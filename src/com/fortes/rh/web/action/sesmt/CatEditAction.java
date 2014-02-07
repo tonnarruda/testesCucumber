@@ -78,6 +78,7 @@ public class CatEditAction extends MyActionSupportList
 	private String assinatura3;
 	private boolean exibirAssinatura4;
 	private String assinatura4;
+	private boolean exibirFotoAcidente;
 	
 	private boolean manterFoto;
 	private File fotoAcidente;
@@ -295,7 +296,8 @@ public class CatEditAction extends MyActionSupportList
 			String pathImg = ServletActionContext.getServletContext().getRealPath("/imgs/") + java.io.File.separatorChar;
 			parametros.put("IMG_DIR", pathImg);
 			parametros.put("FOTO_URL", ArquivoUtil.getPathAnexo("sesmt") + java.io.File.separatorChar + cat.getFotoUrl());
-			configuraAssinaturas();
+			
+			configuraImpressaoInformacoes();
 			
 			return SUCCESS;
 		}
@@ -306,7 +308,7 @@ public class CatEditAction extends MyActionSupportList
 		}
 	}
 
-	private void configuraAssinaturas() 
+	private void configuraImpressaoInformacoes() 
 	{
 		int count = 0;
 		if(exibirAssinatura1)
@@ -317,6 +319,8 @@ public class CatEditAction extends MyActionSupportList
 			parametros.put("ASS" + (++count), assinatura3);
 		if(exibirAssinatura4)
 			parametros.put("ASS" + (++count), assinatura4);
+		
+		parametros.put("EXIBIR_FOTO", exibirFotoAcidente);
 	}
 	
 	private String getPeriodoFormatado()
@@ -572,5 +576,11 @@ public class CatEditAction extends MyActionSupportList
 
 	public void setFotoAcidente(File fotoAcidente) {
 		this.fotoAcidente = fotoAcidente;
+	}
+
+	
+	public void setExibirFotoAcidente(boolean exibirFotoAcidente)
+	{
+		this.exibirFotoAcidente = exibirFotoAcidente;
 	}
 }

@@ -15,6 +15,10 @@
 		{
 			width: 300px !important;
 		}
+		
+		.buttonGroup {
+		    width: 300px !important;
+		}
 	</style>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.cookie.js"/>'></script>
 	<script language="javascript">
@@ -125,7 +129,7 @@
 		<@display.column property="observacao" title="Descrição do Acidente" style="width:280px;"/>
 	</@display.table>
 
-	<div id="box" title="Configurar Assinaturas para Impressão">
+	<div id="box" title="Configurar Informações para Impressão">
 		<@ww.form name="formRelatorio" id="formRelatorio" action="imprimirFichaInvestigacaoAcidente.action" method="POST">
 			<@ww.hidden name="cat.id" id="catId"/>
 			<li>
@@ -142,6 +146,8 @@
 						
 						<@ww.checkbox label="Campo de Assinatura 4" id="exibirAssinatura4" name="exibirAssinatura4" labelPosition="left" onclick="habilitarCampo(this, 'ass3');"/>
 						<@ww.textfield label="Assinatura 4" id="ass4" name="assinatura4" maxLength="25" cssStyle="width: 180px;"/>
+						
+						<@ww.checkbox label="Foto do Acidente" id="exibirFotoAcidente" name="exibirFotoAcidente" labelPosition="left" />
 					</ul>
 				</fieldset>
 			</li>

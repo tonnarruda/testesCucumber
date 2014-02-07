@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fichaInvestigacaoAcidente" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="9b1998d3-a553-4b98-bce8-af4f840ef8c1">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.zoom" value="2.253944402704733"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="52"/>
+	<property name="ireport.y" value="720"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -19,6 +19,7 @@
 	<parameter name="ASS3" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="ASS4" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="FOTO_URL" class="java.lang.String"/>
+	<parameter name="EXIBIR_FOTO" class="java.lang.Boolean"/>
 	<field name="colaborador.empresa.razaoSocial" class="java.lang.String"/>
 	<field name="colaborador.nome" class="java.lang.String"/>
 	<field name="dataFormatada" class="java.lang.String"/>
@@ -772,7 +773,7 @@
 			</staticText>
 		</band>
 		<band height="209">
-			<printWhenExpression><![CDATA[$F{fotoUrl} != null]]></printWhenExpression>
+			<printWhenExpression><![CDATA[$P{EXIBIR_FOTO}.booleanValue() && $F{fotoUrl} != null]]></printWhenExpression>
 			<staticText>
 				<reportElement uuid="779e50e2-4261-45c0-9963-2206dec8e8c0" key="staticText-66" positionType="Float" x="3" y="5" width="530" height="15"/>
 				<box>
