@@ -71,7 +71,6 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Long[] selecionaFamilia(Collection<AreaOrganizacional> areaOrganizacionais, Collection<Long> areasIdsConfiguradas);
 	public Collection<AreaOrganizacional> findSemCodigoAC(Long empresaId);
 	public void deleteAreaOrganizacional(Long[] areaIds) throws Exception;
-	public String findCodigoACDuplicado(Long empresaId);
 	public Long[] findIdsAreasDoResponsavelCoResponsavel(Usuario usuarioLogado, Long empresaId);
 	public Collection<AreaOrganizacional> findAreasByUsuarioResponsavel(Usuario usuario, Long empresaId) throws Exception;
 	public Collection<AreaOrganizacional> getDescendentes(Collection<AreaOrganizacional> areas, Long id, Collection<AreaOrganizacional> descendentes);

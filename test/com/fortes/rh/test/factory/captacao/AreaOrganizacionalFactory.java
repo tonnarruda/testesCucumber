@@ -23,7 +23,6 @@ public class AreaOrganizacionalFactory
 
 		areaOrganizacional.setAreasInteresse(areaInteresses);
 
-		areaOrganizacional.setCodigoAC("0");
 		areaOrganizacional.setConhecimentos(null);
 		areaOrganizacional.setDescricao("descrição");
 		areaOrganizacional.setNome("nome da area organizacional");

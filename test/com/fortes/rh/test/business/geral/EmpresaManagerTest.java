@@ -291,7 +291,6 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	cidadeManager.expects(once()).method("findSemCodigoAC").will(returnValue(null));
     	
     	colaboradorManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("1"));
-    	areaOrganizacionalManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	faixaSalarialManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("2"));
     	cidadeManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	
@@ -305,7 +304,6 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	
     	MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
     	colaboradorManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("1"));
-    	areaOrganizacionalManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	faixaSalarialManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("2"));
     	cidadeManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	

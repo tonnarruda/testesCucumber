@@ -773,10 +773,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		}
 	}
 
-	public String findCodigoACDuplicado(Long empresaId) {
-		return getDao().findCodigoACDuplicado(empresaId);
-	}
-
 	public Long[] findIdsAreasDoResponsavelCoResponsavel(Usuario usuarioLogado, Long empresaId) 
 	{
 		Long[] areasIds = findIdsAreasDoResponsavelCoResponsavel(usuarioLogado.getId(), empresaId);

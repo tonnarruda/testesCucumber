@@ -483,13 +483,14 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
     	areaOrganizacional.setAreaMae(areaMae);
     	areaOrganizacional.setResponsavel(null);
+    	areaOrganizacional.setCodigoAC("001");
 
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	empresa.setAcIntegra(false);
 
     	areaOrganizacionalDao.expects(once()).method("save").with(ANYTHING);
     	areaOrganizacionalManager.insertLotacaoAC(areaOrganizacional, empresa);
-    	assertEquals("0", areaOrganizacional.getCodigoAC());
+    	assertEquals("001", areaOrganizacional.getCodigoAC());
     }
     
     public void testInsertLotacaoACIntegrado() throws Exception
