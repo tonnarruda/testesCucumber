@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
 
 import javax.activation.DataSource;
 import javax.mail.util.ByteArrayDataSource;
+import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -136,6 +137,21 @@ public class ArquivoUtil
 		}
 
 		return arquivoSalvo;
+	}
+	
+	public static String salvaArquivo(File file, String pasta)
+	{
+		String url = "";
+
+		if (file != null && !file.getName().equals(""))
+		{
+			java.io.File logoSalva = ArquivoUtil.salvaArquivo(pasta, file, true);
+
+			if (logoSalva != null)
+				url = logoSalva.getName();
+		}
+
+		return url;
 	}
 
 	public static void deletaArquivos(String pasta, String[] arquivos)
@@ -267,23 +283,21 @@ public class ArquivoUtil
 
 	public static String getPathLogoEmpresa()
 	{
-		StringBuilder path = new StringBuilder(getRhHome());
-		path.append(java.io.File.separatorChar);
-		path.append("anexos");
-		path.append(java.io.File.separatorChar);
-		path.append("logoEmpresas");
-		path.append(java.io.File.separatorChar);
-
-		return path.toString();
+		return ArquivoUtil.getPathAnexo("logoEmpresas");
 	}
 
 	public static String getPathAssinaturas()
+	{
+		return ArquivoUtil.getPathAnexo("assinaturas");
+	}
+	
+	public static String getPathAnexo(String pasta)
 	{
 		StringBuilder path = new StringBuilder(getRhHome());
 		path.append(java.io.File.separatorChar);
 		path.append("anexos");
 		path.append(java.io.File.separatorChar);
-		path.append("assinaturas");
+		path.append(pasta);
 		path.append(java.io.File.separatorChar);
 		
 		return path.toString();
@@ -424,4 +438,27 @@ public class ArquivoUtil
 		CONTEXT_NAME = contextName;
 	}
 	
+	public static void showFile(java.io.File file, HttpServletResponse response) throws IOException 
+	{
+		com.fortes.model.type.File arquivo = new com.fortes.model.type.File();
+		arquivo.setBytes(FileUtil.getFileBytes(file));
+		arquivo.setName(file.getName());
+		arquivo.setSize(file.length());
+		
+		int pos = arquivo.getName().indexOf(".");
+		
+		if(pos > 0){
+			arquivo.setContentType(arquivo.getName().substring(pos));
+		}
+		
+		if (arquivo != null && arquivo.getBytes() != null)
+		{
+			response.addHeader("Expires", "0");
+			response.addHeader("Pragma", "no-cache");
+			response.addHeader("Content-type", arquivo.getContentType());
+			response.addHeader("Content-Transfer-Encoding", "binary");
+
+			response.getOutputStream().write(arquivo.getBytes());
+		}
+	}
 }

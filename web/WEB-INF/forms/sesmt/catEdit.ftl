@@ -3,12 +3,12 @@
 <head>
 <@ww.head/>
 	<#if cat.id?exists>
-		<title>Editar Ficha de Investigação de Acidente(CAT)</title>
+		<title>Editar Ficha de Investigação de Acidente (CAT)</title>
 		<#assign formAction="update.action"/>
 		<#assign accessKey="A"/>
 		<#assign edicao=true>
 	<#else>
-		<title>Inserir Ficha de Investigação de Acidente(CAT)</title>
+		<title>Inserir Ficha de Investigação de Acidente (CAT)</title>
 		<#assign formAction="insert.action"/>
 		<#assign accessKey="I"/>
 	</#if>
@@ -98,7 +98,7 @@
 
 	<#if (colaboradors?exists && colaboradors?size > 0) || (edicao?exists)>
 
-		<@ww.form name="form" id="form" action="${formAction}" method="POST" onsubmit="${validarCampos}" validate="true">
+		<@ww.form name="form" id="form" action="${formAction}" method="POST" onsubmit="${validarCampos}" validate="true" enctype="multipart/form-data">
 
 			<#if cat.colaborador?exists>
 				<b>Colaborador: ${cat.colaborador.nome}<br>
@@ -121,26 +121,58 @@
 			<@ww.textfield label="Horário" required="true" id="horario" name="cat.horario" cssStyle="width:40px;" maxLength="5" liClass="liLeft" cssClass="mascaraHora"/>
 			<@ww.textfield label="Local do Acidente" id="local" name="cat.local" cssStyle="width:305px;" maxLength="100"/>
 			<@ww.select label="Natureza da Lesão" name="cat.naturezaLesao.id" id="naturezaLesao" list="naturezaLesaos" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." cssStyle="width:502px;"/>
-			<@ww.textfield label="Fonte da Lesão" id="fonteLesao" name="cat.fonteLesao" cssStyle="width:160px;" maxLength="100"/>
-			<@ww.textfield label="Parte do Corpo Atingida" id = "parteAtingida" name="cat.parteAtingida" cssStyle="width:160px;" maxLength="100" liClass="liLeft"/>
-			<@ww.select label="Tipo de Acidente" name="cat.tipoAcidente" id="tipoAcidente" list="tipoAcidentes" cssStyle="width:334px;"  headerKey="" headerValue="Selecione..." />
+			<@ww.textfield label="Fonte da Lesão" id="fonteLesao" name="cat.fonteLesao" cssStyle="width:245px;" maxLength="100" liClass="liLeft"/>
+			<@ww.textfield label="Parte do Corpo Atingida" id = "parteAtingida" name="cat.parteAtingida" cssStyle="width:245px;" maxLength="100"/>
+			<@ww.select label="Tipo de Acidente" name="cat.tipoAcidente" id="tipoAcidente" list="tipoAcidentes" cssStyle="width:334px;"  headerKey="" headerValue="Selecione..." liClass="liLeft" />
+			<@ww.textfield label="Qtde de dias debitados" id="qtdDiasDebitados" name="cat.qtdDiasDebitados" cssStyle="width:25px;" maxLength="3" onkeypress="return(somenteNumeros(event,''));"/>
+			<br />
+			<@ww.checkbox label="" id="emitiuCAT" name="cat.emitiuCAT" theme="simple"/>
+			Emitiu CAT? &nbsp; Número CAT: <@ww.textfield label="" required="true" id = "numero" name="cat.numeroCat" cssStyle="width:152px;" maxLength="20" theme="simple"/>
+			<br />
+			<@ww.checkbox label="" id="gerouAfastamento" name="cat.gerouAfastamento" theme="simple"/>
+			Gerou afastamento? &nbsp;&nbsp; Qtde de dias afastados: <@ww.textfield label="" id="qtdDiasAfastado" name="cat.qtdDiasAfastado" cssStyle="width:25px;" maxLength="3" theme="simple"  onkeypress="return(somenteNumeros(event,''));"/>
 
 			<@ww.checkbox label="Foi Treinado para a Função?" id="treinado" name="cat.foiTreinadoParaFuncao" labelPosition="left" />
 			
 			<@ww.checkbox label="Usava EPI?" id="usavaEPI" name="cat.usavaEPI" labelPosition="left"/>
 			<@frt.checkListBox form="document.getElementById('form')" label="EPIs" name="episChecked" id="episChecked" list="episCheckList"/>
 			
-			<@ww.checkbox label="" id="gerouAfastamento" name="cat.gerouAfastamento" theme="simple"/>
-			Gerou Afastamento? / Qtd. de dias Afastados: <@ww.textfield label="" id="qtdDiasAfastado" name="cat.qtdDiasAfastado" cssStyle="width:25px;" maxLength="3" theme="simple"  onkeypress="return(somenteNumeros(event,''));"/>
-			
-			<br>
-			<@ww.checkbox label="" id="emitiuCAT" name="cat.emitiuCAT" theme="simple"/>
-			Emitiu CAT? / Número CAT: <@ww.textfield label="" required="true" id = "numero" name="cat.numeroCat" cssStyle="width:152px;" maxLength="20"  theme="simple"/>
-
 			<@ww.textarea label="Descrição do Acidente" name="cat.observacao" cssStyle="width:500px;" />
 			<@ww.textarea label="Conclusão da Comissão" name="cat.conclusao" cssStyle="width:500px;" />
 			
-			<@ww.hidden label="Id" name="cat.id" />
+			<fieldset style="width:480px;">
+				<@ww.checkbox label="Limitação funcional?" id="limitacaoFuncional" name="cat.limitacaoFuncional" labelPosition="left"/>
+				<@ww.textarea label="Observação" name="cat.obsLimitacaoFuncional" cssStyle="width:477px;" />
+			</fieldset>
+			
+			<br />
+			
+			<@ww.hidden name="cat.id" />
+			<@ww.hidden name="cat.fotoUrl" />
+			
+	        <#if cat.fotoUrl?exists >
+				<div id="divFoto">
+					<table style="border:none;">
+						<tr>
+							<td>
+								<#if cat.id?exists && cat.fotoUrl != "">
+									<a title="Clique para ver a foto no tamanho original" href="<@ww.url includeParams="none" value="showFoto.action?cat.fotoUrl=${cat.fotoUrl}"/>" target="_blank">
+										<img src="<@ww.url includeParams="none" value="showFoto.action?cat.fotoUrl=${cat.fotoUrl}"/>" width="300" id="fotoImg"/>
+									</a>
+								</#if>
+							</td>
+							<td>
+								<@ww.checkbox label="Manter foto do acidente" name="manterFoto" onclick="$('#divFotoUpload').toggle(!this.checked);" value="true" labelPosition="left" checked="checked"/>
+								<div id="divFotoUpload" style="display:none;">
+									<@ww.file label="Nova foto do acidente" name="fotoAcidente" id="fotoAcidente"/>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</div>
+	        <#else>
+				<@ww.file label="Foto do acidente" name="fotoAcidente" id="fotoAcidente"/>
+	        </#if>
 		</@ww.form>
 
 		<div class="buttonGroup">

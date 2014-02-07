@@ -292,33 +292,12 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		if (turma.getAssinaturaDigitalUrl() != null && !turma.getAssinaturaDigitalUrl().equals(""))
 		{
 			java.io.File file = ArquivoUtil.getArquivo(turma.getAssinaturaDigitalUrl(),"assinaturas");
-			showFile(file);
+			HttpServletResponse response = ServletActionContext.getResponse();
+			
+			ArquivoUtil.showFile(file, response);
 		}
 		
 		return Action.SUCCESS;
-	}
-	
-	private void showFile(java.io.File file) throws IOException 
-	{
-		com.fortes.model.type.File arquivo = new com.fortes.model.type.File();
-		arquivo.setBytes(FileUtil.getFileBytes(file));
-		arquivo.setName(file.getName());
-		arquivo.setSize(file.length());
-		int pos = arquivo.getName().indexOf(".");
-		if(pos > 0){
-			arquivo.setContentType(arquivo.getName().substring(pos));
-		}
-		if (arquivo != null && arquivo.getBytes() != null)
-		{
-			HttpServletResponse response = ServletActionContext.getResponse();
-
-			response.addHeader("Expires", "0");
-			response.addHeader("Pragma", "no-cache");
-			response.addHeader("Content-type", arquivo.getContentType());
-			response.addHeader("Content-Transfer-Encoding", "binary");
-
-			response.getOutputStream().write(arquivo.getBytes());
-		}
 	}
 	
 	public String prepareImprimirTurma() throws Exception

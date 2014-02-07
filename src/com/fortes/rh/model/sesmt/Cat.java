@@ -28,36 +28,55 @@ public class Cat extends AbstractModel implements Serializable
 {
     @ManyToOne
     private Colaborador colaborador;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     private Ambiente ambienteColaborador;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     private Funcao funcaoColaborador;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     private NaturezaLesao naturezaLesao;
+    
     @ManyToMany(fetch=FetchType.LAZY)
     private Collection<Epi> epis;
+    
     @Temporal(TemporalType.DATE)
     private Date data;
+    
     @Column(length=5)
     private String horario;
+    
     @Column(length=100)
     private String parteAtingida;
+    
     @Column(length=100)
     private String local;
+    
     @Column(length=100)
     private String fonteLesao;
+    
     private Integer tipoAcidente;
     private boolean foiTreinadoParaFuncao;
     private boolean usavaEPI;
     private boolean emitiuCAT;
+    
     @Column(length=20)
     private String numeroCat;
     private boolean gerouAfastamento;
     private Integer qtdDiasAfastado;
+    
     @Lob
     private String observacao;//descricao do acidente
+    
     @Lob
     private String conclusao;
+    
+    private String fotoUrl;
+    private Integer qtdDiasDebitados;
+    private boolean limitacaoFuncional;
+    @Lob
+    private String obsLimitacaoFuncional;
     
     public Cat()
 	{
@@ -97,6 +116,10 @@ public class Cat extends AbstractModel implements Serializable
 		this.observacao = cat.getObservacao();
 		this.conclusao = cat.getConclusao();
 		this.epis = cat.getEpis();
+		this.fotoUrl = cat.getFotoUrl();
+		this.qtdDiasDebitados = cat.getQtdDiasDebitados();
+		this.limitacaoFuncional = cat.isLimitacaoFuncional();
+		this.obsLimitacaoFuncional = cat.getObsLimitacaoFuncional();
 		
 		this.colaborador = new Colaborador();
 		colaborador.setNome(colaboradorNome);
@@ -353,5 +376,37 @@ public class Cat extends AbstractModel implements Serializable
 
 	public void setLocal(String local) {
 		this.local = local;
+	}
+
+	public String getFotoUrl() {
+		return fotoUrl;
+	}
+
+	public void setFotoUrl(String fotoUrl) {
+		this.fotoUrl = fotoUrl;
+	}
+
+	public Integer getQtdDiasDebitados() {
+		return qtdDiasDebitados;
+	}
+
+	public void setQtdDiasDebitados(Integer qtdDiasDebitados) {
+		this.qtdDiasDebitados = qtdDiasDebitados;
+	}
+
+	public boolean isLimitacaoFuncional() {
+		return limitacaoFuncional;
+	}
+
+	public void setLimitacaoFuncional(boolean limitacaoFuncional) {
+		this.limitacaoFuncional = limitacaoFuncional;
+	}
+
+	public String getObsLimitacaoFuncional() {
+		return obsLimitacaoFuncional;
+	}
+
+	public void setObsLimitacaoFuncional(String obsLimitacaoFuncional) {
+		this.obsLimitacaoFuncional = obsLimitacaoFuncional;
 	}
 }
