@@ -145,12 +145,14 @@
 				<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}'});" imgTitleDisabled="Não é possível excluir a solicitação. Esta já foi aprovada ou encerrada." imgTitle="Excluir" imgName="delete.gif" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
 				
 				<#if solicitacao.anuncio?exists && solicitacao.anuncio.exibirModuloExterno>
+					<#assign titleAnuncio = "Anunciar"/>
 					<#assign imgAnuncio = "cliper_checked.gif"/>
 				<#else>
+					<#assign titleAnuncio = "Anunciado"/>
 					<#assign imgAnuncio = "cliper.gif"/>
 				</#if>
 				
-				<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_ANUNCIAR" href="../anuncio/anunciar.action?solicitacao.id=${solicitacao.id}" imgTitleDisabled="Não é possível anunciar a solicitação. Esta já foi encerrada." imgTitle="Anunciar" imgName="${imgAnuncio}" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
+				<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_ANUNCIAR" href="../anuncio/anunciar.action?solicitacao.id=${solicitacao.id}" imgTitleDisabled="Não é possível anunciar a solicitação. Esta já foi encerrada." imgTitle="${titleAnuncio}" imgName="${imgAnuncio}" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
 
 				<#if !solicitacao.encerrada>
 				 	<#assign onclickEcerrar = "encerraSolicitacao('${solicitacao.id}', '${observacaoLiberador?js_string?replace('\"', '$#-')}');"/>

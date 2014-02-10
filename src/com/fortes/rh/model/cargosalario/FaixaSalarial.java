@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
@@ -235,7 +236,7 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 
 	public void setCodigoAC(String codigoAC)
 	{
-		this.codigoAC = codigoAC;
+		this.codigoAC = StringUtils.defaultIfEmpty(codigoAC, null);
 	}
 
 	public String getNome()

@@ -70,7 +70,7 @@
 	{
 		<#if areaOrganizacional.id?exists>
 			areaMaeId = null;
-			<#if areaOrganizacional.areaMae.id?exists>
+			<#if areaOrganizacional.areaMae?exists && areaOrganizacional.areaMae.id?exists>
 				areaMaeId = ${areaOrganizacional.areaMae.id};
 			</#if>
 		
