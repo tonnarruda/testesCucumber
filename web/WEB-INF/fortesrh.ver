@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.124.146" data="10/02/2014">
+		<Modulo nome=" "><![CDATA[
+			:: Info. Funcionais > Cadastros > Motivos de Desligamento > Inserir/Editar: Novo campo "Considerar para cálculo de turnover", se habilitado na seção "Cálculo de Turnover" do cadastro de empresas.
+			:: SESMT > Movimentações > Ficha de Investigação de Acidente(CAT) > Inserir/Editar: Novos campos de foto do acidente, quantidade de dias debitados, limitação funcional e observação da limitação funcional.
+			:: SESMT > Movimentações > Ficha de Investigação de Acidente(CAT) > Imprimir Ficha de Investigação de Acidente: Nova opção para imprimir a foto do acidente.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.123.145" data="03/02/2014">
 		<Modulo nome=" "><![CDATA[
 			:: C&S > Relatórios > Colaboradores por Cargo: Novos totalizadores nos valores de salário.

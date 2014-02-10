@@ -22339,3 +22339,22 @@ update parametrosdosistema set appversao = '1.1.123.144';--.go
 update papel set help = 'Caso essa opção seja desmarcada, o usuário visualizará somente as solicitações para as áreas organizacionais das quais ele seja um dos responsáveis' where id=45;--.go
 insert into migrations values('20140203110947');--.go
 update parametrosdosistema set appversao = '1.1.123.145';--.go
+-- versao 1.1.124.146
+
+alter table motivodemissao add column turnover boolean NOT NULL DEFAULT false;--.go
+insert into migrations values('20140203162822');--.go
+alter table cat add column fotoUrl character varying(200); --.go
+alter table cat add column qtdDiasDebitados integer;--.go
+alter table cat add column limitacaoFuncional boolean not null default false;--.go
+alter table cat add column obsLimitacaoFuncional text;--.go
+insert into migrations values('20140205101543');--.go
+update areaorganizacional set codigoac = null where trim(codigoac) = ''; --.go
+
+ALTER TABLE areaorganizacional ADD CONSTRAINT no_blank_codigoac_areaorganizacional CHECK(trim(codigoac) <> ''); --.go
+ALTER TABLE areaorganizacional ADD CONSTRAINT unique_codigoac_areaorganizacional UNIQUE(codigoac,empresa_id); --.go
+insert into migrations values('20140207142401');--.go
+update faixasalarial set codigoac = null where codigoac = ''; --.go
+
+ALTER TABLE faixasalarial ADD CONSTRAINT no_blank_codigoac_faixasalarial CHECK(codigoac <> ''); --.go
+insert into migrations values('20140210112646');--.go
+update parametrosdosistema set appversao = '1.1.124.146';--.go
