@@ -18,14 +18,13 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 	
 	public Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(Boolean moduloExterno, char origem, Long origemId)
 	{
-		if(origem == OrigemAnexo.AnexoColaborador)
+		if (origem == OrigemAnexo.AnexoColaborador)
 		{
 			Colaborador colab = (Colaborador) colaboradorManager.findByIdProjectionEmpresa(origemId);
-			Long[] origemIds = new Long[]{origemId, colab.getCandidato().getId()};
-			return getDao().getDocumentoAnexoByOrigemId(moduloExterno, origem, origemIds);
+			return getDao().getDocumentoAnexoByOrigemId(moduloExterno, origem, origemId, colab.getCandidato().getId());
 		}
 		
-		return getDao().getDocumentoAnexoByOrigemId(moduloExterno, origem, origemId);
+		return getDao().getDocumentoAnexoByOrigemId(moduloExterno, origem, origemId, null);
 	}
 
 	public void atualizarDocumentoAnexo(String diretorio,DocumentoAnexo documentoAnexo, com.fortes.model.type.File documento) throws Exception

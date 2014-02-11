@@ -44,7 +44,7 @@ public class DocumentoAnexoManagerTest extends MockObjectTestCase
 		Collection<DocumentoAnexo> documentoAnexos = new ArrayList<DocumentoAnexo>();
 		documentoAnexos.add(documentoAnexo);
 
-		documentoAnexoDao.expects(once()).method("getDocumentoAnexoByOrigemId").with(ANYTHING,ANYTHING,ANYTHING).will(returnValue(documentoAnexos));
+		documentoAnexoDao.expects(once()).method("getDocumentoAnexoByOrigemId").withAnyArguments().will(returnValue(documentoAnexos));
 
 		assertEquals(documentoAnexos.size(), documentoAnexoManager.getDocumentoAnexoByOrigemId(null,'Z', 1L).size());
 	}
