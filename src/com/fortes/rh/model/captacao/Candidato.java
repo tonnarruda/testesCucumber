@@ -1232,4 +1232,11 @@ public class Candidato extends AbstractModel implements Serializable, Cloneable
 	public void setJaFoiColaborador(boolean jaFoiColaborador) {
 		this.jaFoiColaborador = jaFoiColaborador;
 	}
+	
+	public void setCamposExtrasId(Long camposExtrasId) {
+		if(camposExtras == null)
+			camposExtras = new CamposExtras();
+		
+		this.camposExtras.setId(camposExtrasId);
+	}
 }

@@ -206,6 +206,7 @@
 						<@ww.checkbox label="Observações do RH" name="configuracaoImpressaoCurriculo.exibirObservacao" labelPosition="left"/>
 						<@ww.checkbox label="Histórico" name="configuracaoImpressaoCurriculo.exibirHistorico" labelPosition="left"/>
 						<@ww.checkbox label="Texto Digitalizado" name="configuracaoImpressaoCurriculo.exibirTextoOCR" labelPosition="left"/>
+						<@ww.checkbox label="Extra" name="configuracaoImpressaoCurriculo.exibirCamposExtras" labelPosition="left"/>
 						<#if mostraOpcaoSolicitacaoPessoal>
 							<@ww.checkbox label="Solicitação de Pessoal" name="configuracaoImpressaoCurriculo.exibirSolicitacaoPessoal" labelPosition="left"/>
 						<#else>

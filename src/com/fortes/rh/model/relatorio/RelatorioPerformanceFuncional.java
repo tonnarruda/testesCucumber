@@ -3,8 +3,6 @@ package com.fortes.rh.model.relatorio;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -18,6 +16,7 @@ import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
+import com.fortes.rh.util.CampoExtraUtil;
 
 public class RelatorioPerformanceFuncional {
 
@@ -50,7 +49,7 @@ public class RelatorioPerformanceFuncional {
 			Collection<ParticipacaoColaboradorCipa> participacoesNaCipaColaborador,	Collection<AreaOrganizacional> areaOrganizacionals) {
 		
 		this.colaborador = colaborador;
-		this.configuracaoCampoExtras = preencheConteudoCampoExtra(configuracaoCampoExtras);
+		this.configuracaoCampoExtras = CampoExtraUtil.preencheConteudoCampoExtra(colaborador.getCamposExtras(),  configuracaoCampoExtras);
 		this.avaliacaoDesempenhos = avaliacaoDesempenhos;
 		this.avaliacaoExperiencias = avaliacaoExperiencias;
 		this.historicoColaboradors = historicoColaboradors;
@@ -66,46 +65,6 @@ public class RelatorioPerformanceFuncional {
 		this.catsColaborador = catsColaborador;
 		this.participacoesNaCipaColaborador = participacoesNaCipaColaborador;
 		this.areaOrganizacionals = areaOrganizacionals;
-	}
-
-	private Collection<ConfiguracaoCampoExtra> preencheConteudoCampoExtra(Collection<ConfiguracaoCampoExtra> confCampoExtra)
-	{
-		for (ConfiguracaoCampoExtra configuracaoCampoExtra : confCampoExtra) {
-			if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("texto1"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getTexto1());
-			else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("texto2"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getTexto2());
-			else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("texto3"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getTexto3());
-			else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("texto4"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getTexto4());
-			else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("texto5"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getTexto5());
-			else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("texto6"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getTexto6());
-			else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("texto7"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getTexto7());
-			else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("texto8"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getTexto8());
-			else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("texto9"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getTexto9());
-			else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("texto10"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getTexto10());
-			else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("data1"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getData1String());
-			else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("data2"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getData2String());
-			else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("data3"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getData3String());
-			else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("valor1"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getValor1String());
-			else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("valor2"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getValor2String());
-			else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("numero1"))
-				configuracaoCampoExtra.setConteudo(colaborador.getCamposExtras().getNumero1String());
-		}
-		
-		return confCampoExtra;
 	}
 
 	public RelatorioPerformanceFuncional() {

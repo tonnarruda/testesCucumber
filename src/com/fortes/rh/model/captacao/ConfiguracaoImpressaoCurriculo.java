@@ -29,6 +29,7 @@ public class ConfiguracaoImpressaoCurriculo extends AbstractModel implements Ser
 	private boolean exibirExamePalografico;
 	private boolean exibirTextoOCR;
 	private boolean exibirSolicitacaoPessoal;
+	private boolean exibirCamposExtras;
 	
 	private boolean exibirAssinatura1;
 	@Column(length = 50)
@@ -206,6 +207,7 @@ public class ConfiguracaoImpressaoCurriculo extends AbstractModel implements Ser
 		parametros.put("exibirInformacaoSocioEconomica", this.exibirInformacaoSocioEconomica);
 		parametros.put("exibirTextoOCR", this.exibirTextoOCR);
 		parametros.put("exibirSolicitacaoPessoal", this.exibirSolicitacaoPessoal);
+		parametros.put("exibirCamposExtras", this.exibirCamposExtras);
 	}
 
 	public boolean isExibirIdioma()
@@ -357,5 +359,15 @@ public class ConfiguracaoImpressaoCurriculo extends AbstractModel implements Ser
 	public void setExibirSolicitacaoPessoal(boolean exibirSolicitacaoPessoal)
 	{
 		this.exibirSolicitacaoPessoal = exibirSolicitacaoPessoal;
+	}
+	
+	public boolean isExibirCamposExtras()
+	{
+		return exibirCamposExtras;
+	}
+
+	public void setExibirCamposExtras(boolean exibirCamposExtras)
+	{
+		this.exibirCamposExtras = exibirCamposExtras;
 	}
 }

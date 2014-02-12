@@ -1,0 +1,1 @@
+alter table configuracaoimpressaocurriculo add column exibirCamposExtras boolean default false;--.go

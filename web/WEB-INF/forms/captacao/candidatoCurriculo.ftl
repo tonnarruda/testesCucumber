@@ -338,6 +338,53 @@
 	</tr>
 	</#if>
 	
+	<#if empresaSistema.campoExtraCandidato && camposExtras?exists>
+		<tr>
+			<th>EXTRA</th>
+		</tr>
+		<#list configuracaoCampoExtras as configuracaoCampoExtra>
+			<tr>
+				<td>
+					<li>
+						<span>${configuracaoCampoExtra.titulo}:</span>
+						<#if configuracaoCampoExtra.nome == "texto1" && camposExtras.texto1?exists>
+							${camposExtras.texto1}
+						<#elseif configuracaoCampoExtra.nome == "texto2" && camposExtras.texto2?exists>
+							${camposExtras.texto2}
+						<#elseif configuracaoCampoExtra.nome == "texto3" && camposExtras.texto3?exists>
+							${camposExtras.texto3}
+						<#elseif configuracaoCampoExtra.nome == "texto4" && camposExtras.texto4?exists>
+							${camposExtras.texto4}
+						<#elseif configuracaoCampoExtra.nome == "texto5" && camposExtras.texto5?exists>
+							${camposExtras.texto5}
+						<#elseif configuracaoCampoExtra.nome == "texto6" && camposExtras.texto6?exists>
+							${camposExtras.texto6}
+						<#elseif configuracaoCampoExtra.nome == "texto7" && camposExtras.texto7?exists>
+							${camposExtras.texto7}
+						<#elseif configuracaoCampoExtra.nome == "texto8" && camposExtras.texto8?exists>
+							${camposExtras.texto8}
+						<#elseif configuracaoCampoExtra.nome == "texto9" && camposExtras.texto9?exists>
+							${camposExtras.texto9}
+						<#elseif configuracaoCampoExtra.nome == "texto10" && camposExtras.texto10?exists>
+							${camposExtras.texto10}
+						<#elseif configuracaoCampoExtra.nome == "data1" && camposExtras.data1?exists>
+							${camposExtras.data1}
+						<#elseif configuracaoCampoExtra.nome == "data2" && camposExtras.data2?exists>
+							${camposExtras.data2}
+						<#elseif configuracaoCampoExtra.nome == "data3" && camposExtras.data3?exists>
+							${camposExtras.data3}
+						<#elseif configuracaoCampoExtra.nome == "valor1" && camposExtras.valor1?exists>
+							${camposExtras.valor1?string('###,###,###.00')}
+						<#elseif configuracaoCampoExtra.nome == "valor2" && camposExtras.valor2?exists>
+							${camposExtras.valor2?string('###,###,###.00')}
+						<#elseif configuracaoCampoExtra.nome == "numero1" && camposExtras.numero1?exists>
+							${camposExtras.numero1}
+						</#if>
+					 </li>
+				</td>
+			</tr>
+		</#list>
+	</#if>
 
 </table>
 

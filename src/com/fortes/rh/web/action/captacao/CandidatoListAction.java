@@ -32,8 +32,10 @@ import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.geral.AreaInteresseManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.BairroManager;
+import com.fortes.rh.business.geral.CamposExtrasManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
@@ -59,14 +61,17 @@ import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Bairro;
+import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.geral.relatorio.CurriculoCandidatoRelatorio;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.CampoExtraUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -109,7 +114,9 @@ public class CandidatoListAction extends MyActionSupportList
 	private ConfiguracaoImpressaoCurriculoManager configuracaoImpressaoCurriculoManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private F2rhFacade f2rhFacade;
-
+	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	private CamposExtrasManager camposExtrasManager;
+		
 	private Collection<HistoricoCandidato> historicoCandidatos;
 	private Collection<SolicitacaoHistoricoColaborador> historicos;
 	private Collection<Candidato> candidatos;
@@ -234,6 +241,9 @@ public class CandidatoListAction extends MyActionSupportList
 	
 	private int filtrarPor = 1;
 
+	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
+	private CamposExtras camposExtras;
+	
 	public String list() throws Exception
 	{
 		populaEmpresas();
@@ -751,8 +761,20 @@ public class CandidatoListAction extends MyActionSupportList
 	public String verCurriculo() throws Exception
 	{
 		findAndSetCandidato();
+		
+		setCamposExtras();
 
 		return Action.SUCCESS;
+	}
+
+	private void setCamposExtras()
+	{
+		if(getEmpresaSistema().isCampoExtraCandidato()){
+			if(candidato.getCamposExtras() != null && candidato.getCamposExtras().getId() != null)
+				camposExtras = camposExtrasManager.findById(candidato.getCamposExtras().getId());
+			
+			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoCandidato", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
+		}
 	}
 
 	public String imprimirCurriculo() throws Exception
@@ -766,6 +788,8 @@ public class CandidatoListAction extends MyActionSupportList
 		
 		findAndSetCandidato();
 
+		setCamposExtras();
+		
 		//ver historico do candidato
 		historicoCandidatos = historicoCandidatoManager.findByCandidato(candidato);
 		historicos = historicoCandidatoManager.montaMapaHistorico(historicoCandidatos);
@@ -776,6 +800,7 @@ public class CandidatoListAction extends MyActionSupportList
 		curriculo.setCandidatos(candidato);
 		curriculo.setSolicitacao(solicitacao);
 		curriculo.setHistoricos(historicos);
+		curriculo.setConfiguracaoCamposExtras(CampoExtraUtil.preencheConteudoCampoExtra(camposExtras,  configuracaoCampoExtras));
 
 		dataSource = new ArrayList<CurriculoCandidatoRelatorio>();
 		dataSource.add(curriculo);
@@ -886,7 +911,6 @@ public class CandidatoListAction extends MyActionSupportList
 	{
 		return list();
 	}
-	
 
 	public Collection<Candidato> getCandidatos()
 	{
@@ -1832,5 +1856,25 @@ public class CandidatoListAction extends MyActionSupportList
 	public void setPalavrasChaveOutrosCampos(String palavrasChaveOutrosCampos)
 	{
 		this.palavrasChaveOutrosCampos = palavrasChaveOutrosCampos;
+	}
+	
+	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager)
+	{
+		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
+	}
+	
+	public Collection<ConfiguracaoCampoExtra> getConfiguracaoCampoExtras()
+	{
+		return configuracaoCampoExtras;
+	}
+
+	public CamposExtras getCamposExtras()
+	{
+		return camposExtras;
+	}
+	
+	public void setCamposExtrasManager(CamposExtrasManager camposExtrasManager)
+	{
+		this.camposExtrasManager = camposExtrasManager;
 	}
 }
