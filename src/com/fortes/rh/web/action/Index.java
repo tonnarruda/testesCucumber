@@ -280,7 +280,7 @@ public class Index extends MyActionSupport
 				{
 					e.printStackTrace();
 					String msg = (e.getCause() instanceof java.net.ConnectException) ? "Verifique se o mesmo está funcionando corretamente." : e.getMessage();
-					throw new Exception("Erro ao verificar conexão com o WebService. " + msg);
+					throw new Exception("Erro ao verificar conexão com o webservice do AC Pessoal. " + msg);
 				}
 
 				parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
@@ -290,7 +290,7 @@ public class Index extends MyActionSupport
 				boolean rhCompativelComAC  = parametrosDoSistemaManager.verificaCompatibilidadeComWebServiceAC(versaoWebServiceAC, versaoMinimaWebServicxeCompativel);
 
 				if(!rhCompativelComAC)
-					addActionError("A versão do WebService do AC Pessoal ("+versaoWebServiceAC+") está diferente da versão ("+versaoMinimaWebServicxeCompativel+") exigida pelo RH.");
+					addActionError("A versão do webservice do AC Pessoal é incompatível com essa versão do RH. Atualize a versão do webservice do AC Pessoal para que a integração funcione corretamente.");
 			}
 
 			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_PENDENCIA_AC"}))
