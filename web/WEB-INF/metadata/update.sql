@@ -22358,3 +22358,8 @@ update faixasalarial set codigoac = null where codigoac = ''; --.go
 ALTER TABLE faixasalarial ADD CONSTRAINT no_blank_codigoac_faixasalarial CHECK(codigoac <> ''); --.go
 insert into migrations values('20140210112646');--.go
 update parametrosdosistema set appversao = '1.1.124.146';--.go
+-- versao 1.1.125.147
+
+alter table configuracaoimpressaocurriculo add column exibirCamposExtras boolean default false;--.go
+insert into migrations values('20140211163111');--.go
+update parametrosdosistema set appversao = '1.1.125.147';--.go

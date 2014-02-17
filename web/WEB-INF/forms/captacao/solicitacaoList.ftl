@@ -145,10 +145,10 @@
 				<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}'});" imgTitleDisabled="Não é possível excluir a solicitação. Esta já foi aprovada ou encerrada." imgTitle="Excluir" imgName="delete.gif" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
 				
 				<#if solicitacao.anuncio?exists && solicitacao.anuncio.exibirModuloExterno>
-					<#assign titleAnuncio = "Anunciar"/>
+					<#assign titleAnuncio = "Anunciado"/>
 					<#assign imgAnuncio = "cliper_checked.gif"/>
 				<#else>
-					<#assign titleAnuncio = "Anunciado"/>
+					<#assign titleAnuncio = "Anunciar"/>
 					<#assign imgAnuncio = "cliper.gif"/>
 				</#if>
 				

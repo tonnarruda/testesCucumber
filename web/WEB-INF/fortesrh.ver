@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.125.147" data="17/02/2014">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Cadastros > Candidatos > Visualizar Currículo > CURRÍCULO: Nova área com as informações de campos extras, inclusive para impressão.
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.124.146" data="10/02/2014">
 		<Modulo nome=" "><![CDATA[
 			:: Info. Funcionais > Cadastros > Motivos de Desligamento > Inserir/Editar: Novo campo "Considerar para cálculo de turnover", se habilitado na seção "Cálculo de Turnover" do cadastro de empresas.
