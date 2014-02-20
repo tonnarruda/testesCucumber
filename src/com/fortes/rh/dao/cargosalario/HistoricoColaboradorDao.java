@@ -56,4 +56,5 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId);
 	public Collection<HistoricoColaborador> findByAreaGrupoCargo(Long empresaId, Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Long[] areaIds, Boolean areasAtivas, Long[] grupoOcupacionalIds, String vinculo);
 	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long colaboradorId);
+	boolean existeHistoricoPorIndice(Long empresaId);
 }

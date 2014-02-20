@@ -1292,5 +1292,18 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 			query.executeUpdate();		
 		}
 		
+	}
+
+	public boolean existeHistoricoPorIndice(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "hc");
+		criteria.createCriteria("hc.colaborador", "c");
+
+		criteria.setProjection(Projections.rowCount());
+
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Expression.eq("hc.tipoSalario", TipoAplicacaoIndice.INDICE));
+		
+		return ((Integer) criteria.uniqueResult()) > 0;
 	}	
 }

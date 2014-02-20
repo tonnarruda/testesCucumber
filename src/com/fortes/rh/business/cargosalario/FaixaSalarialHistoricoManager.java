@@ -42,4 +42,5 @@ public interface FaixaSalarialHistoricoManager extends GenericManager<FaixaSalar
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 	Collection<FaixaSalarialHistorico> findByTabelaReajusteId(Long tabelaReajusteColaboradorId);
 	Collection<FaixaSalarialHistorico> findByTabelaReajusteIdData(Long tabelaReajusteColaboradorId, Date data);
+	boolean existeHistoricoPorIndice(Long empresaId);
 }

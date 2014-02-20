@@ -1716,6 +1716,30 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(0, historicos.size());
 	}
 	
+	public void testExisteHistoricoPorIndice()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador h1 = HistoricoColaboradorFactory.getEntity();
+		h1.setColaborador(colaborador);
+		h1.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historicoColaboradorDao.save(h1);
+		
+		assertFalse(historicoColaboradorDao.existeHistoricoPorIndice(empresa.getId()));
+		
+		HistoricoColaborador h2 = HistoricoColaboradorFactory.getEntity();
+		h2.setColaborador(colaborador);
+		h2.setTipoSalario(TipoAplicacaoIndice.INDICE);
+		historicoColaboradorDao.save(h2);
+		
+		assertTrue(historicoColaboradorDao.existeHistoricoPorIndice(empresa.getId()));
+	}
+	
 	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)
 	{
 		this.historicoColaboradorDao = historicoColaboradorDao;

@@ -27,4 +27,5 @@ public interface FaixaSalarialHistoricoDao extends GenericDao<FaixaSalarialHisto
 	ReajusteFaixaSalarial findReajusteFaixaSalarial(Date faixasalarialHistoricoData, Long faixaSalarialId);
 	FaixaSalarialHistorico findHistoricoAtual(Long faixaSalarialId);
 	Collection<FaixaSalarialHistorico> findByTabelaReajusteIdData(Long tabelaReajusteId, Date data);
+	boolean existeHistoricoPorIndice(Long empresaId);
 }

@@ -643,6 +643,36 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		assertEquals("Tabela Reajuste 1", 2, faixaSalarialHistoricoDao.findByTabelaReajusteIdData(tabela1.getId(), data).size());
 		assertEquals("Tabela Reajuste 2", 1, faixaSalarialHistoricoDao.findByTabelaReajusteIdData(tabela2.getId(), data).size());
 	}
+	
+	public void testExisteHistoricoPorIndice()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setEmpresa(empresa);
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixa = FaixaSalarialFactory.getEntity();
+		faixa.setCargo(cargo);
+		faixaSalarialDao.save(faixa);
+
+		assertFalse(faixaSalarialHistoricoDao.existeHistoricoPorIndice(empresa.getId()));
+		
+		FaixaSalarialHistorico h1 = FaixaSalarialHistoricoFactory.getEntity();
+		h1.setFaixaSalarial(faixa);
+		h1.setTipo(TipoAplicacaoIndice.VALOR);
+		faixaSalarialHistoricoDao.save(h1);
+		
+		assertFalse(faixaSalarialHistoricoDao.existeHistoricoPorIndice(empresa.getId()));
+		
+		FaixaSalarialHistorico h2 = FaixaSalarialHistoricoFactory.getEntity();
+		h2.setFaixaSalarial(faixa);
+		h2.setTipo(TipoAplicacaoIndice.INDICE);
+		faixaSalarialHistoricoDao.save(h2);
+		
+		assertTrue(faixaSalarialHistoricoDao.existeHistoricoPorIndice(empresa.getId()));
+	}
 
 	public GenericDao<FaixaSalarialHistorico> getGenericDao()
 	{

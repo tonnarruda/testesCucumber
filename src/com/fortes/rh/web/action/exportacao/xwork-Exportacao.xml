@@ -2,6 +2,8 @@
 <!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
 <xwork>
 	<package name="exportacao" extends="default" namespace="/exportacao">
+		
+		<!-- EXPORTAR DADOS PARA O TRU -->
 		<action name="prepareExportacaoTreinamentos" class="com.fortes.rh.web.action.exportacao.ExportacaoAction" method="prepareExportacaoTreinamentos">
 			<result name="success" type="freemarker">/WEB-INF/forms/exportacao/treinamentos.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/exportacao/treinamentos.ftl</result>
@@ -13,6 +15,15 @@
 				<param name="nomeArquivoComExtencao">exportacaoTreinamentosRHParaTRU.tr</param>
 			</result>	
 			<result name="input" type="freemarker">/WEB-INF/forms/exportacao/treinamentos.ftl</result>
+		</action>
+		
+		<!-- EXPORTAR DADOS PARA O AC -->
+		<action name="prepareExportarAC" class="com.fortes.rh.web.action.exportacao.ExportacaoACAction" method="prepareExportarAC">
+			<result name="index" type="freemarker">/WEB-INF/forms/exportacao/indexAC.ftl</result>	
+		</action>
+		<action name="exportarAC" class="com.fortes.rh.web.action.exportacao.ExportacaoACAction" method="exportarAC">
+			<result name="index" type="freemarker">/WEB-INF/forms/exportacao/indexAC.ftl</result>	
+			<result name="indices" type="freemarker">/WEB-INF/forms/exportacao/indicesAC.ftl</result>	
 		</action>
 	</package>
 </xwork>

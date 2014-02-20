@@ -1457,13 +1457,19 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	{
 		getDao().deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradorId);
 	}
+	
+	public void deleteHistoricoColaborador(Long[] colaboradorIds) throws Exception 
+	{
+		getDao().deleteHistoricoColaborador(colaboradorIds);
+	}
+	
+	public boolean existeHistoricoPorIndice(Long empresaId) 
+	{
+		return getDao().existeHistoricoPorIndice(empresaId);
+	}
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
-	}
-
-	public void deleteHistoricoColaborador(Long[] colaboradorIds) throws Exception {
-		getDao().deleteHistoricoColaborador(colaboradorIds);
 	}
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
