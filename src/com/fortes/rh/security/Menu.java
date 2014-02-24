@@ -79,7 +79,7 @@ public abstract class Menu
 				"<img src='"+ contexto + "/imgs/twitter.png' style='vertical-align: middle;'></a></li>\n");
 		
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='http://sistemaderh.blogspot.com' target='_blank' title='Blog'>" +
+				"<a href='http://blog.fortesinformatica.com.br/categoria/ente-rh' target='_blank' title='Blog'>" +
 				"<img src='"+ contexto + "/imgs/blog.png' style='vertical-align: middle;'></a></li>\n");
 		
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
