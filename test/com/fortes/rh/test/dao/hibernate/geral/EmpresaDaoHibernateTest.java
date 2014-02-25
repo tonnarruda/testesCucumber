@@ -33,6 +33,7 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
+import com.fortes.rh.test.factory.geral.GrupoACFactory;
 import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 
@@ -344,6 +345,25 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		Empresa retorno = empresaDao.getCnae(empresa.getId());
 		assertEquals("cnae1", retorno.getCnae());
 		assertEquals("cnae2", retorno.getCnae2());
+	public void testUpdateCodigoAC()
+	{
+		GrupoAC grupoAC = GrupoACFactory.getEntity();
+		grupoAC.setCodigo("003");
+		grupoACDao.save(grupoAC);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setCodigoAC(null);
+		empresa.setGrupoAC(null);
+		empresaDao.save(empresa);
+		
+		empresa.setCodigoAC("0005");
+		empresa.setGrupoAC("003");
+		empresaDao.updateCodigoAC(empresa.getId(), empresa.getCodigoAC(), empresa.getGrupoAC());
+		
+		Empresa retorno = empresaDao.findByIdProjection(empresa.getId());
+		
+		assertEquals("Codigo AC", empresa.getCodigoAC(), retorno.getCodigoAC());
+		assertEquals("Grupo AC", empresa.getGrupoAC(), retorno.getGrupoAC());
 	}
 
 	public void setCidadeDao(CidadeDao cidadeDao)

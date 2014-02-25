@@ -22,8 +22,17 @@
 			<result name="index" type="freemarker">/WEB-INF/forms/exportacao/indexAC.ftl</result>	
 		</action>
 		<action name="exportarAC" class="com.fortes.rh.web.action.exportacao.ExportacaoACAction" method="exportarAC">
+			<interceptor-ref name="defaultUpdateStack" />
 			<result name="index" type="freemarker">/WEB-INF/forms/exportacao/indexAC.ftl</result>	
-			<result name="indices" type="freemarker">/WEB-INF/forms/exportacao/indicesAC.ftl</result>	
+			<result name="empresa" type="freemarker">/WEB-INF/forms/exportacao/empresaAC.ftl</result>
+		</action>
+		<action name="prepareExportarEmpresaAC" class="com.fortes.rh.web.action.exportacao.ExportacaoACAction" method="prepareExportarEmpresaAC">
+			<interceptor-ref name="defaultListStack" />
+			<result name="empresa" type="freemarker">/WEB-INF/forms/exportacao/empresaAC.ftl</result>
+		</action>
+		<action name="exportarEmpresaAC" class="com.fortes.rh.web.action.exportacao.ExportacaoACAction" method="exportarEmpresaAC">
+			<result name="empresa" type="freemarker">/WEB-INF/forms/exportacao/empresaAC.ftl</result>
+			<result name="success" type="redirect"><![CDATA[exportarAC.action?empresaId=${empresaId}&grupoAC=${grupoAC}]]></result>
 		</action>
 	</package>
 </xwork>

@@ -28,4 +28,5 @@ public interface EmpresaDao extends GenericDao<Empresa>
 	boolean isControlaRiscoPorAmbiente(Long empresaId);
 	Collection<Empresa> findEmpresasIntegradas();
 	Empresa getCnae(Long empresaId);
+	void updateCodigoAC(Long empresaId, String codigoAC, String grupoAC);
 }

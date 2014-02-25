@@ -4,7 +4,7 @@
 	<@ww.head/>
 	<title>Exportar dados para o AC Pessoal</title>
 	
-	<#assign validarCampos="return validaFormulario('form', new Array('empresaId'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('empresaId','grupaAC'))"/>
 </head>
 <body>
 	<@ww.actionerror />
@@ -13,7 +13,8 @@
 	<#if usuarioLogado?exists && usuarioLogado.id == 1>
 	
 		<@ww.form name="form" action="exportarAC.action"  onsubmit="${validarCampos}" method="POST">
-			<@ww.select label="Empresa" name="empresaId" id="empresaId" listKey="id" listValue="nome" list="empresas" headerKey="" headerValue="Selecione..." cssClass="selectEmpresa"/>
+			<@ww.select label="Exportar empresa" name="empresaId" id="empresaId" listKey="id" listValue="nome" list="empresas" headerKey="" headerValue="Selecione..." cssStyle="width:150px"/>
+			<@ww.select label="Para o AC" name="grupoAC" id="grupaAC" listKey="codigo" listValue="codigoDescricao" list="gruposACs" headerKey="" headerValue="Selecione..." cssStyle="width:150px"/>
 		</@ww.form>
 		
 		<div class="buttonGroup">

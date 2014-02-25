@@ -475,6 +475,36 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return msgs;
 	}
 	
+	public boolean checkEmpresaIntegradaAc() {
+		return getDao().checkEmpresaIntegradaAc();
+	}
+
+	public boolean checkEmpresaIntegradaAc(Long empresaId) {
+		return getDao().checkEmpresaIntegradaAc(empresaId);
+	}
+
+	public Collection<Empresa> findComCodigoAC() {
+		return getDao().findComCodigoAC();
+	}
+
+	//utilizado apenas para auditar a integração com AC
+	public void auditaIntegracao(Empresa empresa, boolean tavaIntegradaComAC) {
+		Logger logger = Logger.getLogger(Empresa.class);
+		logger.info("Auditoria da integração");
+		logger.info("Empresa: " + empresa.getNome() + " id: " + empresa.getId());
+		logger.info("Antes: " + tavaIntegradaComAC);
+		logger.info("Depois: " + empresa.isAcIntegra() + " Grupo AC: " + empresa.getGrupoAC());
+	}
+
+	public boolean isControlaRiscoPorAmbiente(Long empresaId) {
+		return getDao().isControlaRiscoPorAmbiente(empresaId);
+	}
+	
+	public void updateCodigoGrupoAC(Long empresaId, String codigoAC, String grupoAC) 
+	{
+		getDao().updateCodigoAC(empresaId, codigoAC, grupoAC);
+	}
+	
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
 		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
 	}
@@ -489,18 +519,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public void setMotivoDemissaoManager(MotivoDemissaoManager motivoDemissaoManager) {
 		this.motivoDemissaoManager = motivoDemissaoManager;
-	}
-
-	public boolean checkEmpresaIntegradaAc() {
-		return getDao().checkEmpresaIntegradaAc();
-	}
-
-	public boolean checkEmpresaIntegradaAc(Long empresaId) {
-		return getDao().checkEmpresaIntegradaAc(empresaId);
-	}
-
-	public Collection<Empresa> findComCodigoAC() {
-		return getDao().findComCodigoAC();
 	}
 
 	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
