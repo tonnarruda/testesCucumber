@@ -139,7 +139,7 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 		}
 
 		if (!passou)
-			throw new Exception("Uma pergunta objetiva deve conter no mínimo duas respostas.");
+			throw new Exception("A pergunta deve conter no mínimo duas respostas.");
 
 		return respostasSalvar;
 	}

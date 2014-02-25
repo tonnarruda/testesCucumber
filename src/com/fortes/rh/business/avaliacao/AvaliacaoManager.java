@@ -16,7 +16,7 @@ public interface AvaliacaoManager extends GenericManager<Avaliacao>
 	Integer getCount(Long empresaId, Boolean ativo, char modeloAvaliacao, String titulo);
 	Collection<QuestionarioRelatorio> getQuestionarioRelatorio(Avaliacao avaliacao);
 	void enviaLembrete();
-	Integer getPontuacaoMaximaDaPerformance(Long avaliacaoId);
+	Integer getPontuacaoMaximaDaPerformance(Long avaliacaoId, Long... perguntaIds);
 	Collection<ResultadoQuestionario> montaResultado(Collection<Pergunta> perguntas, Long[] perguntasIds, Long[] areaIds, Date periodoIni, Date periodoFim, Avaliacao avaliacao, Long empresaId) throws Exception;
 	String montaObsAvaliadores(Collection<ColaboradorResposta> colaboradorRespostas);
 	void clonar(Long id, Long... empresasIds);

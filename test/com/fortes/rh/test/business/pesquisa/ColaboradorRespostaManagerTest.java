@@ -640,6 +640,61 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	
     	assertEquals("20%", colaboradorQuestionario.getPerformanceFormatada());
     }
+    
+    public void testSavePerformanceDaAvaliacaoExperienciaPesoNulo()
+    {
+    	Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
+    	
+    	ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(22L);
+    	colaboradorQuestionario.setAvaliacao(avaliacao);
+    	
+    	
+    	Pergunta perguntaObjetiva = PerguntaFactory.getEntity(1L);
+    	perguntaObjetiva.setTipo(TipoPergunta.OBJETIVA);
+    	perguntaObjetiva.setPeso(2);
+    	
+    	Resposta respostaObjetivaA = RespostaFactory.getEntity(1L);
+    	respostaObjetivaA.setPeso(1);
+
+      	ColaboradorResposta colaboradorRespostaObjetiva = ColaboradorRespostaFactory.getEntity(1L);
+    	colaboradorRespostaObjetiva.setPergunta(perguntaObjetiva);
+    	colaboradorRespostaObjetiva.setResposta(respostaObjetivaA);
+
+    	
+    	Pergunta perguntaObjetiva2 = PerguntaFactory.getEntity(1L);
+    	perguntaObjetiva2.setTipo(TipoPergunta.OBJETIVA);
+    	perguntaObjetiva2.setPeso(2);
+    	
+    	Resposta respostaObjetivaA2 = RespostaFactory.getEntity(1L);
+
+      	ColaboradorResposta colaboradorRespostaObjetiva2 = ColaboradorRespostaFactory.getEntity(1L);
+    	colaboradorRespostaObjetiva2.setPergunta(perguntaObjetiva2);
+    	colaboradorRespostaObjetiva2.setResposta(respostaObjetivaA2);
+    	
+    	
+    	Pergunta perguntaNota = PerguntaFactory.getEntity(2L);
+    	perguntaNota.setTipo(TipoPergunta.NOTA);
+    	perguntaNota.setPeso(2);
+    	
+    	ColaboradorResposta colaboradorRespostaNota = ColaboradorRespostaFactory.getEntity(2L);
+    	colaboradorRespostaNota.setValor(5);    	
+    	colaboradorRespostaNota.setPergunta(perguntaNota);
+    	
+    	
+    	Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
+    	colaboradorRespostas.add(colaboradorRespostaObjetiva);
+    	colaboradorRespostas.add(colaboradorRespostaNota);
+    	
+    	Integer pontuacaoMaxima = 22;
+    	
+    	avaliacaoManager.expects(once()).method("getPontuacaoMaximaDaPerformance").will(returnValue(pontuacaoMaxima));
+    	colaboradorRespostaDao.expects(once()).method("findByColaboradorQuestionario").will(returnValue(colaboradorRespostas));
+    	colaboradorQuestionarioManager.expects(once()).method("update").with(eq(colaboradorQuestionario));
+    	
+    	colaboradorRespostaManager.savePerformanceDaAvaliacaoExperiencia(colaboradorQuestionario);
+    	
+    	assertEquals("54,55%", colaboradorQuestionario.getPerformanceFormatada());
+    }
     public void testFindByAvaliadoAndAvaliacaoDesempenho()
 	{
     	boolean desconsiderarAutoAvaliacao = false;

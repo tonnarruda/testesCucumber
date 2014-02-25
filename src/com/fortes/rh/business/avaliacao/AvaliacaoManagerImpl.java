@@ -108,9 +108,9 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
         return resultadoQuestionarios;
     }
 	
-	public Integer getPontuacaoMaximaDaPerformance(Long avaliacaoId) {
+	public Integer getPontuacaoMaximaDaPerformance(Long avaliacaoId, Long... perguntaIds) {
 
-		return getDao().getPontuacaoMaximaDaPerformance(avaliacaoId);
+		return getDao().getPontuacaoMaximaDaPerformance(avaliacaoId, perguntaIds);
 	}
 
 	public void setPerguntaManager(PerguntaManager perguntaManager) {

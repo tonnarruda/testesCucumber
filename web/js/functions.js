@@ -2,7 +2,7 @@
 // de argumentos. Deve ser chamada no evento onKeyPress desta forma:
 // onKeyPress = "return(somenteNumeros(event,'(/){,}.'));"
 // caso queira apenas permitir caracters
-function somenteNumeros(e,args)
+function somenteNumeros(e,args,value)
 {
     if (document.all) // caso seja IE
 	{
@@ -14,6 +14,11 @@ function somenteNumeros(e,args)
 	}
 
 	var chr = String.fromCharCode(evt); // pegando a tecla digitada
+	
+	if(value.indexOf(chr) == 0)//serve para não repetir o character no campo Ex: "-" (valor negativo).
+	{
+		return false;
+	}
 
 	// Se o código for menor que 20 é porque deve ser caracteres de controle
     // ex.: <ENTER>, <TAB>, <BACKSPACE> portanto devemos permitir

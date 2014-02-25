@@ -35,7 +35,9 @@ import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjetiva;
 import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.ConverterUtil;
+import com.fortes.rh.util.LongUtil;
 
 public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<ColaboradorResposta, ColaboradorRespostaDao> implements ColaboradorRespostaManager
 {
@@ -485,38 +487,47 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 
 	private double calculaPerformance(Long colaboradorQuestionarioId, Long avaliacaoId)
 	{
-		int pontuacaoMaxima = avaliacaoManager.getPontuacaoMaximaDaPerformance(avaliacaoId);
+		Collection<Long> perguntasIdsComPesoNulo = new ArrayList<Long>();
+		Collection<ColaboradorResposta> colaboradorRespostas = getDao().findByColaboradorQuestionario(colaboradorQuestionarioId);
+		
+		for (ColaboradorResposta colaboradorResposta : colaboradorRespostas)
+			if((colaboradorResposta.getPergunta() != null && (colaboradorResposta.getPergunta().getTipo() == TipoPergunta.OBJETIVA || colaboradorResposta.getPergunta().getTipo() == TipoPergunta.MULTIPLA_ESCOLHA)) &&
+					(colaboradorResposta.getResposta() != null && colaboradorResposta.getResposta().getPeso() == null))
+				perguntasIdsComPesoNulo.add(colaboradorResposta.getPergunta().getId());
+
 		double performance = 0;
+		int pontuacaoMaxima = avaliacaoManager.getPontuacaoMaximaDaPerformance(avaliacaoId, new CollectionUtil<Long>().convertCollectionToArrayLong(perguntasIdsComPesoNulo));
 		
-		if(pontuacaoMaxima != 0)//caso contrario não posso dividir por zero, ai a performance vai ter que ficar zero
+		if(pontuacaoMaxima == 0)//A performance vai ter que ficar zero, pois não posso dividir por zero
+			return performance;
+		
+		int pontuacaoObtida = 0;
+
+		for (ColaboradorResposta colaboradorResposta : colaboradorRespostas) //for colaboradorRespostas separado devido contagem da multipla escolha (não juntar for de colaboradorRespostas)
 		{
-			int pontuacaoObtida = 0;
+			Pergunta pergunta = colaboradorResposta.getPergunta();
+			Resposta resposta = colaboradorResposta.getResposta();
+
+			if((perguntasIdsComPesoNulo.size() > 0 && perguntasIdsComPesoNulo.contains(pergunta.getId())) || pergunta.getTipo() == TipoPergunta.SUBJETIVA)
+				continue;
 			
-			Collection<ColaboradorResposta> colaboradorRespostas = getDao().findByColaboradorQuestionario(colaboradorQuestionarioId);
-			
-			for (ColaboradorResposta colaboradorResposta : colaboradorRespostas) 
-			{
-				Pergunta pergunta = colaboradorResposta.getPergunta();
-				Resposta resposta = colaboradorResposta.getResposta();
-				
-				int peso = pergunta.getPeso() == null ? 0 : pergunta.getPeso();
-				int pesoResposta = 0;
-				
-				if (pergunta.getTipo() == TipoPergunta.SUBJETIVA)
-					continue;
-				
-				else if (pergunta.getTipo() == TipoPergunta.OBJETIVA || pergunta.getTipo() == TipoPergunta.MULTIPLA_ESCOLHA)
-					pesoResposta = resposta.getPeso() == null ? 0 : resposta.getPeso();
-				
-				else if (pergunta.getTipo() == TipoPergunta.NOTA)
-					pesoResposta = colaboradorResposta.getValor() == null ? 0 : colaboradorResposta.getValor();
-				
-				pontuacaoObtida += (peso * pesoResposta);
-			}
-			
-			performance = (double)pontuacaoObtida / (double)pontuacaoMaxima;
+			int pesoResposta = 0;
+
+			if (pergunta.getTipo() == TipoPergunta.OBJETIVA || pergunta.getTipo() == TipoPergunta.MULTIPLA_ESCOLHA)
+				pesoResposta = resposta.getPeso() == null ? 0 : resposta.getPeso();
+			else if (pergunta.getTipo() == TipoPergunta.NOTA)
+				pesoResposta = colaboradorResposta.getValor() == null ? 0 : colaboradorResposta.getValor();
+
+			int peso = pergunta.getPeso() == null ? 0 : pergunta.getPeso();
+
+			pontuacaoObtida += (peso * pesoResposta);
 		}
-		
+
+		if (pontuacaoObtida < 0)
+			pontuacaoObtida = 0;
+
+		performance = (double)pontuacaoObtida / (double)pontuacaoMaxima;
+
 		return performance;
 	}
 

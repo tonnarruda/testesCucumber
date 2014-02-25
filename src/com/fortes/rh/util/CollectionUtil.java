@@ -375,6 +375,19 @@ public final class CollectionUtil<T>
 		return new String[]{};
 	}
 	
+	public Long[] convertCollectionToArrayLong(Collection<T> col) {
+		int count = 0;
+		Collection<T> retornoCollection = col;
+		if(retornoCollection.size() > 0){
+			Long[] retorno = new Long[retornoCollection.size()];
+			for (T t : retornoCollection) 
+				retorno[count++] = new Long(t.toString());
+			return retorno;
+		}
+		
+		return new Long[]{};
+	}
+	
 	public <K, V extends Comparable<? super V>> Map<K, V> sortMapByValue( Map<K, V> map )
 	{
 		List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>( map.entrySet() );

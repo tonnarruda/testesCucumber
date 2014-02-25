@@ -323,7 +323,7 @@ public class AvaliacaoDaoHibernateTest extends GenericDaoHibernateTest<Avaliacao
 		//migué consulta SQL
 		avaliacaoDao.find(avaliacao);
 		
-		assertEquals(61, avaliacaoDao.getPontuacaoMaximaDaPerformance(avaliacao.getId()).intValue());
+		assertEquals(61, avaliacaoDao.getPontuacaoMaximaDaPerformance(avaliacao.getId(), null).intValue());
 	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao) {

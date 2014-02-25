@@ -65,6 +65,8 @@
 		        	padding: '5px 10px' 
 		        }
 			});
+			
+			exibePorTipo();
 		});
 		
 		function setAspecto(nome)
@@ -72,30 +74,89 @@
 			$("#aspecto").val(nome);
 		}
 
-		function validaQtdAlternativasPerguntaObjetiva()
+		function contaResposta(nameResposta)
 		{
+			var countResposta = 0;
+			
+			$("input[name='" + nameResposta + "']").each(function(){
+				if($(this).val() != "")
+					countResposta++;
+			});
+			
+			return countResposta;
+		}
+
+		function validaPesos(nameResposta)
+		{
+			var qtdRespostaComPesoVazio = 0;
+			var campoIvalido = false;
+		
+			$("input[name='" + nameResposta + "']").each(function()
+			{
+				$(this).css('background', '#FFF');
+				
+				if($(this).val() == "")
+				{
+					qtdRespostaComPesoVazio++;
+				} 
+				else 
+				{
+					var elementos = $(this).val();
+					var qtdElementos =  elementos.length;
+					
+					for(var contador = 0; contador < qtdElementos; contador++)
+					{
+						if(elementos.charAt(contador) == '-' && ((qtdElementos > 1 && contador != 0) || (qtdElementos == 1)))
+						{
+							$(this).css('background', '#FFEEC2');
+							campoIvalido = true;
+						}
+					}
+				}	
+			});
+			
+			if(campoIvalido)
+			{
+				jAlert('Campos inválidos.');
+				return false;
+			}
+
+			if(qtdRespostaComPesoVazio > 1)
+			{
+				jAlert('Não é possível inserir mais de uma alternativa com peso vazio.');
+				return false;
+			}
+			
+			return true;
+		}
+		
+		function validaQtdAlternativasPerguntaObjetivaEMultiplaEscolha()
+		{
+			if($("#tipo").val() != ${tipoPerguntas.getObjetiva()} && $("#tipo").val() != ${tipoPerguntas.getMultiplaEscolha()})
+				return true;
+			
 			if($("#tipo").val() == ${tipoPerguntas.getObjetiva()})
 			{
-				var countRespostaObjetiva = 0;
-	
-				$("input[name='respostaObjetiva']").each(function(){
-					if($(this).val() != "")
-						countRespostaObjetiva++;
-				});
+				var countRespostaObjetiva = contaResposta('respostaObjetiva');
 				
 				if ($('#sugerir').is(":checked"))
-				{
-					$("input[name='respostaObjetivaSugerida']").each(function(){
-						if($(this).val() != "")
-							countRespostaObjetiva++;
-					});
-				}
+					countRespostaObjetiva += contaResposta('respostaObjetivaSugerida');
 				
-				if(countRespostaObjetiva < 2)
-				{
-					jAlert('Perguntas objetivas têm que possuir no mínimo 2 alternativas.');
+				if(!validaPesos('pesoRespostaObjetiva'))
 					return false;
-				}
+			}
+			else if($("#tipo").val() == ${tipoPerguntas.getMultiplaEscolha()})
+			{
+				var countRespostaObjetiva = contaResposta('multiplaResposta');
+
+				if(!validaPesos('pesoRespostaMultipla'))
+					return false;
+			}
+			
+			if(countRespostaObjetiva < 2)
+			{
+				jAlert('A pergunta têm que possuir no mínimo 2 alternativas.');
+				return false;
 			}
 			
 			return true;
@@ -103,7 +164,7 @@
 		
 		function validaForm()
 		{
-			if(!validaQtdAlternativasPerguntaObjetiva())
+			if(!validaQtdAlternativasPerguntaObjetivaEMultiplaEscolha())
 				return false;
 					
 			if(document.getElementById("tipo").value == ${tipoPerguntas.getNota()})
@@ -212,7 +273,7 @@
 	       	var d = $("<div>").attr("id", str);
 			$("<input type='input' id='ro_"+idInputObjetiva+"' name='respostaObjetiva' style='width: 355px'>").appendTo(d);
 			$(document.createTextNode(" Peso: ")).appendTo(d);
-			$("<input name='pesoRespostaObjetiva' id='pesoRespostaObjetiva' value='" + pesoSugerido + "' onkeypress=\"return(somenteNumeros(event,''));\" style='width:30px;text-align:right;'>").appendTo(d);
+			$("<input name='pesoRespostaObjetiva' id='pesoRespostaObjetiva' value='" + pesoSugerido + "' onkeypress=\"return(somenteNumeros(event,'-',this.value));\" style='width:30px;text-align:right;'  maxLength=\"4\">").appendTo(d);
 
 			$("<span> </span> ").appendTo(d); // espaco em branco
 			$("<img src='<@ww.url value="/imgs/delete.gif"/>' onClick=$('#"+ str +"').remove(); style='cursor: pointer'>").appendTo(d);
@@ -229,7 +290,7 @@
 		 	var d = $("<div>").attr("id", str);
 		 	$("<input type='input' id='multiplaResposta_"+idInputObjetivaMultipla+"' name='multiplaResposta' style='width: 355px'>").appendTo(d);
 		 	$(document.createTextNode(" Peso: ")).appendTo(d);
-		 	$("<input name='pesoRespostaMultipla' id='pesoRespostaMultipla' value='" + pesoSugeridoMultipla + "' onkeypress=\"return(somenteNumeros(event,''));\" style='width:30px;text-align:right;'> ").appendTo(d);
+		 	$("<input name='pesoRespostaMultipla' id='pesoRespostaMultipla' value='" + pesoSugeridoMultipla + "' onkeypress=\"return(somenteNumeros(event,'-',this.value));\" style='width:30px;text-align:right;' maxLength=\"4\">").appendTo(d);
 		 	
 		 	$("<span> </span> ").appendTo(d); // espaco em branco
 		 	$("<img src='<@ww.url value="/imgs/delete.gif"/>' onClick=$('#"+ str +"').remove(); style='cursor: pointer'>").appendTo(d);
@@ -263,7 +324,7 @@
 		
 		<@ww.select label="Tipo de Resposta" name="pergunta.tipo" id="tipo" list="tipoPerguntas" cssStyle="width: 200px;" required="true" onchange="exibePorTipo();" disabled="${desabilitaTipo}" />
 		<#if desabilitaTipo == "true">
-			<@ww.hidden name="pergunta.tipo" />
+			<@ww.hidden id="tipo" name="pergunta.tipo" />
 		</#if>
 		
 		<#-- Perguntas Objetivas -->
@@ -277,12 +338,12 @@
 						<#if respostaLista.peso?exists>
 							<#assign pesoSugerido=respostaLista.peso/>
 						<#else>
-							<#assign pesoSugerido="0"/>
+							<#assign pesoSugerido=""/>
 						</#if>
 						
 						<@ww.div id="respostaObjetiva${respostaLista.ordem}">
 							<input name="respostaObjetiva" id="ro_${respostaLista.ordem}" value="${respostaLista.texto}" style="width: 355px;"/>
-							Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="${pesoSugerido}" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
+							Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="${pesoSugerido}" onkeypress="return(somenteNumeros(event,'-',this.value));" style="width:30px;text-align:right;" maxLength="4"/>
 							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#respostaObjetiva' + ${respostaLista.ordem}).remove();"/>
 						</@ww.div>
 					</#list>
@@ -306,7 +367,7 @@
 						
 							<@ww.div id="respostaObjetiva${respostaSugerida.ordem}">
 								<input name="respostaObjetivaSugerida" id="respostaObjetivaSugerida${respostaSugerida.ordem}" value="${respostaSugerida.texto}" style="width: 355px;"/>
-								Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="${pesoSugeridoEdit}" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
+								Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva${respostaSugerida.ordem}" value="${pesoSugeridoEdit}" onkeypress="return(somenteNumeros(event,'-',this.value));" style="width:30px;text-align:right;" maxLength="4"/>
 								<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#respostaObjetiva' + ${respostaSugerida.ordem}).remove();"/>
 								<br>
 							</@ww.div>
@@ -320,7 +381,7 @@
 					</@ww.div>
 						<@ww.div id="d0">
 							<input name="respostaObjetiva" id="ro_0" style="width: 355px;"/>
-							Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="1" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
+							Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="1" onkeypress="return(somenteNumeros(event,'-',this.value));" style="width:30px;text-align:right;" maxLength="4"/>
 							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#d0').remove();"/>
 					</@ww.div>
 				</@ww.div>
@@ -340,12 +401,12 @@
 						<#if respostaLista.peso?exists>
 							<#assign pesoSugerido=respostaLista.peso/>
 						<#else>
-							<#assign pesoSugerido="0"/>
+							<#assign pesoSugerido=""/>
 						</#if>
 					
 						<@ww.div id="multiplaResposta${respostaLista.ordem}">
-							<input name="multiplaResposta" id="multiplaResposta" value="${respostaLista.texto}" style="width: 355px;"/>
-							Peso: <input name="pesoRespostaMultipla" id="pesoRespostaMultipla" value="${pesoSugerido}" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
+							<input name="multiplaResposta" id="multiplaResposta${respostaLista.ordem}" value="${respostaLista.texto}" style="width: 355px;"/>
+							Peso: <input name="pesoRespostaMultipla" id="pesoRespostaMultipla${respostaLista.ordem}" value="${pesoSugerido}" onkeypress="return(somenteNumeros(event,'-',this.value));" style="width:30px;text-align:right;" maxLength="4"/>
 							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#multiplaResposta' + ${respostaLista.ordem}).remove();"/>
 						</@ww.div>
 					</#list>
@@ -356,7 +417,7 @@
 					<br>
 					<@ww.div id="respostaMultiplaEscolhaInsert">
 						<input name="multiplaResposta" id="multiplaResposta" style="width: 355px;"/>
-						Peso: <input name="pesoRespostaMultipla" id="pesoRespostaMultipla" value="1" onkeypress="return(somenteNumeros(event,''));" style="width:30px;text-align:right;"/>
+						Peso: <input name="pesoRespostaMultipla" id="pesoRespostaMultipla" value="1" onkeypress="return(somenteNumeros(event,'-',this.value));" style="width:30px;text-align:right;" maxLength="4"/>
 						<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#respostaMultiplaEscolhaInsert').remove();"/>
 					</@ww.div>
 				</@ww.div>

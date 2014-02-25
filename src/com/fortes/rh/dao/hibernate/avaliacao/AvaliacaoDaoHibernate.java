@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -17,6 +18,7 @@ import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
+import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
 public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implements AvaliacaoDao
@@ -68,7 +70,7 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		return (Integer) criteria.uniqueResult();
 	}
 	
-	public Integer getPontuacaoMaximaDaPerformance(Long avaliacaoId)
+	public Integer getPontuacaoMaximaDaPerformance(Long avaliacaoId, Long... perguntaIds)
 	{
 		StringBuilder sql = new StringBuilder();
 		
@@ -83,6 +85,10 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		sql.append(" 													join pergunta p5 on p5.id = r5.pergunta_id ");		 
 		sql.append(" 													where p5.avaliacao_id = :avaliacaoId ");
 		sql.append(" 													and p5.tipo = :tipoPerguntaObjetiva ");
+		
+		if(LongUtil.isNotEmpty(perguntaIds))
+			sql.append(" 												and p5.id not in (:perguntaIds) ");
+		
 		sql.append(" 													and r5.peso = (select max(r2.peso) ");
 		sql.append(" 																	from Resposta r2 ");
 		sql.append(" 																	where r2.pergunta_id=p5.id) ");
@@ -94,6 +100,11 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		sql.append("  	 									from resposta r6 ");
 		sql.append("  	 									join pergunta p6 on p6.id = r6.pergunta_id 	");
 		sql.append("  							 			where p6.avaliacao_id = :avaliacaoId ");
+		sql.append("  	 									and r6.peso > 0 ");
+		
+		if(LongUtil.isNotEmpty(perguntaIds))
+			sql.append("  	 								and p6.id not in (:perguntaIds) ");
+
 		sql.append("  	 									and p6.tipo = :tipoPerguntaMultiplaEscolha) as multiplaescolha");
 		
 		sql.append(" 	from pergunta p ");
@@ -106,6 +117,9 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		q.setInteger("tipoPerguntaNota", TipoPergunta.NOTA);
 		q.setInteger("tipoPerguntaObjetiva", TipoPergunta.OBJETIVA);
 		q.setInteger("tipoPerguntaMultiplaEscolha", TipoPergunta.MULTIPLA_ESCOLHA);
+		
+		if(LongUtil.isNotEmpty(perguntaIds))
+			q.setParameterList("perguntaIds", perguntaIds, Hibernate.LONG);
 	
 		Object[] somas = (Object[]) q.uniqueResult();
 		

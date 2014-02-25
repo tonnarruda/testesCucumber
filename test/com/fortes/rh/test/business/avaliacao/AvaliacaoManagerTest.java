@@ -98,8 +98,8 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
 	
 	public void testgetPontuacaoMaximaDaPerformance()
 	{
-		avaliacaoDao.expects(once()).method("getPontuacaoMaximaDaPerformance").with(eq(1L)).will(returnValue(210));
-		assertEquals(210, avaliacaoManager.getPontuacaoMaximaDaPerformance(1L).intValue());
+		avaliacaoDao.expects(once()).method("getPontuacaoMaximaDaPerformance").with(eq(1L), ANYTHING).will(returnValue(210));
+		assertEquals(210, avaliacaoManager.getPontuacaoMaximaDaPerformance(1L, null).intValue());
 	}
 	
 	public void testMontaResultado() throws Exception
