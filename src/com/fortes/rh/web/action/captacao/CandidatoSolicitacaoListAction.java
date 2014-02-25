@@ -177,7 +177,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		} catch (Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Erro ao mover Candidatos.");
+			addActionError("Erro ao mover candidatos.");
 		}
 		
 		return Action.SUCCESS;
@@ -190,6 +190,18 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
+	public String removerCandidatosDaSolicitacao()
+	{
+		try {
+			candidatoSolicitacaoManager.remove(candidatoSolicitacaoIdsSelecionados);
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Erro ao remover candidatos.");
+		}
+		
+		return Action.SUCCESS;
+	}
+	
 	public Solicitacao getSolicitacao()
 	{
 		return solicitacao;

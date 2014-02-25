@@ -51,6 +51,7 @@
 	<div class="buttonGroup">
 		<!--<button onclick="window.location='../solicitacaoBDS/prepareImportacaoBDS.action?solicitacao.id=${solicitacao.id}'" class="btnImportarbds" accesskey="I"></button>-->
 		<button type="button" onclick="prepareEnviarFormCandSolic();" class="btnInserirSelecionados" accesskey="I"></button>
+		<button type="button" onclick="removerCandidatosDaSolicitacao(${solicitacao.id}, document.formCandSolic);" class="btnExcluirSelecionados" ></button>
 		<button type="button" onclick="window.location='list.action?solicitacao.id=${solicitacao.id}'" class="btnVoltar" accesskey="V"></button>
 	</div>
 </@ww.form>

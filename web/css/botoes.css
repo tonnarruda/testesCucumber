@@ -350,6 +350,11 @@
 	background-image:url(../imgs/btnInserirSelecionados.gif);
 	width: 171px !important;
 }
+.btnExcluirSelecionados
+{
+	background-image:url(../imgs/btnExcluirSelecionados.gif);
+	width: 171px !important;
+}
 .btnSolicitacoes
 {
 	background-image:url(../imgs/btnSolicitacoes.gif);
@@ -651,6 +656,7 @@
 .btnListarItens,
 .btnRealizarBackup,
 .btnInserirSelecionados,
+.btnExcluirSelecionados,
 .btnAplicar,
 .btnInserir,
 .btnInserirDesabilitado,

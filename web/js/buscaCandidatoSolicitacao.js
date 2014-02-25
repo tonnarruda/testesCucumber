@@ -193,3 +193,16 @@ function prepareEnviarFormCandSolic()
 		jAlert("Nenhum candidato selecionado!");
 	}
 }
+
+function removerCandidatosDaSolicitacao(solicitacaoId, form)
+{
+	if(verificaCandidatoSolicitacaos())
+	{
+		document.formCandSolic.action='removerCandidatosDaSolicitacao.action?solicitacao.id='+solicitacaoId;
+		document.formCandSolic.submit();
+	}
+	else
+	{
+		jAlert("Nenhum candidato selecionado!");
+	}
+}
