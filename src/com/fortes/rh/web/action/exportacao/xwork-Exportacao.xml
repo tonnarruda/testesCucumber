@@ -25,6 +25,7 @@
 			<interceptor-ref name="defaultUpdateStack" />
 			<result name="index" type="freemarker">/WEB-INF/forms/exportacao/indexAC.ftl</result>	
 			<result name="empresa" type="freemarker">/WEB-INF/forms/exportacao/empresaAC.ftl</result>
+			<result name="estabelecimento" type="freemarker">/WEB-INF/forms/exportacao/estabelecimentoAC.ftl</result>
 		</action>
 		<action name="prepareExportarEmpresaAC" class="com.fortes.rh.web.action.exportacao.ExportacaoACAction" method="prepareExportarEmpresaAC">
 			<interceptor-ref name="defaultListStack" />
@@ -32,6 +33,14 @@
 		</action>
 		<action name="exportarEmpresaAC" class="com.fortes.rh.web.action.exportacao.ExportacaoACAction" method="exportarEmpresaAC">
 			<result name="empresa" type="freemarker">/WEB-INF/forms/exportacao/empresaAC.ftl</result>
+			<result name="success" type="redirect"><![CDATA[exportarAC.action?empresaId=${empresaId}&grupoAC=${grupoAC}]]></result>
+		</action>
+		<action name="prepareExportarEstabelecimentoAC" class="com.fortes.rh.web.action.exportacao.ExportacaoACAction" method="prepareExportarEstabelecimentoAC">
+			<interceptor-ref name="defaultListStack" />
+			<result name="estabelecimento" type="freemarker">/WEB-INF/forms/exportacao/estabelecimentoAC.ftl</result>
+		</action>
+		<action name="exportarEstabelecimentoAC" class="com.fortes.rh.web.action.exportacao.ExportacaoACAction" method="exportarEstabelecimentoAC">
+			<result name="estabelecimento" type="freemarker">/WEB-INF/forms/exportacao/estabelecimentoAC.ftl</result>
 			<result name="success" type="redirect"><![CDATA[exportarAC.action?empresaId=${empresaId}&grupoAC=${grupoAC}]]></result>
 		</action>
 	</package>

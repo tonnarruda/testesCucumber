@@ -1,6 +1,7 @@
 package com.fortes.rh.web.action.exportacao;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.hibernate.exception.ConstraintViolationException;
 
@@ -21,6 +22,7 @@ public class ExportacaoACAction extends MyActionSupport
 {
 	private static final String INDEX = "index";
 	private static final String EMPRESA = "empresa";
+	private static final String ESTABELECIMENTO = "estabelecimento";
 	
 	private EmpresaManager empresaManager;
 	private GrupoACManager grupoACManager;
@@ -28,6 +30,7 @@ public class ExportacaoACAction extends MyActionSupport
 	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	
+	private List<String> codigosACs;
 	private Collection<Empresa> empresas;
 	private Collection<GrupoAC> gruposACs;
 	private Collection<Estabelecimento> estabelecimentos;
@@ -50,9 +53,9 @@ public class ExportacaoACAction extends MyActionSupport
 	{
 		try
 		{
-			verificaHistoricosPorIndice();
-			verificaEmpresaAC();
-			verificaEstabelecimentoAC();
+			verificarHistoricosPorIndice();
+			verificarEmpresaAC();
+			verificarEstabelecimentoAC();
 			
 			addActionSuccess("Exportação concluída com sucesso.");
 		}
@@ -66,6 +69,9 @@ public class ExportacaoACAction extends MyActionSupport
 
 			else if (e instanceof EmpresaSemCodigoACException)
 				return prepareExportarEmpresaAC();
+			
+			else if (e instanceof EstabelecimentosSemCodigoACException)
+				return prepareExportarEstabelecimentoAC();
 		}
 		catch (Exception e)
 		{
@@ -77,7 +83,7 @@ public class ExportacaoACAction extends MyActionSupport
 		return prepareExportarAC();
 	}
 	
-	private void verificaHistoricosPorIndice() throws ExisteHistoricoIndiceException
+	private void verificarHistoricosPorIndice() throws ExisteHistoricoIndiceException
 	{
 		
 		if (historicoColaboradorManager.existeHistoricoPorIndice(empresaId))
@@ -90,7 +96,7 @@ public class ExportacaoACAction extends MyActionSupport
 		}
 	}
 	
-	private void verificaEmpresaAC() throws EmpresaSemCodigoACException
+	private void verificarEmpresaAC() throws EmpresaSemCodigoACException
 	{
 		empresa = empresaManager.findByIdProjection(empresaId);
 		
@@ -125,9 +131,46 @@ public class ExportacaoACAction extends MyActionSupport
 		return SUCCESS;
 	}
 	
-	private void exportarEstabelecimentoAC()
+	private void verificarEstabelecimentoAC() throws EstabelecimentosSemCodigoACException
 	{
 		estabelecimentos = estabelecimentoManager.findSemCodigoAC(empresaId);
+		
+		if (!estabelecimentos.isEmpty())
+			throw new EstabelecimentosSemCodigoACException("Existe estabelecimento que ainda não foi vinculado a um estabelecimento do AC Pessoal.<br />Em empresas integradas, apenas o AC Pessoal controla os estabelecimentos.");
+	}
+	
+	public String prepareExportarEstabelecimentoAC()
+	{
+		return ESTABELECIMENTO;
+	}
+	
+	public String exportarEstabelecimentoAC()
+	{
+		estabelecimentos = estabelecimentoManager.findSemCodigoAC(empresaId);
+		Estabelecimento estabelecimento = null;
+		
+		try 
+		{
+			for (int i = 0; i < estabelecimentos.size(); i++) 
+			{
+				estabelecimento = estabelecimentos.toArray(new Estabelecimento[estabelecimentos.size()])[i];
+				estabelecimentoManager.updateCodigoAC(estabelecimento.getId(), codigosACs.get(i));
+			}
+		} 
+		catch (ConstraintViolationException e) 
+		{
+			addActionWarning("Existe outro estabelecimento usando o código AC informado.");
+			e.printStackTrace();
+			return ESTABELECIMENTO;
+		}
+		catch (Exception e) 
+		{
+			addActionError("Não foi possível atualizar os estabelecimentos com os códigos AC informados.");
+			e.printStackTrace();
+			return ESTABELECIMENTO;
+		}
+		
+		return SUCCESS;
 	}
 	
 	class ExisteHistoricoIndiceException extends FortesException 
@@ -141,6 +184,14 @@ public class ExportacaoACAction extends MyActionSupport
 	class EmpresaSemCodigoACException extends FortesException 
 	{
 		public EmpresaSemCodigoACException(String msg) 
+		{
+			super(msg);
+		}
+	}
+	
+	class EstabelecimentosSemCodigoACException extends FortesException 
+	{
+		public EstabelecimentosSemCodigoACException(String msg) 
 		{
 			super(msg);
 		}
@@ -221,5 +272,13 @@ public class ExportacaoACAction extends MyActionSupport
 
 	public void setEstabelecimentos(Collection<Estabelecimento> estabelecimentos) {
 		this.estabelecimentos = estabelecimentos;
+	}
+
+	public List<String> getCodigosACs() {
+		return codigosACs;
+	}
+
+	public void setCodigosACs(List<String> codigosACs) {
+		this.codigosACs = codigosACs;
 	}
 }
