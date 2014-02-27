@@ -273,7 +273,7 @@
 	       	var d = $("<div>").attr("id", str);
 			$("<input type='input' id='ro_"+idInputObjetiva+"' name='respostaObjetiva' style='width: 355px'>").appendTo(d);
 			$(document.createTextNode(" Peso: ")).appendTo(d);
-			$("<input name='pesoRespostaObjetiva' id='pesoRespostaObjetiva' value='" + pesoSugerido + "' onkeypress=\"return(somenteNumeros(event,'-',this.value));\" style='width:30px;text-align:right;'  maxLength=\"4\">").appendTo(d);
+			$("<input name='pesoRespostaObjetiva' id='pesoRespostaObjetiva_"+idInputObjetiva+"' value='" + pesoSugerido + "' onkeypress=\"return(somenteNumeros(event,'-',this.value));\" style='width:30px;text-align:right;'  maxLength=\"4\">").appendTo(d);
 
 			$("<span> </span> ").appendTo(d); // espaco em branco
 			$("<img src='<@ww.url value="/imgs/delete.gif"/>' onClick=$('#"+ str +"').remove(); style='cursor: pointer'>").appendTo(d);
@@ -290,7 +290,7 @@
 		 	var d = $("<div>").attr("id", str);
 		 	$("<input type='input' id='multiplaResposta_"+idInputObjetivaMultipla+"' name='multiplaResposta' style='width: 355px'>").appendTo(d);
 		 	$(document.createTextNode(" Peso: ")).appendTo(d);
-		 	$("<input name='pesoRespostaMultipla' id='pesoRespostaMultipla' value='" + pesoSugeridoMultipla + "' onkeypress=\"return(somenteNumeros(event,'-',this.value));\" style='width:30px;text-align:right;' maxLength=\"4\">").appendTo(d);
+		 	$("<input name='pesoRespostaMultipla' id='pesoRespostaMultipla_"+idInputObjetivaMultipla+"' value='" + pesoSugeridoMultipla + "' onkeypress=\"return(somenteNumeros(event,'-',this.value));\" style='width:30px;text-align:right;' maxLength=\"4\">").appendTo(d);
 		 	
 		 	$("<span> </span> ").appendTo(d); // espaco em branco
 		 	$("<img src='<@ww.url value="/imgs/delete.gif"/>' onClick=$('#"+ str +"').remove(); style='cursor: pointer'>").appendTo(d);
@@ -343,7 +343,7 @@
 						
 						<@ww.div id="respostaObjetiva${respostaLista.ordem}">
 							<input name="respostaObjetiva" id="ro_${respostaLista.ordem}" value="${respostaLista.texto}" style="width: 355px;"/>
-							Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="${pesoSugerido}" onkeypress="return(somenteNumeros(event,'-',this.value));" style="width:30px;text-align:right;" maxLength="4"/>
+							Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva_${respostaLista.ordem}" value="${pesoSugerido}" onkeypress="return(somenteNumeros(event,'-',this.value));" style="width:30px;text-align:right;" maxLength="4"/>
 							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#respostaObjetiva' + ${respostaLista.ordem}).remove();"/>
 						</@ww.div>
 					</#list>
@@ -367,7 +367,7 @@
 						
 							<@ww.div id="respostaObjetiva${respostaSugerida.ordem}">
 								<input name="respostaObjetivaSugerida" id="respostaObjetivaSugerida${respostaSugerida.ordem}" value="${respostaSugerida.texto}" style="width: 355px;"/>
-								Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva${respostaSugerida.ordem}" value="${pesoSugeridoEdit}" onkeypress="return(somenteNumeros(event,'-',this.value));" style="width:30px;text-align:right;" maxLength="4"/>
+								Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva_${respostaSugerida.ordem}" value="${pesoSugeridoEdit}" onkeypress="return(somenteNumeros(event,'-',this.value));" style="width:30px;text-align:right;" maxLength="4"/>
 								<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#respostaObjetiva' + ${respostaSugerida.ordem}).remove();"/>
 								<br>
 							</@ww.div>
@@ -381,7 +381,7 @@
 					</@ww.div>
 						<@ww.div id="d0">
 							<input name="respostaObjetiva" id="ro_0" style="width: 355px;"/>
-							Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva" value="1" onkeypress="return(somenteNumeros(event,'-',this.value));" style="width:30px;text-align:right;" maxLength="4"/>
+							Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva_0" value="1" onkeypress="return(somenteNumeros(event,'-',this.value));" style="width:30px;text-align:right;" maxLength="4"/>
 							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#d0').remove();"/>
 					</@ww.div>
 				</@ww.div>
@@ -406,7 +406,7 @@
 					
 						<@ww.div id="multiplaResposta${respostaLista.ordem}">
 							<input name="multiplaResposta" id="multiplaResposta${respostaLista.ordem}" value="${respostaLista.texto}" style="width: 355px;"/>
-							Peso: <input name="pesoRespostaMultipla" id="pesoRespostaMultipla${respostaLista.ordem}" value="${pesoSugerido}" onkeypress="return(somenteNumeros(event,'-',this.value));" style="width:30px;text-align:right;" maxLength="4"/>
+							Peso: <input name="pesoRespostaMultipla" id="pesoRespostaMultipla_${respostaLista.ordem}" value="${pesoSugerido}" onkeypress="return(somenteNumeros(event,'-',this.value));" style="width:30px;text-align:right;" maxLength="4"/>
 							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#multiplaResposta' + ${respostaLista.ordem}).remove();"/>
 						</@ww.div>
 					</#list>

@@ -1,0 +1,1 @@
+update resposta set peso = 0 where peso is null;--.go

@@ -39,8 +39,8 @@
 	<![endif]-->
 	
 <div id="menuParticipantes">
-	<a href="prepareAvaliados.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}" class="ativaAvaliado">Avaliados</a>
-	<a href="prepareAvaliadores.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}" class="ativaAvaliador">Avaliadores</a>
+	<a href="prepareAvaliados.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}" class="ativaAvaliado" id="ativaAvaliado">Avaliados</a>
+	<a href="prepareAvaliadores.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}" class="ativaAvaliador" id="ativaAvaliador">Avaliadores</a>
 	<a style="width: 760px; border-right: none; border-top: 1px solid #327195;">&nbsp;</a> <!-- Essa ultima serve só para deixar uma bordinha clara -->
 	<div style="clear: both"></div>
 </div>

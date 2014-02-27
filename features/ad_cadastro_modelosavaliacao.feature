@@ -33,6 +33,7 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Desempenho/Acompanhamento do
     Então eu devo ver o título "Inserir Pergunta da Avaliação"
     E eu preencho "aspecto" com "_aspecto 1"
     E eu seleciono "2" de "Ordem"
+    E eu espero 1 segundo
     E eu preencho "pergunta" com "_pergunta 2"
     E eu preencho "peso" com "2"
     E eu seleciono "Nota" de "Tipo de Resposta"
@@ -50,10 +51,24 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Desempenho/Acompanhamento do
     E eu preencho "peso" com "3"
     E eu seleciono "Objetiva" de "Tipo de Resposta"
     E eu preencho "respostaObjetiva" com "_resposta a"
+    E eu preencho "pesoRespostaObjetiva_0" com "1-1"
+    E eu clico no botão "Gravar"
+    E eu devo ver o alert "Campos inválidos." e clico no ok
+    E eu preencho "pesoRespostaObjetiva_0" com "-"
+    E eu clico no botão "Gravar"
+    E eu devo ver o alert "Campos inválidos." e clico no ok
+    E eu preencho "pesoRespostaObjetiva_0" com "-3"
+    E eu clico no botão "Gravar"
+    E eu devo ver o alert "A pergunta têm que possuir no mínimo 2 alternativas." e clico no ok
     E eu clico "Mais uma opção de resposta"
     E eu preencho "ro_1" com "_resposta b"
+    E eu preencho "pesoRespostaObjetiva_1" com ""
     E eu clico "Mais uma opção de resposta"
     E eu preencho "ro_2" com "_resposta c"
+    E eu preencho "pesoRespostaObjetiva_2" com ""
+    E eu clico no botão "Gravar"
+    E eu devo ver o alert "Não é possível inserir mais de uma alternativa com peso vazio." e clico no ok
+    E eu preencho "pesoRespostaObjetiva_1" com "5"
     E eu marco "Solicitar comentário"
     E eu preencho "textoComentario" com "_comentário"
     E eu clico no botão "Gravar"
@@ -66,10 +81,22 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Desempenho/Acompanhamento do
     E eu preencho "peso" com "4"
     E eu seleciono "Múltipla Escolha" de "Tipo de Resposta"
     E eu preencho "multiplaResposta" com "_resposta a"
+    E eu preencho "pesoRespostaMultipla" com "1-1"
+    E eu clico no botão "Gravar"
+    E eu devo ver o alert "Campos inválidos." e clico no ok
+    E eu preencho "pesoRespostaMultipla" com "-"
+    E eu clico no botão "Gravar"
+    E eu devo ver o alert "Campos inválidos." e clico no ok
+    E eu preencho "pesoRespostaMultipla" com "-5"
     E eu clico "adicionarMultiplaResposta"
     E eu preencho "multiplaResposta_1" com "_resposta b"
+    E eu preencho "pesoRespostaMultipla_1" com ""
     E eu clico "adicionarMultiplaResposta"
     E eu preencho "multiplaResposta_2" com "_resposta c"
+    E eu preencho "pesoRespostaMultipla_2" com ""
+    E eu clico no botão "Gravar"
+    E eu devo ver o alert "Não é possível inserir mais de uma alternativa com peso vazio." e clico no ok
+    E eu preencho "pesoRespostaMultipla_1" com "5"
     E eu marco "Solicitar comentário"
     E eu preencho "textoComentario" com "_comentário"
     E eu clico no botão "Gravar"
