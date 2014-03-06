@@ -120,12 +120,6 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 			return "error.area";
 		}
 
-		if(areaOrganizacionalManager.verificaAlteracaoStatusAtivo(areaOrganizacional.getId(), areaOrganizacional.getAreaMae().getId()))
-		{
-			setActionMsg("A Área Organizacional '" + areaOrganizacional.getNome() +"' não pode ser inativada por existir uma ou mais áreas vinculada a mesma.");
-			return "error.area";
-		}
-
 		try
 		{
 			areaOrganizacional.setEmailsNotificacoes(StringUtils.deleteWhitespace(StringUtils.join(emailsNotificacoes, ";")));
