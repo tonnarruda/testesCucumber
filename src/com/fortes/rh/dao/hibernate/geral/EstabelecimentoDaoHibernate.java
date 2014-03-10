@@ -240,4 +240,13 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 		return criteria.list();	
 	}
 
+	public void updateCodigoAC(Long estabelecimentoId, String codigoAC) 
+	{
+		String hql = "update Estabelecimento e set e.codigoAC = :codigoAC where e.id = :estabelecimentoId";
+		Query query = getSession().createQuery(hql);
+		query.setString("codigoAC", codigoAC);
+		query.setLong("estabelecimentoId", estabelecimentoId);
+
+		query.executeUpdate();
+	}
 }

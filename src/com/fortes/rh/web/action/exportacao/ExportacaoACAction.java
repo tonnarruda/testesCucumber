@@ -6,11 +6,14 @@ import java.util.List;
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
+import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
@@ -27,8 +30,10 @@ public class ExportacaoACAction extends MyActionSupport
 	private EmpresaManager empresaManager;
 	private GrupoACManager grupoACManager;
 	private HistoricoColaboradorManager historicoColaboradorManager;
-	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
 	private EstabelecimentoManager estabelecimentoManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private FaixaSalarialManager faixaSalarialManager;
+	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
 	
 	private List<String> codigosACs;
 	private Collection<Empresa> empresas;
@@ -56,6 +61,8 @@ public class ExportacaoACAction extends MyActionSupport
 			verificarHistoricosPorIndice();
 			verificarEmpresaAC();
 			verificarEstabelecimentoAC();
+			exportarAreasOrganizacionaisAC();
+			exportarFaixasSalariaisAC();
 			
 			addActionSuccess("Exportação concluída com sucesso.");
 		}
@@ -72,10 +79,11 @@ public class ExportacaoACAction extends MyActionSupport
 			
 			else if (e instanceof EstabelecimentosSemCodigoACException)
 				return prepareExportarEstabelecimentoAC();
+
 		}
 		catch (Exception e)
 		{
-			addActionWarning(e.getMessage());
+			addActionError(e.getMessage());
 			e.printStackTrace();
 			return prepareExportarAC();
 		}
@@ -173,6 +181,32 @@ public class ExportacaoACAction extends MyActionSupport
 		return SUCCESS;
 	}
 	
+	private void exportarAreasOrganizacionaisAC() throws AreaNaoInseridaACException
+	{
+		Empresa empresa = empresaManager.findEntidadeComAtributosSimplesById(empresaId);
+		empresa.setAcIntegra(true);
+		
+		Collection<AreaOrganizacional> areasSemCodigoAC = areaOrganizacionalManager.findAllList(0, 0, null, empresaId, null);
+		areasSemCodigoAC = areaOrganizacionalManager.ordenarAreasHierarquicamente(areasSemCodigoAC, null);
+		
+		for (AreaOrganizacional areaOrganizacional : areasSemCodigoAC) 
+		{
+			try 
+			{
+				if (areaOrganizacional.getCodigoAC() == null)
+					areaOrganizacionalManager.insertLotacaoAC(areaOrganizacional, empresa);
+			} 
+			catch (Exception e) {
+				throw new AreaNaoInseridaACException("Não foi possível inserir a área organizacional " + areaOrganizacional.getNome() + " no AC Pessoal");
+			}
+		}
+	}
+	
+	private void exportarFaixasSalariaisAC()
+	{
+		
+	}
+	
 	class ExisteHistoricoIndiceException extends FortesException 
 	{
 		public ExisteHistoricoIndiceException(String msg) 
@@ -192,6 +226,14 @@ public class ExportacaoACAction extends MyActionSupport
 	class EstabelecimentosSemCodigoACException extends FortesException 
 	{
 		public EstabelecimentosSemCodigoACException(String msg) 
+		{
+			super(msg);
+		}
+	}
+	
+	class AreaNaoInseridaACException extends FortesException 
+	{
+		public AreaNaoInseridaACException(String msg) 
 		{
 			super(msg);
 		}
@@ -280,5 +322,13 @@ public class ExportacaoACAction extends MyActionSupport
 
 	public void setCodigosACs(List<String> codigosACs) {
 		this.codigosACs = codigosACs;
+	}
+
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager) {
+		this.faixaSalarialManager = faixaSalarialManager;
 	}
 }
