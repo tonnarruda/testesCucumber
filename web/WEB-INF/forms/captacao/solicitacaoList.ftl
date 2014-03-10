@@ -136,47 +136,41 @@
 		</#if>
 		<@display.column title="Ações" media="html" class="acao" style="width: 170px; text-align:left;">
 			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_IMPRIMIR" href="imprimirSolicitacaoPessoal.action?solicitacao.id=${solicitacao.id}" imgTitle="Imprimir" imgName="printer.gif"/>
-			<@authz.authorize ifNotGranted="ROLE_MOV_SOLICITACAO_SELECAO">
-				<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_EDITAR" href="prepareUpdate.action?solicitacao.id=${solicitacao.id}" imgTitleDisabled="Não é possível editar a solicitação. Esta já foi aprovada ou encerrada." imgTitle="Editar" imgName="edit.gif" opacity=!(solicitacao.status!='A' && !solicitacao.encerrada) disabled=!(solicitacao.status!='A' && !solicitacao.encerrada)/>
-				<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}'});" imgTitleDisabled="Não é possível excluir a solicitação. Esta já foi aprovada ou encerrada." imgTitle="Excluir" imgName="delete.gif" opacity=!(solicitacao.status!='A' && !solicitacao.encerrada) disabled=!(solicitacao.status!='A' && !solicitacao.encerrada)/>
-			</@authz.authorize>
-			<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_SELECAO">
-				<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_EDITAR" href="prepareUpdate.action?solicitacao.id=${solicitacao.id}" imgTitleDisabled="Não é possível editar a solicitação. Esta já foi aprovada ou encerrada." imgTitle="Editar" imgName="edit.gif" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
-				<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}'});" imgTitleDisabled="Não é possível excluir a solicitação. Esta já foi aprovada ou encerrada." imgTitle="Excluir" imgName="delete.gif" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
-				
-				<#if solicitacao.anuncio?exists && solicitacao.anuncio.exibirModuloExterno>
-					<#assign titleAnuncio = "Anunciado"/>
-					<#assign imgAnuncio = "cliper_checked.gif"/>
-				<#else>
-					<#assign titleAnuncio = "Anunciar"/>
-					<#assign imgAnuncio = "cliper.gif"/>
-				</#if>
-				
-				<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_ANUNCIAR" href="../anuncio/anunciar.action?solicitacao.id=${solicitacao.id}" imgTitleDisabled="Não é possível anunciar a solicitação. Esta já foi encerrada." imgTitle="${titleAnuncio}" imgName="${imgAnuncio}" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
+			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_EDITAR" href="prepareUpdate.action?solicitacao.id=${solicitacao.id}" imgTitleDisabled="Não é possível editar a solicitação. Esta já foi aprovada ou encerrada." imgTitle="Editar" imgName="edit.gif" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
+			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacao.id=${solicitacao.id}'});" imgTitleDisabled="Não é possível excluir a solicitação. Esta já foi aprovada ou encerrada." imgTitle="Excluir" imgName="delete.gif" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
+			
+			<#if solicitacao.anuncio?exists && solicitacao.anuncio.exibirModuloExterno>
+				<#assign titleAnuncio = "Anunciado"/>
+				<#assign imgAnuncio = "cliper_checked.gif"/>
+			<#else>
+				<#assign titleAnuncio = "Anunciar"/>
+				<#assign imgAnuncio = "cliper.gif"/>
+			</#if>
+			
+			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_ANUNCIAR" href="../anuncio/anunciar.action?solicitacao.id=${solicitacao.id}" imgTitleDisabled="Não é possível anunciar a solicitação. Esta já foi encerrada." imgTitle="${titleAnuncio}" imgName="${imgAnuncio}" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
 
-				<#if !solicitacao.encerrada>
-				 	<#assign onclickEcerrar = "encerraSolicitacao('${solicitacao.id}', '${observacaoLiberador?js_string?replace('\"', '$#-')}');"/>
-				<#else>
-				 	<#assign onclickEcerrar = "newConfirm('${fraseConfirma}', function(){window.location='${actionEncerra}?solicitacao.id=${solicitacao.id}'});"/>
-				</#if>
+			<#if !solicitacao.encerrada>
+			 	<#assign onclickEcerrar = "encerraSolicitacao('${solicitacao.id}', '${observacaoLiberador?js_string?replace('\"', '$#-')}');"/>
+			<#else>
+			 	<#assign onclickEcerrar = "newConfirm('${fraseConfirma}', function(){window.location='${actionEncerra}?solicitacao.id=${solicitacao.id}'});"/>
+			</#if>
+			
+			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_ENCERRAR" href="#" onclick="${onclickEcerrar}" imgTitle="${titleEncerra}" imgName="${imgEncerra}"/>
 				
-				<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_ENCERRAR" href="#" onclick="${onclickEcerrar}" imgTitle="${titleEncerra}" imgName="${imgEncerra}"/>
-					
-				<#if !solicitacao.suspensa>
-					<#assign hrefSuspender = "#"/>
-					<#assign onclickSuspender = "suspenderSolicitacao('${solicitacao.id}');"/>
-					<#assign titelSuspender = "Suspender solicitação"/>
-					<#assign imgSuspender = "control_pause.gif"/>
-				<#else>
-					<#assign hrefSuspender = "liberarSolicitacao.action?solicitacao.id=${solicitacao.id}"/>
-					<#assign onclickSuspender = ""/>
-					<#assign titelSuspender = "Liberar solicitação. Observação: ${obsSuspensao}"/>
-					<#assign imgSuspender = "control_play.gif"/>
-				</#if>
-			
-				<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_SUSPENDER" href="${hrefSuspender}" onclick="${onclickSuspender}" imgTitleDisabled="Não é possível suspender ou liberar a solicitação. Esta já foi encerrada." imgTitle="${titelSuspender}" imgName="${imgSuspender}" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
-			</@authz.authorize>
-			
+			<#if !solicitacao.suspensa>
+				<#assign hrefSuspender = "#"/>
+				<#assign onclickSuspender = "suspenderSolicitacao('${solicitacao.id}');"/>
+				<#assign titelSuspender = "Suspender solicitação"/>
+				<#assign imgSuspender = "control_pause.gif"/>
+			<#else>
+				<#assign hrefSuspender = "liberarSolicitacao.action?solicitacao.id=${solicitacao.id}"/>
+				<#assign onclickSuspender = ""/>
+				<#assign titelSuspender = "Liberar solicitação. Observação: ${obsSuspensao}"/>
+				<#assign imgSuspender = "control_play.gif"/>
+			</#if>
+		
+			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_SUSPENDER" href="${hrefSuspender}" onclick="${onclickSuspender}" imgTitleDisabled="Não é possível suspender ou liberar a solicitação. Esta já foi encerrada." imgTitle="${titelSuspender}" imgName="${imgSuspender}" opacity=solicitacao.encerrada disabled=solicitacao.encerrada/>
+		
 			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_CLONAR" href="prepareClonar.action?solicitacao.id=${solicitacao.id}" imgTitle="Clonar" imgName="clonar.gif"/>
 			
 			<@frt.link verifyRole="ROLE_MOV_SOLICITACAO_CANDIDATO" href="../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}" imgTitle="Candidatos da Seleção" imgName="usuarios.gif"/>
