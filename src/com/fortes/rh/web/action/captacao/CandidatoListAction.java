@@ -244,6 +244,8 @@ public class CandidatoListAction extends MyActionSupportList
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
 	private CamposExtras camposExtras;
 	
+	private boolean modoImpressao;
+	
 	public String list() throws Exception
 	{
 		populaEmpresas();
@@ -1876,5 +1878,13 @@ public class CandidatoListAction extends MyActionSupportList
 	public void setCamposExtrasManager(CamposExtrasManager camposExtrasManager)
 	{
 		this.camposExtrasManager = camposExtrasManager;
+	}
+
+	public boolean isModoImpressao() {
+		return modoImpressao;
+	}
+
+	public void setModoImpressao(boolean modoImpressao) {
+		this.modoImpressao = modoImpressao;
 	}
 }

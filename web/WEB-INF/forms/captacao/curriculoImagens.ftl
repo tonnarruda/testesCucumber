@@ -9,12 +9,20 @@
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/curriculo.css"/>');
 	</style>
+	
+	<#if modoImpressao>
+		<#assign width="100%"/>
+	<#else>
+		<#assign width="230"/>
+	</#if>
+	
 </head>
 <body>
 <div id="containerCv">
-		<#list candidato.candidatoCurriculos as candidatoCurriculos>
-			<a href="javascript:popUp('<@ww.url includeParams="none" value="../candidato/showImagensCurriculo.action?candidato.id=${candidato.id}&nomeImg=${candidatoCurriculos.curriculo}"/>')"><img border="0"  heigth="230" width="230"  src="<@ww.url includeParams="none" value="../candidato/showImagensCurriculo.action?candidato.id=${candidato.id}&nomeImg=${candidatoCurriculos.curriculo}"/>" title="Clique para ampliar"></a>
-		</#list>
+	<#list candidato.candidatoCurriculos as candidatoCurriculos>
+		<a href="javascript:popUp('<@ww.url includeParams="none" value="../candidato/showImagensCurriculo.action?candidato.id=${candidato.id}&nomeImg=${candidatoCurriculos.curriculo}"/>')"><img border="0" width="${width}"  src="<@ww.url includeParams="none" value="../candidato/showImagensCurriculo.action?candidato.id=${candidato.id}&nomeImg=${candidatoCurriculos.curriculo}"/>" title="Clique para ampliar"></a>
+	</#list>
 </div>
+
 </body>
 </html>

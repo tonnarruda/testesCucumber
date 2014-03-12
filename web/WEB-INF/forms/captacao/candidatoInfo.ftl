@@ -8,6 +8,7 @@
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/botoes.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/candidato.css"/>');
 		@import url('<@ww.url value="/css/formModal.css"/>');
 
 		body {
@@ -33,19 +34,53 @@
 		{
 			width: 300px !important;
 		}
-	</style>
-	<!--[if IE]>
-		<style type="text/css" media="screen">
-			span.botao
-			{
-				padding:2px 0 1px 0;
-			}
-			fieldset
-			{
-				padding: 10px;
-			}
+
+		/* Coisas do Gogs */
+		#content1 th,
+		#content2 th,
+		#content3 th,
+		#content4 th,
+		#content5 th {
+			background-color:#23516B;
+			color:#FFCB03;
+			font-weight:bold;
+			padding:8px 15px;
+		}
+		#content1,
+		#content2,
+		#content3,
+		#content4,
+		#content5 {
+			background: #FFF;
+			border: 1px solid #7E9DB9;
+		}
+		#abas #aba1,
+		#abas #aba2,
+		#abas #aba3,
+		#abas #aba4,
+		#abas #aba5 {
+			background: #CCC;
+			border: 1px solid #7E9DB9;
+		}
+		#abas #aba1 {
+			background: #FFF;
+			border: 1px solid #7E9DB9;
+			border-bottom: 1px solid #FFF;
+		}
 		</style>
-	<![endif]-->
+		
+		<!--[if IE]>
+			<style type="text/css" media="screen">
+				span.botao
+				{
+					padding:2px 0 1px 0;
+				}
+				fieldset
+				{
+					padding: 10px;
+				}
+			</style>
+		<![endif]-->
 
 		<#if !palavras?exists>
 			<#assign palavras=""/>
@@ -65,10 +100,12 @@
 				document.getElementById('aba' + i).style.borderBottom = id == i ? "1px solid #FFF" : "1px solid #7E9DB9";
 			}
 			
-			if(id==1)
-				$('.btnImprimirPdfB').show();
-			else
-				$('.btnImprimirPdfB').hide();
+			$('#btnImprimirCurriculo, #btnImprimirCurriculoEscaneado').hide();
+			
+			if (id==1)
+				$('#btnImprimirCurriculo').show();
+			else if (id==3)
+				$('#btnImprimirCurriculoEscaneado').show();
 		}
 
 		function popUp(caminho)
@@ -83,6 +120,14 @@
 				document.getElementById(campo).disabled=false;
 			else
 				document.getElementById(campo).disabled=true;
+		}
+		
+		function imprimirCurriculoEscaneado()
+		{
+			var imprimeViaExec = window.frames['printFrame'].document.execCommand('print', false, null);
+		
+			if (!imprimeViaExec)
+                window.frames['printFrame'].print();
 		}
 		
 		<#if origemList?exists && origemList='CA'>
@@ -244,45 +289,12 @@
 			<br>
 				<#--p><input type="checkbox" name="imprimirHC" id="impHC" /> <label for="impHC">Imprimir HistÃ³rico</label></p>
 				<p><input type="checkbox" name="imprimirAS" id="impAS" /> <label for="impAS">Imprimir Assinatura</label></p-->
-				<button class="btnImprimirPdfB" onclick="openbox('Configurar Impressão', '');" ></button>
+				<button id="btnImprimirCurriculo" class="btnImprimirPdfB" onclick="openbox('Configurar Impressão', '');" ></button>
+				<button id="btnImprimirCurriculoEscaneado" disabled='disabled' class="btnImprimirPdfB" onclick="imprimirCurriculoEscaneado();" style="display:none;"></button>
 			<br>
 		</@authz.authorize>
 	</div>
 	
-		
-	<style>
-	/* Coisas do Gogs */
-	#content1 th,
-	#content2 th,
-	#content3 th,
-	#content4 th,
-	#content5 th {
-		background-color:#23516B;
-		color:#FFCB03;
-		font-weight:bold;
-		padding:8px 15px;
-	}
-	#content1,
-	#content2,
-	#content3,
-	#content4,
-	#content5 {
-		background: #FFF;
-		border: 1px solid #7E9DB9;
-	}
-	#abas #aba1,
-	#abas #aba2,
-	#abas #aba3,
-	#abas #aba4,
-	#abas #aba5 {
-		background: #CCC;
-		border: 1px solid #7E9DB9;
-	}
-	#abas #aba1 {
-		background: #FFF;
-		border: 1px solid #7E9DB9;
-		border-bottom: 1px solid #FFF;
-	}
-	</style>
+	<iframe id="printFrame" name="printFrame" src="verCurriculoEscaneado.action?candidato.id=${candidato.id}&modoImpressao=true" onload="$('#btnImprimirCurriculoEscaneado').removeAttr('disabled')" style="display:none;"></iframe>
 </body>
 </html>
