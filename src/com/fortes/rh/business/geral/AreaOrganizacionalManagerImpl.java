@@ -882,31 +882,38 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			areaOrganizacionalTmp.setAreaMae(null);
 	}
 	
-	public Collection<AreaOrganizacional> ordenarAreasHierarquicamente(Collection<AreaOrganizacional> areas, Collection<Long> areasIds)
+	public Collection<AreaOrganizacional> ordenarAreasHierarquicamente(Collection<AreaOrganizacional> areas, Collection<Long> areasIds, int nivelHierarquico)
 	{
 		Collection<AreaOrganizacional> areasOrdenadas = new ArrayList<AreaOrganizacional>();
 		Collection<Long> areasIdsTemp = new ArrayList<Long>();
 		
+		boolean regrasPrimeiroNivel;
+		boolean regrasDemaisNiveis;
+		
 		for (AreaOrganizacional area : areas) 
 		{
-			if (areasIds == null && (area.getAreaMae() == null || area.getAreaMae().getId() == null))
+			regrasPrimeiroNivel = areasIds == null && (area.getAreaMae() == null || area.getAreaMae().getId() == null);
+			regrasDemaisNiveis = areasIds != null && (area.getAreaMae() != null && area.getAreaMae().getId() != null && areasIds.contains(area.getAreaMae().getId()));
+			
+			if (regrasPrimeiroNivel || regrasDemaisNiveis)
 			{
-				areasOrdenadas.add(area);
-				areasIdsTemp.add(area.getId());
-			}
-			else if (areasIds != null && (area.getAreaMae() != null && area.getAreaMae().getId() != null && areasIds.contains(area.getAreaMae().getId())))
-			{
+				area.setNivelHierarquico(nivelHierarquico);
 				areasOrdenadas.add(area);
 				areasIdsTemp.add(area.getId());
 			}
 		}
 		
 		if (!areasIdsTemp.isEmpty())
-			areasOrdenadas.addAll(ordenarAreasHierarquicamente(areas, areasIdsTemp));
+			areasOrdenadas.addAll(ordenarAreasHierarquicamente(areas, areasIdsTemp, ++nivelHierarquico));
 		
 		return areasOrdenadas;
 	}
 
+	public String getMascaraLotacoesAC(Empresa empresa) throws Exception 
+	{
+		return acPessoalClientLotacao.getMascara(empresa);
+	}
+	
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
 	}

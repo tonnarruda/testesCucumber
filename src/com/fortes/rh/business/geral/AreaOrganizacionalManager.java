@@ -78,5 +78,6 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public String[] getEmailsResponsaveis(Long areaId, Collection<AreaOrganizacional> todasAreas, int tipoResponsavel) throws Exception;
 	public void desvinculaResponsaveis(Long colaboradorId);
 	public boolean verificaAlteracaoStatusAtivo(Long areaId, Long areaMaeId);
-	public Collection<AreaOrganizacional> ordenarAreasHierarquicamente(Collection<AreaOrganizacional> areas, Collection<Long> areasIds);
+	public Collection<AreaOrganizacional> ordenarAreasHierarquicamente(Collection<AreaOrganizacional> areas, Collection<Long> areasIds, int nivelHierarquico);
+	public String getMascaraLotacoesAC(Empresa empresa) throws Exception;
 }

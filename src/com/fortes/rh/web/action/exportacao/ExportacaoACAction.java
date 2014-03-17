@@ -181,13 +181,19 @@ public class ExportacaoACAction extends MyActionSupport
 		return SUCCESS;
 	}
 	
-	private void exportarAreasOrganizacionaisAC() throws AreaNaoInseridaACException
+	private void exportarAreasOrganizacionaisAC() throws Exception
 	{
 		Empresa empresa = empresaManager.findEntidadeComAtributosSimplesById(empresaId);
 		empresa.setAcIntegra(true);
 		
 		Collection<AreaOrganizacional> areasSemCodigoAC = areaOrganizacionalManager.findAllList(0, 0, null, empresaId, null);
-		areasSemCodigoAC = areaOrganizacionalManager.ordenarAreasHierarquicamente(areasSemCodigoAC, null);
+		areasSemCodigoAC = areaOrganizacionalManager.ordenarAreasHierarquicamente(areasSemCodigoAC, null, 1);
+		
+		int maxNiveisRH = ((AreaOrganizacional) areasSemCodigoAC.toArray()[areasSemCodigoAC.size() - 1]).getNivelHierarquico();
+		int maxNiveisAC = areaOrganizacionalManager.getMascaraLotacoesAC(empresa).split("\\.").length;
+		
+		if (maxNiveisRH > maxNiveisAC)
+			throw new AreaNaoInseridaACException("A máscara de lotações no AC Pessoal não é compatível com a quantidade máxima de níveis da hierarquia de áreas organizacionais");
 		
 		for (AreaOrganizacional areaOrganizacional : areasSemCodigoAC) 
 		{

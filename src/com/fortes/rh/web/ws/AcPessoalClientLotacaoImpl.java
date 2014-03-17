@@ -88,10 +88,37 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
             throw new Exception(e);
         }
 	}
+	
+	public String getMascara(Empresa empresa) throws Exception
+	{
+		try
+		{
+			StringBuilder token = new StringBuilder(); 
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "GetMascaraLotacao");
+
+			QName xmlstring = new QName("xs:string");
+
+			call.addParameter("Token",xmlstring,ParameterMode.IN);
+			call.addParameter("Empresa",xmlstring,ParameterMode.IN);
+
+			acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
+
+			Object[] param = new Object[]{token.toString(), empresa.getCodigoAC()};
+
+			TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
+			
+			return result.getMensagem();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw new IntegraACException("Erro ao obter a máscara de lotações do AC Pessoal.");
+		}
+	}
 
 	public void setAcPessoalClient(AcPessoalClient acPessoalClient)
 	{
 		this.acPessoalClient = acPessoalClient;
 	}
-
 }
