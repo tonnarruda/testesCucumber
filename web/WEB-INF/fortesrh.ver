@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.125.148" data="17/03/2014">
+		<Modulo nome=" "><![CDATA[
+			:: R&S > Cadastros > Candidatos > Visualizar Currículo > Currículo Escaneado: Nova opção de imprimir o currículo escaneado.
+			:: R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem Módulo Externo: Novo botão para excluir os candidatos marcados na listagem.
+			:: Aval. Desempenho > Cadastros > Avaliação de Desempenho/Acompanham. do Período de Experiência > Inserir/Editar: Nova possibilidade de inserir o peso com valor negativo ou vazio para os tipos de respostas "Objetiva" e "Múltipla Escolha".
+    	]]></Modulo>
+    </Versao>
 	<Versao id="1.1.125.147" data="17/02/2014">
 		<Modulo nome=" "><![CDATA[
 			:: R&S > Cadastros > Candidatos > Visualizar Currículo > CURRÍCULO: Nova área com as informações de campos extras, inclusive para impressão.

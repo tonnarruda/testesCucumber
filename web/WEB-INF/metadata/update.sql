@@ -22363,3 +22363,8 @@ update parametrosdosistema set appversao = '1.1.124.146';--.go
 alter table configuracaoimpressaocurriculo add column exibirCamposExtras boolean default false;--.go
 insert into migrations values('20140211163111');--.go
 update parametrosdosistema set appversao = '1.1.125.147';--.go
+-- versao 1.1.125.148
+
+update resposta set peso = 0 where peso is null;--.go
+insert into migrations values('20140227081057');--.go
+update parametrosdosistema set appversao = '1.1.125.148';--.go
