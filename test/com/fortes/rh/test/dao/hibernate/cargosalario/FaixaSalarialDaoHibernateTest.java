@@ -416,8 +416,42 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
     	assertEquals(indiceHistorico.getValor(), faixa2retorno.getFaixaSalarialHistoricoAtual().getIndice().getIndiceHistoricoAtual().getValor());
     }
 
-    public void testFindFaixas()
+    public void testFindComHistoricoAtualByEmpresa()
     {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setNome("Cargo");
+		cargo.setEmpresa(empresa);
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixa = FaixaSalarialFactory.getEntity();
+		faixa.setNome("I");
+		faixa.setCargo(cargo);
+		faixa.setCodigoAC(null);
+		faixaSalarialDao.save(faixa);
+		
+		FaixaSalarialHistorico h1 = FaixaSalarialHistoricoFactory.getEntity();
+		h1.setFaixaSalarial(faixa);
+		h1.setData(new Date());
+		h1.setTipo(TipoAplicacaoIndice.VALOR);
+		h1.setStatus(StatusRetornoAC.CONFIRMADO);
+		faixaSalarialHistoricoDao.save(h1);
+		
+		FaixaSalarialHistorico h2 = FaixaSalarialHistoricoFactory.getEntity();
+		h2.setData(DateUtil.criarDataMesAno(1, 1, 2010));
+		h2.setFaixaSalarial(faixa);
+		h2.setTipo(TipoAplicacaoIndice.INDICE);
+		h2.setStatus(StatusRetornoAC.CONFIRMADO);
+		faixaSalarialHistoricoDao.save(h2);
+		
+		Collection<FaixaSalarial> faixaSalarials = faixaSalarialDao.findComHistoricoAtualByEmpresa(empresa.getId(), true);
+		
+		assertTrue(faixaSalarials.size() == 1);
+	}
+   	public void testFindFaixas()
+   	{
         Empresa empresa = EmpresaFactory.getEmpresa();
         empresa = empresaDao.save(empresa);
 

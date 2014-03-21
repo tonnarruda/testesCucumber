@@ -673,7 +673,7 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		
 		assertTrue(faixaSalarialHistoricoDao.existeHistoricoPorIndice(empresa.getId()));
 	}
-
+	
 	public GenericDao<FaixaSalarialHistorico> getGenericDao()
 	{
 		return faixaSalarialHistoricoDao;

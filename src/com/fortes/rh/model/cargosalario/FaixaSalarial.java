@@ -96,6 +96,19 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		setNomeCargo(nomeCargo);
 	}
 
+	//findComHistoricoAtualByEmpresa
+	public FaixaSalarial (Long cargoId, String cargoNome, Long idFaixa, String nomeFaixa, Long historicoFaixaId, Date historicoFaixaData, Double historicoFaixaValor, Integer historicoFaixaTipo )
+	{
+		setProjectionCargoId(cargoId);
+		setNomeCargo(cargoNome);
+		setId(idFaixa);
+		setNome(nomeFaixa);
+		setHistoricoFaixaId(historicoFaixaId);
+		setHistoricoFaixaData(historicoFaixaData);
+		setHistoricoFaixaValor(historicoFaixaValor);
+		setHistoricoFaixaTipo(historicoFaixaTipo);
+	}
+
 	// Projections
 	public void setHistoricoFaixaId(Long historicoFaixaId)
 	{

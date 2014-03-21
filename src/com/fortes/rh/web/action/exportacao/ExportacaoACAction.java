@@ -13,12 +13,15 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupport;
+import com.fortes.rh.web.ws.AcPessoalClientCargo;
 
 @SuppressWarnings("serial")
 public class ExportacaoACAction extends MyActionSupport
@@ -58,6 +61,9 @@ public class ExportacaoACAction extends MyActionSupport
 	{
 		try
 		{
+			empresa = empresaManager.findEntidadeComAtributosSimplesById(empresaId);
+			empresa.setAcIntegra(true);
+			
 			verificarHistoricosPorIndice();
 			verificarEmpresaAC();
 			verificarEstabelecimentoAC();
@@ -183,9 +189,6 @@ public class ExportacaoACAction extends MyActionSupport
 	
 	private void exportarAreasOrganizacionaisAC() throws Exception
 	{
-		Empresa empresa = empresaManager.findEntidadeComAtributosSimplesById(empresaId);
-		empresa.setAcIntegra(true);
-		
 		Collection<AreaOrganizacional> areasSemCodigoAC = areaOrganizacionalManager.findAllList(0, 0, null, empresaId, null);
 		areasSemCodigoAC = areaOrganizacionalManager.ordenarAreasHierarquicamente(areasSemCodigoAC, null, 1);
 		
@@ -208,9 +211,11 @@ public class ExportacaoACAction extends MyActionSupport
 		}
 	}
 	
-	private void exportarFaixasSalariaisAC()
+	private void exportarFaixasSalariaisAC() throws Exception
 	{
-		
+		Collection<FaixaSalarial> faixaSalariais = faixaSalarialManager.findComHistoricoAtualByEmpresa(empresaId, true);
+		for (FaixaSalarial faixaSalarial : faixaSalariais) 
+				faixaSalarialManager.saveFaixaSalarial(faixaSalarial, faixaSalarial.getFaixaSalarialHistoricoAtual(), empresa, new String[]{});
 	}
 	
 	class ExisteHistoricoIndiceException extends FortesException 

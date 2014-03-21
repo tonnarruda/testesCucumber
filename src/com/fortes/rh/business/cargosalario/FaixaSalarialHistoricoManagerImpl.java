@@ -49,7 +49,7 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		try
 		{
 			prepareSaveUpdate(faixaSalarialHistorico, faixaSalarial, empresa);
-			faixaSalarialHistorico = getDao().save(faixaSalarialHistorico);
+			getDao().saveOrUpdate(faixaSalarialHistorico);
 
 			if(empresa.isAcIntegra() && salvaNoAC)
 			{
