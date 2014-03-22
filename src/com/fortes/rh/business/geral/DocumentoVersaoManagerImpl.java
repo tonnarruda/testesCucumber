@@ -6,10 +6,12 @@ import java.util.List;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.filter.ElementFilter;
 import org.jdom.input.SAXBuilder;
 
 public class DocumentoVersaoManagerImpl implements DocumentoVersaoManager
 {
+	@SuppressWarnings("unchecked")
 	public String lerArquivoXML(File xmlFile)
 	{
 		String textoXml = "";
@@ -20,8 +22,11 @@ public class DocumentoVersaoManagerImpl implements DocumentoVersaoManager
 
 			Element element = document.getRootElement();
 
-			List listElements = element.getChildren();
-			Iterator iterListElements = listElements.iterator();
+			List<Element> listElements = element.getChildren();
+			Iterator<Element> iterListElements = listElements.iterator();
+			Iterator<Element> iterItemElements;
+			Element versaoElement;
+			Element itemElement;
 
 			textoXml += "<table cellpadding='0' cellspacing='0' class=\"docVersao\">";
 			int linha = 0;
@@ -34,13 +39,24 @@ public class DocumentoVersaoManagerImpl implements DocumentoVersaoManager
 				else
 					cssClassLinha = "";
 
-				Element elementVersao = (Element)iterListElements.next();
+				versaoElement = iterListElements.next();
 				textoXml += "<tr class=\""+cssClassLinha+"\">";
-				textoXml +=	"<td class=\"tamanho100\">" + elementVersao.getAttributeValue("data") + "</td>";
-				textoXml += "<td class=\"tamanho100\">" + elementVersao.getAttributeValue("id") + "</td>";
+				textoXml +=	"<td class=\"tamanho100\">" + versaoElement.getAttributeValue("data") + "</td>";
+				textoXml += "<td class=\"tamanho100\">" + versaoElement.getAttributeValue("id") + "</td>";
+				textoXml += "<td><ul>";
 				
-				Element elementModule = elementVersao.getChild("Modulo");
-				textoXml += "<td>" + elementModule.getValue().replace(":: ", "<br>- ").trim().substring(4) + "</td><tr>";
+				Element elementModule = versaoElement.getChild("Modulo");
+				iterItemElements = elementModule.getDescendants(new ElementFilter("Item"));
+				
+				while(iterItemElements.hasNext())
+				{
+					itemElement = iterItemElements.next();
+					if(itemElement.getAttribute("visivel").getValue().equalsIgnoreCase("S"))
+						textoXml += "<li>" + itemElement.getTextTrim() + "</li>";
+				}
+				
+				textoXml += "</ul></td></tr>";
+				
 				linha++;
 			}
 

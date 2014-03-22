@@ -17,39 +17,42 @@
 			height: 450px;
 		}
 
-th.tamanho100
-{
-	width: 105px;
-}
-.tabelaTH
-{
-	width: 100%;
-	border: 1px solid #909090;
-}
-.tabelaTH th
-{
-	background-color: #EBEADB;
-	border-right: 1px solid #ACA899;
-	border-left: 1px solid #FFF;
-	border-bottom: 3px solid #D6D2C2;
-	border-top: 1px solid #DCDAC5;
-}
-.docVersao td
-{
-	border-bottom: 1px solid #DFDFDF;
-	padding: 3px;
-}
-.docVersao
-{
-	background-color: #FFF;
-}
-td.tamanho100
-{
-	border-right: 1px solid #DFDFDF;
-	text-align: center;
-	width: 100px;
-}
+		th.tamanho100
+		{
+			width: 105px;
+		}
+		.tabelaTH
+		{
+			width: 100%;
+			border: 1px solid #909090;
+		}
+		.tabelaTH th
+		{
+			background-color: #EBEADB;
+			border-right: 1px solid #ACA899;
+			border-left: 1px solid #FFF;
+			border-bottom: 3px solid #D6D2C2;
+			border-top: 1px solid #DCDAC5;
+		}
+		.docVersao td
+		{
+			border-bottom: 1px solid #DFDFDF;
+			padding: 3px;
+		}
+		.docVersao
+		{
+			background-color: #FFF;
+			font-size: 12px;
+		}
+		td.tamanho100
+		{
+			border-right: 1px solid #DFDFDF;
+			text-align: center;
+			width: 100px;
+		}
 
+		.docVersao ul { list-style: disc; padding-left: 20px; }
+		.docVersao ul li { padding: 3px; }
 	</style>
 </head>
 <body>
