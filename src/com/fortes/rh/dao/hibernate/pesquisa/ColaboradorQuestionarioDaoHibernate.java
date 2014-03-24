@@ -22,6 +22,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -1025,5 +1026,31 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 
 			query.setLong("solicitacaoId", solicitacaoId);
 			query.executeUpdate();
+	}
+
+	public Collection<ColaboradorQuestionario> findAutoAvaliacaoPeriodoExperiencia(Long colaboradorId)
+	{
+		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
+		
+		criteria.createCriteria("cq.avaliacao", "av");
+		
+		ProjectionList p = Projections.projectionList().create();
+		
+		p.add(Projections.property("cq.id"), "id");
+		p.add(Projections.property("cq.respondidaEm"), "respondidaEm");
+		p.add(Projections.property("av.titulo"), "projectionAvaliacaoTitulo");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("cq.colaborador.id", colaboradorId));
+		criteria.add(Expression.eq("cq.avaliador.id", colaboradorId));
+		criteria.add(Expression.eq("av.tipoModeloAvaliacao", TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA));
+		
+		criteria.addOrder(Order.desc("cq.respondidaEm"));
+		criteria.addOrder(Order.asc("av.titulo"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorQuestionario.class));
+		
+		return criteria.list();
 	}
 }

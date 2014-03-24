@@ -46,6 +46,7 @@ import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma;
 import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -1263,6 +1264,47 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		assertNull(colaboradorQuestionarioDao.findById(colaboradorQuestionario.getId(), null));
 	}
 	
+	
+	public void testFindAutoAvaliacaoPeriodoExperiencia()
+	{
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setNome("Joao");
+		colaboradorDao.save(joao);
+		
+		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setNome("Maria");
+		colaboradorDao.save(maria);
+		
+		Avaliacao avaliacaoPerExp = AvaliacaoFactory.getEntity();
+		avaliacaoPerExp.setTipoModeloAvaliacao(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA);
+		avaliacaoDao.save(avaliacaoPerExp);
+		
+		Avaliacao avaliacaoDes = AvaliacaoFactory.getEntity();
+		avaliacaoDes.setTipoModeloAvaliacao(TipoModeloAvaliacao.AVALIACAO_DESEMPENHO);
+		avaliacaoDao.save(avaliacaoDes);
+		
+		ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario1.setColaborador(joao);
+		colaboradorQuestionario1.setAvaliador(joao);
+		colaboradorQuestionario1.setAvaliacao(avaliacaoPerExp);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
+		
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario2.setColaborador(maria);
+		colaboradorQuestionario2.setAvaliador(joao);
+		colaboradorQuestionario2.setAvaliacao(avaliacaoPerExp);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
+		ColaboradorQuestionario colaboradorQuestionario3 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario3.setColaborador(joao);
+		colaboradorQuestionario3.setAvaliador(joao);
+		colaboradorQuestionario3.setAvaliacao(avaliacaoDes);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
+		
+		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findAutoAvaliacaoPeriodoExperiencia(joao.getId());
+		
+		assertEquals(1, retorno.size());
+	}
 	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{

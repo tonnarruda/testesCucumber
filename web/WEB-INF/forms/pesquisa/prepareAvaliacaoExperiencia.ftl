@@ -82,8 +82,10 @@
 				<@ww.hidden name="colaboradorQuestionario.candidato.id" value="${candidato.id}"/>
 			</#if>
 			
+			<@ww.hidden name="colaboradorQuestionario.avaliador.id" />
 			<@ww.hidden name="solicitacao.id" />
 			<@ww.hidden name="respostaColaborador" />
+			<@ww.hidden name="autoAvaliacao" />
 			<@ww.token/>
 		</@ww.form>
 

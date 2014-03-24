@@ -31,7 +31,6 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.Solicitacao;
-import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
@@ -132,6 +131,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private boolean exibeResultadoAutoavaliacao;
 	private Boolean compartilharColaboradores;
 	private boolean respostaColaborador;
+	private boolean autoAvaliacao;
 	private boolean moduloExterno;
 	private boolean preview;
 	private boolean exibirCompetencia = true;
@@ -140,6 +140,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSugeridos;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvos;
+
 
 	public String prepareInsert() throws Exception
 	{
@@ -488,9 +489,12 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		ajustaSolicitacao();
 		
 		Long usuarioId = (getUsuarioLogado() != null) ? getUsuarioLogado().getId() : null;
+		Long usuarioColaboradorId = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession()).getId();
 		Long candidatoId = (candidato != null) ? candidatoId = candidato.getId() : null;
 		
 		Collection<ColaboradorResposta> colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);
+		
+		colaboradorQuestionario.setProjectionAvaliadorId(usuarioColaboradorId);
 		colaboradorRespostaManager.save(colaboradorRespostasDasPerguntas, colaboradorQuestionario, usuarioId, candidatoId);
 		
 		if (respostaColaborador)
@@ -526,6 +530,8 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		if (respostaColaborador)
 			return "sucessoIndex";
+		else if (autoAvaliacao)
+			return "sucessoRespostas";
 		else
 			return Action.SUCCESS;
 	}
@@ -959,5 +965,15 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public void setExibirCompetencia(boolean exibirCompetencia) {
 		this.exibirCompetencia = exibirCompetencia;
+	}
+	
+	public boolean isAutoAvaliacao()
+	{
+		return autoAvaliacao;
+	}
+	
+	public void setAutoAvaliacao(boolean autoAvaliacao)
+	{
+		this.autoAvaliacao = autoAvaliacao;
 	}
 }
