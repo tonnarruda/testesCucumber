@@ -139,4 +139,45 @@ public class Estabelecimento extends AbstractModel implements Serializable
 	{
 		return estabelecimentoManager;
 	}
+
+	public void setLogradouro(String logradouro) 
+	{
+		endereco.setLogradouro(logradouro);
+	}
+	
+	public void setNumero(String numero) 
+	{
+		endereco.setNumero(numero);
+	}
+
+	public void setComplemento(String complemento) 
+	{
+		endereco.setComplemento(complemento);
+	}
+
+	public void setBairro(String bairro) 
+	{
+		endereco.setBairro(bairro);
+	}
+	
+	public void setCep(String cep) 
+	{
+		endereco.setCep(cep);
+	}
+	
+	public void setUfSigla(String ufSigla)
+	{
+		if(endereco.getUf() == null)
+			endereco.setUf(new Estado());
+		
+		endereco.getUf().setSigla(ufSigla);
+	}
+
+	public void setCidadeNome(String cidadeNome)
+	{
+		if(endereco.getCidade() == null)
+			endereco.setCidade(new Cidade());
+		
+		endereco.getCidade().setNome(cidadeNome);
+	}
 }

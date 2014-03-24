@@ -8,22 +8,29 @@ import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.ws.RHServiceIntranetImpl;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.Estado;
+import com.fortes.rh.model.ws.UnidadeIntranet;
 import com.fortes.rh.model.ws.UsuarioIntranet;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 
 public class RHServiceIntranetTest extends MockObjectTestCase
 {
 	private RHServiceIntranetImpl rHServiceIntranetImpl = new RHServiceIntranetImpl();
 	private Mock colaboradorManager;
 	private Mock areaOrganizacionalManager;
+	private Mock estabelecimentoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -34,6 +41,9 @@ public class RHServiceIntranetTest extends MockObjectTestCase
 		
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
 		rHServiceIntranetImpl.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+
+		estabelecimentoManager = new Mock(EstabelecimentoManager.class);
+		rHServiceIntranetImpl.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
 	}
 	
 	public void testAtualizaUsuarios() throws Exception
@@ -62,5 +72,24 @@ public class RHServiceIntranetTest extends MockObjectTestCase
 		Collection<UsuarioIntranet> usuarioIntranets =  rHServiceIntranetImpl.usuariosIntranetList(empresa.getId().toString());
 		
 		assertEquals(2 ,usuarioIntranets.size());
+	}
+	
+	public void testUnidadesIntranetList() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity(1L);
+		estabelecimento1.setCidadeNome("Bostaleza");
+		estabelecimento1.setUfSigla("CE");
+		
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity(2L);
+		estabelecimento2.setCidadeNome("Caucaia");
+		estabelecimento2.setUfSigla("Inferno");
+		
+		estabelecimentoManager.expects(once()).method("findByEmpresa").with(eq(empresa.getId())).will(returnValue(Arrays.asList(estabelecimento1, estabelecimento2)));
+		
+		Collection<UnidadeIntranet> unidadesIntranet =  rHServiceIntranetImpl.unidadesIntranetList(empresa.getId().toString());
+		
+		assertEquals(2 ,unidadesIntranet.size());
 	}
 }

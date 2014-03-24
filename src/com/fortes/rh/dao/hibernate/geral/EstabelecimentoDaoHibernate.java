@@ -70,6 +70,35 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 
 		return criteria.list();
 	}
+	
+	public Collection<Estabelecimento> findByEmpresa(Long empresaId)
+	{
+		Criteria criteria = getSession().createCriteria(Estabelecimento.class,"e");
+		criteria.createCriteria("e.endereco.cidade", "c", Criteria.LEFT_JOIN);
+		criteria.createCriteria("e.endereco.uf", "uf", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		
+		p.add(Projections.property("e.id"), "id");
+		p.add(Projections.property("e.nome"), "nome");
+		p.add(Projections.property("e.endereco.logradouro"), "logradouro");
+		p.add(Projections.property("e.endereco.numero"), "numero");
+		p.add(Projections.property("e.endereco.complemento"), "complemento");
+		p.add(Projections.property("e.endereco.bairro"), "bairro");
+		p.add(Projections.property("e.endereco.cep"), "cep");
+		p.add(Projections.property("uf.sigla"), "ufSigla");
+		p.add(Projections.property("c.nome"), "cidadeNome");
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("e.empresa.id", empresaId));
+		
+		criteria.addOrder(Order.asc("e.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Estabelecimento.class));
+		
+		return criteria.list();
+	}
 
 	public Estabelecimento findEstabelecimentoCodigoAc(Long estabelecimentoId)
 	{
