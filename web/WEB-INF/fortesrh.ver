@@ -2,7 +2,8 @@
 <Versoes>
 	<Versao id="1.1.xxx.xxx" bd="" data="xx/xx/2014">
 		<Modulo nome=" ">
-			<Item visivel="N" motivo=""><![CDATA[Integração com a Intranet: Inserir Unidade/Estabelecimento no Web Service]]></Item>
+			<Item visivel="N" motivo="S20140200284"><![CDATA[Integração com a Intranet: Inserir Unidade/Estabelecimento no Web Service]]></Item>
+			<Item visivel="N" motivo="P20140300073"><![CDATA[BUG: O sistema não apresenta uma das solicitações na listagem de solicitação]]></Item>
     	</Modulo>
     </Versao>
 	<Versao id="1.1.125.148" bd="" data="17/03/2014">
