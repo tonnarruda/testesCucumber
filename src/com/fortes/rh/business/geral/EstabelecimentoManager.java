@@ -22,4 +22,5 @@ public interface EstabelecimentoManager extends GenericManager<Estabelecimento>
 	Collection<Estabelecimento> findSemCodigoAC(Long empresaId);
 	void deleteEstabelecimento(Long[] estabelecimentoIds) throws Exception;
 	Estabelecimento findComEnderecoById(Long estabelecimentoId);
+	Collection<Estabelecimento> findByEmpresa(Long empresaId);
 }

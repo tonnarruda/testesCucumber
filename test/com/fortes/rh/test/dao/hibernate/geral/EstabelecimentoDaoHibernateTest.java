@@ -206,6 +206,68 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		assertEquals("Test 4", estabelecimento2.getId(), ((Estabelecimento)(estabelecimentos.toArray()[2])).getId() );
 	}
 	
+	public void testAllByEmpresa()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setId(1L);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2.setId(2L);
+		
+		empresa = empresaDao.save(empresa);
+		empresa2 = empresaDao.save(empresa2);
+		
+		Estado estado = new Estado();
+		estado.setSigla("CE");
+		estado.setNome("Ceará");
+		estadoDao.save(estado);
+
+		Cidade cidade = new Cidade();
+		cidade.setUf(estado);
+		cidade.setNome("Bostaleza");
+		cidadeDao.save(cidade);
+		
+		Endereco endereco = new Endereco();
+		endereco.setCidade(cidade);
+		endereco.setUf(estado);
+		endereco.setLogradouro("logradouro");
+		endereco.setBairro("bairro");
+		endereco.setCep("60000000");
+		endereco.setNumero("123");
+		endereco.setComplemento("complemento");
+		
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimento1.setEmpresa(empresa);
+		estabelecimento1.setNome("A");
+		estabelecimento1.setEndereco(endereco);
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+		estabelecimento2.setEmpresa(empresa);
+		estabelecimento2.setNome("C");
+		estabelecimento2.setEndereco(endereco);
+		estabelecimentoDao.save(estabelecimento2);
+		
+		Estabelecimento estabelecimento3 = EstabelecimentoFactory.getEntity();
+		estabelecimento3.setEmpresa(empresa2);
+		estabelecimento3.setNome("B");
+		estabelecimento3.setEndereco(endereco);
+		estabelecimentoDao.save(estabelecimento3);
+		
+		Estabelecimento estabelecimento4 = EstabelecimentoFactory.getEntity();
+		estabelecimento4.setEmpresa(empresa);
+		estabelecimento4.setNome("B");
+		estabelecimento4.setEndereco(endereco);
+		estabelecimentoDao.save(estabelecimento4);
+		
+		Collection<Estabelecimento> estabelecimentos = estabelecimentoDao.findByEmpresa(empresa.getId());
+		
+		assertEquals("Test 1", 3, estabelecimentos.size());
+		assertEquals("Test 2", estabelecimento1.getId(), ((Estabelecimento)(estabelecimentos.toArray()[0])).getId() );
+		assertEquals("Test 3", estabelecimento4.getId(), ((Estabelecimento)(estabelecimentos.toArray()[1])).getId() );
+		assertEquals("Test 4", estabelecimento2.getId(), ((Estabelecimento)(estabelecimentos.toArray()[2])).getId() );
+	}
+	
 	public void testAllSelect2()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);

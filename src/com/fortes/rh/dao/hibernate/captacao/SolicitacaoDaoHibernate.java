@@ -76,6 +76,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 
 		criteria.setProjection(p);
 		criteria.addOrder(Order.desc("s.data"));
+		criteria.addOrder(Order.desc("s.id"));
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Solicitacao.class));
 

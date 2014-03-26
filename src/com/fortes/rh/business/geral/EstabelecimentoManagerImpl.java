@@ -31,6 +31,11 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 	{
 		return getDao().findAllSelect(empresaId);
 	}
+	
+	public Collection<Estabelecimento> findByEmpresa(Long empresaId)
+	{
+		return getDao().findByEmpresa(empresaId);
+	}
 
 	public Estabelecimento findEstabelecimentoCodigoAc(Long estabelecimentoId)
 	{

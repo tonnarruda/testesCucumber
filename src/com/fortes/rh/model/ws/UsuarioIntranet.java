@@ -12,6 +12,7 @@ public class UsuarioIntranet implements Serializable
 	private String dataNascimento;
 	private String areaId;
 	private String cargoId;
+	private String estabelecimentoId;
 	private String cpf;
 	private boolean desligado;
 	
@@ -103,5 +104,13 @@ public class UsuarioIntranet implements Serializable
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+
+	public String getEstabelecimentoId() {
+		return estabelecimentoId;
+	}
+
+	public void setEstabelecimentoId(String estabelecimentoId) {
+		this.estabelecimentoId = estabelecimentoId;
 	}
 }
