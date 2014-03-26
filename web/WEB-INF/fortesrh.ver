@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.125.149" bd="" data="">
+		<Modulo nome=" ">
+			<Item visivel="S" motivo="S20140300094"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Cor diferenciada para candidatos contratados através de outras movimentações.]]></Item>
+    	</Modulo>
+    </Versao>
 	<Versao id="1.1.125.148" bd="" data="17/03/2014">
 		<Modulo nome=" ">
 			<Item visivel="S" motivo=""><![CDATA[R&S > Cadastros > Candidatos > Visualizar Currículo > Currículo Escaneado: Nova opção de imprimir o currículo escaneado.]]></Item>

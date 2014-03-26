@@ -9,11 +9,12 @@
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 		
-		#legendas { float: right; margin-bottom: 10px; }
+		#legendas { float: right; margin-bottom: 10px; font-size: 12px; }
 		.naoApto { color: #F00 !important; }
 		.apto { color: #0000FF !important; }
 		.indiferente { color: #555 !important; }
 		.contratado { color: #008000 !important; }
+		.contratadoOutros { color: #990066 !important; }
 		.btnTriagem, .btnInserirEtapasEmGrupo, .btnResultadoAvaliacao, .btnVoltar { margin: 5px 5px 0px 0px; }
 	</style>
 	
@@ -128,7 +129,8 @@
 		<span style='background-color: #0000FF;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aptos
 		<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Indiferente
 		<span style='background-color: #F00;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não Aptos
-		<span style='background-color: #008000;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Contratados/Promovidos
+		<span style='background-color: #008000;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Contratados/Promovidos através desta solicitação
+		<span style='background-color: #990066;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Contratados/Promovidos através de outras movimentações
 	</div>
 	
 	<#assign jaResponderam = false/>
@@ -147,6 +149,7 @@
 		<#-- decide contratação (se é só candidato) ou promoção (se candidato já é colaborador) -->
 		<#if candidatoSolicitacao?exists && candidatoSolicitacao.candidato?exists >
 			<#if candidatoSolicitacao.candidato.contratado || candidatoSolicitacao.status == 'A'>
+				<#assign classe="contratadoOutros"/>
 				<#assign titleContrata="Promover"/>
 				<#assign actionContrata="geral/colaborador/preparePromoverCandidato.action?candidato.id=${candidatoSolicitacao.candidato.id}&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=${candidatoSolicitacao.id}"/>
 			<#else>
