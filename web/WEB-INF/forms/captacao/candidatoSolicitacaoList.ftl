@@ -9,7 +9,7 @@
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 		
-		#legendas { float: right; margin-bottom: 10px; font-size: 12px; }
+		#legendas { float: right; margin-bottom: 10px; }
 		.naoApto { color: #F00 !important; }
 		.apto { color: #0000FF !important; }
 		.indiferente { color: #555 !important; }
@@ -129,8 +129,8 @@
 		<span style='background-color: #0000FF;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Aptos
 		<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Indiferente
 		<span style='background-color: #F00;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não Aptos
-		<span style='background-color: #008000;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Contratados/Promovidos através desta solicitação
-		<span style='background-color: #990066;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Contratados/Promovidos através de outras movimentações
+		<span style='background-color: #008000;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Contratados/Promovidos por esta solicitação
+		<span style='background-color: #990066;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Contratados/Promovidos por outras movimentações
 	</div>
 	
 	<#assign jaResponderam = false/>

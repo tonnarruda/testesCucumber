@@ -113,7 +113,8 @@ public class Index extends MyActionSupport
 
 		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 		ServletActionContext.getRequest().getSession().setMaxInactiveInterval(parametrosDoSistema.getSessionTimeout());
-		
+		Map m = ActionContext.getContext().getSession();
+		SecurityUtil.getColaboradorSession(m);
 		if(ActionContext.getContext().getSession().get("primeiraExecucao") == null)
 		{
 			ActionContext.getContext().getSession().put("primeiraExecucao", "sim");

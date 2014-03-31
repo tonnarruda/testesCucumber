@@ -268,13 +268,13 @@ public class UsuarioEditAction extends MyActionSupportEdit
 		catch (LoginExisteException e)
 		{
 			prepareInsert();
-			addActionError(e.getMessage());
+			addActionWarning(e.getMessage());
 			return Action.INPUT;
 		}
 		catch (SenhaNaoConfereException e)
 		{
 			prepareInsert();
-			addActionError(e.getMessage());
+			addActionWarning(e.getMessage());
 			return Action.INPUT;
 		}
 		catch (Exception e)

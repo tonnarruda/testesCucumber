@@ -62,5 +62,5 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	void updatePerformance(Long colaboradorQuestionarioId, double performance);
 	Collection<ColaboradorQuestionario> findForRankingPerformanceAvaliacaoCurso(Long[] cursosIds, Long[] turmasIds, Long[] avaliacaoCursosIds);
 	void removeBySolicitacaoId(Long solicitacaoId);
-	
+	Collection<ColaboradorQuestionario> findAutoAvaliacaoPeriodoExperiencia(Long colaboradorId);	
 }
