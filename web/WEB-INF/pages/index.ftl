@@ -1,6 +1,6 @@
 <#assign ww=JspTaglibs["/WEB-INF/tlds/webwork.tld"] />
 <#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
-<#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+<#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] /> 
 <html>
 <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
 <meta http-equiv="Content-Language" content="pt-br" />
