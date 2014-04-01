@@ -166,6 +166,10 @@
 			<br />
 		<li>
 		<li>
+			<@ww.checkbox label="Solicitar confirmação de gestores ao desligar colaboradores." id="solicitarConfirmacaoDesligamento" name="empresa.solicitarConfirmacaoDesligamento" liClass="liLeft" labelPosition="left"/>
+			<br />
+		<li>
+		<li>
 			<label>Busca de possíveis parentes nos cadastros de candidatos e colaboradores:</label>
 			<img id="verificaParentescoHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" />
 			<br />

@@ -158,16 +158,22 @@
 				<#assign statusSolicitacao="A"/>
 				<#if integraAc && !colaborador.naoIntegraAc>
 					<#if colaborador.dataSolicitacaoDesligamentoAc?exists>
-						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="#" imgTitle="Solicitação de desligamento aguardando confirmação no AC Pessoal" imgName="desliga_colab.gif" opacity=true />
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:;" imgTitle="Solicitação de desligamento aguardando confirmação no AC Pessoal" imgName="desliga_colab.gif" opacity=true />
 					<#else>
 						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="prepareDesligaAC.action?colaborador.id=${colaborador.id}"
-						 imgTitle="Solicitação de Desligamento do Colaborador no Ac Pessoal" imgName="desliga_colab.gif"/>
+						 imgTitle="Solicitação de Desligamento do Colaborador no AC Pessoal" imgName="desliga_colab.gif"/>
 					</#if>
 				<#else>
-					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Desligar colaborador" imgName="desliga_colab.gif"/>
+					<#if empresaSistema.solicitarConfirmacaoDesligamento && !colaborador.dataSolicitacaoDesligamento?exists>
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Solicitar desligamento" imgName="desliga_colab.gif"/>
+					<#elseif empresaSistema.solicitarConfirmacaoDesligamento && colaborador.dataSolicitacaoDesligamento?exists>
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:;" imgTitle="Aguardando confirmação de desligamento" imgName="desliga_colab.gif" opacity=true/>
+					<#else>
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Desligar colaborador" imgName="desliga_colab.gif"/>
+					</#if>
 				</#if>
 
-				<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="#" imgTitle="Entrevista de Desligamento - disponível apenas após o desligamento do colaborador" imgName="entrevistaBalaoDesligaNova.gif" opacity=true/>
+				<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="javascript:;" imgTitle="Entrevista de Desligamento - disponível apenas após o desligamento do colaborador" imgName="entrevistaBalaoDesligaNova.gif" opacity=true/>
 			<#else>
 				<#assign statusSolicitacao="I"/>
 				<#if colaborador.dataDesligamento?exists && !colaborador.motivoDemissao.motivo?exists>

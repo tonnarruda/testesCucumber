@@ -3124,7 +3124,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("select colab_.id as colabId, colab_.nome as name, colab_.nomeComercial, colab_.matricula, colab_.desligado, colab_.dataAdmissao, colab_.cpf, colab_.usuario_id, colab_.dataDesligamento, md.motivo, colab_.respondeuEntrevista, colab_.candidato_id as candId, colab_.naoIntegraAc , colab_.dataSolicitacaoDesligamentoAc, a.id, hc.status ");
+		sql.append("select colab_.id as colabId, colab_.nome as name, colab_.nomeComercial, colab_.matricula, colab_.desligado, colab_.dataAdmissao, colab_.cpf, colab_.usuario_id, colab_.dataDesligamento, md.motivo, colab_.respondeuEntrevista, colab_.candidato_id as candId, colab_.naoIntegraAc, colab_.dataSolicitacaoDesligamento, colab_.dataSolicitacaoDesligamentoAc, a.id, hc.status ");
 		sql.append("from historicoColaborador hc ");
 		sql.append("inner join ");
 		sql.append("( ");
@@ -4387,11 +4387,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return StringUtil.converteCollectionToArrayString(query.list());
 	}
 
-	public void atualizaDataSolicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, Long colaboradorId) 
+	public void atualizaDataSolicitacaoDesligamento(Date dataSolicitacaoDesligamento, Date dataSolicitacaoDesligamentoAC, Long colaboradorId) 
 	{
-		String hql = "update Colaborador set dataSolicitacaoDesligamentoAc = :dataSolicitacaoDesligamentoAc where id = :colaboradorId";
+		String hql = "update Colaborador set dataSolicitacaoDesligamento = :dataSolicitacaoDesligamento, dataSolicitacaoDesligamentoAc = :dataSolicitacaoDesligamentoAc where id = :colaboradorId";
 		Query query = getSession().createQuery(hql);
-		query.setDate("dataSolicitacaoDesligamentoAc", dataSolicitacaoDesligamento);
+		query.setDate("dataSolicitacaoDesligamento", dataSolicitacaoDesligamento);
+		query.setDate("dataSolicitacaoDesligamentoAc", dataSolicitacaoDesligamentoAC);
 		query.setLong("colaboradorId", colaboradorId);
 		
 		query.executeUpdate();

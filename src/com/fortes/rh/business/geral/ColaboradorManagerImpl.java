@@ -972,11 +972,17 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		if(acPessoalClientColaborador.solicitacaoDesligamentoAc(historicosColaborador, empresa))
 		{
-			getDao().atualizaDataSolicitacaoDesligamentoAc(dataSolicitacaoDesligamento, colaboradorId);
+			getDao().atualizaDataSolicitacaoDesligamento(null, dataSolicitacaoDesligamento, colaboradorId);
 			desligaColaborador(null, null, observacaoDemissao, motivoId, colaboradorId, false);
 		}
 	}
 
+	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId, Empresa empresa) throws Exception 
+	{
+		getDao().atualizaDataSolicitacaoDesligamento(dataSolicitacaoDesligamento, null, colaboradorId);
+		getDao().desligaColaborador(null, null, observacaoDemissao, motivoId, colaboradorId);
+	}
+	
 	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long colaboradorId, boolean desligaByAC) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -1701,7 +1707,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaborador.setMatricula((String) array[3]);
 			colaborador.setDesligado((Boolean) array[4]);
 			colaborador.setDataAdmissao((Date) array[5]);
-			colaborador.setDataSolicitacaoDesligamentoAc((Date) array[13]);
 			colaborador.setPessoal(new Pessoal());
 			colaborador.getPessoal().setCpf((String) array[6]);
 			colaborador.setUsuario(new Usuario());
@@ -1726,15 +1731,18 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				colaborador.getCandidato().setId(((BigInteger)array[11]).longValue());
 
 			colaborador.setNaoIntegraAc((Boolean) array[12]);
-
+			
 			if(array[13] != null)
-				colaborador.setDataSolicitacaoDesligamentoAc((Date) array[13]);
+				colaborador.setDataSolicitacaoDesligamento((Date) array[13]);
 
 			if(array[14] != null)
-				colaborador.setAreaOrganizacionalId(((BigInteger)array[14]).longValue());
+				colaborador.setDataSolicitacaoDesligamentoAc((Date) array[14]);
 
 			if(array[15] != null)
-				colaborador.setStatusAcPessoalConfirmado((((Integer)array[15]).intValue()) == 1);
+				colaborador.setAreaOrganizacionalId(((BigInteger)array[15]).longValue());
+
+			if(array[16] != null)
+				colaborador.setStatusAcPessoalConfirmado((((Integer)array[16]).intValue()) == 1);
 
 			result.add(colaborador);
 		}

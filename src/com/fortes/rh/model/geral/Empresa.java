@@ -67,6 +67,8 @@ public class Empresa extends AbstractModel implements Serializable
     private boolean acIntegra;
     private boolean obrigarAmbienteFuncao;
     private boolean codigoTruCurso; 
+    private boolean solicitarConfirmacaoDesligamento;
+    
     private char verificaParentesco = 'N';
     @Column(length=400)
 	private String mensagemModuloExterno;
@@ -549,5 +551,14 @@ public class Empresa extends AbstractModel implements Serializable
 			return "";
 		
 		return formula.get(formulaTurnover);
+	}
+
+	public boolean isSolicitarConfirmacaoDesligamento() {
+		return solicitarConfirmacaoDesligamento;
+	}
+
+	public void setSolicitarConfirmacaoDesligamento(
+			boolean solicitarConfirmacaoDesligamento) {
+		this.solicitarConfirmacaoDesligamento = solicitarConfirmacaoDesligamento;
 	}
 }

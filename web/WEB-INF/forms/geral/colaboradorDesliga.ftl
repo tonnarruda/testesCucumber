@@ -4,6 +4,8 @@
 <@ww.head/>
 	<#if colaborador.desligado>
 		<title>Colaborador Desligado</title>
+	<#elseif empresaSistema.solicitarConfirmacaoDesligamento>
+		<title>Solicitar Desligamento</title>
 	<#else>
 		<title>Desligar Colaborador</title>
 	</#if>
@@ -84,6 +86,8 @@
 	<div class="buttonGroup">
 		<#if colaborador.dataDesligamento?exists>
 			<input type="button" value=" " onclick="enviarForm(this);" class="btnGravar" />
+		<#elseif empresaSistema.solicitarConfirmacaoDesligamento>
+			<input type="button" value=" " onclick="enviarForm(this);" class="btnSolicitarDesligamento" />
 		<#else>
 			<input type="button" value=" " onclick="enviarForm(this);" class="btnDesligarColaborador" />
 		</#if>

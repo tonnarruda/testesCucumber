@@ -53,6 +53,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		motivoDemissaos = motivoDemissaoManager.findAllSelect(getEmpresaSistema().getId());
 		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
 		motDemissao = colaborador.getMotivoDemissao();
+		
 		return Action.SUCCESS;
 	}
 
@@ -70,9 +71,16 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			if (dataDesligamento.before(colaborador.getDataAdmissao()))
 				throw new Exception("Data de desligamento anterior à data de admissão");
 			
-			colaboradorManager.desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId(), false);
-	
-			addActionSuccess("Colaborador desligado com sucesso.");
+			if (getEmpresaSistema().isSolicitarConfirmacaoDesligamento())
+			{
+				colaboradorManager.solicitacaoDesligamento(dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId(), getEmpresaSistema());
+				addActionSuccess("Solicitação de desligamento cadastrada com sucesso.");
+			} 
+			else 
+			{
+				colaboradorManager.desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId(), false);
+				addActionSuccess("Colaborador desligado com sucesso.");
+			}
 		
 		} catch (Exception e) {
 			addActionError(e.getMessage());

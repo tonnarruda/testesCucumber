@@ -1,0 +1,1 @@
+alter table empresa add column solicitarConfirmacaoDesligamento boolean not null default false;--.go

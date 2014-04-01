@@ -1,0 +1,1 @@
+alter table colaborador add column dataSolicitacaoDesligamento date;--.go
