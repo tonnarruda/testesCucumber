@@ -5412,7 +5412,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Exception exception = null;
 		try {
-			colaboradorDao.atualizaDataSolicitacaoDesligamento(hoje, a, colaborador.getId());
+			colaboradorDao.atualizaDataSolicitacaoDesligamento(null, hoje, colaborador.getId());
 		} catch (Exception e) {
 			exception = e;
 		}
