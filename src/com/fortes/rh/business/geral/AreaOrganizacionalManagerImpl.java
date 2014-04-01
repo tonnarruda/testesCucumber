@@ -174,7 +174,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		}
 		else
 		{
-			getDao().save(areaOrganizacional);
+			getDao().saveOrUpdate(areaOrganizacional);
 		}
 	}
 

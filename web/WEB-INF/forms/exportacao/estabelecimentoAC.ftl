@@ -25,6 +25,7 @@
 	
 		<ol>
 			<li>Crie esses estabelecimentos no AC Pessoal;</li>
+			<li>Marque a integarção com o RH no AC Pessoal;</li>
 			<li>Informe na tabela abaixo os códigos gerados pelo AC Pessoal para os respectivos estabelecimentos;</li>
 			<li><strong>Atenção!</strong> Informar códigos incorretos causará inconsistências irreversíveis no banco de dados do AC Pessoal.</li>
 		</ol>

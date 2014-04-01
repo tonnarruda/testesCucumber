@@ -1,5 +1,6 @@
 package com.fortes.rh.web.action.exportacao;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -14,14 +15,12 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupport;
-import com.fortes.rh.web.ws.AcPessoalClientCargo;
 
 @SuppressWarnings("serial")
 public class ExportacaoACAction extends MyActionSupport
@@ -112,8 +111,6 @@ public class ExportacaoACAction extends MyActionSupport
 	
 	private void verificarEmpresaAC() throws EmpresaSemCodigoACException
 	{
-		empresa = empresaManager.findByIdProjection(empresaId);
-		
 		if (StringUtil.isBlank(empresa.getCodigoAC()))
 			throw new EmpresaSemCodigoACException("A empresa do RH selecionada ainda não foi vinculada a uma empresa criada no AC Pessoal");
 	}
@@ -195,8 +192,16 @@ public class ExportacaoACAction extends MyActionSupport
 		int maxNiveisRH = ((AreaOrganizacional) areasSemCodigoAC.toArray()[areasSemCodigoAC.size() - 1]).getNivelHierarquico();
 		int maxNiveisAC = areaOrganizacionalManager.getMascaraLotacoesAC(empresa).split("\\.").length;
 		
-		if (maxNiveisRH > maxNiveisAC)
-			throw new AreaNaoInseridaACException("A máscara de lotações no AC Pessoal não é compatível com a quantidade máxima de níveis da hierarquia de áreas organizacionais");
+		if (maxNiveisRH > maxNiveisAC){
+			StringBuffer msgPassos = new StringBuffer(); 	
+			msgPassos.append("<ol>");
+			msgPassos.append("  <li>Desmarque a integração no AC Pessoal;</li>");
+			msgPassos.append("  <li>Altere a máscara das lotações para "+maxNiveisRH+" níveis no AC Pessoal;</li>");
+			msgPassos.append("  <li>Marque novamente a integração no AC Pessoal;</li>");
+			msgPassos.append("</ol>");
+			
+			throw new AreaNaoInseridaACException("A máscara de lotações no AC Pessoal não é compatível com a quantidade máxima de níveis da hierarquia de áreas organizacionais.<br />Quantidade de níveis da hierarquia de áreas organizacionais: "+maxNiveisRH + msgPassos);
+		}
 		
 		for (AreaOrganizacional areaOrganizacional : areasSemCodigoAC) 
 		{
@@ -214,8 +219,31 @@ public class ExportacaoACAction extends MyActionSupport
 	private void exportarFaixasSalariaisAC() throws Exception
 	{
 		Collection<FaixaSalarial> faixaSalariais = faixaSalarialManager.findComHistoricoAtualByEmpresa(empresaId, true);
-		for (FaixaSalarial faixaSalarial : faixaSalariais) 
-				faixaSalarialManager.saveFaixaSalarial(faixaSalarial, faixaSalarial.getFaixaSalarialHistoricoAtual(), empresa, new String[]{});
+		
+		String nomeNoAC = "";
+		Collection<String> nomesInseridosNoAC = new ArrayList<String>();
+		
+		for (FaixaSalarial faixaSalarial : faixaSalariais)
+		{
+			nomeNoAC = (StringUtil.subStr(faixaSalarial.getCargo().getNome(), 24)+ " " +  StringUtil.subStr(faixaSalarial.getNome(), 5));
+			nomeNoAC = montaNomeParaAC(nomesInseridosNoAC, (StringUtil.subStr(faixaSalarial.getCargo().getNome(), 24)+ " " +  StringUtil.subStr(faixaSalarial.getNome(), 5)), 1);
+			
+			faixaSalarial.setNomeACPessoal(nomeNoAC);
+			
+			faixaSalarialManager.saveFaixaSalarial(faixaSalarial, faixaSalarial.getFaixaSalarialHistoricoAtual(), empresa, new String[]{});
+		}
+	}
+
+	private String montaNomeParaAC(Collection<String> nomesInseridosNoAC, String nomeNoAC, int count)
+	{
+		if(!nomesInseridosNoAC.contains(nomeNoAC))
+		{
+			nomesInseridosNoAC.add(nomeNoAC);
+			return nomeNoAC;
+		}
+		else{
+			return montaNomeParaAC(nomesInseridosNoAC, StringUtil.subStr(nomeNoAC, 28) + "_" + count, ++count);
+		}
 	}
 	
 	class ExisteHistoricoIndiceException extends FortesException 
