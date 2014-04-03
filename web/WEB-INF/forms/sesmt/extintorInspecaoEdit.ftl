@@ -84,8 +84,6 @@
 			});
 			
 			$('#outroMotivo').toggle($('#check11').is(':checked'));
-			
-			//$('#extintor').combobox();
 		});
 
 		function populaExtintores()
