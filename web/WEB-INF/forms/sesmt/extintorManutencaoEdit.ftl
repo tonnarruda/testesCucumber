@@ -82,11 +82,7 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/combobox.js"/>"></script>
 	
 	<script type="text/javascript">
-	
-	
 		$(function() {
-			
-			$( "#extintor" ).combobox();
 			
 			$("#check11").change(function() {
 				$('#outroMotivo').toggle($(this).is(':checked'));

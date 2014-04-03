@@ -17,7 +17,7 @@ public class ExtintorDWR
 	{
 		// Descrição pode ser "Todos" (filtro listagem), "Selecione..." (edit)
 		Extintor extintorTmp = new Extintor(mensagemHeader);
-		extintorTmp.setId(-1L);
+		extintorTmp.setId(0L);
 
 		Collection<Extintor> colecaoRetorno = new ArrayList<Extintor>();
 		colecaoRetorno.add(extintorTmp);
