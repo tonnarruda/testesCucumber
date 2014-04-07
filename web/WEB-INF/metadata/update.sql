@@ -22368,3 +22368,6 @@ update parametrosdosistema set appversao = '1.1.125.147';--.go
 update resposta set peso = 0 where peso is null;--.go
 insert into migrations values('20140227081057');--.go
 update parametrosdosistema set appversao = '1.1.125.148';--.go
+-- versao 1.1.125.149
+
+update parametrosdosistema set appversao = '1.1.125.149';--.go

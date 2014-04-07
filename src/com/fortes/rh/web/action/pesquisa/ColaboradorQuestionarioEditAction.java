@@ -495,6 +495,9 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		Collection<ColaboradorResposta> colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);
 		
 		colaboradorQuestionario.setProjectionAvaliadorId(usuarioColaboradorId);
+		if(colaboradorQuestionario.getAvaliador() != null && colaboradorQuestionario.getAvaliador().getId() == null)
+			colaboradorQuestionario.setAvaliador(null);
+		
 		colaboradorRespostaManager.save(colaboradorRespostasDasPerguntas, colaboradorQuestionario, usuarioId, candidatoId);
 		
 		if (respostaColaborador)
