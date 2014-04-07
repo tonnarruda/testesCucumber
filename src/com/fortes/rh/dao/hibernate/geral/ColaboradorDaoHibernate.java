@@ -4647,25 +4647,71 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
 		criteria.createCriteria("c.historicoColaboradors", "hc");
+		criteria.createCriteria("c.endereco.cidade", "ci", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.endereco.uf", "u", Criteria.LEFT_JOIN);
 		criteria.createCriteria("hc.areaOrganizacional", "ao");
 		criteria.createCriteria("hc.faixaSalarial", "fs");
+		criteria.createCriteria("hc.estabelecimento", "e");
 		criteria.createCriteria("fs.cargo", "ca");
+		criteria.createCriteria("c.pessoal.ctps.ctpsUf", "ctpsUf", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.pessoal.rgUf", "rgUf", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.distinct(Projections.property("c.id")), "id");
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		p.add(Projections.property("c.desligado"), "desligado");
+		p.add(Projections.property("c.matricula"), "matricula");
+		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
+		p.add(Projections.property("c.vinculo"), "vinculo");
 		p.add(Projections.property("c.pessoal.dataNascimento"), "projectionDataNascimento");
 		p.add(Projections.property("c.pessoal.cpf"), "colaboradorCPF");
-		p.add(Projections.property("c.contato.email"), "emailColaborador");
+		p.add(Projections.property("c.pessoal.pis"), "projectionPis");
+		p.add(Projections.property("c.pessoal.rg"), "projectionRg");
+		p.add(Projections.property("c.pessoal.rgOrgaoEmissor"), "projectionRgOrgaoEmissor");
+		p.add(Projections.property("c.pessoal.rgDataExpedicao"), "projectionRgDataExpedicao");
+		p.add(Projections.property("rgUf.id"), "projectionRgUfId");
+		p.add(Projections.property("rgUf.sigla"), "projectionRgUfSigla");
+		p.add(Projections.property("c.pessoal.conjuge"), "pessoalConjuge");
+		p.add(Projections.property("c.pessoal.pai"), "pessoalPai");
+		p.add(Projections.property("c.pessoal.mae"), "pessoalMae");
+		p.add(Projections.property("c.pessoal.sexo"), "projectionSexo");
+		p.add(Projections.property("c.pessoal.escolaridade"), "pessoalEscolaridade");
+		p.add(Projections.property("c.pessoal.estadoCivil"), "pessoalEstadoCivil");
+		p.add(Projections.property("c.pessoal.deficiencia"), "projectionDeficiencia");
+		p.add(Projections.property("c.contato.ddd"), "contatoDdd");
+		p.add(Projections.property("c.contato.foneFixo"), "contatoFoneFixo");
 		p.add(Projections.property("c.contato.foneCelular"), "contatoCelular");
-		p.add(Projections.property("c.desligado"), "desligado");
+		p.add(Projections.property("c.contato.email"), "emailColaborador");
+		p.add(Projections.property("c.endereco.logradouro"), "enderecoLogradouro");
+		p.add(Projections.property("c.endereco.complemento"), "enderecoComplemento");
+		p.add(Projections.property("c.endereco.numero"), "enderecoNumero");
+		p.add(Projections.property("c.endereco.bairro"), "enderecoBairro");
+		p.add(Projections.property("c.endereco.cep"), "enderecoCep");
+		p.add(Projections.property("ci.nome"), "enderecoCidadeNome");
+		p.add(Projections.property("u.sigla"), "enderecoUfSigla");
+		p.add(Projections.property("c.pessoal.tituloEleitoral.titEleitNumero"), "projectionTituloNumero");
+		p.add(Projections.property("c.pessoal.tituloEleitoral.titEleitZona"), "projectionTituloZona");
+		p.add(Projections.property("c.pessoal.tituloEleitoral.titEleitSecao"), "projectionTituloSecao");
+		p.add(Projections.property("c.pessoal.certificadoMilitar.certMilNumero"), "projectionCertMilNumero");
+		p.add(Projections.property("c.pessoal.certificadoMilitar.certMilTipo"), "projectionCertMilTipo");
+		p.add(Projections.property("c.pessoal.certificadoMilitar.certMilSerie"), "projectionCertMilSerie");
+		p.add(Projections.property("c.pessoal.ctps.ctpsNumero"), "projectionCtpsNumero");
+		p.add(Projections.property("c.pessoal.ctps.ctpsSerie"), "projectionCtpsSerie");
+		p.add(Projections.property("c.pessoal.ctps.ctpsDv"), "projectionCtpsDv");
+		p.add(Projections.property("c.pessoal.ctps.ctpsDataExpedicao"), "projectionCtpsDataExpedicao");
+		p.add(Projections.property("ctpsUf.id"), "projectionCtpsUfId");
+		p.add(Projections.property("ctpsUf.sigla"), "projectionCtpsUfSigla");
+		p.add(Projections.property("c.habilitacao.numeroHab"), "projectionNumeroHabilitacao");
+		p.add(Projections.property("c.habilitacao.emissao"), "projectionEmissaoHabilitacao");
+		p.add(Projections.property("c.habilitacao.vencimento"), "projectionVencimentoHabilitacao");
+		p.add(Projections.property("c.habilitacao.categoria"), "projectionCategoriaHabilitacao");
+		
 		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
 		p.add(Projections.property("ao.nome"), "areaOrganizacionalNome");
 		p.add(Projections.property("ca.id"), "cargoIdProjection");
 		p.add(Projections.property("ca.nome"), "cargoNomeProjection");
-		p.add(Projections.property("hc.estabelecimento.id"), "estabelecimentoIdProjection");
-		
+		p.add(Projections.property("e.id"), "estabelecimentoIdProjection");
 		criteria.setProjection(p);
 
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));
@@ -4678,7 +4724,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return criteria.list();	
 	}
-
+	
 	public void desvinculaCandidato(Long candidatoId) 
 	{
 		String hql = "update Colaborador set candidato.id = null where candidato.id = :candidatoId";

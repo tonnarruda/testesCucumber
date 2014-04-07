@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
+
 import com.fortes.business.GenericManager;
 import com.fortes.model.type.File;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -120,10 +123,9 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<CheckBox> populaCheckBox(Long empresaId);
 	public Colaborador findByIdDadosBasicos(Long id, Integer statusRetornoAC);
 	public Collection<Colaborador> findByAreaOrganizacionalIdsNome(Collection<Long> areasIds, Colaborador colaborador);
-	
 	public Collection<Colaborador> findByIdHistoricoAtual(Collection<Long> colaboradorIds);
 	public Colaborador findByIdHistoricoAtual(Long colaboradorId, boolean exibirSomenteAtivos);
-	
+	public void contratarColaboradorNoAC(Colaborador colaborador, HistoricoColaborador historico, Empresa empresa) throws AddressException, MessagingException,Exception;
 	public void migrarBairro(String bairro, String bairroDestino);
 	public Integer getCountAtivosEstabelecimento(Long estabelecimentoId);
 	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentoIds, String situacao);

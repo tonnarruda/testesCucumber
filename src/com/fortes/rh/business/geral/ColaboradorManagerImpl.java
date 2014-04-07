@@ -291,7 +291,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().getHibernateTemplateByGenericDao().flush();
 
 		if (!colaborador.isNaoIntegraAc() && empresa.isAcIntegra())
-			contratarColaborador(colaborador, historico, empresa);
+			contratarColaboradorNoAC(colaborador, historico, empresa);
 
 		gerenciadorComunicacaoManager.enviaAvisoContratacao(historico);
 
@@ -493,7 +493,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colocacao;
 	}
 
-	private void contratarColaborador(Colaborador colaborador, HistoricoColaborador historico, Empresa empresa) throws AddressException, MessagingException,Exception
+	public void contratarColaboradorNoAC(Colaborador colaborador, HistoricoColaborador historico, Empresa empresa) throws AddressException, MessagingException,Exception
 	{
 		historico.setAreaOrganizacional(areaOrganizacionalManager.findAreaOrganizacionalCodigoAc(historico.getAreaOrganizacional().getId()));
 		historico.setEstabelecimento(estabelecimentoManager.findEstabelecimentoCodigoAc(historico.getEstabelecimento().getId()));
@@ -603,7 +603,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (!colaborador.isNaoIntegraAc() && empresa.isAcIntegra())
 		{
 			if (editarHistorico)// deleta o registro na CTT do AC e cria um novo
-				contratarColaborador(colaborador, historicoColaborador, empresa);
+				contratarColaboradorNoAC(colaborador, historicoColaborador, empresa);
 			else
 				acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, empresa.getCodigoAC()), empresa);
 		}
