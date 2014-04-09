@@ -164,21 +164,34 @@ function getArrayCheckeds(frm, nameCheck)
 	return result;
 }
 
-function addChecks(divName, dados, onClick)
+function addChecks(divName, data, onClick)
 {
 	var result = "";
 	var addOnClick = "";
+	var dados = new Array();
+	var i = 0;
 
+	for (var key in data) {
+		dados[i] = new Array();
+		dados[i][0] = data[key];
+		dados[i][1] = key;
+		i++;
+	}
+		
+	dados.sort();
+	
 	if(onClick != null && onClick != "")
 		addOnClick = "onClick='"+ onClick +"'";
-
-	for (var prop in dados)
+	
+	for (var i = 0 ;i < dados.length; i++)
 	{
-		result += "<label for=\"checkGroup"+ divName + prop +"\" >";
-		result += "<input name=\""+ divName +"\" value=\""+ prop +"\" type=\"checkbox\" "+ addOnClick +" id=\"checkGroup"+ divName + prop +"\">" + dados[prop];
+		result += "<label for=\"checkGroup"+ divName + dados[i][1] +"\" >";
+		result += "<input name=\""+ divName +"\" value=\""+ dados[i][1] +"\" type=\"checkbox\" "+ addOnClick +" id=\"checkGroup"+ divName + dados[i][1] +"\">" + dados[i][0];
     	result += "</label>";
 	}
 
+	console.log(result);
+	
 	$('#listCheckBox'+ divName.replace("[","\\[").replace("]","\\]")).html(result);
 	$('#listCheckBoxFilter'+ divName).val('');
 }
