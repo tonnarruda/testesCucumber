@@ -255,10 +255,16 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		criteria.createCriteria("cq.turma", "t", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.colaborador", "c", Criteria.LEFT_JOIN);
 		criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.LEFT_JOIN);
-		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.LEFT_JOIN);
-		criteria.createCriteria("fs.cargo", "ca", Criteria.LEFT_JOIN);
+
+		if(desligamento){
+			criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.LEFT_JOIN);
+			criteria.createCriteria("fs.cargo", "ca", Criteria.LEFT_JOIN);
+			criteria.createCriteria("hc.areaOrganizacional", "a", Criteria.LEFT_JOIN);
+		} else {
+			criteria.createCriteria("cr.areaOrganizacional", "a", Criteria.LEFT_JOIN);
+		}
+		
 		criteria.createCriteria("cq.candidato", "cand", Criteria.LEFT_JOIN);
-		criteria.createCriteria("cr.areaOrganizacional", "a", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cr.estabelecimento", "e", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cr.pergunta", "p", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cr.resposta", "r", Criteria.LEFT_JOIN);
@@ -288,8 +294,10 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(areasIds != null && areasIds.length > 0)
 			criteria.add(Expression.in("a.id", areasIds));
 
-		if(cargosIds != null && cargosIds.length > 0)
-			criteria.add(Expression.in("cr.cargo.id", cargosIds));
+		if(cargosIds != null && cargosIds.length > 0){
+			String cargo = desligamento ? "ca.id" : "cr.cargo.id";
+			criteria.add(Expression.in(cargo, cargosIds));
+		}
 		
 		if(empresaId != null && empresaId != -1)
 			criteria.add(Expression.eq("c.empresa.id", empresaId));
