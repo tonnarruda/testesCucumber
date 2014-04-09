@@ -627,6 +627,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setData(DateUtil.criarDataMesAno(1, 12, 2012));
 		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
 		historicoColaboradorDao.save(historicoColaborador);
 		
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
