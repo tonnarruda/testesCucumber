@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.12x.1xx" bd="" data="xx/04/2014">
+		<Modulo nome=" ">
+			<Item visivel="N" motivo="P20140200124"><![CDATA[BUG: Info. Funcionais > Relatórios > Resultados das Entrevistas: Ao selecionar áreas organizacionais e cargos para o mesmo relatório, o sistema informa que nenhuma entrevista foi respondida.]]></Item>
+			<Item visivel="N" motivo="P20140300179"><![CDATA[C&S > Relatórios > Colaboradores por Área Organizacional: Apresentar listas de checkbox's por ordem alfabética.]]></Item>
+    	</Modulo>
+    </Versao>
 	<Versao id="1.1.125.149" bd="" data="07/04/2014">
 		<Modulo nome=" ">
 			<Item visivel="S" motivo="S20140300094"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Cor diferenciada para candidatos contratados através de outras movimentações.]]></Item>
