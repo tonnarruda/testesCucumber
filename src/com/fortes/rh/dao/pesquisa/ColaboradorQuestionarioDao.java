@@ -87,5 +87,5 @@ public interface ColaboradorQuestionarioDao extends GenericDao<ColaboradorQuesti
 
 	void removeBySolicitacaoId(Long solicitacaoId);
 
-	Collection<ColaboradorQuestionario> findAutoAvaliacaoPeriodoExperiencia(Long colaboradorId);
+	Collection<ColaboradorQuestionario> findAutoAvaliacao(Long colaboradorId);
 }

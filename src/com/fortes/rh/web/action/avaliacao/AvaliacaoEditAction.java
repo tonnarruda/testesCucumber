@@ -32,6 +32,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
@@ -39,6 +40,7 @@ import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 
 public class AvaliacaoEditAction extends MyActionSupportList
 {
@@ -82,6 +84,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private boolean telaInicial;
 	private String titulo;
 	private char ativos = 'T';
+	private Collection<ColaboradorQuestionario> colaboradorQuestionarios;
 	
 	private void prepare() throws Exception
 	{
@@ -246,6 +249,17 @@ public class AvaliacaoEditAction extends MyActionSupportList
     	
     	return Action.SUCCESS;
     }
+	
+	public String minhasAvaliacoesList()
+	{
+		preview = false;
+		
+		Long usuarioColaboradorId = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession()).getId();
+		
+		colaboradorQuestionarios = colaboradorQuestionarioManager.findAutoAvaliacao(usuarioColaboradorId);
+		
+		return Action.SUCCESS;
+	}
 	
 	public Avaliacao getAvaliacao()
 	{
@@ -440,5 +454,10 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
+	}
+	
+	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios()
+	{
+		return colaboradorQuestionarios;
 	}
 }

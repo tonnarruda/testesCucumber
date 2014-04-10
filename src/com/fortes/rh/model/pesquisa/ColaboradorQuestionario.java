@@ -188,6 +188,12 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     	this.avaliacao.setTitulo(projectionAvaliacaoTitulo); 	
     }
     
+    public void setProjectionAvaliacaoTipoModelo(Character tipoModelo)
+    {
+    	newAvaliacao();
+    	this.avaliacao.setTipoModeloAvaliacao(tipoModelo); 	
+    }
+    
     public void setProjectionAvaliacaoCabecalho(String projectionAvaliacaoCabecalho)
     {
     	newAvaliacao();

@@ -59,5 +59,11 @@
 				<param name="documentName">avaliacao.pdf</param>
 			</result>
 		</action>
+		
+		<action name="minhasAvaliacoesList" class="com.fortes.rh.web.action.avaliacao.AvaliacaoEditAction" method="minhasAvaliacoesList">
+			<interceptor-ref name="defaultListStack"/>
+			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/minhasAvaliacoesList.ftl</result>
+		</action>
+		
 	</package>
 </xwork>

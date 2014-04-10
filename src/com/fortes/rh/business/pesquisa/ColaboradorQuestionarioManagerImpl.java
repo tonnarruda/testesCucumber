@@ -488,8 +488,8 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		getDao().removeBySolicitacaoId(solicitacaoId);
 	}
 
-	public Collection<ColaboradorQuestionario> findAutoAvaliacaoPeriodoExperiencia(Long colaboradorId)
+	public Collection<ColaboradorQuestionario> findAutoAvaliacao(Long colaboradorId)
 	{
-		return getDao().findAutoAvaliacaoPeriodoExperiencia(colaboradorId);
+		return getDao().findAutoAvaliacao(colaboradorId);
 	}
 }

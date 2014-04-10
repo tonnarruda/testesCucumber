@@ -150,15 +150,6 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-	public String respostasPeriodoExperienciaList()
-	{
-		Long usuarioColaboradorId = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession()).getId();
-		
-		colaboradorQuestionarios = colaboradorQuestionarioManager.findAutoAvaliacaoPeriodoExperiencia(usuarioColaboradorId);
-		
-		return SUCCESS;
-	}
-	
 	public String periodoExperienciaQuestionarioList() throws Exception
 	{
 		Long empresaId = getEmpresaSistema().getId();

@@ -26,11 +26,6 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/periodoExperienciaQuestionarioList.ftl</result>
 		</action>
 
-		<action name="respostasPeriodoExperienciaList" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioListAction" method="respostasPeriodoExperienciaList">
-			<interceptor-ref name="defaultListStack"/>
-			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/respostasPeriodoExperienciaList.ftl</result>
-		</action>
-		
 		<action name="prepareInsertAvaliacaoExperiencia" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="prepareInsertAvaliacaoExperiencia">
 			<result name="success" type="freemarker">/WEB-INF/forms/pesquisa/prepareAvaliacaoExperiencia.ftl</result>
 		</action>

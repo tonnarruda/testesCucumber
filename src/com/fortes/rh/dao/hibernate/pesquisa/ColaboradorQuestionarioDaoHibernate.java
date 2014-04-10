@@ -1028,7 +1028,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 			query.executeUpdate();
 	}
 
-	public Collection<ColaboradorQuestionario> findAutoAvaliacaoPeriodoExperiencia(Long colaboradorId)
+	public Collection<ColaboradorQuestionario> findAutoAvaliacao(Long colaboradorId)
 	{
 		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
 		
@@ -1039,11 +1039,12 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("cq.id"), "id");
 		p.add(Projections.property("cq.respondidaEm"), "respondidaEm");
 		p.add(Projections.property("av.titulo"), "projectionAvaliacaoTitulo");
+		p.add(Projections.property("av.tipoModeloAvaliacao"), "projectionAvaliacaoTipoModelo");
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("cq.colaborador.id", colaboradorId));
 		criteria.add(Expression.eq("cq.avaliador.id", colaboradorId));
-		criteria.add(Expression.eq("av.tipoModeloAvaliacao", TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA));
+		criteria.add(Expression.in("av.tipoModeloAvaliacao", new Character[] {TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, TipoModeloAvaliacao.DESEMPENHO}));
 		
 		criteria.addOrder(Order.desc("cq.respondidaEm"));
 		criteria.addOrder(Order.asc("av.titulo"));
