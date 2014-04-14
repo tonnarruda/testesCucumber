@@ -52,6 +52,7 @@ public class Endereco implements Serializable
 	{
 		return StringUtil.formataCep(cep);
 	}
+	
 	@NaoAudita
 	public String getEnderecoFormatado()
 	{
@@ -61,6 +62,12 @@ public class Endereco implements Serializable
 			endereco += " - " + complemento;
 		
 		return endereco;
+	}
+	
+	@NaoAudita
+	public String getEnderecoCompletoFormatado()
+	{
+		return getEnderecoFormatado() + " - " + getCidadeEstado();
 	}
 
 	@NaoAudita

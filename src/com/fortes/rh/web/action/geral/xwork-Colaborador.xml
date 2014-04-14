@@ -54,8 +54,8 @@
 				<param name="dataSource">colaboradors</param>
 				<param name="documentName">aniversariantes.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Data,Matrícula,Nome Comercial,Área Organizacional,Estabelecimento</param>
-				<param name="properties">pessoal.diaMesDataNascimento,matricula,nomeComercial,areaOrganizacional.descricao,estabelecimento.nome</param>
+				<param name="columns">Data,Matrícula,Nome Comercial,Endereço,Área Organizacional,Estabelecimento</param>
+				<param name="properties">pessoal.diaMesDataNascimento,matricula,nomeComercial,endereco.enderecoCompletoFormatado,areaOrganizacional.descricao,estabelecimento.nome</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>					
@@ -63,8 +63,8 @@
 				<param name="dataSource">colaboradors</param>
 				<param name="documentName">aniversariantes.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Data,Matrícula,Nome,Área Organizacional,Estabelecimento</param>
-				<param name="properties">pessoal.diaMesDataNascimento,matricula,nome,areaOrganizacional.descricao,estabelecimento.nome</param>
+				<param name="columns">Data,Matrícula,Nome,Endereço,Área Organizacional,Estabelecimento</param>
+				<param name="properties">pessoal.diaMesDataNascimento,matricula,nome,endereco.enderecoCompletoFormatado,areaOrganizacional.descricao,estabelecimento.nome</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>					
@@ -72,8 +72,8 @@
 				<param name="dataSource">colaboradors</param>
 				<param name="documentName">aniversariantes.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Data,Matrícula,Nome Comercial,Cargo,Estabelecimento</param>
-				<param name="properties">pessoal.diaMesDataNascimento,matricula,nomeComercial,faixaSalarial.descricao,estabelecimento.nome</param>
+				<param name="columns">Data,Matrícula,Nome Comercial,Endereço,Cargo,Estabelecimento</param>
+				<param name="properties">pessoal.diaMesDataNascimento,matricula,nomeComercial,endereco.enderecoCompletoFormatado,faixaSalarial.descricao,estabelecimento.nome</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>					
@@ -81,8 +81,8 @@
 				<param name="dataSource">colaboradors</param>
 				<param name="documentName">aniversariantes.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Data,Matrícula,Nome,Cargo,Estabelecimento</param>
-				<param name="properties">pessoal.diaMesDataNascimento,matricula,nome,faixaSalarial.descricao,estabelecimento.nome</param>
+				<param name="columns">Data,Matrícula,Nome,Endereço,Cargo,Estabelecimento</param>
+				<param name="properties">pessoal.diaMesDataNascimento,matricula,nome,endereco.enderecoCompletoFormatado,faixaSalarial.descricao,estabelecimento.nome</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>					
