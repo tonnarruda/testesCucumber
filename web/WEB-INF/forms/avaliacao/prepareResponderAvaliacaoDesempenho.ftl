@@ -94,6 +94,7 @@
 			<@ww.hidden name="colaboradorQuestionario.avaliacaoDesempenho.permiteAutoAvaliacao"/>
 			<@ww.hidden name="colaboradorQuestionario.avaliacao.exibeResultadoAutoavaliacao"/>
 			<@ww.hidden name="colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo"/>
+			<@ww.hidden name="autoAvaliacao" />
 			
 			<#if colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo && exibirCompetencia>
 				<br />
@@ -142,10 +143,16 @@
 
 		<div class="buttonGroup">
 			<button onclick="enviarForm()" class="btnGravar"></button>
+			<#if autoAvaliacao>
+				<button class="btnCancelar" onclick="window.location='../modelo/minhasAvaliacoesList.action'"></button>
+			<#else>
+				<button class="btnCancelar" onclick="window.location='avaliacaoDesempenhoQuestionarioList.action?avaliacaoDesempenho.id=${colaboradorQuestionario.avaliacaoDesempenho.id}'"></button>		
+			</#if>
+		</div>
 	<#else>
 		<div class="buttonGroup">
-	</#if>
 			<button class="btnCancelar" onclick="window.location='avaliacaoDesempenhoQuestionarioList.action?avaliacaoDesempenho.id=${colaboradorQuestionario.avaliacaoDesempenho.id}'"></button>		
 		</div>
+	</#if>
 </body>
 </html>

@@ -96,16 +96,17 @@
 	<#else>
 		<div class="buttonGroup">
 	</#if>
-
-		<#if colaborador?exists && colaborador.id?exists>
-			<#if !respostaColaborador>
-				<button class="btnCancelar" onclick="window.location='periodoExperienciaQuestionarioList.action?colaborador.id=${colaborador.id}'"></button>
+			<#if autoAvaliacao>
+				<button class="btnCancelar" onclick="window.location='../modelo/minhasAvaliacoesList.action'"></button>
+			<#elseif colaborador?exists && colaborador.id?exists>
+				<#if !respostaColaborador>
+					<button class="btnCancelar" onclick="window.location='periodoExperienciaQuestionarioList.action?colaborador.id=${colaborador.id}'"></button>
+				</#if>
+			<#elseif moduloExterno>
+				<button class="btnCancelar" onclick="window.location='prepareListAnuncio.action'"></button>
+			<#else>
+				<button class="btnCancelar" onclick="window.location='list.action?solicitacao.id=${solicitacao.id}'"></button>		
 			</#if>
-		<#elseif moduloExterno>
-			<button class="btnCancelar" onclick="window.location='prepareListAnuncio.action'"></button>
-		<#else>
-			<button class="btnCancelar" onclick="window.location='list.action?solicitacao.id=${solicitacao.id}'"></button>		
-		</#if>
-	</div>
+		</div> <!-- Fecha div aberta dentro do if/else -->
 </body>
 </html>

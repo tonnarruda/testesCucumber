@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.poi.xslf.model.geom.AddSubtractExpression;
+
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
@@ -346,7 +348,10 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 			return Action.INPUT;
 		}
 		
-		return Action.SUCCESS;
+		if(autoAvaliacao)
+			return "sucessoRespostas";
+		else
+			return Action.SUCCESS;
 	}
 	
 	public String imprimirAvaliacaoDesempenhoRespondida()
@@ -530,6 +535,8 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		ajustaSolicitacao();
 		Collection<ColaboradorResposta> colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);
 		colaboradorRespostaManager.update(colaboradorRespostasDasPerguntas, colaboradorQuestionario, getUsuarioLogado().getId());
+		
+		addActionSuccess("Avaliação respondida com sucesso.");
 		
 		if (respostaColaborador)
 			return "sucessoIndex";
