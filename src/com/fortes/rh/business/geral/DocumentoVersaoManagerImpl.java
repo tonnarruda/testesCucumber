@@ -45,8 +45,7 @@ public class DocumentoVersaoManagerImpl implements DocumentoVersaoManager
 				textoXml += "<td class=\"tamanho100\">" + versaoElement.getAttributeValue("id") + "</td>";
 				textoXml += "<td><ul>";
 				
-				Element elementModule = versaoElement.getChild("Modulo");
-				iterItemElements = elementModule.getDescendants(new ElementFilter("Item"));
+				iterItemElements = versaoElement.getDescendants(new ElementFilter("Item"));
 				
 				while(iterItemElements.hasNext())
 				{
