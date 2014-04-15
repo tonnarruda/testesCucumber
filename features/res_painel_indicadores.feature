@@ -3,7 +3,7 @@
 Funcionalidade: Relatório de Recrutamento e Seleção
 
   Cenário: Relatório de Recrutamento e Seleção
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Quando eu acesso o menu "R&S > Painel de Indicadores"
     
     Então eu devo ver o título "Painel de Indicadores de Recrutamento e Seleção"

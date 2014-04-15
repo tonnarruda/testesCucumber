@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Cargos e Faixas
 
   Cenário: Cadastro de Cargos e Faixas
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Dado que exista a área organizacional "administracao"
     Dado que exista a área organizacional "administracao > desenvolvimento"
     Dado que exista a etapa seletiva "Entrevista com RH"

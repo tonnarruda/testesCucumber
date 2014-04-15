@@ -3,7 +3,7 @@
 Funcionalidade: Categorias de EPI
 
   Cenário: Cadastro de Categorias de EPI
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Quando eu acesso o menu "SESMT > Cadastros > Categorias de EPI"
     Então eu devo ver o título "Categorias de EPI"
     E eu clico no botão "Inserir"

@@ -10,7 +10,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     Dado que haja uma faixa salarial historico com id 1, data "2011-06-01", faixasalarial_id 1, tipo 3, valor 500, status 1
     Dado que haja um motivo da solicitacao com id 1 e descricao "Aumento de quadro"
 
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Dado que exista um candidato "Nikita"
     Dado que exista um bairro "Aldeota" na cidade de "Fortaleza"
     Dado que exista uma etapa seletiva "Entrevista"

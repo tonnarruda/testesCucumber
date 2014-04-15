@@ -5,7 +5,7 @@ Funcionalidade: Importar Cadastros
   Cenário: Importar Cadastros
     Dado que exista uma empresa "Empresa Modelo"
 
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
 
     Quando eu acesso o menu "Utilitários > Importar Cadastros"
     Então eu devo ver o título "Importar Cadastros"

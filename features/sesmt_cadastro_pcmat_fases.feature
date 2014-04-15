@@ -3,7 +3,7 @@
 Funcionalidade: Fases
 
   Cenário: Cadastro de Fases
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Quando eu acesso o menu "SESMT > Cadastros > PCMAT > Fases"
 
     Então eu devo ver o título "Fases"

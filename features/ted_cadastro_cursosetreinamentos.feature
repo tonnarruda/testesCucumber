@@ -6,7 +6,7 @@ Funcionalidade: Cadastrar Curso
     Dado que exista uma avaliacao de curso "Avaliacao"
     Dado que exista um tipo de despesa "_apostilas"
     Dado que exista um tipo de despesa "_alimentacao"
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
 
     Quando eu acesso o menu "T&D > Cadastros > Cursos/Treinamentos"
     Então eu devo ver o título "Cursos"

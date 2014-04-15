@@ -5,7 +5,7 @@ Funcionalidade: Manutenção de Extintores
   Cenário: Cadastro de Manutenção de Extintores
     Dado que exista um extintor localizado em "garagem"    
     
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Quando eu acesso o menu "SESMT > Movimentações > Extintores > Manutenção"
     Então eu devo ver o título "Extintores - Manutenção"
     E eu clico no botão "Inserir"

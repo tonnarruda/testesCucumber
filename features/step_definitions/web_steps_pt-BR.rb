@@ -7,13 +7,13 @@
 
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
-Dado /^que eu esteja logado$/ do
+Dado /^que eu esteja logado com o usuário "([^"]*)"$/ do |nome|
   exec_sql "update  parametrosdosistema  set proximaversao = '2015-01-01';"
   unless page.has_selector?('.saudacao') && page.has_selector?('.nomeUsuario')
     # Evita problema quando o firefox eh instanciado com a janela menor do que o necessario
     page.execute_script("window.resizeTo(screen.width, screen.height);window.moveTo(0,0);window.focus()")
     Dado %{que eu esteja na pagina de login}
-    E %{eu preencho "username" com "fortes"}
+    E %{eu preencho "username" com "#{nome}"}
     E %{eu saio do campo "username"}
     E %{eu preencho "password" com "1234"}
     E %{eu clico em "Entrar"}

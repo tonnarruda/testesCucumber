@@ -6,7 +6,7 @@ Funcionalidade: Cadastrar Frequência do Curso
     Dado que exista um curso "tdd"
     Dado que exista uma turma "a1" para o curso "tdd"
 
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
 
     Quando eu acesso o menu "T&D > Movimentações > Frequência"
     Então eu devo ver o título "Controle de Freqüência"

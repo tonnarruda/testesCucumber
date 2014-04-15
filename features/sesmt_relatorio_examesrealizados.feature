@@ -5,7 +5,7 @@ Funcionalidade: Relatório de Exames Realizados
   Cenário: Relatório de Exames Realizados
     Dado que exista um medico coordenador "eufrasio"
 
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Quando eu acesso o menu "SESMT > Relatórios > Exames Realizados"
     Então eu devo ver o título "Exames Realizados"
     E eu clico no botão "Relatorio"

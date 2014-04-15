@@ -5,7 +5,7 @@ Funcionalidade: Cadastrar Perfil
   Cenário: Cadastro de Perfil
     Dado que exista um papel "configuracoes" 
     Dado que exista um papel "mensagens"
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
 
     Quando eu acesso o menu "Utilitários > Cadastros > Perfis"
     Então eu devo ver o título "Perfis"

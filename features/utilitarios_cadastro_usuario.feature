@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Usuário
 
   Cenário: Cadastro de Usuário
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
 
     Quando eu acesso o menu "Utilitários > Cadastros > Usuários"
     Então eu devo ver o título "Usuários"

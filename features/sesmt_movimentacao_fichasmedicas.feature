@@ -6,7 +6,7 @@ Funcionalidade: Fichas Médicas
     Dado que exista um colaborador "geraldo", da area "administracao", com o cargo "desenvolvedor" e a faixa salarial "I"
     Dado que exista um modelo de ficha medica "admissional" com a pergunta "alérgico?"
 
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Quando eu acesso o menu "SESMT > Movimentações > Fichas Médicas"
     Então eu devo ver o título "Fichas Médicas"
     E eu clico no botão "Inserir"

@@ -6,7 +6,7 @@ Funcionalidade: Relatório de EPIs com CA a Vencer
     Dado que exista o EPI "jaleco" da categoria "vestuario"
     Dado que exista o EPI "oculos" da categoria "visao"
 
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Quando eu acesso o menu "SESMT > Relatórios > EPIs com CA a Vencer"
     Então eu devo ver o título "EPIs com CA a Vencer"
     E eu clico no botão "Relatorio"

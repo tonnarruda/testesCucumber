@@ -5,7 +5,7 @@ Funcionalidade: Relatório de Exames Previstos
   Cenário: Relatório de Exames Previstos
     Dado que exista um colaborador "jackson", da area "desenvolvimento", com o cargo "desenvolvedor" e a faixa salarial "I"
 
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Quando eu acesso o menu "SESMT > Relatórios > Exames Previstos"
     Então eu devo ver o título "Exames Previstos"
     E eu clico no botão "Relatorio"

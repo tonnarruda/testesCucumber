@@ -4,7 +4,7 @@ Funcionalidade: Campos Extras para Candidato
 
   @dev
   Cenário: Campos Extras para Candidato
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
 
     Quando eu acesso o menu "R&S > Cadastros > Candidatos"
     E eu clico no botão "Inserir"

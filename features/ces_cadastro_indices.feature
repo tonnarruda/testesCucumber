@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Índices
 
   Cenário: Cadastro de Índices
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Quando eu acesso o menu "C&S > Cadastros > Índices"
     Então eu devo ver o título "Índices"
     E eu clico no botão "Inserir"

@@ -3,7 +3,7 @@
 Funcionalidade: Eleição
 
   Cenário: Cadastro de Eleição
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Quando eu acesso o menu "SESMT > Cadastros > CIPA > Eleições"
     Então eu devo ver o título "Eleições"
     E eu clico no botão "Inserir"

@@ -3,7 +3,7 @@
 Funcionalidade: Movimentação Agenda
 
   Cenário: Movimentação de Agenda
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Quando eu acesso o menu "R&S > Movimentações > Agenda"
     Então eu devo ver "Seg"
     Então eu devo ver "Ter"

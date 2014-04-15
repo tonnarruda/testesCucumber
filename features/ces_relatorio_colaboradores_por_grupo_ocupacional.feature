@@ -4,7 +4,7 @@ Funcionalidade: Relatório de Colaboradores por Grupo Ocupacional
 
   Cenário: Relatório de Colaboradores por Grupo Ocupacional
     
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Dado que exista o estabelecimento "Matriz"
     Dado que haja uma area organizacional com id 1, nome "Financeiro", ativo "true", empresa_id 1
     Dado que haja uma area organizacional com id 2, nome "Almoxarifado", ativo "false", empresa_id 1

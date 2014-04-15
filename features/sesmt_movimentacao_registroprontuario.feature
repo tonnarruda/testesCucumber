@@ -4,7 +4,7 @@ Funcionalidade: Registro de Prontuário
 
   Cenário: Registro de Prontuário
     Dado que exista um colaborador "geraldo", da area "administracao", com o cargo "desenvolvedor" e a faixa salarial "I"
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
 
     Quando eu acesso o menu "SESMT > Movimentações > Registro de Prontuário"
     Então eu devo ver o título "Registro de Prontuário"

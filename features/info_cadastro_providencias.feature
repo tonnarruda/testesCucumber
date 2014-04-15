@@ -3,7 +3,7 @@
 Funcionalidade: Providências
 
   Cenário: Cadastro de Providências
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Quando eu acesso o menu "Info. Funcionais > Cadastros > Providências"
     Então eu devo ver o título "Providências"
     E eu clico no botão "Inserir"

@@ -3,7 +3,7 @@
 Funcionalidade: Cadastrar Nível de Competência
 
   Cenário: Cadastro de Nível de Competência
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
 
     Quando eu acesso o menu "C&S > Cadastros > Níveis de Competência"
     Então eu devo ver o título "Níveis de Competência"

@@ -6,7 +6,7 @@ Funcionalidade: Solicitações de EPI
     Dado que exista o EPI "jaleco" da categoria "roupas"
     Dado que exista um colaborador "geraldo", da area "administracao", com o cargo "quimico" e a faixa salarial "I"
 
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Quando eu acesso o menu "SESMT > Movimentações > Solicitação de EPIs"
     Então eu devo ver o título "Solicitações de EPI"
     E eu clico no botão "Inserir"

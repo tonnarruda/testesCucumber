@@ -5,7 +5,7 @@ Funcionalidade: Ficha de EPI
   Cenário: Gerar de Ficha de EPI
     Dado que exista um colaborador "geraldo", da area "desenvolvimento", com o cargo "desenvolvedor" e a faixa salarial "I"
 
-    Dado que eu esteja logado
+    Dado que eu esteja logado com o usuário "fortes"
     Quando eu acesso o menu "SESMT > Relatórios > Ficha de EPI"
     Então eu devo ver o título "Ficha de EPI"
     E eu preencho "Nome" com "Gera"
