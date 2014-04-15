@@ -159,9 +159,12 @@
 				<#if integraAc && !colaborador.naoIntegraAc>
 					<#if colaborador.dataSolicitacaoDesligamentoAc?exists>
 						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:;" imgTitle="Solicitação de desligamento aguardando confirmação no AC Pessoal" imgName="desliga_colab.gif" opacity=true />
+					<#elseif !empresaSistema.solicitarConfirmacaoDesligamento>
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="prepareDesligaAC.action?colaborador.id=${colaborador.id}" imgTitle="Solicitação de desligamento no AC Pessoal" imgName="desliga_colab.gif"/>
+					<#elseif colaborador.dataSolicitacaoDesligamento?exists>
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:;" imgTitle="Aguardando confirmação de desligamento" imgName="desliga_colab.gif" opacity=true />
 					<#else>
-						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="prepareDesligaAC.action?colaborador.id=${colaborador.id}"
-						 imgTitle="Solicitação de Desligamento do Colaborador no AC Pessoal" imgName="desliga_colab.gif"/>
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:;" imgTitle="Solicitação de desligamento" imgName="desliga_colab.gif" />
 					</#if>
 				<#else>
 					<#if empresaSistema.solicitarConfirmacaoDesligamento && !colaborador.dataSolicitacaoDesligamento?exists>
@@ -169,7 +172,7 @@
 					<#elseif empresaSistema.solicitarConfirmacaoDesligamento && colaborador.dataSolicitacaoDesligamento?exists>
 						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:;" imgTitle="Aguardando confirmação de desligamento" imgName="desliga_colab.gif" opacity=true/>
 					<#else>
-						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Desligar colaborador" imgName="desliga_colab.gif"/>
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Desligar" imgName="desliga_colab.gif"/>
 					</#if>
 				</#if>
 
