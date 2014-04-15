@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.12x.1xx" bd="" data="xx/04/2014">
 		<Modulo nome=" ">
+			<Item visivel="S" motivo="S20131200084"><![CDATA[Aval. Desempenho > Movimentações > Minhas Avaliações: Nova funcionalidade para editar minhas auto avaliações de acompanhamento de período de experiência e avaliações de desempenho.]]></Item>
 			<Item visivel="S" motivo="S20140200287"><![CDATA[Info. Funcionais > Relatórios > Aniversariantes do Mês > Formato Excel: Nova coluna com o endereço do colaborador.]]></Item>
 			<Item visivel="N" motivo="P20140200124"><![CDATA[BUG: Info. Funcionais > Relatórios > Resultados das Entrevistas: Ao selecionar áreas organizacionais e cargos para o mesmo relatório, o sistema informa que nenhuma entrevista foi respondida.]]></Item>
 			<Item visivel="N" motivo="P20140300179"><![CDATA[C&S > Relatórios > Colaboradores por Área Organizacional: Apresentar listas de checkbox's por ordem alfabética.]]></Item>
