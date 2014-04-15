@@ -74,6 +74,11 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		return faixaSalarialHistorico;
 	}
 
+	public void criarFaixaSalarialHistoricoNoAc(FaixaSalarialHistorico faixaSalarialHistorico, Empresa empresa) throws Exception
+	{
+		acPessoalClientCargo.criarFaixaSalarialHistorico(faixaSalarialHistorico, empresa);
+	}
+	
 	public void update(FaixaSalarialHistorico faixaSalarialHistorico, FaixaSalarial faixaSalarial, Empresa empresa) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();

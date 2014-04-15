@@ -545,6 +545,8 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("hc.quantidadeIndice"), "quantidadeIndice");
 		p.add(Projections.property("hc.tipoSalario"), "tipoSalario");
 		p.add(Projections.property("hc.candidatoSolicitacao"), "candidatoSolicitacao");
+		p.add(Projections.property("hc.status"), "status");
+		p.add(Projections.property("hc.reajusteColaborador.id"), "projectionReajusteColaboradorId");
 		p.add(Projections.property("i.id"), "projectionIndiceId");
 		p.add(Projections.property("i.nome"), "projectionIndiceNome");
 		p.add(Projections.property("fs.id"), "faixaSalarialId");
@@ -559,14 +561,12 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("emp.nome"), "empresaNome");
 		p.add(Projections.property("ao.id"), "areaId");
 		p.add(Projections.property("ao.nome"), "areaOrganizacionalNome");
-		p.add(Projections.property("hc.status"), "status");
 		p.add(Projections.property("co.id"), "colaboradorId");
 		p.add(Projections.property("co.nome"), "colaboradorNome");
 		p.add(Projections.property("co.nomeComercial"), "colaboradorNomeComercial");
 		p.add(Projections.property("co.dataAdmissao"), "colaboradorDataAdmissao");
 		p.add(Projections.property("co.codigoAC"), "projectionColaboradorCodigoAC");
 		p.add(Projections.property("co.naoIntegraAc"), "projectionColaboradorNaoIntegraAc");
-		p.add(Projections.property("hc.reajusteColaborador.id"), "projectionReajusteColaboradorId");
 
 		criteria.setProjection(p);
 
@@ -1305,5 +1305,46 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.add(Expression.eq("hc.tipoSalario", TipoAplicacaoIndice.INDICE));
 		
 		return ((Integer) criteria.uniqueResult()) > 0;
+	}
+
+	public void updateStatusAc(int statusRetornoAC, Long... id) 
+	{
+		Query query = getSession().createQuery("update HistoricoColaborador set status = :status where id in (:id) ");
+
+		query.setInteger("status", statusRetornoAC);
+		query.setParameterList("id", id);
+		
+		query.executeUpdate();
+	}
+
+	public Collection<HistoricoColaborador> findByEmpresa(Long empresaId, int statusRetornoAC) 
+	{
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("hc.colaborador", "c");
+		criteria.createCriteria("hc.estabelecimento", "e");
+		criteria.createCriteria("hc.areaOrganizacional", "ao");
+		criteria.createCriteria("hc.faixaSalarial", "fs");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("hc.id"), "id");
+		p.add(Projections.property("hc.tipoSalario"), "tipoSalario");
+		p.add(Projections.property("hc.data"), "data");
+		p.add(Projections.property("hc.gfip"), "gfip");
+		p.add(Projections.property("hc.salario"), "salario");
+		p.add(Projections.property("fs.codigoAC"), "faixaCodigoAC");
+		p.add(Projections.property("ao.codigoAC"), "areaOrganizacionalCodigoAC");
+		p.add(Projections.property("e.codigoAC"), "estabelecimentoCodigoAC");
+		p.add(Projections.property("c.codigoAC"), "projectionColaboradorCodigoAC");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("hc.status", statusRetornoAC));
+		criteria.add(Expression.eq("c.naoIntegraAc", false));
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
+
+		return criteria.list();
 	}	
 }

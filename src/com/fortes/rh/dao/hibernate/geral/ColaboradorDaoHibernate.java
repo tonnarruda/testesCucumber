@@ -4690,6 +4690,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.endereco.cep"), "enderecoCep");
 		p.add(Projections.property("ci.nome"), "enderecoCidadeNome");
 		p.add(Projections.property("u.sigla"), "enderecoUfSigla");
+		p.add(Projections.property("u.id"), "enderecoUfId");
 		p.add(Projections.property("c.pessoal.tituloEleitoral.titEleitNumero"), "projectionTituloNumero");
 		p.add(Projections.property("c.pessoal.tituloEleitoral.titEleitZona"), "projectionTituloZona");
 		p.add(Projections.property("c.pessoal.tituloEleitoral.titEleitSecao"), "projectionTituloSecao");
@@ -4706,11 +4707,21 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.habilitacao.emissao"), "projectionEmissaoHabilitacao");
 		p.add(Projections.property("c.habilitacao.vencimento"), "projectionVencimentoHabilitacao");
 		p.add(Projections.property("c.habilitacao.categoria"), "projectionCategoriaHabilitacao");
-		
+		p.add(Projections.property("ci.id"), "enderecoCidadeId");
+		p.add(Projections.property("ci.nome"), "enderecoCidadeNome");
+		p.add(Projections.property("ci.codigoAC"), "projectionCidadeCodigoAC");
+		p.add(Projections.property("hc.id"), "historicoColaboradorIdProjection");
+		p.add(Projections.property("hc.salario"), "historicoColaboradorSalarioProjection");
+		p.add(Projections.property("hc.data"), "historicoColaboradorDataProjection");
+		p.add(Projections.property("hc.motivo"), "historicoColaboradorMotivoProjection");
+		p.add(Projections.property("hc.gfip"), "historicoColaboradorGfipProjection");
+		p.add(Projections.property("hc.quantidadeIndice"), "historicoColaboradorQuantidadeIndiceProjection");
+		p.add(Projections.property("hc.tipoSalario"), "historicoColaboradorTipoSalarioProjection");
+		p.add(Projections.property("hc.status"), "historicoColaboradorStatusProjection");
 		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
 		p.add(Projections.property("ao.nome"), "areaOrganizacionalNome");
 		p.add(Projections.property("ca.id"), "cargoIdProjection");
-		p.add(Projections.property("ca.nome"), "cargoNomeProjection");
+		p.add(Projections.property("fs.id"), "faixaSalarialIdProjection");
 		p.add(Projections.property("e.id"), "estabelecimentoIdProjection");
 		criteria.setProjection(p);
 

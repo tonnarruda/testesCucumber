@@ -1740,6 +1740,58 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertTrue(historicoColaboradorDao.existeHistoricoPorIndice(empresa.getId()));
 	}
 	
+	public void testUpdateStatusAc()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador);
+
+		historicoColaboradorDao.updateStatusAc(StatusRetornoAC.AGUARDANDO, historicoColaborador.getId());
+
+		Collection<HistoricoColaborador> historicos = historicoColaboradorDao.findToList(new String[]{"id"}, new String[]{"id"}, new String[]{"colaborador.id", "status"}, new Object[]{colaborador.getId(), StatusRetornoAC.AGUARDANDO});
+
+		assertEquals(1, historicos.size());
+	}
+	
+	public void testFindByEmpresa()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNaoIntegraAc(false);
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setData(new Date());
+		historicoColaborador.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historicoColaborador.setSalario(1000.00);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		Collection<HistoricoColaborador> historicos = historicoColaboradorDao.findByEmpresa(empresa.getId(), StatusRetornoAC.CONFIRMADO);
+		
+		assertEquals(1, historicos.size());
+	}
+	
 	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)
 	{
 		this.historicoColaboradorDao = historicoColaboradorDao;

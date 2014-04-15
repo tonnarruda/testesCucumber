@@ -32,7 +32,7 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new FaixaSalarialHistorico(fsh.id, fsh.data, fsh.status, fsh.tipo, fsh.valor, fsh.quantidade, i.id, i.nome, ih.valor, ih.data, ihatual.valor) ");
+		hql.append("select new FaixaSalarialHistorico(fsh.id, fsh.data, fsh.status, fsh.tipo, fsh.valor, fsh.quantidade, i.id, i.nome, ih.valor, ih.data, ihatual.valor, fs.codigoAC) ");
 		hql.append("from FaixaSalarialHistorico fsh ");
 		hql.append("left join fsh.faixaSalarial fs ");
 		hql.append("left join fsh.indice i ");

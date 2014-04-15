@@ -1137,6 +1137,11 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		}
 	}
 	
+	public void saveHistoricoColaboradorNoAc(Collection<HistoricoColaborador> historicosColaboradores, Empresa empresa) throws Exception
+	{
+		acPessoalClientTabelaReajuste.saveHistoricoColaborador(historicosColaboradores, empresa, null, false);
+	}
+	
 	@SuppressWarnings("static-access")
 	public Collection<HistoricoColaborador> relatorioColaboradorCargo(Empresa empresa, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro, String[] areaOrganizacionalCheck, Boolean exibColabAdmitido, Integer qtdMesesDesatualizacao, String vinculo) throws Exception
 	{
@@ -1466,6 +1471,16 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public boolean existeHistoricoPorIndice(Long empresaId) 
 	{
 		return getDao().existeHistoricoPorIndice(empresaId);
+	}
+	
+	public void updateStatusAc(int statusRetornoAC, Long... id) 
+	{
+		getDao().updateStatusAc(statusRetornoAC, id);
+	}
+
+	public Collection<HistoricoColaborador> findByEmpresa(Long empresaId, int statusRetornoAC) 
+	{
+		return getDao().findByEmpresa(empresaId, statusRetornoAC) ;
 	}
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {

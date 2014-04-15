@@ -17,6 +17,8 @@ import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -75,7 +77,14 @@ public class ExportacaoACAction extends MyActionSupport
 			exportarFaixasSalariaisAC();
 			exportarColaboradoresAC();
 			
-			addActionSuccess("Exportação concluída com sucesso.");
+			if(registrosNaoForamConfirmadosNoAC())
+				addActionSuccess("Primeira fase da exportação concluída com sucesso.<br />Confirme todos os registros pendentes no AC Pessoal referentes à integração com RH." +
+						"<br />Após confirmar todos os registros no AC Pessoal, clique no botão \"Exportar\" novamente.");
+			else
+			{
+				exportarHistoricosColaboardoresAC();
+				addActionSuccess("Exportação concluída com sucesso.");
+			}
 		}
 		catch (FortesException e)
 		{
@@ -100,6 +109,13 @@ public class ExportacaoACAction extends MyActionSupport
 		}
 
 		return prepareExportarAC();
+	}
+
+	private boolean registrosNaoForamConfirmadosNoAC()
+	{
+		boolean existeHistoricoColaboradorPendenteNoAC = historicoColaboradorManager.findPendenciasByHistoricoColaborador(empresaId).size() > 0;
+		boolean existeHistoricoFaixaPendenteNoAC = faixaSalarialHistoricoManager.findPendenciasByFaixaSalarialHistorico(empresaId).size() > 0;
+		return existeHistoricoColaboradorPendenteNoAC || existeHistoricoFaixaPendenteNoAC;
 	}
 	
 	private void verificarHistoricosPorIndice() throws ExisteHistoricoIndiceException
@@ -237,19 +253,33 @@ public class ExportacaoACAction extends MyActionSupport
 			faixaSalarialManager.saveFaixaSalarial(faixaSalarial, faixaSalarial.getFaixaSalarialHistoricoAtual(), empresa, new String[]{});
 
 			Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = faixaSalarialHistoricoManager.findAllSelect(faixaSalarial.getId());
-			for (FaixaSalarialHistorico faixaSalarialHistorico : faixaSalarialHistoricos) 
+			for (FaixaSalarialHistorico faixaSalarialHistorico : faixaSalarialHistoricos)
 				if(!faixaSalarial.getFaixaSalarialHistoricoAtual().getId().equals(faixaSalarialHistorico.getId()))
-					faixaSalarialHistoricoManager.save(faixaSalarialHistorico, faixaSalarial, empresa, true);
+					faixaSalarialHistoricoManager.criarFaixaSalarialHistoricoNoAc(faixaSalarialHistorico, empresa);
 		}
 	}
 	
 	private void exportarColaboradoresAC() throws Exception
 	{
 		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresa(empresaId);
-		
-		for (Colaborador colaborador : colaboradores) 
-			colaboradorManager.contratarColaboradorNoAC(colaborador, colaborador.getHistoricoColaborador(), empresa);
+		for (Colaborador colaborador : colaboradores)
+		{
+			colaborador.getHistoricoColaborador().setAreaOrganizacional(colaborador.getAreaOrganizacional());
+			colaborador.getHistoricoColaborador().setEstabelecimento(colaborador.getEstabelecimento());
+			colaborador.getHistoricoColaborador().setFaixaSalarial(colaborador.getFaixaSalarial());
 			
+			colaboradorManager.contratarColaboradorNoAC(colaborador, colaborador.getHistoricoColaborador(), empresa, false);
+			
+			historicoColaboradorManager.updateStatusAc(StatusRetornoAC.AGUARDANDO, colaborador.getHistoricoColaborador().getId());
+		}
+	}
+
+	private void exportarHistoricosColaboardoresAC() throws Exception
+	{
+		Collection<HistoricoColaborador> historicos = historicoColaboradorManager.findByEmpresa(empresaId, StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorManager.saveHistoricoColaboradorNoAc(historicos, empresa);
+
+		historicoColaboradorManager.updateStatusAc(StatusRetornoAC.AGUARDANDO, new CollectionUtil<HistoricoColaborador>().convertCollectionToArrayIds(historicos));
 	}
 
 	private String montaNomeParaAC(Collection<String> nomesInseridosNoAC, String nomeNoAC, int count)
