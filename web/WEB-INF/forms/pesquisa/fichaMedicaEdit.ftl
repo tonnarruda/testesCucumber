@@ -36,6 +36,9 @@
 
 		<@ww.textarea label="Observação" name="fichaMedica.questionario.cabecalho"/>
 		<@ww.textarea label="Rodapé" name="fichaMedica.rodape" />
+		<small>Evite texto longo no rodapé, pois apenas as quatro primeiras linhas serão exibidas na impressão da ficha.</small>
+		
+		<br /><br />
 
 		<@ww.select label="Ativa" name="fichaMedica.ativa" id="liberado" list=r"#{true:'Sim',false:'Não'}"/>
 

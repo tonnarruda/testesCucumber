@@ -36,6 +36,7 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.MathUtil;
 import com.fortes.rh.util.SpringUtil;
+import com.fortes.rh.util.StringUtil;
 
 public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, QuestionarioDao> implements QuestionarioManager
 {
@@ -502,7 +503,6 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         parametros.put("RODAPE", fichaMedica.getRodape());
         parametros.put("CABECALHOFICHAMEDICA", fichaMedica.getQuestionario().getCabecalho());
 
-        
         Collection<PerguntaFichaMedica> perguntasFormatadas = montaPerguntasComRespostas(perguntas, colaboradorRespostas, false, false);
 
         return perguntasFormatadas;

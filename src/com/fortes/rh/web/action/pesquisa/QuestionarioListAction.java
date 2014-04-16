@@ -109,6 +109,10 @@ public class QuestionarioListAction extends MyActionSupportList
 	private String actionMsg;
 	private boolean imprimirFormaEconomica;
 	
+	private String assinatura1;
+	private String assinatura2;
+	private String assinatura3;
+	
 	private Collection<Empresa> empresas;
 	private Long empresaId;
 	private Long[] empresaIds;//para o filtro "todas"
@@ -226,6 +230,11 @@ public class QuestionarioListAction extends MyActionSupportList
 
 			parametros = new HashMap<String, Object>();
 			perguntaFichaMedicas = questionarioManager.montaImpressaoFichaMedica(questionario.getId(), colaboradorQuestionarioId, parametros);
+			
+			parametros.put("ASSINATURA1", assinatura1);
+	    	parametros.put("ASSINATURA2", assinatura2);
+	    	parametros.put("ASSINATURA3", assinatura3);
+			
 			return Action.SUCCESS;
 		}
 		catch (Exception e)
@@ -782,5 +791,29 @@ public class QuestionarioListAction extends MyActionSupportList
 
 	public void setCursoManager(CursoManager cursoManager) {
 		this.cursoManager = cursoManager;
+	}
+
+	public String getAssinatura1() {
+		return assinatura1;
+	}
+
+	public void setAssinatura1(String assinatura1) {
+		this.assinatura1 = assinatura1;
+	}
+
+	public String getAssinatura2() {
+		return assinatura2;
+	}
+
+	public void setAssinatura2(String assinatura2) {
+		this.assinatura2 = assinatura2;
+	}
+
+	public String getAssinatura3() {
+		return assinatura3;
+	}
+
+	public void setAssinatura3(String assinatura3) {
+		this.assinatura3 = assinatura3;
 	}
 }
