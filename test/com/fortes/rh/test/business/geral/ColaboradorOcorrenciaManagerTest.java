@@ -442,9 +442,8 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		Collection<Object[]> absenteismos = colaboradorOcorrenciaManager.montaGraficoAbsenteismo("01/2011", "05/2011", Arrays.asList(empresa.getId()), null, null);
 		assertEquals(5, absenteismos.size());
 		assertEquals(0.0, ((Object[])absenteismos.toArray()[0])[1]);
-		assertEquals(0.02, ((Object[])absenteismos.toArray()[1])[1]);
-		assertEquals(0.1429, ((Object[])absenteismos.toArray()[3])[1]);
-
+		assertEquals(2.0, ((Object[])absenteismos.toArray()[1])[1]);
+		assertEquals(14.285714285714285, ((Object[])absenteismos.toArray()[3])[1]);
 	}
 	
 	public void testMontaAbsenteismo() throws Exception
@@ -477,14 +476,14 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		assertEquals(new Integer(4), absenteismoFev.getQtdTotalFaltas());
 		assertEquals(new Integer(10), absenteismoFev.getQtdAtivos());
 		assertEquals(new Integer(20), absenteismoFev.getQtdDiasTrabalhados());
-		assertEquals(0.02, absenteismoFev.getAbsenteismo());
+		assertEquals(2.0, absenteismoFev.getAbsenteismo());
 		
 		Absenteismo absenteismoAbr = (Absenteismo) absenteismos.toArray()[3];
 		assertEquals("04", absenteismoAbr.getMes());
 		assertEquals(new Integer(30), absenteismoAbr.getQtdTotalFaltas());
 		assertEquals(new Integer(10), absenteismoAbr.getQtdAtivos());
 		assertEquals(new Integer(21), absenteismoAbr.getQtdDiasTrabalhados());
-		assertEquals(0.1429, absenteismoAbr.getAbsenteismo());
+		assertEquals(14.285714285714285, absenteismoAbr.getAbsenteismo());
 	}
 	
 	public void testDeleteOcorrencias()

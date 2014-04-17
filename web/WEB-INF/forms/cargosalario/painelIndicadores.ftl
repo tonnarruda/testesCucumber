@@ -93,9 +93,9 @@
 				    somaAbsenteismo = this[1] + somaAbsenteismo;
 				});
 				
-				$('#mediaAbsenteismo').text('Absenteísmo: ' + (somaAbsenteismo / absenteismo.length).toFixed(4));
+				$('#mediaAbsenteismo').text('Absenteísmo: ' + (somaAbsenteismo / absenteismo.length).toFixed(2).replace('.',','));
 				
-				montaGraficoLinha([{data: absenteismo}], "#evolucaoAbsenteismo", "Absenteismo", 4);
+				montaGraficoLinha([{data: absenteismo}], "#evolucaoAbsenteismo", "Absenteismo", 2);
 				montaGraficoLinha(turnover, "#evolucaoTurnover", "Turnover", 2);
 				
 				populaAreas();
@@ -516,7 +516,7 @@
 							    	<div id="evolucaoAbsenteismo" style="margin: 30px;height:300px;"></div>
 							    </div>
 								<div id="evolucaoAbsenteismoInfo">
-									<div class="formula">Fórmula: [Total de faltas do mês<img id="tooltipAbsenteismo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" align="absmiddle" /> / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)]</div>
+									<div class="formula">Fórmula: [Total de faltas do mês<img id="tooltipAbsenteismo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" align="absmiddle" /> / (Qtd. colaboradores ativos no início do mês * Dias trabalhados no mês)] * 100</div>
 									
 									<div style="clear: both"></div>
 									

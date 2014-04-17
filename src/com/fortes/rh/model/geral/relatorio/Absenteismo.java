@@ -1,6 +1,5 @@
 package com.fortes.rh.model.geral.relatorio;
 
-import java.text.DecimalFormat;
 import java.util.Date;
 
 public class Absenteismo
@@ -57,12 +56,7 @@ public class Absenteismo
 
 	public Double getAbsenteismo()
 	{
-		try {
-			DecimalFormat df = new DecimalFormat("0.0000");
-			return Double.parseDouble(df.format(this.absenteismo).replace(",", "."));
-		} catch (Exception e) {
-			return 0.0;
-		}
+		return this.absenteismo;
 	}
 	
 	public void setAbsenteismo(Double absenteismo) 

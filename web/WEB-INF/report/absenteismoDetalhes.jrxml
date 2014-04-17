@@ -79,7 +79,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{qtdDiasTrabalhados}]]></textFieldExpression>
 			</textField>
-			<textField pattern="###0.0000;-###0.0000" isBlankWhenNull="true">
+			<textField pattern="###0.00;-###0.00" isBlankWhenNull="true">
 				<reportElement uuid="07bd43a7-1f39-4197-88c2-9022305cc547" key="textField-3" x="0" y="68" width="61" height="16"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>

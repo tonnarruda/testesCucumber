@@ -247,7 +247,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 					absenteismo.setQtdTotalFaltas(absenteismo.getQtdTotalFaltas() + afastamento.getQtdTotalFaltas());
 					
 					if(!absenteismo.getQtdTotalFaltas().equals(0))
-						absenteismo.setAbsenteismo( new Double(absenteismo.getQtdTotalFaltas()) / (absenteismo.getQtdAtivos() * absenteismo.getQtdDiasTrabalhados()));
+						absenteismo.setAbsenteismo( new Double(absenteismo.getQtdTotalFaltas()) / (absenteismo.getQtdAtivos() * absenteismo.getQtdDiasTrabalhados()) * 100.0);
 				}
 			}
 		}
