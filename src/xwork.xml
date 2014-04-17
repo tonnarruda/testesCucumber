@@ -223,6 +223,7 @@
   <include file="/com/fortes/rh/web/action/geral/xwork-Empresa.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-AreaOrganizacional.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-Colaborador.xml" />
+  <include file="/com/fortes/rh/web/action/geral/xwork-ColaboradorAux.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-ColaboradorIdioma.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-Beneficio.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-AreaInteresse.xml" />

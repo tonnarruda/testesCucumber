@@ -111,6 +111,12 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		
 		return Action.SUCCESS;
 	}
+	
+	public String prepareAprovarReprovarSolicitacaoDesligamento() throws Exception
+	{
+		
+		return Action.SUCCESS;
+	}
 
 	public String reLiga() throws Exception
 	{

@@ -182,15 +182,12 @@
 				<#if colaborador.dataDesligamento?exists && !colaborador.motivoDemissao.motivo?exists>
 					<#if integraAc && !colaborador.naoIntegraAc>
 						<#assign imgMotivoDeslig="desligadoAC5.gif"/>
-						<#assign titleMotivoDeslig="Inserir motivo de desligamento"/>
 					<#else>
 						<#assign imgMotivoDeslig="desliga_colab.gif"/>
-						<#assign titleMotivoDeslig="Desligar colaborador"/>
 					</#if>
 					
-					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="${titleMotivoDeslig}" imgName="${imgMotivoDeslig}"/>
+					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Inserir motivo de desligamento" imgName="${imgMotivoDeslig}"/>
 				<#else>
-					
 					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Colaborador já desligado" imgName="desliga_colab.gif" opacity=true/>
 				</#if>
 	
