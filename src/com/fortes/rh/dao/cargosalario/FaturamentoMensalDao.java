@@ -13,7 +13,7 @@ public interface FaturamentoMensalDao extends GenericDao<FaturamentoMensal>
 
 	Collection<FaturamentoMensal> findByPeriodo(Date inicio, Date fim, Long empresaId);
 
-	FaturamentoMensal findAtual(Date data);
+	FaturamentoMensal findAtual(Date data, Long empresaId);
 
 	Double somaByPeriodo(Date dataIni, Date dataFim, Long[] empresaIds);
 }

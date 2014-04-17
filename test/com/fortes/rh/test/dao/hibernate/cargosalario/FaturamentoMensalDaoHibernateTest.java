@@ -89,7 +89,7 @@ public class FaturamentoMensalDaoHibernateTest extends GenericDaoHibernateTest<F
 		novembro.setEmpresa(empresa);
 		faturamentoMensalDao.save(novembro);
 		
-		FaturamentoMensal faturamento = faturamentoMensalDao.findAtual(DateUtil.criarDataMesAno(1, 12, 2000));
+		FaturamentoMensal faturamento = faturamentoMensalDao.findAtual(DateUtil.criarDataMesAno(1, 12, 2000), empresa.getId());
 		assertEquals(novembro, faturamento);
 	}
 	

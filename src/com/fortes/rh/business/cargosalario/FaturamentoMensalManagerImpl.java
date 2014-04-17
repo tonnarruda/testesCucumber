@@ -19,7 +19,7 @@ public class FaturamentoMensalManagerImpl extends GenericManagerImpl<Faturamento
 
 	public Collection<Object[]> findByPeriodo(Date inicio, Date fim, Long empresaId) 
 	{
-		FaturamentoMensal ultimoFaturamento = getDao().findAtual(inicio);
+		FaturamentoMensal ultimoFaturamento = getDao().findAtual(inicio, empresaId);
 		Collection<FaturamentoMensal> faturamentos = getDao().findByPeriodo(inicio, fim, empresaId);
 		Collection<Object[]> graficoEvolucaoFaturamento = new ArrayList<Object[]>();
 

@@ -58,7 +58,7 @@ public class FaturamentoMensalDaoHibernate extends GenericDaoHibernate<Faturamen
 		return criteria.list();
 	}
 
-	public FaturamentoMensal findAtual(Date data) {
+	public FaturamentoMensal findAtual(Date data, Long empresaId) {
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
 		
 		ProjectionList p = Projections.projectionList().create();
@@ -68,7 +68,8 @@ public class FaturamentoMensalDaoHibernate extends GenericDaoHibernate<Faturamen
 		p.add(Projections.property("f.empresa.id"), "projectionEmpresaId");
 		
 		criteria.setProjection(p);
-		criteria.add(Expression.le("f.mesAno", data));		
+		criteria.add(Expression.le("f.mesAno", data));
+		criteria.add(Expression.eq("f.empresa.id", empresaId));
 		
 		criteria.addOrder(Order.desc("f.mesAno"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));

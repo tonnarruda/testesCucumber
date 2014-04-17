@@ -24,6 +24,7 @@ public class FaturamentoMensalEditActionTest extends MockObjectTestCase
 		action.setFaturamentoMensalManager((FaturamentoMensalManager) manager.proxy());
 
 		action.setFaturamentoMensal(new FaturamentoMensal());
+		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 	}
 
 	protected void tearDown() throws Exception

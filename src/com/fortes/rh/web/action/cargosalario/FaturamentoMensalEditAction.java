@@ -41,9 +41,9 @@ public class FaturamentoMensalEditAction extends MyActionSupportList
 
 	public String insert() throws Exception
 	{
-		if(faturamentoMensalManager.verifyExists(new String[]{"mesAno"}, new Object[]{DateUtil.criarDataMesAno(dataMesAno)}))
+		if(faturamentoMensalManager.verifyExists(new String[]{"mesAno", "empresa.id"}, new Object[]{DateUtil.criarDataMesAno(dataMesAno), getEmpresaSistema().getId()}))
 		{
-			addActionMessage("Faturamento para esse Mês/Ano já cadastrado.");
+			addActionMessage("Faturamento para esse mês/ano já cadastrado.");
 			return Action.INPUT;
 		}
 		
