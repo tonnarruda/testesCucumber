@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="curriculo_candidato" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="24e642c7-23e8-452f-83f5-b88fabf7f0af">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.5937424601000028"/>
-	<property name="ireport.x" value="76"/>
-	<property name="ireport.y" value="2066"/>
+	<property name="ireport.zoom" value="4.0"/>
+	<property name="ireport.x" value="994"/>
+	<property name="ireport.y" value="27"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -113,6 +113,7 @@
 		<fieldDescription><![CDATA[Utilizado para definir se a impressão é através da solicitação ou cadastro de candidato]]></fieldDescription>
 	</field>
 	<field name="configuracaoCamposExtras" class="java.lang.Object"/>
+	<field name="candidato.dataCadastro" class="java.util.Date"/>
 	<group name="formacaoSocioEconomicaGroup">
 		<groupExpression><![CDATA[]]></groupExpression>
 		<groupHeader>
@@ -990,9 +991,9 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="266" splitType="Stretch">
+		<band height="280" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="4725d54b-8af5-4415-8f91-c4762af639b0" key="textField" x="39" y="17" width="278" height="12"/>
+				<reportElement uuid="4725d54b-8af5-4415-8f91-c4762af639b0" key="textField" x="39" y="18" width="278" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1005,7 +1006,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.nome}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="25c13393-4187-4b66-ab12-e96be02b76d7" key="staticText-1" x="4" y="17" width="35" height="12"/>
+				<reportElement uuid="25c13393-4187-4b66-ab12-e96be02b76d7" key="staticText-1" x="4" y="18" width="35" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1018,7 +1019,7 @@
 				<text><![CDATA[Nome:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="e56a046c-08a2-40f2-afec-b058386c283f" key="staticText-2" x="322" y="17" width="32" height="12"/>
+				<reportElement uuid="e56a046c-08a2-40f2-afec-b058386c283f" key="staticText-2" x="322" y="31" width="69" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1028,10 +1029,10 @@
 				<textElement>
 					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Nasc.:]]></text>
+				<text><![CDATA[Data Cadastro:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="b0c1b6e5-41d3-4876-a066-b437ca02fc62" key="staticText-3" x="4" y="30" width="97" height="12"/>
+				<reportElement uuid="b0c1b6e5-41d3-4876-a066-b437ca02fc62" key="staticText-3" x="4" y="44" width="97" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1044,7 +1045,7 @@
 				<text><![CDATA[Cargo pretendido:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="6b596b39-dc3f-4611-9cb5-1902b123b080" key="staticText-4" x="4" y="84" width="73" height="12"/>
+				<reportElement uuid="6b596b39-dc3f-4611-9cb5-1902b123b080" key="staticText-4" x="4" y="98" width="73" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1057,7 +1058,7 @@
 				<text><![CDATA[Naturalidade:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="7598849d-cd8c-4014-8643-b1f1221cb139" key="staticText-5" x="4" y="43" width="69" height="12"/>
+				<reportElement uuid="7598849d-cd8c-4014-8643-b1f1221cb139" key="staticText-5" x="4" y="57" width="69" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1070,7 +1071,7 @@
 				<text><![CDATA[Escolaridade:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="96ebf2c2-247c-4d43-94cd-653be4a552f3" key="staticText-6" x="4" y="56" width="157" height="12"/>
+				<reportElement uuid="96ebf2c2-247c-4d43-94cd-653be4a552f3" key="staticText-6" x="4" y="70" width="157" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1083,7 +1084,7 @@
 				<text><![CDATA[Parentes/Amigos na Empresa:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="38c9d8a6-d881-4beb-a79c-03dfa04bb478" key="staticText-8" x="322" y="84" width="29" height="12"/>
+				<reportElement uuid="38c9d8a6-d881-4beb-a79c-03dfa04bb478" key="staticText-8" x="322" y="98" width="29" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1096,7 +1097,7 @@
 				<text><![CDATA[Sexo:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="96a2c243-e583-4365-abdf-b47bd4bd682d" key="staticText-10" x="322" y="43" width="69" height="12"/>
+				<reportElement uuid="96a2c243-e583-4365-abdf-b47bd4bd682d" key="staticText-10" x="322" y="57" width="69" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1108,8 +1109,8 @@
 				</textElement>
 				<text><![CDATA[Pret. salarial:]]></text>
 			</staticText>
-			<textField pattern="" isBlankWhenNull="true">
-				<reportElement uuid="54f557d1-8851-44b0-8d64-bc9121df70d7" key="textField-1" x="354" y="17" width="104" height="12"/>
+			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
+				<reportElement uuid="54f557d1-8851-44b0-8d64-bc9121df70d7" key="textField-1" x="391" y="31" width="64" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1119,10 +1120,10 @@
 				<textElement>
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{candidato.pessoal.dataNascimentoFormatada}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{candidato.dataCadastro}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="f420207c-c145-4abe-a97d-de6e20bd6f12" key="textField-4" x="73" y="43" width="244" height="12"/>
+				<reportElement uuid="f420207c-c145-4abe-a97d-de6e20bd6f12" key="textField-4" x="73" y="57" width="244" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1135,7 +1136,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.escolaridadeDic}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="333c8ec8-d8ae-41cc-9b7b-0c32c907eb6b" key="textField-5" x="161" y="56" width="295" height="12"/>
+				<reportElement uuid="333c8ec8-d8ae-41cc-9b7b-0c32c907eb6b" key="textField-5" x="161" y="70" width="295" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1148,7 +1149,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.parentesAmigos}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="ead32d19-2d9f-4125-ba08-d6053d8cc44c" key="textField-6" x="77" y="84" width="240" height="12"/>
+				<reportElement uuid="ead32d19-2d9f-4125-ba08-d6053d8cc44c" key="textField-6" x="77" y="98" width="240" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1161,7 +1162,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.naturalidade}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="bbfa37e5-d2a1-4778-8014-bcfa50e65ddd" key="textField-7" x="351" y="84" width="99" height="12"/>
+				<reportElement uuid="bbfa37e5-d2a1-4778-8014-bcfa50e65ddd" key="textField-7" x="351" y="98" width="99" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1174,7 +1175,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.sexoDic}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
-				<reportElement uuid="cfdb835d-2c0f-46c0-89df-e0c1ac9764d7" key="textField-9" x="391" y="43" width="64" height="12"/>
+				<reportElement uuid="cfdb835d-2c0f-46c0-89df-e0c1ac9764d7" key="textField-9" x="391" y="57" width="64" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1187,7 +1188,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pretencaoSalarial}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="fbfd031b-2c7b-48e0-870d-79cdbd821381" key="staticText-11" x="4" y="197" width="32" height="12"/>
+				<reportElement uuid="fbfd031b-2c7b-48e0-870d-79cdbd821381" key="staticText-11" x="4" y="211" width="32" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1200,7 +1201,7 @@
 				<text><![CDATA[Email:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="7dc12d0c-b7f6-41b4-8dbf-723cd7ce6cf5" key="staticText-12" x="4" y="123" width="21" height="12"/>
+				<reportElement uuid="7dc12d0c-b7f6-41b4-8dbf-723cd7ce6cf5" key="staticText-12" x="4" y="137" width="21" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1213,7 +1214,7 @@
 				<text><![CDATA[Pai:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="7aa5cb36-cc75-4945-b9d7-25696ef11a25" key="staticText-13" x="4" y="110" width="45" height="12"/>
+				<reportElement uuid="7aa5cb36-cc75-4945-b9d7-25696ef11a25" key="staticText-13" x="4" y="124" width="45" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1226,7 +1227,7 @@
 				<text><![CDATA[Cônjuge:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="6a31c4b7-e81d-4251-bb63-2bcba88c9aa8" key="staticText-15" x="4" y="136" width="26" height="12"/>
+				<reportElement uuid="6a31c4b7-e81d-4251-bb63-2bcba88c9aa8" key="staticText-15" x="4" y="150" width="26" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1239,7 +1240,7 @@
 				<text><![CDATA[Mãe:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="7d1ba4c2-ffa1-44df-8a8c-920157c9b52f" key="staticText-16" x="4" y="158" width="51" height="12"/>
+				<reportElement uuid="7d1ba4c2-ffa1-44df-8a8c-920157c9b52f" key="staticText-16" x="4" y="172" width="51" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1252,7 +1253,7 @@
 				<text><![CDATA[Endereço:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="eb11ebb8-f88b-417d-9c9a-98cb8a96d9e2" key="staticText-17" x="4" y="171" width="74" height="12"/>
+				<reportElement uuid="eb11ebb8-f88b-417d-9c9a-98cb8a96d9e2" key="staticText-17" x="4" y="185" width="74" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1265,7 +1266,7 @@
 				<text><![CDATA[Complemento:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="034874cc-243b-484e-806e-538ebf5e2861" key="staticText-18" x="4" y="236" width="62" height="12"/>
+				<reportElement uuid="034874cc-243b-484e-806e-538ebf5e2861" key="staticText-18" x="4" y="250" width="62" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1278,7 +1279,7 @@
 				<text><![CDATA[Habilitação:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="206848b0-ed6a-4549-8cdc-57927814d112" key="staticText-19" x="4" y="184" width="40" height="12"/>
+				<reportElement uuid="206848b0-ed6a-4549-8cdc-57927814d112" key="staticText-19" x="4" y="198" width="40" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1291,7 +1292,7 @@
 				<text><![CDATA[Cidade:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9e9a39d1-9343-46d8-ac79-76ef21c0b833" key="staticText-20" x="4" y="223" width="21" height="12"/>
+				<reportElement uuid="9e9a39d1-9343-46d8-ac79-76ef21c0b833" key="staticText-20" x="4" y="237" width="21" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1304,7 +1305,7 @@
 				<text><![CDATA[RG:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="b7d06803-fe11-4458-a5aa-8c1928a5963d" key="staticText-21" x="322" y="110" width="52" height="12"/>
+				<reportElement uuid="b7d06803-fe11-4458-a5aa-8c1928a5963d" key="staticText-21" x="322" y="124" width="52" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1317,7 +1318,7 @@
 				<text><![CDATA[Profissão:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="a27e5500-99e1-489d-ad8e-e61c3fd7bc8f" key="staticText-22" x="322" y="171" width="35" height="12"/>
+				<reportElement uuid="a27e5500-99e1-489d-ad8e-e61c3fd7bc8f" key="staticText-22" x="322" y="185" width="35" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1330,7 +1331,7 @@
 				<text><![CDATA[Bairro:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="36a67934-6f5f-4acc-8a62-3b9dd4630130" key="staticText-23" x="322" y="236" width="46" height="12"/>
+				<reportElement uuid="36a67934-6f5f-4acc-8a62-3b9dd4630130" key="staticText-23" x="322" y="250" width="46" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1343,7 +1344,7 @@
 				<text><![CDATA[Emissão:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="c966536b-35ec-4d25-a6ab-08ee57b3c009" key="staticText-24" x="322" y="97" width="58" height="12"/>
+				<reportElement uuid="c966536b-35ec-4d25-a6ab-08ee57b3c009" key="staticText-24" x="322" y="111" width="58" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1356,7 +1357,7 @@
 				<text><![CDATA[Qtd. filhos:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="138f1ad3-2309-42e8-b1b1-17e847fc8621" key="staticText-26" x="322" y="184" width="29" height="12"/>
+				<reportElement uuid="138f1ad3-2309-42e8-b1b1-17e847fc8621" key="staticText-26" x="322" y="198" width="29" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1369,7 +1370,7 @@
 				<text><![CDATA[Fone:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="8efd7ff4-b962-48ff-81be-e1e40de69a9c" key="staticText-27" x="435" y="236" width="32" height="12"/>
+				<reportElement uuid="8efd7ff4-b962-48ff-81be-e1e40de69a9c" key="staticText-27" x="435" y="250" width="32" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1382,7 +1383,7 @@
 				<text><![CDATA[Venc.:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="2b1aec74-1d6d-4681-9c33-e8e6fcb0b449" key="staticText-28" x="322" y="250" width="54" height="12"/>
+				<reportElement uuid="2b1aec74-1d6d-4681-9c33-e8e6fcb0b449" key="staticText-28" x="322" y="264" width="54" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1395,7 +1396,7 @@
 				<text><![CDATA[Categoria:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="340eab3a-71de-45c9-921b-ab6cbd20a169" key="staticText-29" x="322" y="223" width="26" height="12"/>
+				<reportElement uuid="340eab3a-71de-45c9-921b-ab6cbd20a169" key="staticText-29" x="322" y="237" width="26" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1408,7 +1409,7 @@
 				<text><![CDATA[CPF:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="e88a417f-60f2-41ac-8f2d-c47eb0871ada" key="staticText-31" x="430" y="158" width="26" height="12"/>
+				<reportElement uuid="e88a417f-60f2-41ac-8f2d-c47eb0871ada" key="staticText-31" x="430" y="172" width="26" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1421,7 +1422,7 @@
 				<text><![CDATA[CEP:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="6ef19655-764a-43d5-aecc-436bbccd6d96" key="staticText-32" x="322" y="158" width="46" height="12"/>
+				<reportElement uuid="6ef19655-764a-43d5-aecc-436bbccd6d96" key="staticText-32" x="322" y="172" width="46" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1434,7 +1435,7 @@
 				<text><![CDATA[Número:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="fe97906f-ddcc-47d1-a9ec-48453eb0f139" key="staticText-33" x="4" y="97" width="65" height="12"/>
+				<reportElement uuid="fe97906f-ddcc-47d1-a9ec-48453eb0f139" key="staticText-33" x="4" y="111" width="65" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1447,7 +1448,7 @@
 				<text><![CDATA[Estado civil:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="0a48d19d-08d9-467a-83dd-658bc687a72b" key="staticText-34" x="322" y="123" width="52" height="12"/>
+				<reportElement uuid="0a48d19d-08d9-467a-83dd-658bc687a72b" key="staticText-34" x="322" y="137" width="52" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1460,7 +1461,7 @@
 				<text><![CDATA[Profissão:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="5cb78ce1-0cc3-45bb-b8e7-3cf36d1011d2" key="staticText-35" x="322" y="136" width="52" height="12"/>
+				<reportElement uuid="5cb78ce1-0cc3-45bb-b8e7-3cf36d1011d2" key="staticText-35" x="322" y="150" width="52" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1473,7 +1474,7 @@
 				<text><![CDATA[Profissão:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="684f9a96-2d20-458a-887c-453bd391a1a1" key="textField-10" x="69" y="97" width="248" height="12"/>
+				<reportElement uuid="684f9a96-2d20-458a-887c-453bd391a1a1" key="textField-10" x="69" y="111" width="248" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1486,7 +1487,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.estadoCivilDic}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="39cf65be-4895-4f6f-81fe-fcaaeaa9d6df" key="textField-11" x="49" y="110" width="268" height="12"/>
+				<reportElement uuid="39cf65be-4895-4f6f-81fe-fcaaeaa9d6df" key="textField-11" x="49" y="124" width="268" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1499,7 +1500,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.conjuge}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="c866c9b6-f0e0-4180-adbb-34c061dc0c80" key="textField-12" x="25" y="123" width="292" height="12"/>
+				<reportElement uuid="c866c9b6-f0e0-4180-adbb-34c061dc0c80" key="textField-12" x="25" y="137" width="292" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1512,7 +1513,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.pai}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="fba9f918-0338-4cb4-9c10-70a1c2b68b90" key="textField-13" x="30" y="136" width="287" height="12"/>
+				<reportElement uuid="fba9f918-0338-4cb4-9c10-70a1c2b68b90" key="textField-13" x="30" y="150" width="287" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1525,7 +1526,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.mae}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="6e778b92-14ec-4168-9f5d-078ab963da01" key="textField-14" x="55" y="158" width="255" height="12"/>
+				<reportElement uuid="6e778b92-14ec-4168-9f5d-078ab963da01" key="textField-14" x="55" y="172" width="255" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1538,7 +1539,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.endereco.logradouro}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="6d312848-e3e1-43af-a469-1ac6319dde6d" key="textField-15" x="78" y="171" width="236" height="12"/>
+				<reportElement uuid="6d312848-e3e1-43af-a469-1ac6319dde6d" key="textField-15" x="78" y="185" width="236" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1551,7 +1552,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.endereco.complemento}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="f33a0f09-8fc4-4c0c-8d67-f928179023be" key="textField-16" x="44" y="184" width="269" height="12"/>
+				<reportElement uuid="f33a0f09-8fc4-4c0c-8d67-f928179023be" key="textField-16" x="44" y="198" width="269" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1564,7 +1565,7 @@
 				<textFieldExpression><![CDATA[($F{candidato.endereco.cidade.nome}==null ? "" : $F{candidato.endereco.cidade.nome} ) + ( $F{candidato.endereco.uf.sigla}==null ? "" :  " / " + $F{candidato.endereco.uf.sigla})]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="07328377-c2d1-493c-99a0-cbc67b6aa63f" key="textField-17" x="36" y="197" width="276" height="12"/>
+				<reportElement uuid="07328377-c2d1-493c-99a0-cbc67b6aa63f" key="textField-17" x="36" y="211" width="276" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1577,7 +1578,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.contato.email}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement uuid="aa9b95f6-e21f-4178-882c-4c81e8cedd17" key="textField-18" x="368" y="236" width="62" height="12"/>
+				<reportElement uuid="aa9b95f6-e21f-4178-882c-4c81e8cedd17" key="textField-18" x="368" y="250" width="62" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1590,7 +1591,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.habilitacao.emissao}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="3f317758-6cb1-4d46-8b83-3958445b7c56" key="textField-19" x="25" y="223" width="211" height="12"/>
+				<reportElement uuid="3f317758-6cb1-4d46-8b83-3958445b7c56" key="textField-19" x="25" y="237" width="211" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1603,7 +1604,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.rg}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="e59f5f50-009b-4f1f-b417-8f30b9186d37" key="textField-20" x="66" y="236" width="170" height="12"/>
+				<reportElement uuid="e59f5f50-009b-4f1f-b417-8f30b9186d37" key="textField-20" x="66" y="250" width="170" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1616,7 +1617,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.habilitacao.numeroHab}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="0d89ad79-358d-40be-8f83-b8550735811d" key="textField-21" x="380" y="97" width="58" height="12"/>
+				<reportElement uuid="0d89ad79-358d-40be-8f83-b8550735811d" key="textField-21" x="380" y="111" width="58" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1629,7 +1630,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.qtdFilhos}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="9b1a09d6-206e-4154-929f-5a9792c62093" key="textField-22" x="374" y="110" width="156" height="12"/>
+				<reportElement uuid="9b1a09d6-206e-4154-929f-5a9792c62093" key="textField-22" x="374" y="124" width="156" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1642,7 +1643,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.profissaoConjuge}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="67365680-9f33-424e-a15a-d667f7079d76" key="textField-23" x="374" y="123" width="156" height="12"/>
+				<reportElement uuid="67365680-9f33-424e-a15a-d667f7079d76" key="textField-23" x="374" y="137" width="156" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1655,7 +1656,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.profissaoPai}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="229260d7-9c63-47c6-8965-bb6ef3ee9919" key="textField-24" x="374" y="136" width="156" height="12"/>
+				<reportElement uuid="229260d7-9c63-47c6-8965-bb6ef3ee9919" key="textField-24" x="374" y="150" width="156" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1668,7 +1669,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.profissaoMae}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="c23d059f-890b-48b4-8545-57d20517b97b" key="textField-25" x="368" y="158" width="58" height="12"/>
+				<reportElement uuid="c23d059f-890b-48b4-8545-57d20517b97b" key="textField-25" x="368" y="172" width="58" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1681,7 +1682,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.endereco.numero}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="29a01dec-431e-4cdb-a21c-646fa8377b9b" key="textField-26" x="456" y="158" width="75" height="12"/>
+				<reportElement uuid="29a01dec-431e-4cdb-a21c-646fa8377b9b" key="textField-26" x="456" y="172" width="75" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1694,7 +1695,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.endereco.cep}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="8bd59d47-7d06-4488-9832-0bfdc4474008" key="textField-27" x="357" y="171" width="174" height="12"/>
+				<reportElement uuid="8bd59d47-7d06-4488-9832-0bfdc4474008" key="textField-27" x="357" y="185" width="174" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1707,7 +1708,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.endereco.bairro}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement uuid="24f9dc7b-a337-481c-9903-85f249450821" key="textField-29" x="348" y="223" width="183" height="12"/>
+				<reportElement uuid="24f9dc7b-a337-481c-9903-85f249450821" key="textField-29" x="348" y="237" width="183" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1720,7 +1721,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.cpfFormatado}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement uuid="52d6270a-ef08-4707-872a-5788c0144683" key="textField-30" x="467" y="236" width="64" height="12"/>
+				<reportElement uuid="52d6270a-ef08-4707-872a-5788c0144683" key="textField-30" x="467" y="250" width="64" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1733,7 +1734,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.habilitacao.vencimento}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="473d3000-a55c-49b0-9b41-64221cc6a11b" key="textField-31" x="376" y="250" width="155" height="12"/>
+				<reportElement uuid="473d3000-a55c-49b0-9b41-64221cc6a11b" key="textField-31" x="376" y="264" width="155" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1746,7 +1747,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.habilitacao.categoria}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="9f0b9f13-72f3-4a94-a969-b2dd4575191d" key="textField" x="101" y="30" width="354" height="12"/>
+				<reportElement uuid="9f0b9f13-72f3-4a94-a969-b2dd4575191d" key="textField" x="101" y="44" width="354" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1788,16 +1789,16 @@
 				<reportElement uuid="7c38d2f4-e67a-434f-adc9-f9929286a866" key="line-11" x="0" y="1" width="535" height="1"/>
 			</line>
 			<line>
-				<reportElement uuid="be604710-826c-4307-b2b1-85c727f8fada" key="line-12" x="0" y="1" width="1" height="264"/>
+				<reportElement uuid="be604710-826c-4307-b2b1-85c727f8fada" key="line-12" x="0" y="1" width="1" height="278"/>
 			</line>
 			<line>
-				<reportElement uuid="e6c68203-d808-4c6b-9ab2-be6d2c59193c" key="line-13" x="534" y="1" width="1" height="264"/>
+				<reportElement uuid="e6c68203-d808-4c6b-9ab2-be6d2c59193c" key="line-13" x="534" y="1" width="1" height="278"/>
 			</line>
 			<line>
-				<reportElement uuid="f5a8757b-c475-4988-8aef-e9aadf42646b" key="line-14" x="0" y="265" width="535" height="1"/>
+				<reportElement uuid="f5a8757b-c475-4988-8aef-e9aadf42646b" key="line-14" x="0" y="279" width="535" height="1"/>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="a13124f8-6ba9-4265-ae90-882f45dc4ccc" key="textField" x="352" y="184" width="179" height="12"/>
+				<reportElement uuid="a13124f8-6ba9-4265-ae90-882f45dc4ccc" key="textField" x="352" y="198" width="179" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1810,7 +1811,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.contato.foneContatoFormatado}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="128a1802-f4cb-49df-93cb-ed73173ae2b6" key="staticText-48" x="4" y="70" width="70" height="12"/>
+				<reportElement uuid="128a1802-f4cb-49df-93cb-ed73173ae2b6" key="staticText-48" x="4" y="84" width="70" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1823,7 +1824,7 @@
 				<text><![CDATA[Indicado por:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="fdb40706-b5ca-41da-9e0f-57253035366c" key="textField-37" x="74" y="70" width="381" height="12"/>
+				<reportElement uuid="fdb40706-b5ca-41da-9e0f-57253035366c" key="textField-37" x="74" y="84" width="381" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1836,7 +1837,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.indicadoPor}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="7b41a858-814e-4cc1-bf80-04633297950b" key="staticText-51" x="4" y="250" width="47" height="12"/>
+				<reportElement uuid="7b41a858-814e-4cc1-bf80-04633297950b" key="staticText-51" x="4" y="264" width="47" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1849,7 +1850,7 @@
 				<text><![CDATA[Registro:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="6d72e00c-ce96-4f31-8a69-31bfeaee3658" key="textField-38" x="51" y="250" width="185" height="12"/>
+				<reportElement uuid="6d72e00c-ce96-4f31-8a69-31bfeaee3658" key="textField-38" x="51" y="264" width="185" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1862,7 +1863,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.habilitacao.registro}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="e2674a21-53df-4f93-9096-e774846a1b03" key="staticText-52" x="5" y="210" width="60" height="12"/>
+				<reportElement uuid="e2674a21-53df-4f93-9096-e774846a1b03" key="staticText-52" x="5" y="224" width="60" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1875,7 +1876,7 @@
 				<text><![CDATA[Deficiência:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="6ceb6dec-062a-4b95-8b91-0f4f2df7a76b" key="textField-39" x="65" y="210" width="247" height="12"/>
+				<reportElement uuid="6ceb6dec-062a-4b95-8b91-0f4f2df7a76b" key="textField-39" x="65" y="224" width="247" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1888,7 +1889,7 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.deficienciaDescricao}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="b1c777dd-6a4a-46cc-ba44-411463cf4ad6" key="staticText-64" x="322" y="197" width="46" height="12"/>
+				<reportElement uuid="b1c777dd-6a4a-46cc-ba44-411463cf4ad6" key="staticText-64" x="322" y="211" width="46" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1901,7 +1902,7 @@
 				<text><![CDATA[Contato:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="f9c17a90-4211-4002-b632-6111abb0de64" key="textField" x="368" y="197" width="163" height="12"/>
+				<reportElement uuid="f9c17a90-4211-4002-b632-6111abb0de64" key="textField" x="368" y="211" width="163" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1912,6 +1913,32 @@
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{candidato.contato.nomeContato}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="a5cb8674-631f-414b-a6f4-d3951eabcd7d" key="staticText-2" x="4" y="31" width="88" height="12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Data Nascimento:]]></text>
+			</staticText>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="35dbce97-6d49-459b-bbc7-4360104a8a08" key="textField-1" x="93" y="31" width="104" height="12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{candidato.pessoal.dataNascimentoFormatada}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

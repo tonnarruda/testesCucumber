@@ -119,6 +119,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		projectionFindById(p);
 
+		p.add(Projections.property("c.dataCadastro"),"dataCadastro");
 		p.add(Projections.property("c.blackList"),"blackList");
 		p.add(Projections.property("c.observacaoBlackList"),"observacaoBlackList");
 		p.add(Projections.property("c.contratado"),"contratado");
