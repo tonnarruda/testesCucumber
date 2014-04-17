@@ -190,8 +190,6 @@ function addChecks(divName, data, onClick)
     	result += "</label>";
 	}
 
-	console.log(result);
-	
 	$('#listCheckBox'+ divName.replace("[","\\[").replace("]","\\]")).html(result);
 	$('#listCheckBoxFilter'+ divName).val('');
 }
