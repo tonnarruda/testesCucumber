@@ -287,5 +287,15 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/formacaoEscolarRelatorioFiltro.ftl</result>
 		</action>
+		
+		<action name="prepareAprovarReprovarSolicitacaoDesligamento" class="com.fortes.rh.web.action.geral.ColaboradorDesligaAction" method="prepareAprovarReprovarSolicitacaoDesligamento">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/prepareAprovarReprovarSolicitacaoDesligamento.ftl</result>
+		</action>
+		<action name="visualizarSolicitacaoDesligamento" class="com.fortes.rh.web.action.geral.ColaboradorDesligaAction" method="visualizarSolicitacaoDesligamento">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/visualizarSolicitacaoDesligamento.ftl</result>
+		</action>
+		<action name="reprovarSolicitacaoDesligamento" class="com.fortes.rh.web.action.geral.ColaboradorDesligaAction" method="reprovarSolicitacaoDesligamento">
+			<result name="success" type="redirect">prepareAprovarReprovarSolicitacaoDesligamento.action</result>
+		</action>
 	</package>
 </xwork>

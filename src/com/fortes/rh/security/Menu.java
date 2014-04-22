@@ -59,7 +59,7 @@ public abstract class Menu
 
 				menu.append(getFilhos(papel.getId(), contexto, empresaLogada));
 				
-				if(exibeMenuTru)
+				if (exibeMenuTru)
 					menu.append("<li><a href='" + contexto + "/exportacao/prepareExportacaoTreinamentos.action'>Exportar Curso/Turma como ocorrência para o TRU</a>");
 				
 				menu.append("</ul>\n</li>\n");
@@ -117,7 +117,8 @@ public abstract class Menu
 				
 				menuFilho.append("<li>");
 				
-				if (!papeisParaEmpresasIntegradas.contains(papel.getCodigo()) || (papeisParaEmpresasIntegradas.contains(papel.getCodigo()) && empresaLogada.isAcIntegra()) ) {
+				if (verificaPapeisParaEmpresasIntegradas(papel, empresaLogada) && verificaEmpresaComSolicitacaoDesligamento(papel, empresaLogada)) 
+				{
 					menuFilho.append("<a href='" + url + "'>" + papel.getNome() + "</a>");
 				}
 
@@ -135,6 +136,13 @@ public abstract class Menu
 		return menuFilho.toString();
 	}
 	
+	private static boolean verificaPapeisParaEmpresasIntegradas(Papel papel, Empresa empresa) 
+	{
+		return !papeisParaEmpresasIntegradas.contains(papel.getCodigo()) || (papeisParaEmpresasIntegradas.contains(papel.getCodigo()) && empresa.isAcIntegra());
+	}
 	
-
+	private static boolean verificaEmpresaComSolicitacaoDesligamento(Papel papel, Empresa empresa) 
+	{
+		return !papel.getCodigo().equalsIgnoreCase("ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO") || empresa.isSolicitarConfirmacaoDesligamento();
+	}
 }

@@ -977,8 +977,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 
-	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId, Empresa empresa) throws Exception 
+	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId) throws Exception 
 	{
+		refatorar o método atualizaDataSolicitacaoDesligamento para atualizaSolicitacaoDesligamento incluindo os campos observacaoDemissao e motivoId para ser chamado diretamento da action reprovarSolicitacaoDesligamento
 		getDao().atualizaDataSolicitacaoDesligamento(dataSolicitacaoDesligamento, null, colaboradorId);
 		getDao().desligaColaborador(null, null, observacaoDemissao, motivoId, colaboradorId);
 	}
@@ -2548,6 +2549,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void desvinculaCandidato(Long candidatoId) 
 	{
 		getDao().desvinculaCandidato(candidatoId);
+	}
+	
+
+	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId) 
+	{
+		return getDao().findAguardandoDesligamento(empresaId);
 	}
 
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 

@@ -52,7 +52,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento);
 	@Audita(operacao="Solicitação Deslig", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId, Empresa empresa) throws Exception;
-	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId, Empresa empresa) throws Exception;
+	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId) throws Exception;
 
 	public void cancelarContratacaoNoAC(Colaborador colaborador, HistoricoColaborador historicoColaborador, String mensagem) throws Exception;
 	public Collection<Colaborador> findByAreasOrganizacionalIds(Long[] idsLong);
@@ -200,4 +200,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findFormacaoEscolar(Long empresaId, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> cargoIds) throws Exception;
 	public Collection<Colaborador> findByEmpresa(Long empresaId);
 	public void desvinculaCandidato(Long candidatoId);
+	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId);
 }

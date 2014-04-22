@@ -25,19 +25,21 @@ import com.opensymphony.xwork.ModelDriven;
 public class ColaboradorDesligaAction extends MyActionSupport implements ModelDriven
 {
 	private static final long serialVersionUID = 1L;
+	
 	private ColaboradorManager colaboradorManager;
 	private MotivoDemissaoManager motivoDemissaoManager;
+	
 	private Colaborador colaborador;
+	private Comissao comissao;
+	private MotivoDemissao motDemissao;
+
 	private Collection<MotivoDemissao> motivoDemissaos;
+	private Collection<Colaborador> colaboradores;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 
 	private boolean desligado;
 	private Date dataDesligamento;
 	private String observacaoDemissao;
-	private MotivoDemissao motDemissao;
-	
-	private Comissao comissao;
-
 	private String nomeBusca;
 	private String cpfBusca;
 	private boolean integraAc;
@@ -73,7 +75,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			
 			if (getEmpresaSistema().isSolicitarConfirmacaoDesligamento())
 			{
-				colaboradorManager.solicitacaoDesligamento(dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId(), getEmpresaSistema());
+				colaboradorManager.solicitacaoDesligamento(dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId());
 				addActionSuccess("Solicitação de desligamento cadastrada com sucesso.");
 			} 
 			else 
@@ -112,12 +114,6 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return Action.SUCCESS;
 	}
 	
-	public String prepareAprovarReprovarSolicitacaoDesligamento() throws Exception
-	{
-		
-		return Action.SUCCESS;
-	}
-
 	public String reLiga() throws Exception
 	{
 		try
@@ -167,6 +163,26 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			
 			return Action.INPUT;
 		}
+	}
+	
+	public String prepareAprovarReprovarSolicitacaoDesligamento() throws Exception
+	{
+		colaboradores = colaboradorManager.findAguardandoDesligamento(getEmpresaSistema().getId()); 
+		return Action.SUCCESS;
+	}
+
+	public String visualizarSolicitacaoDesligamento() throws Exception
+	{
+		motivoDemissaos = motivoDemissaoManager.findAllSelect(getEmpresaSistema().getId());
+		colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
+		
+		return Action.SUCCESS;
+	}
+	
+	public String reprovarSolicitacaoDesligamento() throws Exception
+	{
+		colaboradorManager.solicitacaoDesligamento(null, null, null, colaborador.getId());
+		return Action.SUCCESS;
 	}
 
 	public Colaborador getColaborador()
@@ -280,5 +296,9 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 
 	public Map<String, Object> getParametros() {
 		return parametros;
+	}
+
+	public Collection<Colaborador> getColaboradores() {
+		return colaboradores;
 	}
 }

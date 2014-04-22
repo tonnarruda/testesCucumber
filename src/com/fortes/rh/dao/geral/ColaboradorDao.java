@@ -133,4 +133,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findDemitidosTurnover(Empresa empresa, Date dataIni, Date dataFim, Integer[] tempoServicoIni, Integer[] tempoServicoFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos);
 	public Collection<Colaborador> findByEmpresa(Long empresaId);
 	public void desvinculaCandidato(Long candidatoId);
+	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId);
 }

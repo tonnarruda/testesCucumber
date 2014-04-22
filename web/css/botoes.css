@@ -6,6 +6,14 @@
 	background-image:url(../imgs/btnNao.gif);
 	width: 61px !important;
 }
+.btnAprovar{
+	background-image:url(../imgs/btnAprovar.gif);
+	width: 88px !important;
+}
+.btnReprovar{
+	background-image:url(../imgs/btnReprovar.gif);
+	width: 93px !important;
+}
 .btnRelatorioPorCriterio{
 	background-image:url(../imgs/btnRelatorioPorcriterio.gif);
 	width: 171px !important;
@@ -748,6 +756,8 @@
 .btnAutoAvaliacoesEmLoteDesabilitado,
 .btnSim,
 .btnNao,
+.btnAprovar,
+.btnReprovar,
 .btnLiberarAvalEmLote,
 .btnLiberar, 
 .btnResponderPorColaboradores,

@@ -603,6 +603,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.codigoAC"), "codigoAC");
 		p.add(Projections.property("c.dataDesligamento"), "dataDesligamento");
+		p.add(Projections.property("c.dataSolicitacaoDesligamento"), "dataSolicitacaoDesligamento");
 		p.add(Projections.property("c.naoIntegraAc"), "naoIntegraAc");
 		p.add(Projections.property("c.observacao"), "observacao");
 		p.add(Projections.property("c.observacaoDemissao"), "observacaoDemissao");
@@ -4673,5 +4674,48 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setLong("candidatoId", candidatoId);
 		
 		query.executeUpdate();
+	}
+
+	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId) 
+	{
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+				.add(Restrictions.le("hc2.data", new Date()))
+				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
+		criteria.createCriteria("c.empresa", "e");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
+		criteria.createCriteria("hc.estabelecimento", "est");
+		criteria.createCriteria("hc.areaOrganizacional", "ao");
+		criteria.createCriteria("hc.faixaSalarial", "fs");
+		criteria.createCriteria("fs.cargo", "ca");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
+		p.add(Projections.property("ao.nome"), "areaOrganizacionalNome");
+		p.add(Projections.property("ca.id"), "cargoIdProjection");
+		p.add(Projections.property("ca.nome"), "cargoNomeProjection");
+		p.add(Projections.property("fs.id"), "faixaSalarialIdProjection");
+		p.add(Projections.property("fs.nome"), "faixaSalarialNomeProjection");
+		p.add(Projections.property("est.id"), "estabelecimentoIdProjection");
+		p.add(Projections.property("est.nome"), "estabelecimentoNomeProjection");
+
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("e.id", empresaId));
+		criteria.add(Expression.isNotNull("c.dataSolicitacaoDesligamento"));
+		criteria.add(Expression.isNull("c.dataSolicitacaoDesligamentoAc"));
+		criteria.add(Expression.isNull("c.dataDesligamento"));
+
+		criteria.add(Expression.or(Expression.isNull("hc.data"), Subqueries.propertyEq("hc.data", subQueryHc)));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+
+		return criteria.list();
 	}
 }
