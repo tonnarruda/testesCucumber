@@ -5332,7 +5332,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 618, false);
+SELECT pg_catalog.setval('papel_sequence', 620, false);
 
 
 --
@@ -30497,6 +30497,7 @@ INSERT INTO migrations (name) VALUES ('20140207142401');
 INSERT INTO migrations (name) VALUES ('20140210112646');
 INSERT INTO migrations (name) VALUES ('20140211163111');
 INSERT INTO migrations (name) VALUES ('20140227081057');
+INSERT INTO migrations (name) VALUES ('20140409163212');
 
 
 --
@@ -30618,7 +30619,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (533, 'ROLE_TIPO_DOCUMENTO', 'Tipo do Documento', '/geral/tipoDocumento/list.action', 9, true, NULL, 374, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (537, 'ROLE_PROVIDENCIA', 'Providências', '/geral/providencia/list.action', 10, true, NULL, 374, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (469, 'ROLE_COLAB_MOV', 'Movimentações', '#', 2, true, NULL, 373, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (470, 'ROLE_MOV_PERIODOEXPERIENCIA', 'Acompanhamento do Período de Experiência', '/avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action', 4, true, NULL, 384, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (438, 'ROLE_CAD_ELEICAO', 'Eleições', '/sesmt/eleicao/list.action', 2, true, NULL, 455, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (377, 'ROLE_COLAB_REL', 'Relatórios', '#', 3, true, NULL, 373, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (479, 'ROLE_CAD_PERIODOEXPERIENCIA', 'Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência', '/avaliacao/avaliacaoExperiencia/prepareResultado.action', 1, true, NULL, 486, NULL);
@@ -30845,13 +30845,15 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (616, 'ROLE_MOV_SOLICITACAO_SUSPENDER', 'Suspender', '#', 7, false, NULL, 21, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (617, 'ROLE_MOV_SOLICITACAO_CLONAR', 'Clonar', '#', 8, false, NULL, 21, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (45, 'ROLE_MOV_SOLICITACAO_SELECAO', 'Ver todas', '#', 1, false, NULL, 21, 'Caso essa opção seja desmarcada, o usuário visualizará somente as solicitações para as áreas organizacionais das quais ele seja um dos responsáveis');
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (470, 'ROLE_MOV_PERIODOEXPERIENCIA', 'Acompanhamento do Período de Experiência', '/avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action', 3, true, NULL, 384, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (619, 'ROLE_MOV_MINHASAVALIACOES', 'Minhas Avaliações', '/avaliacao/modelo/minhasAvaliacoesList.action', 4, true, NULL, 384, NULL);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.125.149', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.125.150', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
 
 
 --
@@ -31121,6 +31123,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 614);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 615);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 616);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 617);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 619);
 
 
 --
