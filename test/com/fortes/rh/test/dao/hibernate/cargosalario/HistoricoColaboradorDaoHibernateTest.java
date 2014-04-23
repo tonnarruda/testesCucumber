@@ -1787,7 +1787,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador);
 		
-		Collection<HistoricoColaborador> historicos = historicoColaboradorDao.findByEmpresa(empresa.getId(), StatusRetornoAC.CONFIRMADO);
+		Collection<HistoricoColaborador> historicos = historicoColaboradorDao.findByEmpresaSemPrimeiroHistorico(empresa.getId());
 		
 		assertEquals(1, historicos.size());
 	}

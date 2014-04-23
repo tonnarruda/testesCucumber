@@ -162,5 +162,5 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public void updateStatusAc(int statusRetornoAC, Long... id);
 
-	public Collection<HistoricoColaborador> findByEmpresa(Long empresaId, int statusRetornoAC);
+	public Collection<HistoricoColaborador> findByEmpresaSemPrimeiroHistorico(Long empresaId);
 }

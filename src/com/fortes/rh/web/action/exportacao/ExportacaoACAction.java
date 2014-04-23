@@ -14,6 +14,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
+import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -24,6 +25,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
+import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupport;
@@ -43,6 +45,7 @@ public class ExportacaoACAction extends MyActionSupport
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private FaixaSalarialManager faixaSalarialManager;
 	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
+	private OcorrenciaManager ocorrenciaManager;
 	
 	private List<String> codigosACs;
 	private Collection<Empresa> empresas;
@@ -67,7 +70,7 @@ public class ExportacaoACAction extends MyActionSupport
 	{
 		try
 		{
-			empresa = empresaManager.findEntidadeComAtributosSimplesById(empresaId);
+			empresa = empresaManager.findById(empresaId);
 			empresa.setAcIntegra(true);
 			
 			verificarHistoricosPorIndice();
@@ -76,6 +79,7 @@ public class ExportacaoACAction extends MyActionSupport
 			exportarAreasOrganizacionaisAC();
 			exportarFaixasSalariaisAC();
 			exportarColaboradoresAC();
+			exportarOcorrenciasAC();
 			
 			if(registrosNaoForamConfirmadosNoAC())
 				addActionSuccess("Primeira fase da exportação concluída com sucesso.<br />Confirme todos os registros pendentes no AC Pessoal referentes à integração com RH." +
@@ -274,9 +278,19 @@ public class ExportacaoACAction extends MyActionSupport
 		}
 	}
 
+	private void exportarOcorrenciasAC() throws Exception
+	{
+		Collection<Ocorrencia> ocorrencias = ocorrenciaManager.findSemCodigoAC(empresaId, null); 
+		for (Ocorrencia ocorrencia : ocorrencias) {
+			ocorrencia.setIntegraAC(true);
+			ocorrencia.setEmpresa(empresa);
+			ocorrenciaManager.saveOrUpdate(ocorrencia, empresa);
+		}
+	}
+
 	private void exportarHistoricosColaboardoresAC() throws Exception
 	{
-		Collection<HistoricoColaborador> historicos = historicoColaboradorManager.findByEmpresa(empresaId, StatusRetornoAC.CONFIRMADO);
+		Collection<HistoricoColaborador> historicos = historicoColaboradorManager.findByEmpresaSemPrimeiroHistorico(empresaId);
 		historicoColaboradorManager.saveHistoricoColaboradorNoAc(historicos, empresa);
 
 		historicoColaboradorManager.updateStatusAc(StatusRetornoAC.AGUARDANDO, new CollectionUtil<HistoricoColaborador>().convertCollectionToArrayIds(historicos));
@@ -421,5 +435,9 @@ public class ExportacaoACAction extends MyActionSupport
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
+	}
+
+	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager) {
+		this.ocorrenciaManager = ocorrenciaManager;
 	}
 }

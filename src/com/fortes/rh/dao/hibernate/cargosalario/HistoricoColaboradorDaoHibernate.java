@@ -16,6 +16,8 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
@@ -1317,8 +1319,12 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.executeUpdate();
 	}
 
-	public Collection<HistoricoColaborador> findByEmpresa(Long empresaId, int statusRetornoAC) 
+	public Collection<HistoricoColaborador> findByEmpresaSemPrimeiroHistorico(Long empresaId) 
 	{
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.min("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"));
+		
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "c");
 		criteria.createCriteria("hc.estabelecimento", "e");
@@ -1338,7 +1344,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("hc.status", statusRetornoAC));
+		criteria.add(Property.forName("hc.data").ne(subQueryHc));
 		criteria.add(Expression.eq("c.naoIntegraAc", false));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 

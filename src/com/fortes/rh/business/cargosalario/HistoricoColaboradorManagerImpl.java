@@ -1478,9 +1478,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		getDao().updateStatusAc(statusRetornoAC, id);
 	}
 
-	public Collection<HistoricoColaborador> findByEmpresa(Long empresaId, int statusRetornoAC) 
+	public Collection<HistoricoColaborador> findByEmpresaSemPrimeiroHistorico(Long empresaId) 
 	{
-		return getDao().findByEmpresa(empresaId, statusRetornoAC) ;
+		return getDao().findByEmpresaSemPrimeiroHistorico(empresaId) ;
 	}
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {

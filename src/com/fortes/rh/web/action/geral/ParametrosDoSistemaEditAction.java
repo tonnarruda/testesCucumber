@@ -138,7 +138,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		colaboradors = colaboradorManager.findSemCodigoAC(empresa.getId());
 		faixaSalarials = faixaSalarialManager.findSemCodigoAC(empresa.getId());
 		indices = indiceManager.findSemCodigoAC(empresa);
-		ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId());
+		ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId(), true);
 
 		Collection<String> msgs = empresaManager.verificaIntegracaoAC(empresa);
 		if (msgs.size() > 1)

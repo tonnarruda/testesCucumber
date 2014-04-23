@@ -433,7 +433,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findSemCodigoAC(empresa.getId());
 			Collection<FaixaSalarial> faixaSalarials = faixaSalarialManager.findSemCodigoAC(empresa.getId());
 			Collection<Indice> indices = indiceManager.findSemCodigoAC(empresa);
-			Collection<Ocorrencia> ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId());
+			Collection<Ocorrencia> ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId(), true);
 			Collection<Cidade> cidades = cidadeManager.findSemCodigoAC();
 			
 			if((colaboradors != null && !colaboradors.isEmpty()) || (estabelecimentos != null && !estabelecimentos.isEmpty()) || (areaOrganizacionals != null && !areaOrganizacionals.isEmpty())

@@ -4640,9 +4640,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findByEmpresa(Long empresaId)
 	{
 		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
-				.setProjection(Projections.max("hc2.data"))
+				.setProjection(Projections.min("hc2.data"))
 				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
-				.add(Restrictions.le("hc2.data", new Date()))
 				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
 
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
@@ -4728,6 +4727,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 		criteria.add(Expression.eq("c.desligado", false));
+		criteria.add(Expression.isNull("c.codigoAC"));
 
 		criteria.addOrder(Order.asc("c.nome"));
 
