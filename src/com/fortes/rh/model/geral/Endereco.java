@@ -67,7 +67,12 @@ public class Endereco implements Serializable
 	@NaoAudita
 	public String getEnderecoCompletoFormatado()
 	{
-		return getEnderecoFormatado() + " - " + getCidadeEstado();
+		String endereco = getEnderecoFormatado() + " - " + getCidadeEstado();
+
+		if (StringUtils.isNotBlank(cep))
+			endereco += ", CEP " + cep; 
+	
+		return endereco;
 	}
 
 	@NaoAudita
