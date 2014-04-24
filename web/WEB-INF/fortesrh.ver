@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.12x.15x" bd="" data="xx/xx/2014">
+		<Item visivel="S" motivo="P20140400200"><![CDATA[T&D > Cadastros > Modelos de Avaliação de Curso > Imprimir: Mostrar título da avalição no cabeçalho do relatório.]]></Item>
+	</Versao>
 	<Versao id="1.1.125.150" bd="" data="22/04/2014">
 		<Item visivel="S" motivo="S20140300133"><![CDATA[R&S > Cadastros > Candidatos > Visualizar Currículo > Imprimir: Adição do campo "data de cadastro" na impressão do currículo.]]></Item>
 		<Item visivel="S" motivo="S20131200084"><![CDATA[Aval. Desempenho > Movimentações > Minhas Avaliações: Nova funcionalidade para editar minhas auto avaliações de acompanhamento de período de experiência e avaliações de desempenho.]]></Item>

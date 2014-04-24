@@ -211,7 +211,12 @@ public class QuestionarioListAction extends MyActionSupportList
     	questionario = questionarioManager.findByIdProjection(questionario.getId());
    	   	dataSource = questionarioManager.getQuestionarioRelatorio(questionario);
 
-   	   	String titulo = TipoQuestionario.getDescricaoMaisc(questionario.getTipo());
+   	   	String titulo = ""; 
+   	   	if(questionario.getTipo() == TipoQuestionario.AVALIACAOTURMA)
+   	   		titulo = questionario.getTitulo();
+   	   	else
+   	   		titulo = TipoQuestionario.getDescricaoMaisc(questionario.getTipo());
+   	   	
    	   	String filtro = TipoQuestionario.getFiltro(questionario, filtroQuestionario);
 
     	parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), filtro);
