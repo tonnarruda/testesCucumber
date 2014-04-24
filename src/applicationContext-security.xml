@@ -619,6 +619,7 @@
 				/avaliacao/desempenho/avaliacaoDesempenhoQuestionarioList*=ROLE_USER
 				/avaliacao/desempenho/*/**=ROLE_MOV_AVALIACAO
 				
+				/avaliacao/modelo/minhasAvaliacoesList* = ROLE_MOV_MINHASAVALIACOES
 				/avaliacao/modelo/imprimir*/** = ROLE_MOV_AVALIACAO
 				/avaliacao/modelo/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO
 				/avaliacao/modeloCandidato/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO,ROLE_MOV_SOLICITACAO,ROLE_MOV_SOLICITACAO_MODELO_AVALIACAO
