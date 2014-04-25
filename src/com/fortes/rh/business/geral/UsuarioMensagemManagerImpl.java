@@ -53,6 +53,50 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		}
 
 		ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
+
+		addMensagensTipoRES(empresaId, caixasMensagens, tipoMensagemPermitidas);
+		
+		addMensagensTipoPesquisa(usuarioId, colaboradorId, caixasMensagens, tipoMensagemPermitidas, colaboradorQuestionarioManager);
+		
+		addMensagensTipoAvaliacaoDesempenho(colaboradorId, caixasMensagens, tipoMensagemPermitidas, colaboradorQuestionarioManager);
+		
+		addMensagensTipoTED(usuarioId, colaboradorId, caixasMensagens, tipoMensagemPermitidas, colaboradorQuestionarioManager);
+
+		addMensagensOutrosTipos(usuarioId, empresaId, caixasMensagens, arrayTipos);
+
+		return caixasMensagens;
+	}
+
+	private void addMensagensOutrosTipos(Long usuarioId, Long empresaId, Map<Character, CaixaMensagem> caixasMensagens, Character[] arrayTipos)
+	{
+		MensagemVO vo;
+		char tp;
+		Collection<UsuarioMensagem> usuarioMensagens = new ArrayList<UsuarioMensagem>();
+		if(arrayTipos != null && arrayTipos.length > 0)
+			usuarioMensagens = getDao().listaUsuarioMensagem(usuarioId, empresaId, arrayTipos);
+
+		for (UsuarioMensagem usuarioMensagem : usuarioMensagens) 
+		{
+			tp = usuarioMensagem.getMensagem().getTipo();
+
+			vo = new MensagemVO();
+			vo.setUsuarioMensagemId(usuarioMensagem.getId());
+			vo.setRemetente(usuarioMensagem.getMensagem().getRemetente());
+			vo.setData(usuarioMensagem.getMensagem().getData());
+			vo.setTexto(usuarioMensagem.getMensagem().getTexto());
+			vo.setTipo(tp);
+			vo.setLink(usuarioMensagem.getMensagem().getLink());
+			vo.setLida(usuarioMensagem.isLida());
+
+			caixasMensagens.get(tp).getMensagens().add(vo); 
+			if (!usuarioMensagem.isLida())
+				caixasMensagens.get(tp).incrementaNaoLidas();
+		}
+	}
+
+	private void addMensagensTipoAvaliacaoDesempenho(Long colaboradorId, Map<Character, CaixaMensagem> caixasMensagens, TipoMensagem tipoMensagemPermitidas, ColaboradorQuestionarioManager colaboradorQuestionarioManager)
+	{
+		MensagemVO vo;
 		if(colaboradorId != null && tipoMensagemPermitidas.containsKey(TipoMensagem.AVALIACAO_DESEMPENHO))
 		{
 			AvaliacaoDesempenhoManager avaliacaoDesempenhoManager = (AvaliacaoDesempenhoManager) SpringUtil.getBean("avaliacaoDesempenhoManager");
@@ -77,31 +121,13 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 				}
 			}
 		}
-		
-		Collection<UsuarioMensagem> usuarioMensagens = new ArrayList<UsuarioMensagem>();
-		if(arrayTipos != null && arrayTipos.length > 0)
-			usuarioMensagens = getDao().listaUsuarioMensagem(usuarioId, empresaId, arrayTipos);
+	}
 
-		for (UsuarioMensagem usuarioMensagem : usuarioMensagens) 
-		{
-			tp = usuarioMensagem.getMensagem().getTipo();
-
-			vo = new MensagemVO();
-			vo.setUsuarioMensagemId(usuarioMensagem.getId());
-			vo.setRemetente(usuarioMensagem.getMensagem().getRemetente());
-			vo.setData(usuarioMensagem.getMensagem().getData());
-			vo.setTexto(usuarioMensagem.getMensagem().getTexto());
-			vo.setTipo(tp);
-			vo.setLink(usuarioMensagem.getMensagem().getLink());
-			vo.setLida(usuarioMensagem.isLida());
-
-			caixasMensagens.get(tp).getMensagens().add(vo); 
-			if (!usuarioMensagem.isLida())
-				caixasMensagens.get(tp).incrementaNaoLidas();
-		}
-
+	private void addMensagensTipoPesquisa(Long usuarioId, Long colaboradorId, Map<Character, CaixaMensagem> caixasMensagens, TipoMensagem tipoMensagemPermitidas, ColaboradorQuestionarioManager colaboradorQuestionarioManager)
+	{
 		if(colaboradorId != null)
 		{
+			MensagemVO vo;
 			if(tipoMensagemPermitidas.containsKey(TipoMensagem.PESQUISAS))
 			{
 				QuestionarioManager questionarioManager = (QuestionarioManager) SpringUtil.getBean("questionarioManager");
@@ -112,12 +138,19 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 					vo.setTexto(questionario.getTitulo());
 					vo.setLink("pesquisa/colaboradorResposta/prepareResponderQuestionario.action?questionario.id=" + questionario.getId() + "&colaborador.id=" + colaboradorId + "&tela=index&validarFormulario=true");
 					vo.setTipo(TipoMensagem.PESQUISAS);
-					
+
 					caixasMensagens.get(TipoMensagem.PESQUISAS).getMensagens().add(vo);
 					caixasMensagens.get(TipoMensagem.PESQUISAS).incrementaNaoLidas();
 				}
 			}
-			
+		}
+	}
+	
+	private void addMensagensTipoTED(Long usuarioId, Long colaboradorId, Map<Character, CaixaMensagem> caixasMensagens, TipoMensagem tipoMensagemPermitidas, ColaboradorQuestionarioManager colaboradorQuestionarioManager)
+	{
+		if(colaboradorId != null)
+		{
+			MensagemVO vo;
 			if(tipoMensagemPermitidas.containsKey(TipoMensagem.TED))
 			{
 				Collection<ColaboradorQuestionario> colaboradorQuestionariosTeD = colaboradorQuestionarioManager.findQuestionarioByTurmaLiberadaPorUsuario(usuarioId);
@@ -127,13 +160,17 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 					vo.setTexto(colaboradorQuestionario.getNomeCursoTurmaAvaliacao());
 					vo.setLink("pesquisa/colaboradorResposta/prepareResponderQuestionario.action?colaborador.id=" + colaboradorId + "&questionario.id=" + colaboradorQuestionario.getQuestionario().getId() + "&turmaId=" + colaboradorQuestionario.getTurma().getId() + "&voltarPara=../../index.action");
 					vo.setTipo(TipoMensagem.TED);
-	
+
 					caixasMensagens.get(TipoMensagem.TED).getMensagens().add(vo);
 					caixasMensagens.get(TipoMensagem.TED).incrementaNaoLidas();
 				}
 			}
 		}
+	}
 
+	private void addMensagensTipoRES(Long empresaId, Map<Character, CaixaMensagem> caixasMensagens, TipoMensagem tipoMensagemPermitidas)
+	{
+		MensagemVO vo;
 		if (tipoMensagemPermitidas.containsKey(TipoMensagem.RES))
 		{
 			SolicitacaoManager solicitacaoManager = (SolicitacaoManager) SpringUtil.getBean("solicitacaoManager");
@@ -167,8 +204,6 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 				}
 			}
 		}
-
-		return caixasMensagens;
 	}
 
 	public UsuarioMensagem findByIdProjection(Long usuarioMensagemId, Long empresaId)
