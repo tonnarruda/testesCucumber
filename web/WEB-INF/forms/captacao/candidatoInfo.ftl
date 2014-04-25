@@ -25,6 +25,7 @@
 			left: 20% !important;
 			width: 400px !important;
 			height: 420px !important;
+			z-index: 9999;
 		}
 		#boxtitle
 		{
