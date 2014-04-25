@@ -2,6 +2,7 @@ package com.fortes.rh.web.action.geral;
 
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -391,7 +393,6 @@ public class ColaboradorListAction extends MyActionSupportList
 			camposExtras.setId(1l);
 			
 			String nomeRelatorio = "modeloDinamico.jrxml";
-			montaColunas();
 			
 			if(agruparPorTempoServico)
 			{
@@ -407,123 +408,16 @@ public class ColaboradorListAction extends MyActionSupportList
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
 			
-			JRDataSource dataSource = new JRBeanCollectionDataSource(colaboradores);
-
-			String filtro = "Estabelecimentos: " + estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck));
-			filtro += "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areaOrganizacionalsCheck));
+			JRDataSource dataSource = setupRelatorio();
 			
-			parametros = RelatorioUtil.getParametrosRelatorio("Listagem de Colaboradores", getEmpresaSistema(), filtro);
-            parametros.put("TOTALREGISTROS", colaboradores.size());
+			montaColunas();
             
             Collection<ReportColumn> colunasMarcadasRedimensionadas = ReportColumn.resizeColumns(colunas, colunasMarcadas);
             
-            // Montagem do relatorio
-            
-            Font SansSerif = new Font(8, "SansSerif", true);
-            
-		    Style headerStyle = new Style();
-		    headerStyle.setBlankWhenNull(true);
-		    headerStyle.setFont(SansSerif);
-		    headerStyle.setBorderBottom(new Border(0.5f, Border.BORDER_STYLE_SOLID));
-		    
-		    Style detailStyle = new Style();
-		    detailStyle.setBlankWhenNull(true);
-		    detailStyle.setFont(SansSerif);
-		    detailStyle.setVerticalAlign(VerticalAlign.TOP);
-		    detailStyle.setOverridesExistingStyle(true);
-		    
-		    Style style = new Style();
-		    style.setFont(SansSerif);
-		    style.setHorizontalAlign(HorizontalAlign.LEFT);
-		    style.setVerticalAlign(VerticalAlign.MIDDLE);
-		    
-		    if(agruparPorTempoServico){
-		    	headerStyle.setPaddingLeft(10);
-		    	style.setPaddingLeft(10);
-		    }
-		    
-		    Style oddDetailStyle = new Style();
-		    oddDetailStyle.setBackgroundColor(new Color(238, 238, 238));
-		    oddDetailStyle.setFont(SansSerif);
-		    
-		    DynamicReportBuilder drb = new DynamicReportBuilder();
-		    drb.setTemplateFile("../../WEB-INF/report/" + nomeRelatorio, true, true, true, true);
-		    drb.setDetailHeight(15);
-		    drb.setHeaderHeight(10);
-		    drb.setMargins(15, 20, 30, 15);
-		    drb.setDefaultStyles(null, null, headerStyle, detailStyle);
-		    drb.setColumnsPerPage(1);
-		    drb.setPageSizeAndOrientation(Page.Page_A4_Landscape());
-		    drb.setUseFullPageWidth(true);
-		    drb.setColumnSpace(4);
-		    drb.setOddRowBackgroundStyle(oddDetailStyle);
-		    drb.setPrintBackgroundOnOddRows(true);
-            
-		    boolean integradaAc = true;
-		    if (empresa != null && empresa.getId() != null)
-		    	integradaAc = empresaManager.checkEmpresaIntegradaAc(empresa.getId());
-		    
-		    AbstractColumn aCol;
-		    for (ReportColumn coluna : colunasMarcadasRedimensionadas)
-            {
-		    	if(!integradaAc && coluna.getName().equals(NOMENCLATURA_ENVIADO_AC))
-		    		continue;
-		    	
-	            aCol = ColumnBuilder.getNew()
-	            					.setColumnProperty(coluna.getProperty(), String.class.getName())
-	            					.setTitle(coluna.getName())
-	            					.setWidth(coluna.getSize() + 30)
-	            					.setStyle(style)
-	            					.build();
-	            
-	            drb.addColumn(aCol);
-			}
-
-		    if(agruparPorTempoServico)
-		    {
-			    Style styleGroup = new Style();
-	            styleGroup.setHorizontalAlign(HorizontalAlign.LEFT);
-	            styleGroup.setVerticalAlign(VerticalAlign.MIDDLE);
-	            styleGroup.setFont(SansSerif);
-	
-			    AbstractColumn columnTempoServico = ColumnBuilder.getNew()
-			            .setColumnProperty("tempoServicoString", String.class.getName())
-			            .setTitle("Tempo de Serviço")
-			            .setWidth(new Integer(100))
-			            .setStyle(styleGroup)
-			            .build();
-
-			    drb.addColumn(columnTempoServico);
-			    
-			    GroupBuilder gb  = new GroupBuilder();
-			    DJGroup g = gb.setCriteriaColumn((PropertyColumn) columnTempoServico)
-			    		.setGroupLayout(GroupLayout.VALUE_IN_HEADER)
-			    		.setAllowFooterSplit(true)
-			    		.setStartInNewPage(true)
-			    		.setDefaultColumnHeaderStyle(styleGroup)
-			    		.setDefaultFooterVariableStyle(styleGroup)
-			    		.setDefaultHeaderVariableStyle(styleGroup)
-			    		.build();
-			    
-			    g.setName("Tempo de Serviço");
-			    g.setDefaulFooterVariableStyle(styleGroup);
-			    g.setDefaulHeaderVariableStyle(styleGroup);
-			    g.setDefaultColumnHeaederStyle(styleGroup);
-			    
-			    drb.addGroup(g);
-		    }
-		    
-	        DynamicReport report = drb.build();
-	        	        
-		    JasperReport jreport = DynamicJasperHelper.generateJasperReport(report, new ClassicLayoutManager(), parametros);
-		    JasperPrint jprint = JasperFillManager.fillReport(jreport, parametros, dataSource);
-		    
-		    HttpServletResponse response = ServletActionContext.getResponse();
-		    response.setContentType("application/octet-stream");
-		    response.setHeader("Content-Disposition", "attachment;filename=\"relatorioDinamico.pdf\"");
-		    
-		    JasperExportManager.exportReportToPdfStream(jprint, response.getOutputStream());
+            DynamicReport dynamicReport = montaRelatorioDinamico(nomeRelatorio, dataSource, colunasMarcadasRedimensionadas);
 			
+            geraRelatorioDinamico(dataSource, dynamicReport);
+            
 			return Action.SUCCESS;
 			
 		}
@@ -539,6 +433,130 @@ public class ColaboradorListAction extends MyActionSupportList
 			prepareRelatorioDinamico();
  			return Action.INPUT;
 		}
+	}
+
+	private JRDataSource setupRelatorio()
+	{
+		JRDataSource dataSource = new JRBeanCollectionDataSource(colaboradores);
+
+		String filtro = "Estabelecimentos: " + estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck));
+		filtro += "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areaOrganizacionalsCheck));
+		
+		parametros = RelatorioUtil.getParametrosRelatorio("Listagem de Colaboradores", getEmpresaSistema(), filtro);
+		parametros.put("TOTALREGISTROS", colaboradores.size());
+		
+		return dataSource;
+	}
+
+	private DynamicReport montaRelatorioDinamico(String nomeRelatorio, JRDataSource dataSource, Collection<ReportColumn> colunasMarcadasRedimensionadas) throws JRException, IOException
+	{
+		Font SansSerif = new Font(8, "SansSerif", true);
+		
+		Style headerStyle = new Style();
+		headerStyle.setBlankWhenNull(true);
+		headerStyle.setFont(SansSerif);
+		headerStyle.setBorderBottom(new Border(0.5f, Border.BORDER_STYLE_SOLID));
+		
+		Style detailStyle = new Style();
+		detailStyle.setBlankWhenNull(true);
+		detailStyle.setFont(SansSerif);
+		detailStyle.setVerticalAlign(VerticalAlign.TOP);
+		detailStyle.setOverridesExistingStyle(true);
+		
+		Style columnStyle = new Style();
+		columnStyle.setFont(SansSerif);
+		columnStyle.setHorizontalAlign(HorizontalAlign.LEFT);
+		columnStyle.setVerticalAlign(VerticalAlign.MIDDLE);
+		
+		if(agruparPorTempoServico){
+			headerStyle.setPaddingLeft(10);
+			columnStyle.setPaddingLeft(10);
+		}
+		
+		Style oddDetailStyle = new Style();
+		oddDetailStyle.setBackgroundColor(new Color(238, 238, 238));
+		oddDetailStyle.setFont(SansSerif);
+		
+		DynamicReportBuilder drb = new DynamicReportBuilder();
+		drb.setTemplateFile("../../WEB-INF/report/" + nomeRelatorio, true, true, true, true);
+		drb.setDetailHeight(15);
+		drb.setHeaderHeight(10);
+		drb.setMargins(15, 20, 30, 15);
+		drb.setDefaultStyles(null, null, headerStyle, detailStyle);
+		drb.setColumnsPerPage(1);
+		drb.setPageSizeAndOrientation(Page.Page_A4_Landscape());
+		drb.setUseFullPageWidth(true);
+		drb.setColumnSpace(4);
+		drb.setOddRowBackgroundStyle(oddDetailStyle);
+		drb.setPrintBackgroundOnOddRows(true);
+		
+		boolean integradaAc = true;
+		if (empresa != null && empresa.getId() != null)
+			integradaAc = empresaManager.checkEmpresaIntegradaAc(empresa.getId());
+		
+		AbstractColumn aCol;
+		for (ReportColumn coluna : colunasMarcadasRedimensionadas)
+		{
+			if(!integradaAc && coluna.getName().equals(NOMENCLATURA_ENVIADO_AC))
+				continue;
+			
+		    aCol = ColumnBuilder.getNew()
+		    					.setColumnProperty(coluna.getProperty(), String.class.getName())
+		    					.setTitle(coluna.getName())
+		    					.setWidth(coluna.getSize() + 30)
+		    					.setStyle(columnStyle)
+		    					.build();
+		    
+		    drb.addColumn(aCol);
+		}
+
+		if(agruparPorTempoServico)
+		{
+		    Style styleGroup = new Style();
+		    styleGroup.setHorizontalAlign(HorizontalAlign.LEFT);
+		    styleGroup.setVerticalAlign(VerticalAlign.MIDDLE);
+		    styleGroup.setFont(SansSerif);
+
+		    AbstractColumn columnTempoServico = ColumnBuilder.getNew()
+		            .setColumnProperty("tempoServicoString", String.class.getName())
+		            .setTitle("Tempo de Serviço")
+		            .setWidth(new Integer(100))
+		            .setStyle(styleGroup)
+		            .build();
+
+		    drb.addColumn(columnTempoServico);
+		    
+		    GroupBuilder gb  = new GroupBuilder();
+		    DJGroup g = gb.setCriteriaColumn((PropertyColumn) columnTempoServico)
+		    		.setGroupLayout(GroupLayout.VALUE_IN_HEADER)
+		    		.setAllowFooterSplit(true)
+		    		.setStartInNewPage(true)
+		    		.setDefaultColumnHeaderStyle(styleGroup)
+		    		.setDefaultFooterVariableStyle(styleGroup)
+		    		.setDefaultHeaderVariableStyle(styleGroup)
+		    		.build();
+		    
+		    g.setName("Tempo de Serviço");
+		    g.setDefaulFooterVariableStyle(styleGroup);
+		    g.setDefaulHeaderVariableStyle(styleGroup);
+		    g.setDefaultColumnHeaederStyle(styleGroup);
+		    
+		    drb.addGroup(g);
+		}
+		
+		return drb.build();		
+	}
+
+	private void geraRelatorioDinamico(JRDataSource dataSource, DynamicReport report) throws JRException, IOException
+	{
+		JasperReport jreport = DynamicJasperHelper.generateJasperReport(report, new ClassicLayoutManager(), parametros);
+		JasperPrint jprint = JasperFillManager.fillReport(jreport, parametros, dataSource);
+		
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType("application/octet-stream");
+		response.setHeader("Content-Disposition", "attachment;filename=\"relatorioDinamico.pdf\"");
+		
+		JasperExportManager.exportReportToPdfStream(jprint, response.getOutputStream());
 	}
 
 	private Collection<Colaborador> getcolaboradoresByFiltros(Collection<Long> estabelecimentos, Collection<Long> areas, String order) 
