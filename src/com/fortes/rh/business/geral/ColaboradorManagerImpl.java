@@ -308,18 +308,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		empregado.setNomeComercial(colaborador.getNomeComercial());
 		empregado.setCodigoAC(colaborador.getCodigoAC());
 
-		empregado.setLogradouro(colaborador.getEndereco().getLogradouro());
-		empregado.setNumero(colaborador.getEndereco().getNumero());
-		empregado.setComplemento(colaborador.getEndereco().getComplemento());
-		empregado.setBairro(colaborador.getEndereco().getBairro());
-		empregado.setCep(colaborador.getEndereco().getCep().equals("") ? "" : colaborador.getEndereco().getCep());
-
-		if(colaborador.getEndereco().getCidade().getId() != null)
-		{
-			Cidade cidade = cidadeManager.findByIdProjection(colaborador.getEndereco().getCidade().getId());
-			empregado.setCidadeCodigoAC(cidade.getCodigoAC());
-			empregado.setUfSigla(cidade.getUf().getSigla());
-		}
+		bindEnderecoEmpregado(colaborador, empregado);
 
 		empregado.setCpf(colaborador.getPessoal().getCpf());
 		empregado.setPis(colaborador.getPessoal().getPis());
@@ -327,21 +316,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (colaborador.getPessoal().getDataNascimento() != null)
 			empregado.setDataNascimento(DateUtil.formataDiaMesAno(colaborador.getPessoal().getDataNascimento()));
 
-		if(colaborador.getPessoal() != null && colaborador.getPessoal().getEscolaridade() != null)
-		{
-			if(colaborador.getPessoal().getEscolaridade().equals("08") || colaborador.getPessoal().getEscolaridade().equals("09"))//tecnico no rh
-				empregado.setEscolaridade("07");//colegial completo no ac
-			else if(colaborador.getPessoal().getEscolaridade().equals("10"))//superior em andamento no rh
-				empregado.setEscolaridade("08");//superior em andamento no ac
-			else if(colaborador.getPessoal().getEscolaridade().equals("11") || colaborador.getPessoal().getEscolaridade().equals("12"))// superior completo / especializacao no rh
-				empregado.setEscolaridade("09");// superior completo no ac
-			else if(colaborador.getPessoal().getEscolaridade().equals("13"))// mestrado no rh
-				empregado.setEscolaridade("10");// mestrado no ac
-			else if(colaborador.getPessoal().getEscolaridade().equals("14"))//doutorrado no rh
-				empregado.setEscolaridade("11");//doutorrado no ac
-			else
-				empregado.setEscolaridade(colaborador.getPessoal().getEscolaridade());
-		}
+		bindEscolaridadeEmpregado(colaborador, empregado);
 
 		empregado.setEstadoCivil(colaborador.getPessoal().getEstadoCivil());
 		if (colaborador.getDataAdmissao() != null)
@@ -357,8 +332,56 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		empregado.setFoneCelular(colaborador.getContato().getFoneCelular());
 		empregado.setEmail(colaborador.getContato().getEmail());
 
+		bindIdentidadeEmpregado(colaborador, empregado);
+		bindTituloEleitoralEmpregado(colaborador, empregado);
+		bindCertificadoMilitarEmpregado(colaborador, empregado);
+		bindHabilitacaoEmpregado(colaborador, empregado);
+		bindCtpsEmpregado(colaborador, empregado);
+		bindVinculoEmpregado(colaborador, empregado);
+
+		return empregado;
+	}
+
+	private void bindEnderecoEmpregado(Colaborador colaborador, TEmpregado empregado) 
+	{
+		empregado.setLogradouro(colaborador.getEndereco().getLogradouro());
+		empregado.setNumero(colaborador.getEndereco().getNumero());
+		empregado.setComplemento(colaborador.getEndereco().getComplemento());
+		empregado.setBairro(colaborador.getEndereco().getBairro());
+		empregado.setCep(colaborador.getEndereco().getCep().equals("") ? "" : colaborador.getEndereco().getCep());
+		
+		if (colaborador.getEndereco().getCidade().getId() != null)
+		{
+			Cidade cidade = cidadeManager.findByIdProjection(colaborador.getEndereco().getCidade().getId());
+			empregado.setCidadeCodigoAC(cidade.getCodigoAC());
+			empregado.setUfSigla(cidade.getUf().getSigla());
+		}
+	}
+	
+	private void bindEscolaridadeEmpregado(Colaborador colaborador, TEmpregado empregado) 
+	{
+		if (colaborador.getPessoal() != null && colaborador.getPessoal().getEscolaridade() != null)
+		{
+			if (colaborador.getPessoal().getEscolaridade().equals("08") || colaborador.getPessoal().getEscolaridade().equals("09"))//tecnico no rh
+				empregado.setEscolaridade("07");//colegial completo no ac
+			else if (colaborador.getPessoal().getEscolaridade().equals("10"))//superior em andamento no rh
+				empregado.setEscolaridade("08");//superior em andamento no ac
+			else if (colaborador.getPessoal().getEscolaridade().equals("11") || colaborador.getPessoal().getEscolaridade().equals("12"))// superior completo / especializacao no rh
+				empregado.setEscolaridade("09");// superior completo no ac
+			else if (colaborador.getPessoal().getEscolaridade().equals("13"))// mestrado no rh
+				empregado.setEscolaridade("10");// mestrado no ac
+			else if (colaborador.getPessoal().getEscolaridade().equals("14"))//doutorrado no rh
+				empregado.setEscolaridade("11");//doutorrado no ac
+			else
+				empregado.setEscolaridade(colaborador.getPessoal().getEscolaridade());
+		}
+	}
+	
+	private void bindIdentidadeEmpregado(Colaborador colaborador, TEmpregado empregado) 
+	{
 		empregado.setIdentidadeNumero(colaborador.getPessoal().getRg());
 		empregado.setIdentidadeOrgao(colaborador.getPessoal().getRgOrgaoEmissor());
+		
 		if (colaborador.getPessoal().getRgDataExpedicao() != null)
 			empregado.setIdentidadeDataExpedicao(DateUtil.formataDiaMesAno(colaborador.getPessoal().getRgDataExpedicao()));
 
@@ -367,8 +390,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			Estado estado = estadoManager.findById(colaborador.getPessoal().getRgUf().getId());
 			empregado.setIdentidadeUF(estado.getSigla());
 		}
-
-		if (colaborador.getPessoal().getTituloEleitoral() != null) {
+	}
+	
+	private void bindTituloEleitoralEmpregado(Colaborador colaborador, TEmpregado empregado) 
+	{
+		if (colaborador.getPessoal().getTituloEleitoral() != null) 
+		{
 			if (colaborador.getPessoal().getTituloEleitoral().getTitEleitNumero() != null)
 				empregado.setTituloNumero(colaborador.getPessoal().getTituloEleitoral().getTitEleitNumero());
 			if (colaborador.getPessoal().getTituloEleitoral().getTitEleitSecao() != null)
@@ -376,9 +403,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			if (colaborador.getPessoal().getTituloEleitoral().getTitEleitZona() != null)
 				empregado.setTituloZona(colaborador.getPessoal().getTituloEleitoral().getTitEleitZona());
 		}
-
-
-		if (colaborador.getPessoal().getCertificadoMilitar() != null) {
+	}
+	
+	private void bindCertificadoMilitarEmpregado(Colaborador colaborador, TEmpregado empregado) 
+	{
+		if (colaborador.getPessoal().getCertificadoMilitar() != null) 
+		{
 			if (colaborador.getPessoal().getCertificadoMilitar().getCertMilNumero() != null)
 				empregado.setCertificadoMilitarNumero(colaborador.getPessoal().getCertificadoMilitar().getCertMilNumero());
 			if (colaborador.getPessoal().getCertificadoMilitar().getCertMilSerie() != null)
@@ -386,8 +416,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			if (colaborador.getPessoal().getCertificadoMilitar().getCertMilTipo() != null)
 				empregado.setCertificadoMilitarTipo(colaborador.getPessoal().getCertificadoMilitar().getCertMilTipo());
 		}
-
-		if (colaborador.getHabilitacao() != null) {
+	}
+	
+	private void bindHabilitacaoEmpregado(Colaborador colaborador, TEmpregado empregado) 
+	{
+		if (colaborador.getHabilitacao() != null) 
+		{
 			if (colaborador.getHabilitacao().getNumeroHab() != null)
 				empregado.setHabilitacaoNumero(colaborador.getHabilitacao().getNumeroHab());
 			if (colaborador.getHabilitacao().getEmissao() != null)
@@ -397,8 +431,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			if (colaborador.getHabilitacao().getCategoria() != null)
 				empregado.setHabilitacaoCategoria(colaborador.getHabilitacao().getCategoria());
 		}
-
-		if (colaborador.getPessoal().getCtps() != null) {
+	}
+	
+	private void bindCtpsEmpregado(Colaborador colaborador, TEmpregado empregado) 
+	{
+		if (colaborador.getPessoal().getCtps() != null) 
+		{
 			if (colaborador.getPessoal().getCtps().getCtpsNumero() != null)
 				empregado.setCtpsNumero(colaborador.getPessoal().getCtps().getCtpsNumero());
 			if (colaborador.getPessoal().getCtps().getCtpsSerie() != null)
@@ -413,25 +451,28 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				empregado.setCtpsUFSigla(estado.getSigla());
 			}
 		}
-
-		if(colaborador.getVinculo().equals(Vinculo.ESTAGIO))
+	}
+	
+	private void bindVinculoEmpregado(Colaborador colaborador, TEmpregado empregado) 
+	{
+		if (colaborador.getVinculo().equals(Vinculo.ESTAGIO))
 			empregado.setTipoAdmissao("00");
-		else{
+		else 
+		{
 			if (colaborador.getVinculo().equals(Vinculo.TEMPORARIO))
 				empregado.setVinculo(50);
-			else{
+			else
+			{
 				if (colaborador.getVinculo().equals(Vinculo.APRENDIZ)){
 					empregado.setVinculo(55);
 					empregado.setCategoria(07);
 				}
-				else{
+				else {
 					empregado.setTipoAdmissao("20");
 					empregado.setVinculo(10);
 				}
 			}
 		}
-
-		return empregado;
 	}
 
 	public String getVinculo(String admissaoTipo, Integer admissaoVinculo, Integer admissaoCategoria) {
