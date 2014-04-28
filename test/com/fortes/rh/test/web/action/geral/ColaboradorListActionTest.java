@@ -208,54 +208,6 @@ public class ColaboradorListActionTest extends MockObjectTestCase
 	{
 		assertEquals("success",action.formPrint());
 	}
-	public void testGetSet()
-	{
-		action.getNomeBusca();
-		action.setNomeBusca("");
-		action.getColaboradores();
-		action.setColaboradores(null);
-		action.setColaborador(null);
-		assertNotNull(action.getColaborador());
-		action.getPageAnt();
-		action.setPageAnt(1);
-		action.getSituacaos();
-		action.getMatriculaBusca();
-		action.setMatriculaBusca("123");
-		action.getSituacao();
-		action.setSituacao(null);
-		action.getAreaOrganizacional();
-		action.setAreaOrganizacional(new AreaOrganizacional());
-		action.getAreaOrganizacional();
-		action.getAreasList();
-		action.setAreasList(null);
-		action.getCargo();
-		action.setCargo(null);
-		action.getCargosList();
-		action.setCargosList(null);
-		action.setExibir('C');
-		action.getExibir();
-		action.getMeses();
-		action.setMes(1);
-		action.getMes();
-		action.getParametros();
-		action.getAreasCheck();
-		action.setAreasCheck(null);
-		action.getAreasCheckList();
-		action.getEstabelecimentosCheck();
-		action.setEstabelecimentosCheck(null);
-		action.getEstabelecimento();
-		action.setEstabelecimento(null);
-		action.getEstabelecimentosList();
-		action.setEstabelecimentosList(null);
-		action.getEstabelecimentosCheckList();
-		action.isExibirNomeComercial();
-		action.setExibirNomeComercial(true);
-		action.getDataFim();
-		action.getDataIni();
-		action.setDataIni(new Date());
-		action.setDataFim(new Date());
-		action.isExibirSomenteAtivos();
-	}
 
 	public void setEmpresaManager(Mock empresaManager)
 	{
