@@ -972,16 +972,14 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		if(acPessoalClientColaborador.solicitacaoDesligamentoAc(historicosColaborador, empresa))
 		{
-			getDao().atualizaDataSolicitacaoDesligamento(null, dataSolicitacaoDesligamento, colaboradorId);
+			getDao().atualizaDataSolicitacaoDesligamento(null, dataSolicitacaoDesligamento, null, null, colaboradorId);
 			desligaColaborador(null, null, observacaoDemissao, motivoId, colaboradorId, false);
 		}
 	}
 
 	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId) throws Exception 
 	{
-		refatorar o método atualizaDataSolicitacaoDesligamento para atualizaSolicitacaoDesligamento incluindo os campos observacaoDemissao e motivoId para ser chamado diretamento da action reprovarSolicitacaoDesligamento
-		getDao().atualizaDataSolicitacaoDesligamento(dataSolicitacaoDesligamento, null, colaboradorId);
-		getDao().desligaColaborador(null, null, observacaoDemissao, motivoId, colaboradorId);
+		getDao().atualizaDataSolicitacaoDesligamento(dataSolicitacaoDesligamento, null, observacaoDemissao, motivoId, colaboradorId);
 	}
 	
 	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long colaboradorId, boolean desligaByAC) throws Exception
@@ -2384,7 +2382,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem, String empresaCodigoAC, String grupoAC) throws Exception
 	{
-		getDao().removerMotivoDemissaoColaborador(colaborador.getId());
+		getDao().religaColaborador(colaborador.getId());
 		gerenciadorComunicacaoManager.enviaMensagemCancelamentoSolicitacaoDesligamentoAC(colaborador, mensagem, empresaCodigoAC, grupoAC);
 	}
 

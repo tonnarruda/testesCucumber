@@ -132,7 +132,6 @@ import com.fortes.rh.test.factory.geral.CamposExtrasFactory;
 import com.fortes.rh.test.factory.geral.ColaboradorOcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
-import com.fortes.rh.test.factory.geral.MotivoDemissaoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.ProvidenciaFactory;
 import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
@@ -5412,27 +5411,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Exception exception = null;
 		try {
-			colaboradorDao.atualizaDataSolicitacaoDesligamento(null, hoje, colaborador.getId());
-		} catch (Exception e) {
-			exception = e;
-		}
-		
-		assertNull(exception);
-	}
-	
-	public void testRemoverMotivoDemissaoColaborador() 
-	{
-		MotivoDemissao motivoDemissao = MotivoDemissaoFactory.getEntity();
-		motivoDemissao.setMotivo("motivo");
-		motivoDemissaoDao.save(motivoDemissao);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setMotivoDemissao(motivoDemissao);
-		colaboradorDao.save(colaborador);
-		
-		Exception exception = null;
-		try {
-			colaboradorDao.removerMotivoDemissaoColaborador(colaborador.getId());
+			colaboradorDao.atualizaDataSolicitacaoDesligamento(null, hoje, null, null, colaborador.getId());
 		} catch (Exception e) {
 			exception = e;
 		}

@@ -61,13 +61,13 @@
 	<@ww.actionerror />
 	<@ww.form name="form" action="${formAction}" method="POST">
 	
-		<@ww.hidden label="Id" name="colaborador.id" />
+		<@ww.hidden name="colaborador.id" />
 		<@ww.hidden name="colaborador.nome" />
 	
 		<@ww.label cssStyle="font-family: Arial, Helvetica, sans-serif;font-size:16px;font-weight:bold;" name="colaborador.nome"/>
 		<br>
 		<@ww.hidden label="Desligado" name="desligado" fieldValue="true" value="true" />
-		<#if integraAc && !colaborador.naoIntegraAc>
+		<#if integraAc && !colaborador.naoIntegraAc && colaborador.dataDesligamento?exists>
 			Data de Desligamento: ${dataDesligamento}<br><br>
 			<@ww.hidden name="dataDesligamento" value="${dataDesligamento}" id="data" />
 		<#else>

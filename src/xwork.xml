@@ -55,7 +55,7 @@
 			  prepareImprimirCertificado,listOcorrenciaColaborador,prepareFiltro,prepareRelatorioOcorrencia,buscaOcorrencia,verTurmasCurso,deleteDetalhe,prepareMudancaFuncao,mudaFuncao,bloquearLtcat,desbloquearLtcat,gerarRelatorioLtcat,
 			  imprimirSolicitacaoPessoal,prepareInsertCurriculo,aplicarDissidio,preparePesquisa,prepareAutoInsert,createAuto,prepareTransferirFaixasCargo,transferirFaixasCargo,prepareFiltroHistoricoTreinamentos,relatorioHistoricoTreinamentos,prepareImportarCadastros,importarCadastros,prepareInsertNota,sobre,prepareRelatorioColaboradorCargo,relatorioColaboradorCargo,prepareInsertFiltro,
 			  prepareUpdateFiltro,preparePromoverCandidato,updateConf,gerarBD,imprimeRelatorioPeriodoDeAcompanhamentoDeExperiencia,imprimirPerformanceFuncional,configAutenticador,
-			  prepareAprovarReprovarSolicitacaoDesligamento,visualizarSolicitacaoDesligamento,reprovarSolicitacaoDesligamento
+			  prepareAprovarReprovarSolicitacaoDesligamento,visualizarSolicitacaoDesligamento,aprovarSolicitacaoDesligamento,reprovarSolicitacaoDesligamento
 			  </param>
         </interceptor-ref>
         <interceptor-ref name="workflow">

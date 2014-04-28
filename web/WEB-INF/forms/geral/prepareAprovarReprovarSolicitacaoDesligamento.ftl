@@ -9,6 +9,9 @@
 <title>Solicitações de Desligamento</title>
 </head>
 <body>
+	<@ww.actionmessage />
+	<@ww.actionerror />
+	
 	<@display.table name="colaboradores" id="colaborador" class="dados" >
 		<@display.column title="Ações" class="acao">
 			<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="visualizarSolicitacaoDesligamento.action?colaborador.id=${colaborador.id}" imgTitle="Visualizar solicitação de desligamento" imgName="desliga_colab.gif"/>

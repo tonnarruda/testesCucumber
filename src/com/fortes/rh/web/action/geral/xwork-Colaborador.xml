@@ -289,12 +289,19 @@
 		</action>
 		
 		<action name="prepareAprovarReprovarSolicitacaoDesligamento" class="com.fortes.rh.web.action.geral.ColaboradorDesligaAction" method="prepareAprovarReprovarSolicitacaoDesligamento">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/prepareAprovarReprovarSolicitacaoDesligamento.ftl</result>
 		</action>
 		<action name="visualizarSolicitacaoDesligamento" class="com.fortes.rh.web.action.geral.ColaboradorDesligaAction" method="visualizarSolicitacaoDesligamento">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/visualizarSolicitacaoDesligamento.ftl</result>
 		</action>
+		<action name="aprovarSolicitacaoDesligamento" class="com.fortes.rh.web.action.geral.ColaboradorDesligaAction" method="aprovarSolicitacaoDesligamento">
+			<interceptor-ref name="defaultDeleteStack"/>
+			<result name="success" type="redirect">prepareAprovarReprovarSolicitacaoDesligamento.action</result>
+			<result name="input" type="redirect">prepareAprovarReprovarSolicitacaoDesligamento.action</result>
+		</action>
 		<action name="reprovarSolicitacaoDesligamento" class="com.fortes.rh.web.action.geral.ColaboradorDesligaAction" method="reprovarSolicitacaoDesligamento">
+			<interceptor-ref name="defaultDeleteStack"/>
 			<result name="success" type="redirect">prepareAprovarReprovarSolicitacaoDesligamento.action</result>
 		</action>
 	</package>

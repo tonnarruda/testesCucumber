@@ -99,7 +99,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			if (dataDesligamento.before(colaborador.getDataAdmissao()))
 				throw new Exception("Data de desligamento anterior à data de admissão");
 			
-			observacaoDemissao = "Solicitado por: " + getUsuarioLogado().getNome() + ".  " +  observacaoDemissao;
+			observacaoDemissao = (getEmpresaSistema().isSolicitarConfirmacaoDesligamento() ? "Aprovado por: " : "Solicitado por: ") + getUsuarioLogado().getNome() + ".  " +  observacaoDemissao;
 			
 			colaboradorManager.solicitacaoDesligamentoAc(dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId(), getEmpresaSistema());
 			
@@ -179,9 +179,25 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return Action.SUCCESS;
 	}
 	
+	public String aprovarSolicitacaoDesligamento() throws Exception
+	{
+		dataDesligamento = colaborador.getDataSolicitacaoDesligamento();
+		motDemissao = colaborador.getMotivoDemissao();
+		observacaoDemissao = colaborador.getObservacaoDemissao();
+		
+		if (getEmpresaSistema().isAcIntegra())
+			return solicitacaoDesligamento();
+
+		colaboradorManager.desligaColaborador(true, dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId(), false);
+		addActionSuccess("Colaborador desligado com sucesso.");
+		
+		return Action.SUCCESS;
+	}
+	
 	public String reprovarSolicitacaoDesligamento() throws Exception
 	{
 		colaboradorManager.solicitacaoDesligamento(null, null, null, colaborador.getId());
+		addActionSuccess("Solicitação de desligamento reprovada com sucesso.");
 		return Action.SUCCESS;
 	}
 
