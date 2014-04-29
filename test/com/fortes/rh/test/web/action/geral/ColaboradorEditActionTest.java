@@ -1,19 +1,26 @@
 package com.fortes.rh.test.web.action.geral;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 
 import mockit.Mockit;
+import net.sf.ezmorph.test.ArrayAssertions;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
+import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
+import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CamposExtrasManager;
@@ -21,18 +28,27 @@ import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorIdiomaManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
+import com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManager;
 import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.ConfiguracaoPerformanceManager;
 import com.fortes.rh.business.geral.DocumentoAnexoManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.EstadoManager;
+import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.sesmt.CatManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.business.sesmt.ComissaoManager;
+import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
+import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -44,6 +60,7 @@ import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -51,20 +68,29 @@ import com.fortes.rh.model.relatorio.ParticipacaoColaboradorCipa;
 import com.fortes.rh.model.sesmt.Cat;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.FormacaoFactory;
+import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.geral.CamposExtrasFactory;
 import com.fortes.rh.test.factory.geral.ColaboradorIdiomaFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.util.mockObjects.MockActionContext;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.geral.ColaboradorEditAction;
+import com.fortes.rh.web.ws.AcPessoalClientSistema;
+import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
+import com.sun.xml.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 public class ColaboradorEditActionTest extends MockObjectTestCase
 {
@@ -90,7 +116,15 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 	private Mock configuracaoPerformanceManager;
 	private Mock transactionManager;
 	private Mock candidatoManager;
-	
+	private Mock quantidadeLimiteColaboradoresPorCargoManager;
+	private Mock solicitacaoExameManager;
+	private Mock colaboradorPeriodoExperienciaAvaliacaoManager;
+	private Mock acPessoalClientSistema;
+	private Mock faixaSalarialManager;
+	private Mock estabelecimentoManager;
+	private Mock periodoExperienciaManager;
+	private Mock avaliacaoManager;
+	private Mock indiceManager;
 
 	protected void setUp () throws Exception
 	{
@@ -117,6 +151,15 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		camposExtrasManager = new Mock(CamposExtrasManager.class);
 		transactionManager = new Mock(PlatformTransactionManager.class);
 		candidatoManager = new Mock(CandidatoManager.class);
+		quantidadeLimiteColaboradoresPorCargoManager = new Mock(QuantidadeLimiteColaboradoresPorCargoManager.class);
+		solicitacaoExameManager = new Mock(SolicitacaoExameManager.class);
+		colaboradorPeriodoExperienciaAvaliacaoManager = new Mock(ColaboradorPeriodoExperienciaAvaliacaoManager.class);
+		acPessoalClientSistema = new Mock(AcPessoalClientSistema.class);
+		faixaSalarialManager = new Mock(FaixaSalarialManager.class);
+		estabelecimentoManager = new Mock(EstabelecimentoManager.class);
+		periodoExperienciaManager = new Mock(PeriodoExperienciaManager.class);
+		avaliacaoManager = new Mock(AvaliacaoManager.class);
+		indiceManager = new Mock(IndiceManager.class);
 		
 		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
@@ -139,6 +182,15 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		action.setConfiguracaoPerformanceManager((ConfiguracaoPerformanceManager) configuracaoPerformanceManager.proxy());
 		action.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
 		action.setCandidatoManager((CandidatoManager) candidatoManager.proxy());
+		action.setQuantidadeLimiteColaboradoresPorCargoManager((QuantidadeLimiteColaboradoresPorCargoManager) quantidadeLimiteColaboradoresPorCargoManager.proxy());
+		action.setSolicitacaoExameManager((SolicitacaoExameManager) solicitacaoExameManager.proxy());
+		action.setColaboradorPeriodoExperienciaAvaliacaoManager((ColaboradorPeriodoExperienciaAvaliacaoManager) colaboradorPeriodoExperienciaAvaliacaoManager.proxy());
+		action.setAcPessoalClientSistema((AcPessoalClientSistema) acPessoalClientSistema.proxy());
+		action.setFaixaSalarialManager((FaixaSalarialManager) faixaSalarialManager.proxy());
+		action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
+		action.setPeriodoExperienciaManager((PeriodoExperienciaManager) periodoExperienciaManager.proxy());
+		action.setAvaliacaoManager((AvaliacaoManager) avaliacaoManager.proxy());
+		action.setIndiceManager((IndiceManager) indiceManager.proxy());
 		
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -156,6 +208,106 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
     {
     	assertEquals(action.execute(), "success");
     }
+	
+	public void testInsert() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(2L);
+		empresa.setCampoExtraColaborador(true);
+		action.setEmpresaSistema(empresa);
+		
+		Date dataAdmissao = DateUtil.criarDataMesAno(01, 02, 2000);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Maluco no pedaço");
+		colaborador.setEmpresa(empresa);
+		colaborador.setDataAdmissao(dataAdmissao);
+		colaborador.getEndereco().setUf(EstadoFactory.getEntity(1L));
+		action.setColaborador(colaborador);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		
+		Cargo cargo = CargoFactory.getEntity(2L);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		faixaSalarial.setCargo(cargo);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setData(dataAdmissao);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		action.setHistoricoColaborador(historicoColaborador);
+		
+		colaboradorManager.expects(once()).method("validaQtdCadastros").isVoid();
+		transactionManager.expects(once()).method("getTransaction").withAnyArguments().will(returnValue(null));
+		areaOrganizacionalManager.expects(once()).method("verificaMaternidade").with(eq(historicoColaborador.getAreaOrganizacional().getId()), eq(null)).will(returnValue(false));
+		quantidadeLimiteColaboradoresPorCargoManager.expects(once()).method("validaLimite").with(eq(historicoColaborador.getAreaOrganizacional().getId()), eq(historicoColaborador.getFaixaSalarial().getId()), eq(empresa.getId()), eq(null)).isVoid();
+		colaboradorManager.expects(once()).method("insert").withAnyArguments().will(returnValue(true));
+		solicitacaoExameManager.expects(once()).method("transferir").withAnyArguments().isVoid();
+		colaboradorPeriodoExperienciaAvaliacaoManager.expects(once()).method("saveConfiguracaoAvaliacaoPeriodoExperiencia").withAnyArguments().isVoid();
+		transactionManager.expects(once()).method("commit").withAnyArguments().isVoid();
+		
+		assertEquals(Action.SUCCESS, action.insert());
+	}
+
+	public void testInsertException() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(2L);
+		action.setEmpresaSistema(empresa);
+		
+		Date dataAdmissao = DateUtil.criarDataMesAno(01, 02, 2000);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNome("Maluco no pedaço");
+		colaborador.setEmpresa(empresa);
+		colaborador.setDataAdmissao(dataAdmissao);
+		action.setColaborador(colaborador);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		Cargo cargo = CargoFactory.getEntity(2L);
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		faixaSalarial.setCargo(cargo);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setData(dataAdmissao);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		action.setHistoricoColaborador(historicoColaborador);
+		
+		colaboradorManager.expects(once()).method("validaQtdCadastros").isVoid();
+		transactionManager.expects(once()).method("getTransaction").withAnyArguments().will(returnValue(null));
+		areaOrganizacionalManager.expects(once()).method("verificaMaternidade").with(eq(historicoColaborador.getAreaOrganizacional().getId()), eq(null)).will(returnValue(false));
+		quantidadeLimiteColaboradoresPorCargoManager.expects(once()).method("validaLimite").with(eq(historicoColaborador.getAreaOrganizacional().getId()), eq(historicoColaborador.getFaixaSalarial().getId()), eq(empresa.getId()), eq(null)).isVoid();
+		colaboradorManager.expects(once()).method("insert").withAnyArguments().will(returnValue(false));
+		transactionManager.expects(once()).method("rollback").withAnyArguments().isVoid();
+
+		mocksDoPrepare(areaOrganizacional, faixaSalarial);
+		
+		assertEquals(Action.ERROR, action.insert());
+	}
+
+	private void mocksDoPrepare(AreaOrganizacional areaOrganizacional, FaixaSalarial faixaSalarial) 
+	{	
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		
+		Indice indice = IndiceFactory.getEntity(1L);
+		
+		Estado estado = EstadoFactory.getEntity(1L);
+		
+		PeriodoExperiencia periodoExperiencia = new PeriodoExperiencia();
+		periodoExperiencia.setId(1L);
+		periodoExperiencia.setDescricao("descricao");
+		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
+		
+		acPessoalClientSistema.expects(once()).method("verificaWebService").withAnyArguments().isVoid();
+		indiceManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(Arrays.asList(indice)));
+		estadoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(Arrays.asList(estado)));
+		faixaSalarialManager.expects(once()).method("findFaixas").withAnyArguments().will(returnValue(Arrays.asList(faixaSalarial)));
+		areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").withAnyArguments().will(returnValue(Arrays.asList(areaOrganizacional)));
+		estabelecimentoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(Arrays.asList(estabelecimento)));
+		periodoExperienciaManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(Arrays.asList(periodoExperiencia)));
+		avaliacaoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(Arrays.asList(avaliacao)));
+	}
 
 	public void testPrepareUpdateInfoPessoais() throws Exception
 	{
