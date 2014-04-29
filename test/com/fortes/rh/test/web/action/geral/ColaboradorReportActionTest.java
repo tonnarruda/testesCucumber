@@ -89,7 +89,7 @@ public class ColaboradorReportActionTest extends MockObjectTestCase
 	 	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(null));
 	 	tabelaReajusteColaboradorManager.expects(once()).method("findAllSelectByNaoAprovada").with(ANYTHING, eq(TipoReajuste.COLABORADOR)).will(returnValue(null));
 	 	grupoOcupacionalManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(null));
-	 	cargoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(null));
+	 	cargoManager.expects(once()).method("populaCheckBox").with(ANYTHING, ANYTHING).will(returnValue(null));
 
 	 	String retorno = action.prepareProjecaoSalarialFiltro();
 
@@ -138,7 +138,7 @@ public class ColaboradorReportActionTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(null));
 		tabelaReajusteColaboradorManager.expects(once()).method("findAllSelectByNaoAprovada").with(ANYTHING, eq(TipoReajuste.COLABORADOR)).will(returnValue(null));
 		grupoOcupacionalManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(null));
-		cargoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(null));
+		cargoManager.expects(once()).method("populaCheckBox").with(ANYTHING, ANYTHING).will(returnValue(null));
 
 		String retorno = action.gerarRelatorioProjecaoSalarial();
 

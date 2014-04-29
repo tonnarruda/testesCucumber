@@ -163,9 +163,10 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	colaboradorQuestionarioCollection.add(colaboradorQuestionario);
 
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
-    	colaboradorTurmaManager.expects(once()).method("getCount").with(eq(turma.getId()), eq(null), eq(""), eq(new String[]{})).will(returnValue(1));
-    	colaboradorTurmaManager.expects(once()).method("findByTurmaColaborador").with(new Constraint[] {eq(turma.getId()), eq(null), eq(""), ANYTHING, eq(1), eq(15)}).will(returnValue(colaboradorTurmas));
+    	colaboradorTurmaManager.expects(once()).method("getCount").with(new Constraint[]{eq(turma.getId()), eq(null), eq(""), eq(new String[]{}), eq(new String[]{})}).will(returnValue(1));
+    	colaboradorTurmaManager.expects(once()).method("findByTurmaColaborador").with(new Constraint[] {eq(turma.getId()), eq(null), eq(""), ANYTHING, ANYTHING, eq(1), eq(15)}).will(returnValue(colaboradorTurmas));
     	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING);
+    	cargoManager.expects(once()).method("populaCheckBox").with(ANYTHING, ANYTHING);
     	colaboradorTurmaManager.expects(once()).method("setFamiliaAreas").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
     	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId()), ANYTHING).will(returnValue(colaboradorQuestionarioCollection));
     	
@@ -499,9 +500,10 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
     	
     	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-    	colaboradorTurmaManager.expects(once()).method("getCount").with(eq(turma.getId()), eq(null), eq(""), eq(new String[]{})).will(returnValue(1));
-    	colaboradorTurmaManager.expects(once()).method("findByTurmaColaborador").with(new Constraint[] {eq(turma.getId()), eq(null), eq(""), ANYTHING,  eq(1), eq(15)}).will(returnValue(colaboradorTurmas));
+    	colaboradorTurmaManager.expects(once()).method("getCount").with(new Constraint[] {eq(turma.getId()), eq(null), eq(""), eq(new String[]{}), eq(new String[]{})}).will(returnValue(1));
+    	colaboradorTurmaManager.expects(once()).method("findByTurmaColaborador").with(new Constraint[] {eq(turma.getId()), eq(null), eq(""), ANYTHING, ANYTHING, eq(1), eq(15)}).will(returnValue(colaboradorTurmas));
     	estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING);
+    	cargoManager.expects(once()).method("populaCheckBox").with(ANYTHING, ANYTHING);
     	colaboradorTurmaManager.expects(once()).method("setFamiliaAreas").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
     	colaboradorQuestionarioManager.expects(once()).method("findRespondidasByColaboradorETurma").with(eq(null), eq(turma.getId()), ANYTHING).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
 

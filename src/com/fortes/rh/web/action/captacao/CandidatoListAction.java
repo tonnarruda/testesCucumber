@@ -381,7 +381,7 @@ public class CandidatoListAction extends MyActionSupportList
 		if(empresaId==null)
 			empresaId = getEmpresaSistema().getId();
 		
-		cargosCheckList = cargoManager.populaCheckBox(empresaId);
+		cargosCheckList = cargoManager.populaCheckBox(false, empresaId);
 		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(empresaId);
 
 		if(solicitacao != null && solicitacao.getId() != null && montaFiltroBySolicitacao)

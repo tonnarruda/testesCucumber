@@ -95,7 +95,7 @@ public class ReajusteRelatorioAction extends MyActionSupport
 		tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelect(getEmpresaSistema().getId());
 		grupoOcupacionals = grupoOcupacionalManager.findAllSelect(getEmpresaSistema().getId());
 		grupoOcupacionalsCheckList = CheckListBoxUtil.populaCheckListBox(grupoOcupacionals, "getId", "getNome");
-		cargosCheckList = cargoManager.populaCheckBox(getEmpresaSistema().getId());
+		cargosCheckList = cargoManager.populaCheckBox(false, getEmpresaSistema().getId());
 		
 		Long[] areaIds = null;
 		Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());

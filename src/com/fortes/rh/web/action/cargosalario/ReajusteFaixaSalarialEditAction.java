@@ -99,7 +99,7 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 	{
 		tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(getEmpresaSistema().getId(), TipoReajuste.FAIXA_SALARIAL);
 		
-		cargosCheckList = cargoManager.populaCheckBox(getEmpresaSistema().getId());
+		cargosCheckList = cargoManager.populaCheckBox(false, getEmpresaSistema().getId());
 
 		return Action.SUCCESS;
 	}

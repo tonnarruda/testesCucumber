@@ -21,6 +21,7 @@
     <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
     
     <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
+    <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
     <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
     
@@ -75,6 +76,7 @@
 		
 		function populaEstabelecimento(empresaId)
 		{
+			DWREngine.setAsync(true);
 			DWRUtil.useLoadingMessage('Carregando...');
 			EstabelecimentoDWR.getByEmpresa(createListEstabelecimento, empresaId);
 		}
@@ -82,6 +84,17 @@
 		function createListEstabelecimento(data)
 		{
 			addChecks('estabelecimentosCheck',data);
+		}
+
+		function populaCargo(empresaId)
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			CargoDWR.getByEmpresas(createListCargo, empresaId, null);
+		}
+
+		function createListCargo(data)
+		{
+			addChecks('cargosCheck',data);
 		}
     </script>
 </head>
@@ -92,10 +105,12 @@
     <@ww.form name="formBusca" id="formBusca" action="list.action" method="POST">
 		<#if compartilharColaboradores>
 			<#include "../util/topFiltro.ftl" />
-	            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" disabled="!compartilharColaboradores" onchange="populaEstabelecimento(this.value);"/>
+	            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" disabled="!compartilharColaboradores" onchange="populaEstabelecimento(this.value);populaCargo(this.value);"/>
 	            <@ww.select label="Aprovado" name="aprovado" list=r"#{'T':'Todos','S':'Sim','N':'Não'}" />
-	            <@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
+	            
 	            <@ww.textfield label="Nome do Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 500px;"/>
+	            <@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
+	            <@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" filtro=true/>
 	            <input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
 	    	<#include "../util/bottomFiltro.ftl" />
 	    	<br>

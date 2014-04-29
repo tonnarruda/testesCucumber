@@ -32,13 +32,13 @@ public interface CargoManager extends GenericManager<Cargo>
 	public Collection<Cargo> populaCargos(String[] cargosCheck);
 	public Collection<Cargo> populaCargos(Long[] ids);
 	public Cargo findByIdAllProjection(Long cargoId);
-	public Collection<CheckBox> populaCheckBox(Long empresaId);
 	public Collection<CheckBox> populaCheckBox(String[] gruposCheck, String[] cargosCheck, Long empresaId) throws Exception;
 	public Collection<Cargo> getCargosFromFaixaSalarialHistoricos(Collection<FaixaSalarialHistorico> faixaSalarialHistoricos);
 	boolean verifyExistCargoNome(String cargoNome, Long empresaId);
 	public Collection<Cargo> findByGrupoOcupacional(Long grupoOcupacionalId);
 	public Map findByAreaDoHistoricoColaborador(String[] areaOrganizacionalIds);
 	public Collection<CheckBox> populaCheckBoxAllCargos();
+	public Collection<CheckBox> populaCheckBox(boolean exibirNomeEmpresa, Long... empresaIds);
 	public Collection<Cargo> findBySolicitacao(Long solicitacaoId);
 	public Collection<Cargo> findAllSelectDistinctNome();
 	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino, Map<Long, Long> areaIds, Map<Long, Long> areaInteresseIds, Map<Long, Long> conhecimentoIds, Map<Long, Long> habilidadeIds, Map<Long, Long> atitudeIds, List<String> mensagens);

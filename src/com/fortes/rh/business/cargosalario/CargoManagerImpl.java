@@ -35,6 +35,7 @@ import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -185,18 +186,22 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return getDao().findByIdAllProjection(cargoId);
 	}
 
-	public Collection<CheckBox> populaCheckBox(Long empresaId)
+	public Collection<CheckBox> populaCheckBox(boolean exibirNomeEmpresa, Long... empresaIds)
 	{
+		String getCheckList = "getNomeMercado";
+		if(exibirNomeEmpresa)
+			getCheckList = "getNomeMercadoComEmpresa";
+		
 		try
 		{
-			Collection<Cargo> cargos = getDao().findAllSelect(empresaId, "nomeMercado", null, Cargo.TODOS);
-			return CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercado");
+			Collection<Cargo> cargosTmp = getDao().findAllSelect(empresaIds);
+			return CheckListBoxUtil.populaCheckListBox(cargosTmp, "getId", getCheckList);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-
+		
 		return new ArrayList<CheckBox>();
 	}
 
@@ -204,7 +209,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	{
 		if(gruposCheck == null || gruposCheck.length == 0)
 		{
-			return populaCheckBox(empresaId);
+			return populaCheckBox(false, empresaId);
 		}
 		else
 		{
