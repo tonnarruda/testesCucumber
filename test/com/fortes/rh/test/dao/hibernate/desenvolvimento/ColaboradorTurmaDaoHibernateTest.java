@@ -493,15 +493,35 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	Turma turma = TurmaFactory.getEntity();
     	turmaDao.save(turma);
     	
+    	Colaborador colab1 = ColaboradorFactory.getEntity();
+    	colaboradorDao.save(colab1);
+
+    	Colaborador colab2 = ColaboradorFactory.getEntity();
+    	colaboradorDao.save(colab2);
+
+    	HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
+    	historicoColaborador1.setColaborador(colab1);
+    	historicoColaborador1.setStatus(StatusRetornoAC.CONFIRMADO);
+    	historicoColaborador1.setData(new Date());
+    	historicoColaboradorDao.save(historicoColaborador1);
+    	
+    	HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+    	historicoColaborador2.setColaborador(colab2);
+    	historicoColaborador2.setStatus(StatusRetornoAC.CONFIRMADO);
+    	historicoColaborador2.setData(new Date());
+    	historicoColaboradorDao.save(historicoColaborador2);
+    	
     	ColaboradorTurma colaboradorTurma1 = getEntity();
+    	colaboradorTurma1.setColaborador(colab1);
     	colaboradorTurma1.setTurma(turma);
     	colaboradorTurmaDao.save(colaboradorTurma1);
 
     	ColaboradorTurma colaboradorTurma2 = getEntity();
+    	colaboradorTurma2.setColaborador(colab2);
     	colaboradorTurma2.setTurma(turma);
     	colaboradorTurmaDao.save(colaboradorTurma2);
     	
-    	assertEquals(new Integer(2), colaboradorTurmaDao.getCount(turma.getId(), null, null, null));
+    	assertEquals(new Integer(2), colaboradorTurmaDao.getCount(turma.getId(), null, null, null, null));
     }
     
     public void testGetCountComEmpresa()
@@ -524,6 +544,18 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	maria.setEmpresa(ente);
     	colaboradorDao.save(maria);
 
+    	HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
+    	historicoColaborador1.setColaborador(maria);
+    	historicoColaborador1.setStatus(StatusRetornoAC.CONFIRMADO);
+    	historicoColaborador1.setData(new Date());
+    	historicoColaboradorDao.save(historicoColaborador1);
+    	
+    	HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+    	historicoColaborador2.setColaborador(joao);
+    	historicoColaborador2.setStatus(StatusRetornoAC.CONFIRMADO);
+    	historicoColaborador2.setData(new Date());
+    	historicoColaboradorDao.save(historicoColaborador2);
+    	
     	ColaboradorTurma mariaTurma = getEntity();
     	mariaTurma.setColaborador(maria);
     	mariaTurma.setTurma(turma);
@@ -534,7 +566,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	joaoTurma.setTurma(turma);
     	colaboradorTurmaDao.save(joaoTurma);
     	
-    	assertEquals(new Integer(1), colaboradorTurmaDao.getCount(turma.getId(), fortes.getId(), null, null));
+    	assertEquals(new Integer(1), colaboradorTurmaDao.getCount(turma.getId(), fortes.getId(), null, null, null));
     }
     
     public void testFindColaboradorByTurma()
@@ -672,7 +704,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
         colaboradorTurma.setColaborador(colaborador);
         colaboradorTurma = colaboradorTurmaDao.save(colaboradorTurma);
 
-        Collection<ColaboradorTurma> retornos = colaboradorTurmaDao.findByTurma(turma.getId(), null, null, null, true, null, null);
+        Collection<ColaboradorTurma> retornos = colaboradorTurmaDao.findByTurma(turma.getId(), null, null, null, null, true, null, null);
 
         ColaboradorTurma colaboradorTurmaRetorno = (ColaboradorTurma) retornos.toArray()[0];
 
@@ -735,7 +767,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaboradorTurma2.setColaborador(colaborador2);
     	colaboradorTurma2 = colaboradorTurmaDao.save(colaboradorTurma2);
     	
-    	Collection<ColaboradorTurma> retornosFiltroEstabelecimento = colaboradorTurmaDao.findByTurma(turma.getId(), null, null,  new Long[]{estabelecimento.getId()}, true, null, null);
+    	Collection<ColaboradorTurma> retornosFiltroEstabelecimento = colaboradorTurmaDao.findByTurma(turma.getId(), null, null,  new Long[]{estabelecimento.getId()}, null, true, null, null);
     	assertEquals(1, retornosFiltroEstabelecimento.size());
     }
 

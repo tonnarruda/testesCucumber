@@ -1240,7 +1240,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new Exception("Não foi possível Editar o colaborador.");
+			throw new Exception("Não foi possível editar o colaborador.");
 		}
 			}
 
@@ -1266,7 +1266,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaborador;
 	}
 
-	private Colaborador bindColaborador(Colaborador colaborador, TEmpregado empregado)
+	private Colaborador bindColaborador(Colaborador colaborador, TEmpregado empregado) throws Exception
 	{
 		// TODO: codigoac vazio
 		colaborador.setCodigoAC(empregado.getCodigoAC());
@@ -1293,6 +1293,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (StringUtils.isNotBlank(empregado.getCidadeCodigoAC()) && StringUtils.isNotBlank(empregado.getUfSigla()))
 		{
 			Cidade cidade = cidadeManager.findByCodigoAC(empregado.getCidadeCodigoAC(), empregado.getUfSigla());
+			if(cidade == null)
+				throw new Exception("A cidade com o código " + empregado.getCidadeCodigoAC() + " não está cadastrada no RH para o estado " + empregado.getUfSigla() + ".");
+			
 			colaborador.getEndereco().setCidade(cidade);
 			colaborador.getEndereco().setUf(colaborador.getEndereco().getCidade().getUf());
 		}
@@ -1794,7 +1797,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 
 		if(colaboradores.isEmpty())
-			throw new Exception ("Não existem Colaboradores com os filtros selecionados" ); 
+			throw new Exception ("Não existem colaboradores com os filtros selecionados" ); 
 
 		return colaboradores;
 	}
@@ -1844,7 +1847,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 
 		if(acompanhamentos.isEmpty())
-			throw new Exception ("Não existem Colaboradores com os filtros selecionados" ); 
+			throw new Exception ("Não existem colaboradores com os filtros selecionados" ); 
 
 		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findByEmpresasIds(new Long[]{empresa.getId()}, AreaOrganizacional.TODAS);
 		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);

@@ -86,7 +86,7 @@ public class ColaboradorReportAction extends MyActionSupport
 		grupoOcupacionals = grupoOcupacionalManager.findAllSelect(getEmpresaSistema().getId());
 		gruposCheckList = CheckListBoxUtil.populaCheckListBox(grupoOcupacionals, "getId", "getNome");
 
-		cargosCheckList = cargoManager.populaCheckBox(getEmpresaSistema().getId());
+		cargosCheckList = cargoManager.populaCheckBox(false, getEmpresaSistema().getId());
 
 		return Action.SUCCESS;
 	}

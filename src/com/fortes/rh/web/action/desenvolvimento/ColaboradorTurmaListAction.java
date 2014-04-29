@@ -97,6 +97,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 	private Long[] colaboradoresCheck;
 	private Collection<CheckBox> colaboradoresCheckList = new ArrayList<CheckBox>();
+	
 
 	private Collection<CheckBox> gruposCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
@@ -145,25 +146,30 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 		populaEmpresa(new String[]{"ROLE_MOV_TURMA","ROLE_MOV_PLANO_TREINAMENTO"});	
-		if(empresaId != null)
+		if(empresaId != null){
 			estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(empresaId);
-		else
+			cargosCheckList = cargoManager.populaCheckBox(true, empresaId);
+		}else{
 			estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas));
+			cargosCheckList = cargoManager.populaCheckBox(true, new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas));
+		}
 		
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
+		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
 		turma = turmaManager.findById(turma.getId()); // precisa da colecao de avaliacaoTurmas
 		
-		setTotalSize(colaboradorTurmaManager.getCount(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck)));
-		colaboradorTurmas = colaboradorTurmaManager.findByTurmaColaborador(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), getPage(), getPagingSize());
+		setTotalSize(colaboradorTurmaManager.getCount(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(cargosCheck)));
+		colaboradorTurmas = colaboradorTurmaManager.findByTurmaColaborador(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(cargosCheck), getPage(), getPagingSize());
 		colaboradorTurmas = colaboradorTurmaManager.setFamiliaAreas(colaboradorTurmas, empresaId);
 		
 		if(aprovado == 'S' || aprovado == 'N')
 		{
 			colaboradorTurmas = colaboradorTurmaManager.filtraAprovadoReprovado(colaboradorTurmas, aprovado);
-			setTotalSize((colaboradorTurmaManager.filtraAprovadoReprovado(colaboradorTurmaManager.findByTurmaColaborador(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null, null), aprovado)).size());
+			setTotalSize((colaboradorTurmaManager.filtraAprovadoReprovado(colaboradorTurmaManager.findByTurmaColaborador(turma.getId(), empresaId, nomeBusca, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null, null, null), aprovado)).size());
 		}
 		
 		colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByColaboradorETurma(null, turma.getId(), empresaId);
+		
 
 		return Action.SUCCESS;
 	}

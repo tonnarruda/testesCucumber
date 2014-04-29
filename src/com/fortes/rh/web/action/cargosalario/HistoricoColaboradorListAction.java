@@ -501,7 +501,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
-		cargosCheckList = cargoManager.populaCheckBox(getEmpresaSistema().getId());
+		cargosCheckList = cargoManager.populaCheckBox(false, getEmpresaSistema().getId());
 		CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);

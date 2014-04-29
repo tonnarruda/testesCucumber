@@ -113,7 +113,7 @@ public class CargoDWR
 	private Collection<Cargo> getFindAllSelect(Long empresaId, Long[] empresaIds) {
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		
-		if(empresaId == 0)
+		if(empresaId == 0 || empresaId == -1)
 			cargos = cargoManager.findAllSelect(empresaIds);
 		else
 			cargos = cargoManager.findAllSelect(empresaId, "nomeMercado", null, Cargo.TODOS);
@@ -122,12 +122,8 @@ public class CargoDWR
 	
 	public Map getByEmpresas(Long empresaId, Long[] empresaIds)
 	{
-		String getParametro = "getId";
 		Collection<Cargo> cargos = getFindAllSelect(empresaId, empresaIds);
-		
-		CollectionUtil<Cargo> cUtil = new CollectionUtil<Cargo>();
-		
-		return cUtil.convertCollectionToMap(cargos, getParametro, "getNomeMercadoComEmpresa");
+		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos, "getId", "getNomeMercadoComEmpresa");
 	}
 	
 	public Map getByEmpresasMaisSemAreaRelacionada(Long empresaId, Long[] empresaIds)

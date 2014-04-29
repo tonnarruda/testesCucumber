@@ -503,9 +503,9 @@ public class CargoManagerTest extends MockObjectTestCase
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		cargos.add(cargo);
 
-		cargoDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(cargos));
 
-		assertEquals(1, cargoManager.populaCheckBox(1L).size());
+		assertEquals(1, cargoManager.populaCheckBox(false, 1L).size());
 	}
 	
 	public void testPopulaCheckBoxAllCargos()
@@ -545,7 +545,7 @@ public class CargoManagerTest extends MockObjectTestCase
 	{
 		cargoManager.setDao(null);
 
-		assertTrue(cargoManager.populaCheckBox(1L).isEmpty());
+		assertTrue(cargoManager.populaCheckBox(false, 1L).isEmpty());
 	}
 
 	public void testPopulaCheckBoxSemGrupo() throws Exception
@@ -557,7 +557,7 @@ public class CargoManagerTest extends MockObjectTestCase
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		cargos.add(cargo);
 
-		cargoDao.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(cargos));
 
 		assertEquals(1, cargoManager.populaCheckBox(null, null, 1L).size());
 	}

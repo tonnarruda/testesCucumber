@@ -10,6 +10,7 @@
 		@import url('<ww:url includeParams="none" value="/css/login.css"/>');
 	</style>
 	<script src='<ww:url includeParams="none" value="/js/functions.js"/>'></script>
+	<script src='<ww:url includeParams="none" value="/js/fortes.js"/>'></script>
 	<script src='<ww:url includeParams="none" value="/dwr/interface/UsuarioDWR.js"/>'></script>
 	<script src='<ww:url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script src='<ww:url includeParams="none" value="/dwr/util.js"/>'></script>
@@ -29,7 +30,7 @@
 		function createListEmpresa(data)
 		{
 			DWRUtil.removeAllOptions("empresa");
-			DWRUtil.addOptions("empresa", data);
+			addOptionsByMap("empresa", data);
 		}
 		
 		$(function() {

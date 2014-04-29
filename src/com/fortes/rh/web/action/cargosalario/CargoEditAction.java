@@ -151,7 +151,7 @@ public class CargoEditAction extends MyActionSupportEdit
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		areasFormacaoCheckList = areaFormacaoManager.populaCheckOrderNome();
 		gruposCheckList = grupoOcupacionalManager.populaCheckOrderNome(getEmpresaSistema().getId());
-		cargosCheckList = cargoManager.populaCheckBox(getEmpresaSistema().getId());
+		cargosCheckList = cargoManager.populaCheckBox(false, getEmpresaSistema().getId());
 		etapaSeletivaCheckList = etapaSeletivaManager.populaCheckOrderNome(getEmpresaSistema().getId());
 
 		return Action.SUCCESS;
