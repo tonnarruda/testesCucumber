@@ -166,7 +166,7 @@
 			<br />
 		<li>
 		<li>
-			<@ww.checkbox label="Solicitar confirmação de gestores ao desligar colaboradores." id="solicitarConfirmacaoDesligamento" name="empresa.solicitarConfirmacaoDesligamento" liClass="liLeft" labelPosition="left"/>
+			<@ww.checkbox label="Solicitar confirmação de gestores ao desligar colaboradores. (Ao marcar esta opção, o usuário deverá logar novamente no sistema)" id="solicitarConfirmacaoDesligamento" name="empresa.solicitarConfirmacaoDesligamento" liClass="liLeft" labelPosition="left"/>
 			<br />
 		<li>
 		<li>
