@@ -20,7 +20,9 @@ public enum EnviarPara
 	PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL (14, "Usuários com permissão de visualizar solicitação pessoal"),
 	RESPONSAVEL_LIMITE_CONTRATO (15, "Responsável pelo limite de colaboradores por cargo"),
 	APROVAR_REPROVAR_SOLICITACAO_PESSOAL (19, "Usuários com perfil de aprovar/reprovar solicitação de pessoal"),
-	AVULSO (99, "Avulso");
+	APROVAR_REPROVAR_SOLICITACAO_DESLIGAMENTO (20, "Usuários com perfil de aprovar/reprovar solicitação de desligamento"),
+	SOLICITANTE_DESLIGAMENTO (21, "Solicitante do desligamento"),
+	AVULSO (99, "Avulso"); 
 	
 	EnviarPara(Integer id , String descricao)
 	{

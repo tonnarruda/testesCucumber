@@ -72,6 +72,11 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private String nome;
 	@Column(length=30)
 	private String nomeComercial;
+	@Lob
+	private String observacao;
+	@Temporal(TemporalType.DATE)
+	private Date dataAdmissao;
+
 	private boolean desligado = false;
 	@Temporal(TemporalType.DATE)
 	private Date dataDesligamento;
@@ -79,58 +84,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Date dataSolicitacaoDesligamento;
 	@Temporal(TemporalType.DATE)
 	private Date dataSolicitacaoDesligamentoAc;
-	@Lob
-	private String observacao;
-	@Temporal(TemporalType.DATE)
-	private Date dataAdmissao;
-
-	@Transient
-	private Estabelecimento estabelecimento;
-	@Transient
-	private AreaOrganizacional areaOrganizacional;
-	@Transient
-	private AreaOrganizacional areaOrganizacionalMatriarca;
-	@Transient
-	private FaixaSalarial faixaSalarial;
-	@Transient
-	private Double salario;
-	@Temporal(TemporalType.DATE)
-	private Date dataAtualizacao = new Date();
-	@Transient
-	private Funcao funcao;
-	@Transient
-	private Ambiente ambiente;
-	@Transient
-	private Long avaliacaoId;
-	@Transient
-	private String avaliacaoTitulo;
-	@Transient
-	private Date respondidaEm;
-	@Transient
-	private Double performance;
-	@Transient
-	private Double mediaPerformance;
-	@Transient
-	private String titulo;
-	@Transient
-	private String nomeAvaliador;
-	
+	@ManyToOne
+	private MotivoDemissao motivoDemissao;
 	@Lob
 	private String observacaoDemissao;
+	@ManyToOne
+	private Colaborador solicitanteDemissao;
 	
-	@Transient
-	private Integer admitidoHa;//usado no ireport
-	
-	@Transient
-	private Integer diasDeEmpresa;
-	@Transient
-	private Integer qtdDiasRespondeuAvExperiencia;
-	@Transient
-	private Long periodoExperienciaId;
-	
-	@Transient
-	private String sugestaoPeriodoAcompanhamentoExperiencia;
-
 	@ManyToOne
 	private Empresa empresa;
 	@Embedded
@@ -184,30 +144,25 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Candidato candidato;
 	@OneToOne(optional=true)
 	private Solicitacao solicitacao; // solicitação de pessoal que contratou o colaborador.
-	@ManyToOne
-	private MotivoDemissao motivoDemissao;
 	@Column(length=50)
 	private String regimeRevezamento;
 
 	private boolean naoIntegraAc = false;
-
-	@Transient
-	private HistoricoColaborador historicoColaborador;
-	@Transient
-	private ReajusteColaborador reajusteColaborador;
-
-	@Transient
-	private Boolean ehProjecao;
 	
-	@Transient
-	private Date avaliacaoRespondidaEm;
-
 	private boolean respondeuEntrevista = false;
 	private File foto;
 
 	@OneToOne(fetch=FetchType.LAZY)
 	private CamposExtras camposExtras;
-		
+
+	@Transient
+	private HistoricoColaborador historicoColaborador;
+	@Transient
+	private ReajusteColaborador reajusteColaborador;
+	@Transient
+	private Boolean ehProjecao;
+	@Transient
+	private Date avaliacaoRespondidaEm;
 	@Transient
 	private String datasDeAvaliacao = "";
 	@Transient
@@ -232,11 +187,50 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private String tempoServicoString;
 	@Transient
 	private String intervaloTempoServico;
-	
 	@Transient
 	private boolean membroComissaoCipa = false;
 	@Transient
 	private Date dataFimComissaoCipa;
+	@Transient
+	private Estabelecimento estabelecimento;
+	@Transient
+	private AreaOrganizacional areaOrganizacional;
+	@Transient
+	private AreaOrganizacional areaOrganizacionalMatriarca;
+	@Transient
+	private FaixaSalarial faixaSalarial;
+	@Transient
+	private Double salario;
+	@Temporal(TemporalType.DATE)
+	private Date dataAtualizacao = new Date();
+	@Transient
+	private Funcao funcao;
+	@Transient
+	private Ambiente ambiente;
+	@Transient
+	private Long avaliacaoId;
+	@Transient
+	private String avaliacaoTitulo;
+	@Transient
+	private Date respondidaEm;
+	@Transient
+	private Double performance;
+	@Transient
+	private Double mediaPerformance;
+	@Transient
+	private String titulo;
+	@Transient
+	private String nomeAvaliador;
+	@Transient
+	private Integer admitidoHa;//usado no ireport
+	@Transient
+	private Integer diasDeEmpresa;
+	@Transient
+	private Integer qtdDiasRespondeuAvExperiencia;
+	@Transient
+	private Long periodoExperienciaId;
+	@Transient
+	private String sugestaoPeriodoAcompanhamentoExperiencia;
 
 	public Colaborador()
 	{
@@ -2838,5 +2832,20 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setStatusAcPessoalConfirmado(boolean statusAcPessoalConfirmado) {
 		this.statusAcPessoalConfirmado = statusAcPessoalConfirmado;
+	}
+
+	public Colaborador getSolicitanteDemissao() {
+		return solicitanteDemissao;
+	}
+
+	public void setSolicitanteDemissao(Colaborador solicitanteDemissao) {
+		this.solicitanteDemissao = solicitanteDemissao;
+	}
+	
+	public void setSolicitanteDemissaoId(Long solicitanteDemissaoId) {
+		if (solicitanteDemissao == null)
+			solicitanteDemissao = new Colaborador();
+		
+		this.solicitanteDemissao.setId(solicitanteDemissaoId);
 	}
 }

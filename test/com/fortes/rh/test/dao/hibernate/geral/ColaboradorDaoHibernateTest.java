@@ -45,9 +45,6 @@ import com.fortes.rh.dao.geral.ProvidenciaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
-import com.fortes.rh.dao.sesmt.ComissaoDao;
-import com.fortes.rh.dao.sesmt.ComissaoMembroDao;
-import com.fortes.rh.dao.sesmt.ComissaoPeriodoDao;
 import com.fortes.rh.dao.sesmt.EpiDao;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.dao.sesmt.HistoricoFuncaoDao;
@@ -183,9 +180,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	private ProvidenciaDao providenciaDao;
 	private PeriodoExperienciaDao periodoExperienciaDao;
 	private ColaboradorPeriodoExperienciaAvaliacaoDao colaboradorPeriodoExperienciaAvaliacaoDao;
-	private ComissaoDao comissaoDao;
-	private ComissaoPeriodoDao comissaoPeriodoDao;
-	private ComissaoMembroDao comissaoMembroDao;
 
 	private Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 	private Cargo cargo1 = CargoFactory.getEntity();
@@ -5402,16 +5396,19 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals("23", qtdTabelasComEmpresa);
 	}
 
-	public void testAtualizaDataSolicitacaoDesligamentoAc() 
+	public void testAtualizaSolicitacaoDesligamento() 
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador);
+		
+		Colaborador solicitanteDemissao = ColaboradorFactory.getEntity();
+		colaboradorDao.save(solicitanteDemissao);
 		
 		Date hoje = new Date(); 
 
 		Exception exception = null;
 		try {
-			colaboradorDao.atualizaDataSolicitacaoDesligamento(null, hoje, null, null, colaborador.getId());
+			colaboradorDao.atualizaSolicitacaoDesligamento(null, hoje, null, null, solicitanteDemissao.getId(), colaborador.getId());
 		} catch (Exception e) {
 			exception = e;
 		}
@@ -6280,17 +6277,4 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 			ColaboradorPeriodoExperienciaAvaliacaoDao colaboradorPeriodoExperienciaAvaliacaoDao) {
 		this.colaboradorPeriodoExperienciaAvaliacaoDao = colaboradorPeriodoExperienciaAvaliacaoDao;
 	}
-
-	public void setComissaoDao(ComissaoDao comissaoDao) {
-		this.comissaoDao = comissaoDao;
-	}
-
-	public void setComissaoMembroDao(ComissaoMembroDao comissaoMembroDao) {
-		this.comissaoMembroDao = comissaoMembroDao;
-	}
-
-	public void setComissaoPeriodoDao(ComissaoPeriodoDao comissaoPeriodoDao) {
-		this.comissaoPeriodoDao = comissaoPeriodoDao;
-	}
-
 }

@@ -51,6 +51,7 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviaMensagemNotificacaoDeNaoAberturaSolicitacaoEpi();
 	void insereGerenciadorComunicacaoDefault(Empresa empresa);
 	void enviaMensagemCancelamentoSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem, String empresaCodigoAC, String grupoAC);
+	void enviaAvisoSolicitacaoDesligamento(Long colaboradorId, Long empresaId);
 	void enviaAvisoOcorrenciaCadastrada(ColaboradorOcorrencia colaboradorOcorrencia, Long empresaId);
 	void enviaAvisoDeAfastamento(Long colaboradorAfastamentoId, Empresa empresa);
 	void enviaAvisoContratacao(HistoricoColaborador historicoColaborador);
@@ -60,4 +61,5 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviaMensagemCadastroSituacaoAC(String nomeColaborador, TSituacao situacao);
 	void enviarEmailParaResponsaveisSolicitacaoPessoal(Solicitacao solicitacao, Empresa empresa, String[] emailsMarcados) throws Exception;
 	void enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador(Long empresaId, String nomeColaborador) throws Exception;
+	void enviaAvisoAprovacaoSolicitacaoDesligamento(String colaboradorNome, Long solicitanteDemissaoId, Empresa empresa, boolean aprovado);
 }

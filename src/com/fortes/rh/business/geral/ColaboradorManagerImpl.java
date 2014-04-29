@@ -972,14 +972,14 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		if(acPessoalClientColaborador.solicitacaoDesligamentoAc(historicosColaborador, empresa))
 		{
-			getDao().atualizaDataSolicitacaoDesligamento(null, dataSolicitacaoDesligamento, null, null, colaboradorId);
+			getDao().atualizaSolicitacaoDesligamento(null, dataSolicitacaoDesligamento, null, null, null, colaboradorId);
 			desligaColaborador(null, null, observacaoDemissao, motivoId, colaboradorId, false);
 		}
 	}
 
-	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId) throws Exception 
+	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long solicitanteDemissaoId, Long colaboradorId) throws Exception 
 	{
-		getDao().atualizaDataSolicitacaoDesligamento(dataSolicitacaoDesligamento, null, observacaoDemissao, motivoId, colaboradorId);
+		getDao().atualizaSolicitacaoDesligamento(dataSolicitacaoDesligamento, null, observacaoDemissao, motivoId, solicitanteDemissaoId, colaboradorId);
 	}
 	
 	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long colaboradorId, boolean desligaByAC) throws Exception

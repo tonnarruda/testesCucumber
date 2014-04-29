@@ -10,16 +10,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.MotivoDemissaoManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.sesmt.Comissao;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ModelDriven;
 
 public class ColaboradorDesligaAction extends MyActionSupport implements ModelDriven
@@ -28,6 +31,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	
 	private ColaboradorManager colaboradorManager;
 	private MotivoDemissaoManager motivoDemissaoManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	private Colaborador colaborador;
 	private Comissao comissao;
@@ -75,8 +79,13 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			
 			if (getEmpresaSistema().isSolicitarConfirmacaoDesligamento())
 			{
-				colaboradorManager.solicitacaoDesligamento(dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId());
+				Colaborador solicitante = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+				Long solicitanteId = solicitante != null ? solicitante.getId() : null;
+				
+				colaboradorManager.solicitacaoDesligamento(dataDesligamento, observacaoDemissao, motDemissao.getId(), solicitanteId, colaborador.getId());
 				addActionSuccess("Solicitação de desligamento cadastrada com sucesso.");
+				
+				gerenciadorComunicacaoManager.enviaAvisoSolicitacaoDesligamento(colaborador.getId(), getEmpresaSistema().getId());
 			} 
 			else 
 			{
@@ -181,23 +190,44 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	
 	public String aprovarSolicitacaoDesligamento() throws Exception
 	{
-		dataDesligamento = colaborador.getDataSolicitacaoDesligamento();
-		motDemissao = colaborador.getMotivoDemissao();
-		observacaoDemissao = colaborador.getObservacaoDemissao();
-		
-		if (getEmpresaSistema().isAcIntegra())
-			return solicitacaoDesligamento();
+		try {
+			dataDesligamento = colaborador.getDataSolicitacaoDesligamento();
+			motDemissao = colaborador.getMotivoDemissao();
+			observacaoDemissao = colaborador.getObservacaoDemissao();
+			
+			if (getEmpresaSistema().isAcIntegra())
+				return solicitacaoDesligamento();
 
-		colaboradorManager.desligaColaborador(true, dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId(), false);
-		addActionSuccess("Colaborador desligado com sucesso.");
+			colaboradorManager.desligaColaborador(true, dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId(), false);
+			
+			gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(colaborador.getNome(), colaborador.getSolicitanteDemissao().getId(), getEmpresaSistema(), true);
+			
+			addActionSuccess("Colaborador desligado com sucesso.");
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Não foi possível gravar a aprovação dessa solicitação de desligamento");
+			return Action.INPUT;
+		}
 		
 		return Action.SUCCESS;
 	}
 	
 	public String reprovarSolicitacaoDesligamento() throws Exception
 	{
-		colaboradorManager.solicitacaoDesligamento(null, null, null, colaborador.getId());
-		addActionSuccess("Solicitação de desligamento reprovada com sucesso.");
+		try {
+			colaboradorManager.solicitacaoDesligamento(null, null, null, null, colaborador.getId());
+			
+			gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(colaborador.getNome(), colaborador.getSolicitanteDemissao().getId(), getEmpresaSistema(), false);
+			
+			addActionSuccess("Solicitação de desligamento reprovada com sucesso.");
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Não foi possível gravar a reprovação dessa solicitação de desligamento");
+			return Action.INPUT;
+		}
+		
 		return Action.SUCCESS;
 	}
 
@@ -316,5 +346,10 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 
 	public Collection<Colaborador> getColaboradores() {
 		return colaboradores;
+	}
+
+	public void setGerenciadorComunicacaoManager(
+			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

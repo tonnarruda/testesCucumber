@@ -609,13 +609,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.observacao"), "observacao");
 		p.add(Projections.property("c.observacaoDemissao"), "observacaoDemissao");
 		p.add(Projections.property("c.motivoDemissao"), "motivoDemissao");
+		p.add(Projections.property("c.solicitanteDemissao.id"), "solicitanteDemissaoId");
 		p.add(Projections.property("c.camposExtras.id"), "projectionCamposExtrasId");
 		p.add(Projections.property("c.candidato.id"), "candidatoId");
 
 		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
-
 		p.add(Projections.property("c.pessoal.rg"), "projectionRg");
 		p.add(Projections.property("c.pessoal.dataNascimento"), "projectionDataNascimento");
+
+		p.add(Projections.property("c.contato.email"), "emailColaborador");
 
 		criteria.setProjection(p);
 
@@ -4389,14 +4391,17 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return StringUtil.converteCollectionToArrayString(query.list());
 	}
 
-	public void atualizaDataSolicitacaoDesligamento(Date dataSolicitacaoDesligamento, Date dataSolicitacaoDesligamentoAC, String observacaoDemissao, Long motivoId, Long colaboradorId) 
+	public void atualizaSolicitacaoDesligamento(Date dataSolicitacaoDesligamento, Date dataSolicitacaoDesligamentoAC, String observacaoDemissao, Long motivoId, Long solicitanteDemissaoId, Long colaboradorId) 
 	{
-		String hql = "update Colaborador set dataSolicitacaoDesligamento = :dataSolicitacaoDesligamento, dataSolicitacaoDesligamentoAc = :dataSolicitacaoDesligamentoAc, observacaoDemissao = :observacaoDemissao, motivoDemissao.id = :motivoId where id = :colaboradorId";
+		String hql = "update Colaborador set dataSolicitacaoDesligamento = :dataSolicitacaoDesligamento, dataSolicitacaoDesligamentoAc = :dataSolicitacaoDesligamentoAc, " +
+					"observacaoDemissao = :observacaoDemissao, motivoDemissao.id = :motivoId, solicitanteDemissao.id = :solicitanteDemissaoId where id = :colaboradorId";
+		
 		Query query = getSession().createQuery(hql);
 		query.setDate("dataSolicitacaoDesligamento", dataSolicitacaoDesligamento);
 		query.setDate("dataSolicitacaoDesligamentoAc", dataSolicitacaoDesligamentoAC);
 		query.setString("observacaoDemissao", observacaoDemissao);
 		query.setParameter("motivoId", motivoId, Hibernate.LONG);
+		query.setParameter("solicitanteDemissaoId", solicitanteDemissaoId, Hibernate.LONG);
 		query.setLong("colaboradorId", colaboradorId);
 		
 		query.executeUpdate();

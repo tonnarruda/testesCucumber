@@ -7,6 +7,14 @@
 	<style>
 		input, textarea, select { background-color: #ececec; }
 	</style>
+	
+	<script>
+		function enviarForm(acao)
+		{
+			$('#formAprovarReprovar').attr('action', acao);
+			$('#formAprovarReprovar').submit();
+		}
+	</script>
 </head>
 <body>
 	<@ww.actionerror />
@@ -19,16 +27,18 @@
 		<@ww.textarea label="Observação" cssStyle="width:355px;" disabled="true" value="${colaborador.observacaoDemissao}"/>
 	</@ww.form>
 	
-	<@ww.form name="form" action="aprovarSolicitacaoDesligamento.action" method="POST">
+	<@ww.form id="formAprovarReprovar" name="form" method="POST">
 		<@ww.hidden name="colaborador.id" />
+		<@ww.hidden name="colaborador.nome" />
 		<@ww.hidden name="colaborador.dataSolicitacaoDesligamento"/>
 		<@ww.hidden name="colaborador.dataAdmissao"/>
 		<@ww.hidden name="colaborador.motivoDemissao.id"/>
+		<@ww.hidden name="colaborador.solicitanteDemissao.id"/>
 		<@ww.hidden name="colaborador.observacaoDemissao"/>
 		
 		<div class="buttonGroup">
-			<input type="button" value="" onclick="newConfirm('Deseja realmente confirmar esse desligamento?', function(){ this.form.submit(); })" class="btnAprovar" />
-			<input type="button" value="" onclick="newConfirm('Deseja realmente reprovar esse desligamento?', function(){ window.location='reprovarSolicitacaoDesligamento.action?colaborador.id=${colaborador.id}'})" class="btnReprovar" />
+			<input type="button" value="" onclick="newConfirm('Deseja realmente aprovar essa solicitação de desligamento?', function(){ enviarForm('aprovarSolicitacaoDesligamento.action'); })" class="btnAprovar" />
+			<input type="button" value="" onclick="newConfirm('Deseja realmente reprovar essa solicitação de desligamento?', function(){ enviarForm('reprovarSolicitacaoDesligamento.action'); })" class="btnReprovar" />
 			<input type="button" value="" onclick="window.location='prepareAprovarReprovarSolicitacaoDesligamento.action'" class="btnVoltar" />
 		</div>
 	</@ww.form>

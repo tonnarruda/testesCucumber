@@ -172,7 +172,7 @@ public class Mail
     	{
     		session = Session.getInstance(properties);
     	}
-        Message msg = new MimeMessage(session);
+    	MimeMessage msg = new MimeMessage(session);
 
         Multipart mimesContainer = new MimeMultipart();
         MimeBodyPart text = new MimeBodyPart();
@@ -180,9 +180,8 @@ public class Mail
         text.setContent(bodyMessage.toString(), "text/html; charset=UTF-8");
         text.setHeader("Content-Type", "text/html; charset=UTF-8");
         
-
         msg.setFrom(new InternetAddress(message.getFrom(), "RH"));
-        msg.setSubject(subject);
+        msg.setSubject(subject, "utf-8");
 
         			//Original (10:48 2/1/2008) msg.setText(body);
         msg.setText(bodyMessage.toString());

@@ -241,6 +241,30 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	}, 
+	SOLICITAR_DESLIGAMENTO(32, "Solicitar desligamento de colaborador", "Info. Funcionais") {
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			MeioComunicacao.EMAIL.add(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_DESLIGAMENTO);
+			
+			return this.getListMeioComunicacao();
+		}
+	}, 
+	APROVAR_SOLICITACAO_DESLIGAMENTO(33, "Aprovar solicitação de desligamento de colaborador", "Info. Funcionais") {
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			MeioComunicacao.EMAIL.add(EnviarPara.SOLICITANTE_DESLIGAMENTO);
+			
+			return this.getListMeioComunicacao();
+		}
+	}, 
+	REPROVAR_SOLICITACAO_DESLIGAMENTO(34, "Reprovar solicitação de desligamento de colaborador", "Info. Funcionais") {
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			MeioComunicacao.EMAIL.add(EnviarPara.SOLICITANTE_DESLIGAMENTO);
+			
+			return this.getListMeioComunicacao();
+		}
+	}, 
 	TERMINO_CONTRATO_COLABORADOR(25, "Terminar contrato temporário do colaborador", "Info. Funcionais") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);

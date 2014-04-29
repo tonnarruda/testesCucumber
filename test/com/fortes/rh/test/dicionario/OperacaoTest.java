@@ -11,7 +11,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testQtdOperacoes()
 	{
-		assertEquals(31, Operacao.values().length);
+		assertEquals(34, Operacao.values().length);
 	}
 
 	public void testGetHashMapGrupos()
@@ -55,6 +55,9 @@ public class OperacaoTest extends TestCase
 		assertEquals("Houver carteira de habilitação a vencer (Notificação periódica)", Operacao.getDescricaoById(++i));
 		assertEquals("Cadastrar solicitação de pessoal", Operacao.getDescricaoById(++i));
 		assertEquals("Cadastrar solicitação de realinhamento para colaborador", Operacao.getDescricaoById(++i));
+		assertEquals("Solicitar desligamento de colaborador", Operacao.getDescricaoById(++i));
+		assertEquals("Aprovar solicitação de desligamento de colaborador", Operacao.getDescricaoById(++i));
+		assertEquals("Reprovar solicitação de desligamento de colaborador", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -102,6 +105,9 @@ public class OperacaoTest extends TestCase
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 29 
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 30 
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 31 
+		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 32 
+		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 33 
+		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 34 
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -140,7 +146,10 @@ public class OperacaoTest extends TestCase
 		assertEquals(++i, Operacao.CADASTRAR_SITUACAO_AC.getId());							// 28
 		assertEquals(++i, Operacao.HABILITACAO_A_VENCER.getId());							// 29
 		assertEquals(++i, Operacao.CADASTRAR_SOLICITACAO.getId());							// 30
-		assertEquals(++i, Operacao.CADASTRAR_SOLICITACAO_REALINHAMENTO_COLABORADOR.getId());			// 31
+		assertEquals(++i, Operacao.CADASTRAR_SOLICITACAO_REALINHAMENTO_COLABORADOR.getId());// 31
+		assertEquals(++i, Operacao.SOLICITAR_DESLIGAMENTO.getId());							// 32
+		assertEquals(++i, Operacao.APROVAR_SOLICITACAO_DESLIGAMENTO.getId());				// 33
+		assertEquals(++i, Operacao.REPROVAR_SOLICITACAO_DESLIGAMENTO.getId());				// 34
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -479,6 +488,39 @@ public class OperacaoTest extends TestCase
 		++qtdDeOperacoesTestadas;
 		
 		Operacao operacao = Operacao.CADASTRAR_SOLICITACAO_REALINHAMENTO_COLABORADOR;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+	}
+	
+	public void testSolicitarDesligamentoColaborador()
+	{
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.SOLICITAR_DESLIGAMENTO;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+	}
+	
+	public void testAprovarSolicitacaoDesligamentoColaborador()
+	{
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.APROVAR_SOLICITACAO_DESLIGAMENTO;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+	}
+	
+	public void testReprovarSolicitacaoDesligamentoColaborador()
+	{
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.REPROVAR_SOLICITACAO_DESLIGAMENTO;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
