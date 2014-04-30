@@ -52,4 +52,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	void auditaIntegracao(Empresa empresa, boolean tavaIntegradaComAC);
 	boolean isControlaRiscoPorAmbiente(Long empresaId);
 	Collection<Empresa> findEmpresasIntegradas() ;
+	Empresa getCnae(Long empresaId);
 }

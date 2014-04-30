@@ -23,6 +23,19 @@
 <@ww.actionerror />
 	<@ww.form name="form" action="gerarRelatorio.action" onsubmit="${validarCampos}" validate="true" method="POST">
 		<@ww.datepicker label="Data" name="data" id="data" required="true" cssClass="mascaraData" value="${dataDoDia}"/>
+		
+		CNAE <br />
+		<select name="cnae" style="width: 150px; margin-bottom:8px;">
+	  		<#if empresa.cnae?exists && empresa.cnae != "">
+	  			<option value="${empresa.cnae}">${empresa.cnae}</option>
+	  		</#if>
+	  		<#if empresa.cnae2?exists && empresa.cnae2 != "">
+		  		<option value="${empresa.cnae2}">${empresa.cnae2}</option>
+	  		<#elseif !empresa.cnae?exists || empresa.cnae == "">
+		  		<option value="">Não existe CNAE</option>
+	  		</#if>
+		</select>
+		
 		<@ww.textfield label="NIT do Representante Legal" name="nit" id="nit" required="true" cssStyle="width: 250px;"/>
 		<@ww.textfield label="Representante Legal" name="responsavel" id="responsavel" cssStyle="width: 450px;" required="true"/>
 		

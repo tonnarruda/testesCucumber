@@ -23,7 +23,7 @@ public interface FuncaoManager extends GenericManager<Funcao>
 	Collection<Funcao> findFuncaoByFaixa(Long faixaId);
 	Funcao findByIdProjection(Long funcaoId);
 	Collection<Funcao> findFuncoesDoAmbiente(Long ambienteId, Date data);
-	Collection<PppRelatorio> populaRelatorioPpp(Colaborador colaborador, Empresa empresa, Date data, String nit, String responsavel, String observacoes, String[] respostas) throws Exception;
+	Collection<PppRelatorio> populaRelatorioPpp(Colaborador colaborador, Empresa empresa, Date data, String nit, String cnae, String responsavel, String observacoes, String[] respostas) throws Exception;
 	Collection<Long> findFuncaoAtualDosColaboradores(Date data, Long estabelecimentoId);
 	Collection<String> findColaboradoresSemFuncao(Date data, Long estabelecimentoId);
 	int getQtdColaboradorByFuncao(Long funcaoId, Long estabelecimentoId, Date data, String sexo);

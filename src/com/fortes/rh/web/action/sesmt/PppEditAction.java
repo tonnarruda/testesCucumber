@@ -10,9 +10,11 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.exception.PppRelatorioException;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.relatorio.PppRelatorio;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.RelatorioUtil;
@@ -27,7 +29,8 @@ public class PppEditAction extends MyActionSupportList
 	
 	private ColaboradorManager colaboradorManager;
 	private FuncaoManager funcaoManager;
-	private HistoricoColaboradorManager historicoColaboradorManager; 
+	private HistoricoColaboradorManager historicoColaboradorManager;
+	private EmpresaManager empresaManager;
 
 	private Colaborador colaborador;
 	private String nit;
@@ -35,6 +38,8 @@ public class PppEditAction extends MyActionSupportList
 	private Date data;
 	private String observacoes;
 	private String[] respostas;
+	private String cnae;
+	private Empresa empresa;
 	
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private Collection<PppRelatorio> dataSource;
@@ -67,6 +72,8 @@ public class PppEditAction extends MyActionSupportList
 		
 		colaborador = colaboradorManager.findByIdProjectionEmpresa(colaborador.getId());
 		
+		empresa = empresaManager.getCnae(getEmpresaSistema().getId());
+		
 		if (StringUtils.isBlank(responsavel))
 			responsavel =  colaborador.getEmpresa().getRepresentanteLegal();
 		if (StringUtils.isBlank(nit))
@@ -97,7 +104,7 @@ public class PppEditAction extends MyActionSupportList
 			parametros.put("IMG_DIR", imgDir);
 			parametros.put("IMPRIMIR_RECIBO", imprimirRecibo);
 			
-			dataSource = funcaoManager.populaRelatorioPpp(colaborador, getEmpresaSistema(), data, nit, responsavel, observacoes, respostas);
+			dataSource = funcaoManager.populaRelatorioPpp(colaborador, getEmpresaSistema(), data, nit, cnae, responsavel, observacoes, respostas);
 			
 			return SUCCESS;
 		}
@@ -210,5 +217,21 @@ public class PppEditAction extends MyActionSupportList
 
 	public void setImprimirRecibo(boolean imprimirRecibo) {
 		this.imprimirRecibo = imprimirRecibo;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setCnae(String cnae) {
+		this.cnae = cnae;
+	}
+
+	public String getCnae() {
+		return cnae;
 	}
 }
