@@ -12,6 +12,7 @@ import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.exception.PppRelatorioException;
 import com.fortes.rh.model.geral.Colaborador;
@@ -34,6 +35,7 @@ public class PppEditActionTest extends MockObjectTestCase
 	Mock colaboradorManager;
 	Mock historicoColaboradorManager;
 	Mock funcaoManager;
+	Mock empresaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -42,10 +44,12 @@ public class PppEditActionTest extends MockObjectTestCase
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		funcaoManager = new Mock(FuncaoManager.class);
 		historicoColaboradorManager = mock(HistoricoColaboradorManager.class);
+		empresaManager = mock(EmpresaManager.class);
 
 		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
 		action.setFuncaoManager((FuncaoManager) funcaoManager.proxy());
 		action.setHistoricoColaboradorManager((HistoricoColaboradorManager) historicoColaboradorManager.proxy());
+		action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 		
 		Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
@@ -67,6 +71,7 @@ public class PppEditActionTest extends MockObjectTestCase
 
 		colaboradorManager.expects(once()).method("findByIdProjectionEmpresa").with(eq(c1.getId())).will(returnValue(c1));
 		historicoColaboradorManager.expects(once()).method("verifyDataHistoricoAdmissao").will(returnValue(true));
+		empresaManager.expects(once()).method("getCnae").withAnyArguments().will(returnValue(empresa));
 		assertEquals("success", action.prepareRelatorio());
 	}
 	
@@ -105,15 +110,17 @@ public class PppEditActionTest extends MockObjectTestCase
 		action.setNit("12332");
 		action.setObservacoes("...");
 		
-		funcaoManager.expects(once()).method("populaRelatorioPpp").with(new Constraint[]{eq(colaborador), ANYTHING, eq(data), ANYTHING, ANYTHING, ANYTHING, eq(respostas)});
+		funcaoManager.expects(once()).method("populaRelatorioPpp").with(new Constraint[]{eq(colaborador), ANYTHING, eq(data), ANYTHING, ANYTHING, ANYTHING, ANYTHING, eq(respostas)});
 		
 		action.gerarRelatorio();
 	}
 	
 	public void testGerarRelatorioPppException() throws Exception
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa(2L);
+		
 		Colaborador colaborador = ColaboradorFactory.getEntity(32L);
-		colaborador.setEmpresa(EmpresaFactory.getEmpresa(2L));
+		colaborador.setEmpresa(empresa);
 		action.setColaborador(colaborador);
 
 		PppRelatorioException exception = new PppRelatorioException();
@@ -122,6 +129,7 @@ public class PppEditActionTest extends MockObjectTestCase
 		funcaoManager.expects(once()).method("populaRelatorioPpp").will(throwException(exception));
 		colaboradorManager.expects(once()).method("findByIdProjectionEmpresa").with(eq(colaborador.getId())).will(returnValue(colaborador));
 		historicoColaboradorManager.expects(once()).method("verifyDataHistoricoAdmissao").will(returnValue(true));
+		empresaManager.expects(once()).method("getCnae").withAnyArguments().will(returnValue(empresa));
 		
 		action.gerarRelatorio();
 		
@@ -129,6 +137,7 @@ public class PppEditActionTest extends MockObjectTestCase
 		funcaoManager.expects(once()).method("populaRelatorioPpp").will(throwException(new Exception()));
 		colaboradorManager.expects(once()).method("findByIdProjectionEmpresa").with(eq(colaborador.getId())).will(returnValue(colaborador));
 		historicoColaboradorManager.expects(once()).method("verifyDataHistoricoAdmissao").will(returnValue(false));
+		empresaManager.expects(once()).method("getCnae").withAnyArguments().will(returnValue(empresa));
 		
 		action.gerarRelatorio();
 		

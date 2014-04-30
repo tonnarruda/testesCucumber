@@ -460,4 +460,19 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		
 		return (Character) query.uniqueResult() == 'A';
 	}
+
+	public Empresa getCnae(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(Empresa.class, "e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("e.cnae"), "cnae");
+		p.add(Projections.property("e.cnae2"),"cnae2");
+		criteria.setProjection(Projections.distinct(p));
+
+		criteria.add(Expression.eq("e.id", empresaId));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return (Empresa) criteria.uniqueResult();
+	}
 }

@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.12x.15x" bd="" data="xx/xx/2014">
+		<Item visivel="S" motivo="S20140100018"><![CDATA[SESMT > Relatórios > PPP: Nova opção de selecionar o CNAE a ser impresso.]]></Item>
+		<Item visivel="S" motivo="S20140100018"><![CDATA[Utilitários > Cadastros > Empresas: Novo campo CNAE 2]]></Item>
+	</Versao>
+	<Versao id="1.1.126.151" bd="" data="29/04/2014">
 		<Item visivel="N" motivo="S20140400233"><![CDATA[Integração com AC Pessoal: Melhoria na mensagem enviada ao AC Pessoal ao tentar atualizar o colaborador com uma cidade não cadastrada no RH.]]></Item>
 		<Item visivel="S" motivo="S20140300204"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turma: Nova filtro por cargo]]></Item>
-		<Item visivel="S" motivo="S20140400016"><![CDATA[T&D > Cadastros > Modelos de Avaliação de Curso > Imprimir: Mostrar título da avalição no cabeçalho do relatório.]]></Item>
-		<Item visivel="S" motivo="S20140400116"><![CDATA[Info. Funcionais > Relatórios > Resultados das Entrevistas: Novo filtro de busca de multipla escolha da área organizacional e do cargo.]]></Item>
+		<Item visivel="S" motivo="S20140400016"><![CDATA[T&D > Cadastros > Modelos de Avaliação de Curso > Imprimir: Mostrar título da avaliação no cabeçalho do relatório.]]></Item>
+		<Item visivel="S" motivo="S20131200084"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar colaborador/Solicitar desligamento: Nova funcionalidade para solicitar desligamento aos gestores. (Disponível quando o campo "Solicitar confirmação de gestores ao desligar colaboradores" estiver marcado na empresa)]]></Item>
+		<Item visivel="S" motivo="S20131200084"><![CDATA[Info. Funcionais > Movimentações > Solicitações de Desligamento: Nova tela para aprovar ou reprovar solicitações de desligamento. (Disponível quando o campo "Solicitar confirmação de gestores ao desligar colaboradores" estiver marcado na empresa)]]></Item>
+		<Item visivel="S" motivo="S20140400116"><![CDATA[Info. Funcionais > Relatórios > Resultados das Entrevistas: Novo filtro de busca de múltipla escolha da área organizacional e do cargo.]]></Item>
+		<Item visivel="S" motivo="S20131200084"><![CDATA[Utilitários > Cadastros > Empresas > Inserir/Editar: Novo campo para solicitar confirmação de gestores ao desligar colaboradores.]]></Item>
 	</Versao>
 	<Versao id="1.1.125.150" bd="" data="22/04/2014">
 		<Item visivel="S" motivo="S20140300133"><![CDATA[R&S > Cadastros > Candidatos > Visualizar Currículo > Imprimir: Adição do campo "data de cadastro" na impressão do currículo.]]></Item>

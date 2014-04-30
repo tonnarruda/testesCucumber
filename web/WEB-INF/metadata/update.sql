@@ -22381,3 +22381,18 @@ alter sequence papel_sequence restart with 620;--.go
 insert into perfil_papel(perfil_id, papeis_id) values(1, 619);--.go
 insert into migrations values('20140409163212');--.go
 update parametrosdosistema set appversao = '1.1.125.150';--.go
+-- versao 1.1.126.151
+
+alter table empresa add column solicitarConfirmacaoDesligamento boolean not null default false;--.go
+insert into migrations values('20140414144454');--.go
+alter table colaborador add column dataSolicitacaoDesligamento date;--.go
+insert into migrations values('20140414151402');--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (620, 'ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO', 'Solicitações de Desligamento', '/geral/colaborador/prepareAprovarReprovarSolicitacaoDesligamento.action', 3, true, 469);--.go
+alter sequence papel_sequence restart with 621;--.go
+
+insert into perfil_papel(perfil_id, papeis_id) values(1, 620);--.go
+insert into migrations values('20140415162942');--.go
+ALTER TABLE colaborador ADD COLUMN solicitanteDemissao_id bigint;--.go
+ALTER TABLE colaborador ADD CONSTRAINT colaborador_solicitanteDemissao_fk FOREIGN KEY (solicitanteDemissao_id) REFERENCES colaborador(id);--.go
+insert into migrations values('20140429104405');--.go
+update parametrosdosistema set appversao = '1.1.126.151';--.go

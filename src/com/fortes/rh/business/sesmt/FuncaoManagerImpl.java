@@ -53,7 +53,7 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 	HistoricoFuncaoManager historicoFuncaoManager = null;
 	
 	// TODO refatorar esse código, não devia estar nesse manager
-	public Collection<PppRelatorio> populaRelatorioPpp(Colaborador colaborador, Empresa empresa, Date data, String nit, String responsavel, String observacoes, String[] respostas) throws Exception
+	public Collection<PppRelatorio> populaRelatorioPpp(Colaborador colaborador, Empresa empresa, Date data, String nit, String cnae, String responsavel, String observacoes, String[] respostas) throws Exception
 	{
 		HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBean("historicoColaboradorManager"); 
 		historicoFuncaoManager = (HistoricoFuncaoManager) SpringUtil.getBean("historicoFuncaoManager");
@@ -68,6 +68,7 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		
 		Collection<Cat> cats = catManager.findCatsColaboradorByDate(colaborador,data);
 		colaborador = colaboradorManager.findById(colaborador.getId());
+		colaborador.getEmpresa().setCnae(cnae);
 		
 		HistoricoColaborador ultimoHistorico = ((HistoricoColaborador) historicosDoColaboradors.toArray()[historicosDoColaboradors.size()-1]);
 		Estabelecimento estabelecimento = ultimoHistorico.getEstabelecimento();

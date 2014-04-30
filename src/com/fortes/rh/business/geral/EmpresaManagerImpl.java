@@ -532,8 +532,11 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return getDao().isControlaRiscoPorAmbiente(empresaId);
 	}
 
+	public Empresa getCnae(Long empresaId) {
+		return getDao().getCnae(empresaId);
+	}
+
 	public void setRiscoManager(RiscoManager riscoManager) {
 		this.riscoManager = riscoManager;
 	}
-
 }
