@@ -1,0 +1,1 @@
+alter table empresa add column cnae2 character varying(20); --.go

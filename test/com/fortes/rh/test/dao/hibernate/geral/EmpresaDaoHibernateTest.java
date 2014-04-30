@@ -333,6 +333,18 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		
 		assertTrue(empresaDao.isControlaRiscoPorAmbiente(empresa.getId()));
 	}
+	
+	public void testGetCnae() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setCnae("cnae1");
+		empresa.setCnae2("cnae2");
+		empresaDao.save(empresa);
+		
+		Empresa retorno = empresaDao.getCnae(empresa.getId());
+		assertEquals("cnae1", retorno.getCnae());
+		assertEquals("cnae2", retorno.getCnae2());
+	}
 
 	public void setCidadeDao(CidadeDao cidadeDao)
 	{

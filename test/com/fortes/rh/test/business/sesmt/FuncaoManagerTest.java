@@ -314,7 +314,7 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		
 		try 
 		{
-			funcaoManager.populaRelatorioPpp(colaborador , empresa, new Date(), "111", "Resp.", "obs", new String[5]);
+			funcaoManager.populaRelatorioPpp(colaborador , empresa, new Date(), "111", null, "Resp.", "obs", new String[5]);
 		}
 		catch (PppRelatorioException e)
 		{

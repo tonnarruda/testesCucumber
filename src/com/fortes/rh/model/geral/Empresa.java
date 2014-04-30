@@ -47,6 +47,8 @@ public class Empresa extends AbstractModel implements Serializable
 	private String emailRespLimiteContrato;
 	@Column(length=20)
     private String cnae;
+	@Column(length=20)
+	private String cnae2;
 	@Column(length=10)
     private String grauDeRisco;
 	@Column(length=100)
@@ -557,8 +559,15 @@ public class Empresa extends AbstractModel implements Serializable
 		return solicitarConfirmacaoDesligamento;
 	}
 
-	public void setSolicitarConfirmacaoDesligamento(
-			boolean solicitarConfirmacaoDesligamento) {
+	public void setSolicitarConfirmacaoDesligamento(boolean solicitarConfirmacaoDesligamento) {
 		this.solicitarConfirmacaoDesligamento = solicitarConfirmacaoDesligamento;
+	}
+		
+	public String getCnae2() {
+		return cnae2;
+	}
+
+	public void setCnae2(String cnae2) {
+		this.cnae2 = cnae2;
 	}
 }

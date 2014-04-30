@@ -148,7 +148,8 @@
 		<@ww.select label="Cidade" name="empresa.cidade.id" id="cidade" list="cidades" required="true" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="" />
 		<@ww.textfield label="Base CNPJ" name="empresa.cnpj" id="cnpj" required="true"  onkeypress="return(somenteNumeros(event,''));" cssStyle="width:100px;" maxLength="8"/>
 		<@ww.textfield label="Atividade" name="empresa.atividade" cssClass="inputNome" maxLength="200"/>
-		<@ww.textfield label="CNAE (Classificação Nacional de Atividades Econômicas)" name="empresa.cnae" cssStyle="width:100px;" onkeypress="return(somenteNumeros(event,'./-'));" maxLength="10"/>
+		<@ww.textfield label="CNAE 01 (Classificação Nacional de Atividades Econômicas)" name="empresa.cnae" cssStyle="width:100px;" onkeypress="return(somenteNumeros(event,'./-'));" maxLength="10"/>
+		<@ww.textfield label="CNAE 02 (Classificação Nacional de Atividades Econômicas)" name="empresa.cnae2" cssStyle="width:100px;" onkeypress="return(somenteNumeros(event,'./-'));" maxLength="10"/>
 		<@ww.textfield label="Grau de Risco" name="empresa.grauDeRisco" cssStyle="width:50px;" maxLength="10" onkeypress="return(somenteNumeros(event,''));"/>
 		<@ww.textfield label="Email Remetente" name="empresa.emailRemetente" id="remetente" required="true" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="100"/>
 		<@ww.textfield label="Email Resp. Setor Pessoal" name="empresa.emailRespSetorPessoal" id="respSetorPessoal" required="true" cssClass="mascaraEmail" cssStyle="width:340px;" maxLength="100"/>
