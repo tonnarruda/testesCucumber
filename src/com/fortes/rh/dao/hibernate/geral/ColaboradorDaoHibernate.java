@@ -80,18 +80,21 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	 * @since 16/02/2008
 	 * @return Coleção com os colaboradores das Áreas Organizacionais Informadas
 	 */
-	public Collection<Colaborador> findByAreaOrganizacionalIds(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentosIds, Integer page, Integer pagingSize, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo)
+	public Collection<Colaborador> findByAreaOrganizacionalIds(Collection<Long> areaOrganizacionalIds, Collection<Long> estabelecimentosIds, Collection<Long> cargosIds, Integer page, Integer pagingSize, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo)
 	{
 		String whereNome = "";
 		String whereMatricula = "";
 		String whereAreaIds = "";
+		String wherecargosIds = "";
 		String whereCPF = "";
 		String whereEstabelecimentosIds = "";
 
 		if(areaOrganizacionalIds != null && !areaOrganizacionalIds.isEmpty())
 			whereAreaIds = "and ao.id in (:ids) ";
-			
 		
+		if(cargosIds != null && !cargosIds.isEmpty())
+			wherecargosIds = "and ca.id in (:cargosIds) ";
+
 		if(estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
 			whereEstabelecimentosIds = "and hc.estabelecimento.id in (:estabelecimentosIds) ";
 
@@ -129,6 +132,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		hql.append("and hc.status = :status ");
 		hql.append(whereAreaIds);
+		hql.append(wherecargosIds);
 		hql.append(whereEstabelecimentosIds);
 		hql.append(whereNome + whereMatricula + whereCPF );
 		hql.append("and hc.data = (select max(hc2.data) ");
@@ -155,10 +159,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setDate("hoje", new Date());
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-
 		
 		if(!whereAreaIds.equals(""))
 			query.setParameterList("ids", areaOrganizacionalIds, Hibernate.LONG);
+		
+		if(!wherecargosIds.equals(""))
+			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
 		
 		if(!whereEstabelecimentosIds.equals(""))
 			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
@@ -188,17 +194,17 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	 *            : Número da página
 	 * @param pagingSize
 	 *            : Quantidade de itens para paginação
-	 * @param ids
+	 * @param areasIds
 	 *            : Array de Long com os ID das Áreas Organizacionais
 	 * @return Coleção com os colaboradores das Áreas Organizacionais Informadas
 	 */
-	public Collection<Colaborador> findByAreaOrganizacionalIds(Integer page, Integer pagingSize, Long[] ids, Long[] estabelecimentosIds, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo)
+	public Collection<Colaborador> findByAreaOrganizacionalIds(Integer page, Integer pagingSize, Long[] areasIds, Long[] cargosIds, Long[] estabelecimentosIds, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo)
 	{
 		Collection<Long> param = new HashSet<Long>();
-		if(ids != null && ids.length > 0)
+		if(areasIds != null && areasIds.length > 0)
 		{
-			for (int i = 0; i < ids.length; i++)
-				param.add(ids[i]);			
+			for (int i = 0; i < areasIds.length; i++)
+				param.add(areasIds[i]);			
 		}
 		
 		Collection<Long> param2 = new HashSet<Long>();
@@ -208,8 +214,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				param2.add(estabelecimentosIds[i]);
 		}
 		
+		Collection<Long> param3 = new HashSet<Long>();
+		if(cargosIds != null && cargosIds.length > 0)
+		{
+			for (int i = 0; i < cargosIds.length; i++)
+				param3.add(cargosIds[i]);
+		}
 		
-		return findByAreaOrganizacionalIds(param, param2, page, pagingSize, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, comHistColaboradorFuturo);
+		
+		return findByAreaOrganizacionalIds(param, param2, param3, page, pagingSize, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, comHistColaboradorFuturo);
 	}
 
 	/**
@@ -224,7 +237,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Collection<Long> param = new HashSet<Long>();
 		for (int i = 0; i < ids.length; i++)
 			param.add(ids[i]);
-		return findByAreaOrganizacionalIds(param, null, null, null, null, null, null, null, false);
+		return findByAreaOrganizacionalIds(param, null, null, null, null, null, null, null, null, false);
 	}
 
 	/**
@@ -238,7 +251,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	{
 		Collection<Long> param = new HashSet<Long>();
 		param.add(area.getId());
-		return findByAreaOrganizacionalIds(param, null, null, null, null, null, null, null, false);
+		return findByAreaOrganizacionalIds(param, null, null, null, null, null, null, null, null, false);
 	}
 
 	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario)
