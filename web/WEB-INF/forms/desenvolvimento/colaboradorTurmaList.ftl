@@ -86,16 +86,6 @@
 			addChecks('estabelecimentosCheck',data);
 		}
 
-		function populaCargo(empresaId)
-		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			CargoDWR.getByEmpresas(createListCargo, empresaId, null);
-		}
-
-		function createListCargo(data)
-		{
-			addChecks('cargosCheck',data);
-		}
     </script>
 </head>
 <body>
@@ -110,7 +100,6 @@
 	            
 	            <@ww.textfield label="Nome do Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 500px;"/>
 	            <@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
-	            <@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" filtro=true/>
 	            <input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
 	    	<#include "../util/bottomFiltro.ftl" />
 	    	<br>
