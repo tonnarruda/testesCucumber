@@ -159,6 +159,9 @@ public class CandidatoListAction extends MyActionSupportList
 
 	//variavel para busca no candidatoList
 	private String nomeBusca = "";
+	private String ddd = "";
+	private String foneFixo = "";
+	private String foneCelular = "";
 	private String indicadoPorBusca = "";
 	private String cpfBusca = "";
 	private char visualizar; //T = todos, D = disponiveis, I = indisponiveis
@@ -254,8 +257,8 @@ public class CandidatoListAction extends MyActionSupportList
 			empresaId = getEmpresaSistema().getId();
 		
 		cpfBusca = StringUtil.removeMascara(cpfBusca);
-		setTotalSize(candidatoManager.getCount(nomeBusca, cpfBusca, empresaId, indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno));
-		candidatos = candidatoManager.list(getPage(), getPagingSize(), nomeBusca, cpfBusca, empresaId, indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno);
+		setTotalSize(candidatoManager.getCount(nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, empresaId, indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno));
+		candidatos = candidatoManager.list(getPage(), getPagingSize(), nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, empresaId, indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno);
 
 		if(candidatos == null || candidatos.isEmpty())
 			addActionMessage("Não existem candidatos a serem listados");
@@ -1886,5 +1889,29 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setModoImpressao(boolean modoImpressao) {
 		this.modoImpressao = modoImpressao;
+	}
+
+	public String getDdd() {
+		return ddd;
+	}
+
+	public void setDdd(String ddd) {
+		this.ddd = ddd;
+	}
+
+	public String getFoneFixo() {
+		return foneFixo;
+	}
+
+	public void setFoneFixo(String foneFixo) {
+		this.foneFixo = foneFixo;
+	}
+
+	public String getFoneCelular() {
+		return foneCelular;
+	}
+
+	public void setFoneCelular(String foneCelular) {
+		this.foneCelular = foneCelular;
 	}
 }

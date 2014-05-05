@@ -19,7 +19,6 @@ import org.hibernate.NonUniqueResultException;
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
-import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.f2rh.Curriculo;
@@ -429,7 +428,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		String cpfBusca = "";
 		Long empresaId = empresa.getId();
 
-		Collection<Candidato> retorno = candidatoManager.list(page, pagingSize, nomeBusca, cpfBusca, empresaId, "", 'T', null, null,null, false, false);
+		Collection<Candidato> retorno = candidatoManager.list(page, pagingSize, nomeBusca, cpfBusca, null, null, null, empresaId, "",'T', null, null, null, false, false);
 
     	assertEquals(3, retorno.size());
     }
@@ -442,7 +441,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	String cpfBusca = "";
     	Long empresaId = 1L;
 
-    	Integer retorno = candidatoManager.getCount(nomeBusca, cpfBusca, empresaId, "", 'T', null, null,null, false, false);
+    	Integer retorno = candidatoManager.getCount(nomeBusca, cpfBusca, null, null, null, empresaId, "",'T', null, null, null, false, false);
 
     	assertTrue(retorno == 3);
     }
