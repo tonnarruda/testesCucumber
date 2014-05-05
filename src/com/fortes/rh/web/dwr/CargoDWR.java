@@ -46,6 +46,9 @@ public class CargoDWR
 	private Collection<Cargo> getCargosByArea(String[] areaOrganizacionalIds, Long empresaId) {
 		Long [] idsLong = LongUtil.arrayStringToArrayLong(areaOrganizacionalIds);
 		
+		if(empresaId != null && (empresaId.equals(-1L) || empresaId.equals(0)))
+			empresaId = null;
+		
 		Collection<Cargo> cargos = cargoManager.findByAreasOrganizacionalIdsProjection(idsLong, empresaId);
 		return cargos;
 	}
@@ -110,7 +113,8 @@ public class CargoDWR
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos, getParametro, "getNomeMercado");
 	}
 	
-	private Collection<Cargo> getFindAllSelect(Long empresaId, Long[] empresaIds) {
+	private Collection<Cargo> getFindAllSelect(Long empresaId, Long[] empresaIds) 
+	{
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		
 		if(empresaId == 0 || empresaId == -1)

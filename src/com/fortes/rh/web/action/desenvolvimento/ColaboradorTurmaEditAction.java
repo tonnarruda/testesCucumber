@@ -52,7 +52,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	private DNTManager dNTManager;
 	private PrioridadeTreinamentoManager prioridadeTreinamentoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private GrupoOcupacionalManager grupoOcupacionalManager;
 	private CargoManager cargoManager;
 	private TurmaManager turmaManager;
 	private CursoManager cursoManager;
@@ -178,6 +177,9 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.TODAS, null);
 		areasCheckList = populaCheckListBox(areaOrganizacionalsTmp, "getId", "getDescricao");
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+		
+		cargosCheckList = cargoManager.populaCheckBox(true, empresaId);
+		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
 
 		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColaboradoresByCursoTurmaIsNull(turma.getCurso().getId());
 		colaboradoresCursosCheckList = populaCheckListBox(colaboradorTurmaManager.getListaColaboradores(colaboradorTurmas), "getId", "getNome");
@@ -480,11 +482,6 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 	public void setCargoManager(CargoManager cargoManager)
 	{
 		this.cargoManager = cargoManager;
-	}
-
-	public void setGrupoOcupacionalManager(GrupoOcupacionalManager grupoOcupacionalManager)
-	{
-		this.grupoOcupacionalManager = grupoOcupacionalManager;
 	}
 
 	public Collection<ColaboradorTurma> getColaboradorTurmas()

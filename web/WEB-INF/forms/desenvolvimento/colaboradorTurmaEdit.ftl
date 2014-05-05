@@ -13,41 +13,20 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorTurmaDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/populaEstabAreaCargo.js"/>"></script>
+
 	<script type='text/javascript'>
-	
 		var empresaIds = new Array();
-		
 		<#if empresaIds?exists>
 			<#list empresaIds as empresaId>
 				empresaIds.push(${empresaId});
 			</#list>
 		</#if>
 	
-		function populaEstabelecimento(empresaId)
-		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId, empresaIds);
-		}
-		
-		function createListEstabelecimento(data)
-		{
-			addChecks('estabelecimentosCheck',data);
-		}
-	
-		function populaAreas(empresaId)
-		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresa(createListAreas, empresaId);
-		}
-
-		function createListAreas(data)
-		{
-			addChecks('areasCheck', data)
-		}
-		
 		function enviaForm()
 		{
 			validaFormularioEPeriodo('form', false, new Array('admIni', 'admFim'));
@@ -102,9 +81,14 @@
 		
 		$(document).ready(function()
 		{
-			var empresa = $('#empresaId').val();
-			populaAreas(empresa);
-			populaEstabelecimento(empresa);
+			populaCargosByAreaVinculados();
+			
+			$('#cargosVinculadosAreas').click(function() {
+				populaCargosByAreaVinculados();
+			});
+			
+			$('#cargosVinculadosAreas').attr('checked', true);;
+			
 		});
 	</script>
 
@@ -137,7 +121,7 @@
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="form" action="listFiltro.action" onsubmit="enviaForm();" method="POST" id="formBusca">
 
-            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" onchange="populaEstabelecimento(this.value);populaAreas(this.value);" disabled="!compartilharColaboradores"/>
+            <@ww.select label="Empresa" name="empresaId" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" onchange="newChangeEmpresa(this.value);" disabled="!compartilharColaboradores"/>
 			
 			<label>Admitidos entre:</label><br />
 			<@ww.datepicker name="dataAdmissaoIni" value="${dataAdmIni}" id="admIni" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
@@ -148,8 +132,9 @@
 			<@ww.textfield label="Matrícula do Colaborador" id="matricula" name="colaborador.matricula" maxLength="20" cssStyle="width: 170px;"/>
 			
 			<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" />
-
-			<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" />
+			<@frt.checkListBox id="areasCheck" name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro=true onClick="populaCargosByAreaVinculados();"/>
+			<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>
+			<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" filtro=true/>
 
 			<input type="button" onclick="enviaForm();" value="" class="btnPesquisar grayBGE" />
 

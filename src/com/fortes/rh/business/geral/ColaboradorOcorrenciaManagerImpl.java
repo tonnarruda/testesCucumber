@@ -317,7 +317,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 				areasIds = new Long[]{-1L};//não vai achar nenhum colaborador
 		}
 			
-		return colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, null, colaborador, null, null, empresaId, false);
+		return colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, null, null, colaborador, null, null, empresaId, false);
 	}
 	
 	public Collection<ColaboradorOcorrencia> findByFiltros(int page, int pagingSize, String colaboradorNome, String ocorrenciaNome, Boolean comProvidencia, Long[] colaboradoresIds, Long empresaId) 

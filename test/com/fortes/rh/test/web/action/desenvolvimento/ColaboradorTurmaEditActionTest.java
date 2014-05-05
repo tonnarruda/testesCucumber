@@ -9,6 +9,7 @@ import mockit.Mockit;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
@@ -19,6 +20,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
@@ -52,6 +54,7 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
 	private Mock prioridadeTreinamentoManager;
 	private Mock colaboradorManager;
 	private Mock estabelecimentoManager;
+	private Mock cargoManager;
 
     protected void setUp() throws Exception
     {
@@ -67,6 +70,7 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
         prioridadeTreinamentoManager = new Mock(PrioridadeTreinamentoManager.class);
         colaboradorManager = new Mock(ColaboradorManager.class);
         estabelecimentoManager = new Mock(EstabelecimentoManager.class);
+        cargoManager = new Mock(CargoManager.class);
 
         action.setColaboradorTurmaManager((ColaboradorTurmaManager) manager.proxy());
         action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
@@ -78,6 +82,7 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
         action.setPrioridadeTreinamentoManager((PrioridadeTreinamentoManager) prioridadeTreinamentoManager.proxy());
         action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
         action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
+        action.setCargoManager((CargoManager) cargoManager.proxy());
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
     }
@@ -225,6 +230,7 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
     	estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(Arrays.asList(empresa)));
     	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
     	areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresa.getId()),ANYTHING,ANYTHING).will(returnValue(Arrays.asList(new AreaOrganizacional(1L, "area", true))));
+    	cargoManager.expects(once()).method("populaCheckBox").with(eq(true), ANYTHING).will(returnValue(Arrays.asList(new Cargo(1L, "cargo"))));
     	manager.expects(once()).method("findColaboradoresByCursoTurmaIsNull").with(eq(turma.getCurso().getId())).will(returnValue(colaboradorTurmas));
     	manager.expects(once()).method("getListaColaboradores").with(eq(colaboradorTurmas)).will(returnValue(colaboradors));
 	}
