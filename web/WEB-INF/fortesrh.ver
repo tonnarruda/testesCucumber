@@ -6,7 +6,7 @@
 	</Versao>
 	<Versao id="1.1.126.151" bd="" data="29/04/2014">
 		<Item visivel="N" motivo="S20140400233"><![CDATA[Integração com AC Pessoal: Melhoria na mensagem enviada ao AC Pessoal ao tentar atualizar o colaborador com uma cidade não cadastrada no RH.]]></Item>
-		<Item visivel="S" motivo="S20140300204"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turma: Nova filtro por cargo]]></Item>
+		<Item visivel="S" motivo="S20140300204"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turma > Incluir Colaboradores: Nova filtro por cargo]]></Item>
 		<Item visivel="S" motivo="S20140400016"><![CDATA[T&D > Cadastros > Modelos de Avaliação de Curso > Imprimir: Mostrar título da avaliação no cabeçalho do relatório.]]></Item>
 		<Item visivel="S" motivo="S20131200084"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar colaborador/Solicitar desligamento: Nova funcionalidade para solicitar desligamento aos gestores. (Disponível quando o campo "Solicitar confirmação de gestores ao desligar colaboradores" estiver marcado na empresa)]]></Item>
 		<Item visivel="S" motivo="S20131200084"><![CDATA[Info. Funcionais > Movimentações > Solicitações de Desligamento: Nova tela para aprovar ou reprovar solicitações de desligamento. (Disponível quando o campo "Solicitar confirmação de gestores ao desligar colaboradores" estiver marcado na empresa)]]></Item>
