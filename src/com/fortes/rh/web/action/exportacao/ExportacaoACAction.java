@@ -11,6 +11,7 @@ import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
@@ -22,6 +23,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
@@ -46,6 +48,7 @@ public class ExportacaoACAction extends MyActionSupport
 	private FaixaSalarialManager faixaSalarialManager;
 	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
 	private OcorrenciaManager ocorrenciaManager;
+	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
 	
 	private List<String> codigosACs;
 	private Collection<Empresa> empresas;
@@ -73,6 +76,7 @@ public class ExportacaoACAction extends MyActionSupport
 			empresa = empresaManager.findById(empresaId);
 			empresa.setAcIntegra(true);
 			
+			atualizarHistoricosParaPendente();
 			verificarHistoricosPorIndice();
 			verificarEmpresaAC();
 			verificarEstabelecimentoAC();
@@ -87,6 +91,7 @@ public class ExportacaoACAction extends MyActionSupport
 			else
 			{
 				exportarHistoricosColaboardoresAC();
+				exportarColaboradoresOcorrenciasAc();
 				addActionSuccess("Exportação concluída com sucesso.");
 			}
 		}
@@ -115,9 +120,21 @@ public class ExportacaoACAction extends MyActionSupport
 		return prepareExportarAC();
 	}
 
+	private void exportarColaboradoresOcorrenciasAc() throws Exception 
+	{
+		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaManager.findByEmpresaId(empresa.getId());
+		for (ColaboradorOcorrencia colaboradorOcorrencia : colaboradorOcorrencias) 
+			colaboradorOcorrenciaManager.saveColaboradorOcorrencia(colaboradorOcorrencia, empresa);
+	}
+
+	private void atualizarHistoricosParaPendente() {
+		Collection<Colaborador> colaboradoresIds = colaboradorManager.findSemCodigoAC(empresaId);
+		historicoColaboradorManager.updateStatusAcByEmpresaAndStatusAtual(StatusRetornoAC.PENDENTE, StatusRetornoAC.CONFIRMADO, new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradoresIds));
+	}
+
 	private boolean registrosNaoForamConfirmadosNoAC()
 	{
-		boolean existeHistoricoColaboradorPendenteNoAC = historicoColaboradorManager.findPendenciasByHistoricoColaborador(empresaId).size() > 0;
+		boolean existeHistoricoColaboradorPendenteNoAC = historicoColaboradorManager.findPendenciasByHistoricoColaborador(empresaId, new Integer[]{StatusRetornoAC.AGUARDANDO}).size() > 0;
 		boolean existeHistoricoFaixaPendenteNoAC = faixaSalarialHistoricoManager.findPendenciasByFaixaSalarialHistorico(empresaId).size() > 0;
 		return existeHistoricoColaboradorPendenteNoAC || existeHistoricoFaixaPendenteNoAC;
 	}
@@ -290,7 +307,7 @@ public class ExportacaoACAction extends MyActionSupport
 
 	private void exportarHistoricosColaboardoresAC() throws Exception
 	{
-		Collection<HistoricoColaborador> historicos = historicoColaboradorManager.findByEmpresaSemPrimeiroHistorico(empresaId);
+		Collection<HistoricoColaborador> historicos = historicoColaboradorManager.findByEmpresaComHistoricoPendente(empresaId);
 		historicoColaboradorManager.saveHistoricoColaboradorNoAc(historicos, empresa);
 
 		historicoColaboradorManager.updateStatusAc(StatusRetornoAC.AGUARDANDO, new CollectionUtil<HistoricoColaborador>().convertCollectionToArrayIds(historicos));
@@ -439,5 +456,10 @@ public class ExportacaoACAction extends MyActionSupport
 
 	public void setOcorrenciaManager(OcorrenciaManager ocorrenciaManager) {
 		this.ocorrenciaManager = ocorrenciaManager;
+	}
+
+	public void setColaboradorOcorrenciaManager(
+			ColaboradorOcorrenciaManager colaboradorOcorrenciaManager) {
+		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
 	}
 }

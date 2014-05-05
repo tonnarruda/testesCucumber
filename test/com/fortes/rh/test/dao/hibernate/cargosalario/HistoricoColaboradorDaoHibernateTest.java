@@ -98,8 +98,11 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
 	private CandidatoDao candidatoDao;
 	private SolicitacaoDao solicitacaoDao;
-	
 	private FaixaSalarialHistoricoDao faixaSalarialHistoricoDao;
+	
+	Empresa empresa;
+	Colaborador colaborador;
+	HistoricoColaborador historicoColaborador;
 
 	public HistoricoColaborador getEntity()
 	{
@@ -1104,7 +1107,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaborador.setStatus(StatusRetornoAC.AGUARDANDO);
 		historicoColaborador = historicoColaboradorDao.save(historicoColaborador);
 
-		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findPendenciasByHistoricoColaborador(empresa.getId());
+		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findPendenciasByHistoricoColaborador(empresa.getId(), null);
 		
 		assertEquals(1, historicoColaboradors.size());
 		
@@ -1759,10 +1762,19 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	
 	public void testFindByEmpresa()
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
+		inicializaColaboradorComHistorico();
+		
+		Collection<HistoricoColaborador> historicos = historicoColaboradorDao.findByEmpresaComHistoricoPendente(empresa.getId());
+		
+		assertEquals(1, historicos.size());
+	}
+
+	private Empresa inicializaColaboradorComHistorico() 
+	{
+		empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador = ColaboradorFactory.getEntity();
 		colaborador.setNaoIntegraAc(false);
 		colaborador.setEmpresa(empresa);
 		colaboradorDao.save(colaborador);
@@ -1776,7 +1788,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(estabelecimento);
 		
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setFaixaSalarial(faixaSalarial);
 		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
@@ -1787,9 +1799,18 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador);
 		
-		Collection<HistoricoColaborador> historicos = historicoColaboradorDao.findByEmpresaSemPrimeiroHistorico(empresa.getId());
+		return empresa;
+	}
+	
+	public void testUpdateStatusAcByEmpresaAndStatusAtual()
+	{
+		inicializaColaboradorComHistorico();
 		
-		assertEquals(1, historicos.size());
+		historicoColaboradorDao.updateStatusAcByEmpresaAndStatusAtual(StatusRetornoAC.PENDENTE, StatusRetornoAC.CONFIRMADO, colaborador.getId());
+		
+		HistoricoColaborador histRetorno = historicoColaboradorDao.findById(historicoColaborador.getId());
+		
+		assertEquals(StatusRetornoAC.PENDENTE, histRetorno.getStatus());
 	}
 	
 	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)

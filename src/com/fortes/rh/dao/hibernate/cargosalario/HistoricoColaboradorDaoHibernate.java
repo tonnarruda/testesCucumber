@@ -16,8 +16,6 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
@@ -618,7 +616,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return criteria.list();
 	}
 
-	public Collection<HistoricoColaborador> findPendenciasByHistoricoColaborador(Long empresaId)
+	public Collection<HistoricoColaborador> findPendenciasByHistoricoColaborador(Long empresaId, Integer... statusAc)
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "c", Criteria.LEFT_JOIN);
@@ -638,7 +636,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		criteria.setProjection(p);
 
-		criteria.add(Expression.ne("hc.status", StatusRetornoAC.CONFIRMADO));
+		criteria.add(Expression.in("hc.status", statusAc));
 		criteria.add(Expression.eq("c.naoIntegraAc", false));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 
@@ -1319,12 +1317,8 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.executeUpdate();
 	}
 
-	public Collection<HistoricoColaborador> findByEmpresaSemPrimeiroHistorico(Long empresaId) 
+	public Collection<HistoricoColaborador> findByEmpresaComHistoricoPendente(Long empresaId) 
 	{
-		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
-				.setProjection(Projections.min("hc2.data"))
-				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"));
-		
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "c");
 		criteria.createCriteria("hc.estabelecimento", "e");
@@ -1344,7 +1338,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		criteria.setProjection(p);
 
-		criteria.add(Property.forName("hc.data").ne(subQueryHc));
+		criteria.add(Expression.eq("hc.status", StatusRetornoAC.PENDENTE));
 		criteria.add(Expression.eq("c.naoIntegraAc", false));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 
@@ -1353,4 +1347,17 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		return criteria.list();
 	}	
+	
+
+	public void updateStatusAcByEmpresaAndStatusAtual(int novoStatusAC, int statusACAtual, Long... colaboradoresIds) 
+	{
+		Query query = getSession().createQuery("update HistoricoColaborador set status = :novoStatusAC where colaborador.id in (:colaboradoresIds) and status = :statusACAtual ");
+		
+		query.setInteger("novoStatusAC", novoStatusAC);
+		query.setInteger("statusACAtual", statusACAtual);
+		query.setParameterList("colaboradoresIds", colaboradoresIds);
+		
+		query.executeUpdate();
+	}
+	
 }

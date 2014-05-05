@@ -188,7 +188,6 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		}
 		else
 			getDao().update(colaboradorOcorrencia);
-
 	}
 
 	public void remove(ColaboradorOcorrencia colaboradorOcorrencia, Empresa empresa) throws Exception
@@ -330,6 +329,11 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		return getDao().findColaboradorOcorrencia(ocorrenciaIds, colaboradorIds, dataIni, dataFim, empresaIds, areaIds, estabelecimentoIds, detalhamento, agruparPorColaborador);
 	}
 
+	public Collection<ColaboradorOcorrencia> findByEmpresaId(Long empresaId) 
+	{
+		return getDao().findByEmpresaId(empresaId);
+	}
+	
 	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager) {
 		this.colaboradorAfastamentoManager = colaboradorAfastamentoManager;
 	}
@@ -341,4 +345,5 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
+
 }

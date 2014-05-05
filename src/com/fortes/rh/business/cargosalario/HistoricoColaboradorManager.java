@@ -84,6 +84,8 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public String findColaboradorCodigoAC(Long historicoColaboradorId);
 
 	Collection<PendenciaAC> findPendenciasByHistoricoColaborador(Long empresaId);
+	
+	Collection<HistoricoColaborador> findPendenciasByHistoricoColaborador(Long empresaId, Integer... statusAC);
 
 	public HistoricoColaborador ajustaAmbienteFuncao(HistoricoColaborador historicoColaborador);
 
@@ -162,5 +164,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public void updateStatusAc(int statusRetornoAC, Long... id);
 
-	public Collection<HistoricoColaborador> findByEmpresaSemPrimeiroHistorico(Long empresaId);
+	public Collection<HistoricoColaborador> findByEmpresaComHistoricoPendente(Long empresaId);
+	
+	public void updateStatusAcByEmpresaAndStatusAtual(int novoStatusAC, int statusACAtual, Long... colaboradoresIds);
 }

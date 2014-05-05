@@ -32,4 +32,5 @@ public interface ColaboradorOcorrenciaManager extends GenericManager<Colaborador
 	Collection<ColaboradorOcorrencia> filtrarOcorrencias(Collection<Long> empresaIds, Date dataIni, Date dataFim, Collection<Long> ocorrenciaIds, Collection<Long> areaIds, Collection<Long> estabelecimentoIds, Collection<Long> colaboradorIds, boolean detalhamento, boolean agruparPorColaborador);
 	Collection<ColaboradorOcorrencia> findByFiltros(int page, int pagingSize, String colaboradorNome, String ocorrenciaNome, Boolean comProvidencia, Long[] colaboradoresIds, Long empresaId);
 	Collection<Colaborador> findColaboraesPermitidosByUsuario(Usuario usuarioLogado, Colaborador colaborador, Long empresaId, boolean roleVerAreas);
+	Collection<ColaboradorOcorrencia> findByEmpresaId(Long empresaId);
 }

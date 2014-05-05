@@ -624,6 +624,11 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	{
 		return getDao().setStatus(historicoColaboradorId, aprovado);
 	}
+	
+	public void updateStatusAcByEmpresaAndStatusAtual(int novoStatusAC, int statusACAtual, Long... colaboradoresIds)
+	{
+		getDao().updateStatusAcByEmpresaAndStatusAtual(novoStatusAC, statusACAtual, colaboradoresIds);
+	}
 
 	public boolean verificaHistoricoNaFolhaAC(Long historicoColaboradorId, String colaboradorCodigoAC, Empresa empresa)
 	{
@@ -861,7 +866,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	{
 		Collection<PendenciaAC> pendenciaACs = new ArrayList<PendenciaAC>();
 
-		Collection<HistoricoColaborador> historicoColaboradors = getDao().findPendenciasByHistoricoColaborador(empresaId);
+		Collection<HistoricoColaborador> historicoColaboradors = getDao().findPendenciasByHistoricoColaborador(empresaId, new Integer[]{StatusRetornoAC.AGUARDANDO, StatusRetornoAC.CANCELADO});
 
 		for (HistoricoColaborador historicoColaborador : historicoColaboradors)
 		{
@@ -875,6 +880,11 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return pendenciaACs;
 	}
 
+	public Collection<HistoricoColaborador>  findPendenciasByHistoricoColaborador(Long empresaId, Integer... statusAC)
+	{
+		return getDao().findPendenciasByHistoricoColaborador(empresaId, statusAC);
+	}
+	
 	public Collection<TSituacao> findHistoricosByTabelaReajuste(Long tabelaReajusteColaboradorId, Empresa empresa)
 	{
 		Collection<HistoricoColaborador> historicos = getDao().findHistoricosByTabelaReajuste(tabelaReajusteColaboradorId);
@@ -1478,9 +1488,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		getDao().updateStatusAc(statusRetornoAC, id);
 	}
 
-	public Collection<HistoricoColaborador> findByEmpresaSemPrimeiroHistorico(Long empresaId) 
+	public Collection<HistoricoColaborador> findByEmpresaComHistoricoPendente(Long empresaId) 
 	{
-		return getDao().findByEmpresaSemPrimeiroHistorico(empresaId) ;
+		return getDao().findByEmpresaComHistoricoPendente(empresaId) ;
 	}
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {
