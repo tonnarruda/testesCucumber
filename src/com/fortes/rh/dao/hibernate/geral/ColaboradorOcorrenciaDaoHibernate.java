@@ -422,4 +422,31 @@ public class ColaboradorOcorrenciaDaoHibernate extends GenericDaoHibernate<Colab
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorOcorrencia.class));
 		return criteria.list();
 	}
+	
+	public Collection<ColaboradorOcorrencia> findByEmpresaId(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(ColaboradorOcorrencia.class, "co");
+		criteria.createCriteria("co.colaborador","c");
+		criteria.createCriteria("co.ocorrencia","o");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("co.id"), "id");
+		p.add(Projections.property("co.dataIni"), "dataIni");
+		p.add(Projections.property("co.dataFim"), "dataFim");
+		p.add(Projections.property("co.observacao"), "observacao");
+		p.add(Projections.property("o.id"), "ocorrenciaId");
+		p.add(Projections.property("o.codigoAC"), "projectionOcorrenciaCodigoAC");
+		p.add(Projections.property("c.id"), "colaboradorId");
+		p.add(Projections.property("c.codigoAC"), "projectionColaboradorCodigoAC");
+		p.add(Projections.property("co.providencia.id"), "providenciaId");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.addOrder(Order.asc("co.dataIni"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorOcorrencia.class));
+
+		return criteria.list();
+	}
 }

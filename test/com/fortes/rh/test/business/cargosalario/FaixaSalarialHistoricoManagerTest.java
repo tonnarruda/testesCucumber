@@ -101,7 +101,7 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
 		indiceManager.expects(once()).method("findByIdProjection").with(eq(faixaSalarialHistorico.getIndice().getId()));
-		faixaSalarialHistoricoDao.expects(once()).method("save").with(eq(faixaSalarialHistorico)).will(returnValue(faixaSalarialHistorico));
+		faixaSalarialHistoricoDao.expects(once()).method("saveOrUpdate").with(eq(faixaSalarialHistorico));
 		faixaSalarialManager.expects(once()).method("findCodigoACById").with(eq(faixaSalarial.getId())).will(returnValue(faixaSalarial));
 		acPessoalClientCargo.expects(once()).method("criarFaixaSalarialHistorico").with(eq(faixaSalarialHistorico), eq(empresa));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
@@ -123,7 +123,7 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		boolean salvaNoAC = false;
 
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
-		faixaSalarialHistoricoDao.expects(once()).method("save").with(eq(faixaSalarialHistorico)).will(returnValue(faixaSalarialHistorico));
+		faixaSalarialHistoricoDao.expects(once()).method("saveOrUpdate").with(eq(faixaSalarialHistorico));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 
 		faixaSalarialHistoricoManager.save(faixaSalarialHistorico, faixaSalarial, empresa, salvaNoAC);
@@ -142,8 +142,8 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		boolean salvaNoAC = true;
 
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
-		faixaSalarialHistoricoDao.expects(once()).method("save").with(eq(faixaSalarialHistorico)).will(returnValue(null));
-		faixaSalarialManager.expects(once()).method("findCodigoACById").with(eq(faixaSalarial.getId())).will(returnValue(faixaSalarial));
+		faixaSalarialHistoricoDao.expects(once()).method("saveOrUpdate").with(eq(faixaSalarialHistorico));
+		faixaSalarialManager.expects(once()).method("findCodigoACById").with(eq(faixaSalarial.getId())).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 
 		Exception exception = null;

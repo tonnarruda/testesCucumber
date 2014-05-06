@@ -4,6 +4,7 @@
 		<Item visivel="S" motivo="S20140200281"><![CDATA[R&S > Cadastros > Candidatos: Novos filtros pelos números de telefone fixo e celular.]]></Item>
 		<Item visivel="S" motivo="S20140100018"><![CDATA[SESMT > Relatórios > PPP: Nova opção de selecionar o CNAE a ser impresso.]]></Item>
 		<Item visivel="S" motivo="S20140100018"><![CDATA[Utilitários > Cadastros > Empresas: Novo campo CNAE 2]]></Item>
+		<Item visivel="N" motivo="S20140200159"><![CDATA[Utilitários > Exportar dados para o AC Pessoal: Nova funcionalidade para exportar dados do sistema RH para o sistema AC Pessoal]]></Item>
 	</Versao>
 	<Versao id="1.1.126.151" bd="" data="29/04/2014">
 		<Item visivel="N" motivo="S20140400233"><![CDATA[Integração com AC Pessoal: Melhoria na mensagem enviada ao AC Pessoal ao tentar atualizar o colaborador com uma cidade não cadastrada no RH.]]></Item>

@@ -1107,7 +1107,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaborador.setStatus(StatusRetornoAC.AGUARDANDO);
 		historicoColaborador = historicoColaboradorDao.save(historicoColaborador);
 
-		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findPendenciasByHistoricoColaborador(empresa.getId(), null);
+		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findPendenciasByHistoricoColaborador(empresa.getId(), StatusRetornoAC.AGUARDANDO);
 		
 		assertEquals(1, historicoColaboradors.size());
 		
@@ -1763,6 +1763,8 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	public void testFindByEmpresa()
 	{
 		inicializaColaboradorComHistorico();
+		historicoColaborador.setStatus(StatusRetornoAC.PENDENTE);
+		historicoColaboradorDao.save(historicoColaborador);
 		
 		Collection<HistoricoColaborador> historicos = historicoColaboradorDao.findByEmpresaComHistoricoPendente(empresa.getId());
 		
@@ -1805,6 +1807,8 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	public void testUpdateStatusAcByEmpresaAndStatusAtual()
 	{
 		inicializaColaboradorComHistorico();
+		historicoColaborador.setStatus(StatusRetornoAC.PENDENTE);
+		historicoColaboradorDao.save(historicoColaborador);
 		
 		historicoColaboradorDao.updateStatusAcByEmpresaAndStatusAtual(StatusRetornoAC.PENDENTE, StatusRetornoAC.CONFIRMADO, colaborador.getId());
 		

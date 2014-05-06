@@ -92,7 +92,8 @@ public class ExportacaoACAction extends MyActionSupport
 			{
 				exportarHistoricosColaboardoresAC();
 				exportarColaboradoresOcorrenciasAc();
-				addActionSuccess("Exportação concluída com sucesso.<br />Finalize a exportação marcando a integração da empresa exportada no sistema RH .");
+				addActionSuccess("Exportação concluída com sucesso.<br />Confirme os registros pendentes no AC Pessoal referentes à integração com RH." +
+						"<br />Finalize a exportação marcando a integração da empresa exportada no sistema RH .");
 			}
 		}
 		catch (FortesException e)
@@ -122,7 +123,7 @@ public class ExportacaoACAction extends MyActionSupport
 
 	private void exportarColaboradoresOcorrenciasAc() throws Exception 
 	{
-		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaManager.find(new String[]{"ocorrencia.empresa.id"}, new Object[]{empresa.getId()});
+		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaManager.findByEmpresaId(empresaId);
 		
 		for (ColaboradorOcorrencia colaboradorOcorrencia : colaboradorOcorrencias) {
 			colaboradorOcorrencia.getOcorrencia().setIntegraAC(true);

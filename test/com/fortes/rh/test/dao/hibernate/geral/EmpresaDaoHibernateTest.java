@@ -350,7 +350,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 	public void testUpdateCodigoAC()
 	{
 		GrupoAC grupoAC = GrupoACFactory.getEntity();
-		grupoAC.setCodigo("003");
+		grupoAC.setCodigo("100");
 		grupoACDao.save(grupoAC);
 		
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -359,7 +359,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		empresaDao.save(empresa);
 		
 		empresa.setCodigoAC("0005");
-		empresa.setGrupoAC("003");
+		empresa.setGrupoAC("100");
 		empresaDao.updateCodigoAC(empresa.getId(), empresa.getCodigoAC(), empresa.getGrupoAC());
 		
 		Empresa retorno = empresaDao.findByIdProjection(empresa.getId());

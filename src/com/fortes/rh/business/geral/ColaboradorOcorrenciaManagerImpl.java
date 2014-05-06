@@ -319,6 +319,11 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		return colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, null, null, colaborador, null, null, empresaId, false);
 	}
 	
+	public Collection<ColaboradorOcorrencia> findByEmpresaId(Long empresaId) 
+	{
+		return getDao().findByEmpresaId(empresaId);
+	}
+	
 	public Collection<ColaboradorOcorrencia> findByFiltros(int page, int pagingSize, String colaboradorNome, String ocorrenciaNome, Boolean comProvidencia, Long[] colaboradoresIds, Long empresaId) 
 	{
 		return getDao().findByFiltros(page, pagingSize, colaboradorNome, ocorrenciaNome, comProvidencia, colaboradoresIds, empresaId);

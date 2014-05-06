@@ -488,7 +488,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	empresa.setAcIntegra(false);
 
-    	areaOrganizacionalDao.expects(once()).method("save").with(ANYTHING);
+    	areaOrganizacionalDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
     	areaOrganizacionalManager.insertLotacaoAC(areaOrganizacional, empresa);
     	assertEquals("001", areaOrganizacional.getCodigoAC());
     }
