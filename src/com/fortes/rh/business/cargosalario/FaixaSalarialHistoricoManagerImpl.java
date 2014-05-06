@@ -49,7 +49,7 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		try
 		{
 			prepareSaveUpdate(faixaSalarialHistorico, faixaSalarial, empresa);
-			faixaSalarialHistorico = getDao().save(faixaSalarialHistorico);
+			getDao().saveOrUpdate(faixaSalarialHistorico);
 
 			if(empresa.isAcIntegra() && salvaNoAC)
 			{
@@ -74,6 +74,11 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		return faixaSalarialHistorico;
 	}
 
+	public void criarFaixaSalarialHistoricoNoAc(FaixaSalarialHistorico faixaSalarialHistorico, Empresa empresa) throws Exception
+	{
+		acPessoalClientCargo.criarFaixaSalarialHistorico(faixaSalarialHistorico, empresa);
+	}
+	
 	public void update(FaixaSalarialHistorico faixaSalarialHistorico, FaixaSalarial faixaSalarial, Empresa empresa) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -388,5 +393,10 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 	public Collection<FaixaSalarialHistorico> findByTabelaReajusteIdData(Long tabelaReajusteColaboradorId, Date data)
 	{
 		return getDao().findByTabelaReajusteIdData(tabelaReajusteColaboradorId, data);
+	}
+
+	public boolean existeHistoricoPorIndice(Long empresaId) 
+	{
+		return getDao().existeHistoricoPorIndice(empresaId);
 	}
 }

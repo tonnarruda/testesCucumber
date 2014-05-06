@@ -5,7 +5,6 @@ package com.fortes.rh.business.geral;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.model.type.File;
@@ -53,4 +52,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	boolean isControlaRiscoPorAmbiente(Long empresaId);
 	Collection<Empresa> findEmpresasIntegradas() ;
 	Empresa getCnae(Long empresaId);
+	void updateCodigoGrupoAC(Long empresaId, String codigoAC, String grupoAC);
 }

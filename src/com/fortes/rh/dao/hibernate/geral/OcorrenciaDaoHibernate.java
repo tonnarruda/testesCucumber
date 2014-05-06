@@ -151,7 +151,7 @@ public class OcorrenciaDaoHibernate extends GenericDaoHibernate<Ocorrencia> impl
 		return (Integer) criteria.uniqueResult();
 	}
 
-	public Collection<Ocorrencia> findSemCodigoAC(Long empresaId) {
+	public Collection<Ocorrencia> findSemCodigoAC(Long empresaId, Boolean integraAC) {
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "o");
 		criteria.createCriteria("o.empresa", "e");
 
@@ -164,7 +164,9 @@ public class OcorrenciaDaoHibernate extends GenericDaoHibernate<Ocorrencia> impl
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.isNull("o.codigoAC"));
-		criteria.add(Expression.eq("o.integraAC", true));
+		
+		if(integraAC != null)
+			criteria.add(Expression.eq("o.integraAC", integraAC));
 		
 		criteria.add(Expression.eq("e.id", empresaId));
 

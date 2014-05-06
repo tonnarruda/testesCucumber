@@ -291,7 +291,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().getHibernateTemplateByGenericDao().flush();
 
 		if (!colaborador.isNaoIntegraAc() && empresa.isAcIntegra())
-			contratarColaborador(colaborador, historico, empresa);
+			contratarColaboradorNoAC(colaborador, historico, empresa, true);
 
 		gerenciadorComunicacaoManager.enviaAvisoContratacao(historico);
 
@@ -493,7 +493,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colocacao;
 	}
 
-	private void contratarColaborador(Colaborador colaborador, HistoricoColaborador historico, Empresa empresa) throws AddressException, MessagingException,Exception
+	public void contratarColaboradorNoAC(Colaborador colaborador, HistoricoColaborador historico, Empresa empresa, boolean enviarEmailContratacao) throws AddressException, MessagingException,Exception
 	{
 		historico.setAreaOrganizacional(areaOrganizacionalManager.findAreaOrganizacionalCodigoAc(historico.getAreaOrganizacional().getId()));
 		historico.setEstabelecimento(estabelecimentoManager.findEstabelecimentoCodigoAc(historico.getEstabelecimento().getId()));
@@ -509,7 +509,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		{
 			try
 			{
-				gerenciadorComunicacaoManager.enviarEmailContratacaoColaborador(colaborador.getNome(), empresa);
+				if(enviarEmailContratacao)
+					gerenciadorComunicacaoManager.enviarEmailContratacaoColaborador(colaborador.getNome(), empresa);
 			}
 			catch (Exception e)
 			{
@@ -603,7 +604,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (!colaborador.isNaoIntegraAc() && empresa.isAcIntegra())
 		{
 			if (editarHistorico)// deleta o registro na CTT do AC e cria um novo
-				contratarColaborador(colaborador, historicoColaborador, empresa);
+				contratarColaboradorNoAC(colaborador, historicoColaborador, empresa, true);
 			else
 				acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, empresa.getCodigoAC()), empresa);
 		}
@@ -2539,9 +2540,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 	}
 
-	public Collection<Colaborador> findByEmpresa(Long empresaId)
+	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC)
 	{
-		return getDao().findByEmpresa(empresaId);
+		return getDao().findByEmpresaAndStatusAC(empresaId, statusAC);
 	}
 
 	public void desvinculaCandidato(Long candidatoId) 

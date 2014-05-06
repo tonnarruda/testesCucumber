@@ -20,6 +20,7 @@ public interface FaixaSalarialHistoricoManager extends GenericManager<FaixaSalar
 {
 	@Audita(operacao="Inserção", auditor=FaixaSalarialHistoricoAuditorCallbackImpl.class)
 	FaixaSalarialHistorico save(FaixaSalarialHistorico faixaSalarialHistorico, FaixaSalarial faixaSalarial, Empresa empresa, boolean salvaNoAC) throws Exception;
+	void criarFaixaSalarialHistoricoNoAc(FaixaSalarialHistorico faixaSalarialHistorico, Empresa empresa) throws Exception;
 	@Audita(operacao="Atualização", auditor=FaixaSalarialHistoricoAuditorCallbackImpl.class)
 	void update(FaixaSalarialHistorico faixaSalarialHistorico, FaixaSalarial faixaSalarial, Empresa empresa) throws Exception;
 	Collection<FaixaSalarialHistorico> findAllSelect(Long faixaSalarialId);
@@ -42,4 +43,5 @@ public interface FaixaSalarialHistoricoManager extends GenericManager<FaixaSalar
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 	Collection<FaixaSalarialHistorico> findByTabelaReajusteId(Long tabelaReajusteColaboradorId);
 	Collection<FaixaSalarialHistorico> findByTabelaReajusteIdData(Long tabelaReajusteColaboradorId, Date data);
+	boolean existeHistoricoPorIndice(Long empresaId);
 }

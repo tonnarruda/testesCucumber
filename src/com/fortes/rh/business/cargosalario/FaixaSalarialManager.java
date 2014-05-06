@@ -44,4 +44,5 @@ public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 	String findCodigoACDuplicado(Long empresaId);
 	Collection<FaixaSalarial> findByCargos(Long[] cargosIds);
 	Collection<FaixaSalarial> findComHistoricoAtual(Long[] faixasSalariaisIds);
+	Collection<FaixaSalarial> findComHistoricoAtualByEmpresa(Long empresaId, boolean semCodigoAC);
 }

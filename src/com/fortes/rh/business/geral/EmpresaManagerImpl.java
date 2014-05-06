@@ -433,7 +433,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findSemCodigoAC(empresa.getId());
 			Collection<FaixaSalarial> faixaSalarials = faixaSalarialManager.findSemCodigoAC(empresa.getId());
 			Collection<Indice> indices = indiceManager.findSemCodigoAC(empresa);
-			Collection<Ocorrencia> ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId());
+			Collection<Ocorrencia> ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId(), true);
 			Collection<Cidade> cidades = cidadeManager.findSemCodigoAC();
 			
 			if((colaboradors != null && !colaboradors.isEmpty()) || (estabelecimentos != null && !estabelecimentos.isEmpty()) || (areaOrganizacionals != null && !areaOrganizacionals.isEmpty())
@@ -475,6 +475,36 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return msgs;
 	}
 	
+	public boolean checkEmpresaIntegradaAc() {
+		return getDao().checkEmpresaIntegradaAc();
+	}
+
+	public boolean checkEmpresaIntegradaAc(Long empresaId) {
+		return getDao().checkEmpresaIntegradaAc(empresaId);
+	}
+
+	public Collection<Empresa> findComCodigoAC() {
+		return getDao().findComCodigoAC();
+	}
+
+	//utilizado apenas para auditar a integração com AC
+	public void auditaIntegracao(Empresa empresa, boolean tavaIntegradaComAC) {
+		Logger logger = Logger.getLogger(Empresa.class);
+		logger.info("Auditoria da integração");
+		logger.info("Empresa: " + empresa.getNome() + " id: " + empresa.getId());
+		logger.info("Antes: " + tavaIntegradaComAC);
+		logger.info("Depois: " + empresa.isAcIntegra() + " Grupo AC: " + empresa.getGrupoAC());
+	}
+
+	public boolean isControlaRiscoPorAmbiente(Long empresaId) {
+		return getDao().isControlaRiscoPorAmbiente(empresaId);
+	}
+	
+	public void updateCodigoGrupoAC(Long empresaId, String codigoAC, String grupoAC) 
+	{
+		getDao().updateCodigoAC(empresaId, codigoAC, grupoAC);
+	}
+	
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
 		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
 	}
@@ -491,18 +521,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		this.motivoDemissaoManager = motivoDemissaoManager;
 	}
 
-	public boolean checkEmpresaIntegradaAc() {
-		return getDao().checkEmpresaIntegradaAc();
-	}
-
-	public boolean checkEmpresaIntegradaAc(Long empresaId) {
-		return getDao().checkEmpresaIntegradaAc(empresaId);
-	}
-
-	public Collection<Empresa> findComCodigoAC() {
-		return getDao().findComCodigoAC();
-	}
-
 	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager) {
 		this.estabelecimentoManager = estabelecimentoManager;
 	}
@@ -517,19 +535,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public void setCidadeManager(CidadeManager cidadeManager) {
 		this.cidadeManager = cidadeManager;
-	}
-
-	//utilizado apenas para auditar a integração com AC
-	public void auditaIntegracao(Empresa empresa, boolean tavaIntegradaComAC) {
-		Logger logger = Logger.getLogger(Empresa.class);
-		logger.info("Auditoria da integração");
-		logger.info("Empresa: " + empresa.getNome() + " id: " + empresa.getId());
-		logger.info("Antes: " + tavaIntegradaComAC);
-		logger.info("Depois: " + empresa.isAcIntegra() + " Grupo AC: " + empresa.getGrupoAC());
-	}
-
-	public boolean isControlaRiscoPorAmbiente(Long empresaId) {
-		return getDao().isControlaRiscoPorAmbiente(empresaId);
 	}
 
 	public Empresa getCnae(Long empresaId) {

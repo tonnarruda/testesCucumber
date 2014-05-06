@@ -908,8 +908,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			
 		this.getFaixaSalarial().setCargo(cargo);
 
-		if(this.historicoColaborador == null)
-			this.setHistoricoColaborador(new HistoricoColaborador());
+		inicializaHistoricoColaborador();
 
 		this.historicoColaborador.setStatus(statusRetornoAC);
 	}
@@ -1043,8 +1042,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	
 		private void setFaixaSalarialHistoricoStatusProjection(Integer faixaSalarialHistoricoStatus)
 	{
-		if(this.historicoColaborador == null)
-			this.setHistoricoColaborador(new HistoricoColaborador());
+		inicializaHistoricoColaborador();
 
 		if(this.getHistoricoColaborador().getFaixaSalarial() == null)
 			this.getHistoricoColaborador().setFaixaSalarial(new FaixaSalarial());
@@ -1055,26 +1053,16 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.getHistoricoColaborador().getFaixaSalarial().getFaixaSalarialHistoricoAtual().setStatus(faixaSalarialHistoricoStatus);
 	}
 	
-	private void setProjectionCamposExtrasId(Long projectionCamposExtrasId)
-	{
-		if(this.camposExtras == null)
-			this.camposExtras = new CamposExtras();
-		
-		this.camposExtras.setId(projectionCamposExtrasId);
-	}
-		
 	private void setHistoricoColaboradorStatusProjection(Integer historicoColaboradorStatus)
 	{
-		if(this.historicoColaborador == null)
-			this.setHistoricoColaborador(new HistoricoColaborador());
+		inicializaHistoricoColaborador();
 
 		this.getHistoricoColaborador().setStatus(historicoColaboradorStatus);
 	}
 
 	private void setFaixaSalarialHistoricoIndiceHistoricoValorProjection(Double faixaSalarialHistoricoIndiceHistoricoValor)
 	{
-		if(this.historicoColaborador == null)
-			this.setHistoricoColaborador(new HistoricoColaborador());
+		inicializaHistoricoColaborador();
 
 		if(this.getHistoricoColaborador().getFaixaSalarial() == null)
 			this.getHistoricoColaborador().setFaixaSalarial(new FaixaSalarial());
@@ -1093,8 +1081,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	private void setFaixaSalarialHistoricoQuantidadeProjection(Double faixaSalarialHistoricoQuantidade)
 	{
-		if(this.historicoColaborador == null)
-			this.setHistoricoColaborador(new HistoricoColaborador());
+		inicializaHistoricoColaborador();
 
 		if(this.getHistoricoColaborador().getFaixaSalarial() == null)
 			this.getHistoricoColaborador().setFaixaSalarial(new FaixaSalarial());
@@ -1107,8 +1094,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	private void setFaixaSalarialHistoricoValorProjection(Double faixaSalarialHistoricoValor)
 	{
-		if(this.historicoColaborador == null)
-			this.setHistoricoColaborador(new HistoricoColaborador());
+		inicializaHistoricoColaborador();
 
 		if(this.getHistoricoColaborador().getFaixaSalarial() == null)
 			this.getHistoricoColaborador().setFaixaSalarial(new FaixaSalarial());
@@ -1121,8 +1107,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	private void setFaixaSalarialHistoricoTipoProjection(Integer faixaSalarialHistoricoTipo)
 	{
-		if(this.historicoColaborador == null)
-			this.setHistoricoColaborador(new HistoricoColaborador());
+		inicializaHistoricoColaborador();
 
 		if(this.getHistoricoColaborador().getFaixaSalarial() == null)
 			this.getHistoricoColaborador().setFaixaSalarial(new FaixaSalarial());
@@ -1135,8 +1120,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	private void setHistoricoColaboradorIndiceHistoricoValorProjection(Double historicoColaboradorIndiceHistoricoValor)
 	{
-		if(this.historicoColaborador == null)
-			this.setHistoricoColaborador(new HistoricoColaborador());
+		inicializaHistoricoColaborador();
 
 		if(this.getHistoricoColaborador().getIndice() == null)
 			this.getHistoricoColaborador().setIndice(new Indice());
@@ -1149,28 +1133,61 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	private void setHistoricoColaboradorQuantidadeIndiceProjection(Double historicoColaboradorQuantidadeIndice)
 	{
-		if(this.historicoColaborador == null)
-			this.setHistoricoColaborador(new HistoricoColaborador());
-
+		inicializaHistoricoColaborador();
 		this.getHistoricoColaborador().setQuantidadeIndice(historicoColaboradorQuantidadeIndice);
 	}
 
 	private void setHistoricoColaboradorSalarioProjection(Double historicoColaboradorSalario)
 	{
-		if(this.historicoColaborador == null)
-			this.setHistoricoColaborador(new HistoricoColaborador());
-
+		inicializaHistoricoColaborador();
 		this.getHistoricoColaborador().setSalario(historicoColaboradorSalario);
 	}
 
 	private void setHistoricoColaboradorTipoSalarioProjection(Integer historicoColaboradorTipoSalario)
 	{
-		if(this.historicoColaborador == null)
-			this.setHistoricoColaborador(new HistoricoColaborador());
-
+		inicializaHistoricoColaborador();
 		this.getHistoricoColaborador().setTipoSalario(historicoColaboradorTipoSalario);
 	}
+	
+	private void setHistoricoColaboradorGfipProjection(String historicoColaboradorGfip)
+	{
+		inicializaHistoricoColaborador();
+		this.getHistoricoColaborador().setGfip(historicoColaboradorGfip);
+	}
+	
+	private void setHistoricoColaboradorMotivoProjection(String historicoColaboradorMotivo)
+	{
+		inicializaHistoricoColaborador();
+		this.getHistoricoColaborador().setMotivo(historicoColaboradorMotivo);
+	}
+	
+	private void setHistoricoColaboradorIdProjection(Long historicoColaboradorId)
+	{
+		inicializaHistoricoColaborador();
+		this.getHistoricoColaborador().setId(historicoColaboradorId);
+	}
 
+	private void inicializaHistoricoColaborador() 
+	{
+		if(this.historicoColaborador == null)
+			this.setHistoricoColaborador(new HistoricoColaborador());
+	}
+	
+	private void setProjectionCamposExtrasId(Long projectionCamposExtrasId)
+	{
+		if(this.camposExtras == null)
+			this.camposExtras = new CamposExtras();
+		
+		this.camposExtras.setId(projectionCamposExtrasId);
+	}
+	
+	public void setHistoricoColaboradorDataProjection(Date historicoColaboradorData)
+	{
+		inicializaHistoricoColaborador();
+		
+		this.getHistoricoColaborador().setData(historicoColaboradorData);
+	}
+	
 	private void setGrupoIdProjection(Long grupoId)
 	{
 		if(this.faixaSalarial == null)

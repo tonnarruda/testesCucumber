@@ -33,21 +33,6 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		return EstabelecimentoFactory.getEntity();
 	}
 
-	public GenericDao<Estabelecimento> getGenericDao()
-	{
-		return estabelecimentoDao;
-	}
-
-	public void setEmpresaDao(EmpresaDao empresaDao)
-	{
-		this.empresaDao = empresaDao;
-	}
-
-	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao)
-	{
-		this.estabelecimentoDao = estabelecimentoDao;
-	}
-
 	public void testRemoveByCodigo()
 	{
 		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
@@ -306,10 +291,6 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		assertEquals("Test 2", estabelecimento1.getId(), ((Estabelecimento)(estabelecimentos.toArray()[0])).getId() );
 		assertEquals("Test 3", "empresa 01 - A", ((Estabelecimento)(estabelecimentos.toArray()[0])).getDescricaoComEmpresa() );
 	}
-
-	public void setGrupoACDao(GrupoACDao grupoACDao) {
-		this.grupoACDao = grupoACDao;
-	}
 	
 	public void testFindSemCodigoAC() {
 		
@@ -377,6 +358,35 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 		Estabelecimento estabelecimentoRetorno = estabelecimentoDao.findComEnderecoById(estabelecimento.getId());
 		
 		assertEquals(estabelecimento, estabelecimentoRetorno);
+	}
+	
+	public void testUpdateCodigoAC()
+	{
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setCodigoAC(null);
+		estabelecimentoDao.save(estabelecimento);
+		
+		assertNull(estabelecimento.getCodigoAC());
+		
+		estabelecimentoDao.updateCodigoAC(estabelecimento.getId(), "0001");
+		
+		assertEquals("0001", estabelecimentoDao.findEntidadeComAtributosSimplesById(estabelecimento.getId()).getCodigoAC());
+	}
+
+	public GenericDao<Estabelecimento> getGenericDao() {
+		return estabelecimentoDao;
+	}
+
+	public void setEmpresaDao(EmpresaDao empresaDao) {
+		this.empresaDao = empresaDao;
+	}
+
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
+		this.estabelecimentoDao = estabelecimentoDao;
+	}
+	
+	public void setGrupoACDao(GrupoACDao grupoACDao) {
+		this.grupoACDao = grupoACDao;
 	}
 
 	public void setCidadeDao(CidadeDao cidadeDao) {

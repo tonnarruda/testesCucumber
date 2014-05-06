@@ -161,11 +161,12 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 		return getDao().getCount(ocorrencia, empresaId);
 	}
 
-	public Collection<Ocorrencia> findSemCodigoAC(Long empresaId) {
-		return getDao().findSemCodigoAC(empresaId);
+	public Collection<Ocorrencia> findSemCodigoAC(Long empresaId, Boolean integraAC) {
+		return getDao().findSemCodigoAC(empresaId, integraAC);
 	}
 	
 	public Collection<Ocorrencia> findComCodigoAC(Long empresaId) {
 		return getDao().findComCodigoAC(empresaId);
 	}
+
 }

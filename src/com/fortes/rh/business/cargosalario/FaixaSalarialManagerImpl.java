@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.event.SaveOrUpdateEvent;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -16,7 +17,6 @@ import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorMa
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
-import com.fortes.rh.exception.FaixaJaCadastradaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -66,7 +66,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		{
 			CollectionUtil<Certificacao> util = new CollectionUtil<Certificacao>();
 			faixaSalarial.setCertificacaos(util.convertArrayStringToCollection(Certificacao.class, certificacaosCheck));
-			faixaSalarial = save(faixaSalarial);
+			getDao().saveOrUpdate(faixaSalarial);
 			
 			faixaSalarialHistorico = faixaSalarialHistoricoManager.save(faixaSalarialHistorico, faixaSalarial, empresa, false);
 
@@ -74,7 +74,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 			{
 				String codigoAC = acPessoalClientCargo.criarCargo(faixaSalarial, faixaSalarialHistorico, empresa);
 				if (codigoAC == null || codigoAC.equals(""))
-					throw new Exception("O Cargo não pôde ser cadastrado no AC Pessoal. <br>Possíveis Motivos: <br>&nbsp&nbsp&nbsp- Cargo existente com a mesma descrição no AC Pessoal. <br>&nbsp&nbsp&nbsp- Limite de cadastros de cargos excedido no AC Pessoal.");
+					throw new Exception("O cargo não pôde ser cadastrado no AC Pessoal. <br>Possíveis Motivos: <br>&nbsp&nbsp&nbsp- Cargo existente com a mesma descrição no AC Pessoal. <br>&nbsp&nbsp&nbsp- Limite de cadastros de cargos excedido no AC Pessoal.");
 
 				getDao().updateCodigoAC(codigoAC, faixaSalarial.getId());
 			}
@@ -371,5 +371,10 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 
 	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
 		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
+	}
+
+	public Collection<FaixaSalarial> findComHistoricoAtualByEmpresa(Long empresaId, boolean semCodigoAC) 
+	{
+		return getDao().findComHistoricoAtualByEmpresa(empresaId, semCodigoAC);
 	}
 }

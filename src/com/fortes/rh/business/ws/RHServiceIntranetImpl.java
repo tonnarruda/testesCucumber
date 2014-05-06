@@ -8,6 +8,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -63,7 +64,7 @@ public class RHServiceIntranetImpl implements RHServiceIntranet
 	
 	public Collection<UsuarioIntranet> usuariosIntranetList(String empresaId)
 	{
-		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresa(Long.valueOf(empresaId));
+		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(Long.valueOf(empresaId), StatusRetornoAC.CONFIRMADO);
 		Collection<UsuarioIntranet> usuarioIntranets = new ArrayList<UsuarioIntranet>();
 		
 		UsuarioIntranet usuarioIntranet;

@@ -118,7 +118,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 	public void insertLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception
 	{
-		if(areaOrganizacional.getAreaMae().getId() == -1)
+		if(areaOrganizacional.getAreaMae() == null || areaOrganizacional.getAreaMae().getId() == null || areaOrganizacional.getAreaMae().getId() == -1)
 			areaOrganizacional.setAreaMae(null);
 
 		if(areaOrganizacional.getResponsavel() == null || areaOrganizacional.getResponsavel().getId() == null)
@@ -146,13 +146,13 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 						throw new AreaColaboradorException("Não é possível cadastrar área organizacional cuja área mãe tenha colaboradores vinculados.");
 
 					String retorno = acPessoalClientLotacao.criarLotacao(areaOrganizacional, empresa);
-					if (retorno == null)
-						throw new IntegraACException("Método: AcPessoalClientLotacao.criarLotacao, codigoAc retornou nulo.");
+					if (retorno == null || retorno.isEmpty())
+						throw new IntegraACException("Método: AcPessoalClientLotacao.criarLotacao, codigoAC retornou codigo nulo ou vazio.");
 					else if (retorno.equals(ErroFeedBackACPessoal.AREAORGANIZACIONAL_NIVEL_EXCEDIDO))
 						throw new AreaColaboradorException(ErroFeedBackACPessoal.getMensagem(retorno));
 					
 					areaOrganizacional.setCodigoAC(retorno);
-					getDao().save(areaOrganizacional);
+					getDao().saveOrUpdate(areaOrganizacional);
 					// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterar o outro banco.
 					getDao().getHibernateTemplateByGenericDao().flush();
 				}
@@ -174,7 +174,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		}
 		else
 		{
-			getDao().save(areaOrganizacional);
+			getDao().saveOrUpdate(areaOrganizacional);
 		}
 	}
 
@@ -881,9 +881,40 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		if(areaOrganizacionalTmp.getAreaMae() != null && areaOrganizacionalTmp.getAreaMae().getId() == null)
 			areaOrganizacionalTmp.setAreaMae(null);
 	}
+	
+	public Collection<AreaOrganizacional> ordenarAreasHierarquicamente(Collection<AreaOrganizacional> areas, Collection<Long> areasIds, int nivelHierarquico)
+	{
+		Collection<AreaOrganizacional> areasOrdenadas = new ArrayList<AreaOrganizacional>();
+		Collection<Long> areasIdsTemp = new ArrayList<Long>();
+		
+		boolean regrasPrimeiroNivel;
+		boolean regrasDemaisNiveis;
+		
+		for (AreaOrganizacional area : areas) 
+		{
+			regrasPrimeiroNivel = areasIds == null && (area.getAreaMae() == null || area.getAreaMae().getId() == null);
+			regrasDemaisNiveis = areasIds != null && (area.getAreaMae() != null && area.getAreaMae().getId() != null && areasIds.contains(area.getAreaMae().getId()));
+			
+			if (regrasPrimeiroNivel || regrasDemaisNiveis)
+			{
+				area.setNivelHierarquico(nivelHierarquico);
+				areasOrdenadas.add(area);
+				areasIdsTemp.add(area.getId());
+			}
+		}
+		
+		if (!areasIdsTemp.isEmpty())
+			areasOrdenadas.addAll(ordenarAreasHierarquicamente(areas, areasIdsTemp, ++nivelHierarquico));
+		
+		return areasOrdenadas;
+	}
 
+	public String getMascaraLotacoesAC(Empresa empresa) throws Exception 
+	{
+		return acPessoalClientLotacao.getMascara(empresa);
+	}
+	
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
 	}
-	
 }

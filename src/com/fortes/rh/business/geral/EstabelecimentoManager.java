@@ -23,4 +23,5 @@ public interface EstabelecimentoManager extends GenericManager<Estabelecimento>
 	void deleteEstabelecimento(Long[] estabelecimentoIds) throws Exception;
 	Estabelecimento findComEnderecoById(Long estabelecimentoId);
 	Collection<Estabelecimento> findByEmpresa(Long empresaId);
+	void updateCodigoAC(Long estabelecimentoId, String codigoAC);
 }

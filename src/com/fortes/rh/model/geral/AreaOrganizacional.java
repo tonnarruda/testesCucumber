@@ -75,6 +75,8 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 	@Transient
 	private Integer colaboradorCount;
 	@Transient
+	private int nivelHierarquico;
+	@Transient
 	private int qtdContratados;
 	
 	public AreaOrganizacional(String nome){
@@ -518,5 +520,13 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 
 	public void setCoResponsavel(Colaborador coResponsavel) {
 		this.coResponsavel = coResponsavel;
+	}
+	
+	public int getNivelHierarquico() {
+		return nivelHierarquico;
+	}
+
+	public void setNivelHierarquico(int nivelHierarquico) {
+		this.nivelHierarquico = nivelHierarquico;
 	}
 }

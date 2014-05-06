@@ -11,6 +11,7 @@ public class StatusRetornoAC extends LinkedHashMap
 	public static final int CONFIRMADO = 1;
 	public static final int AGUARDANDO = 2;
 	public static final int CANCELADO = 3;
+	public static final int PENDENTE = 4;
 
 	public StatusRetornoAC()
 	{

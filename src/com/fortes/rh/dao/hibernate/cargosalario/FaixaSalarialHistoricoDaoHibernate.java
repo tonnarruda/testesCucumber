@@ -23,6 +23,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
 import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 
 @SuppressWarnings("unchecked")
 public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<FaixaSalarialHistorico> implements FaixaSalarialHistoricoDao
@@ -31,7 +32,7 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new FaixaSalarialHistorico(fsh.id, fsh.data, fsh.status, fsh.tipo, fsh.valor, fsh.quantidade, i.id, i.nome, ih.valor, ih.data, ihatual.valor) ");
+		hql.append("select new FaixaSalarialHistorico(fsh.id, fsh.data, fsh.status, fsh.tipo, fsh.valor, fsh.quantidade, i.id, i.nome, ih.valor, ih.data, ihatual.valor, fs.codigoAC) ");
 		hql.append("from FaixaSalarialHistorico fsh ");
 		hql.append("left join fsh.faixaSalarial fs ");
 		hql.append("left join fsh.indice i ");
@@ -491,5 +492,19 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list();
+	}
+
+	public boolean existeHistoricoPorIndice(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "fsh");
+		criteria.createCriteria("fsh.faixaSalarial", "fs");
+		criteria.createCriteria("fs.cargo", "c");
+
+		criteria.setProjection(Projections.rowCount());
+
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Expression.eq("fsh.tipo", TipoAplicacaoIndice.INDICE));
+		
+		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 }

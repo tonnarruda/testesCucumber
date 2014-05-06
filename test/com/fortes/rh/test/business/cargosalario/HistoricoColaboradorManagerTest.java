@@ -1354,7 +1354,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradors.add(historicoColaborador1);
 		historicoColaboradors.add(historicoColaborador2);
 
-		historicoColaboradorDao.expects(once()).method("findPendenciasByHistoricoColaborador").with(eq(1L)).will(returnValue(historicoColaboradors));
+		historicoColaboradorDao.expects(once()).method("findPendenciasByHistoricoColaborador").withAnyArguments().will(returnValue(historicoColaboradors));
 
 		Collection<PendenciaAC> pendenciaACs = historicoColaboradorManager.findPendenciasByHistoricoColaborador(1L);
 

@@ -475,4 +475,15 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		
 		return (Empresa) criteria.uniqueResult();
 	}
+	
+	public void updateCodigoAC(Long empresaId, String codigoAC, String grupoAC) 
+	{
+		String hql = "update Empresa e set e.codigoAC = :codigoAC, e.grupoAC = :grupoAC where e.id = :empresaId";
+		Query query = getSession().createQuery(hql);
+		query.setString("codigoAC", codigoAC);
+		query.setString("grupoAC", grupoAC);
+		query.setLong("empresaId", empresaId);
+
+		query.executeUpdate();
+	}
 }

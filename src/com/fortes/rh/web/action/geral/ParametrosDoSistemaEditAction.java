@@ -122,6 +122,10 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	
 	public String prepareDeleteSemCodigoAC() throws Exception
 	{
+		Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
+		if(usuarioLogado.getId() != 1L)
+			return Action.INPUT;
+		
 		if(empresa == null || empresa.getId() == null)
 			empresa = getEmpresaSistema();
 		else
@@ -129,16 +133,12 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		
 		empresas = empresaManager.findComCodigoAC();
 
-		Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
-		if(usuarioLogado.getId() != 1L)
-			return Action.INPUT;
-		
 		estabelecimentos = estabelecimentoManager.findSemCodigoAC(empresa.getId());
 		areaOrganizacionals = areaOrganizacionalManager.findSemCodigoAC(empresa.getId());
 		colaboradors = colaboradorManager.findSemCodigoAC(empresa.getId());
 		faixaSalarials = faixaSalarialManager.findSemCodigoAC(empresa.getId());
 		indices = indiceManager.findSemCodigoAC(empresa);
-		ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId());
+		ocorrencias = ocorrenciaManager.findSemCodigoAC(empresa.getId(), true);
 
 		Collection<String> msgs = empresaManager.verificaIntegracaoAC(empresa);
 		if (msgs.size() > 1)

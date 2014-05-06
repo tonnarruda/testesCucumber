@@ -118,4 +118,10 @@ public class AcPessoalClientLotacaoTest extends AcPessoalClientTest
 		ResultSet result = query("select nome, lot_codigo_mae, rh_lot from lot where emp_codigo = '" + getEmpresa().getCodigoAC() + "' and codigo = '" + codigoAC + "'");
 		assertFalse(result.next());
 	}
+	
+	public void testGetMascara() throws Exception
+	{
+		montaMockGrupoAC();
+		assertEquals("999.99", acPessoalClientLotacaoImpl.getMascara(empresa));
+	}
 }

@@ -488,7 +488,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	empresa.setAcIntegra(false);
 
-    	areaOrganizacionalDao.expects(once()).method("save").with(ANYTHING);
+    	areaOrganizacionalDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
     	areaOrganizacionalManager.insertLotacaoAC(areaOrganizacional, empresa);
     	assertEquals("001", areaOrganizacional.getCodigoAC());
     }
@@ -506,7 +506,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     	areaOrganizacionalDao.expects(once()).method("findAreaOrganizacionalCodigoAc").with(ANYTHING);
     	acPessoalClientLotacao.expects(once()).method("criarLotacao").with(ANYTHING,ANYTHING).will(returnValue("001"));
-    	areaOrganizacionalDao.expects(once()).method("save").with(ANYTHING);
+    	areaOrganizacionalDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
     	areaOrganizacionalDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
     	
     	areaOrganizacionalManager.insertLotacaoAC(areaOrganizacional, empresa);

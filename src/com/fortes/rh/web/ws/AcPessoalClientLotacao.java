@@ -8,4 +8,5 @@ public interface AcPessoalClientLotacao
 {
 	boolean deleteLotacao(AreaOrganizacional areaOrganizacional, Empresa empresa) throws IntegraACException;
 	String criarLotacao(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception;
+	String getMascara(Empresa empresa) throws Exception;
 }

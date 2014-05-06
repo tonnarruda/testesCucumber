@@ -14,6 +14,6 @@ public interface OcorrenciaDao extends GenericDao<Ocorrencia>
 	Collection<Ocorrencia> findOcorrenciasComAbseteismo(Long empresaId);
 	Collection<Ocorrencia> find(int page, int pagingSize, Ocorrencia ocorrencia, Long empresaId);
 	Integer getCount(Ocorrencia ocorrencia, Long empresaId);
-	Collection<Ocorrencia> findSemCodigoAC(Long empresaId);
+	Collection<Ocorrencia> findSemCodigoAC(Long empresaId, Boolean integraAC);
 	public Collection<Ocorrencia> findComCodigoAC(Long empresaId);
 }

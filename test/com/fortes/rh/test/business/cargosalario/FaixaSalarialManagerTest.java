@@ -199,7 +199,7 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		try
 		{
 			transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
-			faixaSalarialDao.expects(once()).method("save").with(ANYTHING);
+			faixaSalarialDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
 			faixaSalarialHistoricoManager.expects(once()).method("save").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING);
 			transactionManager.expects(once()).method("commit").with(ANYTHING);
 			faixaSalarialManager.saveFaixaSalarial(faixaSalarial, faixaSalarialHistorico, empresa, null);
@@ -229,7 +229,7 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		try
 		{
 			transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
-			faixaSalarialDao.expects(once()).method("save").with(ANYTHING).will(returnValue(faixaSalarial));
+			faixaSalarialDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
 			faixaSalarialHistoricoManager.expects(once()).method("save").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING);
 			acPessoalClientCargo.expects(once()).method("criarCargo").with(ANYTHING,ANYTHING,ANYTHING).will(returnValue("001"));
 			faixaSalarialDao.expects(once()).method("updateCodigoAC").with(ANYTHING, ANYTHING);
@@ -263,7 +263,7 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		try
 		{
 			transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
-			faixaSalarialDao.expects(once()).method("save").with(ANYTHING).will(throwException(exception));
+			faixaSalarialDao.expects(once()).method("saveOrUpdate").with(ANYTHING).will(throwException(exception));
 			transactionManager.expects(once()).method("rollback").with(ANYTHING);
 			faixaSalarialManager.saveFaixaSalarial(faixaSalarial, faixaSalarialHistorico, empresa, null);
 		}
@@ -293,7 +293,7 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		try
 		{
 			transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
-			faixaSalarialDao.expects(once()).method("save").with(ANYTHING).will(returnValue(faixaSalarial));
+			faixaSalarialDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
 			faixaSalarialHistoricoManager.expects(once()).method("save").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING);
 			acPessoalClientCargo.expects(once()).method("criarCargo").with(ANYTHING,ANYTHING,ANYTHING).will(throwException(exception));
 			transactionManager.expects(once()).method("rollback").with(ANYTHING);

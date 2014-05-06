@@ -191,6 +191,31 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		
 		return query.list();
 	}
+	
+	public Collection<FaixaSalarial> findComHistoricoAtualByEmpresa(Long empresaId, boolean semCodigoAC)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new FaixaSalarial(c.id, c.nome, fs.id, fs.nome, hf.id, hf.data, hf.valor, hf.tipo) ");
+		hql.append("from FaixaSalarial fs ");
+		hql.append("inner join fs.cargo c ");
+		hql.append("left join fs.faixaSalarialHistoricos hf with hf.data = (select max(hf2.data) ");
+		hql.append("                                            from FaixaSalarialHistorico hf2 ");
+		hql.append("                                           where hf2.faixaSalarial.id = fs.id ");
+		hql.append("											and	hf2.status = :status) ");
+		hql.append("where c.empresa.id = :empresaId ");
+		
+		if(semCodigoAC)
+			hql.append("and fs.codigoAC is null ");
+		
+		hql.append("order by fs.id ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		
+		query.setLong("empresaId", empresaId);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		return query.list();
+	}
 
 	public Collection<FaixaSalarial> findFaixas(Empresa empresa, Boolean ativo, Long faixaInativaId)
 	{

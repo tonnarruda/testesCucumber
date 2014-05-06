@@ -124,11 +124,16 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 		}
 	}
 
-	public void setAgendaManager(AgendaManager agendaManager) {
-		this.agendaManager = agendaManager;
-	}
-
 	public Estabelecimento findComEnderecoById(Long estabelecimentoId) {
 		return getDao().findComEnderecoById(estabelecimentoId);
+	}
+
+	public void updateCodigoAC(Long estabelecimentoId, String codigoAC) 
+	{
+		getDao().updateCodigoAC(estabelecimentoId, codigoAC);
+	}
+	
+	public void setAgendaManager(AgendaManager agendaManager) {
+		this.agendaManager = agendaManager;
 	}
 }

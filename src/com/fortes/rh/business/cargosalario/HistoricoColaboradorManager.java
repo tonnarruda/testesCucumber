@@ -30,6 +30,8 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	@Audita(operacao="Remoção", auditor=HistoricoColaboradorAuditorCallbackImpl.class)
 	public void removeHistoricoAndReajuste(Long historicoColaboradorId, Long colaboradorId, Empresa empresa) throws Exception;
 	
+	public void saveHistoricoColaboradorNoAc(Collection<HistoricoColaborador> historicosColaboradores, Empresa empresa) throws Exception;
+	
 	public Collection<HistoricoColaborador> getByColaboradorId(Long id);
 
 	public HistoricoColaborador findByIdProjection(Long historicoColaboradorId);
@@ -82,6 +84,8 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public String findColaboradorCodigoAC(Long historicoColaboradorId);
 
 	Collection<PendenciaAC> findPendenciasByHistoricoColaborador(Long empresaId);
+	
+	Collection<HistoricoColaborador> findPendenciasByHistoricoColaborador(Long empresaId, Integer... statusAC);
 
 	public HistoricoColaborador ajustaAmbienteFuncao(HistoricoColaborador historicoColaborador);
 
@@ -155,4 +159,12 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public Collection<HistoricoColaborador> filtraHistoricoColaboradorParaPPP(Collection<HistoricoColaborador> todosHistoricos) throws Exception;
 
 	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long colaboradorId);
+
+	public boolean existeHistoricoPorIndice(Long empresaId);
+
+	public void updateStatusAc(int statusRetornoAC, Long... id);
+
+	public Collection<HistoricoColaborador> findByEmpresaComHistoricoPendente(Long empresaId);
+	
+	public void updateStatusAcByEmpresaAndStatusAtual(int novoStatusAC, int statusACAtual, Long... colaboradoresIds);
 }

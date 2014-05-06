@@ -98,8 +98,11 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
 	private CandidatoDao candidatoDao;
 	private SolicitacaoDao solicitacaoDao;
-	
 	private FaixaSalarialHistoricoDao faixaSalarialHistoricoDao;
+	
+	Empresa empresa;
+	Colaborador colaborador;
+	HistoricoColaborador historicoColaborador;
 
 	public HistoricoColaborador getEntity()
 	{
@@ -1104,7 +1107,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaborador.setStatus(StatusRetornoAC.AGUARDANDO);
 		historicoColaborador = historicoColaboradorDao.save(historicoColaborador);
 
-		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findPendenciasByHistoricoColaborador(empresa.getId());
+		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findPendenciasByHistoricoColaborador(empresa.getId(), StatusRetornoAC.AGUARDANDO);
 		
 		assertEquals(1, historicoColaboradors.size());
 		
@@ -1714,6 +1717,104 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		Collection<HistoricoColaborador> historicos = historicoColaboradorDao.findToList(new String[]{"id"}, new String[]{"id"}, new String[]{"colaborador.id", "status"}, new Object[]{colaborador.getId(), StatusRetornoAC.AGUARDANDO});
 
 		assertEquals(0, historicos.size());
+	}
+	
+	public void testExisteHistoricoPorIndice()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador h1 = HistoricoColaboradorFactory.getEntity();
+		h1.setColaborador(colaborador);
+		h1.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historicoColaboradorDao.save(h1);
+		
+		assertFalse(historicoColaboradorDao.existeHistoricoPorIndice(empresa.getId()));
+		
+		HistoricoColaborador h2 = HistoricoColaboradorFactory.getEntity();
+		h2.setColaborador(colaborador);
+		h2.setTipoSalario(TipoAplicacaoIndice.INDICE);
+		historicoColaboradorDao.save(h2);
+		
+		assertTrue(historicoColaboradorDao.existeHistoricoPorIndice(empresa.getId()));
+	}
+	
+	public void testUpdateStatusAc()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador);
+
+		historicoColaboradorDao.updateStatusAc(StatusRetornoAC.AGUARDANDO, historicoColaborador.getId());
+
+		Collection<HistoricoColaborador> historicos = historicoColaboradorDao.findToList(new String[]{"id"}, new String[]{"id"}, new String[]{"colaborador.id", "status"}, new Object[]{colaborador.getId(), StatusRetornoAC.AGUARDANDO});
+
+		assertEquals(1, historicos.size());
+	}
+	
+	public void testFindByEmpresa()
+	{
+		inicializaColaboradorComHistorico();
+		historicoColaborador.setStatus(StatusRetornoAC.PENDENTE);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		Collection<HistoricoColaborador> historicos = historicoColaboradorDao.findByEmpresaComHistoricoPendente(empresa.getId());
+		
+		assertEquals(1, historicos.size());
+	}
+
+	private Empresa inicializaColaboradorComHistorico() 
+	{
+		empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNaoIntegraAc(false);
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setData(new Date());
+		historicoColaborador.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historicoColaborador.setSalario(1000.00);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		return empresa;
+	}
+	
+	public void testUpdateStatusAcByEmpresaAndStatusAtual()
+	{
+		inicializaColaboradorComHistorico();
+		historicoColaborador.setStatus(StatusRetornoAC.PENDENTE);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		historicoColaboradorDao.updateStatusAcByEmpresaAndStatusAtual(StatusRetornoAC.PENDENTE, StatusRetornoAC.CONFIRMADO, colaborador.getId());
+		
+		HistoricoColaborador histRetorno = historicoColaboradorDao.findById(historicoColaborador.getId());
+		
+		assertEquals(StatusRetornoAC.PENDENTE, histRetorno.getStatus());
 	}
 	
 	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)

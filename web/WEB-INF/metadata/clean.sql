@@ -1,4 +1,5 @@
 update parametrosdosistema set appcontext='/fortesrh', appurl = 'http://127.0.0.1:8080/fortesrh', proximaversao='2020-01-01';
+update grupoac set acurlsoap = 'http://localhost:1024/soap/IAcPessoal',acurlwsdl = 'http://localhost:1024/wsdl/IAcPessoal';
 update empresabds set email='samuelpinheiro@entetecnologia.com.br';
 update candidato set email='samuelpinheiro@entetecnologia.com.br';
 update colaborador set email='samuelpinheiro@entetecnologia.com.br';

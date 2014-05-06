@@ -271,7 +271,7 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	areaOrganizacionalManager.expects(once()).method("findSemCodigoAC").with(eq(empresa.getId())).will(returnValue(Arrays.asList(AreaOrganizacionalFactory.getEntity())));
     	faixaSalarialManager.expects(once()).method("findSemCodigoAC").with(eq(empresa.getId())).will(returnValue(Arrays.asList(FaixaSalarialFactory.getEntity())));
     	indiceManager.expects(once()).method("findSemCodigoAC").will(returnValue(Arrays.asList(IndiceFactory.getEntity())));
-    	OcorrenciaManager.expects(once()).method("findSemCodigoAC").with(eq(empresa.getId())).will(returnValue(Arrays.asList(OcorrenciaFactory.getEntity())));
+    	OcorrenciaManager.expects(once()).method("findSemCodigoAC").with(eq(empresa.getId()), ANYTHING).will(returnValue(Arrays.asList(OcorrenciaFactory.getEntity())));
     	cidadeManager.expects(once()).method("findSemCodigoAC").will(returnValue(Arrays.asList(CidadeFactory.getEntity())));
     	
     	assertTrue(empresaManager.verificaInconcistenciaIntegracaoAC(empresa));

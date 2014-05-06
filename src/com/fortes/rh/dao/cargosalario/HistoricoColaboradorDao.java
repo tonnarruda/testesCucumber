@@ -29,7 +29,7 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public HistoricoColaborador findByIdProjection(Long historicoColaboradorId);
 	public Long findReajusteByHistoricoColaborador(Long historicoColaboradorId);
 	public Collection<HistoricoColaborador> findHistoricosByTabelaReajuste(Long tabelaReajusteColaboradorId);
-	Collection<HistoricoColaborador> findPendenciasByHistoricoColaborador(Long empresaId);
+	Collection<HistoricoColaborador> findPendenciasByHistoricoColaborador(Long empresaId, Integer... statusAc);
 	public Collection<HistoricoColaborador> findHistoricoAprovado(Long historicoColaboradorId, Long colaboradorId);
 	public HistoricoColaborador findByIdProjectionHistorico(Long historicoColaboradorId);
 	public HistoricoColaborador findByAC(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
@@ -56,4 +56,8 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId);
 	public Collection<HistoricoColaborador> findByAreaGrupoCargo(Long empresaId, Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Long[] areaIds, Boolean areasAtivas, Long[] grupoOcupacionalIds, String vinculo);
 	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long colaboradorId);
+	boolean existeHistoricoPorIndice(Long empresaId);
+	public void updateStatusAc(int statusRetornoAC, Long... id);
+	public Collection<HistoricoColaborador> findByEmpresaComHistoricoPendente(Long empresaId);
+	public void updateStatusAcByEmpresaAndStatusAtual(int novoStatusAC, int statusACAtual, Long... colaboradoresIds);
 }

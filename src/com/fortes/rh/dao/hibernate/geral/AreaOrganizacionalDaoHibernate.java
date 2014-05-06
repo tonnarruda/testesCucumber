@@ -21,7 +21,6 @@ import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.StringUtil;
 
 @SuppressWarnings("unchecked")
 public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrganizacional> implements AreaOrganizacionalDao
@@ -466,6 +465,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 
 		p.add(Projections.property("a.id"), "id");
 		p.add(Projections.property("a.nome"), "nome");
+		p.add(Projections.property("am.id"), "idAreaMae");
 		p.add(Projections.property("am.nome"), "nomeAreaMae");
 		p.add(Projections.property("e.nome"), "empresaNome");
 
