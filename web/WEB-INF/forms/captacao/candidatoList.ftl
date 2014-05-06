@@ -93,6 +93,11 @@
 			<@ww.select label="Empresa" id="empresaId" name="empresaId" list="empresas" listKey="id" listValue="nome" headerKey="-1" headerValue="Todas" disabled="!compartilharCandidatos"/>
 			<@ww.textfield label="Nome" name="nomeBusca" liClass="liLeft" cssStyle="width: 350px;" value="${nomeBusca}"/>
 			<@ww.textfield label="CPF" id="cpfBusca" name="cpfBusca" value="${cpfBusca}" cssClass="mascaraCpf"/>
+			
+			<@ww.textfield label="DDD" name="ddd" id="ddd" onkeypress="return somenteNumeros(event,'');" cssStyle="width: 25px;" maxLength="2"  liClass="liLeft"/>
+			<@ww.textfield label="Telefone" name="foneFixo" id="fone" onkeypress="return somenteNumeros(event,'');"  cssStyle="width: 80px;" maxLength="9"  liClass="liLeft" />
+			<@ww.textfield label="Celular" id="celular" name="foneCelular" onkeypress = "return somenteNumeros(event,'');" cssStyle="width: 80px;" maxLength="9" liClass="campo"/>
+			
 			<@ww.textfield label="Indicado por" name="indicadoPor" />
 			<@ww.textfield label="Observações do RH" name="observacaoRH"  cssStyle="width: 240px;"/>
 

@@ -56,13 +56,11 @@ import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
-import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.Pessoal;
-import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
@@ -272,23 +270,23 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		c3 = candidatoDao.save(c3);
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
-		Collection<Candidato> candidatos = candidatoDao.find(1, 10, "", "", empresa.getId(), "", 'T', null, null,null, false, false);
+		Collection<Candidato> candidatos = candidatoDao.find(1, 10, "", "", null, null, null, empresa.getId(), "",'T', null, null, null, false, false);
 
 		assertFalse(candidatos.isEmpty());
 		assertEquals(2, candidatos.size());
 
-		candidatos = candidatoDao.find(1, 10, "chi", "", empresa.getId(), "", 'T', null, null,null, false, false);
+		candidatos = candidatoDao.find(1, 10, "chi", "", null, null, null, empresa.getId(), "",'T', null, null, null, false, false);
 		assertEquals(1, candidatos.size());
 		assertEquals(c1.getId(), ((Candidato)(candidatos.toArray()[0])).getId(), 'T');
 
-		candidatos = candidatoDao.find(1, 10, "chi", "11111111111", empresa.getId(), "", 'T', null, null,null, false, false);
+		candidatos = candidatoDao.find(1, 10, "chi", "11111111111", null, null, null, empresa.getId(), "",'T', null, null, null, false, false);
 		assertEquals(1, candidatos.size());
 		assertEquals(c1.getId(), ((Candidato)(candidatos.toArray()[0])).getId(), 'T');
 
-		candidatos = candidatoDao.find(1, 10, "chi", "22222", empresa.getId(), "", 'T', null, null,null, false, false);
+		candidatos = candidatoDao.find(1, 10, "chi", "22222", null, null, null, empresa.getId(), "",'T', null, null, null, false, false);
 		assertTrue(candidatos.isEmpty());
 
-		candidatos = candidatoDao.find(1, 10, "bob", "", empresa.getId(), "", 'T', null, null,null, false, false);
+		candidatos = candidatoDao.find(1, 10, "bob", "", null, null, null, empresa.getId(), "",'T', null, null, null, false, false);
 		assertEquals(1, candidatos.size());
 
 		assertEquals(c2.getId(), ((Candidato)(candidatos.toArray()[0])).getId(), 'T');
@@ -323,13 +321,13 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		c3 = candidatoDao.save(c3);
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
-		Collection<Candidato> candidatos = candidatoDao.find(1, 10, "", "", empresa.getId(), "", 'T', null, null,null, false, false);
+		Collection<Candidato> candidatos = candidatoDao.find(1, 10, "", "", null, null, null, empresa.getId(), "",'T', null, null, null, false, false);
 		assertEquals(3, candidatos.size());
 
-		candidatos = candidatoDao.find(1, 10, "", "", empresa.getId(), "", 'D', null, null,null, false, false);
+		candidatos = candidatoDao.find(1, 10, "", "", null, null, null, empresa.getId(), "",'D', null, null, null, false, false);
 		assertEquals(1, candidatos.size());
 
-		candidatos = candidatoDao.find(1, 10, "", "", empresa.getId(), "", 'I', null, null,null, false, false);
+		candidatos = candidatoDao.find(1, 10, "", "", null, null, null, empresa.getId(), "",'I', null, null, null, false, false);
 		assertEquals(2, candidatos.size());
 	}
 
@@ -367,16 +365,19 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		c1.setCpf(cpfBusca);
 		c1.setEmpresa(empresa);
 		c1.setDisponivel(true);
+		c1.setContatoDdd("85");
+		c1.setContatoFoneFixo("33334444");
+		c1.setContatoFoneCelular("88889999");
 		candidatoDao.save(c1);
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
 
-		Integer count = candidatoDao.getCount(nomeBusca,cpfBusca,empresa.getId(), "", 'T', null, null,null, false, false);
+		Integer count = candidatoDao.getCount(nomeBusca, cpfBusca, "85", "344", "8889", empresa.getId(), "",'T', null, null, null, false, false);
 
 		assertEquals(1, (int)count);
 	}
 
-	public void testGetCountDisponivel()
+	public void testGetCountDisponivelIndisponivel()
 	{
 		String nomeBusca = "teste";
 		String cpfBusca = "123";
@@ -387,35 +388,21 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Candidato c1 = getCandidato();
 		c1.setNome(nomeBusca);
 		c1.setCpf(cpfBusca);
+		c1.setContatoDdd("85");
+		c1.setContatoFoneFixo("33334444");
+		c1.setContatoFoneCelular("88889999");
 		c1.setEmpresa(empresa);
 		c1.setDisponivel(true);
-		c1 = candidatoDao.save(c1);
+		candidatoDao.save(c1);
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
-		Integer count = candidatoDao.getCount(nomeBusca,cpfBusca,empresa.getId(), "", 'D', null, null,null, false, false);
-
-		assertEquals(1, (int)count);
-	}
-
-	public void testGetCountIndisponivel()
-	{
-		String nomeBusca = "teste";
-		String cpfBusca = "123";
-
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa = empresaDao.save(empresa);
-
-		Candidato c1 = getCandidato();
-		c1.setNome(nomeBusca);
-		c1.setCpf(cpfBusca);
-		c1.setEmpresa(empresa);
+		assertEquals("disponivel", 1, (int)candidatoDao.getCount(nomeBusca, cpfBusca, "85", "344", "8889", empresa.getId(), "",'D', null, null, null, false, false));
+		
 		c1.setDisponivel(false);
-		c1 = candidatoDao.save(c1);
-
+		candidatoDao.save(c1);
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
-		Integer count = candidatoDao.getCount(nomeBusca,cpfBusca,empresa.getId(), "", 'I', null, null,null, false, false);
-
-		assertEquals(1, (int)count);
+		
+		assertEquals("indisponivel", 1, (int)candidatoDao.getCount(nomeBusca, cpfBusca, "85", "344", "8889", empresa.getId(), "",'I', null, null, null, false, false));
 	}
 
 	public void testGetCountPeriodo()
@@ -438,7 +425,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		c1 = candidatoDao.save(c1);
 
 		candidatoDao.getHibernateTemplateByGenericDao().flush();
-		Integer count = candidatoDao.getCount(nomeBusca,cpfBusca,empresa.getId(), "", 'I', dataIni, dataFim,null, false, false);
+		Integer count = candidatoDao.getCount(nomeBusca, cpfBusca, "", "", "", empresa.getId(), "",'I', dataIni, dataFim, null, false, false);
 
 		assertEquals(1, (int)count);
 	}

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.12x.15x" bd="" data="xx/xx/2014">
+		<Item visivel="S" motivo="S20140200281"><![CDATA[R&S > Cadastros > Candidatos: Novos filtros pelos números de telefone fixo e celular.]]></Item>
 		<Item visivel="S" motivo="S20140100018"><![CDATA[SESMT > Relatórios > PPP: Nova opção de selecionar o CNAE a ser impresso.]]></Item>
 		<Item visivel="S" motivo="S20140100018"><![CDATA[Utilitários > Cadastros > Empresas: Novo campo CNAE 2]]></Item>
 	</Versao>

@@ -15,7 +15,7 @@ function somenteNumeros(e,args,value)
 
 	var chr = String.fromCharCode(evt); // pegando a tecla digitada
 	
-	if(value.indexOf(chr) == 0)//serve para não repetir o character no campo Ex: "-" (valor negativo).
+	if(value && value.indexOf(chr) == 0)//serve para não repetir o character no campo Ex: "-" (valor negativo).
 	{
 		return false;
 	}
