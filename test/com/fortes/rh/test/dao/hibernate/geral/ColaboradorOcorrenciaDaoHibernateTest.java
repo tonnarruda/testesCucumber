@@ -400,44 +400,6 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 		retorno = colaboradorOcorrenciaDao.findByFiltros(0, 15, null, null, comProvidencia, null, empresa.getId());
 		assertEquals(1, retorno.size());
 	}
-	
-	public void testFindByEmpresaId()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa.setCodigoAC("1234");
-		empresaDao.save(empresa);
-
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setEmpresa(empresa);
-		colaborador.setCodigoAC("4561");
-		colaboradorDao.save(colaborador);
-
-		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity();
-		ocorrencia.setCodigoAC("789");
-		ocorrenciaDao.save(ocorrencia);
-		
-		Ocorrencia ocorrencia2 = OcorrenciaFactory.getEntity();
-		ocorrencia2.setCodigoAC("897");
-		ocorrenciaDao.save(ocorrencia2);
-		
-		ColaboradorOcorrencia colaboradorOcorrencia = new ColaboradorOcorrencia();
-		colaboradorOcorrencia.setDataIni(new Date());
-		colaboradorOcorrencia.setObservacao("observacao");
-		colaboradorOcorrencia.setColaborador(colaborador);
-		colaboradorOcorrencia.setOcorrencia(ocorrencia);
-		colaboradorOcorrenciaDao.save(colaboradorOcorrencia);
-		
-		
-		ColaboradorOcorrencia colaboradorOcorrencia2 = new ColaboradorOcorrencia();
-		colaboradorOcorrencia2.setDataIni(new Date());
-		colaboradorOcorrencia2.setObservacao("observacao");
-		colaboradorOcorrencia2.setColaborador(colaborador);
-		colaboradorOcorrencia2.setOcorrencia(ocorrencia2);
-
-		colaboradorOcorrenciaDao.save(colaboradorOcorrencia2);
-		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaDao.findByEmpresaId(empresa.getId());
-		assertEquals(2, colaboradorOcorrencias.size());
-	}
 
 	public GenericDao<ColaboradorOcorrencia> getGenericDao()
 	{

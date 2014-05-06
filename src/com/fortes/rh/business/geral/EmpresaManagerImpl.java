@@ -537,19 +537,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		this.cidadeManager = cidadeManager;
 	}
 
-	//utilizado apenas para auditar a integração com AC
-	public void auditaIntegracao(Empresa empresa, boolean tavaIntegradaComAC) {
-		Logger logger = Logger.getLogger(Empresa.class);
-		logger.info("Auditoria da integração");
-		logger.info("Empresa: " + empresa.getNome() + " id: " + empresa.getId());
-		logger.info("Antes: " + tavaIntegradaComAC);
-		logger.info("Depois: " + empresa.isAcIntegra() + " Grupo AC: " + empresa.getGrupoAC());
-	}
-
-	public boolean isControlaRiscoPorAmbiente(Long empresaId) {
-		return getDao().isControlaRiscoPorAmbiente(empresaId);
-	}
-
 	public Empresa getCnae(Long empresaId) {
 		return getDao().getCnae(empresaId);
 	}

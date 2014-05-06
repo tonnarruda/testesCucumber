@@ -92,7 +92,7 @@ public class ExportacaoACAction extends MyActionSupport
 			{
 				exportarHistoricosColaboardoresAC();
 				exportarColaboradoresOcorrenciasAc();
-				addActionSuccess("Exportação concluída com sucesso.");
+				addActionSuccess("Exportação concluída com sucesso.<br />Finalize a exportação marcando a integração da empresa exportada no sistema RH .");
 			}
 		}
 		catch (FortesException e)
@@ -122,14 +122,23 @@ public class ExportacaoACAction extends MyActionSupport
 
 	private void exportarColaboradoresOcorrenciasAc() throws Exception 
 	{
-		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaManager.findByEmpresaId(empresa.getId());
-		for (ColaboradorOcorrencia colaboradorOcorrencia : colaboradorOcorrencias) 
+		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaManager.find(new String[]{"ocorrencia.empresa.id"}, new Object[]{empresa.getId()});
+		
+		for (ColaboradorOcorrencia colaboradorOcorrencia : colaboradorOcorrencias) {
+			colaboradorOcorrencia.getOcorrencia().setIntegraAC(true);
+			
+			if(colaboradorOcorrencia.getProvidencia() != null && colaboradorOcorrencia.getProvidencia().getId() == null)
+				colaboradorOcorrencia.setProvidencia(null);
+			
 			colaboradorOcorrenciaManager.saveColaboradorOcorrencia(colaboradorOcorrencia, empresa);
+		}
 	}
 
 	private void atualizarHistoricosParaPendente() {
 		Collection<Colaborador> colaboradoresIds = colaboradorManager.findSemCodigoAC(empresaId);
-		historicoColaboradorManager.updateStatusAcByEmpresaAndStatusAtual(StatusRetornoAC.PENDENTE, StatusRetornoAC.CONFIRMADO, new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradoresIds));
+		
+		if(colaboradoresIds != null && colaboradoresIds.size() > 0)
+			historicoColaboradorManager.updateStatusAcByEmpresaAndStatusAtual(StatusRetornoAC.PENDENTE, StatusRetornoAC.CONFIRMADO, new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradoresIds));
 	}
 
 	private boolean registrosNaoForamConfirmadosNoAC()
@@ -229,10 +238,11 @@ public class ExportacaoACAction extends MyActionSupport
 	
 	private void exportarAreasOrganizacionaisAC() throws Exception
 	{
-		Collection<AreaOrganizacional> areasSemCodigoAC = areaOrganizacionalManager.findAllList(0, 0, null, empresaId, null);
-		areasSemCodigoAC = areaOrganizacionalManager.ordenarAreasHierarquicamente(areasSemCodigoAC, null, 1);
+		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.find(new String[]{"empresa.id"}, new Object[]{empresaId});
 		
-		int maxNiveisRH = ((AreaOrganizacional) areasSemCodigoAC.toArray()[areasSemCodigoAC.size() - 1]).getNivelHierarquico();
+		areas = areaOrganizacionalManager.ordenarAreasHierarquicamente(areas, null, 1);
+		
+		int maxNiveisRH = ((AreaOrganizacional) areas.toArray()[areas.size() - 1]).getNivelHierarquico();
 		int maxNiveisAC = areaOrganizacionalManager.getMascaraLotacoesAC(empresa).split("\\.").length;
 		
 		if (maxNiveisRH > maxNiveisAC){
@@ -246,7 +256,7 @@ public class ExportacaoACAction extends MyActionSupport
 			throw new AreaNaoInseridaACException("A máscara de lotações no AC Pessoal não é compatível com a quantidade máxima de níveis da hierarquia de áreas organizacionais.<br />Quantidade de níveis da hierarquia de áreas organizacionais: "+maxNiveisRH + msgPassos);
 		}
 		
-		for (AreaOrganizacional areaOrganizacional : areasSemCodigoAC) 
+		for (AreaOrganizacional areaOrganizacional : areas) 
 		{
 			try 
 			{
@@ -262,27 +272,31 @@ public class ExportacaoACAction extends MyActionSupport
 	private void exportarFaixasSalariaisAC() throws Exception
 	{
 		Collection<FaixaSalarial> faixaSalariais = faixaSalarialManager.findComHistoricoAtualByEmpresa(empresaId, true);
+		FaixaSalarialHistorico faixaSalarialHistoricoAtual;
 		
 		String nomeNoAC = "";
 		Collection<String> nomesInseridosNoAC = new ArrayList<String>();
 		
 		for (FaixaSalarial faixaSalarial : faixaSalariais)
 		{
+			faixaSalarialHistoricoAtual= faixaSalarialHistoricoManager.findById(faixaSalarial.getFaixaSalarialHistoricoAtual().getId());
+			faixaSalarial = faixaSalarialManager.findById(faixaSalarial.getId());
+			
 			nomeNoAC = montaNomeParaAC(nomesInseridosNoAC, (StringUtil.subStr(faixaSalarial.getCargo().getNome(), 24)+ " " +  StringUtil.subStr(faixaSalarial.getNome(), 5)), 1);
 			faixaSalarial.setNomeACPessoal(nomeNoAC);
 			
-			faixaSalarialManager.saveFaixaSalarial(faixaSalarial, faixaSalarial.getFaixaSalarialHistoricoAtual(), empresa, new String[]{});
+			faixaSalarialManager.saveFaixaSalarial(faixaSalarial, faixaSalarialHistoricoAtual, empresa, new String[]{});
 
 			Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = faixaSalarialHistoricoManager.findAllSelect(faixaSalarial.getId());
 			for (FaixaSalarialHistorico faixaSalarialHistorico : faixaSalarialHistoricos)
-				if(!faixaSalarial.getFaixaSalarialHistoricoAtual().getId().equals(faixaSalarialHistorico.getId()))
+				if(!faixaSalarialHistoricoAtual.getId().equals(faixaSalarialHistorico.getId()))
 					faixaSalarialHistoricoManager.criarFaixaSalarialHistoricoNoAc(faixaSalarialHistorico, empresa);
 		}
 	}
 	
 	private void exportarColaboradoresAC() throws Exception
 	{
-		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresa(empresaId);
+		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, StatusRetornoAC.PENDENTE);
 		for (Colaborador colaborador : colaboradores)
 		{
 			colaborador.getHistoricoColaborador().setAreaOrganizacional(colaborador.getAreaOrganizacional());
@@ -298,7 +312,10 @@ public class ExportacaoACAction extends MyActionSupport
 	private void exportarOcorrenciasAC() throws Exception
 	{
 		Collection<Ocorrencia> ocorrencias = ocorrenciaManager.findSemCodigoAC(empresaId, null); 
-		for (Ocorrencia ocorrencia : ocorrencias) {
+		for (Ocorrencia ocorrencia : ocorrencias) 
+		{
+			ocorrencia = ocorrenciaManager.findById(ocorrencia.getId());
+			
 			ocorrencia.setIntegraAC(true);
 			ocorrencia.setEmpresa(empresa);
 			ocorrenciaManager.saveOrUpdate(ocorrencia, empresa);
@@ -310,7 +327,8 @@ public class ExportacaoACAction extends MyActionSupport
 		Collection<HistoricoColaborador> historicos = historicoColaboradorManager.findByEmpresaComHistoricoPendente(empresaId);
 		historicoColaboradorManager.saveHistoricoColaboradorNoAc(historicos, empresa);
 
-		historicoColaboradorManager.updateStatusAc(StatusRetornoAC.AGUARDANDO, new CollectionUtil<HistoricoColaborador>().convertCollectionToArrayIds(historicos));
+		if(historicos != null && historicos.size() > 0)
+			historicoColaboradorManager.updateStatusAc(StatusRetornoAC.AGUARDANDO, new CollectionUtil<HistoricoColaborador>().convertCollectionToArrayIds(historicos));
 	}
 
 	private String montaNomeParaAC(Collection<String> nomesInseridosNoAC, String nomeNoAC, int count)

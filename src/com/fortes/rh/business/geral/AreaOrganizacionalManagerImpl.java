@@ -118,7 +118,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 	public void insertLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception
 	{
-		if(areaOrganizacional.getAreaMae().getId() == null || areaOrganizacional.getAreaMae().getId() == -1)
+		if(areaOrganizacional.getAreaMae() == null || areaOrganizacional.getAreaMae().getId() == null || areaOrganizacional.getAreaMae().getId() == -1)
 			areaOrganizacional.setAreaMae(null);
 
 		if(areaOrganizacional.getResponsavel() == null || areaOrganizacional.getResponsavel().getId() == null)

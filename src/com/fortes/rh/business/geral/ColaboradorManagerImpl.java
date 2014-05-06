@@ -2540,9 +2540,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 	}
 
-	public Collection<Colaborador> findByEmpresa(Long empresaId)
+	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC)
 	{
-		return getDao().findByEmpresa(empresaId);
+		return getDao().findByEmpresaAndStatusAC(empresaId, statusAC);
 	}
 
 	public void desvinculaCandidato(Long candidatoId) 

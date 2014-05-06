@@ -345,6 +345,8 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		Empresa retorno = empresaDao.getCnae(empresa.getId());
 		assertEquals("cnae1", retorno.getCnae());
 		assertEquals("cnae2", retorno.getCnae2());
+	}
+	
 	public void testUpdateCodigoAC()
 	{
 		GrupoAC grupoAC = GrupoACFactory.getEntity();

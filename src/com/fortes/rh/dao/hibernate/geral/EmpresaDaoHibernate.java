@@ -474,6 +474,8 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return (Empresa) criteria.uniqueResult();
+	}
+	
 	public void updateCodigoAC(Long empresaId, String codigoAC, String grupoAC) 
 	{
 		String hql = "update Empresa e set e.codigoAC = :codigoAC, e.grupoAC = :grupoAC where e.id = :empresaId";
