@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+  <bean id="transacaoPCManagerTarget" class="com.fortes.rh.business.portalcolaborador.TransacaoPCManagerImpl">
+    <property name="dao">
+      <ref bean="transacaoPCDao" />
+    </property>
+  </bean>
+  <bean id="transacaoPCManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.portalcolaborador.TransacaoPCManager</value>
+    </property>
+    <property name="target">
+      <ref bean="transacaoPCManagerTarget" />
+    </property>
+  </bean>
+</beans>
+

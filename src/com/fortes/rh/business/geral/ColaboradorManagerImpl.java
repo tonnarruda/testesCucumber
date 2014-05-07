@@ -44,6 +44,7 @@ import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
+import com.fortes.rh.business.portalcolaborador.TransacaoPCManager;
 import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
@@ -79,6 +80,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoMensagem;
+import com.fortes.rh.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
@@ -147,6 +149,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private AuditoriaManager auditoriaManager;
 	private CandidatoIdiomaManager candidatoIdiomaManager;
 	private SolicitacaoExameManager solicitacaoExameManager;
+	private TransacaoPCManager transacaoPCManager;
 
 	public void enviaEmailAniversariantes(Collection<Empresa> empresas) throws Exception
 	{
@@ -1312,6 +1315,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 			Colaborador colaboradorAtualizado = findColaboradorById(colaborador.getId());
 			replicaUpdateCandidato(findAllRelacionamentos(colaborador.getId()), idiomas);
+
+			transacaoPCManager.enfileirar(colaboradorAtualizado, colaboradorAtualizado.getClass(), URLTransacaoPC.COLABORADOR_ATUALIZAR);
 			
 			gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
 			
@@ -2767,5 +2772,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager) {
 		this.solicitacaoExameManager = solicitacaoExameManager;
+	}
+	
+	public void setTransacaoPCManager(TransacaoPCManager transacaoPCManager) {
+		this.transacaoPCManager = transacaoPCManager;
 	}
 }

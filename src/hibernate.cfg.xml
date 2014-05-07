@@ -41,6 +41,8 @@
     <mapping class="com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao" />
     <mapping class="com.fortes.rh.model.geral.Noticia" />
     <mapping class="com.fortes.rh.model.geral.UsuarioNoticia" />
+    <!-- PORTAL DO COLABORADOR -->
+    <mapping class="com.fortes.rh.model.portalcolaborador.TransacaoPC" />
     <!-- CAPTACAO DE TALENTOS -->
     <mapping class="com.fortes.rh.model.captacao.Candidato" />
     <mapping class="com.fortes.rh.model.captacao.HistoricoCandidato" />

@@ -9,12 +9,12 @@ public class CryptUtilTest extends TestCase
 	public void testEncrypt()
 	{
 		String encrypted = CryptUtil.encrypt("teste", "0123456789012345");
-		assertEquals("qfQPHRFDenMcztNYlemLig==\n".trim(), encrypted);
+		assertEquals("qfQPHRFDenMcztNYlemLig==", encrypted);
 	}
 	
 	public void testDecrypt()
 	{
-		String decrypted = CryptUtil.decrypt("qfQPHRFDenMcztNYlemLig==\n", "0123456789012345");
+		String decrypted = CryptUtil.decrypt("qfQPHRFDenMcztNYlemLig==", "0123456789012345");
 		assertEquals("teste", decrypted);
 	}
 }

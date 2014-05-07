@@ -207,6 +207,7 @@
 			/WEB-INF/classes/com/fortes/rh/dao/security/applicationContext-dao.xml,
 			/WEB-INF/classes/com/fortes/rh/dao/sesmt/applicationContext-dao.xml,
 			/WEB-INF/classes/com/fortes/rh/dao/avaliacao/applicationContext-dao.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/portalcolaborador/applicationContext-dao.xml,
 
 			/WEB-INF/classes/com/fortes/rh/dao/hibernate/acesso/applicationContext-dao-hibernate.xml,
 			/WEB-INF/classes/com/fortes/rh/dao/hibernate/cargosalario/applicationContext-dao-hibernate.xml,
@@ -217,6 +218,7 @@
 			/WEB-INF/classes/com/fortes/rh/dao/hibernate/security/applicationContext-dao-hibernate.xml,
 			/WEB-INF/classes/com/fortes/rh/dao/hibernate/sesmt/applicationContext-dao-hibernate.xml,
 			/WEB-INF/classes/com/fortes/rh/dao/hibernate/avaliacao/applicationContext-dao-hibernate.xml,
+			/WEB-INF/classes/com/fortes/rh/dao/hibernate/portalcolaborador/applicationContext-dao-hibernate.xml,
 
 			/WEB-INF/classes/com/fortes/rh/business/acesso/applicationContext-business.xml,
 			/WEB-INF/classes/com/fortes/rh/business/cargosalario/applicationContext-business.xml,
@@ -228,6 +230,7 @@
 			/WEB-INF/classes/com/fortes/rh/business/sesmt/applicationContext-business.xml,
 			/WEB-INF/classes/com/fortes/rh/business/avaliacao/applicationContext-business.xml,
 			/WEB-INF/classes/com/fortes/rh/business/importacao/applicationContext-business.xml,
+			/WEB-INF/classes/com/fortes/rh/business/portalcolaborador/applicationContext-business.xml,
 
 			/WEB-INF/classes/applicationContext-xfire.xml,
 			/WEB-INF/classes/applicationContext-dwr.xml,
