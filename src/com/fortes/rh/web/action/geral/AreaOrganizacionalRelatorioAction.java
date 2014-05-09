@@ -129,14 +129,12 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 		return areaOrganizacionals;
 	}
 
-	public void setAreaOrganizacionals(
-			Collection<AreaOrganizacional> areaOrganizacionals)
+	public void setAreaOrganizacionals(Collection<AreaOrganizacional> areaOrganizacionals)
 	{
 		this.areaOrganizacionals = areaOrganizacionals;
 	}
 
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager)
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
 	{
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}

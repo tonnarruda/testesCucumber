@@ -103,10 +103,8 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<DataGrafico> countProvidencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds, int qtdItens);
 	public int getCountAtivos(Date dataBase, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds);
 	public Integer countAdmitidosDemitidosTurnover(Date dataIni, Date dataFim, Empresa empresa, Long[] areasIds, Long[] cargosIds, boolean isAdmitidos);
-//	public Integer countDemitidos(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds);	
 	public Collection<TurnOver> countAdmitidosDemitidosPeriodoTurnover(Date dataIni, Date dataFim, Empresa empresa, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, boolean isAdmitidos);
 	public Integer countAtivosPeriodo(Date dataIni, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, Collection<Long> ocorrenciasIds, boolean consideraDataAdmissao, Long colaboradorId, boolean isAbsenteismo);
-	public Integer countAtivosTurnover(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, boolean consideraDataAdmissao);
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 	public Collection<Colaborador> findByAvaliacoes(Long... avaliacaoIds);
 	public Collection<Colaborador> findAniversariantesByEmpresa(Long empresaId, int dia, int mes);

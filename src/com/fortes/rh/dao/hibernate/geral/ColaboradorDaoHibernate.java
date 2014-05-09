@@ -1698,60 +1698,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Integer) query.uniqueResult();
 	}
 	
-	public Integer countAtivosTurnover(Date dataIni, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, boolean consideraDataAdmissao) 
-	{
-		StringBuilder hql = new StringBuilder("select count(distinct co.id) from Colaborador co ");
-		hql.append("left join co.historicoColaboradors as hc ");
-		hql.append("left join hc.faixaSalarial as fs ");
-		hql.append("inner join co.candidato as ca ");
-		hql.append("inner join ca.candidatoSolicitacaos as cs ");
-		hql.append("inner join cs.solicitacao as s ");
-		hql.append("inner join s.motivoSolicitacao as ms ");
-		
-		hql.append("	where co.empresa.id = :empresaId ");
-		
-		if(consideraDataAdmissao)
-			hql.append("	and co.dataAdmissao <= :data ");
-		
-		hql.append("	and ( co.dataDesligamento is null ");
-		hql.append("          or co.dataDesligamento > :data ) ");//desligado no futuro
-		
-		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
-			hql.append("	and hc.estabelecimento.id in (:estabelecimentosIds) ");
-		if(areasIds != null && areasIds.size() > 0)
-			hql.append("	and hc.areaOrganizacional.id in (:areasIds) ");
-		if(cargosIds != null && cargosIds.size() > 0)
-			hql.append("	and fs.cargo.id in (:cargosIds) ");
-		if(vinculos != null && vinculos.size() > 0)
-			hql.append("	and co.vinculo in (:vinculos) ");
-		
-		hql.append("	and hc.status = :status ");
-		hql.append("	and hc.data = (");
-		hql.append("		select max(hc2.data) ");
-		hql.append("		from HistoricoColaborador as hc2 ");
-		hql.append("			where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :data and hc2.status = :status ");
-		hql.append("		) ");
-		hql.append("	and ms.turnover = :turnover ");
-		
-		Query query = getSession().createQuery(hql.toString());
-		query.setDate("data", dataIni);
-		query.setLong("empresaId", empresaId);
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		query.setBoolean("turnover", true);
-		
-		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
-		if(areasIds != null && areasIds.size() > 0)
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
-		if(cargosIds != null && cargosIds.size() > 0)
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
-		if(vinculos != null && vinculos.size() > 0)
-			query.setParameterList("vinculos", vinculos, Hibernate.STRING);
-		
-		return (Integer) query.uniqueResult();
-	}
-
 	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String agruparPor)
 	{
 		Query query = findColaboradores(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, MOTIVODEMISSAO, agruparPor);

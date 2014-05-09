@@ -4062,62 +4062,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorOcorrenciaDao.save(ocorrenciaJoao);
 	}
 
-	public void testCountAtivosTurnover() {
-		
-		Empresa vega = EmpresaFactory.getEmpresa();
-		empresaDao.save(vega);
-		
-		MotivoSolicitacao motivoTurnover = MotivoSolicitacaoFactory.getEntity();
-		motivoTurnover.setDescricao("Substituição");
-		motivoTurnover.setTurnover(true);
-		motivoSolicitacaoDao.save(motivoTurnover);
-
-		MotivoSolicitacao motivoSemTurnover = MotivoSolicitacaoFactory.getEntity();
-		motivoSemTurnover.setDescricao("Aumento");
-		motivoSemTurnover.setTurnover(false);
-		motivoSolicitacaoDao.save(motivoSemTurnover);
-		
-		Candidato candidatoTurnover = CandidatoFactory.getCandidato();
-		candidatoDao.save(candidatoTurnover);
-
-		Candidato candidatoSemTurnover = CandidatoFactory.getCandidato();
-		candidatoDao.save(candidatoSemTurnover);
-		
-		Solicitacao solicitacaoTurnover = SolicitacaoFactory.getSolicitacao();
-		solicitacaoTurnover.setMotivoSolicitacao(motivoTurnover);
-		solicitacaoDao.save(solicitacaoTurnover);
-		
-		Solicitacao solicitacaoSemTurnover = SolicitacaoFactory.getSolicitacao();
-		solicitacaoSemTurnover.setMotivoSolicitacao(motivoSemTurnover);
-		solicitacaoDao.save(solicitacaoSemTurnover);
-		
-		CandidatoSolicitacao candSolicTurnover = CandidatoSolicitacaoFactory.getEntity(); 
-		candSolicTurnover.setCandidato(candidatoTurnover);
-		candSolicTurnover.setSolicitacao(solicitacaoTurnover);
-		candidatoSolicitacaoDao.save(candSolicTurnover);
-
-		CandidatoSolicitacao candSolicSemTurnover = CandidatoSolicitacaoFactory.getEntity(); 
-		candSolicSemTurnover.setCandidato(candidatoSemTurnover);
-		candSolicSemTurnover.setSolicitacao(solicitacaoSemTurnover);
-		candidatoSolicitacaoDao.save(candSolicSemTurnover);
-		
-		FaixaSalarial dentista01 = FaixaSalarialFactory.getEntity();
-		faixaSalarialDao.save(dentista01);
-		
-		Date data_01_05_2010 = DateUtil.criarDataMesAno(01, 05, 2010);
-		Date data_21_07_2011 = DateUtil.criarDataMesAno(21, 07, 2011);
-		
-		Colaborador joao = montaColaboradorDoTestCountAtivo(vega, data_01_05_2010);
-		joao.setCandidato(candidatoTurnover);
-		montaHistoricoDoTestCountAtivo(data_01_05_2010, dentista01, joao);
-		
-		Colaborador maria = montaColaboradorDoTestCountAtivo(vega, data_21_07_2011);
-		maria.setCandidato(candidatoSemTurnover);
-		montaHistoricoDoTestCountAtivo(data_21_07_2011, dentista01, maria);
-		
-		assertEquals(new Integer(1), colaboradorDao.countAtivosTurnover(data_21_07_2011, vega.getId(), null, null, null, Arrays.asList(Vinculo.EMPREGO), true));
-	}
-
 	private void montaHistoricoDoTestCountAtivo(Date dataContratacaoJoao, FaixaSalarial dentista01, Colaborador joao) {
 		HistoricoColaborador histJoaoAtivo = HistoricoColaboradorFactory.getEntity();
 		histJoaoAtivo.setColaborador(joao);

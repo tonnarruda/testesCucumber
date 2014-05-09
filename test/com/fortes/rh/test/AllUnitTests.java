@@ -494,7 +494,6 @@ import com.fortes.rh.test.web.action.geral.EmpresaEditActionTest;
 import com.fortes.rh.test.web.action.geral.EmpresaListActionTest;
 import com.fortes.rh.test.web.action.geral.EstabelecimentoEditActionTest;
 import com.fortes.rh.test.web.action.geral.EstabelecimentoListActionTest;
-import com.fortes.rh.test.web.action.geral.GastoEmpresaEditActionTest;
 import com.fortes.rh.test.web.action.geral.GerenciadorComunicacaoEditActionTest;
 import com.fortes.rh.test.web.action.geral.GrupoACEditActionTest;
 import com.fortes.rh.test.web.action.geral.HistoricoBeneficioEditActionTest;
@@ -938,7 +937,6 @@ public class AllUnitTests extends TestSuite
 
         // gastos
         suite.addTestSuite(GastoEmpresaManagerTest.class);
-        suite.addTestSuite(GastoEmpresaEditActionTest.class);
         suite.addTestSuite(GastoManagerTest.class);
         suite.addTestSuite(GastoDaoHibernateTest.class);
         suite.addTestSuite(GastoEmpresaDaoHibernateTest.class);
