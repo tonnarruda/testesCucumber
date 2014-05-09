@@ -4,10 +4,13 @@
 <@ww.head/>
 	<#if colaborador.desligado>
 		<title>Colaborador Desligado</title>
+		<#assign msgDesliga = "Confirmar a alteração do dados?"/>
 	<#elseif empresaSistema.solicitarConfirmacaoDesligamento>
 		<title>Solicitar Desligamento</title>
+		<#assign msgDesliga = "Confirma solicitação de desligamento?"/>
 	<#else>
 		<title>Desligar Colaborador</title>
+		<#assign msgDesliga = "Confirma desligamento?"/>
 	</#if>
 	
 	<#assign formAction="desliga.action"/>
@@ -49,7 +52,7 @@
 						document.form.submit();
 					}else{
 						document.form.action = 'desliga.action';
-						newConfirm('Confirma desligamento?', function(){document.form.submit();});
+						newConfirm('${msgDesliga}', function(){document.form.submit();});
 					}
 				}
 			}
@@ -80,6 +83,7 @@
 		<@ww.hidden name="nomeBusca" />
 		<@ww.hidden name="cpfBusca" />
 		<@ww.hidden name="colaborador.dataAdmissao" />
+		<@ww.hidden name="colaborador.desligado" />
 	</@ww.form>
 	
 	
