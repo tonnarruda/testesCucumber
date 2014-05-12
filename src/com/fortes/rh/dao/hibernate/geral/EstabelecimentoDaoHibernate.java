@@ -120,7 +120,7 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 		return (Estabelecimento) criteria.uniqueResult();
 	}
 
-	public Collection<Estabelecimento> findEstabelecimentos(Long[] estabelecimentoIds)
+	public Collection<Estabelecimento> findEstabelecimentos(Long[] estabelecimentoIds, Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(Estabelecimento.class,"e");
 		
@@ -134,6 +134,9 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 		
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			criteria.add(Expression.in("e.id", estabelecimentoIds));
+		
+		if(empresaId != null)
+			criteria.add(Expression.eq("e.empresa.id", empresaId));
 		
 		criteria.addOrder(Order.asc("e.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

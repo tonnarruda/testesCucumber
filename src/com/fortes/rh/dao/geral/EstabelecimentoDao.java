@@ -14,7 +14,7 @@ public interface EstabelecimentoDao extends GenericDao<Estabelecimento>
 	boolean verificaCnpjExiste(String complemento, Long id, Long empresaId);
 	Estabelecimento findEstabelecimentoByCodigoAc(String estabelecimentoCodigoAC, String empresaCodigoAC, String grupoAC);
 	Collection<Estabelecimento> findAllSelect(Long[] empresaIds);
-	public Collection<Estabelecimento> findEstabelecimentos(Long[] estabelecimentoIds);
+	public Collection<Estabelecimento> findEstabelecimentos(Long[] estabelecimentoIds, Long empresaId);
 	Collection<Estabelecimento> findSemCodigoAC(Long empresaId);
 	Estabelecimento findComEnderecoById(Long estabelecimentoId);
 	Collection<Estabelecimento> findByEmpresa(Long empresaId);

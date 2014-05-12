@@ -342,7 +342,7 @@ public class QuestionarioListActionTest extends MockObjectTestCase
     	questionarioManager.expects(once()).method("findByIdProjection").with(eq(questionario.getId())).will(returnValue(questionario));
     	perguntaManager.expects(once()).method("findByQuestionarioAspectoPergunta").with(eq(questionario.getId()), ANYTHING, ANYTHING, eq(true)).will(returnValue(perguntas));
     	questionarioManager.expects(once()).method("montaResultado").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ResultadoQuestionario>()));
-    	estabelecimentoManager.expects(once()).method("nomeEstabelecimentos").with(ANYTHING);
+    	estabelecimentoManager.expects(once()).method("nomeEstabelecimentos").with(ANYTHING,ANYTHING);
     	areaOrganizacionalManager.expects(once()).method("nomeAreas").with(ANYTHING);
 
     	assertEquals("success", action.imprimeResultado());

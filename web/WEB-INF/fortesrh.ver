@@ -6,6 +6,7 @@
 		<Item visivel="S" motivo="S20140100018"><![CDATA[Utilitários > Cadastros > Empresas: Novo campo CNAE 2.]]></Item>
 		<Item visivel="N" motivo="S20140200159"><![CDATA[Utilitários > Exportar dados para o AC Pessoal: Nova funcionalidade para exportar dados do sistema RH para o sistema AC Pessoal.]]></Item>
 		<Item visivel="N" motivo="S20140500053"><![CDATA[Info. Funcionais > Movimentações > Solicitações de Desligamento: Menu renomeado para Aprovar/Reprovar Solicitações de Desligamento.]]></Item>
+		<Item visivel="N" motivo="S20140500038"><![CDATA[Info. Funcionais > Relatórios > Resultados das Entrevistas: Imprimir somente a relação dos estabelecimentos da empresa logada.]]></Item>
 	</Versao>
 	<Versao id="1.1.126.151" bd="" data="29/04/2014">
 		<Item visivel="N" motivo="S20140400233"><![CDATA[Integração com AC Pessoal: Melhoria na mensagem enviada ao AC Pessoal ao tentar atualizar o colaborador com uma cidade não cadastrada no RH.]]></Item>

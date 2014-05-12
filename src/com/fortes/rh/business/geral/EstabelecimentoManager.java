@@ -18,7 +18,7 @@ public interface EstabelecimentoManager extends GenericManager<Estabelecimento>
 	Estabelecimento findEstabelecimentoByCodigoAc(String estabelecimentoCodigoAC, String empresaCodigoAC, String grupoAC);
 	Collection<Estabelecimento> findAllSelect(Long[] empresaIds);
 	Collection<CheckBox> populaCheckBox(Long[] empresaIds);
-	public String nomeEstabelecimentos(Long[] estabelecimentoIds);
+	public String nomeEstabelecimentos(Long[] estabelecimentoIds, Long empresaId);
 	Collection<Estabelecimento> findSemCodigoAC(Long empresaId);
 	void deleteEstabelecimento(Long[] estabelecimentoIds) throws Exception;
 	Estabelecimento findComEnderecoById(Long estabelecimentoId);

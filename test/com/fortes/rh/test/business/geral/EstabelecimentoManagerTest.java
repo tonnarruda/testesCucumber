@@ -103,7 +103,10 @@ public class EstabelecimentoManagerTest extends MockObjectTestCase
     
     public void testNomeEstabelecimentos()
     {
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	
     	Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+    	estabelecimento.setEmpresa(empresa);
     	estabelecimento.setNome("estabelecimento");
 
     	Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity(2L);
@@ -111,14 +114,15 @@ public class EstabelecimentoManagerTest extends MockObjectTestCase
     	
     	Collection<Estabelecimento> estabelecimentos = new ArrayList<Estabelecimento>();
     	estabelecimentos.add(estabelecimento);
+    	
+    	estabelecimentoDao.expects(once()).method("findEstabelecimentos").with(eq(null), eq(empresa.getId())).will(returnValue(estabelecimentos));
+    	
+    	assertEquals("estabelecimento", estabelecimentoManager.nomeEstabelecimentos(null, empresa.getId()));
+
     	estabelecimentos.add(estabelecimento2);
     	
-    	estabelecimentoDao.expects(once()).method("findEstabelecimentos").with(ANYTHING).will(returnValue(estabelecimentos));
-    	
-    	assertEquals("estabelecimento, matriz", estabelecimentoManager.nomeEstabelecimentos(null));
-
-    	estabelecimentoDao.expects(once()).method("findEstabelecimentos").with(ANYTHING).will(returnValue(new ArrayList<Estabelecimento>()));
-    	assertEquals("", estabelecimentoManager.nomeEstabelecimentos(null));
+    	estabelecimentoDao.expects(once()).method("findEstabelecimentos").with(eq(null), eq(null)).will(returnValue(estabelecimentos));
+    	assertEquals("estabelecimento, matriz", estabelecimentoManager.nomeEstabelecimentos(null, null));
     }
     
     public void testPopulaCheckBoxArrayEmpresa()

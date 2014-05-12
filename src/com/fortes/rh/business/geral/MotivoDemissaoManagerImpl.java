@@ -18,7 +18,7 @@ public class MotivoDemissaoManagerImpl extends GenericManagerImpl<MotivoDemissao
 	public Map<String, Object> getParametrosRelatorio(Empresa empresa, Date dataIni, Date dataFim, Long[] estabelecimentosIds, Long[] areasOrganizacionaisIds, Map<String, Object> parametros)
 	{
 		String filtro = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim);
-		filtro += "\nEstabelecimentos: " + estabelecimentoManager.nomeEstabelecimentos(estabelecimentosIds);
+		filtro += "\nEstabelecimentos: " + estabelecimentoManager.nomeEstabelecimentos(estabelecimentosIds, null);
 
 		Map<String, Object> parametrosRelatorio = RelatorioUtil.getParametrosRelatorio("Relatório de Desligamento", empresa, filtro);
 
