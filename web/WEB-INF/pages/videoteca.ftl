@@ -52,7 +52,7 @@
 		</div>
 		<div id="divFiltroForm" class="divFiltroForm hidden">
 			<@ww.form name="formBusca" action="videoteca.action" method="POST" id="formBusca">
-				<@ww.select label="Módulo" name="modulo" list=r"#{'R&S':'R&S', 'C&S':'C&S', 'Pesquisas':'Pesquisas', 'Aval. de Desempenho':'Aval. de Desempenho', 'T&D':'T&D', 'Info. Funcionais':'Info. Funcionais', 'SESMT':'SESMT', 'Utilitários':'Utilitários'}" headerKey="" headerValue="Todos"/>
+				<@ww.select label="Módulo" name="modulo" list=r"#{'R&S':'R&S', 'C&S':'C&S', 'Pesquisas':'Pesquisas', 'Aval. de Desempenho':'Aval. de Desempenho', 'T&D':'T&D', 'Info. Funcionais':'Info. Funcionais', 'SESMT':'SESMT', 'Utilitários':'Utilitários', 'Integração':'Integração'}" headerKey="" headerValue="Todos"/>
 				<button type="submit" class="btnPesquisar grayBGE"></button>
 			</@ww.form>
 		</div>

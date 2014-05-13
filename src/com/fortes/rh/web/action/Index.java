@@ -219,7 +219,7 @@ public class Index extends MyActionSupport
 		pgInicial = false;
 		
 		try {
-			InputStream is = new URL("http://www.fortesinformatica.com.br/portal_videoteca_rh.php?hash="+getCalculoHash()).openStream();
+			InputStream is = new URL("http://www.fortesinformatica.com.br/portaldocliente2/portal_videoteca_rh.php?hash="+getCalculoHash()).openStream();
 			BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
 			
 			String jsonText = readAll(rd);
