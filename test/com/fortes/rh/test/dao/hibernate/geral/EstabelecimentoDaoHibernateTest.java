@@ -90,15 +90,25 @@ public class EstabelecimentoDaoHibernateTest extends GenericDaoHibernateTest<Est
 
 	public void testFindEstabelecimento()
 	{
-		Estabelecimento estabelecimentoRetorno = EstabelecimentoFactory.getEntity();
-		estabelecimentoRetorno.setNome("Mamae");
-		estabelecimentoDao.save(estabelecimentoRetorno);
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
 		
-		Long[] estabelecimentosIds = {estabelecimentoRetorno.getId()};
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimento1.setEmpresa(empresa1);
+		estabelecimento1.setNome("Estab 1");
+		estabelecimentoDao.save(estabelecimento1);
 		
-		Collection<Estabelecimento> estabelecimentos = estabelecimentoDao.findEstabelecimentos(estabelecimentosIds);
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+		estabelecimento2.setNome("Estab 2");
+		estabelecimentoDao.save(estabelecimento2);
 		
-		assertEquals(1, estabelecimentos.size());
+		Long[] estabelecimentosIds = {estabelecimento2.getId(), estabelecimento1.getId()};
+		
+		Collection<Estabelecimento> estabelecimentosEmpresa1 = estabelecimentoDao.findEstabelecimentos(estabelecimentosIds, empresa1.getId());
+		Collection<Estabelecimento> estabelecimentosGeral = estabelecimentoDao.findEstabelecimentos(estabelecimentosIds, null);
+		
+		assertEquals("Estabelecimentos da empresa 1", 1, estabelecimentosEmpresa1.size());
+		assertEquals("Estabelecimentos geral", 2, estabelecimentosGeral.size());
 	}
 
 	public void testFindEstabelecimentoByCodigoAc()

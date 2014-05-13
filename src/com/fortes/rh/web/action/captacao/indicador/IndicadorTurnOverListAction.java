@@ -102,7 +102,7 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 			String filtro =  "Período: " + dataDe + " a " + dataAte;
 
 			if (estabelecimentosCheck != null && estabelecimentosCheck.length > 0)
-				filtro +=  "\nEstabelecimentos: " + StringUtil.subStr(estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck)), 90, "...");
+				filtro +=  "\nEstabelecimentos: " + StringUtil.subStr(estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null), 90, "...");
 			else
 				filtro +=  "\nTodos os Estabelecimentos";
 			

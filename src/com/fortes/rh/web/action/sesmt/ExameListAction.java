@@ -205,7 +205,7 @@ public class ExameListAction extends MyActionSupportList
 
 		if (this.estabelecimentosCheck != null && this.estabelecimentosCheck.length > 0){
 			estabelecimentosIds = LongUtil.arrayStringToArrayLong(this.estabelecimentosCheck);
-			nomeEstabelecimento = estabelecimentoManager.nomeEstabelecimentos(estabelecimentosIds);
+			nomeEstabelecimento = estabelecimentoManager.nomeEstabelecimentos(estabelecimentosIds, null);
 		}
 		
 		if (this.examesCheck != null && this.examesCheck.length > 0)
@@ -264,7 +264,7 @@ public class ExameListAction extends MyActionSupportList
 
 		if (this.estabelecimentosCheck != null && this.estabelecimentosCheck.length > 0){
 			estabelecimentosIds = LongUtil.arrayStringToArrayLong(this.estabelecimentosCheck);
-			nomeEstabelecimento = estabelecimentoManager.nomeEstabelecimentos(estabelecimentosIds);
+			nomeEstabelecimento = estabelecimentoManager.nomeEstabelecimentos(estabelecimentosIds, null);
 		}
 			
 		if (this.examesCheck != null && this.examesCheck.length > 0)

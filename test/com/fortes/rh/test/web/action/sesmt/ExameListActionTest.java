@@ -317,7 +317,7 @@ public class ExameListActionTest extends MockObjectTestCase
 		
 		estabelecimentoManager.expects(atLeastOnce())
 			.method("nomeEstabelecimentos")
-			.with(eq(estabelecimentoIds))
+			.with(eq(estabelecimentoIds), eq(null))
 			.will(returnValue("Paizinho"));
 
 		assertEquals("success", action.relatorioExamesPrevistos());
@@ -371,7 +371,7 @@ public class ExameListActionTest extends MockObjectTestCase
 		
 		estabelecimentoManager.expects(atLeastOnce())
 			.method("nomeEstabelecimentos")
-			.with(eq(estabelecimentoIds))
+			.with(eq(estabelecimentoIds), eq(null))
 			.will(returnValue("Paizinho"));
 		
 		assertEquals("success", action.relatorioExamesRealizados());

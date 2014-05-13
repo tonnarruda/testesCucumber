@@ -95,9 +95,9 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 		return new ArrayList<CheckBox>();
 	}
 
-	public String nomeEstabelecimentos(Long[] estabelecimentoIds)
+	public String nomeEstabelecimentos(Long[] estabelecimentoIds, Long empresaId)
 	{
-		Collection<Estabelecimento> estabelecimentos = getDao().findEstabelecimentos(estabelecimentoIds);
+		Collection<Estabelecimento> estabelecimentos = getDao().findEstabelecimentos(estabelecimentoIds, empresaId);
 		String resultado = "";
 		
 		for (Estabelecimento estabelecimento : estabelecimentos) 
