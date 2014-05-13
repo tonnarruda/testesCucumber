@@ -8,6 +8,10 @@ import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
@@ -90,6 +94,7 @@ public class RHServiceImpl implements RHService
 	private GrupoACManager grupoACManager;
 	private UsuarioManager usuarioManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private PlatformTransactionManager transactionManager;
 
 	private final String MSG_ERRO_REMOVER_SITUACAO_LOTE = "Erro ao excluir situação dos empregados, existem outros cadastros utilizando essa situação.";
 	private final String MSG_ERRO_REMOVER_SITUACAO = "Erro ao excluir situação do empregado, existem outros cadastros utilizando essa situação.";
@@ -294,6 +299,39 @@ public class RHServiceImpl implements RHService
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, "Erro ao desligar empregado.", formataException(parametros, e));
+		}
+	}
+	
+	public FeedbackWebService desligarEmpregadosEmLote(String[] codigosAC, String empCodigo, String dataDesligamento, String grupoAC)
+	{
+		String parametros = "codigo: " + StringUtils.join(codigosAC, ", ")  + " \nempCodigo:" + empCodigo + " \ndataDesligamento: " + dataDesligamento;
+		 
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
+		
+		try
+		{
+			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
+			
+			for (String codigoAC : codigosAC) 
+			{
+				if (!colaboradorManager.desligaColaboradorAC(codigoAC, empresa, DateUtil.montaDataByString(dataDesligamento)))
+					return new FeedbackWebService(false, "Erro: Empregado não encontrado no RH", formataException(parametros, null));
+			}
+			
+			for (String codigoAC : codigosAC) 
+				gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC(codigoAC, empCodigo, grupoAC, empresa);
+
+			transactionManager.commit(status);
+			
+			return new FeedbackWebService(true);
+		}
+		catch (Exception e)
+		{
+			transactionManager.rollback(status);
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao desligar empregado.", formataException(parametros, e));
 		}
@@ -1375,6 +1413,10 @@ public class RHServiceImpl implements RHService
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
+		this.transactionManager = transactionManager;
 	}
 
 }

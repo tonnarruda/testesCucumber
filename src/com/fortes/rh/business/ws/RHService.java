@@ -41,6 +41,7 @@ public interface RHService
 	FeedbackWebService atualizarEmpregado(TEmpregado empregado);
 	FeedbackWebService atualizarEmpregadoAndSituacao(TEmpregado empregado, TSituacao situacao);//O AC confirma cadastro de empregado que estava na CTT
 	FeedbackWebService desligarEmpregado(String codigo, String empCodigo, String dataDesligamento, String grupoAC);
+	FeedbackWebService desligarEmpregadosEmLote(String[] codigosAC, String empCodigo, String dataDesligamento, String grupoAC);
 	FeedbackWebService religarEmpregado(String codigo, String empCodigo, String grupoAC);
 	FeedbackWebService atualizarCodigoEmpregado(String grupoAC, String empresa, String codigo, String codigoNovo);
 	FeedbackWebService cancelarContratacao(TEmpregado empregado, TSituacao situacao,  String mensagem);

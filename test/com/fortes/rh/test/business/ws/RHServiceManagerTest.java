@@ -8,6 +8,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
@@ -92,6 +93,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	private Mock grupoACManager;
 	private Mock usuarioManager;
 	private Mock gerenciadorComunicacaoManager;
+	private Mock transactionManager;
 
 	protected void setUp() throws Exception
 	{
@@ -137,6 +139,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		rHServiceManager.setUsuarioManager((UsuarioManager) usuarioManager.proxy());
 		gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class);
 		rHServiceManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
+		transactionManager = new Mock(PlatformTransactionManager.class);
+		rHServiceManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
 	}
 	
 	public void testBindColaboradorOcorrencias() throws Exception
@@ -243,7 +247,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
     	assertEquals(null, feedback.getException());
     }
 	
-	public void testDesligarColaborador() throws Exception
+	public void testDesligarEmpregado() throws Exception
 	{
 		String dataDesligamento = "01/01/2009";
 		String empresaCodigoAC = "123456";
@@ -258,6 +262,29 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoDesligamentoColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC), ANYTHING, eq(empresa)).isVoid();
 
 		assertEquals(true, rHServiceManager.desligarEmpregado(colaboradorCodigoAC, empresaCodigoAC, dataDesligamento, "XXX").isSucesso());
+	}
+	
+	public void testDesligarEmpregadosEmLote() throws Exception
+	{
+		String dataDesligamento = "01/01/2009";
+		String empresaCodigoAC = "123456";
+		String[] colaboradoresCodigosAC = new String[] {"123123","123124"};
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setNomeComercial("nomeComercial");
+		
+		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
+		transactionManager.expects(once()).method("commit").with(ANYTHING);
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresaCodigoAC), ANYTHING).will(returnValue(empresa));
+		
+		for (String codigoAC : colaboradoresCodigosAC) 
+		{
+			colaboradorManager.expects(once()).method("desligaColaboradorAC").with(eq(codigoAC), eq(empresa), ANYTHING).will(returnValue(true));
+			gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoDesligamentoColaboradorAC").with(eq(codigoAC), eq(empresaCodigoAC), ANYTHING, eq(empresa)).isVoid();
+		}
+		
+		assertEquals(true, rHServiceManager.desligarEmpregadosEmLote(colaboradoresCodigosAC, empresaCodigoAC, dataDesligamento, "XXX").isSucesso());
 	}
 
 	public void testReligarColaborador() throws Exception
