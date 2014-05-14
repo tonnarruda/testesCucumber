@@ -8,4 +8,5 @@ import com.fortes.rh.model.portalcolaborador.TransacaoPC;
 public interface TransacaoPCManager extends GenericManager<TransacaoPC> 
 {
 	void enfileirar(Object objeto, Class<?> classe, URLTransacaoPC urlTransacaoPC);
+	void processarFila();
 }

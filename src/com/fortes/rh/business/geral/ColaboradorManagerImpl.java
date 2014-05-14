@@ -100,6 +100,7 @@ import com.fortes.rh.model.geral.relatorio.CartaoAcompanhamentoExperienciaVO;
 import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
+import com.fortes.rh.model.portalcolaborador.ColaboradorPC;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
@@ -1316,7 +1317,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			Colaborador colaboradorAtualizado = findColaboradorById(colaborador.getId());
 			replicaUpdateCandidato(findAllRelacionamentos(colaborador.getId()), idiomas);
 
-			transacaoPCManager.enfileirar(colaboradorAtualizado, colaboradorAtualizado.getClass(), URLTransacaoPC.COLABORADOR_ATUALIZAR);
+//			transacaoPCManager.enfileirar(new ColaboradorPC(colaboradorAtualizado), ColaboradorPC.class, URLTransacaoPC.COLABORADOR_ATUALIZAR);
+//			transacaoPCManager.processarFila();
 			
 			gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
 			

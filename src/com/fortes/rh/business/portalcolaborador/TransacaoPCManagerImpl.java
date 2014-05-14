@@ -1,16 +1,25 @@
 package com.fortes.rh.business.portalcolaborador;
 
+import java.io.IOException;
+import java.util.Collection;
 import java.util.Date;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.portalcolaborador.TransacaoPCDao;
 import com.fortes.rh.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.model.portalcolaborador.TransacaoPC;
 import com.fortes.rh.util.CryptUtil;
-import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, TransacaoPCDao> implements TransacaoPCManager 
 {
+	private final String URL_PORTAL_COLABORADOR = "http://0.0.0.0:3000";
+	
 	public void enfileirar(Object objeto, Class<?> classe, URLTransacaoPC urlTransacaoPC) 
 	{
 		try {
@@ -18,8 +27,7 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 			transacaoPC.setCodigoUrl(urlTransacaoPC.getId());
 			transacaoPC.setData(new Date());
 			
-			Gson gson = new Gson();
-			String json = gson.toJson(classe.cast(objeto));
+			String json = classe.cast(objeto).toString();
 			
 			transacaoPC.setJson(CryptUtil.encrypt(json, "0123456789012345"));
 			save(transacaoPC);
@@ -27,5 +35,42 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void processarFila()
+	{
+		try {
+			Collection<TransacaoPC> transacoes = getDao().findAll(new String[] { "data" });
+			for (TransacaoPC transacaoPC : transacoes) 
+			{
+				enviar(transacaoPC);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void enviar(TransacaoPC transacaoPC) throws HttpException, IOException 
+	{
+		URLTransacaoPC urlTransacaoPC = URLTransacaoPC.getById(transacaoPC.getCodigoUrl());
+		
+		JsonObject jsonObj = new JsonObject();
+		jsonObj.addProperty("json", transacaoPC.getJson());
+		
+        StringRequestEntity requestEntity = new StringRequestEntity(
+        		jsonObj.toString(),
+        	    "application/json",
+        	    "UTF-8");
+
+    	PostMethod postMethod = new PostMethod(URL_PORTAL_COLABORADOR + urlTransacaoPC.getUrl());
+    	postMethod.setRequestEntity(requestEntity);
+    	postMethod.addRequestHeader("Authorization", "Token token=c880f108ecc40eb1148fb1c6495986e267aaecd157f138a0039dedcfdb0c2baf");
+
+    	final HttpClient httpClient = new HttpClient();
+    	
+    	int statusCode = httpClient.executeMethod(postMethod);
+    	
+    	System.out.println(statusCode);
 	}
 }

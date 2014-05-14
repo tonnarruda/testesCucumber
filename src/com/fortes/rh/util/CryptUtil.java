@@ -10,6 +10,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
 
 public class CryptUtil 
 {
@@ -55,11 +56,31 @@ public class CryptUtil
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
 			byte[] keyBytes = md.digest(key.getBytes());
-			return new SecretKeySpec(keyBytes, "AES");
+			
+			printBytes(keyBytes);
+			
+			Key k = new SecretKeySpec(keyBytes, "AES");
+			
+			printBytes(k.getEncoded());
+			System.out.println(k.getAlgorithm());
+			System.out.println(k.getFormat());
+
+			return k;
+
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		}
 
 		return null;
+	}
+	
+	public static void printBytes(byte[] bytes)
+	{
+		Integer[] n = new Integer[bytes.length];
+		for (int i = 0; i < bytes.length; i++) {
+			n[i] = bytes[i] & 0xFF;
+		}
+		
+		System.out.println( StringUtils.join(n, ',') );
 	}
 }
