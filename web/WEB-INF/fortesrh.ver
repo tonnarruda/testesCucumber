@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.12x.15x" bd="" data="xx/xx/2014">
 		<Item visivel="N" motivo="P20140400187"><![CDATA[Pesquisas > Movimentações > Pesquisas > Colaboradores da Pesquisa: BUG: O sistema estava permitindo excluir um colaborador de uma pesquisa anônima após ele a ter respondido marcando o checkbox e clicando no botão "Excluir" que fica abaixo da tabela. O colaborador era excluído mas suas respostas permaneciam.]]></Item>
+		<Item visivel="N" motivo="P20140500081"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes > Inserir: Mostrar somente os colaboradores contratados no resultado da pesquisa.]]></Item>
 	</Versao>
 	<Versao id="1.1.127.152" bd="" data="19/05/2014">
 		<Item visivel="S" motivo="S20140200281"><![CDATA[R&S > Cadastros > Candidatos: Novos filtros pelos números de telefone fixo e celular.]]></Item>
@@ -12,6 +13,7 @@
 		<Item visivel="N" motivo="S20140500011"><![CDATA[Videoteca > Correção dos títulos de alguns vídeos e inclusão da categoria "Integração" no filtro.]]></Item>
 		<Item visivel="N" motivo="S20140500038"><![CDATA[Info. Funcionais > Relatórios > Resultados das Entrevistas: Imprimir somente a relação dos estabelecimentos da empresa logada.]]></Item>
 		<Item visivel="N" motivo="S20140500047"><![CDATA[Integração com o AC: Análise e implementação do serviço para desligamento em lote no webservice.]]></Item>
+		<Item visivel="N" motivo="P20140500081"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes > Inserir: Mostrar somente os colaboradores contratados no resultado da pesquisa.]]></Item>
 	</Versao>
 	<Versao id="1.1.126.151" bd="" data="29/04/2014">
 		<Item visivel="S" motivo="S20140300204"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turma > Incluir Colaboradores: Nova filtro por cargo.]]></Item>

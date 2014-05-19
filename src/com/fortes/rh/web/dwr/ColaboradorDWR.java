@@ -75,7 +75,7 @@ public class ColaboradorDWR
     	}
     	else
     	{
-    		colaboradores = colaboradorManager.findByNomeCpfMatricula(colaborador, empresaId, true);
+    		colaboradores = colaboradorManager.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, empresaId, null);
     	}
     	
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getMatriculaNomeMaisNomeComercial", Colaborador.class);

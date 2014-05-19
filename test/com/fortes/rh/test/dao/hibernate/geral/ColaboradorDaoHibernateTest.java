@@ -1475,29 +1475,31 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(2, colaboradorDao.findByNomeCpfMatricula(null, empresa.getId(), false).size());
 	}
 
-	public void testFindByNomeCpfMatriculaAndResponsavelArea() {
+	public void testFindByNomeCpfMatriculaComHistoricoComfirmado() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional1);
+		
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional2);
 
+		// Colaborador 1
 		Colaborador colaborador1 = ColaboradorFactory.getEntity();
 		colaborador1.setEmpresa(empresa);
 		colaborador1.setNome("teste");
 		colaborador1.setMatricula("1234");
 		colaboradorDao.save(colaborador1);
 
-		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacional1.setResponsavel(colaborador1);
-		areaOrganizacionalDao.save(areaOrganizacional1);
-
-		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacionalDao.save(areaOrganizacional2);
-
 		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador1.setData(DateUtil.criarDataMesAno(01, 01, 2008));
 		historicoColaborador1.setColaborador(colaborador1);
 		historicoColaborador1.setAreaOrganizacional(areaOrganizacional1);
+		historicoColaborador1.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador1);
 
+		// Colaborador 2
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
 		colaborador2.setEmpresa(empresa);
 		colaborador2.setNome("teste");
@@ -1508,10 +1510,27 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2008));
 		historicoColaborador2.setColaborador(colaborador2);
 		historicoColaborador2.setAreaOrganizacional(areaOrganizacional2);
+		historicoColaborador2.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador2);
-
+		
+		// Colaborador 3
+		Colaborador colaborador3 = ColaboradorFactory.getEntity();
+		colaborador3.setEmpresa(empresa);
+		colaborador3.setPessoalCpf("12345678910");
+		colaborador3.setNome("teste");
+		colaborador3.setMatricula("1234");
+		colaboradorDao.save(colaborador3);
+		
+		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador3.setData(DateUtil.criarDataMesAno(01, 01, 2008));
+		historicoColaborador3.setColaborador(colaborador3);
+		historicoColaborador3.setAreaOrganizacional(areaOrganizacional2);
+		historicoColaborador3.setStatus(StatusRetornoAC.AGUARDANDO);
+		historicoColaboradorDao.save(historicoColaborador3);
+		
 		assertEquals(2, colaboradorDao.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador1, empresa.getId(), null).size());
 		assertEquals(1, colaboradorDao.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador1, empresa.getId(), new Long[]{areaOrganizacional1.getId()}).size());
+		assertEquals(0, colaboradorDao.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador3, empresa.getId(), null).size());
 	}
 
 	public void testSetCodigoColaboradorAC() {

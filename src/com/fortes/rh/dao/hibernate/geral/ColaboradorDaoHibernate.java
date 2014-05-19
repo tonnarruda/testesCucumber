@@ -2852,7 +2852,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "c");
-		criteria.createCriteria("hc.areaOrganizacional", "ao", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
@@ -2860,6 +2859,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
 		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
 		p.add(Projections.property("c.matricula"), "matricula");
+		p.add(Projections.property("c.desligado"), "desligado");
 		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
 		p.add(Projections.property("c.contato.ddd"), "contatoDdd");
 		p.add(Projections.property("c.contato.foneCelular"), "contatoCelular");
@@ -2868,12 +2868,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setProjection(p);
 
 		criteria.add(Subqueries.propertyEq("hc.data", subQuery));
-		subQuery.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
+		criteria.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 		criteria.add(Expression.eq("c.desligado", false));
 
 		if(areasIds != null && areasIds.length > 0)
-			criteria.add(Expression.in("ao.id", areasIds));
+			criteria.add(Expression.in("hc.areaOrganizacional.id", areasIds));
 
 		if(colaborador != null)
 		{
