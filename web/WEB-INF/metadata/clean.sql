@@ -7,6 +7,7 @@ update parametrosdosistema set emailUser='samuelpinheiro@entetecnologia.com.br';
 update empresa set emailRemetente='samuelpinheiro@entetecnologia.com.br';
 update empresa set emailRespSetorPessoal='samuelpinheiro@entetecnologia.com.br';
 update empresa set emailresprh='samuelpinheiro@entetecnologia.com.br';
+update empresa set emailresplimitecontrato='samuelpinheiro@entetecnologia.com.br';
 update usuario set senha='MTIzNA==';
 update historicocolaborador set salario=5555.00;
 update gastoempresaitem set valor=25.00;
