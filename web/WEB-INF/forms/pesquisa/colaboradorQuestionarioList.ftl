@@ -73,7 +73,11 @@
 			<@display.table name="colaboradorQuestionarios" id="colaboradorQuestionario" class="dados">
 	
 				<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkColaborador\", this.checked);' />" style="width: 26px; text-align: center;">
-					<input type="checkbox" class="checkColaborador" value="${colaboradorQuestionario.id}" name="colaboradorQuestionarioIds" />
+					<#if colaboradorQuestionario.respondida>
+						<input type="checkbox" disabled="disabled" title="Pesquisa já respondida. Não é possível realizar alterações."/>
+					<#else>
+						<input type="checkbox" class="checkColaborador" value="${colaboradorQuestionario.id}" name="colaboradorQuestionarioIds"/>
+					</#if>
 					<!-- Marca a posicao da tela -->
 					<a name="c${colaboradorQuestionario.colaborador.id}">
 				</@display.column>
