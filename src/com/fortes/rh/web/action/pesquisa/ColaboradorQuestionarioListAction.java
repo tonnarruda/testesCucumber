@@ -162,7 +162,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 			
 			if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
 			{
-				colaboradors = colaboradorManager.findByNomeCpfMatriculaAndResponsavelArea(colaborador, empresaId, null);
+				colaboradors = colaboradorManager.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, empresaId, null);
 			}
 			else if (colaboradorLogado != null && colaboradorLogado.getId() != null)
 			{
@@ -170,7 +170,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 				Long[] areasIds = cUtil.convertCollectionToArrayIds(areas);
 				if (areasIds.length == 0)
 					areasIds = new Long[]{-1L};
-				colaboradors = colaboradorManager.findByNomeCpfMatriculaAndResponsavelArea(colaborador, empresaId, areasIds);
+				colaboradors = colaboradorManager.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, empresaId, areasIds);
 			}
 			
 			if(colaborador.getId() != null)

@@ -2838,7 +2838,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Collection<Colaborador> findByNomeCpfMatriculaAndResponsavelArea(Colaborador colaborador, Long empresaId, Long[] areasIds)
+	public Collection<Colaborador> findByNomeCpfMatriculaComHistoricoComfirmado(Colaborador colaborador, Long empresaId, Long[] areasIds)
 	{
 		DetachedCriteria subQuery = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2");
 		ProjectionList pSub = Projections.projectionList().create();
@@ -2846,7 +2846,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		pSub.add(Projections.max("hc2.data"));
 		subQuery.setProjection(pSub);
 
-		subQuery.add(Restrictions.sqlRestriction("this0__.colaborador_id=c1_.id"));
+		subQuery.add(Expression.eqProperty("hc2.colaborador.id", "c.id"));
 		subQuery.add(Expression.le("hc2.data", new Date()));
 		subQuery.add(Expression.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
 
