@@ -61,6 +61,8 @@ def popula_db conn
         end
     end
     
+    sql << "update  parametrosdosistema  set proximaversao = '2015-01-01';"
+    
     conn.exec(sql);
     
     puts "Banco de dados populado com sucesso."

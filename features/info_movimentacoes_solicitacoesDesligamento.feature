@@ -6,9 +6,12 @@ Funcionalidade: Cadastrar Colaborador
   Cenário: Cadastro de Colaborador
     Dado que exista um colaborador "Loira do Tchan", da area "Dança", com o cargo "Dançarina" e a faixa salarial "Tchan"
     Dado que exista um motivo de desligamento "Porque eu quero"
+    Dado que a opção de solicitação de confirmação de desligamento para a empresa seja "true"
+    Dado que eu esteja deslogado
+    
     Dado que eu esteja logado com o usuário "fortes"
 
-    Quando eu acesso o menu "Info. Funcionais > Movimentações > Solicitações de Desligamento"
+    Quando eu acesso o menu "Info. Funcionais > Movimentações > Aprovar/Reprovar Solicitações de Desligamento"
     E eu não devo ver "Loira do Tchan"
     
     Então eu acesso o menu "Info. Funcionais > Cadastros > Colaboradores"
@@ -25,7 +28,7 @@ Funcionalidade: Cadastrar Colaborador
     Então eu devo ver o título "Colaboradores"
     E eu devo ver "Solicitação de desligamento cadastrada com sucesso."
 
-    Então eu acesso o menu "Info. Funcionais > Movimentações > Solicitações de Desligamento"
+    Então eu acesso o menu "Info. Funcionais > Movimentações > Aprovar/Reprovar Solicitações de Desligamento"
     E eu devo ver o título "Solicitações de Desligamento"
     E eu devo ver "Loira do Tchan"
     E eu clico na linha "Loira do Tchan" da imagem "Visualizar solicitação de desligamento"
@@ -57,7 +60,7 @@ Funcionalidade: Cadastrar Colaborador
     E eu devo ver o alert "Confirma solicitação de desligamento?" e clico no ok
     E eu devo ver "Solicitação de desligamento cadastrada com sucesso."
 
-    Então eu acesso o menu "Info. Funcionais > Movimentações > Solicitações de Desligamento"
+    Então eu acesso o menu "Info. Funcionais > Movimentações > Aprovar/Reprovar Solicitações de Desligamento"
     E eu devo ver o título "Solicitações de Desligamento"
     E eu devo ver "Loira do Tchan"
     E eu clico na linha "Loira do Tchan" da imagem "Visualizar solicitação de desligamento"
@@ -110,5 +113,6 @@ Funcionalidade: Cadastrar Colaborador
     E eu clico no botão "Pesquisar"
     E eu devo ver "Loira do Tchan"
 
-
-
+	Dado que a opção de solicitação de confirmação de desligamento para a empresa seja "false"
+    E eu acesso o menu "Sair"
+	

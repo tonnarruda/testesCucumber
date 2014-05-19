@@ -20,7 +20,7 @@ Funcionalidade: Cadastrar Colaborador
     Dado que exista uma solicitacao "Solicitacao1" para área "Compras" na faixa "I"
     Dado que exista uma solicitacao "Solicitacao2" para área "Compras" na faixa "I"
     Dado que exista um motivo de desligamento "Porque eu quero"
-
+    
     Dado que eu esteja logado com o usuário "fortes"
 
     Quando eu acesso o menu "Info. Funcionais > Cadastros > Colaboradores"

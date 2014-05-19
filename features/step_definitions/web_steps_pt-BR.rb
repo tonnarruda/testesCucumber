@@ -8,8 +8,6 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
 Dado /^que eu esteja logado com o usuário "([^"]*)"$/ do |nome|
-  exec_sql "update  parametrosdosistema  set proximaversao = '2015-01-01';"
-  exec_sql "update empresa set solicitarConfirmacaoDesligamento = true;"
   unless page.has_selector?('.saudacao') && page.has_selector?('.nomeUsuario')
     # Evita problema quando o firefox eh instanciado com a janela menor do que o necessario
     page.execute_script("window.resizeTo(screen.width, screen.height);window.moveTo(0,0);window.focus()")
@@ -22,8 +20,16 @@ Dado /^que eu esteja logado com o usuário "([^"]*)"$/ do |nome|
   end
 end
 
+Dado /^que eu esteja deslogado$/ do
+  page.execute_script("window.location = 'http://localhost:8080/fortesrh/logout.action'")
+end
+
 Dado /^que a obrigatoriedade dos dados complementares da solicitação de pessoal seja "([^"]*)"$/ do |obrig_dadoscomp|
   exec_sql "update empresa set solPessoalObrigarDadosComplementares = #{obrig_dadoscomp};"
+end
+
+Dado /^que a opção de solicitação de confirmação de desligamento para a empresa seja "([^"]*)"$/ do |solicitar_desligamento|
+  exec_sql "update empresa set solicitarConfirmacaoDesligamento = #{solicitar_desligamento};"
 end
 
 Quando /^eu acesso "([^"]*)"$/ do |path|

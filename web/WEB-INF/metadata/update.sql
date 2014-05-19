@@ -22396,3 +22396,26 @@ ALTER TABLE colaborador ADD COLUMN solicitanteDemissao_id bigint;--.go
 ALTER TABLE colaborador ADD CONSTRAINT colaborador_solicitanteDemissao_fk FOREIGN KEY (solicitanteDemissao_id) REFERENCES colaborador(id);--.go
 insert into migrations values('20140429104405');--.go
 update parametrosdosistema set appversao = '1.1.126.151';--.go
+-- versao 1.1.127.152
+
+alter table empresa add column cnae2 character varying(20); --.go
+insert into migrations values('20140429143936');--.go
+UPDATE papel SET nome = 'Aprovar/Reprovar Solicitações de Desligamento' WHERE id = 620;--.go
+insert into migrations values('20140512151149');--.go
+CREATE FUNCTION criar_usuarionoticia_sequence() RETURNS integer AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_class where relname = 'usuarionoticia_sequence')
+    THEN
+        CREATE SEQUENCE usuarionoticia_sequence;
+    END IF;
+
+    RETURN 1;
+END;
+$$ LANGUAGE plpgsql;--.go
+
+SELECT criar_usuarionoticia_sequence();--.go
+DROP FUNCTION criar_usuarionoticia_sequence();--.go
+
+SELECT setval('usuarionoticia_sequence', (SELECT MAX(id) FROM usuarionoticia));--.go
+insert into migrations values('20140512154855');--.go
+update parametrosdosistema set appversao = '1.1.127.152';--.go
