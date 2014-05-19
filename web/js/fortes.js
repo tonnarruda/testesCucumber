@@ -317,7 +317,11 @@ function addOptionsByMap(selectId, data, prompt)
 		i++;
 	}
 	
-	dados.sort();
+	dados.sort(function(a,b) {
+		if (a[0].toLowerCase() < b[0].toLowerCase()) return -1;
+	    if (a[0].toLowerCase() > b[0].toLowerCase()) return 1;
+	    return 0;
+	});
 	
 	var result = prompt ? "<option value=''>" + prompt + "</option>" : "";
 
