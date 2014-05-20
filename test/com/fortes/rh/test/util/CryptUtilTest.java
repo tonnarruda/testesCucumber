@@ -6,15 +6,13 @@ import com.fortes.rh.util.CryptUtil;
 
 public class CryptUtilTest extends TestCase
 {
-	public void testEncrypt()
+	public void testEncryptDecrypt() throws Exception 
 	{
-		String encrypted = CryptUtil.encrypt("teste", "0123456789012345");
-		assertEquals("qfQPHRFDenMcztNYlemLig==", encrypted);
-	}
-	
-	public void testDecrypt()
-	{
-		String decrypted = CryptUtil.decrypt("qfQPHRFDenMcztNYlemLig==", "0123456789012345");
-		assertEquals("teste", decrypted);
+		String encrypted = "6l3u6nm0P/bTJIUD0Nxmqw==";
+		String decrypted = "Hello World!";
+		String key 		 = "123";
+		
+		assertEquals("Hello World!", CryptUtil.decrypt(encrypted, key));
+		assertEquals("6l3u6nm0P/bTJIUD0Nxmqw==", CryptUtil.encrypt(decrypted, key));
 	}
 }

@@ -2,7 +2,7 @@ package com.fortes.rh.model.dicionario;
 
 public enum URLTransacaoPC
 {
-	COLABORADOR_ATUALIZAR(1, "/colaboradores", "POST");
+	COLABORADOR_ATUALIZAR(1, "/colaboradores.json", "POST");
 
 	private Integer id;
 	private String url;

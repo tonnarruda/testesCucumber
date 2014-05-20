@@ -14,11 +14,14 @@ import com.fortes.rh.dao.portalcolaborador.TransacaoPCDao;
 import com.fortes.rh.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.model.portalcolaborador.TransacaoPC;
 import com.fortes.rh.util.CryptUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.google.gson.JsonObject;
 
 public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, TransacaoPCDao> implements TransacaoPCManager 
 {
 	private final String URL_PORTAL_COLABORADOR = "http://0.0.0.0:3000";
+	
+	private TransacaoPCManager transacaoPCManager;
 	
 	public void enfileirar(Object objeto, Class<?> classe, URLTransacaoPC urlTransacaoPC) 
 	{
@@ -37,14 +40,16 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void processarFila()
 	{
+		transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
+		
 		try {
 			Collection<TransacaoPC> transacoes = getDao().findAll(new String[] { "data" });
+			
 			for (TransacaoPC transacaoPC : transacoes) 
-			{
 				enviar(transacaoPC);
-			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -71,6 +76,7 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
     	
     	int statusCode = httpClient.executeMethod(postMethod);
     	
-    	System.out.println(statusCode);
+    	if (statusCode == 200)
+    		transacaoPCManager.remove(transacaoPC.getId());
 	}
 }

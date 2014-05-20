@@ -221,6 +221,14 @@
     <property name="targetMethod" value="importarUltimasNoticias"/>
   </bean>
 
+  <bean name="processarFilaPCJob" class="com.fortes.rh.business.portalcolaborador.TransacaoPCManagerImpl">
+    <property name="dao" ref="transacaoPCDaoTarget" />
+  </bean>
+  <bean name="processarFilaPC" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="targetObject" ref="processarFilaPCJob"/>
+    <property name="targetMethod" value="processarFila"/>
+  </bean>
+
   <bean name="limpaDirTemp" class="org.springframework.scheduling.quartz.JobDetailBean">
     <property name="jobClass" value="com.fortes.rh.business.geral.LimpaDirTemp" />
   </bean>
@@ -311,6 +319,10 @@
     <property name="jobDetail" ref="importarUltimasNoticias" />
 	<property name="cronExpression" value="0 0 0/1 * * ?" /> <!-- A cada 1 hora -->
   </bean>
+  <bean id="cronTriggerProcessarFilaPC" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="processarFilaPC" />
+	<property name="cronExpression" value="0 0/10 * * * ?" /> <!-- A cada 10 minutos -->
+  </bean>
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     <property name="triggers">
       <list>
@@ -329,6 +341,7 @@
 		<ref bean="cronTriggerlembreteContratoTemporarioColaborador" />
 		<ref bean="cronTriggerlembreteHabilitacaoAVencer" />
 		<ref bean="cronTriggerImportarUltimasNoticias" />
+		<ref bean="cronTriggerProcessarFilaPC" />
       </list>
     </property>
   </bean>

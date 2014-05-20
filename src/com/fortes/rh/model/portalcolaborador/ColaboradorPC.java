@@ -7,9 +7,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class ColaboradorPC {
 
-	private Long id;
-	@SerializedName("empresa_id")
-	private Long empresaId;
+	@SerializedName("empresa")
+	private EmpresaPC empresaPC;
 	private String nome;
 	@SerializedName("nome_comercial")
 	private String nomeComercial;
@@ -18,7 +17,9 @@ public class ColaboradorPC {
 	private String ddd;
 	private String telefone;
 	private String celular; 
-	private String escolaridade; 
+	private String escolaridade;
+	@SerializedName("estado_civil")
+	private String estadoCivil;
 	private String conjuge; 
 	private String pai; 
 	private String mae; 
@@ -31,10 +32,13 @@ public class ColaboradorPC {
 
 	public ColaboradorPC(Colaborador colaborador) 
 	{
-		this.id 			= colaborador.getId();
-		this.empresaId 		= colaborador.getEmpresa().getId();
 		this.nome 			= colaborador.getNome();
 		this.nomeComercial 	= colaborador.getNomeComercial();
+		
+		if (colaborador.getEmpresa() != null)
+		{
+			this.setEmpresaPC(new EmpresaPC(colaborador.getEmpresa()));
+		}
 		
 		if (colaborador.getContato() != null)
 		{
@@ -48,29 +52,22 @@ public class ColaboradorPC {
 		{
 			this.cpf 			= colaborador.getPessoal().getCpf();
 			this.escolaridade 	= colaborador.getPessoal().getEscolaridade();
+			this.estadoCivil	= colaborador.getPessoal().getEstadoCivil();
 			this.conjuge 		= colaborador.getPessoal().getConjuge();
 			this.pai 			= colaborador.getPessoal().getPai();
 			this.mae 			= colaborador.getPessoal().getMae();
 			this.qtdFilhos 		= colaborador.getPessoal().getQtdFilhos();
 		}
 	}
+	
+	public EmpresaPC getEmpresaPC() {
+		return empresaPC;
+	}
 
-	public Long getId() {
-		return id;
+	public void setEmpresaPC(EmpresaPC empresaPC) {
+		this.empresaPC = empresaPC;
 	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public Long getEmpresaId() {
-		return empresaId;
-	}
-	
-	public void setEmpresaId(Long empresaId) {
-		this.empresaId = empresaId;
-	}
-	
+
 	public String getNome() {
 		return nome;
 	}
@@ -133,6 +130,14 @@ public class ColaboradorPC {
 	
 	public void setEscolaridade(String escolaridade) {
 		this.escolaridade = escolaridade;
+	}
+	
+	public String getEstadoCivil() {
+		return estadoCivil;
+	}
+
+	public void setEstadoCivil(String estadoCivil) {
+		this.estadoCivil = estadoCivil;
 	}
 	
 	public String getConjuge() {

@@ -1750,6 +1750,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		empresa.setNome(nome);
 	}
 	
+	public void setEmpresaCnpj(String cnpj)
+	{
+		criarEmpresa();
+		empresa.setCnpj(cnpj);
+	}
+	
 	public void setEmpresaAcIntegra(Boolean acIntegra)
 	{
 		criarEmpresa();
