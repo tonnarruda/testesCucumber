@@ -3,6 +3,8 @@
 	<Versao id="1.1.12x.15x" bd="" data="xx/xx/2014">
 		<Item visivel="N" motivo="P20140400187"><![CDATA[Pesquisas > Movimentações > Pesquisas > Colaboradores da Pesquisa: BUG: O sistema estava permitindo excluir um colaborador de uma pesquisa anônima após ele a ter respondido marcando o checkbox e clicando no botão "Excluir" que fica abaixo da tabela. O colaborador era excluído mas suas respostas permaneciam.]]></Item>
 		<Item visivel="N" motivo="P20140500081"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes > Inserir: Mostrar somente os colaboradores contratados no resultado da pesquisa.]]></Item>
+		<Item visivel="N" motivo="P20140500030"><![CDATA[C&S > Cadastro > Cargos e Faixas: Alteração da regra de exibição do ícone "Funções" verificando apenas se o cliente possui o módulo SESMT.]]></Item>
+		<Item visivel="N" motivo="P20140400264"><![CDATA[BUG: SESMT > Movimentações > Registro de Prontuário: Ajuste na permissão.]]></Item>
 	</Versao>
 	<Versao id="1.1.127.152" bd="" data="19/05/2014">
 		<Item visivel="S" motivo="S20140200281"><![CDATA[R&S > Cadastros > Candidatos: Novos filtros pelos números de telefone fixo e celular.]]></Item>

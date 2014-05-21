@@ -559,7 +559,7 @@
 				/sesmt/clinicaAutorizada/*/**=ROLE_CAD_CLINICA_AUTORIZADA
 				/sesmt/prontuario/prepareRelatorioProntuario*/**=ROLE_REL_PRONTUARIO
 				/sesmt/prontuario/relatorioProntuario*/**=ROLE_REL_PRONTUARIO
-				/sesmt/prontuario/list*/**=ROLE_REL_PRONTUARIO
+				/sesmt/prontuario/list*/**=ROLE_REL_PRONTUARIO, ROLE_CAD_PRONTUARIO
 				/sesmt/prontuario/*/**=ROLE_CAD_PRONTUARIO
 				/sesmt/solicitacaoExame/*/**=ROLE_CAD_SOLICITACAOEXAME
 				/sesmt/solicitacaoEpi/relatorioVencimentoEpi*/**=ROLE_REL_EPIVENCIMENTO
