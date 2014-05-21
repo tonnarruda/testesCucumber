@@ -16,4 +16,5 @@ public interface PapelManager extends GenericManager<Papel>
 	Collection<Long> getPapeisPermitidos() throws Exception;
 	Collection<Papel> findByPerfil(Long perfilId);
 	String montarArvore(Collection<Papel> papeis);
+	boolean possuiModuloSESMT();
 }

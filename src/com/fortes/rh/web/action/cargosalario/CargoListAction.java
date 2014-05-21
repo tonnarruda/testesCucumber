@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.hibernate.exception.ConstraintViolationException;
 
+import com.fortes.rh.business.acesso.PapelManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -21,6 +22,7 @@ public class CargoListAction extends MyActionSupportList
 	
 	private CargoManager cargoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private PapelManager papelManager;
 
 	private Collection<Cargo> cargos;
 	private Cargo cargo = new Cargo();
@@ -28,6 +30,7 @@ public class CargoListAction extends MyActionSupportList
 	private Map<String,Object> parametros;
 
 	private Collection<AreaOrganizacional> areas;
+	private boolean possuiSESMT;
 
 	public String list() throws Exception
 	{
@@ -35,6 +38,8 @@ public class CargoListAction extends MyActionSupportList
 		cargos = cargoManager.findCargos(getPage(), getPagingSize(), getEmpresaSistema().getId(), areaOrganizacional.getId(), cargo.getNomeMercado(), cargo.isAtivo());
 
 		areas = areaOrganizacionalManager.montaAllSelect(getEmpresaSistema().getId());
+		
+		possuiSESMT = papelManager.possuiModuloSESMT();
 
 		return Action.SUCCESS;
 	}
@@ -132,5 +137,13 @@ public class CargoListAction extends MyActionSupportList
 
 	public Map<String, Object> getParametros() {
 		return parametros;
+	}
+
+	public boolean isPossuiSESMT() {
+		return possuiSESMT;
+	}
+
+	public void setPapelManager(PapelManager papelManager) {
+		this.papelManager = papelManager;
 	}
 }

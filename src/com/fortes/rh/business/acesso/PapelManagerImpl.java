@@ -7,8 +7,10 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.model.acesso.Papel;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.StringUtil;
+import com.opensymphony.xwork.ActionContext;
 
 public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implements PapelManager
 {
@@ -187,8 +189,14 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 		return getDao().findByPerfil(perfilId);
 	}
 
-	public void setParametrosDoSistemaManager(
-			ParametrosDoSistemaManager parametrosDoSistemaManager) {
+	public boolean possuiModuloSESMT()
+	{
+		return SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()).equals(1L) 
+				|| !parametrosDoSistemaManager.findById(1L).verificaRemprot() 
+				|| !Autenticador.getModulosNaoConfigurados().contains(75L);
+	}
+	
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }
