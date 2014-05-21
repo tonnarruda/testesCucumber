@@ -13,7 +13,6 @@
 		<Item visivel="N" motivo="S20140500011"><![CDATA[Videoteca > Correção dos títulos de alguns vídeos e inclusão da categoria "Integração" no filtro.]]></Item>
 		<Item visivel="N" motivo="S20140500038"><![CDATA[Info. Funcionais > Relatórios > Resultados das Entrevistas: Imprimir somente a relação dos estabelecimentos da empresa logada.]]></Item>
 		<Item visivel="N" motivo="S20140500047"><![CDATA[Integração com o AC: Análise e implementação do serviço para desligamento em lote no webservice.]]></Item>
-		<Item visivel="N" motivo="P20140500081"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes > Inserir: Mostrar somente os colaboradores contratados no resultado da pesquisa.]]></Item>
 	</Versao>
 	<Versao id="1.1.126.151" bd="" data="29/04/2014">
 		<Item visivel="S" motivo="S20140300204"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turma > Incluir Colaboradores: Nova filtro por cargo.]]></Item>
