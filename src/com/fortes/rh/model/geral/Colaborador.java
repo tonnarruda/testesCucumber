@@ -479,6 +479,16 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.estabelecimento.setId(historicoEstabelecimentoId);
 		this.estabelecimento.setNome(historicoEstabelecimentoNome);
 	}
+	
+	// usado em findByAreasOrganizacionaisEstabelecimentos
+	public Colaborador(Long id, String nome, String nomeComercial, Long historicoAreaId, String historicoAreaNome,Long historicoAreaMaeId, String historicoAreaMaeNome, Long historicoEstabelecimentoId, String historicoEstabelecimentoNome, Long historicoFaixaSalarialId, String historicoFaixaSalarialNome)
+	{
+		this(id, nome, nomeComercial, historicoAreaId, historicoAreaNome, historicoAreaMaeId, historicoAreaMaeNome, historicoEstabelecimentoId, historicoEstabelecimentoNome);
+		
+		this.faixaSalarial = new FaixaSalarial();
+		this.faixaSalarial.setId(historicoFaixaSalarialId);
+		this.faixaSalarial.setNome(historicoFaixaSalarialNome);
+	}
 
 	public Colaborador(Long id, String nome, Date dataNascimento, Character sexo, String escolaridade, int somaCompetencias)
 	{
@@ -488,33 +498,6 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		setProjectionSexo(sexo);
 		setPessoalEscolaridade(escolaridade);
 		this.somaCompetencias = somaCompetencias;
-	}
-	
-	// usado em findByAreasOrganizacionaisEstabelecimentos
-	public Colaborador(Long id, String nome, String nomeComercial, Long historicoAreaId, String historicoAreaNome,Long historicoAreaMaeId, String historicoAreaMaeNome, Long historicoEstabelecimentoId, String historicoEstabelecimentoNome, Long historicoFaixaSalarialId, String historicoFaixaSalarialNome)
-	{
-		this.setId(id);
-		this.nome = nome;
-		this.nomeComercial = nomeComercial;
-		
-		if(this.areaOrganizacional == null)
-			this.areaOrganizacional = new AreaOrganizacional();
-		this.areaOrganizacional.setId(historicoAreaId);
-		this.areaOrganizacional.setNome(historicoAreaNome);
-		
-		if(this.areaOrganizacional.getAreaMae() == null)
-			this.areaOrganizacional.setAreaMae(new AreaOrganizacional());
-		this.areaOrganizacional.getAreaMae().setId(historicoAreaMaeId);
-		this.areaOrganizacional.getAreaMae().setNome(historicoAreaMaeNome);
-		
-		if(this.estabelecimento == null)
-			this.estabelecimento = new Estabelecimento();
-		this.estabelecimento.setId(historicoEstabelecimentoId);
-		this.estabelecimento.setNome(historicoEstabelecimentoNome);
-		
-		this.faixaSalarial = new FaixaSalarial();
-		this.faixaSalarial.setId(historicoFaixaSalarialId);
-		this.faixaSalarial.setNome(historicoFaixaSalarialNome);
 	}
 
 	public Colaborador(Colaborador colaborador, HistoricoColaborador historicoColaborador, FaixaSalarial faixaSalarial,
@@ -597,92 +580,16 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 						Date data1,  Date data2,  Date data3,  Double valor1,  Double valor2,  Integer numero1  
 					   ) 
 	{
-		this.setEstabelecimentoNomeProjection(esNome);
-		this.setEstabelecimentoIdProjection(esId);
-		this.setAreaOrganizacionalId(aoId);
-		this.setAreaOrganizacionalNome(aoNome);
-		this.setAreaOrganizacionalResponsavelNomeProjection(reNome);
-		this.setId(coId);
-		this.setNome(coNome);
-		this.setFaixaSalarialNomeProjection(fsNome);
-		this.setCargoNomeProjection(cgNome);
-		this.setEmpresaId(empresaId);
-		this.setEmpresaNome(empresaNome);
-		this.setEmpresaAcIntegra(empresaAcIntegra);
-		
-		this.nomeComercial = nomeComercial;
-		this.matricula = matricula;
-		this.dataAdmissao = dataAdmissao;
-		this.desligado = BooleanUtils.toBoolean(desligado);
-		this.tempoServico = DateUtil.mesesEntreDatas(dataAdmissao, new Date());
-		this.dataDesligamento = dataDesligamento;
-		this.vinculo = vinculo;
-		this.naoIntegraAc = naoIntegraAc;
-		this.afastado = isAfastado(afastamentoInicio, afastamentoFim);
-		this.cursos = cursos;
-				
-		if (this.pessoal == null)
-			this.pessoal = new Pessoal();
-				
-		this.getPessoal().setEstadoCivil(estadoCivil);
-		this.getPessoal().setEscolaridade(escolaridade);
-		this.getPessoal().setMae(mae);
-		this.getPessoal().setPai(pai);
-		this.getPessoal().setCpf(cpf);
-		this.getPessoal().setPis(pis);
-		this.getPessoal().setRg(rg);
-		this.getPessoal().setRgOrgaoEmissor(rgOrgaoEmissor);
-		this.getPessoal().setDeficiencia(deficiencia);
-		this.getPessoal().setRgDataExpedicao(rgDataExpedicao);
-		this.getPessoal().setSexo(sexo);
-		this.getPessoal().setDataNascimento(dataNascimento);
-		this.getPessoal().setConjuge(conjuge);
-		this.getPessoal().setQtdFilhos(qtdFilhos);
-		
-		if (this.pessoal.getCtps() == null)
-			this.pessoal.setCtps(new Ctps());
-		
-		this.getPessoal().getCtps().setCtpsNumero(ctpsNumero);
-		this.getPessoal().getCtps().setCtpsSerie(ctpsSerie);
-		this.getPessoal().getCtps().setCtpsDv(ctpsDv);
-				
-		if (this.habilitacao == null)
-			this.habilitacao = new Habilitacao();
-		
-		this.getHabilitacao().setNumeroHab(numeroHab);
-		this.getHabilitacao().setEmissao(emissao);
-		this.getHabilitacao().setVencimento(vencimento);
-		this.getHabilitacao().setCategoria(categoria);
-				
-		if (this.endereco == null)
-			this.endereco = new Endereco();
-		
-		Cidade cidade = new Cidade();
-		cidade.setNome(cidadeNome);
-		Estado uf = new Estado();
-		uf.setSigla(ufSigla);
-		
-		this.getEndereco().setLogradouro(logradouro);
-		this.getEndereco().setComplemento(complemento);
-		this.getEndereco().setNumero(numero);
-		this.getEndereco().setBairro(bairro);
-		this.getEndereco().setCep(cep);
-		this.getEndereco().setCidade(cidade);
-		this.getEndereco().setUf(uf);
-		
-		if (contato == null)
-			this.contato = new Contato();
-		
-		this.getContato().setEmail(email);
-		this.getContato().setFoneCelular(foneCelular);
-		this.getContato().setFoneFixo(foneFixo);
-		
-		if (candidato == null)
-			this.candidato = new Candidato();
-		if(candidato.getPessoal() == null)
-			candidato.setPessoal(new Pessoal());
-		
-		candidato.getPessoal().setIndicadoPor(candIndicadoPor);
+		this(coId, coNome, esId, esNome, aoId, aoNome, reNome, cgNome, fsNome,
+				empresaId, empresaNome, empresaAcIntegra, nomeComercial,
+				matricula, desligado, dataAdmissao, dataDesligamento, vinculo,
+				naoIntegraAc, cursos, estadoCivil, escolaridade, mae, pai, cpf,
+				pis, rg, rgOrgaoEmissor, deficiencia, rgDataExpedicao, sexo,
+				dataNascimento, conjuge, qtdFilhos, ctpsNumero, ctpsSerie,
+				ctpsDv, numeroHab, emissao, vencimento, categoria, logradouro,
+				complemento, numero, bairro, cep, email, foneCelular, foneFixo,
+				cidadeNome, ufSigla, afastamentoInicio, afastamentoFim,
+				candIndicadoPor);
 
 		
 		if (this.camposExtras == null)
@@ -717,6 +624,36 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome, 
 			String cidadeNome, String ufSigla, Date afastamentoInicio, Date afastamentoFim, String candIndicadoPor) 
 	{
+		this(coId, coNome, esId, esNome, aoId, aoNome, reNome, cgNome, fsNome,
+				empresaId, empresaNome, empresaAcIntegra, nomeComercial,
+				matricula, desligado, dataAdmissao, dataDesligamento, vinculo,
+				naoIntegraAc, cursos, estadoCivil, escolaridade, mae, pai, cpf,
+				pis, rg, rgOrgaoEmissor, deficiencia, rgDataExpedicao, sexo,
+				dataNascimento, conjuge, qtdFilhos, ctpsNumero, ctpsSerie,
+				ctpsDv, numeroHab, emissao, vencimento, categoria, logradouro,
+				complemento, numero, bairro, cep, email, foneCelular, foneFixo,
+				cidadeNome, ufSigla, afastamentoInicio, afastamentoFim,
+				candIndicadoPor);
+		
+		if (this.funcao == null)
+			this.funcao =  new Funcao();
+		this.funcao.setNome(funcaoNome);
+
+		if (this.ambiente == null)
+			this.ambiente =  new Ambiente();
+		this.ambiente.setNome(ambienteNome);
+	}
+
+	public Colaborador(Long coId, String coNome, Long esId, String esNome, Long aoId, String aoNome, String reNome, String cgNome,
+			String fsNome, Long empresaId, String empresaNome, Boolean empresaAcIntegra, String nomeComercial, String matricula,
+			Boolean desligado, Date dataAdmissao, Date dataDesligamento, String vinculo, boolean naoIntegraAc, String cursos,
+			String estadoCivil, String escolaridade, String mae, String pai, String cpf, String pis, String rg, String rgOrgaoEmissor,
+			Character deficiencia, Date rgDataExpedicao, Character sexo, Date dataNascimento, String conjuge, Integer qtdFilhos,
+			String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, Date vencimento, String categoria,
+			String logradouro, String complemento, String numero, String bairro, String cep, String email, String foneCelular,
+			String foneFixo, String cidadeNome, String ufSigla, Date afastamentoInicio, Date afastamentoFim, String candIndicadoPor) 
+	{
+		
 		this.setEstabelecimentoNomeProjection(esNome);
 		this.setEstabelecimentoIdProjection(esId);
 		this.setAreaOrganizacionalId(aoId);
@@ -729,14 +666,6 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setEmpresaId(empresaId);
 		this.setEmpresaNome(empresaNome);
 		this.setEmpresaAcIntegra(empresaAcIntegra);
-		
-		if (this.funcao == null)
-			this.funcao =  new Funcao();
-		this.funcao.setNome(funcaoNome);
-
-		if (this.ambiente == null)
-			this.ambiente =  new Ambiente();
-		this.ambiente.setNome(ambienteNome);
 		
 		this.nomeComercial = nomeComercial;
 		this.matricula = matricula;
