@@ -2369,6 +2369,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
 
 		Colaborador colaborador = getEntity();
+		colaborador.setDataDesligamento(null);
 		colaborador.getPessoal().setSexo('F');
 		colaborador = colaboradorDao.save(colaborador);
 
@@ -2382,7 +2383,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		// colaborador desligado
 		Colaborador colaborador2 = getEntity();
-		colaborador2.setDesligado(true);
+		colaborador2.setDataDesligamento(DateUtil.criarDataMesAno(1, 1, 2010));
 		colaborador2 = colaboradorDao.save(colaborador2);
 
 		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
@@ -2431,6 +2432,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Colaborador colaborador = getEntity();
 		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(01, 02, 2010));
+		colaborador.setDataDesligamento(null);
 		colaborador = colaboradorDao.save(colaborador);
 		
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
@@ -2444,6 +2446,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		// colaborador fora da data de admissao
 		Colaborador colaborador2 = getEntity();
 		colaborador2.setDataAdmissao(DateUtil.criarDataMesAno(05, 02, 2011));
+//		colaborador2.setDataDesligamento(null);
 		colaborador2 = colaboradorDao.save(colaborador2);
 		
 		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
@@ -2494,6 +2497,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colaborador1 = getEntity();
 		colaborador1.setNome("Arnaldo");
 		colaborador1.setDataAdmissao(DateUtil.criarDataMesAno(05, 02, 2011));
+		colaborador1.setDataDesligamento(null);
 		colaborador1 = colaboradorDao.save(colaborador1);
 		
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
@@ -2555,6 +2559,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador1.setNome("Arnaldo");
 		colaborador1.setNaoIntegraAc(false);
 		colaborador1.setDataAdmissao(DateUtil.criarDataMesAno(05, 02, 2011));
+		colaborador1.setDataDesligamento(null);
 		colaborador1 = colaboradorDao.save(colaborador1);
 		
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
@@ -2576,6 +2581,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador2.setNome("Tibira");
 		colaborador2.setNaoIntegraAc(true);
 		colaborador2.setDataAdmissao(DateUtil.criarDataMesAno(05, 02, 2011));
+		colaborador2.setDataDesligamento(null);
 		colaborador2 = colaboradorDao.save(colaborador2);
 		
 		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
@@ -2639,6 +2645,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setNome("Joao");
 		colaborador.setPessoal(pessoal);
 		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(05, 02, 2011));
+		colaborador.setDataDesligamento(null);
 		colaborador = colaboradorDao.save(colaborador);
 		
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
@@ -2656,6 +2663,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador2.setNome("Maria");
 		colaborador2.setPessoal(pessoal2);
 		colaborador2.setDataAdmissao(DateUtil.criarDataMesAno(05, 02, 2011));
+		colaborador2.setDataDesligamento(null);
 		colaborador2 = colaboradorDao.save(colaborador2);
 		
 		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
@@ -2711,6 +2719,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setNome("Chico");
 		colaborador.setPessoal(pessoal);
 		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(05, 02, 2011));
+		colaborador.setDataDesligamento(null);
 		colaborador = colaboradorDao.save(colaborador);
 		
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
@@ -2729,6 +2738,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador2.setNome("Marcia");
 		colaborador2.setPessoal(pessoal2);
 		colaborador2.setDataAdmissao(DateUtil.criarDataMesAno(01, 02, 2011));
+		colaborador2.setDataDesligamento(null);
 		colaborador2 = colaboradorDao.save(colaborador2);
 		
 		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();

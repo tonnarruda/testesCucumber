@@ -862,7 +862,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		hql.append("left join ifs.indiceHistoricos as ifsh with ifsh.data = (select max(ih3.data) from IndiceHistorico ih3 where ih3.indice.id = ifs.id and ih3.data <= :data) ");
 		hql.append("left join fs.cargo as c ");
 		
-		hql.append("where co.desligado = :desligado ");
+		hql.append("where (co.dataDesligamento is null or co.dataDesligamento >= :data) ");
 		hql.append("and hc.status = :status ");
 		
 		if(dataConsulta != null)
@@ -899,7 +899,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		if(dataConsulta != null)
 			query.setDate("dataConsulta", dataConsulta);
 		
-		query.setBoolean("desligado", false);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		if(cargoIds != null && cargoIds.length > 0)
@@ -1222,7 +1221,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		hql.append("inner join fs.cargo as c ");
 		hql.append("left join c.grupoOcupacional as go ");
 
-		hql.append("where co.desligado = false ");
+		hql.append("where (co.dataDesligamento is null or co.dataDesligamento > :data) ");
 		hql.append("and hc.status = :status ");
 
 		if(cargoIds != null && cargoIds.length > 0)

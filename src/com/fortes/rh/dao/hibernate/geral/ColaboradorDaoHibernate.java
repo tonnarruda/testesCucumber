@@ -1154,8 +1154,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("			where co.id = cf2.colaborador.id) ");
 		hql.append("	 	or caf.inicio is null)  ");
 		
-		if(situacao != null && !situacao.equals(SituacaoColaborador.TODOS))
-			hql.append("	and co.desligado = :desligado ");
+		if (situacao != null)
+		{
+			if (situacao.equals(SituacaoColaborador.ATIVO))
+				hql.append("	and (co.dataDesligamento is null or co.dataDesligamento >= :hoje) ");
+			else if (situacao.equals(SituacaoColaborador.DESLIGADO))
+				hql.append("	and (co.dataDesligamento < :hoje) ");
+		}
 		
 		if(sexo != null && !sexo.equals(Sexo.INDIFERENTE))
 			hql.append("	and co.pessoal.sexo = :sexo ");
@@ -1253,9 +1258,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		// Parâmetros
 		query.setDate("hoje", new Date());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		
-		if(situacao != null && !situacao.equals(SituacaoColaborador.TODOS))
-			query.setBoolean("desligado", situacao.equals("D"));
 		
 		if(sexo != null && !sexo.equals(Sexo.INDIFERENTE))
 			query.setString("sexo", sexo);
