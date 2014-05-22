@@ -75,7 +75,6 @@ public class DNTListAction extends MyActionSupportList
 	//TODO metodo imundo BACALHAU (metodo com muitos ifs)
 	public String listDetalhes() throws Exception
 	{
-
 		if(!msgAlert.equals(""))
 			addActionMessage(msgAlert);
 
@@ -129,6 +128,11 @@ public class DNTListAction extends MyActionSupportList
 		if(areaFiltro == null || areaFiltro.getId() == null || estabelecimento == null || estabelecimento.getId() == null )
 			return Action.SUCCESS;
 
+		return verificaColaboradorTurma();
+	}
+
+	private String verificaColaboradorTurma() 
+	{
 		if (dnt.getEmpresa().getId().equals(getEmpresaSistema().getId()) && areaFiltro.getEmpresa().getId().equals(getEmpresaSistema().getId()))
 		{
 			colaboradors = colaboradorManager.findByAreaEstabelecimento(areaFiltro.getId(), estabelecimento.getId());

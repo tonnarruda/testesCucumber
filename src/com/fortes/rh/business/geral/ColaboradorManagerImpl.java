@@ -552,23 +552,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias,
 			Empresa empresa, boolean editarHistorico, Double salarioColaborador) throws Exception
 			{
-		if (colaborador.getUsuario() != null && colaborador.getUsuario().getId() == null)
-			colaborador.setUsuario(null);
-
-		if (colaborador.getPessoal().getRgUf() != null && colaborador.getPessoal().getRgUf().getId() == null)
-			colaborador.getPessoal().setRgUf(null);
-
-		if (colaborador.getPessoal().getCtps() != null && colaborador.getPessoal().getCtps().getCtpsUf() != null
-				&& colaborador.getPessoal().getCtps().getCtpsUf().getId() == null)
-			colaborador.getPessoal().getCtps().setCtpsUf(null);
-
-		if(colaborador.getSolicitacao() != null && colaborador.getSolicitacao().getId() == null)
-			colaborador.setSolicitacao(null);
-
+		verificaEntidadeIdNulo(colaborador);
 		colaborador.setEmpresa(empresa);
-
 		update(colaborador);
-
 		salvarBairro(colaborador);
 
 		formacaoManager.removeColaborador(colaborador);
@@ -581,19 +567,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (editarHistorico)
 		{
 			historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
-
 			setDadosHistoricoColaborador(historicoColaborador, colaborador);
-
 			historicoColaborador = historicoColaboradorManager.ajustaTipoSalario(historicoColaborador, colaborador.getHistoricoColaborador()
 					.getTipoSalario(), colaborador.getHistoricoColaborador().getIndice(), colaborador.getHistoricoColaborador().getQuantidadeIndice(),
 					salarioColaborador);
 
-			try {
-
-				historicoColaboradorManager.update(historicoColaborador);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			historicoColaboradorManager.update(historicoColaborador);
 			colaborador.setHistoricoColaborador(historicoColaborador);
 		}
 
@@ -608,7 +587,23 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			else
 				acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, empresa.getCodigoAC()), empresa);
 		}
-			}
+	}
+
+	private void verificaEntidadeIdNulo(Colaborador colaborador) 
+	{
+		if (colaborador.getUsuario() != null && colaborador.getUsuario().getId() == null)
+			colaborador.setUsuario(null);
+
+		if (colaborador.getPessoal().getRgUf() != null && colaborador.getPessoal().getRgUf().getId() == null)
+			colaborador.getPessoal().setRgUf(null);
+
+		if (colaborador.getPessoal().getCtps() != null && colaborador.getPessoal().getCtps().getCtpsUf() != null
+				&& colaborador.getPessoal().getCtps().getCtpsUf().getId() == null)
+			colaborador.getPessoal().getCtps().setCtpsUf(null);
+
+		if(colaborador.getSolicitacao() != null && colaborador.getSolicitacao().getId() == null)
+			colaborador.setSolicitacao(null);
+	}
 
 	private void salvarBairro(Colaborador colaborador)
 	{
@@ -626,20 +621,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void saveDetalhes(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias)
 	{
 		if (formacaos != null && !formacaos.isEmpty())
-		{
-			for (Formacao f : formacaos)
-			{
+			for (Formacao f : formacaos){
 				f.setId(null);
 				f.atualizaColaboradorECandidato(colaborador);
 
 				formacaoManager.save(f);
 			}
-		}
 
 		if (idiomas != null && !idiomas.isEmpty())
-		{
-			for (CandidatoIdioma c : idiomas)
-			{
+			for (CandidatoIdioma c : idiomas){
 				ColaboradorIdioma ci = new ColaboradorIdioma();
 				ci.setId(null);
 				ci.setColaborador(colaborador);
@@ -648,12 +638,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 				colaboradorIdiomaManager.save(ci);
 			}
-		}
 
 		if (experiencias != null && !experiencias.isEmpty())
-		{
-			for (Experiencia e : experiencias)
-			{
+			for (Experiencia e : experiencias){
 				e.setId(null);
 				e.atualizaColaboradorECandidato(colaborador);
 
@@ -662,7 +649,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 				experienciaManager.save(e);
 			}
-		}
 	}
 
 	public void setColaboradorIdiomaManager(ColaboradorIdiomaManager colaboradorIdiomaManager)
