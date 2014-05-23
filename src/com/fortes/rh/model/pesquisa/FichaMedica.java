@@ -41,10 +41,7 @@ public class FichaMedica extends AbstractModel implements Serializable, Cloneabl
 		this.setAtiva(ativa);
 		this.setRodape(rodape);
 
-		inicializaQuestionario();
-
-		if(this.questionario.getEmpresa() == null)
-			this.questionario.setEmpresa(new Empresa());
+		inicializaQuestionarioComEmpresa();
 
 		this.questionario.setId(questionarioId);
 		this.questionario.setTitulo(questionarioTitulo);
@@ -74,12 +71,6 @@ public class FichaMedica extends AbstractModel implements Serializable, Cloneabl
 
     	this.questionario.setId(projectionQuestionarioId);
     }
-
-	private void inicializaQuestionario()
-	{
-		if(this.questionario == null)
-    		this.questionario = new Questionario();
-	}
 
     public void setProjectionQuestionarioCabecalho(String projectionQuestionarioCabecalho)
     {
@@ -139,32 +130,37 @@ public class FichaMedica extends AbstractModel implements Serializable, Cloneabl
 
     public void setProjectionQuestionarioEmpresaId(Long projectionQuestionarioEmpresaId)
     {
-    	inicializaQuestionario();
-
-    	if(this.questionario.getEmpresa() == null)
-    		this.questionario.setEmpresa(new Empresa());
+    	inicializaQuestionarioComEmpresa();
 
     	this.questionario.getEmpresa().setId(projectionQuestionarioEmpresaId);
     }
 
     public void setProjectionEmailRemetente(String projectionEmailRemetente)
     {
-    	inicializaQuestionario();
-
-    	if(this.questionario.getEmpresa() == null)
-    		this.questionario.setEmpresa(new Empresa());
+    	inicializaQuestionarioComEmpresa();
 
     	this.questionario.getEmpresa().setEmailRemetente(projectionEmailRemetente);
     }
 
     public void setProjectionEmailRespRH(String projectionEmailRespRH)
     {
-    	inicializaQuestionario();
-
-    	if(this.questionario.getEmpresa() == null)
-    		this.questionario.setEmpresa(new Empresa());
+    	inicializaQuestionarioComEmpresa();
 
     	this.questionario.getEmpresa().setEmailRespRH(projectionEmailRespRH);
+    }
+    
+	private void inicializaQuestionario()
+	{
+		if(this.questionario == null)
+    		this.questionario = new Questionario();
+	}
+	
+    private void inicializaQuestionarioComEmpresa()
+    {
+    	inicializaQuestionario();
+    	
+    	if(this.questionario.getEmpresa() == null)
+    		this.questionario.setEmpresa(new Empresa());
     }
 
 	@Override

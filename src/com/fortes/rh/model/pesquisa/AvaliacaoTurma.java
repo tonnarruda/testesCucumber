@@ -41,11 +41,7 @@ public class AvaliacaoTurma extends AbstractModel implements Serializable, Clone
     	this.setId(id);
 		this.setAtiva(ativa);
 
-		if(this.questionario == null)
-			this.questionario = new Questionario();
-
-		if(this.questionario.getEmpresa() == null)
-			this.questionario.setEmpresa(new Empresa());
+		newQuestionarioComEmpresa();
 
 		this.questionario.setId(questionarioId);
 		this.questionario.setTitulo(questionarioTitulo);
@@ -67,117 +63,109 @@ public class AvaliacaoTurma extends AbstractModel implements Serializable, Clone
 
     public void setProjectionQuestionarioId(Long projectionQuestionarioId)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
+    	newQuestionario();
     	
     	this.questionario.setId(projectionQuestionarioId);
     }
     
     public void setProjectionQuestionarioCabecalho(String projectionQuestionarioCabecalho)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
+    	newQuestionario();
 
     	this.questionario.setCabecalho(projectionQuestionarioCabecalho);
     }
 
     public void setProjectionQuestionarioAnonimo(boolean projectionQuestionarioAnonimo)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
+    	newQuestionario();
 
     	this.questionario.setAnonimo(projectionQuestionarioAnonimo);
     }
 
     public void setProjectionQuestionarioLiberado(boolean projectionQuestionarioLiberado)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
+    	newQuestionario();
 
     	this.questionario.setLiberado(projectionQuestionarioLiberado);
     }
 
     public void setProjectionQuestionarioTitulo(String projectionQuestionarioTitulo)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
+    	newQuestionario();
 
     	this.questionario.setTitulo(projectionQuestionarioTitulo);
     }
 
     public void setProjectionQuestionarioTipo(int projectionQuestionarioTipo)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
+    	newQuestionario();
 
     	this.questionario.setTipo(projectionQuestionarioTipo);
     }
 
     public void setProjectionQuestionarioAplicarPorAspecto(boolean projectionQuestionarioAplicarPorAspecto)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
+    	newQuestionario();
 
     	this.questionario.setAplicarPorAspecto(projectionQuestionarioAplicarPorAspecto);
     }
 
     public void setProjectionQuestionarioDataInicio(Date projectionQuestionarioDataInicio)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
+    	newQuestionario();
 
     	this.questionario.setDataInicio(projectionQuestionarioDataInicio);
     }
 
     public void setProjectionQuestionarioDataFim(Date projectionQuestionarioDataFim )
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
+    	newQuestionario();
 
     	this.questionario.setDataFim(projectionQuestionarioDataFim);
     }
 
     public void setProjectionQuestionarioEmpresaId(Long projectionQuestionarioEmpresaId)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
-
-    	if(this.questionario.getEmpresa() == null)
-    		this.questionario.setEmpresa(new Empresa());
+    	newQuestionarioComEmpresa();
 
     	this.questionario.getEmpresa().setId(projectionQuestionarioEmpresaId);
     }
 
     public void setProjectionEmailRemetente(String projectionEmailRemetente)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
-
-    	if(this.questionario.getEmpresa() == null)
-    		this.questionario.setEmpresa(new Empresa());
+    	newQuestionarioComEmpresa();
 
     	this.questionario.getEmpresa().setEmailRemetente(projectionEmailRemetente);
     }
 
     public void setProjectionEmailRespRH(String projectionEmailRespRH)
     {
-    	if(this.questionario == null)
-    		this.questionario = new Questionario();
-
-    	if(this.questionario.getEmpresa() == null)
-    		this.questionario.setEmpresa(new Empresa());
+    	newQuestionarioComEmpresa();
 
     	this.questionario.getEmpresa().setEmailRespRH(projectionEmailRespRH);
     }
     
     public String getQuestionarioTitulo()
     {
-    	if (this.questionario == null)
-    		this.questionario = new Questionario();
+    	newQuestionario();
     	
     	return this.questionario.getTitulo();
     }
 
+	private void newQuestionario()
+	{
+		if(this.questionario == null)
+    		this.questionario = new Questionario();
+	}
+	
+	private void newQuestionarioComEmpresa()
+	{
+		newQuestionario();
+		
+		if(this.questionario.getEmpresa() == null)
+			this.questionario.setEmpresa(new Empresa());
+	}
+	
 	@Override
 	public Object clone()
 	{
