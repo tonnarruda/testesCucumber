@@ -1826,14 +1826,18 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public void religaColaborador(Long colaboradorId)
 	{
-		String hql = "update Colaborador set desligado = :desligado, dataDesligamento = :data, dataSolicitacaoDesligamento = :data, observacaoDemissao = :observacaoDemissao, motivoDemissao.id = :motivoDemissaoId where id = :colaboradorId";
+		StringBuilder hql = new StringBuilder("update Colaborador set ");
+		hql.append("    desligado = false, ");
+		hql.append("    dataDesligamento = null, ");
+		hql.append("    dataSolicitacaoDesligamento = null, ");
+		hql.append("    dataSolicitacaoDesligamentoAC = null, ");
+		hql.append("    observacaoDemissao = :observacaoDemissao, ");
+		hql.append("    motivoDemissao.id = null ");
+		hql.append("where id = :colaboradorId");
+		
+		Query query = getSession().createQuery(hql.toString());
 
-		Query query = getSession().createQuery(hql);
-
-		query.setBoolean("desligado", false);
-		query.setDate("data", null);
 		query.setString("observacaoDemissao", "");
-		query.setParameter("motivoDemissaoId", null, Hibernate.LONG);
 		query.setLong("colaboradorId", colaboradorId);
 
 		query.executeUpdate();

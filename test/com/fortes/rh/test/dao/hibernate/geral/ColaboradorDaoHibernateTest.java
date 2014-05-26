@@ -129,6 +129,7 @@ import com.fortes.rh.test.factory.geral.CamposExtrasFactory;
 import com.fortes.rh.test.factory.geral.ColaboradorOcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
+import com.fortes.rh.test.factory.geral.MotivoDemissaoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.ProvidenciaFactory;
 import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
@@ -3307,18 +3308,28 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
+		MotivoDemissao motivoDemissao = MotivoDemissaoFactory.getEntity();
+		motivoDemissaoDao.save(motivoDemissao);
+		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setEmpresa(empresa);
 		colaborador.setDataDesligamento(new Date());
+		colaborador.setDataSolicitacaoDesligamento(new Date());
+		colaborador.setDataSolicitacaoDesligamentoAc(new Date());
 		colaborador.setDesligado(true);
 		colaborador.setObservacaoDemissao("demissao");
+		colaborador.setMotivoDemissao(motivoDemissao);
 		colaboradorDao.save(colaborador);
 
 		colaboradorDao.religaColaborador(colaborador.getId());
-		Colaborador colabTmp = colaboradorDao.findColaboradorById(colaborador.getId());
-		assertNull(colabTmp.getDataDesligamento());
-		assertEquals("", colabTmp.getObservacaoDemissao());
-		assertFalse(colabTmp.isDesligado());
+		Colaborador colaboradorReligado = colaboradorDao.findColaboradorById(colaborador.getId());
+		
+		assertNull("Data desligamento", colaboradorReligado.getDataDesligamento());
+		assertNull("Data solicitação desligamento", colaboradorReligado.getDataSolicitacaoDesligamento());
+		assertNull("Data solicitação desligamento AC", colaboradorReligado.getDataSolicitacaoDesligamentoAc());
+		assertNull("Motivo demissão", colaboradorReligado.getMotivoDemissao().getId());
+		assertEquals("Observação demissão", "", colaboradorReligado.getObservacaoDemissao());
+		assertFalse("Está desligado", colaboradorReligado.isDesligado());
 	}
 
 	public void testFindByIdDadosBasicos() 
