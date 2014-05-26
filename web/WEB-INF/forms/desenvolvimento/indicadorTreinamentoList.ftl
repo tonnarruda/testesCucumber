@@ -27,6 +27,7 @@
 	<#include "../ftl/showFilterImports.ftl" />
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	
 	<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
@@ -36,6 +37,8 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/qtip.js"/>'></script>
 	
 	<script type="text/javascript">
+		DWREngine.setAsync(true);
+	
 		function enviaForm(opcao)
 		{
 			if (opcao == 1)
@@ -170,6 +173,17 @@
 		{
 			addChecksByMap("cursosCheck", data);
 		}
+		
+		function populaAreas()
+		{
+			var empresasIds = getArrayCheckeds(document.getElementById('formBusca'), 'empresasCheck');
+			AreaOrganizacionalDWR.getByEmpresas(null, empresasIds, null, createListAreas);
+		}
+		
+		function createListAreas(data)
+		{
+			addChecksByMap("areasCheck", data);
+		}
 	</script>
 
 	<#if indicadorTreinamento?exists && indicadorTreinamento.dataIni?exists>
@@ -192,8 +206,9 @@
 			<@ww.datepicker name="indicadorTreinamento.dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 			<@ww.label value="a" liClass="liLeft" />
 			<@ww.datepicker name="indicadorTreinamento.dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
-			<@frt.checkListBox label="Empresas" id="empresasCheck" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" onClick="populaCursos()" width="470" liClass="liLeft"/>
-			<@frt.checkListBox label="Cursos" name="cursosCheck" id="cursosCheck" list="cursosCheckList" form="document.getElementById('formBusca')" width="470" liClass="liLeft"/>
+			<@frt.checkListBox label="Empresas" id="empresasCheck" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" onClick="populaCursos();populaAreas();" width="310" liClass="liLeft"/>
+			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" list="areasCheckList" form="document.getElementById('formBusca')" width="310" liClass="liLeft"/>
+			<@frt.checkListBox label="Cursos" name="cursosCheck" id="cursosCheck" list="cursosCheckList" form="document.getElementById('formBusca')" width="310" liClass="liLeft"/>
 			<button onclick="return enviaForm(1);" class="btnPesquisar grayBGE"></button>
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />

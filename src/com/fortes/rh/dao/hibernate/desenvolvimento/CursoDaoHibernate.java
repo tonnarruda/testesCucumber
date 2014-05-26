@@ -21,6 +21,7 @@ import com.fortes.rh.dao.desenvolvimento.CursoDao;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.LongUtil;
@@ -133,20 +134,30 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		return (Double) criteria.uniqueResult();
 	}
 	
-	public Collection<IndicadorTreinamento> findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds)
+	public Collection<IndicadorTreinamento> findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds)
 	{
 		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.desenvolvimento.IndicadorTreinamento(c.id, cast((c.cargaHoraria/60 * count(ct.id)) as double)) ");
 		hql.append("from Curso c ");
 		hql.append("left join c.turmas t ");
 		hql.append("left join t.colaboradorTurmas ct "); 
 		hql.append("inner join ct.colaborador co "); 
+		hql.append("inner join co.historicoColaboradors hc ");
 		hql.append("where c.empresa.id in (:empresaIds) ");
 		hql.append("and co.empresa.id in (:empresaIds) ");
 		hql.append("and t.dataPrevIni between :dataIni and :dataFim "); 
 		hql.append("and t.realizada = true ");
+		hql.append("and hc.data = ( ");
+		hql.append("	select max(hc2.data) ");
+		hql.append("	from HistoricoColaborador as hc2 ");
+		hql.append("	where hc2.colaborador.id = co.id ");
+		hql.append("	and hc2.status = :status ");
+		hql.append(") ");
 		
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			hql.append("and c.id in (:cursoIds) ");
+		
+		if (LongUtil.isNotEmpty(areasIds))
+			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
 		
 		hql.append("group by c.id, c.cargaHoraria ");
 		hql.append("order by c.id ");
@@ -155,9 +166,13 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
 		query.setParameterList("empresaIds", empresaIds);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
+		
+		if (LongUtil.isNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 		
 		return query.list();
 	}

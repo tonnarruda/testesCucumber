@@ -63,14 +63,13 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return getDao().findAllByEmpresasParticipantes(empresasIds);
 	}
 	
-	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds)
+	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds)
 	{
-		IndicadorTreinamento indicadorTreinamento = findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, cursoIds);
+		IndicadorTreinamento indicadorTreinamento = findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, areasIds, cursoIds);
 		indicadorTreinamento.setDataIni(dataIni);
 		indicadorTreinamento.setDataFim(dataFim);
 		
-		Double somaHoras = indicadorTreinamento.getSomaHoras();
-		Double qtdHoras = (indicadorTreinamento.getSomaHoras() != null ? indicadorTreinamento.getSomaHoras() : 0);
+		Double qtdHoras = (indicadorTreinamento.getSomaHoras() != null ? indicadorTreinamento.getSomaHoras() : 0d);
 		Double custoPerCapita = 0d;
 		Double horasPerCapita = 0d;
 		Double percentualFrequencia = 0d;
@@ -80,8 +79,8 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		somaCustos = somaCustos == null ? 0 : somaCustos;
 		indicadorTreinamento.setSomaCustos(somaCustos);
 		
-		if (somaHoras != null && somaHoras > 0)
-			indicadorTreinamento.setCustoMedioHora( somaCustos / somaHoras );
+		if (qtdHoras > 0)
+			indicadorTreinamento.setCustoMedioHora( somaCustos / qtdHoras );
 		
 		Integer qtdInscritos = getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaIds, cursoIds);
 
@@ -109,11 +108,11 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return indicadorTreinamento;
 	}
 	
-	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds)
+	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds)
 	{
 		double somaHoras = 0.0;
 		
-		Collection<IndicadorTreinamento> indicadoresPorCurso = getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, cursoIds);
+		Collection<IndicadorTreinamento> indicadoresPorCurso = getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, areasIds, cursoIds);
 		
 		for (IndicadorTreinamento indicadorTreinamento : indicadoresPorCurso) {
 			somaHoras += indicadorTreinamento.getSomaHoras();

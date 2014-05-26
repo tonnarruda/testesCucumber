@@ -15,16 +15,17 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -40,6 +41,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	private TurmaManager turmaManager;
 	private TurmaTipoDespesaManager turmaTipoDespesaManager;
 	private EmpresaManager empresaManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	private JFreeChart chart;
 	private IndicadorTreinamento indicadorTreinamento = new IndicadorTreinamento();
@@ -64,6 +66,8 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	private Long[] empresasCheck;
 	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
+	private Long[] areasCheck;
+	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private Long[] cursosCheck;
 	private Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
 
@@ -75,6 +79,9 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
    		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
    		empresasCheckList =  CheckListBoxUtil.marcaCheckListBox(empresasCheckList, StringUtil.LongToString(empresasCheck));
    		
+   		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas));
+   		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, StringUtil.LongToString(areasCheck));
+   		
    		Collection<Curso> cursos = cursoManager.findAllByEmpresasParticipantes(new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas));
 		cursosCheckList =  CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
 		cursosCheckList =  CheckListBoxUtil.marcaCheckListBox(cursosCheckList, StringUtil.LongToString(cursosCheck));
@@ -84,7 +91,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 			empresasCheck = cUtil.convertCollectionToArrayIds(empresas);
 		}
    		
-		indicadorTreinamento = cursoManager.montaIndicadoresTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, cursosCheck);
+		indicadorTreinamento = cursoManager.montaIndicadoresTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, areasCheck, cursosCheck);
 
 		prepareGraficoFrequencia();
 		prepareGraficoCumprimentoPlanoTreinamento();
@@ -293,5 +300,18 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	public void setCursosCheck(Long[] cursosCheck) {
 		this.cursosCheck = cursosCheck;
+	}
+
+	public Collection<CheckBox> getAreasCheckList() {
+		return areasCheckList;
+	}
+
+	public void setAreasCheck(Long[] areasCheck) {
+		this.areasCheck = areasCheck;
+	}
+
+	public void setAreaOrganizacionalManager(
+			AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 }

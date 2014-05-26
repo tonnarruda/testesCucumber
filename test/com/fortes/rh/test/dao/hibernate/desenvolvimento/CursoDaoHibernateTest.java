@@ -7,27 +7,34 @@ import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
+import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
+import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.AvaliacaoCursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
@@ -44,15 +51,16 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 	private ColaboradorDao colaboradorDao;
 	private ColaboradorTurmaDao colaboradorTurmaDao;
 	private ConhecimentoDao conhecimentoDao;
+	private AreaOrganizacionalDao areaOrganizacionalDao;
+	private HistoricoColaboradorDao historicoColaboradorDao;
 
 	public Curso getEntity()
 	{
 		Curso curso = new Curso();
-
 		curso.setId(null);
-
 		return curso;
 	}
+	
 	public GenericDao<Curso> getGenericDao()
 	{
 		return cursoDao;
@@ -62,10 +70,12 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 	{
 		this.cursoDao = CursoDao;
 	}
+	
 	public void setTurmaDao(TurmaDao turmaDao)
 	{
 		this.turmaDao = turmaDao;
 	}
+	
 	public void setColaboradorTurmaDao(ColaboradorTurmaDao colaboradorTurmaDao)
 	{
 		this.colaboradorTurmaDao = colaboradorTurmaDao;
@@ -242,6 +252,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 	
 	public void testFindIndicadorHorasTreinamentos()
 	{
+		Date hoje = new Date(); 
     	Calendar dataDoisMesesDepois = Calendar.getInstance();
     	dataDoisMesesDepois.add(Calendar.MONTH, +2);
     	Calendar dataTresMesesDepois = Calendar.getInstance();
@@ -252,18 +263,55 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area);
+		
+		AreaOrganizacional area2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area2);
+
 		Colaborador colab1 = ColaboradorFactory.getEntity();
 		colab1.setEmpresa(empresa);
 		colaboradorDao.save(colab1);
+		
+		HistoricoColaborador hc1 = HistoricoColaboradorFactory.getEntity();
+		hc1.setData(hoje);
+		hc1.setColaborador(colab1);
+		hc1.setAreaOrganizacional(area);
+		hc1.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(hc1);
 		
 		Colaborador colab2 = ColaboradorFactory.getEntity();
 		colab2.setEmpresa(empresa);
 		colaboradorDao.save(colab2);
 		
+		HistoricoColaborador hc2 = HistoricoColaboradorFactory.getEntity();
+		hc2.setData(hoje);
+		hc2.setColaborador(colab2);
+		hc2.setAreaOrganizacional(area);
+		hc2.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(hc2);
+		
 		Colaborador colab3 = ColaboradorFactory.getEntity();
 		colab3.setEmpresa(empresa);
 		colaboradorDao.save(colab3);
 		
+		HistoricoColaborador hc3 = HistoricoColaboradorFactory.getEntity();
+		hc3.setData(hoje);
+		hc3.setColaborador(colab3);
+		hc3.setAreaOrganizacional(area);
+		hc3.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(hc3);
+		
+		Colaborador colab4 = ColaboradorFactory.getEntity();
+		colab4.setEmpresa(empresa);
+		colaboradorDao.save(colab4);
+		
+		HistoricoColaborador hc4 = HistoricoColaboradorFactory.getEntity();
+		hc4.setData(hoje);
+		hc4.setColaborador(colab4);
+		hc4.setAreaOrganizacional(area2);
+		hc4.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(hc4);
 		
 		Curso curso1 = CursoFactory.getEntity();
 		curso1.setEmpresa(empresa);
@@ -290,7 +338,6 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		colabTurma2.setTurma(turma1);
 		colaboradorTurmaDao.save(colabTurma2);
 		
-		
 		Curso curso2 = CursoFactory.getEntity();
 		curso2.setEmpresa(empresa);
 		curso2.setCargaHoraria(30*60);
@@ -309,7 +356,12 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		colabTurma3.setCurso(curso2);
 		colabTurma3.setTurma(turma2);
 		colaboradorTurmaDao.save(colabTurma3);
-
+		
+		ColaboradorTurma colabTurma4 = ColaboradorTurmaFactory.getEntity();
+		colabTurma4.setColaborador(colab4);
+		colabTurma4.setCurso(curso1);
+		colabTurma4.setTurma(turma1);
+		colaboradorTurmaDao.save(colabTurma4);
 		
 		Turma turmaForaDaConsulta = TurmaFactory.getEntity();
 		turmaForaDaConsulta.setCurso(curso2);
@@ -319,7 +371,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		turmaForaDaConsulta.setRealizada(true);
 		turmaDao.save(turmaForaDaConsulta);
 
-		Collection<IndicadorTreinamento> result = cursoDao.findIndicadorHorasTreinamentos(dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), new Long[]{empresa.getId()}, null);
+		Collection<IndicadorTreinamento> result = cursoDao.findIndicadorHorasTreinamentos(dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), new Long[]{empresa.getId()}, new Long[]{area.getId()}, null);
 		assertEquals(2, result.size());
 		
 		IndicadorTreinamento result1 = (IndicadorTreinamento)result.toArray()[0];
@@ -785,5 +837,14 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 	public void setConhecimentoDao(ConhecimentoDao conhecimentoDao)
 	{
 		this.conhecimentoDao = conhecimentoDao;
+	}
+
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
+		this.areaOrganizacionalDao = areaOrganizacionalDao;
+	}
+
+	public void setHistoricoColaboradorDao(
+			HistoricoColaboradorDao historicoColaboradorDao) {
+		this.historicoColaboradorDao = historicoColaboradorDao;
 	}
 }
