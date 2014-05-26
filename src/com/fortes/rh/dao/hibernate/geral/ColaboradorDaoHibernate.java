@@ -27,6 +27,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ColaboradorDao;
+import com.fortes.rh.dao.hibernate.util.OrderBySql;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -3468,42 +3469,53 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Collection<DataGrafico> countSexo(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
+	private Criteria configuraCriteriaParaPainelDeIncadores(Criteria criteria, Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds, boolean consideradaDataAdmissaoAndDesligado)
 	{
-		StringBuilder hql = new StringBuilder();		
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+				.add(Restrictions.le("hc2.data", data))
+				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+
+		criteria.createCriteria("hc.colaborador", "c");
+		criteria.createCriteria("hc.faixaSalarial", "fs");
 		
-		hql.append("select ");
-		hql.append("c.pessoal.sexo, count(c.id) ");
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("inner join hc.colaborador as c ");
-		hql.append("inner join hc.faixaSalarial as fs ");
-		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado and (c.pessoal.sexo = :masc or c.pessoal.sexo = :fem) ");
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			hql.append("and c.empresa.id in (:empresaIds) ");
-		
-		subSelectHistoricoAtual(hql, areasIds, cargosIds);
-		
-		hql.append("group by c.pessoal.sexo order by c.pessoal.sexo ");
-		
-		Query query = getSession().createQuery(hql.toString());
+		if(consideradaDataAdmissaoAndDesligado){
+			criteria.add(Expression.le("c.dataAdmissao", data));
+			criteria.add(Expression.eq("c.desligado", false));
+		}
+		criteria.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
+
+		if(LongUtil.isNotEmpty(empresaIds))
+			criteria.add(Expression.in("c.empresa.id", empresaIds));
 		
 		if(LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+			criteria.add(Expression.in("hc.areaOrganizacional.id", areasIds));
+		
 		if(LongUtil.arrayIsNotEmpty(cargosIds))
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+			criteria.add(Expression.in("fs.cargo.id", cargosIds));
 		
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		criteria.add(Subqueries.propertyEq("hc.data", subQueryHc));
 		
-		query.setDate("data", data);
-		query.setBoolean("desligado", false);
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
-		query.setString("masc", "M");
-		query.setString("fem", "F");
+		return criteria;		
+	}
+	
+	public Collection<DataGrafico> countSexo(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
+	{
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		
+		ProjectionList projections = Projections.projectionList().create();
+		projections.add(Projections.groupProperty("c.pessoal.sexo"));
+		projections.add(Projections.count("c.id"));
+		criteria.setProjection(projections);
+		
+		criteria.add(Expression.in("c.pessoal.sexo", new String[] {"M","F"}));
+		
+		criteria.addOrder(Order.asc("c.pessoal.sexo"));
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
 		
-		List resultado = query.list();
+		List resultado = configuraCriteriaParaPainelDeIncadores(criteria, data, empresaIds, areasIds, cargosIds, true).list();
 		
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
@@ -3526,38 +3538,18 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<DataGrafico> countEstadoCivil(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
 	{
-		StringBuilder hql = new StringBuilder();		
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		
-		hql.append("select ");
-		hql.append("c.pessoal.estadoCivil, count(c.id) ");
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("inner join hc.colaborador as c ");
-		hql.append("inner join hc.faixaSalarial as fs ");
-		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado ");
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			hql.append("and c.empresa.id in (:empresaIds) ");
+		ProjectionList projections = Projections.projectionList().create();
+		projections.add(Projections.groupProperty("c.pessoal.estadoCivil"));
+		projections.add(Projections.count("c.id"));
+		criteria.setProjection(projections);
 		
-		subSelectHistoricoAtual(hql, areasIds, cargosIds);
+		criteria.addOrder(Order.asc("c.pessoal.estadoCivil"));
 		
-		hql.append("group by c.pessoal.estadoCivil order by c.pessoal.estadoCivil ");
-		
-		Query query = getSession().createQuery(hql.toString());
-		
-		if(LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
-		if(LongUtil.arrayIsNotEmpty(cargosIds))
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);	
-		
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		
-		query.setDate("data", data);
-		query.setBoolean("desligado", false);
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+		List resultado = configuraCriteriaParaPainelDeIncadores(criteria, data, empresaIds, areasIds, cargosIds, true).list();
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
-		
-		List resultado = query.list();
 		
 		int qtdCasado = 0;
 		int qtdDivorciado = 0;
@@ -3590,40 +3582,18 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<DataGrafico> countFormacaoEscolar(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
 	{
-		StringBuilder hql = new StringBuilder();		
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		
-		hql.append("select ");
-		hql.append("c.pessoal.escolaridade, count(c.id) ");
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("inner join hc.colaborador as c ");
-		hql.append("inner join hc.faixaSalarial as fs ");
-		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado ");
+		ProjectionList projections = Projections.projectionList().create();
+		projections.add(Projections.groupProperty("c.pessoal.escolaridade"));
+		projections.add(Projections.count("c.id"));
+		criteria.setProjection(projections);
 		
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			hql.append(" and c.empresa.id in (:empresaIds) ");
+		criteria.addOrder(Order.asc("c.pessoal.escolaridade"));
 		
-		subSelectHistoricoAtual(hql, areasIds, cargosIds);
-			
-		hql.append("group by c.pessoal.escolaridade order by c.pessoal.escolaridade ");
-		
-		Query query = getSession().createQuery(hql.toString());
-		
-		if(LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
-
-		if(LongUtil.arrayIsNotEmpty(cargosIds))
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
-		
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		query.setDate("data", data);
-		query.setBoolean("desligado", false);
-		
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+		List resultado = configuraCriteriaParaPainelDeIncadores(criteria, data, empresaIds, areasIds, cargosIds, true).list();
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
-		
-		List resultado = query.list();
 		
 		Escolaridade escolaridadeMap = new Escolaridade();
 
@@ -3655,36 +3625,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	
 	public Collection<DataGrafico> countFaixaEtaria(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds)
 	{
-		StringBuilder hql = new StringBuilder();		
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		
-		hql.append("select ");
-		hql.append("c.pessoal.dataNascimento ");
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("inner join hc.colaborador as c ");
-		hql.append("inner join hc.faixaSalarial as fs ");
-		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado ");
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			hql.append("and c.empresa.id in (:empresaIds) ");
+		ProjectionList projections = Projections.projectionList().create();
+		projections.add(Projections.property("c.pessoal.dataNascimento"));
+		criteria.setProjection(projections);
 		
-		subSelectHistoricoAtual(hql, areasIds, cargosIds);
-		
-		Query query = getSession().createQuery(hql.toString());
+		List resultado = configuraCriteriaParaPainelDeIncadores(criteria, data, empresaIds, areasIds, cargosIds, true).list();
 
-		if(LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
-			
-		if(LongUtil.arrayIsNotEmpty(cargosIds))
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
-		
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		query.setDate("data", data);
-		query.setBoolean("desligado", false);
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
-		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
-		
-		List resultado = query.list();
 		
 		int qtdFaixa1 = 0;
 		int qtdFaixa2 = 0;
@@ -3724,37 +3673,19 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<DataGrafico> countDeficiencia(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
 	{
-		StringBuilder hql = new StringBuilder();		
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		
-		hql.append("select ");
-		hql.append("c.pessoal.deficiencia, count(c.id) ");
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("inner join hc.colaborador as c ");
-		hql.append("inner join hc.faixaSalarial as fs ");
-		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado ");
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			hql.append(" and c.empresa.id in (:empresaIds) ");
+		ProjectionList projections = Projections.projectionList().create();
+		projections.add(Projections.groupProperty("c.pessoal.deficiencia"));
+		projections.add(Projections.count("c.id"));
+		criteria.setProjection(projections);
 		
-		subSelectHistoricoAtual(hql, areasIds, cargosIds);
+		criteria.addOrder(Order.asc("c.pessoal.deficiencia"));
 		
-		hql.append("group by c.pessoal.deficiencia order by c.pessoal.deficiencia ");
-		
-		Query query = getSession().createQuery(hql.toString());
-		
-		if(LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
-		if(LongUtil.arrayIsNotEmpty(cargosIds))
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);	
-		
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		
-		query.setDate("data", data);
-		query.setBoolean("desligado", false);
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, data, empresaIds, areasIds, cargosIds, true).list();
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
-		List resultado = query.list();
+
 		Deficiencia deficienciaMap = new Deficiencia();
 		
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
@@ -3784,41 +3715,22 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
 	{
-		StringBuilder hql = new StringBuilder();		
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("c.motivoDemissao", "m");
 		
-		hql.append("select ");
-		hql.append("m.motivo, count(m.id) ");
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("inner join hc.colaborador as c ");
-		hql.append("inner join hc.faixaSalarial as fs ");
-		hql.append("join c.motivoDemissao m ");
-		hql.append("where c.dataDesligamento between :dataIni and :dataFim ");
+		ProjectionList projections = Projections.projectionList().create();
+		projections.add(Projections.groupProperty("m.motivo"));
+		projections.add(Projections.count("m.id"));
+		criteria.setProjection(projections);
 		
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			hql.append(" and c.empresa.id in (:empresaIds) ");
+		criteria.add(Expression.between("c.dataDesligamento", dataIni, dataFim));
 		
-		subSelectHistoricoAtual(hql, areasIds, cargosIds);
+		criteria.addOrder(OrderBySql.sql("2 desc"));
+		criteria.addOrder(Order.asc("m.motivo"));
 		
-		hql.append("group by m.motivo order by count(m.motivo) desc, m.motivo asc");
-		
-		Query query = getSession().createQuery(hql.toString());
-		query.setMaxResults(qtdItens);
-		
-		if(LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
-		if(LongUtil.arrayIsNotEmpty(cargosIds))
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
-		
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		
-		query.setDate("data", dataFim);
-		query.setDate("dataIni", dataIni);
-		query.setDate("dataFim", dataFim);
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataFim, empresaIds, areasIds, cargosIds, false).list();
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
-		List resultado = query.list();
 		
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
@@ -3831,37 +3743,19 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<DataGrafico> countColocacao(Date dataBase, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
 	{
-		StringBuilder hql = new StringBuilder();		
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		
-		hql.append("select ");
-		hql.append("c.vinculo, count(c.id) ");
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("inner join hc.colaborador as c ");
-		hql.append("inner join hc.faixaSalarial as fs ");
-		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado  ");
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			hql.append(" and c.empresa.id in (:empresaIds) ");
+		ProjectionList projections = Projections.projectionList().create();
+		projections.add(Projections.groupProperty("c.vinculo"));
+		projections.add(Projections.count("c.id"));
+		criteria.setProjection(projections);
 		
-		subSelectHistoricoAtual(hql, areasIds, cargosIds);
+		criteria.addOrder(OrderBySql.sql("2 desc"));
 		
-		hql.append("group by c.vinculo order by count(c.id) desc");
-		
-		Query query = getSession().createQuery(hql.toString());
-		
-		if(LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
-		if(LongUtil.arrayIsNotEmpty(cargosIds))
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);	
-		
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		
-		query.setDate("data", dataBase);
-		query.setBoolean("desligado", false);
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataBase, empresaIds, areasIds, cargosIds, true).list();
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
-		List resultado = query.list();
+		
 		Vinculo vinculoMap = new Vinculo();
 		
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
@@ -3880,44 +3774,32 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	
 	public Collection<DataGrafico> countOcorrencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
 	{
-		StringBuilder hql = new StringBuilder();		
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("c.colaboradorOcorrencia", "co", Criteria.LEFT_JOIN);
+		criteria.createCriteria("co.ocorrencia", "o");
 		
-		hql.append("select ");
-		hql.append("o.descricao, count(co.id) ");
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("inner join hc.colaborador as c ");
-		hql.append("inner join hc.faixaSalarial as fs ");
-		hql.append("left join c.colaboradorOcorrencia as co ");
-		hql.append("left join co.ocorrencia as o ");
-		hql.append("where c.dataAdmissao <= :data and c.desligado = :desligado ");
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			hql.append(" and c.empresa.id in (:empresaIds) ");
+		ProjectionList projections = Projections.projectionList().create();
+		projections.add(Projections.groupProperty("o.descricao"));
+		projections.add(Projections.count("co.id"));
+		criteria.setProjection(projections);
 		
-		hql.append(" and (co.dataIni between :data and :dataFim or (co.dataIni < :data and co.dataFim is null) ) ");
+		criteria.add(
+			Expression.or( 
+				Expression.between("co.dataIni", dataIni, dataFim), 
+				Expression.and(
+					Expression.lt("co.dataIni", dataIni), Expression.isNull("co.dataFim")
+				)
+			)
+		);
 		
-		subSelectHistoricoAtual(hql, areasIds, cargosIds);
+		criteria.addOrder(OrderBySql.sql("2 asc"));
+		criteria.addOrder(Order.asc("o.descricao"));
 		
-		hql.append("group by o.descricao order by count(co.id), o.descricao ");
+		criteria.setMaxResults(qtdItens);
 		
-		Query query = getSession().createQuery(hql.toString());
-		
-		if(LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
-		if(LongUtil.arrayIsNotEmpty(cargosIds))
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
-		
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		
-		query.setDate("data", dataIni);
-		query.setDate("dataFim", dataFim);
-		query.setBoolean("desligado", false);
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
-		
-		query.setMaxResults(qtdItens);
+		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataIni, empresaIds, areasIds, cargosIds, true).list();
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
-		List resultado = query.list();
 		
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
@@ -3932,42 +3814,33 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	
 	public Collection<DataGrafico> countProvidencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
 	{
-		StringBuilder hql = new StringBuilder();		
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("c.colaboradorOcorrencia", "co", Criteria.LEFT_JOIN);
+		criteria.createCriteria("co.providencia", "p", Criteria.LEFT_JOIN);
 		
-		hql.append("select ");
-		hql.append("p.descricao, count(co.id) ");
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("inner join hc.colaborador as c ");
-		hql.append("inner join hc.faixaSalarial as fs ");
-		hql.append("left join c.colaboradorOcorrencia as co ");
-		hql.append("left join co.providencia as p ");
-		hql.append("where co.providencia is not null ");
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			hql.append(" and c.empresa.id in (:empresaIds) ");
+		ProjectionList projections = Projections.projectionList().create()
+				.add(Projections.groupProperty("p.descricao"))
+				.add(Projections.count("co.id"));
+		criteria.setProjection(projections);
 		
-		hql.append(" and (co.dataIni between :data and :dataFim or (co.dataIni < :data and co.dataFim is null)) ");
-		subSelectHistoricoAtual(hql, areasIds, cargosIds);
+		criteria.add(Expression.isNotNull("co.providencia")); 
+		criteria.add(
+			Expression.or( 
+				Expression.between("co.dataIni", dataIni, dataFim), 
+				Expression.and(
+					Expression.lt("co.dataIni", dataIni), Expression.isNull("co.dataFim")
+				)
+			)
+		);
 		
-		hql.append("group by p.descricao order by count(co.id), p.descricao ");
+		criteria.addOrder(OrderBySql.sql("2 asc"));
+		criteria.addOrder(Order.asc("p.descricao"));
 		
-		Query query = getSession().createQuery(hql.toString());
+		criteria.setMaxResults(qtdItens);
 		
-		if(LongUtil.arrayIsNotEmpty(areasIds))
-			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
-		if(LongUtil.arrayIsNotEmpty(cargosIds))
-			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);	
-		
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		
-		query.setDate("data", dataIni);
-		query.setDate("dataFim", dataFim);
-		if(empresaIds != null && ! empresaIds.isEmpty())
-			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
-		
-		query.setMaxResults(qtdItens);
-		
+		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataIni, empresaIds, areasIds, cargosIds, false).list();
+
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
-		List resultado = query.list();
 		
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{

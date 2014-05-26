@@ -987,7 +987,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	{
 		return MockColaborador.getColaborador();
 	}
-
+	
 	public void testCountSexo() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);

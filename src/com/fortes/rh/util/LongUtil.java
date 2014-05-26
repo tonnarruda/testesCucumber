@@ -99,4 +99,9 @@ public class LongUtil
 	{
 		return ids != null && ids.length > 0;
 	}
+	
+	public static boolean isNotEmpty(Collection<Long> ids)
+	{
+		return ids != null && !ids.isEmpty();
+	}
 }
