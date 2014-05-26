@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -631,17 +632,19 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 
 	private void montaImpressapPerguntaObjetiva(Pergunta pergunta, Collection<ColaboradorResposta> colaboradorRespostas, StringBuilder textoPerguntaTmp, StringBuilder textoComentarioTmp, boolean quebraLinha)
 	{
+		String comentario = "";
+		
 		for (Resposta resposta: pergunta.getRespostas())
 		{
 			String marcada = " ";
 			
 			for (ColaboradorResposta respostaColaborador: colaboradorRespostas)
 			{
-				if(resposta.getId().equals(respostaColaborador.getResposta().getId()))
+				if (resposta.getId().equals(respostaColaborador.getResposta().getId()))
 				{
 					marcada = "x";
-					if(pergunta.isComentario() && respostaColaborador.getComentario() != null)
-						textoComentarioTmp.append(respostaColaborador.getComentario());
+					if (pergunta.isComentario() && respostaColaborador.getComentario() != null && StringUtils.isEmpty(comentario))
+						comentario = respostaColaborador.getComentario();
 					
 					break;
 				}
@@ -654,6 +657,8 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 			else
 				textoPerguntaTmp.append(resp);
 		}
+		
+		textoComentarioTmp.append(comentario);
 	}
 	
 	public void setAvaliadoNaPerguntaDeAvaliacaoDesempenho(Pergunta pergunta, String avaliadoNome)
