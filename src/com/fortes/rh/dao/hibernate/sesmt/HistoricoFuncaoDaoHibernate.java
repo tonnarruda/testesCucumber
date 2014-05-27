@@ -226,7 +226,7 @@ public class HistoricoFuncaoDaoHibernate extends GenericDaoHibernate<HistoricoFu
 		p.add(Projections.property("e.nome"), "exameNome");
 		criteria.setProjection(p);
 		
-		if (LongUtil.isNotEmpty(funcoesCheck))
+		if (LongUtil.arrayIsNotEmpty(funcoesCheck))
 			criteria.add(Expression.in("f.id", funcoesCheck));
 		
 		criteria.add( Property.forName("hf.data").eq(maxData) );

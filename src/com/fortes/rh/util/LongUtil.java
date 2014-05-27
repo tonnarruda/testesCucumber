@@ -95,7 +95,7 @@ public class LongUtil
 		return ids;
 	}
 	
-	public static boolean isNotEmpty(Long[] ids)
+	public static boolean arrayIsNotEmpty(Long[] ids)
 	{
 		return ids != null && ids.length > 0;
 	}

@@ -125,10 +125,10 @@ public class LongUtilTest extends TestCase
 	
 	public void testIsNotEmpty()
 	{
-		assertFalse(LongUtil.isNotEmpty(null));
-		assertFalse(LongUtil.isNotEmpty(new Long[]{}));
-		assertTrue(LongUtil.isNotEmpty(new Long[]{1L}));
-		assertTrue(LongUtil.isNotEmpty(new Long[]{1L,2L}));
+		assertFalse(LongUtil.arrayIsNotEmpty(null));
+		assertFalse(LongUtil.arrayIsNotEmpty(new Long[]{}));
+		assertTrue(LongUtil.arrayIsNotEmpty(new Long[]{1L}));
+		assertTrue(LongUtil.arrayIsNotEmpty(new Long[]{1L,2L}));
 	}
 
 	public void testCollectionToCollectionLong()

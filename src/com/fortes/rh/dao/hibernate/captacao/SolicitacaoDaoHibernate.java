@@ -419,7 +419,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
     	if (estabelecimentos != null && !estabelecimentos.isEmpty())
     		consulta.append("and estabelecimento.id in (:estabelecimentos) ");
     	
-    	if (LongUtil.isNotEmpty(solicitacaoIds))
+    	if (LongUtil.arrayIsNotEmpty(solicitacaoIds))
     		consulta.append("and solicitacao.id in (:solicitacaoIds) ");
 		
 		consulta.append("group by ");
@@ -441,7 +441,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
     	if (estabelecimentos != null && !estabelecimentos.isEmpty())
     		query.setParameterList("estabelecimentos", estabelecimentos);
 		
-    	if (LongUtil.isNotEmpty(solicitacaoIds))
+    	if (LongUtil.arrayIsNotEmpty(solicitacaoIds))
     		query.setParameterList("solicitacaoIds", solicitacaoIds);
     	
         return query.list();
@@ -463,7 +463,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
     	if (estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
     		consulta.append("	and s.estabelecimento.id in (:estabelecimentos) ");
     	
-    	if (LongUtil.isNotEmpty(solicitacaoIds)) 
+    	if (LongUtil.arrayIsNotEmpty(solicitacaoIds)) 
     		consulta.append("	and s.id in (:solicitacaoIds) ");
 		
 		consulta.append("group by ");
@@ -485,7 +485,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
     	if (estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
     		query.setParameterList("estabelecimentos", estabelecimentosIds);
 		
-    	if (LongUtil.isNotEmpty(solicitacaoIds)) 
+    	if (LongUtil.arrayIsNotEmpty(solicitacaoIds)) 
     		query.setParameterList("solicitacaoIds", solicitacaoIds);
     		
         return query.list();
@@ -511,7 +511,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
         if (estabelecimentos != null && !estabelecimentos.isEmpty())
         	consulta.append("and estabelecimento.id in (:estabelecimentos) ");
         
-        if (LongUtil.isNotEmpty(solicitacaoIds))
+        if (LongUtil.arrayIsNotEmpty(solicitacaoIds))
         	consulta.append("and solicitacao.id in (:solicitacaoIds) ");
         	
         consulta.append("group by ");
@@ -533,7 +533,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
         if (estabelecimentos != null && !estabelecimentos.isEmpty())  
         	query.setParameterList("estabelecimentos", estabelecimentos);
 	        
-        if (LongUtil.isNotEmpty(solicitacaoIds))
+        if (LongUtil.arrayIsNotEmpty(solicitacaoIds))
         	query.setParameterList("solicitacaoIds", solicitacaoIds);
         	
         return query.list();
@@ -657,13 +657,13 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.add(Expression.eq("s.status", StatusAprovacaoSolicitacao.APROVADO));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
-		if (LongUtil.isNotEmpty(estabelecimentoIds))
+		if (LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentoIds));
 		
-		if (LongUtil.isNotEmpty(areaIds))
+		if (LongUtil.arrayIsNotEmpty(areaIds))
 			criteria.add(Expression.in("s.areaOrganizacional.id", areaIds));
 		
-		if (LongUtil.isNotEmpty(solicitacaoIds))
+		if (LongUtil.arrayIsNotEmpty(solicitacaoIds))
 			criteria.add(Expression.in("s.id", solicitacaoIds));
 		
 		criteria.addOrder(Order.desc("qtdVagasAbertas"));
@@ -692,13 +692,13 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
-		if(LongUtil.isNotEmpty(estabelecimentoIds))
+		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentoIds));
 		
-		if(LongUtil.isNotEmpty(areaIds))
+		if(LongUtil.arrayIsNotEmpty(areaIds))
 			criteria.add(Expression.in("s.areaOrganizacional.id", areaIds));
 		
-		if (LongUtil.isNotEmpty(solicitacaoIds))
+		if (LongUtil.arrayIsNotEmpty(solicitacaoIds))
 			criteria.add(Expression.in("s.id", solicitacaoIds));
 		
 		criteria.addOrder(Order.desc("qtdContratados"));
@@ -725,13 +725,13 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
-		if(LongUtil.isNotEmpty(estabelecimentoIds))
+		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentoIds));
 		
-		if(LongUtil.isNotEmpty(areaIds))
+		if(LongUtil.arrayIsNotEmpty(areaIds))
 			criteria.add(Expression.in("a.id", areaIds));
 		
-		if (LongUtil.isNotEmpty(solicitacaoIds))
+		if (LongUtil.arrayIsNotEmpty(solicitacaoIds))
 			criteria.add(Expression.in("s.id", solicitacaoIds));
 		
 		criteria.addOrder(Order.desc("qtdContratados"));
@@ -758,13 +758,13 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
-		if(LongUtil.isNotEmpty(estabelecimentoIds))
+		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentoIds));
 		
-		if(LongUtil.isNotEmpty(areaIds))
+		if(LongUtil.arrayIsNotEmpty(areaIds))
 			criteria.add(Expression.in("s.areaOrganizacional.id", areaIds));
 		
-		if (LongUtil.isNotEmpty(solicitacaoIds))
+		if (LongUtil.arrayIsNotEmpty(solicitacaoIds))
 			criteria.add(Expression.in("s.id", solicitacaoIds));
 		
 		criteria.addOrder(Order.desc("qtdContratados"));
@@ -781,10 +781,10 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
-		if (LongUtil.isNotEmpty(areasIds))
+		if (LongUtil.arrayIsNotEmpty(areasIds))
 			criteria.add(Expression.in("s.areaOrganizacional.id", areasIds));
 		
-		if (LongUtil.isNotEmpty(estabelecimentosIds))
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
 			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentosIds));
 		
 		criteria.addOrder(Order.asc("s.descricao"));

@@ -127,7 +127,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		criteria.add(Expression.between("t.dataPrevIni", dataIni, dataFim));
 		criteria.add(Expression.in("c.empresa.id", empresaIds));
 		
-		if (LongUtil.isNotEmpty(cursoIds))
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			criteria.add(Expression.in("c.id", cursoIds));
 			
 		return (Double) criteria.uniqueResult();
@@ -145,7 +145,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		hql.append("and t.dataPrevIni between :dataIni and :dataFim "); 
 		hql.append("and t.realizada = true ");
 		
-		if (LongUtil.isNotEmpty(cursoIds))
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			hql.append("and c.id in (:cursoIds) ");
 		
 		hql.append("group by c.id, c.cargaHoraria ");
@@ -156,7 +156,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		query.setDate("dataFim", dataFim);
 		query.setParameterList("empresaIds", empresaIds);
 		
-		if (LongUtil.isNotEmpty(cursoIds))
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
 		
 		return query.list();
@@ -170,7 +170,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		hql.append("where t.dataPrevIni between :dataIni and :dataFim ");
 		hql.append("and t.empresa.id in (:empresaIds) ");
 		
-		if (LongUtil.isNotEmpty(cursoIds))
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			hql.append("and t.curso.id in (:cursoIds) ");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -178,7 +178,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		query.setDate("dataFim", dataFim);
 		query.setParameterList("empresaIds", empresaIds);
 		
-		if (LongUtil.isNotEmpty(cursoIds))
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
 
 		return (Integer)query.uniqueResult();
@@ -212,7 +212,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 			criteria.add(Expression.eq("realizada", realizado));
 		criteria.add(Expression.in("c.empresa.id", empresaIds));
 		
-		if (LongUtil.isNotEmpty(cursoIds))
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			criteria.add(Expression.in("c.id", cursoIds));
 
 		return (Integer)criteria.uniqueResult();

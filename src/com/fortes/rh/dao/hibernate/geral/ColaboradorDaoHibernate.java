@@ -2371,9 +2371,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		Query query = getSession().createQuery(hql.toString());
 		
-		if(LongUtil.isNotEmpty(areasIds))
+		if(LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
-		if(LongUtil.isNotEmpty(cargosIds))
+		if(LongUtil.arrayIsNotEmpty(cargosIds))
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);	
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
@@ -2402,9 +2402,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		Query query = getSession().createQuery(hql.toString());
 		
-		if(LongUtil.isNotEmpty(areasIds))
+		if(LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
-		if(LongUtil.isNotEmpty(cargosIds))
+		if(LongUtil.arrayIsNotEmpty(cargosIds))
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);	
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		query.setDate("data", dataBase);
@@ -2824,7 +2824,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("	) ");
 		hql.append("and	co.dataAdmissao between :dataIni and :dataFim ");
 		hql.append("and	es.id in (:estabelecimentosIds) ");
-		if(LongUtil.isNotEmpty(areasIds))
+		if(LongUtil.arrayIsNotEmpty(areasIds))
 			hql.append("and	ao.id in (:areasIds) ");
 		if(exibirSomenteAtivos)
 			hql.append("and	co.desligado = false ");
@@ -2838,7 +2838,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
 
-		if(LongUtil.isNotEmpty(areasIds))
+		if(LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 
 		return query.list();
@@ -3487,9 +3487,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		Query query = getSession().createQuery(hql.toString());
 		
-		if(LongUtil.isNotEmpty(areasIds))
+		if(LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
-		if(LongUtil.isNotEmpty(cargosIds))
+		if(LongUtil.arrayIsNotEmpty(cargosIds))
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
@@ -3543,9 +3543,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		Query query = getSession().createQuery(hql.toString());
 		
-		if(LongUtil.isNotEmpty(areasIds))
+		if(LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
-		if(LongUtil.isNotEmpty(cargosIds))
+		if(LongUtil.arrayIsNotEmpty(cargosIds))
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);	
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
@@ -3608,10 +3608,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		Query query = getSession().createQuery(hql.toString());
 		
-		if(LongUtil.isNotEmpty(areasIds))
+		if(LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 
-		if(LongUtil.isNotEmpty(cargosIds))
+		if(LongUtil.arrayIsNotEmpty(cargosIds))
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
@@ -3646,10 +3646,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("			and hc2.data <= :data and hc2.status = :status ");
 		hql.append("		) ");
 		
-		if(LongUtil.isNotEmpty(areasIds))
+		if(LongUtil.arrayIsNotEmpty(areasIds))
 			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
 		
-		if(LongUtil.isNotEmpty(cargosIds))
+		if(LongUtil.arrayIsNotEmpty(cargosIds))
 			hql.append("and fs.cargo.id in (:cargosIds) ");
 	}
 	
@@ -3670,10 +3670,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		Query query = getSession().createQuery(hql.toString());
 
-		if(LongUtil.isNotEmpty(areasIds))
+		if(LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 			
-		if(LongUtil.isNotEmpty(cargosIds))
+		if(LongUtil.arrayIsNotEmpty(cargosIds))
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
@@ -3741,9 +3741,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		Query query = getSession().createQuery(hql.toString());
 		
-		if(LongUtil.isNotEmpty(areasIds))
+		if(LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
-		if(LongUtil.isNotEmpty(cargosIds))
+		if(LongUtil.arrayIsNotEmpty(cargosIds))
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);	
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
@@ -3804,9 +3804,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Query query = getSession().createQuery(hql.toString());
 		query.setMaxResults(qtdItens);
 		
-		if(LongUtil.isNotEmpty(areasIds))
+		if(LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
-		if(LongUtil.isNotEmpty(cargosIds))
+		if(LongUtil.arrayIsNotEmpty(cargosIds))
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
@@ -3848,9 +3848,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		Query query = getSession().createQuery(hql.toString());
 		
-		if(LongUtil.isNotEmpty(areasIds))
+		if(LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
-		if(LongUtil.isNotEmpty(cargosIds))
+		if(LongUtil.arrayIsNotEmpty(cargosIds))
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);	
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
@@ -3901,9 +3901,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		Query query = getSession().createQuery(hql.toString());
 		
-		if(LongUtil.isNotEmpty(areasIds))
+		if(LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
-		if(LongUtil.isNotEmpty(cargosIds))
+		if(LongUtil.arrayIsNotEmpty(cargosIds))
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
@@ -3952,9 +3952,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		Query query = getSession().createQuery(hql.toString());
 		
-		if(LongUtil.isNotEmpty(areasIds))
+		if(LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);	
-		if(LongUtil.isNotEmpty(cargosIds))
+		if(LongUtil.arrayIsNotEmpty(cargosIds))
 			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);	
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
@@ -4142,13 +4142,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Expression.isNotNull("c.solicitacao.id"));
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));
 	
-		if(LongUtil.isNotEmpty(estabelecimentoIds))
+		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			criteria.add(Expression.in("hc.estabelecimento.id", estabelecimentoIds));
 		
-		if(LongUtil.isNotEmpty(areaIds))
+		if(LongUtil.arrayIsNotEmpty(areaIds))
 			criteria.add(Expression.in("hc.areaOrganizacional.id", areaIds));
 		
-		if (LongUtil.isNotEmpty(solicitacaoIds)) 
+		if (LongUtil.arrayIsNotEmpty(solicitacaoIds)) 
 			criteria.add(Expression.in("c.solicitacao.id", solicitacaoIds));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -4225,10 +4225,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("      and hc2.status = :status ");
 		hql.append("   ) ");
 		
-		if (LongUtil.isNotEmpty(estabelecimentoIds))
+		if (LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			hql.append("and hc.estabelecimento.id in (:estabelecimentoIds) ");
 
-		if (LongUtil.isNotEmpty(areaIds))
+		if (LongUtil.arrayIsNotEmpty(areaIds))
 			hql.append("and hc.areaOrganizacional.id in (:areaIds) ");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -4238,10 +4238,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setInteger("qtdDias", 90);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
-		if (LongUtil.isNotEmpty(estabelecimentoIds))
+		if (LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 		
-		if (LongUtil.isNotEmpty(areaIds))
+		if (LongUtil.arrayIsNotEmpty(areaIds))
 			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
 			
 		return (Integer) query.uniqueResult();
@@ -4260,10 +4260,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("      and hc2.status = :status ");
 		hql.append("   ) ");
 
-		if (LongUtil.isNotEmpty(estabelecimentoIds))
+		if (LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			hql.append("and hc.estabelecimento.id in (:estabelecimentoIds) ");
 
-		if (LongUtil.isNotEmpty(areaIds))
+		if (LongUtil.arrayIsNotEmpty(areaIds))
 			hql.append("and hc.areaOrganizacional.id in (:areaIds) ");
 		
 		Query query = getSession().createQuery(hql.toString());
@@ -4272,10 +4272,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("dataFim", dataAte);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
-		if (LongUtil.isNotEmpty(estabelecimentoIds))
+		if (LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 		
-		if (LongUtil.isNotEmpty(areaIds))
+		if (LongUtil.arrayIsNotEmpty(areaIds))
 			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
 
 		return (Integer) query.uniqueResult();

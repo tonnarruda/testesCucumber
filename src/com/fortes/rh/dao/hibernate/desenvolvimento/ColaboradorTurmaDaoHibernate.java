@@ -253,10 +253,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if(StringUtils.isNotBlank(colaboradorNome))
 			hql.append("	and lower(co.nome) like :nome ");
 
-		if(LongUtil.isNotEmpty(estabelecimentoIds))
+		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			hql.append("	and e.id in (:estabelecimentoIds) ");
 
-		if(LongUtil.isNotEmpty(cargoIds))
+		if(LongUtil.arrayIsNotEmpty(cargoIds))
 			hql.append("	and c.id in (:cargoIds) ");
 		
 		hql.append("	and hc.data = ( ");
@@ -288,10 +288,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if(StringUtils.isNotBlank(colaboradorNome))
 			query.setString("nome", "%" + colaboradorNome.toLowerCase() + "%");
 		
-		if(LongUtil.isNotEmpty(estabelecimentoIds))
+		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 
-		if(LongUtil.isNotEmpty(cargoIds))
+		if(LongUtil.arrayIsNotEmpty(cargoIds))
 			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
 		
 		Collection<ColaboradorTurma> colaboradorTurmas = query.list();
@@ -571,10 +571,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if(StringUtils.isNotBlank(colaboradorNome))
 			hql.append("	and lower(co.nome) like :nome ");
 
-		if(LongUtil.isNotEmpty(estabelecimentoIds))
+		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			hql.append("	and hc.estabelecimento.id in (:estabelecimentoIds) ");
 
-		if(LongUtil.isNotEmpty(cargoIds))
+		if(LongUtil.arrayIsNotEmpty(cargoIds))
 			hql.append("	and c.id in (:cargoIds) ");
 			
 		hql.append("	and hc.data = ( ");
@@ -597,10 +597,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if(StringUtils.isNotBlank(colaboradorNome))
 			query.setString("nome", "%" + colaboradorNome.toLowerCase() + "%");
 		
-		if(LongUtil.isNotEmpty(estabelecimentoIds))
+		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 		
-		if(LongUtil.isNotEmpty(cargoIds))
+		if(LongUtil.arrayIsNotEmpty(cargoIds))
 			query.setParameterList("cargoIds", cargoIds, Hibernate.LONG);
 
 		
@@ -1147,10 +1147,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("              on rct.colaboradorturma_id = ct.id ");
 		sql.append("where t.dataPrevIni >= :dataIni and t.dataPrevFim <= :dataFim and t.realizada = :realizada and t.id is not null ");
 		
-		if (LongUtil.isNotEmpty(empresaIds))
+		if (LongUtil.arrayIsNotEmpty(empresaIds))
 			sql.append("and c.empresa_id in (:empresaIds) ");
 		
-		if (LongUtil.isNotEmpty(cursoIds))
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			sql.append("and c.id in (:cursoIds) ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
@@ -1159,10 +1159,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		query.setDate("dataFim", dataFim);
 		query.setBoolean("realizada", true);
 		
-		if (LongUtil.isNotEmpty(empresaIds))
+		if (LongUtil.arrayIsNotEmpty(empresaIds))
 			query.setParameterList("empresaIds", empresaIds);
 		
-		if (LongUtil.isNotEmpty(cursoIds))
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			query.setParameterList("cursoIds", cursoIds);
 		
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();

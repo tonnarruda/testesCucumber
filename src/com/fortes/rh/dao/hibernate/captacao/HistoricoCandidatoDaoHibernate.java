@@ -149,13 +149,13 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		
 		criteria.setProjection(p);
 		
-		if(LongUtil.isNotEmpty(solicitacaoIds))
+		if(LongUtil.arrayIsNotEmpty(solicitacaoIds))
 			criteria.add(Expression.in("cs.solicitacao.id", solicitacaoIds));
 		
-		if (LongUtil.isNotEmpty(estabelecimentoIds))
+		if (LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentoIds));
 		
-		if (LongUtil.isNotEmpty(areaIds))
+		if (LongUtil.arrayIsNotEmpty(areaIds))
 			criteria.add(Expression.in("s.areaOrganizacional.id", areaIds));
 		
 		criteria.add(Expression.between("hc.data", dataDe, dataAte));
@@ -303,13 +303,13 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		
 		criteria.setProjection(p);
 		
-		if(LongUtil.isNotEmpty(estabelecimentoIds))
+		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))
 			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentoIds));
 		
-		if(LongUtil.isNotEmpty(areaIds))
+		if(LongUtil.arrayIsNotEmpty(areaIds))
 			criteria.add(Expression.in("s.areaOrganizacional.id", areaIds));
 		
-		if(LongUtil.isNotEmpty(solicitacoesIds))
+		if(LongUtil.arrayIsNotEmpty(solicitacoesIds))
 			criteria.add(Expression.in("cs.solicitacao.id", solicitacoesIds));
 		
 		criteria.add(Expression.between("hc.data", dataIni, dataFim));

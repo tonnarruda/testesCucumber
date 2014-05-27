@@ -406,7 +406,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
 		if (realizada != null)
 			criteria.add(Expression.eq("t.realizada", realizada));
 		
-		if (LongUtil.isNotEmpty(cursoIds))
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			criteria.add(Expression.in("c.id", cursoIds));
 
 		criteria.addOrder(Order.desc("t.dataPrevIni"));
@@ -481,7 +481,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         criteria.add(Expression.le("t.dataPrevFim", dataFim));
         criteria.add(Expression.in("e.id", empresasIds));
         
-        if (LongUtil.isNotEmpty(cursosIds))
+        if (LongUtil.arrayIsNotEmpty(cursosIds))
         	criteria.add(Expression.in("t.curso.id", cursosIds));
 
         Integer valor = (Integer) criteria.uniqueResult();
@@ -503,7 +503,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         criteria.add(Expression.le("t.dataPrevFim", dataFim));
         criteria.add(Expression.in("e.id", empresasIds));
         
-        if (LongUtil.isNotEmpty(cursosIds))
+        if (LongUtil.arrayIsNotEmpty(cursosIds))
         	criteria.add(Expression.in("t.curso.id", cursosIds));
 
         Integer valor = (Integer) criteria.uniqueResult();
@@ -569,7 +569,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         criteria.add(Expression.in("t.empresa.id", empresaIds));
         criteria.add(Subqueries.propertyNotIn("t.id", subQuery));
         
-        if (LongUtil.isNotEmpty(cursoIds))
+        if (LongUtil.arrayIsNotEmpty(cursoIds))
         	criteria.add(Expression.in("t.curso.id", cursoIds));
 
     	Double valor = (Double) criteria.uniqueResult();

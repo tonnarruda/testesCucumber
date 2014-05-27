@@ -86,7 +86,7 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		sql.append(" 													where p5.avaliacao_id = :avaliacaoId ");
 		sql.append(" 													and p5.tipo = :tipoPerguntaObjetiva ");
 		
-		if(LongUtil.isNotEmpty(perguntaIds))
+		if(LongUtil.arrayIsNotEmpty(perguntaIds))
 			sql.append(" 												and p5.id not in (:perguntaIds) ");
 		
 		sql.append(" 													and r5.peso = (select max(r2.peso) ");
@@ -102,7 +102,7 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		sql.append("  							 			where p6.avaliacao_id = :avaliacaoId ");
 		sql.append("  	 									and r6.peso > 0 ");
 		
-		if(LongUtil.isNotEmpty(perguntaIds))
+		if(LongUtil.arrayIsNotEmpty(perguntaIds))
 			sql.append("  	 								and p6.id not in (:perguntaIds) ");
 
 		sql.append("  	 									and p6.tipo = :tipoPerguntaMultiplaEscolha) as multiplaescolha");
@@ -118,7 +118,7 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		q.setInteger("tipoPerguntaObjetiva", TipoPergunta.OBJETIVA);
 		q.setInteger("tipoPerguntaMultiplaEscolha", TipoPergunta.MULTIPLA_ESCOLHA);
 		
-		if(LongUtil.isNotEmpty(perguntaIds))
+		if(LongUtil.arrayIsNotEmpty(perguntaIds))
 			q.setParameterList("perguntaIds", perguntaIds, Hibernate.LONG);
 	
 		Object[] somas = (Object[]) q.uniqueResult();
