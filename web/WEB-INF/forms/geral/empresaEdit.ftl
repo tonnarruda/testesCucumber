@@ -21,6 +21,10 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 
+	<style type="text/css">
+		.divInfo { width: 850px !important;}
+	</style>
+	
 	<script type="text/javascript">
 		$(function() {
 			$('#verificaParentescoHelp').qtip({

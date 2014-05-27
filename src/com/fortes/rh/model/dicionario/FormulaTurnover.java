@@ -11,8 +11,8 @@ public class FormulaTurnover extends LinkedHashMap<Integer, String>
 
 	public FormulaTurnover()
 	{
-		put(ATIVOS_INICIO_MES, "[(Admissões + Demissões / 2) / Ativos no início do mês] * 100");
-		put(MEDIA_ATIVOS_MES, "{[(Admissões + Demissões) / 2] / [(Ativos no início do mês + Ativos no final do mês) / 2]} * 100");
+		put(ATIVOS_INICIO_MES, "[(Admissões + Demissões / 2) / Ativos no final do mês anterior] * 100");
+		put(MEDIA_ATIVOS_MES, "{[(Admissões + Demissões) / 2] / [(Ativos no final do mês anterior + Ativos no final do mês atual) / 2]} * 100");
 	}
 	
 	public static String getDescricao(Integer tipo)
