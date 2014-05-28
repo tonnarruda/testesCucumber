@@ -56,6 +56,10 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String horariosBackup;
     @Temporal(TemporalType.DATE)
     private Date proximaVersao;
+    @Column(length=64)
+    private String pcToken;
+    @Column(length=16)
+    private String pcKey;
     
     private Boolean enviarEmail = true;
     private Boolean atualizadoSucesso;
@@ -382,5 +386,20 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	public void setInibirGerarRelatorioPesquisaAnonima(	boolean inibirGerarRelatorioPesquisaAnonima) 
 	{
 		this.inibirGerarRelatorioPesquisaAnonima = inibirGerarRelatorioPesquisaAnonima;
+	}
+	public String getPcToken() {
+		return pcToken;
+	}
+	
+	public void setPcToken(String pcToken) {
+		this.pcToken = pcToken;
+	}
+	
+	public String getPcKey() {
+		return pcKey;
+	}
+	
+	public void setPcKey(String pcKey) {
+		this.pcKey = pcKey;
 	}
 }

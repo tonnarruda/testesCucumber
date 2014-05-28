@@ -1,50 +1,50 @@
 package com.fortes.rh.util;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
+import java.security.spec.KeySpec;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+import javax.xml.bind.DatatypeConverter;
 
 public class CryptUtil 
 {
-	public static byte[] ivBytes = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
-	
-	public static String encrypt(String plainText, String encryptionKey) throws Exception
+	private static byte[] ivBytes = { (byte)213, 34, (byte)142, (byte)251, 68, (byte)141, 52, 31, (byte)166, (byte)147, 127, 48, (byte)247, (byte)177, 76, 28 };
+	private static byte[] saltBytes = { (byte)146, 59, 72, (byte)223, 27, 57, (byte)186, 103 };
+
+	private static SecretKey buildSecretKey(String plainKey) throws Exception
 	{
-		String encryptionKey16x = padMultiple16(encryptionKey);
-		String plainText16x = padMultiple16(plainText);
+		SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+		KeySpec keySpec = new PBEKeySpec(plainKey.toCharArray(), saltBytes, 65536, 128);
+		SecretKey saltedKey = factory.generateSecret(keySpec);
 		
-		Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
-		SecretKeySpec key = new SecretKeySpec(encryptionKey16x.getBytes("UTF-8"), "AES");
+		SecretKey secretKey = new SecretKeySpec(saltedKey.getEncoded(), "AES");
+		
+		return secretKey;
+	}
+	
+	public static String encrypt(String plainText, String plainKey) throws Exception
+	{
+		SecretKey secretKey = buildSecretKey(plainKey);
+		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		IvParameterSpec iv = new IvParameterSpec(ivBytes);
-		cipher.init(Cipher.ENCRYPT_MODE, key, iv);
-		
-		return new String(Base64.encodeBase64(cipher.doFinal(plainText16x.getBytes("UTF-8"))), "UTF-8");
+		cipher.init(Cipher.ENCRYPT_MODE, secretKey, iv);
+		byte[] encryptedBytes = cipher.doFinal(plainText.getBytes("UTF-8"));
+		String codedString = DatatypeConverter.printBase64Binary(encryptedBytes);
+		return codedString;
 	}
 
-	public static String decrypt(String cipherText, String encryptionKey) throws Exception 
+	public static String decrypt(String cipherText, String plainKey) throws Exception
 	{
-		String encryptionKey16x = padMultiple16(encryptionKey);
-		String cipherText16x = padMultiple16(cipherText);
-		
-		byte[] bytes = Base64.decodeBase64(cipherText16x.getBytes());
-		
-		Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
-		SecretKeySpec key = new SecretKeySpec(encryptionKey16x.getBytes("UTF-8"), "AES");
+		SecretKey secretKey = buildSecretKey(plainKey);
+		Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		IvParameterSpec iv = new IvParameterSpec(ivBytes);
-		cipher.init(Cipher.DECRYPT_MODE, key, iv);
-		
-		return new String(cipher.doFinal(bytes), "UTF-8").trim();
-	}
-	
-	public static String padMultiple16(String str)
-	{
-		if (str.length() % 16 == 0)
-			return str;
-		
-		int size = str.length() + 16 - (str.length() % 16);
-		return StringUtils.rightPad(str, size, '\0');
+		cipher.init(Cipher.DECRYPT_MODE, secretKey, iv);
+		byte[] decodedBytes = DatatypeConverter.parseBase64Binary(cipherText);
+		String plainText = new String(cipher.doFinal(decodedBytes), "UTF-8");
+		return plainText;
 	}
 }

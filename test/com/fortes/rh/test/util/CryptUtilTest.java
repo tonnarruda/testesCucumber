@@ -8,11 +8,7 @@ public class CryptUtilTest extends TestCase
 {
 	public void testEncryptDecrypt() throws Exception 
 	{
-		String encrypted = "6l3u6nm0P/bTJIUD0Nxmqw==";
-		String decrypted = "Hello World!";
-		String key 		 = "123";
-		
-		assertEquals("Hello World!", CryptUtil.decrypt(encrypted, key));
-		assertEquals("6l3u6nm0P/bTJIUD0Nxmqw==", CryptUtil.encrypt(decrypted, key));
+		assertEquals("G9izcGdqxKnMWb8Qk1+A78h1wegy/K31sbQsMivtnJfgCP0Z4m8cxwtr0umF1HUc", CryptUtil.encrypt("Burn in hell, your mother fucker!", "1234567890123456"));
+		assertEquals("Burn in hell, your mother fucker!", CryptUtil.decrypt("G9izcGdqxKnMWb8Qk1+A78h1wegy/K31sbQsMivtnJfgCP0Z4m8cxwtr0umF1HUc", "1234567890123456"));
 	}
 }

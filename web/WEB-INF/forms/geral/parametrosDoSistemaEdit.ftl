@@ -118,6 +118,14 @@
 <@ww.actionerror />
 <@ww.actionmessage />
 <@ww.form name="form" action="${formAction}"   validate="true" method="POST">
+	<@ww.hidden name="parametrosDoSistema.id" />
+	<@ww.hidden name="parametrosDoSistema.appVersao" />
+	<@ww.hidden name="parametrosDoSistema.acVersaoWebServiceCompativel" />
+	<@ww.hidden name="parametrosDoSistema.camposCandidatoVisivel" />
+	<@ww.hidden name="parametrosDoSistema.camposCandidatoObrigatorio" />
+	<@ww.hidden name="parametrosDoSistema.camposCandidatoTabs" />
+	<@ww.hidden name="parametrosDoSistema.codEmpresaSuporte" />
+
 	<@ww.textfield label="URL da aplicação" name="parametrosDoSistema.appUrl" id="appUrl" size="40" maxLength="100" required="true"/>
 	<@ww.textfield label="Contexto da aplicação" name="parametrosDoSistema.appContext" id="appContext" size="40" maxLength="100" required="true"/>
 	<@ww.textfield label="Tempo para expirar a sessão(em segundos)" name="parametrosDoSistema.sessionTimeout" id="sessionTimeout" onkeypress="return(somenteNumeros(event,''));" size="8" maxlength="8" required="true"/>
@@ -177,16 +185,23 @@
 			</#if>
 		</div>
 	</div>
+	
+	<br/>
+	
+	<li>
+		<@ww.div cssClass="divInfo">
+			<ul>
+				<h2>
+					Configuração para o Portal do Colaborador:
+				</h2>
+				<@ww.textfield label="Token" name="parametrosDoSistema.pcToken" size="64" maxLength="64" />
+				<@ww.textfield label="Key" name="parametrosDoSistema.pcKey" size="16" maxLength="16" />
+			</ul>
+		</@ww.div>
+	</li>
+	
 	<br/>
 
-	<@ww.hidden name="parametrosDoSistema.id" />
-	<@ww.hidden name="parametrosDoSistema.appVersao" />
-	<@ww.hidden name="parametrosDoSistema.acVersaoWebServiceCompativel" />
-	<@ww.hidden name="parametrosDoSistema.camposCandidatoVisivel" />
-	<@ww.hidden name="parametrosDoSistema.camposCandidatoObrigatorio" />
-	<@ww.hidden name="parametrosDoSistema.camposCandidatoTabs" />
-	<@ww.hidden name="parametrosDoSistema.codEmpresaSuporte" />
-	
 	<li>
 		<@ww.div cssClass="divInfo">
 			<ul>

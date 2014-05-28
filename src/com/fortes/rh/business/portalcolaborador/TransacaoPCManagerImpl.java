@@ -10,8 +10,10 @@ import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.portalcolaborador.TransacaoPCDao;
 import com.fortes.rh.model.dicionario.URLTransacaoPC;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.portalcolaborador.TransacaoPC;
 import com.fortes.rh.util.CryptUtil;
 import com.fortes.rh.util.SpringUtil;
@@ -19,20 +21,21 @@ import com.google.gson.JsonObject;
 
 public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, TransacaoPCDao> implements TransacaoPCManager 
 {
-	private final String URL_PORTAL_COLABORADOR = "http://0.0.0.0:3000";
-	
 	private TransacaoPCManager transacaoPCManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
 	public void enfileirar(Object objeto, Class<?> classe, URLTransacaoPC urlTransacaoPC) 
 	{
 		try {
+			ParametrosDoSistema params = parametrosDoSistemaManager.findById(1L);
+			
 			TransacaoPC transacaoPC = new TransacaoPC();
 			transacaoPC.setCodigoUrl(urlTransacaoPC.getId());
 			transacaoPC.setData(new Date());
 			
 			String json = classe.cast(objeto).toString();
 			
-			transacaoPC.setJson(CryptUtil.encrypt(json, "0123456789012345"));
+			transacaoPC.setJson(CryptUtil.encrypt(json, params.getPcKey()));
 			save(transacaoPC);
 		
 		} catch (Exception e) {
@@ -68,7 +71,7 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
         	    "application/json",
         	    "UTF-8");
 
-    	PostMethod postMethod = new PostMethod(URL_PORTAL_COLABORADOR + urlTransacaoPC.getUrl());
+    	PostMethod postMethod = new PostMethod(urlTransacaoPC.getUrl());
     	postMethod.setRequestEntity(requestEntity);
     	postMethod.addRequestHeader("Authorization", "Token token=c880f108ecc40eb1148fb1c6495986e267aaecd157f138a0039dedcfdb0c2baf");
 
@@ -78,5 +81,9 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
     	
     	if (statusCode == 200)
     		transacaoPCManager.remove(transacaoPC.getId());
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

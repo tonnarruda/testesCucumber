@@ -6,6 +6,9 @@
     <property name="dao">
       <ref bean="transacaoPCDao" />
     </property>
+    <property name="parametrosDoSistemaManager">
+      <ref bean="parametrosDoSistemaManager" />
+    </property>
   </bean>
   <bean id="transacaoPCManager" parent="parentManager">
     <property name="proxyInterfaces">

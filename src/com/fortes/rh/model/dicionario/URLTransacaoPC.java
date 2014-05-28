@@ -15,28 +15,24 @@ public enum URLTransacaoPC
 		this.method = method;
 	}
 
-	public Integer getId() {
+	public Integer getId() 
+	{
 		return id;
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public String getUrl() 
+	{
+		return getBaseUrl() + url;
 	}
 
-	public String getUrl() {
-		return url;
+	private String getBaseUrl()
+	{
+		return "http://0.0.0.0:3000";
 	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getMethod() {
+	
+	public String getMethod() 
+	{
 		return method;
-	}
-
-	public void setMethod(String method) {
-		this.method = method;
 	}
 	
 	public static final URLTransacaoPC getById(int id)
