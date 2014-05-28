@@ -47,19 +47,22 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 	public void processarFila()
 	{
 		transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
+		parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBeanOld("parametrosDoSistemaManager");
+		
+		ParametrosDoSistema params = parametrosDoSistemaManager.findById(1L);
 		
 		try {
 			Collection<TransacaoPC> transacoes = getDao().findAll(new String[] { "data" });
 			
 			for (TransacaoPC transacaoPC : transacoes) 
-				enviar(transacaoPC);
+				enviar(transacaoPC, params.getPcToken());
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void enviar(TransacaoPC transacaoPC) throws HttpException, IOException 
+	private void enviar(TransacaoPC transacaoPC, String pcToken) throws HttpException, IOException 
 	{
 		URLTransacaoPC urlTransacaoPC = URLTransacaoPC.getById(transacaoPC.getCodigoUrl());
 		
@@ -73,7 +76,7 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 
     	PostMethod postMethod = new PostMethod(urlTransacaoPC.getUrl());
     	postMethod.setRequestEntity(requestEntity);
-    	postMethod.addRequestHeader("Authorization", "Token token=c880f108ecc40eb1148fb1c6495986e267aaecd157f138a0039dedcfdb0c2baf");
+    	postMethod.addRequestHeader("Authorization", "Token token=" + pcToken);
 
     	final HttpClient httpClient = new HttpClient();
     	
