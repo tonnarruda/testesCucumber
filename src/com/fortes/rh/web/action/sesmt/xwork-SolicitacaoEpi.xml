@@ -5,13 +5,13 @@
 	<package name="solicitacaoEpi" extends="default" namespace="/sesmt/solicitacaoEpi">
 		<action name="list" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="list">
 	    	<interceptor-ref name="defaultListStack">
-	    		<param name="scope.session">situacao,matriculaBusca,nomeBusca,dataIni,dataFim</param>
+	    		<param name="scope.session">situacao,matriculaBusca,nomeBusca,dataIni,dataFim,estabelecimentoCheck</param>
 	    	</interceptor-ref>	
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiList.ftl</result>
 		</action>
 		<action name="imprimir" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="imprimir">
 	    	<interceptor-ref name="defaultListStack">
-	    		<param name="scope.session">situacao,matriculaBusca,nomeBusca,dataIni,dataFim</param>
+	    		<param name="scope.session">situacao,matriculaBusca,nomeBusca,dataIni,dataFim,estabelecimentoCheck</param>
 	    	</interceptor-ref>	
 			<result name="success" type="jasper">
 				<param name="dataSource">dataSourceLista</param>
@@ -22,7 +22,7 @@
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack">
-				<param name="scope.session">situacao,matriculaBusca,nomeBusca,dataIni,dataFim</param>
+				<param name="scope.session">situacao,matriculaBusca,nomeBusca,dataIni,dataFim,estabelecimentoCheck</param>
 			</interceptor-ref>
 			<result name="success" type="redirect">list.action</result>
 			<result name="error" type="redirect">list.action</result>

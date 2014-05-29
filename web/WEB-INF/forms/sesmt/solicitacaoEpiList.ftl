@@ -45,6 +45,12 @@
 
 		function pesquisar()
 		{
+			$("#form").find("input[name='estabelecimentoCheck']:visible").each(function(i, item) {
+				if(item.checked){
+					$('#limpaEstabelecimentoCheck').val("false");
+				}
+			});
+			
 			$('#pagina').val(1);
 			$('#form').attr('action','list.action').submit();
 		}
@@ -67,7 +73,7 @@
 	<@ww.form name="form" id="form" action="list.action" onsubmit="${validarCampos}" method="POST">
 
 		<@ww.select label="Situação da Solicitação" id="situacao" name="situacao" list=r"#{'T':'Todas','A':'Aberta','E':'Entregue','P':'Entregue Parcialmente'}" />
-
+		<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList"/>
 		<@ww.textfield label="Matrícula do Colaborador" name="matriculaBusca" id="matriculaBusca" cssStyle="width: 60px;"/>
 		<@ww.textfield label="Nome do Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
 		<@ww.select label="Situação do Colaborador" name="situacaoColaborador" id="situacaoColaborador" list="situacoesDoColaborador" cssStyle="width: 165px;"/>
@@ -79,6 +85,7 @@
 		<@ww.select label="Categorias de EPI" name="tipoEpi" id="tipoEpi" listKey="id" listValue="nome" list="tipoEpis" headerKey="" headerValue="Selecione..." />
 		<@ww.hidden id="pagina" name="page"/>
 		<@ww.hidden name="entrega"/>
+		<@ww.hidden name="limpaEstabelecimentoCheck" id="limpaEstabelecimentoCheck" value="true"/>
 
 		<input type="button" value="" onclick="pesquisar()" class="btnPesquisar grayBGE" />
 	</@ww.form>

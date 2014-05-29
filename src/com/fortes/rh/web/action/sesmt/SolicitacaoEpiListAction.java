@@ -21,6 +21,7 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -72,6 +73,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private boolean exibirVencimentoCA;
 	private boolean exibirDesligados;
+	private boolean limpaEstabelecimentoCheck = true;
 	
 	private Map<String, String> situacoesDoColaborador = new SituacaoColaborador();
 	private String situacaoColaborador = SituacaoColaborador.TODOS;
@@ -81,13 +83,17 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		colaborador.setNome(nomeBusca);
 		colaborador.setMatricula(matriculaBusca);
 
+		estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+		
+		CheckListBoxUtil.marcaCheckListBox(estabelecimentoCheckList, estabelecimentoCheck);
+		
 		tipoEpis = tipoEPIManager.find(new String[]{"empresa.id"},new Object[]{ getEmpresaSistema().getId() });
 
-		setTotalSize(solicitacaoEpiManager.getCount(getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador));
-		solicitacaoEpis = solicitacaoEpiManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador);
+		setTotalSize(solicitacaoEpiManager.getCount(getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, estabelecimentoCheck));
+		solicitacaoEpis = solicitacaoEpiManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, estabelecimentoCheck);
 
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
-			addActionMessage("Nenhuma Solicitação de EPIs a ser listada.");
+			addActionMessage("Nenhuma solicitação de EPIs a ser listada.");
 
 		return SUCCESS;
 	}
@@ -97,10 +103,10 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		colaborador.setNome(nomeBusca);
 		colaborador.setMatricula(matriculaBusca);
 		
-		dataSourceLista = solicitacaoEpiManager.findEpisWithItens(getEmpresaSistema().getId(), dataIni, dataFim, situacao, colaborador, tipoEpi, situacaoColaborador);
+		dataSourceLista = solicitacaoEpiManager.findEpisWithItens(getEmpresaSistema().getId(), dataIni, dataFim, situacao, colaborador, tipoEpi, situacaoColaborador, estabelecimentoCheck);
 		
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
-			addActionMessage("Nenhuma Solicitação de EPIs a ser listada.");
+			addActionMessage("Nenhuma solicitação de EPIs a ser listada.");
 		
 		parametros = RelatorioUtil.getParametrosRelatorio("Solicitações de EPIs", getEmpresaSistema(), (dataIni != null && dataFim != null) ? "Período: " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim) : "");
 		
@@ -379,8 +385,6 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		return colaboradorCheckList;
 	}
 
-
-
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
 	}
@@ -455,6 +459,14 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public void setExibirDesligados(boolean exibirDesligados) {
 		this.exibirDesligados = exibirDesligados;
+	}
+	
+	public void setLimpaEstabelecimentoCheck(boolean limpaEstabelecimentoCheck)
+	{
+		this.limpaEstabelecimentoCheck = limpaEstabelecimentoCheck;
+		
+		if(limpaEstabelecimentoCheck)
+			estabelecimentoCheck = null;
 	}
 
 }

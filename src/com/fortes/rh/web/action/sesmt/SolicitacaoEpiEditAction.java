@@ -140,7 +140,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, dataEntrega, entregue);
 			
-			addActionMessage("Solicitação gravada com sucesso.");
+			addActionSuccess("Solicitação gravada com sucesso.");
 			return SUCCESS;
 		}
 		catch (FortesException e)
@@ -152,7 +152,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 		}
 		catch (Exception e)
 		{
-			addActionError("Erro ao gravar solicitação.");
+			addActionError("Não foi possível gravar a solicitação.");
 			e.printStackTrace();
 			prepare();
 			return INPUT;

@@ -58,13 +58,13 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		solicitacaoEpiDao.expects(once()).method("findAllSelect").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colecao));
 		solicitacaoEpiItemManager.expects(once()).method("findAllEntregasBySolicitacaoEpi").with(ANYTHING).will(returnValue(new ArrayList<SolicitacaoEpiItem>()));
 
-		assertEquals(colecao, solicitacaoEpiManager.findAllSelect(0, 0, 1L, null, null, new Colaborador(), situacaoSolicitacaoEpi, null, SituacaoColaborador.TODOS));
+		assertEquals(colecao, solicitacaoEpiManager.findAllSelect(0, 0, 1L, null, null, new Colaborador(), situacaoSolicitacaoEpi, null, SituacaoColaborador.TODOS, estabelecimentoCheck));
 	}
 
 	public void testGetCount()
 	{
 		solicitacaoEpiDao.expects(once()).method("getCount").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(0));
-		assertEquals(Integer.valueOf(0), solicitacaoEpiManager.getCount(1L, new Date(), new Date(), new Colaborador(), SituacaoSolicitacaoEpi.TODAS, null, SituacaoColaborador.TODOS));
+		assertEquals(Integer.valueOf(0), solicitacaoEpiManager.getCount(1L, new Date(), new Date(), new Colaborador(), SituacaoSolicitacaoEpi.TODAS, null, SituacaoColaborador.TODOS, estabelecimentoCheck));
 	}
 
 	public void testFindByIdProjection()

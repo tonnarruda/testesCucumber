@@ -25,9 +25,9 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 	private PlatformTransactionManager transactionManager;
 	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
 
-	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacao, Long tipoEpi, String situacaoColaborador)
+	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacao, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck)
 	{
-		Collection<SolicitacaoEpi> solicitacaoEpis = getDao().findAllSelect(page, pagingSize, empresaId, dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador); 
+		Collection<SolicitacaoEpi> solicitacaoEpis = getDao().findAllSelect(page, pagingSize, empresaId, dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, LongUtil.arrayStringToArrayLong(estabelecimentoCheck)); 
 
 		for (SolicitacaoEpi solicitacaoEpi : solicitacaoEpis) 
 			solicitacaoEpi.setInformativo(montaInformacaoDeEntregas(solicitacaoEpi));
@@ -68,9 +68,9 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		return epiEntregues.toString() + epiNaoEntregues.toString();
 	}
 
-	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacao, Long tipoEpi, String situacaoColaborador)
+	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacao, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck)
 	{
-		return getDao().getCount(empresaId, dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador);
+		return getDao().getCount(empresaId, dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, LongUtil.arrayStringToArrayLong(estabelecimentoCheck));
 	}
 
 	public SolicitacaoEpi findByIdProjection(Long solicitacaoEpiId)
@@ -140,8 +140,8 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		return solicitacaoEpis;
 	}
 
-	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao, Colaborador colaborador, Long tipoEpi, String situacaoColaborador) {
-		return getDao().findEpisWithItens(empresaId, dataIni, dataFim, situacao, colaborador, tipoEpi, situacaoColaborador);
+	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao, Colaborador colaborador, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck) {
+		return getDao().findEpisWithItens(empresaId, dataIni, dataFim, situacao, colaborador, tipoEpi, situacaoColaborador, LongUtil.arrayStringToArrayLong(estabelecimentoCheck));
 	}
 	
 	public Collection<SolicitacaoEpi> findByColaboradorId(Long colaboradorId) {

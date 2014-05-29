@@ -44,6 +44,7 @@ import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemEntregaFactory;
 import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiItemFactory;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 
 public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<SolicitacaoEpi>
 {
@@ -401,7 +402,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		
 		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
 		
-		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId(), SituacaoColaborador.TODOS).intValue());
+		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId(), SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentoCheck)).intValue());
 	}
 	
 	public void testFindAllSelect()
@@ -507,10 +508,10 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		
 		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
 		
-		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.TODOS).size());
-		assertEquals(0, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador2, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.ATIVO).size());
-		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.DESLIGADO).size());
-		assertEquals(1, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ABERTA, null, SituacaoColaborador.ATIVO).size());
+		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentoCheck)).size());
+		assertEquals(0, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador2, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentoCheck)).size());
+		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.DESLIGADO, LongUtil.arrayStringToArrayLong(estabelecimentoCheck)).size());
+		assertEquals(1, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ABERTA, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentoCheck)).size());
 	}
 	
 	public void testFindEpisWithItens() 
