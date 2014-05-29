@@ -6,7 +6,12 @@ import java.util.Date;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.URI;
+import org.apache.commons.httpclient.methods.EntityEnclosingMethod;
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 
 import com.fortes.business.GenericManagerImpl;
@@ -66,24 +71,39 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 	{
 		URLTransacaoPC urlTransacaoPC = URLTransacaoPC.getById(transacaoPC.getCodigoUrl());
 		
-		JsonObject jsonObj = new JsonObject();
-		jsonObj.addProperty("json", transacaoPC.getJson());
-		
-        StringRequestEntity requestEntity = new StringRequestEntity(
-        		jsonObj.toString(),
-        	    "application/json",
-        	    "UTF-8");
-
-    	PostMethod postMethod = new PostMethod(urlTransacaoPC.getUrl());
-    	postMethod.setRequestEntity(requestEntity);
-    	postMethod.addRequestHeader("Authorization", "Token token=" + pcToken);
-
+        HttpMethod method = getMethod(urlTransacaoPC.getMethod());
+        method.setURI(new URI(urlTransacaoPC.getUrl(), false));
+        method.addRequestHeader("Authorization", "Token token=" + pcToken);
+        
+        //TODO: Refatorar para o envio de parametros do GET
+        if (!urlTransacaoPC.getMethod().equalsIgnoreCase("GET"))
+        {
+        	JsonObject jsonObj = new JsonObject();
+    		jsonObj.addProperty("json", transacaoPC.getJson());
+        	
+	        StringRequestEntity requestEntity = new StringRequestEntity(
+	        		jsonObj.toString(),
+	        	    "application/json",
+	        	    "UTF-8");
+	        
+	        ((EntityEnclosingMethod) method).setRequestEntity(requestEntity);
+        }
+        
     	final HttpClient httpClient = new HttpClient();
-    	
-    	int statusCode = httpClient.executeMethod(postMethod);
+    	int statusCode = httpClient.executeMethod(method);
     	
     	if (statusCode == 200)
     		transacaoPCManager.remove(transacaoPC.getId());
+	}
+	
+	private HttpMethod getMethod(String method)
+	{
+		if (method.equalsIgnoreCase("PUT"))
+			return new PutMethod();
+		else if (method.equalsIgnoreCase("POST"))
+			return new PostMethod();
+		
+		return new GetMethod();
 	}
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
