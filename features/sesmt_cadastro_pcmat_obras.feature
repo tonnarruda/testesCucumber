@@ -18,8 +18,9 @@ Funcionalidade: Obras
     E eu preencho "Nome" com "Caucaia Center"
     E eu preencho "Tipo da obra" com "Shopping"
     E eu preencho "CEP" com "60182-455"
+    E eu saio do campo "CEP"
     E eu preencho "Nº" com "571"
-    E eu espero 1 segundo
+    E eu espero 2 segundo
     E eu clico no botão "Gravar"
     Então eu devo ver o título "Obras"
     Então eu devo ver "Caucaia Center"

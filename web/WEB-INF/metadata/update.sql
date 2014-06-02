@@ -22419,3 +22419,6 @@ DROP FUNCTION criar_usuarionoticia_sequence();--.go
 SELECT setval('usuarionoticia_sequence', (SELECT MAX(id) FROM usuarionoticia));--.go
 insert into migrations values('20140512154855');--.go
 update parametrosdosistema set appversao = '1.1.127.152';--.go
+-- versao 1.1.127.153
+
+update parametrosdosistema set appversao = '1.1.127.153';--.go

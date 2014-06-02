@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.12x.15x" bd="" data="xx/xx/2014">
+	<Versao id="1.1.127.153" bd="" data="02/06/2014">
+		<Item visivel="S" motivo=""><![CDATA[Melhorias internas.]]></Item>
 		<Item visivel="N" motivo="P20140400187"><![CDATA[Pesquisas > Movimentações > Pesquisas > Colaboradores da Pesquisa: BUG: O sistema estava permitindo excluir um colaborador de uma pesquisa anônima após ele a ter respondido marcando o checkbox e clicando no botão "Excluir" que fica abaixo da tabela. O colaborador era excluído mas suas respostas permaneciam.]]></Item>
 		<Item visivel="N" motivo="P20140500081"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Participantes > Inserir: Mostrar somente os colaboradores contratados no resultado da pesquisa.]]></Item>
 		<Item visivel="N" motivo="P20140500030"><![CDATA[C&S > Cadastro > Cargos e Faixas: Alteração da regra de exibição do ícone "Funções" verificando apenas se o cliente possui o módulo SESMT.]]></Item>
