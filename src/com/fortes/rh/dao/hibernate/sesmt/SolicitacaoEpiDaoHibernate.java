@@ -111,7 +111,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		sql.append("where hc.data = (select max(hc2.data) from historicocolaborador as hc2 where hc2.colaborador_id = c.id) ");
 		
 		if(LongUtil.arrayIsNotEmpty(estabelecimentoCheck))
-			sql.append("and hc.estabelecimento_id in (:estabelecimentoCheck)");
+			sql.append("and se.estabelecimento_id in (:estabelecimentoCheck)");
 		
 		if (situacaoColaborador.equals(SituacaoColaborador.ATIVO)) {
 			sql.append("and c.desligado = false "); 

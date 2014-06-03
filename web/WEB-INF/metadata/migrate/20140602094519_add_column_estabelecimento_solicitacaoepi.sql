@@ -1,0 +1,2 @@
+alter table solicitacaoepi add column estabelecimento_id bigint;--.go
+ALTER TABLE solicitacaoepi ADD CONSTRAINT solicitacaoepi_estabelecimento_fk FOREIGN KEY (estabelecimento_id) REFERENCES estabelecimento(id);--.go

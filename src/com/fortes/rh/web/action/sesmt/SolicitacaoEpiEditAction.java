@@ -136,6 +136,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 			
 			solicitacaoEpi.setColaborador(colaborador);
 			solicitacaoEpi.setCargo(colaborador.getFaixaSalarial().getCargo());
+			solicitacaoEpi.setEstabelecimento(colaborador.getEstabelecimento());
 			solicitacaoEpi.setEmpresa(getEmpresaSistema());
 
 			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, dataEntrega, entregue);

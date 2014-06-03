@@ -19,6 +19,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
@@ -35,6 +36,9 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 	@ManyToOne
 	private Cargo cargo;
 
+	@ManyToOne
+	private Estabelecimento estabelecimento;
+	
 	@ManyToOne
 	private Empresa empresa;
 	
@@ -241,5 +245,15 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 
 	public void setInformativo(String informativo) {
 		this.informativo = informativo;
+	}
+	
+	public Estabelecimento getEstabelecimento()
+	{
+		return estabelecimento;
+	}
+	
+	public void setEstabelecimento(Estabelecimento estabelecimento)
+	{
+		this.estabelecimento = estabelecimento;
 	}
 }

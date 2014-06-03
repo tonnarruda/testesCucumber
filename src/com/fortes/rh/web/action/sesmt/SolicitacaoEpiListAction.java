@@ -73,7 +73,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private boolean exibirVencimentoCA;
 	private boolean exibirDesligados;
-	private boolean limpaEstabelecimentoCheck = true;
+	private boolean limpaEstabelecimentoCheck;
 	
 	private Map<String, String> situacoesDoColaborador = new SituacaoColaborador();
 	private String situacaoColaborador = SituacaoColaborador.TODOS;

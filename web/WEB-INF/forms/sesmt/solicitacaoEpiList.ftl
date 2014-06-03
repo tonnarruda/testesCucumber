@@ -40,19 +40,27 @@
 		
 		function imprimir()
 		{
+			verificaSeLimpaEstabelecimentoCheck();
+			
 			$('#form').attr('action','imprimir.action').submit();
 		}
 
 		function pesquisar()
 		{
-			$("#form").find("input[name='estabelecimentoCheck']:visible").each(function(i, item) {
-				if(item.checked){
-					$('#limpaEstabelecimentoCheck').val("false");
-				}
-			});
+			verificaSeLimpaEstabelecimentoCheck();
 			
 			$('#pagina').val(1);
 			$('#form').attr('action','list.action').submit();
+		}
+		
+		function verificaSeLimpaEstabelecimentoCheck()
+		{
+			$('#limpaEstabelecimentoCheck').val(true);
+			$("#form").find("input[name='estabelecimentoCheck']").each(function(i, item) {
+				if(item.checked){
+					$('#limpaEstabelecimentoCheck').val(false);
+				}
+			});
 		}
 	
 		function insereHelp(posicao)
