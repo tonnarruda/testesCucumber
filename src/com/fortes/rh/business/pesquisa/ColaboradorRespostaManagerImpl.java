@@ -437,6 +437,8 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 			colaboradorQuestionario.setColaborador(null);
 		if(colaboradorQuestionario.getCandidato() != null && colaboradorQuestionario.getCandidato().getId() == null)
 			colaboradorQuestionario.setCandidato(null);
+		if(colaboradorQuestionario.getAvaliador() != null && colaboradorQuestionario.getAvaliador().getId() == null)
+			colaboradorQuestionario.setAvaliador(null);
 	}
 
 	private void saveRespostas(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario)
