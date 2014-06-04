@@ -7,6 +7,7 @@ import com.fortes.rh.util.MathUtil;
 public class IndicadorTreinamento
 {
 	private Long cursoId;
+	private Long turmaId;
 
 	private Date dataIni;
 	private Date dataFim;
@@ -18,6 +19,7 @@ public class IndicadorTreinamento
 	private Double somaCustos;
 	private Double somaHoras;
 	private Integer qtdColaboradoresInscritos;
+	private Integer qtdColaboradoresFiltrados;
 	private Integer qtdColaboradoresPrevistos;
 
 	private Integer graficoQtdTreinamentosRealizados = 0;
@@ -40,6 +42,15 @@ public class IndicadorTreinamento
 	{
 		this.cursoId = cursoId;
 		this.somaHoras = (somaHoras != null ? somaHoras : 0);
+	}
+	
+	public IndicadorTreinamento(Long turmaId, Integer qtdColaboradoresFiltrados, Integer qtdColaboradoresInscritos, Double somaHoras, Double somaCustos) 
+	{
+		this.turmaId = turmaId;
+		this.qtdColaboradoresFiltrados = qtdColaboradoresFiltrados;
+		this.qtdColaboradoresInscritos = qtdColaboradoresInscritos;
+		this.somaHoras = somaHoras;
+		this.somaCustos = somaCustos;
 	}
 
 	public String getCustoTotalFmt()
@@ -249,6 +260,22 @@ public class IndicadorTreinamento
 
 	public void setSomaCustos(Double somaCustos) {
 		this.somaCustos = somaCustos;
+	}
+
+	public Long getTurmaId() {
+		return turmaId;
+	}
+
+	public void setTurmaId(Long turmaId) {
+		this.turmaId = turmaId;
+	}
+
+	public Integer getQtdColaboradoresFiltrados() {
+		return qtdColaboradoresFiltrados;
+	}
+
+	public void setQtdColaboradoresFiltrados(Integer qtdColaboradoresFiltrados) {
+		this.qtdColaboradoresFiltrados = qtdColaboradoresFiltrados;
 	}
 
 }

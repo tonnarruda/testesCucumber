@@ -136,6 +136,25 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 	
 	public Collection<IndicadorTreinamento> findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds)
 	{
+		StringBuilder hql = new StringBuilder("select new IndicadorTreinamento(tur.id, count(ct.id), ct3.qtdeInscritosTotal, cur.cargaHoraria/60, tur.custo) ");
+		hql.append("from ColaboradorTurma ct ");
+		hql.append("inner join ct.turma tur ");
+		hql.append("inner join tur.curso cur ");
+		hql.append("inner join ct.colaborador col ");
+		hql.append("inner join hc.historicoColaboradors hc "); 
+		hql.append("inner join ( ");
+		hql.append("   select ct2.turma.id, count(ct2.id) as qtdeInscritosTotal from colaboradorTurma ct2 group by ct2.turma.id ");
+		hql.append(") as ct3 on ct3.turma_id = tur.id ");
+		hql.append("where hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = col.id) ");
+		hql.append("group by tur.id, cur.cargahoraria, tur.custo, ct3.qtde_inscritos_total ");
+		hql.append("order by tur.id ");
+		
+		
+		
+		
+		
+		
+		
 		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.desenvolvimento.IndicadorTreinamento(c.id, cast((c.cargaHoraria/60 * count(ct.id)) as double)) ");
 		hql.append("from Curso c ");
 		hql.append("left join c.turmas t ");
@@ -156,7 +175,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			hql.append("and c.id in (:cursoIds) ");
 		
-		if (LongUtil.isNotEmpty(areasIds))
+		if (LongUtil.arrayIsNotEmpty(areasIds))
 			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
 		
 		hql.append("group by c.id, c.cargaHoraria ");
@@ -171,7 +190,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
 		
-		if (LongUtil.isNotEmpty(areasIds))
+		if (LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 		
 		return query.list();
