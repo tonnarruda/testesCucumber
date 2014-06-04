@@ -261,6 +261,7 @@
 				<@ww.hidden name="solicitacaoEpi.id" />
 				<@ww.hidden name="solicitacaoEpi.empresa.id" />
 				<@ww.hidden name="solicitacaoEpi.cargo.id" />
+				<@ww.hidden name="solicitacaoEpi.estabelecimento.id" />
 				
 				<#if !solicitacaoEpi.id?exists>
 					<li>
