@@ -345,7 +345,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		
 		Turma turma2 = TurmaFactory.getEntity();
 		turma2.setCurso(curso2);
-		turma2.setCusto(3512.69);
+		turma2.setCusto(500.50);
 		turma2.setDataPrevIni(dataDoisMesesDepois.getTime());
 		turma2.setDataPrevFim(dataTresMesesDepois.getTime());
 		turma2.setRealizada(true);
@@ -371,17 +371,12 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		turmaForaDaConsulta.setRealizada(true);
 		turmaDao.save(turmaForaDaConsulta);
 
-		Collection<IndicadorTreinamento> result = cursoDao.findIndicadorHorasTreinamentos(dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), new Long[]{empresa.getId()}, new Long[]{area.getId()}, null);
-		assertEquals(2, result.size());
+		IndicadorTreinamento result = cursoDao.findIndicadorHorasTreinamentos(dataDoisMesesDepois.getTime(), dataTresMesesDepois.getTime(), new Long[]{empresa.getId()}, new Long[]{area.getId()}, null);
 		
-		IndicadorTreinamento result1 = (IndicadorTreinamento)result.toArray()[0];
-		IndicadorTreinamento result2 = (IndicadorTreinamento)result.toArray()[1];
-		
-		assertEquals(curso1.getId(), result1.getCursoId());
-		assertEquals(curso2.getId(), result2.getCursoId());
-		
-		assertEquals("Carga Horaria 1", 20.0, result1.getSomaHoras());
-		assertEquals("Carga Horaria 2", 30.0, result2.getSomaHoras());
+		assertEquals("Qtde de colaboradores com filtro", 3, (int)result.getQtdColaboradoresFiltrados());
+		assertEquals("Qtde de colaboradores inscritos", 4, (int)result.getQtdColaboradoresInscritos());
+		assertEquals("Carga horaria", 40.0, result.getSomaHoras());
+		assertEquals("Custos", 700.5, result.getSomaCustos());
 	}
 
 	public void testFindQtdColaboradoresInscritosTreinamentos()

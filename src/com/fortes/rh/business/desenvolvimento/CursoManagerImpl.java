@@ -110,15 +110,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 	
 	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds)
 	{
-		double somaHoras = 0.0;
-		
-		Collection<IndicadorTreinamento> indicadoresPorCurso = getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, areasIds, cursoIds);
-		
-		for (IndicadorTreinamento indicadorTreinamento : indicadoresPorCurso) {
-			somaHoras += indicadorTreinamento.getSomaHoras();
-		}
-		
-		return new IndicadorTreinamento(null, somaHoras);
+		return getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, areasIds, cursoIds);
 	}
 	
 	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursosIds)

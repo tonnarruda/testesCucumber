@@ -44,9 +44,8 @@ public class IndicadorTreinamento
 		this.somaHoras = (somaHoras != null ? somaHoras : 0);
 	}
 	
-	public IndicadorTreinamento(Long turmaId, Integer qtdColaboradoresFiltrados, Integer qtdColaboradoresInscritos, Double somaHoras, Double somaCustos) 
+	public IndicadorTreinamento(Integer qtdColaboradoresFiltrados, Integer qtdColaboradoresInscritos, Double somaHoras, Double somaCustos) 
 	{
-		this.turmaId = turmaId;
 		this.qtdColaboradoresFiltrados = qtdColaboradoresFiltrados;
 		this.qtdColaboradoresInscritos = qtdColaboradoresInscritos;
 		this.somaHoras = somaHoras;

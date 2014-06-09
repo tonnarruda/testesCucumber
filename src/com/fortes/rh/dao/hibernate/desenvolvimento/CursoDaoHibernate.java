@@ -2,6 +2,7 @@ package com.fortes.rh.dao.hibernate.desenvolvimento;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -134,57 +135,37 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		return (Double) criteria.uniqueResult();
 	}
 	
-	public Collection<IndicadorTreinamento> findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds)
+	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds)
 	{
-		StringBuilder hql = new StringBuilder("select new IndicadorTreinamento(tur.id, count(ct.id), ct3.qtdeInscritosTotal, cur.cargaHoraria/60, tur.custo) ");
-		hql.append("from ColaboradorTurma ct ");
-		hql.append("inner join ct.turma tur ");
-		hql.append("inner join tur.curso cur ");
-		hql.append("inner join ct.colaborador col ");
-		hql.append("inner join hc.historicoColaboradors hc "); 
-		hql.append("inner join ( ");
-		hql.append("   select ct2.turma.id, count(ct2.id) as qtdeInscritosTotal from colaboradorTurma ct2 group by ct2.turma.id ");
-		hql.append(") as ct3 on ct3.turma_id = tur.id ");
-		hql.append("where hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = col.id) ");
-		hql.append("group by tur.id, cur.cargahoraria, tur.custo, ct3.qtde_inscritos_total ");
-		hql.append("order by tur.id ");
+		getSession().flush();
 		
-		
-		
-		
-		
-		
-		
-		StringBuilder hql = new StringBuilder("select new com.fortes.rh.model.desenvolvimento.IndicadorTreinamento(c.id, cast((c.cargaHoraria/60 * count(ct.id)) as double)) ");
-		hql.append("from Curso c ");
-		hql.append("left join c.turmas t ");
-		hql.append("left join t.colaboradorTurmas ct "); 
-		hql.append("inner join ct.colaborador co "); 
-		hql.append("inner join co.historicoColaboradors hc ");
-		hql.append("where c.empresa.id in (:empresaIds) ");
-		hql.append("and co.empresa.id in (:empresaIds) ");
-		hql.append("and t.dataPrevIni between :dataIni and :dataFim "); 
-		hql.append("and t.realizada = true ");
-		hql.append("and hc.data = ( ");
-		hql.append("	select max(hc2.data) ");
-		hql.append("	from HistoricoColaborador as hc2 ");
-		hql.append("	where hc2.colaborador.id = co.id ");
-		hql.append("	and hc2.status = :status ");
-		hql.append(") ");
+		StringBuilder sql = new StringBuilder("select tur.id, cast(coalesce(count(ct.id), 0) as integer) as qtdeInscritosFiltrado, ct3.qtdeInscritosTotal, cast(coalesce(cur.cargaHoraria/60, 0) as double precision) as cargaHoraria, coalesce(tur.custo, 0) as custo ");
+		sql.append("from ColaboradorTurma ct ");
+		sql.append("inner join turma tur on ct.turma_id = tur.id "); 
+		sql.append("inner join curso cur on tur.curso_id = cur.id ");
+		sql.append("inner join colaborador col on ct.colaborador_id = col.id ");
+		sql.append("inner join historicoColaborador hc on hc.colaborador_id = col.id ");
+		sql.append("inner join ( ");
+		sql.append("   select ct2.turma_id, cast(coalesce(count(ct2.id), 0) as integer) as qtdeInscritosTotal from colaboradorTurma ct2 group by ct2.turma_id ");
+		sql.append(") as ct3 on ct3.turma_id = tur.id ");
+		sql.append("where hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador_id = col.id and hc.status = :status) ");
+		sql.append("and col.empresa_id in (:empresaIds) ");
+		sql.append("and tur.dataPrevIni between :dataIni and :dataFim "); 
+		sql.append("and tur.realizada = true ");
 		
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
-			hql.append("and c.id in (:cursoIds) ");
+			sql.append("and cur.id in (:cursoIds) ");
 		
 		if (LongUtil.arrayIsNotEmpty(areasIds))
-			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
+			sql.append("and hc.areaOrganizacional_id in (:areasIds) ");
 		
-		hql.append("group by c.id, c.cargaHoraria ");
-		hql.append("order by c.id ");
+		sql.append("group by tur.id, cur.cargahoraria, tur.custo, ct3.qtdeInscritosTotal ");
+		sql.append("order by tur.id ");
 		
-		Query query = getSession().createQuery(hql.toString());
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setParameterList("empresaIds", empresaIds);
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
-		query.setParameterList("empresaIds", empresaIds);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
@@ -193,7 +174,21 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		if (LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 		
-		return query.list();
+		Collection<Object[]> resultado = query.list();
+		Object[] res;
+		Integer qtdColaboradoresFiltrados = 0, qtdColaboradoresInscritos = 0;
+		Double somaHoras = 0.0, somaCustos = 0.0;
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			res = it.next();
+			qtdColaboradoresFiltrados += (Integer)res[1];
+			qtdColaboradoresInscritos += (Integer)res[2];
+			somaHoras += (Double)res[3];
+			somaCustos += (Double)res[4];
+		}
+		
+		return new IndicadorTreinamento(qtdColaboradoresFiltrados, qtdColaboradoresInscritos, somaHoras, somaCustos);
 	}
 
 	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds)
