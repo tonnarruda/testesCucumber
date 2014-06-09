@@ -42,7 +42,7 @@
 		<@ww.textfield label="CEP" name="candidato.endereco.cep" cssClass="mascaraCep" id="cep" />
 		<@ww.textfield label="Telefone fixo" name="candidato.contato.foneFixo" cssClass="medium"/>
 		<@ww.textfield label="Telefone celular" name="candidato.contato.foneCelular" cssClass="medium"/>
-		<@ww.textfield label="Email" name="candidato.contato.email" maxLength="40" cssStyle="width:445px;" />
+		<@ww.textfield label="Email" name="candidato.contato.email" maxLength="200" cssStyle="width:445px;" />
 		<@ww.select label="Sexo" name="candidato.pessoal.sexo" list="sexos" />
 		<@ww.datepicker label="Data de nascimento" name="candidato.pessoal.dataNascimento" cssClass="mascaraData" value="${data}"/>
 		<@ww.select label="Escolaridade" name="candidato.pessoal.escolaridade" list="escolaridades" headerKey="" headerValue=""/>
