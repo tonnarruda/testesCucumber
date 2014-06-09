@@ -1318,6 +1318,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			replicaUpdateCandidato(findAllRelacionamentos(colaborador.getId()), idiomas);
 
 			transacaoPCManager.enfileirar(new ColaboradorPC(colaboradorAtualizado), ColaboradorPC.class, URLTransacaoPC.COLABORADOR_ATUALIZAR);
+			transacaoPCManager.processarFila();
 			
 			gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
 			

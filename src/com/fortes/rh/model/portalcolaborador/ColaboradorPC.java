@@ -9,6 +9,8 @@ public class ColaboradorPC {
 
 	@SerializedName("empresa")
 	private EmpresaPC empresaPC;
+	@SerializedName("endereco_attributes")
+	private EnderecoPC enderecoPC;
 	private String nome;
 	@SerializedName("nome_comercial")
 	private String nomeComercial;
@@ -40,6 +42,11 @@ public class ColaboradorPC {
 			this.setEmpresaPC(new EmpresaPC(colaborador.getEmpresa()));
 		}
 		
+		if (colaborador.getEndereco() != null)
+		{
+			this.setEnderecoPC(new EnderecoPC(colaborador.getEndereco()));
+		}
+		
 		if (colaborador.getContato() != null)
 		{
 			this.email 			= colaborador.getContato().getEmail();
@@ -66,6 +73,14 @@ public class ColaboradorPC {
 
 	public void setEmpresaPC(EmpresaPC empresaPC) {
 		this.empresaPC = empresaPC;
+	}
+	
+	public EnderecoPC getEnderecoPC() {
+		return enderecoPC;
+	}
+
+	public void setEnderecoPC(EnderecoPC enderecoPC) {
+		this.enderecoPC = enderecoPC;
 	}
 
 	public String getNome() {
