@@ -375,8 +375,8 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		
 		assertEquals("Qtde de colaboradores com filtro", 3, (int)result.getQtdColaboradoresFiltrados());
 		assertEquals("Qtde de colaboradores inscritos", 4, (int)result.getQtdColaboradoresInscritos());
-		assertEquals("Carga horaria", 40.0, result.getSomaHoras());
-		assertEquals("Custos", 700.5, result.getSomaCustos());
+		assertEquals("Carga horaria", 50.0, result.getSomaHoras());
+		assertEquals("Custos", Math.round(633.83), Math.round(result.getSomaCustos()));
 	}
 
 	public void testFindQtdColaboradoresInscritosTreinamentos()

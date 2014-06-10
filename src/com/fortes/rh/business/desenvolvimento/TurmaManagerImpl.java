@@ -297,9 +297,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return getDao().quantidadeParticipantesPrevistos(dataIni, dataFim, empresasIds, cursosIds);
 	}
 	
-	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds, Long[] cursosIds) 
+	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds, Long[] areasIds, Long[] cursosIds) 
 	{
-		return getDao().quantidadeParticipantesPresentes(dataIni, dataFim, empresasIds, cursosIds);
+		return getDao().quantidadeParticipantesPresentes(dataIni, dataFim, empresasIds, areasIds, cursosIds);
 	}
 	
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmasCheck, Date dataIni, Date dataFim, Boolean realizada) 
@@ -317,15 +317,14 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return getDao().somaCustosNaoDetalhados(dataIni, dataFim, empresaIds, cursoIds);
 	}
 
-	public Double getPercentualInvestimento(Date dataIni, Date dataFim, Long[] empresaIds) 
+	public Double getPercentualInvestimento(Double somaCustos, Date dataIni, Date dataFim, Long[] empresaIds) 
 	{
 		double percentual = 0.0;
 		
 		Double faturamentoPeriodo = faturamentoMensalManager.somaByPeriodo(dataIni, dataFim, empresaIds);
-		Double custos = getDao().somaCustos(dataIni, dataFim, empresaIds);
 		
 		if (faturamentoPeriodo > 0)
-			percentual = (custos / faturamentoPeriodo) * 100;
+			percentual = (somaCustos / faturamentoPeriodo) * 100;
 		
 		return percentual;
 	}

@@ -1,8 +1,10 @@
 package com.fortes.rh.test.dao.hibernate.desenvolvimento;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.desenvolvimento.AproveitamentoAvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
@@ -10,6 +12,7 @@ import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
@@ -27,6 +30,7 @@ public class ColaboradorPresencaDaoHibernateTest extends GenericDaoHibernateTest
 	private ColaboradorTurmaDao colaboradorTurmaDao;
 	private TurmaDao turmaDao;
 	private ColaboradorDao colaboradorDao;
+	private HistoricoColaboradorDao historicoColaboradorDao;
 	private DiaTurmaDao diaTurmaDao;
 	private AvaliacaoCursoDao avaliacaoCursoDao;
 	private AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao;
@@ -191,15 +195,30 @@ public class ColaboradorPresencaDaoHibernateTest extends GenericDaoHibernateTest
 		diaTurma1.setTurma(turma);
 		diaTurmaDao.save(diaTurma1);
 		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		HistoricoColaborador historicoColaborador = new HistoricoColaborador();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setData(new Date());
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
+		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurma.setTurma(turma);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
 		ColaboradorPresenca colaboradorPresenca1 = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresenca1.setColaboradorTurma(colaboradorTurma);
 		colaboradorPresenca1.setDiaTurma(diaTurma1);
 		colaboradorPresencaDao.save(colaboradorPresenca1);
 		
 		ColaboradorPresenca colaboradorPresenca2 = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresenca2.setColaboradorTurma(colaboradorTurma);
 		colaboradorPresenca2.setDiaTurma(diaTurma1);
 		colaboradorPresencaDao.save(colaboradorPresenca2);
 		
-		assertEquals(new Integer(2), colaboradorPresencaDao.qtdDiaPresentesTurma(turma.getId()));
+		assertEquals(new Integer(2), colaboradorPresencaDao.qtdDiaPresentesTurma(turma.getId(), null));
 	}
 	
 	public GenericDao<ColaboradorPresenca> getGenericDao()
@@ -239,6 +258,11 @@ public class ColaboradorPresencaDaoHibernateTest extends GenericDaoHibernateTest
 	public void setAproveitamentoAvaliacaoCursoDao(
 			AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao) {
 		this.aproveitamentoAvaliacaoCursoDao = aproveitamentoAvaliacaoCursoDao;
+	}
+
+	public void setHistoricoColaboradorDao(
+			HistoricoColaboradorDao historicoColaboradorDao) {
+		this.historicoColaboradorDao = historicoColaboradorDao;
 	}
 
 

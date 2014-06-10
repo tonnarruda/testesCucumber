@@ -64,10 +64,10 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 		getDao().remove(diaTurmaId, null);
 	}
 
-	public Integer qtdDiaPresentesTurma(Long turmaId)
+	public Integer qtdDiaPresentesTurma(Long turmaId, Long[] areasIds)
 	{
 		if (turmaId != null)
-			return getDao().qtdDiaPresentesTurma(turmaId);
+			return getDao().qtdDiaPresentesTurma(turmaId, areasIds);
 		else
 			return 0;
 	}

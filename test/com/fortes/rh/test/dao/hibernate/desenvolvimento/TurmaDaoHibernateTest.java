@@ -668,6 +668,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 	
 	public void testQuantidadeParticipantesPresentes()
 	{
+		Date data = DateUtil.criarDataMesAno(01, 01, 1999);
 		Date dataPrevIni = DateUtil.criarDataMesAno(01, 01, 2000);
 		Date dataPrevFim = DateUtil.criarDataMesAno(01, 02, 2000);
 		
@@ -677,8 +678,18 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		Colaborador c1 = ColaboradorFactory.getEntity();
 		colaboradorDao.save(c1);
 		
+		HistoricoColaborador hc1 = new HistoricoColaborador();
+		hc1.setColaborador(c1);
+		hc1.setData(data);
+		historicoColaboradorDao.save(hc1);
+		
 		Colaborador c2 = ColaboradorFactory.getEntity();
 		colaboradorDao.save(c2);
+		
+		HistoricoColaborador hc2 = new HistoricoColaborador();
+		hc2.setColaborador(c2);
+		hc2.setData(data);
+		historicoColaboradorDao.save(hc2);
 		
 		Turma turma = TurmaFactory.getEntity();
 		turma.setEmpresa(empresa);
@@ -716,7 +727,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		ct3.setColaborador(c2);
 		colaboradorTurmaDao.save(ct3);
 		
-		assertEquals("Nenhuma presenca", new Integer (0), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null));
+		assertEquals("Nenhuma presenca", new Integer (0), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null));
 		
 		ColaboradorPresenca cp11 = new ColaboradorPresenca();
 		cp11.setColaboradorTurma(ct1);
@@ -728,21 +739,21 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		cp12.setPresenca(true);
 		colaboradorPresencaDao.save(cp12);
 
-		assertEquals("Duas presencas na mesma turma", new Integer (1), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null));
+		assertEquals("Duas presencas na mesma turma", new Integer (1), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null));
 		
 		ColaboradorPresenca cp13 = new ColaboradorPresenca();
 		cp13.setColaboradorTurma(ct2);
 		cp13.setPresenca(true);
 		colaboradorPresencaDao.save(cp13);
 		
-		assertEquals("Presencas em duas turmas para o mesmo colaborador", new Integer (2), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null));
+		assertEquals("Presencas em duas turmas para o mesmo colaborador", new Integer (2), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null));
 		
 		ColaboradorPresenca cp21 = new ColaboradorPresenca();
 		cp21.setColaboradorTurma(ct3);
 		cp21.setPresenca(true);
 		colaboradorPresencaDao.save(cp21);
 		
-		assertEquals("Outro colaborador", new Integer (3), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null));
+		assertEquals("Outro colaborador", new Integer (3), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null));
 	}
 	
 	public void testFindByEmpresa()

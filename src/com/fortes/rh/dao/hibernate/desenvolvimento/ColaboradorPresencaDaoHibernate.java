@@ -121,20 +121,34 @@ public class ColaboradorPresencaDaoHibernate extends GenericDaoHibernate<Colabor
 		q.executeUpdate();
 	}
 	
-	public Integer qtdDiaPresentesTurma(Long turmaId)
+	public Integer qtdDiaPresentesTurma(Long turmaId, Long[] areasIds)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select count(dt.id) ");
 		hql.append("from ColaboradorPresenca as cp ");
-		hql.append("join cp.diaTurma dt ");
+		hql.append("inner join cp.diaTurma dt ");
+		hql.append("inner join cp.colaboradorTurma ct ");
+		hql.append("inner join ct.colaborador c ");
+		hql.append("inner join c.historicoColaboradors hc ");
+		hql.append("where hc.data = ( ");
+		hql.append("			select max(hc2.data) ");
+		hql.append("			from HistoricoColaborador as hc2 ");
+		hql.append("			where hc2.colaborador.id = c.id ");
+		hql.append("		) ");
 		
-		if(turmaId != null)
-			hql.append("where dt.turma.id = :turmaId ");
+		if (turmaId != null)
+			hql.append("and dt.turma.id = :turmaId ");
+		
+		if (areasIds != null && areasIds.length > 0)
+			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		
-		if(turmaId != null)
+		if (turmaId != null)
 			query.setLong("turmaId", turmaId);
+		
+		if (areasIds != null && areasIds.length > 0)
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 		
 		return (Integer) query.uniqueResult();	
 	}

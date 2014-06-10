@@ -35,13 +35,13 @@ public interface TurmaManager extends GenericManager<Turma>
 	public boolean verificaAvaliacaoDeTurmaRespondida(Long turmaId);
 	public Collection<Turma> findTurmas(Integer page, Integer pagingSize, Long cursoId);
 	public Integer quantidadeParticipantesPrevistos(Date dataIni, Date dataFim, Long[] empresasIds, Long[] cursosIds);
-	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds, Long[] cursosIds);
+	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds, Long[] areasIds, Long[] cursosIds);
 	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId);
 	public Collection<Turma> findByCursos(Long[] cursoIds);
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmasCheck, Date dataIni, Date dataFim, Boolean realizada);
 	//	public Collection<Colaborador> enviarEmailParticipantes(Long turmaId);
 	public Double somaCustosNaoDetalhados(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
-	public Double getPercentualInvestimento(Date dataIni, Date dataFim, Long[] empresaIds);
+	public Double getPercentualInvestimento(Double somaCustos, Date dataIni, Date dataFim, Long[] empresaIds);
 	public void salvarTurmaDiasCustosColaboradoresAvaliacoes(Turma turma, String[] dias, String custos, Collection<ColaboradorTurma> colaboradorTurmas, Long[] avaliacaoTurmasCheck) throws Exception;
 	public void inserir(Turma turma, String[] dias, String custos, Long[] avaliacaoTurmaIds) throws Exception;
 	public void atualizar(Turma turma, String[] dias, String[] colaboradorTurma, String[] selectPrioridades, Long[] avaliacaoTurmaIds, boolean atualizaAvaliacao) throws Exception;

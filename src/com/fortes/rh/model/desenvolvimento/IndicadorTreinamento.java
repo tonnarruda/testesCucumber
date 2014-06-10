@@ -44,8 +44,9 @@ public class IndicadorTreinamento
 		this.somaHoras = (somaHoras != null ? somaHoras : 0);
 	}
 	
-	public IndicadorTreinamento(Integer qtdColaboradoresFiltrados, Integer qtdColaboradoresInscritos, Double somaHoras, Double somaCustos) 
+	public IndicadorTreinamento(Integer qtdColaboradoresPrevistos, Integer qtdColaboradoresFiltrados, Integer qtdColaboradoresInscritos, Double somaHoras, Double somaCustos) 
 	{
+		this.qtdColaboradoresPrevistos = qtdColaboradoresPrevistos;
 		this.qtdColaboradoresFiltrados = qtdColaboradoresFiltrados;
 		this.qtdColaboradoresInscritos = qtdColaboradoresInscritos;
 		this.somaHoras = somaHoras;
@@ -55,6 +56,7 @@ public class IndicadorTreinamento
 	public String getCustoTotalFmt()
 	{
 		String retorno = "-";
+		
 		if (somaCustos != null && somaCustos > 0)
 			retorno = MathUtil.formataValor(somaCustos);
 

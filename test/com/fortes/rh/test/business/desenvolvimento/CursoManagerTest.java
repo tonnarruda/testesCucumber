@@ -1,7 +1,6 @@
 package com.fortes.rh.test.business.desenvolvimento;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -105,16 +104,8 @@ public class CursoManagerTest extends MockObjectTestCase
 	
 	public void testFindSomaCustoEHorasTreinamentos()
 	{
-		IndicadorTreinamento indicador1 = new IndicadorTreinamento(1L, 60.25);
-		IndicadorTreinamento indicador2 = new IndicadorTreinamento(2L, 45.0);
-		IndicadorTreinamento indicador3 = new IndicadorTreinamento(3L, 1.56);
-		
-		Collection<IndicadorTreinamento> indicadoresPorCurso = Arrays.asList(indicador1, indicador2, indicador3);
-		
-		cursoDao.expects(once()).method("findIndicadorHorasTreinamentos").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(indicadoresPorCurso));
-		
+		cursoDao.expects(once()).method("findIndicadorHorasTreinamentos").withAnyArguments().will(returnValue(new IndicadorTreinamento(10, 10, 10, 106.81, 5000.0)));
 		IndicadorTreinamento indicadorTreinamento = cursoManager.findIndicadorHorasTreinamentos(new Date(), new Date(), new Long[] { 1L }, null, null); 
-		
 		assertEquals(106.81, indicadorTreinamento.getSomaHoras());
 	}
 }

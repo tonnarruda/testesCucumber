@@ -1106,7 +1106,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return colaboradorTurmas;	
 	}
 
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds) 
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds) 
 	{
 		StringBuilder sql = new StringBuilder();		
 		
@@ -1119,6 +1119,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("  rct.qtdavaliacoesaprovadaspornota, ");
 		sql.append("  rct.nota ");
 		sql.append("from Colaboradorturma ct ");
+		sql.append("  inner join historicocolaborador hc on hc.colaborador_id = ct.colaborador_id ");
 		sql.append("  left join turma t on t.id=ct.turma_id ");
 		sql.append("  left join curso c on c.id=t.curso_id ");
 		sql.append("  left join ( select cursos_id, count(avaliacaocursos_id) qtdavaliacoescurso ");
@@ -1146,9 +1147,13 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("                 order by aac.colaboradorturma_id ) as rct ");
 		sql.append("              on rct.colaboradorturma_id = ct.id ");
 		sql.append("where t.dataPrevIni >= :dataIni and t.dataPrevFim <= :dataFim and t.realizada = :realizada and t.id is not null ");
+		sql.append("and hc.data = (select max(hc2.data) from historicocolaborador hc2 where hc2.colaborador_id = hc.colaborador_id) ");
 		
 		if (LongUtil.arrayIsNotEmpty(empresaIds))
 			sql.append("and c.empresa_id in (:empresaIds) ");
+		
+		if (LongUtil.arrayIsNotEmpty(areasIds))
+			sql.append("and hc.areaorganizacional_id in (:areasIds) ");
 		
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			sql.append("and c.id in (:cursoIds) ");
@@ -1161,6 +1166,9 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		
 		if (LongUtil.arrayIsNotEmpty(empresaIds))
 			query.setParameterList("empresaIds", empresaIds);
+		
+		if (LongUtil.arrayIsNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds);
 		
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			query.setParameterList("cursoIds", cursoIds);

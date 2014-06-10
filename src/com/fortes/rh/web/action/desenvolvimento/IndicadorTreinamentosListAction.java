@@ -20,7 +20,6 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.relatorio.DataGrafico;
@@ -79,17 +78,18 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
    		empresasCheckList =  CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
    		empresasCheckList =  CheckListBoxUtil.marcaCheckListBox(empresasCheckList, StringUtil.LongToString(empresasCheck));
    		
-   		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas));
+   		if (ArrayUtils.isEmpty(empresasCheck)) 
+   		{
+   			CollectionUtil<Empresa> cUtil = new CollectionUtil<Empresa>();
+			empresasCheck = cUtil.convertCollectionToArrayIds(empresas);
+		}
+   		
+   		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresasCheck);
    		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, StringUtil.LongToString(areasCheck));
    		
    		Collection<Curso> cursos = cursoManager.findAllByEmpresasParticipantes(new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas));
 		cursosCheckList =  CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
 		cursosCheckList =  CheckListBoxUtil.marcaCheckListBox(cursosCheckList, StringUtil.LongToString(cursosCheck));
-
-   		if (ArrayUtils.isEmpty(empresasCheck)) {
-   			CollectionUtil<Empresa> cUtil = new CollectionUtil<Empresa>();
-			empresasCheck = cUtil.convertCollectionToArrayIds(empresas);
-		}
    		
 		indicadorTreinamento = cursoManager.montaIndicadoresTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, areasCheck, cursosCheck);
 
@@ -123,7 +123,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	private void prepareGraficoDesempenho()
 	{
-		HashMap<String, Integer> resultados = colaboradorTurmaManager.getResultado(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, cursosCheck);
+		HashMap<String, Integer> resultados = colaboradorTurmaManager.getResultado(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, areasCheck, cursosCheck);
 		qtdAprovados = resultados.get("qtdAprovados");
 		qtdReprovados = resultados.get("qtdReprovados");
 
@@ -135,21 +135,19 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	private void prepareGraficoFrequencia()
 	{
-		this.qtdParticipantesPrevistos = turmaManager.quantidadeParticipantesPrevistos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, cursosCheck);
-		Object[] participantes = new Object[]{1, qtdParticipantesPrevistos};
+		Object[] participantes = new Object[]{1, indicadorTreinamento.getQtdColaboradoresPrevistos()};
 		
 		Collection<Object[]>  graficoParticipantes = new ArrayList<Object[]>();
 		graficoParticipantes.add(participantes);
 		grfFrequenciaParticipantes = StringUtil.toJSON(graficoParticipantes, null);
 		
-		this.qtdTotalInscritosTurmas = cursoManager.findQtdColaboradoresInscritosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, cursosCheck);
-		Object[] inscritos = new Object[]{2, qtdTotalInscritosTurmas};
+		Object[] inscritos = new Object[]{2, indicadorTreinamento.getQtdColaboradoresFiltrados()};
 		
 		Collection<Object[]>  graficoInscritos = new ArrayList<Object[]>();
 		graficoInscritos.add(inscritos);
 		grfFrequenciaInscritos = StringUtil.toJSON(graficoInscritos, null);
 		
-		this.qtdParticipantesPresentes = turmaManager.quantidadeParticipantesPresentes(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, cursosCheck);
+		this.qtdParticipantesPresentes = turmaManager.quantidadeParticipantesPresentes(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, areasCheck, cursosCheck);
 		Object[] presentes = new Object[]{3, qtdParticipantesPresentes};
 		
 		Collection<Object[]>  graficoPresentes = new ArrayList<Object[]>();

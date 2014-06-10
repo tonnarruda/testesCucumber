@@ -128,11 +128,11 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 		ColaboradorPresenca colaboradorPresenca2 = ColaboradorPresencaFactory.getEntity(2L);
 		colaboradorPresenca2.setDiaTurma(diaTurma1);
 		
-		colaboradorPresencaDao.expects(once()).method("qtdDiaPresentesTurma").with(ANYTHING).will(returnValue(2));
+		colaboradorPresencaDao.expects(once()).method("qtdDiaPresentesTurma").with(ANYTHING, ANYTHING).will(returnValue(2));
 		
-		assertEquals(new Integer(2), colaboradorPresencaManager.qtdDiaPresentesTurma(turma.getId()));
+		assertEquals(new Integer(2), colaboradorPresencaManager.qtdDiaPresentesTurma(turma.getId(), null));
 		
-		assertEquals(new Integer(0), colaboradorPresencaManager.qtdDiaPresentesTurma(null));
+		assertEquals(new Integer(0), colaboradorPresencaManager.qtdDiaPresentesTurma(null, null));
 	}
 	
 	//reftorar

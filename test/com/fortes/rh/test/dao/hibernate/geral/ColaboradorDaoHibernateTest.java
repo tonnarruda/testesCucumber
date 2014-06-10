@@ -3572,6 +3572,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorAtivoDentroDaConsulta.setDataAdmissao(dataTresMesesAtras.getTime());
 		colaboradorAtivoDentroDaConsulta.setDesligado(false);
 		colaboradorDao.save(colaboradorAtivoDentroDaConsulta);
+		
+		HistoricoColaborador historicoColaborador1 = new HistoricoColaborador();
+		historicoColaborador1.setColaborador(colaboradorAtivoDentroDaConsulta);
+		historicoColaborador1.setData(dataTresMesesAtras.getTime());
+		historicoColaboradorDao.save(historicoColaborador1);
 
 		Colaborador colaboradorDesligadoDentroDaConsulta = ColaboradorFactory.getEntity();
 		colaboradorDesligadoDentroDaConsulta.setEmpresa(empresa);
@@ -3580,14 +3585,24 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorDesligadoDentroDaConsulta.setDataDesligamento(hoje);
 		colaboradorDao.save(colaboradorDesligadoDentroDaConsulta);
 
+		HistoricoColaborador historicoColaborador2 = new HistoricoColaborador();
+		historicoColaborador2.setColaborador(colaboradorDesligadoDentroDaConsulta);
+		historicoColaborador2.setData(dataTresMesesAtras.getTime());
+		historicoColaboradorDao.save(historicoColaborador2);
+		
 		Colaborador colaboradorDesligadoForaDaConsulta = ColaboradorFactory.getEntity();
 		colaboradorDesligadoForaDaConsulta.setEmpresa(empresa);
 		colaboradorDesligadoForaDaConsulta.setDataAdmissao(dataTresMesesAtras.getTime());
 		colaboradorDesligadoForaDaConsulta.setDesligado(true);
 		colaboradorDesligadoForaDaConsulta.setDataDesligamento(dataTresMesesAtras.getTime());
 		colaboradorDao.save(colaboradorDesligadoForaDaConsulta);
+		
+		HistoricoColaborador historicoColaborador3 = new HistoricoColaborador();
+		historicoColaborador3.setColaborador(colaboradorDesligadoForaDaConsulta);
+		historicoColaborador3.setData(dataTresMesesAtras.getTime());
+		historicoColaboradorDao.save(historicoColaborador3);
 
-		assertEquals(new Integer(2), colaboradorDao.getCountAtivos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa.getId()}));
+		assertEquals(new Integer(2), colaboradorDao.getCountAtivosQualquerStatus(dataDoisMesesAtras.getTime(), new Long[]{empresa.getId()}, null));
 
 	}
 	
@@ -4842,7 +4857,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals("", colaboradorDao.findCodigoACDuplicado(vega.getId()));//tem que ser vazio, utilizado na empresaManager
 	}
 	
-	public void testGetColaboradoresByTurmas() {
+	public void testGetColaboradoresByTurmas() 
+	{
+		Date hoje = new Date();
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
@@ -4850,11 +4868,21 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador1.setNome("Xica ");
 		colaborador1.setEmpresa(empresa);
 		colaboradorDao.save(colaborador1);
+		
+		HistoricoColaborador historicoColaborador1 = new HistoricoColaborador();
+		historicoColaborador1.setColaborador(colaborador1);
+		historicoColaborador1.setData(hoje);
+		historicoColaboradorDao.save(historicoColaborador1);
 
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
 		colaborador2.setNome("Xica");
 		colaborador2.setEmpresa(empresa);
 		colaboradorDao.save(colaborador2);
+		
+		HistoricoColaborador historicoColaborador2 = new HistoricoColaborador();
+		historicoColaborador2.setColaborador(colaborador2);
+		historicoColaborador2.setData(hoje);
+		historicoColaboradorDao.save(historicoColaborador2);
 
 		Turma turma = TurmaFactory.getEntity(1L);
 		turma.setDescricao("teste");
@@ -4874,7 +4902,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorTurma2.setColaborador(colaborador2);
 		colaboradorTurmaDao.save(colaboradorTurma2);
 
-		assertEquals(new Integer(2), colaboradorDao.qtdColaboradoresByTurmas(turmaIds));
+		assertEquals(new Integer(2), colaboradorDao.qtdColaboradoresByTurmas(turmaIds, null));
 	}
 
 	public void testFindParentesByNome() 

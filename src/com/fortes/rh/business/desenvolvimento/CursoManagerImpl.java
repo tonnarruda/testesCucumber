@@ -69,28 +69,22 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		indicadorTreinamento.setDataIni(dataIni);
 		indicadorTreinamento.setDataFim(dataFim);
 		
-		Double qtdHoras = (indicadorTreinamento.getSomaHoras() != null ? indicadorTreinamento.getSomaHoras() : 0d);
+		Double qtdHoras = indicadorTreinamento.getSomaHoras();
+		Double somaCustos = indicadorTreinamento.getSomaCustos();
+
+		indicadorTreinamento.setCustoMedioHora( somaCustos / qtdHoras );
+
 		Double custoPerCapita = 0d;
 		Double horasPerCapita = 0d;
 		Double percentualFrequencia = 0d;
 		Double percentualInvestimento = 0d;
 		
-		Double somaCustos = getDao().somaCustosTreinamentos(dataIni, dataFim, empresaIds, cursoIds);
-		somaCustos = somaCustos == null ? 0 : somaCustos;
-		indicadorTreinamento.setSomaCustos(somaCustos);
-		
-		if (qtdHoras > 0)
-			indicadorTreinamento.setCustoMedioHora( somaCustos / qtdHoras );
-		
-		Integer qtdInscritos = getDao().findQtdColaboradoresInscritosTreinamentos(dataIni, dataFim, empresaIds, cursoIds);
-
-		if (qtdInscritos != null && qtdInscritos > 0)
-			custoPerCapita = (somaCustos / qtdInscritos);
+		if (indicadorTreinamento.getQtdColaboradoresFiltrados() > 0)
+			custoPerCapita = (somaCustos / indicadorTreinamento.getQtdColaboradoresFiltrados());
 
 		indicadorTreinamento.setCustoPerCapita(custoPerCapita);
-		indicadorTreinamento.setQtdColaboradoresInscritos(qtdInscritos);
 
-		Integer qtdAtivos = colaboradorManager.getCountAtivos(dataIni, dataFim, empresaIds);
+		Integer qtdAtivos = colaboradorManager.getCountAtivosQualquerStatus(dataFim, empresaIds, areasIds);
 
 		if (qtdAtivos != null && qtdAtivos > 0)
 			horasPerCapita = qtdHoras / qtdAtivos;
@@ -98,11 +92,11 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		indicadorTreinamento.setHorasPerCapita(horasPerCapita);
 		
 		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBean("colaboradorTurmaManager");
-		percentualFrequencia = colaboradorTurmaManager.percentualFrequencia(dataIni, dataFim, empresaIds, cursoIds);
+		percentualFrequencia = colaboradorTurmaManager.percentualFrequencia(dataIni, dataFim, empresaIds, areasIds, cursoIds);
 		indicadorTreinamento.setPercentualFrequencia(percentualFrequencia);
 		
 		TurmaManager turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
-		percentualInvestimento = turmaManager.getPercentualInvestimento(dataIni, dataFim, empresaIds);
+		percentualInvestimento = turmaManager.getPercentualInvestimento(somaCustos, dataIni, dataFim, empresaIds);
 		indicadorTreinamento.setPercentualInvestimento(percentualInvestimento);
 		
 		return indicadorTreinamento;

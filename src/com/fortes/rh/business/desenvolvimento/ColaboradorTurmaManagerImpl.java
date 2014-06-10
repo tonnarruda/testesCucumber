@@ -596,7 +596,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		}
 	}
 
-	public Double percentualFrequencia(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds)
+	public Double percentualFrequencia(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds)
 	{
 		double resultado = 0.0;
 		Integer qtdDiasPresentes = 0;
@@ -611,13 +611,15 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		diaTurmaManager = (DiaTurmaManager) SpringUtil.getBean("diaTurmaManager");
 		ColaboradorPresencaManager colaboradorPresencaManager = (ColaboradorPresencaManager) SpringUtil.getBean("colaboradorPresencaManager");
 		
+		CollectionUtil<Long> cUtil = new CollectionUtil<Long>();
+		
 		for (Long turmaId : turmaIds) 
 		{
-			qtdColaboradoresTurma = colaboradorManager.qtdColaboradoresByTurmas(Arrays.asList(turmaId));
+			qtdColaboradoresTurma = colaboradorManager.qtdColaboradoresByTurmas(Arrays.asList(turmaId), cUtil.convertArrayToCollection(areasIds));
 			qtdDiasTurma = diaTurmaManager.qtdDiasDasTurmas(turmaId);
 			
 			qtdDiasTotal += qtdColaboradoresTurma * qtdDiasTurma;
-			qtdDiasPresentes += colaboradorPresencaManager.qtdDiaPresentesTurma(turmaId);
+			qtdDiasPresentes += colaboradorPresencaManager.qtdDiaPresentesTurma(turmaId, areasIds);
 		}
 
 		if (!qtdDiasTotal.equals(0))
@@ -907,11 +909,11 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findColaboradorByTurma(turmaId, avaliacaoCursoId);
 	}
 	
-	public HashMap<String, Integer> getResultado(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds) 
+	public HashMap<String, Integer> getResultado(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds) 
 	{
 		HashMap<String, Integer> resultados = new HashMap<String, Integer>();
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(dataIni, dataFim, empresaIds, cursoIds);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(dataIni, dataFim, empresaIds, areasIds, cursoIds);
 		Integer qtdAprovados = new Integer(0);
 		Integer qtdReprovados = new Integer(0);
 

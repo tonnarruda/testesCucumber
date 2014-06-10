@@ -17,11 +17,13 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -491,23 +493,36 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         	return valor;
 	}
 	 
-	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds, Long[] cursosIds) 
+	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds, Long[] areasIds, Long[] cursosIds) 
 	{
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+				.add(Restrictions.le("hc2.data", new Date()));
+		
 		Criteria criteria = getSession().createCriteria(ColaboradorPresenca.class,"cp");
 		criteria.createCriteria("cp.colaboradorTurma", "ct");
 		criteria.createCriteria("ct.turma", "t");
 		criteria.createCriteria("t.empresa", "e");
+		criteria.createCriteria("ct.colaborador", "c");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
 
         criteria.setProjection(Projections.countDistinct("cp.colaboradorTurma.id"));
         criteria.add(Expression.ge("t.dataPrevIni", dataIni));
         criteria.add(Expression.le("t.dataPrevFim", dataFim));
         criteria.add(Expression.in("e.id", empresasIds));
         
+        criteria.add(Subqueries.propertyEq("hc.data", subQueryHc));
+        
+        if (LongUtil.arrayIsNotEmpty(areasIds))
+        	criteria.add(Expression.in("hc.areaOrganizacional.id", areasIds));
+        
         if (LongUtil.arrayIsNotEmpty(cursosIds))
         	criteria.add(Expression.in("t.curso.id", cursosIds));
 
         Integer valor = (Integer) criteria.uniqueResult();
-        if(valor == null)
+        
+        if (valor == null)
         	return 0;
         else
         	return valor;

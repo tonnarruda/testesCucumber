@@ -2314,22 +2314,36 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	public Integer getCountAtivos(Date dataIni, Date dataFim, Long[] empresaIds)
+	public Integer getCountAtivosQualquerStatus(Date dataBase, Long[] empresaIds, Long[] areasIds)
 	{
-		StringBuilder hql = new StringBuilder("select count(id) from Colaborador c ");
+		StringBuilder hql = new StringBuilder("select count(c.id) ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as c ");
 		hql.append("where c.empresa.id in (:empresaIds) ");
-
-		if(dataFim != null)
+		hql.append("		and hc.data = ( ");
+		hql.append("			select max(hc2.data) ");
+		hql.append("			from HistoricoColaborador as hc2 ");
+		hql.append("			where hc2.colaborador.id = c.id ");
+		hql.append("			and hc2.data <= :dataBase ");
+		hql.append("		) ");
+		
+		if (LongUtil.arrayIsNotEmpty(areasIds))
+			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
+		
+		if (dataBase != null)
 		{
-			hql.append("and c.dataAdmissao < :dataFim ");
-			hql.append("and (c.dataDesligamento = null or c.dataDesligamento > :dataFim) ");
+			hql.append("and c.dataAdmissao < :dataBase ");
+			hql.append("and (c.dataDesligamento = null or c.dataDesligamento > :dataBase) ");
 		}
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setParameterList("empresaIds", empresaIds);
 
-		if(dataFim != null)
-			query.setDate("dataFim", dataFim);
+		if (dataBase != null)
+			query.setDate("dataBase", dataBase);
+		
+		if (LongUtil.arrayIsNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds);
 
 		return (Integer) query.uniqueResult();
 	}
@@ -3061,16 +3075,27 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Integer qtdColaboradoresByTurmas(Collection<Long> turmaIds)
+	public Integer qtdColaboradoresByTurmas(Collection<Long> turmaIds, Collection<Long> areasIds)
 	{
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+				.add(Restrictions.le("hc2.data", new Date()));
+		
 		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
 		criteria.createCriteria("ct.turma", "t", Criteria.LEFT_JOIN);
 		criteria.createCriteria("ct.colaborador", "c", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.LEFT_JOIN);
+		
+		criteria.add(Subqueries.propertyEq("hc.data", subQueryHc));
 
 		criteria.setProjection(Projections.rowCount());
 
-		if(turmaIds != null && turmaIds.size() >= 1)
+		if (turmaIds != null && turmaIds.size() > 0)
 			criteria.add(Expression.in("t.id", turmaIds));
+
+		if (areasIds != null && areasIds.size() > 0)
+			criteria.add(Expression.in("hc.areaOrganizacional.id", areasIds));
 
 		return (Integer) criteria.uniqueResult();
 	}

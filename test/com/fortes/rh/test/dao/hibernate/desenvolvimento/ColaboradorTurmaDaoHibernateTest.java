@@ -1079,7 +1079,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		Date dataFim = DateUtil.montaDataByString("01/01/2020");
 		
 		try {
-			colaboradorTurmaDao.findAprovadosReprovados(dataIni, dataFim, null, null);	
+			colaboradorTurmaDao.findAprovadosReprovados(dataIni, dataFim, null, null, null);	
 			assertTrue(true);
 		} catch (Exception e) {
 			e.printStackTrace();
