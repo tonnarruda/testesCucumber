@@ -4,6 +4,7 @@
 		<Item visivel="S" motivo="S20140300172"><![CDATA[SESMT > Movimentações > Solicitação de EPIs: Nova opção de filtro por estabelecimento.]]></Item>
 		<Item visivel="N" motivo="P20140500222"><![CDATA[BUG: Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Editar: Ao gravar a edição da erro 500.]]></Item>
 		<Item visivel="N" motivo="P20140500248"><![CDATA[Ajuste no tamanho do campo "Email" do colaborador(quando integrado com AC).]]></Item>
+		<Item visivel="N" motivo="P20140300142"><![CDATA[Correção de bug ao marcar as notícias como lidas.]]></Item> 
 	</Versao>
 	<Versao id="1.1.127.153" bd="" data="02/06/2014">
 		<Item visivel="S" motivo=""><![CDATA[Melhorias internas.]]></Item>
