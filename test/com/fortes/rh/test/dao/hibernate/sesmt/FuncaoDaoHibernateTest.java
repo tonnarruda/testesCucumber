@@ -21,7 +21,6 @@ import com.fortes.rh.dao.sesmt.RiscoMedicaoRiscoDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
-import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -30,6 +29,7 @@ import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
@@ -402,17 +402,35 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest<Funcao>
 		Estabelecimento estabelecimento  = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(estabelecimento);
 		
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
+		Cargo cargo1 = CargoFactory.getEntity();
+		cargo1.setEmpresa(empresa1);
+		cargoDao.save(cargo1);
+		
+		Cargo cargo2 = CargoFactory.getEntity();
+		cargo2.setEmpresa(empresa2);
+		cargoDao.save(cargo2);
+		
 		Funcao funcao1 = FuncaoFactory.getEntity();
 		funcao1.setNome("F1");
+		funcao1.setCargo(cargo1);
 		funcaoDao.save(funcao1);
 		Funcao funcao2 = FuncaoFactory.getEntity();
 		funcao2.setNome("F2");
+		funcao2.setCargo(cargo2);
 		funcaoDao.save(funcao2);
 		Funcao funcao3 = FuncaoFactory.getEntity();
 		funcao3.setNome("F3");
+		funcao3.setCargo(cargo2);
 		funcaoDao.save(funcao3);
 		Funcao funcao4 = FuncaoFactory.getEntity();
 		funcao4.setNome("F4");
+		funcao4.setCargo(cargo1);
 		funcaoDao.save(funcao4);
 		
 		Ambiente ambiente = AmbienteFactory.getEntity();
@@ -462,7 +480,8 @@ public class FuncaoDaoHibernateTest extends GenericDaoHibernateTest<Funcao>
 		historicoColaborador3.setEstabelecimento(estabelecimento);
 		historicoColaboradorDao.save(historicoColaborador3);
 		
-		assertEquals(2, funcaoDao.getQtdColaboradorByFuncao(funcao2.getId(), estabelecimento  .getId(), hoje, Sexo.FEMININO));
+		Long[] funcoesIds = {funcao1.getId(), funcao2.getId(),funcao3.getId(),funcao4.getId()};
+		assertEquals(2, funcaoDao.getQtdColaboradorByFuncao(empresa2.getId(), estabelecimento  .getId(), hoje, 'T').size());
 	}
 
 	public GenericDao<Funcao> getGenericDao()

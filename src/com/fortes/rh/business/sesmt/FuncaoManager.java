@@ -26,8 +26,7 @@ public interface FuncaoManager extends GenericManager<Funcao>
 	Collection<PppRelatorio> populaRelatorioPpp(Colaborador colaborador, Empresa empresa, Date data, String nit, String cnae, String responsavel, String observacoes, String[] respostas) throws Exception;
 	Collection<Long> findFuncaoAtualDosColaboradores(Date data, Long estabelecimentoId);
 	Collection<String> findColaboradoresSemFuncao(Date data, Long estabelecimentoId);
-	int getQtdColaboradorByFuncao(Long funcaoId, Long estabelecimentoId, Date data, String sexo);
-	Collection<QtdPorFuncaoRelatorio> montaRelatorioQtdPorFuncao(Empresa empresa, Estabelecimento estabelecimento, Date data);
+	Collection<QtdPorFuncaoRelatorio> getQtdColaboradorByFuncao(Long empresaId, Long estabelecimentoId, Date data, char tipoAtivo);
 	void removeFuncao(Funcao funcao);
 	Collection<CheckBox> populaCheckBox();
 }

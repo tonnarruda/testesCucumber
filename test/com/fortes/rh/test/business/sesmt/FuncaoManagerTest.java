@@ -202,13 +202,6 @@ public class FuncaoManagerTest extends MockObjectTestCase
 	
 	public void testGetQtdColaboradorByFuncao()
 	{
-		Date data = new Date();
-		funcaoDao.expects(once()).method("getQtdColaboradorByFuncao").with(eq(1L), ANYTHING, eq(data), eq(Sexo.MASCULINO)).will(returnValue(1));
-		assertEquals(1, funcaoManager.getQtdColaboradorByFuncao(1L, null, data, Sexo.MASCULINO));
-	}
-	
-	public void testMontaRelatorioQtdPorFuncao()
-	{
 		Funcao funcao1 = FuncaoFactory.getEntity(1L);
 		funcao1.setNome("Programador");
 
@@ -220,16 +213,28 @@ public class FuncaoManagerTest extends MockObjectTestCase
 		funcaos.add(funcao2);
 		
 		Date data = new Date();
+		Collection<Object[]> retorno = new ArrayList<Object[]>();
+		retorno.add(new Object[]{1L, "Motorista", 1, null});
+		retorno.add(new Object[]{1L, "Motorista", null, 1});
+		retorno.add(new Object[]{2L, "Manobrista", null, 1});
 		
-		funcaoDao.expects(once()).method("findByEmpresa").will(returnValue(funcaos));
-		funcaoDao.expects(atLeastOnce()).method("getQtdColaboradorByFuncao").with(ANYTHING, ANYTHING, eq(data), eq(Sexo.MASCULINO)).will(returnValue(1));
-		funcaoDao.expects(atLeastOnce()).method("getQtdColaboradorByFuncao").with(ANYTHING, ANYTHING, eq(data), eq(Sexo.FEMININO)).will(returnValue(1));
+		funcaoDao.expects(atLeastOnce()).method("getQtdColaboradorByFuncao").with(ANYTHING, ANYTHING, eq(data), eq('T')).will(returnValue(retorno));
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(3L);
 		
-		Collection<QtdPorFuncaoRelatorio> qtdFuncao = funcaoManager.montaRelatorioQtdPorFuncao(empresa, estabelecimento, data);
-		assertEquals(2, qtdFuncao.size());
+		Collection<QtdPorFuncaoRelatorio> funcoesComTotalHomens_E_Mulheres = funcaoManager.getQtdColaboradorByFuncao(empresa.getId(), estabelecimento.getId(), data, 'T');
+		assertEquals(2, funcoesComTotalHomens_E_Mulheres.size());
+		
+		QtdPorFuncaoRelatorio qtdPorFuncaoRelatorio1 = ((QtdPorFuncaoRelatorio)funcoesComTotalHomens_E_Mulheres.toArray()[0]);
+		assertEquals((Long)1L, qtdPorFuncaoRelatorio1.getFuncaoId());
+		assertEquals((Integer)1, qtdPorFuncaoRelatorio1.getQtdHomens());
+		assertEquals((Integer)1, qtdPorFuncaoRelatorio1.getQtdMulheres());
+		
+		QtdPorFuncaoRelatorio qtdPorFuncaoRelatorio2 = ((QtdPorFuncaoRelatorio)funcoesComTotalHomens_E_Mulheres.toArray()[1]);
+		assertEquals((Long)2L, qtdPorFuncaoRelatorio2.getFuncaoId());
+		assertNull(qtdPorFuncaoRelatorio2.getQtdHomens());
+		assertEquals((Integer)1, qtdPorFuncaoRelatorio2.getQtdMulheres());
 	}
 	
     public void testPopulaCheckBox()

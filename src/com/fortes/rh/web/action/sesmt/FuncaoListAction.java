@@ -68,6 +68,8 @@ public class FuncaoListAction extends MyActionSupportList
 
 	private Estabelecimento estabelecimento;
 
+	private char tipoAtivo;
+	
 	public String list() throws Exception
 	{
 		setTotalSize(funcaoManager.getCount(cargoTmp.getId()));
@@ -156,7 +158,7 @@ public class FuncaoListAction extends MyActionSupportList
 		try
 		{
 			parametros = RelatorioUtil.getParametrosRelatorio("Distribuição de Colaboradores por Função", getEmpresaSistema(), "Data: " + DateUtil.formataDiaMesAno(data));
-			dataSource = funcaoManager.montaRelatorioQtdPorFuncao(getEmpresaSistema(), estabelecimento, data);
+			dataSource = funcaoManager.getQtdColaboradorByFuncao(getEmpresaSistema().getId(), estabelecimento.getId(), data, tipoAtivo);
 			
 			if (dataSource.isEmpty())
 			{
@@ -164,7 +166,6 @@ public class FuncaoListAction extends MyActionSupportList
 				throw new Exception(msg);  
 			}
 			
-			parametros.put("QTD_TOTAL", getQtdTotal());
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -210,16 +211,6 @@ public class FuncaoListAction extends MyActionSupportList
 			return INPUT;
 		}
 		return SUCCESS;
-	}
-
-	private Integer getQtdTotal()
-	{
-		Integer total = 0;
-		for (QtdPorFuncaoRelatorio tmp : dataSource)
-		{
-			total += tmp.getQtdTotal();
-		}
-		return total;
 	}
 
 	public Collection<Funcao> getFuncaos()
@@ -407,8 +398,14 @@ public class FuncaoListAction extends MyActionSupportList
 		this.funcoesCheckList = funcoesCheckList;
 	}
 
-	public void setHistoricoFuncaoManager(
-			HistoricoFuncaoManager historicoFuncaoManager) {
+	public void setHistoricoFuncaoManager(HistoricoFuncaoManager historicoFuncaoManager)
+	{
 		this.historicoFuncaoManager = historicoFuncaoManager;
 	}
+
+	public void setTipoAtivo(char tipoAtivo)
+	{
+		this.tipoAtivo = tipoAtivo;
+	}
+
 }

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -186,30 +187,45 @@ public class FuncaoDaoHibernate extends GenericDaoHibernate<Funcao> implements F
 		return query.list();
 	}
 	
-	public int getQtdColaboradorByFuncao(Long funcaoId, Long estabelecimentoId, Date data, String sexo)
+	public Collection<Object[]> getQtdColaboradorByFuncao(Long empresaId, Long estabelecimentoId, Date data, char tipoAtivo)
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select count(*) as qtd ");
+		hql.append("select f.id, f.nome, ");
+		hql.append("(case when c.pessoal.sexo = 'M' then count(c.pessoal.sexo) else 0 end), ");
+		hql.append("(case when c.pessoal.sexo = 'F' then count(c.pessoal.sexo) else 0 end) ");
 		hql.append("from HistoricoColaborador hc ");
-		hql.append("	join hc.colaborador c ");
-		hql.append("where   hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.data <=:data  and hc2.status = :status  and hc2.colaborador.id = hc.colaborador.id) ");
+		hql.append("    inner join hc.funcao f ");
+		hql.append("    inner join f.cargo ca ");
+		hql.append("    inner join hc.colaborador c ");
+		hql.append("where ca.empresa.id = :empresaId ");
+
+		if(tipoAtivo == 'A') // Ativo
+			hql.append("    and (c.dataDesligamento is null or c.dataDesligamento > :data) ");
+		else if(tipoAtivo == 'I') // Inativo
+			hql.append("    and c.dataDesligamento <= :data ");
 		
 		if (estabelecimentoId != null)
 			hql.append("	and hc.estabelecimento.id = :estabelecimentoId ");
 		
-		hql.append("	and hc.funcao.id = :idFuncao ");
-		hql.append("	and c.pessoal.sexo = :sexo ");
+		hql.append("    and hc.data=( ");
+		hql.append("            select max(hc2.data) ");
+		hql.append("            from HistoricoColaborador hc2 ");
+		hql.append("            where hc2.data <= :data ");
+		hql.append("                and hc2.status= :status "); 
+		hql.append("                and hc2.colaborador.id=hc.colaborador.id ");
+		hql.append("        ) ");
+		hql.append("group by f.id,f.nome, c.pessoal.sexo ");
+		hql.append("order by f.nome ");     
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("data", data);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		query.setLong("idFuncao", funcaoId);
-		query.setString("sexo", sexo);
+		query.setLong("empresaId", empresaId);
 		
 		if (estabelecimentoId != null)
 			query.setLong("estabelecimentoId", estabelecimentoId);
 
-		return (Integer)query.uniqueResult();
+		return query.list();
 	}
 }

@@ -149,24 +149,24 @@ public class FuncaoListActionTest extends MockObjectTestCase
     {
     	Collection<QtdPorFuncaoRelatorio> qtdPorFuncaos = new ArrayList<QtdPorFuncaoRelatorio>();
     	
-    	qtdPorFuncaos.add(new QtdPorFuncaoRelatorio("Mecânico", 5, 0));
-    	qtdPorFuncaos.add(new QtdPorFuncaoRelatorio("Motorista", 13, 1));
-    	qtdPorFuncaos.add(new QtdPorFuncaoRelatorio("Auxiliar de RH", 1, 20));
+    	qtdPorFuncaos.add(new QtdPorFuncaoRelatorio(1L, "Mecânico", 5, 0));
+    	qtdPorFuncaos.add(new QtdPorFuncaoRelatorio(2L, "Motorista", 13, 1));
+    	qtdPorFuncaos.add(new QtdPorFuncaoRelatorio(3L, "Auxiliar de RH", 1, 20));
     	
     	action.setEstabelecimento(EstabelecimentoFactory.getEntity(2L));
     	action.setData(new Date());
     	
-		manager.expects(once()).method("montaRelatorioQtdPorFuncao").with(eq(action.getEmpresaSistema()), eq(action.getEstabelecimento()), eq(action.getData())).will(returnValue(qtdPorFuncaos));
+		manager.expects(once()).method("getQtdColaboradorByFuncao").with(eq(action.getEmpresaSistema().getId()), eq(action.getEstabelecimento().getId()), eq(action.getData()), eq('T')).will(returnValue(qtdPorFuncaos));
     	
     	assertEquals("success", action.gerarRelatorioQtdPorFuncao());
-    	assertEquals(40 , action.getParametros().get("QTD_TOTAL"));
     }
     
     public void testGerarRelatorioQtdPorFuncaoException()
     {
-    	manager.expects(once()).method("montaRelatorioQtdPorFuncao").will(throwException(new NullPointerException()));
+    	manager.expects(once()).method("getQtdColaboradorByFuncao").will(throwException(new Exception()));
     	estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<Estabelecimento>()));
-    	assertEquals("input", action.gerarRelatorioQtdPorFuncao());
+    	String a = action.gerarRelatorioQtdPorFuncao();
+    	assertEquals("input", a);
     }
     
     public void testGetSet() throws Exception

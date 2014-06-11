@@ -21,6 +21,7 @@
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 		<@ww.datepicker label="Data" id="data" name="data" required="true" cssClass="mascaraData" value="${date}" />
 		<@ww.select label="Estabelecimento" id="estabelecimento" name="estabelecimento.id" required="true" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" cssStyle="width:240px;"/>
+		<@ww.select label="Exibir colaboradores" id="tipoAtivo" name="tipoAtivo" list=r"#{'A':'Ativos','I':'Inativos','T':'Todos'}" cssStyle="width: 96px;"/>
 	</@ww.form>
 
 	<div class="buttonGroup">

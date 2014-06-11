@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 
 import com.fortes.business.GenericManagerImpl;
@@ -14,7 +15,6 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.sesmt.FuncaoDao;
 import com.fortes.rh.exception.PppRelatorioException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
-import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -411,29 +411,26 @@ public class FuncaoManagerImpl extends GenericManagerImpl<Funcao, FuncaoDao> imp
 		return getDao().findFuncoesDoAmbiente(ambienteId, data);
 	}
 	
-	public int getQtdColaboradorByFuncao(Long funcaoId, Long estabelecimentoId, Date data, String sexo) {
-		return getDao().getQtdColaboradorByFuncao(funcaoId, estabelecimentoId, data, sexo);
-	}
-	
-	public Collection<QtdPorFuncaoRelatorio> montaRelatorioQtdPorFuncao(Empresa empresa, Estabelecimento estabelecimento, Date data)
-	{
-		Collection<QtdPorFuncaoRelatorio> qtdPorFuncao = new ArrayList<QtdPorFuncaoRelatorio>();
-		Collection<Funcao> funcoes = getDao().findByEmpresa(empresa.getId());
+	public Collection<QtdPorFuncaoRelatorio> getQtdColaboradorByFuncao(Long empresaId, Long estabelecimentoId, Date data, char tipoAtivo) {
 		
-		CollectionUtil<Funcao> collectionUtil = new CollectionUtil<Funcao>();
-		funcoes = collectionUtil .distinctCollection(funcoes);
-		funcoes = collectionUtil.sortCollectionStringIgnoreCase(funcoes, "nome");
+		Map<Long, QtdPorFuncaoRelatorio> mapQtdPorFuncaoRelatorio = new HashMap<Long, QtdPorFuncaoRelatorio>();  
+		Collection<QtdPorFuncaoRelatorio> qtdPorFuncaoRelatorios = new ArrayList<QtdPorFuncaoRelatorio>();  
+		Collection<Object[]> totalHomensMulheresPorFuncao = getDao().getQtdColaboradorByFuncao(empresaId, estabelecimentoId, data, tipoAtivo); 
 		
-		for (Funcao funcao : funcoes)
-		{
-			int qtdHomens = getDao().getQtdColaboradorByFuncao(funcao.getId(), estabelecimento.getId(), data, Sexo.MASCULINO); 
-			int qtdMulheres = getDao().getQtdColaboradorByFuncao(funcao.getId(), estabelecimento.getId(), data, Sexo.FEMININO);
+		for (Object[] HomensMulheresDeUmaFuncao : totalHomensMulheresPorFuncao) {
 			
-			QtdPorFuncaoRelatorio qtdPorFuncaoRelatorio = new QtdPorFuncaoRelatorio(funcao.getNome(), qtdHomens, qtdMulheres);
-			qtdPorFuncao.add(qtdPorFuncaoRelatorio);
+			if(mapQtdPorFuncaoRelatorio.containsKey((Long)HomensMulheresDeUmaFuncao[0])){
+				QtdPorFuncaoRelatorio qtdPorFuncaoRelatorioTmp = mapQtdPorFuncaoRelatorio.get((Long)HomensMulheresDeUmaFuncao[0]);
+				qtdPorFuncaoRelatorioTmp.setQtdHomesAndMulheres((Integer) HomensMulheresDeUmaFuncao[2], (Integer) HomensMulheresDeUmaFuncao[3]);
+			} else {
+				QtdPorFuncaoRelatorio qtdPorFuncaoRelatorioTmp = new QtdPorFuncaoRelatorio((Long)HomensMulheresDeUmaFuncao[0], (String)HomensMulheresDeUmaFuncao[1], (Integer) HomensMulheresDeUmaFuncao[2], (Integer) HomensMulheresDeUmaFuncao[3]);
+				mapQtdPorFuncaoRelatorio.put(qtdPorFuncaoRelatorioTmp.getFuncaoId(), qtdPorFuncaoRelatorioTmp);
+				qtdPorFuncaoRelatorios.add(qtdPorFuncaoRelatorioTmp);
+			}
+				
 		}
 		
-		return qtdPorFuncao;
+		return qtdPorFuncaoRelatorios;
 	}
 	
 	public Collection<CheckBox> populaCheckBox() {
