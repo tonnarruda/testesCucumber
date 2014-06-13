@@ -155,6 +155,7 @@ public class FuncaoListActionTest extends MockObjectTestCase
     	
     	action.setEstabelecimento(EstabelecimentoFactory.getEntity(2L));
     	action.setData(new Date());
+    	action.setTipoAtivo('T');
     	
 		manager.expects(once()).method("getQtdColaboradorByFuncao").with(eq(action.getEmpresaSistema().getId()), eq(action.getEstabelecimento().getId()), eq(action.getData()), eq('T')).will(returnValue(qtdPorFuncaos));
     	
@@ -163,10 +164,12 @@ public class FuncaoListActionTest extends MockObjectTestCase
     
     public void testGerarRelatorioQtdPorFuncaoException()
     {
-    	manager.expects(once()).method("getQtdColaboradorByFuncao").will(throwException(new Exception()));
+    	action.setEstabelecimento(EstabelecimentoFactory.getEntity(2L));
+    	
+    	manager.expects(once()).method("getQtdColaboradorByFuncao").will(throwException(new NullPointerException()));
     	estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<Estabelecimento>()));
-    	String a = action.gerarRelatorioQtdPorFuncao();
-    	assertEquals("input", a);
+    	
+    	assertEquals("input", action.gerarRelatorioQtdPorFuncao());
     }
     
     public void testGetSet() throws Exception
