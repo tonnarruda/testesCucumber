@@ -19,6 +19,6 @@ CREATE OR REPLACE VIEW situacaosolicitacaoepi AS
   WHERE hc.data = (( SELECT max(hc2.data) AS max
    FROM historicocolaborador hc2
   WHERE hc2.colaborador_id = c.id AND hc2.status = 1 AND hc2.data <= 'now'::text::date)) AND hc.status = 1
-  GROUP BY se.id, se.empresa_id, est.id, est.nome, c.matricula, c.id, c.nome, c.desligado, se.data, ca.id, ca.nome) sub;
+  GROUP BY se.id, se.empresa_id, est.id, est.nome, c.matricula, c.id, c.nome, c.desligado, se.data, ca.id, ca.nome) sub;--.go
 
-ALTER TABLE situacaosolicitacaoepi OWNER TO postgres;
+ALTER TABLE situacaosolicitacaoepi OWNER TO postgres;--.go

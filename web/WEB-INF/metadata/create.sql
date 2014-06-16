@@ -6274,7 +6274,8 @@ CREATE TABLE solicitacaoepi (
     data date,
     colaborador_id bigint,
     cargo_id bigint,
-    empresa_id bigint
+    empresa_id bigint,
+    estabelecimento_id bigint
 );
 
 
@@ -6314,7 +6315,7 @@ ALTER TABLE public.solicitacaoepiitementrega OWNER TO postgres;
 --
 
 CREATE VIEW situacaosolicitacaoepi AS
-    SELECT sub.solicitacaoepiid, sub.empresaid, sub.estabelecimentoid, sub.estabelecimentonome, sub.colaboradorid, sub.colaboradormatricula, sub.colaboradornome, sub.colaboradordesligado, sub.solicitacaoepidata, sub.cargonome, sub.qtdsolicitado, sub.qtdentregue, CASE WHEN (sub.qtdsolicitado <= sub.qtdentregue) THEN 'E'::text WHEN ((sub.qtdentregue > 0) AND (sub.qtdentregue < sub.qtdsolicitado)) THEN 'P'::text WHEN (sub.qtdentregue = 0) THEN 'A'::text ELSE NULL::text END AS solicitacaoepisituacao FROM (SELECT se.id AS solicitacaoepiid, se.empresa_id AS empresaid, est.id AS estabelecimentoid, est.nome AS estabelecimentonome, c.id AS colaboradorid, c.matricula AS colaboradormatricula, c.nome AS colaboradornome, c.desligado AS colaboradordesligado, se.data AS solicitacaoepidata, ca.nome AS cargonome, (SELECT sum(sei2.qtdsolicitado) AS sum FROM solicitacaoepi_item sei2 WHERE (sei2.solicitacaoepi_id = se.id)) AS qtdsolicitado, COALESCE(sum(seie.qtdentregue), (0)::bigint) AS qtdentregue FROM ((((((solicitacaoepi se LEFT JOIN solicitacaoepi_item sei ON ((sei.solicitacaoepi_id = se.id))) LEFT JOIN solicitacaoepiitementrega seie ON ((seie.solicitacaoepiitem_id = sei.id))) LEFT JOIN colaborador c ON ((se.colaborador_id = c.id))) LEFT JOIN historicocolaborador hc ON ((c.id = hc.colaborador_id))) LEFT JOIN estabelecimento est ON ((hc.estabelecimento_id = est.id))) LEFT JOIN cargo ca ON ((se.cargo_id = ca.id))) WHERE ((hc.data = (SELECT max(hc2.data) AS max FROM historicocolaborador hc2 WHERE (((hc2.colaborador_id = c.id) AND (hc2.status = 1)) AND (hc2.data <= ('now'::text)::date)))) AND (hc.status = 1)) GROUP BY se.id, se.empresa_id, est.id, est.nome, c.matricula, c.id, c.nome, c.desligado, se.data, ca.id, ca.nome) sub;
+    SELECT sub.solicitacaoepiid, sub.empresaid, sub.estabelecimentoid, sub.estabelecimentonome, sub.colaboradorid, sub.colaboradormatricula, sub.colaboradornome, sub.colaboradordesligado, sub.solicitacaoepidata, sub.cargonome, sub.qtdsolicitado, sub.qtdentregue, CASE WHEN (sub.qtdsolicitado <= sub.qtdentregue) THEN 'E'::text WHEN ((sub.qtdentregue > 0) AND (sub.qtdentregue < sub.qtdsolicitado)) THEN 'P'::text WHEN (sub.qtdentregue = 0) THEN 'A'::text ELSE NULL::text END AS solicitacaoepisituacao FROM (SELECT se.id AS solicitacaoepiid, se.empresa_id AS empresaid, est.id AS estabelecimentoid, est.nome AS estabelecimentonome, c.id AS colaboradorid, c.matricula AS colaboradormatricula, c.nome AS colaboradornome, c.desligado AS colaboradordesligado, se.data AS solicitacaoepidata, ca.nome AS cargonome, (SELECT sum(sei2.qtdsolicitado) AS sum FROM solicitacaoepi_item sei2 WHERE (sei2.solicitacaoepi_id = se.id)) AS qtdsolicitado, COALESCE(sum(seie.qtdentregue), (0)::bigint) AS qtdentregue FROM ((((((solicitacaoepi se LEFT JOIN solicitacaoepi_item sei ON ((sei.solicitacaoepi_id = se.id))) LEFT JOIN solicitacaoepiitementrega seie ON ((seie.solicitacaoepiitem_id = sei.id))) LEFT JOIN colaborador c ON ((se.colaborador_id = c.id))) LEFT JOIN historicocolaborador hc ON ((c.id = hc.colaborador_id))) LEFT JOIN estabelecimento est ON ((se.estabelecimento_id = est.id))) LEFT JOIN cargo ca ON ((se.cargo_id = ca.id))) WHERE ((hc.data = (SELECT max(hc2.data) AS max FROM historicocolaborador hc2 WHERE (((hc2.colaborador_id = c.id) AND (hc2.status = 1)) AND (hc2.data <= ('now'::text)::date)))) AND (hc.status = 1)) GROUP BY se.id, se.empresa_id, est.id, est.nome, c.matricula, c.id, c.nome, c.desligado, se.data, ca.id, ca.nome) sub;
 
 
 ALTER TABLE public.situacaosolicitacaoepi OWNER TO postgres;
@@ -30509,6 +30510,9 @@ INSERT INTO migrations (name) VALUES ('20140429104405');
 INSERT INTO migrations (name) VALUES ('20140429143936');
 INSERT INTO migrations (name) VALUES ('20140512151149');
 INSERT INTO migrations (name) VALUES ('20140512154855');
+INSERT INTO migrations (name) VALUES ('20140602094519');
+INSERT INTO migrations (name) VALUES ('20140602100751');
+INSERT INTO migrations (name) VALUES ('20140602104036');
 
 
 --
@@ -30865,7 +30869,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.127.153', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.128.154', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
 
 
 --
@@ -35550,6 +35554,14 @@ ALTER TABLE ONLY solicitacaoepi
 
 ALTER TABLE ONLY solicitacaoepi
     ADD CONSTRAINT solicitacaoepi_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
+-- Name: solicitacaoepi_estabelecimento_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY solicitacaoepi
+    ADD CONSTRAINT solicitacaoepi_estabelecimento_fk FOREIGN KEY (estabelecimento_id) REFERENCES estabelecimento(id);
 
 
 --
