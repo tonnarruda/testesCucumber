@@ -298,6 +298,7 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		criteria.add(Expression.eq("pp.codigo", role));
 		criteria.add(Expression.eq("u.acessoSistema", true));
 		criteria.add(Expression.eq("ue.empresa.id", EmpresaId));
+		criteria.add(Expression.isNotNull("c.contato.email"));
 		
 		criteria.addOrder(Order.asc("c.contato.email"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
