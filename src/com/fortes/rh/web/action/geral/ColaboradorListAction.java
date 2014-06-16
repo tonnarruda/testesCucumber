@@ -408,10 +408,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			if(colaboradores.isEmpty())
 				throw new Exception("SEM_DADOS");
 			
-			JRDataSource dataSource = new JRBeanCollectionDataSource(colaboradores);
-
-			String filtro = "Estabelecimentos: " + estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null);
-			filtro += "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areaOrganizacionalsCheck));
+			JRDataSource dataSource = setupRelatorio();
 			
 			montaColunas();
             
