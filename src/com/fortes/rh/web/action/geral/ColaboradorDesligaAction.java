@@ -182,8 +182,8 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 
 	public String visualizarSolicitacaoDesligamento() throws Exception
 	{
-		motivoDemissaos = motivoDemissaoManager.findAllSelect(getEmpresaSistema().getId());
 		colaborador = colaboradorManager.findColaboradorByIdProjection(colaborador.getId());
+		motivoDemissaos = motivoDemissaoManager.findAllSelect(getEmpresaSistema().getId());
 		
 		return Action.SUCCESS;
 	}

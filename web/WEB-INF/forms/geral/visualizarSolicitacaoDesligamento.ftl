@@ -23,7 +23,7 @@
 		<@ww.label cssStyle="font-family: Arial, Helvetica, sans-serif;font-size:16px;font-weight:bold;" name="colaborador.nome"/><br />
 	
 		<@ww.textfield label="Data de Soliciação de Desligamento" cssStyle="width:90px;" disabled="true" value="${colaborador.dataSolicitacaoDesligamento?string('dd/MM/yyyy')}"/>
-		<@ww.select label="Motivo do Desligamento" list="motivoDemissaos"  listKey="id" listValue="motivo" cssStyle="width: 355px;" disabled="true" value="${colaborador.motivoDemissao.id}"/>
+		<@ww.select name="colaborador.motivoDemissao.id" label="Motivo do Desligamento" list="motivoDemissaos" listKey="id" listValue="motivo" cssStyle="width: 355px;" disabled="true"/>
 		<@ww.textarea label="Observação" cssStyle="width:355px;" disabled="true" value="${colaborador.observacaoDemissao}"/>
 	</@ww.form>
 	
