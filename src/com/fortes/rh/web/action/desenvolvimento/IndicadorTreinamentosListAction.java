@@ -87,7 +87,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
    		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresasCheck);
    		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, StringUtil.LongToString(areasCheck));
    		
-   		Collection<Curso> cursos = cursoManager.findAllByEmpresasParticipantes(new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas));
+   		Collection<Curso> cursos = cursoManager.findAllByEmpresasParticipantes(empresasCheck);
 		cursosCheckList =  CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
 		cursosCheckList =  CheckListBoxUtil.marcaCheckListBox(cursosCheckList, StringUtil.LongToString(cursosCheck));
    		

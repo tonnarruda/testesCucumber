@@ -1,6 +1,7 @@
 package com.fortes.rh.dao.desenvolvimento;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
@@ -13,5 +14,5 @@ public interface ColaboradorPresencaDao extends GenericDao<ColaboradorPresenca>
 	Collection<ColaboradorPresenca> findByDiaTurma(Long diaTurmaId);
 	void savePresencaDia(Long diaTurmaId, Long[] colaboradorTurmaIds);
 	void removeByColaboradorTurma(Long[] colaboradorTurmaIds);
-	public Integer qtdDiaPresentesTurma(Long turmaId, Long[] areasIds);
+	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds);
 }

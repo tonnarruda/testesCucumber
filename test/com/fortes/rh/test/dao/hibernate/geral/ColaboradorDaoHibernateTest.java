@@ -29,6 +29,8 @@ import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.cargosalario.ReajusteColaboradorDao;
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
+import com.fortes.rh.dao.desenvolvimento.CursoDao;
+import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.BairroDao;
@@ -68,6 +70,8 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.EstadoCivil;
@@ -124,6 +128,8 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.ReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
+import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.geral.CamposExtrasFactory;
 import com.fortes.rh.test.factory.geral.ColaboradorOcorrenciaFactory;
@@ -181,6 +187,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	private ProvidenciaDao providenciaDao;
 	private PeriodoExperienciaDao periodoExperienciaDao;
 	private ColaboradorPeriodoExperienciaAvaliacaoDao colaboradorPeriodoExperienciaAvaliacaoDao;
+	private CursoDao cursoDao;
+	private DiaTurmaDao diaTurmaDao;
 
 	private Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 	private Cargo cargo1 = CargoFactory.getEntity();
@@ -4884,7 +4892,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador2.setData(hoje);
 		historicoColaboradorDao.save(historicoColaborador2);
 
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
 		Turma turma = TurmaFactory.getEntity(1L);
+		turma.setCurso(curso);
 		turma.setDescricao("teste");
 		turma.setEmpresa(empresa);
 		turmaDao.save(turma);
@@ -4901,8 +4913,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorTurma2.setTurma(turma);
 		colaboradorTurma2.setColaborador(colaborador2);
 		colaboradorTurmaDao.save(colaboradorTurma2);
+		
+		DiaTurma diaTurma = DiaTurmaFactory.getEntity();
+		diaTurma.setTurma(turma);
+		diaTurmaDao.save(diaTurma);
 
-		assertEquals(new Integer(2), colaboradorDao.qtdColaboradoresByTurmas(turmaIds, null));
+		assertEquals(new Integer(2), colaboradorDao.qtdTotalDiasDaTurmaVezesColaboradoresInscritos(null, null, null, new Long[]{curso.getId()}, null));
 	}
 
 	public void testFindParentesByNome() 
@@ -6285,8 +6301,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		this.periodoExperienciaDao = periodoExperienciaDao;
 	}
 
-	public void setColaboradorPeriodoExperienciaAvaliacaoDao(
-			ColaboradorPeriodoExperienciaAvaliacaoDao colaboradorPeriodoExperienciaAvaliacaoDao) {
+	public void setColaboradorPeriodoExperienciaAvaliacaoDao(ColaboradorPeriodoExperienciaAvaliacaoDao colaboradorPeriodoExperienciaAvaliacaoDao) {
 		this.colaboradorPeriodoExperienciaAvaliacaoDao = colaboradorPeriodoExperienciaAvaliacaoDao;
 	}
+
+	public void setCursoDao(CursoDao cursoDao) {
+		this.cursoDao = cursoDao;
+	}
+
+	public void setDiaTurmaDao(DiaTurmaDao diaTurmaDao) {
+		this.diaTurmaDao = diaTurmaDao;
+	}
+
 }

@@ -8,6 +8,7 @@
 		</action>
 	
 		<action name="list" class="com.fortes.rh.web.action.desenvolvimento.IndicadorTreinamentosListAction" method="list">
+	      	<interceptor-ref name="showFilterStack" />			
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/indicadorTreinamentoList.ftl</result>
 		</action>
 

@@ -2,6 +2,7 @@ package com.fortes.rh.business.desenvolvimento;
 
 import java.text.DecimalFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Locale;
 
 import com.fortes.business.GenericManagerImpl;
@@ -64,12 +65,9 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 		getDao().remove(diaTurmaId, null);
 	}
 
-	public Integer qtdDiaPresentesTurma(Long turmaId, Long[] areasIds)
+	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds)
 	{
-		if (turmaId != null)
-			return getDao().qtdDiaPresentesTurma(turmaId, areasIds);
-		else
-			return 0;
+		return getDao().qtdDiaPresentesTurma(dataIni, dataFim, empresaIds, cursoIds, areasIds);
 	}
 
 	public String calculaFrequencia(Long colaboradorTurmaId, Integer qtdDias)

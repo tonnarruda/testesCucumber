@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.128.155" bd="" data="xx/06/2014">
+		<Item visivel="S" motivo="S20140500038"><![CDATA[T&D > Painel de Indicadores: Novo filtro por área organizacional.]]></Item>
 		<Item visivel="N" motivo="P20140600075"><![CDATA[BUG: Info. Funcionais > Cadastros > Colaboradores > Desligar colaborador/Solicitar desligamento: Mensagem de erro ao tentar desligar colaborador.]]></Item>
 		<Item visivel="N" motivo="P20140600075"><![CDATA[BUG: Info. Funcionais > Movimentações > Aprovar/Reprovar Solicitações de Desligamento: Não marcava o motivo do desligamento corretamente.]]></Item>
 		<Item visivel="N" motivo="P20140600073"><![CDATA[BUG: Info. Funcionais > Relatórios > Listagem de Colaboradores: Exibia a mensagem "Não foi possível gerar o relatório".]]></Item>

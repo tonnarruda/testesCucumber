@@ -1661,12 +1661,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		this.camposExtrasManager = camposExtrasManager;
 	}
-	public Integer qtdColaboradoresByTurmas(Collection<Long> turmaIds, Collection<Long> areasIds) 
+	public Integer qtdTotalDiasDaTurmaVezesColaboradoresInscritos(Date dataPrevIni, Date dataPrevFim, Long[] EmpresaIds, Long[] cursoIds, Long[] areasIds) 
 	{
-		if (turmaIds != null && !turmaIds.isEmpty())
-			return getDao().qtdColaboradoresByTurmas(turmaIds, areasIds);
-		else
-			return 0;
+		return getDao().qtdTotalDiasDaTurmaVezesColaboradoresInscritos(dataPrevIni, dataPrevFim, EmpresaIds, cursoIds, areasIds);
 	}
 
 	public Integer getCountComHistoricoFuturoSQL(Map parametros)

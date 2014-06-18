@@ -11,10 +11,12 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorPresencaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
+import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 
@@ -116,7 +118,10 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 	
 	public void testqtdDiaPresentesTurma() 
 	{
+		Curso curso = CursoFactory.getEntity(1L);
+		
 		Turma turma = TurmaFactory.getEntity(1L);
+		turma.setCurso(curso);
 		turma.setRealizada(true);
 		
 		DiaTurma diaTurma1 = DiaTurmaFactory.getEntity(1L);
@@ -128,11 +133,9 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 		ColaboradorPresenca colaboradorPresenca2 = ColaboradorPresencaFactory.getEntity(2L);
 		colaboradorPresenca2.setDiaTurma(diaTurma1);
 		
-		colaboradorPresencaDao.expects(once()).method("qtdDiaPresentesTurma").with(ANYTHING, ANYTHING).will(returnValue(2));
+		colaboradorPresencaDao.expects(once()).method("qtdDiaPresentesTurma").withAnyArguments().will(returnValue(2));
 		
-		assertEquals(new Integer(2), colaboradorPresencaManager.qtdDiaPresentesTurma(turma.getId(), null));
-		
-		assertEquals(new Integer(0), colaboradorPresencaManager.qtdDiaPresentesTurma(null, null));
+		assertEquals(new Integer(2), colaboradorPresencaManager.qtdDiaPresentesTurma(null, null, null, new Long[]{turma.getId()}, null));
 	}
 	
 	//reftorar

@@ -65,14 +65,14 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 	
 	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds)
 	{
-		IndicadorTreinamento indicadorTreinamento = findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, areasIds, cursoIds);
+		IndicadorTreinamento indicadorTreinamento = getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, areasIds, cursoIds);
 		indicadorTreinamento.setDataIni(dataIni);
 		indicadorTreinamento.setDataFim(dataFim);
 		
 		Double qtdHoras = indicadorTreinamento.getSomaHoras();
 		Double somaCustos = indicadorTreinamento.getSomaCustos();
 
-		indicadorTreinamento.setCustoMedioHora( somaCustos / qtdHoras );
+		indicadorTreinamento.setCustoMedioHora( qtdHoras > 0 ? somaCustos / qtdHoras : 0);
 
 		Double custoPerCapita = 0d;
 		Double horasPerCapita = 0d;
@@ -92,7 +92,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		indicadorTreinamento.setHorasPerCapita(horasPerCapita);
 		
 		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBean("colaboradorTurmaManager");
-		percentualFrequencia = colaboradorTurmaManager.percentualFrequencia(dataIni, dataFim, empresaIds, areasIds, cursoIds);
+		percentualFrequencia = colaboradorTurmaManager.percentualFrequencia(dataIni, dataFim, empresaIds, cursoIds, areasIds);
 		indicadorTreinamento.setPercentualFrequencia(percentualFrequencia);
 		
 		TurmaManager turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
@@ -100,11 +100,6 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		indicadorTreinamento.setPercentualInvestimento(percentualInvestimento);
 		
 		return indicadorTreinamento;
-	}
-	
-	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds)
-	{
-		return getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, areasIds, cursoIds);
 	}
 	
 	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursosIds)

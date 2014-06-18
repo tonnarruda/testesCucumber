@@ -1,6 +1,7 @@
 package com.fortes.rh.dao.hibernate.desenvolvimento;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -16,6 +17,7 @@ import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
+import com.fortes.rh.util.LongUtil;
 
 public class ColaboradorPresencaDaoHibernate extends GenericDaoHibernate<ColaboradorPresenca> implements ColaboradorPresencaDao
 {
@@ -121,12 +123,15 @@ public class ColaboradorPresencaDaoHibernate extends GenericDaoHibernate<Colabor
 		q.executeUpdate();
 	}
 	
-	public Integer qtdDiaPresentesTurma(Long turmaId, Long[] areasIds)
+	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select count(dt.id) ");
+		hql.append("select coalesce(count(dt.id), 0) ");
 		hql.append("from ColaboradorPresenca as cp ");
 		hql.append("inner join cp.diaTurma dt ");
+		hql.append("inner join dt.turma t ");
+		hql.append("inner join t.curso cs ");
+		hql.append("left join cs.empresasParticipantes ep ");
 		hql.append("inner join cp.colaboradorTurma ct ");
 		hql.append("inner join ct.colaborador c ");
 		hql.append("inner join c.historicoColaboradors hc ");
@@ -136,16 +141,34 @@ public class ColaboradorPresencaDaoHibernate extends GenericDaoHibernate<Colabor
 		hql.append("			where hc2.colaborador.id = c.id ");
 		hql.append("		) ");
 		
-		if (turmaId != null)
-			hql.append("and dt.turma.id = :turmaId ");
+		if (dataIni != null)
+			hql.append("and t.dataPrevIni >= :dataIni ");
+
+		if (dataFim != null)
+			hql.append("and t.dataPrevFim <= :dataFim "); 
+
+		if (LongUtil.arrayIsNotEmpty(empresaIds))
+			hql.append("and (cs.empresa.id in (:empresaIds) or ep.id in (:empresaIds)) ");
+		
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
+			hql.append("and t.curso.id in (:cursoIds) ");
 		
 		if (areasIds != null && areasIds.length > 0)
 			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		
-		if (turmaId != null)
-			query.setLong("turmaId", turmaId);
+		if (dataIni != null)
+			query.setDate("dataIni", dataIni);
+
+		if (dataFim != null)
+			query.setDate("dataFim", dataFim);
+		
+		if (LongUtil.arrayIsNotEmpty(empresaIds))
+			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+		
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
+			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
 		
 		if (areasIds != null && areasIds.length > 0)
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);

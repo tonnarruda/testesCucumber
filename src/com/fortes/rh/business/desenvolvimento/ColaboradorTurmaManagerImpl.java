@@ -596,43 +596,22 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		}
 	}
 
-	public Double percentualFrequencia(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds)
+	public Double percentualFrequencia(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds)
 	{
-		double resultado = 0.0;
-		Integer qtdDiasPresentes = 0;
-		Integer qtdDiasTotal = 0;
-		Integer qtdColaboradoresTurma;
-		Integer qtdDiasTurma;
-		
-		turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");
-		Collection<Turma> turmas = turmaManager.findByFiltro(dataIni, dataFim, 'T', empresaIds, cursoIds);
-		Collection<Long> turmaIds = LongUtil.collectionToCollectionLong(turmas);
+		Integer qtdDiasTotal = colaboradorManager.qtdTotalDiasDaTurmaVezesColaboradoresInscritos(dataIni, dataFim, empresaIds, cursoIds, areasIds);
 
-		diaTurmaManager = (DiaTurmaManager) SpringUtil.getBean("diaTurmaManager");
-		ColaboradorPresencaManager colaboradorPresencaManager = (ColaboradorPresencaManager) SpringUtil.getBean("colaboradorPresencaManager");
-		
-		CollectionUtil<Long> cUtil = new CollectionUtil<Long>();
-		
-		for (Long turmaId : turmaIds) 
-		{
-			qtdColaboradoresTurma = colaboradorManager.qtdColaboradoresByTurmas(Arrays.asList(turmaId), cUtil.convertArrayToCollection(areasIds));
-			qtdDiasTurma = diaTurmaManager.qtdDiasDasTurmas(turmaId);
-			
-			qtdDiasTotal += qtdColaboradoresTurma * qtdDiasTurma;
-			qtdDiasPresentes += colaboradorPresencaManager.qtdDiaPresentesTurma(turmaId, areasIds);
-		}
-
-		if (!qtdDiasTotal.equals(0))
-		{
-			resultado = (double) (qtdDiasPresentes.doubleValue() / qtdDiasTotal.doubleValue());
-
-			BigDecimal valor = new BigDecimal(resultado);  
-			valor.setScale(2, BigDecimal.ROUND_UP); //Seta o n° de casas decimais para 2 e o arredondamento para cima  
-			double valorFormatado = valor.doubleValue();  
-			
-			return valorFormatado*100 ;
-		}else
+		if (qtdDiasTotal.equals(0))
 			return 100.0;
+
+		ColaboradorPresencaManager colaboradorPresencaManager = (ColaboradorPresencaManager) SpringUtil.getBean("colaboradorPresencaManager");
+		Integer qtdDiasPresentes = colaboradorPresencaManager.qtdDiaPresentesTurma(dataIni, dataFim, empresaIds, cursoIds, areasIds);
+			
+		double resultado = (double) (qtdDiasPresentes.doubleValue() / qtdDiasTotal.doubleValue());
+
+		BigDecimal valor = new BigDecimal(resultado);  
+		valor.setScale(2, BigDecimal.ROUND_UP); //Seta o n° de casas decimais para 2 e o arredondamento para cima  
+
+		return valor.doubleValue() * 100;  
 	}
 	
 	public Collection<Certificado> montaCertificados(Collection<Colaborador> colaboradores, Certificado certificado, Long empresaId)

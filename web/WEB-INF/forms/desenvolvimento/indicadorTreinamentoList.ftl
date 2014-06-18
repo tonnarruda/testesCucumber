@@ -30,7 +30,6 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	
-	<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
@@ -209,6 +208,7 @@
 			<@frt.checkListBox label="Empresas" id="empresasCheck" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" onClick="populaCursos();populaAreas();" width="310" liClass="liLeft"/>
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" list="areasCheckList" form="document.getElementById('formBusca')" width="310" liClass="liLeft"/>
 			<@frt.checkListBox label="Cursos" name="cursosCheck" id="cursosCheck" list="cursosCheckList" form="document.getElementById('formBusca')" width="310" liClass="liLeft"/>
+			<@ww.hidden id="showFilter" name="showFilter"/>
 			<button onclick="return enviaForm(1);" class="btnPesquisar grayBGE"></button>
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />

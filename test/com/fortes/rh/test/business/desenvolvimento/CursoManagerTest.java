@@ -102,10 +102,4 @@ public class CursoManagerTest extends MockObjectTestCase
 		assertEquals("4:30", cursoManager.somaCargaHoraria(turmas));
 	}
 	
-	public void testFindSomaCustoEHorasTreinamentos()
-	{
-		cursoDao.expects(once()).method("findIndicadorHorasTreinamentos").withAnyArguments().will(returnValue(new IndicadorTreinamento(10, 10, 10, 106.81, 5000.0)));
-		IndicadorTreinamento indicadorTreinamento = cursoManager.findIndicadorHorasTreinamentos(new Date(), new Date(), new Long[] { 1L }, null, null); 
-		assertEquals(106.81, indicadorTreinamento.getSomaHoras());
-	}
 }

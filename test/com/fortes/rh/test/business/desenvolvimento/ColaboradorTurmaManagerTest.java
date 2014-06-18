@@ -1134,55 +1134,12 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 
 	public void testPercentualFrequencia() 
 	{
-		Empresa empresa = new Empresa();
-		empresa.setId(1L);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		
-		Turma turma = TurmaFactory.getEntity(1L);
-		
-		Collection<Long> turmaIds = new ArrayList<Long>();
-		turmaIds.add(turma.getId());
-		
-		Collection<Turma> turmas = new ArrayList<Turma>();
-		turmas.add(new Turma(turma.getId(), 11.1));
-		
-		DiaTurma diaTurma1 = DiaTurmaFactory.getEntity(1L);
-		diaTurma1.setDia(new Date());
-		diaTurma1.setTurma(turma);
-		
-		DiaTurma diaTurma2 = DiaTurmaFactory.getEntity(2L);
-		diaTurma2.setDia(new Date());
-		diaTurma2.setTurma(turma);
+		colaboradorManager.expects(atLeastOnce()).method("qtdTotalDiasDaTurmaVezesColaboradoresInscritos").withAnyArguments().will(returnValue(5));
 
-		Collection<ColaboradorPresenca> colaboradorPresencas = new ArrayList<ColaboradorPresenca>();
-		colaboradorPresencas.add(new ColaboradorPresenca(colaborador.getId(), turma.getId(), 20));
-		
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
-		colaboradorTurma.setColaborador(colaborador);
-		colaboradorTurma.setTurma(turma);
-		
-		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-		colaboradores.add(colaborador);
-		
 		MockSpringUtil.mocks.put("colaboradorPresencaManager", colaboradorPresencaManager);
-		MockSpringUtil.mocks.put("turmaManager", turmaManager);
-		MockSpringUtil.mocks.put("diaTurmaManager", diaTurmaManager);
-
-		turmaManager.expects(once()).method("findByFiltro").with(new Constraint[] {ANYTHING, ANYTHING, eq('T'), eq(new Long[]{empresa.getId()}), eq(null)}).will(returnValue(turmas));
-		colaboradorManager.expects(atLeastOnce()).method("qtdColaboradoresByTurmas").with(eq(turmaIds), ANYTHING).will(returnValue(colaboradores.size()));
-		diaTurmaManager.expects(atLeastOnce()).method("qtdDiasDasTurmas").with(eq(turma.getId())).will(returnValue(new Integer(2)));
-		colaboradorPresencaManager.expects(once()).method("qtdDiaPresentesTurma").with(eq(turma.getId()), ANYTHING).will(returnValue(new Integer(1)));
+		colaboradorPresencaManager.expects(atLeastOnce()).method("qtdDiaPresentesTurma").withAnyArguments().will(returnValue(3));
 		
-		assertEquals(50.0, colaboradorTurmaManager.percentualFrequencia(null, null, new Long[]{empresa.getId()}, null, null));
-
-		// quando colaboradores retornar 0 ( divisão por zero)
-		turmaManager.expects(once()).method("findByFiltro").with(new Constraint[] {ANYTHING, ANYTHING, eq('T'), eq(new Long[]{empresa.getId()}), eq(null)}).will(returnValue(turmas));
-		colaboradorManager.expects(atLeastOnce()).method("qtdColaboradoresByTurmas").with(eq(turmaIds), ANYTHING).will(returnValue(new Integer(0)));
-		diaTurmaManager.expects(atLeastOnce()).method("qtdDiasDasTurmas").with(eq(turma.getId())).will(returnValue(new Integer(2)));
-		colaboradorPresencaManager.expects(once()).method("qtdDiaPresentesTurma").with(eq(turma.getId()), ANYTHING).will(returnValue(new Integer(1)));
-		
-		assertEquals(100.0, colaboradorTurmaManager.percentualFrequencia(null, null, new Long[]{empresa.getId()}, null, null));
+		assertEquals(60.0, colaboradorTurmaManager.percentualFrequencia(null, null, new Long[]{1L}, null, null));
 	}
 	
 	public void testMontaCertificados() 

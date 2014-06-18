@@ -1,6 +1,7 @@
 package com.fortes.rh.business.desenvolvimento;
 
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
@@ -16,5 +17,5 @@ public interface ColaboradorPresencaManager extends GenericManager<ColaboradorPr
 	public String calculaFrequencia(Long colaboradorTurmaId, Integer qtdDias);
 	public Collection<ColaboradorTurma> preparaLinhaEmBranco(Collection<ColaboradorTurma> colaboradorTurmas, int qtdMaxLinha, Long estabelecimentoId);
 	public void removeByColaboradorTurma(Long[] colaboradorTurmaIds);
-	public Integer qtdDiaPresentesTurma(Long turmaId, Long[] areasIds);
+	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds);
 }

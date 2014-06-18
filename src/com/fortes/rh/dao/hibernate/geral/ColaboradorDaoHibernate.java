@@ -3075,29 +3075,57 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Integer qtdColaboradoresByTurmas(Collection<Long> turmaIds, Collection<Long> areasIds)
+	public Integer qtdTotalDiasDaTurmaVezesColaboradoresInscritos(Date dataPrevIni, Date dataPrevFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds)
 	{
-		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
-				.setProjection(Projections.max("hc2.data"))
-				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
-				.add(Restrictions.le("hc2.data", new Date()));
+		getSession().flush();
+		 
+		StringBuilder sql = new StringBuilder();
+		sql.append("select cast(coalesce(sum(subTotal), 0) as integer) from ( ");
+		sql.append("    select (count(ct.id) * dt.diasDaTurma)  as subTotal ");
+		sql.append("    from ColaboradorTurma ct ");
+		sql.append("    left outer join Colaborador c on ct.colaborador_id = c.id ");
+		sql.append("    left outer join HistoricoColaborador hc on c.id=hc.colaborador_id ");
+		sql.append("    left outer join Turma t on ct.turma_id = t.id ");
+		sql.append("    left outer join Curso cs on cs.id = t.curso_id ");
+		sql.append("    left outer join (select dt2.turma_id, count(dt2.id) as diasDaTurma from  DiaTurma dt2 group by turma_id ) as dt on dt.turma_id = t.id ");
+		sql.append("    where hc.data = ( select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador_id = c.id and hc2.data <= current_date) ");
 		
-		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
-		criteria.createCriteria("ct.turma", "t", Criteria.LEFT_JOIN);
-		criteria.createCriteria("ct.colaborador", "c", Criteria.LEFT_JOIN);
-		criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.LEFT_JOIN);
+		if (dataPrevIni != null)
+			sql.append("and t.dataPrevIni >= :dataPrevIni ");
+
+		if (dataPrevFim != null)
+			sql.append("and t.dataPrevFim <= :dataPrevFim "); 
+				
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
+			sql.append("and t.curso_id in (:cursoIds) ");
+
+		if (LongUtil.arrayIsNotEmpty(empresaIds))
+			sql.append("and cs.empresa_id in (:empresaIds) ");
 		
-		criteria.add(Subqueries.propertyEq("hc.data", subQueryHc));
+		if (LongUtil.arrayIsNotEmpty(areasIds))
+			sql.append("and hc.areaOrganizacional_id in (:areasIds) ");
+		
+		sql.append("	group by dt.diasDaTurma ");
+		sql.append(") as sub ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		
+		if (dataPrevIni != null)
+			query.setDate("dataPrevIni", dataPrevIni);
 
-		criteria.setProjection(Projections.rowCount());
+		if (dataPrevFim != null)
+			query.setDate("dataPrevFim", dataPrevFim);
+		
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
+			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
 
-		if (turmaIds != null && turmaIds.size() > 0)
-			criteria.add(Expression.in("t.id", turmaIds));
-
-		if (areasIds != null && areasIds.size() > 0)
-			criteria.add(Expression.in("hc.areaOrganizacional.id", areasIds));
-
-		return (Integer) criteria.uniqueResult();
+		if (LongUtil.arrayIsNotEmpty(empresaIds))
+			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
+		
+		if (LongUtil.arrayIsNotEmpty(areasIds))
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		
+		return (Integer) query.uniqueResult();
 	}
 
 	public Collection<Object> findComHistoricoFuturoSQL(Map parametros, Integer pagingSize, Integer page)
