@@ -1,0 +1,1 @@
+alter table configuracaoimpressaocurriculo add column exibirCabecalho boolean default false;--.go

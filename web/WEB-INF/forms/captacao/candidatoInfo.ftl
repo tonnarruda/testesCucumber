@@ -21,10 +21,10 @@
 		
 		#box
 		{
-			top: -500px !important;
+			top: -550px !important;
 			left: 20% !important;
 			width: 400px !important;
-			height: 420px !important;
+			height: 480px !important;
 			z-index: 9999;
 		}
 		#boxtitle
@@ -253,6 +253,7 @@
 						<@ww.checkbox label="Histórico" name="configuracaoImpressaoCurriculo.exibirHistorico" labelPosition="left"/>
 						<@ww.checkbox label="Texto Digitalizado" name="configuracaoImpressaoCurriculo.exibirTextoOCR" labelPosition="left"/>
 						<@ww.checkbox label="Extra" name="configuracaoImpressaoCurriculo.exibirCamposExtras" labelPosition="left"/>
+						<@ww.checkbox label="Cabeçalho" name="configuracaoImpressaoCurriculo.exibirCabecalho" labelPosition="left"/>
 						<#if mostraOpcaoSolicitacaoPessoal>
 							<@ww.checkbox label="Solicitação de Pessoal" name="configuracaoImpressaoCurriculo.exibirSolicitacaoPessoal" labelPosition="left"/>
 						<#else>
