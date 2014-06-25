@@ -25,15 +25,7 @@ public class File
 	{
 		super();
 	}
-/*
-	public File(String name, String contentType, byte[] bytes)
-	{
-		super();
-		this.name = name;
-		this.contentType = contentType;
-		this.bytes = bytes;
-	}
-*/
+
 	public byte[] getBytes()
 	{
 		return bytes;
@@ -78,28 +70,6 @@ public class File
 	{
 		this.size = size;
 	}
-
-	/*
-	public String getLocation()
-	{
-		return location;
-	}
-
-	public void setLocation(String location)
-	{
-		this.location = location;
-	}
-
-	public FileStoreType getFileStoreType()
-	{
-		return fileStoreType;
-	}
-
-	public void setFileStoreType(FileStoreType fileStoreType)
-	{
-		this.fileStoreType = fileStoreType;
-	}
-	*/
 
 	public java.io.File getFileArchive()
 	{

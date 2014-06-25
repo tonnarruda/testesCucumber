@@ -22,6 +22,8 @@ public class Epi extends AbstractModel implements Serializable
 {
     @Column(length=100)
     private String nome;
+    @Column(length=10)
+    private String codigo;
     private String descricao;
     @Column(length=100)
     private String fabricante;
@@ -129,6 +131,14 @@ public class Epi extends AbstractModel implements Serializable
 	public void setNome(String nome)
 	{
 		this.nome = nome;
+	}
+	public String getCodigo() 
+	{
+		return codigo;
+	}
+	public void setCodigo(String codigo) 
+	{
+		this.codigo = codigo;
 	}
 	public EpiHistorico getEpiHistorico()
 	{

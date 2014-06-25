@@ -16,25 +16,52 @@ public class TipoEPI extends AbstractModel implements Serializable
 {
     @Column(length=100)
     private String nome;
+    @Column(length=6)
+    private String codigo;
     @ManyToOne
     private Empresa empresa;
 
-    public String getNome()
+    public TipoEPI() 
+    {
+    	
+	}
+    
+	public TipoEPI(String codigo, String nome) 
+	{
+		this.codigo = codigo;
+		this.nome = nome;
+	}
+    
+	public String getCodigo() 
+	{
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) 
+	{
+		this.codigo = codigo;
+	}
+
+	public String getNome()
 	{
 		return nome;
 	}
+	
 	public void setNome(String nome)
 	{
 		this.nome = nome;
 	}
+	
 	public Empresa getEmpresa()
 	{
 		return empresa;
 	}
+	
 	public void setEmpresa(Empresa empresa)
 	{
 		this.empresa = empresa;
 	}
+	
 	public void setEmpresaId(Long empresaIdProjection)
 	{
 		if (this.empresa == null)

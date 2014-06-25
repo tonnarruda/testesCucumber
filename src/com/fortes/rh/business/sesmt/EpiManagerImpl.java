@@ -12,10 +12,12 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.sesmt.EpiDao;
 import com.fortes.rh.exception.RemoveCascadeException;
+import com.fortes.rh.model.dicionario.OpcaoImportacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -28,6 +30,7 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
+import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
 import com.fortes.web.tags.CheckBox;
 
 public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements EpiManager
@@ -252,16 +255,6 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 	{
 		return getDao().findByRisco(riscoId);
 	}
-	
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
-	{
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
 
 	public Collection<Epi> findByHistoricoFuncao(Long historicoFuncaoId)
 	{
@@ -271,5 +264,24 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 	public Collection<Epi> findPriorizandoEpiRelacionado(Long empresaId, Long colaboradorId, boolean somenteAtivos) 
 	{
 		return getDao().findPriorizandoEpiRelacionado(empresaId, colaboradorId, somenteAtivos);
+	}
+	
+	public void importarArquivo(File arquivo) throws Exception 
+	{
+		ImportacaoCSVUtil importacaoCSVUtil = new ImportacaoCSVUtil();
+		importacaoCSVUtil.setDelimitador("|#|");
+		importacaoCSVUtil.importarCSV(arquivo.getFileArchive(), OpcaoImportacao.EPIS, true);
+
+		Collection<Epi> epis = importacaoCSVUtil.getEpis();
+	}
+	
+	public void setColaboradorManager(ColaboradorManager colaboradorManager)
+	{
+		this.colaboradorManager = colaboradorManager;
+	}
+	
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
+	{
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 }

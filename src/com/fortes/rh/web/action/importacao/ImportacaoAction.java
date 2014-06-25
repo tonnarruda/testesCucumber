@@ -9,6 +9,8 @@ import com.fortes.model.type.File;
 import com.fortes.rh.business.importacao.ImportacaoColaboradorManager;
 import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
+import com.fortes.rh.business.sesmt.EpiManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
 import com.fortes.rh.util.ArquivoUtil;
@@ -21,6 +23,7 @@ public class ImportacaoAction extends MyActionSupport
 	private ColaboradorAfastamentoManager colaboradorAfastamentoManager;
 	private ImportacaoColaboradorManager importacaoColaboradorManager;
 	private AfastamentoManager afastamentoManager;
+	private EpiManager epiManager;
 	
 	private File arquivo;
 	private String pathArquivo;
@@ -109,6 +112,7 @@ public class ImportacaoAction extends MyActionSupport
 	{
 		return SUCCESS;
 	}
+	
 	public String importarColaboradorDadosPessoais()
 	{
 		java.io.File arquivoCriado = ArquivoUtil.salvaArquivo(null, arquivo, false);
@@ -143,6 +147,35 @@ public class ImportacaoAction extends MyActionSupport
 			return INPUT;
 		}
 		
+	}
+	
+	public String prepareImportarEPIs()
+	{
+		return SUCCESS;
+	}
+	
+	public String importarEPIs()
+	{
+		try {
+			epiManager.importarArquivo(arquivo);
+			
+		} catch (FortesException e) {
+			e.printStackTrace();
+			addActionWarning(e.getMessage());
+			return INPUT;
+		
+		} catch (IOException e) {
+			e.printStackTrace();
+			addActionError("Erro na leitura do arquivo de importação.");
+			return INPUT;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Erro ao executar a importação.");
+			return INPUT;
+		}
+		
+		return SUCCESS;
 	}
 
 	public void setColaboradorAfastamentoManager(ColaboradorAfastamentoManager colaboradorAfastamentoManager) {
@@ -189,5 +222,8 @@ public class ImportacaoAction extends MyActionSupport
 	public Map<String, Long> getAfastamentos() {
 		return afastamentos;
 	}
-	
+
+	public void setEpiManager(EpiManager epiManager) {
+		this.epiManager = epiManager;
+	}
 }

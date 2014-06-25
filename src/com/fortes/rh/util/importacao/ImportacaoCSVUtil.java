@@ -5,15 +5,22 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.dicionario.OpcaoImportacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
+import com.fortes.rh.model.sesmt.Epi;
+import com.fortes.rh.model.sesmt.EpiHistorico;
+import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -23,29 +30,33 @@ public class ImportacaoCSVUtil
 	private String delimitador = ";"; 
 	private Collection<ColaboradorAfastamento> afastamentos = new ArrayList<ColaboradorAfastamento>();
 	private Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+	private Map<String, Epi> episMap = new HashMap<String, Epi>();
 	
 	public void importarCSV(File file, OpcaoImportacao opcao) throws Exception
+	{
+		importarCSV(file, opcao, false);
+	}
+
+	public void importarCSV(File file, OpcaoImportacao opcao, boolean pularTitulos) throws Exception
 	{
 		// ler arquivo
 		BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 		String linha = "";
-		boolean naoAchouLinhaComAfastamento = true;
+		
+		if (pularTitulos)
+			br.readLine();
 		
 		while(br.ready())
 		{
 			String[] campos = null;
 			linha = br.readLine();
 			
-			if (valida(linha)) 
+			if (linha != null && linha.indexOf(delimitador) != -1) 
 			{
-				campos = linha.split(delimitador, -1);
+				campos = linha.split(Pattern.quote(delimitador), -1);
 				setCampos(campos, opcao);
-				naoAchouLinhaComAfastamento = false;
 			}
 		}
-		
-		if(naoAchouLinhaComAfastamento)
-			throw new Exception("Afastamentos não encontrados, verifique o arquivo CSV, linhas invalidas.");
 	}
 	
 	private void setCampos(String[] campos, OpcaoImportacao opcaoImportacao) throws Exception
@@ -56,13 +67,15 @@ public class ImportacaoCSVUtil
 				setAfastamento(campos);
 			case COLABORADORES_DADOS_PESSOAIS:
 				setColaborador(campos);
+			case EPIS:
+				setEpi(campos);
 		}
 	}
 	
 	//Cód. Empregado;Nome Completo;Nome Comercial;Doença(Motivo Afastamento);Data Inicial;Data Final;Médico;CRM;CID;Observação
 	private void setAfastamento(String[] campos) throws Exception
 	{	
-		boolean naoAchouLinhaComAfastamento = true;
+		boolean naoAchouLinhaValida = true;
 		// linhas válidas começam com o código do empregado. O resto é cabeçalho, etc.
 		if (campos.length == 10 && StringUtils.isNumeric(campos[0]))
 		{
@@ -82,17 +95,17 @@ public class ImportacaoCSVUtil
 			colaboradorAfastamento.setObservacao(campos[9]);
 
 			afastamentos.add(colaboradorAfastamento);
-			naoAchouLinhaComAfastamento = false;
+			naoAchouLinhaValida = false;
 		}
 		
-		if(naoAchouLinhaComAfastamento)
-			throw new Exception("Afastamentos não encontrados, verifique o arquivo CSV, nenhum afastamento encontrado.");
+		if (naoAchouLinhaValida)
+			throw new FortesException("Não foram encontradas linhas válidas. Verifique o arquivo.");
 	}
 	
-	
 	//"Matricula;CPF;Endereço;Numero;Complemento Endereço;Cidade(ID);Estado(ID);Bairro;Cep;ddd;telefone;Celular;Grau Instrução(COD. DICIONARIO)"
-	private void setColaborador(String[] campos) {
+	private void setColaborador(String[] campos) throws FortesException {
 		
+		boolean naoAchouLinhaValida = true;
 		if (campos.length >= 13 && campos[1] != null)
 		{
 			Colaborador colaborador = new Colaborador();
@@ -159,11 +172,52 @@ public class ImportacaoCSVUtil
 			colaborador.setPessoalEscolaridade(campos[12]);
 			
 			colaboradores.add(colaborador);
+			
+			naoAchouLinhaValida = false;
 		}
+		
+		if (naoAchouLinhaValida)
+			throw new FortesException("Não foram encontradas linhas válidas. Verifique o arquivo.");
 	}
+	
+	//Código EPI|#|Nome do EPI|#|Nome do Fabricante|#|Status|#|É Fardamento|#|Data do Histórico EPI|#|Data de Vencimento|#|Número do CA|#| Percentual de Atenuação do Risco|#|Período Recomendado de Uso|#|Código da Categoria|#|Nome da Categoria
+	private void setEpi(String[] campos) throws Exception
+	{	
+		boolean naoAchouLinhaValida = true;
+		if (campos.length == 12)
+		{
+			Epi epi;
+			EpiHistorico epiHistorico;
+			
+			if (episMap.containsKey(campos[0]))
+				epi = episMap.get(campos[0]);
+			else
+			{
+				epi = new Epi();
+				epi.setEpiHistoricos(new ArrayList<EpiHistorico>());
+				epi.setCodigo(campos[0]);
+				episMap.put(campos[0], epi);
+			}
+			
+			epi.setNome(campos[1]);
+			epi.setFabricante(campos[2]);
+			epi.setAtivo(new Boolean(campos[3]));
+			epi.setFardamento(new Boolean(campos[4]));
+			epi.setTipoEPI(new TipoEPI(campos[10], campos[11]));
+			
+			epiHistorico = new EpiHistorico();
+			epiHistorico.setData(DateUtil.montaDataByString(campos[5]));
+			epiHistorico.setVencimentoCA(DateUtil.montaDataByString(campos[6]));
+			epiHistorico.setCA(campos[7]);
+			epiHistorico.setAtenuacao(campos[8]);
+			epiHistorico.setValidadeUso(new Integer(campos[9]));
+			epi.getEpiHistoricos().add(epiHistorico);
 
-	private boolean valida(String linha) {
-		return linha != null && linha.indexOf(delimitador) != -1;
+			naoAchouLinhaValida = false;
+		}
+		
+		if (naoAchouLinhaValida)
+			throw new FortesException("Não foram encontradas linhas válidas. Verifique o arquivo.");
 	}
 
 	public Collection<ColaboradorAfastamento> getAfastamentos() {
@@ -172,5 +226,13 @@ public class ImportacaoCSVUtil
 
 	public Collection<Colaborador> getColaboradores() {
 		return colaboradores;
+	}
+
+	public void setDelimitador(String delimitador) {
+		this.delimitador = delimitador;
+	}
+
+	public Collection<Epi> getEpis() {
+		return new ArrayList<Epi>( episMap.values() );
 	}
 }
