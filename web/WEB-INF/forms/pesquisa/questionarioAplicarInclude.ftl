@@ -11,6 +11,7 @@
 		#perguntaResposta { padding: 5px; }
 		#perguntaResposta input { margin-left: -2px; _margin-left: -5px; }
 		#tituloPergunta { margin: 5px 0; padding: 0; font-weight: bold; }
+		.peso { font-size: 10px; font-weight: normal; font-style: italic; color: #777; white-space: nowrap; }
 	</style>
 
 	<script type="text/javascript">
@@ -88,22 +89,27 @@
 			</#if>
 				
 			<div id="perguntaResposta">
-				<p id="tituloPergunta">${pergunta.ordem + ") " + pergunta.texto}</p>
+				<p id="tituloPergunta">
+					${pergunta.ordem + ") " + pergunta.texto} 
+					<#if pergunta.tipo != tipoPergunta.subjetiva>
+						<div class="peso">(Peso ${pergunta.peso})</div>
+					</#if>
+				</p>
 				<#if pergunta.tipo == tipoPergunta.objetiva >
 					<#list pergunta.respostas as resposta>
-						<input type="radio" class="radio" name="resposta${pergunta.id}" label="${resposta.texto}"/>${resposta.texto}<br>
+						<input type="radio" class="radio" name="resposta${pergunta.id}" label="${resposta.texto}"/>${resposta.texto} <span class="peso">(Peso ${resposta.peso})</span><br>
 					</#list>
 				</#if>
 				<#if pergunta.tipo == tipoPergunta.multiplaEscolha >
 					<#list pergunta.respostas as resposta>
-						<input type="checkBox" class="radio" name="resposta${pergunta.id}" label="${resposta.texto}"/>${resposta.texto}<br>
+						<input type="checkBox" class="radio" name="resposta${pergunta.id}" label="${resposta.texto}"/>${resposta.texto} <span class="peso">(Peso ${resposta.peso})</span><br>
 					</#list>
 				</#if>
 				<#if pergunta.tipo == tipoPergunta.subjetiva >
 					<textarea style="height:75px;width:730px;overflow-y:scroll"></textarea>
 				</#if>
 				<#if pergunta.tipo == tipoPergunta.nota >
-						Selecione a nota de ${pergunta.notaMinima} a ${pergunta.notaMaxima}:
+						Selecione a nota de ${pergunta.notaMinima} a ${pergunta.notaMaxima}: 
 						<div id="resposta${pergunta.id}"></div>
 						<script>
 							montaSelect('resposta${pergunta.id}',${pergunta.notaMinima},${pergunta.notaMaxima});
