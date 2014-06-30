@@ -1052,10 +1052,16 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		return salarioVariavel;
 	}
 
-	public void setSalarioVariavel(Double salarioVariavel) {
+	public void setSalarioVariavel(Double salarioVariavel) 
+	{
 		this.salarioVariavel = salarioVariavel;
 	}
 
+	public Double getSalarioCalculadoMaisSalarioVariavel() 
+	{
+		return getSalarioCalculado() + getSalarioVariavel();
+	}
+ 
 	public String getObsACPessoal() 
 	{
 		if(obsACPessoal == null)

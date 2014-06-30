@@ -113,6 +113,9 @@ public class CargoEditAction extends MyActionSupportEdit
 	private Boolean compartilharColaboradores;
 	private char ativa;
 
+	private String reportFilter;
+	private String reportTitle;
+	
 	private void prepare() throws Exception
 	{
 		if (cargo != null && cargo.getId() != null)
@@ -184,7 +187,51 @@ public class CargoEditAction extends MyActionSupportEdit
 		dataHistorico = new Date();
 	}
 	
+	public String relatorioColaboradorCargoXLS() throws Exception
+	{
+		criar relatorio resumido
+		
+		boolean exibirSalarioVariavel = exibirSalarioVariavel();
+		
+		String retorno = relatorioColaboradorCargo();
+		
+		if(exibirSalario && exibirSalarioVariavel)
+			return "successRemuneracaoVariavel";
+		else if(exibirSalario)
+			return "successRemuneracaoNoRH";
+		else
+			return retorno;
+		
+	}
+	
 	public String relatorioColaboradorCargo() throws Exception
+	{
+		boolean exibirSalarioVariavel = exibirSalarioVariavel();
+		
+		try {
+			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(empresa, dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo);
+		} catch (ColecaoVaziaException e) {
+			addActionMessage(e.getMessage());
+			e.printStackTrace();
+			return Action.INPUT;
+		}
+		
+		reportFilter = "Quantidade de Colaboradores por Cargo em " + DateUtil.formataDiaMesAno(dataHistorico); 
+		reportTitle = "Colaboradores por Cargos";
+		
+		parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
+		parametros.put("EXIBIRSALARIO", exibirSalario);
+		parametros.put("EXIBIRSALARIOVARIAVEL", exibirSalarioVariavel);
+		
+		if(exibirSalarioVariavel)
+			return "successRemuneracaoVariavel";
+		if(relatorioResumido)
+			return "successResumido";
+		else
+			return Action.SUCCESS;
+	}
+
+	private boolean exibirSalarioVariavel()
 	{
 		boolean exibirSalarioVariavel = false;
 		
@@ -196,26 +243,8 @@ public class CargoEditAction extends MyActionSupportEdit
 		else
 			exibirSalarioVariavel = empresaManager.checkEmpresaIntegradaAc();
 		
-		try {
-			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(empresa, dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo);
-		} catch (ColecaoVaziaException e) {
-			addActionMessage(e.getMessage());
-			e.printStackTrace();
-			return Action.INPUT;
-		}
-		
-		parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores por Cargos", getEmpresaSistema(), "Quantidade de Colaboradores por Cargo em " + DateUtil.formataDiaMesAno(dataHistorico));
-		parametros.put("EXIBIRSALARIO", exibirSalario);
-		parametros.put("EXIBIRSALARIOVARIAVEL", exibirSalarioVariavel);
-		
-		if(exibirSalarioVariavel)
-			return "successRemuneracaoVariavel";
-		if(relatorioResumido)
-			return "successResumido";
-		else
-			return Action.SUCCESS;
+		return exibirSalarioVariavel;
 	}
-	
 	
 	public String relatorioColaboradorGrupoOcupacional() throws Exception
 	{
@@ -885,5 +914,14 @@ public class CargoEditAction extends MyActionSupportEdit
 	public void setAtiva(char ativa) {
 		this.ativa = ativa;
 	}
-
+	
+	public String getReportFilter()
+	{
+		return reportFilter;
+	}
+	
+	public String getReportTitle()
+	{
+		return reportTitle;
+	}
 }

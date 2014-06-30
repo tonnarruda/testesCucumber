@@ -41,6 +41,12 @@
 			$("#" + outroCheck).attr('disabled', $("#" + esseCheck).attr("checked"));
 		}
 		
+		function submeterAction(action)
+		{
+			$('form[name=form]').attr('action', action);
+			return validaFormulario('form', new Array('data'), new Array('data'));
+		}
+		
 		$(document).ready(function($){
 			var empresa = $('#empresa').val();
 			
@@ -62,14 +68,13 @@
 	
 	<#include "../ftl/mascarasImports.ftl" />
 	
-	<#assign validarCampos="return validaFormulario('form', new Array('data'), new Array('data'))"/>
 	<#if data?exists>
 		<#assign dataTemp = data?date/>
 	<#else>
 		<#assign dataTemp = ""/>
 	</#if>
 
-	<@ww.form name="form" action="relatorioColaboradorCargo.action" onsubmit="${validarCampos}" validate="true" method="POST">
+	<@ww.form name="form" action="relatorioColaboradorCargo.action" validate="true" method="POST">
 		
 		<#if compartilharColaboradores>
 			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="newChangeEmpresa(this.value);"/>
@@ -120,7 +125,8 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button class="btnRelatorio" onclick="${validarCampos};"></button>
+		<button onclick="return submeterAction('relatorioColaboradorCargo.action');" class="btnRelatorio" ></button>
+		<button onclick="return submeterAction('relatorioColaboradorCargoXLS.action');" class="btnRelatorioExportar"></button>
 	</div>
 </body>
 </html>

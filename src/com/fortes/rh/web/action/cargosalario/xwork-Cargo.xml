@@ -111,6 +111,40 @@
 			<result name="input" type="redirect">prepareRelatorioColaboradorCargo.action</result>
 			<result name="error" type="redirect">prepareRelatorioColaboradorCargo.action</result>
 		</action>
+		<action name="relatorioColaboradorCargoXLS" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="relatorioColaboradorCargoXLS">
+			<result name="success" type="xls">
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="documentName">colaboradoresPorCargos.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Cargo / Faixa Salarial,Colaborador,Colocação,Contratado há,Data de Admissão</param>
+				<param name="propertiesGroup">faixaSalarial.descricao</param>
+				<param name="properties">faixaSalarial.descricao,colaborador.nomeMaisNomeComercial,colaborador.vinculo,colaborador.tempoDeServico,colaborador.dataAdmissaoFormatada</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>		
+			<result name="successRemuneracaoNoRH" type="xls">
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="documentName">colaboradorCargoRemuneracaoNoRH.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Cargo / Faixa Salarial,Colaborador,Colocação,Contratado há,Data de Admissão,Salário</param>
+				<param name="propertiesGroup">faixaSalarial.descricao</param>
+				<param name="properties">faixaSalarial.descricao,colaborador.nomeMaisNomeComercial,colaborador.vinculo,colaborador.tempoDeServico,colaborador.dataAdmissaoFormatada,salarioCalculado</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successRemuneracaoVariavel" type="xls">
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="documentName">colaboradorCargoRemuneracaoVariavel.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Cargo / Faixa Salarial,Colaborador,Colocação,Contratado há,Data de Admissão,Salário,Rem. Variável,Total</param>
+				<param name="propertiesGroup">faixaSalarial.descricao</param>
+				<param name="properties">faixaSalarial.descricao,colaborador.nomeMaisNomeComercial,colaborador.vinculo,colaborador.tempoDeServico,colaborador.dataAdmissaoFormatada,salarioCalculado,salarioVariavel,salarioCalculadoMaisSalarioVariavel</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="input" type="redirect">prepareRelatorioColaboradorCargo.action</result>
+			<result name="error" type="redirect">prepareRelatorioColaboradorCargo.action</result>
+		</action>
 		<action name="prepareTransferirFaixasCargo" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="prepareTransferirFaixasCargo">
 			<result name="input" type="redirect">list.action</result>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/transferirFaixasEntreCargos.ftl</result>
