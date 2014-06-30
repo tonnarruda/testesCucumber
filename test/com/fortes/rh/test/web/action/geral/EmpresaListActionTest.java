@@ -64,7 +64,7 @@ public class EmpresaListActionTest extends MockObjectTestCase
     	action.setEmpresaSistema(fortes);
     	
     	assertEquals("success", action.delete());
-    	assertEquals("Não é possível excluir a empresa cujo você esta logado.", action.getActionMessages().toArray()[0]);
+    	assertEquals("Não é possível excluir a empresa cujo você esta logado.", action.getActionWarnings().toArray()[0]);
     }
     
     public void testDeleteEmpresaLogadoEmOutra() throws Exception
@@ -81,7 +81,7 @@ public class EmpresaListActionTest extends MockObjectTestCase
     	manager.expects(once()).method("removeEmpresa").with(eq(fortes.getId()));
     	
     	assertEquals("success", action.delete());
-    	assertEquals("Empresa excluída com sucesso.", action.getActionMessages().toArray()[0]);
+    	assertEquals("Empresa excluída com sucesso.", action.getActionSuccess().toArray()[0]);
     }
 
     public void testGets() throws Exception

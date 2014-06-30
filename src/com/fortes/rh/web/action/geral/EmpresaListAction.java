@@ -37,7 +37,7 @@ public class EmpresaListAction extends MyActionSupportList
 	{
 		if(empresa.getId().equals(getEmpresaSistema().getId()))
 		{
-			addActionMessage("Não é possível excluir a empresa cujo você esta logado.");
+			addActionWarning("Não é possível excluir a empresa cujo você esta logado.");
 			return Action.SUCCESS;			
 		}
 			
@@ -46,7 +46,7 @@ public class EmpresaListAction extends MyActionSupportList
 		else
 			empresaManager.remove(new Long[]{empresa.getId()});
 		
-		addActionMessage("Empresa excluída com sucesso.");
+		addActionSuccess("Empresa excluída com sucesso.");
 		
 		java.io.File pastaExterna = new java.io.File(ArquivoUtil.getPathExternoEmpresa(empresa.getId()));
 		if (pastaExterna.exists())
