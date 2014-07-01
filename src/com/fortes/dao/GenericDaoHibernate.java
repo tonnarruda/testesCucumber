@@ -286,21 +286,27 @@ public class GenericDaoHibernate<T> extends HibernateDaoSupport implements Gener
 
 	public Collection<T> find(String[] key, Object[] value, String[] orderBy)
 	{
-		return find(0, 0, key, value, orderBy);
+		return find(0, 0, key, value, orderBy, null);
 	}
 
 	public Collection<T> find(int pagina, int qtdMax, String[] orderBy)
 	{
-		return find(pagina, qtdMax, null, null, orderBy);
+		return find(pagina, qtdMax, null, null, orderBy, null);
 	}
 
-	public Collection<T> find(int pagina, int qtdMax, String[] key, Object[] value, String[] orderBy)
+	public Collection<T> find(int pagina, int qtdMax, String[] key, Object[] value, String[] orderBy, String[] fetchLazy)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass());
 		if (key != null)
 		{
 			for(int i = 0; i < key.length; i++)
 				criteria.add(Expression.eq(key[i], value[i]));
+		}
+		
+		if (fetchLazy != null)
+		{
+			for (int i = 0; i < fetchLazy.length; i++)
+				criteria.setFetchMode(fetchLazy[i], FetchMode.SELECT);
 		}
 
         if (orderBy != null)

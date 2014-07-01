@@ -131,6 +131,12 @@ public interface GenericManager<T>
 
 	//TODO: Comentar
 	public Collection<T> find(int pagina, int qtdMax, String[] key, Object[] value, String[] orderBy);
+	
+	//TODO: Comentar
+	public T findFirst(String[] key, Object[] value, String[] fetchLazy);
+
+	//TODO: Comentar
+	public T findFirst(String[] key, Object[] value, String[] orderBy, String[] fetchLazy);
 
 	/**
 	 * <p>

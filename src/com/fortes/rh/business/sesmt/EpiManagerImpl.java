@@ -1,5 +1,6 @@
 package com.fortes.rh.business.sesmt;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -12,7 +13,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.sesmt.EpiDao;
@@ -36,6 +36,7 @@ import com.fortes.web.tags.CheckBox;
 public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements EpiManager
 {
 	private EpiHistoricoManager epiHistoricoManager;
+	private TipoEPIManager tipoEPIManager;
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorManager colaboradorManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
@@ -266,15 +267,89 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 		return getDao().findPriorizandoEpiRelacionado(empresaId, colaboradorId, somenteAtivos);
 	}
 	
-	public void importarArquivo(File arquivo) throws Exception 
+	public void importarArquivo(File arquivo, Long empresaId) throws Exception 
 	{
 		ImportacaoCSVUtil importacaoCSVUtil = new ImportacaoCSVUtil();
 		importacaoCSVUtil.setDelimitador("|#|");
-		importacaoCSVUtil.importarCSV(arquivo.getFileArchive(), OpcaoImportacao.EPIS, true);
+		importacaoCSVUtil.importarCSV(arquivo, OpcaoImportacao.EPIS, true);
 
 		Collection<Epi> epis = importacaoCSVUtil.getEpis();
+		TipoEPI tipoEpi;
+		Epi epi;
+		
+		for (Epi epiImportado : epis) 
+		{
+			tipoEpi = saveTipoEPI(epiImportado.getTipoEPI(), empresaId);
+			epi = saveEpi(epiImportado, tipoEpi, empresaId);
+			saveEpiHistoricos(epi, epiImportado);
+		}
 	}
 	
+	private TipoEPI saveTipoEPI(TipoEPI tipoEpiImportado, Long empresaId) 
+	{
+		TipoEPI tipoEpi = tipoEPIManager.findFirst(new String[] {"empresa.id", "codigo"}, new Object[] { empresaId, tipoEpiImportado.getCodigo() }, new String[] {"empresa"});
+		
+		if (tipoEpi == null)
+		{
+			tipoEpiImportado.setEmpresaId(empresaId);
+			tipoEpi = tipoEPIManager.save(tipoEpiImportado);
+		}
+		else
+		{
+			tipoEpi.setNome(tipoEpiImportado.getNome());
+			tipoEPIManager.update(tipoEpi);
+		}
+		
+		return tipoEpi;
+	}
+
+	private Epi saveEpi(Epi epiImportado, TipoEPI tipoEpi, Long empresaId) 
+	{
+		Epi epi = findFirst(new String[] {"empresa.id", "codigo"}, new Object[] { empresaId, epiImportado.getCodigo() }, new String[] {"empresa","tipoEPI"});
+		
+		if (epi == null)
+		{
+			epiImportado.setTipoEPI(tipoEpi);
+			epiImportado.setEmpresaIdProjection(empresaId);
+			epi = save(epiImportado);
+		}
+		else
+		{
+			epi.setNome(epiImportado.getNome());
+			epi.setFabricante(epiImportado.getFabricante());
+			epi.setAtivo(new Boolean(epiImportado.isAtivo()));
+			epi.setFardamento(new Boolean(epiImportado.getFardamento()));
+			epi.setTipoEPI(tipoEpi);
+			update(epi);
+		}
+		
+		return epi;
+	}
+	
+	private void saveEpiHistoricos(Epi epi, Epi epiImportado) 
+	{
+		EpiHistorico epiHistorico;
+		
+		for (EpiHistorico epiHistoricoImportado : epiImportado.getEpiHistoricos()) 
+		{
+			epiHistorico = epiHistoricoManager.findFirst(new String[] {"epi.id", "data", "CA"}, new Object[] { epi.getId(), epiHistoricoImportado.getData(), epiHistoricoImportado.getCA() }, new String[] {"epi"});
+			if (epiHistorico == null)
+			{
+				epiHistoricoImportado.setEpi(epi);
+				epiHistoricoManager.save(epiHistoricoImportado);
+			}
+			else
+			{
+				epiHistorico.setData(epiHistoricoImportado.getData());
+				epiHistorico.setVencimentoCA(epiHistoricoImportado.getVencimentoCA());
+				epiHistorico.setCA(epiHistoricoImportado.getCA());
+				epiHistorico.setAtenuacao(epiHistoricoImportado.getAtenuacao());
+				epiHistorico.setValidadeUso(new Integer(epiHistoricoImportado.getValidadeUso()));
+				epiHistoricoManager.update(epiHistorico);
+			}
+		}
+	}
+
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;
@@ -283,5 +358,10 @@ public class EpiManagerImpl extends GenericManagerImpl<Epi, EpiDao> implements E
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
 	{
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setTipoEPIManager(TipoEPIManager tipoEPIManager) 
+	{
+		this.tipoEPIManager = tipoEPIManager;
 	}
 }

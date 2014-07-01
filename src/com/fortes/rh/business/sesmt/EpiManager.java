@@ -1,11 +1,11 @@
 package com.fortes.rh.business.sesmt;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
-import com.fortes.model.type.File;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Epi;
@@ -32,5 +32,5 @@ public interface EpiManager extends GenericManager<Epi>
 	String findFabricantesDistinctByEmpresa(Long empresaId);
 	Collection<Epi> findAllSelect(Long empresaId);
 	Collection<Epi> findPriorizandoEpiRelacionado(Long empresaId, Long colaboradorId, boolean somenteAtivos);
-	void importarArquivo(File arquivo) throws Exception;
+	void importarArquivo(File file, Long empresaId) throws Exception;
 }

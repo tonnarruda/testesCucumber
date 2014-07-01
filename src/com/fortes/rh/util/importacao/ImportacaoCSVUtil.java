@@ -217,7 +217,7 @@ public class ImportacaoCSVUtil
 		}
 		
 		if (naoAchouLinhaValida)
-			throw new FortesException("Não foram encontradas linhas válidas. Verifique o arquivo.");
+			throw new FortesException("Não foram encontradas linhas com dados de EPI válidos. Verifique o arquivo.");
 	}
 
 	public Collection<ColaboradorAfastamento> getAfastamentos() {

@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.sesmt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -17,18 +18,24 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.EpiHistoricoManager;
 import com.fortes.rh.business.sesmt.EpiManagerImpl;
+import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.dao.sesmt.EpiDao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.EpiHistorico;
+import com.fortes.rh.model.sesmt.TipoEPI;
 import com.fortes.rh.model.sesmt.relatorio.FichaEpiRelatorio;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.sesmt.EpiFactory;
 import com.fortes.rh.test.util.mockObjects.MockCheckListBoxUtil;
+import com.fortes.rh.test.util.mockObjects.MockImportacaoCSVUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
 import com.fortes.web.tags.CheckBox;
 
 public class EpiManagerTest extends MockObjectTestCase
@@ -37,6 +44,7 @@ public class EpiManagerTest extends MockObjectTestCase
 	private Mock epiDao = null;
 	private Mock transactionManager;
 	private Mock epiHistoricoManager;
+	private Mock tipoEPIManager;
 	private Mock colaboradorManager;
 	private Mock areaOrganizacionalManager;
 
@@ -58,7 +66,11 @@ public class EpiManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
 		epiManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 		
+		tipoEPIManager = new Mock(TipoEPIManager.class);
+		epiManager.setTipoEPIManager((TipoEPIManager) tipoEPIManager.proxy());
+		
 		Mockit.redefineMethods(CheckListBoxUtil.class, MockCheckListBoxUtil.class);
+		Mockit.redefineMethods(ImportacaoCSVUtil.class, MockImportacaoCSVUtil.class);
     }
 
 	public void testFindByIdProjection() throws Exception
@@ -166,5 +178,61 @@ public class EpiManagerTest extends MockObjectTestCase
 		epis.add(new Epi());
 		epiDao.expects(once()).method("findEpisDoAmbiente").will(returnValue(epis));
 		assertEquals(1, epiManager.findEpisDoAmbiente(ambienteId, new Date()).size());
+	}
+	
+	public void testImportarArquivo() throws Exception
+	{
+		TipoEPI tipoLuva = new TipoEPI();
+		tipoLuva.setCodigo("T01");
+		tipoLuva.setNome("Luva");
+		
+		TipoEPI tipoBota = new TipoEPI();
+		tipoBota.setCodigo("T02");
+		tipoBota.setNome("Bota");
+		
+		Epi epiLuva = EpiFactory.getEntity(1L);
+		epiLuva.setCodigo("E01");
+		epiLuva.setTipoEPI(tipoLuva);
+		
+		Epi epiBota = EpiFactory.getEntity(2L);
+		epiBota.setCodigo("E02");
+		epiBota.setTipoEPI(tipoBota);
+		
+		Date hoje = new Date();
+		
+		EpiHistorico histLuva1 = new EpiHistorico(1L, "20", hoje, 365, "111", epiLuva.getId(), hoje);
+		EpiHistorico histLuva2 = new EpiHistorico(2L, "21", hoje, 365, "112", epiLuva.getId(), hoje);
+		
+		EpiHistorico histBota1 = new EpiHistorico(3L, "30", hoje, 365, "311", epiBota.getId(), hoje);
+		EpiHistorico histBota2 = new EpiHistorico(4L, "31", hoje, 365, "312", epiBota.getId(), hoje);
+		
+		epiLuva.setEpiHistoricos(Arrays.asList(histLuva1, histLuva2));
+		epiBota.setEpiHistoricos(Arrays.asList(histBota1, histBota2));
+		
+		MockImportacaoCSVUtil.epis = Arrays.asList(epiLuva, epiBota);
+		
+		tipoEPIManager.expects(once()).method("findFirst").withAnyArguments().will(returnValue(tipoLuva));
+		tipoEPIManager.expects(once()).method("update").withAnyArguments().isVoid();
+		
+		epiDao.expects(once()).method("find").withAnyArguments().will(returnValue(Arrays.asList(epiLuva)));
+		epiDao.expects(once()).method("update").withAnyArguments().isVoid();
+		
+		epiHistoricoManager.expects(once()).method("findFirst").withAnyArguments().will(returnValue(histLuva1));
+		epiHistoricoManager.expects(once()).method("update").withAnyArguments();
+		epiHistoricoManager.expects(once()).method("findFirst").withAnyArguments().will(returnValue(null));
+		epiHistoricoManager.expects(once()).method("save").withAnyArguments();
+		
+		tipoEPIManager.expects(once()).method("findFirst").withAnyArguments().will(returnValue(null));
+		tipoEPIManager.expects(once()).method("save").withAnyArguments().isVoid();
+
+		epiDao.expects(once()).method("find").withAnyArguments().will(returnValue(new ArrayList<Epi>()));
+		epiDao.expects(once()).method("save").withAnyArguments().will(returnValue(epiBota));
+		
+		epiHistoricoManager.expects(once()).method("findFirst").withAnyArguments().will(returnValue(histBota1));
+		epiHistoricoManager.expects(once()).method("update").withAnyArguments();
+		epiHistoricoManager.expects(once()).method("findFirst").withAnyArguments().will(returnValue(null));
+		epiHistoricoManager.expects(once()).method("save").withAnyArguments();
+		
+		epiManager.importarArquivo(null, 1L);
 	}
 }

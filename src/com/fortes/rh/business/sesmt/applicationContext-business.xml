@@ -43,6 +43,9 @@
     <property name="epiHistoricoManager">
       <ref bean="epiHistoricoManager" />
     </property>
+    <property name="tipoEPIManager">
+      <ref bean="tipoEPIManager" />
+    </property>
     <property name="colaboradorManager">
       <ref bean="colaboradorManager" />
     </property>

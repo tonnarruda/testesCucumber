@@ -333,4 +333,9 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 		
 		return epis;
 	}
+
+	public Epi findByCodigo(String codigo) 
+	{
+		return null;
+	}
 }

@@ -157,7 +157,9 @@ public class ImportacaoAction extends MyActionSupport
 	public String importarEPIs()
 	{
 		try {
-			epiManager.importarArquivo(arquivo);
+			epiManager.importarArquivo(arquivo.getFileArchive(), getEmpresaSistema().getId());
+			
+			addActionSuccess("Importação concluída com sucesso.");
 			
 		} catch (FortesException e) {
 			e.printStackTrace();
@@ -173,6 +175,10 @@ public class ImportacaoAction extends MyActionSupport
 			e.printStackTrace();
 			addActionError("Erro ao executar a importação.");
 			return INPUT;
+			
+		} finally {
+			if (arquivo != null && arquivo.getFileArchive() != null)
+				arquivo.getFileArchive().delete();
 		}
 		
 		return SUCCESS;

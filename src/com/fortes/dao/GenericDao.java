@@ -149,7 +149,7 @@ public interface GenericDao<T>
 	public Collection<T> find(int pagina, int qtdMax, String[] orderBy);
 
 	//TODO: Comentar
-	public Collection<T> find(int pagina, int qtdMax, String[] key, Object[] value, String[] orderBy);
+	public Collection<T> find(int pagina, int qtdMax, String[] key, Object[] value, String[] orderBy, String[] fetchLazy);
 
 	/**
 	 * <p>

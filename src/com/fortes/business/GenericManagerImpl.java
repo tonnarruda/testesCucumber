@@ -99,6 +99,22 @@ public class GenericManagerImpl<T, D extends GenericDao<T>> implements GenericMa
 	{
 		return dao.find(key, value, orderBy);
 	}
+	
+	public T findFirst(String[] key, Object[] value, String[] fetchLazy)
+	{
+		return findFirst(key, value, null, fetchLazy);
+	}
+
+	@SuppressWarnings("unchecked")
+	public T findFirst(String[] key, Object[] value, String[] orderBy, String[] fetchLazy)
+	{
+		Collection<T> result = dao.find(0, 0,key, value, orderBy, fetchLazy);
+		
+		if (result.isEmpty())
+			return null;
+		
+		return (T) result.toArray()[0];
+	}
 
 	public Collection<T> find(int pagina, int qtdMax, String[] orderBy)
 	{
@@ -107,7 +123,7 @@ public class GenericManagerImpl<T, D extends GenericDao<T>> implements GenericMa
 
 	public Collection<T> find(int pagina, int qtdMax, String[] key, Object[] value, String[] orderBy)
 	{
-		return dao.find(pagina, qtdMax, key, value, orderBy);
+		return dao.find(pagina, qtdMax, key, value, orderBy, null);
 	}
 
 	public Collection<T> findAll()
