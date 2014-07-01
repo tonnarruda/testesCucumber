@@ -21,7 +21,7 @@
 		
 		#box
 		{
-			top: -550px !important;
+			top: -520px !important;
 			left: 20% !important;
 			width: 400px !important;
 			height: 480px !important;

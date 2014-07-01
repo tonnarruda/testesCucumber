@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="curriculo_candidato" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="24e642c7-23e8-452f-83f5-b88fabf7f0af">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="4.0"/>
-	<property name="ireport.x" value="994"/>
-	<property name="ireport.y" value="27"/>
+	<property name="ireport.zoom" value="1.2745232708414267"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -36,6 +36,8 @@
 	<parameter name="mostraOpcaoSolicitacaoPessoal" class="java.lang.Boolean" isForPrompting="false"/>
 	<parameter name="mostraColaboradorSubstituido" class="java.lang.Boolean" isForPrompting="false"/>
 	<parameter name="exibirCamposExtras" class="java.lang.Boolean"/>
+	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho"/>
+	<parameter name="exibirCabecalho" class="java.lang.Boolean"/>
 	<field name="candidato.nome" class="java.lang.String"/>
 	<field name="candidato.colocacaoDic" class="java.lang.String"/>
 	<field name="candidato.pretencaoSalarial" class="java.lang.Double"/>
@@ -991,7 +993,23 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="280" splitType="Stretch">
+		<band height="52" splitType="Stretch">
+			<printWhenExpression><![CDATA[$P{exibirCabecalho}.booleanValue()]]></printWhenExpression>
+			<subreport isUsingCache="true">
+				<reportElement uuid="3cafdf50-121a-46e7-85bb-62d4c89b051e" key="subreport-1" x="-1" y="0" width="535" height="50"/>
+				<subreportParameter name="CABECALHO">
+					<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "cabecalho.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="282" splitType="Stretch">
+			<printWhenExpression><![CDATA[new Boolean($V{PAGE_NUMBER}==1)]]></printWhenExpression>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="4725d54b-8af5-4415-8f91-c4762af639b0" key="textField" x="39" y="18" width="278" height="12"/>
 				<box>
@@ -1941,12 +1959,6 @@
 				<textFieldExpression><![CDATA[$F{candidato.pessoal.dataNascimentoFormatada}]]></textFieldExpression>
 			</textField>
 		</band>
-	</title>
-	<pageHeader>
-		<band splitType="Stretch"/>
-	</pageHeader>
-	<columnHeader>
-		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
 		<band height="34" splitType="Prevent">
