@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.event.SaveOrUpdateEvent;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -364,6 +363,16 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 	{
 		return getDao().findComHistoricoAtual(faixasSalariaisIds);
 	}
+
+	public Collection<FaixaSalarial> findComHistoricoAtualByEmpresa(Long empresaId, boolean semCodigoAC) 
+	{
+		return getDao().findComHistoricoAtualByEmpresa(empresaId, semCodigoAC);
+	}
+
+	public Collection<FaixaSalarial> qtdColaboradoresPorCargoFaixa(Long empresaId) 
+	{
+		return getDao().qtdColaboradoresPorCargoFaixa(empresaId);
+	}
 	
 	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
@@ -373,8 +382,4 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
 	}
 
-	public Collection<FaixaSalarial> findComHistoricoAtualByEmpresa(Long empresaId, boolean semCodigoAC) 
-	{
-		return getDao().findComHistoricoAtualByEmpresa(empresaId, semCodigoAC);
-	}
 }

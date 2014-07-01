@@ -51,6 +51,8 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	@Transient
 	private String descricao;
 	@Transient
+	private int qtdColaboradores;
+	@Transient
 	private int qtdVagasAbertas;
 	@Transient
 	private int qtdContratados;
@@ -89,11 +91,20 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		setNomeCargo(cargoNome);
 	}
 
+	//qtdColaboradoresPorCargoFaixa
 	public FaixaSalarial (Long id, String nome, String nomeCargo)
 	{
 		setId(id);
 		setNome(nome);
 		setNomeCargo(nomeCargo);
+	}
+	
+	public FaixaSalarial (String cargoNome, String faixaNome, Integer qtdColaboradores)
+	{
+		setCargo(new Cargo());
+		getCargo().setNome(cargoNome);
+		setNome(faixaNome);
+		setQtdColaboradores(qtdColaboradores);
 	}
 
 	//findComHistoricoAtualByEmpresa
@@ -421,8 +432,18 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		return configuracaoNivelCompetencias;
 	}
 
-	public void setConfiguracaoNivelCompetencias(
-			Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias) {
+	public void setConfiguracaoNivelCompetencias(Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias) 
+	{
 		this.configuracaoNivelCompetencias = configuracaoNivelCompetencias;
+	}
+
+	public int getQtdColaboradores() 
+	{
+		return qtdColaboradores;
+	}
+
+	public void setQtdColaboradores(int qtdColaboradores) 
+	{
+		this.qtdColaboradores = qtdColaboradores;
 	}
 }

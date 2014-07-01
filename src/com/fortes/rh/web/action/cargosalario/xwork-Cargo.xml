@@ -142,6 +142,15 @@
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
+			<result name="successResumidoXls" type="xls">
+				<param name="dataSource">faixasDoCargo</param>
+				<param name="documentName">colaboradoresPorCargosResumido.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Quantidade,Cargo / Faixa Salarial</param>
+				<param name="properties">qtdColaboradores,descricao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
 			<result name="input" type="redirect">prepareRelatorioColaboradorCargo.action</result>
 			<result name="error" type="redirect">prepareRelatorioColaboradorCargo.action</result>
 		</action>

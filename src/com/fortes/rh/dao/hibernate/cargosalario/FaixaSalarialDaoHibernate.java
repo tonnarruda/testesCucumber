@@ -523,4 +523,29 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 
 		return  StringUtil.converteCollectionToString(query.list());
 	}
+
+	public Collection<FaixaSalarial> qtdColaboradoresPorCargoFaixa(Long empresaId) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new FaixaSalarial(cg.nome, fs.nome, cast(count(c.id) as integer) )");
+		hql.append("from HistoricoColaborador hc ");
+		hql.append("inner join hc.colaborador c ");
+		hql.append("inner join hc.faixaSalarial fs ");
+		hql.append("inner join fs.cargo cg ");
+		hql.append("where hc.data = (select max(hc2.data) ");
+		hql.append("                 from HistoricoColaborador hc2 ");
+		hql.append("                 where hc2.colaborador.id = c.id ");
+		hql.append("				 and hc2.status = :status) ");
+		hql.append("and cg.empresa.id = :empresaId ");
+		hql.append("and c.desligado = false ");
+		hql.append("group by cg.nome, fs.nome ");
+		hql.append("order by cg.nome, fs.nome ");
+
+		Query query = getSession().createQuery(hql.toString());
+
+		query.setLong("empresaId", empresaId);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+
+		return query.list();
+	}
 }

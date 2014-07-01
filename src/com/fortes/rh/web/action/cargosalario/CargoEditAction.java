@@ -189,19 +189,21 @@ public class CargoEditAction extends MyActionSupportEdit
 	
 	public String relatorioColaboradorCargoXLS() throws Exception
 	{
-		criar relatorio resumido
-		
-		boolean exibirSalarioVariavel = exibirSalarioVariavel();
+		if(relatorioResumido)
+		{
+			populaTituloFiltro(); 
+			faixasDoCargo = faixaSalarialManager.qtdColaboradoresPorCargoFaixa(empresa.getId());
+			return "successResumidoXls";
+		}
 		
 		String retorno = relatorioColaboradorCargo();
 		
-		if(exibirSalario && exibirSalarioVariavel)
+		if(exibirSalario && exibirSalarioVariavel())
 			return "successRemuneracaoVariavel";
 		else if(exibirSalario)
 			return "successRemuneracaoNoRH";
 		else
 			return retorno;
-		
 	}
 	
 	public String relatorioColaboradorCargo() throws Exception
@@ -216,9 +218,7 @@ public class CargoEditAction extends MyActionSupportEdit
 			return Action.INPUT;
 		}
 		
-		reportFilter = "Quantidade de Colaboradores por Cargo em " + DateUtil.formataDiaMesAno(dataHistorico); 
-		reportTitle = "Colaboradores por Cargos";
-		
+		populaTituloFiltro(); 
 		parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
 		parametros.put("EXIBIRSALARIO", exibirSalario);
 		parametros.put("EXIBIRSALARIOVARIAVEL", exibirSalarioVariavel);
@@ -229,6 +229,12 @@ public class CargoEditAction extends MyActionSupportEdit
 			return "successResumido";
 		else
 			return Action.SUCCESS;
+	}
+
+	private void populaTituloFiltro() 
+	{
+		reportTitle = "Colaboradores por Cargos";
+		reportFilter = "Quantidade de Colaboradores por Cargo em " + DateUtil.formataDiaMesAno(dataHistorico);
 	}
 
 	private boolean exibirSalarioVariavel()

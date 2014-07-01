@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.1xx.156" bd="" data="xx/07/2014">
+		<Item visivel="S" motivo="S20140500200"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Nova opção no formato xls.]]></Item>
 		<Item visivel="S" motivo="S20140500214"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Visualizar: Exibição dos pesos das perguntas e das respostas.]]></Item>
 	</Versao>
 	<Versao id="1.1.129.155" bd="" data="30/06/2014">
