@@ -1328,7 +1328,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			e.printStackTrace();
 			throw new Exception("Não foi possível editar o colaborador.");
 		}
-			}
+	}
 
 	public boolean updateInfoPessoaisByCpf(Colaborador colaborador, Long empresaId)
 	{

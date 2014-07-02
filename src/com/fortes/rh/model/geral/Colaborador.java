@@ -1457,6 +1457,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			this.endereco.setCidade(new Cidade());
 		this.endereco.getCidade().setCodigoAC(codigoAC);
 	}
+	
+	public void setProjectionCidadeCodigoIBGE(Integer codigoIBGE)
+	{
+		inicializaEndereco();
+		if (this.endereco.getCidade() == null)
+			this.endereco.setCidade(new Cidade());
+		this.endereco.getCidade().setCodigoIBGE(codigoIBGE);
+	}
 
 	private void inicializaEndereco()
 	{

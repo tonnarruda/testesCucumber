@@ -22,6 +22,7 @@ public class Cidade extends AbstractModel implements Serializable
     private String nome;
     @Column(length=12)
     private String codigoAC;
+    private Integer codigoIBGE;
 
     public void setProjectionUfId(Long ufId)
     {
@@ -53,13 +54,6 @@ public class Cidade extends AbstractModel implements Serializable
 	{
 		this.uf = uf;
 	}
-
-	public String toString()
-	{
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-				.append("nome", this.nome).append("id", this.getId()).append("uf",
-						this.uf).toString();
-	}
 	public String getCodigoAC()
 	{
 		return codigoAC;
@@ -67,5 +61,20 @@ public class Cidade extends AbstractModel implements Serializable
 	public void setCodigoAC(String codigoAC)
 	{
 		this.codigoAC = codigoAC;
+	}
+
+	public Integer getCodigoIBGE() {
+		return codigoIBGE;
+	}
+
+	public void setCodigoIBGE(Integer codigoIBGE) {
+		this.codigoIBGE = codigoIBGE;
+	}
+	
+	public String toString()
+	{
+		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+				.append("nome", this.nome).append("id", this.getId()).append("uf",
+						this.uf).toString();
 	}
 }

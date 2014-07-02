@@ -3,14 +3,17 @@ package com.fortes.rh.model.portalcolaborador;
 import com.fortes.rh.model.geral.Endereco;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
 
 public class EnderecoPC {
 
-	private String cep; 
+	private String cep;
 	private String logradouro;
 	private String numero;
 	private String complemento;
 	private String bairro;
+	@SerializedName("cidade_id")
+	private Integer cidadeCodigoIBGE;
 
 	public EnderecoPC() {
 
@@ -22,6 +25,9 @@ public class EnderecoPC {
 		this.numero 		= endereco.getNumero();
 		this.complemento 	= endereco.getComplemento();
 		this.bairro 		= endereco.getBairro();
+		
+		if (endereco.getCidade() != null)
+			this.cidadeCodigoIBGE = endereco.getCidade().getCodigoIBGE();
 	}
 	
 	public String getCep() {
@@ -62,6 +68,14 @@ public class EnderecoPC {
 
 	public void setBairro(String bairro) {
 		this.bairro = bairro;
+	}
+	
+	public Integer getCidadeCodigoIBGE() {
+		return cidadeCodigoIBGE;
+	}
+
+	public void setCidadeCodigoIBGE(Integer cidadeCodigoIBGE) {
+		this.cidadeCodigoIBGE = cidadeCodigoIBGE;
 	}
 
 	public String toString()
