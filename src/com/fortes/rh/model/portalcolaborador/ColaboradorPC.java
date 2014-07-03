@@ -1,12 +1,14 @@
 package com.fortes.rh.model.portalcolaborador;
 
+import javax.persistence.Transient;
+
 import com.fortes.rh.model.geral.Colaborador;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-public class ColaboradorPC {
-
+public class ColaboradorPC 
+{
 	@SerializedName("empresa")
 	private EmpresaPC empresaPC;
 	@SerializedName("endereco_attributes")
@@ -27,6 +29,9 @@ public class ColaboradorPC {
 	private String mae; 
 	@SerializedName("qtd_filhos")
 	private Integer qtdFilhos;
+	
+	@Transient
+	private ArquivoPC foto;
 	
 	public ColaboradorPC() {
 
@@ -64,6 +69,11 @@ public class ColaboradorPC {
 			this.pai 			= colaborador.getPessoal().getPai();
 			this.mae 			= colaborador.getPessoal().getMae();
 			this.qtdFilhos 		= colaborador.getPessoal().getQtdFilhos();
+		}
+		
+		if (colaborador.getFoto() != null)
+		{
+			this.foto = new ArquivoPC(colaborador);
 		}
 	}
 	
@@ -193,6 +203,7 @@ public class ColaboradorPC {
 		
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.add("colaborador", gson.toJsonTree(this));
+		jsonObject.add("foto", gson.toJsonTree(this.foto));
 		
 		return jsonObject.toString();
 	}
