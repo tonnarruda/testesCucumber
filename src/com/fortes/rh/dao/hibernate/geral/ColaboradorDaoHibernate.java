@@ -818,7 +818,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return result == 1;
 	}
 	
-	public Colaborador findByCodigoAC(String codigo, Empresa empresa)
+	public Colaborador findByCodigoAC(String codigoAC, Empresa empresa)
 	{
 		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date());
 
@@ -843,7 +843,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("c.empresa", empresa));//tem que ser por ID, ta correto(CUIDADO: caso mude tem que verificar o grupoAC)
-		criteria.add(Expression.eq("c.codigoAC", codigo));
+		criteria.add(Expression.eq("c.codigoAC", codigoAC));
 
 		criteria.add(Expression.or(Expression.isNull("hc.data"), Subqueries.propertyEq("hc.data", subQueryHc)));
 		
@@ -1782,29 +1782,29 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query;
 	}
 
-	public boolean desligaByCodigo(String codigoac, Empresa empresa, Date data)
+	public boolean desligaByCodigo(Empresa empresa, Date data, String... codigosAC)
 	{
 		String hql = "update Colaborador set dataDesligamento = :data, dataSolicitacaoDesligamentoAc = null, " +
-					"desligado = :valor where codigoac = :codigo and empresa = :emp";
+					"desligado = :valor where codigoac in (:codigos) and empresa = :emp";
 
 		Query query = getSession().createQuery(hql);
 		query.setDate("data", data);
 		query.setBoolean("valor", data != null ? true : false);
-		query.setString("codigo", codigoac);
+		query.setParameterList("codigos", codigosAC, Hibernate.STRING);
 		query.setEntity("emp", empresa);
 		int result = query.executeUpdate();
 
-		return result == 1 ? true : false;
+		return result > 0 ? true : false;
 	}
 
-	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long colaboradorId)
+	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long... colaboradoresIds)
 	{
 		StringBuffer hql = new StringBuffer("update Colaborador set  ");
 		
 		if(desligado != null && dataDesligamento != null)		
 			hql.append("desligado = :desligado, dataDesligamento = :data, ");
 		
-		hql.append("observacaoDemissao = :observacaoDemissao, motivoDemissao.id = :motivoDemissaoId where id = :colaboradorId ");
+		hql.append("observacaoDemissao = :observacaoDemissao, motivoDemissao.id = :motivoDemissaoId where id in (:colaboradoresIds) ");
 
 		Query query = getSession().createQuery(hql.toString());
 
@@ -1816,7 +1816,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		query.setString("observacaoDemissao", observacaoDemissao);
 		query.setLong("motivoDemissaoId", motivoDemissaoId);
-		query.setLong("colaboradorId", colaboradorId);
+		query.setParameterList("colaboradoresIds", colaboradoresIds);
 
 		query.executeUpdate();
 	}
@@ -4703,5 +4703,31 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
 				.add(Restrictions.le("hc2.data", data))
 				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+	}
+
+	public Collection<Colaborador> findColaboradoresByCodigoAC(Empresa empresa, String... codigosACColaboradores) 
+	{
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+				.add(Restrictions.le("hc2.data", new Date()))
+				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
+		criteria.createCriteria("c.empresa", "e");
+		criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("c.empresa", empresa));
+		criteria.add(Expression.in("c.codigoAC", codigosACColaboradores));
+
+		criteria.add(Subqueries.propertyEq("hc.data", subQueryHc));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+
+		return criteria.list();
 	}
 }

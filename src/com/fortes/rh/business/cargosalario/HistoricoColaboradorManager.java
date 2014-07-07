@@ -158,7 +158,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	
 	public Collection<HistoricoColaborador> filtraHistoricoColaboradorParaPPP(Collection<HistoricoColaborador> todosHistoricos) throws Exception;
 
-	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long colaboradorId);
+	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long... colaboradoresIds);
 
 	public boolean existeHistoricoPorIndice(Long empresaId);
 

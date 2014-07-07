@@ -89,7 +89,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			} 
 			else 
 			{
-				colaboradorManager.desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId(), false);
+				colaboradorManager.desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motDemissao.getId(), false, colaborador.getId());
 				addActionSuccess("Colaborador desligado com sucesso.");
 			}
 		
@@ -198,7 +198,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			if (getEmpresaSistema().isAcIntegra())
 				return solicitacaoDesligamento();
 
-			colaboradorManager.desligaColaborador(true, dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId(), false);
+			colaboradorManager.desligaColaborador(true, dataDesligamento, observacaoDemissao, motDemissao.getId(), false, colaborador.getId());
 			
 			gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(colaborador.getNome(), colaborador.getSolicitanteDemissao().getId(), getEmpresaSistema(), true);
 			

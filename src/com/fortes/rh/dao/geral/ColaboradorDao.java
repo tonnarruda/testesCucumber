@@ -31,7 +31,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Colaborador findbyCandidato(Long candidatoId,Long empresaId);
 	public Collection<Colaborador> findByFuncaoAmbiente(Long funcaoId, Long ambienteId);
 	public boolean setCodigoColaboradorAC(String codigo, Long id);
-	public Colaborador findByCodigoAC(String codigo, Empresa empresa);
+	public Colaborador findByCodigoAC(String codigoAC, Empresa empresa);
 	public Colaborador findColaboradorById(Long id);
 	public Collection<Colaborador> findByAreaEstabelecimento(Long areaOrganizacionalId, Long estabelecimentoId);
 	public Collection<Colaborador> findByAreasOrganizacionaisEstabelecimentos(Collection<Long> areasOrganizacionaisIds, Collection<Long> estabelecimentoIds, String colaboradorNome, Long empresaId);
@@ -46,8 +46,8 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String agruparPor);
 	public List<Object[]> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim);
 
-	public boolean desligaByCodigo(String codigoac, Empresa empresa, Date data);
-	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Long colaboradorId);
+	public boolean desligaByCodigo(Empresa empresa, Date data, String... codigosAC);
+	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Long... colaboradoresIds);
 	public void religaColaborador(Long colaboradorId);
 	public Collection<Colaborador> findProjecaoSalarialByHistoricoColaborador(Date data, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> grupoIds, Collection<Long> cargoIds, String filtro, Long empresaId);
 	public Collection<Colaborador> findProjecaoSalarialByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId, Date data, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> grupoIds, Collection<Long> cargoIds, String filtro, Long empresaId);
@@ -132,4 +132,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId);
 	public void removeComDependencias(Long id);
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds);
+	public Collection<Colaborador> findColaboradoresByCodigoAC(Empresa empresa,	String... codigosACColaboradores);
 }

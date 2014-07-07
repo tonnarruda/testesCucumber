@@ -845,12 +845,12 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         candidatoManager.expects(once()).method("updateDisponivelAndContratadoByColaborador").with(eq(true),eq(false),eq(new Long[]{colaborador.getId()})).isVoid();
     	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, eq(new Long[]{colaborador.getId()})).isVoid();
         transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
-        usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(colaborador.getId()));
-        areaOrganizacinoalManager.expects(once()).method("desvinculaResponsaveis").with(eq(colaborador.getId()));
-        historicoColaboradorManager.expects(once()).method("deleteHistoricosAguardandoConfirmacaoByColaborador").with(eq(colaborador.getId()));
+        usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(new Long[]{colaborador.getId()}));
+        areaOrganizacinoalManager.expects(once()).method("desvinculaResponsaveis").with(eq(new Long[]{colaborador.getId()}));
+        historicoColaboradorManager.expects(once()).method("deleteHistoricosAguardandoConfirmacaoByColaborador").with(eq(new Long[]{colaborador.getId()}));
         transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
 
-        colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, colaborador.getId(), true);
+        colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, true, colaborador.getId());
     }
     
     public void testDesligaColaborador() throws Exception
@@ -860,12 +860,12 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	candidatoManager.expects(once()).method("updateDisponivelAndContratadoByColaborador").with(eq(true),eq(false),eq(new Long[]{colaborador.getId()})).isVoid();
     	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, eq(new Long[]{colaborador.getId()})).isVoid();
     	transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
-    	usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(colaborador.getId()));
-    	areaOrganizacinoalManager.expects(once()).method("desvinculaResponsaveis").with(eq(colaborador.getId()));
+    	usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(new Long []{colaborador.getId()}));
+    	areaOrganizacinoalManager.expects(once()).method("desvinculaResponsaveis").with(eq(new Long[]{colaborador.getId()}));
     	colaboradorDao.expects(once()).method("desligaColaborador").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
     	transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
     	
-    	colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, colaborador.getId(), false);
+    	colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, false, colaborador.getId());
     }
     public void testFindByAreasOrganizacionalIds() throws Exception
     {

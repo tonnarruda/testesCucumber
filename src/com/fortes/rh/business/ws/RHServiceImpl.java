@@ -4,15 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
-
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
@@ -94,7 +88,6 @@ public class RHServiceImpl implements RHService
 	private GrupoACManager grupoACManager;
 	private UsuarioManager usuarioManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	private PlatformTransactionManager transactionManager;
 
 	private final String MSG_ERRO_REMOVER_SITUACAO_LOTE = "Erro ao excluir situação dos empregados, existem outros cadastros utilizando essa situação.";
 	private final String MSG_ERRO_REMOVER_SITUACAO = "Erro ao excluir situação do empregado, existem outros cadastros utilizando essa situação.";
@@ -283,15 +276,15 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	public FeedbackWebService desligarEmpregado(String codigo, String empCodigo, String dataDesligamento, String grupoAC)
+	public FeedbackWebService desligarEmpregado(String codigoColaborador, String codigoEmpresa, String dataDesligamento, String grupoAC)
 	{
-		String parametros = "codigo: " + codigo + " \nempCodigo:" + empCodigo + " \ndataDesligamento: " + dataDesligamento;
+		String parametros = "codigo: " + codigoColaborador + " \nempCodigo:" + codigoEmpresa + " \ndataDesligamento: " + dataDesligamento;
 		try
 		{
-			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
-			if(colaboradorManager.desligaColaboradorAC(codigo, empresa, DateUtil.montaDataByString(dataDesligamento)))
+			Empresa empresa = empresaManager.findByCodigoAC(codigoEmpresa, grupoAC);
+			if(colaboradorManager.desligaColaboradorAC(empresa, DateUtil.montaDataByString(dataDesligamento), codigoColaborador))
 			{				
-				gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC(codigo, empCodigo, grupoAC, empresa);
+				gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC(codigoEmpresa, grupoAC, empresa, codigoColaborador);
 				return new FeedbackWebService(true);
 			}
 			else
@@ -304,39 +297,27 @@ public class RHServiceImpl implements RHService
 		}
 	}
 	
-	public FeedbackWebService desligarEmpregadosEmLote(String[] codigosAC, String empCodigo, String dataDesligamento, String grupoAC)
+	public FeedbackWebService desligarEmpregadosEmLote(String[] codigoACColaborador, String codigoACEmpresa, String dataDesligamento, String grupoAC)
 	{
-		String parametros = "codigo: " + StringUtils.join(codigosAC, ", ")  + " \nempCodigo:" + empCodigo + " \ndataDesligamento: " + dataDesligamento;
-		 
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = transactionManager.getTransaction(def);
-		
+		String parametros = "codigo: " + codigoACColaborador + " \nempCodigo:" + codigoACEmpresa + " \ndataDesligamento: " + dataDesligamento;
 		try
 		{
-			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
-			
-			for (String codigoAC : codigosAC) 
-			{
-				if (!colaboradorManager.desligaColaboradorAC(codigoAC, empresa, DateUtil.montaDataByString(dataDesligamento)))
-					return new FeedbackWebService(false, "Erro: Empregado não encontrado no RH", formataException(parametros, null));
+			Empresa empresa = empresaManager.findByCodigoAC(codigoACEmpresa, grupoAC);
+			if(colaboradorManager.desligaColaboradorAC(empresa, DateUtil.montaDataByString(dataDesligamento), codigoACColaborador))
+			{				
+				gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC(codigoACEmpresa, grupoAC, empresa, codigoACColaborador);
+				return new FeedbackWebService(true);
 			}
-			
-			for (String codigoAC : codigosAC) 
-				gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC(codigoAC, empCodigo, grupoAC, empresa);
-
-			transactionManager.commit(status);
-			
-			return new FeedbackWebService(true);
+			else
+				return new FeedbackWebService(false, "Erro: Empregado não encontrado no RH", formataException(parametros, null));
 		}
 		catch (Exception e)
 		{
-			transactionManager.rollback(status);
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao desligar empregado.", formataException(parametros, e));
 		}
 	}
-
+	
 	public FeedbackWebService religarEmpregado(String codigo, String empCodigo, String grupoAC)
 	{
 		String parametros = "codigo: " + codigo + " \nempCodigo: " + empCodigo + " \ngrupoAC: " + grupoAC;
@@ -744,45 +725,6 @@ public class RHServiceImpl implements RHService
 			return new FeedbackWebService(false, "Erro ao excluir índice.", formataException(parametros, e));
 		}
 	}
-
-	/*
-	 * TODO . Ajuste no AC Pessoal
-	 * NOVO método de remover Índice e históricos. descomentar após mudança no AC!
-	 */
-//	public boolean removerIndice(String codigo, TIndiceHistorico[] tindiceHistoricos)
-//	{
-//
-//		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-//		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-//		TransactionStatus status = transactionManager.getTransaction(def);
-//
-//		try
-//		{
-//			for (TIndiceHistorico indiceHistorico : tindiceHistoricos)
-//			{
-//				boolean ret = removerIndiceHistorico(indiceHistorico.getData(), indiceHistorico.getIndiceCodigo());
-//
-//				if (!ret)
-//					throw new Exception("Erro ao remover histórico do Índice " + indiceHistorico.getIndiceCodigo() + " na data " + indiceHistorico.getData());
-//			}
-//
-//			boolean ret = indiceManager.remove(codigo);
-//
-//			if (!ret)
-//				throw new Exception("Erro ao remover Índice. " + codigo);
-//
-//			transactionManager.commit(status);
-//		}
-//		catch (Exception e)
-//		{
-//			transactionManager.rollback(status);
-//			e.printStackTrace();
-//
-//			return false;
-//		}
-//
-//		return true;
-//	}
 
 	public FeedbackWebService criarIndiceHistorico(TIndiceHistorico tindiceHistorico)
 	{
@@ -1414,9 +1356,4 @@ public class RHServiceImpl implements RHService
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
-
-	public void setTransactionManager(PlatformTransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
-	}
-
 }

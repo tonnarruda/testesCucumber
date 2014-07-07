@@ -47,12 +47,12 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	@Audita(operacao="Remoção", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void remove(Colaborador colaborador, Empresa empresa) throws Exception;
 	@Audita(operacao="Desligamento", auditor=ColaboradorAuditorCallbackImpl.class)
-	public void desligaColaborador( Boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Long colaboradorId, boolean desligaByAC) throws Exception;
+	public void desligaColaborador( Boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, boolean desligaByAC, Long... colaboradoresIds) throws Exception;
 	@Audita(operacao="Religamento", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void religaColaborador(Long colaboradorId) throws Exception;
 	//TODO Auditoria não ta passando
 	@Audita(operacao="Desligamento no AC", auditor=ColaboradorAuditorCallbackImpl.class)
-	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento);
+	public boolean desligaColaboradorAC(Empresa empresa, Date dataDesligamento, String... codigosACColaboradores);
 	@Audita(operacao="Solicitação Deslig", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId, Empresa empresa) throws Exception;
 	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long solicitanteDemissaoId, Long colaboradorId) throws Exception;
@@ -74,7 +74,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByArea(AreaOrganizacional areaFiltro);
 	public Collection<Colaborador> findByFuncaoAmbiente(Long funcaoId, Long ambienteId);
 	public boolean setCodigoColaboradorAC(String codigo, Long id);
-	public Colaborador findByCodigoAC(String codigo, Empresa empresa);
+	public Colaborador findByCodigoAC(String codigoAC, Empresa empresa);
 	public Colaborador findColaboradorById(Long id);
 	public Colaborador findByUsuario(Usuario usuario,Long empresaId);
 	public Collection<Colaborador> findByAreaEstabelecimento(Long areaOrganizacionalId, Long estabelecimentoId);
@@ -204,4 +204,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId);
 	public void removeComDependencias(Long id);
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds);
+	public Collection<Colaborador> findColaboradoresByCodigoAC(Empresa empresa, String... codigosACColaboradores);
 }

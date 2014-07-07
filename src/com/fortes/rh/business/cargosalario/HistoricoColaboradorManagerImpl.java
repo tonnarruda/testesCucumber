@@ -1468,9 +1468,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return true;
 	}
 
-	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long colaboradorId)
+	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long... colaboradoresIds)
 	{
-		getDao().deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradorId);
+		getDao().deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradoresIds);
 	}
 	
 	public void deleteHistoricoColaborador(Long[] colaboradorIds) throws Exception 

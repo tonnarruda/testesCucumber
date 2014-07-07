@@ -88,9 +88,9 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 
-	public Empresa findByCodigoAC(String codigo, String grupoAC)
+	public Empresa findByCodigoAC(String codigoAc, String grupoAC)
 	{
-		return getDao().findByCodigo(codigo, grupoAC);
+		return getDao().findByCodigo(codigoAc, grupoAC);
 	}
 
 	public String saveLogo(File logo, String local)

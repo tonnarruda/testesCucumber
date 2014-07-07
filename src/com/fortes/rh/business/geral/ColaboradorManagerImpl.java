@@ -772,9 +772,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByAreasOrganizacionaisEstabelecimentos(areasOrganizacionaisIds, estabelecimentoIds, null, null);
 	}
 
-	public Colaborador findByCodigoAC(String codigo, Empresa empresa)
+	public Colaborador findByCodigoAC(String codigoAC, Empresa empresa)
 	{
-		return getDao().findByCodigoAC(codigo, empresa);
+		return getDao().findByCodigoAC(codigoAC, empresa);
 	}
 
 	public Colaborador findColaboradorById(Long id)
@@ -960,7 +960,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if(acPessoalClientColaborador.solicitacaoDesligamentoAc(historicosColaborador, empresa))
 		{
 			getDao().atualizaSolicitacaoDesligamento(null, dataSolicitacaoDesligamento, null, null, null, colaboradorId);
-			desligaColaborador(null, null, observacaoDemissao, motivoId, colaboradorId, false);
+			desligaColaborador(null, null, observacaoDemissao, motivoId, false, colaboradorId);
 		}
 	}
 
@@ -969,7 +969,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().atualizaSolicitacaoDesligamento(dataSolicitacaoDesligamento, null, observacaoDemissao, motivoId, solicitanteDemissaoId, colaboradorId);
 	}
 	
-	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long colaboradorId, boolean desligaByAC) throws Exception
+	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, boolean desligaByAC, Long... colaboradoresIds) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -978,15 +978,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		try
 		{
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
-			usuarioManager.desativaAcessoSistema(colaboradorId);
-			candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaboradorId);
-			candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.INDIFERENTE, colaboradorId);
-			areaOrganizacionalManager.desvinculaResponsaveis(colaboradorId);
+			usuarioManager.desativaAcessoSistema(colaboradoresIds);
+			candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaboradoresIds);
+			candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.INDIFERENTE, colaboradoresIds);
+			areaOrganizacionalManager.desvinculaResponsaveis(colaboradoresIds);
 
 			if(desligaByAC)
-				historicoColaboradorManager.deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradorId);
+				historicoColaboradorManager.deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradoresIds);
 			else
-				getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, colaboradorId);
+				getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, colaboradoresIds);
 
 			transactionManager.commit(status);
 		}
@@ -1006,18 +1006,23 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().religaColaborador(colaboradorId);
 	}
 
-	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento)
+	public Collection<Colaborador> findColaboradoresByCodigoAC(Empresa empresa, String... codigosACColaboradores)
 	{
-		Colaborador colaborador = findByCodigoAC(codigoAC, empresa);
+		return getDao().findColaboradoresByCodigoAC(empresa, codigosACColaboradores);
+	}
 
+	public boolean desligaColaboradorAC(Empresa empresa, Date dataDesligamento, String... codigosACColaboradores)
+	{
+		Collection<Colaborador> colaboradores = getDao().findColaboradoresByCodigoAC(empresa, codigosACColaboradores);
+		
 		try {
-			desligaColaborador(true, dataDesligamento, "", null, colaborador.getId(), true);
+			desligaColaborador(true, dataDesligamento, "", null, true, new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradores));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
 
-		return getDao().desligaByCodigo(codigoAC, empresa, dataDesligamento);
+		return getDao().desligaByCodigo(empresa, dataDesligamento, codigosACColaboradores);
 	}
 
 	public Long religaColaboradorAC(String codigoAC, String empresaCodigo, String grupoAC)

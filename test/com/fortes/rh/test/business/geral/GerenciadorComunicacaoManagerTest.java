@@ -846,17 +846,20 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2, gerenciadorComunicacao3, gerenciadorComunicacao4);
 		 
-		 colaboradorManager.expects(once()).method("findByCodigoAC").with(ANYTHING, eq(empresa)).will(returnValue(colaborador));
+		 Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+		 colaboradores.add(colaborador);
+		 
+		 colaboradorManager.expects(once()).method("findColaboradoresByCodigoAC").with(eq(empresa), ANYTHING).will(returnValue(colaboradores));
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(situacao.getEmpresaCodigoAC()), eq(situacao.getGrupoAC())).will(returnValue(new ArrayList<UsuarioEmpresa>()));
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.DESLIGAR_COLABORADOR_AC.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
-		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments();
 		 areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(eq(colaborador.getAreaOrganizacional().getId()), eq(colaborador.getEmpresa().getId()), eq(AreaOrganizacional.RESPONSAVEL)).will(returnValue(emails));
 		 areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(eq(colaborador.getAreaOrganizacional().getId()), eq(colaborador.getEmpresa().getId()), eq(AreaOrganizacional.CORRESPONSAVEL)).will(returnValue(emails));
-		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 mail.expects(atLeastOnce()).method("send").withAnyArguments();
 		 
 		 Exception exception = null;
 		 try {
-			 gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC("001", situacao.getEmpresaCodigoAC(), situacao.getGrupoAC(), empresa);
+			 gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC(situacao.getEmpresaCodigoAC(), situacao.getGrupoAC(), empresa, "001");
 		 } catch (Exception e) {
 			 exception = e;
 		 }

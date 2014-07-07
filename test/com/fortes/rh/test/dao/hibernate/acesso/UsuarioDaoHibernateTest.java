@@ -147,17 +147,53 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		usuario.setSenha("1234");
 		usuarioDao.save(usuario);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setUsuario(usuario);
-		colaborador = colaboradorDao.save(colaborador);
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setUsuario(usuario);
+		colaboradorDao.save(colaborador1);
 		
-		usuarioDao.desativaAcessoSistema(colaborador.getId());
+		usuarioDao.desativaAcessoSistema(colaborador1.getId());
 		
-		Usuario usuarioRetorno = usuarioDao.findByIdProjection(usuario.getId());
+		Usuario usuarioRetorno1 = usuarioDao.findByIdProjection(usuario.getId());
 		
-		assertEquals(false, usuarioRetorno.isAcessoSistema());
-		assertNull(usuarioRetorno.getLogin());
-		assertNull(usuarioRetorno.getSenha());
+		assertEquals(false, usuarioRetorno1.isAcessoSistema());
+		assertNull(usuarioRetorno1.getLogin());
+		assertNull(usuarioRetorno1.getSenha());
+	}
+
+	public void testDesativaAcessoSistemaMultiploColaboradores()
+	{
+		Usuario usuario1 = UsuarioFactory.getEntity();
+		usuario1.setAcessoSistema(true);
+		usuario1.setLogin("teste1");
+		usuario1.setSenha("1234");
+		usuarioDao.save(usuario1);
+
+		Usuario usuario2 = UsuarioFactory.getEntity();
+		usuario2.setAcessoSistema(true);
+		usuario2.setLogin("teste2");
+		usuario2.setSenha("1234");
+		usuarioDao.save(usuario2);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setUsuario(usuario1);
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setUsuario(usuario2);
+		colaboradorDao.save(colaborador2);
+		
+		usuarioDao.desativaAcessoSistema(new Long[]{colaborador1.getId(), colaborador2.getId()});
+		
+		Usuario usuarioRetorno1 = usuarioDao.findByIdProjection(usuario2.getId());
+		Usuario usuarioRetorno2 = usuarioDao.findByIdProjection(usuario2.getId());
+		
+		assertEquals(false, usuarioRetorno1.isAcessoSistema());
+		assertNull(usuarioRetorno1.getLogin());
+		assertNull(usuarioRetorno1.getSenha());
+		
+		assertEquals(false, usuarioRetorno2.isAcessoSistema());
+		assertNull(usuarioRetorno2.getLogin());
+		assertNull(usuarioRetorno2.getSenha());
 	}
 
 	public void testExisteLogin()
