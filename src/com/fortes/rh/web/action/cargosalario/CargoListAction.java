@@ -68,7 +68,7 @@ public class CargoListAction extends MyActionSupportList
 	{
 		try {
 			cargoManager.remove(cargo.getId(), getEmpresaSistema());
-			addActionMessage("Cargo excluído com sucesso.");
+			addActionSuccess("Cargo excluído com sucesso.");
 		}catch (InvocationTargetException ive){
 			ive.printStackTrace();
 			ExceptionUtil.traduzirMensagem(this, ive);
@@ -82,7 +82,7 @@ public class CargoListAction extends MyActionSupportList
 			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
 				message += e.getCause().getLocalizedMessage();
 			
-			addActionMessage(message);
+			addActionWarning(message);
 			
 			list();
 		}

@@ -46,10 +46,10 @@ public class FaixaSalarialListAction extends MyActionSupportList
 		try {
 			cargo = cargoManager.findByIdProjection(cargo.getId());
 			faixaSalarialManager.deleteFaixaSalarial(faixaSalarial.getId(),getEmpresaSistema());
-			addActionMessage("Faixa Salarial excluída com sucesso.");
+			addActionSuccess("Faixa salarial excluída com sucesso.");
 			
 		} catch (Exception e) {
-			addActionMessage("Faixa Salarial Não pode ser removido pois possui dependências no sistema. </br> Detalhes: " + e.getMessage());
+			addActionWarning("Essa faixa salarial não pode ser removida pois possui dependências no sistema. <br/> Detalhes: " + e.getMessage());
 		}
 
 		return Action.SUCCESS;
