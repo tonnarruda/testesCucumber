@@ -191,7 +191,7 @@ public class FuncaoListAction extends MyActionSupportList
 		String msg = new String();
 		try
 		{
-			parametros = RelatorioUtil.getParametrosRelatorio("Funções com Exames", getEmpresaSistema(), "Data: " + DateUtil.formataDiaMesAno(data));
+			parametros = RelatorioUtil.getParametrosRelatorio("Funções por Exames", getEmpresaSistema(), "Data: " + DateUtil.formataDiaMesAno(data));
 			funcaos = historicoFuncaoManager.findByFuncoes(data, funcoesCheck);  
 			
 			if (funcaos.isEmpty())
