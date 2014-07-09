@@ -1,6 +1,8 @@
 package com.fortes.rh.dao.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.geral.Colaborador;
@@ -18,4 +20,5 @@ public interface ComissaoMembroDao extends GenericDao<ComissaoMembro>
 	Collection<ComissaoMembro> findByColaborador(Long colaboradorId);
 	Collection<Colaborador> findColaboradoresNaComissao(Long comissaoId);
 	Collection<Comissao> findComissaoByColaborador(Long colaboradorId);
+	public Map<Long, Date> colaboradoresComEstabilidade(Long[] colaboradoresIds);
 }

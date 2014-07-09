@@ -28,6 +28,7 @@ import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
+import com.fortes.rh.business.sesmt.ComissaoMembroManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.dao.geral.GerenciadorComunicacaoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -84,6 +85,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	PeriodoExperienciaManager periodoExperienciaManager;
 	MotivoSolicitacaoManager motivoSolicitacaoManager;
 	UsuarioMensagemManager usuarioMensagemManager;
+	ComissaoMembroManager comissaoMembroManager;
 	UsuarioEmpresaManager usuarioEmpresaManager;
 	ProvidenciaManager providenciaManager;
 	MensagemManager mensagemManager;
@@ -831,13 +833,17 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		Collection<Colaborador> colaboradores = colaboradorManager.findColaboradoresByCodigoAC(empresa, codigosACColaboradores);
 		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(codigoEmpresa, grupoAC);
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.DESLIGAR_COLABORADOR_AC.getId(), empresa.getId());
+		Map<Long, Date> colaboradoresComEstabilidade = comissaoMembroManager.colaboradoresComEstabilidade(new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradores));
 		
 		for (Colaborador colaborador : colaboradores)
 		{
 			String link = "pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=" + colaborador.getId() + "&voltarPara=../../index.action";
 			String msgGeral = "O Colaborador " + colaborador.getNomeComercial() + " foi desligado no AC Pessoal.";
-			String msgDetalhe = "\n\nPara preencher a entrevista de desligamento, acesse a tela de listagem de colaboradores.";
 			
+			if(colaboradoresComEstabilidade.containsKey(colaborador.getId()))
+				msgGeral += "\nEste colaborador faz parte da CIPA e possui estabilidade até o dia " + DateUtil.formataDiaMesAno(colaboradoresComEstabilidade.get(colaborador.getId())) + ".";
+			
+			String msgDetalhe = "\n\nPara preencher a entrevista de desligamento, acesse a tela de listagem de colaboradores.";
 			String subject = "[RH] - Desligamento de colaborador";
 			String[] emails = null;
 			
@@ -1767,5 +1773,9 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	public void setMotivoSolicitacaoManager(MotivoSolicitacaoManager motivoSolicitacaoManager) {
 		this.motivoSolicitacaoManager = motivoSolicitacaoManager;
+	}
+
+	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager) {
+		this.comissaoMembroManager = comissaoMembroManager;
 	}
 }

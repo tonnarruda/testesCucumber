@@ -1,7 +1,11 @@
 package com.fortes.rh.dao.hibernate.sesmt;
 
+import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -204,5 +208,66 @@ public class ComissaoMembroDaoHibernate extends GenericDaoHibernate<ComissaoMemb
 		query.setLong("comissaoId", comissaoId);
 		
 		return query.list();
+	}
+
+	public Map<Long, Date> colaboradoresComEstabilidade(Long[] colaboradoresIds) {
+		
+		StringBuffer sql = new StringBuffer();
+		sql.append("select ");
+		sql.append("	cme.colaborador_id, ");
+		sql.append("	c.dataFim  + interval '1 year' as data ");
+		sql.append("	 ");
+		sql.append("from ");
+		sql.append("	ComissaoMembro cme  ");
+		sql.append("inner join ");
+		sql.append("	ComissaoPeriodo cpe  ");
+		sql.append("		on cme.comissaoPeriodo_id=cpe.id  ");
+		sql.append("inner join ");
+		sql.append("	Comissao c  ");
+		sql.append("		on cpe.comissao_id=c.id  ");
+		sql.append("where ");
+		sql.append("	cme.colaborador_id in (:colaboradoresIds) ");
+		sql.append("	and cpe.aPartirDe=( ");
+		sql.append("		select ");
+		sql.append("			max(cpe2.aPartirDe)  ");
+		sql.append("		from ");
+		sql.append("			ComissaoPeriodo cpe2 ");
+		sql.append("		where ");
+		sql.append("			cpe2.comissao_id=c.id  ");
+		sql.append("			and cpe2.aPartirDe<=current_date ");
+		sql.append("	) ");
+		sql.append("and c.dataFim=( ");
+		sql.append("		select ");
+		sql.append("			max(c3.dataFim)  ");
+		sql.append("		from ");
+		sql.append("			ComissaoMembro cme3 ");
+		sql.append("		inner join ");
+		sql.append("			ComissaoPeriodo cpe3  ");
+		sql.append("				on cme3.comissaoPeriodo_id=cpe3.id  ");
+		sql.append("		inner join ");
+		sql.append("			Comissao c3 ");
+		sql.append("				on cpe3.comissao_id=c3.id                 ");
+		sql.append("		where ");
+		sql.append("			cme3.colaborador_id = cme.colaborador_id ");
+		sql.append("	 	)  ");
+		sql.append("	  ");
+		sql.append("	and cme.tipo=:tipo ");
+		sql.append("	and (c.dataFim + interval '1 year') >= current_date ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		
+		query.setParameterList("colaboradoresIds", colaboradoresIds);
+		query.setString("tipo", TipoMembroComissao.ELEITO);
+		
+		Collection<Object[]> resultado = query.list();
+		Map<Long, Date> map = new HashMap<Long, Date>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			map.put(((BigInteger)res[0]).longValue(), ((Date)res[1]));
+		}
+		
+		return map;
 	}
 }

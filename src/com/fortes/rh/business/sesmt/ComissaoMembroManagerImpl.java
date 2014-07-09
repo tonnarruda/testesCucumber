@@ -3,6 +3,8 @@ package com.fortes.rh.business.sesmt;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.ComissaoMembroDao;
@@ -100,7 +102,14 @@ public class ComissaoMembroManagerImpl extends GenericManagerImpl<ComissaoMembro
 		return getDao().findComissaoByColaborador(colaboradorId) ;
 	}
 
+	public Map<Long, Date> colaboradoresComEstabilidade(Long[] colaboradoresIds) 
+	{
+		return getDao().colaboradoresComEstabilidade(colaboradoresIds);
+	}
+	
 	public void setComissaoReuniaoPresencaManager(ComissaoReuniaoPresencaManager comissaoReuniaoPresencaManager) {
 		this.comissaoReuniaoPresencaManager = comissaoReuniaoPresencaManager;
 	}
+
+	
 }
