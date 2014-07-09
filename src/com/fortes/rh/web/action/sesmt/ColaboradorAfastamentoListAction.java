@@ -88,7 +88,6 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 
 	public String prepareRelatorio() throws Exception
 	{
-
 		afastamentos = afastamentoManager.findAll(new String[] {"descricao"});
 
 		Collection<Estabelecimento> estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
@@ -106,8 +105,12 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 		{
 			if (!validaPeriodo())
 				return INPUT;
+
+			if (agruparPor == 'O')
+				ordenaColaboradorPorNome = true;
 			
 			agruparPorCid = agruparPor == 'C';
+			
 			//cuidado com os parametros desse metodo eles são unha e carne com o relatorio gerado, os parametros são fundamentais
 			colaboradorAfastamentos = colaboradorAfastamentoManager.findRelatorioAfastamentos(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, areasCheck, colaboradorAfastamento, ordenaColaboradorPorNome, agruparPorCid, afastadoPeloINSS);
 			parametros = RelatorioUtil.getParametrosRelatorio("Afastamentos", getEmpresaSistema(), getPeriodoFormatado());
@@ -123,6 +126,8 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			return "afastamentos_por_mes";
 		else if(agruparPor == 'C')
 			return "afastamentos_por_cid";
+		else if(agruparPor == 'O')
+			return "afastamentos_por_colaborador";
 		else
 			return "afastamentos";
 	}

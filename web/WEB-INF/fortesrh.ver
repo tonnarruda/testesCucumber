@@ -3,6 +3,7 @@
 	<Versao id="1.1.1xx.156" bd="" data="xx/07/2014">
 		<Item visivel="S" motivo="S20140500200"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Nova opção no formato xls.]]></Item>
 		<Item visivel="S" motivo="S20140500214"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Visualizar: Exibição dos pesos das perguntas e das respostas.]]></Item>
+		<Item visivel="S" motivo="S20140400011"><![CDATA[SESMT > Relatórios > Afastamentos: Nova opção de agrupar por colaborador.]]></Item>
 		<Item visivel="S" motivo="S20140500191"><![CDATA[Utilitários > Importar EPIs: Nova funcionalidade de importação de EPIs através de arquivo txt.]]></Item>
 		<Item visivel="N" motivo="P20140600135"><![CDATA[C&S > Cadastros > Cargos: Melhorias na exclusão de cargos.]]></Item>
 		<Item visivel="N" motivo="P20140700008"><![CDATA[SESMT > Relatórios > Funções por Exames: Ajuste no título do relatório.]]></Item>

@@ -56,13 +56,19 @@
 				<param name="dataSource">colaboradorAfastamentos</param>
 				<param name="location">/WEB-INF/report/afastamentoscid.jasper</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">afastamentos.pdf</param>
+				<param name="documentName">afastamentos_cid.pdf</param>
 			</result>
 			<result name="afastamentos_por_mes" type="jasper">
 				<param name="dataSource">colaboradorAfastamentos</param>
 				<param name="location">/WEB-INF/report/afastamentosmes.jasper</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">afastamentos.pdf</param>
+				<param name="documentName">afastamentos_mes.pdf</param>
+			</result>
+			<result name="afastamentos_por_colaborador" type="jasper">
+				<param name="dataSource">colaboradorAfastamentos</param>
+				<param name="location">/WEB-INF/report/afastamentoscolaborador.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">afastamentos_colaborador.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioAfastamentos.ftl</result>
 		</action>
