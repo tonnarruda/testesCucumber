@@ -99,6 +99,8 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public TSituacao bindSituacao(HistoricoColaborador historicoColaborador, String empresaCodigoAC);
 
+	public HistoricoColaborador bindSituacao(TSituacao situacao, HistoricoColaborador historicoColaborador) throws Exception;
+	
 	public HistoricoColaborador findByAC(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
 
 	public HistoricoColaborador cancelarSituacao(TSituacao situacao, String mensagem) throws Exception;

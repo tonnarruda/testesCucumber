@@ -93,6 +93,7 @@ import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -1261,6 +1262,22 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 
 		return colaborador;
+	}
+
+	public void saveEmpregadosESituacoes(TEmpregado[] empregados, TSituacao tSituacao, Empresa empresa) throws Exception
+	{
+		for(int i = 0; i < empregados.length; i++)
+		{
+			Colaborador colaborador = new Colaborador();
+			bindColaborador(colaborador, empregados[i]);
+			colaborador.setEmpresa(empresa);
+			getDao().save(colaborador);
+			
+			HistoricoColaborador historicoColaborador = new HistoricoColaborador();
+			historicoColaborador.setColaborador(colaborador);
+			historicoColaboradorManager.bindSituacao(tSituacao, historicoColaborador);
+			historicoColaboradorManager.save(historicoColaborador);
+		}
 	}
 
 	private Colaborador bindColaborador(Colaborador colaborador, TEmpregado empregado) throws Exception

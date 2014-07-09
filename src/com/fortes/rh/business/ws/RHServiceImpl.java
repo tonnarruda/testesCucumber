@@ -4,9 +4,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
+
+import javax.transaction.TransactionManager;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
@@ -63,6 +71,7 @@ import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.model.ws.TSituacaoCargo;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -88,6 +97,7 @@ public class RHServiceImpl implements RHService
 	private GrupoACManager grupoACManager;
 	private UsuarioManager usuarioManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private PlatformTransactionManager transactionManager;
 
 	private final String MSG_ERRO_REMOVER_SITUACAO_LOTE = "Erro ao excluir situação dos empregados, existem outros cadastros utilizando essa situação.";
 	private final String MSG_ERRO_REMOVER_SITUACAO = "Erro ao excluir situação do empregado, existem outros cadastros utilizando essa situação.";
@@ -297,15 +307,15 @@ public class RHServiceImpl implements RHService
 		}
 	}
 	
-	public FeedbackWebService desligarEmpregadosEmLote(String[] codigoACColaborador, String codigoACEmpresa, String dataDesligamento, String grupoAC)
+	public FeedbackWebService desligarEmpregadosEmLote(String[] codigosACColaboradores, String codigoACEmpresa, String dataDesligamento, String grupoAC)
 	{
-		String parametros = "codigo: " + codigoACColaborador + " \nempCodigo:" + codigoACEmpresa + " \ndataDesligamento: " + dataDesligamento;
+		String parametros = "codigo: " + codigosACColaboradores + " \nempCodigo:" + codigoACEmpresa + " \ndataDesligamento: " + dataDesligamento;
 		try
 		{
 			Empresa empresa = empresaManager.findByCodigoAC(codigoACEmpresa, grupoAC);
-			if(colaboradorManager.desligaColaboradorAC(empresa, DateUtil.montaDataByString(dataDesligamento), codigoACColaborador))
+			if(colaboradorManager.desligaColaboradorAC(empresa, DateUtil.montaDataByString(dataDesligamento), codigosACColaboradores))
 			{				
-				gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC(codigoACEmpresa, grupoAC, empresa, codigoACColaborador);
+				gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC(codigoACEmpresa, grupoAC, empresa, codigosACColaboradores);
 				return new FeedbackWebService(true);
 			}
 			else
@@ -314,7 +324,7 @@ public class RHServiceImpl implements RHService
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return new FeedbackWebService(false, "Erro ao desligar empregado.", formataException(parametros, e));
+			return new FeedbackWebService(false, "Erro ao desligar empregado em lote.", formataException(parametros, e));
 		}
 	}
 	
@@ -349,6 +359,121 @@ public class RHServiceImpl implements RHService
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Erro ao alterar código do empregado.", formataException(parametros, e));
+		}
+	}
+	
+	public FeedbackWebService transferir(TEmpresa tEmpresaOrigin, TEmpresa tEmpresasDestino, TEmpregado[] empregados, TSituacao tSituacao, String dataTransferencia)
+	{
+		Empresa empresaOrigin = null;
+		Empresa empresaDestino= null;
+		
+		if(tEmpresaOrigin.getGrupoAC() != null && !"".equals(tEmpresaOrigin.getGrupoAC()))
+		{
+			empresaOrigin = empresaManager.findByCodigoAC(tEmpresaOrigin.getCodigoAC(), tEmpresaOrigin.getGrupoAC());
+			
+			if(empresaOrigin == null)
+				return new FeedbackWebService(false, "Empresa origem não encontrada no sistema RH", formataException( "empCodigo: " + tEmpresaOrigin.getCodigoAC() + "\ngrupoAC: " + tEmpresaOrigin.getGrupoAC(), null));
+		}
+		
+		if(tEmpresasDestino.getGrupoAC() != null && !"".equals(tEmpresasDestino.getGrupoAC()))
+		{
+			empresaDestino = empresaManager.findByCodigoAC(tEmpresasDestino.getCodigoAC(), tEmpresasDestino.getGrupoAC());
+			
+			if(empresaDestino == null)
+				return new FeedbackWebService(false, "Empresa destino não encontrada no sistema RH", formataException( "empCodigo: " + tEmpresasDestino.getCodigoAC() + "\ngrupoAC: " + tEmpresasDestino.getGrupoAC(), null));
+		}
+		
+		if (empresaOrigin != null && empresaDestino == null)
+			return desligarEmpregadosEmLote(tEmpregadoToArrayCodigoAC(empregados), empresaOrigin.getCodigoAC(), dataTransferencia, empresaOrigin.getGrupoAC());
+
+		else if (empresaOrigin == null && empresaDestino != null)
+			return inserirEmpregados(empregados, tSituacao, empresaDestino);
+		
+		else if(empresaOrigin != null && empresaDestino != null)
+			return desligaInsereEmpregados(empregados, tSituacao, dataTransferencia, empresaOrigin, empresaDestino);
+		
+		else
+			return new FeedbackWebService(false, "Nenhuma empresa esta integrada com o sistena RH.", "");
+	}
+
+	private FeedbackWebService desligaInsereEmpregados(TEmpregado[] empregados, TSituacao tSituacao, String dataTransferencia, Empresa empresaOrigin, Empresa empresaDestino) 
+	{
+		String parametros = "empCodigo: " + tSituacao.getEmpresaCodigoAC() + "\ngrupoAC: " + tSituacao.getGrupoAC() + "\ncodigo estabelecimento: " + tSituacao.getEstabelecimentoCodigoAC() +
+				"\ncodigo lotação: " + tSituacao.getLotacaoCodigoAC() + "\ncodigo cargo: " + tSituacao.getCargoCodigoAC();
+		
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
+		
+		try {
+			FeedbackWebService feedbackWebService = desligarEmpregadosEmLote(tEmpregadoToArrayCodigoAC(empregados), empresaOrigin.getCodigoAC(), dataTransferencia, empresaOrigin.getGrupoAC());
+
+			if(!feedbackWebService.isSucesso())
+			{
+				transactionManager.rollback(status);
+				return feedbackWebService;
+			}
+			
+			feedbackWebService = inserirEmpregados(empregados, tSituacao, empresaDestino);
+
+			if(!feedbackWebService.isSucesso())
+			{
+				transactionManager.rollback(status);
+				return feedbackWebService;
+			}
+
+			transactionManager.commit(status);
+			return feedbackWebService; 
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			transactionManager.rollback(status);
+			return new FeedbackWebService(false, "Erro ao transferir empregado.", formataException(parametros, e));
+		}
+	}
+
+	private String[] tEmpregadoToArrayCodigoAC(TEmpregado[] empregados) 
+	{
+		String[] codigosEmpregados = new String[empregados.length];
+		
+		for(int i = 0; i < empregados.length; i++)
+			codigosEmpregados[i] = ((TEmpregado) empregados[i]).getCodigoAC();
+		
+		return codigosEmpregados;
+	}
+	
+	private FeedbackWebService inserirEmpregados(TEmpregado[] tEmpregados, TSituacao tSituacao, Empresa empresaDestino)
+	{
+		String parametros = "empCodigo: " + tSituacao.getEmpresaCodigoAC() + "\ngrupoAC: " + tSituacao.getGrupoAC() + "\ncodigo estabelecimento: " + tSituacao.getEstabelecimentoCodigoAC() +
+				"\ncodigo lotação: " + tSituacao.getLotacaoCodigoAC() + "\ncodigo cargo: " + tSituacao.getCargoCodigoAC();
+		try
+		{
+			Estabelecimento estabelecimento = estabelecimentoManager.findEstabelecimentoByCodigoAc(tSituacao.getEstabelecimentoCodigoAC(),  tSituacao.getEmpresaCodigoAC(), tSituacao.getGrupoAC());
+			AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(tSituacao.getLotacaoCodigoAC(), tSituacao.getEmpresaCodigoAC(), tSituacao.getGrupoAC());
+			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacao.getCargoCodigoAC(), tSituacao.getEmpresaCodigoAC(), tSituacao.getGrupoAC());
+			
+			String retorno = "";
+			
+			if(estabelecimento == null)
+				retorno += "O estabelecimento destino não existe no sistema RH\n";
+
+			if(areaOrganizacional == null)
+				retorno += "A área organizacional destino não existe no sistema RH\n";
+
+			if(faixaSalarial == null)
+				retorno += "O cargo destino não existe no sistema RH\n";
+			
+			if(!retorno.equals(""))
+				return new FeedbackWebService(false,  "Existem inconsistências de integração com o sistema RH na empresa destino.", formataException(retorno, null));	
+		
+			colaboradorManager.saveEmpregadosESituacoes(tEmpregados, tSituacao, empresaDestino);
+			
+			return new FeedbackWebService(true);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, "Erro ao transferir empregado.", formataException(parametros, e));
 		}
 	}
 	
@@ -1355,5 +1480,9 @@ public class RHServiceImpl implements RHService
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public void setTransactionManager(PlatformTransactionManager transactionManager) {
+		this.transactionManager = transactionManager;
 	}
 }

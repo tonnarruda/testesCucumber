@@ -32,6 +32,7 @@ import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.security.spring.aop.callback.ColaboradorAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
 import com.fortes.security.auditoria.Modulo;
@@ -112,6 +113,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public boolean updateInfoPessoaisByCpf(Colaborador colaborador, Long empresaId);
 
 	public Colaborador updateEmpregado(TEmpregado empregado) throws Exception;
+	public void saveEmpregadosESituacoes(TEmpregado[] empregados, TSituacao tSituacao, Empresa empresa) throws Exception;
 	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
 	public Long findByUsuario(Long usuarioId);
 	public Integer getCountAtivosQualquerStatus(Date dataBase, Long[] empresaIds, Long[] areasIds);
