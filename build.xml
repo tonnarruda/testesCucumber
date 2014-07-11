@@ -5,6 +5,7 @@
 
 	<property environment="env"/>
 	<property name="class_dir" value="${ant.project.name}/web/WEB-INF/classes" />
+	<property name="report_dir" value="${ant.project.name}/web/WEB-INF/report" />
 	
 	<path id="project.classpath">
 		<pathelement location="${class_dir}" />
@@ -20,7 +21,7 @@
    	</path>
 
 	<path id="project.classpath.ireport">
-		<pathelement location="${ant.project.name}/web/WEB-INF/classes" />
+		<pathelement location="${class_dir}" />
 		<fileset dir="${env.JASPER_LIB}">  
 			<include name="*.jar" />
 			<exclude name="jasperreports-chart-themes-5.0.0.jar"/> 
@@ -42,9 +43,9 @@
 			<classpath refid="project.classpath.ireport"/>
 		</taskdef>
 		
-		<jaspercompile destdir="${ant.project.name}/web/WEB-INF/report">
+		<jaspercompile destdir="${report_dir}">
 			<src>
-				<fileset dir="${ant.project.name}/web/WEB-INF/report">
+				<fileset dir="${report_dir}">
 					<include name="*.jrxml" />
 	                <date datetime="${vinteDiasAtras} 01:00 AM" when="after"/>
 				</fileset>
@@ -64,7 +65,7 @@
 	    </tstamp>
 
 		<for param="jrxml.file">  
-            <fileset dir="${ant.project.name}/web/WEB-INF/report">
+            <fileset dir="${report_dir}">
                 <include name="*.jrxml" />
                 <date datetime="${vinteDiasAtras} 01:00 AM" when="after"/>
             </fileset>	       
