@@ -441,11 +441,10 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 					|| (cidades != null && !cidades.isEmpty()))
 				return true;
 			
-			String colaboradorCodAcDuplicado = colaboradorManager.findCodigoACDuplicado(empresa.getId());
 			String faixaSalarialCodAcDuplicado = faixaSalarialManager.findCodigoACDuplicado(empresa.getId());
 			String cidadeCodAcDuplicado = cidadeManager.findCodigoACDuplicado();
 				
-			if( StringUtils.isNotEmpty(colaboradorCodAcDuplicado) || StringUtils.isNotEmpty(faixaSalarialCodAcDuplicado) || StringUtils.isNotEmpty(cidadeCodAcDuplicado)) 
+			if( StringUtils.isNotEmpty(faixaSalarialCodAcDuplicado) || StringUtils.isNotEmpty(cidadeCodAcDuplicado)) 
 				return true;
 		}	
 		
@@ -455,16 +454,11 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	public Collection<String> verificaIntegracaoAC(Empresa empresa) 
 	{
 		Collection<String> msgs = new ArrayList<String>();
-		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 		
-		String colaboradorCodAcDuplicado = colaboradorManager.findCodigoACDuplicado(empresa.getId());
 		String faixaSalarialCodAcDuplicado = faixaSalarialManager.findCodigoACDuplicado(empresa.getId());
 		String cidadeCodAcDuplicado = cidadeManager.findCodigoACDuplicado();
 		
 		msgs.add("Verifique os seguintes itens:");
-
-		if( StringUtils.isNotEmpty(colaboradorCodAcDuplicado) )
-			msgs.add("- Existe colaborador duplicado, código AC: " + colaboradorCodAcDuplicado);
 
 		if( StringUtils.isNotEmpty(faixaSalarialCodAcDuplicado) )
 			msgs.add("- Existe faixa salarial duplicada, código AC: " + faixaSalarialCodAcDuplicado);

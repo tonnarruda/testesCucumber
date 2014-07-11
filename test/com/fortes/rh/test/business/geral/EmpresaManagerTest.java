@@ -290,7 +290,6 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	OcorrenciaManager.expects(once()).method("findSemCodigoAC").will(returnValue(null));
     	cidadeManager.expects(once()).method("findSemCodigoAC").will(returnValue(null));
     	
-    	colaboradorManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("1"));
     	faixaSalarialManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("2"));
     	cidadeManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	
@@ -302,19 +301,16 @@ public class EmpresaManagerTest extends MockObjectTestCase
     	Empresa empresa = EmpresaFactory.getEmpresa();
     	empresa.setAcIntegra(true);
     	
-    	MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
-    	colaboradorManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("1"));
     	faixaSalarialManager.expects(once()).method("findCodigoACDuplicado").will(returnValue("2"));
     	cidadeManager.expects(once()).method("findCodigoACDuplicado").will(returnValue(""));
     	
     	Collection<String> collectionMsgs = (Collection<String>) empresaManager.verificaIntegracaoAC(empresa);
     	
-    	assertEquals(3, collectionMsgs.size());
+    	assertEquals(2, collectionMsgs.size());
     	
     	String msgs = StringUtil.converteCollectionToString(collectionMsgs);
     	
     	assertEquals("Verifique os seguintes itens:," +
-    			"- Existe colaborador duplicado, código AC: 1," +
     			"- Existe faixa salarial duplicada, código AC: 2", msgs);
     }
 }

@@ -2342,10 +2342,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findFuncaoAmbiente(colaboradorId);
 	}
 
-	public String findCodigoACDuplicado(Long empresaId) {
-		return getDao().findCodigoACDuplicado(empresaId);
-	}
-
 	public Collection<PendenciaAC> findPendencias(Long empresaId) {
 		Collection<PendenciaAC> pendenciaACs = new ArrayList<PendenciaAC>();
 

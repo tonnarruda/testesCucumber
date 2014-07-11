@@ -796,7 +796,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public boolean setCodigoColaboradorAC(String codigo, Long id)
 	{
-		// TODO: codigoac vazio
 		String hql = "update Colaborador set codigoac = :codigo where id = :id";
 		Query query = getSession().createQuery(hql);
 		query.setString("codigo", codigo);
@@ -4095,7 +4094,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("   where hc2.colaborador.id = co.id ");
 		hql.append("   and hc2.status = :status ");
 		hql.append("  ) ");
-		hql.append("and (co.codigoAC is null or co.codigoAC = '') ");
+		hql.append("and co.codigoAC is null ");
 		hql.append("and co.naoIntegraAc = :naoIntegraAc ");
 		
 		if (empresaId != null)
@@ -4205,21 +4204,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
 
 		return (Integer) query.uniqueResult();
-	}
-
-	public String findCodigoACDuplicado(Long empresaId) 
-	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select codigoAC from Colaborador "); 
-		hql.append("where empresa.id = :empresaId and codigoAC is not null and codigoAC != '' ");
-		hql.append("group by codigoAC ");
-		hql.append("having count(*) > 1 ");	
-		hql.append("order by codigoAC ");
-	
-		Query query = getSession().createQuery(hql.toString());
-		query.setLong("empresaId", empresaId);
-
-		return  StringUtil.converteCollectionToString(query.list());
 	}
 
 	public Collection<Colaborador> findParentesByNome(String nome, Long empresaId) 

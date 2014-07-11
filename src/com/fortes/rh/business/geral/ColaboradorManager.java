@@ -178,7 +178,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public double calculaIndiceProcessoSeletivo(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Date dataAte);
 	public void deleteColaborador(Long[] colaboradorIds) throws Exception;
 	public Colaborador findFuncaoAmbiente(Long colaboradorId);
-	public String findCodigoACDuplicado(Long empresaId);
 	public void setCandidatoNull(Long candidatoId);
 	public Collection<Colaborador> findParentesByNome(String nome, Long empresaId);
 	public Collection<Object> montaParentesByNome(Collection<Colaborador> colaboradores);
