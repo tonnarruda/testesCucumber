@@ -5,8 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-public class EnderecoPC {
-
+public class EnderecoPC extends AbstractAdapterPC 
+{
 	private String cep;
 	private String logradouro;
 	private String numero;
@@ -78,7 +78,7 @@ public class EnderecoPC {
 		this.cidadeCodigoIBGE = cidadeCodigoIBGE;
 	}
 
-	public String toString()
+	public String toJson()
 	{
 		Gson gson = new Gson();
 		

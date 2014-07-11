@@ -9,8 +9,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-public class ArquivoPC {
-
+public class ArquivoPC extends AbstractAdapterPC 
+{
 	private String bytes; 
 	private String name; 
 	@SerializedName("content_type")
@@ -71,7 +71,7 @@ public class ArquivoPC {
 		this.checksum = checksum;
 	}
 	
-	public String toString()
+	public String toJson()
 	{
 		Gson gson = new Gson();
 		

@@ -1319,7 +1319,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 			
 			colaboradorAtualizado.setFoto(getFoto(colaboradorAtualizado.getId()));
-			transacaoPCManager.enfileirar(new ColaboradorPC(colaboradorAtualizado), ColaboradorPC.class, URLTransacaoPC.COLABORADOR_ATUALIZAR);
+			transacaoPCManager.enfileirar(new ColaboradorPC(colaboradorAtualizado), URLTransacaoPC.COLABORADOR_ATUALIZAR);
 			transacaoPCManager.processarFila();
 			
 			

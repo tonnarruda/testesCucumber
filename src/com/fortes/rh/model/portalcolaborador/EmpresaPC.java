@@ -5,8 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-public class EmpresaPC {
-
+public class EmpresaPC extends AbstractAdapterPC 
+{
 	private String nome;
 	@SerializedName("base_cnpj")
 	private String baseCnpj; 
@@ -37,7 +37,7 @@ public class EmpresaPC {
 		this.baseCnpj = baseCnpj;
 	}
 	
-	public String toString()
+	public String toJson()
 	{
 		Gson gson = new Gson();
 		

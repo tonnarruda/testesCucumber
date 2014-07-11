@@ -19,6 +19,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.portalcolaborador.TransacaoPCDao;
 import com.fortes.rh.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.portalcolaborador.AbstractAdapterPC;
 import com.fortes.rh.model.portalcolaborador.TransacaoPC;
 import com.fortes.rh.util.CryptUtil;
 import com.fortes.rh.util.SpringUtil;
@@ -29,7 +30,7 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 	private TransacaoPCManager transacaoPCManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
-	public void enfileirar(Object objeto, Class<?> classe, URLTransacaoPC urlTransacaoPC) 
+	public void enfileirar(AbstractAdapterPC adapterPC, URLTransacaoPC urlTransacaoPC) 
 	{
 		try {
 			ParametrosDoSistema params = parametrosDoSistemaManager.findById(1L);
@@ -38,7 +39,7 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 			transacaoPC.setCodigoUrl(urlTransacaoPC.getId());
 			transacaoPC.setData(new Date());
 			
-			String json = classe.cast(objeto).toString();
+			String json = adapterPC.toJson();
 			
 			transacaoPC.setJson(CryptUtil.encrypt(json, params.getPcKey()));
 			save(transacaoPC);

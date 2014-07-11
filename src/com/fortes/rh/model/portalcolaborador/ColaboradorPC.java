@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
 
-public class ColaboradorPC 
+public class ColaboradorPC extends AbstractAdapterPC
 {
 	@SerializedName("empresa")
 	private EmpresaPC empresaPC;
@@ -197,7 +197,7 @@ public class ColaboradorPC
 		this.qtdFilhos = qtdFilhos;
 	}
 	
-	public String toString()
+	public String toJson()
 	{
 		Gson gson = new Gson();
 		
