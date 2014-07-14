@@ -15,6 +15,7 @@ import com.fortes.rh.dao.captacao.MotivoSolicitacaoDao;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
+import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.BairroDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
@@ -28,8 +29,10 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
@@ -47,6 +50,7 @@ import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 
@@ -61,6 +65,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 	private EstabelecimentoDao estabelecimentoDao;
 	private AreaOrganizacionalDao areaOrganizacionalDao;
 	private ColaboradorDao colaboradorDao;
+	private HistoricoColaboradorDao historicoColaboradorDao;
 	private MotivoSolicitacaoDao motivoSolicitacaoDao;
 	private CandidatoDao candidatoDao;
 	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
@@ -916,11 +921,33 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		colaborador.setSolicitacao(solicitacao);
 		colaboradorDao.save(colaborador);
 		
+		HistoricoColaborador hc = HistoricoColaboradorFactory.getEntity();
+		hc.setColaborador(colaborador);
+		hc.setData(data);
+		historicoColaboradorDao.save(hc);
+		
 		// contratado 14 dias após início da solicitação
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
 		colaborador2.setDataAdmissao(DateUtil.criarDataMesAno(15, 3, 2010));
 		colaborador2.setSolicitacao(solicitacao);
 		colaboradorDao.save(colaborador2);
+		
+		HistoricoColaborador hc2 = HistoricoColaboradorFactory.getEntity();
+		hc2.setColaborador(colaborador2);
+		hc2.setData(data);
+		historicoColaboradorDao.save(hc2);
+
+		// Aguardando confirmação
+		Colaborador colaborador3 = ColaboradorFactory.getEntity();
+		colaborador3.setDataAdmissao(DateUtil.criarDataMesAno(15, 3, 2010));
+		colaborador3.setSolicitacao(solicitacao);
+		colaboradorDao.save(colaborador3);
+		
+		HistoricoColaborador hc3 = HistoricoColaboradorFactory.getEntity();
+		hc3.setColaborador(colaborador3);
+		hc3.setData(data);
+		hc3.setStatus(StatusRetornoAC.AGUARDANDO);
+		historicoColaboradorDao.save(hc3);
 		
 		Collection<Long> areasIds = Arrays.asList(areaOrganizacional.getId());
 		Collection<Long> estabelecimentosIds = Arrays.asList(estabelecimento.getId());
@@ -1198,6 +1225,11 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 
 	public void setCandidatoSolicitacaoDao(CandidatoSolicitacaoDao candidatoSolicitacaoDao) {
 		this.candidatoSolicitacaoDao = candidatoSolicitacaoDao;
+	}
+
+	public void setHistoricoColaboradorDao(
+			HistoricoColaboradorDao historicoColaboradorDao) {
+		this.historicoColaboradorDao = historicoColaboradorDao;
 	}
 
 }

@@ -451,11 +451,13 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 	{
 		StringBuilder consulta = new StringBuilder("select new com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga(s.estabelecimento.id, s.areaOrganizacional.id, fs.cargo.id,count(co.solicitacao.id), coalesce(avg(s.dataEncerramento - s.data), 0)) ");
 		consulta.append("from Colaborador co ");
+		consulta.append("join co.historicoColaboradors hc ");
 		consulta.append("right join co.solicitacao s ");
 		consulta.append("join s.faixaSalarial fs ");
 		consulta.append("where ");
 		consulta.append("	s.dataEncerramento >= :dataDe ");
 		consulta.append("	and s.dataEncerramento <= :dataAte ");
+		consulta.append("	and (hc.data = ( select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = hc.colaborador.id and hc2.data <= :hoje and hc2.status = :status ) or hc.data is null) ");
 		
 		if (areasIds != null && !areasIds.isEmpty())
             consulta.append("	and s.areaOrganizacional.id in (:areasOrganizacionais) ");
@@ -478,6 +480,8 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		Query query = getSession().createQuery(consulta.toString());
         query.setDate("dataDe", inicio);
         query.setDate("dataAte", fim);
+        query.setDate("hoje", new Date());
+        query.setInteger("status", StatusRetornoAC.CONFIRMADO);
         
         if (areasIds != null && !areasIds.isEmpty())
 			query.setParameterList("areasOrganizacionais", areasIds);

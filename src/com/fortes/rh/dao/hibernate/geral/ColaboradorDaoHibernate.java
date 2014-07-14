@@ -4056,22 +4056,22 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.historicoColaboradors", "hc");
+		criteria.createCriteria("c.solicitacao", "s");
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.count("c.id"));
 		
 		criteria.setProjection(p);
-		
-		criteria.add(Expression.between("c.dataAdmissao", dataIni, dataFim));
+	
+		criteria.add(Expression.between("s.dataEncerramento", dataIni, dataFim));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
-		criteria.add(Expression.isNotNull("c.solicitacao.id"));
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));
 	
 		if(LongUtil.arrayIsNotEmpty(estabelecimentoIds))
-			criteria.add(Expression.in("hc.estabelecimento.id", estabelecimentoIds));
+			criteria.add(Expression.in("s.estabelecimento.id", estabelecimentoIds));
 		
 		if(LongUtil.arrayIsNotEmpty(areaIds))
-			criteria.add(Expression.in("hc.areaOrganizacional.id", areaIds));
+			criteria.add(Expression.in("s.areaOrganizacional.id", areaIds));
 		
 		if (LongUtil.arrayIsNotEmpty(solicitacaoIds)) 
 			criteria.add(Expression.in("c.solicitacao.id", solicitacaoIds));

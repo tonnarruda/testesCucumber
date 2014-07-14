@@ -5202,9 +5202,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		areaOrganizacionalDao.save(areaOrganizacional2);
 		
 		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
+		solicitacao1.setDataEncerramento(hoje);
+		solicitacao1.setEstabelecimento(estabelecimento1);
+		solicitacao1.setAreaOrganizacional(areaOrganizacional1);
 		solicitacaoDao.save(solicitacao1);
 		
 		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
+		solicitacao2.setDataEncerramento(hoje);
+		solicitacao2.setEstabelecimento(estabelecimento2);
+		solicitacao2.setAreaOrganizacional(areaOrganizacional2);
 		solicitacaoDao.save(solicitacao2);
 		
 		Colaborador pedro = ColaboradorFactory.getEntity();
