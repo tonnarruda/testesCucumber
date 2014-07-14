@@ -203,6 +203,10 @@
     <action name="logout" class="com.opensymphony.xwork.ActionSupport">
       <result name="success" type="redirect">/j_acegi_logout</result>
     </action>
+    <action name="jobs" class="com.fortes.rh.web.action.JobsAction" method="index">
+      <result name="success" type="freemarker">/WEB-INF/pages/jobs.ftl</result>
+      <result name="index" type="redirect">index.action</result>
+    </action>
     <action name="concurrentSessionError" class="com.opensymphony.xwork.ActionSupport">
       <result name="success">/WEB-INF/pages/concurrentSessionError.jsp</result>
     </action>

@@ -141,7 +141,7 @@ public class GenericDaoHibernate<T> extends HibernateDaoSupport implements Gener
 		getHibernateTemplate().clear();
 		getHibernateTemplate().delete(entity);
 	}
-
+	
 	public T findRandom(String[] properties)
 	{
 		int indice = (int) Math.round((Math.random() * (getCount())));//getCount() retorna quantidade de registros no banco

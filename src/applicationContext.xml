@@ -101,6 +101,7 @@
   <bean name="lembretePesquisaJob" class="com.fortes.rh.business.pesquisa.LembretePesquisa">
   </bean>
   <bean name="lembretePesquisa" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	<property name="name" value="Enviar lembrete de pesquisas"/>
     <property name="targetObject" ref="lembretePesquisaJob"/>
     <property name="targetMethod" value="execute"/>
   </bean>
@@ -110,6 +111,7 @@
 	<property name="empresaManager" ref="empresaManager" />
   </bean>
   <bean name="lembreteExamesPrevistos" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	<property name="name" value="Enviar lembrete de exames previstos"/>
     <property name="targetObject" ref="lembreteExamesPrevistosJob"/>
     <property name="targetMethod" value="executeLembreteExamesPrevistos"/>
   </bean>
@@ -117,6 +119,7 @@
   <bean name="lembretePeriodoExperienciaJob" class="com.fortes.rh.business.avaliacao.LembretePeriodoExperiencia">
   </bean>
   <bean name="lembretePeriodoExperiencia" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	<property name="name" value="Enviar lembrete do período de experiência dos colaboradores"/>
     <property name="targetObject" ref="lembretePeriodoExperienciaJob"/>
     <property name="targetMethod" value="execute"/>
   </bean>
@@ -127,6 +130,7 @@
     <property name="acPessoalImportadorGastos" ref="acPessoalImportadorGastos" />
   </bean>
   <bean name="importadorGastosAC" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	<property name="name" value="Importar de gastos do AC Pessoal"/>
     <property name="targetObject" ref="importadorGastosACJob"/>
     <property name="targetMethod" value="execute"/>
   </bean>
@@ -137,6 +141,7 @@
     <property name="mail" ref="mail" />
   </bean>
   <bean name="emailCartaoAniversariantes" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	<property name="name" value="Enviar cartões para os aniversariantes do dia"/>
     <property name="targetObject" ref="emailCartaoAniversariantesJob"/>
     <property name="targetMethod" value="enviaEmailCartaoAniversariantes"/>
   </bean>
@@ -146,6 +151,7 @@
 	<property name="empresaManager" ref="empresaManager" />
   </bean>
   <bean name="quantidadeCurriculos" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	<property name="name" value="Enviar lembrete da quantidade de currículos cadastrados"/>
     <property name="targetObject" ref="quantidadeCurriculosJob"/>
     <property name="targetMethod" value="execute"/>
   </bean>
@@ -156,6 +162,7 @@
 	<property name="usuarioMensagemManager" ref="usuarioMensagemManager" />
   </bean>
   <bean name="lembreteAberturaSolicitacaoEpi" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	<property name="name" value="Enviar lembrete da abertura de solicitações de EPI"/>
     <property name="targetObject" ref="lembreteAberturaSolicitacaoEpiJob"/>
     <property name="targetMethod" value="enviaMensagemNotificacaoDeNaoAberturaSolicitacaoEpi"/>
   </bean>
@@ -166,6 +173,7 @@
     <property name="mail" ref="mail" />
   </bean>
   <bean name="lembreteResponderAvaliacaoDesempenho" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	<property name="name" value="Enviar lembrete para responder avaliações de desempenho"/>
     <property name="targetObject" ref="lembreteResponderAvaliacaoDesempenhoJob"/>
     <property name="targetMethod" value="enviarLembreteResponderAvaliacaoDesempenho"/>
   </bean>
@@ -176,6 +184,7 @@
 	<property name="usuarioMensagemManager" ref="usuarioMensagemManager" />
   </bean>
   <bean name="lembreteEntregaEpi" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	<property name="name" value="Enviar lembrete da entrega de EPIs"/>
     <property name="targetObject" ref="lembreteEntregaEpiJob"/>
     <property name="targetMethod" value="enviaMensagemNotificacaoDeNaoEntregaSolicitacaoEpi"/>
   </bean>
@@ -185,6 +194,7 @@
     <property name="mail" ref="mail" />
   </bean>
   <bean name="lembreteContratoTemporarioColaborador" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	<property name="name" value="Enviar lembrete de contratos temporários de colaboradores"/>
     <property name="targetObject" ref="lembreteContratoTemporarioColaboradorJob"/>
     <property name="targetMethod" value="enviarEmailTerminoContratoTemporarioColaborador"/>
   </bean>
@@ -197,6 +207,7 @@
 	<property name="mail" ref="mail" />
   </bean>
   <bean name="lembreteHabilitacaoAVencer" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	<property name="name" value="Enviar lembrete de carteiras de habilitação a vencer"/>
     <property name="targetObject" ref="lembreteHabilitacaoAVencerJob"/>
     <property name="targetMethod" value="enviaMensagemHabilitacaoAVencer"/>
   </bean>
@@ -205,6 +216,7 @@
     <property name="dao" ref="noticiaDaoTarget" />
   </bean>
   <bean name="importarUltimasNoticias" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="name" value="Importar últimas notícias"/>
     <property name="targetObject" ref="importarUltimasNoticiasJob"/>
     <property name="targetMethod" value="importarUltimasNoticias"/>
   </bean>
@@ -215,6 +227,7 @@
   
   <!-- Job Responsavel por limpar os arquivos de log antigos -->
   <bean name="logCleanerJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+  	<property name="name" value="Remover arquivos antigos de log" />
     <property name="jobClass" value="com.fortes.rh.config.LogCleanerJob" />
   </bean>
   <bean id="cronTriggerLogCleaner" class="org.springframework.scheduling.quartz.CronTriggerBean">
@@ -227,6 +240,7 @@
     <property name="backupService" ref="backupService" />
   </bean>
   <bean name="backupJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+    <property name="name" value="Backup do banco de dados" />
     <property name="jobClass" value="com.fortes.rh.config.backup.BackupJob" />
 	<property name="jobDataAsMap">
 		<map>
@@ -241,6 +255,7 @@
   
   <!-- Job Responsavel por limpar os arquivos de backup antigos -->
   <bean name="backupCleanerJob" class="org.springframework.scheduling.quartz.JobDetailBean">
+  	<property name="name" value="Remover arquivos antigos de backup do banco de dados" />
     <property name="jobClass" value="com.fortes.rh.config.backup.BackupCleanerJob" />
   </bean>
   <bean id="cronTriggerBackupCleaner" class="org.springframework.scheduling.quartz.CronTriggerBean">
