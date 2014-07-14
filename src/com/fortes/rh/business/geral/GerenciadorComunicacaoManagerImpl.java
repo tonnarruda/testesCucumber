@@ -840,7 +840,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			String link = "pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=" + colaborador.getId() + "&voltarPara=../../index.action";
 			String msgGeral = "O Colaborador " + colaborador.getNomeComercial() + " foi desligado no AC Pessoal.";
 			
-			if(colaboradoresComEstabilidade.containsKey(colaborador.getId()))
+			if(colaboradoresComEstabilidade != null && colaboradoresComEstabilidade.containsKey(colaborador.getId()))
 				msgGeral += "\nEste colaborador faz parte da CIPA e possui estabilidade até o dia " + DateUtil.formataDiaMesAno(colaboradoresComEstabilidade.get(colaborador.getId())) + ".";
 			
 			String msgDetalhe = "\n\nPara preencher a entrevista de desligamento, acesse a tela de listagem de colaboradores.";

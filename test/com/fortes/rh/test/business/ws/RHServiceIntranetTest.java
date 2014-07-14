@@ -11,6 +11,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.ws.RHServiceIntranetImpl;
 import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
@@ -50,6 +51,8 @@ public class RHServiceIntranetTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		
 		Cargo cargo = CargoFactory.getEntity(1L);
 		cargo.setNome("Cargo I");
 		
@@ -60,14 +63,16 @@ public class RHServiceIntranetTest extends MockObjectTestCase
 		colaborador1.setAreaOrganizacional(areaOrganizacional);
 		colaborador1.setCargoIdProjection(cargo.getId());
 		colaborador1.setCargoNomeProjection(cargo.getNome());
+		colaborador1.setEstabelecimento(estabelecimento);
 		
 		Colaborador colaborador2 = ColaboradorFactory.getEntity(2L);
 		colaborador2.setEmpresa(empresa);
 		colaborador2.setAreaOrganizacional(areaOrganizacional);
 		colaborador2.setCargoIdProjection(cargo.getId());
 		colaborador2.setCargoNomeProjection(cargo.getNome());
+		colaborador2.setEstabelecimento(estabelecimento);
 		
-		colaboradorManager.expects(once()).method("findByEmpresa").with(eq(empresa.getId())).will(returnValue(Arrays.asList(colaborador1, colaborador2)));
+		colaboradorManager.expects(once()).method("findByEmpresaAndStatusAC").with(eq(empresa.getId()),eq(StatusRetornoAC.CONFIRMADO)).will(returnValue(Arrays.asList(colaborador1, colaborador2)));
 		
 		Collection<UsuarioIntranet> usuarioIntranets =  rHServiceIntranetImpl.usuariosIntranetList(empresa.getId().toString());
 		

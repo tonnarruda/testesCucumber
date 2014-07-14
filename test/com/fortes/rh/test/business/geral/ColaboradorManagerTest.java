@@ -72,6 +72,7 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -1216,17 +1217,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
     public void testUpdateEmpregado() throws Exception
     {
-    	TEmpregado empregado = new TEmpregado();
-    	empregado.setId(1);
-    	empregado.setCidadeCodigoAC("1234");
-    	empregado.setUfSigla("UF");
-    	empregado.setSexo("M");
-    	empregado.setDeficiencia("1");
-    	empregado.setCtpsDV("");
-    	empregado.setIdentidadeUF("UF");
-    	empregado.setCtpsUFSigla("UF");
-    	empregado.setCtpsDV("1");
-    	empregado.setEscolaridade("Superior Completo");
+    	TEmpregado empregado = iniciaTEmpregado();
 
     	Pessoal pessoal = new Pessoal();
     	pessoal.setEscolaridade("Especialização");
@@ -1247,6 +1238,56 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	assertEquals(colaborador, colaboradorManager.updateEmpregado(empregado));
     }
 
+	private TEmpregado iniciaTEmpregado() {
+		TEmpregado empregado = new TEmpregado();
+    	empregado.setId(1);
+    	empregado.setCidadeCodigoAC("1234");
+    	empregado.setUfSigla("UF");
+    	empregado.setSexo("M");
+    	empregado.setDeficiencia("1");
+    	empregado.setCtpsDV("");
+    	empregado.setIdentidadeUF("UF");
+    	empregado.setCtpsUFSigla("UF");
+    	empregado.setCtpsDV("1");
+    	empregado.setEscolaridade("Superior Completo");
+		return empregado;
+	}
+
+    public void testSaveEmpregadosESituacoes() throws Exception
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	
+    	TEmpregado tEmpregado = iniciaTEmpregado();
+    	
+    	Pessoal pessoal = new Pessoal();
+    	pessoal.setEscolaridade("Especialização");
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	Estado estado = EstadoFactory.getEntity(1L);
+    	Cidade cidade = CidadeFactory.getEntity();
+    	cidade.setId(1L);
+    	cidade.setUf(estado);
+    	colaborador.setPessoal(pessoal);
+    	
+    	TSituacao tSituacao = new TSituacao();
+    	
+    	cidadeManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(cidade));
+    	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
+    	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
+    	colaboradorDao.expects(once()).method("save").with(ANYTHING).isVoid();
+    	historicoColaboradorManager.expects(once()).method("bindSituacao").with(eq(tSituacao), ANYTHING);
+    	historicoColaboradorManager.expects(once()).method("save").with( ANYTHING);
+    	
+    	Exception e = null;
+    	try {
+    		colaboradorManager.saveEmpregadosESituacoes(new TEmpregado[]{tEmpregado}, tSituacao, empresa);
+		} catch (Exception e2) {
+			e = e2;
+		}
+    	
+    	assertNull(e);
+    }
+    
     public void testGetCountAtivosByEstabelecimento()
     {
     	colaboradorDao.expects(once()).method("getCountAtivosByEstabelecimento").with(ANYTHING).will(returnValue(1));

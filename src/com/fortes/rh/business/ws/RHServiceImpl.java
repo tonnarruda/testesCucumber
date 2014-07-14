@@ -5,8 +5,6 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.transaction.TransactionManager;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -71,7 +69,6 @@ import com.fortes.rh.model.ws.TOcorrenciaEmpregado;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.model.ws.TSituacaoCargo;
 import com.fortes.rh.util.ArquivoUtil;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 
@@ -319,7 +316,7 @@ public class RHServiceImpl implements RHService
 				return new FeedbackWebService(true);
 			}
 			else
-				return new FeedbackWebService(false, "Erro: Empregado não encontrado no RH", formataException(parametros, null));
+				return new FeedbackWebService(false, "Existem empregados que não foram encontrados no sistema RH", formataException(parametros, null));
 		}
 		catch (Exception e)
 		{
@@ -362,7 +359,7 @@ public class RHServiceImpl implements RHService
 		}
 	}
 	
-	public FeedbackWebService transferir(TEmpresa tEmpresaOrigin, TEmpresa tEmpresasDestino, TEmpregado[] empregados, TSituacao tSituacao, String dataTransferencia)
+	public FeedbackWebService transferir(TEmpresa tEmpresaOrigin, TEmpresa tEmpresaDestino, TEmpregado[] tEmpregados, TSituacao tSituacao, String dataDesligamento)
 	{
 		Empresa empresaOrigin = null;
 		Empresa empresaDestino= null;
@@ -375,28 +372,28 @@ public class RHServiceImpl implements RHService
 				return new FeedbackWebService(false, "Empresa origem não encontrada no sistema RH", formataException( "empCodigo: " + tEmpresaOrigin.getCodigoAC() + "\ngrupoAC: " + tEmpresaOrigin.getGrupoAC(), null));
 		}
 		
-		if(tEmpresasDestino.getGrupoAC() != null && !"".equals(tEmpresasDestino.getGrupoAC()))
+		if(tEmpresaDestino.getGrupoAC() != null && !"".equals(tEmpresaDestino.getGrupoAC()))
 		{
-			empresaDestino = empresaManager.findByCodigoAC(tEmpresasDestino.getCodigoAC(), tEmpresasDestino.getGrupoAC());
+			empresaDestino = empresaManager.findByCodigoAC(tEmpresaDestino.getCodigoAC(), tEmpresaDestino.getGrupoAC());
 			
 			if(empresaDestino == null)
-				return new FeedbackWebService(false, "Empresa destino não encontrada no sistema RH", formataException( "empCodigo: " + tEmpresasDestino.getCodigoAC() + "\ngrupoAC: " + tEmpresasDestino.getGrupoAC(), null));
+				return new FeedbackWebService(false, "Empresa destino não encontrada no sistema RH", formataException( "empCodigo: " + tEmpresaDestino.getCodigoAC() + "\ngrupoAC: " + tEmpresaDestino.getGrupoAC(), null));
 		}
 		
 		if (empresaOrigin != null && empresaDestino == null)
-			return desligarEmpregadosEmLote(tEmpregadoToArrayCodigoAC(empregados), empresaOrigin.getCodigoAC(), dataTransferencia, empresaOrigin.getGrupoAC());
+			return desligarEmpregadosEmLote(tEmpregadoToArrayCodigoAC(tEmpregados), empresaOrigin.getCodigoAC(), dataDesligamento, empresaOrigin.getGrupoAC());
 
 		else if (empresaOrigin == null && empresaDestino != null)
-			return inserirEmpregados(empregados, tSituacao, empresaDestino);
+			return inserirEmpregados(tEmpregados, tSituacao, empresaDestino);
 		
 		else if(empresaOrigin != null && empresaDestino != null)
-			return desligaInsereEmpregados(empregados, tSituacao, dataTransferencia, empresaOrigin, empresaDestino);
+			return desligaInsereEmpregados(tEmpregados, tSituacao, dataDesligamento, empresaOrigin, empresaDestino);
 		
 		else
 			return new FeedbackWebService(false, "Nenhuma empresa esta integrada com o sistena RH.", "");
 	}
 
-	private FeedbackWebService desligaInsereEmpregados(TEmpregado[] empregados, TSituacao tSituacao, String dataTransferencia, Empresa empresaOrigin, Empresa empresaDestino) 
+	private FeedbackWebService desligaInsereEmpregados(TEmpregado[] tEmpregados, TSituacao tSituacao, String dataTransferencia, Empresa empresaOrigin, Empresa empresaDestino) 
 	{
 		String parametros = "empCodigo: " + tSituacao.getEmpresaCodigoAC() + "\ngrupoAC: " + tSituacao.getGrupoAC() + "\ncodigo estabelecimento: " + tSituacao.getEstabelecimentoCodigoAC() +
 				"\ncodigo lotação: " + tSituacao.getLotacaoCodigoAC() + "\ncodigo cargo: " + tSituacao.getCargoCodigoAC();
@@ -406,7 +403,7 @@ public class RHServiceImpl implements RHService
 		TransactionStatus status = transactionManager.getTransaction(def);
 		
 		try {
-			FeedbackWebService feedbackWebService = desligarEmpregadosEmLote(tEmpregadoToArrayCodigoAC(empregados), empresaOrigin.getCodigoAC(), dataTransferencia, empresaOrigin.getGrupoAC());
+			FeedbackWebService feedbackWebService = desligarEmpregadosEmLote(tEmpregadoToArrayCodigoAC(tEmpregados), empresaOrigin.getCodigoAC(), dataTransferencia, empresaOrigin.getGrupoAC());
 
 			if(!feedbackWebService.isSucesso())
 			{
@@ -414,7 +411,7 @@ public class RHServiceImpl implements RHService
 				return feedbackWebService;
 			}
 			
-			feedbackWebService = inserirEmpregados(empregados, tSituacao, empresaDestino);
+			feedbackWebService = inserirEmpregados(tEmpregados, tSituacao, empresaDestino);
 
 			if(!feedbackWebService.isSucesso())
 			{
@@ -432,12 +429,12 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	private String[] tEmpregadoToArrayCodigoAC(TEmpregado[] empregados) 
+	private String[] tEmpregadoToArrayCodigoAC(TEmpregado[] tEmpregados) 
 	{
-		String[] codigosEmpregados = new String[empregados.length];
+		String[] codigosEmpregados = new String[tEmpregados.length];
 		
-		for(int i = 0; i < empregados.length; i++)
-			codigosEmpregados[i] = ((TEmpregado) empregados[i]).getCodigoAC();
+		for(int i = 0; i < tEmpregados.length; i++)
+			codigosEmpregados[i] = ((TEmpregado) tEmpregados[i]).getCodigoAC();
 		
 		return codigosEmpregados;
 	}
@@ -448,9 +445,9 @@ public class RHServiceImpl implements RHService
 				"\ncodigo lotação: " + tSituacao.getLotacaoCodigoAC() + "\ncodigo cargo: " + tSituacao.getCargoCodigoAC();
 		try
 		{
-			Estabelecimento estabelecimento = estabelecimentoManager.findEstabelecimentoByCodigoAc(tSituacao.getEstabelecimentoCodigoAC(),  tSituacao.getEmpresaCodigoAC(), tSituacao.getGrupoAC());
-			AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(tSituacao.getLotacaoCodigoAC(), tSituacao.getEmpresaCodigoAC(), tSituacao.getGrupoAC());
-			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacao.getCargoCodigoAC(), tSituacao.getEmpresaCodigoAC(), tSituacao.getGrupoAC());
+			Estabelecimento estabelecimento = estabelecimentoManager.findEstabelecimentoByCodigoAc(tSituacao.getEstabelecimentoCodigoAC(),  empresaDestino.getCodigoAC(), empresaDestino.getGrupoAC());
+			AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(tSituacao.getLotacaoCodigoAC(), empresaDestino.getCodigoAC(), empresaDestino.getGrupoAC());
+			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacao.getCargoCodigoAC(), empresaDestino.getCodigoAC(), empresaDestino.getGrupoAC());
 			
 			String retorno = "";
 			
