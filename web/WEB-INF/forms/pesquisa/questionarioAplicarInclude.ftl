@@ -76,6 +76,9 @@
 	
 	<#if perguntas?exists && 0 < perguntas?size >
 		<#list perguntas as pergunta>
+			
+			
+			
 			<#if pergunta.aspecto.nome?exists>
 				<#if pergunta.aspecto.nome != aspectoAnterior>
 					<div class="aspecto">${pergunta.aspecto.nome}</div>
@@ -91,18 +94,26 @@
 			<div id="perguntaResposta">
 				<p id="tituloPergunta">
 					${pergunta.ordem + ") " + pergunta.texto} 
-					<#if pergunta.tipo != tipoPergunta.subjetiva>
-						<div class="peso">(Peso ${pergunta.peso})</div>
+					<#if pergunta.tipo != tipoPergunta.subjetiva && pergunta.peso?exists>
+						<div class="peso">(Peso ${peso})</div>
 					</#if>
 				</p>
 				<#if pergunta.tipo == tipoPergunta.objetiva >
 					<#list pergunta.respostas as resposta>
-						<input type="radio" class="radio" name="resposta${pergunta.id}" label="${resposta.texto}"/>${resposta.texto} <span class="peso">(Peso ${resposta.peso})</span><br>
+						<input type="radio" class="radio" name="resposta${pergunta.id}" label="${resposta.texto}"/>${resposta.texto} 
+						<#if resposta.peso?exists>
+							<span class="peso">(Peso ${resposta.peso})</span>
+						</#if>
+						<br>
 					</#list>
 				</#if>
 				<#if pergunta.tipo == tipoPergunta.multiplaEscolha >
 					<#list pergunta.respostas as resposta>
-						<input type="checkBox" class="radio" name="resposta${pergunta.id}" label="${resposta.texto}"/>${resposta.texto} <span class="peso">(Peso ${resposta.peso})</span><br>
+						<input type="checkBox" class="radio" name="resposta${pergunta.id}" label="${resposta.texto}"/>${resposta.texto} 
+						<#if resposta.peso?exists>
+							<span class="peso">(Peso ${resposta.peso})</span>
+						</#if>
+						<br>
 					</#list>
 				</#if>
 				<#if pergunta.tipo == tipoPergunta.subjetiva >

@@ -4,19 +4,23 @@
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = off;
+SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-SET escape_string_warning = off;
 
 --
--- Name: plpgsql; Type: PROCEDURAL LANGUAGE; Schema: -; Owner: postgres
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
-CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
-ALTER PROCEDURAL LANGUAGE plpgsql OWNER TO postgres;
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
 
 SET search_path = public, pg_catalog;
 
@@ -1650,7 +1654,8 @@ CREATE TABLE colaborador (
     datasolicitacaodesligamentoac date,
     dataencerramentocontrato date,
     datasolicitacaodesligamento date,
-    solicitantedemissao_id bigint
+    solicitantedemissao_id bigint,
+    CONSTRAINT no_blank_codigoac_colaborador CHECK ((btrim((codigoac)::text) <> ''::text))
 );
 
 
@@ -30516,6 +30521,8 @@ INSERT INTO migrations (name) VALUES ('20140602100751');
 INSERT INTO migrations (name) VALUES ('20140602104036');
 INSERT INTO migrations (name) VALUES ('20140623105452');
 INSERT INTO migrations (name) VALUES ('20140630100907');
+INSERT INTO migrations (name) VALUES ('20140707111700');
+INSERT INTO migrations (name) VALUES ('20140711111216');
 
 
 --
@@ -30866,12 +30873,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (470, 'ROLE_MOV_PERIODOEXPERIENCIA', 'Acompanhamento do Período de Experiência', '/avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action', 3, true, NULL, 384, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (619, 'ROLE_MOV_MINHASAVALIACOES', 'Minhas Avaliações', '/avaliacao/modelo/minhasAvaliacoesList.action', 4, true, NULL, 384, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (620, 'ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO', 'Aprovar/Reprovar Solicitações de Desligamento', '/geral/colaborador/prepareAprovarReprovarSolicitacaoDesligamento.action', 3, true, NULL, 469, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (464, 'ROLE_IMPORTA_CADASTROS', 'Importar Cadastros', '/geral/empresa/prepareImportarCadastros.action', 9, true, NULL, 37, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (529, 'LIST_SEM_CODIGOAC', 'Apagar Reg. sem Código AC', '/geral/parametrosDoSistema/prepareDeleteSemCodigoAC.action', 10, true, NULL, 37, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (466, 'ROLE_UTI_EMPRESA', 'Sobre...', '/geral/empresa/sobre.action', 9, true, NULL, 37, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (571, 'ROLE_REGISTRAR_NOVA_LICENCA', 'Registrar Nova Licença', '/registraNovaLicenca.action', 16, true, NULL, 37, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (535, 'ROLE_IMPORTACAO_AFASTAMENTO', 'Importar Afastamentos', '/importacao/prepareImportarAfastamentos.action', 12, true, NULL, 37, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (539, 'ROLE_BACKUP', 'Backup do Banco de Dados', '/backup/list.action', 14, true, NULL, 37, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (618, 'ROLE_UTI_EXPORTAR_AC', 'Exportar dados para o AC Pessoal', '/exportacao/prepareExportarAC.action', 17, true, NULL, 37, NULL);
 
 
@@ -30879,7 +30880,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.129.155', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.130.156', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
 
 
 --
@@ -32756,6 +32757,14 @@ ALTER TABLE ONLY areaorganizacional
 
 
 --
+-- Name: unique_codigoac_colaborador; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY colaborador
+    ADD CONSTRAINT unique_codigoac_colaborador UNIQUE (codigoac, empresa_id);
+
+
+--
 -- Name: unique_codigoac_empresa_estabelecimento; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -33308,7 +33317,7 @@ ALTER TABLE ONLY cargo_areaorganizacional
 --
 
 ALTER TABLE ONLY cargo_areaorganizacional
-    ADD CONSTRAINT cargo_areaorganizacional_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id);
+    ADD CONSTRAINT cargo_areaorganizacional_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id) ON DELETE CASCADE;
 
 
 --

@@ -22476,3 +22476,14 @@ insert into perfil_papel(perfil_id, papeis_id) values(1, 618);--.go
 
 insert into migrations values('20140630100907');--.go
 update parametrosdosistema set appversao = '1.1.129.155';--.go
+-- versao 1.1.130.156
+
+ALTER TABLE cargo_areaorganizacional DROP CONSTRAINT cargo_areaorganizacional_cargo_fk;--.go 
+ALTER TABLE cargo_areaorganizacional ADD CONSTRAINT cargo_areaorganizacional_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id) ON DELETE CASCADE;--.go
+insert into migrations values('20140707111700');--.go
+update colaborador set codigoac = null where trim(codigoac) = ''; --.go
+
+ALTER TABLE colaborador ADD CONSTRAINT no_blank_codigoac_colaborador CHECK(trim(codigoac) <> ''); --.go
+ALTER TABLE colaborador ADD CONSTRAINT unique_codigoac_colaborador UNIQUE(codigoac,empresa_id); --.go
+insert into migrations values('20140711111216');--.go
+update parametrosdosistema set appversao = '1.1.130.156';--.go
