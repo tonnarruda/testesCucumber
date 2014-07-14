@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.1xx.1xx" bd="" data="xx/xx/2014">
 		<Item visivel="N" motivo="P20140700048"><![CDATA[R&S > Painel de Indicadores: Correção de bug no indicador de qtde de vagas preenchidas.]]></Item>
+		<Item visivel="S" motivo="S20140700018"><![CDATA[SESMT > Relatórios > Exames Previstos: Impressão da matrícula junto ao nome do colaborador.]]></Item>
 	</Versao>
 	<Versao id="1.1.130.156" bd="" data="14/07/2014">
 		<Item visivel="S" motivo="S20140500200"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Nova opção no formato xls.]]></Item>

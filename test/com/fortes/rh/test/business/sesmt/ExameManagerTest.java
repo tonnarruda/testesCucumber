@@ -77,9 +77,9 @@ public class ExameManagerTest extends MockObjectTestCase
     	Long[] areasCheck={1L}, estabelecimentosCheck={1L}, colaboradoresCheck={1L}, examesCheck = {1L};
     	Collection<ExamesPrevistosRelatorio> colecao = new ArrayList<ExamesPrevistosRelatorio>();
 
-    	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1Fora = new ExamesPrevistosRelatorio(1L,1L,3L,"Cargo","","","",tresMesesAtras.getTime(),tresMesesAtras.getTime(),1,"PERIODICO",1L,"EST");
-    	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1Atual = new ExamesPrevistosRelatorio(1L,1L,3L,"Cargo","","","",doisMesesAtras.getTime(),doisMesesAtras.getTime(),1,"PERIODICO",1L,"EST");
-    	ExamesPrevistosRelatorio examesPrevistosColaborador2Exame2 = new ExamesPrevistosRelatorio(2L,2L,3L,"Cargo","","","",doisMesesAtras.getTime(),doisMesesAtras.getTime(),1,"PERIODICO",1L,"EST");
+    	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1Fora = new ExamesPrevistosRelatorio(1L,1L,3L,"Cargo","","","","",tresMesesAtras.getTime(),tresMesesAtras.getTime(),1,"PERIODICO",1L,"EST");
+    	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1Atual = new ExamesPrevistosRelatorio(1L,1L,3L,"Cargo","","","","",doisMesesAtras.getTime(),doisMesesAtras.getTime(),1,"PERIODICO",1L,"EST");
+    	ExamesPrevistosRelatorio examesPrevistosColaborador2Exame2 = new ExamesPrevistosRelatorio(2L,2L,3L,"Cargo","","","","",doisMesesAtras.getTime(),doisMesesAtras.getTime(),1,"PERIODICO",1L,"EST");
 //    	ExamesPrevistosRelatorio examesPrevistosColaborador2Exame2Fora = new ExamesPrevistosRelatorio(2L,2L,"","",hoje,hoje,1);
     	colecao.add(examesPrevistosColaborador1Exame1Fora);
     	colecao.add(examesPrevistosColaborador1Exame1Atual);
@@ -121,9 +121,9 @@ public class ExameManagerTest extends MockObjectTestCase
     	Collection<ExamesPrevistosRelatorio> colecao = new ArrayList<ExamesPrevistosRelatorio>();
     	Collection<ExamesPrevistosRelatorio> colecaoFiltrada = new ArrayList<ExamesPrevistosRelatorio>();
     	
-    	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1Fora = new ExamesPrevistosRelatorio(1L,1L,2L,"Cargo","","","",tresMesesAtras.getTime(),tresMesesAtras.getTime(),1, "PERIODICO",1L,"EST");
-    	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1Atual = new ExamesPrevistosRelatorio(1L,1L,1L,"Cargo","","","",doisMesesAtras.getTime(),doisMesesAtras.getTime(),1, "PERIODICO",1L,"EST");
-    	ExamesPrevistosRelatorio examesPrevistosColaborador2Exame2 = new ExamesPrevistosRelatorio(2L,2L,2L,"Cargo","","","",doisMesesAtras.getTime(),doisMesesAtras.getTime(),1, "PERIODICO",1L,"EST");
+    	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1Fora = new ExamesPrevistosRelatorio(1L,1L,2L,"Cargo","","","","",tresMesesAtras.getTime(),tresMesesAtras.getTime(),1, "PERIODICO",1L,"EST");
+    	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1Atual = new ExamesPrevistosRelatorio(1L,1L,1L,"Cargo","","","","",doisMesesAtras.getTime(),doisMesesAtras.getTime(),1, "PERIODICO",1L,"EST");
+    	ExamesPrevistosRelatorio examesPrevistosColaborador2Exame2 = new ExamesPrevistosRelatorio(2L,2L,2L,"Cargo","","","","",doisMesesAtras.getTime(),doisMesesAtras.getTime(),1, "PERIODICO",1L,"EST");
 //    	ExamesPrevistosRelatorio examesPrevistosColaborador2Exame2Fora = new ExamesPrevistosRelatorio(2L,2L,"","",hoje,hoje,1);
     	colecao.add(examesPrevistosColaborador1Exame1Fora);
     	colecao.add(examesPrevistosColaborador1Exame1Atual);
