@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.1xx.1xx" bd="" data="xx/xx/2014">
+		<Item visivel="N" motivo="P20140700048"><![CDATA[R&S > Painel de Indicadores: Correção de bug no indicador de qtde de vagas preenchidas.]]></Item>
+	</Versao>
 	<Versao id="1.1.130.156" bd="" data="14/07/2014">
 		<Item visivel="S" motivo="S20140500200"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Nova opção no formato xls.]]></Item>
 		<Item visivel="S" motivo="S20140500214"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Visualizar: Exibição dos pesos das perguntas e das respostas.]]></Item>
