@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
+
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;

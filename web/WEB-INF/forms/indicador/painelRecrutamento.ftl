@@ -202,29 +202,30 @@
 				</div>
 				<div id="estatisticaPreenchimento" class="table-wrapper">
 			   		<@display.table name="indicadorDuracaoPreenchimentoVagas" id="indicador" class="dados" style="width: 945px;">
-						<@display.column property="cargo.nome" title="Cargo"/>
-						<@display.column title="Vagas Disponíveis" style="width: 120px; text-align: right;">
+						<@display.column property="areaOrganizacional.nome" title="Área Organizacional" />
+						<@display.column property="cargo.nome" title="Cargo" style="width: 240px;"/>
+						<@display.column title="Vagas Disponíveis" style="width: 70px; text-align: right;">
 							<#if indicador.qtdVagas?exists>
 								${indicador.qtdVagas}
 							<#else>
 								0
 							</#if>
 						</@display.column>
-						<@display.column title="Candidatos Atendidos" style="width: 135px; text-align: right;">
+						<@display.column title="Candidatos Atendidos" style="width: 70px; text-align: right;">
 							<#if indicador.qtdCandidatos?exists>
 								${indicador.qtdCandidatos}
 							<#else>
 								0
 							</#if>
 						</@display.column>
-						<@display.column title="Vagas Preenchidas" style="width: 125px; text-align: right;">
+						<@display.column title="Vagas Preenchidas" style="width: 70px; text-align: right;">
 							<#if indicador.qtdContratados?exists>
 								${indicador.qtdContratados}
 							<#else>
 								0
 							</#if>
 						</@display.column>
-						<@display.column title="Média de Dias" style="width: 95px; text-align: right;">
+						<@display.column title="Média de Dias" style="width: 60px; text-align: right;">
 							${indicador.mediaDias?string(",##0.#")}
 						</@display.column>
 					</@display.table>
