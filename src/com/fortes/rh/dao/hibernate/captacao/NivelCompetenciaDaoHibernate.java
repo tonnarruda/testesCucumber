@@ -58,15 +58,15 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		}
 		
 		StringBuilder sql = new StringBuilder();
-		sql.append("select id, nome, 'C' as tipocompetencia ");
+		sql.append("select id, nome, observacao, 'C' as tipocompetencia ");
 		sql.append("from conhecimento as c inner join cargo_conhecimento as cc on c.id = cc.conhecimentos_id ");
 		sql.append("where " + whereConhecimento);
 		sql.append("union ");
-		sql.append("select id, nome, 'H' as tipocompetencia "); 
+		sql.append("select id, nome, observacao, 'H' as tipocompetencia "); 
 		sql.append("from habilidade as h inner join cargo_habilidade as ch on h.id = ch.habilidades_id ");
 		sql.append("where " + whereHabilidade);
 		sql.append("union ");
-		sql.append("select id, nome, 'A' as tipocompetencia "); 
+		sql.append("select id, nome, observacao, 'A' as tipocompetencia "); 
 		sql.append("from atitude as a inner join cargo_atitude as ca on a.id = ca.atitudes_id ");
 		sql.append("where " + whereAtitude);
 		sql.append("order by nome");
@@ -84,7 +84,7 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
-			lista.add(new ConfiguracaoNivelCompetencia(((String)res[2]).charAt(0), ((BigInteger)res[0]).longValue(), (String)res[1]));
+			lista.add(new ConfiguracaoNivelCompetencia(((String)res[3]).charAt(0), ((BigInteger)res[0]).longValue(), (String)res[1], (String)res[2]));
 		}
 
 		return lista;				

@@ -42,7 +42,6 @@
 				style: { width: 400 }
 			});
 			
-			
 			$('#nomeHomonimoEmpresa').change(function() {
 				if ($(this).is(":checked"))
 					$('#nomeHomonimo').attr("disabled", true);

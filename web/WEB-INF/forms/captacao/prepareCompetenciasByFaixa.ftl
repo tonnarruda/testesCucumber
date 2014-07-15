@@ -7,6 +7,9 @@
 		
 		.dados th:first-child { text-align: left; padding-left: 5px; }
 	</style>
+	
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/nivelCompetencia.js"/>"></script>
 
 	<script type="text/javascript">
 		$(function() {
@@ -55,6 +58,7 @@
 
 			return false;
 		}
+	
 	</script>
 
 	<title>Competências da Faixa Salarial</title>
@@ -75,6 +79,11 @@
 				<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
 				<input type="checkbox"  id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
 				<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
+				
+				<#if configuracaoNivelCompetencia.competenciaObservacao?exists && configuracaoNivelCompetencia.competenciaObservacao != "">
+					<img id="competencia_${i}_obs" onLoad="toolTipCompetenciaObs(${i}, '${configuracaoNivelCompetencia.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
+				</#if>
+				
 			</@display.column>
 			
 			<#list nivelCompetencias as nivel>			

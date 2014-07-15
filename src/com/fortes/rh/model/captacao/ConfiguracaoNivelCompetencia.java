@@ -34,6 +34,8 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	@Transient
 	private String competenciaDescricao;	
 	@Transient
+	private String competenciaObservacao;	
+	@Transient
 	private Long cursoId;	
 	@Transient
 	private String cursoNome;	
@@ -85,11 +87,12 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setCompetenciaDescricao(competenciaDescricao);
 	}
 	
-	public ConfiguracaoNivelCompetencia(Character tipoCompetencia, Long competenciaId, String competenciaDescricao)
+	public ConfiguracaoNivelCompetencia(Character tipoCompetencia, Long competenciaId, String competenciaDescricao, String competenciaObservacao)
 	{
 		this.setTipoCompetencia(tipoCompetencia);
 		this.setCompetenciaId(competenciaId);
 		this.setCompetenciaDescricao(competenciaDescricao);
+		this.setCompetenciaObservacao(competenciaObservacao);
 	}
 	
 	public ConfiguracaoNivelCompetencia(Character tipoCompetencia, Long competenciaId, Long nivelCompetenciaId)
@@ -313,5 +316,13 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 
 	public void setCursoId(Long cursoId) {
 		this.cursoId = cursoId;
+	}
+
+	public String getCompetenciaObservacao() {
+		return competenciaObservacao;
+	}
+
+	public void setCompetenciaObservacao(String competenciaObservacao) {
+		this.competenciaObservacao = competenciaObservacao;
 	}
 }
