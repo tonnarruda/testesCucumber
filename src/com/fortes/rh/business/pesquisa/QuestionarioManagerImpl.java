@@ -521,7 +521,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     	parametros.put("TITULO", "Avaliação do Período de Experiência - " + colaboradorQuestionario.getAvaliacao().getTitulo());
     	parametros.put("RODAPE", colaboradorQuestionario.getObservacao());
     	parametros.put("COLABORADOR", colaboradorQuestionario.getColaborador().getNome());
-    	
+    	parametros.put("PERFORMANCE", colaboradorQuestionario.getPerformanceFormatada());
     	
     	Collection<PerguntaFichaMedica> perguntasFormatadas = montaPerguntasComRespostas(perguntas, colaboradorRespostas, false, false);
     	

@@ -3,6 +3,10 @@
 	<Versao id="1.1.1xx.1xx" bd="" data="xx/xx/2014">
 		<Item visivel="N" motivo="P20140700048"><![CDATA[R&S > Painel de Indicadores: Correção de bug no indicador de qtde de vagas preenchidas.]]></Item>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+		<Item visivel="S" motivo="S20140500218"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Exibir campo performance no relatório.]]></Item>
+>>>>>>> Aval. Desempenho > Movimentacoes > Acompanhamento do Periodo de Experiencia > Imprimir Avaliacao: Exibir campo performance no relatorio.
 		<Item visivel="S" motivo="S20140700018"><![CDATA[SESMT > Relatórios > Exames Previstos: Impressão da matrícula junto ao nome do colaborador.]]></Item>
 =======
 		<Item visivel="N" motivo="P20140700076"><![CDATA[R&S > Painel de Indicadores: Correção de bug no indicador de qtde de candidatos atendidos.]]></Item>
