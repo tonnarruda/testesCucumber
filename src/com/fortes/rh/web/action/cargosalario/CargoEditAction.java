@@ -112,6 +112,7 @@ public class CargoEditAction extends MyActionSupportEdit
 	private Empresa empresa;
 	private Boolean compartilharColaboradores;
 	private char ativa;
+	private String selectColuna;
 
 	private String reportFilter;
 	private String reportTitle;
@@ -260,6 +261,7 @@ public class CargoEditAction extends MyActionSupportEdit
 			
 			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorGrupoOcupacional(empresa.getId(), dataHistorico, cargosCheck, estabelecimentosCheck, areaOrganizacionalsCheck, BooleanUtil.getValueCombo(ativa), gruposCheck, vinculo);
 			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores por Grupo Ocupacional", getEmpresaSistema(), "");
+			parametros.put("SELECTCOLUNA", selectColuna);
 			
 			return Action.SUCCESS;
 		
@@ -929,5 +931,9 @@ public class CargoEditAction extends MyActionSupportEdit
 	public String getReportTitle()
 	{
 		return reportTitle;
+	}
+
+	public void setSelectColuna(String selectColuna) {
+		this.selectColuna = selectColuna;
 	}
 }

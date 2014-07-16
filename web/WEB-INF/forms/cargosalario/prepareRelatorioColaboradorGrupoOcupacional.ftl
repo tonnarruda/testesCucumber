@@ -120,6 +120,7 @@
 		<@frt.checkListBox name="gruposCheck" id="gruposCheck" onClick="populaCargoByAreaGrupo()" label="Grupos Ocupacionais" list="gruposCheckList" width="500" />
 		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" />
 		<@ww.select label="Colocação do Colaborador" name="vinculo" id="vinculo" list="vinculos" headerKey="" headerValue="Todas" cssStyle="width: 180px;" />
+		<@ww.select label="Exibir a coluna de " name="selectColuna" list=r"#{'A':'Área Organizacional','C':'Cargo'}"  cssStyle="width:180px"/>
 
 	</@ww.form>
 
