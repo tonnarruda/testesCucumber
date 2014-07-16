@@ -117,7 +117,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try
 		{
 			avaliacaoDesempenhoManager.enviarLembrete(avaliacaoDesempenho.getId(), getEmpresaSistema());
-			addActionMessage("Email(s) enviado(s) com sucesso.");
+			addActionSuccess("Email(s) enviado(s) com sucesso.");
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -180,7 +180,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			else
 			{
 				colaboradorQuestionarioManager.remove(participanteIds, avaliacaoDesempenho.getId(), isAvaliados);
-				addActionMessage(msgDelete + " excluído(s) com sucesso.");				
+				addActionSuccess(msgDelete + " excluído(s) com sucesso.");				
 			}
 		} 
 		catch (AvaliacaoRespondidaException e) 
@@ -324,7 +324,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			else
 				avaliacaoDesempenhoManager.clonar(avaliacaoDesempenho.getId(), getEmpresaSistema().getId());
 				
-			addActionMessage("Avaliação de desempenho clonada com sucesso.");
+			addActionSuccess("Avaliação de desempenho clonada com sucesso.");
 		} 
 		catch (Exception e) {
 			addActionError("Não foi possível clonar a avaliação de desempenho.");
@@ -367,7 +367,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try
 		{
 			colaboradorQuestionarioManager.deleteRespostaAvaliacaoDesempenho(colaboradorQuestionarioId);
-			addActionMessage("Respostas da avaliação de desempenho excluídas com sucesso.");
+			addActionSuccess("Respostas da avaliação de desempenho excluídas com sucesso.");
 		}
 		catch (Exception e)
 		{
@@ -399,7 +399,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		}
 		catch (Exception e) 
 		{
-			addActionError("Não foi possível as avaliações.");
+			addActionError("Não foi possível liberar as avaliações.");
 			e.printStackTrace();
 			return Action.ERROR;
 		}

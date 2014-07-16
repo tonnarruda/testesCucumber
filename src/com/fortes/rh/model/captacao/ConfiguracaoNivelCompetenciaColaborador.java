@@ -25,6 +25,8 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 	@ManyToOne
 	private Colaborador colaborador;
 	@ManyToOne
+	private Colaborador avaliador;
+	@ManyToOne
 	private FaixaSalarial faixaSalarial;
 	@Temporal(TemporalType.DATE)
 	private Date data;
@@ -122,11 +124,23 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 			faixaSalarial = new FaixaSalarial();
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> getConfiguracaoNivelCompetencias() {
+	public Collection<ConfiguracaoNivelCompetencia> getConfiguracaoNivelCompetencias()
+	{
 		return configuracaoNivelCompetencias;
 	}
 
-	public void setConfiguracaoNivelCompetencias(Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias) {
+	public void setConfiguracaoNivelCompetencias(Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias)
+	{
 		this.configuracaoNivelCompetencias = configuracaoNivelCompetencias;
+	}
+
+	public Colaborador getAvaliador()
+	{
+		return avaliador;
+	}
+
+	public void setAvaliador(Colaborador avaliador)
+	{
+		this.avaliador = avaliador;
 	}
 }

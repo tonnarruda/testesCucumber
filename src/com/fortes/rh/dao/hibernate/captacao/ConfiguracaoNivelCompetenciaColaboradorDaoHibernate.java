@@ -115,7 +115,7 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		}
 	}
 
-	public ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId) 
+	public ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId, Long avaliadorId) 
 	{
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaColaborador.class, "cncc");
 		criteria.createCriteria("cncc.colaborador", "co", CriteriaSpecification.LEFT_JOIN);
@@ -132,6 +132,7 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("co.id", colaboradorId));
+		criteria.add(Expression.eq("cncc.avaliador.id", avaliadorId));
 		criteria.add(Expression.eq("cncc.data", data));
 		criteria.addOrder(Order.desc("cncc.data"));
 		

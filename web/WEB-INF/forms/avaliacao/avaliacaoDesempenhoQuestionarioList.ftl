@@ -102,7 +102,8 @@
 			</#if>
 		</@display.column>
 		<@display.column property="colaborador.nome" title="Avaliado"/>
-		<@display.column property="performanceFormatada" title="Performance" style="width:120px; text-align:right;"/>
+		<@display.column property="avaliacaoDesempenho.titulo" title="Título"/>
+		<@display.column property="performanceFormatada" title="Performance" style="width:90px; text-align:right;"/>
 	</@display.table>
 </body>
 </html>

@@ -19,5 +19,5 @@ public interface ConfiguracaoNivelCompetenciaColaboradorManager extends GenericM
 
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 
-	ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId);
+	ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId, Long avaliadorId);
 }

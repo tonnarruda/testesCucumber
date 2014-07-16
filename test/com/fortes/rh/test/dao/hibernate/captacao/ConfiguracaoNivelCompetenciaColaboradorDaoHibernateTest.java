@@ -148,6 +148,12 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 		faixaSalarial2.setCargo(cargo);
 		faixaSalarialDao.save(faixaSalarial2);
 		
+		Colaborador avaliador1 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(avaliador1);
+		
+		Colaborador avaliador2 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(avaliador2);
+		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador);
 
@@ -156,25 +162,29 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 		
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador1 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
 		configuracaoNivelCompetenciaColaborador1.setColaborador(colaborador);
+		configuracaoNivelCompetenciaColaborador1.setAvaliador(avaliador1);
 		configuracaoNivelCompetenciaColaborador1.setFaixaSalarial(faixaSalarial1);
 		configuracaoNivelCompetenciaColaborador1.setData(DateUtil.criarDataMesAno(7, 7, 2011));
 		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador1);
 
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador2 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
 		configuracaoNivelCompetenciaColaborador2.setColaborador(colaborador);
+		configuracaoNivelCompetenciaColaborador2.setAvaliador(avaliador2);
 		configuracaoNivelCompetenciaColaborador2.setFaixaSalarial(faixaSalarial2);
 		configuracaoNivelCompetenciaColaborador2.setData(DateUtil.criarDataMesAno(8, 8, 2011));
 		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador2);
 		
-		ConfiguracaoNivelCompetenciaColaborador config1 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(7, 7, 2011), colaborador.getId());
-		ConfiguracaoNivelCompetenciaColaborador config2 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(8, 8, 2011), colaborador.getId());
-		ConfiguracaoNivelCompetenciaColaborador config3 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(8, 8, 2011), colaborador2.getId());
-		ConfiguracaoNivelCompetenciaColaborador config4 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(9, 9, 2011), colaborador.getId());
+		ConfiguracaoNivelCompetenciaColaborador config1 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(7, 7, 2011), colaborador.getId(), avaliador1.getId());
+		ConfiguracaoNivelCompetenciaColaborador config2 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(8, 8, 2011), colaborador.getId(), avaliador2.getId());
+		ConfiguracaoNivelCompetenciaColaborador config3 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(8, 8, 2011), colaborador2.getId(),avaliador1.getId());
+		ConfiguracaoNivelCompetenciaColaborador config4 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(8, 8, 2011), colaborador.getId(), avaliador1.getId());
+		ConfiguracaoNivelCompetenciaColaborador config5 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(9, 9, 2011), colaborador.getId(), avaliador1.getId());
 		
 		assertEquals(configuracaoNivelCompetenciaColaborador1.getId(), config1.getId());
 		assertEquals(configuracaoNivelCompetenciaColaborador2.getId(), config2.getId());
 		assertNull(config3);
 		assertNull(config4);
+		assertNull(config5);
 	}
 
 	public void setConfiguracaoNivelCompetenciaColaboradorDao(ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao)

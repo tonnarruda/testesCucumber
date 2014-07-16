@@ -37,8 +37,8 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericM
 		getDao().deleteByFaixaSalarial(faixaIds);
 	}
 
-	public ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId) 
+	public ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId, Long avaliadorId) 
 	{
-		return getDao().findByData(data, colaboradorId);
+		return getDao().findByData(data, colaboradorId, avaliadorId);
 	}
 }
