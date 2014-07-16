@@ -115,7 +115,7 @@ public class ColaboradorListActionTest extends MockObjectTestCase
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
 		action.setColaborador(colaborador);
-		colaboradorManager.expects(once()).method("remove").with(eq(colaborador),ANYTHING).isVoid();
+		colaboradorManager.expects(once()).method("removeComDependencias").with(eq(colaborador.getId())).isVoid();
 		
 		assertEquals("success", action.delete());
 	}

@@ -6,6 +6,8 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		
+		ul.aviso { list-style-type: disc; list-style-position: outside; margin-left: 20px; }
 	</style>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoDWR.js"/>'></script>
@@ -119,6 +121,21 @@
 	<#if !page?exists>
 		<#assign page=1>
 	</#if>
+	
+	<#if usuarioLogado?exists && usuarioLogado.id == 1>
+		<#assign avisoExclusao>
+			Procedimento diferenciado para o usuário <strong>${usuarioLogado.nome}</strong>:
+			<ul class=aviso>
+				<li>O colaborador será excluído permanentemente com as suas dependências.</li>
+				<li>Essa exclusão não poderá ser desfeita.</li>
+				<li>Recomendamos que seja efetuado um backup antes da realização desse procedimento.</li>
+				<li>O colaborador não será removido do AC Pessoal, mesmo que os sistemas estejam integrados.</li>
+			</ul>
+			Deseja realmente continuar?
+		</#assign>
+	<#else>
+		<#assign avisoExclusao="Confirma exclusão?"/>
+	</#if>
 
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="formBusca" action="list.action" onsubmit="${validarCampos}" method="POST" id="formBusca">
@@ -202,7 +219,7 @@
 
 			<@frt.link verifyRole="ROLE_COLAB_LIST_EDITAR" href="javascript:enviarPrepareUpDate('${colaborador.id}')" imgTitle="Editar" imgName="edit.gif"/>
 			
-			<@frt.link verifyRole="ROLE_COLAB_LIST_EXCLUIR" href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaborador.id=${colaborador.id}'});" imgTitle="Excluir" imgName="delete.gif"/>
+			<@frt.link verifyRole="ROLE_COLAB_LIST_EXCLUIR" href="javascript:;" onclick="newConfirm('${avisoExclusao?js_string}', function(){window.location='delete.action?colaborador.id=${colaborador.id}'});" imgTitle="Excluir" imgName="delete.gif"/>
 			
 			<@frt.link verifyRole="ROLE_CAD_HISTORICOCOLABORADOR" href="javascript:enviarPrepareProgressaoColaborador('${colaborador.id}')" imgTitle="Visualizar Progressão" imgName="progressao.gif"/>
 

@@ -6076,6 +6076,21 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals("Demosval Pede Pra Sair", ((Colaborador)colaboradores.toArray()[0]).getNome());
 	}
 	
+	public void testRemoveComDependencias()
+	{	
+		String[] sqls = new String[] {
+			"INSERT INTO colaborador (id, desligado, conjugetrabalha, qtdfilhos, sexo, naointegraac, deficiencia, respondeuentrevista) VALUES (-1, false, false, 1, 'M', false, 'N', false);",
+			"INSERT INTO prontuario (id, colaborador_id) VALUES (nextval('prontuario_sequence'), -1);"
+		};
+		JDBCConnection.executeQuery(sqls);
+		
+		colaboradorDao.removeComDependencias(-1L);
+		assertNull(colaboradorDao.findEntidadeComAtributosSimplesById(-1L));
+		
+		String qtdTabelasComColaborador = JDBCConnection.executeQuery("SELECT COUNT(kcu.column_name) FROM information_schema.table_constraints AS tc INNER JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name INNER JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND ccu.table_name = 'colaborador'");
+		assertEquals("Se esse quebrar, provavelmente tem que inserir uma linha de delete em ColaboradorDaoHibernate.removeComDependencias", "27", qtdTabelasComColaborador);
+	}
+	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
 	{
 		this.areaOrganizacionalDao = areaOrganizacionalDao;

@@ -26,6 +26,7 @@ import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.hibernate.util.OrderBySql;
 import com.fortes.rh.model.acesso.Usuario;
@@ -37,6 +38,7 @@ import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.dicionario.Vinculo;
@@ -4648,5 +4650,69 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 
 		return criteria.list();
+	}
+
+	public void removeComDependencias(Long id) 
+	{
+		String[] sqls = new String[]{
+				"UPDATE candidato SET disponivel = true, contratado = false WHERE id IN (SELECT candidato_id FROM colaborador WHERE id = " + id + ");",
+				"UPDATE candidatosolicitacao SET status = '" + StatusCandidatoSolicitacao.INDIFERENTE + "' WHERE candidato_id IN (select candidato_id from colaborador WHERE id = " + id + ");",
+				
+				"UPDATE areaorganizacional SET responsavel_id = NULL WHERE responsavel_id = " + id + ";",
+				"UPDATE areaorganizacional SET coresponsavel_id = NULL WHERE coresponsavel_id = " + id + ";",
+				"DELETE FROM candidatoeleicao WHERE candidato_id = " + id + ";",
+				"DELETE FROM colaboradorafastamento WHERE colaborador_id = " + id + ";",
+				"DELETE FROM colaboradoridioma WHERE colaborador_id = " + id + ";",
+				"DELETE FROM colaboradorocorrencia WHERE colaborador_id = " + id + ";",
+				"DELETE FROM colaboradorperiodoexperienciaavaliacao WHERE colaborador_id = " + id + ";",
+				"DELETE FROM comissaoeleicao WHERE colaborador_id = " + id + ";",
+				"DELETE FROM comissaomembro WHERE colaborador_id = " + id + ";",
+				"UPDATE comissaoplanotrabalho SET responsavel_id = NULL WHERE responsavel_id = " + id + ";",
+				"DELETE FROM comissaoreuniaopresenca WHERE colaborador_id = " + id + ";",
+				"DELETE FROM dependente WHERE colaborador_id = " + id + ";",
+				"DELETE FROM prontuario WHERE colaborador_id = " + id + ";",
+				
+				"DELETE FROM cat_epi WHERE cat_id IN (SELECT id FROM cat WHERE colaborador_id = " + id + ");",
+				"DELETE FROM cat WHERE colaborador_id = " + id + ";",
+				
+				"DELETE FROM colaboradorresposta WHERE colaboradorquestionario_id IN (SELECT id FROM colaboradorquestionario WHERE avaliador_id = " + id + " OR colaborador_id = " + id + ");",
+				"DELETE FROM colaboradorquestionario WHERE avaliador_id = " + id + " OR colaborador_id = " + id + ";",
+				
+				"DELETE FROM aproveitamentoavaliacaocurso WHERE colaboradorturma_id IN (SELECT id FROM colaboradorturma WHERE colaborador_id = " + id + ");",
+				"DELETE FROM colaboradorpresenca WHERE colaboradorturma_id IN (SELECT id FROM colaboradorturma WHERE colaborador_id = " + id + ");",
+				"DELETE FROM colaboradorturma WHERE colaborador_id = " + id + ";",
+				
+				"DELETE FROM configuracaonivelcompetencia WHERE configuracaonivelcompetenciacolaborador_id IN (SELECT id FROM configuracaonivelcompetenciacolaborador WHERE colaborador_id = " + id + ");",
+				"DELETE FROM configuracaonivelcompetenciacolaborador WHERE colaborador_id = " + id + ";",
+				
+				"UPDATE experiencia SET colaborador_id = NULL WHERE colaborador_id = " + id + " AND candidato_id IS NOT NULL;",
+				"DELETE FROM experiencia WHERE colaborador_id = " + id + " AND candidato_id IS NULL;",
+
+				"UPDATE formacao SET colaborador_id = NULL WHERE colaborador_id = " + id + " AND candidato_id IS NOT NULL;",
+				"DELETE FROM formacao WHERE colaborador_id = " + id + " AND candidato_id IS NULL;",
+				
+				"DELETE FROM gastoempresaitem WHERE gastoempresa_id IN (SELECT id FROM gastoempresa WHERE colaborador_id = " + id + ");",
+				"DELETE FROM gastoempresa WHERE colaborador_id = " + id + ";",
+				
+				"DELETE FROM historicocolaboradorbeneficio_beneficio WHERE historicocolaboradorbeneficio_id IN (SELECT id FROM historicocolaboradorbeneficio WHERE colaborador_id = " + id + ");",
+				"DELETE FROM historicocolaboradorbeneficio WHERE colaborador_id = " + id + ";",
+				
+				"DELETE FROM usuariomensagem WHERE mensagem_id IN (SELECT id FROM mensagem WHERE colaborador_id = " + id + ");",
+				"DELETE FROM mensagem WHERE colaborador_id = " + id + ";",
+				
+				"DELETE FROM solicitacaoepiitementrega WHERE solicitacaoepiitem_id IN (SELECT id FROM solicitacaoepi_item WHERE solicitacaoepi_id IN (SELECT id FROM solicitacaoepi WHERE colaborador_id = " + id + "));",
+				"DELETE FROM solicitacaoepi_item WHERE solicitacaoepi_id IN (SELECT id FROM solicitacaoepi WHERE colaborador_id = " + id + ");",
+				"DELETE FROM solicitacaoepi WHERE colaborador_id = " + id + ";",
+				
+				"DELETE FROM examesolicitacaoexame WHERE solicitacaoexame_id IN (SELECT id FROM solicitacaoexame WHERE colaborador_id = " + id + ");",
+				"DELETE FROM solicitacaoexame WHERE colaborador_id = " + id + ";",
+				
+				"UPDATE colaborador SET solicitantedemissao_id = NULL WHERE solicitantedemissao_id = " + id + ";",
+				"DELETE FROM historicocolaborador WHERE colaborador_id = " + id + ";",
+				"DELETE FROM reajustecolaborador WHERE colaborador_id = " + id + ";",
+				"DELETE FROM colaborador WHERE id = " + id + ";"
+		};
+		
+		JDBCConnection.executeQuery(sqls);
 	}
 }

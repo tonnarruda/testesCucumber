@@ -302,9 +302,14 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		try {
-			colaboradorManager.remove(colaborador, getEmpresaSistema());
-		} catch (InvocationTargetException e) {
+		try 
+		{
+			if (getUsuarioLogado().getId().equals(1L))
+				colaboradorManager.removeComDependencias(colaborador.getId());
+			else
+				colaboradorManager.remove(colaborador, getEmpresaSistema());
+		} 
+		catch (InvocationTargetException e) {
 			addActionError(e.getTargetException().getMessage());
 			return "error";
 		}

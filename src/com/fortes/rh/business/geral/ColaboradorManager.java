@@ -202,4 +202,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC);
 	public void desvinculaCandidato(Long candidatoId);
 	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId);
+	public void removeComDependencias(Long id);
 }

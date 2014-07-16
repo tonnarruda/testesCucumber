@@ -2528,27 +2528,34 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		getDao().desvinculaCandidato(candidatoId);
 	}
-	
 
 	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId) 
 	{
 		return getDao().findAguardandoDesligamento(empresaId);
 	}
 
+	public void removeComDependencias(Long id) 
+	{
+		getDao().removeComDependencias(id);
+	}
+	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
 	}
 
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) 
+	{
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
+	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) 
+	{
 		this.solicitacaoManager = solicitacaoManager;
 	}
 
-	public void setAuditoriaManager(AuditoriaManager auditoriaManager) {
+	public void setAuditoriaManager(AuditoriaManager auditoriaManager) 
+	{
 		this.auditoriaManager = auditoriaManager;
 	}
 }
