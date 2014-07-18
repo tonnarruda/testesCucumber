@@ -55,6 +55,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private PlatformTransactionManager transactionManager;
 	
 	private Avaliacao avaliacao;
+	private boolean exibirPeso;
 	
 	private Collection<Avaliacao> avaliacaos;
 	private Collection<Pergunta> perguntas;
@@ -140,6 +141,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 		avaliacao = avaliacaoManager.findById(avaliacao.getId());
 		perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacao.getId(), false);
     	urlVoltar = "list.action?modeloAvaliacao=" + modeloAvaliacao;
+    	exibirPeso = true;
     	
 		return Action.SUCCESS;
 	}
@@ -459,5 +461,13 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios()
 	{
 		return colaboradorQuestionarios;
+	}
+
+	public boolean isExibirPeso() {
+		return exibirPeso;
+	}
+
+	public void setExibirPeso(boolean exibirPeso) {
+		this.exibirPeso = exibirPeso;
 	}
 }
