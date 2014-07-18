@@ -1678,18 +1678,18 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(3, historicoColaboradors.size());
 		
 		HistoricoColaborador resultado1 = (HistoricoColaborador) historicoColaboradors.toArray()[0];
-		assertEquals("Josue", resultado1.getColaborador().getNome());
-		assertEquals("Desenvolvedor A", resultado1.getFaixaSalarial().getDescricao());
+		assertEquals("Joao", resultado1.getColaborador().getNome());
+		assertEquals("Desenvolvedor B", resultado1.getFaixaSalarial().getDescricao());
 		assertEquals("Gerentes", resultado1.getFaixaSalarial().getCargo().getGrupoOcupacional().getNome());
 		
 		HistoricoColaborador resultado2 = (HistoricoColaborador) historicoColaboradors.toArray()[1];
-		assertEquals("Maria", resultado2.getColaborador().getNome());
+		assertEquals("Josue", resultado2.getColaborador().getNome());
 		assertEquals("Desenvolvedor A", resultado2.getFaixaSalarial().getDescricao());
 		assertEquals("Gerentes", resultado2.getFaixaSalarial().getCargo().getGrupoOcupacional().getNome());
 
 		HistoricoColaborador resultado3 = (HistoricoColaborador) historicoColaboradors.toArray()[2];
-		assertEquals("Joao", resultado3.getColaborador().getNome());
-		assertEquals("Desenvolvedor B", resultado3.getFaixaSalarial().getDescricao());
+		assertEquals("Maria", resultado3.getColaborador().getNome());
+		assertEquals("Desenvolvedor A", resultado3.getFaixaSalarial().getDescricao());
 		assertEquals("Gerentes", resultado3.getFaixaSalarial().getCargo().getGrupoOcupacional().getNome());
 		
 		historicoColaboradors = historicoColaboradorDao.findByAreaGrupoCargo(empresa.getId(), DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds, areaOrganizacionalIds, true, grupoOcupacionalIds, vinculo);
