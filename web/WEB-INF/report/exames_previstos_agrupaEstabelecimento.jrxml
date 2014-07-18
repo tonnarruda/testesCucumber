@@ -34,7 +34,7 @@
 		<groupHeader>
 			<band height="43" splitType="Stretch">
 				<staticText>
-					<reportElement uuid="587f5ca5-811e-4805-b797-b7e28dc96c1d" key="staticText-1" x="8" y="18" width="193" height="11"/>
+					<reportElement uuid="587f5ca5-811e-4805-b797-b7e28dc96c1d" key="staticText-1" x="8" y="18" width="157" height="11"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -47,7 +47,7 @@
 					<text><![CDATA[Nome]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="b4872001-bfef-4e86-b834-6bf348fcf6ac" key="staticText-2" x="203" y="18" width="77" height="11"/>
+					<reportElement uuid="b4872001-bfef-4e86-b834-6bf348fcf6ac" key="staticText-2" x="205" y="18" width="75" height="11"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -137,6 +137,19 @@
 					</textElement>
 					<text><![CDATA[Motivo]]></text>
 				</staticText>
+				<staticText>
+					<reportElement uuid="f5f316de-69f5-4a29-8fd2-a44b28572ac5" key="staticText-9" x="167" y="18" width="36" height="11"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Matrícula]]></text>
+				</staticText>
 			</band>
 		</groupHeader>
 		<groupFooter>
@@ -201,7 +214,7 @@
 				</graphicElement>
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="ed115963-70cc-4ecd-bb97-d079179f5ed9" key="textField-3" x="8" y="1" width="193" height="11"/>
+				<reportElement uuid="ed115963-70cc-4ecd-bb97-d079179f5ed9" key="textField-3" x="8" y="1" width="157" height="11"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -212,11 +225,10 @@
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{colaboradorNome} +
-($F{colaboradorNome}.equalsIgnoreCase($F{colaboradorNomeComercial})? "" : " (" + $F{colaboradorNomeComercial} + ")") +
-($F{colaboradorMatricula} == null ? "" : " ("+$F{colaboradorMatricula}+") ")]]></textFieldExpression>
+($F{colaboradorNome}.equalsIgnoreCase($F{colaboradorNomeComercial}) || $F{colaboradorNomeComercial} == null ? "" : " (" + $F{colaboradorNomeComercial} + ")")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="7e7490de-293c-4323-84d0-b8a0f6a37816" key="textField-4" x="201" y="1" width="77" height="11"/>
+				<reportElement uuid="7e7490de-293c-4323-84d0-b8a0f6a37816" key="textField-4" x="203" y="1" width="75" height="11"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -279,6 +291,14 @@
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{motivoSolicitacaoExame}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement uuid="82d8cfc4-c976-4304-96e1-b7e6ac05da5f" mode="Transparent" x="167" y="1" width="36" height="11" forecolor="#000000" backcolor="#FFFFFF"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" markup="none">
+					<font fontName="SansSerif" size="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{colaboradorMatricula}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
