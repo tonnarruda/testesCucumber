@@ -119,6 +119,7 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 	{
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaColaborador.class, "cncc");
 		criteria.createCriteria("cncc.colaborador", "co", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cncc.colaboradorQuestionario", "cq", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("cncc.faixaSalarial", "fs", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("fs.cargo", "ca", CriteriaSpecification.LEFT_JOIN);
 		
@@ -132,7 +133,7 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("co.id", colaboradorId));
-		criteria.add(Expression.eq("cncc.avaliador.id", avaliadorId));
+		criteria.add(Expression.or(Expression.eq("cq.avaliador.id", avaliadorId),Expression.isNull("cq.avaliador.id")));
 		criteria.add(Expression.eq("cncc.data", data));
 		criteria.addOrder(Order.desc("cncc.data"));
 		

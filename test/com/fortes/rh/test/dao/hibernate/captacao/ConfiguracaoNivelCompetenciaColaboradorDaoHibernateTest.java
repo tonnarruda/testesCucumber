@@ -8,15 +8,18 @@ import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
+import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends GenericDaoHibernateTest<ConfiguracaoNivelCompetenciaColaborador>
@@ -25,6 +28,7 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 	private CargoDao cargoDao;
 	private FaixaSalarialDao faixaSalarialDao;
 	private ColaboradorDao colaboradorDao;
+	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
 
 	@Override
 	public ConfiguracaoNivelCompetenciaColaborador getEntity()
@@ -160,16 +164,24 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador2);
 		
+		ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario1.setAvaliador(avaliador1);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
+		
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario2.setAvaliador(avaliador2);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador1 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
 		configuracaoNivelCompetenciaColaborador1.setColaborador(colaborador);
-		configuracaoNivelCompetenciaColaborador1.setAvaliador(avaliador1);
+		configuracaoNivelCompetenciaColaborador1.setColaboradorQuestionario(colaboradorQuestionario1);
 		configuracaoNivelCompetenciaColaborador1.setFaixaSalarial(faixaSalarial1);
 		configuracaoNivelCompetenciaColaborador1.setData(DateUtil.criarDataMesAno(7, 7, 2011));
 		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador1);
 
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador2 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
 		configuracaoNivelCompetenciaColaborador2.setColaborador(colaborador);
-		configuracaoNivelCompetenciaColaborador2.setAvaliador(avaliador2);
+		configuracaoNivelCompetenciaColaborador2.setColaboradorQuestionario(colaboradorQuestionario2);
 		configuracaoNivelCompetenciaColaborador2.setFaixaSalarial(faixaSalarial2);
 		configuracaoNivelCompetenciaColaborador2.setData(DateUtil.criarDataMesAno(8, 8, 2011));
 		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador2);
@@ -202,5 +214,10 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 
 	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
 		this.colaboradorDao = colaboradorDao;
+	}
+
+	public void setColaboradorQuestionarioDao(ColaboradorQuestionarioDao colaboradorQuestionarioDao)
+	{
+		this.colaboradorQuestionarioDao = colaboradorQuestionarioDao;
 	}
 }

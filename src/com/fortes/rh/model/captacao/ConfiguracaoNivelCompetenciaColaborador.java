@@ -16,6 +16,7 @@ import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
 @SuppressWarnings("serial")
 @Entity
@@ -25,7 +26,7 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 	@ManyToOne
 	private Colaborador colaborador;
 	@ManyToOne
-	private Colaborador avaliador;
+	private ColaboradorQuestionario colaboradorQuestionario;
 	@ManyToOne
 	private FaixaSalarial faixaSalarial;
 	@Temporal(TemporalType.DATE)
@@ -134,13 +135,13 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 		this.configuracaoNivelCompetencias = configuracaoNivelCompetencias;
 	}
 
-	public Colaborador getAvaliador()
+	public ColaboradorQuestionario getColaboradorQuestionario()
 	{
-		return avaliador;
+		return colaboradorQuestionario;
 	}
-
-	public void setAvaliador(Colaborador avaliador)
+	
+	public void setColaboradorQuestionario(ColaboradorQuestionario colaboradorQuestionario)
 	{
-		this.avaliador = avaliador;
+		this.colaboradorQuestionario = colaboradorQuestionario;
 	}
 }

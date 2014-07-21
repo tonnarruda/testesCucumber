@@ -1,0 +1,2 @@
+alter table configuracaonivelcompetenciacolaborador add column colaboradorquestionario_id bigint; --.go
+ALTER TABLE configuracaonivelcompetenciacolaborador ADD CONSTRAINT configNivelCompetenciaColaborador_colaboradorquestionario_fk FOREIGN KEY (colaboradorquestionario_id) REFERENCES colaboradorquestionario(id); --.go
