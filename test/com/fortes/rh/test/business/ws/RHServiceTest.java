@@ -69,10 +69,11 @@ public class RHServiceTest extends MockObjectTestCase
 		TEmpregado tEmpregado1 = new TEmpregado();
 		TEmpregado[] tEmpregados = new TEmpregado[]{tEmpregado1};
 		
-		TSituacao tSituacao = new TSituacao();
+		TSituacao tSituacao1 = new TSituacao();
+		TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
 		String dataDesligamento = "10/07/2014";
 		
-		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(tEmpresaOrigin, tEmpresaDestino, tEmpregados, tSituacao, dataDesligamento); 
+		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(tEmpresaOrigin, tEmpresaDestino, tEmpregados, tSituacoes, dataDesligamento); 
 		
 		assertFalse(feedbackWebService.isSucesso());
 		assertEquals("Nenhuma empresa esta integrada com o sistena RH.", feedbackWebService.getMensagem());
@@ -90,9 +91,12 @@ public class RHServiceTest extends MockObjectTestCase
 		TEmpregado tEmpregado1 = new TEmpregado();
 		TEmpregado[] tEmpregados = new TEmpregado[]{tEmpregado1};
 		
+		TSituacao tSituacao1 = new TSituacao();
+		TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
+		
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(tEmpresaOrigin.getCodigoAC()), eq(tEmpresaOrigin.getGrupoAC())).will(returnValue(null));
 		
-		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(tEmpresaOrigin, new TEmpresa(), tEmpregados, new TSituacao(), "10/07/2014"); 
+		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(tEmpresaOrigin, new TEmpresa(), tEmpregados, tSituacoes, "10/07/2014"); 
 		
 		assertFalse(feedbackWebService.isSucesso());
 		assertEquals("Empresa origem não encontrada no sistema RH", feedbackWebService.getMensagem());
@@ -110,9 +114,12 @@ public class RHServiceTest extends MockObjectTestCase
 		TEmpregado tEmpregado1 = new TEmpregado();
 		TEmpregado[] tEmpregados = new TEmpregado[]{tEmpregado1};
 		
+		TSituacao tSituacao1 = new TSituacao();
+		TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
+		
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(null));
 		
-		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(new TEmpresa(), tEmpresaDestino, tEmpregados, new TSituacao(), "10/07/2014"); 
+		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(new TEmpresa(), tEmpresaDestino, tEmpregados, tSituacoes, "10/07/2014"); 
 		
 		assertFalse(feedbackWebService.isSucesso());
 		assertEquals("Empresa destino não encontrada no sistema RH", feedbackWebService.getMensagem());
@@ -141,12 +148,20 @@ public class RHServiceTest extends MockObjectTestCase
 		TEmpregado[] tEmpregados = new TEmpregado[]{tEmpregado1,tEmpregado2,tEmpregado3};
 		String[] codigosAcDosColaboradores = tEmpregadoToArrayCodigoAC(tEmpregados);
 		
+		TSituacao tSituacao1 = new TSituacao();
+		tSituacao1.setEmpregadoCodigoAC("tEmp1");
+		TSituacao tSituacao2 = new TSituacao();
+		tSituacao2.setEmpregadoCodigoAC("tEmp2");
+		TSituacao tSituacao3 = new TSituacao();
+		tSituacao3.setEmpregadoCodigoAC("tEmp3");
+		TSituacao[] tSituacoes = new TSituacao[]{tSituacao1,tSituacao2,tSituacao3};
+		
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(tEmpresaOrigin.getCodigoAC()), eq(tEmpresaOrigin.getGrupoAC())).will(returnValue(empresaOrigem));
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresaOrigem.getCodigoAC()), eq(empresaOrigem.getGrupoAC())).will(returnValue(empresaOrigem));
 		colaboradorManager.expects(once()).method("desligaColaboradorAC").with(eq(empresaOrigem), ANYTHING, eq(codigosAcDosColaboradores)).will(returnValue(true));
 		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoDesligamentoColaboradorAC").
 														with(eq(empresaOrigem.getCodigoAC()), eq(empresaOrigem.getGrupoAC()), eq(empresaOrigem), eq(codigosAcDosColaboradores)).isVoid();
-		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(tEmpresaOrigin, new TEmpresa(), tEmpregados, new TSituacao(), "10/07/2014");
+		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(tEmpresaOrigin, new TEmpresa(), tEmpregados, tSituacoes, "10/07/2014");
 		
 		assertTrue(feedbackWebService.isSucesso());
 	}
@@ -168,12 +183,16 @@ public class RHServiceTest extends MockObjectTestCase
 		tEmpregado1.setCodigoAC("tEmp1");
 		TEmpregado[] tEmpregados = new TEmpregado[]{tEmpregado1};
 		
+		TSituacao tSituacao1 = new TSituacao();
+		tSituacao1.setEmpregadoCodigoAC("tEmp1");
+		TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
+		
 		String[] codigosAcDosColaboradores = tEmpregadoToArrayCodigoAC(tEmpregados);
 		
 		empresaManager.expects(atLeastOnce()).method("findByCodigoAC").with(eq(tEmpresaOrigin.getCodigoAC()), eq(tEmpresaOrigin.getGrupoAC())).will(returnValue(empresaOrigem));
 		colaboradorManager.expects(once()).method("desligaColaboradorAC").with(eq(empresaOrigem), ANYTHING, eq(codigosAcDosColaboradores)).will(returnValue(false));
 		
-		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(tEmpresaOrigin, new TEmpresa(), tEmpregados, new TSituacao(), "10/07/2014");
+		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(tEmpresaOrigin, new TEmpresa(), tEmpregados, tSituacoes, "10/07/2014");
 		
 		assertFalse(feedbackWebService.isSucesso());
 		assertEquals("Existem empregados que não foram encontrados no sistema RH", feedbackWebService.getMensagem());
@@ -206,6 +225,14 @@ public class RHServiceTest extends MockObjectTestCase
 		tSituacao.setCargoCodigoAC("cargoCodigoAC");
 		tSituacao.setEstabelecimentoCodigoAC("estabelecimentoCodigoAC");
 		
+		TSituacao tSituacao1 = tSituacao;
+		tSituacao1.setEmpregadoCodigoAC("tEmp1");
+		TSituacao tSituacao2 = tSituacao;
+		tSituacao2.setEmpregadoCodigoAC("tEmp2");
+		TSituacao tSituacao3 = tSituacao;
+		tSituacao3.setEmpregadoCodigoAC("tEmp3");
+		TSituacao[] tSituacoes = new TSituacao[]{tSituacao1,tSituacao2,tSituacao3};
+		
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
 		estabelecimento.setCodigoAC(tSituacao.getLotacaoCodigoAC());
 		
@@ -216,12 +243,12 @@ public class RHServiceTest extends MockObjectTestCase
 		faixaSalarial.setCodigoAC(tSituacao.getCargoCodigoAC());
 		
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(empresaDestino));
-		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(eq(tSituacao.getEstabelecimentoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(estabelecimento));
-		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(eq(tSituacao.getLotacaoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(areaOrganizacional));
-		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(eq(tSituacao.getCargoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(faixaSalarial));
-		colaboradorManager.expects(once()).method("saveEmpregadosESituacoes").with(eq(tEmpregados), eq(tSituacao), eq(empresaDestino)).isVoid();
+		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(eq(tSituacoes[0].getEstabelecimentoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(estabelecimento));
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(eq(tSituacoes[0].getLotacaoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(areaOrganizacional));
+		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(eq(tSituacoes[0].getCargoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(faixaSalarial));
+		colaboradorManager.expects(once()).method("saveEmpregadosESituacoes").with(eq(tEmpregados), eq(tSituacoes), eq(empresaDestino)).isVoid();
 		
-		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(new TEmpresa(), tEmpresaDestino, tEmpregados, tSituacao, "10/07/2014");
+		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(new TEmpresa(), tEmpresaDestino, tEmpregados, tSituacoes, "10/07/2014");
 		
 		assertTrue(feedbackWebService.isSucesso());
 	}
@@ -253,6 +280,14 @@ public class RHServiceTest extends MockObjectTestCase
 		tSituacao.setCargoCodigoAC("cargoCodigoAC");
 		tSituacao.setEstabelecimentoCodigoAC("estabelecimentoCodigoAC");
 		
+		TSituacao tSituacao1 = tSituacao;
+		tSituacao1.setEmpregadoCodigoAC("tEmp1");
+		TSituacao tSituacao2 = tSituacao;
+		tSituacao2.setEmpregadoCodigoAC("tEmp2");
+		TSituacao tSituacao3 = tSituacao;
+		tSituacao3.setEmpregadoCodigoAC("tEmp3");
+		TSituacao[] tSituacoes = new TSituacao[]{tSituacao1,tSituacao2,tSituacao3};
+		
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
 		estabelecimento.setCodigoAC(tSituacao.getLotacaoCodigoAC());
 		
@@ -263,11 +298,11 @@ public class RHServiceTest extends MockObjectTestCase
 		faixaSalarial.setCodigoAC(tSituacao.getCargoCodigoAC());
 		
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(empresaDestino));
-		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(eq(tSituacao.getEstabelecimentoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(null));
-		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(eq(tSituacao.getLotacaoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(null));
-		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(eq(tSituacao.getCargoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(null));
+		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(eq(tSituacoes[0].getEstabelecimentoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(null));
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(eq(tSituacoes[0].getLotacaoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(null));
+		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(eq(tSituacoes[0].getCargoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(null));
 		
-		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(new TEmpresa(), tEmpresaDestino, tEmpregados, tSituacao, "10/07/2014");
+		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(new TEmpresa(), tEmpresaDestino, tEmpregados, tSituacoes, "10/07/2014");
 		
 		assertFalse(feedbackWebService.isSucesso());
 		assertEquals("Existem inconsistências de integração com o sistema RH na empresa destino.", feedbackWebService.getMensagem());
@@ -314,6 +349,14 @@ public class RHServiceTest extends MockObjectTestCase
 		tSituacao.setCargoCodigoAC("cargoCodigoAC");
 		tSituacao.setEstabelecimentoCodigoAC("estabelecimentoCodigoAC");
 		
+		TSituacao tSituacao1 = tSituacao;
+		tSituacao1.setEmpregadoCodigoAC("tEmp1");
+		TSituacao tSituacao2 = tSituacao;
+		tSituacao2.setEmpregadoCodigoAC("tEmp2");
+		TSituacao tSituacao3 = tSituacao;
+		tSituacao3.setEmpregadoCodigoAC("tEmp3");
+		TSituacao[] tSituacoes = new TSituacao[]{tSituacao1,tSituacao2,tSituacao3};
+		
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
 		estabelecimento.setCodigoAC(tSituacao.getLotacaoCodigoAC());
 		
@@ -333,12 +376,12 @@ public class RHServiceTest extends MockObjectTestCase
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		colaboradorManager.expects(once()).method("desligaColaboradorAC").with(eq(empresaOrigem), ANYTHING, eq(codigosAcDosColaboradores)).will(returnValue(true));
 		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoDesligamentoColaboradorAC").with(eq(tEmpresaOrigin.getCodigoAC()),eq(tEmpresaOrigin.getGrupoAC()),eq(empresaOrigem), eq(codigosAcDosColaboradores)).isVoid();
-		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(eq(tSituacao.getEstabelecimentoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(estabelecimento));
-		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(eq(tSituacao.getLotacaoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(areaOrganizacional));
-		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(eq(tSituacao.getCargoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(faixaSalarial));
-		colaboradorManager.expects(once()).method("saveEmpregadosESituacoes").with(eq(tEmpregados), eq(tSituacao), eq(empresaDestino)).isVoid();
+		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(eq(tSituacoes[0].getEstabelecimentoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(estabelecimento));
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(eq(tSituacoes[0].getLotacaoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(areaOrganizacional));
+		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(eq(tSituacoes[0].getCargoCodigoAC()),eq(tEmpresaDestino.getCodigoAC()), eq(tEmpresaDestino.getGrupoAC())).will(returnValue(faixaSalarial));
+		colaboradorManager.expects(once()).method("saveEmpregadosESituacoes").with(eq(tEmpregados), eq(tSituacoes), eq(empresaDestino)).isVoid();
 		
-		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(tEmpresaOrigin, tEmpresaDestino, tEmpregados, tSituacao, dataDesligamento);
+		FeedbackWebService feedbackWebService = rHServiceImpl.transferir(tEmpresaOrigin, tEmpresaDestino, tEmpregados, tSituacoes, dataDesligamento);
 		
 		assertTrue(feedbackWebService.isSucesso());
 	}

@@ -1258,6 +1258,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Empresa empresa = EmpresaFactory.getEmpresa();
     	
     	TEmpregado tEmpregado = iniciaTEmpregado();
+    	tEmpregado.setCodigoAC("tEmp1");
     	
     	Pessoal pessoal = new Pessoal();
     	pessoal.setEscolaridade("Especialização");
@@ -1269,18 +1270,20 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	cidade.setUf(estado);
     	colaborador.setPessoal(pessoal);
     	
-    	TSituacao tSituacao = new TSituacao();
+    	TSituacao tSituacao1 = new TSituacao();
+    	tSituacao1.setEmpregadoCodigoAC("tEmp1");
+		TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
     	
     	cidadeManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(cidade));
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
     	colaboradorDao.expects(once()).method("save").with(ANYTHING).isVoid();
-    	historicoColaboradorManager.expects(once()).method("bindSituacao").with(eq(tSituacao), ANYTHING);
+    	historicoColaboradorManager.expects(once()).method("bindSituacao").with(eq(tSituacoes[0]), ANYTHING);
     	historicoColaboradorManager.expects(once()).method("save").with( ANYTHING);
     	
     	Exception e = null;
     	try {
-    		colaboradorManager.saveEmpregadosESituacoes(new TEmpregado[]{tEmpregado}, tSituacao, empresa);
+    		colaboradorManager.saveEmpregadosESituacoes(new TEmpregado[]{tEmpregado}, tSituacoes, empresa);
 		} catch (Exception e2) {
 			e = e2;
 		}

@@ -1264,7 +1264,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaborador;
 	}
 
-	public void saveEmpregadosESituacoes(TEmpregado[] empregados, TSituacao tSituacao, Empresa empresa) throws Exception
+	public void saveEmpregadosESituacoes(TEmpregado[] empregados, TSituacao[] tSituacoes, Empresa empresa) throws Exception
 	{
 		for(int i = 0; i < empregados.length; i++)
 		{
@@ -1272,6 +1272,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			bindColaborador(colaborador, empregados[i]);
 			colaborador.setEmpresa(empresa);
 			getDao().save(colaborador);
+			
+			TSituacao tSituacao = new TSituacao();
+			for (TSituacao tSituacaoTmp : tSituacoes) {
+				if (tSituacaoTmp.getEmpregadoCodigoAC().equals(empregados[i].getCodigoAC()))
+					tSituacao = tSituacaoTmp;
+			}
 			
 			HistoricoColaborador historicoColaborador = new HistoricoColaborador();
 			historicoColaborador.setColaborador(colaborador);

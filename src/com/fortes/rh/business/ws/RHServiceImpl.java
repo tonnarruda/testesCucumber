@@ -359,7 +359,7 @@ public class RHServiceImpl implements RHService
 		}
 	}
 	
-	public FeedbackWebService transferir(TEmpresa tEmpresaOrigin, TEmpresa tEmpresaDestino, TEmpregado[] tEmpregados, TSituacao tSituacao, String dataDesligamento)
+	public FeedbackWebService transferir(TEmpresa tEmpresaOrigin, TEmpresa tEmpresaDestino, TEmpregado[] tEmpregados, TSituacao[] tSituacoes, String dataDesligamento)
 	{
 		Empresa empresaOrigin = null;
 		Empresa empresaDestino= null;
@@ -384,19 +384,19 @@ public class RHServiceImpl implements RHService
 			return desligarEmpregadosEmLote(tEmpregadoToArrayCodigoAC(tEmpregados), empresaOrigin.getCodigoAC(), dataDesligamento, empresaOrigin.getGrupoAC());
 
 		else if (empresaOrigin == null && empresaDestino != null)
-			return inserirEmpregados(tEmpregados, tSituacao, empresaDestino);
+			return inserirEmpregados(tEmpregados, tSituacoes, empresaDestino);
 		
 		else if(empresaOrigin != null && empresaDestino != null)
-			return desligaInsereEmpregados(tEmpregados, tSituacao, dataDesligamento, empresaOrigin, empresaDestino);
+			return desligaInsereEmpregados(tEmpregados, tSituacoes, dataDesligamento, empresaOrigin, empresaDestino);
 		
 		else
 			return new FeedbackWebService(false, "Nenhuma empresa esta integrada com o sistena RH.", "");
 	}
 
-	private FeedbackWebService desligaInsereEmpregados(TEmpregado[] tEmpregados, TSituacao tSituacao, String dataTransferencia, Empresa empresaOrigin, Empresa empresaDestino) 
+	private FeedbackWebService desligaInsereEmpregados(TEmpregado[] tEmpregados, TSituacao[] tSituacoes, String dataTransferencia, Empresa empresaOrigin, Empresa empresaDestino) 
 	{
-		String parametros = "empCodigo: " + tSituacao.getEmpresaCodigoAC() + "\ngrupoAC: " + tSituacao.getGrupoAC() + "\ncodigo estabelecimento: " + tSituacao.getEstabelecimentoCodigoAC() +
-				"\ncodigo lotação: " + tSituacao.getLotacaoCodigoAC() + "\ncodigo cargo: " + tSituacao.getCargoCodigoAC();
+		String parametros = "empCodigo: " + tSituacoes[0].getEmpresaCodigoAC() + "\ngrupoAC: " + tSituacoes[0].getGrupoAC() + "\ncodigo estabelecimento: " + tSituacoes[0].getEstabelecimentoCodigoAC() +
+				"\ncodigo lotação: " + tSituacoes[0].getLotacaoCodigoAC() + "\ncodigo cargo: " + tSituacoes[0].getCargoCodigoAC();
 		
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -411,7 +411,7 @@ public class RHServiceImpl implements RHService
 				return feedbackWebService;
 			}
 			
-			feedbackWebService = inserirEmpregados(tEmpregados, tSituacao, empresaDestino);
+			feedbackWebService = inserirEmpregados(tEmpregados, tSituacoes, empresaDestino);
 
 			if(!feedbackWebService.isSucesso())
 			{
@@ -439,15 +439,15 @@ public class RHServiceImpl implements RHService
 		return codigosEmpregados;
 	}
 	
-	private FeedbackWebService inserirEmpregados(TEmpregado[] tEmpregados, TSituacao tSituacao, Empresa empresaDestino)
+	private FeedbackWebService inserirEmpregados(TEmpregado[] tEmpregados, TSituacao[] tSituacoes, Empresa empresaDestino)
 	{
-		String parametros = "empCodigo: " + tSituacao.getEmpresaCodigoAC() + "\ngrupoAC: " + tSituacao.getGrupoAC() + "\ncodigo estabelecimento: " + tSituacao.getEstabelecimentoCodigoAC() +
-				"\ncodigo lotação: " + tSituacao.getLotacaoCodigoAC() + "\ncodigo cargo: " + tSituacao.getCargoCodigoAC();
+		String parametros = "empCodigo: " + tSituacoes[0].getEmpresaCodigoAC() + "\ngrupoAC: " + tSituacoes[0].getGrupoAC() + "\ncodigo estabelecimento: " + tSituacoes[0].getEstabelecimentoCodigoAC() +
+				"\ncodigo lotação: " + tSituacoes[0].getLotacaoCodigoAC() + "\ncodigo cargo: " + tSituacoes[0].getCargoCodigoAC();
 		try
 		{
-			Estabelecimento estabelecimento = estabelecimentoManager.findEstabelecimentoByCodigoAc(tSituacao.getEstabelecimentoCodigoAC(),  empresaDestino.getCodigoAC(), empresaDestino.getGrupoAC());
-			AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(tSituacao.getLotacaoCodigoAC(), empresaDestino.getCodigoAC(), empresaDestino.getGrupoAC());
-			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacao.getCargoCodigoAC(), empresaDestino.getCodigoAC(), empresaDestino.getGrupoAC());
+			Estabelecimento estabelecimento = estabelecimentoManager.findEstabelecimentoByCodigoAc(tSituacoes[0].getEstabelecimentoCodigoAC(),  empresaDestino.getCodigoAC(), empresaDestino.getGrupoAC());
+			AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(tSituacoes[0].getLotacaoCodigoAC(), empresaDestino.getCodigoAC(), empresaDestino.getGrupoAC());
+			FaixaSalarial faixaSalarial = faixaSalarialManager.findFaixaSalarialByCodigoAc(tSituacoes[0].getCargoCodigoAC(), empresaDestino.getCodigoAC(), empresaDestino.getGrupoAC());
 			
 			String retorno = "";
 			
@@ -463,7 +463,7 @@ public class RHServiceImpl implements RHService
 			if(!retorno.equals(""))
 				return new FeedbackWebService(false,  "Existem inconsistências de integração com o sistema RH na empresa destino.", formataException(retorno, null));	
 		
-			colaboradorManager.saveEmpregadosESituacoes(tEmpregados, tSituacao, empresaDestino);
+			colaboradorManager.saveEmpregadosESituacoes(tEmpregados, tSituacoes, empresaDestino);
 			
 			return new FeedbackWebService(true);
 		}

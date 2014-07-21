@@ -93,5 +93,5 @@ public interface RHService
 	FeedbackWebService removerOcorrenciaEmpregado(TOcorrenciaEmpregado[] ocorrenciaEmpregados);
 	
 	//Transferência em lote
-	FeedbackWebService transferir(TEmpresa tEmpresaOrigin, TEmpresa tEmpresaDestino, TEmpregado[] tEmpregados, TSituacao tSituacao, String dataDesligamento);
+	FeedbackWebService transferir(TEmpresa tEmpresaOrigin, TEmpresa tEmpresaDestino, TEmpregado[] tEmpregados, TSituacao[] tSituacoes, String dataDesligamento);
 }
