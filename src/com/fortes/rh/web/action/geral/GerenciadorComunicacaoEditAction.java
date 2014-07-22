@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
@@ -22,6 +24,8 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	private static final long serialVersionUID = 1L;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private UsuarioManager usuarioManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private EstabelecimentoManager estabelecimentoManager;
 	
 	private GerenciadorComunicacao gerenciadorComunicacao;
 	private Collection<GerenciadorComunicacao> gerenciadorComunicacaos;
@@ -30,12 +34,17 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	
 	private String[] usuariosCheck;
 	private Collection<CheckBox> usuariosCheckList = new ArrayList<CheckBox>();
-	
+	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
+
 	private void prepare() throws Exception
 	{
 		Collection<Usuario> usuarios = usuarioManager.findAllSelect(getEmpresaSistema().getId());
 		usuariosCheckList = CheckListBoxUtil.populaCheckListBox(usuarios, "getId", "getNome");
 
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox((getEmpresaSistema().getId()));
+		
 		if(gerenciadorComunicacao != null )
 		{
 			if (gerenciadorComunicacao.getId() != null)
@@ -45,7 +54,8 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 			}
 
 			meioComunicacoes = Operacao.getMeioComunicacaosById(gerenciadorComunicacao.getOperacao());
-			enviarParas = (MeioComunicacao.getMeioComunicacaoById(gerenciadorComunicacao.getMeioComunicacao())).getListEnviarPara();   
+			enviarParas = (MeioComunicacao.getMeioComunicacaoById(gerenciadorComunicacao.getMeioComunicacao())).getListEnviarPara();
+			
 		}else
 		{
 			meioComunicacoes = new TreeMap<Integer, String>();
@@ -56,7 +66,14 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	public String prepareInsert() throws Exception
 	{
 		prepare();
+		
+		setShowFilter(false);
+		
 		return Action.SUCCESS;
+	}
+
+	public boolean isShowFilter() {
+		return getShowFilter();
 	}
 
 	public String prepareUpdate() throws Exception
@@ -218,5 +235,25 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 
 	public void setUsuariosCheckList(Collection<CheckBox> usuariosCheckList) {
 		this.usuariosCheckList = usuariosCheckList;
+	}
+
+	public Collection<CheckBox> getEstabelecimentosCheckList()
+	{
+		return estabelecimentosCheckList;
+	}
+	
+	public Collection<CheckBox> getAreasCheckList()
+	{
+		return areasCheckList;
+	}
+	
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
+	{
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
+	{
+		this.estabelecimentoManager = estabelecimentoManager;
 	}
 }

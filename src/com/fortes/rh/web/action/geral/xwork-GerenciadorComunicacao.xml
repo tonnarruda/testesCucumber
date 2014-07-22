@@ -3,6 +3,9 @@
 
 <xwork>
 	<package name="gerenciadorComunicacao" extends="default" namespace="/geral/gerenciadorComunicacao">
+		<action name="updateFilter" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="updateFilter">
+	      	<interceptor-ref name="showFilterStack" />			
+		</action>	
 		<action name="list" class="com.fortes.rh.web.action.geral.GerenciadorComunicacaoEditAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/gerenciadorComunicacaoList.ftl</result>
 		</action>

@@ -160,6 +160,9 @@
 		<!-- UTIL -->
 		<convert converter="bean" match="com.fortes.web.tags.CheckBox"/>
 		<convert converter="bean" match="com.fortes.web.tags.Option"/>
+		<convert converter="bean" match="com.fortes.rh.model.acesso.Usuario">
+			<param name="include" value="id, nome"/>
+		</convert>
 
 		<!-- DICIONARIO -->
 		<convert converter="bean" match="com.fortes.rh.model.dicionario.TipoPessoa"/>

@@ -131,4 +131,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public void desvinculaCandidato(Long candidatoId);
 	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId);
 	public void removeComDependencias(Long id);
+	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds);
 }

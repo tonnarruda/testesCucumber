@@ -258,6 +258,16 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 	{
 		getDao().updateConfiguracoesMensagens(usuarioId, caixasMensagens);
 	}
+
+	public String[] findEmailsByPerfil(String role, Long empresaId) 
+	{
+		return getDao().findEmailsByPerfil(role, empresaId);
+	}
+
+	public Collection<Usuario> findByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds)
+	{
+		return colaboradorManager.findUsuarioByAreaEstabelecimento(areasIds, estabelecimentosIds);
+	}
 	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
@@ -267,11 +277,6 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 	public void setUsuarioEmpresaManager(UsuarioEmpresaManager usuarioEmpresaManager)
 	{
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
-	}
-
-	public String[] findEmailsByPerfil(String role, Long empresaId) 
-	{
-		return getDao().findEmailsByPerfil(role, empresaId);
 	}
 
 }

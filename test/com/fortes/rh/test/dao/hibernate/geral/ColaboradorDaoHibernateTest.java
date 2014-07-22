@@ -1484,7 +1484,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(2, colaboradorDao.findByNomeCpfMatricula(null, empresa.getId(), false).size());
 	}
 
-	public void testFindByNomeCpfMatriculaComHistoricoComfirmado() {
+	public void testFindByNomeCpfMatriculaComHistoricoComfirmado() 
+	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 		
@@ -5875,10 +5876,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		AreaOrganizacional a1 = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacionalDao.save(a1);
 		
-		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 3, 2012), null, null, null, null, a1, fs1, null);
-		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 8, 2010), null, null, null, null, a1, fs1, null);
-		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, null, null, null, a1, fs1, null);
-		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 5, 2009), DateUtil.criarDataMesAno(1, 11, 2009), null, null, null, null, a1, fs1, null);
+		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 3, 2012), null, null, null, null, a1, fs1, null, null);
+		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 8, 2010), null, null, null, null, a1, fs1, null, null);
+		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, null, null, null, a1, fs1, null, null);
+		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 5, 2009), DateUtil.criarDataMesAno(1, 11, 2009), null, null, null, null, a1, fs1, null, null);
 		
 		
 		Empresa empresaTurnover = EmpresaFactory.getEmpresa();
@@ -5901,7 +5902,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		cs1.setSolicitacao(sol1);
 		candidatoSolicitacaoDao.save(cs1);
 		
-		criarColaboradorHistorico(null, empresaTurnover, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, null, null, null, a1, fs1, can1);
+		criarColaboradorHistorico(null, empresaTurnover, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, null, null, null, a1, fs1, can1, null);
 		
 		Collection<TurnOver> retorno = colaboradorDao.countDemitidosTempoServico(empresa, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
 		
@@ -5939,10 +5940,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Estabelecimento e1 = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(e1);
 		
-		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 3, 2012), null, null, null, e1, a1, fs1, null);
-		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 8, 2010), null, null, null, null, a1, fs1, null);
-		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, null, null, null, a1, fs1, null);
-		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 5, 2009), DateUtil.criarDataMesAno(1, 11, 2009), null, null, null, null, a1, fs1, null);
+		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 3, 2012), null, null, null, e1, a1, fs1, null, null);
+		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 8, 2010), null, null, null, null, a1, fs1, null, null);
+		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, null, null, null, a1, fs1, null, null);
+		criarColaboradorHistorico(null, empresa, DateUtil.criarDataMesAno(1, 5, 2009), DateUtil.criarDataMesAno(1, 11, 2009), null, null, null, null, a1, fs1, null, null);
 		
 		Empresa empresaTurnover = EmpresaFactory.getEmpresa();
 		empresaTurnover.setTurnoverPorSolicitacao(true);
@@ -5955,7 +5956,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Candidato can1 = CandidatoFactory.getCandidato();
 		candidatoDao.save(can1);
 		
-		criarColaboradorHistorico(null, empresaTurnover, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, null, md, null, a1, fs1, can1);
+		criarColaboradorHistorico(null, empresaTurnover, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, null, md, null, a1, fs1, can1, null);
 		
 		Collection<Colaborador> retorno = colaboradorDao.findDemitidosTurnover(empresa, DateUtil.criarDataMesAno(1, 1, 2010), DateUtil.criarDataMesAno(1, 1, 2013), null, null, null, Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
 		assertEquals("Todos do intervalo", 3, retorno.size());
@@ -5970,10 +5971,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals("Empresa com turnover por solicitacao", 1, retorno.size());
 	}
 	
-	private void criarColaboradorHistorico(String nomeColaborador, Empresa empresa, Date dataAdmissao, Date dataDesligamento, Date dataSolicitacaoDesligamento, Date dataSolicitacaoDesligamentoAC, MotivoDemissao motivoDemissao, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, FaixaSalarial faixaSalarial, Candidato candidato)
+	private void criarColaboradorHistorico(String nomeColaborador, Empresa empresa, Date dataAdmissao, Date dataDesligamento, Date dataSolicitacaoDesligamento, Date dataSolicitacaoDesligamentoAC, MotivoDemissao motivoDemissao, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, FaixaSalarial faixaSalarial, Candidato candidato, Usuario usuario)
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setNome(nomeColaborador);
+		colaborador.setUsuario(usuario);
 		colaborador.setCandidato(candidato);
 		colaborador.setEmpresa(empresa);
 		colaborador.setVinculo(Vinculo.EMPREGO);
@@ -6015,10 +6017,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Estabelecimento e1 = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(e1);
 		
-		criarColaboradorHistorico("Airton", empresa1, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 3, 2012), null, null, null, e1, a1, fs1, null);
-		criarColaboradorHistorico("Bruna", empresa1, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 8, 2010), null, null, null, e1, a1, fs1, null);
-		criarColaboradorHistorico("Chico", empresa2, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, null, null, null, a1, fs1, null);
-		criarColaboradorHistorico("Demosval", empresa2, DateUtil.criarDataMesAno(1, 5, 2009), DateUtil.criarDataMesAno(1, 11, 2009), null, null, null, null, a1, fs1, null);
+		criarColaboradorHistorico("Airton", empresa1, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 3, 2012), null, null, null, e1, a1, fs1, null, null);
+		criarColaboradorHistorico("Bruna", empresa1, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 8, 2010), null, null, null, e1, a1, fs1, null, null);
+		criarColaboradorHistorico("Chico", empresa2, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, null, null, null, a1, fs1, null, null);
+		criarColaboradorHistorico("Demosval", empresa2, DateUtil.criarDataMesAno(1, 5, 2009), DateUtil.criarDataMesAno(1, 11, 2009), null, null, null, null, a1, fs1, null, null);
 		
 		Collection<Colaborador> colaboradores = colaboradorDao.findByEmpresaAndStatusAC(empresa1.getId(), StatusRetornoAC.CONFIRMADO);
 		
@@ -6065,10 +6067,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Estabelecimento e1 = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(e1);
 		
-		criarColaboradorHistorico("Demosval Pede Pra Sair", empresa1, DateUtil.criarDataMesAno(1, 5, 2009), null, DateUtil.criarDataMesAno(1, 11, 2010), null, null, e1, a1, fs1, null);
-		criarColaboradorHistorico("Airton Desligado", empresa1, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 3, 2012), null, null, null, e1, a1, fs1, null);
-		criarColaboradorHistorico("Bruna Aguardando no AC", empresa1, DateUtil.criarDataMesAno(1, 2, 2010), null, DateUtil.criarDataMesAno(1, 8, 2010), DateUtil.criarDataMesAno(5, 8, 2010), null, e1, a1, fs1, null);
-		criarColaboradorHistorico("Chico de Outra Empresa", empresa2, DateUtil.criarDataMesAno(1, 5, 2011), null, DateUtil.criarDataMesAno(1, 11, 2011), null, null, e1, a1, fs1, null);
+		criarColaboradorHistorico("Demosval Pede Pra Sair", empresa1, DateUtil.criarDataMesAno(1, 5, 2009), null, DateUtil.criarDataMesAno(1, 11, 2010), null, null, e1, a1, fs1, null, null);
+		criarColaboradorHistorico("Airton Desligado", empresa1, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 3, 2012), null, null, null, e1, a1, fs1, null, null);
+		criarColaboradorHistorico("Bruna Aguardando no AC", empresa1, DateUtil.criarDataMesAno(1, 2, 2010), null, DateUtil.criarDataMesAno(1, 8, 2010), DateUtil.criarDataMesAno(5, 8, 2010), null, e1, a1, fs1, null, null);
+		criarColaboradorHistorico("Chico de Outra Empresa", empresa2, DateUtil.criarDataMesAno(1, 5, 2011), null, DateUtil.criarDataMesAno(1, 11, 2011), null, null, e1, a1, fs1, null, null);
 		
 		Collection<Colaborador> colaboradores = colaboradorDao.findAguardandoDesligamento(empresa1.getId());
 		
@@ -6089,6 +6091,36 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		String qtdTabelasComColaborador = JDBCConnection.executeQuery("SELECT COUNT(kcu.column_name) FROM information_schema.table_constraints AS tc INNER JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name INNER JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name WHERE constraint_type = 'FOREIGN KEY' AND ccu.table_name = 'colaborador'");
 		assertEquals("Se esse quebrar, provavelmente tem que inserir uma linha de delete em ColaboradorDaoHibernate.removeComDependencias", "27", qtdTabelasComColaborador);
+	}
+	
+	public void testFindUsuarioByAreaEstabelecimento()
+	{
+		Usuario usuario1 = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario1);
+		
+		Usuario usuario2 = UsuarioFactory.getEntity();
+		usuarioDao.save(usuario2);
+		
+		AreaOrganizacional area1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area1);
+		
+		AreaOrganizacional area2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area2);
+		
+		Estabelecimento estab1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estab1);
+		
+		Estabelecimento estab2 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estab2);
+		
+		criarColaboradorHistorico("Colaborador 1", null, DateUtil.criarDataMesAno(1, 5, 2014), null, null, null, null, estab1, area1, null, null, usuario1);
+		criarColaboradorHistorico("Colaborador 2", null, DateUtil.criarDataMesAno(1, 6, 2014), null, null, null, null, estab2, area2, null, null, usuario2);
+		criarColaboradorHistorico("Colaborador 3", null, DateUtil.criarDataMesAno(1, 7, 2014), null, null, null, null, estab2, area2, null, null, null);
+		
+		Collection<Usuario> usuarios = colaboradorDao.findUsuarioByAreaEstabelecimento(new Long[] {area2.getId()}, new Long[] {estab2.getId()});
+		
+		assertEquals(1, usuarios.size());
+		assertEquals(usuario2.getId(), ((Usuario)usuarios.toArray()[0]).getId());
 	}
 	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)

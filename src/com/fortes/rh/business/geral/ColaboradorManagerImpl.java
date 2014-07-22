@@ -2538,6 +2538,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		getDao().removeComDependencias(id);
 	}
+
+	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds)
+	{
+		return getDao().findUsuarioByAreaEstabelecimento(areasIds, estabelecimentosIds);
+	}
 	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{

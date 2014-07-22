@@ -5,8 +5,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
-import org.apache.poi.xslf.model.geom.AddSubtractExpression;
-
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
