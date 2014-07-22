@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.1xx.157" bd="" data="xx/xx/2014">
+		<Item visivel="S" motivo="S20140600192"><![CDATA[C&S > Relatórios > Colaboradores por Grupo Ocupacional: Nova opção para selecionar a exibição da coluna de cargo ou área organizacional no relatório.]]></Item>
+		<Item visivel="S" motivo="S20140600030"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Novas opções de impressão da avaliação respondida nos formatos normal e econômico.]]></Item>
+		<Item visivel="S" motivo="S20140500218"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Exibir campo performance do colaborador.]]></Item>
+		<Item visivel="S" motivo="S20140700018"><![CDATA[SESMT > Relatórios > Exames Previstos: Impressão da matrícula junto ao nome do colaborador.]]></Item>
 		<Item visivel="N" motivo="P20140700048"><![CDATA[R&S > Painel de Indicadores: Correção de bug no indicador de qtde de vagas preenchidas.]]></Item>
 		<Item visivel="N" motivo="P20140700076"><![CDATA[R&S > Painel de Indicadores: Correção de bug no indicador de qtde de candidatos atendidos.]]></Item>
 		<Item visivel="N" motivo="S20140600152"><![CDATA[C&S > Cadastro > Cargos e Faixas > Faixa Salariais > Niveis de Competência: Tooltip para exibir a observação da competência quando existente.]]></Item>
-		<Item visivel="S" motivo="S20140600192"><![CDATA[C&S > Relatórios > Colaboradores por Grupo Ocupacional: Nova opção para selecionar a exibição da coluna de cargo ou área organizacional no relatório.]]></Item>
-		<Item visivel="S" motivo="S20140500218"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Exibir campo performance do colaborador.]]></Item>
 		<Item visivel="N" motivo="S20140600152"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Tooltip para exibir a observação da competência quando existente.]]></Item>
 		<Item visivel="N" motivo="S20140600152"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Competências: Tooltip para exibir a observação da competência quando existente.]]></Item>
 		<Item visivel="N" motivo="S20140600019"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Possibilidade do usuário Fortes excluir o colaborador com todas as suas dependências.]]></Item>
-		<Item visivel="S" motivo="S20140700018"><![CDATA[SESMT > Relatórios > Exames Previstos: Impressão da matrícula junto ao nome do colaborador.]]></Item>
 	</Versao>
 	<Versao id="1.1.130.156" bd="" data="14/07/2014">
 		<Item visivel="S" motivo="S20140500200"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Nova opção no formato xls.]]></Item>

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -17,6 +18,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
@@ -50,6 +52,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private AvaliacaoManager avaliacaoManager;
 
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 	private Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
@@ -62,6 +65,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 
 	private Questionario questionario;
 
+	private Long avaliacaoId;
 	private Long pesquisaId;
 	private Long colaboradorId;
 	private Long questionarioId;
@@ -79,6 +83,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	private Collection<CheckBox> colaboradorsCheckList = new ArrayList<CheckBox>();
 	
 	private Map<String, Object> parametros;
+	private boolean modoEconomico;
 	
 	private AvaliacaoDesempenho avaliacaoDesempenho;
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;
@@ -223,9 +228,21 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	{
 		try
 		{
-			parametros = new HashMap<String, Object>();//tem que ser aqui
-			perguntasRespondidas = questionarioManager.montaImpressaoAvaliacaoRespondida(colaboradorQuestionario.getId(), parametros);
-			return Action.SUCCESS;
+			if (modoEconomico)
+			{
+				parametros = new HashMap<String, Object>();//tem que ser aqui
+				perguntasRespondidas = questionarioManager.montaImpressaoAvaliacaoRespondida(colaboradorQuestionario.getId(), parametros);
+				return "success_economico";
+			}
+			else
+			{
+				Avaliacao avaliacao = avaliacaoManager.findEntidadeComAtributosSimplesById(avaliacaoId);
+				
+				parametros = RelatorioUtil.getParametrosRelatorio("Acompanhamento do Período de Experiência", getEmpresaSistema(), avaliacao.getTitulo());
+				colaboradorRespostas = colaboradorRespostaManager.findPerguntasRespostasByColaboradorQuestionario(colaboradorQuestionario.getId());
+				
+				return Action.SUCCESS;
+			}
 		}
 		catch (Exception e)
 		{
@@ -524,5 +541,21 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 
 	public String getMsgFinalRelatorioXls() {
 		return msgFinalRelatorioXls;
+	}
+
+	public boolean isModoEconomico() {
+		return modoEconomico;
+	}
+
+	public void setModoEconomico(boolean modoEconomico) {
+		this.modoEconomico = modoEconomico;
+	}
+
+	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
+		this.avaliacaoManager = avaliacaoManager;
+	}
+
+	public void setAvaliacaoId(Long avaliacaoId) {
+		this.avaliacaoId = avaliacaoId;
 	}
 }

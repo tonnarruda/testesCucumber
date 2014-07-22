@@ -709,4 +709,24 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 
 		return criteria.list().size() > 0;  
 	}
+
+	public Collection<ColaboradorResposta> findPerguntasRespostasByColaboradorQuestionario(Long colaboradorQuestionarioId) 
+	{
+		StringBuffer hql = new StringBuffer();
+		
+		hql.append("select new ColaboradorResposta(asp.id, asp.nome, p.id, p.ordem, p.texto, p.textoComentario, p.tipo, r.texto, cr.comentario, cr.valor, cr.resposta.id) ");
+		hql.append("from ColaboradorQuestionario cq ");
+		hql.append("inner join cq.avaliacao av ");
+		hql.append("left join av.perguntas p ");
+		hql.append("left join p.aspecto asp ");
+		hql.append("left join p.respostas r ");
+		hql.append("left join cq.colaboradorRespostas cr with cr.pergunta.id = p.id and (cr.resposta.id = r.id or cr.resposta.id is null) ");
+		hql.append("where cq.id = :colaboradorQuestionarioId ");
+		hql.append("order by asp.nome, p.ordem, r.ordem");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("colaboradorQuestionarioId", colaboradorQuestionarioId);
+		
+		return query.list();
+	}
 }
