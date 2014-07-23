@@ -188,7 +188,13 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 				solicitacaoManager.encerrarSolicitacaoAoPreencherTotalVagas(solicitacao, getEmpresaSistema());
 
 			transactionManager.commit(status);
-			return Action.SUCCESS;
+
+			if(solicitacao != null && solicitacao.getId() != null)
+			{
+				addActionSuccess("Colaborador <strong>" + colaborador.getNome() + "</strong>  promovido com sucesso.");
+				return "successSolicitacao";
+			}else
+				return Action.SUCCESS;
 		}
 		catch (IntegraACException e)
 		{

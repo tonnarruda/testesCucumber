@@ -18,6 +18,7 @@
 		</action>
 	
 		<action name="list" class="com.fortes.rh.web.action.captacao.CandidatoSolicitacaoListAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<interceptor-ref name="candidatoSolicitacaoListDeleteStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/candidatoSolicitacaoList.ftl</result>
 		</action>

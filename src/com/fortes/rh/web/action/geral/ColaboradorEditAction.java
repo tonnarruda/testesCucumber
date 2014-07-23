@@ -531,7 +531,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		try
 		{
 			colaboradorManager.validaQtdCadastros();			
-			
 		} catch (FortesException e) 
 		{
 			addActionMessage(e.getMessage());
@@ -603,7 +602,10 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				
 				transactionManager.commit(status);
 				
-				return Action.SUCCESS;
+				if(solicitacao != null && solicitacao.getId() != null)
+					return "successSolicitacao";
+				else
+					return Action.SUCCESS;
 			}
 			else
 			{

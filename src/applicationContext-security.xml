@@ -358,7 +358,10 @@
 				/captacao/historicoCandidato/list.action*=ROLE_CAND_SOLICITACAO_HISTORICO
 				/captacao/nivelCompetencia/prepareCompetenciasByCandidato.action*=ROLE_CAND_SOLICITACAO_COMPETENCIAS
 				/geral/colaborador/preparePromoverCandidato.action*=ROLE_CAND_SOLICITACAO_CONTRATAR
-				/geral/colaborador/prepareContrata.action.action*=ROLE_CAND_SOLICITACAO_CONTRATAR
+				/geral/colaborador/prepareContrata.action*=ROLE_CAND_SOLICITACAO_CONTRATAR
+				/geral/colaborador/insert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR
+				/cargosalario/historicoColaborador/prepareInsert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR
+				/cargosalario/historicoColaborador/insert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR
 				/captacao/candidatoSolicitacao/delete.action*=ROLE_CAND_SOLICITACAO_EXCLUIR
 				/captacao/candidatoSolicitacao/popupAvaliacoesCandidatoSolicitacao.action*=ROLE_CAND_SOLICITACAO_AVALIACOES
 				/captacao/candidatoSolicitacao/prepareInsertAvaliacaoSolicitacao.action*=ROLE_CAND_SOLICITACAO_AVALIACOES

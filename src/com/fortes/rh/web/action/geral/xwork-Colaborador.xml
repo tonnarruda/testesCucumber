@@ -113,9 +113,11 @@
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="insert">
 			<interceptor-ref name="defaultDeleteStack"/>
+			<interceptor-ref name="defaultUpdateStack"/>
 		    <interceptor-ref name="tokenWebStack" />
 		    <result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
+			<result name="successSolicitacao" type="redirect">../../captacao/candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}</result>
 			<result name="dependente" type="redirect">/geral/dependente/list.action</result>
 			<result name="contrata" type="redirect">/captacao/candidato/list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorEdit.ftl</result>
