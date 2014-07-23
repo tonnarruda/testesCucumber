@@ -634,11 +634,18 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		return getDao().countColaboradorAvaliacaoRespondida(avaliacaoId);
 	}
 	
-	public boolean existeRespostaSemCargo(Long[] perguntasIds) {
+	public boolean existeRespostaSemCargo(Long[] perguntasIds) 
+	{
 		return getDao().existeRespostaSemCargo(perguntasIds);
 	}
+	
+	public Collection<ColaboradorResposta> findPerguntasRespostasByColaboradorQuestionario(Long colaboradorQuestionarioId) 
+	{
+		return getDao().findPerguntasRespostasByColaboradorQuestionario(colaboradorQuestionarioId);
+	}
 
-	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
+	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) 
+	{
 		this.avaliacaoManager = avaliacaoManager;
 	}
 	

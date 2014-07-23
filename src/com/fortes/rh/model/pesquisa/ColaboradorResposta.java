@@ -46,6 +46,27 @@ public class ColaboradorResposta extends AbstractModel implements Serializable
     @Transient
     private String respostasObjetivas;
     
+	public ColaboradorResposta() {
+		
+	}
+	
+	public ColaboradorResposta(	Long perguntaAspectoId, String perguntaAspectoNome, 
+								Long perguntaId, Integer perguntaOrdem, String perguntaTexto, String perguntaTextoComentario, Integer perguntaTipo, 
+								String respostaTexto, String comentario, Integer valor, Long respostaId) 
+	{
+		this.setProjectionPerguntaAspectoId(perguntaAspectoId);
+		this.setProjectionPerguntaAspectoNome(perguntaAspectoNome);
+		this.setProjectionPerguntaId(perguntaId);
+		this.setProjectionPerguntaOrdem(perguntaOrdem);
+		this.setProjectionPerguntaTexto(perguntaTexto);
+		this.setProjectionPerguntaTextoComentario(perguntaTextoComentario);
+		this.setProjectionPerguntaTipo(perguntaTipo);
+		this.setProjectionRespostaTexto(respostaTexto);
+		this.setComentario(comentario);
+		this.setValor(valor);
+		this.setProjectionRespostaId(respostaId);
+	}
+
 	@NaoAudita
 	public boolean verificaResposta(Pergunta pergunta)
     {
@@ -114,6 +135,14 @@ public class ColaboradorResposta extends AbstractModel implements Serializable
     		this.pergunta = new Pergunta();
 
     	this.pergunta.setTexto(perguntaTexto);
+    }
+    
+    public void setProjectionPerguntaTextoComentario(String perguntaTextoComentario)
+    {
+    	if (this.pergunta == null)
+    		this.pergunta = new Pergunta();
+    	
+    	this.pergunta.setTextoComentario(perguntaTextoComentario);
     }
     
     public void setProjectionPerguntaComentario(boolean perguntaComentario)

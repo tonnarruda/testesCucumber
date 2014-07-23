@@ -42,4 +42,5 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	Integer countColaboradorAvaliacaoRespondida(Long avaliacaoId);
 	void savePerformance(ColaboradorQuestionario colaboradorQuestionario);
 	boolean existeRespostaSemCargo(Long[] perguntasIds);
+	Collection<ColaboradorResposta> findPerguntasRespostasByColaboradorQuestionario(Long colaboradorQuestionarioId);
 }

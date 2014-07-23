@@ -41,4 +41,6 @@ public interface ColaboradorRespostaDao extends GenericDao<ColaboradorResposta>
 	Integer countColaboradorAvaliacaoRespondida(Long avaliacaoId);
 
 	boolean existeRespostaSemCargo(Long[] perguntasIds);
+
+	Collection<ColaboradorResposta> findPerguntasRespostasByColaboradorQuestionario(Long colaboradorQuestionarioId);
 }

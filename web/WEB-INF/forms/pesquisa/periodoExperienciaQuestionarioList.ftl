@@ -45,7 +45,8 @@
 			<@display.column title="Ações" class="acao">
 				<a href="prepareUpdateAvaliacaoExperiencia.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteAvaliacaoExperiencia.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-				<a href="imprimirAvaliacaoRespondida.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}"><img border="0" title="Imprimir Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+				<a href="imprimirAvaliacaoRespondida.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&avaliacaoId=${colaboradorQuestionario.avaliacao.id}"><img border="0" title="Imprimir avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+				<a href="imprimirAvaliacaoRespondida.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&modoEconomico=true"><img border="0" title="Imprimir avaliação no formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"></a>
 			</@display.column>
 			<@display.column property="dataMaisTempoPeriodoExperiencia" title="Data" style="width: 140px;"/>
 			<@display.column property="avaliacao.titulo" title="Avaliação" />

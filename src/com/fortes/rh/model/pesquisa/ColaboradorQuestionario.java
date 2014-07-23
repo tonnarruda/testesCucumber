@@ -2,6 +2,7 @@ package com.fortes.rh.model.pesquisa;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 
@@ -9,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -74,6 +76,9 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     private String pessoaVinculo;
     @Transient
     private String nomeCursoTurmaAvaliacao;
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="colaboradorQuestionario")
+    private Collection<ColaboradorResposta> colaboradorRespostas;
     
     public ColaboradorQuestionario() {
 	}
@@ -742,5 +747,14 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 
 	public void setAvaliacaoCurso(AvaliacaoCurso avaliacaoCurso) {
 		this.avaliacaoCurso = avaliacaoCurso;
+	}
+
+	public Collection<ColaboradorResposta> getColaboradorRespostas() {
+		return colaboradorRespostas;
+	}
+
+	public void setColaboradorRespostas(
+			Collection<ColaboradorResposta> colaboradorRespostas) {
+		this.colaboradorRespostas = colaboradorRespostas;
 	}
 }

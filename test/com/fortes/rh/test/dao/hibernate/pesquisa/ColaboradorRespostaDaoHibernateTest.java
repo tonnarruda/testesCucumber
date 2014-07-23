@@ -890,6 +890,128 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertTrue(colaboradorRespostaDao.existeRespostaSemCargo(new Long[] { p1.getId(), p2.getId() }));
 	}
 	
+	public void testFindPerguntasRespostasByColaboradorQuestionario()
+	{
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacaoDao.save(avaliacao);
+		
+		ColaboradorQuestionario colaboradorQuestionario = new ColaboradorQuestionario();
+		colaboradorQuestionario.setAvaliacao(avaliacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		Aspecto asp1 = AspectoFactory.getEntity();
+		asp1.setNome("Comunicação");
+		aspectoDao.save(asp1);
+
+		Aspecto asp2 = AspectoFactory.getEntity();
+		asp2.setNome("Liderança");
+		aspectoDao.save(asp2);
+		
+		Pergunta pergunta1 = PerguntaFactory.getEntity();
+		pergunta1.setAvaliacao(avaliacao);
+		pergunta1.setOrdem(1);
+		pergunta1.setTexto("Qual é?");
+		pergunta1.setTipo(TipoPergunta.SUBJETIVA);
+		pergunta1.setAspecto(asp1);
+		perguntaDao.save(pergunta1);
+		
+		Pergunta pergunta2 = PerguntaFactory.getEntity();
+		pergunta2.setAvaliacao(avaliacao);
+		pergunta2.setOrdem(2);
+		pergunta2.setTexto("Qual foi?");
+		pergunta2.setTipo(TipoPergunta.NOTA);
+		pergunta2.setAspecto(asp2);
+		perguntaDao.save(pergunta2);
+		
+		Pergunta pergunta3 = PerguntaFactory.getEntity();
+		pergunta3.setAvaliacao(avaliacao);
+		pergunta3.setOrdem(3);
+		pergunta3.setTexto("Por que que tu tá nessa?");
+		pergunta3.setTipo(TipoPergunta.OBJETIVA);
+		pergunta3.setAspecto(asp1);
+		perguntaDao.save(pergunta3);
+		
+		Resposta resposta1 = RespostaFactory.getEntity();
+		resposta1.setPergunta(pergunta3);
+		resposta1.setOrdem(1);
+		resposta1.setTexto("Porque sim");
+		respostaDao.save(resposta1);
+		
+		Resposta resposta2 = RespostaFactory.getEntity();
+		resposta2.setPergunta(pergunta3);
+		resposta2.setOrdem(2);
+		resposta2.setTexto("Porque eu quis");
+		respostaDao.save(resposta2);
+		
+		Pergunta pergunta4 = PerguntaFactory.getEntity();
+		pergunta4.setAvaliacao(avaliacao);
+		pergunta4.setOrdem(4);
+		pergunta4.setTexto("Tá querendo o que?");
+		pergunta4.setTipo(TipoPergunta.MULTIPLA_ESCOLHA);
+		pergunta4.setAspecto(asp2);
+		perguntaDao.save(pergunta4);
+		
+		Resposta resposta3 = RespostaFactory.getEntity();
+		resposta3.setPergunta(pergunta4);
+		resposta3.setOrdem(1);
+		resposta3.setTexto("Aumento de salário");
+		respostaDao.save(resposta3);
+		
+		Resposta resposta4 = RespostaFactory.getEntity();
+		resposta4.setPergunta(pergunta4);
+		resposta4.setOrdem(2);
+		resposta4.setTexto("Férias");
+		respostaDao.save(resposta4);
+		
+		Resposta resposta5 = RespostaFactory.getEntity();
+		resposta5.setPergunta(pergunta4);
+		resposta5.setOrdem(3);
+		resposta5.setTexto("Mudança de cargo");
+		respostaDao.save(resposta5);
+		
+		ColaboradorResposta colaboradorResposta1 = new ColaboradorResposta();
+		colaboradorResposta1.setColaboradorQuestionario(colaboradorQuestionario);
+		colaboradorResposta1.setPergunta(pergunta1);
+		colaboradorResposta1.setComentario("blah blah");
+		colaboradorRespostaDao.save(colaboradorResposta1);
+		
+		ColaboradorResposta colaboradorResposta2 = new ColaboradorResposta();
+		colaboradorResposta2.setColaboradorQuestionario(colaboradorQuestionario);
+		colaboradorResposta2.setPergunta(pergunta2);
+		colaboradorResposta2.setValor(8);
+		colaboradorRespostaDao.save(colaboradorResposta2);
+		
+		ColaboradorResposta colaboradorResposta3 = new ColaboradorResposta();
+		colaboradorResposta3.setColaboradorQuestionario(colaboradorQuestionario);
+		colaboradorResposta3.setPergunta(pergunta3);
+		colaboradorResposta3.setResposta(resposta1);
+		colaboradorRespostaDao.save(colaboradorResposta3);
+		
+		ColaboradorResposta colaboradorResposta4 = new ColaboradorResposta();
+		colaboradorResposta4.setColaboradorQuestionario(colaboradorQuestionario);
+		colaboradorResposta4.setPergunta(pergunta4);
+		colaboradorResposta4.setResposta(resposta3);
+		colaboradorRespostaDao.save(colaboradorResposta4);
+		
+		ColaboradorResposta colaboradorResposta5 = new ColaboradorResposta();
+		colaboradorResposta5.setColaboradorQuestionario(colaboradorQuestionario);
+		colaboradorResposta5.setPergunta(pergunta4);
+		colaboradorResposta5.setResposta(resposta5);
+		colaboradorRespostaDao.save(colaboradorResposta5);
+		
+		Collection<ColaboradorResposta> retorno = colaboradorRespostaDao.findPerguntasRespostasByColaboradorQuestionario(colaboradorQuestionario.getId());
+		ColaboradorResposta[] colaboradorRespostas = retorno.toArray(new ColaboradorResposta[] {});
+		
+		assertEquals("Total de respostas, marcadas ou não", 7, colaboradorRespostas.length);
+		assertEquals("Resposta subjetiva", colaboradorResposta1.getComentario(), colaboradorRespostas[0].getComentario());
+		assertEquals("Resposta objetiva marcada", colaboradorResposta3.getResposta().getId(), colaboradorRespostas[1].getResposta().getId());
+		assertNull("Resposta objetiva não marcada", colaboradorRespostas[2].getResposta().getId());
+		assertEquals("Resposta por nota", colaboradorResposta2.getValor(), colaboradorRespostas[3].getValor());
+		assertEquals("1ª resposta múltipla escolha marcada", colaboradorResposta4.getResposta().getId(), colaboradorRespostas[4].getResposta().getId());
+		assertNull("Resposta múltipla escolha não marcada", colaboradorRespostas[5].getResposta().getId());
+		assertEquals("2ª resposta múltipla escolha marcada", colaboradorResposta5.getResposta().getId(), colaboradorRespostas[6].getResposta().getId());
+	}
+	
 	public GenericDao<ColaboradorResposta> getGenericDao()
 	{
 		return colaboradorRespostaDao;
