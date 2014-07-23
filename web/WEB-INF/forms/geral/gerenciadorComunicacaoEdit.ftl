@@ -222,7 +222,6 @@
 				addChecksByCollection('usuariosCheck',data);
 			}
 			$(function(){
-				$('#divFiltroForm').hide();
 				<#if edicao>
 					exibeCamposEmailsAvulsos(${gerenciadorComunicacao.enviarPara});
 					exibeUsuarios(${gerenciadorComunicacao.enviarPara});
