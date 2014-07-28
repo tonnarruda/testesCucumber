@@ -105,6 +105,7 @@ import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
+import com.fortes.rh.model.sesmt.Prontuario;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
@@ -6080,11 +6081,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	
 	public void testRemoveComDependencias()
 	{	
-		String[] sqls = new String[] {
-			"INSERT INTO colaborador (id, desligado, conjugetrabalha, qtdfilhos, sexo, naointegraac, deficiencia, respondeuentrevista) VALUES (-1, false, false, 1, 'M', false, 'N', false);",
-			"INSERT INTO prontuario (id, colaborador_id) VALUES (nextval('prontuario_sequence'), -1);"
-		};
-		JDBCConnection.executeQuery(sqls);
+		Colaborador colaborador = ColaboradorFactory.getEntity(-1L);
+		colaboradorDao.save(colaborador);
+		
+		ColaboradorOcorrencia colaboradorOcorrencia = ColaboradorOcorrenciaFactory.getEntity(-1L);
+		colaboradorOcorrencia.setColaborador(colaborador);
+		colaboradorOcorrenciaDao.save(colaboradorOcorrencia);
 		
 		colaboradorDao.removeComDependencias(-1L);
 		assertNull(colaboradorDao.findEntidadeComAtributosSimplesById(-1L));

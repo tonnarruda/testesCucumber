@@ -1,0 +1,2 @@
+ALTER TABLE historicocolaboradorbeneficio_beneficio DROP CONSTRAINT historicocolaboradorbeneficio_beneficio_beneficio_fk;--.go 
+ALTER TABLE historicocolaboradorbeneficio_beneficio ADD CONSTRAINT historicocolaboradorbeneficio_beneficio_beneficio_fk FOREIGN KEY (beneficios_id) REFERENCES beneficio(id) ON DELETE CASCADE;--.go

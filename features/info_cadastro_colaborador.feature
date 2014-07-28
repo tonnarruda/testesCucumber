@@ -76,7 +76,7 @@ Funcionalidade: Cadastrar Colaborador
     Quando eu preencho "Nome" com "Silva Barbosa"
     E eu preencho o campo (JS) "CEP" com "60320-104"
     E eu saio do campo "CEP"
-    E eu espero 2 segundos
+    E eu espero 4 segundos
     Então o campo "Logradouro" deve conter "Rua Haroldo Torres - de 501/502 a 1"
     E o campo "Estado" deve ter "CE" selecionado
     E o campo "cidade" deve ter "Fortaleza" selecionado
@@ -218,7 +218,7 @@ Funcionalidade: Cadastrar Colaborador
     E eu devo ver "Colaborador religado com sucesso"
 
     Quando eu clico em excluir "Silva Barbosa"
-    Então eu devo ver "Confirma exclusão?"
+    Então eu devo ver "Procedimento diferenciado para o usuário"
     Quando eu aperto "OK"
     Então eu devo ver "Colaborador excluído com sucesso."
     E eu não devo ver "Silva Barbosa"
