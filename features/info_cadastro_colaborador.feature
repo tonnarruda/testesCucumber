@@ -218,7 +218,7 @@ Funcionalidade: Cadastrar Colaborador
     E eu devo ver "Colaborador religado com sucesso"
 
     Quando eu clico em excluir "Silva Barbosa"
-    Então eu devo ver "Procedimento diferenciado para o usuário"
+    Então eu devo ver "Deseja realmente continuar?"
     Quando eu aperto "OK"
     Então eu devo ver "Colaborador excluído com sucesso."
     E eu não devo ver "Silva Barbosa"

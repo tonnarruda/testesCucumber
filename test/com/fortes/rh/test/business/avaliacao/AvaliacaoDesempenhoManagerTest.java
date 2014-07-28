@@ -123,11 +123,10 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 	public void testLiberar() throws Exception
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(3L);
-		avaliacaoDesempenhoDao.expects(once()).method("findByIdProjection").with(eq(3L)).will(returnValue(avaliacaoDesempenho));
-		colaboradorQuestionarioManager.expects(once()).method("associarParticipantes").with(eq(avaliacaoDesempenho));
+		colaboradorQuestionarioManager.expects(once()).method("associarParticipantes").with(eq(avaliacaoDesempenho), ANYTHING, ANYTHING);
 		avaliacaoDesempenhoDao.expects(once()).method("liberarOrBloquear").with(eq(3L), eq(true));
 		
-		avaliacaoDesempenhoManager.liberar(avaliacaoDesempenho);
+		avaliacaoDesempenhoManager.liberar(avaliacaoDesempenho, null, null);
 	}
 	
 	public void testBloquear() throws Exception

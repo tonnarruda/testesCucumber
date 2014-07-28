@@ -304,13 +304,8 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		this.colaboradorManager = colaboradorManager;
 	}
 
-	public Collection<ColaboradorQuestionario> associarParticipantes(AvaliacaoDesempenho avaliacaoDesempenho) throws Exception
+	public Collection<ColaboradorQuestionario> associarParticipantes(AvaliacaoDesempenho avaliacaoDesempenho, Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores) throws Exception
 	{
-		Collection<Colaborador> avaliados = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null);
-		Collection<Colaborador> avaliadores = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null);
-
-		validaAssociacao(avaliados, avaliadores, avaliacaoDesempenho.isPermiteAutoAvaliacao());
-		
 		Collection<ColaboradorQuestionario> associados = getDao().findByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true);
 		Collection<ColaboradorQuestionario> novosAssociados = new ArrayList<ColaboradorQuestionario>();
 		
@@ -334,7 +329,7 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		return novosAssociados;
 	}
 
-	private void validaAssociacao(Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores, boolean permiteAutoAvaliacao) throws Exception 
+	public void validaAssociacao(Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores, boolean permiteAutoAvaliacao) throws Exception 
 	{
 		if (avaliados.isEmpty() || avaliadores.isEmpty())
 			throw new FortesException("Não foi possível liberar esta avaliação: Número insuficiente de participantes.<br />Verifique se os participantes foram desligados.");

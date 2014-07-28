@@ -55,7 +55,7 @@ Funcionalidade: Campos Extras para Colaborador
     Entao eu devo ver "_Zé da Silva"
 
     Quando eu clico em excluir "_Zé da Silva"
-    Então eu devo ver "Confirma exclusão?"
+    Então eu devo ver "Deseja realmente continuar?"
     Quando eu aperto "OK"
     Então eu devo ver "Colaborador excluído com sucesso."
     E eu não devo ver "_Zé da Silva Barbosa"

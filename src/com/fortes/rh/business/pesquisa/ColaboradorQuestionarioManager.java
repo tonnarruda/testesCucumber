@@ -40,7 +40,7 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	boolean verifyTemParticipantesAssociados(Long avaliacaoDesempenhoId);
 	Collection<ColaboradorQuestionario> findByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Boolean respondida);
 	Collection<ColaboradorQuestionario> findByColaboradorAndAvaliacaoDesempenho(Long colaboradorId, Long avaliacaoDesempenhoId, boolean isAvaliado);
-	Collection<ColaboradorQuestionario> associarParticipantes(AvaliacaoDesempenho avaliacaoDesempenho) throws Exception;
+	Collection<ColaboradorQuestionario> associarParticipantes(AvaliacaoDesempenho avaliacaoDesempenho, Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores) throws Exception;
 	Collection<ColaboradorQuestionario> desassociarParticipantes(AvaliacaoDesempenho avaliacaoDesempenho) throws Exception;
 	void clonar(Collection<ColaboradorQuestionario> participantes, AvaliacaoDesempenho avaliacaoDesempenho, boolean liberada) throws Exception;
 	Collection<ColaboradorQuestionario> findAvaliadosByAvaliador(Long avaliacaoDesempenhoId, Long avaliadorId, Boolean respondida, boolean considerarPeriodoAvalDesempenho);
@@ -62,5 +62,6 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	void updatePerformance(Long colaboradorQuestionarioId, double performance);
 	Collection<ColaboradorQuestionario> findForRankingPerformanceAvaliacaoCurso(Long[] cursosIds, Long[] turmasIds, Long[] avaliacaoCursosIds);
 	void removeBySolicitacaoId(Long solicitacaoId);
-	Collection<ColaboradorQuestionario> findAutoAvaliacao(Long colaboradorId);	
+	Collection<ColaboradorQuestionario> findAutoAvaliacao(Long colaboradorId);
+	public void validaAssociacao(Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores, boolean permiteAutoAvaliacao) throws Exception;
 }

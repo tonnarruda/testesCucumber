@@ -385,21 +385,38 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		{
 			avaliacaoDesempenhoManager.liberarEmLote(avaliacoesCheck, getEmpresaSistema());
 			addActionMessage("Avaliações liberada com sucesso.");
+			return Action.SUCCESS;
+		}
+		catch (FortesException e) 
+		{
+			addActionWarning("Não foi possível realizar a operação 'Liberar avaliações em lote': " +
+					"<br />Existem avaliações com número insuficiente de participantes ou " +
+					"avaliação que não permite a autoavaliação com apenas um participante. " +
+					"<br />Avaliações de Desempenho:" +
+					"<br /> " + e.getMessage());
+			e.printStackTrace();
+			return Action.ERROR;
 		}
 		catch (Exception e) 
 		{
 			addActionError("Não foi possível as avaliações.");
 			e.printStackTrace();
+			return Action.ERROR;
 		}
 		
-		return Action.SUCCESS;
 	}
 	
 	public String liberar() 
 	{
 		try 
 		{
-			avaliacaoDesempenhoManager.liberar(avaliacaoDesempenho);
+			Collection<Colaborador> avaliados = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null);
+			Collection<Colaborador> avaliadores = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null);
+
+			colaboradorQuestionarioManager.validaAssociacao(avaliados, avaliadores, avaliacaoDesempenho.isPermiteAutoAvaliacao());
+			avaliacaoDesempenho = avaliacaoDesempenhoManager.findByIdProjection(avaliacaoDesempenho.getId());
+			
+			avaliacaoDesempenhoManager.liberar(avaliacaoDesempenho, avaliados, avaliadores);
 			addActionSuccess("Avaliação liberada com sucesso.");
 		}
 		catch (FortesException e)
