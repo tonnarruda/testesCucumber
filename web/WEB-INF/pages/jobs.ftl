@@ -20,6 +20,9 @@
 	<@ww.actionmessage />
 
 	<@display.table name="triggers" id="trigger" class="dados">
+		<@display.column title="Ações" media="html" style="text-align:center; width:40px;">
+			<a href="javascript:;" onclick="newConfirm('Confirma execução?', function(){window.location='executeJob.action?jobName=${trigger.name}&jobGroup=${trigger.group}&jobClass=${trigger.jobDetail.jobClass.name}'});"><img border="0" title="Executar" src="<@ww.url includeParams="none" value="/imgs/btnRight.gif"/>"></a>
+		</@display.column>
 		<@display.column property="jobGroup" title="Grupo" style="width: 70px; text-align: center;" />
 		<@display.column property="jobName" title="Tarefa" />
 		<@display.column property="nextFireTime" title="Próxima Execução" format="{0,date,dd/MM/yyyy HH:mm:ss}" style="width: 125px; text-align: center;" />

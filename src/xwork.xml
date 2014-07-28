@@ -207,6 +207,10 @@
       <result name="success" type="freemarker">/WEB-INF/pages/jobs.ftl</result>
       <result name="index" type="redirect">index.action</result>
     </action>
+    <action name="executeJob" class="com.fortes.rh.web.action.JobsAction" method="executeJob">
+      <result name="success" type="redirect">jobs.action</result>
+      <result name="index" type="redirect">index.action</result>
+    </action>
     <action name="concurrentSessionError" class="com.opensymphony.xwork.ActionSupport">
       <result name="success">/WEB-INF/pages/concurrentSessionError.jsp</result>
     </action>

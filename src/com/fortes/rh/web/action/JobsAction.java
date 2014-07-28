@@ -1,11 +1,14 @@
 package com.fortes.rh.web.action;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
+import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
+import org.quartz.SimpleTrigger;
 import org.quartz.Trigger;
 import org.quartz.impl.StdSchedulerFactory;
 
@@ -16,8 +19,10 @@ public class JobsAction extends MyActionSupport
 {
 	private static final long serialVersionUID = 1L;
 	
-	private String jobName;
 	private List<Trigger> triggers;
+	private String jobName;
+	private String jobGroup;
+	private String jobClass;
 	
 	@SuppressWarnings("unchecked")
 	public String index() throws SchedulerException
@@ -42,23 +47,36 @@ public class JobsAction extends MyActionSupport
 		return Action.SUCCESS;
 	}
 	
-	public String executarJob()
+	public String executeJob() throws SchedulerException, ClassNotFoundException
 	{
+		if (getUsuarioLogado().getId() != 1L)
+			return "index";
+		
+		Scheduler scheduler = new StdSchedulerFactory().getScheduler();
+		JobDetail detail = new JobDetail(jobName, jobGroup, Class.forName(jobClass));
+		SimpleTrigger trigger = new SimpleTrigger(jobName + "Trigger", jobGroup, new Date());
+		
+		scheduler.scheduleJob(detail, trigger);
+		
 		return Action.SUCCESS;
 	}
 
-	public String getJobName() 
+	public List<Trigger> getTriggers() 
 	{
-		return jobName;
+		return triggers;
 	}
 
 	public void setJobName(String jobName) 
 	{
 		this.jobName = jobName;
 	}
-	
-	public List<Trigger> getTriggers() 
+
+	public void setJobGroup(String jobGroup) 
 	{
-		return triggers;
+		this.jobGroup = jobGroup;
+	}
+
+	public void setJobClass(String jobClass) {
+		this.jobClass = jobClass;
 	}
 }
