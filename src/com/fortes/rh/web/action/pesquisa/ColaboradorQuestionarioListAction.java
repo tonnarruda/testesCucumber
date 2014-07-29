@@ -236,9 +236,13 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 			}
 			else
 			{
-				Avaliacao avaliacao = avaliacaoManager.findEntidadeComAtributosSimplesById(avaliacaoId);
+				colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionario.getId());
 				
-				parametros = RelatorioUtil.getParametrosRelatorio("Acompanhamento do Período de Experiência", getEmpresaSistema(), avaliacao.getTitulo());
+				String filtro = colaboradorQuestionario.getAvaliacao().getTitulo();
+				filtro += "\nNome: " + colaboradorQuestionario.getColaborador().getNome();
+				filtro += "\nPerformance: " + colaboradorQuestionario.getPerformanceFormatada();
+				
+				parametros = RelatorioUtil.getParametrosRelatorio("Acompanhamento do Período de Experiência", getEmpresaSistema(), filtro);
 				colaboradorRespostas = colaboradorRespostaManager.findPerguntasRespostasByColaboradorQuestionario(colaboradorQuestionario.getId());
 				
 				return Action.SUCCESS;
