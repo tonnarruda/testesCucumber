@@ -323,14 +323,12 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
 		Collection<ColaboradorQuestionario> associados = new ArrayList<ColaboradorQuestionario>();
 		associados.add(colaboradorQuestionario);
 		
-		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(true), eq(null)).will(returnValue(avaliados));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(false), eq(null)).will(returnValue(avaliadores));
 		colaboradorQuestionarioDao.expects(once()).method("findByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(true)).will(returnValue(associados));
 		
 		colaboradorQuestionarioDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
 		colaboradorQuestionarioDao.expects(once()).method("removeParticipantesSemAssociacao").with(ANYTHING);
 		
-		Collection<ColaboradorQuestionario> novosAssociados = colaboradorQuestionarioManager.associarParticipantes(avaliacaoDesempenho);
+		Collection<ColaboradorQuestionario> novosAssociados = colaboradorQuestionarioManager.associarParticipantes(avaliacaoDesempenho, avaliados, avaliadores);
 		assertEquals(8, novosAssociados.size());
 		
 		for (ColaboradorQuestionario associado : novosAssociados) 
@@ -356,14 +354,12 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
 		
 		Collection<ColaboradorQuestionario> associados = new ArrayList<ColaboradorQuestionario>();
 		
-		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(true), eq(null)).will(returnValue(avaliados));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(false), eq(null)).will(returnValue(avaliadores));
 		colaboradorQuestionarioDao.expects(once()).method("findByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(true)).will(returnValue(associados));
 		
 		colaboradorQuestionarioDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
 		colaboradorQuestionarioDao.expects(once()).method("removeParticipantesSemAssociacao").with(ANYTHING);
 		
-		Collection<ColaboradorQuestionario> novosAssociados = colaboradorQuestionarioManager.associarParticipantes(avaliacaoDesempenho);
+		Collection<ColaboradorQuestionario> novosAssociados = colaboradorQuestionarioManager.associarParticipantes(avaliacaoDesempenho, avaliados, avaliadores);
 		assertEquals(3, novosAssociados.size());
 		
 		for (ColaboradorQuestionario associado : novosAssociados) 
@@ -371,51 +367,6 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
 			assertFalse(associado.getColaborador().equals(associado.getAvaliador()));
 		}
 	}
-	
-	public void testAssociarParticipantesExceptionNumeroInsuficienteDeParticipantes()
-	{
-		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
-		
-		Colaborador avaliado1 = ColaboradorFactory.getEntity(11L);
-		Colaborador avaliado2 = ColaboradorFactory.getEntity(12L);
-		
-		Collection<Colaborador> avaliados = Arrays.asList(avaliado1, avaliado2);
-		Collection<Colaborador> avaliadores = new ArrayList<Colaborador>();
-		
-		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(true), eq(null)).will(returnValue(avaliados));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(false), eq(null)).will(returnValue(new ArrayList<Colaborador>()));
-		
-		Exception exception=null;
-		
-		// Teste 1. Número insuficiente de Participantes: Só possui avaliados
-		
-		try {
-			colaboradorQuestionarioManager.associarParticipantes(avaliacaoDesempenho);
-		} catch (Exception e) {
-			exception=e;
-		}
-		
-		assertNotNull(exception.getMessage());
-		
-		// Teste 2. Núm. insuficiente de Participantes: avaliador é igual a avaliado, e não pode autoavaliação.
-		
-		avaliacaoDesempenho.setPermiteAutoAvaliacao(false);
-		avaliados = Arrays.asList(avaliado1);
-		avaliadores = Arrays.asList(avaliado1);
-		
-		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(true), eq(null)).will(returnValue(avaliados));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(false), eq(null)).will(returnValue(avaliadores));
-		
-		exception=null;
-		try {
-			colaboradorQuestionarioManager.associarParticipantes(avaliacaoDesempenho);
-		} catch (Exception e) {
-			exception=e;
-		}
-		
-		assertNotNull(exception.getMessage());
-	}
-	
 	
 	public void testDesassociar() throws Exception
 	{

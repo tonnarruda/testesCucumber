@@ -14,7 +14,9 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoDesempenhoList.ftl</result>
 		</action>
 		<action name="liberarEmLote" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="liberarEmLote">
+			<interceptor-ref name="defaultUpdateStack"/>
 			<result name="success" type="redirect">list.action</result>
+			<result name="error" type="redirect">list.action</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack"/>

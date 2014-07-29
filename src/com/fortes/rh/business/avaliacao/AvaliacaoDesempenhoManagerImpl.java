@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
@@ -16,6 +17,7 @@ import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
@@ -39,6 +41,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	private QuestionarioManager questionarioManager;
 	private AvaliacaoManager avaliacaoManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private ColaboradorManager colaboradorManager;
 	
 	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao) 
 	{
@@ -109,10 +112,9 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		return getDao().findByIdProjection(id);
 	}
 
-	public void liberar(AvaliacaoDesempenho avaliacaoDesempenho) throws Exception
+	public void liberar(AvaliacaoDesempenho avaliacaoDesempenho, Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores) throws Exception
 	{
-		avaliacaoDesempenho = getDao().findByIdProjection(avaliacaoDesempenho.getId());
-		colaboradorQuestionarioManager.associarParticipantes(avaliacaoDesempenho);
+		colaboradorQuestionarioManager.associarParticipantes(avaliacaoDesempenho, avaliados, avaliados);
 		getDao().liberarOrBloquear(avaliacaoDesempenho.getId(), true);
 	}
 
@@ -221,20 +223,50 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	{
 		if(avaliacoesCheck != null)
 		{
+			String fortesException = "";
 			for (String avaliacaoId : avaliacoesCheck) 
 			{
 				if(StringUtils.isNotEmpty(avaliacaoId))
 				{
-					AvaliacaoDesempenho avaliacaoDesempenho = new AvaliacaoDesempenho();
-					avaliacaoDesempenho.setId(Long.parseLong(avaliacaoId));
-	
-					liberar(avaliacaoDesempenho);
+					Long adId = new Long(avaliacaoId);
+					Collection<Colaborador> avaliados = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(adId, true, null);
+					Collection<Colaborador> avaliadores = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(adId, false, null);
+
+					AvaliacaoDesempenho  avaliacaoDesempenho = getDao().findByIdProjection(adId);
+					
+					if (avaliados.isEmpty() || avaliadores.isEmpty())
+					{
+						fortesException += "- " + avaliacaoDesempenho.getTitulo() + "<br /> ";
+						continue;
+					}
+					
+					if (!avaliacaoDesempenho.isPermiteAutoAvaliacao() && avaliados.size() == 1 && avaliadores.size() == 1)
+					{
+						if (((Colaborador)avaliados.toArray()[0]).equals((Colaborador)avaliadores.toArray()[0]))
+							fortesException += "- " + avaliacaoDesempenho.getTitulo() + "<br /> ";
+						
+						continue;
+					}
+
+					if(fortesException.isEmpty())
+						liberar(avaliacaoDesempenho, null, null);
 				}
 			}
+			
+			if(!fortesException.isEmpty())
+				throw new FortesException(fortesException);
 		}
 	}
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public ColaboradorManager getColaboradorManager() {
+		return colaboradorManager;
+	}
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
 	}
 }

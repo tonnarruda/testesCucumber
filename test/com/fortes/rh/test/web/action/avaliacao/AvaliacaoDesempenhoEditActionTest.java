@@ -445,12 +445,21 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
-		manager.expects(once()).method("liberar").with(eq(avaliacaoDesempenho)).isVoid();
+		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>(){}));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>(){}));
+		colaboradorQuestionarioManager.expects(once()).method("validaAssociacao").withAnyArguments().isVoid();
+		manager.expects(once()).method("findByIdProjection").with(eq(avaliacaoDesempenho.getId())).will(returnValue(avaliacaoDesempenho));
 		
+		manager.expects(once()).method("liberar").with(eq(avaliacaoDesempenho), ANYTHING, ANYTHING).isVoid();
+
 		assertEquals("success",action.liberar());
 		
 		//exception
-		manager.expects(once()).method("liberar").with(eq(avaliacaoDesempenho)).will(throwException(new Exception()));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>(){}));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>(){}));
+		manager.expects(once()).method("findByIdProjection").with(eq(avaliacaoDesempenho.getId())).will(returnValue(avaliacaoDesempenho));
+		colaboradorQuestionarioManager.expects(once()).method("validaAssociacao").withAnyArguments().isVoid();
+		manager.expects(once()).method("liberar").with(eq(avaliacaoDesempenho), ANYTHING, ANYTHING).will(throwException(new Exception()));
 		assertEquals("success",action.liberar());
 		assertEquals(1, action.getActionErrors().size());
 
@@ -460,12 +469,20 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
-		manager.expects(once()).method("liberar").with(eq(avaliacaoDesempenho)).isVoid();
+		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>(){}));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>(){}));
+		manager.expects(once()).method("findByIdProjection").with(eq(avaliacaoDesempenho.getId())).will(returnValue(avaliacaoDesempenho));
+		colaboradorQuestionarioManager.expects(once()).method("validaAssociacao").withAnyArguments().isVoid();
+		manager.expects(once()).method("liberar").with(eq(avaliacaoDesempenho),ANYTHING, ANYTHING).isVoid();
 		
 		assertEquals("success",action.liberar());
 		
 		//exception
-		manager.expects(once()).method("liberar").with(eq(avaliacaoDesempenho)).will(throwException(new FortesException("Não foi possível liberar esta avaliação: número insuficiente de participantes.")));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>(){}));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>(){}));
+		manager.expects(once()).method("findByIdProjection").with(eq(avaliacaoDesempenho.getId())).will(returnValue(avaliacaoDesempenho));
+		colaboradorQuestionarioManager.expects(once()).method("validaAssociacao").withAnyArguments().isVoid();
+		manager.expects(once()).method("liberar").with(eq(avaliacaoDesempenho),ANYTHING, ANYTHING).will(throwException(new FortesException("Não foi possível liberar esta avaliação: número insuficiente de participantes.")));
 		assertEquals("success",action.liberar());
 		assertEquals(1, action.getActionWarnings().size());
 		assertEquals("Não foi possível liberar esta avaliação: número insuficiente de participantes.", action.getActionWarnings().toArray()[0]);
