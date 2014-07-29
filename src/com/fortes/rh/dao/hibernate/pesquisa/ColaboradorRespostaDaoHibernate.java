@@ -1,8 +1,10 @@
 package com.fortes.rh.dao.hibernate.pesquisa;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -21,6 +23,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoPergunta;
@@ -712,21 +715,41 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 
 	public Collection<ColaboradorResposta> findPerguntasRespostasByColaboradorQuestionario(Long colaboradorQuestionarioId) 
 	{
-		StringBuffer hql = new StringBuffer();
+		getSession().flush();
 		
-		hql.append("select new ColaboradorResposta(asp.id, asp.nome, p.id, p.ordem, p.texto, p.textoComentario, p.tipo, r.texto, cr.comentario, cr.valor, cr.resposta.id) ");
-		hql.append("from ColaboradorQuestionario cq ");
-		hql.append("inner join cq.avaliacao av ");
-		hql.append("left join av.perguntas p ");
-		hql.append("left join p.aspecto asp ");
-		hql.append("left join p.respostas r ");
-		hql.append("left join cq.colaboradorRespostas cr with cr.pergunta.id = p.id and (cr.resposta.id = r.id or cr.resposta.id is null) ");
-		hql.append("where cq.id = :colaboradorQuestionarioId ");
-		hql.append("order by asp.nome, p.ordem, r.ordem");
+		StringBuffer sql = new StringBuffer();
 		
-		Query query = getSession().createQuery(hql.toString());
+		sql.append("select a.id, a.nome, p.id, p.ordem, p.texto, p.textoComentario, p.tipo, r.texto, cr.comentario, cr.valor, cr.resposta_id ");  
+		sql.append("from colaboradorquestionario cq ");
+		sql.append("left join pergunta p on cq.avaliacao_id = p.avaliacao_id "); 
+		sql.append("left join aspecto a on p.aspecto_id = a.id ");
+		sql.append("left join resposta r on r.pergunta_id = p.id ");
+		sql.append("left join colaboradorresposta cr on cr.colaboradorquestionario_id = cq.id and cr.pergunta_id = p.id and ((p.tipo in (1,5) and cr.resposta_id = r.id) or cr.resposta_id is null) ");
+		sql.append("where cq.id = :colaboradorQuestionarioId ");
+		sql.append("order by a.nome, p.ordem, r.ordem");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("colaboradorQuestionarioId", colaboradorQuestionarioId);
 		
-		return query.list();
+		Collection<Object[]> resultado = query.list();
+		Collection<ColaboradorResposta> lista = new ArrayList<ColaboradorResposta>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			lista.add(new ColaboradorResposta(	((BigInteger)res[0]).longValue(),
+												(String)res[1], 
+												((BigInteger)res[2]).longValue(), 
+												(Integer)res[3], 
+												(String)res[4], 
+												(String)res[5], 
+												(Integer)res[6], 
+												(String)res[7], 
+												(String)res[8], 
+												(Integer)res[9],
+												res[10] != null ? ((BigInteger)res[10]).longValue() : null ) );
+		}
+		
+		return lista;
 	}
 }

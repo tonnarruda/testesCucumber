@@ -48,9 +48,6 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 
 	private boolean avaliarCompetenciasCargo;
 	
-	@OneToMany(fetch=FetchType.LAZY, mappedBy="avaliacao")
-    private Collection<Pergunta> perguntas;
-	
 	@Transient
 	private int totalColab;
 	
@@ -166,13 +163,5 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 	public String getTipoModeloAvaliacaoDescricao() 
 	{
 		return new TipoModeloAvaliacao().get(this.tipoModeloAvaliacao); 	
-	}
-
-	public Collection<Pergunta> getPerguntas() {
-		return perguntas;
-	}
-
-	public void setPerguntas(Collection<Pergunta> perguntas) {
-		this.perguntas = perguntas;
 	}
 }

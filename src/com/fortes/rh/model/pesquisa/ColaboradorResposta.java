@@ -50,6 +50,7 @@ public class ColaboradorResposta extends AbstractModel implements Serializable
 		
 	}
 	
+	// findPerguntasRespostasByColaboradorQuestionario
 	public ColaboradorResposta(	Long perguntaAspectoId, String perguntaAspectoNome, 
 								Long perguntaId, Integer perguntaOrdem, String perguntaTexto, String perguntaTextoComentario, Integer perguntaTipo, 
 								String respostaTexto, String comentario, Integer valor, Long respostaId) 
