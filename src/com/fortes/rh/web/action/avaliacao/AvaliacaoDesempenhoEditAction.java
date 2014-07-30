@@ -413,8 +413,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			Collection<Colaborador> avaliados = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null);
 			Collection<Colaborador> avaliadores = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null);
 
-			colaboradorQuestionarioManager.validaAssociacao(avaliados, avaliadores, avaliacaoDesempenho.isPermiteAutoAvaliacao());
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findByIdProjection(avaliacaoDesempenho.getId());
+			colaboradorQuestionarioManager.validaAssociacao(avaliados, avaliadores, avaliacaoDesempenho.isPermiteAutoAvaliacao());
 			
 			avaliacaoDesempenhoManager.liberar(avaliacaoDesempenho, avaliados, avaliadores);
 			addActionSuccess("Avaliação liberada com sucesso.");

@@ -22487,3 +22487,21 @@ ALTER TABLE colaborador ADD CONSTRAINT no_blank_codigoac_colaborador CHECK(trim(
 ALTER TABLE colaborador ADD CONSTRAINT unique_codigoac_colaborador UNIQUE(codigoac,empresa_id); --.go
 insert into migrations values('20140711111216');--.go
 update parametrosdosistema set appversao = '1.1.130.156';--.go
+-- versao 1.1.131.157
+
+ALTER TABLE cat_epi DROP CONSTRAINT cat_epi_cat_fk;--.go 
+ALTER TABLE cat_epi ADD CONSTRAINT cat_epi_cat_fk FOREIGN KEY (cat_id) REFERENCES cat(id) ON DELETE CASCADE;--.go
+insert into migrations values('20140728145955');--.go
+ALTER TABLE historicocolaboradorbeneficio_beneficio DROP CONSTRAINT historicocolaboradorbeneficio_beneficio_beneficio_fk;--.go 
+ALTER TABLE historicocolaboradorbeneficio_beneficio ADD CONSTRAINT historicocolaboradorbeneficio_beneficio_beneficio_fk FOREIGN KEY (beneficios_id) REFERENCES beneficio(id) ON DELETE CASCADE;--.go
+insert into migrations values('20140728150534');--.go
+ALTER TABLE epi ADD COLUMN codigo CHARACTER VARYING(10);--.go
+insert into migrations values('20140729172030');--.go
+ALTER TABLE tipoepi ADD COLUMN codigo CHARACTER VARYING(6);--.go
+insert into migrations values('20140729172038');--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (621, 'ROLE_IMPORTACAO_EPI', 'Importar EPIs', '/importacao/prepareImportarEPIs.action', 13, true, 37);--.go
+alter sequence papel_sequence restart with 622;--.go
+
+insert into perfil_papel(perfil_id, papeis_id) values(1, 621);--.go	
+insert into migrations values('20140730105735');--.go
+update parametrosdosistema set appversao = '1.1.131.157';--.go
