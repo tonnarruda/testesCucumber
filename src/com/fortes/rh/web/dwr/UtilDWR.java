@@ -11,6 +11,7 @@ import uk.ltd.getahead.dwr.WebContextFactory;
 
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.portalcolaborador.TransacaoPCManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -26,6 +27,7 @@ public class UtilDWR
 	private AcPessoalClient acPessoalClient;
 	private GrupoACManager grupoACManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private TransacaoPCManager transacaoPCManager;
 
 	public String getToken(String grupoAC)
 	{ 
@@ -50,6 +52,20 @@ public class UtilDWR
 		}
 
 		return token;
+	}
+
+	public Integer testarConexaoPC()
+	{ 
+		try
+		{
+			return  200; //transacaoPCManager.testarConexao();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return 0;
+		}
+		
 	}
 
 	public String enviaEmail(String email, boolean autenticacao, boolean tls) throws Exception
@@ -126,5 +142,11 @@ public class UtilDWR
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) 
 	{
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	
+	public void setTransacaoPCManager(TransacaoPCManager transacaoPCManager)
+	{
+		this.transacaoPCManager = transacaoPCManager;
 	}
 }

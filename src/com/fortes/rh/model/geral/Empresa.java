@@ -68,6 +68,7 @@ public class Empresa extends AbstractModel implements Serializable
 	private boolean exibirSalario;
 	private boolean exibirDadosAmbiente;
     private boolean acIntegra;
+    private boolean integradaPortalColaborador;
     private boolean obrigarAmbienteFuncao;
     private boolean codigoTruCurso; 
     private boolean solicitarConfirmacaoDesligamento;
@@ -589,5 +590,15 @@ public class Empresa extends AbstractModel implements Serializable
 	public void setConsiderarSabadoNoAbsenteismo(
 			boolean considerarSabadoNoAbsenteismo) {
 		this.considerarSabadoNoAbsenteismo = considerarSabadoNoAbsenteismo;
+	}
+	
+	public boolean isIntegradaPortalColaborador()
+	{
+		return integradaPortalColaborador;
+	}
+	
+	public void setIntegradaPortalColaborador(boolean integradaPortalColaborador)
+	{
+		this.integradaPortalColaborador = integradaPortalColaborador;
 	}
 }

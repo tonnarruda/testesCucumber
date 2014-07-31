@@ -10,4 +10,5 @@ public interface TransacaoPCManager extends GenericManager<TransacaoPC>
 {
 	void enfileirar(AbstractAdapterPC adapterPC, URLTransacaoPC urlTransacaoPC);
 	void processarFila();
+	public int testarConexao();
 }

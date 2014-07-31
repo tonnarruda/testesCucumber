@@ -1,0 +1,1 @@
+alter table empresa add column integradaPortalColaborador boolean DEFAULT false NOT NULL; --.go

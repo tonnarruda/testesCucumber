@@ -49,6 +49,26 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 		}
 	}
 	
+	public int testarConexao() 
+	{
+		transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
+		parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBeanOld("parametrosDoSistemaManager");
+		
+		ParametrosDoSistema params = parametrosDoSistemaManager.findById(1L);
+		
+		try {
+			TransacaoPC transacaoPC = new TransacaoPC();
+			transacaoPC.setCodigoUrl(URLTransacaoPC.TESTAR_CONEXAO_PORTAL.getId());
+			
+			return enviar(transacaoPC, params.getPcToken());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			return 0;		
+		}
+	}
+	
 	@SuppressWarnings("deprecation")
 	public void processarFila()
 	{
@@ -60,15 +80,19 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 		try {
 			Collection<TransacaoPC> transacoes = getDao().findAll(new String[] { "data" });
 			
-			for (TransacaoPC transacaoPC : transacoes) 
-				enviar(transacaoPC, params.getPcToken());
+			for (TransacaoPC transacaoPC : transacoes) {
+				int statusCode = enviar(transacaoPC, params.getPcToken());
+				
+		    	if (statusCode == 200)
+		    		transacaoPCManager.remove(transacaoPC.getId());
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void enviar(TransacaoPC transacaoPC, String pcToken) throws HttpException, IOException 
+	private Integer enviar(TransacaoPC transacaoPC, String pcToken) throws HttpException, IOException 
 	{
 		URLTransacaoPC urlTransacaoPC = URLTransacaoPC.getById(transacaoPC.getCodigoUrl());
 		
@@ -93,8 +117,7 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
     	final HttpClient httpClient = new HttpClient();
     	int statusCode = httpClient.executeMethod(method);
     	
-    	if (statusCode == 200)
-    		transacaoPCManager.remove(transacaoPC.getId());
+    	return statusCode;
 	}
 	
 	private HttpMethod getMethod(String method)

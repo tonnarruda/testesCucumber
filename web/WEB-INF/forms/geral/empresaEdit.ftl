@@ -22,7 +22,9 @@
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 
 	<style type="text/css">
-		.divInfo { width: 850px !important;}
+		.divInfo { 
+			width: 850px !important;
+		}
 	</style>
 	
 	<script type="text/javascript">
@@ -69,6 +71,19 @@
 			
 		});
 		
+		function testaConexaoPC()
+		{
+			if(document.getElementById("integradaPortalColaborador").checked)
+			{
+				document.getElementById("btnTransferirPC").src="<@ww.url includeParams="none" value="/imgs/conectando.gif"/>";
+				UtilDWR.testarConexaoPC(apresenta_MsgPC);
+			}
+			else
+			{
+				jAlert("Opção: Integra com Portal do Colaborador não selecionada.");
+			}
+		}
+		
 		function testaConexaoAC()
 		{
 			if(document.getElementById("integra").checked)
@@ -100,6 +115,16 @@
 		{
 			document.getElementById("btnTransferir").src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>";
 			jAlert(msg);
+		}
+
+		function apresenta_MsgPC(statusCode)
+		{
+			document.getElementById("btnTransferirPC").src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>";
+			
+			if(statusCode == 200)
+				jAlert("Conexão realizada com sucesso.");
+			else if(statusCode == 401)
+				jAlert("Conexão não autorizada. Verifique se o token está correto.");
 		}
 
 		function enviaForm()
@@ -276,6 +301,18 @@
 		
 		<li>&nbsp;</li>
 				
+		<li>
+			<@ww.div cssClass="divInfo" cssStyle="height:80px;">
+				<h2>Integração com Portal do Colaborador</h2>
+				<ul>
+					<div style="float:right;"><img id="btnTransferirPC" border="0" title="Testar Conexão com Portal do Colaborador" onclick="testaConexaoPC();" src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>" style="cursor:pointer;"></div>
+					<@ww.checkbox label="Integra com Portal do Colaborador" name="empresa.integradaPortalColaborador" id="integradaPortalColaborador" labelPosition="right"  />
+				</ul>
+			</@ww.div>
+		</li>
+		
+		<li>&nbsp;</li>
+		
 		<li>
 			<@ww.div cssClass="divInfo">
 				<h2>Integração com AC Pessoal</h2>
