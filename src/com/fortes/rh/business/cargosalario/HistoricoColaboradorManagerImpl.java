@@ -1484,6 +1484,11 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	{
 		return getDao().findByEmpresaComHistoricoPendente(empresaId) ;
 	}
+	
+	public void enviarHistoricosPortal()
+	{
+		Collection<HistoricoColaborador> historicos = getDao().findPendenciasPortal();
+	}
 
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId) 
 	{

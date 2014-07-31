@@ -221,14 +221,6 @@
     <property name="targetMethod" value="importarUltimasNoticias"/>
   </bean>
 
-  <bean name="processarFilaPCJob" class="com.fortes.rh.business.portalcolaborador.TransacaoPCManagerImpl">
-    <property name="dao" ref="transacaoPCDaoTarget" />
-  </bean>
-  <bean name="processarFilaPC" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-    <property name="targetObject" ref="processarFilaPCJob"/>
-    <property name="targetMethod" value="processarFila"/>
-  </bean>
-
   <bean name="limpaDirTemp" class="org.springframework.scheduling.quartz.JobDetailBean">
     <property name="jobClass" value="com.fortes.rh.business.geral.LimpaDirTemp" />
   </bean>
@@ -269,6 +261,16 @@
   <bean id="cronTriggerBackupCleaner" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="backupCleanerJob" />
     <property name="cronExpression" value="0 0 3 * * ?" /> <!-- Todos os dias as 03:00h am -->
+  </bean>
+
+  <bean name="processarFilaPCJob" class="com.fortes.rh.business.portalcolaborador.TransacaoPCManagerImpl">
+    <property name="dao" ref="transacaoPCDaoTarget" />
+  </bean>
+  <bean name="processarFilaPC" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="name" value="Processar fila para o Portal do Colaborador"/>
+    <property name="group" value="PORTAL"/>
+    <property name="targetObject" ref="processarFilaPCJob"/>
+    <property name="targetMethod" value="processarFila"/>
   </bean>
 
   <bean id="cronTriggerImportadorGastosAC" class="org.springframework.scheduling.quartz.CronTriggerBean">

@@ -1,0 +1,1 @@
+ALTER TABLE colaborador ADD COLUMN atualizarhistoricoportal BOOLEAN NOT NULL DEFAULT false;--.go

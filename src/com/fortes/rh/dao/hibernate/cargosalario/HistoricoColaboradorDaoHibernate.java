@@ -1420,4 +1420,25 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 	
+	public Collection<HistoricoColaborador> findPendenciasPortal() 
+	{
+		Criteria criteria = getSession().createCriteria(SituacaoColaborador.class, "sc");
+		criteria.createCriteria("sc.colaborador", "c");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("hc.id"), "id");
+		p.add(Projections.property("hc.tipoSalario"), "tipoSalario");
+		p.add(Projections.property("hc.data"), "data");
+		p.add(Projections.property("hc.gfip"), "gfip");
+		p.add(Projections.property("hc.salario"), "salario");
+
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("c.colaborador.atualizarHistoricoPortal", true));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
+
+		return criteria.list();
+	}
+	
 }
