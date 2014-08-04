@@ -31,6 +31,6 @@ public interface AreaOrganizacionalDao extends GenericDao<AreaOrganizacional>
 	public Long[] findIdsAreasDoResponsavelCoResponsavel(Long usuarioId, Long empresaId);
 	public Collection<AreaOrganizacional> findSemCodigoAC(Long empresaId);
 	public Collection<Long> findIdsAreasFilhas(Collection<Long> areasIds);
-	public void desvinculaResponsavel(Long colaboradorId);
-	public void desvinculaCoResponsavel(Long colaboradorId);
+	public void desvinculaResponsavel(Long... colaboradoresIds);
+	public void desvinculaCoResponsavel(Long... colaboradoresIds);
 }

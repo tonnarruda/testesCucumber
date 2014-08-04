@@ -1149,14 +1149,14 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		return (String) criteria.uniqueResult();
 	}
 
-	public void updateDisponivelAndContratadoByColaborador(boolean disponivel, boolean contratado, Long... colaboradorId) 
+	public void updateDisponivelAndContratadoByColaborador(boolean disponivel, boolean contratado, Long... colaboradoresIds) 
 	{
 		String hql = "update Candidato set disponivel = :disponivel, contratado = :contratado where id in (select candidato.id from Colaborador where id in (:colaboradorId))";
 
 		Query query = getSession().createQuery(hql);
 		query.setBoolean("disponivel", disponivel);
 		query.setBoolean("contratado", contratado);
-		query.setParameterList("colaboradorId", colaboradorId, Hibernate.LONG);
+		query.setParameterList("colaboradorId", colaboradoresIds, Hibernate.LONG);
 		
 		query.executeUpdate();
 	}

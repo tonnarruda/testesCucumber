@@ -150,9 +150,9 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		return checks;
 	}
 
-	public void desativaAcessoSistema(Long colaboradorId)
+	public void desativaAcessoSistema(Long... colaboradoresIds)
 	{
-		getDao().desativaAcessoSistema(colaboradorId);
+		getDao().desativaAcessoSistema(colaboradoresIds);
 	}
 	
 	public void reativaAcessoSistema(Long colaboradorId)

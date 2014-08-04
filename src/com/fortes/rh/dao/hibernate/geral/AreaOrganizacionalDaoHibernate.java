@@ -496,25 +496,25 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		return criteria.list();
 	}
 
-	public void desvinculaCoResponsavel(Long colaboradorId)
+	public void desvinculaCoResponsavel(Long... colaboradoresIds)
 	{
-		String hql = "update AreaOrganizacional set coResponsavel.id = null where coResponsavel.id = :id";
+		String hql = "update AreaOrganizacional set coResponsavel.id = null where coResponsavel.id in (:ids)";
 		
-		desvinculaResponsaveis(colaboradorId, hql);
+		desvinculaResponsaveis(hql, colaboradoresIds);
 	}
 	
-	public void desvinculaResponsavel(Long colaboradorId)
+	public void desvinculaResponsavel(Long... colaboradoresIds)
 	{
-		String hql = "update AreaOrganizacional set responsavel.id = null where responsavel.id = :id";
+		String hql = "update AreaOrganizacional set responsavel.id = null where responsavel.id in (:ids)";
 
-		desvinculaResponsaveis(colaboradorId, hql);
+		desvinculaResponsaveis(hql, colaboradoresIds);
 	}
 
-	private void desvinculaResponsaveis(Long colaboradorId, String hql)
+	private void desvinculaResponsaveis(String hql, Long... colaboradoresIds)
 	{
 		Query query = getSession().createQuery(hql);
 
-		query.setLong("id", colaboradorId);
+		query.setParameterList("ids", colaboradoresIds);
 
 		query.executeUpdate();
 	}

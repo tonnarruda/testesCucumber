@@ -415,6 +415,49 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		
 	}
 	
+	public void testDesvinculaMultiplosResponsaveis()
+	{
+		Colaborador colaboradorResponsavel1 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaboradorResponsavel1);
+		
+		Colaborador colaboradorCoResponsavel1 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaboradorCoResponsavel1);
+		
+		Colaborador colaboradorResponsavel2 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaboradorResponsavel2);
+		
+		Colaborador colaboradorCoResponsavel2 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaboradorCoResponsavel2);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional1.setEmpresa(empresa);
+		areaOrganizacional1.setResponsavel(colaboradorResponsavel1);
+		areaOrganizacional1.setCoResponsavel(colaboradorCoResponsavel1);
+		areaOrganizacionalDao.save(areaOrganizacional1);
+		
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional2.setEmpresa(empresa);
+		areaOrganizacional2.setResponsavel(colaboradorResponsavel2);
+		areaOrganizacional2.setCoResponsavel(colaboradorCoResponsavel2);
+		areaOrganizacionalDao.save(areaOrganizacional2);
+		
+		assertNotNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional1.getId()).getResponsavel().getId());
+		assertNotNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional1.getId()).getCoResponsavel().getId());
+		assertNotNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional2.getId()).getResponsavel().getId());
+		assertNotNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional2.getId()).getCoResponsavel().getId());
+		
+		areaOrganizacionalDao.desvinculaResponsavel(new Long[]{colaboradorResponsavel1.getId(), colaboradorResponsavel2.getId()});
+		areaOrganizacionalDao.desvinculaCoResponsavel(new Long[]{colaboradorCoResponsavel1.getId(), colaboradorCoResponsavel2.getId()});
+		
+		assertNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional1.getId()).getResponsavel().getId());
+		assertNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional1.getId()).getCoResponsavel().getId());
+		assertNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional2.getId()).getResponsavel().getId());
+		assertNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional2.getId()).getCoResponsavel().getId());
+	}
+	
 	public void setCargoDao(CargoDao cargoDao)
 	{
 		this.cargoDao = cargoDao;

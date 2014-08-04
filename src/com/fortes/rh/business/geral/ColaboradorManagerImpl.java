@@ -93,6 +93,7 @@ import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -772,9 +773,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByAreasOrganizacionaisEstabelecimentos(areasOrganizacionaisIds, estabelecimentoIds, null, null);
 	}
 
-	public Colaborador findByCodigoAC(String codigo, Empresa empresa)
+	public Colaborador findByCodigoAC(String codigoAC, Empresa empresa)
 	{
-		return getDao().findByCodigoAC(codigo, empresa);
+		return getDao().findByCodigoAC(codigoAC, empresa);
 	}
 
 	public Colaborador findColaboradorById(Long id)
@@ -960,7 +961,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if(acPessoalClientColaborador.solicitacaoDesligamentoAc(historicosColaborador, empresa))
 		{
 			getDao().atualizaSolicitacaoDesligamento(null, dataSolicitacaoDesligamento, null, null, null, colaboradorId);
-			desligaColaborador(null, null, observacaoDemissao, motivoId, colaboradorId, false);
+			desligaColaborador(null, null, observacaoDemissao, motivoId, false, colaboradorId);
 		}
 	}
 
@@ -969,7 +970,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().atualizaSolicitacaoDesligamento(dataSolicitacaoDesligamento, null, observacaoDemissao, motivoId, solicitanteDemissaoId, colaboradorId);
 	}
 	
-	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Long colaboradorId, boolean desligaByAC) throws Exception
+	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, boolean desligaByAC, Long... colaboradoresIds) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -978,15 +979,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		try
 		{
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
-			usuarioManager.desativaAcessoSistema(colaboradorId);
-			candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaboradorId);
-			candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.INDIFERENTE, colaboradorId);
-			areaOrganizacionalManager.desvinculaResponsaveis(colaboradorId);
+			usuarioManager.desativaAcessoSistema(colaboradoresIds);
+			candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaboradoresIds);
+			candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.INDIFERENTE, colaboradoresIds);
+			areaOrganizacionalManager.desvinculaResponsaveis(colaboradoresIds);
 
 			if(desligaByAC)
-				historicoColaboradorManager.deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradorId);
+				historicoColaboradorManager.deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradoresIds);
 			else
-				getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, colaboradorId);
+				getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, colaboradoresIds);
 
 			transactionManager.commit(status);
 		}
@@ -1006,18 +1007,26 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().religaColaborador(colaboradorId);
 	}
 
-	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento)
+	public Collection<Colaborador> findColaboradoresByCodigoAC(Empresa empresa, boolean joinComHistorico, String... codigosACColaboradores)
 	{
-		Colaborador colaborador = findByCodigoAC(codigoAC, empresa);
+		return getDao().findColaboradoresByCodigoAC(empresa, joinComHistorico, codigosACColaboradores);
+	}
 
+	public boolean desligaColaboradorAC(Empresa empresa, Date dataDesligamento, String... codigosACColaboradores) throws FortesException, Exception
+	{
+		Collection<Colaborador> colaboradores = getDao().findColaboradoresByCodigoAC(empresa, false, codigosACColaboradores);
+		
 		try {
-			desligaColaborador(true, dataDesligamento, "", null, colaborador.getId(), true);
+			if(codigosACColaboradores.length != colaboradores.size())
+				throw new FortesException("Desligar Empregado: Existe(m) empregado(s) que não se encontra(m) no sistema RH.");
+
+			desligaColaborador(true, dataDesligamento, "", null, true, new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradores));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
 
-		return getDao().desligaByCodigo(codigoAC, empresa, dataDesligamento);
+		return getDao().desligaByCodigo(empresa, dataDesligamento, codigosACColaboradores);
 	}
 
 	public Long religaColaboradorAC(String codigoAC, String empresaCodigo, String grupoAC)
@@ -1256,6 +1265,33 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 
 		return colaborador;
+	}
+
+	public void saveEmpregadosESituacoes(TEmpregado[] tEmpregados, TSituacao[] tSituacoes, Empresa empresa) throws Exception
+	{
+		for(TEmpregado tEmpregado: tEmpregados)
+		{
+			Colaborador colaborador = new Colaborador();
+			bindColaborador(colaborador, tEmpregado);
+			colaborador.setCodigoAC(tEmpregado.getCodigoACDestino());
+			colaborador.setEmpresa(empresa);
+			getDao().save(colaborador);
+			
+			TSituacao tSituacao = new TSituacao();
+			for (TSituacao tSituacaoTmp : tSituacoes) {
+				if (tSituacaoTmp.getEmpregadoCodigoACDestino() != null && tSituacaoTmp.getEmpregadoCodigoACDestino().equals(tEmpregado.getCodigoACDestino()))
+					tSituacao = tSituacaoTmp;
+			}
+			
+			if(tSituacao.getEmpregadoCodigoAC() == null)
+				throw new Exception("O empregado " + colaborador.getNome() + " está sem situação.");
+			
+			HistoricoColaborador historicoColaborador = new HistoricoColaborador();
+			historicoColaborador.setColaborador(colaborador);
+			historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+			historicoColaboradorManager.bindSituacao(tSituacao, historicoColaborador);
+			historicoColaboradorManager.save(historicoColaborador);
+		}
 	}
 
 	private Colaborador bindColaborador(Colaborador colaborador, TEmpregado empregado) throws Exception

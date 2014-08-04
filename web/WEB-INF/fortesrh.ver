@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.13X.158" bd="" data="XX/08/2014">
+		<Item visivel="N" motivo="S20140700032"><![CDATA[WebService: Transferência em lote de empregados.]]></Item>
+	</Versao>
 	<Versao id="1.1.131.157" bd="" data="29/07/2014">
 		<Item visivel="S" motivo="S20140600192"><![CDATA[C&S > Relatórios > Colaboradores por Grupo Ocupacional: Nova opção de exibição do cargo ou área organizacional.]]></Item>
 		<Item visivel="S" motivo="S20140500218"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Exibição da performance do colaborador.]]></Item>

@@ -991,7 +991,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return historicoColaborador;
 	}
 
-	private HistoricoColaborador bindSituacao(TSituacao situacao, HistoricoColaborador historicoColaborador) throws Exception
+	public HistoricoColaborador bindSituacao(TSituacao situacao, HistoricoColaborador historicoColaborador) throws Exception
 	{
 		historicoColaborador.setData(situacao.getDataFormatada());
 		historicoColaborador.setEstabelecimento(estabelecimentoManager.findEstabelecimentoByCodigoAc(situacao.getEstabelecimentoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC()));
@@ -1468,9 +1468,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return true;
 	}
 
-	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long colaboradorId)
+	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long... colaboradoresIds)
 	{
-		getDao().deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradorId);
+		getDao().deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradoresIds);
 	}
 	
 	public void deleteHistoricoColaborador(Long[] colaboradorIds) throws Exception 

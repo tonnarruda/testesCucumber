@@ -234,7 +234,12 @@
 			<#if colaborador.usuario.id?exists>
 				<@frt.link verifyRole="ROLE_COLAB_LIST_CRIARUSUARIO" href="../../acesso/usuario/prepareUpdate.action?origem=C&usuario.id=${colaborador.usuario.id}&colaborador.id=${colaborador.id}" imgTitle="Editar Acesso ao Sistema" imgName="key.gif"/>
 			<#else>
-				<@frt.link verifyRole="ROLE_COLAB_LIST_CRIARUSUARIO" href="../../acesso/usuario/prepareInsert.action?origem=C&colaborador.id=${colaborador.id}&nome=${colaborador.nomeComercial}" imgTitle="Criar Acesso ao Sistema" imgName="key_add.gif"/>
+				<#if colaborador.nomeComercial?exists>
+					<#assign nomComercial=colaborador.nomeComercial/>
+				<#else>
+					<#assign nomComercial=""/>
+				</#if>
+				<@frt.link verifyRole="ROLE_COLAB_LIST_CRIARUSUARIO" href="../../acesso/usuario/prepareInsert.action?origem=C&colaborador.id=${colaborador.id}&nome=${nomComercial}" imgTitle="Criar Acesso ao Sistema" imgName="key_add.gif"/>
 			</#if>
 		
 			<#if colaborador.candidato?exists && colaborador.candidato.id?exists>

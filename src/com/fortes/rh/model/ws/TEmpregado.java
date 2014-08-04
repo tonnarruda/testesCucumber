@@ -10,6 +10,7 @@ public class TEmpregado implements Serializable
 {
 	private Integer id;
 	private String codigoAC;
+	private String codigoACDestino;
 	private String empresaCodigoAC;
 	private String nome;
 	private String nomeComercial;
@@ -504,6 +505,14 @@ public class TEmpregado implements Serializable
 
 	public void setChaveAC_RH(String chaveACRH) {
 		chaveAC_RH = chaveACRH;
+	}
+
+	public String getCodigoACDestino() {
+		return codigoACDestino;
+	}
+
+	public void setCodigoACDestino(String codigoACDestino) {
+		this.codigoACDestino = codigoACDestino;
 	}
 	
 }

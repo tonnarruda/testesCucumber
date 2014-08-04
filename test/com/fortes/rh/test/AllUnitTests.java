@@ -169,6 +169,8 @@ import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemEntregaManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoExameManagerTest;
+import com.fortes.rh.test.business.ws.RHServiceIntranetTest;
+import com.fortes.rh.test.business.ws.RHServiceTest;
 import com.fortes.rh.test.dao.hibernate.acesso.PapelDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.acesso.PerfilDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.acesso.UsuarioDaoHibernateTest;
@@ -1399,6 +1401,10 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(F2rhFacadeTest.class);
         suite.addTestSuite(ExportacaoActionTest.class);
 
+        //SERVICES
+        suite.addTestSuite(RHServiceTest.class);
+        suite.addTestSuite(RHServiceIntranetTest.class);
+        
         return suite;
     }
 }

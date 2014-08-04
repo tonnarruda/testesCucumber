@@ -99,6 +99,8 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public TSituacao bindSituacao(HistoricoColaborador historicoColaborador, String empresaCodigoAC);
 
+	public HistoricoColaborador bindSituacao(TSituacao situacao, HistoricoColaborador historicoColaborador) throws Exception;
+	
 	public HistoricoColaborador findByAC(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
 
 	public HistoricoColaborador cancelarSituacao(TSituacao situacao, String mensagem) throws Exception;
@@ -158,7 +160,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	
 	public Collection<HistoricoColaborador> filtraHistoricoColaboradorParaPPP(Collection<HistoricoColaborador> todosHistoricos) throws Exception;
 
-	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long colaboradorId);
+	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long... colaboradoresIds);
 
 	public boolean existeHistoricoPorIndice(Long empresaId);
 

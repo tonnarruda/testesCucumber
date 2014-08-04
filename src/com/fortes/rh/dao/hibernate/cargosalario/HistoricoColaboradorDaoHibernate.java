@@ -1279,14 +1279,14 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return query.list();
 	}
 
-	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long colaboradorId)
+	public void deleteHistoricosAguardandoConfirmacaoByColaborador(Long... colaboradoresIds)
 	{
-		if(colaboradorId != null)
+		if(colaboradoresIds != null)
 		{
-			String hql = "delete HistoricoColaborador where colaborador.id = :colaboradorId and status = :status";
+			String hql = "delete HistoricoColaborador where colaborador.id in (:colaboradoresIds) and status = :status";
 			Query query = getSession().createQuery(hql);
 	
-			query.setLong("colaboradorId", colaboradorId);
+			query.setParameterList("colaboradoresIds", colaboradoresIds);
 			query.setInteger("status", StatusRetornoAC.AGUARDANDO);
 			query.executeUpdate();		
 		}

@@ -1,6 +1,8 @@
 package com.fortes.rh.business.sesmt;
 
 import java.util.Collection;
+import java.util.Date;
+import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.geral.Colaborador;
@@ -21,4 +23,5 @@ public interface ComissaoMembroManager extends GenericManager<ComissaoMembro>
 	Collection<ComissaoMembro> findByColaborador(Long colaboradorId);
 	Collection<Colaborador> findColaboradoresNaComissao(Long comissaoId);
 	public Collection<Comissao> findComissaoByColaborador(Long colaboradorId);
+	Map<Long, Date> colaboradoresComEstabilidade(Long[] colaboradoresIds);
 }

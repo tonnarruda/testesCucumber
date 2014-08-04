@@ -72,6 +72,7 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -845,12 +846,12 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         candidatoManager.expects(once()).method("updateDisponivelAndContratadoByColaborador").with(eq(true),eq(false),eq(new Long[]{colaborador.getId()})).isVoid();
     	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, eq(new Long[]{colaborador.getId()})).isVoid();
         transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
-        usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(colaborador.getId()));
-        areaOrganizacinoalManager.expects(once()).method("desvinculaResponsaveis").with(eq(colaborador.getId()));
-        historicoColaboradorManager.expects(once()).method("deleteHistoricosAguardandoConfirmacaoByColaborador").with(eq(colaborador.getId()));
+        usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(new Long[]{colaborador.getId()}));
+        areaOrganizacinoalManager.expects(once()).method("desvinculaResponsaveis").with(eq(new Long[]{colaborador.getId()}));
+        historicoColaboradorManager.expects(once()).method("deleteHistoricosAguardandoConfirmacaoByColaborador").with(eq(new Long[]{colaborador.getId()}));
         transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
 
-        colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, colaborador.getId(), true);
+        colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, true, colaborador.getId());
     }
     
     public void testDesligaColaborador() throws Exception
@@ -860,12 +861,12 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	candidatoManager.expects(once()).method("updateDisponivelAndContratadoByColaborador").with(eq(true),eq(false),eq(new Long[]{colaborador.getId()})).isVoid();
     	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, eq(new Long[]{colaborador.getId()})).isVoid();
     	transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
-    	usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(colaborador.getId()));
-    	areaOrganizacinoalManager.expects(once()).method("desvinculaResponsaveis").with(eq(colaborador.getId()));
+    	usuarioManager.expects(once()).method("desativaAcessoSistema").with(eq(new Long []{colaborador.getId()}));
+    	areaOrganizacinoalManager.expects(once()).method("desvinculaResponsaveis").with(eq(new Long[]{colaborador.getId()}));
     	colaboradorDao.expects(once()).method("desligaColaborador").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
     	transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
     	
-    	colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, colaborador.getId(), false);
+    	colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, false, colaborador.getId());
     }
     public void testFindByAreasOrganizacionalIds() throws Exception
     {
@@ -1216,17 +1217,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
     public void testUpdateEmpregado() throws Exception
     {
-    	TEmpregado empregado = new TEmpregado();
-    	empregado.setId(1);
-    	empregado.setCidadeCodigoAC("1234");
-    	empregado.setUfSigla("UF");
-    	empregado.setSexo("M");
-    	empregado.setDeficiencia("1");
-    	empregado.setCtpsDV("");
-    	empregado.setIdentidadeUF("UF");
-    	empregado.setCtpsUFSigla("UF");
-    	empregado.setCtpsDV("1");
-    	empregado.setEscolaridade("Superior Completo");
+    	TEmpregado empregado = iniciaTEmpregado();
 
     	Pessoal pessoal = new Pessoal();
     	pessoal.setEscolaridade("Especialização");
@@ -1247,6 +1238,99 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	assertEquals(colaborador, colaboradorManager.updateEmpregado(empregado));
     }
 
+	private TEmpregado iniciaTEmpregado() {
+		TEmpregado empregado = new TEmpregado();
+    	empregado.setId(1);
+    	empregado.setCidadeCodigoAC("1234");
+    	empregado.setUfSigla("UF");
+    	empregado.setSexo("M");
+    	empregado.setDeficiencia("1");
+    	empregado.setCtpsDV("");
+    	empregado.setIdentidadeUF("UF");
+    	empregado.setCtpsUFSigla("UF");
+    	empregado.setCtpsDV("1");
+    	empregado.setEscolaridade("Superior Completo");
+		return empregado;
+	}
+
+    public void testSaveEmpregadosESituacoesException() throws Exception
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	
+    	TEmpregado tEmpregado = iniciaTEmpregado();
+    	tEmpregado.setCodigoAC("tEmp1");
+    	
+    	Pessoal pessoal = new Pessoal();
+    	pessoal.setEscolaridade("Especialização");
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	colaborador.setPessoal(pessoal);
+    	Estado estado = EstadoFactory.getEntity(1L);
+    	Cidade cidade = CidadeFactory.getEntity();
+    	cidade.setId(1L);
+    	cidade.setUf(estado);
+    	
+    	TSituacao tSituacao1 = new TSituacao();
+    	tSituacao1.setEmpregadoCodigoAC("tEmp1");
+		TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
+    	
+    	cidadeManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(cidade));
+    	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
+    	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
+    	colaboradorDao.expects(once()).method("save").with(ANYTHING).isVoid();
+//    	historicoColaboradorManager.expects(once()).method("bindSituacao").with(eq(tSituacoes[0]), ANYTHING);
+//    	historicoColaboradorManager.expects(once()).method("save").with( ANYTHING);
+    	
+    	Exception e = null;
+    	try {
+    		colaboradorManager.saveEmpregadosESituacoes(new TEmpregado[]{tEmpregado}, tSituacoes, empresa);
+		} catch (Exception e2) {
+			e = e2;
+		}
+    	
+    	assertEquals("O empregado null está sem situação.", e.getMessage());
+    }
+    
+    public void testSaveEmpregadosESituacoes() throws Exception
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	
+    	TEmpregado tEmpregado = iniciaTEmpregado();
+    	tEmpregado.setCodigoACDestino("codigoACDestino");
+    	tEmpregado.setCodigoAC("tEmp1");
+    	
+    	Pessoal pessoal = new Pessoal();
+    	pessoal.setEscolaridade("Especialização");
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	colaborador.setPessoal(pessoal);
+    	Estado estado = EstadoFactory.getEntity(1L);
+    	Cidade cidade = CidadeFactory.getEntity();
+    	cidade.setId(1L);
+    	cidade.setUf(estado);
+    	
+    	TSituacao tSituacao1 = new TSituacao();
+    	tSituacao1.setEmpregadoCodigoAC("tEmp1");
+    	tSituacao1.setEmpregadoCodigoACDestino("codigoACDestino");
+    	TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
+    	
+    	cidadeManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(cidade));
+    	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
+    	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
+    	colaboradorDao.expects(once()).method("save").with(ANYTHING).isVoid();
+    	historicoColaboradorManager.expects(once()).method("bindSituacao").with(eq(tSituacoes[0]), ANYTHING);
+    	historicoColaboradorManager.expects(once()).method("save").with( ANYTHING);
+    	
+    	Exception e = null;
+    	try {
+    		colaboradorManager.saveEmpregadosESituacoes(new TEmpregado[]{tEmpregado}, tSituacoes, empresa);
+    	} catch (Exception e2) {
+    		e = e2;
+    	}
+    	
+    	assertNull(e);
+    }
+    
     public void testGetCountAtivosByEstabelecimento()
     {
     	colaboradorDao.expects(once()).method("getCountAtivosByEstabelecimento").with(ANYTHING).will(returnValue(1));

@@ -1292,9 +1292,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	   	
 	}
 
-	public void updateDisponivelAndContratadoByColaborador(boolean disponivel, boolean contratado, Long... colaboradorId) 
+	public void updateDisponivelAndContratadoByColaborador(boolean disponivel, boolean contratado, Long... colaboradoresIds) 
 	{
-		getDao().updateDisponivelAndContratadoByColaborador(disponivel, contratado, colaboradorId);
+		getDao().updateDisponivelAndContratadoByColaborador(disponivel, contratado, colaboradoresIds);
 	}
 
 	public void updateDisponivel(boolean disponivel, Long candidatoId)

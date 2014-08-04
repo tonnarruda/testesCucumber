@@ -3,6 +3,7 @@ package com.fortes.rh.test.dao.hibernate.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
@@ -257,6 +258,37 @@ public class ComissaoMembroDaoHibernateTest extends GenericDaoHibernateTest<Comi
 		
 		Collection<Colaborador> colabCollection = comissaoMembroDao.findColaboradoresNaComissao(comissao.getId());
 		assertEquals(1, colabCollection.size());
+	}
+	
+	public void testColaboradoresComEstabilidade()
+	{
+		Date hoje = new Date();
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Comissao comissao = ComissaoFactory.getEntity();
+		comissao.setDataFim(hoje);
+		comissaoDao.save(comissao);
+		
+		ComissaoPeriodo comissaoPeriodo = ComissaoPeriodoFactory.getEntity();
+		comissaoPeriodo.setComissao(comissao);
+		comissaoPeriodo.setaPartirDe(DateUtil.criarDataMesAno(01, 01, 2012));
+		comissaoPeriodoDao.save(comissaoPeriodo);
+		
+		ComissaoMembro comissaoMembro = ComissaoMembroFactory.getEntity();
+		comissaoMembro.setColaborador(colaborador);
+		comissaoMembro.setComissaoPeriodo(comissaoPeriodo);
+		comissaoMembroDao.save(comissaoMembro);
+		
+		//migué consulta SQL
+		comissaoMembroDao.find(comissaoMembro);
+		
+		Long[] colaboradoresIds = new Long[] {colaborador.getId()};
+		Map<Long, Date> colaboradoresComEstabilidade = comissaoMembroDao.colaboradoresComEstabilidade(colaboradoresIds);
+		
+		assertEquals(1, colaboradoresComEstabilidade.size());
+		assertEquals(hoje.getYear()+1, colaboradoresComEstabilidade.get(colaborador.getId()).getYear());
 	}
 	
 	public void testFindDataColaboradorComissaoMembro()

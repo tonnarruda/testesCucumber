@@ -11,6 +11,7 @@ import javax.mail.internet.AddressException;
 import com.fortes.business.GenericManager;
 import com.fortes.model.type.File;
 import com.fortes.rh.exception.ColecaoVaziaException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
@@ -32,6 +33,7 @@ import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.security.spring.aop.callback.ColaboradorAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
 import com.fortes.security.auditoria.Modulo;
@@ -47,12 +49,12 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	@Audita(operacao="Remoção", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void remove(Colaborador colaborador, Empresa empresa) throws Exception;
 	@Audita(operacao="Desligamento", auditor=ColaboradorAuditorCallbackImpl.class)
-	public void desligaColaborador( Boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Long colaboradorId, boolean desligaByAC) throws Exception;
+	public void desligaColaborador( Boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, boolean desligaByAC, Long... colaboradoresIds) throws Exception;
 	@Audita(operacao="Religamento", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void religaColaborador(Long colaboradorId) throws Exception;
 	//TODO Auditoria não ta passando
 	@Audita(operacao="Desligamento no AC", auditor=ColaboradorAuditorCallbackImpl.class)
-	public boolean desligaColaboradorAC(String codigoAC, Empresa empresa, Date dataDesligamento);
+	public boolean desligaColaboradorAC(Empresa empresa, Date dataDesligamento, String... codigosACColaboradores) throws FortesException, Exception;
 	@Audita(operacao="Solicitação Deslig", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId, Empresa empresa) throws Exception;
 	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long solicitanteDemissaoId, Long colaboradorId) throws Exception;
@@ -74,7 +76,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByArea(AreaOrganizacional areaFiltro);
 	public Collection<Colaborador> findByFuncaoAmbiente(Long funcaoId, Long ambienteId);
 	public boolean setCodigoColaboradorAC(String codigo, Long id);
-	public Colaborador findByCodigoAC(String codigo, Empresa empresa);
+	public Colaborador findByCodigoAC(String codigoAC, Empresa empresa);
 	public Colaborador findColaboradorById(Long id);
 	public Colaborador findByUsuario(Usuario usuario,Long empresaId);
 	public Collection<Colaborador> findByAreaEstabelecimento(Long areaOrganizacionalId, Long estabelecimentoId);
@@ -112,6 +114,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public boolean updateInfoPessoaisByCpf(Colaborador colaborador, Long empresaId);
 
 	public Colaborador updateEmpregado(TEmpregado empregado) throws Exception;
+	public void saveEmpregadosESituacoes(TEmpregado[] tEmpregados, TSituacao[] tSituacoes, Empresa empresa) throws Exception;
 	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
 	public Long findByUsuario(Long usuarioId);
 	public Integer getCountAtivosQualquerStatus(Date dataBase, Long[] empresaIds, Long[] areasIds);
@@ -204,4 +207,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId);
 	public void removeComDependencias(Long id);
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds);
+	public Collection<Colaborador> findColaboradoresByCodigoAC(Empresa empresa, boolean joinComHistorico, String... codigosACColaboradores);
 }

@@ -20,6 +20,7 @@ public class TSituacao implements Serializable
 	private Double indiceQtd;
 	private String empresaCodigoAC;
 	private String empregadoCodigoAC;
+	private String empregadoCodigoACDestino;
 	private String expAgenteNocivo;//GFIP
 	private Integer movimentoSalarialId;//usado pelo reajuste salarial em lote
 	private String grupoAC;
@@ -113,6 +114,15 @@ public class TSituacao implements Serializable
 	{
 		this.empregadoCodigoAC = empregadoCodigoAC;
 	}
+
+	public String getEmpregadoCodigoACDestino() {
+		return empregadoCodigoACDestino;
+	}
+	
+	public void setEmpregadoCodigoACDestino(String empregadoCodigoACDestino) {
+		this.empregadoCodigoACDestino = empregadoCodigoACDestino;
+	}
+	
 	public Double getValorAnterior()
 	{
 		return valorAnterior;

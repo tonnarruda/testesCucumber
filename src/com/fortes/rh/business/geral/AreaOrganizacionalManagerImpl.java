@@ -864,10 +864,10 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return StringUtil.converteCollectionToArrayString(emailsNotificacoes);
 	}
 
-	public void desvinculaResponsaveis(Long colaboradorId)
+	public void desvinculaResponsaveis(Long... colaboradoresIds)
 	{
-		getDao().desvinculaResponsavel(colaboradorId);		
-		getDao().desvinculaCoResponsavel(colaboradorId);		
+		getDao().desvinculaResponsavel(colaboradoresIds);		
+		getDao().desvinculaCoResponsavel(colaboradoresIds);		
 	}
 	
 	private void correcaoTransientObjectException(AreaOrganizacional areaOrganizacionalTmp) 

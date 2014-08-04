@@ -917,6 +917,9 @@
     <property name="motivoSolicitacaoManager">
       <ref bean="motivoSolicitacaoManager" />
     </property>
+    <property name="comissaoMembroManager">
+      <ref bean="comissaoMembroManager" />
+    </property>
   </bean>
   <bean id="gerenciadorComunicacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

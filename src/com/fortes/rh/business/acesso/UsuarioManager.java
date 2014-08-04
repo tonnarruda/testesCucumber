@@ -39,7 +39,7 @@ public interface UsuarioManager extends GenericManager<Usuario>
 
 	Collection<CheckBox> populaCheckOrderNome(Long empresaId);
 
-	public void desativaAcessoSistema(Long colaboradorId);
+	public void desativaAcessoSistema(Long... colaboradoresIds);
 	
 	public void reativaAcessoSistema(Long colaboradorId);
 

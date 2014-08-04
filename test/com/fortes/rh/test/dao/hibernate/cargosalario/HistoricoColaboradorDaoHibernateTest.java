@@ -1719,6 +1719,41 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(0, historicos.size());
 	}
 	
+	public void testDeleteHistoricosAguardandoConfirmacaoByMultiplosColaboradores()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setEmpresa(empresa);
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmpresa(empresa);
+		colaboradorDao.save(colaborador2);
+		
+		Date hoje = new Date();
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1.setColaborador(colaborador1);
+		historicoColaborador1.setStatus(StatusRetornoAC.AGUARDANDO);
+		historicoColaborador1.setData(hoje);
+		historicoColaboradorDao.save(historicoColaborador1);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2.setColaborador(colaborador2);
+		historicoColaborador2.setStatus(StatusRetornoAC.AGUARDANDO);
+		historicoColaborador2.setData(hoje);
+		historicoColaboradorDao.save(historicoColaborador2);
+
+		historicoColaboradorDao.deleteHistoricosAguardandoConfirmacaoByColaborador(new Long[]{colaborador1.getId(), colaborador2.getId()});
+
+		Collection<HistoricoColaborador> historicos1 = historicoColaboradorDao.findToList(new String[]{"id"}, new String[]{"id"}, new String[]{"colaborador.id", "status"}, new Object[]{colaborador1.getId(), StatusRetornoAC.AGUARDANDO});
+		Collection<HistoricoColaborador> historicos2 = historicoColaboradorDao.findToList(new String[]{"id"}, new String[]{"id"}, new String[]{"colaborador.id", "status"}, new Object[]{colaborador2.getId(), StatusRetornoAC.AGUARDANDO});
+
+		assertEquals(0, historicos1.size());
+		assertEquals(0, historicos2.size());
+	}
+	
 	public void testExisteHistoricoPorIndice()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();

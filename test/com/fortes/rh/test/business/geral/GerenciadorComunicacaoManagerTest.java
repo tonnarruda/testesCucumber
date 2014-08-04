@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 
 import mockit.Mockit;
 
@@ -30,6 +31,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.ProvidenciaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
+import com.fortes.rh.business.sesmt.ComissaoMembroManager;
 import com.fortes.rh.business.sesmt.ExameManager;
 import com.fortes.rh.dao.geral.GerenciadorComunicacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
@@ -119,6 +121,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	private Mock usuarioMensagemManager;
 	private Mock estabelecimentoManager;
 	private Mock usuarioEmpresaManager;
+	private Mock comissaoMembroManager;
 	private Mock questionarioManager;
 	private Mock colaboradorManager;
 	private Mock solicitacaoManager;
@@ -156,6 +159,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 
         mensagemManager = new Mock(MensagemManager.class);
         gerenciadorComunicacaoManager.setMensagemManager((MensagemManager) mensagemManager.proxy());
+        
+		comissaoMembroManager = new Mock(ComissaoMembroManager.class);
+		gerenciadorComunicacaoManager.setComissaoMembroManager((ComissaoMembroManager) comissaoMembroManager.proxy());
         
         areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
         gerenciadorComunicacaoManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
@@ -195,7 +201,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		
 		estabelecimentoManager = new Mock(EstabelecimentoManager.class);
 		MockSpringUtil.mocks.put("estabelecimentoManager", estabelecimentoManager);
-		
+
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
         Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
     }
@@ -846,17 +852,21 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao1, gerenciadorComunicacao2, gerenciadorComunicacao3, gerenciadorComunicacao4);
 		 
-		 colaboradorManager.expects(once()).method("findByCodigoAC").with(ANYTHING, eq(empresa)).will(returnValue(colaborador));
+		 Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+		 colaboradores.add(colaborador);
+		 
+		 colaboradorManager.expects(once()).method("findColaboradoresByCodigoAC").with(eq(empresa), eq(false), ANYTHING).will(returnValue(colaboradores));
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(situacao.getEmpresaCodigoAC()), eq(situacao.getGrupoAC())).will(returnValue(new ArrayList<UsuarioEmpresa>()));
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.DESLIGAR_COLABORADOR_AC.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
-		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments();
 		 areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(eq(colaborador.getAreaOrganizacional().getId()), eq(colaborador.getEmpresa().getId()), eq(AreaOrganizacional.RESPONSAVEL)).will(returnValue(emails));
 		 areaOrganizacionalManager.expects(once()).method("getEmailsResponsaveis").with(eq(colaborador.getAreaOrganizacional().getId()), eq(colaborador.getEmpresa().getId()), eq(AreaOrganizacional.CORRESPONSAVEL)).will(returnValue(emails));
-		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 comissaoMembroManager.expects(once()).method("colaboradoresComEstabilidade").withAnyArguments().will(returnValue(new HashMap<Long, Date>()));
+		 mail.expects(atLeastOnce()).method("send").withAnyArguments();
 		 
 		 Exception exception = null;
 		 try {
-			 gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC("001", situacao.getEmpresaCodigoAC(), situacao.getGrupoAC(), empresa);
+			 gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC(situacao.getEmpresaCodigoAC(), situacao.getGrupoAC(), empresa, "001");
 		 } catch (Exception e) {
 			 exception = e;
 		 }

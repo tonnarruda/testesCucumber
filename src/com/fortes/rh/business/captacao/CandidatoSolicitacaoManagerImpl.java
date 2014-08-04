@@ -211,9 +211,9 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		return getDao().getIdF2RhCandidato(SolicitacaoId);
 	}
 
-	public void setStatusByColaborador(char status, Long... colaboradorId) 
+	public void setStatusByColaborador(char status, Long... colaboradoresIds) 
 	{
-		getDao().setStatusByColaborador(status, colaboradorId);
+		getDao().setStatusByColaborador(status, colaboradoresIds);
 	}
 
 	public void removeCandidato(Long candidatoId) 

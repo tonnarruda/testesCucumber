@@ -19,7 +19,6 @@ public class ParticipacaoColaboradorCipa {
 	private Colaborador colaborador;
 	private Date data;
 	private String descricao;
-	
 	private String funcao;
 	
 	private ParticipacaoColaboradorCipa()
