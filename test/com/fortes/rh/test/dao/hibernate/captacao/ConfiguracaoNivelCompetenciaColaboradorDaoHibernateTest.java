@@ -186,11 +186,11 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 		configuracaoNivelCompetenciaColaborador2.setData(DateUtil.criarDataMesAno(8, 8, 2011));
 		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador2);
 		
-		ConfiguracaoNivelCompetenciaColaborador config1 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(7, 7, 2011), colaborador.getId(), avaliador1.getId());
-		ConfiguracaoNivelCompetenciaColaborador config2 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(8, 8, 2011), colaborador.getId(), avaliador2.getId());
-		ConfiguracaoNivelCompetenciaColaborador config3 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(8, 8, 2011), colaborador2.getId(),avaliador1.getId());
-		ConfiguracaoNivelCompetenciaColaborador config4 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(8, 8, 2011), colaborador.getId(), avaliador1.getId());
-		ConfiguracaoNivelCompetenciaColaborador config5 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(9, 9, 2011), colaborador.getId(), avaliador1.getId());
+		ConfiguracaoNivelCompetenciaColaborador config1 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(7, 7, 2011), colaborador.getId(), avaliador1.getId(), colaboradorQuestionario1.getId());
+		ConfiguracaoNivelCompetenciaColaborador config2 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(8, 8, 2011), colaborador.getId(), avaliador2.getId(), colaboradorQuestionario2.getId());
+		ConfiguracaoNivelCompetenciaColaborador config3 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(8, 8, 2011), colaborador2.getId(),avaliador1.getId(), colaboradorQuestionario1.getId());
+		ConfiguracaoNivelCompetenciaColaborador config4 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(8, 8, 2011), colaborador.getId(), avaliador1.getId(), colaboradorQuestionario1.getId());
+		ConfiguracaoNivelCompetenciaColaborador config5 = configuracaoNivelCompetenciaColaboradorDao.findByData(DateUtil.criarDataMesAno(9, 9, 2011), colaborador.getId(), avaliador1.getId(), colaboradorQuestionario1.getId());
 		
 		assertEquals(configuracaoNivelCompetenciaColaborador1.getId(), config1.getId());
 		assertEquals(configuracaoNivelCompetenciaColaborador2.getId(), config2.getId());

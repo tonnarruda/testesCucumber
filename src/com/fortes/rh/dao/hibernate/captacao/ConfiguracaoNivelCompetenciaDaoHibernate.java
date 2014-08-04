@@ -295,7 +295,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long colaboradorId, Long avaliadorId) 
+	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long colaboradorId, Long colaboradorQuestionarioId) 
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new ConfiguracaoNivelCompetencia(cnc.tipoCompetencia, cnc.competenciaId, cnc.nivelCompetencia.id) "); 
@@ -303,12 +303,12 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		hql.append("left join cnc.configuracaoNivelCompetenciaColaborador cncc "); 
 		hql.append("where cncc.colaborador.id = :colaboradorId ");
 		hql.append("and cncc.data = (select max(data) from ConfiguracaoNivelCompetenciaColaborador where colaborador.id = cncc.colaborador.id) ");
-		hql.append("and (cncc.avaliador.id = :avaliadorId or cncc.avaliador.id is null) ");
+		hql.append("and (cncc.colaboradorQuestionario.id = :colaboradorQuestionarioId or cncc.colaboradorQuestionario.id is null) ");
 		hql.append("order by cnc.competenciaId");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("colaboradorId", colaboradorId);
-		query.setLong("avaliadorId", avaliadorId);
+		query.setLong("colaboradorQuestionarioId", colaboradorQuestionarioId);
 		
 		return query.list();
 	}

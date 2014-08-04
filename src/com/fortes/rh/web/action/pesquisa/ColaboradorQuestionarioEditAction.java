@@ -288,7 +288,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 			nivelCompetencias = nivelCompetenciaManager.findAllSelect(colaborador.getEmpresa().getId());
 			
 			niveisCompetenciaFaixaSalariaisSugeridos = configuracaoNivelCompetenciaManager.findByFaixa(colaborador.getFaixaSalarial().getId());
-			niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByColaborador(colaborador.getId());
+			niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByColaborador(colaborador.getId(), colaboradorQuestionario.getId());
 		}
 		
 		Colaborador colaboradorLogado = colaboradorManager.findByUsuario(getUsuarioLogado(), getEmpresaSistema().getId());
@@ -326,8 +326,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 				colaborador = colaboradorManager.findByIdDadosBasicos(colaboradorQuestionario.getColaborador().getId(), StatusRetornoAC.CONFIRMADO);
 				avaliador = colaboradorManager.findEntidadeComAtributosSimplesById(colaboradorQuestionario.getAvaliador().getId());
 				
-				Acredito que seja necessário passar apenas o id do colaboradorQuestionario(na linha seguinte)
-				configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findByData(hoje, colaborador.getId(), avaliador.getId());
+				configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findByData(hoje, colaborador.getId(), avaliador.getId(), colaboradorQuestionario.getId());
 				if (configuracaoNivelCompetenciaColaborador == null)
 					configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
 				

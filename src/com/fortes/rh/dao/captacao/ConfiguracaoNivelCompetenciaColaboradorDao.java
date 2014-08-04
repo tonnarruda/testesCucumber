@@ -19,5 +19,5 @@ public interface ConfiguracaoNivelCompetenciaColaboradorDao extends GenericDao<C
 
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 
-	ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId, Long avaliadorId);
+	ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId, Long avaliadorId, Long colaboradorQuestionarioId);
 }

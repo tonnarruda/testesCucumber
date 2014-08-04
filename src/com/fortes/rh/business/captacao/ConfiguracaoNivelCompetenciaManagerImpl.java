@@ -294,9 +294,9 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return getDao().somaConfiguracoesByFaixa(faixaSalarialId);
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long colaboradorId) 
+	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long colaboradorId, Long colaboradorQuestionarioId) 
 	{
-		return getDao().findByColaborador(colaboradorId, null);
+		return getDao().findByColaborador(colaboradorId, colaboradorQuestionarioId);
 	}
 
 	public Collection<ConfiguracaoNivelCompetencia> findColaboradoresCompetenciasAbaixoDoNivel(	Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Boolean colaboradoresAvaliados, char agruparPor) 
