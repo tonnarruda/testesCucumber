@@ -855,7 +855,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 		 colaboradores.add(colaborador);
 		 
-		 colaboradorManager.expects(once()).method("findColaboradoresByCodigoAC").with(eq(empresa), ANYTHING).will(returnValue(colaboradores));
+		 colaboradorManager.expects(once()).method("findColaboradoresByCodigoAC").with(eq(empresa), eq(false), ANYTHING).will(returnValue(colaboradores));
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").with(eq(situacao.getEmpresaCodigoAC()), eq(situacao.getGrupoAC())).will(returnValue(new ArrayList<UsuarioEmpresa>()));
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.DESLIGAR_COLABORADOR_AC.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments();

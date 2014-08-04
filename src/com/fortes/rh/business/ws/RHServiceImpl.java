@@ -32,6 +32,7 @@ import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.captacao.Candidato;
@@ -290,8 +291,13 @@ public class RHServiceImpl implements RHService
 		{
 			Empresa empresa = empresaManager.findByCodigoAC(codigoEmpresa, grupoAC);
 			if(colaboradorManager.desligaColaboradorAC(empresa, DateUtil.montaDataByString(dataDesligamento), codigoColaborador))
-			{				
-				gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC(codigoEmpresa, grupoAC, empresa, codigoColaborador);
+			{	
+				try{
+					gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC(codigoEmpresa, grupoAC, empresa, codigoColaborador);
+				} catch (Exception e) {
+					System.out.println("Erro no envio de email de desligamento:\n"  + e.getMessage());
+				}
+				
 				return new FeedbackWebService(true);
 			}
 			else
@@ -312,11 +318,21 @@ public class RHServiceImpl implements RHService
 			Empresa empresa = empresaManager.findByCodigoAC(codigoACEmpresa, grupoAC);
 			if(colaboradorManager.desligaColaboradorAC(empresa, DateUtil.montaDataByString(dataDesligamento), codigosACColaboradores))
 			{				
-				gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC(codigoACEmpresa, grupoAC, empresa, codigosACColaboradores);
+				try {
+					gerenciadorComunicacaoManager.enviaAvisoDesligamentoColaboradorAC(codigoACEmpresa, grupoAC, empresa, codigosACColaboradores);
+				} catch (Exception e) {
+					System.out.println("Erro no envio de email de desligamento:\n"  + e.getMessage());
+				}
+				
 				return new FeedbackWebService(true);
 			}
 			else
 				return new FeedbackWebService(false, "Existem empregados que não foram encontrados no sistema RH", formataException(parametros, null));
+		}
+		catch (FortesException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, e.getMessage(), formataException(parametros, e));
 		}
 		catch (Exception e)
 		{
@@ -364,7 +380,13 @@ public class RHServiceImpl implements RHService
 		Empresa empresaOrigin = null;
 		Empresa empresaDestino= null;
 		
-		if(tEmpresaOrigin.getGrupoAC() != null && !"".equals(tEmpresaOrigin.getGrupoAC()))
+		if(tEmpregados.length == 0)
+			return new FeedbackWebService(false, "Não existem empregados a serem transferidos", null);
+			
+		if(tEmpregados.length != tSituacoes.length)
+			return new FeedbackWebService(false, "Existe uma inconsistência entre a quantidade de empregados e situações.", null);
+
+		if(tEmpresaOrigin != null && tEmpresaOrigin.getGrupoAC() != null && !"".equals(tEmpresaOrigin.getGrupoAC()))
 		{
 			empresaOrigin = empresaManager.findByCodigoAC(tEmpresaOrigin.getCodigoAC(), tEmpresaOrigin.getGrupoAC());
 			
@@ -372,10 +394,10 @@ public class RHServiceImpl implements RHService
 				return new FeedbackWebService(false, "Empresa origem não encontrada no sistema RH", formataException( "empCodigo: " + tEmpresaOrigin.getCodigoAC() + "\ngrupoAC: " + tEmpresaOrigin.getGrupoAC(), null));
 		}
 		
-		if(tEmpresaDestino.getGrupoAC() != null && !"".equals(tEmpresaDestino.getGrupoAC()))
+		if(tEmpresaDestino != null && tEmpresaDestino.getGrupoAC() != null && !"".equals(tEmpresaDestino.getGrupoAC()))
 		{
 			empresaDestino = empresaManager.findByCodigoAC(tEmpresaDestino.getCodigoAC(), tEmpresaDestino.getGrupoAC());
-			
+
 			if(empresaDestino == null)
 				return new FeedbackWebService(false, "Empresa destino não encontrada no sistema RH", formataException( "empCodigo: " + tEmpresaDestino.getCodigoAC() + "\ngrupoAC: " + tEmpresaDestino.getGrupoAC(), null));
 		}
@@ -466,6 +488,11 @@ public class RHServiceImpl implements RHService
 			colaboradorManager.saveEmpregadosESituacoes(tEmpregados, tSituacoes, empresaDestino);
 			
 			return new FeedbackWebService(true);
+		}
+		catch (ConstraintViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, "Empregado existente na empresa destino com mesmo código AC.\nFavor verificar integração dos sistemas", formataException(parametros, e));
 		}
 		catch (Exception e)
 		{

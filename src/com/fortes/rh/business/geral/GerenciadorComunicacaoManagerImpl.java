@@ -830,10 +830,13 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void enviaAvisoDesligamentoColaboradorAC(String codigoEmpresa, String grupoAC, Empresa empresa, String... codigosACColaboradores) 
 	{
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
-		Collection<Colaborador> colaboradores = colaboradorManager.findColaboradoresByCodigoAC(empresa, codigosACColaboradores);
+		Collection<Colaborador> colaboradores = colaboradorManager.findColaboradoresByCodigoAC(empresa, false, codigosACColaboradores);
 		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(codigoEmpresa, grupoAC);
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.DESLIGAR_COLABORADOR_AC.getId(), empresa.getId());
-		Map<Long, Date> colaboradoresComEstabilidade = comissaoMembroManager.colaboradoresComEstabilidade(new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradores));
+
+		Map<Long, Date> colaboradoresComEstabilidade = null;
+		if(colaboradores != null && colaboradores.size() > 0)
+			colaboradoresComEstabilidade = comissaoMembroManager.colaboradoresComEstabilidade(new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradores));
 		
 		for (Colaborador colaborador : colaboradores)
 		{

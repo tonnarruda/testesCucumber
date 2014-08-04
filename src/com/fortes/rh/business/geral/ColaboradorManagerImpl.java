@@ -1007,16 +1007,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().religaColaborador(colaboradorId);
 	}
 
-	public Collection<Colaborador> findColaboradoresByCodigoAC(Empresa empresa, String... codigosACColaboradores)
+	public Collection<Colaborador> findColaboradoresByCodigoAC(Empresa empresa, boolean joinComHistorico, String... codigosACColaboradores)
 	{
-		return getDao().findColaboradoresByCodigoAC(empresa, codigosACColaboradores);
+		return getDao().findColaboradoresByCodigoAC(empresa, joinComHistorico, codigosACColaboradores);
 	}
 
-	public boolean desligaColaboradorAC(Empresa empresa, Date dataDesligamento, String... codigosACColaboradores)
+	public boolean desligaColaboradorAC(Empresa empresa, Date dataDesligamento, String... codigosACColaboradores) throws FortesException, Exception
 	{
-		Collection<Colaborador> colaboradores = getDao().findColaboradoresByCodigoAC(empresa, codigosACColaboradores);
+		Collection<Colaborador> colaboradores = getDao().findColaboradoresByCodigoAC(empresa, false, codigosACColaboradores);
 		
 		try {
+			if(codigosACColaboradores.length != colaboradores.size())
+				throw new FortesException("Desligar Empregado: Existe(m) empregado(s) que não se encontra(m) no sistema RH.");
+
 			desligaColaborador(true, dataDesligamento, "", null, true, new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradores));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1264,23 +1267,28 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaborador;
 	}
 
-	public void saveEmpregadosESituacoes(TEmpregado[] empregados, TSituacao[] tSituacoes, Empresa empresa) throws Exception
+	public void saveEmpregadosESituacoes(TEmpregado[] tEmpregados, TSituacao[] tSituacoes, Empresa empresa) throws Exception
 	{
-		for(int i = 0; i < empregados.length; i++)
+		for(TEmpregado tEmpregado: tEmpregados)
 		{
 			Colaborador colaborador = new Colaborador();
-			bindColaborador(colaborador, empregados[i]);
+			bindColaborador(colaborador, tEmpregado);
+			colaborador.setCodigoAC(tEmpregado.getCodigoACDestino());
 			colaborador.setEmpresa(empresa);
 			getDao().save(colaborador);
 			
 			TSituacao tSituacao = new TSituacao();
 			for (TSituacao tSituacaoTmp : tSituacoes) {
-				if (tSituacaoTmp.getEmpregadoCodigoAC().equals(empregados[i].getCodigoAC()))
+				if (tSituacaoTmp.getEmpregadoCodigoACDestino() != null && tSituacaoTmp.getEmpregadoCodigoACDestino().equals(tEmpregado.getCodigoACDestino()))
 					tSituacao = tSituacaoTmp;
 			}
 			
+			if(tSituacao.getEmpregadoCodigoAC() == null)
+				throw new Exception("O empregado " + colaborador.getNome() + " está sem situação.");
+			
 			HistoricoColaborador historicoColaborador = new HistoricoColaborador();
 			historicoColaborador.setColaborador(colaborador);
+			historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
 			historicoColaboradorManager.bindSituacao(tSituacao, historicoColaborador);
 			historicoColaboradorManager.save(historicoColaborador);
 		}

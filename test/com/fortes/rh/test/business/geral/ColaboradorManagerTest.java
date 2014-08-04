@@ -1253,7 +1253,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		return empregado;
 	}
 
-    public void testSaveEmpregadosESituacoes() throws Exception
+    public void testSaveEmpregadosESituacoesException() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa();
     	
@@ -1264,15 +1264,55 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	pessoal.setEscolaridade("Especialização");
     	
     	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	colaborador.setPessoal(pessoal);
     	Estado estado = EstadoFactory.getEntity(1L);
     	Cidade cidade = CidadeFactory.getEntity();
     	cidade.setId(1L);
     	cidade.setUf(estado);
-    	colaborador.setPessoal(pessoal);
     	
     	TSituacao tSituacao1 = new TSituacao();
     	tSituacao1.setEmpregadoCodigoAC("tEmp1");
 		TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
+    	
+    	cidadeManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(cidade));
+    	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
+    	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
+    	colaboradorDao.expects(once()).method("save").with(ANYTHING).isVoid();
+//    	historicoColaboradorManager.expects(once()).method("bindSituacao").with(eq(tSituacoes[0]), ANYTHING);
+//    	historicoColaboradorManager.expects(once()).method("save").with( ANYTHING);
+    	
+    	Exception e = null;
+    	try {
+    		colaboradorManager.saveEmpregadosESituacoes(new TEmpregado[]{tEmpregado}, tSituacoes, empresa);
+		} catch (Exception e2) {
+			e = e2;
+		}
+    	
+    	assertEquals("O empregado null está sem situação.", e.getMessage());
+    }
+    
+    public void testSaveEmpregadosESituacoes() throws Exception
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	
+    	TEmpregado tEmpregado = iniciaTEmpregado();
+    	tEmpregado.setCodigoACDestino("codigoACDestino");
+    	tEmpregado.setCodigoAC("tEmp1");
+    	
+    	Pessoal pessoal = new Pessoal();
+    	pessoal.setEscolaridade("Especialização");
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	colaborador.setPessoal(pessoal);
+    	Estado estado = EstadoFactory.getEntity(1L);
+    	Cidade cidade = CidadeFactory.getEntity();
+    	cidade.setId(1L);
+    	cidade.setUf(estado);
+    	
+    	TSituacao tSituacao1 = new TSituacao();
+    	tSituacao1.setEmpregadoCodigoAC("tEmp1");
+    	tSituacao1.setEmpregadoCodigoACDestino("codigoACDestino");
+    	TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
     	
     	cidadeManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(cidade));
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
@@ -1284,9 +1324,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Exception e = null;
     	try {
     		colaboradorManager.saveEmpregadosESituacoes(new TEmpregado[]{tEmpregado}, tSituacoes, empresa);
-		} catch (Exception e2) {
-			e = e2;
-		}
+    	} catch (Exception e2) {
+    		e = e2;
+    	}
     	
     	assertNull(e);
     }
