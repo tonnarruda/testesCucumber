@@ -386,7 +386,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     	Empresa empresa = empresaManager.findByIdProjection(getEmpresaSistema().getId());
     	
         solicitacao = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
-    	parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Solicitação Pessoal", getEmpresaSistema(), "");
+    	parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Solicitação de Pessoal", getEmpresaSistema(), "");
     	parametros.put("EXIBIR_COLABORADOR_SUBSTITUIDO", empresa.isSolPessoalExibirColabSubstituido());
 
 		SolicitacaoPessoalRelatorio solicitacaoPessoal = new SolicitacaoPessoalRelatorio(solicitacao);
