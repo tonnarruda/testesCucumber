@@ -3826,7 +3826,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		criteria.setMaxResults(qtdItens);
 		
-		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataIni, empresaIds, areasIds, cargosIds, true).list();
+		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataFim, empresaIds, areasIds, cargosIds, true).list();
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
 		
@@ -3867,7 +3867,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		criteria.setMaxResults(qtdItens);
 		
-		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataIni, empresaIds, areasIds, cargosIds, false).list();
+		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataFim, empresaIds, areasIds, cargosIds, false).list();
 
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
 		

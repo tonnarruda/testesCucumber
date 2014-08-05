@@ -2,6 +2,8 @@
 <Versoes>
 	<Versao id="1.1.13X.158" bd="" data="XX/08/2014">
 		<Item visivel="N" motivo="S20140700032"><![CDATA[WebService: Transferência em lote de empregados.]]></Item>
+		<Item visivel="N" motivo="P20140700131"><![CDATA[Info. Funcionais > Relatórios > Aniversariantes do mês > Formato Excel: Inclusão do bairro no endereço do colaborador.]]></Item>
+		<Item visivel="N" motivo="P20140700219"><![CDATA[BUG: Info. Funcionais > Painel de Indicadores: Os gráficos de ocorrência e de providência estavam apresentando valores errados.]]></Item>
 	</Versao>
 	<Versao id="1.1.131.157" bd="" data="29/07/2014">
 		<Item visivel="S" motivo="S20140600192"><![CDATA[C&S > Relatórios > Colaboradores por Grupo Ocupacional: Nova opção de exibição do cargo ou área organizacional.]]></Item>
