@@ -34,6 +34,8 @@ public class SituacaoColaborador implements Comparable<SituacaoColaborador>
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Colaborador colaborador;
 	
+	private String motivo;
+	
 	@Transient
 	private String dataExtenso;
 	
@@ -60,8 +62,6 @@ public class SituacaoColaborador implements Comparable<SituacaoColaborador>
 		this.colaborador = colaborador;
 		this.motivo = motivo;
 	}
-
-	private String motivo;
 
 	public void setProjectionEstabelecimentoNome(String projectionEstabelecimentoNome)
 	{

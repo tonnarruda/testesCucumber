@@ -1426,11 +1426,10 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.createCriteria("sc.colaborador", "c");
 
 		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("hc.id"), "id");
-		p.add(Projections.property("hc.tipoSalario"), "tipoSalario");
-		p.add(Projections.property("hc.data"), "data");
-		p.add(Projections.property("hc.gfip"), "gfip");
-		p.add(Projections.property("hc.salario"), "salario");
+		p.add(Projections.property("sc.historicoColaboradorId"), "historicoColaboradorId");
+		p.add(Projections.property("sc.data"), "data");
+		p.add(Projections.property("sc.salario"), "salario");
+		p.add(Projections.property("sc.salario"), "salario");
 
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("c.colaborador.atualizarHistoricoPortal", true));
@@ -1439,6 +1438,16 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
 
 		return criteria.list();
+		
+		
+		
+//		Query query = getSession().createQuery("update HistoricoColaborador set status = :novoStatusAC where colaborador.id in (:colaboradoresIds) and status = :statusACAtual ");
+//		
+//		query.setInteger("novoStatusAC", novoStatusAC);
+//		query.setInteger("statusACAtual", statusACAtual);
+//		query.setParameterList("colaboradoresIds", colaboradoresIds);
+//		
+//		return query.list();
 	}
 	
 }

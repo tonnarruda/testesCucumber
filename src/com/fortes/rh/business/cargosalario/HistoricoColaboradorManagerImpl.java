@@ -1485,7 +1485,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return getDao().findByEmpresaComHistoricoPendente(empresaId) ;
 	}
 	
-	public void enviarHistoricosPortal()
+	public void enfileirarHistoricosPC()
 	{
 		Collection<HistoricoColaborador> historicos = getDao().findPendenciasPortal();
 	}
