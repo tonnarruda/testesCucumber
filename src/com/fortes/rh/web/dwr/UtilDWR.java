@@ -58,7 +58,7 @@ public class UtilDWR
 	{ 
 		try
 		{
-			return  200; //transacaoPCManager.testarConexao();
+			return transacaoPCManager.testarConexao();
 		}
 		catch (Exception e)
 		{
@@ -143,7 +143,6 @@ public class UtilDWR
 	{
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
-
 	
 	public void setTransacaoPCManager(TransacaoPCManager transacaoPCManager)
 	{

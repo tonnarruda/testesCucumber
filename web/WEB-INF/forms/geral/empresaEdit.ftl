@@ -125,6 +125,8 @@
 				jAlert("Conexão realizada com sucesso.");
 			else if(statusCode == 401)
 				jAlert("Conexão não autorizada. Verifique se o token está correto.");
+			else
+				jAlert("Ocorreu um erro de conexão. Não foi possível se conectar com o Portal do Colaborador");
 		}
 
 		function enviaForm()
@@ -299,17 +301,18 @@
 			</@ww.div>
 		</li>
 		
-		<li>&nbsp;</li>
-				
-		<li>
-			<@ww.div cssClass="divInfo" cssStyle="height:80px;">
-				<h2>Integração com Portal do Colaborador</h2>
-				<ul>
-					<div style="float:right;"><img id="btnTransferirPC" border="0" title="Testar Conexão com Portal do Colaborador" onclick="testaConexaoPC();" src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>" style="cursor:pointer;"></div>
-					<@ww.checkbox label="Integra com Portal do Colaborador" name="empresa.integradaPortalColaborador" id="integradaPortalColaborador" labelPosition="right"  />
-				</ul>
-			</@ww.div>
-		</li>
+		<#if parametrosDoSistema.pcToken?exists && parametrosDoSistema.pcToken?trim != "">
+			<li>&nbsp;</li>
+			<li>
+				<@ww.div cssClass="divInfo" cssStyle="height:80px;">
+					<h2>Integração com Portal do Colaborador</h2>
+					<ul>
+						<div style="float:right;"><img id="btnTransferirPC" border="0" title="Testar Conexão com Portal do Colaborador" onclick="testaConexaoPC();" src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>" style="cursor:pointer;"></div>
+						<@ww.checkbox label="Integra com Portal do Colaborador" name="empresa.integradaPortalColaborador" id="integradaPortalColaborador" labelPosition="right"  />
+					</ul>
+				</@ww.div>
+			</li>
+		</#if>
 		
 		<li>&nbsp;</li>
 		

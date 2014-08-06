@@ -28,7 +28,7 @@ public enum URLTransacaoPC
 
 	private String getBaseUrl()
 	{
-		return "http://0.0.0.0:3000";
+		return "http://127.0.0.1:3000";
 	}
 	
 	public String getMethod() 

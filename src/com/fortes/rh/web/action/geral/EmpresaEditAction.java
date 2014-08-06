@@ -106,6 +106,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		if (ufs == null)
 			ufs = estadoManager.findAll(new String[]{"sigla"});
 		
+		parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 		grupoACs = grupoACManager.findAll(new String[]{"codigo"});
 	}
 
