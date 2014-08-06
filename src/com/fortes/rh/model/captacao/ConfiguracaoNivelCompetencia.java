@@ -10,8 +10,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
 @SuppressWarnings("serial")
 @Entity
@@ -108,7 +110,8 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setCompetenciaDescricao(competenciaDescricao);
 	}
 	
-	public ConfiguracaoNivelCompetencia(String faixaCompetencia, String faixaNivel, Integer faixaOrdem, String colaboradorNome, BigInteger colaboradorId, String colaboradorNivel, Integer colaboradorOrden)
+	public ConfiguracaoNivelCompetencia(String faixaCompetencia, String faixaNivel, Integer faixaOrdem, String colaboradorNome, BigInteger colaboradorId, 
+			String colaboradorNivel, Integer colaboradorOrden, BigInteger configNCColaboradorId, String avaliadorNome, Boolean avaliacaoAnonima)
 	{
 		competenciaDescricao = faixaCompetencia;
 		nivelCompetencia = new NivelCompetencia();
@@ -121,10 +124,23 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 			colaborador.setId(colaboradorId.longValue());
 		colaborador.setNome(colaboradorNome);
 		configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
+
+		if(configNCColaboradorId != null)
+			configuracaoNivelCompetenciaColaborador.setId(configNCColaboradorId.longValue());
 		
+		if(avaliadorNome != null)
+		{
+			Colaborador avaliador = new Colaborador();
+			avaliador.setNome(avaliadorNome);
+			configuracaoNivelCompetenciaColaborador.setAvaliador(avaliador);
+		}
 		nivelCompetenciaColaborador = new NivelCompetencia();
 		nivelCompetenciaColaborador.setDescricao(colaboradorNivel);
 		nivelCompetenciaColaborador.setOrdem(colaboradorOrden);
+		
+		configuracaoNivelCompetenciaColaborador.setColaboradorQuestionario(new ColaboradorQuestionario());
+		configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().setAvaliacaoDesempenho(new AvaliacaoDesempenho());
+		configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliacaoDesempenho().setAnonima(avaliacaoAnonima == null ? false : avaliacaoAnonima);
 	}
 	
 	public ConfiguracaoNivelCompetencia(BigInteger candidatoId, String candidatoNome, String competencia, String nivel, Integer ordem)

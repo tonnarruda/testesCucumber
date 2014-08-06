@@ -8,6 +8,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManagerImpl;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
@@ -37,6 +38,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 	private Mock configuracaoNivelCompetenciaDao;
 	private Mock nivelCompetenciaManager;
 	private Mock candidatoSolicitacaoManager;
+	private Mock configuracaoNivelCompetenciaColaboradorManager;
 	
 	
 	protected void setUp() throws Exception
@@ -50,6 +52,9 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 
         candidatoSolicitacaoManager = new Mock(CandidatoSolicitacaoManager.class);
         configuracaoNivelCompetenciaManager.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
+        
+        configuracaoNivelCompetenciaColaboradorManager = new Mock(ConfiguracaoNivelCompetenciaColaboradorManager.class);
+        configuracaoNivelCompetenciaManager.setConfiguracaoNivelCompetenciaColaboradorManager((ConfiguracaoNivelCompetenciaColaboradorManager) configuracaoNivelCompetenciaColaboradorManager.proxy());
     }
 
 	public void testSaveByFaixa()
@@ -114,6 +119,9 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		Colaborador maria = ColaboradorFactory.getEntity(2L);
 		maria.setNome("maria");
 
+		Colaborador avaliador = ColaboradorFactory.getEntity(3L);
+		maria.setNome("avaliador");
+
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(999999999999L);
 		
 		NivelCompetencia nivelPessimo = NivelCompetenciaFactory.getEntity();
@@ -130,10 +138,12 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaJoao = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(999999999998L);
 		configuracaoNivelCompetenciaJoao.setColaborador(joao);
+		configuracaoNivelCompetenciaJoao.setAvaliador(avaliador);
 		configuracaoNivelCompetenciaJoao.setFaixaSalarial(faixaSalarial);
 		
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaMaria = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(999999999999L);
 		configuracaoNivelCompetenciaMaria.setColaborador(maria);
+		configuracaoNivelCompetenciaMaria.setAvaliador(avaliador);
 		configuracaoNivelCompetenciaMaria.setFaixaSalarial(faixaSalarial);
 		
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = new ConfiguracaoNivelCompetencia();
@@ -167,6 +177,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 
 		Collection<NivelCompetencia> nivelCompetencias = Arrays.asList(nivelPessimo,nivelRuim,nivelBom);
 		
+		configuracaoNivelCompetenciaColaboradorManager.expects(atLeastOnce()).method("verificaAvaliadorAnonimo").with(ANYTHING).isVoid();
 		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaColaborador").with(eq(competenciaIds), eq(faixaSalarial.getId()), eq(true)).will(returnValue(configuracaoNivelCompetencias));
 		nivelCompetenciaManager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(nivelCompetencias));
 		
@@ -303,8 +314,8 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 	{
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = new ConfiguracaoNivelCompetencia("faixa1", "bom", 5, "Joao", null, "Ruim", 2);
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = new ConfiguracaoNivelCompetencia("faixa2", "medio", 2, "Pedro", null, "otimo", 5);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = new ConfiguracaoNivelCompetencia("faixa1", "bom", 5, "Joao", null, "Ruim", 2, null, "avaliadorNome", false);
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = new ConfiguracaoNivelCompetencia("faixa2", "medio", 2, "Pedro", null, "otimo", 5, null, "avaliadorNome", false);
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias =  Arrays.asList(configuracaoNivelCompetencia1, configuracaoNivelCompetencia2);
 		
 		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaColaborador").with(ANYTHING, eq(faixaSalarial.getId()),ANYTHING).will(returnValue(configuracaoNivelCompetencias));

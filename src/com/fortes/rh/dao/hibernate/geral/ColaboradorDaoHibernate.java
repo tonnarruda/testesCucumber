@@ -4456,7 +4456,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();	
 	}
 
-	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC)
+	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC, boolean semcodigoAc)
 	{
 		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
 				.setProjection(Projections.min("hc2.data")) // Menor data
@@ -4546,7 +4546,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 		criteria.add(Expression.eq("c.desligado", false));
-		criteria.add(Expression.isNull("c.codigoAC"));
+		
+		if(semcodigoAc)
+			criteria.add(Expression.isNull("c.codigoAC"));
 
 		criteria.addOrder(Order.asc("c.nome"));
 

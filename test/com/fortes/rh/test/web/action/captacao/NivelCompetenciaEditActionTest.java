@@ -24,6 +24,7 @@ import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
@@ -334,9 +335,9 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		Collection<ConfiguracaoNivelCompetencia> configuracoes = Arrays.asList(config1, config2);
 		action.setNiveisCompetenciaFaixaSalariais(configuracoes);
 		
-		configuracaoNivelCompetenciaColaboradorManager.expects(once()).method("checarHistoricoMesmaData").with(eq(configuracaoNivelCompetenciaColaborador)).isVoid();
 		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetenciasColaborador").with(eq(configuracoes), eq(configuracaoNivelCompetenciaColaborador)).isVoid();
 		colaboradorManager.expects(once()).method("findById").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		colaboradorManager.expects(once()).method("findByEmpresaAndStatusAC").with(eq(empresa.getId()), eq(StatusRetornoAC.CONFIRMADO), eq(false)).will(returnValue(new ArrayList<Colaborador>()));
 		manager.expects(once()).method("findByCargoOrEmpresa").with(eq(cargo.getId()), eq(empresa.getId())).will(returnValue(configuracoes));
 		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(configuracoes));
 		configuracaoNivelCompetenciaManager.expects(once()).method("findByFaixa").with(eq(faixaSalarial.getId())).will(returnValue(configuracoes));
@@ -375,7 +376,6 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		Collection<ConfiguracaoNivelCompetencia> configuracoes = Arrays.asList(config1, config2);
 		action.setNiveisCompetenciaFaixaSalariais(configuracoes);
 		
-		configuracaoNivelCompetenciaColaboradorManager.expects(once()).method("checarHistoricoMesmaData").with(eq(configuracaoNivelCompetenciaColaborador)).isVoid();
 		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetenciasColaborador").with(eq(configuracoes), eq(configuracaoNivelCompetenciaColaborador)).isVoid();
 		configuracaoNivelCompetenciaColaboradorManager.expects(once()).method("findByIdProjection").with(eq(configuracaoNivelCompetenciaColaborador.getId())).will(returnValue(configuracaoNivelCompetenciaColaborador));
 		configuracaoNivelCompetenciaManager.expects(once()).method("findByConfiguracaoNivelCompetenciaColaborador").with(eq(configuracaoNivelCompetenciaColaborador.getId())).will(returnValue(configuracoes));
@@ -388,45 +388,6 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		assertNotNull(action.getColaborador());
 		assertNotNull(action.getNiveisCompetenciaFaixaSalariais());
 		assertNotNull(action.getNiveisCompetenciaFaixaSalariaisSugeridos());
-	}
-	
-	@SuppressWarnings("unchecked")
-	public void testSaveExceptionCompetenciasColaborador() throws Exception
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		action.setEmpresaSistema(empresa);
-		
-		Cargo cargo = CargoFactory.getEntity();
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
-		faixaSalarial.setCargo(cargo);
-		
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador.setFaixaSalarial(faixaSalarial);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setHistoricoColaborador(historicoColaborador);
-		action.setColaborador(colaborador);
-		
-		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
-		action.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
-		
-		ConfiguracaoNivelCompetencia config1 = new ConfiguracaoNivelCompetencia();
-		ConfiguracaoNivelCompetencia config2 = new ConfiguracaoNivelCompetencia();
-		
-		Collection<ConfiguracaoNivelCompetencia> configuracoes = Arrays.asList(config1, config2);
-		action.setNiveisCompetenciaFaixaSalariais(configuracoes);
-		
-		configuracaoNivelCompetenciaColaboradorManager.expects(once()).method("checarHistoricoMesmaData").will(throwException(new Exception("Já existe configuração para essa data")));
-		colaboradorManager.expects(once()).method("findById").with(eq(colaborador.getId())).will(returnValue(colaborador));
-		manager.expects(once()).method("findByCargoOrEmpresa").with(eq(cargo.getId()), eq(empresa.getId())).will(returnValue(configuracoes));
-		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(configuracoes));
-		configuracaoNivelCompetenciaManager.expects(once()).method("findByFaixa").with(eq(faixaSalarial.getId())).will(returnValue(configuracoes));
-		
-		assertEquals("success", action.saveCompetenciasColaborador());
-		Collection<String> erros = action.getActionErrors(); 
-		
-		assertEquals(1, erros.size());
-		assertEquals("Já existe configuração para essa data", erros.toArray()[0]);
 	}
 	
 	public void testGetSet() throws Exception

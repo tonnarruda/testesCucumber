@@ -297,7 +297,7 @@ public class ExportacaoACAction extends MyActionSupport
 	
 	private void exportarColaboradoresAC() throws Exception
 	{
-		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, StatusRetornoAC.PENDENTE);
+		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, StatusRetornoAC.PENDENTE, true);
 		for (Colaborador colaborador : colaboradores)
 		{
 			colaborador.getHistoricoColaborador().setAreaOrganizacional(colaborador.getAreaOrganizacional());

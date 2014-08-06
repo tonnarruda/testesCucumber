@@ -13,11 +13,11 @@ public interface ConfiguracaoNivelCompetenciaColaboradorManager extends GenericM
 
 	Collection<ConfiguracaoNivelCompetenciaColaborador> findByColaborador(Long colaboradorId);
 
-	void checarHistoricoMesmaData(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) throws Exception;
-
 	void removeColaborador(Colaborador colaborador);
 
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 
 	ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId, Long avaliadorId, Long colaboradorQuestionarioId);
+	
+	void verificaAvaliadorAnonimo(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador);
 }

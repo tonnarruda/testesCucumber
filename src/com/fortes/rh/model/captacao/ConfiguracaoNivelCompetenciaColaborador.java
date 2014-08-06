@@ -13,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
@@ -25,6 +26,8 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 {
 	@ManyToOne
 	private Colaborador colaborador;
+	@ManyToOne
+	private Colaborador avaliador;
 	@ManyToOne
 	private ColaboradorQuestionario colaboradorQuestionario;
 	@ManyToOne
@@ -125,6 +128,54 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 			faixaSalarial = new FaixaSalarial();
 	}
 
+	public void setProjectionAvaliadorNome(String nome)
+	{
+		inicializarAvaliador();
+		getAvaliador().setNome(nome);
+	}
+
+	public void setProjectionAvaliadorId(Long avaliadorId)
+	{
+		inicializarAvaliador();
+		getAvaliador().setId(avaliadorId);
+	}
+	
+	private void inicializarAvaliador()
+	{
+		if(avaliador == null)
+			avaliador = new Colaborador();
+	}
+
+	private void inicializarColaboradorQuestionario()
+	{
+		if(colaboradorQuestionario == null)
+			colaboradorQuestionario = new ColaboradorQuestionario();
+	}
+	
+	public void setProjectionAvaliacaoDesempenhoId(Long avaliacaoDesempenhoId)
+	{
+		inicializarColaboradorQuestionario();
+		getColaboradorQuestionario().setProjectionAvaliacaoDesempenhoId(avaliacaoDesempenhoId);
+	}
+	
+	public void setProjectionAvaliacaoDesempenhoTitulo(String titulo)
+	{
+		inicializarColaboradorQuestionario();
+		getColaboradorQuestionario().setProjectionAvaliacaoDesempenhoTitulo(titulo);
+	}
+	
+	public void setProjectionAvaliacaoDesempenhoAnonima(Boolean anonima)
+	{
+		inicializarColaboradorQuestionario();
+		getColaboradorQuestionario().setProjectionAvaliacaoDesempenhoAnonima(anonima);
+	}
+
+	public void setProjectionColaboradorQuestionarioId(Long colaboradorQuestionarioId)
+	{
+		inicializarColaboradorQuestionario();
+		colaboradorQuestionario.setId(colaboradorQuestionarioId);
+	}
+	
 	public Collection<ConfiguracaoNivelCompetencia> getConfiguracaoNivelCompetencias()
 	{
 		return configuracaoNivelCompetencias;
@@ -143,5 +194,13 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 	public void setColaboradorQuestionario(ColaboradorQuestionario colaboradorQuestionario)
 	{
 		this.colaboradorQuestionario = colaboradorQuestionario;
+	}
+
+	public Colaborador getAvaliador() {
+		return avaliador;
+	}
+
+	public void setAvaliador(Colaborador avaliador) {
+		this.avaliador = avaliador;
 	}
 }

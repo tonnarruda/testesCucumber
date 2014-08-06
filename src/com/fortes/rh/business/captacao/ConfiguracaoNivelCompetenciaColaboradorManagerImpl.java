@@ -12,19 +12,29 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericM
 {
 	public ConfiguracaoNivelCompetenciaColaborador findByIdProjection(Long configuracaoNivelCompetenciaColaboradorId) 
 	{
-		return getDao().findByIdProjection(configuracaoNivelCompetenciaColaboradorId);
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = getDao().findByIdProjection(configuracaoNivelCompetenciaColaboradorId);
+		verificaAvaliadorAnonimo(configuracaoNivelCompetenciaColaborador);
+		return configuracaoNivelCompetenciaColaborador;
 	}
 
 	public Collection<ConfiguracaoNivelCompetenciaColaborador> findByColaborador(Long colaboradorId) 
 	{
-		return getDao().findByColaborador(colaboradorId);
+		Collection<ConfiguracaoNivelCompetenciaColaborador> configuracaoNivelCompetenciaColaboradores = getDao().findByColaborador(colaboradorId);
+		for (ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador : configuracaoNivelCompetenciaColaboradores) 
+			verificaAvaliadorAnonimo(configuracaoNivelCompetenciaColaborador);
+		 
+		return configuracaoNivelCompetenciaColaboradores;
 	}
 
-	public void checarHistoricoMesmaData(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) throws Exception 
+	public void verificaAvaliadorAnonimo(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) 
 	{
-		ConfiguracaoNivelCompetenciaColaborador configMesmaData = getDao().checarHistoricoMesmaData(configuracaoNivelCompetenciaColaborador);
-		if (configMesmaData != null && configMesmaData.getId() != null)
-			throw new Exception("Já existe uma configuração de competências para este Colaborador na data informada.");
+		if(configuracaoNivelCompetenciaColaborador.getAvaliador() == null)
+			configuracaoNivelCompetenciaColaborador.setAvaliador(new Colaborador());
+		
+		if(configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliacaoDesempenho().isAnonima() 
+		|| configuracaoNivelCompetenciaColaborador.getAvaliador().getNome() == null 
+		|| configuracaoNivelCompetenciaColaborador.getAvaliador().getNome().equals(""))
+			configuracaoNivelCompetenciaColaborador.getAvaliador().setNome("Anônimo");
 	}
 
 	public void removeColaborador(Colaborador colaborador) 

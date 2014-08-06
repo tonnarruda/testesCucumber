@@ -170,6 +170,14 @@
 			
 			function enviarForm()
 			{
+				<#if configuracaoNivelCompetenciaColaborador?exists && !configuracaoNivelCompetenciaColaborador.id?exists>
+					if (!validaFormulario('form', new Array('avaliador'), new Array(), true))
+					{
+						jAlert('Selecione um avaliador.');
+						return false;
+					}
+				</#if>
+
 				if (!validaFormulario('form', new Array('data'), new Array('data'), true))
 				{
 					jAlert('Informe uma data correta.');
@@ -208,8 +216,34 @@
 		<@ww.actionmessage />
 		<@ww.actionerror />
 		
+		<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.id?exists>
+			<#assign colaboradorQuestionarioId = configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.id/>
+		<#else>
+			<#assign colaboradorQuestionarioId = ""/>
+		</#if>
+		
+		<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.avaliacaoDesempenho?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.avaliacaoDesempenho.titulo?exists>
+			<#assign avDesempenhoId = configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.avaliacaoDesempenho.id/>
+			<#assign avDesempenhoTitulo = configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.avaliacaoDesempenho.titulo/>
+		<#else>
+			<#assign avDesempenhoId = ""/>
+			<#assign avDesempenhoTitulo = "-"/>
+		</#if>
+
+		<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.avaliador?exists && configuracaoNivelCompetenciaColaborador.avaliador.id?exists>
+			<#assign avaliadorId = configuracaoNivelCompetenciaColaborador.avaliador.id/>
+			<#assign avaliadorNome = configuracaoNivelCompetenciaColaborador.avaliador.nome/>
+		<#else>
+			<#assign avaliadorId = ""/>
+			<#assign avaliadorNome = "Anônimo"/>
+		</#if>
+		
 		<b>Colaborador:</b> ${colaborador.nome}<br>
-		<b>Cargo:</b> ${faixaSalarial.cargo.nome}  &nbsp;&nbsp;  <b>Faixa Salarial:</b> ${faixaSalarial.nome}
+		<b>Cargo:</b> ${faixaSalarial.cargo.nome}  &nbsp;&nbsp;  <b>Faixa Salarial:</b> ${faixaSalarial.nome}<br>
+		<#if configuracaoNivelCompetenciaColaborador?exists && 	configuracaoNivelCompetenciaColaborador.id?exists>
+			<b>Avaliação de Desempenho:</b> ${avDesempenhoTitulo} <br>
+			<b>Avaliador:</b> ${avaliadorNome}<br>
+		</#if>
 		<div style="clear: both;"></div><br />
 		
 		<@ww.form name="form" id="form" action="saveCompetenciasColaborador.action" method="POST">
@@ -220,9 +254,18 @@
 			
 			<@ww.datepicker label="A partir de" name="configuracaoNivelCompetenciaColaborador.data" value="${data}" id="data" cssClass="mascaraData" />
 			
+			<#if configuracaoNivelCompetenciaColaborador?exists && 	configuracaoNivelCompetenciaColaborador.id?exists>
+				<@ww.hidden name="configuracaoNivelCompetenciaColaborador.avaliador.id" id="avaliador" value="${avaliadorId}"/>
+			<#else>
+				<@ww.select label="Avaliador" id="avaliador" name="configuracaoNivelCompetenciaColaborador.avaliador.id" list="colaboradores"  listKey="id" listValue="nome"  headerKey="-1" headerValue="Selecione..." />
+			</#if>
+			
 			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.id" />
 			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.faixaSalarial.id" value="${faixaSalarial.id}"/>
 			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.colaborador.id" value="${colaborador.id}"/>
+			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.id" value="${colaboradorQuestionarioId}"/>
+			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.avaliacaoDesempenho.id" value="${avDesempenhoId}"/>
+			
 			<@ww.hidden name="colaborador.id" />
 			<br />
 			

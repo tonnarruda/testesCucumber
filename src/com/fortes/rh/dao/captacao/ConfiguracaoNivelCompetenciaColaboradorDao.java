@@ -13,8 +13,6 @@ public interface ConfiguracaoNivelCompetenciaColaboradorDao extends GenericDao<C
 
 	Collection<ConfiguracaoNivelCompetenciaColaborador> findByColaborador(Long colaboradorId);
 
-	ConfiguracaoNivelCompetenciaColaborador checarHistoricoMesmaData(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador);
-
 	void removeColaborador(Colaborador colaborador);
 
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;

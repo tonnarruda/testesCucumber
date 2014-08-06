@@ -51,33 +51,4 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerTest extends MockObje
 		
 		assertEquals(2, configuracaoNivelCompetenciaColaboradorManager.findByColaborador(colaborador.getId()).size());
 	}
-	
-	public void testChecarHistoricoMesmaData()
-	{
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		Date data = DateUtil.criarDataMesAno(10, 8, 2011);
-				
-		ConfiguracaoNivelCompetenciaColaborador config1 = new ConfiguracaoNivelCompetenciaColaborador();
-		config1.setId(1L);
-		config1.setColaborador(colaborador);
-		config1.setData(data);
-
-		ConfiguracaoNivelCompetenciaColaborador config2 = new ConfiguracaoNivelCompetenciaColaborador();
-		config2.setId(2L);
-		config2.setColaborador(colaborador);
-		config2.setData(data);
-		
-		configuracaoNivelCompetenciaColaboradorDao.expects(once()).method("checarHistoricoMesmaData").with(eq(config1)).will(returnValue(config2));
-		
-		Exception exception = null;
-		try 
-		{
-			configuracaoNivelCompetenciaColaboradorManager.checarHistoricoMesmaData(config1);
-		} 
-		catch (Exception e) {
-			exception = e;
-		}
-		
-		assertNotNull(exception);
-	}
 }

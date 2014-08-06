@@ -6097,7 +6097,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		criarColaboradorHistorico("Chico", null, empresa2, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, null, null, null, a1, fs1, null, null);
 		criarColaboradorHistorico("Demosval", null, empresa2, DateUtil.criarDataMesAno(1, 5, 2009), DateUtil.criarDataMesAno(1, 11, 2009), null, null, null, null, a1, fs1, null, null);
 		
-		Collection<Colaborador> colaboradores = colaboradorDao.findByEmpresaAndStatusAC(empresa1.getId(), StatusRetornoAC.CONFIRMADO);
+		Collection<Colaborador> colaboradores = colaboradorDao.findByEmpresaAndStatusAC(empresa1.getId(), StatusRetornoAC.CONFIRMADO, true);
 		
 		assertEquals(2, colaboradores.size());
 		assertEquals("Airton", ((Colaborador)colaboradores.toArray()[0]).getNome());

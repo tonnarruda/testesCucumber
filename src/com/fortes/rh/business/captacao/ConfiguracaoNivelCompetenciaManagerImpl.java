@@ -46,6 +46,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	}
 
 	public void saveCompetenciasColaborador(Collection<ConfiguracaoNivelCompetencia> configuracaoNiveisCompetencias, ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) {
+		ajustaConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
 		if (configuracaoNivelCompetenciaColaborador.getId() != null) 
 		{
 			configuracaoNivelCompetenciaColaboradorManager.update(configuracaoNivelCompetenciaColaborador);
@@ -65,6 +66,21 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				}
 			}
 		}
+	}
+	
+	private void ajustaConfiguracaoNivelCompetenciaColaborador(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador){
+		if(configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario() != null && configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getId() == null)
+			configuracaoNivelCompetenciaColaborador.setColaboradorQuestionario(null);
+		else{
+			if(configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliacaoDesempenho() != null && configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliacaoDesempenho().getId() == null)
+				configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().setAvaliacaoDesempenho(null);
+
+			if(configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliador() != null && configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliador().getId() == null)
+				configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().setAvaliador(null);
+		}
+		
+		if(configuracaoNivelCompetenciaColaborador.getAvaliador() != null && (configuracaoNivelCompetenciaColaborador.getAvaliador().getId() == null || configuracaoNivelCompetenciaColaborador.getAvaliador().getId().equals(0L)))
+			configuracaoNivelCompetenciaColaborador.setAvaliador(null);
 	}
 
 	public Collection<ConfiguracaoNivelCompetencia> getCompetenciasCandidato(Long candidatoId, Long empresaId) {
@@ -148,7 +164,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaNivel.getKey(), "GAP", false, false, 0));
 		}
 
-		Long idColaboradorAnterior = null;
+		Long configNCColaboradorId = 0L;
 		ConfiguracaoNivelCompetenciaVO vo = null;
 		
 		String nome;
@@ -156,24 +172,29 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		String nivel;
 		Integer ordem;
 		Integer ordemFaixa;
+		String avaliadorNome;
 		
-		for (ConfiguracaoNivelCompetencia configNivelCompetenciaColaborador : configuracaoNivelCompetencias) 
+		for (ConfiguracaoNivelCompetencia configNivelCompetencia : configuracaoNivelCompetencias) 
 		{
-			nome = configNivelCompetenciaColaborador.getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome();
-			competencia = configNivelCompetenciaColaborador.getCompetenciaDescricao();
-			nivel = configNivelCompetenciaColaborador.getNivelCompetenciaColaborador().getDescricao();
-			ordem = configNivelCompetenciaColaborador.getNivelCompetenciaColaborador().getOrdem();
-			ordemFaixa = configNivelCompetenciaColaborador.getNivelCompetencia().getOrdem();
+			avaliadorNome = "";
+			nome = configNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador().getColaborador().getNome();
+			competencia = configNivelCompetencia.getCompetenciaDescricao();
+			nivel = configNivelCompetencia.getNivelCompetenciaColaborador().getDescricao();
+			ordem = configNivelCompetencia.getNivelCompetenciaColaborador().getOrdem();
+			ordemFaixa = configNivelCompetencia.getNivelCompetencia().getOrdem();
 			
-			if(configNivelCompetenciaColaborador.isColaborador())
+			if(configNivelCompetencia.isColaborador())
 			{
-				if(!configNivelCompetenciaColaborador.getColaboradorId().equals(idColaboradorAnterior))
+				if(!configNCColaboradorId.equals(configNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador().getId()))
 				{
 					Collection<MatrizCompetenciaNivelConfiguracao> matrizCompetenciaNivelConfiguracaos = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
 					for (MatrizCompetenciaNivelConfiguracao matrizCompNivelConfig : matrizModelo)
 						matrizCompetenciaNivelConfiguracaos.add(new MatrizCompetenciaNivelConfiguracao(matrizCompNivelConfig.getCompetencia(), matrizCompNivelConfig.getNivel(), matrizCompNivelConfig.getConfiguracaoFaixa(), matrizCompNivelConfig.getConfiguracao(), matrizCompNivelConfig.getGap()));
 					
-					vo = new ConfiguracaoNivelCompetenciaVO(nome, matrizCompetenciaNivelConfiguracaos);
+					configuracaoNivelCompetenciaColaboradorManager.verificaAvaliadorAnonimo(configNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador());
+					avaliadorNome = configNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador().getAvaliador().getNome();
+						
+					vo = new ConfiguracaoNivelCompetenciaVO(nome, avaliadorNome, matrizCompetenciaNivelConfiguracaos);
 					vo.setTotalPontosFaixa(totalPontosFaixa);
 					vos.add(vo);
 				}
@@ -196,7 +217,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				if((ordem - ordemFaixa) > 0)
 					vo.setTotalGapExcedenteAoCargo(ordem - ordemFaixa); 
 				
-				idColaboradorAnterior = configNivelCompetenciaColaborador.getColaboradorId();
+				configNCColaboradorId = configNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador().getId();
 			}
 		}
 		
@@ -294,9 +315,9 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return getDao().somaConfiguracoesByFaixa(faixaSalarialId);
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long colaboradorId, Long colaboradorQuestionarioId) 
+	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long colaboradorId, Long avaliadorId, Long colaboradorQuestionarioId) 
 	{
-		return getDao().findByColaborador(colaboradorId, colaboradorQuestionarioId);
+		return getDao().findByColaborador(colaboradorId, avaliadorId, colaboradorQuestionarioId);
 	}
 
 	public Collection<ConfiguracaoNivelCompetencia> findColaboradoresCompetenciasAbaixoDoNivel(	Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Boolean colaboradoresAvaliados, char agruparPor) 

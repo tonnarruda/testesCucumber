@@ -140,7 +140,8 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	{
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("select COALESCE(a.nome, conhe.nome, h.nome) as competencia,  ncncf.descricao as nivelFaixaDescricao, ncncf.ordem as nivelFaixaOrdem, c.nome as colabNome, c.id as colabId, nc.descricao as nivelColabDescricao, nc.ordem as nivelColabOrdem from "); 
+		sql.append("select COALESCE(a.nome, conhe.nome, h.nome) as competencia,  ncncf.descricao as nivelFaixaDescricao, ncncf.ordem as nivelFaixaOrdem, c.nome as colabNome, c.id as colabId, nc.descricao as nivelColabDescricao, nc.ordem as nivelColabOrdem, " +
+				"cncc.id as configNCColaboradorId, av.nome as avaliadorNome, ad.anonima as avaliacaoAnonima from "); 
 		sql.append("ConfiguracaoNivelCompetencia cncf ");
 		sql.append("join NivelCompetencia ncncf on ncncf.id = cncf.nivelcompetencia_id ");
 		sql.append("left join Atitude a on a.id = cncf.competencia_id and :tipoAtitude = cncf.tipocompetencia ");
@@ -151,6 +152,9 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("left join NivelCompetencia nc on nc.id = cnc.nivelcompetencia_id ");
 		sql.append("left join ConfiguracaoNivelCompetenciaColaborador cncc on cncc.id = cnc.ConfiguracaoNivelCompetenciaColaborador_id ");
 		sql.append("left join Colaborador c on c.id = cncc.colaborador_id ");
+		sql.append("left join Colaborador av on av.id = cncc.avaliador_id ");
+		sql.append("left join ColaboradorQuestionario cq on cq.id = cncc.colaboradorQuestionario_id ");
+		sql.append("left join AvaliacaoDesempenho ad on ad.id = cq.avaliacaoDesempenho_id ");
 		sql.append("where  ");
 		sql.append("(cncc.data = (select max(data) from ConfiguracaoNivelCompetenciaColaborador where colaborador_id = cncc.colaborador_id and cncc.faixaSalarial_id = :faixaSalarialColaboradorId) ");
 		sql.append("or cncc.data is null) ");
@@ -158,7 +162,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("and cncf.id in (:configuracaoNivelCompetenciaIds) ");
 		
 		if(ordenarPorNivel)
-			sql.append("order by c.nome, c.id, competencia ");
+			sql.append("order by c.nome, c.id, cncc.id, competencia ");
 		else
 			sql.append("order by competencia, c.nome ");
 		
@@ -176,7 +180,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
-			lista.add(new ConfiguracaoNivelCompetencia((String)res[0], (String)res[1], (Integer)res[2], (String)res[3], ((BigInteger)res[4]), (String)res[5], (Integer)res[6] ));
+			lista.add(new ConfiguracaoNivelCompetencia((String)res[0], (String)res[1], (Integer)res[2], (String)res[3], ((BigInteger)res[4]), (String)res[5], (Integer)res[6], ((BigInteger)res[7]),  (String)res[8], (Boolean)res[9] ));
 		}
 		
 		return lista;				
@@ -295,7 +299,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long colaboradorId, Long colaboradorQuestionarioId) 
+	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long colaboradorId, Long avaliadorId, Long colaboradorQuestionarioId) 
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new ConfiguracaoNivelCompetencia(cnc.tipoCompetencia, cnc.competenciaId, cnc.nivelCompetencia.id) "); 
@@ -304,11 +308,13 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		hql.append("where cncc.colaborador.id = :colaboradorId ");
 		hql.append("and cncc.data = (select max(data) from ConfiguracaoNivelCompetenciaColaborador where colaborador.id = cncc.colaborador.id) ");
 		hql.append("and (cncc.colaboradorQuestionario.id = :colaboradorQuestionarioId or cncc.colaboradorQuestionario.id is null) ");
+		hql.append("and (cncc.avaliador.id = :avaliadorId or cncc.avaliador.id is null) ");
 		hql.append("order by cnc.competenciaId");
 		
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("colaboradorId", colaboradorId);
 		query.setLong("colaboradorQuestionarioId", colaboradorQuestionarioId);
+		query.setLong("avaliadorId", avaliadorId);
 		
 		return query.list();
 	}

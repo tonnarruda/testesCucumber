@@ -302,16 +302,15 @@
 			</#if>
 		</@authz.authorize>
 
-		<button onclick="window.location='../solicitacao/list.action'" class="btnVoltar" accesskey="V"></button>
-		
-		<@authz.authorize ifAllGranted="EXIBIR_COMPETENCIA_SOLICITACAO">
-			<br /><br />
+		<@authz.authorize ifAllGranted="ROLE_CAND_SOL_MATRIZ_COMPETENCIA_SOLICITACAO">
 			<#if existeCompetenciaParaFaixa>
 				<button onclick="window.location='../nivelCompetencia/imprimirMatrizCompetenciasCandidatos.action?faixaSalarial.id=${solicitacao.faixaSalarial.id}&solicitacao.id=${solicitacao.id}'" class="btnMatrizCompetencia"></button>
 			<#else>
 				<img border="0" title="Não existe Competência configurada para a Faixa Salarial" style="opacity:0.2;filter:alpha(opacity=20);" src="<@ww.url includeParams="none" value="/imgs/btnMatrizCompetencia.gif"/>">
 			</#if>
 		</@authz.authorize>
+
+		<button onclick="window.location='../solicitacao/list.action'" class="btnVoltar" accesskey="V"></button>
 	</div>
 	
 	<div style="clear: both;"></div>

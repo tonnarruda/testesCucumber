@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="matriz_colaboradores_competencias" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="c591838f-837b-4ba7-bdfa-4d758e28143c">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.357947691000002"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -11,10 +11,12 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
 	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
 	<parameter name="ENTIDADE" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="AVALIADOR" class="java.lang.String"/>
 	<field name="nome" class="java.lang.String"/>
 	<field name="matrizes" class="java.lang.Object"/>
 	<field name="totaisDescricao" class="java.lang.String"/>
 	<field name="totalGapExcedenteCargoDescricao" class="java.lang.String"/>
+	<field name="avaliadorNome" class="java.lang.String"/>
 	<variable name="NUM_PAGINA" class="java.lang.Integer" resetType="None" incrementType="Page" calculation="Count">
 		<variableExpression><![CDATA[$V{PAGE_NUMBER}]]></variableExpression>
 	</variable>
@@ -84,9 +86,9 @@
 		<band height="5" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="108" splitType="Stretch">
+		<band height="119" splitType="Stretch">
 			<subreport isUsingCache="false">
-				<reportElement uuid="8577eb24-cc03-4f39-bec1-77b4f0e3e5f9" key="colabPorSetor" positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="7" y="25" width="520" height="50" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
+				<reportElement uuid="8577eb24-cc03-4f39-bec1-77b4f0e3e5f9" key="colabPorSetor" positionType="Float" isPrintRepeatedValues="false" mode="Opaque" x="7" y="37" width="520" height="50" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true"/>
 				<subreportParameter name="REPORT_DATA_SOURCE">
 					<subreportParameterExpression><![CDATA[$F{matrizes}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -96,7 +98,7 @@
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "matriz_colaboradores_competencias_sub.jasper"]]></subreportExpression>
 			</subreport>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="37dc1b81-01ba-4a9c-9aae-9e1915ec6c5c" key="textField-1" positionType="Float" x="8" y="79" width="263" height="12"/>
+				<reportElement uuid="37dc1b81-01ba-4a9c-9aae-9e1915ec6c5c" key="textField-1" positionType="Float" x="8" y="91" width="263" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -122,7 +124,7 @@
 				<textFieldExpression><![CDATA[$P{ENTIDADE} + ": " + $F{nome}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="fe6c94b8-2c80-4fb4-86a7-d667f94243a7" key="textField-6" positionType="Float" x="8" y="92" width="389" height="12"/>
+				<reportElement uuid="fe6c94b8-2c80-4fb4-86a7-d667f94243a7" key="textField-6" positionType="Float" x="8" y="104" width="389" height="12"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -133,6 +135,21 @@
 					<font size="8" isBold="false" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Índice de assertividade desconsiderando GAP positivo: " + $F{totalGapExcedenteCargoDescricao}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement uuid="104a0232-2396-408b-8fb4-36f7d252838a" key="textField-5" positionType="Float" x="7" y="22" width="520" height="14">
+					<printWhenExpression><![CDATA[$F{avaliadorNome} != null]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{AVALIADOR} + ": " + $F{avaliadorNome}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

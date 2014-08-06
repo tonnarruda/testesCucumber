@@ -22,6 +22,8 @@
 		</@display.column>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width: 75px;text-align: center;"/>
 		<@display.column property="faixaSalarial.descricao" title="Cargo / Faixa Salarial"/>
+		<@display.column property="colaboradorQuestionario.avaliacaoDesempenho.titulo" title="Avaliação de Desempenho"/>
+		<@display.column property="avaliador.nome" title="Avaliador"/>
 	</@display.table>
 
 	<div class="buttonGroup">

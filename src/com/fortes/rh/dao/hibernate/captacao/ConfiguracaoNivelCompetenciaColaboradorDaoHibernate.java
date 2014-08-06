@@ -26,6 +26,9 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		criteria.createCriteria("cncc.colaborador", "co", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("cncc.faixaSalarial", "fs", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("fs.cargo", "ca", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cncc.colaboradorQuestionario", "cq", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cncc.avaliador", "av", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cq.avaliacaoDesempenho", "ad", CriteriaSpecification.LEFT_JOIN);
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cncc.id"), "id");
@@ -36,6 +39,12 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		p.add(Projections.property("ca.nome"), "projectionCargoNome");
 		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
 		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
+		p.add(Projections.property("ad.id"), "projectionAvaliacaoDesempenhoId");
+		p.add(Projections.property("ad.titulo"), "projectionAvaliacaoDesempenhoTitulo");
+		p.add(Projections.property("ad.anonima"), "projectionAvaliacaoDesempenhoAnonima");
+		p.add(Projections.property("av.id"), "projectionAvaliadorId");
+		p.add(Projections.property("av.nome"), "projectionAvaliadorNome");
+		p.add(Projections.property("cq.id"), "projectionColaboradorQuestionarioId");
 
 		criteria.setProjection(p);
 		
@@ -49,49 +58,33 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 	public Collection<ConfiguracaoNivelCompetenciaColaborador> findByColaborador(Long colaboradorId) 
 	{
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaColaborador.class, "cncc");
-		criteria.createCriteria("cncc.colaborador", "co", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cncc.colaboradorQuestionario", "cq", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cncc.avaliador", "av", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cq.avaliacaoDesempenho", "ad", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("cncc.faixaSalarial", "fs", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("fs.cargo", "ca", CriteriaSpecification.LEFT_JOIN);
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cncc.id"), "id");
 		p.add(Projections.property("cncc.data"), "data");
-		p.add(Projections.property("co.nome"), "projectionColaboradorNome");
 		p.add(Projections.property("ca.nome"), "projectionCargoNome");
 		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
+		p.add(Projections.property("ad.id"), "projectionAvaliacaoDesempenhoId");
+		p.add(Projections.property("ad.titulo"), "projectionAvaliacaoDesempenhoTitulo");
+		p.add(Projections.property("ad.anonima"), "projectionAvaliacaoDesempenhoAnonima");
+		p.add(Projections.property("av.id"), "projectionAvaliadorId");
+		p.add(Projections.property("av.nome"), "projectionAvaliadorNome");
+		p.add(Projections.property("cq.id"), "projectionColaboradorQuestionarioId");
 
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.eq("co.id", colaboradorId));
+		criteria.add(Expression.eq("cncc.colaborador.id", colaboradorId));
 		criteria.addOrder(Order.desc("cncc.data"));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetenciaColaborador.class));
 		
 		return criteria.list();
-	}
-
-	public ConfiguracaoNivelCompetenciaColaborador checarHistoricoMesmaData(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) 
-	{
-		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaColaborador.class, "cncc");
-		criteria.createCriteria("cncc.colaborador", "co", CriteriaSpecification.LEFT_JOIN);
-		
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("cncc.id"), "id");
-		p.add(Projections.property("cncc.data"), "data");
-
-		criteria.setProjection(p);
-		
-		if (configuracaoNivelCompetenciaColaborador.getId() != null)
-			criteria.add(Expression.ne("cncc.id", configuracaoNivelCompetenciaColaborador.getId()));
-		
-		criteria.add(Expression.eq("cncc.data", configuracaoNivelCompetenciaColaborador.getData()));
-		criteria.add(Expression.eq("co.id", configuracaoNivelCompetenciaColaborador.getColaborador().getId()));
-		
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetenciaColaborador.class));
-		
-		
-		return (ConfiguracaoNivelCompetenciaColaborador)criteria.uniqueResult();
 	}
 
 	public void removeColaborador(Colaborador colaborador) {
@@ -134,7 +127,7 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		
 		criteria.add(Expression.eq("co.id", colaboradorId));
 		criteria.add(Expression.or(Expression.eq("cq.id", colaboradorQuestionarioId),Expression.isNull("cq.id")));
-		criteria.add(Expression.or(Expression.eq("cq.avaliador.id", avaliadorId),Expression.isNull("cq.avaliador.id")));
+		criteria.add(Expression.or(Expression.eq("cncc.avaliador.id", avaliadorId),Expression.isNull("cncc.avaliador.id")));
 		criteria.add(Expression.eq("cncc.data", data));
 		criteria.addOrder(Order.desc("cncc.data"));
 		

@@ -15,14 +15,16 @@ public class ConfiguracaoNivelCompetenciaVO
 	private Integer totalGapExcedenteAoCargo = 0;
 	private Integer totalPontosFaixa;
 	private Collection<MatrizCompetenciaNivelConfiguracao> matrizes;
+	private String avaliadorNome;
 
 	public ConfiguracaoNivelCompetenciaVO() {
 		super();
 	}
-	public ConfiguracaoNivelCompetenciaVO(String nome, Collection<MatrizCompetenciaNivelConfiguracao> matrizes) {
+	public ConfiguracaoNivelCompetenciaVO(String nome, String avaliadorNome, Collection<MatrizCompetenciaNivelConfiguracao> matrizes) {
 		super();
 		this.nome = nome;
 		this.matrizes = matrizes;
+		this.avaliadorNome = avaliadorNome;
 	}
 	
 	public ConfiguracaoNivelCompetenciaVO(String candidatoNome, Collection<MatrizCompetenciaNivelConfiguracao> matriz, int totalPontosFaixa) 
@@ -115,5 +117,8 @@ public class ConfiguracaoNivelCompetenciaVO
 	}
 	public void setTotalGapExcedenteAoCargo(Integer totalGapExcedenteAoCargo) {
 		this.totalGapExcedenteAoCargo = totalGapExcedenteAoCargo;
+	}
+	public String getAvaliadorNome() {
+		return avaliadorNome;
 	}
 }
