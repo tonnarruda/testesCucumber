@@ -7,11 +7,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.PersistenceException;
 
@@ -50,6 +52,8 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.PendenciaAC;
+import com.fortes.rh.model.portalcolaborador.ColaboradorPC;
+import com.fortes.rh.model.portalcolaborador.HistoricoColaboradorPC;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
@@ -496,9 +500,17 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	public Collection<HistoricoColaborador> progressaoColaborador(Long colaboradorId, Long empresaId) throws Exception
 	{
-		Collection<HistoricoColaborador> retorno = new ArrayList<HistoricoColaborador>();
 		List<HistoricoColaborador> historicoColaboradors = (List<HistoricoColaborador>) findPromocaoByColaborador(colaboradorId);
+		Collection<HistoricoColaborador> retorno = montaSituacaoHistoricoColaborador(historicoColaboradors);
+		montaAreaOrganizacional(empresaId, retorno);
 
+		return retorno;
+	}
+
+	public Collection<HistoricoColaborador> montaSituacaoHistoricoColaborador(List<HistoricoColaborador> historicoColaboradors) 
+	{
+		Collection<HistoricoColaborador> retorno = new ArrayList<HistoricoColaborador>();
+	
 		int proximo = 1;
 		for (HistoricoColaborador historicoColaboradorTmp : historicoColaboradors)
 		{
@@ -563,9 +575,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 			proximo++;
 		}
-
-		montaAreaOrganizacional(empresaId, retorno);
-
 		return retorno;
 	}
 
@@ -1487,7 +1496,24 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	
 	public void enfileirarHistoricosPC()
 	{
-		Collection<HistoricoColaborador> historicos = getDao().findPendenciasPortal();
+		List<HistoricoColaborador> historicos = getDao().findPendenciasPortal();
+		montaSituacaoHistoricoColaborador(historicos);
+		
+		ColaboradorPC colaboradorPC = null;
+		HistoricoColaboradorPC historicoColaboradorPC;
+		Set<ColaboradorPC> colaboradorPCs = new HashSet<ColaboradorPC>();
+		
+		for (HistoricoColaborador historico : historicos) {
+			
+			if(colaboradorPC == null || !colaboradorPC.getCpf().equals(historico.getColaborador().getPessoal().getCpf()))
+				colaboradorPC = new ColaboradorPC(historico.getColaborador());
+			
+			historicoColaboradorPC = new HistoricoColaboradorPC();
+			colaboradorPC.getHistoricosPc().add(historicoColaboradorPC);
+			
+			colaboradorPCs.add(colaboradorPC);
+		}
+		
 	}
 
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId) 

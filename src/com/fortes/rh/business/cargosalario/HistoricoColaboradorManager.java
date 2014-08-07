@@ -171,4 +171,6 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId);
 	
 	public void enfileirarHistoricosPC();
+	
+	public Collection<HistoricoColaborador> montaSituacaoHistoricoColaborador(List<HistoricoColaborador> historicoColaboradors);
 }

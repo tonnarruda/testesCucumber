@@ -1,5 +1,7 @@
 package com.fortes.rh.model.portalcolaborador;
 
+import java.util.List;
+
 import javax.persistence.Transient;
 
 import com.fortes.rh.model.geral.Colaborador;
@@ -29,6 +31,7 @@ public class ColaboradorPC extends AbstractAdapterPC
 	private String mae; 
 	@SerializedName("qtd_filhos")
 	private Integer qtdFilhos;
+	private List<HistoricoColaboradorPC> historicosPc;
 	
 	@Transient
 	private ArquivoPC foto;
@@ -197,6 +200,14 @@ public class ColaboradorPC extends AbstractAdapterPC
 		this.qtdFilhos = qtdFilhos;
 	}
 	
+	public List<HistoricoColaboradorPC> getHistoricosPc() {
+		return historicosPc;
+	}
+	
+	public void setHistoricosPc(List<HistoricoColaboradorPC> historicosPc) {
+		this.historicosPc = historicosPc;
+	}
+
 	public String toJson()
 	{
 		Gson gson = new Gson();
@@ -207,4 +218,5 @@ public class ColaboradorPC extends AbstractAdapterPC
 		
 		return jsonObject.toString();
 	}
+
 }

@@ -1420,34 +1420,19 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 	
-	public Collection<HistoricoColaborador> findPendenciasPortal() 
+	public List<HistoricoColaborador> findPendenciasPortal() 
 	{
-		Criteria criteria = getSession().createCriteria(SituacaoColaborador.class, "sc");
-		criteria.createCriteria("sc.colaborador", "c");
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new HistoricoColaborador(e.cnpj, c.cpf, sc.data, sc.estabelecimentoNome, monta_familia_area(sc.areaId) as area, sc.faixaid, sc.faixanome as faixaNome, sc.cargonome as cargoNome, sc.indiceid, sc.salario, sc.tipo, sc.motivo) ");
+		hql.append("from situacaocolaborador as sc ");
+		hql.append("inner join sc.colaborador as c ");
+		hql.append("inner join c.empresa as e ");
+		hql.append("where c.atualizarhistoricoportal = true ");
+		hql.append("order by e.cnpj, c.cpf, sc.data ");
 
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("sc.historicoColaboradorId"), "historicoColaboradorId");
-		p.add(Projections.property("sc.data"), "data");
-		p.add(Projections.property("sc.salario"), "salario");
-		p.add(Projections.property("sc.salario"), "salario");
+		Query query = getSession().createQuery(hql.toString());
 
-		criteria.setProjection(p);
-		criteria.add(Expression.eq("c.colaborador.atualizarHistoricoPortal", true));
-
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
-
-		return criteria.list();
-		
-		
-		
-//		Query query = getSession().createQuery("update HistoricoColaborador set status = :novoStatusAC where colaborador.id in (:colaboradoresIds) and status = :statusACAtual ");
-//		
-//		query.setInteger("novoStatusAC", novoStatusAC);
-//		query.setInteger("statusACAtual", statusACAtual);
-//		query.setParameterList("colaboradoresIds", colaboradoresIds);
-//		
-//		return query.list();
+		return query.list();
 	}
 	
 }
