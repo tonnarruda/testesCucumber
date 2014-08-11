@@ -3812,14 +3812,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		projections.add(Projections.count("co.id"));
 		criteria.setProjection(projections);
 		
-		criteria.add(
-			Expression.or( 
-				Expression.between("co.dataIni", dataIni, dataFim), 
-				Expression.and(
-					Expression.lt("co.dataIni", dataIni), Expression.isNull("co.dataFim")
-				)
-			)
-		);
+		criteria.add(Expression.between("co.dataIni", dataIni, dataFim));
 		
 		criteria.addOrder(OrderBySql.sql("2 asc"));
 		criteria.addOrder(Order.asc("o.descricao"));
@@ -3852,15 +3845,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				.add(Projections.count("co.id"));
 		criteria.setProjection(projections);
 		
-		criteria.add(Expression.isNotNull("co.providencia")); 
-		criteria.add(
-			Expression.or( 
-				Expression.between("co.dataIni", dataIni, dataFim), 
-				Expression.and(
-					Expression.lt("co.dataIni", dataIni), Expression.isNull("co.dataFim")
-				)
-			)
-		);
+		criteria.add(Expression.between("co.dataIni", dataIni, dataFim));
 		
 		criteria.addOrder(OrderBySql.sql("2 asc"));
 		criteria.addOrder(Order.asc("p.descricao"));

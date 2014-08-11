@@ -351,7 +351,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try
 		{
 			avaliacaoDesempenhoManager.remove(avaliacaoDesempenho.getId());
-			addActionMessage("Avaliação de desempenho excluída com sucesso.");
+			addActionSuccess("Avaliação de desempenho excluída com sucesso.");
 		}
 		catch (Exception e)
 		{
