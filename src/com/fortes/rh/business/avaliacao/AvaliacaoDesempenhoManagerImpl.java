@@ -114,7 +114,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 
 	public void liberar(AvaliacaoDesempenho avaliacaoDesempenho, Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores) throws Exception
 	{
-		colaboradorQuestionarioManager.associarParticipantes(avaliacaoDesempenho, avaliados, avaliados);
+		colaboradorQuestionarioManager.associarParticipantes(avaliacaoDesempenho, avaliados, avaliadores);
 		getDao().liberarOrBloquear(avaliacaoDesempenho.getId(), true);
 	}
 
