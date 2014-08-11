@@ -387,8 +387,8 @@
 				/captacao/solicitacao/updateStatusSolicitacao*/**=ROLE_LIBERA_SOLICITACAO
 				/captacao/solicitacao/agenda*/**=ROLE_SOLICITACAO_AGENDA
 				/captacao/solicitacao/imprimirSolicitacaoPessoal*/**=ROLE_MOV_SOLICITACAO_IMPRIMIR
-				/captacao/solicitacao/prepareInsert*/**=ROLE_MOV_SOLICITACAO_EDITAR, ROLE_MOV_SOLICITACAO_CLONAR
-				/captacao/solicitacao/insert*/**=ROLE_MOV_SOLICITACAO_EDITAR, ROLE_MOV_SOLICITACAO_CLONAR
+				/captacao/solicitacao/prepareInsert*/**=ROLE_MOV_SOLICITACAO_INSERIR, ROLE_MOV_SOLICITACAO_CLONAR
+				/captacao/solicitacao/insert*/**=ROLE_MOV_SOLICITACAO_INSERIR, ROLE_MOV_SOLICITACAO_CLONAR
 				/captacao/solicitacao/prepareUpdate*/**=ROLE_MOV_SOLICITACAO_EDITAR
 				/captacao/solicitacao/update*/**=ROLE_MOV_SOLICITACAO_EDITAR
 				/captacao/solicitacao/delete*/**=ROLE_MOV_SOLICITACAO_EXCLUIR

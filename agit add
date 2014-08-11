@@ -1,0 +1,210 @@
+[33mcommit c75c716238a97ab58d369f513b1abe19fea38172[m
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Mon Aug 11 15:27:30 2014 -0300
+
+    R&S > Movimentacoes > Solicitacao de Pessoal > Inserir/Editar: Nao permitir que sejam selecionados colaboradores ja inseridos como colaboradores substituidos.
+
+[33mcommit 2cdcf4191d88bd3cea676ce399a478112bc3b034[m
+Merge: 15e0cbb c4ff97c
+Author: Rubens Gadelha <rubensgadelha@gmail.com>
+Date:   Mon Aug 11 09:52:10 2014 -0300
+
+    Merge branch 'dev' of github.com:fortesinformatica/FortesRH into dev
+
+[33mcommit 15e0cbbed5a4490a652ae248d8f44e6255fe17fe[m
+Author: Rubens Gadelha <rubensgadelha@gmail.com>
+Date:   Mon Aug 11 09:52:00 2014 -0300
+
+    Correção de bug ao liberar/bloquear avaliações de desempenho
+
+[33mcommit c4ff97cbe16106bcc22b311ab4e72e3676e838a0[m
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Fri Aug 8 16:36:14 2014 -0300
+
+    Ajustar auditoria de desligamento de colaborador
+
+[33mcommit 07fe0a0bcb48451382b0a1fadd32756ec86ac8d9[m
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Fri Aug 8 16:35:50 2014 -0300
+
+    Permitir autoavaliacao de nivel de competencia na avaliacao desempenho
+
+[33mcommit 6bfbc7b774b326fb3376ae07d2433eb9c4308290[m
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Wed Aug 6 10:45:36 2014 -0300
+
+    Aval. Desempenho > Movimentacoes > Responder Avaliacoes de Desempenho: Nao Sobrescrever respostas do nivel de competencia do colaborador avaliado.
+
+[33mcommit 8a5c8318bab5a7c1f3c347abb902b0618ac300f8[m
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Mon Aug 4 13:12:57 2014 -0300
+
+    Troca do campo avaliadorId por colaboradorQuestionarioId em configuracaoNivelCompetenciaColaborador 2.
+
+[33mcommit 65da101eb6d09591d5ad2966205fc8c34d02b9db[m
+Author: Arnaldo Escossio <arnaldoescossio@gmail.com>
+Date:   Mon Jul 21 15:28:39 2014 -0300
+
+    Troca do campo avaliadorId por colaboradorQuestionarioId em configuracaoNivelCompetenciaColaborador.
+
+[33mcommit 9036280a1fd28e4fa1b35aa12d21f9ad824e3186[m
+Author: Arnaldo Escossio <arnaldoescossio@gmail.com>
+Date:   Wed Jul 16 08:37:28 2014 -0300
+
+    Entendimento dos relacionamentos das entidades e criacao do campo de avaliador em "configuracaonivelcompetenciacolaborador".
+
+[33mcommit 6531ea77c362c80f2f3e93c5bd75502dafeb22ed[m
+Author: Rubens Gadelha <rubensgadelha@gmail.com>
+Date:   Tue Aug 5 14:50:43 2014 -0300
+
+    Correção de BUG nos gráficos de ocorrência e providência do painel de indicadores de Info. Funcionais.
+
+[33mcommit f8cdc0a0877ec733d7f3dd597d70af9edaa3c826[m
+Author: Rubens Gadelha <rubensgadelha@gmail.com>
+Date:   Mon Aug 4 16:31:22 2014 -0300
+
+    Inclusão do bairro no endereço do relatório de aniversariantes em Excel
+
+[33mcommit 67dbb24453eb8b5aea4fe167214e9f4047893436[m
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Mon Aug 4 09:42:31 2014 -0300
+
+    Ajuste teste para quantidade de tabelas com colaborador
+
+[33mcommit a0c1b040be27535103b43d3aed313d3e51bdb846[m
+Merge: 8fdfbba c136c74
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Mon Aug 4 09:37:48 2014 -0300
+
+    Merge branch 'transferencialote' into dev
+
+[33mcommit c136c74acf01340417837ae53e06e3ce9f1b74e7[m
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Mon Aug 4 08:06:18 2014 -0300
+
+    WebService: Ajuste para transferir empregados em lote
+
+[33mcommit 8fdfbbacfff6088b1e063e36a65ed696f9bed103[m
+Author: Rubens Gadelha <rubensgadelha@gmail.com>
+Date:   Mon Aug 4 09:27:54 2014 -0300
+
+    Ajuste no título do relatório de solicitação de pessoal
+
+[33mcommit 8c44e7844daa4c67c7927c83f07c6acad5ddc05b[m
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Mon Jul 21 11:09:26 2014 -0300
+
+    WebService: Ajuste no metodo transferir para aceitar um array de tSituacao
+
+[33mcommit 80df716b2fbf46ae7274aa1a4c2a33b5db70c643[m
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Mon Jul 14 15:19:03 2014 -0300
+
+    WebService: Transferencia em lote dos empregados testes
+
+[33mcommit c6647c07aa1b9b59086397271dda312982dc9888[m
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Wed Jul 9 12:00:18 2014 -0300
+
+    WebService: Transferencia em lote dos empregados: Gerenciador de comunicacao referente a estabilidade da CIPA ao desligar colaborador
+
+[33mcommit 8495d0144a43676efdd84c77b20356bb4db854c4[m
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Wed Jul 9 08:27:09 2014 -0300
+
+    WebService: Transferencia em lote dos empregados/colaboradores
+
+[33mcommit cbeb62b6bf8920d127ad090e0c84352da9b99dd2[m
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Mon Jul 7 14:26:40 2014 -0300
+
+    WebService: Desligamento em lote
+
+[33mcommit 18b55318a827a17914bcef3c992d2e3f4cc2f06a[m
+Author: Rubens Gadelha <rubensgadelha@gmail.com>
+Date:   Wed Jul 30 11:18:32 2014 -0300
+
+    Versao 1.1.131.157
+
+[33mcommit 5adf7bbdf926a874620ba854e51e223c6d25029b[m
+Author: Rubens Gadelha <rubensgadelha@gmail.com>
+Date:   Tue Jul 29 14:30:03 2014 -0300
+
+    Adição da performance do colaborador na impressão da avaliação de desempenho no modo não-econômico
+
+[33mcommit 77356a94bab1597dc3675d151e2ea62b21184e9d[m
+Merge: cfa694d bf13c8c
+Author: Rubens Gadelha <rubensgadelha@gmail.com>
+Date:   Tue Jul 29 12:32:03 2014 -0300
+
+    Merge branch 'dev' of github.com:fortesinformatica/FortesRH into dev
+
+[33mcommit cfa694da4a563da44ea368ac5410f84e8571709c[m
+Author: Rubens Gadelha <rubensgadelha@gmail.com>
+Date:   Tue Jul 29 12:31:51 2014 -0300
+
+    Correção de bug ao clonar Aval. de Desempenho
+
+[33mcommit bf13c8ce781ca19d8b2435f1d7f9b25d4affb6e0[m
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Mon Jul 28 16:28:28 2014 -0300
+
+    BUG: Aval. Desempenho > Movimentacoes > Avaliacoes de Desempenho > Liberar Avaliacoes em Lote: Mensagem de alerta quando a operacao de liberar avaliacao em lote nao for realizada com sucesso.
+
+[33mcommit d529e916059dbeee0844beb456de11320025308e[m
+Author: Rubens Gadelha <rubensgadelha@gmail.com>
+Date:   Mon Jul 28 15:30:04 2014 -0300
+
+    Troca de SQL para HQL na exclusão de colaborador pelo usuário Fortes
+
+[33mcommit 6959b33b6ea3d2316ef59b626733f39846c32db2[m
+Author: Rubens Gadelha <rubensgadelha@gmail.com>
+Date:   Mon Jul 28 11:37:19 2014 -0300
+
+    Executar job manualmente (incompleto)
+
+[33mcommit 9ac689fb3b250859ed4809db86f416200f5ccb3b[m
+Author: Arnaldo Escossio <arnaldoescossio@gmail.com>
+Date:   Wed Jul 23 17:43:17 2014 -0300
+
+    Ajuste
+
+[33mcommit 3f4ff2f2c84cb00ffde66429e5af86dc10e89be9[m
+Merge: e7efd1a da4dfa0
+Author: Arnaldo Escossio <arnaldoescossio@gmail.com>
+Date:   Wed Jul 23 15:36:39 2014 -0300
+
+    Utilitarios > Configuracoes > Gerenciador de Comunicacao > Inserir/Editar: Novas opcoes de filtros por area organizacional e estabelecimento para gerenciadores que enviam email ou mensagem para usuarios.
+
+[33mcommit e7efd1aceb1f79c7ea6c69283747ffc1ddaa4f9a[m
+Author: Arnaldo Escossio <arnaldoescossio@gmail.com>
+Date:   Tue Jul 22 18:34:24 2014 -0300
+
+    Filtro de usuarios em gerenciador de comunicacao.
+
+[33mcommit da4dfa03e86b7ada7ffce4d887c4f989a7824630[m
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Wed Jul 23 11:45:41 2014 -0300
+
+    BUG: R&S > Movimentacoes > Solicitacao de Pessoal > Candidatos da Selecao > Contratar/Promover: Acesso negado ao tentar contratar candidato ou promover colaborador.
+
+[33mcommit 96feb82057c3b94ce3667c75dcebbd4b39d4865a[m
+Author: Rubens Gadelha <rubensgadelha@gmail.com>
+Date:   Tue Jul 22 17:36:20 2014 -0300
+
+    Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Novas opções de impressão da avaliação respondida nos formatos normal e econômico.
+
+[33mcommit 74f759aa6aff1c27284147e35b297e52594d3f06[m
+Author: SamuelPinheiro <samuel.flf@gmail.com>
+Date:   Fri Jul 18 11:40:50 2014 -0300
+
+    Ajuste de conflitos no fortesrh.ver
+
+[33mcommit ea2c493b9e90d9c09d3f8dfac8788a193cb18c08[m
+Author: Arnaldo Escossio <arnaldoescossio@gmail.com>
+Date:   Fri Jul 18 08:38:34 2014 -0300
+
+    SESMT > Relatorios > Exames Previstos: Impressao da matricula junto ao nome do colaborador.(Ajustes)
+
+[33mcommit 016bcf27f90c7622f2ea4456c8214a4182a685f2[m
+Author: SamuelPinheiro <samuel.flf@gm
