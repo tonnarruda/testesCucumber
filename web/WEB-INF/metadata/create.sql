@@ -2529,7 +2529,9 @@ CREATE TABLE configuracaonivelcompetenciacolaborador (
     id bigint NOT NULL,
     colaborador_id bigint,
     faixasalarial_id bigint,
-    data date
+    data date,
+    colaboradorquestionario_id bigint,
+    avaliador_id bigint
 );
 
 
@@ -5339,7 +5341,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 622, false);
+SELECT pg_catalog.setval('papel_sequence', 623, false);
 
 
 --
@@ -30526,6 +30528,9 @@ INSERT INTO migrations (name) VALUES ('20140728150534');
 INSERT INTO migrations (name) VALUES ('20140729172030');
 INSERT INTO migrations (name) VALUES ('20140729172038');
 INSERT INTO migrations (name) VALUES ('20140730105735');
+INSERT INTO migrations (name) VALUES ('20140806144616');
+INSERT INTO migrations (name) VALUES ('20140806144634');
+INSERT INTO migrations (name) VALUES ('20140806144701');
 
 
 --
@@ -30878,13 +30883,14 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (620, 'ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO', 'Aprovar/Reprovar Solicitações de Desligamento', '/geral/colaborador/prepareAprovarReprovarSolicitacaoDesligamento.action', 3, true, NULL, 469, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (618, 'ROLE_UTI_EXPORTAR_AC', 'Exportar dados para o AC Pessoal', '/exportacao/prepareExportarAC.action', 17, true, NULL, 37, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (621, 'ROLE_IMPORTACAO_EPI', 'Importar EPIs', '/importacao/prepareImportarEPIs.action', 13, true, NULL, 37, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (622, 'ROLE_CAND_SOL_MATRIZ_COMPETENCIA_SOLICITACAO', 'Imprimir Matriz de Competências', '#', 15, false, NULL, 22, NULL);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.131.157', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.132.158', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
 
 
 --
@@ -31158,6 +31164,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 619);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 620);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 618);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 621);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 622);
 
 
 --
@@ -33942,6 +33949,14 @@ ALTER TABLE ONLY configuracaonivelcompetencia
 
 
 --
+-- Name: confignivelcompetenciacolaborador_colaboradorquestionario_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY configuracaonivelcompetenciacolaborador
+    ADD CONSTRAINT confignivelcompetenciacolaborador_colaboradorquestionario_fk FOREIGN KEY (colaboradorquestionario_id) REFERENCES colaboradorquestionario(id);
+
+
+--
 -- Name: configuracaocampoextra_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -33995,6 +34010,14 @@ ALTER TABLE ONLY configuracaonivelcompetencia
 
 ALTER TABLE ONLY configuracaonivelcompetencia
     ADD CONSTRAINT configuracaonivelcompetencia_nivelcompetencia_fk FOREIGN KEY (nivelcompetencia_id) REFERENCES nivelcompetencia(id);
+
+
+--
+-- Name: configuracaonivelcompetenciacolaborador_avaliador_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY configuracaonivelcompetenciacolaborador
+    ADD CONSTRAINT configuracaonivelcompetenciacolaborador_avaliador_fk FOREIGN KEY (avaliador_id) REFERENCES colaborador(id);
 
 
 --

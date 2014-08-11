@@ -258,8 +258,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		colaborador.setNomeComercial("nomeComercial");
 
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresaCodigoAC), ANYTHING).will(returnValue(empresa));
-		colaboradorManager.expects(once()).method("desligaColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresa), ANYTHING).will(returnValue(true));
-		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoDesligamentoColaboradorAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC), ANYTHING, eq(empresa)).isVoid();
+		colaboradorManager.expects(once()).method("desligaColaboradorAC").withAnyArguments().will(returnValue(true));
+		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoDesligamentoColaboradorAC").withAnyArguments().isVoid();
 
 		assertEquals(true, rHServiceManager.desligarEmpregado(colaboradorCodigoAC, empresaCodigoAC, dataDesligamento, "XXX").isSucesso());
 	}
@@ -274,15 +274,10 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setNomeComercial("nomeComercial");
 		
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
-		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresaCodigoAC), ANYTHING).will(returnValue(empresa));
 		
-		for (String codigoAC : colaboradoresCodigosAC) 
-		{
-			colaboradorManager.expects(once()).method("desligaColaboradorAC").with(eq(codigoAC), eq(empresa), ANYTHING).will(returnValue(true));
-			gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoDesligamentoColaboradorAC").with(eq(codigoAC), eq(empresaCodigoAC), ANYTHING, eq(empresa)).isVoid();
-		}
+		colaboradorManager.expects(once()).method("desligaColaboradorAC").withAnyArguments().will(returnValue(true));
+		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoDesligamentoColaboradorAC").withAnyArguments().isVoid();
 		
 		assertEquals(true, rHServiceManager.desligarEmpregadosEmLote(colaboradoresCodigosAC, empresaCodigoAC, dataDesligamento, "XXX").isSucesso());
 	}
