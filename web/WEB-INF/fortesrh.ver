@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.13X.158" bd="" data="XX/08/2014">
+		<Item visivel="S" motivo="P20140700138"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Não permitir que sejam selecionados colaboradores já inseridos como colaboradores substituídos.]]></Item>
+	</Versao>
 	<Versao id="1.1.132.158" bd="" data="11/08/2014">
 		<Item visivel="S" motivo="S20140600183"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Não Sobrescrever respostas do nível de competência do colaborador avaliado.]]></Item>
 		<Item visivel="S" motivo="S20140600183"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Competências: Não Sobrescrever respostas do nível de competência do colaborador na mesma data.]]></Item>
