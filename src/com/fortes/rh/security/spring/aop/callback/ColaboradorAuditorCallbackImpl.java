@@ -1,7 +1,10 @@
 package com.fortes.rh.security.spring.aop.callback;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -60,24 +63,33 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 	public Auditavel desligaColaborador(MetodoInterceptado metodo) throws Throwable 
 	{
 		metodo.processa();
-
-		Long colaboradorId = (Long) metodo.getParametros()[4];
-		Colaborador colab = new Colaborador();
-		colab.setId(colaboradorId);
-		Colaborador colaborador = carregaEntidade(metodo, colab);
-
+		Map<String, Object> desligamento;
+		Collection<Map<String, Object>> desligamentos = new ArrayList<Map<String,Object>>();
+		String colaboradoresDesligados = "";
 		Long motivoDemissaoId = (Long) metodo.getParametros()[3];
+		Long[] colaboradorIds = (Long[]) metodo.getParametros()[5];
+		Colaborador colab;
+		
+		for (Long colaboradorId : colaboradorIds) 
+		{
+			colab = new Colaborador();
+			colab.setId(colaboradorId);
+			Colaborador colaborador = carregaEntidade(metodo, colab);
+			
+			desligamento = new LinkedHashMap<String, Object>();
+			desligamento.put("Colaborador ID", colaborador.getId());
+			desligamento.put("Colaborador", colaborador.getNome());
+			desligamento.put("Data de desligamento", colaborador.getDataDesligamento());
+			desligamento.put("Motivo de demissao ID", motivoDemissaoId);
+			desligamento.put("Observacao", colaborador.getObservacaoDemissao());
+			desligamentos.add(desligamento);
+			
+			colaboradoresDesligados += colaborador.getNome() + "  ";
+		}
 
-		Map<String, Object> desligamento = new LinkedHashMap<String, Object>();
-		desligamento.put("Colaborador ID", colaborador.getId());
-		desligamento.put("Colaborador", colaborador.getNome());
-		desligamento.put("Data de desligamento", colaborador.getDataDesligamento());
-		desligamento.put("Motivo de demissao ID", motivoDemissaoId);
-		desligamento.put("Observacao", colaborador.getObservacaoDemissao());
-		
-		String dados = new GeraDadosAuditados(null, desligamento).gera();
-		
-		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
+		String dados = new GeraDadosAuditados(null, desligamentos.toArray()).gera();
+			
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaboradoresDesligados, dados);
 	}
 
 	public Auditavel religaColaborador(MetodoInterceptado metodo) throws Throwable 
@@ -101,19 +113,27 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 	public Auditavel desligaColaboradorAC(MetodoInterceptado metodo) throws Throwable 
 	{
 		metodo.processa();
+		Map<String, Object> desligamento;
+		Collection<Map<String, Object>> desligamentos = new ArrayList<Map<String,Object>>();
+		String colabCodigoAcsDeslidos = "";
+		Empresa empresa = (Empresa) metodo.getParametros()[0];
+		Date dataDesligamento = (Date) metodo.getParametros()[1];
+		String[] colaboradorCodigoAcs = (String[]) metodo.getParametros()[2];
+		
+		for (String colabCodigoAC : colaboradorCodigoAcs) 
+		{
+			desligamento = new LinkedHashMap<String, Object>();
+			desligamento.put("Empresa codigoAC", empresa.getCodigoAC());
+			desligamento.put("Colaborador codigoAC", colabCodigoAC);
+			desligamento.put("Data Desligamento", dataDesligamento);
+			desligamentos.add(desligamento);
+			
+			colabCodigoAcsDeslidos += colabCodigoAC + "  ";
+		}
 
-		String codigoAC = (String) metodo.getParametros()[0];
-		Empresa empresa = (Empresa) metodo.getParametros()[1];
-		Date dataDesligamento = (Date) metodo.getParametros()[2];
-		
-		Map<String, Object> desligamento = new LinkedHashMap<String, Object>();
-		desligamento.put("Colaborador codigoAC", codigoAC);
-		desligamento.put("Empresa codigoAC", empresa.getCodigoAC());
-		desligamento.put("Data Desligamento", dataDesligamento);
-		
-		String dados = new GeraDadosAuditados(null, desligamento).gera();
-		
-		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), codigoAC + " " + empresa.getCodigoAC(), dados);
+		String dados = new GeraDadosAuditados(null, desligamentos.toArray()).gera();
+			
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), empresa.getCodigoAC() + " " + colabCodigoAcsDeslidos, dados);
 	}
 
 	public Auditavel solicitacaoDesligamentoAc(MetodoInterceptado metodo) throws Throwable 

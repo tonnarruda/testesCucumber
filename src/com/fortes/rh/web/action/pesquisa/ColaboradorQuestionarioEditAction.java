@@ -134,7 +134,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private boolean autoAvaliacao;
 	private boolean moduloExterno;
 	private boolean preview;
-	private boolean exibirCompetencia = true;
 
 	private Collection<NivelCompetencia> nivelCompetencias;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais;
@@ -291,9 +290,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 			niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByColaborador(colaborador.getId(), avaliador.getId(), colaboradorQuestionario.getId());
 		}
 		
-		Colaborador colaboradorLogado = colaboradorManager.findByUsuario(getUsuarioLogado(), getEmpresaSistema().getId());
-		exibirCompetencia = !(colaboradorLogado != null && colaboradorQuestionario.getColaborador().getId().equals(colaboradorLogado.getId())); 
-
 		return Action.SUCCESS;
 	}
 	
@@ -969,14 +965,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 
 	public void setRelatorioCandidatoSolicitacaoList(RelatorioCandidatoSolicitacaoList relatorioCandidatoSolicitacaoList) {
 		this.relatorioCandidatoSolicitacaoList = relatorioCandidatoSolicitacaoList;
-	}
-
-	public boolean isExibirCompetencia() {
-		return exibirCompetencia;
-	}
-
-	public void setExibirCompetencia(boolean exibirCompetencia) {
-		this.exibirCompetencia = exibirCompetencia;
 	}
 	
 	public boolean isAutoAvaliacao()

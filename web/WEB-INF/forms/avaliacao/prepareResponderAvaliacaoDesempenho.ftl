@@ -98,7 +98,7 @@
 			<@ww.hidden name="colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo"/>
 			<@ww.hidden name="autoAvaliacao" />
 			
-			<#if colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo && exibirCompetencia>
+			<#if colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
 				<br />
 				<fieldset>
 					<legend>Reavaliar as Competências do Colaborador para o Cargo</legend><br />
