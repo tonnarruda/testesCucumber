@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
@@ -24,7 +25,9 @@ import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
@@ -77,6 +80,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private NivelCompetenciaManager nivelCompetenciaManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
 
 	private Avaliacao avaliacaoExperiencia;
 	private Questionario questionario;
@@ -309,6 +313,10 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		Date hoje = new Date();
 		
 		try {
+			AvaliacaoDesempenho avaliacaoDesempenho = avaliacaoDesempenhoManager.findByIdProjection(colaboradorQuestionario.getAvaliacaoDesempenho().getId());
+			if (!avaliacaoDesempenho.isLiberada())
+				throw new FortesException("Esta avaliação foi bloqueada e suas respostas não foram gravadas. Entre em contato com o administrador do sistema.");
+			
 			if(colaboradorQuestionario.getRespondidaEm() == null)
 				colaboradorQuestionario.setRespondidaEm(new Date()); 
 			
@@ -336,6 +344,13 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 			}
 			
 			addActionSuccess("Avaliação respondida com sucesso.");
+			
+		} catch (FortesException e) 
+		{
+			e.printStackTrace();
+			addActionWarning(e.getMessage());
+			
+			return "list";
 		
 		} catch (Exception e) 
 		{
@@ -975,5 +990,10 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	public void setAutoAvaliacao(boolean autoAvaliacao)
 	{
 		this.autoAvaliacao = autoAvaliacao;
+	}
+
+	public void setAvaliacaoDesempenhoManager(
+			AvaliacaoDesempenhoManager avaliacaoDesempenhoManager) {
+		this.avaliacaoDesempenhoManager = avaliacaoDesempenhoManager;
 	}
 }

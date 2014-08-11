@@ -4637,6 +4637,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				"DELETE FROM ConfiguracaoNivelCompetencia WHERE configuracaoNivelCompetenciaColaborador.id IN (SELECT id FROM ConfiguracaoNivelCompetenciaColaborador WHERE colaborador.id = :id)",
 				"DELETE FROM ConfiguracaoNivelCompetenciaColaborador WHERE colaborador.id = :id",
 				
+				"DELETE FROM ConfiguracaoNivelCompetencia WHERE configuracaoNivelCompetenciaColaborador.id IN (SELECT id FROM ConfiguracaoNivelCompetenciaColaborador WHERE avaliador.id = :id)",
+				"DELETE FROM ConfiguracaoNivelCompetenciaColaborador WHERE avaliador.id = :id",
+				
 				"UPDATE Experiencia SET colaborador.id = NULL WHERE colaborador.id = :id AND candidato.id IS NOT NULL",
 				"DELETE FROM Experiencia WHERE colaborador.id = :id AND candidato.id IS NULL",
 
