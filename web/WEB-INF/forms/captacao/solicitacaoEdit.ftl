@@ -185,7 +185,19 @@
 				source: function( request, response ) {
 					DWRUtil.useLoadingMessage('Carregando...');
 					ColaboradorDWR.findByNome(request.term, ${empresaId}, function(dados) {
-						response( dados );
+						
+						var resultado = new Array();
+						var nomesInseridos = new Array();
+						$('.colaboradorSubstituido').each(function(){
+							nomesInseridos.push($(this).val());
+						});
+						
+						$.each(dados, function(index, obj){
+							if (nomesInseridos.indexOf(obj.nome) == -1 )
+								resultado.push(obj);
+						});
+						
+						response( resultado );
 					});
 				},
 				focus: function( event, ui ) {

@@ -357,9 +357,9 @@
 				/captacao/candidatoSolicitacao/list.action*=ROLE_CAND_SOLICITACAO_LISTA,ROLE_CAND_SOLICITACAO_HISTORICO,ROLE_CAND_SOLICITACAO_COMPETENCIAS,ROLE_CAND_SOLICITACAO_CONTRATAR,ROLE_CAND_SOLICITACAO_EXCLUIR,ROLE_CAND_SOLICITACAO_AVALIACOES,ROLE_CAND_SOLICITACAO_VISUALIZARCURRICULO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_IMPRIMIR,ROLE_CAND_SOLICITACAO_TRIAGEM,ROLE_CAND_SOLICITACAO_INSERIRETAPAGRUPO,ROLE_CAND_SOLICITACAO_RESULTADOAVALIACAO,ROLE_CAND_SOLICITACAO_TRANSFCANDIDATO,ROLE_CAND_SOLICITACAO_TRIAGEMMODULOEXTERNO
 				/captacao/historicoCandidato/list.action*=ROLE_CAND_SOLICITACAO_HISTORICO
 				/captacao/nivelCompetencia/prepareCompetenciasByCandidato.action*=ROLE_CAND_SOLICITACAO_COMPETENCIAS
-				/geral/colaborador/preparePromoverCandidato.action*=ROLE_CAND_SOLICITACAO_CONTRATAR
-				/geral/colaborador/prepareContrata.action*=ROLE_CAND_SOLICITACAO_CONTRATAR
-				/geral/colaborador/insert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR
+				/geral/colaborador/preparePromoverCandidato.action*=ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_COLABORADOR
+				/geral/colaborador/prepareContrata.action*=ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_COLABORADOR
+				/geral/colaborador/insert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_COLABORADOR
 				/cargosalario/historicoColaborador/prepareInsert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR
 				/cargosalario/historicoColaborador/insert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR
 				/captacao/candidatoSolicitacao/delete.action*=ROLE_CAND_SOLICITACAO_EXCLUIR
@@ -387,8 +387,8 @@
 				/captacao/solicitacao/updateStatusSolicitacao*/**=ROLE_LIBERA_SOLICITACAO
 				/captacao/solicitacao/agenda*/**=ROLE_SOLICITACAO_AGENDA
 				/captacao/solicitacao/imprimirSolicitacaoPessoal*/**=ROLE_MOV_SOLICITACAO_IMPRIMIR
-				/captacao/solicitacao/prepareInsert*/**=ROLE_MOV_SOLICITACAO_EDITAR, ROLE_MOV_SOLICITACAO_CLONAR
-				/captacao/solicitacao/insert*/**=ROLE_MOV_SOLICITACAO_EDITAR, ROLE_MOV_SOLICITACAO_CLONAR
+				/captacao/solicitacao/prepareInsert*/**=ROLE_MOV_SOLICITACAO_INSERIR, ROLE_MOV_SOLICITACAO_CLONAR
+				/captacao/solicitacao/insert*/**=ROLE_MOV_SOLICITACAO_INSERIR, ROLE_MOV_SOLICITACAO_CLONAR
 				/captacao/solicitacao/prepareUpdate*/**=ROLE_MOV_SOLICITACAO_EDITAR
 				/captacao/solicitacao/update*/**=ROLE_MOV_SOLICITACAO_EDITAR
 				/captacao/solicitacao/delete*/**=ROLE_MOV_SOLICITACAO_EXCLUIR
@@ -609,7 +609,7 @@
 				
 				/avaliacao/periodoExperiencia/prepareCartoesAcompanhamentoPeriodoExperiencia.action*=ROLE_REL_ACOMP_PERIODO_EXPERIENCIA
 				/avaliacao/periodoExperiencia/*/**=ROLE_CAD_PERIODOEXPERIENCIA
-				/avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action*=ROLE_MOV_PERIODOEXPERIENCIA
+				/avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action*=ROLE_MOV_PERIODOEXPERIENCIA,ROLE_USER
 				/avaliacao/avaliacaoExperiencia/respostasPeriodoExperienciaList.action*=ROLE_MOV_MINHASAVALIACOES
 				/avaliacao/avaliacaoExperiencia/prepareUpdateAvaliacaoExperiencia.action*=ROLE_MOV_MINHASAVALIACOES, ROLE_MOV_PERIODOEXPERIENCIA
 				

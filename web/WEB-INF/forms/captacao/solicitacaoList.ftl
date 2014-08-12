@@ -241,7 +241,7 @@
 		<button onclick="${validarCamposUpdateStatus};" class="btnGravar grayBG" id="gravarStatus"></button>
 	</div>
 	<div class="buttonGroup">
-		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_EDITAR">
+		<@authz.authorize ifAllGranted="ROLE_MOV_SOLICITACAO_INSERIR">
 			<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
 		</@authz.authorize>
 	</div>

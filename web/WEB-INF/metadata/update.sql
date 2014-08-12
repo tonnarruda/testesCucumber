@@ -22505,3 +22505,16 @@ alter sequence papel_sequence restart with 622;--.go
 insert into perfil_papel(perfil_id, papeis_id) values(1, 621);--.go	
 insert into migrations values('20140730105735');--.go
 update parametrosdosistema set appversao = '1.1.131.157';--.go
+-- versao 1.1.132.158
+
+alter table configuracaonivelcompetenciacolaborador add column colaboradorquestionario_id bigint; --.go
+ALTER TABLE configuracaonivelcompetenciacolaborador ADD CONSTRAINT configNivelCompetenciaColaborador_colaboradorquestionario_fk FOREIGN KEY (colaboradorquestionario_id) REFERENCES colaboradorquestionario(id); --.go
+insert into migrations values('20140806144616');--.go
+alter table configuracaonivelcompetenciacolaborador add column avaliador_id bigint; --.go
+ALTER TABLE configuracaonivelcompetenciacolaborador ADD CONSTRAINT configuracaoNivelCompetenciaColaborador_avaliador_fk FOREIGN KEY (avaliador_id) REFERENCES colaborador(id); --.go
+insert into migrations values('20140806144634');--.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (622, 'ROLE_CAND_SOL_MATRIZ_COMPETENCIA_SOLICITACAO', 'Imprimir Matriz de Competências', '#', 15, false, 22);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 622);--.go
+alter sequence papel_sequence restart with 623;--.go
+insert into migrations values('20140806144701');--.go
+update parametrosdosistema set appversao = '1.1.132.158';--.go
