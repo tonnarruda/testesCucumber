@@ -465,7 +465,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		
 		ConfiguracaoNivelCompetencia competenciaAtitude = (ConfiguracaoNivelCompetencia)competenciasDaFaixa.toArray()[0]; 
 		assertEquals(configuracaoNivelCompetencia1.getId(), competenciaAtitude.getId());
-		assertEquals("atividade (bom)", competenciaAtitude.getCompetenciaDescricao());
+		assertEquals("atividade (bom)", competenciaAtitude.getCompetenciaDescricaoNivel());
 	}
 	
 	public void testFindCompetenciaColaborador()

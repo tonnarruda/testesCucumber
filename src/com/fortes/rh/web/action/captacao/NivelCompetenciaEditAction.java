@@ -28,7 +28,6 @@ import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
-import com.sun.mail.imap.protocol.Status;
 
 public class NivelCompetenciaEditAction extends MyActionSupportList
 {
@@ -146,10 +145,9 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		candidato = candidatoManager.findByCandidatoId(candidato.getId());
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
 
-		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), getEmpresaSistema().getId());
+		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarial.getCargo().getId());
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		
-		niveisCompetenciaFaixaSalariaisSugeridos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
 		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByCandidato(candidato.getId());
 		
 		return Action.SUCCESS;
@@ -208,13 +206,12 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	
 	public void prepareCompetenciasColaborador()
 	{
-		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), getEmpresaSistema().getId());
+		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarial.getId());
 		
 		if (niveisCompetenciaFaixaSalariais.isEmpty())
 			addActionMessage("Não existem competências (conhecimentos, habilidades ou atitudes) cadastradas para o cargo");
 		
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
-		niveisCompetenciaFaixaSalariaisSugeridos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
 	}
 	
 	public String prepareInsertCompetenciasColaborador()

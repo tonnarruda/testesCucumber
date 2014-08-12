@@ -26,27 +26,26 @@
 					$('.checkCompetencia').attr('checked', $(this).attr('checked'));
 				});
 				
-				<#list niveisCompetenciaFaixaSalariaisSugeridos as nivelSugerido>
-					var linhaSugerida = $('tr').has('.checkCompetencia[value="${nivelSugerido.competenciaId}"]').has('input[type="hidden"][value="${nivelSugerido.tipoCompetencia}"]');
-					linhaSugerida.find('.checkNivel[value="${nivelSugerido.nivelCompetencia.id}"]').parent().css('background-color', '#BFC0C3');
-				</#list>
-
 				<#if niveisCompetenciaFaixaSalariaisSalvos?exists>
 					<#list niveisCompetenciaFaixaSalariaisSalvos as nivelSalvo>
 						var linha = $('tr').has('.checkCompetencia[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
 						var nivelColaborador = linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]');
 						
-						nivelColaborador.attr('checked','checked');
-						nivelColaborador.parent().css('background-color','#ECECEC');
+						linha.find('.checkCompetencia').attr('checked', 'checked');
+						linha.find('.checkNivel').removeAttr('disabled');
 						
-						<#list niveisCompetenciaFaixaSalariaisSugeridos as nivelSugerido>
-							if('${nivelSugerido.competenciaId}' == '${nivelSalvo.competenciaId}' && '${nivelSugerido.nivelCompetencia.id}' == '${nivelSalvo.nivelCompetencia.id}'){
+						nivelColaborador.parent().css('background-color','#ECECEC');
+						<#if colaboradorQuestionario.respondida>
+							nivelColaborador.attr('checked','checked');
+						</#if>
+						
+						<#list niveisCompetenciaFaixaSalariais as nivelSugerido>
+							if('${nivelSugerido.competenciaId}' == '${nivelSalvo.competenciaId}' && '${nivelSugerido.tipoCompetencia}' == '${nivelSalvo.tipoCompetencia}' && '${nivelSugerido.nivelCompetencia.id}' == '${nivelSalvo.nivelCompetencia.id}'){
 								linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').parent().css('background-color','#7CC0B9');
 							}
 						</#list>
 					</#list>
 				</#if>
-				
 			</#if>
 		});
 		
@@ -126,8 +125,17 @@
 							
 						</@display.column>
 						
-						<#list nivelCompetencias as nivel>			
-							<@display.column title="${nivel.descricao}" style="width: 100px; text-align: center;">
+						<#list nivelCompetencias as nivel>
+						
+							<#if configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
+								<#assign class="nivelFaixa"/>
+								<#assign bgcolor="background-color: #BFC0C3;"/>
+							<#else>
+								<#assign class=""/>
+								<#assign bgcolor=""/>
+							</#if>
+									
+							<@display.column title="${nivel.descricao}" style="${bgcolor} width: 100px; text-align: center;" class="${class}">
 								<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" />
 							</@display.column>
 						</#list>

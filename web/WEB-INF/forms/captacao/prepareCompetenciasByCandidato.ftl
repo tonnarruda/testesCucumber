@@ -25,11 +25,6 @@
 				linha.find('.checkNivel').removeAttr('disabled');
 				linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
 			</#list>
-			
-			<#list niveisCompetenciaFaixaSalariaisSugeridos as nivelSugerido>
-				var linhaSugerida = $('tr').has('.checkCompetencia[value="${nivelSugerido.competenciaId}"]').has('input[type="hidden"][value="${nivelSugerido.tipoCompetencia}"]');
-				linhaSugerida.find('.checkNivel[value="${nivelSugerido.nivelCompetencia.id}"]').parent().css('background-color', '#ececec');
-			</#list>
 		});
 		
 		function enviarForm()
@@ -86,8 +81,17 @@
 				<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
 			</@display.column>
 			
-			<#list nivelCompetencias as nivel>			
-				<@display.column title="${nivel.descricao}" style="width: 100px; text-align: center;">
+			<#list nivelCompetencias as nivel>
+				<#if configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
+					<#assign class="nivelFaixa"/>
+					<#assign bgcolor="background-color: #ececec;"/>
+				<#else>
+					<#assign class=""/>
+					<#assign bgcolor=""/>
+				</#if>
+					
+				<#-- <@display.column title="${nivel.descricao}" style="width: 100px; text-align: center;"> -->
+				<@display.column title="${nivel.descricao}" style="${bgcolor} width: 100px; text-align: center;" class="${class}">
 					<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" />
 				</@display.column>
 			</#list>

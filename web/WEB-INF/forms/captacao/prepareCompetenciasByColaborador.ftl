@@ -55,12 +55,7 @@
 						linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
 					</#list>
 				</#if>
-				
-				<#list niveisCompetenciaFaixaSalariaisSugeridos as nivelSugerido>
-					var linhaSugerida = $('tr').has('.checkCompetencia[value="${nivelSugerido.competenciaId}"]').has('input[type="hidden"][value="${nivelSugerido.tipoCompetencia}"]');
-					linhaSugerida.find('.checkNivel[value="${nivelSugerido.nivelCompetencia.id}"]').parent().css('background-color', '#ececec').addClass('nivelFaixa').attr('ordem', ${nivelSugerido.nivelCompetencia.ordem});
-				</#list>
-				
+				 
 				niveis[0] = 'Indefinido';
 				<#list nivelCompetencias as nivel>
 					niveis[${nivel.ordem}] = '${nivel.descricao}';
@@ -109,8 +104,9 @@
 			
 				$('.checkCompetencia:checked').each(function() {
 					var seq = $(this).parent().next().text().match(/\d+/g)[0];
-					var nivelFaixa = $(this).parent().parent().find('.nivelFaixa').attr('ordem');
-					var nivelColab = $(this).parent().parent().find('.checkNivel:checked').attr('ordem');
+					var check = $(this).parent().parent().find('.checkNivel:checked');
+					var nivelColab = check.attr('nivelcolaborador');
+					var nivelFaixa = check.attr('nivelfaixa');
 					
 					if (nivelFaixa || nivelColab)
 					{
@@ -288,9 +284,18 @@
 					</#if>
 				</@display.column>
 				
-				<#list nivelCompetencias as nivel>			
-					<@display.column title="${nivel.descricao}" style="width: 100px; text-align: center;">
-						<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" ordem="${nivel.ordem}" />
+				<#list nivelCompetencias as nivel>
+					
+					<#if configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
+						<#assign class="nivelFaixa"/>
+						<#assign bgcolor="background-color: #ececec;"/>
+					<#else>
+						<#assign class=""/>
+						<#assign bgcolor=""/>
+					</#if>
+					
+					<@display.column title="${nivel.descricao}" style="${bgcolor} width: 100px; text-align: center;" class="${class}">
+						<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" nivelcolaborador="${nivel.ordem}" nivelfaixa="${configuracaoNivelCompetencia.nivelCompetencia.ordem}"/>
 					</@display.column>
 				</#list>
 				

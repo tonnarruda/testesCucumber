@@ -9,6 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -95,6 +97,18 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setCompetenciaId(competenciaId);
 		this.setCompetenciaDescricao(competenciaDescricao);
 		this.setCompetenciaObservacao(competenciaObservacao);
+	}
+	
+	public ConfiguracaoNivelCompetencia(Long id, Character tipoCompetencia, Long competenciaId, String competenciaDescricao, String competenciaObservacao, Long nivelCompetenciaId, String nivelCompetenciaDescricao, Integer nivelCompetenciaOrdem)
+	{
+		this.setId(id);
+		this.setTipoCompetencia(tipoCompetencia);
+		this.setCompetenciaId(competenciaId);
+		this.setCompetenciaDescricao(competenciaDescricao);
+		this.setCompetenciaObservacao(competenciaObservacao);
+		this.setNivelCompetenciaIdProjection(nivelCompetenciaId);
+		this.setProjectionNivelCompetenciaDescricao(nivelCompetenciaDescricao);
+		this.setProjectionNivelCompetenciaOrdem(nivelCompetenciaOrdem);
 	}
 	
 	public ConfiguracaoNivelCompetencia(Character tipoCompetencia, Long competenciaId, Long nivelCompetenciaId)
@@ -258,6 +272,16 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	public String getCompetenciaDescricao() 
 	{
 		return competenciaDescricao;
+	}
+	
+	public String getCompetenciaDescricaoNivel() 
+	{
+		String retorno = competenciaDescricao;
+		
+		if (nivelCompetencia != null && StringUtils.isNotEmpty(nivelCompetencia.getDescricao()))
+			retorno += " (" + nivelCompetencia.getDescricao() + ")";
+		
+		return retorno;
 	}
 
 	public void setCompetenciaDescricao(String competenciaDescricao) 
