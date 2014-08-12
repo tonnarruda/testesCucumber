@@ -486,12 +486,18 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		faixaSalarial.setCargo(cargo);
 		faixaSalarialDao.save(faixaSalarial);
 		
-		Date data = DateUtil.criarAnoMesDia(2008, 2, 12);
-		montaSaveHistoricoColaborador(DateUtil.criarAnoMesDia(2008, 03, 1), colaborador, estabelecimento1, areaOrganizacional1, faixaSalarial, TipoAplicacaoIndice.VALOR);
+		Date dataIni = DateUtil.criarDataMesAno(12, 2, 2008);
+		Date dataFim = DateUtil.criarDataMesAno(2, 4, 2008);
 		
-		Collection<HistoricoColaborador> historicoColaboradores = historicoColaboradorDao.findSemDissidioByDataPercentual(data, 2.0, empresa.getId());
+		montaSaveHistoricoColaborador(DateUtil.criarDataMesAno(1, 3, 2008), colaborador, estabelecimento1, areaOrganizacional1, faixaSalarial, TipoAplicacaoIndice.VALOR);
+		montaSaveHistoricoColaborador(DateUtil.criarDataMesAno(1, 4, 2008), colaborador, estabelecimento1, areaOrganizacional1, faixaSalarial, TipoAplicacaoIndice.VALOR);
+		montaSaveHistoricoColaborador(DateUtil.criarDataMesAno(1, 5, 2008), colaborador, estabelecimento1, areaOrganizacional1, faixaSalarial, TipoAplicacaoIndice.VALOR);
 		
-		assertEquals(1, historicoColaboradores.size());
+		Collection<HistoricoColaborador> retorno1 = historicoColaboradorDao.findSemDissidioByDataPercentual(dataIni, null, 2.0, empresa.getId());
+		Collection<HistoricoColaborador> retorno2 = historicoColaboradorDao.findSemDissidioByDataPercentual(dataIni, dataFim, 2.0, empresa.getId());
+		
+		assertEquals("Sem data final", 3, retorno1.size());
+		assertEquals("Com data final", 2, retorno2.size());
 	}
 
 //TODO NÃO APAGAR RELATORIO DE PROMOÇ~ES EM ESTUDO

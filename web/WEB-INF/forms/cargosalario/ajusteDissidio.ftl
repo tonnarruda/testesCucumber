@@ -7,7 +7,11 @@
 	
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/formModal.css"/>');
 	</style>
+
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js"/>'></script>
 	
 	<#assign showFilter = true/>
 	<#include "../ftl/showFilterImports.ftl" />
@@ -15,6 +19,10 @@
 	
 	<script type="text/javascript">
 		$(function() {
+			$('#tooltipHelp').qtip({
+				content: 'A data inicial é obrigatória. Caso a data final não seja preenchida, as situações serão filtradas a partir da data inicial.'
+			});
+			
 			$('#marcarTodos').click(function(e) {
 				var marcado = $('#marcarTodos').attr('checked');
 				$(".dados").find(":checkbox").attr('checked', marcado);
@@ -81,23 +89,36 @@
 	</script>
 	
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
-	<#assign validarCampos="return validaFormulario('form', new Array('dataBase','percentualDissidio'), new Array('dataBase'))"/>
+	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('dataIni','percentualDissidio'), new Array('dataIni','dataFim'), false)"/>
 </head>
 
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
 
-	<#if dataBase?exists>
-			<#assign data = dataBase?date>
-		<#else>
-			<#assign data = "">
+	<#if dataIni?exists>
+		<#assign valueDataIni = dataIni?date>
+	<#else>
+		<#assign valueDataIni = "">
+	</#if>
+	<#if dataFim?exists>
+		<#assign valueDataFim = dataFim?date>
+	<#else>
+		<#assign valueDataFim = "">
 	</#if>
 	
 	<@ww.form name="form" action="prepareAjusteDissidio.action" id="form" method="POST" onsubmit="${validarCampos}">
 
 		<#include "../util/topFiltro.ftl" />
-			<@ww.datepicker label="Situações a partir de" name="dataBase" id="dataBase" required="true" value="${data}" cssClass="mascaraData"/>
+		
+			<div>
+				Período das situações:
+				<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
+			</div>
+			<@ww.datepicker name="dataIni" id="dataIni" required="true" value="${valueDataIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
+			<@ww.label value="a" liClass="liLeft"/>
+			<@ww.datepicker name="dataFim" id="dataFim"  value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
+			
 			<br />
 			Sugerir reajuste com diferença de até
 			<@ww.textfield theme="simple" name="percentualDissidio" id="percentualDissidio" cssStyle="width:40px; text-align:right;" maxLength="5" onkeypress = "return(somenteNumeros(event,','));"/> 

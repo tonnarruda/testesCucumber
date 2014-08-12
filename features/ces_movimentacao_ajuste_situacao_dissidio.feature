@@ -10,7 +10,7 @@ Funcionalidade: Promoção para Dissídio
     Quando eu acesso o menu "C&S > Movimentações > Alteração de Promoção para Dissídio"
 
     Então eu devo ver o título "Alteração de Promoção para Dissídio"
-    E eu preencho "Situações a partir de" com "14/08/2012"
+    E eu preencho o campo (JS) "dataIni" com "14/08/2012"
     E eu preencho o campo (JS) "percentualDissidio" com "5"
     E eu marco "Estabelecimento Padrão"
     E eu clico no botão "Pesquisar"

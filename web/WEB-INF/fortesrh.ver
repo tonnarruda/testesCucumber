@@ -3,6 +3,7 @@
 	<Versao id="1.1.13X.159" bd="" data="XX/08/2014">
 		<Item visivel="S" motivo="S20140700118"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Desmembrar o perfil 'Inserir/Editar' para os perfis 'Inserir' e 'Editar'.]]></Item>
 		<Item visivel="S" motivo="P20140700138"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Não permitir que sejam selecionados colaboradores já inseridos como colaboradores substituídos.]]></Item>
+		<Item visivel="S" motivo="S20140700085"><![CDATA[C&S > Movimentações > Alteração de Promoção para Dissídio: Nova possibilidade de filtrar as situações por período.]]></Item>
 		<Item visivel="N" motivo="P20140800017"><![CDATA[BUG: Caixa de Mensagem de Aval. de Desempenho: Sem permissão de acesso ao tentar o link de responder avaliação do período de experiência.]]></Item>
 		<Item visivel="N" motivo="S20140600182"><![CDATA[Ajustes nas telas de avaliação de competências para que só sejam dadas as opções de competência definidas para a faixa e não mais as do cargo.]]></Item>
 	</Versao>
