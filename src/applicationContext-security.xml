@@ -609,7 +609,7 @@
 				
 				/avaliacao/periodoExperiencia/prepareCartoesAcompanhamentoPeriodoExperiencia.action*=ROLE_REL_ACOMP_PERIODO_EXPERIENCIA
 				/avaliacao/periodoExperiencia/*/**=ROLE_CAD_PERIODOEXPERIENCIA
-				/avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action*=ROLE_MOV_PERIODOEXPERIENCIA
+				/avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action*=ROLE_MOV_PERIODOEXPERIENCIA,ROLE_USER
 				/avaliacao/avaliacaoExperiencia/respostasPeriodoExperienciaList.action*=ROLE_MOV_MINHASAVALIACOES
 				/avaliacao/avaliacaoExperiencia/prepareUpdateAvaliacaoExperiencia.action*=ROLE_MOV_MINHASAVALIACOES, ROLE_MOV_PERIODOEXPERIENCIA
 				
