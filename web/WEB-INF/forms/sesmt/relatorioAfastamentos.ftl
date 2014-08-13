@@ -19,14 +19,6 @@
 		<#assign fim = ""/>
 	</#if>
 
-	<script>
-		$(function(){
-			$('#agruparPor').change(function() {
-				var agruparPorColaborador = $(this).val() == 'O';
-				$('#wwgrp_ordenaColaboradorPorNome').toggle( !agruparPorColaborador );
-			});
-		});
-	</script>
 </head>
 <body>
 	<@ww.actionmessage />
@@ -47,7 +39,7 @@
 		<@ww.select label="Ordenar por" name="ordenaColaboradorPorNome" id="ordenaColaboradorPorNome" list=r"#{true:'Nome',false:'Data'}" required="true"/>
 
 		<@ww.select label="INSS" name="afastadoPeloINSS" id="afastadoPeloINSS" list=r"#{'T':'Todos','A':'Afastados','N':'Não afastados'}" required="true"/>
-		<@ww.select label="Agrupar por" id="agruparPor" name="agruparPor" list=r"#{'N':'','C':'CID','M':'Mês','O':'Colaborador'}" />
+		<@ww.select label="Agrupar por" id="agruparPor" name="agruparPor" list=r"#{'N':'Sem Agrupamento','C':'CID','M':'Mês','O':'Colaborador'}" />
 
 		<div class="buttonGroup">
 			<button class="btnRelatorio" onclick="${validarCampos}"></button>

@@ -60,7 +60,7 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		return getDao().getCount(empresaId, afastamentoId, nomeBusca, estabelecimentoIds, inicio, fim);
 	}
 
-	public Collection<ColaboradorAfastamento> findAllSelect(int page, int pagingSize, Long empresaId, String nomeBusca, String[] estabelecimentoCheck, String[] areasCheck, ColaboradorAfastamento colaboradorAfastamento, String ascOuDesc, boolean ordenaColaboradorPorNome, boolean ordenaPorCid, char afastadoPeloINSS)
+	public Collection<ColaboradorAfastamento> findAllSelect(int page, int pagingSize, Long empresaId, String nomeBusca, String[] estabelecimentoCheck, String[] areasCheck, ColaboradorAfastamento colaboradorAfastamento, String[] ordenarPor, boolean isListagemColaboradorAfastamento, char afastadoPeloINSS)
 	{
 		Date inicio=null,fim=null;
 		Long afastamentoId = null;
@@ -77,18 +77,17 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 		Long[] estabelecimentoIds = LongUtil.arrayStringToArrayLong(estabelecimentoCheck);
 		Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
 		
-		return getDao().findAllSelect(page, pagingSize, empresaId, afastamentoId, nomeBusca, estabelecimentoIds, areaIds, inicio, fim, ascOuDesc, ordenaColaboradorPorNome, ordenaPorCid, afastadoPeloINSS);
+		return getDao().findAllSelect(page, pagingSize, isListagemColaboradorAfastamento, empresaId, afastamentoId, nomeBusca, estabelecimentoIds, areaIds, inicio, fim, ordenarPor, afastadoPeloINSS);
 	}
 
-	public Collection<ColaboradorAfastamento> findRelatorioAfastamentos(Long empresaId, String nomeBusca, String[] estabelecimentoCheck, String[] areasCheck, ColaboradorAfastamento colaboradorAfastamento, boolean ordenaColaboradorPorNome, boolean ordenaPorCid, char afastadoPeloINSS) throws ColecaoVaziaException
+	public Collection<ColaboradorAfastamento> findRelatorioAfastamentos(Long empresaId, String nomeBusca, String[] estabelecimentoCheck, String[] areasCheck, ColaboradorAfastamento colaboradorAfastamento, String[] ordenarPor, char afastadoPeloINSS) throws ColecaoVaziaException
 	{
 		//cuidado com os parametros desse metodo eles são unha e carne com o relatorio gerado, os parametros são fundamentais
-		Collection<ColaboradorAfastamento> colaboradorAfastamentos = findAllSelect(0, 0, empresaId, nomeBusca, estabelecimentoCheck, areasCheck, colaboradorAfastamento, "ASC", ordenaColaboradorPorNome, ordenaPorCid, afastadoPeloINSS);
-
+		Collection<ColaboradorAfastamento> colaboradorAfastamentos = findAllSelect(0, 0, empresaId, nomeBusca, estabelecimentoCheck, areasCheck, colaboradorAfastamento, ordenarPor, false, afastadoPeloINSS);
 		if (colaboradorAfastamentos == null || colaboradorAfastamentos.isEmpty())
 			throw new ColecaoVaziaException("Não há afastamentos para o filtro informado.");
 
-		if(ordenaPorCid)
+		if(ordenarPor != null && ordenarPor[0].equals("cid"))
 		{
 			for (ColaboradorAfastamento colaboradorAfastamentotemp : colaboradorAfastamentos)
 			{
@@ -96,7 +95,7 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 					colaboradorAfastamentotemp.setCid("");
 				} else {
 					String descricaoCid = cidManager.findDescricaoByCodigo(colaboradorAfastamentotemp.getCid());
-					colaboradorAfastamentotemp.setCid(colaboradorAfastamentotemp.getCid() + " - " + (descricaoCid.equals("")?"Não identificado":descricaoCid));
+					colaboradorAfastamentotemp.setCid(colaboradorAfastamentotemp.getCid() + " - " + (descricaoCid.equals("")?"CID não identificado":descricaoCid));
 				}
 			}
 		}
