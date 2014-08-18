@@ -183,10 +183,12 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.estabelecimento.setId(estabelecimentoId);
 	}
 
-	public HistoricoColaborador(String empresaCnpj, String colaboradorCpf, Date data, String estabelecimentoNome, 
-			String areaComFamiliaNome, Long faixaiId, String faixaNome, String cargoNome, Long indiceId, Double salario, Integer tipoSalario, String motivo)
+	//findPendenciasPortal
+	public HistoricoColaborador(String empresaCnpj, Long colaboradorId, String colaboradorCpf, Date data, String estabelecimentoNome, 
+			String areaComFamiliaNome, Long faixaiId, String faixaNome, String cargoNome, Long indiceId, Double salarioCalculado, Integer tipoSalario, String motivo)
 	{
 		this.colaborador = new Colaborador();
+		this.colaborador.setId(colaboradorId);
 		this.colaborador.setEmpresaCnpj(empresaCnpj);
 		this.colaborador.setColaboradorCPF(colaboradorCpf);
 		
@@ -200,7 +202,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		
 		this.indice = new Indice();
 		this.indice.setId(indiceId);
-		this.salario = salario;
+		this.salario = salarioCalculado;
 		this.tipoSalario = tipoSalario;
 		this.motivo = motivo;	
 	}

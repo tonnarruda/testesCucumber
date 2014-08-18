@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import mockit.Mockit;
 
@@ -28,6 +29,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.portalcolaborador.TransacaoPCManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
@@ -48,11 +50,14 @@ import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
+import com.fortes.rh.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.PendenciaAC;
+import com.fortes.rh.model.geral.Pessoal;
+import com.fortes.rh.model.portalcolaborador.ColaboradorPC;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
@@ -100,7 +105,8 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 	Mock gerenciadorComunicacaoManager;
 	Mock candidatoSolicitacaoManager;
 	Mock solicitacaoManager;
-	
+	Mock transacaoPCManager;
+
 	protected void setUp() throws Exception
 	{
         transactionManager = new Mock(PlatformTransactionManager.class);
@@ -144,6 +150,9 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
 		historicoColaboradorManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
+		
+		transacaoPCManager = mock(TransacaoPCManager.class);
+		historicoColaboradorManager.setTransacaoPCManager((TransacaoPCManager) transacaoPCManager.proxy());
 
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
@@ -2239,4 +2248,74 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		assertTrue(existeDependencia);
 	}
 	
+	public void testEnfileirarHistoricosPC() {
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		areaOrganizacional.setCodigoAC("001");
+
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		estabelecimento.setCodigoAC("002");
+
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		faixaSalarial.setCodigoAC("003");
+
+		Indice indice = IndiceFactory.getEntity(1L);
+		indice.setCodigoAC("004");
+		
+		Pessoal pessoal1 = new Pessoal();
+		pessoal1.setCpf("cpf1");
+
+		Pessoal pessoal2 = new Pessoal();
+		pessoal2.setCpf("cpf2");
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
+		colaborador1.setNome("colaborador1");
+		colaborador1.setPessoal(pessoal1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(2L);
+		colaborador2.setNome("colaborador2");
+		colaborador2.setPessoal(pessoal2);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador1.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historicoColaborador1.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador1.setEstabelecimento(estabelecimento);
+		historicoColaborador1.setFaixaSalarial(faixaSalarial);
+		historicoColaborador1.setData(DateUtil.criarDataMesAno(1, 2, 2014));
+		historicoColaborador1.setIndice(null);
+		historicoColaborador1.setSalario(123.45);
+		historicoColaborador1.setQuantidadeIndice(null);
+		historicoColaborador1.setColaborador(colaborador1);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(2L);
+		historicoColaborador2.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historicoColaborador2.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador2.setEstabelecimento(estabelecimento);
+		historicoColaborador2.setFaixaSalarial(faixaSalarial);
+		historicoColaborador2.setData(DateUtil.criarDataMesAno(2, 4, 2014));
+		historicoColaborador2.setIndice(null);
+		historicoColaborador2.setSalario(700.0);
+		historicoColaborador2.setQuantidadeIndice(null);
+		historicoColaborador2.setColaborador(colaborador1);
+		
+		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity(3L);
+		historicoColaborador3.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historicoColaborador3.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador3.setEstabelecimento(estabelecimento);
+		historicoColaborador3.setFaixaSalarial(faixaSalarial);
+		historicoColaborador3.setData(DateUtil.criarDataMesAno(5, 6, 2014));
+		historicoColaborador3.setIndice(null);
+		historicoColaborador3.setSalario(800.0);
+		historicoColaborador3.setQuantidadeIndice(null);
+		historicoColaborador3.setColaborador(colaborador2);
+		
+		List<HistoricoColaborador> historicos = Arrays.asList(historicoColaborador1, historicoColaborador2, historicoColaborador3);
+		
+		historicoColaboradorDao.expects(once()).method("findPendenciasPortal").will(returnValue(historicos));
+		transacaoPCManager.expects(atLeastOnce()).method("enfileirar").withAnyArguments().isVoid();
+		
+		Set<ColaboradorPC> colaboradoresPC = historicoColaboradorManager.enfileirarHistoricosPC();
+		assertEquals(2, colaboradoresPC.size());
+		assertEquals(2, ((ColaboradorPC) colaboradoresPC.toArray()[0]).getHistoricosPc().size());
+		assertEquals(1, ((ColaboradorPC) colaboradoresPC.toArray()[1]).getHistoricosPc().size());
+	}
 }

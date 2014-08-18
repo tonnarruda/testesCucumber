@@ -5679,17 +5679,17 @@ CREATE TRIGGER tg_atualizar_historico_portal
 DROP VIEW situacaocolaborador;--.go
 
 CREATE VIEW situacaocolaborador AS 
- SELECT hc.colaborador_id as colaboradorId,
- 		hc.id AS historicocolaboradorId, 
+ SELECT hc.colaborador_id as colaborador_id,
+ 		hc.id AS historicocolaborador_id, 
         GREATEST(hc.data, hfs_hc.data, hi_hfs_hc.data, hi_hc.data) AS data, 
-        hc.estabelecimento_id as estabelecimentoId, 
+        hc.estabelecimento_id as estabelecimento_id, 
         e_hc.nome as estabelecimentoNome,  
-        hc.areaorganizacional_id as areaId,
-        c.id AS cargoId, 
+        hc.areaorganizacional_id as areaOrganizacional_id,
+        c.id AS cargo_id, 
         c.nome AS cargoNome, 
-        hc.faixasalarial_id AS faixaId, 
+        hc.faixasalarial_id AS faixa_id, 
         fs_hc.nome AS faixaNome,  
-        i_hc.id AS indiceId,
+        i_hc.id AS indice_id,
         COALESCE(hfs_hc.quantidade * hi_hfs_hc.valor, hfs_hc.valor, hc.quantidadeindice * hi_hc.valor, hc.salario) AS salario, 
         hc.tiposalario AS tipo,  
         hc.motivo 

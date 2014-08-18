@@ -1949,6 +1949,42 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaboradorDao.save(historicoColaborador);
 	}
 	
+	public void testFindPendenciasPortal()
+	{
+		empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNaoIntegraAc(false);
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setData(new Date());
+		historicoColaborador.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historicoColaborador.setSalario(1000.00);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		List<HistoricoColaborador> historicos = historicoColaboradorDao.findPendenciasPortal();
+		
+		assertEquals(1, historicos.size());
+		
+	}
+	
 	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)
 	{
 		this.historicoColaboradorDao = historicoColaboradorDao;

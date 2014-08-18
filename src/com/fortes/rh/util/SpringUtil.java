@@ -52,8 +52,8 @@ public final class SpringUtil
 			"com/fortes/rh/business/sesmt/applicationContext-business.xml",
 			"com/fortes/rh/business/avaliacao/applicationContext-business.xml",
 			"com/fortes/rh/business/security/applicationContext-business.xml",
-			"com/fortes/rh/business/portalcolaborador/applicationContext-business.xml",
-			"com/fortes/rh/config/backup/applicationContext-backup.xml"
+			"com/fortes/rh/config/backup/applicationContext-backup.xml",
+			"com/fortes/rh/business/portalcolaborador/applicationContext-business.xml"
 	};
 	
 	private static ClassPathXmlApplicationContext appContext = null;

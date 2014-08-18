@@ -17,6 +17,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 @Entity
 public class SituacaoColaborador implements Comparable<SituacaoColaborador>
 {
+	//dor(e.cnpj, c.id, c.pessoal.cpf, sc.data, sc.estabelecimentoNome, monta_familia_area(sc.areaId) as area, sc.faixaid, sc.faixanome as faixaNome, sc.cargonome as cargoNome, sc.indiceid, sc.salario, sc.tipo, sc.motivo) ");
 	@Id
 	private Long historicoColaboradorId;
 	@Temporal(TemporalType.DATE)
@@ -63,12 +64,12 @@ public class SituacaoColaborador implements Comparable<SituacaoColaborador>
 		this.motivo = motivo;
 	}
 
-	public void setProjectionEstabelecimentoNome(String projectionEstabelecimentoNome)
+	public void setEstabelecimentoNome(String estabelecimentoNome)
 	{
 		if (this.estabelecimento == null)
 			this.estabelecimento = new Estabelecimento();
 
-		this.estabelecimento.setNome(projectionEstabelecimentoNome);
+		this.estabelecimento.setNome(estabelecimentoNome);
 	}
 
 	public void setProjectionEstabelecimentoId(Long projectionEstabelecimentoId)

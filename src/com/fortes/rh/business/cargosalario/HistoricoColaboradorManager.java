@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -15,6 +16,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.PendenciaAC;
+import com.fortes.rh.model.portalcolaborador.ColaboradorPC;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.security.spring.aop.callback.HistoricoColaboradorAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
@@ -170,7 +172,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId);
 	
-	public void enfileirarHistoricosPC();
+	public Set<ColaboradorPC> enfileirarHistoricosPC();
 	
 	public Collection<HistoricoColaborador> montaSituacaoHistoricoColaborador(List<HistoricoColaborador> historicoColaboradors);
 }

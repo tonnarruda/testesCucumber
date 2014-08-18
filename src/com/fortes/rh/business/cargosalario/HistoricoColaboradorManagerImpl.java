@@ -31,6 +31,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.portalcolaborador.TransacaoPCManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
@@ -47,6 +48,7 @@ import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
+import com.fortes.rh.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -82,6 +84,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	private IndiceManager indiceManager;
 	private EmpresaManager empresaManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	private TransacaoPCManager transacaoPCManager;
 	
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
@@ -1494,7 +1497,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return getDao().findByEmpresaComHistoricoPendente(empresaId) ;
 	}
 	
-	public void enfileirarHistoricosPC()
+	public Set<ColaboradorPC> enfileirarHistoricosPC()
 	{
 		List<HistoricoColaborador> historicos = getDao().findPendenciasPortal();
 		montaSituacaoHistoricoColaborador(historicos);
@@ -1503,17 +1506,23 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		HistoricoColaboradorPC historicoColaboradorPC;
 		Set<ColaboradorPC> colaboradorPCs = new HashSet<ColaboradorPC>();
 		
-		for (HistoricoColaborador historico : historicos) {
-			
-			if(colaboradorPC == null || !colaboradorPC.getCpf().equals(historico.getColaborador().getPessoal().getCpf()))
+		for (HistoricoColaborador historico : historicos) 
+		{
+			if(colaboradorPC == null || !colaboradorPC.getCpf().equals(historico.getColaborador().getPessoal().getCpf())){
 				colaboradorPC = new ColaboradorPC(historico.getColaborador());
+				colaboradorPC.setHistoricosPc(new ArrayList<HistoricoColaboradorPC>());
+			}
 			
-			historicoColaboradorPC = new HistoricoColaboradorPC();
+			historicoColaboradorPC = new HistoricoColaboradorPC(historico);
 			colaboradorPC.getHistoricosPc().add(historicoColaboradorPC);
 			
 			colaboradorPCs.add(colaboradorPC);
 		}
 		
+		for (ColaboradorPC colabPC : colaboradorPCs) 
+			transacaoPCManager.enfileirar(colabPC, URLTransacaoPC.COLABORADOR_ATUALIZAR);
+		
+		return colaboradorPCs;
 	}
 
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId) 
@@ -1538,5 +1547,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
+	}
+
+	public void setTransacaoPCManager(TransacaoPCManager transacaoPCManager) {
+		this.transacaoPCManager = transacaoPCManager;
 	}
 }
