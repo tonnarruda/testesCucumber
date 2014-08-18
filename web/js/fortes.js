@@ -164,7 +164,7 @@ function getArrayCheckeds(frm, nameCheck)
 	return result;
 }
 
-function addChecks(divName, data, onClick)
+function addChecks(divName, data, onClick, orderByData)
 {
 	var result = "";
 	var addOnClick = "";
@@ -177,9 +177,10 @@ function addChecks(divName, data, onClick)
 		dados[i][1] = key;
 		i++;
 	}
-		
-	dados.sort();
 	
+	if(!orderByData)
+		dados.sort();
+
 	if(onClick != null && onClick != "")
 		addOnClick = "onClick='"+ onClick +"'";
 	

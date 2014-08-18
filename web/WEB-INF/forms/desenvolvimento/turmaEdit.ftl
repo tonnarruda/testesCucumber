@@ -68,7 +68,7 @@
 		{
 			if(data != null)
 			{
-				addChecks('diasCheck',data)
+				addChecks('diasCheck',data, null, true)
 				marcaCheckListBoxString(diasIds);
 			}
 			else
