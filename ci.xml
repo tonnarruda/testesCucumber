@@ -196,4 +196,68 @@
 	<target name="integrate-server" depends="coverage">
 		<echo message="Integração concluída com sucesso." />
 	</target>
+	
+	<target name="war">
+		<mkdir dir="${ant.project.name}/dist" />
+		<property name="tmpweb" value="${ant.project.name}/dist/tmpweb" />
+		<property name="base" value="${ant.project.name}/web" />
+		<property name="lib" value="WEB-INF/lib" />
+		<property name="test-ignore" value="WEB-INF/classes/com/fortes/rh/test" />
+	
+		<!-- Copia todos os arquivos, com execao das libs, para diretorio temporario -->
+		<copy todir="${tmpweb}">
+			<fileset dir="${base}">
+				<exclude name="WEB-INF/lib/**" />
+				<exclude name="WEB-INF/report/*.java" />
+				<exclude name="WEB-INF/report/*.bak" />
+				<exclude name="WEB-INF/anexosLtcat/*.*" />
+				<exclude name="WEB-INF/atualizador/*.*" />
+				<exclude name="WEB-INF/temp/*.*" />
+				<exclude name="anexos/*.*" />
+				<exclude name="backup/*.*" />
+				<exclude name="${metadados.dir}/clean.sql"/>
+				<exclude name="${metadados.dir}/create_data.sql"/>
+				<exclude name="${metadados.dir}/create.sql"/>
+				<exclude name="${metadados.dir}/populate.sql"/>
+				<exclude name="${metadados.dir}/update_dev.sql"/>
+			</fileset>
+		</copy>
+		<!-- Copia as libs para diretorio temporario -->
+		<copy todir="${tmpweb}/${lib}" flatten="true" >
+			<fileset dir="${base}/${lib}">
+				<exclude name="fortes-ant.jar" />
+				<exclude name="pmd-4.2.2.jar" />
+				<exclude name="hsqldb.jar" />
+				<exclude name="checkstyle-4.4.jar" />
+				<exclude name="findbugs/**" />
+				<exclude name="findbugs*.jar" />
+				<exclude name="emma*.jar" />
+				<exclude name="ant-junit.jar" />
+				<exclude name="jmock*.jar" />
+				<exclude name="classmock_1.0.jar" />
+				<exclude name="junit.jar" />
+				<exclude name="selenium*.jar" />
+				<exclude name="spring-mock.jar" />
+				<exclude name="retroweaver-all-2.0.2.jar" />
+				<exclude name="args4j-2.0.1.jar" />
+				<exclude name="org.crap4j.jar" />
+				<exclude name="servlet-2.3.jar" />
+				<exclude name="backup"/>
+			</fileset>
+		</copy>
+		
+		<!-- Gera hibernate.cfg.xml com hibernate.show_sql = false -->
+		<exec executable="ruby" failonerror="true">
+			<arg value="${ant.project.name}/geracaoHibernateCfg.rb" />
+			<arg value="${tmpweb}/WEB-INF/classes" />
+		</exec>
+		
+		<!-- Gera War file de acordo com o diretorio temporario -->
+		<war webxml="${tmpweb}/WEB-INF/web.xml"
+			destfile="${ant.project.name}/dist/fortesrh.war" basedir="${tmpweb}"
+			excludes="${test-ignore}/**">
+		</war>
+		
+		<delete dir="${tmpweb}" /> <!--Deleta diretorio temporario -->
+	</target>
 </project>
