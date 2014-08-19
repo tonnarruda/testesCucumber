@@ -8,6 +8,7 @@ import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.captacao.NivelCompetenciaManagerImpl;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
 
@@ -66,5 +67,24 @@ public class NivelCompetenciaManagerTest extends MockObjectTestCase
 		}
 		
 		assertNotNull(e);
+	}
+
+	public void testGetPontuacaoObtidaByConfiguracoesNiveisCompetencia()
+	{
+		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity(1L);
+		nivelCompetencia1.setOrdem(4);
+		
+		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity(2L);
+		nivelCompetencia2.setOrdem(3);
+		
+		ConfiguracaoNivelCompetencia configNivelCompetencia1 = new ConfiguracaoNivelCompetencia();
+		configNivelCompetencia1.setNivelCompetencia(nivelCompetencia1);
+
+		ConfiguracaoNivelCompetencia configNivelCompetencia2 = new ConfiguracaoNivelCompetencia();
+		configNivelCompetencia2.setNivelCompetencia(nivelCompetencia2);
+		
+		Collection<ConfiguracaoNivelCompetencia> confgniveisCompetencia = Arrays.asList(configNivelCompetencia1, configNivelCompetencia2);
+		
+		assertEquals((Integer) 7, nivelCompetenciaManager.getPontuacaoObtidaByConfiguracoesNiveisCompetencia(confgniveisCompetencia));
 	}
 }

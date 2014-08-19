@@ -87,6 +87,9 @@
     <property name="usuarioManager">
       <ref bean="usuarioManager" />
     </property>
+    <property name="nivelCompetenciaManager">
+      <ref bean="nivelCompetenciaManager" />
+    </property>
   </bean>
   <bean id="colaboradorRespostaManager" parent="parentManager">
     <property name="proxyInterfaces">

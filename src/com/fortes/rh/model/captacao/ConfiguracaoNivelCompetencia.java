@@ -111,11 +111,12 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setProjectionNivelCompetenciaOrdem(nivelCompetenciaOrdem);
 	}
 	
-	public ConfiguracaoNivelCompetencia(Character tipoCompetencia, Long competenciaId, Long nivelCompetenciaId)
+	public ConfiguracaoNivelCompetencia(Character tipoCompetencia, Long competenciaId, Long nivelCompetenciaId, Integer nivelCompetenciaOrdem)
 	{
 		this.setTipoCompetencia(tipoCompetencia);
 		this.setCompetenciaId(competenciaId);
 		this.setNivelCompetenciaIdProjection(nivelCompetenciaId);
+		this.nivelCompetencia.setOrdem(nivelCompetenciaOrdem);
 	}
 	
 	public ConfiguracaoNivelCompetencia(Long id, String competenciaDescricao)

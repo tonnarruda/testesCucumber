@@ -18,6 +18,7 @@ import org.springframework.transaction.TransactionUsageException;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -26,6 +27,8 @@ import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -33,6 +36,7 @@ import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.Aspecto;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -45,6 +49,8 @@ import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
@@ -66,6 +72,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 	private Mock questionarioManager;
 	private Mock colaboradorManager;
 	private Mock avaliacaoManager;
+	private Mock nivelCompetenciaManager;
 
     protected void setUp() throws Exception
     {
@@ -90,6 +97,9 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
         
         avaliacaoManager = mock(AvaliacaoManager.class);
         colaboradorRespostaManager.setAvaliacaoManager((AvaliacaoManager) avaliacaoManager.proxy());
+        
+        nivelCompetenciaManager = mock(NivelCompetenciaManager.class);
+        colaboradorRespostaManager.setNivelCompetenciaManager((NivelCompetenciaManager) nivelCompetenciaManager.proxy());
     }
 
     public void testCountRespostas()
@@ -475,9 +485,9 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	
     	Collection<ColaboradorResposta> colaboradorRespostas = Arrays.asList(colaboradorResposta);
     	
-    	colaboradorQuestionarioManager.expects(once()).method("save").will(returnValue(colaboradorQuestionario));
     	historicoColaboradorManager.expects(once()).method("getHistoricoAtual").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
-    	colaboradorRespostaDao.expects(atLeastOnce()).method("save").will(returnValue(ColaboradorRespostaFactory.getEntity(1L)));
+    	colaboradorRespostaDao.expects(once()).method("save").will(returnValue(ColaboradorRespostaFactory.getEntity(1L)));
+    	colaboradorQuestionarioManager.expects(once()).method("save").isVoid();
     	
     	Usuario usuarioLogado = UsuarioFactory.getEntity(1L);
     	
@@ -522,7 +532,8 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	colaboradorRespostas.add(colaboradorResposta1);
     	colaboradorRespostas.add(colaboradorResposta2);
     	
-    	colaboradorQuestionarioManager.expects(once()).method("save").will(returnValue(colaboradorQuestionario));
+    	colaboradorQuestionarioManager.expects(once()).method("save").isVoid();
+    	colaboradorQuestionarioManager.expects(once()).method("update").isVoid();
     	historicoColaboradorManager.expects(atLeastOnce()).method("getHistoricoAtual").with(eq(colaborador.getId())).will(returnValue(new HistoricoColaborador()));
     	colaboradorRespostaDao.expects(atLeastOnce()).method("save");
     	
@@ -530,7 +541,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	
     	avaliacaoManager.expects(once()).method("getPontuacaoMaximaDaPerformance").will(returnValue(pontuacaoMaxima));
     	colaboradorRespostaDao.expects(once()).method("findByColaboradorQuestionario").will(returnValue(colaboradorRespostas));
-    	colaboradorQuestionarioManager.expects(once()).method("update").with(eq(colaboradorQuestionario));
+    	
     	
     	Usuario usuarioLogado = UsuarioFactory.getEntity(1L);
 
@@ -593,11 +604,91 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	
     	avaliacaoManager.expects(once()).method("getPontuacaoMaximaDaPerformance").will(returnValue(pontuacaoMaxima));
     	colaboradorRespostaDao.expects(once()).method("findByColaboradorQuestionario").will(returnValue(colaboradorRespostas));
+    	colaboradorRespostaDao.expects(once()).method("removeByColaboradorQuestionario").isVoid();
     	colaboradorQuestionarioManager.expects(once()).method("update").with(eq(colaboradorQuestionario));
     	
-    	colaboradorRespostaManager.savePerformanceDaAvaliacaoExperiencia(colaboradorQuestionario);
+    	colaboradorRespostaManager.update(new ArrayList<ColaboradorResposta>(), colaboradorQuestionario, 1L, null, null);
     	
     	assertEquals("46,67%", colaboradorQuestionario.getPerformanceFormatada());
+    }
+  
+    public void testSavePerformanceDaAvaliacaoExperienciaComNivelCompetencia()
+    {
+    	Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
+    	
+    	ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(22L);
+    	colaboradorQuestionario.setAvaliacao(avaliacao);
+    	
+    	Pergunta perguntaObjetiva = PerguntaFactory.getEntity(1L);
+    	perguntaObjetiva.setTipo(TipoPergunta.OBJETIVA);
+    	perguntaObjetiva.setPeso(9);
+    	
+    	Resposta respostaObjetivaA = RespostaFactory.getEntity(1L);
+    	respostaObjetivaA.setPeso(1);
+    	
+    	Pergunta perguntaNota = PerguntaFactory.getEntity(2L);
+    	perguntaNota.setTipo(TipoPergunta.NOTA);
+    	perguntaNota.setPeso(2);
+    	
+    	Pergunta perguntaMultipla = PerguntaFactory.getEntity(3L);
+    	perguntaMultipla.setTipo(TipoPergunta.MULTIPLA_ESCOLHA);
+    	perguntaMultipla.setPeso(5);
+    	
+    	Resposta respostaMuliplaA = RespostaFactory.getEntity(2L);
+    	respostaMuliplaA.setPeso(2);
+    	
+    	Resposta respostaMuliplaB = RespostaFactory.getEntity(3L);
+    	respostaMuliplaB.setPeso(4);
+    	
+    	ColaboradorResposta colaboradorRespostaObjetiva = ColaboradorRespostaFactory.getEntity(1L);
+    	colaboradorRespostaObjetiva.setPergunta(perguntaObjetiva);
+    	colaboradorRespostaObjetiva.setResposta(respostaObjetivaA);
+    	
+    	ColaboradorResposta colaboradorRespostaNota = ColaboradorRespostaFactory.getEntity(2L);
+    	colaboradorRespostaNota.setValor(5);    	
+    	colaboradorRespostaNota.setPergunta(perguntaNota);
+    	
+    	ColaboradorResposta colaboradorRespostaMultiplaA = ColaboradorRespostaFactory.getEntity(3L);
+    	colaboradorRespostaMultiplaA.setPergunta(perguntaMultipla);
+    	colaboradorRespostaMultiplaA.setResposta(respostaMuliplaA);
+    	
+    	ColaboradorResposta colaboradorRespostaMultiplaB = ColaboradorRespostaFactory.getEntity(4L);
+    	colaboradorRespostaMultiplaB.setPergunta(perguntaMultipla);
+    	colaboradorRespostaMultiplaB.setResposta(respostaMuliplaB);
+    	
+    	Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
+    	colaboradorRespostas.add(colaboradorRespostaObjetiva);
+    	colaboradorRespostas.add(colaboradorRespostaNota);
+    	colaboradorRespostas.add(colaboradorRespostaMultiplaA);
+    	colaboradorRespostas.add(colaboradorRespostaMultiplaB);
+    	
+    	Integer pontuacaoMaxima = 105;
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	
+    	NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity(1L);
+		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity(2L);
+		
+		ConfiguracaoNivelCompetencia configNivelCompetencia1 = new ConfiguracaoNivelCompetencia();
+		configNivelCompetencia1.setNivelCompetencia(nivelCompetencia1);
+
+		ConfiguracaoNivelCompetencia configNivelCompetencia2 = new ConfiguracaoNivelCompetencia();
+		configNivelCompetencia2.setNivelCompetencia(nivelCompetencia2);
+
+		Collection<ConfiguracaoNivelCompetencia> confgniveisCompetencia = Arrays.asList(configNivelCompetencia1, configNivelCompetencia2);
+		
+		nivelCompetenciaManager.expects(once()).method("getPontuacaoObtidaByConfiguracoesNiveisCompetencia").with(eq(confgniveisCompetencia)).will(returnValue(20));
+		nivelCompetenciaManager.expects(once()).method("getOrdemMaxima").with(eq(empresa.getId())).will(returnValue(50));
+    	
+    	avaliacaoManager.expects(once()).method("getPontuacaoMaximaDaPerformance").will(returnValue(pontuacaoMaxima));
+    	colaboradorRespostaDao.expects(once()).method("findByColaboradorQuestionario").will(returnValue(colaboradorRespostas));
+    	colaboradorRespostaDao.expects(once()).method("removeByColaboradorQuestionario").isVoid();
+    	colaboradorQuestionarioManager.expects(once()).method("update").with(eq(colaboradorQuestionario));
+    	
+    	colaboradorRespostaManager.update(new ArrayList<ColaboradorResposta>(), colaboradorQuestionario, 1L, empresa.getId(), confgniveisCompetencia);
+    	
+    	assertEquals("23,9%", colaboradorQuestionario.getPerformanceFormatada());
+    	assertEquals("9,76%", colaboradorQuestionario.getPerformanceNivelCompetenciaFormatada());
     }
 
     public void testSavePerformanceDaAvaliacaoExperienciaNegativa()
@@ -634,9 +725,10 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	
     	avaliacaoManager.expects(once()).method("getPontuacaoMaximaDaPerformance").will(returnValue(pontuacaoMaxima));
     	colaboradorRespostaDao.expects(once()).method("findByColaboradorQuestionario").will(returnValue(colaboradorRespostas));
+    	colaboradorRespostaDao.expects(once()).method("removeByColaboradorQuestionario").isVoid();
     	colaboradorQuestionarioManager.expects(once()).method("update").with(eq(colaboradorQuestionario));
     	
-    	colaboradorRespostaManager.savePerformanceDaAvaliacaoExperiencia(colaboradorQuestionario);
+    	colaboradorRespostaManager.update(new ArrayList<ColaboradorResposta>(), colaboradorQuestionario, 1L, null, null);
     	
     	assertEquals("20%", colaboradorQuestionario.getPerformanceFormatada());
     }
@@ -689,12 +781,14 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	
     	avaliacaoManager.expects(once()).method("getPontuacaoMaximaDaPerformance").will(returnValue(pontuacaoMaxima));
     	colaboradorRespostaDao.expects(once()).method("findByColaboradorQuestionario").will(returnValue(colaboradorRespostas));
+    	colaboradorRespostaDao.expects(once()).method("removeByColaboradorQuestionario").isVoid();
     	colaboradorQuestionarioManager.expects(once()).method("update").with(eq(colaboradorQuestionario));
     	
-    	colaboradorRespostaManager.savePerformanceDaAvaliacaoExperiencia(colaboradorQuestionario);
+    	colaboradorRespostaManager.update(new ArrayList<ColaboradorResposta>(), colaboradorQuestionario, 1L, null, null);
     	
     	assertEquals("54,55%", colaboradorQuestionario.getPerformanceFormatada());
     }
+    
     public void testFindByAvaliadoAndAvaliacaoDesempenho()
 	{
     	boolean desconsiderarAutoAvaliacao = false;

@@ -60,6 +60,7 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     private AvaliacaoCurso avaliacaoCurso;
     
     private Double performance; // desempenho de Avaliações
+    private Double performanceNivelCompetencia;
     @Lob
     private String observacao;
     
@@ -644,12 +645,33 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 		if (performance == null)
 			return "0%";
 
-	    DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt","BR"));//new DecimalFormat("0.##");
-	    df.applyPattern("0.##");
-         
-		String performanceFmt = df.format((performance * 100)) + "%";
+		return FormataPercentual(performance);
+	}
+	
+	@NaoAudita
+	public String getPerformanceNivelCompetenciaFormatada() {
+		if (performanceNivelCompetencia == null)
+			return "0%";
+		return FormataPercentual(performanceNivelCompetencia);
+	}
+
+	@NaoAudita
+	public String getPerformanceFinal() {
+		if (performanceNivelCompetencia == null)
+			performanceNivelCompetencia = 0.0;
+
+		if (performance == null)
+			performance = 0.0;
 		
-		return performanceFmt;
+		return FormataPercentual(performance + performanceNivelCompetencia);
+	}
+
+	@NaoAudita
+	private String FormataPercentual(Double numero) {
+		DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt","BR"));//new DecimalFormat("0.##");
+		df.applyPattern("0.##");
+		
+		return df.format((numero * 100)) + "%";
 	}
 	
 	@NaoAudita
@@ -756,5 +778,13 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 	public void setColaboradorRespostas(
 			Collection<ColaboradorResposta> colaboradorRespostas) {
 		this.colaboradorRespostas = colaboradorRespostas;
+	}
+
+	public Double getPerformanceNivelCompetencia() {
+		return performanceNivelCompetencia;
+	}
+
+	public void setPerformanceNivelCompetencia(Double performanceNivelCompetencia) {
+		this.performanceNivelCompetencia = performanceNivelCompetencia;
 	}
 }

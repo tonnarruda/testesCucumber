@@ -14,12 +14,14 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.Turma;
@@ -37,7 +39,6 @@ import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjet
 import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.ConverterUtil;
-import com.fortes.rh.util.LongUtil;
 
 public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<ColaboradorResposta, ColaboradorRespostaDao> implements ColaboradorRespostaManager
 {
@@ -48,6 +49,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
     private ColaboradorManager colaboradorManager;
     private AvaliacaoManager avaliacaoManager;
     private UsuarioManager usuarioManager ;
+    private NivelCompetenciaManager nivelCompetenciaManager; 
 
 	public List<Object[]> countRespostas(Long perguntaId, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId)
     {
@@ -419,16 +421,15 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	 */
 	public void save(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId, Long candidatoId)
 	{
-		colaboradorQuestionario.setRespondida(true);
-		colaboradorQuestionario = colaboradorQuestionarioManager.save(colaboradorQuestionario);
-		
-		// TODO tratamento avaliação anônima
-		
 		ajustaEntidadesNull(colaboradorQuestionario);
+		colaboradorQuestionario.setRespondida(true);
 		saveRespostas(colaboradorRespostas, colaboradorQuestionario);
-			
-		if (colaboradorQuestionario.getAvaliacao() != null)
-			savePerformanceDaAvaliacaoExperiencia(colaboradorQuestionario);
+		colaboradorQuestionarioManager.save(colaboradorQuestionario);
+		
+		if (colaboradorQuestionario.getAvaliacao() != null)	{
+			calculaPerformance(colaboradorQuestionario, null, null);
+			colaboradorQuestionarioManager.update(colaboradorQuestionario);
+		}
 	}
 
 	private void ajustaEntidadesNull(ColaboradorQuestionario colaboradorQuestionario)
@@ -471,24 +472,11 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		}
 	}
 	
-	public void savePerformance(ColaboradorQuestionario colaboradorQuestionario)
+	private void calculaPerformance(ColaboradorQuestionario colaboradorQuestionario, Long empresaId, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados)
 	{
-		double performance = calculaPerformance(colaboradorQuestionario.getId(), colaboradorQuestionario.getAvaliacao().getId());
+		Long colaboradorQuestionarioId = colaboradorQuestionario.getId();
+		Long avaliacaoId = colaboradorQuestionario.getAvaliacao().getId();
 		
-		colaboradorQuestionarioManager.updatePerformance(colaboradorQuestionario.getId(), performance);
-	}
-	
-	// TODO esse método não deveria estar aqui, assim como o save e update 
-	public void savePerformanceDaAvaliacaoExperiencia(ColaboradorQuestionario colaboradorQuestionario)
-	{
-		double performance = calculaPerformance(colaboradorQuestionario.getId(), colaboradorQuestionario.getAvaliacao().getId());
-		
-		colaboradorQuestionario.setPerformance(performance);
-		colaboradorQuestionarioManager.update(colaboradorQuestionario);
-	}
-
-	private double calculaPerformance(Long colaboradorQuestionarioId, Long avaliacaoId)
-	{
 		Collection<Long> perguntasIdsComPesoNulo = new ArrayList<Long>();
 		Collection<ColaboradorResposta> colaboradorRespostas = getDao().findByColaboradorQuestionario(colaboradorQuestionarioId);
 		
@@ -496,58 +484,65 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 			if((colaboradorResposta.getPergunta() != null && (colaboradorResposta.getPergunta().getTipo() == TipoPergunta.OBJETIVA || colaboradorResposta.getPergunta().getTipo() == TipoPergunta.MULTIPLA_ESCOLHA)) &&
 					(colaboradorResposta.getResposta() != null && colaboradorResposta.getResposta().getPeso() == null))
 				perguntasIdsComPesoNulo.add(colaboradorResposta.getPergunta().getId());
-
-		double performance = 0;
-		int pontuacaoMaxima = avaliacaoManager.getPontuacaoMaximaDaPerformance(avaliacaoId, new CollectionUtil<Long>().convertCollectionToArrayLong(perguntasIdsComPesoNulo));
 		
-		if(pontuacaoMaxima == 0)//A performance vai ter que ficar zero, pois não posso dividir por zero
-			return performance;
-		
-		int pontuacaoObtida = 0;
-
-		for (ColaboradorResposta colaboradorResposta : colaboradorRespostas) //for colaboradorRespostas separado devido contagem da multipla escolha (não juntar for de colaboradorRespostas)
+		int pontuacaoNivelCompetenciaObtida = 0;
+		int pontuacaoMaximaNivelcompetencia = 0;
+		if(niveisCompetenciaMarcados != null)
 		{
-			Pergunta pergunta = colaboradorResposta.getPergunta();
-			Resposta resposta = colaboradorResposta.getResposta();
-
-			if((perguntasIdsComPesoNulo.size() > 0 && perguntasIdsComPesoNulo.contains(pergunta.getId())) || pergunta.getTipo() == TipoPergunta.SUBJETIVA)
-				continue;
-			
-			int pesoResposta = 0;
-
-			if (pergunta.getTipo() == TipoPergunta.OBJETIVA || pergunta.getTipo() == TipoPergunta.MULTIPLA_ESCOLHA)
-				pesoResposta = resposta.getPeso() == null ? 0 : resposta.getPeso();
-			else if (pergunta.getTipo() == TipoPergunta.NOTA)
-				pesoResposta = colaboradorResposta.getValor() == null ? 0 : colaboradorResposta.getValor();
-
-			int peso = pergunta.getPeso() == null ? 0 : pergunta.getPeso();
-
-			pontuacaoObtida += (peso * pesoResposta);
+			pontuacaoNivelCompetenciaObtida = nivelCompetenciaManager.getPontuacaoObtidaByConfiguracoesNiveisCompetencia(niveisCompetenciaMarcados);
+			pontuacaoMaximaNivelcompetencia = niveisCompetenciaMarcados.size() * nivelCompetenciaManager.getOrdemMaxima(empresaId); 
 		}
-
-		if (pontuacaoObtida < 0)
-			pontuacaoObtida = 0;
-
-		performance = (double)pontuacaoObtida / (double)pontuacaoMaxima;
-
-		return performance;
+		
+		int pontuacaoMaximaQuestionario = avaliacaoManager.getPontuacaoMaximaDaPerformance(avaliacaoId, new CollectionUtil<Long>().convertCollectionToArrayLong(perguntasIdsComPesoNulo));
+		
+		if(pontuacaoMaximaQuestionario != 0 || pontuacaoMaximaNivelcompetencia != 0 )//A performance vai ter que ficar nula, pois não posso dividir por zero
+		{
+			int pontuacaoObtida = 0;
+			for (ColaboradorResposta colaboradorResposta : colaboradorRespostas) //for colaboradorRespostas separado devido contagem da multipla escolha (não juntar for de colaboradorRespostas)
+			{
+				Pergunta pergunta = colaboradorResposta.getPergunta();
+				Resposta resposta = colaboradorResposta.getResposta();
+	
+				if((perguntasIdsComPesoNulo.size() > 0 && perguntasIdsComPesoNulo.contains(pergunta.getId())) || pergunta.getTipo() == TipoPergunta.SUBJETIVA)
+					continue;
+				
+				int pesoResposta = 0;
+	
+				if (pergunta.getTipo() == TipoPergunta.OBJETIVA || pergunta.getTipo() == TipoPergunta.MULTIPLA_ESCOLHA)
+					pesoResposta = resposta.getPeso() == null ? 0 : resposta.getPeso();
+				else if (pergunta.getTipo() == TipoPergunta.NOTA)
+					pesoResposta = colaboradorResposta.getValor() == null ? 0 : colaboradorResposta.getValor();
+	
+				int peso = pergunta.getPeso() == null ? 0 : pergunta.getPeso();
+	
+				pontuacaoObtida += (peso * pesoResposta);
+			}
+	
+			if (pontuacaoObtida < 0)
+				pontuacaoObtida = 0;
+	
+			Double pontuacaoMaxima = (double)pontuacaoMaximaQuestionario + (double)pontuacaoMaximaNivelcompetencia;
+			Double performanceQuestionario = (double)pontuacaoObtida / pontuacaoMaxima;
+	
+			colaboradorQuestionario.setPerformance(performanceQuestionario);
+			colaboradorQuestionario.setPerformanceNivelCompetencia((double) pontuacaoNivelCompetenciaObtida / pontuacaoMaxima);
+		}
 	}
 
 	/**
 	 * @param usuarioLogadoId : O ID do usuario logado eh utilizado na auditoria.
 	 */
-	public void update(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId)
+	public void update(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId, Long empresaId, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados)
 	{
 		ajustaEntidadesNull(colaboradorQuestionario);
-		
-		getDao().removeByColaboradorQuestionario(colaboradorQuestionario.getId());
 		colaboradorQuestionario.setRespondida(true);
-		colaboradorQuestionarioManager.update(colaboradorQuestionario);
-		
+		getDao().removeByColaboradorQuestionario(colaboradorQuestionario.getId());
 		saveRespostas(colaboradorRespostas, colaboradorQuestionario);
-		
+
 		if (colaboradorQuestionario.getAvaliacao() != null)
-			savePerformanceDaAvaliacaoExperiencia(colaboradorQuestionario);
+			calculaPerformance(colaboradorQuestionario, empresaId, niveisCompetenciaMarcados);
+
+		colaboradorQuestionarioManager.update(colaboradorQuestionario);
 	}
 	
 	public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long avaliadoId, Long avaliacaoDesempenhoId)
@@ -667,5 +662,10 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	public void setUsuarioManager(UsuarioManager usuarioManager)
 	{
 		this.usuarioManager = usuarioManager;
+	}
+
+	public void setNivelCompetenciaManager(NivelCompetenciaManager nivelCompetenciaManager) 
+	{
+		this.nivelCompetenciaManager = nivelCompetenciaManager;
 	}
 }

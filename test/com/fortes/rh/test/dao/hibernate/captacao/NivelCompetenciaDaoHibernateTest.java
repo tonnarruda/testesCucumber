@@ -913,6 +913,34 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals("Ordenado por treinamento", cursoConhecimento.getNome(), configsArray[2].getCursoNome());
 	}
 	
+	public void testGetOrdemMaxima()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia1.setOrdem(1);
+		nivelCompetencia1.setEmpresa(empresa);
+		nivelCompetenciaDao.save(nivelCompetencia1);
+		
+		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia2.setOrdem(4);
+		nivelCompetencia2.setEmpresa(empresa);
+		nivelCompetenciaDao.save(nivelCompetencia2);
+
+		NivelCompetencia nivelCompetencia3 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia3.setOrdem(4);
+		nivelCompetencia3.setEmpresa(empresa);
+		nivelCompetenciaDao.save(nivelCompetencia3);
+
+		NivelCompetencia nivelCompetencia4 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia4.setOrdem(2);
+		nivelCompetencia4.setEmpresa(empresa);
+		nivelCompetenciaDao.save(nivelCompetencia4);
+		
+		assertEquals((int) 4, nivelCompetenciaDao.getOrdemMaxima(empresa.getId()));
+	}
+	
 	@Override
 	public GenericDao<NivelCompetencia> getGenericDao()
 	{

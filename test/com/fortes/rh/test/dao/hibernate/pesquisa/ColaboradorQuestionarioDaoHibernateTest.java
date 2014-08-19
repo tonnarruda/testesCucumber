@@ -1129,22 +1129,6 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(colaboradorQuestionario2.getId(), ( (ColaboradorQuestionario) colaboradorQuestionarioDao.findByIdColaboradorCandidato(colaboradorQuestionario2.getId())).getId());
 	}
 	
-	public void testFindTodos()
-	{
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaboradorDao.save(colaborador);
-		
-		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
-		avaliacaoDao.save(avaliacao);
-		
-		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
-		colaboradorQuestionario.setColaborador(colaborador);
-		colaboradorQuestionario.setAvaliacao(avaliacao);
-		colaboradorQuestionarioDao.save(colaboradorQuestionario);
-		
-		assertTrue(colaboradorQuestionarioDao.findTodos().size() > 0);
-	}
-	
 	public void testFindForRankingPerformanceAvaliacaoCurso()
 	{
 		Colaborador joao = ColaboradorFactory.getEntity();
