@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
@@ -32,7 +33,7 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	@Audita(operacao="Inserção", auditor=ColaboradorRespostaAuditorCallbackImpl.class)
 	void save(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId, Long candidatoId);
 	@Audita(operacao="Atualização", auditor=ColaboradorRespostaAuditorCallbackImpl.class)
-	void update(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId);
+	void update(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId, Long empresaId, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados);
 	Collection<ColaboradorResposta> findByAvaliadoAndAvaliacaoDesempenho(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao);
 	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long avaliadoId, Long avaliacaoDesempenhoId);
 	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long avaliadoId, Long avaliacaoDesempenhoId);
@@ -40,7 +41,6 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	Collection<RespostaQuestionarioVO> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId);
 	Usuario findUsuarioParaAuditoria(Long usuarioId);
 	Integer countColaboradorAvaliacaoRespondida(Long avaliacaoId);
-	void savePerformance(ColaboradorQuestionario colaboradorQuestionario);
 	boolean existeRespostaSemCargo(Long[] perguntasIds);
 	Collection<ColaboradorResposta> findPerguntasRespostasByColaboradorQuestionario(Long colaboradorQuestionarioId);
 }

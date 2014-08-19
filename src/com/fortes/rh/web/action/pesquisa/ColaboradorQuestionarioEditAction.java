@@ -287,7 +287,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		if (colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo())
 		{
-			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaborador.getFaixaSalarial().getCargo().getId());
+			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaborador.getFaixaSalarial().getId());
 			nivelCompetencias = nivelCompetenciaManager.findAllSelect(colaborador.getEmpresa().getId());
 			
 			niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByColaborador(colaborador.getId(), avaliador.getId(), colaboradorQuestionario.getId());
@@ -295,17 +295,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		return Action.SUCCESS;
 	}
-	
-	public String atualizaPerformance()
-	{
-		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findTodos();
-		
-		for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios) {
-			colaboradorRespostaManager.savePerformance(colaboradorQuestionario);
-		}
-		return Action.SUCCESS;
-	}
-	
+
 	public String responderAvaliacaoDesempenho()
 	{
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = null;
@@ -322,7 +312,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 			exibeResultadoAutoavaliacao();//usado em avaliacaodesempenhoQuestionariolist.action
 
 			Collection<ColaboradorResposta> colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);
-			colaboradorRespostaManager.update(colaboradorRespostasDasPerguntas, colaboradorQuestionario, getUsuarioLogado().getId());
+			colaboradorRespostaManager.update(colaboradorRespostasDasPerguntas, colaboradorQuestionario, getUsuarioLogado().getId(), getEmpresaSistema().getId(), niveisCompetenciaFaixaSalariais);
 			
 			if (colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo())
 			{
@@ -546,7 +536,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		//      que o "colaboradorQuestionarioManager" atualizasse as respostas e nao o contrario. 		
 		ajustaSolicitacao();
 		Collection<ColaboradorResposta> colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);
-		colaboradorRespostaManager.update(colaboradorRespostasDasPerguntas, colaboradorQuestionario, getUsuarioLogado().getId());
+		colaboradorRespostaManager.update(colaboradorRespostasDasPerguntas, colaboradorQuestionario, getUsuarioLogado().getId(), null, null);
 		
 		addActionSuccess("Avaliação respondida com sucesso.");
 		

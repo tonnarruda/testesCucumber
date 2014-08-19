@@ -608,6 +608,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		p.add(Projections.property("cq.id"), "id");
 		p.add(Projections.property("cq.performance"), "performance");
+		p.add(Projections.property("cq.performanceNivelCompetencia"), "performanceNivelCompetencia");
 		p.add(Projections.property("cq.respondida"), "respondida");
 		p.add(Projections.property("avaliado.id"), "projectionColaboradorId");
 		p.add(Projections.property("avaliado.nome"), "projectionColaboradorNome");
@@ -947,36 +948,15 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 	{
 		String queryHQL = "delete from ColaboradorResposta ce where ce.colaboradorQuestionario.id = :colaboradorQuestionarioId";
 		getSession().createQuery(queryHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
+
+		queryHQL = "delete from ConfiguracaoNivelCompetencia cnc where cnc.configuracaoNivelCompetenciaColaborador.id in (select id from ConfiguracaoNivelCompetenciaColaborador cncc where cncc.colaboradorQuestionario.id = :colaboradorQuestionarioId)";
+		getSession().createQuery(queryHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
+
+		queryHQL = "delete from ConfiguracaoNivelCompetenciaColaborador cncc where cncc.colaboradorQuestionario.id = :colaboradorQuestionarioId";
+		getSession().createQuery(queryHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
 		
-		String queryUpdateHQL = "update ColaboradorQuestionario cq set cq.respondida = false, cq.respondidaEm = null, cq.performance = null, cq.observacao = null where cq.id = :colaboradorQuestionarioId";
+		String queryUpdateHQL = "update ColaboradorQuestionario cq set cq.respondida = false, cq.respondidaEm = null, cq.performance = null, cq.performanceNivelCompetencia = null, cq.observacao = null where cq.id = :colaboradorQuestionarioId";
 		getSession().createQuery(queryUpdateHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
-	}
-	
-	public Collection<ColaboradorQuestionario> findTodos()
-	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("cq.id"), "id");
-		p.add(Projections.property("cq.avaliacao.id"), "projectionAvaliacaoId");
-		criteria.setProjection(p);
-		
-		criteria.add(Expression.isNotNull("cq.avaliacao.id"));
-
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
-
-		return criteria.list();
-	}
-
-	public void updatePerformance(Long colaboradorQuestionarioId, double performance)
-	{
-		String queryUpdateHQL = "update ColaboradorQuestionario cq set cq.performance = :performance where cq.id = :colaboradorQuestionarioId";
-
-		Query query = getSession().createQuery(queryUpdateHQL);
-		query.setLong("colaboradorQuestionarioId",colaboradorQuestionarioId);
-		query.setDouble("performance",performance);
-		
-		query.executeUpdate();
 	}
 
 	public Collection<ColaboradorQuestionario> findForRankingPerformanceAvaliacaoCurso(Long[] cursosIds, Long[] turmasIds, Long[] avaliacaoCursosIds) 

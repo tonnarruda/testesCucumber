@@ -463,16 +463,6 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		getDao().deleteRespostaAvaliacaoDesempenho(colaboradorQuestionarioId);
 	}
 
-	public Collection<ColaboradorQuestionario> findTodos()
-	{
-		return getDao().findTodos();
-	}
-
-	public void updatePerformance(Long colaboradorQuestionarioId, double performance)
-	{
-		getDao().updatePerformance(colaboradorQuestionarioId, performance);
-	}
-
 	public Collection<ColaboradorQuestionario> findForRankingPerformanceAvaliacaoCurso(Long[] cursosIds, Long[] turmasIds, Long[] avaliacaoCursosIds) 
 	{
 		return getDao().findForRankingPerformanceAvaliacaoCurso(cursosIds, turmasIds, avaliacaoCursosIds);

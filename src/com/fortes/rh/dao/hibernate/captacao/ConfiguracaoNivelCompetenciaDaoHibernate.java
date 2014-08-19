@@ -302,7 +302,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long colaboradorId, Long avaliadorId, Long colaboradorQuestionarioId) 
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ConfiguracaoNivelCompetencia(cnc.tipoCompetencia, cnc.competenciaId, cnc.nivelCompetencia.id) "); 
+		hql.append("select new ConfiguracaoNivelCompetencia(cnc.tipoCompetencia, cnc.competenciaId, cnc.nivelCompetencia.id, cnc.nivelCompetencia.ordem) "); 
 		hql.append("from ConfiguracaoNivelCompetencia cnc "); 
 		hql.append("left join cnc.configuracaoNivelCompetenciaColaborador cncc "); 
 		hql.append("where cncc.colaborador.id = :colaboradorId ");
