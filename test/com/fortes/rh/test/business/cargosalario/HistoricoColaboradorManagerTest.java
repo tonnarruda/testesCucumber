@@ -151,14 +151,15 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
 		historicoColaboradorManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
 		
-		transacaoPCManager = mock(TransacaoPCManager.class);
-		historicoColaboradorManager.setTransacaoPCManager((TransacaoPCManager) transacaoPCManager.proxy());
-
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
+
+		transacaoPCManager = new Mock(TransacaoPCManager.class);
+		MockSpringUtil.mocks.put("transacaoPCManager", transacaoPCManager);
 		
 		funcaoManager = mock(FuncaoManager.class);
 		MockSpringUtil.mocks.put("funcaoManager", funcaoManager);
+		
 		ambienteManager = mock(AmbienteManager.class);
 		MockSpringUtil.mocks.put("ambienteManager", ambienteManager);
 		
@@ -2309,9 +2310,13 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaborador3.setColaborador(colaborador2);
 		
 		List<HistoricoColaborador> historicos = Arrays.asList(historicoColaborador1, historicoColaborador2, historicoColaborador3);
+		Long[] empresasIds = new Long[]{1L};
+		Collection<Long> colaboradoresIds = Arrays.asList(colaborador1.getId(), colaborador2.getId());
 		
-		historicoColaboradorDao.expects(once()).method("findPendenciasPortal").will(returnValue(historicos));
-		transacaoPCManager.expects(atLeastOnce()).method("enfileirar").withAnyArguments().isVoid();
+		empresaManager.expects(once()).method("findIntegradaPortalColaborador").will(returnValue(empresasIds));
+		historicoColaboradorDao.expects(once()).method("findPendenciasPortal").with(eq(empresasIds)).will(returnValue(historicos));
+		transacaoPCManager.expects(atLeastOnce()).method("enfileirar").with(ANYTHING, eq(URLTransacaoPC.COLABORADOR_ATUALIZAR)).isVoid();
+		colaboradorManager.expects(once()).method("atualizarHistoricoPortal").with(eq(false), eq(colaboradoresIds)).isVoid();
 		
 		Set<ColaboradorPC> colaboradoresPC = historicoColaboradorManager.enfileirarHistoricosPC();
 		assertEquals(2, colaboradoresPC.size());

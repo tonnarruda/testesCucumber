@@ -1953,13 +1953,12 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	{
 		empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
-		
-		colaborador = ColaboradorFactory.getEntity();
-		colaborador.setNaoIntegraAc(false);
-		colaborador.setEmpresa(empresa);
-		colaboradorDao.save(colaborador);
+
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
 		
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
 		faixaSalarialDao.save(faixaSalarial);
 		
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
@@ -1968,20 +1967,53 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(estabelecimento);
 		
-		historicoColaborador = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador.setColaborador(colaborador);
-		historicoColaborador.setFaixaSalarial(faixaSalarial);
-		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
-		historicoColaborador.setEstabelecimento(estabelecimento);
-		historicoColaborador.setData(new Date());
-		historicoColaborador.setTipoSalario(TipoAplicacaoIndice.VALOR);
-		historicoColaborador.setSalario(1000.00);
-		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
-		historicoColaboradorDao.save(historicoColaborador);
+		Colaborador Gerlan = ColaboradorFactory.getEntity();
+		Gerlan.setNaoIntegraAc(false);
+		Gerlan.setEmpresa(empresa);
+		colaboradorDao.save(Gerlan);
 		
-		List<HistoricoColaborador> historicos = historicoColaboradorDao.findPendenciasPortal();
+		HistoricoColaborador historico1_Gerlan = HistoricoColaboradorFactory.getEntity();
+		historico1_Gerlan.setColaborador(Gerlan);
+		historico1_Gerlan.setFaixaSalarial(faixaSalarial);
+		historico1_Gerlan.setAreaOrganizacional(areaOrganizacional);
+		historico1_Gerlan.setEstabelecimento(estabelecimento);
+		historico1_Gerlan.setData(new Date());
+		historico1_Gerlan.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historico1_Gerlan.setSalario(1000.00);
+		historico1_Gerlan.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historico1_Gerlan);
+
+		HistoricoColaborador historico2_Gerlan = HistoricoColaboradorFactory.getEntity();
+		historico2_Gerlan.setColaborador(Gerlan);
+		historico2_Gerlan.setFaixaSalarial(faixaSalarial);
+		historico2_Gerlan.setAreaOrganizacional(areaOrganizacional);
+		historico2_Gerlan.setEstabelecimento(estabelecimento);
+		historico2_Gerlan.setData(DateUtil.criarDataMesAno(1, 2, 2010));
+		historico2_Gerlan.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historico2_Gerlan.setSalario(500.00);
+		historico2_Gerlan.setStatus(StatusRetornoAC.AGUARDANDO);
+		historicoColaboradorDao.save(historico2_Gerlan);
 		
-		assertEquals(1, historicos.size());
+		Colaborador Darlan = ColaboradorFactory.getEntity();
+		Darlan = ColaboradorFactory.getEntity();
+		Darlan.setNaoIntegraAc(false);
+		Darlan.setEmpresa(empresa);
+		colaboradorDao.save(Darlan);
+		
+		HistoricoColaborador historico_Darla = HistoricoColaboradorFactory.getEntity();
+		historico_Darla.setColaborador(Darlan);
+		historico_Darla.setFaixaSalarial(faixaSalarial);
+		historico_Darla.setAreaOrganizacional(areaOrganizacional);
+		historico_Darla.setEstabelecimento(estabelecimento);
+		historico_Darla.setData(new Date());
+		historico_Darla.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historico_Darla.setSalario(1000.00);
+		historico_Darla.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historico_Darla);
+		
+		List<HistoricoColaborador> historicos = historicoColaboradorDao.findPendenciasPortal(empresa.getId());
+		
+		assertEquals(2, historicos.size());
 		
 	}
 	

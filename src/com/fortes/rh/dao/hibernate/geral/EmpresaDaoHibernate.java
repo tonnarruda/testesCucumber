@@ -490,4 +490,19 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 
 		query.executeUpdate();
 	}
+
+	public Long[] findIntegradaPortalColaborador() {
+		Criteria criteria = getSession().createCriteria(Empresa.class, "e");
+
+		ProjectionList p = Projections.projectionList().create();
+		p. add(Projections.property("e.id"), "id");
+
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("e.integradaPortalColaborador", true));
+		
+		Collection<Long> colIds = criteria.list();
+		Long[] compIds = new Long[colIds.size()];
+		
+		return colIds.toArray(compIds);
+	}
 }

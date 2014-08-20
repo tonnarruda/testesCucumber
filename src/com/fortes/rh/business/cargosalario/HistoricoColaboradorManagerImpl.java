@@ -28,6 +28,7 @@ import com.fortes.model.AbstractModel;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
@@ -84,7 +85,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	private IndiceManager indiceManager;
 	private EmpresaManager empresaManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
-	private TransacaoPCManager transacaoPCManager;
 	
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
@@ -1499,18 +1499,28 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	
 	public Set<ColaboradorPC> enfileirarHistoricosPC()
 	{
-		List<HistoricoColaborador> historicos = getDao().findPendenciasPortal();
+		Long[] empresasIds = empresaManager.findIntegradaPortalColaborador();
+		if(empresasIds.length == 0 ) 
+			return null;
+		
+		List<HistoricoColaborador> historicos = getDao().findPendenciasPortal(empresasIds);
+		
+		if(historicos.isEmpty() ) 
+			return null;
+		
 		montaSituacaoHistoricoColaborador(historicos);
 		
 		ColaboradorPC colaboradorPC = null;
 		HistoricoColaboradorPC historicoColaboradorPC;
 		Set<ColaboradorPC> colaboradorPCs = new HashSet<ColaboradorPC>();
+		Collection<Long> colabIds = new ArrayList<Long>(); 
 		
 		for (HistoricoColaborador historico : historicos) 
 		{
 			if(colaboradorPC == null || !colaboradorPC.getCpf().equals(historico.getColaborador().getPessoal().getCpf())){
 				colaboradorPC = new ColaboradorPC(historico.getColaborador());
 				colaboradorPC.setHistoricosPc(new ArrayList<HistoricoColaboradorPC>());
+				colabIds.add(historico.getColaborador().getId());
 			}
 			
 			historicoColaboradorPC = new HistoricoColaboradorPC(historico);
@@ -1519,8 +1529,12 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			colaboradorPCs.add(colaboradorPC);
 		}
 		
+		TransacaoPCManager transacaoPCManager= (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
 		for (ColaboradorPC colabPC : colaboradorPCs) 
 			transacaoPCManager.enfileirar(colabPC, URLTransacaoPC.COLABORADOR_ATUALIZAR);
+		
+		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
+		colaboradorManager.atualizarHistoricoPortal(false, colabIds);
 		
 		return colaboradorPCs;
 	}
@@ -1547,9 +1561,5 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
-	}
-
-	public void setTransacaoPCManager(TransacaoPCManager transacaoPCManager) {
-		this.transacaoPCManager = transacaoPCManager;
 	}
 }

@@ -273,6 +273,18 @@
     <property name="targetMethod" value="processarFila"/>
   </bean>
 
+  <bean name="enfileirarHistoricosPCJob" class="com.fortes.rh.business.cargosalario.HistoricoColaboradorManagerImpl">
+    <property name="empresaManager" ref="empresaManagerTarget" />
+    <property name="dao" ref="historicoColaboradorDaoTarget" />
+  </bean>
+  
+  <bean name="enfileirarHistoricosPC" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+    <property name="name" value="Enfileirar Historicos para o Portal do Colaborador"/>
+    <property name="group" value="PORTAL"/>
+    <property name="targetObject" ref="enfileirarHistoricosPCJob"/>
+    <property name="targetMethod" value="enfileirarHistoricosPC"/>
+  </bean>
+
   <bean id="cronTriggerImportadorGastosAC" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="importadorGastosAC" />
     <property name="cronExpression" value="0 0 5 5 * ?" />
@@ -321,6 +333,10 @@
     <property name="jobDetail" ref="importarUltimasNoticias" />
 	<property name="cronExpression" value="0 0 0/1 * * ?" /> <!-- A cada 1 hora -->
   </bean>
+  <bean id="cronTriggerEnfileirarHistoricosPC" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="enfileirarHistoricosPC" />
+	<property name="cronExpression" value="0 5 0/1 * * ?" /> <!-- A cada 1 hora -->
+  </bean>
   <bean id="cronTriggerProcessarFilaPC" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="processarFilaPC" />
 	<property name="cronExpression" value="0 0/10 * * * ?" /> <!-- A cada 10 minutos -->
@@ -343,6 +359,7 @@
 		<ref bean="cronTriggerlembreteContratoTemporarioColaborador" />
 		<ref bean="cronTriggerlembreteHabilitacaoAVencer" />
 		<ref bean="cronTriggerImportarUltimasNoticias" />
+		<ref bean="cronTriggerEnfileirarHistoricosPC" />
 		<ref bean="cronTriggerProcessarFilaPC" />
       </list>
     </property>

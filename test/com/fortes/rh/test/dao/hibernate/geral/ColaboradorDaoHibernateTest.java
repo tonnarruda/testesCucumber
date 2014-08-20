@@ -6519,6 +6519,46 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(2, colaboradorDao.findColaboradoresByCodigoAC(empresa1.getId(), true, new String[]{"000012","000013","000014"}).size());
 	}
 	
+	public void testAtualizarHistoricoPortal() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		Colaborador Gerlan = ColaboradorFactory.getEntity();
+		Gerlan.setNaoIntegraAc(false);
+		Gerlan.setEmpresa(empresa);
+		colaboradorDao.save(Gerlan);
+		
+		HistoricoColaborador historico1_Gerlan = HistoricoColaboradorFactory.getEntity();
+		historico1_Gerlan.setColaborador(Gerlan);
+		historico1_Gerlan.setFaixaSalarial(faixaSalarial);
+		historico1_Gerlan.setAreaOrganizacional(areaOrganizacional);
+		historico1_Gerlan.setEstabelecimento(estabelecimento);
+		historico1_Gerlan.setData(new Date());
+		historico1_Gerlan.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historico1_Gerlan.setSalario(1000.00);
+		historico1_Gerlan.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historico1_Gerlan);
+		
+		colaboradorDao.atualizarHistoricoPortal(false, Arrays.asList(Gerlan.getId()));
+		
+		Colaborador result = colaboradorDao.findById(Gerlan.getId());
+		assertFalse(result.isAtualizarHistoricoPortal());
+	}
+	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
 	{
 		this.areaOrganizacionalDao = areaOrganizacionalDao;

@@ -1421,38 +1421,45 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 	
-	public List<HistoricoColaborador> findPendenciasPortal() 
+	public List<HistoricoColaborador> findPendenciasPortal(Long... empresasIds) 
 	{
-
-		Alterar consulta para critéria
-	//		StringBuilder hql = new StringBuilder();
-//		hql.append("select new HistoricoColaborador(e.cnpj, c.id, c.pessoal.cpf, sc.data, sc.estabelecimentoNome, monta_familia_area(sc.areaId) as area, sc.faixaid, sc.faixanome as faixaNome, sc.cargonome as cargoNome, sc.indiceid, sc.salario, sc.tipo, sc.motivo) ");
-//		hql.append("from SituacaoColaborador as sc ");
-//		hql.append("inner join sc.colaborador as c ");
-//		hql.append("inner join c.empresa as e ");
-//		hql.append("where c.atualizarhistoricoportal = true ");
-//		hql.append("order by e.cnpj, c.cpf, sc.data ");//Muito importante não remover
-//
-//		Query query = getSession().createQuery(hql.toString());
-//
-//		return query.list();
 		Criteria criteria = getSession().createCriteria(SituacaoColaborador.class, "sc");
-		criteria.createCriteria("sc.colaborador", "c");
-		criteria.createCriteria("c.empresa", "e");
+		criteria.createCriteria("sc.estabelecimento", "e", Criteria.LEFT_JOIN);
+		criteria.createCriteria("sc.faixaSalarial", "f", Criteria.LEFT_JOIN);
+		criteria.createCriteria("sc.indice", "i", Criteria.LEFT_JOIN);
+		criteria.createCriteria("f.cargo", "cg", Criteria.LEFT_JOIN);
+		criteria.createCriteria("sc.colaborador", "c", Criteria.INNER_JOIN);
+		criteria.createCriteria("c.empresa", "emp");
 
 		ProjectionList p = Projections.projectionList().create();
-//		p.add(Projections.property("e.cnpj"), "id");
+		p.add(Projections.property("emp.cnpj"), "empresaCnpj");
+		p.add(Projections.property("c.id"), "colaboradorId");
+		p.add(Projections.property("c.pessoal.cpf"), "colaboradorCpf");
+		p.add(Projections.property("sc.data"), "data");
+		p.add(Projections.property("e.nome"), "estabelecimentoNome");
+		p.add(Projections.property("f.id"), "faixaSalarialId");
+		p.add(Projections.property("f.nome"), "faixaSalarialNome");
+		p.add(Projections.property("cg.nome"), "cargoNome");
+		p.add(Projections.property("i.id"), "indiceId");
+		p.add(Projections.property("sc.salario"), "salario");
+		p.add(Projections.property("sc.tipo"), "tipoSalario");
+		p.add(Projections.property("sc.motivo"), "motivo");
 		p.add(Projections.sqlProjection("monta_familia_area({alias}.areaOrganizacional_id) as areaNome", new String[]{"areaNome"}, new Type[]{Hibernate.STRING}), "areaOrganizacionalNome") ;
 
 		criteria.setProjection(p);
 
+		criteria.add(Expression.in("emp.id",empresasIds));
 		criteria.add(Expression.eq("c.atualizarHistoricoPortal", true));
+		criteria.add(Expression.eq("sc.status",StatusRetornoAC.CONFIRMADO));
+		
+		//Ordem muito importante não remover
+		criteria.addOrder(Order.asc("emp.cnpj"));
+		criteria.addOrder(Order.asc("c.pessoal.cpf"));
+		criteria.addOrder(Order.asc("sc.data"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
 
 		return criteria.list();
-		
 	}
-	
 }

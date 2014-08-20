@@ -4899,4 +4899,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Colaborador findColaboradorComTodosOsDados(Long id) {
 		return super.findById(id);
 	}
+
+	public void atualizarHistoricoPortal(boolean enviar, Collection<Long> colabIds) 
+	{
+		String hql = "update Colaborador set atualizarHistoricoPortal = :enviar where id in (:colabIds) ";
+
+		Query query = getSession().createQuery(hql);
+		query.setParameterList("colabIds", colabIds, Hibernate.LONG);
+		query.setBoolean("enviar", enviar);
+		
+		query.executeUpdate();
+	}
 }

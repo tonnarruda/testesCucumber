@@ -498,6 +498,11 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	{
 		getDao().updateCodigoAC(empresaId, codigoAC, grupoAC);
 	}
+
+	public Long[] findIntegradaPortalColaborador() 
+	{
+		return getDao().findIntegradaPortalColaborador();
+	}
 	
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
 		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
@@ -538,4 +543,5 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	public void setRiscoManager(RiscoManager riscoManager) {
 		this.riscoManager = riscoManager;
 	}
+
 }

@@ -45,9 +45,6 @@
     <property name="gerenciadorComunicacaoManager">
       <ref bean="gerenciadorComunicacaoManager" />
     </property>
-    <property name="transacaoPCManager">
-      <ref bean="transacaoPCManager" />
-    </property>
   </bean>
   <bean id="historicoColaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

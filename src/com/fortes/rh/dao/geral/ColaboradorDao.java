@@ -137,4 +137,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public int countColaboradoresComHistoricos();
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId);
 	public Colaborador findColaboradorComTodosOsDados(Long id);
+	public void atualizarHistoricoPortal(boolean enviar, Collection<Long> colabIds);
 }

@@ -34,7 +34,9 @@ public class SituacaoColaborador implements Comparable<SituacaoColaborador>
 	private AreaOrganizacional areaOrganizacional;
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Colaborador colaborador;
-	
+	@ManyToOne(fetch=FetchType.LAZY)
+	private Indice indice;
+	private int status;
 	private String motivo;
 	
 	@Transient
@@ -220,6 +222,22 @@ public class SituacaoColaborador implements Comparable<SituacaoColaborador>
 
 	public void setDataExtenso(String dataExtenso) {
 		this.dataExtenso = dataExtenso;
+	}
+
+	public Indice getIndice() {
+		return indice;
+	}
+
+	public void setIndice(Indice indice) {
+		this.indice = indice;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	
 }

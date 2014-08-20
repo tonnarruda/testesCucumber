@@ -33,6 +33,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.util.DateUtil;
@@ -181,30 +182,6 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		if(this.estabelecimento == null)
 			this.estabelecimento = new Estabelecimento();
 		this.estabelecimento.setId(estabelecimentoId);
-	}
-
-	//findPendenciasPortal
-	public HistoricoColaborador(String empresaCnpj, Long colaboradorId, String colaboradorCpf, Date data, String estabelecimentoNome, 
-			String areaComFamiliaNome, Long faixaiId, String faixaNome, String cargoNome, Long indiceId, Double salarioCalculado, Integer tipoSalario, String motivo)
-	{
-		this.colaborador = new Colaborador();
-		this.colaborador.setId(colaboradorId);
-		this.colaborador.setEmpresaCnpj(empresaCnpj);
-		this.colaborador.setColaboradorCPF(colaboradorCpf);
-		
-		this.data =data;
-
-		this.setEstabelecimentoNome(estabelecimentoNome);
-		this.setAreaOrganizacionalNome(areaComFamiliaNome);
-		this.setFaixaSalarialId(faixaiId);
-		this.setFaixaSalarialNome(faixaNome);
-		this.setCargoNome(cargoNome);
-		
-		this.indice = new Indice();
-		this.indice.setId(indiceId);
-		this.salario = salarioCalculado;
-		this.tipoSalario = tipoSalario;
-		this.motivo = motivo;	
 	}
 	
 	public HistoricoColaborador(Date dataAdmissao, Date data)
@@ -424,6 +401,14 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	{
 		this.indice = indice;
 	}
+	
+	public void setIndiceId(Long indiceId)
+	{
+		if(this.indice == null)
+			this.indice = new Indice();
+		
+		this.indice.setId(indiceId);
+	}
 
 	public Double getQuantidadeIndice()
 	{
@@ -537,6 +522,16 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 
 		colaborador.setNome(colaboradorNome);
 	}
+	
+	public void setColaboradorCpf(String colaboradorCpf)
+	{
+		inicializaColaborador();
+		
+		if(colaborador.getPessoal() == null)
+			colaborador.setPessoal(new Pessoal());
+		
+		colaborador.getPessoal().setCpf(colaboradorCpf);
+	}
 
 	public void setColaboradorCodigoAC(String colaboradorCodigoAC)
 	{
@@ -594,6 +589,16 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 			colaborador.setEmpresa(new Empresa());
 		
 		colaborador.getEmpresa().setNome(nomeEmpresa);
+	}
+	
+	public void setEmpresaCnpj(String cnpj)
+	{
+		inicializaColaborador();
+		
+		if (colaborador.getEmpresa() == null)
+			colaborador.setEmpresa(new Empresa());
+		
+		colaborador.getEmpresa().setCnpj(cnpj);
 	}
 	
 	public void setAmbienteId(Long id)

@@ -36,6 +36,7 @@ import com.fortes.rh.test.factory.geral.EstadoFactory;
 import com.fortes.rh.test.factory.geral.GrupoACFactory;
 import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
+import com.fortes.rh.util.LongUtil;
 
 public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 {
@@ -396,6 +397,27 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		
 		assertEquals("Codigo AC", empresa.getCodigoAC(), retorno.getCodigoAC());
 		assertEquals("Grupo AC", empresa.getGrupoAC(), retorno.getGrupoAC());
+	}
+	
+	public void testFindIntegradaPortalColaborador(){
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresa1.setIntegradaPortalColaborador(true);
+		empresa1.setCodigoAC(null);
+		empresa1.setGrupoAC(null);
+		empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2.setIntegradaPortalColaborador(false);
+		empresa2.setCodigoAC(null);
+		empresa2.setGrupoAC(null);
+		empresaDao.save(empresa2);
+		
+		Long[] empresasIds = empresaDao.findIntegradaPortalColaborador();
+		
+		Collection<Long> empresasCollectionIds = LongUtil.arrayLongToCollectionLong(empresasIds);
+		
+		assertTrue(empresasCollectionIds.contains(empresa1.getId()));
+		assertFalse(empresasCollectionIds.contains(empresa2.getId()));
 	}
 
 	public void setCidadeDao(CidadeDao cidadeDao)

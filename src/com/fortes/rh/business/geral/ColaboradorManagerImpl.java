@@ -2731,6 +2731,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 		transactionManager.commit(status);
 	}
+	
+	public void atualizarHistoricoPortal(boolean enviar, Collection<Long> colabIds) 
+	{
+		getDao().atualizarHistoricoPortal(enviar, colabIds);
+	}
 
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId) 
 	{
