@@ -136,13 +136,12 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Long[] configuracaoNivelCompetenciaIds, Long faixaSalarialColaboradorId, boolean ordenarPorNivel) 
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Date dataIni, Date dataFim, Long[] configuracaoNivelCompetenciaIds, Long faixaSalarialColaboradorId, boolean ordenarPorNivel) 
 	{
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("select COALESCE(a.nome, conhe.nome, h.nome) as competencia,  ncncf.descricao as nivelFaixaDescricao, ncncf.ordem as nivelFaixaOrdem, c.nome as colabNome, c.id as colabId, nc.descricao as nivelColabDescricao, nc.ordem as nivelColabOrdem, " +
-				"cncc.id as configNCColaboradorId, av.nome as avaliadorNome, ad.anonima as avaliacaoAnonima from "); 
-		sql.append("ConfiguracaoNivelCompetencia cncf ");
+		sql.append("select COALESCE(a.nome, conhe.nome, h.nome) as competencia,  ncncf.descricao as nivelFaixaDescricao, ncncf.ordem as nivelFaixaOrdem, c.nome as colabNome, c.id as colabId, nc.descricao as nivelColabDescricao, nc.ordem as nivelColabOrdem, cncc.id as configNCColaboradorId, cncc.data as configNCData, av.nome as avaliadorNome, ad.anonima as avaliacaoAnonima ");
+		sql.append("from ConfiguracaoNivelCompetencia cncf ");
 		sql.append("join NivelCompetencia ncncf on ncncf.id = cncf.nivelcompetencia_id ");
 		sql.append("left join Atitude a on a.id = cncf.competencia_id and :tipoAtitude = cncf.tipocompetencia ");
 		sql.append("left join Conhecimento conhe on conhe.id = cncf.competencia_id and :tipoConhecimento = cncf.tipocompetencia ");
@@ -155,14 +154,15 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("left join Colaborador av on av.id = cncc.avaliador_id ");
 		sql.append("left join ColaboradorQuestionario cq on cq.id = cncc.colaboradorQuestionario_id ");
 		sql.append("left join AvaliacaoDesempenho ad on ad.id = cq.avaliacaoDesempenho_id ");
-		sql.append("where  ");
-		sql.append("(cncc.data = (select max(data) from ConfiguracaoNivelCompetenciaColaborador where colaborador_id = cncc.colaborador_id and cncc.faixaSalarial_id = :faixaSalarialColaboradorId) ");
-		sql.append("or cncc.data is null) ");
+		sql.append("where cncc.faixaSalarial_id = :faixaSalarialColaboradorId ");
+	
+		if(dataIni != null &&  dataFim != null)
+			sql.append("and cncc.data >= :dataIni and cncc.data <= :dataFim ");
 		
 		sql.append("and cncf.id in (:configuracaoNivelCompetenciaIds) ");
 		
 		if(ordenarPorNivel)
-			sql.append("order by c.nome, c.id, cncc.id, competencia ");
+			sql.append("order by c.nome, c.id, cncc.data, cncc.id, competencia ");
 		else
 			sql.append("order by competencia, c.nome ");
 		
@@ -173,6 +173,12 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		query.setParameterList("configuracaoNivelCompetenciaIds", configuracaoNivelCompetenciaIds, Hibernate.LONG);
 		query.setLong("faixaSalarialColaboradorId", faixaSalarialColaboradorId);
 		
+		if(dataIni != null &&  dataFim != null)
+		{
+			query.setDate("dataIni", dataIni);
+			query.setDate("dataFim", dataFim);
+		}
+		
 		Collection<Object[]> resultado = query.list();
 		
 		Collection<ConfiguracaoNivelCompetencia> lista = new ArrayList<ConfiguracaoNivelCompetencia>();
@@ -180,7 +186,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
-			lista.add(new ConfiguracaoNivelCompetencia((String)res[0], (String)res[1], (Integer)res[2], (String)res[3], ((BigInteger)res[4]), (String)res[5], (Integer)res[6], ((BigInteger)res[7]),  (String)res[8], (Boolean)res[9] ));
+			lista.add(new ConfiguracaoNivelCompetencia((String)res[0], (String)res[1], (Integer)res[2], (String)res[3], ((BigInteger)res[4]), (String)res[5], (Integer)res[6], ((BigInteger)res[7]), (Date)res[8], (String)res[9], (Boolean)res[10] ));
 		}
 		
 		return lista;				

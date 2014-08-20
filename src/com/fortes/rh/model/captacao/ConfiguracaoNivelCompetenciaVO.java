@@ -16,15 +16,17 @@ public class ConfiguracaoNivelCompetenciaVO
 	private Integer totalPontosFaixa;
 	private Collection<MatrizCompetenciaNivelConfiguracao> matrizes;
 	private String avaliadorNome;
+	private String data;
 
 	public ConfiguracaoNivelCompetenciaVO() {
 		super();
 	}
-	public ConfiguracaoNivelCompetenciaVO(String nome, String avaliadorNome, Collection<MatrizCompetenciaNivelConfiguracao> matrizes) {
+	public ConfiguracaoNivelCompetenciaVO(String nome, String avaliadorNome, String data, Collection<MatrizCompetenciaNivelConfiguracao> matrizes) {
 		super();
 		this.nome = nome;
 		this.matrizes = matrizes;
 		this.avaliadorNome = avaliadorNome;
+		this.data = data;
 	}
 	
 	public ConfiguracaoNivelCompetenciaVO(String candidatoNome, Collection<MatrizCompetenciaNivelConfiguracao> matriz, int totalPontosFaixa) 
@@ -120,5 +122,8 @@ public class ConfiguracaoNivelCompetenciaVO
 	}
 	public String getAvaliadorNome() {
 		return avaliadorNome;
+	}
+	public String getData() {
+		return data;
 	}
 }

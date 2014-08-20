@@ -488,8 +488,11 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = criaConfiguracaoNivelCompetencia(atitude.getId(), nivelCompetencia1, configColaborador, TipoCompetencia.ATITUDE);
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = criaConfiguracaoNivelCompetencia(conhecimento.getId(), nivelCompetencia2, configColaborador, TipoCompetencia.CONHECIMENTO);
 		
+		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2010);
+		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2015);
+		
 		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId()); // Arranjo para teste de consulta SQL
-		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findCompetenciaColaborador(new Long[] { configuracaoNivelCompetencia1.getId(), configuracaoNivelCompetencia2.getId() }, faixaSalarial.getId(), true);
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findCompetenciaColaborador(dataIni, dataFim, new Long[] { configuracaoNivelCompetencia1.getId(), configuracaoNivelCompetencia2.getId() }, faixaSalarial.getId(), true);
 		assertEquals(2, configs.size());
 		assertEquals("atividade", ((ConfiguracaoNivelCompetencia)configs.toArray()[0]).getCompetenciaDescricao());
 		assertEquals("esporte", ((ConfiguracaoNivelCompetencia)configs.toArray()[1]).getCompetenciaDescricao());

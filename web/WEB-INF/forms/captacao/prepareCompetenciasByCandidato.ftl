@@ -82,7 +82,7 @@
 			</@display.column>
 			
 			<#list nivelCompetencias as nivel>
-				<#if configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
+				<#if configuracaoNivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.id?exists && configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
 					<#assign class="nivelFaixa"/>
 					<#assign bgcolor="background-color: #ececec;"/>
 				<#else>

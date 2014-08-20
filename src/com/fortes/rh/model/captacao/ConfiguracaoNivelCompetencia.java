@@ -2,6 +2,7 @@ package com.fortes.rh.model.captacao;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -125,8 +126,9 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setCompetenciaDescricao(competenciaDescricao);
 	}
 	
+	//findCompetenciaColaborador
 	public ConfiguracaoNivelCompetencia(String faixaCompetencia, String faixaNivel, Integer faixaOrdem, String colaboradorNome, BigInteger colaboradorId, 
-			String colaboradorNivel, Integer colaboradorOrden, BigInteger configNCColaboradorId, String avaliadorNome, Boolean avaliacaoAnonima)
+			String colaboradorNivel, Integer colaboradorOrden, BigInteger configNCColaboradorId, Date configCNData, String avaliadorNome, Boolean avaliacaoAnonima)
 	{
 		competenciaDescricao = faixaCompetencia;
 		nivelCompetencia = new NivelCompetencia();
@@ -142,6 +144,8 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 
 		if(configNCColaboradorId != null)
 			configuracaoNivelCompetenciaColaborador.setId(configNCColaboradorId.longValue());
+			
+		configuracaoNivelCompetenciaColaborador.setData(configCNData);
 		
 		if(avaliadorNome != null)
 		{
