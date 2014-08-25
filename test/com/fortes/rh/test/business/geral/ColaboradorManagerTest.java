@@ -1160,9 +1160,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     public void testFindByNomeCpfMatricula()
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	colaboradorDao.expects(once()).method("findByNomeCpfMatricula").with(ANYTHING, eq(empresa.getId()), ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
+    	colaboradorDao.expects(once()).method("findByNomeCpfMatricula").with(ANYTHING, eq(empresa.getId()), ANYTHING, eq(null)).will(returnValue(new ArrayList<Colaborador>()));
 
-    	assertNotNull(colaboradorManager.findByNomeCpfMatricula(null, empresa.getId(), false));
+    	assertNotNull(colaboradorManager.findByNomeCpfMatricula(null, empresa.getId(), false, null));
     }
 
     public void testMigrarBairro()

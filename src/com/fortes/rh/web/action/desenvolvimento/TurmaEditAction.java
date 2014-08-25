@@ -590,14 +590,14 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public String relatorioInvestimentoPorColaborador() throws Exception
 	{
-		colaboradors = colaboradorManager.findByNomeCpfMatricula(null, getEmpresaSistema().getId(), false);
+		colaboradors = colaboradorManager.findByNomeCpfMatricula(null, getEmpresaSistema().getId(), false, null);
 		
 		return Action.SUCCESS;
 	}
 	
 	public String imprimirRelatorioInvestimentoPorColaborador() throws Exception
 	{
-		colaboradors = colaboradorManager.findByNomeCpfMatricula(null, getEmpresaSistema().getId(), false);
+		colaboradors = colaboradorManager.findByNomeCpfMatricula(null, getEmpresaSistema().getId(), false, null);
 		if(colaborador == null || colaborador.getId() == null)
 		{
 			addActionMessage("Colaborador selecionado é inválido.");

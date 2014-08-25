@@ -50,4 +50,5 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	void updateSolicitacao(Solicitacao solicitacao, Long[] avaliacaoIds, Empresa empresa, Usuario usuario) throws Exception;
 	void encerrarSolicitacaoAoPreencherTotalVagas(Solicitacao solicitacao, Empresa empresa) throws Exception;
 	Collection<Solicitacao> findByEmpresaEstabelecimentosAreas(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds);
+	Collection<String> getNomesColabSubstituidosSolicitacaoEncerrada(Long empresaId);
 }

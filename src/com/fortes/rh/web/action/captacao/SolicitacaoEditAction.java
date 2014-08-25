@@ -178,7 +178,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
             solicitacao = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
             
             if(solicitacao.getColaboradorSubstituido() != null)
-            	colaboradoresSusbstituidos = solicitacao.getColaboradorSubstituido().split("\\|;"); 
+            	colaboradoresSusbstituidos = solicitacao.getColaboradorSubstituido().split(", "); 
             
             estado = solicitacao.getCidade().getUf();
             faixaInativaId = solicitacao.getFaixaSalarial().getId();

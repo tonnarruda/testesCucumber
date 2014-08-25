@@ -797,4 +797,21 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return criteria.list();	}
+
+	public Collection<Solicitacao> getNomesColabSubstituidosSolicitacaoEncerrada(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("s.colaboradorSubstituido"), "colaboradorSubstituido");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("s.empresa.id", empresaId));
+		criteria.add(Expression.eq("s.encerrada", true));
+		criteria.add(Expression.isNotNull("s.colaboradorSubstituido"));
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Solicitacao.class));
+		
+		return criteria.list();
+	}
 }

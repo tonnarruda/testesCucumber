@@ -1178,6 +1178,34 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		assertEquals(solicitacao1.getDescricao(), descricao1);
 	}
 	
+	public void testGetNomesColabSubstituidosSolicitacaoEncerrada()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
+		solicitacao1.setColaboradorSubstituido("abcd|;ANTONIO EUFRASIO DE MENEZES");
+		solicitacao1.setEmpresa(empresa);
+		solicitacao1.setEncerrada(true);
+		solicitacao1 = solicitacaoDao.save(solicitacao1);
+		
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
+		solicitacao2.setColaboradorSubstituido("abcd");
+		solicitacao2.setEmpresa(empresa);
+		solicitacao2.setEncerrada(true);
+		solicitacao2 = solicitacaoDao.save(solicitacao2);
+		
+		Solicitacao solicitacaoNaoEcerrada = SolicitacaoFactory.getSolicitacao();
+		solicitacaoNaoEcerrada.setColaboradorSubstituido("josé");
+		solicitacaoNaoEcerrada.setEmpresa(empresa);
+		solicitacaoNaoEcerrada.setEncerrada(false);
+		solicitacaoNaoEcerrada = solicitacaoDao.save(solicitacaoNaoEcerrada);
+		
+		Collection<Solicitacao> nomesColabSubstituidos = solicitacaoDao.getNomesColabSubstituidosSolicitacaoEncerrada(empresa.getId());
+		
+		assertEquals(2, nomesColabSubstituidos.size());
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		this.empresaDao = empresaDao;

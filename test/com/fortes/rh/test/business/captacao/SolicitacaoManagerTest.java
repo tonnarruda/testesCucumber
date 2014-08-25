@@ -10,6 +10,7 @@ import mockit.Mockit;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.AnuncioManager;
@@ -513,6 +514,25 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		solicitacaoDao.expects(once()).method("findQtdContratadosMotivo").with(new Constraint[] {eq(empresa.getId()), eq(estabelecimentoIds), eq(areaIds), eq(solicitacaoIds), eq(dataDe), eq(dataAte)}).will(returnValue(areas));
 		
 		assertEquals(areas, solicitacaoManager.findQtdContratadosPorMotivo(empresa.getId(), estabelecimentoIds, areaIds, solicitacaoIds, dataDe, dataAte));
+	}
+
+	public void testGetNomesColabSubstituidosSolicitacaoEncerrada()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao(1L);
+		solicitacao1.setColaboradorSubstituido("Adão");
+
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao(1L);
+		solicitacao2.setColaboradorSubstituido("Adão, Eva");
+		
+		Collection<Solicitacao> solicitacoes = new ArrayList<Solicitacao>();
+		solicitacoes.add(solicitacao1);
+		solicitacoes.add(solicitacao2);
+		
+		solicitacaoDao.expects(once()).method("getNomesColabSubstituidosSolicitacaoEncerrada").with(eq(empresa.getId())).will(returnValue(solicitacoes));
+		
+		assertEquals(3, solicitacaoManager.getNomesColabSubstituidosSolicitacaoEncerrada(empresa.getId()).size());
 	}
 	
 	// TODO . Por que ta dando pau pra mockar o Mail? 

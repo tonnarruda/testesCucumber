@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ConfiguracaoRelatorioDinamicoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -32,6 +33,7 @@ public class ColaboradorDWR
     private EmpresaManager empresaManager;
     private UsuarioManager usuarioManager;
     private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
+    private SolicitacaoManager solicitacaoManager;
 
 	public Map<Long, String> getColaboradores(String[] areaOrganizacionalIds, Long empresaId)
     {
@@ -214,14 +216,15 @@ public class ColaboradorDWR
 		colaborador.setMatricula(matricula);
 		colaborador.setPessoal(pessoal);
 		
-		Collection<Colaborador> colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, empresaId, somenteAtivos);
+		Collection<Colaborador> colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, empresaId, somenteAtivos, null);
 		
 		return new CollectionUtil<Colaborador>().convertCollectionToMap(colaboradors,"getId","getNomeCpfMatricula");
 	}
 	
 	public Collection<Object> findByNome(String nome, Long empresaId)
 	{
-		Collection<Colaborador> colaboradores = colaboradorManager.findByNomeCpfMatricula(new Colaborador(nome), empresaId, true);
+		Collection<String> nomesColabJaSubstituidos = solicitacaoManager.getNomesColabSubstituidosSolicitacaoEncerrada(empresaId);
+		Collection<Colaborador> colaboradores = colaboradorManager.findByNomeCpfMatricula(new Colaborador(nome), empresaId, true, StringUtil.converteCollectionToArrayString(nomesColabJaSubstituidos));
 		
 		Collection<Object> retorno = new ArrayList<Object>();
 		Map<String, String> colaboradorMap;
@@ -315,5 +318,9 @@ public class ColaboradorDWR
 
 	public void setUsuarioManager(UsuarioManager usuarioManager) {
 		this.usuarioManager = usuarioManager;
+	}
+
+	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
+		this.solicitacaoManager = solicitacaoManager;
 	}
 }
