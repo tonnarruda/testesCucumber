@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
@@ -273,9 +272,23 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		
 		return graficoContratadosMotivo;
 	}
+
+	public Collection<String> getNomesColabSubstituidosSolicitacaoEncerrada(Long empresaId) {
+		Collection<Solicitacao> nomesColabSubstituidosSolicitacaoEncerrada = getDao().getNomesColabSubstituidosSolicitacaoEncerrada(empresaId);
+		Collection<String> nomesColabSubstituidos = new ArrayList<String>();
+		String[] nomesArray;
+		for (Solicitacao solicitacao : nomesColabSubstituidosSolicitacaoEncerrada){
+			if(solicitacao.getColaboradorSubstituido() != null){
+				nomesArray = solicitacao.getColaboradorSubstituido().split(",");
+				for (String nomeArray : nomesArray) 
+					nomesColabSubstituidos.add(nomeArray.trim());
+			}
+		}
+				
+		return nomesColabSubstituidos;
+	}
 	
-	public Collection<Solicitacao> findByEmpresaEstabelecimentosAreas(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds)
-	{
+	public Collection<Solicitacao> findByEmpresaEstabelecimentosAreas(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds){
 		return getDao().findByEmpresaEstabelecimentosAreas(empresaId, estabelecimentosIds, areasIds);
 	}
 

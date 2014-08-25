@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.13X.159" bd="" data="XX/08/2014">
 		<Item visivel="S" motivo="S20140700118"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Desmembrar o perfil 'Inserir/Editar' para os perfis 'Inserir' e 'Editar'.]]></Item>
+		<Item visivel="S" motivo="S20140700222"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Não apresentar o nome do colaborador substituído, quando o mesmo estiver contido em uma solicitação encerrada.]]></Item>
 		<Item visivel="S" motivo="P20140700138"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Não permitir que sejam selecionados colaboradores já inseridos como colaboradores substituídos.]]></Item>
 		<Item visivel="S" motivo="S20140700085"><![CDATA[C&S > Movimentações > Alteração de Promoção para Dissídio: Nova possibilidade de filtrar as situações por período.]]></Item>
 		<Item visivel="S" motivo="P20140800101"><![CDATA[C&S > Relatórios > Matriz comparativa de competências de Colaborador X Cargo/Faixa : Novo filtro por período.]]></Item>

@@ -197,7 +197,7 @@ public class ExameListActionTest extends MockObjectTestCase
 		//Colaborador
 		medicoCoordenadorManager.expects(once()).method("findByEmpresa").with(eq(empresaId)).will(returnValue(new ArrayList<MedicoCoordenador>()));
 		StringUtil.removeMascara(cpf);
-		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(ANYTHING, eq(empresaId), ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(ANYTHING, eq(empresaId), ANYTHING, eq(null)).will(returnValue(new ArrayList<Colaborador>()));
 
 		action.setEmitirPara('C');
 		assertEquals("success", action.filtroImprimirAso());

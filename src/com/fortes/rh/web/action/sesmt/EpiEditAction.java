@@ -144,7 +144,7 @@ public class EpiEditAction extends MyActionSupportEdit
 	public String filtroImprimirFicha()
 	{
 		colaborador.setPessoalCpf(StringUtil.removeMascara(colaborador.getPessoal().getCpf()));
-		colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), false);
+		colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), false, null);
 		if (colaboradors == null || colaboradors.isEmpty())
 			addActionMessage("Nenhum colaborador para o filtro informado.");
 

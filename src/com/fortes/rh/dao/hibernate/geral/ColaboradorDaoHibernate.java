@@ -2538,7 +2538,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Long empresaId, Boolean somenteAtivos)
+	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Long empresaId, Boolean somenteAtivos, String[] colabsNaoHomonimoHa)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 
@@ -2567,6 +2567,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		if(somenteAtivos != null && somenteAtivos)
 			criteria.add(Expression.eq("c.desligado", false));
+
+		if(colabsNaoHomonimoHa != null && colabsNaoHomonimoHa.length > 0)
+			criteria.add(Expression.not(Expression.in("c.nome", colabsNaoHomonimoHa)));
 
 		criteria.addOrder(Order.asc("nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

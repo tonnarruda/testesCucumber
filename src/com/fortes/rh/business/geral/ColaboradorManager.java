@@ -118,7 +118,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Integer getCountAtivosQualquerStatus(Date dataBase, Long[] empresaIds, Long[] areasIds);
 	public File getFoto(Long id) throws Exception;
 	public Collection<Colaborador> findAniversariantes(Long[] empresaIds, int mes, Long[] areaIds, Long[] estabelecimentoIds) throws Exception;
-	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Long empresaId, Boolean somenteAtivos);
+	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Long empresaId, Boolean somenteAtivos, String[] colabsNaoHomonimoHa);
 	public String getNome(Long id);
 	public Colaborador findByIdHistoricoProjection(Long id);
 	public Collection<CheckBox> populaCheckBox(Long empresaId);
