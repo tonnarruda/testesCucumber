@@ -158,8 +158,13 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 				}
 				catch (Exception e)
 				{
-					if (!(e instanceof AreaColaboradorException) && !(e instanceof IntegraACException)) 
-						acPessoalClientLotacao.deleteLotacao(areaOrganizacional, empresa);
+					if (!(e instanceof AreaColaboradorException) && !(e instanceof IntegraACException)){
+						try{
+							acPessoalClientLotacao.deleteLotacao(areaOrganizacional, empresa);
+						} catch (Exception e2) {
+							e2.printStackTrace();
+						}
+					}
 					throw e;
 				}
 				

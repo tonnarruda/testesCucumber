@@ -10,8 +10,9 @@
 		<Item visivel="S" motivo="P20140800101"><![CDATA[C&S > Relatórios > Matriz comparativa de competências de Colaborador X Cargo/Faixa : Novo filtro por período.]]></Item>
 		<Item visivel="S" motivo="S20140800125"><![CDATA[T&D > Cadastro > Cursos/Treinamentos > Turmas: Ordenação do campo 'dias previstos' por data]]></Item>
 		<Item visivel="S" motivo="S20140600182"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Novo cálculo da performance considerando os níveis de competência e ajuste no formulário para que só sejam dadas como opção as competências definidas para a faixa.]]></Item>
-		<Item visivel="N" motivo="P20140800017"><![CDATA[BUG: Caixa de Mensagem de Aval. de Desempenho: Erro de permissão de acesso ao acessar o link de responder a avaliação do período de experiência.]]></Item>
 		<Item visivel="N" motivo="P20140700138"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Não permitir que sejam selecionados colaboradores já inseridos como colaboradores substituídos.]]></Item>
+		<Item visivel="N" motivo="P20140800106"><![CDATA[C&S > Cadastros > Áreas Organizacionais > Inserir: Ajuste na mensagem de erro ao tentar gravar no AC Pessoal.]]></Item>
+		<Item visivel="N" motivo="P20140800017"><![CDATA[BUG: Caixa de Mensagem de Aval. de Desempenho: Erro de permissão de acesso ao acessar o link de responder a avaliação do período de experiência.]]></Item>
 		<Item visivel="N" motivo="P20140800050"><![CDATA[BUG: Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Clonar: Erro ao tentar clonar aval. desempenho cuja descrição aproximava-se do limite permitido.]]></Item>
 		<Item visivel="N" motivo="P20140800149"><![CDATA[BUG: T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações da Turma > Resultado das Avaliações: Erro no cálculo dos percentuais por pergunta.]]></Item>
 		<Item visivel="N" motivo="------------"><![CDATA[BUG: Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento > Imprimir: Erro inesperado.]]></Item>
