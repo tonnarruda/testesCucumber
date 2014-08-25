@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.5937424601000036"/>
-	<property name="ireport.x" value="43"/>
+	<property name="ireport.x" value="484"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -109,7 +109,9 @@
 				<reportElement uuid="3ebc2bfb-c0fe-4e1c-ad76-344e055871d8" key="line-11" x="535" y="0" width="1" height="12"/>
 			</line>
 			<staticText>
-				<reportElement uuid="7f3aa56f-3808-4a3e-9cd7-bb56494e0baa" key="staticText-1" x="430" y="18" width="62" height="12"/>
+				<reportElement uuid="7f3aa56f-3808-4a3e-9cd7-bb56494e0baa" key="staticText-1" x="430" y="18" width="62" height="12">
+					<printWhenExpression><![CDATA[$P{PERFORMANCE} != null]]></printWhenExpression>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -121,7 +123,7 @@
 				</textElement>
 				<text><![CDATA[Perfomance:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement uuid="22455e9f-78bd-4716-9fee-011f6bf2b013" x="494" y="18" width="36" height="12"/>
 				<textElement>
 					<font size="9"/>

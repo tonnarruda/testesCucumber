@@ -36,7 +36,6 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.MathUtil;
 import com.fortes.rh.util.SpringUtil;
-import com.fortes.rh.util.StringUtil;
 
 public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, QuestionarioDao> implements QuestionarioManager
 {
@@ -276,10 +275,10 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 
         Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, null);
         
-        if(questionario.isAnonimo())
-        	questionario.setTotalColab(colaboradorQuestionarioManager.countByQuestionarioRespondido(questionario.getId()));
-        else
-        	questionario.setTotalColab(countColaborador(colaboradorRespostas)); 
+//        if(questionario.isAnonimo())
+//        	questionario.setTotalColab(colaboradorQuestionarioManager.countByQuestionarioRespondido(questionario.getId()));
+//        else
+        	questionario.setTotalColab(countColaborador(colaboradorRespostas));
         
         Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, questionario.getTotalColab(), null);
         percentuaisDeRespostas.addAll(calculaPercentualRespostasMultiplas);
@@ -368,7 +367,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 		{
 			if(colaboradorResposta.getColaboradorQuestionario() != null && colaboradorResposta.getColaboradorQuestionario().getId() != null)
 				distinct.put(colaboradorResposta.getColaboradorQuestionario().getId(), "");
-		}    		
+		}
 		
 		return distinct.keySet().size();
 	}

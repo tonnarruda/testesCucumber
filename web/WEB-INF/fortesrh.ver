@@ -10,6 +10,7 @@
 		<Item visivel="N" motivo="P20140800017"><![CDATA[BUG: Caixa de Mensagem de Aval. de Desempenho: Sem permissão de acesso ao tentar o link de responder avaliação do período de experiência.]]></Item>
 		<Item visivel="N" motivo="P20140800050"><![CDATA[BUG: Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Clonar: Erro ao tentar clonar aval. desempenho com título com grandes descrições.]]></Item>
 		<Item visivel="N" motivo="------------"><![CDATA[BUG: SESMT > Relatórios > Afastamentos: Falta de ordenação ao gerar relatório.]]></Item>
+		<Item visivel="N" motivo="P20140800149"><![CDATA[BUG: T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações da Turma > Resultado das Avaliações: Erro no cálculo dos percentuais por pergunta.]]></Item>
 	</Versao>
 	<Versao id="1.1.132.158" bd="" data="11/08/2014">
 		<Item visivel="S" motivo="S20140600183"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Não Sobrescrever respostas do nível de competência do colaborador avaliado.]]></Item>
