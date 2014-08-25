@@ -1531,7 +1531,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		
 		TransacaoPCManager transacaoPCManager= (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
 		for (ColaboradorPC colabPC : colaboradorPCs) 
-			transacaoPCManager.enfileirar(colabPC, URLTransacaoPC.COLABORADOR_ATUALIZAR);
+			transacaoPCManager.enfileirar(colabPC, URLTransacaoPC.COLABORADOR_ATUALIZAR_HISTORICO);
 		
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 		colaboradorManager.atualizarHistoricoPortal(false, colabIds);

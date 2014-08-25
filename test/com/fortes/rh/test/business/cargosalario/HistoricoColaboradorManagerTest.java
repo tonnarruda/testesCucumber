@@ -2315,7 +2315,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		
 		empresaManager.expects(once()).method("findIntegradaPortalColaborador").will(returnValue(empresasIds));
 		historicoColaboradorDao.expects(once()).method("findPendenciasPortal").with(eq(empresasIds)).will(returnValue(historicos));
-		transacaoPCManager.expects(atLeastOnce()).method("enfileirar").with(ANYTHING, eq(URLTransacaoPC.COLABORADOR_ATUALIZAR)).isVoid();
+		transacaoPCManager.expects(atLeastOnce()).method("enfileirar").with(ANYTHING, eq(URLTransacaoPC.COLABORADOR_ATUALIZAR_HISTORICO)).isVoid();
 		colaboradorManager.expects(once()).method("atualizarHistoricoPortal").with(eq(false), eq(colaboradoresIds)).isVoid();
 		
 		Set<ColaboradorPC> colaboradoresPC = historicoColaboradorManager.enfileirarHistoricosPC();
