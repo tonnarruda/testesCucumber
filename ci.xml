@@ -198,9 +198,9 @@
 	</target>
 	
 	<target name="war">
-		<mkdir dir="${ant.project.name}/dist" />
-		<property name="tmpweb" value="${ant.project.name}/dist/tmpweb" />
-		<property name="base" value="${ant.project.name}/web" />
+		<mkdir dir="dist" />
+		<property name="tmpweb" value="dist/tmpweb" />
+		<property name="base" value="web" />
 		<property name="lib" value="WEB-INF/lib" />
 		<property name="test-ignore" value="WEB-INF/classes/com/fortes/rh/test" />
 	
@@ -248,13 +248,13 @@
 		
 		<!-- Gera hibernate.cfg.xml com hibernate.show_sql = false -->
 		<exec executable="ruby" failonerror="true">
-			<arg value="${ant.project.name}/geracaoHibernateCfg.rb" />
+			<arg value="geracaoHibernateCfg.rb" />
 			<arg value="${tmpweb}/WEB-INF/classes" />
 		</exec>
 		
 		<!-- Gera War file de acordo com o diretorio temporario -->
 		<war webxml="${tmpweb}/WEB-INF/web.xml"
-			destfile="${ant.project.name}/dist/fortesrh.war" basedir="${tmpweb}"
+			destfile="dist/fortesrh.war" basedir="${tmpweb}"
 			excludes="${test-ignore}/**">
 		</war>
 		
