@@ -579,13 +579,13 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 						mensagem.append("Período de Experiência: ");
 						
 						StringBuilder mensagemTitulo = new StringBuilder();
-						mensagemTitulo.append("[RH] - Faltam ")
+						mensagemTitulo.append("[RH] - Falta(m) ")
 								.append(diaLembrete)
-								.append(" dias para a avaliação de ").append(diasAvaliacao).append(" dias de ")
+								.append(" dia(s) para responder a avaliação de ").append(diasAvaliacao).append(" dias do colaborador ")
 								.append(colaborador.getNome()).append(".\n\n");
 						mensagem.append(mensagemTitulo);
 						
-						mensagem.append("Lembrete de avaliação de ")
+						mensagem.append("Lembrete da avaliação de ")
 								.append(diasAvaliacao)
 								.append(" dias do período de experiência.\n")
 								.append("\nColaborador: ").append(colaborador.getNome());

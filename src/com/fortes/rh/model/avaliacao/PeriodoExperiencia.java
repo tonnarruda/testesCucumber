@@ -53,6 +53,12 @@ public class PeriodoExperiencia extends AbstractModel implements Serializable
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
 	}
+	public void setEmpresaId(Long empresaId){
+		if(this.empresa == null)
+			this.empresa = new Empresa();
+		
+		this.getEmpresa().setId(empresaId);
+	}
 
 	public String getDescricao() {
 		return descricao;

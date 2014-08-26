@@ -2206,6 +2206,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.createCriteria("c.usuario", "u", Criteria.LEFT_JOIN);
 		
 		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nome"), "nome");
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
 		p.add(Projections.property("c.contato.email"), "emailColaborador");
@@ -2783,7 +2784,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, cg.nome, fs.nome, ao.id, ao.nome, am.id, am.nome, co.empresa.id, es.nome, cpea.avaliacao.id, emp.nome, fun.nome) ");
 		hql.append("from HistoricoColaborador as hc ");
-		hql.append("left join hc.colaborador as co ");
+		hql.append("inner join hc.colaborador as co ");
 		hql.append("left join hc.faixaSalarial as fs ");
 		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.funcao as fun "); 
@@ -2791,6 +2792,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc.estabelecimento as es ");
 		hql.append("left join ao.areaMae as am ");
 		hql.append("left join fs.cargo as cg ");
+		hql.append("left join co.colaboradorQuestionarios as cq  ");
+		hql.append("left join cq.avaliacao as av with av.tipoModeloAvaliacao = 'A' ");
 		hql.append("left join co.colaboradorPeriodoExperienciaAvaliacaos cpea with cpea.periodoExperiencia = :periodoExperienciaId and cpea.tipo = 'G' ");
 		hql.append("where ");
 		hql.append("		hc.status = :status ");
@@ -2802,7 +2805,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("		) ");
 		hql.append("and co.desligado = false ");
 		hql.append("and co.empresa.id = :empresaId ");
-		hql.append("and :hoje - co.dataAdmissao = :dias");
+		hql.append("and :hoje - co.dataAdmissao = :dias ");
+		hql.append("and co.id not in (select cq.colaborador.id from ColaboradorQuestionario cq2 where cq2.avaliacao.id = av.id and cq2.colaborador.id = co.id) ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresa.getId());
