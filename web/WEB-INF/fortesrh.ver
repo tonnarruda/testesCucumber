@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.13X.159" bd="" data="XX/08/2014">
-		<Item visivel="S" motivo="S20140700118"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Desmembrar o perfil 'Inserir/Editar' para os perfis 'Inserir' e 'Editar'.]]></Item>
-		<Item visivel="S" motivo="S20140700222"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Não apresentar o nome do colaborador substituído, quando o mesmo estiver contido em uma solicitação encerrada.]]></Item>
-		<Item visivel="S" motivo="P20140700138"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Não permitir que sejam selecionados colaboradores já inseridos como colaboradores substituídos.]]></Item>
-		<Item visivel="S" motivo="S20140700085"><![CDATA[C&S > Movimentações > Alteração de Promoção para Dissídio: Nova possibilidade de filtrar as situações por período.]]></Item>
+	<Versao id="1.1.133.159" bd="" data="26/08/2014">
+		<Item visivel="S" motivo="S20140700118"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Substituição da regra de acesso unificada de 'Inserir/Editar' por regras específicas para 'Inserir' e 'Editar'.]]></Item>
+		<Item visivel="S" motivo="S20140700222"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Na pesquisa de colaboradores pelo nome para o campo 'colaborador substituído', não apresentar aqueles que já foram citados como substituídos em outras solicitações de pessoal.]]></Item>
+		<Item visivel="S" motivo="S20140700085"><![CDATA[C&S > Movimentações > Alteração de Promoção para Dissídio: Novo filtro de situações por período.]]></Item>
 		<Item visivel="S" motivo="P20140800101"><![CDATA[C&S > Relatórios > Matriz comparativa de competências de Colaborador X Cargo/Faixa : Novo filtro por período.]]></Item>
-		<Item visivel="S" motivo="S20140800125"><![CDATA[T&D > Cadastro > Cursos/Treinamentos > Turmas: Ordenação de 'Dias Previstos' por data]]></Item>
-		<Item visivel="S" motivo="S20140600182"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Novo cáculo da performance considerando os níveis de competência e exibir somente as competência definidas para a faixa.]]></Item>
-		<Item visivel="N" motivo="P20140800017"><![CDATA[BUG: Caixa de Mensagem de Aval. de Desempenho: Sem permissão de acesso ao tentar o link de responder avaliação do período de experiência.]]></Item>
-		<Item visivel="N" motivo="P20140800050"><![CDATA[BUG: Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Clonar: Erro ao tentar clonar aval. desempenho com título com grandes descrições.]]></Item>
-		<Item visivel="N" motivo="------------"><![CDATA[BUG: SESMT > Relatórios > Afastamentos: Falta de ordenação ao gerar relatório.]]></Item>
+		<Item visivel="S" motivo="S20140800125"><![CDATA[T&D > Cadastro > Cursos/Treinamentos > Turmas: Ordenação do campo 'dias previstos' por data]]></Item>
+		<Item visivel="S" motivo="S20140600182"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Novo cálculo da performance considerando os níveis de competência e ajuste no formulário para que só sejam dadas como opção as competências definidas para a faixa.]]></Item>
+		<Item visivel="N" motivo="P20140800017"><![CDATA[BUG: Caixa de Mensagem de Aval. de Desempenho: Erro de permissão de acesso ao acessar o link de responder a avaliação do período de experiência.]]></Item>
+		<Item visivel="N" motivo="P20140700138"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Não permitir que sejam selecionados colaboradores já inseridos como colaboradores substituídos.]]></Item>
+		<Item visivel="N" motivo="P20140800050"><![CDATA[BUG: Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Clonar: Erro ao tentar clonar aval. desempenho cuja descrição aproximava-se do limite permitido.]]></Item>
 		<Item visivel="N" motivo="P20140800149"><![CDATA[BUG: T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações da Turma > Resultado das Avaliações: Erro no cálculo dos percentuais por pergunta.]]></Item>
-		<Item visivel="N" motivo="------------"><![CDATA[BUG: Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento > Imprimir: Erro 500.]]></Item>
+		<Item visivel="N" motivo="------------"><![CDATA[BUG: Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento > Imprimir: Erro inesperado.]]></Item>
+		<Item visivel="N" motivo="------------"><![CDATA[BUG: SESMT > Relatórios > Afastamentos: Dados do relatório exibidos for de ordem.]]></Item>
 	</Versao>
 	<Versao id="1.1.132.158" bd="" data="11/08/2014">
 		<Item visivel="S" motivo="S20140600183"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Não Sobrescrever respostas do nível de competência do colaborador avaliado.]]></Item>

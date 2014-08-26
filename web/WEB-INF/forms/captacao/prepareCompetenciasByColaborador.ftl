@@ -286,7 +286,7 @@
 				
 				<#list nivelCompetencias as nivel>
 					
-					<#if configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
+					<#if configuracaoNivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
 						<#assign class="nivelFaixa"/>
 						<#assign bgcolor="background-color: #ececec;"/>
 					<#else>

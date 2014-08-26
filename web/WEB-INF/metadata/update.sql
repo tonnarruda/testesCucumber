@@ -22518,3 +22518,38 @@ insert into perfil_papel(perfil_id, papeis_id) values(1, 622);--.go
 alter sequence papel_sequence restart with 623;--.go
 insert into migrations values('20140806144701');--.go
 update parametrosdosistema set appversao = '1.1.132.158';--.go
+-- versao 1.1.133.159
+
+update papel set ordem = ordem + 1 where papelmae_id = 21 and ordem >= 3; --.go
+update papel set nome = 'Editar' where id = 612; --.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (623, 'ROLE_MOV_SOLICITACAO_INSERIR', 'Inserir', '#', 3, false, 21);--.go
+CREATE FUNCTION ajusta_perfil_papel_faixa() RETURNS integer AS $$ 
+DECLARE 
+    mviews RECORD; 
+BEGIN 
+    FOR mviews IN 
+		select perfil_id from perfil_papel where papeis_id = 612 
+		LOOP 
+		  insert into perfil_papel(perfil_id, papeis_id) values( mviews.perfil_id , 623); 
+		END LOOP; 
+    RETURN 1; 
+END; 
+$$ LANGUAGE plpgsql;--.go
+select ajusta_perfil_papel_faixa();--.go
+drop function ajusta_perfil_papel_faixa();--.go
+alter sequence papel_sequence restart with 624;--.go
+insert into migrations values('20140811162337');--.go
+delete from configuracaonivelcompetencia where id not in 
+( 
+    select cnc.id from configuracaonivelcompetencia cnc  
+    inner join configuracaonivelcompetenciacolaborador cncc on cnc.configuracaonivelcompetenciacolaborador_id = cncc.id 
+    inner join configuracaonivelcompetencia cnc2 on cncc.faixasalarial_id = cnc2.faixasalarial_id and (cnc2.competencia_id = cnc.competencia_id and cnc2.tipocompetencia = cnc.tipocompetencia) 
+    where cnc.configuracaonivelcompetenciacolaborador_id is not null 
+) 
+and configuracaonivelcompetenciacolaborador_id is not null;--.go
+insert into migrations values('20140811170530');--.go
+alter table avaliacao alter column titulo type varchar(250);--.go
+insert into migrations values('20140812111552');--.go
+ALTER TABLE colaboradorquestionario ADD COLUMN performanceNivelCompetencia double precision;--.go
+insert into migrations values('20140818153314');--.go
+update parametrosdosistema set appversao = '1.1.133.159';--.go

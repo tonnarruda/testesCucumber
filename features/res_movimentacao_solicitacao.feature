@@ -9,6 +9,10 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     Dado que haja uma faixa salarial com id 1, nome "I", cargo_id 1
     Dado que haja uma faixa salarial historico com id 1, data "2011-06-01", faixasalarial_id 1, tipo 3, valor 500, status 1
     Dado que haja um motivo da solicitacao com id 1 e descricao "Aumento de quadro"
+    
+    Dado que exista um nivel de competencia "Ruim" com a ordem 1
+    Dado que exista um nivel de competencia "Bom" com a ordem 2
+    Dado que exista um nivel de competencia "Otimo" com a ordem 3
 
     Dado que eu esteja logado com o usuário "fortes"
     Dado que exista um candidato "Nikita"
@@ -43,11 +47,20 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     E eu marco "Financeiro (Ativa)"
     E eu clico no botão "Gravar"
 
-    Quando eu acesso o menu "C&S > Cadastros > Cargos e Faixas"
+	Quando eu acesso o menu "C&S > Cadastros > Cargos e Faixas"
     E  eu clico em editar "Contador"
     E eu marco "Financeiro (Ativa)"
     E eu marco "Java"
     E eu clico no botão "Gravar"
+
+	Quando eu clico na linha "Contador" da imagem "Faixas Salariais"
+	E eu devo ver o título "Faixas Salariais"
+	E eu clico na linha "I" da imagem "Níveis de Competência"
+	E eu devo ver o título "Competências da Faixa Salarial"
+	E eu marco "Java"
+	E eu marco o checkbox com name "niveisCompetenciaFaixaSalariais[0].nivelCompetencia.id"
+	E eu clico no botão "Gravar"
+	Então eu devo ver "Níveis de competência da faixa salarial salvos com sucesso"
 
     Quando eu acesso o menu "R&S > Movimentações > Solicitação de Pessoal"
     Então eu devo ver o título "Solicitação de Pessoal"
@@ -216,17 +229,6 @@ Funcionalidade: Movimentação Solicitações de Pessoal
     Então eu clico na linha "Nikita" da imagem "Competências"
     E eu devo ver o título "Competências do Candidato"
     E eu devo ver "Candidato: Nikita"
-    E eu marco "Java"
-    E eu clico no botão "Gravar"
-    E eu devo ver o alert "Não existem níveis de competência cadastrados" e clico no ok
-
-    Dado que exista um nivel de competencia "Ruim" com a ordem 1
-    Dado que exista um nivel de competencia "Bom" com a ordem 2
-    Dado que exista um nivel de competencia "Otimo" com a ordem 3
-
-    E eu clico no botão "Voltar"
-
-    Então eu clico na linha "Nikita" da imagem "Competências"
     E eu marco "Java"
     E eu marco o checkbox com name "niveisCompetenciaFaixaSalariais[0].nivelCompetencia.id"
     E eu clico no botão "Gravar"

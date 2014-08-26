@@ -845,6 +845,15 @@ Dado /^que exista um nivel de competencia "([^"]*)" com a ordem (\d+)$/ do |nive
   end
 end
 
+Dado /^que exista uma connfiguracao de nivel de competencia "([^"]*)" no conhecimento "([^"]*)" para a faixa salarial "([^"]*)"$/ do |nivelcompetencia_descricao, conhecimento_nome, faixasalarial_nome|
+  insert :configuracaonivelcompetencia do
+    nivelcompetencia :nivelcompetencia, :descricao => nivelcompetencia_descricao
+    faixasalarial :faixasalarial, :nome => faixasalarial_nome
+    competencia :competencia, :nome => conhecimento_nome
+    tipocompetencia 'C'
+  end
+end
+
 Dado /^que exista um periodo de experiencia "([^"]*)" de (\d+) dias$/ do |periodo_descricao, periodo_dias|
   insert :periodoexperiencia do
     descricao periodo_descricao
