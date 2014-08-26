@@ -244,6 +244,7 @@
 				/geral/colaborador/relatorioDinamico*/** = ROLE_REL_LISTA_COLAB
 				/geral/colaborador/prepareReciboPagamento.action* = ROLE_REL_RECIBO_PAGAMENTO
 				/geral/colaborador/reciboPagamento.action* = ROLE_REL_RECIBO_PAGAMENTO
+				/geral/colaborador/prepareAtualizarModeloAvaliacao.action* = ROLE_MOV_ATUALIZAR_MODELO_AVALIACAO_COLABORADOR
 				
 				/geral/ocorrencia/list.action*=ROLE_CAD_OCORRENCIA
 				/geral/ocorrencia/prepareInsert.action*=ROLE_CAD_OCORRENCIA_INSERIR

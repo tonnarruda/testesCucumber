@@ -991,6 +991,21 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 		return Action.SUCCESS;
 	}
+	
+	public String prepareAtualizarModeloAvaliacao() throws Exception
+	{
+		periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
+		
+		colaboradorAvaliacoes = colaboradorPeriodoExperienciaAvaliacaoManager.findAll();
+		
+		return Action.SUCCESS;
+	}
+
+	public String atualizarModeloAvaliacao() throws Exception
+	{
+		
+		return Action.SUCCESS;
+	}
 
 	private boolean fotoValida(com.fortes.model.type.File foto)
 	{

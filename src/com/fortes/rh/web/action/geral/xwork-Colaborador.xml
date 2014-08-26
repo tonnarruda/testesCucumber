@@ -307,5 +307,11 @@
 			<result name="success" type="redirect">prepareAprovarReprovarSolicitacaoDesligamento.action</result>
 			<result name="input" type="redirect">prepareAprovarReprovarSolicitacaoDesligamento.action</result>
 		</action>
+		<action name="prepareAtualizarModeloAvaliacao" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="prepareAtualizarModeloAvaliacao">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/prepareAtualizarModeloAvaliacao.ftl</result>
+		</action>
+		<action name="atualizarModeloAvaliacao" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="atualizarModeloAvaliacao">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/prepareAtualizarModeloAvaliacao.ftl</result>
+		</action>
 	</package>
 </xwork>
