@@ -4063,40 +4063,69 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		estabelecimento.setNome("Estabelecimento");
 		estabelecimentoDao.save(estabelecimento);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setEmpresa(empresa);
-		colaborador.setDataAdmissao(quarentaDiasAtras.getTime());
-		colaboradorDao.save(colaborador);
+		Colaborador joseAvaliado = ColaboradorFactory.getEntity();
+		joseAvaliado.setEmpresa(empresa);
+		joseAvaliado.setNome("José");
+		joseAvaliado.setDataAdmissao(quarentaDiasAtras.getTime());
+		colaboradorDao.save(joseAvaliado);
+
+		Colaborador mariaJaRespondido = ColaboradorFactory.getEntity();
+		mariaJaRespondido.setNome("Maria");
+		mariaJaRespondido.setEmpresa(empresa);
+		mariaJaRespondido.setDataAdmissao(quarentaDiasAtras.getTime());
+		colaboradorDao.save(mariaJaRespondido);
 		
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador.setColaborador(colaborador);
-		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2005));
-		historicoColaborador.setEstabelecimento(estabelecimento);
-		historicoColaboradorDao.save(historicoColaborador);
+		HistoricoColaborador historicoJoseAvaliado = HistoricoColaboradorFactory.getEntity();
+		historicoJoseAvaliado.setColaborador(joseAvaliado);
+		historicoJoseAvaliado.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoJoseAvaliado.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(historicoJoseAvaliado);
+		
+		HistoricoColaborador historicoMariaJaRespondido = HistoricoColaboradorFactory.getEntity();
+		historicoMariaJaRespondido.setColaborador(mariaJaRespondido);
+		historicoMariaJaRespondido.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoMariaJaRespondido.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(historicoMariaJaRespondido);
 		
 		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity();
 		periodoExperienciaDao.save(periodoExperiencia);
 		
-		Collection <Colaborador> colabsRetorno = colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId());
-		Colaborador colabRetorno = (Colaborador) colabsRetorno.toArray()[0];
-		assertEquals(1, colabsRetorno.size());
-		assertNull(colabRetorno.getAvaliacaoId());
-		
 		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacao.setTipoModeloAvaliacao('A');
 		avaliacaoDao.save(avaliacao);
 		
-		ColaboradorPeriodoExperienciaAvaliacao colabPeriodoExperienciaAvaliacao = new ColaboradorPeriodoExperienciaAvaliacao();
-		colabPeriodoExperienciaAvaliacao.setColaborador(colaborador);
-		colabPeriodoExperienciaAvaliacao.setPeriodoExperiencia(periodoExperiencia);
-		colabPeriodoExperienciaAvaliacao.setAvaliacao(avaliacao);
-		colabPeriodoExperienciaAvaliacao.setTipo('G');
-		colaboradorPeriodoExperienciaAvaliacaoDao.save(colabPeriodoExperienciaAvaliacao);
+		ColaboradorPeriodoExperienciaAvaliacao colabPeriodoExperienciaAvaliacaoJoseAvaliado = new ColaboradorPeriodoExperienciaAvaliacao();
+		colabPeriodoExperienciaAvaliacaoJoseAvaliado.setColaborador(joseAvaliado);
+		colabPeriodoExperienciaAvaliacaoJoseAvaliado.setPeriodoExperiencia(periodoExperiencia);
+		colabPeriodoExperienciaAvaliacaoJoseAvaliado.setAvaliacao(avaliacao);
+		colabPeriodoExperienciaAvaliacaoJoseAvaliado.setTipo('G');
+		colaboradorPeriodoExperienciaAvaliacaoDao.save(colabPeriodoExperienciaAvaliacaoJoseAvaliado);
 		
-		colabsRetorno = colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId());
-		colabRetorno = (Colaborador) colabsRetorno.toArray()[0];
+		ColaboradorPeriodoExperienciaAvaliacao colabPeriodoExperienciaAvaliacaoJoseAvaliado2 = new ColaboradorPeriodoExperienciaAvaliacao();
+		colabPeriodoExperienciaAvaliacaoJoseAvaliado2.setColaborador(joseAvaliado);
+		colabPeriodoExperienciaAvaliacaoJoseAvaliado2.setPeriodoExperiencia(periodoExperiencia);
+		colabPeriodoExperienciaAvaliacaoJoseAvaliado2.setAvaliacao(avaliacao);
+		colabPeriodoExperienciaAvaliacaoJoseAvaliado2.setTipo('C');
+		colaboradorPeriodoExperienciaAvaliacaoDao.save(colabPeriodoExperienciaAvaliacaoJoseAvaliado2);
+		
+		ColaboradorPeriodoExperienciaAvaliacao colabPeriodoExperienciaAvaliacaoMariaJaRespondido = new ColaboradorPeriodoExperienciaAvaliacao();
+		colabPeriodoExperienciaAvaliacaoMariaJaRespondido.setColaborador(mariaJaRespondido);
+		colabPeriodoExperienciaAvaliacaoMariaJaRespondido.setPeriodoExperiencia(periodoExperiencia);
+		colabPeriodoExperienciaAvaliacaoMariaJaRespondido.setAvaliacao(avaliacao);
+		colabPeriodoExperienciaAvaliacaoMariaJaRespondido.setTipo('G');
+		colaboradorPeriodoExperienciaAvaliacaoDao.save(colabPeriodoExperienciaAvaliacaoMariaJaRespondido);
+		
+		ColaboradorQuestionario colaboradorQuestionarioMariaJaRespondido = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioMariaJaRespondido.setColaborador(mariaJaRespondido);
+		colaboradorQuestionarioMariaJaRespondido.setAvaliacao(avaliacao);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioMariaJaRespondido);
+		
+		Collection <Colaborador> colabsRetorno = colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId());
+		Colaborador colabRetorno = (Colaborador) colabsRetorno.toArray()[0];
+		Collection<Colaborador> colabs = colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId());
 		
 		assertEquals(avaliacao.getId(), colabRetorno.getAvaliacaoId());
-		assertEquals(1, colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId()).size());
+		assertEquals(1, colabs.size());
 		assertEquals("Estabelecimento", colabRetorno.getEstabelecimento().getNome());
 	}
 
