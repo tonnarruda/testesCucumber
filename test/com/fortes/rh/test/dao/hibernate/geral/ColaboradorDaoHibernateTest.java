@@ -1554,8 +1554,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador2.setEmpresa(empresa);
 		colaboradorDao.save(colaborador2);
 
-		assertEquals(1, colaboradorDao.findByNomeCpfMatricula(colaborador1, empresa.getId(), false).size());
-		assertEquals(2, colaboradorDao.findByNomeCpfMatricula(null, empresa.getId(), false).size());
+		Colaborador colaborador3 = ColaboradorFactory.getEntity();
+		colaborador3.setEmpresa(empresa);
+		colaborador3.setNome("Eva");
+		colaboradorDao.save(colaborador3);
+
+		assertEquals(0, colaboradorDao.findByNomeCpfMatricula(colaborador1, empresa.getId(), false, new String[]{"teste"}).size());
+		assertEquals(1, colaboradorDao.findByNomeCpfMatricula(colaborador1, empresa.getId(), false, null).size());
+		assertEquals(2, colaboradorDao.findByNomeCpfMatricula(null, empresa.getId(), false, new String[]{"Eva"}).size());
+		assertEquals(3, colaboradorDao.findByNomeCpfMatricula(null, empresa.getId(), false, null).size());
 	}
 
 	public void testFindByNomeCpfMatriculaComHistoricoComfirmado() 

@@ -6,7 +6,6 @@ include Term::ANSIColor
 $db_name = "fortesrh"
 def exec_sql sql
   begin
-    puts $db_name
     conn = PGconn.connect(:dbname => $db_name, :user => "postgres", :host => "localhost")
     conn.exec(sql)
 	ensure

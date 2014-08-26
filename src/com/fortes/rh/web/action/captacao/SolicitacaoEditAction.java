@@ -178,7 +178,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
             solicitacao = solicitacaoManager.findByIdProjectionForUpdate(solicitacao.getId());
             
             if(solicitacao.getColaboradorSubstituido() != null)
-            	colaboradoresSusbstituidos = solicitacao.getColaboradorSubstituido().split("\\|;"); 
+            	colaboradoresSusbstituidos = solicitacao.getColaboradorSubstituido().split(", "); 
             
             estado = solicitacao.getCidade().getUf();
             faixaInativaId = solicitacao.getFaixaSalarial().getId();
@@ -315,8 +315,8 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
       	{
       		solicitacao.setColaboradorSubstituido(colaboradoresSusbstituidos[0]);
       		for (int i = 1; i < colaboradoresSusbstituidos.length; i++) 
-				if(!colaboradoresSusbstituidos[i].equals(""))
-					solicitacao.setColaboradorSubstituido(solicitacao.getColaboradorSubstituido() + "|;" + colaboradoresSusbstituidos[i]);
+				if(!colaboradoresSusbstituidos[i].equals("") && !solicitacao.getColaboradorSubstituido().contains(colaboradoresSusbstituidos[i]))
+						solicitacao.setColaboradorSubstituido(solicitacao.getColaboradorSubstituido() + "|;" + colaboradoresSusbstituidos[i]);
       	}
 	}
 

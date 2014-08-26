@@ -17,6 +17,7 @@ import com.fortes.rh.model.sesmt.relatorio.ColaboradorAfastamentoMatriz;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -52,13 +53,17 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	private char ordenarPor;
 	private char totalizarDiasPor;
 	
+	private final char COLABORADOR = 'O';
+	private final char MES = 'M';
+	private final char CID = 'C';
+	
 	public String list() throws Exception
 	{
 		if (!validaPeriodo())
 			return SUCCESS;
 
 		setTotalSize(colaboradorAfastamentoManager.getCount(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, colaboradorAfastamento));
-		colaboradorAfastamentos = colaboradorAfastamentoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, null, colaboradorAfastamento, "DESC", false, false, 'T');
+		colaboradorAfastamentos = colaboradorAfastamentoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, null, colaboradorAfastamento, new String[]{"data","colaboradorNome"}, true, 'T');
 	
 		afastamentos = afastamentoManager.findAll(new String[] {"descricao"});
 
@@ -99,6 +104,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
+	@SuppressWarnings("static-access")
 	public String relatorioAfastamentos() throws Exception
 	{
 		try
@@ -106,14 +112,38 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			if (!validaPeriodo())
 				return INPUT;
 
-			if (agruparPor == 'O')
-				ordenaColaboradorPorNome = true;
+			Collection<String> ordenarPor = new ArrayList<String>();
 			
-			agruparPorCid = agruparPor == 'C';
+			if (agruparPor == CID)
+				ordenarPor.add("cid");
+			else if (agruparPor == MES)
+				ordenarPor.add("data");
+			else if (agruparPor == COLABORADOR)
+				ordenarPor.add("colaboradorNome");
+			
+			if(ordenaColaboradorPorNome && !ordenarPor.contains("colaboradorNome"))
+				ordenarPor.add("colaboradorNome");
+			else if(!ordenarPor.contains("data"))
+				ordenarPor.add("data");
 			
 			//cuidado com os parametros desse metodo eles são unha e carne com o relatorio gerado, os parametros são fundamentais
-			colaboradorAfastamentos = colaboradorAfastamentoManager.findRelatorioAfastamentos(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, areasCheck, colaboradorAfastamento, ordenaColaboradorPorNome, agruparPorCid, afastadoPeloINSS);
+			colaboradorAfastamentos = colaboradorAfastamentoManager.findRelatorioAfastamentos(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, areasCheck, colaboradorAfastamento, new StringUtil().converteCollectionToArrayString(ordenarPor), afastadoPeloINSS);
 			parametros = RelatorioUtil.getParametrosRelatorio("Afastamentos", getEmpresaSistema(), getPeriodoFormatado());
+			
+			if(agruparPor == MES)
+			{
+				if(ordenaColaboradorPorNome)
+					return "afastamentos_por_mes_colab";
+				
+				return "afastamentos_por_mes_data";
+			}
+			else if(agruparPor == CID)
+				return "afastamentos_por_cid";
+			else if(agruparPor == COLABORADOR)
+				return "afastamentos_por_colaborador";
+			else
+				return "afastamentos";
+			
 		}
 		catch (ColecaoVaziaException e)
 		{
@@ -121,15 +151,6 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			prepareRelatorio();
 			return INPUT;
 		}
-
-		if(agruparPor == 'M')
-			return "afastamentos_por_mes";
-		else if(agruparPor == 'C')
-			return "afastamentos_por_cid";
-		else if(agruparPor == 'O')
-			return "afastamentos_por_colaborador";
-		else
-			return "afastamentos";
 	}
 	
 	public String prepareRelatorioResumoAfastamentos() throws Exception

@@ -89,4 +89,14 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 
 		return lista;				
 	}
+
+	public int getOrdemMaxima(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "nc");
+		criteria.setProjection(Projections.max("nc.ordem"));
+		criteria.add(Expression.eq("nc.empresa.id", empresaId));
+		
+		Integer result = (Integer) criteria.uniqueResult();
+		return (int) (result == null ? 0 : result);
+	}
 }

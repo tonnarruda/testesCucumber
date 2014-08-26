@@ -505,9 +505,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
-		historicoColaboradors = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, getEmpresaSistema().getId(), cargosCheck, areasCheck, estabelecimentosCheck);		
+		historicoColaboradors = historicoColaboradorManager.findSemDissidioByDataPercentual(dataIni, dataFim, percentualDissidio, getEmpresaSistema().getId(), cargosCheck, areasCheck, estabelecimentosCheck);		
 		
-		if (dataBase != null && percentualDissidio != null && (historicoColaboradors == null || historicoColaboradors.isEmpty()))
+		if (dataIni != null && percentualDissidio != null && (historicoColaboradors == null || historicoColaboradors.isEmpty()))
 			addActionMessage("Não existem colaboradores a serem listados");
 		
 		return Action.SUCCESS;

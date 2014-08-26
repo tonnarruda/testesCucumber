@@ -1,0 +1,1 @@
+alter table avaliacao alter column titulo type varchar(250);--.go

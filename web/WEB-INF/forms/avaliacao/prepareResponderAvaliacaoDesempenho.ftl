@@ -25,28 +25,29 @@
 					$('.checkNivel').attr('disabled', !($(this).attr('checked')));
 					$('.checkCompetencia').attr('checked', $(this).attr('checked'));
 				});
-				
-				<#list niveisCompetenciaFaixaSalariaisSugeridos as nivelSugerido>
-					var linhaSugerida = $('tr').has('.checkCompetencia[value="${nivelSugerido.competenciaId}"]').has('input[type="hidden"][value="${nivelSugerido.tipoCompetencia}"]');
-					linhaSugerida.find('.checkNivel[value="${nivelSugerido.nivelCompetencia.id}"]').parent().css('background-color', '#BFC0C3');
-				</#list>
 
 				<#if niveisCompetenciaFaixaSalariaisSalvos?exists>
 					<#list niveisCompetenciaFaixaSalariaisSalvos as nivelSalvo>
 						var linha = $('tr').has('.checkCompetencia[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
 						var nivelColaborador = linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]');
 						
-						nivelColaborador.attr('checked','checked');
-						nivelColaborador.parent().css('background-color','#ECECEC');
+						linha.find('.checkCompetencia').attr('checked', 'checked');
+						linha.find('.checkNivel').removeAttr('disabled');
+						linha.find('.ordem').val(${nivelSalvo.nivelCompetencia.ordem});
 						
-						<#list niveisCompetenciaFaixaSalariaisSugeridos as nivelSugerido>
-							if('${nivelSugerido.competenciaId}' == '${nivelSalvo.competenciaId}' && '${nivelSugerido.nivelCompetencia.id}' == '${nivelSalvo.nivelCompetencia.id}'){
+						nivelColaborador.parent().css('background-color','#ECECEC');
+						<#if colaboradorQuestionario.respondida>
+							nivelColaborador.attr('checked','checked');
+						</#if>
+						
+						<#list niveisCompetenciaFaixaSalariais as nivelSugerido>
+							if('${nivelSugerido.competenciaId}' == '${nivelSalvo.competenciaId}' && '${nivelSugerido.tipoCompetencia}' == '${nivelSalvo.tipoCompetencia}' && '${nivelSugerido.nivelCompetencia.id}' == '${nivelSalvo.nivelCompetencia.id}'){
 								linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').parent().css('background-color','#7CC0B9');
 							}
 						</#list>
+
 					</#list>
 				</#if>
-				
 			</#if>
 		});
 		
@@ -66,6 +67,11 @@
 			linhasSemRadioMarcado.css('background-color', '#FFEEC2');
 
 			return false;
+		}
+		
+		function setOrdem(i, ordem)
+		{
+			$('#ordem_' + i).val(ordem);
 		}
 	</script>
 	
@@ -117,6 +123,9 @@
 					<@display.table name="niveisCompetenciaFaixaSalariais" id="configuracaoNivelCompetencia" class="dados">
 						<@display.column title="<input type='checkbox' id='checkAllCompetencia'/> Competência" >
 							<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
+							<#-- não utilizar decorator no hidden abaixo -->
+							<input type="hidden" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.ordem" id="ordem_${i}" class="ordem" value=""/>
+							
 							<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
 							<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
 							
@@ -126,9 +135,18 @@
 							
 						</@display.column>
 						
-						<#list nivelCompetencias as nivel>			
-							<@display.column title="${nivel.descricao}" style="width: 100px; text-align: center;">
-								<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" />
+						<#list nivelCompetencias as nivel>
+						
+							<#if configuracaoNivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.id?exists && configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
+								<#assign class="nivelFaixa"/>
+								<#assign bgcolor="background-color: #BFC0C3;"/>
+							<#else>
+								<#assign class=""/>
+								<#assign bgcolor=""/>
+							</#if>
+									
+							<@display.column title="${nivel.descricao}" style="${bgcolor} width: 100px; text-align: center;" class="${class}">
+								<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" onchange="setOrdem(${i}, ${nivel.ordem})"/>
 							</@display.column>
 						</#list>
 						

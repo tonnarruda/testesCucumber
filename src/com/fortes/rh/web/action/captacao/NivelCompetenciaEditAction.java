@@ -28,7 +28,6 @@ import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
-import com.sun.mail.imap.protocol.Status;
 
 public class NivelCompetenciaEditAction extends MyActionSupportList
 {
@@ -48,6 +47,8 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private Colaborador colaborador;
 	private Solicitacao solicitacao;
 	private Date data;
+	private Date dataIni;
+	private Date dataFim;
 	private ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador;
 	
 	private Collection<FaixaSalarial> faixaSalarials;
@@ -146,10 +147,9 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		candidato = candidatoManager.findByCandidatoId(candidato.getId());
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
 
-		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), getEmpresaSistema().getId());
+		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarial.getId());
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		
-		niveisCompetenciaFaixaSalariaisSugeridos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
 		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByCandidato(candidato.getId());
 		
 		return Action.SUCCESS;
@@ -208,13 +208,12 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	
 	public void prepareCompetenciasColaborador()
 	{
-		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), getEmpresaSistema().getId());
+		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarial.getId());
 		
 		if (niveisCompetenciaFaixaSalariais.isEmpty())
 			addActionMessage("Não existem competências (conhecimentos, habilidades ou atitudes) cadastradas para o cargo");
 		
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
-		niveisCompetenciaFaixaSalariaisSugeridos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
 	}
 	
 	public String prepareInsertCompetenciasColaborador()
@@ -312,9 +311,9 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
 		parametros = RelatorioUtil.getParametrosRelatorio("Matriz comparativa Cargo x Colaborador", getEmpresaSistema(), "Cargo/Faixa: " + faixaSalarial.getDescricao());
-		parametros.put("ENTIDADE", "Colaborador Avaliado");
-		parametros.put("AVALIADOR", "Avaliador");
-		configuracaoNivelCompetenciaVOs = configuracaoNivelCompetenciaManager.montaRelatorioConfiguracaoNivelCompetencia(getEmpresaSistema().getId(), faixaSalarial.getId(), LongUtil.arrayStringToArrayLong(competenciasCheck));
+		parametros.put("ENTIDADE", "Colabotrador Avaliado");
+		parametros.put("ISNIVELCOLABORADOR", true);
+		configuracaoNivelCompetenciaVOs = configuracaoNivelCompetenciaManager.montaRelatorioConfiguracaoNivelCompetencia(dataIni, dataFim, getEmpresaSistema().getId(), faixaSalarial.getId(), LongUtil.arrayStringToArrayLong(competenciasCheck));
 		
 		if(configuracaoNivelCompetenciaVOs.isEmpty())
 		{
@@ -333,21 +332,23 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		
 			faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
 			parametros = RelatorioUtil.getParametrosRelatorio("Matriz comparativa Cargo x Candidato", getEmpresaSistema(), "Cargo/Faixa: " + faixaSalarial.getDescricao());
-			parametros.put("ENTIDADE", "Candidato");
+			parametros.put("ENTIDADE", "Candidato Avaliado");
+			parametros.put("ISNIVELCOLABORADOR", false);
 			configuracaoNivelCompetenciaVOs = configuracaoNivelCompetenciaManager.montaMatrizCompetenciaCandidato(getEmpresaSistema().getId(), faixaSalarial.getId(), solicitacao.getId());
 			
 			if(configuracaoNivelCompetenciaVOs.size() == 0)
-				throw new FortesException("Não existem competências para paar os candidatos desta seleção.");
+				throw new FortesException("Não existem competências para os candidatos desta seleção.");
 			
+			return Action.SUCCESS;
 		} catch (FortesException e) {
 			System.out.println(e.getMessage());
 			addActionMessage(e.getMessage());
+			return Action.INPUT;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			addActionError("Erro ao Gerar relatório da matriz de competencia dos candidatos\n" + e.getMessage());
+			return Action.INPUT;
 		}
-		
-		return Action.SUCCESS;
 	}
 	
 	public NivelCompetencia getNivelCompetencia()
@@ -506,5 +507,21 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public Collection<Colaborador> getColaboradores() {
 		return colaboradores;
+	}
+
+	public Date getDataIni() {
+		return dataIni;
+	}
+
+	public void setDataIni(Date dataIni) {
+		this.dataIni = dataIni;
+	}
+
+	public Date getDataFim() {
+		return dataFim;
+	}
+
+	public void setDataFim(Date dataFim) {
+		this.dataFim = dataFim;
 	}
 }

@@ -297,7 +297,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		if(colaborador != null)
 		{
 			situacaoColaborador();
-			colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), somenteAtivos);
+			colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), somenteAtivos, null);
 
 			if(colaborador.getId() != null)
 			{

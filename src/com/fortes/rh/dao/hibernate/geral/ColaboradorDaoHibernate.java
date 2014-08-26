@@ -2538,7 +2538,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Long empresaId, Boolean somenteAtivos)
+	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Long empresaId, Boolean somenteAtivos, String[] colabsNaoHomonimoHa)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 
@@ -2567,6 +2567,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		if(somenteAtivos != null && somenteAtivos)
 			criteria.add(Expression.eq("c.desligado", false));
+
+		if(colabsNaoHomonimoHa != null && colabsNaoHomonimoHa.length > 0)
+			criteria.add(Expression.not(Expression.in("c.nome", colabsNaoHomonimoHa)));
 
 		criteria.addOrder(Order.asc("nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -3301,7 +3304,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long[] avaliacaoIds, Long[] areasCheck, Long[] estabelecimentosCheck, Long[] colaboradorsCheck, boolean considerarAutoAvaliacao) 
 	{
 		StringBuilder hql = new StringBuilder();
-		  hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, aval.nome, cq.respondidaEm, cq.performance, ad.anonima, ad.id, ad.titulo, emp.nome) ");
+		  hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, aval.nome, cq.respondidaEm, cq.performance, cq.performanceNivelCompetencia, ad.anonima, ad.id, ad.titulo, emp.nome) ");
 		  hql.append("from HistoricoColaborador as hc ");
 		  hql.append("left join hc.colaborador as co ");
 		  hql.append("left join co.colaboradorQuestionarios as cq ");
@@ -4621,6 +4624,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				
 				"DELETE FROM ConfiguracaoNivelCompetencia WHERE configuracaoNivelCompetenciaColaborador.id IN (SELECT id FROM ConfiguracaoNivelCompetenciaColaborador WHERE colaborador.id = :id)",
 				"DELETE FROM ConfiguracaoNivelCompetenciaColaborador WHERE colaborador.id = :id",
+				"DELETE FROM ConfiguracaoNivelCompetencia WHERE configuracaoNivelCompetenciaColaborador.id IN (SELECT id FROM ConfiguracaoNivelCompetenciaColaborador WHERE avaliador.id = :id)",
+				"DELETE FROM ConfiguracaoNivelCompetenciaColaborador WHERE avaliador.id = :id",
+				
+				"DELETE FROM ConfiguracaoNivelCompetencia WHERE configuracaoNivelCompetenciaColaborador.id IN (SELECT id FROM ConfiguracaoNivelCompetenciaColaborador WHERE avaliador.id = :id)",
 				"DELETE FROM ConfiguracaoNivelCompetenciaColaborador WHERE avaliador.id = :id",
 				
 				"UPDATE Experiencia SET colaborador.id = NULL WHERE colaborador.id = :id AND candidato.id IS NOT NULL",

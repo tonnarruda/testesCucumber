@@ -1,0 +1,1 @@
+ALTER TABLE colaboradorquestionario ADD COLUMN performanceNivelCompetencia double precision;--.go

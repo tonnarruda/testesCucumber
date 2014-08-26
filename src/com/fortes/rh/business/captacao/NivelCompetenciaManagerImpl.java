@@ -25,4 +25,19 @@ public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompete
 		return getDao().findByCargoOrEmpresa(cargoId, empresaId);
 	}
 
+	public Integer getPontuacaoObtidaByConfiguracoesNiveisCompetencia(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados) 
+	{
+		Integer pontuacao = 0;
+		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaMarcados) {
+			if(configuracaoNivelCompetencia.getNivelCompetencia() != null && configuracaoNivelCompetencia.getNivelCompetencia().getId() != null)
+				pontuacao += configuracaoNivelCompetencia.getNivelCompetencia().getOrdem();
+		}
+		
+		return pontuacao;
+	}
+
+	public int getOrdemMaxima(Long empresaId) 
+	{
+		return getDao().getOrdemMaxima(empresaId);
+	}
 }

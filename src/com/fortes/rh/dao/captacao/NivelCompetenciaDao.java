@@ -12,4 +12,5 @@ public interface NivelCompetenciaDao extends GenericDao<NivelCompetencia>
 
 	Collection<ConfiguracaoNivelCompetencia> findByCargoOrEmpresa(Long cargoId, Long empresaId);
 
+	int getOrdemMaxima(Long empresaId);
 }

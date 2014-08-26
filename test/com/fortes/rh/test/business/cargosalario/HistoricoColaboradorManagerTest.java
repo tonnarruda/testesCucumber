@@ -384,7 +384,8 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 	public void testFindSemDissidioByDataPercentual()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		Date dataBase = DateUtil.criarDataMesAno(1, 2, 2011);
+		Date dataIni = DateUtil.criarDataMesAno(1, 2, 2011);
+		Date dataFim = DateUtil.criarDataMesAno(1, 3, 2011);
 		Double percentualDissidio = 5.0;
 
 		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
@@ -463,35 +464,34 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradors.add(historico1Colaborador2);
 		historicoColaboradors.add(historico2Colaborador2);
 		
-		historicoColaboradorDao.expects(atLeastOnce()).method("findSemDissidioByDataPercentual").with(eq(dataBase), eq(percentualDissidio), eq(empresa.getId())).will(returnValue(historicoColaboradors));
-		
+		historicoColaboradorDao.expects(atLeastOnce()).method("findSemDissidioByDataPercentual").with(eq(dataIni), eq(dataFim), eq(percentualDissidio), eq(empresa.getId())).will(returnValue(historicoColaboradors));
 		
 		String[] cargosIds = new String[] {"1","2"};
 		String[] areasIds = new String[] {"3","4"};
 		String[] estabelecimentosIds = new String[] {"5","6"};
 		
-		Collection<HistoricoColaborador> resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
+		Collection<HistoricoColaborador> resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataIni, dataFim, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
 		assertEquals("Todos hist. colaboradores", 4, resultado.size());
 
 		cargosIds = new String[] {"1"};
 		areasIds = new String[] {"3","4"};
 		estabelecimentosIds = new String[] {"5","6"};
 		
-		resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
+		resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataIni, dataFim, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
 		assertEquals("Sem cargo ID=2", historico1Colaborador1.getFaixaSalarial().getCargo().getId() , ((HistoricoColaborador) resultado.toArray()[0]).getFaixaSalarial().getCargo().getId());
 
 		cargosIds = new String[] {"1","2"};
 		areasIds = new String[] {"4"};
 		estabelecimentosIds = new String[] {"5","6"};
 		
-		resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
+		resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataIni, dataFim, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
 		assertEquals("Sem área ID=3", historico1Colaborador2.getAreaOrganizacional().getId() , ((HistoricoColaborador) resultado.toArray()[0]).getAreaOrganizacional().getId());
 		
 		cargosIds = new String[] {"1","2"};
 		areasIds = new String[] {"3","4"};
 		estabelecimentosIds = new String[] {"5"};
 		
-		resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataBase, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
+		resultado = historicoColaboradorManager.findSemDissidioByDataPercentual(dataIni, dataFim, percentualDissidio, empresa.getId(), cargosIds, areasIds, estabelecimentosIds);
 		assertEquals("Sem estabelecimento ID=6", historico1Colaborador1.getEstabelecimento().getId() , ((HistoricoColaborador) resultado.toArray()[0]).getEstabelecimento().getId());
 		
 

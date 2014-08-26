@@ -26,6 +26,7 @@ import com.fortes.rh.model.relatorio.PerguntaFichaMedica;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ModelDriven;
 
@@ -216,7 +217,7 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         }
     }
     
-    public String imprimirEntrevistaDesligamento()
+    public String imprimirEntrevistaDesligamento() 
     {
     	colaboradorQuestionario = colaboradorQuestionarioManager.findColaboradorComEntrevistaDeDesligamento(colaborador.getId());
 		try
@@ -225,6 +226,7 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
 			perguntasRespondidas = questionarioManager.montaPerguntasComRespostas(questionario.getPerguntas(), colaboradorRespostas, false, false);
 			
 			parametros = new HashMap<String, Object>();//tem que ser aqui
+			parametros.put("SUBREPORT_DIR", ServletActionContext.getServletContext().getRealPath("/WEB-INF/report/") + java.io.File.separator);
 			parametros.put("TITULO", "Entrevista de Desligamento");
 	    	parametros.put("RODAPE", colaboradorQuestionario.getQuestionario().getCabecalho());
 	    	parametros.put("COLABORADOR", colaboradorQuestionario.getColaborador().getNome());

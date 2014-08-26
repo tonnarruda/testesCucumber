@@ -58,9 +58,15 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">afastamentos_cid.pdf</param>
 			</result>
-			<result name="afastamentos_por_mes" type="jasper">
+			<result name="afastamentos_por_mes_data" type="jasper">
 				<param name="dataSource">colaboradorAfastamentos</param>
-				<param name="location">/WEB-INF/report/afastamentosmes.jasper</param>
+				<param name="location">/WEB-INF/report/afastamentosMesOrdenadoPorData.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">afastamentos_mes.pdf</param>
+			</result>
+			<result name="afastamentos_por_mes_colab" type="jasper">
+				<param name="dataSource">colaboradorAfastamentos</param>
+				<param name="location">/WEB-INF/report/afastamentosMesOrdenadoPorColaborador.jasper</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">afastamentos_mes.pdf</param>
 			</result>

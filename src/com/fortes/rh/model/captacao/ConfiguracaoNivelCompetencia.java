@@ -2,12 +2,15 @@ package com.fortes.rh.model.captacao;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
@@ -97,11 +100,24 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setCompetenciaObservacao(competenciaObservacao);
 	}
 	
-	public ConfiguracaoNivelCompetencia(Character tipoCompetencia, Long competenciaId, Long nivelCompetenciaId)
+	public ConfiguracaoNivelCompetencia(Long id, Character tipoCompetencia, Long competenciaId, String competenciaDescricao, String competenciaObservacao, Long nivelCompetenciaId, String nivelCompetenciaDescricao, Integer nivelCompetenciaOrdem)
+	{
+		this.setId(id);
+		this.setTipoCompetencia(tipoCompetencia);
+		this.setCompetenciaId(competenciaId);
+		this.setCompetenciaDescricao(competenciaDescricao);
+		this.setCompetenciaObservacao(competenciaObservacao);
+		this.setNivelCompetenciaIdProjection(nivelCompetenciaId);
+		this.setProjectionNivelCompetenciaDescricao(nivelCompetenciaDescricao);
+		this.setProjectionNivelCompetenciaOrdem(nivelCompetenciaOrdem);
+	}
+	
+	public ConfiguracaoNivelCompetencia(Character tipoCompetencia, Long competenciaId, Long nivelCompetenciaId, Integer nivelCompetenciaOrdem)
 	{
 		this.setTipoCompetencia(tipoCompetencia);
 		this.setCompetenciaId(competenciaId);
 		this.setNivelCompetenciaIdProjection(nivelCompetenciaId);
+		this.nivelCompetencia.setOrdem(nivelCompetenciaOrdem);
 	}
 	
 	public ConfiguracaoNivelCompetencia(Long id, String competenciaDescricao)
@@ -110,8 +126,9 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setCompetenciaDescricao(competenciaDescricao);
 	}
 	
+	//findCompetenciaColaborador
 	public ConfiguracaoNivelCompetencia(String faixaCompetencia, String faixaNivel, Integer faixaOrdem, String colaboradorNome, BigInteger colaboradorId, 
-			String colaboradorNivel, Integer colaboradorOrden, BigInteger configNCColaboradorId, String avaliadorNome, Boolean avaliacaoAnonima)
+			String colaboradorNivel, Integer colaboradorOrden, BigInteger configNCColaboradorId, Date configCNData, String avaliadorNome, Boolean avaliacaoAnonima)
 	{
 		competenciaDescricao = faixaCompetencia;
 		nivelCompetencia = new NivelCompetencia();
@@ -127,6 +144,8 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 
 		if(configNCColaboradorId != null)
 			configuracaoNivelCompetenciaColaborador.setId(configNCColaboradorId.longValue());
+			
+		configuracaoNivelCompetenciaColaborador.setData(configCNData);
 		
 		if(avaliadorNome != null)
 		{
@@ -258,6 +277,16 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	public String getCompetenciaDescricao() 
 	{
 		return competenciaDescricao;
+	}
+	
+	public String getCompetenciaDescricaoNivel() 
+	{
+		String retorno = competenciaDescricao;
+		
+		if (nivelCompetencia != null && StringUtils.isNotEmpty(nivelCompetencia.getDescricao()))
+			retorno += " (" + nivelCompetencia.getDescricao() + ")";
+		
+		return retorno;
 	}
 
 	public void setCompetenciaDescricao(String competenciaDescricao) 

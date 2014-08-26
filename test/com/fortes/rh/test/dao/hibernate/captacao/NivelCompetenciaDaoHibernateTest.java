@@ -465,7 +465,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		
 		ConfiguracaoNivelCompetencia competenciaAtitude = (ConfiguracaoNivelCompetencia)competenciasDaFaixa.toArray()[0]; 
 		assertEquals(configuracaoNivelCompetencia1.getId(), competenciaAtitude.getId());
-		assertEquals("atividade (bom)", competenciaAtitude.getCompetenciaDescricao());
+		assertEquals("atividade (bom)", competenciaAtitude.getCompetenciaDescricaoNivel());
 	}
 	
 	public void testFindCompetenciaColaborador()
@@ -488,8 +488,11 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = criaConfiguracaoNivelCompetencia(atitude.getId(), nivelCompetencia1, configColaborador, TipoCompetencia.ATITUDE);
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = criaConfiguracaoNivelCompetencia(conhecimento.getId(), nivelCompetencia2, configColaborador, TipoCompetencia.CONHECIMENTO);
 		
+		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2010);
+		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2015);
+		
 		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId()); // Arranjo para teste de consulta SQL
-		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findCompetenciaColaborador(new Long[] { configuracaoNivelCompetencia1.getId(), configuracaoNivelCompetencia2.getId() }, faixaSalarial.getId(), true);
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findCompetenciaColaborador(dataIni, dataFim, new Long[] { configuracaoNivelCompetencia1.getId(), configuracaoNivelCompetencia2.getId() }, faixaSalarial.getId(), true);
 		assertEquals(2, configs.size());
 		assertEquals("atividade", ((ConfiguracaoNivelCompetencia)configs.toArray()[0]).getCompetenciaDescricao());
 		assertEquals("esporte", ((ConfiguracaoNivelCompetencia)configs.toArray()[1]).getCompetenciaDescricao());
@@ -911,6 +914,34 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals("Ordenado por treinamento", cursoAtitude.getNome(), configsArray[0].getCursoNome());
 		assertEquals("Ordenado por treinamento", cursoConhecimento.getNome(), configsArray[1].getCursoNome());
 		assertEquals("Ordenado por treinamento", cursoConhecimento.getNome(), configsArray[2].getCursoNome());
+	}
+	
+	public void testGetOrdemMaxima()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia1.setOrdem(1);
+		nivelCompetencia1.setEmpresa(empresa);
+		nivelCompetenciaDao.save(nivelCompetencia1);
+		
+		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia2.setOrdem(4);
+		nivelCompetencia2.setEmpresa(empresa);
+		nivelCompetenciaDao.save(nivelCompetencia2);
+
+		NivelCompetencia nivelCompetencia3 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia3.setOrdem(4);
+		nivelCompetencia3.setEmpresa(empresa);
+		nivelCompetenciaDao.save(nivelCompetencia3);
+
+		NivelCompetencia nivelCompetencia4 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia4.setOrdem(2);
+		nivelCompetencia4.setEmpresa(empresa);
+		nivelCompetenciaDao.save(nivelCompetencia4);
+		
+		assertEquals((int) 4, nivelCompetenciaDao.getOrdemMaxima(empresa.getId()));
 	}
 	
 	@Override
