@@ -197,7 +197,27 @@
 		<echo message="Integração concluída com sucesso." />
 	</target>
 	
-	<target name="war">
+	<path id="project.classpath.ireport">
+		<fileset dir="web/WEB-INF/lib">  
+			<include name="jasperreports-5.0.0.jar" />
+		</fileset>
+	</path>
+	
+	<target name="jasper" >
+		<taskdef name="jaspercompile" classname="net.sf.jasperreports.ant.JRAntCompileTask">
+			<classpath refid="project.classpath.ireport"/>
+		</taskdef>
+		
+		<jaspercompile destdir="web/WEB-INF/report">
+			<src>
+				<fileset dir="web/WEB-INF/report">
+					<include name="*.jrxml" />
+				</fileset>
+			</src>
+		</jaspercompile>
+	</target>
+			
+	<target name="war" depends="jasper">
 		<mkdir dir="dist" />
 		<property name="tmpweb" value="dist/tmpweb" />
 		<property name="base" value="web" />

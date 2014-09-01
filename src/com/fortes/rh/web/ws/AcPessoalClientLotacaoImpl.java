@@ -85,7 +85,7 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
         catch(Exception e)
         {
             e.printStackTrace();
-            throw new Exception(e);
+            throw new Exception("Erro ao cadastrar/atualizar lotação no AC Pessoal.");
         }
 	}
 	

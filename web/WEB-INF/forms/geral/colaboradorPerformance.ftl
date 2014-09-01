@@ -326,7 +326,9 @@
 							</@display.column>
 						</#if>
 					
-						<@display.column property="performanceFormatada" title="Performance" />
+						<@display.column property="performanceFormatada" title="Performance  Questionário" style="width:90px; text-align:right;"/>
+						<@display.column property="performanceNivelCompetenciaFormatada" title="Performance Competência" style="width:90px; text-align:right;"/>
+						<@display.column property="performanceFinal" title="Performance" style="width:90px; text-align:right;"/>
 						<@display.column title="Obs." style="text-align: center;width: 50px">
 							<#if avaliacaoDesempenho.observacao?exists && avaliacaoDesempenho.observacao?trim != "">
 								<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${avaliacaoDesempenho.observacao?j_string?replace("'", "\\'")?replace("\"", "'")}');return false">...</span>

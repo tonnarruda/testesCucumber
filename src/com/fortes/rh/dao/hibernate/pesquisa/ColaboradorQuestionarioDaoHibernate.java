@@ -370,6 +370,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("cq.respondidaEm"), "respondidaEm");
 		p.add(Projections.property("cq.observacao"), "observacao");
 		p.add(Projections.property("cq.performance"), "performance");
+		p.add(Projections.property("cq.performanceNivelCompetencia"), "performanceNivelCompetencia");
 		p.add(Projections.property("colab.id"), "projectionColaboradorId");
 		p.add(Projections.property("colab.nome"), "projectionColaboradorNome");
 		p.add(Projections.property("cand.id"), "projectionCandidatoId");
@@ -437,6 +438,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("cq.id"), "id");
 		p.add(Projections.property("cq.respondidaEm"), "respondidaEm");
 		p.add(Projections.property("cq.performance"), "performance");
+		p.add(Projections.property("cq.performanceNivelCompetencia"), "performanceNivelCompetencia");
 		p.add(Projections.property("cq.observacao"), "observacao");
 		p.add(Projections.property("avd.exibirPerformanceProfissional"), "projectionExibirPerformanceProfissional");
 		p.add(Projections.property("colab.id"), "projectionColaboradorId");
