@@ -30,6 +30,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DNT;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -756,7 +757,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 	
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, String orderBy, boolean comHistColaboradorFuturo, Boolean desligado, Long... turmaIds)
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, String orderBy, boolean comHistColaboradorFuturo, String situacao, Long... turmaIds)
 	{
 		StringBuilder sql = new StringBuilder();		
 		sql.append("select ");
@@ -848,8 +849,23 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			sql.append("	and hc2.data <= :hoje ");
 		sql.append("	and hc2.status <> :statusCancelado ) ");
 		
-		if (desligado != null)
-			sql.append("	and co.desligado = :desligado ");
+		if (situacao != null)
+		{
+			if (situacao.equalsIgnoreCase(SituacaoColaborador.ATIVO))
+			{
+				sql.append("	and (co.dataDesligamento is null ");
+				if (dataFim != null)
+					sql.append("	or co.dataDesligamento > :dataFim ");
+				sql.append("	) ");
+			}
+			else if (situacao.equalsIgnoreCase(SituacaoColaborador.DESLIGADO))
+			{
+				sql.append("	and (co.dataDesligamento is not null ");
+				if (dataFim != null)
+					sql.append("	and co.dataDesligamento <= :dataFim ");
+				sql.append("	) ");
+			}
+		}
 		
 		if (certificacao != null)
 			sql.append("	and cc.certificacaos_id = :certificacaoId ");
@@ -876,9 +892,6 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 
 		Query query = getSession().createSQLQuery(sql.toString());
 		
-		if (desligado != null)
-			query.setBoolean("desligado", desligado);
-
 		if(empresaId != null)
 			query.setLong("empresaId", empresaId);
 

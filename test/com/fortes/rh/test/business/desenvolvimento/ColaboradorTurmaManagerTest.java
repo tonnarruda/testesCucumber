@@ -44,6 +44,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCursoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.CursoPontuacaoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -945,9 +946,9 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllListAndInativas").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 		
-		assertEquals(7, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, null, null, 'T').size());		
-		assertEquals(4, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, null, null, 'S').size());		
-		assertEquals(3, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, null, null, 'N').size());		
+		assertEquals(7, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, null, null, 'T', SituacaoColaborador.ATIVO).size());		
+		assertEquals(4, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, null, null, 'S', SituacaoColaborador.ATIVO).size());		
+		assertEquals(3, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, null, null, 'N', SituacaoColaborador.ATIVO).size());		
 	}
 	
 	public void testFindRelatorioSemTreinamento() throws Exception

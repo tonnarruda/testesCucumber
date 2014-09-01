@@ -109,6 +109,7 @@
 		</#if>
 		
 		<@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1"  onchange="populaEstabelecimento(this.value);populaArea(this.value);" disabled="!compartilharColaboradores"/>		
+		<@ww.select label="Situação" name="situacao" id="situacao" list="situacoes" cssStyle="width: 160px;"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList"/>
 	

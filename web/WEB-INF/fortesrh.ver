@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.13x.160" bd="" data="xx/09/2014">
+		<Item visivel="S" motivo="S20140800155"><![CDATA[T&D > Relatórios > Colaboradores com Treinamentos e T&D > Relatórios > Colaboradores sem Treinamentos: Novo filtro para colaboradores ativos ou desligados.]]></Item>
 		<Item visivel="S" motivo="S20140800179"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Enviar mensagem ou email somente se houver avaliações não respondidas do período de experiência a vencer (Notificação periódica).]]></Item>
 	</Versao>
 	<Versao id="1.1.133.159" bd="" data="26/08/2014">

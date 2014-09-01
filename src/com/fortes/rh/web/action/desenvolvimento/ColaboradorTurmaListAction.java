@@ -31,6 +31,7 @@ import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCertificacaoRelatorio;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -128,6 +129,9 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private Certificacao certificacao;
 	private Collection<Certificacao> certificacoes;
 	private Boolean compartilharColaboradores;
+	
+	private Map<String,String> situacoes = new SituacaoColaborador();
+	private String situacao;
 
 	public String getMsgAlert()
 	{
@@ -330,7 +334,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		{
 			empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 			
-			colaboradorTurmas = colaboradorTurmaManager.findRelatorioComTreinamento(empresaId, curso, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim, aprovado);
+			colaboradorTurmas = colaboradorTurmaManager.findRelatorioComTreinamento(empresaId, curso, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim, aprovado, situacao);
 			curso = cursoManager.findByIdProjection(curso.getId());
 			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores que fizeram o treinamento", getEmpresaSistema(), curso.getNome());
 			
@@ -847,5 +851,17 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public String getReportTitle() {
 		return reportTitle;
+	}
+
+	public Map<String, String> getSituacoes() {
+		return situacoes;
+	}
+
+	public String getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(String situacao) {
+		this.situacao = situacao;
 	}
 }
