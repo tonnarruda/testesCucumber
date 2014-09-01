@@ -31,7 +31,7 @@ public class ColaboradorPC extends AbstractAdapterPC
 	private String mae; 
 	@SerializedName("qtd_filhos")
 	private Integer qtdFilhos;
-	@SerializedName("historico_colaboradores")
+	@SerializedName("historicos_colaboradores")
 	private List<HistoricoColaboradorPC> historicosPc;
 	
 	@Transient

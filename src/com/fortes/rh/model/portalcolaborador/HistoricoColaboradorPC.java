@@ -1,14 +1,13 @@
 package com.fortes.rh.model.portalcolaborador;
 
-import java.util.Date;
-
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.util.DateUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 public class HistoricoColaboradorPC extends AbstractAdapterPC
 {
-	private Date data;
+	private String data;
 	private String motivo;
 	private String estabelecimentoNome;
 	private String cargoNome;
@@ -23,7 +22,7 @@ public class HistoricoColaboradorPC extends AbstractAdapterPC
 
 	public HistoricoColaboradorPC(HistoricoColaborador historicoColaborador) 
 	{
-		this.data = historicoColaborador.getData();
+		this.data = DateUtil.formataDiaMesAno(historicoColaborador.getData());
 		this.motivo = historicoColaborador.getMotivo();
 		this.tipo = historicoColaborador.getTipoSalarioDescricao();
 		this.salario = historicoColaborador.getSalario();
@@ -38,14 +37,14 @@ public class HistoricoColaboradorPC extends AbstractAdapterPC
 			this.areaNome = historicoColaborador.getAreaOrganizacional().getNome();
 	}
 
-	public Date getData() {
+	public String getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(String data) {
 		this.data = data;
 	}
-
+	
 	public String getMotivo() {
 		return motivo;
 	}

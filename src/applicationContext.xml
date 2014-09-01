@@ -275,6 +275,8 @@
 
   <bean name="enfileirarHistoricosPCJob" class="com.fortes.rh.business.cargosalario.HistoricoColaboradorManagerImpl">
     <property name="empresaManager" ref="empresaManagerTarget" />
+    <property name="indiceHistoricoManager" ref="indiceHistoricoManager" />
+    <property name="faixaSalarialHistoricoManager" ref="faixaSalarialHistoricoManager" />
     <property name="dao" ref="historicoColaboradorDaoTarget" />
   </bean>
   
