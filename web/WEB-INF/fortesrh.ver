@@ -12,6 +12,8 @@
 		<Item visivel="S" motivo="P20140800101"><![CDATA[C&S > Relatórios > Matriz comparativa de competências de Colaborador X Cargo/Faixa : Novo filtro por período.]]></Item>
 		<Item visivel="S" motivo="S20140800125"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas: Ordenação de 'Dias Previstos' por data]]></Item>
 		<Item visivel="S" motivo="S20140600182"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Novo cáculo da performance considerando os níveis de competência e exibir somente as competência definidas para a faixa.]]></Item>
+		<Item visivel="S" motivo="S20140800180"><![CDATA[Info. Funcionais > Movimentações > Atualizar Modelos de Avaliação: Nova funcionalidade para atualizar os modelos de acompanhamento do período de experiência do colaborador e do gestor.]]></Item>
+		<Item visivel="N" motivo="P20140700138"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Não permitir que sejam selecionados colaboradores já inseridos como colaboradores substituídos.]]></Item>
 		<Item visivel="N" motivo="P20140800106"><![CDATA[C&S > Cadastros > Áreas Organizacionais > Inserir: Ajuste na mensagem de erro ao tentar gravar no AC Pessoal.]]></Item>
 		<Item visivel="N" motivo="P20140800050"><![CDATA[BUG: Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Clonar: Erro ao tentar clonar aval. desempenho com título com grandes descrições.]]></Item>
 		<Item visivel="N" motivo="------------"><![CDATA[BUG: SESMT > Relatórios > Afastamentos: Falta de ordenação ao gerar relatório.]]></Item>

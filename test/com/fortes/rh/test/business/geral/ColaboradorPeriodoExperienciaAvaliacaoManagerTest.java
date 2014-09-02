@@ -57,8 +57,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerTest extends MockObjec
 
 		Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes = Arrays.asList(config1, config2, config3);
 		
-		colaboradorPeriodoExperienciaAvaliacaoDao.expects(once()).method("save").with(eq(config1));
-		colaboradorPeriodoExperienciaAvaliacaoDao.expects(once()).method("save").with(eq(config3));
+		colaboradorPeriodoExperienciaAvaliacaoDao.expects(atLeastOnce()).method("save").withAnyArguments();
 
 		Exception exception = null;
 		try {
@@ -90,7 +89,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerTest extends MockObjec
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		
-		colaboradorPeriodoExperienciaAvaliacaoDao.expects(once()).method("removeByColaborador").with(eq(colaborador.getId()));
-		colaboradorPeriodoExperienciaAvaliacaoManager.removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador);
+		colaboradorPeriodoExperienciaAvaliacaoDao.expects(once()).method("removeByColaborador").withAnyArguments();
+		colaboradorPeriodoExperienciaAvaliacaoManager.removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador.getId());
 	}
 }

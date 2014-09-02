@@ -9,12 +9,10 @@ import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 public interface ColaboradorPeriodoExperienciaAvaliacaoManager extends GenericManager<ColaboradorPeriodoExperienciaAvaliacao>
 {
 	void saveConfiguracaoAvaliacaoPeriodoExperiencia(Colaborador colaborador, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoesGestor);
-
-	void removeConfiguracaoAvaliacaoPeriodoExperiencia(Colaborador colaborador);
-
+	void removeConfiguracaoAvaliacaoPeriodoExperiencia(Long... colaboradorIds);
 	Collection<ColaboradorPeriodoExperienciaAvaliacao> findByColaborador(Long colaboradorId);
-
 	void enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo();
-
 	void removeByAvaliacao(Long avaliacaoId);
+	void atualizaConfiguracaoAvaliacaoPeriodoExperiencia(Colaborador colaborador, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoesGestor);
+	void atualizaConfiguracaoAvaliacaoPeriodoExperienciaEmVariosColaboradores(Long[] colaboradorIds, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoesGestor);
 }

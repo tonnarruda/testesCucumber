@@ -1531,7 +1531,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		experienciaManager.removeColaborador(colaborador);
 		configuracaoNivelCompetenciaManager.removeColaborador(colaborador);
 		configuracaoNivelCompetenciaColaboradorManager.removeColaborador(colaborador);
-		colaboradorPeriodoExperienciaAvaliacaoManager.removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador);
+		colaboradorPeriodoExperienciaAvaliacaoManager.removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador.getId());
 		mensagemManager.removeMensagensColaborador(colaborador.getId(), null);
 
 		Colaborador	colaboradorTmp = getDao().findColaboradorByIdProjection(colaborador.getId());

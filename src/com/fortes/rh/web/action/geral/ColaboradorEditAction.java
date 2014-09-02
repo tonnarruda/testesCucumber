@@ -71,8 +71,10 @@ import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.dicionario.SexoCadastro;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Beneficio;
@@ -99,6 +101,7 @@ import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.rh.web.ws.AcPessoalClientSistema;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
@@ -201,6 +204,14 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	private Map sexos;
 	private Map deficiencias;
 
+	private Collection<CheckBox> areaCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> colaboradorCheckList = new ArrayList<CheckBox>();
+	private Collection<CheckBox> estabelecimentoCheckList = new ArrayList<CheckBox>();
+
+	private Long[] areaCheck;
+	private Long[] colaboradorCheck;
+	private Long[] estabelecimentoCheck;
+	
 	//Utilizado apenas na hora de contratar o colaborador
 	private Long idCandidato;
 	
@@ -747,8 +758,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			
 			colaboradorManager.update(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema(),editarHistorico, salarioColaborador);
 			
-			colaboradorPeriodoExperienciaAvaliacaoManager.removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador);
-			colaboradorPeriodoExperienciaAvaliacaoManager.saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
+			colaboradorPeriodoExperienciaAvaliacaoManager.atualizaConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
 		}
 //		catch (NestedRuntimeException e)
 //		{
@@ -995,14 +1005,23 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 	public String prepareAtualizarModeloAvaliacao() throws Exception
 	{
 		periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);
-		
-		colaboradorAvaliacoes = colaboradorPeriodoExperienciaAvaliacaoManager.findAll();
+		estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+		avaliacoes = avaliacaoManager.findAllSelect(null, null, getEmpresaSistema().getId(), true, TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, null);
 		
 		return Action.SUCCESS;
 	}
 
 	public String atualizarModeloAvaliacao() throws Exception
 	{
+		try {
+			colaboradorPeriodoExperienciaAvaliacaoManager.atualizaConfiguracaoAvaliacaoPeriodoExperienciaEmVariosColaboradores(colaboradorCheck, colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
+			
+			addActionSuccess("Colaboradores atualizados com sucesso.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Não foi possível atualizar os colaboradores.");
+		}
+		
 		
 		return Action.SUCCESS;
 	}
@@ -1840,9 +1859,38 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		this.encerrarSolicitacao = encerrarSolicitacao;
 	}
 
-	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
 		this.transactionManager = transactionManager;
+	}
+
+	public Collection<CheckBox> getAreaCheckList()
+	{
+		return areaCheckList;
+	}
+
+	public Collection<CheckBox> getColaboradorCheckList()
+	{
+		return colaboradorCheckList;
+	}
+
+	public Collection<CheckBox> getEstabelecimentoCheckList()
+	{
+		return estabelecimentoCheckList;
+	}
+
+	public void setAreaCheck(Long[] areaCheck)
+	{
+		this.areaCheck = areaCheck;
+	}
+
+	public void setColaboradorCheck(Long[] colaboradorCheck)
+	{
+		this.colaboradorCheck = colaboradorCheck;
+	}
+
+	public void setEstabelecimentoCheck(Long[] estabelecimentoCheck)
+	{
+		this.estabelecimentoCheck = estabelecimentoCheck;
 	}
 }

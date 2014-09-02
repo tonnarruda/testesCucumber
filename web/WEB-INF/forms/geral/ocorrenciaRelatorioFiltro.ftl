@@ -48,7 +48,7 @@
 			var estabelecimentoIds = getArrayCheckeds(document.forms[0], 'estabelecimentoCheck');
 			var situacao = $('#situacao').val();
 			
-			ColaboradorDWR.getByAreaEstabelecimentoEmpresas(createListcolaborador, areasIds, estabelecimentoIds, empresaId, empresaIds, situacao);
+			ColaboradorDWR.getByAreaEstabelecimentoEmpresas(createListcolaborador, areasIds, estabelecimentoIds, empresaId, empresaIds, situacao, true);
 		}
 
 		function createListcolaborador(data)

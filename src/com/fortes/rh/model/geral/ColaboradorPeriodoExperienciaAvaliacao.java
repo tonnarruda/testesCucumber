@@ -37,6 +37,13 @@ public class ColaboradorPeriodoExperienciaAvaliacao extends AbstractModel implem
     public ColaboradorPeriodoExperienciaAvaliacao() {
 	}
     
+    public ColaboradorPeriodoExperienciaAvaliacao(Colaborador colaborador, Avaliacao avaliacao, PeriodoExperiencia periodoExperiencia, char tipo) {
+    	this.colaborador = colaborador;
+    	this.periodoExperiencia = periodoExperiencia;
+    	this.avaliacao = avaliacao;
+    	this.tipo = tipo;
+    }
+    
     public ColaboradorPeriodoExperienciaAvaliacao(Long colaboradorId, String colaboradorNome, String colaboradorEmail, Date colaboradorDataAdmissao, String empresaEmailRemetente, Long avaliacaoId, String avaliacaoTitulo, Integer peridoExperienciaDias, Long empresaId)
     {
     	if (colaborador == null)

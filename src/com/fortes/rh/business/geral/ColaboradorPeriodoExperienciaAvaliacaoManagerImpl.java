@@ -6,10 +6,26 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.geral.ColaboradorPeriodoExperienciaAvaliacaoDao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
+import com.fortes.rh.util.CollectionUtil;
 
 public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericManagerImpl<ColaboradorPeriodoExperienciaAvaliacao, ColaboradorPeriodoExperienciaAvaliacaoDao> implements ColaboradorPeriodoExperienciaAvaliacaoManager 
 {
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	
+	public void atualizaConfiguracaoAvaliacaoPeriodoExperiencia(Colaborador colaborador, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoesGestor)
+	{
+		removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador.getId());
+		saveConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
+	}
+	
+	public void atualizaConfiguracaoAvaliacaoPeriodoExperienciaEmVariosColaboradores(Long[] colaboradorIds, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoesGestor)
+	{
+		removeConfiguracaoAvaliacaoPeriodoExperiencia(colaboradorIds);
+		
+		for (Long colaboradorId : colaboradorIds) {
+			saveConfiguracaoAvaliacaoPeriodoExperiencia(new Colaborador(null, null, colaboradorId), colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
+		}
+	}
 	
 	public void saveConfiguracaoAvaliacaoPeriodoExperiencia(Colaborador colaborador, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoes, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorAvaliacoesGestor) 
 	{
@@ -19,9 +35,9 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericMa
 			{
 				if (colabPerExpAvaliacao.getAvaliacao() != null && colabPerExpAvaliacao.getAvaliacao().getId() != null)
 				{
-					colabPerExpAvaliacao.setColaborador(colaborador);
-					colabPerExpAvaliacao.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
-					getDao().save(colabPerExpAvaliacao);
+					ColaboradorPeriodoExperienciaAvaliacao colaboradorPeriodoExperienciaAvaliacao = 
+							new ColaboradorPeriodoExperienciaAvaliacao(colaborador, colabPerExpAvaliacao.getAvaliacao(), colabPerExpAvaliacao.getPeriodoExperiencia(), ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
+					getDao().save(colaboradorPeriodoExperienciaAvaliacao);
 				}
 			}
 		}
@@ -32,17 +48,17 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericMa
 			{
 				if (colabPerExpAvaliacaoGestor.getAvaliacao() != null && colabPerExpAvaliacaoGestor.getAvaliacao().getId() != null)
 				{
-					colabPerExpAvaliacaoGestor.setColaborador(colaborador);
-					colabPerExpAvaliacaoGestor.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_GESTOR);
-					getDao().save(colabPerExpAvaliacaoGestor);
+					ColaboradorPeriodoExperienciaAvaliacao colaboradorPeriodoExperienciaAvaliacaoGestor = 
+							new ColaboradorPeriodoExperienciaAvaliacao(colaborador, colabPerExpAvaliacaoGestor.getAvaliacao(), colabPerExpAvaliacaoGestor.getPeriodoExperiencia(), ColaboradorPeriodoExperienciaAvaliacao.TIPO_GESTOR);
+					getDao().save(colaboradorPeriodoExperienciaAvaliacaoGestor);
 				}
 			}
 		}
 	}
 
-	public void removeConfiguracaoAvaliacaoPeriodoExperiencia(Colaborador colaborador) 
+	public void removeConfiguracaoAvaliacaoPeriodoExperiencia(Long... colaboradorIds) 
 	{
-		getDao().removeByColaborador(colaborador.getId());
+		getDao().removeByColaborador(colaboradorIds);
 	}
 	
 	public void removeByAvaliacao(Long avaliacaoId) 
