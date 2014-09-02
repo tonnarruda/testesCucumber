@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
@@ -21,7 +22,7 @@ public interface ColaboradorOcorrenciaManager extends GenericManager<Colaborador
 	ColaboradorOcorrencia findByIdProjection(Long colaboradorOcorrenciaId);
 	void saveOcorrenciasFromAC(Collection<ColaboradorOcorrencia> colaboradorOcorrencias) throws Exception;
 	@Audita(operacao="Inserção/Atualização", auditor=ColaboradorOcorrenciaAuditorCallbackImpl.class)
-	void saveColaboradorOcorrencia(ColaboradorOcorrencia colaboradorOcorrencia, Empresa empresa) throws Exception;
+	void saveColaboradorOcorrencia(ColaboradorOcorrencia colaboradorOcorrencia, Empresa empresa) throws Exception, IntegraACException;
 	void removeFromAC(Collection<ColaboradorOcorrencia> colaboradorOcorrencias) throws Exception;
 	@Audita(operacao="Remoção", auditor=ColaboradorOcorrenciaAuditorCallbackImpl.class)
 	void remove(ColaboradorOcorrencia colaboradorOcorrencia, Empresa empresa) throws Exception;

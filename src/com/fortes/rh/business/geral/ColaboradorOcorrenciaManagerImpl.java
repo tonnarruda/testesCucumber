@@ -163,7 +163,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 	/**
 	 * Grava localmente/Envia para o AC se integrado
 	 */
-	public void saveColaboradorOcorrencia(ColaboradorOcorrencia colaboradorOcorrencia, Empresa empresa) throws Exception
+	public void saveColaboradorOcorrencia(ColaboradorOcorrencia colaboradorOcorrencia, Empresa empresa) throws Exception, IntegraACException
 	{
 		if (empresa.isAcIntegra() && colaboradorOcorrencia.getOcorrencia().getIntegraAC())
 		{

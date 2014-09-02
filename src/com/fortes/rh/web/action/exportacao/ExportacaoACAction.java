@@ -17,6 +17,7 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -121,7 +122,7 @@ public class ExportacaoACAction extends MyActionSupport
 		return prepareExportarAC();
 	}
 
-	private void exportarColaboradoresOcorrenciasAc() throws Exception 
+	private void exportarColaboradoresOcorrenciasAc() throws Exception, IntegraACException 
 	{
 		Collection<ColaboradorOcorrencia> colaboradorOcorrencias = colaboradorOcorrenciaManager.findByEmpresaId(empresaId);
 		

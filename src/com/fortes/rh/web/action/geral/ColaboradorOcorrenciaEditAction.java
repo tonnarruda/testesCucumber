@@ -1,5 +1,6 @@
 package com.fortes.rh.web.action.geral;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -152,13 +153,26 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 
 			return INPUT;
 		}
+		catch (InvocationTargetException e)
+		{
+			e.printStackTrace();
+
+			if (e.getTargetException() != null && e.getTargetException() instanceof IntegraACException)
+				addActionError("Cadastro não pôde ser realizado no AC Pessoal.");
+			else
+				addActionError("Cadastro não pôde ser realizado.");
+			
+			prepare();
+			
+			return INPUT;
+		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
 			if(msg == null)
 				addActionError("Cadastro não pôde ser realizado.");
 			else
-				addActionMessage(msg);
+				addActionWarning(msg);
 
 			prepare();
 
