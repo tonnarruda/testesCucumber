@@ -106,13 +106,14 @@ public class PerguntaAvaliacaoEditAction extends MyActionSupportList
 		try
 		{
 			if(respostaSugerida.equals(1))
-				respostaObjetiva = (String[]) ArrayUtils.addAll(respostaObjetiva, respostaObjetivaSugerida);
+				respostaObjetiva = (String[]) ArrayUtils.addAll(respostaObjetivaSugerida, respostaObjetiva);
 
 			setMultiplaEscolha();
 			
 			pergunta.setAvaliacao(avaliacao);
 			perguntaManager.salvarPergunta(pergunta, respostaObjetiva, IntegerUtil.arrayStringToArrayInteger(pesoRespostaObjetiva), pergunta.getOrdem());
-
+			respostaSugerida = 0;
+			
 			pergunta = null;
 			prepareInsert();
 			
