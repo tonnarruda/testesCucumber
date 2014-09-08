@@ -5,6 +5,7 @@
 		<Item visivel="S" motivo="S20140800179"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Enviar mensagem ou email somente se houver avaliações não respondidas do período de experiência a vencer (Notificação periódica).]]></Item>
 		<Item visivel="S" motivo="S20140800155"><![CDATA[T&D > Relatórios > Colaboradores com Treinamentos e T&D > Relatórios > Colaboradores sem Treinamentos: Novo filtro para colaboradores ativos ou desligados.]]></Item>
 		<Item visivel="N" motivo="P20140800105"><![CDATA[BUG: Ao sugerir respostas em Aval. de Desempenho, as respostas seguintes continuavam sendo sugeridas, mesmo que não estivesse marcada a opção de sugerir.]]></Item>
+		<Item visivel="N" motivo=""><![CDATA[BUG: R&S > Relatórios > Lista de Candidatos da Seleção: O relatório não trazia todas as etapas que o candidato participou dentro do período, apenas a última.]]></Item>
 	</Versao>
 	<Versao id="1.1.133.159" bd="" data="26/08/2014">
 		<Item visivel="S" motivo="S20140700118"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Substituição da regra de acesso unificada de 'Inserir/Editar' por regras específicas para 'Inserir' e 'Editar'.]]></Item>

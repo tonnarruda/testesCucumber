@@ -82,7 +82,7 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		return candidatoSolicitacao;
 	}
 
-	public void testFindHistoricoAptoByEtapaSolicitacao()
+	public void testFindHistoricosByEtapaSolicitacao()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -142,13 +142,9 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		Collection<CandidatoSolicitacao> candidatoSolicitacaosSemData = candidatoSolicitacaoDao.getCandidatosBySolicitacao(new Long[]{entrevistaComGerente.getId(), entrevista.getId(), redacao.getId()}, empresa.getId(),  StatusSolicitacao.TODAS, Apto.SIM, null, null);
 		Collection<CandidatoSolicitacao> candidatoSolicitacaosVazio = candidatoSolicitacaoDao.getCandidatosBySolicitacao(new Long[]{entrevistaComGerente.getId(), entrevista.getId(), redacao.getId()}, empresa.getId(),  StatusSolicitacao.TODAS, Apto.SIM, DateUtil.criarDataMesAno(01, 01, 2003), DateUtil.criarDataMesAno(02, 02, 2003));
 
-		assertEquals("Datas dentro do período",1, candidatoSolicitacaos.size());
-		assertEquals(redacao, ((CandidatoSolicitacao)candidatoSolicitacaos.toArray()[0]).getEtapaSeletiva());
-		
-		assertEquals("Sem datas para o período", 1, candidatoSolicitacaosSemData.size());
-		assertEquals(entrevistaComGerente, ((CandidatoSolicitacao)candidatoSolicitacaosSemData.toArray()[0]).getEtapaSeletiva());
-		
-		assertEquals("Datas fora do período", 0, candidatoSolicitacaosVazio.size());
+		assertEquals("Participou de duas etapas no período", 2, candidatoSolicitacaos.size());
+		assertEquals("Sem filtro de período. Traz todas as etapas em que ele participou", 3, candidatoSolicitacaosSemData.size());
+		assertEquals("Período fora das etapas realizadas pelo candidato", 0, candidatoSolicitacaosVazio.size());
 	}
 
 	
