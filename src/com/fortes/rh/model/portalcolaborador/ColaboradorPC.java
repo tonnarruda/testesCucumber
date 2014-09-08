@@ -75,7 +75,7 @@ public class ColaboradorPC extends AbstractAdapterPC
 			this.qtdFilhos 		= colaborador.getPessoal().getQtdFilhos();
 		}
 		
-		if (colaborador.getFoto() != null)
+		if (colaborador.getFoto() != null && colaborador.getFoto().getBytes() != null)
 		{
 			this.foto = new ArquivoPC(colaborador);
 		}

@@ -332,6 +332,8 @@
 		<@ww.hidden name="empresa.logoCertificacaoUrl" />
 		<@ww.hidden name="empresa.imgAniversarianteUrl" />
 		<@ww.hidden name="empresa.codigoAC" id="codigoAC" />
+		<@ww.hidden name="integradaPortalColaboradorAnterior" value="${empresa.integradaPortalColaborador?string}" />
+		
 	<@ww.token/>
 	</@ww.form>
 

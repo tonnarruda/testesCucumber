@@ -54,4 +54,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	Empresa getCnae(Long empresaId);
 	void updateCodigoGrupoAC(Long empresaId, String codigoAC, String grupoAC);
 	Long[] findIntegradaPortalColaborador();
+	void enfileirarEmpresaPCAndColaboradorPC(Empresa empresa, Boolean integradaPortalColaboradorAnterior) throws Exception;
 }

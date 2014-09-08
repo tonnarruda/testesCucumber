@@ -79,7 +79,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	private AcPessoalClientTabelaReajusteInterface acPessoalClientTabelaReajuste;
 	private PlatformTransactionManager transactionManager;
 	private ReajusteColaboradorManager reajusteColaboradorManager;
-
 	private EstabelecimentoManager estabelecimentoManager;
 	private FaixaSalarialManager faixaSalarialManager;
 	private IndiceManager indiceManager;
@@ -1496,6 +1495,11 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	{
 		return getDao().findByEmpresaComHistoricoPendente(empresaId) ;
 	}
+
+	public List<HistoricoColaborador> findPendenciasPortal(Boolean atualizarHistoricoPortal, Long... empresasIds) 
+	{
+		return getDao().findPendenciasPortal(atualizarHistoricoPortal, empresasIds);
+	}
 	
 	public Set<ColaboradorPC> enfileirarHistoricosPC()
 	{
@@ -1503,19 +1507,24 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if(empresasIds.length == 0 ) 
 			return null;
 		
-		List<HistoricoColaborador> historicos = getDao().findPendenciasPortal(empresasIds);
-		
+		List<HistoricoColaborador> historicos = findPendenciasPortal(true, empresasIds);
+
+		return enfilerarColaboradoresComHistoricosPC(empresasIds, historicos, URLTransacaoPC.COLABORADOR_ATUALIZAR_HISTORICO);
+	}
+
+	public Set<ColaboradorPC> enfilerarColaboradoresComHistoricosPC(Long[] empresasIds, List<HistoricoColaborador> historicos, URLTransacaoPC uRLTransacaoPC) 
+	{
 		if(historicos.isEmpty() ) 
 			return null;
-		
-		montaSituacaoHistoricoColaborador(historicos);
+
+		Collection<HistoricoColaborador> historicosMontados = montaSituacaoHistoricoColaborador(historicos);
 		
 		ColaboradorPC colaboradorPC = null;
 		HistoricoColaboradorPC historicoColaboradorPC;
 		Set<ColaboradorPC> colaboradorPCs = new HashSet<ColaboradorPC>();
 		Collection<Long> colabIds = new ArrayList<Long>(); 
 		
-		for (HistoricoColaborador historico : historicos) 
+		for (HistoricoColaborador historico : historicosMontados) 
 		{
 			if(colaboradorPC == null || !colaboradorPC.getCpf().equals(historico.getColaborador().getPessoal().getCpf())){
 				colaboradorPC = new ColaboradorPC(historico.getColaborador());
@@ -1531,7 +1540,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		
 		TransacaoPCManager transacaoPCManager= (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
 		for (ColaboradorPC colabPC : colaboradorPCs) 
-			transacaoPCManager.enfileirar(colabPC, URLTransacaoPC.COLABORADOR_ATUALIZAR_HISTORICO);
+			transacaoPCManager.enfileirar(colabPC, uRLTransacaoPC);
 		
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 		colaboradorManager.atualizarHistoricoPortal(false, colabIds);

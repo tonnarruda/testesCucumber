@@ -12,6 +12,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.SituacaoColaborador;
 import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;
+import com.fortes.rh.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -173,6 +174,10 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId);
 	
 	public Set<ColaboradorPC> enfileirarHistoricosPC();
+
+	public List<HistoricoColaborador> findPendenciasPortal(Boolean atualizarHistoricoPortal, Long... empresasIds);
 	
 	public Collection<HistoricoColaborador> montaSituacaoHistoricoColaborador(List<HistoricoColaborador> historicoColaboradors);
+	
+	public Set<ColaboradorPC> enfilerarColaboradoresComHistoricosPC(Long[] empresasIds, List<HistoricoColaborador> historicos, URLTransacaoPC uRLTransacaoPC);
 }

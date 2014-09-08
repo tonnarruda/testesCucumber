@@ -25,13 +25,16 @@ import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.portalcolaborador.TransacaoPCManager;
 import com.fortes.rh.model.dicionario.FormulaTurnover;
+import com.fortes.rh.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.model.portalcolaborador.EmpresaPC;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.DateUtil;
@@ -73,6 +76,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private Collection<Colaborador> colaboradores;
 	private String ano;
+	private Boolean integradaPortalColaboradorAnterior;
 	
 	public String execute() throws Exception
 	{
@@ -193,6 +197,9 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			prepareUpdate();
 			return Action.INPUT;
 		}
+		
+		if(empresa.isIntegradaPortalColaborador())
+			empresaManager.enfileirarEmpresaPCAndColaboradorPC(empresa, integradaPortalColaboradorAnterior);
 		
 		boolean tavaIntegradaComAC = empresaManager.findIntegracaoAC(empresa.getId());
 		empresaManager.update(empresa);
@@ -452,5 +459,9 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public String getAno() {
 		return ano;
+	}
+
+	public void setIntegradaPortalColaboradorAnterior(Boolean integradaPortalColaboradorAnterior) {
+		this.integradaPortalColaboradorAnterior = integradaPortalColaboradorAnterior;
 	}
 }

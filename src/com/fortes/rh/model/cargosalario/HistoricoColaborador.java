@@ -25,13 +25,17 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.model.type.File;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.sesmt.Ambiente;
@@ -522,15 +526,163 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 
 		colaborador.setNome(colaboradorNome);
 	}
+
+	public void setColaboradorContatoEmail(String colaboradorContatoEmail)
+	{
+		inicializaColaborador();
+		inicializaContato();
+		
+		colaborador.getContato().setEmail(colaboradorContatoEmail);
+	}
+
+	public void setColaboradorContatoDdd(String colaboradorContatoDdd)
+	{
+		inicializaColaborador();
+		inicializaContato();
+		
+		colaborador.getContato().setDdd(colaboradorContatoDdd);
+	}
+
+	public void setColaboradorContatoTelefone(String colaboradorContatoTelefone)
+	{
+		inicializaColaborador();
+		inicializaContato();
+		
+		colaborador.getContato().setFoneFixo(colaboradorContatoTelefone);
+	}
+
+	public void setColaboradorContatoCelular(String colaboradorContatoCelular)
+	{
+		inicializaColaborador();
+		inicializaContato();
+		
+		colaborador.getContato().setFoneCelular(colaboradorContatoCelular);
+	}
+
+	private void inicializaContato() 
+	{
+		if (colaborador.getContato() == null)
+			colaborador.setContato(new Contato());
+	}
 	
 	public void setColaboradorCpf(String colaboradorCpf)
 	{
 		inicializaColaborador();
 		
-		if(colaborador.getPessoal() == null)
-			colaborador.setPessoal(new Pessoal());
+		inicializarColaboradorPessoal();
 		
 		colaborador.getPessoal().setCpf(colaboradorCpf);
+	}
+
+	public void setColaboradorPessoalEscolaridade(String colaboradorPessoalEscolaridade)
+	{
+		inicializaColaborador();
+		
+		inicializarColaboradorPessoal();
+		
+		colaborador.getPessoal().setEscolaridade(colaboradorPessoalEscolaridade);
+	}
+
+	public void setColaboradorPessoalEstadoCivil(String colaboradorPessoalEstadoCivil)
+	{
+		inicializaColaborador();
+		inicializarColaboradorPessoal();
+		
+		colaborador.getPessoal().setEstadoCivil(colaboradorPessoalEstadoCivil);
+	}
+
+	
+	public void setColaboradorPessoalConjuge(String colaboradorPessoalConjuge)
+	{
+		inicializaColaborador();
+		inicializarColaboradorPessoal();
+		
+		colaborador.getPessoal().setConjuge(colaboradorPessoalConjuge);
+	}
+
+	public void setColaboradorPessoalPai(String colaboradorPessoalPai)
+	{
+		inicializaColaborador();
+		inicializarColaboradorPessoal();
+		
+		colaborador.getPessoal().setPai(colaboradorPessoalPai);
+	}
+	
+	public void setColaboradorPessoalMae(String colaboradorPessoalMae)
+	{
+		inicializaColaborador();
+		inicializarColaboradorPessoal();
+		
+		colaborador.getPessoal().setMae(colaboradorPessoalMae);
+	}
+	
+	public void setColaboradorPessoalQtdFilhos(int colaboradorPessoalQtdFilhos)
+	{
+		inicializaColaborador();
+		inicializarColaboradorPessoal();
+		
+		colaborador.getPessoal().setQtdFilhos(colaboradorPessoalQtdFilhos);
+	}
+
+	public void setColaboradorEnderecoCep(String colaboradorEnderecoCep)
+	{
+		inicializaColaborador();
+		inicializarColaboradorEndereco();
+		
+		colaborador.getEndereco().setCep(colaboradorEnderecoCep);
+	}
+
+	public void setColaboradorEnderecoLogradouro(String colaboradorEnderecoLogradouro)
+	{
+		inicializaColaborador();
+		inicializarColaboradorEndereco();
+		
+		colaborador.getEndereco().setLogradouro(colaboradorEnderecoLogradouro);
+	}
+	
+	public void setColaboradorEnderecoNumero(String colaboradorEnderecoNumero)
+	{
+		inicializaColaborador();
+		inicializarColaboradorEndereco();
+		
+		colaborador.getEndereco().setNumero(colaboradorEnderecoNumero);
+	}
+
+	public void setColaboradorEnderecoComplemento(String colaboradorEnderecoComplemento)
+	{
+		inicializaColaborador();
+		inicializarColaboradorEndereco();
+		
+		colaborador.getEndereco().setComplemento(colaboradorEnderecoComplemento);
+	}
+	
+	public void setColaboradorEnderecoBairro(String colaboradorEnderecoBairro)
+	{
+		inicializaColaborador();
+		inicializarColaboradorEndereco();
+		
+		colaborador.getEndereco().setBairro(colaboradorEnderecoBairro);
+	}
+	
+	public void setColaboradorEnderecoCidadeCodigoIBGE(Integer colaboradorEnderecoCidadeCodigoIBGE)
+	{
+		inicializaColaborador();
+		inicializarColaboradorEndereco();
+		
+		colaborador.getEndereco().setCidade(new Cidade());
+		
+		colaborador.getEndereco().getCidade().setCodigoIBGE(colaboradorEnderecoCidadeCodigoIBGE);
+	}
+	
+
+	public void inicializarColaboradorPessoal() {
+		if(colaborador.getPessoal() == null)
+			colaborador.setPessoal(new Pessoal());
+	}
+
+	public void inicializarColaboradorEndereco() {
+		if(colaborador.getEndereco() == null)
+			colaborador.setEndereco(new Endereco());
 	}
 
 	public void setColaboradorCodigoAC(String colaboradorCodigoAC)
@@ -1150,6 +1302,39 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 
 	public void setDataSolicitacaoDesligamento(Date dataSolicitacaoDesligamento) {
 		this.dataSolicitacaoDesligamento = dataSolicitacaoDesligamento;
+	}
+	
+	public void setColaboradorFotoName(String colaboradorFotoName) {
+		inicializaColaborador();
+		inicializaFoto();
+		
+		colaborador.getFoto().setName(colaboradorFotoName);
+	}
+	
+	public void setColaboradorFotoBytes(byte[] colaboradorFotoBytes) {
+		inicializaColaborador();
+		inicializaFoto();
+		
+		colaborador.getFoto().setBytes(colaboradorFotoBytes);
+	}
+	
+	public void setColaboradorFotoContentType(String colaboradorFotoContentType) {
+		inicializaColaborador();
+		inicializaFoto();
+		
+		colaborador.getFoto().setContentType(colaboradorFotoContentType);
+	}
+	
+	public void setColaboradorFotoSize(Long colaboradorFotoSize) {
+		inicializaColaborador();
+		inicializaFoto();
+		
+		colaborador.getFoto().setSize(colaboradorFotoSize);
+	}
+	
+	private void inicializaFoto() {
+		if (colaborador.getFoto() == null)
+			colaborador.setFoto(new File());
 	}
 
 }

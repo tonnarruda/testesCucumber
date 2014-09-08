@@ -48,6 +48,9 @@
     <property name="riscoManager">
       <ref bean="riscoManager" />
     </property>
+    <property name="transacaoPCManager">
+      <ref bean="transacaoPCManager" />
+    </property>
   </bean>
   <bean id="empresaManager" parent="parentManager">
     <property name="proxyInterfaces">

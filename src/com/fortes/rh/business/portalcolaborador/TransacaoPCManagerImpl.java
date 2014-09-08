@@ -20,6 +20,7 @@ import com.fortes.rh.dao.portalcolaborador.TransacaoPCDao;
 import com.fortes.rh.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.portalcolaborador.AbstractAdapterPC;
+import com.fortes.rh.model.portalcolaborador.EmpresaPC;
 import com.fortes.rh.model.portalcolaborador.TransacaoPC;
 import com.fortes.rh.util.CryptUtil;
 import com.fortes.rh.util.SpringUtil;
@@ -83,7 +84,7 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 			for (TransacaoPC transacaoPC : transacoes) {
 				int statusCode = enviar(transacaoPC, params.getPcToken());
 				
-		    	if (statusCode == 200)
+		    	if (statusCode == 200 || statusCode == 201)
 		    		transacaoPCManager.remove(transacaoPC.getId());
 			}
 			

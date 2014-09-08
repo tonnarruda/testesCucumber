@@ -239,7 +239,8 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		{
 			FaixaSalarial clone = (FaixaSalarial) super.clone();
 			clone.setCargo(this.cargo);
-			clone.setFaixaSalarialHistoricoAtual((FaixaSalarialHistorico) this.faixaSalarialHistoricoAtual.clone());
+			if(faixaSalarialHistoricoAtual != null)
+				clone.setFaixaSalarialHistoricoAtual((FaixaSalarialHistorico) this.faixaSalarialHistoricoAtual.clone());
 
 			return clone;
 		}

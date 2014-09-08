@@ -2011,7 +2011,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historico_Darla.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historico_Darla);
 		
-		List<HistoricoColaborador> historicos = historicoColaboradorDao.findPendenciasPortal(empresa.getId());
+		List<HistoricoColaborador> historicos = historicoColaboradorDao.findPendenciasPortal(null, empresa.getId());
 		
 		assertEquals(2, historicos.size());
 		

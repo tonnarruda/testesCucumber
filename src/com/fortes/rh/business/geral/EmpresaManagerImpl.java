@@ -17,16 +17,20 @@ import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
+import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.portalcolaborador.TransacaoPCManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.dicionario.TipoEntidade;
+import com.fortes.rh.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
@@ -34,6 +38,7 @@ import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Ocorrencia;
+import com.fortes.rh.model.portalcolaborador.EmpresaPC;
 import com.fortes.rh.model.ws.TEmpresa;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -59,6 +64,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	private IndiceManager indiceManager;
 	private CidadeManager cidadeManager;
 	private RiscoManager riscoManager;
+	private TransacaoPCManager transacaoPCManager;
 
 	public String[] getEmpresasByUsuarioEmpresa(Long usuarioId)
 	{
@@ -504,6 +510,19 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return getDao().findIntegradaPortalColaborador();
 	}
 	
+	public void enfileirarEmpresaPCAndColaboradorPC(Empresa empresa, Boolean integradaPortalColaboradorAnterior) throws Exception 
+	{
+		transacaoPCManager.enfileirar(new EmpresaPC(empresa), URLTransacaoPC.EMPRESA_ATUALIZAR);
+		
+		if (!integradaPortalColaboradorAnterior)
+		{
+			HistoricoColaboradorManager hisColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
+			Collection<HistoricoColaborador> historicosColaboradores = hisColaboradorManager.findPendenciasPortal(null, new Long[]{empresa.getId()});
+			
+			hisColaboradorManager.enfilerarColaboradoresComHistoricosPC(new Long[]{empresa.getId()}, new ArrayList(historicosColaboradores), URLTransacaoPC.COLABORADOR_ATUALIZAR);
+		}
+	}
+
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
 		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
 	}
@@ -542,6 +561,10 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public void setRiscoManager(RiscoManager riscoManager) {
 		this.riscoManager = riscoManager;
+	}
+
+	public void setTransacaoPCManager(TransacaoPCManager transacaoPCManager) {
+		this.transacaoPCManager = transacaoPCManager;
 	}
 
 }

@@ -1421,7 +1421,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 	
-	public List<HistoricoColaborador> findPendenciasPortal(Long... empresasIds) 
+	public List<HistoricoColaborador> findPendenciasPortal(Boolean atualizarHistoricoPortal, Long... empresasIds) 
 	{
 		Criteria criteria = getSession().createCriteria(SituacaoColaborador.class, "sc");
 		criteria.createCriteria("sc.estabelecimento", "e", Criteria.LEFT_JOIN);
@@ -1429,16 +1429,43 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.createCriteria("sc.indice", "i", Criteria.LEFT_JOIN);
 		criteria.createCriteria("f.cargo", "cg", Criteria.LEFT_JOIN);
 		criteria.createCriteria("sc.colaborador", "c", Criteria.INNER_JOIN);
+		criteria.createCriteria("c.endereco.cidade", "ci", Criteria.LEFT_JOIN);
 		criteria.createCriteria("c.empresa", "emp");
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("emp.cnpj"), "empresaCnpj");
 		p.add(Projections.property("c.id"), "colaboradorId");
 		p.add(Projections.property("c.pessoal.cpf"), "colaboradorCpf");
+		if(atualizarHistoricoPortal == null) 
+		{
+			p.add(Projections.property("c.nome"), "colaboradorNome");
+			p.add(Projections.property("c.nomeComercial"), "colaboradorNomeComercial");
+			p.add(Projections.property("c.pessoal.escolaridade"), "colaboradorPessoalEscolaridade");
+			p.add(Projections.property("c.pessoal.estadoCivil"), "colaboradorPessoalEstadoCivil");
+			p.add(Projections.property("c.pessoal.conjuge"), "colaboradorPessoalConjuge");
+			p.add(Projections.property("c.pessoal.pai"), "colaboradorPessoalPai");
+			p.add(Projections.property("c.pessoal.mae"), "colaboradorPessoalMae");
+			p.add(Projections.property("c.pessoal.qtdFilhos"), "colaboradorPessoalQtdFilhos");
+			p.add(Projections.property("c.contato.email"), "colaboradorContatoEmail");
+			p.add(Projections.property("c.contato.ddd"), "colaboradorContatoDdd");
+			p.add(Projections.property("c.contato.foneFixo"), "colaboradorContatoTelefone");
+			p.add(Projections.property("c.contato.foneCelular"), "colaboradorContatoCelular");
+			p.add(Projections.property("c.endereco.cep"), "colaboradorEnderecoCep");
+			p.add(Projections.property("c.endereco.logradouro"), "colaboradorEnderecoLogradouro");
+			p.add(Projections.property("c.endereco.numero"), "colaboradorEnderecoNumero");
+			p.add(Projections.property("c.endereco.complemento"), "colaboradorEnderecoComplemento");
+			p.add(Projections.property("c.endereco.bairro"), "colaboradorEnderecoBairro");
+			p.add(Projections.property("c.foto.name"), "colaboradorFotoName");
+			p.add(Projections.property("c.foto.bytes"), "colaboradorFotoBytes");
+			p.add(Projections.property("c.foto.contentType"), "colaboradorFotoContentType");
+			p.add(Projections.property("c.foto.size"), "colaboradorFotoSize");
+			p.add(Projections.property("ci.codigoIBGE"), "colaboradorEnderecoCidadeCodigoIBGE");
+		}
 		p.add(Projections.property("sc.data"), "data");
 		p.add(Projections.property("e.nome"), "estabelecimentoNome");
 		p.add(Projections.property("f.id"), "faixaSalarialId");
 		p.add(Projections.property("f.nome"), "faixaSalarialNome");
+		p.add(Projections.property("cg.id"), "cargoId");
 		p.add(Projections.property("cg.nome"), "cargoNome");
 		p.add(Projections.property("i.id"), "indiceId");
 		p.add(Projections.property("sc.salario"), "salario");
@@ -1449,8 +1476,10 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.setProjection(p);
 
 		criteria.add(Expression.in("emp.id",empresasIds));
-		criteria.add(Expression.eq("c.atualizarHistoricoPortal", true));
 		criteria.add(Expression.eq("sc.status",StatusRetornoAC.CONFIRMADO));
+		
+		if(atualizarHistoricoPortal != null)
+			criteria.add(Expression.eq("c.atualizarHistoricoPortal", atualizarHistoricoPortal));
 		
 		//Ordem muito importante não remover
 		criteria.addOrder(Order.asc("emp.cnpj"));

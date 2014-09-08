@@ -1320,8 +1320,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			
 			colaboradorAtualizado.setFoto(getFoto(colaboradorAtualizado.getId()));
 			transacaoPCManager.enfileirar(new ColaboradorPC(colaboradorAtualizado), URLTransacaoPC.COLABORADOR_ATUALIZAR);
+
+			//Remover ao concluir PC no RH
 			transacaoPCManager.processarFila();
-			
 			
 			gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
 			
