@@ -5342,7 +5342,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 624, false);
+SELECT pg_catalog.setval('papel_sequence', 625, false);
 
 
 --
@@ -30536,6 +30536,7 @@ INSERT INTO migrations (name) VALUES ('20140811162337');
 INSERT INTO migrations (name) VALUES ('20140811170530');
 INSERT INTO migrations (name) VALUES ('20140812111552');
 INSERT INTO migrations (name) VALUES ('20140818153314');
+INSERT INTO migrations (name) VALUES ('20140903084558');
 
 
 --
@@ -30890,13 +30891,14 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (617, 'ROLE_MOV_SOLICITACAO_CLONAR', 'Clonar', '#', 9, false, NULL, 21, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (612, 'ROLE_MOV_SOLICITACAO_EDITAR', 'Editar', '#', 4, false, NULL, 21, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (623, 'ROLE_MOV_SOLICITACAO_INSERIR', 'Inserir', '#', 3, false, NULL, 21, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (624, 'ROLE_MOV_ATUALIZAR_MODELO_AVALIACAO_COLABORADOR', 'Atualizar Modelos de Avaliação', '/geral/colaborador/prepareAtualizarModeloAvaliacao.action', 4, true, NULL, 469, NULL);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.133.159', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.133.160', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
 
 
 --
@@ -31172,6 +31174,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 618);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 621);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 622);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 623);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 624);
 
 
 --

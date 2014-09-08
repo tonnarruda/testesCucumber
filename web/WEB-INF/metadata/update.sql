@@ -22553,3 +22553,11 @@ insert into migrations values('20140812111552');--.go
 ALTER TABLE colaboradorquestionario ADD COLUMN performanceNivelCompetencia double precision;--.go
 insert into migrations values('20140818153314');--.go
 update parametrosdosistema set appversao = '1.1.133.159';--.go
+-- versao 1.1.133.160
+
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (624, 'ROLE_MOV_ATUALIZAR_MODELO_AVALIACAO_COLABORADOR', 'Atualizar Modelos de Avaliação', '/geral/colaborador/prepareAtualizarModeloAvaliacao.action', 4, true, 469);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 624);--.go
+
+alter sequence papel_sequence restart with 625;--.go
+insert into migrations values('20140903084558');--.go
+update parametrosdosistema set appversao = '1.1.133.160';--.go
