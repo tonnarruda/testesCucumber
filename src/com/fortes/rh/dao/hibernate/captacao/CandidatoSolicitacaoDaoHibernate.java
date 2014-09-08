@@ -478,16 +478,6 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 
 	public Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Long[] etapaIds, Long empresaId, char statusSolicitacao, char situacaoCandidato, Date dataIni, Date dataFim) 
 	{
-		DetachedCriteria subQuery = DetachedCriteria.forClass(HistoricoCandidato.class, "hc2");
-        ProjectionList pSub = Projections.projectionList().create();
-
-        pSub.add(Projections.max("hc2.data"));
-        subQuery.setProjection(pSub);
-        subQuery.add(Restrictions.sqlRestriction("this0__.candidatoSolicitacao_id=cs1_.id"));
-        
-        if (dataIni != null && dataFim != null) 
-        	subQuery.add(Expression.between("hc2.data", dataIni, dataFim));
-        
 		Criteria criteria = getSession().createCriteria(HistoricoCandidato.class, "hc");
 		criteria.createCriteria("hc.candidatoSolicitacao", "cs");
 		criteria.createCriteria("cs.solicitacao", "s");
@@ -508,21 +498,22 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		
 		criteria.setProjection(p);
 
-		if(statusSolicitacao == StatusSolicitacao.ABERTA)
+		if (statusSolicitacao == StatusSolicitacao.ABERTA)
 			criteria.add(Expression.eq("s.encerrada", false));
-		else if(statusSolicitacao == StatusSolicitacao.ENCERRADA)
+		else if (statusSolicitacao == StatusSolicitacao.ENCERRADA)
 			criteria.add(Expression.eq("s.encerrada", true));
 		
-		if(situacaoCandidato != Apto.INDIFERENTE)
+		if (situacaoCandidato != Apto.INDIFERENTE)
 			criteria.add(Expression.eq("hc.apto", situacaoCandidato));
 		
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
-		if(etapaIds.length > 0)
+		if (etapaIds.length > 0)
 			criteria.add(Expression.in("es.id", etapaIds));
 		
-		criteria.add(Subqueries.propertyEq("hc.data", subQuery));
-
+		if (dataIni != null && dataFim != null) 
+			criteria.add(Expression.between("hc.data", dataIni, dataFim));
+		
 		criteria.addOrder(Order.asc("es.nome"));
 		criteria.addOrder(Order.asc("ca.nome"));
 		

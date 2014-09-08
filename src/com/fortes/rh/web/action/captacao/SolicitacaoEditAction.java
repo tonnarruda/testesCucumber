@@ -360,7 +360,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public String imprimirRelatorio() throws Exception
     {
-        String titulo = "Lista de Candidatos da Seleção.";
+        String titulo = "Lista de Candidatos da Seleção";
 		parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), StatusSolicitacao.getDescricao(statusSolicitacao));
 
         candidatoSolicitacaos = candidatoSolicitacaoManager.getCandidatosBySolicitacao(etapaCheck, getEmpresaSistema().getId(), statusSolicitacao, situacaoCandidato, dataIni, dataFim);
