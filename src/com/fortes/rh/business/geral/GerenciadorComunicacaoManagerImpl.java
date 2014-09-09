@@ -830,7 +830,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void enviaAvisoDesligamentoColaboradorAC(String codigoEmpresa, String grupoAC, Empresa empresa, String... codigosACColaboradores) 
 	{
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
-		Collection<Colaborador> colaboradores = colaboradorManager.findColaboradoresByCodigoAC(empresa, false, codigosACColaboradores);
+		Collection<Colaborador> colaboradores = colaboradorManager.findColaboradoresByCodigoAC(empresa.getId(), true, codigosACColaboradores);
 		Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(codigoEmpresa, grupoAC);
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.DESLIGAR_COLABORADOR_AC.getId(), empresa.getId());
 
@@ -841,7 +841,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		for (Colaborador colaborador : colaboradores)
 		{
 			String link = "pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=" + colaborador.getId() + "&voltarPara=../../index.action";
-			String msgGeral = "O Colaborador " + colaborador.getNomeComercial() + " foi desligado no AC Pessoal.";
+			String msgGeral = "O Colaborador " + colaborador.getNomeEOuNomeComercial() + " foi desligado no AC Pessoal.";
 			
 			if(colaboradoresComEstabilidade != null && colaboradoresComEstabilidade.containsKey(colaborador.getId()))
 				msgGeral += "\nEste colaborador faz parte da CIPA e possui estabilidade até o dia " + DateUtil.formataDiaMesAno(colaboradoresComEstabilidade.get(colaborador.getId())) + ".";
