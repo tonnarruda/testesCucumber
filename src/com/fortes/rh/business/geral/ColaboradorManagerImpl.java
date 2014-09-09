@@ -1007,14 +1007,14 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().religaColaborador(colaboradorId);
 	}
 
-	public Collection<Colaborador> findColaboradoresByCodigoAC(Empresa empresa, boolean joinComHistorico, String... codigosACColaboradores)
+	public Collection<Colaborador> findColaboradoresByCodigoAC(Long empresaId, boolean joinComHistorico, String... codigosACColaboradores)
 	{
-		return getDao().findColaboradoresByCodigoAC(empresa, joinComHistorico, codigosACColaboradores);
+		return getDao().findColaboradoresByCodigoAC(empresaId, joinComHistorico, codigosACColaboradores);
 	}
 
 	public boolean desligaColaboradorAC(Empresa empresa, Date dataDesligamento, String... codigosACColaboradores) throws FortesException, Exception
 	{
-		Collection<Colaborador> colaboradores = getDao().findColaboradoresByCodigoAC(empresa, false, codigosACColaboradores);
+		Collection<Colaborador> colaboradores = getDao().findColaboradoresByCodigoAC(empresa.getId(), false, codigosACColaboradores);
 		
 		try {
 			if(codigosACColaboradores.length != colaboradores.size())

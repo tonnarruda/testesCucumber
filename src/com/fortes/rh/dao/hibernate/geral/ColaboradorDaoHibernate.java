@@ -4704,11 +4704,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
 	}
 
-	public Collection<Colaborador> findColaboradoresByCodigoAC(Empresa empresa, boolean joinComHistorico, String... codigosACColaboradores) 
+	public Collection<Colaborador> findColaboradoresByCodigoAC(Long empresaId, boolean joinComHistorico, String... codigosACColaboradores) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
-		criteria.createCriteria("c.empresa", "e");
 		
+		ProjectionList p = Projections.projectionList().create();
+
 		if(joinComHistorico)
 		{
 			criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.LEFT_JOIN);
@@ -4720,13 +4721,17 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
 
 			criteria.add(Subqueries.propertyEq("hc.data", subQueryHc));
+			
+			p.add(Projections.property("hc.areaOrganizacional.id"), "areaOrganizacionalId");
 		}
 
-		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		p.add(Projections.property("c.empresa.id"), "empresaId");
 
 		criteria.setProjection(p);
-		criteria.add(Expression.eq("c.empresa", empresa));
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
 		criteria.add(Expression.in("c.codigoAC", codigosACColaboradores));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
