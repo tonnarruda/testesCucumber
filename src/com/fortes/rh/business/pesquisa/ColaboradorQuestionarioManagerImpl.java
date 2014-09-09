@@ -477,4 +477,5 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	{
 		return getDao().findAutoAvaliacao(colaboradorId);
 	}
+	
 }

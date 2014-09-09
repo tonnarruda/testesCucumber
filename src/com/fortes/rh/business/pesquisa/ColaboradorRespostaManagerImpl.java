@@ -638,6 +638,11 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	{
 		return getDao().findPerguntasRespostasByColaboradorQuestionario(colaboradorQuestionarioId);
 	}
+	
+	public void removeByQuestionarioId(Long questionarioId) 
+	{
+		getDao().removeByQuestionarioId(questionarioId);
+	}
 
 	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) 
 	{

@@ -43,4 +43,5 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	Integer countColaboradorAvaliacaoRespondida(Long avaliacaoId);
 	boolean existeRespostaSemCargo(Long[] perguntasIds);
 	Collection<ColaboradorResposta> findPerguntasRespostasByColaboradorQuestionario(Long colaboradorQuestionarioId);
+	void removeByQuestionarioId(Long questionarioId);
 }

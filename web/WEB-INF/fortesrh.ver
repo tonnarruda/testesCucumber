@@ -3,6 +3,7 @@
 	<Versao id="1.1.1xx.1xx" bd="" data="xx/09/2014">
 		<Item visivel="S" motivo="S20140800062"><![CDATA[T&D > Painel de Indicadores: Para o cálculo do indicador "horas de treinamento per capita" considerar somente a carga horária dos dias da turma que estiverem dentro do período.]]></Item>
 		<Item visivel="N" motivo="P20140900021"><![CDATA[BUG: R&S > Relatórios > Lista de Candidatos da Seleção: O relatório não trazia todas as etapas que o candidato participou dentro do período, apenas a última.]]></Item>
+		<Item visivel="N" motivo="P20140000207"><![CDATA[BUG: Pesquisas > Movimentações > Pesquisas: Excluir respostas dos colaboradores ao excluir perquisa.]]></Item>
 		<Item visivel="N" motivo="P20140800224"><![CDATA[BUG: Utilitários > Configurações > Gerenciador de Comunicação: Ao enviar mensagem e email de aviso de desligamento, o nome do colaborador era preenchido com "null".]]></Item>
 	</Versao>
 	<Versao id="1.1.133.160" bd="" data="08/09/2014">

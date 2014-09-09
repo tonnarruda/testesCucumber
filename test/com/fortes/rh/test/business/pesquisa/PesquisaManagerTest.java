@@ -13,7 +13,9 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
+import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.PesquisaManagerImpl;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
@@ -35,6 +37,8 @@ import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.RespostaFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockServletActionContext;
+import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.webwork.ServletActionContext;
 
 public class PesquisaManagerTest extends MockObjectTestCase
@@ -45,6 +49,7 @@ public class PesquisaManagerTest extends MockObjectTestCase
 	private Mock questionarioManager;
 	private Mock colaboradorQuestionarioManager;
 	private Mock transactionManager;
+	private Mock colaboradorRespostaManager;
 
 
     protected void setUp() throws Exception
@@ -66,6 +71,10 @@ public class PesquisaManagerTest extends MockObjectTestCase
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
+		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
+		
+		colaboradorRespostaManager = new Mock(ColaboradorRespostaManager.class);
+		MockSpringUtil.mocks.put("colaboradorRespostaManager", colaboradorRespostaManager);
     }
 
     public void testDelete() throws Exception
@@ -101,6 +110,7 @@ public class PesquisaManagerTest extends MockObjectTestCase
         	questionarioManager.expects(once()).method("removerPerguntasDoQuestionario").with(ANYTHING);
         	pesquisaDao.expects(once()).method("removerPesquisaDoQuestionario").with(ANYTHING);
         	questionarioManager.expects(once()).method("remove").with(ANYTHING);
+        	colaboradorRespostaManager.expects(once()).method("removeByQuestionarioId").with(ANYTHING).isVoid();
 
     		pesquisaManager.delete(pesquisa.getId(), empresa.getId());
 		}
@@ -122,6 +132,7 @@ public class PesquisaManagerTest extends MockObjectTestCase
 
     		pesquisaDao.expects(once()).method("verificaEmpresaDoQuestionario").with(eq(pesquisa.getId()), eq(empresa.getId())).will(returnValue(false));
     		pesquisaManager.delete(pesquisa.getId(), empresa.getId());
+    		colaboradorRespostaManager.expects(once()).method("removeByQuestionarioId").with(ANYTHING).isVoid();
     	}
     	catch (Exception e)
     	{
@@ -153,7 +164,6 @@ public class PesquisaManagerTest extends MockObjectTestCase
         	pesquisaDao.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(pesquisa));
         	pesquisaDao.expects(once()).method("verificaEmpresaDoQuestionario").with(eq(pesquisa.getId()), eq(empresa.getId())).will(returnValue(true));
         	colaboradorQuestionarioManager.expects(once()).method("findByQuestionario").with(ANYTHING).will(returnValue(colaboradorQuestionarios));
-
 
     		pesquisaManager.delete(pesquisa.getId(), empresa.getId());
     	}

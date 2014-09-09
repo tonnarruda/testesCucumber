@@ -15,6 +15,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.util.SpringUtil;
 
 public class PesquisaManagerImpl extends GenericManagerImpl<Pesquisa, PesquisaDao> implements PesquisaManager
 {
@@ -51,7 +52,10 @@ public class PesquisaManagerImpl extends GenericManagerImpl<Pesquisa, PesquisaDa
 //		Se existir ele retorna uma exceção para a action informando que não é possível excluir a pesquisa.
 		if (colaboradorQuestionarios.size() > 0)
 			throw new Exception("Não foi possível excluir a pesquisa. Pesquisa possui colaboradores.");
-
+		
+		ColaboradorRespostaManager colaboradorRespostaManager = (ColaboradorRespostaManager) SpringUtil.getBean("colaboradorRespostaManager");  
+		colaboradorRespostaManager.removeByQuestionarioId(pesquisa.getQuestionario().getId());
+		
 		questionarioManager.removerPerguntasDoQuestionario(pesquisa.getQuestionario().getId());
 		getDao().removerPesquisaDoQuestionario(pesquisa.getQuestionario().getId());
 		questionarioManager.remove(pesquisa.getQuestionario().getId());
