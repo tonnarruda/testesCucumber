@@ -68,6 +68,8 @@ public class TurmaTipoDespesaDaoHibernate extends GenericDaoHibernate<TurmaTipoD
         if (LongUtil.arrayIsNotEmpty(cursoIds))
         	criteria.add(Expression.in("t.curso.id", cursoIds));
         
+        criteria.add(Expression.eq("t.realizada", true));
+        
         criteria.addOrder(Order.desc("totalDespesas"));
         
         criteria.setResultTransformer(new AliasToBeanResultTransformer(TipoDespesa.class));

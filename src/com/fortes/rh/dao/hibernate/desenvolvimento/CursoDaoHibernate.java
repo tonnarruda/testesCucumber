@@ -138,7 +138,13 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 	{
 		getSession().flush();
 		
-		StringBuilder sql = new StringBuilder("select tur.id, coalesce(tur.qtdparticipantesprevistos, 0), cast(coalesce(count(ct.id), 0) as integer) as qtdeInscritosFiltrado, ct3.qtdeInscritosTotal, cast(coalesce((cur.cargaHoraria/60) * count(ct.id), 0) as double precision) as cargaHoraria, coalesce((tur.custo/ct3.qtdeInscritosTotal) * count(ct.id), 0) as custo ");
+		StringBuilder sql = new StringBuilder("select tur.id, coalesce(tur.qtdparticipantesprevistos, 0), cast(coalesce(count(ct.id), 0) as integer) as qtdeInscritosFiltrado, ct3.qtdeInscritosTotal, ");
+		sql.append("cast(coalesce((cur.cargaHoraria/60) * count(ct.id), 0) as double precision) as cargaHoraria, ");
+		sql.append("CASE when diasTurmaTotal > 0 ");
+		sql.append("	then cast(coalesce(((cur.cargaHoraria/60)/dt.diasTurmaTotal)* dt2.diasTurmaRealizado * count(ct.id),0) as double precision) "); 
+		sql.append("	else cast(coalesce((cur.cargaHoraria/60) * count(ct.id),0) as double precision) ");
+		sql.append("END as cargaHorariaRatiada,");
+		sql.append("coalesce((tur.custo/ct3.qtdeInscritosTotal) * count(ct.id), 0) as custo ");
 		sql.append("from ColaboradorTurma ct ");
 		sql.append("inner join turma tur on ct.turma_id = tur.id "); 
 		sql.append("inner join curso cur on tur.curso_id = cur.id ");
@@ -147,6 +153,17 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		sql.append("left join ( ");
 		sql.append("   select ct2.turma_id, cast(coalesce(count(ct2.id), 0) as integer) as qtdeInscritosTotal from colaboradorTurma ct2 group by ct2.turma_id ");
 		sql.append(") as ct3 on ct3.turma_id = tur.id ");
+		sql.append("left join ( ");
+		sql.append("			select  dt.turma_id as turma_id, cast(coalesce(count(dt.id),0) as integer) as diasTurmaTotal ");
+		sql.append("			from diaTurma dt group by dt.turma_id ");
+		sql.append(") as dt on dt.turma_id = tur.id  ");
+		sql.append("left join ( ");
+		sql.append("			select  dt2.turma_id as turma_id, cast(coalesce(count(dt2.id),0) as integer) as diasTurmaRealizado ");
+		sql.append("			from diaTurma dt2 ");
+		sql.append("			where  dt2.dia between :dataIni and :dataFim " );
+		sql.append("			group by dt2.turma_id ");
+		sql.append(") as dt2 on dt2.turma_id = tur.id  ");
+
 		sql.append("where hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador_id = col.id) ");
 		sql.append("and col.empresa_id in (:empresaIds) ");
 		sql.append("and tur.dataPrevIni between :dataIni and :dataFim "); 
@@ -158,7 +175,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		if (LongUtil.arrayIsNotEmpty(areasIds))
 			sql.append("and hc.areaOrganizacional_id in (:areasIds) ");
 		
-		sql.append("group by tur.id, tur.qtdparticipantesprevistos, cur.cargahoraria, tur.custo, ct3.qtdeInscritosTotal ");
+		sql.append("group by tur.id, tur.qtdparticipantesprevistos, cur.cargahoraria, tur.custo, ct3.qtdeInscritosTotal, dt.diasTurmaTotal, dt2.diasTurmaRealizado ");
 		sql.append("order by tur.id ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
@@ -175,7 +192,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		Collection<Object[]> resultado = query.list();
 		Object[] res;
 		Integer qtdColaboradoresPrevistos = 0, qtdColaboradoresFiltrados = 0, qtdColaboradoresInscritos = 0;
-		Double somaHoras = 0.0, somaCustos = 0.0;
+		Double somaHoras = 0.0, somaCustos = 0.0, somaHorasRatiada = 0.0;
 		
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
@@ -184,10 +201,11 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 			qtdColaboradoresFiltrados += (Integer)res[2];
 			qtdColaboradoresInscritos += (Integer)res[3];
 			somaHoras += (Double)res[4];
-			somaCustos += (Double)res[5];
+			somaHorasRatiada += (Double)res[5];
+			somaCustos += (Double)res[6];
 		}
 		
-		return new IndicadorTreinamento(qtdColaboradoresPrevistos, qtdColaboradoresFiltrados, qtdColaboradoresInscritos, somaHoras, somaCustos);
+		return new IndicadorTreinamento(qtdColaboradoresPrevistos, qtdColaboradoresFiltrados, qtdColaboradoresInscritos, somaHoras, somaHorasRatiada, somaCustos);
 	}
 
 	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds)

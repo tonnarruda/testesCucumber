@@ -121,8 +121,9 @@
 	    	$('#tooltipHelpIndicadoresTeD').qtip({
 				content:'<strong>O resultado dos indicadores de T&D são obtidos através dos seguintes cálculos:</strong>'+
 						'<br/><br/><strong>- Investimento médio da hora de treinamento (R$)</strong><br/>'+
-						'&nbsp&nbsp custoMedioHora = somaCusto / somaHoras<br/>'+
-						'&nbsp&nbsp a somaCusto e Hora dos cursos é referente ao período e empresa selecionados no filtro.<br/>'+
+						'&nbsp&nbsp custoMedioHora = SomaCusto / SomaHoras<br/>'+
+						'&nbsp&nbsp SomaCusto: É a soma do custo de cada turma referente ao filtro.<br/>'+
+						'&nbsp&nbsp SomaHoras: É o somatório de horas do curso vezes a quantidade de colaboradores.<br/>'+
 						'<br/>'+
 						'<strong>- Investimento per capita (R$)</strong><br/>'+
 						'&nbsp&nbsp custoPerCapita (por pessoa) = CustoTotal / Qtd. Colaboradores Ativos e Inscritos<br/>'+
@@ -131,10 +132,11 @@
 						'<br/>'+
 						'<strong>- Horas de treinamento per capita</strong><br/>'+
 						'&nbsp&nbsp horasPerCapita = (QtdHoras * QtdParticipantes) / QtdAtivos<br/><br/>'+
-						'&nbsp&nbsp QtdHoras: soma das horas.<br/>'+
-						'&nbsp&nbsp QtdParticipantes: colaboradores da turma que estejam dentro do período do filtro.<br/>'+
-						'&nbsp&nbsp QtdAtivos: colaboradores ativos na empresa com data admissao menor que a data fim do filtro e<br/>'+
-						'&nbsp&nbsp que não esteja desligado ou com data de desligamento depois da data fim do filtro.<br/>'+
+						'&nbsp&nbsp QtdHoras: somatório das horas de cada dia da turma de acordo com o período.<br/>'+
+						'&nbsp&nbsp QtdParticipantes: colaboradores da(s) turma(s) que estejam dentro do período do filtro.<br/>'+
+						'&nbsp&nbsp QtdAtivos: colaboradores ativos na(s) empresa(s) selecionadas(*) com data de admissao menor que a data fim do filtro e<br/>'+
+						'&nbsp&nbsp que não esteja desligado ou com data de desligamento posterior a data fim do filtro.<br/>'+
+						'&nbsp&nbsp * Caso não seja selecionada nenhuma empresa o cálculo irá considerá todas as empresas listadas no filtro.<br/>'+
 						'<br/>'+
 						'<strong>- Total de investimentos dos treinamentos realizados (R$)</strong><br/>'+
 						'&nbsp&nbsp Soma de todos os custos lançados para os cursos em determinado período e empresa.<br/>'+

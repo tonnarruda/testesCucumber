@@ -70,6 +70,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		indicadorTreinamento.setDataFim(dataFim);
 		
 		Double qtdHoras = indicadorTreinamento.getSomaHoras();
+		Double qtdHorasRatiada = indicadorTreinamento.getSomaHorasRatiada();
 		Double somaCustos = indicadorTreinamento.getSomaCustos();
 
 		indicadorTreinamento.setCustoMedioHora( qtdHoras > 0 ? somaCustos / qtdHoras : 0);
@@ -87,7 +88,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		Integer qtdAtivos = colaboradorManager.getCountAtivosQualquerStatus(dataFim, empresaIds, areasIds);
 
 		if (qtdAtivos != null && qtdAtivos > 0)
-			horasPerCapita = qtdHoras / qtdAtivos;
+			horasPerCapita = qtdHorasRatiada / qtdAtivos;
 
 		indicadorTreinamento.setHorasPerCapita(horasPerCapita);
 		

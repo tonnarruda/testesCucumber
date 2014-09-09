@@ -112,12 +112,14 @@ public class TurmaTipoDespesaDaoHibernateTest extends GenericDaoHibernateTest<Tu
 		turma1.setEmpresa(empresa1);
 		turma1.setDataPrevIni(dataIni);
 		turma1.setDataPrevFim(dataFim);
+		turma1.setRealizada(true);
 		turmaDao.save(turma1);
 		
 		Turma turma2 = TurmaFactory.getEntity();
 		turma2.setEmpresa(empresa2);
 		turma2.setDataPrevIni(dataIni);
 		turma2.setDataPrevFim(dataFim);
+		turma2.setRealizada(true);
 		turmaDao.save(turma2);
 		
 		TipoDespesa tipoDespesaAlim = TipoDespesaFactory.getEntity();

@@ -586,6 +586,8 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         
         if (LongUtil.arrayIsNotEmpty(cursoIds))
         	criteria.add(Expression.in("t.curso.id", cursoIds));
+        
+        criteria.add(Expression.eq("t.realizada", true));
 
     	Double valor = (Double) criteria.uniqueResult();
         

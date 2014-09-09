@@ -809,6 +809,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma.setDataPrevIni(dataPrevIni);
 		turma.setDataPrevFim(dataPrevFim);
 		turma.setCusto(15.50);
+		turma.setRealizada(true);
 		turmaDao.save(turma);
 		
 		Turma turma2 = TurmaFactory.getEntity();
@@ -816,6 +817,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma2.setDataPrevIni(dataPrevIni);
 		turma2.setDataPrevFim(dataPrevFim);
 		turma2.setCusto(13.75);
+		turma2.setRealizada(true);
 		turmaDao.save(turma2);
 
 		Turma turma3 = TurmaFactory.getEntity();
@@ -823,6 +825,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma3.setDataPrevIni(dataPrevIni);
 		turma3.setDataPrevFim(dataPrevFim);
 		turma3.setCusto(50.00);
+		turma3.setRealizada(true);
 		turmaDao.save(turma3);
 		
 		TipoDespesa tipoDespesa = TipoDespesaFactory.getEntity();
@@ -838,6 +841,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turmaOutraEmpresa.setDataPrevIni(dataPrevIni);
 		turmaOutraEmpresa.setDataPrevFim(dataPrevFim);
 		turmaOutraEmpresa.setCusto(10.15);
+		turmaOutraEmpresa.setRealizada(true);
 		turmaDao.save(turmaOutraEmpresa);
 		
 		assertEquals("Empresa 1", 29.25, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null));
@@ -865,6 +869,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma.setDataPrevIni(dataPrevIni);
 		turma.setDataPrevFim(dataPrevFim);
 		turma.setCusto(15.50);
+		turma.setRealizada(true);
 		turmaDao.save(turma);
 		
 		Turma turma2 = TurmaFactory.getEntity();
@@ -872,6 +877,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma2.setDataPrevIni(dataPrevIni);
 		turma2.setDataPrevFim(dataPrevFim);
 		turma2.setCusto(13.75);
+		turma2.setRealizada(true);
 		turmaDao.save(turma2);
 		
 		Turma turma3 = TurmaFactory.getEntity();
@@ -879,6 +885,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma3.setDataPrevIni(dataPrevIni);
 		turma3.setDataPrevFim(dataPrevFim);
 		turma3.setCusto(50.00);
+		turma3.setRealizada(true);
 		turmaDao.save(turma3);
 				
 		Turma turma4 = TurmaFactory.getEntity();
@@ -886,6 +893,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		turma4.setDataPrevIni(dataPrevIni);
 		turma4.setDataPrevFim(dataPrevFim);
 		turma4.setCusto(10.15);
+		turma4.setRealizada(true);
 		turmaDao.save(turma4);
 		
 		assertEquals("Empresa 1", 79.25, turmaDao.somaCustosNaoDetalhados(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null));

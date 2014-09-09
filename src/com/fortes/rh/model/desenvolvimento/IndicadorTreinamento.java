@@ -18,6 +18,7 @@ public class IndicadorTreinamento
 
 	private Double somaCustos;
 	private Double somaHoras;
+	private Double somaHorasRatiada;
 	private Integer qtdColaboradoresInscritos;
 	private Integer qtdColaboradoresFiltrados;
 	private Integer qtdColaboradoresPrevistos;
@@ -44,12 +45,13 @@ public class IndicadorTreinamento
 		this.somaHoras = (somaHoras != null ? somaHoras : 0);
 	}
 	
-	public IndicadorTreinamento(Integer qtdColaboradoresPrevistos, Integer qtdColaboradoresFiltrados, Integer qtdColaboradoresInscritos, Double somaHoras, Double somaCustos) 
+	public IndicadorTreinamento(Integer qtdColaboradoresPrevistos, Integer qtdColaboradoresFiltrados, Integer qtdColaboradoresInscritos, Double somaHoras, Double somaHorasRatiada, Double somaCustos) 
 	{
 		this.qtdColaboradoresPrevistos = qtdColaboradoresPrevistos;
 		this.qtdColaboradoresFiltrados = qtdColaboradoresFiltrados;
 		this.qtdColaboradoresInscritos = qtdColaboradoresInscritos;
 		this.somaHoras = somaHoras;
+		this.somaHorasRatiada = somaHorasRatiada;
 		this.somaCustos = somaCustos;
 	}
 
@@ -277,6 +279,14 @@ public class IndicadorTreinamento
 
 	public void setQtdColaboradoresFiltrados(Integer qtdColaboradoresFiltrados) {
 		this.qtdColaboradoresFiltrados = qtdColaboradoresFiltrados;
+	}
+
+	public Double getSomaHorasRatiada() {
+		return somaHorasRatiada;
+	}
+
+	public void setSomaHorasRatiada(Double somaHorasRatiada) {
+		this.somaHorasRatiada = somaHorasRatiada;
 	}
 
 }
