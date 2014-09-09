@@ -198,8 +198,10 @@
 	</target>
 	
 	<path id="project.classpath.ireport">
-		<fileset dir="web/WEB-INF/lib">  
-			<include name="jasperreports-5.0.0.jar" />
+		<pathelement location="${project.dir}/web/WEB-INF/classes" />
+		<fileset dir="${env.JASPER_LIB}">  
+			<include name="*.jar" />
+			<exclude name="jasperreports-chart-themes-5.0.0.jar"/> 
 		</fileset>
 	</path>
 	
