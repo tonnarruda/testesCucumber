@@ -77,13 +77,13 @@
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 		<@ww.select id="optFiltro" label="Filtrar Por" name="filtro" list=r"#{'1':'Área Organizacional', '2':'Grupo Ocupacional'}" onchange="filtrarOpt();"/>
 		<div id="divAreas">
-			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Área Organizacional" list="areasCheckList" onClick="populaCargos();"/>
+			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Área Organizacional" list="areasCheckList" onClick="populaCargos();" filtro=true/>
 		</div>
 		<div id="divGrupos" style="display:none;">
-			<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargos();"/>
+			<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargos();" filtro=true/>
 		</div>
 		<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="exibirCargosVinculados" name="" labelPosition="left"/>
-		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos *" list="cargosCheckList" />
+		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos *" list="cargosCheckList" filtro=true/>
 		<@ww.checkbox label="Exibir valores atuais das faixas salariais." id="exibirValorFaixaSalarial" name="exibirValorFaixaSalarial" labelPosition="left"/>
 	</@ww.form>
 
