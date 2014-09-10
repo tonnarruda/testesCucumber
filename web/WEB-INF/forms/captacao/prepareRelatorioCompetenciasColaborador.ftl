@@ -27,7 +27,7 @@
 	<@ww.actionerror />
 	<@ww.form name="form" action="imprimirRelatorioCompetenciasColaborador.action" onsubmit="${validarCampos}"  method="POST">
 		<@ww.select label="Cargo/Faixa Salarial" name="faixaSalarial.id" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." cssStyle="width: 502px;" onchange="populaCompetencia(this.value);" />
-		<@frt.checkListBox  label="Competências da Faixa Salarial *" name="competenciasCheck" id="competenciasCheck" list="competenciasCheckList" height="250"/>
+		<@frt.checkListBox  label="Competências da Faixa Salarial *" name="competenciasCheck" id="competenciasCheck" list="competenciasCheckList" height="250" filtro="true"/>
 	</@ww.form>
 	
 	<div class="buttonGroup">

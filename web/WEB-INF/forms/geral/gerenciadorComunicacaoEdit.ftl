@@ -287,11 +287,11 @@
 			<span id="usuariosCheck">
 				<br />
 				<#include "../util/topFiltro.ftl" />
-					<@frt.checkListBox label="Estabelecimentos" name="estabelecimentosCheck" id="estabelecimentosCheck" list="estabelecimentosCheckList" onClick="populaUsuarios();" width="588" filtro=true />
-					<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" onClick="populaUsuarios();" width="588" filtro=true/>
+					<@frt.checkListBox label="Estabelecimentos" name="estabelecimentosCheck" id="estabelecimentosCheck" list="estabelecimentosCheckList" onClick="populaUsuarios();" width="588" filtro="true" />
+					<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" onClick="populaUsuarios();" width="588" filtro="true"/>
 				<#include "../util/bottomFiltro.ftl" />
 				<br />
-				<@frt.checkListBox label="Usuários" id="usuariosMarcados" name="usuariosCheck" list="usuariosCheckList" width="600" filtro=true />
+				<@frt.checkListBox label="Usuários" id="usuariosMarcados" name="usuariosCheck" list="usuariosCheckList" width="600" filtro="true" />
 			</span>
 			<span id="camposQtdDiasLembrete">
 				<@ww.hidden id="qtdDiasLembrete" name="gerenciadorComunicacao.qtdDiasLembrete"/>

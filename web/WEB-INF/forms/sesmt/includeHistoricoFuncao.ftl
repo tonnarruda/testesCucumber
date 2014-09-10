@@ -1,7 +1,7 @@
 			<@ww.datepicker label="A partir de" name="historicoFuncao.data" id="dataHist" required="true" value="${data}" cssClass="mascaraData"/>
 			<@ww.textarea label="Descrição das Atividades Executadas pela Função" name="historicoFuncao.descricao" id="descricao" cssClass="inputNome"  required="true"/>
-			<@frt.checkListBox label="Exames Obrigatórios (SESMT)" name="examesChecked" id="exame" list="examesCheckList" />
-			<@frt.checkListBox label="EPIs (PPRA)" name="episChecked" id="epi" list="episCheckList" />
+			<@frt.checkListBox label="Exames Obrigatórios (SESMT)" name="examesChecked" id="exame" list="examesCheckList" filtro="true"/>
+			<@frt.checkListBox label="EPIs (PPRA)" name="episChecked" id="epi" list="episCheckList" filtro="true"/>
 			
 			<#assign i = 0/>
 			<#if empresaControlaRiscoPor == 'F'> 

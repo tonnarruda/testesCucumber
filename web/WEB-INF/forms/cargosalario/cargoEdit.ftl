@@ -110,27 +110,27 @@
 
 	<@ww.select label="Ativo" name="cargo.ativo" list=r"#{true:'Sim',false:'Não'}"/>
 	<@ww.select label="Grupo Ocupacional" name="cargo.grupoOcupacional.id" list="grupoOcupacionals" emptyOption="true" listKey="id" listValue="nome" headerKey="-1"/>
-	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais Relacionadas*" list="areasCheckList" onClick="populaCHA(document.forms[0],'areasCheck');" />
+	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais Relacionadas*" list="areasCheckList" onClick="populaCHA(document.forms[0],'areasCheck');" filtro="true"/>
 	<@ww.textarea label="Missão do Cargo" name="cargo.missao" cssStyle="width:500px;height:60px;"/>
 	<@ww.textarea label="Fontes de Recrutamento" name="cargo.recrutamento" cssStyle="width:500px;height:30px"/>
-	<@frt.checkListBox name="etapaCheck" id="etapaCheck" label="Etapas Seletivas" list="etapaSeletivaCheckList" />
+	<@frt.checkListBox name="etapaCheck" id="etapaCheck" label="Etapas Seletivas" list="etapaSeletivaCheckList" filtro="true"/>
 	<@ww.textarea label="Responsabilidades Correlatas" name="cargo.responsabilidades" id="resp" cssStyle="width:500px;height:45px;"/>
 	
 	<li>
 		<fieldset class="fieldsetPadrao" style="width:510px;">
 			<ul>
 				<legend>Conhecimento, Habilidades e Atitudes (CHA)</legend>
-				<@frt.checkListBox name="conhecimentosCheck" id="conhecimentosCheck" label="Conhecimentos" list="conhecimentosCheckList" />
+				<@frt.checkListBox name="conhecimentosCheck" id="conhecimentosCheck" label="Conhecimentos" list="conhecimentosCheckList" filtro="true"/>
 				<@ww.textarea label="Complemento dos Conhecimentos" name="cargo.complementoConhecimento" cssStyle="width:500px;height:45px;"/>
 				
-				<@frt.checkListBox name="habilidadesCheck" id="habilidadesCheck" label="Habilidades" list="habilidadesCheckList" />
+				<@frt.checkListBox name="habilidadesCheck" id="habilidadesCheck" label="Habilidades" list="habilidadesCheckList" filtro="true"/>
 				<@ww.textarea label="Complemento das Habilidades" name="cargo.competencias" cssStyle="width:500px;height:45px;"/>
 				
-				<@frt.checkListBox name="atitudesCheck" id="atitudesCheck" label="Atitudes" list="atitudesCheckList" />
+				<@frt.checkListBox name="atitudesCheck" id="atitudesCheck" label="Atitudes" list="atitudesCheckList" filtro="true"/>
 				<@ww.textarea label="Complemento das Atitudes" name="cargo.atitude" cssStyle="width:500px;height:45px;"/>
 				
 				<@ww.select label="Escolaridade" name="cargo.escolaridade" list="escolaridades"  headerKey="" headerValue=""/>
-				<@frt.checkListBox name="areasFormacaoCheck" id="areasFormacaoCheck" label="Áreas de Formação Relacionadas" list="areasFormacaoCheckList"/>
+				<@frt.checkListBox name="areasFormacaoCheck" id="areasFormacaoCheck" label="Áreas de Formação Relacionadas" list="areasFormacaoCheckList" filtro="true"/>
 				
 				<@ww.textarea label="Experiência Desejada" name="cargo.experiencia" cssStyle="width:500px;height:45px;"/>
 				<@ww.textarea label="Observações" name="cargo.observacao" cssStyle="width:500px;height:45px;"/>

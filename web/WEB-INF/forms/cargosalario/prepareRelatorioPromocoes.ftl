@@ -76,8 +76,8 @@
 		<@ww.label value="a" liClass="liLeft"/>
 		<@ww.datepicker name="dataFim" id="dataFim"  value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
 
-		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentoCheck" label="Estabelecimentos" list="estabelecimentosCheckList" />
-		<@frt.checkListBox name="areasCheck" id="areaCheck" label="Áreas Organizacionais" list="areasCheckList" />
+		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentoCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
+		<@frt.checkListBox name="areasCheck" id="areaCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true"/>
 	</@ww.form>
 
 	<div class="buttonGroup">

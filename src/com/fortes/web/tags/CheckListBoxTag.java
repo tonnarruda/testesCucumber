@@ -208,6 +208,10 @@ public class CheckListBoxTag extends TagSupport
 		this.form = form;
 	}
 
+	public void setFiltro(String filtro) {
+		this.filtro = Boolean.valueOf(filtro);
+	}
+	
 	public void setFiltro(boolean filtro) {
 		this.filtro = filtro;
 	}

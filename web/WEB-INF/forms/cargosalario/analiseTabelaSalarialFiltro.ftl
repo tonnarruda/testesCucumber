@@ -83,11 +83,11 @@
 				list=r"#{'1':'Grupos Ocupacionais/Cargos','2':'Áreas Organizacionais'}" onchange="filtrarOpt();" />
 		
 		<span id="divGruposCargos" style="display:''">
-			<@frt.checkListBox name="grupoOcupacionalsCheck" id="grupoOcupacionalsCheck" label="Grupos Ocupacionais" list="grupoOcupacionalsCheckList" width="600" onClick="populaCargos(document.form,'grupoOcupacionalsCheck', ${empresaId});"/>
+			<@frt.checkListBox name="grupoOcupacionalsCheck" id="grupoOcupacionalsCheck" label="Grupos Ocupacionais" list="grupoOcupacionalsCheckList" width="600" onClick="populaCargos(document.form,'grupoOcupacionalsCheck', ${empresaId});" filtro="true"/>
 			<fieldset style="padding: 5px 0px 5px 5px; width: 495px;">
 				<legend>Cargos</legend>
 				<@ww.select label="Situação" id="situacao" name="situacaoCargo" list=r"#{'T':'Todos', 'I':'Inativos'}" cssStyle="width: 160px;" headerKey="A" headerValue="Ativos" onchange="populaCargos(document.form,'grupoOcupacionalsCheck', ${empresaId});"/>
-				<@frt.checkListBox name="cargosCheck" id="cargosCheck" list="cargosCheckList" width="600" />
+				<@frt.checkListBox name="cargosCheck" id="cargosCheck" list="cargosCheckList" width="600" filtro="true"/>
 				OBS: O cargo só aparecerá na listagem ou no relatório se o mesmo apresentar pelo menos um histórico em sua faixa salarial.
 			</fieldset>
 			<br />

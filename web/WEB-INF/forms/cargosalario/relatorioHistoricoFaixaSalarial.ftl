@@ -114,15 +114,15 @@
 				list=r"#{'1':'Grupos Ocupacionais/Cargos','2':'Áreas Organizacionais'}" onchange="filtrarOpt();" />
 		
 		<span id="divGruposCargos" style="display:''">
-			<@frt.checkListBox name="grupoOcupacionalsCheck" id="grupoOcupacionalsCheck" label="Grupos Ocupacionais" list="grupoOcupacionalsCheckList" width="600" onClick="populaCargosByGrupo();"/>
+			<@frt.checkListBox name="grupoOcupacionalsCheck" id="grupoOcupacionalsCheck" label="Grupos Ocupacionais" list="grupoOcupacionalsCheckList" width="600" onClick="populaCargosByGrupo();" filtro="true"/>
 		</span>
 		
 		<span id="divAreaOrganizacionals" style="display:none">
-			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600" onClick="populaCargosByArea();"/>
+			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600" onClick="populaCargosByArea();" filtro="true"/>
 		</span>
 		<@ww.checkbox label="Considerar cargos não vinculados a nenhuma Grupo Ocupacional" id="cargoSemVinculo" name = "" labelPosition="left"/>
 
-		<@frt.checkListBox name="cargosCheck" label="Cargos*" id="cargosCheck" list="cargosCheckList" width="600" />
+		<@frt.checkListBox name="cargosCheck" label="Cargos*" id="cargosCheck" list="cargosCheckList" width="600" filtro="true"/>
 	</@ww.form>
 
 	<div class="buttonGroup">

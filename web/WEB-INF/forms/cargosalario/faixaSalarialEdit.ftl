@@ -57,7 +57,7 @@
 			<@ww.hidden	name="faixaSalarialAux.nomeACPessoal" />
 		</#if>
 		
-        <@frt.checkListBox label="Certificações" name="certificacaosCheck" list="certificacaosCheckList" />
+        <@frt.checkListBox label="Certificações" name="certificacaosCheck" list="certificacaosCheckList" filtro="true"/>
 
 		<#if !edicao>
 			<b><br>Primeiro Histórico da Faixa Salarial:</b><br>
