@@ -211,10 +211,6 @@ public class CheckListBoxTag extends TagSupport
 	public void setFiltro(String filtro) {
 		this.filtro = Boolean.valueOf(filtro);
 	}
-	
-	public void setFiltro(boolean filtro) {
-		this.filtro = filtro;
-	}
 
 	public String getLiClass() {
 		return liClass;
