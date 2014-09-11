@@ -80,7 +80,7 @@
 			}
 			else
 			{
-				jAlert("Opção: Integra com Portal do Colaborador não selecionada.");
+				jAlert('Opção "Integra com Portal do Colaborador" não marcada.');
 			}
 		}
 		
@@ -95,7 +95,7 @@
 			}
 			else
 			{
-				jAlert("Opção: Integra com AC Pessoal não selecionada.");
+				jAlert('Opção "Integra com AC Pessoal" não marcada.');
 			}
 		}
 		
@@ -124,7 +124,7 @@
 			if(statusCode == 200)
 				jAlert("Conexão realizada com sucesso.");
 			else if(statusCode == 401)
-				jAlert("Conexão não autorizada. Verifique se o token está correto.");
+				jAlert("Conexão não autorizada. Verifique se o token e a chave estão corretos.");
 			else
 				jAlert("Ocorreu um erro de conexão. Não foi possível se conectar com o Portal do Colaborador");
 		}

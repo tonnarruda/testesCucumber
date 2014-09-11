@@ -60,6 +60,7 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 		try {
 			TransacaoPC transacaoPC = new TransacaoPC();
 			transacaoPC.setCodigoUrl(URLTransacaoPC.TESTAR_CONEXAO_PORTAL.getId());
+			transacaoPC.setJson(CryptUtil.encrypt("{\"echo\":\"ok\"}", params.getPcKey()));
 			
 			return enviar(transacaoPC, params.getPcToken());
 			
