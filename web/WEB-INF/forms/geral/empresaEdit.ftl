@@ -120,13 +120,7 @@
 		function apresenta_MsgPC(statusCode)
 		{
 			document.getElementById("btnTransferirPC").src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>";
-			
-			if(statusCode == 200)
-				jAlert("Conexão realizada com sucesso.");
-			else if(statusCode == 401)
-				jAlert("Conexão não autorizada. Verifique se o token e a chave estão corretos.");
-			else
-				jAlert("Ocorreu um erro de conexão. Não foi possível se conectar com o Portal do Colaborador");
+			jAlert(statusCode);
 		}
 
 		function enviaForm()

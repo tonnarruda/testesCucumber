@@ -17,10 +17,10 @@ import org.apache.commons.httpclient.methods.StringRequestEntity;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.portalcolaborador.TransacaoPCDao;
+import com.fortes.rh.model.dicionario.TransacaoPCMensagens;
 import com.fortes.rh.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.portalcolaborador.AbstractAdapterPC;
-import com.fortes.rh.model.portalcolaborador.EmpresaPC;
 import com.fortes.rh.model.portalcolaborador.TransacaoPC;
 import com.fortes.rh.util.CryptUtil;
 import com.fortes.rh.util.SpringUtil;
@@ -50,7 +50,8 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 		}
 	}
 	
-	public int testarConexao() 
+	@SuppressWarnings("deprecation")
+	public String testarConexao() 
 	{
 		transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
 		parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBeanOld("parametrosDoSistemaManager");
@@ -62,17 +63,17 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 			transacaoPC.setCodigoUrl(URLTransacaoPC.TESTAR_CONEXAO_PORTAL.getId());
 			transacaoPC.setJson(CryptUtil.encrypt("{\"echo\":\"ok\"}", params.getPcKey()));
 			
-			return enviar(transacaoPC, params.getPcToken());
+			return TransacaoPCMensagens.getDescricao(enviar(transacaoPC, params.getPcToken()));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			
-			return 0;		
+			return TransacaoPCMensagens.getDescricao(TransacaoPCMensagens.ERRO);		
 		}
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void processarFila()
+	public synchronized void processarFila()
 	{
 		transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
 		parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBeanOld("parametrosDoSistemaManager");

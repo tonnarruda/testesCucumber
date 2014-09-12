@@ -27,14 +27,13 @@ import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.portalcolaborador.TransacaoPCManager;
 import com.fortes.rh.model.dicionario.FormulaTurnover;
-import com.fortes.rh.model.dicionario.URLTransacaoPC;
+import com.fortes.rh.model.dicionario.TransacaoPCMensagens;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.model.portalcolaborador.EmpresaPC;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.DateUtil;
@@ -54,6 +53,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private GrupoACManager grupoACManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private TransacaoPCManager transacaoPCManager;
 
 	private Collection<Estado> ufs = null;
 	private Collection<Cidade> cidades = new ArrayList<Cidade>();
@@ -192,6 +192,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		{
 			setActionMsg("Não foi possível habilitar a integração com o AC Pessoal devido a cadastros realizados no período desintegrado.<br />Entre em contato com o suporte técnico.");
 			empresa.setAcIntegra(false);
+			empresa.setIntegradaPortalColaborador(integradaPortalColaboradorAnterior);
 			empresaManager.update(empresa);
 			atualizaEmpresaSessao();
 			prepareUpdate();
@@ -199,7 +200,18 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		}
 		
 		if(empresa.isIntegradaPortalColaborador())
-			empresaManager.enfileirarEmpresaPCAndColaboradorPC(empresa, integradaPortalColaboradorAnterior);
+		{
+			String conexaoPC = transacaoPCManager.testarConexao();
+			if(conexaoPC.equals(TransacaoPCMensagens.getDescricao(TransacaoPCMensagens.OK)))
+			{
+				String mensagem = empresaManager.enfileirarEmpresaPCAndColaboradorPC(empresa, integradaPortalColaboradorAnterior);
+				if(mensagem != null)
+					addActionMessage(mensagem);
+			} else{
+				empresa.setIntegradaPortalColaborador(integradaPortalColaboradorAnterior);
+				addActionWarning(conexaoPC);
+			}
+		}
 		
 		boolean tavaIntegradaComAC = empresaManager.findIntegracaoAC(empresa.getId());
 		empresaManager.update(empresa);
@@ -463,5 +475,9 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public void setIntegradaPortalColaboradorAnterior(Boolean integradaPortalColaboradorAnterior) {
 		this.integradaPortalColaboradorAnterior = integradaPortalColaboradorAnterior;
+	}
+
+	public void setTransacaoPCManager(TransacaoPCManager transacaoPCManager) {
+		this.transacaoPCManager = transacaoPCManager;
 	}
 }

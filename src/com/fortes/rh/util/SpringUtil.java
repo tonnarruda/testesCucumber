@@ -42,7 +42,6 @@ public final class SpringUtil
 			"com/fortes/rh/dao/hibernate/avaliacao/applicationContext-dao-hibernate.xml",
 			"com/fortes/rh/dao/hibernate/portalcolaborador/applicationContext-dao-hibernate.xml",
 			
-
 			"com/fortes/rh/business/acesso/applicationContext-business.xml",
 			"com/fortes/rh/business/cargosalario/applicationContext-business.xml",
 			"com/fortes/rh/business/captacao/applicationContext-business.xml",

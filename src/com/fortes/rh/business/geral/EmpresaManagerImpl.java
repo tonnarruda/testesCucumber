@@ -17,7 +17,6 @@ import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
-import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.portalcolaborador.TransacaoPCManager;
@@ -27,7 +26,6 @@ import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.dicionario.TipoEntidade;
 import com.fortes.rh.model.dicionario.URLTransacaoPC;
@@ -40,6 +38,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.portalcolaborador.EmpresaPC;
 import com.fortes.rh.model.ws.TEmpresa;
+import com.fortes.rh.thread.EnfileiraColaboradorComHistoricosPCThread;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.SpringUtil;
@@ -510,17 +509,19 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return getDao().findIntegradaPortalColaborador();
 	}
 	
-	public void enfileirarEmpresaPCAndColaboradorPC(Empresa empresa, Boolean integradaPortalColaboradorAnterior) throws Exception 
+	public String enfileirarEmpresaPCAndColaboradorPC(Empresa empresa, Boolean integradaPortalColaboradorAnterior) throws Exception 
 	{
 		transacaoPCManager.enfileirar(new EmpresaPC(empresa), URLTransacaoPC.EMPRESA_ATUALIZAR);
 		
 		if (!integradaPortalColaboradorAnterior)
 		{
-			HistoricoColaboradorManager hisColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
-			Collection<HistoricoColaborador> historicosColaboradores = hisColaboradorManager.findPendenciasPortal(null, new Long[]{empresa.getId()});
+			(new EnfileiraColaboradorComHistoricosPCThread(empresa)).start();
 			
-			hisColaboradorManager.enfilerarColaboradoresComHistoricosPC(new Long[]{empresa.getId()}, new ArrayList(historicosColaboradores), URLTransacaoPC.COLABORADOR_ATUALIZAR);
+			return "Empresa editada com sucesso. <br /> Estamos enviando os dados de sua empresa para o Portal do Colaborador. <br />" +
+					"Em breve você receberá um email de confimação. <br />  Email destino: "+ empresa.getEmailRespRH();
 		}
+		
+		return null;
 	}
 
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {

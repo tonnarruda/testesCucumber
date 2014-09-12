@@ -12,6 +12,7 @@ import uk.ltd.getahead.dwr.WebContextFactory;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.portalcolaborador.TransacaoPCManager;
+import com.fortes.rh.model.dicionario.TransacaoPCMensagens;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -54,7 +55,7 @@ public class UtilDWR
 		return token;
 	}
 
-	public Integer testarConexaoPC()
+	public String testarConexaoPC()
 	{ 
 		try
 		{
@@ -63,7 +64,7 @@ public class UtilDWR
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			return 0;
+			return TransacaoPCMensagens.getDescricao(TransacaoPCMensagens.ERRO);
 		}
 		
 	}

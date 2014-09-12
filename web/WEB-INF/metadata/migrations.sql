@@ -5641,7 +5641,7 @@ CREATE OR REPLACE FUNCTION atualizar_historico_portal() RETURNS TRIGGER AS $$
             UPDATE colaborador SET atualizarhistoricoportal = true WHERE id IN ( 
                 SELECT DISTINCT c.id FROM colaborador c 
                 INNER JOIN historicocolaborador hc ON hc.colaborador_id = c.id  
-                WHERE hc.tiposalario = 3 
+                WHERE hc.tiposalario = 1 
                 AND hc.faixasalarial_id = linha.faixasalarial_id 
             );
 
