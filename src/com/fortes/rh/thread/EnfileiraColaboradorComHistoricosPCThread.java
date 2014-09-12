@@ -29,36 +29,12 @@ public class EnfileiraColaboradorComHistoricosPCThread extends Thread{
 			Collection<HistoricoColaborador> historicosColaboradores = hisColaboradorManager.findPendenciasPortal(null, new Long[]{empresa.getId()});
 			hisColaboradorManager.enfilerarColaboradoresComHistoricosPC(new Long[]{empresa.getId()}, new ArrayList(historicosColaboradores), URLTransacaoPC.COLABORADOR_ATUALIZAR);
 			
-			Thread.sleep(3600000);
-			
-			enviarEmailConfirmacaoPC();
-			
 		} catch (Exception e) {
 			
 			e.printStackTrace();
 			enviarEmailinconsistenciaPC();
 		}
     }
-
-	public void enviarEmailConfirmacaoPC() {
-		try {
-			String subject = "[RH] - Email de confirmação do Portal do Colaborador";
-			
-			StringBuilder body = new StringBuilder();
-			body.append("Seus dados foram enviados para o Portal do Colaborador.<br /><br />");
-			body.append("<B> Empresa: ");
-			body.append(empresa.getNome());
-			body.append("<B><br />");
-			
-			Mail mail = (Mail) SpringUtil.getBeanOld("mail");			
-			mail.send(empresa, subject, body.toString(), null, empresa.getEmailRespRH());
-			
-		} catch (AddressException e) {
-			e.printStackTrace();
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public void enviarEmailinconsistenciaPC() {
 		try {

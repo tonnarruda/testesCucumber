@@ -4,26 +4,29 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.util.DateUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.google.gson.annotations.SerializedName;
 
 public class HistoricoColaboradorPC extends AbstractAdapterPC
 {
 	private String data;
 	private String motivo;
+	@SerializedName("estabelecimento_nome")
 	private String estabelecimentoNome;
+	@SerializedName("cargo_nome")
 	private String cargoNome;
+	@SerializedName("area_nome")
 	private String areaNome;
 	private String tipo;
 	private Double salario;
 	
 	public HistoricoColaboradorPC() 
 	{
-
 	}
 
 	public HistoricoColaboradorPC(HistoricoColaborador historicoColaborador) 
 	{
 		this.data = DateUtil.formataDiaMesAno(historicoColaborador.getData());
-		this.motivo = historicoColaborador.getMotivo();
+		this.motivo = historicoColaborador.getMotivoDescricao();
 		this.tipo = historicoColaborador.getTipoSalarioDescricao();
 		this.salario = historicoColaborador.getSalario();
 		

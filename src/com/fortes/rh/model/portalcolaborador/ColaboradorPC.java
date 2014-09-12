@@ -38,13 +38,12 @@ public class ColaboradorPC extends AbstractAdapterPC
 	private ArquivoPC foto;
 	
 	public ColaboradorPC() {
-
 	}
 
 	public ColaboradorPC(Colaborador colaborador) 
 	{
 		this.nome 			= colaborador.getNome();
-		this.nomeComercial 	= colaborador.getNomeComercial();
+		this.nomeComercial  = getNomeComercial(colaborador);
 		
 		if (colaborador.getEmpresa() != null)
 		{
@@ -79,6 +78,13 @@ public class ColaboradorPC extends AbstractAdapterPC
 		{
 			this.foto = new ArquivoPC(colaborador);
 		}
+	}
+
+	public String getNomeComercial(Colaborador colaborador) {
+		if(colaborador.getNomeComercial() == null)
+			return this.nome.substring(0,29);
+		else
+			return colaborador.getNomeComercial();
 	}
 	
 	public EmpresaPC getEmpresaPC() {
@@ -219,5 +225,4 @@ public class ColaboradorPC extends AbstractAdapterPC
 		
 		return jsonObject.toString();
 	}
-
 }
