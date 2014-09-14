@@ -22,13 +22,23 @@ public class PeriodoExperienciaDaoHibernateTest extends GenericDaoHibernateTest<
 		empresa.setId(1L);
 		empresa = empresaDao.save(empresa);
 
-		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity();
-		periodoExperiencia.setEmpresa(empresa);
-		periodoExperiencia.setDescricao("");
-		periodoExperiencia = periodoExperienciaDao.save(periodoExperiencia);
+		PeriodoExperiencia periodoExperiencia1 = PeriodoExperienciaFactory.getEntity();
+		periodoExperiencia1.setDias(30);
+		periodoExperiencia1.setEmpresa(empresa);
+		periodoExperiencia1 = periodoExperienciaDao.save(periodoExperiencia1);
 
+		PeriodoExperiencia periodoExperiencia2 = PeriodoExperienciaFactory.getEntity();
+		periodoExperiencia2.setDias(60);
+		periodoExperiencia2.setEmpresa(empresa);
+		periodoExperiencia2 = periodoExperienciaDao.save(periodoExperiencia2);
+		
 		Collection<PeriodoExperiencia> periodoExperiencias = periodoExperienciaDao.findAllSelect(empresa.getId(), false); 
-		assertEquals(1, periodoExperiencias.size());
+		assertEquals(2, periodoExperiencias.size());
+		assertEquals("1o da ordem ascendente é 30", new Integer(30), ((PeriodoExperiencia) periodoExperiencias.toArray()[0]).getDias());
+
+		periodoExperiencias = periodoExperienciaDao.findAllSelect(empresa.getId(), true); 
+		assertEquals(2, periodoExperiencias.size());
+		assertEquals("1o da ordem descendente é 60", new Integer(60), ((PeriodoExperiencia) periodoExperiencias.toArray()[0]).getDias());
 	}
 	
 	public void testFindAllSelectDistinctDias()

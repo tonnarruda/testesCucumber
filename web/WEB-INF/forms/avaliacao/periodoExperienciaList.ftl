@@ -19,6 +19,13 @@
 		</@display.column>
 		<@display.column title="Dias" property="dias" style="width:80px;" />
 		<@display.column title="Descrição" property="descricao" style="width:250px;" />
+		<@display.column title="Ativo" style="width: 50px; text-align: center;">
+			<#if periodoExperiencia.ativo>
+				<img border="0" style="align: top;" src="<@ww.url includeParams="none" value="/imgs/Ok.gif"/>">
+			<#else>
+				<img border="0" style="align: top;" src="<@ww.url includeParams="none" value="/imgs/notOk.gif"/>">
+			</#if>
+		</@display.column>
 		
 	</@display.table>
 	

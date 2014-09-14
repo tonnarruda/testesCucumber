@@ -1,0 +1,1 @@
+alter table periodoexperiencia add column ativo boolean default true; --.go

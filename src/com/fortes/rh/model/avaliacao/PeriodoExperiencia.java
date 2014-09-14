@@ -22,22 +22,11 @@ public class PeriodoExperiencia extends AbstractModel implements Serializable
 	private String descricao;
 	@ManyToOne
 	private Empresa empresa;
+	private boolean ativo;
 	
 	@Transient
 	private Date dataFim;
 
-	public PeriodoExperiencia() {
-	}
-	
-	public PeriodoExperiencia(Long id, Integer dias, String descricao, Long empresaId)
-	{
-		this.setId(id);
-		this.dias = dias;
-		this.descricao = descricao;
-		this.empresa = new Empresa();
-		this.empresa.setId(empresaId);
-	}
-	
 	public Integer getDias() {
 		return dias;
 	}
@@ -86,5 +75,13 @@ public class PeriodoExperiencia extends AbstractModel implements Serializable
 
 	public void setDataFim(Date dataFim) {
 		this.dataFim = dataFim;
+	}
+	
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 }

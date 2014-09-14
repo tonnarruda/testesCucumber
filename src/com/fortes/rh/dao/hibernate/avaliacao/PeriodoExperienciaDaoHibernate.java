@@ -20,30 +20,39 @@ public class PeriodoExperienciaDaoHibernate extends GenericDaoHibernate<PeriodoE
 	@SuppressWarnings("unchecked")
 	public Collection<PeriodoExperiencia> findAllSelect(Long empresaId, boolean ordenarDiasDesc)
 	{
-		StringBuilder hql = new StringBuilder();
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "p");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.id(),"id");
+		p.add(Projections.property("p.dias"),"dias");
+		p.add(Projections.property("p.descricao"),"descricao");
+		p.add(Projections.property("p.ativo"),"ativo");
+		p.add(Projections.property("p.empresa.id"),"empresaId");
 		
-		hql.append("select new PeriodoExperiencia(p.id, p.dias, p.descricao, p.empresa.id) ");
-		hql.append("from PeriodoExperiencia p ");
-		hql.append("where p.empresa.id = :empresaId ");
-		hql.append("order by p.dias ");
+		criteria.add(Expression.eq("p.empresa.id", empresaId));
 		
 		if(ordenarDiasDesc)
-			hql.append(" desc");
+			criteria.addOrder(Order.desc("p.dias"));
+		else
+			criteria.addOrder(Order.asc("p.dias"));
 		
-		Query query = getSession().createQuery(hql.toString());
-		query.setLong("empresaId", empresaId);
+		criteria.setProjection(p);
 		
-		return query.list();
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<PeriodoExperiencia> findAllSelectDistinctDias(Long empresaId) {
+	public Collection<PeriodoExperiencia> findAllSelectDistinctDias(Long empresaId) 
+	{
 		Criteria criteria = getSession().createCriteria(PeriodoExperiencia.class, "p");
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.distinct(Projections.property("p.dias")), "dias");
 		
 		criteria.add(Expression.eq("p.empresa.id", empresaId));
+		criteria.add(Expression.eq("p.ativo", true));
 		criteria.addOrder(Order.asc("p.dias"));
 		
 		criteria.setProjection(p);

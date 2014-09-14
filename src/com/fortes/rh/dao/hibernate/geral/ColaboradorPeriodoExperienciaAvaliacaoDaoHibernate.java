@@ -44,6 +44,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernate extends GenericD
 		
 		hql.append("where c.desligado = false ");
 		hql.append("and cpea.tipo = 'C' ");
+		hql.append("and pe.ativo = true ");
 		hql.append("and c.id not in (select cq.colaborador.id from ColaboradorQuestionario cq where cq.avaliacao.id = a.id and cq.colaborador.id = c.id) ");
 		
 		Query query = getSession().createQuery(hql.toString());

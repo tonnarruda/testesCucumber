@@ -652,7 +652,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 String[] emails = new String[] {"email1@teste.com"};
 		 
-		 periodoExperienciaManager.expects(once()).method("findAll").will(returnValue(periodoExperiencias));
+		 periodoExperienciaManager.expects(once()).method("findToList").will(returnValue(periodoExperiencias));
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.AVALIACAO_PERIODO_EXPERIENCIA_VENCENDO.getId()),eq(null)).will(returnValue(gerenciadorComunicacaos));
 		 colaboradorManager.expects(atLeastOnce()).method("findAdmitidosHaDias").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradors));
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
