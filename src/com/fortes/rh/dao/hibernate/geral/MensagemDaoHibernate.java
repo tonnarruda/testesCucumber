@@ -33,4 +33,13 @@ public class MensagemDaoHibernate extends GenericDaoHibernate<Mensagem> implemen
 		
 		query.executeUpdate();
 	}
+
+	public void removeByAvaliacaoId(Long avaliacaoId) 
+	{
+		String queryHQL = "delete from UsuarioMensagem where mensagem_id in (select id from Mensagem m where m.avaliacao.id = :avaliacaoId) ";
+		getSession().createQuery(queryHQL).setLong("avaliacaoId", avaliacaoId).executeUpdate();	
+
+		queryHQL = "delete from Mensagem where avaliacao.id = :avaliacaoId";
+		getSession().createQuery(queryHQL).setLong("avaliacaoId", avaliacaoId).executeUpdate();	
+	}
 }

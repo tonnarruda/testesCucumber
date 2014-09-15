@@ -233,7 +233,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		mensagemManager.expects(once()).method("save").with(ANYTHING).will(returnValue(mensagem));
 		usuarioMensagemDao.expects(once()).method("save").with(ANYTHING);
 
-		usuarioMensagemManager.saveMensagemAndUsuarioMensagem("Msg", "Chico Bagulhoso", "link", usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS);
+		usuarioMensagemManager.saveMensagemAndUsuarioMensagem("Msg", "Chico Bagulhoso", "link", usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null);
 	}
 
 	public void testSaveMensagemAndUsuarioMensagemRespAreaOrganizacional() throws Exception
@@ -257,7 +257,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		usuarioMensagemDao.expects(once()).method("save").with(ANYTHING);
 		usuarioMensagemDao.expects(once()).method("save").with(ANYTHING);
 		
-		usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional("Msg", "Chico Bagulhoso", "link", new ArrayList<Long>(), TipoMensagem.AVALIACAO_DESEMPENHO);
+		usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional("Msg", "Chico Bagulhoso", "link", new ArrayList<Long>(), TipoMensagem.AVALIACAO_DESEMPENHO, null);
 	}
 	
 	public void testDeleteUm() throws Exception

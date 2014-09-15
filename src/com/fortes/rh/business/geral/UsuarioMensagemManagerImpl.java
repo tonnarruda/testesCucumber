@@ -16,6 +16,7 @@ import com.fortes.rh.dao.geral.UsuarioMensagemDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -241,7 +242,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		}
 	}
 
-	public void saveMensagemAndUsuarioMensagem(String msg, String remetente, String link, Collection<UsuarioEmpresa> usuarioEmpresas, Colaborador colaborador, char tipoMensagem)
+	public void saveMensagemAndUsuarioMensagem(String msg, String remetente, String link, Collection<UsuarioEmpresa> usuarioEmpresas, Colaborador colaborador, char tipoMensagem, Avaliacao avaliacao)
 	{
 		Mensagem mensagem = new Mensagem();
 		mensagem.setData(new Date());
@@ -251,6 +252,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		mensagem.setLink(link);
 		mensagem.setColaborador(colaborador);
 		mensagem.setTipo(tipoMensagem);
+		mensagem.setAvaliacao(avaliacao);
 
 		mensagem = mensagemManager.save(mensagem);
 
@@ -266,16 +268,16 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 		}
 	}
 
-	public void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String msg, String remetente, String link, Collection<Long> areasIds, char tipoMensagem)
+	public void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String msg, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao)
 	{
 		Collection<UsuarioEmpresa> usuariosResponsaveisAreaOrganizacionais = usuarioEmpresaManager.findUsuarioResponsavelAreaOrganizacional(areasIds);
-		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionais, null, tipoMensagem);
+		saveMensagemAndUsuarioMensagem(msg, remetente, link, usuariosResponsaveisAreaOrganizacionais, null, tipoMensagem, avaliacao);
 	}
 
-	public void saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(String mensagem, String remetente, String link, Collection<Long> areasIds, char tipoMensagem)
+	public void saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(String mensagem, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao)
 	{
 		Collection<UsuarioEmpresa> usuariosCoResponsaveisAreaOrganizacionais = usuarioEmpresaManager.findUsuarioCoResponsavelAreaOrganizacional(areasIds);
-		saveMensagemAndUsuarioMensagem(mensagem, remetente, link, usuariosCoResponsaveisAreaOrganizacionais, null, tipoMensagem);
+		saveMensagemAndUsuarioMensagem(mensagem, remetente, link, usuariosCoResponsaveisAreaOrganizacionais, null, tipoMensagem, avaliacao);
 	}
 
 	public void setMensagemManager(MensagemManager mensagemManager)

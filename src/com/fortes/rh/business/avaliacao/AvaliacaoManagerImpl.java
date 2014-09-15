@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorPeriodoExperienciaAvaliacaoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
@@ -27,12 +28,12 @@ import com.fortes.rh.model.pesquisa.relatorio.ResultadoQuestionario;
 
 public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, AvaliacaoDao> implements AvaliacaoManager
 {
-	private PerguntaManager perguntaManager;
-	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
-	
-	private QuestionarioManager questionarioManager;
 	private RespostaManager respostaManager;
+	private PerguntaManager perguntaManager;
+	private MensagemManager mensagemManager;
+	private QuestionarioManager questionarioManager;
 	private ColaboradorRespostaManager colaboradorRespostaManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
 	
 	public Collection<Avaliacao> findAllSelect(Integer page, Integer pagingSize, Long empresaId, Boolean ativo, char modeloAvaliacao, String titulo) 
@@ -176,11 +177,11 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 	public void remove(Long avaliacaoId) 
 	{
 		Integer qtdColaboradorAvalizacaoRespondida = colaboradorRespostaManager.countColaboradorAvaliacaoRespondida(avaliacaoId);
-		
 		if(qtdColaboradorAvalizacaoRespondida == 0)
 			colaboradorPeriodoExperienciaAvaliacaoManager.removeByAvaliacao(avaliacaoId);
 
 		perguntaManager.removerPerguntasAspectosDaAvaliacao(avaliacaoId);
+		mensagemManager.removeByAvaliacaoId(avaliacaoId);
 		
 		super.remove(avaliacaoId);
 	}
@@ -188,5 +189,9 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
 	{
 		this.colaboradorPeriodoExperienciaAvaliacaoManager = colaboradorPeriodoExperienciaAvaliacaoManager;
+	}
+
+	public void setMensagemManager(MensagemManager mensagemManager) {
+		this.mensagemManager = mensagemManager;
 	}
 }

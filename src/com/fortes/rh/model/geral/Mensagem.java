@@ -13,6 +13,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 
 @SuppressWarnings("serial")
 @Entity
@@ -27,6 +28,9 @@ public class Mensagem extends AbstractModel implements Serializable
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Colaborador colaborador;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Avaliacao avaliacao;
 	
 	private Character tipo;
 	
@@ -106,5 +110,13 @@ public class Mensagem extends AbstractModel implements Serializable
 	public void setTipo(Character tipo) 
 	{
 		this.tipo = tipo;
+	}
+
+	public Avaliacao getAvaliacao() {
+		return avaliacao;
+	}
+
+	public void setAvaliacao(Avaliacao avaliacao) {
+		this.avaliacao = avaliacao;
 	}
 }

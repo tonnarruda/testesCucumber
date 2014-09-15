@@ -51,6 +51,14 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 	@Transient
 	private int totalColab;
 	
+	public Avaliacao(){
+		super();
+	}
+
+	public Avaliacao(Long id){
+		this.setId(id);
+	}
+	
 	@Override
 	public Object clone()
 	{

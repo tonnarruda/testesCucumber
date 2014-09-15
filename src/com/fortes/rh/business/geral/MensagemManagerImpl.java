@@ -105,4 +105,9 @@ public class MensagemManagerImpl extends GenericManagerImpl<Mensagem, MensagemDa
 	{
 		getDao().removeMensagensColaborador(colaboradorId, tipo);
 	}
+
+	public void removeByAvaliacaoId(Long avaliacaoId) 
+	{
+		getDao().removeByAvaliacaoId(avaliacaoId);
+	}
 }

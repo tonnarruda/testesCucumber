@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.geral.CaixaMensagem;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -17,9 +18,9 @@ public interface UsuarioMensagemManager extends GenericManager<UsuarioMensagem>
 	UsuarioMensagem findByIdProjection(Long usuarioMensagemId, Long empresaId);
 	Boolean possuiMensagemNaoLida(Long usuarioId, Long empresaId);
 	void salvaMensagem(Empresa empresa, Mensagem mensage, String[] usuariosCheck) throws Exception;
-	void saveMensagemAndUsuarioMensagem(String mensagem, String remetrnte, String link, Collection<UsuarioEmpresa> usuarioEmpresas, Colaborador colaborador, char tipoMensagem);
-	void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String mensagem, String remetente, String link, Collection<Long> areasIds, char tipoMensagem);
-	void saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(String mensagem, String remetente, String link, Collection<Long> areasIds, char tipoMensagem);
+	void saveMensagemAndUsuarioMensagem(String mensagem, String remetrnte, String link, Collection<UsuarioEmpresa> usuarioEmpresas, Colaborador colaborador, char tipoMensagem, Avaliacao avaliacao);
+	void saveMensagemAndUsuarioMensagemRespAreaOrganizacional(String mensagem, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao);
+	void saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(String mensagem, String remetente, String link, Collection<Long> areasIds, char tipoMensagem, Avaliacao avaliacao);
 	Long getAnteriorOuProximo(Long usuarioMensagemId, Long usuarioId, Long empresaId, char opcao, Character tipo);
 	void delete(UsuarioMensagem usuarioMensagem, Long[] usuarioMensagemIds);
 	Integer countMensagens(Long empresaId, Long usuarioId, Character tipo);
