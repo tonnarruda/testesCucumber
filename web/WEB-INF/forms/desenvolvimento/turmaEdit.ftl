@@ -293,7 +293,7 @@
 				<@ww.textfield name="turma.dataPrevIni" value="${dataIni}" id="prevIni" readonly=true maxlength="10" cssStyle="width:80px;" liClass="liLeft" />
 				<@ww.label value="a" liClass="liLeft"/>
 				<@ww.textfield name="turma.dataPrevFim" value="${dataFim}" id="prevFim" readonly=true maxlength="10" cssStyle="width:80px;" liClass="liLeft"/><br /><br />
-				<@frt.checkListBox name="diasCheck" list="diasCheckList" readonly=true valueString=true width="600"/>
+				<@frt.checkListBox name="diasCheck" list="diasCheckList" readonly=true valueString=true width="600" filtro="true"/>
 			<#else>
 				<@ww.select label="Realizar turma por" name="turma.porTurno" id="porTurno" list=r"#{false:'Dia',true:'Turno'}" onchange="populaDias(document.forms[0]);"/>
 				Período:*<br>
@@ -305,10 +305,10 @@
 		</fieldset><br />
 
 		<#if turmaPertenceAEmpresaLogada>
-			<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList" width="607"/>
+			<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList" width="607" filtro="true"/>
 		<#else>
 			<img id="tooltipAvaliacao" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 250px; margin-bottom:-18px" />
-			<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList" readonly=true  width="607"/>
+			<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList" readonly=true  width="607" filtro="true"/>
 		</#if>
 
 		<@ww.hidden name="turma.id" id="turmaId" />

@@ -35,7 +35,7 @@
 					<@ww.textfield label="Nome do Colaborador" id="nome" name="colaborador.nome" maxLength="100" cssStyle="width: 500px;" />
 					<@ww.textfield label="Nome Comercial" id="nomeComercial" name="colaborador.nomeComercial" maxLength="100" cssStyle="width: 500px;"/>
 					<@ww.textfield label="Matrícula do Colaborador" id="matricula" name="colaborador.matricula" maxLength="20" cssStyle="width: 170px;"/>
-					<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" />
+					<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" />
 
 					<input type="submit" value="" class="btnPesquisar grayBGE" />
 				</ul>
@@ -50,7 +50,7 @@
 
 	<@ww.form id="formRelatorio" name="formRelatorio" action="relatorioHistoricoTreinamentos.action" onsubmit="${validarCampos}" method="POST" >
 		
-		<@frt.checkListBox label="Colaboradores*" id="colaboradoresCheck" name="colaboradoresCheck" list="colaboradoresCheckList" form="document.getElementById('formRelatorio')"/>
+		<@frt.checkListBox label="Colaboradores*" id="colaboradoresCheck" name="colaboradoresCheck" list="colaboradoresCheckList" form="document.getElementById('formRelatorio')" filtro="true"/>
 		
 		Período:<br>
 		<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>

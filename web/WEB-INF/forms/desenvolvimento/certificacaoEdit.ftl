@@ -15,7 +15,7 @@
 		<@ww.actionerror />
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.textfield label="Nome" id="nome" name="certificacao.nome"  cssStyle="width:500px" maxLength="100" required="true"/>
-	        <@frt.checkListBox label="Cursos" name="cursosCheck" list="cursosCheckList" />
+	        <@frt.checkListBox label="Cursos" name="cursosCheck" list="cursosCheckList" filtro="true" />
 			
 			<@ww.hidden name="certificacao.id" />
 			<@ww.token/>

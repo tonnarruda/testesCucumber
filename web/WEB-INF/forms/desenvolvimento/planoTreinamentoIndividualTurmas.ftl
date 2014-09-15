@@ -200,7 +200,7 @@
 									{
 										if(dados != null)
 										{
-											addChecks('diasTurmasCheck[' + indice + ']', dados);
+											addChecks('diasTurmasCheck[' + indice + ']', dados, null, true);
 										}
 										else
 											jAlert("Data inválida.");
@@ -321,10 +321,10 @@
 						<@ww.datepicker required="true" name="turmas[${i}].dataPrevIni" id="prevIni${i}" liClass="liLeft" onblur="populaDias(${i});" onchange="populaDias(${i});"  cssClass="mascaraData validaDataIni"/>
 						<@ww.label value="a" liClass="liLeft" />
 						<@ww.datepicker required="true" name="turmas[${i}].dataPrevFim" id="prevFim${i}" onblur="populaDias(${i});" onchange="populaDias(${i});"  cssClass="mascaraData validaDataFim" />
-						<@frt.checkListBox id="diasCheck${i}" name="diasTurmasCheck[${i}]" list="diasTurmasCheckList" width="486"/>
+						<@frt.checkListBox id="diasCheck${i}" name="diasTurmasCheck[${i}]" list="diasTurmasCheckList" width="486" filtro="true"/>
 					</fieldset>
 					
-					<@frt.checkListBox id="avaliacaoTurmasCheck${i}" name="avaliacaoTurmasCheck[${i}]" label="Questionários de Avaliação do Curso" list="avaliacaoTurmasCheckList"/>
+					<@frt.checkListBox id="avaliacaoTurmasCheck${i}" name="avaliacaoTurmasCheck[${i}]" label="Questionários de Avaliação do Curso" list="avaliacaoTurmasCheckList" filtro="true"/>
 				</div>
 			</fieldset>
 

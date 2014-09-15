@@ -132,7 +132,7 @@
 	<@ww.form name="form" action="imprimirRelatorio.action" validate="true" onsubmit="${validarCampos}" method="POST">
 		<@ww.select label="Curso" name="colaboradorTurma.curso.id" id="cursos" list="cursos" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" liClass="liLeft" onchange="listaTurma();" required="true" cssStyle="width:500px"/>
 	  	<@ww.select label="Turma" name="colaboradorTurma.turma.id" id="turma"  list="turmas" listKey="id" listValue="descricao" headerValue="Selecione..." headerKey="" liClass="liLeft"  onchange="populaDias(document.forms[0]);" required="true" cssStyle="width:500px"/>
-		<@frt.checkListBox name="diasCheck" id="diasCheck" label="Dias Previstos*" list="diasCheckList" readonly=false valueString=true/>
+		<@frt.checkListBox name="diasCheck" id="diasCheck" label="Dias Previstos*" list="diasCheckList" readonly=false valueString=true filtro="true"/>
 		<@ww.select label="Situação do colaborador" name="exibirSituacaoAtualColaborador" list=r"#{true:'Atual',false:'De acordo com a data da turma'}" cssStyle="width:500px"/>
 		<@ww.checkbox label="Quebrar página por estabelecimento" id="quebraPaginaEstabelecimento" name="quebraPaginaEstabelecimento" labelPosition="left"/>
 

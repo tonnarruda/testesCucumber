@@ -63,7 +63,7 @@
 			</@ww.div>
 		</li>
 		<br/>
-		<@frt.checkListBox name="turmasCheck" id="turmasCheck" label="Cursos / Turmas" list="turmasCheckList" width="735" height="300"/>
+		<@frt.checkListBox name="turmasCheck" id="turmasCheck" label="Cursos / Turmas" list="turmasCheckList" width="735" height="300" filtro="true"/>
 	</@ww.form>
 
 	<div class="buttonGroup">

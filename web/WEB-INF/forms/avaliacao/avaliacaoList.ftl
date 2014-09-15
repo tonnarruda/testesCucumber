@@ -80,7 +80,7 @@
 	
 	<div id="formDialog">
 		<@ww.form name="formModal" id="formModal" action="clonar.action" method="POST">
-			<@frt.checkListBox label="Selecione as empresas para as quais deseja clonar este modelo de avaliação" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formModal')"/>
+			<@frt.checkListBox label="Selecione as empresas para as quais deseja clonar este modelo de avaliação" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formModal')" filtro="true"/>
 			* Caso nenhuma empresa seja selecionada, o modelo de avaliação será clonado apenas para a empresa <@authz.authentication operation="empresaNome"/><br>
 			<@ww.hidden name="avaliacao.id" id="avaliacaoId"/>
 			<@ww.hidden name="modeloAvaliacao" id="modeloAvaliacao"/>

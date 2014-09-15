@@ -41,9 +41,9 @@
 	<@ww.actionmessage />
 
 	<@ww.form name="form" action="relatorioRankingAvaliacaoAluno.action" method="POST">
-		<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos" list="cursosCheckList" onClick="getTurmas();" />
-		<@frt.checkListBox name="turmasCheck" id="turmasCheck" label="Cursos / Turmas" list="turmasCheckList" />
-		<@frt.checkListBox name="avaliacaoCursosCheck" id="avaliacaoCursosCheck" label="Avaliações" list="avaliacaoCursosCheckList" />
+		<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos" list="cursosCheckList" onClick="getTurmas();" filtro="true"/>
+		<@frt.checkListBox name="turmasCheck" id="turmasCheck" label="Cursos / Turmas" list="turmasCheckList" filtro="true"/>
+		<@frt.checkListBox name="avaliacaoCursosCheck" id="avaliacaoCursosCheck" label="Avaliações" list="avaliacaoCursosCheckList" filtro="true"/>
 	
 		<div class="buttonGroup">
 			<button type="submit" class="btnRelatorio"></button>

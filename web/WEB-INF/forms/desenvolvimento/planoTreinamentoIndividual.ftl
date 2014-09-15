@@ -101,8 +101,8 @@
 	
 	<@ww.form name="form" action="" method="POST">
 		<@ww.select label="Empresa" name="empresaId" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value); populaArea(this.value);"/>
-		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
-		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList"/>
+		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
+		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true"/>
 		<@ww.select label="Filtrar colaboradores" name="colaboradoresAvaliados" id="colaboradoresAvaliados" list=r"#{'S':'Somente colaboradores com avaliação de nível de competência','N':'Somente colaboradores sem avaliação de nível de competência','T':'Todos os colaboradores'}" cssStyle="width:500px;" />
 		<@ww.select label="Agrupar por" name="agruparPor" id="agruparPor" list=r"#{'C':'Colaborador','T':'Treinamento'}" />
 	</@ww.form>

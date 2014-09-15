@@ -52,7 +52,7 @@
 		</div>
 
 		<#if colaboradoresCheckList?exists && colaboradoresCheckList?size!=0 >
-			<@frt.checkListBox name="colaboradoresCheck" label="Colaboradores" list="colaboradoresCheckList" width="600" height="300"/>
+			<@frt.checkListBox name="colaboradoresCheck" label="Colaboradores" list="colaboradoresCheckList" width="600" height="300" filtro="true"/>
  			<@ww.textfield label="Título do Certificado" name="certificado.titulo" maxlength="200" cssStyle="width: 600px;" />
 
 			<span style="position: relative">
