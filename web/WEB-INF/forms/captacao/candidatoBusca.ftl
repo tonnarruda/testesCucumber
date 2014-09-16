@@ -40,6 +40,9 @@
 			$('#tooltipPalavraChave').qtip({
 				content: 'Este filtro irá incidir sobre os campos "Curso" e "Outros Cursos" contidos na aba "FORMAÇÃO ESCOLAR" e nos campos "Outro Cargo" e "Informações Adicionais" contidos na aba "EXPERIÊNCIAS".'
 			});
+			$('#tooltipExperienciaTrabalho').qtip({
+				content: 'A quantidade de meses deve ser preenchida quando for selecionado pelo menos um cargo abaixo.'
+			});
 		
 			enviaEmpresa($('#empresaSelect').val());
 			
@@ -190,7 +193,7 @@
 					<span>Experiência de:<br /></span>
 				</li>
 				<@ww.textfield name="tempoExperiencia" id="tempoExperiencia" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
-				<li>meses</li>
+				<li>meses <img id="tooltipExperienciaTrabalho" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -2px" /></li>
 				<li>&nbsp;</li>
 				<@frt.checkListBox label="em" name="experienciasCheck" list="experienciasCheckList" width="475px;" />
 			</fieldset>

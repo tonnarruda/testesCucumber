@@ -5,6 +5,7 @@
 		<Item visivel="S" motivo="S20140800178"><![CDATA[Avaliação de Desempenho > Cadastros > Dias do Acompanhamento do Período de Experiência: Novo campo "Ativo". Os relatórios e as notificações automáticas não considerarão os períodos de experiência inativos.]]></Item>
 		<Item visivel="S" motivo="S20140900062"><![CDATA[T&D: Inclusão de filtros em todos os campos de múltipla escolha.]]></Item>
 		<Item visivel="S" motivo="S20140800062"><![CDATA[T&D > Painel de Indicadores: Para o cálculo do indicador "horas de treinamento per capita" considerar somente a carga horária dos dias da turma que estiverem dentro do período.]]></Item>
+		<Item visivel="N" motivo="P20140900037"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem > Triagem Avançada: Mensagem explicativa no filtro "Experiência de Trabalho".]]></Item>
 		<Item visivel="N" motivo="P20140900077"><![CDATA[BUG: Mensagens da avaliação do período de experiência: Excluir mensagens quando avaliação do período de experiência for excluida.]]></Item>
 		<Item visivel="N" motivo="P20140900021"><![CDATA[BUG: R&S > Relatórios > Lista de Candidatos da Seleção: O relatório não trazia todas as etapas que o candidato participou dentro do período, apenas a última.]]></Item>
 		<Item visivel="N" motivo="P20140000207"><![CDATA[BUG: Pesquisas > Movimentações > Pesquisas: Excluir respostas dos colaboradores ao excluir perquisa.]]></Item>
