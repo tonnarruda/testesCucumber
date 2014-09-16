@@ -250,7 +250,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 
-		manager.expects(once()).method("remove");
+		manager.expects(once()).method("remover");
 		assertEquals(action.delete(), "success");
 	}
 	
@@ -259,7 +259,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		
-		manager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));;
+		manager.expects(once()).method("remover").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));;
 		assertEquals(action.delete(), "success");
 	}
 
@@ -426,16 +426,16 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		
-		manager.expects(once()).method("clonar").with(eq(2L), ANYTHING).isVoid();
+		manager.expects(once()).method("clonar").with(eq(2L), ANYTHING, ANYTHING).isVoid();
 		
-		assertEquals("success",action.clonar());
+		assertEquals("success", action.clonar());
 	}
 	public void testClonarException()
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		
-		manager.expects(once()).method("clonar").with(eq(2L), ANYTHING).will(throwException(new Exception()));
+		manager.expects(once()).method("clonar").with(eq(2L), ANYTHING, ANYTHING).will(throwException(new Exception()));
 		
 		assertEquals("success",action.clonar());
 		assertEquals(1, action.getActionErrors().size());

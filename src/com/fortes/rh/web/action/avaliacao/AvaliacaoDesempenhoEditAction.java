@@ -93,6 +93,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private boolean agruparPorAspectos;
 	private boolean desconsiderarAutoAvaliacao;
 	private boolean exibirObsAvaliadores;
+	private boolean clonarParticipantes;
 	private Long[] participanteIds;
 	
 	
@@ -320,9 +321,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		{
 			Long[] empresasIds = LongUtil.arrayStringToArrayLong(empresasCheck);
 			if (empresasIds != null && empresasIds.length > 0)
-				avaliacaoDesempenhoManager.clonar(avaliacaoDesempenho.getId(), empresasIds);
+				avaliacaoDesempenhoManager.clonar(avaliacaoDesempenho.getId(), clonarParticipantes, empresasIds);
 			else
-				avaliacaoDesempenhoManager.clonar(avaliacaoDesempenho.getId(), getEmpresaSistema().getId());
+				avaliacaoDesempenhoManager.clonar(avaliacaoDesempenho.getId(), clonarParticipantes, getEmpresaSistema().getId());
 				
 			addActionSuccess("Avaliação de desempenho clonada com sucesso.");
 		} 
@@ -350,8 +351,12 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		try
 		{
-			avaliacaoDesempenhoManager.remove(avaliacaoDesempenho.getId());
+			avaliacaoDesempenhoManager.remover(avaliacaoDesempenho.getId());
 			addActionSuccess("Avaliação de desempenho excluída com sucesso.");
+		}
+		catch (AvaliacaoRespondidaException e)
+		{
+			addActionWarning(e.getMessage());
 		}
 		catch (Exception e)
 		{
@@ -795,5 +800,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setPeriodoFinal(Date periodoFinal) {
 		this.periodoFinal = periodoFinal;
+	}
+
+	public void setClonarParticipantes(boolean clonarParticipantes) {
+		this.clonarParticipantes = clonarParticipantes;
 	}
 }

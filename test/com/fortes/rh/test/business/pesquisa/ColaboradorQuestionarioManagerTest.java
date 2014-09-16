@@ -393,52 +393,16 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
 		assertEquals(4, desassociados.size());
 	}
 	
-	public void testClonar() throws Exception
-	{
-		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
-		
-		boolean liberada = false;
-		
-		ColaboradorQuestionario colabQuestionario1 = ColaboradorQuestionarioFactory.getEntity(11L);
-		ColaboradorQuestionario colabQuestionario2 = ColaboradorQuestionarioFactory.getEntity(12L);
-		ColaboradorQuestionario colabQuestionario3 = ColaboradorQuestionarioFactory.getEntity(13L);
-		
-		Collection<ColaboradorQuestionario> participantes = Arrays.asList(colabQuestionario1,colabQuestionario2,colabQuestionario3);
-		
-		colaboradorQuestionarioDao.expects(once()).method("save").with(ANYTHING);
-		colaboradorQuestionarioDao.expects(once()).method("save").with(ANYTHING);
-		colaboradorQuestionarioDao.expects(once()).method("save").with(ANYTHING);
-		
-		colaboradorQuestionarioDao.expects(once()).method("removeAssociadosSemResposta").with(ANYTHING);
-
-		
-		colaboradorQuestionarioManager.clonar(participantes, avaliacaoDesempenho, liberada);
-	}
-	
 	public void testClonarComAvaliacaoLiberada() throws Exception
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
+		AvaliacaoDesempenho avaliacaoDesempenhoClone = AvaliacaoDesempenhoFactory.getEntity(2L);
 		
-		boolean liberada = true;
-		
-		ColaboradorQuestionario colabQuestionario1 = ColaboradorQuestionarioFactory.getEntity(11L);
-		ColaboradorQuestionario colabQuestionario2 = ColaboradorQuestionarioFactory.getEntity(12L);
-		ColaboradorQuestionario colabQuestionario3 = ColaboradorQuestionarioFactory.getEntity(13L);
-		
-		Collection<ColaboradorQuestionario> participantes = Arrays.asList(colabQuestionario1,colabQuestionario2,colabQuestionario3);
-		
-		colaboradorQuestionarioDao.expects(once()).method("save").with(ANYTHING);
-		colaboradorQuestionarioDao.expects(once()).method("save").with(ANYTHING);
-		colaboradorQuestionarioDao.expects(once()).method("save").with(ANYTHING);
-		
-		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(true), eq(false)).will(returnValue(new ArrayList<Colaborador>()));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(false), eq(false)).will(returnValue(new ArrayList<Colaborador>()));
-		
+		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(true), eq(null)).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(false), eq(null)).will(returnValue(new ArrayList<Colaborador>()));
 		colaboradorQuestionarioDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
-		colaboradorQuestionarioDao.expects(once()).method("removeAssociadosSemResposta").with(ANYTHING);
 		
-		
-		colaboradorQuestionarioManager.clonar(participantes, avaliacaoDesempenho, liberada);
+		colaboradorQuestionarioManager.clonarParticipantes(avaliacaoDesempenho, avaliacaoDesempenhoClone);
 	}
 
 	public void testRemoveParticipanteDeAvaliacaoDesempenho() throws Exception

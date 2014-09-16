@@ -16,6 +16,7 @@ import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
+import com.fortes.rh.exception.AvaliacaoRespondidaException;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
@@ -48,7 +49,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		return getDao().findAllSelect(empresaId, ativa, tipoModeloAvaliacao);
 	}
 
-	public void clonar(Long avaliacaoDesempenhoId, Long... empresasIds) throws Exception 
+	public void clonar(Long avaliacaoDesempenhoId, boolean clonarParticipantes, Long... empresasIds) throws Exception 
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = getDao().findByIdProjection(avaliacaoDesempenhoId);
 		Long avaliacaoId = avaliacaoDesempenho.getAvaliacao().getId();
@@ -79,6 +80,9 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			avaliacaoDesempenhoClone.setLiberada(false);
 			
 			save(avaliacaoDesempenhoClone);
+			
+			if (clonarParticipantes)
+				colaboradorQuestionarioManager.clonarParticipantes(avaliacaoDesempenho, avaliacaoDesempenhoClone);
 		}
 	}
 	
@@ -122,6 +126,16 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	{
 		colaboradorQuestionarioManager.desassociarParticipantes(avaliacaoDesempenho);
 		getDao().liberarOrBloquear(avaliacaoDesempenho.getId(), false);
+	}
+	
+	public void remover(Long avaliacaoDesempenhoId) throws Exception 
+	{
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByAvaliacaoDesempenho(avaliacaoDesempenhoId);
+		if (!colaboradorQuestionarios.isEmpty())
+			throw new AvaliacaoRespondidaException("Não foi possível excluir, pois já existem respostas para essa avaliação");
+		
+		colaboradorQuestionarioManager.excluirColaboradorQuestionarioByAvaliacaoDesempenho(avaliacaoDesempenhoId);
+		remove(avaliacaoDesempenhoId);
 	}
 
 	public Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada, Long empresaId)

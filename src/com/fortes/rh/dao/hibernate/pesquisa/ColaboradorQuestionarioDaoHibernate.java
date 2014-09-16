@@ -672,6 +672,26 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 
 		return criteria.list();
 	}
+	
+	public Collection<ColaboradorQuestionario> findRespondidasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
+		criteria.createCriteria("cq.questionario", "q", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+
+		p.add(Projections.property("cq.id"), "id");
+		
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
+		criteria.add(Expression.eq("cq.respondida", true));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
 
 	public void removeAssociadosSemResposta(Long avaliacaoDesempenhoId)
 	{

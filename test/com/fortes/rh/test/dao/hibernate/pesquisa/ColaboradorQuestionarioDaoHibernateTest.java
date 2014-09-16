@@ -684,6 +684,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioRespondida);
 
 		assertEquals(1, colaboradorQuestionarioDao.findRespondidasByAvaliacaoDesempenho(new Long[]{avaliador.getId()}, avaliacaoDesempenho.getId(), false).size());
+		assertEquals(1, colaboradorQuestionarioDao.findRespondidasByAvaliacaoDesempenho(avaliacaoDesempenho.getId()).size());
 	}
 	
 	public void testRemoveParticipantesSemAssociacao()

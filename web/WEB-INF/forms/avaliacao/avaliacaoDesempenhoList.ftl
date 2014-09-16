@@ -24,7 +24,7 @@
 		function clonar(avaliacaoDesempenhoId, titulo)
 		{
 			$('#avaliacaoDesempenhoId').val(avaliacaoDesempenhoId);
-			$('#formDialog').dialog({ modal: true, width: 530, title: 'Clonar: ' + titulo });
+			$('#formDialog').dialog({ modal: true, width: 530, title: 'Clonar ' + titulo });
 		}
 		
 		function buscarAvaliacoes()
@@ -118,6 +118,8 @@
 			<@frt.checkListBox label="Selecione as empresas para as quais deseja clonar esta avaliação" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formModal')"/>
 			* Caso nenhuma empresa seja selecionada, a avaliação será clonada apenas para a empresa <@authz.authentication operation="empresaNome"/><br>
 			<@ww.hidden name="avaliacaoDesempenho.id" id="avaliacaoDesempenhoId"/>
+			<br />
+			<@ww.checkbox label="Incluir avaliados e avaliadores" name="clonarParticipantes" labelPosition="left"/>
 			<button class="btnClonar" type="submit"></button>
 		</@ww.form>
 	</div>

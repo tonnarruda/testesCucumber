@@ -15,9 +15,10 @@ public interface AvaliacaoDesempenhoManager extends GenericManager<AvaliacaoDese
 {
 	AvaliacaoDesempenho findByIdProjection(Long id);
 	Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao);
-	void clonar(Long avaliacaoDesempenhoId, Long... empresasIds) throws Exception;
+	void clonar(Long avaliacaoDesempenhoId, boolean clonarParticipantes, Long... empresasIds) throws Exception;
 	void liberar(AvaliacaoDesempenho avaliacaoDesempenho, Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores) throws Exception;
 	void bloquear(AvaliacaoDesempenho avaliacaoDesempenho) throws Exception;
+	void remover(Long avaliacaoDesempenhoId) throws Exception;
 	Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada, Long empresaId);
 	Collection<ResultadoAvaliacaoDesempenho> montaResultado(Collection<Long> avaliadosIds, AvaliacaoDesempenho avaliacaoDesempenho, boolean agruparPorAspectos, boolean desconsiderarAutoAvaliacao) throws ColecaoVaziaException;
 	void enviarLembrete(Long avaliacaoDesempenhoId, Empresa empresa);

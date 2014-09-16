@@ -378,22 +378,29 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		return desassociados;
 	}
 
-	public void clonar(Collection<ColaboradorQuestionario> participantes, AvaliacaoDesempenho avaliacaoDesempenho, boolean liberada) throws Exception
+	public void clonarParticipantes(AvaliacaoDesempenho avaliacaoDesempenho, AvaliacaoDesempenho avaliacaoDesempenhoClone) throws Exception
 	{
-		// clona 
-		for (ColaboradorQuestionario colaboradorQuestionario : participantes)
+		Collection<Colaborador> avaliados = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null);
+		Collection<Colaborador> avaliadores = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null);
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
+		
+		for (Colaborador avaliado : avaliados) 
 		{
-			colaboradorQuestionario.setId(null);
-			colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
-			colaboradorQuestionario.limparCampos();
-			
-			getDao().save(colaboradorQuestionario);
+			ColaboradorQuestionario colaboradorQuestionario = new ColaboradorQuestionario(avaliacaoDesempenhoClone);
+			colaboradorQuestionario.setAvaliacao(avaliacaoDesempenho.getAvaliacao());
+			colaboradorQuestionario.setColaborador(avaliado);
+			colaboradorQuestionarios.add(colaboradorQuestionario);
+		}
+	
+		for (Colaborador avaliador : avaliadores) 
+		{
+			ColaboradorQuestionario colaboradorQuestionario = new ColaboradorQuestionario(avaliacaoDesempenhoClone);
+			colaboradorQuestionario.setAvaliacao(avaliacaoDesempenho.getAvaliacao());
+			colaboradorQuestionario.setAvaliador(avaliador);
+			colaboradorQuestionarios.add(colaboradorQuestionario);
 		}
 		
-		if (liberada) // se a avaliação original estava liberada, desassocia participantes 
-			desassociarParticipantes(avaliacaoDesempenho);
-		else
-			getDao().removeAssociadosSemResposta(avaliacaoDesempenho.getId());
+		getDao().saveOrUpdate(colaboradorQuestionarios);
 	}
 	
 	public void excluirColaboradorQuestionarioByAvaliacaoDesempenho(Long avaliacaoDesempenhoId) 
@@ -477,5 +484,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	{
 		return getDao().findAutoAvaliacao(colaboradorId);
 	}
-	
+
+	public Collection<ColaboradorQuestionario> findRespondidasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId) 
+	{
+		return getDao().findRespondidasByAvaliacaoDesempenho(avaliacaoDesempenhoId);
+	}	
 }
