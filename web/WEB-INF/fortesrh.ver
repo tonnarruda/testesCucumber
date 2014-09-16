@@ -11,6 +11,7 @@
 		<Item visivel="N" motivo="P20140900021"><![CDATA[BUG: R&S > Relatórios > Lista de Candidatos da Seleção: O relatório não trazia todas as etapas que o candidato participou dentro do período, apenas a última.]]></Item>
 		<Item visivel="N" motivo="P20140000207"><![CDATA[BUG: Pesquisas > Movimentações > Pesquisas: Excluir respostas dos colaboradores ao excluir perquisa.]]></Item>
 		<Item visivel="N" motivo="P20140800224"><![CDATA[BUG: Utilitários > Configurações > Gerenciador de Comunicação: Ao enviar mensagem e email de aviso de desligamento, o nome do colaborador era preenchido com "null".]]></Item>
+		<Item visivel="N" motivo="S20140900063"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Nova descrição da permissão para visualizar problemas de comunicação com o AC Pessoal.]]></Item>
 	</Versao>
 	<Versao id="1.1.133.160" bd="" data="08/09/2014">
 		<Item visivel="S" motivo="S20140800180"><![CDATA[Info. Funcionais > Movimentações > Atualizar Modelos de Avaliação: Nova funcionalidade para atualizar os modelos de acompanhamento do período de experiência do colaborador e do gestor.]]></Item>

@@ -267,7 +267,7 @@ public class Index extends MyActionSupport
 		
 		if(integradoAC)
 		{
-			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"RECEBE_ALERTA_SETORPESSOAL"}))
+			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"RECEBE_ALERTA_ERRO_CONEXAO_ACPESSOAL"}))
 			{
 				String versaoWebServiceAC;
 

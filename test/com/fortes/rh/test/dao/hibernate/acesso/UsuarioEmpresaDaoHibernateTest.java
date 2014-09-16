@@ -266,7 +266,7 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 		grupoACDao.save(grupoAC);
 		
 		Papel papel1 = new Papel();
-		papel1.setCodigo("RECEBE_ALERTA_SETORPESSOAL");
+		papel1.setCodigo("ROLE_VISUALIZAR_PENDENCIA_AC");
 		papel1 = papelDao.save(papel1);
 
 		Papel papel2 = new Papel();
@@ -314,10 +314,10 @@ public class UsuarioEmpresaDaoHibernateTest extends GenericDaoHibernateTest<Usua
 		usuarioEmpresa3= usuarioEmpresaDao.save(usuarioEmpresa3);
 		
 		// por codigoAC
-		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRole(empresa.getCodigoAC(), "XXX", null, "RECEBE_ALERTA_SETORPESSOAL").size());
+		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRole(empresa.getCodigoAC(), "XXX", null, "ROLE_VISUALIZAR_PENDENCIA_AC").size());
 		
 		// por empresaId
-		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRole(null, null, empresa.getId(), "RECEBE_ALERTA_SETORPESSOAL").size());
+		assertEquals(2, usuarioEmpresaDao.findUsuariosByEmpresaRole(null, null, empresa.getId(), "ROLE_VISUALIZAR_PENDENCIA_AC").size());
 	}
 	
 	public void testFindUsuariosByEmpresaRole()
