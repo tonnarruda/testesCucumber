@@ -296,7 +296,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaboradorId);
 
 			if (historicoColaborador == null)
-				historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaboradorId);
+				historicoColaborador = historicoColaboradorManager.getHistoricoAtualComFuturo(colaboradorId);
 			
 			if (historicoColaborador == null)
 				historicoColaborador = historicoColaboradorManager.getHistoricoContratacaoAguardando(colaboradorId);

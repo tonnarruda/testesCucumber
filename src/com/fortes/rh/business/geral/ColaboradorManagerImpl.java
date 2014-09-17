@@ -584,7 +584,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		HistoricoColaborador historicoColaborador = null;
 		if (editarHistorico)
 		{
-			historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
+			historicoColaborador = historicoColaboradorManager.getHistoricoAtualComFuturo(colaborador.getId());
 			setDadosHistoricoColaborador(historicoColaborador, colaborador);
 			historicoColaborador = historicoColaboradorManager.ajustaTipoSalario(historicoColaborador, colaborador.getHistoricoColaborador()
 					.getTipoSalario(), colaborador.getHistoricoColaborador().getIndice(), colaborador.getHistoricoColaborador().getQuantidadeIndice(),

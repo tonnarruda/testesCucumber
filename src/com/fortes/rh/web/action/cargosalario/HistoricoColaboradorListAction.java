@@ -406,7 +406,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, getEmpresaSistema().getId());
 			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
-			historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
+			historicoColaborador = historicoColaboradorManager.getHistoricoAtualComFuturo(colaborador.getId());
 			if(historicoColaborador != null)
 				historicoColaborador.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, historicoColaborador.getAreaOrganizacional().getId()));
 

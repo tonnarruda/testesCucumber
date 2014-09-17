@@ -83,7 +83,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
     		candidatoId = colaboradorId;
     	else
     	{
-    		HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaboradorId);
+    		HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtualComFuturo(colaboradorId);
     		areaOrganizacional = historicoColaborador.getAreaOrganizacional();
     		cargo = historicoColaborador.getFaixaSalarial().getCargo();
     		estabelecimento = historicoColaborador.getEstabelecimento();

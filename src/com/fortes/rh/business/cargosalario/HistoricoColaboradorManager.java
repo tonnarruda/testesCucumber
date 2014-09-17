@@ -94,7 +94,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public boolean existeHistoricoAprovado(Long historicoColaboradorId, Long colaboradorId);
 
-	public HistoricoColaborador getHistoricoAtualOuFuturo(Long colaboradorId);
+	public HistoricoColaborador getHistoricoAtualComFuturo(Long colaboradorId);
 
 	public HistoricoColaborador prepareSituacao(TSituacao situacao) throws Exception;
 

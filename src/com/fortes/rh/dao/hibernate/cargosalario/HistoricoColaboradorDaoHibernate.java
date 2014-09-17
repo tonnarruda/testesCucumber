@@ -1423,12 +1423,12 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 	
 	public List<HistoricoColaborador> findPendenciasPortal(Boolean atualizarHistoricoPortal, Long... empresasIds) 
 	{
-		Criteria criteria = getSession().createCriteria(SituacaoColaborador.class, "sc");
-		criteria.createCriteria("sc.estabelecimento", "e", Criteria.LEFT_JOIN);
-		criteria.createCriteria("sc.faixaSalarial", "f", Criteria.LEFT_JOIN);
-		criteria.createCriteria("sc.indice", "i", Criteria.LEFT_JOIN);
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("hc.estabelecimento", "e", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.faixaSalarial", "f", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.indice", "i", Criteria.LEFT_JOIN);
 		criteria.createCriteria("f.cargo", "cg", Criteria.LEFT_JOIN);
-		criteria.createCriteria("sc.colaborador", "c", Criteria.INNER_JOIN);
+		criteria.createCriteria("hc.colaborador", "c", Criteria.INNER_JOIN);
 		criteria.createCriteria("c.endereco.cidade", "ci", Criteria.LEFT_JOIN);
 		criteria.createCriteria("c.empresa", "emp");
 
@@ -1461,30 +1461,32 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 			p.add(Projections.property("c.foto.size"), "colaboradorFotoSize");
 			p.add(Projections.property("ci.codigoIBGE"), "colaboradorEnderecoCidadeCodigoIBGE");
 		}
-		p.add(Projections.property("sc.data"), "data");
+		p.add(Projections.property("hc.data"), "data");
 		p.add(Projections.property("e.nome"), "estabelecimentoNome");
 		p.add(Projections.property("f.id"), "faixaSalarialId");
 		p.add(Projections.property("f.nome"), "faixaSalarialNome");
 		p.add(Projections.property("cg.id"), "cargoId");
 		p.add(Projections.property("cg.nome"), "cargoNome");
 		p.add(Projections.property("i.id"), "indiceId");
-		p.add(Projections.property("sc.salario"), "salario");
-		p.add(Projections.property("sc.tipo"), "tipoSalario");
-		p.add(Projections.property("sc.motivo"), "motivo");
+		p.add(Projections.property("hc.salario"), "salario");
+		p.add(Projections.property("hc.tipoSalario"), "tipoSalario");
+		p.add(Projections.property("hc.motivo"), "motivo");
 		p.add(Projections.sqlProjection("monta_familia_area({alias}.areaOrganizacional_id) as areaNome", new String[]{"areaNome"}, new Type[]{Hibernate.STRING}), "areaOrganizacionalNome") ;
 
 		criteria.setProjection(p);
 
 		criteria.add(Expression.in("emp.id",empresasIds));
-		criteria.add(Expression.eq("sc.status",StatusRetornoAC.CONFIRMADO));
+		criteria.add(Expression.eq("hc.status",StatusRetornoAC.CONFIRMADO));
 		
 		if(atualizarHistoricoPortal != null)
 			criteria.add(Expression.eq("c.atualizarHistoricoPortal", atualizarHistoricoPortal));
 		
+		criteria.add(Expression.eq("c.id", 3569L));
+		
 		//Ordem muito importante não remover
 		criteria.addOrder(Order.asc("emp.cnpj"));
 		criteria.addOrder(Order.asc("c.pessoal.cpf"));
-		criteria.addOrder(Order.asc("sc.data"));
+		criteria.addOrder(Order.asc("hc.data"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));

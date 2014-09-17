@@ -121,7 +121,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		}
 		else
 		{
-			historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
+			historicoColaborador = historicoColaboradorManager.getHistoricoAtualComFuturo(colaborador.getId());
 			historicoColaborador.setId(null);
 			historicoColaborador.setData(new Date());
 		}

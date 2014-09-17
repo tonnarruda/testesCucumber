@@ -1892,7 +1892,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		historicoColaboradorDao.expects(once()).method("getHistoricoAtual").with(eq(colaborador.getId()), eq(TipoBuscaHistoricoColaborador.COM_HISTORICO_FUTURO)).will(returnValue(historicoColaborador));
 
-		HistoricoColaborador retorno = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
+		HistoricoColaborador retorno = historicoColaboradorManager.getHistoricoAtualComFuturo(colaborador.getId());
 
 		assertEquals(historicoColaborador.getId(), retorno.getId());
 	}

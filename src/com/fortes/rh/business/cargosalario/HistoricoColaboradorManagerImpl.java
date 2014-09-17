@@ -102,7 +102,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return getDao().getHistoricoAtual(colaboradorId, TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
 	}
 	
-	public HistoricoColaborador getHistoricoAtualOuFuturo(Long colaboradorId)
+	public HistoricoColaborador getHistoricoAtualComFuturo(Long colaboradorId)
 	{
 		return getDao().getHistoricoAtual(colaboradorId, TipoBuscaHistoricoColaborador.COM_HISTORICO_FUTURO);
 	}
