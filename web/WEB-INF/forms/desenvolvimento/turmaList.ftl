@@ -106,7 +106,7 @@
 				<#assign textoStatus>Bloqueado</#assign>
 			</#if>
 			
-			<a href="../colaboradorTurma/list.action?turma.id=${turma.id}"><img border="0" title="Colaboradores Inscritos" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
+			<a href="../colaboradorTurma/list.action?turma.id=${turma.id}&page=1"><img border="0" title="Colaboradores Inscritos" src="<@ww.url includeParams="none" value="/imgs/usuarios.gif"/>"></a>
 			<a href="prepareUpdate.action?turma.id=${turma.id}&curso.id=${curso.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="enviarEmail(${turma.id});" ><img border="0" title="Enviar aviso por email" src="<@ww.url value="/imgs/icon_email.gif"/>"></a>
 			
