@@ -1322,3 +1322,16 @@ function somaDias(data, dias) {
 
    return diafuturo+"/"+mes+"/"+ano;
 }
+
+function naoInseririrCharacterComValor(e,value)
+{
+    if (document.all) 
+		var evt = event.keyCode;
+    else 
+		var evt = e.charCode;
+	
+	if(value.indexOf(String.fromCharCode(evt)) == 0)
+		return false;
+
+	return true;
+}

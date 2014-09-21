@@ -11,6 +11,7 @@
 		<Item visivel="N" motivo="P20140900021"><![CDATA[BUG: R&S > Relatórios > Lista de Candidatos da Seleção: O relatório não trazia todas as etapas que o candidato participou dentro do período, apenas a última.]]></Item>
 		<Item visivel="N" motivo="P20140000207"><![CDATA[BUG: Pesquisas > Movimentações > Pesquisas: Excluir respostas dos colaboradores ao excluir perquisa.]]></Item>
 		<Item visivel="N" motivo="P20140900094"><![CDATA[BUG: T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos: Paginação não reinicia quando há mudança de turma.]]></Item>
+		<Item visivel="N" motivo="P20140900110"><![CDATA[BUG: Utilitários > Cadastros > Empresas: Impedir a inserção de aspas simples(') no nome da empresa, pois o mesmo invalida o javascrip em vários locais do sistema.]]></Item>
 		<Item visivel="N" motivo="P20140800224"><![CDATA[BUG: Utilitários > Configurações > Gerenciador de Comunicação: Ao enviar mensagem e email de aviso de desligamento, o nome do colaborador era preenchido com "null".]]></Item>
 		<Item visivel="N" motivo="S20140900063"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Nova descrição da permissão para visualizar problemas de comunicação com o AC Pessoal.]]></Item>
 	</Versao>
