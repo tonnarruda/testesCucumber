@@ -35,6 +35,8 @@
 		fieldset { padding: 10px; margin-bottom: 10px; background: inherit; }
 		
 		.subForm { width: 100%; }
+		
+		.listCheckBoxFilter { width: 50px !important; }
 	</style>
 	
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
@@ -332,13 +334,13 @@
 						</tr>
 						<tr>
 							<td>
-								<@frt.checkListBox label="Empresas" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" onClick="populaAreas();" width="280"/>
+								<@frt.checkListBox label="Empresas" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" onClick="populaAreas();" width="280" filtro="true"/>
 							</td>
 							<td>
-								<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" onClick="populaCargosByAreaVinculados();" width="340" />
+								<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" onClick="populaCargosByAreaVinculados();" width="340" filtro="true"/>
 							</td>
 							<td>
-								<@frt.checkListBox label="Cargos" name="cargosCheck" id="cargosCheck" list="cargosCheckList" width="280"/>
+								<@frt.checkListBox label="Cargos" name="cargosCheck" id="cargosCheck" list="cargosCheckList" width="280" filtro="true"/>
 							</td>
 						</tr>
 						<tr>

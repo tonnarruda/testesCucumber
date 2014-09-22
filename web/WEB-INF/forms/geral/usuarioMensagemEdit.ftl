@@ -22,7 +22,7 @@
 <#assign validarCampos="return validaFormulario('form', new Array('@usuariosCheck', 'mensagem'))"/>
 
 <@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
-	<@frt.checkListBox name="usuariosCheck" id="usuariosCheck" label="Destinatários" list="usuariosCheckList"/>
+	<@frt.checkListBox name="usuariosCheck" id="usuariosCheck" label="Destinatários" list="usuariosCheckList" filtro="true"/>
 	<@ww.textarea label="Mensagem" name="usuarioMensagem.mensagem.texto" id="mensagem" cssStyle="width:500px;" theme="css_xhtml"/>
 
 	<@ww.hidden name="usuarioMensagem.empresa.id" value="${empresaEmp.id}" />

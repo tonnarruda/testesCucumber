@@ -119,11 +119,11 @@
 	<@ww.form name="form" action="resultado.action" onsubmit="${validarCampos}" method="POST">
 		
 		<@ww.select label="Empresa" name="empresaId" id="empresa" list="empresas" listKey="id" listValue="nome" headerKey="" headerValue="Todas" onchange="changeEmpresaAvaldesempenho(this.value);" />
-		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600" onClick="populaCargosByAreaVinculados();populaAvaliados();"/>
+		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600" onClick="populaCargosByAreaVinculados();populaAvaliados();" filtro="true"/>
 		<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>
-		<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" id="cargosCheck" list="cargosCheckList"  width="600" onClick="populaAvaliados();"/>
+		<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" id="cargosCheck" list="cargosCheckList"  width="600" onClick="populaAvaliados();" filtro="true"/>
 		
-		<@frt.checkListBox id="colaboradorsCheck" name="colaboradorsCheck" label="Avaliados *" list="colaboradorsCheckList" width="600" />
+		<@frt.checkListBox id="colaboradorsCheck" name="colaboradorsCheck" label="Avaliados *" list="colaboradorsCheckList" width="600" filtro="true" />
 		<@ww.select label="Resultado" required="true" name="opcaoResultado" id="opcaoResultado" list=r"#{'avaliador':'Resultado por Avaliador', 'criterio':'Resultado por Perguntas'}" onchange="filtrarOpt(this.value);"/>
 		
 		<div id="opcoesDoRelatorio">

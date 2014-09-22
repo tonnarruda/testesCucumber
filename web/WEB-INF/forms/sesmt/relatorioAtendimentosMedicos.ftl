@@ -39,7 +39,7 @@
 
 		<@ww.select label="Médico" name="solicitacaoExame.medicoCoordenador.id" id="medico" list="medicoCoordenadors" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." />		
 
-		<@frt.checkListBox label="Motivo do Atendimento" name="motivosCheck" id="motivosCheck" list="motivosCheckList" />
+		<@frt.checkListBox label="Motivo do Atendimento" name="motivosCheck" id="motivosCheck" list="motivosCheckList" filtro="true"/>
 		
 		<@ww.checkbox label="Agrupar por motivo" id="agruparPorMotivo" name="agruparPorMotivo" labelPosition="left"/>
 		

@@ -20,7 +20,7 @@
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 		<@ww.textfield label="Nome" name="risco.descricao" id="descricao" cssClass="inputNome" maxLength="100" required="true"/>
 		<@ww.select label="Tipo de Risco" name="risco.grupoRisco" id="grupoRisco" list="grupoRiscos" cssStyle="width: 220px;" headerKey="-1" headerValue="[Selecione...]" required="true"/>
-		<@frt.checkListBox label="Equipamentos Obrigatórios (EPIs)" name="episCheck" list="episCheckList" />
+		<@frt.checkListBox label="Equipamentos Obrigatórios (EPIs)" name="episCheck" list="episCheckList" filtro="true"/>
 		
 		<@ww.hidden label="Id" name="risco.id" />
 		<@ww.token />

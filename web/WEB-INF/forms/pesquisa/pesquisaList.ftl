@@ -92,7 +92,7 @@
 	
 	<div id="formDialog">
 		<@ww.form name="formModal" id="formModal" action="clonarPesquisa.action" method="POST">
-			<@frt.checkListBox label="Selecione as empresas para as quais deseja clonar esta pesquisa" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formModal')"/>
+			<@frt.checkListBox label="Selecione as empresas para as quais deseja clonar esta pesquisa" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formModal')" filtro="true"/>
 			* Caso nenhuma empresa seja selecionada, a pesquisa será clonada apenas para a empresa <@authz.authentication operation="empresaNome"/><br>
 			<@ww.hidden name="pesquisa.id" id="pesquisaId"/>
 			<button class="btnClonar" type="submit"></button>

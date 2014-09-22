@@ -668,21 +668,21 @@
 		<li>
 			<@ww.div id="wwgrp_cargosCheck" cssClass="campo">
 			<ul>
-				<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" id="cargosCheck" list="cargosCheckList" />
+				<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" id="cargosCheck" list="cargosCheckList" filtro="true" />
 			</ul>
 			</@ww.div>
 		</li>	
 		<li>
 			<@ww.div id="wwgrp_areasCheck" cssClass="campo">
 			<ul>
-        		<@frt.checkListBox label="Áreas de Interesse" name="areasCheck" list="areasCheckList" id="areasCheck" onClick="populaConhecimento(document.forms[0],'areasCheck');"/>
+        		<@frt.checkListBox label="Áreas de Interesse" name="areasCheck" list="areasCheckList" id="areasCheck" onClick="populaConhecimento(document.forms[0],'areasCheck');" filtro="true" />
 			</ul>
 			</@ww.div>
 		</li>	
 		<li>
 			<@ww.div id="wwgrp_conhecimentosCheck" cssClass="campo">
 				<ul>        
-					<@frt.checkListBox label="Conhecimentos" name="conhecimentosCheck" list="conhecimentosCheckList" id="conhecimentosCheck"  />
+					<@frt.checkListBox label="Conhecimentos" name="conhecimentosCheck" list="conhecimentosCheckList" id="conhecimentosCheck" filtro="true" />
 				</ul>
 			</@ww.div>
 		</li>	

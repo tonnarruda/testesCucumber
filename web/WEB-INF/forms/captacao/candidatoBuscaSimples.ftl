@@ -102,10 +102,10 @@
 
 			<@ww.select label="Escolaridade mínima" name="escolaridade" id="escolaridade" list="escolaridades" cssStyle="width: 220px;" headerKey="" headerValue=""/>
 			<@ww.select label="Estado" name="uf" id="uf" list="ufs" cssStyle="width: 45px;" headerKey="" headerValue="" onchange="javascript:populaCidadesCheckList()"/>
-			<@frt.checkListBox label="Cidades" id="cidadesCheck" name="cidadesCheck" list="cidadesCheckList" />
+			<@frt.checkListBox label="Cidades" id="cidadesCheck" name="cidadesCheck" list="cidadesCheckList" filtro="true" />
 
-			<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" />
-			<@frt.checkListBox label="Conhecimentos" name="conhecimentosCheck" list="conhecimentosCheckList" />
+			<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" filtro="true"/>
+			<@frt.checkListBox label="Conhecimentos" name="conhecimentosCheck" list="conhecimentosCheckList" filtro="true"/>
 			
 			<@ww.select label="Ordenar Por" name="ordenar" id="ordenar" list=r"#{'dataAtualizacao':'Data de Atualização','nome':'Nome'}" cssStyle="width: 170px;" />			
 			<@ww.textfield label="Quantidade de registros a serem listados"name="qtdRegistros" id="qtdRegistros" cssStyle="width: 45px; text-align:right;" onkeypress = "return(somenteNumeros(event,''));" maxLength="6" required="true" />

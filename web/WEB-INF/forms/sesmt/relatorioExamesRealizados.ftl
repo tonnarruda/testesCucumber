@@ -74,10 +74,10 @@
 		<@ww.select label="Clínica" name="clinicaAutorizada.id" id="clinica" list="clinicas" listKey="id" listValue="nome" headerKey="" headerValue="Todas" />
 		
 		<div class="divRelatResumido">
-			<@frt.checkListBox name="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" />
+			<@frt.checkListBox name="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
 		</div>
 		
-		<@frt.checkListBox name="examesCheck" label="Exames" list="examesCheckList" />
+		<@frt.checkListBox name="examesCheck" label="Exames" list="examesCheckList" filtro="true"/>
 		
 		<@ww.div class="divRelatResumidoResultado">
 			<@ww.select label="Resultado do Exame" id="resultado" name="resultado" list=r"#{'':'Todos','NORMAL':'Normal','ANORMAL':'Alterado','NAO_REALIZADO':'Não Informado'}" />

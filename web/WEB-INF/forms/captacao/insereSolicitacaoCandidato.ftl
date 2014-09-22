@@ -40,7 +40,7 @@
 		</#if>
 
 		<@ww.select label="Empresa" name="empresa.id" id="empresa" listKey="id" listValue="nome" list="empresas" cssClass="selectEmpresa" disabled="!compartilharCandidatos" onchange="populaSolicitacoes(this.value)";/>
-		<@frt.checkListBox label="Solicitações disponíveis" name="solicitacaosCheckIds" id="solicitacao" list="solicitacaosCheck" width="600"/>
+		<@frt.checkListBox label="Solicitações disponíveis" name="solicitacaosCheckIds" id="solicitacao" list="solicitacaosCheck" width="600" filtro="true"/>
 	
 	</@ww.form>
 

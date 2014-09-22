@@ -115,7 +115,7 @@
 	
 	<div id="formDialog">
 		<@ww.form name="formModal" id="formModal" action="clonar.action" method="POST">
-			<@frt.checkListBox label="Selecione as empresas para as quais deseja clonar esta avaliação" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formModal')"/>
+			<@frt.checkListBox label="Selecione as empresas para as quais deseja clonar esta avaliação" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formModal')" filtro="true"/>
 			* Caso nenhuma empresa seja selecionada, a avaliação será clonada apenas para a empresa <@authz.authentication operation="empresaNome"/><br>
 			<@ww.hidden name="avaliacaoDesempenho.id" id="avaliacaoDesempenhoId"/>
 			<br />
@@ -132,7 +132,7 @@
 		<div style="clear: both"/>
 
 		<@ww.form name="formModalLiberar" id="formModalLiberar" onsubmit="${validarFormModalLiberar}" action="liberarEmLote.action" method="POST">
-			<@frt.checkListBox label="Avaliações" name="avaliacoesCheck" list="avaliacoesCheckList" form="document.getElementById('formModalLiberar')"/>
+			<@frt.checkListBox label="Avaliações" name="avaliacoesCheck" list="avaliacoesCheckList" form="document.getElementById('formModalLiberar')" filtro="true"/>
 			<input type="submit" value="" class="btnLiberar">
 		</@ww.form>
 	</div>

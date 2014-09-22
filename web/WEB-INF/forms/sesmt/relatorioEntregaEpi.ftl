@@ -28,8 +28,8 @@
 		<@ww.datepicker label="Início" name="dataIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${dataIni}" required="true"/>
 		<@ww.datepicker label="Fim" name="dataFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${dataFim}"/>
 		
-		<@frt.checkListBox name="epiCheck" label="EPIs" list="epiCheckList" />
-		<@frt.checkListBox name="colaboradorCheck" label="Colaboradores" list="colaboradorCheckList" />
+		<@frt.checkListBox name="epiCheck" label="EPIs" list="epiCheckList" filtro="true"/>
+		<@frt.checkListBox name="colaboradorCheck" label="Colaboradores" list="colaboradorCheckList" filtro="true"/>
 		<@ww.select label="Agrupar por" id="agruparPor" name="agruparPor" list=r"#{'E':'Epi','C':'Colaborador'}" />
 		
 		<@ww.checkbox label="Exibir entregas a colaboradores desligados" id="exibirDesligados" name="exibirDesligados" labelPosition="left"/>

@@ -68,8 +68,8 @@
 
 <@ww.form name="form" action="imprimirRelatorioTreinamentos.action"  validate="true" method="POST">
 	<@ww.select name="dnt.id" id="dnt" list="dnts" listKey="id" required="true" listValue="nome" label="DNT" headerKey="-1" headerValue="Selecione"/>
-	<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" onClick="populaColaborador();"/>
-	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" onClick="populaColaborador();"/>
+	<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" onClick="populaColaborador();" filtro="true"/>
+	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" onClick="populaColaborador();" filtro="true"/>
 	<@ww.select name="colaborador.id" id="colaboradores" list="colaboradors" listKey="id" listValue="nomeMaisNomeComercial" label="Colaborador" headerKey="" headerValue="Todos"/>
 	<@ww.checkbox onchange="javascript: desableColab(this,'colaboradores');" labelPosition="right" label="Imprimir colaboradores sem Turma" name="semPlano" />
 </@ww.form>

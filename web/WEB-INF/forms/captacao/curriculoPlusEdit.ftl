@@ -108,7 +108,7 @@
 			<@ww.div id="nomesHomonimos" cssStyle="color:red;">	</@ww.div>
 		</@ww.div>
 		<br>
-		<@frt.checkListBox label="Cargo/Função Pretendida*" name="cargosCheck" list="cargosCheckList" />
+		<@frt.checkListBox label="Cargo/Função Pretendida*" name="cargosCheck" list="cargosCheckList" filtro="true"/>
 		<br>
 
 		<@ww.textfield label="Indicado Por" name="candidato.pessoal.indicadoPor" id="indicado" cssStyle="width: 300px;" maxLength="100"/>

@@ -30,7 +30,7 @@
 		<@ww.label value="a" liClass="liLeft" />
 		<@ww.datepicker name="fim" id="fim" value="${fim}" cssClass="mascaraData validaDataFim" />
 
-		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" />
+		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" filtro="true"/>
 
 		<@ww.textfield label="Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
 

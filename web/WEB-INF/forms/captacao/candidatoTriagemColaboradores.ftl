@@ -134,8 +134,8 @@
 
 			<li style="clear:both;"></li>
 
-			<@frt.checkListBox label="Cargo / Faixa Salarial" name="faixasCheck" list="faixasCheckList" />
-			<@frt.checkListBox label="Área Organizacional" name="areasCheck" id="areasCheck" list="areasCheckList"/>
+			<@frt.checkListBox label="Cargo / Faixa Salarial" name="faixasCheck" list="faixasCheckList" filtro="true"/>
+			<@frt.checkListBox label="Área Organizacional" name="areasCheck" id="areasCheck" list="areasCheckList" filtro="true"/>
 			<@ww.checkbox label="Exibir compatibilidade das competências exigidas pela faixa salarial \"${solicitacao.nomeDoCargoDaFaixaSalarial} ${solicitacao.faixaSalarial.nome}\" com as competências do colaborador" onclick="exibeCampoPercentualMinimo();" id="exibeCompatibilidade" name="exibeCompatibilidade" labelPosition="left"/>
 
 			<li id="campoPercMin">

@@ -15,7 +15,7 @@
 		function clonar(fichaMedicaId, titulo)
 		{
 			$('#fichaMedicaId').val(fichaMedicaId);
-			$('#formDialog').dialog({ modal: true, title: 'Clonar: ' + titulo });
+			$('#formDialog').dialog({ modal: true, width: 530, title: 'Clonar: ' + titulo });
 		}
 		
 		function imprimirFichaMedica(questionarioId, questionarioTitulo)
@@ -91,7 +91,7 @@
 	
 	<div id="formDialog">
 		<@ww.form name="formModal" id="formModal" action="clonarFichaMedica.action" method="POST">
-			<@frt.checkListBox label="Selecione as empresas para as quais deseja clonar esta ficha médica" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formModal')"/>
+			<@frt.checkListBox label="Selecione as empresas para as quais deseja clonar esta ficha médica" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formModal')" filtro="true"/>
 			* Caso nenhuma empresa seja selecionada, a ficha médica será clonada apenas para a empresa <@authz.authentication operation="empresaNome"/><br>
 			<@ww.hidden name="fichaMedica.id" id="fichaMedicaId"/>
 			<button class="btnClonar" type="submit"></button>

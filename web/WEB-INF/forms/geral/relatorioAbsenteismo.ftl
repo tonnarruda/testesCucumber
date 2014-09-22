@@ -36,10 +36,10 @@
 		<@ww.label value="a" liClass="liLeft"/>
 		<@ww.textfield name="dataAte" id="dataAte" required="true" cssClass="mascaraMesAnoData validaDataFim"/>
 		
-		<@frt.checkListBox name="ocorrenciasCheck" id="ocorrenciasCheck" label="Ocorrências" list="ocorrenciasCheckList"/>
-		<@frt.checkListBox name="afastamentosCheck" id="afastamentosCheck" label="Afastamentos" list="afastamentosCheckList"/>
-		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
-		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList"/>
+		<@frt.checkListBox name="ocorrenciasCheck" id="ocorrenciasCheck" label="Ocorrências" list="ocorrenciasCheckList" filtro="true"/>
+		<@frt.checkListBox name="afastamentosCheck" id="afastamentosCheck" label="Afastamentos" list="afastamentosCheckList" filtro="true"/>
+		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
+		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true"/>
 	</@ww.form>
 	
 	<div class="buttonGroup">

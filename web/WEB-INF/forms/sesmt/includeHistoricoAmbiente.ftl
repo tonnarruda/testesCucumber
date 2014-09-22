@@ -3,7 +3,7 @@
 		
 		<@ww.textfield label="Tempo de Exposição" name="historicoAmbiente.tempoExposicao" id="tempoExposicao" maxLength="40" style="width:100px;"/>
 	
-		<@frt.checkListBox label="EPCs existentes no Ambiente" name="epcCheck" list="epcCheckList" />
+		<@frt.checkListBox label="EPCs existentes no Ambiente" name="epcCheck" list="epcCheckList" filtro="true"/>
 		
 		<#assign i = 0/>
 		<#if empresaControlaRiscoPor == 'A'> 

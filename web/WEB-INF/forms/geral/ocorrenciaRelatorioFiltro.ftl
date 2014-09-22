@@ -162,10 +162,10 @@
 		<@ww.datepicker name="dataIni" id="dataPrevIni" liClass="liLeft" value="${valueDataIni}" cssClass="mascaraData validaDataIni"/>
 		<@ww.label value="a" liClass="liLeft"/>
 		<@ww.datepicker name="dataFim" id="dataPrevFim" value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
-		<@frt.checkListBox name="ocorrenciaCheck" label="Ocorrência" list="ocorrenciaCheckList" width="500" height="120"/>
+		<@frt.checkListBox name="ocorrenciaCheck" label="Ocorrência" list="ocorrenciaCheckList" width="500" height="120"  filtro="true"/>
 		
-		<@frt.checkListBox name="estabelecimentoCheck" label="Estabelecimento" list="estabelecimentoCheckList" width="500" height="120" onClick="populaColaboradores($('#empresa').val());"/>
-		<@frt.checkListBox name="areaCheck" label="Área Organizacional" list="areaCheckList" width="500" height="120" onClick="populaColaboradores($('#empresa').val());"/>
+		<@frt.checkListBox name="estabelecimentoCheck" label="Estabelecimento" list="estabelecimentoCheckList" width="500" height="120" onClick="populaColaboradores($('#empresa').val());" filtro="true"/>
+		<@frt.checkListBox name="areaCheck" label="Área Organizacional" list="areaCheckList" width="500" height="120" onClick="populaColaboradores($('#empresa').val());" filtro="true"/>
 		
 		<fieldset style="padding: 5px 0px 5px 5px; width: 495px;">
 			<legend>Colaboradores</legend>

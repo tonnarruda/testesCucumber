@@ -122,7 +122,7 @@
 				<@ww.div cssClass="divFiltro">
 					<ul>
 						<@ww.select label="Filtrar Candidatos por Etapa" name="etapaSeletivaIdFiltro" id="etapaSeletiva" list="etapas" onchange="javascript:getCandidatoAptoByEtapa(this.value, ${solicitacao.id})" listKey="id" listValue="nome"  headerKey="-1" headerValue="" />
-						<@frt.checkListBox label="Candidatos*" name="candidatosCheck" list="candidatosCheckList" id="candidatosCheck"/>
+						<@frt.checkListBox label="Candidatos*" name="candidatosCheck" list="candidatosCheckList" id="candidatosCheck" filtro="true"/>
 					</ul>
 				</@ww.div>
 			</li>

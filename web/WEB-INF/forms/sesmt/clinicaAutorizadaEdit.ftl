@@ -120,7 +120,7 @@
 			</@ww.div>
 		</li>
 
-		<@frt.checkListBox label="Exames autorizados" name="examesCheck" id="examesCheck" list="examesCheckList"/>
+		<@frt.checkListBox label="Exames autorizados" name="examesCheck" id="examesCheck" list="examesCheckList" filtro="true"/>
 
 		<@ww.datepicker label="Início do contrato" name="clinicaAutorizada.data" id="data"  required="true" value="${data}" cssClass="mascaraData validaDataIni"/>
 		<@ww.datepicker label="Inativar a partir de (fim do contrato)" name="clinicaAutorizada.dataInativa" id="dataInat"  value="${dataInat}" cssClass="mascaraData validaDataFim"/>

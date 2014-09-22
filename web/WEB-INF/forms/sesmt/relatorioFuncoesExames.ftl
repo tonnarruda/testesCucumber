@@ -26,7 +26,7 @@
 
 		Data:*
 		<@ww.datepicker name="data" id="data" value="${dateIni}" required="true" cssClass="mascaraData"/>
-		<@frt.checkListBox name="funcoesCheck" label="Funções" list="funcoesCheckList" />
+		<@frt.checkListBox name="funcoesCheck" label="Funções" list="funcoesCheckList" filtro="true"/>
 
 		<div class="buttonGroup">
 			<input type="button" value="" onclick="validaFormulario('form',new Array('data'),new Array('data'));" class="btnRelatorio" />

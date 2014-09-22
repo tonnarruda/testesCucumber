@@ -20,7 +20,7 @@
 <#assign validarCampos="return validaFormulario('form', new Array('data'), null)"/>
 <@ww.form name="form" action="imprimirVencimentoCa.action" onsubmit="${validarCampos}" method="POST" >
 	<@ww.datepicker id="data" name="venc" value="${data}" cssClass="mascaraData" label="Data" required="true"/>
-	<@frt.checkListBox name="tipoEPICheck" id="tipoEPICheck" label="Categorias de EPI" list="tipoEPICheckList" />
+	<@frt.checkListBox name="tipoEPICheck" id="tipoEPICheck" label="Categorias de EPI" list="tipoEPICheckList" filtro="true"/>
 </@ww.form>
 
 <div class="buttonGroup">

@@ -19,7 +19,7 @@
 <@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 	<@ww.textfield label="Nome" name="areaInteresse.nome" id="nome" required="true" cssClass="inputNome" maxLength="100"/>
 
-	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais *" list="areasCheckList"/>
+	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais *" list="areasCheckList" filtro="true"/>
 
 	<@ww.textarea  label="Observações" name="areaInteresse.observacao" cssClass="inputNome" />
 

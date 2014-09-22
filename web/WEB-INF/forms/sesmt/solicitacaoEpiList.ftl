@@ -81,7 +81,7 @@
 	<@ww.form name="form" id="form" action="list.action" onsubmit="${validarCampos}" method="POST">
 
 		<@ww.select label="Situação da Solicitação" id="situacao" name="situacao" list=r"#{'T':'Todas','A':'Aberta','E':'Entregue','P':'Entregue Parcialmente'}" />
-		<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList"/>
+		<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList" filtro="true"/>
 		<@ww.textfield label="Matrícula do Colaborador" name="matriculaBusca" id="matriculaBusca" cssStyle="width: 60px;"/>
 		<@ww.textfield label="Nome do Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
 		<@ww.select label="Situação do Colaborador" name="situacaoColaborador" id="situacaoColaborador" list="situacoesDoColaborador" cssStyle="width: 165px;"/>

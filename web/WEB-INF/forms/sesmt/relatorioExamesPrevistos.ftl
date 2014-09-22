@@ -29,10 +29,10 @@
 		Data:*
 		<@ww.datepicker name="data" id="data" value="${dateIni}" required="true" cssClass="mascaraData"/>
 
-		<@frt.checkListBox name="examesCheck" label="Exames" list="examesCheckList" />
-		<@frt.checkListBox name="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" />
-		<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" />
-		<@frt.checkListBox name="colaboradoresCheck" label="Colaboradores" list="colaboradoresCheckList" />
+		<@frt.checkListBox name="examesCheck" label="Exames" list="examesCheckList" filtro="true"/>
+		<@frt.checkListBox name="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true" />
+		<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" />
+		<@frt.checkListBox name="colaboradoresCheck" label="Colaboradores" list="colaboradoresCheckList" filtro="true" />
 		
 		<@ww.select label="Agrupar por" name="agruparPor" list=r"#{'N':'-','A':'Área Organizacional','E':'Estabelecimento'}"/>
 		<@ww.checkbox label="Não imprimir afastado(s)" id="imprimirAfastados" name="imprimirAfastados" labelPosition="left"/>

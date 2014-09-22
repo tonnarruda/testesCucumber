@@ -31,7 +31,7 @@
 		</div>
 	</li>
 	<br>
-	<@frt.checkListBox name="gastosCheck" id="gastosCheck" label="Investimentos ainda sem Grupo" list="gastosCheckList" />
+	<@frt.checkListBox name="gastosCheck" id="gastosCheck" label="Investimentos ainda sem Grupo" list="gastosCheckList" filtro="true"/>
 	<@ww.hidden name="grupoGastoAgrupar.id" />
 	<@ww.token/>
 </@ww.form>

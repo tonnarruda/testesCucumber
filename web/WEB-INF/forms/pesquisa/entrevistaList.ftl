@@ -75,7 +75,7 @@
 	
 	<div id="formDialog">
 		<@ww.form name="formModal" id="formModal" action="clonarEntrevista.action" method="POST">
-			<@frt.checkListBox label="Selecione as empresas para as quais deseja clonar esta entrevista" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formModal')"/>
+			<@frt.checkListBox label="Selecione as empresas para as quais deseja clonar esta entrevista" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formModal')" filtro="true"/>
 			* Caso nenhuma empresa seja selecionada, a entrevista será clonada apenas para a empresa <@authz.authentication operation="empresaNome"/><br>
 			<@ww.hidden name="entrevista.id" id="entrevistaId"/>
 			<button class="btnClonar" type="submit"></button>

@@ -85,7 +85,7 @@
 		<span id="boxtitle"></span>
 
 		<@ww.form name="formPesquisa" id="formPesquisa" action="" onsubmit="pesquisar();return false;" method="POST">
-			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" list="areasCheckList"/>
+			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" list="areasCheckList" filtro="true"/>
 			<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" cssStyle="width:80px;" liClass="liLeft"/>
 			<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width:410px;" />
 
@@ -93,7 +93,7 @@
 		</@ww.form>
 
 		<@ww.form name="form" id="form" action="insert.action" onsubmit="${validarCampos}" validate="true" method="POST">
-			<@frt.checkListBox form="form" label="Colaboradores" name="candidatosCheck" list="candidatosCheckList"/>
+			<@frt.checkListBox form="form" label="Colaboradores" name="candidatosCheck" list="candidatosCheckList" filtro="true"/>
 
 			<@ww.hidden name="eleicao.id"/>
 			<@ww.token/>

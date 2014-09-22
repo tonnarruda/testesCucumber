@@ -31,8 +31,8 @@
 		<@ww.label value="a" liClass="liLeft"/>
 		<@ww.datepicker name="dataAte" id="dataAte" value="${dataAteTmp}" cssClass="mascaraData validaDataFim"/>
 
-		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList"/>
-		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList"/>
+		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
+		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true"/>
 	</@ww.form>
 
 	<div class="buttonGroup">

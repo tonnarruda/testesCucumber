@@ -96,7 +96,7 @@
 				<@ww.div id="nomesHomonimos" cssStyle="color:red;">	</@ww.div>
 			</@ww.div>
 			
-			<@frt.checkListBox label="Cargo/Função Pretendida*" name="cargosCheck" list="cargosCheckList" />
+			<@frt.checkListBox label="Cargo/Função Pretendida*" name="cargosCheck" list="cargosCheckList" filtro="true"/>
 	
 			
 			<@ww.datepicker label="Nascimento" name="candidato.pessoal.dataNascimento" id="nascimento"  liClass="liLeft" cssClass="mascaraData"/>

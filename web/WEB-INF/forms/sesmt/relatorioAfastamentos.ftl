@@ -30,8 +30,8 @@
 		<@ww.label value="a" liClass="liLeft" />
 		<@ww.datepicker name="colaboradorAfastamento.fim" id="fim" value="${fim}" cssClass="mascaraData validaDataFim" />
 
-		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" />
-		<@frt.checkListBox name="areasCheck" label="Área Organizacional" list="areasCheckList"/>
+		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" filtro="true"/>
+		<@frt.checkListBox name="areasCheck" label="Área Organizacional" list="areasCheckList" filtro="true"/>
 
 		<@ww.textfield label="Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
 		<@ww.select label="Motivo" name="colaboradorAfastamento.afastamento.id" id="tipo" required="true" list="afastamentos" listKey="id" listValue="descricao" headerKey="" headerValue="Todos"/>

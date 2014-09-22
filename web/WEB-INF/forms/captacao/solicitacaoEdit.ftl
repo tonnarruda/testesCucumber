@@ -320,9 +320,9 @@
 		</#if>
 		
 		<#if !clone && somenteLeitura && (qtdAvaliacoesRespondidas > 0)>
-			<@frt.checkListBox name="avaliacoesCheck" id="avaliacoesCheck" label="Avaliações" list="avaliacoesCheckList" readonly=true />
+			<@frt.checkListBox name="avaliacoesCheck" id="avaliacoesCheck" label="Avaliações" list="avaliacoesCheckList" readonly=true filtro="true" />
 		<#else>
-			<@frt.checkListBox name="avaliacoesCheck" id="avaliacoesCheck" label="Avaliações" list="avaliacoesCheckList" readonly=false />
+			<@frt.checkListBox name="avaliacoesCheck" id="avaliacoesCheck" label="Avaliações" list="avaliacoesCheckList" readonly=false filtro="true"/>
 		</#if>
 		
 		<@ww.textfield label="Nº Vagas" id="quantidade" name="solicitacao.quantidade" onkeypress = "return(somenteNumeros(event,''));" required="true" cssStyle="width:35px; text-align:right;" maxLength="4" />
@@ -343,7 +343,7 @@
 		</#if>
 		
 		<#if !solicitacao.id?exists>
-			<@frt.checkListBox name="emailsCheck" id="emailsCheck" label="Comunicar responsáveis da Área Organizacional" list="emailsCheckList" />
+			<@frt.checkListBox name="emailsCheck" id="emailsCheck" label="Comunicar responsáveis da Área Organizacional" list="emailsCheckList" filtro="true" />
 		</#if>
 		<br/>
 		
@@ -375,7 +375,7 @@
 					
 					<@ww.select label="Estado"  id="estado" name="estado.id" list="estados" listKey="id" listValue="sigla" liClass="liLeft" headerKey="" headerValue="" onchange="javascript:populaCidades()" required=obrigaDadosComplementares/>
 					<@ww.select label="Cidade"  id="cidade" name="solicitacao.cidade.id" list="cidades" listKey="id" listValue="nome" cssStyle="width: 250px;" headerKey="" headerValue="" onchange="javascript:populaBairros()" required=obrigaDadosComplementares/>
-					<@frt.checkListBox name="bairrosCheck" id="bairrosCheck" label="Bairros${asterisco}" list="bairrosCheckList" width="695"/>
+					<@frt.checkListBox name="bairrosCheck" id="bairrosCheck" label="Bairros${asterisco}" list="bairrosCheckList" width="695" filtro="true"/>
 					<@ww.textarea label="Informações Complementares" id = "infoComplementares" name="solicitacao.infoComplementares" cssStyle="width:445px;" cssStyle="width: 695px;" required=obrigaDadosComplementares/>
 					
 					<@ww.hidden name="solicitacao.liberador.id"  />

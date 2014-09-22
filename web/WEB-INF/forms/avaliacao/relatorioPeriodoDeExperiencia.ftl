@@ -41,9 +41,9 @@
 
 		<@ww.datepicker label="Período" required="true" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
 		<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/><br/>
-		<@frt.checkListBox label="Período de Acompanhamento (máx. 4 opções) *" name="periodoCheck" id="periodoCheck" list="periodoCheckList" onClick="validaQtd();"/>						
-		<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList"/>						
-		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList"/>
+		<@frt.checkListBox label="Período de Acompanhamento (máx. 4 opções) *" name="periodoCheck" id="periodoCheck" list="periodoCheckList" onClick="validaQtd();" filtro="true"/>						
+		<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList" filtro="true"/>						
+		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" filtro="true"/>
 			
 	</@ww.form>
 

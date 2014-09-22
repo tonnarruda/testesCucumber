@@ -97,7 +97,7 @@
 
 		<@ww.select label="Motivo do Atendimento" name="motivo" id="motivoExame" list="motivos" headerKey="" headerValue="Selecione..." />
 		
-		<@frt.checkListBox name="examesCheck" label="Exames" list="examesCheckList" />
+		<@frt.checkListBox name="examesCheck" label="Exames" list="examesCheckList" filtro="true"/>
 		
 		<@ww.select label="Resultado do Exame" id="resultado" name="resultado" list=r"#{'':'Todos','NORMAL':'Normal','ANORMAL':'Alterado','NAO_REALIZADO':'Não Informado'}" />
 		

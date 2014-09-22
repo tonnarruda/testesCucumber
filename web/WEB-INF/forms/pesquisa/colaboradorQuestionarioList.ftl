@@ -58,7 +58,7 @@
 			</#if>
             
             <@ww.select label="Respondida" name="respondida" id="respondida" list=r"#{'S':'Sim','N':'Não'}" headerValue="Todas" headerKey="T"/>
-            <@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" width="600" />
+            <@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" width="600" filtro="true"/>
             <@ww.hidden name="questionario.id"/>
 
             <input type="submit" value="" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">

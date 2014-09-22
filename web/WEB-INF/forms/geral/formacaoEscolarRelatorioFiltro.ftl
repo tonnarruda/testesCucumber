@@ -51,10 +51,10 @@
 			</li>
 		</#if>
 		
-		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" width="600" />
-		<@frt.checkListBox name="areasCheck" id="areaCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="600" onClick="populaCargosByAreaVinculados();"/>
+		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" width="600" filtro="true"/>
+		<@frt.checkListBox name="areasCheck" id="areaCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="600" onClick="populaCargosByAreaVinculados();" filtro="true"/>
 		<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>
-		<@frt.checkListBox name="cargosCheck" label="Cargos" list="cargosCheckList" width="600" />
+		<@frt.checkListBox name="cargosCheck" label="Cargos" list="cargosCheckList" width="600" filtro="true"/>
 		
 		<div class="buttonGroup">
 			<button type="submit" class="btnRelatorio"></button>

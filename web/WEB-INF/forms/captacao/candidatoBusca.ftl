@@ -158,9 +158,9 @@
 			<@ww.select label="Idioma" name="idioma" id="idioma" list="idiomas" listKey="id" listValue="nome" liClass="liLeft" cssStyle="width: 150px;" headerKey="" headerValue=""/>
 			<@ww.select label="Nível" name="nivel" id="nivel" list="nivels" cssStyle="width: 150px;" headerKey="" headerValue=""/>
 			<@ww.select label="Estado" name="uf" id="uf" list="ufs" cssStyle="width: 45px;" headerKey="" headerValue="" onchange="javascript:populaCidadesCheckList();"/>
-			<@frt.checkListBox label="Cidades" id="cidadesCheck" name="cidadesCheck" list="cidadesCheckList" onClick="populaBairros();"/>
+			<@frt.checkListBox label="Cidades" id="cidadesCheck" name="cidadesCheck" list="cidadesCheckList" onClick="populaBairros();" filtro="true"/>
 			<!-- <@ww.select label="Cidade" name="cidade" id="cidade" list="cidades" cssStyle="width: 250px;" headerKey="" headerValue="" onchange="javascript:populaBairros()" />-->
-			<@frt.checkListBox name="bairrosCheck" id="bairrosCheck" label="Bairros" list="bairrosCheckList" />
+			<@frt.checkListBox name="bairrosCheck" id="bairrosCheck" label="Bairros" list="bairrosCheckList" filtro="true"/>
 
 			<li style="clear:both;"></li>
 
@@ -178,9 +178,9 @@
 			<@ww.select label="Deficiência" name="deficiencia" id="deficiencia" list="deficiencias" cssStyle="width: 130px;" liClass="liLeft"/>
 
 			<@ww.select label="Possui Veículo" name="veiculo" id="veiculo" list=r"#{'I':'Indiferente','S':'Sim','N':'Não'}" cssStyle="width: 100px;" />
-			<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" />
-			<@frt.checkListBox label="Áreas de Interesse" name="areasCheck" list="areasCheckList"/>
-			<@frt.checkListBox label="Conhecimentos" name="conhecimentosCheck" list="conhecimentosCheckList" />
+			<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" filtro="true" />
+			<@frt.checkListBox label="Áreas de Interesse" name="areasCheck" list="areasCheckList" filtro="true"/>
+			<@frt.checkListBox label="Conhecimentos" name="conhecimentosCheck" list="conhecimentosCheckList" filtro="true"/>
 			<br />
 			<#if solicitacao?exists && solicitacao.id?exists && solicitacao.experiencia?exists>
 				<br />
@@ -195,7 +195,7 @@
 				<@ww.textfield name="tempoExperiencia" id="tempoExperiencia" cssStyle="width:30px; text-align:right;" liClass="liLeft" maxLength="3" onkeypress = "return(somenteNumeros(event,''));"/>
 				<li>meses <img id="tooltipExperienciaTrabalho" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -2px" /></li>
 				<li>&nbsp;</li>
-				<@frt.checkListBox label="em" name="experienciasCheck" list="experienciasCheckList" width="475px;" />
+				<@frt.checkListBox label="em" name="experienciasCheck" list="experienciasCheckList" width="475px;" filtro="true" />
 			</fieldset>
 			
 			<fieldset class="fieldsetClass">

@@ -107,7 +107,7 @@
 			<@ww.select label="Estado" name="uf" id="uf" list="ufs" liClass="liLeft" cssStyle="width: 45px;" headerKey="" headerValue="" onchange="javascript:populaCidadesCheckList()"/>
 			<@ww.textfield label="Bairro" id="bairro" name="curriculo.bairro" cssStyle="width: 264px;"/>
 			
-			<@frt.checkListBox label="Cidade" name="cidadesCheck" id="cidadesCheck" list="cidadesCheckList" />
+			<@frt.checkListBox label="Cidade" name="cidadesCheck" id="cidadesCheck" list="cidadesCheckList" filtro="true"/>
 			<@ww.textfield label="Palavra chave(Ex.: programador superior completo)" id="observacoes_complementares" name="curriculo.observacoes_complementares" cssStyle="width: 525px;"/>
 			
 			<@ww.hidden name="filtro" value="true"/>
