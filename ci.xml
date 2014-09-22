@@ -308,7 +308,7 @@
 		</if>
 		
 		<mail
-		  tolist="rhliberaversao@grupofortes.com.br"
+		  tolist="rh.alteraversao@grupofortes.com.br"
 		  from="desenvolvimento.rh@grupofortes.com.br"
 		  subject="${solicitacaoOuPendencia} liberada para homologação (${numeroCartao})"
 		  mailhost="smtp.tifortes.com.br"
