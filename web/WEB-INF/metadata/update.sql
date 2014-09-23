@@ -22561,3 +22561,35 @@ insert into perfil_papel(perfil_id, papeis_id) values(1, 624);--.go
 alter sequence papel_sequence restart with 625;--.go
 insert into migrations values('20140903084558');--.go
 update parametrosdosistema set appversao = '1.1.133.160';--.go
+-- versao 1.1.134.161
+
+ALTER TABLE mensagem ADD COLUMN avaliacao_id BIGINT;--.go
+ALTER TABLE ONLY mensagem ADD CONSTRAINT mensagem_avaliacao_fk FOREIGN KEY (avaliacao_id) REFERENCES avaliacao(id);--.go
+insert into migrations values('20140912070420');--.go
+alter table periodoexperiencia add column ativo boolean default true; --.go
+insert into migrations values('20140914130222');--.go
+update papel set codigo = 'RECEBE_ALERTA_ERRO_CONEXAO_ACPESSOAL', nome = 'Recebe mensagem de problema de comunicação com o AC Pessoal' where id = 410;--.go
+insert into migrations values('20140916143559');--.go
+CREATE FUNCTION atualiza_mensagem_com_avaliacaoId() RETURNS integer AS $$
+	DECLARE
+	    MV RECORD;
+	    AVALIACAOID integer;
+	BEGIN
+	    FOR MV IN
+			select id, link from mensagem  where link ilike '%colaboradorQuestionario.avaliacao.id=%'
+			LOOP
+				AVALIACAOID := (select cast((SELECT regexp_replace(MV.link,'(.*)(colaboradorQuestionario.avaliacao.id=)', '')) as integer));
+				iF exists(select id from avaliacao where id = AVALIACAOID) THEN
+					update mensagem set avaliacao_id = AVALIACAOID where id = MV.id;
+				ELSE
+					delete from usuariomensagem where mensagem_id = MV.id;	
+					delete from mensagem where id = MV.id;	
+				END IF;
+			END LOOP;
+	    RETURN 1;
+	END;
+$$ LANGUAGE plpgsql;--.go
+select atualiza_mensagem_com_avaliacaoId();--.go
+drop function atualiza_mensagem_com_avaliacaoId();--.go
+insert into migrations values('20140919212753');--.go
+update parametrosdosistema set appversao = '1.1.134.161';--.go

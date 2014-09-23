@@ -24,7 +24,7 @@
 		function clonar(avaliacaoDesempenhoId, titulo)
 		{
 			$('#avaliacaoDesempenhoId').val(avaliacaoDesempenhoId);
-			$('#formDialog').dialog({ modal: true, width: 530, title: 'Clonar ' + titulo });
+			$('#formDialog').dialog({ modal: true, width: 530, title: 'Clonar: ' + titulo });
 		}
 		
 		function buscarAvaliacoes()
