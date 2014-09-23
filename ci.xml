@@ -308,8 +308,8 @@
 		</if>
 		
 		<mail
-		  tolist="rh.alteraversao@grupofortes.com.br"
-		  from="desenvolvimento.rh@grupofortes.com.br"
+		  tolist="${emailDestino}"
+		  from="${emailFrom}"
 		  subject="${solicitacaoOuPendencia} liberada para homologação (${numeroCartao})"
 		  mailhost="smtp.tifortes.com.br"
 		  mailport="25"
