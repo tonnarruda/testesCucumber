@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.13x.162" bd="" data="22/09/2014">
 		<Item visivel="S" motivo="S20140900026"><![CDATA[Insercao de filtro de busca em R&S, Pesquisas, Avaliacao de Desempenho, Info. Funcionais, SESMT e Utilitarios]]></Item>
+		<Item visivel="N" motivo="P20140900123"><![CDATA[BUG: Erro ao tentar contratar candidato através da "solicitação de pessoal" ou "cadastro de candidato".]]></Item>
 	</Versao>
 	<Versao id="1.1.134.161" bd="" data="22/09/2014">
 		<Item visivel="S" motivo="S20140900051"><![CDATA[C&S: Inclusão de filtros em todos os campos de múltipla escolha.]]></Item>

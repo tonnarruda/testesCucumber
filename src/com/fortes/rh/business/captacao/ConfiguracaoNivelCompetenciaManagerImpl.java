@@ -71,14 +71,17 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	}
 	
 	private void ajustaConfiguracaoNivelCompetenciaColaborador(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador){
-		if(configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario() != null && configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getId() == null)
-			configuracaoNivelCompetenciaColaborador.setColaboradorQuestionario(null);
-		else{
-			if(configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliacaoDesempenho() != null && configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliacaoDesempenho().getId() == null)
-				configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().setAvaliacaoDesempenho(null);
-
-			if(configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliador() != null && configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliador().getId() == null)
-				configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().setAvaliador(null);
+		if(configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario() != null){
+			
+			if(configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getId() == null)			
+				configuracaoNivelCompetenciaColaborador.setColaboradorQuestionario(null);
+			else {
+				if(configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliacaoDesempenho() != null && configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliacaoDesempenho().getId() == null)
+					configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().setAvaliacaoDesempenho(null);
+				
+				if(configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliador() != null && configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliador().getId() == null)
+					configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().setAvaliador(null);
+			}
 		}
 		
 		if(configuracaoNivelCompetenciaColaborador.getAvaliador() != null && (configuracaoNivelCompetenciaColaborador.getAvaliador().getId() == null || configuracaoNivelCompetenciaColaborador.getAvaliador().getId().equals(0L)))
