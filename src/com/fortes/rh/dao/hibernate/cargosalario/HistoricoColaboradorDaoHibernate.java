@@ -1481,8 +1481,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		if(atualizarHistoricoPortal != null)
 			criteria.add(Expression.eq("c.atualizarHistoricoPortal", atualizarHistoricoPortal));
 		
-		criteria.add(Expression.eq("c.id", 3569L));
-		
 		//Ordem muito importante não remover
 		criteria.addOrder(Order.asc("emp.cnpj"));
 		criteria.addOrder(Order.asc("c.pessoal.cpf"));
