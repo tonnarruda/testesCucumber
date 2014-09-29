@@ -553,7 +553,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			{
 				for (PeriodoExperiencia periodoExperiencia : periodoExperiencias)
 				{
-					if (periodoExperiencia.getEmpresa().getId() != gerenciadorComunicacao.getEmpresa().getId())
+					if (!periodoExperiencia.getEmpresa().getId().equals(gerenciadorComunicacao.getEmpresa().getId()))
 						continue;
 					
 					Integer dias = periodoExperiencia.getDias() - diaLembrete;

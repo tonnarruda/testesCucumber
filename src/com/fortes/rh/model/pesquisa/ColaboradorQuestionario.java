@@ -72,7 +72,6 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     
     @Transient
     private String pessoaNome;
-    @SuppressWarnings("unused")
 	@Transient
     private String pessoaVinculo;
     @Transient

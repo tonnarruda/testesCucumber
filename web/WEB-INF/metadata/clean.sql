@@ -8,6 +8,8 @@ update empresa set emailRemetente='samuelpinheiro@entetecnologia.com.br';
 update empresa set emailRespSetorPessoal='samuelpinheiro@entetecnologia.com.br';
 update empresa set emailresprh='samuelpinheiro@entetecnologia.com.br';
 update empresa set emailresplimitecontrato='samuelpinheiro@entetecnologia.com.br';
+update areaorganizacional set emailsnotificacoes = '';
+update parametrosdosistema set emailsmtp='smtp.tifortes.com.br', emailport='25', emailuser='', emailpass='', autenticacao = false, tls = false;
 update usuario set senha='MTIzNA==';
 update historicocolaborador set salario=5555.00;
 update gastoempresaitem set valor=25.00;

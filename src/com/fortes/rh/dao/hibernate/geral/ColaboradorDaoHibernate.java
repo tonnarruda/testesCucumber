@@ -2782,7 +2782,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa, Long periodoExperienciaId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, cg.nome, fs.nome, ao.id, ao.nome, am.id, am.nome, co.empresa.id, es.nome, cpea.avaliacao.id, emp.nome, fun.nome) ");
+		hql.append("select distinct new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, cg.nome, fs.nome, ao.id, ao.nome, am.id, am.nome, co.empresa.id, es.nome, cpea.avaliacao.id, emp.nome, fun.nome) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("inner join hc.colaborador as co ");
 		hql.append("left join hc.faixaSalarial as fs ");
@@ -2792,7 +2792,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc.estabelecimento as es ");
 		hql.append("left join ao.areaMae as am ");
 		hql.append("left join fs.cargo as cg ");
-		hql.append("left join co.colaboradorQuestionarios as cq  ");
+		hql.append("left join co.colaboradorQuestionarios as cq ");
 		hql.append("left join cq.avaliacao as av with av.tipoModeloAvaliacao = 'A' ");
 		hql.append("left join co.colaboradorPeriodoExperienciaAvaliacaos cpea with cpea.periodoExperiencia = :periodoExperienciaId and cpea.tipo = 'G' ");
 		hql.append("where ");
