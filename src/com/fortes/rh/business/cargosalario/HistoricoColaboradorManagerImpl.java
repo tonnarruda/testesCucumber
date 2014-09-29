@@ -61,7 +61,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 import com.fortes.rh.web.ws.AcPessoalClientTabelaReajusteInterface;
 
-@SuppressWarnings({"unchecked","deprecation"})
+@SuppressWarnings({"unchecked"})
 public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<HistoricoColaborador, HistoricoColaboradorDao> implements HistoricoColaboradorManager
 {
 	private AreaOrganizacionalManager areaOrganizacionalManager;

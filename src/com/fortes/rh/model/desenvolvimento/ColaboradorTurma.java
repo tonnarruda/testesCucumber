@@ -66,6 +66,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 
 	@Transient
 	private Double valorAvaliacao;
+	@Transient
+	private Date diaPresente;
 
 	@Transient
 	private Integer totalDias;
@@ -343,12 +345,11 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	}
 	
 	//	findColabTreinamentos	
-	public ColaboradorTurma(Long Id, String colabCodigoAc, Date turmaDataIni, Date turmaDataFim)
+	public ColaboradorTurma(Long Id, String colabCodigoAc, Date diaPresente)
 	{
 		setId(Id);
 		setColaboradorCodigoAc(colabCodigoAc);
-		setTurmaDataPrevFim(turmaDataFim);
-		setTurmaDataPrevIni(turmaDataIni);
+		this.diaPresente = diaPresente;
 	}
 	
 	public void setTurmaRealizada(Boolean turmaRealizada)
@@ -843,5 +844,10 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	public Integer getQtdRespostasAvaliacaoTurma()
 	{
 		return qtdRespostasAvaliacaoTurma;
+	}
+
+	public Date getDiaPresente() 
+	{
+		return diaPresente;
 	}
 }

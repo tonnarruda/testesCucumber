@@ -2,6 +2,10 @@ package com.fortes.rh.web.action.exportacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -12,6 +16,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
@@ -85,20 +90,63 @@ public class ExportacaoAction extends MyActionSupport
 
 			for (Curso curso : cursos)
 			{
-				//Ocorrências dos colaboradores
 				Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColabTreinamentos(empresaId, estabelecimentoIds, areaIds, new Long[]{curso.getId()}, LongUtil.arrayStringToArrayLong(turmasCheck));
+				Map<String, Collection<ColaboradorTurma>> mapColaboradoresTurmas = new HashMap<String, Collection<ColaboradorTurma>>(); 
+				
 				for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
 				{
+					if(!mapColaboradoresTurmas.containsKey(colaboradorTurma.getColaborador().getCodigoAC()))
+						mapColaboradoresTurmas.put(colaboradorTurma.getColaborador().getCodigoAC(), new ArrayList<ColaboradorTurma>());
+
+					mapColaboradoresTurmas.get(colaboradorTurma.getColaborador().getCodigoAC()).add(colaboradorTurma);
+				}
+				
+				Date dataIni = null;
+				Date dataFim = null;
+				Iterator iterator = mapColaboradoresTurmas.entrySet().iterator();
+				while (iterator.hasNext()) 
+				{
+					@SuppressWarnings("rawtypes")
+					Map.Entry mapColaboradorTurma = (Map.Entry) iterator.next();
+					
+					dataFim = null;
+					colaboradorTurmas = (Collection<ColaboradorTurma>) mapColaboradorTurma.getValue();
+					for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
+					{
+						if(dataFim == null)
+						{
+							dataIni = colaboradorTurma.getDiaPresente();
+							dataFim = colaboradorTurma.getDiaPresente();
+						}
+						else
+						{
+							if(DateUtil.incrementaDias(dataFim, 1).equals(colaboradorTurma.getDiaPresente()))
+								dataFim = colaboradorTurma.getDiaPresente();
+							else {
+								texto.append("1"); 
+								texto.append(mapColaboradorTurma.getKey()); 
+								texto.append(curso.getCodigoTru());
+								texto.append(DateUtil.formataDiaMesAno(dataIni).replace("/", ""));
+								texto.append(DateUtil.formataDiaMesAno(dataFim).replace("/", ""));
+								texto.append(StringUtils.rightPad(" ", 270));
+								texto.append("\n");
+								
+								dataIni = colaboradorTurma.getDiaPresente();
+								dataFim = colaboradorTurma.getDiaPresente();
+							}
+						}
+					}
+					
 					texto.append("1"); 
-					texto.append(colaboradorTurma.getColaborador().getCodigoAC()); 
-					texto.append(curso.getCodigoTru()); 
-					texto.append(DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevIni()).replace("/", ""));
-					texto.append(DateUtil.formataDiaMesAno(colaboradorTurma.getTurma().getDataPrevFim()).replace("/", ""));
+					texto.append(mapColaboradorTurma.getKey()); 
+					texto.append(curso.getCodigoTru());
+					texto.append(DateUtil.formataDiaMesAno(dataIni).replace("/", ""));
+					texto.append(DateUtil.formataDiaMesAno(dataFim).replace("/", ""));
 					texto.append(StringUtils.rightPad(" ", 270));
 					texto.append("\n");
-				}
-			}
-
+				}	
+			}	
+			
 			texto.append("T");
 			textoTru = texto.toString();
 			

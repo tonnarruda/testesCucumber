@@ -1256,12 +1256,15 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	public Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cursoIds, Long[] turmaIds) 
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorTurma(ct.id, co.codigoAC, t.dataPrevIni, t.dataPrevFim) ");
+		hql.append("select new ColaboradorTurma(ct.id, co.codigoAC, dt.dia) ");
 		hql.append("from ColaboradorTurma as ct ");
 		hql.append("left join ct.colaborador as co ");
 		hql.append("left join co.historicoColaboradors as hc ");
 		hql.append("left join ct.turma as t ");
+		hql.append("left join t.diasTurma as dt ");
 		hql.append("where t.curso.id in (:cursoIds) ");
+		
+		hql.append("and exists (select id from ColaboradorPresenca cp where cp.diaTurma.id = dt.id and cp.colaboradorTurma.id = ct.id ) ");
 		
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			hql.append("and hc.estabelecimento.id in (:estabelecimentosIds) ");
@@ -1285,7 +1288,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		hql.append("			and hc2.status = :status ");
 		hql.append("	) ");
 		
-		hql.append("order by co.codigoAC asc");
+		hql.append("order by co.codigoAC, dt.dia ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
