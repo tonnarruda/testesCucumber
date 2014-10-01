@@ -1,5 +1,7 @@
 <#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"]/>
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
+
 <html>
 <head>
 	<@ww.head/>
@@ -47,8 +49,12 @@
 	<br>
 	<@display.table name="areaOrganizacionals" id="areaOrganizacional" class="dados" >
 		<@display.column title="Ações" style="text-align:center; width: 80px;" media="html">
-			<a href="prepareUpdate.action?areaOrganizacional.id=${areaOrganizacional.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?areaOrganizacional.id=${areaOrganizacional.id}&areaOrganizacional.empresa.id=${areaOrganizacional.empresa.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			<@authz.authorize ifAllGranted="ROLE_CAD_AREA_EDITAR">
+				<a href="prepareUpdate.action?areaOrganizacional.id=${areaOrganizacional.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+			</@authz.authorize>
+			<@authz.authorize ifAllGranted="ROLE_CAD_AREA_EXCLUIR">
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?areaOrganizacional.id=${areaOrganizacional.id}&areaOrganizacional.empresa.id=${areaOrganizacional.empresa.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			</@authz.authorize>
 		</@display.column>
 		<@display.column property="descricao" title="Descrição"/>
 		<@display.column property="responsavel.nomeComercial" title="Responsável"/>
@@ -61,7 +67,9 @@
 	</@display.table>
 
 	<div class="buttonGroup">
-		<button type="button" class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
+		<@authz.authorize ifAllGranted="ROLE_CAD_AREA_INSERIR">
+			<button type="button" class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
+		</@authz.authorize>
 		<button class="btnImprimir" onclick="imprimir();" accesskey="P"></button>
 		<button type="button"class="btnOrganograma" onclick="window.location='organograma.action'" accesskey="O"></button>
 	</div>

@@ -311,9 +311,14 @@
 								
 				/geral/historicoColaboradorBeneficio/*/**=ROLE_CAD_COLABORADOR
 				/geral/gastoEmpresa/*/**=ROLE_MOV_GASTO_GASTOEMPRESA
-				/geral/areaInteresse/*/**=ROLE_CAD_AREA
+				/geral/areaInteresse/*/**=ROLE_CAD_AREA_INTERESSE
 				/geral/motivoDemissao/*elatorioMotivoDemissao*/**=ROLE_REL_MOTIVO_DEMISSAO
 				/geral/motivoDemissao/*/**=ROLE_CAD_MOTIVO_DEMISSAO
+				/geral/areaOrganizacional/prepareInsert.action*=ROLE_CAD_AREA_INSERIR
+				/geral/areaOrganizacional/insert.action*=ROLE_CAD_AREA_INSERIR
+				/geral/areaOrganizacional/prepareUpdate.action*=ROLE_CAD_AREA_EDITAR
+				/geral/areaOrganizacional/update.action*=ROLE_CAD_AREA_EDITAR
+				/geral/areaOrganizacional/delete.action*=ROLE_CAD_AREA_EXCLUIR
 				/geral/areaOrganizacional/*/**=ROLE_CAD_AREA
 				/geral/estabelecimento/*/**=ROLE_CAD_ESTABELECIMENTO
 				/geral/bairro/*/**=ROLE_CAD_BAIRRO
@@ -341,7 +346,7 @@
 				/geral/gerenciadorComunicacao/*/**=ROLE_CAD_GERENCIADOR_COMUNICACAO
 
 				/captacao/motivoSolicitacao/*/**=ROLE_MOTIVO_SOLICITACAO
-				/captacao/areaInteresse/*/**=ROLE_CAD_AREA
+				/captacao/areaInteresse/*/**=ROLE_CAD_AREA_INTERESSE
 				/captacao/solicitacao/prepareRelatorioProcessoSeletivo*/**=ROLE_REL_PROCESSO_SELETIVO
 				/captacao/solicitacao/imprimirRelatorioProcessoSeletivo*/**=ROLE_REL_PROCESSO_SELETIVO
 				/captacao/solicitacao/prepareRelatorio*/**=ROLE_REL_SOLICITACAO
