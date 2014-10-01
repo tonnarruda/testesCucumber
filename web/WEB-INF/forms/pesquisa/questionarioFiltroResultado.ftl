@@ -14,6 +14,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AspectoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PerguntaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
@@ -35,8 +36,13 @@
 			</#if>
 			
 			var empresa = $('#empresa').val();
-	
-			populaCargosByArea(empresa);
+			
+			<#if questionario.tipo == tipoQuestionario.getPESQUISA() >
+				populaCargosByAreaVinculados();
+			<#else>
+				populaCargosByArea(empresa);
+			</#if>
+			
 			verificaCargoSemAreaRelacionada(empresa);
 			
 			$('#cargoSemArea').click(function() {
@@ -46,6 +52,56 @@
 					populaCargosByArea();
 			});
 		});
+	
+		function populaEstabelecimentos() {
+			DWRUtil.useLoadingMessage('Carregando...');
+			var empresaCheckIds = getArrayCheckeds(document.forms[0], 'empresasCheck');
+			if(empresaCheckIds.length > 0)
+				EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, null, empresaCheckIds);
+			else
+				EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, null, empresaIds);
+		}
+	
+		function createListEstabelecimento(data)
+		{
+			addChecks('estabelecimentosCheck',data);
+		}
+	
+		function populaAreas()
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			var empresaCheckIds = getArrayCheckeds(document.forms[0], 'empresasCheck');
+			if(empresaCheckIds.length > 0)
+				AreaOrganizacionalDWR.getByEmpresas(createListAreas, null, empresaCheckIds, null);
+			else
+				AreaOrganizacionalDWR.getByEmpresas(createListAreas, null, empresaIds, null);
+				
+			populaCargosByAreaVinculados();
+		}
+		
+		function createListAreas(data)
+		{
+			addChecks('areasCheck', data, 'populaCargosByAreaVinculados()');
+		}
+		
+		function populaCargosByAreaVinculados()
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
+			var empresasIds = getArrayCheckeds(document.forms[0],'empresasCheck');
+			
+			if(areasIds.length == 0)
+			{
+				CargoDWR.getByEmpresas(createListCargosByArea, 0, empresasIds);
+			}
+			else
+				CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", 0);
+		}
+		
+		function createListCargosByArea(data)
+		{
+			addChecks('cargosCheck',data);
+		}
 	
 		function populaPerguntasPorAspecto(questionarioId)
 		{
@@ -114,6 +170,10 @@
 			<#else>
 				<@ww.hidden name="questionario.id"/>
 			</#if>
+			
+			<#if questionario.tipo == tipoQuestionario.getPESQUISA() >
+				<@frt.checkListBox label="Empresas" name="empresasCheck" id="empresasCheck" list="empresasCheckList" onClick="populaEstabelecimentos(); populaAreas();" filtro="true"/>
+			</#if> 
 
 			<#if questionario.tipo != tipoQuestionario.getENTREVISTA()>
 				<#assign populaPerguntasPorAspecto = "populaPerguntasPorAspecto(${questionario.id?string});" />
@@ -129,8 +189,14 @@
 				<@frt.checkListBox label="Empresa - Estabelecimento" name="estabelecimentosCheck" id="estabelecimentosCheck" list="estabelecimentosCheckList" filtro="true"/>
 			</#if>
 
-			<@frt.checkListBox label="${descricaoAreas}" name="areasCheck" id="areasCheck" list="areaOrganizacionalsCheckList" onClick="populaCargosByArea();" filtro="true"/>
+			<#if questionario.tipo == tipoQuestionario.getPESQUISA() >
+				<@frt.checkListBox label="${descricaoAreas}" name="areasCheck" id="areasCheck" list="areaOrganizacionalsCheckList" onClick="populaCargosByAreaVinculados();" filtro="true"/>
+			<#else>
+				<@frt.checkListBox label="${descricaoAreas}" name="areasCheck" id="areasCheck" list="areaOrganizacionalsCheckList" onClick="populaCargosByArea();" filtro="true"/>
+			</#if>
+
 			<@ww.checkbox label="Considerar cargos não vinculados a nenhuma Área Organizacional" id="cargoSemArea" name="" labelPosition="left"/>
+			
 			<@frt.checkListBox label="Cargos" id="cargosCheck" name="cargosCheck" list="cargosCheckList" filtro="true"/>
 			
 			<@frt.checkListBox label="Exibir apenas os Aspectos" name="aspectosCheck" id="aspectosCheck" list="aspectosCheckList" onClick="${populaPerguntasPorAspecto}" filtro="true"/>
@@ -139,6 +205,7 @@
 			<#if questionario.tipo == tipoQuestionario.getPESQUISA()>
 				<@ww.checkbox label="Exibir observação" id="exibirCabecalho" name="exibirCabecalho" labelPosition="left"/>
 			</#if>
+			
 			
 			<@ww.checkbox label="Exibir todas as respostas" id="exibirRespostas" name="exibirRespostas" labelPosition="left"/>
 			<@ww.checkbox label="Exibir comentários" id="exibirComentarios" name="exibirComentarios" labelPosition="left"/>

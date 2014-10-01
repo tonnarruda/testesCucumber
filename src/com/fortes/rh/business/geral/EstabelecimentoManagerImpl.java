@@ -36,7 +36,7 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 	{
 		return getDao().findByEmpresa(empresaId);
 	}
-
+	
 	public Estabelecimento findEstabelecimentoCodigoAc(Long estabelecimentoId)
 	{
 		return getDao().findEstabelecimentoCodigoAc(estabelecimentoId);

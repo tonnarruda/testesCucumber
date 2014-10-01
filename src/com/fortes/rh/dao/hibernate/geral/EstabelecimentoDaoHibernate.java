@@ -99,7 +99,7 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 		
 		return criteria.list();
 	}
-
+	
 	public Estabelecimento findEstabelecimentoCodigoAc(Long estabelecimentoId)
 	{
 		Criteria criteria = getSession().createCriteria(Estabelecimento.class,"e");

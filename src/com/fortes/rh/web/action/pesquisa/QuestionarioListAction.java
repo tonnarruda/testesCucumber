@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -22,6 +23,7 @@ import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.Aspecto;
@@ -60,6 +62,7 @@ public class QuestionarioListAction extends MyActionSupportList
     private TurmaManager turmaManager;
     private CursoManager cursoManager;
     private ParametrosDoSistemaManager parametrosDoSistemaManager;
+    private CargoManager cargoManager;
 
 	private Questionario questionario;
 	private ColaboradorQuestionario colaboradorQuestionario;
@@ -91,6 +94,8 @@ public class QuestionarioListAction extends MyActionSupportList
 	private Collection<CheckBox> perguntasCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+	private String[] empresasCheck;
+	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
 
 	private boolean exibirCabecalho;
 	private boolean exibirRespostas;
@@ -302,7 +307,7 @@ public class QuestionarioListAction extends MyActionSupportList
    		else
    			empresas = empresaManager.findDistinctEmpresasByQuestionario(questionario.getId());
     	
-		empresaIds = new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas);
+   		empresaIds = new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas);
 		
     	questionario = questionarioManager.findByIdProjection(questionario.getId());
 
@@ -311,9 +316,14 @@ public class QuestionarioListAction extends MyActionSupportList
     	
     	if(questionario.verificaTipo(TipoQuestionario.FICHAMEDICA))
     		fichaMedicas = fichaMedicaManager.findAllSelect(getEmpresaSistema().getId(), null);
-    	
-		areaOrganizacionalsCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresaIds);
 
+		if(questionario.verificaTipo(TipoQuestionario.PESQUISA)) {
+			Collection<Empresa> empresas = empresaManager.findTodasEmpresas(); 
+			empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+			empresasCheckList = CheckListBoxUtil.marcaCheckListBox(empresasCheckList, empresasCheck);
+		}
+		
+		areaOrganizacionalsCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresaIds);
 		areaOrganizacionalsCheckList = CheckListBoxUtil.marcaCheckListBox(areaOrganizacionalsCheckList, areasCheck);
 		aspectosCheckList = aspectoManager.populaCheckOrderNome(questionario.getId());
 		aspectosCheckList = CheckListBoxUtil.marcaCheckListBox(aspectosCheckList, aspectosCheck);
@@ -379,6 +389,14 @@ public class QuestionarioListAction extends MyActionSupportList
 	
 	    	areasIds = StringUtil.converteArrayToString(areasCheck);
 	    	estabelecimentosIds = StringUtil.converteArrayToString(estabelecimentosCheck);
+	    	
+	    	Long[] empresaIds = LongUtil.arrayStringToArrayLong(empresasCheck);
+	    	
+	    	if(empresaIds.length > 0 && estabelecimentoIds.length == 0 && areaIds.length == 0 && cargoIds.length == 0) {
+	    		estabelecimentoIds = new CollectionUtil<Estabelecimento>().convertCollectionToArrayIds(estabelecimentoManager.findAllSelect(empresaIds));
+	    		areaIds = new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areaOrganizacionalManager.findByEmpresasIds(empresaIds, null));
+//	    		cargoIds = LongUtil.collectionStringToArrayLong(cargoManager.findByEmpresa(empresaId));
+	    	}
 
     		resultadoQuestionarios = questionarioManager.montaResultado(perguntas, perguntasIds, estabelecimentoIds, areaIds, cargoIds, periodoIni, periodoFim, questionario.verificaTipo(TipoQuestionario.ENTREVISTA), turmaId, questionario);
 
@@ -533,6 +551,18 @@ public class QuestionarioListAction extends MyActionSupportList
 		this.aspectosCheck = aspectosCheck;
 	}
 
+	public String[] getEmpresasCheck() {
+		return empresasCheck;
+	}
+
+	public void setEmpresasCheck(String[] empresasCheck) {
+		this.empresasCheck = empresasCheck;
+	}
+	
+	public Collection<CheckBox> getEmpresasCheckList() {
+		return empresasCheckList;
+	}
+	
 	public boolean isExibirComentarios()
 	{
 		return exibirComentarios;
@@ -792,6 +822,10 @@ public class QuestionarioListAction extends MyActionSupportList
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+	
+	public void setCargoManager(CargoManager cargoManager) {
+		this.cargoManager = cargoManager;
 	}
 
 	public void setCursoManager(CursoManager cursoManager) {
