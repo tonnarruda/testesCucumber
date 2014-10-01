@@ -2,7 +2,7 @@
 <Versoes>
 	<Versao id="1.1.135.162" bd="" data="07/10/2014">
 		<Item visivel="S" motivo="S20140900026"><![CDATA[Insercao de filtro de busca em R&S, Pesquisas, Avaliacao de Desempenho, Info. Funcionais, SESMT e Utilitarios]]></Item>
-		<Item visivel="S" motivo="P20140900169"><![CDATA[[P20140900169]Utilitários > Exportar Curso/Turma como ocorrência para o TRU: Considerar como ocorrência, ao exportar, os dias de realização da turma ou os dias presentes do colaborador na turma.]]></Item>
+		<Item visivel="S" motivo="P20140900169"><![CDATA[Utilitários > Exportar Curso/Turma como ocorrência para o TRU: Considerar como ocorrência, ao exportar, os dias de realização da turma ou os dias presentes do colaborador na turma.]]></Item>
 		<Item visivel="S" motivo="S20140900119"><![CDATA[Utilitários > Cadastro > Perfis: Inclusão de permissões para inserir, editar e excluir áreas organizacionais.]]></Item>
 		<Item visivel="N" motivo="P20140900123"><![CDATA[BUG: Erro ao tentar contratar candidato através da "solicitação de pessoal" ou "cadastro de candidato".]]></Item>
 		<Item visivel="N" motivo="P20140900149"><![CDATA[BUG: Gestores recebendo notificações repetidas da "Avaliação do Período de Experiência" dos colaboradores através de email.]]></Item>
