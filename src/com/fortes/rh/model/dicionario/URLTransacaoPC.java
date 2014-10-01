@@ -4,8 +4,9 @@ public enum URLTransacaoPC
 {
 	COLABORADOR_ATUALIZAR(1, "/api/v1/colaboradores/atualizar.json", "PUT"),
 	TESTAR_CONEXAO_PORTAL(2, "/api/v1/testar_conexao", "POST"),
-	COLABORADOR_ATUALIZAR_HISTORICO(3, "/api/v1/colaboradores/atualizarhistorico.json", "PUT"),
-	EMPRESA_ATUALIZAR(4, "/api/v1/empresas/atualizar.json", "PUT");
+	COLABORADOR_ATUALIZAR_HISTORICO(3, "/api/v1/colaboradores/atualizar_historico.json", "PUT"),
+	EMPRESA_ATUALIZAR(4, "/api/v1/empresas/atualizar.json", "PUT"),
+	ENVIAR_EMAIL(5, "/api/v1/enviar_email.json", "POST");
 
 	private Integer id;
 	private String url;
