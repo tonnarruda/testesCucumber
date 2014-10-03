@@ -760,14 +760,6 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			colaboradorPeriodoExperienciaAvaliacaoManager.atualizaConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
 
 		}
-//		catch (NestedRuntimeException e)
-//		{
-//			e.printStackTrace();
-//			addActionError("Erro ao gravar as informações do colaborador!");
-//			prepareUpdate();
-//
-//			return Action.INPUT;
-//		}
 		catch (IntegraACException e)
 		{
 			addActionError("Erro ao gravar as informações do colaborador no AC Pessoal.");

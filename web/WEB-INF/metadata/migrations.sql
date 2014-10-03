@@ -5752,3 +5752,31 @@ $$ LANGUAGE plpgsql; --.go
 
 -- add_column_integradaPortalColaborador_empresa
 alter table empresa add column integradaPortalColaborador boolean DEFAULT false NOT NULL; --.go
+
+-- add_column_atualizarColaboradorPortal
+ALTER TABLE colaborador ADD COLUMN atualizarcolaboradorportal BOOLEAN NOT NULL DEFAULT false;--.go
+
+-- create_trigger_colaborador_atualizarcolaboradorportal
+CREATE OR REPLACE FUNCTION atualizar_colaborador_portal() RETURNS TRIGGER AS $$ 
+    DECLARE 
+        linha RECORD; 
+    BEGIN 
+        IF (TG_OP = 'INSERT') THEN 
+            linha := NEW; 
+        ELSE  
+            linha := OLD; 
+        END IF; 
+
+        IF (TG_TABLE_NAME = 'colaborador') THEN 
+            UPDATE colaborador SET atualizarcolaboradorportal = true WHERE id = linha.id; 
+        END IF;
+
+        RETURN NULL;
+    END;
+    $$ LANGUAGE plpgsql;--.go
+
+DROP TRIGGER IF EXISTS tg_atualizar_colaborador_portal ON colaborador;--.go
+
+CREATE TRIGGER tg_atualizar_colaborador_portal 
+  AFTER INSERT OR UPDATE OR DELETE ON colaborador 
+    FOR EACH ROW EXECUTE PROCEDURE atualizar_colaborador_portal();--.go

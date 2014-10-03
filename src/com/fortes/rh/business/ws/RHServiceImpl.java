@@ -532,7 +532,7 @@ public class RHServiceImpl implements RHService
 			{
 				Colaborador colaborador = colaboradorManager.updateEmpregado(empregado);
 				if(colaborador == null)
-					throw new Exception("Empregado não encontrado.");
+					return new FeedbackWebService(false, "Empregado não encontrado",  "Empregado não encontrado\n" + formataException(parametros, null));
 			}
 			catch (Exception e)
 			{

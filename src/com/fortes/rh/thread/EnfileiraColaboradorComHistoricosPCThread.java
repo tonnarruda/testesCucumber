@@ -28,7 +28,7 @@ public class EnfileiraColaboradorComHistoricosPCThread extends Thread{
 		
 		try {
 			HistoricoColaboradorManager hisColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
-			Collection<HistoricoColaborador> historicosColaboradores = hisColaboradorManager.findPendenciasPortal(null, new Long[]{empresa.getId()});
+			Collection<HistoricoColaborador> historicosColaboradores = hisColaboradorManager.findPendenciasHistoricosPC(null, new Long[]{empresa.getId()});
 			hisColaboradorManager.enfilerarColaboradoresComHistoricosPC(new Long[]{empresa.getId()}, new ArrayList(historicosColaboradores), URLTransacaoPC.COLABORADOR_ATUALIZAR);
 			emailConfirmacaoPC();
 			

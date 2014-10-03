@@ -175,7 +175,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	
 	public Set<ColaboradorPC> enfileirarHistoricosPC();
 
-	public List<HistoricoColaborador> findPendenciasPortal(Boolean atualizarHistoricoPortal, Long... empresasIds);
+	public List<HistoricoColaborador> findPendenciasHistoricosPC(Boolean atualizarHistoricoPortal, Long... empresasIds);
 	
 	public Collection<HistoricoColaborador> montaSituacaoHistoricoColaborador(List<HistoricoColaborador> historicoColaboradors);
 	
