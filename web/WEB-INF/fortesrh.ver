@@ -6,7 +6,7 @@
 		<Item visivel="S" motivo="S20140900119"><![CDATA[Utilitários > Cadastro > Perfis: Inclusão de permissões para inserir, editar e excluir áreas organizacionais.]]></Item>
 		<Item visivel="N" motivo="P20140900123"><![CDATA[BUG: Erro ao tentar contratar candidato através da "solicitação de pessoal" ou "cadastro de candidato".]]></Item>
 		<Item visivel="N" motivo="P20140900149"><![CDATA[BUG: Gestores recebendo notificações repetidas da "Avaliação do Período de Experiência" dos colaboradores através de email.]]></Item>
-		<Item visivel="N" motivo="P20140900209"><![CDATA[BUG: Relatório de Pesquisa apresenta inconsintência quando são marcados todos os itens do filtro de cargos.]]></Item>
+		<Item visivel="N" motivo="P20140900209"><![CDATA[BUG: Pesquisas > Movimentações > Relatório da Pesquisa: Relatório de Pesquisa apresenta inconsintência quando são marcados todos os itens do filtro de cargos.]]></Item>
 	</Versao>
 	<Versao id="1.1.134.161" bd="" data="22/09/2014">
 		<Item visivel="S" motivo="S20140900051"><![CDATA[C&S: Inclusão de filtros em todos os campos de múltipla escolha.]]></Item>

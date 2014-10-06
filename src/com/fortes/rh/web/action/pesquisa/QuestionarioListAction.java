@@ -310,20 +310,24 @@ public class QuestionarioListAction extends MyActionSupportList
    		empresaIds = new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas);
 		
     	questionario = questionarioManager.findByIdProjection(questionario.getId());
-
-    	if(questionario.verificaTipo(TipoQuestionario.ENTREVISTA))
+    	
+    	if(questionario.verificaTipo(TipoQuestionario.ENTREVISTA)) {
     		entrevistas = entrevistaManager.findAllSelect(getEmpresaSistema().getId(), null);
+    		empresaIds = new Long[]{empresaId};
+    	}
     	
     	if(questionario.verificaTipo(TipoQuestionario.FICHAMEDICA))
     		fichaMedicas = fichaMedicaManager.findAllSelect(getEmpresaSistema().getId(), null);
 
 		if(questionario.verificaTipo(TipoQuestionario.PESQUISA)) {
-			Collection<Empresa> empresas = empresaManager.findTodasEmpresas(); 
+			Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, getUsuarioLogado().getId(), "ROLE_MOV_QUESTIONARIO");
 			empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
 			empresasCheckList = CheckListBoxUtil.marcaCheckListBox(empresasCheckList, empresasCheck);
+			empresaIds = new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas);
 		}
 		
 		areaOrganizacionalsCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresaIds);
+		
 		areaOrganizacionalsCheckList = CheckListBoxUtil.marcaCheckListBox(areaOrganizacionalsCheckList, areasCheck);
 		aspectosCheckList = aspectoManager.populaCheckOrderNome(questionario.getId());
 		aspectosCheckList = CheckListBoxUtil.marcaCheckListBox(aspectosCheckList, aspectosCheck);

@@ -35,21 +35,20 @@
 				$('#empresa').val('');
 			</#if>
 			
-			var empresa = $('#empresa').val();
-			
 			<#if questionario.tipo == tipoQuestionario.getPESQUISA() >
 				populaCargosByAreaVinculados();
 			<#else>
-				populaCargosByArea(empresa);
+				populaCargosByArea();
 			</#if>
 			
-			verificaCargoSemAreaRelacionada(empresa);
+			verificaCargoSemAreaRelacionada($('#empresa').val());
 			
 			$('#cargoSemArea').click(function() {
-				if($(this).is(":checked"))
-					addCheckCargoSemArea();
-				else
+				<#if questionario.tipo == tipoQuestionario.getPESQUISA() >
+					populaCargosByAreaVinculados();
+				<#else>
 					populaCargosByArea();
+				</#if>
 			});
 		});
 	
@@ -71,17 +70,23 @@
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			var empresaCheckIds = getArrayCheckeds(document.forms[0], 'empresasCheck');
+			populaCargosByAreaVinculados();
+
 			if(empresaCheckIds.length > 0)
 				AreaOrganizacionalDWR.getByEmpresas(createListAreas, null, empresaCheckIds, null);
 			else
 				AreaOrganizacionalDWR.getByEmpresas(createListAreas, null, empresaIds, null);
 				
-			populaCargosByAreaVinculados();
 		}
 		
 		function createListAreas(data)
 		{
-			addChecks('areasCheck', data, 'populaCargosByAreaVinculados()');
+			<#if questionario.tipo == tipoQuestionario.getPESQUISA() >
+				addChecks('areasCheck', data, 'populaCargosByAreaVinculados()');
+			<#else>
+				addChecks('areasCheck', data, 'populaCargosByArea()');
+			</#if>
+			
 		}
 		
 		function populaCargosByAreaVinculados()
@@ -90,12 +95,20 @@
 			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
 			var empresasIds = getArrayCheckeds(document.forms[0],'empresasCheck');
 			
-			if(areasIds.length == 0)
+			if ($('#cargoSemArea').is(":checked"))
 			{
-				CargoDWR.getByEmpresas(createListCargosByArea, 0, empresasIds);
+				if(areasIds.length == 0)
+					CargoDWR.getByEmpresas(createListCargosByArea, 0, empresasIds);
+				else {
+					CargoDWR.getCargoByAreaMaisSemAreaRelacionada(createListCargosByArea, areasIds, "getNomeMercado", 0);
+				}
 			}
 			else
-				CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", 0);
+				if (areasIds.length == 0)
+					CargoDWR.getByEmpresas(createListCargosByArea, 0, empresasIds);
+				else
+					CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", 0);
+				
 		}
 		
 		function createListCargosByArea(data)
