@@ -352,10 +352,19 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, Integer qtdMesesSemCurso) throws Exception
 	{
 		Date data = null;
-		if(qtdMesesSemCurso != null && qtdMesesSemCurso > 0)
+		if(qtdMesesSemCurso != null && qtdMesesSemCurso >= 0)
 			data = criaDataDiminuindoMeses(qtdMesesSemCurso).getTime();
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findRelatorioSemTreinamento(empresaId, curso, areaIds, estabelecimentoIds, data);
+		Collection<ColaboradorTurma> colaboradorTurmasTemp = getDao().findRelatorioSemTreinamento(empresaId, curso, areaIds, estabelecimentoIds, data);
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+		Collection<Long> colaboradorIdsTurmas = new ArrayList<Long>();
+		
+		for (ColaboradorTurma colaboradorTurma : colaboradorTurmasTemp) {
+			if (!colaboradorIdsTurmas.contains(colaboradorTurma.getColaborador().getId())) {
+				colaboradorIdsTurmas.add(colaboradorTurma.getColaborador().getId());
+				colaboradorTurmas.add(colaboradorTurma);
+			}
+		}
 
 		return validaRelatorioTreinamento(empresaId, curso, colaboradorTurmas);
 	}
