@@ -133,9 +133,9 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	Long questionarioId = 1L;
     	Long colaboradorId = 2L;
 
-    	colaboradorRespostaDao.expects(once()).method("findByQuestionarioColaborador").with(eq(questionarioId), eq(colaboradorId), ANYTHING).will(returnValue(colaboradorRespostas));
+    	colaboradorRespostaDao.expects(once()).method("findByQuestionarioColaborador").with(eq(questionarioId), eq(colaboradorId), ANYTHING, ANYTHING).will(returnValue(colaboradorRespostas));
 
-    	assertEquals(colaboradorRespostas, colaboradorRespostaManager.findByQuestionarioColaborador(questionarioId, colaboradorId, null));
+    	assertEquals(colaboradorRespostas, colaboradorRespostaManager.findByQuestionarioColaborador(questionarioId, colaboradorId, null, null));
     }
 
     public void testSalvaQuestionarioRespondidaPesquisa() throws Exception

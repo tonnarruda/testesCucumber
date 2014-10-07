@@ -512,7 +512,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		colaboradorResposta.setColaboradorQuestionario(colaboradorQuestionario);
 		colaboradorResposta = colaboradorRespostaDao.save(colaboradorResposta);
 		
-		Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaDao.findByQuestionarioColaborador(questionario.getId(), colaborador.getId(), null);
+		Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaDao.findByQuestionarioColaborador(questionario.getId(), colaborador.getId(), null, null);
 		assertEquals(1, colaboradorRespostas.size());
 	}
 	

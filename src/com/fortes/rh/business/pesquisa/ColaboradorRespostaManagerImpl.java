@@ -348,9 +348,9 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
         return resultadosObjetivas;
     }
 
-	public Collection<ColaboradorResposta> findByQuestionarioColaborador(Long questionarioId, Long colaboradorId, Long turmaId)
+	public Collection<ColaboradorResposta> findByQuestionarioColaborador(Long questionarioId, Long colaboradorId, Long turmaId, Long colaboradorQuestionarioId)
 	{
-		return getDao().findByQuestionarioColaborador(questionarioId, colaboradorId, turmaId);
+		return getDao().findByQuestionarioColaborador(questionarioId, colaboradorId, turmaId, colaboradorQuestionarioId);
 	}
 
 	public Collection<ColaboradorResposta> findByQuestionarioCandidato(Long questionarioId, Long candidatoId)
@@ -380,7 +380,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		if(colaboradorQuestionario.getCandidato() != null && colaboradorQuestionario.getCandidato().getId() != null)
 			colaboradorRespostas = findByQuestionarioCandidato(questionarioId, colaboradorQuestionario.getCandidato().getId());
 		else if(colaboradorQuestionario.getColaborador() != null && colaboradorQuestionario.getColaborador().getId() != null)
-			colaboradorRespostas = findByQuestionarioColaborador(questionarioId, colaboradorQuestionario.getColaborador().getId(), null);
+			colaboradorRespostas = findByQuestionarioColaborador(questionarioId, colaboradorQuestionario.getColaborador().getId(), null, colaboradorQuestionario.getId());
 
 		return colaboradorRespostas;
 	}

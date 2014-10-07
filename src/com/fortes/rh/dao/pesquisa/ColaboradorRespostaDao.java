@@ -22,7 +22,7 @@ public interface ColaboradorRespostaDao extends GenericDao<ColaboradorResposta>
 	void removeByColaboradorQuestionario(Long colaboradorQuestionarioId);
 	void removeByColaboradorQuestionario(Long[] colaboradorQuestionarioIds);
 
-	Collection<ColaboradorResposta> findByQuestionarioColaborador(Long questionarioId, Long colaboradorId, Long turmaId);
+	Collection<ColaboradorResposta> findByQuestionarioColaborador(Long questionarioId, Long colaboradorId, Long turmaId, Long colaboradorQuestionarioId);
 	
 	Collection<ColaboradorResposta> findByColaboradorQuestionario(Long colaboradorQuestionarioId);
 

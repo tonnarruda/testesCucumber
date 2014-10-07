@@ -153,7 +153,7 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         		colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
     		else 
     		{
-    			colaboradorRespostas = colaboradorRespostaManager.findByQuestionarioColaborador(questionario.getId(), colaborador.getId(), turmaId);
+    			colaboradorRespostas = colaboradorRespostaManager.findByQuestionarioColaborador(questionario.getId(), colaborador.getId(), turmaId, null);
     			colaboradorQuestionario = colaboradorQuestionarioManager.findByQuestionario(questionario.getId(), colaborador.getId(), turmaId);
     		}
         }

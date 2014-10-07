@@ -449,7 +449,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		query.executeUpdate();
 	}
 
-	public Collection<ColaboradorResposta> findByQuestionarioColaborador(Long questionarioId, Long colaboradorId, Long turmaId)
+	public Collection<ColaboradorResposta> findByQuestionarioColaborador(Long questionarioId, Long colaboradorId, Long turmaId, Long colaboradorQuestionarioId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cr");
 		criteria.createCriteria("cr.colaboradorQuestionario", "cq", Criteria.LEFT_JOIN);
@@ -480,6 +480,9 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(turmaId != null)
 			criteria.add(Expression.eq("cq.turma.id", turmaId));
 
+		if(colaboradorQuestionarioId != null)
+			criteria.add(Expression.eq("cr.colaboradorQuestionario.id", colaboradorQuestionarioId));
+			
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
