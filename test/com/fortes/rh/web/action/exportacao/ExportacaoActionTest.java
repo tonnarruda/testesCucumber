@@ -2,6 +2,7 @@ package com.fortes.rh.web.action.exportacao;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.jmock.Mock;
@@ -14,6 +15,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 
 public class ExportacaoActionTest extends MockObjectTestCase
@@ -77,9 +79,14 @@ public class ExportacaoActionTest extends MockObjectTestCase
     	action.setEstabelecimentosCheck(new String[]{"1"});
     	action.setAreasCheck(new String[]{"1"});
     	
+    	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+    	colaboradorTurma.setColaborador(colaborador);
+    	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+    	colaboradorTurmas.add(colaboradorTurma);
+    	
     	cursoManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(Arrays.asList(curso)));
     	colaboradorTurmaManager.expects(once()).method("findColaboradorByCurso").with(ANYTHING, ANYTHING).will(returnValue(Arrays.asList(colaborador)));
-    	colaboradorTurmaManager.expects(once()).method("findColabTreinamentos").will(returnValue(new ArrayList<ColaboradorTurma>()));
+    	colaboradorTurmaManager.expects(once()).method("findColabTreinamentos").will(returnValue(colaboradorTurmas));
     	
     	assertEquals("success",action.gerarArquivoExportacao());
     	assertEquals(msgRetorno(curso),action.getTextoTru());
@@ -93,6 +100,8 @@ public class ExportacaoActionTest extends MockObjectTestCase
 		texto.append(StringUtils.rightPad("TRAFEGO", 10, " "));
 		texto.append(StringUtils.rightPad("RH", 10, " "));
 		texto.append(StringUtils.rightPad("Importação do RH para o TRU", 40, " "));
+		texto.append("\n");
+		texto.append(StringUtils.rightPad("1123456123", 280, " "));
 		texto.append("\n");
 
 		texto.append("T");

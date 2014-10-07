@@ -1253,7 +1253,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return criteria.list();
 	}
 
-	public Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cursoIds, Long[] turmaIds) 
+	public Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cursoIds, Long[] turmaIds, boolean considerarSomenteDiasPresente) 
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new ColaboradorTurma(ct.id, co.codigoAC, dt.dia) ");
@@ -1264,7 +1264,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		hql.append("left join t.diasTurma as dt ");
 		hql.append("where t.curso.id in (:cursoIds) ");
 		
-		hql.append("and exists (select id from ColaboradorPresenca cp where cp.diaTurma.id = dt.id and cp.colaboradorTurma.id = ct.id ) ");
+		if(considerarSomenteDiasPresente)
+			hql.append("and exists (select id from ColaboradorPresenca cp where cp.diaTurma.id = dt.id and cp.colaboradorTurma.id = ct.id ) ");
 		
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			hql.append("and hc.estabelecimento.id in (:estabelecimentosIds) ");

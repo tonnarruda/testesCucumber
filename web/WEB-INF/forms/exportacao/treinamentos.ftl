@@ -96,6 +96,7 @@
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList"  width="600" filtro="true"/>
 		<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos*" list="cursosCheckList"  width="600" onClick="populaTurma();" filtro="true"/>
 		<@frt.checkListBox name="turmasCheck" id="turmasCheck" label="Cursos / Turmas" list="turmasCheckList" width="600" filtro="true"/>
+		<@ww.select label="Considerar como ocorrência somente os dias da" name="considerarSomenteDiasPresente" list=r"#{false:'Turma',true:'Presença'}" cssStyle="width: 320px;"/>
 	</@ww.form>
 	
 	<div class="buttonGroup">

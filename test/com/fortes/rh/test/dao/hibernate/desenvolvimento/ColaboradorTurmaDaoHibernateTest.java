@@ -392,10 +392,10 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaboradorPresencaMaria.setDiaTurma(diaTurmaMaria);
     	colaboradorPresencaDao.save(colaboradorPresencaMaria);
     	
-    	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findColabTreinamentos(empresa.getId(),null , new Long[]{areaOrganizacional.getId()}, new Long[]{curso.getId()}, null);
+    	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findColabTreinamentos(empresa.getId(),null , new Long[]{areaOrganizacional.getId()}, new Long[]{curso.getId()}, null, true);
     	assertEquals(2, retorno.size());
 
-    	retorno = colaboradorTurmaDao.findColabTreinamentos(empresa.getId(),null , new Long[]{areaOrganizacional.getId()}, new Long[]{curso.getId()}, new Long[]{scrum.getId()});
+    	retorno = colaboradorTurmaDao.findColabTreinamentos(empresa.getId(),null , new Long[]{areaOrganizacional.getId()}, new Long[]{curso.getId()}, new Long[]{scrum.getId()}, true);
     	assertEquals(1, retorno.size());
     }
     

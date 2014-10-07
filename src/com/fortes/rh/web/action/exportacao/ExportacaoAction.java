@@ -16,7 +16,6 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
@@ -46,6 +45,7 @@ public class ExportacaoAction extends MyActionSupport
 	private String[] turmasCheck;
 	
 	private String textoTru;
+	private boolean considerarSomenteDiasPresente;
 	
 	public String prepareExportacaoTreinamentos() throws Exception
 	{
@@ -90,7 +90,14 @@ public class ExportacaoAction extends MyActionSupport
 
 			for (Curso curso : cursos)
 			{
-				Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColabTreinamentos(empresaId, estabelecimentoIds, areaIds, new Long[]{curso.getId()}, LongUtil.arrayStringToArrayLong(turmasCheck));
+				Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColabTreinamentos(empresaId, estabelecimentoIds, areaIds, new Long[]{curso.getId()}, LongUtil.arrayStringToArrayLong(turmasCheck), considerarSomenteDiasPresente);
+				
+				if(colaboradorTurmas.isEmpty()){
+					addActionMessage("Não existem colaboradores, para o filtro informado, inseridos na turma a serem exportados como ocorrência.");
+					prepareExportacaoTreinamentos();
+					return Action.INPUT;
+				}
+				
 				Map<String, Collection<ColaboradorTurma>> mapColaboradoresTurmas = new HashMap<String, Collection<ColaboradorTurma>>(); 
 				
 				for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
@@ -293,5 +300,13 @@ public class ExportacaoAction extends MyActionSupport
 
 	public Collection<CheckBox> getTurmasCheckList() {
 		return turmasCheckList;
+	}
+
+	public boolean isConsiderarSomenteDiasPresente() {
+		return considerarSomenteDiasPresente;
+	}
+
+	public void setConsiderarSomenteDiasPresente(boolean considerarSomenteDiasPresente) {
+		this.considerarSomenteDiasPresente = considerarSomenteDiasPresente;
 	}
 }
