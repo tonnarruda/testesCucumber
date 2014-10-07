@@ -117,4 +117,8 @@ public class TFeedbackPessoalWebService implements Serializable
 	{
 		this.codigoerro = codigoerro;
 	}
+
+	public Boolean getSucesso() {
+		return sucesso;
+	}
 }

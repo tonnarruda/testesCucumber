@@ -93,6 +93,7 @@ import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Autenticador;
@@ -950,7 +951,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 			}
 
-	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId, Empresa empresa) throws Exception 
+	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId, Empresa empresa) throws Exception, IntegraACException 
 	{
 		Collection<HistoricoColaborador> historicosColaborador = new ArrayList<HistoricoColaborador>();
 		HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaboradorId);
@@ -958,11 +959,16 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		historicoColaborador.setObsACPessoal(observacaoDemissao);
 		historicosColaborador.add(historicoColaborador);
 
-		if(acPessoalClientColaborador.solicitacaoDesligamentoAc(historicosColaborador, empresa))
+		TFeedbackPessoalWebService tFeedbackPessoalWebService = acPessoalClientColaborador.solicitacaoDesligamentoAc(historicosColaborador, empresa); 
+		
+		if(tFeedbackPessoalWebService != null && tFeedbackPessoalWebService.getSucesso())
 		{
 			getDao().atualizaSolicitacaoDesligamento(null, dataSolicitacaoDesligamento, null, null, null, colaboradorId);
 			desligaColaborador(null, null, observacaoDemissao, motivoId, false, colaboradorId);
+		}else{
+			throw new IntegraACException("Colaborador não encontrado no Ac Pessoal");
 		}
+				
 	}
 
 	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long solicitanteDemissaoId, Long colaboradorId) throws Exception 

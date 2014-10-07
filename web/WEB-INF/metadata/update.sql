@@ -22593,3 +22593,30 @@ select atualiza_mensagem_com_avaliacaoId();--.go
 drop function atualiza_mensagem_com_avaliacaoId();--.go
 insert into migrations values('20140919212753');--.go
 update parametrosdosistema set appversao = '1.1.134.161';--.go
+-- versao 1.1.135.162
+
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (625, 'ROLE_CAD_AREA_INSERIR', 'Inserir', '#', 1, false, 9);--.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (626, 'ROLE_CAD_AREA_EDITAR', 'Editar', '#', 2, false, 9);--.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (627, 'ROLE_CAD_AREA_EXCLUIR', 'Excluir', '#', 3, false, 9);--.go
+
+CREATE FUNCTION ajusta_perfil_papel_faixa() RETURNS integer AS $$ 
+DECLARE 
+    mviews RECORD; 
+BEGIN 
+    FOR mviews IN 
+		select perfil_id from perfil_papel where papeis_id = 9 
+		LOOP 
+		  insert into perfil_papel(perfil_id, papeis_id) values( mviews.perfil_id , 625);
+		  insert into perfil_papel(perfil_id, papeis_id) values( mviews.perfil_id , 626); 
+		  insert into perfil_papel(perfil_id, papeis_id) values( mviews.perfil_id , 627); 
+		END LOOP; 
+    RETURN 1; 
+END; 
+$$ LANGUAGE plpgsql;--.go
+select ajusta_perfil_papel_faixa();--.go
+drop function ajusta_perfil_papel_faixa();--.go
+alter sequence papel_sequence restart with 628;--.go
+insert into migrations values('20141001093055');--.go
+update papel set codigo = 'ROLE_CAD_AREA_INTERESSE' where id=4;--.go
+insert into migrations values('20141001105527');--.go
+update parametrosdosistema set appversao = '1.1.135.162';--.go

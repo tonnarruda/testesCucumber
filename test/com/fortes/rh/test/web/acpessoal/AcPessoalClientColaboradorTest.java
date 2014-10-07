@@ -269,7 +269,7 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		Collection<HistoricoColaborador> historicos = new ArrayList<HistoricoColaborador>();
 		historicos.add(historicoPorValor1);
 		
-		assertTrue(acPessoalClientColaboradorImpl.solicitacaoDesligamentoAc(historicos, empresa));
+		assertTrue(acPessoalClientColaboradorImpl.solicitacaoDesligamentoAc(historicos, empresa).getSucesso());
 	}
 	
 	

@@ -215,7 +215,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 		return result;
 	}
 
-	public boolean solicitacaoDesligamentoAc(Collection<HistoricoColaborador> historicosAc, Empresa empresa) 
+	public TFeedbackPessoalWebService solicitacaoDesligamentoAc(Collection<HistoricoColaborador> historicosAc, Empresa empresa) throws IntegraACException 
 	{
 		try {
 				StringBuilder token = new StringBuilder();
@@ -275,14 +275,10 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 
 		       	Object[] param = new Object[]{token.toString(), arrayReajuste};
 
-		       	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
-		       	Boolean retorno = result.getSucesso("SetRescisaoRhEmpregados", param, this.getClass()); 
-	       		if(!retorno)
-		        	throw new IntegraACException("Situação do colaborador inexistente no Ac Pessoal.");
-		       	return retorno;
+		       	return (TFeedbackPessoalWebService) call.invoke(param);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return null;
 		}
 	}
 	

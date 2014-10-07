@@ -13,6 +13,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.MotivoDemissaoManager;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.sesmt.Comissao;
@@ -115,7 +116,11 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			addActionSuccess("Solicitação de desligamento enviada com sucesso.");
 			
 		} catch (Exception e) {
-			addActionError(e.getMessage());
+			if(e.getCause() != null && e.getCause().getMessage() != null)
+				addActionError(e.getCause().getMessage());
+			else
+				addActionError("Erro ao tentar desligar colaborador no Ac Pessoal " + e.getMessage());
+			
 			prepareUpdate();
 			return Action.INPUT;
 		}

@@ -1,5 +1,6 @@
 package com.fortes.security.auditoria;
 
+
 public class EmptyAuditorCallbackImpl implements AuditorCallback {
 
 	public Auditavel processa(MetodoInterceptado metodo) throws Throwable {
