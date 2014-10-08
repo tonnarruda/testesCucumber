@@ -2,6 +2,7 @@
 <Versoes>
 
 	<Versao id="1.1.13x.163" bd="" data="XX/XX/2014">
+		<Item visivel="N" motivo="P20140900133"><![CDATA[T&D > Cadastros > Avaliações dos Alunos/Modelos de Avaliação de Curso/Modelos de Avaliação de Aluno: Ajuste na nomeclatura do menu.]]></Item>
 		<Item visivel="N" motivo="P20140900093"><![CDATA[BUG: T&D > Relatório > Colaboradores sem Treinamentos: Colaboradores aparecendo duplicados no relatório.]]></Item>
 		<Item visivel="N" motivo="P20141000010"><![CDATA[BUG: SESMT > Movimentações > Fichas Médicas > Imprimir Ficha: Ao imprimir uma ficha médica considerava-se sempre a primeira ficha do colaborador.]]></Item>
 	</Versao>
