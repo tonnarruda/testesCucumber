@@ -479,19 +479,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public String getVinculo(String admissaoTipo, Integer admissaoVinculo, Integer admissaoCategoria) {
 		String colocacao;
-		if (admissaoTipo!=null && admissaoTipo.equals("00")) {
+		
+		if (admissaoTipo!=null && admissaoTipo.equals("00"))
 			colocacao = Vinculo.ESTAGIO;
-		} else {
-			if (admissaoVinculo!=null && admissaoVinculo == 50) {
-				colocacao = Vinculo.TEMPORARIO;
-			} else {
+		else if (admissaoVinculo!=null && (admissaoVinculo == 50 || admissaoVinculo == 60 || admissaoVinculo == 65 || admissaoVinculo == 70 || admissaoVinculo == 75 || admissaoVinculo == 90))
+			colocacao = Vinculo.TEMPORARIO;
+		else {
 				if (admissaoCategoria!=null && admissaoCategoria == 7) {
 					colocacao = Vinculo.APRENDIZ;
 				} else {
 					colocacao = Vinculo.EMPREGO;
 				}
 			}
-		}
+		
 		return colocacao;
 	}
 
