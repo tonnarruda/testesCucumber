@@ -1610,7 +1610,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 		if (parametrosDoSistema.verificaRemprot()) {
 
-			int qtdColaboradorNoBanco = getDao().getCount(new String[]{"desligado"}, new Object[]{false});
+			int qtdColaboradorNoBanco = getDao().countColaboradoresComHistoricos();
 
 			RPClient remprot = Autenticador.getRemprot();
 			if (Autenticador.isRegistrado())
