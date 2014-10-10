@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.13x.163" bd="" data="XX/XX/2014">
+		<Item visivel="S" motivo="S20140900134"><![CDATA[Integração com o AC Pessoal: Implementação da transferência de colaboradores em lote a partir do AC Pessoal.]]></Item>
 		<Item visivel="N" motivo="P20140900107"><![CDATA[Integração com o AC Pessoal:Considerar regras sobre a colocação temporária do cadastro de colaborador]]></Item>
 		<Item visivel="N" motivo="P20140900133"><![CDATA[T&D > Cadastros > Avaliações dos Alunos/Modelos de Avaliação de Curso/Modelos de Avaliação de Aluno: Ajuste na nomeclatura do menu.]]></Item>
 		<Item visivel="N" motivo="P20140900093"><![CDATA[BUG: T&D > Relatório > Colaboradores sem Treinamentos: Colaboradores aparecendo duplicados no relatório.]]></Item>
