@@ -367,8 +367,6 @@
 				/geral/colaborador/preparePromoverCandidato.action*=ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_COLABORADOR
 				/geral/colaborador/prepareContrata.action*=ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_COLABORADOR
 				/geral/colaborador/insert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_COLABORADOR
-				/cargosalario/historicoColaborador/prepareInsert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR
-				/cargosalario/historicoColaborador/insert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR
 				/captacao/candidatoSolicitacao/delete.action*=ROLE_CAND_SOLICITACAO_EXCLUIR
 				/captacao/candidatoSolicitacao/popupAvaliacoesCandidatoSolicitacao.action*=ROLE_CAND_SOLICITACAO_AVALIACOES
 				/captacao/candidatoSolicitacao/prepareInsertAvaliacaoSolicitacao.action*=ROLE_CAND_SOLICITACAO_AVALIACOES
@@ -453,8 +451,8 @@
 				/cargosalario/historicoColaborador/painelIndicadores.action*=ROLE_INFO_PAINEL_IND
 				/cargosalario/historicoColaborador/historicoColaboradorList.action*=ROLE_CAD_HISTORICOCOLABORADOR
 				/cargosalario/historicoColaborador/list.action*=ROLE_CAD_HISTORICOCOLABORADOR
-				/cargosalario/historicoColaborador/prepareInsert.action*=ROLE_CAD_HISTORICOCOLABORADOR
-				/cargosalario/historicoColaborador/insert.action*=ROLE_CAD_HISTORICOCOLABORADOR
+				/cargosalario/historicoColaborador/prepareInsert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_HISTORICOCOLABORADOR
+				/cargosalario/historicoColaborador/insert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_HISTORICOCOLABORADOR
 				/cargosalario/historicoColaborador/prepareUpdate.action*=ROLE_CAD_HISTORICOCOLABORADOR
 				/cargosalario/historicoColaborador/update.action*=ROLE_CAD_HISTORICOCOLABORADOR
 				/cargosalario/historicoColaborador/*/**=ROLE_CAD_COLABORADOR
