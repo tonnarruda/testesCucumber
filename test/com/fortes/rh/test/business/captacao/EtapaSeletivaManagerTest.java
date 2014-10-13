@@ -185,6 +185,7 @@ public class EtapaSeletivaManagerTest extends MockObjectTestCase
 
     	etapaSeletivaDao.expects(once()).method("findByEtapaSeletivaId").with(eq(etapaSeletiva.getId()),eq(empresa.getId())).will(returnValue(etapaSeletiva));
     	etapaSeletivaDao.expects(once()).method("ordeneDecrescentementeApartirDe").with(eq(etapaSeletiva.getOrdem()),eq(etapaSeletiva));
+    	etapaSeletivaDao.expects(once()).method("deleteVinculoComCargo").with(eq(etapaSeletiva.getId()));
     	etapaSeletivaDao.expects(once()).method("remove").with(eq(etapaSeletiva));
 
     	etapaSeletivaManager.remove(etapaSeletiva,empresa);
