@@ -1,0 +1,1 @@
+delete FROM cargo_etapaseletiva where etapaseletivas_id not in (select id from etapaseletiva); --.go

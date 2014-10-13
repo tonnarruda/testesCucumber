@@ -31,4 +31,6 @@ public interface EtapaSeletivaDao extends GenericDao<EtapaSeletiva>
 	EtapaSeletiva findByIdProjection(Long etapaSeletivaId);
 	
 	public Collection<EtapaSeletiva> findByCargo(Long cargoId);
+	
+	public void deleteVinculoComCargo(Long etapaSeletivaId);
 }

@@ -64,6 +64,8 @@ public class EtapaSeletivaManagerImpl extends GenericManagerImpl<EtapaSeletiva, 
 		getDao().ordeneDecrescentementeApartirDe(ordem, etapaSeletiva);
 
 		super.remove(etapaSeletiva);
+
+		getDao().deleteVinculoComCargo(etapaSeletiva.getId());
 	}
 
 	@Override

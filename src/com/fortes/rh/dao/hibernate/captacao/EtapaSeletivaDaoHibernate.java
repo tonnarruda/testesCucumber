@@ -7,6 +7,7 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -15,6 +16,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.captacao.EtapaSeletivaDao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 
@@ -183,5 +185,11 @@ public class EtapaSeletivaDaoHibernate extends GenericDaoHibernate<EtapaSeletiva
 		query.setLong("cargoId", cargoId);
 
 		return query.list();
+	}
+	
+	public void deleteVinculoComCargo(Long etapaSeletivaId)
+	{
+		String[] sql = new String[] {"delete from cargo_etapaseletiva where etapaseletivas_id = " + etapaSeletivaId};
+		JDBCConnection.executeQuery(sql);
 	}
 }
