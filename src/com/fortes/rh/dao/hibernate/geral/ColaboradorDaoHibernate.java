@@ -4742,18 +4742,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	
 	public int countColaboradoresComHistoricos(){
 		StringBuilder hql = new StringBuilder();
-		hql.append("select co.id ");
-		hql.append("from HistoricoColaborador hc ");
-		hql.append("inner join hc.colaborador co  ");
-		hql.append("where co.empresa.id in ( select e.id from Empresa e ) ");
-		hql.append("and (co.dataDesligamento is null or co.dataDesligamento > :date) "); 
-		hql.append("and hc.data = ( select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = co.id and hc2.status in( :status ))");
+		hql.append("select count( c.id ) from Colaborador c where c.desligado = false and c.id in (select hc.colaborador.id from HistoricoColaborador hc )");
 		
 		Query query = getSession().createQuery(hql.toString());
-		Integer[] status = {StatusRetornoAC.CONFIRMADO, StatusRetornoAC.CANCELADO, StatusRetornoAC.AGUARDANDO, StatusRetornoAC.PENDENTE};
-		query.setParameterList("status", status);
-		query.setDate("date", new Date());
 		
-		return query.list().size();
+		return (Integer) query.uniqueResult();
 	}
 }
