@@ -142,6 +142,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private boolean sugerir = true;
 	private Boolean compartilharColaboradores;
 	private boolean aplicaDissidio;
+	private AreaOrganizacional areaOrganizacioanal;
 	
 	public String painelIndicadores() throws Exception
 	{
@@ -247,7 +248,15 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		if (dataMesAnoFim == null || dataMesAnoFim.equals("  /    ") || dataMesAnoFim.equals(""))
 			dataMesAnoFim = DateUtil.formataMesAno(DateUtil.incrementaMes(hoje, 3));
 		
-		Collection<DataGrafico> graficoSalarioArea  = colaboradorManager.montaSalarioPorArea(dataBase, empresa.getId(), new AreaOrganizacional());
+		
+		AreaOrganizacional area;
+		if(areaOrganizacioanal != null && areaOrganizacioanal.getId() != null )
+			area = areaOrganizacionalManager.findById(areaOrganizacioanal.getId());
+		else
+			area = new AreaOrganizacional();
+		
+		
+		Collection<DataGrafico> graficoSalarioArea  = colaboradorManager.montaSalarioPorArea(dataBase, empresa.getId(), area);
 		
 		Long[] areasIds = LongUtil.arrayStringToArrayLong(areasCheck);
 
@@ -1007,5 +1016,13 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public Collection<TurnOverCollection> getTurnOverCollections() {
 		return turnOverCollections;
+	}
+
+	public void setAreaOrganizacioanal(AreaOrganizacional areaOrganizacioanal) {
+		this.areaOrganizacioanal = areaOrganizacioanal;
+	}
+
+	public AreaOrganizacional getAreaOrganizacioanal() {
+		return areaOrganizacioanal;
 	}
 }
