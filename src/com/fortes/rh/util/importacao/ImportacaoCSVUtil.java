@@ -65,10 +65,13 @@ public class ImportacaoCSVUtil
 		{
 			case AFASTAMENTOS_TRU: 
 				setAfastamento(campos);
+				break;
 			case COLABORADORES_DADOS_PESSOAIS:
 				setColaborador(campos);
+				break;
 			case EPIS:
 				setEpi(campos);
+				break;
 		}
 	}
 	
