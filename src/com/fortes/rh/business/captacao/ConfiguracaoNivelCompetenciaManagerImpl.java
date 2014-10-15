@@ -221,7 +221,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				}
 				
 				if((ordem - ordemFaixa) > 0)
-					vo.setTotalGapExcedenteAoCargo(ordem - ordemFaixa); 
+					vo.setTotalGapExcedenteAoCargo(vo.getTotalGapExcedenteAoCargo() + ordem - ordemFaixa); 
 				
 				configNCColaboradorId = configNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador().getId();
 			}
