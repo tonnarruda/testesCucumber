@@ -333,6 +333,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 				"delete from fase where empresa_id = " + id + ";",
 				"delete from medidaseguranca where empresa_id = " + id + ";",
 				"delete from areavivencia where empresa_id = " + id + ";",
+				"delete from transacaopc where empresa_id = " + id + ";",
 				"delete from empresa where id = " + id + ";"
 		};
 		

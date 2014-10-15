@@ -1,12 +1,14 @@
 -- create_transacaopc.sql
 CREATE TABLE transacaopc (
 	id BIGINT NOT NULL,
+	empresa_id bigint,
 	codigoUrl SMALLINT NOT NULL,
 	json TEXT NOT NULL,
 	data TIMESTAMP NOT NULL default current_timestamp
 );--.go
 
 ALTER TABLE transacaopc ADD CONSTRAINT transacaopc_pkey PRIMARY KEY(id);--.go
+ALTER TABLE transacaopc ADD CONSTRAINT transacaopc_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
 CREATE SEQUENCE transacaopc_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
 -- add_pctoken_pckey_parametrosdosistema.sql
@@ -5753,8 +5755,13 @@ $$ LANGUAGE plpgsql; --.go
 -- add_column_integradaPortalColaborador_empresa
 alter table empresa add column integradaPortalColaborador boolean DEFAULT false NOT NULL; --.go
 
--- add_column_atualizarColaboradorPortal
-ALTER TABLE colaborador ADD COLUMN atualizarcolaboradorportal BOOLEAN NOT NULL DEFAULT false;--.go
+-- create_table_atualizarColaboradorPortal
+CREATE TABLE atualizarcolaboradorportal (
+	id BIGINT NOT NULL,
+    colaborador_id bigint
+); --.go
+ALTER TABLE atualizarcolaboradorportal ADD CONSTRAINT atualizarcolaboradorportal_pkey PRIMARY KEY(id);--.go
+CREATE SEQUENCE atualizarcolaboradorportal_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
 -- create_trigger_colaborador_atualizarcolaboradorportal
 CREATE OR REPLACE FUNCTION atualizar_colaborador_portal() RETURNS TRIGGER AS $$ 
@@ -5767,8 +5774,10 @@ CREATE OR REPLACE FUNCTION atualizar_colaborador_portal() RETURNS TRIGGER AS $$
             linha := OLD; 
         END IF; 
 
-        IF (TG_TABLE_NAME = 'colaborador') THEN 
-            UPDATE colaborador SET atualizarcolaboradorportal = true WHERE id = linha.id; 
+        IF (TG_TABLE_NAME = 'colaborador') THEN
+        	IF not exists(select * from atualizarcolaboradorportal where colaborador_id = linha.id) THEN
+            	INSERT INTO atualizarcolaboradorportal (id, colaborador_id) VALUES (nextval('atualizarcolaboradorportal_sequence'), linha.id);
+        	END IF;
         END IF;
 
         RETURN NULL;
@@ -5780,3 +5789,6 @@ DROP TRIGGER IF EXISTS tg_atualizar_colaborador_portal ON colaborador;--.go
 CREATE TRIGGER tg_atualizar_colaborador_portal 
   AFTER INSERT OR UPDATE OR DELETE ON colaborador 
     FOR EACH ROW EXECUTE PROCEDURE atualizar_colaborador_portal();--.go
+    
+--OBS ADICIONAR A LINHA NO DELETE DO COLBAORADOR DO IMPORTADOR
+--	"DELETE FROM AtualizarColaboradorPortal WHERE colaborador.id = :id",    

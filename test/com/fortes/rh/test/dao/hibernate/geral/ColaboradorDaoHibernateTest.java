@@ -105,6 +105,7 @@ import com.fortes.rh.model.geral.Providencia;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
+import com.fortes.rh.model.portalcolaborador.AtualizarColaboradorPortal;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Epi;
@@ -6553,12 +6554,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historico1_Gerlan.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historico1_Gerlan);
 		
-		colaboradorDao.atualizarHistoricoPortal(false, Arrays.asList(Gerlan.getId()));
+		colaboradorDao.alteraFlagAtualizarHistoricoPortal(false, Arrays.asList(Gerlan.getId()));
 		
 		Colaborador result = colaboradorDao.findById(Gerlan.getId());
 		assertFalse(result.isAtualizarHistoricoPortal());
 	}
-	
+
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
 	{
 		this.areaOrganizacionalDao = areaOrganizacionalDao;

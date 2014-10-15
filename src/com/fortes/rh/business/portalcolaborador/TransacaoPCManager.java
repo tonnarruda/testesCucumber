@@ -8,7 +8,7 @@ import com.fortes.rh.model.portalcolaborador.TransacaoPC;
 
 public interface TransacaoPCManager extends GenericManager<TransacaoPC> 
 {
-	void enfileirar(AbstractAdapterPC adapterPC, URLTransacaoPC urlTransacaoPC);
+	void enfileirar(AbstractAdapterPC adapterPC, URLTransacaoPC urlTransacaoPC, Long empresaId);
 	void processarFila();
 	public String testarConexao();
 }

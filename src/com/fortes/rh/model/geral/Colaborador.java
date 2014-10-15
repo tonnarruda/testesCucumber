@@ -1,6 +1,3 @@
-/* Autor: Igo Coelho
- * Data: 26/05/2006
- * Requisito: RFA0026 */
 package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
@@ -2889,5 +2886,42 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public void setNota(BigDecimal nota)
 	{
 		this.nota = nota;
+	}
+		
+	public void setFotoName(String colaboradorFotoName) {
+		inicializaFoto();
+		
+		getFoto().setName(colaboradorFotoName);
+	}
+	
+	public void setFotoBytes(byte[] colaboradorFotoBytes) {
+		inicializaFoto();
+		
+		getFoto().setBytes(colaboradorFotoBytes);
+	}
+	
+	public void setFotoContentType(String colaboradorFotoContentType) {
+		inicializaFoto();
+		
+		getFoto().setContentType(colaboradorFotoContentType);
+	}
+	
+	public void setFotoSize(Long colaboradorFotoSize) {
+		inicializaFoto();
+		
+		getFoto().setSize(colaboradorFotoSize);
+	}
+	
+	private void inicializaFoto() {
+		if (getFoto() == null)
+			setFoto(new File());
+	}
+	
+	public void setEnderecoCidadeCodigoIBGE(Integer colaboradorEnderecoCidadeCodigoIBGE)
+	{
+		inicializaEndereco();
+		getEndereco().setCidade(new Cidade());
+		
+		getEndereco().getCidade().setCodigoIBGE(colaboradorEnderecoCidadeCodigoIBGE);
 	}
 }

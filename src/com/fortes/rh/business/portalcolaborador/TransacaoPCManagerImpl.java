@@ -19,6 +19,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.portalcolaborador.TransacaoPCDao;
 import com.fortes.rh.model.dicionario.TransacaoPCMensagens;
 import com.fortes.rh.model.dicionario.URLTransacaoPC;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.portalcolaborador.AbstractAdapterPC;
 import com.fortes.rh.model.portalcolaborador.TransacaoPC;
@@ -31,7 +32,7 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 	private TransacaoPCManager transacaoPCManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
-	public void enfileirar(AbstractAdapterPC adapterPC, URLTransacaoPC urlTransacaoPC) 
+	public void enfileirar(AbstractAdapterPC adapterPC, URLTransacaoPC urlTransacaoPC, Long empresaId) 
 	{
 		try {
 			ParametrosDoSistema params = parametrosDoSistemaManager.findById(1L);
@@ -39,6 +40,7 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 			TransacaoPC transacaoPC = new TransacaoPC();
 			transacaoPC.setCodigoUrl(urlTransacaoPC.getId());
 			transacaoPC.setData(new Date());
+			transacaoPC.setEmpresa(new Empresa(empresaId));
 			
 			String json = adapterPC.toJson();
 			

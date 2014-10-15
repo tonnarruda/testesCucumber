@@ -28,7 +28,7 @@ public class EnfileiraColaboradorComHistoricosPCThread extends Thread{
 		
 		try {
 			HistoricoColaboradorManager hisColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
-			Collection<HistoricoColaborador> historicosColaboradores = hisColaboradorManager.findPendenciasHistoricosPC(null, new Long[]{empresa.getId()});
+			Collection<HistoricoColaborador> historicosColaboradores = hisColaboradorManager.findPendenciasHistoricosPC(new Long[]{empresa.getId()});
 			hisColaboradorManager.enfilerarColaboradoresComHistoricosPC(new Long[]{empresa.getId()}, new ArrayList(historicosColaboradores), URLTransacaoPC.COLABORADOR_ATUALIZAR);
 			emailConfirmacaoPC();
 			
@@ -45,7 +45,7 @@ public class EnfileiraColaboradorComHistoricosPCThread extends Thread{
 				"Os dados do colaborador da empresa " + empresa.getNome() + " estão integrados com o do portal do colaborador.");
 		
 		TransacaoPCManager transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
-		transacaoPCManager.enfileirar(emailPC, URLTransacaoPC.ENVIAR_EMAIL);
+		transacaoPCManager.enfileirar(emailPC, URLTransacaoPC.ENVIAR_EMAIL, empresa.getId());
 	}
 
 	private void emailInconsistenciaPC() {

@@ -53,6 +53,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.portalcolaborador.AtualizarColaboradorPortal;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
@@ -4796,6 +4797,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				"UPDATE Colaborador SET solicitanteDemissao.id = NULL WHERE solicitanteDemissao.id = :id",
 				"DELETE FROM HistoricoColaborador WHERE colaborador.id = :id",
 				"DELETE FROM ReajusteColaborador WHERE colaborador.id = :id",
+
+				"DELETE FROM AtualizarColaboradorPortal WHERE colaborador.id = :id",
+				
 				"DELETE FROM Colaborador WHERE id = :id"
 		};
 		
@@ -4900,13 +4904,36 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return super.findById(id);
 	}
 
-	public void atualizarHistoricoPortal(boolean enviar, Collection<Long> colabIds) 
+	public void alteraFlagAtualizarHistoricoPortal(boolean enviar, Collection<Long> colabIds) 
 	{
 		String hql = "update Colaborador set atualizarHistoricoPortal = :enviar where id in (:colabIds) ";
 
 		Query query = getSession().createQuery(hql);
 		query.setParameterList("colabIds", colabIds, Hibernate.LONG);
 		query.setBoolean("enviar", enviar);
+		
+		query.executeUpdate();
+	}
+
+	public Collection<Long> findColaboradoresIdsASeremAtualizadosNoPortal() 
+	{
+		Criteria criteria = getSession().createCriteria(AtualizarColaboradorPortal.class, "acp");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("acp.colaborador.id"), "projectionColaboradorId");
+
+		criteria.setProjection(p);
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+		return criteria.list();
+	}
+	
+	public void removeColaboradoresIdsASerAtualizadoNoPortal(Collection<Long> colabIds) 
+	{
+		String hql = "delete from AtualizarColaboradorPortal where colaborador.id in (:colabIds) ";
+		
+		Query query = getSession().createQuery(hql);
+		query.setParameterList("colabIds", colabIds, Hibernate.LONG);
 		
 		query.executeUpdate();
 	}

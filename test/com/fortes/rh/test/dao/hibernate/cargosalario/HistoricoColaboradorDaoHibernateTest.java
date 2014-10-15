@@ -1949,7 +1949,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaboradorDao.save(historicoColaborador);
 	}
 	
-	public void testFindPendenciasPortal()
+	public void testFindPendenciasHistoricosPC()
 	{
 		empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -2011,9 +2011,59 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historico_Darla.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historico_Darla);
 		
-		List<HistoricoColaborador> historicos = historicoColaboradorDao.findPendenciasHistoricosPC(null, null, empresa.getId());
+		List<HistoricoColaborador> historicos = historicoColaboradorDao.findPendenciasHistoricosPC(empresa.getId());
 		
 		assertEquals(2, historicos.size());
+		
+	}
+
+	public void testFindPendenciasColaboradoresPC()
+	{
+		empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Colaborador Gerlan = ColaboradorFactory.getEntity();
+		Gerlan.setNaoIntegraAc(false);
+		Gerlan.setEmpresa(empresa);
+		colaboradorDao.save(Gerlan);
+		
+		HistoricoColaborador historico1_Gerlan = HistoricoColaboradorFactory.getEntity();
+		historico1_Gerlan.setColaborador(Gerlan);
+		historico1_Gerlan.setData(new Date());
+		historico1_Gerlan.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historico1_Gerlan.setSalario(1000.00);
+		historico1_Gerlan.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historico1_Gerlan);
+
+		HistoricoColaborador historico2_Gerlan = HistoricoColaboradorFactory.getEntity();
+		historico2_Gerlan.setColaborador(Gerlan);
+		historico2_Gerlan.setData(DateUtil.criarDataMesAno(1, 2, 2010));
+		historico2_Gerlan.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historico2_Gerlan.setSalario(500.00);
+		historico2_Gerlan.setStatus(StatusRetornoAC.AGUARDANDO);
+		historicoColaboradorDao.save(historico2_Gerlan);
+		
+		Colaborador Darlan = ColaboradorFactory.getEntity();
+		Darlan = ColaboradorFactory.getEntity();
+		Darlan.setNaoIntegraAc(false);
+		Darlan.setEmpresa(empresa);
+		colaboradorDao.save(Darlan);
+		
+		HistoricoColaborador historico_Darla = HistoricoColaboradorFactory.getEntity();
+		historico_Darla.setColaborador(Darlan);
+		historico_Darla.setData(new Date());
+		historico_Darla.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historico_Darla.setSalario(1000.00);
+		historico_Darla.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historico_Darla);
+		
+		Collection<Long> colabsIds = new ArrayList<Long>();
+		colabsIds.add(Gerlan.getId());
+		colabsIds.add(Darlan.getId());
+				
+		List<Colaborador> colaboradores = historicoColaboradorDao.findColaboradoresPC(colabsIds, empresa.getId());
+		
+		assertEquals(2, colaboradores.size());
 		
 	}
 	

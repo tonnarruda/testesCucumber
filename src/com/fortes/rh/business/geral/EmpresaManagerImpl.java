@@ -511,7 +511,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	
 	public String enfileirarEmpresaPCAndColaboradorPC(Empresa empresa, Boolean integradaPortalColaboradorAnterior) throws Exception 
 	{
-		transacaoPCManager.enfileirar(new EmpresaPC(empresa), URLTransacaoPC.EMPRESA_ATUALIZAR);
+		transacaoPCManager.enfileirar(new EmpresaPC(empresa), URLTransacaoPC.EMPRESA_ATUALIZAR, empresa.getId());
 		
 		if (!integradaPortalColaboradorAnterior)
 		{

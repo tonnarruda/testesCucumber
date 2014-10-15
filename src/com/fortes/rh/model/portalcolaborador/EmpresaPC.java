@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class EmpresaPC extends AbstractAdapterPC 
 {
+	private Long id;
 	private String nome;
 	@SerializedName("base_cnpj")
 	private String baseCnpj; 
@@ -17,8 +18,19 @@ public class EmpresaPC extends AbstractAdapterPC
 
 	public EmpresaPC(Empresa empresa) 
 	{
+		this.id 		= empresa.getId();
 		this.nome 		= empresa.getNome();
 		this.baseCnpj 	= empresa.getCnpj();
+	}
+	
+	public String toJson()
+	{
+		Gson gson = new Gson();
+		
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.add("empresa", gson.toJsonTree(this));
+		
+		return jsonObject.toString();
 	}
 
 	public String getNome() {
@@ -36,14 +48,12 @@ public class EmpresaPC extends AbstractAdapterPC
 	public void setBaseCnpj(String baseCnpj) {
 		this.baseCnpj = baseCnpj;
 	}
-	
-	public String toJson()
-	{
-		Gson gson = new Gson();
-		
-		JsonObject jsonObject = new JsonObject();
-		jsonObject.add("empresa", gson.toJsonTree(this));
-		
-		return jsonObject.toString();
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

@@ -80,7 +80,6 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoMensagem;
-import com.fortes.rh.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
@@ -100,7 +99,6 @@ import com.fortes.rh.model.geral.relatorio.CartaoAcompanhamentoExperienciaVO;
 import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
-import com.fortes.rh.model.portalcolaborador.ColaboradorPC;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
@@ -1319,10 +1317,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 			
 			colaboradorAtualizado.setFoto(getFoto(colaboradorAtualizado.getId()));
-			transacaoPCManager.enfileirar(new ColaboradorPC(colaboradorAtualizado), URLTransacaoPC.COLABORADOR_ATUALIZAR);
-
-			//Remover ao concluir PC no RH
-			transacaoPCManager.processarFila();
 			
 			gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
 			
@@ -2733,9 +2727,14 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		transactionManager.commit(status);
 	}
 	
-	public void atualizarHistoricoPortal(boolean enviar, Collection<Long> colabIds) 
+	public void alteraFlagAtualizarHistoricoPortal(boolean enviar, Collection<Long> colabIds) 
 	{
-		getDao().atualizarHistoricoPortal(enviar, colabIds);
+		getDao().alteraFlagAtualizarHistoricoPortal(enviar, colabIds);
+	}
+
+	public void removeColaboradoresIdsASerAtualizadoNoPortal(Collection<Long> colabIds) 
+	{
+		getDao().removeColaboradoresIdsASerAtualizadoNoPortal(colabIds);
 	}
 
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId) 
@@ -2746,6 +2745,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds)
 	{
 		return getDao().findUsuarioByAreaEstabelecimento(areasIds, estabelecimentosIds);
+	}
+	
+	public Collection<Long> findColaboradoresIdsASeremAtualizadosNoPortal() 
+	{
+		return getDao().findColaboradoresIdsASeremAtualizadosNoPortal();
 	}
 	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
@@ -2788,4 +2792,5 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void setTransacaoPCManager(TransacaoPCManager transacaoPCManager) {
 		this.transacaoPCManager = transacaoPCManager;
 	}
+
 }

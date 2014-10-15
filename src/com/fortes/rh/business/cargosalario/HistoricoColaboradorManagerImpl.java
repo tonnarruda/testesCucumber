@@ -1496,27 +1496,38 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return getDao().findByEmpresaComHistoricoPendente(empresaId) ;
 	}
 
-	public List<HistoricoColaborador> findPendenciasHistoricosPC(Boolean atualizarHistoricoPortal, Long... empresasIds) 
+	public List<HistoricoColaborador> findPendenciasHistoricosPC(Long... empresasIds) 
 	{
-		return getDao().findPendenciasHistoricosPC(null, atualizarHistoricoPortal, empresasIds);
+		return getDao().findPendenciasHistoricosPC(empresasIds);
+	}
+
+	public List<Colaborador> findColaboradoresPC(Collection<Long> colaboradoresIds, Long... empresasIds) 
+	{
+		return getDao().findColaboradoresPC(colaboradoresIds, empresasIds);
 	}
 	
-	public Set<ColaboradorPC> enfileirarHistoricosPC()
+	public void enfileirarPC()
 	{
 		Long[] empresasIds = empresaManager.findIntegradaPortalColaborador();
-		if(empresasIds.length == 0 ) 
-			return null;
-		
-		List<HistoricoColaborador> historicos = findPendenciasHistoricosPC(true, empresasIds);
-
-		return enfilerarColaboradoresComHistoricosPC(empresasIds, historicos, URLTransacaoPC.COLABORADOR_ATUALIZAR_HISTORICO);
+		if(empresasIds != null && empresasIds.length > 0 ) 
+		{
+			List<HistoricoColaborador> historicos = findPendenciasHistoricosPC(empresasIds);
+			if(!historicos.isEmpty()) 
+				enfilerarColaboradoresComHistoricosPC(empresasIds, historicos, URLTransacaoPC.COLABORADOR_ATUALIZAR_HISTORICO);
+			
+			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
+			Collection<Long> colaboradoresIdsASeremAtualizadosNoPortal = colaboradorManager.findColaboradoresIdsASeremAtualizadosNoPortal(); 
+			if(colaboradoresIdsASeremAtualizadosNoPortal != null && colaboradoresIdsASeremAtualizadosNoPortal.size() > 0)
+			{
+				Collection<Colaborador> colaboradores = findColaboradoresPC(colaboradoresIdsASeremAtualizadosNoPortal, empresasIds); 
+				if(!colaboradores.isEmpty()) 
+					enfilerarColaboradoresPC(empresasIds, colaboradores, URLTransacaoPC.COLABORADOR_ATUALIZAR);
+			}
+		}
 	}
 
-	public Set<ColaboradorPC> enfilerarColaboradoresComHistoricosPC(Long[] empresasIds, List<HistoricoColaborador> historicos, URLTransacaoPC uRLTransacaoPC) 
+	public void enfilerarColaboradoresComHistoricosPC(Long[] empresasIds, List<HistoricoColaborador> historicos, URLTransacaoPC uRLTransacaoPC) 
 	{
-		if(historicos.isEmpty() ) 
-			return null;
-
 		Collection<HistoricoColaborador> historicosMontados = montaSituacaoHistoricoColaborador(historicos);
 		
 		ColaboradorPC colaboradorPC = null;
@@ -1540,50 +1551,23 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		
 		TransacaoPCManager transacaoPCManager= (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
 		for (ColaboradorPC colabPC : colaboradorPCs) 
-			transacaoPCManager.enfileirar(colabPC, uRLTransacaoPC);
+			transacaoPCManager.enfileirar(colabPC, uRLTransacaoPC, colabPC.getEmpresaPC().getId());
 		
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
-		colaboradorManager.atualizarHistoricoPortal(false, colabIds);
-		
-		return colaboradorPCs;
+		colaboradorManager.alteraFlagAtualizarHistoricoPortal(false, colabIds);
 	}
 	
-	public Set<ColaboradorPC> enfilerarColaboradoresPC(List<HistoricoColaborador> historicos, URLTransacaoPC uRLTransacaoPC) 
+	public void enfilerarColaboradoresPC(Long[] empresasIds, Collection<Colaborador> colaboradores, URLTransacaoPC uRLTransacaoPC) 
 	{
-		Long[] empresasIds = empresaManager.findIntegradaPortalColaborador();
-		if(empresasIds.length == 0 ) 
-			return null;
-		
-		if(historicos.isEmpty() ) 
-			return null;
-		
-		ColaboradorPC colaboradorPC = null;
-		HistoricoColaboradorPC historicoColaboradorPC;
-		Set<ColaboradorPC> colaboradorPCs = new HashSet<ColaboradorPC>();
-		Collection<Long> colabIds = new ArrayList<Long>(); 
-		
-		for (HistoricoColaborador historico : historicosMontados) 
-		{
-			if(colaboradorPC == null || !colaboradorPC.getCpf().equals(historico.getColaborador().getPessoal().getCpf())){
-				colaboradorPC = new ColaboradorPC(historico.getColaborador());
-				colaboradorPC.setHistoricosPc(new ArrayList<HistoricoColaboradorPC>());
-				colabIds.add(historico.getColaborador().getId());
-			}
-			
-			historicoColaboradorPC = new HistoricoColaboradorPC(historico);
-			colaboradorPC.getHistoricosPc().add(historicoColaboradorPC);
-			
-			colaboradorPCs.add(colaboradorPC);
+		Collection<Long> colabIds = new ArrayList<Long>();
+		TransacaoPCManager transacaoPCManager= (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
+		for (Colaborador colaborador : colaboradores){
+			transacaoPCManager.enfileirar(new ColaboradorPC(colaborador), uRLTransacaoPC, colaborador.getEmpresa().getId());
+			colabIds.add(colaborador.getId());
 		}
 		
-		TransacaoPCManager transacaoPCManager= (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
-		for (ColaboradorPC colabPC : colaboradorPCs) 
-			transacaoPCManager.enfileirar(colabPC, uRLTransacaoPC);
-		
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
-		colaboradorManager.atualizarHistoricoPortal(false, colabIds);
-		
-		return colaboradorPCs;
+		colaboradorManager.removeColaboradoresIdsASerAtualizadoNoPortal(colabIds);
 	}
 
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId) 

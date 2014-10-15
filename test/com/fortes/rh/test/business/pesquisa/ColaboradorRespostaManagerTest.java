@@ -153,7 +153,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(1L);
 
-    	HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+    	HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
     	historicoColaborador.setAreaOrganizacional(areaOrganizacional);
     	historicoColaborador.setFaixaSalarial(faixaSalarial);
 
@@ -167,7 +167,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	String respostas = "PG01¨RO01¨PG02¨RO02¨PG03¨RN10¨RCTESETE¨PG04¨RSTETETETETE";
 
-    	historicoColaboradorManager.expects(once()).method("getHistoricoAtualOuFuturo").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
+    	historicoColaboradorManager.expects(once()).method("getHistoricoAtualComFuturo").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
 
     	DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -254,7 +254,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	colaboradorManager.expects(once()).method("respondeuEntrevista").with(ANYTHING);
 
-    	historicoColaboradorManager.expects(once()).method("getHistoricoAtualOuFuturo").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
+    	historicoColaboradorManager.expects(once()).method("getHistoricoAtualComFuturo").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
     	colaboradorQuestionarioManager.expects(once()).method("findByQuestionario").with(eq(questionario.getId()), eq(colaborador.getId()), ANYTHING).will(returnValue(colaboradorQuestionario));
 
     	colaboradorRespostaDao.expects(once()).method("removeByColaboradorQuestionario").with(eq(colaboradorQuestionario.getId()));
@@ -301,7 +301,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	String respostas = "PG01¨RO01¨PG02¨RO02¨PG03¨RN10¨RCTESETE¨PG04¨RSTETETETETE";
 
-    	historicoColaboradorManager.expects(once()).method("getHistoricoAtualOuFuturo").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
+    	historicoColaboradorManager.expects(once()).method("getHistoricoAtualComFuturo").with(eq(colaborador.getId())).will(returnValue(historicoColaborador));
 
     	colaboradorQuestionario.setRespondida(true);
 

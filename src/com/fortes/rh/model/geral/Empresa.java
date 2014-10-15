@@ -28,6 +28,7 @@ import com.fortes.security.auditoria.ChaveDaAuditoria;
 @SequenceGenerator(name="sequence", sequenceName="empresa_sequence", allocationSize=1)
 public class Empresa extends AbstractModel implements Serializable
 {
+
 	@Column(length=15)
 	@ChaveDaAuditoria
 	private String nome;
@@ -111,6 +112,14 @@ public class Empresa extends AbstractModel implements Serializable
     private Collection<Curso> cursos;
 
     private boolean considerarSabadoNoAbsenteismo;
+    
+    public Empresa() {
+    	super();
+    }
+
+    public Empresa(Long id) {
+    	this.setId(id);
+    }
     
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
