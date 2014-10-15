@@ -1009,14 +1009,22 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		
 		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBeanOld("colaboradorTurmaManager");
 		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColaboradoresComEmailByTurma(turma.getId(), true); 
+		ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
 		
 		String subject = "[RH] - Avaliação " + avaliacaoTurma.getQuestionario().getTitulo() + " do curso " + turma.getCurso().getNome();
-		String  body =  "#COLABORADOR#, a avaliação " + avaliacaoTurma.getQuestionario().getTitulo() + " do curso " + turma.getCurso().getNome() + " está liberada para ser respondida.";
-		
+		String  body =  "#COLABORADOR#, a avaliação " + avaliacaoTurma.getQuestionario().getTitulo() + " do curso " + turma.getCurso().getNome() + " está liberada para ser respondida."
+						+ "<br><br>"
+						+ "<a href='" + parametrosDoSistema.getAppUrl() + "/pesquisa/colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario.action?"
+								+ "questionario.id="+avaliacaoTurma.getQuestionario().getId()
+								+ "&colaborador.id=#COLABORADOR_ID#&"
+								+ "turmaId="+turma.getId()+"'>Acesse o RH para responder a avaliação</a><br><br>";
+				
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
 		{
 			try {
-				mail.send(empresa, subject, null, body.replace("#COLABORADOR#", colaboradorTurma.getColaboradorNome()), colaboradorTurma.getColaborador().getContato().getEmail());
+				body = body.replace("#COLABORADOR#", colaboradorTurma.getColaboradorNome());
+				body = body.replace("#COLABORADOR_ID#", colaboradorTurma.getColaborador().getId().toString());
+				mail.send(empresa, subject, null, body, colaboradorTurma.getColaborador().getContato().getEmail());
 			} catch (Exception e)	{
 				e.printStackTrace();
 			}
