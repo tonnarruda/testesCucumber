@@ -1097,6 +1097,9 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
 		 colaboradorTurma.setColaborador(colaborador);
 		 
+		 ParametrosDoSistema parametroSistema = new ParametrosDoSistema();
+		 parametroSistema.setAppUrl("url");
+		 
 		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR);
 		 
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
@@ -1104,6 +1107,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.LIBERAR_AVALIACAO_TURMA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		 empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
 		 colaboradorTurmaManager.expects(once()).method("findColaboradoresComEmailByTurma").with(eq(turma.getId()), ANYTHING).will(returnValue(Arrays.asList(colaboradorTurma)));
+		 parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametroSistema));
 		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).isVoid();
 		 
 		 Exception exception = null;
