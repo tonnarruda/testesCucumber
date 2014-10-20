@@ -5,7 +5,7 @@ Funcionalidade: Cadastrar Modelos de Avaliação de Turma
   Cenário: Modelos de Avaliação de Turma
     Dado que eu esteja logado com o usuário "fortes"
 
-    Quando eu acesso o menu "T&D > Cadastros > Modelos de Avaliação de Turma"
+    Quando eu acesso o menu "T&D > Cadastros > Modelos de Avaliação de Curso"
     Então eu devo ver o título "Modelos de Avaliação de Curso"
     E eu clico no botão "Inserir"
     Então eu devo ver o título "Inserir Modelo de Avaliação de Curso"

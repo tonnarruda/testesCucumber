@@ -6,7 +6,7 @@ Funcionalidade: Cadastrar Avaliações dos Cursos
     Dado que eu esteja logado com o usuário "fortes"
     Dado que exista um modelo avaliacao aluno "Avaliacao de Aluno"
 
-    Quando eu acesso o menu "T&D > Cadastros > Avaliações dos Cursos"
+    Quando eu acesso o menu "T&D > Cadastros > Avaliações dos Alunos"
     Então eu devo ver o título "Avaliações dos Alunos"
     E eu clico no botão "Inserir"
     Então eu devo ver o título "Inserir Avaliação do Aluno"

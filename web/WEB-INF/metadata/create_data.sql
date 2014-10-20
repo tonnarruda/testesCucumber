@@ -25617,6 +25617,8 @@ INSERT INTO migrations (name) VALUES ('20140916143559');
 INSERT INTO migrations (name) VALUES ('20140919212753');
 INSERT INTO migrations (name) VALUES ('20141001093055');
 INSERT INTO migrations (name) VALUES ('20141001105527');
+INSERT INTO migrations (name) VALUES ('20141008081924');
+INSERT INTO migrations (name) VALUES ('20141013142311');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
@@ -25685,7 +25687,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (483, 'ROLE_MOV_AVALIACAO', 'Responder Avaliações de Desempenho', '/avaliacao/desempenho/avaliacaoDesempenhoQuestionarioList.action', 2, true, NULL, 384, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (366, 'ROLE_T&D_CAD', 'Cadastros', '#', 1, true, NULL, 365, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (23, 'ROLE_MOV_CURSO', 'Cursos/Treinamentos', '/desenvolvimento/curso/list.action', 2, true, NULL, 366, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (413, 'ROLE_MOV_AVALIACAO_CURSO', 'Avaliações dos Cursos', '/desenvolvimento/avaliacaoCurso/list.action', 3, true, NULL, 366, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (367, 'ROLE_T&D_MOV', 'Movimentações', '#', 2, true, NULL, 365, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (71, 'ROLE_FREQUENCIA', 'Frequência', '/desenvolvimento/turma/prepareFrequencia.action', 3, true, NULL, 367, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (414, 'ROLE_MOV_PLANO_TREINAMENTO', 'Plano de Treinamento', '/desenvolvimento/turma/filtroPlanoTreinamento.action', 4, true, NULL, 367, NULL);
@@ -25888,10 +25889,8 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (586, 'ROLE_CX_MENSAGEM_SESMT', 'SESMT', '', 6, false, NULL, 495, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (587, 'ROLE_CX_MENSAGEM_UTILITARIOS', 'Utilitários', '', 7, false, NULL, 495, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (588, 'ROLE_CAND_LIST_DOCUMENTOANEXO', 'Documentos do Candidato', '#', 4, false, NULL, 2, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (419, 'ROLE_AVALIACAO_TURMA', 'Modelos de Avaliação de Turma', '/pesquisa/avaliacaoTurma/list.action', 5, true, NULL, 366, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (420, 'ROLE_CAD_CERTIFICACAO', 'Certificações', '/desenvolvimento/certificacao/list.action', 6, true, NULL, 366, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (534, 'ROLE_TIPO_DESPESA', 'Tipo de Despesa', '/geral/tipoDespesa/list.action', 7, true, NULL, 366, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (589, 'ROLE_CAD_MOD_AVALIACAO_ALUNO', 'Modelos de Avaliação de Aluno', '/avaliacao/modelo/list.action?modeloAvaliacao=L', 4, true, NULL, 366, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (590, 'ROLE_REL_RANKING_AVALIACAO_ALUNO', 'Ranking de Performance das Avaliações dos Alunos', '/desenvolvimento/avaliacaoCurso/prepareRelatorioRankingAvaliacaoAluno.action', 14, true, NULL, 368, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (544, 'ROLE_CAND_SOLICITACAO_COMPETENCIAS', 'Competências', '#', 3, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (591, 'ROLE_CAND_SOLICITACAO_LISTA', 'Ver Listagem dos Candidatos', '#', 1, false, NULL, 22, NULL);
@@ -25947,6 +25946,9 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (626, 'ROLE_CAD_AREA_EDITAR', 'Editar', '#', 2, false, NULL, 9, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (627, 'ROLE_CAD_AREA_EXCLUIR', 'Excluir', '#', 3, false, NULL, 9, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (4, 'ROLE_CAD_AREA_INTERESSE', 'Áreas de Interesse', '/geral/areaInteresse/list.action', 4, true, NULL, 358, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (413, 'ROLE_MOV_AVALIACAO_CURSO', 'Avaliações dos Alunos', '/desenvolvimento/avaliacaoCurso/list.action', 3, true, NULL, 366, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (419, 'ROLE_AVALIACAO_TURMA', 'Modelos de Avaliação de Curso', '/pesquisa/avaliacaoTurma/list.action', 5, true, NULL, 366, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (589, 'ROLE_CAD_MOD_AVALIACAO_ALUNO', 'Modelos de Avaliação de Aluno', '/avaliacao/modelo/list.action?modeloAvaliacao=L', 4, true, NULL, 366, NULL);
 
 
 ALTER TABLE papel ENABLE TRIGGER ALL;
@@ -25969,7 +25971,7 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.135.162', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.135.163', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;

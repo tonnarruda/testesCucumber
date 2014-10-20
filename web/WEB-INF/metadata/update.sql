@@ -22620,3 +22620,12 @@ insert into migrations values('20141001093055');--.go
 update papel set codigo = 'ROLE_CAD_AREA_INTERESSE' where id=4;--.go
 insert into migrations values('20141001105527');--.go
 update parametrosdosistema set appversao = '1.1.135.162';--.go
+-- versao 1.1.135.163
+
+update papel set nome = 'Avaliações dos Alunos' where id = 413;--.go
+update papel set nome = 'Modelos de Avaliação de Curso' where id = 419;--.go
+update papel set nome = 'Modelos de Avaliação de Aluno' where id = 589;--.go
+insert into migrations values('20141008081924');--.go
+delete FROM cargo_etapaseletiva where etapaseletivas_id not in (select id from etapaseletiva); --.go
+insert into migrations values('20141013142311');--.go
+update parametrosdosistema set appversao = '1.1.135.163';--.go
