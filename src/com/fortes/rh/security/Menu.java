@@ -92,11 +92,11 @@ public abstract class Menu
 		
 		if (parametros.isSuporteVeica())
 			menu.append("<li style='float: right; line-height: 0.8em'>" 
-					+ "<a href='http://184.106.249.85' target='_blank' title='Suporte'>" 
+					+ "<a href='http://184.106.249.85' target='_blank' title='Fortes Chat'>" 
 					+ "<img src='" + contexto + "/imgs/ChatFortes.gif' style='vertical-align: middle;'></a></li>\n");
 		else if (!StringUtils.isEmpty(parametros.getCodEmpresaSuporte()) && !StringUtils.isEmpty(parametros.getCodClienteSuporte()))
 			menu.append("<li style='float: right; line-height: 0.8em'>" 
-				+ "<a href='http://chatonline.grupofortes.com.br/cliente/MATRIZ/" + parametros.getCodClienteSuporte() + "/" + parametros.getCodEmpresaSuporte() + "' target='_blank' title='Suporte'>" 
+				+ "<a href='http://chatonline.grupofortes.com.br/cliente/MATRIZ/" + parametros.getCodClienteSuporte() + "/" + parametros.getCodEmpresaSuporte() + "' target='_blank' title='Fortes Chat'>" 
 				+ "<img src='" + contexto + "/imgs/ChatFortes.gif' style='vertical-align: middle;'></a></li>\n");
 		
 		menu.append("</ul>\n\n");
