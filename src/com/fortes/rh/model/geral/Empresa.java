@@ -107,6 +107,8 @@ public class Empresa extends AbstractModel implements Serializable
 
     @ManyToMany(mappedBy="empresasParticipantes")
     private Collection<Curso> cursos;
+
+    private boolean considerarSabadoNoAbsenteismo;
     
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
@@ -569,5 +571,14 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setCnae2(String cnae2) {
 		this.cnae2 = cnae2;
+	}
+
+	public boolean isConsiderarSabadoNoAbsenteismo() {
+		return considerarSabadoNoAbsenteismo;
+	}
+
+	public void setConsiderarSabadoNoAbsenteismo(
+			boolean considerarSabadoNoAbsenteismo) {
+		this.considerarSabadoNoAbsenteismo = considerarSabadoNoAbsenteismo;
 	}
 }

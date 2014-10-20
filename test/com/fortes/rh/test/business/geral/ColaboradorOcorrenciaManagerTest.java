@@ -439,7 +439,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		colaboradorAfastamentoManager.expects(once()).method("countAfastamentosByPeriodo").will(returnValue(retornoBD));
 		colaboradorManager.expects(atLeastOnce()).method("countAtivosPeriodo").will(returnValue(10));
 		
-		Collection<Object[]> absenteismos = colaboradorOcorrenciaManager.montaGraficoAbsenteismo("01/2011", "05/2011", Arrays.asList(empresa.getId()), null, null);
+		Collection<Object[]> absenteismos = colaboradorOcorrenciaManager.montaGraficoAbsenteismo("01/2011", "05/2011", Arrays.asList(empresa.getId()), null, null, false);
 		assertEquals(5, absenteismos.size());
 		assertEquals(0.0, ((Object[])absenteismos.toArray()[0])[1]);
 		assertEquals(2.0, ((Object[])absenteismos.toArray()[1])[1]);
@@ -463,7 +463,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		Date dataIni = DateUtil.montaDataByString("02/01/2011");
 		Date dataFim = DateUtil.montaDataByString("19/05/2011");
 		
-		Collection<Absenteismo> absenteismos = colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null, null);
+		Collection<Absenteismo> absenteismos = colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null, null, false);
 		assertEquals(5, absenteismos.size());
 		
 		Absenteismo absenteismoJan = (Absenteismo) absenteismos.toArray()[0];
@@ -520,7 +520,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		
 		try
 		{
-			colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null, null);
+			colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null, null, false);
 		}
 		catch (Exception e)
 		{

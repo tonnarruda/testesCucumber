@@ -770,7 +770,7 @@ public class DateUtil
 		return (data.compareTo(inicio) >= 0 && data.compareTo(fim) <= 0);
 	}
 
-	public static int contaDiasUteisMes(Date data)
+	public static int contaDiasUteisMes(Date data, boolean considerarSabadoNoAbsenteismo)
 	{  
 		Date dataInicial = getInicioMesData(data);
 		Date dataFinal = getUltimoDiaMes(data);
@@ -781,9 +781,12 @@ public class DateUtil
 	    Calendar calendar = new GregorianCalendar( dataInicial.getYear() + 1900, dataInicial.getMonth(), dataInicial.getDate() );  
 	    for( int i = 1; i <= totalDias; i++ ) 
 	    {  
-	        if(calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY  && calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY)
+	        if(calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY && calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY) 
 	        	diasUteis++;  
 	        
+	        if ( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY && considerarSabadoNoAbsenteismo) 
+	        	diasUteis++;
+	       
 	        calendar.add( Calendar.DATE, 1);  
 	    }
 	      

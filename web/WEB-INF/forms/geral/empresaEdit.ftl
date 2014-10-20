@@ -188,6 +188,17 @@
 		
 		<li>
 			<@ww.div cssClass="divInfo">
+				<h2>Cálculo de Absenteísmo</h2>
+				<ul>
+					<@ww.checkbox label="Considerar sábado como dia útil" id="considerarSabadoNoAbsenteismo" name="empresa.considerarSabadoNoAbsenteismo" liClass="liLeft" labelPosition="left"/>
+				</ul>
+			</@ww.div>
+		</li>
+		
+		<li>&nbsp;</li>
+		
+		<li>
+			<@ww.div cssClass="divInfo">
 				<h2>Cálculo de Turnover</h2>
 				<ul>
 					<@ww.checkbox label="Considerar para cálculo de Turnover apenas as admissões feitas através de solicitações com motivo marcado como \"Considerar para cálculo de turnover\" e apenas as demissões com motivo marcado como \"Considerar para cálculo de turnover\"." id="turnoverPorSolicitacao" name="empresa.turnoverPorSolicitacao" liClass="liLeft" labelPosition="left"/>
