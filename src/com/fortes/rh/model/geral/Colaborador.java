@@ -864,7 +864,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 
 	//findColabPeriodoExperiencia
-	public Colaborador(Long id, String nome, String nomeComercial, String nomeAvaliador, Date respondidaEm, Double performance, Double performanceNivelCompetencia, boolean anonima, Long avaliacaoDesempenhoId, String avaliacaoDesempenhoTitulo, String nomeEmpresa)
+	public Colaborador(Long id, String nome, String nomeComercial, String nomeAvaliador, Date respondidaEm, Double performance, Double performanceNivelCompetencia, boolean anonima, Long avaliacaoDesempenhoId, String avaliacaoDesempenhoTitulo, String nomeEmpresa, String areaNome)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -878,7 +878,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.performance = performance + (performanceNivelCompetencia == null ? 0 : performanceNivelCompetencia);
 		this.avaliacaoDesempenhoTitulo = avaliacaoDesempenhoTitulo;
 		this.avaliacaoDesempenhoId = avaliacaoDesempenhoId;//para o relatório em XLS
-		
+		this.areaOrganizacional = new AreaOrganizacional(areaNome);
+
 		empresa = new Empresa();
 		this.empresa.setNome(nomeEmpresa);
 	}
@@ -2497,6 +2498,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		return formata.format(result).toString() + " %"; 
 	}
 	@NaoAudita
+	
 	public Double getPerformanceDouble() 
 	{
 		return performance ; 

@@ -87,7 +87,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Object> findComHistoricoFuturoSQL(Map parametros, Integer pagingSize, Integer page);
 	public Collection<Colaborador> findColaboradoresEleicao(Long empresaId, Long estabelecimentosIds, Date data);
 	public Collection<Colaborador> findAdmitidosNoPeriodo(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Integer tempoDeEmpresa);
-	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long[] avaliacoesCheck, Long[] areasCheck, Long[] estabelecimentosCheck, Long[] colaboradorsCheck, boolean considerarAutoAvaliacao);
+	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long[] avaliacoesCheck, Long[] areasCheck, Long[] estabelecimentosCheck, Long[] colaboradorsCheck, boolean considerarAutoAvaliacao, boolean agruparPorArea);
 	public void setCandidatoNull(Long idCandidato);
 	public Colaborador findByUsuarioProjection(Long usuarioId);
 	public String[] findEmailsByPapel(Collection<Long> usuarioEmpresaIds);

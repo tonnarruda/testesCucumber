@@ -1892,10 +1892,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return acompanhamentos;
 	}
 
-	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, String[] avaliacaoCheck, String[] areasCheck, String[] estabelecimentoCheck, String[] colaboradorsCheck) throws Exception 
+	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, String[] avaliacaoCheck, String[] areasCheck, String[] estabelecimentoCheck, String[] colaboradorsCheck, boolean agruparPorArea) throws Exception 
 	{
 		Collection<Colaborador> retorno = new ArrayList<Colaborador>();
-		retorno = getDao().findColabPeriodoExperiencia(empresaId, periodoIni, periodoFim, StringUtil.stringToLong(avaliacaoCheck), StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(estabelecimentoCheck), StringUtil.stringToLong(colaboradorsCheck), true);
+		retorno = getDao().findColabPeriodoExperiencia(empresaId, periodoIni, periodoFim, StringUtil.stringToLong(avaliacaoCheck), StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(estabelecimentoCheck), StringUtil.stringToLong(colaboradorsCheck), true, agruparPorArea);
 
 		if(retorno.isEmpty())
 			throw new Exception("Não existem informações para os filtros selecionados");
@@ -1909,7 +1909,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		AvaliacaoDesempenhoManager avaliacaoDesempenhoManager = (AvaliacaoDesempenhoManager) SpringUtil.getBean("avaliacaoDesempenhoManager");
 		Collection<AvaliacaoDesempenho> avaliacaoIds = avaliacaoDesempenhoManager.findIdsAvaliacaoDesempenho(avaliacaoId);
 		CollectionUtil<AvaliacaoDesempenho> clu = new CollectionUtil<AvaliacaoDesempenho>();
-		Collection<Colaborador> retorno = getDao().findColabPeriodoExperiencia(empresaId, periodoIni, periodoFim, clu.convertCollectionToArrayIds(avaliacaoIds), StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(estabelecimentoCheck), StringUtil.stringToLong(colaboradorsCheck), considerarAutoAvaliacao);
+		Collection<Colaborador> retorno = getDao().findColabPeriodoExperiencia(empresaId, periodoIni, periodoFim, clu.convertCollectionToArrayIds(avaliacaoIds), StringUtil.stringToLong(areasCheck), StringUtil.stringToLong(estabelecimentoCheck), StringUtil.stringToLong(colaboradorsCheck), considerarAutoAvaliacao, false);
 
 		if(retorno.isEmpty())
 			throw new Exception("Não existem informações para os filtros selecionados");

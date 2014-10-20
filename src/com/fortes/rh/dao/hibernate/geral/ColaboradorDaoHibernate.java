@@ -3305,12 +3305,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return null;
 	}
 
-	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long[] avaliacaoIds, Long[] areasCheck, Long[] estabelecimentosCheck, Long[] colaboradorsCheck, boolean considerarAutoAvaliacao) 
+	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long[] avaliacaoIds, Long[] areasCheck, Long[] estabelecimentosCheck, Long[] colaboradorsCheck, boolean considerarAutoAvaliacao, boolean agruparPorArea) 
 	{
 		StringBuilder hql = new StringBuilder();
-		  hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, aval.nome, cq.respondidaEm, cq.performance, cq.performanceNivelCompetencia, ad.anonima, ad.id, ad.titulo, emp.nome) ");
+		  hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, aval.nome, cq.respondidaEm, cq.performance, cq.performanceNivelCompetencia, ad.anonima, ad.id, ad.titulo, emp.nome, ao.nome) ");
 		  hql.append("from HistoricoColaborador as hc ");
 		  hql.append("left join hc.colaborador as co ");
+		  hql.append("left join hc.areaOrganizacional as ao ");
 		  hql.append("left join co.colaboradorQuestionarios as cq ");
 		  hql.append("left join cq.avaliacaoDesempenho as ad ");
 		  hql.append("left join ad.avaliacao as a ");
@@ -3344,8 +3345,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		  if(!considerarAutoAvaliacao) 
 			  hql.append("and co.id <> aval.id ");
 
-		  hql.append("order by  co.nome, co.id, ad.titulo, ad.id, aval.nome ");//importante para relatorio
+		  hql.append("order by ");
+
+		  if(agruparPorArea)
+			  hql.append("ao.nome, ");
 		  
+		  hql.append("co.nome, co.id, ad.titulo, ad.id, aval.nome ");//importante para relatorio
+
 		  Query query = getSession().createQuery(hql.toString());
 		  
 		  if (empresaId != null && empresaId > -1)

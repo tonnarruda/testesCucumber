@@ -96,6 +96,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private String observacoes;
 	private Collection<CartaoAcompanhamentoExperienciaVO> cartoesAcompanhamentoExperienciaVOs;
 	private boolean compartilharColaboradores;
+	private boolean agruparPorArea;
 		
 	private void prepare() throws Exception
 	{
@@ -267,7 +268,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	{
 		try 
 		{
-			colaboradores = colaboradorManager.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, avaliacaoCheck, areasCheck, estabelecimentoCheck, colaboradorsCheck);
+			colaboradores = colaboradorManager.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, avaliacaoCheck, areasCheck, estabelecimentoCheck, colaboradorsCheck, agruparPorArea);
 			colaboradores = colaboradorManager.ordenaByMediaPerformance(colaboradores);
 			reportTitle = "Ranking de Performance de Avaliação de Desempenho";
 
@@ -283,6 +284,9 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 			return Action.INPUT;
 		}
 		
+		if(agruparPorArea)
+			return "successArea";
+		
 		return Action.SUCCESS;
 	}
 	
@@ -292,7 +296,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		{
 			Collection<AvaliacaoDesempenho> avaliacaoDesempenhoIds = avaliacaoDesempenhoManager.findIdsAvaliacaoDesempenho(avaliacao.getId());
 			CollectionUtil<AvaliacaoDesempenho> clu = new CollectionUtil<AvaliacaoDesempenho>();
-			colaboradores = colaboradorManager.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, clu.convertCollectionToArrayIdsString(avaliacaoDesempenhoIds), areasCheck, estabelecimentoCheck, colaboradorsCheck);
+			colaboradores = colaboradorManager.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, clu.convertCollectionToArrayIdsString(avaliacaoDesempenhoIds), areasCheck, estabelecimentoCheck, colaboradorsCheck, false);
 			
 			faixaPerformanceAvaliacaoDesempenhos = periodoExperienciaManager.agrupaFaixaAvaliacao(colaboradores, percentualInicial, percentualFinal);
 			
@@ -691,5 +695,13 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public Collection<String> getColumnsNameDinamic() {
 		return columnsNameDinamic;
+	}
+
+	public boolean isAgruparPorArea() {
+		return agruparPorArea;
+	}
+
+	public void setAgruparPorArea(boolean agruparPorArea) {
+		this.agruparPorArea = agruparPorArea;
 	}
 }

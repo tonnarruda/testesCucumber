@@ -4,6 +4,7 @@
 		<Item visivel="S" motivo="S20140900134"><![CDATA[Integração com o AC Pessoal: Implementação da transferência de colaboradores em lote a partir do AC Pessoal.]]></Item>
 		<Item visivel="S" motivo="P20140900107"><![CDATA[Integração com o AC Pessoal:Considerar regras sobre a colocação temporária do cadastro de colaborador.]]></Item>
 		<Item visivel="S" motivo="S20140900122"><![CDATA[C&S > Painel de Indicadores: Inserindo seleção de área organizacional no filtro para o Indicador de Salário por Área Organizacional.]]></Item>
+		<Item visivel="S" motivo="S20140700225"><![CDATA[C&S > Relatórios > Ranking de Performance das Avaliações de Desempenho: Nova opção de agrupar por área organizacional e inserir totalizador ao gerar relatório em XLS.]]></Item>
 		<Item visivel="S" motivo="S20141000057"><![CDATA[T&D > Cadastros > Curso/Treinamentos > Liberar Avaliação: Alterando corpo do email recebido ao liberar avaliação (Adicionando link para respondê-la).]]></Item>
 		<Item visivel="N" motivo="P20140900145"><![CDATA[Remprot: Contabilizando somente colaboradores com histórico.]]></Item>
 		<Item visivel="N" motivo="P20141000047"><![CDATA[BUG: Inserir uma progressão salarial do colaborador: Ajuste na permissão.]]></Item>

@@ -1,8 +1,12 @@
 package com.fortes.webwork.views.xls;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +34,8 @@ import com.opensymphony.xwork.util.OgnlValueStack;
 @SuppressWarnings("serial")
 public class XlsResult extends WebWorkResultSupport {
 
+	protected Row row;
+	protected Sheet sheet;
     protected String dataSource;
     protected String columns;
     protected String columnsNameDinamic;
@@ -42,9 +48,15 @@ public class XlsResult extends WebWorkResultSupport {
     protected String dinamicColumns;
     protected String dinamicProperties;
     protected String msgFinalRelatorioXls;
-    protected int[] rowNumIni, rowNumFim;
+    protected String totalizadorGroup = null;
     protected String[] nomeAgruoadorAnterior;
+    protected String[] propertiesArray;
+    protected String[] propertiesGroupArray;
+    protected int[] rowNumIni, rowNumFim;
     Map<String, CellRangeAddress> celMescladas = new HashMap<String, CellRangeAddress>();
+    protected String propertiesCalculo;
+    protected String operacao;
+    protected String considerarUltimaColunaComo;
     
 	@Override
 	@SuppressWarnings("unchecked")
@@ -68,9 +80,9 @@ public class XlsResult extends WebWorkResultSupport {
 			properties = (String)stack.findValue(dinamicProperties);
 		}
 		
+		propertiesArray = properties.split(",");
+		propertiesGroupArray = new String[]{};
 		String[] columnsArray = columns.split(",");
-		String[] propertiesArray = properties.split(",");
-		String[] propertiesGroupArray = new String[]{};
 		
 		if(propertiesGroup != null)
 			propertiesGroupArray = propertiesGroup.split(",");
@@ -79,7 +91,7 @@ public class XlsResult extends WebWorkResultSupport {
 	    String reportTitleRef = (String)stack.findValue(reportTitle);
 
 		Workbook wb = new HSSFWorkbook();//PLANHILHA (documento)
-	    Sheet sheet = wb.createSheet(sheetName);//planilha filha
+	    sheet = wb.createSheet(sheetName);//planilha filha
 
 	    Font fontBold = wb.createFont();
 	    fontBold.setBoldweight(Font.BOLDWEIGHT_BOLD);
@@ -95,8 +107,12 @@ public class XlsResult extends WebWorkResultSupport {
 	    CellStyle columnStyle = wb.createCellStyle();
 	    columnStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_TOP);
 	    
+	    CellStyle styleUltimaColuna = wb.createCellStyle();
+	    if(considerarUltimaColunaComo.equals("Percentual"))
+	    	styleUltimaColuna.setDataFormat(wb.createDataFormat().getFormat("0.00%"));
+	    
 	    // Cabecalho
-	    Row row = sheet.createRow(0);		    
+	    row = sheet.createRow(0);		    
 	    Cell cell = row.createCell(0);
 	    cell.setCellStyle(boldStyle);
 	    cell.setCellValue(reportTitleRef);
@@ -146,22 +162,82 @@ public class XlsResult extends WebWorkResultSupport {
 		    {
 		    	prop = BeanUtils.getValue(obj, propertiesArray[i]);
 		    	propName = prop!=null?prop.toString():"";
-		    	
-		    	cell = row.createCell(i);
-				cell.setCellValue(propName);
-				cell.setCellStyle(columnStyle);
 				
 				if(propertiesGroupArray.length > i)
 				{
 					propGroup = BeanUtils.getValue(obj, propertiesGroupArray[i]);
 					propNameGroup = propGroup!=null?propGroup.toString():"";
-					mesclaCelulas(propNameGroup, i);
+
+					if(propertiesCalculo != null && propertiesCalculo.equals(propertiesGroupArray[i]))
+						rowIndex = insereTotalizadorCelulaMescalda(rowIndex, propNameGroup);
+						
+					mesclaCelulas(propNameGroup, i, rowIndex);
+				}
+				
+				cell = row.createCell(i);
+				cell.setCellValue(propName);
+				cell.setCellStyle(columnStyle);
+				
+				if((propertiesArray.length - 1)  == i  && propertiesCalculo != null && propName != null && !propName.equals(""))
+				{
+					if(considerarUltimaColunaComo.equals("Texto"))
+						cell.setCellValue(propName.toString());
+					else
+						cell.setCellValue(new Double(propName.toString()));
+					
+					cell.setCellStyle(styleUltimaColuna);
 				}
 		    }
 		}
 	    
-	    for (CellRangeAddress celMesclada : celMescladas.values()) 
+	    Row tempRow;
+	    Double soma, media;
+	    row = sheet.createRow(rowIndex++);
+	    
+	    CellStyle columnStyleOperacao = wb.createCellStyle();
+	    columnStyleOperacao.setAlignment(HSSFCellStyle.ALIGN_RIGHT);
+	    columnStyleOperacao.setFont(fontBold);
+	    
+	    CellStyle columnStyleOperacaoValue = wb.createCellStyle();
+	    columnStyleOperacaoValue.setFont(fontBold);
+	    if(considerarUltimaColunaComo.equals("Percentual"))
+	    	columnStyleOperacaoValue.setDataFormat(wb.createDataFormat().getFormat("0.00%"));
+	    
+	    for (CellRangeAddress celMesclada : celMescladas.values())
+	    {
 	    	sheet.addMergedRegion(celMesclada);
+	    	
+	    	if(propertiesCalculo != null &&  celMesclada.getFirstColumn() == 0)//Somente Primeiro Agrupador
+	    	{
+		    	tempRow = sheet.getRow(celMesclada.getLastRow() + 1);
+				cell = tempRow.createCell(celMesclada.getFirstColumn());
+				cell.setCellValue(operacao);
+				cell.setCellStyle(columnStyleOperacao);
+				
+				cell = tempRow.createCell(propertiesArray.length - 1);
+			
+				soma = somaCelulas(celMesclada.getFirstRow(), celMesclada.getLastRow());
+				NumberFormat formata = new DecimalFormat("#0.0000");
+				
+				if(operacao.equals("Soma"))
+				{
+					if(considerarUltimaColunaComo.equals("Texto"))
+						cell.setCellValue(formata.format(soma).toString().replace(",", "."));
+					else
+						cell.setCellValue(new Double(formata.format(soma).toString().replace(",", ".")));
+				}else if(operacao.equals("Média")){
+					media = soma / (celMesclada.getLastRow() - celMesclada.getFirstRow() + 1);
+					
+					if(considerarUltimaColunaComo.equals("Texto"))
+						cell.setCellValue(formata.format(media).toString().replace(",", "."));
+					else
+						cell.setCellValue(new Double(formata.format(media).toString().replace(",", ".")));
+				}
+				
+				cell.setCellStyle(columnStyleOperacaoValue);
+				sheet.addMergedRegion(new CellRangeAddress(tempRow.getRowNum(), tempRow.getRowNum(), celMesclada.getFirstColumn(), propertiesArray.length - 2));
+	    	}
+	    }
 	    
 	    for (int i = 0; i < propertiesArray.length; i++) 
 	    	sheet.autoSizeColumn(i);		    	
@@ -194,18 +270,70 @@ public class XlsResult extends WebWorkResultSupport {
 		outputStream.close();
 	}
 
-	private void mesclaCelulas(String nomeAgrupador, int colNum) 
+	private int insereTotalizadorCelulaMescalda(int rowIndex, String groupName) 
+	{
+		if(totalizadorGroup == null)
+			totalizadorGroup = groupName;
+		else if(!totalizadorGroup.equals(groupName)) 
+		{
+			totalizadorGroup = groupName;
+			row = sheet.createRow(rowIndex++);
+			for (int in = 0; in < propertiesGroupArray.length; in++)
+				rowNumFim[in] = ++rowNumFim[in];
+		}
+		
+		return rowIndex;
+	}
+	
+	private Double somaCelulas(int ini, int fim) 
+	{
+		Cell cellSum;
+		Double soma = 0.0;
+		
+		for(int i = ini ; i <= fim ; i++)
+		{
+			Row rowSum = sheet.getRow(i);
+			cellSum = rowSum.getCell(propertiesArray.length - 1);
+			if(cellSum != null)
+			{
+				if(considerarUltimaColunaComo.equals("Texto"))
+					soma += convertStringToDoubleByRegex(cellSum.getStringCellValue());
+				else
+					soma += cellSum.getNumericCellValue();
+			}
+		}
+		
+		return soma;
+	}
+
+	private Double convertStringToDoubleByRegex(String numberString) 
+	{
+		String concatena = ""; 
+		Pattern pattern = Pattern.compile("(\\d+)([?,]|[?.])(\\d+)");
+		Matcher m = pattern.matcher(numberString);
+		while (m.find())
+			concatena += m.group();
+
+		try {
+			return new Double(concatena.replace(",", "."));
+		} catch (Exception e) {
+			return 0.0;
+		}
+	}
+
+	private void mesclaCelulas(String nomeAgrupador, int colNum, int rowIndex) 
 	{
 		if(colNum != 0)
 			nomeAgrupador += "_" + nomeAgruoadorAnterior[colNum-1];
 
-		if(celMescladas.get(nomeAgrupador) != null)
-			rowNumFim[colNum] = celMescladas.get(nomeAgrupador).getLastRow() + 1;
-		else 
+		if(celMescladas.get(nomeAgrupador) != null)//se agrupador existir no MAP
+			rowNumFim[colNum] = rowIndex - 1;
+		else
 			rowNumIni[colNum] = ++rowNumFim[colNum];
 
 		celMescladas.put(nomeAgrupador, new CellRangeAddress(rowNumIni[colNum], rowNumFim[colNum], colNum, colNum));
 		nomeAgruoadorAnterior[colNum] = nomeAgrupador;
+		
 	}
 
     public void setReportFilter(String reportFilter) {
@@ -236,11 +364,9 @@ public class XlsResult extends WebWorkResultSupport {
 		this.sheetName = sheetName;
 	}
 
-
 	public void setDinamicColumns(String dinamicColumns) {
 		this.dinamicColumns = dinamicColumns;
 	}
-
 
 	public void setDinamicProperties(String dinamicProperties) {
 		this.dinamicProperties = dinamicProperties;
@@ -256,5 +382,17 @@ public class XlsResult extends WebWorkResultSupport {
 
 	public void setMsgFinalRelatorioXls(String msgFinalRelatorioXls) {
 		this.msgFinalRelatorioXls = msgFinalRelatorioXls;
+	}
+
+	public void setPropertiesCalculo(String propertiesCalculo) {
+		this.propertiesCalculo = propertiesCalculo;
+	}
+
+	public void setOperacao(String operacao) {
+		this.operacao = operacao;
+	}
+
+	public void setConsiderarUltimaColunaComo(String considerarUltimaColunaComo) {
+		this.considerarUltimaColunaComo = considerarUltimaColunaComo;
 	}
 }

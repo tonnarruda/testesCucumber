@@ -94,6 +94,12 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">rankingPerformaceExperiencia.pdf</param>
 			</result>
+		  	<result name="successArea" type="jasper">
+				<param name="location">WEB-INF/report/rankingPerformanceAvDesempenhoAgrupadoPorArea.jasper</param>
+				<param name="dataSource">colaboradores</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">rankingPerformaceExperiencia.pdf</param>
+			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/relatorioRankingPerformancePeriodoDeExperiencia.ftl</result>
 		</action>
 		<action name="prepareRelatorioPerformanceAvaliacaoDesempenho" class="com.fortes.rh.web.action.avaliacao.PeriodoExperienciaEditAction" method="prepareRelatorioPerformanceAvaliacaoDesempenho">
@@ -113,9 +119,25 @@
 				<param name="dataSource">colaboradores</param>
 				<param name="documentName">rankingPerformaceExperiencia.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Avaliado,Avaliação,Avaliador,Respondido em,Performance,Média</param>
+				<param name="columns">Avaliado,Avaliação,Avaliador,Respondido em,Performance (%)</param>
 				<param name="propertiesGroup">id,avaliacaoDesempenhoId</param>
-				<param name="properties">nome,avaliacaoDesempenhoTitulo,nomeAvaliador,respondidaEmFormatada,performance,mediaPerformanceFormatada</param>
+				<param name="properties">nome,avaliacaoDesempenhoTitulo,nomeAvaliador,respondidaEmFormatada,performanceDouble</param>
+				<param name="operacao">Média</param>
+				<param name="propertiesCalculo">id</param>
+				<param name="considerarUltimaColunaComo">Percentual</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>		
+			<result name="successArea" type="xls">
+				<param name="dataSource">colaboradores</param>
+				<param name="documentName">rankingPerformaceExperiencia.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Área Organizacional,Avaliado,Avaliação,Avaliador,Respondido em,Performance (%)</param>
+				<param name="propertiesGroup">areaOrganizacional.nome,id,avaliacaoDesempenhoId</param>
+				<param name="properties">areaOrganizacional.nome,nome,avaliacaoDesempenhoTitulo,nomeAvaliador,respondidaEmFormatada,performanceDouble</param>
+				<param name="operacao">Média</param>
+				<param name="propertiesCalculo">areaOrganizacional.nome</param>
+				<param name="considerarUltimaColunaComo">Percentual</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>		
