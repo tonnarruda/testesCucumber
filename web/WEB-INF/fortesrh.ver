@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.13x.164" bd="" data="XX/XX/2014">
+		<Item visivel="N" motivo="P20141000131"><![CDATA[BUG: T&D > Cadastros > Modelos de Avaliação do Aluno > Inserir: Correção de inconsistência nos pesos inseridos para as respostas da avaliação do aluno.]]></Item>
+	</Versao>
 	<Versao id="1.1.135.163" bd="" data="20/10/2014">
 		<Item visivel="S" motivo="S20140900134"><![CDATA[Integração com o AC Pessoal: Implementação da transferência de colaboradores em lote a partir do AC Pessoal.]]></Item>
 		<Item visivel="S" motivo="P20140900107"><![CDATA[Integração com o AC Pessoal:Considerar regras sobre a colocação temporária do cadastro de colaborador.]]></Item>

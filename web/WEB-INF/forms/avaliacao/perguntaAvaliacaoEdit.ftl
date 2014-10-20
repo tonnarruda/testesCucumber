@@ -352,6 +352,18 @@
 				<#if respostasSugeridas?exists && 0<respostasSugeridas?size>
 					<@ww.checkbox label="Sugerir respostas da última pergunta objetiva" name="" id="sugerir" onclick="exibeSugestoesObjetivas(this.checked);" labelposition="left"/>
 			    </#if>
+			    
+				<@ww.div id="maisRespostas">
+					<@ww.div id="respostaInsert">
+						Opções de Resposta:
+						<br>
+					</@ww.div>
+						<@ww.div id="d0">
+							<input name="respostaObjetiva" id="ro_0" style="width: 355px;"/>
+							Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva_0" value="1" onkeypress="return(somenteNumeros(event,'-',this.value));" style="width:30px;text-align:right;" maxLength="4"/>
+							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#d0').remove();"/>
+					</@ww.div>
+				</@ww.div>
 				
 				<@ww.div id="respostasSugeridas" style="display:none;">
 					<#if respostasSugeridas?exists && 0<respostasSugeridas?size>
@@ -373,17 +385,6 @@
 							</@ww.div>
 						</#list>
 					</#if>
-				</@ww.div>
-				<@ww.div id="maisRespostas">
-					<@ww.div id="respostaInsert">
-						Opções de Resposta:
-						<br>
-					</@ww.div>
-						<@ww.div id="d0">
-							<input name="respostaObjetiva" id="ro_0" style="width: 355px;"/>
-							Peso: <input name="pesoRespostaObjetiva" id="pesoRespostaObjetiva_0" value="1" onkeypress="return(somenteNumeros(event,'-',this.value));" style="width:30px;text-align:right;" maxLength="4"/>
-							<img src="<@ww.url value="/imgs/delete.gif"/>" width="16" height="16" style="cursor: pointer" onclick="$('#d0').remove();"/>
-					</@ww.div>
 				</@ww.div>
 			</#if>
 			<div id="maisRespostasLink"><a href="javascript:addRespostas();" style="text-decoration: none"><img border="0" title="" id="imgCompl" src="<@ww.url value="/imgs/mais.gif"/>" style="margin-top: 5px; margin-bottom: 5px;" align="absmiddle" border="0" width="16" height="16">   Mais uma opção de resposta</a></div>
