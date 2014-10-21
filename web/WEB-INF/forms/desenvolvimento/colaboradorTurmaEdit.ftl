@@ -27,6 +27,14 @@
 			</#list>
 		</#if>
 	
+		$(function(){
+			$("#nome,#matricula").keyup(function(e) {
+				console.log("passou!");
+				if (e.keyCode == 13)
+					enviaForm();
+			});
+		});
+		
 		function enviaForm()
 		{
 			validaFormularioEPeriodo('form', false, new Array('admIni', 'admFim'));
