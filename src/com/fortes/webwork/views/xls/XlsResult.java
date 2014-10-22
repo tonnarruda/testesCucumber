@@ -55,7 +55,7 @@ public class XlsResult extends WebWorkResultSupport {
     protected int[] rowNumIni, rowNumFim;
     Map<String, CellRangeAddress> celMescladas = new HashMap<String, CellRangeAddress>();
     protected String propertiesCalculo;
-    protected String operacao;
+    protected String operacao="";
     protected String considerarUltimaColunaComo;
     
 	@Override
@@ -108,7 +108,7 @@ public class XlsResult extends WebWorkResultSupport {
 	    columnStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_TOP);
 	    
 	    CellStyle styleUltimaColuna = wb.createCellStyle();
-	    if(considerarUltimaColunaComo.equals("Percentual"))
+	    if(considerarUltimaColunaComo!=null && considerarUltimaColunaComo.equals("Percentual"))
 	    	styleUltimaColuna.setDataFormat(wb.createDataFormat().getFormat("0.00%"));
 	    
 	    // Cabecalho
@@ -180,7 +180,7 @@ public class XlsResult extends WebWorkResultSupport {
 				
 				if((propertiesArray.length - 1)  == i  && propertiesCalculo != null && propName != null && !propName.equals(""))
 				{
-					if(considerarUltimaColunaComo.equals("Texto"))
+					if(considerarUltimaColunaComo!=null && considerarUltimaColunaComo.equals("Texto"))
 						cell.setCellValue(propName.toString());
 					else
 						cell.setCellValue(new Double(propName.toString()));
@@ -200,7 +200,7 @@ public class XlsResult extends WebWorkResultSupport {
 	    
 	    CellStyle columnStyleOperacaoValue = wb.createCellStyle();
 	    columnStyleOperacaoValue.setFont(fontBold);
-	    if(considerarUltimaColunaComo.equals("Percentual"))
+	    if(considerarUltimaColunaComo!=null && considerarUltimaColunaComo.equals("Percentual"))
 	    	columnStyleOperacaoValue.setDataFormat(wb.createDataFormat().getFormat("0.00%"));
 	    
 	    for (CellRangeAddress celMesclada : celMescladas.values())
@@ -221,14 +221,14 @@ public class XlsResult extends WebWorkResultSupport {
 				
 				if(operacao.equals("Soma"))
 				{
-					if(considerarUltimaColunaComo.equals("Texto"))
+					if(considerarUltimaColunaComo!=null && considerarUltimaColunaComo.equals("Texto"))
 						cell.setCellValue(formata.format(soma).toString().replace(",", "."));
 					else
 						cell.setCellValue(new Double(formata.format(soma).toString().replace(",", ".")));
 				}else if(operacao.equals("Média")){
 					media = soma / (celMesclada.getLastRow() - celMesclada.getFirstRow() + 1);
 					
-					if(considerarUltimaColunaComo.equals("Texto"))
+					if(considerarUltimaColunaComo!=null && considerarUltimaColunaComo.equals("Texto"))
 						cell.setCellValue(formata.format(media).toString().replace(",", "."));
 					else
 						cell.setCellValue(new Double(formata.format(media).toString().replace(",", ".")));
@@ -296,7 +296,7 @@ public class XlsResult extends WebWorkResultSupport {
 			cellSum = rowSum.getCell(propertiesArray.length - 1);
 			if(cellSum != null)
 			{
-				if(considerarUltimaColunaComo.equals("Texto"))
+				if(considerarUltimaColunaComo!=null && considerarUltimaColunaComo.equals("Texto"))
 					soma += convertStringToDoubleByRegex(cellSum.getStringCellValue());
 				else
 					soma += cellSum.getNumericCellValue();

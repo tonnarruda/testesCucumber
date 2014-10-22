@@ -38,8 +38,8 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="${validarCampos};" class="btnRelatorio">
-		</button>
+		<button onclick="$('form[name=form]').attr('action', 'relatorioSituacoes.action');${validarCampos};" class="btnRelatorio"></button>
+		<button class="btnRelatorioExportar" onclick="$('form[name=form]').attr('action', 'relatorioSituacoesXLS.action');${validarCampos};"></button>
 	</div>
 </body>
 </html>

@@ -84,7 +84,29 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioSituacoes.ftl</result>
 		</action>
-		
+		<action name="relatorioSituacoesXLS" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="relatorioSituacoes">
+			<result name="successAgruparPorArea" type="xls">
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="documentName">situacoes.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Estabelecimento,Área Organizacional,Data,Nome,Cargo - Faixa,Tipo de Salário,Salário (R$),Origem</param>
+				<param name="propertiesGroup">estabelecimento.nome,areaOrganizacional.descricao</param>
+				<param name="properties">estabelecimento.nome,areaOrganizacional.descricao,data,colaborador.nome,faixaSalarial.descricao,descricaoTipoSalario,colaborador.salarioCalculado,origemDaSituacao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successAgruparPorData" type="xls">
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="documentName">situacoes.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Estabelecimento,Mês/Ano,Data,Nome,Área Organizacional,Cargo - Faixa,Tipo de Salário,Salário (R$),Origem</param>
+				<param name="propertiesGroup">estabelecimento.nome,mesAno</param>
+				<param name="properties">estabelecimento.nome,mesAno,data,colaborador.nome,areaOrganizacional.descricao,faixaSalarial.descricao,descricaoTipoSalario,colaborador.salarioCalculado,origemDaSituacao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioSituacoes.ftl</result>
+		</action>
 		<action name="prepareUpdateAmbientesEFuncoes" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="prepareUpdateAmbientesEFuncoes">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/ambientesEFuncoesEdit.ftl</result>
 		</action>

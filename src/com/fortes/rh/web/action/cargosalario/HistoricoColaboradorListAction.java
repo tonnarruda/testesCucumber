@@ -32,6 +32,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.SituacaoColaborador;
 import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.TipoRelatorio;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -143,6 +144,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private Boolean compartilharColaboradores;
 	private boolean aplicaDissidio;
 	private AreaOrganizacional areaOrganizacioanal;
+	private String reportTitle;
+	private String reportFilter;
+	private Character tipo = TipoRelatorio.PDF;
 	
 	public String painelIndicadores() throws Exception
 	{
@@ -475,7 +479,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 			historicoColaboradors = historicoColaboradorManager.montaRelatorioSituacoes(getEmpresaSistema().getId(), dataIni, dataFim, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), origemSituacao, agruparPor, imprimirDesligados);
 			
 			String filtro = "Período : " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim);
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Situações", getEmpresaSistema(), filtro);
+			String titulo = "Relatório de Situações";
+			populaTituloFiltro(titulo, filtro);
+			parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), filtro);
 			
 		}
 		catch (ColecaoVaziaException e)
@@ -497,6 +503,12 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		}
 		
 		return agruparPor == 'A' ? "successAgruparPorArea" : "successAgruparPorData";
+	}
+	
+	private void populaTituloFiltro(String titulo, String filtro) 
+	{
+		reportTitle = titulo;
+		reportFilter = filtro;
 	}
 	
 	public String prepareAjusteDissidio() 
@@ -1024,5 +1036,29 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public AreaOrganizacional getAreaOrganizacioanal() {
 		return areaOrganizacioanal;
+	}
+	
+	public String getReportTitle() {
+		return reportTitle;
+	}
+
+	public void setReportTitle(String reportTitle) {
+		this.reportTitle = reportTitle;
+	}
+	
+	public String getReportFilter() {
+		return reportFilter;
+	}
+
+	public void setReportFilter(String reportFilter) {
+		this.reportFilter = reportFilter;
+	}
+
+	public Character getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Character tipo) {
+		this.tipo = tipo;
 	}
 }
