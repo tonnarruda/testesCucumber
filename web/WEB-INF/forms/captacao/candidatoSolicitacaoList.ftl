@@ -27,12 +27,11 @@
 	<script type="text/javascript">
 		function contrataCandOutraEmpresa(candidatoId, candidatoSolicitacaoId, nomeCandidato)
 		{
-			var link = "${baseUrl}geral/colaborador/prepareContrata.action?candidato.id=" + candidatoId + "&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=" + candidatoSolicitacaoId;
-			
 			ColaboradorDWR.verificaDesligadoByCandidato(candidatoId, function(retorno) {  
-				if(retorno.desligado)
-					newConfirm('Deseja realmente contratar o candidato ' + nomeCandidato + '?', function(){ window.location=link });			
-				else
+				if(retorno.desligado){
+					var link = "geral/colaborador/prepareContrata.action?candidato.id=" + candidatoId + "&solicitacao.id=${solicitacao.id}&candidatoSolicitacaoId=" + candidatoSolicitacaoId;
+					contrataCandidato(nomeCandidato,'Contratar', link );			
+				} else
 					jAlert("Colaborador contratado na empresa " + retorno.empresa + ".\nDesligue-o para continuar o processo de transferência.");
 			});
 			
