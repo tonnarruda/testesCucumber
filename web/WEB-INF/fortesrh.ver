@@ -2,8 +2,8 @@
 <Versoes>
 	<Versao id="1.1.13x.164" bd="" data="XX/XX/2014">
 		<Item visivel="S" motivo="S20140100212"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Possibilitando encerrar vaga ao contratar colaboradores de outra empresa.]]></Item>
-		<Item visivel="S" motivo="S20140500173"><![CDATA[C&S > Relatórios > Situações: Novo botão "Exportar" para gerar relatório em excel.]]></Item>
-		<Item visivel="S" motivo="S20141000073"><![CDATA[T&D > Cadastros > Cursos/treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Pesquisa automática de colaboradores ao pressionar a tecla 'Enter' nos campos 'Nome do Colaborador' e 'Matrícula do Colaborador'.]]></Item>
+		<Item visivel="S" motivo="S20140500173"><![CDATA[C&S > Relatórios > Situações: Novo botão 'Exportar' para gerar relatório em excel.]]></Item>
+		<Item visivel="S" motivo="S20141000058"><![CDATA[T&D > Cadastros > Cursos/treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Pesquisa automática de colaboradores ao pressionar a tecla 'Enter' nos campos 'Nome do Colaborador' e 'Matrícula do Colaborador'.]]></Item>
 		<Item visivel="S" motivo="S20141000055"><![CDATA[Utilitários > Cadastros > Empresas > Inserir/Editar > Cálculo do Absenteísmo : Inserindo flag 'Considerar sábado como dia útil' em empresa para cálculo do absenteísmo.]]></Item>
 		<Item visivel="N" motivo="P20141000131"><![CDATA[BUG: T&D > Cadastros > Modelos de Avaliação do Aluno > Inserir: Correção de inconsistência nos pesos inseridos para as respostas da avaliação do aluno.]]></Item>
 		<Item visivel="N" motivo="S20141000127"><![CDATA[Mudança na descrição do ícone 'Suporte' para 'Fortes Chat'.]]></Item>
