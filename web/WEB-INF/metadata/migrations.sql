@@ -5735,23 +5735,6 @@ CREATE VIEW situacaocolaborador AS
   WHERE hc.status <> 3 AND (hfs_hc.data < proximo.dataproximo OR hfs_hc.data IS NULL) AND (hi_hfs_hc.data < proximo.dataproximo OR hi_hfs_hc.data IS NULL) AND (hi_hfs_hc.data < proximafaixa.dataproximohistfaixa OR hi_hfs_hc.data IS NULL) AND (hfs_hc.data >= faixaatual.dataatualfaixa OR hfs_hc.data IS NULL) AND (hi_hfs_hc.data >= indiceatualfaixa.dataatualindicefaixa OR hi_hfs_hc.data IS NULL) AND (hi_hc.data < proximo.dataproximo OR hi_hc.data IS NULL) AND (hi_hc.data >= indiceatual.dataatualindice OR hi_hc.data IS NULL) 
   ORDER BY hc.colaborador_id, hc.data, hfs_hc.data, hi_hfs_hc.data, hi_hc.data;--.go 
 
--- create_function_montafamiliaarea
-CREATE OR REPLACE FUNCTION monta_familia_area(area_id BIGINT) RETURNS TABLE(area_nome TEXT) AS $$ 
-DECLARE 
-BEGIN 
-    RETURN QUERY  
-    WITH RECURSIVE areaorganizacional_recursiva AS ( 
-        SELECT id, nome, areamae_id, CAST(nome AS TEXT) AS nomeHierarquico 
-        FROM areaorganizacional WHERE id = area_id 
-        UNION ALL 
-        SELECT ao.id, ao.nome, ao.areamae_id, CAST((ao.nome || ' > ' || ao_r.nomeHierarquico) AS TEXT) AS nomeHierarquico 
-        FROM areaorganizacional ao 
-        INNER JOIN areaorganizacional_recursiva ao_r ON ao.id = ao_r.areamae_id 
-    )
-    SELECT nomeHierarquico FROM areaorganizacional_recursiva ORDER BY LENGTH(nomehierarquico) DESC LIMIT 1; 
-END; 
-$$ LANGUAGE plpgsql; --.go
-
 -- add_column_integradaPortalColaborador_empresa
 alter table empresa add column integradaPortalColaborador boolean DEFAULT false NOT NULL; --.go
 
