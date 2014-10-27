@@ -12,6 +12,13 @@
 	<#assign validarCampos="return validaFormulario('form', new Array('cnpj', 'nome'), null, true)"/>
 
 	<script type="text/javascript">
+		$(function(){
+			$("#cnpj").keyup(function(e) {
+				if(e.keyCode != 37 && e.keyCode != 39 && e.keyCode != 8)
+          			$(this).val($(this).val().replace(/[^\d]+/g,'').substring(0,14));
+     		});
+		});
+	
 		function enviaTicket() {
 			if (validaFormulario('form', new Array('cnpj', 'nome'), null, true)) {
 				var nome = removerAcento($('#nome').val());
@@ -39,7 +46,7 @@
 		</tr>
 		<tr>
 			<td class="corpo" colspan="2" style="padding:10px">
-				<@ww.textfield label="CNPJ/CPF" name="cnpj" id="cnpj" maxlength="14" cssStyle="width:110px !important" /><br>
+				<@ww.textfield label="CNPJ/CPF" name="cnpj" id="cnpj" cssStyle="width:110px !important" /><br>
 				<@ww.textfield label="Nome/Denominação Social do Licenciado" name="nome" id="nome" cssStyle="width:320px !important"/>
   				<br>
 			</td>
