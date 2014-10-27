@@ -36,7 +36,7 @@
 		
 		<@ww.select label="Agrupar por" name="agruparPor" list=r"#{'N':'-','A':'Área Organizacional','E':'Estabelecimento'}"/>
 		<@ww.checkbox label="Não imprimir afastado(s)" id="imprimirAfastados" name="imprimirAfastados" labelPosition="left"/>
-		<@ww.checkbox label="Imprimir desligado(s)" id="imprimirDesligados" name="imprimirDesligados" labelPosition="left"/>
+		<@ww.checkbox label="Imprimir desligados" id="imprimirDesligados" name="imprimirDesligados" labelPosition="left"/>
 
 		<div class="buttonGroup">
 			<input type="button" value="" onclick="validaFormulario('form',new Array('data'),new Array('data'));" class="btnRelatorio" />

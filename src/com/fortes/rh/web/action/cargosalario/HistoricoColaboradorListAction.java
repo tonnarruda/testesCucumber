@@ -502,7 +502,12 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 			return Action.INPUT;
 		}
 		
-		return agruparPor == 'A' ? "successAgruparPorArea" : "successAgruparPorData";
+		if (agruparPor == 'M')
+			return "successAgruparPorData";
+		else if (agruparPor == 'C')
+			return "successAgruparPorColaborador";
+		else
+			return "successAgruparPorArea";
 	}
 	
 	private void populaTituloFiltro(String titulo, String filtro) 
