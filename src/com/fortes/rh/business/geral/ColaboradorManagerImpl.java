@@ -905,9 +905,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByIdProjectionEmpresa(colaboradorId);
 	}
 
-	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String agruparPor) throws Exception
+	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String agruparPor, String vinculo) throws Exception
 	{
-		Collection<Colaborador> colaboradors = getDao().findColaboradoresMotivoDemissao(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, agruparPor);
+		Collection<Colaborador> colaboradors = getDao().findColaboradoresMotivoDemissao(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, agruparPor, vinculo);
 		if (colaboradors == null || colaboradors.isEmpty())
 			throw new Exception("Não existem dados para o filtro informado.");
 
@@ -915,9 +915,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	}
 
 	public Collection<MotivoDemissaoQuantidade> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds,
-			Date dataIni, Date dataFim) throws Exception
+			Date dataIni, Date dataFim, String vinculo) throws Exception
 			{
-		List<Object[]> lista = getDao().findColaboradoresMotivoDemissaoQuantidade(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim);
+		List<Object[]> lista = getDao().findColaboradoresMotivoDemissaoQuantidade(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, vinculo);
 
 		if (lista == null || lista.isEmpty())
 			throw new Exception("Não existem dados para o filtro informado.");
@@ -926,7 +926,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		for (Object[] item : lista)
 		{
 			if(item[0] == null)
-				motivos.add(new MotivoDemissaoQuantidade("[não informado]", getDao().countSemMotivos(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim)));
+				motivos.add(new MotivoDemissaoQuantidade("[não informado]", getDao().countSemMotivos(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, vinculo)));
 			else
 				motivos.add(new MotivoDemissaoQuantidade((String) item[0], (Integer) item[1]));
 		}

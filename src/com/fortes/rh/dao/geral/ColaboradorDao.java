@@ -43,8 +43,8 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Colaborador findColaboradorByIdProjection(Long colaboradorId);
 	public boolean atualizarUsuario(Long colaboradorId, Long usuarioId);
 	public Colaborador findByIdProjectionEmpresa(Long colaboradorId);
-	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String agruparPor);
-	public List<Object[]> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim);
+	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String agruparPor, String vinculo);
+	public List<Object[]> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String vinculo);
 
 	public boolean desligaByCodigo(Empresa empresa, Date data, String... codigosAC);
 	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Long... colaboradoresIds);
@@ -70,7 +70,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Colaborador findByIdDadosBasicos(Long id, Integer statusRetornoAC);
 	public Collection<Colaborador> findByIdHistoricoAtual(Collection<Long> colaboradorIds);
 	public Colaborador findByIdHistoricoAtual(Long colaboradorId, boolean exibirSomenteAtivos);
-	public Integer countSemMotivos(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim);
+	public Integer countSemMotivos(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String vinculo);
 	public void migrarBairro(String bairro, String bairroDestino);
 	public Integer getCountAtivosByEstabelecimento(Long estabelecimentoId);
 	public Collection<Colaborador> findByAreaOrganizacionalEstabelecimento(Collection<Long> areaIds, Collection<Long> estabelecimentoIds, String situacao);

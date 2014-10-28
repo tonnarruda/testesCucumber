@@ -11,6 +11,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.MotivoDemissaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -69,6 +70,8 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 	private String reportFilter;
 	private String reportTitle;
 	
+	private String vinculo;
+	private HashMap<String, String> vinculos;
 	
 	public String list() throws Exception
 	{
@@ -101,6 +104,8 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);
 		
+		vinculos = new Vinculo();
+		
 		empresa = getEmpresaSistema();
 		return Action.SUCCESS;
 	}
@@ -109,7 +114,7 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 	{
 		try
 		{
-			colaboradores = colaboradorManager.findColaboradoresMotivoDemissao(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(cargosCheck), dataIni, dataFim, agruparPor);
+			colaboradores = colaboradorManager.findColaboradoresMotivoDemissao(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(cargosCheck), dataIni, dataFim, agruparPor, vinculo);
 		}
 		catch (Exception e)
 		{
@@ -161,7 +166,7 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 	{
 		try
 		{
-			motivoDemissaoQuantidades = colaboradorManager.findColaboradoresMotivoDemissaoQuantidade(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(cargosCheck), dataIni, dataFim);
+			motivoDemissaoQuantidades = colaboradorManager.findColaboradoresMotivoDemissaoQuantidade(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(cargosCheck), dataIni, dataFim, vinculo);
 		}
 		catch (Exception e)
 		{
@@ -182,6 +187,8 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 
 		reportFilter = "Emitido em: " + DateUtil.formataDiaMesAno(new Date());
 		reportTitle = ((Cabecalho) parametros.get("CABECALHO")).getTitulo();
+		
+		vinculos = new Vinculo();
 
 		if(listaColaboradores)
 			return imprimeRelatorioMotivoDemissao();
@@ -385,5 +392,20 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 	public boolean isTurnover() {
 		return turnover;
 	}
+	
+	public String getVinculo() {
+		return vinculo;
+	}
 
+	public void setVinculo(String vinculo) {
+		this.vinculo = vinculo;
+	}
+
+	public HashMap<String, String> getVinculos() {
+		return vinculos;
+	}
+
+	public void setVinculos(HashMap<String, String> vinculos) {
+		this.vinculos = vinculos;
+	}
 }
