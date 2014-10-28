@@ -1344,68 +1344,68 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertTrue(DateUtil.equals(dataPrimeiroHistorico, resultado.getData()));
 	}
 	
-	public void testFindByPeriodo()
-	{
-		Date dataIni = DateUtil.criarDataMesAno(01, 06, 2009);
-		Date dataFim = DateUtil.criarDataMesAno(01, 07, 2009);
-		Date dataHistorico = DateUtil.criarDataMesAno(18, 06, 2009);
-		
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento = estabelecimentoDao.save(estabelecimento); 
-		
-		Colaborador colaboradorDesligado = ColaboradorFactory.getEntity();
-		colaboradorDesligado.setDesligado(true);
-		colaboradorDesligado.setEmpresa(empresa);
-		colaboradorDao.save(colaboradorDesligado);
-		
-		HistoricoColaborador historicoColaboradorDesligado = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorDesligado.setEstabelecimento(estabelecimento);
-		historicoColaboradorDesligado.setColaborador(colaboradorDesligado);
-		historicoColaboradorDesligado.setData(dataHistorico);
-		historicoColaboradorDesligado.setMotivo(MotivoHistoricoColaborador.IMPORTADO);
-		historicoColaboradorDao.save(historicoColaboradorDesligado);
-		
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setEmpresa(empresa);
-		colaboradorDao.save(colaborador);
-
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador.setEstabelecimento(estabelecimento);
-		historicoColaborador.setColaborador(colaborador);
-		historicoColaborador.setData(dataHistorico);
-		historicoColaborador.setMotivo(MotivoHistoricoColaborador.IMPORTADO);
-		historicoColaboradorDao.save(historicoColaborador);
-		
-		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador2.setEstabelecimento(estabelecimento);
-		historicoColaborador2.setColaborador(colaborador);
-		historicoColaborador2.setData(dataIni);
-		historicoColaborador2.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
-		historicoColaboradorDao.save(historicoColaborador2);
-		
-		Long[] estabelecimentosIds = new Long[]{estabelecimento.getId()};
-		Long[] areasIds = new Long[0];
-		String origemSituacao = "T"; // Qualquer origem (RH ou AC)
-		boolean imprimeDesligado = false; 
-		
-		Collection<HistoricoColaborador> resultado1 = historicoColaboradorDao.findByPeriodo(empresa.getId(), dataIni, dataFim, estabelecimentosIds, areasIds, origemSituacao, 'A', imprimeDesligado);
-		
-		assertEquals(2, resultado1.size());
-		
-		origemSituacao = "AC"; // origem  AC
-		Collection<HistoricoColaborador> resultado2 = historicoColaboradorDao.findByPeriodo(empresa.getId(), dataIni, dataFim, estabelecimentosIds, areasIds, origemSituacao, 'M', imprimeDesligado);
-		assertEquals(1, resultado2.size());
-		
-		imprimeDesligado = true; 
-		
-		Collection<HistoricoColaborador> resultado3 = historicoColaboradorDao.findByPeriodo(empresa.getId(), dataIni, dataFim, estabelecimentosIds, areasIds, origemSituacao, 'A', imprimeDesligado);
-		
-		assertEquals(2, resultado3.size());
-		
-	}
+//	public void testFindByPeriodo()
+//	{
+//		Date dataIni = DateUtil.criarDataMesAno(01, 06, 2009);
+//		Date dataFim = DateUtil.criarDataMesAno(01, 07, 2009);
+//		Date dataHistorico = DateUtil.criarDataMesAno(18, 06, 2009);
+//		
+//		Empresa empresa = EmpresaFactory.getEmpresa();
+//		empresaDao.save(empresa);
+//		
+//		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+//		estabelecimento = estabelecimentoDao.save(estabelecimento); 
+//		
+//		Colaborador colaboradorDesligado = ColaboradorFactory.getEntity();
+//		colaboradorDesligado.setDesligado(true);
+//		colaboradorDesligado.setEmpresa(empresa);
+//		colaboradorDao.save(colaboradorDesligado);
+//		
+//		HistoricoColaborador historicoColaboradorDesligado = HistoricoColaboradorFactory.getEntity();
+//		historicoColaboradorDesligado.setEstabelecimento(estabelecimento);
+//		historicoColaboradorDesligado.setColaborador(colaboradorDesligado);
+//		historicoColaboradorDesligado.setData(dataHistorico);
+//		historicoColaboradorDesligado.setMotivo(MotivoHistoricoColaborador.IMPORTADO);
+//		historicoColaboradorDao.save(historicoColaboradorDesligado);
+//		
+//		Colaborador colaborador = ColaboradorFactory.getEntity();
+//		colaborador.setEmpresa(empresa);
+//		colaboradorDao.save(colaborador);
+//
+//		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+//		historicoColaborador.setEstabelecimento(estabelecimento);
+//		historicoColaborador.setColaborador(colaborador);
+//		historicoColaborador.setData(dataHistorico);
+//		historicoColaborador.setMotivo(MotivoHistoricoColaborador.IMPORTADO);
+//		historicoColaboradorDao.save(historicoColaborador);
+//		
+//		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+//		historicoColaborador2.setEstabelecimento(estabelecimento);
+//		historicoColaborador2.setColaborador(colaborador);
+//		historicoColaborador2.setData(dataIni);
+//		historicoColaborador2.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
+//		historicoColaboradorDao.save(historicoColaborador2);
+//		
+//		Long[] estabelecimentosIds = new Long[]{estabelecimento.getId()};
+//		Long[] areasIds = new Long[0];
+//		String origemSituacao = "T"; // Qualquer origem (RH ou AC)
+//		boolean imprimeDesligado = false; 
+//		
+//		Collection<HistoricoColaborador> resultado1 = historicoColaboradorDao.findByPeriodo(empresa.getId(), dataIni, dataFim, estabelecimentosIds, areasIds, origemSituacao, 'A', imprimeDesligado);
+//		
+//		assertEquals(2, resultado1.size());
+//		
+//		origemSituacao = "AC"; // origem  AC
+//		Collection<HistoricoColaborador> resultado2 = historicoColaboradorDao.findByPeriodo(empresa.getId(), dataIni, dataFim, estabelecimentosIds, areasIds, origemSituacao, 'M', imprimeDesligado);
+//		assertEquals(1, resultado2.size());
+//		
+//		imprimeDesligado = true; 
+//		
+//		Collection<HistoricoColaborador> resultado3 = historicoColaboradorDao.findByPeriodo(empresa.getId(), dataIni, dataFim, estabelecimentosIds, areasIds, origemSituacao, 'A', imprimeDesligado);
+//		
+//		assertEquals(2, resultado3.size());
+//		
+//	}
 	
 	public void testFindAllByColaboradorBuscandoAmbienteEFuncao()
 	{

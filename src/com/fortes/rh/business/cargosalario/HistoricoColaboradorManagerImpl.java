@@ -1253,10 +1253,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	public Collection<HistoricoColaborador> montaRelatorioSituacoes(Long empresaId, Date dataIni, Date dataFim, Long[] estabelecimentosIds, Long[] areasIds, String origemSituacao, char agruparPor, boolean imprimirDesligados) throws ColecaoVaziaException, Exception {
 
-		Collection<HistoricoColaborador> situacoes = getDao().findByPeriodo(empresaId, dataIni, dataFim, estabelecimentosIds, areasIds, origemSituacao, agruparPor, imprimirDesligados);
-		montaAreaOrganizacional(empresaId, situacoes);
-		
-		return situacoes;
+		return getDao().findByPeriodo(empresaId, dataIni, dataFim, estabelecimentosIds, areasIds, origemSituacao, agruparPor, imprimirDesligados);
 	}
 
 	public Collection<HistoricoColaborador> findAllByColaborador(Long colaboradorId) {

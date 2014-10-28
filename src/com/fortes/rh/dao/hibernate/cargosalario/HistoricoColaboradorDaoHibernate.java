@@ -1,8 +1,10 @@
 package com.fortes.rh.dao.hibernate.cargosalario;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -21,6 +23,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.SituacaoColaborador;
@@ -955,49 +958,48 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 	 * busca por filtros e também pela origem (RH ou AC), se for especificado.
 	 */
 	public Collection<HistoricoColaborador> findByPeriodo(Long empresaId, Date dataIni, Date dataFim, Long[] estabelecimentosIds, Long[] areasIds, String origemSituacao, char agruparPor, boolean imprimirDesligados) {
+
+		StringBuilder sql = new StringBuilder();
+		sql.append("select hc.id as hc_id, hc.data as hc_data, hc.motivo as hc_motivo, co.id as co_id, co.nome as co_nome, cg.nome as cg_nome, fs.nome as fs_nome, es.id as es_id, es.nome as es_nome, ao.id as ao_id, monta_familia_area(ao.id) as ao_nome, am.id as am_id, am.nome as am_nome, hc.tipoSalario as hc_tipoSalario, hc.salario as hc_salario, ");
+		sql.append("hc.quantidadeIndice as hc_quantidadeIndice, hcih.valor as hcih_valor, fsh.tipo as fsh_tipo, fsh.valor as fsh_valor, fsh.quantidade as fsh_quantidade, fshih.valor as fshih_valor, hci.nome as hci_nome ");
 		
-		StringBuilder hql = new StringBuilder();
+		sql.append("from HistoricoColaborador hc ");
+		sql.append("left join areaOrganizacional ao on hc.areaOrganizacional_id = ao.id ");
+		sql.append("left join areaOrganizacional am on ao.areaMae_id = am.id ");
+		sql.append("left join estabelecimento es on hc.estabelecimento_id = es.id ");
+		sql.append("left join colaborador co on hc.colaborador_id = co.id ");
+		sql.append("left join faixaSalarial fs on hc.faixaSalarial_id = fs.id ");
+		sql.append("left join cargo cg on fs.cargo_id = cg.id ");
 		
-		hql.append("select new HistoricoColaborador(hc.id, hc.data, hc.motivo, co.id, co.nome, cg.nome, fs.nome, es.id, es.nome, ao.id, ao.nome, am.id, am.nome, hc.tipoSalario, hc.salario, " +
-				"hc.quantidadeIndice, hcih.valor, fsh.tipo, fsh.valor, fsh.quantidade, fshih.valor, hci.nome) ");
+		sql.append("left join indice hci on hc.indice_id = hci.id ");
+		sql.append("left join indiceHistorico hcih on hcih.indice_id = hci.id and hcih.data = (select max(ih2.data) from IndiceHistorico ih2 where ih2.indice_id = hci.id and ih2.data <= :data) ");
+		sql.append("left join faixaSalarialHistorico fsh on fsh.faixaSalarial_id = fs.id and fsh.data = (select max(fsh3.data) from FaixaSalarialHistorico fsh3 where fsh3.faixaSalarial_id = fs.id and fsh3.data <= :data) ");
+		sql.append("left join indice fshi on fsh.indice_id = fshi.id ");
+		sql.append("left join indiceHistorico fshih on fshih.indice_id = fshi.id and fshih.data = (select max(ih4.data) from IndiceHistorico ih4 where ih4.indice_id = fshi.id and ih4.data <= :data) ");
 		
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("left join hc.areaOrganizacional as ao ");
-		hql.append("left join ao.areaMae as am ");
-		hql.append("left join hc.estabelecimento as es ");
-		hql.append("left join hc.colaborador as co ");
-		hql.append("left join hc.faixaSalarial as fs ");
-		hql.append("left join fs.cargo as cg ");
-		
-		hql.append("left join hc.indice as hci ");
-		hql.append("left join hci.indiceHistoricos as hcih with hcih.data = (select max(ih2.data) from IndiceHistorico ih2 where ih2.indice.id = hci.id and ih2.data <= :data) ");
-		hql.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh3.data) from FaixaSalarialHistorico fsh3 where fsh3.faixaSalarial.id = fs.id and fsh3.data <= :data) ");
-		hql.append("left join fsh.indice as fshi ");
-		hql.append("left join fshi.indiceHistoricos as fshih with fshih.data = (select max(ih4.data) from IndiceHistorico ih4 where ih4.indice.id = fshi.id and ih4.data <= :data) ");
-		
-		hql.append("where ");
-		hql.append("co.empresa.id = :empresaId ");
-		hql.append("and	hc.data between :dataIni and :dataFim ");
-		hql.append("and	es.id in (:estabelecimentosIds) ");
+		sql.append("where ");
+		sql.append("co.empresa_id = :empresaId ");
+		sql.append("and	hc.data between :dataIni and :dataFim ");
+		sql.append("and	es.id in (:estabelecimentosIds) ");
 		if (areasIds != null && areasIds.length > 0)
-			hql.append("and	ao.id in (:areasIds) ");
+			sql.append("and	ao.id in (:areasIds) ");
 		
 		if (origemSituacao.equals("RH"))
-			hql.append("and hc.motivo != :motivo ");
+			sql.append("and hc.motivo != :motivo ");
 		else if (origemSituacao.equals("AC"))
-			hql.append("and hc.motivo = :motivo ");
+			sql.append("and hc.motivo = :motivo ");
 		
 		if (!imprimirDesligados) 
-			hql.append("and co.desligado = false ");
+			sql.append("and co.desligado = false ");
 		
 		if (agruparPor == 'A') 
-			hql.append("order by es.nome, ao.nome, hc.data desc");
+			sql.append("order by es.nome, ao_nome, hc.data desc");
 		else if (agruparPor == 'M')
-			hql.append("order by es.nome, hc.data desc, ao.nome");
+			sql.append("order by es.nome, hc.data desc, ao_nome");
 		else if (agruparPor == 'C')
-			hql.append("order by es.nome, co.nome, hc.data desc");
+			sql.append("order by es.nome, co.nome, hc.data desc");
 		
-		Query query = getSession().createQuery(hql.toString());
+		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("empresaId", empresaId);
 		query.setDate("data", new Date());
 		query.setDate("dataIni", dataIni);
@@ -1010,7 +1012,39 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		if (StringUtils.isNotBlank(origemSituacao) && !origemSituacao.equals("T"))
 			query.setString("motivo", MotivoHistoricoColaborador.IMPORTADO);
 		
-		return query.list();
+		
+		Collection<Object[]> resultado = query.list();
+		Collection<HistoricoColaborador> lista = new ArrayList<HistoricoColaborador>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+
+			lista.add(new HistoricoColaborador(((BigInteger) res[0]).longValue(), 
+												(Date) res[1], 
+												(String) res[2], 
+												((BigInteger) res[3]).longValue(), 
+												(String) res[4], 
+												(String) res[5], 
+												(String) res[6], 
+												((BigInteger) res[7]).longValue(), 
+												(String) res[8], 
+												((BigInteger) res[9]).longValue(), 
+												(String) res[10], 
+												res[11] != null ? ((BigInteger) res[11]).longValue() : null, 
+												(String) res[12], 
+												(Integer) res[13], 
+												(Double) res[14], 
+												(Double) res[15], 
+												(Double) res[16], 
+												(Integer) res[17], 
+												(Double) res[18], 
+												(Double) res[19], 
+												(Double) res[20], 
+												(String) res[21]));
+		}
+
+		return lista;
 	}
 	
 	/**

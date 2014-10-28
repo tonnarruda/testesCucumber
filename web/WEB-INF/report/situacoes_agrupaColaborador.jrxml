@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="55"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -13,7 +13,7 @@
 	<parameter name="SOMENTE_ATIVOS" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="colaborador.nome" class="java.lang.String"/>
 	<field name="colaborador.salarioCalculado" class="java.lang.Double"/>
-	<field name="areaOrganizacional.descricao" class="java.lang.String"/>
+	<field name="areaOrganizacional.nome" class="java.lang.String"/>
 	<field name="faixaSalarial.nome" class="java.lang.String"/>
 	<field name="faixaSalarial.cargo.nome" class="java.lang.String"/>
 	<field name="data" class="java.util.Date"/>
@@ -223,7 +223,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{areaOrganizacional.descricao}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{areaOrganizacional.nome}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="e102eb21-5313-455e-97eb-5a4223f90cd1" key="textField-8" x="339" y="1" width="173" height="12"/>

@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="situacoes_agrupaArea" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="784" leftMargin="29" rightMargin="29" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="b102cd0e-fa31-45be-b3f9-7e3a83411a03">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="46"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -13,7 +13,7 @@
 	<parameter name="SOMENTE_ATIVOS" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="colaborador.nome" class="java.lang.String"/>
 	<field name="colaborador.salarioCalculado" class="java.lang.Double"/>
-	<field name="areaOrganizacional.descricao" class="java.lang.String"/>
+	<field name="areaOrganizacional.nome" class="java.lang.String"/>
 	<field name="faixaSalarial.nome" class="java.lang.String"/>
 	<field name="faixaSalarial.cargo.nome" class="java.lang.String"/>
 	<field name="data" class="java.util.Date"/>
@@ -52,11 +52,11 @@
 		</groupFooter>
 	</group>
 	<group name="grpAreaOrganizacional">
-		<groupExpression><![CDATA[$F{areaOrganizacional.descricao}]]></groupExpression>
+		<groupExpression><![CDATA[$F{areaOrganizacional.nome}]]></groupExpression>
 		<groupHeader>
 			<band height="17" splitType="Stretch">
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement uuid="0e2997d0-ae03-4266-a9c2-3e1dd3b06851" key="textField" x="15" y="4" width="316" height="12"/>
+					<reportElement uuid="0e2997d0-ae03-4266-a9c2-3e1dd3b06851" key="textField" x="15" y="4" width="763" height="12"/>
 					<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -66,7 +66,7 @@
 					<textElement>
 						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{areaOrganizacional.descricao}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{areaOrganizacional.nome}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
