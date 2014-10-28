@@ -10,6 +10,7 @@
 		<Item visivel="N" motivo="P20141000131"><![CDATA[BUG: T&D > Cadastros > Modelos de Avaliação do Aluno > Inserir: Correção de inconsistência nos pesos inseridos para as respostas da avaliação do aluno.]]></Item>
 		<Item visivel="N" motivo="S20141000127"><![CDATA[Mudança na descrição do ícone 'Suporte' para 'Fortes Chat'.]]></Item>
 		<Item visivel="N" motivo="S20141000177"><![CDATA[Fortes/Remprot > Ao abrir a tela de login, no campo CNPJ, considerando apenas números.]]></Item> 
+		<Item visivel="N" motivo="P20141000155"><![CDATA[BUG: Aval. Desempenho > Relatórios > Acampanhamento do Periodo de Experiencia: Correção de problema gerar relório com qualquer período.]]></Item>
 	</Versao>
 	<Versao id="1.1.135.163" bd="" data="20/10/2014">
 		<Item visivel="S" motivo="S20140900134"><![CDATA[Integração com o AC Pessoal: Implementação da transferência de colaboradores em lote a partir do AC Pessoal.]]></Item>

@@ -167,7 +167,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	{
 		estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		periodoCheckList = periodoExperienciaManager.populaCheckBoxDistinctDias(getEmpresaSistema().getId());
+		periodoCheckList = periodoExperienciaManager.populaCheckBox(getEmpresaSistema().getId());
 	}
 	
 	public String prepareRelatorioRankingPerformance() throws Exception

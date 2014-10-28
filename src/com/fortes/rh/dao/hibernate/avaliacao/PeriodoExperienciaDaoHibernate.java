@@ -18,7 +18,7 @@ public class PeriodoExperienciaDaoHibernate extends GenericDaoHibernate<PeriodoE
 {
 
 	@SuppressWarnings("unchecked")
-	public Collection<PeriodoExperiencia> findAllSelect(Long empresaId, boolean ordenarDiasDesc)
+	public Collection<PeriodoExperiencia> findAllSelect(Long empresaId, boolean ordenarDiasDesc, Boolean ativo)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "p");
 
@@ -28,6 +28,9 @@ public class PeriodoExperienciaDaoHibernate extends GenericDaoHibernate<PeriodoE
 		p.add(Projections.property("p.descricao"),"descricao");
 		p.add(Projections.property("p.ativo"),"ativo");
 		p.add(Projections.property("p.empresa.id"),"empresaId");
+		
+		if (ativo != null)
+			criteria.add(Expression.eq("p.ativo", ativo));
 		
 		criteria.add(Expression.eq("p.empresa.id", empresaId));
 		

@@ -17,7 +17,7 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 {
 	public Collection<PeriodoExperiencia> findAllSelect(Long empresaId, boolean orderDiasDesc)
 	{
-		return getDao().findAllSelect(empresaId, orderDiasDesc);
+		return getDao().findAllSelect(empresaId, orderDiasDesc, null);
 	}
 
 	public Collection<PeriodoExperiencia> findByIdsOrderDias(Long[] PeriodoExperienciaIds)
@@ -49,7 +49,7 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 	{
 		try
 		{
-			Collection<PeriodoExperiencia> periodos = getDao().findAllSelect(empresaId, false);
+			Collection<PeriodoExperiencia> periodos = getDao().findAllSelect(empresaId, false, true);
 			return CheckListBoxUtil.populaCheckListBox(periodos, "getId", "getDiasDescricao");
 		}
 		catch (Exception e)
