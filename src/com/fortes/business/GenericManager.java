@@ -46,6 +46,13 @@ public interface GenericManager<T>
 
 	/**
 	 * <p>
+	 * Retorna a lista de tabelas que dependem do registro.
+	 * </p>
+	 */
+	public String[] findDependentTables(Long id);
+	
+	/**
+	 * <p>
 	 * Removes all entities based on the ids.
 	 * </p>
 	 */

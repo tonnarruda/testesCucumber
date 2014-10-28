@@ -2,6 +2,7 @@ package com.fortes.dao;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import javax.persistence.Transient;
 import org.hibernate.Criteria;
 import org.hibernate.EntityMode;
 import org.hibernate.FetchMode;
+import org.hibernate.Query;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.MatchMode;
@@ -17,6 +19,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.metadata.ClassMetadata;
+import org.hibernate.persister.entity.AbstractEntityPersister;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataAccessResourceFailureException;
@@ -109,6 +112,22 @@ public class GenericDaoHibernate<T> extends HibernateDaoSupport implements Gener
 		getHibernateTemplate().saveOrUpdateAll(entities);
 	}
 
+	public String[] findDependentTables(Long id)
+	{
+		ClassMetadata cm = getSessionFactory().getClassMetadata(getEntityClass());
+		AbstractEntityPersister aep = (AbstractEntityPersister) cm;
+		String table = aep.getTableName();
+		
+		Query query = getSession().createSQLQuery("SELECT * FROM dependent_tables(:table, :id)");
+		query.setString("table", table.toLowerCase());
+		query.setLong("id", id);
+		
+		Object[] result = query.list().toArray();
+		String[] retorno = Arrays.copyOf(result, result.length, String[].class);
+		
+		return retorno;
+	}
+	
 	public void remove(Long[] ids) throws DataAccessException
 	{
 		for (Long id : ids)

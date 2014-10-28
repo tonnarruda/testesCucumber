@@ -40,6 +40,11 @@ public class GenericManagerImpl<T, D extends GenericDao<T>> implements GenericMa
 		dao.saveOrUpdate(entities);
 	}
 
+	public String[] findDependentTables(Long id)
+	{
+		return getDao().findDependentTables(id);
+	}
+	
 	public void remove(Long[] ids)
 	{
 		dao.remove(ids);

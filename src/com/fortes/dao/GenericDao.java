@@ -56,6 +56,13 @@ public interface GenericDao<T>
 
 	/**
 	 * <p>
+	 * Retorna a lista de tabelas que dependem do registro.
+	 * </p>
+	 */
+	public String[] findDependentTables(Long id);
+	
+	/**
+	 * <p>
 	 * Removes from the persistent store all entities based on the ids.
 	 * </p>
 	 */
