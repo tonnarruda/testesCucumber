@@ -2176,9 +2176,6 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
 		areaOrganizacionals.add(areaOrganizacional);
 
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(1L),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
-		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areaOrganizacionals)).will(returnValue(areaOrganizacionals));
-		
 		Date dataIni = new Date();
 		Date dataFim = new Date();
 		Long[] estabelecimentosIds = new Long[]{1L};
