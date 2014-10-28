@@ -32,11 +32,11 @@ public class PeriodoExperienciaDaoHibernateTest extends GenericDaoHibernateTest<
 		periodoExperiencia2.setEmpresa(empresa);
 		periodoExperiencia2 = periodoExperienciaDao.save(periodoExperiencia2);
 		
-		Collection<PeriodoExperiencia> periodoExperiencias = periodoExperienciaDao.findAllSelect(empresa.getId(), false); 
+		Collection<PeriodoExperiencia> periodoExperiencias = periodoExperienciaDao.findAllSelect(empresa.getId(), false, null); 
 		assertEquals(2, periodoExperiencias.size());
 		assertEquals("1o da ordem ascendente é 30", new Integer(30), ((PeriodoExperiencia) periodoExperiencias.toArray()[0]).getDias());
 
-		periodoExperiencias = periodoExperienciaDao.findAllSelect(empresa.getId(), true); 
+		periodoExperiencias = periodoExperienciaDao.findAllSelect(empresa.getId(), true, null); 
 		assertEquals(2, periodoExperiencias.size());
 		assertEquals("1o da ordem descendente é 60", new Integer(60), ((PeriodoExperiencia) periodoExperiencias.toArray()[0]).getDias());
 	}
