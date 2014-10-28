@@ -1697,27 +1697,27 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Integer) query.uniqueResult();
 	}
 	
-	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String agruparPor)
+	public Collection<Colaborador> findColaboradoresMotivoDemissao(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String agruparPor, String vinculo)
 	{
-		Query query = findColaboradores(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, MOTIVODEMISSAO, agruparPor);
+		Query query = findColaboradores(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, MOTIVODEMISSAO, agruparPor, vinculo);
 
 		return query.list();
 	}
 
-	public List<Object[]> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim)
+	public List<Object[]> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String vinculo)
 	{
-		Query query = findColaboradores(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, MOTIVODEMISSAOQUANTIDADE, null);
+		Query query = findColaboradores(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, MOTIVODEMISSAOQUANTIDADE, null, vinculo);
 
 		return query.list();
 	}
 
-	private Query findColaboradores(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, int origem, String agruparPor)
+	private Query findColaboradores(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, int origem, String agruparPor, String vinculo)
 	{
 
 		StringBuilder hql = new StringBuilder();
 
 		if(origem == MOTIVODEMISSAO)
-			hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, co.dataDesligamento, co.observacaoDemissao, mo.id, mo.motivo, cg.nome, fs.nome, es.id, es.nome, ao.id, ao.nome) ");
+			hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, co.dataDesligamento, co.observacaoDemissao, co.vinculo, mo.id, mo.motivo, cg.nome, fs.nome, es.id, es.nome, ao.id, ao.nome) ");
 		else if(origem == MOTIVODEMISSAOQUANTIDADE)
 			hql.append("select mo.motivo, count(mo.motivo) ");
 
@@ -1734,12 +1734,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("			select max(hc2.data) ");
 		hql.append("			from HistoricoColaborador as hc2 ");
 		hql.append("			where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :hoje");
+		hql.append("			and hc2.data <= :hoje and hc2.status = :status ");
 		hql.append("		) ");
 		hql.append("	 	or hc1.data is null ");
 		hql.append("	) ");
 		hql.append("	and ( co.dataDesligamento between :dataIni and :dataFim )");
 
+		if(vinculo != null && !vinculo.equals("") )
+			hql.append(" and co.vinculo = :vinculo ");
+		
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			hql.append(" and es.id in (:estabelecimentoIds) ");
 
@@ -1761,7 +1764,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				hql.append("order by co.nome ");
 			}
 		} else if(origem == MOTIVODEMISSAOQUANTIDADE)
-			hql.append(" group by mo.motivo order by mo.motivo  ");
+			hql.append(" group by mo.id order by mo.id  ");
 
 		Query query = getSession().createQuery(hql.toString());
 
@@ -1769,6 +1772,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("hoje", new Date());
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if(vinculo != null && !vinculo.equals("") )
+			query.setString("vinculo", vinculo);
 
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
@@ -2699,7 +2706,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) query.uniqueResult();
 	}
 
-	public Integer countSemMotivos(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim)
+	public Integer countSemMotivos(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String vinculo)
 	{
 
 		StringBuilder hql = new StringBuilder();
@@ -2724,6 +2731,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("	and ( co.dataDesligamento between :dataIni and :dataFim )");
 		hql.append("	and mo is null");
 
+		if(vinculo != null && !vinculo.equals("") )
+			hql.append(" and co.vinculo = :vinculo ");
+		
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			hql.append(" and es.id in (:estabelecimentoIds) ");
 
@@ -2741,6 +2751,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setDate("dataFim", dataFim);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
+		if(vinculo != null && !vinculo.equals("") )
+			query.setString("vinculo", vinculo);
+		
 		if(estabelecimentoIds != null && estabelecimentoIds.length > 0)
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
 

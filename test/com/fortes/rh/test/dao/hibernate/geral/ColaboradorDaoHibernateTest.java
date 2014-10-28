@@ -3034,7 +3034,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Long[] areaIds = new Long[] { areaOrganizacional1.getId() };
 		Long[] cargoIds = new Long[] { cargo1.getId() };
 
-		Collection<Colaborador> retorno = colaboradorDao.findColaboradoresMotivoDemissao(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, "M");
+		Collection<Colaborador> retorno = colaboradorDao.findColaboradoresMotivoDemissao(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, "M", null);
 
 		assertEquals(1, retorno.size());
 	}
@@ -3049,7 +3049,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Long[] areaIds = new Long[] { areaOrganizacional1.getId() };
 		Long[] cargoIds = new Long[] { cargo1.getId() };
 
-		List<Object[]> retorno = colaboradorDao.findColaboradoresMotivoDemissaoQuantidade(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim);
+		List<Object[]> retorno = colaboradorDao.findColaboradoresMotivoDemissaoQuantidade(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, null);
 
 		assertEquals(1, retorno.size());
 	}
@@ -3898,7 +3898,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 1977));
 		historicoColaborador = historicoColaboradorDao.save(historicoColaborador);
 
-		assertEquals(new Integer(1), colaboradorDao.countSemMotivos(null, null, null, DateUtil.criarDataMesAno(1, 1, 1980), DateUtil.criarDataMesAno(3, 1, 1980)));
+		assertEquals(new Integer(1), colaboradorDao.countSemMotivos(null, null, null, DateUtil.criarDataMesAno(1, 1, 1980), DateUtil.criarDataMesAno(3, 1, 1980), null));
 	}
 
 	public void testMigrarBairro() {
