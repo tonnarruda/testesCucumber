@@ -17,6 +17,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -519,5 +520,21 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		query.executeUpdate();
 	}
 	
-	
+	public void removeComDependencias(Long id) 
+	{
+		String[] sqls = new String[]{
+			"DELETE FROM areainteresse_areaorganizacional WHERE areasorganizacionais_id = " + id,
+			"DELETE FROM atitude_areaorganizacional WHERE areaorganizacionals_id = " + id,
+			"DELETE FROM cargo_areaorganizacional WHERE areasorganizacionais_id = " + id,
+			"DELETE FROM configuracaolimitecolaborador WHERE areaorganizacional_id = " + id,
+			"DELETE FROM conhecimento_areaorganizacional WHERE areaorganizacionals_id = " + id,
+			"DELETE FROM habilidade_areaorganizacional WHERE areaorganizacionals_id = " + id,
+			"DELETE FROM quantidadelimitecolaboradoresporcargo WHERE areaorganizacional_id = " + id,
+			"DELETE FROM solicitacaobds_empresabds WHERE solicitacaobds_id IN (SELECT id FROM solicitacaobds WHERE areaorganizacional_id = " + id + ")",
+			"DELETE FROM solicitacaobds WHERE areaorganizacional_id = " + id,
+			"DELETE FROM areaorganizacional WHERE id = " + id
+		};
+		
+		JDBCConnection.executeQuery(sqls);
+	}
 }

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -28,8 +29,10 @@ import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.exception.AreaColaboradorException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.dicionario.Entidade;
 import com.fortes.rh.model.dicionario.ErroFeedBackACPessoal;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -912,6 +915,31 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			areasOrdenadas.addAll(ordenarAreasHierarquicamente(areas, areasIdsTemp, ++nivelHierarquico));
 		
 		return areasOrdenadas;
+	}
+	
+	public void removeComDependencias(Long id) throws FortesException
+	{
+		String[] tables = getDao().findDependentTables(id);
+		Collection<String> tbls = new ArrayList<String>();
+
+		for (String table : tables)
+		{
+			if (ArrayUtils.contains(new String[] { "areaorganizacional", "colaboradorresposta", "historicocolaborador", "reajustecolaborador", "solicitacao" }, table))
+			{
+				tbls.add(Entidade.getDescricao(table));
+			}
+		}
+		
+		if (!tbls.isEmpty())
+		{
+			StringBuffer msg = new StringBuffer("Essa área organizacional possui dependências que não podem ser excluídas automaticamente: <br />");
+			for (String tbl : tbls) {
+				msg.append("&bull; ").append(Entidade.getDescricao(tbl)).append("<br />");
+			}
+			throw new FortesException(msg.toString());
+		}
+		
+		getDao().removeComDependencias(id);
 	}
 
 	public String getMascaraLotacoesAC(Empresa empresa) throws Exception 

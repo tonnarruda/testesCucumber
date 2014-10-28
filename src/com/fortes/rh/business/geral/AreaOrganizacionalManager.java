@@ -12,6 +12,7 @@ import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.AreaColaboradorException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -80,4 +81,5 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public boolean verificaAlteracaoStatusAtivo(Long areaId, Long areaMaeId);
 	public Collection<AreaOrganizacional> ordenarAreasHierarquicamente(Collection<AreaOrganizacional> areas, Collection<Long> areasIds, int nivelHierarquico);
 	public String getMascaraLotacoesAC(Empresa empresa) throws Exception;
+	public void removeComDependencias(Long id) throws FortesException;
 }

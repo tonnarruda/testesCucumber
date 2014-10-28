@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.codec.binary.Base64;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.BooleanUtil;
@@ -109,11 +110,19 @@ public class AreaOrganizacionalListAction extends MyActionSupportList
 		try {
 			if(getEmpresaSistema().getId().equals(areaOrganizacional.getEmpresa().getId()))
 			{
-				areaOrganizacionalManager.deleteLotacaoAC(areaOrganizacional, getEmpresaSistema());
+				if (getUsuarioLogado().getId().equals(1L))
+					areaOrganizacionalManager.removeComDependencias(areaOrganizacional.getId());
+				else
+					areaOrganizacionalManager.deleteLotacaoAC(areaOrganizacional, getEmpresaSistema());
+				
 				addActionSuccess("Área organizacional excluída com sucesso.");
 			}
 			else
 				addActionWarning("A área organizacional solicitada não existe na empresa " + getEmpresaSistema().getNome() +".");
+			
+		} catch (FortesException e) {
+			addActionWarning(e.getMessage());
+			e.printStackTrace();
 		
 		} catch (IntegraACException e) {
 			addActionError(e.getMessage());

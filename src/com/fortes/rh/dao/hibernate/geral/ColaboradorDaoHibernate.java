@@ -1764,7 +1764,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				hql.append("order by co.nome ");
 			}
 		} else if(origem == MOTIVODEMISSAOQUANTIDADE)
-			hql.append(" group by mo.id order by mo.id  ");
+			hql.append(" group by mo.motivo order by mo.motivo  ");
 
 		Query query = getSession().createQuery(hql.toString());
 
