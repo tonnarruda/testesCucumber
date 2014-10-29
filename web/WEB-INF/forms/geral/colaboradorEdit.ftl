@@ -326,12 +326,12 @@
 			</#if>			
 	    }
 	    
-	    function verificaParentes(nome)
+	    function verificaParentes(nome, validaForm)
 		{
 			if (nome && nome.length >= 4)
 			{
 		    	$('#parentesDialog').empty();
-		    	ColaboradorDWR.findParentesByNome(nome, <@authz.authentication operation="empresaId"/>, function(dados) { listaParentes(dados, nome, '<@authz.authentication operation="empresaNome"/>'); });
+		    	ColaboradorDWR.findParentesByNome(nome, <@authz.authentication operation="empresaId"/>, function(dados) { listaParentes(dados, nome, '<@authz.authentication operation="empresaNome"/>', validaForm ); });
 		    }
 		}
 
@@ -347,14 +347,34 @@
 				arrayValidacao = new Array('nome','nascimento','cpf','ende','num','uf','cidade','ddd','fone','escolaridade','nomeComercial','dt_admissao','dt_hist', 'estabelecimento','areaOrganizacional','faixa','tipoSalario');
 		}
 		exibeLabelDosCamposNaoPreenchidos = true;
-		function validaFormularioDinamico()
+		function validaFormularioDinamico(noSubmit)
 		{
 			<#if obrigarAmbienteFuncao && somenteLeitura == "false">
 				arrayValidacao.push('ambiente','funcao');
 			</#if>
 			
-			return validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao','dt_encerramentoContrato', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}));
+			return validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao','dt_encerramentoContrato', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}), (noSubmit == true ? true : false));
 		}
+		
+		function submit()
+		{
+			if (setaCampos() && validaFormularioDinamico(true))
+			{
+		    	ColaboradorDWR.existeParentesByNome($('#nomePai').val(), $('#nomeMae').val(), $('#nomeConjuge').val(), <@authz.authentication operation="empresaId"/>, 
+		    		function(dado) {
+		    				if(dado == false)
+		    					${validarCampos}
+		    				else {
+								verificaParentes($('#nomePai').val(), validaFormularioDinamico);
+								verificaParentes($('#nomeMae').val(), validaFormularioDinamico);
+								verificaParentes($('#nomeConjuge').val(), validaFormularioDinamico);
+							}
+					}
+				);
+			}
+		}
+		
+		
 	</script>
 </head>
 <body>
@@ -709,7 +729,7 @@
 		</div>
 
 		<div style="width: 440px;">
-			<button onclick="if (setaCampos()) ${validarCampos};" id="gravar" <#if !colaborador.id?exists> </#if> class="btnGravar" accesskey="${accessKey}">
+			<button onclick="submit();" id="gravar" <#if !colaborador.id?exists> </#if> class="btnGravar" accesskey="${accessKey}">
 			</button>
 
 			<#if nomeBusca?exists && cpfBusca?exists>

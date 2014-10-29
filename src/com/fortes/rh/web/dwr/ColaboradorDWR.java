@@ -286,6 +286,18 @@ public class ColaboradorDWR
     	return colaboradorManager.montaParentesByNome(colaboradores);
     }
     
+    public Boolean existeParentesByNome(String nomePai, String nomeMae, String nomeConjuge, Long empresaId)
+    {
+    	Empresa empresa = empresaManager.findById(empresaId);
+
+    	if (empresa.getVerificaParentesco() == VerificacaoParentesco.BUSCA_TODAS_AS_EMPRESAS)
+    		return (colaboradorManager.findParentesByNome(nomePai, null).size() > 0)  ||  (colaboradorManager.findParentesByNome(nomeMae, null).size() > 0) || (colaboradorManager.findParentesByNome(nomeConjuge, null).size() > 0);
+    	else if (empresa.getVerificaParentesco() == VerificacaoParentesco.BUSCA_MESMA_EMPRESA)
+    		return (colaboradorManager.findParentesByNome(nomePai, empresaId).size() > 0)  ||  (colaboradorManager.findParentesByNome(nomeMae, empresaId).size() > 0) || (colaboradorManager.findParentesByNome(nomeConjuge, empresaId).size() > 0);
+    	else
+    		return false;
+    }
+    
     public Map<String, Object> verificaDesligadoByCandidato(Long candidatoId)
     {
     	Map<String, Object> dados = new HashMap<String, Object>();

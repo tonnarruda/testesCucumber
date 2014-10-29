@@ -2425,7 +2425,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public Collection<Colaborador> findParentesByNome(String nome, Long empresaId) 
 	{
-		return getDao().findParentesByNome(nome, empresaId);
+		if(nome != null && StringUtils.isNotBlank(nome))
+			return getDao().findParentesByNome(nome, empresaId);
+		else
+			return new ArrayList<Colaborador>();
 	}
 
 	public boolean pertenceEmpresa(Long colaboradorId, Long empresaId) 

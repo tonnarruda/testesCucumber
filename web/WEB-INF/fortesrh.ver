@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.13x.164" bd="" data="XX/XX/2014">
 		<Item visivel="S" motivo="S20140100212"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Possibilitando encerrar vaga ao contratar colaboradores de outra empresa.]]></Item>
+		<Item visivel="S" motivo="S20140900087"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ao tentar contratar um candidato com os dados já pré-preenchidos, o sistema validará o grau de parentesco (Validação configurável no cadastro de empresa).]]></Item>
 		<Item visivel="S" motivo="S20140500173"><![CDATA[C&S > Relatórios > Situações: Novo botão 'Exportar' para gerar relatório em excel.]]></Item>
 		<Item visivel="S" motivo="S20140500059"><![CDATA[C&S > Relatórios > Situações: Nova opção de agrupar situações por colaborador.]]></Item>
 		<Item visivel="S" motivo="S20141000058"><![CDATA[T&D > Cadastros > Cursos/treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Pesquisa automática de colaboradores ao pressionar a tecla 'Enter' nos campos 'Nome do Colaborador' e 'Matrícula do Colaborador'.]]></Item>

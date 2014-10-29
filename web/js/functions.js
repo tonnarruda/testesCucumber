@@ -1210,9 +1210,9 @@ function desabilita(campo) {
 	campo.attr('disabled','disabled').css('background-color', '#ECECEC');
 }
 
-function listaParentes(dados, nome, empresaNome)
+function listaParentes(dados, nome, empresaNome, submit)
 {
-
+	
 	if ($(dados).size() > 0)
 	{
     	var lista = "<strong>Dados do colaborador</strong>";
@@ -1227,13 +1227,18 @@ function listaParentes(dados, nome, empresaNome)
     		 lista += montaTabelaDados(colaborador.nome, colaborador.conjuge, colaborador.pai, colaborador.mae, colaborador.endereco, colaborador.cidade, colaborador.uf, colaborador.fone, colaborador.empresaNome );
     		 lista += '</div>';
     	});
-	
+    	
+    	botoes = [{ text: "Fechar", click: function() { $(this).dialog("close"); }}];
+
+    	if(submit)
+			botoes.push({ text: "Gravar", click: submit});
+    	
     	$('#parentesDialog').html(lista)
     						.dialog({	title: 'Verificação de Parentesco',
     									modal: true,
     									width: 700,
     									height: 360,
-    									buttons: [ { text: "Fechar", click: function() { $(this).dialog("close"); } } ] 
+    									buttons: botoes
 									});
 	}
 }
