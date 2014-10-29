@@ -19,6 +19,7 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.TipoPergunta;
+import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.Aspecto;
@@ -274,10 +275,10 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         	throw new Exception("Nenhuma pergunta foi respondida.");
 
         Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, null);
-        
-//        if(questionario.isAnonimo())
-//        	questionario.setTotalColab(colaboradorQuestionarioManager.countByQuestionarioRespondido(questionario.getId()));
-//        else
+       
+        if(questionario.isAnonimo() && questionario.getTipo() == TipoQuestionario.PESQUISA ) 
+        	questionario.setTotalColab(colaboradorQuestionarioManager.countByQuestionarioRespondido(questionario.getId()));
+        else
         	questionario.setTotalColab(countColaborador(colaboradorRespostas));
         
         Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, questionario.getTotalColab(), null);
