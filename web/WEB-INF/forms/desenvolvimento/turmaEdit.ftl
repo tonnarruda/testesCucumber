@@ -72,33 +72,13 @@
 		}
 		
 		function exibeHorarios() {
-			if ($("#porTurno").val()) {
-				$(".turnos").show();
-			}
+			$(".turnos, .hora-turno-tarde, .hora-turno-noite").toggle( $("#porTurno").val() == "true" );
 		}
 		
-		function exibeHorario(urlImg, filtroId)
+		function exibeHorario()
 		{
-			var filtro = document.getElementById(filtroId);
-			var linkFiltro = document.getElementById("linkFiltro");
-			var labelLink = document.getElementById("labelLink");
-			var showFilter ='true';
-		
-			if(filtro.style.display == "none" || labelLink.innerHTML == "Exibir Filtro")
-			{
-				filtro.style.display = "block";
-				linkFiltro.innerHTML = '<img alt="Inserir Horário" src="'+urlImg+'/arrow_up.gif"/>  <span id="labelLink" class="labelLink">Inserir Horário</span></a>';
-				jQuery('#showFilter').val(true);
-			}
-			else
-			{
-				filtro.style.display = "none";
-				linkFiltro.innerHTML = '<img alt="Inserir Horário" src="'+urlImg+'/arrow_down.gif"/>  <span id="labelLink" class="labelLink">Inserir Horário</span></a>';
-				jQuery('#showFilter').val(false);
-				showFilter = 'false';
-			}
-			jQuery.ajax({url: 'updateFilter.action?showFilter=' + showFilter});	
-			
+			$('#divFiltroForm').toggle();
+			$('#arrowFiltro').attr('src', $('#divFiltroForm').is(':visible') ? '<@ww.url value="/imgs/arrow_up.gif"/>' : '<@ww.url value="/imgs/arrow_down.gif"/>');
 		}
 		
 		function mostraAssinatura()
@@ -271,16 +251,7 @@
 <#assign validarCampos="return validaFormularioEPeriodo('form', new Array('curso','desc','inst','custo','prevIni','prevFim'), new Array('prevIni', 'prevFim'))"/>
 </head>
 <body>
-	<#assign labelFiltro="Inserir Horário"/>
-	<#if showFilter?exists && showFilter>
-		<#assign imagemFiltro="/imgs/arrow_up.gif"/>
-		<#assign classHidden=""/>
-	<#else>
-		<#assign imagemFiltro="/imgs/arrow_down.gif"/>
-		<#assign classHidden="hidden"/>
-	</#if>
 	<#assign validarCampos="return validaFormulario('formBusca', null, null, true)"/>
-	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
 	<@ww.actionerror />
 	<@ww.form id="formTurma" name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST" enctype="multipart/form-data">
@@ -361,7 +332,6 @@
 			<#assign temPresencasRegistradas = turma.temPresenca?exists && turma.temPresenca/>
 			<#if temPresencasRegistradas>
 	
-				
 			<#if turma.temPresenca?exists && turma.temPresenca>
 				<@ww.select label="Realizar turma por" name="turma.porTurno" list=r"#{false:'Dia',true:'Turno'}" onchange="populaDias(document.forms[0]);" disabled=true/>
 				<@ww.hidden name="turma.porTurno" />
@@ -375,57 +345,27 @@
 				
 				<div class="divFiltro horarios">
 					<div class="divFiltroLink">
-						<a href="javascript:exibeHorario('${urlImgs}','divFiltroForm');" id="linkFiltro"><img alt="Inserir Horário" src="<@ww.url includeParams="none" value="${imagemFiltro}"/>"> <span id="labelLink" class="labelLink">${labelFiltro}</span></a>
+						<a href="javascript:;" onclick="exibeHorario();" id="linkFiltro">
+							<img alt="Definir Horários" id="arrowFiltro" src="<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"> <span id="labelLink" class="labelLink">Definir Horários</span>
+						</a>
 					</div>
-					<div id="divFiltroForm" class="divFiltroForm ${classHidden}" style="display: none;">
-						<div class="turnos"  style="display: none;">
+					<div id="divFiltroForm" class="divFiltroForm" style="display: none;">
+						<div class="turnos">
 							<div class="dias"></div>
 							<div class="manha">Manhã</div>
 							<div class="tarde">Tarde</div>
 							<div class="noite">Noite</div>
 						</div>
-						<div id="domingo">
-							<div class="dias">Domingo</div>
-							<input name="domingo" class="hora hora-inicio" maxlength="5" /> as <input name="domingo" class="hora" maxlength="5" />
-							<input name="domingo" class="hora hora-inicio" maxlength="5" /> as <input name="domingo" class="hora" maxlength="5" />
-							<input name="domingo" class="hora hora-inicio" maxlength="5" /> as <input name="domingo" class="hora" maxlength="5" />
-						</div>
-						<div id="segunda">
-							<div class="dias">Segunda-feira</div>
-							<input name="segunda" class="hora hora-inicio" maxlength="5" /> as <input name="segunda" class="hora" maxlength="5" />
-							<input name="segunda" class="hora hora-inicio" maxlength="5" /> as <input name="segunda" class="hora" maxlength="5" />
-							<input name="segunda" class="hora hora-inicio" maxlength="5" /> as <input name="segunda" class="hora" maxlength="5" />
-						</div>
-						<div id="terca">
-							<div class="dias">Terça-feira</div>
-							<input name="terca" class="hora hora-inicio" maxlength="5" /> as <input name="terca" class="hora" maxlength="5" />
-							<input name="terca" class="hora hora-inicio" maxlength="5" /> as <input name="terca" class="hora" maxlength="5" />
-							<input name="terca" class="hora hora-inicio" maxlength="5" /> as <input name="terca" class="hora" maxlength="5" />
-						</div>
-						<div id="quarta">
-							<div class="dias">Quarta-feira</div>
-							<input name="quarta" class="hora hora-inicio" maxlength="5" /> as <input name="quarta" class="hora" maxlength="5" />
-							<input name="quarta" class="hora hora-inicio" maxlength="5" /> as <input name="quarta" class="hora" maxlength="5" />
-							<input name="quarta" class="hora hora-inicio" maxlength="5" /> as <input name="quarta" class="hora" maxlength="5" />
-						</div>
-						<div id="quinta">
-							<div class="dias">Quinta-feira</div>
-							<input name="quinta" class="hora hora-inicio" maxlength="5" /> as <input name="quinta" class="hora" maxlength="5" />
-							<input name="quinta" class="hora hora-inicio" maxlength="5" /> as <input name="quinta" class="hora" maxlength="5" />
-							<input name="quinta" class="hora hora-inicio" maxlength="5" /> as <input name="quinta" class="hora" maxlength="5" />
-						</div>
-						<div id="sexta">
-							<div class="dias">Sexta-feira</div>
-							<input name="sexta" class="hora hora-inicio" maxlength="5" /> as <input name="sexta" class="hora" maxlength="5" />
-							<input name="sexta" class="hora hora-inicio" maxlength="5" /> as <input name="sexta" class="hora" maxlength="5" />
-							<input name="sexta" class="hora hora-inicio" maxlength="5" /> as <input name="sexta" class="hora" maxlength="5" />
-						</div>
-						<div id="sabado">
-							<div class="dias">Sábado</div>
-							<input name="sabado" class="hora hora-inicio" maxlength="5" /> as <input name="sabado" class="hora" maxlength="5" />
-							<input name="sabado" class="hora hora-inicio" maxlength="5" /> as <input name="sabado" class="hora" maxlength="5" />
-							<input name="sabado" class="hora hora-inicio" maxlength="5" /> as <input name="sabado" class="hora" maxlength="5" />
-						</div>
+						<#assign dias = ["domingo", "segunda", "terca", "quarta", "quinta", "sexta", "sabado"]>
+						<#assign diasExt = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]>
+						<#list dias as dia>
+							<div id="${dia}" class="dia-semana">
+								<div class="dias">${diasExt[dia_index]}</div>
+								<span class="hora-turno-manha"><input name="${dia}" class="hora hora-inicio" maxlength="5" /> às <input name="${dia}" class="hora" maxlength="5" /></span>
+								<span class="hora-turno-tarde"><input name="${dia}" class="hora hora-inicio" maxlength="5" /> às <input name="${dia}" class="hora" maxlength="5" /></span>
+								<span class="hora-turno-noite"><input name="${dia}" class="hora hora-inicio" maxlength="5" /> às <input name="${dia}" class="hora" maxlength="5" /></span>
+							</div>
+						</#list>
 					</div>
 				</div>
 				<br />
