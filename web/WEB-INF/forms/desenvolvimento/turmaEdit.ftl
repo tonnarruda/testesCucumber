@@ -5,6 +5,17 @@
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css"/>');
 	#formDialog { display: none; }
+	.horarios div.dias{ width: 90px; float: left; margin: 2px 0; }
+	.horarios .hora { width: 45px; }
+	.horarios .turnos { width: 100%; height: 20px; }
+	.horarios .manha, .horarios .tarde, .horarios .noite { 
+		float: left;
+		width: 117px;
+		text-align: center;
+		font-weight: bold;
+		margin-left: 15px; 
+	}
+	.horarios .hora-inicio { margin-left: 15px; }
 </style>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
@@ -15,6 +26,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/json2.js"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script><!-- Usado para o function.js cssClass=hora-->
 
 	<#include "../ftl/mascarasImports.ftl" />
 
@@ -56,6 +68,36 @@
 					DiaTurmaDWR.getDias(montaListDias, dIni.value, dFim.value, $('#porTurno').val());
 				}
 			}
+		}
+		
+		function exibeHorarios() {
+			if ($("#porTurno").val()) {
+				$(".turnos").show();
+			}
+		}
+		
+		function exibeHorario(urlImg, filtroId)
+		{
+			var filtro = document.getElementById(filtroId);
+			var linkFiltro = document.getElementById("linkFiltro");
+			var labelLink = document.getElementById("labelLink");
+			var showFilter ='true';
+		
+			if(filtro.style.display == "none" || labelLink.innerHTML == "Exibir Filtro")
+			{
+				filtro.style.display = "block";
+				linkFiltro.innerHTML = '<img alt="Inserir Horário" src="'+urlImg+'/arrow_up.gif"/>  <span id="labelLink" class="labelLink">Inserir Horário</span></a>';
+				jQuery('#showFilter').val(true);
+			}
+			else
+			{
+				filtro.style.display = "none";
+				linkFiltro.innerHTML = '<img alt="Inserir Horário" src="'+urlImg+'/arrow_down.gif"/>  <span id="labelLink" class="labelLink">Inserir Horário</span></a>';
+				jQuery('#showFilter').val(false);
+				showFilter = 'false';
+			}
+			jQuery.ajax({url: 'updateFilter.action?showFilter=' + showFilter});	
+			
 		}
 		
 		function mostraAssinatura()
@@ -210,6 +252,17 @@
 <#assign validarCampos="return validaFormularioEPeriodo('form', new Array('curso','desc','inst','custo','prevIni','prevFim'), new Array('prevIni', 'prevFim'))"/>
 </head>
 <body>
+	<#assign labelFiltro="Inserir Horário"/>
+	<#if showFilter?exists && showFilter>
+		<#assign imagemFiltro="/imgs/arrow_up.gif"/>
+		<#assign classHidden=""/>
+	<#else>
+		<#assign imagemFiltro="/imgs/arrow_down.gif"/>
+		<#assign classHidden="hidden"/>
+	</#if>
+	<#assign validarCampos="return validaFormulario('formBusca', null, null, true)"/>
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+
 	<@ww.actionerror />
 	<@ww.form id="formTurma" name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST" enctype="multipart/form-data">
 		
@@ -286,6 +339,7 @@
 				<#assign dataFim=turma.dataPrevFim/>
 			</#if>
 	
+				
 			<#if turma.temPresenca?exists && turma.temPresenca>
 				<@ww.select label="Realizar turma por" name="turma.porTurno" list=r"#{false:'Dia',true:'Turno'}" onchange="populaDias(document.forms[0]);" disabled=true/>
 				<@ww.hidden name="turma.porTurno" />
@@ -295,7 +349,65 @@
 				<@ww.textfield name="turma.dataPrevFim" value="${dataFim}" id="prevFim" readonly=true maxlength="10" cssStyle="width:80px;" liClass="liLeft"/><br /><br />
 				<@frt.checkListBox name="diasCheck" list="diasCheckList" readonly=true valueString=true width="600" filtro="true"/>
 			<#else>
-				<@ww.select label="Realizar turma por" name="turma.porTurno" id="porTurno" list=r"#{false:'Dia',true:'Turno'}" onchange="populaDias(document.forms[0]);"/>
+				<@ww.select label="Realizar turma por" name="turma.porTurno" id="porTurno" list=r"#{false:'Dia',true:'Turno'}" onchange="populaDias(document.forms[0]); exibeHorarios();"/>
+				
+				<div class="divFiltro horarios">
+					<div class="divFiltroLink">
+						<a href="javascript:exibeHorario('${urlImgs}','divFiltroForm');" id="linkFiltro"><img alt="Inserir Horário" src="<@ww.url includeParams="none" value="${imagemFiltro}"/>"> <span id="labelLink" class="labelLink">${labelFiltro}</span></a>
+					</div>
+					<div id="divFiltroForm" class="divFiltroForm ${classHidden}" style="display: none;">
+						<div class="turnos"  style="display: none;">
+							<div class="dias"></div>
+							<div class="manha">Manhã</div>
+							<div class="tarde">Tarde</div>
+							<div class="noite">Noite</div>
+						</div>
+						<div id="domingo">
+							<div class="dias">Domingo</div>
+							<input name="domingo" class="hora hora-inicio" maxlength="5" /> as <input name="domingo" class="hora" maxlength="5" />
+							<input name="domingo" class="hora hora-inicio" maxlength="5" /> as <input name="domingo" class="hora" maxlength="5" />
+							<input name="domingo" class="hora hora-inicio" maxlength="5" /> as <input name="domingo" class="hora" maxlength="5" />
+						</div>
+						<div id="segunda">
+							<div class="dias">Segunda-feira</div>
+							<input name="segunda" class="hora hora-inicio" maxlength="5" /> as <input name="segunda" class="hora" maxlength="5" />
+							<input name="segunda" class="hora hora-inicio" maxlength="5" /> as <input name="segunda" class="hora" maxlength="5" />
+							<input name="segunda" class="hora hora-inicio" maxlength="5" /> as <input name="segunda" class="hora" maxlength="5" />
+						</div>
+						<div id="terca">
+							<div class="dias">Terça-feira</div>
+							<input name="terca" class="hora hora-inicio" maxlength="5" /> as <input name="terca" class="hora" maxlength="5" />
+							<input name="terca" class="hora hora-inicio" maxlength="5" /> as <input name="terca" class="hora" maxlength="5" />
+							<input name="terca" class="hora hora-inicio" maxlength="5" /> as <input name="terca" class="hora" maxlength="5" />
+						</div>
+						<div id="quarta">
+							<div class="dias">Quarta-feira</div>
+							<input name="quarta" class="hora hora-inicio" maxlength="5" /> as <input name="quarta" class="hora" maxlength="5" />
+							<input name="quarta" class="hora hora-inicio" maxlength="5" /> as <input name="quarta" class="hora" maxlength="5" />
+							<input name="quarta" class="hora hora-inicio" maxlength="5" /> as <input name="quarta" class="hora" maxlength="5" />
+						</div>
+						<div id="quinta">
+							<div class="dias">Quinta-feira</div>
+							<input name="quinta" class="hora hora-inicio" maxlength="5" /> as <input name="quinta" class="hora" maxlength="5" />
+							<input name="quinta" class="hora hora-inicio" maxlength="5" /> as <input name="quinta" class="hora" maxlength="5" />
+							<input name="quinta" class="hora hora-inicio" maxlength="5" /> as <input name="quinta" class="hora" maxlength="5" />
+						</div>
+						<div id="sexta">
+							<div class="dias">Sexta-feira</div>
+							<input name="sexta" class="hora hora-inicio" maxlength="5" /> as <input name="sexta" class="hora" maxlength="5" />
+							<input name="sexta" class="hora hora-inicio" maxlength="5" /> as <input name="sexta" class="hora" maxlength="5" />
+							<input name="sexta" class="hora hora-inicio" maxlength="5" /> as <input name="sexta" class="hora" maxlength="5" />
+						</div>
+						<div id="sabado">
+							<div class="dias">Sábado</div>
+							<input name="sabado" class="hora hora-inicio" maxlength="5" /> as <input name="sabado" class="hora" maxlength="5" />
+							<input name="sabado" class="hora hora-inicio" maxlength="5" /> as <input name="sabado" class="hora" maxlength="5" />
+							<input name="sabado" class="hora hora-inicio" maxlength="5" /> as <input name="sabado" class="hora" maxlength="5" />
+						</div>
+					</div>
+				</div>
+				<br />
+								
 				Período:*<br>
 				<@ww.datepicker required="true" name="turma.dataPrevIni" value="${dataIni}" id="prevIni" liClass="liLeft" onblur="populaDias(document.forms[0]);" onchange="populaDias(document.forms[0]);"  cssClass="mascaraData validaDataIni"/>
 				<@ww.label value="a" liClass="liLeft" />
