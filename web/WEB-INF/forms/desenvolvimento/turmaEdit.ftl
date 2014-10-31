@@ -235,8 +235,6 @@
 <#assign validarCampos="return validaFormularioEPeriodo('form', new Array('curso','desc','inst','custo','prevIni','prevFim'), new Array('prevIni', 'prevFim'))"/>
 </head>
 <body>
-	<#assign validarCampos="return validaFormulario('formBusca', null, null, true)"/>
-
 	<@ww.actionerror />
 	<@ww.form id="formTurma" name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST" enctype="multipart/form-data">
 		
