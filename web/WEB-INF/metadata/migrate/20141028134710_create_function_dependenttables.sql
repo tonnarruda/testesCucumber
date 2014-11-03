@@ -25,4 +25,4 @@ BEGIN
     RETURN QUERY SELECT DISTINCT t FROM UNNEST(tabelas) AS t ORDER BY 1;
 END
 $BODY$
-  LANGUAGE plpgsql;
+  LANGUAGE plpgsql;--.go

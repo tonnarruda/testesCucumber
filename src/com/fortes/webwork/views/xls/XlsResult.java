@@ -54,9 +54,9 @@ public class XlsResult extends WebWorkResultSupport {
     protected String[] propertiesGroupArray;
     protected int[] rowNumIni, rowNumFim;
     Map<String, CellRangeAddress> celMescladas = new HashMap<String, CellRangeAddress>();
-    protected String propertiesCalculo;
-    protected String operacao="";
-    protected String considerarUltimaColunaComo;
+    protected String propertiesCalculo = "";
+    protected String operacao = "";
+    protected String considerarUltimaColunaComo = "";
     
 	@Override
 	@SuppressWarnings("unchecked")
@@ -219,13 +219,13 @@ public class XlsResult extends WebWorkResultSupport {
 				soma = somaCelulas(celMesclada.getFirstRow(), celMesclada.getLastRow());
 				NumberFormat formata = new DecimalFormat("#0.0000");
 				
-				if(operacao.equals("Soma"))
+				if(operacao != null && operacao.equals("Soma"))
 				{
 					if(considerarUltimaColunaComo!=null && considerarUltimaColunaComo.equals("Texto"))
 						cell.setCellValue(formata.format(soma).toString().replace(",", "."));
 					else
 						cell.setCellValue(new Double(formata.format(soma).toString().replace(",", ".")));
-				}else if(operacao.equals("Média")){
+				}else if(operacao != null && operacao.equals("Média")){
 					media = soma / (celMesclada.getLastRow() - celMesclada.getFirstRow() + 1);
 					
 					if(considerarUltimaColunaComo!=null && considerarUltimaColunaComo.equals("Texto"))

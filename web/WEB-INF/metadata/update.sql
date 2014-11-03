@@ -22629,3 +22629,54 @@ insert into migrations values('20141008081924');--.go
 delete FROM cargo_etapaseletiva where etapaseletivas_id not in (select id from etapaseletiva); --.go
 insert into migrations values('20141013142311');--.go
 update parametrosdosistema set appversao = '1.1.135.163';--.go
+-- versao 1.1.136.164
+
+alter table empresa add column considerarsabadonoabsenteismo boolean NOT NULL DEFAULT false; --.go
+insert into migrations values('20141020140204');--.go
+CREATE OR REPLACE FUNCTION monta_familia_area(area_id BIGINT) RETURNS TABLE(area_nome TEXT) AS $$ 
+DECLARE 
+BEGIN 
+    RETURN QUERY  
+    WITH RECURSIVE areaorganizacional_recursiva AS ( 
+        SELECT id, nome, areamae_id, CAST(nome AS TEXT) AS nomeHierarquico 
+        FROM areaorganizacional WHERE id = area_id 
+        UNION ALL 
+        SELECT ao.id, ao.nome, ao.areamae_id, CAST((ao.nome || ' > ' || ao_r.nomeHierarquico) AS TEXT) AS nomeHierarquico 
+        FROM areaorganizacional ao 
+        INNER JOIN areaorganizacional_recursiva ao_r ON ao.id = ao_r.areamae_id 
+    )
+    SELECT nomeHierarquico FROM areaorganizacional_recursiva ORDER BY LENGTH(nomehierarquico) DESC LIMIT 1; 
+END; 
+$$ LANGUAGE plpgsql; --.go
+insert into migrations values('20141027161309');--.go
+
+CREATE OR REPLACE FUNCTION dependent_tables(tabela character varying, id bigint) RETURNS SETOF character varying AS $$
+DECLARE
+    rec RECORD;
+    tabelas VARCHAR[];
+    existe BOOLEAN;
+BEGIN 
+    FOR rec IN
+        SELECT
+            tc.table_name,
+            tc.constraint_name, 
+            kcu.column_name 
+        FROM information_schema.table_constraints AS tc 
+        INNER JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name
+        INNER JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name
+        WHERE constraint_type = 'FOREIGN KEY' 
+        AND ccu.table_name = tabela
+    LOOP
+        EXECUTE 'SELECT EXISTS (SELECT * FROM ' || rec.table_name::varchar || ' WHERE ' || rec.column_name || ' = ' || id || ')' INTO existe;
+        IF existe THEN
+            tabelas := tabelas || rec.table_name::varchar;
+        END IF;
+    END LOOP;
+
+    RETURN QUERY SELECT DISTINCT t FROM UNNEST(tabelas) AS t ORDER BY 1;
+END
+$$
+  LANGUAGE plpgsql;--.go
+
+insert into migrations values('20141028134710');--.go
+update parametrosdosistema set appversao = '1.1.136.164';--.go

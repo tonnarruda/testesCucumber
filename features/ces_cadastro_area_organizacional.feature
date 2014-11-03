@@ -30,6 +30,6 @@ Funcionalidade: Cadastrar Áreas Organizacionais
     E eu devo ver o título "Áreas Organizacionais"
 
     Então eu clico em excluir "Área Mãe 2"
-    E eu devo ver o alert do confirmar exclusão e clico no ok
+    E eu devo ver o alert "Procedimento diferenciado para o usuário" e clico no ok
     Então eu devo ver "Área organizacional excluída com sucesso."
     E eu não devo ver "Área Mãe 2"

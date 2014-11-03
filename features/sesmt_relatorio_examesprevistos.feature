@@ -21,4 +21,8 @@ Funcionalidade: Relatório de Exames Previstos
 
     E eu seleciono "Área Organizacional" de "agruparPor"
     E eu marco "Não imprimir afastado(s)"
-    E eu marco "Imprimir desligado(s)"
+    E eu marco "Imprimir desligados"
+    
+    Entao eu clico no botão "Relatorio"
+    E eu espero 1 segundos
+    Então eu devo ver o título "Exames Previstos"
