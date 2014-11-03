@@ -499,12 +499,14 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		ajustaSolicitacao();
 		
 		Long usuarioId = (getUsuarioLogado() != null) ? getUsuarioLogado().getId() : null;
-		Long usuarioColaboradorId = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession()).getId();
 		Long candidatoId = (candidato != null) ? candidatoId = candidato.getId() : null;
+
+		Colaborador colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+		if (colaborador != null)
+			colaboradorQuestionario.setProjectionAvaliadorId(colaborador.getId());
 		
 		Collection<ColaboradorResposta> colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);
 		
-		colaboradorQuestionario.setProjectionAvaliadorId(usuarioColaboradorId);
 		if(colaboradorQuestionario.getAvaliador() != null && colaboradorQuestionario.getAvaliador().getId() == null)
 			colaboradorQuestionario.setAvaliador(null);
 		

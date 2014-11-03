@@ -68,7 +68,12 @@ public class SecurityUtil
 		if(sc == null)
 			return null;
 		
-		return ((UserDetailsImpl) sc.getAuthentication().getPrincipal()).getColaborador();
+		try {
+			return ((UserDetailsImpl) sc.getAuthentication().getPrincipal()).getColaborador();
+		} catch (ClassCastException e) {
+			return null;
+		}
+		
 	}
 
 	private static SecurityContext getSecurityContext(Map session)
