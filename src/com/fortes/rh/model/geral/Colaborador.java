@@ -385,7 +385,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 
 	//usado no Relatório de Admitidos
-	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Date dataAdmissao, boolean desligado, String cargoNome, String faixaSalarialNome, Long estabelecimentoId, String estabelecimentoNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome)
+	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Date dataAdmissao, boolean desligado, String cargoNome, String faixaSalarialNome, Long estabelecimentoId, String estabelecimentoNome, String empresaNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -420,6 +420,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			this.estabelecimento = new Estabelecimento();
 		this.estabelecimento.setId(estabelecimentoId);
 		this.estabelecimento.setNome(estabelecimentoNome);
+		
+		this.estabelecimento.setProjectionEmpresaNome(empresaNome);
 	}
 	
 	public Colaborador(Long id, String nome, String nomeComercial, Long historicoAreaId, Long historicoEstabelecimentoId)

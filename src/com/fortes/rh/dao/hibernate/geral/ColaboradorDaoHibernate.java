@@ -2834,12 +2834,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findAdmitidos(Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, co.desligado, cg.nome, fs.nome, es.id, es.nome, ao.id, ao.nome, am.id, am.nome) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, co.desligado, cg.nome, fs.nome, es.id, es.nome, emp.nome, ao.id, ao.nome, am.id, am.nome) ");
 
 		hql.append("from HistoricoColaborador as hc1 ");
 		hql.append("left join hc1.areaOrganizacional as ao ");
 		hql.append("left join ao.areaMae as am ");
 		hql.append("left join hc1.estabelecimento as es ");
+		hql.append("left join es.empresa as emp ");
 		hql.append("left join hc1.colaborador as co ");
 		hql.append("left join hc1.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as cg ");
@@ -2860,7 +2861,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(exibirSomenteAtivos)
 			hql.append("and	co.desligado = false ");
 
-		hql.append("order by es.nome,ao.nome,co.nome ");
+		hql.append("order by emp.nome, es.nome,ao.nome,co.nome ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setDate("dataIni", dataIni);

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.13x.165" bd="" data="xx/11/2014">
+		<Item visivel="S" motivo="P20141000280"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Exibindo o nome da empresa do estabelecimento ao gerar o relatório.]]></Item>
+	</Versao>
 	<Versao id="1.1.136.164" bd="" data="03/11/2014">
 		<Item visivel="S" motivo="S20140100212"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Possibilitando encerrar vaga ao contratar colaboradores de outra empresa.]]></Item>
 		<Item visivel="S" motivo="S20140900087"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção: Ao tentar contratar um candidato com os dados já pré-preenchidos, o sistema validará o grau de parentesco (Validação configurável no cadastro de empresa).]]></Item>
