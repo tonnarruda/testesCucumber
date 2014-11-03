@@ -71,6 +71,17 @@
 			}
 		}
 		
+		function montaListDias(data)
+		{ console.log(data);
+			if(data != null)
+			{
+				addChecks('diasCheck',data, null, true)
+				marcaCheckListBoxString(diasIds);
+			}
+			else
+				jAlert("Data inválida.");
+		}
+		
 		function exibeHorarios() {
 			$(".turnos, .hora-turno-tarde, .hora-turno-noite").toggle( $("#porTurno").val() == "true" );
 		}
@@ -85,17 +96,6 @@
 		{
 			mostrar(document.getElementById('assinaturaUpLoad'));
 			$('#divAssinatura hr').remove();
-		}
-	
-		function montaListDias(data)
-		{
-			if(data != null)
-			{
-				addChecks('diasCheck',data, null, true)
-				marcaCheckListBoxString(diasIds);
-			}
-			else
-				jAlert("Data Inválida.");
 		}
 	
 		function marcaCheckListBoxString(checks)
@@ -311,7 +311,8 @@
 				<#assign dataFim=turma.dataPrevFim/>
 			</#if>
 				
-			<#if turma.temPresenca?exists && turma.temPresenca>
+			<#assign temPresencasRegistradas = turma.temPresenca?exists && turma.temPresenca/>
+			<#if temPresencasRegistradas>
 				<@ww.select label="Realizar turma por" name="turma.porTurno" list=r"#{false:'Dia',true:'Turno'}" onchange="populaDias(document.forms[0]);" disabled=true/>
 				<@ww.hidden name="turma.porTurno" />
 				Período:*<br />
@@ -321,40 +322,52 @@
 				<@frt.checkListBox name="diasCheck" list="diasCheckList" readonly=true valueString=true width="600" filtro="true"/>
 			<#else>
 				<@ww.select label="Realizar turma por" name="turma.porTurno" id="porTurno" list=r"#{false:'Dia',true:'Turno'}" onchange="populaDias(document.forms[0]); exibeHorarios();"/>
-				
-				<div class="divFiltro horarios">
-					<div class="divFiltroLink">
-						<a href="javascript:;" onclick="exibeHorario();" id="linkFiltro">
-							<img alt="Definir Horários" id="arrowFiltro" src="<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"> <span id="labelLink" class="labelLink">Definir Horários</span>
-						</a>
-					</div>
-					<div id="divFiltroForm" class="divFiltroForm" style="display: none;">
-						<div class="turnos">
-							<div class="dias"></div>
-							<div class="manha">Manhã</div>
-							<div class="tarde">Tarde</div>
-							<div class="noite">Noite</div>
-						</div>
-						<#assign dias = ["domingo", "segunda", "terca", "quarta", "quinta", "sexta", "sabado"]>
-						<#assign diasExt = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]>
-						<#list dias as dia>
-							<div id="${dia}" class="dia-semana">
-								<div class="dias">${diasExt[dia_index]}</div>
-								<span class="hora-turno-manha"><input name="${dia}" class="hora hora-inicio" maxlength="5" /> às <input name="${dia}" class="hora" maxlength="5" /></span>
-								<span class="hora-turno-tarde"><input name="${dia}" class="hora hora-inicio" maxlength="5" /> às <input name="${dia}" class="hora" maxlength="5" /></span>
-								<span class="hora-turno-noite"><input name="${dia}" class="hora hora-inicio" maxlength="5" /> às <input name="${dia}" class="hora" maxlength="5" /></span>
-							</div>
-						</#list>
-					</div>
-				</div>
-				<br />
-								
 				Período:*<br>
 				<@ww.datepicker required="true" name="turma.dataPrevIni" value="${dataIni}" id="prevIni" liClass="liLeft" onblur="populaDias(document.forms[0]);" onchange="populaDias(document.forms[0]);"  cssClass="mascaraData validaDataIni"/>
 				<@ww.label value="a" liClass="liLeft" />
 				<@ww.datepicker required="true" name="turma.dataPrevFim" value="${dataFim}" id="prevFim" onblur="populaDias(document.forms[0]);" onchange="populaDias(document.forms[0]);"  cssClass="mascaraData validaDataFim" /><br />
 				<@frt.checkListBox name="diasCheck" list="diasCheckList" readonly=false valueString=true filtro="true" width="593"/>
 			</#if>
+			
+			<div class="divFiltro horarios">
+				<div class="divFiltroLink">
+					<a href="javascript:;" onclick="exibeHorario();" id="linkFiltro">
+						<img alt="Definir Horários" id="arrowFiltro" src="<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"> <span id="labelLink" class="labelLink">Definir Horários</span>
+					</a>
+				</div>
+				<div id="divFiltroForm" class="divFiltroForm" style="display: none;">
+					<div class="turnos">
+						<div class="dias"></div>
+						<div class="manha">Manhã</div>
+						<div class="tarde">Tarde</div>
+						<div class="noite">Noite</div>
+					</div>
+					<#assign dias = ["domingo", "segunda", "terca", "quarta", "quinta", "sexta", "sabado"]>
+					<#assign diasExt = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]>
+					<#list dias as dia>
+						<div id="${dia}" class="dia-semana">
+							<div class="dias">${diasExt[dia_index]}</div>
+							<span class="hora-turno-manha">
+								<@ww.textfield name="${dia}" disabled=temPresencasRegistradas maxlength="5" cssClass="hora hora-inicio" liClass="liLeft" /> 
+								<@ww.label value="às" liClass="liLeft" /> 
+								<@ww.textfield name="${dia}" disabled=temPresencasRegistradas maxlength="5" cssClass="hora" liClass="liLeft" /> 
+							</span>
+							<span class="hora-turno-tarde">
+								<@ww.textfield name="${dia}" disabled=temPresencasRegistradas maxlength="5" cssClass="hora hora-inicio" liClass="liLeft" /> 
+								<@ww.label value="às" liClass="liLeft" /> 
+								<@ww.textfield name="${dia}" disabled=temPresencasRegistradas maxlength="5" cssClass="hora" liClass="liLeft" /> 
+							</span>
+							<span class="hora-turno-noite">
+								<@ww.textfield name="${dia}" disabled=temPresencasRegistradas maxlength="5" cssClass="hora hora-inicio" liClass="liLeft" /> 
+								<@ww.label value="às" liClass="liLeft" /> 
+								<@ww.textfield name="${dia}" disabled=temPresencasRegistradas maxlength="5" cssClass="hora" liClass="liLeft" /> 
+							</span>
+						</div>
+					</#list>
+				</div>
+			</div>
+			<br />
+			
 		</fieldset><br />
 
 		<#if turmaPertenceAEmpresaLogada>
