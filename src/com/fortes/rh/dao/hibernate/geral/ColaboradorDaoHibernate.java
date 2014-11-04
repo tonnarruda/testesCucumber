@@ -2410,7 +2410,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("inner join hc.colaborador as c ");
 		hql.append("inner join hc.faixaSalarial as fs ");
-		hql.append("where c.desligado =  false ");
+		hql.append("where (c.dataDesligamento is null or c.dataDesligamento >= :dataBase) ");
 		
 		if(empresaIds != null && ! empresaIds.isEmpty())
 			hql.append("and  c.empresa.id in (:empresaIds) ");
@@ -3538,7 +3538,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		if(consideradaDataAdmissaoAndDesligado){
 			criteria.add(Expression.le("c.dataAdmissao", data));
-			criteria.add(Expression.eq("c.desligado", false));
+			criteria.add(Expression.or(Expression.isNull("c.dataDesligamento"), Expression.ge("c.dataDesligamento", data)));
 		}
 		criteria.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
 

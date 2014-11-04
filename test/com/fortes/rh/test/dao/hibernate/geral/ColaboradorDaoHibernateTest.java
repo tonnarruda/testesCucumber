@@ -1062,7 +1062,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 																																				// superior
 		saveColaborador('F', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area, faixa1);
 		saveColaborador('F', false, DateUtil.criarDataMesAno(04, 04, 2000), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area, faixa2); //faixa de outro cargo
-		saveColaborador('F', true, DateUtil.criarDataMesAno(01, 02, 2005), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area, faixa1); // desligado
+		saveColaborador('F', true, DateUtil.criarDataMesAno(01, 02, 2005), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2007), null, null, area, faixa1); // desligado
+		saveColaborador('F', true, DateUtil.criarDataMesAno(01, 02, 2005), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2009), null, null, area, faixa1); // desligado após a período pesquisado
 		saveColaborador('F', false, DateUtil.criarDataMesAno(02, 03, 2005), outraEmpresa, "01", null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area, faixa1);// outra empresa
 		
 		Collection<DataGrafico> data = colaboradorDao.countSexo(DateUtil.criarDataMesAno(01, 02, 2008), Arrays.asList(empresa.getId()), new Long[]{area.getId()}, new Long[]{cargo1.getId()});
@@ -1072,7 +1073,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		DataGrafico mas = (DataGrafico) data.toArray()[1];
 
 		assertEquals("Feminino", fem.getLabel());
-		assertEquals(1.0, fem.getData());
+		assertEquals(2.0, fem.getData());
 
 		assertEquals("Masculino", mas.getLabel());
 		assertEquals(1.0, mas.getData());
@@ -1114,13 +1115,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		saveColaborador('M', false, DateUtil.criarDataMesAno(02, 02, 2010), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA, null, null, Vinculo.EMPREGO, area, faixa1);// data superior
 		saveColaborador('F', false, DateUtil.criarDataMesAno(01, 02, 2005), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA, null, null, Vinculo.APRENDIZ, area, faixa1);
 		saveColaborador('F', false, DateUtil.criarDataMesAno(04, 04, 2000), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA, null, null, Vinculo.ESTAGIO, area, faixa1);
-		saveColaborador('F', true, DateUtil.criarDataMesAno(01, 02, 2005), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area, faixa1);// desligado
+		saveColaborador('F', true, DateUtil.criarDataMesAno(01, 02, 2005), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2007), null, null, area, faixa1);// desligado
+		saveColaborador('F', true, DateUtil.criarDataMesAno(01, 02, 2005), empresa, "01", null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2009), null, null, area, faixa1);// desligado
 		saveColaborador('F', false, DateUtil.criarDataMesAno(02, 03, 2005), outraEmpresa, "01", null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area, faixa1);// outra empresa
 
 		Collection<DataGrafico> data = colaboradorDao.countColocacao(DateUtil.criarDataMesAno(01, 02, 2008), Arrays.asList(empresa.getId()), null, null);
-		assertEquals(3, data.size());
+		assertEquals(4, data.size());
 		data = colaboradorDao.countColocacao(DateUtil.criarDataMesAno(01, 02, 2008), Arrays.asList(empresa.getId()), new Long[]{area.getId()}, new Long[]{cargo1.getId()});
-		assertEquals(3, data.size());
+		assertEquals(4, data.size());
 
 		DataGrafico empregado = (DataGrafico) data.toArray()[0];
 		DataGrafico aprendiz = (DataGrafico) data.toArray()[1];
@@ -3832,15 +3834,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		areaOrganizacionalDao.save(area);
 		
 		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2000), empresa, EstadoCivil.CASADO_COMUNHAO_PARCIAL, null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area, faixaSalarial);
-		saveColaborador('F', true, DateUtil.criarDataMesAno(01, 02, 2000), empresa, EstadoCivil.CASADO_COMUNHAO_PARCIAL, null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area, faixaSalarial);
+		saveColaborador('F', true, DateUtil.criarDataMesAno(01, 02, 2000), empresa, EstadoCivil.CASADO_COMUNHAO_PARCIAL, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2001), null, null, area, faixaSalarial);
+		saveColaborador('F', true, DateUtil.criarDataMesAno(01, 02, 2000), empresa, EstadoCivil.CASADO_COMUNHAO_PARCIAL, null, Deficiencia.SEM_DEFICIENCIA, DateUtil.criarDataMesAno(01, 02, 2012), null, null, area, faixaSalarial);
 		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2012), empresa, EstadoCivil.CASADO_COMUNHAO_PARCIAL, null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area, faixaSalarial);
 		saveColaborador('M', false, DateUtil.criarDataMesAno(01, 02, 2012), empresa2, EstadoCivil.CASADO_COMUNHAO_PARCIAL, null, Deficiencia.SEM_DEFICIENCIA, null, null, null, area, faixaSalarial);
 
-		assertEquals(1, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), null, null));
-		assertEquals(1, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), new Long[]{area.getId()}, null));
-		assertEquals(1, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), null, new Long[]{cargo.getId()}));
+		assertEquals(2, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), null, null));
+		assertEquals(2, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), new Long[]{area.getId()}, null));
+		assertEquals(2, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), null, new Long[]{cargo.getId()}));
 		assertEquals(0, colaboradorDao.getCountAtivos(dataBase, Arrays.asList(empresa.getId()), null, new Long[]{cargoFora.getId()}));
-		assertEquals(1, colaboradorDao.getCountAtivos(dataBase, new ArrayList<Long>(), new Long[]{area.getId()}, null));
+		assertEquals(2, colaboradorDao.getCountAtivos(dataBase, new ArrayList<Long>(), new Long[]{area.getId()}, null));
 	}
 
 	public void testFindAniversariantes() {
@@ -5786,6 +5789,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colaborador = getColaborador();
 		colaborador.setNome("Xica ");
 		colaborador.setDesligado(false);
+		colaborador.setDataDesligamento(null);
 		colaborador.setDataAdmissao(hoje);
 		colaborador.setEmpresa(empresa);
 		colaboradorDao.save(colaborador);
