@@ -15,7 +15,7 @@
 		<variableExpression><![CDATA[$F{comentario}]]></variableExpression>
 	</variable>
 	<group name="ColabEComentario">
-		<groupExpression><![CDATA[$F{comentario}]]></groupExpression>
+		<groupExpression><![CDATA[$P{QUESTIONARIO_ANONIMO} ? ($F{comentario}) : ($F{colaboradorQuestionario.nomeComercialAvaliadoOuAvalidor} + $F{comentario})]]></groupExpression>
 		<groupHeader>
 			<band height="25" splitType="Stretch">
 				<printWhenExpression><![CDATA[new Boolean($P{QUESTIONARIO_ANONIMO}.equals(new Boolean(false)))]]></printWhenExpression>
