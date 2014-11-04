@@ -347,7 +347,7 @@
 							<td colspan="3">
 								<div class="conteudo-1 conteudo-aba">
 									<fieldset>
-										<@ww.datepicker label="Data" name="dataBase" value="${dateBase}" id="dataBase" cssClass="mascaraData" />
+										<@ww.datepicker label="Colaboradores admitidos até" name="dataBase" value="${dateBase}" id="dataBase" cssClass="mascaraData" />
 									</fieldset>
 								</div>
 								
