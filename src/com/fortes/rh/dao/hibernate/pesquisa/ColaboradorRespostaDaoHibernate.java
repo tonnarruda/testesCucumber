@@ -588,7 +588,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return criteria.list();
 	}
 
-	public List<Object[]> countRespostas(Long avaliadoId, Long avaliacaoDesempenhoId)
+	public List<Object[]> countRespostas(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao)
 	{
 		String queryHQL =	"select r.ordem, count(r.id), p.id, r.id, " +
 							
@@ -608,9 +608,12 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 							"where p.tipo = :tipoPergunta "+
 							"and cr.resposta.id is not null " +
 							"and cq.avaliacaoDesempenho.id = :avaliacaoDesempenhoId " +
-							"and cq.colaborador.id = :avaliadoId " +
-							"group by r.ordem, p.id, r.id "+
-							"order by r.ordem ";
+							"and cq.colaborador.id = :avaliadoId ";
+							
+		if(desconsiderarAutoAvaliacao)
+			queryHQL += "and cq.colaborador.id <> cq.avaliador.id ";
+							
+		queryHQL += "group by r.ordem, p.id, r.id order by r.ordem ";
 
 		Query query = getSession().createQuery(queryHQL);
 		
@@ -621,7 +624,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return query.list();
 	}
 	
-	public List<Object[]> countRespostasMultiplas(Long avaliadoId, Long avaliacaoDesempenhoId)
+	public List<Object[]> countRespostasMultiplas(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao)
 	{
 		String queryHQL =	"select r.ordem, count(r.id), p.id, r.id " +
 		"from ColaboradorResposta cr " +
@@ -633,9 +636,12 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		"where p.tipo = :tipoPergunta "+
 		"and cr.resposta.id is not null " +
 		"and cq.avaliacaoDesempenho.id = :avaliacaoDesempenhoId " +
-		"and cq.colaborador.id = :avaliadoId " +
-		"group by r.ordem, p.id, r.id "+
-		"order by r.ordem ";
+		"and cq.colaborador.id = :avaliadoId ";
+		
+		if(desconsiderarAutoAvaliacao)
+			queryHQL += " and cq.colaborador.id <> cq.avaliador.id ";
+		
+		queryHQL += " group by r.ordem, p.id, r.id order by r.ordem ";
 		
 		Query query = getSession().createQuery(queryHQL);
 		query.setInteger("tipoPergunta", TipoPergunta.MULTIPLA_ESCOLHA);

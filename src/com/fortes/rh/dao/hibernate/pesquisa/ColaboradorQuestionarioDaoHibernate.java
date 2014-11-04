@@ -521,7 +521,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 	}
 
 	//apagar?
-	public Collection<ColaboradorQuestionario> findByColaboradorAndAvaliacaoDesempenho(Long colaboradorParticipanteId, Long avaliacaoDesempenhoId, boolean isAvaliado) {
+	public Collection<ColaboradorQuestionario> findByColaboradorAndAvaliacaoDesempenho(Long colaboradorParticipanteId, Long avaliacaoDesempenhoId, boolean isAvaliado, boolean desconsiderarAutoAvaliacao) {
 		
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
 		
@@ -536,6 +536,9 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("cq.id"), "id");
 		p.add(Projections.property("cq.respondida"), "respondida");
 		criteria.setProjection(p);
+		
+		if(desconsiderarAutoAvaliacao)
+			criteria.add(Expression.neProperty("cq.colaborador", "cq.avaliador"));
 		
 		criteria.add(Expression.eq("colab.id", colaboradorParticipanteId));
 		criteria.add(Expression.eq("avDesempenho.id", avaliacaoDesempenhoId));

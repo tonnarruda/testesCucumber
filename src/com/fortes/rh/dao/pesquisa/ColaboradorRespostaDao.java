@@ -32,9 +32,9 @@ public interface ColaboradorRespostaDao extends GenericDao<ColaboradorResposta>
 	
 	Collection<ColaboradorResposta> findByAvaliadoAndAvaliacaoDesempenho(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao);
 
-	List<Object[]> countRespostas(Long avaliadoId, Long avaliacaoDesempenhoId);
+	List<Object[]> countRespostas(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao);
 	
-	List<Object[]> countRespostasMultiplas(Long avaliadoId, Long avaliacaoDesempenhoId);
+	List<Object[]> countRespostasMultiplas(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao);
 
 	Collection<RespostaQuestionarioVO> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId);
 

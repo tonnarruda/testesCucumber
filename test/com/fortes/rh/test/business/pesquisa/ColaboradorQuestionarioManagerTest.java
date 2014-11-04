@@ -450,8 +450,8 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
 	
 	public void testFindByColaboradorAndAvaliacaoDesempenho()
 	{
-		colaboradorQuestionarioDao.expects(once()).method("findByColaboradorAndAvaliacaoDesempenho").with(eq(1L),eq(1L),eq(true)).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
-		assertNotNull(colaboradorQuestionarioManager.findByColaboradorAndAvaliacaoDesempenho(1L, 1L, true));
+		colaboradorQuestionarioDao.expects(once()).method("findByColaboradorAndAvaliacaoDesempenho").with(eq(1L),eq(1L),eq(true),eq(false)).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		assertNotNull(colaboradorQuestionarioManager.findByColaboradorAndAvaliacaoDesempenho(1L, 1L, true, false));
 	}
 	
     public void testFindAvaliadosByAvaliador()

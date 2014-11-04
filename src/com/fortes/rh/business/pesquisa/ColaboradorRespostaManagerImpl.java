@@ -545,9 +545,9 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		colaboradorQuestionarioManager.update(colaboradorQuestionario);
 	}
 	
-	public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long avaliadoId, Long avaliacaoDesempenhoId)
+	public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao)
     {
-        List<Object[]> countRespostas = getDao().countRespostas(avaliadoId, avaliacaoDesempenhoId);
+        List<Object[]> countRespostas = getDao().countRespostas(avaliadoId, avaliacaoDesempenhoId, desconsiderarAutoAvaliacao);
 
         Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
 
@@ -568,13 +568,13 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
         return resultadosObjetivas;
     }
 
-	 public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long avaliadoId, Long avaliacaoDesempenhoId)
+	 public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao)
 	 {
-		 List<Object[]> countRespostas = getDao().countRespostasMultiplas(avaliadoId, avaliacaoDesempenhoId);
+		 List<Object[]> countRespostas = getDao().countRespostasMultiplas(avaliadoId, avaliacaoDesempenhoId, desconsiderarAutoAvaliacao);
 		 
 		 Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
 		 
-		 Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findByColaboradorAndAvaliacaoDesempenho(avaliadoId, avaliacaoDesempenhoId, true);
+		 Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findByColaboradorAndAvaliacaoDesempenho(avaliadoId, avaliacaoDesempenhoId, true, desconsiderarAutoAvaliacao);
 		 int totalColaboradores = colaboradorQuestionarios.size();
 		 
 		 

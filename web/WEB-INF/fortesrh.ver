@@ -3,7 +3,8 @@
 	<Versao id="1.1.13x.165" bd="" data="xx/11/2014">
 		<Item visivel="S" motivo="P20141000280"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Exibindo o nome da empresa do estabelecimento ao gerar o relatório.]]></Item>
 		<Item visivel="N" motivo="P20141000242"><![CDATA[BUG: Módulo externo> Correção de erro ao responder avaliação.]]></Item>
-		<Item visivel="S" motivo="P20142000274"><![CDATA[BUG: SESMT > Relatórios > Resultado da Ficha Médica: Inconsistência quando respostas subjetivas possuiam a mesma descrição apresentando apenas uma resposta.]]></Item>
+		<Item visivel="N" motivo="P20141000274"><![CDATA[BUG: SESMT > Relatórios > Resultado da Ficha Médica: Inconsistência quando respostas subjetivas possuiam a mesma descrição apresentando apenas uma resposta.]]></Item>
+		<Item visivel="N" motivo="P20141000275"><![CDATA[BUG: Aval. Desempenho > Movimentações > Avaliações de Desempenho > Resultado da Avaliação de Desempenho: Ao marcar a fleg "Desconsiderar auto-avaliação" o relatório apresendado continuava a apresentar respostas da auto-avaliação quando se tratava de perguntas objetiva e multipla escolha.]]></Item>
 	</Versao>
 	<Versao id="1.1.136.164" bd="" data="03/11/2014">
 		<Item visivel="S" motivo="S20140100212"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Possibilitando encerrar vaga ao contratar colaboradores de outra empresa.]]></Item>

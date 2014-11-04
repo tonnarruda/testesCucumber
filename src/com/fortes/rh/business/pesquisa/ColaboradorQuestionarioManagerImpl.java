@@ -295,9 +295,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		return getDao().findByAvaliacaoDesempenho(avaliacaoDesempenhoId, respondida);
 	}
 	
-	public Collection<ColaboradorQuestionario> findByColaboradorAndAvaliacaoDesempenho(Long colaboradorId, Long avaliacaoDesempenhoId, boolean isAvaliado)
+	public Collection<ColaboradorQuestionario> findByColaboradorAndAvaliacaoDesempenho(Long colaboradorId, Long avaliacaoDesempenhoId, boolean isAvaliado, boolean desconsiderarAutoAvaliacao)
 	{
-		return getDao().findByColaboradorAndAvaliacaoDesempenho(colaboradorId, avaliacaoDesempenhoId, isAvaliado);
+		return getDao().findByColaboradorAndAvaliacaoDesempenho(colaboradorId, avaliacaoDesempenhoId, isAvaliado, false);
 	}
 	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {

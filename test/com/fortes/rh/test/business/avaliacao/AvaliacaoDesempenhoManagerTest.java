@@ -201,8 +201,8 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		colaboradorQuestionarioManager.expects(atLeastOnce()).method("getQtdAvaliadores").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(3));
 		perguntaManager.expects(atLeastOnce()).method("getPontuacoesMaximas").with(ANYTHING).will(returnValue(new HashMap<Long, Integer>()));
 		
-		colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").with(eq(2L),eq(3L)).will(returnValue(percentuaisDeRespostas));
-		colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").with(eq(2L),eq(3L)).will(returnValue(percentuaisDeRespostasMultiplas));
+		colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").with(eq(2L),eq(3L),eq(false)).will(returnValue(percentuaisDeRespostas));
+		colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").with(eq(2L),eq(3L),eq(false)).will(returnValue(percentuaisDeRespostasMultiplas));
 		
 		questionarioManager.expects(once()).method("montaResultadosAvaliacaoDesempenho").withAnyArguments().will(returnValue(resultadoQuestionarios));
 		
@@ -229,8 +229,8 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		
 		colaboradorRespostaManager.expects(once()).method("findByAvaliadoAndAvaliacaoDesempenho").with(eq(1L),eq(3L), eq(false)).will(returnValue(colaboradorRespostas));
 		
-		colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").with(eq(1L),eq(3L)).will(returnValue(percentuaisDeRespostas));
-		colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").with(eq(1L),eq(3L)).will(returnValue(percentuaisDeRespostasMultiplas));
+		colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").with(eq(1L),eq(3L),eq(false)).will(returnValue(percentuaisDeRespostas));
+		colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").with(eq(1L),eq(3L),eq(false)).will(returnValue(percentuaisDeRespostasMultiplas));
 		
 		colaboradorQuestionarioManager.expects(atLeastOnce()).method("getQtdAvaliadores").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(1));
 		perguntaManager.expects(once()).method("getPontuacoesMaximas").with(ANYTHING).will(returnValue(new HashMap<Long, Integer>()));

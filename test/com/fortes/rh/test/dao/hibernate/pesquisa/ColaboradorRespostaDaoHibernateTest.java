@@ -156,7 +156,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 		
-		colaboradorRespostaDao.countRespostas(colaborador.getId(), avaliacaoDesempenho.getId());
+		colaboradorRespostaDao.countRespostas(colaborador.getId(), avaliacaoDesempenho.getId(), false);
 	}
 	
 	public void testCountRespostasMultiplaComAvaliacaoDesempenho()
@@ -208,7 +208,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		colaboradorResposta3.setResposta(respostaB);
 		colaboradorResposta3 = colaboradorRespostaDao.save(colaboradorResposta3);
 		
-		List<Object[]> retornos = colaboradorRespostaDao.countRespostasMultiplas(colaborador.getId(), avaliacaoDesempenho.getId());
+		List<Object[]> retornos = colaboradorRespostaDao.countRespostasMultiplas(colaborador.getId(), avaliacaoDesempenho.getId(), false);
 		
 		Object[] qtdRespostaA = (Object[]) retornos.get(0);
 		//Array{ordem da pergunta, quantidade}
