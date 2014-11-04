@@ -482,7 +482,16 @@
       <ref bean="sinalizacaoPcmatDaoTarget" />
     </property>
   </bean>
+  <bean id="motivoSolicitacaoEpiDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.sesmt.MotivoSolicitacaoEpiDao</value>
+    </property>
+    <property name="target">
+      <ref bean="motivoSolicitacaoEpiDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

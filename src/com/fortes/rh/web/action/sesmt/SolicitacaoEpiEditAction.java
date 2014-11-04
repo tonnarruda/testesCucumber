@@ -7,6 +7,7 @@ import java.util.Date;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.EpiHistoricoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
+import com.fortes.rh.business.sesmt.MotivoSolicitacaoEpiManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemEntregaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
@@ -15,6 +16,7 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.EpiHistorico;
+import com.fortes.rh.model.sesmt.MotivoSolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
@@ -31,6 +33,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	private EpiHistoricoManager epiHistoricoManager;
 	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
 	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
+	private MotivoSolicitacaoEpiManager motivoSolicitacaoEpiManager;
 
 	private Colaborador colaborador;
 	private SolicitacaoEpi solicitacaoEpi;
@@ -50,6 +53,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	private boolean entregue;
 	private boolean insert;
 	private Collection<EpiHistorico> epiHistoricos;
+	private Collection<MotivoSolicitacaoEpi> motivoSolicitacaoEpis; 
 
 	public String execute() throws Exception
 	{
@@ -67,6 +71,8 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 			colaborador = solicitacaoEpi.getColaborador(); 
 		}
 
+		motivoSolicitacaoEpis = motivoSolicitacaoEpiManager.findAll(new String[] {"descricao"});
+		
 		if (colaborador != null && colaborador.getId() != null)
 		{
 			Collection<Epi> epis = epiManager.findPriorizandoEpiRelacionado(getEmpresaSistema().getId(), colaborador.getId(), somenteAtivos);
@@ -414,5 +420,15 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	public Collection<EpiHistorico> getEpiHistoricos() {
 		return epiHistoricos;
+	}
+
+	public Collection<MotivoSolicitacaoEpi> getMotivoSolicitacaoEpis()
+	{
+		return motivoSolicitacaoEpis;
+	}
+
+	public void setMotivoSolicitacaoEpiManager(MotivoSolicitacaoEpiManager motivoSolicitacaoEpiManager)
+	{
+		this.motivoSolicitacaoEpiManager = motivoSolicitacaoEpiManager;
 	}
 }

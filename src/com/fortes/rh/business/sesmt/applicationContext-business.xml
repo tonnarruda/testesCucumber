@@ -1089,4 +1089,18 @@
       <ref bean="sinalizacaoPcmatManagerTarget" />
     </property>
   </bean>
+  <bean id="motivoSolicitacaoEpiManagerTarget" class="com.fortes.rh.business.sesmt.MotivoSolicitacaoEpiManagerImpl">
+    <property name="dao">
+      <ref bean="motivoSolicitacaoEpiDao" />
+    </property>
+  </bean>
+  <bean id="motivoSolicitacaoEpiManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.MotivoSolicitacaoEpiManager</value>
+    </property>
+    <property name="target">
+      <ref bean="motivoSolicitacaoEpiManagerTarget" />
+    </property>
+  </bean>
 </beans>
+

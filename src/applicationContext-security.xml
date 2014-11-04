@@ -577,6 +577,7 @@
 				/sesmt/solicitacaoEpi/entrega.action*=ROLE_CAD_ENTREGAEPI
 				/sesmt/solicitacaoEpi/prepareEntrega.action*=ROLE_CAD_ENTREGAEPI
 				/sesmt/solicitacaoEpi/*/**=ROLE_CAD_SOLICITACAOEPI
+				/sesmt/motivoSolicitacaoEpi/*/**=ROLE_CAD_MOTIVO_SOLICITACAO_EPI
 				/sesmt/etapaProcessoEleitoral/*/**=ROLE_CAD_ETAPAPROCESSOELEITORAL
 				/sesmt/eleicao/*/**=ROLE_CAD_ELEICAO
 				/sesmt/candidatoEleicao/*/**=ROLE_CAD_ELEICAO

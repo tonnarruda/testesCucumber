@@ -154,6 +154,7 @@ import com.fortes.rh.test.business.sesmt.HistoricoFuncaoManagerTest;
 import com.fortes.rh.test.business.sesmt.MedicaoRiscoManagerTest;
 import com.fortes.rh.test.business.sesmt.MedicoCoordenadorManagerTest;
 import com.fortes.rh.test.business.sesmt.MedidaSegurancaManagerTest;
+import com.fortes.rh.test.business.sesmt.MotivoSolicitacaoEpiManagerTest;
 import com.fortes.rh.test.business.sesmt.NaturezaLesaoManagerTest;
 import com.fortes.rh.test.business.sesmt.ObraManagerTest;
 import com.fortes.rh.test.business.sesmt.PcmatManagerTest;
@@ -315,6 +316,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.HistoricoFuncaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.MedicaoRiscoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.MedicoCoordenadorDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.MedidaSegurancaDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.MotivoSolicitacaoEpiDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.NaturezaLesaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.ObraDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.PcmatDaoHibernateTest;
@@ -575,6 +577,7 @@ import com.fortes.rh.test.web.action.sesmt.MedicaoRiscoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.MedicoCoordenadorEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.MedicoCoordenadorListActionTest;
 import com.fortes.rh.test.web.action.sesmt.MedidaSegurancaEditActionTest;
+import com.fortes.rh.test.web.action.sesmt.MotivoSolicitacaoEpiEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.NaturezaLesaoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.ObraEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.PcmatEditActionTest;
@@ -1225,6 +1228,10 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(EpcPcmatDaoHibernateTest.class);
         suite.addTestSuite(EpcPcmatManagerTest.class);
         suite.addTestSuite(EpcPcmatEditActionTest.class);
+        
+        suite.addTestSuite(MotivoSolicitacaoEpiDaoHibernateTest.class);
+        suite.addTestSuite(MotivoSolicitacaoEpiManagerTest.class);
+        suite.addTestSuite(MotivoSolicitacaoEpiEditActionTest.class);
         
         // UTILITARIOS
         suite.addTestSuite(AutenticadorTest.class);

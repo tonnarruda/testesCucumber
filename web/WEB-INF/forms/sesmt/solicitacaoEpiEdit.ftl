@@ -26,166 +26,166 @@
 
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 
-<script>
-	$(function() {
-		$('#entregue').change(function() {
-			$('#dataEntrega').attr('disabled', $(this).val() == 'false');
-			$('#dataEntrega_button').toggle($(this).val() == 'true');
+	<script>
+		$(function() {
+			$('#entregue').change(function() {
+				$('#dataEntrega').attr('disabled', $(this).val() == 'false');
+				$('#dataEntrega_button').toggle($(this).val() == 'true');
+			});
+			$('#entregue').change();
 		});
-		$('#entregue').change();
-	});
-	
-	function enviaForm()
-	{
-		check = validaCheck(document.forms[1], 'epiIds', "Selecione pelo menos um EPI.");
-		if (check)
+		
+		function enviaForm()
 		{
-			idsQtdSolicitado = getIdsInputQtdSolicitado(document.forms[1]);
-			validaDatas = new Array('data');
-						
-			if($('#entregue').val() == 'true')
+			check = validaCheck(document.forms[1], 'epiIds', "Selecione pelo menos um EPI.");
+			if (check)
 			{
-				idsQtdSolicitado.push('dataEntrega');
-				validaDatas.push('dataEntrega');
-				
-				var data = new Date($('#data').val());
-				var dataEntrega = new Date($('#dataEntrega').val());
-				
-				if(dataEntrega.getTime() < data.getTime())
+				idsQtdSolicitado = getIdsInputQtdSolicitado(document.forms[1]);
+				validaDatas = new Array('data');
+							
+				if($('#entregue').val() == 'true')
 				{
-					alert('Data da entrega inferior a data da solicitação.');
-					return false;
-				}				
-			}
-			
-			validaForm = validaFormulario('form', idsQtdSolicitado, validaDatas);
-		}
-
-		return check && validaForm;
-	}
-
-	// Pega os ids dos input text (Quantidade)
-	function getIdsInputQtdSolicitado(frm)
-	{
-		ids = new Array('data');
-		j = 1;
-		for (var i = 0; i < frm.elements.length; i++)
-		{
-			var elementForm = frm.elements[i];
-			if ((elementForm != null) && (elementForm.type == 'checkbox') && (elementForm.checked))
-			{
-				id = "selectQtdSolicitado_" + elementForm.value;
-
-				if(id != "selectQtdSolicitado_on")
-				{
-					ids[j] = id;
-
-					// valor 0 é anulado, para forçar a validação
-					var elementQtd = document.getElementById(id);
-					if (elementQtd.value == "0")
+					idsQtdSolicitado.push('dataEntrega');
+					validaDatas.push('dataEntrega');
+					
+					var data = new Date($('#data').val());
+					var dataEntrega = new Date($('#dataEntrega').val());
+					
+					if(dataEntrega.getTime() < data.getTime())
 					{
-						elementQtd.value = "";
-					}
-
-					j++;
+						alert('Data da entrega inferior a data da solicitação.');
+						return false;
+					}				
 				}
+				
+				validaForm = validaFormulario('form', idsQtdSolicitado, validaDatas);
 			}
+	
+			return check && validaForm;
 		}
-		return ids;
-	}
-
-	function marcarDesmarcar(frm)
-	{
-		var vMarcar;
-
-		if (document.getElementById('md').checked)
+	
+		// Pega os ids dos input text (Quantidade)
+		function getIdsInputQtdSolicitado(frm)
 		{
-			vMarcar = true;
-		}
-		else
-		{
-			vMarcar = false;
-		}
-
-		with(frm)
-		{
-			for(i = 0; i < elements.length; i++)
+			ids = new Array('data');
+			j = 1;
+			for (var i = 0; i < frm.elements.length; i++)
 			{
-				if(elements[i].name == 'epiIds' && elements[i].type == 'checkbox')
-				{
-					elements[i].checked = vMarcar;
-					quantidade = document.getElementById("selectQtdSolicitado_" + elements[i].value);
-					quantidade.disabled = !vMarcar;
-					if (vMarcar && quantidade.value == 0)
-						quantidade.value = 1;
-				}
-			}
-		}
-	}
-
-	function mudarQtd(elementCheck)
-	{
-		var id = "selectQtdSolicitado_" + elementCheck.value;
-		var quantidade = document.getElementById(id);
-
-		if(quantidade.disabled)
-		{
-			quantidade.disabled = false;
-			if (quantidade.value == 'undefined' || quantidade.value == 0)
-				quantidade.value = 1;
-			
-			quantidade.focus();
-		}
-		else
-			quantidade.disabled = true;
-	}
-
-	function configuraCampos()
-	{
-		var id = "";
-
-		if (document.forms.length > 1)
-		{
-			for (var i = 0; i < document.forms[1].elements.length; i++)
-			{
-				var elementForm = document.forms[1].elements[i];
+				var elementForm = frm.elements[i];
 				if ((elementForm != null) && (elementForm.type == 'checkbox') && (elementForm.checked))
 				{
 					id = "selectQtdSolicitado_" + elementForm.value;
-
+	
 					if(id != "selectQtdSolicitado_on")
 					{
-						var elementSelect = document.getElementById(id);
-						elementSelect.disabled = false;
+						ids[j] = id;
+	
+						// valor 0 é anulado, para forçar a validação
+						var elementQtd = document.getElementById(id);
+						if (elementQtd.value == "0")
+						{
+							elementQtd.value = "";
+						}
+	
+						j++;
+					}
+				}
+			}
+			return ids;
+		}
+	
+		function marcarDesmarcar(frm)
+		{
+			var vMarcar;
+	
+			if (document.getElementById('md').checked)
+			{
+				vMarcar = true;
+			}
+			else
+			{
+				vMarcar = false;
+			}
+	
+			with(frm)
+			{
+				for(i = 0; i < elements.length; i++)
+				{
+					if(elements[i].name == 'epiIds' && elements[i].type == 'checkbox')
+					{
+						elements[i].checked = vMarcar;
+						quantidade = document.getElementById("selectQtdSolicitado_" + elements[i].value);
+						quantidade.disabled = !vMarcar;
+						if (vMarcar && quantidade.value == 0)
+							quantidade.value = 1;
 					}
 				}
 			}
 		}
-	}
-
-	function listaEpis(colaboradorId)
-	{
-		$('#colaboradorId').val(colaboradorId);
-		validaFormulario('formFiltro', null, null);
-	}
 	
-	function pesquisar()
-	{
-		$('#colaboradorId').val(''); 
-		validaFormulario('formFiltro', null, null);
-	}
-</script>
-
-<#if solicitacaoEpi?exists && solicitacaoEpi.data?exists>
-	<#assign data = solicitacaoEpi.data?date/>
-<#else>
-	<#assign data = ""/>
-</#if>
+		function mudarQtd(elementCheck)
+		{
+			var id = "selectQtdSolicitado_" + elementCheck.value;
+			var quantidade = document.getElementById(id);
+	
+			if(quantidade.disabled)
+			{
+				quantidade.disabled = false;
+				if (quantidade.value == 'undefined' || quantidade.value == 0)
+					quantidade.value = 1;
+				
+				quantidade.focus();
+			}
+			else
+				quantidade.disabled = true;
+		}
+	
+		function configuraCampos()
+		{
+			var id = "";
+	
+			if (document.forms.length > 1)
+			{
+				for (var i = 0; i < document.forms[1].elements.length; i++)
+				{
+					var elementForm = document.forms[1].elements[i];
+					if ((elementForm != null) && (elementForm.type == 'checkbox') && (elementForm.checked))
+					{
+						id = "selectQtdSolicitado_" + elementForm.value;
+	
+						if(id != "selectQtdSolicitado_on")
+						{
+							var elementSelect = document.getElementById(id);
+							elementSelect.disabled = false;
+						}
+					}
+				}
+			}
+		}
+	
+		function listaEpis(colaboradorId)
+		{
+			$('#colaboradorId').val(colaboradorId);
+			validaFormulario('formFiltro', null, null);
+		}
+		
+		function pesquisar()
+		{
+			$('#colaboradorId').val(''); 
+			validaFormulario('formFiltro', null, null);
+		}
+	</script>
+	
+	<#if solicitacaoEpi?exists && solicitacaoEpi.data?exists>
+		<#assign data = solicitacaoEpi.data?date/>
+	<#else>
+		<#assign data = ""/>
+	</#if>
 
 </head>
 <body>
-<@ww.actionmessage />
-<@ww.actionerror />
+	<@ww.actionmessage />
+	<@ww.actionerror />
 	
 	<#include "../util/topFiltro.ftl" />
 	<@ww.form name="formFiltro" action="filtroColaboradores.action" method="POST">
@@ -236,7 +236,7 @@
 						<input type="checkbox" value="${lista[0].id}" id="check${lista[0].id}" name="epiIds" onclick="mudarQtd(this);" ${checked}/>
 					</@display.column>
 	
-					<@display.column title="EPI" style="width:400px;">
+					<@display.column title="EPI" style="width:300px;">
 						<label for="check${lista[0].id}" class="${class}">${lista[0].nomeInativo}</label>
 					</@display.column>
 	
@@ -248,13 +248,17 @@
 						<label for="check${lista[0].id}" class="${class}">${lista[0].epiHistorico.CA}</label>
 					</@display.column>
 	
-					<@display.column title="Quantidade">
+					<@display.column title="Quant." style="width:50px;">
 						<#if lista[1].qtdSolicitado?exists>
 							<#assign qtdSolicitado = lista[1].qtdSolicitado?string />
 						<#else>
 							<#assign qtdSolicitado = "" />
 						</#if>
-						<input type="text" name="selectQtdSolicitado" onkeypress="return somenteNumeros(event,'')" value="${qtdSolicitado}" id="selectQtdSolicitado_${lista[0].id}" disabled style="text-align:right; vertical-align:top; width: 130px;border:1px solid #7E9DB9;"/>
+						<input type="text" name="selectQtdSolicitado" onkeypress="return somenteNumeros(event,'')" value="${qtdSolicitado}" id="selectQtdSolicitado_${lista[0].id}" disabled style="text-align:right; vertical-align:top; width: 80px;border:1px solid #7E9DB9;"/>
+					</@display.column>
+	
+					<@display.column title="Motivo" style="width:200px">
+						<@ww.select name="motivoSolicitacaoEpi.id" id="motivoSolicitacaoEpi" listKey="id" listValue="descricao" list="motivoSolicitacaoEpis" style="width:200px"/>
 					</@display.column>
 				</@display.table>
 	

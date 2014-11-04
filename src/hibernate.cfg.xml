@@ -188,7 +188,9 @@
       <mapping class="com.fortes.rh.model.sesmt.EpiPcmat" />
       <mapping class="com.fortes.rh.model.sesmt.EpcPcmat" />
       <mapping class="com.fortes.rh.model.sesmt.SinalizacaoPcmat" />
+      <mapping class="com.fortes.rh.model.sesmt.MotivoSolicitacaoEpi" />
   </session-factory>
+
 
 
 
