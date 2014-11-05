@@ -19,7 +19,6 @@ public class MotivoSolicitacaoEpiEditAction extends MyActionSupportList
 	{
 		if(motivoSolicitacaoEpi != null && motivoSolicitacaoEpi.getId() != null)
 			motivoSolicitacaoEpi = (MotivoSolicitacaoEpi) motivoSolicitacaoEpiManager.findById(motivoSolicitacaoEpi.getId());
-
 	}
 
 	public String prepareInsert() throws Exception

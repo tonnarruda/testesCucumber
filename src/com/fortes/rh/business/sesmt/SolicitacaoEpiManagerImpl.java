@@ -78,12 +78,12 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		return getDao().findByIdProjection(solicitacaoEpiId);
 	}
 
-	public void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, Date dataEntrega, boolean entregue) throws Exception
+	public void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, String[] selectMotivoSolicitacaoEpi, Date dataEntrega, boolean entregue) throws Exception
 	{
 		try
 		{
 			getDao().save(solicitacaoEpi);
-			solicitacaoEpiItemManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, dataEntrega, entregue);
+			solicitacaoEpiItemManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, selectMotivoSolicitacaoEpi, dataEntrega, entregue);
 		}
 		catch(Exception e)
 		{
@@ -92,11 +92,11 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		}
 	}
 
-	public void update(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado)
+	public void update(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, String[] selectMotivoSolicitacaoEpi)
 	{
 		update(solicitacaoEpi);
 		solicitacaoEpiItemManager.removeAllBySolicitacaoEpi(solicitacaoEpi.getId());
-		solicitacaoEpiItemManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, null, false);
+		solicitacaoEpiItemManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, selectMotivoSolicitacaoEpi, null, false);
 	}
 
 	@Override

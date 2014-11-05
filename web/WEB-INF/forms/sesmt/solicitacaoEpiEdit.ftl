@@ -125,8 +125,11 @@
 	
 		function mudarQtd(elementCheck)
 		{
-			var id = "selectQtdSolicitado_" + elementCheck.value;
-			var quantidade = document.getElementById(id);
+			var idCheckbox = "selectQtdSolicitado_" + elementCheck.value;
+			var idSelect = "selectMotivoSolicitacaoEpi_" + elementCheck.value;
+			
+			var quantidade = document.getElementById(idCheckbox);
+			var motivo = document.getElementById(idSelect);
 	
 			if(quantidade.disabled)
 			{
@@ -138,6 +141,11 @@
 			}
 			else
 				quantidade.disabled = true;
+			
+			if(motivo.disabled)
+				motivo.disabled = false;
+			else
+				motivo.disabled = true;
 		}
 	
 		function configuraCampos()
@@ -151,11 +159,17 @@
 					var elementForm = document.forms[1].elements[i];
 					if ((elementForm != null) && (elementForm.type == 'checkbox') && (elementForm.checked))
 					{
-						id = "selectQtdSolicitado_" + elementForm.value;
+						id1 = "selectQtdSolicitado_" + elementForm.value;
+						id2 = "selectMotivoSolicitacaoEpi_" + elementForm.value;
 	
-						if(id != "selectQtdSolicitado_on")
+						if(id1 != "selectQtdSolicitado_on")
 						{
-							var elementSelect = document.getElementById(id);
+							var elementSelect = document.getElementById(id1);
+							elementSelect.disabled = false;
+						}
+						if(id2 != "selectMotivoSolicitacaoEpi_on")
+						{
+							var elementSelect = document.getElementById(id2);
 							elementSelect.disabled = false;
 						}
 					}
@@ -248,7 +262,7 @@
 						<label for="check${lista[0].id}" class="${class}">${lista[0].epiHistorico.CA}</label>
 					</@display.column>
 	
-					<@display.column title="Quant." style="width:50px;">
+					<@display.column title="Quantidade" style="width:50px;">
 						<#if lista[1].qtdSolicitado?exists>
 							<#assign qtdSolicitado = lista[1].qtdSolicitado?string />
 						<#else>
@@ -257,8 +271,17 @@
 						<input type="text" name="selectQtdSolicitado" onkeypress="return somenteNumeros(event,'')" value="${qtdSolicitado}" id="selectQtdSolicitado_${lista[0].id}" disabled style="text-align:right; vertical-align:top; width: 80px;border:1px solid #7E9DB9;"/>
 					</@display.column>
 	
-					<@display.column title="Motivo" style="width:200px">
-						<@ww.select name="motivoSolicitacaoEpi.id" id="motivoSolicitacaoEpi" listKey="id" listValue="descricao" list="motivoSolicitacaoEpis" style="width:200px"/>
+					<@display.column title="Motivo da Solicitação" style="width:200px">
+						<select name="selectMotivoSolicitacaoEpi" id="selectMotivoSolicitacaoEpi_${lista[0].id}"  style="width:200px" disabled>
+							<option value="" selected="selected" >Selecione...</option>
+							<#list motivoSolicitacaoEpis as motivo>
+								<#if lista[1].motivoSolicitacaoEpi?exists && lista[1].motivoSolicitacaoEpi.id?exists && motivo.id == lista[1].motivoSolicitacaoEpi.id>
+									<option value="${motivo.id}" selected="selected" >${motivo.descricao}</option>
+								<#else>
+									<option value="${motivo.id}" >${motivo.descricao}</option>
+								</#if>
+							</#list>
+						</select>
 					</@display.column>
 				</@display.table>
 	

@@ -1,7 +1,5 @@
 begin;
-insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (628, 'ROLE_CAD_MOTIVO_SOLICITACAO_EPI', 'Motivo da Solicitação do Epi', '/sesmt/motivoSolicitacaoEpi/list.action', 2, true, 385);--.go
-insert into perfil_papel(perfil_id, papeis_id) values(1, 628);--.go
-
+-- add_menu_sesmt_cadastro_motivosolicitacaoepi
 update papel set ordem = 1  where id=77;--.go
 update papel set ordem = 3  where id=78;--.go
 update papel set ordem = 4  where id=86;--.go
@@ -21,6 +19,10 @@ update papel set ordem = 17 where id=530;--.go
 update papel set ordem = 18 where id=476;--.go
 update papel set ordem = 19 where id=532;--.go
 
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (628, 'ROLE_CAD_MOTIVO_SOLICITACAO_EPI', 'Motivo da Solicitação do Epi', '/sesmt/motivoSolicitacaoEpi/list.action', 2, true, 385);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 628);--.go
+
+-- cria_tabela_motivosolicitacaoepi
 CREATE TABLE motivoSolicitacaoEpi (
 	id bigint NOT NULL,
 	descricao character varying(100)
@@ -29,9 +31,15 @@ CREATE TABLE motivoSolicitacaoEpi (
 ALTER TABLE motivoSolicitacaoEpi ADD CONSTRAINT motivoSolicitacaoEpi_pkey PRIMARY KEY(id);--.go
 CREATE SEQUENCE motivoSolicitacaoEpi_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
+-- cria_campo_motivosolicitacaoepi_em_solicitacaoepi_item
+ALTER TABLE solicitacaoepi_item ADD COLUMN motivosolicitacaoepi_id bigint;--.go
+ALTER TABLE solicitacaoepi_item ADD CONSTRAINT solicitacaoepi_item_motivosolicitacaoepi_fk FOREIGN KEY (motivosolicitacaoepi_id) REFERENCES motivosolicitacaoepi(id);--.go
+
+
 commit;
 rollback
 /**
+select * from solicitacaoEpi_item 
 select * from motivoSolicitacaoEpi 
 select max(id) from papel 
 select * from papel where nome = 'CIPA'

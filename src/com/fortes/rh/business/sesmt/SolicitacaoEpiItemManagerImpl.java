@@ -9,6 +9,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiItemDao;
 import com.fortes.rh.model.sesmt.Epi;
 import com.fortes.rh.model.sesmt.EpiHistorico;
+import com.fortes.rh.model.sesmt.MotivoSolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
@@ -34,7 +35,7 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 		return solicitacaoEpiItems;
 	}
 
-	public void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, Date dataEntrega, boolean entregue)
+	public void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, String[] selectMotivoSolicitacaoEpi, Date dataEntrega, boolean entregue)
 	{
 		if (epiIds != null && selectQtdSolicitado != null)
 		{
@@ -48,7 +49,14 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 				if (StringUtils.isBlank(selectQtdSolicitado[i]))
 					selectQtdSolicitado[i] = "0";
 				
+				MotivoSolicitacaoEpi motivoSolicitacaoEpi = new MotivoSolicitacaoEpi();
+				if (StringUtils.isBlank(selectMotivoSolicitacaoEpi[i]))
+					motivoSolicitacaoEpi = null;
+				else 
+					motivoSolicitacaoEpi.setId(Long.valueOf(selectMotivoSolicitacaoEpi[i]));
+				
 				solicitacaoEpiItem.setQtdSolicitado(Integer.valueOf(selectQtdSolicitado[i]));
+				solicitacaoEpiItem.setMotivoSolicitacaoEpi(motivoSolicitacaoEpi);
 				
 				solicitacaoEpiItem.setEpi(epiTmp);
 				solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);

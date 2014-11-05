@@ -27,6 +27,9 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 	@ManyToOne(fetch = FetchType.EAGER)
 	private SolicitacaoEpi solicitacaoEpi;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	private MotivoSolicitacaoEpi motivoSolicitacaoEpi;
+	
 	private Integer qtdSolicitado=0;
 	
 	@OneToMany(mappedBy="solicitacaoEpiItem", cascade=CascadeType.ALL)
@@ -116,22 +119,35 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 		this.solicitacaoEpi = solicitacaoEpi;
 	}
 
-	public Collection<SolicitacaoEpiItemEntrega> getSolicitacaoEpiItemEntregas() {
+	public Collection<SolicitacaoEpiItemEntrega> getSolicitacaoEpiItemEntregas()
+	{
 		return solicitacaoEpiItemEntregas;
 	}
 
-	public void setSolicitacaoEpiItemEntregas(Collection<SolicitacaoEpiItemEntrega> solicitacaoEpiItemEntregas) {
+	public void setSolicitacaoEpiItemEntregas(Collection<SolicitacaoEpiItemEntrega> solicitacaoEpiItemEntregas)
+	{
 		this.solicitacaoEpiItemEntregas = solicitacaoEpiItemEntregas;
 	}
 
-	public int getTotalEntregue() {
+	public int getTotalEntregue()
+	{
 		return totalEntregue;
 	}
 
-	public void setTotalEntregue(Integer totalEntregue) {
-		if(totalEntregue == null)
+	public void setTotalEntregue(Integer totalEntregue)
+	{
+		if (totalEntregue == null)
 			totalEntregue = 0;
-		
 		this.totalEntregue = totalEntregue;
+	}
+
+	public MotivoSolicitacaoEpi getMotivoSolicitacaoEpi()
+	{
+		return motivoSolicitacaoEpi;
+	}
+	
+	public void setMotivoSolicitacaoEpi(MotivoSolicitacaoEpi motivoSolicitacaoEpi)
+	{
+		this.motivoSolicitacaoEpi = motivoSolicitacaoEpi;
 	}
 }

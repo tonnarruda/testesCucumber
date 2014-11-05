@@ -48,6 +48,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	private Date[] selectDataSolicitado;
 	private String[] selectQtdEntregue;
 	private String[] epiIds;
+	private String[] selectMotivoSolicitacaoEpi;
 
 	private Date dataEntrega;
 	private boolean entregue;
@@ -145,7 +146,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 			solicitacaoEpi.setEstabelecimento(colaborador.getEstabelecimento());
 			solicitacaoEpi.setEmpresa(getEmpresaSistema());
 
-			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, dataEntrega, entregue);
+			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, selectMotivoSolicitacaoEpi, dataEntrega, entregue);
 			
 			addActionSuccess("Solicitação gravada com sucesso.");
 			return SUCCESS;
@@ -168,7 +169,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	public String update() throws Exception
 	{
-		solicitacaoEpiManager.update(solicitacaoEpi, epiIds, selectQtdSolicitado);
+		solicitacaoEpiManager.update(solicitacaoEpi, epiIds, selectQtdSolicitado, selectMotivoSolicitacaoEpi);
 		return SUCCESS;
 	}
 	
@@ -430,5 +431,15 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	public void setMotivoSolicitacaoEpiManager(MotivoSolicitacaoEpiManager motivoSolicitacaoEpiManager)
 	{
 		this.motivoSolicitacaoEpiManager = motivoSolicitacaoEpiManager;
+	}
+
+	public String[] getSelectMotivoSolicitacaoEpi()
+	{
+		return selectMotivoSolicitacaoEpi;
+	}
+
+	public void setSelectMotivoSolicitacaoEpi(String[] selectMotivoSolicitacaoEpi)
+	{
+		this.selectMotivoSolicitacaoEpi = selectMotivoSolicitacaoEpi;
 	}
 }

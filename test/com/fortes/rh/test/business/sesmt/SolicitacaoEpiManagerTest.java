@@ -82,15 +82,16 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 	{
 		String[] epiIds = new String[]{"1","2"};
 		String[] selectQtdSolicitado = new String[]{"12","3"};
+		String[] selectMotivoSolicitacaoEpi = new String[]{"1","5"};
 		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(1L);
 
 		solicitacaoEpiDao.expects(once()).method("save").with(eq(solicitacaoEpi)).isVoid();
-		solicitacaoEpiItemManager.expects(once()).method("save").with(new Constraint[] { eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING, eq(false) }).isVoid();
+		solicitacaoEpiItemManager.expects(once()).method("save").with(new Constraint[] { eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado) ,eq(selectMotivoSolicitacaoEpi), ANYTHING, eq(false) }).isVoid();
 
 		Exception exception = null;
 		try
 		{
-			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, null, false);
+			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, selectMotivoSolicitacaoEpi, null, false);
 		}
 		catch (Exception e)
 		{
@@ -108,7 +109,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			solicitacaoEpiManager.save(solicitacaoEpi, null, null, null, false);
+			solicitacaoEpiManager.save(solicitacaoEpi, null, null, null, null, false);
 		}
 		catch (Exception e)
 		{
@@ -121,13 +122,14 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 	{
 		String[] epiIds = new String[]{"1","2"};
 		String[] selectQtdSolicitado = new String[]{"3","3"};
+		String[] selectMotivoSolicitacaoEpi = new String[]{"1","2"};
 		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity(1L);
 
 		solicitacaoEpiDao.expects(once()).method("update").with(eq(solicitacaoEpi)).isVoid();
 		solicitacaoEpiItemManager.expects(once()).method("removeAllBySolicitacaoEpi").with(eq(solicitacaoEpi.getId())).isVoid();
-		solicitacaoEpiItemManager.expects(once()).method("save").with(new Constraint[] {eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), ANYTHING, eq(false)}).isVoid();
+		solicitacaoEpiItemManager.expects(once()).method("save").with(new Constraint[] {eq(solicitacaoEpi), eq(epiIds), eq(selectQtdSolicitado), eq(selectMotivoSolicitacaoEpi), ANYTHING, eq(false)}).isVoid();
 
-		solicitacaoEpiManager.update(solicitacaoEpi, epiIds, selectQtdSolicitado);
+		solicitacaoEpiManager.update(solicitacaoEpi, epiIds, selectQtdSolicitado, selectMotivoSolicitacaoEpi);
 	}
 
 	public void testRemove()
