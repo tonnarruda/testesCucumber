@@ -171,6 +171,13 @@
 	<@display.table name="colaboradors" id="colaborador" pagesize=20 class="dados" defaultsort=3 >
 		<#assign style=""/>
 		<@display.column title="Ações" media="html" class="acao" style = "width:250px;">
+			
+			<#if colaborador.respondeuEntrevista?exists && colaborador.respondeuEntrevista>
+				<#assign imgRespondeuEntrevista="entrevistaBalaoDesligaEdita.gif"/>
+			<#else>
+				<#assign imgRespondeuEntrevista="entrevistaBalaoDesligaNova.gif"/>
+			</#if>
+			
 			<#if !colaborador.desligado>
 				<#assign statusSolicitacao="A"/>
 				<#if integraAc && !colaborador.naoIntegraAc>
@@ -192,8 +199,14 @@
 						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Desligar colaborador" imgName="desliga_colab.gif"/>
 					</#if>
 				</#if>
-
-				<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="javascript:;" imgTitle="Entrevista de Desligamento - disponível apenas após o desligamento do colaborador" imgName="entrevistaBalaoDesligaNova.gif" opacity=true/>
+				
+				<#if colaborador.dataSolicitacaoDesligamentoAc?exists && empresaSistema.acIntegra>
+					<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="../../pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=${colaborador.id}&validarFormulario=false&voltarPara=../../geral/colaborador/list.action" 
+						imgTitle="Entrevista de desligamento" imgName="${imgRespondeuEntrevista}"/>
+				<#else>
+					<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="javascript:;" imgTitle="Entrevista de Desligamento - disponível apenas após o desligamento do colaborador" imgName="entrevistaBalaoDesligaNova.gif" opacity=true/>
+				</#if>
+				
 			<#else>
 				<#assign statusSolicitacao="I"/>
 				<#if colaborador.dataDesligamento?exists && !colaborador.motivoDemissao.motivo?exists>
@@ -207,13 +220,8 @@
 				<#else>
 					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Colaborador já desligado" imgName="desliga_colab.gif" opacity=true/>
 				</#if>
-	
-				<#if colaborador.respondeuEntrevista?exists && colaborador.respondeuEntrevista>
-					<#assign imgRespondeuEntrevista="entrevistaBalaoDesligaEdita.gif"/>
-				<#else>
-					<#assign imgRespondeuEntrevista="entrevistaBalaoDesligaNova.gif"/>
-				</#if>
-					<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="../../pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=${colaborador.id}&validarFormulario=false&voltarPara=../../geral/colaborador/list.action" 
+
+				<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="../../pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=${colaborador.id}&validarFormulario=false&voltarPara=../../geral/colaborador/list.action" 
 					imgTitle="Entrevista de desligamento" imgName="${imgRespondeuEntrevista}"/>
 			</#if>
 

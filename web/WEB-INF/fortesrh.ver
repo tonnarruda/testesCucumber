@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.13x.165" bd="" data="xx/11/2014">
+		<Item visivel="S" motivo="S20141000113"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Possibilitando responder entrevista antes de finalizar o processo de desligamento no AC Pessoal.]]></Item>
 		<Item visivel="S" motivo="P20141000280"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Exibindo o nome da empresa do estabelecimento ao gerar o relatório.]]></Item>
 		<Item visivel="N" motivo="P20141100008"><![CDATA[BUG: Info. Funcionais > Painel de Indicadores: Corrigindo contagem do 'Total de Colaboradores'.]]></Item>
 		<Item visivel="N" motivo="P20141000242"><![CDATA[BUG: Módulo externo> Correção de erro ao responder avaliação.]]></Item>
