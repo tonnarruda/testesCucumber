@@ -5,18 +5,11 @@
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css"/>');
 	#formDialog { display: none; }
-	.horarios div.dias{ width: 90px; float: left; margin: 2px 0; }
-	.horarios .hora { width: 45px; }
-	.horarios .turnos { width: 100%; height: 20px; }
-	.horarios .manha, .horarios .tarde, .horarios .noite { 
-		float: left;
-		width: 117px;
-		text-align: center;
-		font-weight: bold;
-		margin-left: 15px; 
-	}
-	.horarios .hora-inicio { margin-left: 15px; }
-	.horarios .dia-semana { clear: both; }
+	
+	.dados { border: none; }
+	.dados td { padding: 0px; }
+	.dados input[type='text'] { border: 1px solid #7E9DB9; width: 50px; }
+	.hora { text-align: right; }
 </style>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
@@ -53,10 +46,19 @@
 		<#assign custo = ''/>
 	</#if>
 	
+	<#assign temPresencasRegistradas = turma.temPresenca?exists && turma.temPresenca/>
+	
 	<script type="text/javascript">
-		var diasIds = "";
+		String.prototype.capitalize = function() {
+		    return this.charAt(0).toUpperCase() + this.slice(1);
+		}
+	
+		var diasTurmasMarcados = [<#list diaTurmas as diaTurmaMarcado>'${diaTurmaMarcado.dia?string('ddMMyyyy') + diaTurmaMarcado.turno}'<#if diaTurmaMarcado_has_next>, </#if></#list>];
+
 		function populaDias(frm)
 		{
+			$('#diasTable').empty();
+		
 			var dIni = document.getElementById('prevIni');
 			var dFim = document.getElementById('prevFim');
 	
@@ -64,32 +66,53 @@
 			{
 				if(dIni.value != "  /  /    " && dFim.value != "  /  /    ")
 				{
-					diasIds = getArrayCheckeds(frm, "diasCheck");
 					DWRUtil.useLoadingMessage('Carregando...');
 					DiaTurmaDWR.getDias(montaListDias, dIni.value, dFim.value, $('#porTurno').val());
 				}
 			}
 		}
 		
-		function montaListDias(data)
-		{ console.log(data);
-			if(data != null)
+		function montaListDias(diasTurma)
+		{
+			console.log(diasTurma);
+		
+			if (diasTurma != null)
 			{
-				addChecks('diasCheck',data, null, true)
-				marcaCheckListBoxString(diasIds);
+				var dataFmt, id;
+				var onclick = <#if temPresencasRegistradas>"onclick='return false;'"<#else>""</#if>;
+				var readonly = <#if temPresencasRegistradas>"readonly='readonly'"<#else>""</#if>;
+				
+				for (var i = 0; i < diasTurma.length; i++)
+				{
+					dataFmt = $.datepicker.formatDate('dd/mm/yy', diasTurma[i].dia);
+					id = $.datepicker.formatDate('ddmmyy', diasTurma[i].dia) + diasTurma[i].turno;
+					
+					var row = 	"<tr class='" + (i%2 == 0 ? 'even' : 'odd') + "'>\n";
+					row += 		"	<td><input name='diasCheck' id='" + id + "' value='" + id + "' type='checkbox' " + onclick + " /></td>\n";
+					row += 		"	<td><label for='" + id + "'>" + dataFmt + "</label></td>\n";
+					row += 		"	<td><label for='" + id + "'>" + diasTurma[i].diaSemanaDescricao.capitalize() + "</label></td>\n";
+					if (diasTurma[i].turno != 'D')
+					{
+						row +=	"	<td><label for='" + id + "'>" + diasTurma[i].turnoDescricao.capitalize() + "</label></td>\n";
+					}
+					row += 		"	<td><input type='text' name='horaIni[" + id + "]' class='hora' " + readonly + " /> às <input type='text' name='horaFim[" + id + "]' class='hora' " + readonly + " /></td>\n";
+					row += 		"</tr>\n";
+				
+					$('#diasTable').append(row);
+				}
+			
+				marcaCheckListBoxString();
 			}
 			else
 				jAlert("Data inválida.");
 		}
 		
-		function exibeHorarios() {
-			$(".turnos, .hora-turno-tarde, .hora-turno-noite").toggle( $("#porTurno").val() == "true" );
-		}
-		
-		function exibeHorario()
+		function marcaCheckListBoxString()
 		{
-			$('#divFiltroForm').toggle();
-			$('#arrowFiltro').attr('src', $('#divFiltroForm').is(':visible') ? '<@ww.url value="/imgs/arrow_up.gif"/>' : '<@ww.url value="/imgs/arrow_down.gif"/>');
+			for(var count = 0; count < diasTurmasMarcados.length; count++)
+			{
+				$('#' + diasTurmasMarcados[count]).attr('checked','checked');
+			}
 		}
 		
 		function mostraAssinatura()
@@ -254,7 +277,7 @@
 			
 			$('#divAssinatura hr').remove();
 			
-			exibeHorarios();
+			populaDias(document.forms[0]);
 		});
 	</script>
 <@ww.head/>
@@ -346,56 +369,32 @@
 				<@ww.textfield name="turma.dataPrevIni" value="${dataIni}" id="prevIni" readonly=true maxlength="10" cssStyle="width:80px;" liClass="liLeft" />
 				<@ww.label value="a" liClass="liLeft"/>
 				<@ww.textfield name="turma.dataPrevFim" value="${dataFim}" id="prevFim" readonly=true maxlength="10" cssStyle="width:80px;" liClass="liLeft"/><br /><br />
-				<@frt.checkListBox name="diasCheck" list="diasCheckList" readonly=true valueString=true width="600" filtro="true"/>
 			<#else>
-				<@ww.select label="Realizar turma por" name="turma.porTurno" id="porTurno" list=r"#{false:'Dia',true:'Turno'}" onchange="populaDias(document.forms[0]); exibeHorarios();"/>
+				<@ww.select label="Realizar turma por" name="turma.porTurno" id="porTurno" list=r"#{false:'Dia',true:'Turno'}" onchange="populaDias(document.forms[0]);"/>
 				Período:*<br>
 				<@ww.datepicker required="true" name="turma.dataPrevIni" value="${dataIni}" id="prevIni" liClass="liLeft" onblur="populaDias(document.forms[0]);" onchange="populaDias(document.forms[0]);"  cssClass="mascaraData validaDataIni"/>
 				<@ww.label value="a" liClass="liLeft" />
 				<@ww.datepicker required="true" name="turma.dataPrevFim" value="${dataFim}" id="prevFim" onblur="populaDias(document.forms[0]);" onchange="populaDias(document.forms[0]);"  cssClass="mascaraData validaDataFim" /><br />
-				<@frt.checkListBox name="diasCheck" list="diasCheckList" readonly=false valueString=true filtro="true" width="593"/>
 			</#if>
-			
-			<div class="divFiltro horarios">
-				<div class="divFiltroLink">
-					<a href="javascript:;" onclick="exibeHorario();" id="linkFiltro">
-						<img alt="Definir Horários" id="arrowFiltro" src="<@ww.url includeParams="none" value="/imgs/arrow_down.gif"/>"> <span id="labelLink" class="labelLink">Definir Horários</span>
-					</a>
-				</div>
-				<div id="divFiltroForm" class="divFiltroForm" style="display: none;">
-					<div class="turnos">
-						<div class="dias"></div>
-						<div class="manha">Manhã</div>
-						<div class="tarde">Tarde</div>
-						<div class="noite">Noite</div>
-					</div>
-					<#assign dias = ["domingo", "segunda", "terca", "quarta", "quinta", "sexta", "sabado"]>
-					<#assign diasExt = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"]>
-					<#list dias as dia>
-						<div id="${dia}" class="dia-semana">
-							<div class="dias">${diasExt[dia_index]}</div>
-							<span class="hora-turno-manha">
-								<@ww.textfield name="${dia}" disabled=temPresencasRegistradas maxlength="5" cssClass="hora hora-inicio" liClass="liLeft" /> 
-								<@ww.label value="às" liClass="liLeft" /> 
-								<@ww.textfield name="${dia}" disabled=temPresencasRegistradas maxlength="5" cssClass="hora" liClass="liLeft" /> 
-							</span>
-							<span class="hora-turno-tarde">
-								<@ww.textfield name="${dia}" disabled=temPresencasRegistradas maxlength="5" cssClass="hora hora-inicio" liClass="liLeft" /> 
-								<@ww.label value="às" liClass="liLeft" /> 
-								<@ww.textfield name="${dia}" disabled=temPresencasRegistradas maxlength="5" cssClass="hora" liClass="liLeft" /> 
-							</span>
-							<span class="hora-turno-noite">
-								<@ww.textfield name="${dia}" disabled=temPresencasRegistradas maxlength="5" cssClass="hora hora-inicio" liClass="liLeft" /> 
-								<@ww.label value="às" liClass="liLeft" /> 
-								<@ww.textfield name="${dia}" disabled=temPresencasRegistradas maxlength="5" cssClass="hora" liClass="liLeft" /> 
-							</span>
-						</div>
-					</#list>
-				</div>
-			</div>
+
 			<br />
 			
-		</fieldset><br />
+			<div id="wwctrl_diasCheck" class="wwctrl">
+				<div class="listCheckBoxContainer" style="width: 593px;">
+					<div class="listCheckBoxBarra">
+						<input id="listCheckBoxFilterdiasCheck" class="listCheckBoxFilter" title="Digite para filtrar" type="text">
+						&nbsp;<span class="linkCheck" onclick="marcarDesmarcarListCheckBox(document.forms[0], 'diasCheck',true); ">Marcar todos</span> | <span class="linkCheck" onclick="marcarDesmarcarListCheckBox(document.forms[0], 'diasCheck',false); ">Desmarcar todos</span>
+					</div>
+					<div id="listCheckBoxdiasCheck" class="listCheckBox">
+						<table id="diasTable" class="dados">
+							
+						</table>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+		
+		<br />
 
 		<#if turmaPertenceAEmpresaLogada>
 			<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList" width="607" filtro="true"/>

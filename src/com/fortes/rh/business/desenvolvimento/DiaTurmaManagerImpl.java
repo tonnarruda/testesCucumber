@@ -31,7 +31,7 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 			dif = 1 +(dif / (24*60*60*1000));
 			
 			int countTurnos = TipoTurno.getQtdTurnos();
-			if(aplicarPorTurno)
+			if (aplicarPorTurno != null && aplicarPorTurno)
 				dif = dif*countTurnos;
 			
 			DiaTurma diaTurma;
@@ -43,7 +43,7 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 				Date data = (Date) dataPrevIni.clone();
 				diaTurma.setDia(data);
 
-				if(!aplicarPorTurno)
+				if (aplicarPorTurno == null || !aplicarPorTurno)
 					dataPrevIni.setDate(dataPrevIni.getDate() + 1 );
 				else
 				{

@@ -2,13 +2,11 @@ package com.fortes.rh.web.dwr;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.Map;
 
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 
 public class DiaTurmaDWR
@@ -16,7 +14,7 @@ public class DiaTurmaDWR
 	private DiaTurmaManager diaTurmaManager;
 	private TurmaManager turmaManager;
 
-	public Map getDias(String dataIniStr, String dataFimStr, Boolean aplicarPorTurno) throws Exception
+	public Collection<DiaTurma> getDias(String dataIniStr, String dataFimStr, Boolean aplicarPorTurno) throws Exception
 	{
 		Date dataIni = DateUtil.montaDataByString(dataIniStr);
 		Date dataFim = DateUtil.montaDataByString(dataFimStr);
@@ -24,9 +22,7 @@ public class DiaTurmaDWR
 		if (dataIni.after(dataFim)) // verifica se dataIni maior q dataFim
 			return null;
 
-		Collection<DiaTurma> diasTurmas = diaTurmaManager.montaListaDias(dataIni, dataFim, aplicarPorTurno);
-
-		return new CollectionUtil<DiaTurma>().convertCollectionToMap(diasTurmas,"getDescricao","getDescricao");
+		return diaTurmaManager.montaListaDias(dataIni, dataFim, aplicarPorTurno);
 	}
 
 	public String getDiasPorTurma(Long turmaId, String divName)

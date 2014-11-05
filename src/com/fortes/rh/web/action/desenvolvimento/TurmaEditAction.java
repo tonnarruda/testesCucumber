@@ -1,6 +1,5 @@
 package com.fortes.rh.web.action.desenvolvimento;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,7 +15,6 @@ import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fortes.model.type.File;
-import com.fortes.model.type.FileUtil;
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
@@ -182,6 +180,8 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private boolean manterAssinatura;
 
 	private Map<Long, String> despesas = new HashMap<Long, String>();
+	private Map<String, String> horaIni = new HashMap<String, String>();
+	private Map<String, String> horaFim = new HashMap<String, String>();
 	
 	private File assinaturaDigital;
 	
@@ -245,9 +245,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		if(!avaliacaoRespondida)
 			avaliacaoRespondida = turmaAvaliacaoTurmaManager.verificaAvaliacaoliberada(turma.getId());
 
-		diasCheckList = CheckListBoxUtil.populaCheckListBox(diaTurmaManager.montaListaDias((Date) turma.getDataPrevIni().clone(), turma.getDataPrevFim(), turma.isPorTurno()), "getId", "getDescricao");
-		Collection<DiaTurma> diasTurmaMarcados = diaTurmaManager.find(new String[] { "turma.id" }, new Object[] { turma.getId() });
-		diasCheckList = CheckListBoxUtil.marcaCheckListBoxString(diasCheckList, diasTurmaMarcados, "getDescricao");
+		diaTurmas = diaTurmaManager.find(new String[] { "turma.id" }, new Object[] { turma.getId() });
 
 		Collection<AvaliacaoTurma> avaliacaoTurmasMarcadas = avaliacaoTurmaManager.findByTurma(turma.getId());
 		avaliacaoTurmasCheckList = CheckListBoxUtil.marcaCheckListBoxString(avaliacaoTurmasCheckList, avaliacaoTurmasMarcadas, "getQuestionarioTitulo");
@@ -280,6 +278,8 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public String update() throws Exception
 	{
+		System.out.println(horaIni);
+		
 		turma = turmaManager.setAssinaturaDigital(manterAssinatura, turma, assinaturaDigital, "assinaturas");
 		
 		turmaManager.atualizar(turma, diasCheck, colaboradorTurma, selectPrioridades, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), getEmpresaSistema().getId().equals(turma.getEmpresa().getId()));
@@ -1285,5 +1285,13 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public void setManterAssinatura(boolean manterAssinatura) {
 		this.manterAssinatura = manterAssinatura;
+	}
+
+	public void setHoraIni(Map<String, String> horaIni) {
+		this.horaIni = horaIni;
+	}
+
+	public void setHoraFim(Map<String, String> horaFim) {
+		this.horaFim = horaFim;
 	}
 }

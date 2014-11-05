@@ -20,12 +20,14 @@ public class DiaTurma extends AbstractModel implements Serializable, Cloneable
 {
     @Temporal(TemporalType.DATE)
     private Date dia;
-    @Transient
-    private String descricao;
-
     @ManyToOne
     private Turma turma;
     private char turno = 'D';
+    private String horaIni;
+    private String horaFim;
+    
+    @Transient
+    private String descricao;
 
 	public Date getDia()
 	{
@@ -58,6 +60,11 @@ public class DiaTurma extends AbstractModel implements Serializable, Cloneable
 		this.descricao = descricao;
 	}
 	
+	public String getDiaSemanaDescricao() 
+	{
+		return DateUtil.getDiaSemanaDescritivo(dia);
+	}
+	
 	public String getTurnoDescricao() 
 	{
 		return TipoTurno.getDescricao(turno);
@@ -71,5 +78,25 @@ public class DiaTurma extends AbstractModel implements Serializable, Cloneable
 	public void setTurno(char turno) 
 	{
 		this.turno = turno;
+	}
+	
+	public String getHoraIni() 
+	{
+		return horaIni;
+	}
+	
+	public void setHoraIni(String horaIni) 
+	{
+		this.horaIni = horaIni;
+	}
+	
+	public String getHoraFim() 
+	{
+		return horaFim;
+	}
+	
+	public void setHoraFim(String horaFim) 
+	{
+		this.horaFim = horaFim;
 	}
 }
