@@ -154,7 +154,6 @@ import com.fortes.rh.test.business.sesmt.HistoricoFuncaoManagerTest;
 import com.fortes.rh.test.business.sesmt.MedicaoRiscoManagerTest;
 import com.fortes.rh.test.business.sesmt.MedicoCoordenadorManagerTest;
 import com.fortes.rh.test.business.sesmt.MedidaSegurancaManagerTest;
-import com.fortes.rh.test.business.sesmt.MotivoSolicitacaoEpiManagerTest;
 import com.fortes.rh.test.business.sesmt.NaturezaLesaoManagerTest;
 import com.fortes.rh.test.business.sesmt.ObraManagerTest;
 import com.fortes.rh.test.business.sesmt.PcmatManagerTest;
@@ -1230,7 +1229,6 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(EpcPcmatEditActionTest.class);
         
         suite.addTestSuite(MotivoSolicitacaoEpiDaoHibernateTest.class);
-        suite.addTestSuite(MotivoSolicitacaoEpiManagerTest.class);
         suite.addTestSuite(MotivoSolicitacaoEpiEditActionTest.class);
         
         // UTILITARIOS

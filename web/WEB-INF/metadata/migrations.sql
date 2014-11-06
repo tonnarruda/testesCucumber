@@ -39,7 +39,7 @@ ALTER TABLE solicitacaoepi_item ADD CONSTRAINT solicitacaoepi_item_motivosolicit
 commit;
 rollback
 /**
-select * from solicitacaoEpi_item 
+select * from solicitacaoEpi_item
 select * from motivoSolicitacaoEpi 
 select max(id) from papel 
 select * from papel where nome = 'CIPA'

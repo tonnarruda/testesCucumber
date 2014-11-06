@@ -293,10 +293,11 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("select sse.solicitacaoepiid, sse.empresaid, sse.estabelecimentoid, sse.estabelecimentonome, sse.colaboradorid, sse.colaboradormatricula, sse.colaboradornome, sse.colaboradordesligado, ");
-		sql.append("       e.nome as epinome,  sse.solicitacaoepidata, sse.cargonome, sse.qtdsolicitado as qtdsolicitadototal, item.id as itemId, item.qtdsolicitado as qtdsolicitadoitem, ");
+		sql.append("       e.nome as epinome,  sse.solicitacaoepidata, sse.cargonome, sse.qtdsolicitado as qtdsolicitadototal, item.id as itemId, item.qtdsolicitado as qtdsolicitadoitem, mse.descricao, ");
 		sql.append("       sse.qtdentregue, (select coalesce(sum(qtdentregue), 0) from solicitacaoepiitementrega where solicitacaoepiitem_id = item.id) as qtdentrgueitem, sse.solicitacaoepisituacao ");
 		sql.append("from situacaosolicitacaoepi sse ");
 		sql.append("join solicitacaoepi_item item on item.solicitacaoepi_id = sse.solicitacaoepiid ");
+		sql.append("left join motivosolicitacaoepi mse on mse.id = item.motivosolicitacaoepi_id ");
 		sql.append("join epi e on item.epi_id = e.id ");
 		sql.append("join colaborador c on sse.colaboradorid = c.id ");
 		sql.append("where sse.empresaid = :empresaId ");
@@ -388,6 +389,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			vo.setQtdSolicitadoTotal(new Integer(obj[++countCampo].toString()));
 			vo.setItemId(((BigInteger) obj[++countCampo]).longValue());
 			vo.setQtdSolicitadoItem(new Integer(obj[++countCampo].toString()));
+			vo.setDescricaoMotivoSolicitacaoEpi((String) obj[++countCampo]);
 			vo.setQtdEntregue(new Integer(obj[++countCampo].toString()));
 			vo.setQtdEntregueItem((new Integer(obj[++countCampo].toString())));
 			vo.setSolicitacaoEpiSituacao(obj[++countCampo].toString().charAt(0));

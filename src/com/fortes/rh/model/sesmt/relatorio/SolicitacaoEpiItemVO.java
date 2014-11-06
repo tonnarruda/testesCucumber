@@ -27,7 +27,8 @@ public class SolicitacaoEpiItemVO
 	private Long itemId;
 	private Integer qtdSolicitadoItem;
 	private Integer qtdEntregueItem;
-	
+	private String descricaoMotivoSolicitacaoEpi;
+
 	public Long getSolicitacaoEpiId() {
 		return solicitacaoEpiId;
 	}
@@ -178,5 +179,15 @@ public class SolicitacaoEpiItemVO
 	public void setQtdEntregueItem(Integer qtdEntregueItem)
 	{
 		this.qtdEntregueItem = qtdEntregueItem;
+	}
+
+	public String getDescricaoMotivoSolicitacaoEpi()
+	{
+		return descricaoMotivoSolicitacaoEpi;
+	}
+
+	public void setDescricaoMotivoSolicitacaoEpi(String descricaoMotivoSolicitacaoEpi)
+	{
+		this.descricaoMotivoSolicitacaoEpi = descricaoMotivoSolicitacaoEpi;
 	}
 }
