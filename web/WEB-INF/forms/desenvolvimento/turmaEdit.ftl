@@ -10,6 +10,7 @@
 	.dados td { padding: 0px; }
 	.dados input[type='text'] { border: 1px solid #7E9DB9; width: 50px; }
 	.hora { text-align: right; }
+	.invalido { background-color: #FFEEC2 !important; }
 </style>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
@@ -94,7 +95,7 @@
 					{
 						row +=	"	<td><label for='" + id + "'>" + diasTurma[i].turnoDescricao.capitalize() + "</label></td>\n";
 					}
-					row += 		"	<td><input type='text' name='horaIni[" + id + "]' class='hora' " + readonly + " /> às <input type='text' name='horaFim[" + id + "]' class='hora' " + readonly + " /></td>\n";
+					row += 		"	<td><input type='text' name='horaIni[" + id + "]' class='hora' maxlength='5' " + readonly + " /> às <input type='text' name='horaFim[" + id + "]' class='hora' maxlength='5' " + readonly + " /></td>\n";
 					row += 		"</tr>\n";
 				
 					$('#diasTable').append(row);
@@ -251,6 +252,33 @@
 			return total;
 		}
 		
+		function validarCampos()
+		{
+			var chave, horaIni, horaFim, horariosValidos = true;
+			$('input[name=diasCheck]:checked').each(function() {
+				chave = $(this).val();
+				horaIni = $('input[name="horaIni[' + chave + ']"]').val();
+				horaFim = $('input[name="horaFim[' + chave + ']"]').val();
+				
+				if ( (!horaIni != !horaFim) || !(validaHora(horaIni) && validaHora(horaFim)) || (horaFim.replace(':','') < horaIni.replace(':','') ) )
+				{
+					$(this).parents('tr').addClass('invalido');
+					horariosValidos = false;
+				}
+				else
+					$(this).parents('tr').removeClass('invalido');
+				
+			});
+			
+			if (!horariosValidos)
+			{
+				jAlert('Existe(m) horário(s) definidos incorretamente.<br />Informe os horários de início e término para a data ou deixe ambos em branco.');
+				return false;
+			}
+			
+			return validaFormularioEPeriodo('form', new Array('curso','desc','inst','custo','prevIni','prevFim'), new Array('prevIni', 'prevFim'));
+		}
+		
 		$(function() {
 			<#if contemCustosDetalhados>
 				somenteLeitura(false, 'custo');
@@ -289,7 +317,7 @@
 	</script>
 <@ww.head/>
 
-<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('curso','desc','inst','custo','prevIni','prevFim'), new Array('prevIni', 'prevFim'))"/>
+<#assign validarCampos="return validarCampos();"/>
 </head>
 <body>
 	<@ww.actionerror />
