@@ -53,11 +53,12 @@
 		    return this.charAt(0).toUpperCase() + this.slice(1);
 		}
 	
-		var diasTurmasMarcados = [<#list diaTurmas as diaTurmaMarcado>'${diaTurmaMarcado.dia?string('ddMMyyyy') + diaTurmaMarcado.turno}'<#if diaTurmaMarcado_has_next>, </#if></#list>];
+		var diasTurmasMarcados = [<#if diaTurmas?exists><#list diaTurmas as diaTurmaMarcado>'${diaTurmaMarcado.dia?string('ddMMyyyy') + diaTurmaMarcado.turno}'<#if diaTurmaMarcado_has_next>, </#if></#list></#if>];
 
 		function populaDias(frm)
 		{
 			$('#diasTable').empty();
+			$('#listCheckBoxFilterDiasCheck').val('');
 		
 			var dIni = document.getElementById('prevIni');
 			var dFim = document.getElementById('prevFim');
@@ -74,8 +75,6 @@
 		
 		function montaListDias(diasTurma)
 		{
-			console.log(diasTurma);
-		
 			if (diasTurma != null)
 			{
 				var dataFmt, id;
@@ -275,6 +274,14 @@
 				content: 'A alteração da avaliação do curso está restrita à empresa que o criou.'
 			});
 			
+			$('#listCheckBoxFilterDiasCheck').unbind('keyup').keyup(function() {
+		        var texto = removerAcento( $( this ).val().toUpperCase() );
+			    $( this ).parents( '.listCheckBoxContainer' ).find( ':checkbox' ).each( function() {
+			    	 nomeTeste = removerAcento( $( this ).parents( 'tr' ).text().toUpperCase() );
+					 $( this ).parents('tr').toggle( nomeTeste.indexOf( texto ) >= 0 );
+		    	});
+			});
+			
 			$('#divAssinatura hr').remove();
 			
 			populaDias(document.forms[0]);
@@ -382,8 +389,8 @@
 			<div id="wwctrl_diasCheck" class="wwctrl">
 				<div class="listCheckBoxContainer" style="width: 593px;">
 					<div class="listCheckBoxBarra">
-						<input id="listCheckBoxFilterdiasCheck" class="listCheckBoxFilter" title="Digite para filtrar" type="text">
-						&nbsp;<span class="linkCheck" onclick="marcarDesmarcarListCheckBox(document.forms[0], 'diasCheck',true); ">Marcar todos</span> | <span class="linkCheck" onclick="marcarDesmarcarListCheckBox(document.forms[0], 'diasCheck',false); ">Desmarcar todos</span>
+						<input id="listCheckBoxFilterDiasCheck" class="listCheckBoxFilter" title="Digite para filtrar" type="text">
+						&nbsp;<span class="linkCheck" onclick="$('input[name=diasCheck]').attr('checked','checked');">Marcar todos</span> | <span class="linkCheck" onclick="$('input[name=diasCheck]').removeAttr('checked');">Desmarcar todos</span>
 					</div>
 					<div id="listCheckBoxdiasCheck" class="listCheckBox">
 						<table id="diasTable" class="dados">
