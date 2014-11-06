@@ -1,0 +1,2 @@
+ALTER TABLE solicitacaoepi_item ADD COLUMN motivosolicitacaoepi_id bigint;--.go
+ALTER TABLE solicitacaoepi_item ADD CONSTRAINT solicitacaoepi_item_motivosolicitacaoepi_fk FOREIGN KEY (motivosolicitacaoepi_id) REFERENCES motivosolicitacaoepi(id);--.go
