@@ -6,8 +6,10 @@ import java.util.Date;
 import java.util.List;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
+import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
@@ -15,6 +17,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
@@ -27,6 +30,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
 	private AnuncioManager anuncioManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private EmpresaManager empresaManager;
 
 	public Integer getCount(char visualizar, Long empresaId, Long usuarioId, Long cargoId, String descricaoBusca, char statusBusca, Long[] areasIds)
 	{
@@ -91,10 +95,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		}
 	}
 
-	public void setCandidatoSolicitacaoManager(
-			CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
-		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
-	}
+	
 
 	public void setAnuncioManager(AnuncioManager anuncioManager) {
 		this.anuncioManager = anuncioManager;
@@ -292,11 +293,32 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return getDao().findByEmpresaEstabelecimentosAreas(empresaId, estabelecimentosIds, areasIds);
 	}
 
+	public void atualizaStatusSolicitacaoByColaborador(Colaborador colaborador,	char status, boolean disponibilizarCandidato) 
+	{
+		Empresa empresa = empresaManager.findByIdProjection(colaborador.getEmpresa().getId()); 
+		if(empresa.isSolPessoalReabrirSolicitacao() && colaborador.getSolicitacao() != null && colaborador.getSolicitacao().getId() != null){
+			updateEncerraSolicitacao(false, null, colaborador.getSolicitacao().getId());
+			candidatoSolicitacaoManager.setStatusBySolicitacaoAndCandidato(status, colaborador.getCandidato().getId(), colaborador.getSolicitacao().getId() );
+		}
+		
+		CandidatoManager candidatoManager = (CandidatoManager) SpringUtil.getBeanOld("candidatoManager");
+		if(disponibilizarCandidato && colaborador.getCandidato() != null && colaborador.getCandidato().getId() != null)
+			candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaborador.getId());
+	}
+
+	public void setCandidatoSolicitacaoManager(	CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
+		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
+	}
+	
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
 	public void setSolicitacaoAvaliacaoManager(SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager) {
 		this.solicitacaoAvaliacaoManager = solicitacaoAvaliacaoManager;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
 	}
 }

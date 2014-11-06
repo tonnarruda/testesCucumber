@@ -127,6 +127,9 @@
     <property name="gerenciadorComunicacaoManager">
       <ref bean="gerenciadorComunicacaoManager" />
     </property>
+    <property name="empresaManager">
+      <ref bean="empresaManager" />
+    </property>
   </bean>
   <bean id="solicitacaoManager" parent="parentManager">
     <property name="proxyInterfaces">
@@ -178,15 +181,6 @@
   <bean id="candidatoSolicitacaoManagerTarget" class="com.fortes.rh.business.captacao.CandidatoSolicitacaoManagerImpl">
     <property name="dao">
       <ref bean="candidatoSolicitacaoDao" />
-    </property>
-    <property name="historicoCandidatoManager">
-      <ref bean="historicoCandidatoManager" />
-    </property>
-    <property name="parametrosDoSistemaManager">
-      <ref bean="parametrosDoSistemaManager" />
-    </property>
-    <property name="mail">
-      <ref bean="mail" />
     </property>
   </bean>
   <bean id="candidatoSolicitacaoManager" parent="parentManager">

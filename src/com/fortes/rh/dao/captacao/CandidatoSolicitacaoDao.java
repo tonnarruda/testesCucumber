@@ -9,7 +9,6 @@ import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
-@SuppressWarnings("unchecked")
 public interface CandidatoSolicitacaoDao extends GenericDao<CandidatoSolicitacao>
 {
 	Collection<CandidatoSolicitacao> getCandidatosBySolicitacao(Solicitacao solicitacao, ArrayList<Long> idCandidatosComHistoricos);
@@ -32,4 +31,5 @@ public interface CandidatoSolicitacaoDao extends GenericDao<CandidatoSolicitacao
 	void setStatusByColaborador(char status, Long... colaboradoresIds);
 	void removeByCandidato(Long candidatoId);
 	Collection<ColaboradorQuestionario> findAvaliacoesCandidatoSolicitacao(Long solicitacaoId, Long candidatoId);
+	void setStatusBySolicitacaoAndCandidato(char status, Long candidatoId,Long solicitacaoId);
 }

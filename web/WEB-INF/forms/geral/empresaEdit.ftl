@@ -49,6 +49,14 @@
 					$('#nomeHomonimo').removeAttr('disabled');
 			});
 			
+			$('#integra').change(function() {
+				if ($(this).is(":checked"))
+					$('#solPessoalReabrirSolicitacao').removeAttr('disabled');
+				else
+					$('#solPessoalReabrirSolicitacao').attr("disabled", true);
+			});
+			$('#integra').change();
+			
 			$('#nomeHomonimo').change(function() {
 				if ($(this).is(":checked"))
 					$('#nomeHomonimoEmpresa').attr("disabled", true);
@@ -217,6 +225,7 @@
 					<@ww.checkbox label="Exibir valor do salário" name="empresa.solPessoalExibirSalario" labelPosition="right" />
 					<@ww.checkbox label="Exibir o campo Colaborador Substituído" name="empresa.solPessoalExibirColabSubstituido" labelPosition="right" />
 					<@ww.checkbox label="Tornar obrigatório os dados complementares" name="empresa.solPessoalObrigarDadosComplementares" labelPosition="right" />
+					<@ww.checkbox label="Reabrir solicitação após cancelar contratação ou promoção no AC Pessoal (Somente quando integrado)" name="empresa.solPessoalReabrirSolicitacao" id="solPessoalReabrirSolicitacao" labelPosition="right" />
 				</ul>
 			</@ww.div>
 		</li>

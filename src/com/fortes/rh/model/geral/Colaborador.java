@@ -2801,4 +2801,11 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		
 		this.solicitanteDemissao.setId(solicitanteDemissaoId);
 	}
+
+	public void setSolicitacaoId(Long solicitacaoId) {
+		if(this.solicitacao == null)
+			this.solicitacao = new Solicitacao();
+		
+		this.solicitacao.setId(solicitacaoId);
+	}
 }

@@ -4768,4 +4768,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		return (Integer) query.uniqueResult();
 	}
+
+	public void setSolicitacao(Long colaboradorId, Long solicitacaoId) {
+		Query query = getSession().createQuery("update Colaborador set solicitacao.id = :solicitacaoId where id = :colaboradorId ");
+		
+		query.setLong("colaboradorId", colaboradorId);
+		query.setLong("solicitacaoId", solicitacaoId);
+		
+		query.executeUpdate();
+	}
 }

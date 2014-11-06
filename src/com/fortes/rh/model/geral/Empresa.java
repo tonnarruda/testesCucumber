@@ -63,7 +63,8 @@ public class Empresa extends AbstractModel implements Serializable
 	private boolean solPessoalExibirSalario;
 	private boolean solPessoalExibirColabSubstituido;
 	private boolean solPessoalObrigarDadosComplementares;
-
+	private boolean solPessoalReabrirSolicitacao;
+	
 	private boolean exibirSalario;
 	private boolean exibirDadosAmbiente;
     private boolean acIntegra;
@@ -539,6 +540,14 @@ public class Empresa extends AbstractModel implements Serializable
 	public void setSolPessoalObrigarDadosComplementares(
 			boolean solPessoalObrigarDadosComplementares) {
 		this.solPessoalObrigarDadosComplementares = solPessoalObrigarDadosComplementares;
+	}
+
+	public boolean isSolPessoalReabrirSolicitacao() {
+		return solPessoalReabrirSolicitacao;
+	}
+
+	public void setSolPessoalReabrirSolicitacao(boolean solPessoalReabrirSolicitacao) {
+		this.solPessoalReabrirSolicitacao = solPessoalReabrirSolicitacao;
 	}
 
 	public int getFormulaTurnover() {

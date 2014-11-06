@@ -183,7 +183,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			}
 
 			historicoColaboradorManager.insertHistorico(historicoColaborador, getEmpresaSistema());
-
+			
 			if (StringUtils.equals(encerrarSolicitacao, "S")) 
 				solicitacaoManager.encerrarSolicitacaoAoPreencherTotalVagas(solicitacao, getEmpresaSistema());
 
@@ -191,6 +191,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 			if(solicitacao != null && solicitacao.getId() != null)
 			{
+				colaboradorManager.setSolicitacao(colaborador.getId(), solicitacao.getId());
 				addActionSuccess("Colaborador <strong>" + colaborador.getNome() + "</strong>  promovido com sucesso.");
 				return "successSolicitacao";
 			}else

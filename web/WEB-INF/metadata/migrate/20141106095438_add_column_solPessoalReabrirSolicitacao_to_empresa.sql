@@ -1,0 +1,1 @@
+alter table empresa add column solPessoalReabrirSolicitacao boolean default false;--.go

@@ -1028,7 +1028,6 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 	
 	public void testFindMotivosPreenchimentoSolicitacao()
 	{
-		Date dataPassado = DateUtil.criarDataMesAno(1, 7, 2010);
 		Date dataDe = DateUtil.criarDataMesAno(1, 9, 2010);
 		Date dataAte = DateUtil.criarDataMesAno(1, 9, 2011);
 		Date dataEntre = DateUtil.criarDataMesAno(1, 8, 2011);

@@ -8,8 +8,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
-import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
@@ -18,23 +16,11 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.LongUtil;
-import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 
 @SuppressWarnings("unchecked")
 public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<CandidatoSolicitacao, CandidatoSolicitacaoDao> implements CandidatoSolicitacaoManager
 {
-    private HistoricoCandidatoManager historicoCandidatoManager;
-    private Mail mail;
-    private ParametrosDoSistemaManager parametrosDoSistemaManager;
-    private ColaboradorManager colaboradorManager;//SpringUtil deu  PAUUUUU com o applicationContext
-    private ColaboradorQuestionarioManager colaboradorQuestionarioManager;//deu pau nos tests quando setei no xml.(ta com applicationContext)
-
-    public void setHistoricoCandidatoManager(HistoricoCandidatoManager historicoCandidatoManager)
-    {
-        this.historicoCandidatoManager = historicoCandidatoManager;
-    }
-
     public CandidatoSolicitacao findByCandidatoSolicitacao(CandidatoSolicitacao cand)
     {
         return getDao().findByCandidatoSolicitacao(cand);
@@ -124,19 +110,9 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 		return emailNaoAptos.toArray(new String[]{});
     }
 
-    public void setMail(Mail mail)
-    {
-        this.mail = mail;
-    }
-
-    public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
-    {
-        this.parametrosDoSistemaManager = parametrosDoSistemaManager;
-    }
-
     public Collection<CandidatoSolicitacao> verificaExisteColaborador(Collection<CandidatoSolicitacao> candidatoSolicitacaos, Long empresaId)
     {
-        colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+    	ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
         for(CandidatoSolicitacao candidatoSolicitacao : candidatoSolicitacaos)
             candidatoSolicitacao.setExisteColaborador(colaboradorManager.candidatoEhColaborador(candidatoSolicitacao.getCandidato().getId(), empresaId));
 
@@ -224,5 +200,10 @@ public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<Candidat
 	public Collection<ColaboradorQuestionario> findAvaliacoesCandidatoSolicitacao(Long solicitacaoId, Long candidatoId) 
 	{
 		return getDao().findAvaliacoesCandidatoSolicitacao(solicitacaoId, candidatoId);
+	}
+
+	public void setStatusBySolicitacaoAndCandidato(char status, Long candidatoId, Long solicitacaoId) 
+	{
+		getDao().setStatusBySolicitacaoAndCandidato(status, candidatoId, solicitacaoId);
 	}
 }

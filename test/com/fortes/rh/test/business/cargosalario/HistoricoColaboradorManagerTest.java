@@ -16,6 +16,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManagerImpl;
@@ -43,6 +44,7 @@ import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;
 import com.fortes.rh.model.dicionario.CodigoGFIP;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
@@ -97,7 +99,8 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 	Mock empresaManager;
 	Mock gerenciadorComunicacaoManager;
 	Mock candidatoSolicitacaoManager;
-
+	Mock solicitacaoManager;
+	
 	protected void setUp() throws Exception
 	{
         transactionManager = new Mock(PlatformTransactionManager.class);
@@ -149,6 +152,9 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("funcaoManager", funcaoManager);
 		ambienteManager = mock(AmbienteManager.class);
 		MockSpringUtil.mocks.put("ambienteManager", ambienteManager);
+		
+		solicitacaoManager =  new Mock(SolicitacaoManager.class);
+		MockSpringUtil.mocks.put("solicitacaoManager", solicitacaoManager);
 
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 		Mockit.redefineMethods(HibernateTemplate.class, MockHibernateTemplate.class);
@@ -1284,7 +1290,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorDao.expects(once()).method("findByIdProjectionHistorico").with(ANYTHING).will(returnValue(historicoColaborador));
 		historicoColaboradorDao.expects(once()).method("setStatus").with(eq(historicoColaborador.getId()), eq(false)).will(returnValue(true));
 		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemCancelamentoSituacao").with(eq(situacao), eq(mensagem), eq(historicoColaborador)).isVoid();
-		candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, ANYTHING).isVoid();
+		solicitacaoManager.expects(once()).method("atualizaStatusSolicitacaoByColaborador").with(eq(colaborador), eq(StatusCandidatoSolicitacao.APROMOVER), eq(false)).isVoid();
 		
 		HistoricoColaborador historicoColaboradorRetorno = historicoColaboradorManager.cancelarSituacao(situacao, mensagem);
 
@@ -1318,13 +1324,13 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		String mensagem = "Teste";
 
 		historicoColaboradorDao.expects(once()).method("findByAC").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(historicoColaborador));
-		candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, ANYTHING).isVoid();
 		estabelecimentoManager.expects(once()).method("findEstabelecimentoByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(estabelecimento));
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaSalarial));
 		historicoColaboradorDao.expects(once()).method("update").with(ANYTHING);
 		gerenciadorComunicacaoManager.expects(once()).method("enviaMensagemCancelamentoSituacao").with(eq(situacao), eq(mensagem), eq(historicoColaborador)).isVoid();
-
+		solicitacaoManager.expects(once()).method("atualizaStatusSolicitacaoByColaborador").with(eq(colaborador), eq(StatusCandidatoSolicitacao.APROMOVER), eq(false)).isVoid();
+		
 		HistoricoColaborador historicoColaboradorRetorno = historicoColaboradorManager.cancelarSituacao(situacao, mensagem);
 
 		assertEquals(historicoColaborador, historicoColaboradorRetorno);

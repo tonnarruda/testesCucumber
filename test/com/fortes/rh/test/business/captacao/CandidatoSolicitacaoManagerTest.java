@@ -10,9 +10,7 @@ import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManagerImpl;
-import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Candidato;
@@ -28,16 +26,12 @@ import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
-import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 
 public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
 {
 	private CandidatoSolicitacaoManagerImpl candidatoSolicitacaoManager;
 	private Mock candidatoSolicitacaoDao;
-	private Mock historicoCandidatoManager;
-	private Mock parametrosDoSistemaManager;
-	private Mock mail;
 	private Mock colaboradorManager;
 
     protected void setUp() throws Exception
@@ -46,15 +40,6 @@ public class CandidatoSolicitacaoManagerTest extends MockObjectTestCase
 
         candidatoSolicitacaoDao = new Mock(CandidatoSolicitacaoDao.class);
         candidatoSolicitacaoManager.setDao((CandidatoSolicitacaoDao) candidatoSolicitacaoDao.proxy());
-
-        historicoCandidatoManager = new Mock(HistoricoCandidatoManager.class);
-        candidatoSolicitacaoManager.setHistoricoCandidatoManager((HistoricoCandidatoManager) historicoCandidatoManager.proxy());
-
-        parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
-        candidatoSolicitacaoManager.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
-
-        mail = mock(Mail.class);
-        candidatoSolicitacaoManager.setMail((Mail) mail.proxy());
 
         colaboradorManager = new Mock(ColaboradorManager.class);
 

@@ -508,6 +508,33 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(StatusCandidatoSolicitacao.INDIFERENTE, candidatoSolicitacao.getStatus());
 	}
 	
+	public void testSetStatusBySolicitacaoAndCandidato()
+	{
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato);
+		
+		Solicitacao solicitacao = new Solicitacao();
+		solicitacaoDao.save(solicitacao);
+		
+		CandidatoSolicitacao candidatoSolicitacao = CandidatoSolicitacaoFactory.getEntity();
+		candidatoSolicitacao.setCandidato(candidato);
+		candidatoSolicitacao.setSolicitacao(solicitacao);
+		candidatoSolicitacao.setStatus(StatusCandidatoSolicitacao.CONTRATADO);
+		candidatoSolicitacaoDao.save(candidatoSolicitacao);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setCandidato(candidato);
+		colaborador.setSolicitacao(solicitacao);
+		colaboradorDao.save(colaborador);
+		
+		assertEquals(StatusCandidatoSolicitacao.CONTRATADO, candidatoSolicitacao.getStatus());
+		
+		candidatoSolicitacaoDao.setStatusBySolicitacaoAndCandidato(StatusCandidatoSolicitacao.INDIFERENTE, candidato.getId(), solicitacao.getId());
+		candidatoSolicitacao = candidatoSolicitacaoDao.findCandidatoSolicitacaoById(candidatoSolicitacao.getId());
+		
+		assertEquals(StatusCandidatoSolicitacao.INDIFERENTE, candidatoSolicitacao.getStatus());
+	}
+	
 	public void testRemoveByCandidato()
 	{
 		Candidato candidato1 = CandidatoFactory.getCandidato();

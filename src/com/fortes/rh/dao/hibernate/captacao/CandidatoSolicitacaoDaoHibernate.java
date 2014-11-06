@@ -8,14 +8,12 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
-import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -550,6 +548,18 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		query.executeUpdate();
 	}
 
+	public void setStatusBySolicitacaoAndCandidato(char status, Long candidatoId, Long solicitacaoId) 
+	{
+		String hql = "update CandidatoSolicitacao set status = :status where candidato.id = :candidatoId and solicitacao.id = :solicitacaoId ";
+		
+		Query query = getSession().createQuery(hql);
+		query.setCharacter("status", status);
+		query.setLong("candidatoId", candidatoId);
+		query.setLong("solicitacaoId", solicitacaoId);
+		
+		query.executeUpdate();
+	}
+
 	public void removeByCandidato(Long candidatoId) 
 	{
 		String hql = "delete from HistoricoCandidato hs where hs.candidatoSolicitacao.id in (select id from CandidatoSolicitacao c where c.candidato.id = :candidatoId)";
@@ -581,4 +591,5 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		
 		return query.list();
 	}
+
 }

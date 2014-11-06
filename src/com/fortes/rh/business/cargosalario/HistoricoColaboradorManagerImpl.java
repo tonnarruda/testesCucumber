@@ -24,6 +24,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
@@ -850,18 +851,14 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 				historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
 				update(historicoColaborador);
 			}
-	
-			atualizaStatusDaSolicitacao(historicoColaborador);
+
+			SolicitacaoManager solicitacaoManager = (SolicitacaoManager) SpringUtil.getBeanOld("solicitacaoManager");
+			solicitacaoManager.atualizaStatusSolicitacaoByColaborador(historicoColaborador.getColaborador(), StatusCandidatoSolicitacao.APROMOVER, false);
 		}
 		
 		return historicoColaborador;
 	}
 	
-	public void atualizaStatusDaSolicitacao(HistoricoColaborador historicoColaborador)
-	{
-		candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.APROMOVER, historicoColaborador.getColaborador().getId());
-	}
-
 	public Collection<PendenciaAC> findPendenciasByHistoricoColaborador(Long empresaId)
 	{
 		Collection<PendenciaAC> pendenciaACs = new ArrayList<PendenciaAC>();

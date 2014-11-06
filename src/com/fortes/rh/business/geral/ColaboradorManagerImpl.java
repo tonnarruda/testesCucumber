@@ -1524,6 +1524,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void cancelarContratacaoNoAC(Colaborador colaborador, HistoricoColaborador historicoColaborador, String mensagem) throws Exception
 	{
+		solicitacaoManager.atualizaStatusSolicitacaoByColaborador(colaborador, StatusCandidatoSolicitacao.INDIFERENTE, true);
 		historicoColaboradorManager.remove(historicoColaborador);
 		removeColaboradorDependencias(colaborador);		
 		gerenciadorComunicacaoManager.enviaMensagemCancelamentoContratacao(colaborador, mensagem);
@@ -2582,6 +2583,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void removeComDependencias(Long id) 
 	{
 		getDao().removeComDependencias(id);
+	}
+
+	public void setSolicitacao(Long colaboradorId, Long solicitacaoId) 
+	{
+		getDao().setSolicitacao(colaboradorId, solicitacaoId);
 	}
 
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds)

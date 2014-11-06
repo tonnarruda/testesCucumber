@@ -26,6 +26,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.Vinculo;
@@ -834,7 +835,16 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	{
 		this.salario = salario;
 	}
-
+	
+	public void setColaboradorSolicitacaoId(Long solicitacaoId){
+		inicializaColaborador();
+		colaborador.setSolicitacaoId(solicitacaoId);
+	}
+	
+	public void setColaboradorCandidatoId(Long candidatoId){
+		inicializaColaborador();
+		colaborador.setCandidatoId(candidatoId);
+	}
 
 	public String toString()
 	{
