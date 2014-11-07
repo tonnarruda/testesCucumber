@@ -96,11 +96,11 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmaIds);
 	}
 
-	public void atualizar(Turma turma, String[] dias, String[] colaboradorTurma, String[] selectPrioridades, Long[] avaliacaoTurmaIds, boolean atualizaAvaliacao) throws Exception
+	public void atualizar(Turma turma, String[] dias, Map<String, String> horasIni, Map<String, String> horasFim, String[] colaboradorTurma, String[] selectPrioridades, Long[] avaliacaoTurmaIds, boolean atualizaAvaliacao) throws Exception
 	{
 		colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades);
 
-		updateTurmaDias(turma, dias);
+		updateTurmaDias(turma, dias, horasIni, horasFim);
 		
 		TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager = (TurmaAvaliacaoTurmaManager) SpringUtil.getBean("turmaAvaliacaoTurmaManager");
 		
@@ -112,7 +112,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	{
 		save(turma);
 		
-		diaTurmaManager.saveDiasTurma(turma, diasCheck);
+		diaTurmaManager.saveDiasTurma(turma, diasCheck, c, d);
 		
 		if (!StringUtil.isBlank(despesaJSON))
 			turmaTipoDespesaManager.save(despesaJSON, turma.getId());
@@ -138,7 +138,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		}
 	}
 
-	public void updateTurmaDias(Turma turma, String[] diasCheck) throws Exception
+	public void updateTurmaDias(Turma turma, String[] diasCheck, Map<String, String> horasIni, Map<String, String> horasFim) throws Exception
 	{
 		boolean result = false;
 		
@@ -148,7 +148,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			result = colaboradorPresencaManager.existPresencaByTurma(turma.getId());
 			if(!result)
 			{
-				diaTurmaManager.saveDiasTurma(turma, diasCheck);
+				diaTurmaManager.saveDiasTurma(turma, diasCheck, horasIni, horasFim);
 			}
 		}
 		catch(Exception e)

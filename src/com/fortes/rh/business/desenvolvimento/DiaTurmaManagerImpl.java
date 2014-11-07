@@ -3,6 +3,7 @@ package com.fortes.rh.business.desenvolvimento;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -64,7 +65,7 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 		return diaTurmas;
 	}
     // sempre deleta todos os dias e salva os novos.
-	public void saveDiasTurma(Turma turma, String[] diasCheck) throws Exception
+	public void saveDiasTurma(Turma turma, String[] diasCheck, Map<String, String> horasIni, Map<String, String> horasFim) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -79,13 +80,20 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 				DiaTurma diaTurmaTmp;
 				for (String valueDias : diasCheck)
 				{
-					String dataStr = valueDias.substring(0, 10);
+					String[] dataTurno = valueDias.split(";");
+					String chave = valueDias.replace("/", "").replace(";", "");
 
 					diaTurmaTmp = new DiaTurma();
-					diaTurmaTmp.setDia(DateUtil.montaDataByString(dataStr));
+					diaTurmaTmp.setDia(DateUtil.montaDataByString(dataTurno[0]));
 					diaTurmaTmp.setTurma(turma);
-					diaTurmaTmp.setTurno(TipoTurno.getTipoTurnoByStringConteins(valueDias));
+					diaTurmaTmp.setTurno(dataTurno[1].charAt(0));
 
+					if (horasIni.containsKey(chave) && horasFim.containsKey(chave))
+					{
+						diaTurmaTmp.setHoraIni(horasIni.get(chave));
+						diaTurmaTmp.setHoraFim(horasFim.get(chave));
+					}
+					
 					save(diaTurmaTmp);
 				}
 			}

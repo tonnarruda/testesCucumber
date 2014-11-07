@@ -180,8 +180,8 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private boolean manterAssinatura;
 
 	private Map<Long, String> despesas = new HashMap<Long, String>();
-	private Map<String, String> horaIni = new HashMap<String, String>();
-	private Map<String, String> horaFim = new HashMap<String, String>();
+	private Map<String, String> horariosIni;
+	private Map<String, String> horariosFim;
 	
 	private File assinaturaDigital;
 	
@@ -278,11 +278,9 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public String update() throws Exception
 	{
-		System.out.println(horaIni);
-		
 		turma = turmaManager.setAssinaturaDigital(manterAssinatura, turma, assinaturaDigital, "assinaturas");
 		
-		turmaManager.atualizar(turma, diasCheck, colaboradorTurma, selectPrioridades, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), getEmpresaSistema().getId().equals(turma.getEmpresa().getId()));
+		turmaManager.atualizar(turma, diasCheck, horariosIni, horariosFim, colaboradorTurma, selectPrioridades, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), getEmpresaSistema().getId().equals(turma.getEmpresa().getId()));
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
@@ -1287,11 +1285,11 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		this.manterAssinatura = manterAssinatura;
 	}
 
-	public void setHoraIni(Map<String, String> horaIni) {
-		this.horaIni = horaIni;
+	public void setHorariosIni(Map<String, String> horariosIni) {
+		this.horariosIni = horariosIni;
 	}
 
-	public void setHoraFim(Map<String, String> horaFim) {
-		this.horaFim = horaFim;
+	public void setHorariosFim(Map<String, String> horariosFim) {
+		this.horariosFim = horariosFim;
 	}
 }

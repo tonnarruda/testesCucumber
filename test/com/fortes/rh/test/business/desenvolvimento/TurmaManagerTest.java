@@ -350,7 +350,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.atualizar(turma, diasCheck, colaboradorTurmas, selectPrioridades, avaliacaoTurmaIds, true);
+			turmaManager.atualizar(turma, diasCheck, a, b, colaboradorTurmas, selectPrioridades, avaliacaoTurmaIds, true);
 		}
 		catch (Exception e)
 		{
@@ -428,7 +428,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.updateTurmaDias(turma, diasCheck);
+			turmaManager.updateTurmaDias(turma, diasCheck, x, y);
 		}
 		catch (Exception e)
 		{
@@ -454,7 +454,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.updateTurmaDias(turma, diasCheck);
+			turmaManager.updateTurmaDias(turma, diasCheck, x, y);
 		}
 		catch (Exception e)
 		{

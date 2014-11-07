@@ -6,9 +6,9 @@
 	@import url('<@ww.url value="/css/displaytag.css"/>');
 	#formDialog { display: none; }
 	
-	.dados { border: none; }
-	.dados td { padding: 0px; }
-	.dados input[type='text'] { border: 1px solid #7E9DB9; width: 50px; }
+	#diasTable { border: none; }
+	#diasTable td { padding: 0px; }
+	#diasTable input[type='text'] { border: 1px solid #7E9DB9; width: 50px; }
 	.hora { text-align: right; }
 	.invalido { background-color: #FFEEC2 !important; }
 </style>
@@ -88,14 +88,14 @@
 					id = $.datepicker.formatDate('ddmmyy', diasTurma[i].dia) + diasTurma[i].turno;
 					
 					var row = 	"<tr class='" + (i%2 == 0 ? 'even' : 'odd') + "'>\n";
-					row += 		"	<td><input name='diasCheck' id='" + id + "' value='" + id + "' type='checkbox' " + onclick + " /></td>\n";
+					row += 		"	<td><input name='diasCheck' id='" + id + "' value='" + dataFmt + ';' + diasTurma[i].turno + "' type='checkbox' " + onclick + " /></td>\n";
 					row += 		"	<td><label for='" + id + "'>" + dataFmt + "</label></td>\n";
 					row += 		"	<td><label for='" + id + "'>" + diasTurma[i].diaSemanaDescricao.capitalize() + "</label></td>\n";
 					if (diasTurma[i].turno != 'D')
 					{
 						row +=	"	<td><label for='" + id + "'>" + diasTurma[i].turnoDescricao.capitalize() + "</label></td>\n";
 					}
-					row += 		"	<td><input type='text' name='horaIni[" + id + "]' class='hora' maxlength='5' " + readonly + " /> às <input type='text' name='horaFim[" + id + "]' class='hora' maxlength='5' " + readonly + " /></td>\n";
+					row += 		'	<td><input type="text" name="horariosIni[\'' + id + '\']" class="hora" maxlength="5" ' + readonly + ' /> às <input type="text" name="horariosFim[\'' + id + '\']" class="hora" maxlength="5" ' + readonly + ' /></td>\n';
 					row += 		"</tr>\n";
 				
 					$('#diasTable').append(row);
@@ -257,10 +257,10 @@
 			var chave, horaIni, horaFim, horariosValidos = true;
 			$('input[name=diasCheck]:checked').each(function() {
 				chave = $(this).val();
-				horaIni = $('input[name="horaIni[' + chave + ']"]').val();
-				horaFim = $('input[name="horaFim[' + chave + ']"]').val();
+				horaIni = $('input[name="horasIni[' + chave + ']"]').val();
+				horaFim = $('input[name="horasFim[' + chave + ']"]').val();
 				
-				if ( (!horaIni != !horaFim) || !(validaHora(horaIni) && validaHora(horaFim)) || (horaFim.replace(':','') < horaIni.replace(':','') ) )
+				if ( (horaIni && horaFim) && ((!horaIni != !horaFim) || !(validaHora(horaIni) && validaHora(horaFim)) || (horaFim.replace(':','') < horaIni.replace(':','') )) )
 				{
 					$(this).parents('tr').addClass('invalido');
 					horariosValidos = false;
