@@ -6,7 +6,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>
 
-	<title>Motivo da Solicitação do Epi</title>
+	<title>Motivos de Solicitação de EPI</title>
 </head>
 <body>
 	<@ww.actionmessage />

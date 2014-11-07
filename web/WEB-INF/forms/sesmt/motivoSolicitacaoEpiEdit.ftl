@@ -2,10 +2,10 @@
 	<head>
 		<@ww.head/>
 		<#if motivoSolicitacaoEpi.id?exists>
-			<title>Editar Motivo da Solicitacao do EPI</title>
+			<title>Editar Motivo de Solicitação de EPI</title>
 			<#assign formAction="update.action"/>
 		<#else>
-			<title>Inserir Motivo da Solicitacao do EPI</title>
+			<title>Inserir Motivo de Solicitação de EPI</title>
 			<#assign formAction="insert.action"/>
 		</#if>
 	
