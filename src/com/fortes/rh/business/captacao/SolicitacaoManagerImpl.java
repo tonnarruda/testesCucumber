@@ -9,7 +9,6 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
-import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
@@ -240,8 +239,8 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return getDao().findAllByCandidato(candidatoId);
 	}
 
-	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim) {
-		return getDao().findQtdVagasDisponiveis(empresaId, estabelecimentoIds, areaIds, solicitacaoIds, dataIni, dataFim);
+	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim, char statusSolicitacao) {
+		return getDao().findQtdVagasDisponiveis(empresaId, estabelecimentoIds, areaIds, solicitacaoIds, dataIni, dataFim, statusSolicitacao);
 	}
 
 	public Collection<DataGrafico> findQtdContratadosPorFaixa(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim) {

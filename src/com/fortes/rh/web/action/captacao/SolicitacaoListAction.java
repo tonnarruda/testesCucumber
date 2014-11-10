@@ -33,6 +33,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.thread.EnviaEmailSolicitanteThread;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -80,6 +81,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     
     private String json;
     private char statusSolicitacaoAnterior;
+    private Date dataStatusSolicitacaoAnterior;
     private char statusCandSol;
 	private Boolean compartilharCandidatos;
 	
@@ -265,12 +267,12 @@ public class SolicitacaoListAction extends MyActionSupportList
 
     public String updateStatusSolicitacao() throws Exception
     {
-		if(solicitacao.getStatus() != statusSolicitacaoAnterior && SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
+		if((solicitacao.getStatus() != statusSolicitacaoAnterior || (solicitacao.getDataStatus() != null && !solicitacao.getDataStatus().equals(dataStatusSolicitacaoAnterior))) && SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
         {
     		solicitacao.setLiberador(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
         	solicitacaoManager.updateStatusSolicitacao(solicitacao);
     		
-        	solicitacaoManager.emailSolicitante(solicitacao, getEmpresaSistema(), getUsuarioLogado());
+        	new EnviaEmailSolicitanteThread(solicitacao, getEmpresaSistema(), getUsuarioLogado()).start();
         }
 		
     	return Action.SUCCESS;
@@ -498,5 +500,9 @@ public class SolicitacaoListAction extends MyActionSupportList
 	public void setAreaOrganizacionalManager(
 			AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setDataStatusSolicitacaoAnterior(Date dataStatusSolicitacaoAnterior) {
+		this.dataStatusSolicitacaoAnterior = dataStatusSolicitacaoAnterior;
 	}
 }

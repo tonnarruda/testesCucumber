@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
@@ -17,6 +18,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -69,6 +71,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private double indiceProcSeletivo;
 	private boolean indicadorResumido;
 	
+	private LinkedHashMap<Character, String> tiposStatusSolicitacao;
 	private char statusSolicitacao;
 
 	private String grfContratadosFaixa = "";
@@ -86,6 +89,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		if (dataDe == null)
 			dataDe = DateUtil.retornaDataAnteriorQtdMeses(hoje, 2, true);
 		
+		montTiposStatusSolicitacao();
 		Collection<Solicitacao> solicitacoes = solicitacaoManager.findByEmpresaEstabelecimentosAreas(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck));
 		
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
@@ -95,8 +99,8 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
     	CheckListBoxUtil.marcaCheckListBox(solicitacaosCheck, solicitacaosCheckIds);
-
-		faixaSalarials = solicitacaoManager.findQtdVagasDisponiveis(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
+    	    	
+		faixaSalarials = solicitacaoManager.findQtdVagasDisponiveis(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte, statusSolicitacao);
 		qtdCandidatosCadastrados = candidatoManager.findQtdCadastrados(getEmpresaSistema().getId(), dataDe, dataAte);
 		qtdCandidatosAtendidos = candidatoManager.findQtdAtendidos(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
 		qtdEtapasRealizadas = historicoCandidatoManager.findQtdEtapasRealizadas(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte); 
@@ -124,6 +128,15 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		grfDivulgacaoVaga = StringUtil.toJSON(graficoDivulgacaoVaga, null);
 		
 		return Action.SUCCESS;
+	}
+
+	private void montTiposStatusSolicitacao() 
+	{
+		tiposStatusSolicitacao = new  LinkedHashMap<Character, String>();
+    	tiposStatusSolicitacao.put('S', "Solicitação");
+    	tiposStatusSolicitacao.put('A', "Aprovação");
+    	tiposStatusSolicitacao.put('R', "Reprovação");
+    	tiposStatusSolicitacao.put('I', "Análise");
 	}
 
 	public String prepareMotivo() throws Exception
@@ -447,5 +460,9 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 
 	public void setIndicadorResumido(boolean indicadorResumido) {
 		this.indicadorResumido = indicadorResumido;
+	}
+
+	public LinkedHashMap<Character, String> getTiposStatusSolicitacao() {
+		return tiposStatusSolicitacao;
 	}
 }

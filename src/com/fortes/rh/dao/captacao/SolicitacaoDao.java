@@ -35,7 +35,7 @@ public interface SolicitacaoDao extends GenericDao<Solicitacao>
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long[] solicitacaoIds);
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao, boolean indicadorResumido);
 	Collection<Solicitacao> findAllByCandidato(Long candidatoId);
-	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
+	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim, char statusSolicitacao);
 	Collection<FaixaSalarial> findQtdContratadosFaixa(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solisolicitacaoIds, Date dataIni, Date dataFim);
 	Collection<AreaOrganizacional> findQtdContratadosArea(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	Collection<MotivoSolicitacao> findQtdContratadosMotivo(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);

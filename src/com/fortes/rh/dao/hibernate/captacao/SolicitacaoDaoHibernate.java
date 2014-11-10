@@ -64,6 +64,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("us.nome"), "solicitanteNome");
 		p.add(Projections.property("s.encerrada"), "encerrada");
 		p.add(Projections.property("s.dataEncerramento"), "dataEncerramento");
+		p.add(Projections.property("s.dataStatus"), "dataStatus");
 		p.add(Projections.property("s.suspensa"), "suspensa");
 		p.add(Projections.property("s.obsSuspensao"), "obsSuspensao");
 		p.add(Projections.property("s.status"), "status");
@@ -377,7 +378,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 	
 	public void updateStatusSolicitacao(Solicitacao solicitacao) 
 	{
-		String hql = "update Solicitacao set status = :status, observacaoLiberador = :observacaoLiberador, liberador.id = :liberadorId where id = :solicitacaoId";
+		String hql = "update Solicitacao set status = :status, observacaoLiberador = :observacaoLiberador, liberador.id = :liberadorId, dataStatus = :dataStatus where id = :solicitacaoId";
 
 		Query query = getSession().createQuery(hql);
 
@@ -385,6 +386,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		query.setString("observacaoLiberador", solicitacao.getObservacaoLiberador());
 		query.setLong("liberadorId", solicitacao.getLiberador().getId());
 		query.setLong("solicitacaoId", solicitacao.getId());
+		query.setDate("dataStatus", solicitacao.getDataStatus());
 
 		query.executeUpdate();
 	}
@@ -642,7 +644,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 
-	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim) 
+	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim, char statusSolicitacao) 
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.createCriteria("s.faixaSalarial", "f");
@@ -655,10 +657,17 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.between("s.data", dataIni, dataFim));
+		if(statusSolicitacao == StatusAprovacaoSolicitacao.ANALISE || statusSolicitacao == StatusAprovacaoSolicitacao.REPROVADO || statusSolicitacao == StatusAprovacaoSolicitacao.APROVADO)
+		{
+			criteria.add(Expression.eq("s.status", statusSolicitacao));
+			criteria.add(Expression.between("s.dataStatus", dataIni, dataFim));
+		}else{
+			criteria.add(Expression.between("s.data", dataIni, dataFim));
+			criteria.add(Expression.eq("s.status", StatusAprovacaoSolicitacao.APROVADO));
+		}		
+		
 		criteria.add(Expression.eq("s.suspensa", false));
 		criteria.add(Expression.eq("s.encerrada", false));
-		criteria.add(Expression.eq("s.status", StatusAprovacaoSolicitacao.APROVADO));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
 		
 		if (LongUtil.arrayIsNotEmpty(estabelecimentoIds))
@@ -784,7 +793,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		Criteria criteria = montaCriteria();
 		
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
-		
+
 		if (LongUtil.arrayIsNotEmpty(areasIds))
 			criteria.add(Expression.in("s.areaOrganizacional.id", areasIds));
 		

@@ -11,6 +11,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("unchecked")
 public class SolicitacaoDWR {
@@ -32,6 +33,7 @@ public class SolicitacaoDWR {
 		HashMap<String, String> solicitacaoMap = new HashMap<String, String>();
 		solicitacaoMap.put("status", String.valueOf(solicitacao.getStatus()));
 		solicitacaoMap.put("obs", solicitacao.getObservacaoLiberador());
+		solicitacaoMap.put("dataStatus", DateUtil.formataDiaMesAno(solicitacao.getDataStatus()));
 		
 		return solicitacaoMap;  
 	}
