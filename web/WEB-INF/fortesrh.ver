@@ -11,6 +11,7 @@
 		<Item visivel="N" motivo="P20141000242"><![CDATA[BUG: Módulo externo> Correção de erro ao responder avaliação.]]></Item>
 		<Item visivel="N" motivo="P20141000274"><![CDATA[BUG: SESMT > Relatórios > Resultado da Ficha Médica: Inconsistência quando respostas subjetivas possuiam a mesma descrição apresentando apenas uma resposta.]]></Item>
 		<Item visivel="N" motivo="P20141000275"><![CDATA[BUG: Aval. Desempenho > Movimentações > Avaliações de Desempenho > Resultado da Avaliação de Desempenho: Ao marcar a fleg "Desconsiderar auto-avaliação" o relatório apresendado continuava a apresentar respostas da auto-avaliação quando se tratava de perguntas objetiva e multipla escolha.]]></Item>
+		<Item visivel="N" motivo="P20141000201"><![CDATA[Melhoria de performance em várias consultas.]]></Item>
 	</Versao>
 	<Versao id="1.1.136.164" bd="" data="03/11/2014">
 		<Item visivel="S" motivo="S20140100212"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Possibilitando encerrar vaga ao contratar colaboradores de outra empresa.]]></Item>
