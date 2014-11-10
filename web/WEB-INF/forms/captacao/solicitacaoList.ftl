@@ -9,7 +9,7 @@
 	<#include "../ftl/mascarasImports.ftl" />
 	<#assign validarCamposSuspende = "return validaFormulario('formSuspendeSolicitacao', new Array('obsSuspensao'), null)"/>
 	<#assign validarCamposEncerra = "return validaFormulario('formEncerraSolicitacao', new Array('dataEncerramento'), new Array('dataEncerramento'))"/>
-	<#assign validarCamposUpdateStatus = "$('#gravarStatus').attr('disabled', true); return validaFormulario('formUpdateStatusSolicitacao', new Array(), null)"/>
+	<#assign validarCamposUpdateStatus = "return validaFormulario('formUpdateStatusSolicitacao', new Array(), new Array('dataStatus'));"/>
 	<#include "../ftl/showFilterImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
@@ -52,11 +52,20 @@
 		{
 			document.getElementById("pagina").value=1;
 		}
+
+		function setDateStatus(dataStatus)
+		{
+			if(dataStatus)
+				$('#dataStatus').val(dataStatus);
+			else
+				$('#dataStatus').val($.datepicker.formatDate('dd/mm/yy',new Date()));
+		}
 		
-		function aprovarSolicitacao(solicitacaoId, statusAnterior) 
+		function aprovarSolicitacao(solicitacaoId, statusAnterior, dataStatusAnterior) 
 		{
 			$('#solicitacaoIdAlterarStatus').val(solicitacaoId);
 			$('#statusSolicitacaoAnterior').val(statusAnterior);
+			$('#dataStatusSolicitacaoAnterior').val(dataStatusAnterior);
 		
 			$('#alterarStatusDiv').dialog({ modal: true, 
 											width: 500,
@@ -70,6 +79,7 @@
 														$('#obsAprova').val(data.obs);
 														$('#observacaoLiberador').val(data.obs);
 														$('#statusSolicitcao').val(data.status);
+														setDateStatus(data.dataStatus);
 													});
 												}
 											}
@@ -183,7 +193,13 @@
 				<#assign imgStatus = "status_yellow.png"/>
 			</#if>
 			
-			<@frt.link verifyRole="ROLE_LIBERA_SOLICITACAO" href="javascript:;" onclick="javascript:aprovarSolicitacao(${solicitacao.id},'${solicitacao.status}')" imgTitle="Alterar status (${solicitacao.statusFormatado})" imgName="${imgStatus}"/>
+			<#if solicitacao.dataStatus?exists>
+				<#assign dtStatus = "${solicitacao.dataStatus}"/>
+			<#else>
+				<#assign dtStatus = ""/>
+			</#if>
+			
+			<@frt.link verifyRole="ROLE_LIBERA_SOLICITACAO" href="javascript:;" onclick="javascript:aprovarSolicitacao(${solicitacao.id},'${solicitacao.status}','${dtStatus}')" imgTitle="Alterar status (${solicitacao.statusFormatado})" imgName="${imgStatus}"/>
 			
 		</@display.column>
 	
@@ -233,10 +249,12 @@
 	</div>
 	<div id="alterarStatusDiv" class="alterarStatusDiv">
 		<@ww.form name="formUpdateStatusSolicitacao" action="updateStatusSolicitacao.action" method="post" onsubmit="${validarCamposUpdateStatus}">
-			<@ww.select  label="Status"  name="solicitacao.status"  list="status" id="statusSolicitcao" />
+			<@ww.select  label="Status"  name="solicitacao.status"  list="status" id="statusSolicitcao" liClass="liLeft"/>
+			<@ww.datepicker label="Data" name="solicitacao.dataStatus" id="dataStatus" cssClass="mascaraData" />
 			<@ww.textarea label="Observações" name="solicitacao.observacaoLiberador" id="observacaoLiberador" />
 			<@ww.hidden name="solicitacao.id" id="solicitacaoIdAlterarStatus"/>
 			<@ww.hidden name="statusSolicitacaoAnterior" id="statusSolicitacaoAnterior" />
+			<@ww.hidden name="dataStatusSolicitacaoAnterior" id="dataStatusSolicitacaoAnterior" />
 		</@ww.form>
 		<button onclick="${validarCamposUpdateStatus};" class="btnGravar grayBG" id="gravarStatus"></button>
 	</div>

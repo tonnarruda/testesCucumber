@@ -224,7 +224,7 @@ public class ColaboradorDWR
 	public Collection<Object> findByNome(String nome, Long empresaId)
 	{
 		Collection<String> nomesColabJaSubstituidos = solicitacaoManager.getNomesColabSubstituidosSolicitacaoEncerrada(empresaId);
-		Collection<Colaborador> colaboradores = colaboradorManager.findByNomeCpfMatricula(new Colaborador(nome), empresaId, true, StringUtil.converteCollectionToArrayString(nomesColabJaSubstituidos));
+		Collection<Colaborador> colaboradores = colaboradorManager.findByNomeCpfMatricula(new Colaborador(nome), empresaId, false, StringUtil.converteCollectionToArrayString(nomesColabJaSubstituidos));
 		
 		Collection<Object> retorno = new ArrayList<Object>();
 		Map<String, String> colaboradorMap;

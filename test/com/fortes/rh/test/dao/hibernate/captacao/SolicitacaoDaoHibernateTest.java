@@ -283,10 +283,10 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Long[] solicitacaoIds1 = new Long[]{solicitacao1.getId()};
 		Long[] solicitacaoIds2 = new Long[]{solicitacaoTesteArea1.getId()};
 		
-		Collection<FaixaSalarial> faixasSemSolicitacao = solicitacaoDao.findQtdVagasDisponiveis(empresa.getId(), null , null, null, hoje, hoje);
-		Collection<FaixaSalarial> faixasComSolicitacao = solicitacaoDao.findQtdVagasDisponiveis(empresa.getId(), null , null, solicitacaoIds1, hoje, hoje);
-		Collection<FaixaSalarial> faixasSemSolicitacaoComEstabelecimento = solicitacaoDao.findQtdVagasDisponiveis(empresa.getId(), estabelecimentoIds , null, null, hoje, hoje);
-		Collection<FaixaSalarial> faixasComSolicitacaoComArea = solicitacaoDao.findQtdVagasDisponiveis(empresa.getId(), null , areaIds, solicitacaoIds2, hoje, hoje);
+		Collection<FaixaSalarial> faixasSemSolicitacao = solicitacaoDao.findQtdVagasDisponiveis(empresa.getId(), null , null, null, hoje, hoje, 'S');
+		Collection<FaixaSalarial> faixasComSolicitacao = solicitacaoDao.findQtdVagasDisponiveis(empresa.getId(), null , null, solicitacaoIds1, hoje, hoje, 'S');
+		Collection<FaixaSalarial> faixasSemSolicitacaoComEstabelecimento = solicitacaoDao.findQtdVagasDisponiveis(empresa.getId(), estabelecimentoIds , null, null, hoje, hoje, 'S');
+		Collection<FaixaSalarial> faixasComSolicitacaoComArea = solicitacaoDao.findQtdVagasDisponiveis(empresa.getId(), null , areaIds, solicitacaoIds2, hoje, hoje, 'S');
 		
 		FaixaSalarial retornoFaixasSemSolicitacao_1 = (FaixaSalarial) faixasSemSolicitacao.toArray()[0]; 
 		FaixaSalarial retornoFaixasComSolicitacao = (FaixaSalarial) faixasComSolicitacao.toArray()[0]; 

@@ -51,6 +51,8 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	private Date data;
 	@Temporal(TemporalType.DATE)
 	private Date dataEncerramento;
+	@Temporal(TemporalType.DATE)
+	private Date dataStatus;
 	private int quantidade;
 	@Column(length=5)
 	private String vinculo;
@@ -720,7 +722,11 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	}
 
 	public String getStatusFormatado() {
-		return StatusAprovacaoSolicitacao.getDescricao(getStatus());
+		String dtStatus = "";
+		if(dataStatus != null)
+			dtStatus = "<br>" + DateUtil.formataDiaMesAno(dataStatus);
+		
+		return StatusAprovacaoSolicitacao.getDescricao(getStatus()) + dtStatus;
 	}
 	
 	public char getStatus() {
@@ -798,6 +804,14 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 	public void setAmbiente(Ambiente ambiente) {
 		this.ambiente = ambiente;
+	}
+
+	public Date getDataStatus() {
+		return dataStatus;
+	}
+
+	public void setDataStatus(Date dataStatus) {
+		this.dataStatus = dataStatus;
 	}
 	
 }

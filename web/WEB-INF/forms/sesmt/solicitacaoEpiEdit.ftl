@@ -115,7 +115,9 @@
 					{
 						elements[i].checked = vMarcar;
 						quantidade = document.getElementById("selectQtdSolicitado_" + elements[i].value);
+						motivo = document.getElementById("selectMotivoSolicitacaoEpi_" + elements[i].value);
 						quantidade.disabled = !vMarcar;
+						motivo.disabled = !vMarcar;
 						if (vMarcar && quantidade.value == 0)
 							quantidade.value = 1;
 					}
@@ -123,7 +125,7 @@
 			}
 		}
 	
-		function mudarQtd(elementCheck)
+		function habilitaCampos(elementCheck)
 		{
 			var idCheckbox = "selectQtdSolicitado_" + elementCheck.value;
 			var idSelect = "selectMotivoSolicitacaoEpi_" + elementCheck.value;
@@ -247,7 +249,7 @@
 								</#if>
 							</#list>
 						</#if>
-						<input type="checkbox" value="${lista[0].id}" id="check${lista[0].id}" name="epiIds" onclick="mudarQtd(this);" ${checked}/>
+						<input type="checkbox" value="${lista[0].id}" id="check${lista[0].id}" name="epiIds" onclick="habilitaCampos(this);" ${checked}/>
 					</@display.column>
 	
 					<@display.column title="EPI" style="width:300px;">
