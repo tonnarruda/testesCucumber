@@ -1,3 +1,5 @@
+.tern-project
+src/META-INF/
 .ruby-version
 relatorio_cobertura.tar.gz
 junit-report/*
