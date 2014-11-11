@@ -184,7 +184,7 @@
 				minLength: 3,
 				source: function( request, response ) {
 					DWRUtil.useLoadingMessage('Carregando...');
-					ColaboradorDWR.findByNome(request.term, ${empresaId}, function(dados) {
+					ColaboradorDWR.findByNome(request.term, ${empresaId}, $('#incluirColaboradoresDesligados').is(":checked"), function(dados) {
 						
 						var resultado = new Array();
 						var nomesInseridos = new Array();
@@ -332,6 +332,7 @@
 			<div>
 				<label>Colaborador Substituído:</label>
 				<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-top:20px;" />
+				<@ww.checkbox label="Possibilitar substituir colaboradores desligados" name="incluirColaboradoresDesligados" id="incluirColaboradoresDesligados" labelPosition="left"/>
 				<ul id="camposSubstituto"></ul>
 				<a href="javascript:;" onclick="javascript:adicionarCampoColaboradorSubstituto();" style="text-decoration: none;">
 					<img src='<@ww.url includeParams="none" value="/imgs/mais.gif"/>'/> 

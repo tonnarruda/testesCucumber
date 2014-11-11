@@ -154,7 +154,10 @@
 			<@ww.datepicker name="dataDe" id="dataDe"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 			<@ww.label value="a" liClass="liLeft" />
 			<@ww.datepicker name="dataAte" id="dataAte" value="${dateFim}" cssClass="mascaraData validaDataFim" />
-			<@ww.select label="Referenciar o período com a data da" name="statusSolicitacao" id="statusSolicitacao" list="tiposStatusSolicitacao" cssStyle="width: 200px;"  onchange="" />
+
+<!--  		<@ww.select label="Referenciar o período com a data da" name="statusSolicitacao" id="statusSolicitacao" list="tiposStatusSolicitacao" cssStyle="width: 200px;" />-->
+			<@ww.hidden name="statusSolicitacao" value = 'S'/>			
+			
 			<@frt.checkListBox label="Estabelecimentos*" name="estabelecimentosCheck" id="estabelecimentoCheck" list="estabelecimentosCheckList" filtro="true"/>
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" filtro="true" />
 			<@frt.checkListBox label="Solicitações de Pessoal" name="solicitacaosCheckIds" id="solicitacao" list="solicitacaosCheck" width="600" filtro="true"/>

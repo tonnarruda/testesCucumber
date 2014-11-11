@@ -221,10 +221,10 @@ public class ColaboradorDWR
 		return new CollectionUtil<Colaborador>().convertCollectionToMap(colaboradors,"getId","getNomeCpfMatricula");
 	}
 	
-	public Collection<Object> findByNome(String nome, Long empresaId)
+	public Collection<Object> findByNome(String nome, Long empresaId, boolean incluirColaboradoresDesligados)
 	{
 		Collection<String> nomesColabJaSubstituidos = solicitacaoManager.getNomesColabSubstituidosSolicitacaoEncerrada(empresaId);
-		Collection<Colaborador> colaboradores = colaboradorManager.findByNomeCpfMatricula(new Colaborador(nome), empresaId, false, StringUtil.converteCollectionToArrayString(nomesColabJaSubstituidos));
+		Collection<Colaborador> colaboradores = colaboradorManager.findByNomeCpfMatricula(new Colaborador(nome), empresaId, !incluirColaboradoresDesligados, StringUtil.converteCollectionToArrayString(nomesColabJaSubstituidos));
 		
 		Collection<Object> retorno = new ArrayList<Object>();
 		Map<String, String> colaboradorMap;
