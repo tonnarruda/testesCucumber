@@ -1,0 +1,1 @@
+alter table solicitacao alter column horariocomercial type character varying(255);--.go
