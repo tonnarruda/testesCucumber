@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -575,9 +576,17 @@ public class DateUtil
 	 */
 	public static int diferencaEntreDatas(Date dataInicio, Date dataFim)
 	{
+		TimeZone timeZone = TimeZone.getDefault();
+		if (timeZone.inDaylightTime(dataFim) && !timeZone.inDaylightTime(dataInicio) ) {
+			Calendar calendarDataFim = new GregorianCalendar();
+			calendarDataFim.setTime(dataFim);
+			calendarDataFim.add(Calendar.HOUR_OF_DAY, 1);
+			dataFim = calendarDataFim.getTime();
+		}
+		
 		Long diff = dataFim.getTime() - dataInicio.getTime();
 		Long dias = diff/(24L*60L*60L*1000L);
-
+		
 		return dias.intValue();
 	}
 
