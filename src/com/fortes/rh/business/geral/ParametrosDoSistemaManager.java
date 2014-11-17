@@ -17,4 +17,5 @@ public interface ParametrosDoSistemaManager extends GenericManager<ParametrosDoS
 	public void ajustaCamposExtras(ParametrosDoSistema parametrosDoSistema, String[] findAllNomes);
 	public void updateServidorRemprot(String servidorRemprot);
 	public String getContexto();
+	public boolean removeDadosPortalColaborador();
 }

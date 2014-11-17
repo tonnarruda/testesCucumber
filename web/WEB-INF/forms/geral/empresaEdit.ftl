@@ -8,15 +8,18 @@
 		<#assign formAction="update.action"/>
 		<#assign accessKey="A"/>
 		<#assign somenteLeitura="false" />
+		<#assign integradaPortal="${empresa.integradaPortalColaborador?string}" />
 	<#else>
 		<title>Inserir Empresa</title>
 		<#assign formAction="insert.action"/>
 		<#assign accessKey="I"/>
 		<#assign somenteLeitura="true" />
+		<#assign integradaPortal="false" />
 	</#if>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EmpresaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
@@ -68,6 +71,11 @@
 			
 			$('#nomeHomonimoEmpresa').change();
 			$('#nomeHomonimo').change();
+			
+			$('#integradaPortalColaborador').change(function() {
+				if (!$(this).is(":checked") && ${integradaPortal})
+					popUpDadosPortalColaborador();
+			});
 			
 		});
 		
@@ -123,6 +131,44 @@
 			jAlert(statusCode);
 		}
 
+		function removeDadosPortalColaborador()
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			EmpresaDWR.removeDadosPortalColaborador(alertPortal);
+		}
+		
+		function alertPortal(data)
+		{
+			if(data)
+				jAlert('Removido com sucesso');
+			else{
+				
+				jAlert('Ocorreu um erro ao remover dadas do Portal do Colaborador. Verifique as configurações do sistema e o acesso a internet.', $('#integradaPortalColaborador').prop('checked', true));
+			}
+		}
+
+		function popUpDadosPortalColaborador()
+		{
+			var msg = 'Deseja remover todos os dados do sistem Portal do Colaborador.';
+			
+			$('<div>'+ msg +'</div>').dialog({title: 'Alerta!',
+													modal: true, 
+													height: 150,
+													width: 500,
+													buttons: [
+													    {
+													        text: "Sim",
+													        click: function() { removeDadosPortalColaborador(); $(this).dialog("close"); }
+													    },
+													    {
+													        text: "Não",
+													        click: function() { $(this).dialog("close"); }
+													    }
+													] 
+													});
+			
+		}		
+
 		function enviaForm()
 		{
 			if($('#mensagemModuloExterno').val().length > 400)
@@ -138,10 +184,16 @@
 			}
 						
 			if(document.getElementById('cnpj').value.length == 8)
-		 		return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH', 'formulaTurnover'), new Array('remetente','respSetorPessoal'));
+		 		return validaForm();
 			else
 				jAlert("Base CNPJ deve ter 8 dígitos.");
 		}
+		
+		function validaForm()
+		{
+			return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH', 'formulaTurnover'), new Array('remetente','respSetorPessoal'));
+		}
+		
 	</script>
 </head>
 <body>
@@ -327,7 +379,6 @@
 		<@ww.hidden name="empresa.imgAniversarianteUrl" />
 		<@ww.hidden name="empresa.codigoAC" id="codigoAC" />
 		<@ww.hidden name="integradaPortalColaboradorAnterior" value="${empresa.integradaPortalColaborador?string}" />
-		
 	<@ww.token/>
 	</@ww.form>
 

@@ -92,4 +92,9 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 	public void updateServidorRemprot(String servidorRemprot) {
 		getDao().updateServidorRemprot(servidorRemprot);
 	}
+
+	public boolean removeDadosPortalColaborador() 
+	{
+		return removeDadosPortalColaborador();
+	}
 }

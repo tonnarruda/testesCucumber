@@ -184,6 +184,7 @@
 	</bean>
 	<bean id="empresaDWR" class="com.fortes.rh.web.dwr.EmpresaDWR">
 		<property name="empresaManager" ref="empresaManager"/>
+		<property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager"/>
 	</bean>
 	<bean id="solicitacaoEpiDWR" class="com.fortes.rh.web.dwr.SolicitacaoEpiDWR">
 		<property name="solicitacaoEpiManager" ref="solicitacaoEpiManager"/>
