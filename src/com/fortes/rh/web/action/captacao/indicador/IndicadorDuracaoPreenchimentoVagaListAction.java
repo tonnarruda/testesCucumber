@@ -18,7 +18,6 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -71,7 +70,8 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private double indiceProcSeletivo;
 	private boolean indicadorResumido;
 	
-	private LinkedHashMap<Character, String> tiposStatusSolicitacao;
+	private LinkedHashMap<Character, String> tiposStatusAprovacaoSolicitacao;
+	private char statusAprovacaoSolicitacao;
 	private char statusSolicitacao;
 
 	private String grfContratadosFaixa = "";
@@ -89,7 +89,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		if (dataDe == null)
 			dataDe = DateUtil.retornaDataAnteriorQtdMeses(hoje, 2, true);
 		
-		montTiposStatusSolicitacao();
+		montaTiposStatusAprovacaoSolicitacao();
 		Collection<Solicitacao> solicitacoes = solicitacaoManager.findByEmpresaEstabelecimentosAreas(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck));
 		
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
@@ -100,7 +100,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
     	CheckListBoxUtil.marcaCheckListBox(solicitacaosCheck, solicitacaosCheckIds);
     	    	
-		faixaSalarials = solicitacaoManager.findQtdVagasDisponiveis(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte, statusSolicitacao);
+		faixaSalarials = solicitacaoManager.findQtdVagasDisponiveis(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte, statusAprovacaoSolicitacao);
 		qtdCandidatosCadastrados = candidatoManager.findQtdCadastrados(getEmpresaSistema().getId(), dataDe, dataAte);
 		qtdCandidatosAtendidos = candidatoManager.findQtdAtendidos(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte);
 		qtdEtapasRealizadas = historicoCandidatoManager.findQtdEtapasRealizadas(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), dataDe, dataAte); 
@@ -130,19 +130,18 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		return Action.SUCCESS;
 	}
 
-	private void montTiposStatusSolicitacao() 
+	private void montaTiposStatusAprovacaoSolicitacao() 
 	{
-		tiposStatusSolicitacao = new  LinkedHashMap<Character, String>();
-    	tiposStatusSolicitacao.put('S', "Solicitação");
-    	tiposStatusSolicitacao.put('A', "Aprovação");
-    	tiposStatusSolicitacao.put('R', "Reprovação");
-    	tiposStatusSolicitacao.put('I', "Análise");
+		tiposStatusAprovacaoSolicitacao = new  LinkedHashMap<Character, String>();
+		tiposStatusAprovacaoSolicitacao.put('S', "Solicitação");
+		tiposStatusAprovacaoSolicitacao.put('A', "Aprovação");
 	}
 
 	public String prepareMotivo() throws Exception
 	{
 		prepare();
 		setVideoAjuda(787L);
+		montaTiposStatusAprovacaoSolicitacao();
 		
 		return Action.SUCCESS;
 	}
@@ -192,7 +191,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 
 		try
 		{
-			indicador = duracaoPreenchimentoVagaManager.gerarIndicadorMotivoPreenchimentoVagas(dataDe, dataAte, areasOrganizacionais,estabelecimentos, getEmpresaSistema().getId(), statusSolicitacao, indicadorResumido);
+			indicador = duracaoPreenchimentoVagaManager.gerarIndicadorMotivoPreenchimentoVagas(dataDe, dataAte, areasOrganizacionais,estabelecimentos, getEmpresaSistema().getId(), statusSolicitacao, statusAprovacaoSolicitacao, indicadorResumido);
 			
 			StatusSolicitacao status = new StatusSolicitacao();
 			reportFilter = status.get(statusSolicitacao) + " - Período: " + DateUtil.formataDiaMesAno(dataDe) + " a " + DateUtil.formataDiaMesAno(dataAte);
@@ -462,7 +461,15 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		this.indicadorResumido = indicadorResumido;
 	}
 
-	public LinkedHashMap<Character, String> getTiposStatusSolicitacao() {
-		return tiposStatusSolicitacao;
+	public void setStatusAprovacaoSolicitacao(char statusAprovacaoSolicitacao) {
+		this.statusAprovacaoSolicitacao = statusAprovacaoSolicitacao;
+	}
+
+	public LinkedHashMap<Character, String> getTiposStatusAprovacaoSolicitacao() {
+		return tiposStatusAprovacaoSolicitacao;
+	}
+
+	public char getStatusAprovacaoSolicitacao() {
+		return statusAprovacaoSolicitacao;
 	}
 }

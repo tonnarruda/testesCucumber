@@ -10,6 +10,6 @@ public interface DuracaoPreenchimentoVagaManager
 //	DuracaoPreenchimentoVaga save(DuracaoPreenchimentoVaga duracaoPreenchimentoVaga, Date dataAdmissao);
 //	public List<DuracaoPreenchimentoVaga> findSomaDiasPreenchimentoSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos);
 //	public List<IndicadorDuracaoPreenchimentoVaga> findMotivosPreenchimentoSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId);
-	public Collection<IndicadorDuracaoPreenchimentoVaga> gerarIndicadorMotivoPreenchimentoVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao, boolean indicadorResumido) throws Exception;
+	public Collection<IndicadorDuracaoPreenchimentoVaga> gerarIndicadorMotivoPreenchimentoVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao, char statusAprovacaoSolicitacao, boolean indicadorResumido) throws Exception;
 	public Collection<IndicadorDuracaoPreenchimentoVaga> gerarIndicadorDuracaoPreenchimentoVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, Long[] solicitacaoIds) throws Exception;
 }

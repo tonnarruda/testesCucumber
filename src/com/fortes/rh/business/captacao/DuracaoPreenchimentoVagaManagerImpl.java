@@ -80,9 +80,9 @@ public class DuracaoPreenchimentoVagaManagerImpl implements DuracaoPreenchimento
 		return indicadoresDuracaoPreenchimentoVagas;
 	}
 
-	public Collection<IndicadorDuracaoPreenchimentoVaga> gerarIndicadorMotivoPreenchimentoVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao, boolean indicadorResumido) throws Exception
+	public Collection<IndicadorDuracaoPreenchimentoVaga> gerarIndicadorMotivoPreenchimentoVagas(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao, char statusAprovacaoSolicitacao, boolean indicadorResumido) throws Exception
 	{
-		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresMotivos = solicitacaoManager.getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresaId, statusSolicitacao, indicadorResumido);
+		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresMotivos = solicitacaoManager.getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresaId, statusSolicitacao, statusAprovacaoSolicitacao, indicadorResumido);
 		
 		if(indicadoresMotivos == null || indicadoresMotivos.isEmpty())
 			throw new ColecaoVaziaException();

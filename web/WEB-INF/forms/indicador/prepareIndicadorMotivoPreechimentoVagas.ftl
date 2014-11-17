@@ -29,7 +29,7 @@
 	<@ww.datepicker name="dataDe" id="dataDe" liClass="liLeft" value="${valueDataIni}" cssClass="mascaraData validaDataIni"/>
 	<@ww.label value="a" liClass="liLeft"/>
 	<@ww.datepicker name="dataAte" id="dataAte" value="${valueDataFim}"  cssClass="mascaraData validaDataFim"/>
-
+	<@ww.select label="Referenciar o período acima com a data da" name="statusAprovacaoSolicitacao" id="statusAprovacaoSolicitacao" list="tiposStatusAprovacaoSolicitacao" cssStyle="width: 300px;" />
 	<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
 	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true"/>
 

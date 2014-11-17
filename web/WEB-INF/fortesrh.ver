@@ -5,6 +5,8 @@
 		<Item visivel="S" motivo="S20141000202"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Apresentar data do status na listagem de  solicitação.]]></Item>
 		<Item visivel="S" motivo="S20141000109"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Possibilitar inserir colaboradores desligados no campo "Colaborador Substituído".]]></Item>
 		<Item visivel="S" motivo="S20141000197"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Aumento da capacidade do campo "Horário de Trabalho" para 255 caracteres.]]></Item>
+		<Item visivel="S" motivo="P20141000111"><![CDATA[R&S > Relatórios > Estatísticas de Vagas por Motivo: Novo filtro para referenciar o período com a data da solicitação ou a data de aprovação.]]></Item>
+		<Item visivel="S" motivo="P20141000111"><![CDATA[R&S > Painel de Indicadores: Novo filtro para referenciar o período com a data da solicitação ou a data de aprovação.]]></Item>
 		<Item visivel="S" motivo="S20141000113"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Possibilitando responder entrevista antes de finalizar o processo de desligamento no AC Pessoal.]]></Item>
 		<Item visivel="S" motivo="P20141000280"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Exibindo o nome da empresa do estabelecimento ao gerar o relatório.]]></Item>
 		<Item visivel="S" motivo="S20141000244"><![CDATA[SESMT > Cadastros > Motivos de Solicitação de EPI: Novo cadastro.]]></Item>

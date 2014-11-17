@@ -1104,13 +1104,13 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacaoEncerradaFuturo.setAreaOrganizacional(areaOrganizacional);
 		solicitacaoEncerradaFuturo = solicitacaoDao.save(solicitacaoEncerradaFuturo);
 
-		List<IndicadorDuracaoPreenchimentoVaga> todas = solicitacaoDao.getIndicadorMotivosSolicitacao(dataDe, dataFutura, areasOrganizacionais, estabelecimentos, empresa.getId(), StatusSolicitacao.TODAS, false);
+		List<IndicadorDuracaoPreenchimentoVaga> todas = solicitacaoDao.getIndicadorMotivosSolicitacao(dataDe, dataFutura, areasOrganizacionais, estabelecimentos, empresa.getId(), StatusSolicitacao.TODAS, 'S', false);
 		assertEquals(3, todas.size());
 
-		List<IndicadorDuracaoPreenchimentoVaga> abertas = solicitacaoDao.getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresa.getId(), StatusSolicitacao.ABERTA, false);
+		List<IndicadorDuracaoPreenchimentoVaga> abertas = solicitacaoDao.getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresa.getId(), StatusSolicitacao.ABERTA, 'S', false);
 		assertEquals(3, abertas.size());
 
-		List<IndicadorDuracaoPreenchimentoVaga> encerradas = solicitacaoDao.getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresa.getId(), StatusSolicitacao.ENCERRADA, false);
+		List<IndicadorDuracaoPreenchimentoVaga> encerradas = solicitacaoDao.getIndicadorMotivosSolicitacao(dataDe, dataAte, areasOrganizacionais, estabelecimentos, empresa.getId(), StatusSolicitacao.ENCERRADA, 'S', false);
 		assertEquals(1, encerradas.size());
 	}
 	

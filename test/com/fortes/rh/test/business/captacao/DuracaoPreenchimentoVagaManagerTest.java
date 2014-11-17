@@ -138,9 +138,9 @@ public class DuracaoPreenchimentoVagaManagerTest extends MockObjectTestCase
     	
 		areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresaId), eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
     	
-    	solicitacaoManager.expects(once()).method("getIndicadorMotivosSolicitacao").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areasIds),eq(estabelecimentosIds),eq(empresaId),ANYTHING,ANYTHING}).will(returnValue(indicadores));
+    	solicitacaoManager.expects(once()).method("getIndicadorMotivosSolicitacao").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areasIds),eq(estabelecimentosIds),eq(empresaId),ANYTHING,ANYTHING,ANYTHING}).will(returnValue(indicadores));
 
-		Collection<IndicadorDuracaoPreenchimentoVaga> resultado = duracaoPreenchimentoVagaManager.gerarIndicadorMotivoPreenchimentoVagas(dataDe, dataAte, areasIds,estabelecimentosIds, empresaId, StatusSolicitacao.TODAS, false);
+		Collection<IndicadorDuracaoPreenchimentoVaga> resultado = duracaoPreenchimentoVagaManager.gerarIndicadorMotivoPreenchimentoVagas(dataDe, dataAte, areasIds,estabelecimentosIds, empresaId, StatusSolicitacao.TODAS, 'S', false);
 		
 		assertEquals(1, resultado.size());
 		assertEquals(65, ((IndicadorDuracaoPreenchimentoVaga)resultado.toArray()[0]).getQtdAberturas().intValue());
