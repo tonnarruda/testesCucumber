@@ -109,7 +109,7 @@ public class DiaTurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			diaTurmaManager.saveDiasTurma(turma, diasCheck, c, d);
+			diaTurmaManager.saveDiasTurma(turma, diasCheck, null, null);
 		}
 		catch (Exception e)
 		{
@@ -131,7 +131,7 @@ public class DiaTurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			diaTurmaManager.saveDiasTurma(turma, diasCheck, c, d);
+			diaTurmaManager.saveDiasTurma(turma, diasCheck, null, null);
 		}
 		catch (Exception e)
 		{

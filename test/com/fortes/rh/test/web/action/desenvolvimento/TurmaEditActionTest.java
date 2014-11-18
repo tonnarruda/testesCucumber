@@ -173,7 +173,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	Collection<AvaliacaoTurma> avaliacaoTurmas = new ArrayList<AvaliacaoTurma>();
 
     	turmaManager.expects(once()).method("findByIdProjection").with(eq(turma.getId())).will(returnValue(turma));
-    	diaTurmaManager.expects(once()).method("montaListaDias").with(eq(turma.getDataPrevIni()), ANYTHING, eq(false)).will(returnValue(new ArrayList<CheckBox>()));
+//    	diaTurmaManager.expects(once()).method("montaListaDias").with(eq(turma.getDataPrevIni()), ANYTHING, eq(false)).will(returnValue(new ArrayList<CheckBox>()));
     	turmaManager.expects(once()).method("verificaAvaliacaoDeTurmaRespondida").with(eq(turma.getId())).will(returnValue(false));
     	turmaAvaliacaoTurmaManager.expects(once()).method("verificaAvaliacaoliberada").with(eq(turma.getId())).will(returnValue(false));
     	Collection<CheckBox> diasCheckList = MockCheckListBoxUtil.populaCheckListBox(null, null, null);

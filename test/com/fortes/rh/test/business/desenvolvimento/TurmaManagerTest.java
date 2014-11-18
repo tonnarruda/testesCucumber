@@ -311,14 +311,14 @@ public class TurmaManagerTest extends MockObjectTestCase
 		colaboradorTurmas.add(colaboradorTurma);
 
 		turmaDao.expects(once()).method("save").with(eq(turma)).isVoid();
-		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck)).isVoid();
+		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck), ANYTHING, ANYTHING).isVoid();
 		turmaTipoDespesaManager.expects(once()).method("save").with(eq(despesa),eq(turma.getId())).isVoid();
 		turmaAvaliacaoTurmaManager.expects(once()).method("salvarAvaliacaoTurmas").with(eq(turma.getId()),eq(avaliacaoTurmaIds)).isVoid();
 		
 		Exception ex = null;
 		try
 		{
-			turmaManager.inserir(turma, diasCheck, despesa, avaliacaoTurmaIds);
+			turmaManager.inserir(turma, diasCheck, despesa, avaliacaoTurmaIds, null, null);
 		}
 		catch (Exception e)
 		{
@@ -343,14 +343,14 @@ public class TurmaManagerTest extends MockObjectTestCase
 		
 		turmaDao.expects(once()).method("update").with(eq(turma)).isVoid();
 		colaboradorPresencaManager.expects(once()).method("existPresencaByTurma").will(returnValue(false));
-		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck)).isVoid();
+		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck), ANYTHING, ANYTHING).isVoid();
 		
 		turmaAvaliacaoTurmaManager.expects(once()).method("salvarAvaliacaoTurmas").with(eq(turma.getId()),eq(avaliacaoTurmaIds)).isVoid();
 		
 		Exception ex = null;
 		try
 		{
-			turmaManager.atualizar(turma, diasCheck, a, b, colaboradorTurmas, selectPrioridades, avaliacaoTurmaIds, true);
+			turmaManager.atualizar(turma, diasCheck, null, null, colaboradorTurmas, selectPrioridades, avaliacaoTurmaIds, true);
 		}
 		catch (Exception e)
 		{
@@ -371,12 +371,12 @@ public class TurmaManagerTest extends MockObjectTestCase
 		colaboradorTurmas.add(colaboradorTurma);
 
 		turmaDao.expects(once()).method("save").with(eq(turma)).isVoid();
-		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck)).isVoid();
+		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck), ANYTHING, ANYTHING).isVoid();
 
 		Exception ex = null;
 		try
 		{
-			turmaManager.salvarTurmaDiasCusto(turma, diasCheck, null);
+			turmaManager.salvarTurmaDiasCusto(turma, diasCheck, null, null, null);
 		}
 		catch (Exception e)
 		{
@@ -402,7 +402,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.salvarTurmaDiasCusto(turma, diasCheck, null);
+			turmaManager.salvarTurmaDiasCusto(turma, diasCheck, null, null, null);
 		}
 		catch (Exception e)
 		{
@@ -423,12 +423,12 @@ public class TurmaManagerTest extends MockObjectTestCase
 
 		turmaDao.expects(once()).method("update").with(eq(turma)).isVoid();
 		colaboradorPresencaManager.expects(once()).method("existPresencaByTurma").will(returnValue(false));
-		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck)).isVoid();
+		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck), ANYTHING, ANYTHING).isVoid();
 		
 		Exception ex = null;
 		try
 		{
-			turmaManager.updateTurmaDias(turma, diasCheck, x, y);
+			turmaManager.updateTurmaDias(turma, diasCheck, null, null);
 		}
 		catch (Exception e)
 		{
@@ -454,7 +454,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.updateTurmaDias(turma, diasCheck, x, y);
+			turmaManager.updateTurmaDias(turma, diasCheck, null, null);
 		}
 		catch (Exception e)
 		{

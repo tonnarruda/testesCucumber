@@ -50,7 +50,7 @@ public class DiaTurmaDWRTest extends MockObjectTestCase
 		String dataIniStr = "01/12/2000";
 		String dataFimStr = "20/12/2000";
 
-		Map retorno = diaTurmaDWR.getDias(dataIniStr, dataFimStr, false);
+		Collection<DiaTurma> retorno = diaTurmaDWR.getDias(dataIniStr, dataFimStr, false);
 
 		assertEquals(1, retorno.size());
 	}
@@ -60,7 +60,7 @@ public class DiaTurmaDWRTest extends MockObjectTestCase
 		String dataIniStr = "22/12/2000";
 		String dataFimStr = "20/12/2000";
 
-		Map retorno = diaTurmaDWR.getDias(dataIniStr, dataFimStr, false);
+		Collection<DiaTurma> retorno = diaTurmaDWR.getDias(dataIniStr, dataFimStr, false);
 
 		assertNull(retorno);
 	}

@@ -88,9 +88,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return getDao().findByIdProjection(turmaId);
 	}
 
-	public void inserir(Turma turma, String[] dias, String custos, Long[] avaliacaoTurmaIds) throws Exception
+	public void inserir(Turma turma, String[] dias, String custos, Long[] avaliacaoTurmaIds, Map<String, String> horasIni, Map<String, String> horasFim) throws Exception
 	{
-		salvarTurmaDiasCusto(turma, dias, custos);
+		salvarTurmaDiasCusto(turma, dias, horasIni, horasFim, custos);
 
 		TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager = (TurmaAvaliacaoTurmaManager) SpringUtil.getBean("turmaAvaliacaoTurmaManager");
 		turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmaIds);
@@ -108,11 +108,11 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmaIds);
 	}
 
-	public void salvarTurmaDiasCusto(Turma turma, String[] diasCheck, String despesaJSON) throws Exception
+	public void salvarTurmaDiasCusto(Turma turma, String[] diasCheck, Map<String, String> horasIni, Map<String, String> horasFim, String despesaJSON) throws Exception
 	{
 		save(turma);
 		
-		diaTurmaManager.saveDiasTurma(turma, diasCheck, c, d);
+		diaTurmaManager.saveDiasTurma(turma, diasCheck, horasIni, horasFim);
 		
 		if (!StringUtil.isBlank(despesaJSON))
 			turmaTipoDespesaManager.save(despesaJSON, turma.getId());
@@ -120,7 +120,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	
 	public void salvarTurmaDiasCustosColaboradoresAvaliacoes(Turma turma, String[] dias, String custos, Collection<ColaboradorTurma> colaboradorTurmas, Long[] avaliacaoTurmasCheck) throws Exception 
 	{
-		salvarTurmaDiasCusto(turma, dias, custos);
+		salvarTurmaDiasCusto(turma, dias, a, b, custos);
 
 		TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager = (TurmaAvaliacaoTurmaManager) SpringUtil.getBean("turmaAvaliacaoTurmaManager");
 		turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmasCheck);

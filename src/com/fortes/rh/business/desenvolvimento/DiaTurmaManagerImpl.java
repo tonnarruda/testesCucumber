@@ -86,12 +86,14 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 					diaTurmaTmp = new DiaTurma();
 					diaTurmaTmp.setDia(DateUtil.montaDataByString(dataTurno[0]));
 					diaTurmaTmp.setTurma(turma);
-					diaTurmaTmp.setTurno(dataTurno[1].charAt(0));
+					
+					if(dataTurno.length > 1)
+						diaTurmaTmp.setTurno(dataTurno[1].charAt(0));
 
-					if (horasIni.containsKey(chave) && horasFim.containsKey(chave))
+					if ((horasIni != null && horasIni.containsKey(chave)) && (horasFim != null && horasFim.containsKey(chave)))
 					{
-						diaTurmaTmp.setHoraIni(horasIni.get(chave));
-						diaTurmaTmp.setHoraFim(horasFim.get(chave));
+						diaTurmaTmp.setHoraIni(new String(horasIni.get(chave)));
+						diaTurmaTmp.setHoraFim(new String(horasFim.get(chave)));
 					}
 					
 					save(diaTurmaTmp);

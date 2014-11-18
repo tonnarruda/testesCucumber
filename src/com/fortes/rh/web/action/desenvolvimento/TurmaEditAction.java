@@ -271,7 +271,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 		turma = turmaManager.setAssinaturaDigital(false, turma, assinaturaDigital, "assinaturas");
 		
-		turmaManager.inserir(turma, diasCheck, custos, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck));
+		turmaManager.inserir(turma, diasCheck, custos, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), horariosIni, horariosFim);
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
