@@ -83,11 +83,12 @@ public class ExternoAction extends MyActionSupport
 	
 	public String prepareLogin() throws Exception
 	{
+		mensagemLogin = empresaManager.findByIdProjection(empresaId).getMensagemModuloExterno(); 
+
 		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 		if (parametrosDoSistema.getTelaInicialModuloExterno() == TELA_VAGAS_DISPONIVEIS) 
 			return "tela_vagas_disponiveis";
 			
-		mensagemLogin = empresaManager.findByIdProjection(empresaId).getMensagemModuloExterno();
 		if (msg != null && msg.equals(MSG_COD_CAD_SUCCESS))
 			msg = MSG_INF_LOGIN;
 		else if (msg != null && msg.equals(MSG_COD_CAD_ENVIO_CURRICULO_SUCCESS))
