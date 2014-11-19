@@ -545,7 +545,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
         return query.list();
     }
 	
-	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao, char statusAprovacaoSolicitacao, boolean indicadorResumido)
+	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao, char dataStatusAprovacaoSolicitacao, boolean indicadorResumido)
 	{
 		StringBuilder consulta = new StringBuilder("select new com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga( ");
 		
@@ -563,15 +563,15 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		consulta.append("solicitacao.empresa.id = :empresaId ");
 		
 		if (statusSolicitacao == StatusSolicitacao.ABERTA){
-			if(statusAprovacaoSolicitacao == StatusAprovacaoSolicitacao.APROVADO)
-				consulta.append("and (solicitacao.dataStatus between :dataDe and :dataAte) ");
+			if(dataStatusAprovacaoSolicitacao == StatusAprovacaoSolicitacao.APROVADO)
+				consulta.append("and (solicitacao.dataStatus between :dataDe and :dataAte and solicitacao.status = 'A') ");//'A' de Aprovada
 			else
 				consulta.append("and (solicitacao.data between :dataDe and :dataAte) ");
 		}else if (statusSolicitacao == StatusSolicitacao.ENCERRADA){
 			consulta.append("and (solicitacao.dataEncerramento between :dataDe and :dataAte) ");
 		}else{
-			if(statusAprovacaoSolicitacao == StatusAprovacaoSolicitacao.APROVADO)
-				consulta.append("and ((solicitacao.dataStatus between :dataDe and :dataAte) ");
+			if(dataStatusAprovacaoSolicitacao == StatusAprovacaoSolicitacao.APROVADO)
+				consulta.append("and ((solicitacao.dataStatus between :dataDe and :dataAte and solicitacao.status = 'A') ");//'A' de Aprovada
 			else
 				consulta.append("and ((solicitacao.data between :dataDe and :dataAte) ");
 			
@@ -651,7 +651,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 
-	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim, char statusAprovacaoSolicitacao) 
+	public Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim, char dataStatusAprovacaoSolicitacao) 
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.createCriteria("s.faixaSalarial", "f");
@@ -664,15 +664,12 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		
 		criteria.setProjection(p);
 		
-		if(statusAprovacaoSolicitacao == StatusAprovacaoSolicitacao.ANALISE || statusAprovacaoSolicitacao == StatusAprovacaoSolicitacao.REPROVADO || statusAprovacaoSolicitacao == StatusAprovacaoSolicitacao.APROVADO)
-		{
-			criteria.add(Expression.eq("s.status", statusAprovacaoSolicitacao));
+		if(dataStatusAprovacaoSolicitacao == StatusAprovacaoSolicitacao.APROVADO)
 			criteria.add(Expression.between("s.dataStatus", dataIni, dataFim));
-		}else{
+		else
 			criteria.add(Expression.between("s.data", dataIni, dataFim));
-			criteria.add(Expression.eq("s.status", StatusAprovacaoSolicitacao.APROVADO));
-		}		
 		
+		criteria.add(Expression.eq("s.status", StatusAprovacaoSolicitacao.APROVADO));
 		criteria.add(Expression.eq("s.suspensa", false));
 		criteria.add(Expression.eq("s.encerrada", false));
 		criteria.add(Expression.eq("s.empresa.id", empresaId));
