@@ -37,7 +37,18 @@
 	</style>
 
 	<#assign empresaId><@authz.authentication operation="empresaId"/></#assign>
+	
+	
 	<script type="text/javascript">
+		
+		$(function() {
+			<#if solicitacao.obsSuspensao?exists>
+				$('#dataStatus').val(${solicitacao.obsSuspensao});
+			<#else>
+				$('#dataStatus').val($.datepicker.formatDate('dd/mm/yy',new Date()));
+			</#if>
+		});	
+		
 		function populaEmails(id)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
@@ -393,8 +404,8 @@
 						Atualizado por: ${nomeLiberador} 
 						<br><br>					
 					</#if>	
-					Status da solicitação (Inicia o processo de seleção de pessoal)<br><br>
-					<@ww.select  name="solicitacao.status"  list="status" id="statusSolicitcao" disabled="true" />
+					<@ww.select label="Status da solicitação (Inicia o processo de seleção de pessoal)" name="solicitacao.status"  list="status" id="statusSolicitcao" disabled="true"/>
+					<@ww.datepicker label="Data" name="solicitacao.dataStatus" id="dataStatus" cssClass="mascaraData" />
 					<@ww.textarea label="Observação" name="solicitacao.observacaoLiberador" id="obsAprova" disabled="true" />
 				</ul>
 			</@ww.div>

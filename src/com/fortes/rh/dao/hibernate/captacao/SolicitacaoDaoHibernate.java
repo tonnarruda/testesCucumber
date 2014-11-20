@@ -564,9 +564,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		
 		if (statusSolicitacao == StatusSolicitacao.ABERTA){
 			if(dataStatusAprovacaoSolicitacao == StatusAprovacaoSolicitacao.APROVADO)
-				consulta.append("and (solicitacao.dataStatus between :dataDe and :dataAte and solicitacao.status = 'A') ");//'A' de Aprovada
+				consulta.append("and (solicitacao.dataStatus between :dataDe and :dataAte and solicitacao.status = 'A') and (solicitacao.dataEncerramento is null) ");//'A' de Aprovada
 			else
-				consulta.append("and (solicitacao.data between :dataDe and :dataAte) ");
+				consulta.append("and (solicitacao.data between :dataDe and :dataAte) and (solicitacao.dataEncerramento is null) ");
 		}else if (statusSolicitacao == StatusSolicitacao.ENCERRADA){
 			consulta.append("and (solicitacao.dataEncerramento between :dataDe and :dataAte) ");
 		}else{
