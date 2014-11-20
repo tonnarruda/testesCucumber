@@ -1,18 +1,15 @@
 package com.fortes.rh.web.dwr;
 
 import com.fortes.rh.business.geral.EmpresaManager;
-import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 
 
 public class EmpresaDWR
 {
 	private EmpresaManager empresaManager;
-	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
-	public boolean removeDadosPortalColaborador()
+	public void removeDadosPortalColaborador(Long empresaId)
 	{
-		return false;
-//		return parametrosDoSistemaManager.removeDadosPortalColaborador();
+		empresaManager.removeEmpresaPc(empresaId);
 	}
 	
 	public boolean isAcintegra(Long empresaId)
@@ -23,10 +20,5 @@ public class EmpresaDWR
 	public void setEmpresaManager(EmpresaManager empresaManager) 
 	{
 		this.empresaManager = empresaManager;
-	}
-
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) 
-	{
-		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }

@@ -10,7 +10,9 @@ public class EmpresaPC extends AbstractAdapterPC
 	private Long id;
 	private String nome;
 	@SerializedName("base_cnpj")
-	private String baseCnpj; 
+	private String baseCnpj;
+	@SerializedName("email_responsavel")
+	private String emailResponsavel;
 
 	public EmpresaPC() {
 
@@ -21,6 +23,7 @@ public class EmpresaPC extends AbstractAdapterPC
 		this.id 		= empresa.getId();
 		this.nome 		= empresa.getNome();
 		this.baseCnpj 	= empresa.getCnpj();
+		this.emailResponsavel 	= empresa.getEmailRespRH();		
 	}
 	
 	public String toJson()

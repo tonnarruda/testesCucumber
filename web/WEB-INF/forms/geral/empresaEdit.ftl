@@ -9,12 +9,14 @@
 		<#assign accessKey="A"/>
 		<#assign somenteLeitura="false" />
 		<#assign integradaPortal="${empresa.integradaPortalColaborador?string}" />
+		<#assign empresaId="${empresa.id}"/>
 	<#else>
 		<title>Inserir Empresa</title>
 		<#assign formAction="insert.action"/>
 		<#assign accessKey="I"/>
 		<#assign somenteLeitura="true" />
 		<#assign integradaPortal="false" />
+		<#assign empresaId="0"/>
 	</#if>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UtilDWR.js"/>'></script>
@@ -134,17 +136,12 @@
 		function removeDadosPortalColaborador()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			EmpresaDWR.removeDadosPortalColaborador(alertPortal);
+			EmpresaDWR.removeDadosPortalColaborador(alertPortal, ${empresaId});
 		}
 		
-		function alertPortal(data)
+		function alertPortal()
 		{
-			if(data)
-				jAlert('Removido com sucesso');
-			else{
-				
-				jAlert('Ocorreu um erro ao remover dadas do Portal do Colaborador. Verifique as configurações do sistema e o acesso a internet.', $('#integradaPortalColaborador').prop('checked', true));
-			}
+			jAlert('Ao removermos os dados do Portal do Colaborador, enviaremos um email de confirmação para o responsável do RH.');
 		}
 
 		function popUpDadosPortalColaborador()

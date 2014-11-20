@@ -523,6 +523,12 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		
 		return null;
 	}
+	
+	public void removeEmpresaPc(Long empresaId) 
+	{
+		Empresa empresa = getDao().findById(empresaId);
+		transacaoPCManager.enfileirar(new EmpresaPC(empresa), URLTransacaoPC.EMPRESA_REMOVER, empresa.getId());
+	}
 
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
 		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
@@ -567,5 +573,4 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	public void setTransacaoPCManager(TransacaoPCManager transacaoPCManager) {
 		this.transacaoPCManager = transacaoPCManager;
 	}
-
 }
