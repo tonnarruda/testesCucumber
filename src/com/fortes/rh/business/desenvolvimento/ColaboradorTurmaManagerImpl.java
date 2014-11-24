@@ -35,11 +35,13 @@ import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.ws.TAula;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.ibm.icu.math.BigDecimal;
+import com.opensymphony.xwork.Action;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorTurma, ColaboradorTurmaDao> implements ColaboradorTurmaManager
@@ -1031,6 +1033,30 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Collection<Colaborador> findColaboradorByCurso(Long[] cursosIds, Long[] turmasIds) 
 	{
 		return getDao().findColaboradorByCursos(cursosIds, turmasIds);
+	}
+
+	public TAula[] getTreinamentosPrevistoParaTRU(String empregadoCodigo, Empresa empresa, String dataIni, String dataFim) {
+		
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColabTreinamentosPrevistos(empregadoCodigo, empresa.getId(), DateUtil.criarDataDiaMesAno(dataIni), DateUtil.criarDataDiaMesAno(dataFim));
+		
+		if(colaboradorTurmas.isEmpty())
+			return null;
+		
+		int interator = 0;
+		TAula tAula;
+		TAula[] tAulas = new TAula[colaboradorTurmas.size()];
+		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
+		{
+			tAula = new TAula();
+			tAula.setEmpregadoCodigo(colaboradorTurma.getColaborador().getCodigoAC());
+			tAula.setEmpresaCodigo(empresa.getCodigoAC());
+			tAula.setEmpresaGrupo(empresa.getGrupoAC());
+			tAula.setData(DateUtil.formataDiaMesAno(colaboradorTurma.getDiaPresente()));
+						
+			tAulas[interator] = tAula;
+		}
+		
+		return tAulas;
 	}
 	
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)

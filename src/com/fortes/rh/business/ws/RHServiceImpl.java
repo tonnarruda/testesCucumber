@@ -21,6 +21,7 @@ import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceHistoricoManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
+import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -56,6 +57,7 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.model.ws.FeedbackWebService;
 import com.fortes.rh.model.ws.TAreaOrganizacional;
+import com.fortes.rh.model.ws.TAula;
 import com.fortes.rh.model.ws.TCandidato;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.model.ws.TCidade;
@@ -96,6 +98,7 @@ public class RHServiceImpl implements RHService
 	private UsuarioManager usuarioManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private PlatformTransactionManager transactionManager;
+	private ColaboradorTurmaManager colaboradorTurmaManager;
 
 	private final String MSG_ERRO_REMOVER_SITUACAO_LOTE = "Erro ao excluir situação dos empregados, existem outros cadastros utilizando essa situação.";
 	private final String MSG_ERRO_REMOVER_SITUACAO = "Erro ao excluir situação do empregado, existem outros cadastros utilizando essa situação.";
@@ -1409,6 +1412,28 @@ public class RHServiceImpl implements RHService
 		return false;
 	}
 	
+	public TAula[] getTreinamentosPrevistos(String empregadoCodigo, String empresaCodigo, String empresaGrupo, String dataIni, String dataFim)
+	{
+		try {
+			TAula[] tAulas = null;
+			Empresa empresa = empresaManager.findByCodigoAC(empresaCodigo, empresaGrupo);
+			
+			if(empresa != null)
+				tAulas = colaboradorTurmaManager.getTreinamentosPrevistoParaTRU(empregadoCodigo, empresa, dataIni, dataFim);
+			
+			return tAulas;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public TAula[] getTreinamentosCursados(String empregadoCodigo, String empresaCodigo, String empresaGrupo, String dataIni, String dataFim)
+	{
+		
+		return null;
+	}
+	
 	public void setCidadeManager(CidadeManager cidadeManager)
 	{
 		this.cidadeManager = cidadeManager;
@@ -1508,5 +1533,10 @@ public class RHServiceImpl implements RHService
 
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
+	}
+
+	public void setColaboradorTurmaManager(
+			ColaboradorTurmaManager colaboradorTurmaManager) {
+		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
 }

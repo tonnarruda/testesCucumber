@@ -18,6 +18,8 @@ import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCertificacaoRela
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCursoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.ws.TAula;
 
 @SuppressWarnings("unchecked")
 public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma>
@@ -69,4 +71,5 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Long[] estabelecimentoIds,	Long[] areaIds, Long[] cursoIds, Long[] turmaIds, boolean considerarSomenteDiasPresente);
 	public Collection<Colaborador> findColaboradorByCurso(Long[] cursosIds, Long[] turmasIds);
 	public Collection<ColaboradorTurma> filtraAprovadoReprovado(Collection<ColaboradorTurma> colaboradorTurmaIds, char aprovado);
+	public TAula[] getTreinamentosPrevistoParaTRU(String empregadoCodigo, Empresa empresa, String dataIni, String dataFim);
 }

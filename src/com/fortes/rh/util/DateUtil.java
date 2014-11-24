@@ -192,6 +192,27 @@ public class DateUtil
 		return currentDate;
 	}
 	
+	public static Date criarDataDiaMesAno(String dataDiaMesAno)
+	{
+		String dia = "1";
+		String mes = "1";
+		String ano = "0";
+		String[] dma = dataDiaMesAno.split("/");
+		if(dma.length == 3)
+		{
+			dia = dma[0];
+			mes = dma[1];
+			ano = dma[2];
+		}
+
+		Date currentDate = new Date();
+		currentDate.setDate(Integer.parseInt(dia));
+		currentDate.setMonth(Integer.parseInt(mes) - 1);
+		currentDate.setYear(Integer.parseInt(ano) - 1900);
+
+		return currentDate;
+	}
+	
 	public static Date criarDataMesAno(Date data)
 	{
 		Calendar c = Calendar.getInstance();

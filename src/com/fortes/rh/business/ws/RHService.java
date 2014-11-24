@@ -2,6 +2,7 @@ package com.fortes.rh.business.ws;
 
 import com.fortes.rh.model.ws.FeedbackWebService;
 import com.fortes.rh.model.ws.TAreaOrganizacional;
+import com.fortes.rh.model.ws.TAula;
 import com.fortes.rh.model.ws.TCandidato;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.model.ws.TCidade;
@@ -94,4 +95,8 @@ public interface RHService
 	
 	//Transferência em lote
 	FeedbackWebService transferir(TEmpresa tEmpresaOrigin, TEmpresa tEmpresaDestino, TEmpregado[] tEmpregados, TSituacao[] tSituacoes, String dataDesligamento);
+	
+	//TRU
+	TAula[] getTreinamentosPrevistos(String empregadoCodigo, String empresaCodigo, String empresaGrupo, String dataIni, String dataFim);
+	TAula[] getTreinamentosCursados(String empregadoCodigo, String empresaCodigo, String empresaGrupo, String dataIni, String dataFim);
 }

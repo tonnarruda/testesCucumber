@@ -1312,6 +1312,47 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 
 		return colaboradorTurmas;	
 	}
+	
+	public Collection<ColaboradorTurma> findColabTreinamentosPrevistos(String empregadoCodigo, Long empresaId, Date dataIni, Date dataFim) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new ColaboradorTurma(ct.id, co.codigoAC, dt.dia) ");
+		hql.append("from ColaboradorTurma as ct ");
+		hql.append("left join ct.colaborador as co ");
+		hql.append("left join co.historicoColaboradors as hc ");
+		hql.append("left join ct.turma as t ");
+		hql.append("left join t.diasTurma as dt ");
+		hql.append("where dt.dia between :dataIni and :dataFim ");
+		hql.append("and co.empresa.id = :empresaId ");
+		hql.append("and co.naoIntegraAc = false ");
+		hql.append("and co.codigoAC is not null ");
+		hql.append("and co.codigoAC <> '' ");
+		
+		if(empregadoCodigo != null && !"".equals(empregadoCodigo))
+			hql.append("and co.codigoAc = :empregadoCodigo");
+
+		hql.append("	and hc.data = ( ");
+		hql.append("		select max(hc2.data) " );
+		hql.append("		from HistoricoColaborador as hc2 ");
+		hql.append("		where hc2.colaborador.id = co.id ");
+		hql.append("		and hc2.data <= :hoje ");
+		hql.append("			and hc2.status = :status ");
+		hql.append("	) ");
+		
+		hql.append("order by co.codigoAC, dt.dia ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		query.setLong("empresaId", empresaId);
+		query.setDate("hoje", new Date());
+		query.setDate("dataIni", dataIni);
+		query.setDate("dataFim", dataFim);
+		
+		if(empregadoCodigo != null && !"".equals(empregadoCodigo))
+			query.setString("empregadoCodigo", empregadoCodigo);
+		
+		return query.list();	
+	}
 
 	public Collection<Colaborador> findColaboradorByCursos(Long[] cursosIds, Long[] turmasIds) 
 	{
@@ -1334,4 +1375,5 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 
 		return query.list();	
 	}
+
 }

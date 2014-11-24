@@ -46,6 +46,15 @@ public class DateUtilTest extends TestCase
 		assertEquals(107, data.getYear());
 	}
 	
+
+	public void testCriaDataDiaMesAno(){
+
+		Date data = DateUtil.criarDataDiaMesAno("20/11/2014");
+		assertEquals(20, data.getDate());
+		assertEquals(10, data.getMonth());
+		assertEquals(114, data.getYear());
+	}
+	
 	public void testGetDia()
 	{
 		Date data = DateUtil.criarDataMesAno(02, 12, 2011);
