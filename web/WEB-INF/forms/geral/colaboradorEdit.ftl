@@ -349,9 +349,11 @@
 		exibeLabelDosCamposNaoPreenchidos = true;
 		function validaFormularioDinamico(noSubmit)
 		{
-			<#if obrigarAmbienteFuncao && somenteLeitura == "false">
-				arrayValidacao.push('ambiente','funcao');
-			</#if>
+			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
+				<#if obrigarAmbienteFuncao && somenteLeitura == "false">
+					arrayValidacao.push('ambiente','funcao');
+				</#if>
+			</@authz.authorize>
 			
 			return validaFormulario('form', arrayValidacao, new Array('email', 'nascimento', 'cpf', 'cep', 'dt_admissao','dt_encerramentoContrato', 'emissao', 'vencimento','rgDataExpedicao','ctpsDataExpedicao', 'pis' ${validaDataCamposExtras}), (noSubmit == true ? true : false));
 		}
