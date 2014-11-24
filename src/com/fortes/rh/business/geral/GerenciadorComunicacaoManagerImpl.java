@@ -1012,7 +1012,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		ParametrosDoSistema parametrosDoSistema = (ParametrosDoSistema) parametrosDoSistemaManager.findById(1L);
 		
 		String subject = "[RH] - Avaliação " + avaliacaoTurma.getQuestionario().getTitulo() + " do curso " + turma.getCurso().getNome();
-		String  body =  "#COLABORADOR#, a avaliação " + avaliacaoTurma.getQuestionario().getTitulo() + " do curso " + turma.getCurso().getNome() + " está liberada para ser respondida."
+		String bodySubject =  "#COLABORADOR#, a avaliação " + avaliacaoTurma.getQuestionario().getTitulo() + " do curso " + turma.getCurso().getNome() + " está liberada para ser respondida."
 						+ "<br><br>"
 						+ "<a href='" + parametrosDoSistema.getAppUrl() + "/pesquisa/colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario.action?"
 								+ "questionario.id="+avaliacaoTurma.getQuestionario().getId()
@@ -1022,7 +1022,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
 		{
 			try {
-				body = body.replace("#COLABORADOR#", colaboradorTurma.getColaboradorNome());
+				String body = bodySubject.replace("#COLABORADOR#", colaboradorTurma.getColaboradorNome());
 				body = body.replace("#COLABORADOR_ID#", colaboradorTurma.getColaborador().getId().toString());
 				mail.send(empresa, subject, null, body, colaboradorTurma.getColaborador().getContato().getEmail());
 			} catch (Exception e)	{

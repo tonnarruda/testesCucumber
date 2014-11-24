@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.13x.16x" bd="" data="xx/xx/xxxx">
 		<Item visivel="N" motivo="P20141100176"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir: Correção de inconformidade ao clicar em gravar se a opção para preenchimento obrigatório de ambiente e função estivesse configurada na empresa e o perfil do usuário não possuísse permissão para visualizar as informações de SESMT.]]></Item>
+		<Item visivel="N" motivo="P20141100170"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Correção do envio de email ao liberar avaliação da turma.]]></Item>
 	</Versao>
 	<Versao id="1.1.137.165" bd="" data="24/11/2014">
 		<Item visivel="S" motivo="S20141100050"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Novo campo para data da mudança de status da solicitação.]]></Item>
