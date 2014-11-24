@@ -722,11 +722,15 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	}
 
 	public String getStatusFormatado() {
-		String dtStatus = "";
+		return StatusAprovacaoSolicitacao.getDescricao(getStatus());
+	}
+	
+	public String getStatusFormatadoComData() {
+		String status = getStatusFormatado();
 		if(dataStatus != null)
-			dtStatus = "<br>" + DateUtil.formataDiaMesAno(dataStatus);
+			status += "<br>" + DateUtil.formataDiaMesAno(dataStatus);
 		
-		return StatusAprovacaoSolicitacao.getDescricao(getStatus()) + dtStatus;
+		return status;
 	}
 	
 	public char getStatus() {

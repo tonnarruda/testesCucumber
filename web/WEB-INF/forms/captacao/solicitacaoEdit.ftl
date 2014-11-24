@@ -42,8 +42,8 @@
 	<script type="text/javascript">
 		
 		$(function() {
-			<#if solicitacao.obsSuspensao?exists>
-				$('#dataStatus').val(${solicitacao.obsSuspensao});
+			<#if solicitacao.dataStatus?exists>
+				$('#dataStatus').val(${solicitacao.dataStatus});
 			<#else>
 				$('#dataStatus').val($.datepicker.formatDate('dd/mm/yy',new Date()));
 			</#if>

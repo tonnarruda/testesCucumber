@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.13x.165" bd="" data="xx/11/2014">
-		<Item visivel="S" motivo="S20141100050"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Novo campo data para status da solicitação.]]></Item>
-		<Item visivel="S" motivo="S20141000202"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Apresentar data do status na listagem de  solicitação.]]></Item>
-		<Item visivel="S" motivo="S20141000109"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Possibilitar inserir colaboradores desligados no campo "Colaborador Substituído".]]></Item>
-		<Item visivel="S" motivo="S20141000197"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Aumento da capacidade do campo "Horário de Trabalho" para 255 caracteres.]]></Item>
-		<Item visivel="S" motivo="P20141000111"><![CDATA[R&S > Relatórios > Estatísticas de Vagas por Motivo: Novo filtro para referenciar o período com a data da solicitação ou a data de aprovação.]]></Item>
-		<Item visivel="S" motivo="P20141000111"><![CDATA[R&S > Painel de Indicadores: Novo filtro para referenciar o período com a data da solicitação ou a data de aprovação.]]></Item>
-		<Item visivel="S" motivo="S20141000113"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Possibilitando responder entrevista antes de finalizar o processo de desligamento no AC Pessoal.]]></Item>
-		<Item visivel="S" motivo="P20141000280"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Exibindo o nome da empresa do estabelecimento ao gerar o relatório.]]></Item>
+	<Versao id="1.1.137.165" bd="" data="24/11/2014">
+		<Item visivel="S" motivo="S20141100050"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Novo campo para data da mudança de status da solicitação.]]></Item>
+		<Item visivel="S" motivo="S20141000202"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Exibir a data da mudança de status na listagem de solicitações.]]></Item>
+		<Item visivel="S" motivo="S20141000109"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Possibilidade de inserir colaboradores desligados no campo "Colaborador Substituído".]]></Item>
+		<Item visivel="S" motivo="S20141000197"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Aumento do limite do campo "Horário de Trabalho" para 255 caracteres.]]></Item>
+		<Item visivel="S" motivo="P20141000111"><![CDATA[R&S > Relatórios > Estatísticas de Vagas por Motivo: Nova opção de referenciar o período do filtro pela data da solicitação ou pela data de aprovação.]]></Item>
+		<Item visivel="S" motivo="P20141000111"><![CDATA[R&S > Painel de Indicadores: Nova opção de referenciar o período do filtro pela data da solicitação ou pela data de aprovação.]]></Item>
+		<Item visivel="S" motivo="S20141000113"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Possibilidade de responder a entrevista antes de finalizar o processo de desligamento no AC Pessoal.]]></Item>
+		<Item visivel="S" motivo="P20141000280"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Exibir o nome da empresa e do estabelecimento ao gerar o relatório.]]></Item>
 		<Item visivel="S" motivo="S20141000244"><![CDATA[SESMT > Cadastros > Motivos de Solicitação de EPI: Novo cadastro.]]></Item>
-		<Item visivel="S" motivo="S20141000244"><![CDATA[SESMT > Movimentações > Solicitação de EPIs > Inserir/Editar: Novo campo "Motivo da Solicitação" na lista dos EPIs.]]></Item>
-		<Item visivel="S" motivo="P20141000200"><![CDATA[Utilitários > Cadastros > Empresas: Nova configuração para reabrir 'Solicitação de Pessoal' após cancelar uma contratação ou promoção no AC Pessoal (Somente quando integrado).]]></Item>
-		<Item visivel="N" motivo="P20141100008"><![CDATA[BUG: Info. Funcionais > Painel de Indicadores: Corrigindo contagem do 'Total de Colaboradores'.]]></Item>
-		<Item visivel="N" motivo="P20141000242"><![CDATA[BUG: Módulo externo> Correção de erro ao responder avaliação.]]></Item>
-		<Item visivel="N" motivo="P20141000274"><![CDATA[BUG: SESMT > Relatórios > Resultado da Ficha Médica: Inconsistência quando respostas subjetivas possuiam a mesma descrição apresentando apenas uma resposta.]]></Item>
-		<Item visivel="N" motivo="P20141000275"><![CDATA[BUG: Aval. Desempenho > Movimentações > Avaliações de Desempenho > Resultado da Avaliação de Desempenho: Ao marcar a fleg "Desconsiderar auto-avaliação" o relatório apresendado continuava a apresentar respostas da auto-avaliação quando se tratava de perguntas objetiva e multipla escolha.]]></Item>
-		<Item visivel="N" motivo="P20141000201"><![CDATA[Melhoria de performance em várias consultas.]]></Item>
-		<Item visivel="N" motivo="P20141100014"><![CDATA[BUG: Info. Funcionais > Relatórios > Absenteísmo: Inconsistência na contagem dos dias trabalhados no mês de início do horário de verão.]]></Item>
-		<Item visivel="N" motivo="P20141100093"><![CDATA[BUG: Módulo Externo: Mensagem não era exibida na tela de login.]]></Item>
+		<Item visivel="S" motivo="S20141000244"><![CDATA[SESMT > Movimentações > Solicitação de EPIs > Inserir/Editar: Novo campo "Motivo da Solicitação" na lista de EPIs.]]></Item>
+		<Item visivel="S" motivo="P20141000200"><![CDATA[Utilitários > Cadastros > Empresas: Nova configuração para reabertura da solicitação de pessoal relacionada ao cancelar a contratação ou promoção no AC Pessoal (se integrado).]]></Item>
+		<Item visivel="N" motivo="P20141000275"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Resultado da Avaliação de Desempenho: Mesmo marcando a opção "desconsiderar auto-avaliação" o relatório continuava a apresentar as respostas para perguntas objetivas e de múltipla escolha.]]></Item>
+		<Item visivel="N" motivo="P20141100008"><![CDATA[Info. Funcionais > Painel de Indicadores: Correção da contagem do total de colaboradores.]]></Item>
+		<Item visivel="N" motivo="P20141100014"><![CDATA[Info. Funcionais > Relatórios > Absenteísmo: Correção de inconsistência na contagem dos dias trabalhados no mês de início do horário de verão.]]></Item>
+		<Item visivel="N" motivo="P20141000274"><![CDATA[SESMT > Relatórios > Resultado da Ficha Médica: Correção de inconsistência quando respostas subjetivas possuíam a mesma descrição, apresentando apenas uma resposta.]]></Item>
+		<Item visivel="N" motivo="P20141000242"><![CDATA[Módulo Externo > Correção de erro ao responder avaliação.]]></Item>
+		<Item visivel="N" motivo="P20141100093"><![CDATA[Módulo Externo: Correção de inconsistência que impossibilitava a exibição da mensagem da tela de login.]]></Item>
+		<Item visivel="N" motivo="P20141000201"><![CDATA[Melhorias de performance em algumas consultas ao banco de dados.]]></Item>
 	</Versao>
 	<Versao id="1.1.136.164" bd="" data="03/11/2014">
 		<Item visivel="S" motivo="S20140100212"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Possibilitando encerrar vaga ao contratar colaboradores de outra empresa.]]></Item>

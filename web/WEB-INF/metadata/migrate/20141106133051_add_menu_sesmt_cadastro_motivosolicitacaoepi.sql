@@ -19,3 +19,4 @@ update papel set ordem = 19 where id=532;--.go
 
 insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (628, 'ROLE_CAD_MOTIVO_SOLICITACAO_EPI', 'Motivos de Solicitação de EPI', '/sesmt/motivoSolicitacaoEpi/list.action', 2, true, 385);--.go
 insert into perfil_papel(perfil_id, papeis_id) values(1, 628);--.go
+alter sequence papel_sequence restart with 629;--.go
