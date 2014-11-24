@@ -24,6 +24,7 @@ public class CheckListBoxTag extends TagSupport
 	private boolean readonly = false;
 	private boolean filtro = false;
 	private boolean showTitle = false;
+	private boolean somenteAtivo = false;
 
 	public CheckListBoxTag()
 	{
@@ -72,6 +73,7 @@ public class CheckListBoxTag extends TagSupport
 			if (filtro)
 				checkGroup.append("<input type=\"text\" id=\"listCheckBoxFilter" + name + "\" class=\"listCheckBoxFilter\" title=\"Digite para filtrar\"/>\n");
 			
+			
 			if(!readonly)
 			{
 				checkGroup.append("&nbsp;<span class='linkCheck' onclick=\"marcarDesmarcarListCheckBox("+ form +", '"+ name +"',true); "+ onClick +"\">");
@@ -84,6 +86,11 @@ public class CheckListBoxTag extends TagSupport
 				checkGroup.append("Marcar todos</span> | <span class='linkCheckDisabled'>");
 				checkGroup.append("Desmarcar todos</span>");
 			}
+			
+			if(somenteAtivo)
+				checkGroup.append("|<input name=\"somenteAtivos\" value=\"false\" id=\"somenteAtivosCheckkBox_" + name + "\" type=\"checkbox\" onClick=\"escondeInativos(this.id,'listCheckBox"+ name +"')\"/><span class='linkCheck'>Somente Ativo</b></span>");
+			
+			
 			
 			checkGroup.append("</div><div id='listCheckBox"+ name +"' class='listCheckBox' " + dimensionList + ">");
 
@@ -228,5 +235,13 @@ public class CheckListBoxTag extends TagSupport
 	public void setShowTitle(boolean showTitle)
 	{
 		this.showTitle = showTitle;
+	}
+
+	public void setSomenteAtivo(boolean somenteAtivo) {
+		this.somenteAtivo = somenteAtivo;
+	}
+
+	public boolean isSomenteAtivo() {
+		return somenteAtivo;
 	}
 }

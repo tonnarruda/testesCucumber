@@ -1342,3 +1342,11 @@ function naoInseririrCharacterComValor(e,value)
 
 	return true;
 }
+
+function escondeInativos(idSomenteAtivo, idListMultiCheckBox)
+{
+	if($('#' + idSomenteAtivo).is(":checked"))
+		$('#' + idListMultiCheckBox + ' label:contains("Inativ")').hide();
+	else
+		$('#' + idListMultiCheckBox + ' label:contains("Inativ")').show();
+}
