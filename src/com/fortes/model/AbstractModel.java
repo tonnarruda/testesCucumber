@@ -1,5 +1,7 @@
 package com.fortes.model;
 
+import java.util.List;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,6 +24,10 @@ public abstract class AbstractModel
 		this.id = id;
 	}
 
+	public String[] getDependenciasDesconsideradasNaRemocao(){
+		return null;
+	}
+	
 	@Override
 	public boolean equals(Object object)
 	{

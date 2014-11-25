@@ -957,6 +957,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	empresa.setAcIntegra(true);
     	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
     	
+    	String [] tables = new String[]{"historicocolaborador"};
+    	
+    	colaboradorDao.expects(once()).method("findDependentTables").with(eq(colaborador.getId())).will(returnValue(tables));
     	candidatoManager.expects(once()).method("updateDisponivelAndContratadoByColaborador").with(eq(true),eq(false),eq(new Long[]{colaborador.getId()})).isVoid();
     	candidatoSolicitacaoManager.expects(once()).method("setStatusByColaborador").with(ANYTHING, eq(new Long[]{colaborador.getId()})).isVoid();
     	formacaoManager.expects(once()).method("removeColaborador").with(eq(colaborador)).isVoid();
@@ -989,7 +992,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	empresa.setAcIntegra(true);
     	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-
+    	String [] tables = new String[]{"historicocolaborador"};
+    	colaboradorDao.expects(once()).method("findDependentTables").with(eq(colaborador.getId())).will(returnValue(tables));
+    	
     	formacaoManager.expects(once()).method("removeColaborador").with(eq(colaborador)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(colaborador.getId(),""))));;
 
     	Exception exception = null;

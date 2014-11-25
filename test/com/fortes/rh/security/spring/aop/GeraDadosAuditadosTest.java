@@ -15,12 +15,14 @@ public class GeraDadosAuditadosTest extends TestCase {
 						"[DADOS ANTERIORES]\n" +
 						"{\n" +
 //						"  \"chaveParaAuditoria\": \"Carnaval\",\n" +
+						"  \"dependenciasDesconsideradasNaRemocao\": [],\n" +
 						"  \"id\": 1,\n" +
 						"  \"nome\": \"Carnaval\"\n" +
 						"}" +
 						"\n\n[DADOS ATUALIZADOS]\n" +
 						"{\n" +
 //						"  \"chaveParaAuditoria\": \"Carnaval\",\n" +
+						"  \"dependenciasDesconsideradasNaRemocao\": [],\n"+
 						"  \"id\": 1,\n" +
 						"  \"nome\": \"Carnaval\"\n" +
 						"}";
@@ -34,10 +36,12 @@ public class GeraDadosAuditadosTest extends TestCase {
 		Evento parametro = new Evento();
 		parametro.setId(1L);
 		parametro.setNome("Carnaval");
+		parametro.getDependenciasDesconsideradasNaRemocao();
 		
 		Evento resultado = new Evento();
 		resultado.setId(1L);
 		resultado.setNome("Carnaval");
+		parametro.getDependenciasDesconsideradasNaRemocao();
 		
 		String dados = new GeraDadosAuditados(new Object[]{parametro}, resultado).gera();
 		assertEquals(ENTIDADE_FORMATADA, dados);
