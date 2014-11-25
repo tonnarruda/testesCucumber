@@ -2,9 +2,14 @@ package com.fortes.rh.security.spring.aop.callback;
 
 import java.lang.reflect.Method;
 
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
+import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.dicionario.TipoQuestionario;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
 import com.fortes.security.auditoria.Auditavel;
@@ -47,8 +52,8 @@ public class ColaboradorRespostaAuditorCallbackImpl implements AuditorCallback {
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), "Resposta", dados.toString());
 	}
 	
-	public Auditavel update(MetodoInterceptado metodo) throws Throwable {
-		
+	public Auditavel update(MetodoInterceptado metodo) throws Throwable 
+	{
 		ColaboradorQuestionario colaboradorQuestionario = (ColaboradorQuestionario) metodo.getParametros()[1];
 		Usuario usuario = carregaUsuario(metodo, (Long) metodo.getParametros()[2]);
 		
@@ -64,9 +69,33 @@ public class ColaboradorRespostaAuditorCallbackImpl implements AuditorCallback {
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), "Resposta", dados.toString());
 	}
 	
-	private Usuario carregaUsuario(MetodoInterceptado metodo, Long usuarioId) {
+	public Auditavel salvaQuestionarioRespondido(MetodoInterceptado metodo) throws Throwable 
+	{
+		ColaboradorRespostaManager colaboradorRespostaManager = (ColaboradorRespostaManager) metodo.getComponente();
+		QuestionarioManager questionarioManager = colaboradorRespostaManager.getQuestionarioManager();
+		ColaboradorManager colaboradorManager = colaboradorRespostaManager.getColaboradorManager();
+
+		Questionario questionario = questionarioManager.findEntidadeComAtributosSimplesById(((Questionario) metodo.getParametros()[1]).getId());
+		Colaborador colaborador = colaboradorManager.findEntidadeComAtributosSimplesById((Long) metodo.getParametros()[2]);
+		
+		StringBuilder dados = new StringBuilder();
+		dados.append("\nMensagem: ");
+		dados.append("\nAs respostas do(a) colaborador(a) ");
+		dados.append(colaborador.getNome());
+		dados.append(" para a ");
+		dados.append(TipoQuestionario.getDescricao(questionario.getTipo()));
+		dados.append(" ");
+		dados.append(questionario.getTitulo());
+		dados.append(" foram gravadas.\n");
+		
+		metodo.processa();
+		
+		return new AuditavelImpl("Questionario", metodo.getOperacao(), "Respostas para a " + TipoQuestionario.getDescricao(questionario.getTipo()) + ": " + questionario.getTitulo(), dados.toString());
+	}
+	
+	private Usuario carregaUsuario(MetodoInterceptado metodo, Long usuarioId) 
+	{
 		ColaboradorRespostaManager manager = (ColaboradorRespostaManager) metodo.getComponente();
 		return manager.findUsuarioParaAuditoria(usuarioId);
 	}
-	
 }

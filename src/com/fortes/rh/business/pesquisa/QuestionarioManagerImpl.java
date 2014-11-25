@@ -582,22 +582,23 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 		return getDao().findQuestionarioNaoLiberados(time);
 	}
 
-    public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
-    {
-        this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
-    }
-
-	public void setColaboradorManager(ColaboradorManager colaboradorManager)
-	{
-		this.colaboradorManager = colaboradorManager;
-	}
-
 	public Collection<Questionario> findQuestionario(Long colaboradorId) 
 	{
 		return getDao().findQuestionario(colaboradorId);
 	}
 
-	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) 
+	{
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
+	
+	public void setColaboradorManager(ColaboradorManager colaboradorManager)
+	{
+		this.colaboradorManager = colaboradorManager;
+	}
+	
+    public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
+    {
+        this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
+    }
 }

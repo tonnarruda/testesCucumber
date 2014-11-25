@@ -68,7 +68,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
     	return getDao().findInPerguntaIdsAvaliacao(perguntasIds, areasIds, periodoIni, periodoFim, empresaId);
     }
 
-    public void salvaQuestionarioRespondido(String respostas,Questionario questionario, Long colaboradorId, Long turmaId, char vinculo, Date respondidaEm, Long colaboradorQuestionarioId, boolean inserirFichaMedica) throws Exception
+    public void salvaQuestionarioRespondido(String respostas, Questionario questionario, Long colaboradorId, Long turmaId, char vinculo, Date respondidaEm, Long colaboradorQuestionarioId, boolean inserirFichaMedica) throws Exception
     {
     	Long candidatoId = null;
     	AreaOrganizacional areaOrganizacional = null;
@@ -653,10 +653,20 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	{
 		this.historicoColaboradorManager = historicoColaboradorManager;
 	}
-
+	
+	public QuestionarioManager getQuestionarioManager()
+	{
+		return this.questionarioManager;
+	}
+	
 	public void setQuestionarioManager(QuestionarioManager questionarioManager)
 	{
 		this.questionarioManager = questionarioManager;
+	}
+	
+	public ColaboradorManager getColaboradorManager()
+	{
+		return this.colaboradorManager;
 	}
 	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
