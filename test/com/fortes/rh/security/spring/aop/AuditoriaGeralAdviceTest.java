@@ -16,6 +16,7 @@ public class AuditoriaGeralAdviceTest extends MockObjectTestCase {
 	
 	private static final String DADOS_ESPERADOS = "[DADOS ANTERIORES]\n"
 													+ "{\n"
+													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n" 
 													+ "  \"id\": 29,\n"
 													+ "  \"nome\": \"Minha Festa\"\n"
 													+ "}";
@@ -54,8 +55,7 @@ public class AuditoriaGeralAdviceTest extends MockObjectTestCase {
 	private Advice mockaAdviceDeAuditoria() {
 		
 		auditoriaManagerMock = new Mock(AuditoriaManager.class);
-		auditoriaManagerMock.expects(once()).method("audita")
-				.with(eq("Cadastro de Bugigangas"), eq("Remoçao Customizada"), eq("Minha Festa"), eq(DADOS_ESPERADOS));
+		auditoriaManagerMock.expects(once()).method("audita").with(eq("Cadastro de Bugigangas"), eq("Remoçao Customizada"), eq("Minha Festa"), eq(DADOS_ESPERADOS)).isVoid();
 		
 		AuditoriaGeralAdvice auditoriaGeralAdvice = new AuditoriaGeralAdvice();
 		auditoriaGeralAdvice.setAuditoriaManager((AuditoriaManager) auditoriaManagerMock.proxy());

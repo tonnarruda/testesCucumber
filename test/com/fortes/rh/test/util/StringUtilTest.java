@@ -87,7 +87,7 @@ public class StringUtilTest extends TestCase
 		configuracaoPerformances.add(config1);
 		configuracaoPerformances.add(config2);
 		
-		assertEquals("[{\"aberta\":true,\"caixa\":\"1\",\"id\":0,\"ordem\":2},{\"aberta\":false,\"caixa\":\"2\",\"id\":0,\"ordem\":1}]", StringUtil.toJSON(configuracaoPerformances, new String[]{"usuario"}));
+		assertEquals("[{\"aberta\":true,\"caixa\":\"1\",\"dependenciasDesconsideradasNaRemocao\":[],\"id\":0,\"ordem\":2},{\"aberta\":false,\"caixa\":\"2\",\"dependenciasDesconsideradasNaRemocao\":[],\"id\":0,\"ordem\":1}]", StringUtil.toJSON(configuracaoPerformances, new String[]{"usuario"}));
 	}
 	
 	public void testRemoveAspas()

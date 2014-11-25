@@ -23,12 +23,14 @@ public class UpdateAuditorCallbackImplTest extends TestCase {
 	
 	private static final String DADOS_ESPERADOS = "[DADOS ANTERIORES]\n"
 													+ "{\n"
+													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n"
 													+ "  \"id\": 2,\n"
 													+ "  \"nome\": \"Minha Festa\"\n"
 													+ "}"
 													+ "\n\n"
 													+ "[DADOS ATUALIZADOS]\n"
 													+ "{\n"
+													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n"
 													+ "  \"id\": 2,\n"
 													+ "  \"nome\": \"Minha Festa 2010\"\n"
 													+ "}";
@@ -68,6 +70,7 @@ public class UpdateAuditorCallbackImplTest extends TestCase {
 				Evento evento = new Evento();
 				evento.setId(2L);
 				evento.setNome("Minha Festa 2010");
+				evento.getDependenciasDesconsideradasNaRemocao();
 				return new Object[]{evento};
 			}
 			public AccessibleObject getStaticPart() {

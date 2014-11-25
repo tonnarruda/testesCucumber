@@ -1018,11 +1018,11 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 								+ "questionario.id="+avaliacaoTurma.getQuestionario().getId()
 								+ "&colaborador.id=#COLABORADOR_ID#&"
 								+ "turmaId="+turma.getId()+"'>Acesse o RH para responder a avaliação</a><br><br>";
-				
+		String body;
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
 		{
 			try {
-				String body = bodySubject.replace("#COLABORADOR#", colaboradorTurma.getColaboradorNome());
+				body = bodySubject.replace("#COLABORADOR#", colaboradorTurma.getColaboradorNome());
 				body = body.replace("#COLABORADOR_ID#", colaboradorTurma.getColaborador().getId().toString());
 				mail.send(empresa, subject, null, body, colaboradorTurma.getColaborador().getContato().getEmail());
 			} catch (Exception e)	{

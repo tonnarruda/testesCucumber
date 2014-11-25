@@ -18,6 +18,7 @@ import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -64,6 +65,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.TituloEleitoral;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
+import com.fortes.rh.model.dicionario.Entidade;
 import com.fortes.rh.model.dicionario.FormulaTurnover;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
@@ -1513,12 +1515,27 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void remove(Colaborador colaborador, Empresa empresa) throws Exception
 	{
-		Colaborador colaboradorTmp = removeColaboradorDependencias(colaborador);
-
-		if(empresa.isAcIntegra())
-		{
-			if( ! acPessoalClientColaborador.remove(colaboradorTmp, empresa))
-				throw new IntegraACException("Não foi possível remover o colaborador no AC Pessoal.");
+		String[] tables = getDao().findDependentTables(colaborador.getId());
+		
+		String[] dependenciasDesconsideradas = colaborador.getDependenciasDesconsideradasNaRemocao();
+		
+		for (String dependencia : dependenciasDesconsideradas) 
+			tables = (String[]) ArrayUtils.removeElement(tables, dependencia);			
+		
+		if(tables.length > 0){
+			StringBuffer msg = new StringBuffer("Este colaborador não pode ser removido pois possui dependência com: <br />");
+		
+			for (String table : tables)
+				msg.append("&bull; ").append(Entidade.getDescricao(table)).append("<br />");
+			
+			throw new FortesException(msg.toString());
+		}else{
+			Colaborador colaboradorTmp = removeColaboradorDependencias(colaborador);
+			if(empresa.isAcIntegra())
+			{
+				if( ! acPessoalClientColaborador.remove(colaboradorTmp, empresa))
+					throw new IntegraACException("Não foi possível remover o colaborador no AC Pessoal.");
+			}
 		}
 	}
 

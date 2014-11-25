@@ -2808,4 +2808,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		
 		this.solicitacao.setId(solicitacaoId);
 	}
+	
+	@Override
+	public String[] getDependenciasDesconsideradasNaRemocao() {
+		String [] dependencias = new String[]{"candidato", "candidatosolicitacao", "colaboradoridioma", "configuracaonivelcompetencia", "Configuracaonivelcompetenciacolaborador", 
+												"Colaboradorperiodoexperienciaavaliacao", "experiencia", "formacao", "historicocolaborador", "mensagem", "usuariomensagem"};
+		return dependencias; 
+	}
+	
+	
 }

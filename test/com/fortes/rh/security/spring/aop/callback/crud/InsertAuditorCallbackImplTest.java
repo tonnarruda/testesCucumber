@@ -23,6 +23,7 @@ public class InsertAuditorCallbackImplTest extends TestCase {
 	
 	private static final String DADOS_ESPERADOS = "[DADOS ATUALIZADOS]\n"
 													+ "{\n"
+													+ "  \"dependenciasDesconsideradasNaRemocao\": [],\n"
 													+ "  \"id\": 2,\n"
 													+ "  \"nome\": \"Natal\"\n"
 													+ "}";
@@ -62,6 +63,7 @@ public class InsertAuditorCallbackImplTest extends TestCase {
 				Evento evento = new Evento();
 				evento.setId(null);
 				evento.setNome("Natal");
+				evento.getDependenciasDesconsideradasNaRemocao();
 				return new Object[]{evento};
 			}
 			public AccessibleObject getStaticPart() {
@@ -74,6 +76,7 @@ public class InsertAuditorCallbackImplTest extends TestCase {
 				Evento evento = new Evento();
 				evento.setId(2L);
 				evento.setNome("Natal");
+				evento.getDependenciasDesconsideradasNaRemocao();
 				return evento;
 			}
 		};
