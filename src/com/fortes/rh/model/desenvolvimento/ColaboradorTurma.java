@@ -850,4 +850,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	{
 		return diaPresente;
 	}
+
+	public void setDiaPresente(Date diaPresente) {
+		this.diaPresente = diaPresente;
+	}
 }

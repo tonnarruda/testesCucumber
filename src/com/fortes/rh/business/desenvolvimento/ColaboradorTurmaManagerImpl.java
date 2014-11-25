@@ -1043,7 +1043,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			return null;
 		
 		int interator = 0;
-		TAula tAula;
+		TAula tAula = null;
 		TAula[] tAulas = new TAula[colaboradorTurmas.size()];
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
 		{
@@ -1053,7 +1053,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			tAula.setEmpresaGrupo(empresa.getGrupoAC());
 			tAula.setData(DateUtil.formataDiaMesAno(colaboradorTurma.getDiaPresente()));
 						
-			tAulas[interator] = tAula;
+			tAulas[interator++] = tAula;
 		}
 		
 		return tAulas;

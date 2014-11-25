@@ -1418,7 +1418,7 @@ public class RHServiceImpl implements RHService
 			TAula[] tAulas = null;
 			Empresa empresa = empresaManager.findByCodigoAC(empresaCodigo, empresaGrupo);
 			
-			if(empresa != null)
+			if(empresa != null && empresaCodigo != null && dataIni!= null && dataFim != null && !"".equals(empresaCodigo) && !"".equals(dataIni) && !"".equals(dataFim))
 				tAulas = colaboradorTurmaManager.getTreinamentosPrevistoParaTRU(empregadoCodigo, empresa, dataIni, dataFim);
 			
 			return tAulas;

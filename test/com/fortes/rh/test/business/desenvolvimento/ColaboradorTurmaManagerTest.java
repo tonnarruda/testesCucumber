@@ -48,6 +48,7 @@ import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.ws.TAula;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -61,6 +62,7 @@ import com.fortes.rh.test.factory.desenvolvimento.DntFactory;
 import com.fortes.rh.test.factory.desenvolvimento.PrioridadeTreinamentoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 
 public class ColaboradorTurmaManagerTest extends MockObjectTestCase
@@ -1166,6 +1168,45 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Certificado certificadoClonado = (Certificado) certificadosResults.toArray()[0];
 		
 		assertEquals("mamae quer Marlus", certificadoClonado.getConteudo());
+	}
+	
+	public void testeGetTreinamentosPrevistoParaTRU()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setCodigoAC("123");
+		empresa.setGrupoAC("01");
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setCodigoAC("123456");
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(1L);
+		colaborador2.setCodigoAC("123400");
+		
+		ColaboradorTurma ct1 = ColaboradorTurmaFactory.getEntity(1L);
+		ct1.setColaborador(colaborador);
+		ct1.setDiaPresente(DateUtil.criarDataMesAno(1, 11, 2014));
+		
+		ColaboradorTurma ct2 = ColaboradorTurmaFactory.getEntity(2L);
+		ct2.setColaborador(colaborador2);
+		ct2.setDiaPresente(DateUtil.criarDataMesAno(1, 12, 2014));
+		
+		ColaboradorTurma ct3 = ColaboradorTurmaFactory.getEntity();
+		ct3.setColaborador(colaborador);
+		ct3.setDiaPresente(DateUtil.criarDataMesAno(5, 12, 2014));
+		
+		Collection<ColaboradorTurma> colabTurmas =  new ArrayList<ColaboradorTurma>();
+		colabTurmas.add(ct1);
+		colabTurmas.add(ct3);
+		colabTurmas.add(ct2);
+		
+		colaboradorTurmaDao.expects(once()).method("findColabTreinamentosPrevistos").withAnyArguments().will(returnValue(colabTurmas));
+		
+		TAula[] tAula = colaboradorTurmaManager.getTreinamentosPrevistoParaTRU(colaborador.getCodigoAC(), empresa, "01/01/2014", "05/12/2014");
+		
+		assertEquals(3, tAula.length);
+		assertEquals("01/11/2014", ((TAula) tAula[0]).getData());
+		assertEquals("05/12/2014", ((TAula) tAula[1]).getData());
+		assertEquals("01/12/2014", ((TAula) tAula[2]).getData());
 	}
 
 }

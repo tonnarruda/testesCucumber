@@ -1495,10 +1495,89 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		assertEquals(1, colaboradorTurmaDao.findColaboradoresSemAvaliacao(empresa.getId(), dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime()).size());
 	}
 	
-//	public void testFindColaboradoresCertificacoes()
-//	{
-//		assertNotNull(colaboradorTurmaDao.findAprovadosReprovados(1L, null, null, new Long[0], new Long[0], " e.nome, a.nome, co.nome, c.nome ", null));
-//	}
+    
+    public void testFindColabTreinamentosPrevistos()
+    {
+    	Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresaDao.save(empresa);
+    	
+    	Curso curso = CursoFactory.getEntity();
+    	cursoDao.save(curso);
+    	
+    	Turma turma = TurmaFactory.getEntity();
+    	turma.setCurso(curso);
+    	turmaDao.save(turma);
+    	
+    	Turma turma2 = TurmaFactory.getEntity();
+    	turma2.setCurso(curso);
+    	turmaDao.save(turma2);
+    	
+    	DiaTurma diaTurma1 = DiaTurmaFactory.getEntity();
+    	diaTurma1.setDia(DateUtil.criarDataMesAno(1, 11, 2014));
+    	diaTurma1.setTurma(turma);
+    	diaTurmaDao.save(diaTurma1);
+    	
+    	DiaTurma diaTurma2 = DiaTurmaFactory.getEntity();
+    	diaTurma2.setDia(DateUtil.criarDataMesAno(2, 11, 2014));
+    	diaTurma2.setTurma(turma);
+    	diaTurmaDao.save(diaTurma2);
+    	
+    	DiaTurma diaTurma3 = DiaTurmaFactory.getEntity();
+    	diaTurma3.setDia(DateUtil.criarDataMesAno(3, 11, 2014));
+    	diaTurma3.setTurma(turma2);
+    	diaTurmaDao.save(diaTurma3);
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity();
+    	colaborador.setCodigoAC("123445");
+    	colaborador.setEmpresa(empresa);
+    	colaboradorDao.save(colaborador);
+    	
+    	Colaborador colaborador2 = ColaboradorFactory.getEntity();
+    	colaborador2.setEmpresa(empresa);
+    	colaboradorDao.save(colaborador2);
+    	
+    	Colaborador colaborador3 = ColaboradorFactory.getEntity();
+    	colaborador3.setCodigoAC("123456");
+    	colaborador3.setEmpresa(empresa);
+    	colaboradorDao.save(colaborador3);
+    	
+    	HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+    	historicoColaborador.setColaborador(colaborador);
+    	historicoColaborador.setData(new Date());
+    	historicoColaboradorDao.save(historicoColaborador);
+    	
+    	HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+    	historicoColaborador2.setColaborador(colaborador2);
+    	historicoColaborador2.setData(new Date());
+    	historicoColaboradorDao.save(historicoColaborador2);
+    	
+    	HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity();
+    	historicoColaborador3.setColaborador(colaborador3);
+    	historicoColaborador3.setData(new Date());
+    	historicoColaboradorDao.save(historicoColaborador3);
+    	
+    	ColaboradorTurma colaboradorTurma = getEntity();
+    	colaboradorTurma.setColaborador(colaborador);
+    	colaboradorTurma.setTurma(turma);
+    	colaboradorTurma.setCurso(curso);
+    	colaboradorTurma = colaboradorTurmaDao.save(colaboradorTurma);
+    	
+    	ColaboradorTurma colaboradorTurma2 = getEntity();
+    	colaboradorTurma2.setColaborador(colaborador2);
+    	colaboradorTurma2.setTurma(turma);
+    	colaboradorTurma2.setCurso(curso);
+    	colaboradorTurma2 = colaboradorTurmaDao.save(colaboradorTurma2);
+
+    	ColaboradorTurma colaboradorTurma3 = getEntity();
+    	colaboradorTurma3.setColaborador(colaborador3);
+    	colaboradorTurma3.setTurma(turma2);
+    	colaboradorTurma3.setCurso(curso);
+    	colaboradorTurma3 = colaboradorTurmaDao.save(colaboradorTurma3);
+    	
+    	Collection<ColaboradorTurma> colabTurmaRetorno = colaboradorTurmaDao.findColabTreinamentosPrevistos(null, empresa.getId(), DateUtil.criarDataMesAno(1, 11, 2014), DateUtil.criarDataMesAno(2, 11, 2014));
+    	
+    	assertEquals(2, colabTurmaRetorno.size());
+    }
 
     public GenericDao<ColaboradorTurma> getGenericDao()
     {

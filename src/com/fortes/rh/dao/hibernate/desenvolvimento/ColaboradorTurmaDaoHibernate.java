@@ -1336,7 +1336,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		hql.append("		from HistoricoColaborador as hc2 ");
 		hql.append("		where hc2.colaborador.id = co.id ");
 		hql.append("		and hc2.data <= :hoje ");
-		hql.append("			and hc2.status = :status ");
+		hql.append("		and hc2.status = :status ");
 		hql.append("	) ");
 		
 		hql.append("order by co.codigoAC, dt.dia ");
