@@ -77,6 +77,8 @@
 			<arg value="${postgres.user}" />
 			<arg value="-h" />
 			<arg value="${postgres.host}" />
+			<arg value="-p" />
+			<arg value="${postgres.port}" />
 			<arg value="-Fc" />
 			<arg value="--blobs" />
 			<arg value="-f" />
