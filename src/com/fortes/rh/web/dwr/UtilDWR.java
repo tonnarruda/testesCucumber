@@ -9,10 +9,10 @@ import javax.mail.AuthenticationFailedException;
 
 import uk.ltd.getahead.dwr.WebContextFactory;
 
+import com.fortes.portalcolaborador.business.TransacaoPCManager;
+import com.fortes.portalcolaborador.model.dicionario.TransacaoPCMensagens;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
-import com.fortes.rh.business.portalcolaborador.TransacaoPCManager;
-import com.fortes.rh.model.dicionario.TransacaoPCMensagens;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.geral.ParametrosDoSistema;

@@ -30,6 +30,7 @@ import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.portalcolaborador.model.AtualizarColaboradorPortal;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.hibernate.util.OrderBySql;
 import com.fortes.rh.model.acesso.Usuario;
@@ -53,7 +54,6 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
-import com.fortes.rh.model.portalcolaborador.AtualizarColaboradorPortal;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;

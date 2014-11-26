@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.portalcolaborador.model.AtualizarColaboradorPortal;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
@@ -105,7 +106,6 @@ import com.fortes.rh.model.geral.Providencia;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Questionario;
-import com.fortes.rh.model.portalcolaborador.AtualizarColaboradorPortal;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Epi;

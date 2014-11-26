@@ -19,15 +19,15 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.model.type.File;
 import com.fortes.model.type.FileUtil;
+import com.fortes.portalcolaborador.business.TransacaoPCManager;
+import com.fortes.portalcolaborador.model.dicionario.TransacaoPCMensagens;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
-import com.fortes.rh.business.portalcolaborador.TransacaoPCManager;
 import com.fortes.rh.model.dicionario.FormulaTurnover;
-import com.fortes.rh.model.dicionario.TransacaoPCMensagens;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;

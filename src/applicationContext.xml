@@ -263,7 +263,7 @@
     <property name="cronExpression" value="0 0 3 * * ?" /> <!-- Todos os dias as 03:00h am -->
   </bean>
 
-  <bean name="processarFilaPCJob" class="com.fortes.rh.business.portalcolaborador.TransacaoPCManagerImpl">
+  <bean name="processarFilaPCJob" class="com.fortes.portalcolaborador.business.TransacaoPCManagerImpl">
     <property name="dao" ref="transacaoPCDaoTarget" />
   </bean>
   <bean name="processarFilaPC" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">

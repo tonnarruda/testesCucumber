@@ -30,6 +30,7 @@ import remprot.RPClient;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
+import com.fortes.portalcolaborador.business.TransacaoPCManager;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
@@ -44,7 +45,6 @@ import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
-import com.fortes.rh.business.portalcolaborador.TransacaoPCManager;
 import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
