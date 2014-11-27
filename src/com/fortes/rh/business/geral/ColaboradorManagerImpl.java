@@ -1515,17 +1515,17 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void remove(Colaborador colaborador, Empresa empresa) throws Exception
 	{
-		String[] tables = getDao().findDependentTables(colaborador.getId());
+		String[] dependenciasDaTabelaColaborador = getDao().findDependentTables(colaborador.getId());
 		
-		String[] dependenciasDesconsideradas = colaborador.getDependenciasDesconsideradasNaRemocao();
+		String[] dependenciasDesconsideradasNaRemocao = colaborador.getDependenciasDesconsideradasNaRemocao();
 		
-		for (String dependencia : dependenciasDesconsideradas) 
-			tables = (String[]) ArrayUtils.removeElement(tables, dependencia);			
+		for (String dependenciaDesconsideradaNaRemocao : dependenciasDesconsideradasNaRemocao) 
+			dependenciasDaTabelaColaborador = (String[]) ArrayUtils.removeElement(dependenciasDaTabelaColaborador, dependenciaDesconsideradaNaRemocao);			
 		
-		if(tables.length > 0){
+		if(dependenciasDaTabelaColaborador.length > 0){
 			StringBuffer msg = new StringBuffer("Este colaborador não pode ser removido pois possui dependência com: <br />");
 		
-			for (String table : tables)
+			for (String table : dependenciasDaTabelaColaborador)
 				msg.append("&bull; ").append(Entidade.getDescricao(table)).append("<br />");
 			
 			throw new FortesException(msg.toString());
