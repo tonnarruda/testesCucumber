@@ -4,6 +4,7 @@
 package com.fortes.rh.dao.hibernate.geral;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -37,7 +38,9 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		if (StringUtils.isNotBlank(grupoAC))
 			query.setString("grupoAC", grupoAC);
 		
-		return (Empresa) query.uniqueResult();
+		List<Empresa> retorno = query.list(); 
+		
+		return (retorno.size() > 0 ? retorno.get(0) : null);
 	}
 
 	public boolean getIntegracaoAC(Long id)

@@ -90,17 +90,47 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals(emp.getGrupoAC(), "XXX");
 	}
 	
-	public void testFindByCodigoBlank()
+	public void testFindByCodigoSemGrupoAC()
+	{	
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2.setCodigoAC("001122");
+		empresa2.setGrupoAC(null);
+		empresaDao.save(empresa2);
+		
+		Empresa emp = empresaDao.findByCodigo("001122", null);
+		
+		assertNotNull(emp);
+		assertEquals(emp.getCodigoAC(), "001122");
+	}
+	
+	public void testFindByCodigoSemGrupoACEmpresaDuplicada()
 	{	
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setCodigoAC("001122");
 		empresa.setGrupoAC(null);
 		empresaDao.save(empresa);
 		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2.setCodigoAC("001122");
+		empresa2.setGrupoAC(null);
+		empresaDao.save(empresa2);
+		
 		Empresa emp = empresaDao.findByCodigo("001122", null);
 		
 		assertNotNull(emp);
 		assertEquals(emp.getCodigoAC(), "001122");
+	}
+
+	public void testFindByCodigoEmpresaNaoEncontrada()
+	{	
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2.setCodigoAC("001122");
+		empresa2.setGrupoAC(null);
+		empresaDao.save(empresa2);
+		
+		Empresa emp = empresaDao.findByCodigo("001120", null);
+		
+		assertNull(emp);
 	}
 	
 	public void testUpdateCampoExtra()
