@@ -2793,4 +2793,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		this.transacaoPCManager = transacaoPCManager;
 	}
 
+	public void atualizarHistoricoPortal(boolean enviar, Collection<Long> colabIds)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -4937,4 +4937,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		query.executeUpdate();
 	}
+
+	public void atualizarHistoricoPortal(boolean enviar, Collection<Long> colabIds)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

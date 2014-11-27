@@ -1593,4 +1593,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
+
+	public void atualizaStatusDaSolicitacao(HistoricoColaborador historicoColaborador)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }
