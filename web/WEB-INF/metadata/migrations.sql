@@ -5774,4 +5774,13 @@ CREATE TRIGGER tg_atualizar_colaborador_portal
     FOR EACH ROW EXECUTE PROCEDURE atualizar_colaborador_portal();--.go
     
 --OBS ADICIONAR A LINHA NO DELETE DO COLBAORADOR DO IMPORTADOR
---	"DELETE FROM AtualizarColaboradorPortal WHERE colaborador.id = :id",    
+--	"DELETE FROM AtualizarColaboradorPortal WHERE colaborador.id = :id",
+
+-- create_table_movimentacaooperacao
+CREATE TABLE movimentacaooperacao (
+	id BIGINT NOT NULL,
+    operacao CHARACTER VARYING(100),
+    parametros TEXT
+); --.go
+ALTER TABLE movimentacaooperacao ADD CONSTRAINT movimentacaooperacao_pkey PRIMARY KEY(id);--.go
+CREATE SEQUENCE movimentacaooperacao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
