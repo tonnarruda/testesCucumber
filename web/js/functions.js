@@ -1345,8 +1345,24 @@ function naoInseririrCharacterComValor(e,value)
 
 function escondeInativos(idSomenteAtivo, idListMultiCheckBox)
 {
-	if($('#' + idSomenteAtivo).is(":checked"))
-		$('#' + idListMultiCheckBox + ' label:contains("Inativ")').hide();
-	else
-		$('#' + idListMultiCheckBox + ' label:contains("Inativ")').show();
+	$('#' + idListMultiCheckBox + ' label:contains("Ativ")').show();
+	$('#' + idListMultiCheckBox + ' label:contains("Inativ")').show();
+	
+	filtro = $('#' + idSomenteAtivo).val();
+	
+	var ativo = /Ativ[ao]s/.exec(filtro);
+	var inativo = /Inativ[ao]s/.exec(filtro);
+	
+	if(ativo)
+	{
+		$('#' + idListMultiCheckBox + ' label:contains("(Inativo)")').hide();
+		$('#' + idListMultiCheckBox + ' label:contains("(Inativa)")').hide();
+	}
+	
+	if (inativo)
+	{
+		$('#' + idListMultiCheckBox + ' label:contains("(Ativo)")').hide();
+		$('#' + idListMultiCheckBox + ' label:contains("(Ativa)")').hide();
+	}
 }
+

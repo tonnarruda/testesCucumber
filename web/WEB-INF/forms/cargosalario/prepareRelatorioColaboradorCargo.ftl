@@ -111,9 +111,9 @@
 		</li>
 		<br>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" filtro="true"/>
-		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="500" onClick="populaCargosByAreaVinculados();" filtro="true" somenteAtivo=true/>
+		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="500" onClick="populaCargosByAreaVinculados();" filtro="true" flagAtivo=true/>
 		<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>
-		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" filtro="true" somenteAtivo=true/>
+		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" filtro="true" flagAtivo=true/>
 		
 		<@ww.select label="Colocação do Colaborador" name="vinculo" id="vinculo" list="vinculos" headerKey="" headerValue="Todas" cssStyle="width: 180px;" />
 		<@ww.checkbox label="Exibir relatório resumido" name="relatorioResumido" id="resumido" labelPosition="left" onchange="desabilitaOutroCheck('resumido', 'exibirSalario')"/>

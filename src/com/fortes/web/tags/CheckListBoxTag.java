@@ -24,7 +24,7 @@ public class CheckListBoxTag extends TagSupport
 	private boolean readonly = false;
 	private boolean filtro = false;
 	private boolean showTitle = false;
-	private boolean somenteAtivo = false;
+	private boolean flagAtivo = false;
 
 	public CheckListBoxTag()
 	{
@@ -73,24 +73,29 @@ public class CheckListBoxTag extends TagSupport
 			if (filtro)
 				checkGroup.append("<input type=\"text\" id=\"listCheckBoxFilter" + name + "\" class=\"listCheckBoxFilter\" title=\"Digite para filtrar\"/>\n");
 			
-			
 			if(!readonly)
 			{
 				checkGroup.append("&nbsp;<span class='linkCheck' onclick=\"marcarDesmarcarListCheckBox("+ form +", '"+ name +"',true); "+ onClick +"\">");
 				checkGroup.append("Marcar todos</span> | <span class='linkCheck' onclick=\"marcarDesmarcarListCheckBox("+ form +", '"+ name +"',false); "+ onClick +"\">");
-				checkGroup.append("Desmarcar todos</span>");
+				checkGroup.append("Desmarcar todos</span>\n");
 			}
 			else
 			{
 				checkGroup.append("&nbsp;<span class='linkCheckDisabled'>");
 				checkGroup.append("Marcar todos</span> | <span class='linkCheckDisabled'>");
-				checkGroup.append("Desmarcar todos</span>");
+				checkGroup.append("Desmarcar todos</span>\n");
 			}
 			
-			if(somenteAtivo)
-				checkGroup.append("|<input name=\"somenteAtivos\" value=\"false\" id=\"somenteAtivosCheckkBox_" + name + "\" type=\"checkbox\" onClick=\"escondeInativos(this.id,'listCheckBox"+ name +"')\"/><span class='linkCheck'>Somente Ativo</b></span>");
-			
-			
+			if(flagAtivo)
+			{
+				checkGroup.append("|&nbsp;<select id=\"somenteAtivosCheckkBox_" + name + "\" onChange=\"escondeInativos(this.id,'listCheckBox"+ name +"')\"/>");
+				checkGroup.append("   <option value=\"Todos\">Todos</option>");
+				checkGroup.append("   <option value=\"Ativos\">Ativos</option>");
+				checkGroup.append("   <option value=\"Inativos\">Inativos</option>");
+				checkGroup.append("</select>"); 
+				
+//				checkGroup.append("|<input name=\"somenteAtivos\" value=\"false\" id=\"somenteAtivosCheckkBox_" + name + "\" type=\"select\" onClick=\"escondeInativos(this.id,'listCheckBox"+ name +"')\"/><span class='linkCheck'>Somente Ativo</b></span>\n");
+			}
 			
 			checkGroup.append("</div><div id='listCheckBox"+ name +"' class='listCheckBox' " + dimensionList + ">");
 
@@ -237,11 +242,11 @@ public class CheckListBoxTag extends TagSupport
 		this.showTitle = showTitle;
 	}
 
-	public void setSomenteAtivo(boolean somenteAtivo) {
-		this.somenteAtivo = somenteAtivo;
+	public boolean isFlagAtivo() {
+		return flagAtivo;
 	}
 
-	public boolean isSomenteAtivo() {
-		return somenteAtivo;
+	public void setFlagAtivo(boolean flagAtivo) {
+		this.flagAtivo = flagAtivo;
 	}
 }
