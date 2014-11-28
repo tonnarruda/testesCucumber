@@ -81,23 +81,6 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 
 	public Collection<ExamesPrevistosRelatorio> findExamesPeriodicosPrevistos(Long empresaId, Date data, Long[] exameIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] colaboradorIds, boolean imprimirAfastados, boolean imprimirDesligados)
 	{
-		String whereColaboradores = "", whereEstabelecimentos = "",
-			   whereAreasOrganizacionais = "", whereExames = "",
-			   afastados = "", whereDesligados = "";
-
-		if (areaIds != null && areaIds.length > 0)
-			whereAreasOrganizacionais = "and ao.id in (:areaIds) ";
-		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			whereEstabelecimentos = "and es.id in (:estabelecimentoIds) ";
-		if (colaboradorIds != null && colaboradorIds.length > 0)
-			whereColaboradores = "and co.id in (:colaboradorIds) ";
-		if (exameIds != null && exameIds.length > 0)
-			whereExames = "and e.id in (:exameIds) ";
-		if (imprimirAfastados)
-			afastados = "and (afa.fim = null or afa.fim >= :data) ";
-		if (!imprimirDesligados)
-			whereDesligados = "and co.desligado = :imprimirDesligados  ";
-		
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio(co.id,e.id,ao.id,ca.nome,co.matricula,co.nome,co.nomeComercial,e.nome,se.data,re.data,ese.periodicidade, se.motivo, es.id, es.nome) ");
 		hql.append("from SolicitacaoExame se ");
@@ -114,12 +97,25 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		hql.append("where se.empresa.id = :empresaId ");
 		hql.append("and ese.periodicidade > 0 ");
 		hql.append("and se.data <= :data ");
-		hql.append(whereDesligados);
-		hql.append(whereAreasOrganizacionais);
-		hql.append(whereEstabelecimentos);
-		hql.append(whereColaboradores);
-		hql.append(whereExames);
-		hql.append(afastados);
+
+		if (areaIds != null && areaIds.length > 0)
+			hql.append("and ao.id in (:areaIds) ");
+		
+		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
+			hql.append("and es.id in (:estabelecimentoIds) ");
+		
+		if (colaboradorIds != null && colaboradorIds.length > 0)
+			hql.append("and co.id in (:colaboradorIds) ");
+		
+		if (exameIds != null && exameIds.length > 0)
+			hql.append("and e.id in (:exameIds) ");
+		
+		if (imprimirAfastados)
+			hql.append("and (afa.fim = null or afa.fim >= :data) ");
+		
+		if (!imprimirDesligados)
+			hql.append("and co.desligado = :imprimirDesligados ");
+		
 		hql.append("	and hc.data = ( ");
 		hql.append("		select max(hc2.data) " );
 		hql.append("		from HistoricoColaborador as hc2 ");
@@ -127,7 +123,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		hql.append("			and hc2.data <= :hoje and hc2.status = :status ");
 		hql.append("	) ");
 		hql.append("and re.resultado != :naoRealizado ");
-		hql.append("ORDER BY co.id,e.id ");
+		hql.append("order by co.id,e.id ");
 
 		Query query = getSession().createQuery(hql.toString());
 
@@ -189,59 +185,61 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 	
 	public Collection<ExamesRealizadosRelatorio> findExamesRealizadosColaboradores(Long empresaId, String nomeBusca, Date inicio, Date fim, String solicitacaoMotivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds)  
 	{
-		String whereEstabelecimentos = "", whereExames = "", whereResultado="", whereClinica="", whereMotivo="";
+		Query query = montaConsultaDeExamesRealizados(empresaId, nomeBusca, inicio, fim, solicitacaoMotivo, exameResultado, clinicaAutorizadaId, examesIds, estabelecimentosIds, new Colaborador());
 		
-		if (estabelecimentosIds != null && estabelecimentosIds.length > 0)
-			whereEstabelecimentos = "and es.id in (:estabelecimentoIds) ";
+		return query.list();
+	}
+
+	public Collection<ExamesRealizadosRelatorio> findExamesRealizadosCandidatos(Long empresaId, String nomeBusca, Date inicio, Date fim, String solicitacaoMotivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds)  
+	{
+		Query query = montaConsultaDeExamesRealizados(empresaId, nomeBusca, inicio, fim, solicitacaoMotivo, exameResultado, clinicaAutorizadaId, examesIds, estabelecimentosIds, new Candidato());
 		
-		if (examesIds != null && examesIds.length > 0)
-			whereExames = "and e.id in (:exameIds) ";
-		
-		if (clinicaAutorizadaId != null)
-			whereClinica = "and clinica.id = :clinicaId ";
-		
-		if (StringUtils.isNotBlank(solicitacaoMotivo))
-			whereMotivo = "and se.motivo = :motivo ";
-		
-		if (StringUtils.isNotBlank(exameResultado))
-		{
-			if(exameResultado.equalsIgnoreCase(ResultadoExame.NAO_REALIZADO.toString()))
-				whereResultado = "and (re = null or re.resultado = :resultado) ";
-			else
-				whereResultado = "and re.resultado = :resultado ";
-		}
-		
-		StringBuilder hql = new StringBuilder("select distinct new com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio(e.id,co.nome,cast(:tipoPessoa as char),e.nome,se.data,clinica.id,clinica.nome,re.resultado,se.motivo,es.id,es.nome, re.observacao) ");
+		return query.list();
+	}
+	
+	private Query montaConsultaDeExamesRealizados(Long empresaId, String nomeBusca, Date inicio, Date fim, String solicitacaoMotivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, Examinado examinado)
+	{
+		StringBuilder hql = new StringBuilder("select distinct new com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio(e.id,examinado.nome,cast(:tipoPessoa as char),e.nome,se.data,clinica.id,clinica.nome,re.resultado,se.motivo,es.id,es.nome, re.observacao) ");
 		hql.append("from ExameSolicitacaoExame ese ");
 		hql.append("left join ese.realizacaoExame re ");
 		hql.append("left join ese.clinicaAutorizada clinica ");
 		hql.append("left join ese.exame e ");
 		hql.append("left join ese.solicitacaoExame se ");
-		hql.append("inner join se.colaborador co ");
-		hql.append("left join co.historicoColaboradors as hc ");
-		hql.append("left join hc.estabelecimento as es ");
+		
+		examinado.setJoins(hql);
+		
 		hql.append("where se.empresa.id = :empresaId ");
 		hql.append("and se.data between :inicio and :fim ");
 		if (isNotBlank(nomeBusca))
-			hql.append("and lower(co.nome) like :nome ");
-		hql.append(whereEstabelecimentos);
-		hql.append(whereExames);
-		hql.append(whereClinica);
-		hql.append(whereMotivo);
-		hql.append(whereResultado);
+			hql.append("and lower(examinado.nome) like :nome ");
 		
-		hql.append("	and hc.data = ( ");
-		hql.append("		select max(hc2.data) " );
-		hql.append("		from HistoricoColaborador as hc2 ");
-		hql.append("		where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.status = :status ");
-		hql.append("	) ");
+		if (estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			hql.append("and es.id in (:estabelecimentoIds) ");
+		
+		if (examesIds != null && examesIds.length > 0)
+			hql.append("and e.id in (:exameIds) ");
+		
+		if (clinicaAutorizadaId != null)
+			hql.append("and clinica.id = :clinicaId ");
+		
+		if (StringUtils.isNotBlank(solicitacaoMotivo))
+			hql.append("and se.motivo = :motivo ");
+		
+		if (StringUtils.isNotBlank(exameResultado))
+		{
+			if(exameResultado.equalsIgnoreCase(ResultadoExame.NAO_REALIZADO.toString()))
+				hql.append("and (re = null or re.resultado = :resultado) ");
+			else
+				hql.append("and re.resultado = :resultado ");
+		}
+		
+		examinado.setWhereMaxData(hql);
 	
-		hql.append("ORDER BY e.nome ASC, clinica.id ASC, se.data ASC ");
+		hql.append("order by e.nome, clinica.id, se.data ");
 		
 		Query query = getSession().createQuery(hql.toString());
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		query.setCharacter("tipoPessoa", 'C');
+		
+		examinado.setParametros(query);
 		
 		if (isNotBlank(nomeBusca))
 			query.setString("nome", "%" + nomeBusca.toLowerCase() + "%");
@@ -265,87 +263,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		if (StringUtils.isNotBlank(exameResultado))
 			query.setString("resultado", exameResultado);
 		
-		return query.list();
-	}
-	
-	public Collection<ExamesRealizadosRelatorio> findExamesRealizadosCandidatos(Long empresaId, String nomeBusca, Date inicio, Date fim, String solicitacaoMotivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds)  
-	{
-		String whereEstabelecimentos = "", whereExames = "", whereResultado="", whereClinica="", whereMotivo="";
-		
-		if (estabelecimentosIds != null && estabelecimentosIds.length > 0)
-			whereEstabelecimentos = "and es.id in (:estabelecimentoIds) ";
-		
-		if (examesIds != null && examesIds.length > 0)
-			whereExames = "and e.id in (:exameIds) ";
-		
-		if (clinicaAutorizadaId != null)
-			whereClinica = "and clinica.id = :clinicaId ";
-		
-		if (StringUtils.isNotBlank(solicitacaoMotivo))
-			whereMotivo = "and se.motivo = :motivo ";
-		
-		if (StringUtils.isNotBlank(exameResultado))
-		{
-			if(exameResultado.equalsIgnoreCase(ResultadoExame.NAO_REALIZADO.toString()))
-				whereResultado = "and (re = null or re.resultado = :resultado) ";
-			else
-				whereResultado = "and re.resultado = :resultado ";
-		}
-		
-		StringBuilder hql = new StringBuilder("select distinct new com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio(e.id,ca.nome,cast(:tipoPessoa as char),e.nome,se.data,clinica.id,clinica.nome,re.resultado,se.motivo,es.id,es.nome, re.observacao) ");
-		hql.append("from ExameSolicitacaoExame ese ");
-		hql.append("left join ese.realizacaoExame re ");
-		hql.append("left join ese.clinicaAutorizada clinica ");
-		hql.append("left join ese.exame e ");
-		hql.append("left join ese.solicitacaoExame se ");
-		hql.append("inner join se.candidato ca ");
-		hql.append("left join ca.candidatoSolicitacaos as cs ");
-		hql.append("left join cs.solicitacao as s ");
-		hql.append("left join s.estabelecimento as es ");
-		hql.append("where se.empresa.id = :empresaId ");
-		hql.append("and se.data between :inicio and :fim ");
-		if (isNotBlank(nomeBusca))
-			hql.append("and lower(ca.nome) like :nome ");
-		hql.append(whereEstabelecimentos);
-		hql.append(whereExames);
-		hql.append(whereClinica);
-		hql.append(whereMotivo);
-		hql.append(whereResultado);
-		
-		hql.append("and (s.data = ( select max(s2.data) from CandidatoSolicitacao cs2 ");
-		hql.append("				inner join cs2.solicitacao as s2 ");
-		hql.append("				where cs2.candidato.id = ca.id ");
-		hql.append("				and s2.data <= se.data ");
-		hql.append("				and s2.empresa.id = :empresaId) or s.data is null) ");
-	
-		hql.append("ORDER BY e.nome, clinica.id, se.data ");
-		
-		Query query = getSession().createQuery(hql.toString());
-		query.setCharacter("tipoPessoa", 'A');
-		
-		if (isNotBlank(nomeBusca))
-			query.setString("nome", "%" + nomeBusca.toLowerCase() + "%");
-		
-		query.setDate("inicio", inicio);
-		query.setDate("fim", fim);
-		query.setLong("empresaId", empresaId);
-		
-		if (estabelecimentosIds != null && estabelecimentosIds.length > 0)
-			query.setParameterList("estabelecimentoIds", estabelecimentosIds, Hibernate.LONG);
-		
-		if (examesIds != null && examesIds.length > 0)
-			query.setParameterList("exameIds", examesIds, Hibernate.LONG);
-		
-		if (clinicaAutorizadaId != null)
-			query.setLong("clinicaId", clinicaAutorizadaId);
-		
-		if (StringUtils.isNotBlank(solicitacaoMotivo))
-			query.setString("motivo", solicitacaoMotivo);
-		
-		if (StringUtils.isNotBlank(exameResultado))
-		query.setString("resultado", exameResultado);
-		
-		return query.list();
+		return query;
 	}
 	
 	private void montaQuery(Long empresaId, Exame exame, Criteria criteria) {
@@ -496,5 +414,64 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Exame.class));
 		
 		return criteria.list();
+	}
+	
+	/**
+	 * @author Arnaldo
+	 * Classes internas para auxiliar a formação das consultas do método que monta a consulta dos exames realizados por colaboradores e candidatos
+	 */
+	private interface Examinado {
+		public void setJoins(StringBuilder hql);
+		public void setWhereMaxData(StringBuilder hql);
+		public void setParametros(Query query);
+	}
+	
+	private class Colaborador implements Examinado{
+		
+		public void setJoins(StringBuilder hql)
+		{
+			hql.append("inner join se.colaborador examinado ");
+			hql.append("left join examinado.historicoColaboradors as hc ");
+			hql.append("left join hc.estabelecimento as es ");
+		}
+
+		public void setWhereMaxData(StringBuilder hql)
+		{
+			hql.append("and hc.data = ( select max(hc2.data) ");
+			hql.append("	        	from HistoricoColaborador as hc2 ");
+			hql.append("	   			where hc2.colaborador.id = examinado.id ");
+			hql.append("	   			and hc2.status = :status) ");
+		}
+
+		public void setParametros(Query query)
+		{
+			query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+			query.setCharacter("tipoPessoa", 'C');
+		}
+	}
+	
+	private class Candidato implements Examinado{
+		
+		public void setJoins(StringBuilder hql)
+		{
+			hql.append("inner join se.candidato examinado ");
+			hql.append("left join examinado.candidatoSolicitacaos as cs ");
+			hql.append("left join cs.solicitacao as s ");
+			hql.append("left join s.estabelecimento as es ");
+		}
+
+		public void setWhereMaxData(StringBuilder hql)
+		{
+			hql.append("and (s.data = ( select max(s2.data) from CandidatoSolicitacao cs2 ");
+			hql.append("				inner join cs2.solicitacao as s2 ");
+			hql.append("				where cs2.candidato.id = examinado.id ");
+			hql.append("				and s2.data <= se.data ");
+			hql.append("				and s2.empresa.id = :empresaId) or s.data is null) ");
+		}
+
+		public void setParametros(Query query)
+		{
+			query.setCharacter("tipoPessoa", 'A');			
+		}
 	}
 }
