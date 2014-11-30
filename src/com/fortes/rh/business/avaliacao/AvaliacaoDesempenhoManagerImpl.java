@@ -263,7 +263,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 					}
 
 					if(fortesException.isEmpty())
-						liberar(avaliacaoDesempenho, null, null);
+						liberar(avaliacaoDesempenho, avaliados, avaliadores);
 				}
 			}
 			

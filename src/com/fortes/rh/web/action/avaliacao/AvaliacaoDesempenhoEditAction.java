@@ -389,7 +389,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try 
 		{
 			avaliacaoDesempenhoManager.liberarEmLote(avaliacoesCheck, getEmpresaSistema());
-			addActionMessage("Avaliações liberada com sucesso.");
+			addActionSuccess("Avaliações liberadas com sucesso.");
 			return Action.SUCCESS;
 		}
 		catch (FortesException e) 
