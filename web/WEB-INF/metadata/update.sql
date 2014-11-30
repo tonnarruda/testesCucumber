@@ -22733,3 +22733,6 @@ insert into migrations values('20141110145546');--.go
 alter table solicitacao alter column horariocomercial type character varying(255);--.go
 insert into migrations values('20141110164943');--.go
 update parametrosdosistema set appversao = '1.1.137.165';--.go
+-- versao 1.1.137.166
+
+update parametrosdosistema set appversao = '1.1.137.166';--.go

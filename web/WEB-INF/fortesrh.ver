@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.xxx.xxx" bd="" data="xx/xx/xxxx">
+	<Versao id="1.1.137.166" bd="" data="01/12/2014">
+		<Item visivel="S" motivo=""><![CDATA[Melhorias internas.]]></Item>
 		<Item visivel="N" motivo="P20141100131"><![CDATA[Pesquisas > Movimentações > Pesquisas > Colaboradores > Responder: Melhoria na auditoria.]]></Item>
 		<Item visivel="N" motivo="P20141100219"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Liberar avaliações em lote: Correção de inconsistência ao liberar avaliações em lote.]]></Item>
 		<Item visivel="N" motivo="P20141100176"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir: Correção de inconformidade ao clicar em gravar se a opção para preenchimento obrigatório de ambiente e função estivesse configurada na empresa e o perfil do usuário não possuísse permissão para visualizar as informações de SESMT.]]></Item>
-		<Item visivel="N" motivo="P20141100119"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Excluir: Correção da exclusão de colaboradores quando o sistema está integrado com o AC Pessoal.]]></Item>
+		<Item visivel="N" motivo="P20141100119"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Excluir: Correção na exclusão de colaboradores quando o sistema está integrado com o AC Pessoal.]]></Item>
 		<Item visivel="N" motivo="P20141100170"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Correção do envio de email ao liberar avaliação da turma.]]></Item>
 		<Item visivel="N" motivo="P20140900232"><![CDATA[Utilitários > Backup do Banco de Dados: Correção de erro ao gerar backup quando o banco de dados usa uma porta diferente da padrão (5432).]]></Item>
 	</Versao>
