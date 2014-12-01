@@ -1,0 +1,19 @@
+package com.fortes.portalcolaborador.business;
+
+import com.fortes.business.GenericManagerImpl;
+import com.fortes.portalcolaborador.business.operacao.Operacao;
+import com.fortes.portalcolaborador.dao.MovimentacaoOperacaoPCDao;
+import com.fortes.portalcolaborador.model.AbstractAdapterPC;
+import com.fortes.portalcolaborador.model.MovimentacaoOperacaoPC;
+
+public class MovimentacaoOperacaoPCManagerImpl extends GenericManagerImpl<MovimentacaoOperacaoPC, MovimentacaoOperacaoPCDao> implements MovimentacaoOperacaoPCManager 
+{
+	public void enfileirar(Class<? extends Operacao> operacao, AbstractAdapterPC adapterPC)
+	{
+		MovimentacaoOperacaoPC movimentacaoOperacaoPC = new MovimentacaoOperacaoPC();
+		movimentacaoOperacaoPC.setOperacao(operacao);
+		movimentacaoOperacaoPC.setParametros(adapterPC.toJson());
+		
+		save(movimentacaoOperacaoPC);		
+	}
+}

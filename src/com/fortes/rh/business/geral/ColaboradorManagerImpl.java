@@ -30,7 +30,9 @@ import remprot.RPClient;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
-import com.fortes.portalcolaborador.business.TransacaoPCManager;
+import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
+import com.fortes.portalcolaborador.business.operacao.AtualizarColaborador;
+import com.fortes.portalcolaborador.model.ColaboradorPC;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
@@ -149,6 +151,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private CandidatoIdiomaManager candidatoIdiomaManager;
 	private SolicitacaoExameManager solicitacaoExameManager;
 	private TransacaoPCManager transacaoPCManager;
+	private MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager;
 
 	public void enviaEmailAniversariantes(Collection<Empresa> empresas) throws Exception
 	{
@@ -301,6 +304,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		saveDetalhes(colaborador, formacaos, idiomas, experiencias);
 
 		salvarBairro(colaborador);
+		
+		movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador));
 
 		// Flush necessário quando houver uma operação com banco/sistema externo.
 		// garante que erro no banco do RH levantará uma Exception antes de alterar o outro banco.
@@ -2777,11 +2782,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void setTransacaoPCManager(TransacaoPCManager transacaoPCManager) {
 		this.transacaoPCManager = transacaoPCManager;
 	}
-
-	public void atualizarHistoricoPortal(boolean enviar, Collection<Long> colabIds)
-	{
-		// TODO Auto-generated method stub
-		
+	
+	public void setMovimentacaoOperacaoPCManager(MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager) {
+		this.movimentacaoOperacaoPCManager = movimentacaoOperacaoPCManager;
 	}
-
 }

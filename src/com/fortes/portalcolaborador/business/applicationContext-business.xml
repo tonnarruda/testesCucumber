@@ -18,4 +18,18 @@
       <ref bean="transacaoPCManagerTarget" />
     </property>
   </bean>
+
+  <bean id="MovimentacaoOperacaoPCManagerTarget" class="com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManagerImpl">
+    <property name="dao">
+      <ref bean="MovimentacaoOperacaoPCDao" />
+    </property>
+  </bean>
+  <bean id="MovimentacaoOperacaoPCManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager</value>
+    </property>
+    <property name="target">
+      <ref bean="MovimentacaoOperacaoPCManagerTarget" />
+    </property>
+  </bean>
 </beans>

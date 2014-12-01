@@ -1,7 +1,7 @@
 -- create_transacaopc.sql
 CREATE TABLE transacaopc (
 	id BIGINT NOT NULL,
-	empresa_id bigint,
+	empresa_id BIGINT,
 	codigoUrl SMALLINT NOT NULL,
 	json TEXT NOT NULL,
 	data TIMESTAMP NOT NULL default current_timestamp
@@ -5683,11 +5683,11 @@ CREATE VIEW situacaocolaborador AS
 -- add_column_integradaPortalColaborador_empresa
 alter table empresa add column integradaPortalColaborador boolean DEFAULT false NOT NULL; --.go
 
--- create_table_movimentacaooperacao
-CREATE TABLE movimentacaooperacao (
+-- create_table_movimentacaooperacaopc
+CREATE TABLE movimentacaooperacaopc (
 	id BIGINT NOT NULL,
     operacao CHARACTER VARYING(100),
     parametros TEXT
 ); --.go
-ALTER TABLE movimentacaooperacao ADD CONSTRAINT movimentacaooperacao_pkey PRIMARY KEY(id);--.go
-CREATE SEQUENCE movimentacaooperacao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+ALTER TABLE movimentacaooperacaopc ADD CONSTRAINT movimentacaooperacaopc_pkey PRIMARY KEY(id);--.go
+CREATE SEQUENCE movimentacaooperacaopc_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
