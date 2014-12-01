@@ -209,8 +209,4 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findColaboradoresByCodigoAC(Long empresaId, boolean joinComHistorico, String... codigosACColaboradores);
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId);
 	public void populaEscolaridade(Colaborador colaborador, TEmpregado empregado);
-	public void atualizarHistoricoPortal(boolean enviar, Collection<Long> colabIds);
-	public void alteraFlagAtualizarHistoricoPortal(boolean enviar, Collection<Long> colabIds);
-	public void removeColaboradoresIdsASerAtualizadoNoPortal(Collection<Long> colabIds);
-	public Collection<Long> findColaboradoresIdsASeremAtualizadosNoPortal();
 }

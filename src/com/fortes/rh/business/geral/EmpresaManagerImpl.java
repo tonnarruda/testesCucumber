@@ -15,7 +15,6 @@ import com.fortes.model.type.File;
 import com.fortes.portalcolaborador.business.TransacaoPCManager;
 import com.fortes.portalcolaborador.model.EmpresaPC;
 import com.fortes.portalcolaborador.model.dicionario.URLTransacaoPC;
-import com.fortes.portalcolaborador.thread.EnfileiraColaboradorComHistoricosPCThread;
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.HabilidadeManager;
@@ -515,8 +514,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		
 		if (!integradaPortalColaboradorAnterior)
 		{
-			(new EnfileiraColaboradorComHistoricosPCThread(empresa)).start();
-			
 			return "Empresa editada com sucesso. <br /> Estamos enviando os dados de sua empresa para o Portal do Colaborador. <br />" +
 					"Em breve você receberá um email de confimação. <br />  Email destino: "+ empresa.getEmailRespRH();
 		}

@@ -5622,61 +5622,6 @@ INSERT INTO cidade(id, nome, codigoac, uf_id, codigoibge) VALUES (nextval('cidad
 INSERT INTO cidade(id, nome, codigoac, uf_id, codigoibge) VALUES (nextval('cidade_sequence'), 'Balneário Rincão', null, (SELECT id FROM estado WHERE codigoibge = '42'), '422000');
 INSERT INTO cidade(id, nome, codigoac, uf_id, codigoibge) VALUES (nextval('cidade_sequence'), 'Pescaria Brava', null, (SELECT id FROM estado WHERE codigoibge = '42'), '421265');
 
--- add_column_atualizarhistoricoportal
-ALTER TABLE colaborador ADD COLUMN atualizarhistoricoportal BOOLEAN NOT NULL DEFAULT false;--.go
-
--- create_trigger_colaborador_atualizarhistoricoportal
-CREATE OR REPLACE FUNCTION atualizar_historico_portal() RETURNS TRIGGER AS $$ 
-    DECLARE 
-        linha RECORD; 
-    BEGIN 
-        IF (TG_OP = 'INSERT') THEN 
-            linha := NEW; 
-        ELSE  
-            linha := OLD; 
-        END IF; 
-
-        IF (TG_TABLE_NAME = 'historicocolaborador') THEN 
-            UPDATE colaborador SET atualizarhistoricoportal = true WHERE id = linha.colaborador_id; 
-
-        ELSIF (TG_TABLE_NAME = 'faixasalarialhistorico') THEN 
-            UPDATE colaborador SET atualizarhistoricoportal = true WHERE id IN ( 
-                SELECT DISTINCT c.id FROM colaborador c 
-                INNER JOIN historicocolaborador hc ON hc.colaborador_id = c.id  
-                WHERE hc.tiposalario = 1 
-                AND hc.faixasalarial_id = linha.faixasalarial_id 
-            );
-
-        ELSIF (TG_TABLE_NAME = 'indicehistorico') THEN 
-            UPDATE colaborador SET atualizarhistoricoportal = true WHERE id IN ( 
-                SELECT DISTINCT c.id FROM colaborador c 
-                INNER JOIN historicocolaborador hc ON hc.colaborador_id = c.id  
-                WHERE hc.tiposalario = 2 
-                AND hc.indice_id = linha.indice_id 
-            );
-        END IF;
-        RETURN NULL;
-    END;
-    $$ LANGUAGE plpgsql;--.go
-
-DROP TRIGGER IF EXISTS tg_atualizar_historico_portal ON historicocolaborador;--.go
-
-CREATE TRIGGER tg_atualizar_historico_portal 
-  AFTER INSERT OR UPDATE OR DELETE ON historicocolaborador 
-    FOR EACH ROW EXECUTE PROCEDURE atualizar_historico_portal();--.go
-
-DROP TRIGGER IF EXISTS tg_atualizar_historico_portal ON faixasalarialhistorico;--.go
-
-CREATE TRIGGER tg_atualizar_historico_portal 
-  AFTER INSERT OR UPDATE OR DELETE ON faixasalarialhistorico 
-    FOR EACH ROW EXECUTE PROCEDURE atualizar_historico_portal();--.go
-
-DROP TRIGGER IF EXISTS tg_atualizar_historico_portal ON indicehistorico;--.go
-
-CREATE TRIGGER tg_atualizar_historico_portal 
-  AFTER INSERT OR UPDATE OR DELETE ON indicehistorico 
-    FOR EACH ROW EXECUTE PROCEDURE atualizar_historico_portal();--.go
-
 -- update_view_situacaocolaborador
 DROP VIEW situacaocolaborador;--.go
 
@@ -5737,44 +5682,6 @@ CREATE VIEW situacaocolaborador AS
 
 -- add_column_integradaPortalColaborador_empresa
 alter table empresa add column integradaPortalColaborador boolean DEFAULT false NOT NULL; --.go
-
--- create_table_atualizarColaboradorPortal
-CREATE TABLE atualizarcolaboradorportal (
-	id BIGINT NOT NULL,
-    colaborador_id bigint
-); --.go
-ALTER TABLE atualizarcolaboradorportal ADD CONSTRAINT atualizarcolaboradorportal_pkey PRIMARY KEY(id);--.go
-CREATE SEQUENCE atualizarcolaboradorportal_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
-
--- create_trigger_colaborador_atualizarcolaboradorportal
-CREATE OR REPLACE FUNCTION atualizar_colaborador_portal() RETURNS TRIGGER AS $$ 
-    DECLARE 
-        linha RECORD; 
-    BEGIN 
-        IF (TG_OP = 'INSERT') THEN 
-            linha := NEW; 
-        ELSE  
-            linha := OLD; 
-        END IF; 
-
-        IF (TG_TABLE_NAME = 'colaborador') THEN
-        	IF not exists(select * from atualizarcolaboradorportal where colaborador_id = linha.id) THEN
-            	INSERT INTO atualizarcolaboradorportal (id, colaborador_id) VALUES (nextval('atualizarcolaboradorportal_sequence'), linha.id);
-        	END IF;
-        END IF;
-
-        RETURN NULL;
-    END;
-    $$ LANGUAGE plpgsql;--.go
-
-DROP TRIGGER IF EXISTS tg_atualizar_colaborador_portal ON colaborador;--.go
-
-CREATE TRIGGER tg_atualizar_colaborador_portal 
-  AFTER INSERT OR UPDATE OR DELETE ON colaborador 
-    FOR EACH ROW EXECUTE PROCEDURE atualizar_colaborador_portal();--.go
-    
---OBS ADICIONAR A LINHA NO DELETE DO COLBAORADOR DO IMPORTADOR
---	"DELETE FROM AtualizarColaboradorPortal WHERE colaborador.id = :id",
 
 -- create_table_movimentacaooperacao
 CREATE TABLE movimentacaooperacao (

@@ -2726,16 +2726,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 		transactionManager.commit(status);
 	}
-	
-	public void alteraFlagAtualizarHistoricoPortal(boolean enviar, Collection<Long> colabIds) 
-	{
-		getDao().alteraFlagAtualizarHistoricoPortal(enviar, colabIds);
-	}
-
-	public void removeColaboradoresIdsASerAtualizadoNoPortal(Collection<Long> colabIds) 
-	{
-		getDao().removeColaboradoresIdsASerAtualizadoNoPortal(colabIds);
-	}
 
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId) 
 	{
@@ -2745,11 +2735,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds)
 	{
 		return getDao().findUsuarioByAreaEstabelecimento(areasIds, estabelecimentosIds);
-	}
-	
-	public Collection<Long> findColaboradoresIdsASeremAtualizadosNoPortal() 
-	{
-		return getDao().findColaboradoresIdsASeremAtualizadosNoPortal();
 	}
 	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 

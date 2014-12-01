@@ -100,9 +100,4 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public void updateStatusAcByEmpresaAndStatusAtual(int novoStatusAC, int statusACAtual, Long... colaboradoresIds);
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId);
 	public Collection<HistoricoColaborador> montaSituacaoHistoricoColaborador(List<HistoricoColaborador> historicoColaboradors);
-	public void enfileirarPC();
-	public List<Colaborador> findColaboradoresPC(Collection<Long> colaboradoresIds, Long... empresasIds);
-	public List<HistoricoColaborador> findPendenciasHistoricosPC(Long... empresasIds);
-	public void enfilerarColaboradoresPC(Long[] empresasIds, Collection<Colaborador> colaboradores, URLTransacaoPC uRLTransacaoPC);
-	public void enfilerarColaboradoresComHistoricosPC(Long[] empresasIds, List<HistoricoColaborador> historicos, URLTransacaoPC uRLTransacaoPC);
 }
