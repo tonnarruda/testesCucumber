@@ -739,7 +739,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		
 		StringBuffer sql = new StringBuffer();
 		
-		sql.append("select a.id, a.nome, p.id, p.ordem, p.texto, p.textoComentario, p.tipo, r.texto, cr.comentario, cr.valor, cr.resposta_id ");  
+		sql.append("select a.id, a.nome, p.id, p.ordem, p.texto, p.textoComentario, p.tipo, r.texto as textoResposta, cr.comentario, cr.valor, cr.resposta_id ");  
 		sql.append("from colaboradorquestionario cq ");
 		sql.append("left join pergunta p on cq.avaliacao_id = p.avaliacao_id "); 
 		sql.append("left join aspecto a on p.aspecto_id = a.id ");
@@ -757,17 +757,17 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
-			lista.add(new ColaboradorResposta(	((BigInteger)res[0]).longValue(),
-												(String)res[1], 
-												((BigInteger)res[2]).longValue(), 
-												(Integer)res[3], 
-												(String)res[4], 
-												(String)res[5], 
-												(Integer)res[6], 
-												(String)res[7], 
-												(String)res[8], 
-												(Integer)res[9],
-												res[10] != null ? ((BigInteger)res[10]).longValue() : null ) );
+			lista.add(new ColaboradorResposta(	(res[0] != null ? ((BigInteger)res[0]).longValue() : null ),
+					(String)res[1], 
+					(res[2] != null ? ((BigInteger)res[2]).longValue() : null ), 
+					(Integer)res[3], 
+					(String)res[4], 
+					(String)res[5], 
+					(Integer)res[6], 
+					(String)res[7], 
+					(String)res[8], 
+					(Integer)res[9],
+					res[10] != null ? ((BigInteger)res[10]).longValue() : null ) );
 		}
 		
 		return lista;
