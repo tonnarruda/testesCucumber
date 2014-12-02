@@ -45,5 +45,6 @@ public interface ColaboradorTurmaDao extends GenericDao<ColaboradorTurma>
 	Collection<ColaboradorTurma> findColaboradoresComEmailByTurma(Long turmaId, boolean somentePresentes);
 	Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cursoIds, Long[] turmaIds, boolean considerarSomenteDiasPresente);
 	Collection<Colaborador> findColaboradorByCursos(Long[] cursosIds, Long[] turmasIds);
-	Collection<ColaboradorTurma> findColabTreinamentosPrevistos(String empregadoCodigo,Long empresaId, Date dataIni, Date dataFim);
+	Collection<ColaboradorTurma> findColabTreinamentosPrevistos(String colaboradorCodigoAC,Long empresaId, Date dataIni, Date dataFim);
+	Collection<ColaboradorTurma> findTurmaRealizadaByCodigoAc(String colaboradorCodigoAC);
 }

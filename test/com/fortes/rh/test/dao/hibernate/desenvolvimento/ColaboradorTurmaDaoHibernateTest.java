@@ -1495,7 +1495,6 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		assertEquals(1, colaboradorTurmaDao.findColaboradoresSemAvaliacao(empresa.getId(), dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime()).size());
 	}
 	
-    
     public void testFindColabTreinamentosPrevistos()
     {
     	Empresa empresa = EmpresaFactory.getEmpresa();
@@ -1579,6 +1578,50 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	assertEquals(2, colabTurmaRetorno.size());
     }
 
+    public void testFindByCodigoAcTurmaRealizada()
+    {
+    	Turma turma = TurmaFactory.getEntity();
+    	turma.setRealizada(true);
+    	turmaDao.save(turma);
+    	
+    	Turma turma2 = TurmaFactory.getEntity();
+    	turma2.setRealizada(false);
+    	turmaDao.save(turma2);
+    	
+    	DiaTurma diaTurma1 = DiaTurmaFactory.getEntity();
+    	diaTurma1.setDia(DateUtil.criarDataMesAno(1, 11, 2014));
+    	diaTurma1.setTurma(turma);
+    	diaTurmaDao.save(diaTurma1);
+    	
+    	DiaTurma diaTurma2 = DiaTurmaFactory.getEntity();
+    	diaTurma2.setDia(DateUtil.criarDataMesAno(2, 11, 2014));
+    	diaTurma2.setTurma(turma);
+    	diaTurmaDao.save(diaTurma2);
+    	
+    	DiaTurma diaTurma3 = DiaTurmaFactory.getEntity();
+    	diaTurma3.setDia(DateUtil.criarDataMesAno(3, 11, 2014));
+    	diaTurma3.setTurma(turma2);
+    	diaTurmaDao.save(diaTurma3);
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity();
+    	colaborador.setCodigoAC("123445");
+    	colaboradorDao.save(colaborador);
+    	
+    	ColaboradorTurma colaboradorTurma = getEntity();
+    	colaboradorTurma.setColaborador(colaborador);
+    	colaboradorTurma.setTurma(turma);
+    	colaboradorTurma = colaboradorTurmaDao.save(colaboradorTurma);
+    	
+    	ColaboradorTurma colaboradorTurma2 = getEntity();
+    	colaboradorTurma2.setColaborador(colaborador);
+    	colaboradorTurma2.setTurma(turma2);
+    	colaboradorTurma2 = colaboradorTurmaDao.save(colaboradorTurma2);
+    	
+    	Collection<ColaboradorTurma> colabTurmaRetorno = colaboradorTurmaDao.findTurmaRealizadaByCodigoAc(colaborador.getCodigoAC());
+    	
+    	assertEquals(1, colabTurmaRetorno.size());
+    }
+    
     public GenericDao<ColaboradorTurma> getGenericDao()
     {
         return colaboradorTurmaDao;

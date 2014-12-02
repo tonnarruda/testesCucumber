@@ -54,7 +54,6 @@
 		    return this.charAt(0).toUpperCase() + this.slice(1);
 		}
 	
-		var diasTurmasMarcados = [<#if diaTurmas?exists><#list diaTurmas as diaTurmaMarcado>'${diaTurmaMarcado.dia?string('ddMMyyyy') + diaTurmaMarcado.turno}'<#if diaTurmaMarcado_has_next>, </#if></#list></#if>];
 
 		function populaDias(frm)
 		{
@@ -95,7 +94,7 @@
 					{
 						row +=	"	<td><label for='" + id + "'>" + diasTurma[i].turnoDescricao.capitalize() + "</label></td>\n";
 					}
-					row += 		'	<td><input type="text" name="horariosIni[\'' + id + '\']" class="hora" maxlength="5" ' + readonly + ' /> às <input type="text" name="horariosFim[\'' + id + '\']" class="hora" maxlength="5" ' + readonly + ' /></td>\n';
+					row += 		'	<td><input type="text" id="horaIni-' + id + '" name="horariosIni[\'' + id + '\']" class="hora" maxlength="5" ' + readonly + ' /> às <input type="text" id="horaFim-' + id + '" name="horariosFim[\'' + id + '\']" class="hora" maxlength="5" ' + readonly + ' /></td>\n';
 					row += 		"</tr>\n";
 				
 					$('#diasTable').append(row);
@@ -107,11 +106,27 @@
 				jAlert("Data inválida.");
 		}
 		
+		var diasTurmasMarcados = [<#if diaTurmas?exists>
+									<#list diaTurmas as diaTurmaMarcado>
+										'${diaTurmaMarcado.dia?string('ddMMyyyy') + diaTurmaMarcado.turno}'
+										<#if diaTurmaMarcado.horaIni?exists && diaTurmaMarcado.horaFim?exists>
+											 + '-${diaTurmaMarcado.horaIni}' + '-${diaTurmaMarcado.horaFim}'
+										</#if>
+										<#if diaTurmaMarcado_has_next>
+											, 
+										</#if>
+									</#list>
+								</#if>];
+								
 		function marcaCheckListBoxString()
 		{
 			for(var count = 0; count < diasTurmasMarcados.length; count++)
 			{
-				$('#' + diasTurmasMarcados[count]).attr('checked','checked');
+				var identificador = diasTurmasMarcados[count].split("-");
+			
+				$('#' + identificador[0]).attr('checked','checked');
+				$('#horaIni-' + identificador[0]).val(identificador[1]);
+				$('#horaFim-' + identificador[0]).val(identificador[2]);
 			}
 		}
 		

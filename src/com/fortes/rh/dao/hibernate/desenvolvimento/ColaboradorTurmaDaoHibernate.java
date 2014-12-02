@@ -1313,7 +1313,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return colaboradorTurmas;	
 	}
 	
-	public Collection<ColaboradorTurma> findColabTreinamentosPrevistos(String empregadoCodigo, Long empresaId, Date dataIni, Date dataFim) 
+	public Collection<ColaboradorTurma> findColabTreinamentosPrevistos(String colaboradorCodigoAC, Long empresaId, Date dataIni, Date dataFim) 
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new ColaboradorTurma(ct.id, co.codigoAC, dt.dia) ");
@@ -1328,7 +1328,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		hql.append("and co.codigoAC is not null ");
 		hql.append("and co.codigoAC <> '' ");
 		
-		if(empregadoCodigo != null && !"".equals(empregadoCodigo))
+		if(colaboradorCodigoAC != null && !"".equals(colaboradorCodigoAC))
 			hql.append("and co.codigoAc = :empregadoCodigo");
 
 		hql.append("	and hc.data = ( ");
@@ -1348,8 +1348,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		query.setDate("dataIni", dataIni);
 		query.setDate("dataFim", dataFim);
 		
-		if(empregadoCodigo != null && !"".equals(empregadoCodigo))
-			query.setString("empregadoCodigo", empregadoCodigo);
+		if(colaboradorCodigoAC != null && !"".equals(colaboradorCodigoAC))
+			query.setString("empregadoCodigo", colaboradorCodigoAC);
 		
 		return query.list();	
 	}
@@ -1375,5 +1375,27 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 
 		return query.list();	
 	}
+	
+	public Collection<ColaboradorTurma> findTurmaRealizadaByCodigoAc(String colaboradorCodigoAC) 
+	{
+		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class,"ct");
+        criteria.createCriteria("ct.colaborador", "c");
+        criteria.createCriteria("ct.turma", "t");
 
+        ProjectionList p = Projections.projectionList().create();
+        p.add(Projections.property("t.id"), "turmaId");
+        p.add(Projections.property("t.descricao"), "turmaDescricao");
+        p.add(Projections.property("c.codigoAC"), "colaboradorCodigoAc");
+        criteria.setProjection(p);
+
+        if(colaboradorCodigoAC != null && !"".equals(colaboradorCodigoAC))
+        	criteria.add(Expression.eq("c.codigoAC", colaboradorCodigoAC));
+        
+        criteria.add(Expression.eq("t.realizada", true));
+
+        criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+        criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
+
+        return criteria.list();
+	}
 }

@@ -1,8 +1,10 @@
 package com.fortes.rh.business.desenvolvimento;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.transaction.PlatformTransactionManager;
@@ -92,8 +94,13 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 
 					if ((horasIni != null && horasIni.containsKey(chave)) && (horasFim != null && horasFim.containsKey(chave)))
 					{
-						diaTurmaTmp.setHoraIni(new String(horasIni.get(chave)));
-						diaTurmaTmp.setHoraFim(new String(horasFim.get(chave)));
+						Object horaInicial =  horasIni.get(chave);
+						Object horaInicialArray[] = ((Object[]) horaInicial);
+						diaTurmaTmp.setHoraIni((String) horaInicialArray[0]);
+						
+						Object horaFinal =  horasFim.get(chave);
+						Object horaFinalArray[] = ((Object[]) horaFinal);
+						diaTurmaTmp.setHoraFim((String) horaFinalArray[0]);
 					}
 					
 					save(diaTurmaTmp);
@@ -122,6 +129,11 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 	public Collection<DiaTurma> findByTurma(Long turmaId)
 	{
 		return getDao().findByTurma(turmaId);
+	}
+
+	public Collection<DiaTurma> findByTurmaAndPeriodo(Long turmaId, Date dataIni, Date dataFim)
+	{
+		return getDao().findByTurmaAndPeriodo(turmaId, dataIni, dataFim);
 	}
 
 	public Integer qtdDiasDasTurmas(Long turmaId)

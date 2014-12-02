@@ -1430,8 +1430,18 @@ public class RHServiceImpl implements RHService
 	
 	public TAula[] getTreinamentosCursados(String empregadoCodigo, String empresaCodigo, String empresaGrupo, String dataIni, String dataFim)
 	{
-		
-		return null;
+		try {
+			TAula[] tAulas = null;
+			Empresa empresa = empresaManager.findByCodigoAC(empresaCodigo, empresaGrupo);
+			
+			if(empresa != null && empresaCodigo != null && dataIni!= null && dataFim != null && !"".equals(empresaCodigo) && !"".equals(dataIni) && !"".equals(dataFim))
+				tAulas = colaboradorTurmaManager.getTreinamentosRealizadosParaTRU(empregadoCodigo, empresa, dataIni, dataFim);
+			
+			return tAulas;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public void setCidadeManager(CidadeManager cidadeManager)

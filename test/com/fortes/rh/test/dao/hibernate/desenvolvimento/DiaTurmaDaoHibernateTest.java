@@ -1,5 +1,6 @@
 package com.fortes.rh.test.dao.hibernate.desenvolvimento;
 
+import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
@@ -9,6 +10,7 @@ import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class DiaTurmaDaoHibernateTest extends GenericDaoHibernateTest<DiaTurma>
 {
@@ -83,6 +85,25 @@ public class DiaTurmaDaoHibernateTest extends GenericDaoHibernateTest<DiaTurma>
 		diaTurmaDao.save(diaTurma2);
 		
 		assertEquals(new Integer(2), diaTurmaDao.qtdDiasDasTurmas(turma.getId()));
+	}
+	public void testFindByTurmaAndPeriodo()
+	{
+		Turma turma = TurmaFactory.getEntity();
+		turma = turmaDao.save(turma);
+		
+		DiaTurma diaTurma1 = getEntity();
+		diaTurma1.setTurma(turma);
+		diaTurma1.setDia(DateUtil.criarDataMesAno(29, 11, 2014));
+		diaTurmaDao.save(diaTurma1);
+		
+		DiaTurma diaTurma2 = getEntity();
+		diaTurma2.setTurma(turma);
+		diaTurma2.setDia(DateUtil.criarDataMesAno(5, 12, 2014));
+		diaTurmaDao.save(diaTurma2);
+		
+		Collection<DiaTurma> diasTurmaretorno = diaTurmaDao.findByTurmaAndPeriodo(turma.getId(), DateUtil.criarDataMesAno(1, 12, 2014), DateUtil.criarDataMesAno(10, 12, 2014));
+		
+		assertEquals(1, diasTurmaretorno.size());
 	}
 
 	public void setTurmaDao(TurmaDao turmaDao)

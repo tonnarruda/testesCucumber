@@ -1,7 +1,6 @@
 package com.fortes.rh.business.desenvolvimento;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -23,9 +22,11 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Certificado;
+import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DNT;
+import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCertificacaoRelatorio;
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCursoMatriz;
@@ -41,7 +42,6 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.ibm.icu.math.BigDecimal;
-import com.opensymphony.xwork.Action;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorTurma, ColaboradorTurmaDao> implements ColaboradorTurmaManager
@@ -1035,9 +1035,9 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findColaboradorByCursos(cursosIds, turmasIds);
 	}
 
-	public TAula[] getTreinamentosPrevistoParaTRU(String empregadoCodigo, Empresa empresa, String dataIni, String dataFim) {
-		
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColabTreinamentosPrevistos(empregadoCodigo, empresa.getId(), DateUtil.criarDataDiaMesAno(dataIni), DateUtil.criarDataDiaMesAno(dataFim));
+	public TAula[] getTreinamentosPrevistoParaTRU(String colaboradorCodigoAC, Empresa empresa, String dataIni, String dataFim) 
+	{
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColabTreinamentosPrevistos(colaboradorCodigoAC, empresa.getId(), DateUtil.criarDataDiaMesAno(dataIni), DateUtil.criarDataDiaMesAno(dataFim));
 		
 		if(colaboradorTurmas.isEmpty())
 			return null;
@@ -1057,6 +1057,52 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		}
 		
 		return tAulas;
+	}
+
+	public TAula[] getTreinamentosRealizadosParaTRU(String colaboradorCodigoAC, Empresa empresa, String dataIni, String dataFim) 
+	{
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findTurmaRealizadaByCodigoAc(colaboradorCodigoAC);
+		
+		if(colaboradorTurmas.isEmpty())
+			return null;
+		
+		Collection<ColaboradorPresenca> colaboradorPresencas = new ArrayList<ColaboradorPresenca>();
+		ColaboradorPresencaManager colaboradorPresencaManager = (ColaboradorPresencaManager) SpringUtil.getBean("colaboradorPresencaManager");
+		Collection<TAula> tAulas = new ArrayList<TAula>();
+		TAula tAula = null;
+		
+		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
+		{
+			Collection<DiaTurma> diaTurmas = diaTurmaManager.findByTurmaAndPeriodo(colaboradorTurma.getTurma().getId(), DateUtil.criarDataDiaMesAno(dataIni), DateUtil.criarDataDiaMesAno(dataFim));
+	
+			if (diaTurmas.isEmpty())
+				continue;
+
+			colaboradorPresencas = colaboradorPresencaManager.findPresencaByTurma(colaboradorTurma.getTurma().getId());
+
+			for (DiaTurma diaTurma : diaTurmas) 
+			{
+				tAula = new TAula();
+				tAula.setEmpregadoCodigo(colaboradorTurma.getColaborador().getCodigoAC());
+				tAula.setEmpresaCodigo(empresa.getCodigoAC());
+				tAula.setEmpresaGrupo(empresa.getGrupoAC());
+				tAula.setData(DateUtil.formataDiaMesAno(diaTurma.getDia()));
+				tAula.setStatus(0);
+				
+				for (ColaboradorPresenca colaboradorPresenca : colaboradorPresencas) 
+					if(colaboradorPresenca.getDiaTurma().getId().equals(diaTurma.getId()) && colaboradorTurma.getId().equals(colaboradorPresenca.getColaboradorTurma().getId()))
+						tAula.setStatus(1);
+				
+				tAulas.add(tAula);
+			}
+		}
+		
+		int interator = 0;
+		TAula[] TAulasArray = new TAula[tAulas.size()];
+		for (TAula tAulaTemp : tAulas) 
+			TAulasArray[interator++] = tAulaTemp;
+		
+		return TAulasArray;
 	}
 	
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)

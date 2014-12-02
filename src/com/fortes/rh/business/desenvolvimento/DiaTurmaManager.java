@@ -14,6 +14,7 @@ public interface DiaTurmaManager extends GenericManager<DiaTurma>
 	void saveDiasTurma(Turma turma, String[] diasCheck, Map<String, String> horasIni, Map<String, String> horasFim) throws Exception;
 	void deleteDiasTurma(Long turmaId);
 	Collection<DiaTurma> findByTurma(Long turmaId);
-	public Integer qtdDiasDasTurmas(Long turmaId);
-	public void clonarDiaTurmasDeTurma(Turma turmaOrigem, Turma turmaDestino);
+	Integer qtdDiasDasTurmas(Long turmaId);
+	void clonarDiaTurmasDeTurma(Turma turmaOrigem, Turma turmaDestino);
+	Collection<DiaTurma> findByTurmaAndPeriodo(Long turmaId, Date dataIni, Date dataFim);
 }

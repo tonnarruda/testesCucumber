@@ -1,6 +1,7 @@
 package com.fortes.rh.dao.hibernate.desenvolvimento;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -42,6 +43,27 @@ public class DiaTurmaDaoHibernate extends GenericDaoHibernate<DiaTurma> implemen
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
+		return criteria.list();
+	}
+
+	public Collection<DiaTurma> findByTurmaAndPeriodo(Long turmaId, Date dataIni, Date dataFim)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "dt");
+		criteria.createCriteria("dt.turma", "t", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("dt.id"), "id");
+		p.add(Projections.property("dt.dia"), "dia");
+		p.add(Projections.property("dt.turno"), "turno");
+		
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("t.id", turmaId));
+		criteria.add(Expression.between("dt.dia", dataIni, dataFim));
+		
+		criteria.addOrder( Order.asc("dt.dia") );
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
 		return criteria.list();
 	}
 
