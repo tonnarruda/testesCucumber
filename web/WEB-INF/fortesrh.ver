@@ -3,6 +3,7 @@
 	<Versao id="1.1.13x.16x" bd="" data="xx/12/2014">
 		<Item visivel="N" motivo="P20141100221"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Resultado da Avaliação de Desempenho > Relatório: Ajuste para que o título da avaliação seja impresso por completo, mesmo que exceda o tamanho da linha.]]></Item>
 		<Item visivel="N" motivo="P20141100233"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Descrição das respostas estava sendo exibida igual a descrição da pergunta e relatório não estava sendo gerado quando as perguntas não possuiam aspecto.]]></Item>
+		<Item visivel="N" motivo="P20141000117"><![CDATA[Criação de chave única para as ocorrências do colaborador, evitando erro ao desfazer a importação feita do Ponto para o AC e do AC para o RH.]]></Item>
 	</Versao>
 	<Versao id="1.1.137.166" bd="" data="01/12/2014">
 		<Item visivel="S" motivo=""><![CDATA[Melhorias internas.]]></Item>
