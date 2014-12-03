@@ -328,7 +328,9 @@
 		function verificaCpf(data)
 	    {
 			<#if colaborador.id?exists>
-				verificaCpfDuplicado(data, ${idDaEmpresa}, null, ${colaborador.id}, false);
+				verificaCpfDuplicado(data, ${idDaEmpresa}, null, ${colaborador.id},  false);
+			<#elseif candidato?exists>
+				verificaCpfDuplicado(data, ${idDaEmpresa}, null, ${candidato.id}, true);
 			<#else>
 				verificaCpfDuplicado(data, ${idDaEmpresa}, null, null, false);
 			</#if>			
