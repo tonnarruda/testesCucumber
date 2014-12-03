@@ -316,14 +316,14 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		Collection<Colaborador> colaboradoresTodasEmpresas = Arrays.asList(colab1, colab2);
 		
 		empresaManager.expects(once()).method("findById").with(eq(empresaBuscaMesmaEmpresa.getId())).will(returnValue(empresaBuscaMesmaEmpresa));
-		colaboradorManager.expects(once()).method("findParentesByNome").with(eq("joao"), eq(empresaBuscaMesmaEmpresa.getId())).will(returnValue(colaboradoresMesmaEmpresa));
+		colaboradorManager.expects(once()).method("findParentesByNome").with(eq(colab1.getId()),eq("joao"), eq(empresaBuscaMesmaEmpresa.getId())).will(returnValue(colaboradoresMesmaEmpresa));
 		colaboradorManager.expects(once()).method("montaParentesByNome").with(eq(colaboradoresMesmaEmpresa)).will(returnValue(colaboradoresMesmaEmpresa));
 		
 		empresaManager.expects(once()).method("findById").with(eq(empresaBuscaTodasAsEmpresas.getId())).will(returnValue(empresaBuscaTodasAsEmpresas));
-		colaboradorManager.expects(once()).method("findParentesByNome").with(eq("joao"), eq(null)).will(returnValue(colaboradoresTodasEmpresas));
+		colaboradorManager.expects(once()).method("findParentesByNome").with(eq(colab2.getId()),eq("joao"), eq(null)).will(returnValue(colaboradoresTodasEmpresas));
 		colaboradorManager.expects(once()).method("montaParentesByNome").with(eq(colaboradoresTodasEmpresas)).will(returnValue(colaboradoresTodasEmpresas));
 		
-		assertEquals(1, colaboradorDWR.findParentesByNome("joao", empresaBuscaMesmaEmpresa.getId()).size());
-		assertEquals(2, colaboradorDWR.findParentesByNome("joao", empresaBuscaTodasAsEmpresas.getId()).size());
+		assertEquals(1, colaboradorDWR.findParentesByNome(colab1.getId(),"joao", empresaBuscaMesmaEmpresa.getId()).size());
+		assertEquals(2, colaboradorDWR.findParentesByNome(colab2.getId(),"joao", empresaBuscaTodasAsEmpresas.getId()).size());
 	}
 }

@@ -5028,11 +5028,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		pedro.setEmpresa(empresa);
 		colaboradorDao.save(pedro);
 		
-		assertEquals(1, colaboradorDao.findParentesByNome("joao rodrigues", empresa.getId()).size());
-		assertEquals(1, colaboradorDao.findParentesByNome("geraldo rodrigues", empresa.getId()).size());
-		assertEquals(2, colaboradorDao.findParentesByNome("pedro rodrigues", empresa.getId()).size());
-		assertEquals(3, colaboradorDao.findParentesByNome("maria rodrigues", empresa.getId()).size());
-		assertEquals(3, colaboradorDao.findParentesByNome("maria rodrigues", null).size());
+		
+		assertEquals(0, colaboradorDao.findParentesByNome(joao.getId(),"joao rodrigues", empresa.getId()).size());
+		assertEquals(0, colaboradorDao.findParentesByNome(maria.getId(),"geraldo rodrigues", empresa.getId()).size());
+		assertEquals(1, colaboradorDao.findParentesByNome(pedro.getId(),"pedro rodrigues", empresa.getId()).size());
+		assertEquals(2, colaboradorDao.findParentesByNome(maria.getId(),"maria rodrigues", empresa.getId()).size());
+		assertEquals(2, colaboradorDao.findParentesByNome(maria.getId(),"maria rodrigues", null).size());
 	}
 
 	public void testFindColabPeriodoExperiencia() 

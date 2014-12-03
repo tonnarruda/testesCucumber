@@ -4191,7 +4191,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Integer) query.uniqueResult();
 	}
 
-	public Collection<Colaborador> findParentesByNome(String nome, Long empresaId) 
+	public Collection<Colaborador> findParentesByNome(Long colaboradorId, String nome, Long empresaId) 
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.endereco.cidade", "ci", Criteria.LEFT_JOIN);
@@ -4218,6 +4218,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("c.desligado", false));
+		
+		if(colaboradorId != null)
+			criteria.add(Restrictions.ne("c.id", colaboradorId));
 		
 		if(empresaId != null)
 			criteria.add(Expression.eq("c.empresa.id", empresaId));

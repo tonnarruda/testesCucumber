@@ -116,7 +116,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public int qtdDemitidosEm90Dias(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Date dataAte);
 	public int qtdAdmitidosPeriodoEm90Dias(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Date dataAte);
 	public Colaborador findFuncaoAmbiente(Long colaboradorId);
-	public Collection<Colaborador> findParentesByNome(String nome, Long empresaId);
+	public Collection<Colaborador> findParentesByNome(Long colaboradorId, String nome, Long empresaId);
 	public void atualizaSolicitacaoDesligamento(Date dataSolicitacaoDesligamento, Date dataSolicitacaoDesligamentoAC, String observacaoDemissao, Long motivoId, Long solicitanteDemissaoId, Long colaboradorId);
 	public Collection<Colaborador> findPendenciasSolicitacaoDesligamentoAC(Long empresaId);
 	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId);

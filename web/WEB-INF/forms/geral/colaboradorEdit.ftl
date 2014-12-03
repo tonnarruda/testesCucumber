@@ -175,7 +175,14 @@
 	<#assign validarCampos="validaFormularioDinamico();"/>
 
 	<script type="text/javascript">
+		var colaboradorId = null;
+		<#if colaborador.id?exists>
+			colaboradorId = ${colaborador.id};
+		</#if>	
+		
 		$(function() {
+			
+				
 			$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
 			$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
 			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action"/>');
@@ -194,7 +201,7 @@
 			$('#vinculoTooltipHelp').qtip({ content: 'Não é possível alterar o vínculo quando integrado com o AC Pessoal.' });
 			
 			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
-			
+
 			<#if avaliacoes?exists>
 				<#list avaliacoes as avaliacao>
 					<#if avaliacao.periodoExperiencia?exists && avaliacao.periodoExperiencia.id?exists>
@@ -218,7 +225,8 @@
 			
 			<#if edicao == "false">
 				$('#nomePai, #nomeMae, #nomeConjuge').blur(function() {
-					verificaParentes(this.value);
+					
+					verificaParentes(colaboradorId, this.value);
 				});
 				
 				<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
@@ -326,12 +334,12 @@
 			</#if>			
 	    }
 	    
-	    function verificaParentes(nome, validaForm)
+	    function verificaParentes(colaboradorId, nome, validaForm)
 		{
 			if (nome && nome.length >= 4)
 			{
 		    	$('#parentesDialog').empty();
-		    	ColaboradorDWR.findParentesByNome(nome, <@authz.authentication operation="empresaId"/>, function(dados) { listaParentes(dados, nome, '<@authz.authentication operation="empresaNome"/>', validaForm ); });
+		    	ColaboradorDWR.findParentesByNome(colaboradorId, nome, <@authz.authentication operation="empresaId"/>, function(dados) { listaParentes(dados, nome, '<@authz.authentication operation="empresaNome"/>', validaForm ); });
 		    }
 		}
 
@@ -362,14 +370,14 @@
 		{
 			if (setaCampos() && validaFormularioDinamico(true))
 			{
-		    	ColaboradorDWR.existeParentesByNome($('#nomePai').val(), $('#nomeMae').val(), $('#nomeConjuge').val(), <@authz.authentication operation="empresaId"/>, 
+		    	ColaboradorDWR.existeParentesByNome(colaboradorId, $('#nomePai').val(), $('#nomeMae').val(), $('#nomeConjuge').val(), <@authz.authentication operation="empresaId"/>, 
 		    		function(dado) {
 		    				if(dado == false)
 		    					${validarCampos}
 		    				else {
-								verificaParentes($('#nomePai').val(), validaFormularioDinamico);
-								verificaParentes($('#nomeMae').val(), validaFormularioDinamico);
-								verificaParentes($('#nomeConjuge').val(), validaFormularioDinamico);
+								verificaParentes(colaboradorId, $('#nomePai').val(), validaFormularioDinamico);
+								verificaParentes(colaboradorId, $('#nomeMae').val(), validaFormularioDinamico);
+								verificaParentes(colaboradorId, $('#nomeConjuge').val(), validaFormularioDinamico);
 							}
 					}
 				);
