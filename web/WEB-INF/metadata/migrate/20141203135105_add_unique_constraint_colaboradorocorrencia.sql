@@ -1,0 +1,2 @@
+DELETE FROM colaboradorocorrencia WHERE id IN ( SELECT MAX(id) FROM colaboradorocorrencia GROUP BY dataini, colaborador_id, ocorrencia_id HAVING COUNT(id) > 1 );--.go
+ALTER TABLE colaboradorocorrencia ADD CONSTRAINT colaboradorocorrencia_colaborador_ocorrencia_data_uk UNIQUE (colaborador_id, ocorrencia_id, dataini);--.go
