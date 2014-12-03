@@ -316,38 +316,6 @@ public class ColaboradorOcorrenciaDaoHibernateTest extends GenericDaoHibernateTe
 
 		assertEquals(colaboradorOcorrencia, colaboradorOcorrenciaDao.findByDadosAC(colaboradorOcorrencia.getDataIni(), "456", "123", "3", "XXX"));
 	}
-
-	public void testVerifyExistsMesmaData()
-	{
-
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa = empresaDao.save(empresa);
-
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaboradorDao.save(colaborador);
-
-		Ocorrencia ocorrencia = OcorrenciaFactory.getEntity();
-		ocorrencia.setEmpresa(empresa);
-		ocorrenciaDao.save(ocorrencia);
-		Date hoje = new Date();
-
-		ColaboradorOcorrencia colaboradorOcorrencia = new ColaboradorOcorrencia();
-		colaboradorOcorrencia.setDataIni(hoje);
-		colaboradorOcorrencia.setColaborador(colaborador);
-		colaboradorOcorrencia.setOcorrencia(ocorrencia);
-		colaboradorOcorrenciaDao.save(colaboradorOcorrencia);
-
-		assertFalse(colaboradorOcorrenciaDao.verifyExistsMesmaData(colaboradorOcorrencia.getId(), colaborador.getId(), ocorrencia.getId(), empresa.getId(), hoje));
-
-		ColaboradorOcorrencia colaboradorOcorrencia2 = new ColaboradorOcorrencia();
-		colaboradorOcorrencia2.setDataIni(hoje);
-		colaboradorOcorrencia2.setColaborador(colaborador);
-		colaboradorOcorrencia2.setOcorrencia(ocorrencia);
-		colaboradorOcorrenciaDao.save(colaboradorOcorrencia2);
-
-		assertTrue(colaboradorOcorrenciaDao.verifyExistsMesmaData(colaboradorOcorrencia.getId(), colaborador.getId(), ocorrencia.getId(), empresa.getId(), hoje));
-
-	}
 	
 	public void testCountFaltasByPeriodo()
 	{

@@ -5833,13 +5833,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorOcorrencia2.setDataFim(dataFim);
 		colaboradorOcorrenciaDao.save(colaboradorOcorrencia2);
 		
-		ColaboradorOcorrencia colaboradorOcorrencia3 = ColaboradorOcorrenciaFactory.getEntity();
-		colaboradorOcorrencia3.setOcorrencia(ocorrencia2);
-		colaboradorOcorrencia3.setColaborador(colaborador);
-		colaboradorOcorrencia3.setDataIni(hoje);
-		colaboradorOcorrencia3.setDataFim(dataFim);
-		colaboradorOcorrenciaDao.save(colaboradorOcorrencia3);
-		
 		assertEquals(2, colaboradorDao.countOcorrencia(hoje, dataFim, Arrays.asList(empresa.getId()), null, null, 2).size());
 	}
 	
@@ -5877,12 +5870,16 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		ocorrencia1.setDescricao("falta");
 		ocorrenciaDao.save(ocorrencia1);
 		
+		Ocorrencia ocorrencia2 = OcorrenciaFactory.getEntity();
+		ocorrencia2.setDescricao("briga");
+		ocorrenciaDao.save(ocorrencia2);
+		
 		Providencia providencia1 = ProvidenciaFactory.getEntity();
 		providencia1.setDescricao("não faltar");
 		providenciaDao.save(providencia1);
 		
 		Providencia providencia2 = ProvidenciaFactory.getEntity();
-		providencia2.setDescricao("não gaziar");
+		providencia2.setDescricao("não brigar");
 		providenciaDao.save(providencia2);
 		
 		ColaboradorOcorrencia colaboradorOcorrencia1 = ColaboradorOcorrenciaFactory.getEntity();
@@ -5894,20 +5891,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorOcorrenciaDao.save(colaboradorOcorrencia1);
 		
 		ColaboradorOcorrencia colaboradorOcorrencia2 = ColaboradorOcorrenciaFactory.getEntity();
-		colaboradorOcorrencia2.setOcorrencia(ocorrencia1);
+		colaboradorOcorrencia2.setOcorrencia(ocorrencia2);
 		colaboradorOcorrencia2.setColaborador(colaborador);
 		colaboradorOcorrencia2.setProvidencia(providencia2);
 		colaboradorOcorrencia2.setDataIni(hoje);
 		colaboradorOcorrencia2.setDataFim(dataFim);
 		colaboradorOcorrenciaDao.save(colaboradorOcorrencia2);
-		
-		ColaboradorOcorrencia colaboradorOcorrencia3 = ColaboradorOcorrenciaFactory.getEntity();
-		colaboradorOcorrencia3.setOcorrencia(ocorrencia1);
-		colaboradorOcorrencia3.setColaborador(colaborador);
-		colaboradorOcorrencia3.setProvidencia(providencia2);
-		colaboradorOcorrencia3.setDataIni(hoje);
-		colaboradorOcorrencia3.setDataFim(dataFim);
-		colaboradorOcorrenciaDao.save(colaboradorOcorrencia3);
 		
 		assertEquals(2, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()), null, null, 2).size());
 	}
