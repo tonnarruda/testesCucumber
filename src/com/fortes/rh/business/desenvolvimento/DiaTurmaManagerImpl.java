@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -67,7 +66,7 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 		return diaTurmas;
 	}
     // sempre deleta todos os dias e salva os novos.
-	public void saveDiasTurma(Turma turma, String[] diasCheck, Map<String, String> horasIni, Map<String, String> horasFim) throws Exception
+	public void saveDiasTurma(Turma turma, String[] diasCheck, String[] horasIni, String[] horasFim) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -80,10 +79,9 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 			if(diasCheck != null)
 			{
 				DiaTurma diaTurmaTmp;
-				for (String valueDias : diasCheck)
+				for (int i=0; i < diasCheck.length; i++)
 				{
-					String[] dataTurno = valueDias.split(";");
-					String chave = valueDias.replace("/", "").replace(";", "");
+					String[] dataTurno = diasCheck[i].split(";");
 
 					diaTurmaTmp = new DiaTurma();
 					diaTurmaTmp.setDia(DateUtil.montaDataByString(dataTurno[0]));
@@ -91,17 +89,12 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 					
 					if(dataTurno.length > 1)
 						diaTurmaTmp.setTurno(dataTurno[1].charAt(0));
-
-					if ((horasIni != null && horasIni.containsKey(chave)) && (horasFim != null && horasFim.containsKey(chave)))
-					{
-						Object horaInicial =  horasIni.get(chave);
-						Object horaInicialArray[] = ((Object[]) horaInicial);
-						diaTurmaTmp.setHoraIni((String) horaInicialArray[0]);
-						
-						Object horaFinal =  horasFim.get(chave);
-						Object horaFinalArray[] = ((Object[]) horaFinal);
-						diaTurmaTmp.setHoraFim((String) horaFinalArray[0]);
-					}
+					
+					if(!"".equals(horasIni[i]))
+						diaTurmaTmp.setHoraIni((String) horasIni[i]);
+					
+					if(!"".equals(horasFim[i]))
+						diaTurmaTmp.setHoraFim((String) horasFim[i]);
 					
 					save(diaTurmaTmp);
 				}

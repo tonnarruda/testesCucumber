@@ -53,7 +53,6 @@
 		String.prototype.capitalize = function() {
 		    return this.charAt(0).toUpperCase() + this.slice(1);
 		}
-	
 
 		function populaDias(frm)
 		{
@@ -94,11 +93,29 @@
 					{
 						row +=	"	<td><label for='" + id + "'>" + diasTurma[i].turnoDescricao.capitalize() + "</label></td>\n";
 					}
-					row += 		'	<td><input type="text" id="horaIni-' + id + '" name="horariosIni[\'' + id + '\']" class="hora" maxlength="5" ' + readonly + ' /> às <input type="text" id="horaFim-' + id + '" name="horariosFim[\'' + id + '\']" class="hora" maxlength="5" ' + readonly + ' /></td>\n';
+					row += 		'	<td><input type="text" id="horaIni-' + id + '" name="horariosIni" class="hora" maxlength="5" ' + readonly + ' disabled=true /> às <input type="text" id="horaFim-' + id + '" name="horariosFim" class="hora" maxlength="5" ' + readonly + ' disabled=true /></td>\n';
 					row += 		"</tr>\n";
 				
 					$('#diasTable').append(row);
+					$('#horaIni-' + id).css('background-color', '#DEDEDE');
+					$('#horaFim-' + id).css('background-color', '#DEDEDE');
+
 				}
+				
+				$("input[name='diasCheck']").change(function() {
+						var marcado = $(this).is(":checked");
+						
+						$('#horaIni-' + this.id).attr("disabled", !marcado);
+						$('#horaFim-' + this.id).attr("disabled", !marcado);
+						
+						if(marcado){
+							$('#horaIni-' + this.id).css('background-color', '#FFF');
+							$('#horaFim-' + this.id).css('background-color', '#FFF');
+						}else{
+							$('#horaIni-' + this.id).css('background-color', '#DEDEDE');
+							$('#horaFim-' + this.id).css('background-color', '#DEDEDE');
+						}
+					});
 			
 				marcaCheckListBoxString();
 			}
@@ -125,8 +142,8 @@
 				var identificador = diasTurmasMarcados[count].split("-");
 			
 				$('#' + identificador[0]).attr('checked','checked');
-				$('#horaIni-' + identificador[0]).val(identificador[1]);
-				$('#horaFim-' + identificador[0]).val(identificador[2]);
+				$('#horaIni-' + identificador[0]).val(identificador[1]).css('background-color', '#FFF').attr("disabled", false);
+				$('#horaFim-' + identificador[0]).val(identificador[2]).css('background-color', '#FFF').attr("disabled", false);
 			}
 		}
 		
@@ -271,17 +288,24 @@
 		{
 			var chave, horaIni, horaFim, horariosValidos = true;
 			$('input[name=diasCheck]:checked').each(function() {
-				chave = $(this).val();
-				horaIni = $('input[name="horasIni[' + chave + ']"]').val();
-				horaFim = $('input[name="horasFim[' + chave + ']"]').val();
+
+				chaveArray = $(this).val().replace(/\//g,'').split(";");
+				id = chaveArray[0] + chaveArray[1];   
 				
-				if ( (horaIni && horaFim) && ((!horaIni != !horaFim) || !(validaHora(horaIni) && validaHora(horaFim)) || (horaFim.replace(':','') < horaIni.replace(':','') )) )
+				horaIni = $('#horaIni-' + id).val();
+				horaFim = $('#horaFim-' + id).val();
+				
+				if ( (horaIni && horaFim) && ((!horaIni != !horaFim) || !(validaHora(horaIni) && validaHora(horaFim)) || (horaFim.replace(':','') < horaIni.replace(':','') )))
 				{
-					$(this).parents('tr').addClass('invalido');
+					$('#horaIni-' + id).css('background-color', '#FFEEC2');
+					$('#horaFim-' + id).css('background-color', '#FFEEC2');
 					horariosValidos = false;
 				}
 				else
-					$(this).parents('tr').removeClass('invalido');
+				{
+					$('#horaIni-' + id).css('background-color', '#FFF');
+					$('#horaFim-' + id).css('background-color', '#FFF');
+				}
 				
 			});
 			

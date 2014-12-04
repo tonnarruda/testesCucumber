@@ -181,8 +181,8 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private boolean manterAssinatura;
 
 	private Map<Long, String> despesas = new HashMap<Long, String>();
-	private Map<String, String> horariosIni;
-	private Map<String, String> horariosFim;
+	private String[] horariosIni;
+	private String[] horariosFim;
 	
 	private File assinaturaDigital;
 	
@@ -1286,11 +1286,11 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		this.manterAssinatura = manterAssinatura;
 	}
 
-	public void setHorariosIni(Map<String, String> horariosIni) {
+	public void setHorariosIni(String[] horariosIni) {
 		this.horariosIni = horariosIni;
 	}
 
-	public void setHorariosFim(Map<String, String> horariosFim) {
+	public void setHorariosFim(String[] horariosFim) {
 		this.horariosFim = horariosFim;
 	}
 }

@@ -88,7 +88,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return getDao().findByIdProjection(turmaId);
 	}
 
-	public void inserir(Turma turma, String[] dias, String custos, Long[] avaliacaoTurmaIds, Map<String, String> horasIni, Map<String, String> horasFim) throws Exception
+	public void inserir(Turma turma, String[] dias, String custos, Long[] avaliacaoTurmaIds, String[] horasIni, String[] horasFim) throws Exception
 	{
 		salvarTurmaDiasCusto(turma, dias, horasIni, horasFim, custos);
 
@@ -96,7 +96,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmaIds);
 	}
 
-	public void atualizar(Turma turma, String[] dias, Map<String, String> horasIni, Map<String, String> horasFim, String[] colaboradorTurma, String[] selectPrioridades, Long[] avaliacaoTurmaIds, boolean atualizaAvaliacao) throws Exception
+	public void atualizar(Turma turma, String[] dias, String[] horasIni, String[] horasFim, String[] colaboradorTurma, String[] selectPrioridades, Long[] avaliacaoTurmaIds, boolean atualizaAvaliacao) throws Exception
 	{
 		colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades);
 
@@ -108,7 +108,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmaIds);
 	}
 
-	public void salvarTurmaDiasCusto(Turma turma, String[] diasCheck, Map<String, String> horasIni, Map<String, String> horasFim, String despesaJSON) throws Exception
+	public void salvarTurmaDiasCusto(Turma turma, String[] diasCheck, String[] horasIni, String[] horasFim, String despesaJSON) throws Exception
 	{
 		save(turma);
 		
@@ -138,7 +138,7 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		}
 	}
 
-	public void updateTurmaDias(Turma turma, String[] diasCheck, Map<String, String> horasIni, Map<String, String> horasFim) throws Exception
+	public void updateTurmaDias(Turma turma, String[] diasCheck, String[] horasIni, String[] horasFim) throws Exception
 	{
 		boolean result = false;
 		
