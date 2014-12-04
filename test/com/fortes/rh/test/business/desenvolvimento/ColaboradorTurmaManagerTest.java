@@ -1184,15 +1184,19 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		
 		ColaboradorTurma ct1 = ColaboradorTurmaFactory.getEntity(1L);
 		ct1.setColaborador(colaborador);
-		ct1.setDiaPresente(DateUtil.criarDataMesAno(1, 11, 2014));
+		ct1.setDiaTurma(DateUtil.criarDataMesAno(1, 11, 2014));
+		ct1.setDiaTurmaHoraIni("3:00");
+		ct1.setDiaTurmaHoraFim("5:00");
 		
 		ColaboradorTurma ct2 = ColaboradorTurmaFactory.getEntity(2L);
 		ct2.setColaborador(colaborador2);
-		ct2.setDiaPresente(DateUtil.criarDataMesAno(1, 12, 2014));
+		ct2.setDiaTurma(DateUtil.criarDataMesAno(1, 12, 2014));
 		
 		ColaboradorTurma ct3 = ColaboradorTurmaFactory.getEntity();
 		ct3.setColaborador(colaborador);
-		ct3.setDiaPresente(DateUtil.criarDataMesAno(5, 12, 2014));
+		ct3.setDiaTurma(DateUtil.criarDataMesAno(5, 12, 2014));
+		ct3.setDiaTurmaHoraIni("5:00");
+		ct3.setDiaTurmaHoraFim("7:00");
 		
 		Collection<ColaboradorTurma> colabTurmas =  new ArrayList<ColaboradorTurma>();
 		colabTurmas.add(ct1);
@@ -1205,8 +1209,16 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		
 		assertEquals(3, tAula.length);
 		assertEquals("01/11/2014", ((TAula) tAula[0]).getData());
+		assertEquals("3:00", ((TAula) tAula[0]).getHoraIni());
+		assertEquals("5:00", ((TAula) tAula[0]).getHoraFim());
+		
 		assertEquals("05/12/2014", ((TAula) tAula[1]).getData());
+		assertEquals("5:00", ((TAula) tAula[1]).getHoraIni());
+		assertEquals("7:00", ((TAula) tAula[1]).getHoraFim());
+		
 		assertEquals("01/12/2014", ((TAula) tAula[2]).getData());
+		assertNull(((TAula) tAula[2]).getHoraIni());
+		assertNull(((TAula) tAula[2]).getHoraFim());
 	}
 	
 	public void testGetTreinamentosRealizadosParaTRU()

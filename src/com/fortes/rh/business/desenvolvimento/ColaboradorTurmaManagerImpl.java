@@ -1051,7 +1051,9 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			tAula.setEmpregadoCodigo(colaboradorTurma.getColaborador().getCodigoAC());
 			tAula.setEmpresaCodigo(empresa.getCodigoAC());
 			tAula.setEmpresaGrupo(empresa.getGrupoAC());
-			tAula.setData(DateUtil.formataDiaMesAno(colaboradorTurma.getDiaPresente()));
+			tAula.setData(DateUtil.formataDiaMesAno(colaboradorTurma.getDiaTurma()));
+			tAula.setHoraIni(colaboradorTurma.getDiaTurmaHoraIni());
+			tAula.setHoraFim(colaboradorTurma.getDiaTurmaHoraFim());
 						
 			tAulas[interator++] = tAula;
 		}
@@ -1061,7 +1063,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 	public TAula[] getTreinamentosRealizadosParaTRU(String colaboradorCodigoAC, Empresa empresa, String dataIni, String dataFim) 
 	{
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findTurmaRealizadaByCodigoAc(colaboradorCodigoAC);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findTurmaRealizadaByCodigoAc(colaboradorCodigoAC, DateUtil.criarDataDiaMesAno(dataIni), DateUtil.criarDataDiaMesAno(dataFim));
 		
 		if(colaboradorTurmas.isEmpty())
 			return null;
@@ -1087,6 +1089,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 				tAula.setEmpresaCodigo(empresa.getCodigoAC());
 				tAula.setEmpresaGrupo(empresa.getGrupoAC());
 				tAula.setData(DateUtil.formataDiaMesAno(diaTurma.getDia()));
+				tAula.setHoraIni(diaTurma.getHoraIni());
+				tAula.setHoraFim(diaTurma.getHoraFim());
 				tAula.setStatus(0);
 				
 				for (ColaboradorPresenca colaboradorPresenca : colaboradorPresencas) 

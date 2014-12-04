@@ -55,6 +55,8 @@ public class DiaTurmaDaoHibernate extends GenericDaoHibernate<DiaTurma> implemen
 		p.add(Projections.property("dt.id"), "id");
 		p.add(Projections.property("dt.dia"), "dia");
 		p.add(Projections.property("dt.turno"), "turno");
+		p.add(Projections.property("dt.horaIni"), "horaIni");
+		p.add(Projections.property("dt.horaIni"), "horaIni");
 		
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("t.id", turmaId));

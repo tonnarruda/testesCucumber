@@ -83,17 +83,20 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 				{
 					String[] dataTurno = diasCheck[i].split(";");
 
+					if(dataTurno.length == 1)
+						dataTurno = diasCheck[i].split("-");
+					
 					diaTurmaTmp = new DiaTurma();
-					diaTurmaTmp.setDia(DateUtil.montaDataByString(dataTurno[0]));
+					diaTurmaTmp.setDia(DateUtil.montaDataByString(dataTurno[0].trim()));
 					diaTurmaTmp.setTurma(turma);
 					
-					if(dataTurno.length > 1)
+					if(dataTurno.length > 1 && dataTurno[1].length() == 1)
 						diaTurmaTmp.setTurno(dataTurno[1].charAt(0));
 					
-					if(!"".equals(horasIni[i]))
+					if(horasIni != null && !"".equals(horasIni[i]))
 						diaTurmaTmp.setHoraIni((String) horasIni[i]);
 					
-					if(!"".equals(horasFim[i]))
+					if(horasFim != null && !"".equals(horasFim[i]))
 						diaTurmaTmp.setHoraFim((String) horasFim[i]);
 					
 					save(diaTurmaTmp);

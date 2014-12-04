@@ -1316,7 +1316,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	public Collection<ColaboradorTurma> findColabTreinamentosPrevistos(String colaboradorCodigoAC, Long empresaId, Date dataIni, Date dataFim) 
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorTurma(ct.id, co.codigoAC, dt.dia) ");
+		hql.append("select new ColaboradorTurma(ct.id, co.codigoAC, dt.dia, dt.horaIni, dt.horaFim) ");
 		hql.append("from ColaboradorTurma as ct ");
 		hql.append("left join ct.colaborador as co ");
 		hql.append("left join co.historicoColaboradors as hc ");
@@ -1376,22 +1376,24 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();	
 	}
 	
-	public Collection<ColaboradorTurma> findTurmaRealizadaByCodigoAc(String colaboradorCodigoAC) 
+	public Collection<ColaboradorTurma> findTurmaRealizadaByCodigoAc(String colaboradorCodigoAC, Date dataIni, Date dataFim) 
 	{
 		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class,"ct");
         criteria.createCriteria("ct.colaborador", "c");
         criteria.createCriteria("ct.turma", "t");
+        criteria.createCriteria("t.diasTurma", "dt");
 
         ProjectionList p = Projections.projectionList().create();
         p.add(Projections.property("t.id"), "turmaId");
         p.add(Projections.property("t.descricao"), "turmaDescricao");
         p.add(Projections.property("c.codigoAC"), "colaboradorCodigoAc");
-        criteria.setProjection(p);
+        criteria.setProjection(Projections.distinct(p));
 
         if(colaboradorCodigoAC != null && !"".equals(colaboradorCodigoAC))
         	criteria.add(Expression.eq("c.codigoAC", colaboradorCodigoAC));
         
         criteria.add(Expression.eq("t.realizada", true));
+        criteria.add(Expression.between("dt.dia", dataIni, dataFim));
 
         criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
         criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));

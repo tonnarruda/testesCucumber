@@ -68,6 +68,12 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	private Double valorAvaliacao;
 	@Transient
 	private Date diaPresente;
+	@Transient
+	private Date diaTurma;
+	@Transient
+	private String diaTurmaHoraIni;
+	@Transient
+	private String diaTurmaHoraFim;
 
 	@Transient
 	private Integer totalDias;
@@ -350,6 +356,18 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		setId(Id);
 		setColaboradorCodigoAc(colabCodigoAc);
 		this.diaPresente = diaPresente;
+	}
+	
+
+	//	findColabTreinamentosPrevistos	
+	public ColaboradorTurma(Long Id, String colabCodigoAc, Date diaTurma, String diaTurmaHoraIni, String diaTurmaHoraFim)
+	{
+		setId(Id);
+		setColaboradorCodigoAc(colabCodigoAc);
+		this.diaPresente = diaTurma;
+		this.diaTurma = diaTurma;
+		this.diaTurmaHoraIni = diaTurmaHoraIni;
+		this.diaTurmaHoraFim = diaTurmaHoraFim;
 	}
 	
 	public void setTurmaRealizada(Boolean turmaRealizada)
@@ -853,5 +871,29 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 
 	public void setDiaPresente(Date diaPresente) {
 		this.diaPresente = diaPresente;
+	}
+
+	public Date getDiaTurma() {
+		return diaTurma;
+	}
+
+	public void setDiaTurma(Date diaTurma) {
+		this.diaTurma = diaTurma;
+	}
+
+	public String getDiaTurmaHoraIni() {
+		return diaTurmaHoraIni;
+	}
+
+	public void setDiaTurmaHoraIni(String diaTurmaHoraIni) {
+		this.diaTurmaHoraIni = diaTurmaHoraIni;
+	}
+
+	public String getDiaTurmaHoraFim() {
+		return diaTurmaHoraFim;
+	}
+
+	public void setDiaTurmaHoraFim(String diaTurmaHoraFim) {
+		this.diaTurmaHoraFim = diaTurmaHoraFim;
 	}
 }

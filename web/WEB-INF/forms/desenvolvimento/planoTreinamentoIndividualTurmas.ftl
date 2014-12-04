@@ -193,7 +193,7 @@
 			if(dIni.value != "  /  /    " && dFim.value != "  /  /    " && validaDate(dIni) && validaDate(dFim))
 			{
 				DWRUtil.useLoadingMessage('Carregando...');
-				DiaTurmaDWR.getDias(dIni.value, 
+				DiaTurmaDWR.getDiasMaps(dIni.value, 
 									dFim.value,
 									$('#porTurno'+ indice).val(), 
 									function(dados) 

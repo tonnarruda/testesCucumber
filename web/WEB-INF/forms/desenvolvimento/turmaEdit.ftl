@@ -78,7 +78,6 @@
 			{
 				var dataFmt, id;
 				var onclick = <#if temPresencasRegistradas>"onclick='return false;'"<#else>""</#if>;
-				var readonly = <#if temPresencasRegistradas>"readonly='readonly'"<#else>""</#if>;
 				
 				for (var i = 0; i < diasTurma.length; i++)
 				{
@@ -93,34 +92,56 @@
 					{
 						row +=	"	<td><label for='" + id + "'>" + diasTurma[i].turnoDescricao.capitalize() + "</label></td>\n";
 					}
-					row += 		'	<td><input type="text" id="horaIni-' + id + '" name="horariosIni" class="hora" maxlength="5" ' + readonly + ' disabled=true /> às <input type="text" id="horaFim-' + id + '" name="horariosFim" class="hora" maxlength="5" ' + readonly + ' disabled=true /></td>\n';
+					row += 		'	<td><input type="text" id="horaIni-' + id + '" name="horariosIni" class="hora" maxlength="5" disabled=true /> às <input type="text" id="horaFim-' + id + '" name="horariosFim" class="hora" maxlength="5" disabled=true /></td>\n';
 					row += 		"</tr>\n";
 				
 					$('#diasTable').append(row);
 					$('#horaIni-' + id).css('background-color', '#DEDEDE');
 					$('#horaFim-' + id).css('background-color', '#DEDEDE');
-
 				}
 				
 				$("input[name='diasCheck']").change(function() {
-						var marcado = $(this).is(":checked");
-						
-						$('#horaIni-' + this.id).attr("disabled", !marcado);
-						$('#horaFim-' + this.id).attr("disabled", !marcado);
-						
-						if(marcado){
-							$('#horaIni-' + this.id).css('background-color', '#FFF');
-							$('#horaFim-' + this.id).css('background-color', '#FFF');
-						}else{
-							$('#horaIni-' + this.id).css('background-color', '#DEDEDE');
-							$('#horaFim-' + this.id).css('background-color', '#DEDEDE');
-						}
-					});
-			
+					var marcado = $(this).is(":checked");
+					
+					$('#horaIni-' + this.id).attr("disabled", !marcado);
+					$('#horaFim-' + this.id).attr("disabled", !marcado);
+					
+					if(marcado){
+						$('#horaIni-' + this.id).css('background-color', '#FFF');
+						$('#horaFim-' + this.id).css('background-color', '#FFF');
+					}else{
+						$('#horaIni-' + this.id).css('background-color', '#DEDEDE');
+						$('#horaFim-' + this.id).css('background-color', '#DEDEDE');
+					}
+				});
+				
 				marcaCheckListBoxString();
+
+				<#if temPresencasRegistradas>
+					$("input[name='horariosIni']").attr('disabled', true).css('background-color', '#DEDEDE');
+					$("input[name='horariosFim']").attr('disabled', true).css('background-color', '#DEDEDE');
+				</#if>
 			}
 			else
 				jAlert("Data inválida.");
+		}
+		
+		function marcaTodos()
+		{
+			$('input[name=diasCheck]').attr('checked','checked');
+			$("input[name='diasCheck']").each( function() {
+				$('#horaIni-' + this.id).attr("disabled", false).css('background-color', '#FFF');
+				$('#horaFim-' + this.id).attr("disabled", false).css('background-color', '#FFF');
+		    });
+		}
+		
+		function desmarcaTodos()
+		{
+			$('input[name=diasCheck]').removeAttr('checked');
+			$("input[name='diasCheck']").each( function() {
+				$('#horaIni-' + this.id).attr("disabled", true).css('background-color', '#DEDEDE');
+				$('#horaFim-' + this.id).attr("disabled", true).css('background-color', '#DEDEDE');
+		    });
 		}
 		
 		var diasTurmasMarcados = [<#if diaTurmas?exists>
@@ -295,6 +316,12 @@
 				horaIni = $('#horaIni-' + id).val();
 				horaFim = $('#horaFim-' + id).val();
 				
+				if((!horaIni && horaFim) || (horaIni && !horaFim))
+				{
+					$('#horaIni-' + id).val('');
+					$('#horaFim-' + id).val('');
+				}
+				
 				if ( (horaIni && horaFim) && ((!horaIni != !horaFim) || !(validaHora(horaIni) && validaHora(horaFim)) || (horaFim.replace(':','') < horaIni.replace(':','') )))
 				{
 					$('#horaIni-' + id).css('background-color', '#FFEEC2');
@@ -457,7 +484,7 @@
 				<div class="listCheckBoxContainer" style="width: 593px;">
 					<div class="listCheckBoxBarra">
 						<input id="listCheckBoxFilterDiasCheck" class="listCheckBoxFilter" title="Digite para filtrar" type="text">
-						&nbsp;<span class="linkCheck" onclick="$('input[name=diasCheck]').attr('checked','checked');">Marcar todos</span> | <span class="linkCheck" onclick="$('input[name=diasCheck]').removeAttr('checked');">Desmarcar todos</span>
+						&nbsp;<span class="linkCheck" onclick="marcaTodos();">Marcar todos</span> | <span class="linkCheck" onclick="desmarcaTodos();">Desmarcar todos</span>
 					</div>
 					<div id="listCheckBoxdiasCheck" class="listCheckBox">
 						<table id="diasTable" class="dados">

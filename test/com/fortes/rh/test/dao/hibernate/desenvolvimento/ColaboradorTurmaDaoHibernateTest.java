@@ -1617,7 +1617,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaboradorTurma2.setTurma(turma2);
     	colaboradorTurma2 = colaboradorTurmaDao.save(colaboradorTurma2);
     	
-    	Collection<ColaboradorTurma> colabTurmaRetorno = colaboradorTurmaDao.findTurmaRealizadaByCodigoAc(colaborador.getCodigoAC());
+    	Collection<ColaboradorTurma> colabTurmaRetorno = colaboradorTurmaDao.findTurmaRealizadaByCodigoAc(colaborador.getCodigoAC(), DateUtil.criarDataMesAno(1, 11, 2014), DateUtil.criarDataMesAno(3, 11, 2014));
     	
     	assertEquals(1, colabTurmaRetorno.size());
     }
