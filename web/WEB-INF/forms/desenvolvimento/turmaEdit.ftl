@@ -174,43 +174,6 @@
 			$('#divAssinatura hr').remove();
 		}
 	
-		function montaListDias(data)
-		{ console.log(data);
-			if(data != null)
-			{
-				addChecks('diasCheck',data, null, true)
-				marcaCheckListBoxString(diasIds);
-			}
-			else
-				jAlert("Data inválida.");
-		}
-		
-		function exibeHorarios() {
-			$(".turnos, .hora-turno-tarde, .hora-turno-noite").toggle( $("#porTurno").val() == "true" );
-		}
-		
-		function exibeHorario()
-		{
-			$('#divFiltroForm').toggle();
-			$('#arrowFiltro').attr('src', $('#divFiltroForm').is(':visible') ? '<@ww.url value="/imgs/arrow_up.gif"/>' : '<@ww.url value="/imgs/arrow_down.gif"/>');
-		}
-		
-		function mostraAssinatura()
-		{
-			mostrar(document.getElementById('assinaturaUpLoad'));
-			$('#divAssinatura hr').remove();
-		}
-	
-		function marcaCheckListBoxString(checks)
-		{
-			for(var count = 0; count < checks.length; count++)
-			{
-				elemento = document.getElementById("checkGroupdiasCheck"+checks[count]);
-				if(elemento != null)
-					elemento.checked = true;
-			}
-		}
-		
 		function limpaDespesas()
 		{
 			 $('#totalCustos').text('0,00');
@@ -462,8 +425,7 @@
 				<#assign dataFim=turma.dataPrevFim/>
 			</#if>
 				
-			<#assign temPresencasRegistradas = turma.temPresenca?exists && turma.temPresenca/>
-			<#if turma.temPresenca?exists && turma.temPresenca>
+			<#if temPresencasRegistradas>
 				<@ww.select label="Realizar turma por" name="turma.porTurno" list=r"#{false:'Dia',true:'Turno'}" onchange="populaDias(document.forms[0]);" disabled=true/>
 				<@ww.hidden name="turma.porTurno" />
 				Período:*<br />
