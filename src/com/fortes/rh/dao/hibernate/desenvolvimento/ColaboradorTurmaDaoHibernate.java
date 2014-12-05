@@ -1316,11 +1316,12 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	public Collection<ColaboradorTurma> findColabTreinamentosPrevistos(String colaboradorCodigoAC, Long empresaId, Date dataIni, Date dataFim) 
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorTurma(ct.id, co.codigoAC, dt.dia, dt.horaIni, dt.horaFim) ");
+		hql.append("select new ColaboradorTurma(ct.id, co.codigoAC, dt.dia, dt.horaIni, dt.horaFim, cu.nome, t.descricao) ");
 		hql.append("from ColaboradorTurma as ct ");
 		hql.append("left join ct.colaborador as co ");
 		hql.append("left join co.historicoColaboradors as hc ");
 		hql.append("left join ct.turma as t ");
+		hql.append("left join t.curso as cu ");
 		hql.append("left join t.diasTurma as dt ");
 		hql.append("where dt.dia between :dataIni and :dataFim ");
 		hql.append("and co.empresa.id = :empresaId ");
@@ -1381,12 +1382,14 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class,"ct");
         criteria.createCriteria("ct.colaborador", "c");
         criteria.createCriteria("ct.turma", "t");
+        criteria.createCriteria("t.curso", "cu");
         criteria.createCriteria("t.diasTurma", "dt");
 
         ProjectionList p = Projections.projectionList().create();
         p.add(Projections.property("t.id"), "turmaId");
         p.add(Projections.property("t.descricao"), "turmaDescricao");
         p.add(Projections.property("c.codigoAC"), "colaboradorCodigoAc");
+        p.add(Projections.property("cu.nome"), "cursoNome");
         criteria.setProjection(Projections.distinct(p));
 
         if(colaboradorCodigoAC != null && !"".equals(colaboradorCodigoAC))

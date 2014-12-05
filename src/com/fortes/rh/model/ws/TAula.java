@@ -11,7 +11,9 @@ public class TAula implements Serializable
 	private String data;
 	private String horaIni;
 	private String horaFim;
-	private Integer status;
+	private String cursoNome;
+	private String turmaNome;
+	private Integer status = 0;
 
 	public TAula()
 	{
@@ -71,6 +73,22 @@ public class TAula implements Serializable
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getCursoNome() {
+		return cursoNome;
+	}
+
+	public void setCursoNome(String cursoNome) {
+		this.cursoNome = cursoNome;
+	}
+
+	public String getTurmaNome() {
+		return turmaNome;
+	}
+
+	public void setTurmaNome(String turmaNome) {
+		this.turmaNome = turmaNome;
 	}
 	
 }

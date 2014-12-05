@@ -25,9 +25,6 @@
     <property name="empresaManager">
       <ref bean="empresaManager" />
     </property>
-    <property name="historicoColaboradorManager">
-      <ref bean="historicoColaboradorManager" />
-    </property>
     <property name="areaOrganizacionalManager">
       <ref bean="areaOrganizacionalManager" />
     </property>

@@ -1580,12 +1580,17 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 
     public void testFindByCodigoAcTurmaRealizada()
     {
+    	Curso curso = CursoFactory.getEntity();
+    	cursoDao.save(curso);
+    	    	
     	Turma turma = TurmaFactory.getEntity();
     	turma.setRealizada(true);
+    	turma.setCurso(curso);
     	turmaDao.save(turma);
     	
     	Turma turma2 = TurmaFactory.getEntity();
     	turma2.setRealizada(false);
+    	turma2.setCurso(curso);
     	turmaDao.save(turma2);
     	
     	DiaTurma diaTurma1 = DiaTurmaFactory.getEntity();

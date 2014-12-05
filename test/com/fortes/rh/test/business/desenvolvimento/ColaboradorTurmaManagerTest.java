@@ -16,7 +16,6 @@ import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
-import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
@@ -70,7 +69,6 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 	private ColaboradorTurmaManagerImpl colaboradorTurmaManager = new ColaboradorTurmaManagerImpl();
 	private Mock colaboradorTurmaDao;
 	private Mock colaboradorManager;
-	private Mock historicoColaboradorManager;
 	private Mock areaOrganizacionalManager;
 	private Mock avaliacaoCursoManager;
 	private Mock aproveitamentoAvaliacaoCursoManager;
@@ -90,9 +88,6 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		colaboradorTurmaManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
 
-		historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
-		colaboradorTurmaManager.setHistoricoColaboradorManager((HistoricoColaboradorManager) historicoColaboradorManager.proxy());
-
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
 		colaboradorTurmaManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 
@@ -108,15 +103,13 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		certificacaoManager = mock(CertificacaoManager.class);
 		colaboradorTurmaManager.setCertificacaoManager((CertificacaoManager) certificacaoManager.proxy());
 
-		diaTurmaManager = new Mock(DiaTurmaManager.class);
-		colaboradorTurmaManager.setDiaTurmaManager((DiaTurmaManager) diaTurmaManager.proxy());
-
 		empresaManager = new Mock(EmpresaManager.class);
 		colaboradorTurmaManager.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 
 		turmaManager = new Mock(TurmaManager.class);
 
 		colaboradorPresencaManager = new Mock(ColaboradorPresencaManager.class);
+		diaTurmaManager = new Mock(DiaTurmaManager.class);
 		
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 		
@@ -1290,6 +1283,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		diaTurmaManager.expects(atLeastOnce()).method("findByTurmaAndPeriodo").withAnyArguments().will(returnValue(diasTurma));
 		colaboradorPresencaManager.expects(atLeastOnce()).method("findPresencaByTurma").withAnyArguments().will(returnValue(colaboradorPresencas));
 		MockSpringUtil.mocks.put("colaboradorPresencaManager", colaboradorPresencaManager);
+		MockSpringUtil.mocks.put("diaTurmaManager", diaTurmaManager);
 		
 		TAula[] tAula = colaboradorTurmaManager.getTreinamentosRealizadosParaTRU(colaborador.getCodigoAC(), empresa, "1/12/2014", "5/12/2014");
 		
@@ -1301,12 +1295,12 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		assertEquals("02/12/2014", ((TAula) tAula[4]).getData());
 		assertEquals("03/12/2014", ((TAula) tAula[5]).getData());
 		
-		assertEquals(new Integer(1), ((TAula) tAula[0]).getStatus());
-		assertEquals(new Integer(1), ((TAula) tAula[1]).getStatus());
-		assertEquals(new Integer(1), ((TAula) tAula[2]).getStatus());
-		assertEquals(new Integer(0), ((TAula) tAula[3]).getStatus());
-		assertEquals(new Integer(0), ((TAula) tAula[4]).getStatus());
-		assertEquals(new Integer(1), ((TAula) tAula[5]).getStatus());
+		assertEquals(new Integer(2), ((TAula) tAula[0]).getStatus());
+		assertEquals(new Integer(2), ((TAula) tAula[1]).getStatus());
+		assertEquals(new Integer(2), ((TAula) tAula[2]).getStatus());
+		assertEquals(new Integer(1), ((TAula) tAula[3]).getStatus());
+		assertEquals(new Integer(1), ((TAula) tAula[4]).getStatus());
+		assertEquals(new Integer(2), ((TAula) tAula[5]).getStatus());
 	}
 
 }

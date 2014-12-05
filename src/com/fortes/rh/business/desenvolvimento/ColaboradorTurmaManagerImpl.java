@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -48,11 +47,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 {
 	private ColaboradorManager colaboradorManager;
 	private EmpresaManager empresaManager;
-	private DiaTurmaManager diaTurmaManager;
-	private HistoricoColaboradorManager historicoColaboradorManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private CursoManager cursoManager;
-	private TurmaManager turmaManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
 	private AvaliacaoCursoManager avaliacaoCursoManager;
@@ -1054,6 +1050,11 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			tAula.setData(DateUtil.formataDiaMesAno(colaboradorTurma.getDiaTurma()));
 			tAula.setHoraIni(colaboradorTurma.getDiaTurmaHoraIni());
 			tAula.setHoraFim(colaboradorTurma.getDiaTurmaHoraFim());
+			
+			if(colaboradorTurma.getTurma() != null)
+				tAula.setTurmaNome(colaboradorTurma.getTurma().getDescricao());
+			if(colaboradorTurma.getCurso() != null)
+				tAula.setCursoNome(colaboradorTurma.getCurso().getNome());
 						
 			tAulas[interator++] = tAula;
 		}
@@ -1069,7 +1070,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			return null;
 		
 		Collection<ColaboradorPresenca> colaboradorPresencas = new ArrayList<ColaboradorPresenca>();
-		ColaboradorPresencaManager colaboradorPresencaManager = (ColaboradorPresencaManager) SpringUtil.getBean("colaboradorPresencaManager");
+		ColaboradorPresencaManager colaboradorPresencaManager = (ColaboradorPresencaManager) SpringUtil.getBeanOld("colaboradorPresencaManager");
+		DiaTurmaManager diaTurmaManager = (DiaTurmaManager) SpringUtil.getBeanOld("diaTurmaManager");
 		Collection<TAula> tAulas = new ArrayList<TAula>();
 		TAula tAula = null;
 		
@@ -1091,11 +1093,16 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 				tAula.setData(DateUtil.formataDiaMesAno(diaTurma.getDia()));
 				tAula.setHoraIni(diaTurma.getHoraIni());
 				tAula.setHoraFim(diaTurma.getHoraFim());
-				tAula.setStatus(0);
+
+				if(colaboradorTurma.getTurma() != null)
+					tAula.setTurmaNome(colaboradorTurma.getTurma().getDescricao());
+				if(colaboradorTurma.getCurso() != null)
+					tAula.setCursoNome(colaboradorTurma.getCurso().getNome());
 				
+				tAula.setStatus(1);
 				for (ColaboradorPresenca colaboradorPresenca : colaboradorPresencas) 
 					if(colaboradorPresenca.getDiaTurma().getId().equals(diaTurma.getId()) && colaboradorTurma.getId().equals(colaboradorPresenca.getColaboradorTurma().getId()))
-						tAula.setStatus(1);
+						tAula.setStatus(2);
 				
 				tAulas.add(tAula);
 			}
@@ -1124,11 +1131,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		this.colaboradorManager = colaboradorManager;
 	}
 	
-	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
-	{
-		this.historicoColaboradorManager = historicoColaboradorManager;
-	}
-	
 	public void setAproveitamentoAvaliacaoCursoManager(AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager)
 	{
 		this.aproveitamentoAvaliacaoCursoManager = aproveitamentoAvaliacaoCursoManager;
@@ -1147,11 +1149,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
 	{
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-	
-	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager) 
-	{
-		this.diaTurmaManager = diaTurmaManager;
 	}
 	
 	public void setEmpresaManager(EmpresaManager empresaManager) 
