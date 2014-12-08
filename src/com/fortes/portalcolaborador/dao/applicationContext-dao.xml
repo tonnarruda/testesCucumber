@@ -10,12 +10,12 @@
       <ref bean="transacaoPCDaoTarget" />
     </property>
   </bean>
-  <bean id="MovimentacaoOperacaoPCDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+  <bean id="movimentacaoOperacaoPCDao" class="org.springframework.aop.framework.ProxyFactoryBean">
     <property name="proxyInterfaces">
       <value>com.fortes.portalcolaborador.dao.MovimentacaoOperacaoPCDao</value>
     </property>
     <property name="target">
-      <ref bean="transacaoPCDaoTarget" />
+      <ref bean="movimentacaoOperacaoPCDaoTarget" />
     </property>
   </bean>
 </beans>

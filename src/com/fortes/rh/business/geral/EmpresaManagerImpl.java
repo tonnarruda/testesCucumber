@@ -12,8 +12,12 @@ import org.apache.log4j.Logger;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
+import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.portalcolaborador.business.TransacaoPCManager;
+import com.fortes.portalcolaborador.business.operacao.ExcluirEmpresa;
+import com.fortes.portalcolaborador.business.operacao.ExportarEmpresa;
 import com.fortes.portalcolaborador.model.EmpresaPC;
+import com.fortes.portalcolaborador.model.MovimentacaoOperacaoPC;
 import com.fortes.portalcolaborador.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
@@ -62,7 +66,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	private IndiceManager indiceManager;
 	private CidadeManager cidadeManager;
 	private RiscoManager riscoManager;
-	private TransacaoPCManager transacaoPCManager;
+	private MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager;
 
 	public String[] getEmpresasByUsuarioEmpresa(Long usuarioId)
 	{
@@ -510,7 +514,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	
 	public String enfileirarEmpresaPCAndColaboradorPC(Empresa empresa, Boolean integradaPortalColaboradorAnterior) throws Exception 
 	{
-		transacaoPCManager.enfileirar(new EmpresaPC(empresa), URLTransacaoPC.EMPRESA_ATUALIZAR, empresa.getId());
+		movimentacaoOperacaoPCManager.enfileirar(ExportarEmpresa.class, new EmpresaPC(empresa).getIdJson());
 		
 		if (!integradaPortalColaboradorAnterior)
 		{
@@ -524,7 +528,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	public void removeEmpresaPc(Long empresaId) 
 	{
 		Empresa empresa = getDao().findById(empresaId);
-		transacaoPCManager.enfileirar(new EmpresaPC(empresa), URLTransacaoPC.EMPRESA_REMOVER, empresa.getId());
+		movimentacaoOperacaoPCManager.enfileirar(ExcluirEmpresa.class, new EmpresaPC(empresa));
 	}
 
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
@@ -567,7 +571,8 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		this.riscoManager = riscoManager;
 	}
 
-	public void setTransacaoPCManager(TransacaoPCManager transacaoPCManager) {
-		this.transacaoPCManager = transacaoPCManager;
+	public void setMovimentacaoOperacaoPCManager(MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager)
+	{
+		this.movimentacaoOperacaoPCManager = movimentacaoOperacaoPCManager;
 	}
 }

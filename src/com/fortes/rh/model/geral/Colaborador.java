@@ -148,7 +148,6 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private String regimeRevezamento;
 
 	private boolean naoIntegraAc = false;
-	private boolean atualizarHistoricoPortal;
 	
 	private boolean respondeuEntrevista = false;
 	private File foto;
@@ -2868,14 +2867,6 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			return "Sim";
 		else
 			return "Não";	
-	}
-	
-	public boolean isAtualizarHistoricoPortal() {
-		return atualizarHistoricoPortal;
-	}
-
-	public void setAtualizarHistoricoPortal(boolean atualizarHistoricoPortal) {
-		this.atualizarHistoricoPortal = atualizarHistoricoPortal;
 	}
 
 	public BigDecimal getNota()

@@ -33,7 +33,7 @@ public class MovimentacaoOperacaoPC extends AbstractModel implements Serializabl
 	
 	public void setOperacao(Class<? extends Operacao> operacao)
 	{
-		this.operacao = operacao.toString();
+		this.operacao = operacao.getName();
 	}
 	
 	public String getParametros()

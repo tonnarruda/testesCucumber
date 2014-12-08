@@ -48,8 +48,8 @@
     <property name="riscoManager">
       <ref bean="riscoManager" />
     </property>
-    <property name="transacaoPCManager">
-      <ref bean="transacaoPCManager" />
+    <property name="movimentacaoOperacaoPCManager">
+      <ref bean="movimentacaoOperacaoPCManager" />
     </property>
   </bean>
   <bean id="empresaManager" parent="parentManager">

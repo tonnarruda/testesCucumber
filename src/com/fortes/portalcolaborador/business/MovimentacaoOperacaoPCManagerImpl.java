@@ -8,6 +8,7 @@ import com.fortes.portalcolaborador.model.MovimentacaoOperacaoPC;
 
 public class MovimentacaoOperacaoPCManagerImpl extends GenericManagerImpl<MovimentacaoOperacaoPC, MovimentacaoOperacaoPCDao> implements MovimentacaoOperacaoPCManager 
 {
+	
 	public void enfileirar(Class<? extends Operacao> operacao, AbstractAdapterPC adapterPC)
 	{
 		MovimentacaoOperacaoPC movimentacaoOperacaoPC = new MovimentacaoOperacaoPC();
@@ -15,5 +16,19 @@ public class MovimentacaoOperacaoPCManagerImpl extends GenericManagerImpl<Movime
 		movimentacaoOperacaoPC.setParametros(adapterPC.toJson());
 		
 		save(movimentacaoOperacaoPC);		
+	}
+
+	public void enfileirar(Class<? extends Operacao> operacao, String parametros)
+	{
+		MovimentacaoOperacaoPC movimentacaoOperacaoPC = new MovimentacaoOperacaoPC();
+		movimentacaoOperacaoPC.setOperacao(operacao);
+		movimentacaoOperacaoPC.setParametros(parametros);
+		
+		save(movimentacaoOperacaoPC);		
+	}
+
+	public void processarOperacoes()
+	{
+		GerenciadorMovimentacaoOperacao.getInstancia().processarOperacoes();
 	}
 }

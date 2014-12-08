@@ -15,8 +15,9 @@ import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.portalcolaborador.business.operacao.Operacao;
 import com.fortes.portalcolaborador.dao.TransacaoPCDao;
-import com.fortes.portalcolaborador.model.AbstractAdapterPC;
+import com.fortes.portalcolaborador.model.MovimentacaoOperacaoPC;
 import com.fortes.portalcolaborador.model.TransacaoPC;
 import com.fortes.portalcolaborador.model.dicionario.TransacaoPCMensagens;
 import com.fortes.portalcolaborador.model.dicionario.URLTransacaoPC;
@@ -32,7 +33,7 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 	private TransacaoPCManager transacaoPCManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
-	public void enfileirar(AbstractAdapterPC adapterPC, URLTransacaoPC urlTransacaoPC, Long empresaId) 
+	public void enfileirar(URLTransacaoPC urlTransacaoPC, String parametros) 
 	{
 		try {
 			ParametrosDoSistema params = parametrosDoSistemaManager.findById(1L);
@@ -40,11 +41,8 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 			TransacaoPC transacaoPC = new TransacaoPC();
 			transacaoPC.setCodigoUrl(urlTransacaoPC.getId());
 			transacaoPC.setData(new Date());
-			transacaoPC.setEmpresa(new Empresa(empresaId));
+			transacaoPC.setJson(CryptUtil.encrypt(parametros, params.getPcKey()));
 			
-			String json = adapterPC.toJson();
-			
-			transacaoPC.setJson(CryptUtil.encrypt(json, params.getPcKey()));
 			save(transacaoPC);
 		
 		} catch (Exception e) {
@@ -133,6 +131,12 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 			return new PostMethod();
 		
 		return new GetMethod();
+	}
+
+	public void processarOperacoes(Collection<MovimentacaoOperacaoPC> movimentacoesOperacaoPC)
+	{
+		for (MovimentacaoOperacaoPC movimentacaoOperacaoPC : movimentacoesOperacaoPC) 
+			movimentacaoOperacaoPC.getOperacao().gerarTransacao(movimentacaoOperacaoPC.getParametros());
 	}
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {

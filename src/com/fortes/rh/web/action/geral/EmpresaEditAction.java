@@ -19,7 +19,13 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.model.type.File;
 import com.fortes.model.type.FileUtil;
+import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.portalcolaborador.business.TransacaoPCManager;
+import com.fortes.portalcolaborador.business.operacao.AtualizarColaborador;
+import com.fortes.portalcolaborador.business.operacao.ExportarEmpresa;
+import com.fortes.portalcolaborador.model.ColaboradorPC;
+import com.fortes.portalcolaborador.model.EmpresaPC;
+import com.fortes.portalcolaborador.model.MovimentacaoOperacaoPC;
 import com.fortes.portalcolaborador.model.dicionario.TransacaoPCMensagens;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -54,6 +60,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private GrupoACManager grupoACManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private TransacaoPCManager transacaoPCManager;
+	private MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager;
 
 	private Collection<Estado> ufs = null;
 	private Collection<Cidade> cidades = new ArrayList<Cidade>();
@@ -204,9 +211,10 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			String conexaoPC = transacaoPCManager.testarConexao();
 			if(conexaoPC.equals(TransacaoPCMensagens.getDescricao(TransacaoPCMensagens.OK)))
 			{
-				String mensagem = empresaManager.enfileirarEmpresaPCAndColaboradorPC(empresa, integradaPortalColaboradorAnterior);
-				if(mensagem != null)
-					addActionMessage(mensagem);
+				movimentacaoOperacaoPCManager.enfileirar(ExportarEmpresa.class, new EmpresaPC(empresa).getIdJson());
+//				String mensagem = empresaManager.enfileirarEmpresaPCAndColaboradorPC(empresa, integradaPortalColaboradorAnterior);
+//				if(mensagem != null)
+//					addActionMessage(mensagem);
 			} else{
 				empresa.setIntegradaPortalColaborador(integradaPortalColaboradorAnterior);
 				addActionWarning(conexaoPC);
@@ -479,5 +487,10 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public void setTransacaoPCManager(TransacaoPCManager transacaoPCManager) {
 		this.transacaoPCManager = transacaoPCManager;
+	}
+
+	public void setMovimentacaoOperacaoPCManager(MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager)
+	{
+		this.movimentacaoOperacaoPCManager = movimentacaoOperacaoPCManager;
 	}
 }

@@ -19,17 +19,17 @@
     </property>
   </bean>
 
-  <bean id="MovimentacaoOperacaoPCManagerTarget" class="com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManagerImpl">
+  <bean id="movimentacaoOperacaoPCManagerTarget" class="com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManagerImpl">
     <property name="dao">
-      <ref bean="MovimentacaoOperacaoPCDao" />
+      <ref bean="movimentacaoOperacaoPCDao" />
     </property>
   </bean>
-  <bean id="MovimentacaoOperacaoPCManager" parent="parentManager">
+  <bean id="movimentacaoOperacaoPCManager" parent="parentManager">
     <property name="proxyInterfaces">
       <value>com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager</value>
     </property>
     <property name="target">
-      <ref bean="MovimentacaoOperacaoPCManagerTarget" />
+      <ref bean="movimentacaoOperacaoPCManagerTarget" />
     </property>
   </bean>
 </beans>

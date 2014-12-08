@@ -2,10 +2,11 @@ package com.fortes.portalcolaborador.business.operacao;
 
 import com.fortes.portalcolaborador.model.dicionario.URLTransacaoPC;
 
-public class AtualizarColaborador extends Operacao {
+public class ExportarEmpresa extends Operacao {
 
+	@Override
 	public URLTransacaoPC getUrlTransacaoPC()
 	{
-		return URLTransacaoPC.COLABORADOR_ATUALIZAR;
+		return URLTransacaoPC.EMPRESA_ATUALIZAR;
 	}
 }

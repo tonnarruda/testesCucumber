@@ -25,7 +25,7 @@ public abstract class BaseDaoHibernateTest extends AbstractTransactionalSpringCo
     			"com/fortes/rh/dao/security/applicationContext-dao.xml",
     			"com/fortes/rh/dao/sesmt/applicationContext-dao.xml",
     			"com/fortes/rh/dao/avaliacao/applicationContext-dao.xml",
-    			"com/fortes/rh/dao/portalcolaborador/applicationContext-dao.xml",
+    			"com/fortes/portalcolaborador/dao/applicationContext-dao.xml",
 
     			"com/fortes/rh/dao/hibernate/acesso/applicationContext-dao-hibernate.xml",
     			"com/fortes/rh/dao/hibernate/cargosalario/applicationContext-dao-hibernate.xml",
@@ -36,7 +36,7 @@ public abstract class BaseDaoHibernateTest extends AbstractTransactionalSpringCo
     			"com/fortes/rh/dao/hibernate/security/applicationContext-dao-hibernate.xml",
     			"com/fortes/rh/dao/hibernate/sesmt/applicationContext-dao-hibernate.xml",
     			"com/fortes/rh/dao/hibernate/avaliacao/applicationContext-dao-hibernate.xml",
-    			"com/fortes/rh/dao/hibernate/portalcolaborador/applicationContext-dao-hibernate.xml",
+    			"com/fortes/portalcolaborador/dao/hibernate/applicationContext-dao-hibernate.xml",
     			
     			"com/fortes/rh/business/acesso/applicationContext-business.xml",
     			"com/fortes/rh/business/cargosalario/applicationContext-business.xml",
@@ -47,7 +47,7 @@ public abstract class BaseDaoHibernateTest extends AbstractTransactionalSpringCo
     			"com/fortes/rh/business/security/applicationContext-business.xml",
     			"com/fortes/rh/business/sesmt/applicationContext-business.xml",
     			"com/fortes/rh/business/avaliacao/applicationContext-business.xml",
-    			"com/fortes/rh/business/portalcolaborador/applicationContext-business.xml",
+    			"com/fortes/portalcolaborador/business/applicationContext-business.xml",
 
     			"applicationContext-xfire.xml",
     			"applicationContext-dwr.xml",
