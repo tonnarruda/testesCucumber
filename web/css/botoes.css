@@ -148,7 +148,7 @@
 .btnSalvarArquivos
 {
 	background-image:url(../imgs/btnSalvarArquivos.gif);
-	width: 139px !important;
+	width: 140px !important;
 }
 
 .btnAplicar
@@ -637,6 +637,12 @@
 	width: 170px !important;
 }
 
+.btnInserirEditar
+{
+	background-image:url(../imgs/btnInserirEditar.gif);
+	width: 130px !important;
+}
+
 .btnExportar,
 .btnVoltarInicial,
 .btnExcluir,
@@ -766,7 +772,8 @@
 .btnOrganograma,
 .btnCriarTurmas,
 .btnTrocaExtintores,
-.btnEnviarParaAmigo
+.btnEnviarParaAmigo,
+.btnInserirEditar
 {
 	border: 0;
 	background-repeat: no-repeat;
