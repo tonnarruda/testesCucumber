@@ -25,14 +25,22 @@ public class GerenciadorMovimentacaoOperacao {
 	
 	public void processarOperacoes()
 	{
-		if(!emProcessamento){
-			emProcessamento = true;
+		try {
+			if(!emProcessamento){
+				emProcessamento = true;
 
-			movimentacaoOperacaoPCManager = (MovimentacaoOperacaoPCManager) SpringUtil.getBeanOld("movimentacaoOperacaoPCManager");
-			transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
-
-			Collection<MovimentacaoOperacaoPC> movimentacoesOperacaoPC = movimentacaoOperacaoPCManager.findAll(new String[]{"id"});
-			transacaoPCManager.processarOperacoes(movimentacoesOperacaoPC);
+				movimentacaoOperacaoPCManager = (MovimentacaoOperacaoPCManager) SpringUtil.getBeanOld("movimentacaoOperacaoPCManager");
+				Collection<MovimentacaoOperacaoPC> movimentacoesOperacaoPC = movimentacaoOperacaoPCManager.findAll(new String[]{"id"});
+				
+				if(!movimentacoesOperacaoPC.isEmpty())
+				{
+					transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
+					transacaoPCManager.processarOperacoes(movimentacoesOperacaoPC);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
 			emProcessamento = false;
 		}
 
