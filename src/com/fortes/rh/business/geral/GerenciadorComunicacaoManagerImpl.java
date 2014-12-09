@@ -648,8 +648,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	
 	public void enviaMensagemPeriodoExperienciaParaGestorAreaOrganizacional(Long colaboradorAvaliadoId, Long avaliacaoId, Usuario usuario, Empresa empresa) 
 	{
-//		Collection<UsuarioEmpresa> usuarioEmpresaPeriodoExperiencia = usuarioEmpresaManager.findUsuariosByEmpresaRole(empresa.getId(), "ROLE_VER_AREAS");
-
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 		Colaborador colaboradorAvaliado = colaboradorManager.findByIdDadosBasicos(colaboradorAvaliadoId, null);
 
@@ -663,6 +661,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		
 		mensagem.append("\n\nColaborador: ").append(colaboradorAvaliado.getNomeMaisNomeComercial())
 				.append("\nCargo: ").append(colaboradorAvaliado.getFaixaSalarial().getDescricao())
+				.append("\nFunção: ").append(colaboradorAvaliado.getFuncaoNome())
 				.append("\nÁrea: ").append(colaboradorAvaliado.getAreaOrganizacional().getDescricao());
 		
 		String link = "avaliacao/avaliacaoExperiencia/prepareInsertAvaliacaoExperiencia.action?colaboradorQuestionario.colaborador.id=" + colaboradorAvaliado.getId() + "&respostaColaborador=true&preview=true&colaboradorQuestionario.avaliacao.id="+avaliacaoId;

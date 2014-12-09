@@ -3435,6 +3435,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		faixaSalarial.setCargo(cargo);
 		faixaSalarialDao.save(faixaSalarial);
 		
+		Funcao funcao = FuncaoFactory.getEntity();
+		funcao.setNome("Função");
+		funcaoDao.save(funcao);
+		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setEmpresa(empresa);
 		colaborador.setDataDesligamento(new Date());
@@ -3448,9 +3452,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2000));
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setFuncao(funcao);
 		historicoColaboradorDao.save(historicoColaborador);
 		
-		assertEquals(colaborador, colaboradorDao.findByIdDadosBasicos(colaborador.getId(), StatusRetornoAC.CONFIRMADO));
+		Colaborador colabRetorno = colaboradorDao.findByIdDadosBasicos(colaborador.getId(), StatusRetornoAC.CONFIRMADO);
+		
+		assertEquals(colaborador, colabRetorno);
+		assertEquals("Função", colabRetorno.getFuncao().getNome());
 	}
 	
 	public void testFindColaboradoresByArea() 
