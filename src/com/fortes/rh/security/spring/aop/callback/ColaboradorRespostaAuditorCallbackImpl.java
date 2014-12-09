@@ -2,10 +2,12 @@ package com.fortes.rh.security.spring.aop.callback;
 
 import java.lang.reflect.Method;
 
+import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -73,15 +75,28 @@ public class ColaboradorRespostaAuditorCallbackImpl implements AuditorCallback {
 	{
 		ColaboradorRespostaManager colaboradorRespostaManager = (ColaboradorRespostaManager) metodo.getComponente();
 		QuestionarioManager questionarioManager = colaboradorRespostaManager.getQuestionarioManager();
-		ColaboradorManager colaboradorManager = colaboradorRespostaManager.getColaboradorManager();
-
 		Questionario questionario = questionarioManager.findEntidadeComAtributosSimplesById(((Questionario) metodo.getParametros()[1]).getId());
-		Colaborador colaborador = colaboradorManager.findEntidadeComAtributosSimplesById((Long) metodo.getParametros()[2]);
-		
+
 		StringBuilder dados = new StringBuilder();
 		dados.append("\nMensagem: ");
-		dados.append("\nAs respostas do(a) colaborador(a) ");
-		dados.append(colaborador.getNome());
+		
+		if (questionario.verificaTipo(TipoQuestionario.FICHAMEDICA) && ((Character) metodo.getParametros()[4]) == 'A')
+		{
+			CandidatoManager candidatoManager = colaboradorRespostaManager.getCandidatoManager();
+			Candidato candidato = candidatoManager.findEntidadeComAtributosSimplesById((Long) metodo.getParametros()[2]);
+		
+			dados.append("\nAs respostas do(a) candidato(a) ");
+			dados.append(candidato.getNome());
+		}
+		else
+		{
+			ColaboradorManager colaboradorManager = colaboradorRespostaManager.getColaboradorManager();
+			Colaborador colaborador = colaboradorManager.findEntidadeComAtributosSimplesById((Long) metodo.getParametros()[2]);
+
+			dados.append("\nAs respostas do(a) colaborador(a) ");
+			dados.append(colaborador.getNome());
+		}		
+		
 		dados.append(" para a ");
 		dados.append(TipoQuestionario.getDescricao(questionario.getTipo()));
 		dados.append(" ");
@@ -90,7 +105,7 @@ public class ColaboradorRespostaAuditorCallbackImpl implements AuditorCallback {
 		
 		metodo.processa();
 		
-		return new AuditavelImpl("Questionario", metodo.getOperacao(), "Respostas para a " + TipoQuestionario.getDescricao(questionario.getTipo()) + ": " + questionario.getTitulo(), dados.toString());
+		return new AuditavelImpl(TipoQuestionario.getDescricaoMaisc(questionario.getTipo()), metodo.getOperacao(), "Respostas para a " + TipoQuestionario.getDescricao(questionario.getTipo()) + " " + questionario.getTitulo(), dados.toString());
 	}
 	
 	private Usuario carregaUsuario(MetodoInterceptado metodo, Long usuarioId) 

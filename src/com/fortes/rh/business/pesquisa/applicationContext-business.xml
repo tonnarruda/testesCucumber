@@ -81,6 +81,9 @@
     <property name="colaboradorManager">
       <ref bean="colaboradorManager" />
     </property>
+    <property name="candidatoManager">
+      <ref bean="candidatoManager" />
+    </property>
     <property name="avaliacaoManager">
       <ref bean="avaliacaoManager" />
     </property>

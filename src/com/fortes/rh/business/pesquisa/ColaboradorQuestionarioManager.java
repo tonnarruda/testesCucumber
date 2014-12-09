@@ -13,9 +13,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.security.spring.aop.callback.ColaboradorQuestionarioAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
-import com.fortes.security.auditoria.Modulo;
 
-@Modulo("Avaliacao Desempenho")
 public interface ColaboradorQuestionarioManager extends GenericManager<ColaboradorQuestionario>
 {
 	@Audita(operacao="Remoção de Resposta", auditor=ColaboradorQuestionarioAuditorCallbackImpl.class)

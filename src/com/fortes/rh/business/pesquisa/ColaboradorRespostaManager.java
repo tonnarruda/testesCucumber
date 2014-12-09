@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
@@ -22,7 +23,7 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	List countRespostas(Long perguntaId, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId);
 	Collection<ColaboradorResposta> findInPerguntaIds(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areaIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Questionario questionario, Long empresaId);
 	Collection<ColaboradorResposta> findInPerguntaIdsAvaliacao(Long[] perguntasIds, Long[] areasIds,  Date periodoIni, Date periodoFim, Long empresaId);
-	@Audita(operacao="Resp. Questionario", auditor=ColaboradorRespostaAuditorCallbackImpl.class)
+	@Audita(operacao="Resposta", auditor=ColaboradorRespostaAuditorCallbackImpl.class)
 	void salvaQuestionarioRespondido(String respostas, Questionario questionario, Long colaboradorId, Long turmaId, char vinculo, Date respondidaEm, Long colaboradorQuestionarioId, boolean inserirFichaMedica) throws Exception;
 	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areaIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId);
 	Collection<ColaboradorResposta> findRespostasColaborador(Long questionarioId, Boolean aplicarPorAspecto);
@@ -48,4 +49,5 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	void removeByQuestionarioId(Long questionarioId);
 	QuestionarioManager getQuestionarioManager(); // usado pela auditoria
 	ColaboradorManager getColaboradorManager(); // usado pela auditoria
+	CandidatoManager getCandidatoManager(); // usado pela auditoria
 }

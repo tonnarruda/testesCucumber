@@ -14,6 +14,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -47,6 +48,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
     private HistoricoColaboradorManager historicoColaboradorManager;
     private QuestionarioManager questionarioManager;
     private ColaboradorManager colaboradorManager;
+    private CandidatoManager candidatoManager; // usado na auditoria
     private AvaliacaoManager avaliacaoManager;
     private UsuarioManager usuarioManager ;
     private NivelCompetenciaManager nivelCompetenciaManager; 
@@ -682,5 +684,13 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	public void setNivelCompetenciaManager(NivelCompetenciaManager nivelCompetenciaManager) 
 	{
 		this.nivelCompetenciaManager = nivelCompetenciaManager;
+	}
+
+	public CandidatoManager getCandidatoManager() {
+		return candidatoManager;
+	}
+
+	public void setCandidatoManager(CandidatoManager candidatoManager) {
+		this.candidatoManager = candidatoManager;
 	}
 }
