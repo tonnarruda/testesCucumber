@@ -26,6 +26,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EmpresaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
@@ -114,8 +115,14 @@
 			mostraFiltroEnviadosParaAC();
 			populaArea(empresa);
 			populaEstabelecimento(empresa);
+			populaCargo();
 			
-
+			$('#cargosVinculadosAreas').click(function() {
+				populaCargo();
+			});
+			
+			$('#cargosVinculadosAreas').attr('checked', true);
+			
 			$("#colunas").pickList({
 				buttons: true,
 				addText: '',
@@ -180,9 +187,31 @@
 
 		function createListArea(data)
 		{
-			addChecks('areaOrganizacionalsCheck',data);
+			addChecks('areaOrganizacionalsCheck',data, 'populaCargo()');
 		}
 	
+		function populaCargo()
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			var empresaId = $('#empresa').val();
+			
+			var areasIds   = getArrayCheckeds(document.form, 'areaOrganizacionalsCheck');
+			
+			if ($('#cargosVinculadosAreas').is(":checked"))
+			{
+				if(areasIds.length == 0)
+					CargoDWR.getByEmpresas(createListCargo, empresaId, empresaIds);
+				else
+					CargoDWR.getCargoByArea(createListCargo, areasIds, "getNomeMercadoComEmpresa", empresaId);
+			}
+			else 
+				CargoDWR.getByEmpresas(createListCargo, empresaId, empresaIds);
+		}
+
+		function createListCargo(data)
+		{
+			addChecks('cargosCheck',data);
+		}
 		function validarCampos(action)
 		{
 			$('form[name=form]').attr('action', action);
@@ -332,7 +361,7 @@
 	<@ww.form name="form" action="relatorioDinamico.action" onsubmit="return validarCampos();" validate="true" method="POST">
 	
 		<#if compartilharColaboradores>
-			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea(this.value);mostraFiltroEnviadosParaAC()"/>
+			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea(this.value);populaCargo();mostraFiltroEnviadosParaAC()"/>
 		<#else>
 			<@ww.hidden id="empresa" name="empresa.id"/>
 			<li class="wwgrp">
@@ -377,7 +406,11 @@
 		
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" width="600" filtro="true"/>
 
-		<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="600"  filtro="true"/>
+		<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="600" onClick="populaCargo();" filtro="true"/>
+		
+		<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>
+		
+		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" width="600"  filtro="true"/>
 		
 		<br />
 		

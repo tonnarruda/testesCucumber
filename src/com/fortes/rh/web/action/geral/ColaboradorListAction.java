@@ -395,6 +395,8 @@ public class ColaboradorListAction extends MyActionSupportList
 		{
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
+			Collection<Long> cargos = LongUtil.arrayLongToCollectionLong(cargosCheck);
+			
 			camposExtras.setId(1l);
 			
 			String nomeRelatorio = "modeloDinamico.jrxml";
@@ -402,12 +404,12 @@ public class ColaboradorListAction extends MyActionSupportList
 			if(agruparPorTempoServico)
 			{
 				nomeRelatorio = "modeloDinamicoAgrupadoTempoServico.jrxml";
-				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, " co.dataAdmissao desc, " + orderField);
+				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, cargos, " co.dataAdmissao desc, " + orderField);
 				colaboradores = colaboradorManager.montaTempoServico(colaboradores, tempoServicoIni, tempoServicoFim, ReportColumn.getpropertyByOrderField(colunas, orderField));
 			}
 			else 
 			{
-				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, orderField);
+				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, cargos, orderField);
 			}
 
 			if(colaboradores.isEmpty())
@@ -564,9 +566,9 @@ public class ColaboradorListAction extends MyActionSupportList
 		JasperExportManager.exportReportToPdfStream(jprint, response.getOutputStream());
 	}
 
-	private Collection<Colaborador> getcolaboradoresByFiltros(Collection<Long> estabelecimentos, Collection<Long> areas, String order) 
+	private Collection<Colaborador> getcolaboradoresByFiltros(Collection<Long> estabelecimentos, Collection<Long> areas,Collection<Long> cargos, String order) 
 	{
-		return colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, null, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim, situacao, enviadoParaAC);
+		return colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, cargos, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim, situacao, enviadoParaAC);
 	}
 	
 	public String relatorioDinamicoXLS() throws Exception
@@ -575,6 +577,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		{
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
+			Collection<Long> cargos = LongUtil.arrayLongToCollectionLong(cargosCheck);
 			camposExtras.setId(1l);
 			
 			montaColunas();
@@ -583,14 +586,14 @@ public class ColaboradorListAction extends MyActionSupportList
 			
 			if(agruparPorTempoServico)
 			{
-				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, " co.dataAdmissao desc, " + orderField);
+				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, cargos, " co.dataAdmissao desc, " + orderField);
 				colaboradores = colaboradorManager.montaTempoServico(colaboradores, tempoServicoIni, tempoServicoFim, ReportColumn.getpropertyByOrderField(colunas, orderField));
 				dinamicColumns.add("Tempo de serviço");  
 				dinamicProperts.add("tempoServicoString");
 			}
 			else 
 			{
-				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, orderField);
+				colaboradores = getcolaboradoresByFiltros(estabelecimentos, areas, cargos, orderField);
 			}
 			
 			if(colaboradores.isEmpty())

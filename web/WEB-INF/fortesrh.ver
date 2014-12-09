@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.13x.16x" bd="" data="xx/12/2014">
+		<Item visivel="S" motivo="P20140400048"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores >: Inserção do filtro de cargos.]]></Item>
 		<Item visivel="N" motivo="P20141200010"><![CDATA[BUG: Aval. Desempenho > Relatórios > Acompanhamento de Experiência Previsto: Sem permissão de acesso.]]></Item>
 		<Item visivel="N" motivo="P20141200022"><![CDATA[R&S > Cadastros > Candidatos > Currículo Escaneado: Alteração dos botões Inserir e Editar para Inserir/Editar.]]></Item>
 		<Item visivel="N" motivo="P20141100221"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Resultado da Avaliação de Desempenho > Relatório: Ajuste para que o título da avaliação seja impresso por completo, mesmo que exceda o tamanho da linha.]]></Item>
