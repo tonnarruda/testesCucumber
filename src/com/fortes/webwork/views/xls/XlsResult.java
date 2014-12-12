@@ -54,9 +54,9 @@ public class XlsResult extends WebWorkResultSupport {
     protected String[] propertiesGroupArray;
     protected int[] rowNumIni, rowNumFim;
     Map<String, CellRangeAddress> celMescladas = new HashMap<String, CellRangeAddress>();
-    protected String propertiesCalculo = "";
-    protected String operacao = "";
-    protected String considerarUltimaColunaComo = "Texto";
+    protected String propertiesCalculo;
+    protected String operacao;
+    protected String considerarUltimaColunaComo;
     
 	@Override
 	@SuppressWarnings("unchecked")
