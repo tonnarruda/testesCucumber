@@ -124,21 +124,17 @@
 				
 			<#if edicao == "true">
 				$('#nomePai, #nomeMae, #nomeConjuge').blur(function() {
-					verificaParentes(this.value);
+					if (this.value) verificaParentes([this.value]);
 				});
 			</#if>
 			
 		});
 		
-		function verificaParentes(nome)
+		function verificaParentes(nomes)
 		{
-			if (nome && nome.length >= 4)
-			{
-		    	$('#parentesDialog').empty();
-		    	ColaboradorDWR.findParentesByNome(nome, <@authz.authentication operation="empresaId"/>, function(dados) { listaParentes(dados, nome, '<@authz.authentication operation="empresaNome"/>'); });
-		    }
+			$('#parentesDialog').empty();
+	    	ColaboradorDWR.findParentesByNome(null, <@authz.authentication operation="empresaId"/>, nomes, function(dados) { listaParentes(dados, '<@authz.authentication operation="empresaNome"/>'); });
 		}
-
 
 		function populaConhecimento(frm, nameCheck)
 		{

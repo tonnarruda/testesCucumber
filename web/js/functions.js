@@ -1210,7 +1210,7 @@ function desabilita(campo) {
 	campo.attr('disabled','disabled').css('background-color', '#ECECEC');
 }
 
-function listaParentes(dados, nome, empresaNome, submit)
+function listaParentes(dados, empresaNome, submit)
 {
 	
 	if ($(dados).size() > 0)
@@ -1241,6 +1241,8 @@ function listaParentes(dados, nome, empresaNome, submit)
     									buttons: botoes
 									});
 	}
+	else if (submit)
+		submit();
 }
 
 function montaTabelaDados(nome, conjuge, pai, mae, endereco, cidade, uf, fone, empresaNome)

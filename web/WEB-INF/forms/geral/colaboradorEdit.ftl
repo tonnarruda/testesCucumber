@@ -225,8 +225,7 @@
 			
 			<#if edicao == "false">
 				$('#nomePai, #nomeMae, #nomeConjuge').blur(function() {
-					
-					verificaParentes(colaboradorId, this.value);
+					if (this.value) verificaParentes(colaboradorId, [this.value]);
 				});
 				
 				<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
@@ -336,13 +335,10 @@
 			</#if>			
 	    }
 	    
-	    function verificaParentes(colaboradorId, nome, validaForm)
+	    function verificaParentes(colaboradorId, nomes, validaForm)
 		{
-			if (nome && nome.length >= 4)
-			{
-		    	$('#parentesDialog').empty();
-		    	ColaboradorDWR.findParentesByNome(colaboradorId, nome, <@authz.authentication operation="empresaId"/>, function(dados) { listaParentes(dados, nome, '<@authz.authentication operation="empresaNome"/>', validaForm ); });
-		    }
+			$('#parentesDialog').empty();
+	    	ColaboradorDWR.findParentesByNome(	colaboradorId, <@authz.authentication operation="empresaId"/>, nomes, function(dados) { listaParentes(dados, '<@authz.authentication operation="empresaNome"/>', validaForm ); });
 		}
 
 		var arrayValidacao = new Array('nome','nascimento','cpf','ende','num','uf','cidade','ddd','fone','escolaridade','nomeComercial','dt_admissao','dt_hist', 'estabelecimento','areaOrganizacional','faixa','tipoSalario');
@@ -372,21 +368,9 @@
 		{
 			if (setaCampos() && validaFormularioDinamico(true))
 			{
-		    	ColaboradorDWR.existeParentesByNome(colaboradorId, $('#nomePai').val(), $('#nomeMae').val(), $('#nomeConjuge').val(), <@authz.authentication operation="empresaId"/>, 
-		    		function(dado) {
-		    				if(dado == false)
-		    					${validarCampos}
-		    				else {
-								verificaParentes(colaboradorId, $('#nomePai').val(), validaFormularioDinamico);
-								verificaParentes(colaboradorId, $('#nomeMae').val(), validaFormularioDinamico);
-								verificaParentes(colaboradorId, $('#nomeConjuge').val(), validaFormularioDinamico);
-							}
-					}
-				);
+				verificaParentes(colaboradorId, [$('#nomePai').val(), $('#nomeMae').val(), $('#nomeConjuge').val()], validaFormularioDinamico);
 			}
 		}
-		
-		
 	</script>
 </head>
 <body>

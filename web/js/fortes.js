@@ -42,6 +42,7 @@ var BrowserDetect = {
   		{ string: navigator.vendor,	subString: "Camino", identity: "Camino"	},
   		{ string: navigator.userAgent, subString: "Netscape", identity: "Netscape"},
   		{ string: navigator.userAgent, subString: "MSIE", identity: "Explorer", versionSearch: "MSIE"},
+  		{ string: navigator.userAgent, subString: "Trident", identity: "Explorer", versionSearch: "rv"},
   		{ string: navigator.userAgent, subString: "Gecko", identity: "Mozilla", versionSearch: "rv"	},
   		{ string: navigator.userAgent, subString: "Mozilla", identity: "Netscape", versionSearch: "Mozilla"	}
   	],

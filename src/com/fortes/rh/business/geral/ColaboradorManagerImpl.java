@@ -2441,12 +2441,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().setCandidatoNull(candidatoId);
 	}
 
-	public Collection<Colaborador> findParentesByNome(Long colaboradorId, String nome, Long empresaId) 
+	public Collection<Colaborador> findParentesByNome(Long colaboradorId, Long empresaId, String... nome) 
 	{
-		if(nome != null && StringUtils.isNotBlank(nome))
-			return getDao().findParentesByNome(colaboradorId, nome, empresaId);
-		else
-			return new ArrayList<Colaborador>();
+		Collection<Colaborador> parentes = new ArrayList<Colaborador>();
+		
+		for (String nm : nome)
+		{
+			if (nm != null && nm.length() >= 4)
+			{
+				parentes.addAll(getDao().findParentesByNome(colaboradorId, nm, empresaId));
+			}
+		}
+		
+		return parentes;
 	}
 
 	public boolean pertenceEmpresa(Long colaboradorId, Long empresaId) 

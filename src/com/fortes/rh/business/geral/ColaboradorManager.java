@@ -181,7 +181,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void deleteColaborador(Long[] colaboradorIds) throws Exception;
 	public Colaborador findFuncaoAmbiente(Long colaboradorId);
 	public void setCandidatoNull(Long candidatoId);
-	public Collection<Colaborador> findParentesByNome(Long colaboradorId, String nome, Long empresaId);
+	public Collection<Colaborador> findParentesByNome(Long colaboradorId, Long empresaId, String... nome);
 	public Collection<Object> montaParentesByNome(Collection<Colaborador> colaboradores);
 	public String avisoQtdCadastros() throws Exception;
 	public Collection<PendenciaAC> findPendencias(Long empresaId);

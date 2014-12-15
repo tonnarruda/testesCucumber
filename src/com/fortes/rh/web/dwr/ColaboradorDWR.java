@@ -271,15 +271,15 @@ public class ColaboradorDWR
     	return dados;
     }
     
-    public Collection<Object> findParentesByNome(Long colaboradorId, String nome, Long empresaId)
+    public Collection<Object> findParentesByNome(Long colaboradorId, Long empresaId, String... nome)
     {
     	Empresa empresa = empresaManager.findById(empresaId);
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 
     	if (empresa.getVerificaParentesco() == VerificacaoParentesco.BUSCA_TODAS_AS_EMPRESAS)
-    		colaboradores = colaboradorManager.findParentesByNome(colaboradorId, nome, null);
+    		colaboradores = colaboradorManager.findParentesByNome(colaboradorId, null, nome);
     	else if (empresa.getVerificaParentesco() == VerificacaoParentesco.BUSCA_MESMA_EMPRESA)
-    		colaboradores = colaboradorManager.findParentesByNome(colaboradorId, nome, empresaId);
+    		colaboradores = colaboradorManager.findParentesByNome(colaboradorId, empresaId, nome);
     	else
     		return null;
     	
@@ -291,9 +291,9 @@ public class ColaboradorDWR
     	Empresa empresa = empresaManager.findById(empresaId);
 
     	if (empresa.getVerificaParentesco() == VerificacaoParentesco.BUSCA_TODAS_AS_EMPRESAS)
-    		return (colaboradorManager.findParentesByNome(colaboradorId, nomePai, null).size() > 0)  ||  (colaboradorManager.findParentesByNome(colaboradorId, nomeMae, null).size() > 0) || (colaboradorManager.findParentesByNome(colaboradorId, nomeConjuge, null).size() > 0);
+    		return (colaboradorManager.findParentesByNome(colaboradorId, null, nomePai).size() > 0)  ||  (colaboradorManager.findParentesByNome(colaboradorId, null, nomeMae).size() > 0) || (colaboradorManager.findParentesByNome(colaboradorId, null, nomeConjuge).size() > 0);
     	else if (empresa.getVerificaParentesco() == VerificacaoParentesco.BUSCA_MESMA_EMPRESA)
-    		return (colaboradorManager.findParentesByNome(colaboradorId, nomePai, empresaId).size() > 0)  ||  (colaboradorManager.findParentesByNome(colaboradorId, nomeMae, empresaId).size() > 0) || (colaboradorManager.findParentesByNome(colaboradorId, nomeConjuge, empresaId).size() > 0);
+    		return (colaboradorManager.findParentesByNome(colaboradorId, empresaId, nomePai).size() > 0)  ||  (colaboradorManager.findParentesByNome(colaboradorId, empresaId, nomeMae).size() > 0) || (colaboradorManager.findParentesByNome(colaboradorId, empresaId, nomeConjuge).size() > 0);
     	else
     		return false;
     }
