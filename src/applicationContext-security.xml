@@ -224,7 +224,7 @@
 				/security/auditoria/*/**=ROLE_UTI_AUDITORIA
 
 				/indicador/duracaoPreenchimentoVaga/prepare*/**=ROLE_IND
-				/indicador/duracaoPreenchimentoVaga/painel.action*=ROLE_IND
+				/indicador/duracaoPreenchimentoVaga/painel.action*=ROLE_IND,ROLE_RES_PAINEL_IND
 				/indicador/indicadorTurnOver*/**=ROLE_REL_TURNOVER
 
 				/logging/*/**=ROLE_LOGGING
@@ -455,6 +455,7 @@
 				/cargosalario/historicoColaborador/insert.action*=ROLE_CAND_SOLICITACAO_CONTRATAR, ROLE_CAD_HISTORICOCOLABORADOR
 				/cargosalario/historicoColaborador/prepareUpdate.action*=ROLE_CAD_HISTORICOCOLABORADOR
 				/cargosalario/historicoColaborador/update.action*=ROLE_CAD_HISTORICOCOLABORADOR
+				/cargosalario/historicoColaborador/painelIndicadoresCargoSalario.action*=ROLE_CES_PAINEL_IND
 				/cargosalario/historicoColaborador/*/**=ROLE_CAD_COLABORADOR
 				/cargosalario/indice/*/**=ROLE_CAD_INDICE
 				/cargosalario/indiceHistorico/*/**=ROLE_CAD_INDICE
