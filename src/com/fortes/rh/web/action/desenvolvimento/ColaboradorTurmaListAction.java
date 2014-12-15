@@ -294,7 +294,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	{
 		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 		populaEmpresa(new String[]{"ROLE_REL_COLABORADOR_SEM_TREINAMENTO", "ROLE_REL_COLABORADOR_COM_TREINAMENTO"});	
-		cursos = cursoManager.findToList(new String[]{"id","nome"}, new String[]{"id","nome"}, new String[]{"nome"});
 		empresaId = getEmpresaSistema().getId();
 
 		return Action.SUCCESS;

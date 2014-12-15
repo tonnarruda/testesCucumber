@@ -10,6 +10,7 @@
 		<title>Colaboradores que não fizeram o treinamento</title>
 	</#if>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
@@ -21,6 +22,17 @@
 				empresaIds.push(${empresa.id});
 			</#list>
 		</#if>
+		
+		function populaCurso(empresaId)
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			CursoDWR.getCursosByEmpresa(createListCurso, empresaId);
+		}
+		
+		function createListCurso(data)
+		{
+			addOptionsByMap('curso',data,'Selecione...');
+		}
 		
 		function populaEstabelecimento(empresaId)
 		{
@@ -68,6 +80,7 @@
 
 			DWREngine.setAsync(false);
 			
+			populaCurso(empresaValue);
 			populaArea(empresaValue);
 			populaEstabelecimento(empresaValue);
 		});
@@ -98,7 +111,9 @@
 	</#if>
 	
 	<@ww.form name="form" action="${formAction}" onsubmit="return validar()" method="POST">
+		<@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1"  onchange="populaCurso(this.value);populaEstabelecimento(this.value);populaArea(this.value);" disabled="!compartilharColaboradores"/>		
 		<@ww.select name="curso.id" id="curso" list="cursos" listKey="id" required="true" listValue="nome" label="Curso" headerKey="" headerValue="Selecione..."/>
+		<@ww.select label="Situação da turma" name="situacao" id="situacao" list="situacoes" cssStyle="width: 160px;"/>
 		
 		<#if comTreinamento>
 			<label>Período de realização da turma:</label><br />
@@ -108,8 +123,6 @@
 			<@ww.textfield id="meses" label="Colaboradores sem treinamentos há mais de" name="qtdMesesSemCurso" onkeypress="return(somenteNumeros(event,''));" maxLength="3" after="meses" cssStyle="width:30px; text-align:right;" />			
 		</#if>
 		
-		<@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1"  onchange="populaEstabelecimento(this.value);populaArea(this.value);" disabled="!compartilharColaboradores"/>		
-		<@ww.select label="Situação" name="situacao" id="situacao" list="situacoes" cssStyle="width: 160px;"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true"/>
 	

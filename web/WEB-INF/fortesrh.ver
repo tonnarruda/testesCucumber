@@ -8,6 +8,7 @@
 		<Item visivel="N" motivo="P20141100221"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Resultado da Avaliação de Desempenho > Relatório: Ajuste para que o título da avaliação seja impresso por completo, mesmo que exceda o tamanho da linha.]]></Item>
 		<Item visivel="N" motivo="P20141100233"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Descrição das respostas estava sendo exibida igual a descrição da pergunta e relatório não estava sendo gerado quando as perguntas não possuiam aspecto.]]></Item>
 		<Item visivel="N" motivo="P20141200010"><![CDATA[BUG: Aval. Desempenho > Relatórios > Acompanhamento de Experiência Previsto: Sem permissão de acesso.]]></Item>
+		<Item visivel="N" motivo="P20141200049"><![CDATA[T&D > Relatórios > Colaboradores sem treinamento e Colaboradores com treinamento: Correção do filtro de cursos, listando apenas os cursos da empresa selecionada.]]></Item>
 		<Item visivel="N" motivo="P20141000117"><![CDATA[Criação de chave única para as ocorrências do colaborador para evitar erros ao desfazer a importação feita do Ponto para o AC e do AC para o RH.]]></Item>
 		<Item visivel="N" motivo="P20141100249"><![CDATA[Ao verificar grau de parentesco, desconsiderando o colaborador que está sendo cadastrado ou editado.]]></Item>
 	</Versao>
