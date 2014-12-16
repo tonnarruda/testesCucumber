@@ -865,6 +865,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	areaOrganizacinoalManager.expects(once()).method("desvinculaResponsaveis").with(eq(new Long[]{colaborador.getId()}));
     	colaboradorDao.expects(once()).method("desligaColaborador").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING});
     	transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
+    	mensagemManager.expects(once()).method("removerMensagensViculadasByColaborador").withAnyArguments().isVoid();
     	
     	colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, false, colaborador.getId());
     }
@@ -973,6 +974,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorDao.expects(once()).method("remove").with(eq(colaborador.getId())).isVoid();
     	colaboradorDao.expects(once()).method("findColaboradorByIdProjection").with(eq(colaborador.getId())).will(returnValue(colaborador));
     	acPessoalClientColaborador.expects(once()).method("remove").with(ANYTHING, ANYTHING).will(returnValue(true));
+    	mensagemManager.expects(once()).method("removerMensagensViculadasByColaborador").withAnyArguments().isVoid();
 
     	Exception exception = null;
     	try

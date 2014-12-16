@@ -512,7 +512,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(1, colaboradores.size());
 	}
 
-	public void testFindByUsuarioProjection() throws Exception {
+	public void testFindByUsuarioProjection() throws Exception 
+	{
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario.setNome("João Batista");
 		usuarioDao.save(usuario);
@@ -521,10 +522,23 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setNome("João");
 		colaborador.setUsuario(usuario);
 		colaboradorDao.save(colaborador);
+		
+		Usuario usuario2 = UsuarioFactory.getEntity();
+		usuario2.setNome("João Batista");
+		usuario2.setAcessoSistema(false);
+		usuarioDao.save(usuario2);
 
-		Colaborador retorno = colaboradorDao.findByUsuarioProjection(usuario.getId());
+		Colaborador colaborador2 = getEntity();
+		colaborador2.setNome("João");
+		colaborador2.setUsuario(usuario2);
+		colaboradorDao.save(colaborador2);
+
+		Colaborador retorno = colaboradorDao.findByUsuarioProjection(usuario.getId(), null);
 		assertEquals("João", retorno.getNome());
 		assertEquals("João Batista", retorno.getUsuario().getNome());
+		
+		retorno = colaboradorDao.findByUsuarioProjection(usuario2.getId(), true);
+		assertNull(retorno);
 	}
 
 	@Override
@@ -4033,7 +4047,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(0, colaboradorDao.findEmailsDeColaboradoresByPerfis(new Long[] { perfil.getId() }, empresa.getId()).size());
 	}
 
-	public void testFindAdmitidosHaDias() {
+	public void testFindAdmitidosHaDias() 
+	{
 		Calendar quarentaDiasAtras = Calendar.getInstance();
 		quarentaDiasAtras.add(Calendar.DAY_OF_YEAR, -40);
 
@@ -4062,7 +4077,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals("Estabelecimento", colabRetorno.getEstabelecimento().getNome());
 	}
 	
-	public void testFindAdmitidosHaDiasPeriodoExperiencia() {
+	public void testFindAdmitidosHaDiasPeriodoExperiencia() 
+	{
 		Calendar quarentaDiasAtras = Calendar.getInstance();
 		quarentaDiasAtras.add(Calendar.DAY_OF_YEAR, -40);
 		
@@ -4085,6 +4101,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		mariaJaRespondido.setDataAdmissao(quarentaDiasAtras.getTime());
 		colaboradorDao.save(mariaJaRespondido);
 		
+		Colaborador colabDesligado = ColaboradorFactory.getEntity();
+		colabDesligado.setNome("ColabDesligadoFuturo");
+		colabDesligado.setEmpresa(empresa);
+		colabDesligado.setDataAdmissao(quarentaDiasAtras.getTime());
+		colabDesligado.setDataDesligamento(DateUtil.incrementaDias(new Date(), -1));
+		colaboradorDao.save(colabDesligado);
+		
 		HistoricoColaborador historicoJoseAvaliado = HistoricoColaboradorFactory.getEntity();
 		historicoJoseAvaliado.setColaborador(joseAvaliado);
 		historicoJoseAvaliado.setData(DateUtil.criarDataMesAno(01, 01, 2005));
@@ -4096,6 +4119,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoMariaJaRespondido.setData(DateUtil.criarDataMesAno(01, 01, 2005));
 		historicoMariaJaRespondido.setEstabelecimento(estabelecimento);
 		historicoColaboradorDao.save(historicoMariaJaRespondido);
+
+		HistoricoColaborador historicoColabDesligado = HistoricoColaboradorFactory.getEntity();
+		historicoColabDesligado.setColaborador(colabDesligado);
+		historicoColabDesligado.setData(DateUtil.criarDataMesAno(01, 01, 2005));
+		historicoColabDesligado.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(historicoColabDesligado);
 		
 		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity();
 		periodoExperienciaDao.save(periodoExperiencia);
@@ -4124,6 +4153,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colabPeriodoExperienciaAvaliacaoMariaJaRespondido.setAvaliacao(avaliacao);
 		colabPeriodoExperienciaAvaliacaoMariaJaRespondido.setTipo('G');
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(colabPeriodoExperienciaAvaliacaoMariaJaRespondido);
+		
+		ColaboradorPeriodoExperienciaAvaliacao colabDesligadoPeriodoExperienciaAvaliacao = new ColaboradorPeriodoExperienciaAvaliacao();
+		colabDesligadoPeriodoExperienciaAvaliacao.setColaborador(colabDesligado);
+		colabDesligadoPeriodoExperienciaAvaliacao.setPeriodoExperiencia(periodoExperiencia);
+		colabDesligadoPeriodoExperienciaAvaliacao.setAvaliacao(avaliacao);
+		colabDesligadoPeriodoExperienciaAvaliacao.setTipo('C');
+		colaboradorPeriodoExperienciaAvaliacaoDao.save(colabDesligadoPeriodoExperienciaAvaliacao);
 		
 		ColaboradorQuestionario colaboradorQuestionarioMariaJaRespondido = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionarioMariaJaRespondido.setColaborador(mariaJaRespondido);

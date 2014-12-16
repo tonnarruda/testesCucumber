@@ -203,7 +203,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 			if(solicitacao.getEstabelecimento() != null && solicitacao.getEstabelecimento().getId() != null)
 				ambientes = ambienteManager.findByEstabelecimento(solicitacao.getEstabelecimento().getId());
             
-            Colaborador colaboradorLiberador = colaboradorManager.findByUsuarioProjection(solicitacao.getLiberador().getId());
+            Colaborador colaboradorLiberador = colaboradorManager.findByUsuarioProjection(solicitacao.getLiberador().getId(), null);
 			nomeLiberador = colaboradorLiberador!=null?colaboradorLiberador.getNomeMaisNomeComercial():solicitacao.getLiberador().getNome();
 			
 			solicitacaoAvaliacaos = solicitacaoAvaliacaoManager.findBySolicitacaoId(solicitacao.getId(), null);

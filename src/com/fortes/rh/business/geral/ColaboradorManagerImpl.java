@@ -995,8 +995,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			if(desligaByAC)
 				historicoColaboradorManager.deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradoresIds);
 			else
+			{
+				mensagemManager.removerMensagensViculadasByColaborador(colaboradoresIds);
 				getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, colaboradoresIds);
-
+			}
 			transactionManager.commit(status);
 		}
 		catch (Exception e)
@@ -1027,13 +1029,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		try {
 			if(codigosACColaboradores.length != colaboradores.size())
 				throw new FortesException("Desligar Empregado: Existe(m) empregado(s) que não se encontra(m) no sistema RH.");
-
-			desligaColaborador(true, dataDesligamento, "", null, true, new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradores));
+			
+			Long[] colaboradoresIds = new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradores);
+			desligaColaborador(true, dataDesligamento, "", null, true, colaboradoresIds);
+			mensagemManager.removerMensagensViculadasByColaborador(colaboradoresIds);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
-
+		
 		return getDao().desligaByCodigo(empresa, dataDesligamento, codigosACColaboradores);
 	}
 
@@ -1566,6 +1570,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		historicoColaboradorManager.removeColaborador(colaborador.getId());
 
 		remove(colaborador.getId());
+		mensagemManager.removerMensagensViculadasByColaborador(new Long[]{colaborador.getId()});
 
 		if(colaboradorTmp.getCamposExtras() != null && colaboradorTmp.getCamposExtras().getId() != null)
 			camposExtrasManager.remove(colaboradorTmp.getCamposExtras().getId());
@@ -1988,9 +1993,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 	}
 
-	public Colaborador findByUsuarioProjection(Long usuarioId) 
+	public Colaborador findByUsuarioProjection(Long usuarioId, Boolean ativo) 
 	{
-		return getDao().findByUsuarioProjection(usuarioId);
+		return getDao().findByUsuarioProjection(usuarioId, ativo);
 	}
 
 	public String[] findEmailsByUsuarios(Collection<Long> usuarioEmpresaIds)
@@ -2607,6 +2612,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void removeComDependencias(Long id) 
 	{
 		getDao().removeComDependencias(id);
+		mensagemManager.removerMensagensViculadasByColaborador(new Long[]{id});
 	}
 
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId) 

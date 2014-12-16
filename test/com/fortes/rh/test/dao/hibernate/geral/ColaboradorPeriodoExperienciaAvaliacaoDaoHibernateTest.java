@@ -104,20 +104,27 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		
 		Date hoje = new Date();
 		Date ontem = DateUtil.retornaDataDiaAnterior(hoje);
+		Date amanha = DateUtil.incrementaDias(hoje, 1);
 		
 		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setNome("João");
 		joao.setEmpresa(empresa);
 		joao.setDataAdmissao(ontem);
+		joao.setDataDesligamento(hoje);
 		colaboradorDao.save(joao);
 
 		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setNome("Maria");
 		maria.setEmpresa(empresa);
 		maria.setDataAdmissao(ontem);
+		maria.setDataDesligamento(amanha);
 		colaboradorDao.save(maria);
 		
 		Colaborador pedro = ColaboradorFactory.getEntity();
+		pedro.setNome("Pedro");
 		pedro.setEmpresa(empresa);
 		pedro.setDataAdmissao(ontem);
+		pedro.setDataDesligamento(ontem);
 		pedro.setEmailColaborador("");
 		colaboradorDao.save(pedro);
 		
@@ -157,7 +164,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		
 		Collection<ColaboradorPeriodoExperienciaAvaliacao> configs = colaboradorPeriodoExperienciaAvaliacaoDao.getColaboradoresComAvaliacaoVencidaHoje();
 		
-		assertTrue(configs.size() >= 1);
+		assertTrue(configs.size() >= 2);
 	}
 
 	public void testRemoveByAvaliacao()

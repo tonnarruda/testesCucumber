@@ -826,13 +826,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 
 	//Construtor usado em findByIdDadosBasicos
-	public Colaborador (Long id, String nome, String nomeComercial, String matricula, Date dataAdmissao, Integer statusRetornoAC, AreaOrganizacional areaOrganizacional, Cargo cargo, FaixaSalarial faixaSalarial, Empresa empresa, Long estabelecimentoId, String funcaoNome)
+	public Colaborador (Long id, String nome, String nomeComercial, String matricula, Date dataAdmissao, Date dataDesligamento, Integer statusRetornoAC, AreaOrganizacional areaOrganizacional, Cargo cargo, FaixaSalarial faixaSalarial, Empresa empresa, Long estabelecimentoId, String funcaoNome)
 	{
 		this.setId(id);
 		this.nome = nome;
 		this.nomeComercial = nomeComercial;
 		this.matricula = matricula;
 		this.dataAdmissao = dataAdmissao;
+		this.dataDesligamento = dataDesligamento;
 		setAreaOrganizacional(areaOrganizacional);
 		setEstabelecimentoIdProjection(estabelecimentoId);
 		setEmpresa(empresa);
@@ -1672,25 +1673,34 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setUsuarioSenha(String usuarioSenha)
 	{
-		if (usuario == null)
-			usuario = new Usuario();
+		iniciaUsuario();
 		usuario.setSenha(usuarioSenha);
 	}
 
 	public void setUsuarioIdProjection(Long usuarioIdProjection)
 	{
-		if (usuario == null)
-			usuario = new Usuario();
+		iniciaUsuario();
 		usuario.setId(usuarioIdProjection);
 	}
 
 	public void setUsuarioNomeProjection(String usuarioNome)
 	{
-		if (usuario == null)
-			usuario = new Usuario();
+		iniciaUsuario();
 		usuario.setNome(usuarioNome);
 	}
 
+	public void setUsuarioAcessoSistema(Boolean acessoSistema)
+	{
+		iniciaUsuario();
+		usuario.setAcessoSistema(acessoSistema);
+	}
+
+	private void iniciaUsuario() 
+	{
+		if (usuario == null)
+			usuario = new Usuario();
+	}
+	
 	public void setAreaOrganizacionalId(Long id)
 	{
 		if (areaOrganizacional == null)

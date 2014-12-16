@@ -52,6 +52,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("c.contato.email"), "projectionColaboradorContatoEmail");
 		p.add(Projections.property("c.nomeComercial"), "projectionColaboradorNomeComercial");
 		p.add(Projections.property("c.nome"), "projectionColaboradorNome");
+		p.add(Projections.property("c.desligado"), "projectionColaboradorDesligado");
 
 		Disjunction disjunction = Expression.disjunction();
 	    disjunction.add(Expression.eq("q.id", questionarioOrAvaliacaoId));
@@ -93,6 +94,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("cq.respondida"), "respondida");
 		p.add(Projections.property("q.id"), "projectionQuestionarioId");
 		p.add(Projections.property("c.id"), "projectionColaboradorId");
+		p.add(Projections.property("c.desligado"), "projectionColaboradorDesligado");
 		p.add(Projections.property("emp.id"), "projectionColaboradorEmpresaId");
 		p.add(Projections.property("emp.nome"), "projectionColaboradorEmpresaNome");
 		p.add(Projections.property("c.contato.email"), "projectionColaboradorContatoEmail");

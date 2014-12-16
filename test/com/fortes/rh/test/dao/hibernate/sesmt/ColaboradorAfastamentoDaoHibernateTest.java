@@ -434,6 +434,50 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		assertTrue(true);//testa apenas se a consulta roda, é um sql e o hibernate roda o teste em outra transação
 	}
 	
+	public void testFindByColaboradorAfastamentoId() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador ana = ColaboradorFactory.getEntity();
+		ana.setNome("Ana");
+		ana.setEmpresa(empresa);
+		ana.setDesligado(true);
+		colaboradorDao.save(ana);
+		
+		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setNome("Ana");
+		maria.setEmpresa(empresa);
+		maria.setDesligado(false);
+		colaboradorDao.save(maria);
+		
+		Afastamento pessoais = AfastamentoFactory.getEntity();
+		pessoais.setDescricao("Problemas pessoais");
+		pessoais.setInss(false);
+		afastamentoDao.save(pessoais);
+		
+		ColaboradorAfastamento colaboradorAfastamento1 = ColaboradorAfastamentoFactory.getEntity();
+		colaboradorAfastamento1.setInicio(DateUtil.criarDataMesAno(5, 11, 2011));
+		colaboradorAfastamento1.setFim(DateUtil.criarDataMesAno(5, 11, 2011));
+		colaboradorAfastamento1.setColaborador(ana);
+		colaboradorAfastamento1.setObservacao("teste");
+		colaboradorAfastamento1.setMedicoNome("joao");
+		colaboradorAfastamento1.setAfastamento(pessoais);
+		colaboradorAfastamentoDao.save(colaboradorAfastamento1);
+		
+		ColaboradorAfastamento colaboradorAfastamento2 = ColaboradorAfastamentoFactory.getEntity();
+		colaboradorAfastamento2.setInicio(DateUtil.criarDataMesAno(5, 11, 2011));
+		colaboradorAfastamento2.setFim(DateUtil.criarDataMesAno(5, 11, 2011));
+		colaboradorAfastamento2.setColaborador(maria);
+		colaboradorAfastamento2.setObservacao("teste");
+		colaboradorAfastamento2.setMedicoNome("joao");
+		colaboradorAfastamento2.setAfastamento(pessoais);
+		colaboradorAfastamentoDao.save(colaboradorAfastamento2);
+		
+		assertNull(colaboradorAfastamentoDao.findByColaboradorAfastamentoId(colaboradorAfastamento1.getId()));
+		assertEquals(colaboradorAfastamento2.getId(), colaboradorAfastamentoDao.findByColaboradorAfastamentoId(colaboradorAfastamento2.getId()).getId());
+	}
+	
 	public void setAfastamentoDao(AfastamentoDao afastamentoDao)
 	{
 		this.afastamentoDao = afastamentoDao;

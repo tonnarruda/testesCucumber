@@ -83,6 +83,7 @@ public class UsuarioEmpresaDaoHibernate extends GenericDaoHibernate<UsuarioEmpre
 		
 		
 		criteria.add(Expression.eq("p.codigo", role));
+		criteria.add(Expression.eq("u.acessoSistema", true));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(UsuarioEmpresa.class));

@@ -42,7 +42,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernate extends GenericD
 		hql.append("join cpea.avaliacao as a ");
 		hql.append("join c.empresa as e ");
 		
-		hql.append("where c.desligado = false ");
+		hql.append("where (c.dataDesligamento >= current_date or c.dataDesligamento is null) ");
 		hql.append("and cpea.tipo = 'C' ");
 		hql.append("and pe.ativo = true ");
 		hql.append("and c.id not in (select cq.colaborador.id from ColaboradorQuestionario cq where cq.avaliacao.id = a.id and cq.colaborador.id = c.id) ");

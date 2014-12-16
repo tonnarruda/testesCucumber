@@ -470,6 +470,13 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     	newColaborador();
     	this.colaborador.setNome(projectionColaboradorNome);
     }
+    
+    public void setProjectionColaboradorDesligado(boolean desligado)
+    {
+    	newColaborador();
+    	this.colaborador.setDesligado(desligado);
+    }
+    
     public void setProjectionColaboradorEmpresaId(Long colaboradorEmpresaId)
     {
     	newColaborador();

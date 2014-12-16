@@ -200,6 +200,7 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("ca.id", colaboradorAfastamentoId));
+		criteria.add(Expression.eq("co.desligado", false));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorAfastamento.class));

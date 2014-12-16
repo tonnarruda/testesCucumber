@@ -1024,10 +1024,15 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	public void setProjectionColaboradorCodigoAC(String projectionColaboradorCodigoAC)
 	{
 		inicializaColaborador();
-
 		colaborador.setCodigoAC(projectionColaboradorCodigoAC);
 	}
 
+	public void setProjectionColaboradorDesligado(boolean desligado)
+	{
+		inicializaColaborador();
+		colaborador.setDesligado(desligado);
+	}
+	
 	public Collection<Ambiente> getAmbientes() {
 		return ambientes;
 	}

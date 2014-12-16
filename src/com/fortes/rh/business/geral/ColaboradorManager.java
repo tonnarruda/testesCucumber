@@ -148,7 +148,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public List<AcompanhamentoExperienciaColaborador> getAvaliacoesExperienciaPendentesPeriodo(Date periodoIni, Date periodoFim, Empresa empresa, String[] areasCheck, String[] estabelecimentoCheck, Collection<PeriodoExperiencia> periodoExperiencias) throws Exception;
 	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, String[] avaliacaoCheck, String[] areasCheck, String[] estabelecimentoCheck, String[] colaboradorsCheck, boolean agruparPorArea) throws Exception;
 	public Collection<Colaborador> montaTempoServico(Collection<Colaborador> colaboradores, Integer[] tempoServicoIni, Integer[] tempoServicoFim, String orderAgrupadoPor);
-	public Colaborador findByUsuarioProjection(Long usuarioId);
+	public Colaborador findByUsuarioProjection(Long usuarioId, Boolean ativo);
 	public String[] findEmailsByUsuarios(Collection<Long> usuarioEmpresaIds);
 	public Collection<DataGrafico> countSexo(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds);
 	public Collection<DataGrafico> countEstadoCivil(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds);

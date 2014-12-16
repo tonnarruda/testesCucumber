@@ -11,4 +11,5 @@ public interface MensagemManager extends GenericManager<Mensagem>
 	String formataMensagemCancelamentoHistoricoColaborador(String mensagem, HistoricoColaborador historicoColaborador);
 	void removeMensagensColaborador(Long colaboradorId, Character tipo);
 	void removeByAvaliacaoId(Long avaliacaoId);
+	void removerMensagensViculadasByColaborador(Long[] colaboradoresIds);
 }

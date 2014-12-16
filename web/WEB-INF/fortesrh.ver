@@ -2,8 +2,9 @@
 <Versoes>
 	<Versao id="1.1.13x.16x" bd="" data="xx/12/2014">
 		<Item visivel="S" motivo="P20141200021"><![CDATA[Envio de emails automáticos de avaliação do período de experiência: Inserir no corpo do email a função do colaborador.]]></Item>
-		<Item visivel="S" motivo="P20140400048"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores >: Inserção do filtro de cargos.]]></Item>
+		<Item visivel="S" motivo="S20140400048"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores >: Inserção do filtro de cargos.]]></Item>
 		<Item visivel="N" motivo="P20141100106"><![CDATA[R&S > Cadastros > Candidatos > Contratar Candidato: Ao verificar CPF duplicado, desconsiderando o CPF do candidato que está sendo contratado.]]></Item>
+		<Item visivel="N" motivo="P20141200010"><![CDATA[BUG: Aval. Desempenho > Relatórios > Acompanhamento de Experiência Previsto: Sem permissão de acesso.]]></Item>
 		<Item visivel="N" motivo="P20141200022"><![CDATA[R&S > Cadastros > Candidatos > Currículo Escaneado: Alteração dos botões Inserir e Editar para Inserir/Editar.]]></Item>
 		<Item visivel="N" motivo="P20141100221"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Resultado da Avaliação de Desempenho > Relatório: Ajuste para que o título da avaliação seja impresso por completo, mesmo que exceda o tamanho da linha.]]></Item>
 		<Item visivel="N" motivo="P20141100233"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Descrição das respostas estava sendo exibida igual a descrição da pergunta e relatório não estava sendo gerado quando as perguntas não possuiam aspecto.]]></Item>
@@ -14,6 +15,8 @@
 		<Item visivel="N" motivo="P20141200069"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Correção de erro ao gravar quando a verificação de parentesco está ativa.]]></Item>
 		<Item visivel="N" motivo="P20141100249"><![CDATA[Ao verificar grau de parentesco, desconsiderando o colaborador que está sendo cadastrado ou editado.]]></Item>
 		<Item visivel="N" motivo="P20141200043"><![CDATA[Utilitários > Alterar Empresa: Correção de problema com filtros vinculados à empresa anterior.]]></Item>
+		<Item visivel="N" motivo="P20141100106"><![CDATA[R&S > Cadastros > Candidatos > Contratar Candidato: Ao verificar CPF duplicado, desconsiderando o CPF do candidato que está sendo contratado.]]></Item>
+		<Item visivel="N" motivo="P20141100265"><![CDATA[Remoção de mensagens referentes a colaboradores desligados e impossibilitando o envio de mensagens e emails à colaboradores desligados pelo Gerenciador de Mensagens.]]></Item>
 	</Versao>
 	<Versao id="1.1.137.166" bd="" data="01/12/2014">
 		<Item visivel="S" motivo=""><![CDATA[Melhorias internas.]]></Item>

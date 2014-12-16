@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import mockit.Mockit;
 
@@ -95,6 +96,7 @@ import com.fortes.rh.test.factory.geral.GerenciadorComunicacaoFactory;
 import com.fortes.rh.test.factory.geral.OcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.geral.ProvidenciaFactory;
+import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.test.factory.sesmt.ExameFactory;
@@ -318,8 +320,8 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 
 		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametros));
-		colaboradorManager.expects(once()).method("findByUsuarioProjection").with(eq(solicitacao.getSolicitante().getId())).will(returnValue(solicitante));
-		colaboradorManager.expects(once()).method("findByUsuarioProjection").with(eq(usuarioLiberador.getId())).will(returnValue(liberador));
+		colaboradorManager.expects(once()).method("findByUsuarioProjection").with(eq(solicitacao.getSolicitante().getId()), eq(true)).will(returnValue(solicitante));
+		colaboradorManager.expects(once()).method("findByUsuarioProjection").with(eq(usuarioLiberador.getId()), eq(null)).will(returnValue(liberador));
 		gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.ALTERAR_STATUS_SOLICITACAO.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 
@@ -761,7 +763,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
 
 		 colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(ANYTHING, ANYTHING).will(returnValue(avaliado));
-		 colaboradorManager.expects(once()).method("findByUsuarioProjection").with(ANYTHING).will(returnValue(avaliador));
+		 colaboradorManager.expects(once()).method("findByUsuarioProjection").with(ANYTHING, ANYTHING).will(returnValue(avaliador));
 		 usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments().isVoid();
@@ -893,9 +895,14 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 colaborador.setEmpresa(empresa);
 		 colaborador.setHistoricoColaborador(historico);
 		 
+		 UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity();
+		 
+		 List<UsuarioEmpresa> usuariosEmpresa = new ArrayList<UsuarioEmpresa>();
+		 usuariosEmpresa.add(usuarioEmpresa);
+		 
 		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL);
 
-		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").withAnyArguments().will(returnValue(new ArrayList<UsuarioEmpresa>()));
+		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").withAnyArguments().will(returnValue(usuariosEmpresa));
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CANCELAR_CONTRATACAO_AC.getId()),ANYTHING).will(returnValue(Arrays.asList(gerenciadorComunicacao)));
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments();
 		 
@@ -927,10 +934,15 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 colaborador.setEmpresa(empresa);
 		 colaborador.setHistoricoColaborador(historico);
 		 
+		 UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity();
+		 
+		 List<UsuarioEmpresa> usuariosEmpresa = new ArrayList<UsuarioEmpresa>();
+		 usuariosEmpresa.add(usuarioEmpresa);
+		 
 		 GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL);
 		 
 		 colaboradorManager.expects(once()).method("findByCodigoAC").with(eq(colaborador.getCodigoAC()), eq(empresa)).will(returnValue(colaborador));
-		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").withAnyArguments().will(returnValue(new ArrayList<UsuarioEmpresa>()));
+		 usuarioEmpresaManager.expects(once()).method("findUsuariosByEmpresaRoleSetorPessoal").withAnyArguments().will(returnValue(usuariosEmpresa));
 		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CANCELAR_SOLICITACAO_DESLIGAMENTO_AC.getId()),ANYTHING).will(returnValue(Arrays.asList(gerenciadorComunicacao)));
 		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments();
 		 
@@ -1511,7 +1523,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		String[] emailsmMrcados = new String[]{"marcado@gmail.com"};
 
 		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametroSistema));
-		colaboradorManager.expects(atLeastOnce()).method("findByUsuarioProjection").with(eq(solicitacao.getSolicitante().getId())).will(returnValue(colabSolicitante));
+		colaboradorManager.expects(atLeastOnce()).method("findByUsuarioProjection").with(eq(solicitacao.getSolicitante().getId()), eq(true)).will(returnValue(colabSolicitante));
 		motivoSolicitacaoManager.expects(atLeastOnce()).method("findById").with(eq(solicitacao.getMotivoSolicitacao().getId())).will(returnValue(motivoSolicitacao));
 		estabelecimentoManager.expects(atLeastOnce()).method("findById").with(eq(solicitacao.getEstabelecimento().getId())).will(returnValue(estabelecimento));
 		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema),ANYTHING,ANYTHING,ANYTHING});

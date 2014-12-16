@@ -2207,7 +2207,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Long) criteria.uniqueResult();
 	}
 	
-	public Colaborador findByUsuarioProjection(Long usuarioId)
+	public Colaborador findByUsuarioProjection(Long usuarioId, Boolean ativo)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.usuario", "u", Criteria.LEFT_JOIN);
@@ -2218,9 +2218,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
 		p.add(Projections.property("c.contato.email"), "emailColaborador");
 		p.add(Projections.property("u.nome"), "usuarioNomeProjection");
+		p.add(Projections.property("u.acessoSistema"), "usuarioAcessoSistema");
 		
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("u.id", usuarioId));
+		
+		if(ativo != null)
+			criteria.add(Expression.eq("u.acessoSistema", ativo));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
@@ -2620,7 +2624,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, hc.status, ao, ca, fs, e, hc.estabelecimento.id, fun.nome) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, co.dataDesligamento, hc.status, ao, ca, fs, e, hc.estabelecimento.id, fun.nome) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.colaborador as co ");
@@ -2817,7 +2821,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("			where hc2.colaborador.id = co.id ");
 		hql.append("			and hc2.data <= :hoje and hc2.status = :status ");
 		hql.append("		) ");
-		hql.append("and co.desligado = false ");
+		hql.append("and (co.dataDesligamento >= current_date or co.dataDesligamento is null) ");
 		hql.append("and co.empresa.id = :empresaId ");
 		hql.append("and :hoje - co.dataAdmissao = :dias ");
 		hql.append("and co.id not in (select cq.colaborador.id from ColaboradorQuestionario cq2 where cq2.avaliacao.id = av.id and cq2.colaborador.id = co.id) ");
