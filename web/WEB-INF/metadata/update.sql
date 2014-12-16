@@ -22736,3 +22736,19 @@ update parametrosdosistema set appversao = '1.1.137.165';--.go
 -- versao 1.1.137.166
 
 update parametrosdosistema set appversao = '1.1.137.166';--.go
+-- versao 1.1.138.167
+
+CREATE INDEX colaboradorocorrencia_idx ON colaboradorocorrencia(colaborador_id, ocorrencia_id, dataini);--.go
+DELETE FROM colaboradorocorrencia co WHERE co.id NOT IN (SELECT co2.id FROM colaboradorocorrencia co2 WHERE co2.colaborador_id = co.colaborador_id AND co2.ocorrencia_id = co.ocorrencia_id AND co2.dataini = co.dataini ORDER BY co2.providencia_id NULLS LAST LIMIT 1);--.go
+insert into migrations values('20141203135105');--.go
+ALTER TABLE auditoria ALTER COLUMN operacao TYPE CHARACTER VARYING(100);--.go
+insert into migrations values('20141209094628');--.go
+update papel set codigo = 'ROLE_CES_PAINEL_IND' where id = 505;--.go
+update papel set codigo = 'ROLE_RES_PAINEL_IND' where id = 461;--.go
+insert into migrations values('20141215133222');--.go
+DELETE FROM usuariomensagem where mensagem_id in(SELECT id from mensagem  where link like '%colaborador.id=%' 
+and (cast(substring(link,'colaborador.id=([0-9]{1,9})')as integer)) in (select id from colaborador  where desligado = true));--.go
+
+delete from mensagem  where link like '%colaborador.id=%' and (cast(substring(link,'colaborador.id=([0-9]{1,9})')as integer)) in (select id from colaborador  where desligado = true);--.go
+insert into migrations values('20141215173343');--.go
+update parametrosdosistema set appversao = '1.1.138.167';--.go
