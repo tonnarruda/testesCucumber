@@ -669,9 +669,13 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		
 		Collection<FaixaSalarial> resultado = faixaSalarialDao.qtdColaboradoresPorCargoFaixa(empresa.getId());
 		
-		assertEquals(2, resultado.size());
-		assertEquals(1, ((FaixaSalarial) resultado.toArray()[0]).getQtdColaboradores());
-		assertEquals(2, ((FaixaSalarial) resultado.toArray()[1]).getQtdColaboradores());
+		assertEquals("Empresa não nula", 2, resultado.size());
+		assertEquals("Empresa não nula", 1, ((FaixaSalarial) resultado.toArray()[0]).getQtdColaboradores());
+		assertEquals("Empresa não nula", 2, ((FaixaSalarial) resultado.toArray()[1]).getQtdColaboradores());
+
+		resultado = faixaSalarialDao.qtdColaboradoresPorCargoFaixa(null);
+		
+		assertTrue("Empresa nula(todas)", resultado.size() >= 3);
 	}
 
     public GenericDao<FaixaSalarial> getGenericDao()
