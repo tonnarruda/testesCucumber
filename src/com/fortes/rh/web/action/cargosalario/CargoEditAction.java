@@ -209,10 +209,13 @@ public class CargoEditAction extends MyActionSupportEdit
 	
 	public String relatorioColaboradorCargo() throws Exception
 	{
-		boolean exibirSalarioVariavel = exibirSalarioVariavel();
+		boolean exibirSalarioVariavel = false;
+		
+		if(exibirSalario)
+			exibirSalarioVariavel = exibirSalarioVariavel();
 		
 		try {
-			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(empresa, dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo);
+			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(empresa, dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo, exibirSalarioVariavel);
 		} catch (ColecaoVaziaException e) {
 			addActionMessage(e.getMessage());
 			e.printStackTrace();

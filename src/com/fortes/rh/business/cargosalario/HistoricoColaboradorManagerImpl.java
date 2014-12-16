@@ -1150,7 +1150,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	}
 	
 	@SuppressWarnings("static-access")
-	public Collection<HistoricoColaborador> relatorioColaboradorCargo(Empresa empresa, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro, String[] areaOrganizacionalCheck, Boolean exibColabAdmitido, Integer qtdMesesDesatualizacao, String vinculo) throws Exception
+	public Collection<HistoricoColaborador> relatorioColaboradorCargo(Empresa empresa, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro, String[] areaOrganizacionalCheck, Boolean exibeColabAdmitido, Integer qtdMesesDesatualizacao, String vinculo, boolean exibirSalarioVariavel) throws Exception
 	{
 		Collection<HistoricoColaborador> historicoColaboradors;
 		Date dataConsulta = null;
@@ -1162,7 +1162,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if (empresa != null)
 			empresaId = empresa.getId(); 
 		
-		if (exibColabAdmitido)
+		if (exibeColabAdmitido)
 			if(qtdMeses != null && qtdMeses > 0)
 			{
 				//consulta por quantidade de Meses 
@@ -1176,7 +1176,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			dataAtualizacao = dateUtil.retornaDataAnteriorQtdMeses(dataAtual, qtdMesesDesatualizacao, false);
 		
 		historicoColaboradors = getDao().findByCargoEstabelecimento(dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataConsulta, LongUtil.arrayStringToArrayLong(areaOrganizacionalCheck), dataAtualizacao, empresaId, vinculo);
-		getRemuneracaoVariavelByAcPessoal(dataHistorico, historicoColaboradors);
+		
+		if(exibirSalarioVariavel)
+			getRemuneracaoVariavelByAcPessoal(dataHistorico, historicoColaboradors);
 		
 		if(historicoColaboradors.isEmpty())
 			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
