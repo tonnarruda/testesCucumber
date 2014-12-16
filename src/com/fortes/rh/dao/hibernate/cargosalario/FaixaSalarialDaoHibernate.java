@@ -536,14 +536,19 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		hql.append("                 from HistoricoColaborador hc2 ");
 		hql.append("                 where hc2.colaborador.id = c.id ");
 		hql.append("				 and hc2.status = :status) ");
-		hql.append("and cg.empresa.id = :empresaId ");
+		
+		if(empresaId != null)
+			hql.append("and cg.empresa.id = :empresaId ");
+		
 		hql.append("and c.desligado = false ");
 		hql.append("group by cg.nome, fs.nome ");
 		hql.append("order by cg.nome, fs.nome ");
 
 		Query query = getSession().createQuery(hql.toString());
 
-		query.setLong("empresaId", empresaId);
+		if(empresaId != null)
+			query.setLong("empresaId", empresaId);
+		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		return query.list();
