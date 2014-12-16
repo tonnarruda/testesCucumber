@@ -13,6 +13,7 @@
 		<Item visivel="N" motivo="P20141000117"><![CDATA[Criação de chave única para as ocorrências do colaborador para evitar erros ao desfazer a importação feita do Ponto para o AC e do AC para o RH.]]></Item>
 		<Item visivel="N" motivo="P20141200069"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Correção de erro ao gravar quando a verificação de parentesco está ativa.]]></Item>
 		<Item visivel="N" motivo="P20141100249"><![CDATA[Ao verificar grau de parentesco, desconsiderando o colaborador que está sendo cadastrado ou editado.]]></Item>
+		<Item visivel="N" motivo="P20141200043"><![CDATA[Utilitários > Alterar Empresa: Correção de problema com filtros vinculados à empresa anterior.]]></Item>
 	</Versao>
 	<Versao id="1.1.137.166" bd="" data="01/12/2014">
 		<Item visivel="S" motivo=""><![CDATA[Melhorias internas.]]></Item>
