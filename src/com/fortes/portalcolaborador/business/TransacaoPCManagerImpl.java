@@ -24,6 +24,7 @@ import com.fortes.portalcolaborador.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.CryptUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.google.gson.JsonObject;
@@ -31,17 +32,20 @@ import com.google.gson.JsonObject;
 public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, TransacaoPCDao> implements TransacaoPCManager 
 {
 	private TransacaoPCManager transacaoPCManager;
+	private MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private static String key = null;
 	
 	public void enfileirar(URLTransacaoPC urlTransacaoPC, String parametros) 
 	{
 		try {
-			ParametrosDoSistema params = parametrosDoSistemaManager.findById(1L);
+			if(key == null)
+				key = parametrosDoSistemaManager.findById(1L).getPcKey();
 			
 			TransacaoPC transacaoPC = new TransacaoPC();
 			transacaoPC.setCodigoUrl(urlTransacaoPC.getId());
 			transacaoPC.setData(new Date());
-			transacaoPC.setJson(CryptUtil.encrypt(parametros, params.getPcKey()));
+			transacaoPC.setJson(CryptUtil.encrypt(parametros, key));
 			
 			save(transacaoPC);
 		
@@ -56,14 +60,14 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 		transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
 		parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBeanOld("parametrosDoSistemaManager");
 		
-		ParametrosDoSistema params = parametrosDoSistemaManager.findById(1L);
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 		
 		try {
 			TransacaoPC transacaoPC = new TransacaoPC();
 			transacaoPC.setCodigoUrl(URLTransacaoPC.TESTAR_CONEXAO_PORTAL.getId());
-			transacaoPC.setJson(CryptUtil.encrypt("{\"echo\":\"ok\"}", params.getPcKey()));
+			transacaoPC.setJson(CryptUtil.encrypt("{\"echo\":\"ok\"}", parametrosDoSistema.getPcKey()));
 			
-			return TransacaoPCMensagens.getDescricao(enviar(transacaoPC, params.getPcToken()));
+			return TransacaoPCMensagens.getDescricao(enviar(transacaoPC, parametrosDoSistema.getPcToken()));
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -135,11 +139,21 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 
 	public void processarOperacoes(Collection<MovimentacaoOperacaoPC> movimentacoesOperacaoPC)
 	{
-		for (MovimentacaoOperacaoPC movimentacaoOperacaoPC : movimentacoesOperacaoPC) 
+		for (MovimentacaoOperacaoPC movimentacaoOperacaoPC : movimentacoesOperacaoPC){
 			movimentacaoOperacaoPC.getOperacao().gerarTransacao(movimentacaoOperacaoPC.getParametros());
+			
+			Long[] movimentacoesOperacaoPCIds = new CollectionUtil<MovimentacaoOperacaoPC>().convertCollectionToArrayIds(movimentacoesOperacaoPC);
+			movimentacaoOperacaoPCManager.remove(movimentacoesOperacaoPCIds);
+		}
 	}
 
-	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
+	{
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public void setMovimentacaoOperacaoPCManager(MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager)
+	{
+		this.movimentacaoOperacaoPCManager = movimentacaoOperacaoPCManager;
 	}
 }

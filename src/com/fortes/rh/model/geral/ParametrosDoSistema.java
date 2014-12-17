@@ -402,4 +402,8 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	public void setPcKey(String pcKey) {
 		this.pcKey = pcKey;
 	}
+	
+	public boolean isConfiguradoIntegracaoPortalColaborador() {
+		return (pcKey != null && pcToken != null);
+	}
 }

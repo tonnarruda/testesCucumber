@@ -9,6 +9,9 @@
     <property name="parametrosDoSistemaManager">
       <ref bean="parametrosDoSistemaManager" />
     </property>
+    <property name="movimentacaoOperacaoPCManager">
+      <ref bean="movimentacaoOperacaoPCManager" />
+    </property>
   </bean>
   <bean id="transacaoPCManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -570,8 +570,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	}
 
-	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias,
-			Empresa empresa, boolean editarHistorico, Double salarioColaborador) throws Exception
+	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa, boolean editarHistorico, Double salarioColaborador) throws Exception
 	{
 		verificaEntidadeIdNulo(colaborador);
 		colaborador.setEmpresa(empresa);
@@ -597,6 +596,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaborador.setHistoricoColaborador(historicoColaborador);
 		}
 
+		movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador));
+		
 		// Flush necessário quando houver uma operação com banco/sistema externo.
 		// garante que erro no banco do RH levantará uma Exception antes de alterar o outro banco.
 		getDao().getHibernateTemplateByGenericDao().flush();
@@ -1295,9 +1296,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findComNotaDoCurso(colaboradorIds, turmaId);
 	}
 
-	public void updateInfoPessoais(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas,
-			Collection<Experiencia> experiencias, Empresa empresa) throws Exception
-			{
+	public void updateInfoPessoais(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa) throws Exception
+	{
 		try
 		{
 			Colaborador colaboradorOriginal = findColaboradorById(colaborador.getId());
@@ -1322,6 +1322,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 			
 			colaboradorAtualizado.setFoto(getFoto(colaboradorAtualizado.getId()));
+			
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaboradorAtualizado));
 			
 			gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
 			
@@ -1350,6 +1352,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		{
 			colaborador = bindColaborador(colaborador, empregado);
 			getDao().update(colaborador);
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador));
 		}
 
 		return colaborador;

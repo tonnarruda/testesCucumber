@@ -36,12 +36,13 @@ public class EmpresaPC extends AbstractAdapterPC
 		return jsonObject.toString();
 	}
 
-	public String getIdJson()
+	public String getIdentificadoresToJson()
 	{
 		Gson gson = new Gson();
 		
 		JsonObject jsonObject = new JsonObject();
 		jsonObject.add("id", gson.toJsonTree(this.id));
+		jsonObject.add("baseCnpj", gson.toJsonTree(this.baseCnpj));
 		
 		return jsonObject.toString();
 	}
