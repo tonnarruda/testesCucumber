@@ -14,6 +14,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.portalcolaborador.business.TransacaoPCManager;
+import com.fortes.portalcolaborador.business.operacao.AtualizarEmpresa;
 import com.fortes.portalcolaborador.business.operacao.ExcluirEmpresa;
 import com.fortes.portalcolaborador.business.operacao.ExportarEmpresa;
 import com.fortes.portalcolaborador.model.EmpresaPC;
@@ -514,10 +515,11 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	
 	public String enfileirarEmpresaPCAndColaboradorPC(Empresa empresa, Boolean integradaPortalColaboradorAnterior) throws Exception 
 	{
-		movimentacaoOperacaoPCManager.enfileirar(ExportarEmpresa.class, new EmpresaPC(empresa).getIdJson());
+		movimentacaoOperacaoPCManager.enfileirar(AtualizarEmpresa.class, new EmpresaPC(empresa));
 		
 		if (!integradaPortalColaboradorAnterior)
 		{
+			movimentacaoOperacaoPCManager.enfileirar(ExportarEmpresa.class, new EmpresaPC(empresa).getIdJson());
 			return "Empresa editada com sucesso. <br /> Estamos enviando os dados de sua empresa para o Portal do Colaborador. <br />" +
 					"Em breve você receberá um email de confimação. <br />  Email destino: "+ empresa.getEmailRespRH();
 		}

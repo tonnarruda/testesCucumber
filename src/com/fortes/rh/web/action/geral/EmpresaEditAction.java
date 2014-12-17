@@ -211,10 +211,9 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			String conexaoPC = transacaoPCManager.testarConexao();
 			if(conexaoPC.equals(TransacaoPCMensagens.getDescricao(TransacaoPCMensagens.OK)))
 			{
-				movimentacaoOperacaoPCManager.enfileirar(ExportarEmpresa.class, new EmpresaPC(empresa).getIdJson());
-//				String mensagem = empresaManager.enfileirarEmpresaPCAndColaboradorPC(empresa, integradaPortalColaboradorAnterior);
-//				if(mensagem != null)
-//					addActionMessage(mensagem);
+				String mensagem = empresaManager.enfileirarEmpresaPCAndColaboradorPC(empresa, integradaPortalColaboradorAnterior);
+				if(mensagem != null)
+					addActionMessage(mensagem);
 			} else{
 				empresa.setIntegradaPortalColaborador(integradaPortalColaboradorAnterior);
 				addActionWarning(conexaoPC);
