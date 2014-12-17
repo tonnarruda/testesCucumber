@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
-import com.fortes.portalcolaborador.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
