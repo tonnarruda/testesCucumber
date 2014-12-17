@@ -25,7 +25,10 @@ import com.opensymphony.webwork.dispatcher.json.JSONObject;
 @SuppressWarnings({ "unchecked", "rawtypes", "deprecation"})
 public class ExportarEmpresa extends Operacao {
 
-	private HistoricoColaboradorManager hisColaboradorManager;
+	private HistoricoColaboradorManager historicoColaboradorManager;
+	private EmpresaManager empresaManager;
+	private TransacaoPCManager transacaoPCManager;
+	private Mail mail;
 	
 	@Override
 	public URLTransacaoPC getUrlTransacaoPC()
@@ -41,11 +44,11 @@ public class ExportarEmpresa extends Operacao {
 			JSONObject j = new JSONObject(parametros);			
 			Long empresaId = Long.parseLong((String) j.get("id"));
 			
-			EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBeanOld("empresaManager");
+			empresaManager = (EmpresaManager) SpringUtil.getBeanOld("empresaManager");
 			empresa = empresaManager.findEmailsEmpresa(empresaId);
 
-			hisColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
-			enfilerarColaboradoresComHistoricosPC(new ArrayList(hisColaboradorManager.findByEmpresaPC(empresaId)));
+			historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
+			enfilerarColaboradoresComHistoricosPC(new ArrayList(historicoColaboradorManager.findByEmpresaPC(empresaId)));
 			
 			emailConfirmacaoPC(empresa);
 			
@@ -59,7 +62,7 @@ public class ExportarEmpresa extends Operacao {
 	
 	private void enfilerarColaboradoresComHistoricosPC(List<HistoricoColaborador> historicos) 
 	{
-		Collection<HistoricoColaborador> historicosMontados = hisColaboradorManager.montaSituacaoHistoricoColaborador(historicos);
+		Collection<HistoricoColaborador> historicosMontados = historicoColaboradorManager.montaSituacaoHistoricoColaborador(historicos);
 		
 		ColaboradorPC colaboradorPC = null;
 		HistoricoColaboradorPC historicoColaboradorPC;
@@ -80,7 +83,7 @@ public class ExportarEmpresa extends Operacao {
 			colaboradorPCs.add(colaboradorPC);
 		}
 		
-		TransacaoPCManager transacaoPCManager= (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
+		transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
 		for (ColaboradorPC colabPC : colaboradorPCs) 
 			transacaoPCManager.enfileirar(URLTransacaoPC.COLABORADOR_ATUALIZAR, colabPC.toJson());
 	}
@@ -90,7 +93,7 @@ public class ExportarEmpresa extends Operacao {
 		EmailPC emailPC = new EmailPC(empresa.getEmailRespRH(), "[RH] Email de confirmação do Portal do Colaborador", "Email de confirmação do Portal do Colaborador", 
 				"Os dados do colaborador da empresa " + empresa.getNome() + " estão integrados com o do portal do colaborador.");
 		
-		TransacaoPCManager transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
+		transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
 		transacaoPCManager.enfileirar(URLTransacaoPC.ENVIAR_EMAIL, emailPC.toJson());
 	}
 
@@ -105,7 +108,7 @@ public class ExportarEmpresa extends Operacao {
 			body.append("<B><br /><br />");
 			body.append("Favor entrar em contato com o suporte do RH.<br /><br />");
 			
-			Mail mail = (Mail) SpringUtil.getBeanOld("mail");			
+			mail = (Mail) SpringUtil.getBeanOld("mail");			
 			mail.send(empresa, subject, body.toString(), null, empresa.getEmailRespRH());
 			
 		} catch (AddressException e) {

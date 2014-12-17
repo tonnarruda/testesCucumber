@@ -1489,7 +1489,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return getDao().findByEmpresaComHistoricoPendente(empresaId) ;
 	}
 	
-	@Override
 	public Collection<HistoricoColaborador> findByEmpresaPC(Long empresaId) {
 		return getDao().findByEmpresaPC(empresaId);
 	}

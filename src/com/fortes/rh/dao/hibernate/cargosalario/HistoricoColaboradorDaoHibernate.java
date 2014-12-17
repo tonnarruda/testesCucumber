@@ -18,7 +18,6 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.type.Type;
@@ -1422,8 +1421,10 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 	
-	public Collection<HistoricoColaborador> findByEmpresaPC(Long empresaId) {
+	public Collection<HistoricoColaborador> findByEmpresaPC(Long empresaId) 
+	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		
 		criteria.createCriteria("hc.estabelecimento", "e", Criteria.LEFT_JOIN);
 		criteria.createCriteria("hc.faixaSalarial", "f", Criteria.LEFT_JOIN);
 		criteria.createCriteria("hc.indice", "i", Criteria.LEFT_JOIN);

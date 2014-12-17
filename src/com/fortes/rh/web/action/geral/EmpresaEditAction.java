@@ -21,8 +21,6 @@ import com.fortes.model.type.File;
 import com.fortes.model.type.FileUtil;
 import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.portalcolaborador.business.TransacaoPCManager;
-import com.fortes.portalcolaborador.business.operacao.ExportarEmpresa;
-import com.fortes.portalcolaborador.model.EmpresaPC;
 import com.fortes.portalcolaborador.model.dicionario.TransacaoPCMensagens;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EmpresaManager;
