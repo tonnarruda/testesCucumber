@@ -2,16 +2,18 @@
 <Versoes>
 	<Versao id="1.1.138.167" bd="" data="16/12/2014">
 		<Item visivel="S" motivo="S20140400048"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores : Novo filtro por cargos.]]></Item>
-		<Item visivel="S" motivo="P20141200021"><![CDATA[Envio de emails automáticos de avaliação do período de experiência: Inserir no corpo do email a função do colaborador.]]></Item>
 		<Item visivel="N" motivo="P20141100245"><![CDATA[C&S > Painel de Indicadores: Correção na regra de acesso à esta funcionalidade.]]></Item>
 		<Item visivel="N" motivo="P20141100106"><![CDATA[R&S > Cadastros > Candidatos > Contratar Candidato: No campo CPF, ao verificar cadastro duplicado, desconsiderar o candidato que está sendo contratado.]]></Item>
 		<Item visivel="N" motivo="P20141200022"><![CDATA[R&S > Cadastros > Candidatos > Currículo Escaneado: Unificação dos botões Inserir e Editar para Inserir/Editar.]]></Item>
 		<Item visivel="N" motivo="P20141100221"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Resultado da Avaliação de Desempenho > Relatório: Ajuste para que o título da avaliação seja impresso por completo, mesmo que exceda o tamanho da linha.]]></Item>
 		<Item visivel="N" motivo="P20141100233"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Descrição das respostas estava sendo exibida igual a descrição da pergunta e relatório não estava sendo gerado quando as perguntas não possuiam aspecto.]]></Item>
 		<Item visivel="N" motivo="P20141200010"><![CDATA[Aval. Desempenho > Relatórios > Acompanhamento de Experiência Previsto > Relatório: Correção na regra de acesso à esta funcionalidade.]]></Item>
+		<Item visivel="N" motivo="P20141200108"><![CDATA[Aval. Desempenho > Relatórios > Acompanhamento do Período de Experiência: Correção do layout do relatório em xls.]]></Item>
 		<Item visivel="N" motivo="P20141200049"><![CDATA[T&D > Relatórios > Colaboradores sem treinamento e Colaboradores com treinamento: Correção do filtro de cursos, listando apenas os cursos da empresa selecionada.]]></Item>
 		<Item visivel="N" motivo="P20141200069"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Correção de erro ao gravar quando a verificação de parentesco está ativa.]]></Item>
 		<Item visivel="N" motivo="P20141100249"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Ao verificar grau de parentesco, desconsider o colaborador que está sendo cadastrado ou editado.]]></Item>
+		<Item visivel="N" motivo="P20141200095"><![CDATA[Info. Funcionais > Relatórios > Ocorrência: Correção do layout do relatório em xls.]]></Item>
+		<Item visivel="N" motivo="P20141200108"><![CDATA[Info. Funcionais > Relatórios > Desligamentos: Correção do layout do relatório em xls.]]></Item>
 		<Item visivel="N" motivo="P20141200043"><![CDATA[Utilitários > Alterar Empresa: Correção de problema com filtros vinculados à empresa anterior.]]></Item>
 		<Item visivel="N" motivo="P20141000117"><![CDATA[Criação de chave única para as ocorrências do colaborador para evitar erros ao desfazer a importação feita do Ponto para o AC e do AC para o RH.]]></Item>
 		<Item visivel="N" motivo="P20141100265"><![CDATA[Remoção de mensagens referentes a colaboradores desligados e não enviar mensagens e emails à colaboradores desligados pelo Gerenciador de Comunicação.]]></Item>
