@@ -21,6 +21,8 @@ import com.fortes.model.type.File;
 import com.fortes.model.type.FileUtil;
 import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.portalcolaborador.business.TransacaoPCManager;
+import com.fortes.portalcolaborador.business.operacao.AtualizarEmpresa;
+import com.fortes.portalcolaborador.model.EmpresaPC;
 import com.fortes.portalcolaborador.model.dicionario.TransacaoPCMensagens;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -175,6 +177,9 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			addActionMessage("Não foi possível criar uma pasta de configurações do módulo externo.");
 			e.printStackTrace();
 		}
+		
+		if(empresa.isIntegradaPortalColaborador())
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarEmpresa.class, new EmpresaPC(empresa));
 
 		return Action.SUCCESS;
 	}
@@ -203,16 +208,16 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		
 		if(empresa.isIntegradaPortalColaborador())
 		{
-			String conexaoPC = transacaoPCManager.testarConexao();
-			if(conexaoPC.equals(TransacaoPCMensagens.getDescricao(TransacaoPCMensagens.OK)))
-			{
+//			String conexaoPC = transacaoPCManager.testarConexao();
+//			if(conexaoPC.equals(TransacaoPCMensagens.getDescricao(TransacaoPCMensagens.OK)))
+//			{
 				String mensagem = empresaManager.enfileirarEmpresaPCAndColaboradorPC(empresa, integradaPortalColaboradorAnterior);
 				if(mensagem != null)
 					addActionMessage(mensagem);
-			} else{
-				empresa.setIntegradaPortalColaborador(integradaPortalColaboradorAnterior);
-				addActionWarning(conexaoPC);
-			}
+//			} else{
+//				empresa.setIntegradaPortalColaborador(integradaPortalColaboradorAnterior);
+//				addActionWarning(conexaoPC);
+//			}
 		}
 		
 		boolean tavaIntegradaComAC = empresaManager.findIntegracaoAC(empresa.getId());

@@ -37,44 +37,55 @@ public class ExportarEmpresa extends Operacao {
 	}
 	
 	@Override
-	public void gerarTransacao(String parametros)
+	public void gerarTransacao(String parametros) throws Exception
 	{
 		Empresa empresa = null;
 		try {
-			JSONObject j = new JSONObject(parametros);			
-			Long empresaId = Long.parseLong((String) j.get("id"));
+			JSONObject j = new JSONObject(parametros);	
 			
-			empresaManager = (EmpresaManager) SpringUtil.getBeanOld("empresaManager");
-			empresa = empresaManager.findEmailsEmpresa(empresaId);
-
-			historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
-			enfilerarColaboradoresComHistoricosPC(new ArrayList(historicoColaboradorManager.findByEmpresaPC(empresaId)));
-			
-			emailConfirmacaoPC(empresa);
+			if(j.get("id") != null)
+			{
+				Long empresaId = Long.parseLong(((Integer) j.get("id")).toString());
+				
+				transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
+	
+				empresaManager = (EmpresaManager) SpringUtil.getBeanOld("empresaManager");
+				empresa = empresaManager.findEmailsEmpresa(empresaId);
+				
+				if(empresa != null)
+				{
+					historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
+					enfilerarColaboradoresComHistoricosPC(new ArrayList(historicoColaboradorManager.findByEmpresaPC(empresaId)));
+	
+					emailConfirmacaoPC(empresa);
+				}
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+			
 			if(empresa != null)
 				emailInconsistenciaPC(empresa);
+			
+			throw new Exception(e);
 		}
 		
 	}
 	
-	private void enfilerarColaboradoresComHistoricosPC(List<HistoricoColaborador> historicos) 
+	private void enfilerarColaboradoresComHistoricosPC(List<HistoricoColaborador> historicos) throws Exception
 	{
 		Collection<HistoricoColaborador> historicosMontados = historicoColaboradorManager.montaSituacaoHistoricoColaborador(historicos);
 		
 		ColaboradorPC colaboradorPC = null;
 		HistoricoColaboradorPC historicoColaboradorPC;
 		Set<ColaboradorPC> colaboradorPCs = new HashSet<ColaboradorPC>();
-		Collection<Long> colabIds = new ArrayList<Long>(); 
 		
 		for (HistoricoColaborador historico : historicosMontados) 
 		{
-			if(colaboradorPC == null || !colaboradorPC.getCpf().equals(historico.getColaborador().getPessoal().getCpf())){
+			if(colaboradorPC == null || !colaboradorPC.getCpf().equals(historico.getColaborador().getPessoal().getCpf()))
+			{
 				colaboradorPC = new ColaboradorPC(historico.getColaborador());
 				colaboradorPC.setHistoricosPc(new ArrayList<HistoricoColaboradorPC>());
-				colabIds.add(historico.getColaborador().getId());
 			}
 			
 			historicoColaboradorPC = new HistoricoColaboradorPC(historico);
@@ -83,7 +94,6 @@ public class ExportarEmpresa extends Operacao {
 			colaboradorPCs.add(colaboradorPC);
 		}
 		
-		transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
 		for (ColaboradorPC colabPC : colaboradorPCs) 
 			transacaoPCManager.enfileirar(URLTransacaoPC.COLABORADOR_ATUALIZAR, colabPC.toJson());
 	}
@@ -93,7 +103,6 @@ public class ExportarEmpresa extends Operacao {
 		EmailPC emailPC = new EmailPC(empresa.getEmailRespRH(), "[RH] Email de confirmação do Portal do Colaborador", "Email de confirmação do Portal do Colaborador", 
 				"Os dados do colaborador da empresa " + empresa.getNome() + " estão integrados com o do portal do colaborador.");
 		
-		transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
 		transacaoPCManager.enfileirar(URLTransacaoPC.ENVIAR_EMAIL, emailPC.toJson());
 	}
 

@@ -137,13 +137,12 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 		return new GetMethod();
 	}
 
-	public void processarOperacoes(Collection<MovimentacaoOperacaoPC> movimentacoesOperacaoPC)
+	public void processarOperacoes(Collection<MovimentacaoOperacaoPC> movimentacoesOperacaoPC) throws Exception
 	{
-		for (MovimentacaoOperacaoPC movimentacaoOperacaoPC : movimentacoesOperacaoPC){
+		for (MovimentacaoOperacaoPC movimentacaoOperacaoPC : movimentacoesOperacaoPC)
+		{
 			movimentacaoOperacaoPC.getOperacao().gerarTransacao(movimentacaoOperacaoPC.getParametros());
-			
-			Long[] movimentacoesOperacaoPCIds = new CollectionUtil<MovimentacaoOperacaoPC>().convertCollectionToArrayIds(movimentacoesOperacaoPC);
-			movimentacaoOperacaoPCManager.remove(movimentacoesOperacaoPCIds);
+			movimentacaoOperacaoPCManager.remove(movimentacaoOperacaoPC.getId());
 		}
 	}
 

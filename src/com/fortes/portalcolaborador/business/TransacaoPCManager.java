@@ -13,5 +13,5 @@ public interface TransacaoPCManager extends GenericManager<TransacaoPC>
 	void enfileirar(URLTransacaoPC urlTransacaoPC, String parametros);
 	void processarFila();
 	public String testarConexao();
-	void processarOperacoes(Collection<MovimentacaoOperacaoPC> movimentacoesOperacaoPC);
+	void processarOperacoes(Collection<MovimentacaoOperacaoPC> movimentacoesOperacaoPC) throws Exception;
 }
