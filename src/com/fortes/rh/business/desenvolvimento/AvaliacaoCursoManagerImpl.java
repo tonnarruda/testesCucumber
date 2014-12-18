@@ -33,4 +33,14 @@ public class AvaliacaoCursoManagerImpl extends GenericManagerImpl<AvaliacaoCurso
 	{
 		return getDao().buscaFiltro(titulo);
 	}
+	
+	public boolean existeAvaliacaoCursoDeTipoNotaOuPorcentagemRespondida(Long avaliacaoCursoId)
+	{
+		return getDao().existeAvaliacaoCursoDeTipoNotaOuPorcentagemRespondida(avaliacaoCursoId);
+	}
+	
+	public boolean existeAvaliacaoCursoDeTipoAvaliacaoRespondida(Long avaliacaoCursoId)
+	{
+		return getDao().existeAvaliacaoCursoDeTipoAvaliacaoRespondida(avaliacaoCursoId);
+	}
 }

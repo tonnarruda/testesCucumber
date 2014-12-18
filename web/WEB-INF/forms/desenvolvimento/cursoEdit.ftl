@@ -18,6 +18,12 @@
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js"/>'></script>
 <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script><!-- Usado para o function.js cssClass=hora-->
 
+<style>
+	<#if avaliacaoAlunoRespondida>
+		.listCheckBoxContainer { background-color: #E9E9E9; }
+	</#if>
+</style>
+
 </head>
 <body>
 	<#assign linkFiltro=""/>
@@ -46,7 +52,15 @@
 		
 		<@ww.textarea label="Conteúdo Programático" name="curso.conteudoProgramatico" cssStyle="width:500px;"/>
 		<@ww.textarea label="Critérios de Avaliação" name="curso.criterioAvaliacao" cssStyle="width:500px;"/>
-		<@frt.checkListBox label="Avaliações dos Alunos" name="avaliacaoCursoCheck" id="avaliacaoCursoCheck" list="avaliacaoCursoCheckList" filtro="true"/>
+		
+		<#if avaliacaoAlunoRespondida>
+			<@frt.checkListBox label="Avaliações dos Alunos" name="avaliacaoCursoCheck" id="avaliacaoCursoCheck" list="avaliacaoCursoCheckList" readonly=true />
+			<div style="width: 500px;">
+				<strong>Não é possível alterar as Avaliações dos Alunos, pois já existem avaliações respondidas.</strong>
+			</div>
+		<#else>
+			<@frt.checkListBox label="Avaliações dos Alunos" name="avaliacaoCursoCheck" id="avaliacaoCursoCheck" list="avaliacaoCursoCheckList" filtro="true" readonly=false />
+		</#if>
 
 		<@ww.hidden name="curso.id" />
 		<@ww.hidden name="curso.empresa.id" />

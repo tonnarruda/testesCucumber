@@ -14,9 +14,11 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
+import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
 public class AvaliacaoCursoDaoHibernate extends GenericDaoHibernate<AvaliacaoCurso> implements AvaliacaoCursoDao
 {
@@ -93,4 +95,29 @@ public class AvaliacaoCursoDaoHibernate extends GenericDaoHibernate<AvaliacaoCur
 		
 		return criteria.list();
 	}
+	
+	public boolean existeAvaliacaoCursoDeTipoNotaOuPorcentagemRespondida(Long avaliacaoCursoId) {
+		Criteria criteria = getSession().createCriteria(AproveitamentoAvaliacaoCurso.class,"a");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("a.id"), "id");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("a.avaliacaoCurso.id", avaliacaoCursoId));
+		
+		return criteria.list().size() > 0;
+	}
+	
+	public boolean existeAvaliacaoCursoDeTipoAvaliacaoRespondida(Long avaliacaoCursoId) {
+		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class,"cq");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cq.id"), "id");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("cq.avaliacaoCurso.id", avaliacaoCursoId));
+		
+		return criteria.list().size() > 0;
+	}
+	
 }

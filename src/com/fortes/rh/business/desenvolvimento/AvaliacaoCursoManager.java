@@ -18,4 +18,8 @@ public interface AvaliacaoCursoManager extends GenericManager<AvaliacaoCurso>
 
 	Collection<AvaliacaoCurso> findByCursos(Long[] cursosIds);
 	
+	public boolean existeAvaliacaoCursoDeTipoNotaOuPorcentagemRespondida(Long avaliacaoCursoId);
+
+	public boolean existeAvaliacaoCursoDeTipoAvaliacaoRespondida(Long avaliacaoCursoId);
+	
 }

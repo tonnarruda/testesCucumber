@@ -230,6 +230,16 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return getDao().findByCompetencia(conhecimentoId, tipoCompetencia);
 	}
 	
+	public boolean existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida(Long cursoId) 
+	{
+		return getDao().existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida(cursoId);
+	}
+	
+	public boolean existeAvaliacaoAlunoDeTipoAvaliacaoRespondida(Long cursoId)
+	{
+		return getDao().existeAvaliacaoAlunoDeTipoAvaliacaoRespondida(cursoId);
+	}
+	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;

@@ -21,6 +21,7 @@ public class AvaliacaoCursoEditAction extends MyActionSupport implements ModelDr
 	private AvaliacaoCurso avaliacaoCurso;
 	private Map<Character, String> tipos = new TipoAvaliacaoCurso();
 	private Collection<Avaliacao> avaliacoes;
+	private boolean existeAvaliacaoRespondida;
 
 	public String execute() throws Exception
 	{
@@ -29,8 +30,10 @@ public class AvaliacaoCursoEditAction extends MyActionSupport implements ModelDr
 
 	private void prepare() throws Exception
 	{
-		if (avaliacaoCurso != null && avaliacaoCurso.getId() != null)
+		if (avaliacaoCurso != null && avaliacaoCurso.getId() != null) {
 			avaliacaoCurso = (AvaliacaoCurso) avaliacaoCursoManager.findById(avaliacaoCurso.getId());
+			existeAvaliacaoRespondida =  avaliacaoCursoManager.existeAvaliacaoCursoDeTipoNotaOuPorcentagemRespondida(avaliacaoCurso.getId()) || avaliacaoCursoManager.existeAvaliacaoCursoDeTipoAvaliacaoRespondida(avaliacaoCurso.getId());
+		}
 		
 		avaliacoes = avaliacaoManager.findToList(new String[] { "id", "titulo" }, new String[] { "id", "titulo" }, new String[] { "tipoModeloAvaliacao", "empresa.id" }, new Object[] { "L", getEmpresaSistema().getId() });
 	}
@@ -109,4 +112,9 @@ public class AvaliacaoCursoEditAction extends MyActionSupport implements ModelDr
 	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) {
 		this.avaliacaoManager = avaliacaoManager;
 	}
+
+	public boolean isExisteAvaliacaoRespondida() {
+		return existeAvaliacaoRespondida;
+	}
+	
 }

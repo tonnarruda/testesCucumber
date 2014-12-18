@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.13x.16x" bd="" data="xx/12/2014">
+		<Item visivel="N" motivo="P20141100247"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Editar: Impossibilitando a alteração das Avaliações dos Alunos, caso já existam avaliações respondidas.]]></Item>
+		<Item visivel="N" motivo="P20141100247"><![CDATA[T&D > Cadastros > Avaliações dos Alunos > Editar: Impossibilitando a alteração do tipo de Avaliação do Aluno, caso já existam avaliações respondidas.]]></Item>
+	</Versao>
 	<Versao id="1.1.138.167" bd="" data="16/12/2014">
 		<Item visivel="S" motivo="S20140400048"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores : Novo filtro por cargos.]]></Item>
 		<Item visivel="N" motivo="P20141100245"><![CDATA[C&S > Painel de Indicadores: Correção na regra de acesso à esta funcionalidade.]]></Item>

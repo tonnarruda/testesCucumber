@@ -16,4 +16,9 @@ public interface AvaliacaoCursoDao extends GenericDao<AvaliacaoCurso>
 	
 	public Collection<AvaliacaoCurso> buscaFiltro(String titulo);
 	
+	public boolean existeAvaliacaoCursoDeTipoNotaOuPorcentagemRespondida(Long avaliacaoCursoId);
+
+	public boolean existeAvaliacaoCursoDeTipoAvaliacaoRespondida(Long avaliacaoCursoId);
+
+	
 }

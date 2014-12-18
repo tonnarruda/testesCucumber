@@ -82,6 +82,8 @@ public class CursoEditActionTest extends MockObjectTestCase
     	avaliacaoCursoManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<AvaliacaoCurso>()));
     	cursoManager.expects(once()).method("findById").with(eq(curso.getId())).will(returnValue(curso));
     	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(eq(empresa.getId()), eq(curso.getId())).will(returnValue(true));
+    	cursoManager.expects(once()).method("existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida").with(eq(curso.getId())).will(returnValue(false));
+    	cursoManager.expects(once()).method("existeAvaliacaoAlunoDeTipoAvaliacaoRespondida").with(eq(curso.getId())).will(returnValue(false));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").with(eq(true),eq(empresa.getId()),eq(usuario.getId()),ANYTHING).will(returnValue(new ArrayList<Empresa>()));
     	
     	ParametrosDoSistema params = new ParametrosDoSistema();
@@ -108,6 +110,8 @@ public class CursoEditActionTest extends MockObjectTestCase
     	avaliacaoCursoManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<AvaliacaoCurso>()));
     	cursoManager.expects(once()).method("findById").with(eq(curso.getId())).will(returnValue(curso));
     	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(eq(empresaSistema.getId()), eq(curso.getId())).will(returnValue(false));
+    	cursoManager.expects(once()).method("existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida").with(eq(curso.getId())).will(returnValue(false));
+    	cursoManager.expects(once()).method("existeAvaliacaoAlunoDeTipoAvaliacaoRespondida").with(eq(curso.getId())).will(returnValue(false));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").with(eq(true),eq(empresaSistema.getId()),eq(usuario.getId()),ANYTHING).will(returnValue(new ArrayList<Empresa>()));
     	
     	ParametrosDoSistema params = new ParametrosDoSistema();
@@ -176,6 +180,8 @@ public class CursoEditActionTest extends MockObjectTestCase
     	avaliacaoCursoManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<AvaliacaoCurso>()));
     	cursoManager.expects(once()).method("findById").with(eq(curso.getId())).will(returnValue(curso));
     	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(eq(empresa.getId()), eq(curso.getId())).will(returnValue(true));
+    	cursoManager.expects(once()).method("existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida").with(eq(curso.getId())).will(returnValue(false));
+    	cursoManager.expects(once()).method("existeAvaliacaoAlunoDeTipoAvaliacaoRespondida").with(eq(curso.getId())).will(returnValue(false));
     	empresaManager.expects(once()).method("findEmpresasPermitidas").with(eq(true),eq(empresa.getId()),eq(usuario.getId()),ANYTHING).will(returnValue(new ArrayList<Empresa>()));
     	
     	ParametrosDoSistema params = new ParametrosDoSistema();

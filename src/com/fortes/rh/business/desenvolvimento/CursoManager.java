@@ -34,4 +34,6 @@ public interface CursoManager extends GenericManager<Curso>
 	public Collection<Curso> findAllByEmpresasParticipantes(Long... empresasIds);
 	public boolean existeEmpresasNoCurso(Long empresaId, Long cursoId);
 	public Collection<Empresa> findAllEmpresasParticipantes(Long cursoId);
+	public boolean existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida(Long cursoId);
+	public boolean existeAvaliacaoAlunoDeTipoAvaliacaoRespondida(Long cursoId);
 }

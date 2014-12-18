@@ -37,6 +37,7 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 	private Collection<CheckBox> avaliacaoCursoCheckList = new ArrayList<CheckBox>();
 	private Long[] empresasCheck;
 	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
+	private boolean avaliacaoAlunoRespondida;
 	
 	private Collection<Empresa> empresas;
 
@@ -72,6 +73,8 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 		prepare();
 		avaliacaoCursoCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacaoCursoCheckList, curso.getAvaliacaoCursos(), "getId");
 		empresasCheckList = CheckListBoxUtil.marcaCheckListBox(empresasCheckList, curso.getEmpresasParticipantes(), "getId");
+		
+		avaliacaoAlunoRespondida = cursoManager.existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida(curso.getId()) || cursoManager.existeAvaliacaoAlunoDeTipoAvaliacaoRespondida(curso.getId()) ;
 
 		if (curso != null && !cursoManager.existeEmpresasNoCurso(getEmpresaSistema().getId(), curso.getId())){
 			addActionWarning("O curso solicitado não existe ou não esta compartilhado para a empresa " + getEmpresaSistema().getNome() +".");
@@ -216,5 +219,10 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 	public boolean isCursoCompartilhado()
 	{
 		return cursoCompartilhado;
+	}
+	
+	public boolean isAvaliacaoAlunoRespondida()
+	{
+		return avaliacaoAlunoRespondida;
 	}
 }

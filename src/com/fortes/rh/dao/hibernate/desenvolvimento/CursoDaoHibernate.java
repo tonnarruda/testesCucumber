@@ -19,11 +19,13 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
+import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
@@ -453,5 +455,33 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
     	criteria.setResultTransformer(new AliasToBeanResultTransformer(Empresa.class));
 
     	return (Empresa) criteria.uniqueResult();
+	}
+	
+	public boolean existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida(Long cursoId) 
+	{
+		Criteria criteria = getSession().createCriteria(AproveitamentoAvaliacaoCurso.class,"a");
+		criteria.createCriteria("a.colaboradorTurma", "ct", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("a.id"), "id");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("ct.curso.id", cursoId));
+		
+		return criteria.list().size() > 0;
+	}
+	
+	public boolean existeAvaliacaoAlunoDeTipoAvaliacaoRespondida(Long cursoId) 
+	{
+		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class,"cq");
+		criteria.createCriteria("cq.turma", "t", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cq.id"), "id");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("t.curso.id", cursoId));
+		
+		return criteria.list().size() > 0;
 	}
 }
