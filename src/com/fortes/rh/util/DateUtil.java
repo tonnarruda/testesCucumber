@@ -855,5 +855,34 @@ public class DateUtil
 	public static Date getUltimoDiaMesAnterior(Date data) 
 	{
 		return incrementaDias(data, -1);
-	} 
+	}
+	
+	public static Date criarDataComHora(String diaMesAno, String hora) 
+	{
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+		String dia = "1";
+		String mes = "1";
+		String ano = "0";
+		String[] dma = diaMesAno.split("/");
+		if(dma.length == 3)
+		{
+			dia = dma[0];
+			mes = dma[1];
+			ano = dma[2];
+		}
+
+		mes = String.valueOf(Integer.parseInt(mes) - 1);
+		ano = String.valueOf(Integer.parseInt(ano) - 1900);
+
+		Date d;
+		try {
+			d = df.parse(ano + "-" + mes + "-" + dia + " " + hora);
+			Long time = d.getTime();
+			return new Date(time);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

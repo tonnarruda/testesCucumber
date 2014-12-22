@@ -32,10 +32,13 @@ import com.fortes.rh.model.desenvolvimento.DNT;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.StatusTAula;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.ws.TAula;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 @SuppressWarnings("unchecked")
 public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<ColaboradorTurma> implements ColaboradorTurmaDao
@@ -1313,46 +1316,68 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return colaboradorTurmas;	
 	}
 	
-	public Collection<ColaboradorTurma> findColabTreinamentosPrevistos(String colaboradorCodigoAC, Long empresaId, Date dataIni, Date dataFim) 
+	public TAula[] findColabTreinamentosPrevistos(String colaboradorCodigoAC, Long empresaId, String periodoIni, String periodoFim, boolean considerarPresenca) 
 	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorTurma(ct.id, co.codigoAC, dt.dia, dt.horaIni, dt.horaFim, cu.nome, t.descricao) ");
-		hql.append("from ColaboradorTurma as ct ");
-		hql.append("left join ct.colaborador as co ");
-		hql.append("left join co.historicoColaboradors as hc ");
-		hql.append("left join ct.turma as t ");
-		hql.append("left join t.curso as cu ");
-		hql.append("left join t.diasTurma as dt ");
-		hql.append("where dt.dia between :dataIni and :dataFim ");
-		hql.append("and co.empresa.id = :empresaId ");
-		hql.append("and co.naoIntegraAc = false ");
-		hql.append("and co.codigoAC is not null ");
-		hql.append("and co.codigoAC <> '' ");
+		if(periodoIni.split(" ").length == 1)
+			periodoIni += " 00:00";
+		if(periodoFim.split(" ").length == 1)
+			periodoFim += " 23:59";
+		
+		StringBuilder sql = new StringBuilder();
+		sql.append("select ct.id as ctId, co.codigoAC as colabCodigoAC, dt.dia as diaTurma, dt.horaIni as horaIni, dt.horaFim as horaFim, cu.nome as cursoNome, t.descricao as turmaDescricao, cp.presenca as presenca  ");
+		sql.append("from ColaboradorTurma as ct ");
+		sql.append("left join colaborador as co on co.id = ct.colaborador_id ");
+		sql.append("left join turma as t on t.id = ct.turma_id ");
+		sql.append("left join curso as cu on cu.id = t.curso_id ");
+		sql.append("left join diaTurma as dt on dt.turma_id = t.id ");
+		sql.append("left join colaboradorPresenca as cp on cp.colaboradorTurma_id = ct.id and cp.diaturma_id = dt.id ");
+		
+		sql.append("where cast(dt.dia || ' ' || coalesce(dt.horaIni, '00:00') as timestamp) between cast(:periodoIni as timestamp) and cast(:periodoFim as timestamp) ");
+		sql.append("and cast(dt.dia || ' ' || coalesce(dt.horaFim, '23:59') as timestamp) between cast(:periodoIni as timestamp) and cast(:periodoFim as timestamp) ");
+		sql.append("and co.empresa_id = :empresaId ");
+		sql.append("and co.naoIntegraAc = false ");
+		sql.append("and co.codigoAC is not null ");
 		
 		if(colaboradorCodigoAC != null && !"".equals(colaboradorCodigoAC))
-			hql.append("and co.codigoAc = :empregadoCodigo");
+			sql.append("and co.codigoAC = :empregadoCodigo ");
 
-		hql.append("	and hc.data = ( ");
-		hql.append("		select max(hc2.data) " );
-		hql.append("		from HistoricoColaborador as hc2 ");
-		hql.append("		where hc2.colaborador.id = co.id ");
-		hql.append("		and hc2.data <= :hoje ");
-		hql.append("		and hc2.status = :status ");
-		hql.append("	) ");
-		
-		hql.append("order by co.codigoAC, dt.dia ");
+		sql.append("order by co.codigoAC, dt.dia ");
 
-		Query query = getSession().createQuery(hql.toString());
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("empresaId", empresaId);
-		query.setDate("hoje", new Date());
-		query.setDate("dataIni", dataIni);
-		query.setDate("dataFim", dataFim);
+		query.setString("periodoIni", periodoIni);
+		query.setString("periodoFim", periodoFim);
 		
 		if(colaboradorCodigoAC != null && !"".equals(colaboradorCodigoAC))
 			query.setString("empregadoCodigo", colaboradorCodigoAC);
 		
-		return query.list();	
+		int i = 0;
+		List resultado = query.list();
+		TAula[] aulas = new TAula[resultado.size()];
+		
+		for(Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			TAula tAula = new TAula();
+			tAula.setEmpregadoCodigo((String)res[1]);
+			tAula.setData(DateUtil.formataDiaMesAno((Date)res[2]));
+			tAula.setHoraIni((String)res[3]);
+			tAula.setHoraFim((String)res[4]);
+			tAula.setCursoNome((String)res[5]);
+			tAula.setTurmaNome((String)res[6]);
+			
+			if(considerarPresenca)
+			{
+				if (res[7] != null && (Boolean)res[7])
+					tAula.setStatus(StatusTAula.getPresente());
+				else
+					tAula.setStatus(StatusTAula.getFalta());
+			}
+				
+			aulas[i++] = tAula;
+		}
+		
+		return aulas;
 	}
 
 	public Collection<Colaborador> findColaboradorByCursos(Long[] cursosIds, Long[] turmasIds) 

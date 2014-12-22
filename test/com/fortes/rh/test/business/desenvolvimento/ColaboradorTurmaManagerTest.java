@@ -1198,20 +1198,16 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		
 		colaboradorTurmaDao.expects(once()).method("findColabTreinamentosPrevistos").withAnyArguments().will(returnValue(colabTurmas));
 		
-		TAula[] tAula = colaboradorTurmaManager.getTreinamentosPrevistoParaTRU(colaborador.getCodigoAC(), empresa, "01/01/2014", "05/12/2014");
+		TAula[] tAula = colaboradorTurmaManager.getTreinamentosPrevistoParaTRU(colaborador.getCodigoAC(), empresa, "01/01/2014 3:00", "05/12/2014 6:00");
 		
-		assertEquals(3, tAula.length);
+		assertEquals(2, tAula.length);
 		assertEquals("01/11/2014", ((TAula) tAula[0]).getData());
 		assertEquals("3:00", ((TAula) tAula[0]).getHoraIni());
 		assertEquals("5:00", ((TAula) tAula[0]).getHoraFim());
 		
-		assertEquals("05/12/2014", ((TAula) tAula[1]).getData());
-		assertEquals("5:00", ((TAula) tAula[1]).getHoraIni());
-		assertEquals("7:00", ((TAula) tAula[1]).getHoraFim());
-		
-		assertEquals("01/12/2014", ((TAula) tAula[2]).getData());
-		assertNull(((TAula) tAula[2]).getHoraIni());
-		assertNull(((TAula) tAula[2]).getHoraFim());
+		assertEquals("01/12/2014", ((TAula) tAula[1]).getData());
+		assertNull(((TAula) tAula[1]).getHoraIni());
+		assertNull(((TAula) tAula[1]).getHoraFim());
 	}
 	
 	public void testGetTreinamentosRealizadosParaTRU()

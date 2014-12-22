@@ -1412,14 +1412,14 @@ public class RHServiceImpl implements RHService
 		return false;
 	}
 	
-	public TAula[] getTreinamentosPrevistos(String empregadoCodigo, String empresaCodigo, String empresaGrupo, String dataIni, String dataFim)
+	public TAula[] getTreinamentosPrevistos(String empregadoCodigo, String empresaCodigo, String empresaGrupo, String periodoIni, String periodoFim)
 	{
 		try {
 			TAula[] tAulas = null;
 			Empresa empresa = empresaManager.findByCodigoAC(empresaCodigo, empresaGrupo);
 			
-			if(empresa != null && empresaCodigo != null && dataIni!= null && dataFim != null && !"".equals(empresaCodigo) && !"".equals(dataIni) && !"".equals(dataFim))
-				tAulas = colaboradorTurmaManager.getTreinamentosPrevistoParaTRU(empregadoCodigo, empresa, dataIni, dataFim);
+			if(empresa != null && empresaCodigo != null && periodoIni!= null && periodoFim != null && !"".equals(empresaCodigo) && !"".equals(periodoIni) && !"".equals(periodoFim))
+				tAulas = colaboradorTurmaManager.getTreinamentosPrevistoParaTRU(empregadoCodigo, empresa, periodoIni, periodoFim);
 			
 			return tAulas;
 		} catch (Exception e) {
@@ -1428,14 +1428,14 @@ public class RHServiceImpl implements RHService
 		}
 	}
 	
-	public TAula[] getTreinamentosCursados(String empregadoCodigo, String empresaCodigo, String empresaGrupo, String dataIni, String dataFim)
+	public TAula[] getTreinamentosCursados(String empregadoCodigo, String empresaCodigo, String empresaGrupo, String periodoIni, String periodoFim)
 	{
 		try {
 			TAula[] tAulas = null;
 			Empresa empresa = empresaManager.findByCodigoAC(empresaCodigo, empresaGrupo);
 			
-			if(empresa != null && empresaCodigo != null && dataIni!= null && dataFim != null && !"".equals(empresaCodigo) && !"".equals(dataIni) && !"".equals(dataFim))
-				tAulas = colaboradorTurmaManager.getTreinamentosRealizadosParaTRU(empregadoCodigo, empresa, dataIni, dataFim);
+			if(empresa != null && empresaCodigo != null && periodoIni!= null && periodoFim != null && !"".equals(empresaCodigo) && !"".equals(periodoIni) && !"".equals(periodoFim))
+				tAulas = colaboradorTurmaManager.getTreinamentosRealizadosParaTRU(empregadoCodigo, empresa, periodoIni, periodoFim);
 			
 			return tAulas;
 		} catch (Exception e) {

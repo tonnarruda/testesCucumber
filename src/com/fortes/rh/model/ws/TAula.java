@@ -2,39 +2,23 @@ package com.fortes.rh.model.ws;
 
 import java.io.Serializable;
 
+import com.fortes.rh.model.dicionario.StatusTAula;
+
 public class TAula implements Serializable
 {
 	private static final long serialVersionUID = 1L;
-	private String empresaCodigo;
-	private String empresaGrupo;
 	private String empregadoCodigo;
 	private String data;
 	private String horaIni;
 	private String horaFim;
 	private String cursoNome;
 	private String turmaNome;
-	private Integer status = 0;
-
+	private Integer status = StatusTAula.getIndiferente();
+	
 	public TAula()
 	{
 	}
-
-	public String getEmpresaCodigo() {
-		return empresaCodigo;
-	}
-
-	public void setEmpresaCodigo(String empresaCodigo) {
-		this.empresaCodigo = empresaCodigo;
-	}
-
-	public String getEmpresaGrupo() {
-		return empresaGrupo;
-	}
-
-	public void setEmpresaGrupo(String empresaGrupo) {
-		this.empresaGrupo = empresaGrupo;
-	}
-
+	
 	public String getEmpregadoCodigo() {
 		return empregadoCodigo;
 	}
@@ -90,5 +74,4 @@ public class TAula implements Serializable
 	public void setTurmaNome(String turmaNome) {
 		this.turmaNome = turmaNome;
 	}
-	
 }

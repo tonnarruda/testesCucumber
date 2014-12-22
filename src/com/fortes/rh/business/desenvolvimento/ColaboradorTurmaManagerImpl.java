@@ -40,6 +40,7 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
+import com.fortes.rh.util.StringUtil;
 import com.ibm.icu.math.BigDecimal;
 
 @SuppressWarnings("unchecked")
@@ -1031,89 +1032,14 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findColaboradorByCursos(cursosIds, turmasIds);
 	}
 
-	public TAula[] getTreinamentosPrevistoParaTRU(String colaboradorCodigoAC, Empresa empresa, String dataIni, String dataFim) 
+	public TAula[] getTreinamentosPrevistoParaTRU(String colaboradorCodigoAC, Empresa empresa, String periodoIni, String periodoFim) 
 	{
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findColabTreinamentosPrevistos(colaboradorCodigoAC, empresa.getId(), DateUtil.criarDataDiaMesAno(dataIni), DateUtil.criarDataDiaMesAno(dataFim));
-		
-		if(colaboradorTurmas.isEmpty())
-			return null;
-		
-		int interator = 0;
-		TAula tAula = null;
-		TAula[] tAulas = new TAula[colaboradorTurmas.size()];
-		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
-		{
-			tAula = new TAula();
-			tAula.setEmpregadoCodigo(colaboradorTurma.getColaborador().getCodigoAC());
-			tAula.setEmpresaCodigo(empresa.getCodigoAC());
-			tAula.setEmpresaGrupo(empresa.getGrupoAC());
-			tAula.setData(DateUtil.formataDiaMesAno(colaboradorTurma.getDiaTurma()));
-			tAula.setHoraIni(colaboradorTurma.getDiaTurmaHoraIni());
-			tAula.setHoraFim(colaboradorTurma.getDiaTurmaHoraFim());
-			
-			if(colaboradorTurma.getTurma() != null)
-				tAula.setTurmaNome(colaboradorTurma.getTurma().getDescricao());
-			if(colaboradorTurma.getCurso() != null)
-				tAula.setCursoNome(colaboradorTurma.getCurso().getNome());
-						
-			tAulas[interator++] = tAula;
-		}
-		
-		return tAulas;
+		return getDao().findColabTreinamentosPrevistos(colaboradorCodigoAC, empresa.getId(), periodoIni, periodoFim, false);
 	}
 
-	public TAula[] getTreinamentosRealizadosParaTRU(String colaboradorCodigoAC, Empresa empresa, String dataIni, String dataFim) 
+	public TAula[] getTreinamentosRealizadosParaTRU(String colaboradorCodigoAC, Empresa empresa, String periodoIni, String periodoFim) 
 	{
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findTurmaRealizadaByCodigoAc(colaboradorCodigoAC, DateUtil.criarDataDiaMesAno(dataIni), DateUtil.criarDataDiaMesAno(dataFim));
-		
-		if(colaboradorTurmas.isEmpty())
-			return null;
-		
-		Collection<ColaboradorPresenca> colaboradorPresencas = new ArrayList<ColaboradorPresenca>();
-		ColaboradorPresencaManager colaboradorPresencaManager = (ColaboradorPresencaManager) SpringUtil.getBeanOld("colaboradorPresencaManager");
-		DiaTurmaManager diaTurmaManager = (DiaTurmaManager) SpringUtil.getBeanOld("diaTurmaManager");
-		Collection<TAula> tAulas = new ArrayList<TAula>();
-		TAula tAula = null;
-		
-		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
-		{
-			Collection<DiaTurma> diaTurmas = diaTurmaManager.findByTurmaAndPeriodo(colaboradorTurma.getTurma().getId(), DateUtil.criarDataDiaMesAno(dataIni), DateUtil.criarDataDiaMesAno(dataFim));
-	
-			if (diaTurmas.isEmpty())
-				continue;
-
-			colaboradorPresencas = colaboradorPresencaManager.findPresencaByTurma(colaboradorTurma.getTurma().getId());
-
-			for (DiaTurma diaTurma : diaTurmas) 
-			{
-				tAula = new TAula();
-				tAula.setEmpregadoCodigo(colaboradorTurma.getColaborador().getCodigoAC());
-				tAula.setEmpresaCodigo(empresa.getCodigoAC());
-				tAula.setEmpresaGrupo(empresa.getGrupoAC());
-				tAula.setData(DateUtil.formataDiaMesAno(diaTurma.getDia()));
-				tAula.setHoraIni(diaTurma.getHoraIni());
-				tAula.setHoraFim(diaTurma.getHoraFim());
-
-				if(colaboradorTurma.getTurma() != null)
-					tAula.setTurmaNome(colaboradorTurma.getTurma().getDescricao());
-				if(colaboradorTurma.getCurso() != null)
-					tAula.setCursoNome(colaboradorTurma.getCurso().getNome());
-				
-				tAula.setStatus(1);
-				for (ColaboradorPresenca colaboradorPresenca : colaboradorPresencas) 
-					if(colaboradorPresenca.getDiaTurma().getId().equals(diaTurma.getId()) && colaboradorTurma.getId().equals(colaboradorPresenca.getColaboradorTurma().getId()))
-						tAula.setStatus(2);
-				
-				tAulas.add(tAula);
-			}
-		}
-		
-		int interator = 0;
-		TAula[] TAulasArray = new TAula[tAulas.size()];
-		for (TAula tAulaTemp : tAulas) 
-			TAulasArray[interator++] = tAulaTemp;
-		
-		return TAulasArray;
+		return getDao().findColabTreinamentosPrevistos(colaboradorCodigoAC, empresa.getId(), periodoIni, periodoFim, true);
 	}
 	
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)

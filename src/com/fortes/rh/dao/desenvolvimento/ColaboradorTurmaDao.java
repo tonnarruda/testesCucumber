@@ -12,6 +12,7 @@ import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DNT;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.ws.TAula;
 
 @SuppressWarnings("unchecked")
 public interface ColaboradorTurmaDao extends GenericDao<ColaboradorTurma>
@@ -45,6 +46,6 @@ public interface ColaboradorTurmaDao extends GenericDao<ColaboradorTurma>
 	Collection<ColaboradorTurma> findColaboradoresComEmailByTurma(Long turmaId, boolean somentePresentes);
 	Collection<ColaboradorTurma> findColabTreinamentos(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cursoIds, Long[] turmaIds, boolean considerarSomenteDiasPresente);
 	Collection<Colaborador> findColaboradorByCursos(Long[] cursosIds, Long[] turmasIds);
-	Collection<ColaboradorTurma> findColabTreinamentosPrevistos(String colaboradorCodigoAC,Long empresaId, Date dataIni, Date dataFim);
+	TAula[] findColabTreinamentosPrevistos(String colaboradorCodigoAC,Long empresaId, String periodoIni, String periodoFim, boolean considerarPresenca);
 	Collection<ColaboradorTurma> findTurmaRealizadaByCodigoAc(String colaboradorCodigoAC, Date dataIni, Date dataFim);
 }

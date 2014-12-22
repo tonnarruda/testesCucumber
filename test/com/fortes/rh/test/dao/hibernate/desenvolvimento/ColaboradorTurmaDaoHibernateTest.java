@@ -42,11 +42,13 @@ import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.StatusTAula;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.ws.TAula;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -1513,16 +1515,22 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	
     	DiaTurma diaTurma1 = DiaTurmaFactory.getEntity();
     	diaTurma1.setDia(DateUtil.criarDataMesAno(1, 11, 2014));
+    	diaTurma1.setHoraIni("8:00");
+    	diaTurma1.setHoraFim("10:00");
     	diaTurma1.setTurma(turma);
     	diaTurmaDao.save(diaTurma1);
     	
     	DiaTurma diaTurma2 = DiaTurmaFactory.getEntity();
     	diaTurma2.setDia(DateUtil.criarDataMesAno(2, 11, 2014));
+    	diaTurma2.setHoraIni("10:00");
+    	diaTurma2.setHoraFim("11:00");
     	diaTurma2.setTurma(turma);
     	diaTurmaDao.save(diaTurma2);
     	
     	DiaTurma diaTurma3 = DiaTurmaFactory.getEntity();
     	diaTurma3.setDia(DateUtil.criarDataMesAno(3, 11, 2014));
+    	diaTurma3.setHoraIni("11:00");
+    	diaTurma3.setHoraFim("12:00");
     	diaTurma3.setTurma(turma2);
     	diaTurmaDao.save(diaTurma3);
     	
@@ -1539,21 +1547,6 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaborador3.setCodigoAC("123456");
     	colaborador3.setEmpresa(empresa);
     	colaboradorDao.save(colaborador3);
-    	
-    	HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-    	historicoColaborador.setColaborador(colaborador);
-    	historicoColaborador.setData(new Date());
-    	historicoColaboradorDao.save(historicoColaborador);
-    	
-    	HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
-    	historicoColaborador2.setColaborador(colaborador2);
-    	historicoColaborador2.setData(new Date());
-    	historicoColaboradorDao.save(historicoColaborador2);
-    	
-    	HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity();
-    	historicoColaborador3.setColaborador(colaborador3);
-    	historicoColaborador3.setData(new Date());
-    	historicoColaboradorDao.save(historicoColaborador3);
     	
     	ColaboradorTurma colaboradorTurma = getEntity();
     	colaboradorTurma.setColaborador(colaborador);
@@ -1573,9 +1566,30 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	colaboradorTurma3.setCurso(curso);
     	colaboradorTurma3 = colaboradorTurmaDao.save(colaboradorTurma3);
     	
-    	Collection<ColaboradorTurma> colabTurmaRetorno = colaboradorTurmaDao.findColabTreinamentosPrevistos(null, empresa.getId(), DateUtil.criarDataMesAno(1, 11, 2014), DateUtil.criarDataMesAno(2, 11, 2014));
+    	ColaboradorPresenca colaboradorPresenca = ColaboradorPresencaFactory.getEntity();
+    	colaboradorPresenca.setDiaTurma(diaTurma1);
+    	colaboradorPresenca.setColaboradorTurma(colaboradorTurma);
+    	colaboradorPresenca.setPresenca(true);
+    	colaboradorPresencaDao.save(colaboradorPresenca);
     	
-    	assertEquals(2, colabTurmaRetorno.size());
+    	//miguel sql
+    	colaboradorTurmaDao.find(colaboradorTurma);
+    	
+    	TAula[] tAula1 = colaboradorTurmaDao.findColabTreinamentosPrevistos(null, empresa.getId(), "01/11/2014 08:00", "02/11/2014 10:00", false);
+    	TAula[] tAula2 = colaboradorTurmaDao.findColabTreinamentosPrevistos(null, empresa.getId(), "01/11/2014 10:00", "03/11/2014 12:00", false);
+    	TAula[] tAula3 = colaboradorTurmaDao.findColabTreinamentosPrevistos(null, empresa.getId(), "01/11/2014", "02/11/2014", false);
+    	TAula[] tAula4 = colaboradorTurmaDao.findColabTreinamentosPrevistos(colaborador.getCodigoAC(), empresa.getId(), "01/11/2014", "02/11/2014", false);
+    	TAula[] tAula5 = colaboradorTurmaDao.findColabTreinamentosPrevistos(colaborador.getCodigoAC(), empresa.getId(), "01/11/2014", "02/11/2014", true);
+    	
+    	assertEquals(1, tAula1.length);
+    	assertEquals((Integer) StatusTAula.getIndiferente(), ((TAula) tAula1[0]).getStatus());
+    	assertEquals(2, tAula2.length);
+    	assertEquals(2, tAula3.length);
+    	assertEquals(2, tAula4.length);
+    	assertEquals((Integer) StatusTAula.getIndiferente(), ((TAula)tAula4[0]).getStatus());
+    	assertEquals(2, tAula5.length);
+    	assertEquals("Presente no dia",(Integer) StatusTAula.getPresente(), ((TAula)tAula5[0]).getStatus());
+    	assertEquals("Faltou no dia",(Integer) StatusTAula.getFalta(), ((TAula)tAula5[1]).getStatus());
     }
 
     public void testFindByCodigoAcTurmaRealizada()

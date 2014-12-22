@@ -358,20 +358,6 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.diaPresente = diaPresente;
 	}
 	
-
-	//	findColabTreinamentosPrevistos	
-	public ColaboradorTurma(Long Id, String colabCodigoAc, Date diaTurma, String diaTurmaHoraIni, String diaTurmaHoraFim, String cursoNome, String turmaDescricao)
-	{
-		setId(Id);
-		setColaboradorCodigoAc(colabCodigoAc);
-		this.diaPresente = diaTurma;
-		this.diaTurma = diaTurma;
-		this.diaTurmaHoraIni = diaTurmaHoraIni;
-		this.diaTurmaHoraFim = diaTurmaHoraFim;
-		this.setCursoNome(cursoNome);
-		this.setTurmaDescricao(turmaDescricao);
-	}
-	
 	public void setTurmaRealizada(Boolean turmaRealizada)
 	{
 		if (this.turma == null)
