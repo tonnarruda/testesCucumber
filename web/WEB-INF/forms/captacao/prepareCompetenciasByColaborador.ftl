@@ -63,7 +63,7 @@
 
 				<#assign j = 1/>
 				<#list niveisCompetenciaFaixaSalariais as comp>
-					competencias[${j}] = '${comp.competenciaDescricao}';
+					competencias[${j}] = "${comp.competenciaDescricao}";
 					<#assign j = j + 1/>
 				</#list>
 				
