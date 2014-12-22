@@ -46,8 +46,7 @@ public class AvaliacaoCursoEditActionTest extends MockObjectTestCase
     	action.setAvaliacaoCurso(avaliacaoCurso);
     	
     	avaliacaoCursoManager.expects(once()).method("findById").with(eq(avaliacaoCurso.getId())).will(returnValue(avaliacaoCurso));
-    	avaliacaoCursoManager.expects(once()).method("existeAvaliacaoCursoDeTipoNotaOuPorcentagemRespondida").with(eq(avaliacaoCurso.getId())).will(returnValue(false));
-    	avaliacaoCursoManager.expects(once()).method("existeAvaliacaoCursoDeTipoAvaliacaoRespondida").with(eq(avaliacaoCurso.getId())).will(returnValue(false));
+    	avaliacaoCursoManager.expects(once()).method("existeAvaliacaoCursoRespondida").with(eq(avaliacaoCurso.getId()), eq(avaliacaoCurso.getTipo())).will(returnValue(false));
     	avaliacaoManager.expects(once()).method("findToList").withAnyArguments();
     	assertEquals("success", action.prepareUpdate());
     }

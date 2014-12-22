@@ -5,6 +5,7 @@ import java.util.Collection;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
+import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
 
 public class AvaliacaoCursoManagerImpl extends GenericManagerImpl<AvaliacaoCurso, AvaliacaoCursoDao> implements AvaliacaoCursoManager
 {
@@ -34,13 +35,8 @@ public class AvaliacaoCursoManagerImpl extends GenericManagerImpl<AvaliacaoCurso
 		return getDao().buscaFiltro(titulo);
 	}
 	
-	public boolean existeAvaliacaoCursoDeTipoNotaOuPorcentagemRespondida(Long avaliacaoCursoId)
+	public boolean existeAvaliacaoCursoRespondida(Long avaliacaoCursoId, char tipoAvaliacaoCurso)
 	{
-		return getDao().existeAvaliacaoCursoDeTipoNotaOuPorcentagemRespondida(avaliacaoCursoId);
-	}
-	
-	public boolean existeAvaliacaoCursoDeTipoAvaliacaoRespondida(Long avaliacaoCursoId)
-	{
-		return getDao().existeAvaliacaoCursoDeTipoAvaliacaoRespondida(avaliacaoCursoId);
+		return getDao().existeAvaliacaoCursoRespondida(avaliacaoCursoId, tipoAvaliacaoCurso);
 	}
 }

@@ -8,6 +8,7 @@ import java.util.Date;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.dao.desenvolvimento.AproveitamentoAvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
@@ -17,8 +18,10 @@ import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
@@ -27,10 +30,12 @@ import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -43,6 +48,7 @@ import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
@@ -58,6 +64,8 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 	private AreaOrganizacionalDao areaOrganizacionalDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
 	private DiaTurmaDao diaTurmaDao;
+	private ColaboradorQuestionarioDao colaboradorQuestionarioDao; 
+	private AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao; 
 
 	public Curso getEntity()
 	{
@@ -814,7 +822,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		assertEquals(2, cursoDao.findEmpresasParticipantes(curso.getId()).size());
 	}
 	
-	public void findEmpresaByCurso()
+	public void testFindEmpresaByCurso()
 	{
 		Empresa emp1 = EmpresaFactory.getEmpresa();
 		empresaDao.save(emp1);
@@ -824,7 +832,63 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		curso.setEmpresa(emp1);
 		cursoDao.save(curso);
 		
-		assertEquals(emp1.getId(), cursoDao.findEmpresaByCurso(curso.getId()));
+		assertEquals(emp1.getId(), cursoDao.findEmpresaByCurso(curso.getId()).getId());
+	}
+	
+	public void testExisteAvaliacaoAlunoRespondida()
+	{
+		Curso curso1 = criaCurso(TipoAvaliacaoCurso.NOTA, true);
+		Curso curso2 = criaCurso(TipoAvaliacaoCurso.PORCENTAGEM, true);
+		Curso curso3 = criaCurso(TipoAvaliacaoCurso.AVALIACAO, true);
+		
+		boolean existeAvaliacaoAluno1Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso1.getId(), TipoAvaliacaoCurso.NOTA); 
+		boolean existeAvaliacaoAluno2Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso2.getId(), TipoAvaliacaoCurso.PORCENTAGEM); 
+		boolean existeAvaliacaoAluno3Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso3.getId(), TipoAvaliacaoCurso.AVALIACAO); 
+		
+		assertTrue("Avaliação por nota com resposta", existeAvaliacaoAluno1Respondida);
+		assertTrue("Avaliação por porcentagem com resposta", existeAvaliacaoAluno2Respondida);
+		assertTrue("Avaliação por avaliação com resposta", existeAvaliacaoAluno3Respondida);
+		
+		Curso curso4 = criaCurso(TipoAvaliacaoCurso.NOTA, false);
+		Curso curso5 = criaCurso(TipoAvaliacaoCurso.PORCENTAGEM, false);
+		Curso curso6 = criaCurso(TipoAvaliacaoCurso.AVALIACAO, false);
+		
+		boolean existeAvaliacaoAluno4Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso4.getId(), TipoAvaliacaoCurso.NOTA); 
+		boolean existeAvaliacaoAluno5Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso5.getId(), TipoAvaliacaoCurso.PORCENTAGEM); 
+		boolean existeAvaliacaoAluno6Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso6.getId(), TipoAvaliacaoCurso.AVALIACAO); 
+		
+		assertFalse("Avaliação por nota sem resposta", existeAvaliacaoAluno4Respondida);
+		assertFalse("Avaliação por porcentagem sem resposta", existeAvaliacaoAluno5Respondida);
+		assertFalse("Avaliação por avaliação sem resposta", existeAvaliacaoAluno6Respondida);
+		
+	}
+	
+	private Curso criaCurso(char tipoAvaliacaoCurso, boolean comResposta)
+	{
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+
+		if(comResposta){
+			if(tipoAvaliacaoCurso == TipoAvaliacaoCurso.AVALIACAO){
+				Turma turma = TurmaFactory.getEntity();
+				turma.setCurso(curso);
+				turmaDao.save(turma);
+				
+				ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+				colaboradorQuestionario.setTurma(turma);
+				colaboradorQuestionarioDao.save(colaboradorQuestionario);
+			} else {
+				ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+				colaboradorTurma.setCurso(curso);
+				colaboradorTurmaDao.save(colaboradorTurma);
+				
+				AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso = new AproveitamentoAvaliacaoCurso();
+				aproveitamentoAvaliacaoCurso.setColaboradorTurma(colaboradorTurma);
+				aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso);
+			}
+		}
+		
+		return curso;
 	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
@@ -852,16 +916,28 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		this.conhecimentoDao = conhecimentoDao;
 	}
 
-	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
+	{
 		this.areaOrganizacionalDao = areaOrganizacionalDao;
 	}
 
-	public void setHistoricoColaboradorDao(
-			HistoricoColaboradorDao historicoColaboradorDao) {
+	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)
+	{
 		this.historicoColaboradorDao = historicoColaboradorDao;
 	}
 
-	public void setDiaTurmaDao(DiaTurmaDao diaTurmaDao) {
+	public void setDiaTurmaDao(DiaTurmaDao diaTurmaDao)
+	{
 		this.diaTurmaDao = diaTurmaDao;
+	}
+
+	public void setColaboradorQuestionarioDao(ColaboradorQuestionarioDao colaboradorQuestionarioDao)
+	{
+		this.colaboradorQuestionarioDao = colaboradorQuestionarioDao;
+	}
+
+	public void setAproveitamentoAvaliacaoCursoDao(AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao)
+	{
+		this.aproveitamentoAvaliacaoCursoDao = aproveitamentoAvaliacaoCursoDao;
 	}
 }

@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -23,6 +24,7 @@ import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -457,31 +459,24 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
     	return (Empresa) criteria.uniqueResult();
 	}
 	
-	public boolean existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida(Long cursoId) 
+	public boolean existeAvaliacaoAlunoRespondida(Long cursoId, char tipoAvaliacaoCurso) 
 	{
-		Criteria criteria = getSession().createCriteria(AproveitamentoAvaliacaoCurso.class,"a");
-		criteria.createCriteria("a.colaboradorTurma", "ct", Criteria.LEFT_JOIN);
+		Criteria criteria = null;
+		
+		if(tipoAvaliacaoCurso == TipoAvaliacaoCurso.AVALIACAO){
+			criteria = getSession().createCriteria(ColaboradorQuestionario.class,"cq");
+			criteria.createCriteria("cq.turma", "join");
+		} else {
+			criteria = getSession().createCriteria(AproveitamentoAvaliacaoCurso.class,"a");
+			criteria.createCriteria("a.colaboradorTurma", "join");
+		}
 		
 		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("a.id"), "id");
+		p.add(Projections.count("id"));
 		criteria.setProjection(p);
 		
-		criteria.add(Expression.eq("ct.curso.id", cursoId));
+		criteria.add(Expression.eq("join.curso.id", cursoId));
 		
-		return criteria.list().size() > 0;
-	}
-	
-	public boolean existeAvaliacaoAlunoDeTipoAvaliacaoRespondida(Long cursoId) 
-	{
-		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class,"cq");
-		criteria.createCriteria("cq.turma", "t", Criteria.LEFT_JOIN);
-		
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("cq.id"), "id");
-		criteria.setProjection(p);
-		
-		criteria.add(Expression.eq("t.curso.id", cursoId));
-		
-		return criteria.list().size() > 0;
+		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 }

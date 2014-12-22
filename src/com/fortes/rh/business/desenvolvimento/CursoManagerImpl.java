@@ -16,6 +16,7 @@ import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -232,12 +233,12 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 	
 	public boolean existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida(Long cursoId) 
 	{
-		return getDao().existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida(cursoId);
+		return getDao().existeAvaliacaoAlunoRespondida(cursoId, TipoAvaliacaoCurso.NOTA); // Esse tipo pode ser também PERCENTUAL
 	}
 	
 	public boolean existeAvaliacaoAlunoDeTipoAvaliacaoRespondida(Long cursoId)
 	{
-		return getDao().existeAvaliacaoAlunoDeTipoAvaliacaoRespondida(cursoId);
+		return getDao().existeAvaliacaoAlunoRespondida(cursoId, TipoAvaliacaoCurso.AVALIACAO);
 	}
 	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)

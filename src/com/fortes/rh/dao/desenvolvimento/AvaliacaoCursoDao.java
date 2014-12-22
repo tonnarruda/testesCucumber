@@ -7,7 +7,6 @@ import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 
 public interface AvaliacaoCursoDao extends GenericDao<AvaliacaoCurso> 
 {
-
 	Collection<AvaliacaoCurso> findByCursos(Long[] cursosIds);
 
 	Integer countAvaliacoes(Long turmaId, String wherePor);
@@ -16,9 +15,5 @@ public interface AvaliacaoCursoDao extends GenericDao<AvaliacaoCurso>
 	
 	public Collection<AvaliacaoCurso> buscaFiltro(String titulo);
 	
-	public boolean existeAvaliacaoCursoDeTipoNotaOuPorcentagemRespondida(Long avaliacaoCursoId);
-
-	public boolean existeAvaliacaoCursoDeTipoAvaliacaoRespondida(Long avaliacaoCursoId);
-
-	
+	public boolean existeAvaliacaoCursoRespondida(Long avaliacaoCursoId, char tipoAvaliacaoCurso);
 }

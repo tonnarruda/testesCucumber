@@ -30,6 +30,5 @@ public interface CursoDao extends GenericDao<Curso>
 	public Collection<Curso> findAllByEmpresasParticipantes(Long... empresasIds);
 	public boolean existeEmpresasNoCurso(Long empresaId, Long cursoId);
 	public Collection<Empresa> findEmpresasParticipantes(Long cursoId);
-	public boolean existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida(Long cursoId);
-	public boolean existeAvaliacaoAlunoDeTipoAvaliacaoRespondida(Long cursoId);
+	public boolean existeAvaliacaoAlunoRespondida(Long cursoId, char tipoAvaliacaoCurso);
 }
