@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -2448,7 +2449,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public Collection<Colaborador> findParentesByNome(Long colaboradorId, Long empresaId, String... nome) 
 	{
-		Collection<Colaborador> parentes = new ArrayList<Colaborador>();
+		Collection<Colaborador> parentes = new HashSet<Colaborador>();
 		
 		for (String nm : nome)
 		{

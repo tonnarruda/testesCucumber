@@ -123,7 +123,7 @@
 				ajustaBotoes(1, 1);
 				
 			<#if edicao == "true">
-				$('#nomePai, #nomeMae, #nomeConjuge').blur(function() {
+				$('#nomePai, #nomeMae, #nomeConjuge, #nome').blur(function() {
 					if (this.value) verificaParentes([this.value]);
 				});
 			</#if>

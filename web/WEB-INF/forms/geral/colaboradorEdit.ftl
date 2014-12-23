@@ -224,7 +224,7 @@
 			</#if>
 			
 			<#if edicao == "false">
-				$('#nomePai, #nomeMae, #nomeConjuge').blur(function() {
+				$('#nomePai, #nomeMae, #nomeConjuge, #nome').blur(function() {
 					if (this.value) verificaParentes(colaboradorId, [this.value]);
 				});
 				
@@ -368,7 +368,7 @@
 		{
 			if (setaCampos() && validaFormularioDinamico(true))
 			{
-				verificaParentes(colaboradorId, [$('#nomePai').val(), $('#nomeMae').val(), $('#nomeConjuge').val()], validaFormularioDinamico);
+				verificaParentes(colaboradorId, [$('#nomePai').val(), $('#nomeMae').val(), $('#nomeConjuge').val(), $('#nome').val()], validaFormularioDinamico);
 			}
 		}
 	</script>
