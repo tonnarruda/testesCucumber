@@ -1505,9 +1505,9 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	Curso curso = CursoFactory.getEntity();
     	cursoDao.save(curso);
     	
-    	Turma turma = TurmaFactory.getEntity();
-    	turma.setCurso(curso);
-    	turmaDao.save(turma);
+    	Turma turma1 = TurmaFactory.getEntity();
+    	turma1.setCurso(curso);
+    	turmaDao.save(turma1);
     	
     	Turma turma2 = TurmaFactory.getEntity();
     	turma2.setCurso(curso);
@@ -1517,14 +1517,14 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	diaTurma1.setDia(DateUtil.criarDataMesAno(1, 11, 2014));
     	diaTurma1.setHoraIni("8:00");
     	diaTurma1.setHoraFim("10:00");
-    	diaTurma1.setTurma(turma);
+    	diaTurma1.setTurma(turma1);
     	diaTurmaDao.save(diaTurma1);
     	
     	DiaTurma diaTurma2 = DiaTurmaFactory.getEntity();
     	diaTurma2.setDia(DateUtil.criarDataMesAno(2, 11, 2014));
     	diaTurma2.setHoraIni("10:00");
     	diaTurma2.setHoraFim("11:00");
-    	diaTurma2.setTurma(turma);
+    	diaTurma2.setTurma(turma1);
     	diaTurmaDao.save(diaTurma2);
     	
     	DiaTurma diaTurma3 = DiaTurmaFactory.getEntity();
@@ -1550,13 +1550,13 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	
     	ColaboradorTurma colaboradorTurma = getEntity();
     	colaboradorTurma.setColaborador(colaborador);
-    	colaboradorTurma.setTurma(turma);
+    	colaboradorTurma.setTurma(turma1);
     	colaboradorTurma.setCurso(curso);
     	colaboradorTurma = colaboradorTurmaDao.save(colaboradorTurma);
     	
     	ColaboradorTurma colaboradorTurma2 = getEntity();
     	colaboradorTurma2.setColaborador(colaborador2);
-    	colaboradorTurma2.setTurma(turma);
+    	colaboradorTurma2.setTurma(turma1);
     	colaboradorTurma2.setCurso(curso);
     	colaboradorTurma2 = colaboradorTurmaDao.save(colaboradorTurma2);
 
@@ -1580,6 +1580,8 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	TAula[] tAula3 = colaboradorTurmaDao.findColaboradorTreinamentosParaTRU(null, empresa.getId(), "01/11/2014", "02/11/2014", false);
     	TAula[] tAula4 = colaboradorTurmaDao.findColaboradorTreinamentosParaTRU(colaborador.getCodigoAC(), empresa.getId(), "01/11/2014", "02/11/2014", false);
     	TAula[] tAula5 = colaboradorTurmaDao.findColaboradorTreinamentosParaTRU(colaborador.getCodigoAC(), empresa.getId(), "01/11/2014", "02/11/2014", true);
+    	TAula[] tAula6 = colaboradorTurmaDao.findColaboradorTreinamentosParaTRU(null, empresa.getId(), "01/11/2014 7:00", "01/11/2014 8:00", false);
+    	TAula[] tAula7 = colaboradorTurmaDao.findColaboradorTreinamentosParaTRU(null, empresa.getId(), "02/11/2014 11:00", "03/11/2014 13:00", false);
     	
     	assertEquals(1, tAula1.length);
     	assertEquals((Integer) StatusTAula.getIndiferente(), ((TAula) tAula1[0]).getStatus());
@@ -1590,6 +1592,8 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	assertEquals(2, tAula5.length);
     	assertEquals("Presente no dia",(Integer) StatusTAula.getPresente(), ((TAula)tAula5[0]).getStatus());
     	assertEquals("Faltou no dia",(Integer) StatusTAula.getFalta(), ((TAula)tAula5[1]).getStatus());
+    	assertEquals(0, tAula6.length);
+    	assertEquals(1, tAula7.length);
     }
 
     public void testFindByCodigoAcTurmaRealizada()
