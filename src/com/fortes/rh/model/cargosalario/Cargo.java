@@ -98,18 +98,20 @@ public class Cargo extends AbstractModel implements Serializable
 	{
 	}
 
-	public Cargo(Long id, String nome)
+	public Cargo(Long id, String nome, boolean ativo)
 	{
 		this.setId(id);
 		this.setNome(nome);
+		this.ativo = ativo;
 	}
 	
-	public Cargo(Long id, String nomeMercado, Long empresaId, String empresaNome)
+	public Cargo(Long id, String nomeMercado, boolean ativo, Long empresaId, String empresaNome)
 	{
 		this.setId(id);
 		this.setNomeMercado(nomeMercado);
 		this.setEmpresaIdProjection(empresaId);
 		this.setEmpresaNomeProjection(empresaNome);
+		this.ativo = ativo;
 	}
 
 	public Empresa getEmpresa()
@@ -298,6 +300,11 @@ public class Cargo extends AbstractModel implements Serializable
 	{
 		return nomeMercado;
 	}
+	
+	public String getNomeMercadoComStatus()
+	{
+		return nomeMercado + (ativo ? " (Ativa)" : " (Inativa)");
+	}
 
 	@NaoAudita
 	public String getDescEscolaridade()
@@ -372,6 +379,15 @@ public class Cargo extends AbstractModel implements Serializable
 			return this.empresa.getNome() + " - " + this.nomeMercado;
 		else
 			return this.nomeMercado;
+	}
+	
+	@NaoAudita
+	public String getNomeMercadoComEmpresaEStatus()
+	{
+		if(this.empresa != null && this.empresa.getNome() != null)
+			return this.empresa.getNome() + " - " + this.nomeMercado  + (ativo ? " (Ativa)" : " (Inativa)");
+		else
+			return this.nomeMercado  + (ativo ? " (Ativa)" : " (Inativa)");
 	}
 
 	@NaoAudita

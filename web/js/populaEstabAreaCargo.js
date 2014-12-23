@@ -33,7 +33,7 @@ function populaCargosByAreaVinculados()
 		if(areasIds.length == 0)
 			CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
 		else
-			CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
+			CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresaEStatus", empresaId);
 	}
 	else
 		CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);

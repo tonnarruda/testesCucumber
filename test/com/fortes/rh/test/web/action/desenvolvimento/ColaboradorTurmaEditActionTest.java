@@ -230,7 +230,7 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
     	estabelecimentoManager.expects(once()).method("findAllSelect").will(returnValue(Arrays.asList(empresa)));
     	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
     	areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresa.getId()),ANYTHING,ANYTHING).will(returnValue(Arrays.asList(new AreaOrganizacional(1L, "area", true))));
-    	cargoManager.expects(once()).method("populaCheckBox").with(eq(true), ANYTHING).will(returnValue(Arrays.asList(new Cargo(1L, "cargo"))));
+    	cargoManager.expects(once()).method("populaCheckBox").with(eq(true), ANYTHING).will(returnValue(Arrays.asList(new Cargo(1L, "cargo", true))));
     	manager.expects(once()).method("findColaboradoresByCursoTurmaIsNull").with(eq(turma.getCurso().getId())).will(returnValue(colaboradorTurmas));
     	manager.expects(once()).method("getListaColaboradores").with(eq(colaboradorTurmas)).will(returnValue(colaboradors));
 	}

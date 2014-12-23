@@ -184,9 +184,9 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 
 	public Collection<CheckBox> populaCheckBox(boolean exibirNomeEmpresa, Long... empresaIds)
 	{
-		String getCheckList = "getNomeMercado";
+		String getCheckList = "getNomeMercadoComStatus";
 		if(exibirNomeEmpresa)
-			getCheckList = "getNomeMercadoComEmpresa";
+			getCheckList = "getNomeMercadoComEmpresaEStatus";
 		
 		try
 		{
@@ -212,7 +212,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 			Long [] gruposIds = LongUtil.arrayStringToArrayLong(gruposCheck);
 			Collection<Cargo> cargos = getDao().findByGrupoOcupacionalIdsProjection(gruposIds, empresaId, null);
 
-			Collection<CheckBox> checks = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercado");
+			Collection<CheckBox> checks = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercadoComStatus");
 
 			return CheckListBoxUtil.marcaCheckListBox(checks, cargosCheck);
 		}
@@ -305,7 +305,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		try
 		{
 			Collection<Cargo> cargos = getDao().findAllSelectDistinctNomeMercado();
-			return CheckListBoxUtil.populaCheckListBox(cargos, "getNomeMercado", "getNomeMercado");
+			return CheckListBoxUtil.populaCheckListBox(cargos, "getNomeMercado", "getNomeMercadoComStatus");
 		}
 		catch (Exception e)
 		{

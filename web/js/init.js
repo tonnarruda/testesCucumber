@@ -64,11 +64,7 @@ $(function(){
 	try {
 		if ( $('.listCheckBoxFilter').length ) {
 			$('.listCheckBoxFilter').keyup(function() {
-		        var texto = removerAcento( $( this ).val().toUpperCase() );
-			    $( this ).parents( '.listCheckBoxContainer' ).find( ':checkbox' ).each( function() {
-			    	 nomeTeste = removerAcento( $( this ).parent( 'label' ).text().toUpperCase() );
-					 $( this ).parent().toggle( nomeTeste.indexOf( texto ) >= 0 );
-		    	});
+				filtroMultiSelectBox($( this ));
 			});
 		}
 	} catch(e) {}

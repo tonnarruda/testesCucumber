@@ -105,6 +105,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nomeMercado"), "nomeMercado");
+		p.add(Projections.property("c.ativo"), "ativo");
 
 		criteria.setProjection(p);
 
@@ -134,6 +135,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nomeMercado"), "nomeMercado");
+		p.add(Projections.property("c.ativo"), "ativo");
 		p.add(Projections.property("e.id"), "empresaIdProjection");
 		p.add(Projections.property("e.nome"), "empresaNomeProjection");
 
@@ -197,6 +199,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nomeMercado"), "nomeMercado");
 		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.ativo"), "ativo");
 		p.add(Projections.property("e.id"), "empresaIdProjection");
 		p.add(Projections.property("e.nome"), "empresaNomeProjection");
 
@@ -294,7 +297,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 	public Collection<Cargo> findByGrupoOcupacional(Long grupoOcupacionalId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Cargo(c.id, c.nome) ");
+		hql.append("select new Cargo(c.id, c.nome, c.ativo) ");
 		hql.append("from GrupoOcupacional as g ");
 		hql.append("join g.cargos as c ");
 		hql.append("	where g.id = :grupoOcupacionalId ");
@@ -309,7 +312,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new Cargo(c.id, c.nome) ");
+		hql.append("select new Cargo(c.id, c.nome, c.ativo) ");
 
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
@@ -340,6 +343,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.distinct(Projections.property("c.nomeMercado")), "nomeMercado");
+		p.add(Projections.property("c.ativo"), "ativo");
 		criteria.setProjection(p);
 		
 		criteria.addOrder(Order.asc("c.nomeMercado"));
@@ -468,6 +472,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nomeMercado"), "nomeMercado");
 		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.ativo"), "ativo");
 		p.add(Projections.property("e.id"), "empresaIdProjection");
 		p.add(Projections.property("e.nome"), "empresaNomeProjection");
 
@@ -494,6 +499,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nomeMercado"), "nomeMercado");
 		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.ativo"), "ativo");
 		
 		criteria.setProjection(p);
 		
@@ -520,7 +526,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new Cargo(c.id, c.nomeMercado, e.id, e.nome) ");
+		hql.append("select new Cargo(c.id, c.nomeMercado, c.ativo, e.id, e.nome) ");
 		hql.append("from Cargo as c ");
 		hql.append("left join c.areasOrganizacionais as a ");
 		hql.append("left join c.empresa as e ");
@@ -528,7 +534,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		if(empresaId != null)
 			hql.append("where e.id = :empresaId ");
 		
-		hql.append("group by c.id, c.nomeMercado, e.id, e.nome ");
+		hql.append("group by c.id, c.nomeMercado, c.ativo, e.id, e.nome ");
 		hql.append("having count(a.id) = 0 ");
 		hql.append("order by e.nome, c.nomeMercado ");
 
@@ -542,7 +548,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 	public Collection<Cargo> getCargosSemGrupoRelacionado(Long empresaId) 
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Cargo(c.id, c.nomeMercado, e.id, e.nome) ");
+		hql.append("select new Cargo(c.id, c.nomeMercado, c.ativo, e.id, e.nome) ");
 		hql.append("from Cargo as c ");
 		hql.append("left join c.empresa as e ");
 		hql.append("where e.id = :empresaId ");
@@ -559,7 +565,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select distinct new Cargo(c.id, c.nomeMercado, e.id, e.nome) ");
+		hql.append("select distinct new Cargo(c.id, c.nomeMercado, c.ativo, e.id, e.nome) ");
 		hql.append("from Cargo as c ");
 		hql.append("left join c.areasOrganizacionais as a ");
 		hql.append("left join c.empresa as e ");

@@ -1343,26 +1343,28 @@ function naoInseririrCharacterComValor(e,value)
 	return true;
 }
 
-function escondeInativos(idSomenteAtivo, idListMultiCheckBox)
+function exibeAtivosOuInativos(idAtivoInativo)
 {
-	$('#' + idListMultiCheckBox + ' label:contains("Ativ")').show();
-	$('#' + idListMultiCheckBox + ' label:contains("Inativ")').show();
-	
-	filtro = $('#' + idSomenteAtivo).val();
-	
-	var ativo = /Ativ[ao]s/.exec(filtro);
-	var inativo = /Inativ[ao]s/.exec(filtro);
-	
-	if(ativo)
-	{
-		$('#' + idListMultiCheckBox + ' label:contains("(Inativo)")').hide();
-		$('#' + idListMultiCheckBox + ' label:contains("(Inativa)")').hide();
-	}
-	
-	if (inativo)
-	{
-		$('#' + idListMultiCheckBox + ' label:contains("(Ativo)")').hide();
-		$('#' + idListMultiCheckBox + ' label:contains("(Ativa)")').hide();
-	}
+	filtroMultiSelectBox($('#' + idAtivoInativo).parent().find(".listCheckBoxFilter"));
 }
 
+function filtroMultiSelectBox(buscaId)
+{
+	var selectAtivoInativo = buscaId.parent().find(".somenteAtivosCheck").val();
+    var texto = removerAcento( buscaId.val().toUpperCase() );
+    buscaId.parents('.listCheckBoxContainer').find( ':checkbox' ).each( function() {
+    	 nomeTeste = removerAcento( $( this ).parent( 'label' ).text().toUpperCase() );
+    	 
+    	 if(nomeTeste.indexOf( texto ) < 0)
+    		 $( this ).parent().hide();
+    	 else
+    	{
+    		 if( selectAtivoInativo == "Ativos" && (nomeTeste.indexOf( "(ATIV" ) < 0 ) )
+    			 $( this ).parent().hide();
+    		 else if( selectAtivoInativo == "Inativos" && (nomeTeste.indexOf( "(INATIV" ) < 0 ))
+    			 $( this ).parent().hide();
+    		 else
+    			 $( this ).parent().show();
+    	}
+	});
+}

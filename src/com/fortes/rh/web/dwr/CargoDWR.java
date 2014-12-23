@@ -18,7 +18,7 @@ public class CargoDWR
 	{
 		Collection<Cargo> cargos = getCargosByGrupoCollection(grupoOcupacionalIds, empresaId, null);
 
-		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId","getNomeMercado");
+		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId","getNomeMercadoComStatus");
 	}
 
 	public Map getCargoByGrupoAtivoInativo(String[] grupoOcupacionalIds, Long empresaId, Character ativo)
@@ -31,7 +31,7 @@ public class CargoDWR
 		
 		Collection<Cargo> cargos = getCargosByGrupoCollection(grupoOcupacionalIds, empresaId, cargoAtivo);
 		
-		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId","getNomeMercado");
+		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId","getNomeMercadoComStatus");
 	}
 	
 	private Collection<Cargo> getCargosByGrupoCollection (String[] grupoOcupacionalIds, Long empresaId, Boolean cargoAtivo)
@@ -73,7 +73,7 @@ public class CargoDWR
 			cUtil.sortCollectionStringIgnoreCase(cargos, "nomeMercado");
 		}
 		
-		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId", "getNomeMercado");
+		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId", "getNomeMercadoComStatus");
 	}
 	public Map getCargoByAreaMaisSemAreaRelacionada(String[] areaOrganizacionalIds, String label, Long empresaId)
 	{
@@ -105,12 +105,12 @@ public class CargoDWR
 		if(empresaId == -1)//Caso a empresa passada seja -1, vai trazer todos os cargos dando distinct pelo nomeMercado
 		{
 			cargos = cargoManager.findAllSelectDistinctNome();
-			getParametro = "getNomeMercado";
+			getParametro = "getNomeMercadoComStatus";
 		}
 		else
 			cargos = cargoManager.findAllSelect(empresaId, "nomeMercado", null, Cargo.TODOS);
 
-		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos, getParametro, "getNomeMercado");
+		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos, getParametro, "getNomeMercadoComStatus");
 	}
 	
 	private Collection<Cargo> getFindAllSelect(Long empresaId, Long[] empresaIds) 
@@ -127,7 +127,7 @@ public class CargoDWR
 	public Map getByEmpresas(Long empresaId, Long[] empresaIds)
 	{
 		Collection<Cargo> cargos = getFindAllSelect(empresaId, empresaIds);
-		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos, "getId", "getNomeMercadoComEmpresa");
+		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos, "getId", "getNomeMercadoComEmpresaEStatus");
 	}
 	
 	public Map getByEmpresasMaisSemAreaRelacionada(Long empresaId, Long[] empresaIds)
@@ -146,10 +146,10 @@ public class CargoDWR
 		if(cargosSemAreaRelacionada != null && cargosSemAreaRelacionada.size() > 0)
 		{
 			cargos.addAll(cargosSemAreaRelacionada);
-			cUtil.sortCollectionStringIgnoreCase(cargos, "nomeMercadoComEmpresa");
+			cUtil.sortCollectionStringIgnoreCase(cargos, "nomeMercadoComEmpresaEStatus");
 		}
 		
-		return cUtil.convertCollectionToMap(cargos, getParametro, "getNomeMercadoComEmpresa");
+		return cUtil.convertCollectionToMap(cargos, getParametro, "getNomeMercadoComEmpresaEStatus");
 	}
 	
 	public boolean verificaCargoSemAreaRelacionada(Long empresaId)
@@ -173,7 +173,7 @@ public class CargoDWR
 	public Map<Long, String> getCargosByAreaGrupo(Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId)
 	{
 		Collection<Cargo> cargos = cargoManager.findByAreaGrupo(areaOrganizacionalIds, grupoOcupacionalIds, empresaId);
-		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId", "getNomeMercadoComEmpresa");
+		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId", "getNomeMercadoComEmpresaEStatus");
 	}
 	
 	public void setCargoManager(CargoManager cargoManager)

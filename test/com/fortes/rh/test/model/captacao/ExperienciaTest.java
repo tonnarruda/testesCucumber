@@ -20,7 +20,7 @@ public class ExperienciaTest extends TestCase
 	
 	public void testDeveriaPossuirCargo() {
 		
-		experiencia.setCargo(new Cargo(1L, "Cargo"));
+		experiencia.setCargo(new Cargo(1L, "Cargo", true));
 		
 		assertTrue("deveria possuir cargo", experiencia.possuiCargo());
 	}
