@@ -1332,10 +1332,28 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("left join diaTurma as dt on dt.turma_id = t.id ");
 		sql.append("left join colaboradorPresenca as cp on cp.colaboradorTurma_id = ct.id and cp.diaturma_id = dt.id ");
 		
-		sql.append("where ( ( cast(dt.dia || ' ' || coalesce(dt.horaIni, '00:00') as timestamp) > cast(:periodoIni as timestamp) ");
-		sql.append("        and cast(dt.dia || ' ' || coalesce(dt.horaIni, '00:00') as timestamp) < cast(:periodoFim as timestamp) ) ");
-		sql.append("or   ( cast(dt.dia || ' ' || coalesce(dt.horaFim, '23:59') as timestamp) > cast(:periodoIni as timestamp) ");
-		sql.append("		and cast(dt.dia || ' ' || coalesce(dt.horaFim, '23:59') as timestamp) < cast(:periodoFim as timestamp) ) ) ");
+		sql.append("where (");
+		sql.append("		( ");
+		sql.append("			( 	cast(dt.dia || ' ' || coalesce(dt.horaIni, '00:00') as timestamp) > cast(:periodoIni as timestamp) ");		
+		sql.append("          		and cast(dt.dia || ' ' || coalesce(dt.horaIni, '00:00') as timestamp) < cast(:periodoFim as timestamp) ");
+		sql.append("	         ) ");
+		sql.append("			or ( ");
+		sql.append("				cast(dt.dia || ' ' || coalesce(dt.horaFim, '23:59') as timestamp) > cast(:periodoIni as timestamp) ");
+		sql.append("		  		and cast(dt.dia || ' ' || coalesce(dt.horaFim, '23:59') as timestamp) < cast(:periodoFim as timestamp) ");
+		sql.append("				) ");
+		sql.append("		) ");
+		sql.append("		or ");
+		sql.append("		( ");
+		sql.append("			( 	cast(dt.dia || ' ' || coalesce(dt.horaIni, '00:00') as timestamp) <= cast(:periodoIni as timestamp) ");		
+		sql.append("          		and cast(dt.dia || ' ' || coalesce(dt.horaIni, '00:00') as timestamp) <= cast(:periodoFim as timestamp) ");
+		sql.append("	         ) ");
+		sql.append("			and ( ");
+		sql.append("				cast(dt.dia || ' ' || coalesce(dt.horaFim, '23:59') as timestamp) >= cast(:periodoIni as timestamp) ");
+		sql.append("		  		and cast(dt.dia || ' ' || coalesce(dt.horaFim, '23:59') as timestamp) >= cast(:periodoFim as timestamp) ");
+		sql.append("				) ");
+		sql.append("		) ");
+		sql.append("	  ) ");
+		
 		sql.append("and co.empresa_id = :empresaId ");
 		sql.append("and co.naoIntegraAc = false ");
 		sql.append("and co.codigoAC is not null ");
