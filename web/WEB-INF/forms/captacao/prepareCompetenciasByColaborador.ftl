@@ -150,8 +150,6 @@
 			
 			function showTooltip(x, y, contents) 
 			{
-				console.log(contents);
-			
 				$("<div id='tooltip'>" + competencias[ contents[0] ] + ': ' + niveis[ contents[1] ] + "</div>").css({
 					position: "absolute",
 					display: "none",
