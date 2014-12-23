@@ -1575,11 +1575,11 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	//miguel sql
     	colaboradorTurmaDao.find(colaboradorTurma);
     	
-    	TAula[] tAula1 = colaboradorTurmaDao.findColabTreinamentosPrevistos(null, empresa.getId(), "01/11/2014 08:00", "02/11/2014 10:00", false);
-    	TAula[] tAula2 = colaboradorTurmaDao.findColabTreinamentosPrevistos(null, empresa.getId(), "01/11/2014 10:00", "03/11/2014 12:00", false);
-    	TAula[] tAula3 = colaboradorTurmaDao.findColabTreinamentosPrevistos(null, empresa.getId(), "01/11/2014", "02/11/2014", false);
-    	TAula[] tAula4 = colaboradorTurmaDao.findColabTreinamentosPrevistos(colaborador.getCodigoAC(), empresa.getId(), "01/11/2014", "02/11/2014", false);
-    	TAula[] tAula5 = colaboradorTurmaDao.findColabTreinamentosPrevistos(colaborador.getCodigoAC(), empresa.getId(), "01/11/2014", "02/11/2014", true);
+    	TAula[] tAula1 = colaboradorTurmaDao.findColaboradorTreinamentosParaTRU(null, empresa.getId(), "01/11/2014 08:00", "02/11/2014 10:00", false);
+    	TAula[] tAula2 = colaboradorTurmaDao.findColaboradorTreinamentosParaTRU(null, empresa.getId(), "01/11/2014 10:00", "03/11/2014 12:00", false);
+    	TAula[] tAula3 = colaboradorTurmaDao.findColaboradorTreinamentosParaTRU(null, empresa.getId(), "01/11/2014", "02/11/2014", false);
+    	TAula[] tAula4 = colaboradorTurmaDao.findColaboradorTreinamentosParaTRU(colaborador.getCodigoAC(), empresa.getId(), "01/11/2014", "02/11/2014", false);
+    	TAula[] tAula5 = colaboradorTurmaDao.findColaboradorTreinamentosParaTRU(colaborador.getCodigoAC(), empresa.getId(), "01/11/2014", "02/11/2014", true);
     	
     	assertEquals(1, tAula1.length);
     	assertEquals((Integer) StatusTAula.getIndiferente(), ((TAula) tAula1[0]).getStatus());

@@ -1316,7 +1316,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return colaboradorTurmas;	
 	}
 	
-	public TAula[] findColabTreinamentosPrevistos(String colaboradorCodigoAC, Long empresaId, String periodoIni, String periodoFim, boolean considerarPresenca) 
+	public TAula[] findColaboradorTreinamentosParaTRU(String colaboradorCodigoAC, Long empresaId, String periodoIni, String periodoFim, boolean considerarPresenca) 
 	{
 		if(periodoIni.split(" ").length == 1)
 			periodoIni += " 00:00";

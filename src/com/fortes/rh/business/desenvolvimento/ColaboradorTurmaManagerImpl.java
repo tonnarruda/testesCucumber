@@ -1034,12 +1034,12 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 	public TAula[] getTreinamentosPrevistoParaTRU(String colaboradorCodigoAC, Empresa empresa, String periodoIni, String periodoFim) 
 	{
-		return getDao().findColabTreinamentosPrevistos(colaboradorCodigoAC, empresa.getId(), periodoIni, periodoFim, false);
+		return getDao().findColaboradorTreinamentosParaTRU(colaboradorCodigoAC, empresa.getId(), periodoIni, periodoFim, false);
 	}
 
 	public TAula[] getTreinamentosRealizadosParaTRU(String colaboradorCodigoAC, Empresa empresa, String periodoIni, String periodoFim) 
 	{
-		return getDao().findColabTreinamentosPrevistos(colaboradorCodigoAC, empresa.getId(), periodoIni, periodoFim, true);
+		return getDao().findColaboradorTreinamentosParaTRU(colaboradorCodigoAC, empresa.getId(), periodoIni, periodoFim, true);
 	}
 	
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
