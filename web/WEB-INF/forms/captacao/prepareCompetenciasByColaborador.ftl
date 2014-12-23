@@ -63,7 +63,7 @@
 
 				<#assign j = 1/>
 				<#list niveisCompetenciaFaixaSalariais as comp>
-					competencias[${j}] = "${comp.competenciaDescricao}";
+					competencias[${j}] = '${comp.competenciaDescricao?j_string?replace('\"','&quot;')?replace('\'','\\\'')}';
 					<#assign j = j + 1/>
 				</#list>
 				
@@ -280,7 +280,7 @@
 				<@display.column title="Competência" >
 					<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
 					<#if configuracaoNivelCompetencia.competenciaObservacao?exists && configuracaoNivelCompetencia.competenciaObservacao != "">
-						<img id="competencia_${i}_obs" onLoad="toolTipCompetenciaObs(${i}, '${configuracaoNivelCompetencia.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
+						<img id="competencia_${i}_obs" onLoad="toolTipCompetenciaObs(${i}, '${configuracaoNivelCompetencia.competenciaObservacao?j_string?replace('\"','&quot;')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
 					</#if>
 				</@display.column>
 				
