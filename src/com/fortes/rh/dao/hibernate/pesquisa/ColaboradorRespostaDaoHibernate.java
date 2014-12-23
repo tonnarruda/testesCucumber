@@ -758,7 +758,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		{
 			Object[] res = it.next();
 			lista.add(new ColaboradorResposta(	(res[0] != null ? ((BigInteger)res[0]).longValue() : null ),
-					(String)res[1], 
+					(res[1] != null ? (String)res[1] : null), 
 					(res[2] != null ? ((BigInteger)res[2]).longValue() : null ), 
 					(Integer)res[3], 
 					(String)res[4], 
