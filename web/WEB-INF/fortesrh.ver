@@ -2,8 +2,8 @@
 <Versoes>
 	<Versao id="1.1.13x.16x" bd="" data="xx/12/2014">
 		<Item visivel="N" motivo="P20141200038"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Inserção de quebra de linha na impressão da descrição das perguntas quando a mesma excede o tamanho de uma linha.]]></Item>
-		<Item visivel="N" motivo="P20141100247"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Editar: Impossibilitando a alteração das Avaliações dos Alunos, caso já existam avaliações respondidas.]]></Item>
-		<Item visivel="N" motivo="P20141100247"><![CDATA[T&D > Cadastros > Avaliações dos Alunos > Editar: Impossibilitando a alteração do tipo de Avaliação do Aluno, caso já existam avaliações respondidas.]]></Item>
+		<Item visivel="N" motivo="P20141100247"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Editar: Impossibilitando a alteração das avaliações dos alunos, caso já existam avaliações respondidas.]]></Item>
+		<Item visivel="N" motivo="P20141100247"><![CDATA[T&D > Cadastros > Avaliações dos Alunos > Editar: Impossibilitando a alteração do tipo de avaliação do aluno, caso já existam avaliações respondidas.]]></Item>
 		<Item visivel="N" motivo="P20141200146"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Competências > Inserir: Correção do problema ao inserir competências para colaboradores.]]></Item>
 	</Versao>
 	<Versao id="1.1.138.167" bd="" data="16/12/2014">
