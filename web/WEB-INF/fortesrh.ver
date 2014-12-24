@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.13x.16x" bd="" data="xx/12/2014">
-		<Item visivel="S" motivo="S20141200036"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Novo filtro de solicitação por estabelecimento]]></Item>
+		<Item visivel="S" motivo="S20141200086"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Novo filtro de solicitação por estabelecimento.]]></Item>
 		<Item visivel="S" motivo="S20141200020"><![CDATA[C&S > Cadastros > Cargos e Faixas > Excluir: Possibilidade de excluir cargo mesmo que possua vínculo com "Experiência" ou "Limite de colaboradores por cargo".]]></Item>
+		<Item visivel="S" motivo="S20141200036"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Possibilidade de desligar o colaborador na data de admissão.]]></Item>
 		<Item visivel="N" motivo="P20141200125"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de experiência > Excluir: Correção da exclusão dos Modelos de Avaliação de Desempenho, quando os mesmos possuíam perguntas objetivas ou de Múltipla Escolha.]]></Item>
 		<Item visivel="N" motivo="P20141200038"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Inserção de quebra de linha na impressão da descrição das perguntas quando a mesma excede o tamanho de uma linha.]]></Item>
 		<Item visivel="N" motivo="P20141100247"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Editar: Impossibilitando a alteração das avaliações dos alunos, caso já existam avaliações respondidas.]]></Item>

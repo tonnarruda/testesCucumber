@@ -893,7 +893,7 @@ jQuery.fn.insertAtCaret = function (tagName) {
 		dt2 = dataFim.split( "/" )[2].toString() + dataFim.split( "/" )[1].toString() + dataFim.split( "/" )[0].toString();
 
 
-		if( parseInt(dt2) > parseInt(dt1) )
+		if( parseInt(dt2) >= parseInt(dt1) )
 			return true;
 		else
 			return false;
