@@ -55,6 +55,12 @@
 	text-align: left;
 }
 
+.listCheckBoxBarra select{
+	float: right;
+	border: #fff;
+	margin-top: 2px;
+}
+
 .listCheckBoxContainer {
 	font:13.3px sans-serif;
 	border:1px solid #7E9DB9;
