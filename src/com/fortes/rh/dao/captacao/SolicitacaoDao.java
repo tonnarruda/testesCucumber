@@ -7,6 +7,7 @@ package com.fortes.rh.dao.captacao;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import com.fortes.dao.GenericDao;
@@ -19,8 +20,8 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 
 public interface SolicitacaoDao extends GenericDao<Solicitacao>
 {
-	Integer getCount(char visualizar, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca, char statusBusca, Long[] areasIds);
-	Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Usuario usuario, Long cargoId, String descricaoBusca, char statusBusca, Long[] areasIds);
+	Integer getCount(char visualizar, Long empresaId, Usuario usuario, Long estabelecimentoId, Long cargoId, String descricaoBusca, char statusBusca, Long[] areasIds);
+	Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Usuario usuario, Long estabelecimentoId, Long cargoId, String descricaoBusca, char statusBusca, Long[] areasIds);
 	Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Character status, Boolean suspensa);
 	Solicitacao getValor(Long solcitacaoId);
 	Solicitacao findByIdProjection(Long solicitacaoId);

@@ -97,7 +97,8 @@
 			<@ww.select id="visualizacao" label="Visualizar" name="visualizar" list=r"#{'T':'Todas','A':'Abertas em andamento','S':'Abertas suspensas','E':'Encerradas'}" />
 			<@ww.select id="status" label="Status" name="statusBusca" list="status" headerValue="Todos" headerKey="T" />
 			<@ww.textfield label="Descrição" name="descricaoBusca" id="descricaoBusca"  cssStyle="width: 229px;"/>
-			<@ww.select id="cargo" label="Cargo" name="cargo.id" list="cargos" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1" /><br>
+			<@ww.select id="estabelecimento" label="Estabelecimento" name="estabelecimento.id" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1" cssStyle="width: 231px;"/>
+			<@ww.select id="cargo" label="Cargo" name="cargo.id" list="cargos" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1" cssStyle="width: 231px;"/><br>
 			<@ww.hidden id="pagina" name="page"/>
 
 			<input type="submit" value="" class="btnPesquisar grayBGE" accesskey="B">

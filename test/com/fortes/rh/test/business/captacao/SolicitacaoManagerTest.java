@@ -29,6 +29,7 @@ import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
@@ -36,6 +37,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.DateUtil;
@@ -311,6 +313,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		empresa.setId(1L);
 
 		Cargo cargo = CargoFactory.getEntity(-1L);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(-1L);
 
 		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
 		solicitacao1.setId(1L);
@@ -324,10 +327,10 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		char visualizar = 'E';
 		char status = 'T';
 
-		solicitacaoDao.expects(once()).method("getCount").with(new Constraint[] { eq(visualizar), eq(empresa.getId()), eq(usuario), eq(cargo.getId()), ANYTHING, eq(status), ANYTHING })
+		solicitacaoDao.expects(once()).method("getCount").with(new Constraint[] { eq(visualizar), eq(empresa.getId()), eq(usuario), eq(estabelecimento.getId()), eq(cargo.getId()), ANYTHING, eq(status), ANYTHING })
 				.will(returnValue(solicitacaos.size()));
 
-		int resultado = solicitacaoManager.getCount(visualizar, empresa.getId(), usuario.getId(), cargo.getId(), null, status, null);
+		int resultado = solicitacaoManager.getCount(visualizar, empresa.getId(), usuario.getId(), estabelecimento.getId(), cargo.getId(), null, status, null);
 
 		assertEquals(solicitacaos.size(), resultado);
 	}
@@ -341,6 +344,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		empresa.setId(1L);
 
 		Cargo cargo = CargoFactory.getEntity(-1L);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(-1L);
 
 		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
 		solicitacao1.setId(1L);
@@ -358,9 +362,9 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		char status = 'T';
 
 		solicitacaoDao.expects(once()).method("findAllByVisualizacao").with(
-				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(empresa.getId()), eq(usuario), eq(cargo.getId()), eq(null), eq(status), ANYTHING }).will(returnValue(solicitacaos));
+				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(empresa.getId()), eq(usuario), eq(estabelecimento.getId()), eq(cargo.getId()), eq(null), eq(status), ANYTHING }).will(returnValue(solicitacaos));
 
-		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, empresa.getId(), usuario.getId(), cargo.getId(), null, status, null);
+		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, empresa.getId(), usuario.getId(), estabelecimento.getId(), cargo.getId(), null, status, null);
 
 		assertEquals(solicitacaos.size(), resultado.size());
 	}
@@ -373,6 +377,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("usuarioManager", usuarioManager);
 
 		Cargo cargo = CargoFactory.getEntity(-1L);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(-1L);
 
 		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
 		solicitacao1.setId(1L);
@@ -386,10 +391,10 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		char visualizar = 'E';
 		char status = 'T';
 
-		solicitacaoDao.expects(once()).method("getCount").with(new Constraint[] { eq(visualizar), eq(empresa.getId()), ANYTHING, eq(cargo.getId()), ANYTHING, eq(status), ANYTHING }).will(
+		solicitacaoDao.expects(once()).method("getCount").with(new Constraint[] { eq(visualizar), eq(empresa.getId()), ANYTHING, eq(estabelecimento.getId()), eq(cargo.getId()), ANYTHING, eq(status), ANYTHING }).will(
 				returnValue(solicitacaos.size()));
 
-		int resultado = solicitacaoManager.getCount(visualizar, empresa.getId(), cargo.getId(), null, status);
+		int resultado = solicitacaoManager.getCount(visualizar, empresa.getId(), estabelecimento.getId(), cargo.getId(), null, status);
 
 		assertEquals(solicitacaos.size(), resultado);
 	}
@@ -402,6 +407,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("usuarioManager", usuarioManager);
 
 		Cargo cargo = CargoFactory.getEntity(-1L);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(-1L);
 
 		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
 		solicitacao1.setId(1L);
@@ -419,9 +425,9 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		char status = 'T';
 
 		solicitacaoDao.expects(once()).method("findAllByVisualizacao").with(
-				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(empresa.getId()), eq(null), eq(cargo.getId()), eq(null), eq(status), eq(null) }).will(returnValue(solicitacaos));
+				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(empresa.getId()), eq(null), eq(estabelecimento.getId()), eq(cargo.getId()), eq(null), eq(status), eq(null) }).will(returnValue(solicitacaos));
 
-		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, empresa.getId(), cargo.getId(), null, status);
+		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, empresa.getId(), estabelecimento.getId(), cargo.getId(), null, status);
 
 		assertEquals(solicitacaos.size(), resultado.size());
 	}

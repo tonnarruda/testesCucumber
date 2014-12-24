@@ -22,6 +22,7 @@ import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Anuncio;
@@ -32,6 +33,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.thread.EnviaEmailSolicitanteThread;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -48,15 +50,16 @@ public class SolicitacaoListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 
-	private SolicitacaoManager solicitacaoManager;
     private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+    private ParametrosDoSistemaManager parametrosDoSistemaManager;
+    private HistoricoCandidatoManager historicoCandidatoManager;
+    private AreaOrganizacionalManager areaOrganizacionalManager;
+    private EstabelecimentoManager estabelecimentoManager;
+    private PlatformTransactionManager transactionManager;
+    private SolicitacaoManager solicitacaoManager;
     private CandidatoManager candidatoManager;
     private CargoManager cargoManager;
     private Anuncio anuncio;
-    private HistoricoCandidatoManager historicoCandidatoManager;
-    private ParametrosDoSistemaManager parametrosDoSistemaManager;
-    private PlatformTransactionManager transactionManager;
-    private AreaOrganizacionalManager areaOrganizacionalManager;
     
     private Map<String,Object> parametros = new HashMap<String, Object>();
     private HashMap<Character, String> status;
@@ -74,6 +77,8 @@ public class SolicitacaoListAction extends MyActionSupportList
     private EmpresaManager empresaManager;
     private boolean pgInicial = false;//usado pelo decorator
 
+    private Estabelecimento estabelecimento = new Estabelecimento();
+    private Collection<Estabelecimento> estabelecimentos;
     private Collection<Cargo> cargos;
     private Cargo cargo = new Cargo();
     private String descricaoBusca;
@@ -100,22 +105,23 @@ public class SolicitacaoListAction extends MyActionSupportList
 		
 		if(roleMovSolicitacaoSelecao)
 		{
-			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), cargo.getId(), descricaoBusca, statusBusca));
-			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), cargo.getId(), descricaoBusca, statusBusca);
+			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), estabelecimento.getId(), cargo.getId(), descricaoBusca, statusBusca));
+			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), estabelecimento.getId(), cargo.getId(), descricaoBusca, statusBusca);
 		}
 		else
 		{
 			Usuario usuario = getUsuarioLogado();
 			Long[] areasIdsComFilhas = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(usuario, getEmpresaSistema().getId());
 			
-			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), usuario.getId(), cargo.getId(), descricaoBusca, statusBusca, areasIdsComFilhas));
-			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), usuario.getId(), cargo.getId(), descricaoBusca, statusBusca, areasIdsComFilhas);
+			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), usuario.getId(), estabelecimento.getId(), cargo.getId(), descricaoBusca, statusBusca, areasIdsComFilhas));
+			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), usuario.getId(), estabelecimento.getId(), cargo.getId(), descricaoBusca, statusBusca, areasIdsComFilhas);
 		}
 
 		if(solicitacaos == null || solicitacaos.size() == 0)
 			addActionMessage("Não existem solicitações a serem visualizadas!");
 
 		cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome", null, Cargo.TODOS);
+		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		status = new StatusAprovacaoSolicitacao();
 		
         return Action.SUCCESS;
@@ -363,6 +369,18 @@ public class SolicitacaoListAction extends MyActionSupportList
 		this.cargoManager = cargoManager;
 	}
 
+	public Estabelecimento getEstabelecimento() {
+		return estabelecimento;
+	}
+
+	public void setEstabelecimento(Estabelecimento estabelecimento) {
+		this.estabelecimento = estabelecimento;
+	}
+
+	public Collection<Estabelecimento> getEstabelecimentos() {
+		return estabelecimentos;
+	}
+
 	public Collection<Cargo> getCargos()
 	{
 		return cargos;
@@ -495,6 +513,11 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
+	}
+
+	public void setEstabelecimentoManager(
+			EstabelecimentoManager estabelecimentoManager) {
+		this.estabelecimentoManager = estabelecimentoManager;
 	}
 
 	public void setAreaOrganizacionalManager(
