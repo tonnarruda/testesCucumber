@@ -535,6 +535,7 @@ public class PerguntaManagerImpl extends GenericManagerImpl<Pergunta, PerguntaDa
 	
 	public void removerPerguntasAspectosDaAvaliacao(Long avaliacaoId) 
 	{
+		respostaManager.removerRespostasDasPerguntasDaAvaliacao(avaliacaoId);
 		getDao().removerPerguntasDaAvaliacao(avaliacaoId);
 		aspectoManager.removerAspectosDaAvaliacao(avaliacaoId);
 	}

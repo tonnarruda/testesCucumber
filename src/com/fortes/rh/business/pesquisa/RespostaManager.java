@@ -14,4 +14,5 @@ public interface RespostaManager extends GenericManager<Resposta>
 	Collection<Resposta> findRespostasSugeridas(Long questionarioId);
 	void clonarResposta(Pergunta perguntaClonada, Collection<Resposta> respostas);
 	void removerRespostasDasPerguntas(Collection<Long> perguntaIds);
+	void removerRespostasDasPerguntasDaAvaliacao(Long avaliacaoId);
 }

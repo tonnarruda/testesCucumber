@@ -78,5 +78,18 @@ public class RespostaDaoHibernate extends GenericDaoHibernate<Resposta> implemen
 		query.executeUpdate();
 
 	}
+	
+	public void removerRespostasDasPerguntasDaAvaliacao(Long avaliacaoId)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("delete from Resposta r where r.id in (");
+		hql.append("	select r.id from Resposta as r left join r.pergunta as p where p.avaliacao.id = :avaliacaoId");
+		hql.append(")");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("avaliacaoId", avaliacaoId);
+		
+		query.executeUpdate();
+	}
 
 }

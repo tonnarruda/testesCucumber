@@ -10,4 +10,5 @@ public interface RespostaDao extends GenericDao<Resposta>
 	Collection<Resposta> findByPergunta(Long id);
 	Collection<Resposta> findInPerguntaIds(Long[] perguntaIds);
 	void removerRespostasDasPerguntas(Collection<Long> perguntaIds);
+	void removerRespostasDasPerguntasDaAvaliacao(Long avaliacaoId);
 }

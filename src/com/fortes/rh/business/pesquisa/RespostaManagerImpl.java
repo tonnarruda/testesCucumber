@@ -93,5 +93,10 @@ public class RespostaManagerImpl extends GenericManagerImpl<Resposta, RespostaDa
 	{
 		getDao().removerRespostasDasPerguntas(perguntaIds);
 	}
+	
+	public void removerRespostasDasPerguntasDaAvaliacao(Long avaliacaoId)
+	{
+		getDao().removerRespostasDasPerguntasDaAvaliacao(avaliacaoId);
+	}
 
  }
