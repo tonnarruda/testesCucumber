@@ -580,7 +580,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 						Date vencimento, String categoria, String logradouro, String complemento, String numero, 
 						String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome,  
 						String cidadeNome, String ufSigla, Date afastamentoInicio, Date afastamentoFim, String candIndicadoPor, 
-						String texto1,  String texto2,  String texto3,  String texto4,  String texto5,  String texto6,  String texto7,  String texto8,  String texto9,  String texto10,
+						String texto1,  String texto2,  String texto3,  String texto4,  String texto5,  String texto6,  String texto7,  String texto8,  String textolongo1,  String textolongo2,
 						Date data1,  Date data2,  Date data3,  Double valor1,  Double valor2,  Integer numero1  
 					   ) 
 	{
@@ -607,8 +607,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.getCamposExtras().setTexto6(texto6);
 		this.getCamposExtras().setTexto7(texto7);
 		this.getCamposExtras().setTexto8(texto8);
-		this.getCamposExtras().setTexto9(texto9);
-		this.getCamposExtras().setTexto10(texto10);
+		this.getCamposExtras().setTextolongo1(textolongo1);
+		this.getCamposExtras().setTextolongo2(textolongo2);
 		this.getCamposExtras().setData1(data1);
 		this.getCamposExtras().setData2(data2);
 		this.getCamposExtras().setData3(data3);
@@ -1275,16 +1275,16 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.camposExtras.setTexto8(texto8);
 	}
 	
-	public void setProjectionTexto9(String texto9)
+	public void setProjectionTextolongo1(String textolongo1)
 	{
 		inicializaCamposExtras();
-		this.camposExtras.setTexto9(texto9);
+		this.camposExtras.setTextolongo1(textolongo1);
 	}
 	
-	public void setProjectionTexto10(String texto10)
+	public void setProjectionTextolongo2(String textolongo2)
 	{
 		inicializaCamposExtras();
-		this.camposExtras.setTexto10(texto10);
+		this.camposExtras.setTextolongo2(textolongo2);
 	}
 	
 	public void setProjectionData1(Date data1)

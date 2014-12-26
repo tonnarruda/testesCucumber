@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,10 +36,10 @@ public class CamposExtras extends AbstractModel implements Serializable
 	private String texto7;
 	@Column(length=250)
 	private String texto8;
-	@Column(length=250)
-	private String texto9;
-	@Column(length=250)
-	private String texto10;
+	@Lob
+	private String textolongo1;
+	@Lob
+	private String textolongo2;
 	@Temporal(TemporalType.DATE)
     private Date data1;
 	@Temporal(TemporalType.DATE)
@@ -242,16 +243,16 @@ public class CamposExtras extends AbstractModel implements Serializable
 	public void setTexto8(String texto8) {
 		this.texto8 = texto8;
 	}
-	public String getTexto9() {
-		return texto9;
+	public String getTextolongo1() {
+		return textolongo1;
 	}
-	public void setTexto9(String texto9) {
-		this.texto9 = texto9;
+	public void setTextolongo1(String textolongo1) {
+		this.textolongo1 = textolongo1;
 	}
-	public String getTexto10() {
-		return texto10;
+	public String getTextolongo2() {
+		return textolongo2;
 	}
-	public void setTexto10(String texto10) {
-		this.texto10 = texto10;
+	public void setTextolongo2(String textolongo2) {
+		this.textolongo2 = textolongo2;
 	}
 }

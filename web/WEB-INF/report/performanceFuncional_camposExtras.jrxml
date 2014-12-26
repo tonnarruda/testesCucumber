@@ -17,8 +17,8 @@
 	<field name="colaborador.camposExtras.texto5" class="java.lang.String"/>
 	<field name="colaborador.camposExtras.texto7" class="java.lang.String"/>
 	<field name="colaborador.camposExtras.texto8" class="java.lang.String"/>
-	<field name="colaborador.camposExtras.texto9" class="java.lang.String"/>
-	<field name="colaborador.camposExtras.texto10" class="java.lang.String"/>
+	<field name="colaborador.camposExtras.textolongo1" class="java.lang.String"/>
+	<field name="colaborador.camposExtras.textolongo2" class="java.lang.String"/>
 	<field name="colaborador.camposExtras.data1" class="java.util.Date"/>
 	<field name="colaborador.camposExtras.data2" class="java.util.Date"/>
 	<field name="colaborador.camposExtras.data3" class="java.util.Date"/>

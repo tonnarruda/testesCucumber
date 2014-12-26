@@ -43,8 +43,8 @@ public class CamposExtrasManagerTest extends MockObjectTestCase
 		camposExtras.setTexto6("t6");
 		camposExtras.setTexto7("t7");
 		camposExtras.setTexto8("t8");
-		camposExtras.setTexto9("t9");
-		camposExtras.setTexto10("t10");
+		camposExtras.setTextolongo1("tl1");
+		camposExtras.setTextolongo2("tl2");
 		
 		Date date1 = DateUtil.criarDataMesAno(1, 1, 1000);
 		Date date2 = DateUtil.criarDataMesAno(2, 2, 2000);
@@ -66,8 +66,8 @@ public class CamposExtrasManagerTest extends MockObjectTestCase
 		ConfiguracaoCampoExtra texto6 = ConfiguracaoCampoExtraFactory.getEntity("texto6");
 		ConfiguracaoCampoExtra texto7 = ConfiguracaoCampoExtraFactory.getEntity("texto7");
 		ConfiguracaoCampoExtra texto8 = ConfiguracaoCampoExtraFactory.getEntity("texto8");
-		ConfiguracaoCampoExtra texto9 = ConfiguracaoCampoExtraFactory.getEntity("texto9");
-		ConfiguracaoCampoExtra texto10 = ConfiguracaoCampoExtraFactory.getEntity("texto10");
+		ConfiguracaoCampoExtra textolongo1 = ConfiguracaoCampoExtraFactory.getEntity("textolongo1");
+		ConfiguracaoCampoExtra textolongo2 = ConfiguracaoCampoExtraFactory.getEntity("textolongo2");
 
 		ConfiguracaoCampoExtra data1 = ConfiguracaoCampoExtraFactory.getEntity("data1");
 		ConfiguracaoCampoExtra data2 = ConfiguracaoCampoExtraFactory.getEntity("data2");
@@ -86,8 +86,8 @@ public class CamposExtrasManagerTest extends MockObjectTestCase
 		configuracaoCampoExtras.add(texto6);
 		configuracaoCampoExtras.add(texto7);
 		configuracaoCampoExtras.add(texto8);
-		configuracaoCampoExtras.add(texto9);
-		configuracaoCampoExtras.add(texto10);
+		configuracaoCampoExtras.add(textolongo1);
+		configuracaoCampoExtras.add(textolongo2);
 		configuracaoCampoExtras.add(data1);
 		configuracaoCampoExtras.add(data2);
 		configuracaoCampoExtras.add(data3);
@@ -108,8 +108,8 @@ public class CamposExtrasManagerTest extends MockObjectTestCase
 		assertEquals("t6", camposExtrasTemp.getTexto6());
 		assertEquals("t7", camposExtrasTemp.getTexto7());
 		assertEquals("t8", camposExtrasTemp.getTexto8());
-		assertEquals("t9", camposExtrasTemp.getTexto9());
-		assertEquals("t10", camposExtrasTemp.getTexto10());
+		assertEquals("tl1", camposExtrasTemp.getTextolongo1());
+		assertEquals("tl2", camposExtrasTemp.getTextolongo2());
 		assertEquals(date1, camposExtrasTemp.getData1());
 		assertEquals(date2, camposExtrasTemp.getData2());
 		assertEquals(date3, camposExtrasTemp.getData3());

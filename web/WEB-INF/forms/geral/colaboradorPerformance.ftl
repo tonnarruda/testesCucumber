@@ -227,12 +227,12 @@
 					${colaborador.camposExtras.texto8}<br>
 				</#if>
 				
-				<#if colaborador.camposExtras.texto9?exists && configuracaoCampoExtras[i].nome == "texto9">
-					${colaborador.camposExtras.texto9}<br>
+				<#if colaborador.camposExtras.textolongo1?exists && configuracaoCampoExtras[i].nome == "textolongo1">
+					${colaborador.camposExtras.textolongo1}<br>
 				</#if>
 				
-				<#if colaborador.camposExtras.texto10?exists && configuracaoCampoExtras[i].nome == "texto10">
-					${colaborador.camposExtras.texto10}<br>
+				<#if colaborador.camposExtras.textolongo2?exists && configuracaoCampoExtras[i].nome == "textolongo2">
+					${colaborador.camposExtras.textolongo2}<br>
 				</#if>
 				
 				<#if colaborador.camposExtras.data1?exists && configuracaoCampoExtras[i].nome == "data1">

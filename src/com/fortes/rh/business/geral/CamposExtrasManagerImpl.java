@@ -36,10 +36,10 @@ public class CamposExtrasManagerImpl extends GenericManagerImpl<CamposExtras, Ca
 					camposExtrasTemp.setTexto7(camposExtras.getTexto7());
 				if(configuracaoCampoExtra.getNome().equals("texto8"))
 					camposExtrasTemp.setTexto8(camposExtras.getTexto8());
-				if(configuracaoCampoExtra.getNome().equals("texto9"))
-					camposExtrasTemp.setTexto9(camposExtras.getTexto9());
-				if(configuracaoCampoExtra.getNome().equals("texto10"))
-					camposExtrasTemp.setTexto10(camposExtras.getTexto10());
+				if(configuracaoCampoExtra.getNome().equals("textolongo1"))
+					camposExtrasTemp.setTextolongo1(camposExtras.getTextolongo1());
+				if(configuracaoCampoExtra.getNome().equals("textolongo2"))
+					camposExtrasTemp.setTextolongo1(camposExtras.getTextolongo2());
 
 				if(configuracaoCampoExtra.getNome().equals("data1"))
 					camposExtrasTemp.setData1(camposExtras.getData1());

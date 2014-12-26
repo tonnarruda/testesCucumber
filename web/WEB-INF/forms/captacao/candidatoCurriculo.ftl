@@ -363,10 +363,10 @@
 							${camposExtras.texto7}
 						<#elseif configuracaoCampoExtra.nome == "texto8" && camposExtras.texto8?exists>
 							${camposExtras.texto8}
-						<#elseif configuracaoCampoExtra.nome == "texto9" && camposExtras.texto9?exists>
-							${camposExtras.texto9}
-						<#elseif configuracaoCampoExtra.nome == "texto10" && camposExtras.texto10?exists>
-							${camposExtras.texto10}
+						<#elseif configuracaoCampoExtra.nome == "textolongo1" && camposExtras.textolongo1?exists>
+							${camposExtras.textolongo1}
+						<#elseif configuracaoCampoExtra.nome == "textolongo2" && camposExtras.textolongo2?exists>
+							${camposExtras.textolongo2}
 						<#elseif configuracaoCampoExtra.nome == "data1" && camposExtras.data1?exists>
 							${camposExtras.data1}
 						<#elseif configuracaoCampoExtra.nome == "data2" && camposExtras.data2?exists>

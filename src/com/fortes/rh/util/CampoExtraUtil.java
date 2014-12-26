@@ -30,10 +30,10 @@ public class CampoExtraUtil
 					configuracaoCampoExtra.setConteudo(camposExtras.getTexto7());
 				else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("texto8"))
 					configuracaoCampoExtra.setConteudo(camposExtras.getTexto8());
-				else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("texto9"))
-					configuracaoCampoExtra.setConteudo(camposExtras.getTexto9());
-				else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("texto10"))
-					configuracaoCampoExtra.setConteudo(camposExtras.getTexto10());
+				else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("textolongo1"))
+					configuracaoCampoExtra.setConteudo(camposExtras.getTextolongo1());
+				else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("textolongo2"))
+					configuracaoCampoExtra.setConteudo(camposExtras.getTextolongo2());
 				else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("data1"))
 					configuracaoCampoExtra.setConteudo(camposExtras.getData1String());
 				else if(StringUtils.defaultString(configuracaoCampoExtra.getNome()).equals("data2"))

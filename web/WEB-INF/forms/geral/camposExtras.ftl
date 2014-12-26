@@ -21,7 +21,10 @@
 		
 		<@ww.div id="wwgrp_${configuracaoCampoExtra.nome}" cssClass="${externoCampo}">
 			<#if configuracaoCampoExtra.tipo == "texto">
-					<@ww.textfield id="${configuracaoCampoExtra.nome}" label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" cssStyle="width: 400px;" maxLength="250" />
+				<@ww.textfield id="${configuracaoCampoExtra.nome}" label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" cssStyle="width: 400px;" maxLength="250" />
+			</#if>
+			<#if configuracaoCampoExtra.tipo == "textolongo">
+				<@ww.textarea id="${configuracaoCampoExtra.nome}" label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" cssStyle="width: 396px; height: 100px;" />
 			</#if>
 			<#if configuracaoCampoExtra.tipo == "data">
 				<@ww.datepicker id="${configuracaoCampoExtra.nome}" label="${configuracaoCampoExtra.titulo}" name="camposExtras.${configuracaoCampoExtra.nome}" value="${data}" cssClass="mascaraData" />

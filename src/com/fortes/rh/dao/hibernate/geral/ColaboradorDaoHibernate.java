@@ -589,8 +589,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("ce.texto6"), "projectionTexto6");
 		p.add(Projections.property("ce.texto7"), "projectionTexto7");
 		p.add(Projections.property("ce.texto8"), "projectionTexto8");
-		p.add(Projections.property("ce.texto9"), "projectionTexto9");
-		p.add(Projections.property("ce.texto10"), "projectionTexto10");
+		p.add(Projections.property("ce.textolongo1"), "projectionTextolongo1");
+		p.add(Projections.property("ce.textolongo2"), "projectionTextolongo2");
 		p.add(Projections.property("ce.data1"), "projectionData1");
 		p.add(Projections.property("ce.data2"), "projectionData2");
 		p.add(Projections.property("ce.data3"), "projectionData3");
@@ -1108,7 +1108,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				
 				if(habilitaCampoExtra && camposExtras != null)
 				{
-					hql.append(" ,ce.texto1, ce.texto2, ce.texto3, ce.texto4, ce.texto5, ce.texto6, ce.texto7, ce.texto8, ce.texto9, ce.texto10, ");
+					hql.append(" ,ce.texto1, ce.texto2, ce.texto3, ce.texto4, ce.texto5, ce.texto6, ce.texto7, ce.texto8, ce.textolongo1, ce.textolongo2, ");
 					hql.append(" ce.data1, ce.data2, ce.data3, ce.valor1, ce.valor2, ce.numero1 ");
 				}
 				
@@ -1212,10 +1212,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				hql.append(" and normalizar(upper(ce.texto7)) like normalizar(:texto7) ");
 			if(StringUtils.isNotBlank(camposExtras.getTexto8()))
 				hql.append(" and normalizar(upper(ce.texto8)) like normalizar(:texto8) ");
-			if(StringUtils.isNotBlank(camposExtras.getTexto9()))
-				hql.append(" and normalizar(upper(ce.texto9)) like normalizar(:texto9) ");
-			if(StringUtils.isNotBlank(camposExtras.getTexto10()))
-				hql.append(" and normalizar(upper(ce.texto10)) like normalizar(:texto10) ");
+			if(StringUtils.isNotBlank(camposExtras.getTextolongo1()))
+				hql.append(" and normalizar(upper(ce.textolongo1)) like normalizar(:textolongo1) ");
+			if(StringUtils.isNotBlank(camposExtras.getTextolongo2()))
+				hql.append(" and normalizar(upper(ce.textolongo2)) like normalizar(:textolongo2) ");
 
 			montaQueryIntervalo(camposExtras.getData1(), camposExtras.getData1Fim(), "data1", hql);
 			montaQueryIntervalo(camposExtras.getData2(), camposExtras.getData2Fim(), "data2", hql);
@@ -1295,10 +1295,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				query.setString("texto7", "%" + camposExtras.getTexto7().toUpperCase() + "%");
 			if(StringUtils.isNotBlank(camposExtras.getTexto8()))
 				query.setString("texto8", "%" + camposExtras.getTexto8().toUpperCase() + "%");
-			if(StringUtils.isNotBlank(camposExtras.getTexto9()))
-				query.setString("texto9", "%" + camposExtras.getTexto9().toUpperCase() + "%");
-			if(StringUtils.isNotBlank(camposExtras.getTexto10()))
-				query.setString("texto10", "%" + camposExtras.getTexto10().toUpperCase() + "%");
+			if(StringUtils.isNotBlank(camposExtras.getTextolongo1()))
+				query.setString("textolongo1", "%" + camposExtras.getTextolongo1().toUpperCase() + "%");
+			if(StringUtils.isNotBlank(camposExtras.getTextolongo2()))
+				query.setString("textolongo2", "%" + camposExtras.getTextolongo2().toUpperCase() + "%");
 
 			setIntervaloData(camposExtras.getData1(), camposExtras.getData1Fim(), "data1", query);
 			setIntervaloData(camposExtras.getData2(), camposExtras.getData2Fim(), "data2", query);
