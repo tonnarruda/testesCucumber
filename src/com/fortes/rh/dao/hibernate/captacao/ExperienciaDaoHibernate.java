@@ -41,27 +41,18 @@ public class ExperienciaDaoHibernate extends GenericDaoHibernate<Experiencia> im
 	{
 		Criteria criteria = getSession().createCriteria(Experiencia.class, "e");
 		criteria.createCriteria("e.cargo", "c", Criteria.LEFT_JOIN);
-		criteria.createCriteria("e.candidato", "cand", Criteria.LEFT_JOIN);
 
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("e.id"), "id");
-		p.add(Projections.property("e.empresa"), "empresa");
-		p.add(Projections.property("e.colaborador"), "colaborador");
-		p.add(Projections.property("e.candidato"), "candidato");
-		p.add(Projections.property("e.dataAdmissao"), "dataAdmissao");
-		p.add(Projections.property("e.dataDesligamento"), "dataDesligamento");
-		p.add(Projections.property("e.observacao"), "observacao");
-		p.add(Projections.property("e.nomeMercado"), "nomeMercado");
-		p.add(Projections.property("cand.id"), "candidatoId");
-		p.add(Projections.property("c.nomeMercado"), "cargoNomeMercado");
-		criteria.setProjection(p);
+		ProjectionList projections = adicionaCamposBase();
+		projections.add(Projections.property("c.nomeMercado"), "cargoNomeMercado");
+		criteria.setProjection(projections);
 
-		criteria.add(Expression.in("cand.id", candidatoIds));
+		criteria.add(Expression.in("e.candidato.id", candidatoIds));
 
-		criteria.addOrder(Order.asc("cand.id"));
+		criteria.addOrder(Order.asc("e.candidato.id"));
+		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Experiencia.class));
+		
 		return criteria.list();
 	}
 
@@ -69,57 +60,79 @@ public class ExperienciaDaoHibernate extends GenericDaoHibernate<Experiencia> im
 	{
 		Criteria criteria = getSession().createCriteria(Experiencia.class, "e");
 		criteria.createCriteria("e.cargo", "c", Criteria.LEFT_JOIN);
-		criteria.createCriteria("e.candidato", "cand", Criteria.LEFT_JOIN);
-		criteria.createCriteria("e.colaborador", "colab", Criteria.LEFT_JOIN);
 
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("e.id"), "id");
-		p.add(Projections.property("e.empresa"), "empresa");
-		p.add(Projections.property("e.dataAdmissao"), "dataAdmissao");
-		p.add(Projections.property("e.dataDesligamento"), "dataDesligamento");
-		p.add(Projections.property("e.observacao"), "observacao");
-		p.add(Projections.property("e.nomeMercado"), "nomeMercado");
-		p.add(Projections.property("e.salario"), "salario");
-		p.add(Projections.property("cand.id"), "candidatoId");
-		p.add(Projections.property("colab.id"), "colaboradorId");
-		p.add(Projections.property("c.nomeMercado"), "cargoNomeMercado");
-		p.add(Projections.property("c.id"), "cargoId");
-		criteria.setProjection(p);
+		ProjectionList projections = adicionaCamposBase();
+		projections.add(Projections.property("c.nomeMercado"), "cargoNomeMercado");
+		criteria.setProjection(projections);
 
 		criteria.add(Expression.eq("e.colaborador", colaborador));
 
-		//criteria.addOrder(Order.asc("cand.id"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Experiencia.class));
+		
 		return criteria.list();
 	}
-
+	
 	public Collection<Experiencia> findByCandidato(Long candidatoId)
 	{
 		Criteria criteria = getSession().createCriteria(Experiencia.class, "e");
-		criteria.createCriteria("e.cargo", "c", Criteria.LEFT_JOIN);
 
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("e.id"), "id");
-		p.add(Projections.property("e.empresa"), "empresa");
-		p.add(Projections.property("e.nomeMercado"), "nomeMercado");
-		p.add(Projections.property("e.dataAdmissao"), "dataAdmissao");
-		p.add(Projections.property("e.dataDesligamento"), "dataDesligamento");
-		p.add(Projections.property("e.observacao"), "observacao");
-		p.add(Projections.property("e.salario"), "salario");
-		p.add(Projections.property("e.motivoSaida"), "motivoSaida");
-		
-		p.add(Projections.property("c.id"), "cargoId");
-		criteria.setProjection(p);
+		ProjectionList projections = adicionaCamposBase();
+		criteria.setProjection(projections);
 
 		criteria.add(Expression.eq("e.candidato.id", candidatoId));
 
 		criteria.addOrder(Order.desc("e.dataAdmissao"));
+		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Experiencia.class));
+		
 		return criteria.list();
 	}
 
+	public Experiencia findByIdProjection(Long experienciaId)
+	{
+		Criteria criteria = getSession().createCriteria(Experiencia.class, "e");
+
+		ProjectionList projections = adicionaCamposBase();
+		criteria.setProjection(projections);
+
+		criteria.add(Expression.eq("e.id", experienciaId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Experiencia.class));
+		
+		return (Experiencia) criteria.uniqueResult();
+	}
+
+	private ProjectionList adicionaCamposBase()
+	{
+		ProjectionList projections = Projections.projectionList().create();
+		
+		projections.add(Projections.property("e.id"), "id");
+		projections.add(Projections.property("e.empresa"), "empresa");
+		projections.add(Projections.property("e.cargo"), "cargo");
+		projections.add(Projections.property("e.colaborador"), "colaborador");
+		projections.add(Projections.property("e.candidato"), "candidato");
+		projections.add(Projections.property("e.dataAdmissao"), "dataAdmissao");
+		projections.add(Projections.property("e.dataDesligamento"), "dataDesligamento");
+		projections.add(Projections.property("e.observacao"), "observacao");
+		projections.add(Projections.property("e.nomeMercado"), "nomeMercado");
+		projections.add(Projections.property("e.salario"), "salario");
+		projections.add(Projections.property("e.motivoSaida"), "motivoSaida");
+		
+		return projections;
+	}
+
+	public void desvinculaCargo(Long cargoId, String cargoNomeMercado)
+	{
+		String queryHQL = "update Experiencia set nomemercado = :cargoNomeMercado, cargo.id = null where cargo.id = :cargoId";
+		
+		Query query = getSession().createQuery(queryHQL);
+		
+		query.setLong("cargoId",cargoId);
+		query.setString("cargoNomeMercado",cargoNomeMercado);
+		
+		query.executeUpdate();		
+	}
 }

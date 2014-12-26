@@ -51,4 +51,9 @@ public class ExperienciaManagerImpl extends GenericManagerImpl<Experiencia, Expe
 		return getDao().findByCandidato(candidatoId);
 	}
 
+	public void desvinculaCargo(Long cargoId, String cargoNomeMercado)
+	{
+		getDao().desvinculaCargo(cargoId, cargoNomeMercado);
+	}
+
 }

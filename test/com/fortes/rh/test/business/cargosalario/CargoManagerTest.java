@@ -17,6 +17,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
+import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.cargosalario.CargoManagerImpl;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
@@ -25,6 +26,7 @@ import com.fortes.rh.business.geral.AreaFormacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.model.captacao.Atitude;
@@ -73,6 +75,8 @@ public class CargoManagerTest extends MockObjectTestCase
 	Mock etapaSeletivaManager;
 	Mock habilidadeManager;
 	Mock atitudeManager;
+	Mock experienciaManager;
+	Mock quantidadeLimiteColaboradoresPorCargoManager;
 	Mock transactionManager;
 	
 
@@ -100,6 +104,10 @@ public class CargoManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("grupoOcupacionalManager", grupoOcupacionalManager);
 
 		funcaoManager = new Mock(FuncaoManager.class);
+		MockSpringUtil.mocks.put("funcaoManager", funcaoManager);
+
+		quantidadeLimiteColaboradoresPorCargoManager = new Mock(QuantidadeLimiteColaboradoresPorCargoManager.class);
+		MockSpringUtil.mocks.put("quantidadeLimiteColaboradoresPorCargoManager", quantidadeLimiteColaboradoresPorCargoManager);
 		
 		conhecimentoManager = mock(ConhecimentoManager.class);
 		cargoManager.setConhecimentoManager((ConhecimentoManager) conhecimentoManager.proxy());
@@ -118,6 +126,9 @@ public class CargoManagerTest extends MockObjectTestCase
 		
 		habilidadeManager = mock(HabilidadeManager.class);
 		cargoManager.setHabilidadeManager((HabilidadeManager) habilidadeManager.proxy());
+		
+		experienciaManager = mock(ExperienciaManager.class);
+		cargoManager.setExperienciaManager((ExperienciaManager) experienciaManager.proxy());
 		
 		transactionManager = new Mock(PlatformTransactionManager.class);
 		cargoManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
@@ -287,12 +298,12 @@ public class CargoManagerTest extends MockObjectTestCase
 		Collection<FaixaSalarial> faixasSalariais = new ArrayList<FaixaSalarial>();
 		faixasSalariais.add(faixaSalarial);
 
-		MockSpringUtil.mocks.put("faixaSalarialManager", faixaSalarialManager);
-		MockSpringUtil.mocks.put("funcaoManager", funcaoManager);
-
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCargo").withAnyArguments().will(returnValue(faixasSalariais));
 		funcaoManager.expects(once()).method("removeFuncaoAndHistoricosByCargo").withAnyArguments();
 		faixaSalarialManager.expects(once()).method("removeFaixaAndHistoricos").withAnyArguments();
+		cargoDao.expects(once()).method("findByIdProjection").withAnyArguments().will(returnValue(cargo));;
+		experienciaManager.expects(once()).method("desvinculaCargo").withAnyArguments();
+		quantidadeLimiteColaboradoresPorCargoManager.expects(once()).method("deleteByCargo").withAnyArguments();
 		cargoDao.expects(once()).method("remove").withAnyArguments();
 		cargoDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		acPessoalClientCargo.expects(once()).method("deleteCargo").with(ANYTHING, ANYTHING);

@@ -14,5 +14,6 @@ public interface ExperienciaDao extends GenericDao<Experiencia>
 	public Collection<Experiencia> findInCandidatos(Long[] candidatoIds);
 	public Collection<Experiencia> findByColaborador(Colaborador c);
 	public Collection<Experiencia> findByCandidato(Long candidatoId);
-
+	public Experiencia findByIdProjection(Long experienciaId);
+	public void desvinculaCargo(Long cargoId, String cargoNomeMercado);
 }

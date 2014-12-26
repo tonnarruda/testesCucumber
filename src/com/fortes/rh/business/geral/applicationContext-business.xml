@@ -198,6 +198,9 @@
     <property name="atitudeManager">
       <ref bean="atitudeManager" />
     </property>
+    <property name="experienciaManager">
+      <ref bean="experienciaManager" />
+    </property>
     <property name="transactionManager">
       <ref bean="transactionManager" />
     </property>

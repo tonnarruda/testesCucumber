@@ -132,7 +132,7 @@
 						<tr>
 							<td> </td>
 							<td></td>
-							<td>Lista de limites de Colaborador por Cargo</td>
+							<td>Lista de Limites de Colaborador por Cargo</td>
 						</tr>
 					</thead>
 					<tbody id="listaCargos"></tbody>

@@ -16,10 +16,12 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
+import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.geral.AreaFormacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.exception.FaixaJaCadastradaException;
@@ -35,7 +37,6 @@ import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -55,6 +56,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	private AtitudeManager atitudeManager;
 	private FaixaSalarialManager faixaSalarialManager;
 	private EtapaSeletivaManager etapaSeletivaManager;
+	private ExperienciaManager experienciaManager;
 	private PlatformTransactionManager transactionManager;
 
 	public Integer getCount(Long empresaId, Long areaId, String cargoNome, Boolean ativo)
@@ -137,14 +139,6 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	public Cargo findByIdProjection(Long cargoId)
 	{
 		return getDao().findByIdProjection(cargoId);
-	}
-	public void setAcPessoalClientCargo(AcPessoalClientCargo acPessoalClientCargo)
-	{
-		this.acPessoalClientCargo = acPessoalClientCargo;
-	}
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
 	}
 
 	public Collection<Cargo> populaCargos(String[] cargosCheck)
@@ -241,31 +235,49 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 
 	public void remove(Long cargoId, Empresa empresa) throws Exception
 	{
-		FaixaSalarialManager faixaSalarialManager = (FaixaSalarialManager) SpringUtil.getBean("faixaSalarialManager");
-		FuncaoManager funcaoManager = (FuncaoManager) SpringUtil.getBean("funcaoManager");
-		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
-		
-		Collection<FaixaSalarial> faixaSalarials = faixaSalarialManager.findFaixaSalarialByCargo(cargoId);
-		funcaoManager.removeFuncaoAndHistoricosByCargo(cargoId);
-
-		if(faixaSalarials.size() > 0)
-			faixaSalarialManager.removeFaixaAndHistoricos(faixaSalarialUtil.convertCollectionToArrayIds(faixaSalarials));
-		
+		Collection<FaixaSalarial> faixasSalariais = removeFaixasSalariais(cargoId);
+		removeDependencias(cargoId);
 		super.remove(cargoId);
 		
 		// Flush necessário quando houver uma operação com banco/sistema externo.
 		// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterarmos o outro banco.
 		getDao().getHibernateTemplateByGenericDao().flush();
 
-		if(empresa.isAcIntegra() && faixaSalarials.size() > 0)
-			acPessoalClientCargo.deleteCargo(faixaSalarialUtil.convertCollectionToArrayString(faixaSalarials, "getCodigoAC"), empresa);
+		if(empresa.isAcIntegra() && faixasSalariais.size() > 0){
+			CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();			
+			acPessoalClientCargo.deleteCargo(faixaSalarialUtil.convertCollectionToArrayString(faixasSalariais, "getCodigoAC"), empresa);
+		}
+	}
+	
+	private Collection<FaixaSalarial> removeFaixasSalariais(Long cargoId) throws Exception
+	{
+		FaixaSalarialManager faixaSalarialManager = (FaixaSalarialManager) SpringUtil.getBean("faixaSalarialManager");
+		Collection<FaixaSalarial> faixasSalariais = faixaSalarialManager.findFaixaSalarialByCargo(cargoId);
+
+		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
+		if(faixasSalariais.size() > 0)
+			faixaSalarialManager.removeFaixaAndHistoricos(faixaSalarialUtil.convertCollectionToArrayIds(faixasSalariais));
+		
+		return faixasSalariais;
+	}
+
+	private void removeDependencias(Long cargoId)
+	{
+		FuncaoManager funcaoManager = (FuncaoManager) SpringUtil.getBean("funcaoManager");
+		funcaoManager.removeFuncaoAndHistoricosByCargo(cargoId);
+		
+		Cargo cargo = findByIdProjection(cargoId);
+		experienciaManager.desvinculaCargo(cargo.getId(), cargo.getNomeMercado());
+		
+		QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager = (QuantidadeLimiteColaboradoresPorCargoManager) SpringUtil.getBean("quantidadeLimiteColaboradoresPorCargoManager");
+		quantidadeLimiteColaboradoresPorCargoManager.deleteByCargo(cargoId);
 	}
 
 	public boolean verifyExistCargoNome(String cargoNome, Long empresaId)
 	{
 		return getDao().verifyExistCargoNome(cargoNome, empresaId);
 	}
-
+	
 	public Collection<Cargo> findByGrupoOcupacional(Long grupoOcupacionalId)
 	{
 		return getDao().findByGrupoOcupacional(grupoOcupacionalId);
@@ -583,12 +595,28 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		this.conhecimentoManager = conhecimentoManager;
 	}
 	
-	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager) 
+	public void setEtapaSeletivaManager(EtapaSeletivaManager etapaSeletivaManager)
 	{
 		this.etapaSeletivaManager = etapaSeletivaManager;
 	}
 
-	public void setTransactionManager(PlatformTransactionManager transactionManager) {
+	public void setTransactionManager(PlatformTransactionManager transactionManager)
+	{
 		this.transactionManager = transactionManager;
+	}
+
+	public void setAcPessoalClientCargo(AcPessoalClientCargo acPessoalClientCargo)
+	{
+		this.acPessoalClientCargo = acPessoalClientCargo;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager)
+	{
+		this.empresaManager = empresaManager;
+	}
+
+	public void setExperienciaManager(ExperienciaManager experienciaManager)
+	{
+		this.experienciaManager = experienciaManager;
 	}
 }

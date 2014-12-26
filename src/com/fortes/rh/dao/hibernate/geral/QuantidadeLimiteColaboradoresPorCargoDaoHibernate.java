@@ -12,6 +12,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.model.AbstractModel;
 import com.fortes.rh.dao.geral.QuantidadeLimiteColaboradoresPorCargoDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -19,8 +20,8 @@ import com.fortes.rh.model.geral.QuantidadeLimiteColaboradoresPorCargo;
 
 public class QuantidadeLimiteColaboradoresPorCargoDaoHibernate extends GenericDaoHibernate<QuantidadeLimiteColaboradoresPorCargo> implements QuantidadeLimiteColaboradoresPorCargoDao
 {
-
-	public void save(AreaOrganizacional areaOrganizacional, Cargo cargo, int limite) {
+	public void save(AreaOrganizacional areaOrganizacional, Cargo cargo, int limite)
+	{
 		String hql = "insert into QuantidadeLimiteColaboradoresPorCargo(areaorganizacional.id, cargo.id, limite) select :areaId, :cargoId, :limite";
 		Query query = getSession().createQuery(hql);
 
@@ -31,8 +32,10 @@ public class QuantidadeLimiteColaboradoresPorCargoDaoHibernate extends GenericDa
 		query.executeUpdate();
 	}
 
-	public Collection<QuantidadeLimiteColaboradoresPorCargo> findByArea(Long areaId) 
+	public Collection<QuantidadeLimiteColaboradoresPorCargo> findByEntidade(Long id, Class<? extends AbstractModel> entidade) 
 	{
+		String idEntidade = (entidade == AreaOrganizacional.class ? "areaOrganizacional.id" : "cargo.id");
+				
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "q");
 		criteria.createCriteria("q.cargo", "c", Criteria.LEFT_JOIN);
 		
@@ -43,7 +46,9 @@ public class QuantidadeLimiteColaboradoresPorCargoDaoHibernate extends GenericDa
 		p.add(Projections.property("c.nome"), "projectionCargoNome");
 
 		criteria.setProjection(p);
-		criteria.add(Expression.eq("q.areaOrganizacional.id", areaId));
+		
+		criteria.add(Expression.eq(idEntidade, id));
+		
 		criteria.addOrder(Order.asc("c.nome"));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -62,6 +67,16 @@ public class QuantidadeLimiteColaboradoresPorCargoDaoHibernate extends GenericDa
 		query.executeUpdate();
 	}
 
+	public void deleteByCargo(Long cargoId) 
+	{
+		String hql = "delete QuantidadeLimiteColaboradoresPorCargo where cargo.id = :cargoId";
+		
+		Query query = getSession().createQuery(hql);
+		query.setLong("cargoId", cargoId);
+		
+		query.executeUpdate();
+	}
+	
 	public QuantidadeLimiteColaboradoresPorCargo findLimite(Long cargoId, Collection<Long> areasIds) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "q");

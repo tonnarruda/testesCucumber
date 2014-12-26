@@ -9,6 +9,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.dao.geral.QuantidadeLimiteColaboradoresPorCargoDao;
 import com.fortes.rh.exception.LimiteColaboradorExceditoException;
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.ConfiguracaoLimiteColaborador;
@@ -36,9 +37,14 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 
 	public Collection<QuantidadeLimiteColaboradoresPorCargo> findByArea(Long areaId) 
 	{
-		return getDao().findByArea(areaId);
+		return getDao().findByEntidade(areaId, AreaOrganizacional.class);
 	}
 
+	public Collection<QuantidadeLimiteColaboradoresPorCargo> findByCargo(Long cargoId) 
+	{
+		return getDao().findByEntidade(cargoId, Cargo.class);
+	}
+	
 	public void updateLimites(Collection<QuantidadeLimiteColaboradoresPorCargo> quantidadeLimiteColaboradoresPorCargos, AreaOrganizacional areaOrganizacional) 
 	{
 		getDao().deleteByArea(areaOrganizacional.getId());
@@ -48,6 +54,11 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 	public void deleteByArea(Long... areaIds) 
 	{
 		getDao().deleteByArea(areaIds);
+	}
+
+	public void deleteByCargo(Long cargoId)
+	{
+		getDao().deleteByCargo(cargoId);
 	}
 
 	public void validaLimite(Long areaId, Long faixaId, Long empresaId, Long colaboradorId) throws LimiteColaboradorExceditoException 

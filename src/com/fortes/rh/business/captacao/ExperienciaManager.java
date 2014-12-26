@@ -15,5 +15,6 @@ public interface ExperienciaManager extends GenericManager<Experiencia>
 	public void montaExperienciasBDS(Collection<Experiencia> experiencias, Candidato candidato);
 	public Collection<Experiencia> findByColaborador(Long id);
 	public Collection<Experiencia> findByCandidato(Long candidatoId);
+	public void desvinculaCargo(Long cargoId, String cargoNomeMercado);
 
 }
