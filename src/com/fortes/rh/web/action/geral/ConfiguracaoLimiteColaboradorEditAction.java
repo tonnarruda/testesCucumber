@@ -83,7 +83,7 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 			quantidadeLimiteColaboradoresPorCargoManager.saveLimites(quantidadeLimiteColaboradoresPorCargos, configuracaoLimiteColaborador.getAreaOrganizacional());
 			configuracaoLimiteColaboradorManager.enviaEmail(configuracaoLimiteColaborador, quantidadeLimiteColaboradoresPorCargos, getEmpresaSistema());
 
-			addActionMessage("Configuração gravada com sucesso.");
+			addActionSuccess("Configuração gravada com sucesso.");
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -113,7 +113,7 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 		{
 			quantidadeLimiteColaboradoresPorCargoManager.deleteByArea(configuracaoLimiteColaborador.getAreaOrganizacional().getId());
 			configuracaoLimiteColaboradorManager.remove(configuracaoLimiteColaborador.getId());
-			addActionMessage("Configuração excluída com sucesso.");
+			addActionSuccess("Configuração excluída com sucesso.");
 		}
 		catch (Exception e)
 		{

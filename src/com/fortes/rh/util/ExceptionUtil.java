@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.fortes.rh.model.dicionario.Entidade;
 import com.fortes.rh.web.action.MyActionSupport;
 
 public class ExceptionUtil
@@ -45,11 +46,11 @@ public class ExceptionUtil
 		String dep = "outra entidade";//erros[3];
 
 		if(erros.length > 2){
-			entity = erros[0].toString().replace("\"","").toUpperCase();
-			dep = erros[2].toString().replace("\"","").toUpperCase();
+			entity = erros[0].toString().replace("\"","").toLowerCase();
+			dep = erros[2].toString().replace("\"","").toLowerCase();
 		}
 		
-		return "Entidade \"" + entity + "\" possui dependências em \"" + dep + "\".";
+		return "Entidade \"" + Entidade.getDescricao(entity) + "\" possui dependências em \"" + Entidade.getDescricao(dep) + "\".";
 	}
 		
 	private static Object[] getPalavrasEntreAspas(String frase) 
