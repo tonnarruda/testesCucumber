@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version last-->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="curriculo_candidato" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="24e642c7-23e8-452f-83f5-b88fabf7f0af">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.2745232708414267"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="775"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -2036,7 +2035,7 @@
 						<dataSourceExpression><![CDATA[$F{configuracaoCamposExtras}]]></dataSourceExpression>
 					</datasetRun>
 					<jr:listContents height="16" width="535">
-						<textField>
+						<textField isStretchWithOverflow="true">
 							<reportElement x="0" y="0" width="535" height="16" uuid="43b27d49-907b-4022-bca1-8a135402029e"/>
 							<box leftPadding="2" bottomPadding="1">
 								<topPen lineWidth="0.0"/>
@@ -2044,7 +2043,8 @@
 								<bottomPen lineWidth="0.0"/>
 								<rightPen lineWidth="0.0"/>
 							</box>
-							<textFieldExpression><![CDATA[$F{titulo}+" : "+($F{conteudo} != null ? $F{conteudo} : "")]]></textFieldExpression>
+							<textElement markup="styled"/>
+							<textFieldExpression><![CDATA["<b>"+$F{titulo}+":</b>  "+($F{conteudo} != null ? $F{conteudo} : "")]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>

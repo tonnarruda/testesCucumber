@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.9487171000000014"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="1"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -41,18 +41,18 @@
 	</columnHeader>
 	<detail>
 		<band height="15" splitType="Stretch">
-			<textField isBlankWhenNull="false">
-				<reportElement uuid="7765acaa-ea06-4528-ab5e-5cdbae243280" key="textField" x="0" y="0" width="773" height="15"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" x="0" y="0" width="773" height="15" uuid="7765acaa-ea06-4528-ab5e-5cdbae243280"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
+				<textElement verticalAlignment="Middle" markup="styled">
+					<font size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{titulo} + ": " + $F{conteudo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["<b>" + $F{titulo} + ":</b>   " + $F{conteudo}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
