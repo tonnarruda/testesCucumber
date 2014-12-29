@@ -13,6 +13,12 @@
 		.tabela_colabs .dados { width: 385px; border: none; }
 		fieldset { padding: 10px; margin-bottom: 20px; }
 		.legend { font-weight: bold; }
+		
+		.diasTable { border: none; }
+		.diasTable td { padding: 0px; }
+		.diasTable input[type='text'] { border: 1px solid #7E9DB9; width: 50px; }
+		.hora { text-align: right; }
+		.invalido { background-color: #FFEEC2 !important; }
 	</style>
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
@@ -24,6 +30,8 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/json2.js"/>'></script>
 	
 	<#include "../ftl/mascarasImports.ftl" />
+	
+	<#assign temPresencasRegistradas = turma.temPresenca?exists && turma.temPresenca/>
 	
 	<script type="text/javascript">
 		$(function() {
@@ -39,23 +47,31 @@
 				var fset = $(this).closest('fieldset');
 				var i = fset.attr('indice');
 				
+				$('#diasTable' + i).empty();
+				$('#listCheckBoxFilterDiasCheck' + i).val('');
+				
 				if (id)
 				{
 					TurmaDWR.getTurma(id, populaTurma);
 				}
 				else
 				{
-					fset.find('input:text,input:checkbox,.listCheckBox').removeAttr('disabled').css('background','#fff');
+					fset.find('input:text,input:checkbox,.listCheckBox').removeAttr('disabled').css('background-color','#fff');
 					fset.find('input:text').val('');
 					fset.find('#prevIni' + i + '_button > img, #prevFim' + i + '_button > img, #detalharCusto' + i + ' img').show();
 					fset.find('.mascaraData').val('  /  /    ');
 					fset.find(':checkbox').removeAttr('checked');
 					fset.find('#listCheckBoxdiasTurmasCheck\\[' + i + '\\]').empty();
+					fset.find('#listCheckBoxdiasCheck' + i).removeAttr('disabled');
 				}
 			});
 		});
 		
 		$.datepicker.setDefaults({ dayNames: ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'] });
+		
+		String.prototype.capitalize = function() {
+		    return this.charAt(0).toUpperCase() + this.slice(1);
+		}
 		
 		function populaTurma(turma)
 		{
@@ -68,46 +84,110 @@
 			$("#instituicao" + i).val(turma.instituicao);
 			$("#custo" + i).val(turma.custoFormatado);
 			$("#porTurno" + i).val('' + turma.porTurno).attr('disabled', 'disabled').css('background','#ececec');
+			$("#listCheckBoxdiasCheck" + i).attr('disabled', 'disabled');
 			
 			var datas = turma.periodoFormatado.split(' a ');
 			$("#prevIni" + i).val(datas[0]);
 			$("#prevFim" + i).val(datas[1]);
 			
-			populaDiasTurma(turma.dataPrevIni, turma.dataPrevFim, turma.porTurno, i);
-			
-			$(turma.diasTurma).each(function(k, diaTurma) {
-				$("input[name='diasTurmasCheck[" + i + "]'][value='" + diaTurma.descricao + "']").attr("checked","checked");
-			});
+			populaDias(i, turma);
 			
 			$(turma.avaliacaoTurmas).each(function(j, avaliacaoTurma) {
 				$("input[name='avaliacaoTurmasCheck[" + i + "]'][value='" + avaliacaoTurma.id + "']").attr("checked","checked");
 			});
 			
-			fset.find('input:text,input:checkbox,.listCheckBox').attr('disabled','disabled').css('background','#ececec');
+			fset.find('input:text,input:checkbox,.listCheckBox').attr('disabled','disabled').css('background-color','#ececec');
 			fset.find('#prevIni' + i + '_button > img, #prevFim' + i + '_button > img, #detalharCusto' + i + ' img').hide();
 		}
 		
-		function populaDiasTurma(dataIni, dataFim, diasPorTurno, i)
+		function populaDias(indice, turma)
 		{
-			var atual = dataIni;
-			var atualDesc;
-			var datas = [];
-			
-			while (atual <= dataFim) 
+			var dIni = document.getElementById('prevIni' + indice);
+			var dFim = document.getElementById('prevFim' + indice);
+	
+			if(validaDate(dIni) && validaDate(dFim))
 			{
-				if(!diasPorTurno)
-					datas.push($.datepicker.formatDate('dd/mm/yy - DD', atual));
-				else
+				if(dIni.value != "  /  /    " && dFim.value != "  /  /    ")
 				{
-					datas.push($.datepicker.formatDate('dd/mm/yy - DD', atual) + ' - manhã');
-					datas.push($.datepicker.formatDate('dd/mm/yy - DD', atual) + ' - tarde');
-					datas.push($.datepicker.formatDate('dd/mm/yy - DD', atual) + ' - noite');
+					DWRUtil.useLoadingMessage('Carregando...');
+					DiaTurmaDWR.getDias(dIni.value, dFim.value, $('#porTurno' + indice).val(), function(dados) { montaListDias(dados, indice, turma); });
+				}
+			}
+		}
+		
+		function montaListDias(diasTurma, indice, turma)
+		{
+			if (diasTurma != null)
+			{
+				var dataFmt, id;
+				var onclick = turma ? "onclick='return false;'" : "";
+				
+				for (var i = 0; i < diasTurma.length; i++)
+				{
+					dataFmt = $.datepicker.formatDate('dd/mm/yy', diasTurma[i].dia);
+					id = $.datepicker.formatDate('ddmmyy', diasTurma[i].dia) + diasTurma[i].turno + indice;
+					
+					var row = 	"<tr class='" + (i%2 == 0 ? 'even' : 'odd') + "'>\n";
+					row += 		"	<td><input name='diasTurmasCheck[" + indice + "]' id='" + id + "' value='" + dataFmt + ';' + diasTurma[i].turno + "' type='checkbox' " + onclick + " /></td>\n";
+					row += 		"	<td><label for='" + id + "'>" + dataFmt + "</label></td>\n";
+					row += 		"	<td><label for='" + id + "'>" + diasTurma[i].diaSemanaDescricao.capitalize() + "</label></td>\n";
+					if (diasTurma[i].turno != 'D')
+					{
+						row +=	"	<td><label for='" + id + "'>" + diasTurma[i].turnoDescricao.capitalize() + "</label></td>\n";
+					}
+					row += 		'	<td><input type="text" id="horaIni-' + id + '" name="horariosIni[' + indice + ']" class="hora" maxlength="5" disabled=true /> às <input type="text" id="horaFim-' + id + '" name="horariosFim[' + indice + ']" class="hora" maxlength="5" disabled=true /></td>\n';
+					row += 		"</tr>\n";
+				
+					$('#diasTable' + indice).append(row);
+					$('#horaIni-' + id).css('background-color', '#ECECEC');
+					$('#horaFim-' + id).css('background-color', '#ECECEC');
 				}
 				
-				atual.setDate(atual.getDate() + 1);
+				if (turma)
+				{
+					$(turma.diasTurma).each(function(k, diaTurma) {
+						var id = $.datepicker.formatDate('ddmmyy', diaTurma.dia) + diaTurma.turno + indice;
+						$('#' + id).attr("checked", "checked");
+						$('#horaIni-' + id).val(diaTurma.horaIni);
+						$('#horaFim-' + id).val(diaTurma.horaFim);
+					});
+				}
+				
+				$("input[name='diasTurmasCheck\[" + indice + "\]']").change(function() {
+					var marcado = $(this).is(":checked");
+					
+					$('#horaIni-' + this.id).attr("disabled", !marcado);
+					$('#horaFim-' + this.id).attr("disabled", !marcado);
+					
+					if(marcado){
+						$('#horaIni-' + this.id).css('background-color', '#FFF');
+						$('#horaFim-' + this.id).css('background-color', '#FFF');
+					}else{
+						$('#horaIni-' + this.id).css('background-color', '#ECECEC');
+						$('#horaFim-' + this.id).css('background-color', '#ECECEC');
+					}
+				});
 			}
+			else
+				jAlert("Data inválida.");
+		}
+		
+		function marcarDesmarcarTodosDiasTurmas(indice, marcar)
+		{
+			if ($('#listCheckBoxdiasCheck' + indice).attr('disabled') == 'disabled')
+				return false;
+		
+			var checks = $("input[name='diasTurmasCheck\[" + indice + "\]']");
 			
-			addChecksArray('diasTurmasCheck[' + i + ']', datas);
+			if (marcar)
+				checks.attr('checked','checked');
+			else
+				checks.removeAttr('checked');
+			
+			checks.each( function() {
+				$('#horaIni-' + this.id).attr("disabled", false).css('background-color', marcar ? '#FFF' : '#ECECEC');
+				$('#horaFim-' + this.id).attr("disabled", false).css('background-color', marcar ? '#FFF' : '#ECECEC');
+		    });
 		}
 	
 		function abrirPopupDespesas(indice) 
@@ -184,30 +264,7 @@
 			 $('#totalCustos').text('0,00');
 			 $('.despesa').val('');
 		}
-		
-		function populaDias(indice)
-		{
-			var dIni = document.getElementById('prevIni' + indice);
-			var dFim = document.getElementById('prevFim' + indice);
-	
-			if(dIni.value != "  /  /    " && dFim.value != "  /  /    " && validaDate(dIni) && validaDate(dFim))
-			{
-				DWRUtil.useLoadingMessage('Carregando...');
-				DiaTurmaDWR.getDiasMaps(dIni.value, 
-									dFim.value,
-									$('#porTurno'+ indice).val(), 
-									function(dados) 
-									{
-										if(dados != null)
-										{
-											addChecks('diasTurmasCheck[' + indice + ']', dados, null, true);
-										}
-										else
-											jAlert("Data inválida.");
-									});
-			}
-		}
-		
+				
 		function aplicar()
 		{
 			var obrigatorios = [];
@@ -321,7 +378,22 @@
 						<@ww.datepicker required="true" name="turmas[${i}].dataPrevIni" id="prevIni${i}" liClass="liLeft" onblur="populaDias(${i});" onchange="populaDias(${i});"  cssClass="mascaraData validaDataIni"/>
 						<@ww.label value="a" liClass="liLeft" />
 						<@ww.datepicker required="true" name="turmas[${i}].dataPrevFim" id="prevFim${i}" onblur="populaDias(${i});" onchange="populaDias(${i});"  cssClass="mascaraData validaDataFim" />
-						<@frt.checkListBox id="diasCheck${i}" name="diasTurmasCheck[${i}]" list="diasTurmasCheckList" width="486" filtro="true"/>
+						
+						<br />
+			
+						<div id="wwctrl_diasCheck" class="wwctrl">
+							<div class="listCheckBoxContainer" style="width: 490px;">
+								<div class="listCheckBoxBarra">
+									<input id="listCheckBoxFilterDiasCheck${i}" class="listCheckBoxFilter" title="Digite para filtrar" type="text">
+									&nbsp;<span class="linkCheck" onclick="marcarDesmarcarTodosDiasTurmas(${i}, true);">Marcar todos</span> | <span class="linkCheck" onclick="marcarDesmarcarTodosDiasTurmas(${i}, false);">Desmarcar todos</span>
+								</div>
+								<div id="listCheckBoxdiasCheck${i}" class="listCheckBox">
+									<table id="diasTable${i}" class="dados diasTable">
+										
+									</table>
+								</div>
+							</div>
+						</div>
 					</fieldset>
 					
 					<@frt.checkListBox id="avaliacaoTurmasCheck${i}" name="avaliacaoTurmasCheck[${i}]" label="Questionários de Avaliação do Curso" list="avaliacaoTurmasCheckList" filtro="true"/>

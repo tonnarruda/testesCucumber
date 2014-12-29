@@ -1,6 +1,7 @@
 package com.fortes.rh.model.dicionario;
 
 import java.util.LinkedHashMap;
+
 import org.apache.commons.lang.StringUtils;
 
 @SuppressWarnings("serial")
@@ -29,18 +30,6 @@ public class TipoTurno extends LinkedHashMap<Character, String>
 	{
 		TipoTurno tipoTurno = new TipoTurno();
 		return tipoTurno.size() - 1;
-	}
-
-	public static char getTipoTurnoByInt(int num)
-	{
-		if(num == 3)
-			return TipoTurno.MANHA;
-		if(num == 2)
-			return TipoTurno.TARDE;
-		if(num == 1)
-			return TipoTurno.NOITE;
-		
-		return TipoTurno.DIA;
 	}
 
 	public static char getTipoTurnoByStringConteins(String descricao)

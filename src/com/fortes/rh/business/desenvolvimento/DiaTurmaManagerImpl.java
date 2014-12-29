@@ -1,10 +1,10 @@
 package com.fortes.rh.business.desenvolvimento;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -27,39 +27,38 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 	{
 		Collection<DiaTurma> diaTurmas = new ArrayList<DiaTurma>();
 
-		if(dataPrevIni != null && dataPrevFim != null && (dataPrevIni.before(dataPrevFim) || dataPrevIni.equals(dataPrevFim)))
+		if (dataPrevIni != null && dataPrevFim != null && (dataPrevIni.before(dataPrevFim) || dataPrevIni.equals(dataPrevFim)))
 		{
-			Long dif = dataPrevFim.getTime() - dataPrevIni.getTime();
-			dif = 1 +(dif / (24*60*60*1000));
-			
-			int countTurnos = TipoTurno.getQtdTurnos();
-			if (aplicarPorTurno != null && aplicarPorTurno)
-				dif = dif*countTurnos;
-			
+			Date data;
 			DiaTurma diaTurma;
-			for(Long cont = 1L;cont <= dif; cont++)
+			int qtdDias = DateUtil.diferencaEntreDatas(dataPrevIni, dataPrevFim);
+			
+			for (int d = 0; d <= qtdDias; d++)
 			{
-				diaTurma = new DiaTurma();
-				diaTurma.setId(cont);
-
-				Date data = (Date) dataPrevIni.clone();
-				diaTurma.setDia(data);
-
+				data = DateUtil.incrementaDias(dataPrevIni, d);
+				
 				if (aplicarPorTurno == null || !aplicarPorTurno)
-					dataPrevIni.setDate(dataPrevIni.getDate() + 1 );
+				{
+					diaTurma = new DiaTurma();
+					diaTurma.setDia(data);
+					
+					diaTurmas.add(diaTurma);
+				}
 				else
 				{
-					diaTurma.setTurno(TipoTurno.getTipoTurnoByInt(countTurnos));
-					countTurnos--;
-
-					if(countTurnos == 0)
+					Set<Entry<Character, String>> tiposTurno = new TipoTurno().entrySet();
+					for (Entry<Character, String> tipoTurno : tiposTurno) 
 					{
-						countTurnos = TipoTurno.getQtdTurnos();
-						dataPrevIni.setDate(dataPrevIni.getDate() + 1 );
+						if (!tipoTurno.getKey().equals(TipoTurno.DIA))
+						{
+							diaTurma = new DiaTurma();
+							diaTurma.setDia(data);
+							diaTurma.setTurno(tipoTurno.getKey());
+							
+							diaTurmas.add(diaTurma);
+						}
 					}
 				}
-
-				diaTurmas.add(diaTurma);
 			}
 		}
 
@@ -94,10 +93,10 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 						diaTurmaTmp.setTurno(dataTurno[1].charAt(0));
 					
 					if(horasIni != null && !"".equals(horasIni[i]))
-						diaTurmaTmp.setHoraIni((String) horasIni[i]);
+						diaTurmaTmp.setHoraIni(horasIni[i]);
 					
 					if(horasFim != null && !"".equals(horasFim[i]))
-						diaTurmaTmp.setHoraFim((String) horasFim[i]);
+						diaTurmaTmp.setHoraFim(horasFim[i]);
 					
 					save(diaTurmaTmp);
 				}

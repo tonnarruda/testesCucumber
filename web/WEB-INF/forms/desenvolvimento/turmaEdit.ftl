@@ -96,8 +96,8 @@
 					row += 		"</tr>\n";
 				
 					$('#diasTable').append(row);
-					$('#horaIni-' + id).css('background-color', '#DEDEDE');
-					$('#horaFim-' + id).css('background-color', '#DEDEDE');
+					$('#horaIni-' + id).css('background-color', '#ECECEC');
+					$('#horaFim-' + id).css('background-color', '#ECECEC');
 				}
 				
 				$("input[name='diasCheck']").change(function() {
@@ -110,16 +110,16 @@
 						$('#horaIni-' + this.id).css('background-color', '#FFF');
 						$('#horaFim-' + this.id).css('background-color', '#FFF');
 					}else{
-						$('#horaIni-' + this.id).css('background-color', '#DEDEDE');
-						$('#horaFim-' + this.id).css('background-color', '#DEDEDE');
+						$('#horaIni-' + this.id).css('background-color', '#ECECEC');
+						$('#horaFim-' + this.id).css('background-color', '#ECECEC');
 					}
 				});
 				
 				marcaCheckListBoxString();
 
 				<#if temPresencasRegistradas>
-					$("input[name='horariosIni']").attr('disabled', true).css('background-color', '#DEDEDE');
-					$("input[name='horariosFim']").attr('disabled', true).css('background-color', '#DEDEDE');
+					$("input[name='horariosIni']").attr('disabled', true).css('background-color', '#ECECEC');
+					$("input[name='horariosFim']").attr('disabled', true).css('background-color', '#ECECEC');
 				</#if>
 			}
 			else
@@ -139,8 +139,8 @@
 		{
 			$('input[name=diasCheck]').removeAttr('checked');
 			$("input[name='diasCheck']").each( function() {
-				$('#horaIni-' + this.id).attr("disabled", true).css('background-color', '#DEDEDE');
-				$('#horaFim-' + this.id).attr("disabled", true).css('background-color', '#DEDEDE');
+				$('#horaIni-' + this.id).attr("disabled", true).css('background-color', '#ECECEC');
+				$('#horaFim-' + this.id).attr("disabled", true).css('background-color', '#ECECEC');
 		    });
 		}
 		
