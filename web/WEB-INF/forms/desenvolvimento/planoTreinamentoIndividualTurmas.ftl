@@ -59,10 +59,10 @@
 					fset.find('input:text,input:checkbox,.listCheckBox').removeAttr('disabled').css('background-color','#fff');
 					fset.find('input:text').val('');
 					fset.find('#prevIni' + i + '_button > img, #prevFim' + i + '_button > img, #detalharCusto' + i + ' img').show();
+					fset.find('#porTurno' + i).removeAttr('disabled').css('background-color','#fff');
 					fset.find('.mascaraData').val('  /  /    ');
 					fset.find(':checkbox').removeAttr('checked');
-					fset.find('#listCheckBoxdiasTurmasCheck\\[' + i + '\\]').empty();
-					fset.find('#listCheckBoxdiasCheck' + i).removeAttr('disabled');
+					fset.find('#listCheckBoxdiasTurmasCheck\\[' + i + '\\]').empty().removeAttr('disabled');
 				}
 			});
 		});
@@ -83,8 +83,8 @@
 			$("#inst" + i).val(turma.instrutor);
 			$("#instituicao" + i).val(turma.instituicao);
 			$("#custo" + i).val(turma.custoFormatado);
-			$("#porTurno" + i).val('' + turma.porTurno).attr('disabled', 'disabled').css('background','#ececec');
-			$("#listCheckBoxdiasCheck" + i).attr('disabled', 'disabled');
+			$("#porTurno" + i).val('' + turma.porTurno).attr('disabled', 'disabled').css('background-color','#ececec');
+			$("#listCheckBoxdiasTurmasCheck\\[" + i + "\\]").attr('disabled', 'disabled');
 			
 			var datas = turma.periodoFormatado.split(' a ');
 			$("#prevIni" + i).val(datas[0]);
@@ -102,6 +102,9 @@
 		
 		function populaDias(indice, turma)
 		{
+			$('#diasTable' + indice).empty();
+			$('#listCheckBoxFilterDiasCheck' + indice).val('');
+		
 			var dIni = document.getElementById('prevIni' + indice);
 			var dFim = document.getElementById('prevFim' + indice);
 	
@@ -174,7 +177,7 @@
 		
 		function marcarDesmarcarTodosDiasTurmas(indice, marcar)
 		{
-			if ($('#listCheckBoxdiasCheck' + indice).attr('disabled') == 'disabled')
+			if ($('#listCheckBoxdiasTurmasCheck\\[' + indice + '\\]').attr('disabled') == 'disabled')
 				return false;
 		
 			var checks = $("input[name='diasTurmasCheck\[" + indice + "\]']");
@@ -387,7 +390,7 @@
 									<input id="listCheckBoxFilterDiasCheck${i}" class="listCheckBoxFilter" title="Digite para filtrar" type="text">
 									&nbsp;<span class="linkCheck" onclick="marcarDesmarcarTodosDiasTurmas(${i}, true);">Marcar todos</span> | <span class="linkCheck" onclick="marcarDesmarcarTodosDiasTurmas(${i}, false);">Desmarcar todos</span>
 								</div>
-								<div id="listCheckBoxdiasCheck${i}" class="listCheckBox">
+								<div id="listCheckBoxdiasTurmasCheck[${i}]" class="listCheckBox">
 									<table id="diasTable${i}" class="dados diasTable">
 										
 									</table>

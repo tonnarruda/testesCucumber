@@ -89,7 +89,9 @@ public class TurmaListAction extends MyActionSupportList
 	private Collection<CheckBox> diasTurmasCheckList = new ArrayList<CheckBox>();
 	private Collection<String[]> avaliacaoTurmasCheck;
 	private Collection<CheckBox> avaliacaoTurmasCheckList = new ArrayList<CheckBox>();
-
+	private Collection<String[]> horariosIni;
+	private Collection<String[]> horariosFim;
+	
 	private Date dataIni;
 	private Date dataFim;
 	private char realizada;
@@ -300,7 +302,7 @@ public class TurmaListAction extends MyActionSupportList
 						if (avaliacaoTurmasCheck != null && avaliacaoTurmasCheck.size() > i)
 							avaliacoesCheck = LongUtil.arrayStringToArrayLong((String[]) avaliacaoTurmasCheck.toArray()[i]);
 	
-						turmaManager.salvarTurmaDiasCustosColaboradoresAvaliacoes(turma, diasCheck, custosTurma, turma.getColaboradorTurmas(), avaliacoesCheck);
+						turmaManager.salvarTurmaDiasCustosColaboradoresAvaliacoes(turma, diasCheck, custosTurma, turma.getColaboradorTurmas(), avaliacoesCheck, (String[]) horariosIni.toArray()[i], (String[]) horariosFim.toArray()[i]);
 					}
 				}
 				
@@ -778,8 +780,15 @@ public class TurmaListAction extends MyActionSupportList
 		return compartilharColaboradores;
 	}
 
-	public void setParametrosDoSistemaManager(
-			ParametrosDoSistemaManager parametrosDoSistemaManager) {
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public void setHorariosIni(Collection<String[]> horariosIni) {
+		this.horariosIni = horariosIni;
+	}
+
+	public void setHorariosFim(Collection<String[]> horariosFim) {
+		this.horariosFim = horariosFim;
 	}
 }
