@@ -138,7 +138,7 @@
 					{
 						row +=	"	<td><label for='" + id + "'>" + diasTurma[i].turnoDescricao.capitalize() + "</label></td>\n";
 					}
-					row += 		'	<td><input type="text" id="horaIni-' + id + '" name="horariosIni[' + indice + ']" class="hora" maxlength="5" disabled=true /> às <input type="text" id="horaFim-' + id + '" name="horariosFim[' + indice + ']" class="hora" maxlength="5" disabled=true /></td>\n';
+					row += 		'	<td><input type="text" id="horaIni-' + id + '" name="horariosIni[' + indice + ']" class="mascaraHora hora" maxlength="5" disabled=true /> às <input type="text" id="horaFim-' + id + '" name="horariosFim[' + indice + ']" class="mascaraHora hora" maxlength="5" disabled=true /></td>\n';
 					row += 		"</tr>\n";
 				
 					$('#diasTable' + indice).append(row);
@@ -272,6 +272,7 @@
 		{
 			var obrigatorios = [];
 			var validados = [];
+			var horariosValidos = true;
 			
 			for (var i = 0; i < ${cursosColaboradores?size}; i++)
 			{
@@ -286,9 +287,39 @@
 	
 					validados.push('prevIni' + i);
 					validados.push('prevFim' + i);
+					
+					var horaIni, horaFim;
+					$("input:checkbox:checked[name='diasTurmasCheck\[" + i + "\]']").each(function(i, check) {
+						horaIni = $('#horaIni-' + this.id).val();
+						horaFim = $('#horaFim-' + this.id).val();
+						
+						if((!horaIni && horaFim) || (horaIni && !horaFim))
+						{
+							$('#horaIni-' + this.id).val('');
+							$('#horaFim-' + this.id).val('');
+						}
+						
+						if ( (horaIni && horaFim) && ((!horaIni != !horaFim) || !(validaHora(horaIni) && validaHora(horaFim)) || (parseInt(horaFim.replace(':','')) < parseInt(horaIni.replace(':',''))) ))
+						{
+							$('#horaIni-' + this.id).css('background-color', '#FFEEC2');
+							$('#horaFim-' + this.id).css('background-color', '#FFEEC2');
+							horariosValidos = false;
+						}
+						else
+						{
+							$('#horaIni-' + this.id).css('background-color', '#FFF');
+							$('#horaFim-' + this.id).css('background-color', '#FFF');
+						}
+					});
 				}
 			}
 			
+			if (!horariosValidos)
+			{
+				jAlert('Existe(m) horário(s) definidos incorretamente.<br />Informe os horários de início e término para a data ou deixe ambos em branco.');
+				return false;
+			}
+
 			return validaFormularioEPeriodo('form', obrigatorios, validados);
 		}
 		

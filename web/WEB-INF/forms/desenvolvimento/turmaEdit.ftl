@@ -285,7 +285,7 @@
 					$('#horaFim-' + id).val('');
 				}
 				
-				if ( (horaIni && horaFim) && ((!horaIni != !horaFim) || !(validaHora(horaIni) && validaHora(horaFim)) || (horaFim.replace(':','') < horaIni.replace(':','') )))
+				if ( (horaIni && horaFim) && ((!horaIni != !horaFim) || !(validaHora(horaIni) && validaHora(horaFim)) || (parseInt(horaFim.replace(':','')) < parseInt(horaIni.replace(':',''))) ))
 				{
 					$('#horaIni-' + id).css('background-color', '#FFEEC2');
 					$('#horaFim-' + id).css('background-color', '#FFEEC2');
