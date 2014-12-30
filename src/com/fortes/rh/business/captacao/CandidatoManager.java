@@ -79,4 +79,5 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public Collection<Candidato> findByCPF(String cpf, Long empresaId, Long candidatoId, Boolean contratado);
 	public Collection<Colaborador> findColaboradoresMesmoCpf(String[] candidatosCpfs);
 	public void updateDisponivel(boolean disponivel, Long candidatoId);
+	public void deleteCargosPretendidos(Long... cargosIds);
 }

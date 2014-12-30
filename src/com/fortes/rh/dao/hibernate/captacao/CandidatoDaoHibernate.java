@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -51,6 +52,7 @@ import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.ArrayUtil;
 
 @SuppressWarnings({ "deprecation", "unchecked" })
 public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implements CandidatoDao
@@ -1414,5 +1416,15 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		query.setParameterList("candidatosCpfs", candidatosCpfs, Hibernate.STRING);
 				
 		return query.list();
+	}
+
+	public void deleteCargosPretendidos(Long... cargosIds)
+	{
+		if(!ArrayUtils.isEmpty(cargosIds))
+		{
+			String[] sql = new String[] {"delete from candidato_cargo where cargos_id in ("+StringUtils.join(cargosIds, ",")+");"};
+			JDBCConnection.executeQuery(sql);
+		}
+
 	}
 }

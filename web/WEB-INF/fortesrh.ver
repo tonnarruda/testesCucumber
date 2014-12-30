@@ -2,7 +2,7 @@
 <Versoes>
 	<Versao id="1.1.13x.16x" bd="" data="xx/12/2014">
 		<Item visivel="S" motivo="S20141200086"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Novo filtro de solicitação por estabelecimento.]]></Item>
-		<Item visivel="S" motivo="S20141200020"><![CDATA[C&S > Cadastros > Cargos e Faixas > Excluir: Possibilidade de excluir cargo mesmo que possua vínculo com "Experiência" ou "Limite de colaboradores por cargo".]]></Item>
+		<Item visivel="S" motivo="S20141200020"><![CDATA[C&S > Cadastros > Cargos e Faixas > Excluir: Possibilidade de excluir cargo mesmo que possua vínculo com "Experiência" ,"Limite de colaboradores por cargo" ou "Cargos/Funções pretendidas".]]></Item>
 		<Item visivel="S" motivo="S20141200036"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Possibilidade de desligar o colaborador na data de admissão.]]></Item>
 		<Item visivel="S" motivo="S20140900149"><![CDATA[Utilitários > Configurações > Campos Extras: Conversão de dois campos extras de texto para texto longo.]]></Item>
 		<Item visivel="S" motivo="P20141200021"><![Envio de emails automáticos de avaliação do período de experiência: Inserir no corpo do email o cargo do colaborador.]]></Item>

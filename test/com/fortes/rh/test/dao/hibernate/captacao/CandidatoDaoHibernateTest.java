@@ -2575,6 +2575,17 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(2, candidatoDao.findColaboradoresMesmoCpf(new String[] { "", colab1.getPessoal().getCpf(), colab2.getPessoal().getCpf() }).size() );
 	}
 	
+	public void testDeleteCargosPretendidos() 
+	{
+		Exception ex = null;
+		try {
+			candidatoDao.deleteCargosPretendidos(99999999999L);
+		} catch (Exception e) {
+			ex = e;
+		}
+		assertNull(ex);
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		 this.empresaDao = empresaDao;

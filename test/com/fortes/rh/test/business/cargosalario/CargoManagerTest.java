@@ -15,6 +15,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.captacao.AtitudeManager;
+import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
@@ -77,6 +78,7 @@ public class CargoManagerTest extends MockObjectTestCase
 	Mock atitudeManager;
 	Mock experienciaManager;
 	Mock quantidadeLimiteColaboradoresPorCargoManager;
+	Mock candidatoManager;
 	Mock transactionManager;
 	
 
@@ -108,6 +110,9 @@ public class CargoManagerTest extends MockObjectTestCase
 
 		quantidadeLimiteColaboradoresPorCargoManager = new Mock(QuantidadeLimiteColaboradoresPorCargoManager.class);
 		MockSpringUtil.mocks.put("quantidadeLimiteColaboradoresPorCargoManager", quantidadeLimiteColaboradoresPorCargoManager);
+		
+		candidatoManager = new Mock(CandidatoManager.class);
+		MockSpringUtil.mocks.put("candidatoManager", candidatoManager);
 		
 		conhecimentoManager = mock(ConhecimentoManager.class);
 		cargoManager.setConhecimentoManager((ConhecimentoManager) conhecimentoManager.proxy());
@@ -304,6 +309,7 @@ public class CargoManagerTest extends MockObjectTestCase
 		cargoDao.expects(once()).method("findByIdProjection").withAnyArguments().will(returnValue(cargo));;
 		experienciaManager.expects(once()).method("desvinculaCargo").withAnyArguments();
 		quantidadeLimiteColaboradoresPorCargoManager.expects(once()).method("deleteByCargo").withAnyArguments();
+		candidatoManager.expects(once()).method("deleteCargosPretendidos").withAnyArguments();
 		cargoDao.expects(once()).method("remove").withAnyArguments();
 		cargoDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		acPessoalClientCargo.expects(once()).method("deleteCargo").with(ANYTHING, ANYTHING);

@@ -14,6 +14,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.captacao.AtitudeManager;
+import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.business.captacao.ExperienciaManager;
@@ -57,6 +58,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	private FaixaSalarialManager faixaSalarialManager;
 	private EtapaSeletivaManager etapaSeletivaManager;
 	private ExperienciaManager experienciaManager;
+	private CandidatoManager candidatoManager;
 	private PlatformTransactionManager transactionManager;
 
 	public Integer getCount(Long empresaId, Long areaId, String cargoNome, Boolean ativo)
@@ -271,6 +273,9 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		
 		QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager = (QuantidadeLimiteColaboradoresPorCargoManager) SpringUtil.getBean("quantidadeLimiteColaboradoresPorCargoManager");
 		quantidadeLimiteColaboradoresPorCargoManager.deleteByCargo(cargoId);
+		
+		CandidatoManager candidatoManager = (CandidatoManager) SpringUtil.getBean("candidatoManager");
+		candidatoManager.deleteCargosPretendidos(cargoId);
 	}
 
 	public boolean verifyExistCargoNome(String cargoNome, Long empresaId)
@@ -618,5 +623,10 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	public void setExperienciaManager(ExperienciaManager experienciaManager)
 	{
 		this.experienciaManager = experienciaManager;
+	}
+
+	public void setCandidatoManager(CandidatoManager candidatoManager)
+	{
+		this.candidatoManager = candidatoManager;
 	}
 }
