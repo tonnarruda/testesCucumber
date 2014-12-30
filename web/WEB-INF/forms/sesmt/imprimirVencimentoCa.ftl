@@ -17,9 +17,9 @@
 <@ww.actionerror />
 <@ww.actionmessage />
 
-<#assign validarCampos="return validaFormulario('form', new Array('data'), null)"/>
+<#assign validarCampos="return validaFormulario('form', new Array('data'), new Array('data'))"/>
 <@ww.form name="form" action="imprimirVencimentoCa.action" onsubmit="${validarCampos}" method="POST" >
-	<@ww.datepicker id="data" name="venc" value="${data}" cssClass="mascaraData" label="Data" required="true"/>
+	<@ww.datepicker id="data" name="venc" value="${data}" cssClass="mascaraData" label="CA a vencer até" required="true"/>
 	<@frt.checkListBox name="tipoEPICheck" id="tipoEPICheck" label="Categorias de EPI" list="tipoEPICheckList" filtro="true"/>
 </@ww.form>
 
