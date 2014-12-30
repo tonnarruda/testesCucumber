@@ -138,7 +138,7 @@
 					{
 						row +=	"	<td><label for='" + id + "'>" + diasTurma[i].turnoDescricao.capitalize() + "</label></td>\n";
 					}
-					row += 		'	<td><input type="text" id="horaIni-' + id + '" name="horariosIni[' + indice + ']" class="mascaraHora hora" maxlength="5" disabled=true /> às <input type="text" id="horaFim-' + id + '" name="horariosFim[' + indice + ']" class="mascaraHora hora" maxlength="5" disabled=true /></td>\n';
+					row += 		'	<td><input type="text" id="horaIni-' + id + '" name="horariosIni[' + indice + ']" class="mascaraHora hora" maxlength="5" disabled="disabled" /> às <input type="text" id="horaFim-' + id + '" name="horariosFim[' + indice + ']" class="mascaraHora hora" maxlength="5" disabled="disabled" /></td>\n';
 					row += 		"</tr>\n";
 				
 					$('#diasTable' + indice).append(row);

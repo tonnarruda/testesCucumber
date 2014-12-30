@@ -85,10 +85,9 @@ public class TurmaListAction extends MyActionSupportList
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
-	private Collection<String[]> diasTurmasCheck;
-	private Collection<CheckBox> diasTurmasCheckList = new ArrayList<CheckBox>();
 	private Collection<String[]> avaliacaoTurmasCheck;
 	private Collection<CheckBox> avaliacaoTurmasCheckList = new ArrayList<CheckBox>();
+	private Collection<String[]> diasTurmasCheck;
 	private Collection<String[]> horariosIni;
 	private Collection<String[]> horariosFim;
 	
@@ -712,14 +711,6 @@ public class TurmaListAction extends MyActionSupportList
 		this.diasTurmasCheck = diasTurmasCheck;
 	}
 
-	public Collection<CheckBox> getDiasTurmasCheckList() {
-		return diasTurmasCheckList;
-	}
-
-	public void setDiasTurmasCheckList(Collection<CheckBox> diasTurmasCheckList) {
-		this.diasTurmasCheckList = diasTurmasCheckList;
-	}
-
 	public void setEstabelecimentoManager(	EstabelecimentoManager estabelecimentoManager) {
 		this.estabelecimentoManager = estabelecimentoManager;
 	}
@@ -790,5 +781,13 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setHorariosFim(Collection<String[]> horariosFim) {
 		this.horariosFim = horariosFim;
+	}
+
+	public Collection<String[]> getHorariosIni() {
+		return horariosIni;
+	}
+
+	public Collection<String[]> getHorariosFim() {
+		return horariosFim;
 	}
 }
