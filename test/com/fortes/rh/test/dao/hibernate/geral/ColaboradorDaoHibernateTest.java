@@ -5048,6 +5048,20 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
+		Colaborador julia = ColaboradorFactory.getEntity();
+		julia.setNome("roberta rodrigues");
+		julia.setPessoalMae("marcia rodrigues");
+		julia.setPessoalPai("julio medeiro");
+		julia.setEmpresa(empresa);
+		colaboradorDao.save(julia);
+		
+		Colaborador roberta = ColaboradorFactory.getEntity();
+		roberta.setNome("roberta rodrigues");
+		roberta.setPessoalMae("maria rodrigues");
+		roberta.setPessoalPai("julio medeiro");
+		roberta.setEmpresa(empresa);
+		colaboradorDao.save(roberta);
+		
 		Colaborador joao = ColaboradorFactory.getEntity();
 		joao.setNome("joao rodrigues");
 		joao.setPessoalMae("maria rodrigues");
@@ -5072,12 +5086,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		pedro.setEmpresa(empresa);
 		colaboradorDao.save(pedro);
 		
-		
 		assertEquals(0, colaboradorDao.findParentesByNome(joao.getId(),"joao rodrigues", empresa.getId()).size());
 		assertEquals(0, colaboradorDao.findParentesByNome(maria.getId(),"geraldo rodrigues", empresa.getId()).size());
 		assertEquals(1, colaboradorDao.findParentesByNome(pedro.getId(),"pedro rodrigues", empresa.getId()).size());
-		assertEquals(2, colaboradorDao.findParentesByNome(maria.getId(),"maria rodrigues", empresa.getId()).size());
-		assertEquals(2, colaboradorDao.findParentesByNome(maria.getId(),"maria rodrigues", null).size());
+		assertEquals(3, colaboradorDao.findParentesByNome(maria.getId(),maria.getNome(), empresa.getId()).size());
+		assertEquals(3, colaboradorDao.findParentesByNome(maria.getId(),maria.getNome(), null).size());
+		assertEquals(1, colaboradorDao.findParentesByNome(julia.getId(),julia.getPessoal().getPai(), empresa.getId()).size());
+		assertEquals(3, colaboradorDao.findParentesByNome(roberta.getId(),roberta.getPessoal().getMae(), null).size());
+		assertTrue(colaboradorDao.findParentesByNome(maria.getId(),null, null).size() >= 4);
 	}
 
 	public void testFindColabPeriodoExperiencia() 

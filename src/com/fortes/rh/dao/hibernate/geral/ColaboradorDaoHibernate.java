@@ -4230,12 +4230,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(empresaId != null)
 			criteria.add(Expression.eq("c.empresa.id", empresaId));
 
-		if(nome != null && StringUtils.isNotBlank(nome))
+		if(StringUtils.isNotBlank(nome))
 			criteria.add(Expression.or(
-							Expression.or(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", nome, Hibernate.STRING), 
-											Restrictions.sqlRestriction("normalizar(this_.conjuge) ilike  normalizar(?)", nome, Hibernate.STRING)), 
-							Expression.or(Restrictions.sqlRestriction("normalizar(this_.pai) ilike  normalizar(?)", nome, Hibernate.STRING), 
-											Restrictions.sqlRestriction("normalizar(this_.mae) ilike  normalizar(?)", nome, Hibernate.STRING))
+							Expression.or(Restrictions.sqlRestriction("normalizar({alias}.nome) ilike  normalizar(?)", nome, Hibernate.STRING), 
+											Restrictions.sqlRestriction("normalizar({alias}.conjuge) ilike  normalizar(?)", nome, Hibernate.STRING)), 
+							Expression.or(Restrictions.sqlRestriction("normalizar({alias}.pai) ilike  normalizar(?)", nome, Hibernate.STRING), 
+											Restrictions.sqlRestriction("normalizar({alias}.mae) ilike  normalizar(?)", nome, Hibernate.STRING))
 						));
 
 		criteria.addOrder(Order.asc("c.nome"));

@@ -2447,15 +2447,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().setCandidatoNull(candidatoId);
 	}
 
-	public Collection<Colaborador> findParentesByNome(Long colaboradorId, Long empresaId, String... nome) 
+	public Collection<Colaborador> findParentesByNome(Long colaboradorId, Long empresaId, String... nomes) 
 	{
 		Collection<Colaborador> parentes = new HashSet<Colaborador>();
 		
-		for (String nm : nome)
+		for (String nome : nomes)
 		{
-			if (nm != null && nm.length() >= 4)
+			if (nome != null && nome.length() >= 4)
 			{
-				parentes.addAll(getDao().findParentesByNome(colaboradorId, nm, empresaId));
+				parentes.addAll(getDao().findParentesByNome(colaboradorId, nome, empresaId));
 			}
 		}
 		
