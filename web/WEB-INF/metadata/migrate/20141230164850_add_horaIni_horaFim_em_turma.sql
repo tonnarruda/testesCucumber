@@ -1,0 +1,2 @@
+ALTER TABLE diaturma ADD COLUMN horaini CHARACTER VARYING(5);--.go
+ALTER TABLE diaturma ADD COLUMN horafim CHARACTER VARYING(5);--.go
