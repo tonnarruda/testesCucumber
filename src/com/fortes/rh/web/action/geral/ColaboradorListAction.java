@@ -381,7 +381,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			{
 				String orderField = "ce." + configuracaoCampoExtra.getNome();
 				String nomeExtra = "camposExtras." + configuracaoCampoExtra.getNome();
-				if(!configuracaoCampoExtra.getTipo().equals("texto"))
+				if(!configuracaoCampoExtra.getTipo().equals("texto") && !configuracaoCampoExtra.getTipo().equals("textolongo"))
 					nomeExtra = "camposExtras." + configuracaoCampoExtra.getNome() + "String";
 					
 				colunas.add(new ReportColumn(configuracaoCampoExtra.getTitulo(), nomeExtra, orderField, configuracaoCampoExtra.getSize(), false));
