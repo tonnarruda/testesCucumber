@@ -251,9 +251,10 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		hql.append("join s.cargo ca ");
 		hql.append("join item.epi e ");
 		hql.append("where e.empresa.id = :empresaId ");
+		hql.append("and ent.dataEntrega >= :dataIni ");
 		
-		if (dataIni != null && dataFim != null)
-			hql.append("and ent.dataEntrega between :dataIni and :dataFim ");
+		if (dataFim != null)
+			hql.append("and ent.dataEntrega <= :dataFim ");
 		
 		if(epiIds != null && epiIds.length != 0)
 			hql.append("and e.id in (:epiCheck) ");
@@ -271,6 +272,10 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresaId);
+		query.setDate("dataIni", dataIni);
+		
+		if (dataFim != null)
+			query.setDate("dataFim", dataFim);
 		
 		if(epiIds != null && epiIds.length != 0)
 			query.setParameterList("epiCheck", epiIds, Hibernate.LONG);
@@ -278,16 +283,10 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		if (colaboradorCheck != null && colaboradorCheck.length != 0)
 			query.setParameterList("colaboradorCheck", colaboradorCheck, Hibernate.LONG);
 
-		if (dataIni != null && dataFim != null)
-		{
-			query.setDate("dataIni", dataIni);
-			query.setDate("dataFim", dataFim);
-		}
-		
 		return query.list();
 	}
 	
-	public Collection<com.fortes.rh.model.sesmt.relatorio.SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao, Colaborador colaborador, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck)
+	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao, Colaborador colaborador, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck)
 	{
 		getSession().flush(); //Necessário para que nos testes a view enxergue os dados inseridos via hibernate 
 

@@ -22,7 +22,7 @@
 	<@ww.actionerror />
 	<@ww.actionmessage />
 
-	<#assign validarCampos="return validaFormulario('form', new Array('periodoIni'), new Array('periodoIni'))"/>
+	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('periodoIni'), new Array('periodoIni','periodoFim'))"/>
 	<@ww.form name="form" action="relatorioEntregaEpi.action" onsubmit="${validarCampos}" method="POST" >
 		Período:<br>
 		<@ww.datepicker label="Início" name="dataIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${dataIni}" required="true"/>

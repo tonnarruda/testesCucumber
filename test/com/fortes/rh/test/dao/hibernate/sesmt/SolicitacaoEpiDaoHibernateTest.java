@@ -307,10 +307,12 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Long[] colaboradorCheck = {colaborador.getId()};
 		char agruparPor = 'C';//agrupar por colaborador
 		
-		Collection<SolicitacaoEpiItemEntrega> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), hoje, data3, null, colaboradorCheck, agruparPor, false);
+		Collection<SolicitacaoEpiItemEntrega> entregasParciais = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), hoje, data2, null, colaboradorCheck, agruparPor, false);
+		Collection<SolicitacaoEpiItemEntrega> entregasTotais = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), hoje, null, null, colaboradorCheck, agruparPor, false);
 		
-		assertEquals(3, colecao.size());
-		assertEquals(hoje, ((SolicitacaoEpiItemEntrega)colecao.toArray()[0]).getEpiHistorico().getVencimentoCA());
+		assertEquals(2, entregasParciais.size());
+		assertEquals(3, entregasTotais.size());
+		assertEquals(hoje, ((SolicitacaoEpiItemEntrega)entregasParciais.toArray()[0]).getEpiHistorico().getVencimentoCA());
 	}
 	
 	public void testGetCount()

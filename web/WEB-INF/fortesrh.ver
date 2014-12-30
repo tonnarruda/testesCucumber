@@ -11,6 +11,7 @@
 		<Item visivel="N" motivo="P20141100247"><![CDATA[T&D > Cadastros > Avaliações dos Alunos > Editar: Impossibilitando a alteração do tipo de avaliação do aluno, caso já existam avaliações respondidas.]]></Item>
 		<Item visivel="N" motivo="P20141200034"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir: Notificando no ato da contratação quando o contratado for pai, mãe ou cônjugue de algum colaborador.]]></Item>
 		<Item visivel="N" motivo="P20141200146"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Competências > Inserir: Correção do problema ao inserir competências para colaboradores.]]></Item>
+		<Item visivel="N" motivo="------------"><![CDATA[SESMT > Relatórios > EPIs Entregues > Imprimir: Correção de erro ao emitir relatório sem especificar a data final do período.]]></Item>
 	</Versao>
 	<Versao id="1.1.138.167" bd="" data="16/12/2014">
 		<Item visivel="S" motivo="S20140400048"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores : Novo filtro por cargos.]]></Item>
