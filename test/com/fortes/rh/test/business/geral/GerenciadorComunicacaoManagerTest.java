@@ -518,15 +518,20 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 Contato contato = new Contato();
 		 contato.setEmail("email@email.com");
 		 
+		 FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		 faixaSalarial.setCargo(CargoFactory.getEntity());
+		 
 		 Colaborador teo = ColaboradorFactory.getEntity(1L);
 		 teo.setNome("Teo");
 		 teo.setEmpresa(empresa);
 		 teo.setContato(contato);
+		 teo.setFaixaSalarial(faixaSalarial);
 		 
 		 Colaborador leo = ColaboradorFactory.getEntity(2L);
 		 leo.setNome("Leo");
 		 leo.setEmpresa(empresa);
 		 leo.setContato(contato);
+		 leo.setFaixaSalarial(faixaSalarial);
 		 
 		 PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity();
 		 periodoExperiencia.setDias(10);

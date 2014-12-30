@@ -429,7 +429,8 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			mensagem = new StringBuilder();
 			body = new StringBuilder();
 
-			body.append("Sr(a) " + colaboradorAvaliacao.getColaborador().getNome() + ", <br><br>");
+			body.append("Sr(a) " + colaboradorAvaliacao.getColaborador().getNome() + ", <br>");
+			body.append("Cargo: " + colaboradorAvaliacao.getColaborador().getFaixaSalarial().getDescricao() + "<br><br>");
 			mensagem.append("Por gentileza, preencha sua avaliação para o período de experiência de " + colaboradorAvaliacao.getPeriodoExperiencia().getDias() + " dias");
 			body.append(mensagem.toString().replace("dias", "dias <br>"));
 

@@ -44,7 +44,8 @@ public class ColaboradorPeriodoExperienciaAvaliacao extends AbstractModel implem
     	this.tipo = tipo;
     }
     
-    public ColaboradorPeriodoExperienciaAvaliacao(Long colaboradorId, String colaboradorNome, String colaboradorEmail, Date colaboradorDataAdmissao, String empresaEmailRemetente, Long avaliacaoId, String avaliacaoTitulo, Integer peridoExperienciaDias, Long empresaId)
+    public ColaboradorPeriodoExperienciaAvaliacao(Long colaboradorId, String colaboradorNome, String colaboradorEmail, Date colaboradorDataAdmissao, String empresaEmailRemetente,
+    		Long avaliacaoId, String avaliacaoTitulo, Integer peridoExperienciaDias, Long empresaId, String faixaSalarialNome, String cargoNome)
     {
     	if (colaborador == null)
     		colaborador = new Colaborador();
@@ -64,6 +65,8 @@ public class ColaboradorPeriodoExperienciaAvaliacao extends AbstractModel implem
     	colaborador.getContato().setEmail(colaboradorEmail);
     	colaborador.getEmpresa().setId(empresaId);
     	colaborador.getEmpresa().setEmailRemetente(empresaEmailRemetente);
+    	colaborador.setCargoNomeProjection(cargoNome);
+    	colaborador.setFaixaSalarialNomeProjection(faixaSalarialNome);
     	
     	avaliacao.setId(avaliacaoId);
     	avaliacao.setTitulo(avaliacaoTitulo);

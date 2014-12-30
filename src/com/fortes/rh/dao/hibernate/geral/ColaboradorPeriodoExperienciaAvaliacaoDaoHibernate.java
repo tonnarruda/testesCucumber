@@ -8,6 +8,7 @@ import org.hibernate.criterion.Expression;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ColaboradorPeriodoExperienciaAvaliacaoDao;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 
 public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernate extends GenericDaoHibernate<ColaboradorPeriodoExperienciaAvaliacao> implements ColaboradorPeriodoExperienciaAvaliacaoDao
@@ -35,19 +36,31 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernate extends GenericD
 	public Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradoresComAvaliacaoVencidaHoje() 
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorPeriodoExperienciaAvaliacao(c.id, c.nome, c.contato.email, c.dataAdmissao, e.emailRemetente, a.id, a.titulo, pe.dias, e.id) ");
+		hql.append("select new ColaboradorPeriodoExperienciaAvaliacao(c.id, c.nome, c.contato.email, c.dataAdmissao, e.emailRemetente, a.id, a.titulo, pe.dias, e.id, fs.nome, ca.nome) ");
 		hql.append("from ColaboradorPeriodoExperienciaAvaliacao as cpea ");
 		hql.append("join cpea.periodoExperiencia as pe ");
 		hql.append("join cpea.colaborador as c ");
+		hql.append("left join c.historicoColaboradors as hc ");
+		hql.append("left join hc.faixaSalarial as fs ");
+		hql.append("left join fs.cargo as ca ");
 		hql.append("join cpea.avaliacao as a ");
 		hql.append("join c.empresa as e ");
 		
 		hql.append("where (c.dataDesligamento >= current_date or c.dataDesligamento is null) ");
+		
+		hql.append("	and hc.data = ( ");
+		hql.append("		select max(hc2.data) " );
+		hql.append("		from HistoricoColaborador as hc2 "); 
+		hql.append("		where hc2.colaborador.id = c.id ");
+		hql.append("			and hc2.status = :status ");
+		hql.append("	) ");
+		
 		hql.append("and cpea.tipo = 'C' ");
 		hql.append("and pe.ativo = true ");
 		hql.append("and c.id not in (select cq.colaborador.id from ColaboradorQuestionario cq where cq.avaliacao.id = a.id and cq.colaborador.id = c.id) ");
 		
 		Query query = getSession().createQuery(hql.toString());
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		return query.list();
 	}
