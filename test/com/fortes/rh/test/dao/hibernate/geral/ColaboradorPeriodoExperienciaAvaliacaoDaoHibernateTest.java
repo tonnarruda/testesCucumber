@@ -6,12 +6,18 @@ import java.util.Date;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
+import com.fortes.rh.dao.cargosalario.CargoDao;
+import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
+import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.ColaboradorPeriodoExperienciaAvaliacaoDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.Empresa;
@@ -21,6 +27,9 @@ import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
 
@@ -32,6 +41,9 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 	private AvaliacaoDao avaliacaoDao;
 	private EmpresaDao empresaDao;
 	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
+	private HistoricoColaboradorDao historicoColaboradorDao;
+	private CargoDao cargoDao;
+	private FaixaSalarialDao faixaSalarialDao;
 	
 	public ColaboradorPeriodoExperienciaAvaliacao getEntity()
 	{
@@ -106,19 +118,38 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		Date ontem = DateUtil.retornaDataDiaAnterior(hoje);
 		Date amanha = DateUtil.incrementaDias(hoje, 1);
 		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
 		Colaborador joao = ColaboradorFactory.getEntity();
 		joao.setNome("João");
 		joao.setEmpresa(empresa);
 		joao.setDataAdmissao(ontem);
 		joao.setDataDesligamento(hoje);
 		colaboradorDao.save(joao);
-
+		
+		HistoricoColaborador historicoColaboradorJoao = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorJoao.setColaborador(joao);
+		historicoColaboradorJoao.setFaixaSalarial(faixaSalarial);
+		historicoColaboradorJoao.setData(ontem);
+		historicoColaboradorDao.save(historicoColaboradorJoao);
+		
 		Colaborador maria = ColaboradorFactory.getEntity();
 		maria.setNome("Maria");
 		maria.setEmpresa(empresa);
 		maria.setDataAdmissao(ontem);
 		maria.setDataDesligamento(amanha);
 		colaboradorDao.save(maria);
+		
+		HistoricoColaborador historicoColaboradorMaria = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorMaria.setColaborador(maria);
+		historicoColaboradorMaria.setFaixaSalarial(faixaSalarial);
+		historicoColaboradorMaria.setData(ontem);
+		historicoColaboradorDao.save(historicoColaboradorMaria);
 		
 		Colaborador pedro = ColaboradorFactory.getEntity();
 		pedro.setNome("Pedro");
@@ -127,6 +158,12 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		pedro.setDataDesligamento(ontem);
 		pedro.setEmailColaborador("");
 		colaboradorDao.save(pedro);
+		
+		HistoricoColaborador historicoColaboradorPedro = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorPedro.setColaborador(pedro);
+		historicoColaboradorPedro.setFaixaSalarial(faixaSalarial);
+		historicoColaboradorPedro.setData(ontem);
+		historicoColaboradorDao.save(historicoColaboradorPedro);
 		
 		ColaboradorQuestionario colaboradorQuestionarioMaria = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionarioMaria.setRespondida(true);
@@ -216,4 +253,17 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 	public void setEmpresaDao(EmpresaDao empresaDao) {
 		this.empresaDao = empresaDao;
 	}
+	
+	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao) {
+		this.historicoColaboradorDao = historicoColaboradorDao;
+	}
+
+	public void setCargoDao(CargoDao cargoDao) {
+		this.cargoDao = cargoDao;
+	}
+
+	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao) {
+		this.faixaSalarialDao = faixaSalarialDao;
+	}
+	
 }
