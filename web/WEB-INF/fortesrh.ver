@@ -13,6 +13,7 @@
 		<Item visivel="N" motivo="P20141100247"><![CDATA[T&D > Cadastros > Avaliações dos Alunos > Editar: Impossibilitando a alteração do tipo de avaliação do aluno, caso já existam avaliações respondidas.]]></Item>
 		<Item visivel="N" motivo="P20141200034"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir: Notificando no ato da contratação quando o contratado for pai, mãe ou cônjugue de algum colaborador.]]></Item>
 		<Item visivel="N" motivo="P20141200146"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Competências > Inserir: Correção do problema ao inserir competências para colaboradores.]]></Item>
+		<Item visivel="N" motivo="S20141000009"><![CDATA[Integração com o sistema TRU para fornecer informações sobre os horários de treinamentos dos colaboradores.]]></Item>
 		<Item visivel="N" motivo="------------"><![CDATA[SESMT > Relatórios > EPIs Entregues > Imprimir: Correção de erro ao emitir relatório sem especificar a data final do período.]]></Item>
 		<Item visivel="N" motivo="------------"><![CDATA[SESMT > Relatórios > EPIs com CA a Vencer > Imprimir: Correção de erro na validação da data quando esta era inválida.]]></Item>
 	</Versao>
