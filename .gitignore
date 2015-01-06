@@ -21,3 +21,4 @@ Thumbs.db
 .externalToolBuilders/
 ruby/Gemfile.lock
 .rvmrc
+*.DS_Store
