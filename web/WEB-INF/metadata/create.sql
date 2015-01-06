@@ -922,8 +922,8 @@ CREATE TABLE camposextras (
     texto6 character varying(250),
     texto7 character varying(250),
     texto8 character varying(250),
-    texto9 character varying(250),
-    texto10 character varying(250)
+    textolongo1 text,
+    textolongo2 text
 );
 
 
@@ -2843,7 +2843,9 @@ CREATE TABLE diaturma (
     id bigint NOT NULL,
     dia date,
     turma_id bigint,
-    turno character(1) DEFAULT 'D'::bpchar NOT NULL
+    turno character(1) DEFAULT 'D'::bpchar NOT NULL,
+    horaini character varying(5),
+    horafim character varying(5)
 );
 
 
@@ -29719,8 +29721,6 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (12, false, false, 'texto6', 'Campo de Texto 6', NULL, 1, 'texto', 6, NULL);
 INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (13, false, false, 'texto7', 'Campo de Texto 7', NULL, 1, 'texto', 7, NULL);
 INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (14, false, false, 'texto8', 'Campo de Texto 8', NULL, 1, 'texto', 8, NULL);
-INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (15, false, false, 'texto9', 'Campo de Texto 9', NULL, 1, 'texto', 9, NULL);
-INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (16, false, false, 'texto10', 'Campo de Texto 10', NULL, 1, 'texto', 10, NULL);
 INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (17, false, false, 'texto1', 'Campo de Texto 1', NULL, 1, 'texto', 1, 1);
 INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (18, false, false, 'texto2', 'Campo de Texto 2', NULL, 1, 'texto', 2, 1);
 INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (19, false, false, 'texto3', 'Campo de Texto 3', NULL, 1, 'texto', 3, 1);
@@ -29735,8 +29735,10 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (28, false, false, 'texto6', 'Campo de Texto 6', NULL, 1, 'texto', 6, 1);
 INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (29, false, false, 'texto7', 'Campo de Texto 7', NULL, 1, 'texto', 7, 1);
 INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (30, false, false, 'texto8', 'Campo de Texto 8', NULL, 1, 'texto', 8, 1);
-INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (31, false, false, 'texto9', 'Campo de Texto 9', NULL, 1, 'texto', 9, 1);
-INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (32, false, false, 'texto10', 'Campo de Texto 10', NULL, 1, 'texto', 10, 1);
+INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (15, false, false, 'textolongo1', 'Campo de Texto Longo 1', NULL, 1, 'textolongo', 9, NULL);
+INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (31, false, false, 'textolongo1', 'Campo de Texto Longo 1', NULL, 1, 'textolongo', 9, 1);
+INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (16, false, false, 'textolongo2', 'Campo de Texto Longo 2', NULL, 1, 'textolongo', 10, NULL);
+INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, descricao, titulo, ordem, tipo, posicao, empresa_id) VALUES (32, false, false, 'textolongo2', 'Campo de Texto Longo 2', NULL, 1, 'textolongo', 10, 1);
 
 
 --
@@ -30661,6 +30663,8 @@ INSERT INTO migrations (name) VALUES ('20141203135105');
 INSERT INTO migrations (name) VALUES ('20141209094628');
 INSERT INTO migrations (name) VALUES ('20141215133222');
 INSERT INTO migrations (name) VALUES ('20141215173343');
+INSERT INTO migrations (name) VALUES ('20141229113638');
+INSERT INTO migrations (name) VALUES ('20141230164850');
 
 
 --
@@ -30773,6 +30777,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (416, 'ROLE_REL_COLABORADOR_COM_TREINAMENTO', 'Colaboradores com Treinamentos', '/desenvolvimento/colaboradorTurma/prepareRelatorioColaborador.action?comTreinamento=true', 8, true, NULL, 368, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (421, 'ROLE_REL_MATRIZ_TREINAMENTO', 'Matriz de Treinamentos', '/desenvolvimento/certificacao/matrizTreinamento.action', 9, true, NULL, 368, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (450, 'ROLE_CAD_MEDICAORISCO', 'Medição dos Riscos', '/sesmt/medicaoRisco/list.action', 1, true, NULL, 386, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (559, 'ROLE_REL_FUNCAO_EXAME', 'Funções por Exames', '/sesmt/funcao/prepareRelatorioFuncoesExames.action', 18, true, NULL, 387, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (422, 'ROLE_REL_HISTORICO_TREINAMENTOS', 'Histórico de Treinamentos', '/desenvolvimento/colaboradorTurma/prepareFiltroHistoricoTreinamentos.action', 10, true, NULL, 368, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (465, 'ROLE_REL_COLABORADORES_CERTIFICACOES', 'Colaboradores x Certificações', '/desenvolvimento/colaboradorTurma/prepareRelatorioColaboradorCertificacao.action', 11, true, NULL, 368, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (498, 'ROLE_CRONOGRAMA_TREINAMENTO', 'Investimento em T&D', '/desenvolvimento/turma/relatorioInvestimento.action', 12, true, NULL, 368, NULL);
@@ -30891,6 +30896,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (357, 'ROLE_R&S', 'R&S', '#', 4, true, 'R', NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (562, 'ROLE_VISUALIZAR_ATUALIZACAO_SISTEMA', 'Visualizar mensagem de atualização do sistema', '', 3, false, NULL, NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (525, 'ROLE_INFORM_CANDIDATO_COMPETENCIA', 'Visualizar Competência', '--', 3, false, NULL, 2, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (580, 'ROLE_REL_FORMACAOESCOLAR', 'Formação Escolar', '/geral/colaborador/prepareRelatorioFormacaoEscolar.action', 10, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (563, 'ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL', 'Plano de Desenvolvimento Individual (PDI)', '/desenvolvimento/turma/preparePdi.action', 5, true, NULL, 367, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (484, 'ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO', 'Pode Ver e Responder Aval. Desempenho Por Outro Usuário', '#', 1, false, NULL, 483, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (487, 'ROLE_RESPONDER_AVALIACAO_TURMA_POR_OUTRO_USUARIO', 'Pode Responder Avaliação De Turma Por Outro Usuário', '#', 14, false, NULL, 365, NULL);
@@ -30943,8 +30949,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (579, 'ROLE_CAD_LIST_HISTORICOEXTINTOR', 'Troca de Localização', '/sesmt/historicoExtintor/list.action', 3, true, NULL, 457, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (523, 'ROLE_INFORM_CANDIDATO_CURRICULO', 'Visualizar Currículo', '--', 1, false, NULL, 2, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (524, 'ROLE_INFORM_CANDIDATO_HISTORICO', 'Visualizar Histórico', '--', 2, false, NULL, 2, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (559, 'ROLE_REL_FUNCAO_EXAME', 'Funções por Exames', '/sesmt/funcao/prepareRelatorioFuncoesExames.action', 18, true, NULL, 387, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (580, 'ROLE_REL_FORMACAOESCOLAR', 'Formação Escolar', '/geral/colaborador/prepareRelatorioFormacaoEscolar.action', 10, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (496, 'ROLE_CX_MENSAGEM_RES', 'R&S', '#', 1, false, NULL, 495, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (581, 'ROLE_CX_MENSAGEM_CES', 'C&S', '', 1, false, NULL, 495, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (582, 'ROLE_CX_MENSAGEM_PESQUISAS', 'Pesquisas', '', 2, false, NULL, 495, NULL);
@@ -31032,7 +31036,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.138.167', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.139.168', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
 
 
 --

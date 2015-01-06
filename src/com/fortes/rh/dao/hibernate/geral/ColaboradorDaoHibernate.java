@@ -975,6 +975,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Colaborador> findByCargoIdsEstabelecimentoIds(Collection<Long> cargoIds, Collection<Long> estabelecimentoIds, String colaboradorNome, Long empresaId)
 	{
+		
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, a.id, a.nome, am.id, am.nome, hc.estabelecimento.id, hc.estabelecimento.nome) ");
 		hql.append("from HistoricoColaborador as hc ");

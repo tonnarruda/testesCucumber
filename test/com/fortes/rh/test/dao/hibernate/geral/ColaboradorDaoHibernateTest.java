@@ -2315,19 +2315,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	public void testFindByCargoIdsEstabelecimentoIds() {
 		Empresa empresa = new Empresa();
-		empresa.setNome("empresa");
-		empresa.setCnpj("21212121212");
-		empresa.setRazaoSocial("empresa");
-		empresa = empresaDao.save(empresa);
+		empresaDao.save(empresa);
 
 		Colaborador colaborador = getColaborador();
 		colaborador.setEmpresa(empresa);
 		colaborador.setNome("francisco");
-
-		colaborador = colaboradorDao.save(colaborador);
+		colaboradorDao.save(colaborador);
 
 		Cargo cargoAtual = CargoFactory.getEntity();
-		cargoAtual = cargoDao.save(cargoAtual);
+		cargoDao.save(cargoAtual);
 
 		FaixaSalarial faixaSalarialAtual = FaixaSalarialFactory.getEntity();
 		faixaSalarialAtual.setCargo(cargoAtual);
@@ -2350,23 +2346,23 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		estabelecimentosIds.add(estabelecimentoAtual.getId());
 
 		HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2008));
+		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, Calendar.getInstance().get(Calendar.YEAR)));
 		historicoColaboradorAtual.setColaborador(colaborador);
 		historicoColaboradorAtual.setEstabelecimento(estabelecimentoAtual);
 		historicoColaboradorAtual.setFaixaSalarial(faixaSalarialAtual);
-		historicoColaboradorAtual = historicoColaboradorDao.save(historicoColaboradorAtual);
+		historicoColaboradorDao.save(historicoColaboradorAtual);
 
 		HistoricoColaborador historicoColaboradorAntigo = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorAntigo.setData(DateUtil.criarDataMesAno(1, 1, 2007));
+		historicoColaboradorAntigo.setData(DateUtil.criarDataMesAno(1, 1, Calendar.getInstance().get(Calendar.YEAR) - 1));
 		historicoColaboradorAntigo.setColaborador(colaborador);
 		historicoColaboradorAntigo.setEstabelecimento(estabelecimentoAntigo);
-		historicoColaboradorAntigo = historicoColaboradorDao.save(historicoColaboradorAntigo);
+		historicoColaboradorDao.save(historicoColaboradorAntigo);
 
 		HistoricoColaborador historicoColaboradorFuturo = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorFuturo.setData(DateUtil.criarDataMesAno(1, 1, 2015));
+		historicoColaboradorFuturo.setData(DateUtil.criarDataMesAno(1, 1, Calendar.getInstance().get(Calendar.YEAR) + 1));
 		historicoColaboradorFuturo.setColaborador(colaborador);
 		historicoColaboradorFuturo.setEstabelecimento(estabelecimentoAntigo);
-		historicoColaboradorFuturo = historicoColaboradorDao.save(historicoColaboradorFuturo);
+		historicoColaboradorDao.save(historicoColaboradorFuturo);
 
 		Collection<Colaborador> colaboradores = colaboradorDao.findByCargoIdsEstabelecimentoIds(cargosIds, estabelecimentosIds, "franci", null);
 
@@ -2378,9 +2374,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	public void testFindByGrupoOcupacionalIdsEstabelecimentoIds() {
 		Empresa empresa = new Empresa();
-		empresa.setNome("empresa");
-		empresa.setCnpj("21212121212");
-		empresa.setRazaoSocial("empresa");
 		empresa = empresaDao.save(empresa);
 
 		Colaborador colaborador = getColaborador();
@@ -2415,20 +2408,20 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		estabelecimentosIds.add(estabelecimentoAtual.getId());
 
 		HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2008));
+		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, Calendar.getInstance().get(Calendar.YEAR)));
 		historicoColaboradorAtual.setColaborador(colaborador);
 		historicoColaboradorAtual.setEstabelecimento(estabelecimentoAtual);
 		historicoColaboradorAtual.setFaixaSalarial(faixaSalarialAtual);
 		historicoColaboradorAtual = historicoColaboradorDao.save(historicoColaboradorAtual);
 
 		HistoricoColaborador historicoColaboradorAntigo = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorAntigo.setData(DateUtil.criarDataMesAno(1, 1, 2007));
+		historicoColaboradorAntigo.setData(DateUtil.criarDataMesAno(1, 1, Calendar.getInstance().get(Calendar.YEAR) - 1));
 		historicoColaboradorAntigo.setColaborador(colaborador);
 		historicoColaboradorAntigo.setEstabelecimento(estabelecimentoAntigo);
 		historicoColaboradorAntigo = historicoColaboradorDao.save(historicoColaboradorAntigo);
 
 		HistoricoColaborador historicoColaboradorFuturo = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorFuturo.setData(DateUtil.criarDataMesAno(1, 1, 2015));
+		historicoColaboradorFuturo.setData(DateUtil.criarDataMesAno(1, 1, Calendar.getInstance().get(Calendar.YEAR) + 1));
 		historicoColaboradorFuturo.setColaborador(colaborador);
 		historicoColaboradorFuturo.setEstabelecimento(estabelecimentoAntigo);
 		historicoColaboradorFuturo = historicoColaboradorDao.save(historicoColaboradorFuturo);

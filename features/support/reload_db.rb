@@ -61,7 +61,7 @@ def popula_db conn
         end
     end
     
-    sql << "update  parametrosdosistema  set proximaversao = '2015-01-01';"
+    sql << "update  parametrosdosistema  set proximaversao = '2020-01-01';"
     
     conn.exec(sql);
     

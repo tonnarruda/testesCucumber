@@ -1,18 +1,22 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.13x.16x" bd="" data="xx/12/2014">
+	<Versao id="1.1.13x.16x" bd="" data="xx/01/2015">
+		<Item visivel="N" motivo="P20141200177"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Inserção de quebra de linha na impressão das respostas quando as mesmas excedem o tamanho de uma linha.]]></Item>
+		<Item visivel="N" motivo="P20141200188"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Performance Profissional: Correção na permissão de visualização das avaliações de desempenho.]]></Item>
+	</Versao>
+	<Versao id="1.1.139.168" bd="" data="05/01/2015">
 		<Item visivel="S" motivo="S20141200086"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Novo filtro de solicitação por estabelecimento.]]></Item>
 		<Item visivel="S" motivo="S20141200020"><![CDATA[C&S > Cadastros > Cargos e Faixas > Excluir: Possibilidade de excluir cargo mesmo que possua vínculo com "Experiência" ,"Limite de colaboradores por cargo" ou "Cargos/Funções pretendidas".]]></Item>
 		<Item visivel="S" motivo="S20141000009"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas: Nova opção de inserir os horários para cada dia de realização da turma.]]></Item>
 		<Item visivel="S" motivo="S20141200036"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Possibilidade de desligar o colaborador na data de admissão.]]></Item>
 		<Item visivel="S" motivo="S20140900149"><![CDATA[Utilitários > Configurações > Campos Extras: Conversão de dois campos extras de texto para texto longo.]]></Item>
 		<Item visivel="S" motivo="S20141200021"><![CDATA[Envio de emails automáticos de avaliação do período de experiência: Inserir no corpo do email o cargo do colaborador.]]></Item>
-		<Item visivel="N" motivo="P20141200125"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de experiência > Excluir: Correção da exclusão dos Modelos de Avaliação de Desempenho, quando os mesmos possuíam perguntas objetivas ou de Múltipla Escolha.]]></Item>
+		<Item visivel="N" motivo="P20141200125"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Excluir: Correção da exclusão dos modelos de avaliação de desempenho, quando os mesmos possuíam perguntas objetivas ou de múltipla escolha.]]></Item>
 		<Item visivel="N" motivo="P20141200038"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Inserção de quebra de linha na impressão da descrição das perguntas quando a mesma excede o tamanho de uma linha.]]></Item>
-		<Item visivel="N" motivo="P20141100247"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Editar: Impossibilitando a alteração das avaliações dos alunos, caso já existam avaliações respondidas.]]></Item>
-		<Item visivel="N" motivo="P20141100247"><![CDATA[T&D > Cadastros > Avaliações dos Alunos > Editar: Impossibilitando a alteração do tipo de avaliação do aluno, caso já existam avaliações respondidas.]]></Item>
-		<Item visivel="N" motivo="P20141200034"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir: Notificando no ato da contratação quando o contratado for pai, mãe ou cônjugue de algum colaborador.]]></Item>
-		<Item visivel="N" motivo="P20141200146"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Competências > Inserir: Correção do problema ao inserir competências para colaboradores.]]></Item>
+		<Item visivel="N" motivo="P20141100247"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Editar: Impossibilitar a alteração das avaliações dos alunos, caso já existam avaliações respondidas.]]></Item>
+		<Item visivel="N" motivo="P20141100247"><![CDATA[T&D > Cadastros > Avaliações dos Alunos > Editar: Impossibilitar a alteração do tipo de avaliação do aluno, caso já existam avaliações respondidas.]]></Item>
+		<Item visivel="N" motivo="P20141200034"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir: Notificar no ato da contratação quando o contratado for pai, mãe ou cônjugue de algum colaborador.]]></Item>
+		<Item visivel="N" motivo="P20141200146"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Competências > Inserir: Correção de erro ao inserir competências para colaboradores.]]></Item>
 		<Item visivel="N" motivo="S20141000009"><![CDATA[Integração com o sistema TRU para fornecer informações sobre os horários de treinamentos dos colaboradores.]]></Item>
 		<Item visivel="N" motivo="------------"><![CDATA[SESMT > Relatórios > EPIs Entregues > Imprimir: Correção de erro ao emitir relatório sem especificar a data final do período.]]></Item>
 		<Item visivel="N" motivo="------------"><![CDATA[SESMT > Relatórios > EPIs com CA a Vencer > Imprimir: Correção de erro na validação da data quando esta era inválida.]]></Item>

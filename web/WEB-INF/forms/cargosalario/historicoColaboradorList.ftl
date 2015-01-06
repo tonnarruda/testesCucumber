@@ -34,7 +34,10 @@
 		<@display.column property="areaOrganizacional.descricao" title="Área Organizacional" style="width:250px"/>
 
 		<@display.column property="descricaoTipoSalario" title="Tipo" style="width:100px;"/>
-		<@display.column property="salarioCalculado" title="Salário" format="{0, number, #,##0.00}" style="text-align:right; width:80px;"/>
+		<@display.column style="text-align:right; width:80px;">
+			${historicoColaborador.salarioCalculado?string.currency}
+		</@display.column>
+		
 		<#if integradoAC>
 			<@display.column title="Status no AC" style="width: 50px;text-align: center;">
 				<img border="0" title="${statusRetornoAC.getDescricao(historicoColaborador.status)}"
