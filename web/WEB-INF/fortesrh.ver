@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.13x.16x" bd="" data="xx/01/2015">
+		<Item visivel="N" motivo="P20141200177"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Inserção de quebra de linha na impressão das respostas quando as mesmas excedem o tamanho de uma linha.]]></Item>
+	</Versao>
 	<Versao id="1.1.139.168" bd="" data="05/01/2015">
 		<Item visivel="S" motivo="S20141200086"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Novo filtro de solicitação por estabelecimento.]]></Item>
 		<Item visivel="S" motivo="S20141200020"><![CDATA[C&S > Cadastros > Cargos e Faixas > Excluir: Possibilidade de excluir cargo mesmo que possua vínculo com "Experiência" ,"Limite de colaboradores por cargo" ou "Cargos/Funções pretendidas".]]></Item>
