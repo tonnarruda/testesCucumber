@@ -12,6 +12,7 @@ import junit.framework.TestCase;
 
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.MesComparator;
+import com.ibm.icu.util.Calendar;
 
 @SuppressWarnings("deprecation")
 public class DateUtilTest extends TestCase
@@ -155,8 +156,7 @@ public class DateUtilTest extends TestCase
 	
 	public void testGetAno()
 	{
-		//todo ano tem que mudar ehhehehe
-		assertEquals("Test 1", "2014", DateUtil.getAno());
+		assertEquals("Test 1", Integer.toString(Calendar.getInstance().get(Calendar.YEAR)), DateUtil.getAno());
 	}	
 	
 	public void testGetIntervalDateString()

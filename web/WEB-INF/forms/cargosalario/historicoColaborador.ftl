@@ -69,7 +69,9 @@
 		<@display.column property="areaOrganizacional.descricao" title="Área Organizacional" style="width:250px; ${style}"/>
 
 		<@display.column property="descricaoTipoSalario" title="Tipo" style="width:100px; ${style}"/>
-		<@display.column property="salarioCalculado" title="Salário" format="{0, number, #,##0.00}" style="text-align:right; width:80px; ${style}"/>
+		<@display.column title="Salário" style="text-align:right; width:80px; ${style}">
+			${historicoColaboradors.salarioCalculado?string.currency}
+		</@display.column>
 
 	</@display.table>
 	<#if integradoAC?exists && integradoAC>

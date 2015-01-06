@@ -22752,3 +22752,17 @@ and (cast(substring(link,'colaborador.id=([0-9]{1,9})')as integer)) in (select i
 delete from mensagem  where link like '%colaborador.id=%' and (cast(substring(link,'colaborador.id=([0-9]{1,9})')as integer)) in (select id from colaborador  where desligado = true);--.go
 insert into migrations values('20141215173343');--.go
 update parametrosdosistema set appversao = '1.1.138.167';--.go
+-- versao 1.1.139.168
+
+UPDATE configuracaocampoextra set nome = 'textolongo1', descricao = 'Campo de Texto Longo 1', tipo = 'textolongo' where nome = 'texto9';--.go
+UPDATE configuracaocampoextra set nome = 'textolongo2', descricao = 'Campo de Texto Longo 2', tipo = 'textolongo' where nome = 'texto10';--.go
+
+alter table camposextras rename column texto9 to textolongo1;--.go
+alter table camposextras rename column texto10 to textolongo2;--.go
+alter table camposextras alter column textolongo1 TYPE text;--.go
+alter table camposextras alter column textolongo2 TYPE text;--.go
+insert into migrations values('20141229113638');--.go
+ALTER TABLE diaturma ADD COLUMN horaini CHARACTER VARYING(5);--.go
+ALTER TABLE diaturma ADD COLUMN horafim CHARACTER VARYING(5);--.go
+insert into migrations values('20141230164850');--.go
+update parametrosdosistema set appversao = '1.1.139.168';--.go
