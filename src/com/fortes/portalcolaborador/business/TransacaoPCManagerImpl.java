@@ -88,9 +88,9 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 			Collection<TransacaoPC> transacoes = getDao().findAll(new String[] { "data" });
 			
 			for (TransacaoPC transacaoPC : transacoes) {
-				int statusCode = enviar(transacaoPC, params.getPcToken());
+ 				int statusCode = enviar(transacaoPC, params.getPcToken());
 				
-		    	if (statusCode == 200 || statusCode == 201)
+		    	if ( (statusCode >= 200 && statusCode <= 208) || statusCode == 226 )
 		    		transacaoPCManager.remove(transacaoPC.getId());
 			}
 			

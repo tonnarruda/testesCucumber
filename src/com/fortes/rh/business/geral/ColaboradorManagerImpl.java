@@ -50,6 +50,7 @@ import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
+import com.fortes.rh.dao.hibernate.geral.CidadeDaoHibernate;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
@@ -236,6 +237,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			{
 		colaborador.setUsuario(null);
 
+		if (colaborador.getEndereco().getCidade() != null)
+			colaborador.getEndereco().setCidade(cidadeManager.findById(colaborador.getEndereco().getCidade().getId()));
+		
 		if (colaborador.getPessoal().getCtps().getCtpsUf().getId() == null)
 			colaborador.getPessoal().getCtps().setCtpsUf(null);
 
@@ -249,7 +253,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		if(idCandidato != null)
 			getDao().setCandidatoNull(idCandidato);
-
+		
 		save(colaborador);
 
 		// Inicia historico do colaborador
@@ -305,7 +309,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		salvarBairro(colaborador);
 		
-		movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador));
+		if(empresa.isIntegradaPortalColaborador())
+		{
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador));
+		}
 
 		// Flush necessário quando houver uma operação com banco/sistema externo.
 		// garante que erro no banco do RH levantará uma Exception antes de alterar o outro banco.
@@ -596,7 +603,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaborador.setHistoricoColaborador(historicoColaborador);
 		}
 
-		movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador));
+		if(empresa.isIntegradaPortalColaborador())
+		{
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador));
+		}
 		
 		// Flush necessário quando houver uma operação com banco/sistema externo.
 		// garante que erro no banco do RH levantará uma Exception antes de alterar o outro banco.
