@@ -88,15 +88,16 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		hql.append("join ese.exame e ");
 		hql.append("left join ese.realizacaoExame re ");
 		hql.append("join se.colaborador co ");
-		hql.append("left join co.colaboradorAfastamento afa ");
+		if (imprimirAfastados)
+			hql.append("left join co.colaboradorAfastamento afa ");
 		hql.append("left join co.historicoColaboradors as hc ");
 		hql.append("left join hc.estabelecimento as es ");
 		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as ca ");
 		hql.append("where se.empresa.id = :empresaId ");
-		hql.append("and ese.periodicidade > 0 ");
 		hql.append("and se.data <= :data ");
+		hql.append("and ese.periodicidade > 0 ");
 
 		if (areaIds != null && areaIds.length > 0)
 			hql.append("and ao.id in (:areaIds) ");

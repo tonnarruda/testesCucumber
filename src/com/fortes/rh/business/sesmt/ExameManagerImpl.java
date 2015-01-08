@@ -102,7 +102,6 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 	{
 		Collection<ExamesPrevistosRelatorio> examesRealizadosAteData = getDao().findExamesPeriodicosPrevistos(empresaId, data, examesChecks, estabelecimentosChecks, areasChecks, colaboradoresChecks, imprimirAfastados, imprimirDesligados);
 
-
 		Collection<ExamesPrevistosRelatorio> examesAVencer = this.prepararExamesAVencer(data, examesRealizadosAteData);
 		
 		examesAVencer = this.filtrarApenasExamesVencidos(data, examesRealizadosAteData, examesAVencer);
@@ -167,20 +166,24 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		}
 		return colecaoExamesAVencer;
 	}
-	
-	private Collection<ExamesPrevistosRelatorio> filtrarApenasExamesVencidos(Date data, 
-							Collection<ExamesPrevistosRelatorio> colecaoExamesRealizadosAteData, Collection<ExamesPrevistosRelatorio> colecaoExamesAVencer) 
+
+	private Collection<ExamesPrevistosRelatorio> filtrarApenasExamesVencidos(Date data, Collection<ExamesPrevistosRelatorio> colecaoExamesRealizadosAteData, Collection<ExamesPrevistosRelatorio> colecaoExamesAVencer)
 	{
 		Collection<ExamesPrevistosRelatorio> colecaoResultado = new ArrayList<ExamesPrevistosRelatorio>();
 
 		// Em seguida, são considerados os exames que foram realizados após os filtrados, e que não venceram ainda na data.
 		// Neste caso, o exame previamente filtrado é descartado.
+		
+		Collection<ExamesPrevistosRelatorio> c = new ArrayList<ExamesPrevistosRelatorio>();
+		c.addAll(colecaoExamesRealizadosAteData);
+		c.removeAll(colecaoExamesAVencer);
+		
 		for (ExamesPrevistosRelatorio examesPrevistosRelatorio : colecaoExamesAVencer)
 		{
-			for (ExamesPrevistosRelatorio examesPrevistos2 : colecaoExamesRealizadosAteData)
+			for (ExamesPrevistosRelatorio examesPrevistos2 : c)
 			{
-				if (examesPrevistosRelatorio.getAdicionar() &&
-						!colecaoExamesAVencer.contains(examesPrevistos2)
+				if (examesPrevistosRelatorio.getAdicionar()
+//						&& !colecaoExamesAVencer.contains(examesPrevistos2)
 						&& examesPrevistos2.getColaboradorId().equals(examesPrevistosRelatorio.getColaboradorId())
 						&& examesPrevistos2.getExameId().equals(examesPrevistosRelatorio.getExameId()))
 				{
