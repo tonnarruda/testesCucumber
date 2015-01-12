@@ -32,7 +32,9 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.portalcolaborador.business.operacao.AtualizarColaborador;
+import com.fortes.portalcolaborador.business.operacao.InserirColaborador;
 import com.fortes.portalcolaborador.model.ColaboradorPC;
+import com.fortes.portalcolaborador.model.EmpresaPC;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
@@ -308,11 +310,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		saveDetalhes(colaborador, formacaos, idiomas, experiencias);
 
 		salvarBairro(colaborador);
-		
-		if(empresa.isIntegradaPortalColaborador())
-		{
-			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador));
-		}
 
 		// Flush necessário quando houver uma operação com banco/sistema externo.
 		// garante que erro no banco do RH levantará uma Exception antes de alterar o outro banco.
@@ -320,6 +317,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		if (!colaborador.isNaoIntegraAc() && empresa.isAcIntegra())
 			contratarColaboradorNoAC(colaborador, historico, empresa, true);
+		else if(empresa.isIntegradaPortalColaborador())
+			movimentacaoOperacaoPCManager.enfileirar(InserirColaborador.class, new ColaboradorPC(colaborador).getIdentificadorToJson());
 
 		gerenciadorComunicacaoManager.enviaAvisoContratacao(historico);
 

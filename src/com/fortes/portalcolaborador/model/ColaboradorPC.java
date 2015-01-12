@@ -1,9 +1,12 @@
 package com.fortes.portalcolaborador.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Transient;
 
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -11,6 +14,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class ColaboradorPC extends AbstractAdapterPC
 {
+	private Long id;
 	@SerializedName("empresa")
 	private EmpresaPC empresaPC;
 	@SerializedName("endereco_attributes")
@@ -39,9 +43,10 @@ public class ColaboradorPC extends AbstractAdapterPC
 	
 	public ColaboradorPC() {
 	}
-
+	
 	public ColaboradorPC(Colaborador colaborador) 
 	{
+		this.id = colaborador.getId();
 		this.nome 			= colaborador.getNome();
 		this.nomeComercial  = getNomeComercial(colaborador);
 		
@@ -78,6 +83,16 @@ public class ColaboradorPC extends AbstractAdapterPC
 		{
 			this.foto = new ArquivoPC(colaborador);
 		}
+	}
+	
+	public String getIdentificadorToJson()
+	{
+		Gson gson = new Gson();
+		
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.add("id", gson.toJsonTree(this.id));
+		
+		return jsonObject.toString();
 	}
 
 	public String getNomeComercial(Colaborador colaborador) {

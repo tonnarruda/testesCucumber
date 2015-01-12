@@ -100,4 +100,5 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId);
 	public Collection<HistoricoColaborador> montaSituacaoHistoricoColaborador(List<HistoricoColaborador> historicoColaboradors);
 	public Collection<HistoricoColaborador> findByEmpresaPC(Long empresaId);
+	public Collection<HistoricoColaborador> findByColaboradorIdWithProjectionPC(Long colaboradorId);
 }

@@ -964,7 +964,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 		historicoColaborador = bindSituacao(situacao, historicoColaborador);
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
-
+		
 		getDao().update(historicoColaborador);
 
 		return historicoColaborador;
@@ -1491,6 +1491,11 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	
 	public Collection<HistoricoColaborador> findByEmpresaPC(Long empresaId) {
 		return getDao().findByEmpresaPC(empresaId);
+	}
+	
+	public Collection<HistoricoColaborador> findByColaboradorIdWithProjectionPC(Long colaboradorId) 
+	{
+		return getDao().findByColaboradorIdWithProjectionPC(colaboradorId);
 	}
 
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId) 

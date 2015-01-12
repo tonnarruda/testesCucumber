@@ -16,6 +16,7 @@ import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Subqueries;
@@ -1423,6 +1424,41 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 	
 	public Collection<HistoricoColaborador> findByEmpresaPC(Long empresaId) 
 	{
+		Criteria criteria = criteriaHistoricoForPC();
+		
+		criteria.setProjection(projectionHistoricoForPC());
+
+		criteria.add(Expression.eq("emp.id",empresaId));
+		criteria.add(Expression.eq("hc.status",StatusRetornoAC.CONFIRMADO));
+		
+		//Ordem muito importante não remover
+		criteria.addOrder(Order.asc("c.pessoal.cpf"));
+		criteria.addOrder(Order.asc("hc.data"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
+
+		return criteria.list();
+	}
+	
+	public Collection<HistoricoColaborador> findByColaboradorIdWithProjectionPC(Long colaboradorId) 
+	{
+		Criteria criteria = criteriaHistoricoForPC();
+		
+		criteria.setProjection(projectionHistoricoForPC());
+
+		criteria.add(Expression.eq("c.id", colaboradorId));
+		criteria.add(Expression.eq("hc.status",StatusRetornoAC.CONFIRMADO));
+		
+		criteria.addOrder(Order.asc("hc.data"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
+
+		return criteria.list();
+	}
+	
+	private Criteria criteriaHistoricoForPC() {
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		
 		criteria.createCriteria("hc.estabelecimento", "e", Criteria.LEFT_JOIN);
@@ -1432,7 +1468,11 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.createCriteria("hc.colaborador", "c", Criteria.INNER_JOIN);
 		criteria.createCriteria("c.endereco.cidade", "ci", Criteria.LEFT_JOIN);
 		criteria.createCriteria("c.empresa", "emp");
-
+		
+		return criteria;
+	}
+	
+	private Projection projectionHistoricoForPC() {
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("emp.cnpj"), "empresaCnpj");
 		p.add(Projections.property("emp.id"), "empresaId");
@@ -1473,18 +1513,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("hc.motivo"), "motivo");
 		p.add(Projections.sqlProjection("monta_familia_area({alias}.areaOrganizacional_id) as areaNome", new String[]{"areaNome"}, new Type[]{Hibernate.STRING}), "areaOrganizacionalNome") ;
 		
-		criteria.setProjection(p);
-
-		criteria.add(Expression.eq("emp.id",empresaId));
-		criteria.add(Expression.eq("hc.status",StatusRetornoAC.CONFIRMADO));
-		
-		//Ordem muito importante não remover
-		criteria.addOrder(Order.asc("c.pessoal.cpf"));
-		criteria.addOrder(Order.asc("hc.data"));
-
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
-
-		return criteria.list();
+		return p;
 	}
 }
