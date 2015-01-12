@@ -17,10 +17,18 @@ import com.fortes.rh.util.DateUtil;
 public class HistoricoExtintorManagerImpl extends GenericManagerImpl<HistoricoExtintor, HistoricoExtintorDao> implements HistoricoExtintorManager
 {
 	private PlatformTransactionManager transactionManager;
+
+	public HistoricoExtintor save(HistoricoExtintor historicoExtintor) 
+	{
+		if (historicoExtintor.getHoraString() != null)
+			historicoExtintor.setData(DateUtil.montaDataByStringComHora(DateUtil.formataDiaMesAno(historicoExtintor.getData()),historicoExtintor.getHoraString()));
+		
+		return getDao().save(historicoExtintor);
+	}
 	
 	public void update(HistoricoExtintor historicoExtintor) 
 	{
-		if(historicoExtintor.getHoraString() != null)
+		if (historicoExtintor.getHoraString() != null)
 			historicoExtintor.setData(DateUtil.montaDataByStringComHora(DateUtil.formataDiaMesAno(historicoExtintor.getData()),historicoExtintor.getHoraString()));
 		
 		getDao().update(historicoExtintor);

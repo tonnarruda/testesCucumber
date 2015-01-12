@@ -35,14 +35,16 @@ public class ExtintorDaoHibernate extends GenericDaoHibernate<Extintor> implemen
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "e");
 		criteria.createCriteria("e.historicoExtintores","he");
 
+		DetachedCriteria maxData = DetachedCriteria.forClass(HistoricoExtintor.class, "he2")
+				.setProjection( Projections.max("data") )
+				.add(Restrictions.eqProperty("he2.extintor.id", "e.id"));
+		
+		criteria.add( Property.forName("he.data").eq(maxData) );
+		
 		if (isCount)
 			criteria.setProjection(Projections.rowCount());
 		else
 		{
-			DetachedCriteria maxData = DetachedCriteria.forClass(HistoricoExtintor.class, "he2")
-		    											.setProjection( Projections.max("data") )
-		    											.add(Restrictions.eqProperty("he2.extintor.id", "e.id"));
-
 			ProjectionList p = Projections.projectionList().create();
 			p.add(Projections.property("e.id"), "id");
 			p.add(Projections.property("he.localizacao"), "localizacaoProjection");
@@ -52,8 +54,6 @@ public class ExtintorDaoHibernate extends GenericDaoHibernate<Extintor> implemen
 
 			criteria.setProjection(p);
 
-			criteria.add( Property.forName("he.data").eq(maxData) );
-			
 			criteria.addOrder(Order.asc("e.tipo"));
 			criteria.addOrder(Order.asc("he.localizacao"));
 			criteria.addOrder(Order.asc("e.numeroCilindro"));
