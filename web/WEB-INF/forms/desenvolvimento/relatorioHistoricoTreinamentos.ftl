@@ -35,7 +35,7 @@
 					<@ww.textfield label="Nome do Colaborador" id="nome" name="colaborador.nome" maxLength="100" cssStyle="width: 500px;" />
 					<@ww.textfield label="Nome Comercial" id="nomeComercial" name="colaborador.nomeComercial" maxLength="100" cssStyle="width: 500px;"/>
 					<@ww.textfield label="Matrícula do Colaborador" id="matricula" name="colaborador.matricula" maxLength="20" cssStyle="width: 170px;"/>
-					<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" />
+					<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 
 					<input type="submit" value="" class="btnPesquisar grayBGE" />
 				</ul>

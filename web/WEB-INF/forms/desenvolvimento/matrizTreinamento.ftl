@@ -51,7 +51,7 @@
 		<@ww.actionerror />
 		
 		<@ww.form name="form" action="imprimirMatrizTreinamento.action" onsubmit="${validarCampos}" validate="true" method="POST">
-			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais*" list="areasCheckList" onClick="populaCargosByArea();" filtro="true"/>
+			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais*" list="areasCheckList" onClick="populaCargosByArea();" filtro="true" selectAtivoInativo="true"/>
 			<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos*" list="cargosCheckList" onClick="populaFaixas();" filtro="true"/>
 			<@frt.checkListBox name="faixaSalarialsCheck" id="faixaSalarialsCheck" label="Faixas Salariais (disponível se for selecionado apenas um Cargo)" list="faixaSalarialsCheckList" filtro="true"/>
 		</@ww.form>
