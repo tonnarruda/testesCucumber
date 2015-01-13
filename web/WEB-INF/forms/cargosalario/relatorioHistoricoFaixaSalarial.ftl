@@ -118,11 +118,11 @@
 		</span>
 		
 		<span id="divAreaOrganizacionals" style="display:none">
-			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600" onClick="populaCargosByArea();" filtro="true"/>
+			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600" onClick="populaCargosByArea();" filtro="true" selectAtivoInativo="true"/>
 		</span>
 		<@ww.checkbox label="Considerar cargos não vinculados a nenhuma Grupo Ocupacional" id="cargoSemVinculo" name = "" labelPosition="left"/>
 
-		<@frt.checkListBox name="cargosCheck" label="Cargos*" id="cargosCheck" list="cargosCheckList" width="600" filtro="true"/>
+		<@frt.checkListBox name="cargosCheck" label="Cargos*" id="cargosCheck" list="cargosCheckList" width="600" filtro="true" selectAtivoInativo="true"/>
 	</@ww.form>
 
 	<div class="buttonGroup">

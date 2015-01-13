@@ -89,7 +89,7 @@ public class CheckListBoxTag extends TagSupport
 			if(selectAtivoInativo)
 			{
 				checkGroup.append("|&nbsp;<select class='somenteAtivosCheck' id=\"somenteAtivosCheckBox" + name + "\" onChange=\"exibeAtivosOuInativos(this.id)\"/>");
-				checkGroup.append("   <option value=\"Todos\">Todos</option>");
+				checkGroup.append("   <option value=\"Todo(a)s\">Todos</option>");
 				checkGroup.append("   <option value=\"Ativos\">Ativos</option>");
 				checkGroup.append("   <option value=\"Inativos\">Inativos</option>");
 				checkGroup.append("</select>"); 
@@ -240,11 +240,7 @@ public class CheckListBoxTag extends TagSupport
 		this.showTitle = showTitle;
 	}
 
-	public boolean isSelectAtivoInativo() {
-		return selectAtivoInativo;
-	}
-
-	public void setSelectAtivoInativo(boolean selectAtivoInativo) {
-		this.selectAtivoInativo = selectAtivoInativo;
+	public void setSelectAtivoInativo(String selectAtivoInativo) {
+		this.selectAtivoInativo = Boolean.valueOf(selectAtivoInativo);
 	}
 }

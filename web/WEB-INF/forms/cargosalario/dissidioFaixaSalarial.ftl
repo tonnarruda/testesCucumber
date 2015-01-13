@@ -38,7 +38,7 @@
 
 	<@ww.form name="form" id="form" action="insertColetivo.action" method="POST">
 		<@ww.select label="Tabela de Reajuste" name="tabelaReajusteColaborador.id" id="tabelaReajuste" list="tabelaReajusteColaboradors" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" required="true" cssStyle="width:500px;"/>
-		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos*" list="cargosCheckList" onClick="populaFaixas();" filtro="true"/>
+		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos*" list="cargosCheckList" onClick="populaFaixas();" filtro="true" selectAtivoInativo="true"/>
 		Faixas Salariais*:
 		<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  />
 		<@frt.checkListBox name="faixasCheck" id="faixasCheck" list="faixasCheckList" filtro="true"/>

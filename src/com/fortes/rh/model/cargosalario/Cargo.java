@@ -303,7 +303,7 @@ public class Cargo extends AbstractModel implements Serializable
 	
 	public String getNomeMercadoComStatus()
 	{
-		return nomeMercado + (ativo ? " (Ativa)" : " (Inativa)");
+		return nomeMercado + (ativo ? " (Ativo)" : " (Inativo)");
 	}
 
 	@NaoAudita
@@ -385,9 +385,9 @@ public class Cargo extends AbstractModel implements Serializable
 	public String getNomeMercadoComEmpresaEStatus()
 	{
 		if(this.empresa != null && this.empresa.getNome() != null)
-			return this.empresa.getNome() + " - " + this.nomeMercado  + (ativo ? " (Ativa)" : " (Inativa)");
+			return this.empresa.getNome() + " - " + this.nomeMercado  + (ativo ? " (Ativo)" : " (Inativo)");
 		else
-			return this.nomeMercado  + (ativo ? " (Ativa)" : " (Inativa)");
+			return this.nomeMercado  + (ativo ? " (Ativo)" : " (Inativo)");
 	}
 
 	@NaoAudita

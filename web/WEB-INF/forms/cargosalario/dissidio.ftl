@@ -63,7 +63,7 @@
 		<@ww.select label="Tabela de Reajuste" name="tabelaReajusteColaborador.id" id="tabelaReajuste" list="tabelaReajusteColaboradors" listKey="id" listValue="nome" headerValue="Selecione..." headerKey="" required="true"/>
 		<@ww.select id="optFiltro" label="Filtrar Por" name="filtrarPor" list=r"#{'1':'Área Organizacional', '2':'Grupo Ocupacional'}" onchange="filtrarOpt();"/>
 
-		<@frt.checkListBox name="areasCheck" id="areaCheck" label="Áreas Organizacionais *" list="areasCheckList" filtro="true"/>
+		<@frt.checkListBox name="areasCheck" id="areaCheck" label="Áreas Organizacionais *" list="areasCheckList" filtro="true" selectAtivoInativo="true" />
 		<@frt.checkListBox name="gruposCheck" id="grupoCheck"  label="Grupos Ocupacionais" list="gruposCheckList" filtro="true"/>
 
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentoCheck" label="Estabelecimentos *" list="estabelecimentosCheckList" filtro="true"/>

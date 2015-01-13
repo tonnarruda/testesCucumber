@@ -74,7 +74,7 @@
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" width="600" filtro="true"/>
 		<@ww.select id="optFiltro" label="Filtrar Colaboradores Por" name="filtro" list=r"#{'1':'Área Organizacional', '2':'Grupo Ocupacional/Cargo'}" onchange="filtrarOpt();"/>
 		<div id="divAreas">
-			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Área Organizacional" list="areasCheckList" width="600" filtro="true"/>
+			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Área Organizacional" list="areasCheckList" width="600" filtro="true" selectAtivoInativo="true"/>
 		</div>
 		<div id="divGrupos" style="display:none;">
 			<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargosByGrupo(document.forms[0],'gruposCheck');" width="600" filtro="true"/>
