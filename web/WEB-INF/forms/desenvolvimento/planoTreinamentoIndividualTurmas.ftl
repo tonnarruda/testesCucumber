@@ -127,8 +127,8 @@
 				
 				for (var i = 0; i < diasTurma.length; i++)
 				{
-					dataFmt = $.datepicker.formatDate('dd/mm/yy', diasTurma[i].dia);
-					id = $.datepicker.formatDate('ddmmyy', diasTurma[i].dia) + diasTurma[i].turno + indice;
+					dataFmt = diasTurma[i].diaFormatado;
+					id = dataFmt.replace(/\//g,'') + diasTurma[i].turno + indice;
 					
 					var row = 	"<tr class='" + (i%2 == 0 ? 'even' : 'odd') + "'>\n";
 					row += 		"	<td><input name='diasTurmasCheck[" + indice + "]' id='" + id + "' value='" + dataFmt + ';' + diasTurma[i].turno + "' type='checkbox' " + onclick + " /></td>\n";
@@ -149,7 +149,7 @@
 				if (turma)
 				{
 					$(turma.diasTurma).each(function(k, diaTurma) {
-						var id = $.datepicker.formatDate('ddmmyy', diaTurma.dia) + diaTurma.turno + indice;
+						var id = diaTurma.diaFormatado.replace(/\//g,'') + diaTurma.turno + indice;
 						$('#' + id).attr("checked", "checked");
 						$('#horaIni-' + id).val(diaTurma.horaIni);
 						$('#horaFim-' + id).val(diaTurma.horaFim);

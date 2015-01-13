@@ -33,18 +33,27 @@ public class DiaTurma extends AbstractModel implements Serializable, Cloneable
 	{
 		return dia;
 	}
+	
+	public String getDiaFormatado()
+	{
+		return DateUtil.formataDiaMesAno(dia);
+	}
+	
 	public void setDia(Date dia)
 	{
 		this.dia = dia;
 	}
+	
 	public Turma getTurma()
 	{
 		return turma;
 	}
+	
 	public void setTurma(Turma turma)
 	{
 		this.turma = turma;
 	}
+	
 	public String getDescricao()
 	{
 		String descricao = DateUtil.formataDiaMesAno(this.dia) + " - " + DateUtil.getDiaSemanaDescritivo(this.dia);
