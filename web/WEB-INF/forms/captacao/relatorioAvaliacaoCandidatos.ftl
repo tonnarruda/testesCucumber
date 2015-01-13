@@ -86,15 +86,15 @@
 			<li>
 				<@ww.div id="divAreas">
 					<ul>
-						<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais*" list="areasCheckList" filtro="true"/>
+						<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais*" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 					</ul>
 				</@ww.div>
 			</li>
 			<li>
 				<@ww.div id="divGrupos" cssStyle="display:none;">
 					<ul>
-						<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargosByGrupo(document.forms[0],'gruposCheck');"/>
-						<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" />
+						<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargosByGrupo(document.forms[0],'gruposCheck');" filtro="true" />
+						<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" filtro="true" selectAtivoInativo="true" />
 					</ul>
 				</@ww.div>
 			</li>

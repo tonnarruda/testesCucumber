@@ -77,7 +77,7 @@
 			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Área Organizacional" list="areasCheckList" width="600" filtro="true" selectAtivoInativo="true"/>
 		</div>
 		<div id="divGrupos" style="display:none;">
-			<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargosByGrupo(document.forms[0],'gruposCheck');" width="600" filtro="true"/>
+			<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargosByGrupo(document.forms[0],'gruposCheck');" width="600" filtro="true"  selectAtivoInativo="true" />
 			<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos*" list="cargosCheckList" width="600" filtro="true"/>
 		</div>
 	</@ww.form>

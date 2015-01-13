@@ -80,7 +80,7 @@
 			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Área Organizacional" list="areasCheckList" onClick="populaCargos();" filtro="true" selectAtivoInativo="true"/>
 		</div>
 		<div id="divGrupos" style="display:none;">
-			<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargos();" filtro="true"/>
+			<@frt.checkListBox name="gruposCheck" id="gruposCheck" label="Grupos Ocupacionais" list="gruposCheckList" onClick="populaCargos();" filtro="true"  selectAtivoInativo="true"/>
 		</div>
 		<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="exibirCargosVinculados" name="" labelPosition="left"/>
 		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos *" list="cargosCheckList" filtro="true" selectAtivoInativo="true"/>

@@ -158,7 +158,7 @@
 			<@ww.hidden name="statusSolicitacao" value = 'S'/>			
 			
 			<@frt.checkListBox label="Estabelecimentos*" name="estabelecimentosCheck" id="estabelecimentoCheck" list="estabelecimentosCheckList" filtro="true"/>
-			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" filtro="true" />
+			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" filtro="true" selectAtivoInativo="true" />
 			<@frt.checkListBox label="Solicitações de Pessoal" name="solicitacaosCheckIds" id="solicitacao" list="solicitacaosCheck" width="600" filtro="true"/>
 			
 			<button onclick="return validaForm();" class="btnPesquisar grayBGE"></button>

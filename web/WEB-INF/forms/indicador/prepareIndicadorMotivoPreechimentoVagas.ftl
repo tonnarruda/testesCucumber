@@ -31,7 +31,7 @@
 	<@ww.datepicker name="dataAte" id="dataAte" value="${valueDataFim}"  cssClass="mascaraData validaDataFim"/>
 	<@ww.select label="Referenciar o período acima com a data da" name="dataStatusAprovacaoSolicitacao" list="tiposDataStatusAprovacaoSolicitacao" cssStyle="width: 300px;" />
 	<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
-	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true"/>
+	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 
 	<@ww.select id="statusSolicitacao" label="Considerar Solicitações de Pessoal" name="statusSolicitacao" list=r"#{'T':'Abertas e Encerradas', 'A':'Abertas', 'E':'Encerradas'}"/>
 	
