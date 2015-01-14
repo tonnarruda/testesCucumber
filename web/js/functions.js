@@ -1,4 +1,4 @@
-// Função que permite apenas teclas numéricas e todos os caracteres que estiverem na lista
+ // Função que permite apenas teclas numéricas e todos os caracteres que estiverem na lista
 // de argumentos. Deve ser chamada no evento onKeyPress desta forma:
 // onKeyPress = "return(somenteNumeros(event,'(/){,}.'));"
 // caso queira apenas permitir caracters
@@ -1343,28 +1343,14 @@ function naoInseririrCharacterComValor(e,value)
 	return true;
 }
 
-function exibeAtivosOuInativos(idAtivoInativo)
+function checkListBoxSearch(name)
 {
-	filtroMultiSelectBox($('#' + idAtivoInativo).parent().find(".listCheckBoxFilter"));
-}
-
-function filtroMultiSelectBox(buscaId)
-{
-	var selectAtivoInativo = buscaId.parent().find(".somenteAtivosCheck").val();
-    var texto = removerAcento( buscaId.val().toUpperCase() );
-    buscaId.parents('.listCheckBoxContainer').find( ':checkbox' ).each( function() {
-    	 nomeTeste = removerAcento( $( this ).parent( 'label' ).text().toUpperCase() );
-    	 
-    	 if(nomeTeste.indexOf( texto ) < 0)
-    		 $( this ).parent().hide();
-    	 else
-    	{
-    		 if( selectAtivoInativo == "Ativos" && (nomeTeste.indexOf( "(ATIV" ) < 0 ) )
-    			 $( this ).parent().hide();
-    		 else if( selectAtivoInativo == "Inativos" && (nomeTeste.indexOf( "(INATIV" ) < 0 ))
-    			 $( this ).parent().hide();
-    		 else
-    			 $( this ).parent().show();
-    	}
+	var filtroTexto = removerAcento($('#listCheckBoxFilter' + name).val().toUpperCase());
+	var filtroAtivo = $('#listCheckBoxActive' + name).val();
+	var nomeTeste;
+	
+	$("input:checkbox[name='" + name + "']").each(function() {
+		nomeTeste = removerAcento( $( this ).parent( 'label' ).text().toUpperCase() );
+		$( this ).parent().toggle( nomeTeste.indexOf( filtroTexto ) > -1 && nomeTeste.indexOf( filtroAtivo ) > -1 );
 	});
 }

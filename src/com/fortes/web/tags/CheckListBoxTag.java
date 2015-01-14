@@ -71,7 +71,7 @@ public class CheckListBoxTag extends TagSupport
 			checkGroup.append("<div class='listCheckBoxContainer' "+  dimension + "> <div class='listCheckBoxBarra'>");
 
 			if (filtro)
-				checkGroup.append("<input type=\"text\" id=\"listCheckBoxFilter" + name + "\" class=\"listCheckBoxFilter\" title=\"Digite para filtrar\"/>\n");
+				checkGroup.append("<input type=\"text\" id=\"listCheckBoxFilter" + name + "\" class=\"listCheckBoxFilter\" onkeyup=\"checkListBoxSearch('" + name + "')\" title=\"Digite para filtrar\"/>\n");
 			
 			if(!readonly)
 			{
@@ -88,10 +88,10 @@ public class CheckListBoxTag extends TagSupport
 			
 			if(selectAtivoInativo)
 			{
-				checkGroup.append("<select class='somenteAtivosCheck' id=\"somenteAtivosCheckBox" + name + "\" onChange=\"exibeAtivosOuInativos(this.id)\"/>");
-				checkGroup.append("   <option value=\"Todo(a)s\">Todos</option>");
-				checkGroup.append("   <option value=\"Ativos\">Ativos</option>");
-				checkGroup.append("   <option value=\"Inativos\">Inativos</option>");
+				checkGroup.append("<select class='listCheckBoxActive' id=\"listCheckBoxActive" + name + "\" onchange=\"checkListBoxSearch('" + name + "')\" />");
+				checkGroup.append("   <option value=\"\">Todos</option>");
+				checkGroup.append("   <option value=\"(ATIV\">Ativos</option>");
+				checkGroup.append("   <option value=\"(INATIV\">Inativos</option>");
 				checkGroup.append("</select>"); 
 			}
 			

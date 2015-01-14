@@ -59,17 +59,7 @@ $(function(){
 		}, 1000);
 	} catch(e) {}
 	
-	
-	// Filtro dos checklistboxes
-	try {
-		if ( $('.listCheckBoxFilter').length ) {
-			$('.listCheckBoxFilter').keyup(function() {
-				filtroMultiSelectBox($( this ));
-			});
-		}
-	} catch(e) {}
-	
-	
+
 	// Últimas notícias
 	try {
 		if (ultimasNoticias != null && ultimasNoticias.length > 0) {

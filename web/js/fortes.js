@@ -193,8 +193,7 @@ function addChecks(divName, data, onClick, orderByData)
 	}
 
 	$('#listCheckBox'+ divName.replace("[","\\[").replace("]","\\]")).html(result);
-	$('#listCheckBoxFilter'+ divName).val('');
-	filtroMultiSelectBox($('#listCheckBoxFilter'+ divName));
+	$('#listCheckBoxFilter' + divName + ', #listCheckBoxActive' + divName).val('');
 }
 
 function addChecksArray(divName, dados, onClick)
@@ -216,8 +215,7 @@ function addChecksArray(divName, dados, onClick)
 	}
 	
 	$('#listCheckBox'+ divName.replace("[","\\[").replace("]","\\]")).html(result);
-	$('#listCheckBoxFilter'+ divName).val('');
-	filtroMultiSelectBox($('#listCheckBoxFilter'+ divName));
+	$('#listCheckBoxFilter' + divName + ', #listCheckBoxActive' + divName).val('');
 }
 
 function addChecksByCollection(divName, dados, label, onClick)
@@ -244,8 +242,7 @@ function addChecksByCollection(divName, dados, label, onClick)
 	}
 
 	$('#listCheckBox'+ divName).html(result);
-	$('#listCheckBoxFilter'+ divName).val('');
-	filtroMultiSelectBox($('#listCheckBoxFilter'+ divName));
+	$('#listCheckBoxFilter' + divName + ', #listCheckBoxActive' + divName).val('');
 }
 
 function addChecksByMap(divName, data, onClick)
@@ -280,8 +277,7 @@ function addChecksByMap(divName, data, onClick)
 	}
 
 	$('#listCheckBox'+ divName).html(result);
-	$('#listCheckBoxFilter'+ divName).val('');
-	filtroMultiSelectBox($('#listCheckBoxFilter'+ divName));
+	$('#listCheckBoxFilter' + divName + ', #listCheckBoxActive' + divName).val('');
 }
 
 function addOptionsByCollection(selectId, dados, prompt, label)
