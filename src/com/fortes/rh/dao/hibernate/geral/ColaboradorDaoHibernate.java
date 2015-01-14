@@ -61,6 +61,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 {
 	private static final int AREA_ORGANIZACIONAL = 1;
 	private static final int GRUPO_OCUPACIONAL = 2;
+	@SuppressWarnings("unused")
 	private static final int CARGO = 3;
 	
 	private static final int MOTIVODEMISSAO = 1;
@@ -286,7 +287,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return criteria.list();
 	}
-
+	
+	@SuppressWarnings("rawtypes")
 	public Integer getCount(Map parametros, int tipoBuscaHistorico)
 	{
 		Query query = montaConsulta(parametros, true, tipoBuscaHistorico);
@@ -294,6 +296,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Integer) Integer.parseInt(query.uniqueResult().toString());
 	}
 
+	@SuppressWarnings("rawtypes")
 	private Query montaConsulta(Map parametros, boolean count, int tipoBuscaHistorico)
 	{
 		String nomeBusca = (String) parametros.get("nomeBusca");
@@ -402,6 +405,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Collection<Colaborador> findList(int page, int pagingSize, Map parametros, int tipoBuscaHistorico)
 	{
 		Query query = montaConsulta(parametros, false, tipoBuscaHistorico);
@@ -450,6 +454,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return result;
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Colaborador findColaboradorPesquisa(Long id, Long empresaId)
 	{
 		Colaborador colaborador = new Colaborador();
@@ -643,6 +648,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) criteria.uniqueResult();
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Colaborador findByUsuario(Usuario usuario, Long empresaId)
 	{
 		Colaborador colaborador = new Colaborador();
@@ -1431,6 +1437,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) criteria.uniqueResult();
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public Collection<TurnOver> countAdmitidosDemitidosPeriodoTurnover(Date dataIni, Date dataFim, Empresa empresa, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, boolean isAdmitidos)
 	{
 		StringBuilder sql = new StringBuilder();
@@ -3135,6 +3142,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Integer) query.uniqueResult();
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Collection<Object> findComHistoricoFuturoSQL(Map parametros, Integer pagingSize, Integer page)
 	{
 		String nomeBusca = (String) parametros.get("nomeBusca");

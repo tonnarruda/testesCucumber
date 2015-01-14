@@ -159,6 +159,25 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		assertNull(usuarioRetorno1.getLogin());
 		assertNull(usuarioRetorno1.getSenha());
 	}
+	
+	public void testRemoveAcessoSistema()
+	{
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuario.setAcessoSistema(true);
+		usuario.setLogin("teste0123568");
+		usuario.setSenha("1234");
+		usuarioDao.save(usuario);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setUsuario(usuario);
+		colaboradorDao.save(colaborador1);
+		
+		usuarioDao.removeAcessoSistema(colaborador1.getId());
+		
+		Usuario usuarioRetorno1 = usuarioDao.findByIdProjection(usuario.getId());
+		
+		assertFalse(usuarioRetorno1.isAcessoSistema());
+	}
 
 	public void testDesativaAcessoSistemaMultiploColaboradores()
 	{

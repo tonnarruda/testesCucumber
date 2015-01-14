@@ -13,7 +13,6 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.MotivoDemissaoManager;
 import com.fortes.rh.exception.FortesException;
-import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.model.sesmt.Comissao;
@@ -90,12 +89,13 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			} 
 			else 
 			{
-				colaboradorManager.desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motDemissao.getId(), false, colaborador.getId());
+				colaboradorManager.desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motDemissao.getId(), false, getEmpresaSistema().isAcIntegra(), colaborador.getId());
 				addActionSuccess("Colaborador desligado com sucesso.");
 			}
 		
 		} catch (Exception e) {
 			addActionError(e.getMessage());
+			e.printStackTrace();
 			prepareUpdate();
 			return Action.INPUT;
 		}
@@ -203,7 +203,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			if (getEmpresaSistema().isAcIntegra())
 				return solicitacaoDesligamento();
 
-			colaboradorManager.desligaColaborador(true, dataDesligamento, observacaoDemissao, motDemissao.getId(), false, colaborador.getId());
+			colaboradorManager.desligaColaborador(true, dataDesligamento, observacaoDemissao, motDemissao.getId(), false, getEmpresaSistema().isAcIntegra(), colaborador.getId());
 			
 			gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(colaborador.getNome(), colaborador.getSolicitanteDemissao().getId(), getEmpresaSistema(), true);
 			

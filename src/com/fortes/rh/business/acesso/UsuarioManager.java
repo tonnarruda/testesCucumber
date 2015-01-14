@@ -42,6 +42,8 @@ public interface UsuarioManager extends GenericManager<Usuario>
 	public void desativaAcessoSistema(Long... colaboradoresIds);
 	
 	public void reativaAcessoSistema(Long colaboradorId);
+	
+	public void removeAcessoSistema(Long... colaboradoresIds);
 
 	public Usuario save(Usuario usuario, Long colaboradorId, String[] empresasId, String[] selectPerfils) throws LoginExisteException, SenhaNaoConfereException, Exception;
 

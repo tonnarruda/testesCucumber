@@ -198,11 +198,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findSemUsuarios(empresaId, usuario);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Integer getCount(Map parametros)
 	{
 		return getDao().getCount(parametros, TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Collection findList(int page, int pagingSize, Map parametros)
 	{
 		return getDao().findList(page, pagingSize, parametros, TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
@@ -967,7 +969,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if(tFeedbackPessoalWebService != null && tFeedbackPessoalWebService.getSucesso())
 		{
 			getDao().atualizaSolicitacaoDesligamento(null, dataSolicitacaoDesligamento, null, null, null, colaboradorId);
-			desligaColaborador(null, null, observacaoDemissao, motivoId, false, colaboradorId);
+			desligaColaborador(null, null, observacaoDemissao, motivoId, false, empresa.isAcIntegra(), colaboradorId);
 		}else{
 			throw new IntegraACException("Colaborador não encontrado no Ac Pessoal");
 		}
@@ -979,7 +981,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().atualizaSolicitacaoDesligamento(dataSolicitacaoDesligamento, null, observacaoDemissao, motivoId, solicitanteDemissaoId, colaboradorId);
 	}
 	
-	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, boolean desligaByAC, Long... colaboradoresIds) throws Exception
+	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, boolean desligaByAC, boolean integradoAC, Long... colaboradoresIds) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -987,17 +989,17 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		try
 		{
+			@SuppressWarnings("deprecation")
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
-			usuarioManager.desativaAcessoSistema(colaboradoresIds);
+			usuarioManager.removeAcessoSistema(colaboradoresIds);
 			candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaboradoresIds);
 			candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.INDIFERENTE, colaboradoresIds);
-			areaOrganizacionalManager.desvinculaResponsaveis(colaboradoresIds);
 
 			if(desligaByAC)
 				historicoColaboradorManager.deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradoresIds);
-			else
-			{
-				mensagemManager.removerMensagensViculadasByColaborador(colaboradoresIds);
+			else {
+				if(!integradoAC)
+					removeVinculos(colaboradoresIds);
 				getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, colaboradoresIds);
 			}
 			transactionManager.commit(status);
@@ -1009,9 +1011,18 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 
+	private void removeVinculos(Long... colaboradoresIds){
+		try {
+			areaOrganizacionalManager.desvinculaResponsaveis(colaboradoresIds);
+			mensagemManager.removerMensagensViculadasByColaborador(colaboradoresIds);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void religaColaborador(Long colaboradorId) throws Exception
 	{
-		UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
+		UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
 		usuarioManager.reativaAcessoSistema(colaboradorId);
 		candidatoManager.updateDisponivelAndContratadoByColaborador(false, true, colaboradorId);
 		candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.APROMOVER, colaboradorId);
@@ -1032,8 +1043,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				throw new FortesException("Desligar Empregado: Existe(m) empregado(s) que não se encontra(m) no sistema RH.");
 			
 			Long[] colaboradoresIds = new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradores);
-			desligaColaborador(true, dataDesligamento, "", null, true, colaboradoresIds);
-			mensagemManager.removerMensagensViculadasByColaborador(colaboradoresIds);
+			desligaColaborador(true, dataDesligamento, "", null, true, true, colaboradoresIds);
+			removeVinculos(colaboradoresIds);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -1189,11 +1200,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().setMatriculaColaborador(colaboradorId, matricula);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Collection<Colaborador> findListComHistoricoFuturo(int page, int pagingSize, Map parametros)
 	{
 		return getDao().findList(page, pagingSize, parametros, TipoBuscaHistoricoColaborador.COM_HISTORICO_FUTURO);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Integer getCountComHistoricoFuturo(Map parametros)
 	{
 		return getDao().getCount(parametros, TipoBuscaHistoricoColaborador.COM_HISTORICO_FUTURO);
@@ -1732,11 +1745,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().qtdTotalDiasDaTurmaVezesColaboradoresInscritos(dataPrevIni, dataPrevFim, EmpresaIds, cursoIds, areasIds);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Integer getCountComHistoricoFuturoSQL(Map parametros)
 	{
 		return getDao().findComHistoricoFuturoSQL(parametros, 0, 0).size();
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Collection<Colaborador> findComHistoricoFuturoSQL(int page, int pagingSize, Map parametros) throws Exception
 	{
 		Collection<Colaborador> result = new LinkedList<Colaborador>();
@@ -2428,7 +2443,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem, String empresaCodigoAC, String grupoAC) throws Exception
 	{
-		getDao().religaColaborador(colaborador.getId());
+		this.religaColaborador(colaborador.getId());
 		gerenciadorComunicacaoManager.enviaMensagemCancelamentoSolicitacaoDesligamentoAC(colaborador, mensagem, empresaCodigoAC, grupoAC);
 	}
 

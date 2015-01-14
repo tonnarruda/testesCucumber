@@ -160,6 +160,11 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		getDao().reativaAcessoSistema(colaboradorId);
 	}
 
+	public void removeAcessoSistema(Long... colaboradoresIds)
+	{
+		getDao().removeAcessoSistema(colaboradoresIds);
+	}
+	
 	private void validaUsuario(Usuario usuario) throws LoginExisteException, SenhaNaoConfereException
 	{
 		if(existeLogin(usuario))

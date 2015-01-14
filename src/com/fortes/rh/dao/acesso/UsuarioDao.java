@@ -40,4 +40,6 @@ public interface UsuarioDao extends GenericDao<Usuario>
 	Collection<Empresa> findEmpresas(String usuarioNome);
 
 	String[] findEmailsByPerfil(String role, Long EmpresaId);
+	
+	void removeAcessoSistema(Long... colaboradoresIds);
 }

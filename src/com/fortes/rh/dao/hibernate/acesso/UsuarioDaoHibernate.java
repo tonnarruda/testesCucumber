@@ -205,6 +205,18 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 
 		query.executeUpdate();
 	}
+	
+	public void removeAcessoSistema(Long... colaboradoresIds)
+	{
+		String hql = "update Usuario u set u.acessoSistema = :acessoSistema where u.id in (select c.usuario.id from Colaborador c where c.id in (:colaboradoresIds))";
+
+		Query query = getSession().createQuery(hql);
+
+		query.setParameterList("colaboradoresIds", colaboradoresIds);
+		query.setBoolean("acessoSistema", false);
+
+		query.executeUpdate();
+	}
 
 	public void setUltimoLogin(Long id) {
 		String hql = "update Usuario u set u.ultimoLogin = :ultimoLogin where u.id = :id";
