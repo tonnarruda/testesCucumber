@@ -31,7 +31,7 @@
 		<@ww.datepicker name="colaboradorAfastamento.fim" id="fim" value="${fim}" cssClass="mascaraData validaDataFim" />
 
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" filtro="true"/>
-		<@frt.checkListBox name="areasCheck" label="Área Organizacional" list="areasCheckList" filtro="true"/>
+		<@frt.checkListBox name="areasCheck" label="Área Organizacional" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 		<@frt.checkListBox name="motivosCheck" label="Motivo de Afastamento" list="motivosCheckList" filtro="true"/>
 		
 		<@ww.select label="Ordenar por" name="ordenarPor" id="ordenarPor" list=r"#{'N':'Nome do colaborador','D':'Qtde de dias de afastamento (decrescente)'}" cssStyle="width:500px"/>

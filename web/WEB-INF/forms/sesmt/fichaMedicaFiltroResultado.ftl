@@ -61,7 +61,7 @@
 			<@ww.datepicker label="Período" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
 			<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/>
 
-			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areaOrganizacionalsCheckList" filtro="true"/>
+			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areaOrganizacionalsCheckList" filtro="true" selectAtivoInativo="true"/>
 			<@frt.checkListBox label="Exibir apenas os Aspectos" name="aspectosCheck" id="aspectosCheck" list="aspectosCheckList" filtro="true" />
 			<@frt.checkListBox label="Exibir apenas as Perguntas" name="perguntasCheck" id="perguntasCheck" list="perguntasCheckList" filtro="true" />
 

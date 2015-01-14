@@ -31,7 +31,7 @@
 
 		<@frt.checkListBox name="examesCheck" label="Exames" list="examesCheckList" filtro="true"/>
 		<@frt.checkListBox name="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true" />
-		<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" />
+		<@frt.checkListBox name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true" />
 		<@frt.checkListBox name="colaboradoresCheck" label="Colaboradores" list="colaboradoresCheckList" filtro="true" />
 		
 		<@ww.select label="Agrupar por" name="agruparPor" list=r"#{'N':'-','A':'Área Organizacional','E':'Estabelecimento'}"/>

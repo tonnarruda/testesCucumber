@@ -22,7 +22,7 @@
 		<@ww.select label="Agrupar por" id="agruparPor" name="agruparPor" list=r"#{'E':'Epi','C':'Colaborador'}" />
 		<@frt.checkListBox name="tipoEPICheck" id="tipoEPICheck" label="Categorias de EPI" list="tipoEPICheckList" filtro="true"/>
 		<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList" filtro="true"/>						
-		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" filtro="true"/>
+		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 		<@ww.checkbox label="Exibir Vencimento do CA" id="exibirVencimentoCA" name="exibirVencimentoCA" labelPosition="left"/>
 	</@ww.form>
 
