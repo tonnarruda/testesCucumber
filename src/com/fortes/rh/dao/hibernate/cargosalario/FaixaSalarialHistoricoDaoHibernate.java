@@ -77,8 +77,6 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		hql.append("    	left join indicehistorico ih on fsh.indice_id = ih.indice_id ");
 		hql.append("    	left join indice i on fsh.indice_id = i.id ");
 		hql.append("    where fsh.faixasalarial_id = :faixaId ");
-		hql.append("    	and fsh.data <= current_date ");
-		hql.append("    	and (ih.data is null or ih.data <= current_date) ");
 		hql.append("    order by fsh.data, ih.data) as faixas ");
 		hql.append("where faixas.dataindice is null or (faixas.dataindice >= faixas.dataindiceanterior ");
 		hql.append("and ((faixas.dataindice < faixas.proximadatafaixa) or faixas.proximadatafaixa is null)) ");
