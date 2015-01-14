@@ -312,13 +312,14 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 	{
 		StringBuilder hql = new StringBuilder();
 
-		hql.append("select new Cargo(c.id, c.nome, c.ativo) ");
+		hql.append("select new Cargo(c.id, c.nomeMercado, c.ativo, e.id, e.nome) ");
 
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join hc.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as c ");
 		hql.append("left join hc.areaOrganizacional as a ");
+		hql.append("left join c.empresa as e ");
 
 		hql.append("where a.id in ( :areaIds ) ");
 

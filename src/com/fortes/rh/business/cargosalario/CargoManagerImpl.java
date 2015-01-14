@@ -297,7 +297,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 			cargos = getDao().findByAreaDoHistoricoColaborador(areaIds);
 		}
 
-		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId","getNome");
+		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId","getNomeMercadoComStatus");
 	}
 
 	public Collection<CheckBox> populaCheckBoxAllCargos()
