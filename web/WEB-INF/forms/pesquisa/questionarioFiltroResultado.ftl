@@ -203,14 +203,14 @@
 			</#if>
 
 			<#if questionario.tipo == tipoQuestionario.getPESQUISA() >
-				<@frt.checkListBox label="${descricaoAreas}" name="areasCheck" id="areasCheck" list="areaOrganizacionalsCheckList" onClick="populaCargosByAreaVinculados();" filtro="true"/>
+				<@frt.checkListBox label="${descricaoAreas}" name="areasCheck" id="areasCheck" list="areaOrganizacionalsCheckList" onClick="populaCargosByAreaVinculados();" filtro="true" selectAtivoInativo="true"/>
 			<#else>
-				<@frt.checkListBox label="${descricaoAreas}" name="areasCheck" id="areasCheck" list="areaOrganizacionalsCheckList" onClick="populaCargosByArea();" filtro="true"/>
+				<@frt.checkListBox label="${descricaoAreas}" name="areasCheck" id="areasCheck" list="areaOrganizacionalsCheckList" onClick="populaCargosByArea();" filtro="true" selectAtivoInativo="true"/>
 			</#if>
 
 			<@ww.checkbox label="Considerar cargos não vinculados a nenhuma Área Organizacional" id="cargoSemArea" name="" labelPosition="left"/>
 			
-			<@frt.checkListBox label="Cargos" id="cargosCheck" name="cargosCheck" list="cargosCheckList" filtro="true"/>
+			<@frt.checkListBox label="Cargos" id="cargosCheck" name="cargosCheck" list="cargosCheckList" filtro="true" selectAtivoInativo="true"/>
 			
 			<@frt.checkListBox label="Exibir apenas os Aspectos" name="aspectosCheck" id="aspectosCheck" list="aspectosCheckList" onClick="${populaPerguntasPorAspecto}" filtro="true"/>
 			<@frt.checkListBox label="Exibir apenas as Perguntas" name="perguntasCheck" id="perguntasCheck" list="perguntasCheckList" filtro="true"/>

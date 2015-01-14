@@ -90,7 +90,7 @@
 		<@ww.label value="a" liClass="liLeft"/>
 		<@ww.datepicker name="dataFim" id="dataFim"  value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
 		<@frt.checkListBox label="Estabelecimentos*" name="estabelecimentosCheck" id="estabelecimentoCheck" list="estabelecimentosCheckList" filtro="true"/>
-		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" filtro="true"/>
+		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 		
 		<@ww.select label="Exibir apenas colaboradores ativos" id="exibirSomenteAtivos" name="exibirSomenteAtivos" list=r"#{true:'Sim',false:'Não'}" cssStyle="width: 96px;"/>
 		

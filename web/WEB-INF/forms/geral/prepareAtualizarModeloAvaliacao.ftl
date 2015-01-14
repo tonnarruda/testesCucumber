@@ -116,7 +116,7 @@
 	<@ww.form id="form" action="atualizarModeloAvaliacao" name="form" method="POST">
 	
 		<@frt.checkListBox name="estabelecimentoCheck" label="Estabelecimento" list="estabelecimentoCheckList" width="718" height="120" onClick="populaColaboradores($('#empresa').val());" filtro="true"/>
-		<@frt.checkListBox name="areaCheck" label="Área Organizacional" list="areaCheckList" width="718" height="120" onClick="populaColaboradores($('#empresa').val());" filtro="true"/>
+		<@frt.checkListBox name="areaCheck" label="Área Organizacional" list="areaCheckList" width="718" height="120" onClick="populaColaboradores($('#empresa').val());" filtro="true" selectAtivoInativo="true"/>
 		<@frt.checkListBox id="colaboradorCheck" name="colaboradorCheck" label="Colaborador*" list="colaboradorCheckList" width="718" height="180" filtro="true"/>
 
 		<div>

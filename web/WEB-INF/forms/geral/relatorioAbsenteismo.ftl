@@ -39,7 +39,7 @@
 		<@frt.checkListBox name="ocorrenciasCheck" id="ocorrenciasCheck" label="Ocorrências" list="ocorrenciasCheckList" filtro="true"/>
 		<@frt.checkListBox name="afastamentosCheck" id="afastamentosCheck" label="Afastamentos" list="afastamentosCheckList" filtro="true"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
-		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true"/>
+		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 	</@ww.form>
 	
 	<div class="buttonGroup">

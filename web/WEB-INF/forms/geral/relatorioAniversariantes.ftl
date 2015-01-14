@@ -76,7 +76,7 @@
 		
 		<@ww.select label="Mês" name="mes" list="meses"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
-		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true"/>
+		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 		<@ww.select label="Exibir" name="exibir" list=r"#{'A':'Área Organizacional','C':'Cargo'}"/>
 		<@ww.checkbox labelPosition="right" label="Exibir nome comercial" name="exibirNomeComercial" />
 	</@ww.form>

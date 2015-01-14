@@ -88,9 +88,9 @@
 		<@ww.datepicker name="dataFim" id="dataFim"  value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
 		
 		<@frt.checkListBox label="Estabelecimentos*" name="estabelecimentosCheck" id="estabelecimentoCheck" list="estabelecimentosCheckList" filtro="true"/>
-		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" onClick="populaCargosByAreaVinculados()" filtro="true"/>
+		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" onClick="populaCargosByAreaVinculados()" filtro="true" selectAtivoInativo="true"/>
 		<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>
-		<@frt.checkListBox label="Cargo" name="cargosCheck" list="cargosCheckList" filtro="true" />
+		<@frt.checkListBox label="Cargo" name="cargosCheck" list="cargosCheckList" filtro="true" selectAtivoInativo="true"/>
 		
 		<@ww.select label="Colocação do Colaborador" name="vinculo" id="vinculo" list="vinculos" headerKey="" headerValue="Todas" cssStyle="width: 180px;" />
 		<@ww.select label="Exibir lista de Colaboradores" id="listaColaboradores" onchange="getAgruparPorMotivo()" name="listaColaboradores" list=r"#{true:'Sim',false:'Não'}" cssStyle="width: 96px;"/>
