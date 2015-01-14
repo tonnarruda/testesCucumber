@@ -70,7 +70,9 @@
 
 		<@display.column property="descricaoTipoSalario" title="Tipo" style="width:100px; ${style}"/>
 		<@display.column title="Salário" style="text-align:right; width:80px; ${style}">
-			${historicoColaboradors.salarioCalculado?string.currency}
+			<#if historicoColaboradors.salarioCalculado?exists>
+				${historicoColaboradors.salarioCalculado?string.currency}
+			</#if>
 		</@display.column>
 
 	</@display.table>
