@@ -174,21 +174,20 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		// Em seguida, são considerados os exames que foram realizados após os filtrados, e que não venceram ainda na data.
 		// Neste caso, o exame previamente filtrado é descartado.
 		
-		Collection<ExamesPrevistosRelatorio> c = new ArrayList<ExamesPrevistosRelatorio>();
-		c.addAll(colecaoExamesRealizadosAteData);
-		c.removeAll(colecaoExamesAVencer);
+		Collection<ExamesPrevistosRelatorio> colecaoExamesPrevistos = new ArrayList<ExamesPrevistosRelatorio>();
+		colecaoExamesPrevistos.addAll(colecaoExamesRealizadosAteData);
+		colecaoExamesPrevistos.removeAll(colecaoExamesAVencer);
 		
 		for (ExamesPrevistosRelatorio examesPrevistosRelatorio : colecaoExamesAVencer)
 		{
-			for (ExamesPrevistosRelatorio examesPrevistos2 : c)
+			for (ExamesPrevistosRelatorio examePrevistoRelatorio : colecaoExamesPrevistos)
 			{
 				if (examesPrevistosRelatorio.getAdicionar()
-//						&& !colecaoExamesAVencer.contains(examesPrevistos2)
-						&& examesPrevistos2.getColaboradorId().equals(examesPrevistosRelatorio.getColaboradorId())
-						&& examesPrevistos2.getExameId().equals(examesPrevistosRelatorio.getExameId()))
+						&& examePrevistoRelatorio.getColaboradorId().equals(examesPrevistosRelatorio.getColaboradorId())
+						&& examePrevistoRelatorio.getExameId().equals(examesPrevistosRelatorio.getExameId()))
 				{
-					if ((examesPrevistos2.getDataProximoExame().compareTo(data) > 0)
-						&& (examesPrevistos2.getDataRealizacaoExame().compareTo(examesPrevistosRelatorio.getDataRealizacaoExame()) > 0))
+					if ((examePrevistoRelatorio.getDataProximoExame().compareTo(data) > 0)
+						&& (examePrevistoRelatorio.getDataRealizacaoExame().compareTo(examesPrevistosRelatorio.getDataRealizacaoExame()) > 0))
 					{
 						examesPrevistosRelatorio.setAdicionar(false);
 					}
