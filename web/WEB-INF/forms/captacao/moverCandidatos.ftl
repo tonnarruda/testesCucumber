@@ -137,6 +137,7 @@
 			<@display.column title="" style="width: 30px; text-align: center;">
 				<input type="radio" value="${sol.id}" name="solicitacaoDestino.id"/>
 			</@display.column>
+			<@display.column property="id" title="Código"/>
 			<@display.column property="faixaSalarial.cargo.nome" title="Cargo" />
 			<@display.column property="empresa.nome" title="Empresa" />
 			<@display.column property="areaOrganizacional.nome" title="Área" />
