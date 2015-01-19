@@ -1,10 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.13x.16x" bd="" data="xx/01/2015">
+	<Versao id="1.1.140.169" bd="" data="xx/01/2015">
 		<Item visivel="S" motivo="P20150100013"><![CDATA[C&S > Cadastros > Cargos e Faixas > faixas salariais > editar: Visualisação do históricos futuros da faixa salarial.]]></Item>
 		<Item visivel="N" motivo="P20141200177"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Inserção de quebra de linha na impressão das respostas quando as mesmas excedem o tamanho de uma linha.]]></Item>
 		<Item visivel="N" motivo="P20141200188"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Performance Profissional: Correção na permissão de visualização das avaliações de desempenho.]]></Item>
 		<Item visivel="N" motivo="P20141200187"><![CDATA[SESMT > Cadastros > Extintores: Correção da paginação dos resultados e no formulário que não gravava as horas ao inserir um novo histórico.]]></Item>
+		<Item visivel="N" motivo="P20150100011"><![CDATA[SESMT > Relatórios > Exames Previstos: Melhoria na performance para consultar os registros a serem impressos.]]></Item>
 		<Item visivel="N" motivo="P20150100038"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas: Correção de bug ao carregar os dias de realização da turma quando o browser do cliente tinha uma timezone diferente da configurada no servidor.]]></Item>
 		<Item visivel="N" motivo="P20141200182"><![CDATA[Ao cancelar o desligamento de um colaborador na tabela temporária do AC Pessoal, indisponibilizando o candidado e reabilitando o acesso do usuário]]></Item>
 	</Versao>
