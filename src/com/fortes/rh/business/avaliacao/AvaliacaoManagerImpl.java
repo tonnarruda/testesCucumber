@@ -32,6 +32,7 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 	private PerguntaManager perguntaManager;
 	private MensagemManager mensagemManager;
 	private QuestionarioManager questionarioManager;
+	private PeriodoExperienciaManager periodoExperienciaManager;
 	private ColaboradorRespostaManager colaboradorRespostaManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager;
@@ -140,6 +141,10 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 				empresa.setId(empresaId);
 				
 				Avaliacao avaliacao = (Avaliacao) getDao().findById(id).clone();
+				
+				if(!empresaId.equals(avaliacao.getEmpresa().getId()))
+					avaliacao.setPeriodoExperiencia(periodoExperienciaManager.clonarPeriodoExperiencia(avaliacao.getPeriodoExperiencia().getId(), empresa));
+				
 				avaliacao.setEmpresa(empresa);
 				avaliacao.setTitulo(avaliacao.getTitulo() + " (Clone)");
 				avaliacao.setId(null);
@@ -193,5 +198,9 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 
 	public void setMensagemManager(MensagemManager mensagemManager) {
 		this.mensagemManager = mensagemManager;
+	}
+	
+	public void setPeriodoExperienciaManager(PeriodoExperienciaManager periodoExperienciaManager){
+		this.periodoExperienciaManager = periodoExperienciaManager;
 	}
 }

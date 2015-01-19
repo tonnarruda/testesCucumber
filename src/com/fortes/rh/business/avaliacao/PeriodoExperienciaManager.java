@@ -6,6 +6,7 @@ import com.fortes.business.GenericManager;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.FaixaPerformanceAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.web.tags.CheckBox;
 
 public interface PeriodoExperienciaManager extends GenericManager<PeriodoExperiencia> 
@@ -16,4 +17,5 @@ public interface PeriodoExperienciaManager extends GenericManager<PeriodoExperie
 	Collection<CheckBox> populaCheckBoxDistinctDias(Long empresaId);
 	Collection<FaixaPerformanceAvaliacaoDesempenho> agrupaFaixaAvaliacao(Collection<Colaborador> colaboradores, String[] percentualInicial, String[] percentualFinal) throws Exception;
 	Collection<PeriodoExperiencia> findByIdsOrderDias(Long[] PeriodoExperienciaIds);
+	PeriodoExperiencia clonarPeriodoExperiencia(Long id, Empresa empresa);
 }

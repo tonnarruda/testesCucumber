@@ -15,7 +15,7 @@ import com.fortes.rh.model.geral.Empresa;
 @SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="periodoExperiencia_sequence", allocationSize=1)
-public class PeriodoExperiencia extends AbstractModel implements Serializable
+public class PeriodoExperiencia extends AbstractModel implements Serializable, Cloneable
 {
 	private Integer dias;
 	@Column(length=40)
@@ -84,4 +84,19 @@ public class PeriodoExperiencia extends AbstractModel implements Serializable
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
+
+	@Override
+	public Object clone()
+	{
+	   try
+	   {
+	      return super.clone();
+	   }
+	   catch (CloneNotSupportedException e)
+	   {
+	      throw new Error("Ocorreu um erro interno no sistema. Não foi possível clonar o objeto.");
+	   }
+	}
+	
+	
 }

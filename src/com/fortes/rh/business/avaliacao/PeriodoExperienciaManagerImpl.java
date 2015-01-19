@@ -10,6 +10,7 @@ import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.FaixaPerformanceAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.web.tags.CheckBox;
 
@@ -108,5 +109,31 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 		}
 		
 		return faixas;
+	}
+
+	public PeriodoExperiencia clonarPeriodoExperiencia(Long id, Empresa empresa) 
+	{
+		PeriodoExperiencia periodoExperienciaClone = (PeriodoExperiencia) getDao().findById(id).clone();
+		
+		Collection<PeriodoExperiencia> periodoExperiencias =  getDao().findAllSelect(empresa.getId(), false, true);
+		
+		boolean existe = false;
+		for (PeriodoExperiencia periodoExperiencia : periodoExperiencias) 
+		{
+			if (periodoExperiencia.getDias().equals(periodoExperienciaClone.getDias()))
+			{
+				periodoExperienciaClone = periodoExperiencia;
+				existe = true;
+				break;
+			}
+		}
+		if(!existe)
+		{
+			periodoExperienciaClone.setId(null);
+			periodoExperienciaClone.setEmpresa(empresa);
+			getDao().save(periodoExperienciaClone);
+		}
+		
+		return periodoExperienciaClone;
 	}
 }

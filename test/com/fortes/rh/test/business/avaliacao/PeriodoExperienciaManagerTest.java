@@ -1,5 +1,6 @@
 package com.fortes.rh.test.business.avaliacao;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -11,7 +12,9 @@ import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.FaixaPerformanceAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 
 public class PeriodoExperienciaManagerTest extends MockObjectTestCase
 {
@@ -66,5 +69,50 @@ public class PeriodoExperienciaManagerTest extends MockObjectTestCase
 		assertEquals("De 51.0% à 100.0%", faixa_51_100.getFaixa());
 		assertEquals(2, faixa_51_100.getQuantidade());
 		assertEquals("33.33", faixa_51_100.getPercentual());
+	}
+	
+	public void testClonarPeriodoExperiencia(){
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);//Empresa para a qual o período de experiência será clonado
+		
+		PeriodoExperiencia experiencia = PeriodoExperienciaFactory.getEntity();
+		experiencia.setDias(20);
+		
+		Collection<PeriodoExperiencia> periodoExperiencias = new ArrayList<PeriodoExperiencia>();
+		periodoExperiencias.add(experiencia);
+		
+		
+		PeriodoExperiencia periodoExperienciaClone = PeriodoExperienciaFactory.getEntity(1L);
+		periodoExperienciaClone.setEmpresaId(2L);
+		periodoExperienciaClone.setDias(15);
+	
+		periodoExperienciaDao.expects(once()).method("findById").with(eq(periodoExperienciaClone.getId())).will(returnValue(periodoExperienciaClone));
+		periodoExperienciaDao.expects(once()).method("findAllSelect").with(eq(empresa.getId()), eq(false), eq(true)).will(returnValue(periodoExperiencias));
+		periodoExperienciaDao.expects(once()).method("save").with(ANYTHING).will(returnValue(periodoExperienciaClone));
+		
+		long empresaId = periodoExperienciaManager.clonarPeriodoExperiencia(periodoExperienciaClone.getId(), empresa).getEmpresa().getId();
+		assertEquals(empresaId, 1L);
+	}
+	
+	public void testClonarPeriodoExperienciaJaExistenteNaEmpresa(){
+		Empresa empresaDeDestinoDoClone = EmpresaFactory.getEmpresa(1L); //Empresa para a qual o período de experiência será clonado
+		
+		PeriodoExperiencia periodoExperiencia1 = PeriodoExperienciaFactory.getEntity(100L);
+		periodoExperiencia1.setEmpresa(empresaDeDestinoDoClone);
+		periodoExperiencia1.setDias(15);
+		
+		Collection<PeriodoExperiencia> periodoExperienciasExistentes = new ArrayList<PeriodoExperiencia>();
+		periodoExperienciasExistentes.add(periodoExperiencia1);
+		
+		
+		PeriodoExperiencia periodoExperienciaClone = PeriodoExperienciaFactory.getEntity(1L);
+		periodoExperienciaClone.setEmpresaId(2L);
+		periodoExperienciaClone.setDias(15);
+	
+		periodoExperienciaDao.expects(once()).method("findById").with(eq(periodoExperienciaClone.getId())).will(returnValue(periodoExperienciaClone));
+		periodoExperienciaDao.expects(once()).method("findAllSelect").with(eq(empresaDeDestinoDoClone.getId()), eq(false), eq(true)).will(returnValue(periodoExperienciasExistentes));
+		
+		PeriodoExperiencia experienciaRetonada =  periodoExperienciaManager.clonarPeriodoExperiencia(periodoExperienciaClone.getId(), empresaDeDestinoDoClone);
+		assertEquals(periodoExperiencia1.getId(), experienciaRetonada.getId());
+		assertEquals(empresaDeDestinoDoClone.getId(), experienciaRetonada.getEmpresa().getId());
 	}
 }

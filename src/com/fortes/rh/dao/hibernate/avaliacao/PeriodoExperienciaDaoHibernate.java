@@ -3,7 +3,6 @@ package com.fortes.rh.dao.hibernate.avaliacao;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
