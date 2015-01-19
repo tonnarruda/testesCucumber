@@ -139,27 +139,6 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 //		assertEquals(0, usuarioDao.getCountUsuario(usuario.getNome(), usuarioEmpresa.getEmpresa()).intValue());
 	}
 	
-	public void testDesativaAcessoSistema()
-	{
-		Usuario usuario = UsuarioFactory.getEntity();
-		usuario.setAcessoSistema(true);
-		usuario.setLogin("teste0123568");
-		usuario.setSenha("1234");
-		usuarioDao.save(usuario);
-		
-		Colaborador colaborador1 = ColaboradorFactory.getEntity();
-		colaborador1.setUsuario(usuario);
-		colaboradorDao.save(colaborador1);
-		
-		usuarioDao.desativaAcessoSistema(colaborador1.getId());
-		
-		Usuario usuarioRetorno1 = usuarioDao.findByIdProjection(usuario.getId());
-		
-		assertEquals(false, usuarioRetorno1.isAcessoSistema());
-		assertNull(usuarioRetorno1.getLogin());
-		assertNull(usuarioRetorno1.getSenha());
-	}
-	
 	public void testRemoveAcessoSistema()
 	{
 		Usuario usuario = UsuarioFactory.getEntity();
@@ -172,14 +151,35 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		colaborador1.setUsuario(usuario);
 		colaboradorDao.save(colaborador1);
 		
-		usuarioDao.removeAcessoSistema(colaborador1.getId());
+		usuarioDao.desativaAcessoSistema(true, colaborador1.getId());
+		
+		Usuario usuarioRetorno1 = usuarioDao.findByIdProjection(usuario.getId());
+		
+		assertEquals(false, usuarioRetorno1.isAcessoSistema());
+		assertNull(usuarioRetorno1.getLogin());
+		assertNull(usuarioRetorno1.getSenha());
+	}
+	
+	public void testDesativaAcessoSistema()
+	{
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuario.setAcessoSistema(true);
+		usuario.setLogin("teste0123568");
+		usuario.setSenha("1234");
+		usuarioDao.save(usuario);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setUsuario(usuario);
+		colaboradorDao.save(colaborador1);
+		
+		usuarioDao.desativaAcessoSistema(false, colaborador1.getId());
 		
 		Usuario usuarioRetorno1 = usuarioDao.findByIdProjection(usuario.getId());
 		
 		assertFalse(usuarioRetorno1.isAcessoSistema());
 	}
 
-	public void testDesativaAcessoSistemaMultiploColaboradores()
+	public void testRemoveAcessoSistemaMultiploColaboradores()
 	{
 		Usuario usuario1 = UsuarioFactory.getEntity();
 		usuario1.setAcessoSistema(true);
@@ -201,7 +201,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		colaborador2.setUsuario(usuario2);
 		colaboradorDao.save(colaborador2);
 		
-		usuarioDao.desativaAcessoSistema(new Long[]{colaborador1.getId(), colaborador2.getId()});
+		usuarioDao.desativaAcessoSistema(true, new Long[]{colaborador1.getId(), colaborador2.getId()});
 		
 		Usuario usuarioRetorno1 = usuarioDao.findByIdProjection(usuario2.getId());
 		Usuario usuarioRetorno2 = usuarioDao.findByIdProjection(usuario2.getId());

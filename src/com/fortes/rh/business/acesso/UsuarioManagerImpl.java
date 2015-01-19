@@ -150,9 +150,9 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		return checks;
 	}
 
-	public void desativaAcessoSistema(Long... colaboradoresIds)
+	public void removeAcessoSistema(Long... colaboradoresIds)
 	{
-		getDao().desativaAcessoSistema(colaboradoresIds);
+		getDao().desativaAcessoSistema(true, colaboradoresIds);
 	}
 	
 	public void reativaAcessoSistema(Long colaboradorId)
@@ -160,9 +160,9 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		getDao().reativaAcessoSistema(colaboradorId);
 	}
 
-	public void removeAcessoSistema(Long... colaboradoresIds)
+	public void desativaAcessoSistema(Long... colaboradoresIds)
 	{
-		getDao().removeAcessoSistema(colaboradoresIds);
+		getDao().desativaAcessoSistema(false, colaboradoresIds);
 	}
 	
 	private void validaUsuario(Usuario usuario) throws LoginExisteException, SenhaNaoConfereException

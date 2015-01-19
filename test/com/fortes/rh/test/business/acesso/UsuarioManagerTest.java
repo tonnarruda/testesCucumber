@@ -246,7 +246,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
     {
     	usuarioDao.expects(once()).method("desativaAcessoSistema").with(ANYTHING);
 
-    	usuarioManager.desativaAcessoSistema(null);
+    	usuarioManager.removeAcessoSistema(null);
     }
 
     public void testPopulaCheckOrderNome()

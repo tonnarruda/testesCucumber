@@ -21,7 +21,7 @@ public interface UsuarioDao extends GenericDao<Usuario>
 
 	Usuario findByLogin(Usuario usuario);
 
-	void desativaAcessoSistema(Long... colaboradoresIds);
+	void desativaAcessoSistema(boolean removeAcesso, Long... colaboradoresIds);
 	
 	void reativaAcessoSistema(Long colaboradorId);
 

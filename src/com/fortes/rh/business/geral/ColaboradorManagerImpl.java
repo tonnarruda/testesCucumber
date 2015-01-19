@@ -991,7 +991,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		{
 			@SuppressWarnings("deprecation")
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
-			usuarioManager.removeAcessoSistema(colaboradoresIds);
+			usuarioManager.desativaAcessoSistema(colaboradoresIds);
 			candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaboradoresIds);
 			candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.INDIFERENTE, colaboradoresIds);
 

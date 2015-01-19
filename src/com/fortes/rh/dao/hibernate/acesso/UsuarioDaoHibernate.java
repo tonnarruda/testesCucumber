@@ -182,9 +182,14 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		return (Usuario) criteria.uniqueResult();
 	}
 
-	public void desativaAcessoSistema(Long... colaboradoresIds)
+	public void desativaAcessoSistema(boolean removeAcesso, Long... colaboradoresIds)
 	{
-		String hql = "update Usuario u set u.acessoSistema = :acessoSistema, u.login = null, u.senha = null where u.id in (select c.usuario.id from Colaborador c where c.id in (:colaboradoresIds))";
+		String hql = "update Usuario u set u.acessoSistema = :acessoSistema";
+			
+		if(removeAcesso)
+			hql += ", u.login = null, u.senha = null";
+
+		hql += " where u.id in (select c.usuario.id from Colaborador c where c.id in (:colaboradoresIds))";
 
 		Query query = getSession().createQuery(hql);
 
