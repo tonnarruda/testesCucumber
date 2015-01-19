@@ -243,6 +243,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 				filtro += "\nPerformance: " + colaboradorQuestionario.getPerformanceFormatada();
 				
 				parametros = RelatorioUtil.getParametrosRelatorio("Acompanhamento do Período de Experiência", getEmpresaSistema(), filtro);
+				parametros.put("Observacao", colaboradorQuestionario.getObservacao());
 				colaboradorRespostas = colaboradorRespostaManager.findPerguntasRespostasByColaboradorQuestionario(colaboradorQuestionario.getId());
 				
 				return Action.SUCCESS;

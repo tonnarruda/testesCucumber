@@ -3,8 +3,10 @@
 	<Versao id="1.1.140.169" bd="" data="xx/01/2015">
 		<Item visivel="S" motivo="P20150100013"><![CDATA[C&S > Cadastros > Cargos e Faixas > faixas salariais > editar: Visualisação do históricos futuros da faixa salarial.]]></Item>
 		<Item visivel="S" motivo="S20141200162"><![CDATA[C&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Tranf. Candidatos: Nova coluna com código da solicitação de pessoal.]]></Item>	
-		<Item visivel="S" motivo="P20150100014"><![CDATA[[Aval. Desempenho > Cadastros > Avaliacões de Desempenho/Acomp. do Período de Experiência > Clonar: Clonando os dias de período de experiência ao clonar uma avaliação entre empresas.]]></Item>
+		<Item visivel="S" motivo="P20150100014"><![CDATA[Aval. Desempenho > Cadastros > Avaliacões de Desempenho/Acomp. do Período de Experiência > Clonar: Clonando os dias de período de experiência ao clonar uma avaliação entre empresas.]]></Item>
 		<Item visivel="N" motivo="P20141200177"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Inserção de quebra de linha na impressão das respostas quando as mesmas excedem o tamanho de uma linha.]]></Item>
+		<Item visivel="N" motivo="P20150100019"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Inserção de quebra de linha na impressão dos comentários das perguntas quando as mesmas excedem o tamanho de uma linha.]]></Item>
+		<Item visivel="N" motivo="P20150100019"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Inserindo observação da avaliação no relatório.]]></Item>
 		<Item visivel="N" motivo="P20141200188"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Performance Profissional: Correção na permissão de visualização das avaliações de desempenho.]]></Item>
 		<Item visivel="N" motivo="P20141200187"><![CDATA[SESMT > Cadastros > Extintores: Correção da paginação dos resultados e no formulário que não gravava as horas ao inserir um novo histórico.]]></Item>
 		<Item visivel="N" motivo="P20150100011"><![CDATA[SESMT > Relatórios > Exames Previstos: Melhoria na performance para consultar os registros a serem impressos.]]></Item>
