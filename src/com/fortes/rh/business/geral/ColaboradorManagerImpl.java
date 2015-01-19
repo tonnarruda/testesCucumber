@@ -991,7 +991,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		{
 			@SuppressWarnings("deprecation")
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
-			usuarioManager.desativaAcessoSistema(colaboradoresIds);
+			if(integradoAC)
+				usuarioManager.desativaAcessoSistema(colaboradoresIds);
+			else
+				usuarioManager.removeAcessoSistema(colaboradoresIds);
+			
 			candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaboradoresIds);
 			candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.INDIFERENTE, colaboradoresIds);
 
@@ -1100,7 +1104,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		colaboradorByHistoricoColaboradors = setFamiliaAreasOrder(empresaId, colaboradorByHistoricoColaboradors);
 
 		return colaboradorByHistoricoColaboradors;
-			}
+	}
 
 	private Collection<Colaborador> setFamiliaAreasOrder(Long empresaId, Collection<Colaborador> colaboradorByHistoricoColaboradors) throws Exception
 	{
