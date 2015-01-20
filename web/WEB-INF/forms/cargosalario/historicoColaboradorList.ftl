@@ -35,7 +35,9 @@
 
 		<@display.column property="descricaoTipoSalario" title="Tipo" style="width:100px;"/>
 		<@display.column style="text-align:right; width:80px;">
-			${historicoColaborador.salarioCalculado?string.currency}
+			<#if historicoColaborador.salarioCalculado?exists>
+				${historicoColaborador.salarioCalculado?string.currency}
+			</#if>
 		</@display.column>
 		
 		<#if integradoAC>
