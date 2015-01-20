@@ -208,4 +208,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds);
 	public Collection<Colaborador> findColaboradoresByCodigoAC(Long empresaId, boolean joinComHistorico, String... codigosACColaboradores);
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId);
+	public void populaEscolaridade(Colaborador colaborador, TEmpregado empregado);
 }

@@ -67,6 +67,8 @@ import com.fortes.rh.model.captacao.TituloEleitoral;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.dicionario.Entidade;
+import com.fortes.rh.model.dicionario.Escolaridade;
+import com.fortes.rh.model.dicionario.EscolaridadeAC;
 import com.fortes.rh.model.dicionario.FormulaTurnover;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
@@ -1326,7 +1328,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	private Colaborador bindColaborador(Colaborador colaborador, TEmpregado empregado) throws Exception
 	{
-		// TODO: codigoac vazio
 		colaborador.setCodigoAC(empregado.getCodigoAC());
 		colaborador.setNome(empregado.getNome());
 		if(empregado.getNomeComercial() != null && !empregado.getNomeComercial().equals(""))
@@ -1369,22 +1370,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		colaborador.getPessoal().setDataNascimento(empregado.getDataNascimentoFormatada());
 
-		if(empregado.getEscolaridade() != null)
-		{
-			if(colaborador.getPessoal().getEscolaridade() == null)
-			{	
-				populaEscolaridadePadrao(colaborador, empregado);
-			}	
-			else if(((colaborador.getPessoal().getEscolaridade().equals("08") || colaborador.getPessoal().getEscolaridade().equals("09")) && !empregado.getEscolaridade().equals("07"))
-						|| (colaborador.getPessoal().getEscolaridade().equals("10") && !empregado.getEscolaridade().equals("08"))
-						|| ((colaborador.getPessoal().getEscolaridade().equals("11") || colaborador.getPessoal().getEscolaridade().equals("12")) && !empregado.getEscolaridade().equals("09"))
-						|| (colaborador.getPessoal().getEscolaridade().equals("13") && !empregado.getEscolaridade().equals("10"))
-						|| (colaborador.getPessoal().getEscolaridade().equals("14") && !empregado.getEscolaridade().equals("11")))
-							populaEscolaridadePadrao(colaborador, empregado);
-		} else if(colaborador.getPessoal().getEscolaridade() == null){
-			colaborador.getPessoal().setEscolaridade("01");
-		}
-
+		populaEscolaridade(colaborador, empregado);
+		
 		colaborador.getPessoal().setEstadoCivil(empregado.getEstadoCivil());
 		colaborador.getPessoal().setConjuge(empregado.getConjuge());
 		colaborador.getPessoal().setPai(empregado.getPai());
@@ -1444,25 +1431,38 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		return colaborador;
 	}
-
-	//obs: se alterar esse método tem que alterar no importador ac rh
-	private void populaEscolaridadePadrao(Colaborador colaborador, TEmpregado empregado) 
+	
+	private void defineEscolaridade(Colaborador colaborador, TEmpregado empregado) 
 	{
-		if(empregado.getEscolaridade().equals("08"))//superior em andamento no ac
-			colaborador.getPessoal().setEscolaridade("10");//superior em andamento no rh
-		else if(empregado.getEscolaridade().equals("09"))// superior completo no ac
-			colaborador.getPessoal().setEscolaridade("11");// superior completo no rh
-		else if(empregado.getEscolaridade().equals("10"))// mestrado no ac
-			colaborador.getPessoal().setEscolaridade("13");// mestrado no rh
-		else if(empregado.getEscolaridade().equals("11"))//doutorrado no ac
-			colaborador.getPessoal().setEscolaridade("14");//doutorrado no rh
-		else if(colaborador.getPessoal().getEscolaridade() == null)
-			colaborador.getPessoal().setEscolaridade("01");//sem escolaridade no rh
+		if(empregado.getEscolaridade() == null && colaborador.getPessoal().getEscolaridade() == null)
+			colaborador.getPessoal().setEscolaridade(Escolaridade.ANALFABETO);
+		else if(empregado.getEscolaridade().equals(EscolaridadeAC.SUPERIOR_EM_ANDAMENTO))
+			colaborador.getPessoal().setEscolaridade(Escolaridade.SUPERIOR_EM_ANDAMENTO);
+		else if(empregado.getEscolaridade().equals(EscolaridadeAC.SUPERIOR_COMPLETO))
+			colaborador.getPessoal().setEscolaridade(Escolaridade.SUPERIOR_COMPLETO);
+		else if(empregado.getEscolaridade().equals(EscolaridadeAC.MESTRADO))
+			colaborador.getPessoal().setEscolaridade(Escolaridade.MESTRADO);
+		else if(empregado.getEscolaridade().equals(EscolaridadeAC.DOUTORADO))
+			colaborador.getPessoal().setEscolaridade(Escolaridade.DOUTORADO);
+		else 
+			colaborador.getPessoal().setEscolaridade(empregado.getEscolaridade());
 	}
 
-	public void setEstadoManager(EstadoManager estadoManager)
+	//obs: se alterar esse método tem que alterar no importador ac rh
+	public void populaEscolaridade(Colaborador colaborador, TEmpregado empregado) 
 	{
-		this.estadoManager = estadoManager;
+		if(colaborador.getPessoal().getEscolaridade() == null){
+			defineEscolaridade(colaborador, empregado);
+		} else {
+			if((empregado.getEscolaridade() == null)
+					|| ((colaborador.getPessoal().getEscolaridade().equals(Escolaridade.TECNICO_EM_ANDAMENTO) || colaborador.getPessoal().getEscolaridade().equals(Escolaridade.TECNICO_COMPLETO)) && empregado.getEscolaridade().equals(EscolaridadeAC.COLEGIAL_COMPLETO))
+					|| (colaborador.getPessoal().getEscolaridade().equals(Escolaridade.ESPECIALIZACAO)) && empregado.getEscolaridade().equals(EscolaridadeAC.SUPERIOR_COMPLETO))
+			{
+				return;
+			}
+			defineEscolaridade(colaborador, empregado);
+		}
+
 	}
 
 	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC)
@@ -2663,5 +2663,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void setAuditoriaManager(AuditoriaManager auditoriaManager) 
 	{
 		this.auditoriaManager = auditoriaManager;
+	}
+
+	public void setEstadoManager(EstadoManager estadoManager)
+	{
+		this.estadoManager = estadoManager;
 	}
 }

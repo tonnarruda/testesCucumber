@@ -5,11 +5,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import mockit.Mockit;
 
+import org.apache.tools.ant.taskdefs.condition.HasMethod;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -56,6 +58,8 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.dicionario.Escolaridade;
+import com.fortes.rh.model.dicionario.EscolaridadeAC;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
@@ -1537,6 +1541,40 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		assertEquals(2, ((Colaborador)colaboradoresRetornados.toArray()[0]).getFormacao().size());
 		assertEquals(1, ((Colaborador)colaboradoresRetornados.toArray()[0]).getColaboradorIdiomas().size());
     }
+
+    public void testPopulaEsxcolaridadePadrao()
+    {
+    	// Este trecho testa todas as condições previstas
+    	testaEscolaridade(null, null, Escolaridade.ANALFABETO);
+    	testaEscolaridade(null, EscolaridadeAC.ANALFABETO, Escolaridade.ANALFABETO);
+    	testaEscolaridade(Escolaridade.GINASIO_EM_ANDAMENTO, null, Escolaridade.GINASIO_EM_ANDAMENTO);
+    	testaEscolaridade(Escolaridade.TECNICO_EM_ANDAMENTO, EscolaridadeAC.COLEGIAL_COMPLETO, Escolaridade.TECNICO_EM_ANDAMENTO);
+    	testaEscolaridade(Escolaridade.TECNICO_COMPLETO, EscolaridadeAC.COLEGIAL_COMPLETO, Escolaridade.TECNICO_COMPLETO);
+    	testaEscolaridade(Escolaridade.ESPECIALIZACAO, EscolaridadeAC.SUPERIOR_COMPLETO, Escolaridade.ESPECIALIZACAO);
+    	testaEscolaridade(Escolaridade.SUPERIOR_EM_ANDAMENTO, EscolaridadeAC.SUPERIOR_EM_ANDAMENTO, Escolaridade.SUPERIOR_EM_ANDAMENTO);
+    	testaEscolaridade(Escolaridade.SUPERIOR_COMPLETO, EscolaridadeAC.SUPERIOR_COMPLETO, Escolaridade.SUPERIOR_COMPLETO);
+    	testaEscolaridade(Escolaridade.MESTRADO, EscolaridadeAC.MESTRADO, Escolaridade.MESTRADO);
+    	testaEscolaridade(Escolaridade.DOUTORADO, EscolaridadeAC.DOUTORADO, Escolaridade.DOUTORADO);
+    	
+    	// Este trecho testa situações variadas
+    	testaEscolaridade(Escolaridade.GINASIO_COMPLETO, EscolaridadeAC.COLEGIAL_EM_ANDAMENTO, Escolaridade.COLEGIAL_EM_ANDAMENTO);
+    	testaEscolaridade(Escolaridade.PRIMARIO_EM_ANDAMENTO, EscolaridadeAC.GINASIO_EM_ANDAMENTO, Escolaridade.GINASIO_EM_ANDAMENTO);
+    	testaEscolaridade(Escolaridade.SUPERIOR_EM_ANDAMENTO, EscolaridadeAC.SUPERIOR_COMPLETO, Escolaridade.SUPERIOR_COMPLETO);
+    	testaEscolaridade(Escolaridade.ESPECIALIZACAO, EscolaridadeAC.MESTRADO, Escolaridade.MESTRADO);
+    }
+    
+    private void testaEscolaridade(String escolaridadeDocolaborador, String escolaridadeDoEmpregado, String escolaridadeEsperada) 
+    {
+    	Colaborador colaborador = ColaboradorFactory.getEntity();
+    	colaborador.getPessoal().setEscolaridade(escolaridadeDocolaborador);
+    	
+    	TEmpregado tEmpregado = iniciaTEmpregado();
+    	tEmpregado.setEscolaridade(escolaridadeDoEmpregado);
+    	
+    	colaboradorManager.populaEscolaridade(colaborador, tEmpregado);
+    	
+    	assertEquals(escolaridadeEsperada, colaborador.getPessoal().getEscolaridade());
+    }
     
   //TODO remprot
 //    public void testValidaQtdCadastros()
@@ -1558,3 +1596,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 //		assertNotNull(exception);
 //    }
 }
+
+
+
+
