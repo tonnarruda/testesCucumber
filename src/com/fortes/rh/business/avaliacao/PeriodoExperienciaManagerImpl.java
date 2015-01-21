@@ -120,7 +120,7 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 		boolean existe = false;
 		for (PeriodoExperiencia periodoExperiencia : periodoExperiencias) 
 		{
-			if (periodoExperiencia.getDias().equals(periodoExperienciaClone.getDias()))
+			if (periodoExperiencia.getDias().equals(periodoExperienciaClone.getDias()) && periodoExperiencia.getDescricao().equals(periodoExperienciaClone.getDescricao()))
 			{
 				periodoExperienciaClone = periodoExperiencia;
 				existe = true;
@@ -131,6 +131,7 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 		{
 			periodoExperienciaClone.setId(null);
 			periodoExperienciaClone.setEmpresa(empresa);
+			periodoExperienciaClone.setAtivo(true);
 			getDao().save(periodoExperienciaClone);
 		}
 		

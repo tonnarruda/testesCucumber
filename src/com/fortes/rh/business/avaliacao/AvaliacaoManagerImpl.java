@@ -142,7 +142,7 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 				
 				Avaliacao avaliacao = (Avaliacao) getDao().findById(id).clone();
 				
-				if(!empresaId.equals(avaliacao.getEmpresa().getId()))
+				if(!empresaId.equals(avaliacao.getEmpresa().getId()) && avaliacao.getPeriodoExperiencia() != null)
 					avaliacao.setPeriodoExperiencia(periodoExperienciaManager.clonarPeriodoExperiencia(avaliacao.getPeriodoExperiencia().getId(), empresa));
 				
 				avaliacao.setEmpresa(empresa);
