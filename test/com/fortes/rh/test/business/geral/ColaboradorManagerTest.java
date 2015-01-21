@@ -59,7 +59,7 @@ import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.Escolaridade;
-import com.fortes.rh.model.dicionario.EscolaridadeAC;
+import com.fortes.rh.model.dicionario.EscolaridadeACPessoal;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
@@ -1546,21 +1546,21 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     {
     	// Este trecho testa todas as condições previstas
     	testaEscolaridade(null, null, Escolaridade.ANALFABETO);
-    	testaEscolaridade(null, EscolaridadeAC.ANALFABETO, Escolaridade.ANALFABETO);
+    	testaEscolaridade(null, EscolaridadeACPessoal.ANALFABETO, Escolaridade.ANALFABETO);
     	testaEscolaridade(Escolaridade.GINASIO_EM_ANDAMENTO, null, Escolaridade.GINASIO_EM_ANDAMENTO);
-    	testaEscolaridade(Escolaridade.TECNICO_EM_ANDAMENTO, EscolaridadeAC.COLEGIAL_COMPLETO, Escolaridade.TECNICO_EM_ANDAMENTO);
-    	testaEscolaridade(Escolaridade.TECNICO_COMPLETO, EscolaridadeAC.COLEGIAL_COMPLETO, Escolaridade.TECNICO_COMPLETO);
-    	testaEscolaridade(Escolaridade.ESPECIALIZACAO, EscolaridadeAC.SUPERIOR_COMPLETO, Escolaridade.ESPECIALIZACAO);
-    	testaEscolaridade(Escolaridade.SUPERIOR_EM_ANDAMENTO, EscolaridadeAC.SUPERIOR_EM_ANDAMENTO, Escolaridade.SUPERIOR_EM_ANDAMENTO);
-    	testaEscolaridade(Escolaridade.SUPERIOR_COMPLETO, EscolaridadeAC.SUPERIOR_COMPLETO, Escolaridade.SUPERIOR_COMPLETO);
-    	testaEscolaridade(Escolaridade.MESTRADO, EscolaridadeAC.MESTRADO, Escolaridade.MESTRADO);
-    	testaEscolaridade(Escolaridade.DOUTORADO, EscolaridadeAC.DOUTORADO, Escolaridade.DOUTORADO);
+    	testaEscolaridade(Escolaridade.TECNICO_EM_ANDAMENTO, EscolaridadeACPessoal.COLEGIAL_COMPLETO, Escolaridade.TECNICO_EM_ANDAMENTO);
+    	testaEscolaridade(Escolaridade.TECNICO_COMPLETO, EscolaridadeACPessoal.COLEGIAL_COMPLETO, Escolaridade.TECNICO_COMPLETO);
+    	testaEscolaridade(Escolaridade.ESPECIALIZACAO, EscolaridadeACPessoal.SUPERIOR_COMPLETO, Escolaridade.ESPECIALIZACAO);
+    	testaEscolaridade(Escolaridade.SUPERIOR_EM_ANDAMENTO, EscolaridadeACPessoal.SUPERIOR_EM_ANDAMENTO, Escolaridade.SUPERIOR_EM_ANDAMENTO);
+    	testaEscolaridade(Escolaridade.SUPERIOR_COMPLETO, EscolaridadeACPessoal.SUPERIOR_COMPLETO, Escolaridade.SUPERIOR_COMPLETO);
+    	testaEscolaridade(Escolaridade.MESTRADO, EscolaridadeACPessoal.MESTRADO, Escolaridade.MESTRADO);
+    	testaEscolaridade(Escolaridade.DOUTORADO, EscolaridadeACPessoal.DOUTORADO, Escolaridade.DOUTORADO);
     	
     	// Este trecho testa situações variadas
-    	testaEscolaridade(Escolaridade.GINASIO_COMPLETO, EscolaridadeAC.COLEGIAL_EM_ANDAMENTO, Escolaridade.COLEGIAL_EM_ANDAMENTO);
-    	testaEscolaridade(Escolaridade.PRIMARIO_EM_ANDAMENTO, EscolaridadeAC.GINASIO_EM_ANDAMENTO, Escolaridade.GINASIO_EM_ANDAMENTO);
-    	testaEscolaridade(Escolaridade.SUPERIOR_EM_ANDAMENTO, EscolaridadeAC.SUPERIOR_COMPLETO, Escolaridade.SUPERIOR_COMPLETO);
-    	testaEscolaridade(Escolaridade.ESPECIALIZACAO, EscolaridadeAC.MESTRADO, Escolaridade.MESTRADO);
+    	testaEscolaridade(Escolaridade.GINASIO_COMPLETO, EscolaridadeACPessoal.COLEGIAL_EM_ANDAMENTO, Escolaridade.COLEGIAL_EM_ANDAMENTO);
+    	testaEscolaridade(Escolaridade.PRIMARIO_EM_ANDAMENTO, EscolaridadeACPessoal.GINASIO_EM_ANDAMENTO, Escolaridade.GINASIO_EM_ANDAMENTO);
+    	testaEscolaridade(Escolaridade.SUPERIOR_EM_ANDAMENTO, EscolaridadeACPessoal.SUPERIOR_COMPLETO, Escolaridade.SUPERIOR_COMPLETO);
+    	testaEscolaridade(Escolaridade.ESPECIALIZACAO, EscolaridadeACPessoal.MESTRADO, Escolaridade.MESTRADO);
     }
     
     private void testaEscolaridade(String escolaridadeDocolaborador, String escolaridadeDoEmpregado, String escolaridadeEsperada) 

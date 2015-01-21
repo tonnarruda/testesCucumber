@@ -68,7 +68,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.dicionario.Entidade;
 import com.fortes.rh.model.dicionario.Escolaridade;
-import com.fortes.rh.model.dicionario.EscolaridadeAC;
+import com.fortes.rh.model.dicionario.EscolaridadeACPessoal;
 import com.fortes.rh.model.dicionario.FormulaTurnover;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
@@ -1436,13 +1436,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		if(empregado.getEscolaridade() == null && colaborador.getPessoal().getEscolaridade() == null)
 			colaborador.getPessoal().setEscolaridade(Escolaridade.ANALFABETO);
-		else if(empregado.getEscolaridade().equals(EscolaridadeAC.SUPERIOR_EM_ANDAMENTO))
+		else if(empregado.getEscolaridade().equals(EscolaridadeACPessoal.SUPERIOR_EM_ANDAMENTO))
 			colaborador.getPessoal().setEscolaridade(Escolaridade.SUPERIOR_EM_ANDAMENTO);
-		else if(empregado.getEscolaridade().equals(EscolaridadeAC.SUPERIOR_COMPLETO))
+		else if(empregado.getEscolaridade().equals(EscolaridadeACPessoal.SUPERIOR_COMPLETO))
 			colaborador.getPessoal().setEscolaridade(Escolaridade.SUPERIOR_COMPLETO);
-		else if(empregado.getEscolaridade().equals(EscolaridadeAC.MESTRADO))
+		else if(empregado.getEscolaridade().equals(EscolaridadeACPessoal.MESTRADO))
 			colaborador.getPessoal().setEscolaridade(Escolaridade.MESTRADO);
-		else if(empregado.getEscolaridade().equals(EscolaridadeAC.DOUTORADO))
+		else if(empregado.getEscolaridade().equals(EscolaridadeACPessoal.DOUTORADO))
 			colaborador.getPessoal().setEscolaridade(Escolaridade.DOUTORADO);
 		else 
 			colaborador.getPessoal().setEscolaridade(empregado.getEscolaridade());
@@ -1455,8 +1455,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			defineEscolaridade(colaborador, empregado);
 		} else {
 			if((empregado.getEscolaridade() == null)
-					|| ((colaborador.getPessoal().getEscolaridade().equals(Escolaridade.TECNICO_EM_ANDAMENTO) || colaborador.getPessoal().getEscolaridade().equals(Escolaridade.TECNICO_COMPLETO)) && empregado.getEscolaridade().equals(EscolaridadeAC.COLEGIAL_COMPLETO))
-					|| (colaborador.getPessoal().getEscolaridade().equals(Escolaridade.ESPECIALIZACAO)) && empregado.getEscolaridade().equals(EscolaridadeAC.SUPERIOR_COMPLETO))
+					|| ((colaborador.getPessoal().getEscolaridade().equals(Escolaridade.TECNICO_EM_ANDAMENTO) || colaborador.getPessoal().getEscolaridade().equals(Escolaridade.TECNICO_COMPLETO)) && empregado.getEscolaridade().equals(EscolaridadeACPessoal.COLEGIAL_COMPLETO))
+					|| (colaborador.getPessoal().getEscolaridade().equals(Escolaridade.ESPECIALIZACAO)) && empregado.getEscolaridade().equals(EscolaridadeACPessoal.SUPERIOR_COMPLETO))
 			{
 				return;
 			}

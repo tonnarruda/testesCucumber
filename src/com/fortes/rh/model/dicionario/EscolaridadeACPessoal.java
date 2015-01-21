@@ -2,7 +2,7 @@ package com.fortes.rh.model.dicionario;
 
 import java.util.LinkedHashMap;
 
-public class EscolaridadeAC extends LinkedHashMap<String, String> {
+public class EscolaridadeACPessoal extends LinkedHashMap<String, String> {
 	private static final long serialVersionUID = -3100048869132122135L;
 
 	public static final String ANALFABETO = "01";
@@ -17,7 +17,7 @@ public class EscolaridadeAC extends LinkedHashMap<String, String> {
 	public  static final String MESTRADO = "10";
 	public  static final String DOUTORADO = "11";
 
-	public EscolaridadeAC() {
+	public EscolaridadeACPessoal() {
 		put(ANALFABETO, "Analfabeto");
 		put(PRIMARIO_EM_ANDAMENTO, "Até o 5ºano incompleto do ensino fundamental");
 		put(PRIMARIO_COMPLETO, "5º ano completo do ensino fundamental");
