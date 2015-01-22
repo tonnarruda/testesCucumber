@@ -1451,18 +1451,14 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	//obs: se alterar esse método tem que alterar no importador ac rh
 	public void populaEscolaridade(Colaborador colaborador, TEmpregado empregado) 
 	{
-		if(colaborador.getPessoal().getEscolaridade() == null){
-			defineEscolaridade(colaborador, empregado);
-		} else {
-			if((empregado.getEscolaridade() == null)
+		if(colaborador.getPessoal().getEscolaridade() != null && ((empregado.getEscolaridade() == null)
 					|| ((colaborador.getPessoal().getEscolaridade().equals(Escolaridade.TECNICO_EM_ANDAMENTO) || colaborador.getPessoal().getEscolaridade().equals(Escolaridade.TECNICO_COMPLETO)) && empregado.getEscolaridade().equals(EscolaridadeACPessoal.COLEGIAL_COMPLETO))
-					|| (colaborador.getPessoal().getEscolaridade().equals(Escolaridade.ESPECIALIZACAO)) && empregado.getEscolaridade().equals(EscolaridadeACPessoal.SUPERIOR_COMPLETO))
-			{
-				return;
-			}
-			defineEscolaridade(colaborador, empregado);
+					|| (colaborador.getPessoal().getEscolaridade().equals(Escolaridade.ESPECIALIZACAO)) && empregado.getEscolaridade().equals(EscolaridadeACPessoal.SUPERIOR_COMPLETO)))
+		{
+			return;
 		}
-
+		
+		defineEscolaridade(colaborador, empregado);
 	}
 
 	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC)
