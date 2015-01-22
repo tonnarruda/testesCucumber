@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.1435888100000224"/>
-	<property name="ireport.x" value="4"/>
-	<property name="ireport.y" value="78"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="34"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -243,7 +243,7 @@
 				<text><![CDATA[Formação Escolar ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="fc4f9348-af97-4a73-b17c-787ad33187de" positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="5" y="11" width="124" height="14"/>
+				<reportElement uuid="fc4f9348-af97-4a73-b17c-787ad33187de" x="5" y="11" width="124" height="14"/>
 				<box topPadding="1" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -256,7 +256,7 @@
 				<text><![CDATA[Curso]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="73fcc1bd-97cd-4235-9aa2-dcac30b5d218" positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="129" y="11" width="91" height="14"/>
+				<reportElement uuid="73fcc1bd-97cd-4235-9aa2-dcac30b5d218" x="129" y="11" width="91" height="14"/>
 				<box topPadding="1" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -269,7 +269,7 @@
 				<text><![CDATA[Formação]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="4a467839-539e-4512-8e81-9a7f3270c1f0" positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="220" y="11" width="131" height="14"/>
+				<reportElement uuid="4a467839-539e-4512-8e81-9a7f3270c1f0" x="220" y="11" width="131" height="14"/>
 				<box topPadding="1" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -282,7 +282,7 @@
 				<text><![CDATA[Instituição de Ensino]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="41adde58-0b6b-423f-bc46-b8f2fd596159" positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="351" y="11" width="88" height="14"/>
+				<reportElement uuid="41adde58-0b6b-423f-bc46-b8f2fd596159" x="351" y="11" width="88" height="14"/>
 				<box topPadding="1" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -295,7 +295,7 @@
 				<text><![CDATA[Situação]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="de464063-bd45-4cc3-a5a7-05f12233c404" positionType="FixRelativeToBottom" stretchType="RelativeToBandHeight" x="439" y="11" width="91" height="14"/>
+				<reportElement uuid="de464063-bd45-4cc3-a5a7-05f12233c404" x="439" y="11" width="91" height="14"/>
 				<box topPadding="1" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -399,7 +399,7 @@
 				<text><![CDATA[Idiomas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="29eca0a9-0e87-4459-9e9f-05d88451403f" positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Transparent" x="5" y="11" width="346" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="29eca0a9-0e87-4459-9e9f-05d88451403f" mode="Transparent" x="5" y="11" width="346" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box topPadding="1" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -413,7 +413,7 @@
 				<text><![CDATA[Idioma]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="b9955e1a-94e8-4150-9842-b250eae71092" positionType="FixRelativeToBottom" stretchType="RelativeToTallestObject" mode="Transparent" x="351" y="11" width="179" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement uuid="b9955e1a-94e8-4150-9842-b250eae71092" mode="Transparent" x="351" y="11" width="179" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
 				<box topPadding="1" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>

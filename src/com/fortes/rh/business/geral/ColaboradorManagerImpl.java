@@ -2597,14 +2597,18 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public Collection<Colaborador> findFormacaoEscolar(Long empresaId, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> cargoIds) throws Exception
 	{
 		Collection<Colaborador> colaboradores = findAreaOrganizacionalByAreas(false, estabelecimentoIds, areaIds, cargoIds, null, empresaId, null, null, null, null, null, null, null, SituacaoColaborador.ATIVO, null);
+		Collection<Formacao> formacoes;
+		Collection<ColaboradorIdioma> colaboradorIdiomas;
 		
 		for (Colaborador colaborador : colaboradores) {
 
-			Collection<Formacao> formacoes = formacaoManager.findByColaborador(colaborador.getId());
-			Collection<ColaboradorIdioma> colaboradorIdiomas = colaboradorIdiomaManager.findByColaborador(colaborador.getId()); 
+			formacoes = formacaoManager.findByColaborador(colaborador.getId());
+			if (formacoes != null && !formacoes.isEmpty())
+				colaborador.setFormacao(formacoes);
 			
-			colaborador.setFormacao(formacoes);
-			colaborador.setColaboradorIdiomas(colaboradorIdiomas);
+			colaboradorIdiomas = colaboradorIdiomaManager.findByColaborador(colaborador.getId()); 
+			if (colaboradorIdiomas != null && !colaboradorIdiomas.isEmpty())
+				colaborador.setColaboradorIdiomas(colaboradorIdiomas);
 		}
 		
 		return colaboradores;
