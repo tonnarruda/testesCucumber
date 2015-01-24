@@ -94,7 +94,7 @@
 		</span>
 		
 		<span id="divAreaOrganizacionals" style="display:none">
-			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600"/>
+			<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" width="600" filtro="true" selectAtivoInativo="true"/>
 		</span>
 	</@ww.form>
 

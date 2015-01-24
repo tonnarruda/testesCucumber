@@ -138,7 +138,7 @@
 			</@ww.div>
 	
 			<@ww.div id="areaOrganizacional">
-				<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="600" filtro="true"/>
+				<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" label="Áreas Organizacionais" list="areaOrganizacionalsCheckList" width="600" filtro="true" selectAtivoInativo="true"/>
 			</@ww.div>
 	
 			<@ww.div id="grupoOcupacional">

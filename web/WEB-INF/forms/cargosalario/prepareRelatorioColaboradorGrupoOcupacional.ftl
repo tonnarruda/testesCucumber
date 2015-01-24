@@ -114,11 +114,10 @@
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" filtro="true"/>
 		<fieldset style="width:482px">
 			<legend>Áreas Organizacionais</legend>
-			<@ww.select id="ativa" name="ativa" list=r"#{'S':'Ativas','N':'Inativas'}" headerKey="T" headerValue="Ativas e inativas" onchange="populaArea();" cssStyle="width:475px"/>
-			<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" onClick="populaCargoByAreaGrupo()" list="areaOrganizacionalsCheckList" width="475" filtro="true"/>
+			<@frt.checkListBox name="areaOrganizacionalsCheck" id="areaOrganizacionalsCheck" onClick="populaCargoByAreaGrupo()" list="areaOrganizacionalsCheckList" width="475" filtro="true" selectAtivoInativo="true"/>
 		</fieldset>
 		<@frt.checkListBox name="gruposCheck" id="gruposCheck" onClick="populaCargoByAreaGrupo()" label="Grupos Ocupacionais" list="gruposCheckList" width="500" filtro="true"/>
-		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" filtro="true"/>
+		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" filtro="true" selectAtivoInativo="true"/>
 		<@ww.select label="Colocação do Colaborador" name="vinculo" id="vinculo" list="vinculos" headerKey="" headerValue="Todas" cssStyle="width: 180px;" />
 		<@ww.select label="Exibir a coluna de " name="selectColuna" list=r"#{'A':'Área Organizacional','C':'Cargo'}"  cssStyle="width:180px"/>
 

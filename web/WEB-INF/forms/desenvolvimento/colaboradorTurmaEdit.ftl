@@ -142,7 +142,7 @@
 			<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" filtro="true"/>
 			<@frt.checkListBox id="areasCheck" name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" onClick="populaCargosByAreaVinculados();"/>
 			<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>
-			<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" filtro="true"/>
+			<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" filtro="true" selectAtivoInativo="true"/>
 
 			<input type="button" onclick="enviaForm();" value="" class="btnPesquisar grayBGE" />
 
