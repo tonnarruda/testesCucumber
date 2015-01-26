@@ -174,7 +174,7 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 			colaboradoresOcorrencias = colaboradorOcorrenciaManager.filtrarOcorrencias(empresaIds, dataIni, dataFim, ocorrenciaIds, areaIds, estabelecimentoIds, colaboradorIds, detalhamento, agruparPorColaborador);
 
 			if(colaboradoresOcorrencias == null || colaboradoresOcorrencias.isEmpty())
-				throw new ColecaoVaziaException("Não existem dados para o relatório");
+				throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
 
 			String acao, extensao;
 			

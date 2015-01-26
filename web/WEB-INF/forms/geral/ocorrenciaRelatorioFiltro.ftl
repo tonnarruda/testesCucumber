@@ -145,6 +145,7 @@
 <body>
 	<@ww.actionerror />
 	<@ww.actionmessage />
+	
 	<@ww.form name="form" action="${formAction}" validate="true" method="POST">
 		<@ww.hidden id="tipo" name="tipo"/>
 		
