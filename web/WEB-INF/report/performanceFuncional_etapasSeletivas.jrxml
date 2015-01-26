@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="performanceFuncional_etapasSeletivas" pageWidth="785" pageHeight="802" whenNoDataType="AllSectionsNoDetail" columnWidth="785" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="cd1cfcae-15d4-49c8-8f35-4717ebff763f">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="3.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -14,6 +14,7 @@
 	<field name="aptoFormatado" class="java.lang.String"/>
 	<field name="observacao" class="java.lang.String"/>
 	<field name="etapaSeletiva.nome" class="java.lang.String"/>
+	<field name="candidatoSolicitacao.solicitacao.id" class="java.lang.Long"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{candidatoSolicitacao.solicitacao.descricao}]]></variableExpression>
 	</variable>
@@ -53,7 +54,7 @@
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Descrição]]></text>
+				<text><![CDATA[Solicitação]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="d077f040-6712-4aed-8618-6301c2ab235a" key="staticText-15" x="209" y="0" width="150" height="16"/>
@@ -141,7 +142,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement/>
-				<textFieldExpression><![CDATA[$F{candidatoSolicitacao.solicitacao.descricao}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{candidatoSolicitacao.solicitacao.id} + " - " + $F{candidatoSolicitacao.solicitacao.descricao}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
 				<reportElement uuid="ccb81493-b8a6-48fc-a239-25982d48690f" key="textField" x="369" y="-1" width="100" height="16"/>
