@@ -5,6 +5,16 @@
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 	</style>
+	
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type="text/javascript">
+		$(function() {
+			$('.tooltipHelp').qtip({
+				content: 'Não foi possível obter o salário. Verifique se o índice/faixa possui histórico nesta data.'
+			});
+		});
+	</script>
+	
 	<title>Editar Situações do Colaborador - ${colaborador.nome}</title>
 </head>
 <body>
@@ -37,6 +47,10 @@
 		<@display.column style="text-align:right; width:80px;">
 			<#if historicoColaborador.salarioCalculado?exists>
 				${historicoColaborador.salarioCalculado?string.currency}
+			<#else>
+				<div style="width: 100%; text-align: center;">
+					<img class="tooltipHelp" src="<@ww.url value="/imgs/iconWarning.gif"/>" />
+				</div>
 			</#if>
 		</@display.column>
 		

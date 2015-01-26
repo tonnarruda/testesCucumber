@@ -94,7 +94,14 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/configuracaoPerformance.js"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 	<script type="text/javascript">
+		$(function() {
+			$('.tooltipHelp').qtip({
+				content: 'Não foi possível obter o salário. Verifique se o índice/faixa possui histórico nesta data.'
+			});
+		});
+		
 		var configPerformanceBoxes = ${configPerformanceBoxes};		
 	</script>
 </head>
@@ -435,7 +442,15 @@
 						<@display.column property="estabelecimento.nome" title="Estabelecimento" />
 						<@display.column property="areaOrganizacional.descricao" title="Área Organizacional" />
 						<@display.column property="descricaoTipoSalario" title="Tipo Salário" style="width:70px;"/>
-						<@display.column property="salarioCalculado" title="Salário" format="{0,number,currency}" style="width:80px"/>
+						<@display.column title="Salário" format="{0,number,currency}" style="width:80px">
+							<#if historicoColaboradors.salarioCalculado?exists>
+								${historicoColaboradors.salarioCalculado?string.currency}
+							<#else>
+								<div style="width: 100%; text-align: center;">
+									<img class="tooltipHelp" src="<@ww.url value="/imgs/iconWarning.gif"/>" />
+								</div>
+							</#if>
+						</@display.column>
 					</@display.table>
 				</td>
 			</tr>

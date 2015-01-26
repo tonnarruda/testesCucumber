@@ -2,12 +2,24 @@
 <#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
-<@ww.head/>
-<style type="text/css">
-	@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
-</style>
-<title>Progressão do Colaborador</title>
+	<@ww.head/>
+	
+	<style type="text/css">
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+	</style>
+	
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type="text/javascript">
+	$(function() {
+		$('.tooltipHelp').qtip({
+			content: 'Não foi possível obter o salário. Verifique se o índice/faixa possui histórico nesta data.'
+		});
+	});
+	</script>
+	
+	<title>Progressão do Colaborador</title>
 </head>
+
 <body>
 <table>
 <tr>
@@ -72,6 +84,10 @@
 		<@display.column title="Salário" style="text-align:right; width:80px; ${style}">
 			<#if historicoColaboradors.salarioCalculado?exists>
 				${historicoColaboradors.salarioCalculado?string.currency}
+			<#else>
+				<div style="width: 100%; text-align: center;">
+					<img class="tooltipHelp" src="<@ww.url value="/imgs/iconWarning.gif"/>" />
+				</div>
 			</#if>
 		</@display.column>
 
