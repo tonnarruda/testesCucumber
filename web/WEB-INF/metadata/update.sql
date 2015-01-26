@@ -22766,3 +22766,9 @@ ALTER TABLE diaturma ADD COLUMN horaini CHARACTER VARYING(5);--.go
 ALTER TABLE diaturma ADD COLUMN horafim CHARACTER VARYING(5);--.go
 insert into migrations values('20141230164850');--.go
 update parametrosdosistema set appversao = '1.1.139.168';--.go
+-- versao 1.1.140.169
+
+DROP INDEX IF EXISTS index_solicitacaoexame_data_empresa_id;--.go
+CREATE INDEX index_solicitacaoexame_data_empresa_id ON solicitacaoexame (data,empresa_id);--.go
+insert into migrations values('20150119094033');--.go
+update parametrosdosistema set appversao = '1.1.140.169';--.go
