@@ -2629,10 +2629,20 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findAguardandoDesligamento(empresaId);
 	}
 
-	public void removeComDependencias(Long id) 
+	public void removeComDependencias(Long id) throws Exception
 	{
-		getDao().removeComDependencias(id);
-		mensagemManager.removerMensagensViculadasByColaborador(new Long[]{id});
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
+		try {
+			getDao().removeComDependencias(id);
+			mensagemManager.removerMensagensViculadasByColaborador(new Long[]{id});
+		}
+		catch (Exception e)	{
+			transactionManager.rollback(status);
+			throw e;
+		}
+		transactionManager.commit(status);
 	}
 
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId) 
