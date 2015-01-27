@@ -29,6 +29,7 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		
 		Map<String, String> dadosAnteriores = new HashMap<String, String>();
 		dadosAnteriores.put("status", solicitacaoAnterior.getStatusFormatado());
+		dadosAnteriores.put("dataStatus", solicitacaoAnterior.getDataStatusFormatada());
 
 		if(solicitacaoAnterior.getLiberador().getId() != null)
 			dadosAnteriores.put("liberadorId", solicitacaoAnterior.getLiberador().getId().toString());
@@ -40,6 +41,7 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 
 		Map<String, String> dadosAtualizados = new HashMap<String, String>();
 		dadosAtualizados.put("status", String.valueOf(solicitacao.getStatusFormatado()));
+		dadosAtualizados.put("dataStatus", String.valueOf(solicitacao.getDataStatusFormatada()));
 		dadosAtualizados.put("liberadorId", solicitacao.getLiberador().getId().toString());
 		dadosAtualizados.put("liberadorNome", solicitacao.getLiberador().getNome());
 		dadosAtualizados.put("liberadorObservacao", solicitacao.getObservacaoLiberador());
