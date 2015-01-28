@@ -278,12 +278,18 @@
 	<#include "../ftl/mascarasImports.ftl" />
 	
 	<@ww.form name="form" id="form" action="${formAction}" validate="true" onsubmit="${validarCampos}" method="POST">
-		<@ww.datepicker label="Data" name="solicitacao.data" required="true" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData"/>
-		
-		<@ww.textfield label="Descrição" name="solicitacao.descricao" id="descricao" cssClass="inputNome" maxlength="67" required="true"/>
-		<@ww.textfield label="Horário de Trabalho" name="solicitacao.horarioComercial" id="horarioComercial" cssClass="inputNome" maxlength="255" required="true"/>
+		<#if somenteLeitura>
+			<@ww.textfield readonly="true" label="Data" name="solicitacao.data" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData" cssStyle="background: #EBEBEB;"/>
+			<@ww.textfield readonly="true" label="Descrição" name="solicitacao.descricao" id="descricao" cssClass="inputNome" cssStyle="background: #EBEBEB;" />
+			<@ww.textfield readonly="true" label="Horário de Trabalho" name="solicitacao.horarioComercial" id="horarioComercial" cssClass="inputNome" cssStyle="background: #EBEBEB;" />
+		<#else>
+			<@ww.datepicker label="Data" name="solicitacao.data" required="true" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData"/>
+			
+			<@ww.textfield label="Descrição" name="solicitacao.descricao" id="descricao" cssClass="inputNome" maxlength="67" required="true"/>
+			<@ww.textfield label="Horário de Trabalho" name="solicitacao.horarioComercial" id="horarioComercial" cssClass="inputNome" maxlength="255" required="true"/>
+		</#if>
 
-		<#if !clone && somenteLeitura && solicitacao.estabelecimento?exists && solicitacao.estabelecimento.id?exists>
+		<#if !clone && possuiCandidatoSolicitacao && solicitacao.estabelecimento?exists && solicitacao.estabelecimento.id?exists || somenteLeitura>
 			<@ww.textfield readonly="true" label="Estabelecimento" name="solicitacao.estabelecimento.nome" id="estabelecimento" cssStyle="width: 347px;background: #EBEBEB;"/>
 			<@ww.hidden name="solicitacao.estabelecimento.id"/>
 		<#else>
@@ -294,7 +300,7 @@
 			<@ww.select label="Estabelecimento" name="solicitacao.estabelecimento.id" id="estabelecimento" list="estabelecimentos" onchange="${funcaoEstabelecimento}" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." required="true" cssStyle="width: 347px;"/>
 		</#if>
 
-		<#if !clone && somenteLeitura && solicitacao.areaOrganizacional?exists && solicitacao.areaOrganizacional.id?exists>
+		<#if !clone && possuiCandidatoSolicitacao && solicitacao.areaOrganizacional?exists && solicitacao.areaOrganizacional.id?exists || somenteLeitura>
 			<@ww.textfield readonly="true" label="Área" name="solicitacao.areaOrganizacional.nome" id="area" cssStyle="width: 347px;background: #EBEBEB;"/>
 			<@ww.hidden name="solicitacao.areaOrganizacional.id"/>
 		<#else>
@@ -306,7 +312,7 @@
 			<@ww.select label="Área Organizacional" name="solicitacao.areaOrganizacional.id" id="area" list="areas" listKey="id" listValue="descricao" headerKey="" headerValue="Selecione..." required="true" cssStyle="width: 347px;" onchange="${funcaoPopulaEmails}" />
 		</#if>
 
-		<#if !clone && somenteLeitura && solicitacao.faixaSalarial?exists && solicitacao.faixaSalarial.id?exists>
+		<#if !clone && possuiCandidatoSolicitacao && solicitacao.faixaSalarial?exists && solicitacao.faixaSalarial.id?exists || somenteLeitura>
 			<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">
 				<@ww.textfield readonly="true" label="Ambiente" name="solicitacao.ambiente.nome" id="ambiente" cssStyle="width: 347px;background: #EBEBEB;"/>
 				<@ww.textfield readonly="true" label="Cargo/Faixa" name="solicitacao.faixaSalarial.descricao" id="faixa" cssStyle="width: 347px;background: #EBEBEB;"/>
@@ -330,14 +336,19 @@
 			</@authz.authorize>
 		</#if>
 		
-		<#if !clone && somenteLeitura && (qtdAvaliacoesRespondidas > 0)>
+		<#if !clone && possuiCandidatoSolicitacao && (qtdAvaliacoesRespondidas > 0) || somenteLeitura>
 			<@frt.checkListBox name="avaliacoesCheck" id="avaliacoesCheck" label="Avaliações" list="avaliacoesCheckList" readonly=true filtro="true" />
 		<#else>
 			<@frt.checkListBox name="avaliacoesCheck" id="avaliacoesCheck" label="Avaliações" list="avaliacoesCheckList" readonly=false filtro="true"/>
 		</#if>
 		
-		<@ww.textfield label="Nº Vagas" id="quantidade" name="solicitacao.quantidade" onkeypress = "return(somenteNumeros(event,''));" required="true" cssStyle="width:35px; text-align:right;" maxLength="4" />
-		<@ww.select  id="motivoSolicitacaoId" label="Motivo da Solicitação" name="solicitacao.motivoSolicitacao.id" list="motivoSolicitacaos"  required="true" cssStyle="width: 250px;" listKey="id" listValue="descricao"  headerKey="" headerValue="" />
+		<#if somenteLeitura>
+			<@ww.textfield readonly="true" label="Nº Vagas" id="quantidade" name="solicitacao.quantidade" cssStyle="width:35px; text-align:right; background: #EBEBEB;"/>
+			<@ww.textfield readonly="true" label="Motivo da Solicitação" name="solicitacao.motivoSolicitacao.descricao" id="motivoSolicitacaoId" cssClass="inputNome" cssStyle="width: 250px; background: #EBEBEB;" />
+		<#else>
+			<@ww.textfield label="Nº Vagas" id="quantidade" name="solicitacao.quantidade" onkeypress = "return(somenteNumeros(event,''));" required="true" cssStyle="width:35px; text-align:right;" maxLength="4" />
+			<@ww.select  id="motivoSolicitacaoId" label="Motivo da Solicitação" name="solicitacao.motivoSolicitacao.id" list="motivoSolicitacaos"  required="true" cssStyle="width: 250px;" listKey="id" listValue="descricao"  headerKey="" headerValue="" />
+		</#if>
 		
 		<#if exibeColaboradorSubstituido>
 			<div>
@@ -368,29 +379,56 @@
 						<#assign asterisco=""/>
 					</#if>
 				
-					<@ww.select label="Vínculo" name="solicitacao.vinculo" id="vinculo" list=r"vinculos" cssStyle="width: 85px;" required=obrigaDadosComplementares/>
-					<#if exibeSalario>
-						<@ww.textfield label="Remuneração (R$)" id="remuneracao" name="solicitacao.remuneracao" cssClass="currency" cssStyle="width:85px; text-align:right;" maxLength="12" required=obrigaDadosComplementares/>
+					<#if somenteLeitura>
+						<@ww.textfield readonly="true" label="Vínculo" name="solicitacao.vinculoDescricao" id="vinculo" cssStyle="width: 85px; background: #EBEBEB;" />
+						
+						<#if exibeSalario>
+							<@ww.textfield readonly="true" label="Remuneração (R$)" id="remuneracao" name="solicitacao.remuneracao" cssClass="currency" cssStyle="width:85px; text-align:right; background: #EBEBEB;" />
+						</#if>
+						
+						<@ww.select label="Escolaridade mínima" id="escolaridade" name="solicitacao.escolaridade" list="escolaridades" cssStyle="width: 256px; background: #EBEBEB;"  headerKey="" headerValue="" disabled="true" />
+						<@ww.select label="Sexo" id="sexo" name="solicitacao.sexo" list="sexos" liClass="liLeft" cssStyle="background: #EBEBEB;" disabled="true" />
+						
+						<li>
+						<span>Idade Preferencial:</span>
+						</li>
+						<@ww.textfield name="solicitacao.idadeMinima" id="dataPrevIni" liClass="liLeft" cssStyle="width: 30px;text-align: right;background: #EBEBEB;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));" readonly="true" />
+						<@ww.label value="a" liClass="liLeft"/>
+						<@ww.textfield name="solicitacao.idadeMaxima" id="dataPrevFim" cssStyle="width: 30px;text-align: right;background: #EBEBEB;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" readonly="true" />
+						<@ww.label value="anos"/><div style="clear: both"></div>
+						
+						<@ww.select label="Estado"  id="estado" name="estado.id" list="estados" listKey="id" listValue="sigla" liClass="liLeft" cssStyle="background: #EBEBEB;" headerKey="" headerValue="" disabled="true" />
+						<@ww.select label="Cidade"  id="cidade" name="solicitacao.cidade.id" list="cidades" listKey="id" listValue="nome" cssStyle="width: 250px; background: #EBEBEB;" headerKey="" headerValue="" disabled="true" />
+
+						<@frt.checkListBox name="bairrosCheck" id="bairrosCheck" label="Bairros${asterisco}" list="bairrosCheckList" width="695" filtro="true" readonly=true/>
+						<@ww.textarea label="Informações Complementares" id = "infoComplementares" name="solicitacao.infoComplementares" cssStyle="width:445px;" cssStyle="width: 695px; background: #EBEBEB;" readonly=true/>
+
 					<#else>
-						<@ww.hidden name="solicitacao.remuneracao"  id="remuneracao"/>
+						<@ww.select label="Vínculo" name="solicitacao.vinculo" id="vinculo" list=r"vinculos" cssStyle="width: 85px;" required=obrigaDadosComplementares/>
+						<#if exibeSalario>
+							<@ww.textfield label="Remuneração (R$)" id="remuneracao" name="solicitacao.remuneracao" cssClass="currency" cssStyle="width:85px; text-align:right;" maxLength="12" required=obrigaDadosComplementares/>
+						<#else>
+							<@ww.hidden name="solicitacao.remuneracao"  id="remuneracao"/>
+						</#if>
+						<@ww.select label="Escolaridade mínima" id="escolaridade" name="solicitacao.escolaridade" list="escolaridades" cssStyle="width: 256px;"  headerKey="" headerValue="" required=obrigaDadosComplementares/>
+						<@ww.select label="Sexo" id="sexo" name="solicitacao.sexo" list="sexos" liClass="liLeft" required=obrigaDadosComplementares/>
+						
+						<li>
+						<span>Idade Preferencial:${asterisco}</span>
+						</li>
+						<@ww.textfield name="solicitacao.idadeMinima" id="dataPrevIni" liClass="liLeft" cssStyle="width: 30px;text-align: right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));" required=obrigaDadosComplementares/>
+						<@ww.label value="a" liClass="liLeft"/>
+						<@ww.textfield name="solicitacao.idadeMaxima" id="dataPrevFim" cssStyle="width: 30px;text-align: right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" required=obrigaDadosComplementares/>
+						<@ww.label value="anos"/><div style="clear: both"></div>
+						
+						<@ww.select label="Estado"  id="estado" name="estado.id" list="estados" listKey="id" listValue="sigla" liClass="liLeft" headerKey="" headerValue="" onchange="javascript:populaCidades()" required=obrigaDadosComplementares/>
+						<@ww.select label="Cidade"  id="cidade" name="solicitacao.cidade.id" list="cidades" listKey="id" listValue="nome" cssStyle="width: 250px;" headerKey="" headerValue="" onchange="javascript:populaBairros()" required=obrigaDadosComplementares/>
+						<@frt.checkListBox name="bairrosCheck" id="bairrosCheck" label="Bairros${asterisco}" list="bairrosCheckList" width="695" filtro="true"/>
+						<@ww.textarea label="Informações Complementares" id = "infoComplementares" name="solicitacao.infoComplementares" cssStyle="width:445px;" cssStyle="width: 695px;" required=obrigaDadosComplementares/>
+						
+						<@ww.hidden name="solicitacao.liberador.id"  />
 					</#if>
-					<@ww.select label="Escolaridade mínima" id="escolaridade" name="solicitacao.escolaridade" list="escolaridades" cssStyle="width: 256px;"  headerKey="" headerValue="" required=obrigaDadosComplementares/>
-					<@ww.select label="Sexo" id="sexo" name="solicitacao.sexo" list="sexos" liClass="liLeft" required=obrigaDadosComplementares/>
 					
-					<li>
-					<span>Idade Preferencial:${asterisco}</span>
-					</li>
-					<@ww.textfield name="solicitacao.idadeMinima" id="dataPrevIni" liClass="liLeft" cssStyle="width: 30px;text-align: right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));" required=obrigaDadosComplementares/>
-					<@ww.label value="a" liClass="liLeft"/>
-					<@ww.textfield name="solicitacao.idadeMaxima" id="dataPrevFim" cssStyle="width: 30px;text-align: right;" maxLength="3" onkeypress = "return(somenteNumeros(event,''));" liClass="liLeft" required=obrigaDadosComplementares/>
-					<@ww.label value="anos"/><div style="clear: both"></div>
-					
-					<@ww.select label="Estado"  id="estado" name="estado.id" list="estados" listKey="id" listValue="sigla" liClass="liLeft" headerKey="" headerValue="" onchange="javascript:populaCidades()" required=obrigaDadosComplementares/>
-					<@ww.select label="Cidade"  id="cidade" name="solicitacao.cidade.id" list="cidades" listKey="id" listValue="nome" cssStyle="width: 250px;" headerKey="" headerValue="" onchange="javascript:populaBairros()" required=obrigaDadosComplementares/>
-					<@frt.checkListBox name="bairrosCheck" id="bairrosCheck" label="Bairros${asterisco}" list="bairrosCheckList" width="695" filtro="true"/>
-					<@ww.textarea label="Informações Complementares" id = "infoComplementares" name="solicitacao.infoComplementares" cssStyle="width:445px;" cssStyle="width: 695px;" required=obrigaDadosComplementares/>
-					
-					<@ww.hidden name="solicitacao.liberador.id"  />
 					<@ww.div id="divcomplementar"/>
 				</ul>
 			</@ww.div>
@@ -405,7 +443,13 @@
 						<br><br>					
 					</#if>	
 					<@ww.select label="Status da solicitação (Inicia o processo de seleção de pessoal)" name="solicitacao.status"  list="status" id="statusSolicitcao" disabled="true"/>
-					<@ww.datepicker label="Data" name="solicitacao.dataStatus" id="dataStatus" cssClass="mascaraData" />
+					
+					<#if somenteLeitura>
+						<@ww.textfield readonly="true" label="Data" name="solicitacao.dataStatus" id="dataStatus" cssClass="mascaraData" cssStyle="background: #EBEBEB;"/>
+					<#else>
+						<@ww.datepicker label="Data" name="solicitacao.dataStatus" id="dataStatus" cssClass="mascaraData" />
+					</#if>
+					
 					<@ww.textarea label="Observação" name="solicitacao.observacaoLiberador" id="obsAprova" disabled="true" />
 				</ul>
 			</@ww.div>
@@ -415,7 +459,7 @@
 		<@ww.hidden name="solicitacao.solicitante.id" />
 		<@ww.hidden name="solicitacao.empresa.id" />
 		
-		<@authz.authorize !ifAllGranted="ROLE_LIBERA_SOLICITACAO">
+		<@authz.authorize ifNotGranted="ROLE_LIBERA_SOLICITACAO">
 			<@ww.hidden name="solicitacao.status" />
 			<@ww.hidden name="solicitacao.observacaoLiberador" />
 		</@authz.authorize>
@@ -424,14 +468,19 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}" id="gravar">
-		</button>
-		<#if visualizar?exists && cargo?exists>
-			<button onclick="window.location='list.action?visualizar=${visualizar}&cargo.id=${cargo.id}'" class="btnCancelar" accesskey="V">
+		<#if !somenteLeitura>
+			<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}" id="gravar" />
 		<#else>
-			<button onclick="window.location='list.action'" class="btnCancelar" accesskey="V">
+			<@authz.authorize ifAllGranted="ROLE_LIBERA_SOLICITACAO">
+				<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}" id="gravar" />
+			</@authz.authorize>
 		</#if>
-		</button>
+				
+		<#if visualizar?exists && cargo?exists>
+			<button onclick="window.location='list.action?visualizar=${visualizar}&cargo.id=${cargo.id}'" class="btnCancelar" accesskey="V" ></button>
+		<#else>
+			<button onclick="window.location='list.action'" class="btnCancelar" accesskey="V" ></button>
+		</#if>
 	</div>
 </body>
 </html>

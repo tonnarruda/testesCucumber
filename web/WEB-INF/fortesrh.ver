@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.14x.169" bd="" data="xx/xx/2015">
+		<Item visivel="S" motivo="S20141200160"><![CDATA[R&S > Movimentação > Solicitação de Pessoal: Permitir apenas visualização da solicitação de pessoal após o status ser alterado para aprovada ou reprovada.]]></Item>
 		<Item visivel="N" motivo="P20150100179"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Excluir: Correção de bug ao excluir colaborador que possui mensagens com o usuário fortes.]]></Item>
 		<Item visivel="N" motivo="P20150100169"><![CDATA[Info. Funcionais > Relatórios > Ocorrências: Ao tentar imprimir o relatório com filtros que não retornavam dados, não apresentava mensagem informando.]]></Item>
 		<Item visivel="N" motivo="P20150100182"><![CDATA[Utilitários > Auditoria: Mostrar data do status de uma solicitação de pessoal na auditoria.]]></Item>

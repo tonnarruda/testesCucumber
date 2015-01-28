@@ -146,6 +146,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	private boolean obrigaDadosComplementares;
 	private boolean clone;
 	private boolean somenteLeitura;
+	private boolean possuiCandidatoSolicitacao;
 	private boolean imprimirObservacao;
 
 	private char statusSolicitacao;
@@ -195,7 +196,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
             
             // Campos somente leitura se já houver candidatos na solicitação
             if (candidatoSolicitacaoManager.getCount(new String[] {"solicitacao.id"}, new Object[]{solicitacao.getId()}) > 0)
-            	somenteLeitura = true;
+            	possuiCandidatoSolicitacao = true;
             
 			if(solicitacao.getFaixaSalarial() != null && solicitacao.getFaixaSalarial().getCargo() != null && solicitacao.getFaixaSalarial().getCargo().getId() != null)
 				funcoes = funcaoManager.findByCargo(solicitacao.getFaixaSalarial().getCargo().getId());
@@ -241,7 +242,12 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         prepare();
 
         bairrosCheckList = CheckListBoxUtil.marcaCheckListBox(bairrosCheckList, bairroManager.getBairrosBySolicitacao(solicitacao.getId()), "getId");
-
+        
+        if(solicitacao.getStatus() != 'I' && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"})) {
+        	addActionMessage("Esta solicitação está aprovada ou reprovada. Só é possível visualizá-la.");
+        	somenteLeitura = true;
+        }
+        
         return Action.SUCCESS;
     }
 
@@ -774,6 +780,10 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	public boolean isSomenteLeitura()
 	{
 		return somenteLeitura;
+	}
+
+	public boolean isPossuiCandidatoSolicitacao() {
+		return possuiCandidatoSolicitacao;
 	}
 
 	public Collection<ProcessoSeletivoRelatorio> getProcessoSeletivoRelatorios()
