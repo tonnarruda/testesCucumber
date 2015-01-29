@@ -282,6 +282,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("s.data"), "data");
 		p.add(Projections.property("s.liberador"), "liberador");
 		p.add(Projections.property("s.observacaoLiberador"), "observacaoLiberador");
+		p.add(Projections.property("s.dataStatus"), "dataStatus");
 		p.add(Projections.property("s.status"), "status");
 		p.add(Projections.property("s.encerrada"), "encerrada");
 		p.add(Projections.property("s.suspensa"), "suspensa");
