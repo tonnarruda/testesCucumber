@@ -977,8 +977,10 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	mensagemManager.expects(once()).method("removeMensagensColaborador").with(eq(colaborador.getId()),eq(null)).isVoid();
     	colaboradorDao.expects(once()).method("remove").with(eq(colaborador.getId())).isVoid();
     	colaboradorDao.expects(once()).method("findColaboradorByIdProjection").with(eq(colaborador.getId())).will(returnValue(colaborador));
+    	transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
     	acPessoalClientColaborador.expects(once()).method("remove").with(ANYTHING, ANYTHING).will(returnValue(true));
     	mensagemManager.expects(once()).method("removerMensagensViculadasByColaborador").withAnyArguments().isVoid();
+    	transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
 
     	Exception exception = null;
     	try
@@ -1002,7 +1004,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorDao.expects(once()).method("findDependentTables").with(eq(colaborador.getId())).will(returnValue(tables));
     	
     	formacaoManager.expects(once()).method("removeColaborador").with(eq(colaborador)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(colaborador.getId(),""))));;
-
+    	
     	Exception exception = null;
     	try
     	{

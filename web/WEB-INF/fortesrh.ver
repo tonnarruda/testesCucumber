@@ -7,6 +7,7 @@
 		<Item visivel="N" motivo="P20150100179"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Excluir: Correção de bug ao excluir colaborador que possui mensagens com o usuário fortes.]]></Item>
 		<Item visivel="N" motivo="P20150100169"><![CDATA[Info. Funcionais > Relatórios > Ocorrências: Ao tentar imprimir o relatório com filtros que não retornavam dados, não apresentava mensagem informando.]]></Item>
 		<Item visivel="N" motivo="P20150100182"><![CDATA[Utilitários > Auditoria: Mostrar data do status de uma solicitação de pessoal na auditoria.]]></Item>
+		<Item visivel="N" motivo="P20150100259"><![CDATA[Tratamento de mensagens ao cancelar contratação pelo AC Pessoal.]]></Item>
 	<Versao id="1.1.140.169" bd="" data="26/01/2015">
 		<Item visivel="S" motivo="P20150100013"><![CDATA[C&S > Cadastros > Cargos e Faixas > Faixas Salariais > Editar: Visualisação do históricos futuros da faixa salarial.]]></Item>
 		<Item visivel="S" motivo="S20141200162"><![CDATA[C&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Tranf. Candidatos: Nova coluna com código da solicitação de pessoal.]]></Item>	

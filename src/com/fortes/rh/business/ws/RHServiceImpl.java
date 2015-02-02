@@ -1,5 +1,6 @@
 package com.fortes.rh.business.ws;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -575,6 +576,10 @@ public class RHServiceImpl implements RHService
 			colaboradorManager.cancelarContratacaoNoAC(colaborador, historico, mensagem);
 			
 			return new FeedbackWebService(true);
+		}
+		catch (FortesException e) {
+			e.printStackTrace();
+			return new FeedbackWebService(false, e.getMessage(), formataException(parametros, e));
 		}
 		catch (Exception e)
 		{

@@ -1533,12 +1533,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void remove(Colaborador colaborador, Empresa empresa) throws Exception
 	{
-		String[] dependenciasDaTabelaColaborador = getDao().findDependentTables(colaborador.getId());
-		
-		String[] dependenciasDesconsideradasNaRemocao = colaborador.getDependenciasDesconsideradasNaRemocao();
-		
-		for (String dependenciaDesconsideradaNaRemocao : dependenciasDesconsideradasNaRemocao) 
-			dependenciasDaTabelaColaborador = (String[]) ArrayUtils.removeElement(dependenciasDaTabelaColaborador, dependenciaDesconsideradaNaRemocao);			
+		String[] dependenciasDaTabelaColaborador = verificaDependencias(colaborador);		
 		
 		if(dependenciasDaTabelaColaborador.length > 0){
 			StringBuffer msg = new StringBuffer("Este colaborador não pode ser removido pois possui dependência com: <br />");
@@ -1561,11 +1556,34 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		solicitacaoManager.atualizaStatusSolicitacaoByColaborador(colaborador, StatusCandidatoSolicitacao.INDIFERENTE, true);
 		historicoColaboradorManager.remove(historicoColaborador);
-		removeColaboradorDependencias(colaborador);		
+		
+		String[] dependenciasDaTabelaColaborador = verificaDependencias(colaborador);
+		if(dependenciasDaTabelaColaborador.length > 0){
+			StringBuffer msg = new StringBuffer("Erro ao cancelar contratação do empregado. Este empregado possui dependências no RH com: ");
+		
+			for (String table : dependenciasDaTabelaColaborador)
+				msg.append(Entidade.getDescricao(table)).append("; ");
+			
+			throw new FortesException(msg.toString());
+		}else{
+			removeColaboradorDependencias(colaborador);
+		}
+		
 		gerenciadorComunicacaoManager.enviaMensagemCancelamentoContratacao(colaborador, mensagem);
 		auditoriaManager.auditaCancelarContratacaoNoAC(colaborador, mensagem);
 	}
 
+	private String[] verificaDependencias(Colaborador colaborador) throws Exception {
+		String[] dependenciasDaTabelaColaborador = getDao().findDependentTables(colaborador.getId());
+		
+		String[] dependenciasDesconsideradasNaRemocao = colaborador.getDependenciasDesconsideradasNaRemocao();
+		
+		for (String dependenciaDesconsideradaNaRemocao : dependenciasDesconsideradasNaRemocao) 
+			dependenciasDaTabelaColaborador = (String[]) ArrayUtils.removeElement(dependenciasDaTabelaColaborador, dependenciaDesconsideradaNaRemocao);			
+		
+		return dependenciasDaTabelaColaborador;
+	}
+	
 	public Colaborador removeColaboradorDependencias(Colaborador colaborador) 
 	{
 		formacaoManager.removeColaborador(colaborador);
@@ -1582,13 +1600,22 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.INDIFERENTE, colaborador.getId());
 
 		historicoColaboradorManager.removeColaborador(colaborador.getId());
-
-		remove(colaborador.getId());
-		mensagemManager.removerMensagensViculadasByColaborador(new Long[]{colaborador.getId()});
+		
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
+		try{
+			remove(colaborador.getId());
+			mensagemManager.removerMensagensViculadasByColaborador(new Long[]{colaborador.getId()});
+			transactionManager.commit(status);
+		} catch (Exception e) {
+			transactionManager.rollback(status);
+		}
 
 		if(colaboradorTmp.getCamposExtras() != null && colaboradorTmp.getCamposExtras().getId() != null)
 			camposExtrasManager.remove(colaboradorTmp.getCamposExtras().getId());
 
+		
 		return colaboradorTmp;
 	}
 
