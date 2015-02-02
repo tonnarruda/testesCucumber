@@ -178,7 +178,7 @@
 			<@ww.select label="Deficiência" name="deficiencia" id="deficiencia" list="deficiencias" cssStyle="width: 130px;" liClass="liLeft"/>
 
 			<@ww.select label="Possui Veículo" name="veiculo" id="veiculo" list=r"#{'I':'Indiferente','S':'Sim','N':'Não'}" cssStyle="width: 100px;" />
-			<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" filtro="true" />
+			<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" filtro="true" selectAtivoInativo="true"/>
 			<@frt.checkListBox label="Áreas de Interesse" name="areasCheck" list="areasCheckList" filtro="true"/>
 			<@frt.checkListBox label="Conhecimentos" name="conhecimentosCheck" list="conhecimentosCheckList" filtro="true"/>
 			<br />

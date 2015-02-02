@@ -100,6 +100,7 @@
 				else
 					populaCargosByGrupo();
 			});
+			populaCargosByGrupo();
 		});
 		
 	</script>

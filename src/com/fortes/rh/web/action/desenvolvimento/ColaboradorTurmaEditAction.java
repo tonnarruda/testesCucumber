@@ -175,7 +175,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 
 		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.TODAS, null);
-		areasCheckList = populaCheckListBox(areaOrganizacionalsTmp, "getId", "getDescricao");
+		areasCheckList = populaCheckListBox(areaOrganizacionalsTmp, "getId", "getDescricaoStatusAtivo");
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		
 		cargosCheckList = cargoManager.populaCheckBox(true, empresaId);

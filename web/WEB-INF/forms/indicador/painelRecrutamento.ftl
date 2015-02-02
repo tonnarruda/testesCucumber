@@ -157,9 +157,9 @@
 			<@ww.select label="Referenciar o período acima com a data da" name="dataStatusAprovacaoSolicitacao" list="tiposDataStatusAprovacaoSolicitacao" cssStyle="width: 300px;" />
 			<@ww.hidden name="statusSolicitacao" value = 'S'/>			
 			
-			<@frt.checkListBox label="Estabelecimentos*" name="estabelecimentosCheck" id="estabelecimentoCheck" list="estabelecimentosCheckList" filtro="true"/>
-			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" filtro="true" selectAtivoInativo="true" />
-			<@frt.checkListBox label="Solicitações de Pessoal" name="solicitacaosCheckIds" id="solicitacao" list="solicitacaosCheck" width="600" filtro="true"/>
+			<@frt.checkListBox label="Estabelecimentos*" name="estabelecimentosCheck" id="estabelecimentoCheck" list="estabelecimentosCheckList" filtro="true" width="460" liClass="liLeft"/>
+			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" filtro="true" selectAtivoInativo="true" width="460" liClass="liLeft"/>
+			<@frt.checkListBox label="Solicitações de Pessoal" name="solicitacaosCheckIds" id="solicitacao" list="solicitacaosCheck" width="926" filtro="true"/>
 			
 			<button onclick="return validaForm();" class="btnPesquisar grayBGE"></button>
 		</@ww.form>

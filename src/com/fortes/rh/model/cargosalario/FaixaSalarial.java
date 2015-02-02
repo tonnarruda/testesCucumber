@@ -241,16 +241,25 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	}
 	public void setProjectionCargoId(Long cargoId)
 	{
-		if(this.cargo == null)
-			this.cargo = new Cargo();
+		iniciaCargo();
 		this.cargo.setId(cargoId);
 	}
 
 	public void setNomeCargo(String nomeCargo)
 	{
-		if(this.cargo == null)
-			this.cargo = new Cargo();
+		iniciaCargo();
 		this.cargo.setNome(nomeCargo);
+	}
+	
+	public void setAtivoCargo(boolean ativoCargo)
+	{
+		iniciaCargo();
+		this.cargo.setAtivo(ativoCargo);
+	}
+
+	private void iniciaCargo() 
+	{
+		if(this.cargo == null) this.cargo = new Cargo();
 	}
 
 	public String getCodigoAC()
@@ -286,6 +295,12 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	public String getDescricao()
 	{
 		descricao = this.cargo.getNome() + " " + this.nome;
+		return descricao;
+	}
+	
+	public String getDescricaoComStatus()
+	{
+		descricao = this.cargo.getNome() + " " + this.nome + (this.cargo.isAtivo() ? " (Ativo)" : " (Inativo)");
 		return descricao;
 	}
 
@@ -410,8 +425,7 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 
 	public void setEmpresaNome(String empresaNome) {
 		
-		if(this.cargo == null)
-			this.cargo = new Cargo();
+		iniciaCargo();
 		if(this.cargo.getEmpresa() == null)
 			this.cargo.setEmpresa(new Empresa());
 		

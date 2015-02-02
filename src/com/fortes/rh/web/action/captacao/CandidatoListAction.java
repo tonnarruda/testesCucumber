@@ -300,7 +300,7 @@ public class CandidatoListAction extends MyActionSupportList
 		idiomas = idiomaManager.findAll(new String[]{"nome"});
 
 		Collection<Cargo> cargos = cargoManager.findAllSelect(empresaId, "nomeMercado", null, Cargo.TODOS);
-		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercado");
+		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercadoComStatus");
 
 		Collection<AreaInteresse> areaInteressesAux = areaInteresseManager.findAllSelect(empresaId);
 		areasCheckList = CheckListBoxUtil.populaCheckListBox(areaInteressesAux, "getId", "getNome");
@@ -437,7 +437,7 @@ public class CandidatoListAction extends MyActionSupportList
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		
 		Collection<FaixaSalarial> faixas = faixaSalarialManager.findAllSelectByCargo((empresaId == null || empresaId == -1 ? null : empresaId));
-		faixasCheckList = CheckListBoxUtil.populaCheckListBox(faixas, "getId", "getDescricao");
+		faixasCheckList = CheckListBoxUtil.populaCheckListBox(faixas, "getId", "getDescricaoComStatus");
 
 		populaEmpresas();
 	

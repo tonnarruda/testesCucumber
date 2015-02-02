@@ -140,7 +140,7 @@
 			<@ww.textfield label="Matrícula do Colaborador" id="matricula" name="colaborador.matricula" maxLength="20" cssStyle="width: 170px;"/>
 			
 			<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimento" list="estabelecimentosCheckList" filtro="true"/>
-			<@frt.checkListBox id="areasCheck" name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" onClick="populaCargosByAreaVinculados();"/>
+			<@frt.checkListBox id="areasCheck" name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" onClick="populaCargosByAreaVinculados();" selectAtivoInativo="true"/>
 			<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>
 			<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" filtro="true" selectAtivoInativo="true"/>
 
