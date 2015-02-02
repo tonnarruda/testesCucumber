@@ -58,6 +58,7 @@ import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoColaboradorIntegraAC;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.CamposExtras;
@@ -116,6 +117,9 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Map situacaos = new SituacaoColaborador();
 	private Map situacaosIntegraAC = new SituacaoColaboradorIntegraAC();
 	private String situacao;
+	
+	private Map<String,String> vinculos = new Vinculo();
+	private String vinculo;
 
 	private Collection<String> dinamicColumns;
 	private Collection<String> dinamicProperts;
@@ -695,7 +699,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		try
 		{
 			empresaIds = empresaManager.selecionaEmpresa(empresa, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_ADMITIDOS");
-			colaboradors = colaboradorManager.findAdmitidos(empresaIds, dataIni, dataFim, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), exibirSomenteAtivos);
+			colaboradors = colaboradorManager.findAdmitidos(empresaIds, vinculo, dataIni, dataFim, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), exibirSomenteAtivos);
 			
 			reportFilter = "Período : " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim);
 			reportTitle = "Relatório de Admitidos";
@@ -784,7 +788,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	{
 		this.colaborador=colaborador;
 	}
-
+	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager=colaboradorManager;
@@ -1299,5 +1303,21 @@ public class ColaboradorListAction extends MyActionSupportList
 	public void setCargosCheck(Long[] cargosCheck)
 	{
 		this.cargosCheck = cargosCheck;
+	}
+
+	public Map<String, String> getVinculos() {
+		return vinculos;
+	}
+
+	public void setVinculos(Map<String, String> vinculos) {
+		this.vinculos = vinculos;
+	}
+
+	public String getVinculo() {
+		return vinculo;
+	}
+
+	public void setVinculo(String vinculo) {
+		this.vinculo = vinculo;
 	}
 }

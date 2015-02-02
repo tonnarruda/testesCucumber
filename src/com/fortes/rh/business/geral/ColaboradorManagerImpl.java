@@ -1694,9 +1694,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return admitidosHaDias;
 	}
 
-	public Collection<Colaborador> findAdmitidos(Long[] empresaIds, Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos) throws Exception {
+	public Collection<Colaborador> findAdmitidos(Long[] empresaIds, String vinculo, Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos) throws Exception {
 
-		Collection<Colaborador> admitidos = getDao().findAdmitidos(dataIni, dataFim, areasIds, estabelecimentosIds, exibirSomenteAtivos);
+		Collection<Colaborador> admitidos = getDao().findAdmitidos(vinculo, dataIni, dataFim, areasIds, estabelecimentosIds, exibirSomenteAtivos);
 
 		if (admitidos == null || admitidos.isEmpty())
 			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");

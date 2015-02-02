@@ -82,6 +82,8 @@
 				<strong><@authz.authentication operation="empresaNome"/></strong>
 			</li>
 		</#if>
+
+		<@ww.select label="Colocação" name="vinculo" list="vinculos" cssStyle="width: 150px;" id="vinculo" headerKey="" headerValue="Todas" />
 		
 		<div>Período*:</div>
 		<@ww.datepicker name="dataIni" id="dataIni" liClass="liLeft" value="${valueDataIni}"  cssClass="mascaraData validaDataIni"/>

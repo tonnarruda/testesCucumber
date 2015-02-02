@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.rh.model.captacao.Habilitacao;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Endereco;
@@ -21,6 +22,7 @@ public class ColaboradorFactory
 		colaborador.setDesligado(false);
 		colaborador.setObservacao("observação");
 		colaborador.setDataAdmissao(new Date());
+		colaborador.setVinculo(Vinculo.EMPREGO);
 
 		Endereco endereco = new Endereco();
 		endereco.setLogradouro("logradouro");

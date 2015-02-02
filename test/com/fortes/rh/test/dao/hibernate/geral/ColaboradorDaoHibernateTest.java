@@ -4384,7 +4384,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		areaOrganizacionalDao.save(areaOrganizacional2);
 		
 		Colaborador colaborador1 = montaColaboradorDoTestCountAtivo(empresa, dataAdmissao);
-
 		Colaborador colaborador2 = montaColaboradorDoTestCountAtivo(empresa, dataAdmissaoFora);
 
 		HistoricoColaborador historicoColaborador1_1 = HistoricoColaboradorFactory.getEntity();
@@ -4421,16 +4420,19 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Long[] areasIds = null;
 		Long[] estabelecimentosIds = new Long[] { estabelecimento1.getId() };
 
-		Collection<Colaborador> colaboradorRetornado = colaboradorDao.findAdmitidos(dataIni, dataFim, areasIds, estabelecimentosIds, false);
+		Collection<Colaborador> colaboradorRetornado = colaboradorDao.findAdmitidos(Vinculo.EMPREGO, dataIni, dataFim, areasIds, estabelecimentosIds, false);
 		assertEquals(1, colaboradorRetornado.size());
 		assertEquals(historicoColaborador1_1.getAreaOrganizacional().getId(), ((Colaborador)colaboradorRetornado.toArray()[0]).getAreaOrganizacional().getId());
 		
 		estabelecimentosIds = new Long[] { estabelecimento1.getId(), estabelecimento2.getId() };
 		
-		colaboradorRetornado = colaboradorDao.findAdmitidos(dataIni, dataFim, areasIds, estabelecimentosIds, false);
+		colaboradorRetornado = colaboradorDao.findAdmitidos(Vinculo.EMPREGO, dataIni, dataFim, areasIds, estabelecimentosIds, false);
 		assertEquals(2, colaboradorRetornado.size());
 		assertEquals(historicoColaborador1_1.getAreaOrganizacional().getId(), ((Colaborador)colaboradorRetornado.toArray()[0]).getAreaOrganizacional().getId());
 		assertEquals(historicoColaborador2_1.getAreaOrganizacional().getId(), ((Colaborador)colaboradorRetornado.toArray()[1]).getAreaOrganizacional().getId());
+		
+		colaboradorRetornado = colaboradorDao.findAdmitidos(Vinculo.ESTAGIO, dataIni, dataFim, areasIds, estabelecimentosIds, false);
+		assertEquals(0, colaboradorRetornado.size());
 	}
 
 	public void testFindHistoricoByColaboradors() {

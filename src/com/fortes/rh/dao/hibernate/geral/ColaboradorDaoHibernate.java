@@ -2844,7 +2844,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Collection<Colaborador> findAdmitidos(Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos)
+	public Collection<Colaborador> findAdmitidos(String vinculo, Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, co.desligado, cg.nome, fs.nome, es.id, es.nome, emp.nome, ao.id, ao.nome, am.id, am.nome) ");
@@ -2869,11 +2869,16 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("	) ");
 		hql.append("and	co.dataAdmissao between :dataIni and :dataFim ");
 		hql.append("and	es.id in (:estabelecimentosIds) ");
-		if(LongUtil.arrayIsNotEmpty(areasIds))
+		
+		if (LongUtil.arrayIsNotEmpty(areasIds))
 			hql.append("and	ao.id in (:areasIds) ");
-		if(exibirSomenteAtivos)
+		
+		if (exibirSomenteAtivos)
 			hql.append("and	co.desligado = false ");
 
+		if (!StringUtil.isBlank(vinculo))
+			hql.append("and co.vinculo = :vinculo ");
+		
 		hql.append("order by emp.nome, es.nome,ao.nome,co.nome ");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -2883,9 +2888,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
 
-		if(LongUtil.arrayIsNotEmpty(areasIds))
+		if (LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 
+		if (!StringUtil.isBlank(vinculo))
+			query.setString("vinculo", vinculo);
+		
 		return query.list();
 	}
 

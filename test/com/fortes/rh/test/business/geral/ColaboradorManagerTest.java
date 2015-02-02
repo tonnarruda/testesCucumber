@@ -65,6 +65,7 @@ import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
+import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
@@ -1396,7 +1397,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Long[] areasIds=new Long[]{1L};
 		Long[] estabelecimentosIds=new Long[]{1L,2L};
 		
-		assertEquals(1, colaboradorManager.findAdmitidos(new Long[]{1L}, new Date(), new Date(), areasIds, estabelecimentosIds, false).size());
+		assertEquals(1, colaboradorManager.findAdmitidos(new Long[]{1L}, Vinculo.EMPREGO, new Date(), new Date(), areasIds, estabelecimentosIds, false).size());
     }
     
     public void testFindAdmitidosException() 
@@ -1409,12 +1410,12 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Exception exception =null;
     	
     	try {
-			colaboradorManager.findAdmitidos(new Long[]{1L}, new Date(), new Date(), areasIds, estabelecimentosIds, false);
+			colaboradorManager.findAdmitidos(new Long[]{1L}, Vinculo.EMPREGO, new Date(), new Date(), areasIds, estabelecimentosIds, false);
 		} catch (Exception e) {
 			exception = e;
 		}
 		
-		assertEquals("Não existem dados para o filtro informado.",exception.getMessage());
+		assertEquals("Não existem dados para o filtro informado.", exception.getMessage());
     }
     
     public void testMontaGraficoEvolucaoFolha() 

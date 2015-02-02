@@ -134,7 +134,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void validaQtdCadastros() throws Exception;
 	public Collection<String> findEmailsDeColaboradoresByPerfis(Collection<Perfil> perfis, Long empresaId);
 	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa, Long periodoExperienciaId) throws Exception;
-	public Collection<Colaborador> findAdmitidos(Long[] empresaIds, Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos) throws ColecaoVaziaException, Exception;
+	public Collection<Colaborador> findAdmitidos(Long[] empresaIds, String vinculo, Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos) throws ColecaoVaziaException, Exception;
 	public Collection<Colaborador> findByNomeCpfMatriculaComHistoricoComfirmado(Colaborador colaborador, Long empresaId, Long[] areasIds);
 	public Collection<Colaborador> setFamiliaAreas(Collection<Colaborador> colaboradores, Long... empresaId) throws Exception;
 	public Collection<Colaborador> findByCpf(String cpf, Long empresaId, Long colaboradorId, Boolean desligado);
