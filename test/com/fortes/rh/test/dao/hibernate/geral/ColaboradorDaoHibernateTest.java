@@ -1489,6 +1489,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setObservacaoDemissao("");
 		colaborador.setDesligado(false);
 		colaborador.setMotivoDemissao(null);
+		colaborador.setDemissaoGerouSubstituicao(null);
 		colaborador = colaboradorDao.save(colaborador);
 
 		MotivoDemissao motivo = new MotivoDemissao();
@@ -1496,7 +1497,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		motivo = motivoDemissaoDao.save(motivo);
 
 		Date dataDesligamento = new Date();
-		colaboradorDao.desligaColaborador(true, dataDesligamento, "desligado", motivo.getId(), colaborador.getId());
+		colaboradorDao.desligaColaborador(true, dataDesligamento, "desligado", motivo.getId(), 'I', colaborador.getId());
 
 		Colaborador colaboradorRetorno = colaboradorDao.findColaboradorById(colaborador.getId());
 
@@ -1504,6 +1505,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals("desligado", colaboradorRetorno.getObservacaoDemissao());
 		assertEquals(DateUtil.formataDiaMesAno(dataDesligamento), DateUtil.formataDiaMesAno(colaboradorRetorno.getDataDesligamento()));
 		assertEquals(motivo.getId(), colaboradorRetorno.getMotivoDemissao().getId());
+		assertEquals((Character)'I', colaboradorRetorno.getDemissaoGerouSubstituicao());
 	}
 	
 	public void testDesligaMultiplosColaboradores() {
@@ -1512,6 +1514,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador1.setObservacaoDemissao("");
 		colaborador1.setDesligado(false);
 		colaborador1.setMotivoDemissao(null);
+		colaborador1.setDemissaoGerouSubstituicao(null);
 		colaborador1 = colaboradorDao.save(colaborador1);
 		
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
@@ -1519,6 +1522,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador2.setObservacaoDemissao("");
 		colaborador2.setDesligado(false);
 		colaborador2.setMotivoDemissao(null);
+		colaborador1.setDemissaoGerouSubstituicao(null);
 		colaborador2 = colaboradorDao.save(colaborador2);
 		
 		MotivoDemissao motivo = new MotivoDemissao();
@@ -1526,7 +1530,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		motivo = motivoDemissaoDao.save(motivo);
 		
 		Date dataDesligamento = new Date();
-		colaboradorDao.desligaColaborador(true, dataDesligamento, "desligado", motivo.getId(), new Long[]{colaborador1.getId(), colaborador2.getId()});
+		colaboradorDao.desligaColaborador(true, dataDesligamento, "desligado", motivo.getId(), 'S', new Long[]{colaborador1.getId(), colaborador2.getId()});
 		
 		Colaborador colaboradorRetorno1 = colaboradorDao.findColaboradorById(colaborador1.getId());
 		Colaborador colaboradorRetorno2 = colaboradorDao.findColaboradorById(colaborador2.getId());
@@ -1535,11 +1539,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals("desligado", colaboradorRetorno1.getObservacaoDemissao());
 		assertEquals(DateUtil.formataDiaMesAno(dataDesligamento), DateUtil.formataDiaMesAno(colaboradorRetorno1.getDataDesligamento()));
 		assertEquals(motivo.getId(), colaboradorRetorno1.getMotivoDemissao().getId());
+		assertEquals((Character)'S', colaboradorRetorno1.getDemissaoGerouSubstituicao());
+		
 		
 		assertEquals(true, colaboradorRetorno2.isDesligado());
 		assertEquals("desligado", colaboradorRetorno2.getObservacaoDemissao());
 		assertEquals(DateUtil.formataDiaMesAno(dataDesligamento), DateUtil.formataDiaMesAno(colaboradorRetorno2.getDataDesligamento()));
 		assertEquals(motivo.getId(), colaboradorRetorno2.getMotivoDemissao().getId());
+		assertEquals((Character)'S', colaboradorRetorno2.getDemissaoGerouSubstituicao());
 	}
 
 	public void testFindByIdProjectionEmpresa() {
@@ -5576,7 +5583,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Exception exception = null;
 		try {
-			colaboradorDao.atualizaSolicitacaoDesligamento(null, hoje, null, null, solicitanteDemissao.getId(), colaborador.getId());
+			colaboradorDao.atualizaSolicitacaoDesligamento(null, hoje, null, null, null, solicitanteDemissao.getId(), colaborador.getId());
 		} catch (Exception e) {
 			exception = e;
 		}

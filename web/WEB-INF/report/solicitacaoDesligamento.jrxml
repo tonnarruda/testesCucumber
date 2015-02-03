@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
+<!-- 2015-02-02T21:17:59 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="extintores" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="12edfd2b-7e17-483c-81fc-73a0f911dc66">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
@@ -15,6 +17,7 @@
 	<parameter name="DATADESLIGAMENTO" class="java.lang.String"/>
 	<parameter name="MOTIVODEMISSAO" class="java.lang.String"/>
 	<parameter name="OBSDEMISSAO" class="java.lang.String"/>
+	<parameter name="GEROUSUBSTITUICAO" class="java.lang.String" isForPrompting="false"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[]]></variableExpression>
 	</variable>
@@ -27,7 +30,7 @@
 	<pageHeader>
 		<band height="51" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement uuid="2cf468ae-3b09-4ecc-acc1-d700240a4459" key="subreport-1" x="7" y="1" width="528" height="50"/>
+				<reportElement key="subreport-1" x="7" y="1" width="528" height="50" uuid="2cf468ae-3b09-4ecc-acc1-d700240a4459"/>
 				<subreportParameter name="CABECALHO">
 					<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -39,9 +42,12 @@
 		<band height="7" splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="27" splitType="Stretch">
+		<band height="29" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="40506045-3e04-4089-8dd8-21ee7cf426c9" key="staticText-13" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="535" height="27"/>
+				<reportElement key="staticText-13" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="535" height="29" uuid="40506045-3e04-4089-8dd8-21ee7cf426c9">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -55,7 +61,7 @@
 				<text><![CDATA[Nome do Colaborador: ]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="8f435506-31fa-45a8-8d00-beed1a58dc1c" stretchType="RelativeToTallestObject" x="0" y="11" width="532" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="12" width="532" height="16" uuid="8f435506-31fa-45a8-8d00-beed1a58dc1c"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -71,7 +77,9 @@
 		</band>
 		<band height="29">
 			<staticText>
-				<reportElement uuid="397b33fe-a0ec-4776-a973-97f2e21a93c3" key="staticText-5" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="535" height="29"/>
+				<reportElement key="staticText-5" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="535" height="29" uuid="397b33fe-a0ec-4776-a973-97f2e21a93c3">
+					<property name="local_mesure_unitheight" value="pixel"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -85,7 +93,7 @@
 				<text><![CDATA[Data da Solicitação de Desligamento:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="8f435506-31fa-45a8-8d00-beed1a58dc1c" stretchType="RelativeToTallestObject" x="0" y="13" width="532" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="12" width="532" height="16" uuid="8f435506-31fa-45a8-8d00-beed1a58dc1c"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -98,16 +106,13 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{DATADESLIGAMENTO}]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement uuid="914eb428-1086-4d60-a29a-0911bd19a255" x="0" y="0" width="535" height="1" isPrintWhenDetailOverflows="true"/>
-				<graphicElement>
-					<pen lineWidth="0.5"/>
-				</graphicElement>
-			</line>
 		</band>
-		<band height="28">
+		<band height="29">
 			<staticText>
-				<reportElement uuid="b6e4c6b2-a31b-4699-b2e1-df41113cd766" key="staticText-12" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="535" height="28"/>
+				<reportElement key="staticText-12" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="535" height="29" uuid="b6e4c6b2-a31b-4699-b2e1-df41113cd766">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -121,7 +126,7 @@
 				<text><![CDATA[Motivo do Desligamento:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="8f435506-31fa-45a8-8d00-beed1a58dc1c" stretchType="RelativeToTallestObject" x="0" y="12" width="532" height="16"/>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="12" width="532" height="16" uuid="8f435506-31fa-45a8-8d00-beed1a58dc1c"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -135,9 +140,45 @@
 				<textFieldExpression><![CDATA[$P{MOTIVODEMISSAO}]]></textFieldExpression>
 			</textField>
 		</band>
+		<band height="29">
+			<staticText>
+				<reportElement key="staticText-12" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="535" height="29" uuid="6a8039e8-9b46-4f30-a982-1a5c7a1aaba6">
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<paragraph leftIndent="5" spacingBefore="1"/>
+				</textElement>
+				<text><![CDATA[Gera Substituição:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="11" width="532" height="16" uuid="e5d1d060-66cd-4ce8-9092-5ac657be0070">
+					<property name="local_mesure_unity" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+					<paragraph leftIndent="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{GEROUSUBSTITUICAO}]]></textFieldExpression>
+			</textField>
+		</band>
 		<band height="32">
 			<staticText>
-				<reportElement uuid="61fec666-043d-49b5-b5eb-8eb07b32eaa7" key="staticText-11" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="0" width="535" height="32" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true"/>
+				<reportElement key="staticText-11" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="0" width="535" height="32" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="61fec666-043d-49b5-b5eb-8eb07b32eaa7"/>
 				<box>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -151,7 +192,7 @@
 				<text><![CDATA[Observação: ]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="ce06d4ad-8dcd-4184-b77e-35f7f5e12fd5" positionType="Float" stretchType="RelativeToTallestObject" x="0" y="14" width="535" height="18"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1" y="14" width="535" height="18" uuid="ce06d4ad-8dcd-4184-b77e-35f7f5e12fd5"/>
 				<box>
 					<leftPen lineWidth="0.0"/>
 					<bottomPen lineWidth="0.0"/>

@@ -958,7 +958,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 			}
 
-	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long colaboradorId, Empresa empresa) throws Exception, IntegraACException 
+	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Character gerouSubstituicao, Long colaboradorId, Empresa empresa) throws Exception, IntegraACException 
 	{
 		Collection<HistoricoColaborador> historicosColaborador = new ArrayList<HistoricoColaborador>();
 		HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaboradorId);
@@ -970,20 +970,20 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 		if(tFeedbackPessoalWebService != null && tFeedbackPessoalWebService.getSucesso())
 		{
-			getDao().atualizaSolicitacaoDesligamento(null, dataSolicitacaoDesligamento, null, null, null, colaboradorId);
-			desligaColaborador(null, null, observacaoDemissao, motivoId, false, empresa.isAcIntegra(), colaboradorId);
+			getDao().atualizaSolicitacaoDesligamento(null, dataSolicitacaoDesligamento, null, null, null, null, colaboradorId);
+			desligaColaborador(null, null, observacaoDemissao, motivoId, gerouSubstituicao, false, empresa.isAcIntegra(), colaboradorId);
 		}else{
 			throw new IntegraACException("Colaborador não encontrado no Ac Pessoal");
 		}
 				
 	}
 
-	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Long solicitanteDemissaoId, Long colaboradorId) throws Exception 
+	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Character gerouSubstituicao, Long solicitanteDemissaoId, Long colaboradorId) throws Exception 
 	{
-		getDao().atualizaSolicitacaoDesligamento(dataSolicitacaoDesligamento, null, observacaoDemissao, motivoId, solicitanteDemissaoId, colaboradorId);
+		getDao().atualizaSolicitacaoDesligamento(dataSolicitacaoDesligamento, null, observacaoDemissao, motivoId, gerouSubstituicao, solicitanteDemissaoId, colaboradorId);
 	}
 	
-	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, boolean desligaByAC, boolean integradoAC, Long... colaboradoresIds) throws Exception
+	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Character gerouSubstituicao, boolean desligaByAC, boolean integradoAC, Long... colaboradoresIds) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -1006,7 +1006,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			else {
 				if(!integradoAC)
 					removeVinculos(colaboradoresIds);
-				getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, colaboradoresIds);
+				getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, gerouSubstituicao, colaboradoresIds);
 			}
 			transactionManager.commit(status);
 		}
@@ -1049,7 +1049,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				throw new FortesException("Desligar Empregado: Existe(m) empregado(s) que não se encontra(m) no sistema RH.");
 			
 			Long[] colaboradoresIds = new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradores);
-			desligaColaborador(true, dataDesligamento, "", null, true, true, colaboradoresIds);
+			desligaColaborador(true, dataDesligamento, "", null, null, true, true, colaboradoresIds);
 			removeVinculos(colaboradoresIds);
 		} catch (Exception e) {
 			e.printStackTrace();

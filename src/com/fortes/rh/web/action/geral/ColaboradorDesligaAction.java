@@ -36,6 +36,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	private Colaborador colaborador;
 	private Comissao comissao;
 	private MotivoDemissao motDemissao;
+	private Character gerouSubstituicao;
 
 	private Collection<MotivoDemissao> motivoDemissaos;
 	private Collection<Colaborador> colaboradores;
@@ -59,6 +60,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		motivoDemissaos = motivoDemissaoManager.findAllSelect(getEmpresaSistema().getId());
 		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
 		motDemissao = colaborador.getMotivoDemissao();
+		gerouSubstituicao = colaborador.getDemissaoGerouSubstituicao();
 		
 		return Action.SUCCESS;
 	}
@@ -82,14 +84,14 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 				Colaborador solicitante = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
 				Long solicitanteId = solicitante != null ? solicitante.getId() : null;
 				
-				colaboradorManager.solicitacaoDesligamento(dataDesligamento, observacaoDemissao, motDemissao.getId(), solicitanteId, colaborador.getId());
+				colaboradorManager.solicitacaoDesligamento(dataDesligamento, observacaoDemissao, motDemissao.getId(), gerouSubstituicao, solicitanteId, colaborador.getId());
 				addActionSuccess("Solicitação de desligamento cadastrada com sucesso.");
 				
 				gerenciadorComunicacaoManager.enviaAvisoSolicitacaoDesligamento(colaborador.getId(), getEmpresaSistema().getId());
 			} 
 			else 
 			{
-				colaboradorManager.desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motDemissao.getId(), false, getEmpresaSistema().isAcIntegra(), colaborador.getId());
+				colaboradorManager.desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motDemissao.getId(), gerouSubstituicao, false, getEmpresaSistema().isAcIntegra(), colaborador.getId());
 				addActionSuccess("Colaborador desligado com sucesso.");
 			}
 		
@@ -111,7 +113,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			
 			observacaoDemissao = (getEmpresaSistema().isSolicitarConfirmacaoDesligamento() ? "Aprovado por: " : "Solicitado por: ") + getUsuarioLogado().getNome() + ".  " +  observacaoDemissao;
 			
-			colaboradorManager.solicitacaoDesligamentoAc(dataDesligamento, observacaoDemissao, motDemissao.getId(), colaborador.getId(), getEmpresaSistema());
+			colaboradorManager.solicitacaoDesligamentoAc(dataDesligamento, observacaoDemissao, motDemissao.getId(), gerouSubstituicao, colaborador.getId(), getEmpresaSistema());
 			
 			addActionSuccess("Solicitação de desligamento enviada com sucesso.");
 			
@@ -135,7 +137,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			colaboradorManager.validaQtdCadastros();			
 			colaboradorManager.religaColaborador(colaborador.getId());
 			
-			addActionMessage("Colaborador religado com sucesso.");
+			addActionSuccess("Colaborador religado com sucesso.");
 		} 
 		catch (FortesException e) 
 		{
@@ -159,6 +161,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			
 			parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), "");
 			MotivoDemissao motivo = motivoDemissaoManager.findById(motDemissao.getId());
+			colaborador.setDemissaoGerouSubstituicao(gerouSubstituicao);
 			
 			//migue para funcionar reports	
 			motivoDemissaos = new ArrayList<MotivoDemissao>();
@@ -168,6 +171,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			parametros.put("COLABORADORNOME", colaborador.getNome());
 			parametros.put("DATADESLIGAMENTO", DateUtil.formataDiaMesAno(dataDesligamento));
 			parametros.put("MOTIVODEMISSAO", motivo.getMotivo());
+			parametros.put("GEROUSUBSTITUICAO", colaborador.getDescricaoDemissaoGerouSubstituicao());
 			parametros.put("OBSDEMISSAO", observacaoDemissao);
 
 			return Action.SUCCESS;
@@ -199,11 +203,12 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			dataDesligamento = colaborador.getDataSolicitacaoDesligamento();
 			motDemissao = colaborador.getMotivoDemissao();
 			observacaoDemissao = colaborador.getObservacaoDemissao();
+			gerouSubstituicao = colaborador.getDemissaoGerouSubstituicao();
 			
 			if (getEmpresaSistema().isAcIntegra())
 				return solicitacaoDesligamento();
 
-			colaboradorManager.desligaColaborador(true, dataDesligamento, observacaoDemissao, motDemissao.getId(), false, getEmpresaSistema().isAcIntegra(), colaborador.getId());
+			colaboradorManager.desligaColaborador(true, dataDesligamento, observacaoDemissao, motDemissao.getId(), gerouSubstituicao, false, getEmpresaSistema().isAcIntegra(), colaborador.getId());
 			
 			gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(colaborador.getNome(), colaborador.getSolicitanteDemissao().getId(), getEmpresaSistema(), true);
 			
@@ -221,7 +226,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	public String reprovarSolicitacaoDesligamento() throws Exception
 	{
 		try {
-			colaboradorManager.solicitacaoDesligamento(null, null, null, null, colaborador.getId());
+			colaboradorManager.solicitacaoDesligamento(null, null, null, null, null, colaborador.getId());
 			
 			gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(colaborador.getNome(), colaborador.getSolicitanteDemissao().getId(), getEmpresaSistema(), false);
 			
@@ -353,8 +358,15 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		return colaboradores;
 	}
 
-	public void setGerenciadorComunicacaoManager(
-			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public Character getGerouSubstituicao() {
+		return gerouSubstituicao;
+	}
+
+	public void setGerouSubstituicao(Character gerouSubstituicao) {
+		this.gerouSubstituicao = gerouSubstituicao;
 	}
 }

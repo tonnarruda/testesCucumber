@@ -855,7 +855,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         historicoColaboradorManager.expects(once()).method("deleteHistoricosAguardandoConfirmacaoByColaborador").with(eq(new Long[]{colaborador.getId()}));
         transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
 
-        colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, true, true, colaborador.getId());
+        colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, 'I', true, true, colaborador.getId());
     }
     
     public void testDesligaColaborador() throws Exception
@@ -871,7 +871,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorDao.expects(once()).method("desligaColaborador").withAnyArguments().isVoid();
     	transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
     	
-    	colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, false, false, colaborador.getId());
+    	colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, 'I', false, false, colaborador.getId());
     }
     public void testFindByAreasOrganizacionalIds() throws Exception
     {

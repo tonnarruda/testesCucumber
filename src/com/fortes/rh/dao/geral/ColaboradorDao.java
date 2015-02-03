@@ -47,7 +47,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public List<Object[]> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String vinculo);
 
 	public boolean desligaByCodigo(Empresa empresa, Date data, String... codigosAC);
-	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Long... colaboradoresIds);
+	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacao, Long motivoDemissaoId, Character gerouSubstituicao, Long... colaboradoresIds);
 	public void religaColaborador(Long colaboradorId);
 	public Collection<Colaborador> findProjecaoSalarialByHistoricoColaborador(Date data, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> grupoIds, Collection<Long> cargoIds, String filtro, Long empresaId);
 	public Collection<Colaborador> findProjecaoSalarialByTabelaReajusteColaborador(Long tabelaReajusteColaboradorId, Date data, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> grupoIds, Collection<Long> cargoIds, String filtro, Long empresaId);
@@ -117,7 +117,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public int qtdAdmitidosPeriodoEm90Dias(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Date dataAte);
 	public Colaborador findFuncaoAmbiente(Long colaboradorId);
 	public Collection<Colaborador> findParentesByNome(Long colaboradorId, String nome, Long empresaId);
-	public void atualizaSolicitacaoDesligamento(Date dataSolicitacaoDesligamento, Date dataSolicitacaoDesligamentoAC, String observacaoDemissao, Long motivoId, Long solicitanteDemissaoId, Long colaboradorId);
+	public void atualizaSolicitacaoDesligamento(Date dataSolicitacaoDesligamento, Date dataSolicitacaoDesligamentoAC, String observacaoDemissao, Long motivoId, Character gerouSubstituicao, Long solicitanteDemissaoId, Long colaboradorId);
 	public Collection<Colaborador> findPendenciasSolicitacaoDesligamentoAC(Long empresaId);
 	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId);
 	public Collection<Colaborador> findAguardandoEntregaEpi(Collection<Integer> diasLembrete, Long empresaId);

@@ -90,6 +90,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private String observacaoDemissao;
 	@ManyToOne
 	private Colaborador solicitanteDemissao;
+	private Character demissaoGerouSubstituicao;
 	
 	@ManyToOne
 	private Empresa empresa;
@@ -2826,6 +2827,21 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 												"Colaboradorperiodoexperienciaavaliacao", "experiencia", "formacao", "historicocolaborador", "mensagem", "usuariomensagem"};
 		return dependencias; 
 	}
+
+	public Character getDemissaoGerouSubstituicao() {
+		return demissaoGerouSubstituicao;
+	}
+
+	public void setDemissaoGerouSubstituicao(Character demissaoGerouSubstituicao) {
+		this.demissaoGerouSubstituicao = demissaoGerouSubstituicao;
+	}
 	
-	
+	public String getDescricaoDemissaoGerouSubstituicao() {
+		if(demissaoGerouSubstituicao == null || demissaoGerouSubstituicao == 'I') 
+			return "Indiferente";
+		else if(demissaoGerouSubstituicao == 'S')
+			return "Sim";
+		else
+			return "Não";		
+	}
 }

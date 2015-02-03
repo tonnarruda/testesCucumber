@@ -66,7 +66,8 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		Collection<Map<String, Object>> desligamentos = new ArrayList<Map<String,Object>>();
 		String colaboradoresDesligados = "";
 		Long motivoDemissaoId = (Long) metodo.getParametros()[3];
-		Long[] colaboradorIds = (Long[]) metodo.getParametros()[6];
+		
+		Long[] colaboradorIds = (Long[]) metodo.getParametros()[7];
 		Colaborador colab;
 		
 		for (Long colaboradorId : colaboradorIds) 
@@ -80,6 +81,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 			desligamento.put("Colaborador", colaborador.getNome());
 			desligamento.put("Data de desligamento", colaborador.getDataDesligamento());
 			desligamento.put("Motivo de demissao ID", motivoDemissaoId);
+			desligamento.put("Gera substituição", colaborador.getDescricaoDemissaoGerouSubstituicao());
 			desligamento.put("Observacao", colaborador.getObservacaoDemissao());
 			desligamentos.add(desligamento);
 			

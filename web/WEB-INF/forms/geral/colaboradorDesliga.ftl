@@ -78,6 +78,7 @@
 		</#if>	
 
 		<@ww.select label="Motivo do Desligamento" name="motDemissao.id" id="motivoId" list="motivoDemissaos"  listKey="id" listValue="motivo" headerKey="" headerValue="Selecione..." cssStyle="width: 355px;" required="true" />
+		<@ww.select label="Gera Substituição" name="gerouSubstituicao" list=r"#{'I':'Indiferente','S':'Sim','N':'Não'}"/>
 		<@ww.textarea label="Observações" name="observacaoDemissao" value="${observacaoDemissao}" cssStyle="width:445px;"/>
 	
 		<@ww.hidden name="nomeBusca" />
