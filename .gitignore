@@ -22,3 +22,6 @@ Thumbs.db
 ruby/Gemfile.lock
 .rvmrc
 *.DS_Store
+.dbeaver-data-sources.xml
+.myumldata
+Scripts/
