@@ -36,6 +36,7 @@ import com.fortes.rh.model.captacao.Ctps;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.Habilitacao;
+import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.TituloEleitoral;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -386,7 +387,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 
 	//usado no Relatório de Admitidos
-	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Date dataAdmissao, boolean desligado, String cargoNome, String faixaSalarialNome, Long estabelecimentoId, String estabelecimentoNome, String empresaNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome)
+	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Date dataAdmissao, boolean desligado, String cargoNome, String faixaSalarialNome, Long estabelecimentoId, String estabelecimentoNome, String empresaNome, Long areaId, String areaNome, Long areaMaeId, String areaMaeNome, String motivoSolicitacaoDescricao, Boolean motivoSolicitacaoTurnover)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -423,6 +424,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.estabelecimento.setNome(estabelecimentoNome);
 		
 		this.estabelecimento.setProjectionEmpresaNome(empresaNome);
+		
+		if(this.solicitacao == null)
+			this.solicitacao = new Solicitacao();
+		
+		this.solicitacao.setProjectionMotivoSolicitacaoDescricao(motivoSolicitacaoDescricao);
+		this.solicitacao.setProjectionMotivoSolicitacaoTurnover(motivoSolicitacaoTurnover != null && motivoSolicitacaoTurnover);
 	}
 	
 	public Colaborador(Long id, String nome, String nomeComercial, Long historicoAreaId, Long historicoEstabelecimentoId)

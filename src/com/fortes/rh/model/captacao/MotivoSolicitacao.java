@@ -39,6 +39,11 @@ public class MotivoSolicitacao extends AbstractModel implements Serializable
 		return turnover;
 	}
 	
+	public String getTurnoverFormatado() 
+	{
+		return turnover ? "Sim" : "Não";
+	}
+	
 	public void setTurnover(boolean turnover) 
 	{
 		this.turnover = turnover;

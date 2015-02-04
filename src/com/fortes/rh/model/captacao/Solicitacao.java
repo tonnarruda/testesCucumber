@@ -204,14 +204,6 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		this.getCidade().getUf().setSigla(projectionCidadeUfSigla);
 	}
 
-	public void setProjectionMotivoSolicitacaoId(Long projectionMotivoSolicitacaoId)
-	{
-		if(this.motivoSolicitacao == null)
-			motivoSolicitacao = new MotivoSolicitacao();
-
-		motivoSolicitacao.setId(projectionMotivoSolicitacaoId);
-	}
-
 	public void setProjectionEstabelecimentoId(Long projectionEstabelecimentoId)
 	{
 		if(this.estabelecimento == null)
@@ -228,12 +220,28 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		this.estabelecimento.setNome(projectionEstabelecimentoNome);
 	}
 
-	public void setProjectionMotivoSolicitacaoDescricao(String projectionMotivoSolicitacaoDescricao)
+	public void setProjectionMotivoSolicitacaoId(Long projectionMotivoSolicitacaoId)
 	{
 		if(this.motivoSolicitacao == null)
 			motivoSolicitacao = new MotivoSolicitacao();
 
-		motivoSolicitacao.setDescricao(projectionMotivoSolicitacaoDescricao);
+		motivoSolicitacao.setId(projectionMotivoSolicitacaoId);
+	}
+	
+	public void setProjectionMotivoSolicitacaoDescricao(String motivoSolicitacaoDescricao)
+	{
+		if(this.motivoSolicitacao == null)
+			motivoSolicitacao = new MotivoSolicitacao();
+
+		motivoSolicitacao.setDescricao(motivoSolicitacaoDescricao);
+	}
+	
+	public void setProjectionMotivoSolicitacaoTurnover(boolean motivoSolicitacaoTurnover) 
+	{
+		if(this.motivoSolicitacao == null)
+			motivoSolicitacao = new MotivoSolicitacao();
+
+		motivoSolicitacao.setTurnover(motivoSolicitacaoTurnover);
 	}
 	
 	private void iniciaAmbiente() 
@@ -821,5 +829,4 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	public void setDataStatus(Date dataStatus) {
 		this.dataStatus = dataStatus;
 	}
-	
 }

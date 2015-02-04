@@ -2851,7 +2851,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findAdmitidos(String vinculo, Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, co.desligado, cg.nome, fs.nome, es.id, es.nome, emp.nome, ao.id, ao.nome, am.id, am.nome) ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, co.dataAdmissao, co.desligado, cg.nome, fs.nome, es.id, es.nome, emp.nome, ao.id, ao.nome, am.id, am.nome, ms.descricao, ms.turnover) ");
 
 		hql.append("from HistoricoColaborador as hc1 ");
 		hql.append("left join hc1.areaOrganizacional as ao ");
@@ -2861,6 +2861,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc1.colaborador as co ");
 		hql.append("left join hc1.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as cg ");
+		hql.append("left join co.solicitacao as sol ");
+		hql.append("left join sol.motivoSolicitacao as ms ");
 
 		hql.append("where ");
 		hql.append("		hc1.status = :status ");

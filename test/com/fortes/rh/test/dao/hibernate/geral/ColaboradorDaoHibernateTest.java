@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
@@ -4392,6 +4393,17 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Colaborador colaborador1 = montaColaboradorDoTestCountAtivo(empresa, dataAdmissao);
 		Colaborador colaborador2 = montaColaboradorDoTestCountAtivo(empresa, dataAdmissaoFora);
+		
+		MotivoSolicitacao motivo = new MotivoSolicitacao();
+		motivo.setDescricao("Aumento de quadro");
+		motivo.setTurnover(true);
+		motivoSolicitacaoDao.save(motivo);
+		
+		Solicitacao solicitacao = new Solicitacao();
+		solicitacao.setMotivoSolicitacao(motivo);
+		solicitacaoDao.save(solicitacao);
+		
+		colaborador1.setSolicitacao(solicitacao);
 
 		HistoricoColaborador historicoColaborador1_1 = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador1_1.setData(DateUtil.criarDataMesAno(1, 1, 2008));
@@ -4427,19 +4439,28 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Long[] areasIds = null;
 		Long[] estabelecimentosIds = new Long[] { estabelecimento1.getId() };
 
-		Collection<Colaborador> colaboradorRetornado = colaboradorDao.findAdmitidos(Vinculo.EMPREGO, dataIni, dataFim, areasIds, estabelecimentosIds, false);
-		assertEquals(1, colaboradorRetornado.size());
-		assertEquals(historicoColaborador1_1.getAreaOrganizacional().getId(), ((Colaborador)colaboradorRetornado.toArray()[0]).getAreaOrganizacional().getId());
+		Collection<Colaborador> colaboradorRetornadoArray = colaboradorDao.findAdmitidos(Vinculo.EMPREGO, dataIni, dataFim, areasIds, estabelecimentosIds, false);
+		assertEquals(1, colaboradorRetornadoArray.size());
+		assertEquals(historicoColaborador1_1.getAreaOrganizacional().getId(), ((Colaborador)colaboradorRetornadoArray.toArray()[0]).getAreaOrganizacional().getId());
 		
 		estabelecimentosIds = new Long[] { estabelecimento1.getId(), estabelecimento2.getId() };
 		
-		colaboradorRetornado = colaboradorDao.findAdmitidos(Vinculo.EMPREGO, dataIni, dataFim, areasIds, estabelecimentosIds, false);
-		assertEquals(2, colaboradorRetornado.size());
-		assertEquals(historicoColaborador1_1.getAreaOrganizacional().getId(), ((Colaborador)colaboradorRetornado.toArray()[0]).getAreaOrganizacional().getId());
-		assertEquals(historicoColaborador2_1.getAreaOrganizacional().getId(), ((Colaborador)colaboradorRetornado.toArray()[1]).getAreaOrganizacional().getId());
+		colaboradorRetornadoArray = colaboradorDao.findAdmitidos(Vinculo.EMPREGO, dataIni, dataFim, areasIds, estabelecimentosIds, false);
+		assertEquals(2, colaboradorRetornadoArray.size());
 		
-		colaboradorRetornado = colaboradorDao.findAdmitidos(Vinculo.ESTAGIO, dataIni, dataFim, areasIds, estabelecimentosIds, false);
-		assertEquals(0, colaboradorRetornado.size());
+		Colaborador colaboradorRetornado1 = (Colaborador)colaboradorRetornadoArray.toArray()[0];
+		Colaborador colaboradorRetornado2 = (Colaborador)colaboradorRetornadoArray.toArray()[1];
+		
+		assertEquals(historicoColaborador1_1.getAreaOrganizacional().getId(), colaboradorRetornado1.getAreaOrganizacional().getId());
+		assertEquals(historicoColaborador2_1.getAreaOrganizacional().getId(), colaboradorRetornado2.getAreaOrganizacional().getId());
+		
+		assertEquals(solicitacao.getMotivoSolicitacao().getDescricao(), colaboradorRetornado1.getSolicitacao().getMotivoSolicitacao().getDescricao());
+		assertNull(colaboradorRetornado2.getSolicitacao().getMotivoSolicitacao().getDescricao());
+		assertEquals(solicitacao.getMotivoSolicitacao().isTurnover(), colaboradorRetornado1.getSolicitacao().getMotivoSolicitacao().isTurnover());
+		assertFalse(colaboradorRetornado2.getSolicitacao().getMotivoSolicitacao().isTurnover());
+		
+		colaboradorRetornadoArray = colaboradorDao.findAdmitidos(Vinculo.ESTAGIO, dataIni, dataFim, areasIds, estabelecimentosIds, false);
+		assertEquals(0, colaboradorRetornadoArray.size());
 	}
 
 	public void testFindHistoricoByColaboradors() {
