@@ -517,7 +517,7 @@
 			</#if>
 			<@ww.datepicker label="Encerramento do Contrato" name="colaborador.dataEncerramentoContrato" value="${dataEncerramentoContrato}" id="dt_encerramentoContrato" cssClass="mascaraData"/>
 			
-			<@ww.textfield label="Regime de Revezamento (PPP)" name="colaborador.regimeRevezamento" id="regimeRevezamento" cssStyle="width:353px;" maxLength="50"/>
+			<@ww.textfield label="Regime de Revezamento (PPP)" name="colaborador.regimeRevezamento" id="regimeRevezamento" cssStyle="width:353px;" maxLength="255"/>
 
 			<li>
 				<@ww.div cssClass="divInfo" >
