@@ -35,8 +35,8 @@
 				<param name="dataSource">motivoDemissaoQuantidades</param>
 				<param name="documentName">motivosDemissaoBasico.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Motivo,Quantidade</param>
-				<param name="properties">motivo,quantidade</param>
+				<param name="columns">Motivo,Turnover,Quantidade</param>
+				<param name="properties">motivo,descricaoTurnover,quantidade</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
@@ -44,8 +44,8 @@
 				<param name="dataSource">colaboradores</param>
 				<param name="documentName">motivosDemissao.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Matrícula,Nome,Motivo,Cargo-Faixa,Período</param>
-				<param name="properties">matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado</param>
+				<param name="columns">Matrícula,Nome,Motivo,Cargo-Faixa,Período,Turnover</param>
+				<param name="properties">matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado,motivoDemissao.descricaoTurnover</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
@@ -53,8 +53,8 @@
 				<param name="dataSource">colaboradores</param>
 				<param name="documentName">motivosDemissao.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Matrícula,Nome,Motivo,Cargo-Faixa,Período,Observação</param>
-				<param name="properties">matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado,observacaoDemissao</param>
+				<param name="columns">Matrícula,Nome,Motivo,Cargo-Faixa,Período,Observação,Turnover</param>
+				<param name="properties">matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado,observacaoDemissao,motivoDemissao.descricaoTurnover</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
@@ -62,9 +62,9 @@
 				<param name="dataSource">colaboradores</param>
 				<param name="documentName">motivosDemissao.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Área Organizacional,Matrícula,Nome,Motivo,Cargo-Faixa,Período</param>
+				<param name="columns">Área Organizacional,Matrícula,Nome,Motivo,Cargo-Faixa,Período,Turnover</param>
 				<param name="propertiesGroup">areaOrganizacional.id</param>
-				<param name="properties">areaOrganizacional.descricao,matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado</param>
+				<param name="properties">areaOrganizacional.descricao,matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado,motivoDemissao.descricaoTurnover</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
@@ -72,9 +72,9 @@
 				<param name="dataSource">colaboradores</param>
 				<param name="documentName">motivosDemissao.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Área Organizacional,Matrícula,Nome,Motivo,Cargo-Faixa,Período,Observação</param>
+				<param name="columns">Área Organizacional,Matrícula,Nome,Motivo,Cargo-Faixa,Período,Turnover,Observação</param>
 				<param name="propertiesGroup">areaOrganizacional.id</param>
-				<param name="properties">areaOrganizacional.descricao,matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado,observacaoDemissao</param>
+				<param name="properties">areaOrganizacional.descricao,matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado,motivoDemissao.descricaoTurnover,observacaoDemissao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
@@ -82,9 +82,9 @@
 				<param name="dataSource">colaboradores</param>
 				<param name="documentName">motivosDemissao.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Estabelecimento,Matrícula,Nome,Motivo,Cargo-Faixa,Período</param>
+				<param name="columns">Estabelecimento,Matrícula,Nome,Motivo,Cargo-Faixa,Período,Turnover</param>
 				<param name="propertiesGroup">estabelecimento.id</param>
-				<param name="properties">estabelecimento.nome,matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado</param>
+				<param name="properties">estabelecimento.nome,matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado,motivoDemissao.descricaoTurnover</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
@@ -92,9 +92,9 @@
 				<param name="dataSource">colaboradores</param>
 				<param name="documentName">motivosDemissao.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Estabelecimento,Matrícula,Nome,Motivo,Cargo-Faixa,Período,Observação</param>
+				<param name="columns">Estabelecimento,Matrícula,Nome,Motivo,Cargo-Faixa,Período,Turnover,Observação</param>
 				<param name="propertiesGroup">estabelecimento.id</param>
-				<param name="properties">estabelecimento.nome,matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado,observacaoDemissao</param>
+				<param name="properties">estabelecimento.nome,matricula,nome,motivoDemissao.motivoFormatado,cargoFaixa,periodoFormatado,motivoDemissao.descricaoTurnover,observacaoDemissao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
@@ -102,9 +102,9 @@
 				<param name="dataSource">colaboradores</param>
 				<param name="documentName">motivosDemissao.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Motivo,Matrícula,Nome,Estabelecimento,Cargo-Faixa,Período</param>
+				<param name="columns">Motivo,Matrícula,Nome,Estabelecimento,Cargo-Faixa,Período,Turnover</param>
 				<param name="propertiesGroup">motivoDemissao.id</param>
-				<param name="properties">motivoDemissao.motivoFormatado,matricula,nome,estabelecimento.nome,cargoFaixa,periodoFormatado</param>
+				<param name="properties">motivoDemissao.motivoFormatado,matricula,nome,estabelecimento.nome,cargoFaixa,periodoFormatado,motivoDemissao.descricaoTurnover</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
@@ -112,9 +112,9 @@
 				<param name="dataSource">colaboradores</param>
 				<param name="documentName">motivosDemissao.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Motivo,Matrícula,Nome,Estabelecimento,Cargo-Faixa,Período,Observação</param>
+				<param name="columns">Motivo,Matrícula,Nome,Estabelecimento,Cargo-Faixa,Período,Turnover,Observação</param>
 				<param name="propertiesGroup">motivoDemissao.id</param>
-				<param name="properties">motivoDemissao.motivoFormatado,matricula,nome,estabelecimento.nome,cargoFaixa,periodoFormatado,observacaoDemissao</param>
+				<param name="properties">motivoDemissao.motivoFormatado,matricula,nome,estabelecimento.nome,cargoFaixa,periodoFormatado,motivoDemissao.descricaoTurnover,observacaoDemissao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>

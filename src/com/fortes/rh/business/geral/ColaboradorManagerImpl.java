@@ -933,9 +933,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		for (Object[] item : lista)
 		{
 			if(item[0] == null)
-				motivos.add(new MotivoDemissaoQuantidade("[não informado]", getDao().countSemMotivos(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, vinculo)));
+				motivos.add(new MotivoDemissaoQuantidade("[não informado]", descricaoTurnover(false), getDao().countSemMotivos(estabelecimentoIds, areaIds, cargoIds, dataIni, dataFim, vinculo)));
 			else
-				motivos.add(new MotivoDemissaoQuantidade((String) item[0], (Integer) item[1]));
+				motivos.add(new MotivoDemissaoQuantidade((String) item[0], descricaoTurnover((Boolean) item[1]), (Integer) item[2]));
 		}
 
 		CollectionUtil<MotivoDemissaoQuantidade> util = new CollectionUtil<MotivoDemissaoQuantidade>();
@@ -946,6 +946,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return motivos;
 			}
 
+	private String descricaoTurnover(Boolean motivo){
+		if (motivo != null && motivo) {
+			return "Sim";
+		} else {
+			return "Não";
+		}
+	}
 	public Collection<Colaborador> getColaboradoresByEstabelecimentoAreaGrupo(char filtrarPor, Collection<Long> estabelecimentosIds, Collection<Long> areasIds,
 			Collection<Long> cargosIds, String colaboradorNome, Long empresaId)
 			{

@@ -59,6 +59,14 @@ public class MotivoDemissao extends AbstractModel implements Serializable
 		this.turnover = turnover;
 	}
 	
+	public String getDescricaoTurnover(){
+		if (turnover) {
+			return "Sim";
+		} else {
+			return "Não";
+		}
+	}
+	
 	public void setEmpresaId(Long empresaId)
 	{
 		if (empresa == null)

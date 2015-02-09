@@ -1727,9 +1727,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		StringBuilder hql = new StringBuilder();
 
 		if(origem == MOTIVODEMISSAO)
-			hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, co.dataDesligamento, co.observacaoDemissao, co.vinculo, mo.id, mo.motivo, cg.nome, fs.nome, es.id, es.nome, ao.id, ao.nome) ");
+			hql.append("select new Colaborador(co.id, co.nome, co.matricula, co.dataAdmissao, co.dataDesligamento, co.observacaoDemissao, co.vinculo, mo.id, mo.motivo, cg.nome, fs.nome, es.id, es.nome, ao.id, ao.nome, mo.turnover) ");
 		else if(origem == MOTIVODEMISSAOQUANTIDADE)
-			hql.append("select mo.motivo, count(mo.motivo) ");
+			hql.append("select mo.motivo, mo.turnover, count(mo.motivo) ");
 
 		hql.append("from HistoricoColaborador as hc1 ");
 		hql.append("left join hc1.areaOrganizacional as ao ");
@@ -1774,7 +1774,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				hql.append("order by co.nome ");
 			}
 		} else if(origem == MOTIVODEMISSAOQUANTIDADE)
-			hql.append(" group by mo.motivo order by mo.motivo  ");
+			hql.append(" group by mo.motivo, mo.turnover order by mo.motivo  ");
 
 		Query query = getSession().createQuery(hql.toString());
 

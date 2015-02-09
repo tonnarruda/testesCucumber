@@ -4,6 +4,7 @@
 		<Item visivel="S" motivo="S20141200160"><![CDATA[R&S > Movimentação > Solicitação de Pessoal: Permitir apenas visualização da solicitação de pessoal após o status ser alterado para aprovada ou reprovada.]]></Item>
 		<Item visivel="S" motivo="P20150100032"><![CDATA[C&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Histórico > Imprimir: Melhoria no layout do relatório.]]></Item>
 		<Item visivel="S" motivo="S20150100106"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Novo campo para informar se o desligamento gera substituição de colaborador.]]></Item>
+	    <Item visivel="S" motivo="S20141200165"><![CDATA[Info. Funcionais > Relatórios > Desligamentos > Imprimir/Exportar: Inserida a informação de "Turnover".]]></Item>
 		<Item visivel="S" motivo="S20141100227"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Novo filtro por colocação.]]></Item>
 		<Item visivel="S" motivo="S20141200166"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Novas colunas "motivo da admissão" e "turnover".]]></Item>
 		<Item visivel="S" motivo="S20150100154"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de configuração para notificar quando "Cadastrar solicitação de realinhamento para colaborador" através de email para o gestor, cogestor da área organizacional e outros usuários.]]></Item>

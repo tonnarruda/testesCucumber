@@ -5,6 +5,7 @@ public class MotivoDemissaoQuantidade
 {
 	private String motivo;
 	private Integer quantidade;
+	private String descricaoTurnover;
 
 	public MotivoDemissaoQuantidade()
 	{
@@ -16,6 +17,13 @@ public class MotivoDemissaoQuantidade
 		super();
 		this.motivo = motivo;
 		this.quantidade = quantidade;
+	}
+	
+	public MotivoDemissaoQuantidade(String motivo, String descricaoTurnover, Integer quantidade){
+		super();
+		this.motivo = motivo;
+		this.quantidade = quantidade;
+		this.descricaoTurnover = descricaoTurnover;
 	}
 
 	public String getMotivo()
@@ -34,4 +42,13 @@ public class MotivoDemissaoQuantidade
 	{
 		this.quantidade = quantidade;
 	}
+
+	public String getDescricaoTurnover() {
+		return descricaoTurnover;
+	}
+
+	public void setDescricaoTurnover(String descricaoTurnover) {
+		this.descricaoTurnover = descricaoTurnover;
+	}
+
 }

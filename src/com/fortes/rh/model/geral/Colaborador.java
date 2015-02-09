@@ -352,7 +352,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 	
 	//usado em Relatório de Desligamento (findColaboradores)
-	public Colaborador(Long id, String nome, String matricula, Date dataAdmissao, Date dataDesligamento, String observacaoDemissao, String vinculo, Long motivoId, String motivoDemissao, String cargoNome, String faixaSalarialNome, Long estabelecimentoId, String estabelecimentoNome, Long areaId, String areaNome)
+	public Colaborador(Long id, String nome, String matricula, Date dataAdmissao, Date dataDesligamento, String observacaoDemissao, String vinculo, Long motivoId, String motivoDemissao, String cargoNome, String faixaSalarialNome, Long estabelecimentoId, String estabelecimentoNome, Long areaId, String areaNome, boolean turnover)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -366,6 +366,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			this.motivoDemissao = new MotivoDemissao();
 		this.motivoDemissao.setId(motivoId);
 		this.motivoDemissao.setMotivo(motivoDemissao);
+		this.motivoDemissao.setTurnover(turnover);
 
 		if(this.faixaSalarial == null)
 			this.faixaSalarial = new FaixaSalarial();
