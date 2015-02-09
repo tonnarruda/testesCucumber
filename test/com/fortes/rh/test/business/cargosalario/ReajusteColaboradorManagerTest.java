@@ -19,9 +19,12 @@ import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.cargosalario.ReajusteColaboradorManagerImpl;
 import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.dao.cargosalario.ReajusteColaboradorDao;
+import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -31,6 +34,7 @@ import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -75,6 +79,7 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 	Mock tabelaReajusteColaboradorManager;
 	Mock historicoColaboradorManager;
 	Mock gerenciadorComunicacaoManager;
+	Mock candidatoSolicitacaoManager;
 	
 	protected void setUp() throws Exception
 	{
@@ -101,7 +106,7 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 		
 		tabelaReajusteColaboradorManager = mock(TabelaReajusteColaboradorManager.class);
 		historicoColaboradorManager = mock(HistoricoColaboradorManager.class);
-
+		
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
@@ -145,12 +150,12 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 		colaborador.setNome("Colaborador 1");
 		
 		reajusteColaboradorDao.expects(once()).method("save");
-		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador").with(eq(empresa.getId()), eq(colaborador.getNome()));
+		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador").with(eq(empresa.getId()), eq(colaborador));
 		
 		Exception exception = null;
 		
 		try {
-			reajusteColaboradorManager.insertSolicitacaoReajuste(getReajusteColaborador(), empresa.getId(), colaborador.getNome());
+			reajusteColaboradorManager.insertSolicitacaoReajuste(getReajusteColaborador(), empresa.getId(), colaborador);
 		} catch (Exception e) {
 			exception = e;
 		}
@@ -233,7 +238,7 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 
 		try
 		{
-			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador, empresa.getId(), colaborador.getNome());
+			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador, empresa.getId(), colaborador);
 		}
 		catch (Exception e) {
 			exception = e;
@@ -263,7 +268,7 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 
 		try
 		{
-			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador, empresa.getId(), colaborador.getNome());
+			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador, empresa.getId(), colaborador);
 		}
 		catch (Exception e) {
 			exception = e;
@@ -290,7 +295,7 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 
 		try
 		{
-			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador, empresa.getId(), colaborador.getNome());
+			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador, empresa.getId(), colaborador);
 		}
 		catch (Exception e) {
 			exception = e;

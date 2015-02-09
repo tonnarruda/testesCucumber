@@ -137,9 +137,9 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		action.setEmpresaSistema(empresa);
 		
 		tabelaReajusteColaboradorManager.expects(once()).method("findByIdProjection").with(eq(tabelaReajusteColaborador.getId())).will(returnValue(tabelaReajusteColaborador));
-		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(eq(colaborador.getId()), ANYTHING).will(returnValue(colaborador));
 		manager.expects(once()).method("validaSolicitacaoReajuste").isVoid();
-		manager.expects(once()).method("insertSolicitacaoReajuste").with(eq(reajusteColaborador), eq(empresa.getId()), eq(colaborador.getNome())).isVoid();
+		manager.expects(once()).method("insertSolicitacaoReajuste").with(eq(reajusteColaborador), eq(empresa.getId()), eq(colaborador)).isVoid();
 		
 		mocksPrepareSolicitacaoReajuste();
 		

@@ -21,6 +21,7 @@ import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.MathUtil;
@@ -69,14 +70,14 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 		
 	}
 	
-	public void insertSolicitacaoReajuste(ReajusteColaborador reajusteColaborador, Long empresaId, String nomeColaborador) throws Exception
+	public void insertSolicitacaoReajuste(ReajusteColaborador reajusteColaborador, Long empresaId, Colaborador colaborador) throws Exception
 	{
 		try
 		{
 			ajustaTipoSalario(reajusteColaborador);
 			save(reajusteColaborador);
 			
-			gerenciadorComunicacaoManager.enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador(empresaId, nomeColaborador);
+			gerenciadorComunicacaoManager.enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador(empresaId, colaborador);
 		}
 		catch(Exception e)
 		{

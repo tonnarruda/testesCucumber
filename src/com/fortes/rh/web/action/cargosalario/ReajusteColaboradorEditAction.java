@@ -202,7 +202,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		try
 		{
 			tabelaReajusteColaborador = tabelaReajusteColaboradorManager.findByIdProjection(tabelaReajusteColaborador.getId());
-			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+			colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId(), null);
 			
 			if(!tabelaReajusteColaborador.getData().after(colaborador.getDataAdmissao()))
 			{
@@ -217,7 +217,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 			setDadosSolicitacaoReajuste();
 			reajusteColaboradorManager.validaSolicitacaoReajuste(reajusteColaborador);
 			
-			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador, getEmpresaSistema().getId(), colaborador.getNome());
+			reajusteColaboradorManager.insertSolicitacaoReajuste(reajusteColaborador, getEmpresaSistema().getId(), colaborador);
 			
 			addActionSuccess("Solicitação de realinhamento incluída com sucesso");
 		} 

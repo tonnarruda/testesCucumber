@@ -90,6 +90,9 @@ public enum Operacao
 			this.add(MeioComunicacao.EMAIL);
 			
 			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
+			MeioComunicacao.EMAIL.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.EMAIL.add(EnviarPara.COGESTOR_AREA);
+			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
 			
 			return this.getListMeioComunicacao();
 		}
