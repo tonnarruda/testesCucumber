@@ -222,7 +222,9 @@
 		
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-		<#if tabelaReajusteColaborador.id?exists && reajustes?exists && 0 < reajustes?size>
-			<button onclick="aplicar(${existemDesligados?string})" class="btnAplicar" accesskey="P"></button>
-		</#if>
+		<@authz.authorize ifAllGranted="ROLE_MOV_APLICARREALINHAMENTO">
+			<#if tabelaReajusteColaborador.id?exists && reajustes?exists && 0 < reajustes?size>
+				<button onclick="aplicar(${existemDesligados?string})" class="btnAplicar" accesskey="P"></button>
+			</#if>
+		</@authz.authorize>
 	</div>

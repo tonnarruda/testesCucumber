@@ -420,6 +420,7 @@
 				/cargosalario/reajusteFaixaSalarial*/**=ROLE_DISSIDIO_FAIXASALARIAL
 				/cargosalario/reajusteIndice*/**=ROLE_DISSIDIO_INDICE
 				
+				/cargosalario/tabelaReajusteColaborador/aplicarPor*.action*=ROLE_MOV_APLICARREALINHAMENTO
 				/cargosalario/tabelaReajusteColaborador/*/**=ROLE_MOV_SIMULACAOREAJUSTE
 				
 				/cargosalario/cargo/prepareRelatorioColaboradorGrupoOcupacional.action/*/**=ROLE_REL_COLAB_GRUPOOCUPACIONAL

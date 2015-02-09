@@ -63,7 +63,9 @@
 	
 	<button onclick="window.location='../reajusteIndice/prepareInsert.action'" class="btnInserir" style="margin-right:80px;"></button>
 	
-	<#if tabelaReajusteColaborador.id?exists && reajustesIndice?exists && 0 < reajustesIndice?size>
-		<button onclick="aplicarPorIndice()" class="btnAplicar"></button>
-	</#if>
+	<@authz.authorize ifAllGranted="ROLE_MOV_APLICARREALINHAMENTO">
+		<#if tabelaReajusteColaborador.id?exists && reajustesIndice?exists && 0 < reajustesIndice?size>
+			<button onclick="aplicarPorIndice()" class="btnAplicar"></button>
+		</#if>
+	</@authz.authorize>
 </div>

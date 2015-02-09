@@ -67,7 +67,9 @@
 
 	<button onclick="window.location='../reajusteFaixaSalarial/prepareInsert.action'" class="btnInserir" style="margin-right:80px;"></button>
 	
-	<#if tabelaReajusteColaborador.id?exists && reajustesFaixaSalarial?exists && 0 < reajustesFaixaSalarial?size>
-		<button onclick="aplicarPorFaixaSalarial()" class="btnAplicar"></button>
-	</#if>
+	<@authz.authorize ifAllGranted="ROLE_MOV_APLICARREALINHAMENTO">
+		<#if tabelaReajusteColaborador.id?exists && reajustesFaixaSalarial?exists && 0 < reajustesFaixaSalarial?size>
+			<button onclick="aplicarPorFaixaSalarial()" class="btnAplicar"></button>
+		</#if>
+	</@authz.authorize>
 </div>
