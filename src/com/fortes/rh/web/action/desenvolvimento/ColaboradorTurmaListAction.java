@@ -411,11 +411,11 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	{
 		try
 		{
-			colaboradoresCertificacoes = colaboradorTurmaManager.montaRelatorioColaboradorCertificacao(getEmpresaSistema().getId(), certificacao, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck));
-			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores x Certificações", getEmpresaSistema(), "Certificação: " + certificacao.getNome());
-			
+			reportTitle = "Colaboradores x Certificações";
 			reportFilter = "Emitido em: " + DateUtil.formataDiaMesAno(new Date());
-			reportTitle = ((Cabecalho) parametros.get("CABECALHO")).getTitulo();
+			
+			colaboradoresCertificacoes = colaboradorTurmaManager.montaRelatorioColaboradorCertificacao(getEmpresaSistema().getId(), certificacao, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck));
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), "Certificação: " + certificacao.getNome());
 			
 			return SUCCESS;
 		}
