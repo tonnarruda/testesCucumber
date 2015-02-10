@@ -2835,7 +2835,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("		) ");
 		hql.append("and (co.dataDesligamento >= current_date or co.dataDesligamento is null) ");
 		hql.append("and co.empresa.id = :empresaId ");
-		hql.append("and :hoje - co.dataAdmissao = :dias ");
+		hql.append("and :hoje - (co.dataAdmissao - 1) = :dias ");
 		hql.append("and co.id not in (select cq.colaborador.id from ColaboradorQuestionario cq2 where cq2.avaliacao.id = av.id and cq2.colaborador.id = co.id) ");
 
 		Query query = getSession().createQuery(hql.toString());

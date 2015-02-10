@@ -447,14 +447,18 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	    			
 	    			for (Integer diasLembreteGerenciadorComunicacao : diasLembrete) 
 	    			{
-	    				Integer diasDeEmpresaDoColaborador = DateUtil.diferencaEntreDatas(colaboradorAvaliacao.getColaborador().getDataAdmissao(), new Date());
+	    				Calendar calendar = Calendar.getInstance();  
+	    				calendar.setTime(colaboradorAvaliacao.getColaborador().getDataAdmissao());  
+	    				calendar.add(Calendar.DAY_OF_MONTH, -1);
+	    				
+	    				Integer diasDeEmpresaDoColaborador = DateUtil.diferencaEntreDatas(calendar.getTime(), new Date());
 
 	    				if( (colaboradorAvaliacao.getPeriodoExperiencia().getDias() - diasLembreteGerenciadorComunicacao) == diasDeEmpresaDoColaborador)
 						{
 		    				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR_AVALIADO.getId())){
 			    				mail.send(colaboradorAvaliacao.getColaborador().getEmpresa(), subject, body.toString(), null, colaboradorAvaliacao.getColaborador().getContato().getEmail());
 			    			} 		
-			    		
+		    				
 		    				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR_AVALIADO.getId())){
 			    				Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findByColaboradorId(colaboradorAvaliacao.getColaborador().getId());
 			    				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", link, usuarioEmpresas, colaboradorAvaliacao.getColaborador(), TipoMensagem.AVALIACAO_DESEMPENHO, colaboradorAvaliacao.getAvaliacao());
@@ -553,7 +557,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					if (!periodoExperiencia.getEmpresa().getId().equals(gerenciadorComunicacao.getEmpresa().getId()))
 						continue;
 					
-					Integer dias = periodoExperiencia.getDias() - diaLembrete;
+					Integer dias = periodoExperiencia.getDias() - diaLembrete;	
 					if (dias <= 0)
 						continue;
 					

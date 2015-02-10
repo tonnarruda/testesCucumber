@@ -4051,7 +4051,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	public void testFindAdmitidosHaDias() 
 	{
 		Calendar quarentaDiasAtras = Calendar.getInstance();
-		quarentaDiasAtras.add(Calendar.DAY_OF_YEAR, -40);
+		quarentaDiasAtras.add(Calendar.DAY_OF_YEAR, -39);
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -4081,7 +4081,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	public void testFindAdmitidosHaDiasPeriodoExperiencia() 
 	{
 		Calendar quarentaDiasAtras = Calendar.getInstance();
-		quarentaDiasAtras.add(Calendar.DAY_OF_YEAR, -40);
+		quarentaDiasAtras.add(Calendar.DAY_OF_YEAR, -39);
 		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
