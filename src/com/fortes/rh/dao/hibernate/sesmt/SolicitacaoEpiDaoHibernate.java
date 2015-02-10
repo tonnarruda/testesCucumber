@@ -60,12 +60,13 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			solicitacaoEpi.setColaboradorNome(solicitacaoEpiAux[3].toString());
 			solicitacaoEpi.setColaboradorDesligado(new Boolean(solicitacaoEpiAux[4].toString()));
 			solicitacaoEpi.setColaboradorStatus(new Integer(solicitacaoEpiAux[5].toString()));
+			solicitacaoEpi.setColaboradorMotivoHistorico(solicitacaoEpiAux[6].toString());
 			try {
-				solicitacaoEpi.setData(sDF.parse(solicitacaoEpiAux[6].toString()));
+				solicitacaoEpi.setData(sDF.parse(solicitacaoEpiAux[7].toString()));
 			} catch (ParseException e) {e.printStackTrace();}
-			solicitacaoEpi.setCargoNome(solicitacaoEpiAux[7].toString());
-			solicitacaoEpi.setQtdEpiSolicitado(new Integer(solicitacaoEpiAux[8].toString()));
-			solicitacaoEpi.setQtdEpiEntregue(new Integer(solicitacaoEpiAux[9].toString()));
+			solicitacaoEpi.setCargoNome(solicitacaoEpiAux[8].toString());
+			solicitacaoEpi.setQtdEpiSolicitado(new Integer(solicitacaoEpiAux[9].toString()));
+			solicitacaoEpi.setQtdEpiEntregue(new Integer(solicitacaoEpiAux[10].toString()));
 			
 			solicitacoes.add(solicitacaoEpi);
 		}
@@ -88,7 +89,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			sql = new StringBuilder("select sub.* ");
 
 		sql.append("from ( ");
-		sql.append("select se.id as id, se.empresa_id, c.matricula, c.nome, c.desligado, hc.status, se.data, ca.nome as nomeCargo,  "); 
+		sql.append("select se.id as id, se.empresa_id, c.matricula, c.nome, c.desligado, hc.status, hc.motivo, se.data, ca.nome as nomeCargo,  "); 
 		sql.append("  (select sum(sei2.qtdSolicitado) from solicitacaoepi_item sei2 "); 
 		sql.append("    left join solicitacaoepiitementrega seie2 on seie2.solicitacaoepiitem_id=sei2.id "); 
 		sql.append("    left join epihistorico ehist2 on ehist2.id=seie2.epihistorico_id ");
@@ -122,7 +123,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		if (tipoEpi != null)
 			sql.append("and e.tipoepi_id = :tipoEpi ");
 
-		sql.append("group by se.id, c.matricula, c.id, c.nome, c.desligado, hc.status, se.data, ca.id, ca.nome, se.empresa_id ");
+		sql.append("group by se.id, c.matricula, c.id, c.nome, c.desligado, hc.status, hc.motivo, se.data, ca.id, ca.nome, se.empresa_id ");
 		sql.append(") as sub ");
  
 		sql.append("where sub.empresa_id = :empresaId ");

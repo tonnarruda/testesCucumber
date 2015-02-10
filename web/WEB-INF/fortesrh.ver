@@ -12,6 +12,7 @@
 		<Item visivel="N" motivo="P20150100179"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Excluir: Correção de bug ao excluir colaborador que possui mensagens com o usuário fortes.]]></Item>
 		<Item visivel="N" motivo="P20150200069"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Correção de bug ao contratar um colaborador através de uma solicitação de pessoal cujo campo horário de trabalho tivesse um valor maior do que 50 caracteres.]]></Item>
 		<Item visivel="N" motivo="P20150100169"><![CDATA[Info. Funcionais > Relatórios > Ocorrências: Ao tentar imprimir o relatório com filtros que não retornavam dados, o mesmo não apresentava mensagem informando esta ausência de dados.]]></Item>
+		<Item visivel="N" motivo="P20150200072"><![CDATA[SESMT > Movimentações > Entrega de EPIs: Correção de bug que não permitia que um colaborador recebesse o EPI se a sua última situação estivesse pendente de confirmação no AC, ainda que esta não fosse a situação de contratação.]]></Item>
 		<Item visivel="N" motivo="P20150100182"><![CDATA[Utilitários > Auditoria: Mostrar data do status de uma solicitação de pessoal na auditoria.]]></Item>
 		<Item visivel="N" motivo="P20150100259"><![CDATA[Tratamento de mensagens ao cancelar contratação pelo AC Pessoal.]]></Item>
 	</Versao>

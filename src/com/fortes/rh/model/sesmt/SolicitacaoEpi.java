@@ -147,6 +147,17 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 		
 		this.colaborador.getHistoricoColaborador().setStatus(colaboradorStatus);
 	}
+	
+	public void setColaboradorMotivoHistorico(String colaboradorMotivoHistorico)
+	{
+		if (this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		if (this.colaborador.getHistoricoColaborador() == null)
+			this.colaborador.setHistoricoColaborador(new HistoricoColaborador());
+		
+		this.colaborador.getHistoricoColaborador().setMotivo(colaboradorMotivoHistorico);
+	}
 
 	public Cargo getCargo()
 	{
