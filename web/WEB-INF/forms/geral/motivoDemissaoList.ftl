@@ -17,15 +17,13 @@
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?motivoDemissao.id=${motivoDemissao.id}&page=${page}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="motivo" title="Motivo"/>
-		<#if turnover>
-			<@display.column title="Turnover" style="width: 120px; text-align: center;">
-				<#if motivoDemissao.turnover>
-					Sim
-				<#else>
-					Não
-				</#if>
-			</@display.column>
-		</#if>
+		<@display.column title="Turnover" style="width: 120px; text-align: center;">
+			<#if motivoDemissao.turnover>
+				Sim
+			<#else>
+				Não
+			</#if>
+		</@display.column>
 	</@display.table>
 
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>

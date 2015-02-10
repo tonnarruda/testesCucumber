@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.0.1.final using JasperReports Library version 6.0.0  -->
+<!-- 2015-02-10T15:58:07 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="motivos_demissao_observacao" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="784" leftMargin="29" rightMargin="29" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="d85fe8f6-6a06-4b89-8c7b-84faebca8ec5">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
@@ -138,7 +140,10 @@
 				<text><![CDATA[Nome]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-5" x="306" y="12" width="88" height="11" uuid="76736826-0cd9-42a4-9458-b37ba85d3a11"/>
+				<reportElement key="staticText-5" x="306" y="12" width="123" height="11" uuid="76736826-0cd9-42a4-9458-b37ba85d3a11">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -151,7 +156,10 @@
 				<text><![CDATA[Cargo - Faixa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-8" x="395" y="12" width="135" height="11" uuid="c09424ea-2d52-4495-bc39-4da76a8319f0"/>
+				<reportElement key="staticText-8" x="430" y="12" width="98" height="11" uuid="c09424ea-2d52-4495-bc39-4da76a8319f0">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitwidth" value="pixel"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -190,7 +198,10 @@
 				<text><![CDATA[Estabelecimento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-3" x="531" y="12" width="38" height="11" uuid="2de709d6-f020-4281-8365-d6715d7f6e49"/>
+				<reportElement key="staticText-3" x="529" y="12" width="40" height="11" uuid="2de709d6-f020-4281-8365-d6715d7f6e49">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -241,7 +252,9 @@
 				<textFieldExpression><![CDATA[$F{matricula}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-8" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="306" y="1" width="88" height="12" backcolor="#FFFFFF" uuid="fbc2612a-14a9-4397-a3ec-9af3f0ba7109"/>
+				<reportElement key="textField-8" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="306" y="1" width="123" height="12" backcolor="#FFFFFF" uuid="fbc2612a-14a9-4397-a3ec-9af3f0ba7109">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -254,7 +267,10 @@
 				<textFieldExpression><![CDATA[$F{faixaSalarial.cargo.nome} + " " + $F{faixaSalarial.nome}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="395" y="1" width="135" height="12" backcolor="#FFFFFF" uuid="7a62dd6b-ebee-47ab-9195-018dea67e5ac"/>
+				<reportElement key="textField" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="430" y="1" width="98" height="12" backcolor="#FFFFFF" uuid="7a62dd6b-ebee-47ab-9195-018dea67e5ac">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -293,7 +309,9 @@
 				<textFieldExpression><![CDATA[$F{estabelecimento.nome}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="531" y="1" width="38" height="12" backcolor="#FFFFFF" uuid="7bd9ba56-4545-4f82-872b-130ff7f67118"/>
+				<reportElement key="textField" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="529" y="1" width="40" height="12" backcolor="#FFFFFF" uuid="7bd9ba56-4545-4f82-872b-130ff7f67118">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
 				<box topPadding="1" leftPadding="2" bottomPadding="1" rightPadding="2">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

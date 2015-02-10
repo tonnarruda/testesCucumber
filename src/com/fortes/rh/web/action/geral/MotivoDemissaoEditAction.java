@@ -1,8 +1,6 @@
 package com.fortes.rh.web.action.geral;
 
-import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.MotivoDemissaoManager;
-import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.MotivoDemissao;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
@@ -11,11 +9,9 @@ import com.opensymphony.xwork.ModelDriven;
 @SuppressWarnings({"serial"})
 public class MotivoDemissaoEditAction extends MyActionSupportEdit implements ModelDriven
 {
-	private EmpresaManager empresaManager;
 	private MotivoDemissaoManager motivoDemissaoManager;
 	
 	private MotivoDemissao motivoDemissao;
-	private boolean turnorver;
 	
 	public String execute() throws Exception
 	{
@@ -24,9 +20,6 @@ public class MotivoDemissaoEditAction extends MyActionSupportEdit implements Mod
 
 	private void prepare() throws Exception
 	{
-		Empresa empresa = empresaManager.findByIdProjection(getEmpresaSistema().getId());
-		turnorver = empresa.isTurnoverPorSolicitacao();
-		
 		if (motivoDemissao != null && motivoDemissao.getId() != null)
 			motivoDemissao = (MotivoDemissao) motivoDemissaoManager.findById(motivoDemissao.getId());
 	}
@@ -77,13 +70,5 @@ public class MotivoDemissaoEditAction extends MyActionSupportEdit implements Mod
 	public void setMotivoDemissaoManager(MotivoDemissaoManager motivoDemissaoManager)
 	{
 		this.motivoDemissaoManager = motivoDemissaoManager;
-	}
-
-	public boolean getTurnorver() {
-		return turnorver;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 }

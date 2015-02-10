@@ -55,7 +55,6 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 	private Date dataFim;
 
 	private boolean listaColaboradores;
-	private boolean turnover;
 	
 	private String agruparPor;
 	private boolean exibirObservacao = false;
@@ -82,16 +81,13 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 		setTotalSize(motivoDemissaoManager.getCount(keys, values));
 		motivoDemissaos = motivoDemissaoManager.find(getPage(), getPagingSize(), keys, values, orders);
 
-		Empresa empresa = empresaManager.findByIdProjection(getEmpresaSistema().getId());
-		turnover = empresa.isTurnoverPorSolicitacao();
-		
 		return Action.SUCCESS;
 	}
 
 	public String delete() throws Exception
 	{
 		motivoDemissaoManager.remove(motivoDemissao.getId());
-		addActionMessage("Motivo excluído com sucesso.");
+		addActionSuccess("Motivo de desligamento excluído com sucesso.");
 
 		return Action.SUCCESS;
 	}
@@ -389,10 +385,6 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 		return reportTitle;
 	}
 
-	public boolean isTurnover() {
-		return turnover;
-	}
-	
 	public String getVinculo() {
 		return vinculo;
 	}

@@ -1,9 +1,7 @@
 package com.fortes.rh.web.action.captacao;
 
 import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
-import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
-import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ModelDriven;
@@ -12,8 +10,6 @@ import com.opensymphony.xwork.ModelDriven;
 public class MotivoSolicitacaoEditAction extends MyActionSupportEdit implements ModelDriven
 {
 	private MotivoSolicitacaoManager motivoSolicitacaoManager;
-	private EmpresaManager empresaManager;
-	private Boolean turnorver;
 
 	private MotivoSolicitacao motivoSolicitacao;
 
@@ -24,9 +20,6 @@ public class MotivoSolicitacaoEditAction extends MyActionSupportEdit implements 
 
 	private void prepare() throws Exception
 	{
-		Empresa empresa = empresaManager.findByIdProjection(getEmpresaSistema().getId());
-		turnorver = empresa.isTurnoverPorSolicitacao();
-		
 		if(motivoSolicitacao != null && motivoSolicitacao.getId() != null)
 			motivoSolicitacao = (MotivoSolicitacao) motivoSolicitacaoManager.findById(motivoSolicitacao.getId());
 	}
@@ -75,17 +68,5 @@ public class MotivoSolicitacaoEditAction extends MyActionSupportEdit implements 
 	public void setMotivoSolicitacaoManager(MotivoSolicitacaoManager motivoSolicitacaoManager)
 	{
 		this.motivoSolicitacaoManager = motivoSolicitacaoManager;
-	}
-
-	public Boolean getTurnorver() {
-		return turnorver;
-	}
-
-	public void setTurnorver(Boolean turnorver) {
-		this.turnorver = turnorver;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager) {
-		this.empresaManager = empresaManager;
 	}
 }
