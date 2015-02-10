@@ -3,7 +3,7 @@
 	<Versao id="1.1.14x.169" bd="" data="xx/xx/2015">
 		<Item visivel="S" motivo="S20141200160"><![CDATA[R&S > Movimentação > Solicitação de Pessoal: Permitir apenas visualização da solicitação de pessoal após o status ser alterado para aprovada ou reprovada.]]></Item>
 		<Item visivel="S" motivo="P20150100032"><![CDATA[C&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Histórico > Imprimir: Melhoria no layout do relatório.]]></Item>
-		<Item visivel="S" motivo="S20150100127"><![CDATA[T&D > Relatórios > Colaboradores x Certificações > Exportar: Inserida a funcionalidade de exportar o relatório.]]></Item>
+		<Item visivel="S" motivo="S20150100127"><![CDATA[T&D > Relatórios > Colaboradores x Certificações > Exportar: Novo botão "Exportar" para gerar relatório no formato XLS.]]></Item>
 		<Item visivel="S" motivo="S20150100106"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Novo campo para informar se o desligamento gera substituição de colaborador.]]></Item>
 		<Item visivel="S" motivo="S20150100079"><![CDATA[Info. Funcionais > Movimentações > Aprovar/Reprovar Solicitações de Desligamento: Data de solicitação de desligamento inserida na lista.]]></Item>
 	    <Item visivel="S" motivo="S20141200165"><![CDATA[Info. Funcionais > Relatórios > Desligamentos > Imprimir/Exportar: Inserida a informação de "Turnover".]]></Item>
