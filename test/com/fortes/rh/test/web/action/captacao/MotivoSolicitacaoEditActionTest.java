@@ -4,7 +4,6 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
-import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -15,7 +14,6 @@ public class MotivoSolicitacaoEditActionTest extends MockObjectTestCase
 {
 	private MotivoSolicitacaoEditAction action;
 	private Mock manager;
-	private Mock empresaManager;
 	
     protected void setUp() throws Exception
     {
@@ -23,9 +21,6 @@ public class MotivoSolicitacaoEditActionTest extends MockObjectTestCase
         action = new MotivoSolicitacaoEditAction();
         manager = new Mock(MotivoSolicitacaoManager.class);
         action.setMotivoSolicitacaoManager((MotivoSolicitacaoManager) manager.proxy());
-
-        empresaManager = new Mock(EmpresaManager.class);
-        action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
     }
 
     protected void tearDown() throws Exception
@@ -51,7 +46,6 @@ public class MotivoSolicitacaoEditActionTest extends MockObjectTestCase
     	action.setMotivoSolicitacao(motivoSolicitacao);
 
     	manager.expects(once()).method("findById").with(eq(motivoSolicitacao.getId())).will(returnValue(motivoSolicitacao));
-    	empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
 
     	assertEquals(action.prepareInsert(), "success");
     }
@@ -67,7 +61,6 @@ public class MotivoSolicitacaoEditActionTest extends MockObjectTestCase
     	action.setMotivoSolicitacao(motivoSolicitacao);
 
     	manager.expects(once()).method("findById").with(eq(motivoSolicitacao.getId())).will(returnValue(motivoSolicitacao));
-    	empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
 
     	assertEquals(action.prepareUpdate(), "success");
     }
