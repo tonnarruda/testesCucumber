@@ -20,6 +20,7 @@
 		<@display.column property="estabelecimento.nome" title="Estabelecimento"/>
 		<@display.column property="areaOrganizacional.nome" title="Área Organizacional"/>
 		<@display.column property="cargoFaixa" title="Cargo/Faixa"/>
+        <@display.column property="dataSolicitacaoDesligamentoStr" title="Data de Desligamento"/>
 	</@display.table>
 </body>
 </html>

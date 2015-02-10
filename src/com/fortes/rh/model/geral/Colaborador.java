@@ -2621,6 +2621,11 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public Date getDataSolicitacaoDesligamento() {
 		return dataSolicitacaoDesligamento;
 	}
+	
+	@NaoAudita
+	public String getDataSolicitacaoDesligamentoStr(){
+		return DateUtil.formataDiaMesAno(this.dataSolicitacaoDesligamento);
+	}
 
 	public void setDataSolicitacaoDesligamento(Date dataSolicitacaoDesligamento) {
 		this.dataSolicitacaoDesligamento = dataSolicitacaoDesligamento;

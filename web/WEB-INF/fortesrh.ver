@@ -5,6 +5,7 @@
 		<Item visivel="S" motivo="P20150100032"><![CDATA[C&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Histórico > Imprimir: Melhoria no layout do relatório.]]></Item>
 		<Item visivel="S" motivo="S20150100127"><![CDATA[T&D > Relatórios > Colaboradores x Certificações > Exportar: Inserida a funcionalidade de exportar o relatório.]]></Item>
 		<Item visivel="S" motivo="S20150100106"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Novo campo para informar se o desligamento gera substituição de colaborador.]]></Item>
+		<Item visivel="S" motivo="S20150100079"><![CDATA[Info. Funcionais > Movimentações > Aprovar/Reprovar Solicitações de Desligamento: Data de solicitação de desligamento inserida na lista.]]></Item>
 	    <Item visivel="S" motivo="S20141200165"><![CDATA[Info. Funcionais > Relatórios > Desligamentos > Imprimir/Exportar: Inserida a informação de "Turnover".]]></Item>
 		<Item visivel="S" motivo="S20141100227"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Novo filtro por colocação.]]></Item>
 		<Item visivel="S" motivo="S20141200166"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Novas colunas "Motivo da Admissão" e "Turnover".]]></Item>
