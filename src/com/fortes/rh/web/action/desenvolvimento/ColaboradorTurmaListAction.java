@@ -37,9 +37,11 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
@@ -76,7 +78,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private Long colaboradorId;
 	private Long cursoId;
 	private String json = "";
-	private String reportTitle;
 
 	private int qtdMesesSemCurso = 0;
 
@@ -123,6 +124,9 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private Long empresaId;
 	private String nomeBusca = "";
 	private Collection<Empresa> empresas;
+	
+	private String reportFilter;
+	private String reportTitle;
 	
 	//relatório de Colaboradores x Certificações
 	private Collection<ColaboradorCertificacaoRelatorio> colaboradoresCertificacoes;
@@ -407,8 +411,12 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	{
 		try
 		{
+			reportTitle = "Colaboradores x Certificações";
+			reportFilter = "Emitido em: " + DateUtil.formataDiaMesAno(new Date());
+			
 			colaboradoresCertificacoes = colaboradorTurmaManager.montaRelatorioColaboradorCertificacao(getEmpresaSistema().getId(), certificacao, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck));
-			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores x Certificações", getEmpresaSistema(), "Certificação: " + certificacao.getNome());
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), "Certificação: " + certificacao.getNome());
+			
 			return SUCCESS;
 		}
 		catch (ColecaoVaziaException e)
@@ -862,5 +870,17 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public void setSituacao(String situacao) {
 		this.situacao = situacao;
+	}
+
+	public String getReportFilter() {
+		return reportFilter;
+	}
+
+	public void setReportFilter(String reportFilter) {
+		this.reportFilter = reportFilter;
+	}
+
+	public void setReportTitle(String reportTitle) {
+		this.reportTitle = reportTitle;
 	}
 }
