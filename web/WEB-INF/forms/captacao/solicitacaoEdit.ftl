@@ -15,6 +15,12 @@
 	<#assign DataSolicitacao = "${dataDoDia}"/>
 </#if>
 
+<#if solicitacao.dataStatus?exists>
+	<#assign DataStatusSolicitacao = solicitacao.dataStatus?date/>
+<#else>
+	<#assign DataStatusSolicitacao = "${dataDoDia}"/>
+</#if>
+
 <#if visualizar?exists && cargo?exists>
 	<#assign formAction = formAction + "?visualizar=${visualizar}&cargo.id=${cargo.id}"/>
 </#if>
@@ -40,15 +46,6 @@
 	
 	
 	<script type="text/javascript">
-		
-		$(function() {
-			<#if solicitacao.dataStatus?exists>
-				$('#dataStatus').val(${solicitacao.dataStatus});
-			<#else>
-				$('#dataStatus').val($.datepicker.formatDate('dd/mm/yy',new Date()));
-			</#if>
-		});	
-		
 		function populaEmails(id)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
@@ -445,9 +442,9 @@
 					<@ww.select label="Status da solicitação (Inicia o processo de seleção de pessoal)" name="solicitacao.status"  list="status" id="statusSolicitcao" disabled="true"/>
 					
 					<#if somenteLeitura>
-						<@ww.textfield readonly="true" label="Data" name="solicitacao.dataStatus" id="dataStatus" cssClass="mascaraData" cssStyle="background: #EBEBEB;"/>
+						<@ww.textfield readonly="true" label="Data" name="solicitacao.dataStatus" value="${DataStatusSolicitacao}" cssClass="mascaraData" cssStyle="background: #EBEBEB;"/>
 					<#else>
-						<@ww.datepicker label="Data" name="solicitacao.dataStatus" id="dataStatus" cssClass="mascaraData" />
+						<@ww.datepicker label="Data" name="solicitacao.dataStatus" value="${DataStatusSolicitacao}" cssClass="mascaraData" />
 					</#if>
 					
 					<@ww.textarea label="Observação" name="solicitacao.observacaoLiberador" id="obsAprova" disabled="true" />
