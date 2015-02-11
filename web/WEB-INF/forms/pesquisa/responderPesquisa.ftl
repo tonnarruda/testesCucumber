@@ -1,3 +1,4 @@
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 <@ww.head/>
@@ -218,9 +219,18 @@
 	</div>
 	<div class="buttonGroup">
 
-		<#if questionario.perguntas?exists && 0 < questionario.perguntas?size>
-			<button onclick="${validarCampos}" class="${buttonClass}"></button>
+		<#if questionario.tipo == 1>
+			<@authz.authorize ifAllGranted="ROLE_COLAB_LIST_ENTREVISTA_RESPONDER">
+				<#if questionario.perguntas?exists && 0 < questionario.perguntas?size>
+					<button onclick="${validarCampos}" class="${buttonClass}"></button>
+				</#if>
+			</@authz.authorize>
+		<#else>
+			<#if questionario.perguntas?exists && 0 < questionario.perguntas?size>
+				<button onclick="${validarCampos}" class="${buttonClass}"></button>
+			</#if>
 		</#if>
+		
 		<button onclick="window.location='${retorno}'" class="btnVoltar"></button>
 		
 		<#if exibirImprimir>
