@@ -1,3 +1,4 @@
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"] />
 <html>
 <head>
 <@ww.head/>
@@ -85,9 +86,9 @@
 				return false;
 		
 			if ($("#autenticacao").is(':checked')) {
-				return validaFormulario('form', new Array('appUrl','appContext', 'sessionTimeout','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico', 'emailUser'), new Array('emailDoSuporteTecnico','emailRemetente','proximaVersao'));
+				return validaFormulario('form', new Array('appUrl', '@horariosBackupList', 'appContext', 'sessionTimeout','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico', 'emailUser'), new Array('emailDoSuporteTecnico','emailRemetente','proximaVersao'));
 			} else {
-				return validaFormulario('form', new Array('appUrl','appContext', 'sessionTimeout','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico','emailRemetente','proximaVersao'));			
+				return validaFormulario('form', new Array('appUrl', '@horariosBackupList', 'appContext', 'sessionTimeout','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico','emailRemetente','proximaVersao'));			
 			}
 		}
 		
@@ -105,6 +106,21 @@
 	<@ww.textfield label="Atualizador" name="parametrosDoSistema.atualizadorPath" id="atualizadorPath" size="80" maxLength="100" required="true"/>
 	<@ww.textfield label="Configuração do autenticador" name="parametrosDoSistema.servidorRemprot" id="servidorRemprot" size="80" maxLength="100" required="true"/>
 	<@ww.textfield label="Réplica do backup do banco de dados" name="parametrosDoSistema.caminhoBackup" id="caminhoBackup" size="80" maxLength="200" />
+	
+	<li id="wwgrp_horariosBackup" class="wwgrp">
+		<div id="wwlbl_horariosBackup" class="wwlbl"><label for="horariosBackup" class="desc">Horários de backup do banco de dados:*</label></div>
+		<div id="wwctrl_horariosBackup" class="wwctrl">
+			<div class="listCheckBoxContainer" style="width: 570px; height: 150px;">
+				<div id="listCheckBoxhorariosBackup" class="listCheckBox">
+					<table id="diasTable" class="dados">
+						<#foreach hora in horariosBackupList>
+							<label for="checkHorariosBackupList${hora}"><input name="horariosBackup" value="${hora}" type="checkbox" id="checkGrouphorariosBackup${hora}">${hora}:00</label> 
+						</#foreach>
+					</table>
+				</div>
+			</div>
+		</div>
+	</li>
 	<br/>
 	
 	<@ww.select label="Perfil padrão" name="parametrosDoSistema.perfilPadrao.id" list="perfils" cssStyle="width: 300px;" listKey="id" listValue="nome" required="true" id="perfil" />
@@ -201,6 +217,11 @@
 		<button type="button" onclick="submitForm();" class="btnGravar" accesskey="${accessKey}">
 		</button>
 	</div>
-
+	
+	<script>
+		<#foreach horaBackup in horariosBackup>
+			$("#checkGrouphorariosBackup${horaBackup}").attr("checked", "checked");
+		</#foreach>
+	</script>
 </body>
 </html>

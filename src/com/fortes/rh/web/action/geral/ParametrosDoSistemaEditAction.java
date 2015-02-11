@@ -69,6 +69,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 	private String[] camposCandidatoObrigatorios;
 	private String[] camposCandidatoVisivels;
+	private String horariosBackup;
 	
 	private boolean habilitaCampoExtra;
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
@@ -100,7 +101,9 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 		if(getUsuarioLogado().getId() != 1 && parametrosDoSistema.getProximaVersao() == null)
 			parametrosDoSistema.setProximaVersao(parametrosDoSistemaAux.getProximaVersao());
-
+		
+		parametrosDoSistema.setHorariosBackup(horariosBackup);
+		
 		ServletActionContext.getRequest().getSession().setMaxInactiveInterval(parametrosDoSistema.getSessionTimeout());
 		parametrosDoSistemaManager.update(parametrosDoSistema);
 		
@@ -239,6 +242,19 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 	public void setCamposCandidatoVisivels(String[] camposCandidatoVisivels) {
 		this.camposCandidatoVisivels = camposCandidatoVisivels;
+	}
+	
+	public void setHorariosBackup(String horariosBackup) {
+		this.horariosBackup = horariosBackup;
+	}
+
+	public String[] getHorariosBackup() {
+		return parametrosDoSistema.getHorariosBackup().split(",");
+	}
+	
+	public String[] getHorariosBackupList() {
+		return new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
+							"13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
 	}
 
 	public boolean isHabilitaCampoExtra() {

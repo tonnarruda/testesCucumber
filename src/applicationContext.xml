@@ -250,7 +250,7 @@
   </bean>
   <bean id="cronTriggerBackup" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="backupJob" />
-    <property name="cronExpression" value="0 0 2 * * ?" /> <!-- Todos os dias as 02:00h am -->
+    <property name="cronExpression" value="0 0 0/1 * * ?"/> <!-- A cada 1 hora --> 
   </bean>
   
   <!-- Job Responsavel por limpar os arquivos de backup antigos -->

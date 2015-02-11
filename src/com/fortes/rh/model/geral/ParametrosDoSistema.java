@@ -51,6 +51,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String acVersaoWebServiceCompativel;
     @Column(length=200)
     private String caminhoBackup;
+    private String horariosBackup;
     @Temporal(TemporalType.DATE)
     private Date proximaVersao;
     
@@ -319,6 +320,16 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	public void setCaminhoBackup(String caminhoBackup)
 	{
 		this.caminhoBackup = caminhoBackup;
+	}
+	
+	public String getHorariosBackup()
+	{
+		return horariosBackup;
+	}
+	
+	public void setHorariosBackup(String horariosBackup)
+	{
+		this.horariosBackup = horariosBackup.replace(" ", "");
 	}
 
 	public Boolean getCompartilharCursos()
