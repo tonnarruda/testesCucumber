@@ -46,8 +46,10 @@
 					<font face=verdana size=2 color=black>
 					<br>
 					<br>Verifique o endereço digitado.
-					<br>Dúvidas entre em contato com 
-					<a href="mailto:suporte.rh@grupofortes.com.br">suporte.rh@grupofortes.com.br</a>
+					<% if (request.getAttribute("javax.servlet.forward.request_uri") == null || !request.getAttribute("javax.servlet.forward.request_uri").toString().contains("/externo/")) { %>
+						<br>Dúvidas entre em contato com 
+						<a href="mailto:suporte.rh@grupofortes.com.br">suporte.rh@grupofortes.com.br</a>
+					<% } %>
 					</p>
 				</font>
 				

@@ -17,6 +17,7 @@
 		<Item visivel="N" motivo="P20150100169"><![CDATA[Info. Funcionais > Relatórios > Ocorrências: Ao tentar imprimir o relatório com filtros que não retornavam dados, o mesmo não apresentava mensagem informando esta ausência de dados.]]></Item>
 		<Item visivel="N" motivo="P20150200072"><![CDATA[SESMT > Movimentações > Entrega de EPIs: Correção de bug que não permitia que um colaborador recebesse o EPI se a sua última situação estivesse pendente de confirmação no AC, ainda que esta não fosse a situação de contratação.]]></Item>
 		<Item visivel="N" motivo="P20150100182"><![CDATA[Utilitários > Auditoria: Mostrar data do status de uma solicitação de pessoal na auditoria.]]></Item>
+		<Item visivel="N" motivo="S20150200052"><![CDATA[Módulo Externo: Não exibir o email do suporte da Fortes nas telas de erro.]]></Item>
 		<Item visivel="N" motivo="P20150100259"><![CDATA[Tratamento de mensagens ao cancelar contratação pelo AC Pessoal.]]></Item>
 		<Item visivel="N" motivo="P20150200019"><![CDATA[Ajuste na contagem de dias para o envio de lembretes de avaliações de período de experiência.]]></Item>
 	</Versao>
