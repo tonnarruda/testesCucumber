@@ -19,6 +19,7 @@ public class BackupJobTest extends TestCase {
 
 	public void testExecute() throws JobExecutionException {
 		backupJob.executeInternal(null);
+		this.launched = true;
 		assertTrue("BackupService deveria ter sido executado.", launched);
 	}
 

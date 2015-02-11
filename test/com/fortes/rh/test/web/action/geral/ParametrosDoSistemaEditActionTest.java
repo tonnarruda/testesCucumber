@@ -57,6 +57,7 @@ public class ParametrosDoSistemaEditActionTest extends MockObjectTestCase
     	
     	action.setParametrosDoSistema(parametrosDoSistema);
     	action.setUsuarioLogado(UsuarioFactory.getEntity(1L));
+    	action.setHorariosBackup("02");
     	
     	manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
     	
