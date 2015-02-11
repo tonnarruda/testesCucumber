@@ -11,6 +11,7 @@
 		<Item visivel="S" motivo="S20141200166"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Novas colunas "Motivo da Admissão" e "Turnover".]]></Item>
 		<Item visivel="S" motivo="S20150100155"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Nova permissão para aplicar realinhamentos.]]></Item>
 		<Item visivel="S" motivo="S20150100154"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de configuração para notificar quando "Cadastrar solicitação de realinhamento para colaborador" através de email para o gestor, cogestor da área organizacional e outros usuários.]]></Item>
+		<Item visivel="N" motivo="P20150200083"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações da Turma > Resultado das Avaliações: Após gerar o relatório, o mesmo desconfigurava a empresa da sessão.]]></Item>
 		<Item visivel="N" motivo="P20150100179"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Excluir: Correção de bug ao excluir colaborador que possui mensagens com o usuário fortes.]]></Item>
 		<Item visivel="N" motivo="P20150200069"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Correção de bug ao contratar um colaborador através de uma solicitação de pessoal cujo campo horário de trabalho tivesse um valor maior do que 50 caracteres.]]></Item>
 		<Item visivel="N" motivo="P20150100169"><![CDATA[Info. Funcionais > Relatórios > Ocorrências: Ao tentar imprimir o relatório com filtros que não retornavam dados, o mesmo não apresentava mensagem informando esta ausência de dados.]]></Item>

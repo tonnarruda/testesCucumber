@@ -231,7 +231,7 @@
 				<@ww.hidden name="urlVoltar"/>
 				<@ww.hidden name="turmaId"/>
 				<@ww.hidden name="cursoId"/>
-				<@ww.hidden id="empresa" name="empresaSistema.id"/>
+				<@ww.hidden id="empresa" value="${empresaSistema.id}"/>
 		</@ww.form>
 
 		<div class="buttonGroup">
