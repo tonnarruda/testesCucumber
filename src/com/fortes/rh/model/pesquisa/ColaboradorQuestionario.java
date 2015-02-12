@@ -698,7 +698,7 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 			dataFmt = DateUtil.formataDiaMesAno(respondidaEm);
 		
 			if ( colaborador.getDataAdmissao() != null)
-				dataFmt = dataFmt + " (" + DateUtil.diferencaEntreDatas(colaborador.getDataAdmissao(), respondidaEm) + " dias)";
+				dataFmt = dataFmt + " (" + DateUtil.diferencaEntreDatas(colaborador.getDataAdmissao(), respondidaEm, false) + " dias)";
 		}
 		return dataFmt;
 	}

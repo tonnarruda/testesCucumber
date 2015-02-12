@@ -127,7 +127,7 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 	{
 		Cat ultimoCat = getDao().findUltimoCat(empresaId); 
 		
-		return ultimoCat != null ? DateUtil.diferencaEntreDatas(ultimoCat.getData(), new Date()) : 0;
+		return ultimoCat != null ? DateUtil.diferencaEntreDatas(ultimoCat.getData(), new Date(), false) : 0;
 	}
 	
 	public Collection<DataGrafico> findQtdCatsPorDiaSemana(Long empresaId, Date dataIni, Date dataFim) 

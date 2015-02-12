@@ -360,7 +360,7 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 		String periodo = "";
 		if (dataPrevIni != null)
 			periodo += DateUtil.formataDiaMesAno(dataPrevIni);
-		if (dataPrevFim != null && (DateUtil.diferencaEntreDatas(dataPrevIni, dataPrevFim) > 0))
+		if (dataPrevFim != null && (DateUtil.diferencaEntreDatas(dataPrevIni, dataPrevFim, false) > 0))
 			periodo += " a " + DateUtil.formataDiaMesAno(dataPrevFim);
 
 		return periodo;

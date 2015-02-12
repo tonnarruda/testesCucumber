@@ -31,7 +31,7 @@ public class DiaTurmaManagerImpl extends GenericManagerImpl<DiaTurma, DiaTurmaDa
 		{
 			Date data;
 			DiaTurma diaTurma;
-			int qtdDias = DateUtil.diferencaEntreDatas(dataPrevIni, dataPrevFim);
+			int qtdDias = DateUtil.diferencaEntreDatas(dataPrevIni, dataPrevFim, false);
 			
 			for (int d = 0; d <= qtdDias; d++)
 			{

@@ -4050,8 +4050,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	public void testFindAdmitidosHaDias() 
 	{
-		Calendar quarentaDiasAtras = Calendar.getInstance();
-		quarentaDiasAtras.add(Calendar.DAY_OF_YEAR, -39);
+		Calendar trintaNoveDiasAtras = Calendar.getInstance();
+		trintaNoveDiasAtras.add(Calendar.DAY_OF_YEAR, -39);
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -4062,7 +4062,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setEmpresa(empresa);
-		colaborador.setDataAdmissao(quarentaDiasAtras.getTime());
+		colaborador.setDataAdmissao(trintaNoveDiasAtras.getTime());
 		colaboradorDao.save(colaborador);
 
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
@@ -4080,8 +4080,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	
 	public void testFindAdmitidosHaDiasPeriodoExperiencia() 
 	{
-		Calendar quarentaDiasAtras = Calendar.getInstance();
-		quarentaDiasAtras.add(Calendar.DAY_OF_YEAR, -39);
+		Calendar trintaNoveDiasAtras = Calendar.getInstance();
+		trintaNoveDiasAtras.add(Calendar.DAY_OF_YEAR, -39);
 		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -4093,19 +4093,19 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador joseAvaliado = ColaboradorFactory.getEntity();
 		joseAvaliado.setEmpresa(empresa);
 		joseAvaliado.setNome("José");
-		joseAvaliado.setDataAdmissao(quarentaDiasAtras.getTime());
+		joseAvaliado.setDataAdmissao(trintaNoveDiasAtras.getTime());
 		colaboradorDao.save(joseAvaliado);
 
 		Colaborador mariaJaRespondido = ColaboradorFactory.getEntity();
 		mariaJaRespondido.setNome("Maria");
 		mariaJaRespondido.setEmpresa(empresa);
-		mariaJaRespondido.setDataAdmissao(quarentaDiasAtras.getTime());
+		mariaJaRespondido.setDataAdmissao(trintaNoveDiasAtras.getTime());
 		colaboradorDao.save(mariaJaRespondido);
 		
 		Colaborador colabDesligado = ColaboradorFactory.getEntity();
 		colabDesligado.setNome("ColabDesligadoFuturo");
 		colabDesligado.setEmpresa(empresa);
-		colabDesligado.setDataAdmissao(quarentaDiasAtras.getTime());
+		colabDesligado.setDataAdmissao(trintaNoveDiasAtras.getTime());
 		colabDesligado.setDataDesligamento(DateUtil.incrementaDias(new Date(), -1));
 		colaboradorDao.save(colabDesligado);
 		

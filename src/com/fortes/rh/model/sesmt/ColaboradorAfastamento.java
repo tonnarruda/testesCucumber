@@ -107,9 +107,9 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 		Integer periodoFmtInt = 0;
 		if (inicio != null){
 			if (fim != null)
-				periodoFmtInt = DateUtil.diferencaEntreDatas(inicio, fim) + 1;
+				periodoFmtInt = DateUtil.diferencaEntreDatas(inicio, fim, false) + 1;
 			else
-				periodoFmtInt = DateUtil.diferencaEntreDatas(inicio, new Date()) + 1;
+				periodoFmtInt = DateUtil.diferencaEntreDatas(inicio, new Date(), false) + 1;
 		}
 		return periodoFmtInt;
 	}

@@ -321,7 +321,7 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 				if (colabAfast.getInicio() != null && colabAfast.getFim() != null && !DateUtil.mesmoMes(colabAfast.getInicio(), colabAfast.getFim()))
 				{
 					dataInicio = colabAfast.getInicio();
-					colabAfast.setQtdDias(DateUtil.diferencaEntreDatas(dataInicio, DateUtil.getUltimoDiaMes(dataInicio)) + 1);
+					colabAfast.setQtdDias(DateUtil.diferencaEntreDatas(dataInicio, DateUtil.getUltimoDiaMes(dataInicio), false) + 1);
 					
 					while (true) 
 					{
@@ -338,7 +338,7 @@ public class ColaboradorAfastamentoManagerImpl extends GenericManagerImpl<Colabo
 						novoColaboradorAfastamento.setInicio(dataInicio);
 						novoColaboradorAfastamento.setFim(dataFim);
 						novoColaboradorAfastamento.setQtdAfastamentos(0);
-						novoColaboradorAfastamento.setQtdDias(DateUtil.diferencaEntreDatas(dataInicio, dataFim) + 1);
+						novoColaboradorAfastamento.setQtdDias(DateUtil.diferencaEntreDatas(dataInicio, dataFim, false) + 1);
 						colaboradorAfastamentoExtras.add(novoColaboradorAfastamento);
 					}
 				}

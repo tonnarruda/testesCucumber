@@ -72,7 +72,7 @@ public class BackupCleanerJob implements Job {
 	 */
 	private boolean isOldFile(Date lastModified) {
 		Date today = new Date();
-		int diferencaEntreDatas = DateUtil.diferencaEntreDatas(lastModified, today);
+		int diferencaEntreDatas = DateUtil.diferencaEntreDatas(lastModified, today, false);
 		return (diferencaEntreDatas >= this.maxDay);
 	}
 	/**

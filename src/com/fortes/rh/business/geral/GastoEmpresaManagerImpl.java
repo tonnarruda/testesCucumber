@@ -541,7 +541,7 @@ public class GastoEmpresaManagerImpl extends GenericManagerImpl<GastoEmpresa, Ga
 			dataFim = DateUtil.getUltimoDiaMes(dataFim);
 			Date dataAnterior = dataIni;
 
-			int meses = (int) MathUtil.round((DateUtil.diferencaEntreDatas(dataIni, dataFim) / 30),1);
+			int meses = (int) MathUtil.round((DateUtil.diferencaEntreDatas(dataIni, dataFim, false) / 30),1);
 
 			for (int i = 0; i < meses; i++)
 			{

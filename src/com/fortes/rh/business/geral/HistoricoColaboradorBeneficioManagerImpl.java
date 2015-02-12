@@ -77,7 +77,7 @@ public class HistoricoColaboradorBeneficioManagerImpl extends GenericManagerImpl
 		for (Iterator<Object[]> it = historicoColaboradorBeneficios.iterator(); it.hasNext();)
 		{
 			Object[] beneficio = it.next();
-			if(DateUtil.diferencaEntreDatas((Date)beneficio[2], dateIni) <= 0 && DateUtil.diferencaEntreDatas((Date)beneficio[2], dateFim) > 0)
+			if(DateUtil.diferencaEntreDatas((Date)beneficio[2], dateIni, false) <= 0 && DateUtil.diferencaEntreDatas((Date)beneficio[2], dateFim, false) > 0)
 				retorno.add(beneficio);
 		}
 
@@ -104,7 +104,7 @@ public class HistoricoColaboradorBeneficioManagerImpl extends GenericManagerImpl
 
 		Object[] beneficioBase = beneficio.clone();
 
-		while(DateUtil.diferencaEntreDatas(dataDe, dataAte) > 0)
+		while(DateUtil.diferencaEntreDatas(dataDe, dataAte, false) > 0)
 		{
 			Object[] beneficioClonado = beneficioBase.clone();
 			beneficioClonado[2] = dataDe;
@@ -130,14 +130,14 @@ public class HistoricoColaboradorBeneficioManagerImpl extends GenericManagerImpl
 			{
 				if(menorDiferenca == null)
 				{
-					menorDiferenca = DateUtil.diferencaEntreDatas(historico.getData(), data);
+					menorDiferenca = DateUtil.diferencaEntreDatas(historico.getData(), data, false);
 					retorno = historico.getValor() - (historico.getValor() * historico.getParaColaborador()/100);
 					continue;
 				}
 
-				if(DateUtil.diferencaEntreDatas(historico.getData(), data) >= 0 && DateUtil.diferencaEntreDatas(historico.getData(), data) < menorDiferenca)
+				if(DateUtil.diferencaEntreDatas(historico.getData(), data, false) >= 0 && DateUtil.diferencaEntreDatas(historico.getData(), data, false) < menorDiferenca)
 				{
-					menorDiferenca = DateUtil.diferencaEntreDatas(historico.getData(), data);
+					menorDiferenca = DateUtil.diferencaEntreDatas(historico.getData(), data, false);
 					retorno = historico.getValor() - (historico.getValor() * historico.getParaColaborador()/100);
 				}
 			}

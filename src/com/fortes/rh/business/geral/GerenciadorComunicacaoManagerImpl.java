@@ -447,11 +447,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	    			
 	    			for (Integer diasLembreteGerenciadorComunicacao : diasLembrete) 
 	    			{
-	    				Calendar calendar = Calendar.getInstance();  
-	    				calendar.setTime(colaboradorAvaliacao.getColaborador().getDataAdmissao());  
-	    				calendar.add(Calendar.DAY_OF_MONTH, -1);
-	    				
-	    				Integer diasDeEmpresaDoColaborador = DateUtil.diferencaEntreDatas(calendar.getTime(), new Date());
+	    				Integer diasDeEmpresaDoColaborador = DateUtil.diferencaEntreDatas(colaboradorAvaliacao.getColaborador().getDataAdmissao(), new Date(), true);
 
 	    				if( (colaboradorAvaliacao.getPeriodoExperiencia().getDias() - diasLembreteGerenciadorComunicacao) == diasDeEmpresaDoColaborador)
 						{

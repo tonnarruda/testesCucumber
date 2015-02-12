@@ -43,7 +43,7 @@ public class LogCleanerJob implements Job {
 
 	private boolean isOldLogFile(Date today, File f) {
 		Date lastModified = new Date(f.lastModified());
-		boolean isOldLogFile = (DateUtil.diferencaEntreDatas(lastModified, today) >= OLD_FILES_MAX_DAY);
+		boolean isOldLogFile = (DateUtil.diferencaEntreDatas(lastModified, today, false) >= OLD_FILES_MAX_DAY);
 		return isOldLogFile;
 	}
 	

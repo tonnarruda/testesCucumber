@@ -78,7 +78,7 @@ public class EtapaProcessoEleitoral extends AbstractModel implements Serializabl
 		String dataFmt = "";
 		if (eleicao != null && eleicao.getPosse() != null && this.data != null)
 		{
-			this.prazo = DateUtil.diferencaEntreDatas(eleicao.getPosse(),data);
+			this.prazo = DateUtil.diferencaEntreDatas(eleicao.getPosse(),data, false);
 			dataFmt = DateUtil.formataDiaMesAno(data) + " "
 				+ DateUtil.getDiaSemanaDescritivo(data).substring(0,3).toLowerCase()
 				+ " (" + getPrazoFormatado() + ")";
@@ -173,7 +173,7 @@ public class EtapaProcessoEleitoral extends AbstractModel implements Serializabl
 		{
 			if (recalcularPrazo)
 			{
-				prazo = DateUtil.diferencaEntreDatas(eleicaoPosse, data);
+				prazo = DateUtil.diferencaEntreDatas(eleicaoPosse, data, false);
 			}
 			else
 			{

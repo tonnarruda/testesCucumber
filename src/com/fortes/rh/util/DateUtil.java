@@ -593,17 +593,17 @@ public class DateUtil
 	 * @since 17/01/2008
 	 * @param dataInicio
 	 * @param dataFim
+	 * @param incluirDataInicioNaDiferenca TODO
 	 * @return Quantidade de dias entre as datas
 	 */
-	public static int diferencaEntreDatas(Date dataInicio, Date dataFim)
+	public static int diferencaEntreDatas(Date dataInicio, Date dataFim, Boolean incluirDataInicioNaDiferenca)
 	{
+		if(incluirDataInicioNaDiferenca)
+			dataInicio = incrementaData(dataInicio, Calendar.DAY_OF_MONTH, -1, false);
+		
 		TimeZone timeZone = TimeZone.getDefault();
-		if (timeZone.inDaylightTime(dataFim) && !timeZone.inDaylightTime(dataInicio) ) {
-			Calendar calendarDataFim = new GregorianCalendar();
-			calendarDataFim.setTime(dataFim);
-			calendarDataFim.add(Calendar.HOUR_OF_DAY, 1);
-			dataFim = calendarDataFim.getTime();
-		}
+		if (timeZone.inDaylightTime(dataFim) && !timeZone.inDaylightTime(dataInicio) ) 
+			dataFim = incrementaData(dataInicio, Calendar.HOUR_OF_DAY, 1, false);
 		
 		Long diff = dataFim.getTime() - dataInicio.getTime();
 		Long dias = diff/(24L*60L*60L*1000L);
@@ -684,13 +684,21 @@ public class DateUtil
 		return frase;
 	}
 
-	public static Date incrementaDias(Date dataAntiga, Integer periodicidade)
+	public static Date incrementaData(Date data, int tipoIncremento, int incremento, boolean zerarHorario)
 	{
 		Calendar calendar = new GregorianCalendar();
-		calendar.setTime(dataAntiga);
-		calendar.add(GregorianCalendar.DAY_OF_MONTH, periodicidade);
+		if(zerarHorario)
+			calendar.clear();
 		
+		calendar.setTime(data);
+		calendar.add(tipoIncremento, incremento);
+			
 		return calendar.getTime();
+	}
+	
+	public static Date incrementaDias(Date dataAntiga, Integer periodicidade)
+	{
+		return incrementaData(dataAntiga, Calendar.DAY_OF_MONTH, periodicidade, false);
 	}
 
 	public static Date incrementaMes(Date dataAntiga, Integer periodicidade)
@@ -806,7 +814,7 @@ public class DateUtil
 		Date dataFinal = getUltimoDiaMes(data);
 		
 	    int diasUteis = 0;
-	    int totalDias = diferencaEntreDatas( dataInicial, dataFinal ) + 1;  
+	    int totalDias = diferencaEntreDatas( dataInicial, dataFinal, false ) + 1;  
 	      
 	    Calendar calendar = new GregorianCalendar( dataInicial.getYear() + 1900, dataInicial.getMonth(), dataInicial.getDate() );  
 	    for( int i = 1; i <= totalDias; i++ ) 
@@ -855,34 +863,5 @@ public class DateUtil
 	public static Date getUltimoDiaMesAnterior(Date data) 
 	{
 		return incrementaDias(data, -1);
-	}
-	
-	public static Date criarDataComHora(String diaMesAno, String hora) 
-	{
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-		String dia = "1";
-		String mes = "1";
-		String ano = "0";
-		String[] dma = diaMesAno.split("/");
-		if(dma.length == 3)
-		{
-			dia = dma[0];
-			mes = dma[1];
-			ano = dma[2];
-		}
-
-		mes = String.valueOf(Integer.parseInt(mes) - 1);
-		ano = String.valueOf(Integer.parseInt(ano) - 1900);
-
-		Date d;
-		try {
-			d = df.parse(ano + "-" + mes + "-" + dia + " " + hora);
-			Long time = d.getTime();
-			return new Date(time);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
-		}
 	}
 }

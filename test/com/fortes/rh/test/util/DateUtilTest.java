@@ -124,7 +124,8 @@ public class DateUtilTest extends TestCase
 		Date data1 = new Date(2008, 0, 1);
 		Date data2 = new Date(2008, 0, 10);
 
-		assertEquals(9, DateUtil.diferencaEntreDatas(data1, data2));
+		assertEquals("Desconsiderando data inicial", 9, DateUtil.diferencaEntreDatas(data1, data2, false));
+		assertEquals("Considerando data inicial", 10, DateUtil.diferencaEntreDatas(data1, data2, true));
 	}
 
 	public void testCriarDataMesAno()
@@ -285,15 +286,6 @@ public class DateUtilTest extends TestCase
 		assertEquals("Test 4", 23, data.getHours());
 		assertEquals("Test 5", 59, data.getMinutes());
 		assertEquals("Test 6", 59, data.getSeconds());
-	}
-
-	public void testMesPosterior(){
-
-		assertTrue("Test 1", DateUtil.mesPosterior(new Date(108, 10, 1), new Date(108, 11, 1)));
-		assertTrue("Test 2", DateUtil.mesPosterior(new Date(108, 10, 1), new Date(108, 11, 30)));
-		assertFalse("Test 3", DateUtil.mesPosterior(new Date(108, 10, 1), new Date(108, 9, 1)));
-		assertFalse("Test 4", DateUtil.mesPosterior(new Date(108, 10, 1), new Date(108, 10, 30)));
-
 	}
 
 	public void testSetaMesPosterior(){

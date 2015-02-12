@@ -147,7 +147,7 @@ public class CatManagerTest extends MockObjectTestCase
 		
 		catDao.expects(once()).method("findUltimoCat").with(ANYTHING).will(returnValue(cat));
 
-		int qtdDiasSemAcidentes = DateUtil.diferencaEntreDatas(data, new Date());
+		int qtdDiasSemAcidentes = DateUtil.diferencaEntreDatas(data, new Date(), false);
 		int qtdDiasSemAcidentesTeste = catManager.findQtdDiasSemAcidentes(empresa.getId());
 		
 		assertEquals(qtdDiasSemAcidentes, qtdDiasSemAcidentesTeste);
