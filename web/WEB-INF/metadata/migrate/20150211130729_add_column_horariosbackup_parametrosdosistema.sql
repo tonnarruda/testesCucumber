@@ -1,0 +1,1 @@
+alter table parametrosdosistema add column horariosbackup text default '2'; --.go
