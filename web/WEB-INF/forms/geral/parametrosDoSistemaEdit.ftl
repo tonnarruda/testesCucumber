@@ -86,9 +86,9 @@
 				return false;
 		
 			if ($("#autenticacao").is(':checked')) {
-				return validaFormulario('form', new Array('appUrl', '@horariosBackupList', 'appContext', 'sessionTimeout','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico', 'emailUser'), new Array('emailDoSuporteTecnico','emailRemetente','proximaVersao'));
+				return validaFormulario('form', new Array('appUrl', '@horariosBackup', 'appContext', 'sessionTimeout','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico', 'emailUser'), new Array('emailDoSuporteTecnico','emailRemetente','proximaVersao'));
 			} else {
-				return validaFormulario('form', new Array('appUrl', '@horariosBackupList', 'appContext', 'sessionTimeout','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico','emailRemetente','proximaVersao'));			
+				return validaFormulario('form', new Array('appUrl', '@horariosBackup', 'appContext', 'sessionTimeout','atualizadorPath','servidorRemprot','perfil','emailDoSuporteTecnico'), new Array('emailDoSuporteTecnico','emailRemetente','proximaVersao'));			
 			}
 		}
 		
@@ -108,7 +108,7 @@
 	<@ww.textfield label="Réplica do backup do banco de dados" name="parametrosDoSistema.caminhoBackup" id="caminhoBackup" size="80" maxLength="200" />
 	
 	<li id="wwgrp_horariosBackup" class="wwgrp">
-		<div id="wwlbl_horariosBackup" class="wwlbl"><label for="horariosBackup" class="desc">Horários de backup do banco de dados:*</label></div>
+		<div id="wwlbl_horariosBackup" class="wwlbl"><label for="horariosBackup" class="desc">Marque as horas desejadas do dia para efetuar o backup do banco de dados:*</label></div>
 		<div id="wwctrl_horariosBackup" class="wwctrl">
 			<div class="listCheckBoxContainer" style="width: 570px; height: 150px;">
 				<div id="listCheckBoxhorariosBackup" class="listCheckBox">
