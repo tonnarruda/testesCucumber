@@ -65,6 +65,8 @@ public abstract class Menu
 		}
 
 		menu.append("<li><a href='" + contexto + "/logout.action' accesskey='a'>S<u>a</u>ir</a></li>\n");
+		
+		menu.append("<li class='noHover'><input type='text' id='searchMenu' placeholder='Acesso rápido'/></li>\n");
 
 		menu.append("<li style='float: right; line-height: 0.8em;'><a href='" + contexto + "/geral/documentoVersao/list.action' class='versao' style='padding-right: 10px;'> Versão: "  +  parametros.getAppVersao() +"</a></li>\n");
 		

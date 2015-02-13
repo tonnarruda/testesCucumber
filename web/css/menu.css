@@ -45,6 +45,11 @@
 #menuDropDown li:hover {
 	background-color: #5292C0;
 }
+
+#menuDropDown li.noHover:hover {
+	background-color: inherit;
+}
+
 #menuDropDown li:hover > a {
 	color: #FFF;
 }
@@ -75,6 +80,11 @@
 #menuDropDown li li:hover > ul {
 	margin-top: -26px;
 	left: 100%;
+}
+
+#menuDropDown #searchMenu {
+	margin-top: 5px; 
+	margin-left: 20px;
 }
 /*
 #menuDropDown li ul {

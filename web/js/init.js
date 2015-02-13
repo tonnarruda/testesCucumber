@@ -60,6 +60,34 @@ $(function(){
 	} catch(e) {}
 	
 
+	// Busca de menu
+	var menus = [];
+	$("ul#menuDropDown li:not(:has(ul))")
+		.each(function(i, item) { 
+			var li = $(item),
+				a = li.find("a"),
+				labels = [ a.text() ];
+		
+			li.parents('li').each(function(j, p) {
+				labels.push( $(p).find("> a").text() );
+			});
+			
+			menus.push({ value: a.attr("href"), label: labels.reverse().join(" > "), });
+		});
+	
+	$("#searchMenu").autocomplete({ 
+						source: menus,
+						focus: function( event, ui ) {
+							$( "#searchMenu" ).val( ui.item.label );
+							return false;
+						},
+						select: function( event, ui ) {
+							location.href = ui.item.value;
+							return false;
+						}
+		 			});
+	
+	
 	// Últimas notícias
 	try {
 		if (ultimasNoticias != null && ultimasNoticias.length > 0) {
