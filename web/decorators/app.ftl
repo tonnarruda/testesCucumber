@@ -73,21 +73,6 @@
 		</div>
 		<div id="logoDiv"><a href="<@ww.url value='/'/>"><img src='<@ww.url includeParams="none" value="/imgs/topo_ico.jpg"/>' border='0'/></a></div>
 		
-		<div id="news">
-			<a id="newsIcon" href="javascript:;" title="Últimas notícias" style="display:none">
-				<img src='<@ww.url includeParams="none" value="/imgs/news.png"/>' border='0'/>
-			</a>
-			<div id="newsCount" style="display:none"></div>
-			
-			<div id="newsList" style="display:none">
-				<ul></ul>
-			</div>
-			
-			<div id="newsDetails" style="display:none">
-				<iframe width="960" height="480"></iframe>
-			</div>
-		</div>
-		
 		<#if REG_MSG?exists && REG_MSG != "">
 			<span id="msgAutenticacao">&nbsp &nbsp &nbsp ${REG_MSG}</span>
 		</#if>
@@ -117,6 +102,32 @@
 		</#if>
 		
 		<br /><br />
+	</div>
+
+	<div id="sidebar">
+		<div id="news">
+			<a id="newsIcon" href="javascript:;" title="Últimas notícias" style="display:none">
+				<img src='<@ww.url includeParams="none" value="/imgs/sb_news.png"/>' border='0'/>
+			</a>
+			<div id="newsCount" style="display:none"></div>
+			
+			<div id="newsList" style="display:none">
+				<ul></ul>
+			</div>
+			
+			<div id="newsDetails" style="display:none">
+				<iframe width="960" height="480"></iframe>
+			</div>
+		</div>
+		
+		<a title="LogMeIn Rescue" href="http://www.logmein123.com" target="_blank" rel="nofollow"><img src="<@ww.url includeParams="none" value="/imgs/sb_logmein.png"/>" border="0"/></a><br />
+		<#if Session["LINK_SUPORTE"]?exists>
+			<a title="Suporte via chat" href="${Session["LINK_SUPORTE"]}" target="_blank" rel="nofollow"><img src="<@ww.url includeParams="none" value="/imgs/sb_chat.png"/>" border="0" /></a><br />
+		</#if>
+		<a title="Blog" href="http://blog.fortesinformatica.com.br/categoria/ente-rh" target="_blank" rel="nofollow"><img src="<@ww.url includeParams="none" value="/imgs/sb_blog.png"/>" border="0" /></a><br />
+		<a title="Twitter" href="http://twitter.com/#!/entetecnologia" target="_blank" rel="nofollow"><img src="<@ww.url includeParams="none" value="/imgs/sb_twitter.png"/>" border="0" /></a><br />
+		<a title="Videoteca" href="<@ww.url includeParams="none" value="/videoteca.action"/>" rel="nofollow"><img src="<@ww.url includeParams="none" value="/imgs/sb_videos.png"/>" border="0" /></a><br />
+		<a title="Contatos" href="<@ww.url includeParams="none" value="/contatos.action"/>" rel="nofollow"><img src="<@ww.url includeParams="none" value="/imgs/sb_fone.png"/>"  border="0" /></a>
 	</div>
 </body>
 </html>

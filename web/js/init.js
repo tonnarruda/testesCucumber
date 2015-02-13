@@ -79,7 +79,7 @@ $(function(){
 			
 			$('#newsIcon').show().click(function(event) {
 								event.preventDefault();
-								$('#newsList').dialog({ width: 400, height: 200, title: 'Últimas Notícias', position: { my: "right top", at: "right bottom", of: "#newsIcon" } });
+								$('#newsList').dialog({ width: 400, height: 200, title: 'Últimas Notícias', position: { my: "right top", at: "left top", of: "#news" } });
 							});
 			
 			$('#newsList li').click(function(event) {

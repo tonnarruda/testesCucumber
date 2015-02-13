@@ -2,6 +2,9 @@ package com.fortes.rh.web.action.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -30,6 +33,7 @@ public class LoginAction extends MyActionSupport
 	private Boolean demonstracao = false;
 	private String servidorRemprot;
 
+	@SuppressWarnings("unchecked")
 	public String login() throws Exception
 	{
 		try
@@ -37,15 +41,18 @@ public class LoginAction extends MyActionSupport
 			if (SecurityUtil.hasLoggedUser())
 				return "index";
 			
+			Map<String, Object> session = ActionContext.getContext().getSession();
+			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 			
 			String msgAutenticacao = "";
+			String linkSuporte = null;
+			
 			if(demonstracao)
 			{
 				msgAutenticacao = Autenticador.getMsgPadrao();
 			}
 			else
 			{
-				ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 				try {
 					servidorRemprot = parametrosDoSistema.getServidorRemprot();
 					Autenticador.verificaCopia(servidorRemprot, parametrosDoSistema.verificaRemprot());
@@ -62,9 +69,15 @@ public class LoginAction extends MyActionSupport
 				}					
 			}
 			
-			ActionContext.getContext().getSession().put("REG_MSG", msgAutenticacao);
+			session.put("REG_MSG", msgAutenticacao);
 			
-			//empresas = empresaManager.findToList(new String[]{"id","nome"}, new String[]{"id","nome"}, new String[]{"nome"});
+			if (parametrosDoSistema.isSuporteVeica())
+				linkSuporte = "http://184.106.249.85";
+			else if (!StringUtils.isEmpty(parametrosDoSistema.getCodEmpresaSuporte()) && !StringUtils.isEmpty(parametrosDoSistema.getCodClienteSuporte()))
+				linkSuporte = "http://chatonline.grupofortes.com.br/cliente/MATRIZ/" + parametrosDoSistema.getCodClienteSuporte() + "/" + parametrosDoSistema.getCodEmpresaSuporte();
+			
+			session.put("LINK_SUPORTE", linkSuporte);
+			
 			return Action.SUCCESS;
 
 		} catch (Exception e)
