@@ -128,6 +128,17 @@
 </head>
 <body>
 	<@ww.actionmessage />
+
+	<#if questionario.tipo == 1>
+		<@authz.authorize ifNotGranted="ROLE_COLAB_LIST_ENTREVISTA_RESPONDER">
+			<div class="info">
+				<ul>
+					<li>Você não tem permissão para responder esta entrevista. Só é possível visualizá-la.</li>
+				<ul>
+			</div>
+		</@authz.authorize>
+	</#if>
+
 	<#if !questionario.anonimo>
 		<#if colaborador?exists && colaborador.nome?exists>
 			<#if vinculo?exists && vinculo == 'A'>
