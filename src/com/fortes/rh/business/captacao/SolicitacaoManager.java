@@ -23,6 +23,14 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 {
 	@Audita(operacao="Altera Status", auditor=SolicitacaoAuditorCallbackImpl.class)
 	void updateStatusSolicitacao(Solicitacao solicitacao);
+
+	@Audita(operacao="Inserção", auditor=SolicitacaoAuditorCallbackImpl.class)
+	Solicitacao save(Solicitacao solicitacao, String[] emailsMarcados, Long[] avaliacaoIds);
+	
+	@Audita(operacao="Atualização", auditor=SolicitacaoAuditorCallbackImpl.class)
+	void updateSolicitacao(Solicitacao solicitacao, Long[] avaliacaoIds, Empresa empresa, Usuario usuario) throws Exception;
+
+	
 	boolean removeCascade(Long id);
 	Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Character status, Boolean suspensa);
 	Solicitacao getValor(Long id);
@@ -42,13 +50,11 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorQtdCandidatos(Date dataDe, Date dataAte, Collection<Long> areasIds, Collection<Long> estabelecimentosIds, Long[] solicitacaoIds);
 	List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMotivosSolicitacao(Date dataDe, Date dataAte, Collection<Long> areasOrganizacionais, Collection<Long> estabelecimentos, Long empresaId, char statusSolicitacao, char dataStatusAprovacaoSolicitacao, boolean indicadorResumido);
 	void emailSolicitante(Solicitacao solicitacao, Empresa empresa, Usuario usuario);
-	Solicitacao save(Solicitacao solicitacao, String[] emailsMarcados, Long[] avaliacaoIds);
 	Collection<Solicitacao> findAllByCandidato(Long candidatoId);
 	Collection<FaixaSalarial> findQtdVagasDisponiveis(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim, char dataStatusAprovacaoSolicitacao);
 	Collection<DataGrafico> findQtdContratadosPorFaixa(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	Collection<DataGrafico> findQtdContratadosPorArea(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
 	Collection<DataGrafico> findQtdContratadosPorMotivo(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim);
-	void updateSolicitacao(Solicitacao solicitacao, Long[] avaliacaoIds, Empresa empresa, Usuario usuario) throws Exception;
 	void encerrarSolicitacaoAoPreencherTotalVagas(Solicitacao solicitacao, Empresa empresa) throws Exception;
 	Collection<Solicitacao> findByEmpresaEstabelecimentosAreas(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds);
 	Collection<String> getNomesColabSubstituidosSolicitacaoEncerrada(Long empresaId);
