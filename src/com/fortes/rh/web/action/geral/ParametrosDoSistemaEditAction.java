@@ -106,7 +106,8 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		for(int i=0; i < 24; i++)
 			horasBackupMap.put(i + "",i + ":00");
 		horariosBackupList = populaCheckListBox(horasBackupMap);
-		horariosBackupList = marcaCheckListBox(horariosBackupList, parametrosDoSistema.getHorariosBackup().split(","));
+		if(parametrosDoSistema.getHorariosBackup() != null)
+			horariosBackupList = marcaCheckListBox(horariosBackupList, parametrosDoSistema.getHorariosBackup().split(","));
 	}
 
 	public String update() throws Exception
