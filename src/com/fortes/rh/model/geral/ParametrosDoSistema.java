@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -51,6 +52,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String acVersaoWebServiceCompativel;
     @Column(length=200)
     private String caminhoBackup;
+    @Lob
     private String horariosBackup;
     @Temporal(TemporalType.DATE)
     private Date proximaVersao;
@@ -329,7 +331,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	
 	public void setHorariosBackup(String horariosBackup)
 	{
-		this.horariosBackup = horariosBackup.replace(" ", "");
+		this.horariosBackup = horariosBackup;
 	}
 
 	public Boolean getCompartilharCursos()

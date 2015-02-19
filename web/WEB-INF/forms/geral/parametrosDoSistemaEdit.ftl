@@ -106,23 +106,7 @@
 	<@ww.textfield label="Atualizador" name="parametrosDoSistema.atualizadorPath" id="atualizadorPath" size="80" maxLength="100" required="true"/>
 	<@ww.textfield label="Configuração do autenticador" name="parametrosDoSistema.servidorRemprot" id="servidorRemprot" size="80" maxLength="100" required="true"/>
 	<@ww.textfield label="Réplica do backup do banco de dados" name="parametrosDoSistema.caminhoBackup" id="caminhoBackup" size="80" maxLength="200" />
-	
-	<li id="wwgrp_horariosBackup" class="wwgrp">
-		<div id="wwlbl_horariosBackup" class="wwlbl"><label for="horariosBackup" class="desc">Marque as horas desejadas do dia para efetuar o backup do banco de dados:*</label></div>
-		<div id="wwctrl_horariosBackup" class="wwctrl">
-			<div class="listCheckBoxContainer" style="width: 570px; height: 150px;">
-				<div id="listCheckBoxhorariosBackup" class="listCheckBox">
-					<table id="diasTable" class="dados">
-						<#foreach hora in horariosBackupList>
-							<label for="checkHorariosBackupList${hora}"><input name="horariosBackup" value="${hora}" type="checkbox" id="checkGrouphorariosBackup${hora}">${hora}:00</label> 
-						</#foreach>
-					</table>
-				</div>
-			</div>
-		</div>
-	</li>
-	<br/>
-	
+	<@frt.checkListBox label="Marque as horas desejadas do dia para efetuar o backup do banco de dados" name="horariosBackup" id="horariosBackup" list="horariosBackupList" width="562"/>
 	<@ww.select label="Perfil padrão" name="parametrosDoSistema.perfilPadrao.id" list="perfils" cssStyle="width: 300px;" listKey="id" listValue="nome" required="true" id="perfil" />
 	<@ww.select label="Tela inicial do módulo externo" id="telainicialmoduloexterno" name="parametrosDoSistema.telaInicialModuloExterno" list=r"#{'L':'Tela de login','V':'Tela de vagas disponíveis'}" required="true" cssStyle="width: 300px;" />
 	<@ww.checkbox label="Forçar caixa alta nos campos do módulo externo" id="capitalizarCampos" name="parametrosDoSistema.upperCase" liClass="liLeft" labelPosition="left"/>
@@ -217,11 +201,5 @@
 		<button type="button" onclick="submitForm();" class="btnGravar" accesskey="${accessKey}">
 		</button>
 	</div>
-	
-	<script>
-		<#foreach horaBackup in horariosBackup>
-			$("#checkGrouphorariosBackup${horaBackup}").attr("checked", "checked");
-		</#foreach>
-	</script>
 </body>
 </html>

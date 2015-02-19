@@ -1,10 +1,15 @@
 package com.fortes.rh.web.action.geral;
 
 
+import static com.fortes.rh.util.CheckListBoxUtil.marcaCheckListBox;
+import static com.fortes.rh.util.CheckListBoxUtil.populaCheckListBox;
+
 import java.sql.BatchUpdateException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.exception.ConstraintViolationException;
@@ -36,6 +41,7 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
+import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
@@ -69,7 +75,8 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 	private String[] camposCandidatoObrigatorios;
 	private String[] camposCandidatoVisivels;
-	private String horariosBackup;
+	private Collection<String> horariosBackup;
+	private Collection<CheckBox> horariosBackupList = new ArrayList<CheckBox>();
 	
 	private boolean habilitaCampoExtra;
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
@@ -88,8 +95,18 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	{
 		parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 		perfils = perfilManager.findAll();
+		populoHorariosBackupList();
 		
 		return Action.SUCCESS;
+	}
+
+	private void populoHorariosBackupList() 
+	{
+		HashMap<String, String> horasBackupMap = new LinkedHashMap<String, String>();
+		for(int i=0; i < 24; i++)
+			horasBackupMap.put(i + "",i + ":00");
+		horariosBackupList = populaCheckListBox(horasBackupMap);
+		horariosBackupList = marcaCheckListBox(horariosBackupList, parametrosDoSistema.getHorariosBackup().split(","));
 	}
 
 	public String update() throws Exception
@@ -102,12 +119,13 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		if(getUsuarioLogado().getId() != 1 && parametrosDoSistema.getProximaVersao() == null)
 			parametrosDoSistema.setProximaVersao(parametrosDoSistemaAux.getProximaVersao());
 		
-		parametrosDoSistema.setHorariosBackup(horariosBackup);
+		parametrosDoSistema.setHorariosBackup(StringUtil.converteCollectionToString(horariosBackup));
 		
 		ServletActionContext.getRequest().getSession().setMaxInactiveInterval(parametrosDoSistema.getSessionTimeout());
 		parametrosDoSistemaManager.update(parametrosDoSistema);
 		
 		perfils = perfilManager.findAll();
+		populoHorariosBackupList();
 		addActionSuccess("Configurações do sistema atualizadas com sucesso.");
 
 		return Action.SUCCESS;
@@ -243,18 +261,9 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	public void setCamposCandidatoVisivels(String[] camposCandidatoVisivels) {
 		this.camposCandidatoVisivels = camposCandidatoVisivels;
 	}
-	
-	public void setHorariosBackup(String horariosBackup) {
-		this.horariosBackup = horariosBackup;
-	}
 
-	public String[] getHorariosBackup() {
-		return parametrosDoSistema.getHorariosBackup().split(",");
-	}
-	
-	public String[] getHorariosBackupList() {
-		return new String[]{"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12",
-							"13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23"};
+	public Collection<CheckBox> getHorariosBackupList() {
+		return horariosBackupList;
 	}
 
 	public boolean isHabilitaCampoExtra() {
@@ -377,5 +386,9 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 	public void setLogErro(String logErro) {
 		this.logErro = logErro;
+	}
+
+	public void setHorariosBackup(Collection<String> horariosBackup) {
+		this.horariosBackup = horariosBackup;
 	}
 }
