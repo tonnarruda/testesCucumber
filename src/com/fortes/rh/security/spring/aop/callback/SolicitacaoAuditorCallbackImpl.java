@@ -128,7 +128,7 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		dadosAnteriores.put("motivoSolicitacaoId", solicitacaoAnterior.getMotivoSolicitacao().getId().toString());
 		dadosAnteriores.put("motivoSolicitacaoDescricao", solicitacaoAnterior.getMotivoSolicitacao().getDescricao());
 		dadosAnteriores.put("vinculo", solicitacaoAnterior.getVinculoDescricao());
-		dadosAnteriores.put("remuneracao", solicitacaoAnterior.getRemuneracaoFormatada() != null ? solicitacaoAnterior.getRemuneracaoFormatada() : "");
+		dadosAnteriores.put("remuneracao", solicitacaoAnterior.getRemuneracao() != null ? solicitacaoAnterior.getRemuneracaoFormatada() : "");
 		dadosAnteriores.put("escolaridade", solicitacaoAnterior.getEscolaridade() != null ? solicitacaoAnterior.getEscolaridade() : "");
 		dadosAnteriores.put("sexo", solicitacaoAnterior.getSexo());
 		dadosAnteriores.put("idadeMinima", solicitacaoAnterior.getIdadeMinimaDesc() != null ? solicitacaoAnterior.getIdadeMinimaDesc() : "");
@@ -234,7 +234,7 @@ public class SolicitacaoAuditorCallbackImpl implements AuditorCallback {
 		}
 		
 		dadosAtualizados.put("vinculo", solicitacao.getVinculoDescricao());
-		dadosAtualizados.put("remuneracao", solicitacao.getRemuneracaoFormatada() != null ? solicitacao.getRemuneracaoFormatada() : "");
+		dadosAtualizados.put("remuneracao", solicitacao.getRemuneracao() != null ? solicitacao.getRemuneracaoFormatada() : "");
 		dadosAtualizados.put("escolaridade", solicitacao.getEscolaridade() != null ? solicitacao.getEscolaridade() : "");
 		dadosAtualizados.put("sexo", solicitacao.getSexo());
 		dadosAtualizados.put("idadeMinima", solicitacao.getIdadeMinimaDesc() != null ? solicitacao.getIdadeMinimaDesc() : "");
