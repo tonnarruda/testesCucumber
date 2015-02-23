@@ -7,6 +7,7 @@
 		<Item visivel="S" motivo="P20150200083"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações da Turma > Resultado das Avaliações: Após gerar o relatório, o mesmo desconfigurava a empresa da sessão.]]></Item>
 		<Item visivel="S" motivo="S20150100127"><![CDATA[T&D > Relatórios > Colaboradores x Certificações > Exportar: Novo botão "Exportar" para gerar relatório no formato XLS.]]></Item>
 		<Item visivel="S" motivo="S20150100106"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Novo campo para informar se o desligamento gera substituição de colaborador.]]></Item>
+		<Item visivel="S" motivo="P20150200212"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Não enviar a solicitação de desligamento para o AC quando a opção de não enviar o colaborador para o AC Pessoal estiver marcada.]]></Item>
 		<Item visivel="S" motivo="P20150100179"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Excluir: Correção de inconsistência ao excluir colaborador que possui mensagens com o usuário fortes.]]></Item>
 		<Item visivel="S" motivo="P20150200069"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Correção de inconsistência ao contratar um colaborador através de uma solicitação de pessoal cujo campo horário de trabalho tivesse um valor maior do que 50 caracteres.]]></Item>
 		<Item visivel="S" motivo="S20150100079"><![CDATA[Info. Funcionais > Movimentações > Aprovar/Reprovar Solicitações de Desligamento: Data de solicitação de desligamento inserida na lista.]]></Item>
