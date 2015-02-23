@@ -1351,6 +1351,6 @@ function checkListBoxSearch(name)
 	
 	$("input:checkbox[name='" + name + "']").each(function() {
 		nomeTeste = removerAcento( $( this ).parent( 'label' ).text().toUpperCase() );
-		$( this ).parent().toggle( nomeTeste.indexOf( filtroTexto ) > -1 && nomeTeste.indexOf( filtroAtivo ) > -1 );
+		$( this ).parent().toggle( nomeTeste.indexOf( filtroTexto ) > -1 && ( typeof filtroAtivo == "undefined" || nomeTeste.indexOf( filtroAtivo ) > -1 ));
 	});
 }
