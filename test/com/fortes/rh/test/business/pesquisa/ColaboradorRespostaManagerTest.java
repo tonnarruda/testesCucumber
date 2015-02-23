@@ -440,13 +440,12 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	//resposta.ordem, count(resposta.id), pergunta.id, resposta.id
     	countRespostas.add(new Object[]{1,1,384L,103L});
     	countRespostas.add(new Object[]{1,2,382L,102L});
-    	countRespostas.add(new Object[]{1,2,382L,102L});
     	countRespostas.add(new Object[]{2,1,384L,104L});
     	
     	colaboradorRespostaDao.expects(once()).method("countRespostasMultiplas").with(new Constraint[]{eq(perguntasIds), ANYTHING, eq(areasIds), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(countRespostas));
     	Collection<QuestionarioResultadoPerguntaObjetiva> resultadosMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, null, areasIds, null, null, null, false, null, 2, null);
     	
-    	assertEquals(4, resultadosMultiplas.size());
+    	assertEquals(3, resultadosMultiplas.size());
     	for (QuestionarioResultadoPerguntaObjetiva resultado : resultadosMultiplas)
     	{
     		if(resultado.getRespostaId().equals(103L))

@@ -213,7 +213,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		whereTurma +
 		whereEmpresa +
 		"group by r.ordem, p.id, r.id "+
-		"order by r.ordem ";
+		"order by p.id, r.ordem ";
 		
 		Query query = getSession().createQuery(queryHQL);
 		query.setInteger("tipoPergunta", TipoPergunta.MULTIPLA_ESCOLHA);

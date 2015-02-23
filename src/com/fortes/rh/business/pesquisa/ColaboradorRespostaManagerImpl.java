@@ -3,8 +3,11 @@ package com.fortes.rh.business.pesquisa;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
@@ -397,24 +400,39 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Integer totalColaboradores, Long empresaId)
 	{
     	List<Object[]> countRespostas = getDao().countRespostasMultiplas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, empresaId);
+        Collection<QuestionarioResultadoPerguntaObjetiva> resultadosMultiplaEscolha = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
+        Map<Long, Integer> totalRespostasPorQuestao = new LinkedHashMap<Long, Integer>();
+        
+        Long perguntaId;
+        for (int i = 0; i < countRespostas.size(); i++)
+        {
+        	Object[] qtdResposta = (Object[])countRespostas.get(i);
 
-        Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
+        	if(qtdResposta[1] != null && qtdResposta[2] != null)
+        	{
+	        	perguntaId = (Long)qtdResposta[2];
+	        	if(totalRespostasPorQuestao.containsKey(perguntaId))
+	        		totalRespostasPorQuestao.put(perguntaId, (totalRespostasPorQuestao.get(perguntaId) + (Integer)qtdResposta[1]));
+	        	else
+	        		totalRespostasPorQuestao.put(perguntaId, (Integer)qtdResposta[1]);
+        	}
+        }
 
         for (int i = 0; i < countRespostas.size(); i++)
         {
             Object[] qtdResposta = (Object[])countRespostas.get(i);
             
-            if(qtdResposta[1] != null && qtdResposta[3] != null)
+            if(qtdResposta[1] != null && qtdResposta[2] != null && qtdResposta[3] != null)
             {
 	            QuestionarioResultadoPerguntaObjetiva resultado = new QuestionarioResultadoPerguntaObjetiva();
 	            resultado.setQtdRespostas((Integer)qtdResposta[1]);
 	            resultado.setRespostaId((Long)qtdResposta[3]);
-	            resultado.setQtdPercentualRespostas(ConverterUtil.convertDoubleToString((resultado.getQtdRespostas() / new Double(totalColaboradores)) * 100.0));
-	            resultadosObjetivas.add(resultado);
+	            resultado.setQtdPercentualRespostas(ConverterUtil.convertDoubleToString((resultado.getQtdRespostas() / new Double(totalRespostasPorQuestao.get((Long)qtdResposta[2]))) * 100.0));
+	            resultadosMultiplaEscolha.add(resultado);
             }
         }
 
-        return resultadosObjetivas;
+        return resultadosMultiplaEscolha;
 	}
 	
 	/**
