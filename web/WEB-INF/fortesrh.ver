@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.14x.169" bd="" data="xx/xx/2015">
-		<Item visivel="S" motivo="S20141200160"><![CDATA[R&S > Movimentação > Solicitação de Pessoal: Permitir apenas visualização da solicitação de pessoal após o status ser alterado para aprovada ou reprovada.]]></Item>
+	<Versao id="1.1.141.170" bd="" data="24/02/2015">
+		<Item visivel="S" motivo="S20141200160"><![CDATA[R&S > Movimentação > Solicitação de Pessoal > Editar: Apenas visualizar a solicitação de pessoal quando o status estiver aprovada ou reprovada.]]></Item>
 		<Item visivel="S" motivo="P20150100032"><![CDATA[C&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Histórico > Imprimir: Melhoria no layout do relatório.]]></Item>
 		<Item visivel="S" motivo="P20150200173"><![CDATA[Pesquisas > Movimentações > Pesquisas > Relatório da Pesquisa: Alteração no cálculo do percentual do resultado das respostas, passando a considerando a quantidade de respostas em vez de quantidade de colaboradores.]]></Item>
 		<Item visivel="S" motivo="P20150200083"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações da Turma > Resultado das Avaliações: Após gerar o relatório, o mesmo desconfigurava a empresa da sessão.]]></Item>
@@ -20,8 +20,8 @@
 		<Item visivel="S" motivo="S20141000205"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Novas permissões para visualizar ou responder a entrevista de desligamento.]]></Item>
 		<Item visivel="S" motivo="S20150100154"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de configuração para notificar quando "Cadastrar solicitação de realinhamento para colaborador" através de email para o gestor, cogestor da área organizacional e outros usuários.]]></Item>
 		<Item visivel="S" motivo="S20150200057"><![CDATA[Utilitários > Configurações > Sistema: Nova configuração de horários do backup automático do banco de dados.]]></Item>
-		<Item visivel="S" motivo="P20150100299"><![CDATA[Utilitários > Auditoria: Auditando dados da inclusão/alteração da solicitação de pessoal.]]></Item>
-		<Item visivel="S" motivo="P20150100182"><![CDATA[Utilitários > Auditoria: Mostrar data do status de uma solicitação de pessoal na auditoria.]]></Item>
+		<Item visivel="S" motivo="P20150100299"><![CDATA[Utilitários > Auditoria: Auditar dados da inserção e edição da solicitação de pessoal.]]></Item>
+		<Item visivel="S" motivo="P20150100182"><![CDATA[Utilitários > Auditoria: Auditar data e mudança do status de uma solicitação de pessoal.]]></Item>
 		<Item visivel="S" motivo="S20150200052"><![CDATA[Módulo Externo: Não exibir o email do suporte da Fortes nas telas de erro.]]></Item>
 		<Item visivel="S" motivo="P20150100259"><![CDATA[Tratamento de mensagens ao cancelar contratação pelo AC Pessoal.]]></Item>
 		<Item visivel="S" motivo="P20150200019"><![CDATA[Ajuste na contagem de dias para o envio de lembretes de avaliações de período de experiência.]]></Item>

@@ -29,5 +29,5 @@ Funcionalidade: Cadastrar Motivos de Solicitação
 
     Então eu clico em excluir "falta de mão de obra 2"
     E eu devo ver o alert do confirmar exclusão e clico no ok
-    Então eu devo ver "Motivo de Solicitação excluído com sucesso."
+    Então eu devo ver "Motivo de solicitação excluído com sucesso."
     E eu não devo ver "falta de mão de obra 2"

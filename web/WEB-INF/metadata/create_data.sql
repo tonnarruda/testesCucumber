@@ -4,10 +4,9 @@
 
 SET statement_timeout = 0;
 SET client_encoding = 'UTF8';
-SET standard_conforming_strings = off;
+SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
-SET escape_string_warning = off;
 
 SET search_path = public, pg_catalog;
 
@@ -890,7 +889,7 @@ SELECT pg_catalog.setval('ocorrencia_sequence', 1, false);
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 629, false);
+SELECT pg_catalog.setval('papel_sequence', 632, false);
 
 
 --
@@ -25646,6 +25645,11 @@ INSERT INTO migrations (name) VALUES ('20141215173343');
 INSERT INTO migrations (name) VALUES ('20141229113638');
 INSERT INTO migrations (name) VALUES ('20141230164850');
 INSERT INTO migrations (name) VALUES ('20150119094033');
+INSERT INTO migrations (name) VALUES ('20150201192803');
+INSERT INTO migrations (name) VALUES ('20150204154925');
+INSERT INTO migrations (name) VALUES ('20150209142427');
+INSERT INTO migrations (name) VALUES ('20150211112346');
+INSERT INTO migrations (name) VALUES ('20150211130729');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
@@ -25987,6 +25991,9 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (628, 'ROLE_CAD_MOTIVO_SOLICITACAO_EPI', 'Motivos de Solicitação de EPI', '/sesmt/motivoSolicitacaoEpi/list.action', 2, true, NULL, 385, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (505, 'ROLE_CES_PAINEL_IND', 'Painel de Indicadores', '/cargosalario/historicoColaborador/painelIndicadoresCargoSalario.action', 4, true, NULL, 361, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (461, 'ROLE_RES_PAINEL_IND', 'Painel de Indicadores', '/indicador/duracaoPreenchimentoVaga/painel.action', 4, true, NULL, 357, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (629, 'ROLE_MOV_APLICARREALINHAMENTO', 'Aplicar Realinhamento', '#', 1, false, NULL, 26, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (630, 'ROLE_COLAB_LIST_ENTREVISTA_VISUALIZAR', 'Visualizar', '#', 1, false, NULL, 547, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (631, 'ROLE_COLAB_LIST_ENTREVISTA_RESPONDER', 'Responder', '#', 2, false, NULL, 547, NULL);
 
 
 ALTER TABLE papel ENABLE TRIGGER ALL;
@@ -26009,7 +26016,7 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.140.169', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.141.170', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2');
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;
@@ -26280,6 +26287,9 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 625);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 626);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 627);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 628);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 629);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 630);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 631);
 
 
 ALTER TABLE perfil_papel ENABLE TRIGGER ALL;

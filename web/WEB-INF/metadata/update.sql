@@ -22772,3 +22772,36 @@ DROP INDEX IF EXISTS index_solicitacaoexame_data_empresa_id;--.go
 CREATE INDEX index_solicitacaoexame_data_empresa_id ON solicitacaoexame (data,empresa_id);--.go
 insert into migrations values('20150119094033');--.go
 update parametrosdosistema set appversao = '1.1.140.169';--.go
+-- versao 1.1.141.170
+
+alter table colaborador add column demissaogerousubstituicao character(1);--.go
+insert into migrations values('20150201192803');--.go
+ALTER TABLE colaborador ALTER COLUMN regimerevezamento TYPE character varying(255);--.go
+insert into migrations values('20150204154925');--.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (629, 'ROLE_MOV_APLICARREALINHAMENTO', 'Aplicar Realinhamento', '#', 1, false, 26); --.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 629 from perfil_papel where papeis_id = 26;
+alter sequence papel_sequence restart with 630;--.go
+insert into migrations values('20150209142427');--.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (630, 'ROLE_COLAB_LIST_ENTREVISTA_VISUALIZAR', 'Visualizar', '#', 1, false, 547);--.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (631, 'ROLE_COLAB_LIST_ENTREVISTA_RESPONDER', 'Responder', '#', 2, false, 547);--.go
+
+CREATE FUNCTION ajusta_perfil() RETURNS integer AS $$ 
+DECLARE 
+    mviews RECORD; 
+BEGIN 
+    FOR mviews IN 
+		select perfil_id from perfil_papel where papeis_id = 547 
+		LOOP 
+		  insert into perfil_papel(perfil_id, papeis_id) values( mviews.perfil_id , 630);
+		  insert into perfil_papel(perfil_id, papeis_id) values( mviews.perfil_id , 631); 
+		END LOOP; 
+    RETURN 1; 
+END; 
+$$ LANGUAGE plpgsql;--.go
+select ajusta_perfil();--.go
+drop function ajusta_perfil();--.go
+alter sequence papel_sequence restart with 632;--.go
+insert into migrations values('20150211112346');--.go
+alter table parametrosdosistema add column horariosbackup text default '2'; --.go
+insert into migrations values('20150211130729');--.go
+update parametrosdosistema set appversao = '1.1.141.170';--.go

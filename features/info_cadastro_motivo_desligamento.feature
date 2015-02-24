@@ -28,7 +28,7 @@ Funcionalidade: Motivos de Desligamento
 
     Então eu clico em excluir "gritou com o colega"
     E eu devo ver o alert do confirmar exclusão e clico no ok
-    Então eu devo ver "Motivo excluído com sucesso."
+    Então eu devo ver "Motivo de desligamento excluído com sucesso."
     E eu não devo ver "gritou com o colega"
 
 

@@ -17,12 +17,11 @@ Funcionalidade: Relatório de Colaboradores por Grupo Ocupacional
     Então eu marco "Matriz"
     E eu marco "Financeiro"
     
-    Então eu seleciono "Ativas" de "ativa"
+    Então eu seleciono "Ativos" de "listCheckBoxActiveareaOrganizacionalsCheck"
     E eu espero 1 segundo
     E eu devo ver "Financeiro"
-    E eu não devo ver "Almoxarifado"
-    
-    Então eu seleciono "Ativas e inativas" de "ativa"
+
+    Então eu seleciono "Todos" de "listCheckBoxActiveareaOrganizacionalsCheck"
     E eu espero 1 segundo
     E eu devo ver "Financeiro"
     E eu devo ver "Almoxarifado"
