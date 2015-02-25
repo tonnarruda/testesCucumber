@@ -4,6 +4,7 @@
 		<Item visivel="S" motivo="S20141200160"><![CDATA[R&S > Movimentação > Solicitação de Pessoal > Editar: Apenas visualizar a solicitação de pessoal quando o status estiver aprovada ou reprovada.]]></Item>
 		<Item visivel="S" motivo="P20150100032"><![CDATA[C&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Histórico > Imprimir: Melhoria no layout do relatório.]]></Item>
 		<Item visivel="S" motivo="P20150200173"><![CDATA[Pesquisas > Movimentações > Pesquisas > Relatório da Pesquisa: Alteração no cálculo do percentual do resultado das respostas, passando a considerando a quantidade de respostas em vez de quantidade de colaboradores.]]></Item>
+		<Item visivel="S" motivo="P20150200234"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Impossibilitando duplicar respotas ao responder uma avaliação de desempenho.]]></Item>
 		<Item visivel="S" motivo="P20150200083"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações da Turma > Resultado das Avaliações: Após gerar o relatório, o mesmo desconfigurava a empresa da sessão.]]></Item>
 		<Item visivel="S" motivo="S20150100127"><![CDATA[T&D > Relatórios > Colaboradores x Certificações > Exportar: Novo botão "Exportar" para gerar relatório no formato XLS.]]></Item>
 		<Item visivel="S" motivo="S20150100106"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Novo campo para informar se o desligamento gera substituição de colaborador.]]></Item>
