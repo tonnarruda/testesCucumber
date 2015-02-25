@@ -62,7 +62,7 @@ public class CandidatoFactory
 		pessoal.setEscolaridade("e");
 		pessoal.setSexo('m');
 		pessoal.setConjugeTrabalha(false);
-		pessoal.setCpf("00000000000");
+		pessoal.setCpf("11111111111");
 		pessoal.setConjuge("Maria");
 		pessoal.setNaturalidade("Palmacia");
 		pessoal.setMae("Joana");

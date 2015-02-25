@@ -73,6 +73,10 @@ import com.opensymphony.xwork.ActionContext;
 @SuppressWarnings("unchecked")
 public class CandidatoEditAction extends MyActionSupportEdit
 {
+	private static final String CPF_JA_CADASTRADO = "CPF já cadastrado!";
+
+	private static final String JA_EXISTE_UM_CURRICULO_COM_ESSE_CPF = "Já existe um currículo com esse CPF.";
+
 	private static final long serialVersionUID = 1L;
 
 	private CandidatoManager candidatoManager;
@@ -324,20 +328,12 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		
 		try 
 		{
-			Candidato candidatoTmp = candidatoManager.verifyCPF(candidato.getPessoal().getCpf(), empresa.getId(), candidato.getId(), null);
-			if(candidatoTmp != null)
-			{
-				if (moduloExterno)
-					addActionError("Já existe um currículo com esse CPF e/ou em duplicidade.");
-				else
-					addActionError("CPF já cadastrado!");
-				
-				prepare();
-				return Action.INPUT;				
+			if (verificaCPFDuplicado(empresa.getId(), true)) {
+				return Action.INPUT;
 			}
 		} catch (NonUniqueResultException notUniqueResultException) 
 		{
-			addActionError("CPF já cadastrado!");
+			addActionError(CPF_JA_CADASTRADO);
 			prepare();
 			return Action.INPUT;				
 		}
@@ -461,20 +457,12 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 		try 
 		{
-			Candidato candidatoTmp = candidatoManager.verifyCPF(candidato.getPessoal().getCpf(), empresaId, candidato.getId(), null);
-			if(candidatoTmp != null)
-			{
-				if (moduloExterno)
-					addActionError("Já existe um currículo com esse CPF.");
-				else
-					addActionError("CPF já cadastrado!");
-				
-				prepare();
-				return Action.INPUT;				
+			if (verificaCPFDuplicado(empresaId, true)) {
+				return Action.INPUT;
 			}
 		} catch (NonUniqueResultException notUniqueResultException) 
 		{
-			addActionError("CPF já cadastrado!");
+			addActionError(CPF_JA_CADASTRADO);
 			prepare();
 			return Action.INPUT;				
 		}
@@ -566,31 +554,36 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public String insertCurriculo() throws Exception
 	{		
-		try
-		{
+		try {
+			
+			if (verificaCPFDuplicado(empresaId, false)) {
+				return Action.INPUT;
+			}
+			
 			if (candidato.getId() == null)
 				prepareCandidato();
 
 			candidato.setCargos(cargoManager.populaCargos(cargosCheck));
-			candidato = candidatoManager.saveCandidatoCurriculo(candidato, imagens, ocrTexto);
+			candidato = candidatoManager.saveCandidatoCurriculo(candidato,
+					imagens, ocrTexto);
 			return Action.SUCCESS;
-		}
-		catch (FormatoArquivoInvalidoException e)
-		{
+		} catch (NonUniqueResultException notUniqueResultException) {
+			addActionError(CPF_JA_CADASTRADO);
+			prepare();
+			return Action.INPUT;
+		} catch (FormatoArquivoInvalidoException e) {
 			if (candidato.getId() == null)
 				prepareInsertCurriculoPlus();
-			
+
 			CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
-			
+
 			addActionError(e.getMessage());
 			e.printStackTrace();
 			return Action.INPUT;
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			if (candidato.getId() == null)
 				prepareInsertCurriculoPlus();
-			
+
 			CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
 
 			addActionError("Não foi possível inserir currículo escaneado.");
@@ -605,13 +598,18 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		
 		try
 		{
+			if (verificaCPFDuplicado(empresaId, true)) {
+				return Action.INPUT;
+			}
 			prepareCandidato();
 			candidato.setOcrTexto(ArquivoUtil.convertToLatin1Compatible(candidato.getOcrTexto().getBytes()));
 			candidato = candidatoManager.save(candidato);
 			addActionMessage("Currículo ("+ candidato.getNome() +") cadastrado com sucesso.");
-		}
-		catch (Exception e)
-		{
+		} catch (NonUniqueResultException notUniqueResultException) {
+			addActionError(CPF_JA_CADASTRADO);
+			prepare();
+			return Action.INPUT;
+		} catch (Exception e) {
 			addActionMessage("Erro ao cadastrar Currículo");
 			return Action.INPUT;
 		}
@@ -658,14 +656,20 @@ public class CandidatoEditAction extends MyActionSupportEdit
 
 	public String updateCurriculo() throws Exception
 	{
-		if (candidato != null && candidato.getId() != null)
-		{
-			candidatoManager.atualizaTextoOcr(candidato);
-			return Action.SUCCESS;
-		}
-		else
-		{
-			addActionError("Nenhum candidato selecione para ser atualizado.");
+		try {
+			if (verificaCPFDuplicado(empresaId, null)) {
+				return Action.INPUT;
+			}
+			if (candidato != null && candidato.getId() != null)	{
+				candidatoManager.atualizaTextoOcr(candidato);
+				return Action.SUCCESS;
+			} else {
+				addActionError("Nenhum candidato selecione para ser atualizado.");
+				return Action.INPUT;
+			}
+			
+		} catch (NonUniqueResultException notUniqueResultException) {
+			addActionError(CPF_JA_CADASTRADO);
 			return Action.INPUT;
 		}
 	}
@@ -835,6 +839,26 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			return prepareUpdateExamePalografico();
 		}
 		return Action.SUCCESS;
+	}
+	
+	private boolean verificaCPFDuplicado(Long empresaId, Boolean prepareSimple) throws Exception {
+		if (candidato != null && candidato.getPessoal().getCpf() != null && !candidato.getPessoal().getCpf().isEmpty()) {
+			Candidato candidatoTmp = candidatoManager.verifyCPF(candidato.getPessoal().getCpf(), empresaId, candidato.getId(), null);
+			if(candidatoTmp != null) {
+				if (moduloExterno) {
+					addActionWarning(JA_EXISTE_UM_CURRICULO_COM_ESSE_CPF);
+				} else {
+					addActionWarning(CPF_JA_CADASTRADO);
+				}
+				if (prepareSimple != null && prepareSimple) {
+					prepare();
+				} else if (!prepareSimple) {
+					prepareInsertCurriculoPlus();
+				}
+				return true;				
+			}
+		}
+		return false;
 	}
 	
 	public Candidato getCandidato()

@@ -480,6 +480,7 @@
 </head>
 
 <body>
+<@ww.actionmessage />
 <@ww.actionerror />
 	<div id="abas">
     	<div id="aba1" class="abaDadosPessoais"><a href="javascript: abas(1, '',${edicao}, qtdAbas)">Dados Pessoais</a></div>

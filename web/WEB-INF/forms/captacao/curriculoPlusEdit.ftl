@@ -97,6 +97,7 @@
 <#assign validarCampos="return validaForm()"/>
 </head>
 <body>
+	<@ww.actionmessage />
 	<@ww.actionerror />
 	<@ww.form name="form" action="insertCurriculoPlus.action" onsubmit="${validarCampos}" validate="true" method="POST" enctype="multipart/form-data">
 		<b>Preenchimento de Dados</b>

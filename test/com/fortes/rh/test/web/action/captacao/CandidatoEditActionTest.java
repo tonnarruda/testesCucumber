@@ -153,6 +153,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     public void testInsertCurriculoTexto() throws Exception
     {
     	Candidato candidato = prepareMocksInsertCurriculo();
+    	manager.expects(once()).method("verifyCPF").withAnyArguments().will(returnValue(null));
     	manager.expects(once()).method("save").with(ANYTHING).will(returnValue(candidato));
     	
     	assertEquals("success" , action.insertCurriculoTexto());
@@ -228,6 +229,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	cargoManager.expects(once()).method("populaCargos").with(ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	cargoManager.expects(once()).method("populaCargos").with(ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	manager.expects(once()).method("saveCandidatoCurriculo").with(ANYTHING,ANYTHING,ANYTHING);
+    	manager.expects(once()).method("verifyCPF").withAnyArguments().will(returnValue(null));
     	assertEquals("success", action.insertCurriculo());
 
     	candidato.setId(1L);
@@ -235,7 +237,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	//manager.expects(once()).method("validaQtdCadastros").isVoid();
     	cargoManager.expects(once()).method("populaCargos").with(ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	manager.expects(once()).method("saveCandidatoCurriculo").with(ANYTHING,ANYTHING,ANYTHING).will(throwException(new Exception()));
-
+    	manager.expects(once()).method("verifyCPF").withAnyArguments().will(returnValue(null));
     	assertEquals("input", action.insertCurriculo());
 
     	candidato.setId(null);
@@ -245,7 +247,8 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	empresaManager.expects(once()).method("findToList").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(empresas));
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
     	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
-
+    	manager.expects(once()).method("verifyCPF").withAnyArguments().will(returnValue(null));
+    	
     	assertEquals("input",action.insertCurriculo());
     }
 
@@ -267,6 +270,7 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	estadoManager.expects(once()).method("findAll").will(returnValue(new ArrayList<Estado>()));
     	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<Cargo>()));
     	cargoManager.expects(once()).method("populaCargos").with(ANYTHING).will(returnValue(new ArrayList<Cargo>()));
+    	manager.expects(once()).method("verifyCPF").withAnyArguments().will(returnValue(null));
     	
     	assertEquals("input", action.insertCurriculo());
     }
@@ -309,7 +313,8 @@ public class CandidatoEditActionTest extends MockObjectTestCase
     	action.setCandidato(candidato);
 
     	manager.expects(once()).method("atualizaTextoOcr").with(eq(candidato));
-
+    	manager.expects(once()).method("verifyCPF").withAnyArguments().will(returnValue(null));
+    	
     	assertEquals("success", action.updateCurriculo());
 
     	action.setCandidato(null);
