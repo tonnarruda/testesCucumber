@@ -594,17 +594,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 						Date data1,  Date data2,  Date data3,  Double valor1,  Double valor2,  Integer numero1  
 					   ) 
 	{
-		this(coId, coNome, esId, esNome, aoId, aoNome, reNome, cgNome, fsNome,
-				empresaId, empresaNome, empresaAcIntegra, nomeComercial,
-				matricula, desligado, dataAdmissao, dataDesligamento, vinculo,
-				naoIntegraAc, cursos, estadoCivil, escolaridade, mae, pai, cpf,
-				pis, rg, rgOrgaoEmissor, deficiencia, rgDataExpedicao, sexo,
-				dataNascimento, conjuge, qtdFilhos, ctpsNumero, ctpsSerie,
-				ctpsDv, numeroHab, emissao, vencimento, categoria, logradouro,
-				complemento, numero, bairro, cep, email, foneCelular, foneFixo,
-				cidadeNome, ufSigla, afastamentoInicio, afastamentoFim,
-				candIndicadoPor);
-
+		
+		this(esId, esNome, aoId, aoNome, reNome, coId, coNome, cgNome, fsNome, empresaId, empresaNome, empresaAcIntegra, nomeComercial,
+				matricula, desligado, dataAdmissao, dataDesligamento, vinculo, naoIntegraAc, cursos, estadoCivil, escolaridade, mae, pai,
+				cpf, pis, rg, rgOrgaoEmissor, deficiencia, rgDataExpedicao, sexo, dataNascimento, conjuge, qtdFilhos, ctpsNumero, ctpsSerie,
+				ctpsDv, numeroHab, emissao, vencimento, categoria, logradouro, complemento, numero, bairro, cep, email, foneCelular, foneFixo, 
+				funcaoNome, ambienteNome, cidadeNome, ufSigla, afastamentoInicio, afastamentoFim, candIndicadoPor);
 		
 		if (this.camposExtras == null)
 			this.camposExtras = new CamposExtras();
