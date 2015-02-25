@@ -30,6 +30,7 @@
 	
 	<@ww.form id="formAprovarReprovar" name="form" method="POST">
 		<@ww.hidden name="colaborador.id" />
+		<@ww.hidden name="colaborador.naoIntegraAc"/>
 		<@ww.hidden name="colaborador.nome" />
 		<@ww.hidden name="colaborador.dataSolicitacaoDesligamento"/>
 		<@ww.hidden name="colaborador.dataAdmissao"/>

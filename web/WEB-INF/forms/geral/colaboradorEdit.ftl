@@ -700,8 +700,10 @@
 		<@ww.hidden name="colaborador.candidato.id"/>
 		<@ww.hidden name="colaborador.motivoDemissao.id"/>
 		<@ww.hidden name="colaborador.observacaoDemissao"/>
+		<@ww.hidden name="colaborador.dataSolicitacaoDesligamento"/>
+		<@ww.hidden name="colaborador.dataSolicitacaoDesligamentoAc"/>
 		<@ww.hidden name="candidatoSolicitacaoId"/>
-
+		
 		<@ww.hidden name="page" />
 		<#if candidato?exists>
 			<@ww.hidden name="idCandidato" value="${candidato.id}"/>

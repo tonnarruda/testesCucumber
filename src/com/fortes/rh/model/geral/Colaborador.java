@@ -36,7 +36,6 @@ import com.fortes.rh.model.captacao.Ctps;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
 import com.fortes.rh.model.captacao.Habilitacao;
-import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.TituloEleitoral;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -567,6 +566,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.naoIntegraAc = colaborador.isNaoIntegraAc();
 		this.camposExtras = colaborador.getCamposExtras();
 		this.solicitacao = colaborador.getSolicitacao();
+		this.dataSolicitacaoDesligamento = colaborador.getDataSolicitacaoDesligamento();
+		this.dataSolicitacaoDesligamentoAc = colaborador.getDataSolicitacaoDesligamentoAc();
 	}
 
 	public Colaborador(String esNome, String aoNome, String reNome, String coNome, String cgNome, String fsNome)

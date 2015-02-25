@@ -99,7 +99,7 @@
 		
 		<input type="button" value=" " onclick="window.location='list.action'" class="btnVoltar" />
 		
-		<#if colaborador.desligado && !integraAc>
+		<#if colaborador.desligado && (colaborador.naoIntegraAc || !integraAc)>
 			<input type="button" value=" " onclick="enviarForm(this);" id="religa" class="btnCancelarDesligamento" />
 		</#if>
 
