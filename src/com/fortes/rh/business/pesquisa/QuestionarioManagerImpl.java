@@ -281,7 +281,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         else
         	questionario.setTotalColab(countColaborador(colaboradorRespostas));
         
-        Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, questionario.getTotalColab(), null);
+        Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, null);
         percentuaisDeRespostas.addAll(calculaPercentualRespostasMultiplas);
         
     	resultadoQuestionarios = montaResultadosQuestionarios(perguntas, respostas, colaboradorRespostas, percentuaisDeRespostas, questionario.isAnonimo());

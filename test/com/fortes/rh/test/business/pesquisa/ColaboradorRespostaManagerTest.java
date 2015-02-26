@@ -404,8 +404,70 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	assertEquals(colaboradorRespostas, colaboradorRespostaManager.findRespostasColaborador(colaboradorQuestionario.getId(), aplicarPorAspecto));
 
     }
+    
+    public void testCalculaPercentualRespostasDeAvaliacoesDeDesempenho()
+    {
+    	Long avaliadoId = 1L;
+    	Long avaliacaoDesempenhoId = 1L;
+    	
+    	List<Object[]> countRespostas = new ArrayList<Object[]>();
+    	//resposta.ordem, count(resposta.id), pergunta.id, resposta.id, count(respostas da pergunta)
+    	countRespostas.add(new Object[]{1,1,384L,103L,3});
+    	countRespostas.add(new Object[]{2,3,382L,102L,3});
+    	countRespostas.add(new Object[]{2,2,384L,104L,3});
+    	
+    	colaboradorRespostaDao.expects(once()).method("countRespostas").with(eq(avaliadoId), eq(avaliacaoDesempenhoId), eq(true)).will(returnValue(countRespostas));
+    	Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = colaboradorRespostaManager.calculaPercentualRespostas(avaliadoId, avaliacaoDesempenhoId, true);
+    	
+    	assertEquals(3, resultadosObjetivas.size());
+    	for (QuestionarioResultadoPerguntaObjetiva resultado : resultadosObjetivas)
+    	{
+    		if(resultado.getRespostaId().equals(103L))
+    			assertEquals("33,33", resultado.getQtdPercentualRespostas());
+    		if(resultado.getRespostaId().equals(102L))
+    			assertEquals("100,00", resultado.getQtdPercentualRespostas());
+    		if(resultado.getRespostaId().equals(104L))
+    			assertEquals("66,67", resultado.getQtdPercentualRespostas());
+    	}
+    }
 
-    public void testCalculaPercentualRespostas()
+    public void testCalculaPercentualRespostasMultiplaDeAvaliacoesDeDesempenho()
+    {
+    	Long avaliadoId = 1L;
+    	Long avaliacaoDesempenhoId = 1L;
+    	boolean desconsiderarAutoAvaliacao = true;
+    	
+    	List<Object[]> countRespostas = new ArrayList<Object[]>();
+    	//resposta.ordem, count(resposta.id), pergunta.id, resposta.id
+    	countRespostas.add(new Object[]{1,1,384L,103L});
+    	countRespostas.add(new Object[]{1,2,382L,102L});
+    	countRespostas.add(new Object[]{2,1,384L,104L});
+    	countRespostas.add(new Object[]{1,3,385L,105L});
+    	
+    	Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
+    	colaboradorQuestionarios.add(new ColaboradorQuestionario());
+    	colaboradorQuestionarios.add(new ColaboradorQuestionario());
+    	colaboradorQuestionarios.add(new ColaboradorQuestionario());
+    	
+    	colaboradorRespostaDao.expects(once()).method("countRespostasMultiplas").with(eq(avaliadoId), eq(avaliacaoDesempenhoId), eq(true)).will(returnValue(countRespostas));
+    	colaboradorQuestionarioManager.expects(once()).method("findByColaboradorAndAvaliacaoDesempenho").with(eq(avaliadoId), eq(avaliacaoDesempenhoId), eq(true), eq(desconsiderarAutoAvaliacao)).will(returnValue(colaboradorQuestionarios));
+    	Collection<QuestionarioResultadoPerguntaObjetiva> resultadosMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(avaliadoId, avaliacaoDesempenhoId, true);
+    	
+    	assertEquals(4, resultadosMultiplas.size());
+    	for (QuestionarioResultadoPerguntaObjetiva resultado : resultadosMultiplas)
+    	{
+    		if(resultado.getRespostaId().equals(103L))
+    			assertEquals("33,33", resultado.getQtdPercentualRespostas());
+    		if(resultado.getRespostaId().equals(102L))
+    			assertEquals("66,67", resultado.getQtdPercentualRespostas());
+    		if(resultado.getRespostaId().equals(104L))
+    			assertEquals("33,33", resultado.getQtdPercentualRespostas());
+    		if(resultado.getRespostaId().equals(105L))
+    			assertEquals("100,00", resultado.getQtdPercentualRespostas());
+    	}
+    }
+    
+    public void testCalculaPercentualRespostasDeAvaliacoes()
     {
     	Long[] perguntasIds = new Long[]{1L};
     	Long[] areasIds = new Long[]{2L};
@@ -431,7 +493,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 		}
     }
     
-    public void testCalculaPercentualRespostasMultipla()
+    public void testCalculaPercentualRespostasMultiplaDeAvaliacoes()
     {
     	Long[] perguntasIds = new Long[]{1L};
     	Long[] areasIds = new Long[]{2L};
@@ -443,7 +505,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	countRespostas.add(new Object[]{2,1,384L,104L});
     	
     	colaboradorRespostaDao.expects(once()).method("countRespostasMultiplas").with(new Constraint[]{eq(perguntasIds), ANYTHING, eq(areasIds), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(countRespostas));
-    	Collection<QuestionarioResultadoPerguntaObjetiva> resultadosMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, null, areasIds, null, null, null, false, null, 2, null);
+    	Collection<QuestionarioResultadoPerguntaObjetiva> resultadosMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, null, areasIds, null, null, null, false, null, null);
     	
     	assertEquals(3, resultadosMultiplas.size());
     	for (QuestionarioResultadoPerguntaObjetiva resultado : resultadosMultiplas)

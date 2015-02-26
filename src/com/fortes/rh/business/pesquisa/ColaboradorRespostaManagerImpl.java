@@ -330,29 +330,6 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
         this.transactionManager = transactionManager;
     }
 
-    public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId)
-    {
-        List<Object[]> countRespostas = getDao().countRespostas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, empresaId);
-
-        Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
-
-        for (int i = 0; i < countRespostas.size(); i++)
-        {
-            Object[] qtdResposta = (Object[])countRespostas.get(i);
-            
-            if(qtdResposta[1] != null && qtdResposta[3] != null && qtdResposta[4] != null)
-            {
-	            QuestionarioResultadoPerguntaObjetiva resultado = new QuestionarioResultadoPerguntaObjetiva();
-	            resultado.setQtdRespostas((Integer)qtdResposta[1]);
-	            resultado.setRespostaId((Long)qtdResposta[3]);
-	            resultado.setQtdPercentualRespostas(ConverterUtil.convertDoubleToString((resultado.getQtdRespostas() / new Double((Integer)qtdResposta[4])) * 100.0));
-	            resultadosObjetivas.add(resultado);
-            }
-        }
-
-        return resultadosObjetivas;
-    }
-
 	public Collection<ColaboradorResposta> findByQuestionarioColaborador(Long questionarioId, Long colaboradorId, Long turmaId, Long colaboradorQuestionarioId)
 	{
 		return getDao().findByQuestionarioColaborador(questionarioId, colaboradorId, turmaId, colaboradorQuestionarioId);
@@ -395,44 +372,6 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		Collection<ColaboradorResposta> colaboradorRespostas = getDao().findByColaboradorQuestionario(id);
 		
 		return colaboradorRespostas;
-	}
-	
-	public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Integer totalColaboradores, Long empresaId)
-	{
-    	List<Object[]> countRespostas = getDao().countRespostasMultiplas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, empresaId);
-        Collection<QuestionarioResultadoPerguntaObjetiva> resultadosMultiplaEscolha = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
-        Map<Long, Integer> totalRespostasPorQuestao = new LinkedHashMap<Long, Integer>();
-        
-        Long perguntaId;
-        for (int i = 0; i < countRespostas.size(); i++)
-        {
-        	Object[] qtdResposta = (Object[])countRespostas.get(i);
-
-        	if(qtdResposta[1] != null && qtdResposta[2] != null)
-        	{
-	        	perguntaId = (Long)qtdResposta[2];
-	        	if(totalRespostasPorQuestao.containsKey(perguntaId))
-	        		totalRespostasPorQuestao.put(perguntaId, (totalRespostasPorQuestao.get(perguntaId) + (Integer)qtdResposta[1]));
-	        	else
-	        		totalRespostasPorQuestao.put(perguntaId, (Integer)qtdResposta[1]);
-        	}
-        }
-
-        for (int i = 0; i < countRespostas.size(); i++)
-        {
-            Object[] qtdResposta = (Object[])countRespostas.get(i);
-            
-            if(qtdResposta[1] != null && qtdResposta[2] != null && qtdResposta[3] != null)
-            {
-	            QuestionarioResultadoPerguntaObjetiva resultado = new QuestionarioResultadoPerguntaObjetiva();
-	            resultado.setQtdRespostas((Integer)qtdResposta[1]);
-	            resultado.setRespostaId((Long)qtdResposta[3]);
-	            resultado.setQtdPercentualRespostas(ConverterUtil.convertDoubleToString((resultado.getQtdRespostas() / new Double(totalRespostasPorQuestao.get((Long)qtdResposta[2]))) * 100.0));
-	            resultadosMultiplaEscolha.add(resultado);
-            }
-        }
-
-        return resultadosMultiplaEscolha;
 	}
 	
 	/**
@@ -565,56 +504,108 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		colaboradorQuestionarioManager.update(colaboradorQuestionario);
 	}
 	
+    public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId)
+    {
+        List<Object[]> countRespostas = getDao().countRespostas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, empresaId);
+
+        Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = processaRespostas(countRespostas);
+
+        return resultadosObjetivas;
+    }
+
 	public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao)
     {
         List<Object[]> countRespostas = getDao().countRespostas(avaliadoId, avaliacaoDesempenhoId, desconsiderarAutoAvaliacao);
 
-        Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
+        Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = processaRespostas(countRespostas);
+
+        return resultadosObjetivas;
+    }
+
+	private Collection<QuestionarioResultadoPerguntaObjetiva> processaRespostas(List<Object[]> countRespostas) {
+		Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
+		
+		for (int i = 0; i < countRespostas.size(); i++)
+		{
+			Object[] qtdResposta = (Object[])countRespostas.get(i);
+			
+			if(qtdResposta[1] != null && qtdResposta[3] != null && qtdResposta[4] != null)
+			{
+				QuestionarioResultadoPerguntaObjetiva resultado = new QuestionarioResultadoPerguntaObjetiva();
+				resultado.setQtdRespostas((Integer)qtdResposta[1]);
+				resultado.setRespostaId((Long)qtdResposta[3]);
+				resultado.setQtdPercentualRespostas(ConverterUtil.convertDoubleToString((resultado.getQtdRespostas() / new Double((Integer)qtdResposta[4])) * 100.0));
+				resultadosObjetivas.add(resultado);
+			}
+		}
+		return resultadosObjetivas;
+	}
+	
+	public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId)
+	{
+    	List<Object[]> countRespostas = getDao().countRespostasMultiplas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, empresaId);
+        Collection<QuestionarioResultadoPerguntaObjetiva> resultadosMultiplaEscolha = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
+        Map<Long, Integer> totalRespostasPorQuestao = new LinkedHashMap<Long, Integer>();
+        
+        Long perguntaId;
+        for (int i = 0; i < countRespostas.size(); i++)
+        {
+        	Object[] qtdResposta = (Object[])countRespostas.get(i);
+
+        	if(qtdResposta[1] != null && qtdResposta[2] != null)
+        	{
+	        	perguntaId = (Long)qtdResposta[2];
+	        	if(totalRespostasPorQuestao.containsKey(perguntaId))
+	        		totalRespostasPorQuestao.put(perguntaId, (totalRespostasPorQuestao.get(perguntaId) + (Integer)qtdResposta[1]));
+	        	else
+	        		totalRespostasPorQuestao.put(perguntaId, (Integer)qtdResposta[1]);
+        	}
+        }
 
         for (int i = 0; i < countRespostas.size(); i++)
         {
             Object[] qtdResposta = (Object[])countRespostas.get(i);
             
-            if(qtdResposta[1] != null && qtdResposta[3] != null && qtdResposta[4] != null)
+            if(qtdResposta[1] != null && qtdResposta[2] != null && qtdResposta[3] != null)
             {
 	            QuestionarioResultadoPerguntaObjetiva resultado = new QuestionarioResultadoPerguntaObjetiva();
 	            resultado.setQtdRespostas((Integer)qtdResposta[1]);
 	            resultado.setRespostaId((Long)qtdResposta[3]);
-	            resultado.setQtdPercentualRespostas(ConverterUtil.convertDoubleToString((resultado.getQtdRespostas() / new Double((Integer)qtdResposta[4])) * 100.0));
-	            resultadosObjetivas.add(resultado);
+	            resultado.setQtdPercentualRespostas(ConverterUtil.convertDoubleToString((resultado.getQtdRespostas() / new Double(totalRespostasPorQuestao.get((Long)qtdResposta[2]))) * 100.0));
+	            resultadosMultiplaEscolha.add(resultado);
             }
         }
 
-        return resultadosObjetivas;
-    }
+        return resultadosMultiplaEscolha;
+	}
 
-	 public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao)
-	 {
-		 List<Object[]> countRespostas = getDao().countRespostasMultiplas(avaliadoId, avaliacaoDesempenhoId, desconsiderarAutoAvaliacao);
-		 
-		 Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
-		 
-		 Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findByColaboradorAndAvaliacaoDesempenho(avaliadoId, avaliacaoDesempenhoId, true, desconsiderarAutoAvaliacao);
-		 int totalColaboradores = colaboradorQuestionarios.size();
-		 
-		 
-		 for (int i = 0; i < countRespostas.size(); i++)
-		 {
-			 Object[] qtdResposta = (Object[])countRespostas.get(i);
-		    
-			 if(qtdResposta[1] != null && qtdResposta[3] != null)
-			 {
-				 QuestionarioResultadoPerguntaObjetiva resultado = new QuestionarioResultadoPerguntaObjetiva();
-				 resultado.setQtdRespostas((Integer)qtdResposta[1]);
-				 resultado.setRespostaId((Long)qtdResposta[3]);
-				 resultado.setQtdPercentualRespostas(ConverterUtil.convertDoubleToString((resultado.getQtdRespostas() / new Double(totalColaboradores)) * 100.0));
-				 resultadosObjetivas.add(resultado);
-			 }
-		 }
-		
-		 return resultadosObjetivas;
-	 }
-	 
+	public Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao)
+	{
+		List<Object[]> countRespostas = getDao().countRespostasMultiplas(avaliadoId, avaliacaoDesempenhoId, desconsiderarAutoAvaliacao);
+
+		Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = new ArrayList<QuestionarioResultadoPerguntaObjetiva>();
+
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findByColaboradorAndAvaliacaoDesempenho(avaliadoId, avaliacaoDesempenhoId, true, desconsiderarAutoAvaliacao);
+		int totalColaboradores = colaboradorQuestionarios.size();
+
+
+		for (int i = 0; i < countRespostas.size(); i++)
+		{
+			Object[] qtdResposta = (Object[])countRespostas.get(i);
+
+			if(qtdResposta[1] != null && qtdResposta[3] != null)
+			{
+				QuestionarioResultadoPerguntaObjetiva resultado = new QuestionarioResultadoPerguntaObjetiva();
+				resultado.setQtdRespostas((Integer)qtdResposta[1]);
+				resultado.setRespostaId((Long)qtdResposta[3]);
+				resultado.setQtdPercentualRespostas(ConverterUtil.convertDoubleToString((resultado.getQtdRespostas() / new Double(totalColaboradores)) * 100.0));
+				resultadosObjetivas.add(resultado);
+			}
+		}
+
+		return resultadosObjetivas;
+	}
+
 	public Collection<RespostaQuestionarioVO> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId) 
 	{
 		Collection<RespostaQuestionarioVO> respostas = getDao().findRespostasAvaliacaoDesempenho(colaboradorQuestionarioId);
