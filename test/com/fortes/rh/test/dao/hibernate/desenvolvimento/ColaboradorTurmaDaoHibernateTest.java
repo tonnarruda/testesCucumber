@@ -1610,6 +1610,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	assertEquals("Faltou no dia",(Integer) StatusTAula.getFalta(), ((TAula)tAula5[1]).getStatus());
     	assertEquals(0, tAula6.length);
     	assertEquals(1, tAula7.length);
+    	assertEquals(1, tAula8.length);
     }
     
     public void testFindColabTreinamentosPrevistosComDiaTurmaComHoraNula()

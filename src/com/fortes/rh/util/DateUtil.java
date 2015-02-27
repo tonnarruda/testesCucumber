@@ -526,6 +526,22 @@ public class DateUtil
 			throw new IllegalArgumentException("Data inválida.");
 		}
 	}
+
+	public static Date montaDataComHora(String dataHora, String horaDefault)
+	{
+		boolean invalida = isDataInvalida(dataHora);
+		if (invalida)
+			return null;
+		
+		Date dataGerada = null;
+		
+		if(dataHora.split(" ").length == 1){
+			dataGerada =  DateUtil.montaDataByStringComHora(dataHora, (horaDefault == null ? "00:00" : horaDefault));
+		} else if(dataHora.split(" ").length == 2) 
+			dataGerada =  DateUtil.montaDataByStringComHora(dataHora.split(" ")[0], dataHora.split(" ")[1]);
+		
+		return dataGerada;
+	}
 	
 	public static Date montaDataByStringPostgres(String dataStr)
 	{

@@ -1318,13 +1318,11 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	
 	public TAula[] findColaboradorTreinamentosParaTRU(String colaboradorCodigoAC, Long empresaId, String periodoIni, String periodoFim, boolean considerarPresenca) 
 	{
-		if(periodoIni.split(" ").length == 1)
-			periodoIni += " 00:00";
-		if(periodoFim.split(" ").length == 1)
-			periodoFim += " 23:59";
+		Date dataIni = DateUtil.montaDataComHora(periodoIni, "00:00");
+		Date dataFim = DateUtil.montaDataComHora(periodoFim, "23:59");
 		
 		StringBuilder sql = new StringBuilder();
-		sql.append("select ct.id as ctId, co.codigoAC as colabCodigoAC, dt.dia as diaTurma, dt.horaIni as horaIni, dt.horaFim as horaFim, cu.nome as cursoNome, t.descricao as turmaDescricao, cp.presenca as presenca  ");
+		sql.append("select ct.id as ctId, co.codigoAC as colabCodigoAC, dt.dia as diaTurma, dt.horaIni as horaIni, dt.horaFim as horaFim, cu.nome as cursoNome, t.descricao as turmaDescricao, cp.presenca as presenca ");
 		sql.append("from ColaboradorTurma as ct ");
 		sql.append("left join colaborador as co on co.id = ct.colaborador_id ");
 		sql.append("left join turma as t on t.id = ct.turma_id ");
@@ -1365,8 +1363,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("empresaId", empresaId);
-		query.setString("periodoIni", periodoIni);
-		query.setString("periodoFim", periodoFim);
+		query.setTimestamp("periodoIni", dataIni);
+		query.setTimestamp("periodoFim", dataFim);
 		
 		if(colaboradorCodigoAC != null && !"".equals(colaboradorCodigoAC))
 			query.setString("empregadoCodigo", colaboradorCodigoAC);

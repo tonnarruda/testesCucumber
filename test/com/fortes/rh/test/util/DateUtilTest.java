@@ -421,6 +421,27 @@ public class DateUtilTest extends TestCase
 		
 		assertTrue(DateUtil.between(data, dataInicio, dataFim));
 	}
+
+	public void testMontaDatatComHora()
+	{
+		Date data1 = DateUtil.montaDataComHora("26/02/2015 12:00", "14:30");
+		Date data2 = DateUtil.montaDataComHora("27/02/2015", "15:32");
+		Date data3 = DateUtil.montaDataComHora("01/03/2015", null);
+		
+		assertEquals(DateUtil.montaDataByStringComHora("26/02/2015", "12:00"), data1);
+		assertEquals(DateUtil.montaDataByStringComHora("27/02/2015", "15:32"), data2);
+		assertEquals(DateUtil.montaDataByStringComHora("01/03/2015", "00:00"), data3);
+		
+		assertNull(DateUtil.montaDataComHora(null, "15:32"));
+		assertNull(DateUtil.montaDataComHora(null, null));
+		
+		try {
+			DateUtil.montaDataComHora("ab/12/20000", "15:32");
+			assertTrue("Digitação incorreta não verificada", false);
+		} catch (Exception e) {
+			assertTrue("Digitação incorreta verificada corretamente", true);
+		}
+	}
 	
 	public void testContaDiasUteis()
 	{
