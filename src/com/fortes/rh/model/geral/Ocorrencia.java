@@ -12,7 +12,7 @@ import com.fortes.model.AbstractModel;
 @SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="ocorrencia_sequence", allocationSize=1)
-public class Ocorrencia extends AbstractModel implements Serializable
+public class Ocorrencia extends AbstractModel implements Serializable, Cloneable
 {
 	@Column(length=40)
     private String descricao;
@@ -115,4 +115,11 @@ public class Ocorrencia extends AbstractModel implements Serializable
 	public void setPerformance(boolean performance) {
 		this.performance = performance;
 	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		return super.clone();
+	}
+
 }

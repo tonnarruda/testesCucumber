@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.14x.17x" bd="" data="xx/03/2015">
 		<Item visivel="S" motivo="S20150200111"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Correção de bug ao apresentar função e ambiente no relatório dinâmico.]]></Item>
+		<Item visivel="S" motivo="P20150200223"><![CDATA[Utilitários > Auditoria: Auditar dados do tipo de ocorrência e exibir flag que indica envio para o AC, quando a integração está ligada.]]></Item>
 	</Versao>
 	<Versao id="1.1.141.170" bd="" data="24/02/2015">
 		<Item visivel="S" motivo="S20141200160"><![CDATA[R&S > Movimentação > Solicitação de Pessoal > Editar: Apenas visualizar a solicitação de pessoal quando o status estiver aprovada ou reprovada.]]></Item>

@@ -19,16 +19,7 @@
 		<@ww.textfield label="Pontuação" name="ocorrencia.pontuacao" id="pontuacao" maxLength="10" onkeypress="return(somenteNumeros(event,'-'));" cssStyle="width:70px;"  required="true" cssClass="pontuacao"/>
 
 		<#if empresaIntegradaComAC>
-			<#if ocorrencia.id?exists>
-				<@ww.hidden name="ocorrencia.integraAC"/>
-				<#if ocorrencia.integraAC>
-					Esta ocorrência está integrada com o AC Pessoal
-				<#else>
-					Esta ocorrência não está integrada com o AC Pessoal
-				</#if>		
-			<#else>
-				<@ww.checkbox label="Enviar para o AC Pessoal" id="integraAC" name="ocorrencia.integraAC" labelPosition="left"/>
-			</#if>
+			<@ww.checkbox label="Enviar para o AC Pessoal" id="integraAC" name="ocorrencia.integraAC" labelPosition="left"/>
 		</#if>
 		
 		<@ww.checkbox label="Considerar como absenteísmo" name="ocorrencia.absenteismo"  labelPosition="left"/>
