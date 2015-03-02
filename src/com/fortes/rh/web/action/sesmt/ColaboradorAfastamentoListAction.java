@@ -52,6 +52,8 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	private char agruparPor;
 	private char ordenarPor;
 	private char totalizarDiasPor;
+	private String reportFilter;
+	private String reportTitle;
 	
 	private final char COLABORADOR = 'O';
 	private final char MES = 'M';
@@ -105,11 +107,14 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
+	public String relatorioAfastamentosXls() throws Exception{
+		return relatorioAfastamentos() + "Xls";
+	}
+	
 	@SuppressWarnings("static-access")
 	public String relatorioAfastamentos() throws Exception
 	{
-		try
-		{
+		try	{
 			if (!validaPeriodo())
 				return INPUT;
 
@@ -129,9 +134,12 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			else if(!ordenarPor.contains("data"))
 				ordenarPor.add("data");
 			
+			reportTitle = "Afastamentos";
+			reportFilter = getPeriodoFormatado();
+			
 			//cuidado com os parametros desse metodo eles são unha e carne com o relatorio gerado, os parametros são fundamentais
 			colaboradorAfastamentos = colaboradorAfastamentoManager.findRelatorioAfastamentos(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, areasCheck, colaboradorAfastamento, new StringUtil().converteCollectionToArrayString(ordenarPor), afastadoPeloINSS);
-			parametros = RelatorioUtil.getParametrosRelatorio("Afastamentos", getEmpresaSistema(), getPeriodoFormatado());
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
 			
 			if(agruparPor == MES)
 			{
@@ -362,5 +370,13 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 
 	public void setTotalizarDiasPor(char totalizarDiasPor) {
 		this.totalizarDiasPor = totalizarDiasPor;
+	}
+
+	public String getReportFilter() {
+		return reportFilter;
+	}
+
+	public String getReportTitle() {
+		return reportTitle;
 	}
 }

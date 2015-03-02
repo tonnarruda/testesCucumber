@@ -6,7 +6,6 @@
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
-	<#assign validarCampos="return validaFormularioEPeriodo('form', null, new Array('inicio','fim'))"/>
 
 	<#if colaboradorAfastamento.inicio?exists >
 		<#assign inicio = colaboradorAfastamento.inicio?date/>
@@ -18,6 +17,13 @@
 	<#else>
 		<#assign fim = ""/>
 	</#if>
+
+	<script type='text/javascript'>
+		function submeterAction(action){
+			$('form[name=form]').attr('action', action);
+			return validaFormularioEPeriodo('form', null, new Array('inicio','fim'));
+		}
+	</script>
 
 </head>
 <body>
@@ -42,7 +48,8 @@
 		<@ww.select label="Agrupar por" id="agruparPor" name="agruparPor" list=r"#{'N':'Sem Agrupamento','C':'CID','M':'Mês','O':'Colaborador','A':'Área Organizacional'}" />
 
 		<div class="buttonGroup">
-			<button class="btnRelatorio" onclick="${validarCampos}"></button>
+			<button onclick="return submeterAction('relatorioAfastamentos.action');" class="btnRelatorio" ></button>
+			<button onclick="return submeterAction('relatorioAfastamentosXls.action');" class="btnRelatorioExportar"></button>
 		</div>
 	</@ww.form>
 </body>
