@@ -76,6 +76,12 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">afastamentos_colaborador.pdf</param>
 			</result>
+			<result name="afastamentos_por_area" type="jasper">
+				<param name="dataSource">colaboradorAfastamentos</param>
+				<param name="location">/WEB-INF/report/afastamentosarea.jasper</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">afastamentos_area.pdf</param>
+			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioAfastamentos.ftl</result>
 		</action>
 		<action name="prepareRelatorioResumoAfastamentos" class="com.fortes.rh.web.action.sesmt.ColaboradorAfastamentoListAction" method="prepareRelatorioResumoAfastamentos">

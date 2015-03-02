@@ -121,6 +121,8 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 					hql.append(" upper(trim(coalesce(ca.cid,'')))");
 				if(ordem.equals("colaboradorNome"))
 					hql.append(" co.nome");
+				if(ordem.equals("areaNome"))
+					hql.append(" ao.nome");
 				if(!ordenarPor[ordenarPor.length -1].equals(ordem))
 					hql.append(",");
 			}

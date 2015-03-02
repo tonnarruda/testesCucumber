@@ -56,6 +56,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	private final char COLABORADOR = 'O';
 	private final char MES = 'M';
 	private final char CID = 'C';
+	private final char AREA = 'A';
 	
 	public String list() throws Exception
 	{
@@ -116,6 +117,8 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			
 			if (agruparPor == CID)
 				ordenarPor.add("cid");
+			else if (agruparPor == AREA)
+				ordenarPor.add("areaNome");
 			else if (agruparPor == MES)
 				ordenarPor.add("data");
 			else if (agruparPor == COLABORADOR)
@@ -141,6 +144,8 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 				return "afastamentos_por_cid";
 			else if(agruparPor == COLABORADOR)
 				return "afastamentos_por_colaborador";
+			else if(agruparPor == AREA)
+				return "afastamentos_por_area";
 			else
 				return "afastamentos";
 			
