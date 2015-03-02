@@ -534,6 +534,7 @@
 				/pesquisa/colaboradorResposta/prepareResponderQuestionarioPorOutroUsuario*/**=ROLE_RESPONDER_PESQUISA_POR_OUTRO_USUARIO,ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO,ROLE_RESPONDER_AVALIACAO_TURMA_POR_OUTRO_USUARIO
 				/pesquisa/colaboradorResposta/prepareResponderQuestionario.action*/**=ROLE_USER
 				/pesquisa/colaboradorResposta/salvaQuestionarioRespondido.action*/**=ROLE_USER
+				/pesquisa/colaboradorResposta/prepareResponderEntrevista.action*=ROLE_COLAB_LIST_ENTREVISTA
 				/pesquisa/colaboradorResposta/*/**=ROLE_MOV_QUESTIONARIO, ROLE_CAD_COLABORADOR
 				/geral/colaborador/*/**=ROLE_CAD_COLABORADOR
 
