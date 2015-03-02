@@ -9,9 +9,11 @@ import java.util.Map;
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
+import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
@@ -27,16 +29,13 @@ public class RelatorioPresencaAction extends MyActionSupport
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private TurmaManager turmaManager;
 	private ColaboradorPresencaManager colaboradorPresencaManager;
-
+	private DiaTurmaManager diaTurmaManager;
 	private Collection<Curso> cursos;
 	private Collection<ColaboradorTurma> colaboradorTurmas;
 	private Collection<Turma> turmas;
 	private Collection<ListaDePresenca> listaDePresencas = new ArrayList<ListaDePresenca>();;
-
 	private ColaboradorTurma colaboradorTurma;
-
 	private Map<String,Object> parametros = new HashMap<String,Object>();
-
 	private String[] diasCheck;
 	private Collection<CheckBox> diasCheckList = new ArrayList<CheckBox>();
 	private int qtdLinhas = 20;
@@ -69,7 +68,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 		{
 			colaboradorTurmas = colaboradorTurmaManager.findByTurma(colaboradorTurma.getTurma().getId(), null, exibirSituacaoAtualColaborador, null, null);
 			colaboradorTurmas = colaboradorTurmaManager.montaColunas(colaboradorTurmas, exibirNomeComercial, exibirCargo, exibirEstabelecimento, exibirAssinatura, exibirArea, exibirCPF);
-
+			
 			if(quebraPaginaEstabelecimento)
 				montaListaDePresencaPorEstabelecimento();
 			else
@@ -90,7 +89,7 @@ public class RelatorioPresencaAction extends MyActionSupport
 		 
 		return Action.SUCCESS;
 	}
-
+	
 	private void montaListaDePresencaPorEstabelecimento() 
 	{
 		Collection<Long> estabelecimentoIds = colaboradorTurmaManager.findIdEstabelecimentosByTurma(colaboradorTurma.getTurma().getId(), getEmpresaSistema().getId());
@@ -110,12 +109,16 @@ public class RelatorioPresencaAction extends MyActionSupport
 
 	private void montaListaDePresenca(Long estabelecimentoId, ArrayList<ColaboradorTurma> listaColaboradorTurmaPorEstabelecimento) 
 	{
+		Integer qtdColabPresentes;
 		Collection<ColaboradorTurma> colaboradorTurmasTemp;
+		Collection<DiaTurma> diasTurma = diaTurmaManager.findById(diasCheck);
 	
-		for (String dia : diasCheck)
+		for(DiaTurma diaTurma : diasTurma)
 		{
+			qtdColabPresentes = colaboradorPresencaManager.qtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId(diaTurma.getId(), estabelecimentoId);
 			colaboradorTurmasTemp = colaboradorPresencaManager.preparaLinhaEmBranco(listaColaboradorTurmaPorEstabelecimento, qtdLinhas, estabelecimentoId);
-			ListaDePresenca listaDePresenca = new ListaDePresenca(dia, colaboradorTurmasTemp);
+			ListaDePresenca listaDePresenca = new ListaDePresenca(diaTurma.getDescricao(), qtdColabPresentes, colaboradorTurmasTemp);
+			
 			listaDePresencas.add(listaDePresenca);
 		}
 	}
@@ -209,11 +212,13 @@ public class RelatorioPresencaAction extends MyActionSupport
 	class ListaDePresenca
 	{
 		private String data;
+		private Integer qtdColaboradoresPresentes;
 		private Collection<ColaboradorTurma> colaboradorTurmas;
 
-		ListaDePresenca(String data, Collection<ColaboradorTurma> colaboradorTurmas)
+		ListaDePresenca(String data, Integer qtdColaboradoresPresentes, Collection<ColaboradorTurma> colaboradorTurmas)
 		{
 			this.data = data;
+			this.qtdColaboradoresPresentes = qtdColaboradoresPresentes;
 			this.colaboradorTurmas = colaboradorTurmas;
 		}
 
@@ -236,6 +241,15 @@ public class RelatorioPresencaAction extends MyActionSupport
 		{
 			this.data = data;
 		}
+
+		public Integer getQtdColaboradoresPresentes() {
+			return qtdColaboradoresPresentes;
+		}
+
+		public void setQtdColaboradoresPresentes(Integer qtdColaboradoresPresentes) {
+			this.qtdColaboradoresPresentes = qtdColaboradoresPresentes;
+		}
+
 	}
 	public ColaboradorTurma getColaboradorTurma()
 	{
@@ -452,5 +466,9 @@ public class RelatorioPresencaAction extends MyActionSupport
 	public void setExibirSituacaoAtualColaborador(
 			boolean exibirSituacaoAtualColaborador) {
 		this.exibirSituacaoAtualColaborador = exibirSituacaoAtualColaborador;
+	}
+
+	public void setDiaTurmaManager(DiaTurmaManager diaTurmaManager) {
+		this.diaTurmaManager = diaTurmaManager;
 	}
 }

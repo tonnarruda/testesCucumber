@@ -14,6 +14,7 @@ import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
@@ -22,6 +23,7 @@ import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -29,6 +31,7 @@ import com.fortes.rh.test.factory.desenvolvimento.ColaboradorPresencaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 
 public class ColaboradorPresencaDaoHibernateTest extends GenericDaoHibernateTest<ColaboradorPresenca>
 {
@@ -40,6 +43,7 @@ public class ColaboradorPresencaDaoHibernateTest extends GenericDaoHibernateTest
 	private HistoricoColaboradorDao historicoColaboradorDao;
 	private DiaTurmaDao diaTurmaDao;
 	private EmpresaDao empresaDao;
+	private EstabelecimentoDao estabelecimentoDao;
 
 	public ColaboradorPresenca getEntity()
 	{
@@ -261,6 +265,85 @@ public class ColaboradorPresencaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals(new Integer(3), colaboradorPresencaDao.qtdDiaPresentesTurma(null, null, new Long[]{empresa1.getId(), empresa2.getId()}, new Long[]{curso1.getId(), curso2.getId()}, null));
 	}
 	
+	public void testQtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento est1 = EstabelecimentoFactory.getEntity();
+		est1.setNome("Est-1");
+		estabelecimentoDao.save(est1);
+		
+		Estabelecimento est2 = EstabelecimentoFactory.getEntity();
+		est2.setNome("Est-2");
+		estabelecimentoDao.save(est2);
+
+		Curso curso = CursoFactory.getEntity();
+		curso.setEmpresasParticipantes(Arrays.asList(new Empresa[]{empresa}));
+		cursoDao.save(curso);
+
+		Turma turma = TurmaFactory.getEntity();
+		turma.setRealizada(true);
+		turma.setCurso(curso);
+		turmaDao.save(turma);
+
+		DiaTurma diaTurma1 = DiaTurmaFactory.getEntity();
+		diaTurma1.setTurma(turma);
+		diaTurmaDao.save(diaTurma1);
+		
+		DiaTurma diaTurma2 = DiaTurmaFactory.getEntity();
+		diaTurma2.setTurma(turma);
+		diaTurmaDao.save(diaTurma2);
+		
+		Colaborador raimundo = ColaboradorFactory.getEntity();
+		colaboradorDao.save(raimundo);
+		
+		HistoricoColaborador hCRaimundo = new HistoricoColaborador();
+		hCRaimundo.setColaborador(raimundo);
+		hCRaimundo.setEstabelecimento(est1);
+		hCRaimundo.setData(new Date());
+		historicoColaboradorDao.save(hCRaimundo);
+		
+		Colaborador jussara = ColaboradorFactory.getEntity();
+		colaboradorDao.save(jussara);
+		
+		HistoricoColaborador hCJussara = new HistoricoColaborador();
+		hCJussara.setColaborador(jussara);
+		hCJussara.setEstabelecimento(est2);
+		hCJussara.setData(new Date());
+		historicoColaboradorDao.save(hCJussara);
+		
+		ColaboradorTurma raimundoTurma = new ColaboradorTurma();
+		raimundoTurma.setColaborador(raimundo);
+		raimundoTurma.setTurma(turma);
+		colaboradorTurmaDao.save(raimundoTurma);
+		
+		ColaboradorTurma jussaraTurma = new ColaboradorTurma();
+		jussaraTurma.setColaborador(jussara);
+		jussaraTurma.setTurma(turma);
+		colaboradorTurmaDao.save(jussaraTurma);
+		
+		ColaboradorPresenca colaboradorPresenca1 = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresenca1.setColaboradorTurma(jussaraTurma);
+		colaboradorPresenca1.setDiaTurma(diaTurma1);
+		colaboradorPresencaDao.save(colaboradorPresenca1);
+		
+		ColaboradorPresenca colaboradorPresenca2 = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresenca2.setColaboradorTurma(jussaraTurma);
+		colaboradorPresenca2.setDiaTurma(diaTurma2);
+		colaboradorPresencaDao.save(colaboradorPresenca2);
+		
+		ColaboradorPresenca colaboradorPresenca3 = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresenca3.setColaboradorTurma(raimundoTurma);
+		colaboradorPresenca3.setDiaTurma(diaTurma2);
+		colaboradorPresencaDao.save(colaboradorPresenca3);
+		
+		assertEquals(new Integer(1), colaboradorPresencaDao.qtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId(diaTurma1.getId(), null));
+		assertEquals(new Integer(2), colaboradorPresencaDao.qtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId(diaTurma2.getId(), null));
+		assertEquals(new Integer(1), colaboradorPresencaDao.qtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId(diaTurma2.getId(), est1.getId()));
+	}
+	
+	
 	public GenericDao<ColaboradorPresenca> getGenericDao()
 	{
 		return colaboradorPresencaDao;
@@ -310,6 +393,10 @@ public class ColaboradorPresencaDaoHibernateTest extends GenericDaoHibernateTest
 
 	public void setEmpresaDao(EmpresaDao empresaDao) {
 		this.empresaDao = empresaDao;
+	}
+
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
+		this.estabelecimentoDao = estabelecimentoDao;
 	}
 
 

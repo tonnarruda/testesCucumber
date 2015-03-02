@@ -18,11 +18,13 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
+import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -34,6 +36,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
@@ -56,6 +59,7 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
 	private Mock turmaManager;
 	private Mock colaboradorPresencaManager;
 	private Mock parametrosDoSistemaManager;
+	private Mock diaTurmaManager;
 	
     protected void setUp() throws Exception
     {
@@ -73,6 +77,9 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
         
         colaboradorPresencaManager = new Mock(ColaboradorPresencaManager.class);
         action.setColaboradorPresencaManager((ColaboradorPresencaManager) colaboradorPresencaManager.proxy());
+        
+        diaTurmaManager = new Mock(DiaTurmaManager.class);
+        action.setDiaTurmaManager((DiaTurmaManager) diaTurmaManager.proxy());
         
 		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
 		MockSpringUtil.mocks.put("parametrosDoSistemaManager", parametrosDoSistemaManager);
@@ -135,15 +142,24 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
     	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
     	colaboradorTurmas.add(colaboradorTurma);
     	
-    	action.setDiasCheck(new String[]{"1"});
+    	DiaTurma diaTurma = DiaTurmaFactory.getEntity(1L);
+    	diaTurma.setDia(new Date());
+    	String[] diasTurmaIds = new String[]{diaTurma.getId().toString()};
+
+    	Collection<DiaTurma> diasTurmasRetornoFyndById = new ArrayList<DiaTurma>();
+    	diasTurmasRetornoFyndById.add(diaTurma);
+    	
+    	action.setDiasCheck(diasTurmaIds);
     	action.setQuebraPaginaEstabelecimento(false);
     	action.setExibirSituacaoAtualColaborador(true);
     	
     	turmaManager.expects(once()).method("findById").with(eq(colaboradorTurma.getTurma().getId())).will(returnValue(turma));    	
     	colaboradorTurmaManager.expects(once()).method("findByTurma").with(new Constraint[] { eq(colaboradorTurma.getTurma().getId()), ANYTHING, eq(true), ANYTHING, ANYTHING }).will(returnValue(colaboradorTurmas));    	
     	colaboradorTurmaManager.expects(once()).method("montaColunas").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colaboradorTurmas));    	
+    	colaboradorPresencaManager.expects(once()).method("qtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId").with(eq(diaTurma.getId()), eq(null)).will(returnValue(10));
     	colaboradorPresencaManager.expects(once()).method("preparaLinhaEmBranco").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
     	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(ANYTHING, ANYTHING).will(returnValue(true));
+    	diaTurmaManager.expects(once()).method("findById").with(eq(diasTurmaIds)).will(returnValue(diasTurmasRetornoFyndById));
     	
 		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
 		parametrosDoSistema.setAppVersao("1.01.1");
@@ -185,7 +201,14 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
     	Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
     	colaboradorTurmas.add(colaboradorTurma);
     	
-    	action.setDiasCheck(new String[]{"1"});
+    	DiaTurma diaTurma = DiaTurmaFactory.getEntity(1L);
+    	diaTurma.setDia(new Date());
+    	String[] diasTurmaIds = new String[]{diaTurma.getId().toString()};
+
+    	Collection<DiaTurma> diasTurmasRetornoFyndById = new ArrayList<DiaTurma>();
+    	diasTurmasRetornoFyndById.add(diaTurma);
+    	
+    	action.setDiasCheck(diasTurmaIds);
     	action.setQuebraPaginaEstabelecimento(true);
     	action.setExibirSituacaoAtualColaborador(true);
     	
@@ -193,8 +216,10 @@ public class RelatorioPresencaActionTest extends MockObjectTestCase
     	colaboradorTurmaManager.expects(once()).method("findByTurma").with(new Constraint[] { eq(colaboradorTurma.getTurma().getId()), ANYTHING, eq(true), ANYTHING, ANYTHING }).will(returnValue(colaboradorTurmas));    	
     	colaboradorTurmaManager.expects(once()).method("montaColunas").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colaboradorTurmas));    	
     	colaboradorTurmaManager.expects(once()).method("findIdEstabelecimentosByTurma").with(eq(colaboradorTurma.getTurma().getId()), eq(empresa.getId())).will(returnValue(Arrays.asList(new Long[]{1L})));    	
+    	colaboradorPresencaManager.expects(once()).method("qtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId").with(eq(diaTurma.getId()),eq(estabelecimento.getId())).will(returnValue(10));
     	colaboradorPresencaManager.expects(once()).method("preparaLinhaEmBranco").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
     	cursoManager.expects(once()).method("existeEmpresasNoCurso").with(ANYTHING, ANYTHING).will(returnValue(true));
+    	diaTurmaManager.expects(once()).method("findById").with(eq(diasTurmaIds)).will(returnValue(diasTurmasRetornoFyndById));
     	
 		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
 		parametrosDoSistema.setAppVersao("1.01.1");

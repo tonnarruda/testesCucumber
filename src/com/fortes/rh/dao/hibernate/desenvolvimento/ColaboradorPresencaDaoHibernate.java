@@ -6,14 +6,18 @@ import java.util.Date;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
@@ -174,5 +178,28 @@ public class ColaboradorPresencaDaoHibernate extends GenericDaoHibernate<Colabor
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
 		
 		return (Integer) query.uniqueResult();	
+	}
+
+	public Integer qtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId(Long diaTurma, Long estabelecimentoId) 
+	{
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"));
+		
+		Criteria criteria = getSession().createCriteria(ColaboradorPresenca.class, "cp");
+		criteria.createCriteria("cp.diaTurma", "dt");
+		criteria.createCriteria("cp.colaboradorTurma", "ct");
+		criteria.createCriteria("ct.colaborador", "c");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
+		
+		criteria.add(Subqueries.propertyEq("hc.data", subQueryHc));
+		
+		criteria.setProjection(Projections.rowCount());
+		criteria.add(Expression.eq("dt.id", diaTurma));
+		
+		if(estabelecimentoId != null)
+			criteria.add(Expression.eq("hc.estabelecimento.id", estabelecimentoId));
+
+		return (Integer) criteria.uniqueResult();
 	}
 }

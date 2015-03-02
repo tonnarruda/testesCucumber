@@ -53,7 +53,7 @@ public class DiaTurmaDWR
 					diasTurmaMarcadoDescricao = diasTurmaMarcado.getDescricao();
 
 					result.append("<label for=\"checkGroup"+ divName + diasTurmaMarcadoDescricao +"\" >");
-					result.append("<input name=\""+ divName +"\" value=\""+ diasTurmaMarcadoDescricao +"\" type=\"checkbox\" id=\"checkGroup"+ divName + diasTurmaMarcadoDescricao + "\">" + diasTurmaMarcadoDescricao);
+					result.append("<input name=\""+ divName +"\" value=\""+ diasTurmaMarcado.getId() +"\" type=\"checkbox\" id=\"checkGroup"+ divName + diasTurmaMarcadoDescricao + "\">" + diasTurmaMarcadoDescricao);
 					result.append("</label>");
 				}
 			}

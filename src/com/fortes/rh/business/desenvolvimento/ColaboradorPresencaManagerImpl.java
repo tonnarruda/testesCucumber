@@ -105,6 +105,11 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 	public void removeByColaboradorTurma(Long[] colaboradorTurmaIds)
 	{
 		getDao().removeByColaboradorTurma(colaboradorTurmaIds);
+	}
+
+	public Integer qtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId(Long diaTurmaId, Long estabelecimentoId) 
+	{
+		return getDao().qtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId(diaTurmaId, estabelecimentoId);
 	} 
 	
 }
