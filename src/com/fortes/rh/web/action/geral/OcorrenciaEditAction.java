@@ -1,6 +1,7 @@
 package com.fortes.rh.web.action.geral;
 
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -12,6 +13,7 @@ import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
@@ -24,6 +26,7 @@ import com.fortes.rh.model.geral.relatorio.ColaboradorOcorrenciaRelatorio;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -119,19 +122,16 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 		try {
 			ocorrencia.setEmpresa(getEmpresaSistema());
 			ocorrenciaManager.saveOrUpdate(ocorrencia, getEmpresaSistema());
-		}
-		catch (IntegraACException e)
+		} catch (Exception e)
 		{
 			prepareInsert();
 			e.printStackTrace();
-			addActionError("Cadastro não pôde ser realizado no AC Pessoal.");
-			return Action.INPUT;
-		}
-		catch (Exception e)
-		{
-			prepareInsert();
-			e.printStackTrace();
-			addActionError("Cadastro não pôde ser realizado.");
+			
+			if (e instanceof InvocationTargetException && ((InvocationTargetException)e).getTargetException() instanceof IntegraACException) 
+				addActionError("Cadastro não pôde ser realizado no AC Pessoal.");
+			else 
+				addActionError("Cadastro não pôde ser realizado.");
+
 			return Action.INPUT;
 		}
 
