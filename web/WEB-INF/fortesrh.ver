@@ -2,10 +2,11 @@
 <Versoes>
 	<Versao id="1.1.14x.17x" bd="" data="xx/03/2015">
 		<Item visivel="S" motivo="S20141200045"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Inserção dos filtros: Área Organizacional e Motivo da Solivitação.]]></Item>
+		<Item visivel="S" motivo="S20150200210"><![CDATA[Aval. Desempenho > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência: Ajuste na inconsistência da quantidade de respostas das questões objetivas e comentários.]]></Item>
 		<Item visivel="S" motivo="S20140300005"><![CDATA[T&D > Relatórios > Lista de Presença : Exibir quantidade de participantes presentes no relatório.]]></Item>
-		<Item visivel="S" motivo="P20150200270"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Corrigindo problema com permissões ao visualizar entrevista de desligamento.]]></Item>
-		<Item visivel="S" motivo="S20140300177"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir > Dados Funcionais: Colocando ambientes em ordem alfabética.]]></Item>
-		<Item visivel="S" motivo="S20150200111"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Correção de bug ao apresentar função e ambiente no relatório dinâmico.]]></Item>
+		<Item visivel="S" motivo="P20150200270"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Ajuste na inconsistência da permissões ao visualizar entrevista de desligamento.]]></Item>
+		<Item visivel="S" motivo="S20140300177"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir > Dados Funcionais: Listar ambientes em ordem alfabética.]]></Item>
+		<Item visivel="S" motivo="S20150200111"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Ajuste na inconsistência ao apresentar função e ambiente no relatório dinâmico.]]></Item>
 		<Item visivel="S" motivo="S20150100108"><![CDATA[SESMT > Relatórios > Afastamentos: Criando nova opção de agrupamento por Área Organizacional.]]></Item>
 		<Item visivel="S" motivo="S20141200093"><![CDATA[SESMT > Relatórios > Afastamentos: Nova opção de gerar o relatório no formato xls.]]></Item>
 		<Item visivel="S" motivo="P20150200223"><![CDATA[Utilitários > Auditoria: Auditar dados do tipo de ocorrência e exibir flag que indica envio para o AC, quando a integração está ligada.]]></Item>
@@ -16,23 +17,23 @@
 		<Item visivel="S" motivo="P20150200173"><![CDATA[Pesquisas > Movimentações > Pesquisas > Relatório da Pesquisa: Alteração no cálculo do percentual do resultado das respostas, passando a considerando a quantidade de respostas em vez de quantidade de colaboradores.]]></Item>
 		<Item visivel="S" motivo="P20150200234"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Ajuste na inconsistência do resultado da performance ao gravar relatório com duplo click.]]></Item>
 		<Item visivel="S" motivo="P20150200083"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações da Turma > Resultado das Avaliações: Após gerar o relatório, o mesmo desconfigurava a empresa da sessão.]]></Item>
-		<Item visivel="S" motivo="S20150100127"><![CDATA[T&D > Relatórios > Colaboradores x Certificações > Exportar: Novo botão "Exportar" para gerar relatório no formato XLS.]]></Item>
+		<Item visivel="S" motivo="S20150100127"><![CDATA[T&D > Relatórios > Colaboradores x Certificações > Exportar: Nova opção de gerar o relatório no formato xls.]]></Item>
 		<Item visivel="S" motivo="S20150100106"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Novo campo para informar se o desligamento gera substituição de colaborador.]]></Item>
-		<Item visivel="S" motivo="P20150200212"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Não enviar a solicitação de desligamento para o AC quando a opção de não enviar o colaborador para o AC Pessoal estiver marcada.]]></Item>
-		<Item visivel="S" motivo="P20150100179"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Excluir: Correção de inconsistência ao excluir colaborador que possui mensagens com o usuário fortes.]]></Item>
-		<Item visivel="S" motivo="P20150200069"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Correção de inconsistência ao contratar um colaborador através de uma solicitação de pessoal cujo campo horário de trabalho tivesse um valor maior do que 50 caracteres.]]></Item>
+		<Item visivel="S" motivo="P20150200212"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Ajuste na inconsistência ao solicitar desligamento para o colaborador que tiver a opção de "Não enviar este colaborador para o AC Pessoal" marcada.]]></Item>
+		<Item visivel="S" motivo="P20150100179"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Excluir: Ajuste da inconsistência ao excluir colaborador que possui mensagens com o usuário fortes.]]></Item>
+		<Item visivel="S" motivo="P20150200069"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Ajuste da inconsistência ao contratar um colaborador através de uma solicitação de pessoal cujo campo horário de trabalho tivesse um valor maior do que 50 caracteres.]]></Item>
 		<Item visivel="S" motivo="S20150100079"><![CDATA[Info. Funcionais > Movimentações > Aprovar/Reprovar Solicitações de Desligamento: Data de solicitação de desligamento inserida na lista.]]></Item>
 		<Item visivel="S" motivo="P20150100169"><![CDATA[Info. Funcionais > Relatórios > Ocorrências: Ao tentar imprimir o relatório com filtros que não retornavam dados, o mesmo não apresentava mensagem informando esta ausência de dados.]]></Item>
 	    <Item visivel="S" motivo="S20141200165"><![CDATA[Info. Funcionais > Relatórios > Desligamentos > Imprimir/Exportar: Inserida a informação de "Turnover".]]></Item>
 		<Item visivel="S" motivo="S20141100227"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Novo filtro por colocação.]]></Item>
 		<Item visivel="S" motivo="S20141200166"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Novas colunas "Motivo da Admissão" e "Turnover".]]></Item>
-		<Item visivel="S" motivo="P20150200072"><![CDATA[SESMT > Movimentações > Entrega de EPIs: Correção de inconsistência que não permitia que um colaborador recebesse o EPI se a sua última situação estivesse pendente de confirmação no AC, ainda que esta não fosse a situação de contratação.]]></Item>
+		<Item visivel="S" motivo="P20150200072"><![CDATA[SESMT > Movimentações > Entrega de EPIs: Ajuste da inconsistência que não permitia que um colaborador recebesse o EPI se a sua última situação estivesse pendente de confirmação no AC, ainda que esta não fosse a situação de contratação.]]></Item>
 		<Item visivel="S" motivo="S20150100155"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Nova permissão para aplicar realinhamentos.]]></Item>
 		<Item visivel="S" motivo="S20141000205"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Novas permissões para visualizar ou responder a entrevista de desligamento.]]></Item>
 		<Item visivel="S" motivo="S20150100154"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de configuração para notificar quando "Cadastrar solicitação de realinhamento para colaborador" através de email para o gestor, cogestor da área organizacional e outros usuários.]]></Item>
 		<Item visivel="S" motivo="S20150200057"><![CDATA[Utilitários > Configurações > Sistema: Nova configuração de horários do backup automático do banco de dados.]]></Item>
 		<Item visivel="S" motivo="P20150100299"><![CDATA[Utilitários > Auditoria: Auditar dados da inserção e edição da solicitação de pessoal.]]></Item>
-		<Item visivel="S" motivo="P20150100182"><![CDATA[Utilitários > Auditoria: Auditar data e mudança do status de uma solicitação de pessoal.]]></Item>
+		<Item visivel="S" motivo="P20150100182"><![CDATA[Utilitários > Auditoria: Auditar a data e a mudança do status de uma solicitação de pessoal.]]></Item>
 		<Item visivel="S" motivo="S20150200052"><![CDATA[Módulo Externo: Não exibir o email do suporte da Fortes nas telas de erro.]]></Item>
 		<Item visivel="S" motivo="P20150100259"><![CDATA[Tratamento de mensagens ao cancelar contratação pelo AC Pessoal.]]></Item>
 		<Item visivel="S" motivo="P20150200019"><![CDATA[Ajuste na contagem de dias para o envio de lembretes de avaliações de período de experiência.]]></Item>

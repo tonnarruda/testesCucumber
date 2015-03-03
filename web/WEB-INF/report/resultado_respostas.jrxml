@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resultado_respostas" pageWidth="529" pageHeight="802" whenNoDataType="AllSectionsNoDetail" columnWidth="529" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5fde20ba-66b7-49e1-99bc-665acf905da4">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.1435888100000016"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -12,9 +12,6 @@
 	<field name="colaboradorQuestionario.colaborador.nomeComercial" class="java.lang.String"/>
 	<field name="respostasObjetivas" class="java.lang.String"/>
 	<field name="colaboradorQuestionario.colaborador.nome" class="java.lang.String"/>
-	<variable name="countCharRespostasObjetivas" class="java.lang.Integer">
-		<variableExpression><![CDATA[new Integer(($F{respostasObjetivas}.length() + 1)/2)]]></variableExpression>
-	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -28,7 +25,7 @@
 		<band height="12" splitType="Stretch">
 			<printWhenExpression><![CDATA[new Boolean(!($P{QUESTIONARIO_ANONIMO}.booleanValue()))]]></printWhenExpression>
 			<staticText>
-				<reportElement uuid="c69127c2-3ca4-4b8d-865e-3e932f123238" key="staticText-1" x="0" y="0" width="130" height="12"/>
+				<reportElement key="staticText-1" x="0" y="0" width="130" height="12" uuid="c69127c2-3ca4-4b8d-865e-3e932f123238"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -46,7 +43,7 @@
 		<band height="13" splitType="Stretch">
 			<printWhenExpression><![CDATA[new Boolean(!($P{QUESTIONARIO_ANONIMO}.booleanValue()))]]></printWhenExpression>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="96ba824a-225b-4fdb-9527-f6ef3e9162b4" key="textField" x="14" y="0" width="515" height="12">
+				<reportElement key="textField" x="14" y="0" width="515" height="12" uuid="96ba824a-225b-4fdb-9527-f6ef3e9162b4">
 					<printWhenExpression><![CDATA[new Boolean($P{QUESTIONARIO_ANONIMO}.equals(new Boolean(false)))]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -61,7 +58,7 @@
 				<textFieldExpression><![CDATA[$F{respostasObjetivas} == null ? ($F{colaboradorQuestionario.colaborador.nomeComercial} ==null?$F{colaboradorQuestionario.colaborador.nome}:$F{colaboradorQuestionario.colaborador.nomeComercial})+ ": " : ($F{colaboradorQuestionario.colaborador.nomeComercial} ==null?$F{colaboradorQuestionario.colaborador.nome}:$F{colaboradorQuestionario.colaborador.nomeComercial}) + ": " +$F{respostasObjetivas}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement uuid="54d2d00b-69a0-4302-9ed7-6a39cd742084" key="textField-2" mode="Opaque" x="14" y="0" width="515" height="13" isRemoveLineWhenBlank="true" backcolor="#FFFFFF">
+				<reportElement key="textField-2" mode="Opaque" x="14" y="0" width="515" height="13" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="54d2d00b-69a0-4302-9ed7-6a39cd742084">
 					<printWhenExpression><![CDATA[new Boolean($P{QUESTIONARIO_ANONIMO}.equals(new Boolean(true)))]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -76,7 +73,7 @@
 				<textFieldExpression><![CDATA[$F{respostasObjetivas}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement uuid="61131fc2-c5a6-4874-ad35-2df35637706d" key="textField-2" mode="Opaque" x="14" y="0" width="515" height="13" isRemoveLineWhenBlank="true" backcolor="#FFFFFF">
+				<reportElement key="textField-2" mode="Opaque" x="14" y="0" width="515" height="13" isRemoveLineWhenBlank="true" backcolor="#FFFFFF" uuid="61131fc2-c5a6-4874-ad35-2df35637706d">
 					<printWhenExpression><![CDATA[new Boolean($P{QUESTIONARIO_ANONIMO}.equals(new Boolean(true)))]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -95,7 +92,7 @@
 	<columnFooter>
 		<band height="20" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="91468e1c-8371-440d-a371-0566fa62b8e5" key="textField-1" x="14" y="7" width="100" height="12"/>
+				<reportElement key="textField-1" x="14" y="7" width="100" height="12" uuid="91468e1c-8371-440d-a371-0566fa62b8e5"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -105,20 +102,7 @@
 				<textElement>
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[!$P{QUESTIONARIO_ANONIMO}.booleanValue() ? ($V{COLUMN_COUNT}.intValue() <= 1 ? $V{COLUMN_COUNT} + " resposta" :  $V{COLUMN_COUNT} + " respostas") : ($V{countCharRespostasObjetivas}.intValue() <= 1 ? $V{countCharRespostasObjetivas} + " resposta" : $V{countCharRespostasObjetivas} + " respostas")]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement uuid="a413e314-e18c-4294-b7eb-02f27a3b1283" key="textField-1" x="14" y="7" width="100" height="12"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[!$P{QUESTIONARIO_ANONIMO}.booleanValue() ? ($V{COLUMN_COUNT}.intValue() <= 1 ? $V{COLUMN_COUNT} + " resposta" :  $V{COLUMN_COUNT} + " respostas") : ($V{countCharRespostasObjetivas}.intValue() <= 1 ? $V{countCharRespostasObjetivas} + " resposta" : $V{countCharRespostasObjetivas} + " respostas")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}.intValue() <= 1 ? $V{REPORT_COUNT} + " resposta" :  $V{REPORT_COUNT} + " respostas"]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>
