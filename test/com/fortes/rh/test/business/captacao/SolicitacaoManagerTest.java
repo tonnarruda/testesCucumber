@@ -24,16 +24,20 @@ import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
+import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
@@ -314,6 +318,8 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 
 		Cargo cargo = CargoFactory.getEntity(-1L);
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(-1L);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(-1L);
+		MotivoSolicitacao motivoSolicitacao = MotivoSolicitacaoFactory.getEntity();
 
 		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
 		solicitacao1.setId(1L);
@@ -327,12 +333,12 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		char visualizar = 'E';
 		char status = 'T';
 
-		solicitacaoDao.expects(once()).method("getCount").with(new Constraint[] { eq(visualizar), eq(empresa.getId()), eq(usuario), eq(estabelecimento.getId()), eq(cargo.getId()), ANYTHING, eq(status), ANYTHING })
+		solicitacaoDao.expects(once()).method("getCount").with(new Constraint[] { eq(visualizar), eq(empresa.getId()), eq(usuario), eq(estabelecimento.getId()), eq(areaOrganizacional.getId()), eq(cargo.getId()), eq(motivoSolicitacao.getId()), ANYTHING, eq(status), ANYTHING })
 				.will(returnValue(solicitacaos.size()));
 
-		int resultado = solicitacaoManager.getCount(visualizar, empresa.getId(), usuario.getId(), estabelecimento.getId(), cargo.getId(), null, status, null);
+		int resutado = solicitacaoManager.getCount(visualizar, empresa.getId(), usuario.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), "desc", status, null);
 
-		assertEquals(solicitacaos.size(), resultado);
+		assertEquals(solicitacaos.size(), resutado);
 	}
 
 	public void testFindAllByVisualizacaoComUsuarioValido()
@@ -345,6 +351,8 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 
 		Cargo cargo = CargoFactory.getEntity(-1L);
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(-1L);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		MotivoSolicitacao motivo = MotivoSolicitacaoFactory.getEntity();
 
 		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
 		solicitacao1.setId(1L);
@@ -362,9 +370,9 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		char status = 'T';
 
 		solicitacaoDao.expects(once()).method("findAllByVisualizacao").with(
-				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(empresa.getId()), eq(usuario), eq(estabelecimento.getId()), eq(cargo.getId()), eq(null), eq(status), ANYTHING }).will(returnValue(solicitacaos));
+				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(empresa.getId()), eq(usuario), eq(estabelecimento.getId()), eq(areaOrganizacional.getId()), eq(cargo.getId()), eq(motivo.getId()), eq(null), eq(status), ANYTHING }).will(returnValue(solicitacaos));
 
-		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, empresa.getId(), usuario.getId(), estabelecimento.getId(), cargo.getId(), null, status, null);
+		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, empresa.getId(), usuario.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivo.getId(), null, status, null);
 
 		assertEquals(solicitacaos.size(), resultado.size());
 	}
@@ -378,6 +386,8 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 
 		Cargo cargo = CargoFactory.getEntity(-1L);
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(-1L);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		MotivoSolicitacao motivo = MotivoSolicitacaoFactory.getEntity();
 
 		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
 		solicitacao1.setId(1L);
@@ -391,10 +401,10 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		char visualizar = 'E';
 		char status = 'T';
 
-		solicitacaoDao.expects(once()).method("getCount").with(new Constraint[] { eq(visualizar), eq(empresa.getId()), ANYTHING, eq(estabelecimento.getId()), eq(cargo.getId()), ANYTHING, eq(status), ANYTHING }).will(
+		solicitacaoDao.expects(once()).method("getCount").with(new Constraint[] { eq(visualizar), eq(empresa.getId()), ANYTHING, eq(estabelecimento.getId()), eq(areaOrganizacional.getId()), eq(cargo.getId()), eq(motivo.getId()), ANYTHING, eq(status), ANYTHING }).will(
 				returnValue(solicitacaos.size()));
 
-		int resultado = solicitacaoManager.getCount(visualizar, empresa.getId(), estabelecimento.getId(), cargo.getId(), null, status);
+		int resultado = solicitacaoManager.getCount(visualizar, empresa.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivo.getId(), null, status);
 
 		assertEquals(solicitacaos.size(), resultado);
 	}
@@ -408,6 +418,8 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 
 		Cargo cargo = CargoFactory.getEntity(-1L);
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(-1L);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		MotivoSolicitacao motivo = MotivoSolicitacaoFactory.getEntity();
 
 		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
 		solicitacao1.setId(1L);
@@ -425,9 +437,9 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		char status = 'T';
 
 		solicitacaoDao.expects(once()).method("findAllByVisualizacao").with(
-				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(empresa.getId()), eq(null), eq(estabelecimento.getId()), eq(cargo.getId()), eq(null), eq(status), eq(null) }).will(returnValue(solicitacaos));
+				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(empresa.getId()), eq(null), eq(estabelecimento.getId()), eq(areaOrganizacional.getId()), eq(cargo.getId()), eq(motivo.getId()), eq(null), eq(status), eq(null) }).will(returnValue(solicitacaos));
 
-		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, empresa.getId(), estabelecimento.getId(), cargo.getId(), null, status);
+		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, empresa.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivo.getId(), null, status);
 
 		assertEquals(solicitacaos.size(), resultado.size());
 	}

@@ -31,30 +31,30 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private EmpresaManager empresaManager;
 
-	public Integer getCount(char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long cargoId, String descricaoBusca, char statusBusca, Long[] areasIds)
+	public Integer getCount(char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds)
 	{
 		Usuario usuario = new Usuario();
 		usuario.setId(usuarioId);
 
-		return getDao().getCount(visualizar, empresaId, usuario, estabelecimentoId, cargoId, descricaoBusca, statusBusca, areasIds);
+		return getDao().getCount(visualizar, empresaId, usuario, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds);
 	}
 	
-	public Integer getCount(char visualizar, Long empresaId, Long estabelecimentoId, Long cargoId, String descricaoBusca, char statusBusca)
+	public Integer getCount(char visualizar, Long empresaId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca)
 	{
-		return getDao().getCount(visualizar, empresaId, null, estabelecimentoId, cargoId, descricaoBusca, statusBusca, null);
+		return getDao().getCount(visualizar, empresaId, null, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, null);
 	}
 
-	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long cargoId, String descricaoBusca, char statusBusca, Long[] areasIds)
+	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds)
 	{
 		Usuario usuario = new Usuario();
 		usuario.setId(usuarioId);
 
-		return getDao().findAllByVisualizacao(page, pagingSize, visualizar, empresaId, usuario, estabelecimentoId, cargoId, descricaoBusca, statusBusca, areasIds);
+		return getDao().findAllByVisualizacao(page, pagingSize, visualizar, empresaId, usuario, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds);
 	}
 
-	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long estabelecimentoId, Long cargoId, String descricaoBusca, char statusBusca)
+	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca)
 	{
-		return getDao().findAllByVisualizacao(page, pagingSize, visualizar,empresaId, null, estabelecimentoId, cargoId, descricaoBusca, statusBusca, null);
+		return getDao().findAllByVisualizacao(page, pagingSize, visualizar,empresaId, null, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, null);
 	}
 
 	@Override

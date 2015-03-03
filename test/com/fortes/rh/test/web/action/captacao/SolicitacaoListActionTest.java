@@ -13,6 +13,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -20,9 +21,11 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
@@ -42,6 +45,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 	private Mock manager;
 	private Mock candidatoSolicitacaoManager;
 	private Mock areaorganizacionalManager;
+	private Mock motivoSolicitacaoManager;
 	private Mock candidatoManager;
 	private Mock cargoManager;
 	private Mock estabelecimentoManager;
@@ -56,6 +60,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
         candidatoManager = new Mock(CandidatoManager.class);
         candidatoSolicitacaoManager = new Mock(CandidatoSolicitacaoManager.class);
         areaorganizacionalManager = new Mock(AreaOrganizacionalManager.class);
+        motivoSolicitacaoManager = new Mock(MotivoSolicitacaoManager.class);
         cargoManager = new Mock(CargoManager.class);
         estabelecimentoManager = new Mock(EstabelecimentoManager.class);
         empresaManager = new Mock(EmpresaManager.class);
@@ -66,6 +71,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
         action.setCandidatoManager((CandidatoManager) candidatoManager.proxy());
         action.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
         action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaorganizacionalManager.proxy());
+        action.setMotivoSolicitacaoManager((MotivoSolicitacaoManager) motivoSolicitacaoManager.proxy());
         action.setCargoManager((CargoManager)cargoManager.proxy());
         action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
         action.setEmpresaManager((EmpresaManager)empresaManager.proxy());
@@ -101,7 +107,9 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(solicitacaos));
     	cargoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Cargo>()));
     	estabelecimentoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Estabelecimento>()));
-
+    	areaorganizacionalManager.expects(once()).method("montaAllSelect").withAnyArguments().will(returnValue(new ArrayList<AreaOrganizacional>()));
+    	motivoSolicitacaoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(new ArrayList<MotivoSolicitacao>()));
+    	
     	assertEquals(action.list(), "success");
     	manager.verify();
     }
@@ -119,6 +127,8 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(solicitacaos));
     	cargoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Cargo>()));
     	estabelecimentoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Estabelecimento>()));
+    	areaorganizacionalManager.expects(once()).method("montaAllSelect").withAnyArguments().will(returnValue(new ArrayList<AreaOrganizacional>()));
+    	motivoSolicitacaoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(new ArrayList<MotivoSolicitacao>()));
     	
     	assertEquals(action.list(), "success");
     }
@@ -145,6 +155,8 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(new ArrayList<Solicitacao>()));
     	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(cargos));
     	estabelecimentoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(estabelecimentos));
+    	areaorganizacionalManager.expects(once()).method("montaAllSelect").withAnyArguments().will(returnValue(new ArrayList<AreaOrganizacional>()));
+    	motivoSolicitacaoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(new ArrayList<MotivoSolicitacao>()));
     	
     	manager.expects(once()).method("removeCascade").with(ANYTHING).will(returnValue(true));
 
@@ -175,6 +187,8 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING,ANYTHING,ANYTHING).will(returnValue(cargos));
     	estabelecimentoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(estabelecimentos));
     	manager.expects(once()).method("removeCascade").with(ANYTHING).will(returnValue(false));
+    	areaorganizacionalManager.expects(once()).method("montaAllSelect").withAnyArguments().will(returnValue(new ArrayList<AreaOrganizacional>()));
+    	motivoSolicitacaoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(new ArrayList<MotivoSolicitacao>()));
 
     	assertEquals("success", action.delete());
     	assertFalse(action.getActionWarnings().isEmpty());
@@ -248,6 +262,8 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(new ArrayList<Solicitacao>()));
     	cargoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Cargo>()));
     	estabelecimentoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Estabelecimento>()));
+    	areaorganizacionalManager.expects(once()).method("montaAllSelect").withAnyArguments().will(returnValue(new ArrayList<AreaOrganizacional>()));
+    	motivoSolicitacaoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(new ArrayList<MotivoSolicitacao>()));
     	
     	assertEquals("input",action.encerrarSolicitacao());
     	assertEquals("Data de Encerramento Inválida.", action.getActionWarnings().toArray()[0]);

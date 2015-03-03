@@ -5,6 +5,7 @@ package com.fortes.rh.web.action.captacao;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
+import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -29,9 +31,11 @@ import com.fortes.rh.model.captacao.Anuncio;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.EventoAgenda;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
+import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.security.SecurityUtil;
@@ -54,6 +58,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     private ParametrosDoSistemaManager parametrosDoSistemaManager;
     private HistoricoCandidatoManager historicoCandidatoManager;
     private AreaOrganizacionalManager areaOrganizacionalManager;
+    private MotivoSolicitacaoManager motivoSolicitacaoManager;
     private EstabelecimentoManager estabelecimentoManager;
     private PlatformTransactionManager transactionManager;
     private SolicitacaoManager solicitacaoManager;
@@ -77,9 +82,14 @@ public class SolicitacaoListAction extends MyActionSupportList
     private EmpresaManager empresaManager;
     private boolean pgInicial = false;//usado pelo decorator
 
-    private Estabelecimento estabelecimento = new Estabelecimento();
+    private Collection<MotivoSolicitacao> motivosSolicitacoes = new ArrayList<MotivoSolicitacao>();
+    private Collection<AreaOrganizacional> areasOrganizacionais = new ArrayList<AreaOrganizacional>();
     private Collection<Estabelecimento> estabelecimentos;
     private Collection<Cargo> cargos;
+
+    private MotivoSolicitacao motivoSolicitacao = new MotivoSolicitacao();
+    private AreaOrganizacional areaOrganizacional = new AreaOrganizacional();
+    private Estabelecimento estabelecimento = new Estabelecimento();
     private Cargo cargo = new Cargo();
     private String descricaoBusca;
     private char statusBusca = 'T';
@@ -95,6 +105,7 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	private String voltarPara;
 
+
 	public String list() throws Exception
     {
 		setVideoAjuda(678L);
@@ -105,16 +116,16 @@ public class SolicitacaoListAction extends MyActionSupportList
 		
 		if(roleMovSolicitacaoSelecao)
 		{
-			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), estabelecimento.getId(), cargo.getId(), descricaoBusca, statusBusca));
-			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), estabelecimento.getId(), cargo.getId(), descricaoBusca, statusBusca);
+			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca));
+			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca);
 		}
 		else
 		{
 			Usuario usuario = getUsuarioLogado();
 			Long[] areasIdsComFilhas = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(usuario, getEmpresaSistema().getId());
 			
-			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), usuario.getId(), estabelecimento.getId(), cargo.getId(), descricaoBusca, statusBusca, areasIdsComFilhas));
-			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), usuario.getId(), estabelecimento.getId(), cargo.getId(), descricaoBusca, statusBusca, areasIdsComFilhas);
+			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), usuario.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, areasIdsComFilhas));
+			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), usuario.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, areasIdsComFilhas);
 		}
 
 		if(solicitacaos == null || solicitacaos.size() == 0)
@@ -122,6 +133,9 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 		cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome", null, Cargo.TODOS);
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
+		areasOrganizacionais = areaOrganizacionalManager.montaAllSelect(getEmpresaSistema().getId());
+		motivosSolicitacoes = motivoSolicitacaoManager.findAll();
+		
 		status = new StatusAprovacaoSolicitacao();
 		
         return Action.SUCCESS;
@@ -369,12 +383,35 @@ public class SolicitacaoListAction extends MyActionSupportList
 		this.cargoManager = cargoManager;
 	}
 
+	public MotivoSolicitacao getMotivoSolicitacao() {
+		return motivoSolicitacao;
+	}
+
+	public void setMotivoSolicitacao(MotivoSolicitacao motivoSolicitacao) {
+		this.motivoSolicitacao = motivoSolicitacao;
+	}
+
+	public AreaOrganizacional getAreaOrganizacional() {
+		return areaOrganizacional;
+	}
+
+	public void setAreaOrganizacional(AreaOrganizacional areaOrganizacional) {
+		this.areaOrganizacional = areaOrganizacional;
+	}
+
 	public Estabelecimento getEstabelecimento() {
 		return estabelecimento;
 	}
 
 	public void setEstabelecimento(Estabelecimento estabelecimento) {
 		this.estabelecimento = estabelecimento;
+	}
+	
+	public Collection<MotivoSolicitacao> getMotivosSolicitacoes() {
+		return motivosSolicitacoes;
+	}
+	public Collection<AreaOrganizacional> getAreasOrganizacionais() {
+		return areasOrganizacionais;
 	}
 
 	public Collection<Estabelecimento> getEstabelecimentos() {
@@ -523,6 +560,11 @@ public class SolicitacaoListAction extends MyActionSupportList
 	public void setAreaOrganizacionalManager(
 			AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+	
+	public void setMotivoSolicitacaoManager(
+			MotivoSolicitacaoManager motivoSolicitacaoManager) {
+		this.motivoSolicitacaoManager = motivoSolicitacaoManager;
 	}
 
 	public void setDataStatusSolicitacaoAnterior(Date dataStatusSolicitacaoAnterior) {
