@@ -134,6 +134,16 @@
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>	
+			<result name="afastamentos_por_areaXls" type="xls">
+				<param name="dataSource">colaboradorAfastamentos</param>
+				<param name="documentName">afastamentos_area.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Área Organizacional,Matrícula,Colaborador,Período,Dias,Estabelecimento,Médico,Motivo,CID</param>
+				<param name="propertiesGroup">colaborador.areaOrganizacional.descricao</param>
+				<param name="properties">colaborador.areaOrganizacional.descricao,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.estabelecimento.nome,medicoNome,afastamento.descricao,cid</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioAfastamentos.ftl</result>
 		</action>
 		<action name="prepareRelatorioResumoAfastamentos" class="com.fortes.rh.web.action.sesmt.ColaboradorAfastamentoListAction" method="prepareRelatorioResumoAfastamentos">
