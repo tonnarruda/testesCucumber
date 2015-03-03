@@ -31,7 +31,8 @@ public class AmbienteDWR
 		else{
 			ambienteVazio.setNome(" Selecione...");
 		}
-		return  new CollectionUtil<Ambiente>().convertCollectionToMap(ambientes,"getId","getNome");
+		
+		return new CollectionUtil<Ambiente>().convertCollectionToMap(ambientes,"getId","getNome");
 	}
 	
 	public Map<Object, Object> getAmbienteChecks(Long estabelecimentoId, Date data)

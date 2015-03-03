@@ -3,6 +3,7 @@
 	<Versao id="1.1.14x.17x" bd="" data="xx/03/2015">
 		<Item visivel="S" motivo="S20140300005"><![CDATA[T&D > Relatórios > Lista de Presença : Exibir quantidade de participantes presentes no relatório.]]></Item>
 		<Item visivel="S" motivo="P20150200270"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Corrigindo problema com permissões ao visualizar entrevista de desligamento.]]></Item>
+		<Item visivel="S" motivo="S20140300177"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir > Dados Funcionais: Colocando ambientes em ordem alfabética.]]></Item>
 		<Item visivel="S" motivo="S20150200111"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Correção de bug ao apresentar função e ambiente no relatório dinâmico.]]></Item>
 		<Item visivel="S" motivo="S20150100108"><![CDATA[SESMT > Relatórios > Afastamentos: Criando nova opção de agrupamento por Área Organizacional.]]></Item>
 		<Item visivel="S" motivo="S20141200093"><![CDATA[SESMT > Relatórios > Afastamentos: Nova opção de gerar o relatório no formato xls.]]></Item>
