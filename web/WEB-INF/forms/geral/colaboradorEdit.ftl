@@ -295,6 +295,7 @@
 		{
 			DWRUtil.removeAllOptions("funcao");
 			DWRUtil.addOptions("funcao", data);
+			orderSelectByNome("funcao");
 		}
 
 		function setaCampos()
