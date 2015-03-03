@@ -13,9 +13,6 @@
 		<fileset dir="${project.dir}/extras">
 			<include name="*.jar" />
 		</fileset>
-		<fileset dir="${lib.dir}/backup">
-			<include name="*.jar" />
-		</fileset>
    	</path>
 
 	<path id="project.classpath.ireport">
@@ -83,7 +80,7 @@
 	<target name="clean-reports">
 		<taskdef resource="net/sf/antcontrib/antlib.xml">  
 	        <classpath>  
-	            <pathelement location="${project.dir}/web/WEB-INF/lib/backup/ant-contrib-1.0b3.jar"/>  
+	            <pathelement location="${project.dir}/web/WEB-INF/lib/ant-contrib-1.0b3.jar"/>  
 	        </classpath>  
 		</taskdef> 
 		
