@@ -698,5 +698,31 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		assertEquals(tCargo.getDescricao(), faixaSalarial.getNome());
 		assertEquals(tCargo.getDescricaoACPessoal(), faixaSalarial.getNomeACPessoal());
 	}
+	
+	public void testQtdColaboradoresPorCargoFaixa() {
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+
+		Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
+		faixaSalarials.add(FaixaSalarialFactory.getEntity(1L));
+
+		faixaSalarialDao.expects(once()).method("qtdColaboradoresPorCargoFaixa").with(ANYTHING).will(returnValue(faixaSalarials));
+
+		Collection<FaixaSalarial> retorno = faixaSalarialManager.qtdColaboradoresPorCargoFaixa(empresa.getId());
+
+		assertEquals(faixaSalarials.size(), retorno.size());
+	}
+	
+	public void testQtdColaboradoresPorCargoFaixaAreaOrganizacional() {
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+
+		Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
+		faixaSalarials.add(FaixaSalarialFactory.getEntity(1L));
+
+		faixaSalarialDao.expects(once()).method("qtdColaboradoresPorCargoFaixaAreaOrganizacional").with(ANYTHING).will(returnValue(faixaSalarials));
+
+		Collection<FaixaSalarial> retorno = faixaSalarialManager.qtdColaboradoresPorCargoFaixaAreaOrganizacional(empresa.getId());
+
+		assertEquals(faixaSalarials.size(), retorno.size());
+	}
 }
 

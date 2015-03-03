@@ -60,6 +60,8 @@ public class CargoEditAction extends MyActionSupportEdit
     private CodigoCBOManager codigoCBOManager;
 
     private boolean exibirSalario;//padrão tem que ser falso
+    private boolean exibirAreaOrganizacional;
+    
 	private Collection<Cargo> cargos = new ArrayList<Cargo>();
 	private Collection<HistoricoColaborador> historicoColaboradors;
 	private Collection<GrupoOcupacional> grupoOcupacionals = new ArrayList<GrupoOcupacional>();
@@ -116,6 +118,8 @@ public class CargoEditAction extends MyActionSupportEdit
 
 	private String reportFilter;
 	private String reportTitle;
+	
+	private boolean exibirSalarioVariavel = false;
 	
 	private void prepare() throws Exception
 	{
@@ -190,26 +194,50 @@ public class CargoEditAction extends MyActionSupportEdit
 	
 	public String relatorioColaboradorCargoXLS() throws Exception
 	{
-		if(relatorioResumido)
-		{
+		if(relatorioResumido) {
 			populaTituloFiltro(); 
-			faixasDoCargo = faixaSalarialManager.qtdColaboradoresPorCargoFaixa(empresa.getId());
-			return "successResumidoXls";
+			if (exibirAreaOrganizacional) {
+				faixasDoCargo = faixaSalarialManager.qtdColaboradoresPorCargoFaixaAreaOrganizacional(empresa.getId());
+				return "successResumidoAreaOrganizacionalXls";
+			} else {
+				faixasDoCargo = faixaSalarialManager.qtdColaboradoresPorCargoFaixa(empresa.getId());
+				return "successResumidoXls";
+			}
 		}
 		
 		String retorno = relatorioColaboradorCargo();
 		
-		if(exibirSalario && exibirSalarioVariavel())
+		if(exibirSalario && exibirSalarioVariavel && !exibirAreaOrganizacional)
 			return "successRemuneracaoVariavel";
-		else if(exibirSalario)
+		else if(exibirSalario && exibirSalarioVariavel && exibirAreaOrganizacional)
+			return "successRemuneracaoVariavelAreaOrganizacional";
+		else if (exibirSalario && !exibirAreaOrganizacional)
 			return "successRemuneracaoNoRH";
+		else if (exibirSalario && exibirAreaOrganizacional)
+			return "successRemuneracaoNoRHAreaOrganizacional";
+		else if (!exibirSalario && exibirAreaOrganizacional)
+			return "successAreaOrganizacional";
 		else
 			return retorno;
 	}
 	
-	public String relatorioColaboradorCargo() throws Exception
-	{
-		boolean exibirSalarioVariavel = false;
+	public String relatorioColaboradorCargo() throws Exception {
+		
+		String retorno = populaDadosRelatorioColaboradorCargo();
+		
+		if (exibirSalarioVariavel && !exibirAreaOrganizacional)
+			return "successRemuneracaoVariavel";
+		else if (exibirSalarioVariavel && exibirAreaOrganizacional)
+			return "successRemuneracaoVariavelAreaOrganizacional";
+		else if(relatorioResumido)
+			return "successResumido";
+		else if (exibirAreaOrganizacional)
+			return "successAreaOrganizacional";
+		else
+			return retorno;
+	}
+
+	private String populaDadosRelatorioColaboradorCargo() throws Exception {
 		
 		if(exibirSalario)
 			exibirSalarioVariavel = exibirSalarioVariavel();
@@ -226,13 +254,9 @@ public class CargoEditAction extends MyActionSupportEdit
 		parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
 		parametros.put("EXIBIRSALARIO", exibirSalario);
 		parametros.put("EXIBIRSALARIOVARIAVEL", exibirSalarioVariavel);
+		parametros.put("EXIBIRAREAORGANIZACIONAL", exibirAreaOrganizacional);
 		
-		if(exibirSalarioVariavel)
-			return "successRemuneracaoVariavel";
-		if(relatorioResumido)
-			return "successResumido";
-		else
-			return Action.SUCCESS;
+		return Action.SUCCESS;
 	}
 
 	private void populaTituloFiltro() 
@@ -938,5 +962,13 @@ public class CargoEditAction extends MyActionSupportEdit
 
 	public void setSelectColuna(String selectColuna) {
 		this.selectColuna = selectColuna;
+	}
+
+	public boolean isExibirAreaOrganizacional() {
+		return exibirAreaOrganizacional;
+	}
+
+	public void setExibirAreaOrganizacional(boolean exibirAreaOrganizacional) {
+		this.exibirAreaOrganizacional = exibirAreaOrganizacional;
 	}
 }

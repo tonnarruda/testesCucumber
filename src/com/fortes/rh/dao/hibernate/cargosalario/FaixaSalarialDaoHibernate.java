@@ -525,11 +525,29 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		return  StringUtil.converteCollectionToString(query.list());
 	}
 
-	public Collection<FaixaSalarial> qtdColaboradoresPorCargoFaixa(Long empresaId) 
-	{
+	public Collection<FaixaSalarial> qtdColaboradoresPorCargoFaixa(Long empresaId){
+
+		return qtdColaboradoresCorpoHql(empresaId, false).list();
+	}
+	
+	public Collection<FaixaSalarial> qtdColaboradoresPorCargoFaixaAreaOrganizacional(Long empresaId){
+		
+		return qtdColaboradoresCorpoHql(empresaId, true).list();
+	}
+	
+	private Query qtdColaboradoresCorpoHql(Long empresaId, boolean isAreaOrganizacional) {
+		
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new FaixaSalarial(cg.nome, fs.nome, cast(count(c.id) as integer) )");
-		hql.append("from HistoricoColaborador hc ");
+		
+		if (isAreaOrganizacional) {
+			hql.append("select new FaixaSalarial(cg.nome, fs.nome, cast(count(c.id) as integer), ao.nome )");
+			hql.append("from HistoricoColaborador hc ");
+			hql.append("inner join hc.areaOrganizacional as ao ");
+		} else {
+			hql.append("select new FaixaSalarial(cg.nome, fs.nome, cast(count(c.id) as integer))");
+			hql.append("from HistoricoColaborador hc ");
+		}
+		
 		hql.append("inner join hc.colaborador c ");
 		hql.append("inner join hc.faixaSalarial fs ");
 		hql.append("inner join fs.cargo cg ");
@@ -542,16 +560,21 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 			hql.append("and cg.empresa.id = :empresaId ");
 		
 		hql.append("and c.desligado = false ");
-		hql.append("group by cg.nome, fs.nome ");
+		
+		if (isAreaOrganizacional) {
+			hql.append("group by cg.nome, fs.nome, ao.nome ");
+		} else {
+			hql.append("group by cg.nome, fs.nome ");
+		}
+		
 		hql.append("order by cg.nome, fs.nome ");
-
+		
 		Query query = getSession().createQuery(hql.toString());
-
+		
 		if(empresaId != null)
 			query.setLong("empresaId", empresaId);
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-
-		return query.list();
+		return query;
 	}
 }

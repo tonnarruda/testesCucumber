@@ -120,6 +120,8 @@
 		<@authz.authorize ifAllGranted="EXIBIR_SALARIO_RELAT_COLAB_CARGO">
 			<@ww.checkbox label="Exibir Salário" name="exibirSalario" id="exibirSalario" labelPosition="left" onchange="desabilitaOutroCheck('exibirSalario', 'resumido')"/>
 		</@authz.authorize>
+
+		<@ww.checkbox label="Exibir área organizacional" name="exibirAreaOrganizacional" id="exibirAreaOrganizacional" labelPosition="left"/>
 		
 	</@ww.form>
 

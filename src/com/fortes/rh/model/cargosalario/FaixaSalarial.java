@@ -64,6 +64,8 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	private String empresaGrupoAC;
 	@Transient
 	private Collection<Competencia> competencias;
+	@Transient
+	private String areaOrganizacionalNome;
 
 	public FaixaSalarial()
 	{
@@ -99,12 +101,19 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		setNomeCargo(nomeCargo);
 	}
 	
-	public FaixaSalarial (String cargoNome, String faixaNome, Integer qtdColaboradores)
-	{
+	public FaixaSalarial (String cargoNome, String faixaNome, Integer qtdColaboradores)	{
 		setCargo(new Cargo());
 		getCargo().setNome(cargoNome);
 		setNome(faixaNome);
 		setQtdColaboradores(qtdColaboradores);
+	}
+	
+	public FaixaSalarial (String cargoNome, String faixaNome, Integer qtdColaboradores, String areaOrganizacionalNome)	{
+		setCargo(new Cargo());
+		getCargo().setNome(cargoNome);
+		setNome(faixaNome);
+		setQtdColaboradores(qtdColaboradores);
+		setAreaOrganizacionalNome(areaOrganizacionalNome);
 	}
 
 	//findComHistoricoAtualByEmpresa
@@ -459,5 +468,15 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	public void setQtdColaboradores(int qtdColaboradores) 
 	{
 		this.qtdColaboradores = qtdColaboradores;
+	}
+
+
+	public String getAreaOrganizacionalNome() {
+		return areaOrganizacionalNome;
+	}
+
+
+	public void setAreaOrganizacionalNome(String areaOrganizacionalNome) {
+		this.areaOrganizacionalNome = areaOrganizacionalNome;
 	}
 }

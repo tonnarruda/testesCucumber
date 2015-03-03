@@ -96,6 +96,12 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">colaboradoresPorCargos.pdf</param>
 			</result>
+			<result name="successAreaOrganizacional" type="jasper">
+				<param name="location">WEB-INF/report/colaboradorCargoPaisagem.jasper</param>
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradoresPorCargos.pdf</param>
+			</result>
 			<result name="successResumido" type="jasper">
 				<param name="location">WEB-INF/report/colaboradorCargoResumido.jasper</param>
 				<param name="dataSource">historicoColaboradors</param>
@@ -104,6 +110,12 @@
 			</result>
 			<result name="successRemuneracaoVariavel" type="jasper">
 				<param name="location">WEB-INF/report/colaboradorCargoRemuneracaoVariavel.jasper</param>
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradoresPorCargosResumido.pdf</param>
+			</result>
+			<result name="successRemuneracaoVariavelAreaOrganizacional" type="jasper">
+				<param name="location">WEB-INF/report/colaboradorCargoRemuneracaoVariavelPaisagem.jasper</param>
 				<param name="dataSource">historicoColaboradors</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">colaboradoresPorCargosResumido.pdf</param>
@@ -121,6 +133,16 @@
 				<param name="properties">faixaSalarial.descricao,colaborador.nomeMaisNomeComercial,colaborador.vinculo,colaborador.tempoDeServico,colaborador.dataAdmissaoFormatada</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successAreaOrganizacional" type="xls">
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="documentName">colaboradoresPorCargos.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Cargo / Faixa Salarial,Colaborador,Área Organizacional,Colocação,Contratado há,Data de Admissão</param>
+				<param name="propertiesGroup">faixaSalarial.descricao</param>
+				<param name="properties">faixaSalarial.descricao,colaborador.nomeMaisNomeComercial,areaOrganizacional.nome,colaborador.vinculo,colaborador.tempoDeServico,colaborador.dataAdmissaoFormatada</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
 			</result>		
 			<result name="successRemuneracaoNoRH" type="xls">
 				<param name="dataSource">historicoColaboradors</param>
@@ -129,6 +151,16 @@
 				<param name="columns">Cargo / Faixa Salarial,Colaborador,Colocação,Contratado há,Data de Admissão,Salário</param>
 				<param name="propertiesGroup">faixaSalarial.descricao</param>
 				<param name="properties">faixaSalarial.descricao,colaborador.nomeMaisNomeComercial,colaborador.vinculo,colaborador.tempoDeServico,colaborador.dataAdmissaoFormatada,salarioCalculado</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successRemuneracaoNoRHAreaOrganizacional" type="xls">
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="documentName">colaboradorCargoRemuneracaoNoRH.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Cargo / Faixa Salarial,Colaborador,Área Organizacional,Colocação,Contratado há,Data de Admissão,Salário</param>
+				<param name="propertiesGroup">faixaSalarial.descricao</param>
+				<param name="properties">faixaSalarial.descricao,colaborador.nomeMaisNomeComercial,areaOrganizacional.nome,colaborador.vinculo,colaborador.tempoDeServico,colaborador.dataAdmissaoFormatada,salarioCalculado</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
@@ -142,12 +174,31 @@
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
+			<result name="successRemuneracaoVariavelAreaOrganizacional" type="xls">
+				<param name="dataSource">historicoColaboradors</param>
+				<param name="documentName">colaboradorCargoRemuneracaoVariavel.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Cargo / Faixa Salarial,Colaborador,,Área OrganizacionalColocação,Contratado há,Data de Admissão,Salário,Rem. Variável,Total</param>
+				<param name="propertiesGroup">faixaSalarial.descricao</param>
+				<param name="properties">faixaSalarial.descricao,colaborador.nomeMaisNomeComercial,areaOrganizacional.nome,colaborador.vinculo,colaborador.tempoDeServico,colaborador.dataAdmissaoFormatada,salarioCalculado,salarioVariavel,salarioCalculadoMaisSalarioVariavel</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
 			<result name="successResumidoXls" type="xls">
 				<param name="dataSource">faixasDoCargo</param>
 				<param name="documentName">colaboradoresPorCargosResumido.xls</param>
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Quantidade,Cargo / Faixa Salarial</param>
 				<param name="properties">qtdColaboradores,descricao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successResumidoAreaOrganizacionalXls" type="xls">
+				<param name="dataSource">faixasDoCargo</param>
+				<param name="documentName">colaboradoresPorCargosResumido.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Quantidade,Cargo / Faixa Salarial,Área Organizacional</param>
+				<param name="properties">qtdColaboradores,descricao,areaOrganizacionalNome</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
