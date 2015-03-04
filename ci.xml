@@ -9,7 +9,7 @@
 		<pathelement location="${build.dir}" />
 		<fileset dir="${lib.dir}">
 			<include name="*.jar" />
-			<include name="backup/ant-apache-log4j.jar" />
+			<include name="ant-apache-log4j.jar" />
 			<exclude name="ant-junit.jar" />
             <exclude name="webwork2-spring.jar" />
 		</fileset>
@@ -21,7 +21,7 @@
    	<path id="project.classpath2">
 		<fileset dir="${lib.dir}">
 			<include name="*.jar" />
-			<include name="backup/ant-apache-log4j.jar" />
+			<include name="ant-apache-log4j.jar" />
 			<exclude name="ant-junit.jar" />
             <exclude name="webwork2-spring.jar" />
 		</fileset>
@@ -231,7 +231,6 @@
 				<exclude name="WEB-INF/atualizador/*.*" />
 				<exclude name="WEB-INF/temp/*.*" />
 				<exclude name="anexos/*.*" />
-				<exclude name="backup/*.*" />
 				<exclude name="${metadados.dir}/clean.sql"/>
 				<exclude name="${metadados.dir}/create_data.sql"/>
 				<exclude name="${metadados.dir}/create.sql"/>
