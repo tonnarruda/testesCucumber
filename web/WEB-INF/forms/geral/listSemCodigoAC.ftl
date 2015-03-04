@@ -91,7 +91,7 @@
 			
 			<@display.column property="id" title="ID" style="width: 30px;text-align: right;"/>
 			<@display.column property="cargo.empresa.nome" title="Empresa"/>
-			<@display.column property="nome" title="Faixas Salariais"/>
+			<@display.column property="descricao" title="Cargo - Faixa Salarial"/>
 		</@display.table>
 	
 		Índices
