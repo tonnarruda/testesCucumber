@@ -16,14 +16,19 @@
 		<#assign dataFim = ""/>
 	</#if>
 
+	<script type='text/javascript'>
+		function submeterAction(action){
+			$('form[name=form]').attr('action', action);
+			return validaFormularioEPeriodo('form', new Array('periodoIni'), new Array('periodoIni','periodoFim'));
+		}
+	</script>
 
 </head>
 <body>
 	<@ww.actionerror />
 	<@ww.actionmessage />
 
-	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array('periodoIni'), new Array('periodoIni','periodoFim'))"/>
-	<@ww.form name="form" action="relatorioEntregaEpi.action" onsubmit="${validarCampos}" method="POST" >
+	<@ww.form name="form" id="form" action="relatorioEntregaEpi.action" method="POST" >
 		Período:<br>
 		<@ww.datepicker label="Início" name="dataIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${dataIni}" required="true"/>
 		<@ww.datepicker label="Fim" name="dataFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${dataFim}"/>
@@ -36,7 +41,8 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="${validarCampos}" class="btnRelatorio"></button>
+		<button onclick="return submeterAction('relatorioEntregaEpi.action');" class="btnRelatorio" ></button>
+		<button onclick="return submeterAction('relatorioEntregaEpiXls.action');" class="btnRelatorioExportar"></button>
 	</div>
 </body>
 </html>

@@ -110,5 +110,28 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioEntregaEpi.ftl</result>
 		</action>
+			<action name="relatorioEntregaEpiXls" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiListAction" method="relatorioEntregaEpiXls">
+			<result name="successXls" type="xls">
+				<param name="dataSource">dataSourceEntrega</param>
+				<param name="documentName">Epi_Entregues.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">EPI,Colaborador,Cargo,Qtd. Sol.,Qtd. Entr.,Entrega,Venc. CA</param>
+				<param name="propertiesGroup">solicitacaoEpiItem.epi.nomeInativo,solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome</param>
+				<param name="properties">solicitacaoEpiItem.epi.nomeInativo,solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome,solicitacaoEpiItem.qtdSolicitado,qtdEntregue,dataEntrega,epiHistorico.vencimentoCA</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>	
+			<result name="success_agrupar_colaboradorXls" type="xls">
+				<param name="dataSource">dataSourceEntrega</param>
+				<param name="documentName">Epi_Entregues_agrupaColab.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Colaborador,Cargo,EPI,Qtd. Sol.,Qtd. Entr.,Entrega,Venc. CA</param>
+				<param name="propertiesGroup">solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome,solicitacaoEpiItem.epi.nomeInativo</param>
+				<param name="properties">solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome,solicitacaoEpiItem.epi.nomeInativo,solicitacaoEpiItem.qtdSolicitado,qtdEntregue,dataEntrega,epiHistorico.vencimentoCA</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="inputXls" type="freemarker">/WEB-INF/forms/sesmt/relatorioEntregaEpi.ftl</result>
+		</action>
 	</package>
 </xwork>

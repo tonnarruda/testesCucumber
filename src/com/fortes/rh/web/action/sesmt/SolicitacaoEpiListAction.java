@@ -78,6 +78,9 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private Map<String, String> situacoesDoColaborador = new SituacaoColaborador();
 	private String situacaoColaborador = SituacaoColaborador.TODOS;
 	
+	private String reportFilter;
+	private String reportTitle;
+	
 	public String list() throws Exception
 	{
 		colaborador.setNome(nomeBusca);
@@ -170,12 +173,20 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 	
+	public String relatorioEntregaEpiXls()
+	{
+		return relatorioEntregaEpi() + "Xls";
+	}
+	
 	public String relatorioEntregaEpi()
 	{
 		try
 		{
+			reportTitle = "EPIs Entregues " + DateUtil.formataDiaMesAno(vencimento);
+			reportFilter = "";
+			
 			dataSourceEntrega = solicitacaoEpiManager.findRelatorioEntregaEpi(getEmpresaSistema().getId(), dataIni, dataFim, epiCheck, colaboradorCheck, agruparPor, exibirDesligados);
-			parametros = RelatorioUtil.getParametrosRelatorio("EPIs Entregues " + DateUtil.formataDiaMesAno(vencimento), getEmpresaSistema(), null);
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), null);
 			
 			switch (agruparPor)
 			{
@@ -467,6 +478,14 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		
 		if(limpaEstabelecimentoCheck)
 			estabelecimentoCheck = null;
+	}
+
+	public String getReportFilter() {
+		return reportFilter;
+	}
+
+	public String getReportTitle() {
+		return reportTitle;
 	}
 
 }

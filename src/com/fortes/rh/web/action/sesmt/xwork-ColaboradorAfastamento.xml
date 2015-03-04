@@ -144,7 +144,7 @@
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioAfastamentos.ftl</result>
+			<result name="inputXls" type="freemarker">/WEB-INF/forms/sesmt/relatorioAfastamentos.ftl</result>
 		</action>
 		<action name="prepareRelatorioResumoAfastamentos" class="com.fortes.rh.web.action.sesmt.ColaboradorAfastamentoListAction" method="prepareRelatorioResumoAfastamentos">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioResumoAfastamentos.ftl</result>
