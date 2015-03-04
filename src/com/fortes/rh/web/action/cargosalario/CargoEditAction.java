@@ -197,26 +197,20 @@ public class CargoEditAction extends MyActionSupportEdit
 		if(relatorioResumido) {
 			populaTituloFiltro(); 
 			if (exibirAreaOrganizacional) {
-				faixasDoCargo = faixaSalarialManager.qtdColaboradoresPorCargoFaixaAreaOrganizacional(empresa.getId());
+				faixasDoCargo = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(empresa.getId(), exibirAreaOrganizacional);
 				return "successResumidoAreaOrganizacionalXls";
 			} else {
-				faixasDoCargo = faixaSalarialManager.qtdColaboradoresPorCargoFaixa(empresa.getId());
+				faixasDoCargo = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(empresa.getId(), exibirAreaOrganizacional);
 				return "successResumidoXls";
 			}
 		}
 		
 		String retorno = relatorioColaboradorCargo();
 		
-		if(exibirSalario && exibirSalarioVariavel && !exibirAreaOrganizacional)
-			return "successRemuneracaoVariavel";
-		else if(exibirSalario && exibirSalarioVariavel && exibirAreaOrganizacional)
-			return "successRemuneracaoVariavelAreaOrganizacional";
-		else if (exibirSalario && !exibirAreaOrganizacional)
+		if (exibirSalario && !exibirSalarioVariavel && !exibirAreaOrganizacional)
 			return "successRemuneracaoNoRH";
-		else if (exibirSalario && exibirAreaOrganizacional)
+		else if (exibirSalario && !exibirSalarioVariavel && exibirAreaOrganizacional)
 			return "successRemuneracaoNoRHAreaOrganizacional";
-		else if (!exibirSalario && exibirAreaOrganizacional)
-			return "successAreaOrganizacional";
 		else
 			return retorno;
 	}

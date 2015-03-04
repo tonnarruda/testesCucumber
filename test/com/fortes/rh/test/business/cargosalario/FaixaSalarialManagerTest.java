@@ -705,9 +705,9 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 		faixaSalarials.add(FaixaSalarialFactory.getEntity(1L));
 
-		faixaSalarialDao.expects(once()).method("qtdColaboradoresPorCargoFaixa").with(ANYTHING).will(returnValue(faixaSalarials));
+		faixaSalarialDao.expects(once()).method("colaboradoresPorCargoFaixa").with(ANYTHING, eq(false)).will(returnValue(faixaSalarials));
 
-		Collection<FaixaSalarial> retorno = faixaSalarialManager.qtdColaboradoresPorCargoFaixa(empresa.getId());
+		Collection<FaixaSalarial> retorno = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(empresa.getId(), false);
 
 		assertEquals(faixaSalarials.size(), retorno.size());
 	}
@@ -718,9 +718,9 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
 		faixaSalarials.add(FaixaSalarialFactory.getEntity(1L));
 
-		faixaSalarialDao.expects(once()).method("qtdColaboradoresPorCargoFaixaAreaOrganizacional").with(ANYTHING).will(returnValue(faixaSalarials));
+		faixaSalarialDao.expects(once()).method("colaboradoresPorCargoFaixa").with(ANYTHING, eq(true)).will(returnValue(faixaSalarials));
 
-		Collection<FaixaSalarial> retorno = faixaSalarialManager.qtdColaboradoresPorCargoFaixaAreaOrganizacional(empresa.getId());
+		Collection<FaixaSalarial> retorno = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(empresa.getId(), true);
 
 		assertEquals(faixaSalarials.size(), retorno.size());
 	}

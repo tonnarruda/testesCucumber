@@ -24,7 +24,6 @@ import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
-import com.fortes.rh.model.dicionario.TipoReajuste;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.util.StringUtil;
@@ -525,17 +524,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		return  StringUtil.converteCollectionToString(query.list());
 	}
 
-	public Collection<FaixaSalarial> qtdColaboradoresPorCargoFaixa(Long empresaId){
-
-		return qtdColaboradoresCorpoHql(empresaId, false).list();
-	}
-	
-	public Collection<FaixaSalarial> qtdColaboradoresPorCargoFaixaAreaOrganizacional(Long empresaId){
-		
-		return qtdColaboradoresCorpoHql(empresaId, true).list();
-	}
-	
-	private Query qtdColaboradoresCorpoHql(Long empresaId, boolean isAreaOrganizacional) {
+	public Collection<FaixaSalarial> colaboradoresPorCargoFaixa(Long empresaId, boolean isAreaOrganizacional) {
 		
 		StringBuilder hql = new StringBuilder();
 		
@@ -575,6 +564,6 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 			query.setLong("empresaId", empresaId);
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		return query;
+		return query.list();
 	}
 }
