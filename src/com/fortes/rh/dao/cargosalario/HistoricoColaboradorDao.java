@@ -39,7 +39,7 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public HistoricoColaborador findHistoricoAdmissao(Long colaboradorId);
 	public Collection<HistoricoColaborador> findColaboradoresByTabelaReajusteData(Long tabelaReajusteColaboradorId, Date data);
 	public Collection<HistoricoColaborador> findByData(Long colaboradorId, Date data);
-	public Collection<HistoricoColaborador> findByCargoEstabelecimento(Date data, Long[] cargoIds, Long[] estabelecimentoIds, Date dataConsulta, Long[] areaOrganizacionalIds, Date dataAtualizacao, Long empresaId, String vinculo);
+	public Collection<HistoricoColaborador> findByCargoEstabelecimento(Date data, Long[] cargoIds, Long[] estabelecimentoIds, Date dataConsulta, Long[] areaOrganizacionalIds, Date dataAtualizacao, String vinculo, Long... empresasIds);
 	public Collection<HistoricoColaborador> findByPeriodo(Long empresaId, Date dataIni, Date dataFim, Long[] estabelecimentosIds, Long[] areasIds, String origemSituacao, char agruparPor, boolean imprimirDesligados);
 	public Collection<HistoricoColaborador> findAllByColaborador(Long colaboradorId);
 	public boolean updateAmbienteEFuncao(HistoricoColaborador historicoColaborador);

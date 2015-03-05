@@ -369,8 +369,8 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		return getDao().findComHistoricoAtualByEmpresa(empresaId, semCodigoAC);
 	}
 
-	public Collection<FaixaSalarial> relatorioColaboradoresPorCargoResumidoXLS(Long empresaId, boolean exibirAreaOrganizacional){
-		return getDao().colaboradoresPorCargoFaixa(empresaId, exibirAreaOrganizacional);
+	public Collection<FaixaSalarial> relatorioColaboradoresPorCargoResumidoXLS(boolean exibirAreaOrganizacional, Long... empresasIds){
+		return getDao().colaboradoresPorCargoFaixa(exibirAreaOrganizacional, empresasIds);
 	}
 	
 	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {

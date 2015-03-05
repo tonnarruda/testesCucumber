@@ -526,7 +526,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		return  StringUtil.converteCollectionToString(query.list());
 	}
 
-	public Collection<FaixaSalarial> colaboradoresPorCargoFaixa(Long empresaId, boolean isAreaOrganizacional) {
+	public Collection<FaixaSalarial> colaboradoresPorCargoFaixa(boolean isAreaOrganizacional, Long... empresasIds) {
 		
 		StringBuilder hql = new StringBuilder();
 		
@@ -547,8 +547,8 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		hql.append("                 where hc2.colaborador.id = c.id ");
 		hql.append("				 and hc2.status = :status) ");
 		
-		if(empresaId != null)
-			hql.append("and cg.empresa.id = :empresaId ");
+		if(empresasIds != null && empresasIds.length > 0)
+			hql.append("and cg.empresa.id in (:empresasIds) ");
 		
 		hql.append("and c.desligado = false ");
 		
@@ -562,8 +562,8 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		
 		Query query = getSession().createQuery(hql.toString());
 		
-		if(empresaId != null)
-			query.setLong("empresaId", empresaId);
+		if(empresasIds != null && empresasIds.length > 0)
+			query.setParameterList("empresasIds", empresasIds);
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		return query.list();

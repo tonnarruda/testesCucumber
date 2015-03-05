@@ -34,6 +34,7 @@ import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -118,6 +119,7 @@ public class CargoEditAction extends MyActionSupportEdit
 
 	private String reportFilter;
 	private String reportTitle;
+	private Long[] empresasPermitidas;
 	
 	private boolean exibirSalarioVariavel = false;
 	
@@ -197,10 +199,10 @@ public class CargoEditAction extends MyActionSupportEdit
 		if(relatorioResumido) {
 			populaTituloFiltro(); 
 			if (exibirAreaOrganizacional) {
-				faixasDoCargo = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(empresa.getId(), exibirAreaOrganizacional);
+				faixasDoCargo = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(exibirAreaOrganizacional, empresa.getId());
 				return "successResumidoAreaOrganizacionalXls";
 			} else {
-				faixasDoCargo = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(empresa.getId(), exibirAreaOrganizacional);
+				faixasDoCargo = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(exibirAreaOrganizacional, empresa.getId());
 				return "successResumidoXls";
 			}
 		}
@@ -237,7 +239,7 @@ public class CargoEditAction extends MyActionSupportEdit
 			exibirSalarioVariavel = exibirSalarioVariavel();
 		
 		try {
-			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(empresa, dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo, exibirSalarioVariavel);
+			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo, exibirSalarioVariavel, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
 		} catch (ColecaoVaziaException e) {
 			addActionMessage(e.getMessage());
 			e.printStackTrace();
@@ -964,5 +966,9 @@ public class CargoEditAction extends MyActionSupportEdit
 
 	public void setExibirAreaOrganizacional(boolean exibirAreaOrganizacional) {
 		this.exibirAreaOrganizacional = exibirAreaOrganizacional;
+	}
+	
+	public void setEmpresasPermitidas(Long[] empresasPermitidas) {
+		this.empresasPermitidas = empresasPermitidas;
 	}
 }

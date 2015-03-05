@@ -1150,17 +1150,13 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	}
 	
 	@SuppressWarnings("static-access")
-	public Collection<HistoricoColaborador> relatorioColaboradorCargo(Empresa empresa, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro, String[] areaOrganizacionalCheck, Boolean exibeColabAdmitido, Integer qtdMesesDesatualizacao, String vinculo, boolean exibirSalarioVariavel) throws Exception
+	public Collection<HistoricoColaborador> relatorioColaboradorCargo(Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, Integer qtdMeses, char opcaoFiltro, String[] areaOrganizacionalCheck, Boolean exibeColabAdmitido, Integer qtdMesesDesatualizacao, String vinculo, boolean exibirSalarioVariavel, Long... empresasIds) throws Exception
 	{
 		Collection<HistoricoColaborador> historicoColaboradors;
 		Date dataConsulta = null;
 		Date dataAtualizacao = null;
 		Date dataAtual = new Date();
 		DateUtil dateUtil = new DateUtil();
-		Long empresaId = null;
-		
-		if (empresa != null)
-			empresaId = empresa.getId(); 
 		
 		if (exibeColabAdmitido)
 			if(qtdMeses != null && qtdMeses > 0)
@@ -1175,7 +1171,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if (qtdMesesDesatualizacao != null)
 			dataAtualizacao = dateUtil.retornaDataAnteriorQtdMeses(dataAtual, qtdMesesDesatualizacao, false);
 		
-		historicoColaboradors = getDao().findByCargoEstabelecimento(dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataConsulta, LongUtil.arrayStringToArrayLong(areaOrganizacionalCheck), dataAtualizacao, empresaId, vinculo);
+		historicoColaboradors = getDao().findByCargoEstabelecimento(dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataConsulta, LongUtil.arrayStringToArrayLong(areaOrganizacionalCheck), dataAtualizacao, vinculo, empresasIds);
 		
 		if(exibirSalarioVariavel)
 			getRemuneracaoVariavelByAcPessoal(dataHistorico, historicoColaboradors);
