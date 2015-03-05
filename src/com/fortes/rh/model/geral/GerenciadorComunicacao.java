@@ -30,7 +30,7 @@ public class GerenciadorComunicacao extends AbstractModel implements Serializabl
 	
 	@Column(length=200)
     private String destinatario;
-	@Column(length=20)
+	
 	private String qtdDiasLembrete;
 	
 	private boolean permitirResponderAvaliacao;
