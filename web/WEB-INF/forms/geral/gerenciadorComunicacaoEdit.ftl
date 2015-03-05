@@ -37,6 +37,7 @@
 	  	</style>
 			
 		<script type="text/javascript">
+
 			function validacoesGerenciadorComunicacao()
 			{
 				var valido = true;
@@ -87,7 +88,6 @@
 					return false;
 				}	
 				
-			
 			 	var submeter = true;
 				if($('#enviarParas').val() == 99)//EviarPara.AVULSO = 99
 				{	
@@ -196,10 +196,15 @@
 			
 			function addDia(qtd)
 			{
-				if (qtd != "" && $('.dias[id="' + qtd + '"]').size() == 0)
-					$('#configDias').append('<span class="dias" id="' + qtd + '">' + qtd + '</span><span class="del" title="Excluir configuração" onclick="delDia(this)"><img src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" /></span>');
+				if($(".dias").size() >= 20 ){
+					jAlert("Não é possível cadastrar mais que 20 dias.");
+				}
+				else { 
+				    	if(qtd != "" && $('.dias[id="' + qtd + '"]').size() == 0)
+							$('#configDias').append('<span class="dias" id="' + qtd + '">' + qtd + '</span><span class="del" title="Excluir configuração" onclick="delDia(this)"><img src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" /></span>');
 				
-				$('#qtdDias').val('').focus();
+						$('#qtdDias').val('').focus();
+				}
 			}
 	
 			function delDia(item)

@@ -11,9 +11,9 @@
 		<Item visivel="S" motivo="S20150200179"><![CDATA[SESMT > Relatórios > EPIs Entregues: Nova opção de gerar o relatório no formato xls.]]></Item>
 		<Item visivel="S" motivo="S20150100108"><![CDATA[SESMT > Relatórios > Afastamentos: Criando nova opção de agrupamento por Área Organizacional.]]></Item>
 		<Item visivel="S" motivo="S20141200093"><![CDATA[SESMT > Relatórios > Afastamentos: Nova opção de gerar o relatório no formato xls.]]></Item>
+		<Item visivel="S" motivo="P20150200108"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Limitação de 20 cadastros dos dias de antecedência/prazo para os gerenciadores de comunicação que notificam de acordo com os dias configurados.]]></Item>
 		<Item visivel="S" motivo="P20150200223"><![CDATA[Utilitários > Auditoria: Auditar dados do tipo de ocorrência e exibir flag que indica envio para o AC, quando a integração está ligada.]]></Item>
 		<Item visivel="S" motivo="S20150300006"><![CDATA[Utilitários > Apagar Reg. sem Código AC > Faixas Salariais: Exibindo o nome do cargo e o nome da faixa.]]></Item>
-		
 	</Versao>
 	<Versao id="1.1.141.170" bd="" data="24/02/2015">
 		<Item visivel="S" motivo="S20141200160"><![CDATA[R&S > Movimentação > Solicitação de Pessoal > Editar: Apenas visualizar a solicitação de pessoal quando o status estiver aprovada ou reprovada.]]></Item>
