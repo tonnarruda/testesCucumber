@@ -699,19 +699,6 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		assertEquals(tCargo.getDescricaoACPessoal(), faixaSalarial.getNomeACPessoal());
 	}
 	
-	public void testQtdColaboradoresPorCargoFaixa() {
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-
-		Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
-		faixaSalarials.add(FaixaSalarialFactory.getEntity(1L));
-
-		faixaSalarialDao.expects(once()).method("colaboradoresPorCargoFaixa").with(ANYTHING, eq(false)).will(returnValue(faixaSalarials));
-
-		Collection<FaixaSalarial> retorno = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(empresa.getId(), false);
-
-		assertEquals(faixaSalarials.size(), retorno.size());
-	}
-	
 	public void testQtdColaboradoresPorCargoFaixaAreaOrganizacional() {
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 
