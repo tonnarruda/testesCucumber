@@ -63,6 +63,11 @@
 	<@ww.actionmessage />
 
 	<@ww.form name="form" action="gerarRelatorio.action" onsubmit="return validarCampos();" validate="true" method="POST">
+
+		<#list empresas as empresa>
+			<input type="hidden" name="empresasPermitidas" value="${empresa.id}" />
+		</#list>
+
 		<#if compartilharColaboradores>
 			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="newChangeEmpresa(this.value);"/>
 		<#else>

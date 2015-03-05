@@ -741,7 +741,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         colaboradorDao.expects(once()).method("findAreaOrganizacionalByAreas").withAnyArguments().will(returnValue(colaboradors));
 
-        Collection<Colaborador> retorno = colaboradorManager.findAreaOrganizacionalByAreas(false, null, null, null, null, null, null, null, null, null, null, null, null, SituacaoColaborador.ATIVO, null);
+        Collection<Colaborador> retorno = colaboradorManager.findAreaOrganizacionalByAreas(false, null, null, null, null, null, null, null, null, null, null, null, SituacaoColaborador.ATIVO, null, null);
 
         assertEquals(1, retorno.size());
     }
@@ -1623,7 +1623,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Collection<Long> areaIds = Arrays.asList(areaOrganizacional.getId());
     	Collection<Long> cargoIds = Arrays.asList(cargo.getId());
     	
-    	colaboradorDao.expects(once()).method("findAreaOrganizacionalByAreas").with(new Constraint[] {eq(false), eq(estabelecimentoIds), eq(areaIds), eq(cargoIds), eq(null), eq(empresa.getId()),  eq(null), eq(null), eq(null), eq(null), eq(null), eq(null), eq(null), eq(SituacaoColaborador.ATIVO), eq(null)}).will(returnValue(colaboradores));
+    	colaboradorDao.expects(once()).method("findAreaOrganizacionalByAreas").with(new Constraint[] {eq(false), eq(estabelecimentoIds), eq(areaIds), eq(cargoIds), eq(null), eq(null), eq(null), eq(null), eq(null), eq(null), eq(null), eq(null), eq(SituacaoColaborador.ATIVO), eq(null), eq(new Long[]{empresa.getId()})}).will(returnValue(colaboradores));
     	formacaoManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(formacoes));
     	colaboradorIdiomaManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(colaboradorIdiomas));;
     	

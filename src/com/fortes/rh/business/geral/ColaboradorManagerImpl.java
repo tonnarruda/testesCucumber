@@ -903,9 +903,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByIdProjectionUsuario(colaboradorId);
 	}
 
-	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, CamposExtras camposExtras, Long empresaId, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, String deficiencia, Integer[] tempoServicoIni, Integer[] tempoServicoFim, String situacao, Character enviadoParaAC)
+	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, CamposExtras camposExtras, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, String deficiencia, Integer[] tempoServicoIni, Integer[] tempoServicoFim, String situacao, Character enviadoParaAC, Long... empresasIds)
 	{
-		return getDao().findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentosIds, areasIds, cargosIds, camposExtras, empresaId, order, dataAdmissaoIni, dataAdmissaoFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim, situacao, enviadoParaAC);
+		return getDao().findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentosIds, areasIds, cargosIds, camposExtras, order, dataAdmissaoIni, dataAdmissaoFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim, situacao, enviadoParaAC, empresasIds);
 	}
 
 	public void setCidadeManager(CidadeManager cidadeManager)
@@ -2660,7 +2660,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	
 	public Collection<Colaborador> findFormacaoEscolar(Long empresaId, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> cargoIds) throws Exception
 	{
-		Collection<Colaborador> colaboradores = findAreaOrganizacionalByAreas(false, estabelecimentoIds, areaIds, cargoIds, null, empresaId, null, null, null, null, null, null, null, SituacaoColaborador.ATIVO, null);
+		Collection<Colaborador> colaboradores = findAreaOrganizacionalByAreas(false, estabelecimentoIds, areaIds, cargoIds, null, null, null, null, null, null, null, null, SituacaoColaborador.ATIVO, null, empresaId);
 		Collection<Formacao> formacoes;
 		Collection<ColaboradorIdioma> colaboradorIdiomas;
 		

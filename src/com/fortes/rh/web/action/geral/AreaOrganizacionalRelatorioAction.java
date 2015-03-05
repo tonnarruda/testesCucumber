@@ -20,6 +20,7 @@ import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.fortes.web.tags.CheckBox;
@@ -62,6 +63,7 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 	private Empresa empresa;
 	private Boolean compartilharColaboradores;
 	private String reportTitle;
+	private Long[] empresasPermitidas;
 	
 	public String execute() throws Exception
 	{
@@ -94,7 +96,7 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areasCheck);
 			Collection<Long> cargos = LongUtil.arrayStringToCollectionLong(cargosCheck);
 				
-			dataSource = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, cargos, camposExtras, empresa.getId(), null, null, null, null, null, null, null, SituacaoColaborador.ATIVO, null);
+			dataSource = colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, cargos, camposExtras, null, null, null, null, null, null, null, SituacaoColaborador.ATIVO, null, EmpresaUtil.empresasSelecionadas(empresa.getId(),empresasPermitidas));
 			if(dataSource == null || dataSource.isEmpty())
 			{
 				ResourceBundle bundle = ResourceBundle.getBundle("application");
@@ -313,5 +315,9 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 	public String getReportTitle()
 	{
 		return reportTitle;
+	}
+	
+	public void setEmpresasPermitidas(Long[] empresasPermitidas) {
+		this.empresasPermitidas = empresasPermitidas;
 	}
 }

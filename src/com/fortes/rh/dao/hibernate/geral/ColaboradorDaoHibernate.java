@@ -1105,8 +1105,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	}
 
 	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentoIds,
-			Collection<Long> areaOrganizacionalIds, Collection<Long> cargoIds, CamposExtras camposExtras, Long empresaId, String order, 
-			Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, String deficiencia, Integer[] tempoServicoIni, Integer[] tempoServicoFim, String situacao, Character enviadoParaAC)
+			Collection<Long> areaOrganizacionalIds, Collection<Long> cargoIds, CamposExtras camposExtras, String order, Date dataAdmissaoIni, 
+			Date dataAdmissaoFim, String sexo, String deficiencia, Integer[] tempoServicoIni, Integer[] tempoServicoFim, String situacao, Character enviadoParaAC, Long... empresasIds)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select distinct new Colaborador(es.id, es.nome, ao.id, ao.nome, re.nome, co.id, co.nome, cg.nome, fs.nome, emp.id, emp.nome, emp.acIntegra, " +
@@ -1182,8 +1182,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(deficiencia != null && deficiencia.equals("3"))
 			hql.append("    and co.pessoal.deficiencia = '0'");
 		
-		if(empresaId != null)
-			hql.append("	and emp.id = :empresaId ");
+		if(empresasIds != null)
+			hql.append("	and emp.id in (:empresasIds) ");
 
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
 			hql.append(" and hc1.estabelecimento.id in (:estabelecimentoIds) ");
@@ -1271,8 +1271,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(sexo != null && !sexo.equals(Sexo.INDIFERENTE))
 			query.setString("sexo", sexo);
 		
-		if(empresaId != null)
-			query.setLong("empresaId", empresaId);
+		if(empresasIds != null && empresasIds.length > 0)
+			query.setParameterList("empresasIds", empresasIds);
 
 		if(estabelecimentoIds != null && !estabelecimentoIds.isEmpty())
 			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);

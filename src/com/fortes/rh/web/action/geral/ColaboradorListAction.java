@@ -575,7 +575,7 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	private Collection<Colaborador> getcolaboradoresByFiltros(Collection<Long> estabelecimentos, Collection<Long> areas,Collection<Long> cargos, String order) 
 	{
-		return colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, cargos, camposExtras, empresa.getId(), orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim, situacao, enviadoParaAC);
+		return colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, cargos, camposExtras, orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim, situacao, enviadoParaAC, empresa.getId());
 	}
 	
 	public String relatorioDinamicoXLS() throws Exception
