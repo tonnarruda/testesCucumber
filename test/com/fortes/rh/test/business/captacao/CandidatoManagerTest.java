@@ -428,7 +428,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 		String cpfBusca = "";
 		Long empresaId = empresa.getId();
 
-		Collection<Candidato> retorno = candidatoManager.list(page, pagingSize, nomeBusca, cpfBusca, null, null, null, empresaId, "",'T', null, null, null, false, false);
+		Collection<Candidato> retorno = candidatoManager.list(page, pagingSize, nomeBusca, cpfBusca, null, null, null, "", 'T',null, null, null, false, false, empresaId);
 
     	assertEquals(3, retorno.size());
     }
@@ -441,7 +441,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	String cpfBusca = "";
     	Long empresaId = 1L;
 
-    	Integer retorno = candidatoManager.getCount(nomeBusca, cpfBusca, null, null, null, empresaId, "",'T', null, null, null, false, false);
+    	Integer retorno = candidatoManager.getCount(nomeBusca, cpfBusca, null, null, null, "", 'T',null, null, null, false, false, empresaId);
 
     	assertTrue(retorno == 3);
     }

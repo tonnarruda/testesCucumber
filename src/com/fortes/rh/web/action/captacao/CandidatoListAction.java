@@ -75,6 +75,7 @@ import com.fortes.rh.util.CampoExtraUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
@@ -257,8 +258,8 @@ public class CandidatoListAction extends MyActionSupportList
 			empresaId = getEmpresaSistema().getId();
 		
 		cpfBusca = StringUtil.removeMascara(cpfBusca);
-		setTotalSize(candidatoManager.getCount(nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, empresaId, indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno));
-		candidatos = candidatoManager.list(getPage(), getPagingSize(), nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, empresaId, indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno);
+		setTotalSize(candidatoManager.getCount(nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno, EmpresaUtil.empresasSelecionadas(empresaId, empresas)));
+		candidatos = candidatoManager.list(getPage(), getPagingSize(), nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, indicadoPor, visualizar, dataCadIni, dataCadFim, observacaoRH, exibeContratados, exibeExterno, EmpresaUtil.empresasSelecionadas(empresaId, empresas));
 
 		if(candidatos == null || candidatos.isEmpty())
 			addActionMessage("Não existem candidatos a serem listados");

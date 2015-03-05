@@ -31,8 +31,8 @@ public interface CandidatoManager extends GenericManager<Candidato>
 
 	public Candidato findByCPF(String cpf, Long empresaId);
     //public void importa(File xmlFile);
-	public Collection<Candidato> list(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno);
-	public Integer getCount(String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno);
+	public Collection<Candidato> list(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds);
+	public Integer getCount(String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds);
 	public Collection<Candidato> busca(Map<String, Object> parametros, Long empresa, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar) throws Exception;
 	public File getFoto(Long id) throws Exception;
 	public void updateSenha(Candidato candidato);

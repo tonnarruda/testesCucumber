@@ -200,14 +200,14 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		return false;
 	}
 
-	public Collection<Candidato> list(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno)
+	public Collection<Candidato> list(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds)
 	{
-		return getDao().find(page, pagingSize, nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, empresaId, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno);
+		return getDao().find(page, pagingSize, nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, empresasIds);
 	}
 
-	public Integer getCount(String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno)
+	public Integer getCount(String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds)
 	{
-		return getDao().getCount(nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, empresaId, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno);
+		return getDao().getCount(nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, empresasIds);
 	}
 
 	public File getFoto(Long id) throws Exception

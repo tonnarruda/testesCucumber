@@ -145,11 +145,11 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		return (Candidato) criteria.uniqueResult();
 	}
 	
-	public Collection<Candidato> find(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno)
+	public Collection<Candidato> find(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds)
 	{
 		StringBuilder sql = new StringBuilder();
 		sql.append("select can.id, can.nome, can.idF2RH, can.disponivel, can.contratado, can.dataCadastro, can.dataAtualizacao, can.indicadoPor, can.cpf, emp.id, exists(select cpf from colaborador where cpf=can.cpf and can.cpf is not null and can.cpf <> '') as jaFoiColaborador "); 
-		Query query = montaListaCandidato(page, pagingSize, nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, empresaId, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, sql);
+		Query query = montaListaCandidato(page, pagingSize, nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, sql, empresasIds);
 		
 		List resultado = query.list();
 		Collection<Candidato> candidatos = new ArrayList<Candidato>();
@@ -188,24 +188,24 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		return candidatos;
 	}
 
-	public Integer getCount(String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno)
+	public Integer getCount(String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds)
 	{
 		StringBuilder sql = new StringBuilder();
 		sql.append("select count(*) as total "); 
 		
-		Query query = montaListaCandidato(0, 0, nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, empresaId, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, sql);
+		Query query = montaListaCandidato(0, 0, nomeBusca, cpfBusca, ddd, foneFixo, foneCelular, indicadoPor, visualizar, dataIni, dataFim, observacaoRH, exibeContratados, exibeExterno, sql, empresasIds);
 		
 		return (Integer) query.uniqueResult();
 	}
 
-	private Query montaListaCandidato(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, StringBuilder sql) 
+	private Query montaListaCandidato(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, StringBuilder sql, Long... empresasIds) 
 	{
 		sql.append("from Candidato can ");
 		sql.append("left join Empresa emp on can.empresa_id = emp.id ");
 		sql.append("where true = true ");
 				
-		if(empresaId != null && empresaId > 0)
-			sql.append("and can.empresa_id = :empresaId ");
+		if(empresasIds != null && empresasIds.length > 0)
+			sql.append("and can.empresa_id in (:empresasIds) ");
 		
 		if (exibeExterno)
 			sql.append("and can.origem = :origem ");
@@ -280,8 +280,8 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		if(StringUtils.isNotBlank(observacaoRH))
 			query.setString("observacaoRH", "%" + observacaoRH.toUpperCase() + "%");
 		
-		if(empresaId != null && empresaId > 0)
-			query.setLong("empresaId", empresaId);
+		if(empresasIds != null && empresasIds.length > 0)
+			query.setParameterList("empresasIds", empresasIds);
 		
 		if (pagingSize != 0)
 		{

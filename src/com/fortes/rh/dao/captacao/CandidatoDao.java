@@ -21,8 +21,8 @@ import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 public interface CandidatoDao extends GenericDao<Candidato>
 {
 	public Collection<Candidato> findBusca(Map parametros, Long empresa, Collection<Long> idsCandidatos, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar) throws Exception;
-	public Collection<Candidato> find(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno);
-	public Integer getCount(String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, Long empresaId, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno);
+	public Collection<Candidato> find(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds);
+	public Integer getCount(String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds);
 	public Collection<Candidato> findCandidatosById(Long[] ids);
 	public List getConhecimentosByCandidatoId(Long id);
 	public Collection<Candidato> getCandidatosByCpf(String[] cpfs, Long empresaId);
