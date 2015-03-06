@@ -14,6 +14,7 @@ import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
+import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
@@ -29,11 +30,13 @@ import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
@@ -59,6 +62,7 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
     private ConfiguracaoNivelCompetenciaDao configuracaoNivelCompetenciaDao;
     private ColaboradorDao colaboradorDao;
     private HistoricoColaboradorDao historicoColaboradorDao;
+    private AreaOrganizacionalDao areaOrganizacionalDao;
 
     public void setEmpresaDao(EmpresaDao empresaDao)
     {
@@ -626,6 +630,9 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area);
+		
 		Cargo cargo = CargoFactory.getEntity();
 		cargo.setEmpresa(empresa);
 		cargoDao.save(cargo);	
@@ -647,6 +654,7 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		historicoColaborador1.setData(DateUtil.criarDataMesAno(01, 01, 2014));
 		historicoColaborador1.setColaborador(colaborador1);
 		historicoColaborador1.setFaixaSalarial(faixaSalarial1);
+		historicoColaborador1.setAreaOrganizacional(area);
 		historicoColaboradorDao.save(historicoColaborador1);
 		
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
@@ -656,6 +664,7 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2014));
 		historicoColaborador2.setColaborador(colaborador2);
 		historicoColaborador2.setFaixaSalarial(faixaSalarial2);
+		historicoColaborador2.setAreaOrganizacional(area);
 		historicoColaboradorDao.save(historicoColaborador2);
 		
 		Colaborador colaborador3 = ColaboradorFactory.getEntity();
@@ -665,6 +674,7 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		historicoColaborador3.setData(DateUtil.criarDataMesAno(01, 01, 2014));
 		historicoColaborador3.setColaborador(colaborador3);
 		historicoColaborador3.setFaixaSalarial(faixaSalarial2);
+		historicoColaborador3.setAreaOrganizacional(area);
 		historicoColaboradorDao.save(historicoColaborador3);
 		
 		Collection<FaixaSalarial> resultado = faixaSalarialDao.colaboradoresPorCargoFaixa(empresa.getId(), false);
@@ -733,5 +743,9 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 
 	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
 		this.colaboradorDao = colaboradorDao;
+	}
+
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
+		this.areaOrganizacionalDao = areaOrganizacionalDao;
 	}
 }
