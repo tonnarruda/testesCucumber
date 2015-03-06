@@ -223,10 +223,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return semReajustes;
 	}
 	
-	public List<RelatorioPromocoes> getPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim, Long empresaId)
+	public List<RelatorioPromocoes> getPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim, Long... empresasIds)
 	{
 		List<RelatorioPromocoes> promocoes = new ArrayList<RelatorioPromocoes>();
-		Collection<SituacaoColaborador> situacaoColaboradors = getDao().getPromocoes(areasIds, estabelecimentosIds, null, dataFim, empresaId);
+		Collection<SituacaoColaborador> situacaoColaboradors = getDao().getPromocoes(areasIds, estabelecimentosIds, null, dataFim, empresasIds);
 
 		if (situacaoColaboradors == null || situacaoColaboradors.isEmpty())
 			return promocoes;
@@ -234,7 +234,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		Iterator<SituacaoColaborador> iterator = situacaoColaboradors.iterator();
 		SituacaoColaborador proximaSituacao = (SituacaoColaborador) iterator.next();
 			
-		Collection<AreaOrganizacional> areaOrganizacionals = ajustaFamilia(empresaId);
+		Collection<AreaOrganizacional> areaOrganizacionals = ajustaFamilia(empresasIds);
 		
 		for (SituacaoColaborador situacao : situacaoColaboradors) 
 		{
@@ -343,8 +343,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return map;
 	}
 
-	private Collection<AreaOrganizacional> ajustaFamilia(Long empresaId) {
-		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
+	private Collection<AreaOrganizacional> ajustaFamilia(Long... empresasIds) {
+		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, empresasIds);
 		try {
 			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 		} catch (Exception e) {
@@ -573,7 +573,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	{
 		if (empresaId != null)
 		{
-			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
+			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, empresaId);
 			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 
 			for (HistoricoColaborador historico : retorno)

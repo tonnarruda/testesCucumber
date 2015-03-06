@@ -150,7 +150,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 		//Se tem papel especifico, carrega todas as áreas organizacionais
 		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_REALINHAMENTO"}))
 		{
-			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, Arrays.asList(reajusteColaborador.getAreaOrganizacionalAtual().getId(), reajusteColaborador.getAreaOrganizacionalProposta().getId()));
+			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.ATIVA, Arrays.asList(reajusteColaborador.getAreaOrganizacionalAtual().getId(), reajusteColaborador.getAreaOrganizacionalProposta().getId()), getEmpresaSistema().getId());
 		}
 		else
 		{
@@ -305,7 +305,7 @@ public class ReajusteColaboradorEditAction extends MyActionSupportEdit implement
 
 		//Se for o super-usuário ou papel especifico, carrega todas as áreas organizacionais
 		if(usuarioLogado.getId() == 1L || SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_REALINHAMENTO"}))
-			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
+			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, empresaId);
 		else
 			areaOrganizacionals = areaOrganizacionalManager.findAreasByUsuarioResponsavel(usuarioLogado, empresaId);
 

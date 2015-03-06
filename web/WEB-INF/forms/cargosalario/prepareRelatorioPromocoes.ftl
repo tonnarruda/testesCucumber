@@ -69,6 +69,11 @@
 	<@ww.actionmessage />
 
 	<@ww.form name="form" action="imprimirRelatorioPromocoes.action" onsubmit="${validarCampos}" validate="true" method="POST">
+
+		<#list empresas as empresa>
+			<input type="hidden" name="empresasPermitidas" value="${empresa.id}" />
+		</#list>
+
 		<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea(this.value);" disabled="!compartilharColaboradores"/>
 		
 		<div>Período*:</div>

@@ -163,7 +163,7 @@ public class EpiManagerTest extends MockObjectTestCase
 		areas.add(areaOrganizacional);
 
 		colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(eq(colaborador.getId()), ANYTHING).will(returnValue(colaborador));
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(empresa.getId()), eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areas));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areas)).will(returnValue(areas));
 
 		FichaEpiRelatorio fichaEpiRelatorioTmp = epiManager.findImprimirFicha(empresa, colaborador);

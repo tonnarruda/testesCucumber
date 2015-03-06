@@ -458,7 +458,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		
 		documentoAnexoManager.expects(once()).method("getDocumentoAnexoByOrigemId").with(eq(null), ANYTHING, eq(colaborador.getId())).will(returnValue(documentoAnexosColaborador));
 
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(empresa.getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areas));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areas)).will(returnValue(areas));
 		configuracaoPerformanceManager.expects(once()).method("findByUsuario").with(ANYTHING);
 		colaboradorManager.expects(once()).method("findByCpf").with(eq(colaborador.getPessoal().getCpf()), eq(null), eq(null), eq(null)).will(returnValue(new ArrayList<Colaborador>()));

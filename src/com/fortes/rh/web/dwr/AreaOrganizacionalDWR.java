@@ -52,7 +52,7 @@ public class AreaOrganizacionalDWR
 		if(empresaId == null || empresaId == 0 || empresaId == -1 )
 			areaOrganizacionals = areaOrganizacionalManager.findByEmpresasIds(empresaIds, areaAtiva);
 		else
-			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, areaAtiva, null);
+			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(areaAtiva, null, empresaId);
 
 		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
@@ -66,7 +66,7 @@ public class AreaOrganizacionalDWR
 	{
 		CollectionUtil<AreaOrganizacional> areaOrganizacionalsUtil = new CollectionUtil<AreaOrganizacional>();
 		
-		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.ATIVA, Arrays.asList(areaOrganizacionalInativaId));
+		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.ATIVA, Arrays.asList(areaOrganizacionalInativaId), empresaId);
 		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 		areaOrganizacionals = areaOrganizacionalsUtil.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricao");
 		
@@ -76,7 +76,7 @@ public class AreaOrganizacionalDWR
 	@SuppressWarnings("unchecked")
 	public Map<Object, Object> getEmailsResponsaveis(Long id, Long empresaId) throws Exception
 	{
-		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(empresaId, true, null); 
+		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(true, null, empresaId); 
 		areas = areaOrganizacionalManager.getAncestrais(areas, id);
 		Collection<AreaOrganizacional> areasComEmailResp = new ArrayList<AreaOrganizacional>();
 		Map<Object, Object> emailsResponsaveis = new HashMap<Object, Object>();

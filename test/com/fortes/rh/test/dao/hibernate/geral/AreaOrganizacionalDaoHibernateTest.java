@@ -205,7 +205,7 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 
 		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
 
-		areaOrganizacionals = areaOrganizacionalDao.findAllList(0, 0, null, null, empresa.getId(), AreaOrganizacional.TODAS, null);
+		areaOrganizacionals = areaOrganizacionalDao.findAllList(0, 0, null, null, AreaOrganizacional.TODAS, null, empresa.getId());
 
 		assertEquals(1, areaOrganizacionals.size());
 	}

@@ -44,6 +44,7 @@ import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.ComparatorString;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
@@ -147,6 +148,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String reportTitle;
 	private String reportFilter;
 	private Character tipo = TipoRelatorio.PDF;
+	private Long[] empresasPermitidas;
 	
 	public String painelIndicadores() throws Exception
 	{
@@ -324,8 +326,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	@SuppressWarnings("unchecked")
 	public String imprimirRelatorioPromocoes() throws Exception
 	{
-		Collection<RelatorioPromocoes> promocoes = historicoColaboradorManager.getPromocoes(LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim, empresa==null?getEmpresaSistema().getId():empresa.getId());
-
+		Collection<RelatorioPromocoes> promocoes = historicoColaboradorManager.getPromocoes(LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
+		
 		if (promocoes.isEmpty())
 		{
 			ResourceBundle bundle = ResourceBundle.getBundle("application");
@@ -402,7 +404,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		{
 			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
 
-			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
+			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, getEmpresaSistema().getId());
 			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 			historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
 			if(historicoColaborador != null)
@@ -1069,5 +1071,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setTipo(Character tipo) {
 		this.tipo = tipo;
+	}
+	
+	public void setEmpresasPermitidas(Long[] empresasPermitidas) {
+		this.empresasPermitidas = empresasPermitidas;
 	}
 }

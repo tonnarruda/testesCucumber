@@ -137,7 +137,7 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 		} 
 		else if (agruparPor.equals("A"))
 		{
-			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(null, AreaOrganizacional.TODAS, null);
+			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, null);
 			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 
 			for (Colaborador colaborador: colaboradores)

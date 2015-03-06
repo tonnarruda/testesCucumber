@@ -264,7 +264,7 @@ public class GastoEmpresaManagerTest extends MockObjectTestCase
 		gastoEmpresaDao.expects(once()).method("filtroRelatorioByColaborador").with(new Constraint[]{ANYTHING}).will(returnValue(listaGastos));
 		historicoColaboradorBeneficioManager.expects(once()).method("filtroRelatorioByColaborador").with(new Constraint[]{ANYTHING}).will(returnValue(listaBeneficios));
 		turmaManager.expects(once()).method("filtroRelatorioByColaborador").with(new Constraint[]{ANYTHING}).will(returnValue(listaTreinamentos));
-		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllListAndInativas").with(eq(1L),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllListAndInativas").with(eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{1L})).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("montaFamilia").with(ANYTHING).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getDistinctAreaMae").with(ANYTHING,ANYTHING).will(returnValue(areaOrganizacionals));
 
@@ -275,7 +275,7 @@ public class GastoEmpresaManagerTest extends MockObjectTestCase
 		gastoEmpresaDao.expects(once()).method("filtroRelatorioByColaborador").with(new Constraint[]{ANYTHING}).will(returnValue(new LinkedList()));
 		historicoColaboradorBeneficioManager.expects(once()).method("filtroRelatorioByColaborador").with(new Constraint[]{ANYTHING}).will(returnValue(listaBeneficios));
 		turmaManager.expects(once()).method("filtroRelatorioByColaborador").with(new Constraint[]{ANYTHING}).will(returnValue(listaTreinamentos));
-		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllListAndInativas").with(eq(1L),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllListAndInativas").with(eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{1L})).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("montaFamilia").with(ANYTHING).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getDistinctAreaMae").with(ANYTHING,ANYTHING).will(returnValue(areaOrganizacionals));
 
@@ -286,7 +286,7 @@ public class GastoEmpresaManagerTest extends MockObjectTestCase
 		gastoEmpresaDao.expects(once()).method("filtroRelatorioByColaborador").with(new Constraint[]{ANYTHING}).will(returnValue(listaGastos));
 		historicoColaboradorBeneficioManager.expects(once()).method("filtroRelatorioByColaborador").with(new Constraint[]{ANYTHING}).will(returnValue(new LinkedList()));
 		turmaManager.expects(once()).method("filtroRelatorioByColaborador").with(new Constraint[]{ANYTHING}).will(returnValue(listaTreinamentos));
-		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllListAndInativas").with(eq(1L),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllListAndInativas").with(eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{1L})).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("montaFamilia").with(ANYTHING).will(returnValue(areaOrganizacionals));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getDistinctAreaMae").with(ANYTHING,ANYTHING).will(returnValue(areaOrganizacionals));
 

@@ -728,7 +728,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 
 		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
 
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(empresa.getId()), ANYTHING, ANYTHING).will(returnValue(areas));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areas)).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(new AreaOrganizacional()));
 
@@ -950,6 +950,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 	{
 		Curso curso = CursoFactory.getEntity(10L);
 		Long empresaId=1L;
+		Long[] empresasPermitidas = new Long[]{empresaId};
 		Long[] areaIds=null;
 		Long[] estabelecimentoIds=null;
 		
@@ -961,7 +962,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		colaboradorTurma.setColaborador(colaborador);
 		
 		colaboradorTurmaDao.expects(once()).method("findRelatorioSemTreinamento").will(returnValue(colaboradorTurmas));
-		mockValidaRelatorio(curso, empresaId);
+		mockValidaRelatorio(curso, empresasPermitidas);
 		
 		Collection<ColaboradorTurma> resultado = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, curso, areaIds, estabelecimentoIds, null);
 		
@@ -989,9 +990,9 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		assertTrue(exception instanceof ColecaoVaziaException);
 	}
 
-	private void mockValidaRelatorio(Curso curso, Long empresaId) {
+	private void mockValidaRelatorio(Curso curso, Long[] empresasIds) {
 		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(empresaId), ANYTHING, ANYTHING).will(returnValue(areas));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(ANYTHING, ANYTHING, eq(empresasIds)).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(eq(areas)).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(new AreaOrganizacional()));
 		cursoManager.expects(atLeastOnce()).method("findByIdProjection").will(returnValue(curso));

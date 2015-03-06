@@ -1431,7 +1431,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				
 			for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 			{
-				Collection<AreaOrganizacional> todasAreas = areaOrganizacionalManager.findAllListAndInativas(gerenciadorComunicacao.getEmpresa().getId(), true, null);
+				Collection<AreaOrganizacional> todasAreas = areaOrganizacionalManager.findAllListAndInativas(true, null, gerenciadorComunicacao.getEmpresa().getId());
 
 				try {
 

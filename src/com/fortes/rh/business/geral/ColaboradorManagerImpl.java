@@ -1148,7 +1148,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private Collection<Colaborador> setFamiliaAreasOrder(Long empresaId, Collection<Colaborador> colaboradorByHistoricoColaboradors) throws Exception
 	{
 		// monta familia das areas
-		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
+		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, empresaId);
 		areas = areaOrganizacionalManager.montaFamilia(areas);
 
 		for (Colaborador colaborador : colaboradorByHistoricoColaboradors)
@@ -1165,7 +1165,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public Collection<Colaborador> ordenaPorEstabelecimentoArea(Long empresaId, Collection<Colaborador> colaboradors) throws Exception
 	{
 		// monta familia das areas
-		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(null, AreaOrganizacional.TODAS, null);
+		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, null);
 		areas = areaOrganizacionalManager.montaFamilia(areas);
 		
 		for (Colaborador colaboradorTmp : colaboradors) {

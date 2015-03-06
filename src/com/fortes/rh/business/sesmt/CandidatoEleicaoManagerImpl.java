@@ -89,7 +89,7 @@ public class CandidatoEleicaoManagerImpl extends GenericManagerImpl<CandidatoEle
 			}
 
 			Collection<Colaborador> colaboradors = colaboradorManager.findByIdHistoricoAtual(colaboradorIds);
-			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
+			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, empresaId);
 			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 
 			for (CandidatoEleicao candidatoEleicao : candidatoEleicaos)

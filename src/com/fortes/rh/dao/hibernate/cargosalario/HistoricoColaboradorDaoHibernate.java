@@ -252,7 +252,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return new ArrayList();
 	}
 
-	public Collection<SituacaoColaborador> getPromocoes(Long[] areaIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim, Long empresaId)
+	public Collection<SituacaoColaborador> getPromocoes(Long[] areaIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim, Long... empresasIds)
 	{
 		Criteria criteria = getSession().createCriteria(SituacaoColaborador.class, "sc");
 		criteria.createCriteria("sc.estabelecimento", "e");
@@ -269,7 +269,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		
 		criteria.add(Expression.not(Expression.eq("sc.motivo", MotivoHistoricoColaborador.DISSIDIO)));
 		criteria.add(Expression.not(Expression.eq("sc.motivo", MotivoHistoricoColaborador.SEM_MOTIVO)));
-		criteria.add(Expression.eq("e.empresa.id", empresaId));
+		criteria.add(Expression.in("e.empresa.id", empresasIds));
 		
 		if(areaIds != null && areaIds.length > 0)
 			criteria.add(Expression.in("sc.areaOrganizacional.id", areaIds));

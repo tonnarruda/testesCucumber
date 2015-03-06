@@ -57,7 +57,7 @@ public class CatManagerImpl extends GenericManagerImpl<Cat, CatDao> implements C
 	
 	private void setFamiliaAreas(Collection<Cat> cats, Long empresaId)
 	{
-		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(empresaId, true, null);
+		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(true, null, empresaId);
 
 		try
 		{

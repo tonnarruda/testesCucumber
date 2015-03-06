@@ -144,7 +144,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public void ajustaMotivoContratado(Long colaboradorId);
 
-	public List<RelatorioPromocoes> getPromocoes(Long[] arrayStringToArrayLong, Long[] arrayStringToArrayLong2, Date dataIni, Date dataFim, Long empresaId);
+	public List<RelatorioPromocoes> getPromocoes(Long[] arrayStringToArrayLong, Long[] arrayStringToArrayLong2, Date dataIni, Date dataFim, Long... empresasIds);
 	
 	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId, int mesesSemReajuste);
 	

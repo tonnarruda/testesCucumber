@@ -187,16 +187,16 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     {
     	Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
 
-    	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(0), eq(0), eq(null), eq(null), eq(1L),eq(AreaOrganizacional.TODAS), ANYTHING}).will(returnValue(areas));
+    	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(0), eq(0), eq(null), eq(null), eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{1L})}).will(returnValue(areas));
 
-    	assertEquals(areaOrganizacionalManager.findAllListAndInativas(1L, AreaOrganizacional.TODAS, null), areas);
+    	assertEquals(areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, 1L), areas);
     }
 
     public void testFindAllListComIdUsuario()
     {
     	Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
 
-    	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(0), eq(0), eq(1L), eq(null), eq(1L),eq(AreaOrganizacional.TODAS), ANYTHING}).will(returnValue(areas));
+    	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(0), eq(0), eq(1L), eq(null), eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{1L})}).will(returnValue(areas));
 
     	assertEquals(areaOrganizacionalManager.findAllList(1L,1L, AreaOrganizacional.TODAS, null), areas);
     }
@@ -205,7 +205,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     {
     	Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
 
-    	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(1), eq(15), eq(null), eq(""), eq(1L),eq(AreaOrganizacional.TODAS), ANYTHING}).will(returnValue(areas));
+    	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(1), eq(15), eq(null), eq(""), eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{1L})}).will(returnValue(areas));
 
     	assertEquals(areaOrganizacionalManager.findAllList(1, 15, "", 1L, AreaOrganizacional.TODAS), areas);
     }
@@ -519,7 +519,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	empresa.setId(1L);
 
     	Collection<AreaOrganizacional> areas = preparaCollection();
-    	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[] {eq(0), eq(0), eq(null), eq(null), eq(empresa.getId()), eq(AreaOrganizacional.TODAS), ANYTHING}).will(returnValue(areas));
+    	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[] {eq(0), eq(0), eq(null), eq(null), eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{empresa.getId()})}).will(returnValue(areas));
 
     	assertEquals(5, areaOrganizacionalManager.montaAllSelect(empresa.getId()).size());
     }
@@ -529,7 +529,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	Empresa empresa = new Empresa();
     	empresa.setId(1L);
 
-    	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[] {eq(0), eq(0), eq(null), eq(null), eq(empresa.getId()), eq(AreaOrganizacional.TODAS), ANYTHING}).will(returnValue(null));
+    	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[] {eq(0), eq(0), eq(null), eq(null), eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{empresa.getId()})}).will(returnValue(null));
 
     	assertTrue(areaOrganizacionalManager.montaAllSelect(empresa.getId()).isEmpty());
     }
@@ -539,7 +539,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	Empresa empresa = new Empresa();
     	empresa.setId(1L);
 
-    	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[] {eq(0), eq(0), eq(null), eq(null), eq(empresa.getId()), eq(AreaOrganizacional.TODAS), ANYTHING}).will(returnValue(preparaCollection()));
+    	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[] {eq(0), eq(0), eq(null), eq(null), eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{empresa.getId()})}).will(returnValue(preparaCollection()));
 
     	assertEquals(5, areaOrganizacionalManager.findAllSelectOrderDescricao(empresa.getId(), AreaOrganizacional.TODAS, null).size());
     }
@@ -877,7 +877,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	
     	Long empresaId=1L;
     	
-		areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(0),eq(0),eq(null),eq(null),eq(empresaId), ANYTHING, ANYTHING}).will(returnValue(areas));
+		areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(0),eq(0),eq(null),eq(null), ANYTHING, ANYTHING, eq(new Long[]{empresaId})}).will(returnValue(areas));
 		
 		assertEquals(1,areaOrganizacionalManager.setFamiliaAreas(examesPrevistosRelatorios, empresaId).size());
 	} 
@@ -1099,7 +1099,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		areaFilha2.setAreaMae(areaMae2);
 		
 		Collection<AreaOrganizacional> todasAsAreas = Arrays.asList(areaMae1, areaMae2, areaFilha1, areaFilha2, areaAvo);
-		areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(0),eq(0),eq(null),eq(null),eq(empresa.getId()), ANYTHING, ANYTHING}).will(returnValue(todasAsAreas));
+		areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[]{eq(0),eq(0),eq(null),eq(null), ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()})}).will(returnValue(todasAsAreas));
 		
 		assertEquals(4, areaOrganizacionalManager.getEmailsResponsaveis(areaFilha1.getId(), empresa.getId(), AreaOrganizacional.RESPONSAVEL).length);
 	}

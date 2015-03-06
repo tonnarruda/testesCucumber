@@ -1445,7 +1445,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaos.add(gerenciadorComunicacao7);
 		
 		gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.HABILITACAO_A_VENCER.getId()),eq(null)).will(returnValue(gerenciadorComunicacaos));
-		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllListAndInativas").with(eq(gerenciadorComunicacao1.getEmpresa().getId()), eq(true), eq(null)).will(returnValue(areas));
+		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllListAndInativas").with(eq(true), eq(null), eq(new Long[]{gerenciadorComunicacao1.getEmpresa().getId()})).will(returnValue(areas));
 		colaboradorManager.expects(atLeastOnce()).method("findHabilitacaAVencer").with(eq(diasLembrete), eq(gerenciadorComunicacao1.getEmpresa().getId())).will(returnValue(Arrays.asList(colaborador1, colaborador2, colaborador3)));
 		
 		// Email para gestor

@@ -87,12 +87,12 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "ao");
 		criteria.setProjection(Projections.rowCount());
 
-		montaConsulta(criteria, null, nome, empresaId, AreaOrganizacional.TODAS, null);
+		montaConsulta(criteria, null, nome, AreaOrganizacional.TODAS, null, empresaId);
 
 		return (Integer) criteria.list().get(0);
 	}
 
-	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, Long colaboradorId, String nome, Long empresaId, Boolean ativo, Collection<Long> areaInativaIds)
+	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, Long colaboradorId, String nome, Boolean ativo, Collection<Long> areaInativaIds, Long... empresasIds)
 	{
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class,"ao");
 		// existem criterias criados no método montaConsulta
@@ -119,7 +119,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 
 		criteria.setProjection(p);
 
-		montaConsulta(criteria, colaboradorId, nome, empresaId, ativo, areaInativaIds);
+		montaConsulta(criteria, colaboradorId, nome, ativo, areaInativaIds, empresasIds);
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(AreaOrganizacional.class));
 		criteria.addOrder(Order.asc("ao.nome"));
@@ -134,7 +134,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		return criteria.list();
 	}
 
-	private void montaConsulta(Criteria criteria, Long colaboradorId, String nome, Long empresaId, Boolean ativo, Collection<Long> areaInativaIds)
+	private void montaConsulta(Criteria criteria, Long colaboradorId, String nome, Boolean ativo, Collection<Long> areaInativaIds, Long... empresasIds)
 	{
 		criteria.createCriteria("areaMae", "am", Criteria.LEFT_JOIN);
 		criteria.createCriteria("responsavel", "r", Criteria.LEFT_JOIN);
@@ -155,8 +155,8 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 				criteria.add(Expression.or(Expression.eq("ao.ativo", ativo), Expression.in("ao.id", areaInativaIds)));
 		}
 
-		if(empresaId != null)
-			criteria.add(Expression.eq("ao.empresa.id", empresaId));
+		if(empresasIds != null)
+			criteria.add(Expression.in("ao.empresa.id", empresasIds));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	}

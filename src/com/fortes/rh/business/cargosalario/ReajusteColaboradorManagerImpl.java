@@ -256,7 +256,7 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 	public Collection<ReajusteColaborador> ordenaPorEstabelecimentoAreaOrGrupoOcupacional(Long empresaId, Collection<ReajusteColaborador> reajusteColaboradors, String filtro) throws Exception
 	{
 		//monta familia das areas
-		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(empresaId, AreaOrganizacional.TODAS, null);
+		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, empresaId);
 		areas = areaOrganizacionalManager.montaFamilia(areas);
 		
 		for (ReajusteColaborador reajusteTmp : reajusteColaboradors)

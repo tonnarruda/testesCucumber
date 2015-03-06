@@ -108,6 +108,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 	public void testInsertSolicitacaoReajuste() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Long[] empresasPermitidas = new Long[]{empresa.getId()};
 		
 		FaixaSalarial faixaSalarialAtual = FaixaSalarialFactory.getEntity(1L);
 		FaixaSalarial faixaSalarialProposta = FaixaSalarialFactory.getEntity(2L);
@@ -141,13 +142,13 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("validaSolicitacaoReajuste").isVoid();
 		manager.expects(once()).method("insertSolicitacaoReajuste").with(eq(reajusteColaborador), eq(empresa.getId()), eq(colaborador)).isVoid();
 		
-		mocksPrepareSolicitacaoReajuste();
+		mocksPrepareSolicitacaoReajuste(empresasPermitidas);
 		
 		assertEquals("success", action.insertSolicitacaoReajuste());
 		assertEquals("Solicitação de realinhamento incluída com sucesso", action.getActionSuccess().toArray()[0]);
 	}
 	
-	private void mocksPrepareSolicitacaoReajuste()
+	private void mocksPrepareSolicitacaoReajuste(Long[] empresasPermitidas)
 	{
 		Collection<AreaOrganizacional> areaOrganizacionalsPropostas = new ArrayList<AreaOrganizacional>();
 		areaOrganizacionalsPropostas.add(AreaOrganizacionalFactory.getEntity(1L));
@@ -155,7 +156,7 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 		
 		indiceManager.expects(once()).method("findAll").with(ANYTHING).will(returnValue(new ArrayList<Indice>()));
 		
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(action.getEmpresaSistema().getId()),eq(AreaOrganizacional.TODAS), ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(AreaOrganizacional.TODAS), ANYTHING, eq(empresasPermitidas)).will(returnValue(new ArrayList<AreaOrganizacional>()));
 		
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionalsPropostas));
 		
@@ -167,7 +168,8 @@ public class ReajusteColaboradorEditActionTest extends MockObjectTestCase
 	
 	public void testPrepareSolicitacaoReajuste() throws Exception
 	{
-		mocksPrepareSolicitacaoReajuste();
+		Long[] empresasPermitidas = new Long[]{action.getEmpresaSistema().getId()};
+		mocksPrepareSolicitacaoReajuste(empresasPermitidas);
 		
 		assertEquals("success",action.prepareSolicitacaoReajuste());
 	}
