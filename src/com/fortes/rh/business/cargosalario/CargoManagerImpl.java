@@ -503,8 +503,8 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		if(tCargo.getCargoId() == 0)//cadastra um novo cargo, foi inserido uma descrição no AC
 		{
 			Cargo cargo = new Cargo();
-			cargo.setNome(tCargo.getCargoDescricao());
-			cargo.setNomeMercado(tCargo.getCargoDescricao());
+			cargo.setNome(StringUtils.isEmpty(tCargo.getCargoDescricao()) ? tCargo.getDescricaoACPessoal() : tCargo.getCargoDescricao());
+			cargo.setNomeMercado(StringUtils.isEmpty(tCargo.getCargoDescricao()) ? tCargo.getDescricaoACPessoal() : tCargo.getCargoDescricao());
 			cargo.setCboCodigo(tCargo.getCboCodigo());
 			cargo.setEmpresa(empresa);
 			

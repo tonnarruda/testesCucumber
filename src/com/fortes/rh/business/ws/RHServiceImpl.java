@@ -1301,6 +1301,8 @@ public class RHServiceImpl implements RHService
 		{
 			if (StringUtils.defaultString(tCargo.getDescricao()).equals("")) 
 				throw new Exception("Descrição da faixa está vazia.");
+			if (StringUtils.defaultString(tCargo.getCargoDescricao()).length() > 30) 
+				throw new Exception("Descrição do cargo deve ter no máximo 30 caracteres.");
 			
 			FaixaSalarial faixaSalarial = faixaSalarialManager.montaFaixa(tCargo);
 			faixaSalarial.setCargo(cargoManager.preparaCargoDoAC(tCargo));
