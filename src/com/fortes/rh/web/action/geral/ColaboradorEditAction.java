@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -758,6 +759,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			colaboradorManager.update(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema(),editarHistorico, salarioColaborador);
 			
 			colaboradorPeriodoExperienciaAvaliacaoManager.atualizaConfiguracaoAvaliacaoPeriodoExperiencia(colaborador, colaboradorAvaliacoes, colaboradorAvaliacoesGestor);
+
 		}
 //		catch (NestedRuntimeException e)
 //		{

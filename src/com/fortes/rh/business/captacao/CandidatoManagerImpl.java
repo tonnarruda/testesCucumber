@@ -610,22 +610,26 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	   		candidato = save(candidato);
 	   	
     	Collection<Formacao> formacaos = colaborador.getFormacao();
-    	for (Formacao formacao : formacaos)
-		{
-    		formacao.setCandidato(candidato);
+    	if (formacaos != null && !formacaos.isEmpty()) {
+			for (Formacao formacao : formacaos) {
+				formacao.setCandidato(candidato);
+			}
+    		candidato.setFormacao(formacaos);
 		}
-		candidato.setFormacao(formacaos);
 
     	Collection<Experiencia> experiencias = colaborador.getExperiencias();
-    	for (Experiencia experiencia : experiencias)
-		{
-    		if(experiencia.getCargo() == null || experiencia.getCargo().getId() == null)
-    			experiencia.setCargo(null);
-
-    		experiencia.setCandidato(candidato);
+    	if (experiencias != null && !experiencias.isEmpty()) {
+    		for (Experiencia experiencia : experiencias){
+    			
+    			if(experiencia.getCargo() == null || experiencia.getCargo().getId() == null)
+    				experiencia.setCargo(null);
+    			
+    			experiencia.setCandidato(candidato);
+    		}
+    		
+    		candidato.setExperiencias(experiencias);
+			
 		}
-
-    	candidato.setExperiencias(experiencias);
 
 	   	candidato.setCandidatoIdiomas(candidatoIdiomaManager.montaCandidatoIdiomaByColaboradorIdioma(colaborador.getColaboradorIdiomas(), candidato));
 

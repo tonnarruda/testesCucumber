@@ -32,6 +32,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
+import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
@@ -143,6 +144,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private SolicitacaoManager solicitacaoManager;
 	private AuditoriaManager auditoriaManager;
+	private CandidatoIdiomaManager candidatoIdiomaManager;
 
 	public void enviaEmailAniversariantes(Collection<Empresa> empresas) throws Exception
 	{
@@ -595,6 +597,43 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				contratarColaboradorNoAC(colaborador, historicoColaborador, empresa, true);
 			else
 				acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, empresa.getCodigoAC()), empresa);
+		}
+		
+		// Replica as alterações do colaborador no candidato
+		replicaUpdateCandidato(colaborador, formacaos, idiomas, experiencias);
+	}
+
+	private void replicaUpdateCandidato(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas,
+			Collection<Experiencia> experiencias) {
+		if (colaborador.getCandidato() != null && colaborador.getCandidato().getId() != null && colaborador.getCandidato().getId() > 0) {
+			Long candidatoId = colaborador.getCandidato().getId();
+			Candidato candidato = candidatoManager.findById(candidatoId);
+			if (candidato != null) {
+				Colaborador colaboradorCandidato = findById(colaborador.getId());
+				colaboradorCandidato.setFormacao(formacaos);
+				
+				try {
+					candidatoIdiomaManager.removeCandidato(candidato);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				if (idiomas != null && !idiomas.isEmpty()) {
+					List<ColaboradorIdioma> colaboradorIdiomas = new ArrayList<ColaboradorIdioma>();
+					for (CandidatoIdioma c : idiomas) {
+						ColaboradorIdioma ci = new ColaboradorIdioma();
+						ci.setId(null);
+						ci.setColaborador(colaborador);
+						ci.setIdioma(c.getIdioma());
+						ci.setNivel(c.getNivel());
+
+						colaboradorIdiomas.add(ci);
+					}
+					colaboradorCandidato.setColaboradorIdiomas(colaboradorIdiomas);
+
+				}
+				colaboradorCandidato.setExperiencias(experiencias);
+				candidatoManager.saveOrUpdateCandidatoByColaborador(colaboradorCandidato);
+			}
 		}
 	}
 
@@ -2712,5 +2751,14 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void setEstadoManager(EstadoManager estadoManager)
 	{
 		this.estadoManager = estadoManager;
+	}
+
+	public CandidatoIdiomaManager getCandidatoIdiomaManager() {
+		return candidatoIdiomaManager;
+	}
+
+	public void setCandidatoIdiomaManager(
+			CandidatoIdiomaManager candidatoIdiomaManager) {
+		this.candidatoIdiomaManager = candidatoIdiomaManager;
 	}
 }

@@ -161,6 +161,9 @@
     <property name="auditoriaManager">
       <ref bean="auditoriaManager" />
     </property>
+    <property name="candidatoIdiomaManager">
+      <ref bean="candidatoIdiomaManager" />
+    </property>
   </bean>
   <bean id="colaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

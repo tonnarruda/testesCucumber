@@ -39,16 +39,18 @@ public class CandidatoIdiomaManagerImpl extends GenericManagerImpl<CandidatoIdio
 	{
 		Collection<CandidatoIdioma> candidatoIdiomas = new ArrayList<CandidatoIdioma>();
 
-		for (ColaboradorIdioma idioma : colaboradorIdiomas)
-		{
-			CandidatoIdioma ci = new CandidatoIdioma();
-			ci.setCandidato(candidato);
-			ci.setIdioma(idioma.getIdioma());
-			ci.setNivel(idioma.getNivel());
-
-			save(ci);
-
-			candidatoIdiomas.add(ci);
+		if (colaboradorIdiomas != null && !colaboradorIdiomas.isEmpty()) {
+			
+			for (ColaboradorIdioma idioma : colaboradorIdiomas){
+				CandidatoIdioma ci = new CandidatoIdioma();
+				ci.setCandidato(candidato);
+				ci.setIdioma(idioma.getIdioma());
+				ci.setNivel(idioma.getNivel());
+				
+				save(ci);
+				
+				candidatoIdiomas.add(ci);
+			}
 		}
 		return candidatoIdiomas;
 	}

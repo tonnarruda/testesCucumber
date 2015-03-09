@@ -7,6 +7,7 @@
 		<Item visivel="S" motivo="S20140300005"><![CDATA[T&D > Relatórios > Lista de Presença : Exibir quantidade de participantes presentes no relatório.]]></Item>
 		<Item visivel="S" motivo="P20150200270"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Ajuste na inconsistência da permissões ao visualizar entrevista de desligamento.]]></Item>
 		<Item visivel="S" motivo="S20140300177"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir > Dados Funcionais: Listar ambientes em ordem alfabética.]]></Item>
+		<Item visivel="S" motivo="S20140300178"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Alterar > Refletir as alterações do colaborador no seu respectivo candidato.]]></Item>
 		<Item visivel="S" motivo="S20150200111"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Ajuste na inconsistência ao apresentar função e ambiente no relatório dinâmico.]]></Item>
 		<Item visivel="S" motivo="S20150200179"><![CDATA[SESMT > Relatórios > EPIs Entregues: Nova opção de gerar o relatório no formato xls.]]></Item>
 		<Item visivel="S" motivo="S20150100108"><![CDATA[SESMT > Relatórios > Afastamentos: Criando nova opção de agrupamento por Área Organizacional.]]></Item>
