@@ -619,6 +619,7 @@ function ativaOuDesativa(elementId)
 	else
 	{
 		element.disabled = true;
+		element.value = "";
 		return;
 	}
 	element.focus();

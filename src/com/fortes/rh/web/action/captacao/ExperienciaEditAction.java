@@ -5,8 +5,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -82,27 +80,10 @@ public class ExperienciaEditAction extends MyActionSupportEdit
 		Integer id =  (lista.size() + 1);
 		experiencia.setId(Long.valueOf(id.toString()));
 
-		experiencia.setNomeMercado(montaNomeMercado());
 		lista.add(experiencia);
 		session.put("SESSION_EXPERIENCIA", lista);
 
 		return Action.SUCCESS;
-	}
-
-	private String montaNomeMercado()
-	{
-		String nomeMercado = "";
-
-		if(StringUtils.isNotBlank(experiencia.getNomeMercado()))
-		{
-			nomeMercado = experiencia.getNomeMercado();
-		}
-		else
-		{
-			nomeMercado = experiencia.getCargo().getNomeMercado();
-		}
-		
-		return nomeMercado;
 	}
 
 	public String update() throws Exception
@@ -119,7 +100,6 @@ public class ExperienciaEditAction extends MyActionSupportEdit
 			}
 		}
 
-		experiencia.setNomeMercado(montaNomeMercado());
 		lista.add(experiencia);
 		session.put("SESSION_EXPERIENCIA", lista);
 

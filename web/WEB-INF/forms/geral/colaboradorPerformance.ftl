@@ -646,7 +646,7 @@
 					<td>
 						<@display.table name="experiencias" id="exp" class="dados" defaultsort=4 defaultorder="descending">
 							<@display.column property="empresa" title="Empresa"/>
-							<@display.column property="nomeMercado" title="Cargo/Função"/>
+							<@display.column property="nomeFuncao" title="Cargo/Função"/>
 							<@display.column property="dataAdmissao" title="Admissão" format="{0,date,dd/MM/yyyy}" style="text-align: center"/>
 							<@display.column property="dataDesligamento" title="Desligamento" format="{0,date,dd/MM/yyyy}" style="text-align: center"/>
 						</@display.table>

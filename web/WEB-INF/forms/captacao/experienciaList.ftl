@@ -45,7 +45,7 @@
 			<a href="javascript:newConfirm('Confirma exclusão?', function(){removeExperiencia(${exp.id?string?replace(".", "")?replace(",","")})});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="empresa" title="Empresa"/>
-		<@display.column property="nomeMercado" title="Cargo/Função"/>
+		<@display.column property="nomeFuncao" title="Cargo/Função"/>
 		<@display.column property="dataAdmissao" title="Admissão" format="{0,date,dd/MM/yyyy}" style="text-align: center"/>
 		<@display.column property="dataDesligamento" title="Desligamento" format="{0,date,dd/MM/yyyy}" style="text-align: center"/>
 	</@display.table>

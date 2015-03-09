@@ -164,14 +164,6 @@ public class Experiencia extends AbstractModel implements Serializable
 		return nomeFuncao;
 	}
 
-	public void setCargoNomeMercado(String cargoNomeMercado)
-	{
-		if (cargo == null)
-			cargo = new Cargo();
-
-		cargo.setNome(cargoNomeMercado);
-	}
-
 	public void setCandidatoId(Long candidatoId)
 	{
 		if (candidato == null)

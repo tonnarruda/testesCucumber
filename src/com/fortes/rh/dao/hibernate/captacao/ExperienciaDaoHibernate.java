@@ -43,7 +43,6 @@ public class ExperienciaDaoHibernate extends GenericDaoHibernate<Experiencia> im
 		criteria.createCriteria("e.cargo", "c", Criteria.LEFT_JOIN);
 
 		ProjectionList projections = adicionaCamposBase();
-		projections.add(Projections.property("c.nomeMercado"), "cargoNomeMercado");
 		criteria.setProjection(projections);
 
 		criteria.add(Expression.in("e.candidato.id", candidatoIds));
@@ -62,7 +61,6 @@ public class ExperienciaDaoHibernate extends GenericDaoHibernate<Experiencia> im
 		criteria.createCriteria("e.cargo", "c", Criteria.LEFT_JOIN);
 
 		ProjectionList projections = adicionaCamposBase();
-		projections.add(Projections.property("c.nomeMercado"), "cargoNomeMercado");
 		criteria.setProjection(projections);
 
 		criteria.add(Expression.eq("e.colaborador", colaborador));
