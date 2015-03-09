@@ -82,4 +82,6 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Collection<AreaOrganizacional> ordenarAreasHierarquicamente(Collection<AreaOrganizacional> areas, Collection<Long> areasIds, int nivelHierarquico);
 	public String getMascaraLotacoesAC(Empresa empresa) throws Exception;
 	public void removeComDependencias(Long id) throws FortesException;
+	Collection<AreaOrganizacional> findAllListAndInativasByColaboradorId(Long empresaId, Long colaboradorId, Boolean ativo, Collection<Long> areaInativaIds);
+	Collection<AreaOrganizacional> findAllSelectOrderDescricaoByColaboradorId(Long empresaId, Long colaboradorId, Boolean ativo, Long areaInativaId) throws Exception;
 }

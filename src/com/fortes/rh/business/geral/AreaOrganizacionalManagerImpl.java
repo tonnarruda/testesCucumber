@@ -483,6 +483,20 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return areaOrganizacionals;
 	}
 	
+	public Collection<AreaOrganizacional> findAllSelectOrderDescricaoByColaboradorId(Long empresaId, Long colaboradorId, Boolean ativo, Long areaInativaId) throws Exception{
+		Collection<Long> areasInativas = null;
+		if(areaInativaId != null)
+			areasInativas = Arrays.asList(areaInativaId);
+		
+		Collection<AreaOrganizacional> areaOrganizacionals = findAllListAndInativasByColaboradorId(empresaId, colaboradorId, ativo, areasInativas);
+		areaOrganizacionals = montaFamilia(areaOrganizacionals);
+
+		CollectionUtil<AreaOrganizacional> cUtil = new CollectionUtil<AreaOrganizacional>();
+		areaOrganizacionals = cUtil.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricao");
+
+		return areaOrganizacionals;
+	}
+	
 	public Collection<AreaOrganizacional> findByConhecimento(Long conhecimentoId)
 	{
 		return getDao().findByConhecimento(conhecimentoId);
@@ -949,5 +963,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {
 		this.transactionManager = transactionManager;
+	}
+	
+	public Collection<AreaOrganizacional> findAllListAndInativasByColaboradorId(Long empresaId, Long colaboradorId, Boolean ativo, Collection<Long> areaInativaIds) {
+		return getDao().findAllList(0, 0, colaboradorId, null, empresaId, ativo, areaInativaIds);
 	}
 }

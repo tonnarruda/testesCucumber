@@ -213,7 +213,10 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 			qtdAvaliacoesRespondidas = colaboradorQuestionarioManager.findBySolicitacaoRespondidas(solicitacao.getId()).size();
         }
 
-    	areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaInativaId);
+    	Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
+    	Long empresaSistemaId = getEmpresaSistema().getId();
+    	Long colaboradorId = colaboradorManager.findByUsuario(usuarioLogado, empresaSistemaId).getId();
+    	areas = areaOrganizacionalManager.findAllSelectOrderDescricaoByColaboradorId(empresaSistemaId, colaboradorId, AreaOrganizacional.ATIVA, areaInativaId);
     	
     	estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 
