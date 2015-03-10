@@ -562,7 +562,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias,
 			Empresa empresa, boolean editarHistorico, Double salarioColaborador) throws Exception
-			{
+	{
 		verificaEntidadeIdNulo(colaborador);
 		colaborador.setEmpresa(empresa);
 		update(colaborador);
@@ -599,41 +599,26 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, empresa.getCodigoAC()), empresa);
 		}
 		
-		// Replica as alterações do colaborador no candidato
-		replicaUpdateCandidato(colaborador, formacaos, idiomas, experiencias);
+		replicaUpdateCandidato(findById(colaborador.getId()), idiomas);
 	}
 
-	private void replicaUpdateCandidato(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas,
-			Collection<Experiencia> experiencias) {
+	/**Replica as alterações do colaborador no candidato */
+	private void replicaUpdateCandidato(Colaborador colaborador, Collection<CandidatoIdioma> idiomas) 
+	{
 		if (colaborador.getCandidato() != null && colaborador.getCandidato().getId() != null && colaborador.getCandidato().getId() > 0) {
-			Long candidatoId = colaborador.getCandidato().getId();
-			Candidato candidato = candidatoManager.findById(candidatoId);
-			if (candidato != null) {
-				Colaborador colaboradorCandidato = findById(colaborador.getId());
-				colaboradorCandidato.setFormacao(formacaos);
-				
-				try {
-					candidatoIdiomaManager.removeCandidato(candidato);
-				} catch (Exception e) {
-					e.printStackTrace();
+			if (idiomas != null && !idiomas.isEmpty()) {
+				List<ColaboradorIdioma> colaboradorIdiomas = new ArrayList<ColaboradorIdioma>();
+				for (CandidatoIdioma candidatoIdioma : idiomas) {
+					ColaboradorIdioma candidatoIdiomaTemp = new ColaboradorIdioma();
+					candidatoIdiomaTemp.setId(null);
+					candidatoIdiomaTemp.setColaborador(colaborador);
+					candidatoIdiomaTemp.setIdioma(candidatoIdioma.getIdioma());
+					candidatoIdiomaTemp.setNivel(candidatoIdioma.getNivel());
+					colaboradorIdiomas.add(candidatoIdiomaTemp);
 				}
-				if (idiomas != null && !idiomas.isEmpty()) {
-					List<ColaboradorIdioma> colaboradorIdiomas = new ArrayList<ColaboradorIdioma>();
-					for (CandidatoIdioma c : idiomas) {
-						ColaboradorIdioma ci = new ColaboradorIdioma();
-						ci.setId(null);
-						ci.setColaborador(colaborador);
-						ci.setIdioma(c.getIdioma());
-						ci.setNivel(c.getNivel());
-
-						colaboradorIdiomas.add(ci);
-					}
-					colaboradorCandidato.setColaboradorIdiomas(colaboradorIdiomas);
-
-				}
-				colaboradorCandidato.setExperiencias(experiencias);
-				candidatoManager.saveOrUpdateCandidatoByColaborador(colaboradorCandidato);
+				colaborador.setColaboradorIdiomas(colaboradorIdiomas);
 			}
+			candidatoManager.saveOrUpdateCandidatoByColaborador(colaborador);
 		}
 	}
 

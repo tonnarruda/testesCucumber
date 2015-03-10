@@ -571,66 +571,42 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	{
 		Candidato candidato = null;
 		
-		if(colaborador.getCandidato() == null || colaborador.getCandidato().getId() == null)
-		{
+		if(colaborador.getCandidato() == null || colaborador.getCandidato().getId() == null){
 			candidato = new Candidato();
 			candidato.setDataCadastro(new Date());
-		}
-		else
+		}else
 			candidato = colaborador.getCandidato();
 
 		candidato.setPessoal(colaborador.getPessoal());
+		candidato.setHabilitacao(colaborador.getHabilitacao());
 		candidato.setDataAtualizacao(new Date());
 		candidato.setCursos(colaborador.getCursos());
 		candidato.setEndereco(colaborador.getEndereco());
 		candidato.setNome(colaborador.getNome());
 		candidato.setColocacao(Vinculo.EMPREGO);
 		candidato.setPretencaoSalarial(null);
-		candidato.setDisponivel(true);
 		candidato.setBlackList(false);
+		candidato.setDisponivel(colaborador.isDesligado());
 		candidato.setContratado(!colaborador.isDesligado());
 		candidato.setObservacao(colaborador.getObservacao());
 		candidato.setOrigem(OrigemCandidato.CADASTRADO);
 		candidato.setEmpresa(colaborador.getEmpresa());
+		candidato.setContato(colaborador.getContato());
 		
-		Contato contato = new Contato();
-		if(colaborador.getContato() != null)
-		{
-			contato.setDdd(colaborador.getContato().getDdd());
-			contato.setEmail(colaborador.getContato().getEmail());
-			contato.setFoneFixo(colaborador.getContato().getFoneFixo());			
+		if(candidato.getId() == null){
+			SocioEconomica socioEconomica = new SocioEconomica();
+			candidato.setSocioEconomica(socioEconomica);
 		}
 		
-	   	candidato.setContato(contato);
-
-	   	SocioEconomica socioEconomica = new SocioEconomica();
-	   	candidato.setSocioEconomica(socioEconomica);
-
 	   	if(candidato.getId() == null)
 	   		candidato = save(candidato);
 	   	
-    	Collection<Formacao> formacaos = colaborador.getFormacao();
-    	if (formacaos != null && !formacaos.isEmpty()) {
-			for (Formacao formacao : formacaos) {
-				formacao.setCandidato(candidato);
-			}
-    		candidato.setFormacao(formacaos);
-		}
+    	if (colaborador.getFormacao() != null && !colaborador.getFormacao().isEmpty()) 
+    		candidato.setFormacao(colaborador.getFormacao());
 
-    	Collection<Experiencia> experiencias = colaborador.getExperiencias();
-    	if (experiencias != null && !experiencias.isEmpty()) {
-    		for (Experiencia experiencia : experiencias){
-    			
-    			if(experiencia.getCargo() == null || experiencia.getCargo().getId() == null)
-    				experiencia.setCargo(null);
-    			
-    			experiencia.setCandidato(candidato);
-    		}
-    		
-    		candidato.setExperiencias(experiencias);
-			
-		}
-
+    	if (colaborador.getExperiencias() != null && !colaborador.getExperiencias().isEmpty()) 
+    		candidato.setExperiencias(colaborador.getExperiencias());
+	   	
 	   	candidato.setCandidatoIdiomas(candidatoIdiomaManager.montaCandidatoIdiomaByColaboradorIdioma(colaborador.getColaboradorIdiomas(), candidato));
 
 	   	update(candidato);
