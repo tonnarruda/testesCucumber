@@ -215,8 +215,12 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
     	Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
     	Long empresaSistemaId = getEmpresaSistema().getId();
-    	Long colaboradorId = colaboradorManager.findByUsuario(usuarioLogado, empresaSistemaId).getId();
-    	areas = areaOrganizacionalManager.findAllSelectOrderDescricaoByColaboradorId(empresaSistemaId, colaboradorId, AreaOrganizacional.ATIVA, areaInativaId);
+    	
+    	boolean roleMovSolicitacaoSelecao = SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_SELECAO"});
+		if(roleMovSolicitacaoSelecao)
+			areas = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaSistemaId, AreaOrganizacional.ATIVA, areaInativaId);
+		else
+			areas = areaOrganizacionalManager.findAllSelectOrderDescricaoByUsuarioId(empresaSistemaId, usuarioLogado.getId(), AreaOrganizacional.ATIVA, areaInativaId);
     	
     	estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 

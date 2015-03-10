@@ -962,6 +962,51 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		assertEquals(Arrays.asList(areaMae1.getId(), areaMae2.getId(), areaFilha1.getId(), areaFilha2.getId(), areaAvo.getId()), areasIds);
 	}
 	
+	public void testFindAllSelectOrderDescricaoByUsuarioId() throws Exception 
+	{
+		Usuario usuarioLogado = UsuarioFactory.getEntity(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	colaborador.setUsuario(usuarioLogado);
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+
+		AreaOrganizacional areaAvo = AreaOrganizacionalFactory.getEntity(1L);
+		areaAvo.setNome("areaAvo");
+		
+		AreaOrganizacional areaMae1 = AreaOrganizacionalFactory.getEntity(2L);
+		areaMae1.setNome("areaMae");
+		areaMae1.setAreaMae(areaAvo);
+		
+		AreaOrganizacional areaFilha1 = AreaOrganizacionalFactory.getEntity(3L);
+		areaFilha1.setNome("areaFilha1");
+		areaFilha1.setResponsavel(colaborador);
+		areaFilha1.setAreaMae(areaMae1);
+		
+		AreaOrganizacional areaFilha2 = AreaOrganizacionalFactory.getEntity(4L);
+		areaFilha2.setNome("areaFilha2");
+		areaFilha2.setAreaMae(areaMae1);
+		
+		AreaOrganizacional areaInativa = AreaOrganizacionalFactory.getEntity(5L);
+		areaFilha1.setResponsavel(colaborador);
+		areaInativa.setNome("areaInativa");
+		areaInativa.setAtivo(false);
+		
+		areaOrganizacionalDao.expects(once()).method("findAreasDoResponsavelCoResponsavel").with(eq(usuarioLogado.getId()), eq(empresa.getId()), eq(true), eq(Arrays.asList(areaInativa.getId()))).will(returnValue(Arrays.asList(areaAvo, areaInativa)));
+		
+		Collection<AreaOrganizacional> areasIds = null;
+		Exception exception = null;
+		
+		try {
+			areasIds = areaOrganizacionalManager.findAllSelectOrderDescricaoByUsuarioId(empresa.getId(), usuarioLogado.getId(), true, areaInativa.getId());
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
+		assertEquals(2, areasIds.size());
+	}
+	
 	public void testFindAreasByUsuarioResponsavel() 
 	{
 		Usuario usuarioLogado = UsuarioFactory.getEntity(1L);

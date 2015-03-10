@@ -483,18 +483,12 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return areaOrganizacionals;
 	}
 	
-	public Collection<AreaOrganizacional> findAllSelectOrderDescricaoByColaboradorId(Long empresaId, Long colaboradorId, Boolean ativo, Long areaInativaId) throws Exception{
+	public Collection<AreaOrganizacional> findAllSelectOrderDescricaoByUsuarioId(Long empresaId, Long usuarioId, Boolean ativo, Long areaInativaId) throws Exception{
 		Collection<Long> areasInativas = null;
 		if(areaInativaId != null)
 			areasInativas = Arrays.asList(areaInativaId);
-		
-		Collection<AreaOrganizacional> areaOrganizacionals = findAllListAndInativasByColaboradorId(empresaId, colaboradorId, ativo, areasInativas);
-		areaOrganizacionals = montaFamilia(areaOrganizacionals);
 
-		CollectionUtil<AreaOrganizacional> cUtil = new CollectionUtil<AreaOrganizacional>();
-		areaOrganizacionals = cUtil.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricao");
-
-		return areaOrganizacionals;
+		return findAllListAndInativasByUsuarioId(empresaId, usuarioId, ativo, areasInativas);
 	}
 	
 	public Collection<AreaOrganizacional> findByConhecimento(Long conhecimentoId)
@@ -965,7 +959,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		this.transactionManager = transactionManager;
 	}
 	
-	public Collection<AreaOrganizacional> findAllListAndInativasByColaboradorId(Long empresaId, Long colaboradorId, Boolean ativo, Collection<Long> areaInativaIds) {
-		return getDao().findAllList(0, 0, colaboradorId, null, empresaId, ativo, areaInativaIds);
+	public Collection<AreaOrganizacional> findAllListAndInativasByUsuarioId(Long empresaId, Long usuarioId, Boolean ativo, Collection<Long> areaInativaIds) {
+		return getDao().findAreasDoResponsavelCoResponsavel(usuarioId, empresaId, ativo, areaInativaIds);
 	}
 }

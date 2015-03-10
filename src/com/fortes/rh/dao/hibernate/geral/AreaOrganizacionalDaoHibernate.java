@@ -3,8 +3,12 @@
  * Requisito: RFA004*/
 package com.fortes.rh.dao.hibernate.geral;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -455,6 +459,49 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		query.setLong("empresaId", empresaId);
 		
 		return LongUtil.collectionStringToArrayLong(query.list());
+	}
+	
+	public Collection<AreaOrganizacional> findAreasDoResponsavelCoResponsavel(Long usuarioId, Long empresaId, Boolean ativo, Collection<Long> areaInativaIds) 
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("select a.id, monta_familia_area(a.id) as descricao from AreaOrganizacional a "); 
+		sql.append("inner join colaborador c on (c.id = a.responsavel_id or c.id = a.coResponsavel_id) ");
+		sql.append("inner join usuario u on u.id = c.usuario_id ");
+		sql.append("left join areaorganizacional am on am.id = a.areamae_id ");
+		sql.append("where u.id = :usuarioId ");
+		sql.append("and a.empresa_id = :empresaId ");
+		
+		if(ativo != null)
+			if (areaInativaIds == null || areaInativaIds.isEmpty())
+				sql.append("and a.ativo = :ativo ");
+			else
+				sql.append("and (a.ativo = :ativo or a.id in (:areaInativaIds))");
+		
+		sql.append("order by descricao");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		
+		query.setLong("usuarioId", usuarioId);
+		query.setLong("empresaId", empresaId);
+		
+		if(ativo != null)
+			query.setBoolean("ativo", ativo);
+		
+		if(areaInativaIds != null)
+			query.setParameterList("areaInativaIds", areaInativaIds, Hibernate.LONG);
+		
+		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
+		for (Iterator<Object[]> it = query.list().iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			AreaOrganizacional area = new AreaOrganizacional();
+			BigInteger id = (BigInteger)res[0];
+			area.setId(id.longValue());
+			area.setNome((String)res[1]);
+			areas.add(area);
+		}
+
+		return areas;
 	}
 
 	public Collection<AreaOrganizacional> findSemCodigoAC(Long empresaId) 
