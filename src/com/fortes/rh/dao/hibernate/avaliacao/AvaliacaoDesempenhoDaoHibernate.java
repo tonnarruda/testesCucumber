@@ -58,7 +58,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada, Long empresaId)
+	public Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada, Long... empresasIds)
 	{
 		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
 		criteria.createCriteria("cq.avaliacaoDesempenho", "ad");
@@ -81,8 +81,8 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		if(liberada != null)
 			criteria.add(Expression.eq("ad.liberada", liberada));
 		
-		if(empresaId != null && !empresaId.equals(-1L))
-			criteria.add(Expression.eq("a.empresa.id", empresaId));
+		if(empresasIds != null && empresasIds.length > 0)
+			criteria.add(Expression.in("a.empresa.id", empresasIds));
 
 		criteria.addOrder(Order.asc("ad.titulo"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

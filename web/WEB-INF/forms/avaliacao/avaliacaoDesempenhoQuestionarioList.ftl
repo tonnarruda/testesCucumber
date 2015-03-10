@@ -22,6 +22,12 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 	
 	<script type="text/javascript">
+		var empresaIds = new Array();
+		<#if empresaIds?exists>
+			<#list empresaIds as empresaId>
+				empresaIds.push(${empresaId});
+			</#list>
+		</#if>
 	
 		$(function() {
 			<#if exibeResultadoAutoavaliacao && colaboradorQuestionario?exists && msgResultadoAvaliacao?exists>
@@ -44,7 +50,10 @@
 		function populaAvaliacaoDesempenho()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			AvaliacaoDesempenhoDWR.getAvaliacoesByEmpresaPermitidas(createListAvaliacaoDesmpenho, $('#empresaId').val(), false);
+			if ( $('#empresaId').val() == "" )
+				AvaliacaoDesempenhoDWR.getAvaliacoesByEmpresaPermitidas(createListAvaliacaoDesmpenho, false, empresaIds);
+			else
+				AvaliacaoDesempenhoDWR.getAvaliacoesByEmpresaPermitidas(createListAvaliacaoDesmpenho, false, [$('#empresaId').val()]);
 		}
 
 		function createListAvaliacaoDesmpenho(data)
@@ -76,7 +85,7 @@
 	
 	<@ww.form name="form" action="avaliacaoDesempenhoQuestionarioList.action" onsubmit="${validarCampos}" method="POST">
 
-		<@ww.select label="Empresa" name="empresaId" id="empresaId" listKey="id" listValue="nome" list="empresas" headerKey="-1" headerValue="Todas" cssClass="selectEmpresa" onchange="populaAvaliacaoDesempenho();" disabled="${desabilita}"/>
+		<@ww.select label="Empresa" name="empresaId" id="empresaId" listKey="id" listValue="nome" list="empresas" headerKey="" headerValue="Todas" cssClass="selectEmpresa" onchange="populaAvaliacaoDesempenho();" disabled="${desabilita}"/>
 		<@ww.select label="Avaliação de Desempenho" required="true" name="avaliacaoDesempenho.id" id="avaliacao" list="avaliacaoDesempenhos" listKey="id" listValue="titulo" cssStyle="width: 500px;" headerKey="" headerValue="Selecione..." onchange="${funcaoAvaliacao}"/>
 		<@authz.authorize ifAllGranted="ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO">
 			<@ww.select label="Avaliador" required="true" name="avaliador.id" id="avaliador" list="avaliadors" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="Selecione..."/>

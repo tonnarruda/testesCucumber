@@ -28,7 +28,7 @@ public class AvaliacaoDesempenhoDWR
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<Long, String> getAvaliacoesByEmpresaPermitidas(Long empresaId, String naoApagar, HttpServletRequest request)
+	public Map<Long, String> getAvaliacoesByEmpresaPermitidas(String naoApagar, HttpServletRequest request, Long... empresasIds)
 	{
 		Map session = new SessionMap(request);
 		
@@ -37,11 +37,11 @@ public class AvaliacaoDesempenhoDWR
 		
 		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = new ArrayList<AvaliacaoDesempenho>();
 		if(SecurityUtil.verifyRole(session, new String[]{"ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO"}) )
-			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findByAvaliador(null, true, empresaId);//pega todas liberadas
+			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findByAvaliador(null, true, empresasIds);//pega todas liberadas
 		else
-			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findByAvaliador(avaliador.getId(), true, empresaId);
+			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findByAvaliador(avaliador.getId(), true, empresasIds);
 		
-		return new CollectionUtil<AvaliacaoDesempenho>().convertCollectionToMap(avaliacaoDesempenhos, "getId", ((empresaId == null || empresaId.equals(-1L)) ? "getTituloComEmpresa" : "getTitulo"));
+		return new CollectionUtil<AvaliacaoDesempenho>().convertCollectionToMap(avaliacaoDesempenhos, "getId", ((empresasIds.length > 1) ? "getTituloComEmpresa" : "getTitulo"));
 	}
 	
 	public Map<Long, String> getParticipantesByAvalEmpresaAreaCargo(Long avaliacaoDesempenhoId, Long empresaId, Long[] areasIds, Long[] cargosIds)

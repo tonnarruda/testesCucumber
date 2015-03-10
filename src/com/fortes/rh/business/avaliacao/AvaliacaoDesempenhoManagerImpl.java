@@ -138,9 +138,9 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		remove(avaliacaoDesempenhoId);
 	}
 
-	public Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada, Long empresaId)
+	public Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada, Long... empresasIds)
 	{
-		return getDao().findByAvaliador(avaliadorId, liberada, empresaId);
+		return getDao().findByAvaliador(avaliadorId, liberada, empresasIds);
 	}
 	
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager) {

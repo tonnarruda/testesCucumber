@@ -19,7 +19,7 @@ public interface AvaliacaoDesempenhoManager extends GenericManager<AvaliacaoDese
 	void liberar(AvaliacaoDesempenho avaliacaoDesempenho, Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores) throws Exception;
 	void bloquear(AvaliacaoDesempenho avaliacaoDesempenho) throws Exception;
 	void remover(Long avaliacaoDesempenhoId) throws Exception;
-	Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada, Long empresaId);
+	Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada, Long... empresasIds);
 	Collection<ResultadoAvaliacaoDesempenho> montaResultado(Collection<Long> avaliadosIds, AvaliacaoDesempenho avaliacaoDesempenho, boolean agruparPorAspectos, boolean desconsiderarAutoAvaliacao) throws ColecaoVaziaException;
 	void enviarLembrete(Long avaliacaoDesempenhoId, Empresa empresa);
 	Integer findCountTituloModeloAvaliacao(Integer page, Integer pagingSize, Date periodoInicial, Date periodoFinal, Long empresaId, String nomeBusca, Long avaliacaoId, Boolean liberada);

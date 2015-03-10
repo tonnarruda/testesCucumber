@@ -29,6 +29,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -95,6 +96,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private boolean exibirObsAvaliadores;
 	private boolean clonarParticipantes;
 	private Long[] participanteIds;
+	private Long[] empresaIds;//repassado para o DWR
 	
 	
 	//questionario list
@@ -199,6 +201,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		try {
 			compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 			empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
+			
+			CollectionUtil<Empresa> empresasTemp = new CollectionUtil<Empresa>();
+			empresaIds = empresasTemp.convertCollectionToArrayIds(empresas);
 			
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null, null, null);
@@ -456,7 +461,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		empresaId = getEmpresaSistema().getId();
 		empresas = empresaManager.findEmpresasPermitidas(true, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
-
+		CollectionUtil<Empresa> empresasTemp = new CollectionUtil<Empresa>();
+		empresaIds = empresasTemp.convertCollectionToArrayIds(empresas);
+		
 		if(avaliador == null)
 			avaliador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
 		
@@ -677,6 +684,10 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public void setParticipanteIds(Long[] participanteIds)
 	{
 		this.participanteIds = participanteIds;
+	}
+	
+	public Long[] getEmpresaIds() {
+		return empresaIds;
 	}
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
