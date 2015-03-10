@@ -606,6 +606,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private void replicaUpdateCandidato(Colaborador colaborador, Collection<CandidatoIdioma> idiomas) 
 	{
 		if (colaborador.getCandidato() != null && colaborador.getCandidato().getId() != null && colaborador.getCandidato().getId() > 0) {
+			
 			if (idiomas != null && !idiomas.isEmpty()) {
 				List<ColaboradorIdioma> colaboradorIdiomas = new ArrayList<ColaboradorIdioma>();
 				for (CandidatoIdioma candidatoIdioma : idiomas) {
@@ -1296,10 +1297,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, empresa.getCodigoAC()), empresa);
 			}
 
-
 			Colaborador colaboradorAtualizado = findColaboradorById(colaborador.getId());
-
+			replicaUpdateCandidato(findById(colaborador.getId()), idiomas);
+			
 			gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
+			
 		}
 		catch (Exception e)
 		{

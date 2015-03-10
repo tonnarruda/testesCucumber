@@ -179,10 +179,12 @@ public class Formacao extends AbstractModel implements Serializable
 
 	public void setColaboradorId(Long colaboradorId)
 	{
-		if (colaborador == null)
-			colaborador = new Colaborador();
-
-		colaborador.setId(colaboradorId);
+		if(colaboradorId != null){
+			if (colaborador == null)
+				colaborador = new Colaborador();
+	
+			colaborador.setId(colaboradorId);
+		}
 	}
 
 	public String toString()

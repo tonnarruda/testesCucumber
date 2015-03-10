@@ -101,6 +101,7 @@ public class FormacaoDaoHibernate extends GenericDaoHibernate<Formacao> implemen
 		p.add(Projections.property("f.id"), "id");
 		p.add(Projections.property("a.id"), "areaFormacaoId");
 		p.add(Projections.property("a.nome"), "areaFormacaoNome");
+		p.add(Projections.property("f.colaborador.id"), "colaboradorId");
 
 		criteria.setProjection(p);
 

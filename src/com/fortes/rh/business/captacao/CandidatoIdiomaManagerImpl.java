@@ -9,6 +9,8 @@ import com.fortes.rh.dao.captacao.CandidatoIdiomaDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.geral.ColaboradorIdioma;
+import com.fortes.rh.model.pesquisa.Pergunta;
+import com.fortes.rh.util.CollectionUtil;
 
 public class CandidatoIdiomaManagerImpl extends GenericManagerImpl<CandidatoIdioma, CandidatoIdiomaDao> implements CandidatoIdiomaManager
 {
@@ -37,22 +39,23 @@ public class CandidatoIdiomaManagerImpl extends GenericManagerImpl<CandidatoIdio
 
 	public Collection<CandidatoIdioma> montaCandidatoIdiomaByColaboradorIdioma(Collection<ColaboradorIdioma> colaboradorIdiomas, Candidato candidato)
 	{
-		Collection<CandidatoIdioma> candidatoIdiomas = new ArrayList<CandidatoIdioma>();
+		if(candidato.getCandidatoIdiomas() != null)
+			getDao().remove(new CollectionUtil<CandidatoIdioma>().convertCollectionToArrayIds(candidato.getCandidatoIdiomas()));
 
+		Collection<CandidatoIdioma> candidatoIdiomasTemp = new ArrayList<CandidatoIdioma>();
+		
 		if (colaboradorIdiomas != null && !colaboradorIdiomas.isEmpty()) {
-			
 			for (ColaboradorIdioma idioma : colaboradorIdiomas){
 				CandidatoIdioma ci = new CandidatoIdioma();
 				ci.setCandidato(candidato);
 				ci.setIdioma(idioma.getIdioma());
 				ci.setNivel(idioma.getNivel());
-				
 				save(ci);
-				
-				candidatoIdiomas.add(ci);
+
+				candidatoIdiomasTemp.add(ci);
 			}
 		}
-		return candidatoIdiomas;
+		return candidatoIdiomasTemp;
 	}
 
 	public Collection<CandidatoIdioma> findByCandidato(Long candidatoId)
