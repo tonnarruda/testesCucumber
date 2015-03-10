@@ -30,6 +30,7 @@ import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
@@ -67,6 +68,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private String[] percentualInicial;
 	private String[] percentualFinal;
 	private Collection<Empresa> empresas;
+	private Long[] empresasPermitidas;
 	private Empresa empresa;
 	
 	private String[] areasCheck;
@@ -272,7 +274,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	{
 		try 
 		{
-			colaboradores = colaboradorManager.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, avaliacaoCheck, areasCheck, estabelecimentoCheck, colaboradorsCheck, agruparPorArea);
+			colaboradores = colaboradorManager.findColabPeriodoExperiencia(periodoIni, periodoFim, avaliacaoCheck, areasCheck, estabelecimentoCheck, colaboradorsCheck, agruparPorArea, empresa.getId());
 			colaboradores = colaboradorManager.ordenaByMediaPerformance(colaboradores);
 			reportTitle = "Ranking de Performance de Avaliação de Desempenho";
 
@@ -300,7 +302,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		{
 			Collection<AvaliacaoDesempenho> avaliacaoDesempenhoIds = avaliacaoDesempenhoManager.findIdsAvaliacaoDesempenho(avaliacao.getId());
 			CollectionUtil<AvaliacaoDesempenho> clu = new CollectionUtil<AvaliacaoDesempenho>();
-			colaboradores = colaboradorManager.findColabPeriodoExperiencia(empresa.getId(), periodoIni, periodoFim, clu.convertCollectionToArrayIdsString(avaliacaoDesempenhoIds), areasCheck, estabelecimentoCheck, colaboradorsCheck, false);
+			colaboradores = colaboradorManager.findColabPeriodoExperiencia(periodoIni, periodoFim, clu.convertCollectionToArrayIdsString(avaliacaoDesempenhoIds), areasCheck, estabelecimentoCheck, colaboradorsCheck, false, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
 			
 			faixaPerformanceAvaliacaoDesempenhos = periodoExperienciaManager.agrupaFaixaAvaliacao(colaboradores, percentualInicial, percentualFinal);
 			
@@ -510,6 +512,10 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	
 	public void setEmpresas(Collection<Empresa> empresas) {
 		this.empresas = empresas;
+	}
+	
+	public void setEmpresasPermitidas(Long[] empresasPermitidas) {
+		this.empresasPermitidas = empresasPermitidas;
 	}
 	
 	public EmpresaManager getEmpresaManager() {

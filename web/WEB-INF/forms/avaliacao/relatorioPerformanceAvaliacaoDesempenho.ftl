@@ -65,6 +65,10 @@
 	<@ww.actionmessage />
 
 	<@ww.form name="form" action="imprimeRelatorioPerformanceAvaliacaoDesempenho.action" onsubmit="${validarCamposAvaliacaoDesempenho}" method="POST">
+
+		<#list empresas as empresa>
+			<input type="hidden" name="empresasPermitidas" value="${empresa.id}" />
+		</#list>
 		
 		<@ww.datepicker label="Período" required="true" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
 		<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/>

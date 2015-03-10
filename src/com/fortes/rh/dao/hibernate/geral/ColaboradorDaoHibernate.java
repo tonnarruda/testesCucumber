@@ -3386,7 +3386,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return null;
 	}
 
-	public Collection<Colaborador> findColabPeriodoExperiencia(Long empresaId, Date periodoIni, Date periodoFim, Long[] avaliacaoIds, Long[] areasCheck, Long[] estabelecimentosCheck, Long[] colaboradorsCheck, boolean considerarAutoAvaliacao, boolean agruparPorArea) 
+	public Collection<Colaborador> findColabPeriodoExperiencia(Date periodoIni, Date periodoFim, Long[] avaliacaoIds, Long[] areasCheck, Long[] estabelecimentosCheck, Long[] colaboradorsCheck, boolean considerarAutoAvaliacao, boolean agruparPorArea, Long... empresasIds) 
 	{
 		StringBuilder hql = new StringBuilder();
 		  hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, aval.nome, cq.respondidaEm, cq.performance, cq.performanceNivelCompetencia, ad.anonima, ad.id, ad.titulo, emp.nome, ao.nome) ");
@@ -3407,8 +3407,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		  hql.append("  ) ");
 		  hql.append("and co.desligado = false ");
 		  
-		  if (empresaId != null && empresaId > -1)
-			  hql.append("and co.empresa.id = :empresaId ");
+		  if (empresasIds != null && empresasIds.length > 0)
+			  hql.append("and co.empresa.id in( :empresasIds ) ");
 		  
 		  hql.append("and cq.respondidaEm between :periodoIni and :periodoFim ");
 		  hql.append("and ad.id in (:avaliacaoId) ");
@@ -3435,8 +3435,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		  Query query = getSession().createQuery(hql.toString());
 		  
-		  if (empresaId != null && empresaId > -1)
-			  query.setLong("empresaId", empresaId);
+		  if (empresasIds != null && empresasIds.length > 0)
+			  query.setParameterList("empresasIds", empresasIds);
 		  
 		  query.setDate("periodoIni", periodoIni);
 		  query.setDate("periodoFim", periodoFim);
