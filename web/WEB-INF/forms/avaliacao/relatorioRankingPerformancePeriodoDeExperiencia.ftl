@@ -30,10 +30,17 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
 	<script type="text/javascript">
+		var empresaIds = new Array();
+		<#if empresaIds?exists>
+			<#list empresaIds as empresaId>
+				empresaIds.push(${empresaId});
+			</#list>
+		</#if>
+		
 		$(function() {
 			$('#empresaId').change(function() {
-													getAreasOrganizacionais(this.value);
-									});
+				getAreasOrganizacionais(this.value);
+			});
 			
 			$("input[name='avaliacaoCheck']").live('click', function() { getColaboradores(); });
 		});
@@ -65,7 +72,7 @@
 		function getAreasOrganizacionais(empresaId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresa(createListAreasOrganizacionais, empresaId);
+			AreaOrganizacionalDWR.getByEmpresas(createListAreasOrganizacionais, empresaId, empresaIds, null);
 			return false;
 		}
 		

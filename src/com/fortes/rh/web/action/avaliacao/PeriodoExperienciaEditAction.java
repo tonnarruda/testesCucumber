@@ -97,6 +97,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Collection<CartaoAcompanhamentoExperienciaVO> cartoesAcompanhamentoExperienciaVOs;
 	private boolean compartilharColaboradores;
 	private boolean agruparPorArea;
+	private Long[] empresaIds;//repassado para o DWR
 		
 	private void prepare() throws Exception
 	{
@@ -176,6 +177,9 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresa.getId(), getUsuarioLogado().getId());
+		
+		CollectionUtil<Empresa> empresasPermitidas = new CollectionUtil<Empresa>();
+		empresaIds = empresasPermitidas.convertCollectionToArrayIds(empresas);
 		
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresa.getId());
     	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(empresa.getId());
@@ -703,5 +707,9 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public void setAgruparPorArea(boolean agruparPorArea) {
 		this.agruparPorArea = agruparPorArea;
+	}
+	
+	public Long[] getEmpresaIds() {
+		return empresaIds;
 	}
 }
