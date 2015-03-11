@@ -3,12 +3,18 @@ package com.fortes.rh.test.business.acesso;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import mockit.Mockit;
+
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 
 import com.fortes.rh.business.acesso.PapelManagerImpl;
 import com.fortes.rh.dao.acesso.PapelDao;
+import com.fortes.rh.exception.NotConectAutenticationException;
+import com.fortes.rh.exception.NotRegistredException;
 import com.fortes.rh.model.acesso.Papel;
+import com.fortes.rh.test.util.mockObjects.MockAutenticador;
+import com.fortes.rh.util.Autenticador;
 
 public class PapelManagerTest extends MockObjectTestCase
 {
@@ -21,9 +27,11 @@ public class PapelManagerTest extends MockObjectTestCase
 
 		papelDao = new Mock(PapelDao.class);
 		papelManager.setDao((PapelDao) papelDao.proxy());
+		
+		Mockit.redefineMethods(Autenticador.class, MockAutenticador.class);
 	}
 
-	public void testGetPerfilOrganizado(){
+	public void testGetPerfilOrganizado() throws NotConectAutenticationException, NotRegistredException{
 
 		Collection<Papel> papeis = new ArrayList<Papel>();
 

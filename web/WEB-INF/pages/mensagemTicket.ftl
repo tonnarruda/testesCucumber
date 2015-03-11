@@ -17,6 +17,7 @@
 </head>
 <body>
 <@ww.actionerror />
+<@ww.actionmessage />
 <@ww.form name="form" action="validaTicket.action" validate="true" method="POST">
 	<br><br><br>
 	

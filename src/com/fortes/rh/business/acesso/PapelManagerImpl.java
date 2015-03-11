@@ -6,6 +6,8 @@ import java.util.Collection;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.acesso.PapelDao;
+import com.fortes.rh.exception.NotConectAutenticationException;
+import com.fortes.rh.exception.NotRegistredException;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.Autenticador;
@@ -17,7 +19,7 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 	private static Long ROLE_CX_MENSAGEM = 495L;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	
-	public String getPerfilOrganizado(String[] marcados, Collection<Papel> papeisComHelp)
+	public String getPerfilOrganizado(String[] marcados, Collection<Papel> papeisComHelp) throws NotConectAutenticationException, NotRegistredException
 	{
 		Collection<Long> modulosNaoConfigurados = Autenticador.getModulosNaoConfigurados();
 		Collection<Papel> papeisSemModulosNaoConfigurados = getDao().findNotIn(modulosNaoConfigurados);
@@ -189,7 +191,7 @@ public class PapelManagerImpl extends GenericManagerImpl<Papel, PapelDao> implem
 		return getDao().findByPerfil(perfilId);
 	}
 
-	public boolean possuiModuloSESMT()
+	public boolean possuiModuloSESMT() throws NotConectAutenticationException, NotRegistredException
 	{
 		return SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()).equals(1L) 
 				|| !parametrosDoSistemaManager.findById(1L).verificaRemprot() 

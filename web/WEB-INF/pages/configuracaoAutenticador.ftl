@@ -5,6 +5,8 @@
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/login.css" />');
 		@import url('<@ww.url includeParams="none" value="/css/botoes.css" />');
+		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/default.css"/>');
 	</style>
 	<script src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
 	<#assign validarCampos="return validaFormulario('form', new Array('servidorRemprot'), null)"/>
@@ -18,6 +20,7 @@
 </head>
 <body>
 <@ww.actionerror />
+<@ww.actionmessage /> 
 <@ww.form name="form" action="configAutenticador.action" onsubmit="${validarCampos}" validate="true" method="POST">
 	<br><br><br>
 	<table width="344px" align="center" cellspacing="0" cellpadding="0" border="0">

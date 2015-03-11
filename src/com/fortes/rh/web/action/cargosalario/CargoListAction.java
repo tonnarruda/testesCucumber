@@ -9,6 +9,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import com.fortes.rh.business.acesso.PapelManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.exception.NotConectAutenticationException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.ExceptionUtil;
@@ -34,13 +35,21 @@ public class CargoListAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		setTotalSize(cargoManager.getCount(getEmpresaSistema().getId(), areaOrganizacional.getId(), cargo.getNomeMercado(), cargo.isAtivo()));
-		cargos = cargoManager.findCargos(getPage(), getPagingSize(), getEmpresaSistema().getId(), areaOrganizacional.getId(), cargo.getNomeMercado(), cargo.isAtivo());
-
-		areas = areaOrganizacionalManager.montaAllSelect(getEmpresaSistema().getId());
+		try {
+			setTotalSize(cargoManager.getCount(getEmpresaSistema().getId(), areaOrganizacional.getId(), cargo.getNomeMercado(), cargo.isAtivo()));
+			cargos = cargoManager.findCargos(getPage(), getPagingSize(), getEmpresaSistema().getId(), areaOrganizacional.getId(), cargo.getNomeMercado(), cargo.isAtivo());
+			
+			areas = areaOrganizacionalManager.montaAllSelect(getEmpresaSistema().getId());
+			
+			possuiSESMT = papelManager.possuiModuloSESMT();
+		} catch (NotConectAutenticationException e) {
+			e.printStackTrace();
+			addActionMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError(e.getMessage());
+		}
 		
-		possuiSESMT = papelManager.possuiModuloSESMT();
-
 		return Action.SUCCESS;
 	}
 	

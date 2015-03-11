@@ -1727,8 +1727,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		int qtdColaboradorNoBanco = getDao().getCount(new String[]{"desligado"}, new Object[]{false});
 		
 		RPClient remprot = Autenticador.getRemprot();
-		if(Autenticador.isRegistrado())
-		{
+		if(Autenticador.isRegistrado()) {
 			if (remprot.getUserCount() > 0 && (remprot.getUserCount() - (remprot.getUserCount() * 0.05)) <= qtdColaboradorNoBanco)
 				return "Atualmente existem " + qtdColaboradorNoBanco + " colaboradores cadastrados no sistema.<br>Sua licença permite cadastrar " + remprot.getUserCount() + " colaboradores.";			
 		}	

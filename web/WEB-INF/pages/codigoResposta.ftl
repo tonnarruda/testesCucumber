@@ -13,6 +13,7 @@
 </head>
 <body>
 <@ww.actionerror />
+<@ww.actionmessage />
 <@ww.form name="form" action="validaCodigoResposta.action" onsubmit="${validarCampos}" validate="true" method="POST">
 	<br><br><br>
 	<table width="344" align="center" cellspacing="0" cellpadding="0" border="0">

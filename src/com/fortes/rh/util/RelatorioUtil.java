@@ -35,10 +35,14 @@ public class RelatorioUtil
     	String msgRegistro = "";
 		if (parametrosDoSistema.verificaRemprot())
 		{
-			if(Autenticador.isDemo())
-				msgRegistro = Autenticador.getMsgPadrao();
+			try {
+				if(Autenticador.isDemo())
+					msgRegistro = Autenticador.getMsgPadrao();
 			else
 				msgRegistro = Autenticador.getMsgAutenticado(parametrosDoSistema.getServidorRemprot());			
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
     	Cabecalho cabecalho = new Cabecalho(titulo, empresa.getNome(), filtro, usuario.getNome(), parametrosDoSistema.getAppVersao(), pathLogoRelatorio, msgRegistro);

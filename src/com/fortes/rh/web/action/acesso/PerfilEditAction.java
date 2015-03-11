@@ -5,6 +5,8 @@ import java.util.Collection;
 
 import com.fortes.rh.business.acesso.PapelManager;
 import com.fortes.rh.business.acesso.PerfilManager;
+import com.fortes.rh.exception.NotConectAutenticationException;
+import com.fortes.rh.exception.NotRegistredException;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -32,19 +34,37 @@ public class PerfilEditAction extends MyActionSupportEdit implements ModelDriven
 			perfil = (Perfil) perfilManager.findById(perfil.getId());
 	}
 
-	public String prepareInsert() throws Exception
+	public String prepareInsert()
 	{
-		prepare();
-		exibirPerfil = papelManager.getPerfilOrganizado(null, papeisComHelp);
+		try {
+			prepare();
+			exibirPerfil = papelManager.getPerfilOrganizado(null, papeisComHelp);
+		} catch (NotConectAutenticationException e) {
+			e.printStackTrace();
+			addActionMessage(e.getMessage());
+		} catch (NotRegistredException e) {
+			e.printStackTrace();
+			addActionMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError(e.getMessage());
+		}
 		return Action.SUCCESS;
 	}
 
 	public String prepareUpdate() throws Exception
 	{
-		prepare();
-		permissoes = perfilManager.montaPermissoes(perfil);
-		exibirPerfil = papelManager.getPerfilOrganizado(permissoes, papeisComHelp);
-
+		try {
+			prepare();
+			permissoes = perfilManager.montaPermissoes(perfil);
+			exibirPerfil = papelManager.getPerfilOrganizado(permissoes, papeisComHelp);
+		} catch (NotConectAutenticationException e) {
+			e.printStackTrace();
+			addActionMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError(e.getMessage());
+		}
 		return Action.SUCCESS;
 	}
 

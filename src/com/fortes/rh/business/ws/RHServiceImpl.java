@@ -1,6 +1,5 @@
 package com.fortes.rh.business.ws;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;

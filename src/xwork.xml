@@ -172,6 +172,7 @@
     </action>
     <action name="geraTicket" class="com.fortes.rh.web.action.security.Autenticador" method="geraTicket">
       <result name="success" type="freemarker">/WEB-INF/pages/mensagemTicket.ftl</result>
+      <result name="input" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>
     </action>
     <action name="validaTicket" class="com.fortes.rh.web.action.security.Autenticador" method="validaTicket">
       <result name="success" type="redirect">/logout.action</result>

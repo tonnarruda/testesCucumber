@@ -3,7 +3,6 @@ package com.fortes.rh.web.action.security;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.config.SetupListener;
 import com.fortes.rh.config.backup.RunAntScript;
@@ -18,70 +17,62 @@ import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
+@SuppressWarnings("serial")
 public class LoginAction extends MyActionSupport
 {
-	private EmpresaManager empresaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private Collection<Empresa> empresas = new ArrayList<Empresa>();
 	private String msgRemprot = "";
 	private String senhaBD;
 	private String versao;
-//	private Boolean atualizadoSucesso = true;
 	private Boolean demonstracao = false;
 	private String servidorRemprot;
 
+	@SuppressWarnings("unchecked")
 	public String login() throws Exception
 	{
-		try
-		{
+		try {
 			if (SecurityUtil.hasLoggedUser())
 				return "index";
-			
-			
-			String msgAutenticacao = "";
-			if(demonstracao)
-			{
-				msgAutenticacao = Autenticador.getMsgPadrao();
-			}
-			else
-			{
-				ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-				try {
-					servidorRemprot = parametrosDoSistema.getServidorRemprot();
-					Autenticador.verificaCopia(servidorRemprot, parametrosDoSistema.verificaRemprot());
-				} catch (NotRegistredException e) {
-					msgRemprot = e.getMessage();
-					msgAutenticacao = Autenticador.getMsgPadrao();
-					return "not_registered";
-				} catch (NotConectAutenticationException e) {
-					msgRemprot = e.getMessage();
-					msgAutenticacao = Autenticador.getMsgPadrao();
-					return "not_conect"; 
-				} catch (Exception e) {
-					e.printStackTrace();
-				}					
-			}
-			
-			ActionContext.getContext().getSession().put("REG_MSG", msgAutenticacao);
-			
-			//empresas = empresaManager.findToList(new String[]{"id","nome"}, new String[]{"id","nome"}, new String[]{"nome"});
-			return Action.SUCCESS;
 
-		} catch (Exception e)
-		{
+			if(demonstracao){
+				ActionContext.getContext().getSession().put("REG_MSG", Autenticador.getMsgPadrao());
+				Autenticador.setDemo(true);
+				return Action.SUCCESS;
+			}
+
+			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+			servidorRemprot = parametrosDoSistema.getServidorRemprot();
+			
+			if(servidorRemprot == null || "".equals(servidorRemprot)) 
+				return "not_conect";
+			
+			Autenticador.verificaCopia(servidorRemprot, parametrosDoSistema.verificaRemprot());
+			
+		} catch (NotRegistredException e) {
+			msgRemprot = e.getMessage();
+			addActionWarning(msgRemprot);
+			Autenticador.setDemo(false);
+			return "not_registered";
+		} catch (NotConectAutenticationException e) {
+			msgRemprot = e.getMessage();
+			addActionWarning(msgRemprot);
+			Autenticador.setDemo(false);
+			return "not_conect"; 
+		} catch (Exception e) {
 			addActionError("Erro ao iniciar o RH (Entre em contato com o suporte)<br>" + e.getMessage());
 			e.printStackTrace();
 			return Action.INPUT;
-		}
+		}			
+
+		return Action.SUCCESS;
 	}
 	
 	public String configAutenticador() throws Exception
 	{
-		try
-		{
+		try {
 			parametrosDoSistemaManager.updateServidorRemprot(servidorRemprot);
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			addActionError("Erro ao configurar servidor de autenticação." + e.getMessage());
 			e.printStackTrace();
 			return Action.INPUT;
@@ -92,14 +83,12 @@ public class LoginAction extends MyActionSupport
 
 	public String updateConf() throws Exception
 	{
-		try
-		{
+		try	{
 			SetupListener setupListener = new SetupListener();
 			versao = setupListener.updateConf(senhaBD);
 			
 			addActionMessage("Senha salva com sucesso, reinicie a aplicação RH.");
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			addActionError("Erro ao iniciar o RH (Entre em contato com o suporte<br>" + e.getMessage());
 			e.printStackTrace();
 		}
@@ -109,8 +98,7 @@ public class LoginAction extends MyActionSupport
 	
 	public String gerarBD() throws Exception
 	{
-		try
-		{
+		try	{
 			String dbName = ArquivoUtil.getSystemConf().getProperty("db.name");
 			if(dbName == null || dbName.equals(""))
 				dbName = "fortesrh";
@@ -119,8 +107,7 @@ public class LoginAction extends MyActionSupport
 			runAntScript.addProperty("db_name", dbName);
 			runAntScript.launch();
 			addActionMessage("Banco gerado com sucesso, reinicie a aplicação RH.");
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			addActionError(e.getMessage());
 			e.printStackTrace();
 		}
@@ -136,11 +123,6 @@ public class LoginAction extends MyActionSupport
 	public void setEmpresas(Collection<Empresa> empresas)
 	{
 		this.empresas = empresas;
-	}
-
-	public void setEmpresaManager(EmpresaManager empresaManager)
-	{
-		this.empresaManager = empresaManager;
 	}
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
@@ -178,10 +160,4 @@ public class LoginAction extends MyActionSupport
 	public void setServidorRemprot(String servidorRemprot) {
 		this.servidorRemprot = servidorRemprot;
 	}
-
-//	public Boolean getAtualizadoSucesso()
-//	{
-//		return atualizadoSucesso;
-//	}
-
 }

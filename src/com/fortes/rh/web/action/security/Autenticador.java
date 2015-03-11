@@ -1,11 +1,11 @@
 package com.fortes.rh.web.action.security;
 
-import org.apache.log4j.Logger;
-
 import remprot.RPClient;
 import remprot.RPWebClient;
 import remprot.RPWebPacket;
 
+import com.fortes.rh.exception.NotConectAutenticationException;
+import com.fortes.rh.exception.NotRegistredException;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupport;
 import com.opensymphony.xwork.Action;
@@ -20,53 +20,58 @@ public class Autenticador extends MyActionSupport
 	private String nome;
 	private String ultimoReset;
 	private int ticket;
-
-	private static Logger logger = Logger.getLogger(Autenticador.class);
-	
 	public String codigoOperacional()
 	{
-		RPClient client = com.fortes.rh.util.Autenticador.getRemprot();  
-
 		try {
+			RPClient client = com.fortes.rh.util.Autenticador.getRemprot();  
 			codigoOperacional = client.requestKey(cnpj, nome, true);
 			ultimoReset = DateUtil.formataDiaMesAno(client.getLastResetDate());
+			return ActionSupport.SUCCESS;
+		} catch (NotConectAutenticationException e) {
+			e.printStackTrace();
+			addActionMessage(e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
+			addActionError("Favor entrar em contato com o suporte.<br/>Erro no processo de liberação do código operacional.");
 		}
 
-		return ActionSupport.SUCCESS;
+		return ActionSupport.INPUT;
 	}
 	
 	public String validaCodigoResposta()
 	{
-		// TODO remprot - Tratar os erros com mensagens bem explicadas
-		RPClient client = getClientRemprot(codigoResposta);
-
-		if (com.fortes.rh.util.Autenticador.isRegistrado())
+		try {
+			clientRemprot(codigoResposta);
 			return ActionSupport.SUCCESS;
-		else
-		{
-			addActionError("Erro ao liberar licença. (Código do erro: " + String.valueOf(client.getErrors())+")");
-			logger.info("Erro do RemProt ao liberar licença: " + String.valueOf(client.getErrors()));
-			return ActionSupport.INPUT;
+		} catch (NotConectAutenticationException e) {
+			e.printStackTrace();
+			addActionMessage(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Favor entrar em contato com o suporte.<br/>Erro no processo de validação do código de resposta.");
 		}
+		
+		return ActionSupport.INPUT;
 	}
 	
 	public String geraTicket()
 	{
-		RPClient client = com.fortes.rh.util.Autenticador.getRemprot();  
-		
 		try {
+			RPClient client = com.fortes.rh.util.Autenticador.getRemprot();  
 			codigoOperacional = client.requestKey(cnpj, nome, true);
-			
 			RPWebClient rpWebClient = new RPWebClient();
 			RPWebPacket rpWebPacket = rpWebClient.WebStoreOperational(nome, cnpj, codigoOperacional);
 			ticket = rpWebPacket.TicketNo;
-		} catch (Exception e) {
+			return ActionSupport.SUCCESS;
+		} catch (NotConectAutenticationException e) {
 			e.printStackTrace();
+			addActionMessage(e.getMessage());
+        } catch (Exception e) {
+        	e.printStackTrace();
+        	addActionError("Favor entrar em contato com o suporte.<br/>Erro no processo de geração do ticket.");
 		}
-		
-		return ActionSupport.SUCCESS;
+
+		return ActionSupport.INPUT;
 	}
 	
 	public String validaTicket()
@@ -75,36 +80,27 @@ public class Autenticador extends MyActionSupport
 			RPWebClient rpWebClient = new RPWebClient();
 			RPWebPacket rpWebPacket = rpWebClient.WebRetrieveAnswer(ticket);
 			
-			if(!rpWebPacket.Successful){
-				addActionError("Ticket ainda não validado. Aguarde a validação do técnico e clique em OK.");
-				return ActionSupport.INPUT;
-			}
-			
-			RPClient client = getClientRemprot(rpWebPacket.AnswerCode);
-			
-			if (!com.fortes.rh.util.Autenticador.isRegistrado())
-			{
-				addActionError("Impossível liberar licença. (Código do erro: " + String.valueOf(client.getErrors())+ ")");
-				logger.info("Erro do RemProt ao liberar licença: " + String.valueOf(client.getErrors()));
-				return ActionSupport.INPUT;
-			}
-			
+			if(!rpWebPacket.Successful)
+				throw new NotConectAutenticationException("Aguarde a validação do técnico e clique em OK.");
+
+			clientRemprot(rpWebPacket.AnswerCode);
+			return ActionSupport.SUCCESS;
+		} catch (NotConectAutenticationException e) {
+			e.printStackTrace();
+			addActionWarning(e.getMessage());
 		} catch (Exception e) {
 			addActionError("Erro ao liberar licença. Entre em contato com o suporte." );
 			e.printStackTrace();
-			return ActionSupport.INPUT;
 		}
 		
-		return ActionSupport.SUCCESS;
+		return ActionSupport.INPUT;
 	}
 	
-	private RPClient getClientRemprot(String codigoResposta)
+	private void clientRemprot(String codigoResposta) throws NotConectAutenticationException, NotRegistredException
 	{
-		RPClient client = com.fortes.rh.util.Autenticador.getRemprot();
-		client.applyResponse(cnpj, nome, codigoResposta);
-		client.loadLicense();
-		
-		return client;
+		com.fortes.rh.util.Autenticador.getRemprot().applyResponse(cnpj, nome, codigoResposta);
+		com.fortes.rh.util.Autenticador.loadLicense();
+		com.fortes.rh.util.Autenticador.verificaRegistro();
 	}
 	
 	public String registraNovaLicenca() 
@@ -155,13 +151,11 @@ public class Autenticador extends MyActionSupport
 	public String getUltimoReset() {
 		return ultimoReset;
 	}
-
 	
 	public int getTicket()
 	{
 		return ticket;
 	}
-
 	
 	public void setTicket(int ticket)
 	{
