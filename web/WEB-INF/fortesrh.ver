@@ -2,13 +2,13 @@
 <Versoes>
 	<Versao id="1.1.14x.17x" bd="" data="xx/03/2015">
 		<Item visivel="S" motivo="S20141200045"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Novas opções de filtragem por área organizacional e motivo da solicitação.]]></Item>
-		<Item visivel="S" motivo="S20140800023"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Alterar: Exibir somente as áreas organizacionais que estão sob a responsabilidade do usuário logado.]]></Item>
+		<Item visivel="S" motivo="S20140800023"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Exibir somente as áreas organizacionais que estão sob a responsabilidade do usuário logado.]]></Item>
 		<Item visivel="S" motivo="S20150100136"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Inserção da flag para emitir e/ou exportar as informações com a Área Organizacional.]]></Item>
 		<Item visivel="S" motivo="S20150200210"><![CDATA[Aval. Desempenho > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência: Ajuste na inconsistência da quantidade de respostas das questões objetivas e comentários.]]></Item>
 		<Item visivel="S" motivo="S20140300005"><![CDATA[T&D > Relatórios > Lista de Presença : Exibir quantidade de participantes presentes no relatório.]]></Item>
 		<Item visivel="S" motivo="P20150200270"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Ajuste na inconsistência da permissões ao visualizar entrevista de desligamento.]]></Item>
 		<Item visivel="S" motivo="S20140300177"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir > Dados Funcionais: Listar ambientes em ordem alfabética.]]></Item>
-		<Item visivel="S" motivo="S20140300178"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Alterar > Refletir as alterações do colaborador no seu respectivo candidato.]]></Item>
+		<Item visivel="S" motivo="S20140300178"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Refletir as alterações do colaborador no seu respectivo candidato.]]></Item>
 		<Item visivel="S" motivo="S20150200111"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Ajuste na inconsistência ao apresentar função e ambiente no relatório dinâmico.]]></Item>
 		<Item visivel="S" motivo="S20150200179"><![CDATA[SESMT > Relatórios > EPIs Entregues: Nova opção de gerar o relatório no formato xls.]]></Item>
 		<Item visivel="S" motivo="S20150100108"><![CDATA[SESMT > Relatórios > Afastamentos: Criando nova opção de agrupamento por Área Organizacional.]]></Item>
