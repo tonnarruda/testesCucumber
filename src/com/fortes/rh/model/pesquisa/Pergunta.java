@@ -323,4 +323,12 @@ public class Pergunta extends AbstractModel implements Serializable, Cloneable
 	public void setColaboradorRespostas(Collection<ColaboradorResposta> colaboradorRespostas) {
 		this.colaboradorRespostas = colaboradorRespostas;
 	}
+
+	public void setAspectoNome(String nomeAspecto) {
+		if(aspecto == null)
+			aspecto = new Aspecto();
+		
+		aspecto.setNome(nomeAspecto);
+		
+	}
 }

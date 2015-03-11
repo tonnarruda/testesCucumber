@@ -73,7 +73,8 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	private Collection<PeriodoExperiencia> periodoExperiencias;
 
 	private boolean imprimirFormaEconomica = false;
-	private char modeloAvaliacao = 'D'; 
+	private char modeloAvaliacao = 'D';
+	private boolean agruparPorAspecto;
 	private TipoModeloAvaliacao tipoModeloAvaliacao = new TipoModeloAvaliacao();
 	
 	private Colaborador colaborador;
@@ -241,13 +242,14 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	public String imprimir()
     {
     	avaliacao = avaliacaoManager.findById(avaliacao.getId());
-   	   	dataSource = avaliacaoManager.getQuestionarioRelatorio(avaliacao);
+   	   	dataSource = avaliacaoManager.getQuestionarioRelatorio(avaliacao, agruparPorAspecto);
 
    	   	String titulo = "Avaliação";
    	   	String filtro = avaliacao.getTitulo();
    	   	
     	parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), filtro);
     	parametros.put("FORMA_ECONOMICA", imprimirFormaEconomica );
+    	parametros.put("AGRUPAR_POR_ASPECTO", agruparPorAspecto );
     	
     	return Action.SUCCESS;
     }
@@ -321,6 +323,10 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	public void setImprimirFormaEconomica(boolean imprimirFormaEconomica)
 	{
 		this.imprimirFormaEconomica = imprimirFormaEconomica;
+	}
+
+	public boolean isImprimirFormaEconomica() {
+		return imprimirFormaEconomica;
 	}
 
 	public char getModeloAvaliacao() {
@@ -469,5 +475,9 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public void setExibirPeso(boolean exibirPeso) {
 		this.exibirPeso = exibirPeso;
+	}
+
+	public void setAgruparPorAspecto(boolean agruparPorAspecto) {
+		this.agruparPorAspecto = agruparPorAspecto;
 	}
 }

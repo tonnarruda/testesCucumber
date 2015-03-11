@@ -14,6 +14,7 @@ import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
+import com.fortes.rh.dao.pesquisa.PerguntaDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
@@ -90,10 +91,10 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
     	perguntas.add(pergunta1);
     	perguntas.add(pergunta2);
 
-    	perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionario").with(eq(avaliacao.getId())).will(returnValue(perguntas));
+    	perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionarioAgrupadosPorAspecto").with(eq(avaliacao.getId()),ANYTHING).will(returnValue(perguntas));
     	perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, ANYTHING);
 
-    	avaliacaoManager.getQuestionarioRelatorio(avaliacao);
+    	avaliacaoManager.getQuestionarioRelatorio(avaliacao, false);
     }
 	
 	public void testgetPontuacaoMaximaDaPerformance()

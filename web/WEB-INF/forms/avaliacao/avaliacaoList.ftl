@@ -7,6 +7,7 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		#formDialog { display: none; width: 600px; }
+		#tipoAgrupamentoDialog { display: none; }
 	</style>
 
 	<#if modeloAvaliacao?exists && modeloAvaliacao = tipoModeloAvaliacao.getSolicitacao()>
@@ -28,6 +29,15 @@
 			$('#modeloAvaliacao').val(modeloAvaliacao);
 			$('#formDialog').dialog({ modal: true, width: 530, title: 'Clonar: ' + titulo });
 		}
+		
+		function escolheTipoAgrupamento(avaliacaoId, avaliacaoNome, modeloAvaliacao, imprimirFormaEconomica){
+			$('#avaliacaoIdTipoAgrupamento').val(avaliacaoId);
+			$('#modeloAvaliacaoTipoAgrupamentoTipoAgrupamento').val(modeloAvaliacao);
+			$('#imprimirFormaEconomica').val(imprimirFormaEconomica);
+			$('#tipoAgrupamentoDialog form').attr("action","imprimir.action");
+			$('#tipoAgrupamentoDialog').dialog({ title: avaliacaoNome, modal: true, width: 550, height: 150 });
+		}
+		
 	</script>
 </head>
 <body>
@@ -61,9 +71,15 @@
 			<a href="../../pesquisa/aspecto/listAvaliacao.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="Aspectos" src="<@ww.url includeParams="none" value="/imgs/agrupar.gif"/>"></a>
 			<a href="prepareUpdate.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="javascript:;" onclick="javascript:clonar(${avaliacao.id},'${modeloAvaliacao}','${avaliacao.titulo}');"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
-			<a href="imprimir.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="Imprimir Modelo da Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
-			<a href="imprimir.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}&imprimirFormaEconomica=true"><img border="0" title="Imprimir Modelo da Avaliação em formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"></a>
+			<#if modeloAvaliacao?exists && (modeloAvaliacao = tipoModeloAvaliacao.getSolicitacao() || modeloAvaliacao = tipoModeloAvaliacao.getAvaliacaoAluno()) >
+				<a href="imprimir.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}"><img border="0" title="Imprimir Modelo da Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+				<a href="imprimir.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}&imprimirFormaEconomica=true"><img border="0" title="Imprimir Modelo da Avaliação em formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"></a>
+			<#else>
+				<a href="#" onclick="escolheTipoAgrupamento('${avaliacao.id}', '${avaliacao.titulo}','${modeloAvaliacao}', false)"><img border="0" title="Imprimir Modelo da Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+				<a href="#" onclick="escolheTipoAgrupamento('${avaliacao.id}', '${avaliacao.titulo}','${modeloAvaliacao}', true)"><img border="0" title="Imprimir Modelo da Avaliação em formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"></a>
+			</#if>
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?avaliacao.id=${avaliacao.id}&modeloAvaliacao=${modeloAvaliacao}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+			
 		</@display.column>
 		
 		<@display.column title="Avaliação" property="titulo" class="${classe}"/>
@@ -85,6 +101,17 @@
 			<@ww.hidden name="avaliacao.id" id="avaliacaoId"/>
 			<@ww.hidden name="modeloAvaliacao" id="modeloAvaliacao"/>
 			<button class="btnClonar" type="submit"></button>
+		</@ww.form>
+	</div>
+
+	<div id="tipoAgrupamentoDialog">
+		<@ww.form name="formTipoAgrupamento" id="formTipoAgrupamento" action="" method="" >
+			<@ww.select label="Tipo de agrupamento" name="agruparPorAspecto" list=r"#{'false':'Por ordem', 'true':'Por aspecto'}" cssStyle="width: 200px; margin-top: 6px;" />
+			<@ww.hidden name="avaliacao.id" id="avaliacaoIdTipoAgrupamento"/>
+			<@ww.hidden name="modeloAvaliacao" id="modeloAvaliacaoTipoAgrupamento"/>
+			<@ww.hidden name= "imprimirFormaEconomica" id="imprimirFormaEconomica"/>
+			<button class="btnImprimir grayBG" onclick="$('#tipoAgrupamentoDialog').dialog('close');"></button>
+			<button type="button" onclick="$('#tipoAgrupamentoDialog').dialog('close'); $('#tipoAgrupamentoDialog input').val(''); $('#tipoAgrupamentoDialog select').val('');" class="btnCancelar grayBG">	</button>
 		</@ww.form>
 	</div>
 </body>

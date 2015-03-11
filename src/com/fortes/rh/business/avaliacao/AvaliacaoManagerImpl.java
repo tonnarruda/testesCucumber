@@ -19,6 +19,7 @@ import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.pesquisa.Aspecto;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Resposta;
@@ -47,13 +48,17 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 		return getDao().getCount(empresaId, ativo, modeloAvaliacao, titulo);
 	}
 	
-	public Collection<QuestionarioRelatorio> getQuestionarioRelatorio(Avaliacao avaliacao) {
+	public Collection<QuestionarioRelatorio> getQuestionarioRelatorio(Avaliacao avaliacao, boolean ordenarPorAspecto) {
 		
-		Collection<Pergunta> perguntas = perguntaManager.getPerguntasRespostaByQuestionario(avaliacao.getId());
+		Collection<Pergunta> perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacao.getId(), ordenarPorAspecto);
 		
 		//trata as perguntas para substituir #AVALIADO# por AVALIADO (para impressão)
-		for (Pergunta pergunta : perguntas)
+		for (Pergunta pergunta : perguntas) {
+			if(pergunta.getAspecto() == null || pergunta.getAspecto().getNome() == null || "".equals(pergunta.getAspecto().getNome())){
+				pergunta.setAspectoNome("Sem aspecto");
+			}
 			perguntaManager.setAvaliadoNaPerguntaDeAvaliacaoDesempenho(pergunta, "AVALIADO");
+		}
 
         QuestionarioRelatorio questionarioRelatorio = new QuestionarioRelatorio();
         questionarioRelatorio.setAvaliacaoExperiencia(avaliacao);
