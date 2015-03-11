@@ -29,6 +29,8 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 
 	Collection<ConfiguracaoNivelCompetenciaVO> montaRelatorioConfiguracaoNivelCompetencia(Date dataIni, Date dataFim, Long empresaId, Long faixaSalarialId, Long[] competenciasIds);
 
+	Collection<ConfiguracaoNivelCompetenciaVO> montaConfiguracaoNivelCompetenciaByFaixa(Long empresaId, Long faixaSalarialId);
+
 	Collection<ConfiguracaoNivelCompetenciaVO> montaMatrizCompetenciaCandidato(Long empresaId, Long faixaSalarialId, Long solicitacaoId);
 
 	void removeByFaixas(Long[] faixaSalarialIds);

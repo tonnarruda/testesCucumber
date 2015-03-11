@@ -97,7 +97,8 @@
 				<@frt.link verifyRole="ROLE_AVAL_DESEMP_DELETE_RESPOSTA" href="#" onclick="newConfirm('Confirma exclusão das respostas?', function(){window.location='deleteAvaliacao.action?colaboradorQuestionarioId=${colaboradorQuestionario.id}&avaliacaoDesempenho.id=${avaliacaoDesempenho.id}&respondida=${respondida}'});" imgTitle="Excluir respostas" imgName="deletar_avaliacao.gif"/>
 			<#else>
 				<a href="prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}"><img border="0" title="Responder" src="<@ww.url value="/imgs/folhaCheia.gif"/>"></a>
-				<img border="0" title="Não há respostas a serem impressas" src="<@ww.url value="/imgs/printer.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);"/>
+				<a href="imprimirFormularioAvaliacaoDesempenho.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}"><img border="0" title="Imprimir formulário" src="<@ww.url value="/imgs/printer.gif"/>"></a>
+				<!-- img border="0" title="Não há respostas a serem impressas" src="<@ww.url value="/imgs/printer.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);"/ -->
 				<@frt.link verifyRole="ROLE_AVAL_DESEMP_DELETE_RESPOSTA" imgTitle="Não há respostas a serem excluídas" imgName="deletar_avaliacao.gif" opacity=true/>
 			</#if>
 		</@display.column>

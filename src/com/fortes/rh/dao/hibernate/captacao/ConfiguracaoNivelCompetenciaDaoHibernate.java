@@ -159,7 +159,8 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		if(dataIni != null &&  dataFim != null)
 			sql.append("and cncc.data >= :dataIni and cncc.data <= :dataFim ");
 		
-		sql.append("and cncf.id in (:configuracaoNivelCompetenciaIds) ");
+		if (configuracaoNivelCompetenciaIds != null)
+			sql.append("and cncf.id in (:configuracaoNivelCompetenciaIds) ");
 		
 		if(ordenarPorNivel)
 			sql.append("order by c.nome, c.id, cncc.data, cncc.id, competencia ");
@@ -170,8 +171,9 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		query.setCharacter("tipoAtitude", TipoCompetencia.ATITUDE);
 		query.setCharacter("tipoConhecimento", TipoCompetencia.CONHECIMENTO);
 		query.setCharacter("tipoHabilidade", TipoCompetencia.HABILIDADE);
-		query.setParameterList("configuracaoNivelCompetenciaIds", configuracaoNivelCompetenciaIds, Hibernate.LONG);
 		query.setLong("faixaSalarialColaboradorId", faixaSalarialColaboradorId);
+		if (configuracaoNivelCompetenciaIds != null)
+			query.setParameterList("configuracaoNivelCompetenciaIds", configuracaoNivelCompetenciaIds, Hibernate.LONG);
 		
 		if(dataIni != null &&  dataFim != null)
 		{
