@@ -54,9 +54,6 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 		
 		//trata as perguntas para substituir #AVALIADO# por AVALIADO (para impressão)
 		for (Pergunta pergunta : perguntas) {
-			if(pergunta.getAspecto() == null || pergunta.getAspecto().getNome() == null || "".equals(pergunta.getAspecto().getNome())){
-				pergunta.setAspectoNome("Sem aspecto");
-			}
 			perguntaManager.setAvaliadoNaPerguntaDeAvaliacaoDesempenho(pergunta, "AVALIADO");
 		}
 

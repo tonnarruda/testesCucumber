@@ -249,7 +249,6 @@ public class AvaliacaoEditAction extends MyActionSupportList
    	   	
     	parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), filtro);
     	parametros.put("FORMA_ECONOMICA", imprimirFormaEconomica );
-    	parametros.put("AGRUPAR_POR_ASPECTO", agruparPorAspecto );
     	
     	return Action.SUCCESS;
     }

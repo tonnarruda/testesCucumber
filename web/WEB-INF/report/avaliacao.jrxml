@@ -13,7 +13,6 @@
 	</parameter>
 	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
 	<parameter name="FORMA_ECONOMICA" class="java.lang.Boolean" isForPrompting="false"/>
-	<parameter name="AGRUPAR_POR_ASPECTO" class="java.lang.Boolean"/>
 	<field name="avaliacaoExperiencia.titulo" class="java.lang.String"/>
 	<field name="avaliacaoExperiencia.dataInicio" class="java.util.Date"/>
 	<field name="avaliacaoExperiencia.dataFim" class="java.util.Date"/>
@@ -124,24 +123,7 @@
 	<detail>
 		<band height="34" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-3" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="533" height="34" isPrintWhenDetailOverflows="true" uuid="cc71f931-62ba-42dd-8109-a7a1a0e1f596">
-					<printWhenExpression><![CDATA[$P{AGRUPAR_POR_ASPECTO}]]></printWhenExpression>
-				</reportElement>
-				<subreportParameter name="REPORT_DATA_SOURCE">
-					<subreportParameterExpression><![CDATA[$F{perguntas}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="SUBREPORT_DIR">
-					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportParameter name="FORMA_ECONOMICA">
-					<subreportParameterExpression><![CDATA[$P{FORMA_ECONOMICA}]]></subreportParameterExpression>
-				</subreportParameter>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "avaliacaoExperiencia_perguntas_agrupado_aspecto.jasper"]]></subreportExpression>
-			</subreport>
-			<subreport isUsingCache="true">
-				<reportElement key="subreport-3" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="535" height="34" isPrintWhenDetailOverflows="true" uuid="249fed2c-e62e-43b3-a507-fcd3653312e7">
-					<printWhenExpression><![CDATA[!$P{AGRUPAR_POR_ASPECTO}]]></printWhenExpression>
-				</reportElement>
+				<reportElement key="subreport-3" positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="533" height="34" isPrintWhenDetailOverflows="true" uuid="cc71f931-62ba-42dd-8109-a7a1a0e1f596"/>
 				<subreportParameter name="REPORT_DATA_SOURCE">
 					<subreportParameterExpression><![CDATA[$F{perguntas}]]></subreportParameterExpression>
 				</subreportParameter>
