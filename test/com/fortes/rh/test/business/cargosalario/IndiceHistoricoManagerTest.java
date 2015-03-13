@@ -1,5 +1,7 @@
 package com.fortes.rh.test.business.cargosalario;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -8,6 +10,7 @@ import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.cargosalario.IndiceHistoricoManagerImpl;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
@@ -87,15 +90,33 @@ public class IndiceHistoricoManagerTest extends MockObjectTestCase
 		assertNull(retorno);
 	}
 
-	public void testRemove()
+	public void testRemoveOk()
 	{
 		indiceHistoricoDao.expects(once()).method("remove").with(ANYTHING, ANYTHING).will(returnValue(true));
 
-		boolean retorno = indiceHistoricoManager.remove(new Date(), 1L);
+		boolean retorno = false;
+		try {
+			retorno = indiceHistoricoManager.remove(new Date(), 1L);
+		} catch (FortesException e) {
+			e.printStackTrace();
+		}
 
 		assertTrue(retorno);
 	}
 
+	public void testRemoveComHistoricoUnico()
+	{
+		indiceHistoricoDao.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(Arrays.asList(new Object())));
+		
+		boolean retorno = false;
+		try {
+			retorno = indiceHistoricoManager.remove(new Date(), 1L);
+		} catch (FortesException e) {
+		}
+		
+		assertFalse(retorno);
+	}
+	
 	public void testVerifyDataIndice()
 	{
 		Indice indice = IndiceFactory.getEntity(1L);

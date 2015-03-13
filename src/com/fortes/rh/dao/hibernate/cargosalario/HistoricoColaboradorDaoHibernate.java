@@ -1403,5 +1403,36 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		
 		query.executeUpdate();
 	}
+
+	@Override
+	public Collection<HistoricoColaborador> findDependenciasComHistoricoIndice(Date data, Long indiceId) 
+	{
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("hc.colaborador", "c");
+		criteria.createCriteria("hc.estabelecimento", "e");
+		criteria.createCriteria("hc.areaOrganizacional", "ao");
+		criteria.createCriteria("hc.faixaSalarial", "fs");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("hc.id"), "id");
+		p.add(Projections.property("hc.tipoSalario"), "tipoSalario");
+		p.add(Projections.property("hc.data"), "data");
+		p.add(Projections.property("hc.gfip"), "gfip");
+		p.add(Projections.property("hc.salario"), "salario");
+		p.add(Projections.property("fs.codigoAC"), "faixaCodigoAC");
+		p.add(Projections.property("ao.codigoAC"), "areaOrganizacionalCodigoAC");
+		p.add(Projections.property("e.codigoAC"), "estabelecimentoCodigoAC");
+		p.add(Projections.property("c.codigoAC"), "projectionColaboradorCodigoAC");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("hc.status", StatusRetornoAC.PENDENTE));
+		criteria.add(Expression.eq("c.naoIntegraAc", false));
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
+
+		return criteria.list();	}
 	
 }
