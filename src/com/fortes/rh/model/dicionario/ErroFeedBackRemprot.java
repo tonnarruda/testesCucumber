@@ -44,10 +44,10 @@ public class ErroFeedBackRemprot extends LinkedHashMap
 		mensagens.put(ApplicationDiffers, "O nome que está gravado no \".inf\" difere do nome do arquivo.");
 		mensagens.put(UserWantsToTransport, "O usuário deseja transportar a licença.");
 		mensagens.put(FileAccessDenied,"Acesso negado (FileAccessDenied).");
-		mensagens.put(ProtectionNotSet,"Dados da proteção não foram inseridos.");
+		mensagens.put(ProtectionNotSet,"Os dados da licença de uso não foram inseridos.");
 		mensagens.put(LicenseDataNotFound,"Sem data de licença (LicenseDataNotFound).");
 		mensagens.put(ExecutionLimitExpired, "Data para habilitação expirou.");
-		mensagens.put(ProtectionNotFound, "Dados da proteção não foram encontrados.");
+		mensagens.put(ProtectionNotFound, "Os dados da licença de uso não foram econtrados.");
 		mensagens.put(ServiceRemprotError, "Não foi possível conectar com servidor do Remprot.");
 	}
 	

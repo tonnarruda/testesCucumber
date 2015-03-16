@@ -46,7 +46,7 @@
 		</tr>
 		<tr>
 			<td class="corpo" colspan="2" style="padding:10px">
-				<@ww.textfield label="CNPJ/CPF" name="cnpj" id="cnpj" cssStyle="width:110px !important" /><br>
+				<@ww.textfield label="CNPJ/CPF" name="cnpj" id="cnpj" cssStyle="width:110px !important"/><br>
 				<@ww.textfield label="Nome/Denominação Social do Licenciado" name="nome" id="nome" cssStyle="width:320px !important"/>
   				<br>
 			</td>

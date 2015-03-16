@@ -41,6 +41,11 @@
 				<button type="submit" class="btnOK" style="background-color:transparent"></button>
 			</td>
 		</tr>
+		<tr>
+			<td colspan="2" align="center">
+				<a href="login.action">Editar dados da lincença de uso</a>
+			</td>
+		</tr>
 	</table>
 </@ww.form>
 

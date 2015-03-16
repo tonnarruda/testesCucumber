@@ -1,5 +1,6 @@
 package com.fortes.rh.util;
 
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -126,7 +127,7 @@ public class Autenticador
 		clientRemprot.setServerAddress(urlServidorRemprot);	// Aqui eu carrego os dados da licenca 
 
 		if(!Autenticador.isDemo() && !clientRemprot.testConnection())
-			throw new NotConectAutenticationException("Para que seja efetuado a validação do sistema o servidor remprot (" + urlServidorRemprot + ") deverá ter acesso a internet.<br/>"
+			throw new NotConectAutenticationException("Para que seja efetuado a validação do sistema, o servidor remprot (" + urlServidorRemprot + ") deverá ter acesso a internet.<br/>"
 					+ "Por gentileza teste a url abaixo no servidor remprot para verificar o acesso ou entre em contato com o suporte caso o problema persista.<br/>"
 					+ "Url: <a href=\"http://www.fortesinformatica.com.br/remprot\">http://www.fortesinformatica.com.br/remprot</a>");
 		
@@ -154,18 +155,20 @@ public class Autenticador
 	{
 		ErroFeedBackRemprot erroFeedBackRemprot = new ErroFeedBackRemprot();
 		logger.info("Erro do Remprot ao liberar licença: " + String.valueOf(clientRemprot.getErrors()));
-		throw new NotRegistredException("Problema na validação da licença de uso. (Código do erro: " + String.valueOf(clientRemprot.getErrors())+")"
-				+ "<br/>" + erroFeedBackRemprot.getMensagem(clientRemprot.getErrors()) +
-				"<br/>Favor entrar em contato com o suporte");
+		throw new NotRegistredException("Problema na validação da licença de uso. (Código do erro: " + String.valueOf(clientRemprot.getErrors())+") <br/>" +
+										erroFeedBackRemprot.getMensagem(clientRemprot.getErrors()) + "<br/>" +
+										"Favor entrar em contato com o suporte.");
 	}
 	
 	private static void verificaConexaoComServidorRemprot(String url) throws NotConectAutenticationException
 	{
 		try {
-			new Socket(url, 50001);//testa se é possível conectar ao servidor remprot com a porta 50001
+			Socket socket = new Socket();
+			socket.connect(new InetSocketAddress(url, 50001), 3000); //testa se é possível conectar ao servidor remprot com a porta 50001
 		} catch (Exception e) {
 			throw new NotConectAutenticationException("Não foi possível se conectar com o servidor remprot. <br/>"
-					+ "Verifique se existe algun firewall, proxy ou ativirus bloqueando o acesso ao servidor \"" + url + "\" na porta \"50001\".");
+					+ "- Verifique se o endereço IP \"" + url + "\" está correto. <br/>"
+					+ "- Verifique se existe algum firewall, proxy ou ativirus bloqueando o acesso ao servidor \"" + url + "\" na porta \"50001\". <br/>");
 		}
 	}
 

@@ -80,8 +80,12 @@ public class Autenticador extends MyActionSupport
 			RPWebClient rpWebClient = new RPWebClient();
 			RPWebPacket rpWebPacket = rpWebClient.WebRetrieveAnswer(ticket);
 			
-			if(!rpWebPacket.Successful)
-				throw new NotConectAutenticationException("Aguarde a validação do técnico e clique em OK.");
+			if(!rpWebPacket.Successful)	
+				throw new NotConectAutenticationException("Aguarde a validação do técnico e clique em OK. </br>" +
+														  "Caso já tenha validado, verifique se os dados da licença de uso estão corretos juntamente com o técnico:</br>" +
+														  "CNPJ: "+ getCnpj() + "</br>"+
+														  "Razão Social: " + getNome() + "</br>"+
+														  "Se houver algo errado, clique em \"Editar dados da licença de uso\" e gere um novo ticket.");
 
 			clientRemprot(rpWebPacket.AnswerCode);
 			return ActionSupport.SUCCESS;
