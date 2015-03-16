@@ -217,7 +217,9 @@
 				</#if>
 				
 				<#if colaborador.dataSolicitacaoDesligamentoAc?exists && empresaSistema.acIntegra>
-					<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="${linkEntrevista}"	imgTitle="${imgTitleEntrevista}" imgName="${imgRespondeuEntrevista}" opacity=opacityEntrevista />
+					<@authz.authorize ifAllGranted="ROLE_COLAB_LIST_ENTREVISTA">
+						<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="${linkEntrevista}"	imgTitle="${imgTitleEntrevista}" imgName="${imgRespondeuEntrevista}" opacity=opacityEntrevista />
+					</@authz.authorize>	
 				<#else>
 					<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="javascript:;" imgTitle="Entrevista de Desligamento - disponível apenas após o desligamento do colaborador" imgName="entrevistaBalaoDesligaNova.gif" opacity=true/>
 				</#if>
@@ -236,8 +238,9 @@
 					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Colaborador já desligado" imgName="desliga_colab.gif" opacity=true/>
 				</#if>
 
-				<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="${linkEntrevista}"	imgTitle="${imgTitleEntrevista}" imgName="${imgRespondeuEntrevista}" opacity=opacityEntrevista />
-
+				<@authz.authorize ifAllGranted="ROLE_COLAB_LIST_ENTREVISTA">
+					<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="${linkEntrevista}"	imgTitle="${imgTitleEntrevista}" imgName="${imgRespondeuEntrevista}" opacity=opacityEntrevista />
+				</@authz.authorize>
 			</#if>
 
 			<@frt.link verifyRole="ROLE_COLAB_LIST_EDITAR" href="javascript:enviarPrepareUpDate('${colaborador.id}')" imgTitle="Editar" imgName="edit.gif"/>
