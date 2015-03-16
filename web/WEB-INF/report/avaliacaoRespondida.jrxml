@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="3.452271214393109"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="643"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -33,16 +33,9 @@
 	<group name="grp_aspecto">
 		<groupExpression><![CDATA[$F{pergunta.aspecto.nome}]]></groupExpression>
 		<groupHeader>
-			<band height="12">
-				<printWhenExpression><![CDATA[$F{pergunta.aspecto.nome} != null]]></printWhenExpression>
-				<rectangle>
-					<reportElement key="rectangle-1" stretchType="RelativeToTallestObject" x="0" y="0" width="537" height="11" forecolor="#000000" backcolor="#EEEEEE" uuid="955b477c-0f9c-4fb6-91f2-e1814182ccb3"/>
-					<graphicElement fill="Solid">
-						<pen lineWidth="0.0" lineStyle="Solid"/>
-					</graphicElement>
-				</rectangle>
-				<textField isBlankWhenNull="true">
-					<reportElement key="textField" x="0" y="1" width="535" height="11" isRemoveLineWhenBlank="true" uuid="081d33c7-3af7-4296-98f0-a38808bd7f8f"/>
+			<band height="18">
+				<textField isBlankWhenNull="false">
+					<reportElement key="textField" mode="Opaque" x="0" y="4" width="534" height="14" backcolor="#EEEEEE" uuid="081d33c7-3af7-4296-98f0-a38808bd7f8f"/>
 					<box leftPadding="1">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -50,9 +43,9 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font size="8" isBold="true"/>
+						<font size="10" isBold="true"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{pergunta.aspecto.nome}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[  ($F{pergunta.aspecto.nome} != null ? $F{pergunta.aspecto.nome} : "Sem Aspecto" )]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -62,7 +55,7 @@
 		<groupHeader>
 			<band height="15">
 				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement key="textField" x="22" y="2" width="513" height="11" uuid="cd29f78c-bdd8-4c49-8d07-649f6b54c1a3"/>
+					<reportElement key="textField" x="10" y="2" width="525" height="11" uuid="cd29f78c-bdd8-4c49-8d07-649f6b54c1a3"/>
 					<box leftPadding="1">
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -70,25 +63,9 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font size="8" isBold="false"/>
+						<font size="10" isBold="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{pergunta.texto}]]></textFieldExpression>
-				</textField>
-				<textField evaluationTime="Group" evaluationGroup="grp_pergunta" isBlankWhenNull="false">
-					<reportElement key="textField" x="0" y="2" width="20" height="11" uuid="155eaa3c-06a7-4913-b8d1-128e831f1622">
-						<property name="local_mesure_unitwidth" value="pixel"/>
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					</reportElement>
-					<box leftPadding="1">
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Right" markup="styled">
-						<font size="8" isBold="false"/>
-					</textElement>
-					<textFieldExpression><![CDATA[$V{pergunta_COUNT} +  ") "]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{pergunta.ordem} +  ") " + $F{pergunta.texto}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -105,7 +82,7 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font size="8" isBold="false"/>
+						<font size="10" isBold="false"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{pergunta.textoComentario} + " " + ( $V{comentario} != null ? $V{comentario} : "" )]]></textFieldExpression>
 				</textField>
@@ -143,7 +120,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="8"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[( $F{pergunta.tipo} == 3 ? $F{comentario} : "" ) +
 ( $F{pergunta.tipo} == 4 ? "Nota: " + $F{valor} : "" ) +
@@ -195,7 +172,7 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="8" isBold="false"/>
+					<font size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Observação: " + $P{Observacao}]]></textFieldExpression>
 			</textField>
