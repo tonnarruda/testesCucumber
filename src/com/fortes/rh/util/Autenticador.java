@@ -80,11 +80,16 @@ public class Autenticador
 	
 	public static Collection<Long> getModulosNaoConfigurados() throws NotConectAutenticationException, NotRegistredException
 	{
-		RPClient c = getRemprot();
+		Collection<Long> modulosNaoConfigurados = new ArrayList<Long>();
+		
+		if(verificaLicensa) {
+			RPClient c = getRemprot();
 			    // somatorio dos modulos do RH: 1  - Recrut. e Seleção ,2  - Cargos e Salários ,4  - Pesquisa ,
 				//8  - Treina. e Desenvolvimento ,16 - Avaliação de Desempenho ,32 - SESMT
-		return getModulosNaoConfigurados(c.getEnabledModules());
-
+			modulosNaoConfigurados = getModulosNaoConfigurados(c.getEnabledModules());
+		} 
+		
+		return modulosNaoConfigurados;
 	}
 	
 	public static Collection<Long> getModulosNaoConfigurados(int chave) 

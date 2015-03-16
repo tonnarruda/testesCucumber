@@ -49,6 +49,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 		try {
 			configuraPapeis(userDetails, empresaId);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new BadCredentialsException(messages.getMessage("AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"), userDetails);
 		}
 	}
