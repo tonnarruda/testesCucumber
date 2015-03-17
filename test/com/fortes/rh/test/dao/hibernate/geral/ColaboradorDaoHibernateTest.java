@@ -6254,12 +6254,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Estabelecimento e1 = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(e1);
 		
+		Long[] areas = new Long[]{a1.getId()};
+		
 		criarColaboradorHistorico("Demosval Pede Pra Sair", null, empresa1, DateUtil.criarDataMesAno(1, 5, 2009), null, DateUtil.criarDataMesAno(1, 11, 2010), null, null, e1, a1, fs1, null, null);
 		criarColaboradorHistorico("Airton Desligado", null, empresa1, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 3, 2012), null, null, null, e1, a1, fs1, null, null);
 		criarColaboradorHistorico("Bruna Aguardando no AC", null, empresa1, DateUtil.criarDataMesAno(1, 2, 2010), null, DateUtil.criarDataMesAno(1, 8, 2010), DateUtil.criarDataMesAno(5, 8, 2010), null, e1, a1, fs1, null, null);
 		criarColaboradorHistorico("Chico de Outra Empresa", null, empresa2, DateUtil.criarDataMesAno(1, 5, 2011), null, DateUtil.criarDataMesAno(1, 11, 2011), null, null, e1, a1, fs1, null, null);
 		
-		Collection<Colaborador> colaboradores = colaboradorDao.findAguardandoDesligamento(empresa1.getId());
+		Collection<Colaborador> colaboradores = colaboradorDao.findAguardandoDesligamento(empresa1.getId(), areas);
 		
 		assertEquals(1, colaboradores.size());
 		assertEquals("Demosval Pede Pra Sair", ((Colaborador)colaboradores.toArray()[0]).getNome());

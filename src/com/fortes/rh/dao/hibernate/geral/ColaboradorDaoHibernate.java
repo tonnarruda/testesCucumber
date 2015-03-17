@@ -4610,7 +4610,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.executeUpdate();
 	}
 
-	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId) 
+	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId, Long[] areasIdsPorResponsavel) 
 	{
 		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date());
 
@@ -4641,7 +4641,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Expression.isNotNull("c.dataSolicitacaoDesligamento"));
 		criteria.add(Expression.isNull("c.dataSolicitacaoDesligamentoAc"));
 		criteria.add(Expression.isNull("c.dataDesligamento"));
-
+		if(areasIdsPorResponsavel != null)
+			criteria.add(Expression.in("ao.id", areasIdsPorResponsavel));
+		
 		criteria.add(Expression.or(Expression.isNull("hc.data"), Subqueries.propertyEq("hc.data", subQueryHc)));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

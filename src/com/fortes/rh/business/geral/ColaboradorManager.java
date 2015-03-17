@@ -203,7 +203,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findFormacaoEscolar(Long empresaId, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> cargoIds) throws Exception;
 	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC, boolean semcodigoAc);
 	public void desvinculaCandidato(Long candidatoId);
-	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId);
+	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId, Long[] areasIdsPorResponsavel);
 	public void removeComDependencias(Long id) throws Exception;
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds);
 	public Collection<Colaborador> findColaboradoresByCodigoAC(Long empresaId, boolean joinComHistorico, String... codigosACColaboradores);

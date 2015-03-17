@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.MotivoDemissaoManager;
@@ -31,6 +32,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	
 	private ColaboradorManager colaboradorManager;
 	private MotivoDemissaoManager motivoDemissaoManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
 	private Colaborador colaborador;
@@ -186,7 +188,17 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	
 	public String prepareAprovarReprovarSolicitacaoDesligamento() throws Exception
 	{
-		colaboradores = colaboradorManager.findAguardandoDesligamento(getEmpresaSistema().getId()); 
+		Long[] areasIdsPorResponsavel = null;
+		
+		if(getUsuarioLogado().getId() != 1L && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_COLAB_VER_TODOS"}))
+		{
+			areasIdsPorResponsavel = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(getUsuarioLogado(), getEmpresaSistema().getId());
+			
+			if(areasIdsPorResponsavel.length == 0)
+				areasIdsPorResponsavel = new Long[]{-1L};//não vai achar nenhum colaborador
+		}
+		
+		colaboradores = colaboradorManager.findAguardandoDesligamento(getEmpresaSistema().getId(), areasIdsPorResponsavel); 
 		return Action.SUCCESS;
 	}
 
@@ -370,5 +382,10 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 
 	public void setGerouSubstituicao(Character gerouSubstituicao) {
 		this.gerouSubstituicao = gerouSubstituicao;
+	}
+	
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
+	{
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 }
