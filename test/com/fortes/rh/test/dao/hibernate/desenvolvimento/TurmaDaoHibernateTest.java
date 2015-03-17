@@ -16,6 +16,7 @@ import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.TipoDespesaDao;
 import com.fortes.rh.dao.geral.TurmaTipoDespesaDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -26,6 +27,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.geral.TurmaTipoDespesa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
@@ -35,6 +37,7 @@ import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.TipoDespesaFactory;
 import com.fortes.rh.test.factory.geral.TurmaTipoDespesaFactory;
 import com.fortes.rh.util.DateUtil;
@@ -51,6 +54,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 	private TurmaTipoDespesaDao turmaTipoDespesaDao;
 	private TipoDespesaDao tipoDespesaDao;
 	private ColaboradorPresencaDao colaboradorPresencaDao;
+	private EstabelecimentoDao estabelecimentoDao;
 
 	public Turma getEntity()
 	{
@@ -666,8 +670,101 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		assertEquals("Empresa 1 e 2", new Integer (6), turmaDao.quantidadeParticipantesPrevistos(dataPrevIni, dataPrevFim, new Long[]{empresa1.getId(), empresa2.getId()}, null));
 	}
 	
-	public void testQuantidadeParticipantesPresentes()
-	{
+	public void testQuantidadeParticipantesPresentesFiltroEstabelecimento(){
+		Date data = DateUtil.criarDataMesAno(01, 01, 1999);
+		Date dataPrevIni = DateUtil.criarDataMesAno(01, 01, 2000);
+		Date dataPrevFim = DateUtil.criarDataMesAno(01, 02, 2000);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador c1 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(c1);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+    	estabelecimentoDao.save(estabelecimento);
+		
+		HistoricoColaborador hc1 = new HistoricoColaborador();
+		hc1.setColaborador(c1);
+		hc1.setData(data);
+		hc1.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(hc1);
+		
+		Colaborador c2 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(c2);
+		
+		HistoricoColaborador hc2 = new HistoricoColaborador();
+		hc2.setColaborador(c2);
+		hc2.setData(data);
+		hc2.setEstabelecimento(estabelecimento);
+		historicoColaboradorDao.save(hc2);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setEmpresa(empresa);
+		turma.setDataPrevIni(dataPrevIni);
+		turma.setDataPrevFim(dataPrevFim);
+		turma.setQtdParticipantesPrevistos(new Integer(2));
+		turmaDao.save(turma);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setEmpresa(empresa);
+		turma2.setDataPrevIni(dataPrevIni);
+		turma2.setDataPrevFim(dataPrevFim);
+		turma2.setQtdParticipantesPrevistos(new Integer(2));
+		turmaDao.save(turma2);
+
+		Turma turma3 = TurmaFactory.getEntity();
+		turma3.setEmpresa(empresa);
+		turma3.setDataPrevIni(dataPrevIni);
+		turma3.setDataPrevFim(dataPrevFim);
+		turma3.setQtdParticipantesPrevistos(new Integer(2));
+		turmaDao.save(turma3);
+		
+		ColaboradorTurma ct1 = new ColaboradorTurma();
+		ct1.setTurma(turma);
+		ct1.setColaborador(c1);
+		colaboradorTurmaDao.save(ct1);
+		
+		ColaboradorTurma ct2 = new ColaboradorTurma();
+		ct2.setTurma(turma2);
+		ct2.setColaborador(c1);
+		colaboradorTurmaDao.save(ct2);
+		
+		ColaboradorTurma ct3 = new ColaboradorTurma();
+		ct3.setTurma(turma3);
+		ct3.setColaborador(c2);
+		colaboradorTurmaDao.save(ct3);
+		
+		assertEquals("Nenhuma presenca", new Integer (0), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null, new Long[]{estabelecimento.getId()}));
+		
+		ColaboradorPresenca cp11 = new ColaboradorPresenca();
+		cp11.setColaboradorTurma(ct1);
+		cp11.setPresenca(true);
+		colaboradorPresencaDao.save(cp11);
+
+		ColaboradorPresenca cp12 = new ColaboradorPresenca();
+		cp12.setColaboradorTurma(ct1);
+		cp12.setPresenca(true);
+		colaboradorPresencaDao.save(cp12);
+
+		assertEquals("Duas presencas na mesma turma", new Integer (1), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null, new Long[]{estabelecimento.getId()}));
+		
+		ColaboradorPresenca cp13 = new ColaboradorPresenca();
+		cp13.setColaboradorTurma(ct2);
+		cp13.setPresenca(true);
+		colaboradorPresencaDao.save(cp13);
+		
+		assertEquals("Presencas em duas turmas para o mesmo colaborador", new Integer (2), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null, new Long[]{estabelecimento.getId()}));
+		
+		ColaboradorPresenca cp21 = new ColaboradorPresenca();
+		cp21.setColaboradorTurma(ct3);
+		cp21.setPresenca(true);
+		colaboradorPresencaDao.save(cp21);
+		
+		assertEquals("Outro colaborador", new Integer (3), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null, new Long[]{estabelecimento.getId()}));
+	}
+	
+	public void testQuantidadeParticipantesPresentes(){
 		Date data = DateUtil.criarDataMesAno(01, 01, 1999);
 		Date dataPrevIni = DateUtil.criarDataMesAno(01, 01, 2000);
 		Date dataPrevFim = DateUtil.criarDataMesAno(01, 02, 2000);
@@ -727,7 +824,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		ct3.setColaborador(c2);
 		colaboradorTurmaDao.save(ct3);
 		
-		assertEquals("Nenhuma presenca", new Integer (0), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null));
+		assertEquals("Nenhuma presenca", new Integer (0), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null, null));
 		
 		ColaboradorPresenca cp11 = new ColaboradorPresenca();
 		cp11.setColaboradorTurma(ct1);
@@ -739,21 +836,21 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 		cp12.setPresenca(true);
 		colaboradorPresencaDao.save(cp12);
 
-		assertEquals("Duas presencas na mesma turma", new Integer (1), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null));
+		assertEquals("Duas presencas na mesma turma", new Integer (1), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null, null));
 		
 		ColaboradorPresenca cp13 = new ColaboradorPresenca();
 		cp13.setColaboradorTurma(ct2);
 		cp13.setPresenca(true);
 		colaboradorPresencaDao.save(cp13);
 		
-		assertEquals("Presencas em duas turmas para o mesmo colaborador", new Integer (2), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null));
+		assertEquals("Presencas em duas turmas para o mesmo colaborador", new Integer (2), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null, null));
 		
 		ColaboradorPresenca cp21 = new ColaboradorPresenca();
 		cp21.setColaboradorTurma(ct3);
 		cp21.setPresenca(true);
 		colaboradorPresencaDao.save(cp21);
 		
-		assertEquals("Outro colaborador", new Integer (3), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null));
+		assertEquals("Outro colaborador", new Integer (3), turmaDao.quantidadeParticipantesPresentes(dataPrevIni, dataPrevFim, new Long[]{empresa.getId()}, null, null, null));
 	}
 	
 	public void testFindByEmpresa()
@@ -931,6 +1028,12 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 	public void setColaboradorPresencaDao(
 			ColaboradorPresencaDao colaboradorPresencaDao) {
 		this.colaboradorPresencaDao = colaboradorPresencaDao;
+	}
+	public EstabelecimentoDao getEstabelecimentoDao() {
+		return estabelecimentoDao;
+	}
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
+		this.estabelecimentoDao = estabelecimentoDao;
 	}
 
 }

@@ -138,7 +138,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		return (Double) criteria.uniqueResult();
 	}
 	
-	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds)
+	public IndicadorTreinamento findIndicadorHorasTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds)
 	{
 		getSession().flush();
 		
@@ -179,6 +179,10 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		if (LongUtil.arrayIsNotEmpty(areasIds))
 			sql.append("and hc.areaOrganizacional_id in (:areasIds) ");
 		
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds)){
+			sql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
+		}
+		
 		sql.append("group by tur.id, tur.qtdparticipantesprevistos, cur.cargahoraria, tur.custo, ct3.qtdeInscritosTotal, dt.diasTurmaTotal, dt2.diasTurmaRealizado ");
 		sql.append("order by tur.id ");
 		
@@ -192,6 +196,10 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		
 		if (LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds)){
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+		}
 		
 		Collection<Object[]> resultado = query.list();
 		Object[] res;

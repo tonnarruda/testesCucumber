@@ -1101,13 +1101,61 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		Date dataFim = DateUtil.montaDataByString("01/01/2020");
 		
 		try {
-			colaboradorTurmaDao.findAprovadosReprovados(dataIni, dataFim, null, null, null);	
+			colaboradorTurmaDao.findAprovadosReprovados(dataIni, dataFim, null, null, null, null);	
 			assertTrue(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("Erro na consulta do SQL");
 		}
 	}
+	
+	public void testFindAprovadosReprovadosFiltroEstabelecimento (){
+		
+		Date dataIni = DateUtil.montaDataByString("01/01/2008");
+		Date dataFim = DateUtil.montaDataByString("01/01/2020");
+		
+    	Curso curso = CursoFactory.getEntity();
+    	curso = cursoDao.save(curso);
+    	
+    	Turma turma = TurmaFactory.getEntity();
+    	turma.setCurso(curso);
+    	turma = turmaDao.save(turma);
+    	
+    	Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+    	estabelecimentoDao.save(estabelecimento);
+    	
+    	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+    	areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity();
+    	
+    	HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+    	historicoColaborador.setColaborador(colaborador);
+    	historicoColaborador.setEstabelecimento(estabelecimento);
+    	historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2001));
+    	historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+    	historicoColaborador = historicoColaboradorDao.save(historicoColaborador);
+    	
+    	colaborador.setHistoricoColaborador(historicoColaborador);
+    	colaborador = colaboradorDao.save(colaborador);
+    	
+    	PrioridadeTreinamento prioridadeTreinamento = new PrioridadeTreinamento();
+    	prioridadeTreinamento = prioridadeTreinamentoDao.save(prioridadeTreinamento);
+    	
+    	ColaboradorTurma colaboradorTurma = getEntity();
+    	colaboradorTurma.setTurma(turma);
+    	colaboradorTurma.setColaborador(colaborador);
+    	colaboradorTurma = colaboradorTurmaDao.save(colaboradorTurma);
+    	
+    	try {
+			colaboradorTurmaDao.findAprovadosReprovados(dataIni, dataFim, null, new Long[]{areaOrganizacional.getId()}, new Long[]{curso.getId()}, new Long[]{estabelecimento.getId()});	
+			assertTrue(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail("Erro na consulta do SQL");
+		}
+    }
+	
 	
 	public void testFindByColaboradorAndTurma2()
 	{

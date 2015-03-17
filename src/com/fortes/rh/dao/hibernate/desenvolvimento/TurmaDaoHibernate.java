@@ -493,7 +493,7 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         	return valor;
 	}
 	 
-	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds, Long[] areasIds, Long[] cursosIds) 
+	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds, Long[] areasIds, Long[] cursosIds, Long[] estabelecimentosIds) 
 	{
 		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
 				.setProjection(Projections.max("hc2.data"))
@@ -519,6 +519,10 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         
         if (LongUtil.arrayIsNotEmpty(cursosIds))
         	criteria.add(Expression.in("t.curso.id", cursosIds));
+        
+        if (LongUtil.arrayIsNotEmpty(estabelecimentosIds)){
+        	criteria.add(Expression.in("hc.estabelecimento.id", estabelecimentosIds));
+		}
 
         Integer valor = (Integer) criteria.uniqueResult();
         

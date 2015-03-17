@@ -28,6 +28,7 @@
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
@@ -181,9 +182,18 @@
 			AreaOrganizacionalDWR.getByEmpresas(null, empresasIds, null, createListAreas);
 		}
 		
+		function populaEstabelecimentos() {
+			var empresasIds = getArrayCheckeds(document.getElementById('formBusca'), 'empresasCheck');
+			EstabelecimentoDWR.getByEmpresas(null, empresasIds, createListEstabelecimentos);
+		}
+		
 		function createListAreas(data)
 		{
 			addChecksByMap("areasCheck", data);
+		}
+		
+		function createListEstabelecimentos(data) {
+			addChecksByMap("estabelecimentosCheck", data);
 		}
 	</script>
 
@@ -207,9 +217,10 @@
 			<@ww.datepicker name="indicadorTreinamento.dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 			<@ww.label value="a" liClass="liLeft" />
 			<@ww.datepicker name="indicadorTreinamento.dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
-			<@frt.checkListBox label="Empresas" id="empresasCheck" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" liClass="liLeft" onClick="populaCursos();populaAreas();" width="460" filtro="true"/>
-			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" list="areasCheckList" form="document.getElementById('formBusca')" width="460" liClass="liLeft" filtro="true" selectAtivoInativo="true"/>
-			<@frt.checkListBox label="Cursos" name="cursosCheck" id="cursosCheck" list="cursosCheckList" form="document.getElementById('formBusca')" width="925" filtro="true"/>
+			<@frt.checkListBox label="Empresas" id="empresasCheck" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" liClass="liLeft" onClick="populaCursos();populaAreas();populaEstabelecimentos();" width="472" filtro="true"/>
+			<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" liClass="liLeft" form="document.getElementById('formBusca')" width="472" filtro="true"/>
+			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" list="areasCheckList" form="document.getElementById('formBusca')" width="472" liClass="liLeft" filtro="true" selectAtivoInativo="true"/>
+			<@frt.checkListBox label="Cursos" name="cursosCheck" id="cursosCheck" list="cursosCheckList" form="document.getElementById('formBusca')" liClass="liLeft" width="472" filtro="true"/>
 			<@ww.hidden id="showFilter" name="showFilter"/>
 			<button onclick="return enviaForm(1);" class="btnPesquisar grayBGE"></button>
 		</@ww.form>

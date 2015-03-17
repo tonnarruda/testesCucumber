@@ -64,9 +64,9 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		return getDao().findAllByEmpresasParticipantes(empresasIds);
 	}
 	
-	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds)
+	public IndicadorTreinamento montaIndicadoresTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds)
 	{
-		IndicadorTreinamento indicadorTreinamento = getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, areasIds, cursoIds);
+		IndicadorTreinamento indicadorTreinamento = getDao().findIndicadorHorasTreinamentos(dataIni, dataFim, empresaIds, areasIds, cursoIds, estabelecimentosIds);
 		indicadorTreinamento.setDataIni(dataIni);
 		indicadorTreinamento.setDataFim(dataFim);
 		

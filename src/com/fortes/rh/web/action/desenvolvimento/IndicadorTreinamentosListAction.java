@@ -17,6 +17,7 @@ import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
@@ -41,6 +42,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	private TurmaTipoDespesaManager turmaTipoDespesaManager;
 	private EmpresaManager empresaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private EstabelecimentoManager estabelecimentoManager;
 
 	private JFreeChart chart;
 	private IndicadorTreinamento indicadorTreinamento = new IndicadorTreinamento();
@@ -69,6 +71,8 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private Long[] cursosCheck;
 	private Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
+	private Long[] estabelecimentosCheck;
+	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 
 	public String list() throws Exception
 	{
@@ -90,8 +94,11 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
    		Collection<Curso> cursos = cursoManager.findAllByEmpresasParticipantes(empresasCheck);
 		cursosCheckList =  CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
 		cursosCheckList =  CheckListBoxUtil.marcaCheckListBox(cursosCheckList, StringUtil.LongToString(cursosCheck));
+		
+		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(empresasCheck);
+		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, StringUtil.LongToString(estabelecimentosCheck));
    		
-		indicadorTreinamento = cursoManager.montaIndicadoresTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, areasCheck, cursosCheck);
+		indicadorTreinamento = cursoManager.montaIndicadoresTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, areasCheck, cursosCheck, estabelecimentosCheck);
 
 		prepareGraficoFrequencia();
 		prepareGraficoCumprimentoPlanoTreinamento();
@@ -123,7 +130,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	private void prepareGraficoDesempenho()
 	{
-		HashMap<String, Integer> resultados = colaboradorTurmaManager.getResultado(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, areasCheck, cursosCheck);
+		HashMap<String, Integer> resultados = colaboradorTurmaManager.getResultado(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, areasCheck, cursosCheck, estabelecimentosCheck);
 		qtdAprovados = resultados.get("qtdAprovados");
 		qtdReprovados = resultados.get("qtdReprovados");
 
@@ -147,7 +154,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		graficoInscritos.add(inscritos);
 		grfFrequenciaInscritos = StringUtil.toJSON(graficoInscritos, null);
 		
-		this.qtdParticipantesPresentes = turmaManager.quantidadeParticipantesPresentes(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, areasCheck, cursosCheck);
+		this.qtdParticipantesPresentes = turmaManager.quantidadeParticipantesPresentes(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, areasCheck, cursosCheck, estabelecimentosCheck);
 		Object[] presentes = new Object[]{3, qtdParticipantesPresentes};
 		
 		Collection<Object[]>  graficoPresentes = new ArrayList<Object[]>();
@@ -311,5 +318,31 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	public void setAreaOrganizacionalManager(
 			AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+	
+	public Collection<CheckBox> getEstabelecimentosCheckList() {
+		return estabelecimentosCheckList;
+	}
+
+	public void setEstabelecimentosCheckList(
+			Collection<CheckBox> estabelecimentosCheckList) {
+		this.estabelecimentosCheckList = estabelecimentosCheckList;
+	}
+
+	public EstabelecimentoManager getEstabelecimentoManager() {
+		return estabelecimentoManager;
+	}
+
+	public void setEstabelecimentoManager(
+			EstabelecimentoManager estabelecimentoManager) {
+		this.estabelecimentoManager = estabelecimentoManager;
+	}
+
+	public Long[] getEstabelecimentosCheck() {
+		return estabelecimentosCheck;
+	}
+
+	public void setEstabelecimentosCheck(Long[] estabelecimentosCheck) {
+		this.estabelecimentosCheck = estabelecimentosCheck;
 	}
 }

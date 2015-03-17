@@ -1122,7 +1122,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return colaboradorTurmas;	
 	}
 
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds) 
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds) 
 	{
 		StringBuilder sql = new StringBuilder();		
 		
@@ -1174,6 +1174,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			sql.append("and c.id in (:cursoIds) ");
 		
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds)){
+			sql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
+		}
+		
 		Query query = getSession().createSQLQuery(sql.toString());
 		
 		query.setDate("dataIni", dataIni);
@@ -1188,6 +1192,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			query.setParameterList("cursoIds", cursoIds);
+		
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds)){
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+		}
 		
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		

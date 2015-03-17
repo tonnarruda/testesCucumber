@@ -897,11 +897,11 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findColaboradorByTurma(turmaId, avaliacaoCursoId);
 	}
 	
-	public HashMap<String, Integer> getResultado(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds) 
+	public HashMap<String, Integer> getResultado(Date dataIni, Date dataFim, Long[] empresaIds, Long[] areasIds, Long[] cursoIds, Long[] estabelecimentosIds) 
 	{
 		HashMap<String, Integer> resultados = new HashMap<String, Integer>();
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(dataIni, dataFim, empresaIds, areasIds, cursoIds);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(dataIni, dataFim, empresaIds, areasIds, cursoIds, estabelecimentosIds);
 		Integer qtdAprovados = new Integer(0);
 		Integer qtdReprovados = new Integer(0);
 

@@ -18,6 +18,7 @@ import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -35,6 +36,7 @@ import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -48,6 +50,7 @@ import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.util.DateUtil;
 
@@ -66,6 +69,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 	private DiaTurmaDao diaTurmaDao;
 	private ColaboradorQuestionarioDao colaboradorQuestionarioDao; 
 	private AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao; 
+	private EstabelecimentoDao estabelecimentoDao;
 
 	public Curso getEntity()
 	{
@@ -278,6 +282,12 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		
 		AreaOrganizacional area2 = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacionalDao.save(area2);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+    	estabelecimentoDao.save(estabelecimento);
+    	
+    	Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+    	estabelecimentoDao.save(estabelecimento2);
 
 		Colaborador colab1 = ColaboradorFactory.getEntity();
 		colab1.setEmpresa(empresa);
@@ -287,6 +297,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		hc1.setData(dataHistorico);
 		hc1.setColaborador(colab1);
 		hc1.setAreaOrganizacional(area);
+		hc1.setEstabelecimento(estabelecimento);
 		hc1.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(hc1);
 		
@@ -298,6 +309,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		hc2.setData(dataHistorico);
 		hc2.setColaborador(colab2);
 		hc2.setAreaOrganizacional(area);
+		hc2.setEstabelecimento(estabelecimento);
 		hc2.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(hc2);
 		
@@ -309,6 +321,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		hc3.setData(dataHistorico);
 		hc3.setColaborador(colab3);
 		hc3.setAreaOrganizacional(area);
+		hc3.setEstabelecimento(estabelecimento);
 		hc3.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(hc3);
 		
@@ -320,6 +333,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		hc4.setData(dataHistorico);
 		hc4.setColaborador(colab4);
 		hc4.setAreaOrganizacional(area2);
+		hc4.setEstabelecimento(estabelecimento2);
 		hc4.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(hc4);
 		
@@ -396,7 +410,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		turmaForaDaConsulta.setRealizada(true);
 		turmaDao.save(turmaForaDaConsulta);
 
-		IndicadorTreinamento result = cursoDao.findIndicadorHorasTreinamentos(dataDoisMesesDepois, dataTresMesesDepois, new Long[]{empresa.getId()}, new Long[]{area.getId()}, null);
+		IndicadorTreinamento result = cursoDao.findIndicadorHorasTreinamentos(dataDoisMesesDepois, dataTresMesesDepois, new Long[]{empresa.getId()}, new Long[]{area.getId()}, null, new Long[]{estabelecimento.getId()});
 		
 		assertEquals("Qtde de colaboradores com filtro", 3, (int)result.getQtdColaboradoresFiltrados());
 		assertEquals("Qtde de colaboradores inscritos", 4, (int)result.getQtdColaboradoresInscritos());
@@ -939,5 +953,13 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 	public void setAproveitamentoAvaliacaoCursoDao(AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao)
 	{
 		this.aproveitamentoAvaliacaoCursoDao = aproveitamentoAvaliacaoCursoDao;
+	}
+
+	public EstabelecimentoDao getEstabelecimentoDao() {
+		return estabelecimentoDao;
+	}
+
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
+		this.estabelecimentoDao = estabelecimentoDao;
 	}
 }

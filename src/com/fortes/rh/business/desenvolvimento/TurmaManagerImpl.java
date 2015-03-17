@@ -297,9 +297,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		return getDao().quantidadeParticipantesPrevistos(dataIni, dataFim, empresasIds, cursosIds);
 	}
 	
-	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds, Long[] areasIds, Long[] cursosIds) 
+	public Integer quantidadeParticipantesPresentes(Date dataIni, Date dataFim, Long[] empresasIds, Long[] areasIds, Long[] cursosIds, Long[] estabelecimentosIds) 
 	{
-		return getDao().quantidadeParticipantesPresentes(dataIni, dataFim, empresasIds, areasIds, cursosIds);
+		return getDao().quantidadeParticipantesPresentes(dataIni, dataFim, empresasIds, areasIds, cursosIds, estabelecimentosIds);
 	}
 	
 	public Collection<Turma> findByTurmasPeriodo(Long[] turmasCheck, Date dataIni, Date dataFim, Boolean realizada) 
