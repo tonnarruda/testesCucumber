@@ -242,7 +242,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	public String imprimir()
     {
     	avaliacao = avaliacaoManager.findById(avaliacao.getId());
-   	   	dataSource = avaliacaoManager.getQuestionarioRelatorio(avaliacao, agruparPorAspecto);
+   	   	dataSource = avaliacaoManager.getQuestionarioRelatorioCollection(avaliacao, agruparPorAspecto);
 
    	   	String titulo = "Avaliação";
    	   	String filtro = avaliacao.getTitulo();

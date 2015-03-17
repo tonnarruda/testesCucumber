@@ -94,7 +94,7 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
     	perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionarioAgrupadosPorAspecto").with(eq(avaliacao.getId()),ANYTHING).will(returnValue(perguntas));
     	perguntaManager.expects(atLeastOnce()).method("setAvaliadoNaPerguntaDeAvaliacaoDesempenho").with(ANYTHING, ANYTHING);
 
-    	avaliacaoManager.getQuestionarioRelatorio(avaliacao, false);
+    	avaliacaoManager.getQuestionarioRelatorioCollection(avaliacao, false);
     }
 	
 	public void testgetPontuacaoMaximaDaPerformance()

@@ -28,6 +28,7 @@ import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.relatorio.QuestionarioAvaliacaoDesempenhoVO;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
@@ -105,7 +106,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private Collection<RespostaQuestionarioVO> respostaQuestionarioVOs;
 	private Collection<Pergunta> perguntas;
 	private Collection<Avaliacao> avaliacaoExperiencias = new ArrayList<Avaliacao>();
-	private Collection<QuestionarioRelatorio> dataSource;
+	private Collection<QuestionarioAvaliacaoDesempenhoVO> questionarioAvaliacaoDesempenhoVOs;
 	
 	private TipoPergunta tipoPergunta = new TipoPergunta();
 	
@@ -389,20 +390,26 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	public String imprimirFormularioAvaliacaoDesempenho()
 	{
 		colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionario.getId());
-		avaliacao = avaliacaoManager.findById(colaboradorQuestionario.getAvaliacao().getId());	
-   	   	dataSource = avaliacaoManager.getQuestionarioRelatorio(avaliacao);
-
-   	   	String titulo = "Avaliação";
-   	   	String filtro = colaboradorQuestionario.getAvaliacaoDesempenho().getTitulo();
+		avaliacao = avaliacaoManager.findById(colaboradorQuestionario.getAvaliacao().getId());
 		
 		colaborador = colaboradorManager.findByIdComHistorico(colaboradorQuestionario.getColaborador().getId());
 		avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
 		
+		QuestionarioAvaliacaoDesempenhoVO questionarioAvaliacaoDesempenhoVO = new QuestionarioAvaliacaoDesempenhoVO();
+		questionarioAvaliacaoDesempenhoVO.setQuestionarioRelatorio(avaliacaoManager.getQuestionarioRelatorio(avaliacao, ordenarPorAspecto));
+		questionarioAvaliacaoDesempenhoVO.setMatrizes(configuracaoNivelCompetenciaManager.montaConfiguracaoNivelCompetenciaByFaixa(colaborador.getEmpresa().getId(), colaborador.getHistoricoColaborador().getFaixaSalarial().getId()));
+		
+		questionarioAvaliacaoDesempenhoVOs = new ArrayList<QuestionarioAvaliacaoDesempenhoVO>();
+		questionarioAvaliacaoDesempenhoVOs.add(questionarioAvaliacaoDesempenhoVO);
+
+   	   	String titulo = "Avaliação";
+   	   	String filtro = colaboradorQuestionario.getAvaliacaoDesempenho().getTitulo();
+		
 		filtro += "\nAvaliador: " + avaliador.getNome();
 		filtro += "\nAvaliado: " + colaborador.getNome();
-		niveisCompetenciaFaixaSalariaisVOs = configuracaoNivelCompetenciaManager.montaConfiguracaoNivelCompetenciaByFaixa(colaborador.getEmpresa().getId(), colaborador.getHistoricoColaborador().getFaixaSalarial().getId());
 		
 		parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), filtro);
+		parametros.put("IS_AUTO_AVALIACAO", colaborador.getId().equals(avaliador.getId()));
 		
 		return Action.SUCCESS;
 	}
@@ -983,8 +990,8 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		return niveisCompetenciaFaixaSalariaisSalvos;
 	}
 	
-	public Collection<QuestionarioRelatorio> getDataSource() {
-		return dataSource;
+	public Collection<QuestionarioAvaliacaoDesempenhoVO> getQuestionarioAvaliacaoDesempenhoVOs() {
+		return questionarioAvaliacaoDesempenhoVOs;
 	}
 
 	public void setCandidatoSolicitacaoManager(

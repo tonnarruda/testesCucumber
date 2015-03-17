@@ -48,7 +48,7 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
 		return getDao().getCount(empresaId, ativo, modeloAvaliacao, titulo);
 	}
 	
-	public Collection<QuestionarioRelatorio> getQuestionarioRelatorio(Avaliacao avaliacao, boolean ordenarPorAspecto) {
+	public QuestionarioRelatorio getQuestionarioRelatorio(Avaliacao avaliacao, boolean ordenarPorAspecto) {
 		
 		Collection<Pergunta> perguntas = perguntaManager.getPerguntasRespostaByQuestionarioAgrupadosPorAspecto(avaliacao.getId(), ordenarPorAspecto);
 		
@@ -60,6 +60,12 @@ public class AvaliacaoManagerImpl extends GenericManagerImpl<Avaliacao, Avaliaca
         QuestionarioRelatorio questionarioRelatorio = new QuestionarioRelatorio();
         questionarioRelatorio.setAvaliacaoExperiencia(avaliacao);
         questionarioRelatorio.setPerguntas(perguntas);
+
+        return questionarioRelatorio;
+	}
+	
+	public Collection<QuestionarioRelatorio> getQuestionarioRelatorioCollection(Avaliacao avaliacao, boolean ordenarPorAspecto) {
+        QuestionarioRelatorio questionarioRelatorio = getQuestionarioRelatorio(avaliacao, ordenarPorAspecto);
 
         Collection<QuestionarioRelatorio> questionarioRelatorios = new ArrayList<QuestionarioRelatorio>();
         questionarioRelatorios.add(questionarioRelatorio);
