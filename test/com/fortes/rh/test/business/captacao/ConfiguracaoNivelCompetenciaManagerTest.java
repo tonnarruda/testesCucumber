@@ -209,6 +209,63 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		assertEquals(new Integer(0), ((MatrizCompetenciaNivelConfiguracao)matrizMaria.toArray()[11]).getGap());
 		
 	}
+	
+	public void testMontaConfiguracaoNivelCompetenciaByFaixa()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(999999999999L);
+		
+		NivelCompetencia nivelPessimo = NivelCompetenciaFactory.getEntity();
+		nivelPessimo.setDescricao("pessimo");
+		nivelPessimo.setOrdem(1);
+
+		NivelCompetencia nivelRuim = NivelCompetenciaFactory.getEntity();
+		nivelRuim.setDescricao("ruim");
+		nivelRuim.setOrdem(2);
+
+		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity();
+		nivelBom.setDescricao("bom");
+		nivelBom.setOrdem(3);
+		
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(999999999998L);
+		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia1.setId(1L);
+		configuracaoNivelCompetencia1.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetencia);
+		configuracaoNivelCompetencia1.setCompetenciaDescricao("Java");
+		configuracaoNivelCompetencia1.setNivelCompetencia(nivelBom);
+		configuracaoNivelCompetencia1.setNivelCompetenciaColaborador(nivelPessimo);
+		configuracaoNivelCompetencia1.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia2.setId(2L);
+		configuracaoNivelCompetencia2.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetencia);
+		configuracaoNivelCompetencia2.setCompetenciaDescricao("Delphi");
+		configuracaoNivelCompetencia2.setNivelCompetencia(nivelRuim);
+		configuracaoNivelCompetencia2.setNivelCompetenciaColaborador(nivelRuim);
+		configuracaoNivelCompetencia2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia3 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia3.setId(3L);
+		configuracaoNivelCompetencia3.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetencia);
+		configuracaoNivelCompetencia3.setCompetenciaDescricao("C#");
+		configuracaoNivelCompetencia3.setNivelCompetencia(nivelPessimo);
+		configuracaoNivelCompetencia3.setNivelCompetenciaColaborador(nivelRuim);
+		configuracaoNivelCompetencia3.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = Arrays.asList(configuracaoNivelCompetencia1,configuracaoNivelCompetencia2,configuracaoNivelCompetencia3);
+		
+		Collection<NivelCompetencia> nivelCompetencias = Arrays.asList(nivelPessimo,nivelRuim,nivelBom);
+		
+		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId())).will(returnValue(configuracaoNivelCompetencias));
+		nivelCompetenciaManager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(nivelCompetencias));
+		
+		Collection<MatrizCompetenciaNivelConfiguracao> result = configuracaoNivelCompetenciaManager.montaConfiguracaoNivelCompetenciaByFaixa(empresa.getId(), faixaSalarial.getId());
+		
+		assertEquals(9, result.size());
+	}
 
 	public void testMontaMatrizCompetenciaCandidato()
 	{

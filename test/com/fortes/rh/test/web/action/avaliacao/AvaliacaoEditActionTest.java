@@ -147,7 +147,7 @@ public class AvaliacaoEditActionTest extends MockObjectTestCase
     	action.setAvaliacao(avaliacao);
 
     	manager.expects(once()).method("findById").with(eq(avaliacao.getId())).will(returnValue(avaliacao));
-    	manager.expects(once()).method("getQuestionarioRelatorio").with(eq(avaliacao),ANYTHING).will(returnValue(new ArrayList<QuestionarioRelatorio>()));
+    	manager.expects(once()).method("getQuestionarioRelatorioCollection").with(eq(avaliacao),ANYTHING).will(returnValue(new ArrayList<QuestionarioRelatorio>()));
 
     	assertEquals("success", action.imprimir());
     	assertNotNull(action.getParametros());

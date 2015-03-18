@@ -111,12 +111,12 @@
 			</result>
 		</action>
 		
-		<action name="imprimirFormularioAvaliacaoDesempenho" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="imprimirFormularioAvaliacaoDesempenho">
+		<action name="imprimirQuestionario" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="imprimirQuestionario">
 			<result name="success" type="jasper">
-				<param name="location">WEB-INF/report/formulario_avaliacao.jasper</param>
-				<param name="dataSource">questionarioAvaliacaoDesempenhoVOs</param>
+				<param name="location">WEB-INF/report/questionario_avaliacao.jasper</param>
+				<param name="dataSource">questionarioAvaliacaoVOs</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">formularioAvaliacao.pdf</param>
+				<param name="documentName">questionarioAvaliacao.pdf</param>
 			</result>
 		</action>
 		

@@ -232,8 +232,6 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	
 	public Collection<MatrizCompetenciaNivelConfiguracao> montaConfiguracaoNivelCompetenciaByFaixa(Long empresaId, Long faixaSalarialId) 
 	{
-		Collection<MatrizCompetenciaNivelConfiguracao> matrizCompetenciaNivelConfiguracaos = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
-
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId);
 		Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId);
 

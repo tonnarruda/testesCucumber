@@ -6,7 +6,7 @@ import java.util.Collection;
 import com.fortes.rh.model.captacao.MatrizCompetenciaNivelConfiguracao;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioRelatorio;
 
-public class QuestionarioAvaliacaoDesempenhoVO implements Serializable
+public class QuestionarioAvaliacaoVO implements Serializable
 {
 	private static final long serialVersionUID = 5732056883883181559L;
 	

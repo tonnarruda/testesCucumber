@@ -167,7 +167,7 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="178" splitType="Stretch">
+		<band height="166" splitType="Stretch">
 			<staticText>
 				<reportElement key="staticText-10" positionType="Float" x="0" y="4" width="175" height="15" uuid="270fd2d2-30ac-4218-b05d-56892d371179"/>
 				<box>
@@ -185,7 +185,7 @@
 				<reportElement key="rectangle-1" x="0" y="22" width="535" height="92" uuid="bb543167-13f5-461c-9355-a980f227c156"/>
 			</rectangle>
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-5" positionType="Float" x="0" y="142" width="533" height="34" isPrintWhenDetailOverflows="true" uuid="eecadda2-e015-4477-a306-a884487baebc"/>
+				<reportElement key="subreport-5" positionType="Float" x="0" y="124" width="533" height="38" isPrintWhenDetailOverflows="true" uuid="eecadda2-e015-4477-a306-a884487baebc"/>
 				<subreportParameter name="SUBREPORT_DIR">
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -195,7 +195,7 @@
 				<subreportParameter name="REPORT_DATA_SOURCE">
 					<subreportParameterExpression><![CDATA[$F{matrizes}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "formulario_avaliacao_competencias_sub.jasper"]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "questionario_avaliacao_competencias_sub.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</summary>
