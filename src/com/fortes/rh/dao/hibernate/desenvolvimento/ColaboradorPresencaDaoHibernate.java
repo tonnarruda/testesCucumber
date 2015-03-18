@@ -127,7 +127,7 @@ public class ColaboradorPresencaDaoHibernate extends GenericDaoHibernate<Colabor
 		q.executeUpdate();
 	}
 	
-	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds)
+	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds, Long[] estabelecimentosIds)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select coalesce(count(dt.id), 0) ");
@@ -157,8 +157,11 @@ public class ColaboradorPresencaDaoHibernate extends GenericDaoHibernate<Colabor
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			hql.append("and t.curso.id in (:cursoIds) ");
 		
-		if (areasIds != null && areasIds.length > 0)
+		if (LongUtil.arrayIsNotEmpty(areasIds))
 			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
+		
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
+			hql.append("and hc.estabelecimento.id in (:estabelecimentosIds) ");
 		
 		Query query = getSession().createQuery(hql.toString());
 		
@@ -174,8 +177,11 @@ public class ColaboradorPresencaDaoHibernate extends GenericDaoHibernate<Colabor
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			query.setParameterList("cursoIds", cursoIds, Hibernate.LONG);
 		
-		if (areasIds != null && areasIds.length > 0)
+		if (LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
 		
 		return (Integer) query.uniqueResult();	
 	}

@@ -52,8 +52,6 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	private Integer qtdReprovados;
 	private Integer qtdTreinamentosRealizados;
 	private Integer qtdTreinamentosNaoRealizados;
-	private Integer qtdTotalInscritosTurmas = 0;
-	private Integer qtdParticipantesPrevistos= 0;
 	private Integer qtdParticipantesPresentes= 0;
 	private Map<String, Object> parametros;
 	private Collection<String> colecao = new ArrayList<String>();
@@ -226,22 +224,6 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		this.turmaManager = turmaManager;
 	}
 	
-	public Integer getQtdTotalInscritosTurmas() {
-		return cursoManager.findQtdColaboradoresInscritosTreinamentos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, null);
-	}
-
-	public void setQtdTotalInscritosTurmas(Integer qtdTotalInscritosTurmas) {
-		this.qtdTotalInscritosTurmas = qtdTotalInscritosTurmas;
-	}
-
-	public Integer getQtdParticipantesPrevistos() {
-		return turmaManager.quantidadeParticipantesPrevistos(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, null);
-	}
-	
-	public void setQtdParticipantesPrevistos(Integer qtdParticipantesPrevistos) {
-		this.qtdParticipantesPrevistos = qtdParticipantesPrevistos;
-	}
-
 	public void setColaboradorPresencaManager(ColaboradorPresencaManager colaboradorPresencaManager) {
 		this.colaboradorPresencaManager = colaboradorPresencaManager;
 	}

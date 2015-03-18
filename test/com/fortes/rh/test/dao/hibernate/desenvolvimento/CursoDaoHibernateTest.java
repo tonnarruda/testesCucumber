@@ -955,11 +955,8 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		this.aproveitamentoAvaliacaoCursoDao = aproveitamentoAvaliacaoCursoDao;
 	}
 
-	public EstabelecimentoDao getEstabelecimentoDao() {
-		return estabelecimentoDao;
-	}
-
-	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) 
+	{
 		this.estabelecimentoDao = estabelecimentoDao;
 	}
 }

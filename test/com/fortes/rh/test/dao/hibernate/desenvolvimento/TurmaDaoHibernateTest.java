@@ -1029,11 +1029,7 @@ public class TurmaDaoHibernateTest extends GenericDaoHibernateTest<Turma>
 			ColaboradorPresencaDao colaboradorPresencaDao) {
 		this.colaboradorPresencaDao = colaboradorPresencaDao;
 	}
-	public EstabelecimentoDao getEstabelecimentoDao() {
-		return estabelecimentoDao;
-	}
 	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
 		this.estabelecimentoDao = estabelecimentoDao;
 	}
-
 }

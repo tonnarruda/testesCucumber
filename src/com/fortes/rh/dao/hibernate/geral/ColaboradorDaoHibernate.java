@@ -2334,7 +2334,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	public Integer getCountAtivosQualquerStatus(Date dataBase, Long[] empresaIds, Long[] areasIds)
+	public Integer getCountAtivosQualquerStatus(Date dataBase, Long[] empresaIds, Long[] areasIds, Long[] estabelecimentosIds)
 	{
 		StringBuilder hql = new StringBuilder("select count(c.id) ");
 		hql.append("from HistoricoColaborador as hc ");
@@ -2350,6 +2350,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if (LongUtil.arrayIsNotEmpty(areasIds))
 			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
 		
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
+			hql.append("and hc.estabelecimento.id in (:estabelecimentosIds) ");
+		
 		if (dataBase != null)
 		{
 			hql.append("and c.dataAdmissao < :dataBase ");
@@ -2364,6 +2367,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		if (LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds);
+		
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds);
 
 		return (Integer) query.uniqueResult();
 	}
@@ -3103,7 +3109,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	public Integer qtdTotalDiasDaTurmaVezesColaboradoresInscritos(Date dataPrevIni, Date dataPrevFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds)
+	public Integer qtdTotalDiasDaTurmaVezesColaboradoresInscritos(Date dataPrevIni, Date dataPrevFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds, Long[] estabelecimentosIds)
 	{
 		getSession().flush();
 		 
@@ -3133,6 +3139,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if (LongUtil.arrayIsNotEmpty(areasIds))
 			sql.append("and hc.areaOrganizacional_id in (:areasIds) ");
 		
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
+			sql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
+		
 		sql.append("	group by dt.diasDaTurma ");
 		sql.append(") as sub ");
 		
@@ -3152,6 +3161,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		if (LongUtil.arrayIsNotEmpty(areasIds))
 			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		
+		if (LongUtil.arrayIsNotEmpty(estabelecimentosIds))
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
 		
 		return (Integer) query.uniqueResult();
 	}

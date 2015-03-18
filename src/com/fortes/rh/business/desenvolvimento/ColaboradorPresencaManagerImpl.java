@@ -65,9 +65,9 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 		getDao().remove(diaTurmaId, null);
 	}
 
-	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds)
+	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds, Long[] estabelecimentosIds)
 	{
-		return getDao().qtdDiaPresentesTurma(dataIni, dataFim, empresaIds, cursoIds, areasIds);
+		return getDao().qtdDiaPresentesTurma(dataIni, dataFim, empresaIds, cursoIds, areasIds, estabelecimentosIds);
 	}
 
 	public String calculaFrequencia(Long colaboradorTurmaId, Integer qtdDias)

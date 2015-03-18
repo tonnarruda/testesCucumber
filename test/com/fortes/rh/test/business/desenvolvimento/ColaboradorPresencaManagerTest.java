@@ -135,7 +135,7 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 		
 		colaboradorPresencaDao.expects(once()).method("qtdDiaPresentesTurma").withAnyArguments().will(returnValue(2));
 		
-		assertEquals(new Integer(2), colaboradorPresencaManager.qtdDiaPresentesTurma(null, null, null, new Long[]{turma.getId()}, null));
+		assertEquals(new Integer(2), colaboradorPresencaManager.qtdDiaPresentesTurma(null, null, null, new Long[]{turma.getId()}, null, null));
 	}
 	
 	//reftorar
