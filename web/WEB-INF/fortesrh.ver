@@ -10,7 +10,7 @@
 		<Item visivel="S" motivo="S20150200210"><![CDATA[Aval. Desempenho > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência: Ajuste na inconsistência da quantidade de respostas das questões objetivas e comentários.]]></Item>			
 		<Item visivel="S" motivo="S20140300005"><![CDATA[T&D > Relatórios > Lista de Presença : Exibir quantidade de participantes presentes no relatório.]]></Item>
 		<Item visivel="S" motivo="S20150300098"><![CDATA[T&D > Painel de Controle : Adicionado filtro por estabelecimentos.]]></Item>
-		<Item visivel="S" motivo="P20150300139"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Solicitar desligamento: Ajuste na inconsistência ao desligar colaborador, quando a opção 'Entrevista de desligamento' não está marcada no perfil do usuário que está realizando o desligamento.]]></Item>
+		<Item visivel="S" motivo="P20150300139"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Solicitar desligamento: Ajuste da inconsistência ao desligar colaborador, quando a opção 'Entrevista de desligamento' não está marcada no perfil do usuário que está realizando o desligamento.]]></Item>
 		<Item visivel="S" motivo="P20150200270"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Ajuste na inconsistência da permissões ao visualizar entrevista de desligamento.]]></Item>
 		<Item visivel="S" motivo="S20140300177"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir > Dados Funcionais: Listar ambientes em ordem alfabética.]]></Item>
 		<Item visivel="S" motivo="S20140300178"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Refletir as alterações do colaborador no seu respectivo candidato.]]></Item>
