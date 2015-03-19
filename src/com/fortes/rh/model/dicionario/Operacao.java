@@ -350,8 +350,16 @@ public enum Operacao
 			
 			return this.getListMeioComunicacao();
 		}
+	},
+	CRIAR_ACESSO_SISTEMA(35, "Criar acesso ao sistema para colaborador", "Info. Funcionais"){
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			MeioComunicacao.EMAIL.add(EnviarPara.COLABORADOR);
+			
+			return this.getListMeioComunicacao();
+		}
 	};
-
+	
 	private int id;
 	private String descricao;
 	private String grupo;

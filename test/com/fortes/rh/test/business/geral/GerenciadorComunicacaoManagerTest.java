@@ -237,6 +237,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
 		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
 		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
+		gerenciadorComunicacaoDao.expects(once()).method("save").withAnyArguments().isVoid();
 
 		// se for inserir mais  um defalt terá de aterar no importador o método insereGerenciadorComunicacaoDefault(empresa) em empresaJDBC.
 		Exception exception = null;

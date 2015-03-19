@@ -10,6 +10,7 @@ import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.LoginExisteException;
@@ -28,6 +29,7 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 {
 	private ColaboradorManager colaboradorManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	public Usuario findByLogin(String login)
 	{
@@ -235,6 +237,8 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 			}
 			
 			colaboradorManager.atualizarUsuario(colaborador.getId(), usuario.getId());
+			
+			gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema(usuario.getLogin(), senhaPadrao, colaborador, empresa);
 		}
 	}
 	
@@ -284,4 +288,7 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		this.usuarioEmpresaManager = usuarioEmpresaManager;
 	}
 
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
 }

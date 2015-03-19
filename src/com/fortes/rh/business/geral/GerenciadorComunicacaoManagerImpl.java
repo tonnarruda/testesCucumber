@@ -123,6 +123,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		save(new GerenciadorComunicacao(Operacao.CANCELAR_SOLICITACAO_DESLIGAMENTO_AC, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL, empresa));
 		save(new GerenciadorComunicacao(Operacao.TERMINO_CONTRATO_COLABORADOR, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa, "2"));
 		save(new GerenciadorComunicacao(Operacao.CADASTRAR_SOLICITACAO, MeioComunicacao.EMAIL, EnviarPara.RESPONSAVEL_RH, empresa));
+		save(new GerenciadorComunicacao(Operacao.CRIAR_ACESSO_SISTEMA, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR, empresa));
 		// Criar novo gerenciador default no importador(EmpresaJDBC.java : insereGerenciadorComunicacaoDefault) quando for criado um novo gerenciador default aqui (gambi)
 	}
 	
@@ -1747,6 +1748,33 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public void enviarEmailAoCriarAcessoSistema(String login, String senha, Colaborador colaborador, Empresa empresa) 
+	{
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CRIAR_ACESSO_SISTEMA.getId(), empresa.getId());
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())
+					&& colaborador.getContato().getEmail() != null && !colaborador.getContato().getEmail().isEmpty()){
+				ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
+				try
+				{
+					StringBuilder corpo = new StringBuilder();
+					corpo.append("Seu acesso ao Fortes RH foi liberado<br><br>");
+					corpo.append("<strong>Login:</strong> "+login+"<br> <strong>Senha:</strong> "+senha+"<br><br>");
+		    		corpo.append("Acesse o RH em: <br>");
+		    		corpo.append("<a href=\"" + parametros.getAppUrl() + "\">RH</a><br><br>");
+		    		corpo.append("Copyright© by Fortes Informática LTDA<br>");
+		    		corpo.append("http://www.fortesinformatica.com.br");
+
+					mail.send(empresa, parametros, "[RH] - Aviso - Acesso ao Fortes RH", corpo.toString(), colaborador.getContato().getEmail());
+				}
+				catch (Exception e)
+				{
+					e.printStackTrace();
+				}
+			} 		
 		}
 	}
 

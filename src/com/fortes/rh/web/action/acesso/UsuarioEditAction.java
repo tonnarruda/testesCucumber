@@ -10,6 +10,7 @@ import com.fortes.rh.business.acesso.PerfilManager;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.LoginExisteException;
@@ -34,6 +35,7 @@ public class UsuarioEditAction extends MyActionSupportEdit
 	private ColaboradorManager colaboradorManager;
 	private EmpresaManager empresaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 
 	private Usuario usuario;
 	private UsuarioEmpresa usuarioEmpresa;
@@ -258,11 +260,14 @@ public class UsuarioEditAction extends MyActionSupportEdit
 		try
 		{
 			usuario.setLogin(usuario.getLogin().trim());
+			String senha = usuario.getSenha();
 			usuario = usuarioManager.save(usuario, colaboradorId, empresasId, selectPerfils);
 
-			if (colaborador != null && colaborador.getId() != null)
+			if (colaborador != null && colaborador.getId() != null) {
+				colaborador = colaboradorManager.findByIdProjectionUsuario(colaboradorId);
+				gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema(usuario.getLogin(), senha, colaborador, getEmpresaSistema());
 				return "usuarioColaborador";
-			else
+			} else
 				return Action.SUCCESS;
 		}
 		catch (LoginExisteException e)
@@ -499,6 +504,10 @@ public class UsuarioEditAction extends MyActionSupportEdit
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager)
 	{
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+	
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
 	public void setPerfil(Perfil perfil)

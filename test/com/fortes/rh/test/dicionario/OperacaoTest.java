@@ -11,7 +11,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testQtdOperacoes()
 	{
-		assertEquals(34, Operacao.values().length);
+		assertEquals(35, Operacao.values().length);
 	}
 
 	public void testGetHashMapGrupos()
@@ -58,6 +58,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Solicitar desligamento de colaborador", Operacao.getDescricaoById(++i));
 		assertEquals("Aprovar solicitação de desligamento de colaborador", Operacao.getDescricaoById(++i));
 		assertEquals("Reprovar solicitação de desligamento de colaborador", Operacao.getDescricaoById(++i));
+		assertEquals("Criar acesso ao sistema para colaborador", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -107,7 +108,8 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 31 
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 32 
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 33 
-		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 34 
+		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 34
+		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 35 
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -150,6 +152,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(++i, Operacao.SOLICITAR_DESLIGAMENTO.getId());							// 32
 		assertEquals(++i, Operacao.APROVAR_SOLICITACAO_DESLIGAMENTO.getId());				// 33
 		assertEquals(++i, Operacao.REPROVAR_SOLICITACAO_DESLIGAMENTO.getId());				// 34
+		assertEquals(++i, Operacao.CRIAR_ACESSO_SISTEMA.getId());							// 35
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -521,6 +524,17 @@ public class OperacaoTest extends TestCase
 		++qtdDeOperacoesTestadas;
 		
 		Operacao operacao = Operacao.REPROVAR_SOLICITACAO_DESLIGAMENTO;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+	}
+	
+	public void testCriarAcessoSistema()
+	{
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.CRIAR_ACESSO_SISTEMA;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
