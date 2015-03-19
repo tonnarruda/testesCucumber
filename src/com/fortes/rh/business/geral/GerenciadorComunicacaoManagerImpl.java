@@ -1686,9 +1686,10 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		try {
 			Empresa empresa = empresaManager.findByIdProjection(empresaId);
 			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
-			
+				
 			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
 			Colaborador colaborador = colaboradorManager.findColaboradorByIdProjection(colaboradorId);
+			String link = parametrosDoSistema.getAppUrl() + "/geral/colaborador/visualizarSolicitacaoDesligamento.action?colaborador.id=" + colaborador.getId();
 			
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
 			String[] emailsByUsuario = usuarioManager.findEmailsByPerfil("ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO", empresa.getId()); 
@@ -1697,7 +1698,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			StringBuilder body = new StringBuilder();
 			body.append("Existe uma solicitação de desligamento para o colaborador <b>");
 			body.append(colaborador.getNome());
-			body.append("</b> pendente. Para aprovar ou reprovar essa solicitação, acesse no sistema RH o menu Info. Funcionais > Movimentações > Solicitação de Desligamento.<br /><br />");
+			body.append("</b> pendente. Para aprovar ou reprovar essa solicitação, acesse o sistema <a href='"+link+"'>RH</a>.<br/><br />");
 			body.append("<b>Data da Solicitação:</b><br />");
 			body.append(DateUtil.formataDate(colaborador.getDataSolicitacaoDesligamento(), "dd/MM/yyyy") + "<br /><br />");
 			body.append("<b>Motivo:</b><br />");
