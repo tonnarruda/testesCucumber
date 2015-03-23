@@ -168,5 +168,5 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	
 	public void updateStatusAcByEmpresaAndStatusAtual(int novoStatusAC, int statusACAtual, Long... colaboradoresIds);
 
-	public Collection<HistoricoColaborador> findDependenciasComHistoricoIndice(Date data, Long indiceId);
+	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId);
 }

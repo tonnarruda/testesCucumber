@@ -23,7 +23,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
-import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.SituacaoColaborador;
@@ -1392,7 +1391,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return criteria.list();
 	}	
 	
-
 	public void updateStatusAcByEmpresaAndStatusAtual(int novoStatusAC, int statusACAtual, Long... colaboradoresIds) 
 	{
 		Query query = getSession().createQuery("update HistoricoColaborador set status = :novoStatusAC where colaborador.id in (:colaboradoresIds) and status = :statusACAtual ");
@@ -1404,35 +1402,21 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.executeUpdate();
 	}
 
-	@Override
-	public Collection<HistoricoColaborador> findDependenciasComHistoricoIndice(Date data, Long indiceId) 
+	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Date dataSegundoHistoricoIndice, Long indiceId) 
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
-		criteria.createCriteria("hc.colaborador", "c");
-		criteria.createCriteria("hc.estabelecimento", "e");
-		criteria.createCriteria("hc.areaOrganizacional", "ao");
-		criteria.createCriteria("hc.faixaSalarial", "fs");
+		criteria.setProjection(Projections.count("data"));
+				
+		criteria.add(Expression.in("hc.status",new Integer[] {StatusRetornoAC.AGUARDANDO, StatusRetornoAC.CONFIRMADO}));
+		criteria.add(Expression.eq("hc.tipoSalario", TipoAplicacaoIndice.INDICE));
+		criteria.add(Expression.eq("hc.indice.id", indiceId));
+		
+		criteria.add(Expression.ge("hc.data", dataHistoricoExcluir));
+		
+		if(dataSegundoHistoricoIndice != null)
+			criteria.add(Expression.lt("hc.data", dataSegundoHistoricoIndice));
 
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("hc.id"), "id");
-		p.add(Projections.property("hc.tipoSalario"), "tipoSalario");
-		p.add(Projections.property("hc.data"), "data");
-		p.add(Projections.property("hc.gfip"), "gfip");
-		p.add(Projections.property("hc.salario"), "salario");
-		p.add(Projections.property("fs.codigoAC"), "faixaCodigoAC");
-		p.add(Projections.property("ao.codigoAC"), "areaOrganizacionalCodigoAC");
-		p.add(Projections.property("e.codigoAC"), "estabelecimentoCodigoAC");
-		p.add(Projections.property("c.codigoAC"), "projectionColaboradorCodigoAC");
-
-		criteria.setProjection(p);
-
-		criteria.add(Expression.eq("hc.status", StatusRetornoAC.PENDENTE));
-		criteria.add(Expression.eq("c.naoIntegraAc", false));
-		criteria.add(Expression.eq("c.empresa.id", empresaId));
-
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
-
-		return criteria.list();	}
+		return ((Integer) criteria.uniqueResult()) > 0;
+	}
 	
 }

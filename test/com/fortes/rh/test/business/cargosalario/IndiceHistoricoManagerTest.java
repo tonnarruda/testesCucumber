@@ -1,13 +1,15 @@
 package com.fortes.rh.test.business.cargosalario;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+
+import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
+import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceHistoricoManagerImpl;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
 import com.fortes.rh.exception.FortesException;
@@ -15,11 +17,16 @@ import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
+import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.util.SpringUtil;
 
 public class IndiceHistoricoManagerTest extends MockObjectTestCase
 {
 	IndiceHistoricoManagerImpl indiceHistoricoManager = null;
+
 	Mock indiceHistoricoDao;
+	Mock historicoColaboradorManager;
+	Mock faixaSalarialHistoricoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -28,6 +35,14 @@ public class IndiceHistoricoManagerTest extends MockObjectTestCase
 
 		indiceHistoricoDao = new Mock(IndiceHistoricoDao.class);
 		indiceHistoricoManager.setDao((IndiceHistoricoDao) indiceHistoricoDao.proxy());
+
+		historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
+		MockSpringUtil.mocks.put("historicoColaboradorManager", historicoColaboradorManager);
+		
+		faixaSalarialHistoricoManager = new Mock(FaixaSalarialHistoricoManager.class);
+		MockSpringUtil.mocks.put("faixaSalarialHistoricoManager", faixaSalarialHistoricoManager);
+		
+		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 	}
 
 	protected void tearDown() throws Exception
@@ -92,38 +107,74 @@ public class IndiceHistoricoManagerTest extends MockObjectTestCase
 
 	public void testRemoveOk()
 	{
-		indiceHistoricoDao.expects(once()).method("remove").with(ANYTHING, ANYTHING).will(returnValue(true));
-
+		Date data = new Date();
+		Long indiceId = 1L;
+		
+		indiceHistoricoDao.expects(once()).method("existeHistoricoAnteriorDaData").with(eq(data), eq(indiceId), eq(true)).will(returnValue(true));
+		indiceHistoricoDao.expects(once()).method("remove").with(eq(data), eq(indiceId)).will(returnValue(true));
+		
 		boolean retorno = false;
 		try {
-			retorno = indiceHistoricoManager.remove(new Date(), 1L);
+			retorno = indiceHistoricoManager.remove(data, indiceId);
 		} catch (FortesException e) {
-			e.printStackTrace();
 		}
-
+		
 		assertTrue(retorno);
 	}
-
-	public void testRemoveComHistoricoUnico()
+	
+	public void testRemoveSemDependencia()
 	{
-		indiceHistoricoDao.expects(once()).method("findToList").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(Arrays.asList(new Object())));
+		Date data = new Date();
+		Long indiceId = 1L;
+		
+		indiceHistoricoDao.expects(once()).method("existeHistoricoAnteriorDaData").with(eq(data), eq(indiceId), eq(true)).will(returnValue(false));
+		historicoColaboradorManager.expects(once()).method("existeDependenciaComHistoricoIndice").with(eq(data), eq(indiceId)).will(returnValue(false));
+		faixaSalarialHistoricoManager.expects(once()).method("existeDependenciaComHistoricoIndice").with(eq(data), eq(indiceId)).will(returnValue(false));
+		indiceHistoricoDao.expects(once()).method("remove").with(eq(data), eq(indiceId)).will(returnValue(true));
 		
 		boolean retorno = false;
 		try {
-			retorno = indiceHistoricoManager.remove(new Date(), 1L);
+			retorno = indiceHistoricoManager.remove(data, indiceId);
 		} catch (FortesException e) {
 		}
 		
-		assertFalse(retorno);
+		assertTrue(retorno);
 	}
 	
-	public void testVerifyDataIndice()
+	public void testRemoveComDependenciaEmHistoricoColaborador()
 	{
-		Indice indice = IndiceFactory.getEntity(1L);
 		Date data = new Date();
-
-		indiceHistoricoDao.expects(once()).method("existsAnteriorByDataIndice").with(eq(data), eq(indice.getId())).will(returnValue(true));
-
-		assertEquals(true, indiceHistoricoManager.existsAnteriorByDataIndice(data, indice.getId()));
+		Long indiceId = 1L;
+		
+		indiceHistoricoDao.expects(once()).method("existeHistoricoAnteriorDaData").with(eq(data), eq(indiceId), eq(true)).will(returnValue(false));
+		historicoColaboradorManager.expects(once()).method("existeDependenciaComHistoricoIndice").with(eq(data), eq(indiceId)).will(returnValue(true));
+		
+		String mensagem = null;
+		try {
+			indiceHistoricoManager.remove(data, indiceId);
+		} catch (FortesException e) {
+			mensagem = e.getMessage();
+		}
+		
+		assertEquals(mensagem, "O histórico deste índice não pode ser excluído, pois existe histórico de colaborador no RH que depende deste valor.");
+	}
+	
+	public void testRemoveComDependenciaEmHistoricoFaixaSalarial()
+	{
+		Date data = new Date();
+		Long indiceId = 1L;
+		
+		indiceHistoricoDao.expects(once()).method("existeHistoricoAnteriorDaData").with(eq(data), eq(indiceId), eq(true)).will(returnValue(false));
+		historicoColaboradorManager.expects(once()).method("existeDependenciaComHistoricoIndice").with(eq(data), eq(indiceId)).will(returnValue(false));
+		faixaSalarialHistoricoManager.expects(once()).method("existeDependenciaComHistoricoIndice").with(eq(data), eq(indiceId)).will(returnValue(true));
+		
+		String mensagem = null;
+		try {
+			indiceHistoricoManager.remove(data, indiceId);
+		} catch (FortesException e) {
+			mensagem = e.getMessage();
+		}
+		
+		assertEquals(mensagem, "O histórico deste índice não pode ser excluído, pois existe histórico de faixa salarial no RH que depende deste valor.");
 	}
 }

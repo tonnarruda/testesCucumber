@@ -1489,9 +1489,16 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return getDao().findByEmpresaComHistoricoPendente(empresaId) ;
 	}
 
-	public Collection<HistoricoColaborador> findDependenciasComHistoricoIndice(Date data, Long indiceId) 
+	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId) 
 	{
-		return getDao().findDependenciasComHistoricoIndice(data, indiceId);
+		Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoManager.findToList(new String[]{"data"}, new String[]{"data"}, new String[]{"indice.id"}, new Long[]{indiceId}, 1, 2, new String[]{"data"});
+		
+		if(indiceHistoricos.size() == 1)
+			return getDao().existeDependenciaComHistoricoIndice(dataHistoricoExcluir, null, indiceId);
+		else if(indiceHistoricos.size() > 1)
+			return getDao().existeDependenciaComHistoricoIndice(dataHistoricoExcluir, ((IndiceHistorico) indiceHistoricos.toArray()[1]).getData(), indiceId);
+		
+		return false;
 	}
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {

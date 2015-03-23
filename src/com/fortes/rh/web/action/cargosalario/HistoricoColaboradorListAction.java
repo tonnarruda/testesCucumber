@@ -325,7 +325,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		if (promocoes.isEmpty())
 		{
 			ResourceBundle bundle = ResourceBundle.getBundle("application");
-			addActionError(bundle.getString("error.relatorio.vazio"));
+			addActionMessage(bundle.getString("error.relatorio.vazio"));
 			setActionMsg(bundle.getString("error.relatorio.vazio"));
 
 			prepareRelatorioPromocoes();
@@ -366,7 +366,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		if (ultimasPromocoes.isEmpty())
 		{
 			ResourceBundle bundle = ResourceBundle.getBundle("application");
-			addActionError(bundle.getString("error.relatorio.vazio"));
+			addActionMessage(bundle.getString("error.relatorio.vazio"));
 			setActionMsg(bundle.getString("error.relatorio.vazio"));
 
 			prepareRelatorioPromocoes();
@@ -414,7 +414,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		}
 		else
 		{
-			addActionError("Colaborador não selecionado");
+			addActionError("Colaborador não selecionado.");
 			return Action.INPUT;
 		}
 	}
@@ -437,11 +437,11 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		try
 		{
 			historicoColaboradorManager.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), getEmpresaSistema());
-			addActionMessage("Situação excluída com sucesso.");
+			addActionSuccess("Situação excluída com sucesso.");
 		}
 		catch (NestedRuntimeException e) // TODO rever necessidade desse catch
 		{
-			addActionError("Não foi possível excluir a Situação.");
+			addActionError("Não foi possível excluir a situação.");
 		}
 		catch (IntegraACException e)
 		{
@@ -452,7 +452,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		}
 		catch (Exception e)
 		{
-			String message = "Não foi possível excluir a Situação.";
+			String message = "Não foi possível excluir a situação.";
 			
 			if(e.getMessage() != null)
 				message = e.getMessage();

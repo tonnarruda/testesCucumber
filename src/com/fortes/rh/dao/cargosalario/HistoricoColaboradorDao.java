@@ -60,5 +60,5 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public void updateStatusAc(int statusRetornoAC, Long... id);
 	public Collection<HistoricoColaborador> findByEmpresaComHistoricoPendente(Long empresaId);
 	public void updateStatusAcByEmpresaAndStatusAtual(int novoStatusAC, int statusACAtual, Long... colaboradoresIds);
-	public Collection<HistoricoColaborador> findDependenciasComHistoricoIndice(Date data, Long indiceId);
+	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Date dataSegundoHistoricoIndice, Long indiceId);
 }

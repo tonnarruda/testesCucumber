@@ -218,9 +218,6 @@
     <property name="dao">
       <ref bean="indiceHistoricoDao" />
     </property>
-    <property name="historicoColaboradorManager">
-      <ref bean="historicoColaboradorManager" />
-    </property>
   </bean>
   <bean id="indiceHistoricoManager" parent="parentManager">
     <property name="proxyInterfaces">

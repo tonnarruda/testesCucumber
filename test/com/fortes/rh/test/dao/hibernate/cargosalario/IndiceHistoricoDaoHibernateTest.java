@@ -186,11 +186,13 @@ public class IndiceHistoricoDaoHibernateTest extends GenericDaoHibernateTest<Ind
 		indiceHistorico2.setData(DateUtil.criarDataMesAno(01, 01, 2009));
 		indiceHistoricoDao.save(indiceHistorico2);
 		
-		assertEquals(false, indiceHistoricoDao.existsAnteriorByDataIndice(DateUtil.criarDataMesAno(01, 01, 1989), indice.getId()));
-		assertEquals(true, indiceHistoricoDao.existsAnteriorByDataIndice(DateUtil.criarDataMesAno(01, 01, 2000), indice.getId()));
-		assertEquals(true, indiceHistoricoDao.existsAnteriorByDataIndice(DateUtil.criarDataMesAno(01, 01, 2001), indice.getId()));
-		assertEquals(true, indiceHistoricoDao.existsAnteriorByDataIndice(DateUtil.criarDataMesAno(01, 01, 2009), indice.getId()));
-		assertEquals(true, indiceHistoricoDao.existsAnteriorByDataIndice(DateUtil.criarDataMesAno(01, 01, 2010), indice.getId()));
+		assertEquals(false, indiceHistoricoDao.existeHistoricoAnteriorDaData(DateUtil.criarDataMesAno(01, 01, 1989), indice.getId(), false));
+		assertEquals(false, indiceHistoricoDao.existeHistoricoAnteriorDaData(DateUtil.criarDataMesAno(01, 01, 1989), indice.getId(), true));
+		assertEquals(true, indiceHistoricoDao.existeHistoricoAnteriorDaData(DateUtil.criarDataMesAno(01, 01, 2000), indice.getId(), false));
+		assertEquals(false, indiceHistoricoDao.existeHistoricoAnteriorDaData(DateUtil.criarDataMesAno(01, 01, 2000), indice.getId(), true));
+		assertEquals(true, indiceHistoricoDao.existeHistoricoAnteriorDaData(DateUtil.criarDataMesAno(01, 01, 2001), indice.getId(), false));
+		assertEquals(true, indiceHistoricoDao.existeHistoricoAnteriorDaData(DateUtil.criarDataMesAno(01, 01, 2009), indice.getId(), false));
+		assertEquals(true, indiceHistoricoDao.existeHistoricoAnteriorDaData(DateUtil.criarDataMesAno(01, 01, 2010), indice.getId(), false));
 	}
 
 	public void testDeleteByIndice() {

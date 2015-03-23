@@ -15,8 +15,8 @@ public interface IndiceHistoricoManager extends GenericManager<IndiceHistorico>
 	Double findUltimoSalarioIndice(Long indiceId);
 	Collection<IndiceHistorico> findByPeriodo(Long indiceId, Date data, Date dataProximo);
 	boolean remove(Date data, Long indiceId) throws FortesException;
-	public Date[] findDoisPrimeirosHistoricos(Date data, Long indiceId);
-	boolean existsAnteriorByDataIndice(Date data, Long indiceId);
+	boolean existeHistoricoAnteriorOuIgualDaData(Date data, Long indiceId);
+	boolean existeHistoricoAnteriorDaData(Date data, Long indiceId);
 	void updateValor(Date data, Long indiceId, Double valor);
 	void deleteByIndice(Long[] indiceIds) throws Exception;
 	Collection<IndiceHistorico> findByTabelaReajusteId(Long tabelaReajusteColaboradorId);

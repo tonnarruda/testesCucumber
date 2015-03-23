@@ -9,6 +9,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.CountProjection;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -504,5 +505,22 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		criteria.add(Expression.eq("fsh.tipo", TipoAplicacaoIndice.INDICE));
 		
 		return ((Integer) criteria.uniqueResult()) > 0;
+	}
+
+	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Date dataSegundoHistoricoIndice, Long indiceId)
+	{
+		Criteria criteria = getSession().createCriteria(FaixaSalarialHistorico.class, "fsh");
+		criteria.setProjection(Projections.count("data"));
+				
+		criteria.add(Expression.in("fsh.status",new Integer[] {StatusRetornoAC.AGUARDANDO, StatusRetornoAC.CONFIRMADO}));
+		criteria.add(Expression.eq("fsh.tipo", TipoAplicacaoIndice.INDICE));
+		criteria.add(Expression.eq("fsh.indice.id", indiceId));
+
+		criteria.add(Expression.ge("fsh.data", dataHistoricoExcluir));
+		
+		if(dataSegundoHistoricoIndice != null)
+			criteria.add(Expression.lt("fsh.data", dataSegundoHistoricoIndice));
+
+		return ((Integer) criteria.uniqueResult()) > 0;	
 	}
 }

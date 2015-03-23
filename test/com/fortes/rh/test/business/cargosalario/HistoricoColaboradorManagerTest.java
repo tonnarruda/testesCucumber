@@ -2188,4 +2188,53 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Long[] areasIds = new Long[]{1L};
 		historicoColaboradorManager.montaRelatorioSituacoes(1L, dataIni, dataFim, estabelecimentosIds, areasIds, "RH", 'A', false);
 	}
+	
+	public void testExisteDependenciaComHistoricoIndiceComNenhumHistoricoIndice() 
+	{
+		Date dataHistoricoExcluir = new Date();
+		Long indiceId = 1L;
+		
+		indiceHistoricoManager.expects(once()).method("findToList").will(returnValue(new ArrayList<IndiceHistorico>()));
+		
+		boolean existeDependencia = historicoColaboradorManager.existeDependenciaComHistoricoIndice(dataHistoricoExcluir, indiceId);
+		
+		assertFalse(existeDependencia);
+	}
+	
+	public void testExisteDependenciaComHistoricoIndiceComUmHistoricoIndice() 
+	{
+		Date dataHistoricoExcluir = new Date();
+		Long indiceId = 1L;
+		
+		Collection<IndiceHistorico> indiceHistoricos = new ArrayList<IndiceHistorico>();
+		indiceHistoricos.add(new IndiceHistorico());
+		
+		indiceHistoricoManager.expects(once()).method("findToList").will(returnValue(indiceHistoricos));
+		historicoColaboradorDao.expects(once()).method("existeDependenciaComHistoricoIndice").with(eq(dataHistoricoExcluir), NULL, eq(indiceId)) .will(returnValue(true));
+		
+		boolean existeDependencia = historicoColaboradorManager.existeDependenciaComHistoricoIndice(dataHistoricoExcluir, indiceId);
+		
+		assertTrue(existeDependencia);
+	}
+
+	public void testExisteDependenciaComHistoricoIndiceComVariosHistoricoIndice() 
+	{
+		Date dataHistoricoExcluir = new Date();
+		Long indiceId = 1L;
+		
+		IndiceHistorico indiceHistorico2 = new IndiceHistorico();
+		indiceHistorico2.setData(new Date());
+		
+		Collection<IndiceHistorico> indiceHistoricos = new ArrayList<IndiceHistorico>();
+		indiceHistoricos.add(new IndiceHistorico());
+		indiceHistoricos.add(indiceHistorico2);
+		
+		indiceHistoricoManager.expects(once()).method("findToList").will(returnValue(indiceHistoricos));
+		historicoColaboradorDao.expects(once()).method("existeDependenciaComHistoricoIndice").with(eq(dataHistoricoExcluir), eq(indiceHistorico2.getData()), eq(indiceId)) .will(returnValue(true));
+		
+		boolean existeDependencia = historicoColaboradorManager.existeDependenciaComHistoricoIndice(dataHistoricoExcluir, indiceId);
+		
+		assertTrue(existeDependencia);
+	}
+	
 }
