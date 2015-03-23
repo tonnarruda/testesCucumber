@@ -35,7 +35,7 @@ public class ParametrosDoSistemaTest extends TestCase {
 	}
 	
 	public void testVerificaRemprotDataFutura() {
-		parametros.setProximaVersao(DateUtil.criarDataMesAno(21, 03, 2015));
+		parametros.setProximaVersao(DateUtil.criarDataMesAno(21, 03, 2050));
 		assertEquals(false, parametros.verificaRemprot());
 	}
 	
