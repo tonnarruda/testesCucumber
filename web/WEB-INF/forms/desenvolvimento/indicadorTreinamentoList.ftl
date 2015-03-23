@@ -225,6 +225,7 @@
 			<button onclick="return enviaForm(1);" class="btnPesquisar grayBGE"></button>
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
+	</div></div>
 		<br>
 			<@ww.div>
 				<div id="gogDiv">
