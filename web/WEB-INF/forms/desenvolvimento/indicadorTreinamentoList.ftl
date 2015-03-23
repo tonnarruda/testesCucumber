@@ -36,7 +36,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/qtip.js"/>'></script>
 	
-	<script type="text/javascript">
+	<script type='text/javascript'>
 		DWREngine.setAsync(true);
 	
 		function enviaForm(opcao)
@@ -225,7 +225,7 @@
 			<button onclick="return enviaForm(1);" class="btnPesquisar grayBGE"></button>
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
-		</div><br>
+		<br>
 			<@ww.div>
 				<div id="gogDiv">
 					<div class="gogDivTotal">
