@@ -239,8 +239,8 @@ public class XlsResult extends WebWorkResultSupport {
 	    	}
 	    }
 	    
-	    for (int i = 0; i < propertiesArray.length; i++) 
-	    	sheet.autoSizeColumn(i);		    	
+	    for (int i = 0; i < propertiesArray.length; i++)
+	    	sheet.autoSizeColumn(i, true);
 	    
 	    //mensagem final
 	    msgFinalRelatorioXls = (String)stack.findValue(msgFinalRelatorioXls);
