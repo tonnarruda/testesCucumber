@@ -394,8 +394,8 @@
 				/captacao/solicitacao/imprimirSolicitacaoPessoal*/**=ROLE_MOV_SOLICITACAO_IMPRIMIR
 				/captacao/solicitacao/prepareInsert*/**=ROLE_MOV_SOLICITACAO_INSERIR, ROLE_MOV_SOLICITACAO_CLONAR
 				/captacao/solicitacao/insert*/**=ROLE_MOV_SOLICITACAO_INSERIR, ROLE_MOV_SOLICITACAO_CLONAR
-				/captacao/solicitacao/prepareUpdate*/**=ROLE_MOV_SOLICITACAO_EDITAR
-				/captacao/solicitacao/update*/**=ROLE_MOV_SOLICITACAO_EDITAR
+				/captacao/solicitacao/prepareUpdate*/**=ROLE_MOV_SOLICITACAO_EDITAR,ROLE_LIBERA_SOLICITACAO
+				/captacao/solicitacao/update*/**=ROLE_MOV_SOLICITACAO_EDITAR,ROLE_LIBERA_SOLICITACAO
 				/captacao/solicitacao/delete*/**=ROLE_MOV_SOLICITACAO_EXCLUIR
 				/captacao/solicitacao/anuncio/*/**=ROLE_MOV_SOLICITACAO_ANUNCIAR
 				/captacao/solicitacao/encerrarSolicitacao*/**=ROLE_MOV_SOLICITACAO_ENCERRAR

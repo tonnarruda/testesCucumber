@@ -58,6 +58,7 @@ import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.thread.EnviaEmailSolicitanteThread;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -253,6 +254,9 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         if(solicitacao.getStatus() != 'I' && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"})) {
         	addActionMessage("Esta solicitação está aprovada ou reprovada. Só é possível visualizá-la.");
         	somenteLeitura = true;
+        } else if ( SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}) &&
+        		!SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_EDITAR"}) ) {
+        	somenteLeitura = true;
         }
         
         return Action.SUCCESS;
@@ -317,7 +321,15 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         
         insereColaboradorSubstituto();
         
-        solicitacaoManager.updateSolicitacao(solicitacao, LongUtil.arrayStringToArrayLong(avaliacoesCheck), getEmpresaSistema(), getUsuarioLogado());
+        if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}) && 
+       			!SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_EDITAR"}))
+		{
+        	solicitacao.setLiberador(getUsuarioLogado());
+        	solicitacaoManager.updateStatusSolicitacao(solicitacao);
+        	
+        	new EnviaEmailSolicitanteThread(solicitacao, getEmpresaSistema(), getUsuarioLogado()).start();
+		} else
+			solicitacaoManager.updateSolicitacao(solicitacao, LongUtil.arrayStringToArrayLong(avaliacoesCheck), getEmpresaSistema(), getUsuarioLogado());
         
         return Action.SUCCESS;
     }
