@@ -217,7 +217,7 @@
 				</#if>
 				
 				<#if colaborador.dataSolicitacaoDesligamentoAc?exists && empresaSistema.acIntegra>
-					<@authz.authorize ifAllGranted="ROLE_COLAB_LIST_ENTREVISTA">
+					<@authz.authorize ifAllGranted="ROLE_COLAB_LIST_ENTREVISTA"><!--Tem que existir esse authorize devido a um bug. Não remover-->
 						<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="${linkEntrevista}"	imgTitle="${imgTitleEntrevista}" imgName="${imgRespondeuEntrevista}" opacity=opacityEntrevista />
 					</@authz.authorize>	
 				<#else>
@@ -238,7 +238,7 @@
 					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Colaborador já desligado" imgName="desliga_colab.gif" opacity=true/>
 				</#if>
 
-				<@authz.authorize ifAllGranted="ROLE_COLAB_LIST_ENTREVISTA">
+				<@authz.authorize ifAllGranted="ROLE_COLAB_LIST_ENTREVISTA"><!--Tem que existir esse authorize devido a um bug. Não remover-->
 					<@frt.link verifyRole="ROLE_COLAB_LIST_ENTREVISTA" href="${linkEntrevista}"	imgTitle="${imgTitleEntrevista}" imgName="${imgRespondeuEntrevista}" opacity=opacityEntrevista />
 				</@authz.authorize>
 			</#if>
