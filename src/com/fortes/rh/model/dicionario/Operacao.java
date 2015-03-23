@@ -93,6 +93,7 @@ public enum Operacao
 			MeioComunicacao.EMAIL.add(EnviarPara.GESTOR_AREA);
 			MeioComunicacao.EMAIL.add(EnviarPara.COGESTOR_AREA);
 			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
+			MeioComunicacao.EMAIL.add(EnviarPara.APLICAR_REALINHAMENTO);
 			
 			return this.getListMeioComunicacao();
 		}

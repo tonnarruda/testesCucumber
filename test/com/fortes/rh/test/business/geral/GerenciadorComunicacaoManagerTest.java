@@ -1563,7 +1563,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findByIdProjection").with(eq(empresa.getId())).will(returnValue(empresa));
 		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa), eq(subject), eq(body), eq(null), eq(emails)});
 		
-		gerenciadorComunicacaoManager.enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador(empresa.getId(), colaborador);
+		gerenciadorComunicacaoManager.enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador(empresa.getId(), colaborador, null);
 	}
 	
 }

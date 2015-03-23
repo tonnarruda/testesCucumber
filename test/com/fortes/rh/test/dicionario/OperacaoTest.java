@@ -494,7 +494,7 @@ public class OperacaoTest extends TestCase
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
-		assertEquals(5,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+		assertEquals(6,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testSolicitarDesligamentoColaborador()

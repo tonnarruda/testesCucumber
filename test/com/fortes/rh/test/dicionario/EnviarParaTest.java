@@ -9,7 +9,7 @@ public class EnviarParaTest extends TestCase
 	
 	public void testChave()
 	{
-		assertEquals(19, EnviarPara.values().length);
+		assertEquals(20, EnviarPara.values().length);
 		
 		assertEquals(new Integer(0), EnviarPara.SELECIONAR_ENVIAR_PARA.getId());
 		assertEquals(new Integer(1), EnviarPara.USUARIOS.getId());
@@ -29,6 +29,7 @@ public class EnviarParaTest extends TestCase
 		assertEquals(new Integer(19), EnviarPara.APROVAR_REPROVAR_SOLICITACAO_PESSOAL.getId());
 		assertEquals(new Integer(20), EnviarPara.APROVAR_REPROVAR_SOLICITACAO_DESLIGAMENTO.getId());
 		assertEquals(new Integer(21), EnviarPara.SOLICITANTE_DESLIGAMENTO.getId());
+		assertEquals(new Integer(22), EnviarPara.APLICAR_REALINHAMENTO.getId());
 		assertEquals(new Integer(99), EnviarPara.AVULSO.getId());
 	}
 

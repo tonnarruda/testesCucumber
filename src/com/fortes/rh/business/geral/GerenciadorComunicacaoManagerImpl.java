@@ -1651,7 +1651,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		body.append("<br>Observação do liberador: " + StringUtils.trimToEmpty(solicitacao.getObservacaoLiberador()));
 	}
 	
-	public void enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador(Long empresaId, Colaborador colaborador) 
+	public void enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador(Long empresaId, Colaborador colaborador, Long tabelaReajusteColaboradorId) 
 	{
 		try 
 		{
@@ -1680,6 +1680,18 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 						Collection<UsuarioEmpresa> usuariosConfigurados = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
 						String[] emails = colaboradorManager.findEmailsByUsuarios(LongUtil.collectionToCollectionLong(usuariosConfigurados));
 						mail.send(empresa, subject, body, null, emails);
+					} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.APLICAR_REALINHAMENTO.getId()))
+					{
+						UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
+						String[] emails = usuarioManager.findEmailsByPerfil("ROLE_MOV_APLICARREALINHAMENTO", empresa.getId());
+						
+						ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
+						String link = parametrosDoSistema.getAppUrl() + "/cargosalario/tabelaReajusteColaborador/visualizar.action?tabelaReajusteColaborador.id=" + tabelaReajusteColaboradorId;
+						String bodyAplicarRealinhamento = body;
+						bodyAplicarRealinhamento += "<br><br>Acesse o RH para aplicar o realinhamento:<br>";
+						bodyAplicarRealinhamento += "<a href='" + link + "'>RH</a>";
+						
+						mail.send(empresa, subject, bodyAplicarRealinhamento, null, emails);
 					}
 				}
 			}

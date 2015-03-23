@@ -150,7 +150,7 @@ public class ReajusteColaboradorManagerTest extends MockObjectTestCase
 		colaborador.setNome("Colaborador 1");
 		
 		reajusteColaboradorDao.expects(once()).method("save");
-		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador").with(eq(empresa.getId()), eq(colaborador));
+		gerenciadorComunicacaoManager.expects(once()).method("enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador").with(eq(empresa.getId()), eq(colaborador), ANYTHING);
 		
 		Exception exception = null;
 		

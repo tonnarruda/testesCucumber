@@ -24,6 +24,7 @@
 		<Item visivel="S" motivo="P20150200108"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Limitação de 20 cadastros dos dias de antecedência/prazo para os gerenciadores de comunicação que notificam de acordo com os dias configurados.]]></Item>
 		<Item visivel="S" motivo="S20150300020"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Inserção do link da solicitação de pessoal no email enviado ao responsável por aprovar/reprovar a solicitação.]]></Item>
 		<Item visivel="S" motivo="S20150300025"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Inserção do link da solicitação de desligamento de colaborador no email enviado ao responsável por aprovar/reprovar a solicitação.]]></Item>
+		<Item visivel="S" motivo="S20150300026"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Novo gerenciador de comunicação por email para usuários com perfil de aplicar realinhamento, quando cadastrar solicitação de realinhamento para colaborador.]]></Item>
 		<Item visivel="S" motivo="P20150200223"><![CDATA[Utilitários > Auditoria: Auditar dados do tipo de ocorrência e exibir flag que indica envio para o AC, quando a integração está ligada.]]></Item>
 		<Item visivel="S" motivo="S20150300006"><![CDATA[Utilitários > Apagar Reg. sem Código AC > Faixas Salariais: Exibindo o nome do cargo e o nome da faixa.]]></Item>
 		<Item visivel="S" motivo="S20150200036"><![CDATA[Melhoria das mensagens de retorno do validador de licença(Remprot).]]></Item>

@@ -77,7 +77,7 @@ public class ReajusteColaboradorManagerImpl extends GenericManagerImpl<ReajusteC
 			ajustaTipoSalario(reajusteColaborador);
 			save(reajusteColaborador);
 			
-			gerenciadorComunicacaoManager.enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador(empresaId, colaborador);
+			gerenciadorComunicacaoManager.enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador(empresaId, colaborador, reajusteColaborador.getTabelaReajusteColaborador().getId());
 		}
 		catch(Exception e)
 		{
