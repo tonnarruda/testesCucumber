@@ -499,7 +499,8 @@ public class DateUtil
 			String[] parteData = dataStr.split("/");
 			
 			Calendar c = Calendar.getInstance();
-			c.set(Integer.parseInt(parteData[2]), Integer.parseInt(parteData[1])-1, Integer.parseInt(parteData[0]), 0, 0, 0);
+			c.clear();
+			c.set(Integer.parseInt(parteData[2]), Integer.parseInt(parteData[1])-1, Integer.parseInt(parteData[0]));
 
 			return c.getTime();
 		} catch (Exception e) {

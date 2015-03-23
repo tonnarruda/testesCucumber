@@ -21,11 +21,9 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Certificado;
-import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DNT;
-import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCertificacaoRelatorio;
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCursoMatriz;
@@ -40,7 +38,6 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
-import com.fortes.rh.util.StringUtil;
 import com.ibm.icu.math.BigDecimal;
 
 @SuppressWarnings("unchecked")
@@ -605,15 +602,17 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		}
 	}
 
-	public Double percentualFrequencia(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds)
+	public Double percentualFrequencia(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds, Long[] estabelecimentosIds)
 	{
-		Integer qtdDiasTotal = colaboradorManager.qtdTotalDiasDaTurmaVezesColaboradoresInscritos(dataIni, dataFim, empresaIds, cursoIds, areasIds);
-
-		if (qtdDiasTotal.equals(0))
-			return 100.0;
-
+		Integer qtdDiasTotal = colaboradorManager.qtdTotalDiasDaTurmaVezesColaboradoresInscritos(dataIni, dataFim, empresaIds, cursoIds, areasIds, estabelecimentosIds);
 		ColaboradorPresencaManager colaboradorPresencaManager = (ColaboradorPresencaManager) SpringUtil.getBean("colaboradorPresencaManager");
-		Integer qtdDiasPresentes = colaboradorPresencaManager.qtdDiaPresentesTurma(dataIni, dataFim, empresaIds, cursoIds, areasIds);
+		Integer qtdDiasPresentes = colaboradorPresencaManager.qtdDiaPresentesTurma(dataIni, dataFim, empresaIds, cursoIds, areasIds, estabelecimentosIds);
+
+		if (qtdDiasTotal.equals(0)){
+			if (qtdDiasPresentes == 0)
+				return 0.0;
+			return 100.0;
+		}
 			
 		double resultado = (double) (qtdDiasPresentes.doubleValue() / qtdDiasTotal.doubleValue());
 

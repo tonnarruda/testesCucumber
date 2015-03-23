@@ -1135,7 +1135,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("colaboradorPresencaManager", colaboradorPresencaManager);
 		colaboradorPresencaManager.expects(atLeastOnce()).method("qtdDiaPresentesTurma").withAnyArguments().will(returnValue(3));
 		
-		assertEquals(60.0, colaboradorTurmaManager.percentualFrequencia(null, null, new Long[]{1L}, null, null));
+		assertEquals(60.0, colaboradorTurmaManager.percentualFrequencia(null, null, new Long[]{1L}, null, null, null));
 	}
 	
 	public void testMontaCertificados() 

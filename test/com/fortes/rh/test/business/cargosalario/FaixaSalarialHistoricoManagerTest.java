@@ -522,7 +522,7 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 
 		Date date = new Date();
 
-		indiceHistoricoManager.expects(once()).method("existsAnteriorByDataIndice").with(eq(date),eq(indice.getId())).will(returnValue(true));
+		indiceHistoricoManager.expects(once()).method("existeHistoricoAnteriorOuIgualDaData").with(eq(date),eq(indice.getId())).will(returnValue(true));
 
 		assertTrue(faixaSalarialHistoricoManager.verifyHistoricoIndiceNaData(date, indice.getId()));
 	}
@@ -620,5 +620,53 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 	public void testGetsSets()
 	{
 		faixaSalarialHistoricoManager.setAcPessoalClientCargo(null);
+	}
+	
+	public void testExisteDependenciaComHistoricoIndiceComNenhumHistoricoIndice() 
+	{
+		Date dataHistoricoExcluir = new Date();
+		Long indiceId = 1L;
+		
+		indiceHistoricoManager.expects(once()).method("findToList").will(returnValue(new ArrayList<IndiceHistorico>()));
+		
+		boolean existeDependencia = faixaSalarialHistoricoManager.existeDependenciaComHistoricoIndice(dataHistoricoExcluir, indiceId);
+		
+		assertFalse(existeDependencia);
+	}
+	
+	public void testExisteDependenciaComHistoricoIndiceComUmHistoricoIndice() 
+	{
+		Date dataHistoricoExcluir = new Date();
+		Long indiceId = 1L;
+		
+		Collection<IndiceHistorico> indiceHistoricos = new ArrayList<IndiceHistorico>();
+		indiceHistoricos.add(new IndiceHistorico());
+		
+		indiceHistoricoManager.expects(once()).method("findToList").will(returnValue(indiceHistoricos));
+		faixaSalarialHistoricoDao.expects(once()).method("existeDependenciaComHistoricoIndice").with(eq(dataHistoricoExcluir), NULL, eq(indiceId)) .will(returnValue(true));
+		
+		boolean existeDependencia = faixaSalarialHistoricoManager.existeDependenciaComHistoricoIndice(dataHistoricoExcluir, indiceId);
+		
+		assertTrue(existeDependencia);
+	}
+
+	public void testExisteDependenciaComHistoricoIndiceComVariosHistoricoIndice() 
+	{
+		Date dataHistoricoExcluir = new Date();
+		Long indiceId = 1L;
+		
+		IndiceHistorico indiceHistorico2 = new IndiceHistorico();
+		indiceHistorico2.setData(new Date());
+		
+		Collection<IndiceHistorico> indiceHistoricos = new ArrayList<IndiceHistorico>();
+		indiceHistoricos.add(new IndiceHistorico());
+		indiceHistoricos.add(indiceHistorico2);
+		
+		indiceHistoricoManager.expects(once()).method("findToList").will(returnValue(indiceHistoricos));
+		faixaSalarialHistoricoDao.expects(once()).method("existeDependenciaComHistoricoIndice").with(eq(dataHistoricoExcluir), eq(indiceHistorico2.getData()), eq(indiceId)) .will(returnValue(true));
+		
+		boolean existeDependencia = faixaSalarialHistoricoManager.existeDependenciaComHistoricoIndice(dataHistoricoExcluir, indiceId);
+		
+		assertTrue(existeDependencia);
 	}
 }

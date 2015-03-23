@@ -28,6 +28,9 @@
     <property name="usuarioEmpresaManager">
       <ref bean="usuarioEmpresaManager" />
     </property>
+     <property name="gerenciadorComunicacaoManager">
+      <ref bean="gerenciadorComunicacaoManager" />
+    </property>
   </bean>
   <bean id="usuarioManager" parent="parentManager">
     <property name="proxyInterfaces">

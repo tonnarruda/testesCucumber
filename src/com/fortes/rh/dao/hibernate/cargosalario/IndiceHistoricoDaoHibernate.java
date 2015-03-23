@@ -107,7 +107,6 @@ public class IndiceHistoricoDaoHibernate extends GenericDaoHibernate<IndiceHisto
 	public Collection<IndiceHistorico> findByPeriodo(Long indiceId, Date data, Date dataProximo)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "ih");
-		criteria.createCriteria("ih.indice", "i", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ih.data"), "data");
@@ -115,7 +114,7 @@ public class IndiceHistoricoDaoHibernate extends GenericDaoHibernate<IndiceHisto
 
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("i.id", indiceId));
+		criteria.add(Expression.eq("ih.indice.id", indiceId));
 		criteria.add(Expression.gt("ih.data", data));
 		criteria.add(Expression.le("ih.data", dataProximo));
 
@@ -138,18 +137,21 @@ public class IndiceHistoricoDaoHibernate extends GenericDaoHibernate<IndiceHisto
 		return result == 1;
 	}
 
-	public boolean existsAnteriorByDataIndice(Date data, Long indiceId)
+	public boolean existeHistoricoAnteriorDaData(Date data, Long indiceId, boolean menorQueData)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "ih");
-		criteria.createCriteria("ih.indice", "i", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ih.id"), "id");
 
 		criteria.setProjection(p);
 
-		criteria.add(Expression.le("ih.data", data));
-		criteria.add(Expression.eq("i.id", indiceId));
+		if(menorQueData)
+			criteria.add(Expression.lt("ih.data", data));
+		else
+			criteria.add(Expression.le("ih.data", data));
+		
+		criteria.add(Expression.eq("ih.indice.id", indiceId));
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 

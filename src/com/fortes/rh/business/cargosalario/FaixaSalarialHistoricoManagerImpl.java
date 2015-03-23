@@ -260,7 +260,7 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 
 	public boolean verifyHistoricoIndiceNaData(Date data, Long indiceId)
 	{
-		return indiceHistoricoManager.existsAnteriorByDataIndice(data, indiceId);
+		return indiceHistoricoManager.existeHistoricoAnteriorOuIgualDaData(data, indiceId);
 	}
 
 	public void setIndiceManager(IndiceManager indiceManager)
@@ -398,5 +398,17 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 	public boolean existeHistoricoPorIndice(Long empresaId) 
 	{
 		return getDao().existeHistoricoPorIndice(empresaId);
+	}
+
+	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId)
+	{
+		Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoManager.findToList(new String[]{"data"}, new String[]{"data"}, new String[]{"indice.id"}, new Long[]{indiceId}, 1, 2, new String[]{"data"});
+		
+		if(indiceHistoricos.size() == 1)
+			return getDao().existeDependenciaComHistoricoIndice(dataHistoricoExcluir, null, indiceId);
+		else if(indiceHistoricos.size() > 1)
+			return getDao().existeDependenciaComHistoricoIndice(dataHistoricoExcluir, ((IndiceHistorico) indiceHistoricos.toArray()[1]).getData(), indiceId);
+		
+		return false;
 	}
 }

@@ -281,8 +281,9 @@
 
 			$("<span> </span> ").appendTo(d); // espaco em branco
 			$("<img src='<@ww.url value="/imgs/delete.gif"/>' onClick=$('#"+ str +"').remove(); style='cursor: pointer'>").appendTo(d);
-	
-		 	$("#maisRespostas").append(d);
+			
+			if ($("#respostasEdicao").size() > 0) $("#respostasEdicao").append(d);
+			if ($("#maisRespostas").size() > 0) $("#maisRespostas").append(d);
 		 	$('#ro_'+idInputObjetiva).focus();
 		 	idInputObjetiva++;
 		}

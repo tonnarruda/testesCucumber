@@ -17,6 +17,6 @@ public interface ColaboradorPresencaManager extends GenericManager<ColaboradorPr
 	public String calculaFrequencia(Long colaboradorTurmaId, Integer qtdDias);
 	public Collection<ColaboradorTurma> preparaLinhaEmBranco(Collection<ColaboradorTurma> colaboradorTurmas, int qtdMaxLinha, Long estabelecimentoId);
 	public void removeByColaboradorTurma(Long[] colaboradorTurmaIds);
-	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds);
+	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds, Long[] estabelecimentosIds);
 	public Integer qtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId(Long diaTurmaId, Long estabelecimentoId);
 }

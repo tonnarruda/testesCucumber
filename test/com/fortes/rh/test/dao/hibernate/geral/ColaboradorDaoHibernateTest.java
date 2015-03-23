@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.fortes.dao.GenericDao;
-import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
@@ -3680,6 +3679,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento2);
 
 		Colaborador colaboradorAtivoDentroDaConsulta = ColaboradorFactory.getEntity();
 		colaboradorAtivoDentroDaConsulta.setEmpresa(empresa);
@@ -3690,6 +3695,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		HistoricoColaborador historicoColaborador1 = new HistoricoColaborador();
 		historicoColaborador1.setColaborador(colaboradorAtivoDentroDaConsulta);
 		historicoColaborador1.setData(dataTresMesesAtras.getTime());
+		historicoColaborador1.setEstabelecimento(estabelecimento1);
 		historicoColaboradorDao.save(historicoColaborador1);
 
 		Colaborador colaboradorDesligadoDentroDaConsulta = ColaboradorFactory.getEntity();
@@ -3702,6 +3708,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		HistoricoColaborador historicoColaborador2 = new HistoricoColaborador();
 		historicoColaborador2.setColaborador(colaboradorDesligadoDentroDaConsulta);
 		historicoColaborador2.setData(dataTresMesesAtras.getTime());
+		historicoColaborador2.setEstabelecimento(estabelecimento1);
 		historicoColaboradorDao.save(historicoColaborador2);
 		
 		Colaborador colaboradorDesligadoForaDaConsulta = ColaboradorFactory.getEntity();
@@ -3714,9 +3721,23 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		HistoricoColaborador historicoColaborador3 = new HistoricoColaborador();
 		historicoColaborador3.setColaborador(colaboradorDesligadoForaDaConsulta);
 		historicoColaborador3.setData(dataTresMesesAtras.getTime());
+		historicoColaborador3.setEstabelecimento(estabelecimento1);
 		historicoColaboradorDao.save(historicoColaborador3);
+		
+		Colaborador colaboradorAtivoDentroDaConsultaeOutroestabelecimento = ColaboradorFactory.getEntity();
+		colaboradorAtivoDentroDaConsultaeOutroestabelecimento.setEmpresa(empresa);
+		colaboradorAtivoDentroDaConsultaeOutroestabelecimento.setDataAdmissao(dataTresMesesAtras.getTime());
+		colaboradorAtivoDentroDaConsultaeOutroestabelecimento.setDesligado(false);
+		colaboradorDao.save(colaboradorAtivoDentroDaConsultaeOutroestabelecimento);
+		
+		HistoricoColaborador historicoColaborador4 = new HistoricoColaborador();
+		historicoColaborador4.setColaborador(colaboradorAtivoDentroDaConsultaeOutroestabelecimento);
+		historicoColaborador4.setData(dataTresMesesAtras.getTime());
+		historicoColaborador4.setEstabelecimento(estabelecimento2);
+		historicoColaboradorDao.save(historicoColaborador4);
 
-		assertEquals(new Integer(2), colaboradorDao.getCountAtivosQualquerStatus(dataDoisMesesAtras.getTime(), new Long[]{empresa.getId()}, null));
+		assertEquals(new Integer(2), colaboradorDao.getCountAtivosQualquerStatus(dataDoisMesesAtras.getTime(), new Long[]{empresa.getId()}, null, new Long[]{estabelecimento1.getId()}));
+		assertEquals(new Integer(1), colaboradorDao.getCountAtivosQualquerStatus(dataDoisMesesAtras.getTime(), new Long[]{empresa.getId()}, null, new Long[]{estabelecimento2.getId()}));
 
 	}
 	
@@ -5016,6 +5037,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimentoA = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimentoA);
+		
+		Estabelecimento estabelecimentoB = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimentoB);
 
 		Colaborador colaborador1 = ColaboradorFactory.getEntity();
 		colaborador1.setNome("Xica ");
@@ -5025,6 +5052,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		HistoricoColaborador historicoColaborador1 = new HistoricoColaborador();
 		historicoColaborador1.setColaborador(colaborador1);
 		historicoColaborador1.setData(hoje);
+		historicoColaborador1.setEstabelecimento(estabelecimentoA);
 		historicoColaboradorDao.save(historicoColaborador1);
 
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
@@ -5035,6 +5063,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		HistoricoColaborador historicoColaborador2 = new HistoricoColaborador();
 		historicoColaborador2.setColaborador(colaborador2);
 		historicoColaborador2.setData(hoje);
+		historicoColaborador2.setEstabelecimento(estabelecimentoB);
 		historicoColaboradorDao.save(historicoColaborador2);
 
 		Curso curso = CursoFactory.getEntity();
@@ -5063,7 +5092,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		diaTurma.setTurma(turma);
 		diaTurmaDao.save(diaTurma);
 
-		assertEquals(new Integer(2), colaboradorDao.qtdTotalDiasDaTurmaVezesColaboradoresInscritos(null, null, null, new Long[]{curso.getId()}, null));
+		assertEquals(new Integer(1), colaboradorDao.qtdTotalDiasDaTurmaVezesColaboradoresInscritos(null, null, null, new Long[]{curso.getId()}, null, new Long[]{estabelecimentoA.getId()}));
 	}
 
 	public void testFindParentesByNome() 

@@ -23,7 +23,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
-import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.SituacaoColaborador;
@@ -1392,7 +1391,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return criteria.list();
 	}	
 	
-
 	public void updateStatusAcByEmpresaAndStatusAtual(int novoStatusAC, int statusACAtual, Long... colaboradoresIds) 
 	{
 		Query query = getSession().createQuery("update HistoricoColaborador set status = :novoStatusAC where colaborador.id in (:colaboradoresIds) and status = :statusACAtual ");
@@ -1402,6 +1400,23 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.setParameterList("colaboradoresIds", colaboradoresIds);
 		
 		query.executeUpdate();
+	}
+
+	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Date dataSegundoHistoricoIndice, Long indiceId) 
+	{
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.setProjection(Projections.count("data"));
+				
+		criteria.add(Expression.in("hc.status",new Integer[] {StatusRetornoAC.AGUARDANDO, StatusRetornoAC.CONFIRMADO}));
+		criteria.add(Expression.eq("hc.tipoSalario", TipoAplicacaoIndice.INDICE));
+		criteria.add(Expression.eq("hc.indice.id", indiceId));
+		
+		criteria.add(Expression.ge("hc.data", dataHistoricoExcluir));
+		
+		if(dataSegundoHistoricoIndice != null)
+			criteria.add(Expression.lt("hc.data", dataSegundoHistoricoIndice));
+
+		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 	
 }

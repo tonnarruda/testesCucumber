@@ -44,4 +44,5 @@ public interface FaixaSalarialHistoricoManager extends GenericManager<FaixaSalar
 	Collection<FaixaSalarialHistorico> findByTabelaReajusteId(Long tabelaReajusteColaboradorId);
 	Collection<FaixaSalarialHistorico> findByTabelaReajusteIdData(Long tabelaReajusteColaboradorId, Date data);
 	boolean existeHistoricoPorIndice(Long empresaId);
+	boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId);
 }

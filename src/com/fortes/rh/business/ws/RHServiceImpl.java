@@ -930,10 +930,14 @@ public class RHServiceImpl implements RHService
 
 		if (indice != null && indice.getId() != null)
 		{
-			if(indiceHistoricoManager.remove(DateUtil.montaDataByString(data), indice.getId()))
-				return new FeedbackWebService(true);
-			else
-				return new FeedbackWebService(false, "Erro: Histórico do índice não encontrado.", formataException(parametros, null));
+			try {
+				if(indiceHistoricoManager.remove(DateUtil.montaDataByString(data), indice.getId()))
+					return new FeedbackWebService(true);
+				else
+					return new FeedbackWebService(false, "Erro: Histórico do índice não encontrado.", formataException(parametros, null));
+			} catch (FortesException e) {
+				return new FeedbackWebService(false, e.getMessage(), formataException(parametros, null));
+			}
 		}
 		else
 			return new FeedbackWebService(true);
@@ -942,7 +946,6 @@ public class RHServiceImpl implements RHService
 	public void bindIndice(TIndice tindice, Indice indice)
 	{
 		indice.setNome(tindice.getNome());
-		//TODO: codigoac vazio
 		indice.setCodigoAC(tindice.getCodigo());
 		indice.setGrupoAC(tindice.getGrupoAC());
 	}

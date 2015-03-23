@@ -86,7 +86,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 
 		indicadorTreinamento.setCustoPerCapita(custoPerCapita);
 
-		Integer qtdAtivos = colaboradorManager.getCountAtivosQualquerStatus(dataFim, empresaIds, areasIds);
+		Integer qtdAtivos = colaboradorManager.getCountAtivosQualquerStatus(dataFim, empresaIds, areasIds, estabelecimentosIds);
 
 		if (qtdAtivos != null && qtdAtivos > 0)
 			horasPerCapita = qtdHorasRatiada / qtdAtivos;
@@ -94,7 +94,7 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		indicadorTreinamento.setHorasPerCapita(horasPerCapita);
 		
 		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBean("colaboradorTurmaManager");
-		percentualFrequencia = colaboradorTurmaManager.percentualFrequencia(dataIni, dataFim, empresaIds, cursoIds, areasIds);
+		percentualFrequencia = colaboradorTurmaManager.percentualFrequencia(dataIni, dataFim, empresaIds, cursoIds, areasIds, estabelecimentosIds);
 		indicadorTreinamento.setPercentualFrequencia(percentualFrequencia);
 		
 		TurmaManager turmaManager = (TurmaManager) SpringUtil.getBean("turmaManager");

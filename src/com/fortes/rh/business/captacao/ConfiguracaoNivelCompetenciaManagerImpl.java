@@ -229,6 +229,34 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		
 		return vos;
 	}
+	
+	public Collection<MatrizCompetenciaNivelConfiguracao> montaConfiguracaoNivelCompetenciaByFaixa(Long empresaId, Long faixaSalarialId) 
+	{
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId);
+		Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId);
+
+		Map<String, String> competenciaNiveis = new HashMap<String, String>();
+		for (ConfiguracaoNivelCompetencia competencia : configuracaoNivelCompetencias) 
+			competenciaNiveis.put(competencia.getCompetenciaDescricao(), competencia.getNivelCompetencia().getDescricao());
+
+		Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
+		Map<String, String> competenciaNiveisConfigurados = new HashMap<String, String>();
+		for (Map.Entry<String, String> competenciaNivel : competenciaNiveis.entrySet()) 
+		{
+			for (NivelCompetencia nivel : niveis) 
+			{
+				boolean isConfiguracaoFaixa = competenciaNivel.getValue().equals(nivel.getDescricao());
+				matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaNivel.getKey(), nivel.getOrdem() + " - " + nivel.getDescricao(), isConfiguracaoFaixa, false));
+
+				if(isConfiguracaoFaixa)
+				{
+					competenciaNiveisConfigurados.put(competenciaNivel.getKey(), competenciaNivel.getValue());
+				}
+			}
+		}
+
+		return matrizModelo;
+	}
 
 	public Collection<ConfiguracaoNivelCompetenciaVO> montaMatrizCompetenciaCandidato(Long empresaId, Long faixaSalarialId, Long solicitacaoId) 
 	{

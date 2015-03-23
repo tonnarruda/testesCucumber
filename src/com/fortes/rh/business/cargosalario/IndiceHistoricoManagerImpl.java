@@ -5,7 +5,9 @@ import java.util.Date;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
+import com.fortes.rh.util.SpringUtil;
 
 public class IndiceHistoricoManagerImpl extends GenericManagerImpl<IndiceHistorico, IndiceHistoricoDao> implements IndiceHistoricoManager
 {
@@ -34,14 +36,30 @@ public class IndiceHistoricoManagerImpl extends GenericManagerImpl<IndiceHistori
 		return getDao().findByPeriodo(indiceId, data, dataProximo);
 	}
 
-	public boolean remove(Date data, Long indiceId)
+	@SuppressWarnings("deprecation")
+	public boolean remove(Date data, Long indiceId) throws FortesException
 	{
+		if(!existeHistoricoAnteriorDaData(data, indiceId)){
+			HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
+			if(historicoColaboradorManager.existeDependenciaComHistoricoIndice(data, indiceId))
+				throw new FortesException("O histórico deste índice não pode ser excluído, pois existe histórico de colaborador no RH que depende deste valor.");
+
+			FaixaSalarialHistoricoManager faixaSalarialHistoricoManager = (FaixaSalarialHistoricoManager) SpringUtil.getBeanOld("faixaSalarialHistoricoManager");
+			if(faixaSalarialHistoricoManager.existeDependenciaComHistoricoIndice(data, indiceId))
+				throw new FortesException("O histórico deste índice não pode ser excluído, pois existe histórico de faixa salarial no RH que depende deste valor.");
+		}
+		
 		return getDao().remove(data, indiceId);
 	}
-
-	public boolean existsAnteriorByDataIndice(Date data, Long indiceId)
+	
+	public boolean existeHistoricoAnteriorOuIgualDaData(Date data, Long indiceId)
 	{
-		return getDao().existsAnteriorByDataIndice(data, indiceId);
+		return getDao().existeHistoricoAnteriorDaData(data, indiceId, false);
+	}
+	
+	public boolean existeHistoricoAnteriorDaData(Date data, Long indiceId)
+	{
+		return getDao().existeHistoricoAnteriorDaData(data, indiceId, true);
 	}
 
 	public void updateValor(Date data, Long indiceId, Double valor)

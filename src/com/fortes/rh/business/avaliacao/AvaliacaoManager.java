@@ -14,7 +14,8 @@ public interface AvaliacaoManager extends GenericManager<Avaliacao>
 {
 	Collection<Avaliacao> findAllSelect(Integer page, Integer pagingSize, Long empresaId, Boolean ativo, char modeloAvaliacao, String titulo);
 	Integer getCount(Long empresaId, Boolean ativo, char modeloAvaliacao, String titulo);
-	Collection<QuestionarioRelatorio> getQuestionarioRelatorio(Avaliacao avaliacao, boolean ordenarPorAspecto);
+	QuestionarioRelatorio getQuestionarioRelatorio(Avaliacao avaliacao, boolean ordenarPorAspecto);
+	Collection<QuestionarioRelatorio> getQuestionarioRelatorioCollection(Avaliacao avaliacao, boolean ordenarPorAspecto);
 	void enviaLembrete();
 	Integer getPontuacaoMaximaDaPerformance(Long avaliacaoId, Long... perguntaIds);
 	Collection<ResultadoQuestionario> montaResultado(Collection<Pergunta> perguntas, Long[] perguntasIds, Long[] areaIds, Date periodoIni, Date periodoFim, Avaliacao avaliacao, Long empresaId) throws Exception;

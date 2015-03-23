@@ -194,8 +194,10 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 		{
 			areasIdsPorResponsavel = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(getUsuarioLogado(), getEmpresaSistema().getId());
 			
-			if(areasIdsPorResponsavel.length == 0)
-				areasIdsPorResponsavel = new Long[]{-1L};//não vai achar nenhum colaborador
+			if(areasIdsPorResponsavel.length == 0){
+				addActionWarning("Você não é responsável por uma Área Organizacional");
+				return Action.SUCCESS;
+			}
 		}
 		
 		colaboradores = colaboradorManager.findAguardandoDesligamento(getEmpresaSistema().getId(), areasIdsPorResponsavel); 

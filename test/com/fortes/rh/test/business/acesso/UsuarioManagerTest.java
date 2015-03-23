@@ -8,6 +8,7 @@ import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.acesso.UsuarioManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.exception.LoginExisteException;
 import com.fortes.rh.exception.SenhaNaoConfereException;
@@ -28,6 +29,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
 	Mock usuarioDao;
 	Mock colaboradorManager;
 	Mock usuarioEmpresaManager;
+	Mock gerenciadorComunicacaoManager;
 
     protected void setUp() throws Exception
     {
@@ -41,6 +43,9 @@ public class UsuarioManagerTest extends MockObjectTestCase
 
         usuarioEmpresaManager = new Mock(UsuarioEmpresaManager.class);
         usuarioManager.setUsuarioEmpresaManager((UsuarioEmpresaManager) usuarioEmpresaManager.proxy());
+
+        gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class);
+        usuarioManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
     }
 
     public void testFindByLogin()
@@ -440,7 +445,8 @@ public class UsuarioManagerTest extends MockObjectTestCase
     	usuarioEmpresaManager.expects(once()).method("findByUsuarioEmpresa").with(ANYTHING, eq(empresa.getId())).will(returnValue(null));
     	usuarioEmpresaManager.expects(once()).method("save").with(ANYTHING);
     	colaboradorManager.expects(once()).method("atualizarUsuario").with(eq(colaborador.getId()), ANYTHING);
-
+    	gerenciadorComunicacaoManager.expects(once()).method("enviarEmailAoCriarAcessoSistema");
+    	
     	Exception ex = null;
     	try
     	{

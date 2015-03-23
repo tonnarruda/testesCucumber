@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 
 public interface IndiceHistoricoManager extends GenericManager<IndiceHistorico>
@@ -13,8 +14,9 @@ public interface IndiceHistoricoManager extends GenericManager<IndiceHistorico>
 	boolean verifyData(Long indiceHistoricoId, Date data, Long indiceId);
 	Double findUltimoSalarioIndice(Long indiceId);
 	Collection<IndiceHistorico> findByPeriodo(Long indiceId, Date data, Date dataProximo);
-	boolean remove(Date data, Long indiceId);
-	boolean existsAnteriorByDataIndice(Date data, Long indiceId);
+	boolean remove(Date data, Long indiceId) throws FortesException;
+	boolean existeHistoricoAnteriorOuIgualDaData(Date data, Long indiceId);
+	boolean existeHistoricoAnteriorDaData(Date data, Long indiceId);
 	void updateValor(Date data, Long indiceId, Double valor);
 	void deleteByIndice(Long[] indiceIds) throws Exception;
 	Collection<IndiceHistorico> findByTabelaReajusteId(Long tabelaReajusteColaboradorId);

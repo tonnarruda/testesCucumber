@@ -1858,6 +1858,97 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(StatusRetornoAC.PENDENTE, histRetorno.getStatus());
 	}
 	
+	public void testExisteDependenciaComHistoricoIndiceExistindoUmHistoricoIndice()
+	{
+		Indice indice = IndiceFactory.getEntity();
+		indiceDao.save(indice);
+		
+		Date dataHistoricoIndice = DateUtil.criarDataDiaMesAno("01/01/2015");
+		Date dataHistoricoColaborador1 = DateUtil.criarDataDiaMesAno("01/01/2015");
+		Date dataHistoricoColaborador2 = DateUtil.criarDataDiaMesAno("02/01/2015");
+		
+		inicializaColaboradorComHistorico();
+		
+		criaHistoricoColaborador(indice, dataHistoricoColaborador1, TipoAplicacaoIndice.INDICE, StatusRetornoAC.CONFIRMADO, false);
+		boolean existeDependencia = historicoColaboradorDao.existeDependenciaComHistoricoIndice(dataHistoricoIndice, null, indice.getId());
+		
+		assertTrue("Histórico do colaborador na mesma data que histórico do índice", existeDependencia);
+		
+		criaHistoricoColaborador(indice, dataHistoricoColaborador2, TipoAplicacaoIndice.INDICE, StatusRetornoAC.AGUARDANDO, false);
+		existeDependencia = historicoColaboradorDao.existeDependenciaComHistoricoIndice(dataHistoricoIndice, null, indice.getId());
+		
+		assertTrue("Histórico do colaborador com data posterior à data do histórico do índice", existeDependencia);
+	}
+	
+	public void testExisteDependenciaComHistoricoIndiceExistindoMaisDeUmHistoricoIndice()
+	{
+		Indice indice = IndiceFactory.getEntity();
+		indiceDao.save(indice);
+		
+		Date dataHistoricoIndice1 = DateUtil.criarDataDiaMesAno("01/01/2015");
+		Date dataHistoricoIndice2 = DateUtil.criarDataDiaMesAno("01/02/2015");
+		Date dataHistoricoColaborador1 = DateUtil.criarDataDiaMesAno("01/01/2015");
+		Date dataHistoricoColaborador2 = DateUtil.criarDataDiaMesAno("02/01/2015");
+		
+		inicializaColaboradorComHistorico();
+		
+		criaHistoricoColaborador(indice, dataHistoricoColaborador1, TipoAplicacaoIndice.INDICE, StatusRetornoAC.CONFIRMADO, false);
+		boolean existeDependencia = historicoColaboradorDao.existeDependenciaComHistoricoIndice(dataHistoricoIndice1, dataHistoricoColaborador2, indice.getId());
+		
+		assertTrue("Histórico do colaborador na mesma data que histórico do índice", existeDependencia);
+		
+		criaHistoricoColaborador(indice, dataHistoricoColaborador2, TipoAplicacaoIndice.INDICE, StatusRetornoAC.AGUARDANDO, false);
+		existeDependencia = historicoColaboradorDao.existeDependenciaComHistoricoIndice(dataHistoricoIndice1, dataHistoricoIndice2, indice.getId());
+		
+		assertTrue("Histórico do colaborador com data posterior à data do histórico do índice", existeDependencia);
+	}
+
+	public void testExisteDependenciaComHistoricoIndiceComCondicoesInsatisfatorias()
+	{
+		Indice indice1 = IndiceFactory.getEntity();
+		indiceDao.save(indice1);
+
+		Indice indice2 = IndiceFactory.getEntity();
+		indiceDao.save(indice2);
+
+		Date dataHistoricoIndice1 = DateUtil.criarDataDiaMesAno("01/01/2015");
+		Date dataHistoricoIndice2 = DateUtil.criarDataDiaMesAno("01/02/2015");
+		Date dataHistoricoColaborador1 = DateUtil.criarDataDiaMesAno("01/01/2015");
+		Date dataHistoricoColaborador2 = DateUtil.criarDataDiaMesAno("02/01/2015");
+
+		inicializaColaboradorComHistorico();
+
+		criaHistoricoColaborador(indice1, dataHistoricoColaborador1, TipoAplicacaoIndice.INDICE, StatusRetornoAC.CANCELADO, false);
+		boolean existeDependencia = historicoColaboradorDao.existeDependenciaComHistoricoIndice(dataHistoricoIndice1, null, indice1.getId());
+
+		assertFalse("Histórico do colaborador cancelado", existeDependencia);
+
+		criaHistoricoColaborador(indice1, dataHistoricoColaborador1, TipoAplicacaoIndice.VALOR, StatusRetornoAC.AGUARDANDO, false);
+		existeDependencia = historicoColaboradorDao.existeDependenciaComHistoricoIndice(dataHistoricoIndice1, dataHistoricoIndice2, indice1.getId());
+		
+		assertFalse("Histórico do colaborador por valor", existeDependencia);
+		
+		criaHistoricoColaborador(indice1, dataHistoricoColaborador2, TipoAplicacaoIndice.INDICE, StatusRetornoAC.CONFIRMADO, false);
+		existeDependencia = historicoColaboradorDao.existeDependenciaComHistoricoIndice(dataHistoricoIndice1, dataHistoricoIndice2, indice2.getId());
+		
+		assertFalse("Histórico do colaborador com outro índice", existeDependencia);
+	}
+
+	private void criaHistoricoColaborador(Indice indice, Date dataPrimeiroHistoricoIndice, int tipoSalario, int status, boolean criaNovoHistorico)
+	{
+		HistoricoColaborador historicoColaborador = null;
+		if(criaNovoHistorico)
+			historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		else
+			historicoColaborador = this.historicoColaborador;
+		
+		historicoColaborador.setData(dataPrimeiroHistoricoIndice);
+		historicoColaborador.setTipoSalario(tipoSalario);
+		historicoColaborador.setIndice(indice);
+		historicoColaborador.setStatus(status);
+		historicoColaboradorDao.save(historicoColaborador);
+	}
+	
 	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)
 	{
 		this.historicoColaboradorDao = historicoColaboradorDao;

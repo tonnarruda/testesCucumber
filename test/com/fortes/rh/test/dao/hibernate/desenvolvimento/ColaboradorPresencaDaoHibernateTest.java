@@ -203,6 +203,9 @@ public class ColaboradorPresencaDaoHibernateTest extends GenericDaoHibernateTest
 		Empresa empresa2 = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa2);
 		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
 		Curso curso1 = CursoFactory.getEntity();
 		curso1.setEmpresasParticipantes(Arrays.asList(new Empresa[]{empresa1}));
 		cursoDao.save(curso1);
@@ -235,6 +238,7 @@ public class ColaboradorPresencaDaoHibernateTest extends GenericDaoHibernateTest
 		HistoricoColaborador historicoColaborador = new HistoricoColaborador();
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setData(new Date());
+		historicoColaborador.setEstabelecimento(estabelecimento);
 		historicoColaboradorDao.save(historicoColaborador);
 		
 		ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
@@ -262,7 +266,8 @@ public class ColaboradorPresencaDaoHibernateTest extends GenericDaoHibernateTest
 		colaboradorPresenca3.setDiaTurma(diaTurma1);
 		colaboradorPresencaDao.save(colaboradorPresenca3);
 		
-		assertEquals(new Integer(3), colaboradorPresencaDao.qtdDiaPresentesTurma(null, null, new Long[]{empresa1.getId(), empresa2.getId()}, new Long[]{curso1.getId(), curso2.getId()}, null));
+		assertEquals(new Integer(3), colaboradorPresencaDao.qtdDiaPresentesTurma(null, null, new Long[]{empresa1.getId(), empresa2.getId()}, new Long[]{curso1.getId(), curso2.getId()}, null, new Long[]{estabelecimento.getId()}));
+		assertEquals(new Integer(0), colaboradorPresencaDao.qtdDiaPresentesTurma(null, null, new Long[]{empresa1.getId(), empresa2.getId()}, new Long[]{curso1.getId(), curso2.getId()}, null, new Long[]{0L}));
 	}
 	
 	public void testQtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId() 

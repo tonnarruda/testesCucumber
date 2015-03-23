@@ -49,6 +49,8 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 	private TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao;
 	private ReajusteFaixaSalarialDao reajusteFaixaSalarialDao;
 
+	private FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+	
 	public FaixaSalarialHistorico getEntity()
 	{
 		return FaixaSalarialHistoricoFactory.getEntity();
@@ -672,6 +674,91 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		faixaSalarialHistoricoDao.save(h2);
 		
 		assertTrue(faixaSalarialHistoricoDao.existeHistoricoPorIndice(empresa.getId()));
+	}
+	
+	public void testExisteDependenciaComHistoricoIndiceExistindoUmHistoricoIndice()
+	{
+		Indice indice = IndiceFactory.getEntity();
+		indiceDao.save(indice);
+		
+		Date dataHistoricoIndice = DateUtil.criarDataDiaMesAno("01/01/2015");
+		Date dataHistoricoFaixaSalarial1 = DateUtil.criarDataDiaMesAno("01/01/2015");
+		Date dataHistoricoFaixaSalarial2 = DateUtil.criarDataDiaMesAno("02/01/2015");
+		
+		criaHistoricoFaixaSalarial(indice, dataHistoricoFaixaSalarial1, TipoAplicacaoIndice.INDICE, StatusRetornoAC.CONFIRMADO, false);
+		boolean existeDependencia = faixaSalarialHistoricoDao.existeDependenciaComHistoricoIndice(dataHistoricoIndice, null, indice.getId());
+		
+		assertTrue("Histórico do colaborador na mesma data que histórico do índice", existeDependencia);
+		
+		criaHistoricoFaixaSalarial(indice, dataHistoricoFaixaSalarial2, TipoAplicacaoIndice.INDICE, StatusRetornoAC.AGUARDANDO, false);
+		existeDependencia = faixaSalarialHistoricoDao.existeDependenciaComHistoricoIndice(dataHistoricoIndice, null, indice.getId());
+		
+		assertTrue("Histórico da faixa salarial com data posterior à data do histórico do índice", existeDependencia);
+	}
+	
+	public void testExisteDependenciaComHistoricoIndiceExistindoMaisDeUmHistoricoIndice()
+	{
+		Indice indice = IndiceFactory.getEntity();
+		indiceDao.save(indice);
+		
+		Date dataHistoricoIndice1 = DateUtil.criarDataDiaMesAno("01/01/2015");
+		Date dataHistoricoIndice2 = DateUtil.criarDataDiaMesAno("01/02/2015");
+		Date dataHistoricoFaixaSalarial1 = DateUtil.criarDataDiaMesAno("01/01/2015");
+		Date dataHistoricoFaixaSalarial2 = DateUtil.criarDataDiaMesAno("02/01/2015");
+		
+		criaHistoricoFaixaSalarial(indice, dataHistoricoFaixaSalarial1, TipoAplicacaoIndice.INDICE, StatusRetornoAC.CONFIRMADO, false);
+		boolean existeDependencia = faixaSalarialHistoricoDao.existeDependenciaComHistoricoIndice(dataHistoricoIndice1, dataHistoricoFaixaSalarial2, indice.getId());
+		
+		assertTrue("Histórico da faixa salarial na mesma data que histórico do índice", existeDependencia);
+		
+		criaHistoricoFaixaSalarial(indice, dataHistoricoFaixaSalarial2, TipoAplicacaoIndice.INDICE, StatusRetornoAC.AGUARDANDO, false);
+		existeDependencia = faixaSalarialHistoricoDao.existeDependenciaComHistoricoIndice(dataHistoricoIndice1, dataHistoricoIndice2, indice.getId());
+		
+		assertTrue("Histórico da faixa salarial com data posterior à data do histórico do índice", existeDependencia);
+	}
+
+	public void testExisteDependenciaComHistoricoIndiceComCondicoesInsatisfatorias()
+	{
+		Indice indice1 = IndiceFactory.getEntity();
+		indiceDao.save(indice1);
+
+		Indice indice2 = IndiceFactory.getEntity();
+		indiceDao.save(indice2);
+
+		Date dataHistoricoIndice1 = DateUtil.criarDataDiaMesAno("01/01/2015");
+		Date dataHistoricoIndice2 = DateUtil.criarDataDiaMesAno("01/02/2015");
+		Date dataHistoricoFaixaSalarial1 = DateUtil.criarDataDiaMesAno("01/01/2015");
+		Date dataHistoricoFaixaSalarial2 = DateUtil.criarDataDiaMesAno("02/01/2015");
+
+		criaHistoricoFaixaSalarial(indice1, dataHistoricoFaixaSalarial1, TipoAplicacaoIndice.INDICE, StatusRetornoAC.CANCELADO, false);
+		boolean existeDependencia = faixaSalarialHistoricoDao.existeDependenciaComHistoricoIndice(dataHistoricoIndice1, null, indice1.getId());
+
+		assertFalse("Histórico da faixa salarial cancelado", existeDependencia);
+
+		criaHistoricoFaixaSalarial(indice1, dataHistoricoFaixaSalarial1, TipoAplicacaoIndice.VALOR, StatusRetornoAC.AGUARDANDO, false);
+		existeDependencia = faixaSalarialHistoricoDao.existeDependenciaComHistoricoIndice(dataHistoricoIndice1, dataHistoricoIndice2, indice1.getId());
+		
+		assertFalse("Histórico da faixa salarial por valor", existeDependencia);
+		
+		criaHistoricoFaixaSalarial(indice1, dataHistoricoFaixaSalarial2, TipoAplicacaoIndice.INDICE, StatusRetornoAC.CONFIRMADO, false);
+		existeDependencia = faixaSalarialHistoricoDao.existeDependenciaComHistoricoIndice(dataHistoricoIndice1, dataHistoricoIndice2, indice2.getId());
+		
+		assertFalse("Histórico da faixa salarial com outro índice", existeDependencia);
+	}
+	
+	private void criaHistoricoFaixaSalarial(Indice indice, Date dataPrimeiroHistoricoIndice, int tipo, int status, boolean criaNovoHistorico)
+	{
+		FaixaSalarialHistorico faixaSalarialHistorico = null;
+		if(criaNovoHistorico)
+			faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		else
+			faixaSalarialHistorico = this.faixaSalarialHistorico;
+		
+		faixaSalarialHistorico.setData(dataPrimeiroHistoricoIndice);
+		faixaSalarialHistorico.setTipo(tipo);
+		faixaSalarialHistorico.setIndice(indice);
+		faixaSalarialHistorico.setStatus(status);
+		faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
 	}
 	
 	public GenericDao<FaixaSalarialHistorico> getGenericDao()

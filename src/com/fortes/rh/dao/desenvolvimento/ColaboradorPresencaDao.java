@@ -14,6 +14,6 @@ public interface ColaboradorPresencaDao extends GenericDao<ColaboradorPresenca>
 	Collection<ColaboradorPresenca> findByDiaTurma(Long diaTurmaId);
 	void savePresencaDia(Long diaTurmaId, Long[] colaboradorTurmaIds);
 	void removeByColaboradorTurma(Long[] colaboradorTurmaIds);
-	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds);
+	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds, Long[] estabelecimentosIds);
 	Integer qtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId(Long diaTurma, Long estabelecimentoId);
 }

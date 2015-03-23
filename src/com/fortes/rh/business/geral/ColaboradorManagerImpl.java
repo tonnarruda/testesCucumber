@@ -1504,9 +1504,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findByUsuario(usuarioId);
 	}
 
-	public Integer getCountAtivosQualquerStatus(Date dataBase, Long[] empresaIds, Long[] areasIds)
+	public Integer getCountAtivosQualquerStatus(Date dataBase, Long[] empresaIds, Long[] areasIds, Long[] estabelecimentosIds)
 	{
-		return getDao().getCountAtivosQualquerStatus(dataBase, empresaIds, areasIds);
+		return getDao().getCountAtivosQualquerStatus(dataBase, empresaIds, areasIds, estabelecimentosIds);
 	}
 
 	public Integer getCountAtivosEstabelecimento(Long estabelecimentoId)
@@ -1799,9 +1799,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		this.camposExtrasManager = camposExtrasManager;
 	}
-	public Integer qtdTotalDiasDaTurmaVezesColaboradoresInscritos(Date dataPrevIni, Date dataPrevFim, Long[] EmpresaIds, Long[] cursoIds, Long[] areasIds) 
+	public Integer qtdTotalDiasDaTurmaVezesColaboradoresInscritos(Date dataPrevIni, Date dataPrevFim, Long[] EmpresaIds, Long[] cursoIds, Long[] areasIds, Long[] estabelecimentosIds) 
 	{
-		return getDao().qtdTotalDiasDaTurmaVezesColaboradoresInscritos(dataPrevIni, dataPrevFim, EmpresaIds, cursoIds, areasIds);
+		return getDao().qtdTotalDiasDaTurmaVezesColaboradoresInscritos(dataPrevIni, dataPrevFim, EmpresaIds, cursoIds, areasIds, estabelecimentosIds);
 	}
 
 	@SuppressWarnings("rawtypes")

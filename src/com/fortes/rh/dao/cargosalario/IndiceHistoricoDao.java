@@ -20,7 +20,7 @@ public interface IndiceHistoricoDao extends GenericDao<IndiceHistorico>
 
 	boolean remove(Date data, Long indiceId);
 
-	boolean existsAnteriorByDataIndice(Date data, Long indiceId);
+	boolean existeHistoricoAnteriorDaData(Date data, Long indiceId, boolean menorQueData);
 
 	void updateValor(Date data, Long indiceId, Double valor);
 
