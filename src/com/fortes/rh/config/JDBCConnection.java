@@ -22,10 +22,10 @@ public class JDBCConnection {
 	private String password;
 
 	public JDBCConnection(Properties properties) {
-		this.driverClass = properties.getProperty("hibernate.connection.driver_class");
-		this.jdbcUrl = properties.getProperty("hibernate.connection.url");
-		this.user = properties.getProperty("hibernate.connection.username");
-		this.password = properties.getProperty("hibernate.connection.password");
+		this.driverClass = properties.getProperty("hibernate.connection.driver_class").trim();
+		this.jdbcUrl = properties.getProperty("hibernate.connection.url").trim();
+		this.user = properties.getProperty("hibernate.connection.username").trim();
+		this.password = properties.getProperty("hibernate.connection.password").trim();
 	}
 
 	/**

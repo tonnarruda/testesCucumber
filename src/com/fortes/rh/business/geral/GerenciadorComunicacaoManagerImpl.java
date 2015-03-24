@@ -498,7 +498,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				try 
 				{
 					char barra = File.separatorChar;
-					String path = ArquivoUtil.getSystemConf().getProperty("sys.path");
+					String path = ArquivoUtil.getSystemConf().getProperty("sys.path").trim();
 					path = path + barra + "WEB-INF" + barra +"report" + barra; 
 					ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
 					String msgRegistro = Autenticador.getMsgAutenticado("");

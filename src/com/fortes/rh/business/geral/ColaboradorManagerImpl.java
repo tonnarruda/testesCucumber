@@ -153,7 +153,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		int mes = DateUtil.getMes(data);
 
 		char barra = java.io.File.separatorChar;
-		String path = ArquivoUtil.getSystemConf().getProperty("sys.path");
+		String path = ArquivoUtil.getSystemConf().getProperty("sys.path").trim();
 		path = path + barra + "WEB-INF" + barra + "report" + barra; 
 
 		Map<String,Object> parametros = new HashMap<String, Object>();

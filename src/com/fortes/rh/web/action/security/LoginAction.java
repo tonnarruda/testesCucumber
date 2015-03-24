@@ -104,7 +104,7 @@ public class LoginAction extends MyActionSupport
 				dbName = "fortesrh";
 
 			RunAntScript runAntScript = new RunAntScript(null, "create-bd");
-			runAntScript.addProperty("db_name", dbName);
+			runAntScript.addProperty("db_name", dbName.trim());
 			runAntScript.launch();
 			addActionMessage("Banco gerado com sucesso, reinicie a aplicação RH.");
 		} catch (Exception e) {
