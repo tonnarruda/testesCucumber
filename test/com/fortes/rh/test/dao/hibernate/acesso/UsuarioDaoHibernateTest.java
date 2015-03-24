@@ -9,18 +9,24 @@ import com.fortes.rh.dao.acesso.PapelDao;
 import com.fortes.rh.dao.acesso.PerfilDao;
 import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.acesso.UsuarioEmpresaDao;
+import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.acesso.Papel;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.util.DateUtil;
 
@@ -28,6 +34,8 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 {
 	private UsuarioDao usuarioDao;
 	private EmpresaDao empresaDao;
+	private AreaOrganizacionalDao areaOrganizacionalDao;
+	private HistoricoColaboradorDao historicoColaboradorDao;
 	private UsuarioEmpresaDao usuarioEmpresaDao;
 	private ColaboradorDao colaboradorDao;
 	private PerfilDao perfilDao;
@@ -425,7 +433,153 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		String[] retorno = usuarioDao.findEmailsByPerfil("ROLE", empresa.getId()); 
 		assertEquals("colab@gmail.com", ((String) retorno[0]));
 	}
+	
+	public void testFindEmailByPerfilAndResponsavelComGestor()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setNome("Empresa");
+		empresaDao.save(empresa);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuario.setAcessoSistema(true);
+		usuario.setLogin("usuario");
+		usuarioDao.save(usuario);
+		
+		Colaborador colab = ColaboradorFactory.getEntity();
+		colab.setEmailColaborador("colab@gmail.com");
+		colab.setUsuario(usuario);
+		colaboradorDao.save(colab);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		areaOrganizacional.setNome("Area");
+		areaOrganizacional.setResponsavel(colab);
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setData(new Date());
+		historicoColaborador.setColaborador(colab);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorDao.save(historicoColaborador);
 
+		Papel papel = new Papel();
+		papel.setCodigo("ROLE");
+		papel.setNome("role");
+		papel.setUrl("#");
+		papel.setMenu(false);
+		papel.setOrdem(1);
+		papelDao.save(papel);
+		Collection<Papel> papeis = Arrays.asList(papel);
+		
+		Perfil perfil = new Perfil();
+		perfil.setNome("perfil");
+		perfil.setPapeis(papeis);
+		perfilDao.save(perfil);
+		
+		UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity();
+		usuarioEmpresa.setEmpresa(empresa);
+		usuarioEmpresa.setUsuario(usuario);
+		usuarioEmpresa.setPerfil(perfil);
+		usuarioEmpresaDao.save(usuarioEmpresa);
+		
+		usuarioDao.getHibernateTemplateByGenericDao().flush();
+		String[] retorno = usuarioDao.findEmailsByPerfilAndResponsavel(papel.getCodigo(), colab.getId(), empresa.getId()); 
+		assertEquals("colab@gmail.com", ((String) retorno[0]));
+	}
+
+	public void testFindEmailByPerfilAndResponsavelComPermissaoDeVerTodosColaboradores()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setNome("Empresa");
+		empresaDao.save(empresa);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuario.setAcessoSistema(true);
+		usuario.setLogin("usuario");
+		usuarioDao.save(usuario);
+		
+		Colaborador colab = ColaboradorFactory.getEntity();
+		colab.setEmailColaborador("colab@gmail.com");
+		colab.setEmpresa(empresa);
+		colab.setUsuario(usuario);
+		colaboradorDao.save(colab);
+		
+		Papel papel = new Papel();
+		papel.setCodigo("ROLE");
+		papel.setNome("role");
+		papel.setUrl("#");
+		papel.setMenu(false);
+		papel.setOrdem(1);
+		papelDao.save(papel);
+		
+		Papel papel1 = new Papel();
+		papel1.setCodigo("ROLE_COLAB_VER_TODOS");
+		papel1.setNome("role");
+		papel1.setUrl("#");
+		papel1.setMenu(false);
+		papel1.setOrdem(2);
+		papelDao.save(papel1);
+		
+		Collection<Papel> papeis = Arrays.asList(papel, papel1);
+		
+		Perfil perfil = new Perfil();
+		perfil.setNome("perfil");
+		perfil.setPapeis(papeis);
+		perfilDao.save(perfil);
+		
+		UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity();
+		usuarioEmpresa.setEmpresa(empresa);
+		usuarioEmpresa.setUsuario(usuario);
+		usuarioEmpresa.setPerfil(perfil);
+		usuarioEmpresaDao.save(usuarioEmpresa);
+		
+		usuarioDao.getHibernateTemplateByGenericDao().flush();
+		String[] retorno = usuarioDao.findEmailsByPerfilAndResponsavel(papel.getCodigo(), colab.getId(), empresa.getId()); 
+		assertEquals("colab@gmail.com", ((String) retorno[0]));
+	}
+	
+	public void testFindEmailByPerfilAndResponsavelApenasComPermissaoDeAprovarOrreprovarSolicitacaoDesligamento()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setNome("Empresa");
+		empresaDao.save(empresa);
+		
+		Usuario usuario = UsuarioFactory.getEntity();
+		usuario.setAcessoSistema(true);
+		usuario.setLogin("usuario");
+		usuarioDao.save(usuario);
+		
+		Colaborador colab = ColaboradorFactory.getEntity();
+		colab.setEmailColaborador("colab@gmail.com");
+		colab.setUsuario(usuario);
+		colaboradorDao.save(colab);
+		
+		Papel papel = new Papel();
+		papel.setCodigo("ROLE");
+		papel.setNome("role");
+		papel.setUrl("#");
+		papel.setMenu(false);
+		papel.setOrdem(1);
+		papelDao.save(papel);
+		
+		Collection<Papel> papeis = Arrays.asList(papel);
+		
+		Perfil perfil = new Perfil();
+		perfil.setNome("perfil");
+		perfil.setPapeis(papeis);
+		perfilDao.save(perfil);
+		
+		UsuarioEmpresa usuarioEmpresa = UsuarioEmpresaFactory.getEntity();
+		usuarioEmpresa.setEmpresa(empresa);
+		usuarioEmpresa.setUsuario(usuario);
+		usuarioEmpresa.setPerfil(perfil);
+		usuarioEmpresaDao.save(usuarioEmpresa);
+		
+		String[] retorno = usuarioDao.findEmailsByPerfilAndResponsavel(papel.getCodigo(), colab.getId(), empresa.getId()); 
+		assertEquals(0, retorno.length);
+	}
+	
+	
+	
 	public GenericDao<Usuario> getGenericDao()
 	{
 		return usuarioDao;
@@ -439,6 +593,14 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		this.empresaDao = empresaDao;
+	}
+
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
+		this.areaOrganizacionalDao = areaOrganizacionalDao;
+	}
+
+	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao) {
+		this.historicoColaboradorDao = historicoColaboradorDao;
 	}
 
 	public void setUsuarioEmpresaDao(UsuarioEmpresaDao usuarioEmpresaDao)

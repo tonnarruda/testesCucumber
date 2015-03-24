@@ -278,6 +278,10 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		return colaboradorManager.findUsuarioByAreaEstabelecimento(areasIds, estabelecimentosIds);
 	}
 	
+	public String[] findEmailByPerfilAndResponsavel(String role, Long colaboradorId, Long empresaId){
+		return getDao().findEmailsByPerfilAndResponsavel(role, colaboradorId, empresaId);
+	}
+	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;

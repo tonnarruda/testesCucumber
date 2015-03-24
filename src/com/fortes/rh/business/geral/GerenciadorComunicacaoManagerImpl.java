@@ -1713,7 +1713,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			String link = parametrosDoSistema.getAppUrl() + "/geral/colaborador/visualizarSolicitacaoDesligamento.action?colaborador.id=" + colaborador.getId();
 			
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
-			String[] emailsByUsuario = usuarioManager.findEmailsByPerfil("ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO", empresa.getId()); 
+			String[] emailsByUsuario = usuarioManager.findEmailByPerfilAndResponsavel("ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO", colaboradorId, empresaId);
 			
 			String subject = "[RH] - Solicitação de desligamento de colaborador";
 			StringBuilder body = new StringBuilder();

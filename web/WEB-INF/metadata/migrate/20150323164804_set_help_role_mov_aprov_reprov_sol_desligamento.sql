@@ -1,0 +1,1 @@
+update papel set help ='Para visualizar as solicitações de desligamento, o usuário deverá ser gestor de uma área organizacional ou ter no perfil a permissão de visualizar todos os colaboradores.' where id = 620;--.go

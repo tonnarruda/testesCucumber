@@ -322,4 +322,48 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 
 		return new CollectionUtil<String>().convertCollectionToArrayString(criteria.list());
 	}
+
+	public String[] findEmailsByPerfilAndResponsavel(String role, Long colaboradorId, Long empresaId) {
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("select distinct c.email " );
+		sql.append(" from colaborador c " );
+		sql.append("		join usuario u on u.id = c.usuario_id " );
+		sql.append("		join usuarioempresa ue on ue.usuario_id = u.id " );
+		sql.append("		join perfil p on p.id = ue.perfil_id  ");
+		sql.append("		join perfil_papel pp on pp.perfil_id = p.id " );
+		sql.append("		join papel pa on pa.id = pp.papeis_id " );
+		sql.append("		left join areaorganizacional a on a.responsavel_id = c.id " );
+		sql.append("		where " );
+		sql.append("			pa.codigo = :role ");
+		sql.append("			and ( ");
+		sql.append("					( ");
+		sql.append("						a.responsavel_id = c.id and a.id = ( ");
+		sql.append("															 	select areaorganizacional_id from historicocolaborador hc " );
+		sql.append("															 	where hc.data = ( ");
+		sql.append("															 	select max(data) from historicocolaborador hc1 " );
+		sql.append("															 	where hc1.colaborador_id = :colaboradorId) and hc.colaborador_id = :colaboradorId ) " );
+		sql.append("					)or 'ROLE_COLAB_VER_TODOS' = ( ");
+		sql.append("													select distinct(pa1.codigo) from usuarioempresa " );
+		sql.append("													join perfil p1 on ue.perfil_id = p1.id " );
+		sql.append("													join perfil_papel pp1 on p1.id = pp1.perfil_id " );
+		sql.append("													join papel pa1 on pp1.papeis_id = pa1.id and pa1.codigo = 'ROLE_COLAB_VER_TODOS' " );
+		sql.append("												 ) ");
+		sql.append(" 			) "	);
+		sql.append("			and u.acessosistema = true " );
+		sql.append("        	and ue.empresa_id= :empresaId " ); 
+		sql.append("        	and c.email is not null " ); 
+		sql.append("    	order by ");
+		sql.append("       		c.email asc ");
+		
+		
+		Query q = getSession().createSQLQuery(sql.toString());
+		
+		q.setString("role", role);
+		q.setLong("colaboradorId", colaboradorId);
+		q.setLong("empresaId", empresaId);
+		
+		return new CollectionUtil<String>().convertCollectionToArrayString(q.list());
+	}
 }
