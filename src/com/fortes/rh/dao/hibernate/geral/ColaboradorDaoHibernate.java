@@ -3328,7 +3328,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			if(situacao.trim().equals("A"))
 			{
 				query.setBoolean("situacao", false);
-				query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+				Integer[] status = {StatusRetornoAC.CONFIRMADO,StatusRetornoAC.CANCELADO};
+				query.setParameterList("status", status);
 			}
 			if(situacao.trim().equals("D"))
 			{
