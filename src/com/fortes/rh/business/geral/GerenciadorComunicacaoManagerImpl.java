@@ -1643,8 +1643,8 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	{
 		body.append("<br>Descrição: " + solicitacao.getDescricao());
 		body.append("<br>Data: " + DateUtil.formataDiaMesAno(solicitacao.getData()));
-		body.append("<br>Motivo: " + solicitacao.getMotivoSolicitacao().getDescricao());
-		body.append("<br>Estabelecimento: " + solicitacao.getEstabelecimento().getNome());
+		body.append("<br>Motivo: " + (solicitacao.getMotivoSolicitacao() != null ? solicitacao.getMotivoSolicitacao().getDescricao() : ""));
+		body.append("<br>Estabelecimento: " + (solicitacao.getEstabelecimento()!= null ? solicitacao.getEstabelecimento().getNome() : ""));
 		body.append("<br>Solicitante: " + nomeSolicitante);
 		body.append("<br>Status: " + solicitacao.getStatusFormatado());
 		body.append("<br>Liberador: " + nomeLiberador);
