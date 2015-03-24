@@ -160,11 +160,11 @@ public class JDBCConnection {
 		Properties configuracao = ArquivoUtil.getSystemConf();
 		JDBCConnection jdbcConn = new JDBCConnection(configuracao);
 		
-		if (StringUtils.isNotEmpty(configuracao.getProperty("db.name")))
+		if (StringUtils.isNotEmpty(configuracao.getProperty("db.name").trim()))
 		{
 			String sql = "select alter_trigger(table_name, '" + acao + "') FROM information_schema.constraint_column_usage " +
 						" where table_schema='public' " +
-						" and table_catalog='" + configuracao.getProperty("db.name") + "' group by table_name;";
+						" and table_catalog='" + configuracao.getProperty("db.name").trim() + "' group by table_name;";
 			
 			jdbcConn.executeSql(sql);
 		}

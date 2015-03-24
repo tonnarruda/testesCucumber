@@ -116,11 +116,11 @@ public class SetupListener implements ServletContextListener
 	 */
 	private void efetuaMergeNaConfiguracaoDoHibernate(Properties configuracao, Properties configuracaoDoCliente)
 	{
-		configuracao.setProperty(HIBERNATE_CONNECTION_DRIVER_CLASS, configuracaoDoCliente.getProperty(HIBERNATE_CONNECTION_DRIVER_CLASS));
-		configuracao.setProperty(HIBERNATE_DIALECT, configuracaoDoCliente.getProperty(HIBERNATE_DIALECT));
-		configuracao.setProperty(HIBERNATE_CONNECTION_URL, configuracaoDoCliente.getProperty(HIBERNATE_CONNECTION_URL));
-		configuracao.setProperty(HIBERNATE_CONNECTION_USERNAME, configuracaoDoCliente.getProperty(HIBERNATE_CONNECTION_USERNAME));
-		configuracao.setProperty(HIBERNATE_CONNECTION_PASSWORD, configuracaoDoCliente.getProperty(HIBERNATE_CONNECTION_PASSWORD));
+		configuracao.setProperty(HIBERNATE_CONNECTION_DRIVER_CLASS, configuracaoDoCliente.getProperty(HIBERNATE_CONNECTION_DRIVER_CLASS).trim());
+		configuracao.setProperty(HIBERNATE_DIALECT, configuracaoDoCliente.getProperty(HIBERNATE_DIALECT).trim());
+		configuracao.setProperty(HIBERNATE_CONNECTION_URL, configuracaoDoCliente.getProperty(HIBERNATE_CONNECTION_URL).trim());
+		configuracao.setProperty(HIBERNATE_CONNECTION_USERNAME, configuracaoDoCliente.getProperty(HIBERNATE_CONNECTION_USERNAME).trim());
+		configuracao.setProperty(HIBERNATE_CONNECTION_PASSWORD, configuracaoDoCliente.getProperty(HIBERNATE_CONNECTION_PASSWORD).trim());
 	}
 
 	/**

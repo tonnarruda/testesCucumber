@@ -40,7 +40,7 @@ public class BackupServiceImpl implements BackupService {
 		try {
 			logger.info("Efetuando backup do banco.");
 			
-			String dbName = ArquivoUtil.getSystemConf().getProperty("db.name").trim();
+			String dbName = ArquivoUtil.getSystemConf().getProperty("db.name");
 			if(dbName == null || dbName.equals(""))
 				dbName = "fortesrh";
 			
