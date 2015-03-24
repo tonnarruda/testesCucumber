@@ -294,10 +294,12 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 
 	public void atualizaStatusSolicitacaoByColaborador(Colaborador colaborador,	char status, boolean disponibilizarCandidato) 
 	{
+		if(colaborador.getSolicitacao() != null && colaborador.getSolicitacao().getId() != null)
+			candidatoSolicitacaoManager.setStatusBySolicitacaoAndCandidato(status, colaborador.getCandidato().getId(), colaborador.getSolicitacao().getId() );
+		
 		Empresa empresa = empresaManager.findByIdProjection(colaborador.getEmpresa().getId()); 
 		if(empresa.isSolPessoalReabrirSolicitacao() && colaborador.getSolicitacao() != null && colaborador.getSolicitacao().getId() != null){
 			updateEncerraSolicitacao(false, null, colaborador.getSolicitacao().getId());
-			candidatoSolicitacaoManager.setStatusBySolicitacaoAndCandidato(status, colaborador.getCandidato().getId(), colaborador.getSolicitacao().getId() );
 		}
 		
 		CandidatoManager candidatoManager = (CandidatoManager) SpringUtil.getBeanOld("candidatoManager");
