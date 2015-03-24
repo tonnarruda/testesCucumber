@@ -1204,7 +1204,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		
 		for (HistoricoColaborador historicoColaborador : historicoColaboradors) 
 		{			
-			if (historicoColaborador.getColaborador() != null && historicoColaborador.getColaborador().getEmpresa().isAcIntegra() && historicoColaborador.getColaborador().getCodigoAC() != null && !historicoColaborador.getColaborador().getCodigoAC().equals(""))
+			if (historicoColaborador.getColaborador() != null && historicoColaborador.getColaborador().getEmpresa().isAcIntegra() && historicoColaborador.getColaborador().getCodigoAC() != null && !historicoColaborador.getColaborador().getCodigoAC().equals("") && !historicoColaborador.getColaborador().isNaoIntegraAc())
 			{
 				colaboradoresIdsList.remove(historicoColaborador.getColaborador().getCodigoAC().toString());
 				colaboradoresIdsList.add(historicoColaborador.getColaborador().getCodigoAC().toString());
