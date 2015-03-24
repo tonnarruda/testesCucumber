@@ -1297,10 +1297,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	
 	public void testEnviaMensagemCadastroSituacaoAC()
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		empresa.setNome("Empresa I");
-		empresa.setEmailRespRH("teste1@gmail.com;teste2@gmail.com;");
-		empresa.setEmailRemetente("teste1@gmail.com");
+		Empresa empresa = criaEmpresa();
 		
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
 		
@@ -1374,10 +1371,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 
 	public void testEnviaMensagemHabilitacaoAVencer()
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		empresa.setNome("Empresa I");
-		empresa.setEmailRespRH("teste1@gmail.com;teste2@gmail.com;");
-		empresa.setEmailRemetente("teste1@gmail.com");
+		Empresa empresa = criaEmpresa();
 		
 		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity(1L);
 		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity(2L);
@@ -1491,10 +1485,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		parametroSistema.setAppUrl("url");
 		parametroSistema.setEmailDoSuporteTecnico("t@t.com.br");
 		
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		empresa.setNome("Empresa I");
-		empresa.setEmailRespRH("teste1@gmail.com;teste2@gmail.com;");
-		empresa.setEmailRemetente("teste1@gmail.com");
+		Empresa empresa = criaEmpresa();
 		
 		Usuario solicitante = UsuarioFactory.getEntity(1L);
 		
@@ -1543,10 +1534,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 	
 	public void testEnviaComunicadoAoCadastrarSolicitacaoRealinhamentoColaborador() throws Exception
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		empresa.setNome("Empresa I");
-		empresa.setEmailRespRH("teste1@gmail.com;teste2@gmail.com;");
-		empresa.setEmailRemetente("teste1@gmail.com");
+		Empresa empresa = criaEmpresa();
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setNome("Colaborador");
@@ -1566,4 +1554,54 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaoManager.enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador(empresa.getId(), colaborador, null);
 	}
 	
+	public void testEnviarEmailAoCriarAcessoSistemaSemEmail()
+	{
+		Empresa empresa = criaEmpresa();
+
+		try{
+			gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema("login", "senha", null, empresa);
+			gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema("login", "senha", "", empresa);
+			gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema("login", "senha", " ", empresa);
+		} catch (Exception e) {
+			assertFalse(true);
+		}
+		assertTrue(true);
+	}
+	
+	public void testEenviarEmailAoCriarAcessoSistemaComEmail()
+	{
+		Empresa empresa = criaEmpresa();
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));
+		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CRIAR_ACESSO_SISTEMA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		mail.expects(once()).method("send").withAnyArguments().isVoid();
+		
+		gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema("login", "senha", "email@email.com", empresa);
+	}
+	
+	public void testEenviarEmailAoCriarAcessoSistemaSemGerenciadorConfigurado()
+	{
+		Empresa empresa = criaEmpresa();
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.AVULSO);
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		
+		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));
+		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CRIAR_ACESSO_SISTEMA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		
+		gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema("login", "senha", "email@email.com", empresa);
+	}
+
+	private Empresa criaEmpresa()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setNome("Empresa I");
+		empresa.setEmailRespRH("teste1@gmail.com;teste2@gmail.com;");
+		empresa.setEmailRemetente("teste1@gmail.com");
+		
+		return empresa;
+	}
 }

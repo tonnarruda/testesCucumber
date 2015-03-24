@@ -265,7 +265,7 @@ public class UsuarioEditAction extends MyActionSupportEdit
 
 			if (colaborador != null && colaborador.getId() != null) {
 				colaborador = colaboradorManager.findByIdProjectionUsuario(colaboradorId);
-				gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema(usuario.getLogin(), senha, colaborador, getEmpresaSistema());
+				gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema(usuario.getLogin(), senha, colaborador.getContato().getEmail(), getEmpresaSistema());
 				return "usuarioColaborador";
 			} else
 				return Action.SUCCESS;

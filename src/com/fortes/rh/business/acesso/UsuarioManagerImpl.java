@@ -238,7 +238,7 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 			
 			colaboradorManager.atualizarUsuario(colaborador.getId(), usuario.getId());
 			
-			gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema(usuario.getLogin(), senhaPadrao, colaborador, empresa);
+			gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema(usuario.getLogin(), senhaPadrao, colaborador.getContato().getEmail(), empresa);
 		}
 	}
 	

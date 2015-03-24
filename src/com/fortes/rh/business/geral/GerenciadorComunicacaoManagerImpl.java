@@ -1773,30 +1773,30 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
-	public void enviarEmailAoCriarAcessoSistema(String login, String senha, Colaborador colaborador, Empresa empresa) 
+	public void enviarEmailAoCriarAcessoSistema(String login, String senha, String email, Empresa empresa) 
 	{
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CRIAR_ACESSO_SISTEMA.getId(), empresa.getId());
-		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
-			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())
-					&& colaborador.getContato().getEmail() != null && !colaborador.getContato().getEmail().isEmpty()){
+		try {
+			if(StringUtils.isNotBlank(email)){
 				ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
-				try
-				{
-					StringBuilder corpo = new StringBuilder();
-					corpo.append("Seu acesso ao Fortes RH foi liberado<br><br>");
-					corpo.append("<strong>Login:</strong> "+login+"<br> <strong>Senha:</strong> "+senha+"<br><br>");
-		    		corpo.append("Acesse o RH em: <br>");
-		    		corpo.append("<a href=\"" + parametros.getAppUrl() + "\">RH</a><br><br>");
-		    		corpo.append("Copyright© by Fortes Informática LTDA<br>");
-		    		corpo.append("http://www.fortesinformatica.com.br");
 
-					mail.send(empresa, parametros, "[RH] - Aviso - Acesso ao Fortes RH", corpo.toString(), colaborador.getContato().getEmail());
-				}
-				catch (Exception e)
-				{
-					e.printStackTrace();
-				}
-			} 		
+				StringBuilder corpo = new StringBuilder();
+				corpo.append("Seu acesso ao sistema RH foi liberado<br><br>");
+				corpo.append("<strong>Login:</strong> "+login+"<br> <strong>Senha:</strong> "+senha+"<br><br>");
+				corpo.append("Acesse o RH em: <br>");
+				corpo.append("<a href=\"" + parametros.getAppUrl() + "\">RH</a><br><br>");
+				corpo.append("Copyright© by Fortes Informática LTDA<br>");
+				corpo.append("http://www.fortesinformatica.com.br");
+
+				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CRIAR_ACESSO_SISTEMA.getId(), empresa.getId());
+				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
+					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
+						mail.send(empresa, parametros, "[RH] - Liberação de acesso ao sistema RH", corpo.toString(), email);
+					}
+				} 		
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
