@@ -22805,3 +22805,15 @@ insert into migrations values('20150211112346');--.go
 alter table parametrosdosistema add column horariosbackup text default '2'; --.go
 insert into migrations values('20150211130729');--.go
 update parametrosdosistema set appversao = '1.1.141.170';--.go
+-- versao 1.1.142.171
+
+alter table gerenciadorcomunicacao alter column qtddiaslembrete type varchar(255);--.go
+insert into migrations values('20150305094610');--.go
+UPDATE experiencia set cargo_id = null where cargo_id not in(select id from cargo);--.go
+ALTER TABLE experiencia DROP CONSTRAINT IF EXISTS experiencia_cargo_fk;--.go
+ALTER TABLE ONLY experiencia ADD CONSTRAINT experiencia_cargo_fk FOREIGN KEY (cargo_id) REFERENCES cargo(id);--.go
+
+insert into migrations values('20150309145121');--.go
+update papel set help ='Para visualizar as solicitações de desligamento, o usuário deverá ser gestor de uma área organizacional ou ter no perfil a permissão de visualizar todos os colaboradores.' where id = 620;--.go
+insert into migrations values('20150323164804');--.go
+update parametrosdosistema set appversao = '1.1.142.171';--.go
