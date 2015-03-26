@@ -212,6 +212,7 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 
 	public void testSaveCompetenciasByFaixa()
 	{
+		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L); 
 		action.setEmpresaSistema(empresa);
 		

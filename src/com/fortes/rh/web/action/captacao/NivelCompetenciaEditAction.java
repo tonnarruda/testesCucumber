@@ -23,6 +23,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -54,8 +55,17 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private Collection<FaixaSalarial> faixaSalarials;
 	private Collection<NivelCompetencia> nivelCompetencias;
 	private Collection<Colaborador> colaboradores;
+	
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais;
+	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisConhecimento;
+	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisHabilidade;
+	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisAtitude;
+	
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvos;
+	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvosConhecimento;
+	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvosHabilidade;
+	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvosAtitude;
+	
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSugeridos;
 	private Collection<ConfiguracaoNivelCompetenciaColaborador> configuracaoNivelCompetenciaColaboradores;
 	private Collection<Solicitacao> solicitacoes;
@@ -133,9 +143,43 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
 		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), null);
+		
+		if (niveisCompetenciaFaixaSalariais == null) {
+			niveisCompetenciaFaixaSalariais = new ArrayList<ConfiguracaoNivelCompetencia>();
+		}
+		
+		niveisCompetenciaFaixaSalariaisConhecimento = new ArrayList<ConfiguracaoNivelCompetencia>();
+		niveisCompetenciaFaixaSalariaisHabilidade = new ArrayList<ConfiguracaoNivelCompetencia>();
+		niveisCompetenciaFaixaSalariaisAtitude = new ArrayList<ConfiguracaoNivelCompetencia>();
+		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariais) {
+			if (Character.valueOf('C').equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
+				niveisCompetenciaFaixaSalariaisConhecimento.add(configuracaoNivelCompetencia);
+			}
+			if (Character.valueOf('H').equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
+				niveisCompetenciaFaixaSalariaisHabilidade.add(configuracaoNivelCompetencia);
+			}
+			if (Character.valueOf('A').equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
+				niveisCompetenciaFaixaSalariaisAtitude.add(configuracaoNivelCompetencia);
+			}
+		}
+		
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		
 		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
+		niveisCompetenciaFaixaSalariaisSalvosConhecimento = new ArrayList<ConfiguracaoNivelCompetencia>();
+		niveisCompetenciaFaixaSalariaisSalvosHabilidade = new ArrayList<ConfiguracaoNivelCompetencia>();
+		niveisCompetenciaFaixaSalariaisSalvosAtitude = new ArrayList<ConfiguracaoNivelCompetencia>();
+		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariaisSalvos) {
+			if (Character.valueOf('C').equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
+				niveisCompetenciaFaixaSalariaisSalvosConhecimento.add(configuracaoNivelCompetencia);
+			}
+			if (Character.valueOf('H').equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
+				niveisCompetenciaFaixaSalariaisSalvosHabilidade.add(configuracaoNivelCompetencia);
+			}
+			if (Character.valueOf('A').equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
+				niveisCompetenciaFaixaSalariaisSalvosAtitude.add(configuracaoNivelCompetencia);
+			}
+		}
 		
 		return Action.SUCCESS;
 	}
@@ -159,6 +203,34 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		try
 		{
+			if (niveisCompetenciaFaixaSalariais == null) {
+				niveisCompetenciaFaixaSalariais = new ArrayList<ConfiguracaoNivelCompetencia>();
+			}
+			
+			if (niveisCompetenciaFaixaSalariaisConhecimento != null && !niveisCompetenciaFaixaSalariaisConhecimento.isEmpty()) {
+				for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariaisConhecimento) {
+					if (configuracaoNivelCompetencia != null) {
+						niveisCompetenciaFaixaSalariais.add(configuracaoNivelCompetencia);
+					}
+				}
+			}
+			
+			if (niveisCompetenciaFaixaSalariaisHabilidade != null && !niveisCompetenciaFaixaSalariaisHabilidade.isEmpty()) {
+				for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariaisHabilidade) {
+					if (configuracaoNivelCompetencia != null) {
+						niveisCompetenciaFaixaSalariais.add(configuracaoNivelCompetencia);
+					}
+				}
+			}
+			
+			if (niveisCompetenciaFaixaSalariaisAtitude != null && !niveisCompetenciaFaixaSalariaisAtitude.isEmpty()) {
+				for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariaisAtitude) {
+					if (configuracaoNivelCompetencia != null) {
+						niveisCompetenciaFaixaSalariais.add(configuracaoNivelCompetencia);
+					}
+				}
+			}
+			
 			configuracaoNivelCompetenciaManager.saveCompetencias(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), null);
 			addActionSuccess("Níveis de competência da faixa salarial salvos com sucesso");
 		}
@@ -523,5 +595,44 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public void setDataFim(Date dataFim) {
 		this.dataFim = dataFim;
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariaisConhecimento() {
+		return niveisCompetenciaFaixaSalariaisConhecimento;
+	}
+
+	public void setNiveisCompetenciaFaixaSalariaisConhecimento(
+			Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisConhecimento) {
+		this.niveisCompetenciaFaixaSalariaisConhecimento = niveisCompetenciaFaixaSalariaisConhecimento;
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariaisHabilidade() {
+		return niveisCompetenciaFaixaSalariaisHabilidade;
+	}
+
+	public void setNiveisCompetenciaFaixaSalariaisHabilidade(
+			Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisHabilidade) {
+		this.niveisCompetenciaFaixaSalariaisHabilidade = niveisCompetenciaFaixaSalariaisHabilidade;
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariaisAtitude() {
+		return niveisCompetenciaFaixaSalariaisAtitude;
+	}
+
+	public void setNiveisCompetenciaFaixaSalariaisAtitude(
+			Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisAtitude) {
+		this.niveisCompetenciaFaixaSalariaisAtitude = niveisCompetenciaFaixaSalariaisAtitude;
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariaisSalvosConhecimento() {
+		return niveisCompetenciaFaixaSalariaisSalvosConhecimento;
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariaisSalvosHabilidade() {
+		return niveisCompetenciaFaixaSalariaisSalvosHabilidade;
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariaisSalvosAtitude() {
+		return niveisCompetenciaFaixaSalariaisSalvosAtitude;
 	}
 }
