@@ -466,50 +466,28 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = new Empresa();
 		empresaDao.save(empresa);
 
-		Colaborador joao = getEntity();
-		joao.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 4, 1984));
-		joao.getContato().setEmail("email.com");
-		joao.setDesligado(false);
-		joao.setEmpresa(empresa);
-		colaboradorDao.save(joao);
-		
-		Colaborador jonas = getEntity();
-		jonas.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 5, 1984));
-		jonas.getContato().setEmail("email.com");
-		jonas.setDesligado(false);
-		jonas.setEmpresa(empresa);
-		colaboradorDao.save(jonas);
-		
-		Colaborador paula = getEntity();
-		paula.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(25, 4, 1984));
-		paula.getContato().setEmail("email.com");
-		paula.setDesligado(false);
-		paula.setEmpresa(empresa);
-		colaboradorDao.save(paula);
-		
-		Colaborador maria = getEntity();
-		maria.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 4, 1984));
-		maria.getContato().setEmail("");
-		maria.setDesligado(false);
-		maria.setEmpresa(empresa);
-		colaboradorDao.save(maria);
-		
-		Colaborador pedro = getEntity();
-		pedro.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 4, 1984));
-		pedro.getContato().setEmail(null);
-		pedro.setDesligado(false);
-		pedro.setEmpresa(empresa);
-		colaboradorDao.save(pedro);
-		
-		Colaborador marcos = getEntity();
-		marcos.getPessoal().setDataNascimento(DateUtil.criarDataMesAno(07, 4, 1984));
-		marcos.getContato().setEmail("asdf");
-		marcos.setDesligado(true);
-		marcos.setEmpresa(empresa);
-		colaboradorDao.save(marcos);
+		criaColaboradorPara(DateUtil.criarDataMesAno(07, 4, 1984), "jose@email.com", false, empresa);
+		criaColaboradorPara(DateUtil.criarDataMesAno(07, 5, 1984), "chico@email.com", false, empresa);
+		criaColaboradorPara(DateUtil.criarDataMesAno(25, 4, 1984), "maria@email.com", false, empresa);
+		criaColaboradorPara(DateUtil.criarDataMesAno(07, 4, 1984), "", false, empresa);
+		criaColaboradorPara(DateUtil.criarDataMesAno(07, 4, 1984), null, false, empresa);
+		criaColaboradorPara(DateUtil.criarDataMesAno(07, 4, 1984), "joão@email.com", true, empresa);
 		
 		Collection<Colaborador> colaboradores = colaboradorDao.findAniversariantesByEmpresa(empresa.getId(), 7, 4);
+		
 		assertEquals(1, colaboradores.size());
+		assertEquals("jose@email.com", ((Colaborador)colaboradores.toArray()[0]).getContato().getEmail());
+	}
+
+	private void criaColaboradorPara(Date dataAniversario, String email, boolean desligado, Empresa empresa)
+	{
+		Colaborador colaborador = getEntity();
+		colaborador.getPessoal().setDataNascimento(dataAniversario);
+		colaborador.getContato().setEmail(email);
+		colaborador.setDesligado(desligado);
+		colaborador.setEmpresa(empresa);
+		
+		colaboradorDao.save(colaborador);
 	}
 
 	public void testFindByUsuarioProjection() throws Exception 

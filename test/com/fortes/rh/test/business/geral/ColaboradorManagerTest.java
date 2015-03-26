@@ -5,16 +5,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import mockit.Mockit;
 
-import org.apache.tools.ant.taskdefs.condition.HasMethod;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
-import org.jmock.MockObjectTestCase;
+import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -107,6 +105,7 @@ import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.test.util.mockObjects.MockTransactionStatus;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.importacao.ImportacaoCSVUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
@@ -138,6 +137,8 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     private Mock colaboradorPeriodoExperienciaAvaliacaoManager;
     private Mock solicitacaoManager;
     private Mock mensagemManager;
+    private Mock mail;
+    
 	private Colaborador colaborador;
 	private List<Formacao> formacoes;
 	private List<CandidatoIdioma> idiomas;
@@ -211,6 +212,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		mensagemManager = new Mock(MensagemManager.class);
 		colaboradorManager.setMensagemManager((MensagemManager) mensagemManager.proxy());
 		
+        mail = mock(Mail.class);
+        colaboradorManager.setMail((Mail) mail.proxy());
+
         usuarioManager = new Mock(UsuarioManager.class);
         MockSpringUtil.mocks.put("usuarioManager", usuarioManager);
         MockSpringUtil.mocks.put("avaliacaoDesempenhoManager", avaliacaoDesempenhoManager);
@@ -268,6 +272,86 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	assertEquals("03/02/2011\n23/02/2011", ((Colaborador)colabs.toArray()[0]).getDatasDeAvaliacao());
     	assertEquals("03/02/2011", ((Colaborador)colabs.toArray()[1]).getDatasDeAvaliacao());
     }
+    
+    public void testEnviaEmailAniversariantesSemEmpresas()
+    {
+    	Collection<Empresa> empresas = new ArrayList<Empresa>();
+    	
+		executaTesteEnviaEmailAniversariante(empresas);
+    }
+    
+    public void testEnviaEmailAniversariantesSemAniversariantesNoMes()
+    {
+    	Empresa empresa1 = EmpresaFactory.getEmpresa(1L); 
+    	Empresa empresa2 = EmpresaFactory.getEmpresa(2L);
+    	
+    	Collection<Empresa> empresas = Arrays.asList(empresa1, empresa2);
+		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+
+    	int dia = DateUtil.getDia(new Date());
+    	int mes = DateUtil.getMes(new Date());
+    	
+		colaboradorDao.expects(atLeastOnce()).method("findAniversariantesByEmpresa").with(ANYTHING, eq(dia), eq(mes)).will(returnValue(colaboradores));
+
+    	executaTesteEnviaEmailAniversariante(empresas);
+    }
+    
+    public void testEnviaEmailAniversariantesComAniversariantesNoMesSemEmail()
+    {
+    	Empresa empresa1 = EmpresaFactory.getEmpresa(1L); 
+    	Empresa empresa2 = EmpresaFactory.getEmpresa(2L);
+    	
+    	Collection<Empresa> empresas = Arrays.asList(empresa1, empresa2);
+
+    	Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
+    	colaborador1.getContato().setEmail(null);
+    	Colaborador colaborador2 = ColaboradorFactory.getEntity(1L);
+    	colaborador2.getContato().setEmail("");
+    	
+    	Collection<Colaborador> colaboradores = Arrays.asList(colaborador2);
+    	
+    	int dia = DateUtil.getDia(new Date());
+    	int mes = DateUtil.getMes(new Date());
+    	
+		colaboradorDao.expects(atLeastOnce()).method("findAniversariantesByEmpresa").with(ANYTHING, eq(dia), eq(mes)).will(returnValue(colaboradores));
+		executaTesteEnviaEmailAniversariante(empresas);
+    }
+    
+    public void testEnviaEmailAniversariantesComAniversariantesNoMesComEmail()
+    {
+    	Empresa empresa1 = EmpresaFactory.getEmpresa(1L); 
+    	Empresa empresa2 = EmpresaFactory.getEmpresa(2L);
+    	
+    	Collection<Empresa> empresas = Arrays.asList(empresa1, empresa2);
+    	
+    	Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
+    	colaborador1.getContato().setEmail("email@email.com");
+    	Colaborador colaborador2 = ColaboradorFactory.getEntity(1L);
+    	colaborador2.getContato().setEmail("");
+    	
+    	Collection<Colaborador> colaboradores = Arrays.asList(colaborador1,colaborador2);
+    	
+    	int dia = DateUtil.getDia(new Date());
+    	int mes = DateUtil.getMes(new Date());
+    	
+    	colaboradorDao.expects(atLeastOnce()).method("findAniversariantesByEmpresa").with(ANYTHING, eq(dia), eq(mes)).will(returnValue(colaboradores));
+    	mail.expects(atLeastOnce()).method("send").withAnyArguments().isVoid();
+    	
+    	executaTesteEnviaEmailAniversariante(empresas);
+    }
+
+	private void executaTesteEnviaEmailAniversariante(Collection<Empresa> empresas)
+	{
+    	Exception erro = null;
+    	try {
+    		colaboradorManager.enviaEmailAniversariantes(empresas);
+		} catch (Exception e) {
+			erro = e;
+			e.printStackTrace();
+		}
+
+    	assertNull("Fluxo de execução ok", erro);
+	}
     
     public void testGetAvaliacoesExperienciaPendentesPeriodo() throws Exception
     {

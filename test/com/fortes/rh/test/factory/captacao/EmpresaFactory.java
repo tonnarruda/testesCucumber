@@ -10,6 +10,7 @@ public class EmpresaFactory
 		empresa.setNome("empresa");
 		empresa.setCnpj("21212121212");
 		empresa.setRazaoSocial("empresa");
+		empresa.setMensagemCartaoAniversariante("Feliz aniversário");
 
 		return empresa;
 	}
