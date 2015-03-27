@@ -23,7 +23,6 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -143,6 +142,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
 		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), null);
+		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		
 		if (niveisCompetenciaFaixaSalariais == null) {
 			niveisCompetenciaFaixaSalariais = new ArrayList<ConfiguracaoNivelCompetencia>();
@@ -151,6 +151,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		niveisCompetenciaFaixaSalariaisConhecimento = new ArrayList<ConfiguracaoNivelCompetencia>();
 		niveisCompetenciaFaixaSalariaisHabilidade = new ArrayList<ConfiguracaoNivelCompetencia>();
 		niveisCompetenciaFaixaSalariaisAtitude = new ArrayList<ConfiguracaoNivelCompetencia>();
+		
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariais) {
 			if (Character.valueOf('C').equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
 				niveisCompetenciaFaixaSalariaisConhecimento.add(configuracaoNivelCompetencia);
@@ -163,12 +164,11 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			}
 		}
 		
-		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
-		
 		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
 		niveisCompetenciaFaixaSalariaisSalvosConhecimento = new ArrayList<ConfiguracaoNivelCompetencia>();
 		niveisCompetenciaFaixaSalariaisSalvosHabilidade = new ArrayList<ConfiguracaoNivelCompetencia>();
 		niveisCompetenciaFaixaSalariaisSalvosAtitude = new ArrayList<ConfiguracaoNivelCompetencia>();
+		
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariaisSalvos) {
 			if (Character.valueOf('C').equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
 				niveisCompetenciaFaixaSalariaisSalvosConhecimento.add(configuracaoNivelCompetencia);
@@ -180,7 +180,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 				niveisCompetenciaFaixaSalariaisSalvosAtitude.add(configuracaoNivelCompetencia);
 			}
 		}
-		
 		return Action.SUCCESS;
 	}
 	
