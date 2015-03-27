@@ -97,12 +97,14 @@ import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.ColaboradorIdiomaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.geral.EstadoFactory;
+import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
 import com.fortes.rh.test.util.mockObjects.MockAutenticador;
 import com.fortes.rh.test.util.mockObjects.MockImportacaoCSVUtil;
 import com.fortes.rh.test.util.mockObjects.MockRPClient;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.test.util.mockObjects.MockTransactionStatus;
+import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.Mail;
@@ -224,6 +226,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         Mockit.redefineMethods(ImportacaoCSVUtil.class, MockImportacaoCSVUtil.class);
         Mockit.redefineMethods(Autenticador.class, MockAutenticador.class);
         Mockit.redefineMethods(RPClient.class, MockRPClient.class);
+        Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
     }
 
     public void testFindAdmitidosNoPeriodo() throws Exception
