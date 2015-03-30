@@ -323,11 +323,11 @@
 				/geral/estabelecimento/*/**=ROLE_CAD_ESTABELECIMENTO
 				/geral/bairro/*/**=ROLE_CAD_BAIRRO
 
-				/geral/documentoAnexo/prepareInsertColaborador*/**=ROLE_CAD_COLABORADOR
-				/geral/documentoAnexo/prepareUpdateColaborador*/**=ROLE_CAD_COLABORADOR
-				/geral/documentoAnexo/deleteColaborador*/**=ROLE_CAD_COLABORADOR
-				/geral/documentoAnexo/insertColaborador*/**=ROLE_CAD_COLABORADOR
-				/geral/documentoAnexo/updateColaborador*/**=ROLE_CAD_COLABORADOR
+				/geral/documentoAnexo/prepareInsertColaborador*/**=ROLE_CAD_COLABORADOR,ROLE_COLAB_LIST_DOCUMENTOANEXO
+				/geral/documentoAnexo/prepareUpdateColaborador*/**=ROLE_CAD_COLABORADOR,ROLE_COLAB_LIST_DOCUMENTOANEXO
+				/geral/documentoAnexo/deleteColaborador*/**=ROLE_CAD_COLABORADOR,ROLE_COLAB_LIST_DOCUMENTOANEXO
+				/geral/documentoAnexo/insertColaborador*/**=ROLE_CAD_COLABORADOR,ROLE_COLAB_LIST_DOCUMENTOANEXO
+				/geral/documentoAnexo/updateColaborador*/**=ROLE_CAD_COLABORADOR,ROLE_COLAB_LIST_DOCUMENTOANEXO
 				/geral/documentoAnexo/prepareInsertCandidato*/**=ROLE_CAD_CANDIDATO
 				/geral/documentoAnexo/prepareUpdateCandidato*/**=ROLE_CAD_CANDIDATO
 				/geral/documentoAnexo/deleteCandidato*/**=ROLE_CAD_CANDIDATO
