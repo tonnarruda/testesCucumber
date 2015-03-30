@@ -49,10 +49,12 @@ public class MensagemDaoHibernate extends GenericDaoHibernate<Mensagem> implemen
 	public void removerMensagensViculadasByColaborador(Long[] colaboradoresIds) {
 		
 		String[] sql = new String[] {"DELETE FROM usuariomensagem where mensagem_id in(SELECT id from mensagem 	where link like '%colaborador.id=%'" + 
-										"and (cast(substring(link,'colaborador.id=([0-9]{1,9})')as integer)) in ("+StringUtils.join(colaboradoresIds, ",")+"));"};
+										"and (cast(substring(link,'colaborador.id=([0-9]{1,9})')as integer)) in ("+StringUtils.join(colaboradoresIds, ",")+") "
+										+ "and colaborador_id not in ("+StringUtils.join(colaboradoresIds, ",")+")); "};
 		JDBCConnection.executeQuery(sql);
 		
-		sql = new String[] {"delete from mensagem where link like '%colaborador.id=%' and (cast(substring(link,'colaborador.id=([0-9]{1,9})')as integer)) in ("+StringUtils.join(colaboradoresIds, ",")+");"};
+		sql = new String[] {"delete from mensagem where link like '%colaborador.id=%' and (cast(substring(link,'colaborador.id=([0-9]{1,9})')as integer)) in ("+StringUtils.join(colaboradoresIds, ",")+") "
+				+ "and colaborador_id not in ("+StringUtils.join(colaboradoresIds, ",")+"); "};
 		JDBCConnection.executeQuery(sql);
 	}
 }
