@@ -3,6 +3,7 @@
 	<Versao id="1.1.14x.17x" bd="" data="xx/04/2015">
 		<Item visivel="S" motivo="S20150300093"><![CDATA[C&S > Cadastros > Cargos e Faixas > Faixas Salariais > Níveis de Competência: Agrupamento das competências em conhecimento, habilidade e atitude.]]></Item>
 		<Item visivel="N" motivo="S20150300100"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Apresentar na listagem de colaboradores ativos, os colaboradores que estejam com o último histórico cancelado.]]></Item>
+		<Item visivel="S" motivo="S20150300097"><![CDATA[Info. Funcionais > Cadastros > Painel de Indicadores: Novo filtro por estabelecimentos.]]></Item>
 		<Item visivel="S" motivo="P20150300218"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Inconsistência ao excluir colaborador quando o mesmo apresentava mensagens.]]></Item>
 	</Versao>
 	<Versao id="1.1.142.171" bd="" data="24/03/2015">

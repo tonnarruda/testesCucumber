@@ -275,14 +275,14 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		this.acPessoalClientColaboradorOcorrencia = acPessoalClientColaboradorOcorrencia;
 	}
 
-	public Collection<Object[]> montaGraficoAbsenteismo(String dataMesAnoIni, String dataMesAnoFim, Collection<Long> empresaIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean considerarSabadoNoAbsenteismo) 
+	public Collection<Object[]> montaGraficoAbsenteismo(String dataMesAnoIni, String dataMesAnoFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean considerarSabadoNoAbsenteismo) 
 	{
 		Collection<Object[]>  graficoEvolucaoAbsenteismo = new ArrayList<Object[]>();
 		Date dataIni = DateUtil.criarDataMesAno(dataMesAnoIni);
 		Date dataFim = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(dataMesAnoFim));
 
 		try {
-			Collection<Absenteismo> absenteismos = montaAbsenteismo(dataIni, dataFim, empresaIds, null, areasIds, null, null, cargosIds, considerarSabadoNoAbsenteismo);
+			Collection<Absenteismo> absenteismos = montaAbsenteismo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, null, null, cargosIds, considerarSabadoNoAbsenteismo);
 			
 			for (Absenteismo absenteismo : absenteismos) 
 			{

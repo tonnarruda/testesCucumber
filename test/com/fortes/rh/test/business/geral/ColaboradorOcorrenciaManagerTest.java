@@ -21,10 +21,12 @@ import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.ColaboradorOcorrenciaFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.util.mockObjects.MockTransactionStatus;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaboradorOcorrencia;
@@ -428,6 +430,8 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 	public void testMontaGraficoAbsenteismo() throws Exception
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		
 		Collection<Absenteismo> retornoBD = new ArrayList<Absenteismo>();
 		retornoBD.add(new Absenteismo("2011", "01", 0));
 		retornoBD.add(new Absenteismo("2011", "02", 2));
@@ -439,7 +443,8 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		colaboradorAfastamentoManager.expects(once()).method("countAfastamentosByPeriodo").will(returnValue(retornoBD));
 		colaboradorManager.expects(atLeastOnce()).method("countAtivosPeriodo").will(returnValue(10));
 		
-		Collection<Object[]> absenteismos = colaboradorOcorrenciaManager.montaGraficoAbsenteismo("01/2011", "05/2011", Arrays.asList(empresa.getId()), null, null, false);
+		Collection<Object[]> absenteismos = colaboradorOcorrenciaManager.montaGraficoAbsenteismo("01/2011", "05/2011", Arrays.asList(empresa.getId()), Arrays.asList(estabelecimento.getId()), null, null, false);
+		
 		assertEquals(5, absenteismos.size());
 		assertEquals(0.0, ((Object[])absenteismos.toArray()[0])[1]);
 		assertEquals(2.0, ((Object[])absenteismos.toArray()[1])[1]);

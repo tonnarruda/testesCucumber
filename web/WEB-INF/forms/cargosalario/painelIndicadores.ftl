@@ -45,6 +45,7 @@
 		
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 		
@@ -194,7 +195,16 @@
 				
 				return validaFormulario('formBusca', new Array('@empresasCheck','dataBase','dataIni','dataFim','dataIniDeslig','dataFimDeslig','dataIniTurn','dataFimTurn','dataMesAnoIni','dataMesAnoFim'), new Array('dataBase','dataIni','dataFim','dataIniDeslig','dataFimDeslig','dataIniTurn','dataFimTurn','dataMesAnoIni','dataMesAnoFim'));
 			}
-						
+					
+			function populaEstabelecimentos() {
+				var empresasIds = getArrayCheckeds(document.forms[0],'empresasCheck');
+				EstabelecimentoDWR.getByEmpresas(null, empresasIds, createListEstabelecimentos);
+			}	
+			
+			function createListEstabelecimentos(data) {
+				addChecksByMap("estabelecimentosCheck", data);
+			}
+			
 			function populaAreas()
 			{
 				DWRUtil.useLoadingMessage('Carregando...');
@@ -331,8 +341,11 @@
 							</td>
 						</tr>
 						<tr>
-							<td colspan="3" align="left">
-								<@frt.checkListBox label="Empresas" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" onClick="populaAreas();" width="910" filtro="true"/>
+							<td>
+								<@frt.checkListBox label="Empresas" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" onClick="populaAreas();populaEstabelecimentos();" width="450" filtro="true"/>
+							</td>
+							<td>
+								<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" form="document.getElementById('formBusca')" width="450" filtro="true"/>
 							</td>
 						</tr>
 					    <tr>

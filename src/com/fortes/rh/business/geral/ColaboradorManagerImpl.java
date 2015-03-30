@@ -2081,57 +2081,57 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findEmailsByPapel(usuarioEmpresaIds);
 	}
 
-	public Collection<DataGrafico> countSexo(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
+	public Collection<DataGrafico> countSexo(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds) 
 	{
-		return getDao().countSexo(data, empresaIds, areasIds, cargosIds);
+		return getDao().countSexo(data, empresaIds, estabelecimentosIds, areasIds, cargosIds);
 	}
 
-	public Collection<DataGrafico> countEstadoCivil(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
+	public Collection<DataGrafico> countEstadoCivil(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds) 
 	{
-		return getDao().countEstadoCivil(data, empresaIds, areasIds, cargosIds);
+		return getDao().countEstadoCivil(data, empresaIds, estabelecimentosIds, areasIds, cargosIds);
 	}
 
-	public Collection<DataGrafico> countFormacaoEscolar(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
+	public Collection<DataGrafico> countFormacaoEscolar(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds) 
 	{
-		return  getDao().countFormacaoEscolar(data, empresaIds, areasIds, cargosIds);
+		return  getDao().countFormacaoEscolar(data, empresaIds, estabelecimentosIds, areasIds, cargosIds);
 	}
 
-	public Collection<DataGrafico> countFaixaEtaria(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds)
+	public Collection<DataGrafico> countFaixaEtaria(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds)
 	{
-		return  getDao().countFaixaEtaria(data, empresaIds, areasIds, cargosIds);
+		return  getDao().countFaixaEtaria(data, empresaIds, estabelecimentosIds, areasIds, cargosIds);
 	}
 
-	public Collection<DataGrafico> countDeficiencia(Date data, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
+	public Collection<DataGrafico> countDeficiencia(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds) 
 	{
-		return getDao().countDeficiencia(data, empresaIds, areasIds, cargosIds);
+		return getDao().countDeficiencia(data, empresaIds, estabelecimentosIds, areasIds, cargosIds);
 	}
 
-	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
+	public Collection<DataGrafico> countMotivoDesligamento(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
 	{
-		return getDao().countMotivoDesligamento(dataIni, dataFim, empresaIds, areasIds, cargosIds, qtdItens);
+		return getDao().countMotivoDesligamento(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItens);
 	}
 
-	public Collection<DataGrafico> countColocacao(Date dataBase, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
+	public Collection<DataGrafico> countColocacao(Date dataBase, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds) 
 	{
-		return getDao().countColocacao(dataBase, empresaIds, areasIds, cargosIds);
+		return getDao().countColocacao(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
 	}
 
-	public Collection<DataGrafico> countOcorrencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
+	public Collection<DataGrafico> countOcorrencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
 	{
-		return getDao().countOcorrencia(dataIni, dataFim, empresaIds, areasIds, cargosIds, qtdItens);
+		return getDao().countOcorrencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItens);
 	}
 
-	public Collection<DataGrafico> countProvidencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
+	public Collection<DataGrafico> countProvidencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
 	{
-		return getDao().countProvidencia(dataIni, dataFim, empresaIds, areasIds, cargosIds, qtdItens);
+		return getDao().countProvidencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItens);
 	}
 
-	public int getCountAtivos(Date dataBase, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds) 
+	public int getCountAtivos(Date dataBase, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds) 
 	{
-		return getDao().getCountAtivos(dataBase, empresaIds, areasIds, cargosIds);
+		return getDao().getCountAtivos(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
 	}
 
-	public Integer countAdmitidosDemitidosTurnover(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] areasIds, Long[] cargosIds, boolean isAdmitidos) 
+	public Integer countAdmitidosDemitidosTurnover(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, boolean isAdmitidos) 
 	{
 		Integer totalPorEmpresas = 0;
 		if(empresaIds != null)
@@ -2139,7 +2139,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			for (Long empresaId : empresaIds)
 			{	
 				Empresa empresaTmp = empresaManager.findByIdProjection(empresaId);
-				totalPorEmpresas += getDao().countAdmitidosDemitidosTurnover(dataIni, dataFim, empresaTmp, areasIds, cargosIds, isAdmitidos);
+				totalPorEmpresas += getDao().countAdmitidosDemitidosTurnover(dataIni, dataFim, empresaTmp, estabelecimentosIds, areasIds, cargosIds, isAdmitidos);
 			}			
 		}
 
@@ -2320,7 +2320,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return StringUtil.toJSON(retorno, null);
 	}
 	
-	public Collection<DataGrafico> montaGraficoTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Date dataIni, Date dataFim, Collection<Long> empresasIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos) 
+	public Collection<DataGrafico> montaGraficoTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Date dataIni, Date dataFim, Collection<Long> empresasIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos) 
 	{
 		Map<String, Integer> qtds = new HashMap<String, Integer>();
 		Empresa empresa;
@@ -2330,7 +2330,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		{
 			empresa = empresaManager.findByIdProjection(empresaId);
 			
-			Collection<TurnOver> turnOvers = getDao().countDemitidosTempoServico(empresa, dataIni, dataFim, areasIds, cargosIds, vinculos);
+			Collection<TurnOver> turnOvers = getDao().countDemitidosTempoServico(empresa, dataIni, dataFim, estabelecimentosIds, areasIds, cargosIds, vinculos);
 			
 			for (TurnOver turnOver : turnOvers)
 			{				

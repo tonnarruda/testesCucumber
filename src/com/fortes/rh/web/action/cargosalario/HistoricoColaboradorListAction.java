@@ -163,6 +163,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 			
 		Long[] areasIds = LongUtil.arrayStringToArrayLong(areasCheck);
 		Long[] cargosIds = LongUtil.arrayStringToArrayLong(cargosCheck);
+		Long[] estabelecimentosIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
 		
 		Date hoje = new Date();
 		dataBase = (dataBase == null) ? hoje : dataBase;
@@ -192,26 +193,29 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 		empresasCheckList = CheckListBoxUtil.marcaCheckListBox(empresasCheckList, empresasCheck);
 		
-		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, empresaIds, areasIds, cargosIds);
-		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, empresaIds, areasIds, cargosIds);
-		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(dataBase, empresaIds, areasIds, cargosIds);
-		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(dataBase, empresaIds, areasIds, cargosIds);
-		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, empresaIds, areasIds, cargosIds);
-		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, empresaIds, areasIds, cargosIds);
+		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(LongUtil.collectionStringToArrayLong(empresaIds));
+		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		
-		Collection<DataGrafico> graficoOcorrencia = colaboradorManager.countOcorrencia(dataIni, dataFim, empresaIds, areasIds, cargosIds, qtdItensOcorrencia);
-		Collection<DataGrafico> graficoProvidencia = colaboradorManager.countProvidencia(dataIni, dataFim, empresaIds, areasIds, cargosIds, qtdItensOcorrencia);
+		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
+		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
+		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
+		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
+		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
+		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
+		
+		Collection<DataGrafico> graficoOcorrencia = colaboradorManager.countOcorrencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItensOcorrencia);
+		Collection<DataGrafico> graficoProvidencia = colaboradorManager.countProvidencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItensOcorrencia);
 
-		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIniDeslig, dataFimDeslig, empresaIds, areasIds, cargosIds, qtdItensDesligamento);
+		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIniDeslig, dataFimDeslig, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItensDesligamento);
 		
-		Collection<DataGrafico> graficoTurnoverTempoServico = colaboradorManager.montaGraficoTurnoverTempoServico(tempoServicoIni, tempoServicoFim, dataIniTurn, dataFimTurn, empresaIds, LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), new CollectionUtil<String>().convertArrayToCollection(vinculosCheck));
+		Collection<DataGrafico> graficoTurnoverTempoServico = colaboradorManager.montaGraficoTurnoverTempoServico(tempoServicoIni, tempoServicoFim, dataIniTurn, dataFimTurn, empresaIds, LongUtil.arrayLongToCollectionLong(estabelecimentosIds), LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), new CollectionUtil<String>().convertArrayToCollection(vinculosCheck));
 		
-		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, empresaIds, LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), getEmpresaSistema().isConsiderarSabadoNoAbsenteismo());
+		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, empresaIds, LongUtil.arrayLongToCollectionLong(estabelecimentosIds), LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), getEmpresaSistema().isConsiderarSabadoNoAbsenteismo());
 		grfEvolucaoAbsenteismo = StringUtil.toJSON(graficoEvolucaoAbsenteismo, null);
 		
-		countAdmitidos = colaboradorManager.countAdmitidosDemitidosTurnover(dataIniTurn, dataFimTurn, empresaIds, areasIds, cargosIds, true);
-		countDemitidos = colaboradorManager.countAdmitidosDemitidosTurnover(dataIniTurn, dataFimTurn, empresaIds, areasIds, cargosIds, false);
-		qtdColaborador = colaboradorManager.getCountAtivos(dataBase, empresaIds, areasIds, cargosIds);
+		countAdmitidos = colaboradorManager.countAdmitidosDemitidosTurnover(dataIniTurn, dataFimTurn, empresaIds, estabelecimentosIds, areasIds, cargosIds, true);
+		countDemitidos = colaboradorManager.countAdmitidosDemitidosTurnover(dataIniTurn, dataFimTurn, empresaIds, estabelecimentosIds, areasIds, cargosIds, false);
+		qtdColaborador = colaboradorManager.getCountAtivos(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
 		
 		grfFormacaoEscolars = StringUtil.toJSON(graficoformacaoEscolars, null);
 		grfFaixaEtarias = StringUtil.toJSON(graficofaixaEtaria, null);
@@ -226,7 +230,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		
 		turnOverCollections = new ArrayList<TurnOverCollection>();
 		for (Long empresaId: empresaIds) 
-			turnOverCollections.add(colaboradorManager.montaTurnOver(dataIniTurn, dataFimTurn, empresaId, null, LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), new CollectionUtil<String>().convertArrayToCollection(vinculosCheck), 3));
+			turnOverCollections.add(colaboradorManager.montaTurnOver(dataIniTurn, dataFimTurn, empresaId, LongUtil.arrayLongToCollectionLong(estabelecimentosIds), LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), new CollectionUtil<String>().convertArrayToCollection(vinculosCheck), 3));
 		
 		grfEvolucaoTurnover = colaboradorManager.montaGraficoTurnover(turnOverCollections, empresas);
 		
