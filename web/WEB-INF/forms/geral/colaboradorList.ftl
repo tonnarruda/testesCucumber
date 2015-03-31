@@ -166,8 +166,11 @@
 			<input type="submit" value="" id="btnPesquisar" class="btnPesquisar grayBGE" onclick="document.getElementById('pagina').value = 1;">
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
-	<br>
 
+	<p>
+		<span style="background-color: #454C54;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Ativos&nbsp;&nbsp;<span style="background-color: #e36f6f;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Desligados
+	</P>
+	
 	<@display.table name="colaboradors" id="colaborador" pagesize=20 class="dados" defaultsort=3 >
 		<#assign style=""/>
 		<@display.column title="Ações" media="html" class="acao" style = "width:250px;">
