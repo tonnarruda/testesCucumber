@@ -134,5 +134,13 @@ public class IndiceManagerImpl extends GenericManagerImpl<Indice, IndiceDao> imp
 	{
 		return getDao().findComHistoricoAtual(empresa);
 	}
+	
+	public Collection<Indice> findIndices(int page, int pagingSize, String nome) {
+		return getDao().findIndices(page, pagingSize, nome);
+	}
+	
+	public Integer getCount(String nome){
+		return getDao().getCount(nome);
+	}
 
 }

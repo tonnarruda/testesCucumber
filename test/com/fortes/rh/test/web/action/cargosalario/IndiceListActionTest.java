@@ -43,8 +43,8 @@ public class IndiceListActionTest extends MockObjectTestCase
    {
 	   Collection<Indice> indices = IndiceFactory.getCollection(1L);
 
-	   manager.expects(once()).method("getCount").withNoArguments().will(returnValue(1));
-	   manager.expects(once()).method("find").with(ANYTHING,ANYTHING,ANYTHING).will(returnValue(indices));
+	   manager.expects(once()).method("getCount").with(ANYTHING).will(returnValue(1));
+	   manager.expects(once()).method("findIndices").with(ANYTHING,ANYTHING,ANYTHING).will(returnValue(indices));
 
 	   assertEquals("success", action.list());
 	   assertEquals(indices, action.getIndices());

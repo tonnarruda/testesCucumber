@@ -17,4 +17,6 @@ public interface IndiceDao extends GenericDao<Indice>
 	Collection<Indice> findSemCodigoAC(Empresa empresa);
 	Collection<Indice> findComHistoricoAtual(Long[] indicesIds);
 	Collection<Indice> findComHistoricoAtual(Empresa empresa);
+	Collection<Indice> findIndices(int page, int pagingSize, String nome);
+	Integer getCount(String nome);
 }

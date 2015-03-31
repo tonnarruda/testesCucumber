@@ -29,4 +29,6 @@ public interface IndiceManager extends GenericManager<Indice>
 	void deleteIndice(Long[] indiceIds) throws Exception;
 	Collection<Indice> findComHistoricoAtual(Long[] indicesIds);
 	Collection<Indice> findComHistoricoAtual(Empresa empresa);
+	Collection<Indice> findIndices(int page, int pagingSize, String nome);
+	Integer getCount(String nome);
 }

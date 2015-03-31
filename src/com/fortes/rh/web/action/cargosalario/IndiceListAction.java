@@ -14,13 +14,14 @@ public class IndiceListAction extends MyActionSupportList
 
 	private Collection<Indice> indices;
 
-	private Indice indiceAux;
+	private Indice indiceAux = new Indice();
 	private boolean integradoAC;
 
 	public String list() throws Exception
 	{
-		setTotalSize(indiceManager.getCount());
-		indices = indiceManager.find(getPage(),getPagingSize(), new String[]{"nome"});
+		setTotalSize(indiceManager.getCount(indiceAux.getNome()));
+//		indices = indiceManager.find(getPage(),getPagingSize(), new String[]{"nome"});
+		indices = indiceManager.findIndices(getPage(), getPagingSize(), indiceAux.getNome());
 		
 		integradoAC = getEmpresaSistema().isAcIntegra();
 		

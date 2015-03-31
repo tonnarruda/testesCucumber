@@ -171,4 +171,53 @@ public class IndiceDaoHibernate extends GenericDaoHibernate<Indice> implements I
 
 		return query.list();
 	}
+	
+	public Collection<Indice> findIndices(int page, int pagingSize, String nome) {
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "i");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("i.id"), "id");
+		p.add(Projections.property("i.nome"), "nome");
+		p.add(Projections.property("i.codigoAC"), "codigoAC");
+
+		criteria.setProjection(p);
+
+		if (nome != null && nome.trim().length() > 0) {
+			criteria.add(Expression.ilike("i.nome","%"+ nome +"%"));
+		}
+		
+		if(pagingSize > 0) {
+			criteria.setFirstResult(((page - 1) * pagingSize));
+			criteria.setMaxResults(pagingSize);
+		}
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
+	
+	public Integer getCount(String nome){
+		
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "i");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("i.id"), "id");
+		p.add(Projections.property("i.nome"), "nome");
+		p.add(Projections.property("i.codigoAC"), "codigoAC");
+
+		criteria.setProjection(p);
+
+		if (nome != null && nome.trim().length() > 0) {
+			criteria.add(Expression.ilike("i.nome","%"+ nome +"%"));
+		}
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		Collection<Indice> indices = criteria.list();
+		
+		if (indices == null || indices.isEmpty()) {
+			return 0;
+		} else {
+			return indices.size();
+		}
+	}
 }

@@ -265,6 +265,46 @@ public class IndiceDaoHibernateTest extends GenericDaoHibernateTest<Indice>
 		
 		assertEquals(0, indiceDao.findSemCodigoAC(ente).size());
 	}
+	
+	public void testGetCount(){
+		
+		Indice indice1 = IndiceFactory.getEntity();
+		indice1.setNome("aaa");
+		indiceDao.save(indice1);
+		
+		Indice indice2 = IndiceFactory.getEntity();
+		indice2.setNome("mmm");
+		indiceDao.save(indice2);
+		
+		int retorno1 = indiceDao.getCount(indice1.getNome());
+		int retorno2 = indiceDao.getCount(null);
+		int retorno3 = indiceDao.getCount("zzzxxxcccvvv");
+		
+		assertEquals("Retorno de 1 indíce", 1, retorno1);
+		assertTrue("Retorno de 2 indíces", retorno2 > 1);
+		assertEquals("Retorno de 0 indíces", 0, retorno3);
+	}
+	
+	public void testFindIndices() {
+		
+		Indice indice1 = IndiceFactory.getEntity();
+		indice1.setNome("aaa");
+		indiceDao.save(indice1);
+		
+		Indice indice2 = IndiceFactory.getEntity();
+		indice2.setNome("mmm");
+		indiceDao.save(indice2);
+		
+		Collection<Indice> retorno1 = indiceDao.findIndices(0, 0, indice1.getNome());
+		Collection<Indice> retorno2 = indiceDao.findIndices(0, 0, null);
+		Collection<Indice> retorno3 = indiceDao.findIndices(0, 0, "zzzxxxcccvvv");
+		
+		assertEquals("Retorno de 1 indíce", 1, retorno1.size());
+		assertTrue("Retorno de 2 indíces", retorno2.size() > 1);
+		assertEquals("Retorno de 0 indíces", 0, retorno3.size());
+		
+		
+	}
 
 	public void setIndiceDao(IndiceDao indiceDao)
 	{
