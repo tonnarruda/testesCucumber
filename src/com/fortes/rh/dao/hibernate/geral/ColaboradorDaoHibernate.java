@@ -35,6 +35,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.Deficiencia;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
+import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
@@ -3265,7 +3266,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		sql.append("on a.id = hc.areaOrganizacional_id ");
 		sql.append("where ");
 		sql.append("colab_.empresa_id = :empresaId ");
-		sql.append("and hc.status in (:status) ");
+		
+		sql.append("and ( ( hc.status in (:status)  ");
+		if(situacao != null && !situacao.trim().equals("") && !situacao.trim().equals("T") && !situacao.trim().equals("U"))
+		{
+			if(situacao.trim().equals("A"))
+				sql.append("and hc.motivo != :motivoContratado ) or ( hc.motivo = :motivoContratado and hc.status = :statusConfirmado ");
+		}
+		sql.append(") ) ");
 		
 		if(areaBuscaId != null)
 			sql.append("and hc.areaOrganizacional_id = :areaBuscaId ");
@@ -3338,7 +3346,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			if(situacao.trim().equals("A"))
 			{
 				query.setBoolean("situacao", false);
-				Integer[] status = {StatusRetornoAC.CONFIRMADO,StatusRetornoAC.CANCELADO};
+				Integer[] status = {StatusRetornoAC.CONFIRMADO,StatusRetornoAC.CANCELADO, StatusRetornoAC.AGUARDANDO};
+				query.setInteger("statusConfirmado", StatusRetornoAC.CONFIRMADO);
+				query.setString("motivoContratado", MotivoHistoricoColaborador.CONTRATADO);
 				query.setParameterList("status", status);
 			}
 			if(situacao.trim().equals("D"))
