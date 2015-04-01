@@ -23,6 +23,7 @@ public enum EnviarPara
 	APROVAR_REPROVAR_SOLICITACAO_DESLIGAMENTO (20, "Usuários com perfil de aprovar/reprovar solicitação de desligamento"),
 	SOLICITANTE_DESLIGAMENTO (21, "Solicitante do desligamento"),
 	APLICAR_REALINHAMENTO(22, "Usuários com perfil de aplicar realinhamento"),
+	APROVAR_REPROVAR_SOLICITACAO_PESSOAL_AND_GESTOR(23,"Gestor da área organizacional com o perfil de aprovar/reprovar solicitação de pessoal."), 
 	AVULSO (99, "Avulso");
 	
 	EnviarPara(Integer id , String descricao)

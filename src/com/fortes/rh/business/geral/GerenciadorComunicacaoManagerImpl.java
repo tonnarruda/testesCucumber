@@ -1631,6 +1631,25 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 						
 						mail.send(empresa, parametrosDoSistema, subject, bodyAprovarReprovar, emailsByUsuario);
 					}
+					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_PESSOAL_AND_GESTOR.getId()))
+					{
+						Collection<AreaOrganizacional> todasAreas = areaOrganizacionalManager.findAllListAndInativas(empresa.getId(), true, null);
+						Collection<AreaOrganizacional> areaOrganizacionais = areaOrganizacionalManager.getAncestrais(todasAreas, solicitacao.getAreaOrganizacional().getId());
+						
+						Collection<Long> areasIds = LongUtil.collectionToCollectionLong(areaOrganizacionais);
+						
+						UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
+						String[] emailsByUsuario = usuarioManager.findEmailByPerfilAndGestor("ROLE_LIBERA_SOLICITACAO", empresa.getId(), areasIds, false);
+						
+							if(emailsByUsuario.length > 0 ){
+								String link = parametrosDoSistema.getAppUrl() + "/captacao/solicitacao/prepareUpdate.action?solicitacao.id=" + solicitacao.getId();
+								String bodyAprovarReprovar = body.toString();
+								bodyAprovarReprovar += "<br><br>Acesse o RH para aprovar ou reprovar a solicitação:<br>";
+								bodyAprovarReprovar += "<a href='" + link + "'>RH</a>";
+								
+								mail.send(empresa, parametrosDoSistema, subject, bodyAprovarReprovar, emailsByUsuario);
+							}
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -1704,18 +1723,27 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void enviaAvisoSolicitacaoDesligamento(Long colaboradorId, Long empresaId) 
 	{
 		try {
+			
+			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+			Colaborador colaborador = colaboradorManager.findByIdComHistorico(colaboradorId);
+			
 			Empresa empresa = empresaManager.findByIdProjection(empresaId);
 			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 				
-			ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
-			Colaborador colaborador = colaboradorManager.findColaboradorByIdProjection(colaboradorId);
 			String link = parametrosDoSistema.getAppUrl() + "/geral/colaborador/visualizarSolicitacaoDesligamento.action?colaborador.id=" + colaborador.getId();
 			
 			UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBean("usuarioManager");
-			String[] emailsByUsuario = usuarioManager.findEmailByPerfilAndResponsavel("ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO", colaboradorId, empresaId);
+			String[] emailsByUsuario; 
+			
+			Collection<AreaOrganizacional> todasAreas = areaOrganizacionalManager.findAllListAndInativas(empresa.getId(), true, null);
+			Collection<AreaOrganizacional> areaOrganizacionais = areaOrganizacionalManager.getAncestrais(todasAreas, colaborador.getAreaOrganizacional().getId());
+			
+			Collection<Long> areasIds = LongUtil.collectionToCollectionLong(areaOrganizacionais);
+			
+			emailsByUsuario = usuarioManager.findEmailByPerfilAndGestor("ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO", empresaId, areasIds, true);
 			
 			String subject = "[RH] - Solicitação de desligamento de colaborador";
-			StringBuilder body = new StringBuilder();
+			StringBuilder body = new StringBuilder(); 
 			body.append("Existe uma solicitação de desligamento para o colaborador <b>");
 			body.append(colaborador.getNome());
 			body.append("</b> pendente. Para aprovar ou reprovar essa solicitação, acesse o sistema <a href='"+link+"'>RH</a>.<br/><br />");

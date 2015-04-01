@@ -323,7 +323,7 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		return new CollectionUtil<String>().convertCollectionToArrayString(criteria.list());
 	}
 
-	public String[] findEmailsByPerfilAndResponsavel(String role, Long colaboradorId, Long empresaId) {
+	public String[] findEmailsByPerfilAndGestor(String role, Long empresaId, Collection<Long> areaOrganizacionalIds, boolean isVerTodosColaboradores) {
 		
 		StringBuilder sql = new StringBuilder();
 		
@@ -338,18 +338,17 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		sql.append("		where " );
 		sql.append("			pa.codigo = :role ");
 		sql.append("			and ( ");
-		sql.append("					( ");
-		sql.append("						a.responsavel_id = c.id and a.id = ( ");
-		sql.append("															 	select areaorganizacional_id from historicocolaborador hc " );
-		sql.append("															 	where hc.data = ( ");
-		sql.append("															 	select max(data) from historicocolaborador hc1 " );
-		sql.append("															 	where hc1.colaborador_id = :colaboradorId) and hc.colaborador_id = :colaboradorId ) " );
-		sql.append("					)or 'ROLE_COLAB_VER_TODOS' = ( ");
-		sql.append("													select distinct(pa1.codigo) from usuarioempresa " );
-		sql.append("													join perfil p1 on ue.perfil_id = p1.id " );
-		sql.append("													join perfil_papel pp1 on p1.id = pp1.perfil_id " );
-		sql.append("													join papel pa1 on pp1.papeis_id = pa1.id and pa1.codigo = 'ROLE_COLAB_VER_TODOS' " );
-		sql.append("												 ) ");
+		sql.append("			a.id in(:areaOrganizacionalIds)" );
+		
+		if(isVerTodosColaboradores){
+			sql.append("				or 'ROLE_COLAB_VER_TODOS' = ( ");
+			sql.append("													select distinct(pa1.codigo) from usuarioempresa " );
+			sql.append("													join perfil p1 on ue.perfil_id = p1.id " );
+			sql.append("													join perfil_papel pp1 on p1.id = pp1.perfil_id " );
+			sql.append("													join papel pa1 on pp1.papeis_id = pa1.id and pa1.codigo = 'ROLE_COLAB_VER_TODOS' " );
+			sql.append("												 ) ");
+		}
+		
 		sql.append(" 			) "	);
 		sql.append("			and u.acessosistema = true " );
 		sql.append("        	and ue.empresa_id= :empresaId " ); 
@@ -357,13 +356,12 @@ public class UsuarioDaoHibernate extends GenericDaoHibernate<Usuario> implements
 		sql.append("    	order by ");
 		sql.append("       		c.email asc ");
 		
-		
 		Query q = getSession().createSQLQuery(sql.toString());
-		
 		q.setString("role", role);
-		q.setLong("colaboradorId", colaboradorId);
 		q.setLong("empresaId", empresaId);
-		
+		q.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds);
+			
 		return new CollectionUtil<String>().convertCollectionToArrayString(q.list());
 	}
+	
 }

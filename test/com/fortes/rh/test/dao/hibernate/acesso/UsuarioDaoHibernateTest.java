@@ -29,6 +29,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.UsuarioEmpresaFactory;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.LongUtil;
 
 public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 {
@@ -450,10 +451,17 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		colab.setUsuario(usuario);
 		colaboradorDao.save(colab);
 		
+		
+		AreaOrganizacional areaOrganizacionalMae = AreaOrganizacionalFactory.getEntity(1L);
+		areaOrganizacionalMae.setNome("Area Mãe");
+		areaOrganizacionalDao.save(areaOrganizacionalMae);
+
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
 		areaOrganizacional.setNome("Area");
 		areaOrganizacional.setResponsavel(colab);
 		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Collection<AreaOrganizacional> areas = Arrays.asList(areaOrganizacionalMae, areaOrganizacional);
 		
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
 		historicoColaborador.setData(new Date());
@@ -482,7 +490,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		usuarioEmpresaDao.save(usuarioEmpresa);
 		
 		usuarioDao.getHibernateTemplateByGenericDao().flush();
-		String[] retorno = usuarioDao.findEmailsByPerfilAndResponsavel(papel.getCodigo(), colab.getId(), empresa.getId()); 
+		String[] retorno = usuarioDao.findEmailsByPerfilAndGestor(papel.getCodigo(), empresa.getId(), LongUtil.collectionToCollectionLong(areas), true); 
 		assertEquals("colab@gmail.com", ((String) retorno[0]));
 	}
 
@@ -502,6 +510,16 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		colab.setEmpresa(empresa);
 		colab.setUsuario(usuario);
 		colaboradorDao.save(colab);
+		
+		AreaOrganizacional areaOrganizacionalMae = AreaOrganizacionalFactory.getEntity(1L);
+		areaOrganizacionalMae.setNome("Area Mãe");
+		areaOrganizacionalDao.save(areaOrganizacionalMae);
+
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		areaOrganizacional.setNome("Area");
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Collection<AreaOrganizacional> areas = Arrays.asList(areaOrganizacionalMae, areaOrganizacional);
 		
 		Papel papel = new Papel();
 		papel.setCodigo("ROLE");
@@ -533,7 +551,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		usuarioEmpresaDao.save(usuarioEmpresa);
 		
 		usuarioDao.getHibernateTemplateByGenericDao().flush();
-		String[] retorno = usuarioDao.findEmailsByPerfilAndResponsavel(papel.getCodigo(), colab.getId(), empresa.getId()); 
+		String[] retorno = usuarioDao.findEmailsByPerfilAndGestor(papel.getCodigo(), empresa.getId(), LongUtil.collectionToCollectionLong(areas), true); 
 		assertEquals("colab@gmail.com", ((String) retorno[0]));
 	}
 	
@@ -553,6 +571,16 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		colab.setUsuario(usuario);
 		colaboradorDao.save(colab);
 		
+		AreaOrganizacional areaOrganizacionalMae = AreaOrganizacionalFactory.getEntity(1L);
+		areaOrganizacionalMae.setNome("Area Mãe");
+		areaOrganizacionalDao.save(areaOrganizacionalMae);
+
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
+		areaOrganizacional.setNome("Area");
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Collection<AreaOrganizacional> areas = Arrays.asList(areaOrganizacionalMae, areaOrganizacional);
+
 		Papel papel = new Papel();
 		papel.setCodigo("ROLE");
 		papel.setNome("role");
@@ -574,7 +602,7 @@ public class UsuarioDaoHibernateTest extends GenericDaoHibernateTest<Usuario>
 		usuarioEmpresa.setPerfil(perfil);
 		usuarioEmpresaDao.save(usuarioEmpresa);
 		
-		String[] retorno = usuarioDao.findEmailsByPerfilAndResponsavel(papel.getCodigo(), colab.getId(), empresa.getId()); 
+		String[] retorno = usuarioDao.findEmailsByPerfilAndGestor(papel.getCodigo(), empresa.getId(),  LongUtil.collectionToCollectionLong(areas), true); 
 		assertEquals(0, retorno.length);
 	}
 	

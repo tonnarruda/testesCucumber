@@ -483,7 +483,7 @@ public class OperacaoTest extends TestCase
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
-		assertEquals(3,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+		assertEquals(4,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
 	}
 	
 	public void testCadastrarSolicitacaoRealinhamentoColaborador()

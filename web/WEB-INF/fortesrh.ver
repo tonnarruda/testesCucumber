@@ -5,6 +5,7 @@
 		<Item visivel="S" motivo="P20150300172"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Documentos do Colaborador > Inserir/Editar: Correção da inconsistência na permissão de acesso a estas funcionalidades.]]></Item>
 		<Item visivel="S" motivo="S20150300097"><![CDATA[Info. Funcionais > Cadastros > Painel de Indicadores: Novo filtro por estabelecimentos.]]></Item>
 		<Item visivel="S" motivo="P20150300218"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Inconsistência ao excluir colaborador quando o mesmo apresentava mensagens.]]></Item>
+		<Item visivel="S" motivo="S20150300103"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Nova opção de configuração para notificar quando "Cadastrar solicitação de pessoal" através de email para gestores com o perfil de aprovar/reprovar solicitação de pessoal.]]></Item>
 		<Item visivel="N" motivo="S20150300100"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Apresentar na listagem de colaboradores ativos, os colaboradores que estejam com o último histórico cancelado.]]></Item>
 	</Versao>
 	<Versao id="1.1.142.171" bd="" data="24/03/2015">

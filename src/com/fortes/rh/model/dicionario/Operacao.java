@@ -51,6 +51,7 @@ public enum Operacao
 			
 			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
 			MeioComunicacao.EMAIL.add(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_PESSOAL);
+			MeioComunicacao.EMAIL.add(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_PESSOAL_AND_GESTOR);
 			
 			return this.getListMeioComunicacao();
 		}
