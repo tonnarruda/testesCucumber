@@ -138,7 +138,7 @@ public class ColaboradorRespostaEditAction extends MyActionSupportEdit implement
         		if(colaboradorQuestionario != null && colaboradorQuestionario.getId() != null)
         			colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
         		else
-        			colaboradorRespostas = colaboradorRespostaManager.findByQuestionarioCandidato(questionario.getId(), candidato.getId());
+        			colaboradorRespostas = colaboradorRespostaManager.findByQuestionarioCandidato(questionario.getId(), candidato.getId(), null);
         	}
         }
         else

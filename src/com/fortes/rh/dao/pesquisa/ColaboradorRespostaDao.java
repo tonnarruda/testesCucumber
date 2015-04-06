@@ -26,7 +26,7 @@ public interface ColaboradorRespostaDao extends GenericDao<ColaboradorResposta>
 	
 	Collection<ColaboradorResposta> findByColaboradorQuestionario(Long colaboradorQuestionarioId);
 
-	Collection<ColaboradorResposta> findByQuestionarioCandidato(Long questionarioId, Long candidatoId);
+	Collection<ColaboradorResposta> findByQuestionarioCandidato(Long questionarioId, Long candidatoId, Long colaboradorQuestionarioId);
 
 	List<Object[]> countRespostasMultiplas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId);
 	

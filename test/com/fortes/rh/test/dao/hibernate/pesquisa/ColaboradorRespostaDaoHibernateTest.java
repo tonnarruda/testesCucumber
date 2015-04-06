@@ -555,7 +555,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		Candidato candidato = CandidatoFactory.getCandidato();
 		candidato = candidatoDao.save(candidato);
 		
-		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(1L);
 		colaboradorQuestionario.setCandidato(candidato);
 		colaboradorQuestionario.setQuestionario(questionario);
 		colaboradorQuestionario = colaboradorQuestionarioDao.save(colaboradorQuestionario);
@@ -574,7 +574,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		colaboradorResposta.setColaboradorQuestionario(colaboradorQuestionario);
 		colaboradorResposta = colaboradorRespostaDao.save(colaboradorResposta);
 		
-		Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaDao.findByQuestionarioCandidato(questionario.getId(), candidato.getId());
+		Collection<ColaboradorResposta> colaboradorRespostas = colaboradorRespostaDao.findByQuestionarioCandidato(questionario.getId(), candidato.getId(), colaboradorQuestionario.getId());
 		assertEquals(1, colaboradorRespostas.size());
 	}
 	

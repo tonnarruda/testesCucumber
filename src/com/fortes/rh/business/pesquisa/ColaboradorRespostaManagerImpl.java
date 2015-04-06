@@ -335,9 +335,9 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		return getDao().findByQuestionarioColaborador(questionarioId, colaboradorId, turmaId, colaboradorQuestionarioId);
 	}
 
-	public Collection<ColaboradorResposta> findByQuestionarioCandidato(Long questionarioId, Long candidatoId)
+	public Collection<ColaboradorResposta> findByQuestionarioCandidato(Long questionarioId, Long candidatoId, Long colaboradorQuestionarioId)
 	{
-		return getDao().findByQuestionarioCandidato(questionarioId, candidatoId);
+		return getDao().findByQuestionarioCandidato(questionarioId, candidatoId, colaboradorQuestionarioId);
 	}
 
 	public void removeFicha(Long colaboradorQuestionarioId) throws Exception
@@ -360,7 +360,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		Collection<ColaboradorResposta> colaboradorRespostas = null; 
 		
 		if(colaboradorQuestionario.getCandidato() != null && colaboradorQuestionario.getCandidato().getId() != null)
-			colaboradorRespostas = findByQuestionarioCandidato(questionarioId, colaboradorQuestionario.getCandidato().getId());
+			colaboradorRespostas = findByQuestionarioCandidato(questionarioId, colaboradorQuestionario.getCandidato().getId(), colaboradorQuestionario.getId());
 		else if(colaboradorQuestionario.getColaborador() != null && colaboradorQuestionario.getColaborador().getId() != null)
 			colaboradorRespostas = findByQuestionarioColaborador(questionarioId, colaboradorQuestionario.getColaborador().getId(), null, colaboradorQuestionario.getId());
 

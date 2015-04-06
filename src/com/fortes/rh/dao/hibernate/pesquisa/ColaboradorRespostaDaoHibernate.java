@@ -522,7 +522,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return criteria.list();
 	}
 	
-	public Collection<ColaboradorResposta> findByQuestionarioCandidato(Long questionarioId, Long candidatoId)
+	public Collection<ColaboradorResposta> findByQuestionarioCandidato(Long questionarioId, Long candidatoId, Long colaboradorQuestionarioId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cr");
 		criteria.createCriteria("cr.colaboradorQuestionario", "cq", Criteria.LEFT_JOIN);
@@ -538,6 +538,8 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		cr.add(Projections.property("cr.pergunta.id"), "projectionPerguntaId");
 		
 		criteria.setProjection(cr);
+		if(colaboradorQuestionarioId != null)
+			criteria.add(Expression.eq("cq.id", colaboradorQuestionarioId));
 		
 		criteria.add(Expression.eq("q.id", questionarioId));
 		criteria.add(Expression.eq("c.id", candidatoId));
