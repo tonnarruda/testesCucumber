@@ -3,7 +3,7 @@ package com.fortes.rh.web.dwr;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.fortes.rh.util.StringUtil;
+import com.fortes.rh.util.HttpUtil;
 
 
 public class EnderecoDWR {
@@ -14,7 +14,7 @@ public class EnderecoDWR {
 	public String buscaPorCep(String cep) 
 	{
 		try {
-			String pagina = StringUtil.getHTML(getUrlParaCep(cep));
+		    String pagina = HttpUtil.getHtmlViaPost(getUrlParaCep(cep));
 			
 			Pattern pattern = Pattern.compile("<span class=\"respostadestaque\">("+ expressaoRegular + ")</span>");
 			Matcher matcher = pattern.matcher(pagina);
