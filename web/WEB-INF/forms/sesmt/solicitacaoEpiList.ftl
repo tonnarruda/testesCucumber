@@ -108,18 +108,18 @@
 			<#if solicitacaoEpi.situacao == 'E' || solicitacaoEpi.situacao == 'P'>
 				<a href="prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}"><img border="0" title="Entrega" src="<@ww.url value="/imgs/check.gif"/>"></a>
 				<@authz.authorize ifAllGranted="ROLE_CAD_SOLICITACAOEPI" >
-				<img border="0" title="Não é possível editar uma solicitação já entregue, ou com algum item entregue" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-				<img border="0" title="Não é possível excluir uma solicitação já entregue, ou com algum item entregue" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+					<img border="0" title="Não é possível editar uma solicitação já entregue, ou com algum item entregue" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+					<img border="0" title="Não é possível excluir uma solicitação já entregue, ou com algum item entregue" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				</@authz.authorize>
 			<#else>
-				<#if solicitacaoEpi.colaborador.historicoColaborador.motivo == "C" && solicitacaoEpi.colaborador.historicoColaborador.status != 1>
+				<#if solicitacaoEpi.colaborador.historicoColaborador.motivo && solicitacaoEpi.colaborador.historicoColaborador.motivo == "C" && solicitacaoEpi.colaborador.historicoColaborador.status != 1>
 					<a href="#"><img border="0" title="Não é permitida entrega de EPIs a colaboradores não confirmados no AC" src="<@ww.url value="/imgs/check.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);"></a>
 				<#else>
 					<a href="prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}"><img border="0" title="Entrega" src="<@ww.url value="/imgs/check.gif"/>"></a>
 				</#if>
 				<@authz.authorize ifAllGranted="ROLE_CAD_SOLICITACAOEPI" >
-				<a href="prepareUpdate.action?solicitacaoEpi.id=${solicitacaoEpi.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacaoEpi.id=${solicitacaoEpi.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+					<a href="prepareUpdate.action?solicitacaoEpi.id=${solicitacaoEpi.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacaoEpi.id=${solicitacaoEpi.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				</@authz.authorize>
 			</#if>
 		</@display.column>

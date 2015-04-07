@@ -36,7 +36,6 @@ import com.fortes.rh.util.LongUtil;
 @SuppressWarnings("unchecked")
 public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoEpi> implements SolicitacaoEpiDao
 {
-	// TODO: Sem teste
 	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck)
 	{
 		Query query = montaConsultaFind(false, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi, tipoEpi, situacaoColaborador, estabelecimentoCheck);
@@ -60,7 +59,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			solicitacaoEpi.setColaboradorNome(solicitacaoEpiAux[3].toString());
 			solicitacaoEpi.setColaboradorDesligado(new Boolean(solicitacaoEpiAux[4].toString()));
 			solicitacaoEpi.setColaboradorStatus(new Integer(solicitacaoEpiAux[5].toString()));
-			solicitacaoEpi.setColaboradorMotivoHistorico(solicitacaoEpiAux[6].toString());
+			solicitacaoEpi.setColaboradorMotivoHistorico((String)solicitacaoEpiAux[6]);
 			try {
 				solicitacaoEpi.setData(sDF.parse(solicitacaoEpiAux[7].toString()));
 			} catch (ParseException e) {e.printStackTrace();}

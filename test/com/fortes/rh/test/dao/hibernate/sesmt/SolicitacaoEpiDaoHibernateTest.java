@@ -458,6 +458,7 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 
 		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador2.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador2.setMotivo(null);
 		historicoColaborador2.setColaborador(colaborador2);
 		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2010));
 		historicoColaboradorDao.save(historicoColaborador2);
