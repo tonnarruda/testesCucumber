@@ -4852,4 +4852,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		query.executeUpdate();
 	}
+
+	public Colaborador findColaboradorComTodosOsDados(Long id) {
+		return super.findById(id);
+	}
 }

@@ -135,4 +135,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findColaboradoresByCodigoAC(Long empresaId,	boolean joinComHistorico, String... codigosACColaboradores);
 	public int countColaboradoresComHistoricos();
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId);
+	public Colaborador findColaboradorComTodosOsDados(Long id);
 }

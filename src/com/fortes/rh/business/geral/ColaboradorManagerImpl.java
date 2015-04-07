@@ -599,7 +599,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 				acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, empresa.getCodigoAC()), empresa);
 		}
 		
-		replicaUpdateCandidato(findById(colaborador.getId()), idiomas);
+		replicaUpdateCandidato(findAllRelacionamentos(colaborador.getId()), idiomas);
 	}
 
 	/**Replica as alterações do colaborador no candidato */
@@ -816,6 +816,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findColaboradorById(id);
 	}
 
+	public Colaborador findAllRelacionamentos(Long id){
+		return getDao().findColaboradorComTodosOsDados(id);
+	}
+	
 	public boolean setCodigoColaboradorAC(String codigo, Long id)
 	{
 		return getDao().setCodigoColaboradorAC(codigo, id);
@@ -1058,6 +1062,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void religaColaborador(Long colaboradorId) throws Exception
 	{
 		UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
@@ -1298,7 +1303,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			}
 
 			Colaborador colaboradorAtualizado = findColaboradorById(colaborador.getId());
-			replicaUpdateCandidato(findById(colaborador.getId()), idiomas);
+			replicaUpdateCandidato(findAllRelacionamentos(colaborador.getId()), idiomas);
 			
 			gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
 			
