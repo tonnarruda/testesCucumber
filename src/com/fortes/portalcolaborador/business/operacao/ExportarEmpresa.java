@@ -82,16 +82,19 @@ public class ExportarEmpresa extends Operacao {
 		
 		for (HistoricoColaborador historico : historicosMontados) 
 		{
-			if(colaboradorPC == null || !colaboradorPC.getCpf().equals(historico.getColaborador().getPessoal().getCpf()))
+			if(colaboradorPC.getCpf() != null )
 			{
-				colaboradorPC = new ColaboradorPC(historico.getColaborador());
-				colaboradorPC.setHistoricosPc(new ArrayList<HistoricoColaboradorPC>());
+				if(colaboradorPC == null || !colaboradorPC.getCpf().equals(historico.getColaborador().getPessoal().getCpf()))
+				{
+					colaboradorPC = new ColaboradorPC(historico.getColaborador());
+					colaboradorPC.setHistoricosPc(new ArrayList<HistoricoColaboradorPC>());
+				}
+				
+				historicoColaboradorPC = new HistoricoColaboradorPC(historico);
+				colaboradorPC.getHistoricosPc().add(historicoColaboradorPC);
+				
+				colaboradorPCs.add(colaboradorPC);
 			}
-			
-			historicoColaboradorPC = new HistoricoColaboradorPC(historico);
-			colaboradorPC.getHistoricosPc().add(historicoColaboradorPC);
-			
-			colaboradorPCs.add(colaboradorPC);
 		}
 		
 		for (ColaboradorPC colabPC : colaboradorPCs) 

@@ -317,7 +317,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		if (!colaborador.isNaoIntegraAc() && empresa.isAcIntegra())
 			contratarColaboradorNoAC(colaborador, historico, empresa, true);
-		else if(empresa.isIntegradaPortalColaborador())
+
+		if(empresa.isIntegradaPortalColaborador())
 			movimentacaoOperacaoPCManager.enfileirar(InserirColaborador.class, new ColaboradorPC(colaborador).getIdentificadorToJson());
 
 		gerenciadorComunicacaoManager.enviaAvisoContratacao(historico);
@@ -603,9 +604,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		}
 
 		if(empresa.isIntegradaPortalColaborador())
-		{
 			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador));
-		}
 		
 		// Flush necessário quando houver uma operação com banco/sistema externo.
 		// garante que erro no banco do RH levantará uma Exception antes de alterar o outro banco.

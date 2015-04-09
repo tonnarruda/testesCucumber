@@ -15,16 +15,13 @@ import org.apache.commons.httpclient.methods.PutMethod;
 import org.apache.commons.httpclient.methods.StringRequestEntity;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.portalcolaborador.business.operacao.Operacao;
 import com.fortes.portalcolaborador.dao.TransacaoPCDao;
 import com.fortes.portalcolaborador.model.MovimentacaoOperacaoPC;
 import com.fortes.portalcolaborador.model.TransacaoPC;
 import com.fortes.portalcolaborador.model.dicionario.TransacaoPCMensagens;
 import com.fortes.portalcolaborador.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
-import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
-import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.CryptUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.google.gson.JsonObject;
@@ -79,12 +76,15 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 	@SuppressWarnings("deprecation")
 	public void processarFila()
 	{
-		transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
-		parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBeanOld("parametrosDoSistemaManager");
-		
-		ParametrosDoSistema params = parametrosDoSistemaManager.findById(1L);
-		
 		try {
+			if(!TransacaoPCMensagens.getDescricao(TransacaoPCMensagens.OK).equals(testarConexao()))
+				throw new Exception(testarConexao());
+			
+			transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
+			parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBeanOld("parametrosDoSistemaManager");
+			
+			ParametrosDoSistema params = parametrosDoSistemaManager.findById(1L);
+		
 			Collection<TransacaoPC> transacoes = getDao().findAll(new String[] { "data" });
 			
 			for (TransacaoPC transacaoPC : transacoes) {
