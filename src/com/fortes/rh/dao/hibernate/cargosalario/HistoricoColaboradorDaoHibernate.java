@@ -1400,6 +1400,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.setParameterList("colaboradoresIds", colaboradoresIds);
 		
 		query.executeUpdate();
+		
 	}
 
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Date dataSegundoHistoricoIndice, Long indiceId) 
