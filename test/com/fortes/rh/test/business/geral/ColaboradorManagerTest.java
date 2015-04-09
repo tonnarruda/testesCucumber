@@ -19,6 +19,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import remprot.RPClient;
 
+import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
@@ -142,7 +143,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     private Mock mensagemManager;
     private Mock mail;
     private Mock solicitacaoExameManager;
-    
+    private Mock movimentacaoOperacaoPCManager;
 	private Colaborador colaborador;
 	private List<Formacao> formacoes;
 	private List<CandidatoIdioma> idiomas;
@@ -219,9 +220,11 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		solicitacaoExameManager = new Mock(SolicitacaoExameManager.class);
 		colaboradorManager.setSolicitacaoExameManager((SolicitacaoExameManager) solicitacaoExameManager.proxy());
 
-		mail = mock(Mail.class);
+		movimentacaoOperacaoPCManager = mock(MovimentacaoOperacaoPCManager.class);
+		colaboradorManager.setMovimentacaoOperacaoPCManager((MovimentacaoOperacaoPCManager) movimentacaoOperacaoPCManager.proxy());
+		
+        mail = mock(Mail.class);
         colaboradorManager.setMail((Mail) mail.proxy());
-        
 
         usuarioManager = new Mock(UsuarioManager.class);
         MockSpringUtil.mocks.put("usuarioManager", usuarioManager);
@@ -1343,6 +1346,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
     	colaboradorDao.expects(once()).method("findByIdComHistorico").with(ANYTHING,eq(null)).will(returnValue(colaborador));
     	colaboradorDao.expects(once()).method("update").with(eq(colaborador));
+    	movimentacaoOperacaoPCManager.expects(once()).method("enfileirar").with(ANYTHING, ANYTHING);
 
     	assertEquals(colaborador, colaboradorManager.updateEmpregado(empregado));
     }
