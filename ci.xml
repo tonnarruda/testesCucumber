@@ -285,7 +285,7 @@
 		    <arg value="-1"/>
 		    <arg value="--pretty=oneline"/>
 		</exec>
-		<propertyregex property="commit" input="${commitCompleto}" regexp="(\[[SsPp][0-9]{11}\])(\[[Hh][Oo]\])?(.*)" select="\1\3"/>
+		<propertyregex property="commit" input="${commitCompleto}" regexp="(\[[SsPp][0-9]{11}\])(\[.*\])?(.*)" select="\1\3"/>
 		
 		<echo message="${commit}"/>
 	</target>

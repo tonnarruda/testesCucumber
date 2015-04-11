@@ -2,6 +2,8 @@
 <Versoes>
 	<Versao id="1.1.14x.17x" bd="" data="xx/04/2015">
 		<Item visivel="S" motivo="S20150300093"><![CDATA[C&S > Cadastros > Cargos e Faixas > Faixas Salariais > Níveis de Competência: Agrupamento das competências em conhecimento, habilidade e atitude.]]></Item>
+		<Item visivel="S" motivo="P20150400004"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Ajuste na pesquisa do endereço pelo CEP.]]></Item>
+		<Item visivel="S" motivo="P20150400002"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Ajuste da inconsistência ao atualizar colaboradores com a situação de aguardando confirmação.]]></Item>
 		<Item visivel="S" motivo="P20150300172"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Documentos do Colaborador > Inserir/Editar: Correção da inconsistência na permissão de acesso a estas funcionalidades.]]></Item>
 		<Item visivel="S" motivo="S20150300097"><![CDATA[Info. Funcionais > Cadastros > Painel de Indicadores: Novo filtro por estabelecimentos.]]></Item>
 		<Item visivel="S" motivo="P20150300218"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Inconsistência ao excluir colaborador quando o mesmo apresentava mensagens.]]></Item>
