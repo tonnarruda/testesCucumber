@@ -112,7 +112,7 @@
 					<img border="0" title="Não é possível excluir uma solicitação já entregue, ou com algum item entregue" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				</@authz.authorize>
 			<#else>
-				<#if solicitacaoEpi.colaborador.historicoColaborador.motivo && solicitacaoEpi.colaborador.historicoColaborador.motivo == "C" && solicitacaoEpi.colaborador.historicoColaborador.status != 1>
+				<#if solicitacaoEpi.colaborador.historicoColaborador.motivo?exists && solicitacaoEpi.colaborador.historicoColaborador.motivo == "C" && solicitacaoEpi.colaborador.historicoColaborador.status != 1>
 					<a href="#"><img border="0" title="Não é permitida entrega de EPIs a colaboradores não confirmados no AC" src="<@ww.url value="/imgs/check.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);"></a>
 				<#else>
 					<a href="prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}"><img border="0" title="Entrega" src="<@ww.url value="/imgs/check.gif"/>"></a>

@@ -2,14 +2,15 @@
 <Versoes>
 	<Versao id="1.1.14x.17x" bd="" data="xx/04/2015">
 		<Item visivel="S" motivo="S20150300093"><![CDATA[C&S > Cadastros > Cargos e Faixas > Faixas Salariais > Níveis de Competência: Agrupamento das competências em conhecimento, habilidade e atitude.]]></Item>
+		<Item visivel="N" motivo="S20150300100"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Apresentar na listagem de colaboradores ativos, os colaboradores que estejam com o último histórico cancelado.]]></Item>
 		<Item visivel="S" motivo="P20150400004"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Ajuste na pesquisa do endereço pelo CEP.]]></Item>
 		<Item visivel="S" motivo="P20150400002"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Ajuste da inconsistência ao atualizar colaboradores com a situação de aguardando confirmação.]]></Item>
-		<Item visivel="S" motivo="P20150300172"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Documentos do Colaborador > Inserir/Editar: Correção da inconsistência na permissão de acesso a estas funcionalidades.]]></Item>
+		<Item visivel="S" motivo="P20150300172"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Documentos do Colaborador > Inserir/Editar: Ajuste da inconsistência na permissão de acesso a estas funcionalidades.]]></Item>
 		<Item visivel="S" motivo="S20150300097"><![CDATA[Info. Funcionais > Cadastros > Painel de Indicadores: Novo filtro por estabelecimentos.]]></Item>
-		<Item visivel="S" motivo="P20150300218"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Inconsistência ao excluir colaborador quando o mesmo apresentava mensagens.]]></Item>
+		<Item visivel="S" motivo="P20150300218"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Ajuste da inconsistência ao excluir colaborador quando o mesmo apresentava mensagens.]]></Item>
+		<Item visivel="S" motivo="P20150400011"><![CDATA[SESMT > Movimentações > Solicitação de EPIs: Ajuste da inconsistência ao visualizar solicitações de EPIs.]]></Item>
 		<Item visivel="S" motivo="P20150200246"><![CDATA[SESMT > Movimentações > Ficha Médica > Imprimir: Ajuste da inconsistência na impressão da ficha médica do candidato.]]></Item>
 		<Item visivel="S" motivo="S20150300103"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Nova opção de configuração para notificar quando "Cadastrar solicitação de pessoal" através de email para gestores com o perfil de aprovar/reprovar solicitação de pessoal.]]></Item>
-		<Item visivel="N" motivo="S20150300100"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Apresentar na listagem de colaboradores ativos, os colaboradores que estejam com o último histórico cancelado.]]></Item>
 	</Versao>
 	<Versao id="1.1.142.171" bd="" data="24/03/2015">
 		<Item visivel="S" motivo="S20141200045"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Novas opções de filtragem por área organizacional e motivo da solicitação.]]></Item>
@@ -18,12 +19,12 @@
 		<Item visivel="S" motivo="P20150300112"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Perguntas > Editar: Ajuste na inconsistência ao tentar adicionar novas opções de respostas nas perguntas objetivas.]]></Item>
 		<Item visivel="S" motivo="S20150300008"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Imprimir: Possibilidade de escolher a impressão das perguntas por ordem ou por aspecto.]]></Item>
 		<Item visivel="S" motivo="S20140700206"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho > Imprimir questionário: Nova opção para impressão do questionário das avaliações não respondidas, contendo as competências exigidas pelo cargo.]]></Item>
-		<Item visivel="S" motivo="P20150300106"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir avaliação: Ajuste na inconsistência ao imprimir perguntas agrupadas por aspecto.]]></Item>
-		<Item visivel="S" motivo="S20150200210"><![CDATA[Aval. Desempenho > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência: Ajuste na inconsistência da quantidade de respostas das questões objetivas e comentários das perguntas.]]></Item>			
+		<Item visivel="S" motivo="P20150300106"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir avaliação: Ajuste da inconsistência ao imprimir perguntas agrupadas por aspecto.]]></Item>
+		<Item visivel="S" motivo="S20150200210"><![CDATA[Aval. Desempenho > Relatórios > Resultado das Avaliações de Desempenho e Acompanhamento do Período de Experiência: Ajuste da inconsistência da quantidade de respostas das questões objetivas e comentários das perguntas.]]></Item>			
 		<Item visivel="S" motivo="S20140300005"><![CDATA[T&D > Relatórios > Lista de Presença : Exibir quantidade de participantes presentes no relatório.]]></Item>
 		<Item visivel="S" motivo="S20150300098"><![CDATA[T&D > Painel de Controle : Novo filtro por estabelecimentos.]]></Item>
 		<Item visivel="S" motivo="P20150300139"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Solicitar desligamento: Ajuste da inconsistência ao desligar colaborador, quando a opção "Entrevista de desligamento" não está marcada no perfil do usuário que está realizando o desligamento.]]></Item>
-		<Item visivel="S" motivo="P20150200270"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Ajuste na inconsistência das permissões ao visualizar entrevista de desligamento.]]></Item>
+		<Item visivel="S" motivo="P20150200270"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Ajuste da inconsistência das permissões ao visualizar entrevista de desligamento.]]></Item>
 		<Item visivel="S" motivo="S20140300177"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir > Dados Funcionais: Listar ambientes em ordem alfabética.]]></Item>
 		<Item visivel="S" motivo="S20140300178"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Refletir as alterações do colaborador no seu respectivo candidato.]]></Item>
 		<Item visivel="S" motivo="S20150300009"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Criar acesso ao sistema: Notificar colaborador por email ao criar acesso ao sistema.]]></Item>
