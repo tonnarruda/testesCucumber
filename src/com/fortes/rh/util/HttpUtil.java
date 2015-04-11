@@ -15,7 +15,7 @@ public class HttpUtil
 
 	    PostMethod method = new PostMethod(url);
 
-	    int returnCode = client.executeMethod(method);
+	    client.executeMethod(method);
 	    return method.getResponseBodyAsString();
 	}
 	

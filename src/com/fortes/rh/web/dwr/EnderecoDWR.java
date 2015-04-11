@@ -1,5 +1,6 @@
 package com.fortes.rh.web.dwr;
 
+import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,7 +39,9 @@ public class EnderecoDWR {
 	    	
 			return response;
 			
-		} catch (Exception e) {
+		}catch (UnknownHostException ue){ 
+			return "{\"sucesso\":\"2\"}";
+		}catch (Exception e) {
 			return "{\"sucesso\":\"0\"}";
 		}
 	}

@@ -1135,7 +1135,7 @@ function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId
 			 EnderecoDWR.buscaPorCep($cep.val(), {timeout:10000, callback: function(data) {
 				 
 				 jsonCEP = jQuery.parseJSON(data);
-				 
+				 				 
 				 if (jsonCEP.sucesso == 1)
 				 {
 			 		 $logradouro.val(jsonCEP.logradouro);
@@ -1149,6 +1149,15 @@ function addBuscaCEP(cepFieldId, logradouroFieldId, bairroFieldId, cidadeFieldId
 					});
 					 $estado.change();
 					 $bairro.val(jsonCEP.bairro);
+				 }
+				 else if (jsonCEP.sucesso == 2)
+				 {
+					 jAlert("Não possivel estabelecer a conexão com o servidor remoto. Favor verificar acesso a internet."); 
+					 $logradouro.val("");
+					 $bairro.val("");
+					 $cidade.val("");
+					 $estado.val("");
+					 $estado.change();
 				 }
 				 else
 				 {
