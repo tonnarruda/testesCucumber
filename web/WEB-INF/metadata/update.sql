@@ -22817,3 +22817,6 @@ insert into migrations values('20150309145121');--.go
 update papel set help ='Para visualizar as solicitações de desligamento, o usuário deverá ser gestor de uma área organizacional ou ter no perfil a permissão de visualizar todos os colaboradores.' where id = 620;--.go
 insert into migrations values('20150323164804');--.go
 update parametrosdosistema set appversao = '1.1.142.171';--.go
+-- versao 1.1.142.172
+
+update parametrosdosistema set appversao = '1.1.142.172';--.go

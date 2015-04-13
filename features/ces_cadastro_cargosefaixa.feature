@@ -87,11 +87,11 @@ Funcionalidade: Cadastrar Cargos e Faixas
     E eu clico na linha "Faixa II" da imagem "Níveis de Competência"
     E eu devo ver o título "Competências da Faixa Salarial"
     E eu marco "java"
-    E eu escolho "niveisCompetenciaFaixaSalariais[0].nivelCompetencia.id"
+    E eu escolho "niveisCompetenciaFaixaSalariaisConhecimento[0].nivelCompetencia.id"
     E eu marco "testes"
     E eu clico no botão "Gravar"
     E eu devo ver o alert "Selecione os níveis para as competências indicadas." e clico no ok
-    E eu escolho "niveisCompetenciaFaixaSalariais[1].nivelCompetencia.id"
+    E eu escolho "niveisCompetenciaFaixaSalariaisConhecimento[1].nivelCompetencia.id"
     E eu clico no botão "Gravar"
     E eu devo ver "Níveis de competência da faixa salarial salvos com sucesso"
     E eu clico no botão "Voltar"

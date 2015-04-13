@@ -1,8 +1,13 @@
 package com.fortes.rh.test.util;
 
+import java.io.IOException;
+
+import org.apache.commons.httpclient.HttpException;
+
 import junit.framework.TestCase;
 
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.HttpUtil;
 import com.fortes.rh.util.StringUtil;
 
 public class TestsNoIncludeAllUnitTest extends TestCase
@@ -65,11 +70,11 @@ public class TestsNoIncludeAllUnitTest extends TestCase
     }
 
     // Testes da classe StringUtil.java
-	public void testGetHTML()
+	public void testGetHTML() throws HttpException, IOException
 	{
 		String url = "http://m.correios.com.br/movel/buscaCepConfirma.do?cepEntrada=60743-760&tipoCep=&cepTemp=&metodo=buscarCep";
 		
-		assertTrue(StringUtil.getHTML(url).contains("respostadestaque"));
+		assertTrue(HttpUtil.getHtmlViaPost(url).contains("respostadestaque"));
 	}
 
 }

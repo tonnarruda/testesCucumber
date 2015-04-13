@@ -58,8 +58,8 @@ Funcionalidade: Movimentação Solicitações de Pessoal
 	E eu clico na linha "I" da imagem "Níveis de Competência"
 	E eu devo ver o título "Competências da Faixa Salarial"
 	E eu marco "Java"
-	E eu marco o checkbox com name "niveisCompetenciaFaixaSalariais[0].nivelCompetencia.id"
-	E eu clico no botão "Gravar"
+	E eu marco o checkbox com name "niveisCompetenciaFaixaSalariaisConhecimento[0].nivelCompetencia.id"
+    E eu clico no botão "Gravar"
 	Então eu devo ver "Níveis de competência da faixa salarial salvos com sucesso"
 
     Quando eu acesso o menu "R&S > Movimentações > Solicitação de Pessoal"
