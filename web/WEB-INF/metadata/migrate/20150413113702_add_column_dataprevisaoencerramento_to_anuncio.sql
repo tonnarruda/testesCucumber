@@ -1,0 +1,1 @@
+ALTER TABLE anuncio ADD COLUMN dataPrevisaoEncerramento DATE;--.go 
