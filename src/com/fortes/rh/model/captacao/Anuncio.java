@@ -1,12 +1,15 @@
 package com.fortes.rh.model.captacao;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -36,6 +39,9 @@ public class Anuncio extends AbstractModel implements Serializable
     private boolean mostraSexo;
     private boolean mostraIdade;
     private boolean exibirModuloExterno;
+    
+    @Temporal(TemporalType.DATE)
+	private Date dataPrevisaoEncerramento;
    
     @Transient
     private CandidatoSolicitacao candidatoSolicitacao;
@@ -193,6 +199,14 @@ public class Anuncio extends AbstractModel implements Serializable
 
 	public void setExibirModuloExterno(boolean exibirModuloExterno) {
 		this.exibirModuloExterno = exibirModuloExterno;
+	}
+	
+	public Date getDataPrevisaoEncerramento() {
+		return dataPrevisaoEncerramento;
+	}
+
+	public void setDataPrevisaoEncerramento(Date dataPrevisaoEncerramento) {
+		this.dataPrevisaoEncerramento = dataPrevisaoEncerramento;
 	}
 
 	public CandidatoSolicitacao getCandidatoSolicitacao() {

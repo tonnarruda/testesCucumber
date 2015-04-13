@@ -13,6 +13,12 @@
 
 <#assign validarCampos="return validaFormulario('form', new Array('titulo','cabecalho'), null)"/>
 
+<#if anuncio.id?exists && anuncio.dataPrevisaoEncerramento?exists>
+	<#assign data=anuncio.dataPrevisaoEncerramento?date/>
+<#else>
+	<#assign data=""/>
+</#if>
+
 <script language='javascript'>
 	$(function(){
 		$('#exibirModuloExterno').change(function(){
@@ -36,6 +42,7 @@
 		<@ww.textfield label="Título" required="true" name="anuncio.titulo" id="titulo" cssStyle="width: 600px;" maxLength="100"/>
 		<@ww.textarea label="Descrição" required="true" name="anuncio.cabecalho" id="cabecalho" cssStyle="width: 600px;"/>
 		<@ww.select label="Exibir no módulo externo" id="exibirModuloExterno" name="anuncio.exibirModuloExterno" list=r"#{true:'Sim',false:'Não'}" required="true"/>
+		<@ww.datepicker label="Previsão de encerramento" name="anuncio.dataPrevisaoEncerramento" id="dataPrevisaoEncerramento" cssClass="mascaraData" value="${data}" />
 
 		<#if solicitacaoAvaliacaos?exists && (solicitacaoAvaliacaos?size > 0)>
 			<@frt.checkListBox id="solicitacaoAvaliacaosCheck" label="Modelos de avaliação a serem respondidos ao se candidatar pelo modulo externo" name="solicitacaoAvaliacaosCheck" list="solicitacaoAvaliacaosCheckList" width="600"/>

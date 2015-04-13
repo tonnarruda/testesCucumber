@@ -134,18 +134,15 @@
 
 <span id="exibir">
 	<strong>
-		Identificação do Colaborador
+		Dados Pessoais
 		<#if colaborador.empresa.nome?exists>
 			(Empresa ${colaborador.empresa.nome})
 		</#if>
 	</strong>
 </span>
-<div class='grade'>
+<div class='grade' style="margin-bottom: 12px;">
 	<#if colaborador.nome?exists>
 		<div class='grade_field'><strong>Nome:</strong> ${colaborador.nome}</div>
-	</#if>
-	<#if colaborador.dataAdmissao?exists>
-		<div class='grade_field'><strong>Admissão:</strong> ${colaborador.dataAdmissao}</div>
 	</#if>
 		
 	<#if colaborador.foto?exists>
@@ -154,8 +151,6 @@
 		</div>
 	</#if>
 			
-	<div class='grade_field'><strong>Cargo Atual:</strong> <#if historicoColaborador?exists && historicoColaborador.faixaSalarial?exists && historicoColaborador.faixaSalarial.cargo?exists && historicoColaborador.faixaSalarial.cargo.nome?exists>${historicoColaborador.faixaSalarial.cargo.nome}</#if></div>
-	
 	<div class='grade_field'>
 		<strong>Email:</strong>
 		<#if colaborador.contato?exists && colaborador.contato.email?exists>
@@ -163,6 +158,9 @@
 		</#if>
 	</div>
 	
+	<#if colaborador.pessoal?exists && colaborador.pessoal.cpf?exists>
+		<div class='grade_field'><strong>CPF:</strong> ${colaborador.pessoal.cpfFormatado}</div>
+	</#if>
 	<#if colaborador.pessoal?exists && colaborador.pessoal.getEstadoCivilDic()?exists>
 		<div class='grade_field'><strong>Estado Civil:</strong> ${colaborador.pessoal.getEstadoCivilDic()}</div>
 	</#if>
@@ -194,85 +192,146 @@
 	<#if colaborador.pessoal?exists && colaborador.pessoal.deficienciaDescricao?exists>
 		<div class='grade_field'><strong>Deficiência:</strong> ${colaborador.pessoal.deficienciaDescricao}</div>
 	</#if>
-	<#if colaborador.vinculoDescricao?exists>
-		<div class='grade_field'><strong>Vínculo:</strong> ${colaborador.vinculoDescricao}</div>
-	</#if>
-	<#assign i = 0/>
-	<#if configuracaoCampoExtras?exists>
-		<#list configuracaoCampoExtras as configuracaoCampoExtra>
-			<div class='grade_field'><strong>${configuracaoCampoExtras[i].titulo}: </strong>  
-						
-				<#if colaborador.camposExtras.texto1?exists && configuracaoCampoExtras[i].nome == "texto1" >
-					${colaborador.camposExtras.texto1}<br>
-				</#if>
-				
-				<#if colaborador.camposExtras.texto2?exists && configuracaoCampoExtras[i].nome == "texto2">
-					${colaborador.camposExtras.texto2}<br>
-				</#if>
-				
-				<#if colaborador.camposExtras.texto3?exists && configuracaoCampoExtras[i].nome == "texto3">
-					${colaborador.camposExtras.texto3}<br>
-				</#if>
-				
-				<#if colaborador.camposExtras.texto4?exists && configuracaoCampoExtras[i].nome == "texto4">
-					${colaborador.camposExtras.texto4}<br>
-				</#if>
-				
-				<#if colaborador.camposExtras.texto5?exists && configuracaoCampoExtras[i].nome == "texto5">
-					${colaborador.camposExtras.texto5}<br>
-				</#if>
-				
-				<#if colaborador.camposExtras.texto6?exists && configuracaoCampoExtras[i].nome == "texto6">
-					${colaborador.camposExtras.texto6}<br>
-				</#if>
-				
-				<#if colaborador.camposExtras.texto7?exists && configuracaoCampoExtras[i].nome == "texto7">
-					${colaborador.camposExtras.texto7}<br>
-				</#if>
-				
-				<#if colaborador.camposExtras.texto8?exists && configuracaoCampoExtras[i].nome == "texto8">
-					${colaborador.camposExtras.texto8}<br>
-				</#if>
-				
-				<#if colaborador.camposExtras.textolongo1?exists && configuracaoCampoExtras[i].nome == "textolongo1">
-					${colaborador.camposExtras.textolongo1}<br>
-				</#if>
-				
-				<#if colaborador.camposExtras.textolongo2?exists && configuracaoCampoExtras[i].nome == "textolongo2">
-					${colaborador.camposExtras.textolongo2}<br>
-				</#if>
-				
-				<#if colaborador.camposExtras.data1?exists && configuracaoCampoExtras[i].nome == "data1">
-					${colaborador.camposExtras.data1}<br>
-				</#if>
-				
-				<#if colaborador.camposExtras.data2?exists && configuracaoCampoExtras[i].nome == "data2">
-					${colaborador.camposExtras.data2}<br>
-				</#if>
-				
-				<#if colaborador.camposExtras.data3?exists && configuracaoCampoExtras[i].nome == "data3">
-					${colaborador.camposExtras.data3}<br>
-				</#if>
-				
-				<#if colaborador.camposExtras.valor1?exists && configuracaoCampoExtras[i].nome == "valor1">
-					${colaborador.camposExtras.valor1?string('###,###,###.00')}
-				</#if>
-				
-				<#if colaborador.camposExtras.valor2?exists && configuracaoCampoExtras[i].nome == "valor2">
-					${colaborador.camposExtras.valor2?string('###,###,###.00')}<br>
-				</#if>
-				
-				<#if colaborador.camposExtras.numero1?exists && configuracaoCampoExtras[i].nome == "numero1">
-					${colaborador.camposExtras.numero1}<br>
-				</#if>
-			</div>
-			<#assign i = i + 1/>
-		</#list>
-	</#if>
-	
 	<br style='clear: both'>
 </div>
 
+<span id="exibir">
+	<strong>
+		Dados Funcionais
+	</strong>
+</span>
+<div class='grade' style="margin-bottom: 12px;">
+	<#if colaborador.dataAdmissao?exists>
+		<div class='grade_field'><strong>Admissão:</strong> ${colaborador.dataAdmissao}</div>
+	</#if>
+	<div class='grade_field'><strong>Cargo Atual:</strong> <#if historicoColaborador?exists && historicoColaborador.faixaSalarial?exists && historicoColaborador.faixaSalarial.cargo?exists && historicoColaborador.faixaSalarial.cargo.nome?exists>${historicoColaborador.faixaSalarial.cargo.nome}</#if></div>
+	<#if colaborador.vinculoDescricao?exists>
+		<div class='grade_field'><strong>Vínculo:</strong> ${colaborador.vinculoDescricao}</div>
+	</#if>
+	<br style='clear: both'>
+</div>
+
+
+<span id="exibir">
+	<strong>
+		Documentos
+	</strong>
+</span>
+<div class='grade' style="margin-bottom: 12px;">
+	<div style="margin-bottom: 12px;">
+		<#if colaborador.pessoal?exists && colaborador.pessoal.rg?exists>
+			<div style="margin:2px 0 0 5px;"><strong>Identidade</strong></div> 
+			<#if colaborador.pessoal?exists && colaborador.pessoal.rg?exists>
+				<div class='grade_field'><strong>Número:</strong> ${colaborador.pessoal.rg}</div>
+			</#if>
+			<#if colaborador.pessoal?exists && colaborador.pessoal.rgOrgaoEmissor?exists>
+				<div class='grade_field'><strong>Orgão Emissor:</strong> ${colaborador.pessoal.rgOrgaoEmissor}</div>
+			</#if>
+			<#if colaborador.pessoal?exists && colaborador.pessoal.rgUf.id?exists>
+				<div class='grade_field'><strong>Estado:</strong> ${colaborador.pessoal.rgUf.sigla}</div>
+			</#if>	 
+		</#if>
+		<br style='clear: both'>
+	</div>
+	
+	<div>
+		<#if colaborador.pessoal?exists && colaborador.pessoal.tituloEleitoral.titEleitNumero?exists>
+			<div style="margin-left: 5px;"><strong>Título Eleitoral</strong></div>
+			<#if colaborador.pessoal?exists && colaborador.pessoal.tituloEleitoral?exists && colaborador.pessoal.tituloEleitoral.titEleitNumero?exists>
+				<div class='grade_field'><strong>Número:</strong> ${colaborador.pessoal.tituloEleitoral.titEleitNumero}</div>
+			</#if>
+			
+			<#if colaborador.pessoal?exists && colaborador.pessoal.tituloEleitoral?exists && colaborador.pessoal.tituloEleitoral.titEleitZona?exists>
+				<div class='grade_field'><strong>Zona:</strong> ${colaborador.pessoal.tituloEleitoral.titEleitZona}</div>
+			</#if>
+			<#if colaborador.pessoal?exists && colaborador.pessoal.tituloEleitoral?exists && colaborador.pessoal.tituloEleitoral.titEleitSecao?exists>
+				<div class='grade_field'><strong>Seção:</strong> ${colaborador.pessoal.tituloEleitoral.titEleitSecao}</div>
+			</#if>
+		</#if>
+	</div>
+<br style='clear: both'>
+</div>	
+
+<#if configuracaoCampoExtras?exists>
+	<span id="exibir">
+		<strong>
+			Extra
+		</strong>
+	</span>
+	<div class='grade' style="margin-bottom: 12px;">
+		<#assign i = 0/>	
+			<#list configuracaoCampoExtras as configuracaoCampoExtra>
+				<div class='grade_field'><strong>${configuracaoCampoExtras[i].titulo}: </strong>  
+							
+					<#if colaborador.camposExtras.texto1?exists && configuracaoCampoExtras[i].nome == "texto1" >
+						${colaborador.camposExtras.texto1}<br>
+					</#if>
+					
+					<#if colaborador.camposExtras.texto2?exists && configuracaoCampoExtras[i].nome == "texto2">
+						${colaborador.camposExtras.texto2}<br>
+					</#if>
+					
+					<#if colaborador.camposExtras.texto3?exists && configuracaoCampoExtras[i].nome == "texto3">
+						${colaborador.camposExtras.texto3}<br>
+					</#if>
+					
+					<#if colaborador.camposExtras.texto4?exists && configuracaoCampoExtras[i].nome == "texto4">
+						${colaborador.camposExtras.texto4}<br>
+					</#if>
+					
+					<#if colaborador.camposExtras.texto5?exists && configuracaoCampoExtras[i].nome == "texto5">
+						${colaborador.camposExtras.texto5}<br>
+					</#if>
+					
+					<#if colaborador.camposExtras.texto6?exists && configuracaoCampoExtras[i].nome == "texto6">
+						${colaborador.camposExtras.texto6}<br>
+					</#if>
+					
+					<#if colaborador.camposExtras.texto7?exists && configuracaoCampoExtras[i].nome == "texto7">
+						${colaborador.camposExtras.texto7}<br>
+					</#if>
+					
+					<#if colaborador.camposExtras.texto8?exists && configuracaoCampoExtras[i].nome == "texto8">
+						${colaborador.camposExtras.texto8}<br>
+					</#if>
+					
+					<#if colaborador.camposExtras.textolongo1?exists && configuracaoCampoExtras[i].nome == "textolongo1">
+						${colaborador.camposExtras.textolongo1}<br>
+					</#if>
+					
+					<#if colaborador.camposExtras.textolongo2?exists && configuracaoCampoExtras[i].nome == "textolongo2">
+						${colaborador.camposExtras.textolongo2}<br>
+					</#if>
+					
+					<#if colaborador.camposExtras.data1?exists && configuracaoCampoExtras[i].nome == "data1">
+						${colaborador.camposExtras.data1}<br>
+					</#if>
+					
+					<#if colaborador.camposExtras.data2?exists && configuracaoCampoExtras[i].nome == "data2">
+						${colaborador.camposExtras.data2}<br>
+					</#if>
+					
+					<#if colaborador.camposExtras.data3?exists && configuracaoCampoExtras[i].nome == "data3">
+						${colaborador.camposExtras.data3}<br>
+					</#if>
+					
+					<#if colaborador.camposExtras.valor1?exists && configuracaoCampoExtras[i].nome == "valor1">
+						${colaborador.camposExtras.valor1?string('###,###,###.00')}
+					</#if>
+					
+					<#if colaborador.camposExtras.valor2?exists && configuracaoCampoExtras[i].nome == "valor2">
+						${colaborador.camposExtras.valor2?string('###,###,###.00')}<br>
+					</#if>
+					
+					<#if colaborador.camposExtras.numero1?exists && configuracaoCampoExtras[i].nome == "numero1">
+						${colaborador.camposExtras.numero1}<br>
+					</#if>
+				</div>
+			<#assign i = i + 1/>
+		</#list>
+		<br style='clear: both'>
+	</div>	
+</#if>
 
 <br>
 <div class="painelConfiguracao">
