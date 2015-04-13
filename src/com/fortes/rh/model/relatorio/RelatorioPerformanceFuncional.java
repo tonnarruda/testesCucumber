@@ -155,4 +155,8 @@ public class RelatorioPerformanceFuncional {
 	public Collection<AreaOrganizacional> getAreaOrganizacionals() {
 		return areaOrganizacionals;
 	}
+	
+	public Boolean isCamposExtras() {
+		return configuracaoCampoExtras.size() > 0;
+	}
 }

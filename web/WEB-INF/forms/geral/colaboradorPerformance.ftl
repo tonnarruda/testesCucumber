@@ -252,7 +252,7 @@
 <br style='clear: both'>
 </div>	
 
-<#if configuracaoCampoExtras?exists>
+<#if configuracaoCampoExtras?exists && (configuracaoCampoExtras.size() > 0) >
 	<span id="exibir">
 		<strong>
 			Extra
