@@ -13,6 +13,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.AnuncioDao;
 import com.fortes.rh.model.captacao.Anuncio;
+import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 
 @SuppressWarnings("unchecked")
 public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements AnuncioDao
@@ -24,6 +25,8 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 		criteria.createAlias("s.candidatoSolicitacaos", "cs", Criteria.LEFT_JOIN);
 
 		criteria.add(Expression.eq("s.encerrada", false));
+		criteria.add(Expression.eq("s.suspensa", false));
+		criteria.add(Expression.eq("s.status", StatusAprovacaoSolicitacao.APROVADO));
 		criteria.add(Expression.eq("s.empresa.id", empresaIdExterno));
 		criteria.add(Expression.eq("a.exibirModuloExterno", true));
 
@@ -112,6 +115,7 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 		p.add(Projections.property("a.mostraIdade"), "mostraIdade");
 		p.add(Projections.property("a.solicitacao"), "solicitacao");
 		p.add(Projections.property("a.exibirModuloExterno"), "exibirModuloExterno");
+		p.add(Projections.property("a.dataPrevisaoEncerramento"), "dataPrevisaoEncerramento");
 			
 		criteria.setProjection(p);
 		

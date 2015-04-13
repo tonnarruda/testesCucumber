@@ -78,6 +78,7 @@
 					</@display.column>
 					
 					<@display.column property="solicitacao.quantidade" title="Vagas" style="text-align:center; width: 40px;"/>
+					<@display.column property="dataPrevisaoEncerramento" title="Previsão de encerramento" format="{0,date,dd/MM/yyyy}" style="text-align:center; width:70px;"/>
 				</@display.table>
 			</td>
 		</tr>
