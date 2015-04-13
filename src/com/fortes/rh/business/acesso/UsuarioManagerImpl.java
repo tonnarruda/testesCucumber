@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.dao.acesso.UsuarioDao;
@@ -19,9 +20,11 @@ import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
 
@@ -30,6 +33,7 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 	private ColaboradorManager colaboradorManager;
 	private UsuarioEmpresaManager usuarioEmpresaManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
 
 	public Usuario findByLogin(String login)
 	{
@@ -278,8 +282,13 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		return colaboradorManager.findUsuarioByAreaEstabelecimento(areasIds, estabelecimentosIds);
 	}
 	
-	public String[] findEmailByPerfilAndGestor(String role, Long empresaId, Collection<Long> areaOrganizacionalIds, boolean isVerTodosColaboradores){
-		return getDao().findEmailsByPerfilAndGestor(role, empresaId, areaOrganizacionalIds, isVerTodosColaboradores);
+	public String[] findEmailByPerfilAndGestor(String role, Long empresaId, Long areaOrganizacionalId, boolean isVerTodosColaboradores)
+	{
+		Collection<AreaOrganizacional> todasAreas = areaOrganizacionalManager.findAllListAndInativas(empresaId, true, null);
+		Collection<AreaOrganizacional> areaOrganizacionais = areaOrganizacionalManager.getAncestrais(todasAreas, areaOrganizacionalId);
+		Collection<Long> areasIds = LongUtil.collectionToCollectionLong(areaOrganizacionais);
+		
+		return getDao().findEmailsByPerfilAndGestor(role, empresaId, areasIds, isVerTodosColaboradores);
 	}
 	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
@@ -294,5 +303,10 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public void setAreaOrganizacionalManager(
+			AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 }

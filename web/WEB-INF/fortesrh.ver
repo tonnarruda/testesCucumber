@@ -10,7 +10,7 @@
 		<Item visivel="S" motivo="P20150300218"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Ajuste da inconsistência ao excluir colaborador quando o mesmo apresentava mensagens.]]></Item>
 		<Item visivel="S" motivo="P20150400011"><![CDATA[SESMT > Movimentações > Solicitação de EPIs: Ajuste da inconsistência ao visualizar solicitações de EPIs.]]></Item>
 		<Item visivel="S" motivo="P20150200246"><![CDATA[SESMT > Movimentações > Ficha Médica > Imprimir: Ajuste da inconsistência na impressão da ficha médica do candidato.]]></Item>
-		<Item visivel="S" motivo="S20150300103"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Nova opção de configuração para notificar quando "Cadastrar solicitação de pessoal" através de email para gestores com o perfil de aprovar/reprovar solicitação de pessoal.]]></Item>
+		<Item visivel="S" motivo="P20150100303"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Nova opção de configuração para notificar quando "Cadastrar solicitação de pessoal" através de email para gestores com o perfil de aprovar/reprovar solicitação de pessoal.]]></Item>
 	</Versao>
 	<Versao id="1.1.142.171" bd="" data="24/03/2015">
 		<Item visivel="S" motivo="S20141200045"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Novas opções de filtragem por área organizacional e motivo da solicitação.]]></Item>

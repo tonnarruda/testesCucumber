@@ -1587,9 +1587,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		colaboradorManager.expects(atLeastOnce()).method("findByUsuarioProjection").with(eq(solicitacao.getSolicitante().getId()), eq(true)).will(returnValue(colabSolicitante));
 		motivoSolicitacaoManager.expects(atLeastOnce()).method("findById").with(eq(solicitacao.getMotivoSolicitacao().getId())).will(returnValue(motivoSolicitacao));
 		estabelecimentoManager.expects(atLeastOnce()).method("findById").with(eq(solicitacao.getEstabelecimento().getId())).will(returnValue(estabelecimento));
-		usuarioManager.expects(once()).method("findEmailByPerfilAndGestor").with(eq("ROLE_LIBERA_SOLICITACAO"), eq(empresa.getId()), eq(areasId), eq(false)).will(returnValue(emailsByUsuario));
-		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(empresa.getId()), eq(true), ANYTHING).will(returnValue(areas));
-		areaOrganizacionalManager.expects(once()).method("getAncestrais").with(eq(areas), eq(solicitacao.getAreaOrganizacional().getId())).will(returnValue(areas));
+		usuarioManager.expects(once()).method("findEmailByPerfilAndGestor").with(eq("ROLE_LIBERA_SOLICITACAO"), eq(empresa.getId()), eq(solicitacao.getAreaOrganizacional().getId()), eq(false)).will(returnValue(emailsByUsuario));
 		mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
 			
 		gerenciadorComunicacaoManager.enviarEmailParaResponsaveisSolicitacaoPessoal(solicitacao, empresa, emailsmMrcados);
