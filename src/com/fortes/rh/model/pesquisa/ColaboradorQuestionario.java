@@ -27,6 +27,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
@@ -746,6 +747,13 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 		this.avaliacaoDesempenho = avaliacaoDesempenho;
 	}
 	
+	public void setAvaliacaoDesempenhoId(Long avaliacaoDesempenhoId) {
+		if(this.avaliacaoDesempenho == null)
+			this.avaliacaoDesempenho = new AvaliacaoDesempenho();
+		
+		this.avaliacaoDesempenho.setId(avaliacaoDesempenhoId);
+	}
+	
 	@NaoAudita
 	public void limparCampos() 
 	{
@@ -763,7 +771,6 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 		this.solicitacao = solicitacao;
 	}
 
-	
 	public String getNomeCursoTurmaAvaliacao()
 	{
 		return nomeCursoTurmaAvaliacao;
@@ -792,5 +799,20 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 
 	public void setPerformanceNivelCompetencia(Double performanceNivelCompetencia) {
 		this.performanceNivelCompetencia = performanceNivelCompetencia;
+	}
+
+	/**
+	 * Este método retorna a descrição do TipoModeloAvalicao considerando que  
+	 * uma avaliação de desempenho possa estar usando um modelo de acompanhamento 
+	 * do periodo de experiência.
+	 */
+	public String getDescricaoModeloAvaliacao() {
+		
+		TipoModeloAvaliacao tipoModeloAvaliacao = new TipoModeloAvaliacao();
+		
+		if(this.avaliacaoDesempenho == null || this.avaliacaoDesempenho.getId() == null)
+			return tipoModeloAvaliacao.get(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA);
+		else
+			return tipoModeloAvaliacao.get(TipoModeloAvaliacao.AVALIACAO_DESEMPENHO);
 	}
 }

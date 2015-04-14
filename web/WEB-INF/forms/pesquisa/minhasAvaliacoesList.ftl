@@ -26,7 +26,7 @@
 		</@display.column>
 		<@display.column property="respondidaEm" title="Data" format="{0,date,dd/MM/yyyy}" style="width: 100px; text-align: center;"/>
 		<@display.column property="avaliacao.titulo" title="Avaliação" />
-		<@display.column property="avaliacao.tipoModeloAvaliacaoDescricao" title="Tipo da Avaliação" />
+		<@display.column property="descricaoModeloAvaliacao" title="Tipo da Avaliação" />
 	</@display.table>
 
 </body>

@@ -883,7 +883,12 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		return (Integer) criteria.uniqueResult();
 	}
-
+	
+	/**
+	 * Este método retorna ColaboradorQuestionario que não contêm AvaliacaoDesempenho, 
+	 * garantindo que não seja selecionado uma avaliação de desempenho que está usando 
+	 * um modelo de acompanhamento do periodo de experiência.
+	 */
 	public ColaboradorQuestionario findByColaboradorAvaliacao(Long colaboradorId, Long avaliacaoId) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
@@ -899,6 +904,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		criteria.add(Expression.eq("cq.colaborador.id", colaboradorId));
 	    criteria.add(Expression.eq("cq.avaliacao.id", avaliacaoId));
+	    criteria.add(Expression.isNull("cq.avaliacaoDesempenho.id"));
 
 		criteria.setProjection(Projections.distinct(p));
 		
@@ -1045,6 +1051,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		p.add(Projections.property("cq.id"), "id");
 		p.add(Projections.property("cq.respondidaEm"), "respondidaEm");
+		p.add(Projections.property("cq.avaliacaoDesempenho.id"), "avaliacaoDesempenhoId");
 		p.add(Projections.property("av.titulo"), "projectionAvaliacaoTitulo");
 		p.add(Projections.property("av.tipoModeloAvaliacao"), "projectionAvaliacaoTipoModelo");
 		criteria.setProjection(p);
