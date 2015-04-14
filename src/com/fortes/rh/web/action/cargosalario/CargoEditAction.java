@@ -196,15 +196,14 @@ public class CargoEditAction extends MyActionSupportEdit
 	
 	public String relatorioColaboradorCargoXLS() throws Exception
 	{
-		if(relatorioResumido) {
+		if(relatorioResumido) 
+		{
 			populaTituloFiltro(); 
-			if (exibirAreaOrganizacional) {
-				faixasDoCargo = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(exibirAreaOrganizacional, empresa.getId());
+			faixasDoCargo = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(exibirAreaOrganizacional, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
+			if (exibirAreaOrganizacional) 
 				return "successResumidoAreaOrganizacionalXls";
-			} else {
-				faixasDoCargo = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(exibirAreaOrganizacional, empresa.getId());
+			 else 
 				return "successResumidoXls";
-			}
 		}
 		
 		String retorno = relatorioColaboradorCargo();

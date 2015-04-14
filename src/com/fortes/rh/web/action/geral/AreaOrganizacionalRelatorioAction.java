@@ -106,7 +106,7 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 
 			reportTitle = "Relatório de Colaboradores por Área Organizacional";
 
-			dataSource = colaboradorManager.ordenaPorEstabelecimentoArea(getEmpresaSistema().getId(), dataSource);
+			dataSource = colaboradorManager.ordenaPorEstabelecimentoArea(dataSource, EmpresaUtil.empresasSelecionadas(empresa.getId(),empresasPermitidas));
 
 			parametros = areaOrganizacionalManager.getParametrosRelatorio("Relatório de Áreas Organizacionais", getEmpresaSistema(), null);
 

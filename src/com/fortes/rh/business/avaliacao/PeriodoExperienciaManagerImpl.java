@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.FaixaPerformanceAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
@@ -84,7 +85,7 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 		return new ArrayList<CheckBox>();
 	}
 
-	public Collection<FaixaPerformanceAvaliacaoDesempenho> agrupaFaixaAvaliacao(Collection<Colaborador> colaboradores, String[] percentualInicial, String[] percentualFinal) throws Exception 
+	public Collection<FaixaPerformanceAvaliacaoDesempenho> agrupaFaixaAvaliacao(Collection<Colaborador> colaboradores, String[] percentualInicial, String[] percentualFinal) throws Exception, ColecaoVaziaException 
 	{
 		Collection<FaixaPerformanceAvaliacaoDesempenho> faixas = new ArrayList<FaixaPerformanceAvaliacaoDesempenho>();
 		
@@ -101,7 +102,7 @@ public class PeriodoExperienciaManagerImpl extends GenericManagerImpl<PeriodoExp
 		}
 
 		if(faixas.isEmpty())
-			throw new Exception("Não existem colaboradores dentro das faixas solicitadas.");
+			throw new ColecaoVaziaException("Não existem colaboradores dentro das faixas solicitadas.");
 		
 		for (Colaborador colaborador : colaboradores)
 		{

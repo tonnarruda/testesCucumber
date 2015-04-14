@@ -16,6 +16,7 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.PerguntaManager;
+import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
@@ -99,7 +100,6 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	private Collection<CartaoAcompanhamentoExperienciaVO> cartoesAcompanhamentoExperienciaVOs;
 	private boolean compartilharColaboradores;
 	private boolean agruparPorArea;
-	private Long[] empresaIds;//repassado para o DWR
 		
 	private void prepare() throws Exception
 	{
@@ -179,9 +179,6 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresa.getId(), getUsuarioLogado().getId());
-		
-		CollectionUtil<Empresa> empresasPermitidas = new CollectionUtil<Empresa>();
-		empresaIds = empresasPermitidas.convertCollectionToArrayIds(empresas);
 		
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresa.getId());
     	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(empresa.getId());
@@ -274,7 +271,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 	{
 		try 
 		{
-			colaboradores = colaboradorManager.findColabPeriodoExperiencia(periodoIni, periodoFim, avaliacaoCheck, areasCheck, estabelecimentoCheck, colaboradorsCheck, agruparPorArea, empresa.getId());
+			colaboradores = colaboradorManager.findColabPeriodoExperiencia(periodoIni, periodoFim, avaliacaoCheck, areasCheck, estabelecimentoCheck, colaboradorsCheck, agruparPorArea, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
 			colaboradores = colaboradorManager.ordenaByMediaPerformance(colaboradores);
 			reportTitle = "Ranking de Performance de Avaliação de Desempenho";
 
@@ -309,6 +306,12 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 			reportTitle = "Resultado da avaliação agrupado por faixa";
 			reportFilter = "Período de " + DateUtil.formataDiaMesAno(periodoIni) + " a " + DateUtil.formataDiaMesAno(periodoFim);
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);			
+		}
+		catch(ColecaoVaziaException cv){
+			addActionMessage(cv.getMessage());
+			cv.printStackTrace();
+			prepareRelatorioPerformanceAvaliacaoDesempenho();
+			return Action.INPUT;
 		}
 		catch (Exception e)
 		{
@@ -713,9 +716,5 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 
 	public void setAgruparPorArea(boolean agruparPorArea) {
 		this.agruparPorArea = agruparPorArea;
-	}
-	
-	public Long[] getEmpresaIds() {
-		return empresaIds;
 	}
 }

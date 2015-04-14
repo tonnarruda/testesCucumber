@@ -31,9 +31,9 @@
 
 	<script type="text/javascript">
 		var empresaIds = new Array();
-		<#if empresaIds?exists>
-			<#list empresaIds as empresaId>
-				empresaIds.push(${empresaId});
+		<#if empresas?exists && 0 < empresas?size>
+			<#list empresas as empresa>
+				empresaIds.push(${empresa.id});
 			</#list>
 		</#if>
 		
@@ -106,14 +106,19 @@
 
 	<@ww.form name="form" action="${action}" onsubmit="${validarCamposAvaliacaoDesempenho}" method="POST">
 		
+		<#list empresas as empresa>
+			<input type="hidden" name="empresasPermitidas" value="${empresa.id}" />
+		</#list>
+		
 		<@ww.datepicker label="Período" required="true" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
 		<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/>
-		<@ww.select label="Empresa" name="empresa.id" id="empresaId" listKey="id" listValue="nome" list="empresas" headerKey="-1" headerValue="Todas" cssClass="selectEmpresa"/>
+		<@ww.select label="Empresa" name="empresa.id" id="empresaId" listKey="id" listValue="nome" list="empresas" headerKey="" headerValue="Todas" cssClass="selectEmpresa"/>
 		<@frt.checkListBox label="Avaliações*" name="avaliacaoCheck" id="avaliacaoCheck" list="avaliacaoCheckList" onClick="getColaboradores();" filtro="true"/>						
 		<@frt.checkListBox label="Colaboradores" name="colaboradorsCheck" id="colaboradorsCheck" list="colaboradorsCheckList" filtro="true"/>
 		<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList" filtro="true"/>						
 		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 		<@ww.checkbox label="Agrupar por área organizacional" name="agruparPorArea" labelPosition="right" /><br>
+		
 	</@ww.form>
 
 	<div class="buttonGroupAvaliacaoDesempenho">

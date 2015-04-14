@@ -764,7 +764,7 @@ public class ColaboradorListAction extends MyActionSupportList
 				
 			colaboradores = colaboradorManager.findFormacaoEscolar(empresa.getId(), estabelecimentos, areas, cargos);
 
-			colaboradores = colaboradorManager.ordenaPorEstabelecimentoArea(getEmpresaSistema().getId(), colaboradores);
+			colaboradores = colaboradorManager.ordenaPorEstabelecimentoArea(colaboradores, getEmpresaSistema().getId());
 
 			parametros = areaOrganizacionalManager.getParametrosRelatorio("Relatório de Formação Escolar", getEmpresaSistema(), null);
 

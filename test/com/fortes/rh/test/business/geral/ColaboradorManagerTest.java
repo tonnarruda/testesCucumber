@@ -1210,7 +1210,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         areaOrganizacinoalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING);
 
-        Collection<Colaborador> retorno = colaboradorManager.ordenaPorEstabelecimentoArea(empresa.getId(), colaboradors);
+        Collection<Colaborador> retorno = colaboradorManager.ordenaPorEstabelecimentoArea(colaboradors, empresa.getId());
 
         assertEquals(colaboradors.size(), retorno.size());
     }
@@ -1237,7 +1237,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 
         areaOrganizacinoalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING);
 
-        Collection<Colaborador> retorno = colaboradorManager.ordenaPorEstabelecimentoArea(empresa.getId(), colaboradors);
+        Collection<Colaborador> retorno = colaboradorManager.ordenaPorEstabelecimentoArea(colaboradors, empresa.getId());
 
         assertEquals(colaboradors.size(), retorno.size());
     }

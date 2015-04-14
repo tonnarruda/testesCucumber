@@ -23,9 +23,9 @@
 	
 	<script type="text/javascript">
 		var empresaIds = new Array();
-		<#if empresaIds?exists>
-			<#list empresaIds as empresaId>
-				empresaIds.push(${empresaId});
+		<#if empresas?exists>
+			<#list empresas as empresa>
+				empresaIds.push(${empresa.id});
 			</#list>
 		</#if>
 	
@@ -50,10 +50,7 @@
 		function populaAvaliacaoDesempenho()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			if ( $('#empresaId').val() == "" )
-				AvaliacaoDesempenhoDWR.getAvaliacoesByEmpresaPermitidas(createListAvaliacaoDesmpenho, false, empresaIds);
-			else
-				AvaliacaoDesempenhoDWR.getAvaliacoesByEmpresaPermitidas(createListAvaliacaoDesmpenho, false, [$('#empresaId').val()]);
+			AvaliacaoDesempenhoDWR.getAvaliacoesByEmpresaPermitidas(createListAvaliacaoDesmpenho, false, ($('#empresaId').val() == ""  ? empresaIds : [$('#empresaId').val()]) );
 		}
 
 		function createListAvaliacaoDesmpenho(data)

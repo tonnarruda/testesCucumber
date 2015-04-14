@@ -1162,10 +1162,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradorByHistoricoColaboradors;
 	}
 
-	public Collection<Colaborador> ordenaPorEstabelecimentoArea(Long empresaId, Collection<Colaborador> colaboradors) throws Exception
+	public Collection<Colaborador> ordenaPorEstabelecimentoArea(Collection<Colaborador> colaboradors, Long... empresasIds) throws Exception
 	{
 		// monta familia das areas
-		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, null);
+		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, empresasIds);
 		areas = areaOrganizacionalManager.montaFamilia(areas);
 		
 		for (Colaborador colaboradorTmp : colaboradors) {

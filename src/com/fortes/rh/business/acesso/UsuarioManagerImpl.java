@@ -284,7 +284,7 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 	
 	public String[] findEmailByPerfilAndGestor(String role, Long empresaId, Long areaOrganizacionalId, boolean isVerTodosColaboradores)
 	{
-		Collection<AreaOrganizacional> todasAreas = areaOrganizacionalManager.findAllListAndInativas(empresaId, true, null);
+		Collection<AreaOrganizacional> todasAreas = areaOrganizacionalManager.findAllListAndInativas(true, null, empresaId);
 		Collection<AreaOrganizacional> areaOrganizacionais = areaOrganizacionalManager.getAncestrais(todasAreas, areaOrganizacionalId);
 		Collection<Long> areasIds = LongUtil.collectionToCollectionLong(areaOrganizacionais);
 		

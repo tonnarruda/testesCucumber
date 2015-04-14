@@ -14,9 +14,9 @@
 	
 	<script type="text/javascript">
 		var empresaIds = new Array();
-		<#if empresaIds?exists>
-			<#list empresaIds as empresaId>
-				empresaIds.push(${empresaId});
+		<#if empresas?exists>
+			<#list empresas as empresa>
+				empresaIds.push(${empresa.id});
 			</#list>
 		</#if>
 		
@@ -70,13 +70,8 @@
 			var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
 			var empresaId = $('#empresa').val();
 			
-			if ($('#cargosVinculadosAreas').is(":checked"))
-			{
-				if(areasIds.length == 0)
-					CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
-				else
-					CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
-			}
+			if ($('#cargosVinculadosAreas').is(":checked") && areasIds.length != 0)
+				CargoDWR.getCargoByArea(createListCargosByArea, areasIds, "getNomeMercadoComEmpresa", empresaId);
 			else
 				CargoDWR.getByEmpresas(createListCargosByArea, empresaId, empresaIds);
 		}

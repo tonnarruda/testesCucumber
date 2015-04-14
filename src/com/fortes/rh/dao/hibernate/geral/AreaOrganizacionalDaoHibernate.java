@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -155,7 +154,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 				criteria.add(Expression.or(Expression.eq("ao.ativo", ativo), Expression.in("ao.id", areaInativaIds)));
 		}
 
-		if(empresasIds != null)
+		if(LongUtil.arrayIsNotEmpty(empresasIds))
 			criteria.add(Expression.in("ao.empresa.id", empresasIds));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -352,7 +351,6 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		p.add(Projections.property("e.nome"), "empresaNome");
 		p.add(Projections.property("eMae.id"), "empresaAreaMaeId");
 		p.add(Projections.property("eMae.nome"), "empresaAreaMaeNome");
-		
 		p.add(Projections.property("res.nome"), "responsavelNome");
 
 		criteria.setProjection(p);
