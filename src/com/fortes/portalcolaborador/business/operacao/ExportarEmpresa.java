@@ -76,11 +76,19 @@ public class ExportarEmpresa extends Operacao {
 	{
 		Collection<HistoricoColaborador> historicosMontados = historicoColaboradorManager.montaSituacaoHistoricoColaborador(historicos);
 		
+		Collection<ColaboradorPC> colaboradorPCs = montaColaboradorPCComHistoricos(historicosMontados);
+		
+		for (ColaboradorPC colabPC : colaboradorPCs) 
+			transacaoPCManager.enfileirar(URLTransacaoPC.COLABORADOR_ATUALIZAR, colabPC.toJson());
+	}
+
+	private Collection<ColaboradorPC> montaColaboradorPCComHistoricos(Collection<HistoricoColaborador> historicosColaborador) 
+	{
 		ColaboradorPC colaboradorPC = null;
 		HistoricoColaboradorPC historicoColaboradorPC;
 		Set<ColaboradorPC> colaboradorPCs = new HashSet<ColaboradorPC>();
 		
-		for (HistoricoColaborador historico : historicosMontados) 
+		for (HistoricoColaborador historico : historicosColaborador) 
 		{
 			if(colaboradorPC.getCpf() != null )
 			{
@@ -97,8 +105,7 @@ public class ExportarEmpresa extends Operacao {
 			}
 		}
 		
-		for (ColaboradorPC colabPC : colaboradorPCs) 
-			transacaoPCManager.enfileirar(URLTransacaoPC.COLABORADOR_ATUALIZAR, colabPC.toJson());
+		return colaboradorPCs;
 	}
 	
 	private void emailConfirmacaoPC(Empresa empresa) 

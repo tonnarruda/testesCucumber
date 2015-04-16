@@ -28,7 +28,7 @@ public class HistoricoColaboradorPC extends AbstractAdapterPC
 		this.data = DateUtil.formataDiaMesAno(historicoColaborador.getData());
 		this.motivo = historicoColaborador.getMotivoDescricao();
 		this.tipo = historicoColaborador.getTipoSalarioDescricao();
-		this.salario = historicoColaborador.getSalario();
+		this.salario = historicoColaborador.getSalarioCalculado();
 		
 		if (historicoColaborador.getEstabelecimento() != null)
 			this.estabelecimentoNome = historicoColaborador.getEstabelecimento().getNome();

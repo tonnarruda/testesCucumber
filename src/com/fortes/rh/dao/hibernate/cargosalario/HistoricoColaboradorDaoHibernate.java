@@ -58,6 +58,55 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		return query.list();
 	}
+	
+	public Collection<HistoricoColaborador> getHistoricos(Long colaboradorId, Long empresaId)
+	{
+		StringBuilder hql = new StringBuilder();
+
+		hql.append("select new HistoricoColaborador (hc.id, hc.salario, hc.data, hc.gfip, hc.motivo, hc.quantidadeIndice, hc.tipoSalario, hc.status, ");
+		hql.append("e.id, emp.cnpj, es.id, es.nome, ao.id, cast(monta_familia_area(ao.id), text) as ao_nome ), c.id, c.nomeMercado, c.nome, ");
+		hql.append("co.id, co.nomeComercial, co.nome, co.pessoal.cpf, co.nome, co.nomeComercial, co.pessoal.escolaridade,co.pessoal.estadoCivil,co.pessoal.conjuge, co.pessoal.pai, co.pessoal.mae, ");
+		hql.append("co.pessoal.qtdFilhos, co.contato.email, co.contato.ddd, co.contato.foneFixo, co.contato.foneCelular, co.endereco.cep, co.endereco.logradouro, co.endereco.numero, ");
+		hql.append("co.endereco.complemento, co.endereco.bairro, co.foto.name, co.foto.bytes, co.foto.contentType, co.foto.size, ci.codigoIBGE, ");
+		hql.append("fs.id, fs.nome, i.id, i.nome, ih.valor, ");
+		hql.append("fsh.valor, fsh.tipo, fsh.quantidade, ifsh.valor ) ");
+
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.areaOrganizacional as ao ");
+		hql.append("left join hc.estabelecimento as es ");
+		hql.append("left join hc.indice as i ");
+		hql.append("left join i.indiceHistoricos as ih with ih.data = (select max(ih2.data) from IndiceHistorico ih2 where ih2.indice.id = i.id and ih2.data <= :hoje ) ");
+		hql.append("left join hc.colaborador as co ");
+		hql.append("left join co.endereco.cidade as ci ");
+		hql.append("left join co.empresa as e ");
+		hql.append("left join hc.faixaSalarial as fs ");
+		hql.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh2.data) from FaixaSalarialHistorico fsh2 where fsh2.faixaSalarial.id = fs.id and fsh2.data <= :hoje and fsh2.status != :status) ");
+		hql.append("left join fsh.indice as ifs ");
+		hql.append("left join ifs.indiceHistoricos as ifsh with ifsh.data = (select max(ih3.data) from IndiceHistorico ih3 where ih3.indice.id = ifs.id and ih3.data <= :hoje) ");
+		hql.append("left join fs.cargo as c ");
+
+		hql.append("where hc.status != :status  ");
+		
+		if (colaboradorId != null)
+			hql.append("and co.id = :colaboradorId");
+		
+		if (empresaId != null)
+			hql.append("and e.id = :empresaId");
+
+		hql.append("order by co.id, hc.data desc ");
+
+		Query query = getSession().createQuery(hql.toString());
+
+		if (colaboradorId != null)
+			query.setLong("colaboradorId", colaboradorId);
+		
+		if (empresaId != null)
+			query.setLong("empresaId", empresaId);
+		
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+
+		return query.list();
+	}
 
 	public HistoricoColaborador getHistoricoAtual(Long colaboradorId, int tipoBuscaHistoricoColaborador)
 	{
@@ -1443,19 +1492,21 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 	
 	public Collection<HistoricoColaborador> findByColaboradorIdWithProjectionPC(Long colaboradorId) 
 	{
-		Criteria criteria = criteriaHistoricoForPC();
+		Criteria criteria = getSession().createCriteria(SituacaoColaborador.class, "sc");
 		
-		criteria.setProjection(projectionHistoricoForPC());
+//		criteria.setProjection(projectionHistoricoForPC());
 
-		criteria.add(Expression.eq("c.id", colaboradorId));
-		criteria.add(Expression.eq("hc.status",StatusRetornoAC.CONFIRMADO));
-		
-		criteria.addOrder(Order.asc("hc.data"));
+//		criteria.add(Expression.eq("sc.colaborador.id", colaboradorId));
+//		criteria.add(Expression.eq("sc.status",StatusRetornoAC.CONFIRMADO));
+//		
+//		criteria.addOrder(Order.asc("sc.data"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(SituacaoColaborador.class));
 
-		return criteria.list();
+		Collection<SituacaoColaborador> teste = criteria.list(); 
+		
+		return null;
 	}
 	
 	private Criteria criteriaHistoricoForPC() {
@@ -1464,6 +1515,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.createCriteria("hc.estabelecimento", "e", Criteria.LEFT_JOIN);
 		criteria.createCriteria("hc.faixaSalarial", "f", Criteria.LEFT_JOIN);
 		criteria.createCriteria("hc.indice", "i", Criteria.LEFT_JOIN);
+		criteria.createCriteria("f.faixaSalarialHistoricos", "fh", Criteria.LEFT_JOIN);
 		criteria.createCriteria("f.cargo", "cg", Criteria.LEFT_JOIN);
 		criteria.createCriteria("hc.colaborador", "c", Criteria.INNER_JOIN);
 		criteria.createCriteria("c.endereco.cidade", "ci", Criteria.LEFT_JOIN);

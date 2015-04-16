@@ -353,6 +353,13 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.colaborador.setHistoricoColaborador(this);
 	}
 	
+	public HistoricoColaborador(Long historicoId, Double salario, Date data, String gfip, String motivo, Double quantidadeIndice, int tipoSalario, int status,
+								Long empresaId, String cnpj, Long estabelecimentoId, String estabelecimentoNome, Long areaId, String areaNome, Long cargoId, String cargoNome,
+								int qtdFilhos, String email, String ddd, String foneFixo, String foneCelular, String cep, String logradouro, String numero, String complemento, 
+								String bairro, String fotoNome, byte fotoBytes, String fotoContentType, Long fotoSize, Integer codigoIBGE, Long faixaSalarialId, String faixaSalarialNome,
+								Long indiceId, String indiceNome, Double indiceHistoricoValor, Double faixaHistoricoValor, Integer faixaHistoricoTipo, Double faixaHistoricoQuantidade, Double indiceFaixaHistoricoValor){
+		
+	}
 	
 	public HistoricoColaborador()
 	{
@@ -1180,7 +1187,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	{
 		this.faixaSalarial = faixaSalarial;
 	}
-
+	
 	public ReajusteColaborador getReajusteColaborador()
 	{
 		return reajusteColaborador;
