@@ -741,7 +741,8 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		
 		StringBuffer sql = new StringBuffer();
 		
-		sql.append("select a.id as apId, a.nome as apNome, p.id as pId, p.ordem as pOrdem, p.texto as pTexto, p.textoComentario as pTextoCom, p.tipo as pTipo, r.texto as rTexto, cr.comentario as crCom, cr.valor as crValor, cr.resposta_id as crRespId ");  
+		sql.append("select a.id as apId, a.nome as apNome, p.id as pId, p.ordem as pOrdem, p.texto as pTexto, p.textoComentario as pTextoCom, p.tipo as pTipo, r.texto as rTexto, ");
+		sql.append("(select comentario from colaboradorresposta cr2  where cr2.colaboradorquestionario_id =  cq.id and cr2.pergunta_id = p.id and comentario is not null limit 1) as crCom, cr.valor as crValor, cr.resposta_id as crRespId ");  
 		sql.append("from colaboradorquestionario cq ");
 		sql.append("left join pergunta p on cq.avaliacao_id = p.avaliacao_id "); 
 		sql.append("left join aspecto a on p.aspecto_id = a.id ");
