@@ -402,8 +402,8 @@ public class QuestionarioListAction extends MyActionSupportList
 //	    		cargoIds = LongUtil.collectionStringToArrayLong(cargoManager.findByEmpresa(empresaId));
 	    	}
 
-    		resultadoQuestionarios = questionarioManager.montaResultado(perguntas, perguntasIds, estabelecimentoIds, areaIds, cargoIds, periodoIni, periodoFim, questionario.verificaTipo(TipoQuestionario.ENTREVISTA), turmaId, questionario);
-
+    		resultadoQuestionarios = questionarioManager.montaResultado(perguntas, perguntasIds, estabelecimentoIds, areaIds, cargoIds, periodoIni, periodoFim, questionario.verificaTipo(TipoQuestionario.ENTREVISTA), turmaId, questionario, parametrosDoSistemaManager.findById(1L).isInibirGerarRelatorioPesquisaAnonima());
+    		
     		String estabelecimentos = estabelecimentoManager.nomeEstabelecimentos(estabelecimentoIds, getEmpresaSistema().getId());
     		String areas = areaOrganizacionalManager.nomeAreas(areaIds);
     		

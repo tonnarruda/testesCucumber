@@ -113,6 +113,7 @@
 	<@ww.checkbox label="Compartilhar candidatos entre empresas." id="compartilharCandidato" name="parametrosDoSistema.compartilharCandidatos" liClass="liLeft" labelPosition="left"/>
 	<@ww.checkbox label="Compartilhar colaboradores entre empresas." id="compartilharColaborador" name="parametrosDoSistema.compartilharColaboradores" liClass="liLeft" labelPosition="left"/>
 	<@ww.checkbox label="Compartilhar cursos entre empresas." id="compartilharCurso" name="parametrosDoSistema.compartilharCursos" liClass="liLeft" labelPosition="left"/>
+	<@ww.checkbox label="Inibir gerar relatórios de pesquisas anônimas com apenas um resultado." id="inibirGerarRelatorioPesquisaAnonima" name="parametrosDoSistema.inibirGerarRelatorioPesquisaAnonima" liClass="liLeft" labelPosition="left"/>
 	<br />
 	<@ww.textfield label="E-mail do suporte técnico" name="parametrosDoSistema.emailDoSuporteTecnico" id="emailDoSuporteTecnico" cssClass="mascaraEmail" size="40" maxLength="39" required="true"/>
 	

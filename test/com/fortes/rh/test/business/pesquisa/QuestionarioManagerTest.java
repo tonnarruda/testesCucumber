@@ -29,6 +29,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoPergunta;
+import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.Aspecto;
@@ -522,10 +523,111 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
 
-    	Collection<ResultadoQuestionario> resultado = questionarioManager.montaResultado(perguntas, new Long[] { pergunta1.getId(), pergunta2.getId() }, null, null, null, null, null, true, null, questionario);
+    	Collection<ResultadoQuestionario> resultado = questionarioManager.montaResultado(perguntas, new Long[] { pergunta1.getId(), pergunta2.getId() }, null, null, null, null, null, true, null, questionario, false);
     	assertEquals(2, resultado.size());
     	assertEquals(1, ((ResultadoQuestionario)resultado.toArray()[0]).getColabRespostas().size());
     	assertEquals(1, ((ResultadoQuestionario)resultado.toArray()[0]).getRespostas().size());
+    }
+    
+    public void testMontaResultadoQuandoQuestionarioAnonimo() throws Exception
+    {
+    	Pergunta pergunta1 = PerguntaFactory.getEntity(1L);
+    	pergunta1.setTipo(TipoPergunta.SUBJETIVA);
+
+    	Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
+    	perguntas.add(pergunta1);
+
+    	Resposta resposta1 = RespostaFactory.getEntity(1L);
+    	resposta1.setPergunta(pergunta1);
+
+    	Collection<Resposta> respostas = new ArrayList<Resposta>();
+    	respostas.add(resposta1);
+
+    	ColaboradorResposta colaboradorResposta1 = ColaboradorRespostaFactory.getEntity(1L);
+    	colaboradorResposta1.setPergunta(pergunta1);
+
+    	Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
+    	colaboradorRespostas.add(colaboradorResposta1);
+
+    	Questionario questionario = QuestionarioFactory.getEntity(1L);
+    	questionario.setAnonimo(true);
+    	questionario.setTipo(TipoQuestionario.PESQUISA);
+    	
+    	ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity(1L);
+    	colaboradorQuestionario1.setQuestionario(questionario);
+
+    	ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity(2L);
+    	colaboradorQuestionario2.setQuestionario(questionario);
+    	
+    	Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
+    	colaboradorQuestionarios.add(colaboradorQuestionario1);
+    	colaboradorQuestionarios.add(colaboradorQuestionario2);
+    	
+    	respostaManager.expects(once()).method("findInPerguntaIds").with(ANYTHING).will(returnValue(respostas));
+    	colaboradorRespostaManager.expects(once()).method("findInPerguntaIds").will(returnValue(colaboradorRespostas));
+    	colaboradorRespostaManager.expects(once()).method("existeRespostaSemCargo").with(eq( new Long[] { pergunta1.getId() } )).will(returnValue(false));
+    	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
+    	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
+    	colaboradorQuestionarioManager.expects(once()).method("countByQuestionarioRespondido").with(eq(questionario.getId())).will(returnValue(colaboradorQuestionarios.size()));
+    	
+    	Exception exception = null;
+    	try
+		{
+    		questionarioManager.montaResultado(perguntas, new Long[] { pergunta1.getId() }, null, null, null, null, null, true, null, questionario, true);
+		}
+		catch (Exception e)
+		{
+			exception = e;
+		}
+
+		assertNull(exception);
+    }
+    
+    public void testMontaResultadoQuandoQuestionarioAnonimoEApenasUmaReposta() throws Exception
+    {
+    	Pergunta pergunta1 = PerguntaFactory.getEntity(1L);
+    	pergunta1.setTipo(TipoPergunta.SUBJETIVA);
+
+    	Collection<Pergunta> perguntas = new ArrayList<Pergunta>();
+    	perguntas.add(pergunta1);
+
+    	Resposta resposta1 = RespostaFactory.getEntity(1L);
+    	resposta1.setPergunta(pergunta1);
+
+    	Collection<Resposta> respostas = new ArrayList<Resposta>();
+    	respostas.add(resposta1);
+
+    	ColaboradorResposta colaboradorResposta1 = ColaboradorRespostaFactory.getEntity(1L);
+    	colaboradorResposta1.setPergunta(pergunta1);
+
+    	Collection<ColaboradorResposta> colaboradorRespostas = new ArrayList<ColaboradorResposta>();
+    	colaboradorRespostas.add(colaboradorResposta1);
+
+    	Questionario questionario = QuestionarioFactory.getEntity(1L);
+    	questionario.setAnonimo(true);
+    	questionario.setTipo(TipoQuestionario.PESQUISA);
+
+    	ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity(1L);
+    	colaboradorQuestionario1.setQuestionario(questionario);
+
+    	Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
+    	colaboradorQuestionarios.add(colaboradorQuestionario1);
+    	
+    	respostaManager.expects(once()).method("findInPerguntaIds").with(ANYTHING).will(returnValue(respostas));
+    	colaboradorRespostaManager.expects(once()).method("findInPerguntaIds").will(returnValue(colaboradorRespostas));
+    	colaboradorRespostaManager.expects(once()).method("existeRespostaSemCargo").with(eq( new Long[] { pergunta1.getId() } )).will(returnValue(false));
+    	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
+    	colaboradorQuestionarioManager.expects(once()).method("countByQuestionarioRespondido").with(eq(questionario.getId())).will(returnValue(colaboradorQuestionarios.size()));
+
+    	Exception exception = null;
+    	try {
+    		questionarioManager.montaResultado(perguntas, new Long[] { pergunta1.getId() }, null, null, null, null, null, true, null, questionario, true);
+		}
+		catch (Exception e) {
+			exception = e;
+		}
+
+		assertEquals("A pesquisa é anônima e o relatório resultou em respostas de um único colaborador, não é possível gerá-lo.", exception.getMessage());
     }
     
     public void testMontaResultadosAvaliacaoDesempenho()

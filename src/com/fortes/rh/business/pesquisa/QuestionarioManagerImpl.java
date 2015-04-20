@@ -259,7 +259,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     }
 
     //TODO Refatorar consultas grandes como banco da vega esta exibindo "could not execute query" quando marcamos áreas organizacionais 
-    public Collection<ResultadoQuestionario> montaResultado(Collection<Pergunta> perguntas, Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Questionario questionario) throws Exception
+    public Collection<ResultadoQuestionario> montaResultado(Collection<Pergunta> perguntas, Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Questionario questionario, boolean inibirGerarRelatorioPesquisaAnonima) throws Exception
     {
     	ColaboradorRespostaManager colaboradorRespostaManager = (ColaboradorRespostaManager) SpringUtil.getBean("colaboradorRespostaManager");
 
@@ -273,14 +273,17 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
 
         if(colaboradorRespostas.isEmpty())
         	throw new Exception("Nenhuma pergunta foi respondida.");
-
+        
         Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, null);
        
-        if(questionario.isAnonimo() && questionario.getTipo() == TipoQuestionario.PESQUISA ) 
+        if(questionario.isAnonimo() && questionario.getTipo() == TipoQuestionario.PESQUISA ) {
         	questionario.setTotalColab(colaboradorQuestionarioManager.countByQuestionarioRespondido(questionario.getId()));
-        else
+        	
+        	if( inibirGerarRelatorioPesquisaAnonima && questionario.getTotalColab() == 1)
+            	throw new Exception("A pesquisa é anônima e o relatório resultou em respostas de um único colaborador, não é possível gerá-lo.");
+        } else	
         	questionario.setTotalColab(countColaborador(colaboradorRespostas));
-        
+
         Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultiplas = colaboradorRespostaManager.calculaPercentualRespostasMultipla(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, null);
         percentuaisDeRespostas.addAll(calculaPercentualRespostasMultiplas);
         

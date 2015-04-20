@@ -62,6 +62,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private Boolean compartilharColaboradores;
     private Boolean compartilharCandidatos;
     private Boolean compartilharCursos;
+    private Boolean inibirGerarRelatorioPesquisaAnonima;
     private boolean suporteVeica;
 
     private Integer sessionTimeout;
@@ -344,6 +345,13 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 		this.compartilharCursos = compartilharCursos;
 	}
 	
+	public Boolean isInibirGerarRelatorioPesquisaAnonima() {
+		return inibirGerarRelatorioPesquisaAnonima;
+	}
+	public void setInibirGerarRelatorioPesquisaAnonima(
+			Boolean inibirGerarRelatorioPesquisaAnonima) {
+		this.inibirGerarRelatorioPesquisaAnonima = inibirGerarRelatorioPesquisaAnonima;
+	}
 	public char getTelaInicialModuloExterno()
 	{
 		return telaInicialModuloExterno;
