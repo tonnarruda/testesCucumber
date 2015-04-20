@@ -3,6 +3,7 @@
 	<Versao id="1.1.14x.17x" bd="" data="xx/04/2015">
 		<Item visivel="S" motivo="S20150300113"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Performance Profissional: Adição das informações de CPF, RG e Título eleitoral.]]></Item>
 		<Item visivel="S" motivo="S20150300118"><![CDATA[Módulo Externo: Exibindo data da previsão de encerramento das vagas.]]></Item>
+		<Item visivel="N" motivo="P20150400028"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Imprimir: Ajuste para apresentar o motivo da solicitação por completo.]]></Item>
 	</Versao>
 	<Versao id="1.1.142.172" bd="" data="13/04/2015">
 		<Item visivel="S" motivo="S20150300093"><![CDATA[C&S > Cadastros > Cargos e Faixas > Faixas Salariais > Níveis de Competência: Agrupamento das competências em conhecimento, habilidade e atitude.]]></Item>

@@ -652,25 +652,29 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		this.descricao = descricao;
 	}
 	
-	public String getNomeDoCargoDaFaixaSalarial() {
+	public String getNomeDoCargoDaFaixaSalarial()
+	{
 		FaixaSalarial faixa = this.getFaixaSalarial();
 		if (faixa != null)
 			return faixa.getNomeDoCargo();
 		return "";
 	}
-	
-	private String getDescricaoDaAreaOrganizacional() {
+
+	private String getDescricaoDaAreaOrganizacional()
+	{
 		AreaOrganizacional area = getAreaOrganizacional();
 		if (area != null)
 			return area.getDescricao();
 		return "";
 	}
 
-	public Anuncio getAnuncio() {
+	public Anuncio getAnuncio()
+	{
 		return anuncio;
 	}
 
-	public void setAnuncio(Anuncio anuncio) {
+	public void setAnuncio(Anuncio anuncio)
+	{
 		this.anuncio = anuncio;
 	}
 
@@ -679,154 +683,185 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		if (this.anuncio == null)
 			this.anuncio = new Anuncio();
 
-		if(exibirModuloExterno != null)
+		if (exibirModuloExterno != null)
 			this.anuncio.setExibirModuloExterno(exibirModuloExterno);
 	}
 
-	public String getIdadeMinimaDesc() {
+	public String getIdadeMinimaDesc()
+	{
 		return StringUtil.valueOf(this.idadeMinima);
 	}
 
-	public String getIdadeMaximaDesc() {
+	public String getIdadeMaximaDesc()
+	{
 		return StringUtil.valueOf(this.idadeMaxima);
 	}
 
-	public Usuario getLiberador() {
+	public Usuario getLiberador()
+	{
 		return liberador;
 	}
 
-	public void setLiberador(Usuario liberador) {
+	public void setLiberador(Usuario liberador)
+	{
 		this.liberador = liberador;
 	}
-	
-	public void setLiberadorNome(String liberadorNome) {
-		if(this.liberador == null)
+
+	public void setLiberadorNome(String liberadorNome)
+	{
+		if (this.liberador == null)
 			this.liberador = new Usuario();
-			
+
 		this.liberador.setNome(liberadorNome);
 	}
-	
-	public void setLiberadorId(Long liberadorId) {
-		if(this.liberador == null)
+
+	public void setLiberadorId(Long liberadorId)
+	{
+		if (this.liberador == null)
 			this.liberador = new Usuario();
-		
+
 		this.liberador.setId(liberadorId);
 	}
 
-	public String getHorarioComercial() {
+	public String getHorarioComercial()
+	{
 		return horarioComercial;
 	}
 
-	public void setHorarioComercial(String horarioComercial) {
+	public void setHorarioComercial(String horarioComercial)
+	{
 		this.horarioComercial = horarioComercial;
 	}
 
-	public Collection<CandidatoSolicitacao> getCandidatoSolicitacaos() {
+	public Collection<CandidatoSolicitacao> getCandidatoSolicitacaos()
+	{
 		return candidatoSolicitacaos;
 	}
 
-	public void setCandidatoSolicitacaos(Collection<CandidatoSolicitacao> candidatoSolicitacaos) {
+	public void setCandidatoSolicitacaos(Collection<CandidatoSolicitacao> candidatoSolicitacaos)
+	{
 		this.candidatoSolicitacaos = candidatoSolicitacaos;
 	}
 
-	public String getStatusFormatado() {
+	public String getStatusFormatado()
+	{
 		return StatusAprovacaoSolicitacao.getDescricao(getStatus());
 	}
-	
-	public String getDataStatusFormatada() {
+
+	public String getDataStatusFormatada()
+	{
 		return DateUtil.formataDiaMesAno(dataStatus);
 	}
-	
-	public String getStatusFormatadoComData() {
+
+	public String getStatusFormatadoComData()
+	{
 		String status = getStatusFormatado();
-		if(dataStatus != null)
+		if (dataStatus != null)
 			status += "<br>" + DateUtil.formataDiaMesAno(dataStatus);
-		
-		return status;
-	}
-	
-	public char getStatus() {
+
 		return status;
 	}
 
-	public void setStatus(char status) {
+	public char getStatus()
+	{
+		return status;
+	}
+
+	public void setStatus(char status)
+	{
 		this.status = status;
 	}
 
-	public String getObservacaoLiberador() {
+	public String getObservacaoLiberador()
+	{
 		return observacaoLiberador;
 	}
 
-	public void setObservacaoLiberador(String observacaoLiberador) {
+	public void setObservacaoLiberador(String observacaoLiberador)
+	{
 		this.observacaoLiberador = observacaoLiberador;
 	}
 
-	public String getColaboradorSubstituido() {
-		if(colaboradorSubstituido != null)
+	public String getColaboradorSubstituido()
+	{
+		if (colaboradorSubstituido != null)
 			return colaboradorSubstituido.replace("|;", ", ");
-		
+
 		return colaboradorSubstituido;
 	}
 
-	public void setColaboradorSubstituido(String colaboradorSubstituido) {
+	public void setColaboradorSubstituido(String colaboradorSubstituido)
+	{
 		this.colaboradorSubstituido = colaboradorSubstituido;
 	}
 
-	public Integer getQtdVagasPreenchidas() {
+	public Integer getQtdVagasPreenchidas()
+	{
 		return qtdVagasPreenchidas;
 	}
 
-	public void setQtdVagasPreenchidas(Integer qtdVagasPreenchidas) {
+	public void setQtdVagasPreenchidas(Integer qtdVagasPreenchidas)
+	{
 		this.qtdVagasPreenchidas = qtdVagasPreenchidas;
 	}
 
-	public Collection<SolicitacaoAvaliacao> getSolicitacaoAvaliacaos() {
+	public Collection<SolicitacaoAvaliacao> getSolicitacaoAvaliacaos()
+	{
 		return solicitacaoAvaliacaos;
 	}
 
-	public void setSolicitacaoAvaliacaos(
-			Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos) {
+	public void setSolicitacaoAvaliacaos(Collection<SolicitacaoAvaliacao> solicitacaoAvaliacaos)
+	{
 		this.solicitacaoAvaliacaos = solicitacaoAvaliacaos;
 	}
 
-	public Integer getQtdAvaliacoes() {
+	public Integer getQtdAvaliacoes()
+	{
 		return qtdAvaliacoes;
 	}
 
-	public void setQtdAvaliacoes(Integer qtdAvaliacoes) {
+	public void setQtdAvaliacoes(Integer qtdAvaliacoes)
+	{
 		this.qtdAvaliacoes = qtdAvaliacoes;
 	}
 
-	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios() {
+	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios()
+	{
 		return colaboradorQuestionarios;
 	}
 
-	public void setColaboradorQuestionarios(
-			Collection<ColaboradorQuestionario> colaboradorQuestionarios) {
+	public void setColaboradorQuestionarios(Collection<ColaboradorQuestionario> colaboradorQuestionarios)
+	{
 		this.colaboradorQuestionarios = colaboradorQuestionarios;
 	}
 
-	public Funcao getFuncao() {
+	public Funcao getFuncao()
+	{
 		return funcao;
 	}
 
-	public void setFuncao(Funcao funcao) {
+	public void setFuncao(Funcao funcao)
+	{
 		this.funcao = funcao;
 	}
 
-	public Ambiente getAmbiente() {
+	public Ambiente getAmbiente()
+	{
 		return ambiente;
 	}
 
-	public void setAmbiente(Ambiente ambiente) {
+	public void setAmbiente(Ambiente ambiente)
+	{
 		this.ambiente = ambiente;
 	}
 
-	public Date getDataStatus() {
+	public Date getDataStatus()
+	{
 		return dataStatus;
 	}
 
-	public void setDataStatus(Date dataStatus) {
+	public void setDataStatus(Date dataStatus)
+	{
 		this.dataStatus = dataStatus;
 	}
 }
