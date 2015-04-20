@@ -103,9 +103,12 @@ public class UsuarioEditAction extends MyActionSupportEdit
 		empresas = empresaManager.findByUsuarioPermissao(usuarioId, "ROLE_CAD_USUARIO", "ROLE_COLAB_LIST_CRIARUSUARIO");
 		colaboradores = colaboradorManager.findSemUsuarios(getEmpresaSistema().getId(), usuario);
 		
-		if(colaboradorId != null)
+		
+		if(colaboradorId != null) {
 			colaboradorPertenceEmpresaLogada = colaboradorManager.pertenceEmpresa(colaboradorId, getEmpresaSistema().getId());
-
+			colaborador = colaboradorManager.findColaboradorByIdProjection(colaboradorId);
+		}
+		
 		listaEmpresas = new Object[empresas.size()][2];
 		int i = 0;
 		for (Empresa emp: empresas)

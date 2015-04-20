@@ -108,7 +108,13 @@
 		
 		
 		<#if colaboradorPertenceEmpresaLogada>
-			<@ww.select label="Colaborador" name="colaboradorId" list="colaboradores"  listKey="id" listValue="nome"  headerKey="" headerValue="Nenhum" />
+			<#if colaborador.desligado>
+				<br/>
+				<span style="color: red;">* O usuário tem referência com o colaborador(a) ${colaborador.nome}, que está desligado(a).</span><br/><br/>
+				<@ww.hidden name="colaboradorId" />
+			<#else>
+				<@ww.select label="Colaborador" name="colaboradorId" list="colaboradores"  listKey="id" listValue="nome"  headerKey="" headerValue="Nenhum" />
+			</#if>
 		<#else>
 			<br/>
 			* Colaborador cadastrado para esse usuário não pertence a essa empresa que você está logado(a).<br/><br/>
