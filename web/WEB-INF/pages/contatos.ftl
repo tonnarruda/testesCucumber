@@ -49,9 +49,8 @@
 							<li>Suporte Fiscal: 365 dias/ano (85) 4005.1124</li>
 							<li>Suporte Pessoal: 365 dias/ano (85) 4005.1123</li>
 							<li>Suporte Pessoal ENTE (85) 4005-1128</li>
-							<li>Suporte RH: (85) 4005.1114</li>
 							<li>Suporte RH - Segmento de Transporte: (85) 4005.1120</li>
-							<li>Suporte Ponto: (85) 4005.1127</li>
+							<li>Suporte Ponto/RH: (85) 4005.1127</li>
 							<li>Suporte AG: (85) 4005.1190</li>
 							<li>Suporte Cargas: (85) 4005.1144</li>
 							<li>Suporte Frota: (85) 4005.1159</li>
