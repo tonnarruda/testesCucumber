@@ -85,7 +85,47 @@
 				<param name="properties">pessoal.diaMesDataNascimento,matricula,nome,endereco.enderecoCompletoFormatado,faixaSalarial.descricao,estabelecimento.nome</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="sucessoAreaNomeComercialTodosMeses" type="xls">
+				<param name="dataSource">colaboradors</param>
+				<param name="documentName">aniversariantes.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Mês,Data,Matrícula,Nome Comercial,Endereço,Área Organizacional,Estabelecimento</param>
+				<param name="propertiesGroup">pessoal.mesNascimentoExtenso</param>
+				<param name="properties">pessoal.mesNascimentoExtenso,pessoal.diaMesDataNascimento,matricula,nomeComercial,endereco.enderecoCompletoFormatado,areaOrganizacional.descricao,estabelecimento.nome</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
 			</result>					
+			<result name="sucessoAreaTodosMeses" type="xls">
+				<param name="dataSource">colaboradors</param>
+				<param name="documentName">aniversariantes.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Mês,Data,Matrícula,Nome,Endereço,Área Organizacional,Estabelecimento</param>
+				<param name="propertiesGroup">pessoal.mesNascimentoExtenso</param>
+				<param name="properties">pessoal.mesNascimentoExtenso,pessoal.diaMesDataNascimento,matricula,nome,endereco.enderecoCompletoFormatado,areaOrganizacional.descricao,estabelecimento.nome</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>					
+			<result name="sucessoCargoNomeComercialTodosMeses" type="xls">
+				<param name="dataSource">colaboradors</param>
+				<param name="documentName">aniversariantes.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Mês,Data,Matrícula,Nome Comercial,Endereço,Cargo,Estabelecimento</param>
+				<param name="propertiesGroup">pessoal.mesNascimentoExtenso</param>
+				<param name="properties">pessoal.mesNascimentoExtenso,pessoal.diaMesDataNascimento,matricula,nomeComercial,endereco.enderecoCompletoFormatado,faixaSalarial.descricao,estabelecimento.nome</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>					
+			<result name="sucessoCargoTodosMeses" type="xls">
+				<param name="dataSource">colaboradors</param>
+				<param name="documentName">aniversariantes.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Mês,Data,Matrícula,Nome,Endereço,Cargo,Estabelecimento</param>
+				<param name="propertiesGroup">pessoal.mesNascimentoExtenso</param>
+				<param name="properties">pessoal.mesNascimentoExtenso,pessoal.diaMesDataNascimento,matricula,nome,endereco.enderecoCompletoFormatado,faixaSalarial.descricao,estabelecimento.nome</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/relatorioAniversariantes.ftl</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.geral.ColaboradorEditAction" method="prepareInsert">

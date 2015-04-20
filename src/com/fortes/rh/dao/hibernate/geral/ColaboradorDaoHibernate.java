@@ -2514,7 +2514,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("		where hc2.colaborador.id = co.id ");
 		hql.append("		and hc2.data <= :hoje and hc2.status = :status ) ");
 		hql.append("	or hc1.data is null) ");
-		hql.append("	and (month(co.pessoal.dataNascimento) = :mes) ");
+		if (mes > 0) {
+			hql.append("	and (month(co.pessoal.dataNascimento) = :mes) ");
+		}
 		hql.append("	and co.desligado = false ");
 
 		if(empresaIds != null && empresaIds.length > 0)
@@ -2534,7 +2536,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			query.setParameterList("empresaIds", empresaIds, Hibernate.LONG);
 
 		query.setDate("hoje", new Date());
-		query.setInteger("mes", mes);
+		if (mes > 0) {
+			query.setInteger("mes", mes);
+		}
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		if(areaIds != null && areaIds.length > 0)

@@ -321,9 +321,12 @@ public class ColaboradorListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
+	@SuppressWarnings("unchecked")
 	public String prepareRelatorioAniversariantes()
 	{
 		prepareEmpresas("ROLE_REL_ANIVERSARIANTES");
+		
+		meses.put(0, "Todos");
 		
 		Calendar hoje = Calendar.getInstance();
 		mes = hoje.get(Calendar.MONTH) + 1;
@@ -641,10 +644,17 @@ public class ColaboradorListAction extends MyActionSupportList
 			
 			if(retorno.equals(SUCCESS))
 			{
-				if(exibir == 'A')
-					return exibirNomeComercial?"sucessoAreaNomeComercial":"sucessoArea";
-				else
-					return exibirNomeComercial?"sucessoCargoNomeComercial":"sucessoCargo";
+				if (mes > 0) {
+					if(exibir == 'A')
+						return exibirNomeComercial?"sucessoAreaNomeComercial":"sucessoArea";
+					else
+						return exibirNomeComercial?"sucessoCargoNomeComercial":"sucessoCargo";
+				} else {
+					if(exibir == 'A')
+						return exibirNomeComercial?"sucessoAreaNomeComercialTodosMeses":"sucessoAreaTodosMeses";
+					else
+						return exibirNomeComercial?"sucessoCargoNomeComercialTodosMeses":"sucessoCargoTodosMeses";
+				}
 			}
 			
 			return Action.INPUT;
@@ -661,12 +671,17 @@ public class ColaboradorListAction extends MyActionSupportList
 			empresaIds = empresaManager.selecionaEmpresa(empresa, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_ANIVERSARIANTES");
 			colaboradors = colaboradorManager.findAniversariantes(empresaIds, mes, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck));
 			
-			reportTitle="Aniversariantes do mês: " + meses.get(mes);
+			if (mes > 0) {
+				reportTitle="Aniversariantes do mês: " + meses.get(mes);
+			} else {
+				reportTitle="Aniversariantes";
+			}
 			
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), null);
 			parametros.put("EXIBIR_NOME_COMERCIAL", exibirNomeComercial);
 			parametros.put("EXIBIR_CARGO", exibirCargo);
 			parametros.put("EXIBIR_AREA", exibirArea);
+			parametros.put("TODOS_MESES", mes == 0 ? true : false);
 		}
 		catch (ColecaoVaziaException e)
 		{
