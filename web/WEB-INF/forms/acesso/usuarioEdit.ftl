@@ -106,7 +106,6 @@
 		<@ww.textfield label="Nome" name="usuario.nome" id="nome" cssStyle="width:445px;" required="true" cssClass="inputNome" maxLength="100"/>
 		<@ww.textfield label="Login" name="usuario.login" cssClass="inputLogin" maxLength="25" id="login" required="true"/>
 		
-		
 		<#if colaboradorPertenceEmpresaLogada>
 			<#if colaborador.desligado>
 				<br/>
