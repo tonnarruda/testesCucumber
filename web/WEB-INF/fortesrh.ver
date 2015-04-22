@@ -3,6 +3,7 @@
 	<Versao id="1.1.14x.17x" bd="" data="xx/04/2015">
 		<Item visivel="S" motivo="P20150400076"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Ajuste na impressão das justificativas das respostas.]]></Item>
 		<Item visivel="S" motivo="S20150300113"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Performance Profissional: Adição das informações de CPF, RG e Título eleitoral.]]></Item>
+		<Item visivel="S" motivo="S20150300120"><![CDATA[Info. Funcionais > Relatórios > Aniversariantes do Mês: Nova opção no filtro "Mês" para exibir aniversariantes de todos os meses.]]></Item>
 		<Item visivel="S" motivo="P20150400147"><![CDATA[Utilitários > Cadastros > Usuários > Editar: Nova mensagem para informar quando o colaborador referente ao usuário estiver desligado.]]></Item>
 		<Item visivel="S" motivo="S20150300157"><![CDATA[Utilitários > Configurações > Sistema: Nova configuração para impossibilitar gerar relatório de pesquisa anônima que possua respostas de um único colaborador.]]></Item>
 		<Item visivel="S" motivo="S20150300118"><![CDATA[Módulo Externo: Exibindo data da previsão de encerramento das vagas.]]></Item>

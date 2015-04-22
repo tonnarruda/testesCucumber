@@ -53,7 +53,6 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.dicionario.Mes;
 import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoColaboradorIntegraAC;
@@ -153,7 +152,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	private Integer[] tempoServicoIni;
 	private Integer[] tempoServicoFim;
 	private int mes;
-	private Map meses = new Mes();
+	private Map meses = DateUtil.getMesesComoOpcoesParaSelect();
 	
 	//relatorio de admitidos
 	private Date dataIni;
@@ -325,8 +324,6 @@ public class ColaboradorListAction extends MyActionSupportList
 	public String prepareRelatorioAniversariantes()
 	{
 		prepareEmpresas("ROLE_REL_ANIVERSARIANTES");
-		
-		meses.put(0, "Todos");
 		
 		Calendar hoje = Calendar.getInstance();
 		mes = hoje.get(Calendar.MONTH) + 1;

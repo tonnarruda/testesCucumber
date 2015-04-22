@@ -434,35 +434,9 @@ public class Pessoal implements Serializable
 	public String getMesNascimentoExtenso(){
 		String mes = "-";
 		if (this.dataNascimento != null){
-			Integer tmp=0;
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(this.dataNascimento);
-			tmp = calendar.get(Calendar.MONTH)+1;
-			if (tmp == 1) {
-				mes = "Janeiro";
-			} else if (tmp == 2) {
-				mes = "Fevereiro";
-			} else if (tmp == 3) {
-				mes = "Março";
-			} else if (tmp == 4) {
-				mes = "Abril";
-			} else if (tmp == 5) {
-				mes = "Maio";
-			}  else if (tmp == 6) {
-				mes = "Junho";
-			} else if (tmp == 7) {
-				mes = "Julho";
-			} else if (tmp == 8) {
-				mes = "Agosto";
-			} else if (tmp == 9) {
-				mes = "Setembro";
-			} else if (tmp == 10) {
-				mes = "Outubro";
-			} else if (tmp == 11) {
-				mes = "Novembro";
-			} else if (tmp == 12) {
-				mes = "Dezembro";
-			}
+			mes = DateUtil.getNomeMesCompleto(calendar.get(Calendar.MONTH)+1);
 		}
 		return mes;
 	}

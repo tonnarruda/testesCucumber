@@ -83,7 +83,6 @@ import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.EstadoCivil;
 import com.fortes.rh.model.dicionario.FiltrosRelatorio;
 import com.fortes.rh.model.dicionario.FuncaoComissaoEleitoral;
-import com.fortes.rh.model.dicionario.Mes;
 import com.fortes.rh.model.dicionario.MotivoExtintorManutencao;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.NaturezaExame;
@@ -565,7 +564,6 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new EstadoCivil());
 		cobreGetSet(new FiltrosRelatorio());
 		cobreGetSet(new FuncaoComissaoEleitoral());
-		cobreGetSet(new Mes());
 		cobreGetSet(new MotivoExtintorManutencao());
 		cobreGetSet(new MotivoHistoricoColaborador());
 		cobreGetSet(new NaturezaExame());
