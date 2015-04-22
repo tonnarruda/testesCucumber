@@ -399,10 +399,10 @@ public class QuestionarioListAction extends MyActionSupportList
 	    	if(empresaIds.length > 0 && estabelecimentoIds.length == 0 && areaIds.length == 0 && cargoIds.length == 0) {
 	    		estabelecimentoIds = new CollectionUtil<Estabelecimento>().convertCollectionToArrayIds(estabelecimentoManager.findAllSelect(empresaIds));
 	    		areaIds = new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areaOrganizacionalManager.findByEmpresasIds(empresaIds, null));
-//	    		cargoIds = LongUtil.collectionStringToArrayLong(cargoManager.findByEmpresa(empresaId));
 	    	}
 
-    		resultadoQuestionarios = questionarioManager.montaResultado(perguntas, perguntasIds, estabelecimentoIds, areaIds, cargoIds, periodoIni, periodoFim, questionario.verificaTipo(TipoQuestionario.ENTREVISTA), turmaId, questionario, parametrosDoSistemaManager.findById(1L).isInibirGerarRelatorioPesquisaAnonima());
+    		boolean inibirGerarRelatorioPesquisaAnonima = parametrosDoSistemaManager.findById(1L).getInibirGerarRelatorioPesquisaAnonima();
+			resultadoQuestionarios = questionarioManager.montaResultado(perguntas, perguntasIds, estabelecimentoIds, areaIds, cargoIds, periodoIni, periodoFim, questionario.verificaTipo(TipoQuestionario.ENTREVISTA), turmaId, questionario, inibirGerarRelatorioPesquisaAnonima );
     		
     		String estabelecimentos = estabelecimentoManager.nomeEstabelecimentos(estabelecimentoIds, getEmpresaSistema().getId());
     		String areas = areaOrganizacionalManager.nomeAreas(areaIds);

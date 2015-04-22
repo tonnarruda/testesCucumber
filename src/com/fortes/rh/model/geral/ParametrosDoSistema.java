@@ -345,13 +345,16 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 		this.compartilharCursos = compartilharCursos;
 	}
 	
-	public Boolean isInibirGerarRelatorioPesquisaAnonima() {
+	public Boolean getInibirGerarRelatorioPesquisaAnonima()
+	{
 		return inibirGerarRelatorioPesquisaAnonima;
 	}
-	public void setInibirGerarRelatorioPesquisaAnonima(
-			Boolean inibirGerarRelatorioPesquisaAnonima) {
+
+	public void setInibirGerarRelatorioPesquisaAnonima(Boolean inibirGerarRelatorioPesquisaAnonima)
+	{
 		this.inibirGerarRelatorioPesquisaAnonima = inibirGerarRelatorioPesquisaAnonima;
 	}
+
 	public char getTelaInicialModuloExterno()
 	{
 		return telaInicialModuloExterno;

@@ -120,6 +120,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		if(getUsuarioLogado().getId() != 1 && parametrosDoSistema.getProximaVersao() == null)
 			parametrosDoSistema.setProximaVersao(parametrosDoSistemaAux.getProximaVersao());
 		
+		parametrosDoSistema.setSuporteVeica(parametrosDoSistemaAux.isSuporteVeica());
 		parametrosDoSistema.setHorariosBackup(StringUtil.converteCollectionToString(horariosBackup));
 		
 		ServletActionContext.getRequest().getSession().setMaxInactiveInterval(parametrosDoSistema.getSessionTimeout());

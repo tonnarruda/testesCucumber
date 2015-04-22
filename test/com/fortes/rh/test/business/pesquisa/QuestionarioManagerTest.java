@@ -627,7 +627,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 			exception = e;
 		}
 
-		assertEquals("A pesquisa é anônima e o relatório resultou em respostas de um único colaborador, não é possível gerá-lo.", exception.getMessage());
+		assertEquals("Não é possível gerar o relatório porque a pesquisa é anônima e possui respostas de um único colaborador.", exception.getMessage());
     }
     
     public void testMontaResultadosAvaliacaoDesempenho()
