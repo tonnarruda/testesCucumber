@@ -6,6 +6,10 @@
 		<Item visivel="S" motivo="P20150400147"><![CDATA[Utilitários > Cadastros > Usuários > Editar: Nova mensagem para informar quando o colaborador referente ao usuário estiver desligado.]]></Item>
 		<Item visivel="S" motivo="S20150300118"><![CDATA[Módulo Externo: Exibindo data da previsão de encerramento das vagas.]]></Item>
 		<Item visivel="N" motivo="P20150400028"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Imprimir: Ajuste para apresentar o motivo da solicitação por completo.]]></Item>
+		<Item visivel="N" motivo="P20150100303"><![CDATA[R&S: Gerar dados apenas das empresas cujo usuário logado tenha permissão ao selecionar a opção “todas” no filtro de empresas.]]></Item>
+		<Item visivel="N" motivo="P20150100303"><![CDATA[C&S: Gerar dados apenas das empresas cujo usuário logado tenha permissão ao selecionar a opção “todas” no filtro de empresas.]]></Item>
+		<Item visivel="N" motivo="P20150100303"><![CDATA[Pesquisa: Gerar dados apenas das empresas cujo usuário logado tenha permissão ao selecionar a opção “todas” no filtro de empresas.]]></Item>
+		<Item visivel="N" motivo="P20150100303"><![CDATA[Aval. Desempenho: Gerar dados apenas das empresas cujo usuário logado tenha permissão ao selecionar a opção “todas” no filtro de empresas.]]></Item>
 	</Versao>
 	<Versao id="1.1.142.172" bd="" data="13/04/2015">
 		<Item visivel="S" motivo="S20150300093"><![CDATA[C&S > Cadastros > Cargos e Faixas > Faixas Salariais > Níveis de Competência: Agrupamento das competências em conhecimento, habilidade e atitude.]]></Item>
