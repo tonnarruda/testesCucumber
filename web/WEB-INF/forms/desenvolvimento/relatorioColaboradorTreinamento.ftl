@@ -129,6 +129,9 @@
 		<#if comTreinamento>
 			<@ww.select label="Aprovado" name="aprovado" list=r"#{'T':'Todos','S':'Sim','N':'Não'}" />
 		</#if>
+		
+		<@ww.checkbox label="Exibir cargos" name="exibeCargo" id="exibeCargo" labelPosition="left"/>
+		
 		<@ww.hidden name="comTreinamento"/>
 	</@ww.form>
 	

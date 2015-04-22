@@ -136,6 +136,8 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	
 	private Map<String,String> situacoes = new SituacaoColaborador();
 	private String situacao;
+	
+	private boolean exibeCargo;
 
 	public String getMsgAlert()
 	{
@@ -343,7 +345,12 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 			
 			reportTitle = "Colaboradores que fizeram um treinamento ";
 
-			return Action.SUCCESS;
+			String retorno = Action.SUCCESS;
+			if (exibeCargo) {
+				retorno += "ExibirCargos";
+			}
+			
+			return retorno;
 		}
 		catch (ColecaoVaziaException e)
 		{
@@ -882,5 +889,13 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public void setReportTitle(String reportTitle) {
 		this.reportTitle = reportTitle;
+	}
+
+	public boolean isExibeCargo() {
+		return exibeCargo;
+	}
+
+	public void setExibeCargo(boolean exibeCargo) {
+		this.exibeCargo = exibeCargo;
 	}
 }
