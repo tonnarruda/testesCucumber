@@ -1489,15 +1489,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return getDao().findByEmpresaComHistoricoPendente(empresaId) ;
 	}
 	
-	public Collection<HistoricoColaborador> findByEmpresaPC(Long empresaId) {
-		return getDao().findByEmpresaPC(empresaId);
-	}
-	
-	public Collection<HistoricoColaborador> findByColaboradorIdWithProjectionPC(Long colaboradorId) 
-	{
-		return getDao().findByColaboradorIdWithProjectionPC(colaboradorId);
-	}
-
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId) 
 	{
 		Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoManager.findToList(new String[]{"data"}, new String[]{"data"}, new String[]{"indice.id"}, new Long[]{indiceId}, 1, 2, new String[]{"data"});
@@ -1508,6 +1499,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			return getDao().existeDependenciaComHistoricoIndice(dataHistoricoExcluir, ((IndiceHistorico) indiceHistoricos.toArray()[1]).getData(), indiceId);
 		
 		return false;
+	}
+	
+	public Collection<HistoricoColaborador> getHistoricosConfirmados(Long colaboradorId, Long empresaId){
+		return montaSituacaoHistoricoColaborador((List<HistoricoColaborador>) getDao().getHistoricosConfirmados(colaboradorId,empresaId));
 	}
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {
@@ -1520,11 +1515,5 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
-	}
-
-	public void atualizaStatusDaSolicitacao(HistoricoColaborador historicoColaborador)
-	{
-		// TODO Auto-generated method stub
-		
 	}
 }

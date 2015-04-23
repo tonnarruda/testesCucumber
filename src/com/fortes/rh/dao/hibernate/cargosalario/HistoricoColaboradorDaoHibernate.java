@@ -58,55 +58,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		return query.list();
 	}
-	
-	public Collection<HistoricoColaborador> getHistoricos(Long colaboradorId, Long empresaId)
-	{
-		StringBuilder hql = new StringBuilder();
-
-		hql.append("select new HistoricoColaborador (hc.id, hc.salario, hc.data, hc.gfip, hc.motivo, hc.quantidadeIndice, hc.tipoSalario, hc.status, ");
-		hql.append("e.id, emp.cnpj, es.id, es.nome, ao.id, cast(monta_familia_area(ao.id), text) as ao_nome ), c.id, c.nomeMercado, c.nome, ");
-		hql.append("co.id, co.nomeComercial, co.nome, co.pessoal.cpf, co.nome, co.nomeComercial, co.pessoal.escolaridade,co.pessoal.estadoCivil,co.pessoal.conjuge, co.pessoal.pai, co.pessoal.mae, ");
-		hql.append("co.pessoal.qtdFilhos, co.contato.email, co.contato.ddd, co.contato.foneFixo, co.contato.foneCelular, co.endereco.cep, co.endereco.logradouro, co.endereco.numero, ");
-		hql.append("co.endereco.complemento, co.endereco.bairro, co.foto.name, co.foto.bytes, co.foto.contentType, co.foto.size, ci.codigoIBGE, ");
-		hql.append("fs.id, fs.nome, i.id, i.nome, ih.valor, ");
-		hql.append("fsh.valor, fsh.tipo, fsh.quantidade, ifsh.valor ) ");
-
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("left join hc.areaOrganizacional as ao ");
-		hql.append("left join hc.estabelecimento as es ");
-		hql.append("left join hc.indice as i ");
-		hql.append("left join i.indiceHistoricos as ih with ih.data = (select max(ih2.data) from IndiceHistorico ih2 where ih2.indice.id = i.id and ih2.data <= :hoje ) ");
-		hql.append("left join hc.colaborador as co ");
-		hql.append("left join co.endereco.cidade as ci ");
-		hql.append("left join co.empresa as e ");
-		hql.append("left join hc.faixaSalarial as fs ");
-		hql.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh2.data) from FaixaSalarialHistorico fsh2 where fsh2.faixaSalarial.id = fs.id and fsh2.data <= :hoje and fsh2.status != :status) ");
-		hql.append("left join fsh.indice as ifs ");
-		hql.append("left join ifs.indiceHistoricos as ifsh with ifsh.data = (select max(ih3.data) from IndiceHistorico ih3 where ih3.indice.id = ifs.id and ih3.data <= :hoje) ");
-		hql.append("left join fs.cargo as c ");
-
-		hql.append("where hc.status != :status  ");
-		
-		if (colaboradorId != null)
-			hql.append("and co.id = :colaboradorId");
-		
-		if (empresaId != null)
-			hql.append("and e.id = :empresaId");
-
-		hql.append("order by co.id, hc.data desc ");
-
-		Query query = getSession().createQuery(hql.toString());
-
-		if (colaboradorId != null)
-			query.setLong("colaboradorId", colaboradorId);
-		
-		if (empresaId != null)
-			query.setLong("empresaId", empresaId);
-		
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-
-		return query.list();
-	}
 
 	public HistoricoColaborador getHistoricoAtual(Long colaboradorId, int tipoBuscaHistoricoColaborador)
 	{
@@ -1471,100 +1422,59 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 	
-	public Collection<HistoricoColaborador> findByEmpresaPC(Long empresaId) 
+	public Collection<HistoricoColaborador> getHistoricosConfirmados(Long colaboradorId, Long empresaId)
 	{
-		Criteria criteria = criteriaHistoricoForPC();
-		
-		criteria.setProjection(projectionHistoricoForPC());
+		StringBuilder hql = new StringBuilder();
 
-		criteria.add(Expression.eq("emp.id",empresaId));
-		criteria.add(Expression.eq("hc.status",StatusRetornoAC.CONFIRMADO));
-		
-		//Ordem muito importante não remover
-		criteria.addOrder(Order.asc("c.pessoal.cpf"));
-		criteria.addOrder(Order.asc("hc.data"));
+		hql.append("select new HistoricoColaborador( ");
+		hql.append("e.id, e.nome, e.cnpj, e.emailRespRH, ");
+		hql.append("hc.id, hc.salario, hc.data, hc.motivo, hc.quantidadeIndice, hc.tipoSalario, hc.status, ");
+		hql.append("ao.id, cast(monta_familia_area(ao.id), text) as ao_nome, ");
+		hql.append("cg.id, cg.nomeMercado, cg.nome, ");
+		hql.append("fs.id, fs.nome, ");
+		hql.append("fsh.valor, fsh.tipo, fsh.quantidade, ifsh.valor, ");
+		hql.append("i.id, i.nome, ih.valor, ");
+		hql.append("co.id, co.nomeComercial, co.nome, ");
+		hql.append("co.pessoal.cpf, co.pessoal.escolaridade, co.pessoal.estadoCivil, co.pessoal.conjuge, co.pessoal.pai, co.pessoal.mae, co.pessoal.qtdFilhos, "); 
+		hql.append("co.contato.email, co.contato.ddd, co.contato.foneFixo, co.contato.foneCelular, ");
+		hql.append("co.endereco.cep, co.endereco.logradouro, co.endereco.numero, co.endereco.complemento, co.endereco.bairro, ");
+		hql.append("co.foto, ");
+		hql.append("ci.codigoIBGE ) ");
 
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.areaOrganizacional as ao ");
+		hql.append("left join hc.indice as i ");
+		hql.append("left join i.indiceHistoricos as ih with ih.data = (select max(ih2.data) from IndiceHistorico ih2 where ih2.indice.id = i.id and ih2.data <= :hoje ) ");
+		hql.append("left join hc.colaborador as co ");
+		hql.append("left join co.empresa as e ");
+		hql.append("left join co.endereco.cidade as ci ");
+		hql.append("left join hc.faixaSalarial as fs ");
+		hql.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh2.data) from FaixaSalarialHistorico fsh2 where fsh2.faixaSalarial.id = fs.id and fsh2.data <= :hoje and fsh2.status = :status) ");
+		hql.append("left join fsh.indice as ifs ");
+		hql.append("left join ifs.indiceHistoricos as ifsh with ifsh.data = (select max(ih3.data) from IndiceHistorico ih3 where ih3.indice.id = ifs.id and ih3.data <= :hoje) ");
+		hql.append("left join fs.cargo as cg ");
 
-		return criteria.list();
-	}
-	
-	public Collection<HistoricoColaborador> findByColaboradorIdWithProjectionPC(Long colaboradorId) 
-	{
-		Criteria criteria = getSession().createCriteria(SituacaoColaborador.class, "sc");
+		hql.append("where hc.status = :status  ");
 		
-//		criteria.setProjection(projectionHistoricoForPC());
+		if (colaboradorId != null)
+			hql.append("and co.id = :colaboradorId ");
+		
+		if (empresaId != null)
+			hql.append("and e.id = :empresaId ");
 
-//		criteria.add(Expression.eq("sc.colaborador.id", colaboradorId));
-//		criteria.add(Expression.eq("sc.status",StatusRetornoAC.CONFIRMADO));
-//		
-//		criteria.addOrder(Order.asc("sc.data"));
+		hql.append("order by co.id, hc.data desc ");
 
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(SituacaoColaborador.class));
+		Query query = getSession().createQuery(hql.toString());
 
-		Collection<SituacaoColaborador> teste = criteria.list(); 
+		if (colaboradorId != null)
+			query.setLong("colaboradorId", colaboradorId);
 		
-		return null;
-	}
-	
-	private Criteria criteriaHistoricoForPC() {
-		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		if (empresaId != null)
+			query.setLong("empresaId", empresaId);
 		
-		criteria.createCriteria("hc.estabelecimento", "e", Criteria.LEFT_JOIN);
-		criteria.createCriteria("hc.faixaSalarial", "f", Criteria.LEFT_JOIN);
-		criteria.createCriteria("hc.indice", "i", Criteria.LEFT_JOIN);
-		criteria.createCriteria("f.faixaSalarialHistoricos", "fh", Criteria.LEFT_JOIN);
-		criteria.createCriteria("f.cargo", "cg", Criteria.LEFT_JOIN);
-		criteria.createCriteria("hc.colaborador", "c", Criteria.INNER_JOIN);
-		criteria.createCriteria("c.endereco.cidade", "ci", Criteria.LEFT_JOIN);
-		criteria.createCriteria("c.empresa", "emp");
-		
-		return criteria;
-	}
-	
-	private Projection projectionHistoricoForPC() {
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("emp.cnpj"), "empresaCnpj");
-		p.add(Projections.property("emp.id"), "empresaId");
-		p.add(Projections.property("c.id"), "colaboradorId");
-		p.add(Projections.property("c.pessoal.cpf"), "colaboradorCpf");
-		
-		p.add(Projections.property("c.nome"), "colaboradorNome");
-		p.add(Projections.property("c.nomeComercial"), "colaboradorNomeComercial");
-		p.add(Projections.property("c.pessoal.escolaridade"), "colaboradorPessoalEscolaridade");
-		p.add(Projections.property("c.pessoal.estadoCivil"), "colaboradorPessoalEstadoCivil");
-		p.add(Projections.property("c.pessoal.conjuge"), "colaboradorPessoalConjuge");
-		p.add(Projections.property("c.pessoal.pai"), "colaboradorPessoalPai");
-		p.add(Projections.property("c.pessoal.mae"), "colaboradorPessoalMae");
-		p.add(Projections.property("c.pessoal.qtdFilhos"), "colaboradorPessoalQtdFilhos");
-		p.add(Projections.property("c.contato.email"), "colaboradorContatoEmail");
-		p.add(Projections.property("c.contato.ddd"), "colaboradorContatoDdd");
-		p.add(Projections.property("c.contato.foneFixo"), "colaboradorContatoTelefone");
-		p.add(Projections.property("c.contato.foneCelular"), "colaboradorContatoCelular");
-		p.add(Projections.property("c.endereco.cep"), "colaboradorEnderecoCep");
-		p.add(Projections.property("c.endereco.logradouro"), "colaboradorEnderecoLogradouro");
-		p.add(Projections.property("c.endereco.numero"), "colaboradorEnderecoNumero");
-		p.add(Projections.property("c.endereco.complemento"), "colaboradorEnderecoComplemento");
-		p.add(Projections.property("c.endereco.bairro"), "colaboradorEnderecoBairro");
-		p.add(Projections.property("c.foto.name"), "colaboradorFotoName");
-		p.add(Projections.property("c.foto.bytes"), "colaboradorFotoBytes");
-		p.add(Projections.property("c.foto.contentType"), "colaboradorFotoContentType");
-		p.add(Projections.property("c.foto.size"), "colaboradorFotoSize");
-		p.add(Projections.property("ci.codigoIBGE"), "colaboradorEnderecoCidadeCodigoIBGE");
-		p.add(Projections.property("hc.data"), "data");
-		p.add(Projections.property("e.nome"), "estabelecimentoNome");
-		p.add(Projections.property("f.id"), "faixaSalarialId");
-		p.add(Projections.property("f.nome"), "faixaSalarialNome");
-		p.add(Projections.property("cg.id"), "cargoId");
-		p.add(Projections.property("cg.nome"), "cargoNome");
-		p.add(Projections.property("i.id"), "indiceId");
-		p.add(Projections.property("hc.salario"), "salario");
-		p.add(Projections.property("hc.tipoSalario"), "tipoSalario");
-		p.add(Projections.property("hc.motivo"), "motivo");
-		p.add(Projections.sqlProjection("monta_familia_area({alias}.areaOrganizacional_id) as areaNome", new String[]{"areaNome"}, new Type[]{Hibernate.STRING}), "areaOrganizacionalNome") ;
-		
-		return p;
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		query.setDate("hoje", new Date());
+
+		return query.list();
 	}
 }

@@ -353,13 +353,74 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.colaborador.setHistoricoColaborador(this);
 	}
 	
-	public HistoricoColaborador(Long historicoId, Double salario, Date data, String gfip, String motivo, Double quantidadeIndice, int tipoSalario, int status,
-								Long empresaId, String cnpj, Long estabelecimentoId, String estabelecimentoNome, Long areaId, String areaNome, Long cargoId, String cargoNome,
-								int qtdFilhos, String email, String ddd, String foneFixo, String foneCelular, String cep, String logradouro, String numero, String complemento, 
-								String bairro, String fotoNome, byte fotoBytes, String fotoContentType, Long fotoSize, Integer codigoIBGE, Long faixaSalarialId, String faixaSalarialNome,
-								Long indiceId, String indiceNome, Double indiceHistoricoValor, Double faixaHistoricoValor, Integer faixaHistoricoTipo, Double faixaHistoricoQuantidade, Double indiceFaixaHistoricoValor){
+	//getHistoricosConfirmados
+	public HistoricoColaborador(Long empresaId, String empresaNome, String empresaCnpj, String empresaEmailResponsavel, 
+			Long id, Double salario, Date data, String motivo, Double quantidadeIndice, int tipoSalario, int status,
+			Long areaId, String areaNome,
+			Long cargoId, String cargoNomeMercado, String cargoNome,
+			Long faixaId, String faixaNome,
+			Double faixaHistoricoValor, Integer faixaHistoricoTipo, Double faixaHistoricoQuantidade, Double faixaHistoricoIndiceValor,
+			Long indiceId, String indiceNome, Double indiceHistoricoValor,
+			Long colaboradorId, String colaboradorNomeComercial, String colaboradorNome, 
+			String colabPessoalCPF, String colabPessoalEscolaridade, String colabPessoalEstadoCivil, String colabPessoalConjuge, String colabPessoalPai, String colabPessoalMae, int colabPessoalQtdFilho,
+			String colabContatoEmail, String colabContatoDDD, String colabContatoFoneFixo, String colabContatoFoneCel,
+			String colabEndCEP, String colabEndLogradouro, String colabEndNumero, String colabEndComplemento, String colabEndBairro,
+			File foto,
+			Integer colabCidadeCodigoIBGE
+			)
+	{
+		setEmpresaId(empresaId);
+		setEmpresaNome(empresaNome);
+		setEmpresaCnpj(empresaCnpj);
+		setEmpresaEmailResponsavel(empresaEmailResponsavel);
+		setId(id);
+		setSalario(salario);
+		setData(data);
+		setMotivo(motivo);
+		setQuantidadeIndice(quantidadeIndice);
+		setTipoSalario(tipoSalario);
+		setStatus(status);
+		setAreaId(areaId);
+		setAreaOrganizacionalNome(areaNome);
+		setCargoId(cargoId);
+		setCargoNomeMercado(cargoNomeMercado);
+		setCargoNome(cargoNome);
+		setFaixaSalarialId(faixaId);
+		setFaixaSalarialNome(faixaNome);
+		setProjectionFaixaHistoricoValor(faixaHistoricoValor);
+		setProjectionFaixaHistoricoTipo(faixaHistoricoTipo);
+		setProjectionFaixaHistoricoQuantidade(faixaHistoricoQuantidade);
+		setProjectionFaixaHistoricoIndiceValor(faixaHistoricoIndiceValor);
+		setProjectionIndiceId(indiceId);
+		setProjectionIndiceNome(indiceNome);
+		setProjectionIndiceHistoricoValor(indiceHistoricoValor);
+		setColaboradorId(colaboradorId);
+		setColaboradorNomeComercial(colaboradorNomeComercial);
+		setColaboradorNome(colaboradorNome);
 		
+		if(this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		this.colaborador.setPessoalCpf(colabPessoalCPF);
+		this.colaborador.setPessoalEscolaridade(colabPessoalEscolaridade);
+		this.colaborador.setPessoalEstadoCivil(colabPessoalEstadoCivil);
+		this.colaborador.setPessoalConjuge(colabPessoalConjuge);
+		this.colaborador.setPessoalPai(colabPessoalPai);
+		this.colaborador.setPessoalMae(colabPessoalMae);
+		this.colaborador.setPessoalQtdFilhos(colabPessoalQtdFilho);
+		this.colaborador.setEmailColaborador(colabContatoEmail);
+		this.colaborador.setContatoDdd(colabContatoDDD);
+		this.colaborador.setContatoFoneFixo(colabContatoFoneFixo);
+		this.colaborador.setContatoCelular(colabContatoFoneCel);
+		this.colaborador.setEnderecoCep(colabEndCEP);
+		this.colaborador.setEnderecoLogradouro(colabEndLogradouro);
+		this.colaborador.setEnderecoNumero(colabEndNumero);
+		this.colaborador.setEnderecoComplemento(colabEndComplemento);
+		this.colaborador.setEnderecoBairro(colabEndBairro);
+		this.colaborador.setFoto(foto);
+		this.colaborador.setProjectionCidadeCodigoIBGE(colabCidadeCodigoIBGE);
 	}
+	
 	
 	public HistoricoColaborador()
 	{
@@ -732,32 +793,34 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 
 	public void setEmpresaId(Long id)
 	{
-		inicializaColaborador();
-
-		if (colaborador.getEmpresa() == null)
-			colaborador.setEmpresa(new Empresa());
-
+		iniciaEmpresaDoColaborador();
 		colaborador.getEmpresa().setId(id);
 	}
 
 	public void setEmpresaNome(String nomeEmpresa)
 	{
-		inicializaColaborador();
-		
-		if (colaborador.getEmpresa() == null)
-			colaborador.setEmpresa(new Empresa());
-		
+		iniciaEmpresaDoColaborador();
 		colaborador.getEmpresa().setNome(nomeEmpresa);
 	}
 	
 	public void setEmpresaCnpj(String cnpj)
 	{
+		iniciaEmpresaDoColaborador();
+		colaborador.getEmpresa().setCnpj(cnpj);
+	}
+	
+	public void setEmpresaEmailResponsavel(String empresaEmailResponsavel)
+	{
+		iniciaEmpresaDoColaborador();
+		colaborador.getEmpresa().setEmailRespRH(empresaEmailResponsavel);
+		
+	}
+
+	private void iniciaEmpresaDoColaborador() {
 		inicializaColaborador();
 		
 		if (colaborador.getEmpresa() == null)
 			colaborador.setEmpresa(new Empresa());
-		
-		colaborador.getEmpresa().setCnpj(cnpj);
 	}
 	
 	public void setAmbienteId(Long id)

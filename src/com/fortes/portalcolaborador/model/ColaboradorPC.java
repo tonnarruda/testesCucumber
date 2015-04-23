@@ -1,12 +1,9 @@
 package com.fortes.portalcolaborador.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.Transient;
 
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;

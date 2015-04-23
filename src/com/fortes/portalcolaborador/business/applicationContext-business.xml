@@ -36,7 +36,7 @@
     </property>
   </bean>
   
-   <bean id="colaboradorPCManagerTarget" class="com.fortes.portalcolaborador.business.ColaboradorPCManagerImpl">
+  <bean id="colaboradorPCManagerTarget" class="com.fortes.portalcolaborador.business.ColaboradorPCManagerImpl">
     <property name="dao">
       <ref bean="colaboradorPCDao" />
     </property>

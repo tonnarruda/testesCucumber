@@ -88,7 +88,6 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId, int mesesSemReajuste);
 	public Map<Character, Collection<Object[]>> montaPromocoesHorizontalEVertical(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds);
 	public void deleteHistoricoColaborador(Long[] colaboradorIds) throws Exception;
-	public void atualizaStatusDaSolicitacao(HistoricoColaborador historicoColaborador);
 	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId);
 	public Collection<HistoricoColaborador> relatorioColaboradorGrupoOcupacional(Long empresaId, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, String[] areaOrganizacionalsCheck, Boolean areasAtivas, String[] gruposCheck, String vinculo) throws Exception;
 	public Collection<HistoricoColaborador> filtraHistoricoColaboradorParaPPP(Collection<HistoricoColaborador> todosHistoricos) throws Exception;
@@ -99,6 +98,5 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public void updateStatusAcByEmpresaAndStatusAtual(int novoStatusAC, int statusACAtual, Long... colaboradoresIds);
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId);
 	public Collection<HistoricoColaborador> montaSituacaoHistoricoColaborador(List<HistoricoColaborador> historicoColaboradors);
-	public Collection<HistoricoColaborador> findByEmpresaPC(Long empresaId);
-	public Collection<HistoricoColaborador> findByColaboradorIdWithProjectionPC(Long colaboradorId);
+	public Collection<HistoricoColaborador> getHistoricosConfirmados(Long colaboradorId, Long empresaId);
 }

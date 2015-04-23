@@ -1,31 +1,21 @@
 package com.fortes.portalcolaborador.business.operacao;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import com.fortes.portalcolaborador.business.ColaboradorPCManager;
 import com.fortes.portalcolaborador.business.TransacaoPCManager;
-import com.fortes.portalcolaborador.model.ColaboradorPC;
 import com.fortes.portalcolaborador.model.EmailPC;
-import com.fortes.portalcolaborador.model.HistoricoColaboradorPC;
 import com.fortes.portalcolaborador.model.dicionario.URLTransacaoPC;
-import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.webwork.dispatcher.json.JSONObject;
 
-@SuppressWarnings({ "unchecked", "rawtypes", "deprecation"})
+@SuppressWarnings({"deprecation"})
 public class ExportarEmpresa extends Operacao {
 
-	private HistoricoColaboradorManager historicoColaboradorManager;
 	private EmpresaManager empresaManager;
 	private TransacaoPCManager transacaoPCManager;
 	private Mail mail;
@@ -45,18 +35,16 @@ public class ExportarEmpresa extends Operacao {
 			
 			if(j.get("id") != null)
 			{
-				Long empresaId = Long.parseLong(((Integer) j.get("id")).toString());
-				
-				transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
-	
 				empresaManager = (EmpresaManager) SpringUtil.getBeanOld("empresaManager");
+				transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
+
+				Long empresaId = Long.parseLong(((Integer) j.get("id")).toString());
 				empresa = empresaManager.findEmailsEmpresa(empresaId);
 				
 				if(empresa != null)
 				{
-					historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
-					enfilerarColaboradoresComHistoricosPC(new ArrayList(historicoColaboradorManager.findByEmpresaPC(empresaId)));
-	
+					ColaboradorPCManager colaboradorPCManager = (ColaboradorPCManager) SpringUtil.getBeanOld("colaboradorPCManager");
+					colaboradorPCManager.enfileirarColaboradoresPCComHistoricos(null, empresaId);
 					emailConfirmacaoPC(empresa);
 				}
 			}
@@ -70,42 +58,6 @@ public class ExportarEmpresa extends Operacao {
 			throw new Exception(e);
 		}
 		
-	}
-	
-	private void enfilerarColaboradoresComHistoricosPC(List<HistoricoColaborador> historicos) throws Exception
-	{
-		Collection<HistoricoColaborador> historicosMontados = historicoColaboradorManager.montaSituacaoHistoricoColaborador(historicos);
-		
-		Collection<ColaboradorPC> colaboradorPCs = montaColaboradorPCComHistoricos(historicosMontados);
-		
-		for (ColaboradorPC colabPC : colaboradorPCs) 
-			transacaoPCManager.enfileirar(URLTransacaoPC.COLABORADOR_ATUALIZAR, colabPC.toJson());
-	}
-
-	private Collection<ColaboradorPC> montaColaboradorPCComHistoricos(Collection<HistoricoColaborador> historicosColaborador) 
-	{
-		ColaboradorPC colaboradorPC = null;
-		HistoricoColaboradorPC historicoColaboradorPC;
-		Set<ColaboradorPC> colaboradorPCs = new HashSet<ColaboradorPC>();
-		
-		for (HistoricoColaborador historico : historicosColaborador) 
-		{
-			if(colaboradorPC.getCpf() != null )
-			{
-				if(colaboradorPC == null || !colaboradorPC.getCpf().equals(historico.getColaborador().getPessoal().getCpf()))
-				{
-					colaboradorPC = new ColaboradorPC(historico.getColaborador());
-					colaboradorPC.setHistoricosPc(new ArrayList<HistoricoColaboradorPC>());
-				}
-				
-				historicoColaboradorPC = new HistoricoColaboradorPC(historico);
-				colaboradorPC.getHistoricosPc().add(historicoColaboradorPC);
-				
-				colaboradorPCs.add(colaboradorPC);
-			}
-		}
-		
-		return colaboradorPCs;
 	}
 	
 	private void emailConfirmacaoPC(Empresa empresa) 

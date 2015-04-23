@@ -20,10 +20,10 @@ public class InserirColaborador extends Operacao {
 			
 		if(j.get("id") != null)
 		{
-			Long colaboradorId = Long.parseLong(((Integer) j.get("id")).toString());
-			
 			ColaboradorPCManager colaboradorPCManager = (ColaboradorPCManager) SpringUtil.getBeanOld("colaboradorPCManager");
-			colaboradorPCManager.enfileirarColaboradorPC(colaboradorId);
+
+			Long colaboradorId = Long.parseLong(((Integer) j.get("id")).toString());
+			colaboradorPCManager.enfileirarColaboradoresPCComHistoricos(colaboradorId, null);
 		}
 	}
 }
