@@ -130,7 +130,9 @@
 			<@ww.select label="Aprovado" name="aprovado" list=r"#{'T':'Todos','S':'Sim','N':'Não'}" />
 		</#if>
 		
-		<@ww.checkbox label="Exibir cargos" name="exibeCargo" id="exibeCargo" labelPosition="left"/>
+		<#if comTreinamento>
+			<@ww.checkbox label="Exibir cargos" name="exibeCargo" id="exibeCargo" labelPosition="left"/>
+		</#if>
 		
 		<@ww.hidden name="comTreinamento"/>
 	</@ww.form>
