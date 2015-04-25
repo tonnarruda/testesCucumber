@@ -650,7 +650,7 @@ public class DateUtil
 		
 		TimeZone timeZone = TimeZone.getDefault();
 		if (timeZone.inDaylightTime(dataFim) && !timeZone.inDaylightTime(dataInicio) ) 
-			dataFim = incrementaData(dataInicio, Calendar.HOUR_OF_DAY, 1, false);
+			dataFim = incrementaData(dataFim, Calendar.HOUR_OF_DAY, 1, false);
 		
 		Long diff = dataFim.getTime() - dataInicio.getTime();
 		Long dias = diff/(24L*60L*60L*1000L);
