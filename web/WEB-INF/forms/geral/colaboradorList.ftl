@@ -256,7 +256,7 @@
 			
 			<@frt.link verifyRole="ROLE_COLAB_LIST_NIVELCOMPETENCIA" href="../../captacao/nivelCompetencia/listCompetenciasColaborador.action?colaborador.id=${colaborador.id}" imgTitle="Competências" imgName="competencias.gif"/>
 
-			<@frt.link verifyRole="ROLE_COLAB_LIST_SOLICITACAO" href="prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=${statusSolicitacao}&voltarPara=../../geral/colaborador/list.action" imgTitle="Incluir em Solicitação" imgName="db_add.gif" disabled=!colaborador.statusAcPessoalConfirmado/>
+			<@frt.link verifyRole="ROLE_COLAB_LIST_SOLICITACAO" href="prepareColaboradorSolicitacao.action?colaborador.id=${colaborador.id}&statusCandSol=${statusSolicitacao}&voltarPara=../../geral/colaborador/list.action" imgTitle="Incluir em Solicitação" imgName="db_add.gif" />
 
 			<@frt.link verifyRole="ROLE_COLAB_LIST_DOCUMENTOANEXO" href="../documentoAnexo/listColaborador.action?documentoAnexo.origem=D&documentoAnexo.origemId=${colaborador.id}" imgTitle="Documentos do Colaborador" imgName="anexos.gif"/>
 
