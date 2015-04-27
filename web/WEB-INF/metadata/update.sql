@@ -22820,3 +22820,10 @@ update parametrosdosistema set appversao = '1.1.142.171';--.go
 -- versao 1.1.142.172
 
 update parametrosdosistema set appversao = '1.1.142.172';--.go
+-- versao 1.1.143.173
+
+ALTER TABLE anuncio ADD COLUMN dataPrevisaoEncerramento DATE;--.go 
+insert into migrations values('20150413113702');--.go
+alter table parametrosdosistema add column inibirgerarrelatoriopesquisaanonima boolean default false;--.go
+insert into migrations values('20150420140050');--.go
+update parametrosdosistema set appversao = '1.1.143.173';--.go

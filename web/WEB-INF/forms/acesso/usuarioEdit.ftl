@@ -107,7 +107,7 @@
 		<@ww.textfield label="Login" name="usuario.login" cssClass="inputLogin" maxLength="25" id="login" required="true"/>
 		
 		<#if colaboradorPertenceEmpresaLogada>
-			<#if colaborador.desligado>
+			<#if colaborador?exists && colaborador.desligado>
 				<br/>
 				<span style="color: red;">* O usuário tem referência com o colaborador(a) ${colaborador.nome}, que está desligado(a).</span><br/><br/>
 				<@ww.hidden name="colaboradorId" />
