@@ -29,8 +29,7 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 		
 		criteria.add(Expression.eq("a.empresa.id", empresaId));
 		
-		boolean modeloDeDesempenho = TipoModeloAvaliacao.DESEMPENHO == modeloAvaliacao;
-		if (modeloDeDesempenho)
+		if (TipoModeloAvaliacao.DESEMPENHO == modeloAvaliacao)
 			criteria.add(Expression.ne("a.tipoModeloAvaliacao", TipoModeloAvaliacao.SOLICITACAO));
 		else
 		{
