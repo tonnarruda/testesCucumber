@@ -8,6 +8,7 @@ public class OrigemAnexo extends LinkedHashMap
 	public static final char PPRA = 'B';
 	public static final char AnexoCandidato = 'C';
 	public static final char AnexoColaborador = 'D';
+	public static final char Curso = 'U';
 
 	@SuppressWarnings("unchecked")
 	public OrigemAnexo()
@@ -17,5 +18,6 @@ public class OrigemAnexo extends LinkedHashMap
 		put(PPRA, "PPRA");
 		put(AnexoCandidato, "AnexoCandidato");
 		put(AnexoColaborador, "AnexoColaborador");
+		put(Curso, "Curso");
 	}
 }

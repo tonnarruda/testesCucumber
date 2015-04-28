@@ -79,6 +79,12 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 		prepare();
 		return Action.SUCCESS;
 	}
+	
+	public String prepareInsertCurso() throws Exception
+	{
+		prepare();
+		return Action.SUCCESS;
+	}	
 
 	public String prepareUpdateCandidato() throws Exception
 	{
@@ -92,6 +98,11 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 		prepare();
 		return Action.SUCCESS;
 	}
+	
+	public String prepareUpdateCurso() throws Exception {
+		prepare();
+		return Action.SUCCESS;
+	}
 
 	private String insert() throws Exception
 	{
@@ -102,7 +113,11 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 		}
 		catch (Exception e)
 		{
-			addActionError("Não foi possível inserir o documento.");
+			String tipo = "documento";
+			if (origemTmp == 'U') {
+				tipo = "anexo";
+			}
+			addActionError("Não foi possível inserir o " + tipo + ".");
 			return Action.INPUT;
 		}
 	}
@@ -118,6 +133,11 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 		diretorio = "documentosColaboradores";
 		return insert();
 	}
+	
+	public String insertCurso() throws Exception{
+		diretorio = "anexosCursos";
+		return insert();
+	}
 
 	public String update() throws Exception
 	{
@@ -128,7 +148,11 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 		}
 		catch (Exception e)
 		{
-			addActionError("Não foi possível editar o documento.");
+			String tipo = "documento";
+			if (origemTmp == 'U') {
+				tipo = "anexo";
+			}
+			addActionError("Não foi possível editar " + tipo + ".");
 			return Action.INPUT;
 		}
 	}
@@ -149,6 +173,11 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 		diretorio = "documentosColaboradores";
 		return update();
 	}
+	
+	public String updateCurso() throws Exception {
+		diretorio = "anexosCursos";
+		return update();
+	}
 
 	public String showDocumento() throws Exception
 	{
@@ -161,6 +190,9 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 			}
 			else if(documentoAnexo.getOrigem() == 'C'){
 				file = ArquivoUtil.getArquivo(documentoAnexo.getUrl(),"documentosCandidatos");
+			}
+			else if(documentoAnexo.getOrigem() == 'U'){
+				file = ArquivoUtil.getArquivo(documentoAnexo.getUrl(),"anexosCursos");
 			}
 			
 			if(file != null)

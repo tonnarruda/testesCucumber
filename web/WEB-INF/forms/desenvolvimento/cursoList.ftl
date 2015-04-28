@@ -36,6 +36,7 @@
 		<@display.column title="Ações" class="acao">
 			<a href="prepareUpdate.action?curso.id=${curso.id}&curso.empresa.id=${curso.empresa.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="../turma/list.action?curso.id=${curso.id}"><img border="0" title="Turmas" src="<@ww.url value="/imgs/db_add.gif"/>"></a>
+			<a href="../../geral/documentoAnexo/listCurso.action?documentoAnexo.origem=U&documentoAnexo.origemId=${curso.id}"><img border="0" title="Inserir Anexos" src="<@ww.url includeParams="none" value="/imgs/anexos.gif"/>"></a>
 			<#if curso.empresa.id == empresaSistema.id>
 				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?curso.id=${curso.id}&curso.empresa.id=${curso.empresa.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 			<#else>

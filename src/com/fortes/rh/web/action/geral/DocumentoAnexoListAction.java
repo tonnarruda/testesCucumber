@@ -72,6 +72,11 @@ public class DocumentoAnexoListAction extends MyActionSupportList
 		diretorio = "documentosColaboradores";
 		return delete();
 	}
+	
+	public String deleteCurso() throws Exception {
+		diretorio = "anexosCursos";
+		return delete();
+	}
 
 	public Collection<DocumentoAnexo> getDocumentoAnexos()
 	{

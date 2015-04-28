@@ -591,6 +591,9 @@
     <property name="candidatoManager">
       <ref bean="candidatoManager" />
     </property>
+    <property name="cursoManager">
+      <ref bean="cursoManager" />
+    </property>
   </bean>
   <bean id="documentoAnexoManager" parent="parentManager">
     <property name="proxyInterfaces">

@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.captacao.CandidatoManager;
+import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.dao.geral.DocumentoAnexoDao;
 import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.geral.Colaborador;
@@ -15,6 +16,7 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 {
 	private ColaboradorManager colaboradorManager;
 	private CandidatoManager candidatoManager;
+	private CursoManager cursoManager;
 	
 	public Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(Boolean moduloExterno, char origem, Long origemId)
 	{
@@ -108,10 +110,11 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 			nome = candidatoManager.findByCandidatoId(id).getNome();
 		else if(origem == 'D')
 			nome = colaboradorManager.findColaboradorByIdProjection(id).getNome();
+		else if(origem == 'U')
+			nome = cursoManager.findById(id).getNome();
 			
 		return nome;
 	}
-
 
 	public void setCandidatoManager(CandidatoManager candidatoManager) {
 		this.candidatoManager = candidatoManager;
@@ -119,5 +122,9 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
+	}
+
+	public void setCursoManager(CursoManager cursoManager) {
+		this.cursoManager = cursoManager;
 	}
 }

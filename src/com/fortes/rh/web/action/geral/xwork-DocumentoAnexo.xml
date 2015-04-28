@@ -9,11 +9,17 @@
 		<action name="listColaborador" class="com.fortes.rh.web.action.geral.DocumentoAnexoListAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/documentoAnexoList.ftl</result>
 		</action>
+		<action name="listCurso" class="com.fortes.rh.web.action.geral.DocumentoAnexoListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/cursoAnexoList.ftl</result>
+		</action>
 		<action name="deleteCandidato" class="com.fortes.rh.web.action.geral.DocumentoAnexoListAction" method="deleteCandidato">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/documentoAnexoList.ftl</result>
 		</action>
 		<action name="deleteColaborador" class="com.fortes.rh.web.action.geral.DocumentoAnexoListAction" method="deleteColaborador">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/documentoAnexoList.ftl</result>
+		</action>
+		<action name="deleteCurso" class="com.fortes.rh.web.action.geral.DocumentoAnexoListAction" method="deleteCurso">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/cursoAnexoList.ftl</result>
 		</action>
 		<action name="prepareInsertCandidato" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="prepareInsertCandidato">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/documentoAnexoEdit.ftl</result>
@@ -21,11 +27,17 @@
 		<action name="prepareInsertColaborador" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="prepareInsertColaborador">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/documentoAnexoEdit.ftl</result>
 		</action>
+		<action name="prepareInsertCurso" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="prepareInsertCurso">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/cursoAnexoEdit.ftl</result>
+		</action>
 		<action name="prepareUpdateCandidato" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="prepareUpdateCandidato">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/documentoAnexoEdit.ftl</result>
 		</action>
 		<action name="prepareUpdateColaborador" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="prepareUpdateColaborador">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/documentoAnexoEdit.ftl</result>
+		</action>
+		<action name="prepareUpdateCurso" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="prepareUpdateCurso">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/cursoAnexoEdit.ftl</result>
 		</action>
 		<action name="insertCandidato" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="insertCandidato">
 			<result name="success" type="redirect"><![CDATA[listCandidato.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}&solicitacaoId=${solicitacaoId}]]></result>
@@ -35,6 +47,10 @@
 			<result name="success" type="redirect"><![CDATA[listColaborador.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/documentoAnexoEdit.ftl</result>
 		</action>
+		<action name="insertCurso" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="insertCurso">
+			<result name="success" type="redirect"><![CDATA[listCurso.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/cursoAnexoEdit.ftl</result>
+		</action>
 		<action name="updateCandidato" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="updateCandidato">
 			<result name="success" type="redirect"><![CDATA[listCandidato.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}&solicitacaoId=${solicitacaoId}]]></result>
 			<result name="successColaborador" type="redirect"><![CDATA[listColaborador.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}&origem=${origemDocumento}&origemId=${origemIdDocumento}]]></result>
@@ -43,6 +59,10 @@
 		<action name="updateColaborador" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="updateColaborador">
 			<result name="success" type="redirect"><![CDATA[listColaborador.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}]]></result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/documentoAnexoEdit.ftl</result>
+		</action>
+			<action name="updateCurso" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="updateCurso">
+			<result name="success" type="redirect"><![CDATA[listCurso.action?documentoAnexo.origem=${origemTmp}&documentoAnexo.origemId=${origemIdTmp}&nome=${nomeTmp}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/cursoAnexoEdit.ftl</result>
 		</action>
 		<action name="showDocumento" class="com.fortes.rh.web.action.geral.DocumentoAnexoEditAction" method="showDocumento" />
 	</package>
