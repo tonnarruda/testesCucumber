@@ -50,7 +50,7 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
         solicitacaoEpiManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
     }
 
-	public void testFindAllSelect()
+	public void testFindAllSelectByData()
 	{
 		char situacaoSolicitacaoEpi = SituacaoSolicitacaoEpi.TODAS;
 		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();
@@ -60,11 +60,25 @@ public class SolicitacaoEpiManagerTest extends MockObjectTestCase
 
 		assertEquals(colecao, solicitacaoEpiManager.findAllSelect(0, 0, 1L, null, null, new Colaborador(), situacaoSolicitacaoEpi, null, SituacaoColaborador.TODOS, null, 'D'));
 	}
+	
+	public void testFindAllSelectByNome() {
+		char situacaoSolicitacaoEpi = SituacaoSolicitacaoEpi.TODAS;
+		Collection<SolicitacaoEpi> colecao = new ArrayList<SolicitacaoEpi>();
+		colecao.add(new SolicitacaoEpi());
+		solicitacaoEpiDao.expects(once()).method("findAllSelect").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(colecao));
+		solicitacaoEpiItemManager.expects(once()).method("findAllEntregasBySolicitacaoEpi").with(ANYTHING).will(returnValue(new ArrayList<SolicitacaoEpiItem>()));
 
-	public void testGetCount()
-	{
+		assertEquals(colecao, solicitacaoEpiManager.findAllSelect(0, 0, 1L, null, null, new Colaborador(), situacaoSolicitacaoEpi, null, SituacaoColaborador.TODOS, null, 'N'));
+	}
+
+	public void testGetCountByData() {
 		solicitacaoEpiDao.expects(once()).method("getCount").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(0));
 		assertEquals(Integer.valueOf(0), solicitacaoEpiManager.getCount(1L, new Date(), new Date(), new Colaborador(), SituacaoSolicitacaoEpi.TODAS, null, SituacaoColaborador.TODOS, null, 'D'));
+	}
+	
+	public void testGetCountByNome() {
+		solicitacaoEpiDao.expects(once()).method("getCount").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(0));
+		assertEquals(Integer.valueOf(0), solicitacaoEpiManager.getCount(1L, new Date(), new Date(), new Colaborador(), SituacaoSolicitacaoEpi.TODAS, null, SituacaoColaborador.TODOS, null, 'N'));
 	}
 
 	public void testFindByIdProjection()
