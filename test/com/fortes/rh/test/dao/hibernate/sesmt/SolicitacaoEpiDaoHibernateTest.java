@@ -413,10 +413,12 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
 		
 		String[] estabelecimentos = null;
-		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId(), SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentos)).intValue());
+		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId(), SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentos), 'D').intValue());
+		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId(), SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentos), 'N').intValue());
 		
 		estabelecimentos = new String[]{estabelecimento1.getId().toString()};
-		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId(), SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentos)).intValue());
+		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId(), SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentos), 'D').intValue());
+		assertEquals(1, solicitacaoEpiDao.getCount(empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, tipoEPI.getId(), SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentos), 'N').intValue());
 	}
 	
 	public void testFindAllSelect()
@@ -528,16 +530,23 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		solicitacaoEpiDao.findByIdProjection(solicitacaoEpi.getId());
 		
 		String[] estabelecimentos = new String[]{};
-		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentos )).size());
-		assertEquals(0, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador2, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentos)).size());
-		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.DESLIGADO, LongUtil.arrayStringToArrayLong(estabelecimentos)).size());
-		assertEquals(1, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ABERTA, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentos)).size());
+		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentos ), 'D').size());
+		assertEquals(0, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador2, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'D').size());
+		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.DESLIGADO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'D').size());
+		assertEquals(1, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ABERTA, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'D').size());
+		
+		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.TODOS, LongUtil.arrayStringToArrayLong(estabelecimentos ), 'N').size());
+		assertEquals(0, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador2, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'N').size());
+		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.DESLIGADO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'N').size());
+		assertEquals(1, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador1, SituacaoSolicitacaoEpi.ABERTA, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'N').size());
 		
 		estabelecimentos = new String[]{estabelecimento1.getId().toString(), estabelecimento2.getId().toString()};
-		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.DESLIGADO, LongUtil.arrayStringToArrayLong(estabelecimentos)).size());
+		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.DESLIGADO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'D').size());
+		assertEquals(2, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador, SituacaoSolicitacaoEpi.ENTREGUE, null, SituacaoColaborador.DESLIGADO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'N').size());
 		
 		estabelecimentos = new String[]{estabelecimento3.getId().toString()};
-		assertEquals(1, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador2, SituacaoSolicitacaoEpi.ABERTA, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentos)).size());
+		assertEquals(1, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador2, SituacaoSolicitacaoEpi.ABERTA, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'D').size());
+		assertEquals(1, solicitacaoEpiDao.findAllSelect(1, 2, empresa.getId(), dataIni, dataFim, colaborador2, SituacaoSolicitacaoEpi.ABERTA, null, SituacaoColaborador.ATIVO, LongUtil.arrayStringToArrayLong(estabelecimentos), 'N').size());
 	}
 	
 	public void testFindEpisWithItens() 

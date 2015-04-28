@@ -94,6 +94,8 @@
 		<@ww.hidden id="pagina" name="page"/>
 		<@ww.hidden name="entrega"/>
 		<@ww.hidden name="limpaEstabelecimentoCheck" id="limpaEstabelecimentoCheck" value="true"/>
+		
+		<@ww.select label="Ordenação" id="ordem" name="ordem" list=r"#{'D':'Por Data','N':'Por Nome'}" />
 
 		<input type="button" value="" onclick="pesquisar()" class="btnPesquisar grayBGE" />
 	</@ww.form>

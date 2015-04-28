@@ -36,9 +36,9 @@ import com.fortes.rh.util.LongUtil;
 @SuppressWarnings("unchecked")
 public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoEpi> implements SolicitacaoEpiDao
 {
-	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck)
+	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
 	{
-		Query query = montaConsultaFind(false, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi, tipoEpi, situacaoColaborador, estabelecimentoCheck);
+		Query query = montaConsultaFind(false, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi, tipoEpi, situacaoColaborador, estabelecimentoCheck, ordem);
 
 		if(pagingSize != 0)
         {
@@ -73,13 +73,13 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		return solicitacoes;
 	}
 
-	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck)
+	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
 	{
-		Query query = montaConsultaFind(true, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi, tipoEpi, situacaoColaborador, estabelecimentoCheck);
+		Query query = montaConsultaFind(true, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi, tipoEpi, situacaoColaborador, estabelecimentoCheck, ordem);
 		return new Integer(query.uniqueResult().toString());
 	}
 
-	private Query montaConsultaFind(boolean count, Long empresaId, Date dataIni, Date dataFim, String nomeBusca, String matriculaBusca, char situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck)
+	private Query montaConsultaFind(boolean count, Long empresaId, Date dataIni, Date dataFim, String nomeBusca, String matriculaBusca, char situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
 	{
 		StringBuilder sql = null;
 		if (count)
@@ -145,7 +145,11 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			sql.append("and sub.data between :dataIni and :dataFim ");
 
 		if (!count)
-			sql.append("order by sub.data DESC, sub.nome ASC ");
+			if (ordem == 'D') {
+				sql.append("order by sub.data DESC, sub.nome ASC ");
+			} else {
+				sql.append("order by sub.nome ASC, sub.data DESC ");
+			}
 		
 		SQLQuery query = getSession().createSQLQuery(sql.toString());
 		
@@ -286,7 +290,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		return query.list();
 	}
 	
-	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao, Colaborador colaborador, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck)
+	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao, Colaborador colaborador, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
 	{
 		getSession().flush(); //Necessário para que nos testes a view enxergue os dados inseridos via hibernate 
 
@@ -328,7 +332,11 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		if(LongUtil.arrayIsNotEmpty(estabelecimentoCheck))
 			sql.append("and sse.estabelecimentoid in (:estabelecimentoCheck) ");
 		
-		sql.append("order by sse.solicitacaoepidata desc, sse.colaboradornome ");
+		if (ordem == 'D') {
+			sql.append("order by sse.solicitacaoepidata desc, sse.colaboradornome ");
+		} else {
+			sql.append("order by sse.colaboradornome, sse.solicitacaoepidata desc ");
+		}
 		
 		SQLQuery query = getSession().createSQLQuery(sql.toString());
 		

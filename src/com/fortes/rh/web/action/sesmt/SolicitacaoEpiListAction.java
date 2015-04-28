@@ -81,6 +81,8 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private String reportFilter;
 	private String reportTitle;
 	
+	private char ordem = 'D';
+	
 	public String list() throws Exception
 	{
 		colaborador.setNome(nomeBusca);
@@ -92,8 +94,8 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		
 		tipoEpis = tipoEPIManager.find(new String[]{"empresa.id"},new Object[]{ getEmpresaSistema().getId() });
 
-		setTotalSize(solicitacaoEpiManager.getCount(getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, estabelecimentoCheck));
-		solicitacaoEpis = solicitacaoEpiManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, estabelecimentoCheck);
+		setTotalSize(solicitacaoEpiManager.getCount(getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, estabelecimentoCheck, ordem));
+		solicitacaoEpis = solicitacaoEpiManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, estabelecimentoCheck, ordem);
 
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
 			addActionMessage("Nenhuma solicitação de EPIs a ser listada.");
@@ -106,7 +108,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		colaborador.setNome(nomeBusca);
 		colaborador.setMatricula(matriculaBusca);
 		
-		dataSourceLista = solicitacaoEpiManager.findEpisWithItens(getEmpresaSistema().getId(), dataIni, dataFim, situacao, colaborador, tipoEpi, situacaoColaborador, estabelecimentoCheck);
+		dataSourceLista = solicitacaoEpiManager.findEpisWithItens(getEmpresaSistema().getId(), dataIni, dataFim, situacao, colaborador, tipoEpi, situacaoColaborador, estabelecimentoCheck, ordem);
 		
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
 			addActionMessage("Nenhuma solicitação de EPIs a ser listada.");
@@ -486,6 +488,14 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 
 	public String getReportTitle() {
 		return reportTitle;
+	}
+
+	public char getOrdem() {
+		return ordem;
+	}
+
+	public void setOrdem(char ordem) {
+		this.ordem = ordem;
 	}
 
 }
