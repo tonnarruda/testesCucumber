@@ -564,7 +564,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public Collection<Colaborador> montaExibicaoAprovadosReprovados(Long empresaId, Long turmaId)
 	{
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, null, null, null, null, null, " co.nome ", true, "A", turmaId);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, null, null, null, null, null, " co.nome ", true, SituacaoColaborador.ATIVO, turmaId);
 		
 		//add colaboradores aprovados. Tem que ser dois for, primeiro os aprovados(é uma regra do multiSelectBox)
 		for (ColaboradorTurma ct : colaboradorTurmas) 
@@ -592,7 +592,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			else if(!aprovadoPresenca)
 				texto = "(reprovado por falta)";
 			else if(!aprovadoNota)
-				texto = "(reprovado por Nota)";
+				texto = "(reprovado por nota)";
 			
 			if(!aprovadoPresenca || !aprovadoNota)
 			{

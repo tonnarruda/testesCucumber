@@ -283,7 +283,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	cursoManager.expects(once()).method("find").withAnyArguments().will(returnValue(new ArrayList<Curso>()));
     	
     	assertEquals("success", action.verTurmasCurso());
-    	assertEquals("Não existe Turma para o Curso informado.<br>",action.getActionMessages().toArray()[0]);
+    	assertEquals("Não existe turma para o curso informado.<br>",action.getActionMessages().toArray()[0]);
     }
     
     public void testPrepareImprimirTurma() throws Exception
@@ -382,19 +382,20 @@ public class TurmaEditActionTest extends MockObjectTestCase
 		action.setCertificado(certificado);
 		String[] colaboradoresCheck = {"1000"};
 		action.setColaboradoresCheck(colaboradoresCheck);
+		action.setTurma(TurmaFactory.getEntity(2L));
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
     	Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
     	colaboradors.add(colaborador);
 		
-    	colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(false)).will(returnValue(colaboradors));
+    	colaboradorManager.expects(once()).method("findComNotaDoCurso").with(ANYTHING, ANYTHING).will(returnValue(colaboradors));
     	colaboradorTurmaManager.expects(once()).method("montaCertificados").with(ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
     	
     	assertEquals("successGrande", action.imprimirCertificado());
     	
     	certificado.setTamanho("0"); //pequeno
     	
-    	colaboradorManager.expects(once()).method("findAllSelect").with(ANYTHING, eq(false)).will(returnValue(colaboradors));
+    	colaboradorManager.expects(once()).method("findComNotaDoCurso").with(ANYTHING, ANYTHING).will(returnValue(colaboradors));
     	colaboradorTurmaManager.expects(once()).method("montaCertificados").with(ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
     	
     	assertEquals("successPequeno", action.imprimirCertificado());
@@ -416,15 +417,22 @@ public class TurmaEditActionTest extends MockObjectTestCase
 		action.setCertificado(certificado);
 		action.setColaboradoresCheck(colaboradoresCheck);
 		action.setCurso(CursoFactory.getEntity(2L));
+		action.setTurma(TurmaFactory.getEntity(2L));
 		
 		certificado.setTamanho("1");//grande
+
+		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
+    	Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
+    	colaboradors.add(colaborador);
 		
+    	colaboradorManager.expects(once()).method("findComNotaDoCurso").with(ANYTHING, ANYTHING).will(returnValue(colaboradors));
     	cursoManager.expects(once()).method("getConteudoProgramatico").with(eq(2L)).will(returnValue("Conteúdo programático: bla bla bla"));
     	
     	assertEquals("successGrande", action.imprimirCertificadoVerso());
     	
     	certificado.setTamanho("0");//pequeno
     	
+    	colaboradorManager.expects(once()).method("findComNotaDoCurso").with(ANYTHING, ANYTHING).will(returnValue(colaboradors));
     	cursoManager.expects(once()).method("getConteudoProgramatico").with(eq(2L)).will(returnValue("Conteúdo programático: bla bla bla"));
     	
     	assertEquals("successPequeno", action.imprimirCertificadoVerso());

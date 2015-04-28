@@ -4,6 +4,7 @@
 package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Collection;
@@ -233,6 +234,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private String sugestaoPeriodoAcompanhamentoExperiencia;
 	@Transient
 	private Integer statusAcPessoal;
+	private BigDecimal nota;
 
 	public Colaborador()
 	{
@@ -2853,5 +2855,15 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			return "Sim";
 		else
 			return "Não";		
+	}
+
+	public BigDecimal getNota()
+	{
+		return nota;
+	}
+
+	public void setNota(BigDecimal nota)
+	{
+		this.nota = nota;
 	}
 }

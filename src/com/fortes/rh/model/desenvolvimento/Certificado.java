@@ -5,7 +5,9 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.rh.model.desenvolvimento.relatorio.CertificacaoTreinamentosRelatorio;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.DateUtil;
+import java.math.BigDecimal;
 
 
 public class Certificado implements Cloneable
@@ -19,6 +21,7 @@ public class Certificado implements Cloneable
 	private boolean imprimirMoldura;
 	private boolean imprimirLogo;
 	private boolean imprimirLogoCertificado;
+	private BigDecimal nota;
 	
 	public Certificado()
 	{
@@ -74,82 +77,18 @@ public class Certificado implements Cloneable
 		}
 		catch (CloneNotSupportedException e)
 		{
-			throw new Error("This should not occur since we implement Cloneable");
+			throw new Error("Não é possível gerar clone.");
 		}
 	}
-	
-	public String getAss1()
-	{
-		return ass1;
-	}
-	public void setAss1(String ass1)
-	{
-		this.ass1 = ass1;
-	}
-	public String getAss2()
-	{
-		return ass2;
-	}
-	public void setAss2(String ass2)
-	{
-		this.ass2 = ass2;
-	}
-	public String getConteudo()
-	{
-		return conteudo;
-	}
-	public void setConteudo(String conteudo)
-	{
-		this.conteudo = conteudo;
-	}
-	public String getData()
-	{
-		return data;
-	}
-	public void setData(String data)
-	{
-		this.data = data;
-	}
-	public boolean isImprimirLogo()
-	{
-		return imprimirLogo;
-	}
-	public void setImprimirLogo(boolean imprimirLogo)
-	{
-		this.imprimirLogo = imprimirLogo;
-	}
-	public boolean isImprimirMoldura()
-	{
-		return imprimirMoldura;
-	}
-	public void setImprimirMoldura(boolean imprimirMoldura)
-	{
-		this.imprimirMoldura = imprimirMoldura;
-	}
-	public String getTamanho()
-	{
-		return tamanho;
-	}
-	public void setTamanho(String tamanho)
-	{
-		this.tamanho = tamanho;
-	}
-	public String getTitulo()
-	{
-		return titulo;
-	}
-	public void setTitulo(String titulo)
-	{
-		this.titulo = titulo;
-	}
 
-	public static Collection<Certificado> gerarColecao(String[] colaboradoresCheck, Certificado certificado)
+	public static Collection<Certificado> gerarColecaoVerso(Collection<Colaborador> colaboradores, Certificado certificado)
 	{
-		Collection<Certificado> certificados = new ArrayList<Certificado>(colaboradoresCheck.length);
-		for (String id: colaboradoresCheck)
+		Collection<Certificado> certificados = new ArrayList<Certificado>(colaboradores.size());
+		for (Colaborador colaborador: colaboradores)
 		{
 			Certificado certificadoTmp = new Certificado();
 			certificadoTmp.setImprimirMoldura(certificado.isImprimirMoldura());		
+			certificadoTmp.setNota(colaborador.getNota());		
 			certificados.add(certificadoTmp);
 		}
 		
@@ -173,12 +112,104 @@ public class Certificado implements Cloneable
 		return certificacaoTreinamentos;
 	}
 
-	public boolean isImprimirLogoCertificado() {
+	public String getAss1()
+	{
+		return ass1;
+	}
+
+	public void setAss1(String ass1)
+	{
+		this.ass1 = ass1;
+	}
+
+	public String getAss2()
+	{
+		return ass2;
+	}
+
+	public void setAss2(String ass2)
+	{
+		this.ass2 = ass2;
+	}
+
+	public String getConteudo()
+	{
+		return conteudo;
+	}
+
+	public void setConteudo(String conteudo)
+	{
+		this.conteudo = conteudo;
+	}
+
+	public String getData()
+	{
+		return data;
+	}
+
+	public void setData(String data)
+	{
+		this.data = data;
+	}
+
+	public boolean isImprimirLogo()
+	{
+		return imprimirLogo;
+	}
+
+	public void setImprimirLogo(boolean imprimirLogo)
+	{
+		this.imprimirLogo = imprimirLogo;
+	}
+
+	public boolean isImprimirMoldura()
+	{
+		return imprimirMoldura;
+	}
+
+	public void setImprimirMoldura(boolean imprimirMoldura)
+	{
+		this.imprimirMoldura = imprimirMoldura;
+	}
+
+	public String getTamanho()
+	{
+		return tamanho;
+	}
+
+	public void setTamanho(String tamanho)
+	{
+		this.tamanho = tamanho;
+	}
+
+	public String getTitulo()
+	{
+		return titulo;
+	}
+
+	public void setTitulo(String titulo)
+	{
+		this.titulo = titulo;
+	}
+
+	public boolean isImprimirLogoCertificado()
+	{
 		return imprimirLogoCertificado;
 	}
 
-	public void setImprimirLogoCertificado(boolean imprimirLogoCertificado) {
+	public void setImprimirLogoCertificado(boolean imprimirLogoCertificado)
+	{
 		this.imprimirLogoCertificado = imprimirLogoCertificado;
+	}
+
+	public BigDecimal getNota()
+	{
+		return nota;
+	}
+
+	public void setNota(java.math.BigDecimal nota)
+	{
+		this.nota = nota;
 	}
 
 }

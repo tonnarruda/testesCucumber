@@ -1281,6 +1281,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		return getDao().findAllSelect(colaboradorIds, colabDesligado);
 	}
+	
+	public Collection<Colaborador> findComNotaDoCurso(Collection<Long> colaboradorIds, Long turmaId)
+	{
+		return getDao().findComNotaDoCurso(colaboradorIds, turmaId);
+	}
 
 	public void updateInfoPessoais(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas,
 			Collection<Experiencia> experiencias, Empresa empresa) throws Exception

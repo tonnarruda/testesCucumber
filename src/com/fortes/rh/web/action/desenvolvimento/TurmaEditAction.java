@@ -178,6 +178,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private boolean turmaPertenceAEmpresaLogada = true;
 	private boolean exibirAssinaturaDigital;
 	private boolean manterAssinatura;
+	private boolean imprimirNotaNoVerso;
 
 	private Map<Long, String> despesas = new HashMap<Long, String>();
 	private String[] horariosIni;
@@ -343,7 +344,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		
 		if (turmas.isEmpty())
 		{
-			addActionMessage("Não existe Turma para o Curso informado.<br>");
+			addActionMessage("Não existe turma para o curso informado.<br>");
 		}
 
 		prepareFrequencia();
@@ -423,7 +424,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 			parametros.put("NOMEINSTRUTOR", turma.getInstrutor() != null && !"".equals(turma.getInstrutor()) ? turma.getInstrutor() + "\nInstrutor" : "");
 		}
 		
-		colaboradores = colaboradorManager.findAllSelect(LongUtil.arrayStringToCollectionLong(colaboradoresCheck), false);
+		colaboradores = colaboradorManager.findComNotaDoCurso(LongUtil.arrayStringToCollectionLong(colaboradoresCheck), turma.getId());
 		dataSource = colaboradorTurmaManager.montaCertificados(colaboradores, certificado, getEmpresaSistema().getId());
 
 		if(certificado.getTamanho().equals("declaracao"))
@@ -445,8 +446,10 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		String path = ServletActionContext.getServletContext().getRealPath("/imgs/") + java.io.File.separator;
 		parametros.put("PATH_IMG", path);
 		parametros.put("CONTEUDO_PROGRAMATICO", cursoManager.getConteudoProgramatico(curso.getId()));
-
-		dataSource = Certificado.gerarColecao(colaboradoresCheck, certificado);
+		parametros.put("IMPRIMIR_NOTA_VERSO", imprimirNotaNoVerso);
+		
+		colaboradores = colaboradorManager.findComNotaDoCurso(LongUtil.arrayStringToCollectionLong(colaboradoresCheck), turma.getId());
+		dataSource = Certificado.gerarColecaoVerso(colaboradores, certificado);
 
 		if(certificado.getTamanho().equals("1"))
 			return "successGrande";
@@ -523,7 +526,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 		}
 		catch (Exception e)
 		{
-			addActionError("Erro ao salvar Aproveitamento/Notas");
+			addActionError("Erro ao salvar aproveitamento/notas");
 			prepareAproveitamento();
 			return Action.INPUT;
 		}
@@ -1291,5 +1294,10 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public void setHorariosFim(String[] horariosFim) {
 		this.horariosFim = horariosFim;
+	}
+
+	public void setImprimirNotaNoVerso(boolean imprimirNotaNoVerso)
+	{
+		this.imprimirNotaNoVerso = imprimirNotaNoVerso;
 	}
 }

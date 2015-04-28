@@ -28,6 +28,8 @@ import com.fortes.rh.dao.cargosalario.GrupoOcupacionalDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.cargosalario.ReajusteColaboradorDao;
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
+import com.fortes.rh.dao.desenvolvimento.AproveitamentoAvaliacaoCursoDao;
+import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
 import com.fortes.rh.dao.desenvolvimento.DiaTurmaDao;
@@ -69,6 +71,8 @@ import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
+import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
@@ -79,6 +83,7 @@ import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
+import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -127,6 +132,7 @@ import com.fortes.rh.test.factory.cargosalario.GrupoOcupacionalFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.ReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
+import com.fortes.rh.test.factory.desenvolvimento.AvaliacaoCursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.DiaTurmaFactory;
@@ -146,7 +152,6 @@ import com.fortes.rh.test.factory.sesmt.SolicitacaoEpiFactory;
 import com.fortes.rh.test.util.mockObjects.MockCandidato;
 import com.fortes.rh.test.util.mockObjects.MockColaborador;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.LongUtil;
 
 public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colaborador> 
 {
@@ -190,6 +195,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	private ColaboradorPeriodoExperienciaAvaliacaoDao colaboradorPeriodoExperienciaAvaliacaoDao;
 	private CursoDao cursoDao;
 	private DiaTurmaDao diaTurmaDao;
+	private AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao; 
+	private AvaliacaoCursoDao avaliacaoCursoDao;
 
 	private Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 	private Cargo cargo1 = CargoFactory.getEntity();
@@ -3434,7 +3441,75 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		assertEquals(1, colaboradorDao.findAllSelect(Arrays.asList(colaborador1.getId(), colaborador2.getId()) , true).size());
 	}
+	
+	public void testFindComNotaDoCurso() 
+	{
+		testePorTipoAvaliacao(TipoAvaliacaoCurso.NOTA, true, 8.00);
+		testePorTipoAvaliacao(TipoAvaliacaoCurso.PORCENTAGEM, true, 9.56);
+		testePorTipoAvaliacao(TipoAvaliacaoCurso.AVALIACAO, true, 0.78);
+		testePorTipoAvaliacao(TipoAvaliacaoCurso.NOTA, false, null);
+	}
 
+	private void testePorTipoAvaliacao(char tipoAvaliacaoCurso, boolean comResposta, Double nota)
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setDesligado(false);
+		colaboradorDao.save(colaborador);
+		
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turmaDao.save(turma);
+		
+		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCurso.setTipo(tipoAvaliacaoCurso);
+		avaliacaoCursoDao.save(avaliacaoCurso);
+
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurma.setCurso(curso);
+		colaboradorTurma.setTurma(turma);
+		colaboradorTurmaDao.save(colaboradorTurma);
+
+		if(comResposta){
+			if(tipoAvaliacaoCurso == TipoAvaliacaoCurso.AVALIACAO){
+				Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+				avaliacaoDao.save(avaliacao);
+				
+				avaliacaoCurso.setAvaliacao(avaliacao);
+				avaliacaoCursoDao.save(avaliacaoCurso);
+				
+				ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+				colaboradorQuestionario.setColaborador(colaborador);
+				colaboradorQuestionario.setTurma(turma);
+				colaboradorQuestionario.setAvaliacaoCurso(avaliacaoCurso);
+				colaboradorQuestionario.setAvaliacao(avaliacao);
+				colaboradorQuestionario.setPerformance(nota);
+				colaboradorQuestionarioDao.save(colaboradorQuestionario);
+				
+				nota = nota * 100; // Na consulta, quando o tipo é 'Avaliação', a performance(nota) é multiplicada por 100.
+			} else {
+				AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso = new AproveitamentoAvaliacaoCurso();
+				aproveitamentoAvaliacaoCurso.setColaboradorTurma(colaboradorTurma);
+				aproveitamentoAvaliacaoCurso.setAvaliacaoCurso(avaliacaoCurso);
+				aproveitamentoAvaliacaoCurso.setValor(nota);
+				aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso);
+			}
+		}
+		
+		colaboradorDao.getHibernateTemplateByGenericDao().flush();
+		
+		Collection<Colaborador> colaboradoresRetorno = colaboradorDao.findComNotaDoCurso(Arrays.asList(colaborador.getId()), turma.getId());
+		Colaborador colaboradorRetorno = ((Colaborador)(colaboradoresRetorno.toArray())[0]);
+		
+		if(comResposta)
+			assertEquals(nota, colaboradorRetorno.getNota().doubleValue());
+		else
+			assertNull(colaboradorRetorno.getNota());
+	}
+	
 	public void testReligaColaborador() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
@@ -3766,7 +3841,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(new Integer(1), colaboradorDao.getCountAtivosQualquerStatus(dataDoisMesesAtras.getTime(), new Long[]{empresa.getId()}, null, new Long[]{estabelecimento2.getId()}));
 
 	}
-	
+
 	public void testCountAdmitidosSemTurnover() {
 		
 		Calendar dataDoisMesesAtras = Calendar.getInstance();
@@ -5670,9 +5745,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	
 	public void testDependenciasApagarColaboradorNoImportador()
 	{
-		String qtdTabelasComEmpresa = JDBCConnection.executeQuery("select count(table_name) from information_schema.columns as col where col.column_name = 'colaborador_id' and col.table_schema = 'public';");
+		String qtdTabelasComColaborador = JDBCConnection.executeQuery("select count(table_name) from information_schema.columns as col where col.column_name = 'colaborador_id' and col.table_schema = 'public' and is_updatable = 'YES';");
 		//se esse quebrar, provavelmente tem que inserir uma linha de delete no Importador colaboradorJDBC.java método removerColaborador();
-		assertEquals("23", qtdTabelasComEmpresa);
+		assertEquals("22", qtdTabelasComColaborador);
 	}
 
 	public void testAtualizaSolicitacaoDesligamento() 
@@ -6652,4 +6727,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		this.diaTurmaDao = diaTurmaDao;
 	}
 
+	public void setAproveitamentoAvaliacaoCursoDao(AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao)
+	{
+		this.aproveitamentoAvaliacaoCursoDao = aproveitamentoAvaliacaoCursoDao;
+	}
+
+	public void setAvaliacaoCursoDao(AvaliacaoCursoDao avaliacaoCursoDao)
+	{
+		this.avaliacaoCursoDao = avaliacaoCursoDao;
+	}
 }

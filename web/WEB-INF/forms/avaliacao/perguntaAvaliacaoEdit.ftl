@@ -325,7 +325,7 @@
 		<@ww.select label="Ordem" name="pergunta.ordem" id="ordem" list="ordens" required="true" cssStyle="width:40px;text-align:right;" liClass="liLeft"/>
 		<@ww.textfield id="peso" label="Peso" name="pergunta.peso" maxLength="4" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:30px;text-align:right;"/>
 		Pergunta:* <br> <@ww.textfield theme="simple" id="pergunta" label="Pergunta" name="pergunta.texto" required="true" cssStyle="width: 350px;"/>
-		<img id="criterioTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
+		<img id="criterioTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 0px;margin-top: 0px;vertical-align: top;"/>
 		
 		<@ww.select label="Tipo de Resposta" name="pergunta.tipo" id="tipo" list="tipoPerguntas" cssStyle="width: 200px;" required="true" onchange="exibePorTipo();" disabled="${desabilitaTipo}" />
 		<#if desabilitaTipo == "true">

@@ -109,10 +109,9 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findAllSelect(Long empresaId, String ordenarPor);
 	public Collection<Colaborador> findAllSelect(String situacao, Long... empresaIds);
 	public Collection<Colaborador> findAllSelect(Collection<Long> colaboradorIds, Boolean colabDesligado);
-	
+	public Collection<Colaborador> findComNotaDoCurso(Collection<Long> colaboradorIds, Long turmaId);
 	public void updateInfoPessoais(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa) throws Exception;
 	public boolean updateInfoPessoaisByCpf(Colaborador colaborador, Long empresaId);
-
 	public Colaborador updateEmpregado(TEmpregado empregado) throws Exception;
 	public void saveEmpregadosESituacoes(TEmpregado[] tEmpregados, TSituacao[] tSituacoes, Empresa empresa) throws Exception;
 	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);

@@ -1,5 +1,7 @@
 package com.fortes.rh.dao.hibernate.geral;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -14,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -2343,6 +2346,39 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
+	@SuppressWarnings("rawtypes")
+	public Collection<Colaborador> findComNotaDoCurso(Collection<Long> colaboradorIds, Long turmaId)
+	{
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("select c.id, c.nome, c.nomeComercial, v_cn.nota, v_cn.qtdAvaliacoesCurso ");
+		sql.append("from Colaborador as c ");
+		sql.append("left join View_CursoNota v_cn on v_cn.colaborador_id = c.id and v_cn.turma_id = "+ turmaId+" ");
+		sql.append("where c.id in (:colaboradorIds) ");
+		sql.append("   and c.desligado = false ");
+
+		SQLQuery query = getSession().createSQLQuery(sql.toString());
+		query.setParameterList("colaboradorIds", colaboradorIds);
+		
+		Collection<Colaborador> colaboradores = new LinkedList<Colaborador>();
+		Collection lista = query.list();
+
+		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();)
+		{
+			Object[] array = it.next();
+			Colaborador colaborador = new Colaborador();
+			colaborador.setId( ((BigInteger) array[0]).longValue() );
+			colaborador.setNome((String) array[1]);
+			colaborador.setNomeComercial((String) array[2]);
+			if(array[3] != null && ((BigInteger)array[4]).intValue() == 1 ) // array[4] é qtdAvaliacoesCurso, e se tiver mais de uma avaliação para o curso a nota deve ficar nula.
+				colaborador.setNota((BigDecimal.valueOf((Double)array[3])));
+
+			colaboradores.add(colaborador);
+		}
+
+		return colaboradores;
+	}
+	
 	public Integer getCountAtivosQualquerStatus(Date dataBase, Long[] empresaIds, Long[] areasIds, Long[] estabelecimentosIds)
 	{
 		StringBuilder hql = new StringBuilder("select count(c.id) ");

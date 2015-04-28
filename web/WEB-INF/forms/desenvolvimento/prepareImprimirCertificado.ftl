@@ -4,7 +4,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 
 <@ww.head/>
 	<title>Impressão de Certificado</title>
@@ -18,7 +18,6 @@
 		#ttcont {display:block; padding:2px 12px 3px 7px; margin-left:5px; background:#666; color:#FFF}
 		#ttbot {display:block; height:5px; margin-left:5px; overflow:hidden}
 	</style>
-
 </head>
 <body>
 	<@ww.actionmessage />
@@ -56,8 +55,9 @@
  			<@ww.textfield label="Título do Certificado" name="certificado.titulo" maxlength="200" cssStyle="width: 600px;" />
 
 			<span style="position: relative">
-				<img id="help_conteudo" style="position: absolute; top: 12px; _top: 6px; left: 70px;" src='<@ww.url value='/imgs/help.gif'/>'/>
-				<@ww.textarea label="Conteúdo" name="certificado.conteudo" cssStyle="width:600px;"/>
+				Conteúdo:
+				<img id="help_conteudo" style="position: absolute; top: 0px; _top: 6px; left: 70px;" src='<@ww.url value='/imgs/help.gif'/>'/>
+				<@ww.textarea name="certificado.conteudo" cssStyle="width:600px;"/>
 			</span>
 
 			<fieldset style="padding: 5px 0px 5px 5px; width: 595px;">
@@ -74,6 +74,11 @@
 			<@ww.select label="Tamanho do Certificado" id="certificadoTamanho" name="certificado.tamanho" list=r"#{'1':'1 por página','2':'2 por página','declaracao':'Declaração'}" />
 			<@ww.checkbox label="Imprimir Moldura" name="certificado.imprimirMoldura" labelPosition="left"/>
 			<@ww.checkbox label="Imprimir Logotipo" name="certificado.imprimirLogo" labelPosition="left"/>
+			<div>
+				<@ww.checkbox name="imprimirNotaNoVerso" theme="simple"/>
+			    Imprimir Nota no Verso
+				<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 0px;margin-top: 0px;vertical-align: top;"/>
+			</div>
 
 			<@ww.hidden name="turma.assinaturaDigitalUrl" />
 			<@ww.hidden name="turma.instrutor" />
@@ -169,9 +174,15 @@
 			});
 
 			$('#help_conteudo').qtip({
-				content: 'Utilize a expressão #NOMECOLABORADOR# <br/>no local onde deve aparecer o nome do colaborador.'
+				content: 'Utilize a expressão #NOMECOLABORADOR# no local onde deve aparecer o nome do colaborador.'
 				, style: { width: '100px' }
 			});
+			
+			$('#tooltipHelp').qtip({
+				content: 'A nota será impressa somente se houver apenas uma avaliação do curso com resultado registrado.'
+				, style: { width: '100px' }
+			});
+			
 			
 			mostrarCheckAssInstrutor();
 			abiltaOuDesabilitaCampoAssinatura2();

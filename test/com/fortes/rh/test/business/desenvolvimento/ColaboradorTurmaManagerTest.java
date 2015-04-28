@@ -597,7 +597,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		String _span = "</span>";
 		
 		assertEquals(span + "(reprovado por falta)" + _span, buscaNomeColaborador(4L, colaboradores));
-		assertEquals(span + "(reprovado por Nota)" + _span, buscaNomeColaborador(6L, colaboradores));
+		assertEquals(span + "(reprovado por nota)" + _span, buscaNomeColaborador(6L, colaboradores));
 		assertEquals(span + "(reprovado por nota e falta)" + _span, buscaNomeColaborador(7L, colaboradores));
 	}
 
