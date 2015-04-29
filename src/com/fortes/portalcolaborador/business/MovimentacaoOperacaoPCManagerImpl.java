@@ -9,22 +9,28 @@ import com.fortes.portalcolaborador.model.MovimentacaoOperacaoPC;
 public class MovimentacaoOperacaoPCManagerImpl extends GenericManagerImpl<MovimentacaoOperacaoPC, MovimentacaoOperacaoPCDao> implements MovimentacaoOperacaoPCManager 
 {
 	
-	public void enfileirar(Class<? extends Operacao> operacao, AbstractAdapterPC adapterPC)
+	public void enfileirar(Class<? extends Operacao> operacao, AbstractAdapterPC adapterPC, boolean isEmpresaIntegraAC)
 	{
-		MovimentacaoOperacaoPC movimentacaoOperacaoPC = new MovimentacaoOperacaoPC();
-		movimentacaoOperacaoPC.setOperacao(operacao);
-		movimentacaoOperacaoPC.setParametros(adapterPC.toJson());
-		
-		save(movimentacaoOperacaoPC);		
+		if(isEmpresaIntegraAC)
+		{
+			MovimentacaoOperacaoPC movimentacaoOperacaoPC = new MovimentacaoOperacaoPC();
+			movimentacaoOperacaoPC.setOperacao(operacao);
+			movimentacaoOperacaoPC.setParametros(adapterPC.toJson());
+			
+			save(movimentacaoOperacaoPC);		
+		}
 	}
 
-	public void enfileirar(Class<? extends Operacao> operacao, String parametros)
+	public void enfileirar(Class<? extends Operacao> operacao, String parametros, boolean isEmpresaIntegraAC)
 	{
-		MovimentacaoOperacaoPC movimentacaoOperacaoPC = new MovimentacaoOperacaoPC();
-		movimentacaoOperacaoPC.setOperacao(operacao);
-		movimentacaoOperacaoPC.setParametros(parametros);
-		
-		save(movimentacaoOperacaoPC);		
+		if(isEmpresaIntegraAC)
+		{
+			MovimentacaoOperacaoPC movimentacaoOperacaoPC = new MovimentacaoOperacaoPC();
+			movimentacaoOperacaoPC.setOperacao(operacao);
+			movimentacaoOperacaoPC.setParametros(parametros);
+			
+			save(movimentacaoOperacaoPC);
+		}
 	}
 
 	public void processarOperacoes()

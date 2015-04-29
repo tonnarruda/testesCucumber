@@ -16,6 +16,7 @@ import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.portalcolaborador.business.TransacaoPCManager;
 import com.fortes.portalcolaborador.model.ColaboradorPC;
 import com.fortes.portalcolaborador.model.dicionario.URLTransacaoPC;
@@ -106,6 +107,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 	Mock candidatoSolicitacaoManager;
 	Mock solicitacaoManager;
 	Mock transacaoPCManager;
+	Mock movimentacaoOperacaoPCManager;
 
 	protected void setUp() throws Exception
 	{
@@ -150,6 +152,9 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
 		historicoColaboradorManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
+		
+		movimentacaoOperacaoPCManager = mock(MovimentacaoOperacaoPCManager.class);
+		historicoColaboradorManager.setMovimentacaoOperacaoPCManager((MovimentacaoOperacaoPCManager) movimentacaoOperacaoPCManager.proxy());
 		
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
@@ -1986,6 +1991,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
 		faixaSalarialManager.expects(once()).method("findFaixaSalarialByCodigoAc").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
 		historicoColaboradorDao.expects(once()).method("update").with(ANYTHING);
+		movimentacaoOperacaoPCManager.expects(once()).method("enfileirar").withAnyArguments().isVoid();
 
 		HistoricoColaborador retorno = historicoColaboradorManager.updateSituacao(situacao);
 

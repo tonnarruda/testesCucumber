@@ -512,11 +512,11 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	
 	public String enfileirarEmpresaPCAndColaboradorPC(Empresa empresa, Boolean integradaPortalColaboradorAnterior) throws Exception 
 	{
-		movimentacaoOperacaoPCManager.enfileirar(AtualizarEmpresa.class, new EmpresaPC(empresa));
+		movimentacaoOperacaoPCManager.enfileirar(AtualizarEmpresa.class, new EmpresaPC(empresa), empresa.isIntegradaPortalColaborador());
 		
 		if (!integradaPortalColaboradorAnterior)
 		{
-			movimentacaoOperacaoPCManager.enfileirar(ExportarEmpresa.class, new EmpresaPC(empresa).getIdentificadoresToJson());
+			movimentacaoOperacaoPCManager.enfileirar(ExportarEmpresa.class, new EmpresaPC(empresa).getIdentificadoresToJson(), empresa.isAcIntegra());
 			return "Empresa editada com sucesso. <br /> Estamos enviando os dados de sua empresa para o Portal do Colaborador. <br />" +
 					"Em breve você receberá um email de confimação. <br />  Email destino: "+ empresa.getEmailRespRH();
 		}
@@ -527,7 +527,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	public void removeEmpresaPc(Long empresaId) 
 	{
 		Empresa empresa = getDao().findById(empresaId);
-		movimentacaoOperacaoPCManager.enfileirar(ExcluirEmpresa.class, new EmpresaPC(empresa));
+		movimentacaoOperacaoPCManager.enfileirar(ExcluirEmpresa.class, new EmpresaPC(empresa), empresa.isIntegradaPortalColaborador());
 	}
 
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {

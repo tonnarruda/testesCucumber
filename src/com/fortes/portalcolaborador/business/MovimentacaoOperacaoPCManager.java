@@ -9,7 +9,7 @@ import com.fortes.portalcolaborador.model.MovimentacaoOperacaoPC;
 
 public interface MovimentacaoOperacaoPCManager extends GenericManager<MovimentacaoOperacaoPC> 
 {
-	void enfileirar(Class<? extends Operacao> operacao, AbstractAdapterPC adapterPC);
-	void enfileirar(Class<? extends Operacao> operacao, String parametros);
+	void enfileirar(Class<? extends Operacao> operacao, AbstractAdapterPC adapterPC, boolean isEmpresaIntegraAC);
+	void enfileirar(Class<? extends Operacao> operacao, String parametros, boolean isEmpresaIntegraAC);
 	void processarOperacoes();
 }

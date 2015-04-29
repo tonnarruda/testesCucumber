@@ -5,13 +5,13 @@ import com.fortes.portalcolaborador.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.webwork.dispatcher.json.JSONObject;
 
-public class InserirColaborador extends Operacao {
+public class AtualizarHistoricoColaborador extends Operacao{
 
-	public URLTransacaoPC getUrlTransacaoPC()
-	{
-		return URLTransacaoPC.COLABORADOR_ATUALIZAR;
+	@Override
+	public URLTransacaoPC getUrlTransacaoPC() {
+		return URLTransacaoPC.COLABORADOR_ATUALIZAR_HISTORICO;
 	}
-	
+
 	@Override
 	@SuppressWarnings({ "deprecation"})
 	public void gerarTransacao(String parametros) throws Exception
@@ -21,9 +21,9 @@ public class InserirColaborador extends Operacao {
 		if(j.get("id") != null)
 		{
 			ColaboradorPCManager colaboradorPCManager = (ColaboradorPCManager) SpringUtil.getBeanOld("colaboradorPCManager");
-
 			Long colaboradorId = Long.parseLong(((Integer) j.get("id")).toString());
 			colaboradorPCManager.enfileirarColaboradoresPCComHistoricos(getUrlTransacaoPC(), colaboradorId, null);
 		}
 	}
+	
 }

@@ -44,7 +44,7 @@ public class ExportarEmpresa extends Operacao {
 				if(empresa != null)
 				{
 					ColaboradorPCManager colaboradorPCManager = (ColaboradorPCManager) SpringUtil.getBeanOld("colaboradorPCManager");
-					colaboradorPCManager.enfileirarColaboradoresPCComHistoricos(null, empresaId);
+					colaboradorPCManager.enfileirarColaboradoresPCComHistoricos(URLTransacaoPC.COLABORADOR_ATUALIZAR, null, empresaId);
 					emailConfirmacaoPC(empresa);
 				}
 			}

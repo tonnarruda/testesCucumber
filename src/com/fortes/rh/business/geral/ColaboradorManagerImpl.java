@@ -318,8 +318,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (!colaborador.isNaoIntegraAc() && empresa.isAcIntegra())
 			contratarColaboradorNoAC(colaborador, historico, empresa, true);
 
-		if(empresa.isIntegradaPortalColaborador())
-			movimentacaoOperacaoPCManager.enfileirar(InserirColaborador.class, new ColaboradorPC(colaborador).getIdentificadorToJson());
+		movimentacaoOperacaoPCManager.enfileirar(InserirColaborador.class, new ColaboradorPC(colaborador).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
 
 		gerenciadorComunicacaoManager.enviaAvisoContratacao(historico);
 
@@ -603,8 +602,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			colaborador.setHistoricoColaborador(historicoColaborador);
 		}
 
-		if(empresa.isIntegradaPortalColaborador())
-			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador));
+		movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador), empresa.isIntegradaPortalColaborador());
 		
 		// Flush necessário quando houver uma operação com banco/sistema externo.
 		// garante que erro no banco do RH levantará uma Exception antes de alterar o outro banco.
@@ -1331,7 +1329,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			
 			colaboradorAtualizado.setFoto(getFoto(colaboradorAtualizado.getId()));
 			
-			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaboradorAtualizado));
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaboradorAtualizado), empresa.isIntegradaPortalColaborador());
 			
 			gerenciadorComunicacaoManager.enviaAvisoAtualizacaoInfoPessoais(colaboradorOriginal, colaboradorAtualizado, empresa.getId());
 			
@@ -1360,7 +1358,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		{
 			colaborador = bindColaborador(colaborador, empregado);
 			getDao().update(colaborador);
-			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador));
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador), colaborador.getEmpresa().isIntegradaPortalColaborador());
 		}
 
 		return colaborador;

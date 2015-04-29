@@ -333,11 +333,11 @@
   </bean>
   <bean id="cronTriggerProcessarOperacaoPC" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="processarOperacaoPC" />
-	<property name="cronExpression" value="0 0/10 * * * ?" /> <!-- A cada 10 minutos -->
+	<property name="cronExpression" value="0 0/1 * * * ?" /> <!-- A cada 10 minutos -->
   </bean>
   <bean id="cronTriggerProcessarFilaPC" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="processarFilaPC" />
-	<property name="cronExpression" value="0 0/10 * * * ?" /> <!-- A cada 10 minutos -->
+	<property name="cronExpression" value="0 0/1 * * * ?" /> <!-- A cada 10 minutos -->
   </bean>
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     <property name="triggers">

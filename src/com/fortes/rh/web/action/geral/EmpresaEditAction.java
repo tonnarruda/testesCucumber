@@ -178,8 +178,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			e.printStackTrace();
 		}
 		
-		if(empresa.isIntegradaPortalColaborador())
-			movimentacaoOperacaoPCManager.enfileirar(AtualizarEmpresa.class, new EmpresaPC(empresa));
+		movimentacaoOperacaoPCManager.enfileirar(AtualizarEmpresa.class, new EmpresaPC(empresa), empresa.isIntegradaPortalColaborador());
 
 		return Action.SUCCESS;
 	}

@@ -93,7 +93,7 @@ public class ColaboradorPC extends AbstractAdapterPC
 	}
 
 	public String getNomeComercial(Colaborador colaborador) {
-		if(colaborador.getNomeComercial() == null)
+		if(colaborador.getNome() != null && colaborador.getNomeComercial() == null)
 			return this.nome.substring(0,29);
 		else
 			return colaborador.getNomeComercial();

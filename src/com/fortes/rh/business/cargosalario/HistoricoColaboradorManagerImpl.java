@@ -23,6 +23,9 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.AbstractModel;
+import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
+import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoColaborador;
+import com.fortes.portalcolaborador.model.ColaboradorPC;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -77,6 +80,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	private IndiceManager indiceManager;
 	private EmpresaManager empresaManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	private MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager;
 	
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	
@@ -697,6 +701,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			reajusteColaboradorManager.updateFromHistoricoColaborador(historicoColaboradorTmp);
 
 		update(historicoColaboradorTmp);
+
 		// garante que um erro no banco do RH levantará uma Exception antes de alterar o outro banco.
 		getDao().getHibernateTemplateByGenericDao().flush(); 
 
@@ -707,7 +712,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			historicoColaboradors.add(historicoColaboradorTmp);
 			
 			acPessoalClientTabelaReajuste.saveHistoricoColaborador(historicoColaboradors, empresa, salarioAntigo, false);
-		}
+		}else
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoColaborador.class, new ColaboradorPC(historicoColaborador.getColaborador()).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
+		
 	}
 
 	public boolean alterouDadosIntegradoAC(HistoricoColaborador historicoColaboradorTela, HistoricoColaborador historicoColaboradorBanco)
@@ -966,6 +973,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
 		
 		getDao().update(historicoColaborador);
+		
+		if(historicoColaborador.getColaborador() != null && historicoColaborador.getColaborador().getEmpresa() != null)
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoColaborador.class, new ColaboradorPC(historicoColaborador.getColaborador()).getIdentificadorToJson(), historicoColaborador.getColaborador().getEmpresa().isIntegradaPortalColaborador());
 
 		return historicoColaborador;
 	}
@@ -1132,8 +1142,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		}
 
 		historicoColaborador = ajustaTipoSalario(historicoColaborador, historicoColaborador.getTipoSalario(), historicoColaborador.getIndice(), historicoColaborador.getQuantidadeIndice(), historicoColaborador.getSalario());
-		
 		save(historicoColaborador);
+
 		// garante que um erro no banco do RH levantará uma Exception antes de alterar o outro banco.
 		getDao().getHibernateTemplateByGenericDao().flush(); 
 
@@ -1145,7 +1155,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			historicoColaboradors.add(historicoColaborador);
 
 			acPessoalClientTabelaReajuste.saveHistoricoColaborador(historicoColaboradors, empresa, null, false);
-		}
+		}else
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoColaborador.class, new ColaboradorPC(historicoColaborador.getColaborador()).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
 	}
 	
 	public void saveHistoricoColaboradorNoAc(Collection<HistoricoColaborador> historicosColaboradores, Empresa empresa) throws Exception
@@ -1515,5 +1526,14 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
+	}
+
+	public MovimentacaoOperacaoPCManager getMovimentacaoOperacaoPCManager() {
+		return movimentacaoOperacaoPCManager;
+	}
+
+	public void setMovimentacaoOperacaoPCManager(
+			MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager) {
+		this.movimentacaoOperacaoPCManager = movimentacaoOperacaoPCManager;
 	}
 }

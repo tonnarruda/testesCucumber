@@ -1346,7 +1346,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
     	colaboradorDao.expects(once()).method("findByIdComHistorico").with(ANYTHING,eq(null)).will(returnValue(colaborador));
     	colaboradorDao.expects(once()).method("update").with(eq(colaborador));
-    	movimentacaoOperacaoPCManager.expects(once()).method("enfileirar").with(ANYTHING, ANYTHING);
+    	movimentacaoOperacaoPCManager.expects(once()).method("enfileirar").with(ANYTHING, ANYTHING, ANYTHING);
 
     	assertEquals(colaborador, colaboradorManager.updateEmpregado(empregado));
     }
