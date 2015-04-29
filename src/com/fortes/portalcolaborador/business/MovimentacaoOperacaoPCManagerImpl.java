@@ -9,9 +9,9 @@ import com.fortes.portalcolaborador.model.MovimentacaoOperacaoPC;
 public class MovimentacaoOperacaoPCManagerImpl extends GenericManagerImpl<MovimentacaoOperacaoPC, MovimentacaoOperacaoPCDao> implements MovimentacaoOperacaoPCManager 
 {
 	
-	public void enfileirar(Class<? extends Operacao> operacao, AbstractAdapterPC adapterPC, boolean isEmpresaIntegraAC)
+	public void enfileirar(Class<? extends Operacao> operacao, AbstractAdapterPC adapterPC, boolean empresaIntegradaComPortal)
 	{
-		if(isEmpresaIntegraAC)
+		if(empresaIntegradaComPortal)
 		{
 			MovimentacaoOperacaoPC movimentacaoOperacaoPC = new MovimentacaoOperacaoPC();
 			movimentacaoOperacaoPC.setOperacao(operacao);
@@ -21,9 +21,9 @@ public class MovimentacaoOperacaoPCManagerImpl extends GenericManagerImpl<Movime
 		}
 	}
 
-	public void enfileirar(Class<? extends Operacao> operacao, String parametros, boolean isEmpresaIntegraAC)
+	public void enfileirar(Class<? extends Operacao> operacao, String parametros, boolean empresaIntegradaComPortal)
 	{
-		if(isEmpresaIntegraAC)
+		if(empresaIntegradaComPortal)
 		{
 			MovimentacaoOperacaoPC movimentacaoOperacaoPC = new MovimentacaoOperacaoPC();
 			movimentacaoOperacaoPC.setOperacao(operacao);
