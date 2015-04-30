@@ -16,16 +16,16 @@ import com.fortes.rh.util.SpringUtil;
 
 public class ColaboradorPCManagerImpl extends GenericManagerImpl<ColaboradorPC, ColaboradorPCDao> implements ColaboradorPCManager 
 {
-	public void enfileirarColaboradoresPCComHistoricos(URLTransacaoPC uRLTransacaoPC, Long colaboradorId, Long empresaId)
+	public void enfileirarComHistoricos(URLTransacaoPC uRLTransacaoPC, Long colaboradorId, Long empresaId)
 	{
 		TransacaoPCManager transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
 		HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
 		
-		Collection<HistoricoColaborador> historicosMontados = historicoColaboradorManager.getHistoricosConfirmados(colaboradorId, empresaId);
-		Collection<ColaboradorPC> colaboradorPCs = montaColaboradorPCComHistoricos(historicosMontados);
+		Collection<HistoricoColaborador> historicosMontados = historicoColaboradorManager.findHistoricosConfirmados(colaboradorId, empresaId);
+		Collection<ColaboradorPC> colaboradoresPC = montaColaboradorPCComHistoricos(historicosMontados);
 		
-		for (ColaboradorPC colabPC : colaboradorPCs) 
-			transacaoPCManager.enfileirar(uRLTransacaoPC, colabPC.toJson());
+		for (ColaboradorPC colaboradorPC : colaboradoresPC) 
+			transacaoPCManager.enfileirar(uRLTransacaoPC, colaboradorPC.toJson());
 	}
 	
 	private Collection<ColaboradorPC> montaColaboradorPCComHistoricos(Collection<HistoricoColaborador> historicosColaborador) 

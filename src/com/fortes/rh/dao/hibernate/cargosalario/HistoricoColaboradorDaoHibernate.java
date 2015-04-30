@@ -1422,7 +1422,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 	
-	public Collection<HistoricoColaborador> getHistoricosConfirmados(Long colaboradorId, Long empresaId)
+	public Collection<HistoricoColaborador> findHistoricosConfirmados(Long colaboradorId, Long empresaId)
 	{
 		StringBuilder hql = new StringBuilder();
 

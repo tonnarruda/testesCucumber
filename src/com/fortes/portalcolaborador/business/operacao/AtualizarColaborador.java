@@ -6,6 +6,6 @@ public class AtualizarColaborador extends Operacao {
 
 	public URLTransacaoPC getUrlTransacaoPC()
 	{
-		return URLTransacaoPC.COLABORADOR_ATUALIZAR;
+		return URLTransacaoPC.ATUALIZAR_COLABORADOR;
 	}
 }

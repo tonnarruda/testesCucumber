@@ -5,25 +5,25 @@ import com.fortes.portalcolaborador.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.webwork.dispatcher.json.JSONObject;
 
-public class InserirColaborador extends Operacao {
+public class AtualizarColaboradorComHistorico extends Operacao {
 
 	public URLTransacaoPC getUrlTransacaoPC()
 	{
-		return URLTransacaoPC.COLABORADOR_ATUALIZAR;
+		return URLTransacaoPC.ATUALIZAR_COLABORADOR;
 	}
 	
 	@Override
 	@SuppressWarnings({ "deprecation"})
 	public void gerarTransacao(String parametros) throws Exception
 	{
-		JSONObject j = new JSONObject(parametros);	
+		JSONObject jsonColaborador = new JSONObject(parametros);	
 			
-		if(j.get("id") != null)
+		if(jsonColaborador.get("id") != null)
 		{
 			ColaboradorPCManager colaboradorPCManager = (ColaboradorPCManager) SpringUtil.getBeanOld("colaboradorPCManager");
 
-			Long colaboradorId = Long.parseLong(((Integer) j.get("id")).toString());
-			colaboradorPCManager.enfileirarColaboradoresPCComHistoricos(getUrlTransacaoPC(), colaboradorId, null);
+			Long colaboradorId = Long.parseLong(((Integer) jsonColaborador.get("id")).toString());
+			colaboradorPCManager.enfileirarComHistoricos(getUrlTransacaoPC(), colaboradorId, null);
 		}
 	}
 }

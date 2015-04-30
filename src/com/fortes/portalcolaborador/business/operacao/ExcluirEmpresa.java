@@ -7,6 +7,6 @@ public class ExcluirEmpresa extends Operacao {
 	@Override
 	public URLTransacaoPC getUrlTransacaoPC()
 	{
-		return URLTransacaoPC.EMPRESA_REMOVER;
+		return URLTransacaoPC.REMOVER_EMPRESA;
 	}
 }

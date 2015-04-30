@@ -74,7 +74,7 @@ public class ExportarEmpresaTest extends MockObjectTestCase {
 		empresaManager.expects(once()).method("findEmailsEmpresa").with(eq(empresa.getId())).will(returnValue(empresa));
 		historicoColaboradorManager.expects(once()).method("findByEmpresaPC").with(eq(empresa.getId())).will(returnValue(historicoColaboradores));
 		historicoColaboradorManager.expects(once()).method("montaSituacaoHistoricoColaborador").with(eq(historicoColaboradores)).will(returnValue(historicoColaboradores));
-		transacaoPCManager.expects(once()).method("enfileirar").with(eq(URLTransacaoPC.COLABORADOR_ATUALIZAR), ANYTHING).isVoid();
+		transacaoPCManager.expects(once()).method("enfileirar").with(eq(URLTransacaoPC.ATUALIZAR_COLABORADOR), ANYTHING).isVoid();
 		transacaoPCManager.expects(once()).method("enfileirar").with(eq(URLTransacaoPC.ENVIAR_EMAIL), ANYTHING).isVoid();
 		
 		Exception ex = null;

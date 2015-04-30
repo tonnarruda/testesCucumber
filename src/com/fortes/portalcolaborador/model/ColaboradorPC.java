@@ -1,9 +1,11 @@
 package com.fortes.portalcolaborador.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Transient;
 
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -47,16 +49,6 @@ public class ColaboradorPC extends AbstractAdapterPC
 		this.nome 			= colaborador.getNome();
 		this.nomeComercial  = getNomeComercial(colaborador);
 		
-		if (colaborador.getEmpresa() != null)
-		{
-			this.setEmpresaPC(new EmpresaPC(colaborador.getEmpresa()));
-		}
-		
-		if (colaborador.getEndereco() != null)
-		{
-			this.setEnderecoPC(new EnderecoPC(colaborador.getEndereco()));
-		}
-		
 		if (colaborador.getContato() != null)
 		{
 			this.email 			= colaborador.getContato().getEmail();
@@ -76,9 +68,18 @@ public class ColaboradorPC extends AbstractAdapterPC
 			this.qtdFilhos 		= colaborador.getPessoal().getQtdFilhos();
 		}
 		
+		if (colaborador.getEmpresa() != null)
+			this.setEmpresaPC(new EmpresaPC(colaborador.getEmpresa()));
+		
+		if (colaborador.getEndereco() != null)
+			this.setEnderecoPC(new EnderecoPC(colaborador.getEndereco()));
+		
 		if (colaborador.getFoto() != null && colaborador.getFoto().getBytes() != null)
-		{
 			this.foto = new ArquivoPC(colaborador);
+		
+		if (colaborador.getHistoricoColaborador() != null){
+			this.historicosPc = new ArrayList<HistoricoColaboradorPC>();
+			this.historicosPc.add(new HistoricoColaboradorPC(colaborador.getHistoricoColaborador()));
 		}
 	}
 	

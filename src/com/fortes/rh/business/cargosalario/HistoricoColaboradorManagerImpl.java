@@ -1512,8 +1512,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return false;
 	}
 	
-	public Collection<HistoricoColaborador> getHistoricosConfirmados(Long colaboradorId, Long empresaId){
-		return montaSituacaoHistoricoColaborador((List<HistoricoColaborador>) getDao().getHistoricosConfirmados(colaboradorId,empresaId));
+	public Collection<HistoricoColaborador> findHistoricosConfirmados(Long colaboradorId, Long empresaId){
+		return montaSituacaoHistoricoColaborador((List<HistoricoColaborador>) getDao().findHistoricosConfirmados(colaboradorId,empresaId));
 	}
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {

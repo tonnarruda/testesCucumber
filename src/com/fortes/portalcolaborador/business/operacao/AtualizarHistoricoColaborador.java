@@ -9,7 +9,7 @@ public class AtualizarHistoricoColaborador extends Operacao{
 
 	@Override
 	public URLTransacaoPC getUrlTransacaoPC() {
-		return URLTransacaoPC.COLABORADOR_ATUALIZAR_HISTORICO;
+		return URLTransacaoPC.ATUALIZAR_HISTORICO_COLABORADOR;
 	}
 
 	@Override
@@ -22,7 +22,7 @@ public class AtualizarHistoricoColaborador extends Operacao{
 		{
 			ColaboradorPCManager colaboradorPCManager = (ColaboradorPCManager) SpringUtil.getBeanOld("colaboradorPCManager");
 			Long colaboradorId = Long.parseLong(((Integer) j.get("id")).toString());
-			colaboradorPCManager.enfileirarColaboradoresPCComHistoricos(getUrlTransacaoPC(), colaboradorId, null);
+			colaboradorPCManager.enfileirarComHistoricos(getUrlTransacaoPC(), colaboradorId, null);
 		}
 	}
 	

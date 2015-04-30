@@ -2,12 +2,12 @@ package com.fortes.portalcolaborador.model.dicionario;
 
 public enum URLTransacaoPC
 {
-	COLABORADOR_ATUALIZAR(1, "/api/v1/colaboradores/atualizar.json", "PUT"),
+	ATUALIZAR_COLABORADOR(1, "/api/v1/colaboradores/atualizar.json", "PUT"),
 	TESTAR_CONEXAO_PORTAL(2, "/api/v1/testar_conexao", "POST"),
-	COLABORADOR_ATUALIZAR_HISTORICO(3, "/api/v1/colaboradores/atualizar_historico.json", "PUT"),
-	EMPRESA_ATUALIZAR(4, "/api/v1/empresas/atualizar.json", "PUT"),
+	ATUALIZAR_HISTORICO_COLABORADOR(3, "/api/v1/colaboradores/atualizar_historico.json", "PUT"),
+	ATUALIZAR_EMPRESA(4, "/api/v1/empresas/atualizar.json", "PUT"),
 	ENVIAR_EMAIL(5, "/api/v1/enviar_email.json", "POST"),
-	EMPRESA_REMOVER(6, "/api/v1/empresas/remover.json", "PUT");
+	REMOVER_EMPRESA(6, "/api/v1/empresas/remover.json", "PUT");
 
 	private Integer id;
 	private String url;

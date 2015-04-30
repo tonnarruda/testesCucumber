@@ -6,6 +6,6 @@ import com.fortes.portalcolaborador.model.dicionario.URLTransacaoPC;
 
 public interface ColaboradorPCManager extends GenericManager<ColaboradorPC> {
 
-	void enfileirarColaboradoresPCComHistoricos(URLTransacaoPC uRLTransacaoPC, Long colaboradorId, Long empresaId);
+	void enfileirarComHistoricos(URLTransacaoPC uRLTransacaoPC, Long colaboradorId, Long empresaId);
 
 }

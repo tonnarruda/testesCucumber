@@ -7,6 +7,6 @@ public class AtualizarEmpresa extends Operacao {
 	@Override
 	public URLTransacaoPC getUrlTransacaoPC()
 	{
-		return URLTransacaoPC.EMPRESA_ATUALIZAR;
+		return URLTransacaoPC.ATUALIZAR_EMPRESA;
 	}
 }

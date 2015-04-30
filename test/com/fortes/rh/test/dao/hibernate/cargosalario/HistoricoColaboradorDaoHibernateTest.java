@@ -2008,7 +2008,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		montaSaveHistoricoColaborador(DateUtil.criarAnoMesDia(2007, 03, 1), colaborador, estabelecimento, areaOrganizacional, faixaSalarialA, TipoAplicacaoIndice.CARGO);
 		montaSaveHistoricoColaborador(DateUtil.criarAnoMesDia(2008, 03, 1), colaborador, estabelecimento, areaOrganizacional, faixaSalarialB, TipoAplicacaoIndice.CARGO);
 
-		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.getHistoricosConfirmados(colaborador.getId(), null);
+		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findHistoricosConfirmados(colaborador.getId(), null);
 
 		assertEquals(2, historicoColaboradors.size());
 		
