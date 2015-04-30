@@ -81,6 +81,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private Collection<Colaborador> colaboradores;
 	private String ano;
 	private Boolean integradaPortalColaboradorAnterior;
+	private Boolean excluirDadosPortalColaborador;
 	
 	public String execute() throws Exception
 	{
@@ -217,6 +218,8 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 //				empresa.setIntegradaPortalColaborador(integradaPortalColaboradorAnterior);
 //				addActionWarning(conexaoPC);
 //			}
+		} else if ( excluirDadosPortalColaborador ) {
+			empresaManager.removeEmpresaPc(empresa.getId());
 		}
 		
 		boolean tavaIntegradaComAC = empresaManager.findIntegracaoAC(empresa.getId());
@@ -481,6 +484,10 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public void setIntegradaPortalColaboradorAnterior(Boolean integradaPortalColaboradorAnterior) {
 		this.integradaPortalColaboradorAnterior = integradaPortalColaboradorAnterior;
+	}
+	
+	public void setExcluirDadosPortalColaborador(Boolean excluirDadosPortalColaborador) {
+		this.excluirDadosPortalColaborador = excluirDadosPortalColaborador;
 	}
 
 	public void setTransacaoPCManager(TransacaoPCManager transacaoPCManager) {

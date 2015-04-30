@@ -317,12 +317,14 @@ function validaCamposObrigatorios(campos, formulario)
 				validacao = true;
 			else if(campoClass == "pontuacao" && campo.value != '')
 				validacao = true;
-			else if((campoClass != "listCheckBox" && campoClass != "mascaraHora" && campoClass != "mascaraCnpj" && campoClass != "mascaraCep" && campoClass != "mascaraCpf" && campoClass.substring(0, 11) != "mascaraData" && campoClass.substring(0, 17) != "mascaraMesAnoData" && campo.value.trim() != "" && campo.value.trim() != "-1") || (campo.type == "select-multiple" && campo.length > 0))
+			else if(campoClass == "radio" && $(campo).find("input[type='radio']:checked").size() > 0 && $(campo).is(":visible") || campoClass == "radio" && !$(campo).is(":visible") )
+				validacao = true;
+			else if((campoClass != "listCheckBox" && campoClass != "radio" && campoClass != "mascaraHora" && campoClass != "mascaraCnpj" && campoClass != "mascaraCep" && campoClass != "mascaraCpf" && campoClass.substring(0, 11) != "mascaraData" && campoClass.substring(0, 17) != "mascaraMesAnoData" && campo.value.trim() != "" && campo.value.trim() != "-1") || (campo.type == "select-multiple" && campo.length > 0))
 				validacao = true;
 
 			if(validacao)
 			{
-				campo.style.background = "#FFF"; // Cor do campo validado que
+				campo.style.background = ""; // Cor do campo validado que
 													// foi preenchido(depois de
 													// corrigido)
 			}

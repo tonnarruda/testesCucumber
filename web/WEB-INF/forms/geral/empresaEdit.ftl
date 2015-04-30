@@ -73,10 +73,11 @@
 			
 			$('#nomeHomonimoEmpresa').change();
 			$('#nomeHomonimo').change();
-			
+
+			$("#excluirDadosPortalColaboradorLi").toggle(!$('#integradaPortalColaborador').is(":checked") && ${integradaPortal});
+
 			$('#integradaPortalColaborador').change(function() {
-				if (!$(this).is(":checked") && ${integradaPortal})
-					popUpDadosPortalColaborador();
+				$("#excluirDadosPortalColaboradorLi, #excluirDadosPortalColaborador").toggle(!$(this).is(":checked") && ${integradaPortal});
 			});
 			
 		});
@@ -144,28 +145,6 @@
 			jAlert('Ao removermos os dados do Portal do Colaborador, enviaremos um email de confirmação para o responsável do RH.');
 		}
 
-		function popUpDadosPortalColaborador()
-		{
-			var msg = 'Deseja remover todos os dados do sistem Portal do Colaborador.';
-			
-			$('<div>'+ msg +'</div>').dialog({title: 'Alerta!',
-													modal: true, 
-													height: 150,
-													width: 500,
-													buttons: [
-													    {
-													        text: "Sim",
-													        click: function() { removeDadosPortalColaborador(); $(this).dialog("close"); }
-													    },
-													    {
-													        text: "Não",
-													        click: function() { $(this).dialog("close"); }
-													    }
-													] 
-													});
-			
-		}		
-
 		function enviaForm()
 		{
 			if($('#mensagemModuloExterno').val().length > 400)
@@ -188,7 +167,7 @@
 		
 		function validaForm()
 		{
-			return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH', 'formulaTurnover'), new Array('remetente','respSetorPessoal'));
+			return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH', 'formulaTurnover', 'excluirDadosPortalColaborador'), new Array('remetente','respSetorPessoal'));
 		}
 		
 	</script>
@@ -352,6 +331,15 @@
 					<ul>
 						<div style="float:right;"><img id="btnTransferirPC" border="0" title="Testar Conexão com Portal do Colaborador" onclick="testaConexaoPC();" src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>" style="cursor:pointer;"></div>
 						<@ww.checkbox label="Integra com Portal do Colaborador" name="empresa.integradaPortalColaborador" id="integradaPortalColaborador" labelPosition="right"  />
+						<li id="excluirDadosPortalColaboradorLi">
+							<@ww.div >
+								Além de desintegrar, deseja remover todos os dados referentes a essa empresa no Portal do Colaborador?
+							</@ww.div>
+							<@ww.div id="excluirDadosPortalColaborador" cssClass="radio" cssStyle="width: 700px;">
+								<input name="excluirDadosPortalColaborador" type="radio" value="true"/><label>Sim</label>
+								<input name="excluirDadosPortalColaborador" type="radio" value="false"/><label>Não</label>
+							</@ww.div>
+						</li>
 					</ul>
 				</@ww.div>
 			</li>

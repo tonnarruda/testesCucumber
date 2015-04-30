@@ -35,6 +35,8 @@ public class EmpresaListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
+		empresa = empresaManager.findById(empresa.getId());
+		
 		if(empresa.getId().equals(getEmpresaSistema().getId()))
 		{
 			addActionWarning("Não é possível excluir a empresa cujo você esta logado.");
@@ -45,6 +47,10 @@ public class EmpresaListAction extends MyActionSupportList
 			empresaManager.removeEmpresa(empresa.getId());
 		else
 			empresaManager.remove(new Long[]{empresa.getId()});
+
+		if(empresa.isIntegradaPortalColaborador()) {
+			empresaManager.removeEmpresaPc(empresa.getId());
+		}
 		
 		addActionSuccess("Empresa excluída com sucesso.");
 		

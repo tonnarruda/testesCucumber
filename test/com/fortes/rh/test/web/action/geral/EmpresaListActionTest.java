@@ -63,6 +63,8 @@ public class EmpresaListActionTest extends MockObjectTestCase
 
     	action.setEmpresaSistema(fortes);
     	
+    	manager.expects(once()).method("findById").with(eq(fortes.getId())).will(returnValue(fortes));
+    	
     	assertEquals("success", action.delete());
     	assertEquals("Não é possível excluir a empresa cujo você esta logado.", action.getActionWarnings().toArray()[0]);
     }
@@ -78,6 +80,7 @@ public class EmpresaListActionTest extends MockObjectTestCase
     	action.setEmpresa(fortes);
     	action.setEmpresaSistema(ente);
     	
+    	manager.expects(once()).method("findById").with(eq(fortes.getId())).will(returnValue(fortes));
     	manager.expects(once()).method("removeEmpresa").with(eq(fortes.getId()));
     	
     	assertEquals("success", action.delete());

@@ -6,11 +6,6 @@ import com.fortes.rh.business.geral.EmpresaManager;
 public class EmpresaDWR
 {
 	private EmpresaManager empresaManager;
-
-	public void removeDadosPortalColaborador(Long empresaId)
-	{
-		empresaManager.removeEmpresaPc(empresaId);
-	}
 	
 	public boolean isAcintegra(Long empresaId)
 	{
