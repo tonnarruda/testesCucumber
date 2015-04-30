@@ -32,7 +32,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.type.File;
 import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.portalcolaborador.business.operacao.AtualizarColaborador;
-import com.fortes.portalcolaborador.business.operacao.InserirColaborador;
+import com.fortes.portalcolaborador.business.operacao.AtualizarColaboradorComHistorico;
 import com.fortes.portalcolaborador.model.ColaboradorPC;
 import com.fortes.portalcolaborador.model.EmpresaPC;
 import com.fortes.rh.business.acesso.UsuarioManager;
@@ -318,7 +318,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (!colaborador.isNaoIntegraAc() && empresa.isAcIntegra())
 			contratarColaboradorNoAC(colaborador, historico, empresa, true);
 
-		movimentacaoOperacaoPCManager.enfileirar(InserirColaborador.class, new ColaboradorPC(colaborador).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
+		movimentacaoOperacaoPCManager.enfileirar(AtualizarColaboradorComHistorico.class, new ColaboradorPC(colaborador).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
 
 		gerenciadorComunicacaoManager.enviaAvisoContratacao(historico);
 
@@ -590,19 +590,22 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		saveDetalhes(colaborador, formacaos, idiomas, experiencias);
 
 		HistoricoColaborador historicoColaborador = null;
-		if (editarHistorico)
-		{
+		if (editarHistorico) {
 			historicoColaborador = historicoColaboradorManager.getHistoricoAtualComFuturo(colaborador.getId());
 			setDadosHistoricoColaborador(historicoColaborador, colaborador);
+			
 			historicoColaborador = historicoColaboradorManager.ajustaTipoSalario(historicoColaborador, colaborador.getHistoricoColaborador()
 					.getTipoSalario(), colaborador.getHistoricoColaborador().getIndice(), colaborador.getHistoricoColaborador().getQuantidadeIndice(),
 					salarioColaborador);
 
 			historicoColaboradorManager.update(historicoColaborador);
 			colaborador.setHistoricoColaborador(historicoColaborador);
+
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaboradorComHistorico.class, new ColaboradorPC(colaborador).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
+		} else {
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador),empresa.isIntegradaPortalColaborador());
 		}
 
-		movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador), empresa.isIntegradaPortalColaborador());
 		
 		// Flush necessário quando houver uma operação com banco/sistema externo.
 		// garante que erro no banco do RH levantará uma Exception antes de alterar o outro banco.
