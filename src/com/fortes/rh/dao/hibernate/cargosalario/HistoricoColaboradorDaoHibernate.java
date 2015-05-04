@@ -1421,7 +1421,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 	
-	public Collection<HistoricoColaborador> findHistoricosConfirmados(Long colaboradorId, Long empresaId)
+	public Collection<HistoricoColaborador> findHistoricosConfirmados(Long empresaId, Long... colaboradoresIds)
 	{
 		StringBuilder hql = new StringBuilder();
 
@@ -1455,7 +1455,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		hql.append("where hc.status = :status  ");
 		
-		if (LongUtil.arrayIsNotEmpty(colaboradorId))
+		if (LongUtil.arrayIsNotEmpty(colaboradoresIds))
 			hql.append("and co.id in (:colaboradorId) ");
 		
 		if (empresaId != null)
@@ -1465,8 +1465,8 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		Query query = getSession().createQuery(hql.toString());
 
-		if (LongUtil.arrayIsNotEmpty(colaboradorId))
-			query.setParameterList("colaboradorId", colaboradorId);
+		if (LongUtil.arrayIsNotEmpty(colaboradoresIds))
+			query.setParameterList("colaboradorId", colaboradoresIds);
 		
 		if (empresaId != null)
 			query.setLong("empresaId", empresaId);

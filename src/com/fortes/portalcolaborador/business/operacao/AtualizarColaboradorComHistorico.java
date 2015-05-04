@@ -23,7 +23,7 @@ public class AtualizarColaboradorComHistorico extends Operacao {
 			ColaboradorPCManager colaboradorPCManager = (ColaboradorPCManager) SpringUtil.getBeanOld("colaboradorPCManager");
 
 			Long colaboradorId = Long.parseLong(((Integer) jsonColaborador.get("id")).toString());
-			colaboradorPCManager.enfileirarComHistoricos(getUrlTransacaoPC(), colaboradorId, null);
+			colaboradorPCManager.enfileirarComHistoricos(getUrlTransacaoPC(), null, colaboradorId);
 		}
 	}
 }

@@ -16,6 +16,7 @@ import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManagerImpl;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.IndiceHistoricoManager;
@@ -50,6 +51,7 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 	Mock indiceManager;
 	Mock transactionManager;
 	Mock acPessoalClientCargo = null;
+	Mock movimentacaoOperacaoPCManager;
 
 	protected void setUp() throws Exception
 	{
@@ -73,6 +75,9 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 
 		indiceManager = new Mock(IndiceManager.class);
 		faixaSalarialHistoricoManager.setIndiceManager((IndiceManager) indiceManager.proxy());
+		
+		movimentacaoOperacaoPCManager = new Mock(MovimentacaoOperacaoPCManager.class);
+		faixaSalarialHistoricoManager.setMovimentacaoOperacaoPCManager((MovimentacaoOperacaoPCManager) movimentacaoOperacaoPCManager.proxy());
 
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 	}
@@ -125,6 +130,7 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
 		faixaSalarialHistoricoDao.expects(once()).method("saveOrUpdate").with(eq(faixaSalarialHistorico));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
+		movimentacaoOperacaoPCManager.expects(once()).method("enfileirar").withAnyArguments().isVoid();
 
 		faixaSalarialHistoricoManager.save(faixaSalarialHistorico, faixaSalarial, empresa, salvaNoAC);
 	}

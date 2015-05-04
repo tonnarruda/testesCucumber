@@ -17,14 +17,14 @@ import com.fortes.rh.util.SpringUtil;
 
 public class ColaboradorPCManagerImpl extends GenericManagerImpl<ColaboradorPC, ColaboradorPCDao> implements ColaboradorPCManager 
 {
-	public void enfileirarComHistoricos(URLTransacaoPC uRLTransacaoPC, Long colaboradorId, Long empresaId)
+	public void enfileirarComHistoricos(URLTransacaoPC uRLTransacaoPC, Long empresaId, Long... colaboradoresIds)
 	{
-		if(empresaId != null || LongUtil.arrayIsNotEmpty(colaboradorId))
+		if(empresaId != null || LongUtil.arrayIsNotEmpty(colaboradoresIds))
 		{
 			TransacaoPCManager transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
 			HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
 			
-			Collection<HistoricoColaborador> historicosMontados = historicoColaboradorManager.findHistoricosConfirmados(colaboradorId, empresaId);
+			Collection<HistoricoColaborador> historicosMontados = historicoColaboradorManager.findHistoricosConfirmados(empresaId, colaboradoresIds);
 			Collection<ColaboradorPC> colaboradoresPC = montaColaboradorPCComHistoricos(historicosMontados);
 			
 			for (ColaboradorPC colaboradorPC : colaboradoresPC) 

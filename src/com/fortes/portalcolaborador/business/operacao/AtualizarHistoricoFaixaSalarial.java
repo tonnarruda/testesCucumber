@@ -10,7 +10,7 @@ public class AtualizarHistoricoFaixaSalarial extends Operacao {
 
 	@Override
 	public URLTransacaoPC getUrlTransacaoPC() {
-		return URLTransacaoPC.COLABORADOR_ATUALIZAR_HISTORICO;
+		return URLTransacaoPC.ATUALIZAR_HISTORICO_COLABORADOR;
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class AtualizarHistoricoFaixaSalarial extends Operacao {
 			Long faixaId = Long.parseLong(((Integer) j.get("id")).toString());
 			
 			Long[] colaboradoresIds = historicoColaboradorManager.findColaboradorByFaixaId(faixaId);
-			colaboradorPCManager.enfileirarColaboradoresPCComHistoricos(getUrlTransacaoPC(), null, colaboradoresIds);
+			colaboradorPCManager.enfileirarComHistoricos(getUrlTransacaoPC(), null, colaboradoresIds);
 		}
 	}
 }
