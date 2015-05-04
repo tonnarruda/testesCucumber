@@ -1516,6 +1516,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return montaSituacaoHistoricoColaborador((List<HistoricoColaborador>) getDao().findHistoricosConfirmados(colaboradorId,empresaId));
 	}
 
+	public Long[] findColaboradorByFaixaId(Long faixaId) {
+		return getDao().findColaboradorByFaixaId(faixaId);
+	}
+	
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
 	}
@@ -1536,4 +1540,5 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager) {
 		this.movimentacaoOperacaoPCManager = movimentacaoOperacaoPCManager;
 	}
+
 }

@@ -11,6 +11,8 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
+import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoFaixaSalarial;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FaixaJaCadastradaException;
@@ -26,6 +28,7 @@ import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.ws.TSituacaoCargo;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientCargo;
 
 public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaSalarialHistorico, FaixaSalarialHistoricoDao> implements FaixaSalarialHistoricoManager
@@ -34,6 +37,7 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 	IndiceManager indiceManager;
 	private AcPessoalClientCargo acPessoalClientCargo;
 	private PlatformTransactionManager transactionManager;
+	private MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager;
 
 	public void setIndiceHistoricoManager(IndiceHistoricoManager indiceHistoricoManager)
 	{
@@ -61,7 +65,8 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 				}
 
 				acPessoalClientCargo.criarFaixaSalarialHistorico(faixaSalarialHistorico, empresa);
-			}
+			}else
+				movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoFaixaSalarial.class, faixaSalarial.getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
 
 			transactionManager.commit(status);
 		}
@@ -101,6 +106,8 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 
 			if(empresa.isAcIntegra())
 				acPessoalClientCargo.criarFaixaSalarialHistorico(faixaSalarialHistorico, empresa);
+			else
+				movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoFaixaSalarial.class, faixaSalarial.getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
 
 			transactionManager.commit(status);
 		}
@@ -410,5 +417,9 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 			return getDao().existeDependenciaComHistoricoIndice(dataHistoricoExcluir, ((IndiceHistorico) indiceHistoricos.toArray()[1]).getData(), indiceId);
 		
 		return false;
+	}
+
+	public void setMovimentacaoOperacaoPCManager(MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager) {
+		this.movimentacaoOperacaoPCManager = movimentacaoOperacaoPCManager;
 	}
 }

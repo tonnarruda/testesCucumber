@@ -26,6 +26,8 @@ import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.geral.Empresa;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 @SuppressWarnings("serial")
 @Entity
@@ -390,7 +392,6 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		return nomesDeCargoEFaixa;
 	}
 
-
 	public String getNomeACPessoal()
 	{
 		return nomeACPessoal;
@@ -441,6 +442,15 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		
 		this.cargo.getEmpresa().setNome(empresaNome);
 	}
+	
+	public void setEmpresaIntegradaPortalColaborador(boolean empresaIntegradaPortalColaborador) {
+		
+		iniciaCargo();
+		if(this.cargo.getEmpresa() == null)
+			this.cargo.setEmpresa(new Empresa());
+		
+		this.cargo.getEmpresa().setIntegradaPortalColaborador(empresaIntegradaPortalColaborador);
+	}
 
 	public Collection<Competencia> getCompetencias()
 	{
@@ -471,13 +481,23 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		this.qtdColaboradores = qtdColaboradores;
 	}
 
-
-	public String getAreaOrganizacionalNome() {
+	public String getAreaOrganizacionalNome() 
+	{
 		return areaOrganizacionalNome;
 	}
 
-
-	public void setAreaOrganizacionalNome(String areaOrganizacionalNome) {
+	public void setAreaOrganizacionalNome(String areaOrganizacionalNome) 
+	{
 		this.areaOrganizacionalNome = areaOrganizacionalNome;
+	}
+	
+	public String getIdentificadorToJson()
+	{
+		Gson gson = new Gson();
+		
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.add("id", gson.toJsonTree(getId()));
+		
+		return jsonObject.toString();
 	}
 }

@@ -246,6 +246,9 @@
     <property name="transactionManager">
       <ref bean="transactionManager" />
     </property>
+    <property name="movimentacaoOperacaoPCManager">
+      <ref bean="movimentacaoOperacaoPCManager" />
+    </property>
   </bean>
   <bean id="faixaSalarialHistoricoManager" parent="parentManager">
     <property name="proxyInterfaces">

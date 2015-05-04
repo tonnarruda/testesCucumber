@@ -443,8 +443,8 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 			Collection<Cidade> cidades = cidadeManager.findSemCodigoAC();
 			
 			if((colaboradors != null && !colaboradors.isEmpty()) || (estabelecimentos != null && !estabelecimentos.isEmpty()) || (areaOrganizacionals != null && !areaOrganizacionals.isEmpty())
-					|| (faixaSalarials != null && !faixaSalarials.isEmpty()) || (indices != null && !indices.isEmpty()) || (ocorrencias != null && !ocorrencias.isEmpty())
-					|| (cidades != null && !cidades.isEmpty()))
+					|| (faixaSalarials != null && !faixaSalarials.isEmpty()) || (indices != null && !indices.isEmpty()) || (ocorrencias != null && !ocorrencias.isEmpty()))
+//					)|| (cidades != null && !cidades.isEmpty()))
 				return true;
 			
 			String faixaSalarialCodAcDuplicado = faixaSalarialManager.findCodigoACDuplicado(empresa.getId());

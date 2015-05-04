@@ -12,20 +12,24 @@ import com.fortes.portalcolaborador.model.HistoricoColaboradorPC;
 import com.fortes.portalcolaborador.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 
 public class ColaboradorPCManagerImpl extends GenericManagerImpl<ColaboradorPC, ColaboradorPCDao> implements ColaboradorPCManager 
 {
 	public void enfileirarComHistoricos(URLTransacaoPC uRLTransacaoPC, Long colaboradorId, Long empresaId)
 	{
-		TransacaoPCManager transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
-		HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
-		
-		Collection<HistoricoColaborador> historicosMontados = historicoColaboradorManager.findHistoricosConfirmados(colaboradorId, empresaId);
-		Collection<ColaboradorPC> colaboradoresPC = montaColaboradorPCComHistoricos(historicosMontados);
-		
-		for (ColaboradorPC colaboradorPC : colaboradoresPC) 
-			transacaoPCManager.enfileirar(uRLTransacaoPC, colaboradorPC.toJson());
+		if(empresaId != null || LongUtil.arrayIsNotEmpty(colaboradorId))
+		{
+			TransacaoPCManager transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
+			HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
+			
+			Collection<HistoricoColaborador> historicosMontados = historicoColaboradorManager.findHistoricosConfirmados(colaboradorId, empresaId);
+			Collection<ColaboradorPC> colaboradoresPC = montaColaboradorPCComHistoricos(historicosMontados);
+			
+			for (ColaboradorPC colaboradorPC : colaboradoresPC) 
+				transacaoPCManager.enfileirar(uRLTransacaoPC, colaboradorPC.toJson());
+		}
 	}
 	
 	private Collection<ColaboradorPC> montaColaboradorPCComHistoricos(Collection<HistoricoColaborador> historicosColaborador) 

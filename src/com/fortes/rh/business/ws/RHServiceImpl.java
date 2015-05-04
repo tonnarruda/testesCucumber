@@ -13,6 +13,8 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
+import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
+import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoFaixaSalarial;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
@@ -101,7 +103,7 @@ public class RHServiceImpl implements RHService
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private PesquisaManager pesquisaManager;
-
+	private MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager;
 	private final String MSG_ERRO_REMOVER_SITUACAO_LOTE = "Erro ao excluir situação dos empregados, existem outros cadastros utilizando essa situação.";
 	private final String MSG_ERRO_REMOVER_SITUACAO = "Erro ao excluir situação do empregado, existem outros cadastros utilizando essa situação.";
 	private final String MSG_ERRO_REMOVER_LOTACAO = "Erro ao excluir lotação, existem outros cadastros utilizando essa lotação.";
@@ -1236,6 +1238,10 @@ public class RHServiceImpl implements RHService
 			else
 				faixaSalarialHistoricoManager.save(faixaSalarialHistorico);
 			
+			if (faixaSalarial.getCargo() != null && faixaSalarial.getCargo().getEmpresa() != null) {
+				movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoFaixaSalarial.class, faixaSalarial.getIdentificadorToJson(), faixaSalarial.getCargo().getEmpresa().isIntegradaPortalColaborador());
+			}
+			
 			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
@@ -1255,6 +1261,10 @@ public class RHServiceImpl implements RHService
 			faixaSalarialHistorico.setId(faixaSalarialHistoricoManager.findIdByDataFaixa(faixaSalarialHistorico));
 						
 			faixaSalarialHistoricoManager.update(faixaSalarialHistorico);
+			
+			if (faixaSalarial.getCargo() != null && faixaSalarial.getCargo().getEmpresa() != null) {
+				movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoFaixaSalarial.class, faixaSalarial.getIdentificadorToJson(), faixaSalarial.getCargo().getEmpresa().isIntegradaPortalColaborador());
+			}
 			
 			return new FeedbackWebService(true);
 		}
@@ -1578,5 +1588,9 @@ public class RHServiceImpl implements RHService
 
 	public void setPesquisaManager(PesquisaManager pesquisaManager) {
 		this.pesquisaManager = pesquisaManager;
+	}
+	
+	public void setMovimentacaoOperacaoPCManager(MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager) {
+		this.movimentacaoOperacaoPCManager = movimentacaoOperacaoPCManager;
 	}
 }

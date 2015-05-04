@@ -16,12 +16,10 @@ import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
-import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
@@ -34,6 +32,7 @@ import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
 public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<HistoricoColaborador> implements HistoricoColaboradorDao
@@ -1456,8 +1455,8 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		hql.append("where hc.status = :status  ");
 		
-		if (colaboradorId != null)
-			hql.append("and co.id = :colaboradorId ");
+		if (LongUtil.arrayIsNotEmpty(colaboradorId))
+			hql.append("and co.id in (:colaboradorId) ");
 		
 		if (empresaId != null)
 			hql.append("and e.id = :empresaId ");
@@ -1466,8 +1465,8 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		Query query = getSession().createQuery(hql.toString());
 
-		if (colaboradorId != null)
-			query.setLong("colaboradorId", colaboradorId);
+		if (LongUtil.arrayIsNotEmpty(colaboradorId))
+			query.setParameterList("colaboradorId", colaboradorId);
 		
 		if (empresaId != null)
 			query.setLong("empresaId", empresaId);
@@ -1476,5 +1475,21 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.setDate("hoje", new Date());
 
 		return query.list();
+	}
+
+	public Long[] findColaboradorByFaixaId(Long faixaId) 
+	{
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("hc.colaborador", "c");
+		criteria.createCriteria("hc.faixaSalarial", "fs");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"));
+		
+		criteria.setProjection(Projections.distinct(p));
+		criteria.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
+		criteria.add(Expression.eq("fs.id", faixaId));
+		
+		return LongUtil.collectionStringToArrayLong(criteria.list());
 	}
 }
