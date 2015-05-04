@@ -190,10 +190,16 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 	/**
 	 * Transfere as solicitações de candidato para colaborador, no ato da contratação
 	 */
-	public void transferir(Long empresaId, Long candidatoId, Long colaboradorId)
+	public void transferirCandidatoToColaborador(Long empresaId, Long candidatoId, Long colaboradorId)
 	{
 		if (empresaId != null && candidatoId != null && colaboradorId != null)
-			getDao().transferir(empresaId, candidatoId, colaboradorId);
+			getDao().transferirCandidatoToColaborador(empresaId, candidatoId, colaboradorId);
+	}
+	
+	public void transferirColaboradorToCandidato(Long empresaId, Long candidatoId, Long colaboradorId)
+	{
+		if (empresaId != null && candidatoId != null && colaboradorId != null)
+			getDao().transferirColaboradorToCandidato(empresaId, candidatoId, colaboradorId);
 	}
 
 	public void setRealizacaoExameManager(RealizacaoExameManager realizacaoExameManager)
@@ -229,6 +235,10 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 
 	public void removeByCandidato(Long candidatoId) {
 		getDao().removeByCandidato(candidatoId);
+	}
+
+	public void removeByColaborador(Long colaboradorId) {
+		getDao().removeByColaborador(colaboradorId);
 	}
 
 	public Integer findProximaOrdem(Date data) 

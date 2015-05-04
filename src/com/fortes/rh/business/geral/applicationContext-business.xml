@@ -164,6 +164,9 @@
     <property name="candidatoIdiomaManager">
       <ref bean="candidatoIdiomaManager" />
     </property>
+    <property name="solicitacaoExameManager">
+      <ref bean="solicitacaoExameManager" />
+    </property>
   </bean>
   <bean id="colaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

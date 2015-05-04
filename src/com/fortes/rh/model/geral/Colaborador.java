@@ -2822,8 +2822,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	
 	@Override
 	public String[] getDependenciasDesconsideradasNaRemocao() {
-		String [] dependencias = new String[]{"candidato", "candidatosolicitacao", "colaboradoridioma", "configuracaonivelcompetencia", "Configuracaonivelcompetenciacolaborador", 
-												"Colaboradorperiodoexperienciaavaliacao", "experiencia", "formacao", "historicocolaborador", "mensagem", "usuariomensagem"};
+		String [] dependencias = new String[]{"candidato", "candidatosolicitacao", "colaboradoridioma", "configuracaonivelcompetencia", "configuracaonivelcompetenciacolaborador", 
+												"colaboradorperiodoexperienciaavaliacao", "experiencia", "formacao", "historicocolaborador", "mensagem", "usuariomensagem", "solicitacaoexame"};
 		return dependencias; 
 	}
 

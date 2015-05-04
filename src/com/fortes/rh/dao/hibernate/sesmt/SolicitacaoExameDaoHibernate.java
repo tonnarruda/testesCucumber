@@ -218,7 +218,7 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		return criteria.list();
 	}
 
-	public void transferir(Long empresaId, Long candidatoId, Long colaboradorId)
+	public void transferirCandidatoToColaborador(Long empresaId, Long candidatoId, Long colaboradorId)
 	{
 		String hql = "update SolicitacaoExame se set se.colaborador.id = :colaboradorId, se.candidato.id = null where (se.candidato.id = :candidatoId and se.empresa.id = :empresaId)";
 		Query query = getSession().createQuery(hql);
@@ -227,6 +227,18 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		query.setLong("colaboradorId", colaboradorId);
 		query.executeUpdate();
 	}
+	
+	public void transferirColaboradorToCandidato(Long empresaId, Long candidatoId, Long colaboradorId)
+	{
+		String hql = "update SolicitacaoExame se set se.colaborador.id = null, se.candidato.id = :candidatoId where (se.colaborador.id = :colaboradorId and se.empresa.id = :empresaId)";
+		Query query = getSession().createQuery(hql);
+		query.setLong("empresaId", empresaId);
+		query.setLong("candidatoId", candidatoId);
+		query.setLong("colaboradorId", colaboradorId);
+		query.executeUpdate();
+	}
+	
+	
 
 	/**
 	 * Relatório de Atendimentos médicos
@@ -328,6 +340,14 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 	
 		queryHQL = "delete from SolicitacaoExame se where se.candidato.id = :candidatoId";
 		getSession().createQuery(queryHQL).setLong("candidatoId",candidatoId).executeUpdate();
+	}
+
+	public void removeByColaborador(Long colaboradorId) {
+		String queryHQL = "delete from ExameSolicitacaoExame e where e.solicitacaoExame.id in (select se.id from SolicitacaoExame se where se.colaborador.id = :colaboradorId)";
+		getSession().createQuery(queryHQL).setLong("colaboradorId",colaboradorId).executeUpdate();
+	
+		queryHQL = "delete from SolicitacaoExame se where se.colaborador.id = :colaboradorId";
+		getSession().createQuery(queryHQL).setLong("colaboradorId",colaboradorId).executeUpdate();
 	}
 
 	public Integer findProximaOrdem(Date data) 

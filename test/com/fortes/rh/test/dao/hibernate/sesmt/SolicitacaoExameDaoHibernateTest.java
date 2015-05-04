@@ -264,7 +264,7 @@ public class SolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTest<So
 		solicitacaoExameDao.findAllSelect(1, 15, empresa.getId(), dataIni, dataFim, TipoPessoa.TODOS, "", "", "", null, null);
 	}
 
-	public void testTransferir()
+	public void testTransferirCandidatoToColaborador()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
@@ -281,13 +281,39 @@ public class SolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTest<So
 		colaboradorContratado.setCandidato(candidato);
 		colaboradorDao.save(colaboradorContratado);
 
-		solicitacaoExameDao.transferir(empresa.getId(), candidato.getId(), colaboradorContratado.getId());
+		solicitacaoExameDao.transferirCandidatoToColaborador(empresa.getId(), candidato.getId(), colaboradorContratado.getId());
 
 		Collection<SolicitacaoExame> resultadoCandidato = solicitacaoExameDao.findByCandidatoOuColaborador(TipoPessoa.CANDIDATO, candidato.getId(), null);
 		Collection<SolicitacaoExame> resultadoColaborador = solicitacaoExameDao.findByCandidatoOuColaborador(TipoPessoa.COLABORADOR, colaboradorContratado.getId(), null);
 
 		assertEquals(0, resultadoCandidato.size());
 		assertEquals(1, resultadoColaborador.size());
+	}
+
+	public void testTransferirColaboradorToCandidato()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidatoDao.save(candidato);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setCandidato(candidato);
+		colaboradorDao.save(colaborador);
+
+		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity();
+		solicitacaoExame.setColaborador(colaborador);
+		solicitacaoExame.setEmpresa(empresa);
+		solicitacaoExameDao.save(solicitacaoExame);
+
+		solicitacaoExameDao.transferirColaboradorToCandidato(empresa.getId(), candidato.getId(), colaborador.getId());
+
+		Collection<SolicitacaoExame> resultadoCandidato = solicitacaoExameDao.findByCandidatoOuColaborador(TipoPessoa.CANDIDATO, candidato.getId(), null);
+		Collection<SolicitacaoExame> resultadoColaborador = solicitacaoExameDao.findByCandidatoOuColaborador(TipoPessoa.COLABORADOR, colaborador.getId(), null);
+
+		assertEquals(1, resultadoCandidato.size());
+		assertEquals(0, resultadoColaborador.size());
 	}
 	
 	public void testFindAtendimentosMedicos()
@@ -379,6 +405,56 @@ public class SolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTest<So
 		assertEquals(solicitacaoExame2.getId(), ( (SolicitacaoExame)solicitacaoExameDao.findByIdProjection(solicitacaoExame2.getId())).getId()) ;
 		
 		solicitacaoExameDao.removeByCandidato(candidato1.getId());
+		
+		assertNull(solicitacaoExameDao.findByIdProjection(solicitacaoExame1.getId())) ;
+		assertEquals(solicitacaoExame2.getId(), ( (SolicitacaoExame)solicitacaoExameDao.findByIdProjection(solicitacaoExame2.getId())).getId()) ;
+	}
+	
+	public void testRemoveByColaborador() {
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador2);
+		
+		MedicoCoordenador medicoCoordenador = new MedicoCoordenador();
+		medicoCoordenadorDao.save(medicoCoordenador);
+		
+		SolicitacaoExame solicitacaoExame1 = SolicitacaoExameFactory.getEntity();
+		solicitacaoExame1.setColaborador(colaborador1);
+		solicitacaoExame1.setMedicoCoordenador(medicoCoordenador);
+		solicitacaoExame1.setMotivo(MotivoSolicitacaoExame.PERIODICO);
+		solicitacaoExameDao.save(solicitacaoExame1);
+		
+		SolicitacaoExame solicitacaoExame2 = SolicitacaoExameFactory.getEntity();
+		solicitacaoExame2.setColaborador(colaborador2);
+		solicitacaoExame2.setMedicoCoordenador(medicoCoordenador);
+		solicitacaoExame2.setMotivo(MotivoSolicitacaoExame.PERIODICO);
+		solicitacaoExameDao.save(solicitacaoExame2);
+		
+		Exame exame = ExameFactory.getEntity();
+		exameDao.save(exame);
+		
+		RealizacaoExame realizacaoExame = new RealizacaoExame();
+		realizacaoExame.setResultado("NORMAL");
+		realizacaoExameDao.save(realizacaoExame);
+
+		ExameSolicitacaoExame exameSolicitacaoExame1 = new ExameSolicitacaoExame();
+		exameSolicitacaoExame1.setExame(exame);
+		exameSolicitacaoExame1.setSolicitacaoExame(solicitacaoExame1);
+		exameSolicitacaoExame1.setRealizacaoExame(realizacaoExame);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame1);
+		
+		ExameSolicitacaoExame exameSolicitacaoExame2 = new ExameSolicitacaoExame();
+		exameSolicitacaoExame2.setExame(exame);
+		exameSolicitacaoExame2.setSolicitacaoExame(solicitacaoExame2);
+		exameSolicitacaoExame2.setRealizacaoExame(realizacaoExame);
+		exameSolicitacaoExameDao.save(exameSolicitacaoExame2);
+		
+		assertEquals(solicitacaoExame1.getId(), ( (SolicitacaoExame)solicitacaoExameDao.findByIdProjection(solicitacaoExame1.getId())).getId()) ;
+		assertEquals(solicitacaoExame2.getId(), ( (SolicitacaoExame)solicitacaoExameDao.findByIdProjection(solicitacaoExame2.getId())).getId()) ;
+		
+		solicitacaoExameDao.removeByColaborador(colaborador1.getId());
 		
 		assertNull(solicitacaoExameDao.findByIdProjection(solicitacaoExame1.getId())) ;
 		assertEquals(solicitacaoExame2.getId(), ( (SolicitacaoExame)solicitacaoExameDao.findByIdProjection(solicitacaoExame2.getId())).getId()) ;

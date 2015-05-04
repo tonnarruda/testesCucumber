@@ -598,7 +598,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			if (colaboradorManager.insert(colaborador, salarioColaborador, idCandidato, formacaos, idiomas, experiencias, solicitacao, getEmpresaSistema()))
 			{
 				// Transferindo solicitações médicas do candidato
-				solicitacaoExameManager.transferir(getEmpresaSistema().getId(), idCandidato, colaborador.getId());
+				solicitacaoExameManager.transferirCandidatoToColaborador(getEmpresaSistema().getId(), idCandidato, colaborador.getId());
 				
 				if (candidatoSolicitacaoId != null)
 					candidatoSolicitacaoManager.setStatus(candidatoSolicitacaoId, StatusCandidatoSolicitacao.CONTRATADO);

@@ -242,7 +242,7 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("verificaMaternidade").with(eq(historicoColaborador.getAreaOrganizacional().getId()), eq(null)).will(returnValue(false));
 		quantidadeLimiteColaboradoresPorCargoManager.expects(once()).method("validaLimite").with(eq(historicoColaborador.getAreaOrganizacional().getId()), eq(historicoColaborador.getFaixaSalarial().getId()), eq(empresa.getId()), eq(null)).isVoid();
 		colaboradorManager.expects(once()).method("insert").withAnyArguments().will(returnValue(true));
-		solicitacaoExameManager.expects(once()).method("transferir").withAnyArguments().isVoid();
+		solicitacaoExameManager.expects(once()).method("transferirCandidatoToColaborador").withAnyArguments().isVoid();
 		colaboradorPeriodoExperienciaAvaliacaoManager.expects(once()).method("saveConfiguracaoAvaliacaoPeriodoExperiencia").withAnyArguments().isVoid();
 		transactionManager.expects(once()).method("commit").withAnyArguments().isVoid();
 		

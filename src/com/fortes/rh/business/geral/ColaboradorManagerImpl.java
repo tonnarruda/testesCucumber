@@ -45,6 +45,7 @@ import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.security.AuditoriaManager;
+import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FortesException;
@@ -145,6 +146,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private SolicitacaoManager solicitacaoManager;
 	private AuditoriaManager auditoriaManager;
 	private CandidatoIdiomaManager candidatoIdiomaManager;
+	private SolicitacaoExameManager solicitacaoExameManager;
 
 	public void enviaEmailAniversariantes(Collection<Empresa> empresas) throws Exception
 	{
@@ -1632,6 +1634,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		colaboradorPeriodoExperienciaAvaliacaoManager.removeConfiguracaoAvaliacaoPeriodoExperiencia(colaborador.getId());
 		mensagemManager.removeMensagensColaborador(colaborador.getId(), null);
 
+		if(colaborador.getEmpresa() != null && colaborador.getCandidato() != null)
+			solicitacaoExameManager.transferirColaboradorToCandidato(colaborador.getEmpresa().getId(), colaborador.getCandidato().getId(), colaborador.getId());
+
+		solicitacaoExameManager.removeByColaborador(colaborador.getId());
+		
 		Colaborador	colaboradorTmp = getDao().findColaboradorByIdProjection(colaborador.getId());
 
 		candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaborador.getId());
@@ -2745,8 +2752,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return candidatoIdiomaManager;
 	}
 
-	public void setCandidatoIdiomaManager(
-			CandidatoIdiomaManager candidatoIdiomaManager) {
+	public void setCandidatoIdiomaManager(CandidatoIdiomaManager candidatoIdiomaManager) {
 		this.candidatoIdiomaManager = candidatoIdiomaManager;
+	}
+
+	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager) {
+		this.solicitacaoExameManager = solicitacaoExameManager;
 	}
 }

@@ -21,12 +21,14 @@ public interface SolicitacaoExameManager extends GenericManager<SolicitacaoExame
 	Collection<SolicitacaoExameRelatorio> imprimirSolicitacaoExames(Long solicitacaoExameId) throws ColecaoVaziaException;
 	void update(SolicitacaoExame solicitacaoExame, String[] examesId, String[] selectClinicas, Integer[] periodicidades);
 	Collection<SolicitacaoExame> findByCandidatoOuColaborador(TipoPessoa vinculo, Long candidatoOuColaboradorId, String motivo);
-	void transferir(Long empresaId, Long candidatoId, Long colaboradorId);
+	void transferirCandidatoToColaborador(Long empresaId, Long candidatoId, Long colaboradorId);
+	void transferirColaboradorToCandidato(Long empresaId, Long candidatoId, Long colaboradorId);
 	Collection<SolicitacaoExame> getRelatorioAtendimentos(Date inicio, Date fim, SolicitacaoExame solicitacaoExame, Empresa empresa, boolean agruparPorMotivo, boolean ordenarPorNome, String[] motivos) throws ColecaoVaziaException;
 	AsoRelatorio montaRelatorioAso(Empresa empresa, SolicitacaoExame solicitacaoExame) throws ColecaoVaziaException;
 	MedicoCoordenador setMedicoByQuantidade(Collection<MedicoCoordenador> medicoCoordenadors);
 	SolicitacaoExame findByIdProjection(Long id);
 	void removeByCandidato(Long candidatoId);
+	void removeByColaborador(Long colaboradorId);
 	Integer findProximaOrdem(Date data);
 	void ajustaOrdemDoList(Date data, Integer ordem) throws Exception;
 	void ajustaOrdem(Date dataAnterior, Date dataAtual, Integer ordemAnterior, Integer novaOrdem) throws Exception;

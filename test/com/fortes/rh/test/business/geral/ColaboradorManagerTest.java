@@ -39,6 +39,7 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
@@ -140,6 +141,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     private Mock solicitacaoManager;
     private Mock mensagemManager;
     private Mock mail;
+    private Mock solicitacaoExameManager;
     
 	private Colaborador colaborador;
 	private List<Formacao> formacoes;
@@ -214,8 +216,12 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		mensagemManager = new Mock(MensagemManager.class);
 		colaboradorManager.setMensagemManager((MensagemManager) mensagemManager.proxy());
 		
-        mail = mock(Mail.class);
+		solicitacaoExameManager = new Mock(SolicitacaoExameManager.class);
+		colaboradorManager.setSolicitacaoExameManager((SolicitacaoExameManager) solicitacaoExameManager.proxy());
+
+		mail = mock(Mail.class);
         colaboradorManager.setMail((Mail) mail.proxy());
+        
 
         usuarioManager = new Mock(UsuarioManager.class);
         MockSpringUtil.mocks.put("usuarioManager", usuarioManager);
@@ -1070,6 +1076,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	acPessoalClientColaborador.expects(once()).method("remove").with(ANYTHING, ANYTHING).will(returnValue(true));
     	mensagemManager.expects(once()).method("removerMensagensViculadasByColaborador").withAnyArguments().isVoid();
     	transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
+    	solicitacaoExameManager.expects(once()).method("removeByColaborador").with(eq(colaborador.getId()));
 
     	Exception exception = null;
     	try

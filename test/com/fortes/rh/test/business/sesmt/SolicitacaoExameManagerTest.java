@@ -229,9 +229,9 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 	{
 		Long empresaId=1L, candidatoId=100L, colaboradorId=1302L;
 		
-		solicitacaoExameDao.expects(once()).method("transferir").isVoid();
+		solicitacaoExameDao.expects(once()).method("transferirCandidatoToColaborador").isVoid();
 		
-		solicitacaoExameManager.transferir(empresaId, candidatoId, colaboradorId);
+		solicitacaoExameManager.transferirCandidatoToColaborador(empresaId, candidatoId, colaboradorId);
 	}
 	
 	public void testMontaRelatorioAso() throws Exception
