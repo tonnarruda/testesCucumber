@@ -156,7 +156,7 @@
 			${nomeColaborador}
 		</@display.column>
 
-		<@display.column title="Vínculo" style="vertical-align: top;">
+		<@display.column title="Vínculo/Cargo" style="vertical-align: top;">
 			<#if solicitacaoExame.colaborador?exists && solicitacaoExame.cargoNome?exists >
 				${solicitacaoExame.cargoNome}
 			</#if>
