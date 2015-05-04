@@ -144,12 +144,13 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		if (dataIni != null && dataFim != null)
 			sql.append("and sub.data between :dataIni and :dataFim ");
 
-		if (!count)
+		if (!count)	{
 			if (ordem == 'D') {
 				sql.append("order by sub.data DESC, sub.nome ASC ");
 			} else {
 				sql.append("order by sub.nome ASC, sub.data DESC ");
 			}
+		}
 		
 		SQLQuery query = getSession().createSQLQuery(sql.toString());
 		

@@ -89,14 +89,12 @@
 		<@ww.datepicker name="dataIni" id="dataIni"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData"/>
 		<@ww.label value="a" liClass="liLeft" />
 		<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData" />
-
 		<@ww.select label="Categorias de EPI" name="tipoEpi" id="tipoEpi" listKey="id" listValue="nome" list="tipoEpis" headerKey="" headerValue="Selecione..." />
+		<@ww.select label="Ordenação" id="ordem" name="ordem" list=r"#{'D':'Por Data','N':'Por Nome'}" />
 		<@ww.hidden id="pagina" name="page"/>
+		<@ww.hidden id="showFilter" name="showFilter"/>		
 		<@ww.hidden name="entrega"/>
 		<@ww.hidden name="limpaEstabelecimentoCheck" id="limpaEstabelecimentoCheck" value="true"/>
-		
-		<@ww.select label="Ordenação" id="ordem" name="ordem" list=r"#{'D':'Por Data','N':'Por Nome'}" />
-
 		<input type="button" value="" onclick="pesquisar()" class="btnPesquisar grayBGE" />
 	</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
