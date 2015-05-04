@@ -113,11 +113,7 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 		}
 		catch (Exception e)
 		{
-			String tipo = "documento";
-			if (origemTmp == 'U') {
-				tipo = "anexo";
-			}
-			addActionError("Não foi possível inserir o " + tipo + ".");
+			addActionError("Não foi possível inserir o documento/anexo.");
 			return Action.INPUT;
 		}
 	}
@@ -148,11 +144,7 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 		}
 		catch (Exception e)
 		{
-			String tipo = "documento";
-			if (origemTmp == 'U') {
-				tipo = "anexo";
-			}
-			addActionError("Não foi possível editar " + tipo + ".");
+			addActionError("Não foi possível inserir o documento/anexo.");
 			return Action.INPUT;
 		}
 	}
@@ -360,4 +352,4 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 		this.origemIdDocumento = origemIdDocumento;
 	}
 
-	}
+}

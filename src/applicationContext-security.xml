@@ -335,6 +335,13 @@
 				/geral/documentoAnexo/updateCandidato*/**=ROLE_CAD_CANDIDATO
 				/geral/documentoAnexo/listCandidato.action*=ROLE_CAND_LIST_DOCUMENTOANEXO,ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO
 				/geral/documentoAnexo/listColaborador.action*=ROLE_COLAB_LIST_DOCUMENTOANEXO
+				
+				/geral/documentoAnexo/listCurso.action*=ROLE_MOV_CURSO
+				/geral/documentoAnexo/deleteCurso*/**=ROLE_MOV_CURSO
+				/geral/documentoAnexo/prepareInsertCurso*/**=ROLE_MOV_CURSO
+				/geral/documentoAnexo/prepareUpdateCurso*/**=ROLE_MOV_CURSO
+				/geral/documentoAnexo/insertCurso*/**=ROLE_MOV_CURSO
+				/geral/documentoAnexo/updateCurso*/**=ROLE_MOV_CURSO
 
 				/geral/areaFormacao/*/**=ROLE_AREAFORMACAO
 				/geral/configuracaoCampoExtra/*/**=ROLE_CAMPO_EXTRA
