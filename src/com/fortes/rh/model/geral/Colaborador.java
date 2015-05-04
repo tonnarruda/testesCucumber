@@ -47,6 +47,7 @@ import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -230,6 +231,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Long periodoExperienciaId;
 	@Transient
 	private String sugestaoPeriodoAcompanhamentoExperiencia;
+	@Transient
+	private Integer statusAcPessoal;
 
 	public Colaborador()
 	{
@@ -2818,6 +2821,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			this.solicitacao = new Solicitacao();
 		
 		this.solicitacao.setId(solicitacaoId);
+	}
+	
+	public boolean isStatusAcPessoalAguardandoConfirmacao() {
+		return statusAcPessoal == StatusRetornoAC.AGUARDANDO;
+	}
+		
+	public void setStatusAcPessoal(Integer statusAcPessoal) {
+			this.statusAcPessoal = statusAcPessoal;
 	}
 	
 	@Override

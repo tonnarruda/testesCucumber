@@ -1875,6 +1875,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 			if(array[15] != null)
 				colaborador.setAreaOrganizacionalId(((BigInteger)array[15]).longValue());
+			
+			if(array[16] != null)
+				colaborador.setStatusAcPessoal(((Integer)array[16]).intValue());
 				
 			result.add(colaborador);
 		}
