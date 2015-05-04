@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.14x.17x" bd="" data="xx/05/2015">
+		<Item visivel="S" motivo="P20150400136"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Promover: Ajuste dos dados pré-carregados para o cadastro da nova situação.]]></Item>	
 		<Item visivel="S" motivo="S20150300124"><![CDATA[T&D > Cadastros > Cursos/Treinamentos: Nova opção para inserir anexos.]]></Item>		
 		<Item visivel="S" motivo="P20150400049"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Incluir em Solicitação: Exibir ícone independente do status da situação.]]></Item>
 	</Versao>

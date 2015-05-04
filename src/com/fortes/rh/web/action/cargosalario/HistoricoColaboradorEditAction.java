@@ -135,40 +135,39 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 	{
 		dataPrimeiroHist = historicoColaboradorManager.getPrimeiroHistorico(colaborador.getId()).getData();
 
-		historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());
+		HistoricoColaborador historicoColaboradorAtual = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());
 		
-		if(historicoColaborador != null) {
+		if (solicitacao != null && solicitacao.getId() != null && solicitacao.getId() > 0) {
+			historicoColaborador = new HistoricoColaborador();
+			historicoColaborador.setColaborador(historicoColaboradorAtual.getColaborador());
+			historicoColaborador.setGfip(historicoColaboradorAtual.getGfip());
 			
-			if (solicitacao != null && solicitacao.getId() != null && solicitacao.getId() > 0) {
-				Solicitacao solicitacaoPromocao = solicitacaoManager.findById(solicitacao.getId());
-				
-				historicoColaborador.setSalario(solicitacaoPromocao.getRemuneracao());
-				
-				if (solicitacaoPromocao.getEstabelecimento() != null) {
-					historicoColaborador.setEstabelecimento(solicitacaoPromocao.getEstabelecimento());
-				}
-				
-				if (solicitacaoPromocao.getAreaOrganizacional() != null) {
-					historicoColaborador.setAreaOrganizacional(solicitacaoPromocao.getAreaOrganizacional());
-				}
-				
-				if (solicitacaoPromocao.getAmbiente() != null) {
-					historicoColaborador.setAmbiente(solicitacaoPromocao.getAmbiente());
-				}
-				
-				if (solicitacaoPromocao.getFaixaSalarial() != null) {
-					historicoColaborador.setFaixaSalarial(faixaSalarialManager.findById(solicitacaoPromocao.getFaixaSalarial().getId()));
-				}
-				
-				if (solicitacaoPromocao.getFuncao() != null) {
-					historicoColaborador.setFuncao(solicitacaoPromocao.getFuncao());
-				}
-				
-				
+			Solicitacao solicitacaoPromocao = solicitacaoManager.findById(solicitacao.getId());
+			
+			historicoColaborador.setSalario(solicitacaoPromocao.getRemuneracao());
+			
+			if (solicitacaoPromocao.getEstabelecimento() != null) {
+				historicoColaborador.setEstabelecimento(solicitacaoPromocao.getEstabelecimento());
 			}
 			
-			historicoColaborador.setData(new Date());
+			if (solicitacaoPromocao.getAreaOrganizacional() != null) {
+				historicoColaborador.setAreaOrganizacional(solicitacaoPromocao.getAreaOrganizacional());
+			}
+			
+			if (solicitacaoPromocao.getAmbiente() != null) {
+				historicoColaborador.setAmbiente(solicitacaoPromocao.getAmbiente());
+			}
+			
+			if (solicitacaoPromocao.getFaixaSalarial() != null) {
+				historicoColaborador.setFaixaSalarial(faixaSalarialManager.findById(solicitacaoPromocao.getFaixaSalarial().getId()));
+			}
+			
+			if (solicitacaoPromocao.getFuncao() != null) {
+				historicoColaborador.setFuncao(solicitacaoPromocao.getFuncao());
+			}
+		
 			historicoColaborador.setId(null);
+			historicoColaborador.setData(new Date());
 			historicoColaborador.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
 		}
 
