@@ -1,11 +1,9 @@
 package com.fortes.portalcolaborador.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Transient;
 
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -76,11 +74,6 @@ public class ColaboradorPC extends AbstractAdapterPC
 		
 		if (colaborador.getFoto() != null && colaborador.getFoto().getBytes() != null)
 			this.foto = new ArquivoPC(colaborador);
-		
-		if (colaborador.getHistoricoColaborador() != null){
-			this.historicosPc = new ArrayList<HistoricoColaboradorPC>();
-			this.historicosPc.add(new HistoricoColaboradorPC(colaborador.getHistoricoColaborador()));
-		}
 	}
 	
 	public String getIdentificadorToJson()

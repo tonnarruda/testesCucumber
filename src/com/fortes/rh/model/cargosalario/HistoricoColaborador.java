@@ -353,9 +353,10 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.colaborador.setHistoricoColaborador(this);
 	}
 	
-	//getHistoricosConfirmados
+	//findHistoricosConfirmados
 	public HistoricoColaborador(Long empresaId, String empresaNome, String empresaCnpj, String empresaEmailResponsavel, 
 			Long id, Double salario, Date data, String motivo, Double quantidadeIndice, int tipoSalario, int status,
+			Long estabId, String estabNome,
 			Long areaId, String areaNome,
 			Long cargoId, String cargoNomeMercado, String cargoNome,
 			Long faixaId, String faixaNome,
@@ -382,6 +383,8 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		setStatus(status);
 		setAreaId(areaId);
 		setAreaOrganizacionalNome(areaNome);
+		setProjectionEstabelecimentoId(estabId);
+		setProjectionEstabelecimentoNome(estabNome);
 		setCargoId(cargoId);
 		setCargoNomeMercado(cargoNomeMercado);
 		setCargoNome(cargoNome);

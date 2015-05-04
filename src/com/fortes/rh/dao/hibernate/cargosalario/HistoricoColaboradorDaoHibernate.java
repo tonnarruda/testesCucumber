@@ -1428,6 +1428,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		hql.append("select new HistoricoColaborador( ");
 		hql.append("e.id, e.nome, e.cnpj, e.emailRespRH, ");
 		hql.append("hc.id, hc.salario, hc.data, hc.motivo, hc.quantidadeIndice, hc.tipoSalario, hc.status, ");
+		hql.append("est.id, est.nome, ");
 		hql.append("ao.id, cast(monta_familia_area(ao.id), text) as ao_nome, ");
 		hql.append("cg.id, cg.nomeMercado, cg.nome, ");
 		hql.append("fs.id, fs.nome, ");
@@ -1441,6 +1442,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		hql.append("ci.codigoIBGE ) ");
 
 		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.estabelecimento as est ");
 		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.indice as i ");
 		hql.append("left join i.indiceHistoricos as ih with ih.data = (select max(ih2.data) from IndiceHistorico ih2 where ih2.indice.id = i.id and ih2.data <= :hoje ) ");

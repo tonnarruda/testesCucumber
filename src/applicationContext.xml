@@ -273,13 +273,13 @@
     <property name="targetMethod" value="processarOperacoes"/>
   </bean>
 
-  <bean name="processarFilaPCJob" class="com.fortes.portalcolaborador.business.TransacaoPCManagerImpl">
+  <bean name="processarTransacaoPCJob" class="com.fortes.portalcolaborador.business.TransacaoPCManagerImpl">
     <property name="dao" ref="transacaoPCDaoTarget" />
   </bean>
-  <bean name="processarFilaPC" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  <bean name="processarTransacaoPC" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
     <property name="name" value="Processar fila para o Portal do Colaborador"/>
     <property name="group" value="PORTAL"/>
-    <property name="targetObject" ref="processarFilaPCJob"/>
+    <property name="targetObject" ref="processarTransacaoPCJob"/>
     <property name="targetMethod" value="processarFila"/>
   </bean>
 
@@ -335,8 +335,8 @@
     <property name="jobDetail" ref="processarOperacaoPC" />
 	<property name="cronExpression" value="0 0/1 * * * ?" /> <!-- A cada 10 minutos -->
   </bean>
-  <bean id="cronTriggerProcessarFilaPC" class="org.springframework.scheduling.quartz.CronTriggerBean">
-    <property name="jobDetail" ref="processarFilaPC" />
+  <bean id="cronTriggerprocessarTransacaoPC" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="processarTransacaoPC" />
 	<property name="cronExpression" value="0 0/1 * * * ?" /> <!-- A cada 10 minutos -->
   </bean>
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -358,7 +358,7 @@
 		<ref bean="cronTriggerlembreteHabilitacaoAVencer" />
 		<ref bean="cronTriggerImportarUltimasNoticias" />
 		<ref bean="cronTriggerProcessarOperacaoPC" />
-		<ref bean="cronTriggerProcessarFilaPC" />
+		<!--<ref bean="cronTriggerprocessarTransacaoPC" /> -->
       </list>
     </property>
   </bean>
