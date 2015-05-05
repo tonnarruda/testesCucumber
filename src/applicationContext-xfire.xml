@@ -26,6 +26,7 @@
     <property name="gerenciadorComunicacaoManager" ref="gerenciadorComunicacaoManager" />
     <property name="transactionManager" ref="transactionManager" />
     <property name="colaboradorTurmaManager" ref="colaboradorTurmaManager" />
+    <property name="pesquisaManager" ref="pesquisaManager" />
   </bean>
   <bean id="rhWebService" class="org.codehaus.xfire.spring.remoting.XFireExporter">
     <property name="serviceFactory">

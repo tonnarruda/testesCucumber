@@ -33,6 +33,7 @@ import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
+import com.fortes.rh.business.pesquisa.PesquisaManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
@@ -99,6 +100,7 @@ public class RHServiceImpl implements RHService
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
+	private PesquisaManager pesquisaManager;
 
 	private final String MSG_ERRO_REMOVER_SITUACAO_LOTE = "Erro ao excluir situação dos empregados, existem outros cadastros utilizando essa situação.";
 	private final String MSG_ERRO_REMOVER_SITUACAO = "Erro ao excluir situação do empregado, existem outros cadastros utilizando essa situação.";
@@ -1453,6 +1455,21 @@ public class RHServiceImpl implements RHService
 		}
 	}
 	
+	public boolean existePesquisaParaSerRespondida(String empregadoCodigo, String empresaCodigo, String empresaGrupo)
+	{
+		try {
+			Empresa empresa = empresaManager.findByCodigoAC(empresaCodigo, empresaGrupo);
+			
+			if(empresa != null && empregadoCodigo != null && !"".equals(empregadoCodigo))
+				return pesquisaManager.existePesquisaParaSerRespondida(empregadoCodigo, empresa.getId());
+			
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
 	public void setCidadeManager(CidadeManager cidadeManager)
 	{
 		this.cidadeManager = cidadeManager;
@@ -1557,5 +1574,9 @@ public class RHServiceImpl implements RHService
 	public void setColaboradorTurmaManager(
 			ColaboradorTurmaManager colaboradorTurmaManager) {
 		this.colaboradorTurmaManager = colaboradorTurmaManager;
+	}
+
+	public void setPesquisaManager(PesquisaManager pesquisaManager) {
+		this.pesquisaManager = pesquisaManager;
 	}
 }

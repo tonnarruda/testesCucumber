@@ -20,4 +20,5 @@ public interface PesquisaManager extends GenericManager<Pesquisa>
 	Pesquisa clonarPesquisa(Long pesquisaId, Long[] empresasIds) throws Exception;
 	Long getIdByQuestionario(Long questionarioId);
 	Integer getCount(Long empresaId, String questionarioTitulo);
+	boolean existePesquisaParaSerRespondida(String colaboradorCodigoAC, Long empresaId);
 }

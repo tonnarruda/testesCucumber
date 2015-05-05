@@ -186,9 +186,24 @@ public class PesquisaManagerImpl extends GenericManagerImpl<Pesquisa, PesquisaDa
 		return pesquisa;
 	}
 
+	public boolean existePesquisaParaSerRespondida(String colaboradorCodigoAC, Long empresaId) 
+	{
+		return getDao().existePesquisaParaSerRespondida(colaboradorCodigoAC, empresaId);
+	}
+
 	public Pesquisa findByQuestionario(Long questionarioId)
 	{
 		return getDao().findByQuestionario(questionarioId);
+	}
+	
+	public Long getIdByQuestionario(Long questionarioId)
+	{
+		return getDao().getIdByQuestionario(questionarioId);
+	}
+	
+	public Integer getCount(Long empresaId, String questionarioTitulo)
+	{
+		return getDao().getCount(empresaId, questionarioTitulo);
 	}
 
 	public void setQuestionarioManager(QuestionarioManager questionarioManager)
@@ -206,19 +221,8 @@ public class PesquisaManagerImpl extends GenericManagerImpl<Pesquisa, PesquisaDa
 		this.perguntaManager = perguntaManager;
 	}
 
-	public Long getIdByQuestionario(Long questionarioId)
-	{
-		return getDao().getIdByQuestionario(questionarioId);
-	}
-
-	public Integer getCount(Long empresaId, String questionarioTitulo)
-	{
-		return getDao().getCount(empresaId, questionarioTitulo);
-	}
-
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
 	{
 		this.colaboradorQuestionarioManager = colaboradorQuestionarioManager;
 	}
-
 }

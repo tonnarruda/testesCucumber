@@ -14,5 +14,5 @@ public interface PesquisaDao extends GenericDao<Pesquisa>
 	boolean verificaEmpresaDoQuestionario(Long pesquisaId, Long empresaId);
 	Integer getCount(Long empresaId, String questionarioTitulo);
 	void removerPesquisaDoQuestionario(Long questionarioId);
-
+	boolean existePesquisaParaSerRespondida(String colaboradorCodigoAC,	Long empresaId);
 }

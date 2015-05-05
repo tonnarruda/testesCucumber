@@ -185,4 +185,18 @@ public class PesquisaDaoHibernate extends GenericDaoHibernate<Pesquisa> implemen
 
 		getSession().createQuery(queryHQL).setLong("questionarioId",questionarioId).executeUpdate();
 	}
+
+	public boolean existePesquisaParaSerRespondida(String colaboradorCodigoAC,Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "p");
+		criteria.createCriteria("p.questionario", "q", Criteria.INNER_JOIN);
+		criteria.createCriteria("q.colaboradorQuestionarios", "cq", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cq.colaborador", "c", Criteria.LEFT_JOIN);
+
+		criteria.add(Expression.eq("c.codigoAC", colaboradorCodigoAC));
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Expression.eq("cq.respondida", false));
+
+		return criteria.list().size() > 0;
+	}
 }

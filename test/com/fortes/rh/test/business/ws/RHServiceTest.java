@@ -10,6 +10,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.pesquisa.PesquisaManager;
 import com.fortes.rh.business.ws.RHServiceImpl;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -34,6 +35,7 @@ public class RHServiceTest extends MockObjectTestCase
 	private Mock estabelecimentoManager;
 	private Mock faixaSalarialManager;
 	private Mock transactionManager;
+	private Mock pesquisaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -59,6 +61,9 @@ public class RHServiceTest extends MockObjectTestCase
 		
 		transactionManager = new Mock(PlatformTransactionManager.class);
 		rHServiceImpl.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+		
+		pesquisaManager = new Mock(PesquisaManager.class);
+		rHServiceImpl.setPesquisaManager((PesquisaManager) pesquisaManager.proxy());
 	}
 	
 	public void testTransferirSemEmpresaIntegrada() throws Exception
@@ -394,5 +399,22 @@ public class RHServiceTest extends MockObjectTestCase
 			codigosEmpregados[i] = ((TEmpregado) empregados[i]).getCodigoAC();
 		
 		return codigosEmpregados;
+	}
+	
+	public void testExistePesquisaParaSerRespondida()
+	{
+		String empregadoCodigoAC = "empregadoCodigoAC";
+		String empresaCodigoAC = "empresaCodigoAC";
+		String grupoAC = "grupoAC";
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setId(1L);
+		empresa.setCodigoAC(empresaCodigoAC);
+		empresa.setGrupoAC(grupoAC);
+
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), eq(empresa.getGrupoAC())).will(returnValue(empresa));
+		pesquisaManager.expects(once()).method("existePesquisaParaSerRespondida").with(eq(empregadoCodigoAC), eq(empresa.getId())).will(returnValue(true));
+		
+		assertTrue("Existe Pesquisa a ser Respondida", rHServiceImpl.existePesquisaParaSerRespondida(empregadoCodigoAC, empresaCodigoAC, grupoAC));
 	}
 }
