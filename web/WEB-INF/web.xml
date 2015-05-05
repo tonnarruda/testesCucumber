@@ -32,6 +32,10 @@
 	<listener>
 		<listener-class>com.fortes.rh.config.SetupListener</listener-class>
 	</listener>
+	
+	<listener>
+		<listener-class>com.fortes.rh.config.UsuarioListener</listener-class>
+	</listener>
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
