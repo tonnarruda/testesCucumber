@@ -234,6 +234,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private String sugestaoPeriodoAcompanhamentoExperiencia;
 	@Transient
 	private Integer statusAcPessoal;
+	@Transient
 	private BigDecimal nota;
 
 	public Colaborador()
