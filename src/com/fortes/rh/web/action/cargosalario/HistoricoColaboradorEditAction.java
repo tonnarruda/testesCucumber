@@ -184,6 +184,9 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 		try
 		{
+			colaborador = colaboradorManager.findColaboradorById(historicoColaborador.getColaborador().getId());
+			historicoColaborador.setColaborador(colaborador);
+			
 			if(historicoColaboradorManager.existeHistoricoData(historicoColaborador))
 			{
 				addActionMessage("Já existe uma Situação nessa data.");
@@ -191,7 +194,6 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 				return Action.INPUT;				
 			}
 
-			colaborador = colaboradorManager.findColaboradorById(historicoColaborador.getColaborador().getId());
 			if(historicoColaboradorManager.verificaPrimeiroHistoricoAdmissao(true, historicoColaborador, colaborador))
 			{
 				addActionError("Data do histórico não pode ser inferior à data de admissão (Data Admissão: " + colaborador.getDataAdmissaoFormatada() + ")." );

@@ -326,9 +326,11 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 
 	private void dadoQueJaExisteHistoricoNaData() {
 		historicoColaborador.setData(new Date());
+		historicoColaborador.setColaborador(ColaboradorFactory.getEntity(1L));
 		action.setHistoricoColaborador(historicoColaborador);
 		historicoColaboradorManager.expects(once()).method("existeHistoricoData")
 			.with(eq(historicoColaborador)).will(returnValue(true));
+		colaboradorManager.expects(once()).method("findColaboradorById").with(ANYTHING).will(returnValue(historicoColaborador.getColaborador()));
 	}
 	
 	private void assertQueMetodoPrepareFoiChamado() {
