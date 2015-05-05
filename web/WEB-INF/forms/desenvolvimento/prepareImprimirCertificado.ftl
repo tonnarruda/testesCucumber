@@ -143,10 +143,12 @@
 			if(value == "T") {
 				document.getElementById('divTreinamento').style.display = "";
 				document.getElementById('divCertificacao').style.display = "none";
+				$('#imprimirCertificado_imprimirNotaNoVerso').removeAttr('disabled');
 			}
 			else if(value == "C"){
 				document.getElementById('divTreinamento').style.display = "none";
 				document.getElementById('divCertificacao').style.display = "";
+				$('#imprimirCertificado_imprimirNotaNoVerso').attr('checked',false).attr('disabled', 'disabled');
 			}
 			
 			mostrarCheckAssInstrutor();

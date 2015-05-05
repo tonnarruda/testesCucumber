@@ -3,6 +3,7 @@
 	<Versao id="1.1.14x.17x" bd="" data="xx/05/2015">
 		<Item visivel="S" motivo="P20150400136"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Promover: Ajuste dos dados pré-carregados para o cadastro da nova situação.]]></Item>	
 		<Item visivel="S" motivo="S20150300124"><![CDATA[T&D > Cadastros > Cursos/Treinamentos: Nova opção para inserir anexos.]]></Item>		
+		<Item visivel="S" motivo="S20150300125"><![CDATA[T&D > Relatórios > Certificados: Nova opção para imprimir nota do aluno no verso do certificado.]]></Item>
 		<Item visivel="S" motivo="P20150400049"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Permitir incluir na solicitação de pessoal os colaboradores com histrorico cancelado.]]></Item>
 		<Item visivel="S" motivo="S20150300156"><![CDATA[SESMT > Movimentações > Solicitação de EPIs: Nova opção no filtro para ordenação por data ou por nome.]]></Item>
 		<Item visivel="S" motivo="P20150400230"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos: Exibição do cargo do colaborador considerando sua situação na data da solicitação.]]></Item>

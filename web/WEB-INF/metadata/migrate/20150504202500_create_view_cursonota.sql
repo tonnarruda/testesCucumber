@@ -1,6 +1,6 @@
 create view View_CursoNota as 
 select 
-	ct.id as colaboradorturma_id,
+	ct.id as colaboradorturma_id, 
 	ct.colaborador_id as colaborador_id, 
 	ct.turma_id as turma_id, 
 	count(ct.id) as qtdavaliacoescurso, 
@@ -15,5 +15,5 @@ left join
 left join 
 	colaboradorquestionario cq on ac.id = cq.avaliacaocurso_id and ac.avaliacao_id = cq.avaliacao_id and ct.colaborador_id = cq.colaborador_id 
 where (ct.id = aac.colaboradorturma_id or (ct.colaborador_id = cq.colaborador_id and ct.turma_id = cq.turma_id)) 
-group by ct.id, ct.colaborador_id, ct.turma_id
+group by ct.id, ct.colaborador_id, ct.turma_id 
 order by ct.id; --.go
