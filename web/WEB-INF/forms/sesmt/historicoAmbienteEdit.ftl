@@ -32,7 +32,6 @@
 			<#if historicoAmbiente?exists && historicoAmbiente.riscoAmbientes?exists>
 				<#list historicoAmbiente.riscoAmbientes as riscoAmbiente>
 					$('#check' + ${riscoAmbiente.risco.id}).attr('checked', true).parent().parent().find('input, select, textarea').attr('disabled', false);
-					console.log(${riscoAmbiente.risco.id});
 					<#if riscoAmbiente.periodicidadeExposicao?exists>
 						$('#perExposicao' + ${riscoAmbiente.risco.id}).val('${riscoAmbiente.periodicidadeExposicao}');
 					</#if>
