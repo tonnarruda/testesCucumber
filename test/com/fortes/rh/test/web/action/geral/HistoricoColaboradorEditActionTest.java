@@ -360,7 +360,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	private void simulaComportamentoDoPrepareSemHistorico() {
 		simulaComportamentoDoPrepare();
 		
-		historicoColaboradorManager.expects(once()).method("getHistoricoAtualOuFuturo").with(eq(1L)).will(returnValue(historicoColaborador));
+		historicoColaboradorManager.expects(once()).method("getHistoricoAtualComFuturo").with(ANYTHING).will(returnValue(historicoColaborador));
 	}
 	
 	private void simulaComportamentoDoPrepareComHistorico() {
