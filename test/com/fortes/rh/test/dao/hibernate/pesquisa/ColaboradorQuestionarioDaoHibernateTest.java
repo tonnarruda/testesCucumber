@@ -1300,6 +1300,49 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(1, retorno.size());
 	}
 	
+	public void testFindAvaliacaoEmDesempnhoEPeriodoExperiencia()
+	{
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setNome("Joao");
+		colaboradorDao.save(joao);
+		
+		Avaliacao modeloAvaliacaoPerExp = AvaliacaoFactory.getEntity();
+		modeloAvaliacaoPerExp.setTipoModeloAvaliacao(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA);
+		avaliacaoDao.save(modeloAvaliacaoPerExp);
+		
+		Avaliacao modeloAvaliacaoDes = AvaliacaoFactory.getEntity();
+		modeloAvaliacaoDes.setTipoModeloAvaliacao(TipoModeloAvaliacao.DESEMPENHO);
+		avaliacaoDao.save(modeloAvaliacaoDes);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
+		ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario1.setColaborador(joao);
+		colaboradorQuestionario1.setAvaliacao(modeloAvaliacaoPerExp);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
+		
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario2.setColaborador(joao);
+		colaboradorQuestionario2.setAvaliacao(modeloAvaliacaoPerExp);
+		colaboradorQuestionario2.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
+		ColaboradorQuestionario colaboradorQuestionario3 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario3.setColaborador(joao);
+		colaboradorQuestionario3.setAvaliacao(modeloAvaliacaoDes);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
+		
+		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findByAvaliacaoComQtdPeriodoExperienciaEDesempenho(modeloAvaliacaoPerExp.getId());
+		
+		assertEquals(1, retorno.size());
+		assertEquals(modeloAvaliacaoPerExp.getId(), ((ColaboradorQuestionario)retorno.toArray()[0]).getAvaliacao().getId());
+		assertEquals(new Integer(1), ((ColaboradorQuestionario)retorno.toArray()[0]).getQtdPeriodoExperiencia());
+		
+		assertEquals(modeloAvaliacaoPerExp.getId(), ((ColaboradorQuestionario)retorno.toArray()[0]).getAvaliacao().getId());
+		assertEquals(new Integer(1), ((ColaboradorQuestionario)retorno.toArray()[0]).getQtdAvaliacaoDesempenho());
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		this.empresaDao = empresaDao;

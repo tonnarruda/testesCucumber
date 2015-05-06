@@ -154,6 +154,9 @@
 		<create creator="spring" javascript="SolicitacaoEpiDWR">
 			<param name="beanName" value="solicitacaoEpiDWR"/>
 		</create>
+		<create creator="spring" javascript="ColaboradorQuestionarioDWR">
+			<param name="beanName" value="colaboradorQuestionarioDWR"/>
+		</create>
 		
 		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
 		

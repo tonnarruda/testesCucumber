@@ -17,6 +17,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
@@ -1062,6 +1063,34 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		criteria.addOrder(Order.desc("cq.respondidaEm"));
 		criteria.addOrder(Order.asc("av.titulo"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorQuestionario.class));
+		
+		return criteria.list();
+	}
+
+	public Collection<ColaboradorQuestionario> findByAvaliacaoComQtdPeriodoExperienciaEDesempenho(Long avaliacaoId)
+	{
+		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
+		
+		ProjectionList p = Projections.projectionList().create();
+		
+		p.add(Projections.groupProperty("cq.colaborador.id"), "projectionColaboradorId");
+		p.add(Projections.groupProperty("cq.avaliacao.id"), "projectionAvaliacaoId");
+		p.add(Projections.sqlProjection("sum(case when avaliacaodesempenho_id is null then 1 else 0 end) as qtdPeriodoExperiencia",
+				new String []  {"qtdPeriodoExperiencia"}, 
+        		new Type[] {Hibernate.INTEGER}), "qtdPeriodoExperiencia");
+		p.add(Projections.sqlProjection("sum(case when avaliacaodesempenho_id is not null then 1 else 0 end) as qtdAvaliacaoDesempenho",
+				new String []  {"qtdAvaliacaoDesempenho"}, 
+				new Type[] {Hibernate.INTEGER}), "qtdAvaliacaoDesempenho");
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("cq.avaliacao.id", avaliacaoId));
+		
+		criteria.addOrder(Order.asc("cq.colaborador.id"));
+		criteria.addOrder(Order.asc("cq.avaliacao.id"));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorQuestionario.class));

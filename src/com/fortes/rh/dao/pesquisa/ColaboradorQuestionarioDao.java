@@ -48,4 +48,5 @@ public interface ColaboradorQuestionarioDao extends GenericDao<ColaboradorQuesti
 	Collection<ColaboradorQuestionario> findForRankingPerformanceAvaliacaoCurso(Long[] cursosIds, Long[] turmasIds, Long[] avaliacaoCursosIds);
 	void removeBySolicitacaoId(Long solicitacaoId);
 	Collection<ColaboradorQuestionario> findAutoAvaliacao(Long colaboradorId);
+	Collection<ColaboradorQuestionario> findByAvaliacaoComQtdPeriodoExperienciaEDesempenho(Long avaliacaoId);
 }

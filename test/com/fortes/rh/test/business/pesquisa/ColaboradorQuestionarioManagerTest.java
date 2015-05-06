@@ -472,4 +472,33 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
 		
 		assertNotNull(colaboradorQuestionarioManager.getPerformance(avaliados, avaliacaoDesempenhoId));
     }
+    
+    public void testExisteMesmoModeloAvaliacaoEmDesempnhoEPeriodoExperiencia()
+    {
+    	ColaboradorQuestionario colaboradorQuestionario1 = criaColaboradorQuestionarioParatestExisteMesmoModeloAvaliacaoEmDesempnhoEPeriodoExperiencia(0,1);
+    	ColaboradorQuestionario colaboradorQuestionario2 = criaColaboradorQuestionarioParatestExisteMesmoModeloAvaliacaoEmDesempnhoEPeriodoExperiencia(0,3);
+    	ColaboradorQuestionario colaboradorQuestionario3 = criaColaboradorQuestionarioParatestExisteMesmoModeloAvaliacaoEmDesempnhoEPeriodoExperiencia(2,0);
+    	
+    	Collection<ColaboradorQuestionario> colaboradorQuestionarios = Arrays.asList(colaboradorQuestionario1, colaboradorQuestionario2, colaboradorQuestionario3);
+    	Long avaliacaoId = 1L;
+    	
+    	colaboradorQuestionarioDao.expects(atLeastOnce()).method("findByAvaliacaoComQtdPeriodoExperienciaEDesempenho").with(eq(avaliacaoId)).will(returnValue(colaboradorQuestionarios));
+    	
+    	assertFalse("Não existe uma mesma avaliação para Desempenho e Per. Experiência",colaboradorQuestionarioManager.existeMesmoModeloAvaliacaoEmDesempenhoEPeriodoExperiencia(avaliacaoId));
+    	
+    	ColaboradorQuestionario colaboradorQuestionario4 = criaColaboradorQuestionarioParatestExisteMesmoModeloAvaliacaoEmDesempnhoEPeriodoExperiencia(2,1);
+    	colaboradorQuestionarios = Arrays.asList(colaboradorQuestionario1, colaboradorQuestionario2, colaboradorQuestionario3, colaboradorQuestionario4);
+    	colaboradorQuestionarioDao.expects(atLeastOnce()).method("findByAvaliacaoComQtdPeriodoExperienciaEDesempenho").with(eq(avaliacaoId)).will(returnValue(colaboradorQuestionarios));
+
+    	assertTrue("Existe uma mesma avaliação para Desempenho e Per. Experiência",colaboradorQuestionarioManager.existeMesmoModeloAvaliacaoEmDesempenhoEPeriodoExperiencia(avaliacaoId));
+    }
+
+	private ColaboradorQuestionario criaColaboradorQuestionarioParatestExisteMesmoModeloAvaliacaoEmDesempnhoEPeriodoExperiencia(Integer qtdAvaliacaoDesempenho, Integer qtdPeriodoExperiencia)
+	{
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+    	colaboradorQuestionario.setQtdAvaliacaoDesempenho(qtdAvaliacaoDesempenho);
+    	colaboradorQuestionario.setQtdPeriodoExperiencia(qtdPeriodoExperiencia);
+    	
+		return colaboradorQuestionario;
+	}
 }

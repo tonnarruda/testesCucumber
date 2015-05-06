@@ -77,6 +77,10 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     private String pessoaVinculo;
     @Transient
     private String nomeCursoTurmaAvaliacao;
+    @Transient
+    private Integer qtdPeriodoExperiencia;
+    @Transient
+    private Integer qtdAvaliacaoDesempenho;
     
     @OneToMany(fetch=FetchType.LAZY, mappedBy="colaboradorQuestionario")
     private Collection<ColaboradorResposta> colaboradorRespostas;
@@ -814,5 +818,25 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 			return tipoModeloAvaliacao.get(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA);
 		else
 			return tipoModeloAvaliacao.get(TipoModeloAvaliacao.AVALIACAO_DESEMPENHO);
+	}
+
+	public Integer getQtdPeriodoExperiencia()
+	{
+		return qtdPeriodoExperiencia;
+	}
+
+	public void setQtdPeriodoExperiencia(Integer qtdPeriodoExperiencia)
+	{
+		this.qtdPeriodoExperiencia = qtdPeriodoExperiencia;
+	}
+
+	public Integer getQtdAvaliacaoDesempenho()
+	{
+		return qtdAvaliacaoDesempenho;
+	}
+
+	public void setQtdAvaliacaoDesempenho(Integer qtdAvaliacaoDesempenho)
+	{
+		this.qtdAvaliacaoDesempenho = qtdAvaliacaoDesempenho;
 	}
 }

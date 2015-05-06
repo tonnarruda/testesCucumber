@@ -44,6 +44,7 @@
 			DWRUtil.useLoadingMessage('Carregando...');
 			PerguntaDWR.getPerguntas(createListPerguntas, questionarioId);
 			AspectoDWR.getAspectosId(createListAspectos, questionarioId);
+			ColaboradorQuestionarioDWR.getAspectosId(createListAspectos, questionarioId);
 		}
 		
 		function createListPerguntas(data)

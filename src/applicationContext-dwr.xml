@@ -173,10 +173,8 @@
 		<property name="acPessoalClient" ref="acPessoalClient"/>
 		<property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
 	</bean>
-
 	<bean id="gerenciadorComunicacaoDWR" class="com.fortes.rh.web.dwr.GerenciadorComunicacaoDWR">
 	</bean>
-
 	<bean id="morroDWR" class="com.fortes.rh.web.dwr.MorroDWR">
 	  	<property name="morroManager" ref="morroManager" />
 	  	<property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
@@ -187,4 +185,9 @@
 	<bean id="solicitacaoEpiDWR" class="com.fortes.rh.web.dwr.SolicitacaoEpiDWR">
 		<property name="solicitacaoEpiManager" ref="solicitacaoEpiManager"/>
 	</bean>
+<!--
+	<bean id="colaboradorQuestionarioDWR" class="com.fortes.rh.web.dwr.ColaboradorQuestionarioDWR">
+		<property name="colaboradorQuestionarioManager" ref="colaboradorQuestionarioManager"/>
+	</bean>
+	-->
 </beans>

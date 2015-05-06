@@ -61,4 +61,5 @@ public interface ColaboradorQuestionarioManager extends GenericManager<Colaborad
 	Collection<ColaboradorQuestionario> findAutoAvaliacao(Long colaboradorId);
 	public void validaAssociacao(Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores, boolean permiteAutoAvaliacao) throws Exception;
 	Collection<ColaboradorQuestionario> findRespondidasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
+	boolean existeMesmoModeloAvaliacaoEmDesempenhoEPeriodoExperiencia(Long avaliacaoId);
 }

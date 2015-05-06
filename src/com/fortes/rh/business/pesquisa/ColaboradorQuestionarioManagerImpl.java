@@ -488,5 +488,17 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	public Collection<ColaboradorQuestionario> findRespondidasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId) 
 	{
 		return getDao().findRespondidasByAvaliacaoDesempenho(avaliacaoDesempenhoId);
+	}
+
+	public boolean existeMesmoModeloAvaliacaoEmDesempenhoEPeriodoExperiencia(Long avaliacaoId)
+	{
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = getDao().findByAvaliacaoComQtdPeriodoExperienciaEDesempenho(avaliacaoId);
+		
+		for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios) {
+			if(colaboradorQuestionario.getQtdPeriodoExperiencia() > 0 && colaboradorQuestionario.getQtdAvaliacaoDesempenho() > 0)
+				return true;			
+		}
+		
+		return false;
 	}	
 }
