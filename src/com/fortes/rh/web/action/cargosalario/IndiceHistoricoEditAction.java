@@ -1,5 +1,7 @@
 package com.fortes.rh.web.action.cargosalario;
 
+import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
+import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoIndice;
 import com.fortes.rh.business.cargosalario.IndiceHistoricoManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.model.cargosalario.Indice;
@@ -17,6 +19,7 @@ public class IndiceHistoricoEditAction extends MyActionSupportEdit implements Mo
 	private IndiceHistorico indiceHistorico;
 	private Indice indiceAux;
 	private boolean integradoAC;
+	private MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager;
 
 	public String execute() throws Exception
 	{
@@ -75,6 +78,7 @@ public class IndiceHistoricoEditAction extends MyActionSupportEdit implements Mo
 			}
 
 			indiceHistoricoManager.save(indiceHistorico);
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoIndice.class, indiceAux.getIdentificadorToJson(), getEmpresaSistema().isIntegradaPortalColaborador());
 		}
 
 		return Action.SUCCESS;
@@ -97,6 +101,7 @@ public class IndiceHistoricoEditAction extends MyActionSupportEdit implements Mo
 			}
 
 			indiceHistoricoManager.update(indiceHistorico);	
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoIndice.class, indiceAux.getIdentificadorToJson(), getEmpresaSistema().isIntegradaPortalColaborador());
 		}
 
 		return Action.SUCCESS;
@@ -147,5 +152,10 @@ public class IndiceHistoricoEditAction extends MyActionSupportEdit implements Mo
 	public void setIntegradoAC(boolean integradoAC)
 	{
 		this.integradoAC = integradoAC;
+	}
+
+	public void setMovimentacaoOperacaoPCManager(
+			MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager) {
+		this.movimentacaoOperacaoPCManager = movimentacaoOperacaoPCManager;
 	}
 }

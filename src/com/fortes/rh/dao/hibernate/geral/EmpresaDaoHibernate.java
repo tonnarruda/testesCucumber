@@ -506,4 +506,13 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		
 		return colIds.toArray(compIds);
 	}
+
+	public boolean existeEmpresaIntegradaComPortal(String grupoAC) 
+	{
+		Criteria criteria = getSession().createCriteria(Empresa.class, "e");
+		criteria.add(Expression.eq("e.integradaPortalColaborador", true));
+		criteria.add(Expression.eq("e.grupoAC", grupoAC));
+		
+		return criteria.list().size() > 0;
+	}
 }

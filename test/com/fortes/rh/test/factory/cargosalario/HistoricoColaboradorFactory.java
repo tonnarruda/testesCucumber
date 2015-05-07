@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 
 public class HistoricoColaboradorFactory
 {
@@ -14,7 +15,7 @@ public class HistoricoColaboradorFactory
 
 		historicoColaborador.setId(null);
 		historicoColaborador.setMotivo("C");
-		historicoColaborador.setTipoSalario(3);
+		historicoColaborador.setTipoSalario(TipoAplicacaoIndice.VALOR);
 		historicoColaborador.setSalario(1D);
 		historicoColaborador.setColaborador(null);
 		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);

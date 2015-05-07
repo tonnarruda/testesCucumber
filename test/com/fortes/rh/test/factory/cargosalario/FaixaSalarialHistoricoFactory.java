@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 
 public class FaixaSalarialHistoricoFactory
 {
@@ -12,7 +13,7 @@ public class FaixaSalarialHistoricoFactory
 		FaixaSalarialHistorico faixaSalarialHistorico = new FaixaSalarialHistorico();
 
 		faixaSalarialHistorico.setId(null);
-		faixaSalarialHistorico.setTipo(1);
+		faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.VALOR);
 		faixaSalarialHistorico.setQuantidade(2.0);
 
 		return faixaSalarialHistorico;

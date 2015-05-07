@@ -6,7 +6,7 @@ import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.webwork.dispatcher.json.JSONObject;
 
-public class AtualizarHistoricoFaixaSalarial extends Operacao {
+public class AtualizarHistoricoIndice extends Operacao {
 
 	@Override
 	public URLTransacaoPC getUrlTransacaoPC() {
@@ -24,9 +24,9 @@ public class AtualizarHistoricoFaixaSalarial extends Operacao {
 			ColaboradorPCManager colaboradorPCManager = (ColaboradorPCManager) SpringUtil.getBeanOld("colaboradorPCManager");
 			HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
 
-			Long faixaId = Long.parseLong(((Integer) j.get("id")).toString());
+			Long indiceId = Long.parseLong(((Integer) j.get("id")).toString());
 			
-			Long[] colaboradoresIds = historicoColaboradorManager.findColaboradorIdByFaixaId(faixaId);
+			Long[] colaboradoresIds = historicoColaboradorManager.findColaboradorIdByIndiceId(indiceId);
 			colaboradorPCManager.enfileirarComHistoricos(getUrlTransacaoPC(), null, colaboradoresIds);
 		}
 	}

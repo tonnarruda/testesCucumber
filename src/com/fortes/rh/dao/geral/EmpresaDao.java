@@ -30,4 +30,5 @@ public interface EmpresaDao extends GenericDao<Empresa>
 	Empresa getCnae(Long empresaId);
 	void updateCodigoAC(Long empresaId, String codigoAC, String grupoAC);
 	Long[] findIntegradaPortalColaborador();
+	boolean existeEmpresaIntegradaComPortal(String grupoAC);
 }

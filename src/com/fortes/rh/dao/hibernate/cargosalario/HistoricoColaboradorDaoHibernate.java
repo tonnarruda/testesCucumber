@@ -1463,7 +1463,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		if (empresaId != null)
 			hql.append("and e.id = :empresaId ");
 
-		hql.append("order by co.id, hc.data desc ");
+		hql.append("order by co.id, hc.data asc ");
 
 		Query query = getSession().createQuery(hql.toString());
 
@@ -1479,7 +1479,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return query.list();
 	}
 
-	public Long[] findColaboradorByFaixaId(Long faixaId) 
+	public Long[] findColaboradorIdByFaixaId(Long faixaId) 
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "c");
@@ -1491,6 +1491,33 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.setProjection(Projections.distinct(p));
 		criteria.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
 		criteria.add(Expression.eq("fs.id", faixaId));
+		
+		return LongUtil.collectionStringToArrayLong(criteria.list());
+	}
+
+	public Long[] findColaboradorIdByIndiceId(Long indiceId) 
+	{
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("hc.indice", "i", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.colaborador", "c", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.LEFT_JOIN);
+		criteria.createCriteria("fs.faixaSalarialHistoricos", "fsh", Criteria.LEFT_JOIN);
+		criteria.createCriteria("fsh.indice", "ifs", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"));
+		
+		criteria.setProjection(Projections.distinct(p));
+		criteria.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
+		criteria.add(Expression.eq("fsh.status", StatusRetornoAC.CONFIRMADO));
+		criteria.add(Expression.or(
+									Expression.eq("i.id", indiceId),
+									Expression.eq("ifs.id", indiceId)
+									));
+		criteria.add(Expression.ne("hc.tipoSalario", TipoAplicacaoIndice.VALOR));
+		criteria.add(Expression.eq("fsh.tipo", TipoAplicacaoIndice.INDICE));
+		
+		criteria.addOrder(Order.asc("c.id"));
 		
 		return LongUtil.collectionStringToArrayLong(criteria.list());
 	}

@@ -399,7 +399,8 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals("Grupo AC", empresa.getGrupoAC(), retorno.getGrupoAC());
 	}
 	
-	public void testFindIntegradaPortalColaborador(){
+	public void testFindIntegradaPortalColaborador()
+	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
 		empresa1.setIntegradaPortalColaborador(true);
 		empresa1.setCodigoAC(null);
@@ -418,6 +419,27 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		
 		assertTrue(empresasCollectionIds.contains(empresa1.getId()));
 		assertFalse(empresasCollectionIds.contains(empresa2.getId()));
+	}
+	
+	public void testExisteEmpresaIntegradaComPortal()
+	{
+		GrupoAC grupoAC = GrupoACFactory.getEntity();
+		grupoAC.setCodigo("Gr1");
+		grupoACDao.save(grupoAC);
+		
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresa1.setIntegradaPortalColaborador(true);
+		empresa1.setCodigoAC("CodA");
+		empresa1.setGrupoAC(grupoAC.getCodigo());
+		empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2.setIntegradaPortalColaborador(false);
+		empresa2.setCodigoAC("CodB");
+		empresa2.setGrupoAC(grupoAC.getCodigo());
+		empresaDao.save(empresa2);
+		
+		assertTrue(empresaDao.existeEmpresaIntegradaComPortal(grupoAC.getCodigo()));
 	}
 
 	public void setCidadeDao(CidadeDao cidadeDao)

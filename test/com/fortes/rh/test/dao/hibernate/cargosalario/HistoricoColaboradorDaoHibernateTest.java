@@ -2012,12 +2012,13 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 
 		assertEquals(2, historicoColaboradors.size());
 		
-		assertEquals(indiceHistorico.getValor(), ((HistoricoColaborador) historicoColaboradors.toArray()[0]).getFaixaSalarial().getFaixaSalarialHistoricoAtual().getIndice().getIndiceHistoricoAtual().getValor());
-		assertEquals(faixaSalarialHistorico.getValor(), ((HistoricoColaborador) historicoColaboradors.toArray()[1]).getFaixaSalarial().getFaixaSalarialHistoricoAtual().getValor());
+		assertEquals(faixaSalarialHistorico.getValor(), ((HistoricoColaborador) historicoColaboradors.toArray()[0]).getFaixaSalarial().getFaixaSalarialHistoricoAtual().getValor());
+		assertEquals(indiceHistorico.getValor(), ((HistoricoColaborador) historicoColaboradors.toArray()[1]).getFaixaSalarial().getFaixaSalarialHistoricoAtual().getIndice().getIndiceHistoricoAtual().getValor());
 		
 	}
 	
-	public void testFindColaboradorByFaixaId(){
+	public void testFindColaboradorIdByFaixaId()
+	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
@@ -2049,12 +2050,77 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		montaSaveHistoricoColaborador(DateUtil.criarAnoMesDia(2007, 03, 1), colaborador, estabelecimento, areaOrganizacional, faixaSalarialA, TipoAplicacaoIndice.CARGO);
 		montaSaveHistoricoColaborador(DateUtil.criarAnoMesDia(2007, 04, 1), colaborador, estabelecimento, areaOrganizacional, faixaSalarialA, TipoAplicacaoIndice.CARGO);
 
-		Long[] colaboradoresIds = historicoColaboradorDao.findColaboradorByFaixaId(faixaSalarialA.getId());
+		Long[] colaboradoresIds = historicoColaboradorDao.findColaboradorIdByFaixaId(faixaSalarialA.getId());
 
 		assertEquals(1, colaboradoresIds.length);
 		
 		assertEquals(colaborador.getId(), ((Long) colaboradoresIds[0]));
-			
+	}
+	
+	
+	public void testFindColaboradorIdByIndiceId()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+
+		Colaborador marcelo = ColaboradorFactory.getEntity();
+		marcelo.setEmpresa(empresa);
+		colaboradorDao.save(marcelo);
+		
+		Colaborador samuel = ColaboradorFactory.getEntity();
+		samuel.setEmpresa(empresa);
+		colaboradorDao.save(samuel);
+
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+
+		Indice indice = IndiceFactory.getEntity();
+		indiceDao.save(indice);
+		
+		IndiceHistorico indiceHistorico = IndiceHistoricoFactory.getEntity();
+		indiceHistorico.setIndice(indice);
+		indiceHistorico.setData(DateUtil.criarDataMesAno(1, 1, 2004));
+		indiceHistorico.setValor(600.0);
+		indiceHistoricoDao.save(indiceHistorico);
+		
+		FaixaSalarial faixaSalarialA = FaixaSalarialFactory.getEntity();
+		faixaSalarialA.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarialA);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setData(DateUtil.criarDataMesAno(1, 2, 2005));
+		faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.INDICE);
+		faixaSalarialHistorico.setIndice(indice);
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarialA);
+		faixaSalarialHistorico.setStatus(StatusRetornoAC.CONFIRMADO);
+		faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+		
+		FaixaSalarial faixaSalarialB = FaixaSalarialFactory.getEntity();
+		faixaSalarialB.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarialB);
+		
+		FaixaSalarialHistorico faixaSalarialHistoricoB = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistoricoB.setData(DateUtil.criarDataMesAno(1, 2, 2005));
+		faixaSalarialHistoricoB.setTipo(TipoAplicacaoIndice.INDICE);
+		faixaSalarialHistoricoB.setIndice(indice);
+		faixaSalarialHistoricoB.setFaixaSalarial(faixaSalarialB);
+		faixaSalarialHistoricoB.setStatus(StatusRetornoAC.CONFIRMADO);
+		faixaSalarialHistoricoDao.save(faixaSalarialHistoricoB);
+
+		montaSaveHistoricoColaborador(DateUtil.criarAnoMesDia(2007, 03, 1), marcelo, estabelecimento, areaOrganizacional, faixaSalarialA, TipoAplicacaoIndice.CARGO);
+		montaSaveHistoricoColaborador(DateUtil.criarAnoMesDia(2007, 04, 1), samuel, estabelecimento, areaOrganizacional, faixaSalarialB, TipoAplicacaoIndice.VALOR);
+
+		Long[] colaboradoresIds = historicoColaboradorDao.findColaboradorIdByIndiceId(indice.getId());
+
+		assertEquals(1, colaboradoresIds.length);
+		
+		assertEquals(marcelo.getId(), ((Long) colaboradoresIds[0]));
 	}
 	
 	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)

@@ -5,6 +5,7 @@ import mockit.Mockit;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.rh.business.cargosalario.IndiceHistoricoManager;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
@@ -20,6 +21,7 @@ public class IndiceHistoricoListActionTest extends MockObjectTestCase
 {	
 	private IndiceHistoricoListAction action;
 	private Mock manager;
+	private Mock movimentacaoOperacaoPCManager;
 
     protected void setUp() throws Exception
     {
@@ -28,6 +30,9 @@ public class IndiceHistoricoListActionTest extends MockObjectTestCase
        
         manager = new Mock(IndiceHistoricoManager.class);
         action.setIndiceHistoricoManager((IndiceHistoricoManager) manager.proxy());
+        
+        movimentacaoOperacaoPCManager = new Mock(MovimentacaoOperacaoPCManager.class);
+        action.setMovimentacaoOperacaoPCManager((MovimentacaoOperacaoPCManager) movimentacaoOperacaoPCManager.proxy());
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
     }
@@ -53,7 +58,10 @@ public class IndiceHistoricoListActionTest extends MockObjectTestCase
     	IndiceHistorico indiceHistorico = IndiceHistoricoFactory.getEntity(1L);
     	action.setIndiceHistorico(indiceHistorico);
     	
+    	action.setIndiceAux(IndiceFactory.getEntity());
+    	
     	manager.expects(once()).method("remove").with(eq(indiceHistorico.getId()));
+    	movimentacaoOperacaoPCManager.expects(once()).method("enfileirar").withAnyArguments().isVoid();
     	
     	assertEquals("success", action.delete());
     	assertEquals(indiceHistorico, action.getIndiceHistorico());

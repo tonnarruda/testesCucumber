@@ -14,6 +14,8 @@ import javax.persistence.Transient;
 import com.fortes.model.AbstractModel;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 import com.fortes.security.auditoria.NaoAudita;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 @SuppressWarnings("serial")
 @Entity
@@ -144,5 +146,14 @@ public class Indice extends AbstractModel implements Serializable, Cloneable
 	public void setReajusteIndices(Collection<ReajusteIndice> reajusteIndices) {
 		this.reajusteIndices = reajusteIndices;
 	}
-	
+
+	public String getIdentificadorToJson()
+	{
+		Gson gson = new Gson();
+		
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.add("id", gson.toJsonTree(getId()));
+		
+		return jsonObject.toString();
+	}
 }

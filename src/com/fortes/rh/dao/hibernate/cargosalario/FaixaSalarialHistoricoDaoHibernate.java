@@ -20,6 +20,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
 import com.fortes.rh.model.cargosalario.ReajusteFaixaSalarial;
@@ -522,5 +523,15 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 			criteria.add(Expression.lt("fsh.data", dataSegundoHistoricoIndice));
 
 		return ((Integer) criteria.uniqueResult()) > 0;	
+	}
+
+	public FaixaSalarial findFaixaSalarial(Long faixaSalarialHistoricoId) 
+	{
+		Criteria criteria = getSession().createCriteria(FaixaSalarial.class, "fs");
+		criteria.createCriteria("fs.faixaSalarialHistoricos", "fsh", Criteria.INNER_JOIN);
+				
+		criteria.add(Expression.eq("fsh.id", faixaSalarialHistoricoId));
+
+		return (FaixaSalarial) criteria.uniqueResult();	
 	}
 }

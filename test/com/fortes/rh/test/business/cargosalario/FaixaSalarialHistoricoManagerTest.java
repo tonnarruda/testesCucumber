@@ -252,12 +252,16 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setAcIntegra(true);
 
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		
 		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(1L);
 
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
 		acPessoalClientCargo.expects(once()).method("deleteFaixaSalarialHistorico").with(ANYTHING, ANYTHING);
 		faixaSalarialHistoricoDao.expects(once()).method("remove").with(eq(faixaSalarialHistorico.getId()));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
+		faixaSalarialHistoricoDao.expects(once()).method("findFaixaSalarial").with(eq(faixaSalarialHistorico.getId())).will(returnValue(faixaSalarial));
+		movimentacaoOperacaoPCManager.expects(once()).method("enfileirar").withAnyArguments().isVoid();
 
 		faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), empresa);
 	}
@@ -267,12 +271,15 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setAcIntegra(true);
 
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		
 		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(1L);
 
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
 		acPessoalClientCargo.expects(once()).method("deleteFaixaSalarialHistorico").with(ANYTHING, ANYTHING);
 		faixaSalarialHistoricoDao.expects(once()).method("remove").with(eq(faixaSalarialHistorico.getId())).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(faixaSalarialHistorico.getId(),""))));;
 		transactionManager.expects(once()).method("rollback").with(ANYTHING);
+		faixaSalarialHistoricoDao.expects(once()).method("findFaixaSalarial").with(eq(faixaSalarialHistorico.getId())).will(returnValue(faixaSalarial));
 
 		Exception exception = null;
 
@@ -287,21 +294,6 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 
 		assertNotNull(exception);
 	}
-
-//	public void testRemoveIds() throws Exception
-//	{
-//		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-//		empresa.setAcIntegra(true);
-//
-//		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity(1L);
-//		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity(2L);
-//
-//		Long[] ids = new Long[]{faixaSalarialHistorico1.getId(), faixaSalarialHistorico2.getId()};
-//
-//		acPessoalClientCargo.expects(atLeastOnce()).method("deleteFaixaSalarialHistorico").with(ANYTHING, ANYTHING);
-//
-//		faixaSalarialHistoricoManager.removeAC(ids, empresa);
-//	}
 
 	public void testVerifyDataUpdate()
 	{

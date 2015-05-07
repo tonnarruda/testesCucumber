@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -1245,6 +1246,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		reajusteColaboradorManager.expects(once()).method("remove").with(ANYTHING);
 		acPessoalClientTabelaReajuste.expects(once()).method("deleteHistoricoColaboradorAC").with(ANYTHING, ANYTHING);
+		movimentacaoOperacaoPCManager.expects(once()).method("enfileirar").withAnyArguments().isVoid();
 
 		Exception exception = null;
 		try
@@ -2255,4 +2257,84 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		assertTrue(existeDependencia);
 	}
 	
+	public void testeFindHistoricosConfirmados()
+	{
+		Cargo cargo = CargoFactory.getEntity(1L);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		faixaSalarial.setCargo(cargo);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity(1L);
+		faixaSalarialHistorico1.setData(DateUtil.criarDataMesAno(1, 1, 2000));
+		faixaSalarialHistorico1.setValor(1000.00);
+		faixaSalarialHistorico1.setQuantidade(null);
+		faixaSalarialHistorico1.setFaixaSalarial(faixaSalarial);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity(1L);
+		faixaSalarialHistorico2.setData(DateUtil.criarDataMesAno(1, 1, 2008));
+		faixaSalarialHistorico2.setValor(1200.00);
+		faixaSalarialHistorico2.setQuantidade(null);
+		faixaSalarialHistorico2.setFaixaSalarial(faixaSalarial);
+		
+		Collection<FaixaSalarialHistorico> faixaHistoricos = Arrays.asList(faixaSalarialHistorico1, faixaSalarialHistorico2);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador1.setData(DateUtil.criarDataMesAno(1, 1, 2006));
+		historicoColaborador1.setSalario(800.00);
+		historicoColaborador1.setColaborador(colaborador1);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(2L);
+		historicoColaborador2.setTipoSalario(TipoAplicacaoIndice.CARGO);
+		historicoColaborador2.setData(DateUtil.criarDataMesAno(1, 1, 2007));
+		historicoColaborador2.setFaixaSalarial(faixaSalarial);
+		historicoColaborador2.setIndice(new Indice());
+		historicoColaborador2.setColaborador(colaborador1);
+		
+		Indice indice = IndiceFactory.getEntity(1L);
+
+		IndiceHistorico indiceHistorico1 = IndiceHistoricoFactory.getEntity(1L);
+		indiceHistorico1.setData(DateUtil.criarDataMesAno(1, 1, 2008));
+		indiceHistorico1.setIndice(indice);
+		indiceHistorico1.setValor(10000.0);
+		
+		IndiceHistorico indiceHistorico2 = IndiceHistoricoFactory.getEntity(2L);
+		indiceHistorico2.setData(DateUtil.criarDataMesAno(1, 1, 2010));
+		indiceHistorico2.setIndice(indice);
+		indiceHistorico2.setValor(20000.0);
+		
+		Collection<IndiceHistorico> indiceHistoricos = Arrays.asList(indiceHistorico2);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(2L);
+		
+		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity(3L);
+		historicoColaborador3.setColaborador(colaborador2);
+		historicoColaborador3.setFaixaSalarial(new FaixaSalarial());
+		historicoColaborador3.setIndice(indice);
+		historicoColaborador3.setTipoSalario(TipoAplicacaoIndice.INDICE);
+		historicoColaborador3.setData(DateUtil.criarDataMesAno(1, 1, 2009));
+		
+		HistoricoColaborador historicoColaborador4 = HistoricoColaboradorFactory.getEntity(4L);
+		historicoColaborador4.setData(DateUtil.criarDataMesAno(1, 1, 2011));
+		historicoColaborador4.setSalario(25000.0);
+		historicoColaborador4.setTipoSalario(TipoAplicacaoIndice.VALOR);
+		historicoColaborador4.setColaborador(colaborador2);
+		
+		Long[] colaboradoresIds = new Long[]{colaborador1.getId(), colaborador2.getId()};
+		
+		Collection<HistoricoColaborador> historicoColaboradors = new LinkedList<HistoricoColaborador>(); 
+		historicoColaboradors.add(historicoColaborador1);
+		historicoColaboradors.add(historicoColaborador2);
+		historicoColaboradors.add(historicoColaborador3);
+		historicoColaboradors.add(historicoColaborador4);
+		
+		historicoColaboradorDao.expects(once()).method("findHistoricosConfirmados").with(ANYTHING,eq(colaboradoresIds)).will(returnValue(historicoColaboradors));
+		faixaSalarialHistoricoManager.expects(once()).method("findByPeriodo").withAnyArguments().will(returnValue(faixaHistoricos));
+		indiceHistoricoManager.expects(once()).method("findByPeriodo").withAnyArguments().will(returnValue(indiceHistoricos));
+		
+		Collection<HistoricoColaborador> historicosColaboradoresMontados = historicoColaboradorManager.findHistoricosConfirmados(1L, colaboradoresIds);
+		
+		assertEquals(6, historicosColaboradoresMontados.size());
+	}
 }

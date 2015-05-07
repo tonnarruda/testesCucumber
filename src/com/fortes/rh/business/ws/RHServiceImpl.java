@@ -15,6 +15,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoFaixaSalarial;
+import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoIndice;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
@@ -907,6 +908,8 @@ public class RHServiceImpl implements RHService
 				indiceHistoricoManager.updateValor(indiceHistorico.getData(), indice.getId(), indiceHistorico.getValor());
 			else
 				indiceHistoricoManager.save(indiceHistorico);
+			
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoIndice.class, indice.getIdentificadorToJson(), empresaManager.existeEmpresaIntegradaComPortal(tindiceHistorico.getGrupoAC()));
 
 			return new FeedbackWebService(true);
 		}
@@ -935,9 +938,10 @@ public class RHServiceImpl implements RHService
 		if (indice != null && indice.getId() != null)
 		{
 			try {
-				if(indiceHistoricoManager.remove(DateUtil.montaDataByString(data), indice.getId()))
+				if(indiceHistoricoManager.remove(DateUtil.montaDataByString(data), indice.getId())){
+					movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoIndice.class, indice.getIdentificadorToJson(), empresaManager.existeEmpresaIntegradaComPortal(grupoAC));
 					return new FeedbackWebService(true);
-				else
+				}else
 					return new FeedbackWebService(false, "Erro: Histórico do índice não encontrado.", formataException(parametros, null));
 			} catch (FortesException e) {
 				return new FeedbackWebService(false, e.getMessage(), formataException(parametros, null));
@@ -1238,9 +1242,8 @@ public class RHServiceImpl implements RHService
 			else
 				faixaSalarialHistoricoManager.save(faixaSalarialHistorico);
 			
-			if (faixaSalarial.getCargo() != null && faixaSalarial.getCargo().getEmpresa() != null) {
+			if (faixaSalarial.getCargo() != null && faixaSalarial.getCargo().getEmpresa() != null)
 				movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoFaixaSalarial.class, faixaSalarial.getIdentificadorToJson(), faixaSalarial.getCargo().getEmpresa().isIntegradaPortalColaborador());
-			}
 			
 			return new FeedbackWebService(true);
 		}
@@ -1262,9 +1265,8 @@ public class RHServiceImpl implements RHService
 						
 			faixaSalarialHistoricoManager.update(faixaSalarialHistorico);
 			
-			if (faixaSalarial.getCargo() != null && faixaSalarial.getCargo().getEmpresa() != null) {
+			if (faixaSalarial.getCargo() != null && faixaSalarial.getCargo().getEmpresa() != null) 
 				movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoFaixaSalarial.class, faixaSalarial.getIdentificadorToJson(), faixaSalarial.getCargo().getEmpresa().isIntegradaPortalColaborador());
-			}
 			
 			return new FeedbackWebService(true);
 		}
@@ -1288,6 +1290,9 @@ public class RHServiceImpl implements RHService
 			faixaSalarialHistorico.setId(faixaSalarialHistoricoManager.findIdByDataFaixa(faixaSalarialHistorico));
 			
 			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico);
+			
+			if (faixaSalarial.getCargo() != null && faixaSalarial.getCargo().getEmpresa() != null) 
+				movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoFaixaSalarial.class, faixaSalarial.getIdentificadorToJson(), faixaSalarial.getCargo().getEmpresa().isIntegradaPortalColaborador());
 			
 			return new FeedbackWebService(true);
 		}

@@ -802,6 +802,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		
 		if(historicoColaboradorTmp.getCandidatoSolicitacao() != null && historicoColaboradorTmp.getCandidatoSolicitacao().getId() != null)
 			candidatoSolicitacaoManager.setStatus(historicoColaboradorTmp.getCandidatoSolicitacao().getId(), StatusCandidatoSolicitacao.APROMOVER);
+		
+		movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoColaborador.class, new ColaboradorPC(new Colaborador("",colaboradorId)).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
 	}
 
 	public void removeHistoricoAndReajusteAC(HistoricoColaborador historicoColaborador) throws Exception
@@ -1512,12 +1514,36 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return false;
 	}
 	
-	public Collection<HistoricoColaborador> findHistoricosConfirmados(Long empresaId, Long... colaboradoresIds){
-		return montaSituacaoHistoricoColaborador((List<HistoricoColaborador>) getDao().findHistoricosConfirmados(empresaId,colaboradoresIds));
+	public Collection<HistoricoColaborador> findHistoricosConfirmados(Long empresaId, Long... colaboradoresIds)
+	{
+		Collection<HistoricoColaborador> historicosColaboradores = getDao().findHistoricosConfirmados(empresaId,colaboradoresIds);
+		Collection<HistoricoColaborador> historicosColaboradoresMontados = new LinkedList<HistoricoColaborador>();
+		
+		Long colaboradorId = 0L;
+		Collection<HistoricoColaborador> histColabAtual = new LinkedList<HistoricoColaborador>();
+		
+		for (HistoricoColaborador historicoColaborador : historicosColaboradores) 
+		{
+			if(colaboradorId != 0L && !colaboradorId.equals(historicoColaborador.getColaborador().getId())){
+				historicosColaboradoresMontados.addAll(montaSituacaoHistoricoColaborador((List<HistoricoColaborador>) histColabAtual));
+				histColabAtual.clear();
+			}
+
+			colaboradorId = historicoColaborador.getColaborador().getId();
+			histColabAtual.add(historicoColaborador);
+		}
+		
+		historicosColaboradoresMontados.addAll(montaSituacaoHistoricoColaborador((List<HistoricoColaborador>) histColabAtual));
+		
+		return historicosColaboradoresMontados;
 	}
 
-	public Long[] findColaboradorByFaixaId(Long faixaId) {
-		return getDao().findColaboradorByFaixaId(faixaId);
+	public Long[] findColaboradorIdByFaixaId(Long faixaId) {
+		return getDao().findColaboradorIdByFaixaId(faixaId);
+	}
+	
+	public Long[] findColaboradorIdByIndiceId(Long indiceId) {
+		return getDao().findColaboradorIdByIndiceId(indiceId);
 	}
 	
 	public void setEmpresaManager(EmpresaManager empresaManager) {
@@ -1536,9 +1562,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return movimentacaoOperacaoPCManager;
 	}
 
-	public void setMovimentacaoOperacaoPCManager(
-			MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager) {
+	public void setMovimentacaoOperacaoPCManager(MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager) {
 		this.movimentacaoOperacaoPCManager = movimentacaoOperacaoPCManager;
 	}
-
 }

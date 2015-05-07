@@ -7,6 +7,7 @@ import mockit.Mockit;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.rh.business.cargosalario.IndiceHistoricoManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.model.cargosalario.Indice;
@@ -24,6 +25,7 @@ public class IndiceHistoricoEditActionTest extends MockObjectTestCase
 	private IndiceHistoricoEditAction action;
 	private Mock manager;
 	private Mock indiceManager;
+	private Mock movimentacaoOperacaoPCManager;
 
     protected void setUp() throws Exception
     {
@@ -35,6 +37,9 @@ public class IndiceHistoricoEditActionTest extends MockObjectTestCase
 
         indiceManager = new Mock(IndiceManager.class);
         action.setIndiceManager((IndiceManager) indiceManager.proxy());
+        
+        movimentacaoOperacaoPCManager = new Mock(MovimentacaoOperacaoPCManager.class);
+        action.setMovimentacaoOperacaoPCManager((MovimentacaoOperacaoPCManager) movimentacaoOperacaoPCManager.proxy());
         
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
     }
@@ -66,6 +71,7 @@ public class IndiceHistoricoEditActionTest extends MockObjectTestCase
     	
     	manager.expects(once()).method("verifyData").with(eq(indiceHistorico.getId()), eq(indiceHistorico.getData()), eq(indice.getId())).will(returnValue(false));
     	manager.expects(once()).method("save").with(eq(indiceHistorico));
+    	movimentacaoOperacaoPCManager.expects(once()).method("enfileirar").withAnyArguments().isVoid();
 
     	assertEquals("success", action.insert());
     }
@@ -102,8 +108,8 @@ public class IndiceHistoricoEditActionTest extends MockObjectTestCase
     	action.setIndiceAux(indice);
     	
     	manager.expects(once()).method("verifyData").with(eq(indiceHistorico.getId()), eq(indiceHistorico.getData()), eq(indice.getId())).will(returnValue(false));
-    	
     	manager.expects(once()).method("update").with(eq(indiceHistorico));
+    	movimentacaoOperacaoPCManager.expects(once()).method("enfileirar").withAnyArguments().isVoid();
     	
     	assertEquals("success", action.update());
     }

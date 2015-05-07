@@ -529,6 +529,11 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		Empresa empresa = getDao().findById(empresaId);
 		movimentacaoOperacaoPCManager.enfileirar(ExcluirEmpresa.class, new EmpresaPC(empresa), empresa.isIntegradaPortalColaborador());
 	}
+	
+	public boolean existeEmpresaIntegradaComPortal(String grupoAC) 
+	{
+		return getDao().existeEmpresaIntegradaComPortal(grupoAC);
+	}
 
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
 		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;

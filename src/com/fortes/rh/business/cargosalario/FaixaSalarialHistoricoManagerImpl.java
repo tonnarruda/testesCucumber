@@ -300,8 +300,12 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		{
 			if(empresa.isAcIntegra())
 				acPessoalClientCargo.deleteFaixaSalarialHistorico(faixaSalarialHistoricoId, empresa);
+			
+			FaixaSalarial faixaSalarial = findFaixaSalarial(faixaSalarialHistoricoId);
 
 			remove(faixaSalarialHistoricoId);
+			
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoFaixaSalarial.class, faixaSalarial.getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());			
 
 			transactionManager.commit(status);
 		}
@@ -310,6 +314,10 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 			transactionManager.rollback(status);
 			throw e;
 		}
+	}
+
+	private FaixaSalarial findFaixaSalarial(Long faixaSalarialHistoricoId) {
+		return getDao().findFaixaSalarial(faixaSalarialHistoricoId);
 	}
 
 	public void removeByFaixas(Long[] faixaSalarialIds)

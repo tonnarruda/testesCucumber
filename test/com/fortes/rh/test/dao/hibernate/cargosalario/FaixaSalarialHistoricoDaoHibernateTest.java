@@ -761,6 +761,20 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
 	}
 	
+	public void testFindFaixaSalarial()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+		
+		FaixaSalarial faixaSalarialRetorno = faixaSalarialHistoricoDao.findFaixaSalarial(faixaSalarialHistorico.getId());
+		
+		assertEquals(faixaSalarial.getId(), faixaSalarialRetorno.getId());
+	}
+	
 	public GenericDao<FaixaSalarialHistorico> getGenericDao()
 	{
 		return faixaSalarialHistoricoDao;
