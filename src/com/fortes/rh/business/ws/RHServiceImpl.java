@@ -514,7 +514,7 @@ public class RHServiceImpl implements RHService
 		String parametros = "empregado: " + empregado.getCodigoAC() + "\nempresa: " + empregado.getEmpresaCodigoAC() + "\ngrupo AC: " + empregado.getGrupoAC();
 		try
 		{
-			colaboradorManager.updateEmpregado(empregado);
+			colaboradorManager.updateEmpregado(empregado, true);
 			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
@@ -533,7 +533,7 @@ public class RHServiceImpl implements RHService
 		{
 			try
 			{
-				Colaborador colaborador = colaboradorManager.updateEmpregado(empregado);
+				Colaborador colaborador = colaboradorManager.updateEmpregado(empregado, false);
 				if(colaborador == null)
 					return new FeedbackWebService(false, "Empregado não encontrado",  "Empregado não encontrado\n" + formataException(parametros, null));
 			}

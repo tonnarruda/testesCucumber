@@ -316,8 +316,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		if (!colaborador.isNaoIntegraAc() && empresa.isAcIntegra())
 			contratarColaboradorNoAC(colaborador, historico, empresa, true);
-
-		movimentacaoOperacaoPCManager.enfileirar(AtualizarColaboradorComHistorico.class, new ColaboradorPC(colaborador).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
+		else
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaboradorComHistorico.class, new ColaboradorPC(colaborador).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
 
 		gerenciadorComunicacaoManager.enviaAvisoContratacao(historico);
 
@@ -1348,7 +1348,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().updateInfoPessoaisByCpf(colaborador, empresaId);
 	}
 
-	public Colaborador updateEmpregado(TEmpregado empregado) throws Exception
+	public Colaborador updateEmpregado(TEmpregado empregado, boolean geraMovimentacaoOperacaoPC) throws Exception
 	{
 		Colaborador colaborador = null;
 		if(empregado.getId() != null && empregado.getId() != 0)
@@ -1360,7 +1360,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		{
 			colaborador = bindColaborador(colaborador, empregado);
 			getDao().update(colaborador);
-			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador), colaborador.getEmpresa().isIntegradaPortalColaborador());
+			
+			if(geraMovimentacaoOperacaoPC)
+				movimentacaoOperacaoPCManager.enfileirar(AtualizarColaborador.class, new ColaboradorPC(colaborador), colaborador.getEmpresa().isIntegradaPortalColaborador());
 		}
 
 		return colaborador;

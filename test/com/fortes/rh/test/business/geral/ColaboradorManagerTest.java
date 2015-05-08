@@ -1348,7 +1348,7 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorDao.expects(once()).method("update").with(eq(colaborador));
     	movimentacaoOperacaoPCManager.expects(once()).method("enfileirar").with(ANYTHING, ANYTHING, ANYTHING);
 
-    	assertEquals(colaborador, colaboradorManager.updateEmpregado(empregado));
+    	assertEquals(colaborador, colaboradorManager.updateEmpregado(empregado, true));
     }
 
 	private TEmpregado iniciaTEmpregado() {

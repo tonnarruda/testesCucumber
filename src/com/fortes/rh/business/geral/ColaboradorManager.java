@@ -112,7 +112,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findComNotaDoCurso(Collection<Long> colaboradorIds, Long turmaId);
 	public void updateInfoPessoais(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Empresa empresa) throws Exception;
 	public boolean updateInfoPessoaisByCpf(Colaborador colaborador, Long empresaId);
-	public Colaborador updateEmpregado(TEmpregado empregado) throws Exception;
+	public Colaborador updateEmpregado(TEmpregado empregado, boolean geraMovimentacaoOperacaoPC) throws Exception;
 	public void saveEmpregadosESituacoes(TEmpregado[] tEmpregados, TSituacao[] tSituacoes, Empresa empresa) throws Exception;
 	public Colaborador findByCodigoAC(String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
 	public Long findByUsuario(Long usuarioId);

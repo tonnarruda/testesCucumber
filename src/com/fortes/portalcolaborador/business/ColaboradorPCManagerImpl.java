@@ -17,6 +17,7 @@ import com.fortes.rh.util.SpringUtil;
 
 public class ColaboradorPCManagerImpl extends GenericManagerImpl<ColaboradorPC, ColaboradorPCDao> implements ColaboradorPCManager 
 {
+	@SuppressWarnings("deprecation")
 	public void enfileirarComHistoricos(URLTransacaoPC uRLTransacaoPC, Long empresaId, Long... colaboradoresIds)
 	{
 		if(empresaId != null || LongUtil.arrayIsNotEmpty(colaboradoresIds))
