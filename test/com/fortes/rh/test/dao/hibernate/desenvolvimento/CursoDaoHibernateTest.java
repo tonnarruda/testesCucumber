@@ -898,8 +898,13 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 				
 				AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso = new AproveitamentoAvaliacaoCurso();
 				aproveitamentoAvaliacaoCurso.setColaboradorTurma(colaboradorTurma);
+				
+				if (tipoAvaliacaoCurso == TipoAvaliacaoCurso.NOTA)
+					aproveitamentoAvaliacaoCurso.setValor(10.0);
+
 				aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso);
 			}
+
 		}
 		
 		return curso;

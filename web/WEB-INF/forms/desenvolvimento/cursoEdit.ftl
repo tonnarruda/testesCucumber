@@ -15,8 +15,17 @@
 
 <#include "../ftl/mascarasImports.ftl" />
 
+<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js"/>'></script>
 <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script><!-- Usado para o function.js cssClass=hora-->
+
+<script>
+	$(function() {
+		$('#avaliacaoCursoCheckToolTipHelp').qtip({
+			content: 'Não será possível desmarcar nenhuma das avaliações dos alunos, quando houver resposta para pelo menos uma das avaliações.'
+		});
+	});
+</script>
 
 <style>
 	<#if avaliacaoAlunoRespondida>
@@ -56,10 +65,10 @@
 		<#if avaliacaoAlunoRespondida>
 			<@frt.checkListBox label="Avaliações dos Alunos" name="avaliacaoCursoCheck" id="avaliacaoCursoCheck" list="avaliacaoCursoCheckList" readonly=true />
 			<div style="width: 500px;">
-				<strong>Não é possível alterar as Avaliações dos Alunos, pois já existem avaliações respondidas.</strong>
+				<strong>Não é possível desmarcar nenhuma das avaliações dos alunos, pois já existe resposta para pelo menos uma das avaliações acima.</strong>
 			</div>
 		<#else>
-			<@frt.checkListBox label="Avaliações dos Alunos" name="avaliacaoCursoCheck" id="avaliacaoCursoCheck" list="avaliacaoCursoCheckList" filtro="true" readonly=false />
+			<@frt.checkListBox label="Avaliações dos Alunos" name="avaliacaoCursoCheck" id="avaliacaoCursoCheck" list="avaliacaoCursoCheckList" filtro="true" readonly=false tooltipHelp="true"/>
 		</#if>
 
 		<@ww.hidden name="curso.id" />

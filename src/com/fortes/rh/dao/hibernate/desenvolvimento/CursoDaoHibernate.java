@@ -485,6 +485,10 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		
 		criteria.add(Expression.eq("join.curso.id", cursoId));
 		
+		if(tipoAvaliacaoCurso == TipoAvaliacaoCurso.NOTA){ 
+			criteria.add(Expression.not(Expression.eq("a.valor", 0.0)));
+		}
+		
 		return ((Integer) criteria.uniqueResult()) > 0;
 	}
 }

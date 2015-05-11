@@ -9,9 +9,12 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.fortes.rh.util.ArquivoUtil;
+
 @SuppressWarnings("serial")
 public class CheckListBoxTag extends TagSupport
 {
+	private String id = "";
 	private String name = ""; // nome do componente
 	private String label = ""; // label do componente
 	private String list = ""; // elementos checks
@@ -25,6 +28,7 @@ public class CheckListBoxTag extends TagSupport
 	private boolean filtro = false;
 	private boolean showTitle = false;
 	private boolean selectAtivoInativo = false;
+	private boolean tooltipHelp = false;
 
 	public CheckListBoxTag()
 	{
@@ -66,8 +70,12 @@ public class CheckListBoxTag extends TagSupport
 				clss += " " + liClass;
 					
 			checkGroup.append("<li id=\"wwgrp_"+ name +"\" class=\"" + clss + "\"> <div id=\"wwlbl_"+ name +"\" class=\"wwlbl\"> ");
-			checkGroup.append("<label for=\""+ name +"\" class=\"desc\"> "+ labelFormatado +" </label> </div>\n <div id=\"wwctrl_"+ name +"\" class=\"wwctrl\">\n");
-
+			checkGroup.append("<label for=\""+ name +"\" class=\"desc\"> "+ labelFormatado +" </label>");
+			
+			if (tooltipHelp)
+				checkGroup.append("<img id=\""+id+"ToolTipHelp\" src=\"/"+ArquivoUtil.getContextName()+"/imgs/help.gif\" width=\"16\" height=\"16\" style=\"margin-bottom: -3px;\" />");
+			
+			checkGroup.append("</div>\n <div id=\"wwctrl_"+ name +"\" class=\"wwctrl\">\n");
 			checkGroup.append("<div class='listCheckBoxContainer' "+  dimension + "> <div class='listCheckBoxBarra'>");
 
 			if (filtro)
@@ -144,6 +152,14 @@ public class CheckListBoxTag extends TagSupport
 		}
 
 		return SKIP_BODY;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getList() {
@@ -229,7 +245,11 @@ public class CheckListBoxTag extends TagSupport
 	public void setLiClass(String liClass) {
 		this.liClass = liClass;
 	}
-	
+
+	public void setTooltipHelp(String tooltipHelp) {
+		this.tooltipHelp = Boolean.valueOf(tooltipHelp);
+	}
+
 	public boolean isShowTitle()
 	{
 		return showTitle;
