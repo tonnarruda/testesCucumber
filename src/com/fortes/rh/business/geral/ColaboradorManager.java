@@ -204,7 +204,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC, boolean semcodigoAc);
 	public void desvinculaCandidato(Long candidatoId);
 	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId, Long[] areasIdsPorResponsavel);
-	public void removeComDependencias(Long id) throws Exception;
+	public void removeComDependencias(Colaborador colaborador, Empresa empresa) throws Exception;
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds);
 	public Collection<Colaborador> findColaboradoresByCodigoAC(Long empresaId, boolean joinComHistorico, String... codigosACColaboradores);
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId);

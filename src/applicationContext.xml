@@ -358,7 +358,7 @@
 		<ref bean="cronTriggerlembreteHabilitacaoAVencer" />
 		<ref bean="cronTriggerImportarUltimasNoticias" />
 		<ref bean="cronTriggerProcessarOperacaoPC" />
-		<!--<ref bean="cronTriggerprocessarTransacaoPC" /> -->
+		<ref bean="cronTriggerprocessarTransacaoPC" />
       </list>
     </property>
   </bean>

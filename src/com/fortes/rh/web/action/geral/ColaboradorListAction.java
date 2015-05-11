@@ -308,7 +308,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		try 
 		{
 			if (getUsuarioLogado().getId().equals(1L))
-				colaboradorManager.removeComDependencias(colaborador.getId());
+				colaboradorManager.removeComDependencias(colaborador, getEmpresaSistema());
 			else
 				colaboradorManager.remove(colaborador, getEmpresaSistema());
 		} 

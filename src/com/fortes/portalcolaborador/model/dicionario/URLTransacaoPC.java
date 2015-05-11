@@ -7,7 +7,8 @@ public enum URLTransacaoPC
 	ATUALIZAR_HISTORICO_COLABORADOR(3, "/api/v1/colaboradores/atualizar_historico.json", "PUT"),
 	ATUALIZAR_EMPRESA(4, "/api/v1/empresas/atualizar.json", "PUT"),
 	ENVIAR_EMAIL(5, "/api/v1/enviar_email.json", "POST"),
-	REMOVER_EMPRESA(6, "/api/v1/empresas/remover.json", "PUT");
+	REMOVER_EMPRESA(6, "/api/v1/empresas/remover.json", "PUT"),
+	REMOVER_COLABORADOR(7, "/api/v1/colaboradores/remover.json", "PUT");
 
 	private Integer id;
 	private String url;

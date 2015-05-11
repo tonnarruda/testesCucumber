@@ -530,12 +530,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.cursos"), "cursos");
 		p.add(Projections.property("c.desligado"), "desligado");
 		p.add(Projections.property("c.dataDesligamento"), "dataDesligamento");
+		p.add(Projections.property("c.dataSolicitacaoDesligamento"), "dataSolicitacaoDesligamento");
 		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
 		p.add(Projections.property("c.observacao"), "observacao");
 		p.add(Projections.property("c.observacaoDemissao"), "observacaoDemissao");
+		p.add(Projections.property("c.motivoDemissao"), "motivoDemissao");
 		p.add(Projections.property("c.demissaoGerouSubstituicao"), "demissaoGerouSubstituicao");
 		p.add(Projections.property("c.vinculo"), "vinculo");
 		p.add(Projections.property("c.naoIntegraAc"), "naoIntegraAc");
+		p.add(Projections.property("c.solicitanteDemissao.id"), "solicitanteDemissaoId");
 		p.add(Projections.property("c.pessoal.estadoCivil"), "pessoalEstadoCivil");
 		p.add(Projections.property("c.pessoal.escolaridade"), "pessoalEscolaridade");
 		p.add(Projections.property("c.pessoal.mae"), "pessoalMae");
@@ -592,6 +595,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("emp.grupoAC"), "empresaGrupoAC");
 		p.add(Projections.property("emp.campoExtraColaborador"), "campoExtraColaborador");
 		p.add(Projections.property("emp.cnpj"), "empresaCnpj");
+		p.add(Projections.property("emp.integradaPortalColaborador"), "empresaIntegradaPortalColaborador");
 		p.add(Projections.property("ce.id"), "projectionCamposExtrasId");
 		p.add(Projections.property("ce.texto1"), "projectionTexto1");
 		p.add(Projections.property("ce.texto2"), "projectionTexto2");

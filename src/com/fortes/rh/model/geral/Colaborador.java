@@ -1771,6 +1771,16 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		empresa.setAcIntegra(acIntegra);
 	}
 
+	public void setEmpresaIntegradaPortalColaborador(Boolean empresaIntegradaPortalColaborador)
+	{
+		criarEmpresa();
+		
+		if(empresaIntegradaPortalColaborador == null)
+			empresaIntegradaPortalColaborador = false;
+		
+		empresa.setIntegradaPortalColaborador(empresaIntegradaPortalColaborador);;
+	}
+
 	public void setEmpresaEmailRemetente(String emailRemetente)
 	{
 		criarEmpresa();

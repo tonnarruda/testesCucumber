@@ -516,7 +516,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		
 		if (!integradaPortalColaboradorAnterior)
 		{
-			movimentacaoOperacaoPCManager.enfileirar(ExportarEmpresa.class, new EmpresaPC(empresa).getIdentificadoresToJson(), empresa.isAcIntegra());
+			movimentacaoOperacaoPCManager.enfileirar(ExportarEmpresa.class, new EmpresaPC(empresa).getIdentificadoresToJson(), empresa.isIntegradaPortalColaborador());
 			return "Empresa editada com sucesso. <br /> Estamos enviando os dados de sua empresa para o Portal do Colaborador. <br />" +
 					"Em breve você receberá um email de confimação. <br />  Email destino: "+ empresa.getEmailRespRH();
 		}

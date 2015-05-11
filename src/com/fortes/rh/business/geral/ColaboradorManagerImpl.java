@@ -34,6 +34,7 @@ import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.portalcolaborador.business.TransacaoPCManager;
 import com.fortes.portalcolaborador.business.operacao.AtualizarColaborador;
 import com.fortes.portalcolaborador.business.operacao.AtualizarColaboradorComHistorico;
+import com.fortes.portalcolaborador.business.operacao.ExcluirColaborador;
 import com.fortes.portalcolaborador.model.ColaboradorPC;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
@@ -1613,11 +1614,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			throw new FortesException(msg.toString());
 		}else{
 			Colaborador colaboradorTmp = removeColaboradorDependencias(colaborador);
-			if(empresa.isAcIntegra())
-			{
+			if(empresa.isAcIntegra()){
 				if( ! acPessoalClientColaborador.remove(colaboradorTmp, empresa))
 					throw new IntegraACException("Não foi possível remover o colaborador no AC Pessoal.");
 			}
+			
+			movimentacaoOperacaoPCManager.enfileirar(ExcluirColaborador.class, new ColaboradorPC(colaboradorTmp), empresa.isIntegradaPortalColaborador());
 		}
 	}
 
@@ -1635,7 +1637,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			
 			throw new FortesException(msg.toString());
 		}else{
-			removeColaboradorDependencias(colaborador);
+			Colaborador	colaboradorTmp = removeColaboradorDependencias(colaborador);
+			movimentacaoOperacaoPCManager.enfileirar(ExcluirColaborador.class, new ColaboradorPC(colaboradorTmp), colaboradorTmp.getEmpresa().isIntegradaPortalColaborador());
 		}
 		
 		gerenciadorComunicacaoManager.enviaMensagemCancelamentoContratacao(colaborador, mensagem);
@@ -1668,7 +1671,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		solicitacaoExameManager.removeByColaborador(colaborador.getId());
 		
-		Colaborador	colaboradorTmp = getDao().findColaboradorByIdProjection(colaborador.getId());
+		Colaborador	colaboradorTmp = getDao().findColaboradorById(colaborador.getId());
 
 		candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaborador.getId());
 		candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.INDIFERENTE, colaborador.getId());
@@ -2729,14 +2732,17 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findAguardandoDesligamento(empresaId, areasIdsPorResponsavel);
 	}
 
-	public void removeComDependencias(Long id) throws Exception
+	public void removeComDependencias(Colaborador colaborador, Empresa empresa) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = transactionManager.getTransaction(def);
 		try {
-			getDao().removeComDependencias(id);
-			mensagemManager.removerMensagensViculadasByColaborador(new Long[]{id});
+			colaborador = findColaboradorById(colaborador.getId());
+			getDao().removeComDependencias(colaborador.getId());
+			mensagemManager.removerMensagensViculadasByColaborador(new Long[]{colaborador.getId()});
+
+			movimentacaoOperacaoPCManager.enfileirar(ExcluirColaborador.class, new ColaboradorPC(colaborador), empresa.isIntegradaPortalColaborador());
 		}
 		catch (Exception e)	{
 			transactionManager.rollback(status);
