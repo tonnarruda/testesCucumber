@@ -263,6 +263,7 @@
 	<!-- Gera Atualizador -->
 	<target name="build_atualizador">
 		<ant dir="EquipeRH/FortesRH_Atualizador" antfile="gera_atualizador_build.xml">
+			<property name="tomcat.versao" value="Tomcat6" /> <!-- Versão do tomcat -->
 			<property name="fortesrh.war.file" location="${ant.project.name}/dist/fortesrh.war" /> <!-- Origem -->
 			<property name="fortesrh.pack.dir" location="${ant.project.name}/dist" /> <!-- Destino -->
 		</ant>
