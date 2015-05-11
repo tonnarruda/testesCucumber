@@ -268,6 +268,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (idCandidato != null)
 		{
 			candidatoManager.updateSetContratado(idCandidato, empresa.getId());
+			experienciaManager.removeCandidato(new Candidato(idCandidato, null));//vai ser salvo logo abaixo com id de candidato e colaborador, fazendo compartilhamento das experiências.
 
 			// Transfere as competências configuradas no candidato
 			Collection<ConfiguracaoNivelCompetencia> configuracoesNiveisCompetencias = configuracaoNivelCompetenciaManager.findByCandidato(idCandidato);
