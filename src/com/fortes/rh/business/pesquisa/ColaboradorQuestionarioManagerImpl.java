@@ -492,7 +492,7 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 
 	public boolean existeMesmoModeloAvaliacaoEmDesempenhoEPeriodoExperiencia(Long avaliacaoId)
 	{
-		Collection<ColaboradorQuestionario> colaboradorQuestionarios = getDao().findByAvaliacaoComQtdPeriodoExperienciaEDesempenho(avaliacaoId);
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = getDao().findByAvaliacaoComQtdDesempenhoEPeriodoExperiencia(avaliacaoId);
 		
 		for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios) {
 			if(colaboradorQuestionario.getQtdPeriodoExperiencia() > 0 && colaboradorQuestionario.getQtdAvaliacaoDesempenho() > 0)

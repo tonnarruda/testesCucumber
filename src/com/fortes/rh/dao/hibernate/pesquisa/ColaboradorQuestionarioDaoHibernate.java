@@ -1070,7 +1070,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return criteria.list();
 	}
 
-	public Collection<ColaboradorQuestionario> findByAvaliacaoComQtdPeriodoExperienciaEDesempenho(Long avaliacaoId)
+	public Collection<ColaboradorQuestionario> findByAvaliacaoComQtdDesempenhoEPeriodoExperiencia(Long avaliacaoId)
 	{
 		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
 		

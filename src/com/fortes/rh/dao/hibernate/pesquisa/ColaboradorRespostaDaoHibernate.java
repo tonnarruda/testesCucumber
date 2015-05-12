@@ -25,6 +25,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
@@ -33,7 +34,7 @@ import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
 @SuppressWarnings("unchecked")
 public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<ColaboradorResposta> implements ColaboradorRespostaDao
 {
-	public List<Object[]> countRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId)
+	public List<Object[]> countRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId, Character tipoModeloAvaliacao)
 	{
 		String whereEmpresa = "";
 		String whereAreas = "";
@@ -49,6 +50,8 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		String wherePeriodoFimSub = "";
 		String whereTurmaSub = "";
 		String whereTurma = "";
+		String whereColaboradorQuestionarioSub = "";
+		String whereColaboradorQuestionario = "";
 
 		if(empresaId != null && empresaId != -1)
 			whereEmpresa = "and c.empresa.id = :empresaId ";
@@ -94,6 +97,18 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 			whereTurmaSub = "and cqsub.turma.id = :turmaId ";
 			whereTurma = "and cq.turma.id = :turmaId ";			
 		}
+		
+		if(tipoModeloAvaliacao != null)
+		{
+			if(tipoModeloAvaliacao.equals(TipoModeloAvaliacao.DESEMPENHO)){
+				whereColaboradorQuestionarioSub = "   and cqsub.avaliacaoDesempenho.id is not null " ;
+				whereColaboradorQuestionario =  "   and cq.avaliacaoDesempenho.id is not null " ;
+			}
+			else if(tipoModeloAvaliacao.equals(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA)){
+				whereColaboradorQuestionarioSub = "   and cqsub.avaliacaoDesempenho.id is null " ;
+				whereColaboradorQuestionario =  "   and cq.avaliacaoDesempenho.id is null " ;
+			}
+		}
 
 		String queryHQL =	"select r.ordem, count(r.id), p.id, r.id, " +
 							"   (select count(crsub.pergunta.id) from ColaboradorResposta as crsub " +
@@ -107,6 +122,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 								wherePeriodoIniSub +
 								wherePeriodoFimSub +
 								whereTurmaSub +
+								whereColaboradorQuestionarioSub +
 							"   group by crsub.pergunta.id) " +
 							"from ColaboradorResposta cr " +
 							"left join cr.areaOrganizacional as a "	+
@@ -124,6 +140,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 							wherePeriodoIni +
 							wherePeriodoFim +
 							whereTurma +
+							whereColaboradorQuestionario +
 							whereEmpresa +
 							"group by r.ordem, p.id, r.id "+
 							"order by r.ordem ";
@@ -321,7 +338,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return criteria.list();
 	}
 	
-	public Collection<ColaboradorResposta> findInPerguntaIdsAvaliacao(Long[] perguntasIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long empresaId) 
+	public Collection<ColaboradorResposta> findInPerguntaIdsAvaliacao(Long[] perguntasIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long empresaId, Character tipoModeloAvaliacao) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"cr");
 		criteria.createCriteria("cr.colaboradorQuestionario", "cq", Criteria.LEFT_JOIN);
@@ -350,7 +367,11 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 
 		criteria.setProjection(p);
 
-			
+		if(tipoModeloAvaliacao != null && tipoModeloAvaliacao == TipoModeloAvaliacao.DESEMPENHO)
+			criteria.add(Expression.isNotNull("cq.avaliacaoDesempenho"));
+		else if(tipoModeloAvaliacao != null && tipoModeloAvaliacao == TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA)
+			criteria.add(Expression.isNull("cq.avaliacaoDesempenho"));
+		
 		if(perguntasIds != null && perguntasIds.length > 0)
 			criteria.add(Expression.in("p.id", perguntasIds));
 

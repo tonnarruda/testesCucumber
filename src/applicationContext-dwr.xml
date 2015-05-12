@@ -185,9 +185,7 @@
 	<bean id="solicitacaoEpiDWR" class="com.fortes.rh.web.dwr.SolicitacaoEpiDWR">
 		<property name="solicitacaoEpiManager" ref="solicitacaoEpiManager"/>
 	</bean>
-<!--
 	<bean id="colaboradorQuestionarioDWR" class="com.fortes.rh.web.dwr.ColaboradorQuestionarioDWR">
 		<property name="colaboradorQuestionarioManager" ref="colaboradorQuestionarioManager"/>
 	</bean>
-	-->
 </beans>

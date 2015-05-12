@@ -22,10 +22,10 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	@SuppressWarnings("rawtypes")
 	List countRespostas(Long perguntaId, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId);
 	Collection<ColaboradorResposta> findInPerguntaIds(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areaIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Questionario questionario, Long empresaId);
-	Collection<ColaboradorResposta> findInPerguntaIdsAvaliacao(Long[] perguntasIds, Long[] areasIds,  Date periodoIni, Date periodoFim, Long empresaId);
+	Collection<ColaboradorResposta> findInPerguntaIdsAvaliacao(Long[] perguntasIds, Long[] areasIds,  Date periodoIni, Date periodoFim, Long empresaId, Character tipoModeloAvaliacao);
 	@Audita(operacao="Resposta", auditor=ColaboradorRespostaAuditorCallbackImpl.class)
 	void salvaQuestionarioRespondido(String respostas, Questionario questionario, Long colaboradorId, Long turmaId, char vinculo, Date respondidaEm, Long colaboradorQuestionarioId, boolean inserirFichaMedica) throws Exception;
-	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areaIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId);
+	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areaIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Long empresaId, Character tipoModeloAvaliacao);
 	Collection<ColaboradorResposta> findRespostasColaborador(Long questionarioId, Boolean aplicarPorAspecto);
 	Collection<ColaboradorResposta> findByQuestionarioColaborador(Long questionarioId, Long colaboradorId, Long turmaId, Long colaboradorQuestionarioId);
 	Collection<ColaboradorResposta> findByQuestionarioCandidato(Long questionarioId, Long candidatoId, Long colaboradorQuestionarioId);

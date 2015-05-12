@@ -14,7 +14,6 @@ import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.pesquisa.RespostaManager;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
-import com.fortes.rh.dao.pesquisa.PerguntaDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
@@ -131,7 +130,6 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
     	colaboradorRespostas.add(colaboradorResposta2);
     	
     	Collection<ColaboradorResposta> colabRespostas1 = Arrays.asList(colaboradorResposta1);
-//    	Collection<ColaboradorResposta> colabRespostas2 = Arrays.asList(colaboradorResposta2);
     	
     	Avaliacao avaliacao = AvaliacaoFactory.getEntity(3L);
     	
@@ -150,7 +148,7 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
     	
     	questionarioManager.expects(once()).method("montaResultadosQuestionarios").will(returnValue(resultadoQuestionarios));
     	
-    	Collection<ResultadoQuestionario> resultado = avaliacaoManager.montaResultado(perguntas, null, null, null, null, avaliacao, null);
+    	Collection<ResultadoQuestionario> resultado = avaliacaoManager.montaResultado(perguntas, null, null, null, null, avaliacao, null, null);
     	assertEquals(2, resultado.size());
     	assertEquals(1, ((ResultadoQuestionario)resultado.toArray()[0]).getColabRespostas().size());
     }
@@ -164,7 +162,7 @@ public class AvaliacaoManagerTest extends MockObjectTestCase
 		Exception exception=null;
 		
 		try {
-			avaliacaoManager.montaResultado(perguntas, null, null, null, null, avaliacao, null);
+			avaliacaoManager.montaResultado(perguntas, null, null, null, null, avaliacao, null, null);
 		} catch (Exception e) {
 			exception=e;
 		}

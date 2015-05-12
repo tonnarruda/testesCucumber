@@ -478,8 +478,8 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
     	countRespostas.add(new Object[]{2,3,382L,102L,3});
     	countRespostas.add(new Object[]{2,2,384L,104L,3});
 
-    	colaboradorRespostaDao.expects(once()).method("countRespostas").with(new Constraint[]{eq(perguntasIds), ANYTHING, eq(areasIds), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(countRespostas));
-    	Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, null, areasIds, null, null, null, false, null, null);
+    	colaboradorRespostaDao.expects(once()).method("countRespostas").with(new Constraint[]{eq(perguntasIds), ANYTHING, eq(areasIds), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(countRespostas));
+    	Collection<QuestionarioResultadoPerguntaObjetiva> resultadosObjetivas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, null, areasIds, null, null, null, false, null, null, null);
 
     	assertEquals(3, resultadosObjetivas.size());
     	for (QuestionarioResultadoPerguntaObjetiva resultado : resultadosObjetivas)

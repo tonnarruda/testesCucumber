@@ -276,7 +276,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         if(colaboradorRespostas.isEmpty())
         	throw new Exception("Nenhuma pergunta foi respondida.");
         
-        Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, null);
+        Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, null, null);
        
         if(questionario.isAnonimo() && questionario.getTipo() == TipoQuestionario.PESQUISA ) {
         	ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBean("parametrosDoSistemaManager");

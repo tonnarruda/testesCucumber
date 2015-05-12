@@ -13,6 +13,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AspectoDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PerguntaDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorQuestionarioDWR.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
@@ -44,9 +45,25 @@
 			DWRUtil.useLoadingMessage('Carregando...');
 			PerguntaDWR.getPerguntas(createListPerguntas, questionarioId);
 			AspectoDWR.getAspectosId(createListAspectos, questionarioId);
-			ColaboradorQuestionarioDWR.getAspectosId(createListAspectos, questionarioId);
 		}
 		
+		function exibeTipoModeloAvaliacao()
+		{
+			ColaboradorQuestionarioDWR.existeModeloAvaliacaoEmDesempnhoEPeriodoExperiencia(exibeTelaTipoModeloAvaliacao, $('#avaliacaoExperiencia').val());
+		}
+		
+		function exibeTelaTipoModeloAvaliacao(existeModeloAvaliacaoEmDesempnhoEPeriodoExperiencia)
+		{
+			if(existeModeloAvaliacaoEmDesempnhoEPeriodoExperiencia) {
+				$('#liTipoModeloAvaliacao').show();
+				$('#tipoModeloAvaliacao').attr('checked', 'checked');
+			}
+			else {
+				$('#liTipoModeloAvaliacao').hide();
+				$('#divTipoModeloAvaliacao input:radio').removeAttr('checked');
+			}
+		}
+
 		function createListPerguntas(data)
 		{
 			addChecks('perguntasCheck',data)
@@ -70,6 +87,8 @@
 		
 		$(document).ready(function($)
 		{
+			$('#liTipoModeloAvaliacao').hide();
+			
 			var empresa = $('#empresa').val();
 			populaArea(empresa);
 			
@@ -92,11 +111,24 @@
 	<@ww.actionmessage />
 
 		<@ww.form name="form" action="imprimeResultado.action" onsubmit="${validarCampos}" method="POST">
-			<@ww.select label="Modelo de Avaliação" required="true" name="avaliacaoExperiencia.id" id="avaliacaoExperiencia" list="" listKey="id" listValue="titulo" headerKey="" headerValue="Selecione..." onchange="populaPesquisaAspecto(this.value);"/>
+			<@ww.select label="Modelo de Avaliação" required="true" name="avaliacaoExperiencia.id" id="avaliacaoExperiencia" list="" listKey="id" listValue="titulo" headerKey="" headerValue="Selecione..." onchange="populaPesquisaAspecto(this.value);exibeTipoModeloAvaliacao(this.value);"/>
+			<li id="liTipoModeloAvaliacao" style="width: 505px;">
+				<fieldset>
+					<@ww.div >
+						Este modelo de avalição está sendo utilizado <br />nos dois tipos de avalições citados abaixo.<br /><br />
+						Escolha um desses tipos:<br />
+					</@ww.div>
+					<@ww.div id="divTipoModeloAvaliacao" cssClass="radio">
+						<input id="tipoModeloAvaliacao" name="tipoModeloAvaliacao" type="radio" value="D" checked/><label>Avaliação Desempenho</label>
+						<input id="tipoModeloAvaliacao" name="tipoModeloAvaliacao" type="radio" value="A"/><label>Acomp. de Período de Experiência</label>
+					</@ww.div>
+				</fieldset>
+				<br />
+			</li>	
 
 			<@ww.datepicker label="Período" name="periodoIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${periodoIniFormatado}"/>
 			<@ww.datepicker label="" name="periodoFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${periodoFimFormatado}"/>
-
+			
 			<@ww.select label="Empresa" name="empresa.id" id="empresaId" listKey="id" listValue="nome" list="empresas" headerKey="-1" headerValue="Todas" cssClass="selectEmpresa" onchange="populaArea(this.value);"/>
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 			<@frt.checkListBox label="Exibir apenas os Aspectos" name="aspectosCheck" id="aspectosCheck" list="aspectosCheckList" filtro="true"/>

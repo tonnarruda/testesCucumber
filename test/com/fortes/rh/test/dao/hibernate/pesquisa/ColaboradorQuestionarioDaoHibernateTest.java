@@ -1333,7 +1333,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		colaboradorQuestionario3.setAvaliacao(modeloAvaliacaoDes);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario3);
 		
-		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findByAvaliacaoComQtdPeriodoExperienciaEDesempenho(modeloAvaliacaoPerExp.getId());
+		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findByAvaliacaoComQtdDesempenhoEPeriodoExperiencia(modeloAvaliacaoPerExp.getId());
 		
 		assertEquals(1, retorno.size());
 		assertEquals(modeloAvaliacaoPerExp.getId(), ((ColaboradorQuestionario)retorno.toArray()[0]).getAvaliacao().getId());

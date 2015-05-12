@@ -70,6 +70,7 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	private boolean agruparPorAspectos;
 	private Collection<ResultadoQuestionario> resultados;
 	private boolean compartilharColaboradores;
+	private Character tipoModeloAvaliacao;
 	
 	public String prepareResultado()
 	{
@@ -100,10 +101,7 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	    		return Action.INPUT;
 	    	}
 	   	   	
-	    	TipoModeloAvaliacao tipo = new TipoModeloAvaliacao();
-	    	String tipoRelatorio = tipo.get(avaliacaoExperiencia.getTipoModeloAvaliacao());
-	    	
-	    	parametros = RelatorioUtil.getParametrosRelatorio(tipoRelatorio, getEmpresaSistema(), avaliacaoExperiencia.getTitulo());
+	    	parametros = RelatorioUtil.getParametrosRelatorio(defineModeloDeAvaliacaoDoRelatorio(), getEmpresaSistema(), avaliacaoExperiencia.getTitulo());
 	    	parametros.put("AGRUPAR_ASPECTO", agruparPorAspectos);
 	    	parametros.put("EXIBIR_CABECALHO", exibirCabecalho);
 	    	parametros.put("EXIBIR_RESPOSTAS_SUBJETIVAS", true);
@@ -116,12 +114,12 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	    	Long[] perguntasIds = clu.convertCollectionToArrayIds(perguntas);
 	    	Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
 	    	
-    		resultados = avaliacaoManager.montaResultado(perguntas, perguntasIds, areaIds, periodoIni, periodoFim, avaliacaoExperiencia, empresa.getId());
+    		resultados = avaliacaoManager.montaResultado(perguntas, perguntasIds, areaIds, periodoIni, periodoFim, avaliacaoExperiencia, empresa.getId(), tipoModeloAvaliacao);
     		parametros.put("TOTAL_COLAB_RESP", avaliacaoExperiencia.getTotalColab());
     		
     		String obsAval = "";
     		if(exibirObsAvaliadores)
-    			obsAval = avaliacaoManager.montaObsAvaliadores(colaboradorRespostaManager.findInPerguntaIdsAvaliacao(perguntasIds, areaIds, periodoIni, periodoFim, empresa.getId()));
+    			obsAval = avaliacaoManager.montaObsAvaliadores(colaboradorRespostaManager.findInPerguntaIdsAvaliacao(perguntasIds, areaIds, periodoIni, periodoFim, empresa.getId(), tipoModeloAvaliacao));
     		parametros.put("OBS_AVALIADOS", obsAval);
 		}
 		catch (Exception e)
@@ -134,6 +132,16 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 
     	return Action.SUCCESS;
     }
+
+	private String defineModeloDeAvaliacaoDoRelatorio()
+	{
+		TipoModeloAvaliacao tipo = new TipoModeloAvaliacao();
+		
+		if(tipoModeloAvaliacao == null)
+			return tipo.get(avaliacaoExperiencia.getTipoModeloAvaliacao());
+		else
+			return tipo.get(tipoModeloAvaliacao);
+	}
 
 	public Avaliacao getAvaliacaoExperiencia()
 	{
@@ -316,5 +324,10 @@ public class AvaliacaoExperienciaEditAction extends MyActionSupportList
 	public void setColaboradorRespostaManager(
 			ColaboradorRespostaManager colaboradorRespostaManager) {
 		this.colaboradorRespostaManager = colaboradorRespostaManager;
+	}
+
+	public void setTipoModeloAvaliacao(Character tipoModeloAvaliacao)
+	{
+		this.tipoModeloAvaliacao = tipoModeloAvaliacao;
 	}
 }
