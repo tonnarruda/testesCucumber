@@ -109,7 +109,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
     	Long[] areasIds = new Long[]{};
 
-    	colaboradorRespostaDao.expects(once()).method("countRespostas").with(new Constraint[]{ANYTHING, ANYTHING, eq(areasIds), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(lista));
+    	colaboradorRespostaDao.expects(once()).method("countRespostas").with(new Constraint[]{ANYTHING, ANYTHING, eq(areasIds), ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(lista));
 
     	assertEquals(lista, colaboradorRespostaManager.countRespostas(pergunta.getId(), null, areasIds, null, null, null));
     }

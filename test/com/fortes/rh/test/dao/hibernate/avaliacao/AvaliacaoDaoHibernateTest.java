@@ -50,62 +50,54 @@ public class AvaliacaoDaoHibernateTest extends GenericDaoHibernateTest<Avaliacao
 		this.avaliacaoDao = avaliacaoDao;
 	}
 	
-	public void testFindAllSelect()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		
-		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
-		avaliacao.setAtivo(true);
-		avaliacao.setEmpresa(empresa);
-		avaliacao.setTipoModeloAvaliacao(TipoModeloAvaliacao.SOLICITACAO);
-		avaliacao.setTitulo("rrrrr dias");
-		avaliacaoDao.save(avaliacao);
-		
-		Avaliacao avaliacao2 = AvaliacaoFactory.getEntity();
-		avaliacao2.setAtivo(true);
-		avaliacao2.setEmpresa(empresa);
-		avaliacao2.setTipoModeloAvaliacao(TipoModeloAvaliacao.DESEMPENHO);
-		avaliacao2.setTitulo("60 dias");
-		avaliacaoDao.save(avaliacao2);
-
-		Avaliacao avaliacao3 = AvaliacaoFactory.getEntity();
-		avaliacao3.setAtivo(true);
-		avaliacao3.setEmpresa(empresa);
-		avaliacao3.setTipoModeloAvaliacao(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA);
-		avaliacao3.setTitulo("100 dias");
-		avaliacaoDao.save(avaliacao3);
-
-		Avaliacao avaliacao4 = AvaliacaoFactory.getEntity();
-		avaliacao4.setAtivo(true);
-		avaliacao4.setEmpresa(empresa);
-		avaliacao4.setTipoModeloAvaliacao(TipoModeloAvaliacao.AVALIACAO_DESEMPENHO);
-		avaliacao4.setTitulo("600 dias");
-		avaliacaoDao.save(avaliacao4);
-		
-		Avaliacao avaliacao5 = AvaliacaoFactory.getEntity();
-		avaliacao5.setAtivo(true);
-		avaliacao5.setEmpresa(empresa);
-		avaliacao5.setTipoModeloAvaliacao(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA);
-		avaliacao5.setTitulo("50 dias");
-		avaliacaoDao.save(avaliacao5);
-				
-		assertEquals(1, avaliacaoDao.findAllSelect(null, null, empresa.getId(), true, TipoModeloAvaliacao.SOLICITACAO, null).size());
-		assertEquals(4, avaliacaoDao.findAllSelect(null, null, empresa.getId(), true, TipoModeloAvaliacao.DESEMPENHO, null).size());
-		assertEquals(2, avaliacaoDao.findAllSelect(null, null, empresa.getId(), true, TipoModeloAvaliacao.DESEMPENHO, "60").size());
-	}
-	
 	public void testGetCount()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
+		preparaTesteFindAllSelectEGetCount(empresa);
+		
+		assertEquals(new Integer(1), avaliacaoDao.getCount(empresa.getId(), true, TipoModeloAvaliacao.SOLICITACAO, null));
+		assertEquals(new Integer(1), avaliacaoDao.getCount(empresa.getId(), false, TipoModeloAvaliacao.SOLICITACAO, null));
+		assertEquals(new Integer(2), avaliacaoDao.getCount(empresa.getId(), null, TipoModeloAvaliacao.SOLICITACAO, null));
+		assertEquals(new Integer(3), avaliacaoDao.getCount(empresa.getId(), true, TipoModeloAvaliacao.DESEMPENHO, null));
+		assertEquals(new Integer(1), avaliacaoDao.getCount(empresa.getId(), null, TipoModeloAvaliacao.DESEMPENHO, "60"));
+		assertEquals(new Integer(1), avaliacaoDao.getCount(empresa.getId(), true, TipoModeloAvaliacao.AVALIACAO_DESEMPENHO, null));
+		assertEquals(new Integer(2), avaliacaoDao.getCount(empresa.getId(), true, TipoModeloAvaliacao.AVALIACAO_ALUNO, null));
+		assertEquals(new Integer(2), avaliacaoDao.getCount(empresa.getId(), true, TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, null));
+	}
+	
+	public void testFindAllSelect()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		preparaTesteFindAllSelectEGetCount(empresa);
+				
+		assertEquals(1, avaliacaoDao.findAllSelect(null, null, empresa.getId(), true, TipoModeloAvaliacao.SOLICITACAO, null).size());
+		assertEquals(1, avaliacaoDao.findAllSelect(null, null, empresa.getId(), false, TipoModeloAvaliacao.SOLICITACAO, null).size());
+		assertEquals(3, avaliacaoDao.findAllSelect(null, null, empresa.getId(), true, TipoModeloAvaliacao.DESEMPENHO, null).size());
+		assertEquals(1, avaliacaoDao.findAllSelect(null, null, empresa.getId(), true, TipoModeloAvaliacao.DESEMPENHO, "60").size());
+		assertEquals(1, avaliacaoDao.findAllSelect(null, null, empresa.getId(), true, TipoModeloAvaliacao.AVALIACAO_DESEMPENHO, null).size());
+		assertEquals(2, avaliacaoDao.findAllSelect(null, null, empresa.getId(), true, TipoModeloAvaliacao.AVALIACAO_ALUNO, null).size());
+		assertEquals(2, avaliacaoDao.findAllSelect(null, null, empresa.getId(), true, TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, null).size());
+	}
+	
+	private void preparaTesteFindAllSelectEGetCount(Empresa empresa)
+	{
 		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
 		avaliacao.setAtivo(true);
 		avaliacao.setEmpresa(empresa);
 		avaliacao.setTipoModeloAvaliacao(TipoModeloAvaliacao.SOLICITACAO);
-		avaliacao.setTitulo("rrrrr dias");
+		avaliacao.setTitulo("30 dias");
 		avaliacaoDao.save(avaliacao);
+
+		Avaliacao avaliacao1 = AvaliacaoFactory.getEntity();
+		avaliacao1.setAtivo(false);
+		avaliacao1.setEmpresa(empresa);
+		avaliacao1.setTipoModeloAvaliacao(TipoModeloAvaliacao.SOLICITACAO);
+		avaliacao1.setTitulo("45 dias");
+		avaliacaoDao.save(avaliacao1);
 		
 		Avaliacao avaliacao2 = AvaliacaoFactory.getEntity();
 		avaliacao2.setAtivo(true);
@@ -113,14 +105,14 @@ public class AvaliacaoDaoHibernateTest extends GenericDaoHibernateTest<Avaliacao
 		avaliacao2.setTipoModeloAvaliacao(TipoModeloAvaliacao.DESEMPENHO);
 		avaliacao2.setTitulo("60 dias");
 		avaliacaoDao.save(avaliacao2);
-		
+
 		Avaliacao avaliacao3 = AvaliacaoFactory.getEntity();
 		avaliacao3.setAtivo(true);
 		avaliacao3.setEmpresa(empresa);
 		avaliacao3.setTipoModeloAvaliacao(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA);
 		avaliacao3.setTitulo("100 dias");
 		avaliacaoDao.save(avaliacao3);
-		
+
 		Avaliacao avaliacao4 = AvaliacaoFactory.getEntity();
 		avaliacao4.setAtivo(true);
 		avaliacao4.setEmpresa(empresa);
@@ -135,9 +127,19 @@ public class AvaliacaoDaoHibernateTest extends GenericDaoHibernateTest<Avaliacao
 		avaliacao5.setTitulo("50 dias");
 		avaliacaoDao.save(avaliacao5);
 		
-		assertEquals(new Integer(1), avaliacaoDao.getCount(empresa.getId(), true, TipoModeloAvaliacao.SOLICITACAO, null));
-		assertEquals(new Integer(4), avaliacaoDao.getCount(empresa.getId(), true, TipoModeloAvaliacao.DESEMPENHO, null));
-		assertEquals(new Integer(2), avaliacaoDao.getCount(empresa.getId(), true, TipoModeloAvaliacao.DESEMPENHO, "60"));
+		Avaliacao avaliacao6 = AvaliacaoFactory.getEntity();
+		avaliacao6.setAtivo(true);
+		avaliacao6.setEmpresa(empresa);
+		avaliacao6.setTipoModeloAvaliacao(TipoModeloAvaliacao.AVALIACAO_ALUNO);
+		avaliacao6.setTitulo("Tipo aluno");
+		avaliacaoDao.save(avaliacao6);
+		
+		Avaliacao avaliacao7 = AvaliacaoFactory.getEntity();
+		avaliacao7.setAtivo(true);
+		avaliacao7.setEmpresa(empresa);
+		avaliacao7.setTipoModeloAvaliacao(TipoModeloAvaliacao.AVALIACAO_ALUNO);
+		avaliacao7.setTitulo("Tipo aluno");
+		avaliacaoDao.save(avaliacao7);	
 	}
 
 	public void testFindAllSelectComAvaliacaoDesempenho()
