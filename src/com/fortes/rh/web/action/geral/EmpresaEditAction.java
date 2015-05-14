@@ -22,6 +22,7 @@ import com.fortes.model.type.FileUtil;
 import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.portalcolaborador.business.TransacaoPCManager;
 import com.fortes.portalcolaborador.business.operacao.AtualizarEmpresa;
+import com.fortes.portalcolaborador.business.operacao.ExcluirEmpresa;
 import com.fortes.portalcolaborador.model.EmpresaPC;
 import com.fortes.portalcolaborador.model.dicionario.TransacaoPCMensagens;
 import com.fortes.rh.business.geral.CidadeManager;
@@ -218,8 +219,12 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 //				empresa.setIntegradaPortalColaborador(integradaPortalColaboradorAnterior);
 //				addActionWarning(conexaoPC);
 //			}
-		} else if ( excluirDadosPortalColaborador ) {
-			empresaManager.removeEmpresaPc(empresa.getId());
+		} else if ( integradaPortalColaboradorAnterior )  {
+			if ( excluirDadosPortalColaborador ) {
+				empresaManager.removeEmpresaPc(empresa.getId());
+			} else {
+				movimentacaoOperacaoPCManager.enfileirar(AtualizarEmpresa.class, new EmpresaPC(empresa), integradaPortalColaboradorAnterior);
+			}
 		}
 		
 		boolean tavaIntegradaComAC = empresaManager.findIntegracaoAC(empresa.getId());

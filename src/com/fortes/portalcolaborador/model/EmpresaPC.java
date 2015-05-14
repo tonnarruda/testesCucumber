@@ -13,6 +13,7 @@ public class EmpresaPC extends AbstractAdapterPC
 	private String baseCnpj;
 	@SerializedName("email_responsavel")
 	private String emailResponsavel;
+	private boolean integrada;
 
 	public EmpresaPC() {
 
@@ -24,6 +25,7 @@ public class EmpresaPC extends AbstractAdapterPC
 		this.nome 		= empresa.getNome();
 		this.baseCnpj 	= empresa.getCnpj();
 		this.emailResponsavel 	= empresa.getEmailRespRH();		
+		this.integrada 	= empresa.isIntegradaPortalColaborador();		
 	}
 	
 	public String toJson()
@@ -69,5 +71,13 @@ public class EmpresaPC extends AbstractAdapterPC
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Boolean getIntegrada() {
+		return integrada;
+	}
+
+	public void setIntegrada(Boolean integrada) {
+		this.integrada = integrada;
 	}
 }
