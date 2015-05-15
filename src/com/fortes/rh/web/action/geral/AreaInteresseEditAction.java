@@ -2,6 +2,8 @@ package com.fortes.rh.web.action.geral;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fortes.rh.business.geral.AreaInteresseManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -10,6 +12,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
+import com.muantech.rollbar.java.RollbarNotifier;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ModelDriven;
 
@@ -30,7 +33,15 @@ public class AreaInteresseEditAction extends MyActionSupportEdit implements Mode
 	}
 
 	private void prepare() throws Exception {
-
+		RollbarNotifier.init("https://api.rollbar.com/api/1/item/", "fbc508088d0b46ce8ba9070c28655c5b", "production");
+		Map<String,Object> context = new HashMap<String,Object>();
+	    context.put("platform","Java");
+		try {
+			throw new Exception("Teste Rollbar");
+		} catch (Exception e) {
+			RollbarNotifier.notify(e, context);
+		}
+		
 		if(areaInteresse != null && areaInteresse.getId() != null) {
 			areaInteresse = areaInteresseManager.findByIdProjection(areaInteresse.getId());
 			areaInteresse.setAreasOrganizacionais(areaOrganizacionalManager.getAreasByAreaInteresse(areaInteresse.getId()));
