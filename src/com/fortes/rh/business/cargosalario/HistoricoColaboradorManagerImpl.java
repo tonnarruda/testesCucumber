@@ -806,7 +806,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoColaborador.class, new ColaboradorPC(new Colaborador("",colaboradorId)).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
 	}
 
-	public void removeHistoricoAndReajusteAC(HistoricoColaborador historicoColaborador) throws Exception
+	public void removeHistoricoAndReajusteAC(HistoricoColaborador historicoColaborador, Empresa empresa) throws Exception
 	{
 		if(!existeHistoricoAprovado(historicoColaborador.getId(), historicoColaborador.getColaborador().getId()))
 			throw new Exception("Não existe outro histórico aprovado pelo AC Pessoal. Não é permitido excluir.");
@@ -826,6 +826,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 			if(reajusteColaboradorId != null)
 				reajusteColaboradorManager.remove(reajusteColaboradorId);
+			
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoColaborador.class, new ColaboradorPC(historicoColaborador.getColaborador()).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
 
 			transactionManager.commit(status);
 		}
@@ -1354,9 +1356,13 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
  		return valorTotalFolha;
 	}
 
-	public void deleteSituacaoByMovimentoSalarial(Long movimentoSalarialId, Long empresaId)
+	public void deleteSituacaoByMovimentoSalarial(Long movimentoSalarialId, Empresa empresa)
 	{
-		getDao().deleteSituacaoByMovimentoSalarial(movimentoSalarialId, empresaId);
+		getDao().deleteSituacaoByMovimentoSalarial(movimentoSalarialId, empresa.getId());
+		Long[] colaboradoresIds = getDao().findColaboradorIdByMovimentacaoSalarial(movimentoSalarialId.intValue(), empresa.getId());
+		
+		for (Long colaboradorId : colaboradoresIds) 
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoColaborador.class, new ColaboradorPC(new Colaborador("", colaboradorId)).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
 	}
 
 	public Collection<HistoricoColaborador> findImprimirListaFrequencia(Estabelecimento estabelecimento, Date votacaoIni, Date votacaoFim) {
@@ -1544,6 +1550,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	
 	public Long[] findColaboradorIdByIndiceId(Long indiceId) {
 		return getDao().findColaboradorIdByIndiceId(indiceId);
+	}
+	
+	public Collection<Colaborador> findColaboradoresByTabelaReajuste(Long tabelaReajusteColaboradorId){
+		return getDao().findColaboradoresByTabelaReajuste(tabelaReajusteColaboradorId);
 	}
 	
 	public void setEmpresaManager(EmpresaManager empresaManager) {

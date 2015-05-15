@@ -56,5 +56,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	Long[] findIntegradaPortalColaborador();
 	String enfileirarEmpresaPCAndColaboradorPC(Empresa empresa, Boolean integradaPortalColaboradorAnterior) throws Exception;
 	void removeEmpresaPc(Long empresaId);
-	boolean existeEmpresaIntegradaComPortal(String grupoAC);
+	boolean existeEmpresaIntegradaPortalColaboradorByGrupoAC(String grupoAC);
 }

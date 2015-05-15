@@ -712,7 +712,7 @@ public class RHServiceImpl implements RHService
 			if(empresa == null || empresa.getId() == null)
 				return new FeedbackWebService(false, "Erro ao excluir a situação, empresa não encontrada.", formataException(parametros, null));
 			
-			historicoColaboradorManager.deleteSituacaoByMovimentoSalarial(movimentoSalarialId.longValue(), empresa.getId());
+			historicoColaboradorManager.deleteSituacaoByMovimentoSalarial(movimentoSalarialId.longValue(), empresa);
 			return new FeedbackWebService(true);
 		}
 		catch (ConstraintViolationException e)
@@ -739,8 +739,10 @@ public class RHServiceImpl implements RHService
 		try
 		{
 			HistoricoColaborador historico = historicoColaboradorManager.findByAC(situacao.getDataFormatada(), situacao.getEmpregadoCodigoAC(),  situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
-			if(historico != null)
-				historicoColaboradorManager.removeHistoricoAndReajusteAC(historico);
+			if(historico != null){
+				Empresa empresa = empresaManager.findByCodigoAC(situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
+				historicoColaboradorManager.removeHistoricoAndReajusteAC(historico, empresa);
+			}
 			return new FeedbackWebService(true);
 		}
 		catch (ConstraintViolationException e)
@@ -909,7 +911,7 @@ public class RHServiceImpl implements RHService
 			else
 				indiceHistoricoManager.save(indiceHistorico);
 			
-			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoIndice.class, indice.getIdentificadorToJson(), empresaManager.existeEmpresaIntegradaComPortal(tindiceHistorico.getGrupoAC()));
+			enfileiraPortalColaboradorByIndice(indice);
 
 			return new FeedbackWebService(true);
 		}
@@ -930,6 +932,11 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
+	private void enfileiraPortalColaboradorByIndice(Indice indice) 
+	{
+		movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoIndice.class, indice.getIdentificadorToJson(),empresaManager.existeEmpresaIntegradaPortalColaboradorByGrupoAC(indice.getGrupoAC()));
+	}
+
 	public FeedbackWebService removerIndiceHistorico(String data, String indiceCodigo, String grupoAC)
 	{
 		String parametros = "indice: " + indiceCodigo + "\ndata: " + data + "\ngrupoAC: " + grupoAC;
@@ -939,7 +946,7 @@ public class RHServiceImpl implements RHService
 		{
 			try {
 				if(indiceHistoricoManager.remove(DateUtil.montaDataByString(data), indice.getId())){
-					movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoIndice.class, indice.getIdentificadorToJson(), empresaManager.existeEmpresaIntegradaComPortal(grupoAC));
+					enfileiraPortalColaboradorByIndice(indice);
 					return new FeedbackWebService(true);
 				}else
 					return new FeedbackWebService(false, "Erro: Histórico do índice não encontrado.", formataException(parametros, null));

@@ -524,15 +524,13 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return null;
 	}
 	
-	public void removeEmpresaPc(Long empresaId) 
-	{
+	public void removeEmpresaPc(Long empresaId){
 		Empresa empresa = getDao().findById(empresaId);
 		movimentacaoOperacaoPCManager.enfileirar(ExcluirEmpresa.class, new EmpresaPC(empresa), empresa.isIntegradaPortalColaborador());
 	}
 	
-	public boolean existeEmpresaIntegradaComPortal(String grupoAC) 
-	{
-		return getDao().existeEmpresaIntegradaComPortal(grupoAC);
+	public boolean existeEmpresaIntegradaPortalColaboradorByGrupoAC(String grupoAC){
+		return getDao().existeEmpresaIntegradaPortalColaboradorByGrupoAC(grupoAC);
 	}
 
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {

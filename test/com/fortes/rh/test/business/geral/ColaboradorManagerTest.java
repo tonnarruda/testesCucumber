@@ -20,6 +20,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import remprot.RPClient;
 
 import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
+import com.fortes.portalcolaborador.business.operacao.ExcluirColaborador;
+import com.fortes.portalcolaborador.model.ColaboradorPC;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
@@ -1074,12 +1076,13 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	colaboradorPeriodoExperienciaAvaliacaoManager.expects(once()).method("removeConfiguracaoAvaliacaoPeriodoExperiencia").withAnyArguments().isVoid();
     	mensagemManager.expects(once()).method("removeMensagensColaborador").with(eq(colaborador.getId()),eq(null)).isVoid();
     	colaboradorDao.expects(once()).method("remove").with(eq(colaborador.getId())).isVoid();
-    	colaboradorDao.expects(once()).method("findColaboradorByIdProjection").with(eq(colaborador.getId())).will(returnValue(colaborador));
+    	colaboradorDao.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
     	transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING).will(returnValue(new MockTransactionStatus()));
     	acPessoalClientColaborador.expects(once()).method("remove").with(ANYTHING, ANYTHING).will(returnValue(true));
     	mensagemManager.expects(once()).method("removerMensagensViculadasByColaborador").withAnyArguments().isVoid();
     	transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
     	solicitacaoExameManager.expects(once()).method("removeByColaborador").with(eq(colaborador.getId()));
+    	movimentacaoOperacaoPCManager.expects(once()).method("enfileirar").with(ANYTHING, ANYTHING, ANYTHING);
 
     	Exception exception = null;
     	try

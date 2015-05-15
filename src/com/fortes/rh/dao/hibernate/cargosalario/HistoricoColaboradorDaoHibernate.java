@@ -23,6 +23,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.SituacaoColaborador;
@@ -32,6 +33,8 @@ import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.util.ArrayUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
@@ -619,6 +622,26 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return criteria.list();
 	}
 
+	public Collection<Colaborador> findColaboradoresByTabelaReajuste(Long tabelaReajusteColaboradorId)
+	{
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		criteria.createCriteria("c.historicoColaboradors", "hc");
+		criteria.createCriteria("hc.reajusteColaborador", "rc");
+		criteria.createCriteria("rc.tabelaReajusteColaborador", "tr");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+
+		criteria.setProjection(Projections.distinct(p));
+
+		criteria.add(Expression.eq("tr.id", tabelaReajusteColaboradorId));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+
+		return criteria.list();
+	}
+	
 	public Collection<HistoricoColaborador> findPendenciasByHistoricoColaborador(Long empresaId, Integer... statusAc)
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
@@ -1167,6 +1190,22 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 		query.executeUpdate();		
 	}
+	
+	public Long[] findColaboradorIdByMovimentacaoSalarial(Integer movimentoSalarialId, Long empresaId) {
+		
+		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
+		criteria.createCriteria("hc.colaborador", "c");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"));
+		
+		criteria.setProjection(Projections.distinct(p));
+
+		criteria.add(Expression.eq("hc.movimentoSalarialId", movimentoSalarialId));
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+
+		return new CollectionUtil<Long>().convertCollectionToArrayLong(criteria.list());
+	}
 
 	public void setMotivo(Long[] historicoColaboradorIds, String tipo) 
 	{
@@ -1490,6 +1529,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		
 		criteria.setProjection(Projections.distinct(p));
 		criteria.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
+		criteria.add(Expression.eq("hc.tipoSalario", TipoAplicacaoIndice.CARGO));
 		criteria.add(Expression.eq("fs.id", faixaId));
 		
 		return LongUtil.collectionStringToArrayLong(criteria.list());
@@ -1497,28 +1537,49 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 
 	public Long[] findColaboradorIdByIndiceId(Long indiceId) 
 	{
-		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
-		criteria.createCriteria("hc.indice", "i", Criteria.LEFT_JOIN);
-		criteria.createCriteria("hc.colaborador", "c", Criteria.LEFT_JOIN);
-		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.LEFT_JOIN);
-		criteria.createCriteria("fs.faixaSalarialHistoricos", "fsh", Criteria.LEFT_JOIN);
-		criteria.createCriteria("fsh.indice", "ifs", Criteria.LEFT_JOIN);
+		StringBuffer sql = new StringBuffer();
+		sql.append("select distinct (cast(colabId as text)) from ( ");
+		sql.append("select c.id as colabId ");
+		sql.append("from HistoricoColaborador h ");
+		sql.append("left join indice i on h.indice_id=i.id  ");
+		sql.append("left outer join colaborador c on h.colaborador_id=c.id  ");
+		sql.append("left outer join empresa e on c.empresa_id=e.id  ");
+		sql.append("where h.status = :statusHistorico  ");
+		sql.append("and i.id = :indiceId  ");
+		sql.append("and h.tipoSalario = :tipoSalario ");
+		sql.append("and e.integradaPortalColaborador = :integradaPortalColaborador ");
+		sql.append("union ");
+		sql.append("select c.id as colabId ");
+		sql.append("from HistoricoColaborador h ");
+		sql.append("left outer join faixasalarial f on h.faixasalarial_id=f.id  ");
+		sql.append("left join faixasalarialhistorico fsh on fsh.faixasalarial_id = f.id ");
+		sql.append("left join indice i on i.id = fsh.indice_id ");
+		sql.append("left outer join Colaborador c on h.colaborador_id=c.id  ");
+		sql.append("left outer join Empresa e on c.empresa_id=e.id  ");
+		sql.append("where h.status = :statusHistorico  ");
+		sql.append("and i.id = :indiceId  ");
+		sql.append("and h.tipoSalario = :tipoSalarioHistorico ");
+		sql.append("and fsh.tipo = :tipoSalario ");
+		sql.append("and fsh.status = :statusHistorico ");
+		sql.append("and e.integradaPortalColaborador = :integradaPortalColaborador ");
+		sql.append(") as colaboradores order by colabId ");
 
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("c.id"));
+		Query query = getSession().createSQLQuery(sql.toString());
 		
-		criteria.setProjection(Projections.distinct(p));
-		criteria.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
-		criteria.add(Expression.eq("fsh.status", StatusRetornoAC.CONFIRMADO));
-		criteria.add(Expression.or(
-									Expression.eq("i.id", indiceId),
-									Expression.eq("ifs.id", indiceId)
-									));
-		criteria.add(Expression.ne("hc.tipoSalario", TipoAplicacaoIndice.VALOR));
-		criteria.add(Expression.eq("fsh.tipo", TipoAplicacaoIndice.INDICE));
+		query.setLong("indiceId", indiceId);
+		query.setInteger("statusHistorico", StatusRetornoAC.CONFIRMADO);
+		query.setInteger("tipoSalario", TipoAplicacaoIndice.INDICE);
+		query.setInteger("tipoSalarioHistorico", TipoAplicacaoIndice.CARGO);
+		query.setBoolean("integradaPortalColaborador", true);
 		
-		criteria.addOrder(Order.asc("c.id"));
+		Collection<Object[]> resultado = query.list();
+		Collection<String> lista = new ArrayList<String>();
 		
-		return LongUtil.collectionStringToArrayLong(criteria.list());
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
+			Object res = it.next();
+			lista.add((String)res);
+		}
+
+		return LongUtil.collectionStringToArrayLong(lista);			
 	}
 }

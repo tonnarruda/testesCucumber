@@ -456,7 +456,8 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		criteria.addOrder(Order.asc("e.nome"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
-		return criteria.list();	}
+		return criteria.list();	
+	}
 
 	public boolean isControlaRiscoPorAmbiente(Long empresaId) 
 	{
@@ -492,7 +493,8 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		query.executeUpdate();
 	}
 
-	public Long[] findIntegradaPortalColaborador() {
+	public Long[] findIntegradaPortalColaborador() 
+	{
 		Criteria criteria = getSession().createCriteria(Empresa.class, "e");
 
 		ProjectionList p = Projections.projectionList().create();
@@ -507,12 +509,12 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		return colIds.toArray(compIds);
 	}
 
-	public boolean existeEmpresaIntegradaComPortal(String grupoAC) 
+	public boolean existeEmpresaIntegradaPortalColaboradorByGrupoAC(String grupoAC) 
 	{
 		Criteria criteria = getSession().createCriteria(Empresa.class, "e");
 		criteria.add(Expression.eq("e.integradaPortalColaborador", true));
 		criteria.add(Expression.eq("e.grupoAC", grupoAC));
-		
+
 		return criteria.list().size() > 0;
 	}
 }

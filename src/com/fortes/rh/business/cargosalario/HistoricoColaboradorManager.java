@@ -64,7 +64,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public HistoricoColaborador bindSituacao(TSituacao situacao, HistoricoColaborador historicoColaborador) throws Exception;
 	public HistoricoColaborador findByAC(Date data, String empregadoCodigoAC, String empresaCodigoAC, String grupoAC);
 	public HistoricoColaborador cancelarSituacao(TSituacao situacao, String mensagem) throws Exception;
-	public void removeHistoricoAndReajusteAC(HistoricoColaborador historico) throws Exception;
+	public void removeHistoricoAndReajusteAC(HistoricoColaborador historico, Empresa empresa) throws Exception;
 	public boolean verificaDataPrimeiroHistorico(Colaborador colaborador);
 	public boolean verificaPrimeiroHistoricoAdmissao(boolean editarHistorico, HistoricoColaborador historicoColaborador, Colaborador colaborador);
 	public void removeColaborador(Long colaboradorId);
@@ -79,7 +79,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public boolean updateAmbienteEFuncao(HistoricoColaborador historicoColaborador) throws Exception;
 	public Collection<HistoricoColaborador> getHistoricosComAmbienteEFuncao(Long colaboradorId);
 	public Double getValorTotalFolha(Long empresaId, Date data);
-	public void deleteSituacaoByMovimentoSalarial(Long movimentoSalarialId, Long empresaId);
+	public void deleteSituacaoByMovimentoSalarial(Long movimentoSalarialId, Empresa empresa);
 	public Collection<HistoricoColaborador> findImprimirListaFrequencia(Estabelecimento estabelecimento, Date votacaoIni, Date votacaoFim);
 	public void setMotivo(Long[] historicoColaboradorIds, String tipoMotivo);
 	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataIni, Date dataFim, Double percentualDissidio, Long empresaId, String[] cargosIds, String[] areasIds, String[] estabelecimentosIds);
@@ -101,4 +101,5 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public Collection<HistoricoColaborador> findHistoricosConfirmados(Long empresaId, Long... colaboradoresIds);
 	public Long[] findColaboradorIdByFaixaId(Long faixaId);
 	public Long[] findColaboradorIdByIndiceId(Long indiceId);
+	public Collection<Colaborador> findColaboradoresByTabelaReajuste(Long tabelaReajusteColaboradorId);
 }

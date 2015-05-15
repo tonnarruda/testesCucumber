@@ -89,6 +89,16 @@ public class Indice extends AbstractModel implements Serializable, Cloneable
 		}
 	}
 
+	public String getIdentificadorToJson()
+	{
+		Gson gson = new Gson();
+		
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.add("id", gson.toJsonTree(getId()));
+		
+		return jsonObject.toString();
+	}
+
 	public String getCodigoAC()
 	{
 		return codigoAC;
@@ -145,15 +155,5 @@ public class Indice extends AbstractModel implements Serializable, Cloneable
 
 	public void setReajusteIndices(Collection<ReajusteIndice> reajusteIndices) {
 		this.reajusteIndices = reajusteIndices;
-	}
-
-	public String getIdentificadorToJson()
-	{
-		Gson gson = new Gson();
-		
-		JsonObject jsonObject = new JsonObject();
-		jsonObject.add("id", gson.toJsonTree(getId()));
-		
-		return jsonObject.toString();
 	}
 }

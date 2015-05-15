@@ -1037,6 +1037,50 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		
 		HistoricoColaborador historicoColaboradorDaTabela = HistoricoColaboradorFactory.getEntity();
 		historicoColaboradorDaTabela.setColaborador(colaboradorNaTabela);
+		historicoColaboradorDaTabela.setReajusteColaborador(reajusteColaborador1);
+		historicoColaboradorDaTabela.setData(DateUtil.criarDataMesAno(01, 02, 2000));
+		historicoColaboradorDao.save(historicoColaboradorDaTabela);
+		
+		HistoricoColaborador historicoColaboradorForaDaTabela = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorForaDaTabela.setReajusteColaborador(reajusteColaborador2);
+		historicoColaboradorForaDaTabela.setColaborador(colaboradorForaDaTabela);
+		historicoColaboradorForaDaTabela.setData(DateUtil.criarDataMesAno(01, 02, 2000));
+		historicoColaboradorDao.save(historicoColaboradorForaDaTabela);
+		
+		Collection<Colaborador> retorno = historicoColaboradorDao.findColaboradoresByTabelaReajuste(tabelaReajusteColaborador1.getId());
+		assertEquals(1, retorno.size());
+		assertEquals(colaboradorNaTabela.getId(), ((Colaborador)retorno.toArray()[0]).getId());
+	}
+	
+	public void testFindColaboradoresByTabelaReajuste()
+	{
+		Colaborador colaboradorNaTabela = ColaboradorFactory.getEntity();
+		colaboradorNaTabela.setNome("colaboradorNaTabela");
+		colaboradorDao.save(colaboradorNaTabela);
+		
+		Colaborador colaboradorForaDaTabela = ColaboradorFactory.getEntity();
+		colaboradorForaDaTabela.setNome("colaboradorForaDaTabela");
+		colaboradorDao.save(colaboradorForaDaTabela);
+		
+		TabelaReajusteColaborador tabelaReajusteColaborador1 = TabelaReajusteColaboradorFactory.getEntity();
+		tabelaReajusteColaborador1.setData(DateUtil.criarDataMesAno(01, 02, 2000));
+		tabelaReajusteColaboradorDao.save(tabelaReajusteColaborador1);
+		
+		TabelaReajusteColaborador tabelaReajusteColaborador2 = TabelaReajusteColaboradorFactory.getEntity();
+		tabelaReajusteColaborador2.setData(DateUtil.criarDataMesAno(01, 02, 2000));
+		tabelaReajusteColaboradorDao.save(tabelaReajusteColaborador2);
+		
+		ReajusteColaborador reajusteColaborador1 = ReajusteColaboradorFactory.getReajusteColaborador();
+		reajusteColaborador1.setColaborador(colaboradorNaTabela);
+		reajusteColaborador1.setTabelaReajusteColaborador(tabelaReajusteColaborador1);
+		reajusteColaboradorDao.save(reajusteColaborador1);
+
+		ReajusteColaborador reajusteColaborador2 = ReajusteColaboradorFactory.getReajusteColaborador();
+		reajusteColaborador2.setTabelaReajusteColaborador(tabelaReajusteColaborador2);
+		reajusteColaboradorDao.save(reajusteColaborador2);
+		
+		HistoricoColaborador historicoColaboradorDaTabela = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorDaTabela.setColaborador(colaboradorNaTabela);
 		historicoColaboradorDaTabela.setData(DateUtil.criarDataMesAno(01, 02, 2000));
 		historicoColaboradorDao.save(historicoColaboradorDaTabela);
 		
@@ -2061,6 +2105,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	public void testFindColaboradorIdByIndiceId()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setIntegradaPortalColaborador(true);
 		empresaDao.save(empresa);
 		
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
@@ -2116,11 +2161,41 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		montaSaveHistoricoColaborador(DateUtil.criarAnoMesDia(2007, 03, 1), marcelo, estabelecimento, areaOrganizacional, faixaSalarialA, TipoAplicacaoIndice.CARGO);
 		montaSaveHistoricoColaborador(DateUtil.criarAnoMesDia(2007, 04, 1), samuel, estabelecimento, areaOrganizacional, faixaSalarialB, TipoAplicacaoIndice.VALOR);
 
+		//migué para funcionar sql
+		historicoColaboradorDao.findAll();
+		
 		Long[] colaboradoresIds = historicoColaboradorDao.findColaboradorIdByIndiceId(indice.getId());
 
 		assertEquals(1, colaboradoresIds.length);
 		
 		assertEquals(marcelo.getId(), ((Long) colaboradoresIds[0]));
+	}
+
+	public void testeFindColaboradorIdByMovimentacaoSalarial(){
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador marcelo = ColaboradorFactory.getEntity();
+		marcelo.setEmpresa(empresa);
+		colaboradorDao.save(marcelo);
+		
+		Colaborador samuel = ColaboradorFactory.getEntity();
+		samuel.setEmpresa(empresa);
+		colaboradorDao.save(samuel);
+		
+		Integer movimentoSalarialId = 1;
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(marcelo);
+		historicoColaborador.setMovimentoSalarialId(movimentoSalarialId);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		HistoricoColaborador historicoColaboradorSamuel = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorSamuel.setColaborador(samuel);
+		historicoColaboradorDao.save(historicoColaboradorSamuel);
+		
+		assertEquals(1, historicoColaboradorDao.findColaboradorIdByMovimentacaoSalarial(movimentoSalarialId, empresa.getId()).length);
 	}
 	
 	public void setHistoricoColaboradorDao(HistoricoColaboradorDao historicoColaboradorDao)

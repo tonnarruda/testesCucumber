@@ -64,4 +64,6 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public Collection<HistoricoColaborador> findHistoricosConfirmados(Long empresaId, Long... colaboradoresIds);
 	public Long[] findColaboradorIdByFaixaId(Long faixaId);
 	public Long[] findColaboradorIdByIndiceId(Long indiceId);
+	public Long[] findColaboradorIdByMovimentacaoSalarial(Integer movimentoSalarialId, Long empresaId);
+	public Collection<Colaborador> findColaboradoresByTabelaReajuste(Long tabelaReajusteColaboradorId);
 }

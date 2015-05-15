@@ -13,6 +13,9 @@ import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
+import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
+import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoColaborador;
+import com.fortes.portalcolaborador.model.ColaboradorPC;
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.cargosalario.IndiceHistoricoManager;
@@ -63,6 +66,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 	Mock quantidadeLimiteColaboradoresPorCargoManager;
 	Mock faixaSalarialHistoricoManager;
 	Mock indiceHistoricoManager;
+	Mock movimentacaoOperacaoPCManager;
 
 	protected void setUp() throws Exception
 	{
@@ -74,6 +78,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		reajusteFaixaSalarialManager = new Mock(ReajusteFaixaSalarialManager.class);
 		faixaSalarialHistoricoManager = new Mock(FaixaSalarialHistoricoManager.class);
 		indiceHistoricoManager = new Mock(IndiceHistoricoManager.class);
+		movimentacaoOperacaoPCManager = new Mock(MovimentacaoOperacaoPCManager.class);
 
 		tabelaReajusteColaboradorDao = new Mock(TabelaReajusteColaboradorDao.class);
 		tabelaReajusteColaboradorManager.setDao((TabelaReajusteColaboradorDao) tabelaReajusteColaboradorDao.proxy());
@@ -85,6 +90,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		tabelaReajusteColaboradorManager.setReajusteFaixaSalarialManager((ReajusteFaixaSalarialManager) reajusteFaixaSalarialManager.proxy());
 		tabelaReajusteColaboradorManager.setFaixaSalarialHistoricoManager((FaixaSalarialHistoricoManager) faixaSalarialHistoricoManager.proxy());
 		tabelaReajusteColaboradorManager.setIndiceHistoricoManager((IndiceHistoricoManager) indiceHistoricoManager.proxy());
+		tabelaReajusteColaboradorManager.setMovimentacaoOperacaoPCManager((MovimentacaoOperacaoPCManager) movimentacaoOperacaoPCManager.proxy());
 		
 		colaboradorManager = mock(ColaboradorManager.class);
 		tabelaReajusteColaboradorManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
@@ -309,6 +315,7 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		reajusteDoMario.setEstabelecimentoProposto(estabelecimentoProposto);
 		
 		HistoricoColaborador historicoAtualDoMario = new HistoricoColaborador();
+		historicoAtualDoMario.setId(1L);
 		historicoAtualDoMario.setAreaOrganizacional(areaOrganizacionalProposta);
 		historicoAtualDoMario.setFaixaSalarial(faixaSalarial);
 		historicoAtualDoMario.setColaborador(mario);
@@ -324,22 +331,16 @@ public class TabelaReajusteColaboradorManagerTest extends MockObjectTestCase
 		
 		colaboradorManager.expects(once()).method("verificaColaboradoresSemCodigoAC").isVoid();
 		colaboradorManager.expects(once()).method("verificaColaboradoresDesligados").isVoid();
-
 		historicoColaboradorManager.expects(atLeastOnce()).method("getHistoricoAtual").with(eq(22L)).will(returnValue(historicoAtualDoAbreu));
 		historicoColaboradorManager.expects(atLeastOnce()).method("getHistoricoAtual").with(eq(11L)).will(returnValue(historicoAtualDoMario));
-		
 		historicoColaboradorManager.expects(once()).method("ajustaTipoSalario").with(new Constraint[]{ANYTHING, eq(TipoAplicacaoIndice.VALOR), ANYTHING, ANYTHING, eq(1000d)}).will(returnValue(historicoAtualDoAbreu));
 		historicoColaboradorManager.expects(once()).method("ajustaTipoSalario").with(new Constraint[]{ANYTHING, eq(TipoAplicacaoIndice.VALOR), ANYTHING, ANYTHING, eq(2000d)}).will(returnValue(historicoAtualDoMario));
-		
 		quantidadeLimiteColaboradoresPorCargoManager.expects(atLeastOnce()).method("validaLimite").withAnyArguments();
-		
-		historicoColaboradorManager.expects(atLeastOnce()).method("save").withAnyArguments();
-
+		historicoColaboradorManager.expects(atLeastOnce()).method("save").withAnyArguments().will(returnValue(historicoAtualDoMario));
 		tabelaReajusteColaboradorDao.expects(once()).method("updateSetAprovada").withAnyArguments();
-		
 		tabelaReajusteColaboradorDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
-		
 		acPessoalClientTabelaReajuste.expects(once()).method("aplicaReajuste").withAnyArguments();
+		movimentacaoOperacaoPCManager.expects(atLeastOnce()).method("enfileirar").withAnyArguments();
 
 		Exception exception = null;
 		try

@@ -192,6 +192,9 @@
     <property name="indiceHistoricoManager">
       <ref bean="indiceHistoricoManager" />
     </property>
+    <property name="movimentacaoOperacaoPCManager">
+      <ref bean="movimentacaoOperacaoPCManager" />
+    </property>    
   </bean>
   <bean id="tabelaReajusteColaboradorManager" parent="parentManager">
     <property name="proxyInterfaces">

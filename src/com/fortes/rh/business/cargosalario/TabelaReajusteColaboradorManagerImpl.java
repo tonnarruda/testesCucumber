@@ -5,6 +5,11 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
+import com.fortes.portalcolaborador.business.operacao.AtualizarColaboradorComHistorico;
+import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoColaborador;
+import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoIndice;
+import com.fortes.portalcolaborador.model.ColaboradorPC;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
@@ -21,6 +26,7 @@ import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoReajuste;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.CollectionUtil;
@@ -39,6 +45,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 	private AcPessoalClientTabelaReajusteInterface acPessoalClientTabelaReajuste;
 	private ColaboradorManager colaboradorManager;
 	private QuantidadeLimiteColaboradoresPorCargoManager quantidadeLimiteColaboradoresPorCargoManager;
+	private MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager;
 
 	//private final Boolean APROVADA = true;  - Descomentar se for necessário criar o método para encontrar tabelas aprovadas.
 	private final Boolean NAO_APROVADA = false;
@@ -154,6 +161,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), empresa.getId(), reajuste.getColaborador().getId());
 			
 			historicoColaborador = historicoColaboradorManager.save(historicoColaborador);
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoColaborador.class, new ColaboradorPC(historicoColaborador.getColaborador()).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
 
 			if(!reajuste.getColaborador().isNaoIntegraAc())
 				historicosAc.add(historicoColaborador);
@@ -218,6 +226,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 			indiceHistorico.setReajusteIndice(reajuste);
 
 			indiceHistoricoManager.save(indiceHistorico);
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoIndice.class, indiceHistorico.getIndice().getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
 		}
 		
 		getDao().updateSetAprovada(tabelaReajusteColaborador.getId(), true);
@@ -255,6 +264,12 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 					situacaosTmp.add(situacao);
 			}
 			
+			if(empresa.isIntegradaPortalColaborador()){
+				Collection<Colaborador> colaboradores = historicoColaboradorManager.findColaboradoresByTabelaReajuste(tabelaReajusteColaboradorId);
+				for (Colaborador colaborador : colaboradores) 
+					movimentacaoOperacaoPCManager.enfileirar(AtualizarColaboradorComHistorico.class, new ColaboradorPC(colaborador).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
+			}
+			
 			historicoColaboradorManager.remove(historicoIds);
 			
 			// garante que um erro no banco do RH levantará uma Exception antes de alterar o outro banco.
@@ -282,8 +297,10 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 	{
 		Collection<IndiceHistorico> historicos = indiceHistoricoManager.findByTabelaReajusteId(tabelaReajusteColaboradorId);
 		
-		for (IndiceHistorico indiceHistorico : historicos) 
+		for (IndiceHistorico indiceHistorico : historicos){ 
 			indiceHistoricoManager.remove(indiceHistorico.getId());
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoIndice.class, indiceHistorico.getIndice().getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
+		}
 		
 		getDao().updateSetAprovada(tabelaReajusteColaboradorId, false);
 	}
@@ -401,5 +418,10 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 	public void setIndiceHistoricoManager(IndiceHistoricoManager indiceHistoricoManager)
 	{
 		this.indiceHistoricoManager = indiceHistoricoManager;
+	}
+
+	public void setMovimentacaoOperacaoPCManager(
+			MovimentacaoOperacaoPCManager movimentacaoOperacaoPCManager) {
+		this.movimentacaoOperacaoPCManager = movimentacaoOperacaoPCManager;
 	}
 }

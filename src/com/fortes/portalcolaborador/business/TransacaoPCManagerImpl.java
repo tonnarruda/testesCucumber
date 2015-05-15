@@ -77,9 +77,6 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 	public void processarFila()
 	{
 		try {
-			if(!TransacaoPCMensagens.getDescricao(TransacaoPCMensagens.OK).equals(testarConexao()))
-				throw new Exception(testarConexao());
-			
 			transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
 			parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBeanOld("parametrosDoSistemaManager");
 			

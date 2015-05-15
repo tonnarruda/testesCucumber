@@ -439,7 +439,7 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		empresa2.setGrupoAC(grupoAC.getCodigo());
 		empresaDao.save(empresa2);
 		
-		assertTrue(empresaDao.existeEmpresaIntegradaComPortal(grupoAC.getCodigo()));
+		assertTrue(empresaDao.existeEmpresaIntegradaPortalColaboradorByGrupoAC(grupoAC.getCodigo()));
 	}
 
 	public void setCidadeDao(CidadeDao cidadeDao)
