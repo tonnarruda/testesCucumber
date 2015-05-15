@@ -276,7 +276,7 @@
 		
 		<delete dir="${tmpweb}" /> <!--Deleta diretorio temporario -->
 		
-		<antcall target="enviarEmail"/>
+		<antcall target="rumMigrate"/>
 	</target>
 	
 	<target name="getUltimoCommit">
@@ -322,5 +322,13 @@
 		  </message>
 		</mail>
 	</target>
-			
+	
+	<target name="rumMigrate">
+		<exec executable="ruby">
+		    <arg value="migrate.rb"/>
+		    <arg value="--db"/>
+		    <arg value="homologacao"/>
+		</exec>
+		<echo message="Migrate executada."/>
+	</target>
 </project>
