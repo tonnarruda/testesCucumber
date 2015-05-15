@@ -99,4 +99,5 @@ public interface RHService
 	//TRU
 	TAula[] getTreinamentosPrevistos(String empregadoCodigo, String empresaCodigo, String empresaGrupo, String dataIni, String dataFim);
 	TAula[] getTreinamentosCursados(String empregadoCodigo, String empresaCodigo, String empresaGrupo, String dataIni, String dataFim);
+	boolean existePesquisaParaSerRespondida(String empregadoCodigo, String empresaCodigo, String empresaGrupo);
 }
