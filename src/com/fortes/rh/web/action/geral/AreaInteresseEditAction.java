@@ -1,5 +1,6 @@
 package com.fortes.rh.web.action.geral;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -33,11 +34,11 @@ public class AreaInteresseEditAction extends MyActionSupportEdit implements Mode
 	}
 
 	private void prepare() throws Exception {
-		RollbarNotifier.init("https://api.rollbar.com/api/1/item/", "fbc508088d0b46ce8ba9070c28655c5b", "production");
+		RollbarNotifier.init("https://api.rollbar.com/api/1/item/", "ec888be98c904dac80fed9eef1c6c4d3", "production");
 		Map<String,Object> context = new HashMap<String,Object>();
 	    context.put("platform","Java");
 		try {
-			throw new Exception("Teste Rollbar");
+			throw new IOException("Erro ao gravar colaborador(teste rollbar).");
 		} catch (Exception e) {
 			RollbarNotifier.notify(e, context);
 		}
