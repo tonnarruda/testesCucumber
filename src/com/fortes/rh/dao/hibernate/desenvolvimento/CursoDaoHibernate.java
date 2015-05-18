@@ -8,7 +8,6 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -485,7 +484,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		
 		criteria.add(Expression.eq("join.curso.id", cursoId));
 		
-		if(tipoAvaliacaoCurso == TipoAvaliacaoCurso.NOTA){ 
+		if(tipoAvaliacaoCurso != TipoAvaliacaoCurso.AVALIACAO){ 
 			criteria.add(Expression.not(Expression.eq("a.valor", 0.0)));
 		}
 		

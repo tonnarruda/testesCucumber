@@ -849,35 +849,43 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		assertEquals(emp1.getId(), cursoDao.findEmpresaByCurso(curso.getId()).getId());
 	}
 	
-	public void testExisteAvaliacaoAlunoRespondida()
+	public void testExisteAvaliacaoAlunoRespondidaComResposta()
 	{
-		Curso curso1 = criaCurso(TipoAvaliacaoCurso.NOTA, true);
-		Curso curso2 = criaCurso(TipoAvaliacaoCurso.PORCENTAGEM, true);
-		Curso curso3 = criaCurso(TipoAvaliacaoCurso.AVALIACAO, true);
+		Curso curso1 = criaCurso(TipoAvaliacaoCurso.NOTA, true, 6.0);
+		Curso curso2 = criaCurso(TipoAvaliacaoCurso.PORCENTAGEM, true, 50.0);
+		Curso curso3 = criaCurso(TipoAvaliacaoCurso.AVALIACAO, true, null);
+		Curso curso4 = criaCurso(TipoAvaliacaoCurso.NOTA, true, 0.0);
+		Curso curso5 = criaCurso(TipoAvaliacaoCurso.PORCENTAGEM, true, 0.0);
 		
 		boolean existeAvaliacaoAluno1Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso1.getId(), TipoAvaliacaoCurso.NOTA); 
 		boolean existeAvaliacaoAluno2Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso2.getId(), TipoAvaliacaoCurso.PORCENTAGEM); 
 		boolean existeAvaliacaoAluno3Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso3.getId(), TipoAvaliacaoCurso.AVALIACAO); 
+		boolean existeAvaliacaoAluno4Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso4.getId(), TipoAvaliacaoCurso.NOTA); 
+		boolean existeAvaliacaoAluno5Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso5.getId(), TipoAvaliacaoCurso.PORCENTAGEM); 
 		
 		assertTrue("Avaliação por nota com resposta", existeAvaliacaoAluno1Respondida);
 		assertTrue("Avaliação por porcentagem com resposta", existeAvaliacaoAluno2Respondida);
 		assertTrue("Avaliação por avaliação com resposta", existeAvaliacaoAluno3Respondida);
+		assertFalse("Avaliação por nota com resposta 0", existeAvaliacaoAluno4Respondida);
+		assertFalse("Avaliação por porcentagem com resposta 0", existeAvaliacaoAluno5Respondida);
+	}
+
+	public void testExisteAvaliacaoAlunoRespondidaSemResposta()
+	{
+		Curso curso6 = criaCurso(TipoAvaliacaoCurso.NOTA, false, null);
+		Curso curso7 = criaCurso(TipoAvaliacaoCurso.PORCENTAGEM, false, null);
+		Curso curso8 = criaCurso(TipoAvaliacaoCurso.AVALIACAO, false, null);
 		
-		Curso curso4 = criaCurso(TipoAvaliacaoCurso.NOTA, false);
-		Curso curso5 = criaCurso(TipoAvaliacaoCurso.PORCENTAGEM, false);
-		Curso curso6 = criaCurso(TipoAvaliacaoCurso.AVALIACAO, false);
+		boolean existeAvaliacaoAluno6Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso6.getId(), TipoAvaliacaoCurso.NOTA); 
+		boolean existeAvaliacaoAluno7Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso7.getId(), TipoAvaliacaoCurso.PORCENTAGEM); 
+		boolean existeAvaliacaoAluno8Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso8.getId(), TipoAvaliacaoCurso.AVALIACAO); 
 		
-		boolean existeAvaliacaoAluno4Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso4.getId(), TipoAvaliacaoCurso.NOTA); 
-		boolean existeAvaliacaoAluno5Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso5.getId(), TipoAvaliacaoCurso.PORCENTAGEM); 
-		boolean existeAvaliacaoAluno6Respondida = cursoDao.existeAvaliacaoAlunoRespondida(curso6.getId(), TipoAvaliacaoCurso.AVALIACAO); 
-		
-		assertFalse("Avaliação por nota sem resposta", existeAvaliacaoAluno4Respondida);
-		assertFalse("Avaliação por porcentagem sem resposta", existeAvaliacaoAluno5Respondida);
-		assertFalse("Avaliação por avaliação sem resposta", existeAvaliacaoAluno6Respondida);
-		
+		assertFalse("Avaliação por nota sem resposta", existeAvaliacaoAluno6Respondida);
+		assertFalse("Avaliação por porcentagem sem resposta", existeAvaliacaoAluno7Respondida);
+		assertFalse("Avaliação por avaliação sem resposta", existeAvaliacaoAluno8Respondida);
 	}
 	
-	private Curso criaCurso(char tipoAvaliacaoCurso, boolean comResposta)
+	private Curso criaCurso(char tipoAvaliacaoCurso, boolean comResposta, Double valorResposta)
 	{
 		Curso curso = CursoFactory.getEntity();
 		cursoDao.save(curso);
@@ -898,9 +906,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 				
 				AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso = new AproveitamentoAvaliacaoCurso();
 				aproveitamentoAvaliacaoCurso.setColaboradorTurma(colaboradorTurma);
-				
-				if (tipoAvaliacaoCurso == TipoAvaliacaoCurso.NOTA)
-					aproveitamentoAvaliacaoCurso.setValor(10.0);
+				aproveitamentoAvaliacaoCurso.setValor(valorResposta);
 
 				aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso);
 			}
