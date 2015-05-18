@@ -61,6 +61,9 @@
 			<result name="input" type="redirect"><![CDATA[list.action?turma.id=${turma.id}&msgAlert=${msgAlert}&planoTreinamento=${planoTreinamento}]]></result>
 		</action>
 		<action name="listFiltro" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorTurmaEditAction" method="listFiltro">
+			<interceptor-ref name="defaultListStack">
+	    		<param name="scope.session">dataAdmissaoIni,dataAdmissaoFim,colaborador.nome,colaborador.matricula,estabelecimentosCheck,areasCheck,cargosCheck,showFilter</param>
+	    	</interceptor-ref>	
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorTurmaEdit.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorTurmaEdit.ftl</result>
 		</action>

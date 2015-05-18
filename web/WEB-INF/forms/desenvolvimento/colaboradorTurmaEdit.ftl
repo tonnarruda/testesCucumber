@@ -86,18 +86,6 @@
 			else 
 				document.formColab.submit();
 		}
-		
-		$(document).ready(function()
-		{
-			populaCargosByAreaVinculados();
-			
-			$('#cargosVinculadosAreas').click(function() {
-				populaCargosByAreaVinculados();
-			});
-			
-			$('#cargosVinculadosAreas').attr('checked', true);;
-			
-		});
 	</script>
 
 <#include "../ftl/showFilterImports.ftl" />
@@ -143,7 +131,7 @@
 			<@frt.checkListBox id="areasCheck" name="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" onClick="populaCargosByAreaVinculados();" selectAtivoInativo="true"/>
 			<@ww.checkbox label="Exibir somente os cargos vinculados às áreas organizacionais acima." id="cargosVinculadosAreas" name="" labelPosition="left"/>
 			<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" filtro="true" selectAtivoInativo="true"/>
-
+			
 			<input type="button" onclick="enviaForm();" value="" class="btnPesquisar grayBGE" />
 
 			<@ww.hidden name="colaboradorTurma.id" />
@@ -182,5 +170,23 @@
 		</#if>
 		<button onclick="window.location='list.action?turma.id=${turma.id}&curso.id=${turma.curso.id}&planoTreinamento=${planoTreinamento?string}'" class="btnVoltar"></button>
 	</div>
+	
+	<script type='text/javascript'>
+		$(document).ready(function()
+		{
+			$('#cargosVinculadosAreas').click(function() {
+				populaCargosByAreaVinculados();
+			});
+			
+			$('#cargosVinculadosAreas').attr('checked', true);
+			
+			$(cargosCheck).each(function(j, cargoCheck) {
+				id = "#checkGroupcargosCheck" + cargoCheck; 
+				$('id').attr('checked', true);
+			});
+			
+			populaCargosByAreaVinculados();
+		});
+	</script>
 </body>
 </html>
