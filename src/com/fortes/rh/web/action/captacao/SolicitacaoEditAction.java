@@ -222,7 +222,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 			areas = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaSistemaId, AreaOrganizacional.ATIVA, areaInativaId);
 		else
 			areas = areaOrganizacionalManager.findAllSelectOrderDescricaoByUsuarioId(empresaSistemaId, usuarioLogado.getId(), AreaOrganizacional.ATIVA, areaInativaId);
-    	
+		
     	estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 
 		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();

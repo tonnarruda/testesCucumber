@@ -462,20 +462,24 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 	public Collection<AreaOrganizacional> findAreasDoResponsavelCoResponsavel(Long usuarioId, Long empresaId, Boolean ativo, Collection<Long> areaInativaIds) 
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append("select a.id, monta_familia_area(a.id) as descricao from AreaOrganizacional a "); 
-		sql.append("inner join colaborador c on (c.id = a.responsavel_id or c.id = a.coResponsavel_id) ");
-		sql.append("inner join usuario u on u.id = c.usuario_id ");
-		sql.append("left join areaorganizacional am on am.id = a.areamae_id ");
-		sql.append("where u.id = :usuarioId ");
-		sql.append("and a.empresa_id = :empresaId ");
+//		sql.append("select a.id_area,  a.area_nome as descricao from monta_familia_areas_filhas(ao.id) as a ");
+//		sql.append("inner join areaorganizacional ao on (ao.id = a.id_area) ");
+//		sql.append("inner join colaborador c on (c.id = ao.responsavel_id or c.id = ao.coResponsavel_id) ");
+//		sql.append("inner join usuario u on u.id = c.usuario_id ");
+//		sql.append("left join areaorganizacional am on am.id = ao.areamae_id ");
+//		sql.append("where u.id = :usuarioId ");
+//		sql.append("and ao.empresa_id = :empresaId ");
+		
+		
+		sql.append("select * from monta_familia_areas_filhas_by_usuario_and_empresa(:usuarioId, :empresaId)");
 		
 		if(ativo != null)
 			if (areaInativaIds == null || areaInativaIds.isEmpty())
-				sql.append("and a.ativo = :ativo ");
+				sql.append("where areaativo = :ativo ");
 			else
-				sql.append("and (a.ativo = :ativo or a.id in (:areaInativaIds))");
+				sql.append("where (areaativo = :ativo or areaid in (:areaInativaIds))");
 		
-		sql.append("order by descricao");
+		sql.append("order by areanome");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		
@@ -489,6 +493,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 			query.setParameterList("areaInativaIds", areaInativaIds, Hibernate.LONG);
 		
 		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
+		
 		for (Iterator<Object[]> it = query.list().iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
