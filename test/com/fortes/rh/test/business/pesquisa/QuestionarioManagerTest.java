@@ -568,6 +568,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	colaboradorRespostaManager.expects(once()).method("existeRespostaSemCargo").with(eq( new Long[] { pergunta1.getId() } )).will(returnValue(false));
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
+    	colaboradorRespostaManager.expects(once()).method("apenasUmColaboradorRespondeuPesquisaAnonima").will(returnValue(false));
     	colaboradorQuestionarioManager.expects(once()).method("countByQuestionarioRespondido").with(eq(questionario.getId())).will(returnValue(colaboradorQuestionarios.size()));
     	
     	Exception exception = null;
@@ -609,7 +610,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 
     	ColaboradorQuestionario colaboradorQuestionario1 = ColaboradorQuestionarioFactory.getEntity(1L);
     	colaboradorQuestionario1.setQuestionario(questionario);
-
+    	
     	Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
     	colaboradorQuestionarios.add(colaboradorQuestionario1);
     	
@@ -617,6 +618,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	colaboradorRespostaManager.expects(once()).method("findInPerguntaIds").will(returnValue(colaboradorRespostas));
     	colaboradorRespostaManager.expects(once()).method("existeRespostaSemCargo").with(eq( new Long[] { pergunta1.getId() } )).will(returnValue(false));
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
+    	colaboradorRespostaManager.expects(once()).method("apenasUmColaboradorRespondeuPesquisaAnonima").will(returnValue(true));
     	colaboradorQuestionarioManager.expects(once()).method("countByQuestionarioRespondido").with(eq(questionario.getId())).will(returnValue(colaboradorQuestionarios.size()));
 
     	Exception exception = null;

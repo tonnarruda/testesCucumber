@@ -23,7 +23,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
-import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoPergunta;
@@ -192,7 +191,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 			wherePeriodoFim = desligamento ? "and c.dataDesligamento <= :periodoFim " : "and cq.respondidaEm <= :periodoFim ";
 		
 		if(turmaId != null)
-			whereTurma = "and cq.turma.id = :turmaId ";			
+			whereTurma = "and cq.turma.id = :turmaId ";
 		
 		String queryHQL =	"select r.ordem, count(r.id), p.id, r.id " +
 		"from ColaboradorResposta cr " +
@@ -718,6 +717,44 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 
 		return criteria.list().size();
+	}
+	
+	public boolean apenasUmColaboradorRespondeuPesquisaAnonima(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Long questionarioId) 
+	{
+		String queryHQL = "select distinct count(pergunta.id) from ColaboradorResposta cr ";
+		
+		if(perguntasIds != null && perguntasIds.length > 0) {
+			queryHQL += "where pergunta.id in ( :perguntasIds ) ";
+		} else
+			queryHQL += "where pergunta.id in (select p2.id from Pergunta p2 where p2.questionario.id = :questionarioId ) ";
+		
+		if(areasIds != null && areasIds.length > 0)
+			queryHQL += "and areaOrganizacional.id in (:areasIds) ";
+		
+		if(cargosIds != null && cargosIds.length > 0)
+			queryHQL += "and cargo.id in (:cargosIds) ";
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			queryHQL += "and estabelecimento.id in (:estabelecimentosIds) ";
+		
+		queryHQL += "group by colaboradorQuestionario.id, pergunta.id having count(pergunta.id) = 1";
+
+		Query query = getSession().createQuery(queryHQL);
+		if(perguntasIds != null && perguntasIds.length > 0)
+			query.setParameterList("perguntasIds", perguntasIds, Hibernate.LONG);
+		else
+			query.setLong("questionarioId", questionarioId);
+
+		if(areasIds != null && areasIds.length > 0)
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		
+		if(cargosIds != null && cargosIds.length > 0)
+			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+		
+		return query.list().size() > 0;
 	}
 
 	public boolean existeRespostaSemCargo(Long[] perguntasIds) 

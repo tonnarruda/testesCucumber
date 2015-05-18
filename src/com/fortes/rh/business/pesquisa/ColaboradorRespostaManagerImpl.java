@@ -653,6 +653,11 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	{
 		getDao().removeByQuestionarioId(questionarioId);
 	}
+	
+	public boolean apenasUmColaboradorRespondeuPesquisaAnonima(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Long questionarioId)
+	{
+		return getDao().apenasUmColaboradorRespondeuPesquisaAnonima(perguntasIds, estabelecimentosIds, areasIds, cargosIds, questionarioId);
+	}
 
 	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) 
 	{

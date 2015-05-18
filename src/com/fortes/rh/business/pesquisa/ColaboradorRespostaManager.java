@@ -50,4 +50,5 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	QuestionarioManager getQuestionarioManager(); // usado pela auditoria
 	ColaboradorManager getColaboradorManager(); // usado pela auditoria
 	CandidatoManager getCandidatoManager(); // usado pela auditoria
+	boolean apenasUmColaboradorRespondeuPesquisaAnonima(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Long questionarioId);
 }

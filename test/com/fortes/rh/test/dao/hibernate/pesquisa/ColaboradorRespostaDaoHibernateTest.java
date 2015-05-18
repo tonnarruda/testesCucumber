@@ -648,6 +648,23 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		
 		return colaboradorResposta;
 	}
+	
+	private ColaboradorResposta montaColaboradorRespostaAnonima(Pergunta pergunta, Resposta resposta, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, Cargo cargo)
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
+		ColaboradorResposta colaboradorResposta = ColaboradorRespostaFactory.getEntity();
+		colaboradorResposta.setColaboradorQuestionario(null);
+		colaboradorResposta.setPergunta(pergunta);
+		colaboradorResposta.setResposta(resposta);
+		colaboradorResposta.setAreaOrganizacional(areaOrganizacional);
+		colaboradorResposta.setCargo(cargo);
+		colaboradorRespostaDao.save(colaboradorResposta);
+		
+		return colaboradorResposta;
+	}
 
 	public void testFindRespostasColaborador()
 	{
@@ -1011,6 +1028,83 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		assertEquals("1ª resposta múltipla escolha marcada", colaboradorResposta4.getResposta().getId(), colaboradorRespostas[4].getResposta().getId());
 		assertNull("Resposta múltipla escolha não marcada", colaboradorRespostas[5].getResposta().getId());
 		assertEquals("2ª resposta múltipla escolha marcada", colaboradorResposta5.getResposta().getId(), colaboradorRespostas[6].getResposta().getId());
+	}
+	
+	public void testApenasUmColaboradorRespondeuPesquisaAnonima() {
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
+
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		Questionario questionario = QuestionarioFactory.getEntity();
+		questionario = questionarioDao.save(questionario);
+
+		Pesquisa pesquisa = PesquisaFactory.getEntity();
+		pesquisa.setQuestionario(questionario);
+		pesquisa = pesquisaDao.save(pesquisa);
+
+		Pergunta pergunta = PerguntaFactory.getEntity();
+		pergunta.setTexto("Voce foi criado com a avo?");
+		pergunta.setQuestionario(questionario);
+		pergunta = perguntaDao.save(pergunta);
+
+		Resposta respostaA = RespostaFactory.getEntity();
+		respostaA.setTexto("Sim");
+		respostaA.setOrdem(1);
+		respostaA.setPergunta(pergunta);
+		respostaA = respostaDao.save(respostaA);
+
+		Resposta respostaB = RespostaFactory.getEntity();
+		respostaB.setTexto("Nao");
+		respostaB.setOrdem(2);
+		respostaB.setPergunta(pergunta);
+		respostaB = respostaDao.save(respostaB);
+
+		montaColaboradorRespostaAnonima(pergunta, respostaA, null, areaOrganizacional, cargo);
+
+		boolean apenasUmColaboradorRespondeuPesquisaAnonima = colaboradorRespostaDao.apenasUmColaboradorRespondeuPesquisaAnonima(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, new Long[]{cargo.getId()}, questionario.getId());
+
+		assertEquals(true, apenasUmColaboradorRespondeuPesquisaAnonima);
+	}
+	
+	public void testMaisDeUmColaboradorRespondeuPesquisaAnonima() {
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
+
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		Questionario questionario = QuestionarioFactory.getEntity();
+		questionario = questionarioDao.save(questionario);
+
+		Pesquisa pesquisa = PesquisaFactory.getEntity();
+		pesquisa.setQuestionario(questionario);
+		pesquisa = pesquisaDao.save(pesquisa);
+
+		Pergunta pergunta = PerguntaFactory.getEntity();
+		pergunta.setTexto("Voce foi criado com a avo?");
+		pergunta.setQuestionario(questionario);
+		pergunta = perguntaDao.save(pergunta);
+
+		Resposta respostaA = RespostaFactory.getEntity();
+		respostaA.setTexto("Sim");
+		respostaA.setOrdem(1);
+		respostaA.setPergunta(pergunta);
+		respostaA = respostaDao.save(respostaA);
+
+		Resposta respostaB = RespostaFactory.getEntity();
+		respostaB.setTexto("Nao");
+		respostaB.setOrdem(2);
+		respostaB.setPergunta(pergunta);
+		respostaB = respostaDao.save(respostaB);
+
+		montaColaboradorRespostaAnonima(pergunta, respostaA, null, areaOrganizacional, cargo);
+		montaColaboradorRespostaAnonima(pergunta, respostaB, null, areaOrganizacional, cargo);
+
+		boolean apenasUmColaboradorRespondeuPesquisaAnonima = colaboradorRespostaDao.apenasUmColaboradorRespondeuPesquisaAnonima(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, new Long[]{cargo.getId()}, questionario.getId());
+
+		assertEquals(false, apenasUmColaboradorRespondeuPesquisaAnonima);
 	}
 	
 	public GenericDao<ColaboradorResposta> getGenericDao()

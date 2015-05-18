@@ -279,7 +279,9 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         if(questionario.isAnonimo() && questionario.getTipo() == TipoQuestionario.PESQUISA ) {
         	questionario.setTotalColab(colaboradorQuestionarioManager.countByQuestionarioRespondido(questionario.getId()));
         	
-        	if( inibirGerarRelatorioPesquisaAnonima && questionario.getTotalColab() == 1)
+        	boolean apenasUmColaboradorRespondeuPesquisaAnonima = colaboradorRespostaManager.apenasUmColaboradorRespondeuPesquisaAnonima(perguntasIds, estabelecimentosIds, areasIds, cargosIds, questionario.getId());
+        	
+        	if( inibirGerarRelatorioPesquisaAnonima && apenasUmColaboradorRespondeuPesquisaAnonima)
             	throw new Exception("Não é possível gerar o relatório porque a pesquisa é anônima e possui respostas de um único colaborador.");
         } else	
         	questionario.setTotalColab(countColaborador(colaboradorRespostas));
