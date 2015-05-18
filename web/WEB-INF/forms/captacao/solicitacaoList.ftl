@@ -226,6 +226,7 @@
 		<@display.column property="estabelecimento.nome" title="Estabelecimento" class="${classe}"/>
 		<@display.column property="areaOrganizacional.nome" title="Área" class="${classe}"/>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:70px;" class="${classe}"/>
+		<@display.column property="dataEncerramento" title="Data de Encerramento" format="{0,date,dd/MM/yyyy}" style="width:70px;" class="${classe}"/>
 
 		<@display.column title="Status" style="width:33px;" class="${classe}">
 			${solicitacao.statusFormatadoComData}
