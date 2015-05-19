@@ -68,7 +68,25 @@
 					$("#emailPass").attr('disabled','disabled');
 				}
 			});
+			
+			$("#qtdColabPesquisa").val(${parametrosDoSistema.quantidadeColaboradoresRelatorioPesquisaAnonima});
+			$("#inibirGerarRelatorioPesquisaAnonima").attr('checked', ${parametrosDoSistema.inibirGerarRelatorioPesquisaAnonima?string});
+			
+			$('#inibirGerarRelatorioPesquisaAnonima').change(function(){
+				abiltaOuDesabilitaCampoQtdResposta();
+			});
+			
+			$('#inibirGerarRelatorioPesquisaAnonima').change();			
 		});
+		
+		function abiltaOuDesabilitaCampoQtdResposta()
+		{
+			if ($('#inibirGerarRelatorioPesquisaAnonima').is(":checked"))
+				$('#qtdColabPesquisa').removeAttr('disabled').css('background', '#FFFFFF')
+			else
+				$('#qtdColabPesquisa').attr('disabled', true).css('background', '#F6F6F6');
+		} 
+		
 		
 		function validaSessionTimeout()
 		{
@@ -113,21 +131,19 @@
 	<@ww.checkbox label="Compartilhar candidatos entre empresas." id="compartilharCandidato" name="parametrosDoSistema.compartilharCandidatos" liClass="liLeft" labelPosition="left"/>
 	<@ww.checkbox label="Compartilhar colaboradores entre empresas." id="compartilharColaborador" name="parametrosDoSistema.compartilharColaboradores" liClass="liLeft" labelPosition="left"/>
 	<@ww.checkbox label="Compartilhar cursos entre empresas." id="compartilharCurso" name="parametrosDoSistema.compartilharCursos" liClass="liLeft" labelPosition="left"/>
-	<!-- @ww.checkbox label="Impossibilitar gerar relatório de pesquisa anônima que possua respostas de único colaborador." id="inibirGerarRelatorioPesquisaAnonima" name="parametrosDoSistema.inibirGerarRelatorioPesquisaAnonima" liClass="liLeft" labelPosition="left"/ -->
 	
-	<div id="wwgrp_inibirGerarRelatorioPesquisaAnonima" class="wwgrp">
-		<span id="wwctrl_inibirGerarRelatorioPesquisaAnonima" class="wwctrl">
-			<input type="hidden" name="_FALSE_.parametrosDoSistema.inibirGerarRelatorioPesquisaAnonima" value="false">
-			<input type="checkbox" name="parametrosDoSistema.inibirGerarRelatorioPesquisaAnonima" value="true" checked="checked" id="inibirGerarRelatorioPesquisaAnonima">
-		</span> 
-		<span id="wwlbl_inibirGerarRelatorioPesquisaAnonima" class="wwlbl">
-			<label for="inibirGerarRelatorioPesquisaAnonima" class="checkboxLabel">Impossibilitar gerar relatório de pesquisa anônima que possua respostas de até <input type="text" name="parametrosDoSistema.quantidadeColaboradoresRelatorioPesquisaAnonima" value="${parametrosDoSistema.quantidadeColaboradoresRelatorioPesquisaAnonima}" style="width: 25px;"/> colaborador(es).</label>
-		</span>
-	</div>
-
+	<input type="checkbox" name="parametrosDoSistema.inibirGerarRelatorioPesquisaAnonima" value="true" id="inibirGerarRelatorioPesquisaAnonima" />
+	<label for="inibirGerarRelatorioPesquisaAnonima" class="checkboxLabel">
+		Impossibilitar gerar relatório de uma pesquisa anônima que possua no mínimo
+		<select name="parametrosDoSistema.quantidadeColaboradoresRelatorioPesquisaAnonima" id="qtdColabPesquisa">
+			<#list 1..10 as n>
+				<option value=${n}>${n}</option>
+			</#list>
+		</select>	
+		respostas.
+	</label>
 	
-	
-	<br />
+	<br /><br />
 	<@ww.textfield label="E-mail do suporte técnico" name="parametrosDoSistema.emailDoSuporteTecnico" id="emailDoSuporteTecnico" cssClass="mascaraEmail" size="40" maxLength="39" required="true"/>
 	
 	Email remetente: &nbsp;&nbsp;&nbsp;

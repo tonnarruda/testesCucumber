@@ -62,7 +62,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private Boolean compartilharColaboradores;
     private Boolean compartilharCandidatos;
     private Boolean compartilharCursos;
-    private Boolean inibirGerarRelatorioPesquisaAnonima;
+    private boolean inibirGerarRelatorioPesquisaAnonima;
     private int quantidadeColaboradoresRelatorioPesquisaAnonima;
     private boolean suporteVeica;
 
@@ -346,16 +346,6 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 		this.compartilharCursos = compartilharCursos;
 	}
 	
-	public Boolean getInibirGerarRelatorioPesquisaAnonima()
-	{
-		return inibirGerarRelatorioPesquisaAnonima;
-	}
-
-	public void setInibirGerarRelatorioPesquisaAnonima(Boolean inibirGerarRelatorioPesquisaAnonima)
-	{
-		this.inibirGerarRelatorioPesquisaAnonima = inibirGerarRelatorioPesquisaAnonima;
-	}
-
 	public char getTelaInicialModuloExterno()
 	{
 		return telaInicialModuloExterno;
@@ -376,12 +366,21 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 		this.suporteVeica = suporteVeica;
 	}
 	
-	public int getQuantidadeColaboradoresRelatorioPesquisaAnonima() {
+	public int getQuantidadeColaboradoresRelatorioPesquisaAnonima() 
+	{
 		return quantidadeColaboradoresRelatorioPesquisaAnonima;
 	}
 	
-	public void setQuantidadeColaboradoresRelatorioPesquisaAnonima(
-			int quantidadeColaboradoresRelatorioPesquisaAnonima) {
+	public void setQuantidadeColaboradoresRelatorioPesquisaAnonima(int quantidadeColaboradoresRelatorioPesquisaAnonima) 
+	{
 		this.quantidadeColaboradoresRelatorioPesquisaAnonima = quantidadeColaboradoresRelatorioPesquisaAnonima;
+	}
+	public boolean isInibirGerarRelatorioPesquisaAnonima() 
+	{
+		return inibirGerarRelatorioPesquisaAnonima;
+	}
+	public void setInibirGerarRelatorioPesquisaAnonima(	boolean inibirGerarRelatorioPesquisaAnonima) 
+	{
+		this.inibirGerarRelatorioPesquisaAnonima = inibirGerarRelatorioPesquisaAnonima;
 	}
 }

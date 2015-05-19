@@ -1,1 +1,1 @@
-alter table parametrosdosistema add column quantidadecolaboradoresrelatoriopesquisaanonima integer default 0; --.go
+alter table parametrosdosistema add column quantidadecolaboradoresrelatoriopesquisaanonima integer default 1; --.go
