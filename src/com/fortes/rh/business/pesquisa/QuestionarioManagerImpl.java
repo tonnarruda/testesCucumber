@@ -287,7 +287,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         	boolean possuiQuantidadeInvalidaDeColaboradoresQueResponderam = colaboradorRespostaManager.verificaQuantidadeColaboradoresQueResponderamPesquisaAnonima(perguntasIds, estabelecimentosIds, areasIds, cargosIds, questionario.getId(), parametrosDoSistema.getQuantidadeColaboradoresRelatorioPesquisaAnonima());
         	
         	if( parametrosDoSistema.isInibirGerarRelatorioPesquisaAnonima() && possuiQuantidadeInvalidaDeColaboradoresQueResponderam)
-            	throw new Exception("Não é possível gerar o relatório desta pesquisa anônima, pois a quantidade de resposta gerada é inferior a quantidade mínima configurada. Quantidade mínima de resposta(s): " + parametrosDoSistema.getQuantidadeColaboradoresRelatorioPesquisaAnonima() + " resposta(s).");
+            	throw new Exception("Não é possível gerar o relatório desta pesquisa anônima, pois a quantidade de resposta gerada é inferior ou igual a quantidade mínima configurada. Quantidade mínima de resposta(s): " + parametrosDoSistema.getQuantidadeColaboradoresRelatorioPesquisaAnonima() + " resposta(s).");
         } else	
         	questionario.setTotalColab(countColaborador(colaboradorRespostas));
 

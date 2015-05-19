@@ -132,16 +132,16 @@
 	<@ww.checkbox label="Compartilhar colaboradores entre empresas." id="compartilharColaborador" name="parametrosDoSistema.compartilharColaboradores" liClass="liLeft" labelPosition="left"/>
 	<@ww.checkbox label="Compartilhar cursos entre empresas." id="compartilharCurso" name="parametrosDoSistema.compartilharCursos" liClass="liLeft" labelPosition="left"/>
 	
-	<input type="checkbox" name="parametrosDoSistema.inibirGerarRelatorioPesquisaAnonima" value="true" id="inibirGerarRelatorioPesquisaAnonima" />
+	<input type="checkbox" name="parametrosDoSistema.inibirGerarRelatorioPesquisaAnonima" value="true" id="inibirGerarRelatorioPesquisaAnonima"/>
 	<label for="inibirGerarRelatorioPesquisaAnonima" class="checkboxLabel">
-		Impossibilitar gerar relatório de uma pesquisa anônima que possua no mínimo
-		<select name="parametrosDoSistema.quantidadeColaboradoresRelatorioPesquisaAnonima" id="qtdColabPesquisa">
-			<#list 1..10 as n>
-				<option value=${n}>${n}</option>
-			</#list>
-		</select>	
-		respostas.
+		Impossibilitar gerar relatório de uma pesquisa anônima que possua 
 	</label>
+	<select name="parametrosDoSistema.quantidadeColaboradoresRelatorioPesquisaAnonima" id="qtdColabPesquisa">
+		<#list 1..10 as n>
+			<option value=${n}>${n}</option>
+		</#list>
+	</select>	
+	ou menos respostas.
 	
 	<br /><br />
 	<@ww.textfield label="E-mail do suporte técnico" name="parametrosDoSistema.emailDoSuporteTecnico" id="emailDoSuporteTecnico" cssClass="mascaraEmail" size="40" maxLength="39" required="true"/>

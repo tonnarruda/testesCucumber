@@ -5488,7 +5488,8 @@ CREATE TABLE parametrosdosistema (
     telainicialmoduloexterno character(1) DEFAULT 'L'::bpchar NOT NULL,
     suporteveica boolean DEFAULT false,
     horariosbackup text DEFAULT '2'::text,
-    inibirgerarrelatoriopesquisaanonima boolean DEFAULT false
+    inibirgerarrelatoriopesquisaanonima boolean DEFAULT false,
+    quantidadecolaboradoresrelatoriopesquisaanonima integer DEFAULT 1
 );
 
 
@@ -7061,6 +7062,16 @@ ALTER TABLE public.usuarionoticia_sequence OWNER TO postgres;
 
 SELECT pg_catalog.setval('usuarionoticia_sequence', 1, false);
 
+
+--
+-- Name: view_cursonota; Type: VIEW; Schema: public; Owner: postgres
+--
+
+CREATE VIEW view_cursonota AS
+    SELECT ct.id AS colaboradorturma_id, ct.colaborador_id, ct.turma_id, count(ct.id) AS qtdavaliacoescurso, sum((((CASE WHEN (ac.tipo = 'a'::bpchar) THEN (cq.performance * (100)::double precision) ELSE aac.valor END >= ac.minimoaprovacao) OR (ac.minimoaprovacao IS NULL)))::integer) AS qtdavaliacoesaprovadaspornota, sum(CASE WHEN (ac.tipo = 'a'::bpchar) THEN (cq.performance * (100)::double precision) ELSE aac.valor END) AS nota FROM (((avaliacaocurso ac CROSS JOIN colaboradorturma ct) LEFT JOIN aproveitamentoavaliacaocurso aac ON (((ac.id = aac.avaliacaocurso_id) AND (ct.id = aac.colaboradorturma_id)))) LEFT JOIN colaboradorquestionario cq ON ((((ac.id = cq.avaliacaocurso_id) AND (ac.avaliacao_id = cq.avaliacao_id)) AND (ct.colaborador_id = cq.colaborador_id)))) WHERE ((ct.id = aac.colaboradorturma_id) OR ((ct.colaborador_id = cq.colaborador_id) AND (ct.turma_id = cq.turma_id))) GROUP BY ct.id, ct.colaborador_id, ct.turma_id ORDER BY ct.id;
+
+
+ALTER TABLE public.view_cursonota OWNER TO postgres;
 
 --
 -- Data for Name: afastamento; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -30684,6 +30695,9 @@ INSERT INTO migrations (name) VALUES ('20150309145121');
 INSERT INTO migrations (name) VALUES ('20150323164804');
 INSERT INTO migrations (name) VALUES ('20150413113702');
 INSERT INTO migrations (name) VALUES ('20150420140050');
+INSERT INTO migrations (name) VALUES ('20150504202500');
+INSERT INTO migrations (name) VALUES ('20150511151651');
+INSERT INTO migrations (name) VALUES ('20150518162625');
 
 
 --
@@ -31058,7 +31072,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.143.173', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.144.174', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1);
 
 
 --

@@ -646,7 +646,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 			exception = e;
 		}
 
-		assertEquals("Não é possível gerar o relatório desta pesquisa anônima, pois a quantidade de resposta gerada é inferior a quantidade mínima configurada. Quantidade mínima de resposta(s): 1 resposta(s).", exception.getMessage());
+		assertEquals("Não é possível gerar o relatório desta pesquisa anônima, pois a quantidade de resposta gerada é inferior ou igual a quantidade mínima configurada. Quantidade mínima de resposta(s): 1 resposta(s).", exception.getMessage());
     }
     
     public void testMontaResultadosAvaliacaoDesempenho()
