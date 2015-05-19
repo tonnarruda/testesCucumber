@@ -1,0 +1,1 @@
+alter table parametrosdosistema add column quantidadecolaboradoresrelatoriopesquisaanonima integer default 0; --.go
