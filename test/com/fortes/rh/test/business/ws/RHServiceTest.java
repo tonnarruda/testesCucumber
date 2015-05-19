@@ -403,9 +403,9 @@ public class RHServiceTest extends MockObjectTestCase
 	
 	public void testExistePesquisaParaSerRespondida()
 	{
-		String empregadoCodigoAC = "empregadoCodigoAC";
-		String empresaCodigoAC = "empresaCodigoAC";
-		String grupoAC = "grupoAC";
+		String empregadoCodigoAC = "001";
+		String empresaCodigoAC = "001";
+		String grupoAC = "001";
 		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa.setId(1L);
@@ -417,4 +417,32 @@ public class RHServiceTest extends MockObjectTestCase
 		
 		assertTrue("Existe Pesquisa a ser Respondida", rHServiceImpl.existePesquisaParaSerRespondida(empregadoCodigoAC, empresaCodigoAC, grupoAC));
 	}
+	
+	public void testExistePesquisaParaSerRespondidaComParametrosNulos()
+	{
+		String empregadoCodigoAC = null;
+		String empresaCodigoAC = null;
+		String grupoAC = null;
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setId(1L);
+		empresa.setCodigoAC(empresaCodigoAC);
+		empresa.setGrupoAC(grupoAC);
+		
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), eq(empresa.getGrupoAC())).will(returnValue(empresa));
+		
+		assertFalse("Existe Pesquisa a ser Respondida", rHServiceImpl.existePesquisaParaSerRespondida(empregadoCodigoAC, empresaCodigoAC, grupoAC));
+	}
+	
+	public void testExistePesquisaParaSerRespondidaException()
+	{
+		String empregadoCodigoAC = "001";
+		String empresaCodigoAC = "001";
+		String grupoAC = "001";
+
+		rHServiceImpl.setEmpresaManager(null);
+		
+		assertFalse("Existe Pesquisa a ser Respondida", rHServiceImpl.existePesquisaParaSerRespondida(empregadoCodigoAC, empresaCodigoAC, grupoAC));
+	}
+
 }
