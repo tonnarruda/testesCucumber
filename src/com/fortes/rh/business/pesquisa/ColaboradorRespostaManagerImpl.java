@@ -654,9 +654,9 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		getDao().removeByQuestionarioId(questionarioId);
 	}
 	
-	public boolean apenasUmColaboradorRespondeuPesquisaAnonima(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Long questionarioId)
+	public boolean verificaQuantidadeColaboradoresQueResponderamPesquisaAnonima(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Long questionarioId, int quantidadeColaboradoresRelatorioPesquisaAnonima)
 	{
-		return getDao().apenasUmColaboradorRespondeuPesquisaAnonima(perguntasIds, estabelecimentosIds, areasIds, cargosIds, questionarioId);
+		return getDao().verificaQuantidadeColaboradoresQueResponderamPesquisaAnonima(perguntasIds, estabelecimentosIds, areasIds, cargosIds, questionarioId, quantidadeColaboradoresRelatorioPesquisaAnonima);
 	}
 
 	public void setAvaliacaoManager(AvaliacaoManager avaliacaoManager) 

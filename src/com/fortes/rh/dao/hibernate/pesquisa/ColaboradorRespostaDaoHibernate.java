@@ -719,7 +719,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return criteria.list().size();
 	}
 	
-	public boolean apenasUmColaboradorRespondeuPesquisaAnonima(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Long questionarioId) 
+	public boolean verificaQuantidadeColaboradoresQueResponderamPesquisaAnonima(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Long questionarioId, int quantidadeColaboradoresRelatorioPesquisaAnonima) 
 	{
 		String queryHQL = "select distinct count(pergunta.id) from ColaboradorResposta cr ";
 		
@@ -737,7 +737,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			queryHQL += "and estabelecimento.id in (:estabelecimentosIds) ";
 		
-		queryHQL += "group by colaboradorQuestionario.id, pergunta.id having count(pergunta.id) = 1";
+		queryHQL += "group by colaboradorQuestionario.id, pergunta.id having count(pergunta.id) <= :quantidadeColaboradoresRelatorioPesquisaAnonima";
 
 		Query query = getSession().createQuery(queryHQL);
 		if(perguntasIds != null && perguntasIds.length > 0)
@@ -753,6 +753,8 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		
 		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
 			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+		
+		query.setInteger("quantidadeColaboradoresRelatorioPesquisaAnonima", quantidadeColaboradoresRelatorioPesquisaAnonima);
 		
 		return query.list().size() > 0;
 	}

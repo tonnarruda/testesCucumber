@@ -46,5 +46,5 @@ public interface ColaboradorRespostaDao extends GenericDao<ColaboradorResposta>
 
 	void removeByQuestionarioId(Long questionarioId);
 	
-	boolean apenasUmColaboradorRespondeuPesquisaAnonima(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Long questionarioId);
+	boolean verificaQuantidadeColaboradoresQueResponderamPesquisaAnonima(Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Long questionarioId, int quantidadeColaboradoresRelatorioPesquisaAnonima);
 }

@@ -113,7 +113,20 @@
 	<@ww.checkbox label="Compartilhar candidatos entre empresas." id="compartilharCandidato" name="parametrosDoSistema.compartilharCandidatos" liClass="liLeft" labelPosition="left"/>
 	<@ww.checkbox label="Compartilhar colaboradores entre empresas." id="compartilharColaborador" name="parametrosDoSistema.compartilharColaboradores" liClass="liLeft" labelPosition="left"/>
 	<@ww.checkbox label="Compartilhar cursos entre empresas." id="compartilharCurso" name="parametrosDoSistema.compartilharCursos" liClass="liLeft" labelPosition="left"/>
-	<@ww.checkbox label="Impossibilitar gerar relatório de pesquisa anônima que possua respostas de um único colaborador." id="inibirGerarRelatorioPesquisaAnonima" name="parametrosDoSistema.inibirGerarRelatorioPesquisaAnonima" liClass="liLeft" labelPosition="left"/>
+	<!-- @ww.checkbox label="Impossibilitar gerar relatório de pesquisa anônima que possua respostas de único colaborador." id="inibirGerarRelatorioPesquisaAnonima" name="parametrosDoSistema.inibirGerarRelatorioPesquisaAnonima" liClass="liLeft" labelPosition="left"/ -->
+	
+	<div id="wwgrp_inibirGerarRelatorioPesquisaAnonima" class="wwgrp">
+		<span id="wwctrl_inibirGerarRelatorioPesquisaAnonima" class="wwctrl">
+			<input type="hidden" name="_FALSE_.parametrosDoSistema.inibirGerarRelatorioPesquisaAnonima" value="false">
+			<input type="checkbox" name="parametrosDoSistema.inibirGerarRelatorioPesquisaAnonima" value="true" checked="checked" id="inibirGerarRelatorioPesquisaAnonima">
+		</span> 
+		<span id="wwlbl_inibirGerarRelatorioPesquisaAnonima" class="wwlbl">
+			<label for="inibirGerarRelatorioPesquisaAnonima" class="checkboxLabel">Impossibilitar gerar relatório de pesquisa anônima que possua respostas de até <input type="text" name="parametrosDoSistema.quantidadeColaboradoresRelatorioPesquisaAnonima" value="${parametrosDoSistema.quantidadeColaboradoresRelatorioPesquisaAnonima}" style="width: 25px;"/> colaborador(es).</label>
+		</span>
+	</div>
+
+	
+	
 	<br />
 	<@ww.textfield label="E-mail do suporte técnico" name="parametrosDoSistema.emailDoSuporteTecnico" id="emailDoSuporteTecnico" cssClass="mascaraEmail" size="40" maxLength="39" required="true"/>
 	

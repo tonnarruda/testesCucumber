@@ -1063,7 +1063,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 
 		montaColaboradorRespostaAnonima(pergunta, respostaA, null, areaOrganizacional, cargo);
 
-		boolean apenasUmColaboradorRespondeuPesquisaAnonima = colaboradorRespostaDao.apenasUmColaboradorRespondeuPesquisaAnonima(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, new Long[]{cargo.getId()}, questionario.getId());
+		boolean apenasUmColaboradorRespondeuPesquisaAnonima = colaboradorRespostaDao.verificaQuantidadeColaboradoresQueResponderamPesquisaAnonima(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, new Long[]{cargo.getId()}, questionario.getId(), 1);
 
 		assertEquals(true, apenasUmColaboradorRespondeuPesquisaAnonima);
 	}
@@ -1102,7 +1102,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		montaColaboradorRespostaAnonima(pergunta, respostaA, null, areaOrganizacional, cargo);
 		montaColaboradorRespostaAnonima(pergunta, respostaB, null, areaOrganizacional, cargo);
 
-		boolean apenasUmColaboradorRespondeuPesquisaAnonima = colaboradorRespostaDao.apenasUmColaboradorRespondeuPesquisaAnonima(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, new Long[]{cargo.getId()}, questionario.getId());
+		boolean apenasUmColaboradorRespondeuPesquisaAnonima = colaboradorRespostaDao.verificaQuantidadeColaboradoresQueResponderamPesquisaAnonima(new Long[]{pergunta.getId()}, null, new Long[]{areaOrganizacional.getId()}, new Long[]{cargo.getId()}, questionario.getId(), 1);
 
 		assertEquals(false, apenasUmColaboradorRespondeuPesquisaAnonima);
 	}

@@ -63,6 +63,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private Boolean compartilharCandidatos;
     private Boolean compartilharCursos;
     private Boolean inibirGerarRelatorioPesquisaAnonima;
+    private int quantidadeColaboradoresRelatorioPesquisaAnonima;
     private boolean suporteVeica;
 
     private Integer sessionTimeout;
@@ -373,5 +374,14 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	public void setSuporteVeica(boolean suporteVeica) 
 	{
 		this.suporteVeica = suporteVeica;
+	}
+	
+	public int getQuantidadeColaboradoresRelatorioPesquisaAnonima() {
+		return quantidadeColaboradoresRelatorioPesquisaAnonima;
+	}
+	
+	public void setQuantidadeColaboradoresRelatorioPesquisaAnonima(
+			int quantidadeColaboradoresRelatorioPesquisaAnonima) {
+		this.quantidadeColaboradoresRelatorioPesquisaAnonima = quantidadeColaboradoresRelatorioPesquisaAnonima;
 	}
 }

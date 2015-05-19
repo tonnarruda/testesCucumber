@@ -333,9 +333,6 @@ public class QuestionarioListActionTest extends MockObjectTestCase
 
     public void testImprimeResultado() throws Exception
     {
-    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
-    	parametrosDoSistema.setInibirGerarRelatorioPesquisaAnonima(false);
-    	
     	Questionario questionario = QuestionarioFactory.getEntity(1L);
     	action.setQuestionario(questionario);
     	action.setAgruparPorAspectos(true);
@@ -344,10 +341,9 @@ public class QuestionarioListActionTest extends MockObjectTestCase
 
     	questionarioManager.expects(once()).method("findByIdProjection").with(eq(questionario.getId())).will(returnValue(questionario));
     	perguntaManager.expects(once()).method("findByQuestionarioAspectoPergunta").with(eq(questionario.getId()), ANYTHING, ANYTHING, eq(true)).will(returnValue(perguntas));
-    	questionarioManager.expects(once()).method("montaResultado").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ResultadoQuestionario>()));
+    	questionarioManager.expects(once()).method("montaResultado").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ResultadoQuestionario>()));
     	estabelecimentoManager.expects(once()).method("nomeEstabelecimentos").with(ANYTHING,ANYTHING);
     	areaOrganizacionalManager.expects(once()).method("nomeAreas").with(ANYTHING);
-    	parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
 
     	assertEquals("success", action.imprimeResultado());
     	assertNotNull(action.getPerguntas());

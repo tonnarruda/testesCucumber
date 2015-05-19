@@ -12,6 +12,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.dao.pesquisa.QuestionarioDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
@@ -22,6 +23,7 @@ import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.Aspecto;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
@@ -259,7 +261,7 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     }
 
     //TODO Refatorar consultas grandes como banco da vega esta exibindo "could not execute query" quando marcamos áreas organizacionais 
-    public Collection<ResultadoQuestionario> montaResultado(Collection<Pergunta> perguntas, Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Questionario questionario, Boolean inibirGerarRelatorioPesquisaAnonima) throws Exception
+    public Collection<ResultadoQuestionario> montaResultado(Collection<Pergunta> perguntas, Long[] perguntasIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Date periodoIni, Date periodoFim, boolean desligamento, Long turmaId, Questionario questionario) throws Exception
     {
     	ColaboradorRespostaManager colaboradorRespostaManager = (ColaboradorRespostaManager) SpringUtil.getBean("colaboradorRespostaManager");
 
@@ -277,12 +279,15 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         Collection<QuestionarioResultadoPerguntaObjetiva> percentuaisDeRespostas = colaboradorRespostaManager.calculaPercentualRespostas(perguntasIds, estabelecimentosIds, areasIds, cargosIds, periodoIni, periodoFim, desligamento, turmaId, null);
        
         if(questionario.isAnonimo() && questionario.getTipo() == TipoQuestionario.PESQUISA ) {
+        	ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBean("parametrosDoSistemaManager");
+        	ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
+        	
         	questionario.setTotalColab(colaboradorQuestionarioManager.countByQuestionarioRespondido(questionario.getId()));
         	
-        	boolean apenasUmColaboradorRespondeuPesquisaAnonima = colaboradorRespostaManager.apenasUmColaboradorRespondeuPesquisaAnonima(perguntasIds, estabelecimentosIds, areasIds, cargosIds, questionario.getId());
+        	boolean possuiQuantidadeInvalidaDeColaboradoresQueResponderam = colaboradorRespostaManager.verificaQuantidadeColaboradoresQueResponderamPesquisaAnonima(perguntasIds, estabelecimentosIds, areasIds, cargosIds, questionario.getId(), parametrosDoSistema.getQuantidadeColaboradoresRelatorioPesquisaAnonima());
         	
-        	if( inibirGerarRelatorioPesquisaAnonima && apenasUmColaboradorRespondeuPesquisaAnonima)
-            	throw new Exception("Não é possível gerar o relatório porque a pesquisa é anônima e possui respostas de um único colaborador.");
+        	if( parametrosDoSistema.getInibirGerarRelatorioPesquisaAnonima() && possuiQuantidadeInvalidaDeColaboradoresQueResponderam)
+            	throw new Exception("Não é possível gerar o relatório porque a pesquisa é anônima e possui respostas de até " + parametrosDoSistema.getQuantidadeColaboradoresRelatorioPesquisaAnonima() + " colaborador(es).");
         } else	
         	questionario.setTotalColab(countColaborador(colaboradorRespostas));
 

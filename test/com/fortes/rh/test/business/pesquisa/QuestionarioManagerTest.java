@@ -15,6 +15,7 @@ import org.jmock.core.Constraint;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.AspectoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
@@ -32,6 +33,7 @@ import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.Aspecto;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
@@ -48,6 +50,7 @@ import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.pesquisa.AspectoFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
@@ -77,6 +80,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 	private Mock colaboradorManager;
 	private Mock gerenciadorComunicacaoManager;
 	private Mock avaliacaoManager;
+	private Mock parametrosDoSistemaManager;
 
     protected void setUp() throws Exception
     {
@@ -111,6 +115,9 @@ public class QuestionarioManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("fichaMedicaManager", fichaMedicaManager);
 		MockSpringUtil.mocks.put("avaliacaoManager", avaliacaoManager);
 
+		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
+		MockSpringUtil.mocks.put("parametrosDoSistemaManager", parametrosDoSistemaManager);
+		
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 
     }
@@ -523,7 +530,7 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
 
-    	Collection<ResultadoQuestionario> resultado = questionarioManager.montaResultado(perguntas, new Long[] { pergunta1.getId(), pergunta2.getId() }, null, null, null, null, null, true, null, questionario, false);
+    	Collection<ResultadoQuestionario> resultado = questionarioManager.montaResultado(perguntas, new Long[] { pergunta1.getId(), pergunta2.getId() }, null, null, null, null, null, true, null, questionario);
     	assertEquals(2, resultado.size());
     	assertEquals(1, ((ResultadoQuestionario)resultado.toArray()[0]).getColabRespostas().size());
     	assertEquals(1, ((ResultadoQuestionario)resultado.toArray()[0]).getRespostas().size());
@@ -531,6 +538,10 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     
     public void testMontaResultadoQuandoQuestionarioAnonimo() throws Exception
     {
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+    	parametrosDoSistema.setInibirGerarRelatorioPesquisaAnonima(true);
+    	parametrosDoSistema.setQuantidadeColaboradoresRelatorioPesquisaAnonima(1);
+    	
     	Pergunta pergunta1 = PerguntaFactory.getEntity(1L);
     	pergunta1.setTipo(TipoPergunta.SUBJETIVA);
 
@@ -568,13 +579,14 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	colaboradorRespostaManager.expects(once()).method("existeRespostaSemCargo").with(eq( new Long[] { pergunta1.getId() } )).will(returnValue(false));
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostasMultipla").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
-    	colaboradorRespostaManager.expects(once()).method("apenasUmColaboradorRespondeuPesquisaAnonima").will(returnValue(false));
+    	colaboradorRespostaManager.expects(once()).method("verificaQuantidadeColaboradoresQueResponderamPesquisaAnonima").will(returnValue(false));
     	colaboradorQuestionarioManager.expects(once()).method("countByQuestionarioRespondido").with(eq(questionario.getId())).will(returnValue(colaboradorQuestionarios.size()));
+    	parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
     	
     	Exception exception = null;
     	try
 		{
-    		questionarioManager.montaResultado(perguntas, new Long[] { pergunta1.getId() }, null, null, null, null, null, true, null, questionario, true);
+    		questionarioManager.montaResultado(perguntas, new Long[] { pergunta1.getId() }, null, null, null, null, null, true, null, questionario);
 		}
 		catch (Exception e)
 		{
@@ -586,6 +598,10 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     
     public void testMontaResultadoQuandoQuestionarioAnonimoEApenasUmaReposta() throws Exception
     {
+    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
+    	parametrosDoSistema.setInibirGerarRelatorioPesquisaAnonima(true);
+    	parametrosDoSistema.setQuantidadeColaboradoresRelatorioPesquisaAnonima(1);
+    	
     	Pergunta pergunta1 = PerguntaFactory.getEntity(1L);
     	pergunta1.setTipo(TipoPergunta.SUBJETIVA);
 
@@ -618,18 +634,19 @@ public class QuestionarioManagerTest extends MockObjectTestCase
     	colaboradorRespostaManager.expects(once()).method("findInPerguntaIds").will(returnValue(colaboradorRespostas));
     	colaboradorRespostaManager.expects(once()).method("existeRespostaSemCargo").with(eq( new Long[] { pergunta1.getId() } )).will(returnValue(false));
     	colaboradorRespostaManager.expects(once()).method("calculaPercentualRespostas").will(returnValue(new ArrayList<QuestionarioResultadoPerguntaObjetiva>()));
-    	colaboradorRespostaManager.expects(once()).method("apenasUmColaboradorRespondeuPesquisaAnonima").will(returnValue(true));
+    	colaboradorRespostaManager.expects(once()).method("verificaQuantidadeColaboradoresQueResponderamPesquisaAnonima").will(returnValue(true));
     	colaboradorQuestionarioManager.expects(once()).method("countByQuestionarioRespondido").with(eq(questionario.getId())).will(returnValue(colaboradorQuestionarios.size()));
+    	parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
 
     	Exception exception = null;
     	try {
-    		questionarioManager.montaResultado(perguntas, new Long[] { pergunta1.getId() }, null, null, null, null, null, true, null, questionario, true);
+    		questionarioManager.montaResultado(perguntas, new Long[] { pergunta1.getId() }, null, null, null, null, null, true, null, questionario);
 		}
 		catch (Exception e) {
 			exception = e;
 		}
 
-		assertEquals("Não é possível gerar o relatório porque a pesquisa é anônima e possui respostas de um único colaborador.", exception.getMessage());
+		assertEquals("Não é possível gerar o relatório porque a pesquisa é anônima e possui respostas de até 1 colaborador(es).", exception.getMessage());
     }
     
     public void testMontaResultadosAvaliacaoDesempenho()
