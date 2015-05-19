@@ -23,6 +23,7 @@ import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -36,6 +37,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.security.SecurityUtil;
@@ -64,6 +66,7 @@ public class SolicitacaoListAction extends MyActionSupportList
     private SolicitacaoManager solicitacaoManager;
     private CandidatoManager candidatoManager;
     private CargoManager cargoManager;
+    private ColaboradorManager colaboradorManager;
     private Anuncio anuncio;
     
     private Map<String,Object> parametros = new HashMap<String, Object>();
@@ -133,13 +136,26 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 		cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome", null, Cargo.TODOS);
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-		areasOrganizacionais = areaOrganizacionalManager.montaAllSelect(getEmpresaSistema().getId());
+		
+		if(roleMovSolicitacaoSelecao)
+			areasOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, null);
+		else
+			areasOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricaoByUsuarioId(getEmpresaSistema().getId(), getUsuarioLogado().getId(), AreaOrganizacional.ATIVA, null);
+		
 		motivosSolicitacoes = motivoSolicitacaoManager.findAll();
 		
 		status = new StatusAprovacaoSolicitacao();
 		
         return Action.SUCCESS;
     }
+	
+	public String getNomeLiberador(Long idLiberador){
+		
+		Colaborador colaboradorLiberador = colaboradorManager.findByUsuarioProjection(solicitacao.getLiberador().getId(), null);
+		String nomeLiberador = colaboradorLiberador!=null?colaboradorLiberador.getNomeMaisNomeComercial():solicitacao.getLiberador().getNome();
+		
+		return nomeLiberador;
+	}
 
 	public String listRecebidas() throws Exception
     {
@@ -569,5 +585,13 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public void setDataStatusSolicitacaoAnterior(Date dataStatusSolicitacaoAnterior) {
 		this.dataStatusSolicitacaoAnterior = dataStatusSolicitacaoAnterior;
+	}
+
+	public ColaboradorManager getColaboradorManager() {
+		return colaboradorManager;
+	}
+
+	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
+		this.colaboradorManager = colaboradorManager;
 	}
 }

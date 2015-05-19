@@ -26,9 +26,11 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
@@ -104,10 +106,10 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     	
     	manager.expects(once()).method("getCount").withAnyArguments().will(returnValue(2));
     	areaorganizacionalManager.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").withAnyArguments();
+    	areaorganizacionalManager.expects(once()).method("findAllSelectOrderDescricaoByUsuarioId").withAnyArguments();
     	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(solicitacaos));
     	cargoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Cargo>()));
     	estabelecimentoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Estabelecimento>()));
-    	areaorganizacionalManager.expects(once()).method("montaAllSelect").withAnyArguments().will(returnValue(new ArrayList<AreaOrganizacional>()));
     	motivoSolicitacaoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(new ArrayList<MotivoSolicitacao>()));
     	
     	assertEquals(action.list(), "success");
@@ -127,7 +129,7 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(solicitacaos));
     	cargoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Cargo>()));
     	estabelecimentoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Estabelecimento>()));
-    	areaorganizacionalManager.expects(once()).method("montaAllSelect").withAnyArguments().will(returnValue(new ArrayList<AreaOrganizacional>()));
+    	areaorganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").withAnyArguments();
     	motivoSolicitacaoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(new ArrayList<MotivoSolicitacao>()));
     	
     	assertEquals(action.list(), "success");
@@ -152,10 +154,10 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 
     	manager.expects(once()).method("getCount").withAnyArguments().will(returnValue(1));
     	areaorganizacionalManager.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").withAnyArguments();
+    	areaorganizacionalManager.expects(once()).method("findAllSelectOrderDescricaoByUsuarioId").withAnyArguments();
     	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(new ArrayList<Solicitacao>()));
     	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(cargos));
     	estabelecimentoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(estabelecimentos));
-    	areaorganizacionalManager.expects(once()).method("montaAllSelect").withAnyArguments().will(returnValue(new ArrayList<AreaOrganizacional>()));
     	motivoSolicitacaoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(new ArrayList<MotivoSolicitacao>()));
     	
     	manager.expects(once()).method("removeCascade").with(ANYTHING).will(returnValue(true));
@@ -183,11 +185,11 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
 
     	manager.expects(once()).method("getCount").withAnyArguments().will(returnValue(1));
     	areaorganizacionalManager.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").withAnyArguments();
+    	areaorganizacionalManager.expects(once()).method("findAllSelectOrderDescricaoByUsuarioId").withAnyArguments();
     	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(new ArrayList<Solicitacao>()));
     	cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING,ANYTHING,ANYTHING).will(returnValue(cargos));
     	estabelecimentoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(estabelecimentos));
     	manager.expects(once()).method("removeCascade").with(ANYTHING).will(returnValue(false));
-    	areaorganizacionalManager.expects(once()).method("montaAllSelect").withAnyArguments().will(returnValue(new ArrayList<AreaOrganizacional>()));
     	motivoSolicitacaoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(new ArrayList<MotivoSolicitacao>()));
 
     	assertEquals("success", action.delete());
@@ -259,10 +261,10 @@ public class SolicitacaoListActionTest extends MockObjectTestCase
     	
     	manager.expects(once()).method("getCount").withAnyArguments().will(returnValue(0));
     	areaorganizacionalManager.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").withAnyArguments();
+    	areaorganizacionalManager.expects(once()).method("findAllSelectOrderDescricaoByUsuarioId").withAnyArguments();
     	manager.expects(once()).method("findAllByVisualizacao").withAnyArguments().will(returnValue(new ArrayList<Solicitacao>()));
     	cargoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Cargo>()));
     	estabelecimentoManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<Estabelecimento>()));
-    	areaorganizacionalManager.expects(once()).method("montaAllSelect").withAnyArguments().will(returnValue(new ArrayList<AreaOrganizacional>()));
     	motivoSolicitacaoManager.expects(once()).method("findAll").withAnyArguments().will(returnValue(new ArrayList<MotivoSolicitacao>()));
     	
     	assertEquals("input",action.encerrarSolicitacao());

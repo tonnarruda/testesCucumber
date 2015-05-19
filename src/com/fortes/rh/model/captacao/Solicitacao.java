@@ -753,13 +753,17 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 		return DateUtil.formataDiaMesAno(dataStatus);
 	}
 
-	public String getStatusFormatadoComData()
-	{
+	public String getStatusFormatadoComData() {
 		String status = getStatusFormatado();
-		if (dataStatus != null)
+		if (dataStatus != null) {
 			status += "<br>" + DateUtil.formataDiaMesAno(dataStatus);
+		}
 
 		return status;
+	}
+	
+	public String getAprovadorSolicitacao(){
+		return (getLiberador() != null && getLiberador().getNome() != null && getLiberador().getNome().trim().length() > 0) ? getLiberador().getNome() : "Não informado"; 
 	}
 
 	public char getStatus()

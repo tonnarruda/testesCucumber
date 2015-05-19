@@ -462,14 +462,6 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 	public Collection<AreaOrganizacional> findAreasDoResponsavelCoResponsavel(Long usuarioId, Long empresaId, Boolean ativo, Collection<Long> areaInativaIds) 
 	{
 		StringBuilder sql = new StringBuilder();
-//		sql.append("select a.id_area,  a.area_nome as descricao from monta_familia_areas_filhas(ao.id) as a ");
-//		sql.append("inner join areaorganizacional ao on (ao.id = a.id_area) ");
-//		sql.append("inner join colaborador c on (c.id = ao.responsavel_id or c.id = ao.coResponsavel_id) ");
-//		sql.append("inner join usuario u on u.id = c.usuario_id ");
-//		sql.append("left join areaorganizacional am on am.id = ao.areamae_id ");
-//		sql.append("where u.id = :usuarioId ");
-//		sql.append("and ao.empresa_id = :empresaId ");
-		
 		
 		sql.append("select * from monta_familia_areas_filhas_by_usuario_and_empresa(:usuarioId, :empresaId)");
 		

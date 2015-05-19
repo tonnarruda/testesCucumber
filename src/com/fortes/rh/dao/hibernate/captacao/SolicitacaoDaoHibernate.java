@@ -71,6 +71,8 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("e.nome"), "projectionEstabelecimentoNome");
 		p.add(Projections.property("an.exibirModuloExterno"), "projectionAnuncioExibirModuloExterno");
 		p.add(Projections.property("ms.descricao"), "projectionMotivoSolicitacaoDescricao");
+		p.add(Projections.property("s.liberador"), "liberador");
+		
 
 		montaConsulta(criteria, visualizar, empresaId, usuario, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds);
 
@@ -94,7 +96,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		criteria.createCriteria("fs.cargo", "c", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.estabelecimento", "e", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.motivoSolicitacao", "ms", Criteria.LEFT_JOIN);
-		
+		criteria.createCriteria("s.liberador", "l", Criteria.LEFT_JOIN);
 
 		criteria.add(Expression.eq("s.empresa.id",empresaId));
 
