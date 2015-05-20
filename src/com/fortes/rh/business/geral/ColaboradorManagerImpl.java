@@ -1375,6 +1375,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void saveEmpregadosESituacoes(TEmpregado[] tEmpregados, TSituacao[] tSituacoes, Empresa empresa) throws Exception
 	{
+		empresa = empresaManager.findById(empresa.getId());
+		
 		for(TEmpregado tEmpregado: tEmpregados)
 		{
 			Colaborador colaborador = new Colaborador();
@@ -1397,6 +1399,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
 			historicoColaboradorManager.bindSituacao(tSituacao, historicoColaborador);
 			historicoColaboradorManager.save(historicoColaborador);
+			
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarColaboradorComHistorico.class, new ColaboradorPC(colaborador).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
 		}
 	}
 

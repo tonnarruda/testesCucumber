@@ -14,8 +14,11 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
+import com.fortes.portalcolaborador.business.operacao.AtualizarColaboradorComHistorico;
+import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoColaborador;
 import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoFaixaSalarial;
 import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoIndice;
+import com.fortes.portalcolaborador.model.ColaboradorPC;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
@@ -657,7 +660,11 @@ public class RHServiceImpl implements RHService
 		try
 		{
 			HistoricoColaborador historicoColaborador = montaSituacao(empregado, situacao);
+			Empresa empresa = empresaManager.findById(historicoColaborador.getColaborador().getEmpresa().getId());
+			
 			historicoColaboradorManager.save(historicoColaborador);
+			
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoColaborador.class, new ColaboradorPC(historicoColaborador.getColaborador()).getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
 			
 			gerenciadorComunicacaoManager.enviaMensagemCadastroSituacaoAC(empregado.getNome(), situacao);
 

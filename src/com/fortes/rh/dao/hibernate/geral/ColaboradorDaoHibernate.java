@@ -2210,6 +2210,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("e.id"), "empresaId");
 
 		criteria.setProjection(p);
 		criteria.add(Expression.eq("c.codigoAC", empregadoCodigoAC));
