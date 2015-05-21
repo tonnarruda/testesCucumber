@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Transient;
 
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.SerializedName;
@@ -32,6 +33,7 @@ public class ColaboradorPC extends AbstractAdapterPC
 	private String mae; 
 	@SerializedName("qtd_filhos")
 	private Integer qtdFilhos;
+	private String desligamento;
 	@SerializedName("historicos_colaboradores")
 	private List<HistoricoColaboradorPC> historicosPc;
 	
@@ -74,6 +76,19 @@ public class ColaboradorPC extends AbstractAdapterPC
 		
 		if (colaborador.getFoto() != null && colaborador.getFoto().getBytes() != null)
 			this.foto = new ArquivoPC(colaborador);
+	}
+	
+	public ColaboradorPC(Long id, String desligamento, String cpf, String baseCnpj) 
+	{
+		this.id = id;
+		this.desligamento = desligamento;
+		this.cpf = cpf;
+		
+		if (baseCnpj != null) {
+			this.empresaPC = new EmpresaPC();
+			this.empresaPC.setBaseCnpj(baseCnpj);
+			
+		}
 	}
 	
 	public String getIdentificadorToJson()
@@ -213,6 +228,14 @@ public class ColaboradorPC extends AbstractAdapterPC
 		this.qtdFilhos = qtdFilhos;
 	}
 	
+	public String getDesligamento() {
+		return desligamento;
+	}
+
+	public void setDesligamento(String desligamento) {
+		this.desligamento = desligamento;
+	}
+
 	public List<HistoricoColaboradorPC> getHistoricosPc() {
 		return historicosPc;
 	}

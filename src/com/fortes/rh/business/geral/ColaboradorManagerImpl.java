@@ -34,6 +34,7 @@ import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.portalcolaborador.business.TransacaoPCManager;
 import com.fortes.portalcolaborador.business.operacao.AtualizarColaborador;
 import com.fortes.portalcolaborador.business.operacao.AtualizarColaboradorComHistorico;
+import com.fortes.portalcolaborador.business.operacao.AtualizarDesligamentoColaborador;
 import com.fortes.portalcolaborador.business.operacao.ExcluirColaborador;
 import com.fortes.portalcolaborador.model.ColaboradorPC;
 import com.fortes.portalcolaborador.model.TransacaoPC;
@@ -1061,12 +1062,19 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			candidatoManager.updateDisponivelAndContratadoByColaborador(true, false, colaboradoresIds);
 			candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.INDIFERENTE, colaboradoresIds);
 
-			if(desligaByAC)
+			if(desligaByAC) {
 				historicoColaboradorManager.deleteHistoricosAguardandoConfirmacaoByColaborador(colaboradoresIds);
-			else {
+			} else {
 				if(!integradoAC)
 					removeVinculos(colaboradoresIds);
+				
 				getDao().desligaColaborador(desligado, dataDesligamento, observacaoDemissao, motivoDemissaoId, gerouSubstituicao, colaboradoresIds);
+				
+				for (Long colaboradorId : colaboradoresIds) {
+					Colaborador colaborador = this.findById(colaboradorId);
+					ColaboradorPC colaboradorPC = new ColaboradorPC(colaborador.getId(), colaborador.getDataDesligamentoFormatada(), colaborador.getPessoal().getCpf(), colaborador.getEmpresa().getCnpj());
+					movimentacaoOperacaoPCManager.enfileirar(AtualizarDesligamentoColaborador.class, colaboradorPC, colaborador.getEmpresa().isIntegradaPortalColaborador());
+				}
 			}
 			transactionManager.commit(status);
 		}
@@ -1094,6 +1102,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		candidatoManager.updateDisponivelAndContratadoByColaborador(false, true, colaboradorId);
 		candidatoSolicitacaoManager.setStatusByColaborador(StatusCandidatoSolicitacao.APROMOVER, colaboradorId);
 		getDao().religaColaborador(colaboradorId);
+		
+		Colaborador colaborador = this.findById(colaboradorId);
+		ColaboradorPC colaboradorPC = new ColaboradorPC(colaborador.getId(), colaborador.getDataDesligamentoFormatada(), colaborador.getPessoal().getCpf(), colaborador.getEmpresa().getCnpj());
+		movimentacaoOperacaoPCManager.enfileirar(AtualizarDesligamentoColaborador.class, colaboradorPC, colaborador.getEmpresa().isIntegradaPortalColaborador());
 	}
 
 	public Collection<Colaborador> findColaboradoresByCodigoAC(Long empresaId, boolean joinComHistorico, String... codigosACColaboradores)
