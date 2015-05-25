@@ -1,7 +1,10 @@
 package com.fortes.portalcolaborador.business;
 
 
+import java.io.IOException;
 import java.util.Collection;
+
+import org.apache.commons.httpclient.HttpException;
 
 import com.fortes.business.GenericManager;
 import com.fortes.portalcolaborador.model.MovimentacaoOperacaoPC;
@@ -12,6 +15,7 @@ public interface TransacaoPCManager extends GenericManager<TransacaoPC>
 {
 	void enfileirar(URLTransacaoPC urlTransacaoPC, String parametros);
 	void processarFila();
-	public String testarConexao();
+	Integer enviar(TransacaoPC transacaoPC, String pcToken) throws HttpException, IOException;
+	String testarConexao();
 	void processarOperacoes(Collection<MovimentacaoOperacaoPC> movimentacoesOperacaoPC) throws Exception;
 }

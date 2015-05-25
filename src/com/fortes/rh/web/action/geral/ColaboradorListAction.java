@@ -193,6 +193,8 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	public String list() throws Exception
 	{
+		colaboradorManager.verificarAtualizacaoNoPortalColaborador();
+		
 		Collection<AreaOrganizacional> areaOrganizacionalsTmp = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, getEmpresaSistema().getId());
 		areasList = areaOrganizacionalManager.montaFamilia(areaOrganizacionalsTmp);
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();

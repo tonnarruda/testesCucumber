@@ -96,7 +96,7 @@ public class TransacaoPCManagerImpl extends GenericManagerImpl<TransacaoPC, Tran
 		}
 	}
 	
-	private Integer enviar(TransacaoPC transacaoPC, String pcToken) throws HttpException, IOException 
+	public Integer enviar(TransacaoPC transacaoPC, String pcToken) throws HttpException, IOException 
 	{
 		URLTransacaoPC urlTransacaoPC = URLTransacaoPC.getById(transacaoPC.getCodigoUrl());
 		

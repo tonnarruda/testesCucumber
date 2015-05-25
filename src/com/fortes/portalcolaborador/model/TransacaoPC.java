@@ -28,6 +28,14 @@ public class TransacaoPC extends AbstractModel implements Serializable
     @Temporal(TemporalType.TIMESTAMP)
     private Date data;
 
+    public TransacaoPC() {}
+
+    public TransacaoPC(Integer codigoUrl, String json) 
+    {
+    	this.codigoUrl = codigoUrl;
+    	this.json = json;
+    }
+    
     public String toString()
     {
     	return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)

@@ -36,6 +36,9 @@ import com.fortes.portalcolaborador.business.operacao.AtualizarColaborador;
 import com.fortes.portalcolaborador.business.operacao.AtualizarColaboradorComHistorico;
 import com.fortes.portalcolaborador.business.operacao.ExcluirColaborador;
 import com.fortes.portalcolaborador.model.ColaboradorPC;
+import com.fortes.portalcolaborador.model.TransacaoPC;
+import com.fortes.portalcolaborador.model.dicionario.TransacaoPCMensagens;
+import com.fortes.portalcolaborador.model.dicionario.URLTransacaoPC;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.CandidatoIdiomaManager;
@@ -112,6 +115,7 @@ import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.CryptUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.Mail;
@@ -2749,6 +2753,33 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			throw e;
 		}
 		transactionManager.commit(status);
+	}
+	
+	public void verificarAtualizacaoNoPortalColaborador()
+	{
+		try
+		{
+//			empresaManager = (EmpresaManager) SpringUtil.getBeanOld("empresaManager");
+//			
+//			Collection<Empresa> empresas = empresaManager.findToList(new String[]{"id"}, new String[]{"id"}, new String[]{"integradaPortalColaborador"}, new Boolean[]{true});
+			
+			transacaoPCManager = (TransacaoPCManager) SpringUtil.getBeanOld("transacaoPCManager");
+			parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBeanOld("parametrosDoSistemaManager");
+
+			ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
+
+			TransacaoPC transacaoPC = new TransacaoPC(URLTransacaoPC.VERIFICAR_ATUALIZACAO_COLABORADOR.getId(), CryptUtil.encrypt("{\"cnpj\":\"0001\"}", parametrosDoSistema.getPcKey()));
+
+			String retorno = TransacaoPCMensagens.getDescricao(transacaoPCManager.enviar(transacaoPC, parametrosDoSistema.getPcToken()));
+//			return TransacaoPCMensagens.getDescricao(enviar(transacaoPC, parametrosDoSistema.getPcToken()));
+
+//			return TransacaoPCMensagens.getDescricao(TransacaoPCMensagens.ERRO);		
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+//			throw new Exception("Não foi possível editar o colaborador.");
+		}
 	}
 
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId) 
