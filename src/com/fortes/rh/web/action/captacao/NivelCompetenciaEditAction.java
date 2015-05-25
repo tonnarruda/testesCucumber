@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
@@ -17,6 +18,7 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaVO;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.Solicitacao;
@@ -39,6 +41,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private CandidatoManager candidatoManager;
 	private ColaboradorManager colaboradorManager;
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
+	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 	private SolicitacaoManager solicitacaoManager;
 	
 	private NivelCompetencia nivelCompetencia;
@@ -50,6 +53,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private Date dataIni;
 	private Date dataFim;
 	private ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador;
+	private ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial;
 	
 	private Collection<FaixaSalarial> faixaSalarials;
 	private Collection<NivelCompetencia> nivelCompetencias;
@@ -67,6 +71,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSugeridos;
 	private Collection<ConfiguracaoNivelCompetenciaColaborador> configuracaoNivelCompetenciaColaboradores;
+	private Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> configuracaoNivelCompetenciaFaixasSalariais;
 	private Collection<Solicitacao> solicitacoes;
 
 	private String[] competenciasCheck;
@@ -277,6 +282,14 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		return Action.SUCCESS;	
 	}
 	
+	public String listCompetenciasFaixaSalarial()
+	{
+		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
+		configuracaoNivelCompetenciaFaixasSalariais = configuracaoNivelCompetenciaFaixaSalarialManager.findToList(new String[]{"id", "data"}, new String[]{"id", "data"}, new String[]{"faixaSalarial.id"}, new Long[]{faixaSalarial.getId()});
+		
+		return Action.SUCCESS;	
+	}
+	
 	public void prepareCompetenciasColaborador()
 	{
 		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarial.getId());
@@ -299,6 +312,22 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		faixaSalarial = colaborador.getHistoricoColaborador().getFaixaSalarial();
 		
 		prepareCompetenciasColaborador();
+		
+		return Action.SUCCESS;
+	}
+	
+	public String prepareInsertCompetenciasFaixaSalarial()
+	{
+		configuracaoNivelCompetenciaFaixaSalarial = new ConfiguracaoNivelCompetenciaFaixaSalarial();
+		configuracaoNivelCompetenciaFaixaSalarial.setData(new Date());
+		
+//		colaborador = colaboradorManager.findById(colaborador.getId());
+//		colaboradores = new ArrayList<Colaborador>();
+//		colaboradores.add(new Colaborador("Anônimo", 0L));
+//		colaboradores.addAll(colaboradorManager.findByEmpresaAndStatusAC(getEmpresaSistema().getId(), StatusRetornoAC.CONFIRMADO, false));
+//		faixaSalarial = colaborador.getHistoricoColaborador().getFaixaSalarial();
+//		
+//		prepareCompetenciasColaborador();
 		
 		return Action.SUCCESS;
 	}
@@ -525,13 +554,11 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		return configuracaoNivelCompetenciaColaborador;
 	}
 
-	public void setConfiguracaoNivelCompetenciaColaborador(
-			ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) {
+	public void setConfiguracaoNivelCompetenciaColaborador(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) {
 		this.configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaborador;
 	}
 
-	public void setConfiguracaoNivelCompetenciaColaboradorManager(
-			ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
+	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
 		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
 	}
 
@@ -539,8 +566,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		return configuracaoNivelCompetenciaColaboradores;
 	}
 
-	public void setConfiguracaoNivelCompetenciaColaboradores(
-			Collection<ConfiguracaoNivelCompetenciaColaborador> configuracaoNivelCompetenciaColaboradores) {
+	public void setConfiguracaoNivelCompetenciaColaboradores(Collection<ConfiguracaoNivelCompetenciaColaborador> configuracaoNivelCompetenciaColaboradores) {
 		this.configuracaoNivelCompetenciaColaboradores = configuracaoNivelCompetenciaColaboradores;
 	}
 
@@ -633,5 +659,13 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public Collection<ConfiguracaoNivelCompetencia> getNiveisCompetenciaFaixaSalariaisSalvosAtitude() {
 		return niveisCompetenciaFaixaSalariaisSalvosAtitude;
+	}
+
+	public void setConfiguracaoNivelCompetenciaFaixasSalariais(Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> configuracaoNivelCompetenciaFaixasSalariais) {
+		this.configuracaoNivelCompetenciaFaixasSalariais = configuracaoNivelCompetenciaFaixasSalariais;
+	}
+
+	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager) {
+		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
 	}
 }

@@ -45,6 +45,9 @@
 		<action name="listCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="listCompetenciasColaborador">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/listCompetenciasColaborador.ftl</result>
 		</action>
+		<action name="listCompetenciasFaixaSalarial" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="listCompetenciasFaixaSalarial">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/listCompetenciasFaixaSalarial.ftl</result>
+		</action>
 		<action name="prepareInsertCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareInsertCompetenciasColaborador">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByColaborador.ftl</result>
 		</action>
