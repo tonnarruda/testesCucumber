@@ -45,7 +45,7 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	Usuario findUsuarioParaAuditoria(Long usuarioId);
 	Integer countColaboradorAvaliacaoRespondida(Long avaliacaoId);
 	boolean existeRespostaSemCargo(Long[] perguntasIds);
-	Collection<ColaboradorResposta> findPerguntasRespostasByColaboradorQuestionario(Long colaboradorQuestionarioId);
+	Collection<ColaboradorResposta> findPerguntasRespostasByColaboradorQuestionario(Long colaboradorQuestionarioId, boolean agruparPorAspecto);
 	void removeByQuestionarioId(Long questionarioId);
 	QuestionarioManager getQuestionarioManager(); // usado pela auditoria
 	ColaboradorManager getColaboradorManager(); // usado pela auditoria

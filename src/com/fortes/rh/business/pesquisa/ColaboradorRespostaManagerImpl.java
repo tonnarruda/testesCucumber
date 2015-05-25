@@ -644,9 +644,9 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		return getDao().existeRespostaSemCargo(perguntasIds);
 	}
 	
-	public Collection<ColaboradorResposta> findPerguntasRespostasByColaboradorQuestionario(Long colaboradorQuestionarioId) 
+	public Collection<ColaboradorResposta> findPerguntasRespostasByColaboradorQuestionario(Long colaboradorQuestionarioId, boolean agruparPorAspecto) 
 	{
-		return getDao().findPerguntasRespostasByColaboradorQuestionario(colaboradorQuestionarioId);
+		return getDao().findPerguntasRespostasByColaboradorQuestionario(colaboradorQuestionarioId, agruparPorAspecto);
 	}
 	
 	public void removeByQuestionarioId(Long questionarioId) 

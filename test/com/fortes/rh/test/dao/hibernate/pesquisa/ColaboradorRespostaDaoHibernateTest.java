@@ -1017,17 +1017,29 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 		colaboradorResposta5.setResposta(resposta5);
 		colaboradorRespostaDao.save(colaboradorResposta5);
 		
-		Collection<ColaboradorResposta> retorno = colaboradorRespostaDao.findPerguntasRespostasByColaboradorQuestionario(colaboradorQuestionario.getId());
-		ColaboradorResposta[] colaboradorRespostas = retorno.toArray(new ColaboradorResposta[] {});
+		Collection<ColaboradorResposta> retornoPorAspecto = colaboradorRespostaDao.findPerguntasRespostasByColaboradorQuestionario(colaboradorQuestionario.getId(), true);
+		ColaboradorResposta[] colaboradorRespostasPorAspecto = retornoPorAspecto.toArray(new ColaboradorResposta[] {});
 		
-		assertEquals("Total de respostas, marcadas ou não", 7, colaboradorRespostas.length);
-		assertEquals("Resposta subjetiva", colaboradorResposta1.getComentario(), colaboradorRespostas[0].getComentario());
-		assertEquals("Resposta objetiva marcada", colaboradorResposta3.getResposta().getId(), colaboradorRespostas[1].getResposta().getId());
-		assertNull("Resposta objetiva não marcada", colaboradorRespostas[2].getResposta().getId());
-		assertEquals("Resposta por nota", colaboradorResposta2.getValor(), colaboradorRespostas[3].getValor());
-		assertEquals("1ª resposta múltipla escolha marcada", colaboradorResposta4.getResposta().getId(), colaboradorRespostas[4].getResposta().getId());
-		assertNull("Resposta múltipla escolha não marcada", colaboradorRespostas[5].getResposta().getId());
-		assertEquals("2ª resposta múltipla escolha marcada", colaboradorResposta5.getResposta().getId(), colaboradorRespostas[6].getResposta().getId());
+		Collection<ColaboradorResposta> retornoPorOrdem = colaboradorRespostaDao.findPerguntasRespostasByColaboradorQuestionario(colaboradorQuestionario.getId(), false);
+		ColaboradorResposta[] colaboradorRespostasPorOrdem = retornoPorOrdem.toArray(new ColaboradorResposta[] {});
+		
+		assertEquals("Total de respostas, marcadas ou não", 7, colaboradorRespostasPorAspecto.length);
+		assertEquals("Resposta subjetiva", colaboradorResposta1.getComentario(), colaboradorRespostasPorAspecto[0].getComentario());
+		assertEquals("Resposta objetiva marcada", colaboradorResposta3.getResposta().getId(), colaboradorRespostasPorAspecto[1].getResposta().getId());
+		assertNull("Resposta objetiva não marcada", colaboradorRespostasPorAspecto[2].getResposta().getId());
+		assertEquals("Resposta por nota", colaboradorResposta2.getValor(), colaboradorRespostasPorAspecto[3].getValor());
+		assertEquals("1ª resposta múltipla escolha marcada", colaboradorResposta4.getResposta().getId(), colaboradorRespostasPorAspecto[4].getResposta().getId());
+		assertNull("Resposta múltipla escolha não marcada", colaboradorRespostasPorAspecto[5].getResposta().getId());
+		assertEquals("2ª resposta múltipla escolha marcada", colaboradorResposta5.getResposta().getId(), colaboradorRespostasPorAspecto[6].getResposta().getId());
+		
+		assertEquals("Total de respostas, marcadas ou não", 7, colaboradorRespostasPorOrdem.length);
+		assertEquals("Resposta subjetiva", colaboradorResposta1.getComentario(), colaboradorRespostasPorOrdem[0].getComentario());
+		assertEquals("Resposta objetiva marcada", colaboradorResposta3.getResposta().getId(), colaboradorRespostasPorOrdem[2].getResposta().getId());
+		assertNull("Resposta objetiva não marcada", colaboradorRespostasPorOrdem[1].getResposta().getId());
+		assertEquals("Resposta por nota", colaboradorResposta2.getValor(), colaboradorRespostasPorOrdem[1].getValor());
+		assertEquals("1ª resposta múltipla escolha marcada", colaboradorResposta4.getResposta().getId(), colaboradorRespostasPorOrdem[4].getResposta().getId());
+		assertNull("Resposta múltipla escolha não marcada", colaboradorRespostasPorOrdem[5].getResposta().getId());
+		assertEquals("2ª resposta múltipla escolha marcada", colaboradorResposta5.getResposta().getId(), colaboradorRespostasPorOrdem[6].getResposta().getId());
 	}
 	
 	public void testApenasUmColaboradorRespondeuPesquisaAnonima() {

@@ -774,7 +774,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return criteria.list().size() > 0;  
 	}
 
-	public Collection<ColaboradorResposta> findPerguntasRespostasByColaboradorQuestionario(Long colaboradorQuestionarioId) 
+	public Collection<ColaboradorResposta> findPerguntasRespostasByColaboradorQuestionario(Long colaboradorQuestionarioId, boolean agruparPorAspecto) 
 	{
 		getSession().flush();
 		
@@ -788,7 +788,11 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		sql.append("left join resposta r on r.pergunta_id = p.id ");
 		sql.append("left join colaboradorresposta cr on cr.colaboradorquestionario_id = cq.id and cr.pergunta_id = p.id and ((p.tipo in (1,5) and cr.resposta_id = r.id) or cr.resposta_id is null) ");
 		sql.append("where cq.id = :colaboradorQuestionarioId ");
-		sql.append("order by a.nome, p.ordem, r.ordem");
+		if (agruparPorAspecto) {
+			sql.append("order by a.nome, p.ordem, r.ordem");
+		} else {
+			sql.append("order by p.ordem, a.nome, r.ordem");
+		}
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("colaboradorQuestionarioId", colaboradorQuestionarioId);

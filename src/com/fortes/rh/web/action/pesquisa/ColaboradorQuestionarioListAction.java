@@ -101,6 +101,8 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	private String reportFilter;
 	private String reportTitle;
 	private String msgFinalRelatorioXls;
+	
+	private boolean agruparPorAspecto;
 
 	public String list() throws Exception
 	{
@@ -243,7 +245,7 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 				
 				parametros = RelatorioUtil.getParametrosRelatorio("Acompanhamento do Período de Experiência", getEmpresaSistema(), filtro);
 				parametros.put("Observacao", colaboradorQuestionario.getObservacao());
-				colaboradorRespostas = colaboradorRespostaManager.findPerguntasRespostasByColaboradorQuestionario(colaboradorQuestionario.getId());
+				colaboradorRespostas = colaboradorRespostaManager.findPerguntasRespostasByColaboradorQuestionario(colaboradorQuestionario.getId(), agruparPorAspecto);
 				
 				return Action.SUCCESS;
 			}
@@ -561,5 +563,13 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 
 	public void setAvaliacaoId(Long avaliacaoId) {
 		this.avaliacaoId = avaliacaoId;
+	}
+
+	public boolean isAgruparPorAspecto() {
+		return agruparPorAspecto;
+	}
+
+	public void setAgruparPorAspecto(boolean agruparPorAspecto) {
+		this.agruparPorAspecto = agruparPorAspecto;
 	}
 }

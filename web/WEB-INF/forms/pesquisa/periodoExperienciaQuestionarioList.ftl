@@ -8,7 +8,21 @@
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		#tipoAgrupamentoDialog { display: none; }
 	</style>
+	
+	<script type='text/javascript'>
+		
+		function escolheTipoAgrupamento(avaliacaoId, avaliacaoNome, colaboradorQuestionarioId, modoEconomico){
+			$('#avaliacaoIdTipoAgrupamento').val(avaliacaoId);
+			$('#colaboradorQuestionarioIdTipoAgrupamento').val(colaboradorQuestionarioId);
+			$('#modoEconomico').val(modoEconomico);
+			$('#tipoAgrupamentoDialog form').attr("action","imprimirAvaliacaoRespondida.action");
+			$('#tipoAgrupamentoDialog').dialog({ title: avaliacaoNome, modal: true, width: 550, height: 150 });
+		}
+		
+	</script>
+	
 </head>
 <body>
 	<#assign validarCampos="return validaFormulario('form', null, null)"/>
@@ -45,7 +59,7 @@
 			<@display.column title="Ações" class="acao">
 				<a href="prepareUpdateAvaliacaoExperiencia.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteAvaliacaoExperiencia.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-				<a href="imprimirAvaliacaoRespondida.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&avaliacaoId=${colaboradorQuestionario.avaliacao.id}"><img border="0" title="Imprimir avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+				<a href="#" onclick="escolheTipoAgrupamento('${colaboradorQuestionario.avaliacao.id}', '${colaboradorQuestionario.avaliacao.titulo}','${colaboradorQuestionario.id}', false)"><img border="0" title="Imprimir avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 				<a href="imprimirAvaliacaoRespondida.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&modoEconomico=true"><img border="0" title="Imprimir avaliação no formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"></a>
 			</@display.column>
 			<@display.column property="dataMaisTempoPeriodoExperiencia" title="Data" style="width: 140px;"/>
@@ -62,5 +76,17 @@
 			<button class="btnInserir" onclick="window.location='prepareInsertAvaliacaoExperiencia.action?colaboradorQuestionario.colaborador.id=${colaborador.id}'"></button>
 		</div>
 	</#if>	
+	
+	<div id="tipoAgrupamentoDialog" >
+		<@ww.form name="formOrdenarImpressao" action="" method="" >
+			<@ww.select label="Tipo de agrupamento" name="agruparPorAspecto" list=r"#{'false':'Por ordem', 'true':'Por aspecto'}" cssStyle="width: 200px; margin-top: 6px;" />
+			<@ww.hidden name="avaliacao.id" id="avaliacaoIdTipoAgrupamento"/>
+			<@ww.hidden name="colaboradorQuestionario.id" id="colaboradorQuestionarioIdTipoAgrupamento"/>
+			<@ww.hidden name= "modoEconomico" id="modoEconomico"/>
+			<button class="btnImprimir grayBG" onclick="$('#tipoAgrupamentoDialog').dialog('close');"></button>
+			<button type="button" onclick="$('#tipoAgrupamentoDialog').dialog('close'); $('#tipoAgrupamentoDialog input').val(''); $('#tipoAgrupamentoDialog select').val('');" class="btnCancelar grayBG">	</button>
+		</@ww.form>
+	</div>
+	
 </body>
 </html>
