@@ -98,8 +98,6 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		Collection<Epc> epcsDoAmbiente = epcManager.findEpcsDoAmbiente(ambiente.getId(), data);
 		ppraLtcatRelatorio.formataEpcs(epcsDoAmbiente);
 		
-		Collection<Epi> episDoAmbiente = epiManager.findEpisDoAmbiente(ambiente.getId(), data); 
-		ppraLtcatRelatorio.formataEpis(episDoAmbiente);
 	}
 	
 	private PpraLtcatRelatorio populaRelatorioPorAmbiente(Empresa empresa, Estabelecimento estabelecimento, Ambiente ambiente, Date data, ComposicaoSesmt composicaoSesmt, Collection<Funcao> funcoesDoAmbiente) 
@@ -111,6 +109,9 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		PpraLtcatRelatorio ppraLtcatRelatorio = new PpraLtcatRelatorio(cabecalho, ppra, ltcat, exibirPpra, exibirLtcat);
 		
 		populaRelatorioPor(ambiente, data, composicaoSesmt, ppraLtcatRelatorio);
+		
+		Collection<Epi> episDoAmbiente = epiManager.findEpisDoAmbiente(ambiente.getId(), data); 
+		ppraLtcatRelatorio.formataEpis(episDoAmbiente);
 		
 		ppraLtcatRelatorio.formataFuncoes(funcoesDoAmbiente);
 
@@ -135,6 +136,9 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		
 		populaRelatorioPor(ambiente, data, composicaoSesmt, ppraLtcatRelatorio);
 
+		Collection<Epi> episDaFuncao = epiManager.findByHistoricoFuncao(funcao.getHistoricoAtual().getId()); 
+		ppraLtcatRelatorio.formataEpis(episDaFuncao);
+		
 		ppraLtcatRelatorio.formataFuncoes(Arrays.asList(funcao));
 
 		//TODO Samuel falta implementar por funcao

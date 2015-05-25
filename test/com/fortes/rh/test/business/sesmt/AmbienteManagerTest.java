@@ -3,6 +3,7 @@ package com.fortes.rh.test.business.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -26,8 +27,10 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.Epi;
+import com.fortes.rh.model.sesmt.EpiHistorico;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
+import com.fortes.rh.model.sesmt.HistoricoFuncao;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 import com.fortes.rh.model.sesmt.relatorio.PpraLtcatCabecalho;
@@ -265,8 +268,95 @@ public class AmbienteManagerTest extends MockObjectTestCase
 		
 		assertEquals( new ArrayList<CheckBox>(), ambienteManager.populaCheckBox(1L));
 	}
+	
+	public void testPopulaRelatorioPorFuncao() throws Exception
+	{
+		Date hoje = Calendar.getInstance().getTime();
+		boolean exibirPpra=true;
+		boolean exibirLtcat=true;
+		boolean exibirComposicaoSesmt=true;
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setRazaoSocial("TESTEX S/A Testes Automatizados");
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(2L);
+		
+		Endereco endereco = new Endereco();
+		endereco.setLogradouro("Rua Margarida Flores");
+		endereco.setBairro("Parque Araxá");
+		endereco.setNumero("234");
+		estabelecimento.setEndereco(endereco);
+		
+		Collection<Epi> listEpis = new ArrayList<Epi>();
+		
+		Epi epi1 = new Epi();
+		epi1.setEmpresa(empresa);
+		epi1.setDescricao("Epi1");
 
-	public void testPopulaRelatorio() throws Exception
+		Epi epi2 = new Epi();
+		epi2.setEmpresa(empresa);
+		epi1.setDescricao("Epi2");
+		
+		listEpis.add(epi2);
+		
+		HistoricoFuncao historicoFuncao = new HistoricoFuncao();
+		historicoFuncao.setId(1L);
+		historicoFuncao.setEpis(listEpis);
+		historicoFuncao.setDescricao("Piso de concreto, paredes de aço, teto de madeira.");
+		
+		Funcao funcao = new Funcao();
+		funcao.setHistoricoAtual(historicoFuncao);
+		funcao.setNome("Função");
+		
+		Collection<Funcao> funcoes = new ArrayList<Funcao>();
+		funcoes.add(funcao);
+		
+		HistoricoAmbiente historicoAmbiente = new HistoricoAmbiente();
+		historicoAmbiente.setDescricao("Piso de concreto, paredes de aço, teto de madeira.");
+		
+		Ambiente ambiente1 = AmbienteFactory.getEntity(50L);
+		ambiente1.setHistoricoAtual(historicoAmbiente);
+		ambiente1.setNome("Ambiente1");
+		
+		Ambiente ambiente2 = AmbienteFactory.getEntity(51L);
+		ambiente2.setNome("Ambiente2");
+		HistoricoAmbiente historicoAmbiente2 = new HistoricoAmbiente();
+		historicoAmbiente2.setDescricao("Paredes revestidas com isolamento acústico.");
+		ambiente2.setHistoricoAtual(historicoAmbiente2);
+		
+		Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
+		ambientes.add(ambiente1);
+		ambientes.add(ambiente2);
+		
+		PpraLtcatCabecalho cabecalho = new PpraLtcatCabecalho();
+		
+		cabecalho.setEmpresa(empresa);
+		cabecalho.setEstabelecimento(estabelecimento);
+		
+		estabelecimentoManager.expects(once()).method("findById").will(returnValue(estabelecimento));
+		ambienteDao.expects(once()).method("findByIds").will(returnValue(ambientes));
+		
+		composicaoSesmtManager.expects(once()).method("findByData").with(eq(empresa.getId()), ANYTHING);
+		funcaoManager.expects(atLeastOnce()).method("findFuncoesDoAmbiente").will(returnValue(funcoes));
+		ambienteDao.expects(atLeastOnce()).method("getQtdColaboradorByAmbiente").with(ANYTHING,ANYTHING,eq(Sexo.MASCULINO),ANYTHING).will(returnValue(10));
+		ambienteDao.expects(atLeastOnce()).method("getQtdColaboradorByAmbiente").with(ANYTHING,ANYTHING,eq(Sexo.FEMININO),ANYTHING).will(returnValue(50));
+		riscoMedicaoRiscoManager.expects(atLeastOnce()).method("findMedicoesDeRiscosDaFuncao").will(returnValue(new ArrayList<RiscoMedicaoRisco>()));
+		epcManager.expects(atLeastOnce()).method("findEpcsDoAmbiente").will(returnValue(new ArrayList<Epc>()));
+		epiManager.expects(atLeastOnce()).method("findByHistoricoFuncao").will(returnValue(listEpis));
+		empresaManager.expects(atLeastOnce()).method("isControlaRiscoPorAmbiente").will(returnValue(false));
+		
+		Date data = hoje;
+		String[] ambienteCheck=new String[]{"50", "51"};
+		boolean gerarPpra=exibirPpra;
+		boolean gerarLtcat=exibirLtcat;
+		
+		Collection<PpraLtcatRelatorio> relatorios = ambienteManager.montaRelatorioPpraLtcat(empresa, estabelecimento.getId(), data, ambienteCheck, gerarPpra, gerarLtcat, exibirComposicaoSesmt);
+		
+		assertEquals(2, relatorios.size());
+		assertEquals(60, ((PpraLtcatRelatorio) relatorios.toArray()[0]).getCabecalho().getQtdTotal().intValue());
+	}
+	
+	public void testPopulaRelatorioPorAmbiente() throws Exception
 	{
 		Date hoje = Calendar.getInstance().getTime();
 		boolean exibirPpra=true;

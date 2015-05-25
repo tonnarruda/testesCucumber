@@ -49,6 +49,15 @@ public class Funcao extends AbstractModel implements Serializable
 		historicoAtual.setDescricao(descricao);
 	}
 	
+	public Funcao(Long id, String nome, Long historicoAtualId, String descricao) 
+	{
+		setId(id);
+		this.nome = nome;
+		this.historicoAtual = new HistoricoFuncao();
+		historicoAtual.setDescricao(descricao);
+		historicoAtual.setId(historicoAtualId);
+	}
+	
 	public Funcao(Long id, String nome) 
 	{
 		setId(id);
