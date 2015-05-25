@@ -170,6 +170,14 @@
       <ref bean="configuracaoNivelCompetenciaColaboradorDaoTarget" />
     </property>
   </bean>
+  <bean id="configuracaoNivelCompetenciaFaixaSalarialDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialDao</value>
+    </property>
+    <property name="target">
+      <ref bean="configuracaoNivelCompetenciaFaixaSalarialDaoTarget" />
+    </property>
+  </bean>
 </beans>
 
 

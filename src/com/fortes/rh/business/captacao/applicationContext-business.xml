@@ -406,6 +406,19 @@
       <ref bean="configuracaoNivelCompetenciaColaboradorManagerTarget" />
     </property>
   </bean>
+  <bean id="configuracaoNivelCompetenciaFaixaSalarialManagerTarget" class="com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManagerImpl">
+    <property name="dao">
+      <ref bean="configuracaoNivelCompetenciaFaixaSalarialDao" />
+    </property>
+  </bean>
+  <bean id="configuracaoNivelCompetenciaFaixaSalarialManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager</value>
+    </property>
+    <property name="target">
+      <ref bean="configuracaoNivelCompetenciaFaixaSalarialManagerTarget" />
+    </property>
+  </bean>
 </beans>
 
 
