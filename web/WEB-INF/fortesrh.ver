@@ -5,6 +5,7 @@
 		<Item visivel="S" motivo="S20150400047"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Guardar as opções do filtro ao realizar pesquisa.]]></Item>
 		<Item visivel="S" motivo="P20150400234"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Ajuste no campo "Área Organizacional" para exibir as áreas organizacionais nas quais o colaborador é responsável/corresponsável e suas descendentes.]]></Item>
 		<Item visivel="S" motivo="P20150400136"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Promover: Ajuste dos dados pré-carregados para o cadastro da nova situação.]]></Item>	
+		<Item visivel="S" motivo="S20150500138"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Possibilidade de imprimir a avaliação por ordem de aspectos ou por ordem de perguntas.]]></Item>
 		<Item visivel="S" motivo="S20150300124"><![CDATA[T&D > Cadastros > Cursos/Treinamentos: Nova opção para inserir anexos.]]></Item>		
 		<Item visivel="S" motivo="P20150500031"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Editar: Ajuste para possibilitar desmarcar "Avaliações dos Alunos" quando estas não possuírem respostas.]]></Item>		
 		<Item visivel="S" motivo="S20150400047"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Guardar as opções do filtro ao realizar pesquisa.]]></Item>
