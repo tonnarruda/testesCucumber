@@ -17,7 +17,7 @@ public class CompetenciaDWR
 	@SuppressWarnings("unchecked")
 	public Map getByFaixa(Long faixaId)
 	{
-		return CollectionUtil.convertCollectionToMap(configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaId), "getId", "getCompetenciaDescricaoNivel", ConfiguracaoNivelCompetencia.class);
+		return CollectionUtil.convertCollectionToMap(configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaId, null), "getId", "getCompetenciaDescricaoNivel", ConfiguracaoNivelCompetencia.class);
 	}
 
 	public Collection<ConfiguracaoNivelCompetencia> getSugestoesBySolicitacao(Long solicitacaoId) 

@@ -105,7 +105,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId) 
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId, Date data) 
 	{
 		StringBuilder sql = new StringBuilder();
 
@@ -116,13 +116,14 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("left join Conhecimento conhe on conhe.id = cnc.competencia_id and 'C' = cnc.tipocompetencia ");
 		sql.append("left join Habilidade h on h.id = cnc.competencia_id and 'H' = cnc.tipocompetencia ");
 		sql.append("where cnc.faixasalarial_id = :faixaSalarialId  ");
-		sql.append("and cncf.data = (select max(data) from ConfiguracaoNivelCompetenciaFaixaSalarial cncf2 where cncf2.faixasalarial_id = cncf.faixasalarial_id ) ");
+		sql.append("and cncf.data = (select max(data) from ConfiguracaoNivelCompetenciaFaixaSalarial cncf2 where cncf2.faixasalarial_id = cncf.faixasalarial_id and cncf2.data <= :data) ");
 		sql.append("and cnc.configuracaoNivelCompetenciaColaborador_id is null ");
 		sql.append("and cnc.candidato_id is null ");		
 		sql.append("order by competenciaDescricao ");
 
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("faixaSalarialId", faixaId);
+		query.setDate("data", data == null ? new Date() : data);
 		
 		Collection<Object[]> resultado = query.list();
 		

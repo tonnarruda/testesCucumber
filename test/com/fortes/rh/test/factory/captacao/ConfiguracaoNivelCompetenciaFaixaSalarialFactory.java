@@ -8,10 +8,16 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialFactory
 {
 	public static ConfiguracaoNivelCompetenciaFaixaSalarial getEntity()
 	{
-		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarialF = new ConfiguracaoNivelCompetenciaFaixaSalarial();
-		configuracaoNivelCompetenciaFaixaSalarialF.setId(null);
-		configuracaoNivelCompetenciaFaixaSalarialF.setData(new Date());
-		return configuracaoNivelCompetenciaFaixaSalarialF;
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = new ConfiguracaoNivelCompetenciaFaixaSalarial();
+		configuracaoNivelCompetenciaFaixaSalarial.setId(null);
+		configuracaoNivelCompetenciaFaixaSalarial.setData(new Date());
+		return configuracaoNivelCompetenciaFaixaSalarial;
 	}
-
+	
+	public static ConfiguracaoNivelCompetenciaFaixaSalarial getEntity(Long id)
+	{
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = getEntity();
+		configuracaoNivelCompetenciaFaixaSalarial.setId(id);
+		return configuracaoNivelCompetenciaFaixaSalarial;
+	}
 }

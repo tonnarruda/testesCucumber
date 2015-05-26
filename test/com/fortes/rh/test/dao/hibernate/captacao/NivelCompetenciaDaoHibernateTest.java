@@ -448,12 +448,12 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		nivelCompetencia2.setDescricao("dificil");
 		nivelCompetenciaDao.save(nivelCompetencia2);
 		
-		ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial1 = new ConfiguracaoNivelCompetenciaFaixaSalarialFactory().getEntity();
+		ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial1 = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
 		cncFaixaSalarial1.setData(DateUtil.criarDataMesAno(1, 1, 2015));
 		cncFaixaSalarial1.setFaixaSalarial(faixaSalarial);
 		configuracaoNivelCompetenciaFaixaSalarialDao.save(cncFaixaSalarial1);
 		
-		ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial2 = new ConfiguracaoNivelCompetenciaFaixaSalarialFactory().getEntity();
+		ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial2 = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
 		cncFaixaSalarial2.setData(DateUtil.criarDataMesAno(1, 2, 2015));
 		cncFaixaSalarial2.setFaixaSalarial(faixaSalarial);
 		configuracaoNivelCompetenciaFaixaSalarialDao.save(cncFaixaSalarial2);
@@ -476,7 +476,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		
 		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId());//gambi do SQL, precisa disso só para a proxima consulta
 		
-		Collection<ConfiguracaoNivelCompetencia> competenciasDaFaixa = configuracaoNivelCompetenciaDao.findCompetenciaByFaixaSalarial(faixaSalarial.getId());
+		Collection<ConfiguracaoNivelCompetencia> competenciasDaFaixa = configuracaoNivelCompetenciaDao.findCompetenciaByFaixaSalarial(faixaSalarial.getId(), null);
 		assertEquals(1, competenciasDaFaixa.size());
 		
 		ConfiguracaoNivelCompetencia competenciaAtitude = (ConfiguracaoNivelCompetencia)competenciasDaFaixa.toArray()[0]; 
