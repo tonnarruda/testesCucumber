@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.144.174" bd="" data="19/05/2015">
 		<Item visivel="S" motivo="P20150400222"><![CDATA[R&S > Cadastros > Candidatos > Editar > Experiências: Ajuste na inconsistência da duplicação de experiências ao contratar o candidato.]]></Item>
+		<Item visivel="S" motivo="S20150400047"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Guardar as opções do filtro ao realizar pesquisa.]]></Item>
 		<Item visivel="S" motivo="P20150400136"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Promover: Ajuste dos dados pré-carregados para o cadastro da nova situação.]]></Item>	
 		<Item visivel="S" motivo="S20150300124"><![CDATA[T&D > Cadastros > Cursos/Treinamentos: Nova opção para inserir anexos.]]></Item>		
 		<Item visivel="S" motivo="P20150500031"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Editar: Ajuste para possibilitar desmarcar "Avaliações dos Alunos" quando estas não possuírem respostas.]]></Item>		
