@@ -463,7 +463,7 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 	{
 		StringBuilder sql = new StringBuilder();
 		
-		sql.append("select * from monta_familia_areas_filhas_by_usuario_and_empresa(:usuarioId, :empresaId)");
+		sql.append("select distinct * from monta_familia_areas_filhas_by_usuario_and_empresa(:usuarioId, :empresaId)");
 		
 		if(ativo != null)
 			if (areaInativaIds == null || areaInativaIds.isEmpty())
