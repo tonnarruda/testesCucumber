@@ -24,7 +24,6 @@
 	</@display.table>
 
 	<div class="buttonGroup">
-		<!-- <button class="btnInserir" onclick="window.location='prepareInsertCompetenciasFaixaSalarial.action?faixaSalaral.id=${faixaSalarial.id}'"></button> -->
 		<button class="btnInserir" onclick="window.location='prepareInsertCompetenciasFaixaSalarial.action?faixaSalarial.id=${faixaSalarial.id}'"></button>
 		<button onclick="window.location='../../cargosalario/faixaSalarial/list.action';" class="btnVoltar"></button>
 	</div>

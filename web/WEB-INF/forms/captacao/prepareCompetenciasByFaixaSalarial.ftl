@@ -39,27 +39,32 @@
 				$('.checkNivelAtitude').attr('disabled', !($(this).attr('checked')));
 				$('.checkCompetenciaAtitude').attr('checked', $(this).attr('checked'));
 			});
+			<#if niveisCompetenciaFaixaSalariaisSalvosConhecimento?exists>
+				<#list niveisCompetenciaFaixaSalariaisSalvosConhecimento as nivelSalvo>
+					var linhaConhecimento = $('tr').has('.checkCompetenciaConhecimento[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
+					linhaConhecimento.find('.checkCompetenciaConhecimento').attr('checked', 'true');
+					linhaConhecimento.find('.checkNivelConhecimento').removeAttr('disabled');
+					linhaConhecimento.find('.checkNivelConhecimento[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
+				</#list>
+			</#if>
 			
-			<#list niveisCompetenciaFaixaSalariaisSalvosConhecimento as nivelSalvo>
-				var linhaConhecimento = $('tr').has('.checkCompetenciaConhecimento[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
-				linhaConhecimento.find('.checkCompetenciaConhecimento').attr('checked', 'true');
-				linhaConhecimento.find('.checkNivelConhecimento').removeAttr('disabled');
-				linhaConhecimento.find('.checkNivelConhecimento[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
-			</#list>
+			<#if niveisCompetenciaFaixaSalariaisSalvosHabilidade?exists>
+				<#list niveisCompetenciaFaixaSalariaisSalvosHabilidade as nivelSalvo>
+					var linhaHabilidade = $('tr').has('.checkCompetenciaHabilidade[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
+					linhaHabilidade.find('.checkCompetenciaHabilidade').attr('checked', 'true');
+					linhaHabilidade.find('.checkNivelHabilidade').removeAttr('disabled');
+					linhaHabilidade.find('.checkNivelHabilidade[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
+				</#list>
+			</#if>
 			
-			<#list niveisCompetenciaFaixaSalariaisSalvosHabilidade as nivelSalvo>
-				var linhaHabilidade = $('tr').has('.checkCompetenciaHabilidade[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
-				linhaHabilidade.find('.checkCompetenciaHabilidade').attr('checked', 'true');
-				linhaHabilidade.find('.checkNivelHabilidade').removeAttr('disabled');
-				linhaHabilidade.find('.checkNivelHabilidade[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
-			</#list>
-			
-			<#list niveisCompetenciaFaixaSalariaisSalvosAtitude as nivelSalvo>
-				var linhaAtitude = $('tr').has('.checkCompetenciaAtitude[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
-				linhaAtitude.find('.checkCompetenciaAtitude').attr('checked', 'true');
-				linhaAtitude.find('.checkNivelAtitude').removeAttr('disabled');
-				linhaAtitude.find('.checkNivelAtitude[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
-			</#list>
+			<#if niveisCompetenciaFaixaSalariaisSalvosAtitude?exists>
+				<#list niveisCompetenciaFaixaSalariaisSalvosAtitude as nivelSalvo>
+					var linhaAtitude = $('tr').has('.checkCompetenciaAtitude[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
+					linhaAtitude.find('.checkCompetenciaAtitude').attr('checked', 'true');
+					linhaAtitude.find('.checkNivelAtitude').removeAttr('disabled');
+					linhaAtitude.find('.checkNivelAtitude[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
+				</#list>
+			</#if>
 		});
 		
 		function enviarForm() {
@@ -106,8 +111,10 @@
 	<#if configuracaoNivelCompetenciaFaixaSalarial?exists && configuracaoNivelCompetenciaFaixaSalarial.data?exists>
 		<#assign data = configuracaoNivelCompetenciaFaixaSalarial.data?date/>
 	<#else>
-		<#assign data = ""/>
+		<#assign data = "  /  /    "/>
 	</#if>
+	
+	<#include "../ftl/mascarasImports.ftl" />
 </head>
 <body>
 	<@ww.actionmessage />

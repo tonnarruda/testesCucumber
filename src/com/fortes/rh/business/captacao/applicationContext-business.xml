@@ -381,6 +381,9 @@
     <property name="configuracaoNivelCompetenciaColaboradorManager">
       <ref bean="configuracaoNivelCompetenciaColaboradorManager" />
     </property>
+    <property name="configuracaoNivelCompetenciaFaixaSalarialManager">
+      <ref bean="configuracaoNivelCompetenciaFaixaSalarialManager" />
+    </property>
     <property name="candidatoSolicitacaoManager">
       <ref bean="candidatoSolicitacaoManager" />
     </property>

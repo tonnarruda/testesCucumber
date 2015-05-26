@@ -271,13 +271,18 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		String queryHQL = "delete from ConfiguracaoNivelCompetencia cnc where cnc.configuracaoNivelCompetenciaColaborador.id = :configuracaoNivelColaboradorId";
 
 		Query query = getSession().createQuery(queryHQL);
-
 		query.setLong("configuracaoNivelColaboradorId", configuracaoNivelColaboradorId);
-
 		query.executeUpdate();
-		
 	}
 
+	public void removeByConfiguracaoNivelFaixaSalarial(Long configuracaoNivelFaixaSalarialId){
+		String queryHQL = "delete from ConfiguracaoNivelCompetencia cnc where cnc.configuracaoNivelCompetenciaFaixaSalarial.id = :configuracaoNivelFaixaSalarialId";
+		
+		Query query = getSession().createQuery(queryHQL);
+		query.setLong("configuracaoNivelFaixaSalarialId", configuracaoNivelFaixaSalarialId);
+		query.executeUpdate();
+	}
+	
 	public void removeByCandidato(Long candidatoId) {
 		String queryHQL = "delete from ConfiguracaoNivelCompetencia cnc where cnc.candidato.id = :candidatoId";
 		getSession().createQuery(queryHQL).setLong("candidatoId",candidatoId).executeUpdate();

@@ -362,6 +362,12 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		configuracaoNivelCompetenciaColaboradorManager.remove(configuracaoNivelColaboradorId);
 	}
 
+	public void removeConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelFaixaSalarialId)
+	{
+		getDao().removeByConfiguracaoNivelFaixaSalarial(configuracaoNivelFaixaSalarialId);
+		configuracaoNivelCompetenciaFaixaSalarialManager.remove(configuracaoNivelFaixaSalarialId);
+	}
+
 	public void removeByCandidato(Long candidatoId) {
 		getDao().removeByCandidato(candidatoId);		
 	}
