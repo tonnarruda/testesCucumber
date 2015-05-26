@@ -15,12 +15,14 @@ import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
+import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -31,6 +33,7 @@ import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
+import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
@@ -47,6 +50,7 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 	private Mock colaboradorManager;
 	private Mock configuracaoNivelCompetenciaManager;
 	private Mock configuracaoNivelCompetenciaColaboradorManager;
+	private Mock solicitacaoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -57,6 +61,7 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class);
 		configuracaoNivelCompetenciaColaboradorManager = new Mock(ConfiguracaoNivelCompetenciaColaboradorManager.class);
+		solicitacaoManager = new Mock(SolicitacaoManager.class);
 		
 		action = new NivelCompetenciaEditAction();
 		action.setNivelCompetencia(new NivelCompetencia());
@@ -67,6 +72,7 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
 		action.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
 		action.setConfiguracaoNivelCompetenciaColaboradorManager((ConfiguracaoNivelCompetenciaColaboradorManager) configuracaoNivelCompetenciaColaboradorManager.proxy());
+		action.setSolicitacaoManager((SolicitacaoManager) solicitacaoManager.proxy()); 
 		
 		Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
 	}
@@ -196,11 +202,15 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		Collection<ConfiguracaoNivelCompetencia> configuracoes = Arrays.asList(config1, config2);
 		action.setNiveisCompetenciaFaixaSalariais(configuracoes);
 		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		action.setSolicitacao(solicitacao);
+		
 		candidatoManager.expects(once()).method("findByCandidatoId").with(eq(candidato.getId())).will(returnValue(candidato));
 		faixaSalarialManager.expects(once()).method("findByFaixaSalarialId").with(eq(faixaSalarial.getId())).will(returnValue(faixaSalarial));
-		configuracaoNivelCompetenciaManager.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId())).will(returnValue(configuracoes));
+		configuracaoNivelCompetenciaManager.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId()), ANYTHING).will(returnValue(configuracoes));
 		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(configuracoes));
 		configuracaoNivelCompetenciaManager.expects(once()).method("findByCandidato").with(eq(candidato.getId())).will(returnValue(configuracoes));
+		solicitacaoManager.expects(once()).method("findById").with(eq(solicitacao.getId())).will(returnValue(solicitacao));
 		
 		assertEquals("success", action.prepareCompetenciasByCandidato());
 		assertNotNull(action.getCandidato());
@@ -255,12 +265,16 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		Collection<ConfiguracaoNivelCompetencia> configuracoes = Arrays.asList(config1, config2);
 		action.setNiveisCompetenciaFaixaSalariais(configuracoes);
 		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		action.setSolicitacao(solicitacao);
+
 		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetencias").with(eq(configuracoes), eq(faixaSalarial.getId()), eq(candidato.getId())).isVoid();
 		candidatoManager.expects(once()).method("findByCandidatoId").with(eq(candidato.getId())).will(returnValue(candidato));
 		faixaSalarialManager.expects(once()).method("findByFaixaSalarialId").with(eq(faixaSalarial.getId())).will(returnValue(faixaSalarial));
-		configuracaoNivelCompetenciaManager.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId())).will(returnValue(configuracoes));
+		configuracaoNivelCompetenciaManager.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId()), ANYTHING).will(returnValue(configuracoes));
 		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(configuracoes));
 		configuracaoNivelCompetenciaManager.expects(once()).method("findByCandidato").with(eq(candidato.getId())).will(returnValue(configuracoes));
+		solicitacaoManager.expects(once()).method("findById").with(eq(solicitacao.getId())).will(returnValue(solicitacao));
 		
 		assertEquals("success", action.saveCompetenciasByCandidato());
 	}
@@ -336,7 +350,7 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetenciasColaborador").with(eq(configuracoes), eq(configuracaoNivelCompetenciaColaborador)).isVoid();
 		colaboradorManager.expects(once()).method("findById").with(eq(colaborador.getId())).will(returnValue(colaborador));
 		colaboradorManager.expects(once()).method("findByEmpresaAndStatusAC").with(eq(empresa.getId()), eq(StatusRetornoAC.CONFIRMADO), eq(false)).will(returnValue(new ArrayList<Colaborador>()));
-		configuracaoNivelCompetenciaManager.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId())).will(returnValue(configuracoes));
+		configuracaoNivelCompetenciaManager.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId()), ANYTHING).will(returnValue(configuracoes));
 		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(configuracoes));
 		
 		assertEquals("success", action.saveCompetenciasColaborador());
@@ -376,7 +390,7 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		configuracaoNivelCompetenciaColaboradorManager.expects(once()).method("findByIdProjection").with(eq(configuracaoNivelCompetenciaColaborador.getId())).will(returnValue(configuracaoNivelCompetenciaColaborador));
 		configuracaoNivelCompetenciaManager.expects(once()).method("findByConfiguracaoNivelCompetenciaColaborador").with(eq(configuracaoNivelCompetenciaColaborador.getId())).will(returnValue(configuracoes));
 		
-		configuracaoNivelCompetenciaManager.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId())).will(returnValue(configuracoes));
+		configuracaoNivelCompetenciaManager.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId()), ANYTHING).will(returnValue(configuracoes));
 		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(configuracoes));
 		
 		assertEquals("success", action.saveCompetenciasColaborador());
