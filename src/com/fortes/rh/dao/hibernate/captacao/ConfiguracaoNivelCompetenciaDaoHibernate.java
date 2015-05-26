@@ -110,11 +110,13 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		StringBuilder sql = new StringBuilder();
 
 		sql.append("select cnc.id, cnc.tipoCompetencia, cnc.competencia_id as competenciaId, COALESCE(a.nome, conhe.nome, h.nome) as competenciaDescricao, COALESCE(a.observacao, conhe.observacao, h.observacao) as competenciaObservacao, cnc.nivelcompetencia_id, nc.descricao, nc.ordem from ConfiguracaoNivelCompetencia cnc ");
+		sql.append("join ConfiguracaoNivelCompetenciaFaixaSalarial cncf on cncf.id = cnc.ConfiguracaoNivelCompetenciaFaixaSalarial_id ");
 		sql.append("join nivelcompetencia nc on nc.id = cnc.nivelcompetencia_id ");
 		sql.append("left join Atitude a on a.id = cnc.competencia_id and 'A' = cnc.tipocompetencia ");
 		sql.append("left join Conhecimento conhe on conhe.id = cnc.competencia_id and 'C' = cnc.tipocompetencia ");
 		sql.append("left join Habilidade h on h.id = cnc.competencia_id and 'H' = cnc.tipocompetencia ");
 		sql.append("where cnc.faixasalarial_id = :faixaSalarialId  ");
+		sql.append("and cncf.data = (select max(data) from ConfiguracaoNivelCompetenciaFaixaSalarial cncf2 where cncf2.faixasalarial_id = cncf.faixasalarial_id ) ");
 		sql.append("and cnc.configuracaoNivelCompetenciaColaborador_id is null ");
 		sql.append("and cnc.candidato_id is null ");		
 		sql.append("order by competenciaDescricao ");

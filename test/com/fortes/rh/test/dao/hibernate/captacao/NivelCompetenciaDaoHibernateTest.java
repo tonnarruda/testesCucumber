@@ -11,6 +11,7 @@ import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
+import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.dao.captacao.HabilidadeDao;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
@@ -26,6 +27,7 @@ import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.captacao.NivelCompetencia;
@@ -43,6 +45,7 @@ import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
@@ -67,6 +70,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 	private FaixaSalarialDao faixaSalarialDao;
 	private CandidatoDao candidatoDao;
 	private ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao;
+	private ConfiguracaoNivelCompetenciaFaixaSalarialDao configuracaoNivelCompetenciaFaixaSalarialDao;
 	private ColaboradorManager colaboradorManager;
 	private ColaboradorDao colaboradorDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
@@ -444,11 +448,22 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		nivelCompetencia2.setDescricao("dificil");
 		nivelCompetenciaDao.save(nivelCompetencia2);
 		
+		ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial1 = new ConfiguracaoNivelCompetenciaFaixaSalarialFactory().getEntity();
+		cncFaixaSalarial1.setData(DateUtil.criarDataMesAno(1, 1, 2015));
+		cncFaixaSalarial1.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(cncFaixaSalarial1);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial2 = new ConfiguracaoNivelCompetenciaFaixaSalarialFactory().getEntity();
+		cncFaixaSalarial2.setData(DateUtil.criarDataMesAno(1, 2, 2015));
+		cncFaixaSalarial2.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(cncFaixaSalarial2);
+
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = new ConfiguracaoNivelCompetencia();
 		configuracaoNivelCompetencia1.setFaixaSalarial(faixaSalarial);
 		configuracaoNivelCompetencia1.setNivelCompetencia(nivelCompetencia1);
 		configuracaoNivelCompetencia1.setCompetenciaId(atitude.getId());
 		configuracaoNivelCompetencia1.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetencia1.setConfiguracaoNivelCompetenciaFaixaSalarial(cncFaixaSalarial2);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia1);
 		
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = new ConfiguracaoNivelCompetencia();
@@ -456,12 +471,13 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configuracaoNivelCompetencia2.setNivelCompetencia(nivelCompetencia2);
 		configuracaoNivelCompetencia2.setCompetenciaId(conhecimento.getId());
 		configuracaoNivelCompetencia2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configuracaoNivelCompetencia2.setConfiguracaoNivelCompetenciaFaixaSalarial(cncFaixaSalarial1);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia2);
 		
 		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId());//gambi do SQL, precisa disso só para a proxima consulta
 		
 		Collection<ConfiguracaoNivelCompetencia> competenciasDaFaixa = configuracaoNivelCompetenciaDao.findCompetenciaByFaixaSalarial(faixaSalarial.getId());
-		assertEquals(2, competenciasDaFaixa.size());
+		assertEquals(1, competenciasDaFaixa.size());
 		
 		ConfiguracaoNivelCompetencia competenciaAtitude = (ConfiguracaoNivelCompetencia)competenciasDaFaixa.toArray()[0]; 
 		assertEquals(configuracaoNivelCompetencia1.getId(), competenciaAtitude.getId());
@@ -1015,5 +1031,10 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 	public void setColaboradorQuestionarioDao(
 			ColaboradorQuestionarioDao colaboradorQuestionarioDao) {
 		this.colaboradorQuestionarioDao = colaboradorQuestionarioDao;
+	}
+
+	public void setConfiguracaoNivelCompetenciaFaixaSalarialDao(
+			ConfiguracaoNivelCompetenciaFaixaSalarialDao configuracaoNivelCompetenciaFaixaSalarialDao) {
+		this.configuracaoNivelCompetenciaFaixaSalarialDao = configuracaoNivelCompetenciaFaixaSalarialDao;
 	}
 }
