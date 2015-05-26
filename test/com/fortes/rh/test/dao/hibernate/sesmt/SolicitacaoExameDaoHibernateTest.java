@@ -356,7 +356,7 @@ public class SolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTest<So
 		Date fim = DateUtil.criarDataMesAno(01, 05, 2010);
 		String[] motivos = new String[]{MotivoSolicitacaoExame.PERIODICO};
 		
-		assertEquals(2,solicitacaoExameDao.findAtendimentosMedicos(inicio, fim, motivos, medicoCoordenador, empresa.getId(), false, false).size());
+		assertEquals(2,solicitacaoExameDao.findAtendimentosMedicos(inicio, fim, motivos, medicoCoordenador, empresa.getId(), false, false, 'T').size());
 //		assertEquals(2,solicitacaoExameDao.findAtendimentosMedicos(inicio, fim, motivo, medicoCoordenador, empresa.getId(), true).size());
 	}
 

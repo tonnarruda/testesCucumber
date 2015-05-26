@@ -7,6 +7,7 @@ import java.util.Date;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -198,11 +199,11 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		Collection<SolicitacaoExame> solicitacaoExames = new ArrayList<SolicitacaoExame>();
 		solicitacaoExames.add(solicitacaoExame);
 		
-		solicitacaoExameDao.expects(once()).method("findAtendimentosMedicos").will(returnValue(solicitacaoExames));
+		solicitacaoExameDao.expects(once()).method("findAtendimentosMedicos").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(solicitacaoExames));
 		
 		boolean agruparPorMotivo=false;
 		boolean ordenarPorNome=false;
-		assertEquals(1,solicitacaoExameManager.getRelatorioAtendimentos(inicio, fim, solicitacaoExame, empresa, agruparPorMotivo, ordenarPorNome, new String[]{}).size());
+		assertEquals(1,solicitacaoExameManager.getRelatorioAtendimentos(inicio, fim, solicitacaoExame, empresa, agruparPorMotivo, ordenarPorNome, new String[]{}, 'T').size());
 	}
 	
 	public void testGetRelatorioAtendimentosColecaoVazia()
@@ -217,7 +218,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		
 		Exception exception=null;
 		try {
-			solicitacaoExameManager.getRelatorioAtendimentos(inicio, fim, solicitacaoExame, empresa, false, false, new String[]{});
+			solicitacaoExameManager.getRelatorioAtendimentos(inicio, fim, solicitacaoExame, empresa, false, false, new String[]{}, 'T');
 		} catch (ColecaoVaziaException e) {
 			exception=e;
 		}

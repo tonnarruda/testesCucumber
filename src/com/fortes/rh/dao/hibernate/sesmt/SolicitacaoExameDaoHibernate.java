@@ -243,9 +243,9 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 	/**
 	 * Relatório de Atendimentos médicos
 	 */
-	public Collection<SolicitacaoExame> findAtendimentosMedicos(Date inicio, Date fim, String[] motivos, MedicoCoordenador medicoCoordenador, Long empresaId, boolean agruparPorMotivo, boolean ordenarPorNome)
+	public Collection<SolicitacaoExame> findAtendimentosMedicos(Date inicio, Date fim, String[] motivos, MedicoCoordenador medicoCoordenador, Long empresaId, boolean agruparPorMotivo, boolean ordenarPorNome, char situacao)
 	{
-		StringBuilder hql = new StringBuilder("select new SolicitacaoExame(se.id, se.data, se.motivo, se.ordem, se.observacao, se.medicoCoordenador.nome, co.nome, co.nomeComercial, ca.nome, cargo.nome, cargoDoCandidato.nome, co.matricula) ");
+		StringBuilder hql = new StringBuilder("select distinct new SolicitacaoExame(se.id, se.data, se.motivo, se.ordem, se.observacao, se.medicoCoordenador.nome, co.nome, co.nomeComercial, ca.nome, cargo.nome, cargoDoCandidato.nome, co.matricula) ");
 		hql.append("from SolicitacaoExame se ");
 		hql.append("left join se.candidato ca ");
 		
@@ -258,6 +258,9 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		hql.append("left join co.historicoColaboradors hc ");
 		hql.append("left join hc.faixaSalarial fs ");
 		hql.append("left join fs.cargo cargo ");
+		hql.append("left join se.exameSolicitacaoExames es ");
+		hql.append("left join es.realizacaoExame re ");
+		
 		hql.append("where se.empresa.id = :empresaId ");
 		
 		hql.append("and (ca != null and (sol = null or sol.id = (select max(s2.id) from CandidatoSolicitacao cs2 ");
@@ -274,6 +277,12 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 			hql.append("and se.medicoCoordenador.id = :medicoId ");
 
 		hql.append("and se.data between :inicio and :fim ");
+		
+		if (situacao == 'A') {
+			hql.append("and re.id is not null ");
+		} else if (situacao == 'S') {
+			hql.append("and re.id is null ");
+		}
 
 		hql.append("order by ");
 		

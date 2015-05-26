@@ -57,7 +57,6 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
     @Transient
     private String cargoNome;
     
-
     public SolicitacaoExame()	{ }
 
     //usado na consulta da listagem
@@ -74,7 +73,7 @@ public class SolicitacaoExame extends AbstractModel implements Serializable
         
         setCandidatoNome(candidatoNome);
         setMedicoCoordenadorNome(medicoCoordenadorNome);
-        this.cargoNome = cargoNome; 
+        this.cargoNome = cargoNome;
         
     }
     

@@ -45,6 +45,8 @@
 		
 		<@ww.select label="Ordenar por" name="ordenarPorNome" id="ordenarPorNome" list=r"#{false:'Ordem de Atendimento',true:'Nome'}"/>
 		
+		<@ww.select label="Situação" name="situacao" id="situacao" list=r"#{'T':'Todos','A':'Atendimentos médicos','S':'Solicitações de atendimento'}"/>
+		
 		<div class="buttonGroup">
 			<input type="button" value="" onclick="validaFormularioEPeriodo('form',new Array('dataIni','dataFim'),new Array('dataIni','dataFim'));" class="btnRelatorio" />
 		</div>

@@ -101,6 +101,8 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 
 	private Date dataAnterior;
 	
+	private char situacao;
+	
 	//p/ não deixar repetido (hardcoded) no ftl
 	public String getMotivoDEMISSIONAL()
 	{
@@ -308,7 +310,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			solicitacaoExames = solicitacaoExameManager.getRelatorioAtendimentos(inicio, fim, solicitacaoExame, getEmpresaSistema(), agruparPorMotivo, ordenarPorNome, MotivoSolicitacaoExame.getMarcados(motivosCheck));
+			solicitacaoExames = solicitacaoExameManager.getRelatorioAtendimentos(inicio, fim, solicitacaoExame, getEmpresaSistema(), agruparPorMotivo, ordenarPorNome, MotivoSolicitacaoExame.getMarcados(motivosCheck), situacao);
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Atendimentos Médicos", getEmpresaSistema(), "Período: " + DateUtil.formataDiaMesAno(inicio) + " - " + DateUtil.formataDiaMesAno(fim));
 			parametros.put("TOTAL", solicitacaoExames.size());
@@ -704,5 +706,11 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 
 	public String getExameAsosJson() {
 		return StringUtil.toJSON(exameManager.findByAsoPadrao(), null);
+	}
+	public char getSituacao() {
+		return situacao;
+	}
+	public void setSituacao(char situacao) {
+		this.situacao = situacao;
 	}
 }
