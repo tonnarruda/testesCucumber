@@ -27,11 +27,11 @@
 			<result name="success" type="redirect">list.action</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/nivelCompetenciaEdit.ftl</result>
 		</action>
-		<action name="prepareCompetenciasByFaixa" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareCompetenciasByFaixa">
-			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByFaixa.ftl</result>
+		<action name="prepareCompetenciasByFaixaSalarial" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareCompetenciasByFaixaSalarial">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByFaixaSalarial.ftl</result>
 		</action>
-		<action name="saveCompetenciasByFaixa" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="saveCompetenciasByFaixa">
-			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByFaixa.ftl</result>
+		<action name="saveCompetenciasByFaixaSalarial" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="saveCompetenciasByFaixaSalarial">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByFaixaSalarial.ftl</result>
 		</action>
 		<action name="prepareCompetenciasByCandidato" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareCompetenciasByCandidato">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByCandidato.ftl</result>
@@ -50,6 +50,9 @@
 		</action>
 		<action name="prepareInsertCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareInsertCompetenciasColaborador">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByColaborador.ftl</result>
+		</action>
+		<action name="prepareInsertCompetenciasFaixaSalarial" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareInsertCompetenciasFaixaSalarial">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByFaixaSalarial.ftl</result>
 		</action>
 		<action name="prepareUpdateCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="prepareUpdateCompetenciasColaborador">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByColaborador.ftl</result>

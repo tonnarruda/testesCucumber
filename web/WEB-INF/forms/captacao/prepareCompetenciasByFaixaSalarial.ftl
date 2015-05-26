@@ -63,6 +63,13 @@
 		});
 		
 		function enviarForm() {
+		
+			if (!validaFormulario('form', new Array('data'), new Array('data'), true))
+			{
+				jAlert('Informe uma data correta.');
+				return false;
+			}
+			
 			if ($('.checkCompetenciaConhecimento').size() == 0 && $('.checkCompetenciaHabilidade').size() == 0 && $('.checkCompetenciaAtitude').size() == 0)	{
 				jAlert('Não existem competências cadastradas para o cargo.');
 				return false;
@@ -94,6 +101,13 @@
 	</script>
 
 	<title>Competências da Faixa Salarial</title>
+	
+			
+	<#if configuracaoNivelCompetenciaFaixaSalarial?exists && configuracaoNivelCompetenciaFaixaSalarial.data?exists>
+		<#assign data = configuracaoNivelCompetenciaFaixaSalarial.data?date/>
+	<#else>
+		<#assign data = ""/>
+	</#if>
 </head>
 <body>
 	<@ww.actionmessage />
@@ -101,8 +115,13 @@
 	
 	<p><b>Cargo:</b> ${faixaSalarial.cargo.nome} &nbsp;&nbsp;&nbsp; <b>Faixa:</b> ${faixaSalarial.nome}</p>
 	
-	<@ww.form name="form" id="form" action="saveCompetenciasByFaixa.action" method="POST">
+	<@ww.form name="form" id="form" action="saveCompetenciasByFaixaSalarial.action" method="POST">
 		<@ww.hidden name="faixaSalarial.id"/>
+		<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.id" />
+		<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.faixaSalarial.id" value="${faixaSalarial.id}"/>
+		
+		<@ww.datepicker label="A partir de" name="configuracaoNivelCompetenciaFaixaSalarial.data" value="${data}" id="data" cssClass="mascaraData" />
+		<br />
 		
 		<#assign i = 0/>
 		<@display.table name="niveisCompetenciaFaixaSalariaisConhecimento" id="configuracaoNivelCompetencia" class="dados">
@@ -180,7 +199,7 @@
 	
 	<div class="buttonGroup">
 		<button class="btnGravar" onclick="enviarForm();"></button>
-		<button class="btnVoltar" onclick="window.location='../../cargosalario/faixaSalarial/list.action?cargo.id=${faixaSalarial.cargo.id}'"></button>
+		<button class="btnVoltar" onclick="window.location='../../captacao/nivelCompetencia/listCompetenciasFaixaSalarial.action?faixaSalarial.id=${faixaSalarial.id}'"></button>
 	</div>
 </body>
 </html>
