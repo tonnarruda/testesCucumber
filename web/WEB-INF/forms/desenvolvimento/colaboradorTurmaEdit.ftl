@@ -134,7 +134,7 @@
 			
 			<input type="button" onclick="enviaForm();" value="" class="btnPesquisar grayBGE" />
 
-			<@ww.hidden name="colaboradorTurma.id" />
+			<@ww.hidden name="colaboradorTurma.id" />	
 			<@ww.hidden name="turma.id" />
 			<@ww.hidden id="filtrarPor" name="filtrarPor"/>
 			<@ww.hidden name="turma.curso.id"/>
@@ -172,20 +172,26 @@
 	</div>
 	
 	<script type='text/javascript'>
+		$('#cargosVinculadosAreas').click(function() {
+			populaCargosByAreaVinculados();
+		});
+		
+		$('#cargosVinculadosAreas').attr('checked', true);
+		
+		populaCargosByAreaVinculados();
+	
 		$(document).ready(function()
 		{
-			$('#cargosVinculadosAreas').click(function() {
-				populaCargosByAreaVinculados();
-			});
-			
-			$('#cargosVinculadosAreas').attr('checked', true);
-			
-			$(cargosCheck).each(function(j, cargoCheck) {
-				id = "#checkGroupcargosCheck" + cargoCheck; 
-				$('id').attr('checked', true);
-			});
-			
-			populaCargosByAreaVinculados();
+			window.onload = function(){
+				<#assign cargosChecks = request.getAttribute('cargosCheckList')>
+	
+				<#foreach item in cargosChecks > 
+					<#if item.selecionado >
+				    	console.log('${item.id}');
+				    	$("#checkGroupcargosCheck" + ${item.id}).attr('checked', true);
+				    </#if>
+				</#foreach>
+			};
 		});
 	</script>
 </body>
