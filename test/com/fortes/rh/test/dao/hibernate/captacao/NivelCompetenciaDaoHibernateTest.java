@@ -171,12 +171,12 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
 
-		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId());
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId(), null);
 		assertEquals(1, configs.size());
 		
 		configuracaoNivelCompetenciaDao.removeByFaixas(new Long[]{faixaSalarial.getId()});
 		
-		configs = configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId());
+		configs = configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId(), null);
 		assertEquals(0, configs.size());
 	}
 	
@@ -424,11 +424,11 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configuracaoNivelCompetenciaDiferente.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetenciaDiferente);
 		
-		assertEquals(2, configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial1.getId()).size());
+		assertEquals(2, configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial1.getId(), null).size());
 		
 		configuracaoNivelCompetenciaDao.deleteConfiguracaoByFaixa(faixaSalarial1.getId());
 
-		assertEquals(0, configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial1.getId()).size());
+		assertEquals(0, configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial1.getId(), null).size());
 	}
 	
 	public void testFindByFaixaSalarial()
@@ -474,7 +474,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configuracaoNivelCompetencia2.setConfiguracaoNivelCompetenciaFaixaSalarial(cncFaixaSalarial1);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia2);
 		
-		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId());//gambi do SQL, precisa disso só para a proxima consulta
+		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId(), null);//gambi do SQL, precisa disso só para a proxima consulta
 		
 		Collection<ConfiguracaoNivelCompetencia> competenciasDaFaixa = configuracaoNivelCompetenciaDao.findCompetenciaByFaixaSalarial(faixaSalarial.getId(), null);
 		assertEquals(1, competenciasDaFaixa.size());
@@ -507,7 +507,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2010);
 		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2015);
 		
-		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId()); // Arranjo para teste de consulta SQL
+		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId(), null); // Arranjo para teste de consulta SQL
 		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findCompetenciaColaborador(dataIni, dataFim, new Long[] { configuracaoNivelCompetencia1.getId(), configuracaoNivelCompetencia2.getId() }, faixaSalarial.getId(), true);
 		assertEquals(2, configs.size());
 		assertEquals("atividade", ((ConfiguracaoNivelCompetencia)configs.toArray()[0]).getCompetenciaDescricao());
@@ -585,7 +585,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configJose1.setTipoCompetencia(TipoCompetencia.ATITUDE);
 		configuracaoNivelCompetenciaDao.save(configJose1);
 		
-		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId()); // Arranjo para teste de consulta SQL
+		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId(), null); // Arranjo para teste de consulta SQL
 		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findCompetenciaCandidato(faixaSalarial.getId(), candidatosIds);
 		
 		assertEquals(5, configs.size());

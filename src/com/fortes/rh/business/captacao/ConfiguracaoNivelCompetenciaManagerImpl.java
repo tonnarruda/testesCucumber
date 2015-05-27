@@ -24,8 +24,8 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 
-	public Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId) {
-		return getDao().findByFaixa(faixaSalarialId);
+	public Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId, Date data) {
+		return getDao().findByFaixa(faixaSalarialId, data);
 	}
 
 	public Collection<ConfiguracaoNivelCompetencia> findByCandidato(Long candidatoId) {

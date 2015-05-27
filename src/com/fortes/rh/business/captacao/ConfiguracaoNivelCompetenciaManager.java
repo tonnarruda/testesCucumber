@@ -13,7 +13,7 @@ import com.fortes.rh.model.geral.Colaborador;
 
 public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<ConfiguracaoNivelCompetencia>
 {
-	Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId);
+	Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId, Date data);
 	
 	void saveCompetencias(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais, Long faixaSalarialId, Long candidatoId);
 

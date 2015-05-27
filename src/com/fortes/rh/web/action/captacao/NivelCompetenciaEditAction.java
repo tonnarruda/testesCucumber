@@ -171,7 +171,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		}
 		
 		if(configuracaoNivelCompetenciaFaixaSalarial != null && configuracaoNivelCompetenciaFaixaSalarial.getId() != null){
-			niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
+			niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 			niveisCompetenciaFaixaSalariaisSalvosConhecimento = new ArrayList<ConfiguracaoNivelCompetencia>();
 			niveisCompetenciaFaixaSalariaisSalvosHabilidade = new ArrayList<ConfiguracaoNivelCompetencia>();
 			niveisCompetenciaFaixaSalariaisSalvosAtitude = new ArrayList<ConfiguracaoNivelCompetencia>();

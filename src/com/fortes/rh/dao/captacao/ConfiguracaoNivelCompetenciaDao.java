@@ -12,7 +12,7 @@ public interface ConfiguracaoNivelCompetenciaDao extends GenericDao<Configuracao
 	void deleteConfiguracaoByFaixa(Long faixaSalarialId);
 	void deleteConfiguracaoByCandidatoFaixa(Long candidatoId, Long faixaSalarialId);
 
-	Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId);
+	Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId, Date data);
 
 	Collection<ConfiguracaoNivelCompetencia> findByCandidato(Long candidatoId);
 	Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelCompetenciaColaboradorId);

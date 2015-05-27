@@ -1,6 +1,7 @@
 package com.fortes.rh.web.dwr;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
@@ -24,7 +25,7 @@ public class CompetenciaDWR
 	{
 		Solicitacao solicitacao = solicitacaoManager.findByIdProjectionAreaFaixaSalarial(solicitacaoId);
 		
-		Collection<ConfiguracaoNivelCompetencia> configuracoes =  configuracaoNivelCompetenciaManager.findByFaixa(solicitacao.getFaixaSalarial().getId());
+		Collection<ConfiguracaoNivelCompetencia> configuracoes =  configuracaoNivelCompetenciaManager.findByFaixa(solicitacao.getFaixaSalarial().getId(), new Date());
 
 		return configuracoes;
 	}
