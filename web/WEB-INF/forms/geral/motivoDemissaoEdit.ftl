@@ -17,7 +17,11 @@
 	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 		<@ww.hidden name="motivoDemissao.id" />
 		<@ww.textfield label="Motivo" name="motivoDemissao.motivo" id="motivo" size="50" maxLength="50" required="true"/>
-		<@ww.checkbox label="Considerar para cálculo de turnover" name="motivoDemissao.turnover" labelPosition="left"/>
+		
+		<#if exibeFlagTurnover>
+			<@ww.checkbox label="Considerar para cálculo de turnover" name="motivoDemissao.turnover" labelPosition="left"/>
+		</#if>
+		
 	</@ww.form>
 
 

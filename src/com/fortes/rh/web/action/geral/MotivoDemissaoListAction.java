@@ -72,8 +72,12 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 	private String vinculo;
 	private HashMap<String, String> vinculos;
 	
+	private boolean exibeFlagTurnover;
+	
 	public String list() throws Exception
 	{
+		exibeFlagTurnover = getEmpresaSistema().isTurnoverPorSolicitacao();
+		
 		String[] keys = new String[]{"empresa.id"};
 		Object[] values = new Object[]{getEmpresaSistema().getId()};
 		String[] orders = new String[]{"motivo asc"};
@@ -399,5 +403,13 @@ public class MotivoDemissaoListAction extends MyActionSupportList
 
 	public void setVinculos(HashMap<String, String> vinculos) {
 		this.vinculos = vinculos;
+	}
+
+	public boolean isExibeFlagTurnover() {
+		return exibeFlagTurnover;
+	}
+
+	public void setExibeFlagTurnover(boolean exibeFlagTurnover) {
+		this.exibeFlagTurnover = exibeFlagTurnover;
 	}
 }

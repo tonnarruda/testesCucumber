@@ -13,6 +13,8 @@ public class MotivoSolicitacaoListAction extends MyActionSupportList
 	private MotivoSolicitacaoManager motivoSolicitacaoManager;
 	private Collection<MotivoSolicitacao> motivoSolicitacaos;
 	private MotivoSolicitacao motivoSolicitacao;
+	
+	private boolean exibeFlagTurnover;
 
 	public String execute() throws Exception {
 		return Action.SUCCESS;
@@ -20,6 +22,9 @@ public class MotivoSolicitacaoListAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
+		
+		exibeFlagTurnover = getEmpresaSistema().isTurnoverPorSolicitacao();
+		
 		setVideoAjuda(634L);
 		motivoSolicitacaos = motivoSolicitacaoManager.findAll();
 
@@ -51,5 +56,13 @@ public class MotivoSolicitacaoListAction extends MyActionSupportList
 
 	public void setMotivoSolicitacaoManager(MotivoSolicitacaoManager motivoSolicitacaoManager){
 		this.motivoSolicitacaoManager = motivoSolicitacaoManager;
+	}
+
+	public boolean isExibeFlagTurnover() {
+		return exibeFlagTurnover;
+	}
+
+	public void setExibeFlagTurnover(boolean exibeFlagTurnover) {
+		this.exibeFlagTurnover = exibeFlagTurnover;
 	}
 }

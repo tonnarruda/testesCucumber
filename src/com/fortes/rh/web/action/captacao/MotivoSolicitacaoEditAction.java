@@ -12,6 +12,8 @@ public class MotivoSolicitacaoEditAction extends MyActionSupportEdit implements 
 	private MotivoSolicitacaoManager motivoSolicitacaoManager;
 
 	private MotivoSolicitacao motivoSolicitacao;
+	
+	private boolean exibeFlagTurnover;
 
 	public String execute() throws Exception
 	{
@@ -20,6 +22,8 @@ public class MotivoSolicitacaoEditAction extends MyActionSupportEdit implements 
 
 	private void prepare() throws Exception
 	{
+		exibeFlagTurnover = getEmpresaSistema().isTurnoverPorSolicitacao();
+		
 		if(motivoSolicitacao != null && motivoSolicitacao.getId() != null)
 			motivoSolicitacao = (MotivoSolicitacao) motivoSolicitacaoManager.findById(motivoSolicitacao.getId());
 	}
@@ -68,5 +72,13 @@ public class MotivoSolicitacaoEditAction extends MyActionSupportEdit implements 
 	public void setMotivoSolicitacaoManager(MotivoSolicitacaoManager motivoSolicitacaoManager)
 	{
 		this.motivoSolicitacaoManager = motivoSolicitacaoManager;
+	}
+
+	public boolean isExibeFlagTurnover() {
+		return exibeFlagTurnover;
+	}
+
+	public void setExibeFlagTurnover(boolean exibeFlagTurnover) {
+		this.exibeFlagTurnover = exibeFlagTurnover;
 	}
 }

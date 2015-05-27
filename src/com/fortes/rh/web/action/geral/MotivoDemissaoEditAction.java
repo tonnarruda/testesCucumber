@@ -13,6 +13,8 @@ public class MotivoDemissaoEditAction extends MyActionSupportEdit implements Mod
 	
 	private MotivoDemissao motivoDemissao;
 	
+	private boolean exibeFlagTurnover;
+	
 	public String execute() throws Exception
 	{
 		return Action.SUCCESS;
@@ -20,6 +22,8 @@ public class MotivoDemissaoEditAction extends MyActionSupportEdit implements Mod
 
 	private void prepare() throws Exception
 	{
+		exibeFlagTurnover = getEmpresaSistema().isTurnoverPorSolicitacao();
+		
 		if (motivoDemissao != null && motivoDemissao.getId() != null)
 			motivoDemissao = (MotivoDemissao) motivoDemissaoManager.findById(motivoDemissao.getId());
 	}
@@ -70,5 +74,13 @@ public class MotivoDemissaoEditAction extends MyActionSupportEdit implements Mod
 	public void setMotivoDemissaoManager(MotivoDemissaoManager motivoDemissaoManager)
 	{
 		this.motivoDemissaoManager = motivoDemissaoManager;
+	}
+
+	public boolean isExibeFlagTurnover() {
+		return exibeFlagTurnover;
+	}
+
+	public void setExibeFlagTurnover(boolean exibeFlagTurnover) {
+		this.exibeFlagTurnover = exibeFlagTurnover;
 	}
 }
