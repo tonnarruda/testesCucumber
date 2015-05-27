@@ -12,7 +12,8 @@
 	<@ww.actionerror />
 	<@ww.actionmessage />
 	
-	<b>Faixa Salarial:</b> ${faixaSalarial.nome}
+	<p><b>Cargo:</b> ${faixaSalarial.cargo.nome} &nbsp;&nbsp;&nbsp; <b>Faixa:</b> ${faixaSalarial.nome}</p>
+
 	<div style="clear: both;"></div><br />
 	
 	<@display.table name="configuracaoNivelCompetenciaFaixasSalariais" id="cncFaixaSalarial" class="dados" style="width: 200px">

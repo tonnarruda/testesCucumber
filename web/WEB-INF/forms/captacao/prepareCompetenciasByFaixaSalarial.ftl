@@ -9,7 +9,6 @@
 	</style>
 	
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/nivelCompetencia.js"/>"></script>
 
 	<script type="text/javascript">
 		$(function() {
@@ -67,8 +66,16 @@
 			</#if>
 		});
 		
-		function enviarForm() {
+		function toolTipCompetenciaObs(elementoId, obs)
+		{
+			$("#"+elementoId).qtip({
+				content: '<div style="text-align:justify">' + obs.split('$#-').join("\"") + '</div>',
+				style: { width: 400 }
+			});
+		}
 		
+		function enviarForm() 
+		{		
 			if (!validaFormulario('form', new Array('data'), new Array('data'), true))
 			{
 				jAlert('Informe uma data correta.');
@@ -140,7 +147,7 @@
 				<label for="competenciaConhecimento_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
 				
 				<#if configuracaoNivelCompetencia.competenciaObservacao?exists && configuracaoNivelCompetencia.competenciaObservacao != "">
-					<img id="competenciaConhecimento_${i}_obs" onLoad="toolTipCompetenciaObs(${i}, '${configuracaoNivelCompetencia.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
+					<img id="competenciaConhecimento_${i}_obs" onLoad="toolTipCompetenciaObs(this.id, '${configuracaoNivelCompetencia.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
 				</#if>
 				
 			</@display.column>
@@ -164,7 +171,7 @@
 				<label for="competenciaHabilidade_${i}">${configuracaoNivelCompetenciaHabilidade.competenciaDescricao}</label>
 				
 				<#if configuracaoNivelCompetenciaHabilidade.competenciaObservacao?exists && configuracaoNivelCompetenciaHabilidade.competenciaObservacao != "">
-					<img id="competenciaHabilidade_${i}_obs" onLoad="toolTipCompetenciaObs(${i}, '${configuracaoNivelCompetenciaHabilidade.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
+					<img id="competenciaHabilidade_${i}_obs" onLoad="toolTipCompetenciaObs(this.id, '${configuracaoNivelCompetenciaHabilidade.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
 				</#if>
 				
 			</@display.column>
@@ -188,7 +195,7 @@
 				<label for="competenciaAtitude_${i}">${configuracaoNivelCompetenciaAtitude.competenciaDescricao}</label>
 				
 				<#if configuracaoNivelCompetenciaAtitude.competenciaObservacao?exists && configuracaoNivelCompetenciaAtitude.competenciaObservacao != "">
-					<img id="competenciaAtitude_${i}_obs" onLoad="toolTipCompetenciaObs(${i}, '${configuracaoNivelCompetenciaAtitude.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
+					<img id="competenciaAtitude_${i}_obs" onLoad="toolTipCompetenciaObs(this.id, '${configuracaoNivelCompetenciaAtitude.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
 				</#if>
 				
 			</@display.column>
