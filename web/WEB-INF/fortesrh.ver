@@ -1,20 +1,24 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.144.174" bd="" data="19/05/2015">
-		<Item visivel="S" motivo="P20150400222"><![CDATA[R&S > Cadastros > Candidatos > Editar > Experiências: Ajuste na inconsistência da duplicação de experiências ao contratar o candidato.]]></Item>
+	<Versao id="1.1.14x.17x" db="" data="xx/xx/2015">
 		<Item visivel="S" motivo="S20150400047"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Guardar as opções do filtro ao realizar pesquisa.]]></Item>
 		<Item visivel="S" motivo="P20150400234"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Ajuste no campo "Área Organizacional" para exibir as áreas organizacionais nas quais o colaborador é responsável/corresponsável e suas descendentes.]]></Item>
-		<Item visivel="S" motivo="P20150400136"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Promover: Ajuste dos dados pré-carregados para o cadastro da nova situação.]]></Item>	
+		<Item visivel="N" motivo="P20150400203"><![CDATA[C&S > Movimentações > Planejamento de Realinhamentos: Ajuste na inconsistência para exibição do ícone "Imprimir" somente quando o usuário possuir a permissão.]]></Item>
 		<Item visivel="S" motivo="S20150500138"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Possibilidade de imprimir a avaliação por ordem de aspectos ou por ordem de perguntas.]]></Item>
+		<Item visivel="S" motivo="S20150400047"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Guardar as opções do filtro ao realizar pesquisa.]]></Item>
+	</Versao>
+	<Versao id="1.1.144.174" bd="" data="19/05/2015">
+		<Item visivel="S" motivo="P20150400222"><![CDATA[R&S > Cadastros > Candidatos > Editar > Experiências: Ajuste na inconsistência da duplicação de experiências ao contratar o candidato.]]></Item>
+		<Item visivel="S" motivo="P20150400136"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Promover: Ajuste dos dados pré-carregados para o cadastro da nova situação.]]></Item>	
 		<Item visivel="S" motivo="S20150300124"><![CDATA[T&D > Cadastros > Cursos/Treinamentos: Nova opção para inserir anexos.]]></Item>		
 		<Item visivel="S" motivo="P20150500031"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Editar: Ajuste para possibilitar desmarcar "Avaliações dos Alunos" quando estas não possuírem respostas.]]></Item>		
-		<Item visivel="S" motivo="S20150400047"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Guardar as opções do filtro ao realizar pesquisa.]]></Item>
 		<Item visivel="S" motivo="S20150300125"><![CDATA[T&D > Relatórios > Certificados: Nova opção para imprimir nota do aluno no verso do certificado.]]></Item>
 		<Item visivel="S" motivo="P20150400049"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Permitir incluir na solicitação de pessoal os colaboradores com histrorico cancelado.]]></Item>
 		<Item visivel="S" motivo="P20150400229"><![CDATA[SESMT > Cadastros > Ambientes > Editar > Editar  Histórico: Ajuste de inconsistência ao marcar os riscos existentes do ambiente.]]></Item>
 		<Item visivel="S" motivo="S20150300156"><![CDATA[SESMT > Movimentações > Solicitação de EPIs: Nova opção no filtro para ordenação por data ou por nome.]]></Item>
 		<Item visivel="S" motivo="P20150400230"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos: Exibição do cargo do colaborador considerando sua situação na data da solicitação.]]></Item>
 		<Item visivel="S" motivo="S20150500126"><![CDATA[Utilitários > Configurações > Sistema: Nova opção para impossibilitar gerar relatório de uma pesquisa anônima que possua no mínimo uma certa quantidade resposta.]]></Item>
+		<Item visivel="S" motivo="S20150400007"><![CDATA[Integração com o AC Pessoal: Excluir dependências de solicitações/atendimentos médicos e período de experiência ao cancelar contratação do colaborador pelo sistema Ac Pessoal.]]></Item>
 	</Versao>
 	<Versao id="1.1.143.173" bd="" data="27/04/2015">
 		<Item visivel="S" motivo="P20150400076"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Ajuste na impressão das justificativas das respostas.]]></Item>
