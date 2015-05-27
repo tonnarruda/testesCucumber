@@ -165,18 +165,22 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarialDao.save(faixaSalarial);
 		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
+		configuracaoNivelCompetenciaFaixaSalarial.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
+		
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = new ConfiguracaoNivelCompetencia();
 		configuracaoNivelCompetencia.setNivelCompetencia(nivel);
 		configuracaoNivelCompetencia.setCompetenciaId(habilidade.getId());
-		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
 
-		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId(), null);
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 		assertEquals(1, configs.size());
 		
-		configuracaoNivelCompetenciaDao.removeByFaixas(new Long[]{faixaSalarial.getId()});
+		configuracaoNivelCompetenciaDao.removeByConfiguracaoNivelFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getId());
 		
-		configs = configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId(), null);
+		configs = configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 		assertEquals(0, configs.size());
 	}
 	
@@ -384,51 +388,6 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals(configuracaoNivelCompetencia1.getId(), ((ConfiguracaoNivelCompetencia) (configuracoesNivelCompetencia.toArray()[0])).getId());
 		assertEquals(configuracaoNivelCompetencia2.getId(), ((ConfiguracaoNivelCompetencia) (configuracoesNivelCompetencia.toArray()[1])).getId());
 		
-	}
-	
-	public void testDeleteConfiguracaoByFaixa()
-	{
-		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
-		conhecimentoDao.save(conhecimento);
-		
-		Atitude atitude = AtitudeFactory.getEntity();
-		atitudeDao.save(atitude);
-		
-		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity();
-		faixaSalarialDao.save(faixaSalarial1);
-		
-		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity();
-		faixaSalarialDao.save(faixaSalarial2);
-		
-		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
-		nivelCompetenciaDao.save(nivelCompetencia);
-		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = new ConfiguracaoNivelCompetencia();
-		configuracaoNivelCompetencia1.setFaixaSalarial(faixaSalarial1);
-		configuracaoNivelCompetencia1.setNivelCompetencia(nivelCompetencia);
-		configuracaoNivelCompetencia1.setCompetenciaId(atitude.getId());
-		configuracaoNivelCompetencia1.setTipoCompetencia(TipoCompetencia.ATITUDE);
-		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia1);
-		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = new ConfiguracaoNivelCompetencia();
-		configuracaoNivelCompetencia2.setFaixaSalarial(faixaSalarial1);
-		configuracaoNivelCompetencia2.setNivelCompetencia(nivelCompetencia);
-		configuracaoNivelCompetencia2.setCompetenciaId(conhecimento.getId());
-		configuracaoNivelCompetencia2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
-		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia2);
-		
-		ConfiguracaoNivelCompetencia configuracaoNivelCompetenciaDiferente = new ConfiguracaoNivelCompetencia();
-		configuracaoNivelCompetenciaDiferente.setFaixaSalarial(faixaSalarial2);
-		configuracaoNivelCompetenciaDiferente.setNivelCompetencia(nivelCompetencia);
-		configuracaoNivelCompetenciaDiferente.setCompetenciaId(conhecimento.getId());
-		configuracaoNivelCompetenciaDiferente.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
-		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetenciaDiferente);
-		
-		assertEquals(2, configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial1.getId(), null).size());
-		
-		configuracaoNivelCompetenciaDao.deleteConfiguracaoByFaixa(faixaSalarial1.getId());
-
-		assertEquals(0, configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial1.getId(), null).size());
 	}
 	
 	public void testFindByFaixaSalarial()

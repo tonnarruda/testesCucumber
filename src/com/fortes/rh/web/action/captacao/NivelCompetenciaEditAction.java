@@ -190,51 +190,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		}
 		return Action.SUCCESS;
 	}
-//	
-//	public String prepareCompetenciasByFaixa()
-//	{
-//		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
-//		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), null);
-//		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
-//		
-//		if (niveisCompetenciaFaixaSalariais == null) {
-//			niveisCompetenciaFaixaSalariais = new ArrayList<ConfiguracaoNivelCompetencia>();
-//		}
-//		
-//		niveisCompetenciaFaixaSalariaisConhecimento = new ArrayList<ConfiguracaoNivelCompetencia>();
-//		niveisCompetenciaFaixaSalariaisHabilidade = new ArrayList<ConfiguracaoNivelCompetencia>();
-//		niveisCompetenciaFaixaSalariaisAtitude = new ArrayList<ConfiguracaoNivelCompetencia>();
-//		
-//		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariais) {
-//			if (Character.valueOf('C').equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
-//				niveisCompetenciaFaixaSalariaisConhecimento.add(configuracaoNivelCompetencia);
-//			}
-//			if (Character.valueOf('H').equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
-//				niveisCompetenciaFaixaSalariaisHabilidade.add(configuracaoNivelCompetencia);
-//			}
-//			if (Character.valueOf('A').equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
-//				niveisCompetenciaFaixaSalariaisAtitude.add(configuracaoNivelCompetencia);
-//			}
-//		}
-//		
-//		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId());
-//		niveisCompetenciaFaixaSalariaisSalvosConhecimento = new ArrayList<ConfiguracaoNivelCompetencia>();
-//		niveisCompetenciaFaixaSalariaisSalvosHabilidade = new ArrayList<ConfiguracaoNivelCompetencia>();
-//		niveisCompetenciaFaixaSalariaisSalvosAtitude = new ArrayList<ConfiguracaoNivelCompetencia>();
-//		
-//		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariaisSalvos) {
-//			if (Character.valueOf('C').equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
-//				niveisCompetenciaFaixaSalariaisSalvosConhecimento.add(configuracaoNivelCompetencia);
-//			}
-//			if (Character.valueOf('H').equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
-//				niveisCompetenciaFaixaSalariaisSalvosHabilidade.add(configuracaoNivelCompetencia);
-//			}
-//			if (Character.valueOf('A').equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
-//				niveisCompetenciaFaixaSalariaisSalvosAtitude.add(configuracaoNivelCompetencia);
-//			}
-//		}
-//		return Action.SUCCESS;
-//	}
 	
 	public String prepareCompetenciasByCandidato()
 	{

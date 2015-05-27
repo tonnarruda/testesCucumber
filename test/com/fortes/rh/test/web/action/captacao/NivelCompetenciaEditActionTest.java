@@ -21,6 +21,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -31,6 +32,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
@@ -156,12 +158,12 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		assertEquals("success", action.update());
 	}
 	
-	public void testPrepareCompetenciasByFaixa()
+	public void testPrepareCompetenciasByFaixaSalarialInsert()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L); 
 		action.setEmpresaSistema(empresa);
 		
-		Cargo cargo = CargoFactory.getEntity();
+		Cargo cargo = CargoFactory.getEntity(1L);
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarial.setCargo(cargo);
 		action.setFaixaSalarial(faixaSalarial);
@@ -172,12 +174,44 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		Collection<ConfiguracaoNivelCompetencia> configuracoes = Arrays.asList(config1, config2);
 		action.setNiveisCompetenciaFaixaSalariais(configuracoes);
 		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
+		action.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
+
 		faixaSalarialManager.expects(once()).method("findByFaixaSalarialId").with(eq(faixaSalarial.getId())).will(returnValue(faixaSalarial));
 		manager.expects(once()).method("findByCargoOrEmpresa").with(eq(cargo.getId()), eq(null)).will(returnValue(configuracoes));
 		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(configuracoes));
-		configuracaoNivelCompetenciaManager.expects(once()).method("findByFaixa").with(eq(faixaSalarial.getId())).will(returnValue(configuracoes));
 		
-		assertEquals("success", action.prepareCompetenciasByFaixa());
+		assertEquals("success", action.prepareCompetenciasByFaixaSalarial());
+		assertNotNull(action.getFaixaSalarial());
+		assertNotNull(action.getNiveisCompetenciaFaixaSalariais());
+		assertNotNull(action.getNivelCompetencias());
+	}
+	
+	public void testPrepareCompetenciasByFaixaSalarialUpdate()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L); 
+		action.setEmpresaSistema(empresa);
+		
+		Cargo cargo = CargoFactory.getEntity(1L);
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		action.setFaixaSalarial(faixaSalarial);
+		
+		ConfiguracaoNivelCompetencia config1 = new ConfiguracaoNivelCompetencia();
+		ConfiguracaoNivelCompetencia config2 = new ConfiguracaoNivelCompetencia();
+		
+		Collection<ConfiguracaoNivelCompetencia> configuracoes = Arrays.asList(config1, config2);
+		action.setNiveisCompetenciaFaixaSalariais(configuracoes);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(1L);
+		action.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
+		
+		faixaSalarialManager.expects(once()).method("findByFaixaSalarialId").with(eq(faixaSalarial.getId())).will(returnValue(faixaSalarial));
+		manager.expects(once()).method("findByCargoOrEmpresa").with(eq(cargo.getId()), eq(null)).will(returnValue(configuracoes));
+		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(configuracoes));
+		configuracaoNivelCompetenciaManager.expects(once()).method("findByFaixa").with(eq(faixaSalarial.getId()), eq(configuracaoNivelCompetenciaFaixaSalarial.getData())).will(returnValue(configuracoes));
+		
+		assertEquals("success", action.prepareCompetenciasByFaixaSalarial());
 		assertNotNull(action.getFaixaSalarial());
 		assertNotNull(action.getNiveisCompetenciaFaixaSalariais());
 		assertNotNull(action.getNivelCompetencias());
@@ -227,7 +261,7 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		action.setEmpresaSistema(empresa);
 		
 		Cargo cargo = CargoFactory.getEntity();
-		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		faixaSalarial.setCargo(cargo);
 		action.setFaixaSalarial(faixaSalarial);
 		
@@ -237,13 +271,16 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		Collection<ConfiguracaoNivelCompetencia> configuracoes = Arrays.asList(config1, config2);
 		action.setNiveisCompetenciaFaixaSalariais(configuracoes);
 		
-		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetencias").with(eq(configuracoes), eq(faixaSalarial.getId()), eq(null)).isVoid();
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(1L);
+		action.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
+		
+		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetenciasFaixaSalarial").with(eq(configuracoes), eq(configuracaoNivelCompetenciaFaixaSalarial)).isVoid();
 		faixaSalarialManager.expects(once()).method("findByFaixaSalarialId").with(eq(faixaSalarial.getId())).will(returnValue(faixaSalarial));
 		manager.expects(once()).method("findByCargoOrEmpresa").with(eq(cargo.getId()), eq(null)).will(returnValue(configuracoes));
 		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(configuracoes));
-		configuracaoNivelCompetenciaManager.expects(once()).method("findByFaixa").with(eq(faixaSalarial.getId())).will(returnValue(configuracoes));
+		configuracaoNivelCompetenciaManager.expects(once()).method("findByFaixa").with(eq(faixaSalarial.getId()), eq(configuracaoNivelCompetenciaFaixaSalarial.getData())).will(returnValue(configuracoes));
 		
-		assertEquals("success", action.saveCompetenciasByFaixa());
+		assertEquals("success", action.saveCompetenciasByFaixaSalarial());
 	}
 	
 	public void testSaveCompetenciasByCandidato()

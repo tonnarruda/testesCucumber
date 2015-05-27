@@ -32,17 +32,14 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return getDao().findByCandidato(candidatoId);
 	}
 
-	public void saveCompetencias(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais, Long faixaSalarialId, Long candidatoId) {
-		if (candidatoId == null)
-			getDao().deleteConfiguracaoByFaixa(faixaSalarialId);
-		else
-			getDao().deleteConfiguracaoByCandidatoFaixa(candidatoId, faixaSalarialId);
+	public void saveCompetencias(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais, Long faixaSalarialId, Long candidatoId) 
+	{
+		getDao().deleteConfiguracaoByCandidatoFaixa(candidatoId, faixaSalarialId);
 
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariais) {
 			if (configuracaoNivelCompetencia.getCompetenciaId() != null) {
 				configuracaoNivelCompetencia.setFaixaSalarialIdProjection(faixaSalarialId);
-				if (candidatoId != null)
-					configuracaoNivelCompetencia.setCandidatoIdProjection(candidatoId);
+				configuracaoNivelCompetencia.setCandidatoIdProjection(candidatoId);
 
 				getDao().save(configuracaoNivelCompetencia);
 			}
