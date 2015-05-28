@@ -305,7 +305,7 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		action.setSolicitacao(solicitacao);
 
-		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetencias").with(eq(configuracoes), eq(faixaSalarial.getId()), eq(candidato.getId())).isVoid();
+		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetenciasCandidato").with(eq(configuracoes), eq(faixaSalarial.getId()), eq(candidato.getId())).isVoid();
 		candidatoManager.expects(once()).method("findByCandidatoId").with(eq(candidato.getId())).will(returnValue(candidato));
 		faixaSalarialManager.expects(once()).method("findByFaixaSalarialId").with(eq(faixaSalarial.getId())).will(returnValue(faixaSalarial));
 		configuracaoNivelCompetenciaManager.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId()), ANYTHING).will(returnValue(configuracoes));
