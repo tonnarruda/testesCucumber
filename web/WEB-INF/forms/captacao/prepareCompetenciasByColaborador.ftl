@@ -29,6 +29,10 @@
 		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
 		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/nivelCompetencia.js"/>"></script>
 		
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/NivelCompetenciaDWR.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+		
 		<script type="text/javascript">
 			var niveis = [];
 			var competencias = [];
@@ -67,9 +71,10 @@
 					<#assign j = j + 1/>
 				</#list>
 				
-				$('.checkCompetencia, .checkNivel').click(atualizarGrafico);
+				$('.checkCompetencia, #checkAllCompetencia, .checkNivel').click(atualizarGrafico);
 				
 				atualizarGrafico();
+				
 			});
 			
 			var options = {
@@ -98,33 +103,36 @@
 			
 			function atualizarGrafico()
 			{
-				labels = [];
-				compFaixa = [];
-				compColab = [];
-			
-				$('.checkCompetencia:checked').each(function() {
-					var seq = $(this).parent().next().text().match(/\d+/g)[0];
-					var check = $(this).parent().parent().find('.checkNivel:checked');
-					var nivelColab = check.attr('nivelcolaborador');
-					var nivelFaixa = check.attr('nivelfaixa');
+				if($('.checkCompetencia').is(':checked'))
+				{
+					labels = [];
+					compFaixa = [];
+					compColab = [];
+				
+					$('.checkCompetencia:checked').each(function() {
+						var seq = $(this).parent().next().text().match(/\d+/g)[0];
+						var check = $(this).parent().parent().find('.checkNivel:checked');
+						var nivelColab = check.attr('nivelcolaborador');
+						var nivelFaixa = check.attr('nivelfaixa');
+						
+						if (nivelFaixa || nivelColab)
+						{
+							labels.push({ label: seq });
+							compFaixa.push([ seq, nivelFaixa || 0 ]);
+							compColab.push([ seq, nivelColab || 0 ]);
+						}
+					});
 					
-					if (nivelFaixa || nivelColab)
-					{
-						labels.push({ label: seq });
-						compFaixa.push([ seq, nivelFaixa || 0 ]);
-						compColab.push([ seq, nivelColab || 0 ]);
-					}
-				});
-				
-				options.series.spider.legs.data = labels;
-				
-				var data = [
-					{ label: "Competências exigidas pelo cargo/faixa", color:"orange", data: compFaixa, spider: {show: true} },
-					{ label: "Competências do colaborador", color:"lightblue", data: compColab, spider: {show: true} }
-				];
-				
-				var plot = $.plot($("#grafico"), data , options);
-				$("#grafico").bind("plothover", graficohover);
+					options.series.spider.legs.data = labels;
+					
+					var data = [
+						{ label: "Competências exigidas pelo cargo/faixa", color:"orange", data: compFaixa, spider: {show: true} },
+						{ label: "Competências do colaborador", color:"lightblue", data: compColab, spider: {show: true} }
+					];
+					
+					var plot = $.plot($("#grafico"), data , options);
+					$("#grafico").bind("plothover", graficohover);
+				}
 			}
 			
 			var serie = null;
@@ -193,6 +201,105 @@
 	
 				return false;
 			}
+			
+			var configChecked;
+			var nivelChecked =  new Object();
+			var onLoad =  new Object();
+			function repopulaConfiguracaoNivelCompetencia()
+			{
+				configChecked = $('.checkCompetencia:checked').map(function(){
+					if($(this).parent().parent().find(".checkNivel").is(":checked")){
+						id = $(this).val();
+						nivelChecked[id] = $(this).parent().parent().find(".checkNivel:checked").val(); 
+						return id;
+					}
+				}).get();
+			
+				$('#configuracaoNivelCompetencia tbody').remove();
+				NivelCompetenciaDWR.findCompetenciaByFaixaSalarialAndData(repopulaConfiguracaoNivelCompetenciaByDados, ${faixaSalarial.id}, $('#data').val());
+			}
+
+			function repopulaConfiguracaoNivelCompetenciaByDados(dados)
+			{
+				if(dados == ''){
+					jAlert("Não existem competências (conhecimentos, habilidades ou atitudes) para a data informada.");
+					return;
+				}
+				
+				var content = '<tbody>';
+				var contador = 0;
+		
+				for (var prop in dados)
+				{
+					if (contador % 2 != 0)
+						content += '<tr class="even">';
+					else
+						content += '<tr class="odd">';
+				    
+				    id = dados[prop]["competenciaId"];
+				    marcado = $.inArray(id + '', configChecked) > -1;
+				    
+				    content += '	<td style="width: 20px;">';
+				    content += '		<input type="hidden" name="niveisCompetenciaFaixaSalariais[' + contador + '].tipoCompetencia" value="' + dados[prop]["tipoCompetencia"] + '" id="form_niveisCompetenciaFaixaSalariais_' + contador + '__tipoCompetencia" />';
+					content += '		<input type="checkbox" id="competencia_' + contador + '" name="niveisCompetenciaFaixaSalariais[' + contador + '].competenciaId" value="' + id + '" class="checkCompetencia" ';
+					
+					if(marcado)
+						content += ' checked=true';
+											
+					content += '     />';
+					content += '	</td>';
+					content += '	<td style="width: 20px; text-align: center;">';
+					content += '	' + (contador + 1);
+					content += '	</td>';
+					content += '	<td>';
+					content += '		<label for="competencia_' + contador + '">' + dados[prop]["competenciaDescricao"] + '</label>';
+
+					if(dados[prop]["competenciaObservacao"] != "")
+					{
+						src = '<@ww.url value="/imgs/help-info.gif"/>';
+						onLoad[contador] = dados[prop]["competenciaObservacao"];						
+						content += '	<img id="competencia_' + contador + '_obs" src="' + src + '" width="16" height="16" style="margin-left: 0px;margin-top: 0px;vertical-align: top;"/>';
+					}
+										
+					content += '	</td>';
+					
+					<#list nivelCompetencias as nivel>
+						content += '<td style=" width: 100px; text-align: center;';
+
+						if(dados[prop]["nivelCompetencia"]["id"] == ${nivel.id})
+							content += 'background-color: #ececec;" class="nivelFaixa';
+							
+						content += '">	<input type="radio" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[' + contador + '].nivelCompetencia.id" value="${nivel.id}" nivelcolaborador="${nivel.ordem}" nivelfaixa="' + dados[prop]["nivelCompetencia"]["ordem"] + '" ';
+						
+						if(nivelChecked[id] == ${nivel.id})
+							content += ' checked=true ';
+						
+						if(!marcado)
+							content += ' disabled="disabled"';
+						
+						content += '/></td>';
+					</#list>
+					content += '</tr>';
+					contador++;
+				}
+				content += '</tbody>';
+				
+				$('#configuracaoNivelCompetencia').append(content);
+				
+				$('#checkAllCompetencia').attr('checked', false);
+				
+				$('.checkCompetencia').click(function() {
+					$(this).parent().parent().find(".checkNivel").attr('disabled', !($(this).attr('checked')));
+				});
+			
+				$('.checkCompetencia, #checkAllCompetencia, .checkNivel').click(atualizarGrafico);
+				
+				$.each(onLoad, function(key, value) {
+    				toolTipCompetenciaObs(key, value);
+				})
+
+				atualizarGrafico();
+			}
 
 		</script>
 		
@@ -240,13 +347,13 @@
 		</#if>
 		<div style="clear: both;"></div><br />
 		
-		<@ww.form name="form" id="form" action="saveCompetenciasColaborador.action" method="POST">
+			<@ww.form name="form" id="form" action="saveCompetenciasColaborador.action" method="POST">
 			
 			<div id="legendas" style="float:right;">
 				<span style='background-color: #ececec;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial
 			</div>
 			
-			<@ww.datepicker label="A partir de" name="configuracaoNivelCompetenciaColaborador.data" value="${data}" id="data" cssClass="mascaraData" />
+			<@ww.datepicker label="A partir de" name="configuracaoNivelCompetenciaColaborador.data" value="${data}" id="data" cssClass="mascaraData" onchange="repopulaConfiguracaoNivelCompetencia();"/>
 			
 			<#if configuracaoNivelCompetenciaColaborador?exists && 	configuracaoNivelCompetenciaColaborador.id?exists>
 				<@ww.hidden name="configuracaoNivelCompetenciaColaborador.avaliador.id" id="avaliador" value="${avaliadorId}"/>
@@ -263,42 +370,44 @@
 			<@ww.hidden name="colaborador.id" />
 			<br />
 			
-			<#assign i = 0/>
-			<@display.table name="niveisCompetenciaFaixaSalariais" id="configuracaoNivelCompetencia" class="dados">
-			
-				<@display.column title="<input type='checkbox' id='checkAllCompetencia'/>" style="width: 20px;">
-					<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
-					<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
-				</@display.column>
-
-				<@display.column title="#" style="width: 20px; text-align: center;">
-					${i+1}
-				</@display.column>
-
-				<@display.column title="Competência" >
-					<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
-					<#if configuracaoNivelCompetencia.competenciaObservacao?exists && configuracaoNivelCompetencia.competenciaObservacao != "">
-						<img id="competencia_${i}_obs" onLoad="toolTipCompetenciaObs(${i}, '${configuracaoNivelCompetencia.competenciaObservacao?j_string?replace('\"','&quot;')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
-					</#if>
-				</@display.column>
+			<div id="niveisCompetenciaFaixaSalariais">
+				<#assign i = 0/>
+				<@display.table name="niveisCompetenciaFaixaSalariais" id="configuracaoNivelCompetencia" class="dados">
 				
-				<#list nivelCompetencias as nivel>
-					
-					<#if configuracaoNivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
-						<#assign class="nivelFaixa"/>
-						<#assign bgcolor="background-color: #ececec;"/>
-					<#else>
-						<#assign class=""/>
-						<#assign bgcolor=""/>
-					</#if>
-					
-					<@display.column title="${nivel.descricao}" style="${bgcolor} width: 100px; text-align: center;" class="${class}">
-						<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" nivelcolaborador="${nivel.ordem}" nivelfaixa="${configuracaoNivelCompetencia.nivelCompetencia.ordem}"/>
+					<@display.column title="<input type='checkbox' id='checkAllCompetencia'/>" style="width: 20px;">
+						<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
+						<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
 					</@display.column>
-				</#list>
-				
-				<#assign i = i + 1/>
-			</@display.table>
+	
+					<@display.column title="#" style="width: 20px; text-align: center;">
+						${i+1}
+					</@display.column>
+	
+					<@display.column title="Competência" >
+						<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
+						<#if configuracaoNivelCompetencia.competenciaObservacao?exists && configuracaoNivelCompetencia.competenciaObservacao != "">
+							<img id="competencia_${i}_obs" onLoad="toolTipCompetenciaObs(${i}, '${configuracaoNivelCompetencia.competenciaObservacao?j_string?replace('\"','&quot;')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
+						</#if>
+					</@display.column>
+					
+					<#list nivelCompetencias as nivel>
+						
+						<#if configuracaoNivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
+							<#assign class="nivelFaixa"/>
+							<#assign bgcolor="background-color: #ececec;"/>
+						<#else>
+							<#assign class=""/>
+							<#assign bgcolor=""/>
+						</#if>
+						
+						<@display.column title="${nivel.descricao}" style="${bgcolor} width: 100px; text-align: center;" class="${class}">
+							<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" nivelcolaborador="${nivel.ordem}" nivelfaixa="${configuracaoNivelCompetencia.nivelCompetencia.ordem}"/>
+						</@display.column>
+					</#list>
+					
+					<#assign i = i + 1/>
+				</@display.table>
+			</div>
 			
 			<@ww.token/>
 		</@ww.form>

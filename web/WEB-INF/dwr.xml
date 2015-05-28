@@ -157,6 +157,9 @@
 		<create creator="spring" javascript="ColaboradorQuestionarioDWR">
 			<param name="beanName" value="colaboradorQuestionarioDWR"/>
 		</create>
+		<create creator="spring" javascript="NivelCompetenciaDWR">
+			<param name="beanName" value="nivelCompetenciaDWR"/>
+		</create>
 		
 		<convert converter="bean" match="com.opensymphony.xwork.ValidationAwareSupport"/>
 		
