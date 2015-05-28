@@ -75,11 +75,16 @@
 				
 				atualizarGrafico();
 				
+				<#if !niveisCompetenciaFaixaSalariais?exists || niveisCompetenciaFaixaSalariais?size == 0>
+					montaAlerta();
+				</#if>
+				
 			});
 			
 			var options = {
 				series:{
 					spider:{
+						show: 'auto', 
 						active: true,
 						legs: { 
 							data: labels,
@@ -103,36 +108,35 @@
 			
 			function atualizarGrafico()
 			{
-				if($('.checkCompetencia').is(':checked'))
-				{
-					labels = [];
-					compFaixa = [];
-					compColab = [];
+				labels = [];
+				compFaixa = [];
+				compColab = [];
+			
+				$('.checkCompetencia:checked').each(function() {
+					var seq = $(this).parent().next().text().match(/\d+/g)[0];
+					var check = $(this).parent().parent().find('.checkNivel:checked');
+					var nivelColab = check.attr('nivelcolaborador');
+					var nivelFaixa = check.attr('nivelfaixa');
+					
+					if (nivelFaixa || nivelColab)
+					{
+						labels.push({ label: seq });
+						compFaixa.push([ seq, nivelFaixa || 0 ]);
+						compColab.push([ seq, nivelColab || 0 ]);
+					}
+				});
 				
-					$('.checkCompetencia:checked').each(function() {
-						var seq = $(this).parent().next().text().match(/\d+/g)[0];
-						var check = $(this).parent().parent().find('.checkNivel:checked');
-						var nivelColab = check.attr('nivelcolaborador');
-						var nivelFaixa = check.attr('nivelfaixa');
-						
-						if (nivelFaixa || nivelColab)
-						{
-							labels.push({ label: seq });
-							compFaixa.push([ seq, nivelFaixa || 0 ]);
-							compColab.push([ seq, nivelColab || 0 ]);
-						}
-					});
-					
-					options.series.spider.legs.data = labels;
-					
-					var data = [
-						{ label: "Competências exigidas pelo cargo/faixa", color:"orange", data: compFaixa, spider: {show: true} },
-						{ label: "Competências do colaborador", color:"lightblue", data: compColab, spider: {show: true} }
-					];
-					
-					var plot = $.plot($("#grafico"), data , options);
-					$("#grafico").bind("plothover", graficohover);
-				}
+				options.series.spider.legs.data = labels;
+				
+				var data = [
+					{ label: "Competências exigidas pelo cargo/faixa", color:"orange", data: compFaixa, spider: {show: true} },
+					{ label: "Competências do colaborador", color:"lightblue", data: compColab, spider: {show: true} }
+				];
+				
+				if($('.checkCompetencia').is(':checked'))
+					plot = $.plot($("#grafico"), data , options);
+				
+				$("#grafico").bind("plothover", graficohover);
 			}
 			
 			var serie = null;
@@ -202,6 +206,21 @@
 				return false;
 			}
 			
+			function montaAlerta()
+			{
+					var content = '<tbody>';
+					content +=  '<tr><td colspan="7">';
+					content +=  ' <div class="info"> ';
+					content +=	' <ul>';
+					content +=	' 	<li>Não existem competências configuradas para ${faixaSalarial.descricao} na data informada.</li>';
+					content +=	' </ul>';
+					content +=	'</div>';
+					content +=  '</tr></td>';
+					content += '</tbody>';
+					
+					$('#configuracaoNivelCompetencia').append(content);			
+			}
+			
 			var configChecked;
 			var nivelChecked =  new Object();
 			var onLoad =  new Object();
@@ -219,16 +238,18 @@
 				NivelCompetenciaDWR.findCompetenciaByFaixaSalarialAndData(repopulaConfiguracaoNivelCompetenciaByDados, ${faixaSalarial.id}, $('#data').val());
 			}
 
+
+
 			function repopulaConfiguracaoNivelCompetenciaByDados(dados)
 			{
-				if(dados == ''){
-					jAlert("Não existem competências (conhecimentos, habilidades ou atitudes) para a data informada.");
+				if(dados == '')	{
+					montaAlerta();
+					$('.base').remove();
 					return;
 				}
 				
-				var content = '<tbody>';
 				var contador = 0;
-		
+				var content = '<tbody>';
 				for (var prop in dados)
 				{
 					if (contador % 2 != 0)

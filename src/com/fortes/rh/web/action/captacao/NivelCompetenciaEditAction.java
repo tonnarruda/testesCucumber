@@ -288,10 +288,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	public void prepareCompetenciasColaborador()
 	{
 		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarial.getId(), data);
-		
-		if (niveisCompetenciaFaixaSalariais.isEmpty())
-			addActionMessage("Não existem competências (conhecimentos, habilidades ou atitudes) cadastradas para o cargo");
-		
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 	}
 	
