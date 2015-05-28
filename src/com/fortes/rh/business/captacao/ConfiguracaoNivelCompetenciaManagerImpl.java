@@ -32,11 +32,11 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return getDao().findByCandidato(candidatoId);
 	}
 
-	public void saveCompetencias(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais, Long faixaSalarialId, Long candidatoId) 
+	public void saveCompetenciasCandidato(Collection<ConfiguracaoNivelCompetencia> configuracaoNiveisCompetencias, Long faixaSalarialId, Long candidatoId) 
 	{
 		getDao().deleteConfiguracaoByCandidatoFaixa(candidatoId, faixaSalarialId);
 
-		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariais) {
+		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNiveisCompetencias) {
 			if (configuracaoNivelCompetencia.getCompetenciaId() != null) {
 				configuracaoNivelCompetencia.setFaixaSalarialIdProjection(faixaSalarialId);
 				configuracaoNivelCompetencia.setCandidatoIdProjection(candidatoId);
@@ -46,18 +46,19 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		}
 	}
 
-	public void saveCompetenciasColaborador(Collection<ConfiguracaoNivelCompetencia> configuracaoNiveisCompetencias, ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) {
+	public void saveCompetenciasColaborador(Collection<ConfiguracaoNivelCompetencia> configuracaoNiveisCompetencias, ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) 
+	{
 		ajustaConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
-		if (configuracaoNivelCompetenciaColaborador.getId() != null) 
-		{
+		
+		if (configuracaoNivelCompetenciaColaborador.getId() == null) { 
+			configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.save(configuracaoNivelCompetenciaColaborador);
+		} else {
 			configuracaoNivelCompetenciaColaboradorManager.update(configuracaoNivelCompetenciaColaborador);
 			getDao().deleteConfiguracaoNivelCompetenciaByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId());
 		} 
-		else
-			configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.save(configuracaoNivelCompetenciaColaborador);
 
-		if(configuracaoNiveisCompetencias != null)
-		{
+		if(configuracaoNiveisCompetencias != null) {
+			
 			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNiveisCompetencias) 
 			{
 				if (configuracaoNivelCompetencia.getCompetenciaId() != null) 

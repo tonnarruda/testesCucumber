@@ -15,7 +15,7 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 {
 	Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId, Date data);
 	
-	void saveCompetencias(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais, Long faixaSalarialId, Long candidatoId);
+	void saveCompetenciasCandidato(Collection<ConfiguracaoNivelCompetencia> configuracaoNiveisCompetencias, Long faixaSalarialId, Long candidatoId);
 
 	Collection<ConfiguracaoNivelCompetencia> findByCandidato(Long candidato);
 
