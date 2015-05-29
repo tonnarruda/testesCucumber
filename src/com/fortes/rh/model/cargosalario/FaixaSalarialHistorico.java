@@ -15,8 +15,6 @@ import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.util.MathUtil;
 import com.fortes.rh.util.SalarioUtil;
 import com.fortes.security.auditoria.NaoAudita;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 @SuppressWarnings("serial")
 @Entity

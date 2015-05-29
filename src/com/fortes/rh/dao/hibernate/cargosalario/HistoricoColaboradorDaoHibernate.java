@@ -1484,16 +1484,16 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		hql.append("left join hc.estabelecimento as est ");
 		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("left join hc.indice as i ");
-		hql.append("left join i.indiceHistoricos as ih with ih.data = (select max(ih2.data) from IndiceHistorico ih2 where ih2.indice.id = i.id and ih2.data <= :hoje ) ");
+		hql.append("left join i.indiceHistoricos as ih with ih.data = (select max(ih2.data) from IndiceHistorico ih2 where ih2.indice.id = i.id and ih2.data <= hc.data ) ");
 		hql.append("left join hc.colaborador as co ");
 		hql.append("left join co.empresa as e ");
 		hql.append("left join co.endereco.cidade as ci ");
 		hql.append("left join hc.faixaSalarial as fs ");
-		hql.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh2.data) from FaixaSalarialHistorico fsh2 where fsh2.faixaSalarial.id = fs.id and fsh2.data <= :hoje and fsh2.status = :status) ");
+		hql.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh2.data) from FaixaSalarialHistorico fsh2 where fsh2.faixaSalarial.id = fs.id and fsh2.data <= hc.data and fsh2.status = :status) ");
 		hql.append("left join fsh.indice as ifs ");
-		hql.append("left join ifs.indiceHistoricos as ifsh with ifsh.data = (select max(ih3.data) from IndiceHistorico ih3 where ih3.indice.id = ifs.id and ih3.data <= :hoje) ");
+		hql.append("left join ifs.indiceHistoricos as ifsh with ifsh.data = (select max(ih3.data) from IndiceHistorico ih3 where ih3.indice.id = ifs.id and ih3.data <= hc.data) ");
 		hql.append("left join fs.cargo as cg ");
-
+		
 		hql.append("where hc.status = :status  ");
 		
 		if (LongUtil.arrayIsNotEmpty(colaboradoresIds))
@@ -1513,7 +1513,6 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 			query.setLong("empresaId", empresaId);
 		
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		query.setDate("hoje", new Date());
 
 		return query.list();
 	}

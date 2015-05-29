@@ -8,6 +8,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
 import com.fortes.portalcolaborador.business.operacao.AtualizarColaboradorComHistorico;
 import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoColaborador;
+import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoFaixaSalarial;
 import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoIndice;
 import com.fortes.portalcolaborador.model.ColaboradorPC;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -288,7 +289,10 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 		Collection<FaixaSalarialHistorico> historicos = faixaSalarialHistoricoManager.findByTabelaReajusteId(tabelaReajusteColaboradorId);
 		
 		for (FaixaSalarialHistorico faixaSalarialHistorico : historicos) 
+		{	
+			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoFaixaSalarial.class, faixaSalarialHistorico.getFaixaSalarial().getIdentificadorToJson(), empresa.isIntegradaPortalColaborador());
 			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), empresa);
+		}
 		
 		getDao().updateSetAprovada(tabelaReajusteColaboradorId, false);
 	}
