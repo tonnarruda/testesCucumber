@@ -699,6 +699,19 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		assertEquals(tCargo.getDescricaoACPessoal(), faixaSalarial.getNomeACPessoal());
 	}
 	
+	public void testdeleteFaixaSalarialByIds()
+	{
+		TCargo tCargo = new TCargo();
+		tCargo.setCodigo("02569");
+		tCargo.setDescricao("Desc");
+		tCargo.setDescricaoACPessoal("desc AC");
+		
+		FaixaSalarial faixaSalarial = faixaSalarialManager.montaFaixa(tCargo);
+		assertEquals(tCargo.getCodigo(), faixaSalarial.getCodigoAC());
+		assertEquals(tCargo.getDescricao(), faixaSalarial.getNome());
+		assertEquals(tCargo.getDescricaoACPessoal(), faixaSalarial.getNomeACPessoal());
+	}
+	
 	public void testQtdColaboradoresPorCargoFaixa() {
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 

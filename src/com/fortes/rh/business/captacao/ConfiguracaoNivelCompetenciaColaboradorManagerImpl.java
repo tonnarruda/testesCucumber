@@ -7,6 +7,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.SpringUtil;
 
 public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericManagerImpl<ConfiguracaoNivelCompetenciaColaborador, ConfiguracaoNivelCompetenciaColaboradorDao> implements ConfiguracaoNivelCompetenciaColaboradorManager
 {
@@ -44,7 +45,14 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericM
 
 	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception 
 	{
+		deleteDependenciasByFaixaSalarial(faixaIds);
 		getDao().deleteByFaixaSalarial(faixaIds);
+	}
+
+	public void deleteDependenciasByFaixaSalarial(Long[] faixaIds)
+	{
+		ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager = (ConfiguracaoNivelCompetenciaManager) SpringUtil.getBean("configuracaoNivelCompetenciaManager");
+		configuracaoNivelCompetenciaManager.removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixaSalarial(faixaIds);
 	}
 
 	public ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId, Long avaliadorId, Long colaboradorQuestionarioId) 

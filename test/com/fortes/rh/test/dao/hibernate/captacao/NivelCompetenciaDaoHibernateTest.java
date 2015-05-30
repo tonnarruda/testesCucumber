@@ -45,6 +45,7 @@ import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -556,10 +557,54 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals("jose", ((ConfiguracaoNivelCompetencia)configs.toArray()[4]).getCandidato().getNome());
 	}
 	
+	public void testRemoveByFaixasIds()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+		
+		Candidato jose = CandidatoFactory.getCandidato();
+		candidatoDao.save(jose);
+		
+		NivelCompetencia nivel = NivelCompetenciaFactory.getEntity();
+		nivelCompetenciaDao.save(nivel);
+
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimentoDao.save(conhecimento);
+		
+		Atitude atitude = AtitudeFactory.getEntity();
+		atitudeDao.save(atitude);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = ConfiguracaoNivelCompetenciaFactory.getEntity();
+		configuracaoNivelCompetencia1.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetencia1.setCompetenciaId(conhecimento.getId());
+		configuracaoNivelCompetencia1.setNivelCompetencia(nivel);
+		configuracaoNivelCompetencia1.setCandidato(jose);;
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia1);
+
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = ConfiguracaoNivelCompetenciaFactory.getEntity();
+		configuracaoNivelCompetencia2.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetencia2.setCompetenciaId(atitude.getId());
+		configuracaoNivelCompetencia2.setNivelCompetencia(nivel);
+		configuracaoNivelCompetencia2.setCandidato(jose);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia2);
+		
+		Long[] faixaSalarialIds = new Long[]{configuracaoNivelCompetencia1.getId(), configuracaoNivelCompetencia2.getId()};
+		
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = configuracaoNivelCompetenciaDao.findByCandidato(jose.getId());
+		
+		assertEquals(2, configuracaoNivelCompetencias.size());
+		
+		configuracaoNivelCompetenciaDao.removeByFaixas(faixaSalarialIds);
+		
+		configuracaoNivelCompetencias = configuracaoNivelCompetenciaDao.findByCandidato(jose.getId());
+		
+		assertEquals(0, configuracaoNivelCompetencias.size());
+	}
+
 	public void testFindCompetenciasIdsConfiguradasByFaixaSolicitacao()
 	{
 		Conhecimento conhecimento = criaConhecimento();
-		
+
 		Atitude atitude = criaAtitude();
 		
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();

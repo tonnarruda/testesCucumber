@@ -73,6 +73,9 @@
     <property name="configuracaoNivelCompetenciaColaboradorManager">
       <ref bean="configuracaoNivelCompetenciaColaboradorManager" />
     </property>
+    <property name="configuracaoNivelCompetenciaFaixaSalarialManager">
+      <ref bean="configuracaoNivelCompetenciaFaixaSalarialManager" />
+    </property>
   </bean>
   <bean id="faixaSalarialManager" parent="parentManager">
     <property name="proxyInterfaces">

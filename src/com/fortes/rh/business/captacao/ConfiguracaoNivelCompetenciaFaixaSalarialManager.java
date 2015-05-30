@@ -5,4 +5,6 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 
 public interface ConfiguracaoNivelCompetenciaFaixaSalarialManager extends GenericManager<ConfiguracaoNivelCompetenciaFaixaSalarial>
 {
+	void deleteByFaixaSalarial(Long[] faixaIds);
+	void deleteDependenciasByFaixaSalarial(Long[] faixaIds);
 }

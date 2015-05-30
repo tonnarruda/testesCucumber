@@ -255,25 +255,24 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 
 	public void removeByFaixas(Long[] faixaSalarialIds) 
 	{
-		String hql = "delete ConfiguracaoNivelCompetencia where faixaSalarial.id in(:faixaSalarialIds)";
+		String hql = "delete ConfiguracaoNivelCompetencia where faixaSalarial.id in (:faixaSalarialIds)";
 
 		Query query = getSession().createQuery(hql);
 		query.setParameterList("faixaSalarialIds", faixaSalarialIds, Hibernate.LONG);
-
 		query.executeUpdate();
 	}
 
-	public void removeColaborador(Colaborador colaborador) {
+	public void removeColaborador(Colaborador colaborador) 
+	{
 		String queryHQL = "delete from ConfiguracaoNivelCompetencia cnc where cnc.configuracaoNivelCompetenciaColaborador.id in (select id from ConfiguracaoNivelCompetenciaColaborador where colaborador.id = :colaboradorId)";
 
 		Query query = getSession().createQuery(queryHQL);
-
 		query.setLong("colaboradorId", colaborador.getId());
-
 		query.executeUpdate();
 	}
 
-	public void removeByConfiguracaoNivelColaborador(Long configuracaoNivelColaboradorId) {
+	public void removeByConfiguracaoNivelColaborador(Long configuracaoNivelColaboradorId)
+	{
 		String queryHQL = "delete from ConfiguracaoNivelCompetencia cnc where cnc.configuracaoNivelCompetenciaColaborador.id = :configuracaoNivelColaboradorId";
 
 		Query query = getSession().createQuery(queryHQL);
@@ -281,17 +280,40 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		query.executeUpdate();
 	}
 
-	public void removeByConfiguracaoNivelFaixaSalarial(Long configuracaoNivelFaixaSalarialId){
+	public void removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixaSalarial(Long[] faixaIds)
+	{
+		String queryHQL = "delete from ConfiguracaoNivelCompetencia cnc where cnc.configuracaoNivelCompetenciaColaborador.id in (select id from ConfiguracaoNivelCompetenciaColaborador where faixaSalarial.id in (:faixaIds))";
+
+		removeDependenciasComConfiguracaoNivelCompetencia(faixaIds, queryHQL);
+	}
+	
+	public void removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixaSalarial(Long[] faixaIds)
+	{
+		String queryHQL = "delete from ConfiguracaoNivelCompetencia cnc where cnc.configuracaoNivelCompetenciaFaixaSalarial.id in (select id from ConfiguracaoNivelCompetenciaFaixaSalarial where faixaSalarial.id in (:faixaIds))";
+
+		removeDependenciasComConfiguracaoNivelCompetencia(faixaIds, queryHQL);
+	}
+
+	private void removeDependenciasComConfiguracaoNivelCompetencia(Long[] faixaIds, String queryHQL)
+	{
+		Query query = getSession().createQuery(queryHQL);
+		query.setParameterList("faixaIds", faixaIds, Hibernate.LONG);
+		query.executeUpdate();
+	}
+
+	public void removeByConfiguracaoNivelFaixaSalarial(Long configuracaoNivelFaixaSalarialId)
+	{
 		String queryHQL = "delete from ConfiguracaoNivelCompetencia cnc where cnc.configuracaoNivelCompetenciaFaixaSalarial.id = :configuracaoNivelFaixaSalarialId";
-		
+
 		Query query = getSession().createQuery(queryHQL);
 		query.setLong("configuracaoNivelFaixaSalarialId", configuracaoNivelFaixaSalarialId);
 		query.executeUpdate();
 	}
-	
-	public void removeByCandidato(Long candidatoId) {
+
+	public void removeByCandidato(Long candidatoId)
+	{
 		String queryHQL = "delete from ConfiguracaoNivelCompetencia cnc where cnc.candidato.id = :candidatoId";
-		getSession().createQuery(queryHQL).setLong("candidatoId",candidatoId).executeUpdate();
+		getSession().createQuery(queryHQL).setLong("candidatoId", candidatoId).executeUpdate();
 	}
 
 	@SuppressWarnings("unchecked")

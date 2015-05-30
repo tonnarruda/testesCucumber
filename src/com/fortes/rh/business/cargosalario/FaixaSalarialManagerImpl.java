@@ -13,6 +13,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
@@ -35,6 +36,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
+	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 
 	@Override
 	@Deprecated
@@ -314,7 +316,6 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		FaixaSalarial faixaSalarial = new FaixaSalarial();
 		faixaSalarial.setNome(tCargo.getDescricao());
 		faixaSalarial.setNomeACPessoal(tCargo.getDescricaoACPessoal());
-		//TODO: codigoac vazio
 		faixaSalarial.setCodigoAC(tCargo.getCodigo());
 		
 		return faixaSalarial;
@@ -327,6 +328,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 			faixaSalarialHistoricoManager.deleteByFaixaSalarial(faixaIds);
 			certificacaoManager.deleteByFaixaSalarial(faixaIds);
 			configuracaoNivelCompetenciaColaboradorManager.deleteByFaixaSalarial(faixaIds);
+			configuracaoNivelCompetenciaFaixaSalarialManager.deleteByFaixaSalarial(faixaIds);
 			configuracaoNivelCompetenciaManager.removeByFaixas(faixaIds);
 			
 			getDao().remove(faixaIds);
@@ -379,5 +381,10 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 
 	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
 		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
+	}
+
+	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager)
+	{
+		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
 	}
 }
