@@ -54,7 +54,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.save(configuracaoNivelCompetenciaColaborador);
 		} else {
 			configuracaoNivelCompetenciaColaboradorManager.update(configuracaoNivelCompetenciaColaborador);
-			getDao().deleteConfiguracaoNivelCompetenciaByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId());
+			getDao().deleteByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId());
 		} 
 
 		if(configuracaoNiveisCompetencias != null) {
@@ -93,7 +93,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		if (configuracaoNivelCompetenciaFaixaSalarial.getId() != null) 
 		{
 			configuracaoNivelCompetenciaFaixaSalarialManager.update(configuracaoNivelCompetenciaFaixaSalarial);
-			getDao().deleteConfiguracaoNivelCompetenciaByConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getId());
+			getDao().deleteByConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getId());
 		} 
 		else
 			configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.save(configuracaoNivelCompetenciaFaixaSalarial);
@@ -356,13 +356,13 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	}
 
 	public void removeConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelColaboradorId) {
-		getDao().removeByConfiguracaoNivelColaborador(configuracaoNivelColaboradorId);
+		getDao().removeByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelColaboradorId);
 		configuracaoNivelCompetenciaColaboradorManager.remove(configuracaoNivelColaboradorId);
 	}
 
 	public void removeConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelFaixaSalarialId)
 	{
-		getDao().removeByConfiguracaoNivelFaixaSalarial(configuracaoNivelFaixaSalarialId);
+		getDao().removeByConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelFaixaSalarialId);
 		configuracaoNivelCompetenciaFaixaSalarialManager.remove(configuracaoNivelFaixaSalarialId);
 	}
 
@@ -390,12 +390,12 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	
 	public void removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixaSalarial(Long[] faixaIds)
 	{
-		getDao().removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixaSalarial(faixaIds);
+		getDao().removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixasSalariais(faixaIds);
 	}
 	
 	public void removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixaSalarial(Long[] faixaIds)
 	{
-		getDao().removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixaSalarial(faixaIds);
+		getDao().removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixasSalariais(faixaIds);
 	}
 
 	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager)
