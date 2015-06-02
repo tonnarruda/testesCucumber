@@ -104,10 +104,17 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest extends Gen
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
 		configuracaoNivelCompetenciaColaborador.setFaixaSalarial(faixaSalarial);
 		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador);
-		
+
 		Exception exception = null;
 		try {
+			int result = configuracaoNivelCompetenciaColaboradorDao.findToList(new String[]{"data"}, new String[]{"data"}, new String[]{"id"}, new Long[]{configuracaoNivelCompetenciaColaborador.getId()}).size();
+			assertEquals(1, result);
+			
 			configuracaoNivelCompetenciaColaboradorDao.deleteByFaixaSalarial(new Long[] {faixaSalarial.getId()});
+
+			result = configuracaoNivelCompetenciaColaboradorDao.findToList(new String[]{"data"}, new String[]{"data"}, new String[]{"id"}, new Long[]{configuracaoNivelCompetenciaColaborador.getId()}).size();
+			assertEquals(0, result);
+			
 		} catch (Exception e) {
 			exception = e;
 		}
