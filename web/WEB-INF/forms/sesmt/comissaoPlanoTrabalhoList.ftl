@@ -6,7 +6,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		@import url('<@ww.url value="/css/formModal.css"/>');
 	</style>
-	<style type="text/css">#menuComissao a.ativaPlano{color: #FFCB03;}</style>
+	<style type="text/css">#menuComissao a.ativaPlano{border-bottom: 2px solid #5292C0;}</style>
 	<title></title>
 
 	<script src='<@ww.url includeParams="none" value="/js/formModal.js"/>'></script>

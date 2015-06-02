@@ -50,7 +50,7 @@
 			<#assign selected=""/>
 
 			<@display.column title="Data Realização" style="width:200px;">
-				<@ww.datepicker name="datasRealizacaoExames" id="datasRealizacaoExames_${lista[0].id}" value="${lista[1].data?date}" cssClass="mascaraData" cssStyle="border: 1px solid #7E9DB9"/>
+				<@ww.datepicker name="datasRealizacaoExames" id="datasRealizacaoExames_${lista[0].id}" value="${lista[1].data?date}" cssClass="mascaraData" cssStyle="border: 1px solid #BEBEBE"/>
 			</@display.column>
 			
 			<@display.column title="Resultado" style="width:200px;">
@@ -79,7 +79,7 @@
 			</@display.column>
 
 			<@display.column title="Observação" style="width:400px;">
-				<@ww.textfield name="observacoes" value="${lista[1].observacao}" cssStyle="vertical-align:top; width: 340px;border:1px solid #7E9DB9;"/>
+				<@ww.textfield name="observacoes" value="${lista[1].observacao}" cssStyle="vertical-align:top; width: 340px;border:1px solid #BEBEBE;"/>
 			</@display.column>
 		</@display.table>
 		<@ww.token/>

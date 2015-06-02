@@ -4,7 +4,7 @@
 		<@ww.head/>
 		<style type="text/css">
 			@import url('<@ww.url value="/css/displaytag.css"/>');
-			#menuPcmat a#menuFases { color: #FFCB03; }
+			#menuPcmat a#menuFases { border-bottom: 2px solid #5292C0; }
 		</style>
 		
 		<title>PCMAT - Fase ${fasePcmat.fase.descricao} - Riscos e Medidas de Segurança</title>

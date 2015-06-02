@@ -58,7 +58,7 @@
 	
 		#parentesDialog { display: none; }
 		#parentesDialog li { margin: 5px 0px; }
-		#parentesDialog .divInfoColab, #parentesDialog .divInfoColabDestaque { padding: 5px; margin: 5px 0px; border: 1px solid #7E9DB9; font-size: 10px; }
+		#parentesDialog .divInfoColab, #parentesDialog .divInfoColabDestaque { padding: 5px; margin: 5px 0px; border: 1px solid #BEBEBE; font-size: 10px; }
 		#parentesDialog .divInfoColab { background-color: #E9E9E9; }
 		#parentesDialog .divInfoColabDestaque { margin-bottom: 10px; }
 		#parentesDialog .xz { background-color:#fbfa99; color:red; }

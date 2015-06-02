@@ -12,7 +12,7 @@
 		
 		#campoPercMin { display: none; }
 	</style>
-	<style type="text/css">#menuBusca a.ativaTriagemColaboradores{color: #FFCB03;}</style>
+	<style type="text/css">#menuBusca a.ativaTriagemColaboradores{border-bottom: 2px solid #5292C0;}</style>
 	
 	<#include "../ftl/mascarasImports.ftl" />
 

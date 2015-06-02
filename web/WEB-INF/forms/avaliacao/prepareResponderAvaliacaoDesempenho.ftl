@@ -60,7 +60,7 @@
 				return true;
 			}
 				
-			$('tr.even').css('background-color', '#E4F0FE');
+			$('tr.even').css('background-color', '#EFEFEF');
 			$('tr.odd').css('background-color', '#FFF');
 		
 			jAlert('Selecione os níveis para as competências indicadas.');

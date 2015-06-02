@@ -34,7 +34,7 @@
 }
 .gogDivFormulario {
 	background-color: #FFFFFF;
-	border: 1px solid #7E9DB9;
+	border: 1px solid #BEBEBE;
 	color: #454C54;
 	padding: 5px;
 	height: 90px;
@@ -44,14 +44,14 @@
 	width: 49%;
 }
 .gogDivTituloX {
-	background-color: #5B86B3;
+	background-color: #999999;
 	color: #FFFFFF;
 	font-weight: bold;
 	padding: 8px 15px;
 }
 .gogDivFormularioX {
 	background-color: #FFFFFF;
-	border: 1px solid #7E9DB9;
+	border: 1px solid #BEBEBE;
 	color: #454C54;
 	padding: 5px;
 	height: 200px;

@@ -78,7 +78,7 @@ a:hover {
 	border: 1px solid #666;
 	width: 100%;
 	margin: 0px 0 10px 0 !important;
-	border:1px solid #7E9DB9;
+	border:1px solid #BEBEBE;
 }
 #conteudoExibeEsconde .dados {
 	margin: 0 !important;
@@ -114,6 +114,7 @@ th,td {
 .dados th
 {
 	padding: 5px 0;
+	font-weight: normal;
 }
 
 .dados td input,th input{
@@ -126,14 +127,14 @@ th,td {
 }
 
 .dados thead tr {
-	background-color: #5B86B3;
+	background-color: #999999;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	color: #FFF;
 }
 
 .dados tfoot tr {
-	background-color: #5B86B3;
+	background-color: #999999;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	color: #FFF;
@@ -146,7 +147,7 @@ th,td {
 }
 
 th.sorted {
-	background-color: #5B86B3;
+	background-color: #999999;
 }
 
 th a,th a:visited {
@@ -178,7 +179,7 @@ th.order2 a {
 }
 
 tr.tableRowEven,tr.even {
-	background-color: #E4F0FE;
+	background-color: #EFEFEF;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size:13px;
 }

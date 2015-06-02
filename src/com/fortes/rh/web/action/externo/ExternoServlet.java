@@ -60,7 +60,7 @@ public class ExternoServlet extends HttpServlet
 		logotipo("logotipo.png","image/jpeg"),
 		menu1("topo_bg.jpg","image/jpeg"),
 		menu2("topo_bg_right.jpg","image/jpeg"),
-		menu3("topo_img_right.jpg","image/jpeg"),
+		menu3("topo_img_right.png","image/jpeg"),
 		layout("layout.css","text"),
 		trafego("trafego.css","text");
 

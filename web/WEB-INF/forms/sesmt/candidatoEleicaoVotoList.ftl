@@ -4,7 +4,7 @@
 <@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
-		#menuEleicao a.ativaResultado{color: #FFCB03;}
+		#menuEleicao a.ativaResultado{  border-bottom: 2px solid #5292C0;}
 		#eleicao { height: 25px; }
 		
 	</style>
@@ -27,7 +27,7 @@
 		</@display.column>
 
 			<@display.column title="Qtd. de Votos" style="width:80px;text-align:center;">
-				<input type="text" name="qtdVotos" id="qtdVotos" value="${candidatoEleicao.qtdVoto}" style="border: 1px solid #7E9DB9;width:40px;text-align:right;" maxLength="5" onkeypress = "return(somenteNumeros(event,''));"/>
+				<input type="text" name="qtdVotos" id="qtdVotos" value="${candidatoEleicao.qtdVoto}" style="border: 1px solid #BEBEBE;width:40px;text-align:right;" maxLength="5" onkeypress = "return(somenteNumeros(event,''));"/>
 				<input type="hidden" name="idCandidatoEleicaos" id="idCandidatoEleicaos" value="${candidatoEleicao.id}"/>
 			</@display.column>
 

@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-	<link rel="SHORTCUT ICON" href='<@ww.url includeParams="none" value="/imgs/fortes.ico"/>'>
+	<link rel="SHORTCUT ICON" href='<@ww.url includeParams="none" value="/imgs/inf.ico"/>'>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta http-equiv="Content-Language" content="pt-br" />
 	<meta http-equiv="Cache-Control" content="no-cache, no-store" />
@@ -69,9 +69,9 @@
 		</div>
 			
 		<div id="userDiv1">
-			<img src='<@ww.url includeParams="none" value="/imgs/topo_img_right.jpg"/>' border='0' align='absMiddle' />
+			<img src='<@ww.url includeParams="none" value="/imgs/topo_img_right.png"/>' border='0' align='absMiddle' />
 		</div>
-		<div id="logoDiv"><a href="<@ww.url value='/'/>"><img src='<@ww.url includeParams="none" value="/imgs/topo_ico.jpg"/>' border='0'/></a></div>
+		<div id="logoDiv"><a href="<@ww.url value='/'/>"><img src='<@ww.url includeParams="none" value="/imgs/topo_ico.png"/>' border='0'/></a></div>
 		
 		<div id="news">
 			<a id="newsIcon" href="javascript:;" title="Últimas notícias" style="display:none">

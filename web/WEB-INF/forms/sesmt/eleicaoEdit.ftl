@@ -6,7 +6,7 @@
 	<#else>
 		<#assign formAction="insert.action"/>
 	</#if>
-	<style type="text/css">#menuEleicao a.ativaGeral{color: #FFCB03;}</style>
+	<style type="text/css">#menuEleicao a.ativaGeral{border-bottom: 2px solid #5292C0;}</style>
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<#assign validarCampos="return validaFormulario('form', new Array('posse','estabelecimento'), new Array('posse'))"/>

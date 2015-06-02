@@ -85,7 +85,7 @@
 				</@display.column>
 				
 				<@display.column title="Titulo" style="text-align: center;width:400px;">
-					<@ww.textfield theme="simple" id="titulo${i}" name="configuracaoCampoExtras[${i}].titulo" maxLength="60" cssStyle="width: 500px;border:1px solid #7E9DB9;"/>
+					<@ww.textfield theme="simple" id="titulo${i}" name="configuracaoCampoExtras[${i}].titulo" maxLength="60" cssStyle="width: 500px;border:1px solid #BEBEBE;"/>
 				</@display.column>
 				<@display.column title="Ordem" style="vertical-align:middle; text-align: center; width:30px;">
 					<@ww.select id="ordem${i}" name="configuracaoCampoExtras[${i}].ordem" list="ordens"/>

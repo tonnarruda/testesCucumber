@@ -5,7 +5,7 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		input {
-			border: 1px solid #7E9DB9 !important;
+			border: 1px solid #BEBEBE !important;
 		}
 		
 		.dados a

@@ -1,7 +1,7 @@
 <#assign ww=JspTaglibs["/WEB-INF/tlds/webwork.tld"] />
 <html>
 <head>
-	<link rel="SHORTCUT ICON" href='<@ww.url includeParams="none" value="/imgs/fortes.ico"/>'>
+	<link rel="SHORTCUT ICON" href='<@ww.url includeParams="none" value="/imgs/inf.ico"/>'>
 	<title>Login</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link href="<@ww.url includeParams="none" value="/css/app.css" />" rel="stylesheet" type="text/css" media="all"/>

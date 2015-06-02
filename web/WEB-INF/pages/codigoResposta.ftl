@@ -22,8 +22,8 @@
 		</tr>
 		<tr>
 			<td class="corpo" style="padding:10px" height="71px" colspan="2" align="center">
-				<font style="font-weight:bold; color:yellow;">Verifique a licença do sistema</font><br><br>
-				Entre em contato com a Fortes pelo telefone<br> (85) 4005.1114 ou acesse o <a href=http://www.fortesinformatica.com.br/portaldocliente target=_blank><font style="color:yellow;">Portal do Cliente</font></a><br> para obter o código de resposta.<br>
+				<font style="font-weight:bold; color:#9F6000;">Verifique a licença do sistema</font><br><br>
+				Entre em contato com a Fortes pelo telefone<br> (85) 4005.1114 ou acesse o <a href=http://www.fortesinformatica.com.br/portaldocliente target=_blank><font style="color:#9F6000;">Portal do Cliente</font></a><br> para obter o código de resposta.<br>
 			</td>
 		</tr>
 		<tr>
@@ -40,7 +40,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width="109px" height="79px" class="logo"></td>
+			<td width="109px" height="60px" class="logo"></td>
 			<td class="rodape" valign="top" align="right">
 				<button type="button" onclick="window.location='login.action?demonstracao=true'" class="btnDemo" style="background-color:transparent"></button>
 				<button onclick="${validarCampos};" class="btnEnviarBlue" style="background-color:transparent" accesskey="E"></button>

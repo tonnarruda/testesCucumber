@@ -9,7 +9,7 @@
 	@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 	.grade
 	{
-		border:1px solid #7E9DB9;
+		border:1px solid #BEBEBE;
 		width: 100%;
 	}
 	.grade td {
@@ -40,7 +40,7 @@
 		padding: 5px;
 		padding-left: 20px;
 		background: #EBECF1 url('${urlImg}/baixo.gif') no-repeat 2px 3px;
-		border: 1px solid #7E9DB9;
+		border: 1px solid #BEBEBE;
 	}
 	ul#sortable li h4 a.fechado {
 		background: #EBECF1 url('${urlImg}/proxima.gif') no-repeat 2px 3px;
@@ -67,7 +67,7 @@
 		background: url('${urlImg}/proxima.gif') no-repeat;
 	}
 	.painelConfiguracao{
-		border: 1px solid #7E9DB9;
+		border: 1px solid #BEBEBE;
 		background: #EBECF1;
 		width: 100%;		
 		height: 23px;

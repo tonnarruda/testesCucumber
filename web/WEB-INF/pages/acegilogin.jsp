@@ -61,7 +61,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="corpo">
+			<td class="corpo logo-sistema">
 			</td>
 			<td class="corpo">
 				<%=request.getAttribute("msgRemprot")%><br>
@@ -74,7 +74,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width="109px" height="79px" class="logo"></td>
+			<td width="109px" height="60px" class="logo"></td>
 			<td class="rodape" valign="top">
 				<input type="submit" name="submit" value=" " class="btnEntrar"/>
 				<br>

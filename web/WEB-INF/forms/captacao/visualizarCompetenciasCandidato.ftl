@@ -31,7 +31,7 @@
 		
 		function getNiveisCargo(solicitacaoId)
 		{
-			$('tr.even > td').css('background-color', '#E4F0FE');
+			$('tr.even > td').css('background-color', '#EFEFEF');
 			$('tr.odd > td').css('background-color', '#FFF');
 		
 			if (solicitacaoId != '')

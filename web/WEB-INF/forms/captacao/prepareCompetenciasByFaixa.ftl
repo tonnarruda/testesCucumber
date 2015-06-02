@@ -80,7 +80,7 @@
 				return true;
 			}
 				
-			$('tr.even').css('background-color', '#E4F0FE');
+			$('tr.even').css('background-color', '#EFEFEF');
 			$('tr.odd').css('background-color', '#FFF');
 		
 			jAlert('Selecione os níveis para as competências indicadas.');
@@ -107,7 +107,7 @@
 		<#assign i = 0/>
 		<@display.table name="niveisCompetenciaFaixaSalariaisConhecimento" id="configuracaoNivelCompetencia" class="dados">
 		
-			<@display.caption><div style="background-color: #5B86B3;font-weight: bold; color: #FFF;">Conhecimento</div> </@display.caption>
+			<@display.caption><div style="background-color: #999999;font-weight: bold; color: #FFF;">Conhecimento</div> </@display.caption>
 			<@display.column title="<input type='checkbox' id='checkAllCompetenciaConhecimento'/> Competência" >
 				<@ww.hidden name="niveisCompetenciaFaixaSalariaisConhecimento[${i}].tipoCompetencia"/>
 				<input type="checkbox"  id="competenciaConhecimento_${i}" name="niveisCompetenciaFaixaSalariaisConhecimento[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetenciaConhecimento" />
@@ -131,7 +131,7 @@
 		<#assign i = 0/>
 		<@display.table name="niveisCompetenciaFaixaSalariaisHabilidade" id="configuracaoNivelCompetenciaHabilidade" class="dados">
 		
-			<@display.caption><div style="background-color: #5B86B3;font-weight: bold; color: #FFF;">Habilidade</div> </@display.caption>
+			<@display.caption><div style="background-color: #999999;font-weight: bold; color: #FFF;">Habilidade</div> </@display.caption>
 			<@display.column title="<input type='checkbox' id='checkAllCompetenciaHabilidade'/> Competência" >
 				<@ww.hidden name="niveisCompetenciaFaixaSalariaisHabilidade[${i}].tipoCompetencia"/>
 				<input type="checkbox"  id="competenciaHabilidade_${i}" name="niveisCompetenciaFaixaSalariaisHabilidade[${i}].competenciaId" value="${configuracaoNivelCompetenciaHabilidade.competenciaId}" class="checkCompetenciaHabilidade" />
@@ -155,7 +155,7 @@
 		<#assign i = 0/>
 		<@display.table name="niveisCompetenciaFaixaSalariaisAtitude" id="configuracaoNivelCompetenciaAtitude" class="dados">
 					
-			<@display.caption><div style="background-color: #5B86B3;font-weight: bold; color: #FFF;">Atitude</div> </@display.caption>
+			<@display.caption><div style="background-color: #999999;font-weight: bold; color: #FFF;">Atitude</div> </@display.caption>
 			<@display.column title="<input type='checkbox' id='checkAllCompetenciaAtitude'/> Competência" >
 				<@ww.hidden name="niveisCompetenciaFaixaSalariaisAtitude[${i}].tipoCompetencia"/>
 				<input type="checkbox"  id="competenciaAtitude_${i}" name="niveisCompetenciaFaixaSalariaisAtitude[${i}].competenciaId" value="${configuracaoNivelCompetenciaAtitude.competenciaId}" class="checkCompetenciaAtitude" />

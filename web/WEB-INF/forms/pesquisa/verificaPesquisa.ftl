@@ -19,7 +19,7 @@
 	}
 	div.even
 	{
-		background-color: #E4F0FE;
+		background-color: #EFEFEF;
 		font-family: Arial, Helvetica, sans-serif;
 		font-size:13px;
 		padding: 10px;

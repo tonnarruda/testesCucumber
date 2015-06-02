@@ -7,18 +7,20 @@ body {
 }
 .rodape {
 	background-repeat:repeat-x;
-	background-image:url('../imgs/login_bg_down.jpg');
+	background-color: white;
 }
 .logo {
 	background-repeat:repeat-x;
-	background-image:url('../imgs/login_logo.jpg');
+	background-color: white;
 }
 .corpo {
-	background-repeat:repeat;
-	background-image:url('../imgs/login_bg.jpg');
+	background: white;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 13px;
-	color: #FFF;
+}
+.logo-sistema {
+	background-repeat:repeat;
+	background-image:url('../imgs/logo-sistema.jpg');
 }
 .selectEmpresa ,input {
 	font-family: "Courier New", Courier, monospace;
@@ -29,7 +31,7 @@ body {
 .linkbranco {
 	font-family: "Verdana";
 	font-size:10px;
-	color: #fff;
+	color: red;
 }
 
 .msgErro {
@@ -47,7 +49,7 @@ li {
 
 .btnEntrar
 {
-	background-image:url(../imgs/btnEntrar.gif);
+	background-image:url(../imgs/btnEntrar.png);
 	width: 63px !important;
 	border: 0;
 	background-repeat: no-repeat;

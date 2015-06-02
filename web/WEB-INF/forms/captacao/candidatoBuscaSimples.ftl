@@ -13,7 +13,7 @@
 
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
-		#menuBusca a.ativaSimples { color: #FFCB03; }
+		#menuBusca a.ativaSimples { border-bottom: 2px solid #5292C0; }
 	</style>
 	
 	<#include "../ftl/mascarasImports.ftl" />

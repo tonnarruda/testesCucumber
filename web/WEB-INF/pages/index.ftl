@@ -32,7 +32,7 @@
 		.column { width: 50%; float: left; min-height: 50px; }
 		.left .portlet { margin: 0 0.5em 1em 0; }
 		.right .portlet { margin: 0 0 1em 0.5em; }
-		.portlet-header { margin: 0.3em; padding: 3px; }
+		.portlet-header { margin-bottom: 0.3em; padding: 5px; }
 		.portlet-header .ui-icon { float: right; cursor: pointer; }
 		.portlet-content { padding: 0.4em; height: 180px; overflow: auto;}
 		.ui-sortable-placeholder { background: transparent; border: 1px dotted black; visibility: visible !important; height: 220px !important; }

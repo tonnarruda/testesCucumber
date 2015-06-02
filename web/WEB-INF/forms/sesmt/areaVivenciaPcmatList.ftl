@@ -4,7 +4,7 @@
 	<@ww.head/>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
-		#menuPcmat a#menuAreasVivencia { color: #FFCB03; }
+		#menuPcmat a#menuAreasVivencia { border-bottom: 2px solid #5292C0; }
 	</style>
 
 	<title>PCMAT</title>

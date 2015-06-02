@@ -4,7 +4,7 @@
 
 
   <style type="text/css">
-    #menuEleicao a.ativaComunicado{color: #FFCB03;}
+    #menuEleicao a.ativaComunicado{border-bottom: 2px solid #5292C0;}
     #eleicao { height: 20px; }
   </style>
 

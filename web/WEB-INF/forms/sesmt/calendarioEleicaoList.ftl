@@ -5,7 +5,7 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		@import url('<@ww.url value="/css/formModal.css"/>');
-		#menuEleicao a.ativaCalendario{color: #FFCB03;}
+		#menuEleicao a.ativaCalendario{  border-bottom: 2px solid #5292C0;}
 		#eleicao{height: 25px; }
 	</style>
 	<script src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>

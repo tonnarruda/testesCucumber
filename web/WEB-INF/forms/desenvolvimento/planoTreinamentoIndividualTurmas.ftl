@@ -9,14 +9,14 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	
 		#formDialog { display: none; }
-		.tabela_colabs { float: right; width: 400px; height: 689px; overflow-y: scroll; overflow-x: hidden; border: 1px solid #7E9DB9; }
+		.tabela_colabs { float: right; width: 400px; height: 689px; overflow-y: scroll; overflow-x: hidden; border: 1px solid #BEBEBE; }
 		.tabela_colabs .dados { width: 385px; border: none; }
 		fieldset { padding: 10px; margin-bottom: 20px; }
 		.legend { font-weight: bold; }
 		
 		.diasTable { border: none; }
 		.diasTable td { padding: 0px; }
-		.diasTable input[type='text'] { border: 1px solid #7E9DB9; width: 50px; }
+		.diasTable input[type='text'] { border: 1px solid #BEBEBE; width: 50px; }
 		.hora { text-align: right; }
 		.invalido { background-color: #FFEEC2 !important; }
 	</style>
@@ -454,7 +454,7 @@
 		<@display.table name="tipoDespesas" id="tipoDespesa" class="dados" style="width:450px;">
 			<@display.column property="descricao" title="Descrição"/>
 			<@display.column title="Custo (R$)" style="text-align: center; width:120px;">
-				<input type="text" name="${tipoDespesa.id}" class="despesa moeda" maxlength="10" size="12" style="text-align:right; width: 90px;border:1px solid #7E9DB9;"/>
+				<input type="text" name="${tipoDespesa.id}" class="despesa moeda" maxlength="10" size="12" style="text-align:right; width: 90px;border:1px solid #BEBEBE;"/>
 			</@display.column>
 		</@display.table>
 	</div>

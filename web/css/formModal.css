@@ -22,7 +22,7 @@
 	height: 480px;
 	padding: 48px;
 	margin:0;
-	border: 2px solid #7E9DB9;
+	border: 2px solid #BEBEBE;
 	background-color: white;
 	overflow: none;
 }
@@ -40,7 +40,7 @@
 	left-padding:8px;
 	margin:0;
 
-	background-color: #23516B;
+	background-color: #6B2323;
 	color: #FFCB03;
 	font-weight: bold;
 	text-align:center;
@@ -55,7 +55,7 @@
 	height: 280px;
 	padding: 48px;
 	margin:0;
-	border: 2px solid #7E9DB9;
+	border: 2px solid #BEBEBE;
 	background-color: white;
 	overflow: none;
 }
@@ -73,7 +73,7 @@
 	left-padding:8px;
 	margin:0;
 
-	background-color: #23516B;
+	background-color: #6B2323;
 	color: #FFCB03;
 	font-weight: bold;
 	text-align:center;

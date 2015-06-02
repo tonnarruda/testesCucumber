@@ -3,26 +3,25 @@
 	{
 		margin: -16px;
 		color: #FFCB03;
-		background-color: #23516B;
-		border-top: 1px solid #327195; /* Sombra clara */
+		background: #E0DFDF;
+		/* background-color: #6B2323;
+		border-top: 1px solid #953232;  Sombra clara */
 	}
 	#menuBusca a 
 	{
 		float: left;
 		display: block;
-		padding: 5px 15px;
-		font-weight: bold!important;
+		padding: 7px 15px;
 		font-family: Arial, Helvetica, sans-serif;
 		font-size: 12px;
 		text-align: center;
 		text-decoration: none;
-		color: #FFF;
-		border-left: 1px solid #327195; /* Sombra clara */
-		border-right: 1px solid #1C4055; /* Sombra escura */
+		color: #5C5C5A;
+		border-right: 1px solid #C6C6C6;
 	}
 	#menuBusca a:hover
 	{
-		background-color: #6391AB;
+		  color: #5292C0;
 	}
 </style> 
 	<#if solicitacao?exists && solicitacao.id?exists>

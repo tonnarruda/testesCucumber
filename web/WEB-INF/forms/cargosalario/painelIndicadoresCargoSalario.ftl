@@ -16,7 +16,7 @@
 			float: left;
 			margin-top: 5px;
 			margin-right: 5px;
-			border: 1px solid #7E9DB9;
+			border: 1px solid #BEBEBE;
 		}
 		.fieldGraph h1 {
 			display: block;
@@ -26,7 +26,7 @@
 			font-size: 13px;
 			font-weight: normal;
 			background: #EBECF1;
-			border-bottom: 1px solid #7E9DB9;
+			border-bottom: 1px solid #BEBEBE;
 		}
 		#salarioAreasLegenda{
 			float: left;

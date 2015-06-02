@@ -15,7 +15,7 @@
 		#contatos ul { }
 		#contatos ul li { }
 		#contatos ul li ul { margin-bottom: 20px; }
-		#contatos ul li ul li { margin-left: 20px; list-style: none; color: #5B86B3; }
+		#contatos ul li ul li { margin-left: 20px; list-style: none; color: #999999; }
 		#contatos ul li ul li ul { margin-bottom: 20px; }
 		#contatos ul li ul li ul li { margin-left: 20px; list-style: none; color: #666; }
 		.uf { padding: 3px 5px; font-weight: bold; }

@@ -91,10 +91,10 @@
 				
 				<@display.column property="risco.descricao" title="Risco" style="vertical-align:top; text-align: center;"/>
 				<@display.column title="Intensidade / Concentração" >
-					<input type="text" value="${intensidadeMedida}" name="intensidadeValues" maxLength="100" style="text-align:right; width: 110px;border:1px solid #7E9DB9;" />
+					<input type="text" value="${intensidadeMedida}" name="intensidadeValues" maxLength="100" style="text-align:right; width: 110px;border:1px solid #BEBEBE;" />
 				</@display.column>
 				<@display.column title="Técnica Utilizada" >
-					<input type="text" value="${tecnicaUtilizada}" id="tecnica" name="tecnicaValues" maxLength="100" style="width: 190px;border:1px solid #7E9DB9;" />
+					<input type="text" value="${tecnicaUtilizada}" id="tecnica" name="tecnicaValues" maxLength="100" style="width: 190px;border:1px solid #BEBEBE;" />
 					<@ww.hidden name="riscoIds" value="${riscoMedicaoRisco.risco.id}"/>
 				</@display.column>
 				<@display.column title="Descrição PPRA">

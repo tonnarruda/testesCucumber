@@ -2,7 +2,7 @@
 <html>
 <head>
 	<@ww.head/>
-	<style type="text/css">#menuComissao a.ativaComissao{color: #FFCB03;}</style>
+	<style type="text/css">#menuComissao a.ativaComissao{border-bottom: 2px solid #5292C0;}</style>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 	</style>

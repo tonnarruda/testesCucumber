@@ -14,7 +14,7 @@
 			max-width: 300px;
 			max-height: 200px;
 			background: #FFF;
-			border: 1px solid #7E9DB9;
+			border: 1px solid #BEBEBE;
 			overflow: auto;
 		}
 		.ui-autocomplete a {
@@ -31,7 +31,7 @@
 			padding: 0;
 			width: 18px;
 			height: 18px;
-			border: 1px solid #7E9DB9;
+			border: 1px solid #BEBEBE;
 			border-left: none;
 			vertical-align: bottom;
 			background-image: url(../../imgs/ui-icons_222222_256x240.png);

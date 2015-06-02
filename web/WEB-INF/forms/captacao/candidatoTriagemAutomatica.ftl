@@ -6,7 +6,7 @@
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
-		#menuBusca a.ativaTriagemAutomatica{color: #FFCB03;}
+		#menuBusca a.ativaTriagemAutomatica{border-bottom: 2px solid #5292C0;}
 		.cinza { color: #BBB; }
 	</style>
 

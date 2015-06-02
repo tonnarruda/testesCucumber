@@ -35,7 +35,7 @@ div.graph3 {
 	float: left;
 	margin-top: 5px;
 	margin-right: 5px;
-	border: 1px solid #7E9DB9;
+	border: 1px solid #BEBEBE;
 	width: 477px !important;
 }
 
@@ -47,7 +47,7 @@ div.graph3 {
 	font-size: 13px;
 	font-weight: normal;
 	background: #EBECF1;
-	border-bottom: 1px solid #7E9DB9;
+	border-bottom: 1px solid #BEBEBE;
 }
 
 .fieldGraph div.legend>table {
@@ -62,7 +62,7 @@ div.graph3 {
 .fieldDados {
 	height: 18px;
 	width: 953px !important;
-	border: 1px solid #7E9DB9;
+	border: 1px solid #BEBEBE;
 	padding: 5px;
 }
 
@@ -126,7 +126,7 @@ div.graph3 {
 .grid .grid-cell {
 	width: 470px;
 	vertical-align: top;
-	border: 1px solid #7E9DB9;
+	border: 1px solid #BEBEBE;
 	position: relative;
 }
 
@@ -168,5 +168,5 @@ div.graph3 {
 	font-size: 13px;
 	font-weight: normal;
 	background: #EBECF1;
-	border-bottom: 1px solid #7E9DB9;
+	border-bottom: 1px solid #BEBEBE;
 }

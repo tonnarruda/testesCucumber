@@ -8,9 +8,9 @@
 			@import url('<@ww.url value="/css/formModal.css"/>');
 			
 			<#if isAvaliados>
-		    	#menuParticipantes a.ativaAvaliado{color: #FFCB03;}
+		    	#menuParticipantes a.ativaAvaliado{border-bottom: 2px solid #5292C0;}
 			<#else>
-		    	#menuParticipantes a.ativaAvaliador{color: #FFCB03;}
+		    	#menuParticipantes a.ativaAvaliador{border-bottom: 2px solid #5292C0;}
 		    </#if>
 		    
 		    #box { height: 500px; }

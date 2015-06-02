@@ -23,7 +23,7 @@
 		.conteudo { background-color: #F6F6F6; padding: 10px; border: 1px solid #CCC; }
 		
 		.fieldDados { width: 923px !important; }
-		.fieldDadosTurnover { border: none; border-top: 1px solid #7E9DB9; height: inherit; }
+		.fieldDadosTurnover { border: none; border-top: 1px solid #BEBEBE; height: inherit; }
 		.fieldDadosTurnover th { font-weight: normal; border-bottom: 1px solid #000; }
 		.fieldDadosTurnover td.val { text-align: right; } 
 		.grid-cell { background-color: #FFF; }
@@ -535,7 +535,7 @@
 									
 									<div style="clear: both"></div>
 									
-									<div class="fieldDados" style="border:none;border-top:1px solid #7E9DB9;">
+									<div class="fieldDados" style="border:none;border-top:1px solid #BEBEBE;">
 										<div id="mediaAbsenteismo"></div>
 									</div>
 							 	</div>

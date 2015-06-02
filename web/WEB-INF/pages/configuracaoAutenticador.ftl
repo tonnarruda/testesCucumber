@@ -30,7 +30,7 @@
 		</tr>
 		<tr>
 			<td class="corpo" colspan="3" style="padding-left:10px" height="71px" colspan="3" align="center">
-			<font style="font-weight:bold; color:yellow;">Verifique a localização do serviço de autenticação.</font><br><br>
+			<font style="font-weight:bold; color:#9F6000;">Verifique a localização do serviço de autenticação.</font><br><br>
 			Entre em contato com a Fortes pelo telefone (85)4005.1114 para obter mais informações.<br><br>
 			</td>
 		</tr>
@@ -41,7 +41,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width="109px" height="79px" class="logo"></td>
+			<td width="109px" height="60px" class="logo"></td>
 			<td width="170px" height="79px"  valign="top" class="rodape">
 				<button type="button" onclick="window.location='login.action?demonstracao=true'" class="btnDemo" style="background-color:transparent"></button>
 			</td> 

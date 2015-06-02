@@ -413,7 +413,7 @@
 							</#list>
 						</#if>
 					
-						<@ww.textfield name="periodicidades" value="${periodo}" theme="simple" disabled="true" maxlength="10" id="periodicidadeId${lista[0].id}" cssStyle="width:30px;border:1px solid #7E9DB9; text-align:right;" maxLength="4" onkeypress="return(somenteNumeros(event,''));"/>
+						<@ww.textfield name="periodicidades" value="${periodo}" theme="simple" disabled="true" maxlength="10" id="periodicidadeId${lista[0].id}" cssStyle="width:30px;border:1px solid #BEBEBE; text-align:right;" maxLength="4" onkeypress="return(somenteNumeros(event,''));"/>
 					</@display.column>
 				</@display.table>
 				<@ww.token/>

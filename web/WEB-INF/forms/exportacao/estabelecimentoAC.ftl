@@ -36,7 +36,7 @@
 		<@display.table name="estabelecimentos" id="estabelecimento" class="dados">
 			<@display.column title="Código AC" style="text-align:center; width:80px;">
 				<#assign i = estabelecimento_rowNum - 1/>
-				<@ww.textfield name="codigosACs[${i}]" id="codigoAC_${i}" required="true" cssStyle="width: 35px; border: 1px solid #7E9DB9;" maxLength="4" onkeypress="return somenteNumeros(event,'');"/>
+				<@ww.textfield name="codigosACs[${i}]" id="codigoAC_${i}" required="true" cssStyle="width: 35px; border: 1px solid #BEBEBE;" maxLength="4" onkeypress="return somenteNumeros(event,'');"/>
 			</@display.column>
 			<@display.column property="nome" title="Nome do Estabelecimento"/>
 		</@display.table>

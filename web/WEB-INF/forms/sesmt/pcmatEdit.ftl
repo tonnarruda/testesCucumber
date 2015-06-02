@@ -3,7 +3,7 @@
 		<title>PCMAT</title>
 
 		<style type="text/css">
-			#menuPcmat a#menuGeral{ color: #FFCB03; }
+			#menuPcmat a#menuGeral{ border-bottom: 2px solid #5292C0; }
 		</style>
 	
 		<#include "../ftl/mascarasImports.ftl" />

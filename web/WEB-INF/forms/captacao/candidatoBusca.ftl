@@ -7,7 +7,7 @@
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
 		
-		#menuBusca a.ativaAvancada{ color: #FFCB03; }
+		#menuBusca a.ativaAvancada{ border-bottom: 2px solid #5292C0; }
 	</style>
 
 	<#if solicitacao?exists && solicitacao.id?exists>

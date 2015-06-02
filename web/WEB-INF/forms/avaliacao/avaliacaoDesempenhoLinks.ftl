@@ -2,29 +2,24 @@
 		#menuParticipantes
 		{
 			margin: -16px;
-			height: 25px;
-			width: 1000px;
 			color: #FFCB03;
-			background-color: #23516B;
+			background-color: #E0DFDF;
 		}
 		#menuParticipantes a 
 		{
 			float: left;
 			display: block;
-			padding: 5px 15px;
-			font-weight: bold!important;
+			padding: 7px 15px;
 			font-family: Arial, Helvetica, sans-serif;
 			font-size: 12px;
 			text-align: center;
 			text-decoration: none;
-			color: #FFF;
-			border-left: 1px solid #327195; /* Sombra clara */
-			border-right: 1px solid #1C4055; /* Sombra escura */
-			border-top: 1px solid #327195; /* Sombra clara */
+			color: #5C5C5A;
+  			border-right: 1px solid #C6C6C6;
 		}
 		#menuParticipantes a:hover
 		{
-			background-color: #6391AB;
+			color: #5292C0;
 		}
 	</style> 
 
@@ -41,7 +36,6 @@
 <div id="menuParticipantes">
 	<a href="prepareAvaliados.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}" class="ativaAvaliado" id="ativaAvaliado">Avaliados</a>
 	<a href="prepareAvaliadores.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}" class="ativaAvaliador" id="ativaAvaliador">Avaliadores</a>
-	<a style="width: 760px; border-right: none; border-top: 1px solid #327195;">&nbsp;</a> <!-- Essa ultima serve só para deixar uma bordinha clara -->
 	<div style="clear: both"></div>
 </div>
 	

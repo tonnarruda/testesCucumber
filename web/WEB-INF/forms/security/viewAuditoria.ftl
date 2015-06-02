@@ -23,21 +23,21 @@
 			}
 			.tdLabel {
 				text-align:right;
-				background-color: #5B86B3;
+				background-color: #999999;
 				width:12%;
 			}
 			.tdDados {
 				background-color:white;
 			}
 			.waDivTitulo {
-				background-color:#23516B;
+				background-color:#6B2323;
 				color:#FFCB03;
 				font-weight:bold;
 				padding:8px 15px;
 			}
 			.waDivFormulario {
 				background-color:#FFFFFF;
-				border:1px solid #7E9DB9;
+				border:1px solid #BEBEBE;
 				color:#5C5C5A;
 				padding:15px;
 			}

@@ -42,7 +42,7 @@
 		#content3 th,
 		#content4 th,
 		#content5 th {
-			background-color:#23516B;
+			background-color:#6B2323;
 			color:#FFCB03;
 			font-weight:bold;
 			padding:8px 15px;
@@ -53,7 +53,7 @@
 		#content4,
 		#content5 {
 			background: #FFF;
-			border: 1px solid #7E9DB9;
+			border: 1px solid #BEBEBE;
 		}
 		#abas #aba1,
 		#abas #aba2,
@@ -61,11 +61,11 @@
 		#abas #aba4,
 		#abas #aba5 {
 			background: #CCC;
-			border: 1px solid #7E9DB9;
+			border: 1px solid #BEBEBE;
 		}
 		#abas #aba1 {
 			background: #FFF;
-			border: 1px solid #7E9DB9;
+			border: 1px solid #BEBEBE;
 			border-bottom: 1px solid #FFF;
 		}
 		</style>
@@ -98,7 +98,7 @@
 			{
 				document.getElementById('content' + i).style.display = id == i ? "block" : "none";
 				document.getElementById('aba' + i).style.background  = id == i ? "#FFF" : "#CCC";
-				document.getElementById('aba' + i).style.borderBottom = id == i ? "1px solid #FFF" : "1px solid #7E9DB9";
+				document.getElementById('aba' + i).style.borderBottom = id == i ? "1px solid #FFF" : "1px solid #BEBEBE";
 			}
 			
 			$('#btnImprimirCurriculo, #btnImprimirCurriculoEscaneado').hide();

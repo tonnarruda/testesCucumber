@@ -6,7 +6,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		@import url('<@ww.url value="/css/formModal.css"/>');
 	</style>
-	<style type="text/css">#menuComissao a.ativaReuniao{color: #FFCB03;}</style>
+	<style type="text/css">#menuComissao a.ativaReuniao{border-bottom: 2px solid #5292C0;}</style>
 
 	<script src='<@ww.url includeParams="none" value="/js/formModal.js"/>'></script>
 	<script src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
@@ -121,7 +121,7 @@
 				linha += '<td align="center"><input type="checkbox" ' + (colaboradores[i].presente == 'true' ? 'checked="checked"' : '') + ' onclick="desabilitaJustificativa(this);" id="check' + colaboradores[i].id + '" value="' + colaboradores[i].id + '" name="colaboradorChecks" /></td>';
 				linha += '<td align="left">' + colaboradores[i].nome + '</td>';
 				linha += '<td align="center">';
-				linha += '  <input type="text" value="' + (colaboradores[i].justificativaFalta != null ? colaboradores[i].justificativaFalta : '') + '" name="justificativas" maxlength="100" id="justificativaId' + colaboradores[i].id + '" style="width:160px;border:1px solid #7E9DB9;"/>';
+				linha += '  <input type="text" value="' + (colaboradores[i].justificativaFalta != null ? colaboradores[i].justificativaFalta : '') + '" name="justificativas" maxlength="100" id="justificativaId' + colaboradores[i].id + '" style="width:160px;border:1px solid #BEBEBE;"/>';
 				linha += '  <input type="hidden" name="colaboradorIds" value="' + colaboradores[i].id + '"/>';
 				linha += '</td>';
 				linha += '</tr>';
@@ -178,7 +178,7 @@
 			<@ww.hidden name="comissaoReuniao.id" id="comissaoReuniaoId" value=""/>
 			<@ww.hidden name="comissao.id" id="comissaoId" />
 			Presença:<br/>
-			<div style="height:130px;width:520px;overflow-y:scroll;border:1px solid #7E9DB9;">
+			<div style="height:130px;width:520px;overflow-y:scroll;border:1px solid #BEBEBE;">
 				<table name="colaboradors" id="colaborador" class="dados" style="width:500px;border:none;">
 					<thead>
 						<tr>

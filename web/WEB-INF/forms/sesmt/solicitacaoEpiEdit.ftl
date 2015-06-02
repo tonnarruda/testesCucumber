@@ -270,7 +270,7 @@
 						<#else>
 							<#assign qtdSolicitado = "" />
 						</#if>
-						<input type="text" name="selectQtdSolicitado" onkeypress="return somenteNumeros(event,'')" value="${qtdSolicitado}" id="selectQtdSolicitado_${lista[0].id}" disabled style="text-align:right; vertical-align:top; width: 80px;border:1px solid #7E9DB9;"/>
+						<input type="text" name="selectQtdSolicitado" onkeypress="return somenteNumeros(event,'')" value="${qtdSolicitado}" id="selectQtdSolicitado_${lista[0].id}" disabled style="text-align:right; vertical-align:top; width: 80px;border:1px solid #BEBEBE;"/>
 					</@display.column>
 	
 					<@display.column title="Motivo da Solicitação" style="width:200px">

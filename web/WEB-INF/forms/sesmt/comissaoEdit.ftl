@@ -9,7 +9,7 @@
 		<#assign formAction="insert.action"/>
 		<#assign accessKey="I"/>
 	</#if>
-	<style type="text/css">#menuComissao a.ativaGeral{color: #FFCB03;}</style>
+	<style type="text/css">#menuComissao a.ativaGeral{  border-bottom: 2px solid #5292C0;}</style>
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<#assign dateIni = ""/>

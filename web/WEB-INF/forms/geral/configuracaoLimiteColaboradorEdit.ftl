@@ -19,7 +19,7 @@
 		.listaDeLimites 
 		{
 			background-color:#EEE;
-			border:1px solid #7E9DB9;
+			border:1px solid #BEBEBE;
 			color:#5C5C5A;
 			padding:5px;
 			width: 580px;

@@ -59,7 +59,7 @@
 .ui-widget { font-family: Lucida Grande, Lucida Sans, Arial, sans-serif; font-size: 1.1em; }
 .ui-widget .ui-widget { font-size: 1em; }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-family: Lucida Grande, Lucida Sans, Arial, sans-serif; font-size: 1em; }
-.ui-widget-content { border: 1px solid #7E9DB9; background: #fcfdfd; color: #222222; }
+.ui-widget-content { border: 1px solid #BEBEBE; background: #fcfdfd; color: #222222; }
 .ui-widget-content a { color: #222222; }
 .ui-widget-header { border: 1px solid #4297d7; background: #5c9ccc; color: #ffffff; font-weight: bold; }
 .ui-widget-header a { color: #ffffff; }

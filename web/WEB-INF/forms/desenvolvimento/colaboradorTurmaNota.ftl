@@ -70,7 +70,7 @@
 				<@display.column property="titulo" title="Avaliação" style="width: 400px;"/>
 
 				<@display.column title="Nota" style="width: 60px;text-align: center;">
-					<@ww.textfield id="nota_${avaliacaoCurso.id}" name="notas" value="" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #7E9DB9;" onkeypress="return(somenteNumeros(event,'.,,'));"/>
+					<@ww.textfield id="nota_${avaliacaoCurso.id}" name="notas" value="" maxLength="5" cssStyle="text-align: right;width: 40px;border:1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,'.,,'));"/>
 					<@ww.hidden name="avaliacaoCursoIds" value="${avaliacaoCurso.id}"/>
 				</@display.column>
 			</@display.table>

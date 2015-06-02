@@ -26,9 +26,9 @@
 			<span class="nomeEmpresa">&nbsp;&nbsp;</span>
 		</div>
 		<div id="userDiv1">
-			<img src='<ww:url includeParams="none" value="/imgs/topo_img_right.jpg"/>' border='0' align='absMiddle' />
+			<img src='<ww:url includeParams="none" value="/imgs/topo_img_right.png"/>' border='0' align='absMiddle' />
 		</div>
-		<div id="logoDiv"><a href="<ww:url value='/'/>"><img src='<ww:url includeParams="none" value="/imgs/topo_ico.jpg"/>' border='0'/></a></div>
+		<div id="logoDiv"><a href="<ww:url value='/'/>"><img src='<ww:url includeParams="none" value="/imgs/topo_ico.png"/>' border='0'/></a></div>
 	</div>
 		
 	<ul id="menuDropDown"></ul>

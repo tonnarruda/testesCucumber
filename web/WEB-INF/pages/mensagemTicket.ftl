@@ -33,7 +33,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td width="109px" height="79px" class="logo"></td>
+			<td width="109px" height="60px" class="logo"></td>
 			<td class="rodape" valign="top" align="right">
 				<@ww.hidden name="ticket" value="${ticket}"/>
 				<@ww.hidden name="nome" value="${nome}"/>

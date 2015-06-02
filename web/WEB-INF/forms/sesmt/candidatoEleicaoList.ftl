@@ -7,7 +7,7 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		@import url('<@ww.url value="/css/formModal.css"/>');
-		#menuEleicao a.ativaCandidato{color: #FFCB03;}
+		#menuEleicao a.ativaCandidato{  border-bottom: 2px solid #5292C0;}
 		#eleicao { height: 25px; }
 	</style>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js"/>'></script>

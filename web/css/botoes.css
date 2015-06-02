@@ -91,22 +91,22 @@
 }
 .btnEnviarBlue
 {
-	background-image:url(../imgs/btnEnviarBlue.gif);
+	background-image:url(../imgs/btnEnviarBlue.png);
 	width: 81px !important;
 }
 .btnGerarTicket
 {
-	background-image:url(../imgs/btnGerarTicket.gif);
+	background-image:url(../imgs/btnGerarTicket.png);
 	width: 93px !important;
 }
 .btnOK
 {
-	background-image:url(../imgs/btnOK.gif);
+	background-image:url(../imgs/btnOK.png);
 	width: 46px !important;
 }
 .btnDemo
 {
-	background-image:url(../imgs/btnDemo.gif);
+	background-image:url(../imgs/btnDemo.png);
 	width: 123px !important;
 }
 .btnResultadoAvaliacao

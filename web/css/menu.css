@@ -3,7 +3,11 @@
 	height: 26px;
 	width: 100%;
 	list-style: none;
-	background: url(../imgs/bgMenu2.gif);
+	/*background: url(../imgs/bgMenu2.gif);*/
+	background: white;
+	-webkit-box-shadow: 0px 0px 5px gray;
+  	-moz-box-shadow: 0px 0px 5px gray;
+ 	box-shadow: 0px 0px 5px gray;
 	z-index: 998;
 }
 #menuDropDown li {
@@ -27,11 +31,18 @@
 }
 #menuDropDown > li {
 	position: relative;
+	/*border-right: 1px solid #c6c6c6;*/
 }
 #menuDropDown > li > a {
 	height: 16px;
-	background: url(../imgs/menu_strip_down_arrow.gif) right center no-repeat;
+	/*background: url(../imgs/menu_strip_down_arrow.gif) right center no-repeat;*/
+	background: url(../imgs/ico-sub-menu.png) no-repeat right 10px;
 }
+
+#menuDropDown > li:hover > a {
+	background: url(../imgs/ico-sub-menu.png) no-repeat right -29px;
+}
+
 #menuDropDown > li > a[accesskey="a"],
 #menuDropDown > li > a[title="Blog"],
 #menuDropDown > li > a[title="Twitter"],
@@ -43,16 +54,16 @@
 }
 
 #menuDropDown li:hover {
-	background-color: #5292C0;
+	/*background-color: #C05252;*/
 }
 #menuDropDown li:hover > a {
-	color: #FFF;
+	color: #5292C0;
 }
 #menuDropDown a {
 	display: block;
 	float: left;
 	margin: 0;
-	color: #FFF;
+	color: #3f3f3f;
 	text-decoration: none;
 	padding: 5px 20px 5px 15px;
 }

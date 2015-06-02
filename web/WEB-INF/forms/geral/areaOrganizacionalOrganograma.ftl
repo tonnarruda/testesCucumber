@@ -10,7 +10,7 @@
 	<style type="text/css" media="all">
 		#waDiv { position: relative; width: 98%; margin: 0px auto; left: 0; }
 	
-		#organogramaAreas { overflow: auto; margin-top: 10px; padding: 10px; border: 1px solid #7E9DB9; display: none; }
+		#organogramaAreas { overflow: auto; margin-top: 10px; padding: 10px; border: 1px solid #BEBEBE; display: none; }
 		.buttonGroup { display: none }
 	</style>
 
@@ -67,10 +67,10 @@
 					vline              : 10,                     // size of the smallest vertical line of connectors
 					hline              : 10,                     // size of the smallest horizontal line of connectors
 					inner_padding      : 10,                     // space from text to box border
-					box_color          : '#e4f0fe',              // fill color of boxes
+					box_color          : '#EFEFEF',              // fill color of boxes
 					box_color_hover    : '#ffb',                 // fill color of boxes when mouse is over them
-					box_border_color   : '#7e9db9',              // stroke color of boxes
-					line_color         : '#7e9db9',              // color of connectors
+					box_border_color   : '#BEBEBE',              // stroke color of boxes
+					line_color         : '#BEBEBE',              // color of connectors
 					title_color        : '#333333',              // color of titles
 					subtitle_color     : '#006600',                 // color of subtitles
 					subtitle2_color     : '#006600',                 // color of subtitles

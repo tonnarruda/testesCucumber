@@ -6,7 +6,7 @@
 			@import url('<@ww.url value="/css/displaytag.css"/>');
 			
 			.dados th:first-child { text-align: left; padding-left: 5px; }
-			#boxgrafico { width: 966px; border: 1px solid #7E9DB9; margin-top: 15px; padding-top: 10px; }
+			#boxgrafico { width: 966px; border: 1px solid #BEBEBE; margin-top: 15px; padding-top: 10px; }
 			#grafico { width: 640px; height: 440px; margin: 0px auto; }
 		</style>
 
@@ -185,7 +185,7 @@
 					return true;
 				}
 					
-				$('tr.even').css('background-color', '#E4F0FE');
+				$('tr.even').css('background-color', '#EFEFEF');
 				$('tr.odd').css('background-color', '#FFF');
 			
 				jAlert('Selecione os níveis para as competências indicadas.');
