@@ -56,8 +56,13 @@
 		
 		<#if integradoAC>
 			<@display.column title="Status no AC" style="width: 50px;text-align: center;">
-				<img border="0" title="${statusRetornoAC.getDescricao(historicoColaborador.status)}"
-				src="<@ww.url includeParams="none" value="/imgs/"/>${statusRetornoAC.getImg(historicoColaborador.status)}">
+				<#if historicoColaborador.tipoSalario == 1>
+					<img border="0" title="${statusRetornoAC.getDescricao(historicoColaborador.status)}"
+					src="<@ww.url includeParams="none" value="/imgs/"/>${statusRetornoAC.getImg(historicoColaborador.faixaSalarial.faixaSalarialHistoricoAtual.status)}">
+				<#else>
+					<img border="0" title="${statusRetornoAC.getDescricao(historicoColaborador.status)}"
+					src="<@ww.url includeParams="none" value="/imgs/"/>${statusRetornoAC.getImg(historicoColaborador.status)}">
+				</#if>
 			</@display.column>
 		</#if>
 	</@display.table>

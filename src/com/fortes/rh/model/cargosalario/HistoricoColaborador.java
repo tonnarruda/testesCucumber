@@ -109,7 +109,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 			String ambienteNome, Long funcaoId, String funcaoNome, Long faixaSalarialId, String faixaSalarialNome,
 			Long cargoId, String cargoNomeMercado, String cargoNome, Long grupoId, String grupoNome, Long estabelecimentoId, String estabelecimentoNome,
 			Double faixaHistoricoValor, Integer faixaHistoricoTipo, Double faixaHistoricoQuantidade, Double faixaHistoricoIndiceValor,
-			String faixaCodigoAc, String areaOrganizacionalCodigoAc, String estabelecimentoCodigoAc )
+			String faixaCodigoAc, String areaOrganizacionalCodigoAc, String estabelecimentoCodigoAc, Integer faixaSalarialHistoricoStatus )
 	{
 		setId(id);
 		setSalario(salario);
@@ -150,6 +150,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		setProjectionFaixaHistoricoTipo(faixaHistoricoTipo);
 		setProjectionFaixaHistoricoQuantidade(faixaHistoricoQuantidade);
 		setProjectionFaixaHistoricoIndiceValor(faixaHistoricoIndiceValor);
+		setProjectionFaixaSalarialHistoricoStatus(faixaSalarialHistoricoStatus);
 	}
 
 	public HistoricoColaborador(Long id, Double salario, Long colaboradorId, Long areaOrganizacionalId, String areaOrganizacionalNome, Long funcaoId, Long ambienteId, Long estabelecimentoId, String colaboradorNome, String cargoNomeMercado, Long faixaSalarialId, int tipoSalario)
@@ -649,6 +650,18 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 
 		if(faixaHistoricoTipo != null)
 			this.faixaSalarial.getFaixaSalarialHistoricoAtual().setTipo(faixaHistoricoTipo);
+	}
+	
+	public void setProjectionFaixaSalarialHistoricoStatus(Integer faixaSalarialHistoricoStatus)
+	{
+		if (this.faixaSalarial == null)
+			this.faixaSalarial = new FaixaSalarial();
+
+		if (this.faixaSalarial.getFaixaSalarialHistoricoAtual() == null)
+			this.faixaSalarial.setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
+
+		if(faixaSalarialHistoricoStatus != null)
+			this.faixaSalarial.getFaixaSalarialHistoricoAtual().setStatus(faixaSalarialHistoricoStatus);
 	}
 
 	public void setProjectionFaixaHistoricoQuantidade(Double faixaHistoricoQuantidade)

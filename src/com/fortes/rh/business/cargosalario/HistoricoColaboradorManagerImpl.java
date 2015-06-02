@@ -548,6 +548,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 						HistoricoColaborador historicoColaboradorClone = (HistoricoColaborador) historicoColaboradorTmp.clone();
 						historicoColaboradorClone.setData(faixaHistorico.getData());
 						historicoColaboradorClone.getFaixaSalarial().setFaixaSalarialHistoricoAtual(faixaHistorico);
+						historicoColaboradorClone.setStatus(faixaHistorico.getStatus());
 
 						if (faixaHistorico.getObsReajuste() == null || faixaHistorico.getObsReajuste().equals(""))
 							historicoColaboradorClone.setMotivo("Reajuste da Faixa");
