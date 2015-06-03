@@ -75,7 +75,7 @@ public abstract class Menu
 				"<img src='"+ contexto + "/imgs/telefone.gif' style='vertical-align: middle;'></a></li>\n");
 
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='http://twitter.com/#!/entetecnologia' target='_blank' title='Twitter'>" +
+				"<a href='http://twitter.com/#!/fortesinfo' target='_blank' title='Twitter'>" +
 				"<img src='"+ contexto + "/imgs/twitter.png' style='vertical-align: middle;'></a></li>\n");
 		
 		menu.append("<li style='float: right; line-height: 0.8em'>" +

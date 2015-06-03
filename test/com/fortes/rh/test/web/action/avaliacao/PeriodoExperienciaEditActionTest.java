@@ -148,7 +148,7 @@ public class PeriodoExperienciaEditActionTest extends MockObjectTestCase
 		
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setId(10L);
-		empresa.setNome("Ente");
+		empresa.setNome("Fortes");
 		action.setEmpresa(empresa);
 		
 		Date periodo = new Date();
@@ -180,7 +180,7 @@ public class PeriodoExperienciaEditActionTest extends MockObjectTestCase
     public void testImpRankPerformAvDesempenho() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	empresa.setNome("Ente");
+    	empresa.setNome("Fortes");
     	action.setEmpresaSistema(empresa);
     	
     	Date periodo = new Date();
@@ -203,7 +203,7 @@ public class PeriodoExperienciaEditActionTest extends MockObjectTestCase
     public void testImpRankPerformAvDesempenhoException() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	empresa.setNome("Ente");
+    	empresa.setNome("Fortes");
     	action.setEmpresaSistema(empresa);
     	
     	Date periodo = new Date();
