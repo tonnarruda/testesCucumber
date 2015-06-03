@@ -33,7 +33,16 @@
 			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #009900;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Abertas em andamento";
 			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #002EB8;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Abertas suspensas";
 			obj.innerHTML += "&nbsp;&nbsp;<span style='background-color: #555;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Encerradas";
+
+			toggleDataEncerramento($("#visualizacao").val());
 		});
+
+		function toggleDataEncerramento(visualizar){
+			if(visualizar == 'A' || visualizar == 'S')
+				$('td:nth-child(9),th:nth-child(9)').hide();
+			else			
+				$('td:nth-child(9),th:nth-child(9)').show();
+		}
 
 		function encerraSolicitacao(solicitacaoId, observacaoLiberador)
 		{
