@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="competencias_colaborador" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" isFloatColumnFooter="true" uuid="3154a2ca-d256-453e-b675-26d2bd440fb6">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="2.8531167061100042"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -17,45 +17,32 @@
 	<field name="configuracaoNivelCompetenciaColaborador.colaborador.nome" class="java.lang.String"/>
 	<field name="nivelCompetenciaColaborador.descricao" class="java.lang.String"/>
 	<field name="nivelCompetenciaColaborador.ordem" class="java.lang.Integer"/>
-	<variable name="count_colab_competencia" class="java.lang.Integer" resetType="Group" resetGroup="grp_competencia" calculation="Count">
-		<variableExpression><![CDATA[$F{configuracaoNivelCompetenciaColaborador.colaborador.nome}]]></variableExpression>
+	<field name="configuracaoNivelCompetenciaColaborador.avaliador.nome" class="java.lang.String"/>
+	<field name="configuracaoNivelCompetenciaColaborador.dataFormatada" class="java.lang.String"/>
+	<variable name="countCompetencia" class="java.lang.Integer" resetType="Group" resetGroup="grp_colaborador" calculation="Count">
+		<variableExpression><![CDATA[$F{competenciaDescricao}]]></variableExpression>
 	</variable>
-	<group name="grp_competencia">
-		<groupExpression><![CDATA[$F{competenciaDescricao}]]></groupExpression>
+	<group name="grp_colaborador">
+		<groupExpression><![CDATA[$F{configuracaoNivelCompetenciaColaborador.colaborador.nome}]]></groupExpression>
 		<groupHeader>
-			<band height="14" splitType="Stretch">
-				<textField isBlankWhenNull="true">
-					<reportElement uuid="1404194c-0407-480a-8535-a56d2352257d" key="textField" x="4" y="2" width="531" height="11"/>
+			<band height="13">
+				<textField pattern="" isBlankWhenNull="true">
+					<reportElement key="textField-7" x="1" y="0" width="532" height="13" uuid="001ada16-77c8-471b-8814-b56cbd0615ea"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
-					<textElement>
-						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<textElement verticalAlignment="Middle">
+						<font size="8"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{competenciaDescricao}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{configuracaoNivelCompetenciaColaborador.colaborador.nome}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="15" splitType="Stretch">
-				<printWhenExpression><![CDATA[new Boolean($V{count_colab_competencia}.intValue() > 0)]]></printWhenExpression>
-				<textField isBlankWhenNull="false">
-					<reportElement uuid="30588d6c-eb58-460f-96f9-e08d7d315750" key="textField" x="426" y="0" width="108" height="15"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="8" isBold="false" pdfFontName="Helvetica-Bold"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Total de colaboradores: " + $V{count_colab_competencia}.toString()]]></textFieldExpression>
-				</textField>
-			</band>
+			<band/>
 		</groupFooter>
 	</group>
 	<background>
@@ -67,7 +54,7 @@
 	<pageHeader>
 		<band height="60" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement uuid="332996d4-cdb6-4a73-835c-6dffd4b2614d" key="subreport-1" x="0" y="0" width="534" height="50"/>
+				<reportElement key="subreport-1" x="0" y="0" width="534" height="50" uuid="332996d4-cdb6-4a73-835c-6dffd4b2614d"/>
 				<subreportParameter name="CABECALHO">
 					<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -76,35 +63,22 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="32" splitType="Stretch">
+		<band height="49" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="20730c78-d1f1-4d18-b232-8a44d78c0e91" key="staticText-2" x="4" y="8" width="531" height="11"/>
+				<reportElement key="staticText-6" x="441" y="22" width="62" height="24" uuid="9da19bd8-5fbb-4362-a092-d6c16fb1a4aa"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
-					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Competência]]></text>
-			</staticText>
-			<staticText>
-				<reportElement uuid="9da19bd8-5fbb-4362-a092-d6c16fb1a4aa" key="staticText-6" x="379" y="21" width="109" height="11"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left">
+				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Nível Exigido pela Faixa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="01951ace-e252-4c64-9696-dddb48504a9e" key="staticText-7" x="9" y="21" width="264" height="11"/>
+				<reportElement key="staticText-7" x="1" y="11" width="532" height="11" uuid="01951ace-e252-4c64-9696-dddb48504a9e"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -117,7 +91,7 @@
 				<text><![CDATA[Colaborador]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="aa6c5893-5b67-40f1-826e-4caf4b4c9506" key="staticText-9" x="490" y="21" width="43" height="11"/>
+				<reportElement key="staticText-9" x="505" y="35" width="28" height="11" uuid="aa6c5893-5b67-40f1-826e-4caf4b4c9506"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -130,7 +104,7 @@
 				<text><![CDATA[GAP]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="9c0578cb-b60b-40f7-a90a-795ee5a8a931" key="staticText-10" x="277" y="21" width="98" height="11"/>
+				<reportElement key="staticText-10" x="208" y="35" width="166" height="11" uuid="9c0578cb-b60b-40f7-a90a-795ee5a8a931"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -140,36 +114,62 @@
 				<textElement>
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
+				<text><![CDATA[Avaliador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" x="377" y="22" width="61" height="24" uuid="daf7de5d-5a00-4972-a3d1-2fce14a2767a"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
 				<text><![CDATA[Nível do Colaborador]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" x="164" y="35" width="43" height="11" uuid="26089bad-5a4a-4485-8bb3-d8dadc203ab5"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Data]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-10" x="12" y="35" width="150" height="11" uuid="96aa64cc-cc70-4063-be53-2e8852b4d7dc"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Competência]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="12" splitType="Prevent">
-			<printWhenExpression><![CDATA[new Boolean($V{count_colab_competencia}.intValue() > 0)]]></printWhenExpression>
+			<printWhenExpression><![CDATA[new Boolean($V{countCompetencia}.intValue() > 0)]]></printWhenExpression>
 			<rectangle>
-				<reportElement uuid="2ba3d9da-6099-41b8-a80b-61a15b201f59" key="rectangle-1" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="9" y="1" width="525" height="11" backcolor="#EEEEEE">
-					<printWhenExpression><![CDATA[new Boolean(($V{count_colab_competencia}.intValue() % 2) == 1)]]></printWhenExpression>
+				<reportElement key="rectangle-1" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="9" y="1" width="525" height="11" backcolor="#EEEEEE" uuid="2ba3d9da-6099-41b8-a80b-61a15b201f59">
+					<printWhenExpression><![CDATA[new Boolean(($V{countCompetencia}.intValue() % 2) == 1)]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</graphicElement>
 			</rectangle>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement uuid="001ada16-77c8-471b-8814-b56cbd0615ea" key="textField-7" x="9" y="1" width="264" height="11"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{configuracaoNivelCompetenciaColaborador.colaborador.nome}]]></textFieldExpression>
-			</textField>
-			<textField pattern="" isBlankWhenNull="true">
-				<reportElement uuid="58d10ac9-4d23-494f-b16b-486a2ab2a5cf" key="textField-8" x="379" y="1" width="109" height="11"/>
+				<reportElement key="textField-8" x="441" y="1" width="62" height="11" uuid="58d10ac9-4d23-494f-b16b-486a2ab2a5cf"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -182,7 +182,7 @@
 				<textFieldExpression><![CDATA[$F{nivelCompetencia.descricao}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement uuid="ec3201a0-a61c-4fb2-b532-804b7b39fa68" key="textField-9" x="277" y="1" width="98" height="11"/>
+				<reportElement key="textField-9" x="377" y="1" width="61" height="11" uuid="ec3201a0-a61c-4fb2-b532-804b7b39fa68"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -195,7 +195,7 @@
 				<textFieldExpression><![CDATA[$F{nivelCompetenciaColaborador.descricao}]]></textFieldExpression>
 			</textField>
 			<textField pattern="" isBlankWhenNull="true">
-				<reportElement uuid="10cf09fe-a974-4208-a8d5-e6ff78c517d7" key="textField-10" x="490" y="1" width="43" height="11"/>
+				<reportElement key="textField-10" x="505" y="1" width="28" height="11" uuid="10cf09fe-a974-4208-a8d5-e6ff78c517d7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -207,6 +207,46 @@
 				</textElement>
 				<textFieldExpression><![CDATA[new Integer($F{nivelCompetenciaColaborador.ordem}.intValue() - $F{nivelCompetencia.ordem}.intValue())]]></textFieldExpression>
 			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField-9" x="208" y="1" width="166" height="11" uuid="d19a813f-83ed-47e2-ab39-76e5dcc45fda"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{configuracaoNivelCompetenciaColaborador.avaliador.nome} == null ? "Anônimo" : $F{configuracaoNivelCompetenciaColaborador.avaliador.nome}]]></textFieldExpression>
+			</textField>
+			<textField pattern="" isBlankWhenNull="true">
+				<reportElement key="textField-9" x="164" y="1" width="43" height="11" uuid="f0d097df-5fcd-4685-bd29-8061ac5ea2d5"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{configuracaoNivelCompetenciaColaborador.dataFormatada}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement key="textField" x="12" y="1" width="150" height="11" uuid="1404194c-0407-480a-8535-a56d2352257d"/>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="8" isBold="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{competenciaDescricao}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<columnFooter>
@@ -215,7 +255,7 @@
 	<pageFooter>
 		<band height="15" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="de33ee29-e6d7-40fc-80ef-32d574f0c854" key="textField-1" x="319" y="2" width="186" height="13"/>
+				<reportElement key="textField-1" x="319" y="2" width="186" height="13" uuid="de33ee29-e6d7-40fc-80ef-32d574f0c854"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -226,14 +266,13 @@
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement uuid="91ef4557-47e2-43f3-bb29-773ea7f87bcd" key="textField-2" x="507" y="2" width="26" height="13"/>
+				<reportElement key="textField-2" x="507" y="2" width="26" height="13" uuid="91ef4557-47e2-43f3-bb29-773ea7f87bcd"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
 				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
 		</band>

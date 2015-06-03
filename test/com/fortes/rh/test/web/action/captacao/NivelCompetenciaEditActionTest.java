@@ -9,6 +9,7 @@ import mockit.Mockit;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
@@ -336,7 +337,7 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		faixaSalarial.setCargo(cargo);
 		action.setFaixaSalarial(faixaSalarial);
 		
-		configuracaoNivelCompetenciaManager.expects(once()).method("findColaboradorAbaixoNivel").with(ANYTHING, eq(faixaSalarial.getId())).will(returnValue(Arrays.asList(new ConfiguracaoNivelCompetencia())));
+		configuracaoNivelCompetenciaManager.expects(once()).method("findColaboradorAbaixoNivel").with(ANYTHING, eq(faixaSalarial.getId()), ANYTHING).will(returnValue(Arrays.asList(new ConfiguracaoNivelCompetencia())));
 		faixaSalarialManager.expects(once()).method("findByFaixaSalarialId").with(ANYTHING).will(returnValue(faixaSalarial));
 		
 		assertEquals("success", action.imprimirRelatorioCompetenciasColaborador());
@@ -352,7 +353,7 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		
-		configuracaoNivelCompetenciaManager.expects(once()).method("findColaboradorAbaixoNivel").with(ANYTHING, eq(faixaSalarial.getId())).will(returnValue(new ArrayList<ConfiguracaoNivelCompetencia>()));
+		configuracaoNivelCompetenciaManager.expects(once()).method("findColaboradorAbaixoNivel").with(ANYTHING, eq(faixaSalarial.getId()), ANYTHING).will(returnValue(new ArrayList<ConfiguracaoNivelCompetencia>()));
 		faixaSalarialManager.expects(once()).method("findByFaixaSalarialId").with(ANYTHING).will(returnValue(faixaSalarial));
 		faixaSalarialManager.expects(once()).method("findAllSelectByCargo").with(ANYTHING).will(returnValue(new ArrayList<FaixaSalarial>()));
 		

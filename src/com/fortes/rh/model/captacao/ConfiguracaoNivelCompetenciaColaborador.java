@@ -18,6 +18,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -64,6 +65,11 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 	public Date getData() 
 	{
 		return data;
+	}
+	
+	public String getDataFormatada() 
+	{
+		return DateUtil.formataDiaMesAno(data);
 	}
 
 	public void setData(Date data) 

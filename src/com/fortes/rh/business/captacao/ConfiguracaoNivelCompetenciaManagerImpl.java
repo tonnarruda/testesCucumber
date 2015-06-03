@@ -147,13 +147,29 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return getDao().findCompetenciaByFaixaSalarial(faixaId, data);
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> findColaboradorAbaixoNivel(Long[] competenciasIds, Long faixaSalarialId) {
-		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaColaborador(null, null, competenciasIds, faixaSalarialId, false);
+	public Collection<ConfiguracaoNivelCompetencia> findColaboradorAbaixoNivel(Long[] competenciasIds, Long faixaSalarialId, Date data) 
+	{
 		Collection<ConfiguracaoNivelCompetencia> configuracaoAbaixos = new ArrayList<ConfiguracaoNivelCompetencia>();
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaColaborador(data, null, competenciasIds, faixaSalarialId, false);
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasFaixas = getDao().findCompetenciasFaixaSalarial(competenciasIds, faixaSalarialId);
+		
+		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNivelCompetencias) 
+		{
+			for (ConfiguracaoNivelCompetencia competenciaFaixa : configuracaoNivelCompetenciasFaixas)
+			{
+				if((competenciaFaixa.getConfiguracaoNivelCompetenciaFaixaSalarial().getData().equals(configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador().getData()) 
+						|| competenciaFaixa.getConfiguracaoNivelCompetenciaFaixaSalarial().getData().before(configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador().getData()))
+						&& competenciaFaixa.getCompetenciaId().equals(configuracaoNivelCompetencia.getCompetenciaId()))
+				{
+					configuracaoNivelCompetencia.setNivelCompetenciaDescricaoProjection(competenciaFaixa.getNivelCompetencia().getDescricao());
+					configuracaoNivelCompetencia.setNivelCompetenciaOrdemProjection(competenciaFaixa.getNivelCompetencia().getOrdem());
+				}
+			}
+			
+			if(configuracaoNivelCompetencia.getNivelCompetencia() == null  || configuracaoNivelCompetencia.getNivelCompetencia().getOrdem() == null )
+				continue;
 
-		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNivelCompetencias) {
-			if (configuracaoNivelCompetencia.getNivelCompetenciaColaborador().getOrdem() != null
-					&& configuracaoNivelCompetencia.getNivelCompetenciaColaborador().getOrdem() < configuracaoNivelCompetencia.getNivelCompetencia().getOrdem())
+			if (configuracaoNivelCompetencia.getNivelCompetenciaColaborador().getOrdem() != null && configuracaoNivelCompetencia.getNivelCompetenciaColaborador().getOrdem() < configuracaoNivelCompetencia.getNivelCompetencia().getOrdem())
 				configuracaoAbaixos.add(configuracaoNivelCompetencia);
 		}
 

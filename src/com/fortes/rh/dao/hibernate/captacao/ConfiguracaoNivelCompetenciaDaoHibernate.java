@@ -171,8 +171,11 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("left join AvaliacaoDesempenho ad on ad.id = cq.avaliacaoDesempenho_id ");
 		sql.append("where cncc.faixaSalarial_id = :faixaSalarialColaboradorId ");
 	
-		if(dataIni != null &&  dataFim != null)
-			sql.append("and cncc.data >= :dataIni and cncc.data <= :dataFim ");
+		if(dataIni != null)
+			sql.append("and cncc.data >= :dataIni ");
+		
+		if(dataFim != null)
+			sql.append("and cncc.data <= :dataFim ");
 		
 		if (competenciaIds != null)
 			sql.append("and cnc.competencia_id in (:competenciasIds) ");
@@ -180,21 +183,22 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		if(ordenarPorNivel)
 			sql.append("order by c.nome, c.id, cncc.data, cncc.id, competencia ");
 		else
-			sql.append("order by competencia, c.nome ");
+			sql.append("order by c.nome, c.id, competencia, cncc.data, cncc.id ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setCharacter("tipoAtitude", TipoCompetencia.ATITUDE);
 		query.setCharacter("tipoConhecimento", TipoCompetencia.CONHECIMENTO);
 		query.setCharacter("tipoHabilidade", TipoCompetencia.HABILIDADE);
 		query.setLong("faixaSalarialColaboradorId", faixaSalarialColaboradorId);
+		
 		if (competenciaIds != null)
 			query.setParameterList("competenciasIds", competenciaIds, Hibernate.LONG);
 		
-		if(dataIni != null &&  dataFim != null)
-		{
+		if(dataIni != null)
 			query.setDate("dataIni", dataIni);
+
+		if(dataFim != null)
 			query.setDate("dataFim", dataFim);
-		}
 		
 		Collection<Object[]> resultado = query.list();
 		
@@ -510,17 +514,22 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("left join Conhecimento conhe on conhe.id = cnc.competencia_id and 'C' = cnc.tipocompetencia ");
 		sql.append("left join Habilidade h on h.id = cnc.competencia_id and 'H' = cnc.tipocompetencia ");
 		sql.append("where cncc.faixaSalarial_id = :faixaSalarialId  ");
-		sql.append("and cncc.data >= :dataIni and cncc.data <= :dataFim ");
+		sql.append("and cncc.data >= :dataIni ");
+		
+		if(dataFim != null)
+			sql.append("and cncc.data <= :dataFim ");
+		
 		sql.append("order by competenciaDescricao ");
 
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("faixaSalarialId", faixaId);
 		query.setDate("dataIni", dataIni);
-		query.setDate("dataFim", dataFim);
+		
+		if(dataFim != null)
+			query.setDate("dataFim", dataFim);
 		
 		@SuppressWarnings("unchecked")
 		Collection<Object[]> resultado = query.list();
-		
 		Collection<Competencia> lista = new ArrayList<Competencia>();
 		
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)

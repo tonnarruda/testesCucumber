@@ -208,17 +208,17 @@
 			
 			function montaAlerta()
 			{
-					var content = '<tbody>';
-					content +=  '<tr><td colspan="7">';
-					content +=  ' <div class="info"> ';
-					content +=	' <ul>';
-					content +=	' 	<li>Não existem competências configuradas para ${faixaSalarial.descricao} na data informada.</li>';
-					content +=	' </ul>';
-					content +=	'</div>';
-					content +=  '</tr></td>';
-					content += '</tbody>';
-					
-					$('#configuracaoNivelCompetencia').append(content);			
+				var content = '<tbody>';
+				content +=  '<tr><td colspan="7">';
+				content +=  ' <div class="info"> ';
+				content +=	' <ul>';
+				content +=	' 	<li>Não existem competências configuradas para ${faixaSalarial.descricao} na data informada.</li>';
+				content +=	' </ul>';
+				content +=	'</div>';
+				content +=  '</tr></td>';
+				content += '</tbody>';
+				
+				$('#configuracaoNivelCompetencia').append(content);			
 			}
 			
 			var configChecked;
