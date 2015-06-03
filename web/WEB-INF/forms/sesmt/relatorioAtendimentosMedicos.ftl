@@ -43,9 +43,9 @@
 		
 		<@ww.checkbox label="Agrupar por motivo" id="agruparPorMotivo" name="agruparPorMotivo" labelPosition="left"/>
 		
-		<@ww.select label="Ordenar por" name="ordenarPorNome" id="ordenarPorNome" list=r"#{false:'Ordem de Atendimento',true:'Nome'}"/>
+		<@ww.select label="Ordenar por" name="ordenarPorNome" id="ordenarPorNome" list=r"#{false:'Ordem de Atendimento',true:'Nome'}" cssStyle="width: 235px;"/>
 		
-		<@ww.select label="Situação" name="situacao" id="situacao" list=r"#{'T':'Todos','A':'Atendimentos médicos','S':'Solicitações de atendimento'}"/>
+		<@ww.select label="Situação" name="situacao" id="situacao" list=r"#{'T':'Todos','A':'Atendimentos médicos realizados','S':'Solicitações de atendimento'}" cssStyle="width: 235px;"/>
 		
 		<div class="buttonGroup">
 			<input type="button" value="" onclick="validaFormularioEPeriodo('form',new Array('dataIni','dataFim'),new Array('dataIni','dataFim'));" class="btnRelatorio" />
