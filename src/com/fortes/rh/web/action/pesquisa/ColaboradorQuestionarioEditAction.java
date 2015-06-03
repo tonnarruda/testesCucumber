@@ -395,7 +395,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		QuestionarioAvaliacaoVO questionarioAvaliacaoVO = new QuestionarioAvaliacaoVO();
 		questionarioAvaliacaoVO.setQuestionarioRelatorio(avaliacaoManager.getQuestionarioRelatorio(avaliacao, ordenarPorAspecto));
-		questionarioAvaliacaoVO.setMatrizes(configuracaoNivelCompetenciaManager.montaConfiguracaoNivelCompetenciaByFaixa(colaborador.getEmpresa().getId(), colaborador.getHistoricoColaborador().getFaixaSalarial().getId()));
+		questionarioAvaliacaoVO.setMatrizes(configuracaoNivelCompetenciaManager.montaConfiguracaoNivelCompetenciaByFaixa(colaborador.getEmpresa().getId(), colaborador.getHistoricoColaborador().getFaixaSalarial().getId(), colaboradorQuestionario.getAvaliacaoDesempenho() == null ? new Date(): colaboradorQuestionario.getAvaliacaoDesempenho().getInicio()));
 		
 		questionarioAvaliacaoVOs = new ArrayList<QuestionarioAvaliacaoVO>();
 		questionarioAvaliacaoVOs.add(questionarioAvaliacaoVO);

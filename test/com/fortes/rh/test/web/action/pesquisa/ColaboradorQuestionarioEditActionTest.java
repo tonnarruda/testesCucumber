@@ -552,7 +552,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizCompetenciaNivelConfiguracoes = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
 		
-		configuracaoNivelCompetenciaManager.expects(once()).method("montaConfiguracaoNivelCompetenciaByFaixa").with(eq(colaborador.getEmpresa().getId()),eq(colaborador.getHistoricoColaborador().getFaixaSalarial().getId())).will(returnValue(matrizCompetenciaNivelConfiguracoes));
+		configuracaoNivelCompetenciaManager.expects(once()).method("montaConfiguracaoNivelCompetenciaByFaixa").with(eq(colaborador.getEmpresa().getId()),eq(colaborador.getHistoricoColaborador().getFaixaSalarial().getId()), ANYTHING).will(returnValue(matrizCompetenciaNivelConfiguracoes));
 		
 		assertEquals("success", action.imprimirQuestionario());
 		assertNotNull(action.getParametros());

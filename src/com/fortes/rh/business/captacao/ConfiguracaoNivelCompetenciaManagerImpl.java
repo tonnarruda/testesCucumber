@@ -309,9 +309,9 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return vos;
 	}
 	
-	public Collection<MatrizCompetenciaNivelConfiguracao> montaConfiguracaoNivelCompetenciaByFaixa(Long empresaId, Long faixaSalarialId) 
+	public Collection<MatrizCompetenciaNivelConfiguracao> montaConfiguracaoNivelCompetenciaByFaixa(Long empresaId, Long faixaSalarialId, Date data) 
 	{
-		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId, null);
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId, data);
 		Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId);
 
 		Map<String, String> competenciaNiveis = new HashMap<String, String>();
@@ -328,9 +328,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaNivel.getKey(), nivel.getOrdem() + " - " + nivel.getDescricao(), isConfiguracaoFaixa, false));
 
 				if(isConfiguracaoFaixa)
-				{
 					competenciaNiveisConfigurados.put(competenciaNivel.getKey(), competenciaNivel.getValue());
-				}
 			}
 		}
 
