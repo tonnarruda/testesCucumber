@@ -3,7 +3,6 @@ package com.fortes.rh.test.business.sesmt;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -27,7 +26,6 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.Epi;
-import com.fortes.rh.model.sesmt.EpiHistorico;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.HistoricoFuncao;
