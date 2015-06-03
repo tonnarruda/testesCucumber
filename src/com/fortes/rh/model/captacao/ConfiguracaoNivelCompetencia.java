@@ -129,13 +129,11 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	}
 	
 	//findCompetenciaColaborador
-	public ConfiguracaoNivelCompetencia(String faixaCompetencia, String faixaNivel, Integer faixaOrdem, String colaboradorNome, BigInteger colaboradorId, 
+	public ConfiguracaoNivelCompetencia(BigInteger competenciaId, String faixaCompetencia, String colaboradorNome, BigInteger colaboradorId, 
 			String colaboradorNivel, Integer colaboradorOrden, BigInteger configNCColaboradorId, Date configCNData, String avaliadorNome, Boolean avaliacaoAnonima)
 	{
-		competenciaDescricao = faixaCompetencia;
-		nivelCompetencia = new NivelCompetencia();
-		nivelCompetencia.setDescricao(faixaNivel);
-		nivelCompetencia.setOrdem(faixaOrdem);
+		this.competenciaId = competenciaId.longValue();
+		this.competenciaDescricao = faixaCompetencia;
 		
 		configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
 		Colaborador colaborador = new Colaborador();
@@ -226,10 +224,26 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	
 	public void setNivelCompetenciaIdProjection(Long nivelCompetenciaId) 
 	{
+		inicializaNivelCompetencia();
+		this.nivelCompetencia.setId(nivelCompetenciaId);
+	}
+	
+	public void setNivelCompetenciaDescricaoProjection(String nivelCompetenciaDescricao) 
+	{
+		inicializaNivelCompetencia();
+		this.nivelCompetencia.setDescricao(nivelCompetenciaDescricao);
+	}
+	
+	public void setNivelCompetenciaOrdemProjection(Integer nivelCompetenciaOrdem) 
+	{
+		inicializaNivelCompetencia();
+		this.nivelCompetencia.setOrdem(nivelCompetenciaOrdem);
+	}
+
+	private void inicializaNivelCompetencia() 
+	{
 		if (this.nivelCompetencia == null)
 			this.nivelCompetencia = new NivelCompetencia();
-		
-		this.nivelCompetencia.setId(nivelCompetenciaId);
 	}
 	
 	public void setProjectionConfiguracaoNivelCompetenciaColaboradorId(Long configuracaoNivelCompetenciaColaboradorId) 
@@ -250,16 +264,14 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	
 	public void setProjectionNivelCompetenciaDescricao(String descricao) 
 	{
-		if (this.nivelCompetencia == null)
-			this.nivelCompetencia = new NivelCompetencia();
+		inicializaNivelCompetencia();
 		
 		this.nivelCompetencia.setDescricao(descricao);
 	}
 	
 	public void setProjectionNivelCompetenciaOrdem(Integer ordem) 
 	{
-		if (this.nivelCompetencia == null)
-			this.nivelCompetencia = new NivelCompetencia();
+		inicializaNivelCompetencia();
 		
 		this.nivelCompetencia.setOrdem(ordem);
 	}
@@ -388,5 +400,13 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	public void setConfiguracaoNivelCompetenciaFaixaSalarial(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial)
 	{
 		this.configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarial;
+	}
+	
+	public void setConfiguracaoNivelCompetenciaFaixaSalarialData(Date ConfiguracaoNivelCompetenciaFaixaSalarialData)
+	{
+		if(this.configuracaoNivelCompetenciaFaixaSalarial == null)
+			this.configuracaoNivelCompetenciaFaixaSalarial = new ConfiguracaoNivelCompetenciaFaixaSalarial();
+		
+		this.configuracaoNivelCompetenciaFaixaSalarial.setData(ConfiguracaoNivelCompetenciaFaixaSalarialData);
 	}
 }

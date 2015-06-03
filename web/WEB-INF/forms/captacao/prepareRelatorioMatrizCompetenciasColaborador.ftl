@@ -11,10 +11,10 @@
 	<#include "../ftl/mascarasImports.ftl" />
 	
 	<script type='text/javascript'>
-		function populaCompetencia(faixaId)
+		function populaCompetencia()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			CompetenciaDWR.getByFaixa(createListCompetencia, faixaId);
+			CompetenciaDWR.getCompetenciasColaboradorByFaixaSalarialAndPeriodo(createListCompetencia, $('#faixa').val(), $('#dataIni').val(), $('#dataFim').val());
 		}
 
 		function createListCompetencia(data)
@@ -40,12 +40,12 @@
 	<@ww.actionmessage />
 	<@ww.actionerror />
 	<@ww.form name="form" action="imprimirMatrizCompetenciasColaborador.action" onsubmit="${validarCampos}"  method="POST">
-		<div>Período*:</div>
-		<@ww.datepicker name="dataIni" id="dataIni" liClass="liLeft" value="${valueDataIni}"  cssClass="mascaraData validaDataIni"/>
+		<div>Período da competência do colaborador*:</div>
+		<@ww.datepicker name="dataIni" id="dataIni" liClass="liLeft" value="${valueDataIni}"  cssClass="mascaraData validaDataIni" onchange="populaCompetencia();"/>
 		<@ww.label value="a" liClass="liLeft"/>
-		<@ww.datepicker name="dataFim" id="dataFim" value="${valueDataFim}" cssClass="mascaraData validaDataFim"/>
+		<@ww.datepicker name="dataFim" id="dataFim" value="${valueDataFim}" cssClass="mascaraData validaDataFim" onchange="populaCompetencia();"/>
 		
-		<@ww.select label="Cargo/Faixa Salarial" name="faixaSalarial.id" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." cssStyle="width: 502px;" onchange="populaCompetencia(this.value);" />
+		<@ww.select label="Cargo/Faixa Salarial" name="faixaSalarial.id" id="faixa" list="faixaSalarials" listKey="id" listValue="descricao" required="true" headerKey="" headerValue="Selecione..." cssStyle="width: 502px;" onchange="populaCompetencia();" />
 		<@frt.checkListBox  label="Competências da Faixa Salarial *" name="competenciasCheck" id="competenciasCheck" list="competenciasCheckList" height="250" filtro="true"/>
 	</@ww.form>
 	

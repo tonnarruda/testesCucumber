@@ -25,6 +25,7 @@ import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
@@ -45,6 +46,7 @@ import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
@@ -609,7 +611,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2015);
 		
 		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId(), null); // Arranjo para teste de consulta SQL
-		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findCompetenciaColaborador(dataIni, dataFim, new Long[] { configuracaoNivelCompetencia1.getId(), configuracaoNivelCompetencia2.getId() }, faixaSalarial.getId(), true);
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findCompetenciaColaborador(dataIni, dataFim, new Long[] { atitude.getId(), conhecimento.getId() }, faixaSalarial.getId(), true);
 		assertEquals(2, configs.size());
 		assertEquals("atividade", ((ConfiguracaoNivelCompetencia)configs.toArray()[0]).getCompetenciaDescricao());
 		assertEquals("esporte", ((ConfiguracaoNivelCompetencia)configs.toArray()[1]).getCompetenciaDescricao());
@@ -1103,6 +1105,154 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		nivelCompetenciaDao.save(nivelCompetencia4);
 		
 		assertEquals((int) 4, nivelCompetenciaDao.getOrdemMaxima(empresa.getId()));
+	}
+	
+	public void testFindCompetenciasByFaixa()
+	{
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimento.setNome("conhecimento");
+		conhecimentoDao.save(conhecimento);
+		
+		NivelCompetencia nivelRegular = NivelCompetenciaFactory.getEntity();
+		nivelRegular.setDescricao("regular");
+		nivelRegular.setOrdem(2);
+		nivelCompetenciaDao.save(nivelRegular);
+		
+		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity();
+		nivelBom.setDescricao("bom");
+		nivelBom.setOrdem(3);
+		nivelCompetenciaDao.save(nivelBom);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
+		configuracaoNivelCompetenciaFaixaSalarial.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
+		
+		ConfiguracaoNivelCompetencia configFaixa1 = new ConfiguracaoNivelCompetencia();
+		configFaixa1.setConfiguracaoNivelCompetenciaColaborador(null);
+		configFaixa1.setCandidato(null);
+		configFaixa1.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
+		configFaixa1.setNivelCompetencia(nivelBom);
+		configFaixa1.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configFaixa1.setCompetenciaId(conhecimento.getId());
+		configuracaoNivelCompetenciaDao.save(configFaixa1);
+		
+		ConfiguracaoNivelCompetencia configFaixa2 = new ConfiguracaoNivelCompetencia();
+		configFaixa2.setConfiguracaoNivelCompetenciaColaborador(null);
+		configFaixa2.setCandidato(null);
+		configFaixa2.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
+		configFaixa2.setNivelCompetencia(nivelRegular);
+		configFaixa2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configFaixa2.setCompetenciaId(conhecimento.getId());
+		configuracaoNivelCompetenciaDao.save(configFaixa2);
+		
+		//Migué
+		configuracaoNivelCompetenciaDao.findAll();
+		
+		Collection<ConfiguracaoNivelCompetencia> retorno = configuracaoNivelCompetenciaDao.findCompetenciasFaixaSalarial(null, faixaSalarial.getId());
+		
+		assertEquals(2, retorno.size());
+		assertEquals("bom", ((ConfiguracaoNivelCompetencia) retorno.toArray()[0]).getNivelCompetencia().getDescricao());
+	}
+	
+	public void testFindCompetenciasFaixaPorColaborador(){
+		
+		Colaborador samuel = ColaboradorFactory.getEntity();
+		colaboradorDao.save(samuel);
+		
+		Conhecimento conhecimento = criaConhecimento();
+		Atitude atitude = criaAtitude();
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+
+		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial2);
+		
+		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia1.setDescricao("bom");
+		nivelCompetencia1.setOrdem(7);
+		nivelCompetenciaDao.save(nivelCompetencia1);
+		
+		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia2.setDescricao("dificil");
+		nivelCompetencia2.setOrdem(5);
+		nivelCompetenciaDao.save(nivelCompetencia2);
+		
+		NivelCompetencia nivelCompetencia3 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia3.setDescricao("impossivel");
+		nivelCompetencia3.setOrdem(1);
+		nivelCompetenciaDao.save(nivelCompetencia3);
+		
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador1 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
+		configuracaoNivelCompetenciaColaborador1.setColaborador(samuel);
+		configuracaoNivelCompetenciaColaborador1.setData(DateUtil.criarDataMesAno(1, 1, 2015));
+		configuracaoNivelCompetenciaColaborador1.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador1);
+		
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador2 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
+		configuracaoNivelCompetenciaColaborador2.setColaborador(samuel);
+		configuracaoNivelCompetenciaColaborador2.setData(DateUtil.criarDataMesAno(1, 3, 2015));
+		configuracaoNivelCompetenciaColaborador2.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador2);
+		
+		//fora devido a faixa
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador3 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
+		configuracaoNivelCompetenciaColaborador3.setColaborador(samuel);
+		configuracaoNivelCompetenciaColaborador3.setData(DateUtil.criarDataMesAno(1, 4, 2015));
+		configuracaoNivelCompetenciaColaborador3.setFaixaSalarial(faixaSalarial2);
+		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador3);
+		
+		//fora devido ao periodo
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador4 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
+		configuracaoNivelCompetenciaColaborador4.setColaborador(samuel);
+		configuracaoNivelCompetenciaColaborador4.setData(DateUtil.criarDataMesAno(1, 5, 2015));
+		configuracaoNivelCompetenciaColaborador4.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetenciaColaboradorDao.save(configuracaoNivelCompetenciaColaborador4);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia1.setNivelCompetencia(nivelCompetencia1);
+		configuracaoNivelCompetencia1.setCompetenciaId(atitude.getId());
+		configuracaoNivelCompetencia1.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetencia1.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador1);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia1);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia2.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetencia2.setNivelCompetencia(nivelCompetencia2);
+		configuracaoNivelCompetencia2.setCompetenciaId(conhecimento.getId());
+		configuracaoNivelCompetencia2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configuracaoNivelCompetencia2.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador1);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia2);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia3 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia3.setNivelCompetencia(nivelCompetencia3);
+		configuracaoNivelCompetencia3.setCompetenciaId(conhecimento.getId());
+		configuracaoNivelCompetencia3.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configuracaoNivelCompetencia3.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador2);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia3);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia4 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia4.setNivelCompetencia(nivelCompetencia1);
+		configuracaoNivelCompetencia4.setCompetenciaId(atitude.getId());
+		configuracaoNivelCompetencia4.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetencia4.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador3);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia4);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia5 = new ConfiguracaoNivelCompetencia();
+		configuracaoNivelCompetencia5.setNivelCompetencia(nivelCompetencia2);
+		configuracaoNivelCompetencia5.setCompetenciaId(conhecimento.getId());
+		configuracaoNivelCompetencia5.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configuracaoNivelCompetencia5.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador4);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia5);
+		
+		Collection<Competencia> competencias = configuracaoNivelCompetenciaDao.findCompetenciasColaboradorByFaixaSalarialAndPeriodo(faixaSalarial.getId(),DateUtil.criarDataMesAno(1, 1, 2015),DateUtil.criarDataMesAno(1, 3, 2015));
+		
+		assertEquals(2, competencias.size());
+		assertEquals(atitude.getNome(), ((Competencia)competencias.toArray()[0]).getNome());
+		assertEquals(conhecimento.getNome(), ((Competencia)competencias.toArray()[1]).getNome());
 	}
 	
 	@Override
