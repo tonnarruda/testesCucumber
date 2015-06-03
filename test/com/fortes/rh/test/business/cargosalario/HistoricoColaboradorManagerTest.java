@@ -1159,9 +1159,11 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(1L);
 		faixaSalarialHistorico.setObsReajuste("obsReajuste");
 		faixaSalarialHistorico.setIndice(indice);
+		faixaSalarialHistorico.setStatus(1);
 		faixaSalarialHistorico.setData(DateUtil.criarDataMesAno(01, 01, 2006));
 
 		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity(1L);
+		faixaSalarialHistorico2.setStatus(1);
 		faixaSalarialHistorico2.setData(DateUtil.criarDataMesAno(01, 01, 2006));
 
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
