@@ -7,6 +7,7 @@
 		<Item visivel="S" motivo="S20150500138"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Possibilidade de imprimir a avaliação por ordem de aspectos ou por ordem de perguntas.]]></Item>
 		<Item visivel="S" motivo="S20150400047"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Guardar as opções do filtro ao realizar pesquisa.]]></Item>
 		<Item visivel="S" motivo="P20150500090"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Ajuste de inconsitência no relatório quando a empresa controla o risco pela função.]]></Item>
+		<Item visivel="S" motivo="S20150500190"><![CDATA[SESMT > Relatórios > Atendimentos médicos: Novo filtro por situação, o qual possibilita a impressão somente dos atendimentos médicos ou das solicitações de atendimentos ou ambas as situações.]]></Item>
 	</Versao>
 	<Versao id="1.1.144.174" bd="" data="19/05/2015">
 		<Item visivel="S" motivo="P20150400222"><![CDATA[R&S > Cadastros > Candidatos > Editar > Experiências: Ajuste na inconsistência da duplicação de experiências ao contratar o candidato.]]></Item>

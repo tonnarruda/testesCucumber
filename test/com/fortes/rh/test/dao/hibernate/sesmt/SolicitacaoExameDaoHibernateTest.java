@@ -357,7 +357,6 @@ public class SolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTest<So
 		String[] motivos = new String[]{MotivoSolicitacaoExame.PERIODICO};
 		
 		assertEquals(2,solicitacaoExameDao.findAtendimentosMedicos(inicio, fim, motivos, medicoCoordenador, empresa.getId(), false, false, 'T').size());
-//		assertEquals(2,solicitacaoExameDao.findAtendimentosMedicos(inicio, fim, motivo, medicoCoordenador, empresa.getId(), true).size());
 	}
 
 	public void testRemoveByCandidato() {
