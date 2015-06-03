@@ -81,7 +81,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public Double getValorTotalFolha(Long empresaId, Date data);
 	public void deleteSituacaoByMovimentoSalarial(Long movimentoSalarialId, Empresa empresa);
 	public Collection<HistoricoColaborador> findImprimirListaFrequencia(Estabelecimento estabelecimento, Date votacaoIni, Date votacaoFim);
-	public void setMotivo(Long[] historicoColaboradorIds, String tipoMotivo);
+	public void setMotivo(Long[] historicoColaboradorIds, String tipoMotivo, boolean empresaIntegradaComPortal);
 	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataIni, Date dataFim, Double percentualDissidio, Long empresaId, String[] cargosIds, String[] areasIds, String[] estabelecimentosIds);
 	public void ajustaMotivoContratado(Long colaboradorId);
 	public List<RelatorioPromocoes> getPromocoes(Long[] arrayStringToArrayLong, Long[] arrayStringToArrayLong2, Date dataIni, Date dataFim, Long... empresasIds);

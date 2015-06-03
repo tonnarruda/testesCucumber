@@ -969,6 +969,9 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	areaOrganizacinoalManager.expects(once()).method("desvinculaResponsaveis").with(eq(new Long[]{colaborador.getId()}));
     	mensagemManager.expects(once()).method("removerMensagensViculadasByColaborador").withAnyArguments().isVoid();
     	colaboradorDao.expects(once()).method("desligaColaborador").withAnyArguments().isVoid();
+    	colaboradorDao.expects(once()).method("findById").with(ANYTHING).will(returnValue(colaborador));
+    	movimentacaoOperacaoPCManager.expects(once()).method("enfileirar").with(ANYTHING, ANYTHING, ANYTHING);
+    	
     	transactionManager.expects(atLeastOnce()).method("commit").with(ANYTHING);
     	
     	colaboradorManager.desligaColaborador(true, new Date(), "observacao", 1L, 'I', false, false, colaborador.getId());
@@ -1390,12 +1393,11 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	tSituacao1.setEmpregadoCodigoAC("tEmp1");
 		TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
     	
+		empresaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(empresa));
     	cidadeManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(cidade));
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
     	colaboradorDao.expects(once()).method("save").with(ANYTHING).isVoid();
-//    	historicoColaboradorManager.expects(once()).method("bindSituacao").with(eq(tSituacoes[0]), ANYTHING);
-//    	historicoColaboradorManager.expects(once()).method("save").with( ANYTHING);
     	
     	Exception e = null;
     	try {
@@ -1430,13 +1432,15 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	tSituacao1.setEmpregadoCodigoACDestino("codigoACDestino");
     	TSituacao[] tSituacoes = new TSituacao[]{tSituacao1};
     	
+    	empresaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(empresa));
     	cidadeManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(cidade));
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
     	colaboradorDao.expects(once()).method("save").with(ANYTHING).isVoid();
     	historicoColaboradorManager.expects(once()).method("bindSituacao").with(eq(tSituacoes[0]), ANYTHING);
     	historicoColaboradorManager.expects(once()).method("save").with( ANYTHING);
-    	
+    	movimentacaoOperacaoPCManager.expects(once()).method("enfileirar").with(ANYTHING, ANYTHING, ANYTHING);
+        
     	Exception e = null;
     	try {
     		colaboradorManager.saveEmpregadosESituacoes(new TEmpregado[]{tEmpregado}, tSituacoes, empresa);

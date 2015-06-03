@@ -526,9 +526,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	{
 		if(aplicaDissidio)
 		{
-			historicoColaboradorManager.setMotivo(historicoColaboradorIds, "D");
-			historicoColaboradorManager.setMotivo(retiraDissidioIds, "P");
-			sugerir = false;			
+			historicoColaboradorManager.setMotivo(historicoColaboradorIds, "D", getEmpresaSistema().isIntegradaPortalColaborador());
+			historicoColaboradorManager.setMotivo(retiraDissidioIds, "P", getEmpresaSistema().isIntegradaPortalColaborador());
+			sugerir = false;	
 		}
 
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());

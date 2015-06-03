@@ -1374,8 +1374,16 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return getDao().findImprimirListaFrequencia(estabelecimento, votacaoIni, votacaoFim);
 	}
 
-	public void setMotivo(Long[] historicoColaboradorIds, String tipo) {
+	public void setMotivo(Long[] historicoColaboradorIds, String tipo, boolean empresaIntegradaComPortal) {
+		
 		getDao().setMotivo(historicoColaboradorIds, tipo);
+		
+		if(empresaIntegradaComPortal && historicoColaboradorIds != null && historicoColaboradorIds.length > 0){
+			Collection<HistoricoColaborador> historicoColaboradoresDissidio = this.findById(historicoColaboradorIds);
+			for (HistoricoColaborador historicoColaborador : historicoColaboradoresDissidio) {
+				movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoColaborador.class, new ColaboradorPC(historicoColaborador.getColaborador()).getIdentificadorToJson(), empresaIntegradaComPortal);
+			}
+		}
 	}
 
 	public Collection<HistoricoColaborador> findSemDissidioByDataPercentual(Date dataIni, Date dataFim, Double percentualDissidio, Long empresaId, String[] cargosIds, String[] areasIds, String[] estabelecimentosIds)
