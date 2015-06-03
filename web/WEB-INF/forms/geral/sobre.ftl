@@ -2,7 +2,7 @@
 <head>
 	<@ww.head/>
 
-	<title>Sobre o RH</title>
+	<title>Sobre o Fortes RH</title>
 
 	<style>
 		ul.sobre { margin-bottom: 25px; }
