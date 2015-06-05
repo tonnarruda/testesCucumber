@@ -98,6 +98,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		} 
 		else
 			configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.save(configuracaoNivelCompetenciaFaixaSalarial);
+		
 
 		if(niveisCompetenciaFaixaSalariais != null)
 		{
@@ -109,6 +110,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 					getDao().save(configuracaoNivelCompetencia);
 				}
 			}
+			getDao().atualizarConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 		}
 	}
 

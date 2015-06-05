@@ -19,6 +19,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
@@ -556,5 +557,23 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		}
 
 		return lista;				
+	}
+
+	public void atualizarConfiguracaoNivelCompetenciaColaborador(Long faixaSalarialId, Date data) {
+		String[] sql = new String[] {"DELETE FROM configuracaonivelcompetencia cncc "
+									+ "			WHERE cncc.configuracaonivelcompetenciacolaborador_id in ( "
+									+ " 				   SELECT id FROM configuracaonivelcompetenciacolaborador "
+									+ "		    			WHERE faixasalarial_id = :faixaSalarialId and data >= :data"
+									+ "							and (data <= (coalesce ((SELECT min(data) FROM configuracaonivelcompetenciafaixasalarial WHERE faixasalarial_id = :faixaSalarialId and data > ':data'), '01-01-2300'))) "
+									+ "					) "
+									+ "					and competencia_id || tipocompetencia not in (SELECT distinct competencia_id || tipocompetencia FROM configuracaonivelcompetencia WHERE configuracaonivelcompetenciafaixasalarial_id in ( "
+									+ "													SELECT id FROM configuracaonivelcompetenciafaixasalarial WHERE faixasalarial_id = :faixaSalarialId and data = ':data')"
+									+ "		 									   ) " };
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("faixaSalarialId", faixaSalarialId);
+		query.setDate("data", data);
+		
+		JDBCConnection.executeQuery(sql);
 	}
 }
