@@ -147,7 +147,12 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	public String prepareCompetenciasByFaixaSalarial()
 	{
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());
-		niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), null);
+		
+		if(configuracaoNivelCompetenciaFaixaSalarial == null || configuracaoNivelCompetenciaFaixaSalarial.getId() == null)
+			niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), null);
+		else 
+			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getId());
+		
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		
 		if (niveisCompetenciaFaixaSalariais == null) {
