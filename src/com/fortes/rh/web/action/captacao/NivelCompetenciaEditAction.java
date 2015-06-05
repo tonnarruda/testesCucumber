@@ -150,14 +150,34 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		
 		if(configuracaoNivelCompetenciaFaixaSalarial == null || configuracaoNivelCompetenciaFaixaSalarial.getId() == null)
 			niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), null);
-		else 
+		else {
 			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getId());
+			
+			if(configuracaoNivelCompetenciaFaixaSalarial != null && configuracaoNivelCompetenciaFaixaSalarial.getId() != null){
+				niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
+				niveisCompetenciaFaixaSalariaisSalvosConhecimento = new ArrayList<ConfiguracaoNivelCompetencia>();
+				niveisCompetenciaFaixaSalariaisSalvosHabilidade = new ArrayList<ConfiguracaoNivelCompetencia>();
+				niveisCompetenciaFaixaSalariaisSalvosAtitude = new ArrayList<ConfiguracaoNivelCompetencia>();
+
+				for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariaisSalvos) {
+					if (TipoCompetencia.CONHECIMENTO.equals(configuracaoNivelCompetencia.getTipoCompetencia()))
+						niveisCompetenciaFaixaSalariaisSalvosConhecimento.add(configuracaoNivelCompetencia);
+
+					if (TipoCompetencia.HABILIDADE.equals(configuracaoNivelCompetencia.getTipoCompetencia()))
+						niveisCompetenciaFaixaSalariaisSalvosHabilidade.add(configuracaoNivelCompetencia);
+
+					if (TipoCompetencia.ATITUDE.equals(configuracaoNivelCompetencia.getTipoCompetencia()))
+						niveisCompetenciaFaixaSalariaisSalvosAtitude.add(configuracaoNivelCompetencia);
+				}
+			}
+
+			
+		}
 		
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		
-		if (niveisCompetenciaFaixaSalariais == null) {
+		if (niveisCompetenciaFaixaSalariais == null)
 			niveisCompetenciaFaixaSalariais = new ArrayList<ConfiguracaoNivelCompetencia>();
-		}
 		
 		niveisCompetenciaFaixaSalariaisConhecimento = new ArrayList<ConfiguracaoNivelCompetencia>();
 		niveisCompetenciaFaixaSalariaisHabilidade = new ArrayList<ConfiguracaoNivelCompetencia>();
@@ -175,24 +195,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			}
 		}
 		
-		if(configuracaoNivelCompetenciaFaixaSalarial != null && configuracaoNivelCompetenciaFaixaSalarial.getId() != null){
-			niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
-			niveisCompetenciaFaixaSalariaisSalvosConhecimento = new ArrayList<ConfiguracaoNivelCompetencia>();
-			niveisCompetenciaFaixaSalariaisSalvosHabilidade = new ArrayList<ConfiguracaoNivelCompetencia>();
-			niveisCompetenciaFaixaSalariaisSalvosAtitude = new ArrayList<ConfiguracaoNivelCompetencia>();
-
-			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariaisSalvos) {
-				if (TipoCompetencia.CONHECIMENTO.equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
-					niveisCompetenciaFaixaSalariaisSalvosConhecimento.add(configuracaoNivelCompetencia);
-				}
-				if (TipoCompetencia.HABILIDADE.equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
-					niveisCompetenciaFaixaSalariaisSalvosHabilidade.add(configuracaoNivelCompetencia);
-				}
-				if (TipoCompetencia.ATITUDE.equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
-					niveisCompetenciaFaixaSalariaisSalvosAtitude.add(configuracaoNivelCompetencia);
-				}
-			}
-		}
 		return Action.SUCCESS;
 	}
 	
