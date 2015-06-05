@@ -388,8 +388,21 @@ public class GenericDaoHibernate<T> extends HibernateDaoSupport implements Gener
 		criteria.setProjection(p);
 
 		if (key != null)
-			for(int i = 0; i < key.length; i++)
-				criteria.add(Expression.eq(key[i], value[i]));
+			for(int i = 0; i < key.length; i++){
+
+				if(key[i].startsWith(">="))
+					criteria.add(Expression.ge(key[i].replaceFirst(">=", ""), value[i]));
+				else if(key[i].startsWith(">"))
+					criteria.add(Expression.gt(key[i].replaceFirst(">", ""), value[i]));
+				else if(key[i].startsWith("<="))
+					criteria.add(Expression.le(key[i].replaceFirst("<=", ""), value[i]));
+				else if(key[i].startsWith("<"))
+					criteria.add(Expression.lt(key[i].replaceFirst("<", ""), value[i]));
+				else if(key[i].startsWith("!="))
+					criteria.add(Expression.ne(key[i].replaceFirst("!=", ""), value[i]));
+				else
+					criteria.add(Expression.eq(key[i], value[i]));
+			}
 
         if (orderBy != null)
         {

@@ -137,4 +137,19 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		
 		return (ConfiguracaoNivelCompetenciaColaborador) criteria.uniqueResult();
 	}
+
+	public boolean existeDependenciaComCompetenciasDaFaixaSalarial(Long faixaSalarialId, Date dataInicial, Date dataFinal)
+	{
+		// TODO: Criar teste
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "cncc");
+		criteria.setProjection(Projections.count("data"));
+				
+		criteria.add(Expression.eq("cncc.faixaSalarial.id", faixaSalarialId));
+		criteria.add(Expression.ge("cncc.data", dataInicial));
+		
+		if(dataFinal != null)
+			criteria.add(Expression.lt("cncc.data", dataFinal));
+
+		return ((Integer) criteria.uniqueResult()) > 0;	
+	}
 }

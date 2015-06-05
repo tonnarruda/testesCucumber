@@ -53,6 +53,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private Date data;
 	private Date dataIni;
 	private Date dataFim;
+	private boolean edicao;
 	private ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador;
 	private ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial;
 	
@@ -170,8 +171,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 						niveisCompetenciaFaixaSalariaisSalvosAtitude.add(configuracaoNivelCompetencia);
 				}
 			}
-
-			
 		}
 		
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
@@ -214,13 +213,12 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String saveCompetenciasByFaixaSalarial()
+	public String saveCompetenciasByFaixaSalarial() throws Exception
 	{
 		try
 		{
-			if (niveisCompetenciaFaixaSalariais == null) {
+			if (niveisCompetenciaFaixaSalariais == null) 
 				niveisCompetenciaFaixaSalariais = new ArrayList<ConfiguracaoNivelCompetencia>();
-			}
 			
 			atualizaNivelCometenciaFaixaSalarial(niveisCompetenciaFaixaSalariaisConhecimento);
 			atualizaNivelCometenciaFaixaSalarial(niveisCompetenciaFaixaSalariaisHabilidade);
@@ -340,6 +338,8 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	
 	public String prepareUpdateCompetenciasFaixaSalarial()
 	{
+		edicao = true;
+		
 		configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findById(configuracaoNivelCompetenciaFaixaSalarial.getId());
 		faixaSalarial = configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial();
 		
@@ -394,10 +394,14 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			configuracaoNivelCompetenciaManager.removeConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getId());
 			addActionSuccess("Competências excluídas com sucesso");
 		}
+		catch (FortesException e)
+		{
+			addActionWarning(e.getMessage());
+			e.printStackTrace();
+		}
 		catch (Exception e)
 		{
 			addActionError("Não foi possível excluir as competências.");
-			addActionError(e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -703,5 +707,10 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	public void setConfiguracaoNivelCompetenciaFaixaSalarial(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial)
 	{
 		this.configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarial;
+	}
+
+	public boolean getEdicao()
+	{
+		return edicao;
 	}
 }

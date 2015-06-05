@@ -1,5 +1,8 @@
 package com.fortes.rh.business.captacao;
 
+import java.util.Collection;
+import java.util.Date;
+
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 
@@ -7,4 +10,5 @@ public interface ConfiguracaoNivelCompetenciaFaixaSalarialManager extends Generi
 {
 	void deleteByFaixaSalarial(Long[] faixaIds);
 	void deleteDependenciasByFaixaSalarial(Long[] faixaIds);
+	Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> findProximaConfiguracaoAposData(Long faixaSalarialId, Date data);
 }

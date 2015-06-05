@@ -59,4 +59,9 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericM
 	{
 		return getDao().findByData(data, colaboradorId, avaliadorId, colaboradorQuestionarioId);
 	}
+
+	public boolean existeDependenciaComCompetenciasDaFaixaSalarial(Long faixaSalarialId, Date dataInicial, Date dataFinal)
+	{
+		return getDao().existeDependenciaComCompetenciasDaFaixaSalarial(faixaSalarialId, dataInicial, dataFinal);
+	}
 }

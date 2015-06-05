@@ -18,10 +18,10 @@
 		
 		<script type="text/javascript" >
 			$(function() {
-				abilitaExibirPerformanceProfissional();
+				habilitaExibirPerformanceProfissional();
 			});
 			
-			function abilitaExibirPerformanceProfissional()
+			function habilitaExibirPerformanceProfissional()
 			{
 				$('#exibirPerformanceProfissional').attr('disabled', $('#anonima').val()=='true');
 			}
@@ -59,7 +59,7 @@
 			</#if>
 			
 			<@ww.select label="Modelo da Avaliação" name="avaliacaoDesempenho.avaliacao.id" id="modelo" required="true" list="avaliacaos" listKey="id" listValue="titulo" cssStyle="width: 450px;" headerKey="" headerValue="Selecione..." disabled="${desabilita}" />
-			<@ww.select label="Anônima" name="avaliacaoDesempenho.anonima" id="anonima" list=r"#{true:'Sim',false:'Não'}" disabled="${desabilita}" required="true" headerKey="" headerValue="" onchange="abilitaExibirPerformanceProfissional();"/>
+			<@ww.select label="Anônima" name="avaliacaoDesempenho.anonima" id="anonima" list=r"#{true:'Sim',false:'Não'}" disabled="${desabilita}" required="true" headerKey="" headerValue="" onchange="habilitaExibirPerformanceProfissional();"/>
 			<@ww.checkbox label="Exibir em Performance Profissional" id="exibirPerformanceProfissional" name="avaliacaoDesempenho.exibirPerformanceProfissional"  labelPosition="left"/>
 			<@ww.select label="Permitir autoavaliação" name="avaliacaoDesempenho.permiteAutoAvaliacao" disabled="${desabilita}" id="permiteAutoAvaliacao" list=r"#{true:'Sim',false:'Não'}" required="true" headerKey="" headerValue=""/>
 			

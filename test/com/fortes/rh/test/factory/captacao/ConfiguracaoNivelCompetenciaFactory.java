@@ -30,4 +30,11 @@ public class ConfiguracaoNivelCompetenciaFactory
 		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaFaixaSalarial(cncFaixaSalarial);
 		return configuracaoNivelCompetencia;
 	}
+	
+	public static ConfiguracaoNivelCompetencia getEntity(Character tipo)
+	{
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntity();
+		configuracaoNivelCompetencia.setTipoCompetencia(tipo);
+		return configuracaoNivelCompetencia;
+	}
 }

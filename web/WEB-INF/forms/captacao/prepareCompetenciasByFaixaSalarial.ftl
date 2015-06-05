@@ -64,6 +64,16 @@
 					linhaAtitude.find('.checkNivelAtitude[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
 				</#list>
 			</#if>
+			
+			<#if configuracaoNivelCompetenciaFaixaSalarial?exists && configuracaoNivelCompetenciaFaixaSalarial.id?exists>
+				$('#data').attr("disabled","disabled");
+				$('#data_button').hide();
+				$(":checkbox").attr("disabled","disabled");
+			<#else>
+				$('#data').removeAttr("disabled");
+				$('#data_button').show();
+				$(":checkbox").removeAttr("disabled");
+			</#if>
 		});
 		
 		function toolTipCompetenciaObs(elementoId, obs)
@@ -113,7 +123,6 @@
 	</script>
 
 	<title>Competências da Faixa Salarial</title>
-	
 			
 	<#if configuracaoNivelCompetenciaFaixaSalarial?exists && configuracaoNivelCompetenciaFaixaSalarial.data?exists>
 		<#assign data = configuracaoNivelCompetenciaFaixaSalarial.data?date/>
@@ -135,6 +144,9 @@
 		<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.faixaSalarial.id" value="${faixaSalarial.id}"/>
 		
 		<@ww.datepicker label="A partir de" name="configuracaoNivelCompetenciaFaixaSalarial.data" value="${data}" id="data" cssClass="mascaraData" />
+		<#if edicao>
+			<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.data" value="${data}"/>
+		</#if>
 		<br />
 		
 		<#assign i = 0/>
@@ -143,9 +155,12 @@
 			<@display.caption><div style="background-color: #999999;font-weight: bold; color: #FFF;">Conhecimento</div> </@display.caption>
 			<@display.column title="<input type='checkbox' id='checkAllCompetenciaConhecimento'/> Competência" >
 				<@ww.hidden name="niveisCompetenciaFaixaSalariaisConhecimento[${i}].tipoCompetencia"/>
-				<input type="checkbox"  id="competenciaConhecimento_${i}" name="niveisCompetenciaFaixaSalariaisConhecimento[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetenciaConhecimento" />
+				<input type="checkbox" id="competenciaConhecimento_${i}" name="niveisCompetenciaFaixaSalariaisConhecimento[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetenciaConhecimento" />
 				<label for="competenciaConhecimento_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
 				
+				<#if edicao>
+					<@ww.hidden name="niveisCompetenciaFaixaSalariaisConhecimento[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}"/>
+				</#if>
 				<#if configuracaoNivelCompetencia.competenciaObservacao?exists && configuracaoNivelCompetencia.competenciaObservacao != "">
 					<img id="competenciaConhecimento_${i}_obs" onLoad="toolTipCompetenciaObs(this.id, '${configuracaoNivelCompetencia.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
 				</#if>
@@ -170,6 +185,9 @@
 				<input type="checkbox"  id="competenciaHabilidade_${i}" name="niveisCompetenciaFaixaSalariaisHabilidade[${i}].competenciaId" value="${configuracaoNivelCompetenciaHabilidade.competenciaId}" class="checkCompetenciaHabilidade" />
 				<label for="competenciaHabilidade_${i}">${configuracaoNivelCompetenciaHabilidade.competenciaDescricao}</label>
 				
+				<#if edicao>
+					<@ww.hidden name="niveisCompetenciaFaixaSalariaisHabilidade[${i}].competenciaId" value="${configuracaoNivelCompetenciaHabilidade.competenciaId}"/>
+				</#if>
 				<#if configuracaoNivelCompetenciaHabilidade.competenciaObservacao?exists && configuracaoNivelCompetenciaHabilidade.competenciaObservacao != "">
 					<img id="competenciaHabilidade_${i}_obs" onLoad="toolTipCompetenciaObs(this.id, '${configuracaoNivelCompetenciaHabilidade.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
 				</#if>
@@ -194,6 +212,9 @@
 				<input type="checkbox"  id="competenciaAtitude_${i}" name="niveisCompetenciaFaixaSalariaisAtitude[${i}].competenciaId" value="${configuracaoNivelCompetenciaAtitude.competenciaId}" class="checkCompetenciaAtitude" />
 				<label for="competenciaAtitude_${i}">${configuracaoNivelCompetenciaAtitude.competenciaDescricao}</label>
 				
+				<#if edicao>
+					<@ww.hidden name="niveisCompetenciaFaixaSalariaisAtitude[${i}].competenciaId" value="${configuracaoNivelCompetenciaAtitude.competenciaId}"/>
+				</#if>
 				<#if configuracaoNivelCompetenciaAtitude.competenciaObservacao?exists && configuracaoNivelCompetenciaAtitude.competenciaObservacao != "">
 					<img id="competenciaAtitude_${i}_obs" onLoad="toolTipCompetenciaObs(this.id, '${configuracaoNivelCompetenciaAtitude.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
 				</#if>

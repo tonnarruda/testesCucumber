@@ -22,7 +22,7 @@
 <script>
 	$(function() {
 		$('#avaliacaoCursoCheckToolTipHelp').qtip({
-			content: 'Não será possível desmarcar nenhuma das avaliações dos alunos, quando houver resposta para pelo menos uma das avaliações.'
+			content: 'Não será possível desmarcar nenhuma das avaliações dos alunos quando houver resposta para pelo menos uma das avaliações.'
 		});
 	});
 </script>

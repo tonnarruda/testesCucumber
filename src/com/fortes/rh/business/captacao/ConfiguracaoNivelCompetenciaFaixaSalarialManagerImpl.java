@@ -1,5 +1,8 @@
 package com.fortes.rh.business.captacao;
 
+import java.util.Collection;
+import java.util.Date;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialDao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
@@ -17,5 +20,10 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialManagerImpl extends Generi
 	{
 		ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager = (ConfiguracaoNivelCompetenciaManager) SpringUtil.getBean("configuracaoNivelCompetenciaManager");
 		configuracaoNivelCompetenciaManager.removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixaSalarial(faixaIds);
+	}
+
+	public Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> findProximaConfiguracaoAposData(Long faixaSalarialId, Date data)
+	{
+		return getDao().findProximaConfiguracaoAposData(faixaSalarialId, data);
 	}
 }
