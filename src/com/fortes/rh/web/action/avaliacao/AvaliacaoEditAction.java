@@ -124,6 +124,10 @@ public class AvaliacaoEditAction extends MyActionSupportList
 	{
 		avaliacao.setEmpresa(getEmpresaSistema());
 		avaliacaoManager.save(avaliacao);
+		
+		if(modeloAvaliacao == 'A')
+			modeloAvaliacao = 'D';
+		
 		return Action.SUCCESS;
 	}
 

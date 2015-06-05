@@ -15,6 +15,7 @@
 	<Versao id="1.1.144.174" bd="" data="19/05/2015">
 		<Item visivel="S" motivo="P20150400222"><![CDATA[R&S > Cadastros > Candidatos > Editar > Experiências: Ajuste na inconsistência da duplicação de experiências ao contratar o candidato.]]></Item>
 		<Item visivel="S" motivo="P20150400136"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Promover: Ajuste dos dados pré-carregados para o cadastro da nova situação.]]></Item>	
+		<Item visivel="S" motivo="P20150400031"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência: Ajuste na inconsistência relacionado ao modelo de avaliações de desempenho e de acompanhamento do período de experiência.]]></Item>
 		<Item visivel="S" motivo="S20150300124"><![CDATA[T&D > Cadastros > Cursos/Treinamentos: Nova opção para inserir anexos.]]></Item>		
 		<Item visivel="S" motivo="P20150500031"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Editar: Ajuste para possibilitar desmarcar "Avaliações dos Alunos" quando estas não possuírem respostas.]]></Item>		
 		<Item visivel="S" motivo="S20150300125"><![CDATA[T&D > Relatórios > Certificados: Nova opção para imprimir nota do aluno no verso do certificado.]]></Item>

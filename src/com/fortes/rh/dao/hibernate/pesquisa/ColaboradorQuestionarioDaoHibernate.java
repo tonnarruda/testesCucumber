@@ -1076,7 +1076,6 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		ProjectionList p = Projections.projectionList().create();
 		
-		p.add(Projections.groupProperty("cq.colaborador.id"), "projectionColaboradorId");
 		p.add(Projections.groupProperty("cq.avaliacao.id"), "projectionAvaliacaoId");
 		p.add(Projections.sqlProjection("sum(case when avaliacaodesempenho_id is null then 1 else 0 end) as qtdPeriodoExperiencia",
 				new String []  {"qtdPeriodoExperiencia"}, 
@@ -1089,7 +1088,6 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		criteria.add(Expression.eq("cq.avaliacao.id", avaliacaoId));
 		
-		criteria.addOrder(Order.asc("cq.colaborador.id"));
 		criteria.addOrder(Order.asc("cq.avaliacao.id"));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
