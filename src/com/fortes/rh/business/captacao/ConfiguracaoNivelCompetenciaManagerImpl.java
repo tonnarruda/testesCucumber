@@ -112,8 +112,12 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 					getDao().save(configuracaoNivelCompetencia);
 				}
 			}
-			getDao().atualizarConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 		}
+	}
+	
+	public void atualizarConfiguracaoNivelCompetenciaColaborador(Long faixaSalarialId , Date data)
+	{
+		getDao().atualizarConfiguracaoNivelCompetenciaColaborador(faixaSalarialId, data);
 	}
 
 	public Collection<ConfiguracaoNivelCompetencia> getCompetenciasCandidato(Long candidatoId, Long empresaId) {

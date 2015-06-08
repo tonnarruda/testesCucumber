@@ -27,6 +27,7 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.DateUtil;
 
 public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetencia> implements ConfiguracaoNivelCompetenciaDao
 {
@@ -559,20 +560,20 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return lista;				
 	}
 
-	public void atualizarConfiguracaoNivelCompetenciaColaborador(Long faixaSalarialId, Date data) {
-		String[] sql = new String[] {"DELETE FROM configuracaonivelcompetencia cncc "
-									+ "			WHERE cncc.configuracaonivelcompetenciacolaborador_id in ( "
-									+ " 				   SELECT id FROM configuracaonivelcompetenciacolaborador "
-									+ "		    			WHERE faixasalarial_id = :faixaSalarialId and data >= :data"
-									+ "							and (data <= (coalesce ((SELECT min(data) FROM configuracaonivelcompetenciafaixasalarial WHERE faixasalarial_id = :faixaSalarialId and data > ':data'), '01-01-2300'))) "
-									+ "					) "
-									+ "					and competencia_id || tipocompetencia not in (SELECT distinct competencia_id || tipocompetencia FROM configuracaonivelcompetencia WHERE configuracaonivelcompetenciafaixasalarial_id in ( "
-									+ "													SELECT id FROM configuracaonivelcompetenciafaixasalarial WHERE faixasalarial_id = :faixaSalarialId and data = ':data')"
-									+ "		 									   ) " };
+	public void atualizarConfiguracaoNivelCompetenciaColaborador(Long faixaSalarialId, Date data) 
+	{
+		getSession().flush();
 		
-		Query query = getSession().createSQLQuery(sql.toString());
-		query.setLong("faixaSalarialId", faixaSalarialId);
-		query.setDate("data", data);
+		String dataFormatada = DateUtil.formataDiaMesAno(data);
+		String[] sql = new String[] {"DELETE FROM configuracaonivelcompetencia cnc "
+									+ "			WHERE cnc.configuracaonivelcompetenciacolaborador_id in ( "
+									+ " 				   SELECT id FROM configuracaonivelcompetenciacolaborador cncc "
+									+ "		    			WHERE cncc.faixasalarial_id = " + faixaSalarialId + " and cncc.data >= '" + dataFormatada + "' "
+									+ "							and (cncc.data <= (coalesce ((SELECT min(data) FROM configuracaonivelcompetenciafaixasalarial WHERE faixasalarial_id = " + faixaSalarialId + " and data > '" + dataFormatada + "'), '01-01-2300'))) "
+									+ "					) "
+									+ "					and cnc.competencia_id || cnc.tipocompetencia not in (SELECT distinct competencia_id || tipocompetencia FROM configuracaonivelcompetencia WHERE configuracaonivelcompetenciafaixasalarial_id in ( "
+									+ "													SELECT id FROM configuracaonivelcompetenciafaixasalarial cncf WHERE cncf.faixasalarial_id = " + faixaSalarialId + " and cncf.data = '" + dataFormatada + "') "
+									+ "		 									   ) " };
 		
 		JDBCConnection.executeQuery(sql);
 	}

@@ -225,6 +225,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			atualizaNivelCometenciaFaixaSalarial(niveisCompetenciaFaixaSalariaisAtitude);
 			
 			configuracaoNivelCompetenciaManager.saveCompetenciasFaixaSalarial(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaFaixaSalarial);
+			configuracaoNivelCompetenciaManager.atualizarConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 			addActionSuccess("Níveis de competência da faixa salarial salvos com sucesso.");
 		}
 		catch (Exception e)
