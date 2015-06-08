@@ -78,8 +78,8 @@ public class Entidade extends LinkedHashMap<String, String> {
 		put("configuracaocampoextra", "configuração de campos extras");
 		put("configuracaoimpressaocurriculo", "configuração de impressão de currículo");
 		put("configuracaolimitecolaborador", "configuração de limite de colaborador por cargo");
-		put("configuracaonivelcompetencia", "configuração de nível de competência");
-		put("configuracaonivelcompetenciacolaborador", "configuração de nível de competência do colaborador");
+		put("configuracaonivelcompetencia", "nível de competência");
+		put("configuracaonivelcompetenciacolaborador", "competência do colaborador");
 		put("configuracaoperformance", "configuração de performance");
 		put("configuracaorelatoriodinamico", "configuração de relatório dinâmico");
 		put("conhecimento", "conhecimento");
@@ -209,6 +209,7 @@ public class Entidade extends LinkedHashMap<String, String> {
 		put("usuarioempresa", "empresas do usuário");
 		put("usuariomensagem", "mensagens do usuário");
 		put("usuarionoticia", "notícias lidas pelo usuário");
+		put("configuracaonivelcompetenciafaixasalarial", "competências da faixa salarial ");
 	}
 	
 	public static String getDescricao(String tabela)

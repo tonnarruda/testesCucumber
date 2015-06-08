@@ -846,6 +846,23 @@ Dado /^que exista um nivel de competencia "([^"]*)" com a ordem (\d+)$/ do |nive
   end
 end
 
+Dado /^que exista uma connfiguracao de nivel de competencia da faixa salarial "([^"]*)" na data "([^"]*)"$/ do |faixasalarial_nome, competencia_data|
+  insert :configuracaonivelcompetenciafaixasalarial do
+    data competencia_data
+    faixasalarial :faixasalarial, :nome => faixasalarial_nome
+    id 1
+  end
+end
+
+Dado /^que exista uma connfiguracao de nivel de competencia "([^"]*)" no conhecimento "([^"]*)" para connfiguracao de nivel de competencia da faixa salarial na data "([^"]*)"$/ do |nivelcompetencia_descricao, conhecimento_nome, competencia_data|
+  insert :configuracaonivelcompetencia do
+    nivelcompetencia :nivelcompetencia, :descricao => nivelcompetencia_descricao
+    configuracaonivelcompetenciafaixasalarial :configuracaonivelcompetenciafaixasalarial, :data => competencia_data
+    competencia :competencia, :nome => conhecimento_nome
+    tipocompetencia 'C'
+  end
+end
+
 Dado /^que exista uma connfiguracao de nivel de competencia "([^"]*)" no conhecimento "([^"]*)" para a faixa salarial "([^"]*)"$/ do |nivelcompetencia_descricao, conhecimento_nome, faixasalarial_nome|
   insert :configuracaonivelcompetencia do
     nivelcompetencia :nivelcompetencia, :descricao => nivelcompetencia_descricao

@@ -15,6 +15,7 @@ Funcionalidade: Cadastrar Cargos e Faixas
     Dado que exista um nivel de competencia "regular" com a ordem 2
     Dado que exista um nivel de competencia "bom" com a ordem 3
 
+
     Quando eu acesso o menu "C&S > Cadastros > Cargos e Faixas"
     Então eu devo ver o título "Cargos"
     E eu clico no botão "Inserir"
@@ -85,6 +86,7 @@ Funcionalidade: Cadastrar Cargos e Faixas
     Então eu devo ver o título "Faixas Salariais"
     E eu devo ver "Faixa II"
     E eu clico na linha "Faixa II" da imagem "Níveis de Competência"
+    E eu clico no botão "Inserir"
     E eu devo ver o título "Competências da Faixa Salarial"
     E eu marco "java"
     E eu escolho "niveisCompetenciaFaixaSalariaisConhecimento[0].nivelCompetencia.id"
@@ -93,7 +95,6 @@ Funcionalidade: Cadastrar Cargos e Faixas
     E eu devo ver o alert "Selecione os níveis para as competências indicadas." e clico no ok
     E eu escolho "niveisCompetenciaFaixaSalariaisConhecimento[1].nivelCompetencia.id"
     E eu clico no botão "Gravar"
-    E eu devo ver "Níveis de competência da faixa salarial salvos com sucesso"
     E eu clico no botão "Voltar"
 
     Então eu devo ver o título "Faixas Salariais"
@@ -105,5 +106,4 @@ Funcionalidade: Cadastrar Cargos e Faixas
 
     Então eu clico em excluir "_Analista"
     E eu devo ver o alert do confirmar exclusão e clico no ok
-    Então eu devo ver "Cargo excluído com sucesso."
-    E eu não devo ver "_Analista"
+    Então eu devo ver "possui dependências em".

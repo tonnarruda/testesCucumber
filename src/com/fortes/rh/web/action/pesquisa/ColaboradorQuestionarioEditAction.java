@@ -296,7 +296,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		if (colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo())
 		{
-			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaborador.getFaixaSalarial().getId(), colaboradorQuestionario.getAvaliacaoDesempenho() == null ? new Date(): colaboradorQuestionario.getAvaliacaoDesempenho().getInicio());
+			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaborador.getFaixaSalarial().getId(), new Date());
 			nivelCompetencias = nivelCompetenciaManager.findAllSelect(colaborador.getEmpresa().getId());
 			
 			niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByColaborador(colaborador.getId(), avaliador.getId(), colaboradorQuestionario.getId());
@@ -395,7 +395,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		QuestionarioAvaliacaoVO questionarioAvaliacaoVO = new QuestionarioAvaliacaoVO();
 		questionarioAvaliacaoVO.setQuestionarioRelatorio(avaliacaoManager.getQuestionarioRelatorio(avaliacao, ordenarPorAspecto));
-		questionarioAvaliacaoVO.setMatrizes(configuracaoNivelCompetenciaManager.montaConfiguracaoNivelCompetenciaByFaixa(colaborador.getEmpresa().getId(), colaborador.getHistoricoColaborador().getFaixaSalarial().getId(), colaboradorQuestionario.getAvaliacaoDesempenho() == null ? new Date(): colaboradorQuestionario.getAvaliacaoDesempenho().getInicio()));
+		questionarioAvaliacaoVO.setMatrizes(configuracaoNivelCompetenciaManager.montaConfiguracaoNivelCompetenciaByFaixa(colaborador.getEmpresa().getId(), colaborador.getHistoricoColaborador().getFaixaSalarial().getId(), new Date()));
 		
 		questionarioAvaliacaoVOs = new ArrayList<QuestionarioAvaliacaoVO>();
 		questionarioAvaliacaoVOs.add(questionarioAvaliacaoVO);

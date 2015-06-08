@@ -2562,7 +2562,8 @@ CREATE TABLE configuracaonivelcompetencia (
     competencia_id bigint,
     candidato_id bigint,
     tipocompetencia character(1),
-    configuracaonivelcompetenciacolaborador_id bigint
+    configuracaonivelcompetenciacolaborador_id bigint,
+    configuracaonivelcompetenciafaixasalarial_id bigint
 );
 
 
@@ -2624,6 +2625,40 @@ ALTER TABLE public.configuracaonivelcompetenciacolaborador_sequence OWNER TO pos
 --
 
 SELECT pg_catalog.setval('configuracaonivelcompetenciacolaborador_sequence', 1, false);
+
+
+--
+-- Name: configuracaonivelcompetenciafaixasalarial; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE configuracaonivelcompetenciafaixasalarial (
+    id bigint NOT NULL,
+    faixasalarial_id bigint,
+    data date
+);
+
+
+ALTER TABLE public.configuracaonivelcompetenciafaixasalarial OWNER TO postgres;
+
+--
+-- Name: configuracaonivelcompetenciafaixasalarial_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE configuracaonivelcompetenciafaixasalarial_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.configuracaonivelcompetenciafaixasalarial_sequence OWNER TO postgres;
+
+--
+-- Name: configuracaonivelcompetenciafaixasalarial_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaonivelcompetenciafaixasalarial_sequence', 1, false);
 
 
 --
@@ -29785,6 +29820,12 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Data for Name: configuracaonivelcompetenciafaixasalarial; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: configuracaoperformance; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -30698,6 +30739,8 @@ INSERT INTO migrations (name) VALUES ('20150420140050');
 INSERT INTO migrations (name) VALUES ('20150504202500');
 INSERT INTO migrations (name) VALUES ('20150511151651');
 INSERT INTO migrations (name) VALUES ('20150518162625');
+INSERT INTO migrations (name) VALUES ('20150608111027');
+INSERT INTO migrations (name) VALUES ('20150608111109');
 
 
 --
@@ -31072,7 +31115,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.144.174', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.145.175', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1);
 
 
 --
@@ -32096,6 +32139,14 @@ ALTER TABLE ONLY configuracaonivelcompetenciacolaborador
 
 
 --
+-- Name: configuracaonivelcompetenciafaixasalarial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY configuracaonivelcompetenciafaixasalarial
+    ADD CONSTRAINT configuracaonivelcompetenciafaixasalarial_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: configuracaoperformance_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -33060,6 +33111,13 @@ ALTER TABLE ONLY usuarionoticia
 --
 
 CREATE INDEX colaboradorocorrencia_idx ON colaboradorocorrencia USING btree (colaborador_id, ocorrencia_id, dataini);
+
+
+--
+-- Name: configuracaonivelcompetenciafaixasalarial_data_faixasalarial_uk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX configuracaonivelcompetenciafaixasalarial_data_faixasalarial_uk ON configuracaonivelcompetenciafaixasalarial USING btree (data, faixasalarial_id);
 
 
 --
@@ -34176,6 +34234,14 @@ ALTER TABLE ONLY configuracaonivelcompetencia
 
 
 --
+-- Name: confignivelcompetencia_confignivelcompetenciafaixasalarial_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY configuracaonivelcompetencia
+    ADD CONSTRAINT confignivelcompetencia_confignivelcompetenciafaixasalarial_fk FOREIGN KEY (configuracaonivelcompetenciafaixasalarial_id) REFERENCES configuracaonivelcompetenciafaixasalarial(id);
+
+
+--
 -- Name: confignivelcompetenciacolaborador_colaboradorquestionario_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -34261,6 +34327,14 @@ ALTER TABLE ONLY configuracaonivelcompetenciacolaborador
 
 ALTER TABLE ONLY configuracaonivelcompetenciacolaborador
     ADD CONSTRAINT configuracaonivelcompetenciacolaborador_faixasalarial_fk FOREIGN KEY (faixasalarial_id) REFERENCES faixasalarial(id);
+
+
+--
+-- Name: configuracaonivelcompetenciafaixasalarial_faixasalarial_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY configuracaonivelcompetenciafaixasalarial
+    ADD CONSTRAINT configuracaonivelcompetenciafaixasalarial_faixasalarial_fk FOREIGN KEY (faixasalarial_id) REFERENCES faixasalarial(id);
 
 
 --

@@ -20,9 +20,10 @@ Funcionalidade: Cadastrar Colaborador
     Dado que exista uma solicitacao "Solicitacao1" para área "Compras" na faixa "I"
     Dado que exista uma solicitacao "Solicitacao2" para área "Compras" na faixa "I"
     Dado que exista um motivo de desligamento "Porque eu quero"
-    Dado que exista uma connfiguracao de nivel de competencia "bom" no conhecimento "java" para a faixa salarial "I"
-    Dado que exista uma connfiguracao de nivel de competencia "bom" no conhecimento "testes" para a faixa salarial "I"
-        
+    Dado que exista uma connfiguracao de nivel de competencia da faixa salarial "I" na data "01/01/2015"
+    Dado que exista uma connfiguracao de nivel de competencia "bom" no conhecimento "java" para connfiguracao de nivel de competencia da faixa salarial na data "01/01/2015"
+    Dado que exista uma connfiguracao de nivel de competencia "bom" no conhecimento "testes" para connfiguracao de nivel de competencia da faixa salarial na data "01/01/2015"
+
     Dado que eu esteja logado com o usuário "fortes"
 
     Quando eu acesso o menu "Info. Funcionais > Cadastros > Colaboradores"
