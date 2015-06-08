@@ -143,7 +143,7 @@
 		<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.id" />
 		<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.faixaSalarial.id" value="${faixaSalarial.id}"/>
 		
-		<@ww.datepicker label="A partir de" name="configuracaoNivelCompetenciaFaixaSalarial.data" value="${data}" id="data" cssClass="mascaraData" />
+		<@ww.datepicker label="A partir de" name="configuracaoNivelCompetenciaFaixaSalarial.data" value="${data}" id="data" cssClass="mascaraData" required="true"/>
 		<#if edicao>
 			<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.data" value="${data}"/>
 		</#if>

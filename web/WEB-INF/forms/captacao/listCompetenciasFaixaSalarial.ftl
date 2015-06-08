@@ -16,7 +16,7 @@
 
 	<div style="clear: both;"></div><br />
 	
-	<@display.table name="configuracaoNivelCompetenciaFaixasSalariais" id="cncFaixaSalarial" class="dados" style="width: 200px">
+	<@display.table name="configuracaoNivelCompetenciaFaixasSalariais" id="cncFaixaSalarial" defaultsort=2 class="dados" style="width: 200px">
 		<@display.column title="Ações" media="html" style="text-align:center; width:50px;" >
 			<a href="prepareUpdateCompetenciasFaixaSalarial.action?configuracaoNivelCompetenciaFaixaSalarial.id=${cncFaixaSalarial.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteCompetenciasFaixaSalarial.action?faixaSalarial.id=${faixaSalarial.id}&configuracaoNivelCompetenciaFaixaSalarial.id=${cncFaixaSalarial.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>

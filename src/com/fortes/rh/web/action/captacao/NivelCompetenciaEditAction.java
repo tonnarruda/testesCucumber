@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
+
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
@@ -227,6 +229,14 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			configuracaoNivelCompetenciaManager.saveCompetenciasFaixaSalarial(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaFaixaSalarial);
 			configuracaoNivelCompetenciaManager.atualizarConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 			addActionSuccess("Níveis de competência da faixa salarial salvos com sucesso.");
+		}
+		catch (DataIntegrityViolationException e)
+		{
+			addActionWarning("Já existe uma configuração de competências nesta data.");
+			e.printStackTrace();
+			configuracaoNivelCompetenciaFaixaSalarial.setId(null);
+			prepareCompetenciasByFaixaSalarial();
+			return Action.INPUT;
 		}
 		catch (Exception e)
 		{

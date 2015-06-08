@@ -62,6 +62,7 @@
 		</action>
 		<action name="saveCompetenciasByFaixaSalarial" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="saveCompetenciasByFaixaSalarial">
 			<result name="success" type="redirect"><![CDATA[listCompetenciasFaixaSalarial.action?faixaSalarial.id=${faixaSalarial.id}]]></result>
+			<result name="input" type="freemarker">/WEB-INF/forms/captacao/prepareCompetenciasByFaixaSalarial.ftl</result>
 		</action>
 		<action name="deleteCompetenciasColaborador" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="deleteCompetenciasColaborador">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/listCompetenciasColaborador.ftl</result>
