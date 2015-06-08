@@ -12,8 +12,7 @@
 		<Item visivel="S" motivo="P20150500047"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão: Identificar as situações do colaborador que estão aguardando confirmação no AC.]]></Item>
 		<Item visivel="S" motivo="P20150500090"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Ajuste de inconsitência no relatório quando a empresa controla o risco pela função.]]></Item>
 		<Item visivel="S" motivo="S20150500190"><![CDATA[SESMT > Relatórios > Atendimentos médicos: Novo filtro por situação, o qual possibilita a impressão somente dos atendimentos médicos ou das solicitações de atendimentos ou ambas as situações.]]></Item>
-		
-	
+		<Item visivel="S" motivo="S20150500254"><![CDATA[Mudança da marca ENTE Tecnologia para Fortes RH]]></Item>
 	</Versao>
 	<Versao id="1.1.144.174" bd="" data="19/05/2015">
 		<Item visivel="S" motivo="P20150400222"><![CDATA[R&S > Cadastros > Candidatos > Editar > Experiências: Ajuste na inconsistência da duplicação de experiências ao contratar o candidato.]]></Item>
