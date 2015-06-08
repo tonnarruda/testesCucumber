@@ -35,14 +35,14 @@
 						linha.find('.checkNivel').removeAttr('disabled');
 						linha.find('.ordem').val(${nivelSalvo.nivelCompetencia.ordem});
 						
-						nivelColaborador.parent().css('background-color','#ECECEC');
+						nivelColaborador.parent().css('background-color','#E4F0FE');
 						<#if colaboradorQuestionario.respondida>
 							nivelColaborador.attr('checked','checked');
 						</#if>
 						
 						<#list niveisCompetenciaFaixaSalariais as nivelSugerido>
 							if('${nivelSugerido.competenciaId}' == '${nivelSalvo.competenciaId}' && '${nivelSugerido.tipoCompetencia}' == '${nivelSalvo.tipoCompetencia}' && '${nivelSugerido.nivelCompetencia.id}' == '${nivelSalvo.nivelCompetencia.id}'){
-								linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').parent().css('background-color','#7CC0B9');
+								linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').parent().css('background-color','#A4E2DB');
 							}
 						</#list>
 
@@ -112,9 +112,9 @@
 					<div id="legendas">
 						<span style='background-color: #BFC0C3;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência exigido para o Cargo/Faixa Salarial
 						<br /><br />
-						<span style='background-color: #ECECEC;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência do Colaborador
+						<span style='background-color: #E4F0FE;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência do Colaborador
 						<br /><br />
-						<span style='background-color: #7CC0B9;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência do Colaborador é igual ao nível exigido para o Cargo/Faixa Salarial
+						<span style='background-color: #A4E2DB;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência do Colaborador é igual ao nível exigido para o Cargo/Faixa Salarial
 					</div>
 		
 					<br /><br />

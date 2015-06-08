@@ -288,7 +288,7 @@
 						content += '<td style=" width: 100px; text-align: center;';
 
 						if(dados[prop]["nivelCompetencia"]["id"] == ${nivel.id})
-							content += 'background-color: #ececec;" class="nivelFaixa';
+							content += 'background-color: #BFC0C3;" class="nivelFaixa';
 							
 						content += '">	<input type="radio" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[' + contador + '].nivelCompetencia.id" value="${nivel.id}" nivelcolaborador="${nivel.ordem}" nivelfaixa="' + dados[prop]["nivelCompetencia"]["ordem"] + '" ';
 						
@@ -371,7 +371,7 @@
 			<@ww.form name="form" id="form" action="saveCompetenciasColaborador.action" method="POST">
 			
 			<div id="legendas" style="float:right;">
-				<span style='background-color: #ececec;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial
+				<span style='background-color: #BFC0C3;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial
 			</div>
 			
 			<@ww.datepicker label="A partir de" name="configuracaoNivelCompetenciaColaborador.data" value="${data}" id="data" cssClass="mascaraData" onchange="repopulaConfiguracaoNivelCompetencia();"/>
@@ -415,7 +415,7 @@
 						
 						<#if configuracaoNivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
 							<#assign class="nivelFaixa"/>
-							<#assign bgcolor="background-color: #ececec;"/>
+							<#assign bgcolor="background-color: #BFC0C3;"/>
 						<#else>
 							<#assign class=""/>
 							<#assign bgcolor=""/>
