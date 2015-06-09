@@ -17,11 +17,8 @@
 		
 		/* cria link sobre a parte "FECHAR" do splash do Chat */ 
 		#fecharSplash {
-			 left: 507px;
-			 top: 10px;
-			 color: white;
-			 font-weight: bold;
-			 position: absolute; 
+			 color: red;
+			 font-weight: bold;	  
 			 cursor: pointer; 
 			 border: none; 
 			 text-decoration: none; 
@@ -48,24 +45,24 @@
 	
 	<script type='text/javascript'>
 		$(function () {
-			<#--
+			
 			$( "#splash" ).dialog({
 				autoOpen: false,
 				modal: true,
 				zIndex: 99999,
-				minWidth: 578,
+				minWidth: 430,
 				create: function (event, ui) { $(".ui-dialog-titlebar").hide(); },
 			  	close: function() {
 			  		if ( $('#naoExibirMsg').is(':checked') ) 
-			  			$.cookie("pgInicialSplashChat", false, { expires: 30 }); 
+			  			$.cookie("pgInicialSplashMarca", false, { expires: 30 }); 
 			  	}
 			});
 			
-			if($.cookie("pgInicialSplashChat") != 'false')
+			if($.cookie("pgInicialSplashMarca") != 'false')
 			{
 				$("#splash").dialog("open");
 			}
-			-->
+			
 			
 			$( ".column" ).sortable({
 				connectWith: ".column",
@@ -220,11 +217,10 @@
 	</form>
 	
 	<div id="splash" style="display: none;">
-		<a id="fecharSplash" title="Fechar" href="javascript:;" onclick="$('#splash').dialog('close');">
+		<a id="fecharSplash" title="Fechar" href="javascript:;" onclick="$('#splash').dialog('close');" style="float: right; color: red;">
 			FECHAR
 		</a>
-		<a href="http://www.fortesinformatica.com.br/i/mails/chat_grupoFortes/html_chat.html" target="_blank" >
-			<img border="0" title="Acesse o novo chat"  src="<@ww.url includeParams="none" value="/imgs/splashChat.jpg"/>">
+			<img border="0" title="Nova marca"  src="<@ww.url includeParams="none" value="/imgs/splashMarca.jpg"/>">
 		</a>
 		<input type="checkbox" id="naoExibirMsg" name="naoExibirMsg"/>
 		<label for="naoExibirMsg">Não exibir esta mensagem novamente</label>
