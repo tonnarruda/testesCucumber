@@ -4897,4 +4897,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Colaborador findColaboradorComTodosOsDados(Long id) {
 		return super.findById(id);
 	}
+
+	public Collection<Colaborador> findByEstadosCelularOitoDigitos(Long[] ufId) {
+
+		String hql = "select c from Colaborador c where c.endereco.uf.id in (:ufId) and length(c.contato.foneCelular) = 8";
+		Query query = getSession().createQuery(hql);
+		query.setParameterList("ufId", ufId);
+		
+		Collection<Colaborador> colaboradores = query.list(); 
+		
+		return colaboradores;
+	}
 }

@@ -59,4 +59,5 @@ public interface CandidatoDao extends GenericDao<Candidato>
 	public Collection<Candidato> findByCPF(String cpf, Long empresaId, 	Long candidatoId, Boolean contratado);
 	public Collection<Colaborador> findColaboradoresMesmoCpf(String[] candidatosCpfs);
 	public void deleteCargosPretendidos(Long... cargosIds);
+	public void inserirNonoDigitoCelular(Long[] ufIds);
 }

@@ -1427,4 +1427,15 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		}
 
 	}
+
+	public void inserirNonoDigitoCelular(Long[] ufIds) 
+	{
+		getSession().flush();
+		
+		String hql = "update Candidato set contato.foneCelular =  '9'||contato.foneCelular where endereco.uf.id in (:ufIds) and length(contato.foneCelular) = 8";
+		Query query = getSession().createQuery(hql);
+		query.setParameterList("ufIds", ufIds, Hibernate.LONG);
+		
+		query.executeUpdate();
+	}
 }

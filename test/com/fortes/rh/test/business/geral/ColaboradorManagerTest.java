@@ -1675,6 +1675,23 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	assertEquals(escolaridadeEsperada, colaborador.getPessoal().getEscolaridade());
     }
     
+    public void testInsereNonoDigitoCelular() throws Exception{
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	colaborador.setContatoCelular("88888888");
+    	colaborador.setEnderecoUfId(1L);
+    	
+    	Collection<Colaborador> colaboradores = Arrays.asList(colaborador);
+    	colaboradorDao.expects(once()).method("findByEstadosCelularOitoDigitos").with(eq(new Long[]{1L})).will(returnValue(colaboradores));
+    	colaboradorDao.expects(once()).method("update").with(eq(colaborador));
+    	
+    	colaboradorManager.insereNonoDigitoCelular(new Long[]{1L});
+    	
+    	assertEquals(9, colaborador.getContato().getFoneCelular().length());
+    	
+    	
+    }
+    
   //TODO remprot
 //    public void testValidaQtdCadastros()
 //    {

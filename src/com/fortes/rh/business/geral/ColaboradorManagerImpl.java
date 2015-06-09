@@ -2722,6 +2722,23 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		transactionManager.commit(status);
 	}
 
+	public void insereNonoDigitoCelular(Long[] ufId) throws Exception {
+		
+		Collection<Colaborador> colaboradores = getDao().findByEstadosCelularOitoDigitos(ufId);
+		
+		for (Colaborador colaborador : colaboradores) {
+			colaborador.getContato().setFoneCelular("9" + colaborador.getContato().getFoneCelular());
+			
+			if (!colaborador.isNaoIntegraAc() && colaborador.getEmpresa().isAcIntegra()){
+				acPessoalClientColaborador.atualizar(bindEmpregado(colaborador, colaborador.getEmpresa().getCodigoAC()), colaborador.getEmpresa());
+			}
+			
+			getDao().update(colaborador);
+			
+		}
+		
+	}
+	
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId) 
 	{
 		getDao().setSolicitacao(colaboradorId, solicitacaoId);
@@ -2768,4 +2785,5 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	public void setSolicitacaoExameManager(SolicitacaoExameManager solicitacaoExameManager) {
 		this.solicitacaoExameManager = solicitacaoExameManager;
 	}
+
 }

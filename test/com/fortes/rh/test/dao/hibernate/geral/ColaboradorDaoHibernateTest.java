@@ -42,6 +42,7 @@ import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
 import com.fortes.rh.dao.geral.ColaboradorPeriodoExperienciaAvaliacaoDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
+import com.fortes.rh.dao.geral.EstadoDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.dao.geral.MotivoDemissaoDao;
 import com.fortes.rh.dao.geral.OcorrenciaDao;
@@ -197,6 +198,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	private DiaTurmaDao diaTurmaDao;
 	private AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao; 
 	private AvaliacaoCursoDao avaliacaoCursoDao;
+	private EstadoDao estadoDao;
 
 	private Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 	private Cargo cargo1 = CargoFactory.getEntity();
@@ -6519,6 +6521,18 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(2, colaboradorDao.findColaboradoresByCodigoAC(empresa1.getId(), true, new String[]{"000012","000013","000014"}).size());
 	}
 	
+	public void testFindByEstadosCelularOitoDigitos(){
+		Estado estado = EstadoFactory.getEntity(50L);
+		estadoDao.save(estado);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.getEndereco().setUf(estado);
+		colaborador = colaboradorDao.save(colaborador);
+		
+		assertEquals(1, colaboradorDao.findByEstadosCelularOitoDigitos(new Long[]{estado.getId()}).size());
+		
+	}
+	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
 	{
 		this.areaOrganizacionalDao = areaOrganizacionalDao;
@@ -6735,5 +6749,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 	public void setAvaliacaoCursoDao(AvaliacaoCursoDao avaliacaoCursoDao)
 	{
 		this.avaliacaoCursoDao = avaliacaoCursoDao;
+	}
+
+	public void setEstadoDao(EstadoDao estadoDao) {
+		this.estadoDao = estadoDao;
 	}
 }

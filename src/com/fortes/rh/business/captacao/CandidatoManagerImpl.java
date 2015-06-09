@@ -1345,6 +1345,10 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	{
 		getDao().deleteCargosPretendidos(cargosIds);
 	}
+	
+	public void inserirNonoDigitoCelular(Long[] ufIds){
+		getDao().inserirNonoDigitoCelular(ufIds);
+	}
 
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
