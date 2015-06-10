@@ -1,9 +1,11 @@
 package com.fortes.rh.test.factory.captacao;
 
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 
 public class ConfiguracaoNivelCompetenciaFactory
 {
@@ -21,13 +23,16 @@ public class ConfiguracaoNivelCompetenciaFactory
 		return configuracaoNivelCompetencia;
 	}
 
-	public static ConfiguracaoNivelCompetencia getEntity(NivelCompetencia nivelCompetencia, Long competenciaId, ConfiguracaoNivelCompetenciaColaborador cncColaborador, ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial)
+	public static ConfiguracaoNivelCompetencia getEntity(NivelCompetencia nivelCompetencia, Long competenciaId, ConfiguracaoNivelCompetenciaColaborador cncColaborador, ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial, Candidato candidato, FaixaSalarial faixaSalarial)
 	{
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntity();
 		configuracaoNivelCompetencia.setNivelCompetencia(nivelCompetencia);
 		configuracaoNivelCompetencia.setCompetenciaId(competenciaId);
 		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaColaborador(cncColaborador);
 		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaFaixaSalarial(cncFaixaSalarial);
+		configuracaoNivelCompetencia.setCandidato(candidato);
+		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial);
+		
 		return configuracaoNivelCompetencia;
 	}
 	

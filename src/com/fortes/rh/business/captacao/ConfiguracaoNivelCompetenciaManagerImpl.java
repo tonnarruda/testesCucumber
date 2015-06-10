@@ -445,7 +445,8 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 
-	public void removeConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelColaboradorId) {
+	public void removeConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelColaboradorId)
+	{
 		getDao().removeByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelColaboradorId);
 		configuracaoNivelCompetenciaColaboradorManager.remove(configuracaoNivelColaboradorId);
 	}
@@ -454,25 +455,35 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	{
 		// TODO: Criar teste
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findById(configuracaoNivelFaixaSalarialId);
-		if(existeDependenciaComCompetenciasDoColaborador(configuracaoNivelCompetenciaFaixaSalarial))
-			throw new FortesException("Esta configuração de competência não pode ser excluída, pois existe configuração do colaborador que depende dela.");
-
-//		if(existeDependenciaComCandidato(data, configuracaoNivelFaixaSalarialId))
-//			throw new FortesException("O histórico deste índice não pode ser excluído, pois existe histórico de faixa salarial no RH que depende deste valor.");
-
+		
+		verificaDependencias(configuracaoNivelCompetenciaFaixaSalarial);
+		
 		getDao().removeByConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelFaixaSalarialId);
 		configuracaoNivelCompetenciaFaixaSalarialManager.remove(configuracaoNivelFaixaSalarialId);
 	}
 
-	private boolean existeDependenciaComCompetenciasDoColaborador(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial)
+	private void verificaDependencias(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) throws Exception
 	{
-		Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> configuracaoNivelCompetenciaFaixaSalariais = configuracaoNivelCompetenciaFaixaSalarialManager.findProximaConfiguracaoAposData(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
+		Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> proximasConfiguracoesDafaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findProximasConfiguracoesAposData(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
+		Date dataDaProximaConfiguracaodaFaixaSalarial = (proximasConfiguracoesDafaixaSalarial.size() == 0 ? null : ((ConfiguracaoNivelCompetenciaFaixaSalarial) proximasConfiguracoesDafaixaSalarial.toArray()[0]).getData());
+
+		if(existeDependenciaComCompetenciasDoColaborador(configuracaoNivelCompetenciaFaixaSalarial, dataDaProximaConfiguracaodaFaixaSalarial))
+			throw new FortesException("Esta configuração de competência não pode ser excluída, pois existem competências do colaborador que dependem da mesma.");
+
+		if(existeDependenciaComCompetenciasDoCandidato(configuracaoNivelCompetenciaFaixaSalarial, dataDaProximaConfiguracaodaFaixaSalarial))
+			throw new FortesException("Esta configuração de competência não pode ser excluída, pois existem competências do candidato que dependem da mesma.");
+	}
 		
-		Date proximaData = (configuracaoNivelCompetenciaFaixaSalariais.size() == 0 ? null : ((ConfiguracaoNivelCompetenciaFaixaSalarial) configuracaoNivelCompetenciaFaixaSalariais.toArray()[0]).getData());
-		
-		return configuracaoNivelCompetenciaColaboradorManager.existeDependenciaComCompetenciasDaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), proximaData);
+	private boolean existeDependenciaComCompetenciasDoColaborador(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Date dataDaProximaConfiguracaodaFaixaSalarial) 
+	{
+		return configuracaoNivelCompetenciaColaboradorManager.existeDependenciaComCompetenciasDaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial);
 	}
 
+	private boolean existeDependenciaComCompetenciasDoCandidato(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Date dataDaProximaConfiguracaodaFaixaSalarial)
+	{
+		return getDao().existeDependenciaComCompetenciasDaCandidato(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), dataDaProximaConfiguracaodaFaixaSalarial);
+	}
+	
 	public void removeByCandidato(Long candidatoId) {
 		getDao().removeByCandidato(candidatoId);		
 	}

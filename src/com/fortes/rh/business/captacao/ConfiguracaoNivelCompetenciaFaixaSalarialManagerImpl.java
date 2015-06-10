@@ -22,8 +22,8 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialManagerImpl extends Generi
 		configuracaoNivelCompetenciaManager.removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixaSalarial(faixaIds);
 	}
 
-	public Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> findProximaConfiguracaoAposData(Long faixaSalarialId, Date data)
+	public Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> findProximasConfiguracoesAposData(Long faixaSalarialId, Date data)
 	{
-		return getDao().findProximaConfiguracaoAposData(faixaSalarialId, data);
+		return getDao().findProximasConfiguracoesAposData(faixaSalarialId, data);
 	}
 }

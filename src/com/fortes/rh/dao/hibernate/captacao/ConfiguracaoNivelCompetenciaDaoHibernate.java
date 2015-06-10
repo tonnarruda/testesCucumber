@@ -577,4 +577,23 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		
 		JDBCConnection.executeQuery(sql);
 	}
+
+	public boolean existeDependenciaComCompetenciasDaCandidato(Long faixaSalarialId, Date dataInicial, Date dataFinal)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "cnc");
+		criteria.createCriteria("cnc.candidato", "ca", Criteria.INNER_JOIN);
+		criteria.createCriteria("ca.candidatoSolicitacaos", "cs", Criteria.INNER_JOIN);
+		criteria.createCriteria("cs.solicitacao", "s", Criteria.INNER_JOIN);
+		
+		criteria.setProjection(Projections.count("s.data"));
+				
+		criteria.add(Expression.eq("cnc.faixaSalarial.id", faixaSalarialId));
+		criteria.add(Expression.eq("cs.triagem", false));
+		criteria.add(Expression.ge("s.data", dataInicial));
+		
+		if(dataFinal != null)
+			criteria.add(Expression.lt("s.data", dataFinal));
+
+		return ((Integer) criteria.uniqueResult()) > 0;		
+	}
 }

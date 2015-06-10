@@ -29,7 +29,7 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialDaoHibernate extends Gener
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> findProximaConfiguracaoAposData(Long faixaSalarialId, Date dataConfiguracaoExcluir)
+	public Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> findProximasConfiguracoesAposData(Long faixaSalarialId, Date dataConfiguracaoExcluir)
 	{
 		// TODO: Criar teste
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaFaixaSalarial.class, "cncfs");
