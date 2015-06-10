@@ -102,6 +102,7 @@
 			<@ww.hidden name="colaboradorQuestionario.avaliacaoDesempenho.permiteAutoAvaliacao"/>
 			<@ww.hidden name="colaboradorQuestionario.avaliacao.exibeResultadoAutoavaliacao"/>
 			<@ww.hidden name="colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo"/>
+			<@ww.hidden name="colaboradorQuestionario.configuracaoNivelCompetenciaColaborador.id"/>
 			<@ww.hidden name="autoAvaliacao" />
 			
 			<#if colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>

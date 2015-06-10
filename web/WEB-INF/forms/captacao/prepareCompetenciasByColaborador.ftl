@@ -57,6 +57,7 @@
 						linha.find('.checkCompetencia').attr('checked', 'true');
 						linha.find('.checkNivel').removeAttr('disabled');
 						linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
+						linha.find('.ordem').val(${nivelSalvo.nivelCompetencia.ordem});
 					</#list>
 				</#if>
 				 
@@ -321,7 +322,11 @@
 
 				atualizarGrafico();
 			}
-
+			
+			function setOrdem(i, ordem)
+			{
+				$('#ordem_' + i).val(ordem);
+			}
 		</script>
 		
 		<title>Competências do Colaborador</title>
@@ -395,9 +400,11 @@
 				<#assign i = 0/>
 				<@display.table name="niveisCompetenciaFaixaSalariais" id="configuracaoNivelCompetencia" class="dados">
 				
+				
 					<@display.column title="<input type='checkbox' id='checkAllCompetencia'/>" style="width: 20px;">
 						<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
 						<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
+						<input type="hidden" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.ordem" id="ordem_${i}" class="ordem" value=""/>
 					</@display.column>
 	
 					<@display.column title="#" style="width: 20px; text-align: center;">
@@ -422,7 +429,7 @@
 						</#if>
 						
 						<@display.column title="${nivel.descricao}" style="${bgcolor} width: 100px; text-align: center;" class="${class}">
-							<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" nivelcolaborador="${nivel.ordem}" nivelfaixa="${configuracaoNivelCompetencia.nivelCompetencia.ordem}"/>
+							<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" nivelcolaborador="${nivel.ordem}" nivelfaixa="${configuracaoNivelCompetencia.nivelCompetencia.ordem}" onchange="setOrdem(${i}, ${nivel.ordem})"/>
 						</@display.column>
 					</#list>
 					

@@ -398,6 +398,8 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 			colaboradorQuestionario.setCandidato(null);
 		if(colaboradorQuestionario.getAvaliador() != null && colaboradorQuestionario.getAvaliador().getId() == null)
 			colaboradorQuestionario.setAvaliador(null);
+		if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() == null)
+			colaboradorQuestionario.setConfiguracaoNivelCompetenciaColaborador(null);
 	}
 
 	private void saveRespostas(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario)
@@ -430,7 +432,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		}
 	}
 	
-	private void calculaPerformance(ColaboradorQuestionario colaboradorQuestionario, Long empresaId, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados)
+	public void calculaPerformance(ColaboradorQuestionario colaboradorQuestionario, Long empresaId, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados)
 	{
 		Long colaboradorQuestionarioId = colaboradorQuestionario.getId();
 		Long avaliacaoId = colaboradorQuestionario.getAvaliacao().getId();

@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -22,6 +23,7 @@ import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -70,6 +72,8 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     private Colaborador avaliador;
     @ManyToOne
     private AvaliacaoDesempenho avaliacaoDesempenho;
+    @OneToOne
+    private ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador;
     
     @Transient
     private String pessoaNome;
@@ -838,5 +842,23 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 	public void setQtdAvaliacaoDesempenho(Integer qtdAvaliacaoDesempenho)
 	{
 		this.qtdAvaliacaoDesempenho = qtdAvaliacaoDesempenho;
+	}
+
+	public ConfiguracaoNivelCompetenciaColaborador getConfiguracaoNivelCompetenciaColaborador() 
+	{
+		return configuracaoNivelCompetenciaColaborador;
+	}
+
+	public void setConfiguracaoNivelCompetenciaColaborador(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador) 
+	{
+		this.configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaborador;
+	}
+	
+	public void setConfiguracaoNivelCompetenciaColaboradorId(Long configuracaoNivelCompetenciaColaboradorId) 
+	{
+		if(this.configuracaoNivelCompetenciaColaborador == null)
+			this.configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+	
+		this.configuracaoNivelCompetenciaColaborador.setId(configuracaoNivelCompetenciaColaboradorId);
 	}
 }

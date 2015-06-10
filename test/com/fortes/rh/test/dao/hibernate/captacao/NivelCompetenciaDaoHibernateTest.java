@@ -1157,7 +1157,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configuracaoNivelCompetenciaDao.save(configFaixa2);
 		
 		//Migué
-		configuracaoNivelCompetenciaDao.findAll();
+		configuracaoNivelCompetenciaDao.getHibernateTemplateByGenericDao().flush();
 		
 		Collection<ConfiguracaoNivelCompetencia> retorno = configuracaoNivelCompetenciaDao.findCompetenciasFaixaSalarial(null, faixaSalarial.getId());
 		

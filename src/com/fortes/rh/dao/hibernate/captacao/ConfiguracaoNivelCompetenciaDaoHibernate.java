@@ -487,7 +487,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		if (competenciaIds != null)
 			sql.append("and cnc.competencia_id in (:competenciasIds) ");
 		
-		sql.append("order by cncf.data, cncf.id, competencia ");
+		sql.append("order by cncf.data, cncf.id, competencia, nc.descricao ");
 
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setCharacter("tipoAtitude", TipoCompetencia.ATITUDE);
