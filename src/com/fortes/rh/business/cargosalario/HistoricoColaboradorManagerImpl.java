@@ -24,6 +24,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.model.AbstractModel;
 import com.fortes.portalcolaborador.business.MovimentacaoOperacaoPCManager;
+import com.fortes.portalcolaborador.business.operacao.AtualizarColaboradorComHistorico;
 import com.fortes.portalcolaborador.business.operacao.AtualizarHistoricoColaborador;
 import com.fortes.portalcolaborador.model.ColaboradorPC;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
@@ -979,7 +980,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		getDao().update(historicoColaborador);
 		
 		if(historicoColaborador.getColaborador() != null && historicoColaborador.getColaborador().getEmpresa() != null)
-			movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoColaborador.class, new ColaboradorPC(historicoColaborador.getColaborador()).getIdentificadorToJson(), historicoColaborador.getColaborador().getEmpresa().isIntegradaPortalColaborador());
+			if(historicoColaborador.getMotivo().equals("C"))
+				movimentacaoOperacaoPCManager.enfileirar(AtualizarColaboradorComHistorico.class, new ColaboradorPC(historicoColaborador.getColaborador()).getIdentificadorToJson(), historicoColaborador.getColaborador().getEmpresa().isIntegradaPortalColaborador());
+			else 
+				movimentacaoOperacaoPCManager.enfileirar(AtualizarHistoricoColaborador.class, new ColaboradorPC(historicoColaborador.getColaborador()).getIdentificadorToJson(), historicoColaborador.getColaborador().getEmpresa().isIntegradaPortalColaborador());
 
 		return historicoColaborador;
 	}
