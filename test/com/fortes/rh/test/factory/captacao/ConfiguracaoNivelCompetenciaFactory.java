@@ -36,10 +36,44 @@ public class ConfiguracaoNivelCompetenciaFactory
 		return configuracaoNivelCompetencia;
 	}
 	
+	public static ConfiguracaoNivelCompetencia getEntityFaixaSalarial(ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial, NivelCompetencia nivelCompetencia, Long competenciaId, Character tipoCompetencia)
+	{
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntity();
+		configuracaoNivelCompetencia.setNivelCompetencia(nivelCompetencia);
+		configuracaoNivelCompetencia.setCompetenciaId(competenciaId);
+		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaFaixaSalarial(cncFaixaSalarial);
+		configuracaoNivelCompetencia.setTipoCompetencia(tipoCompetencia);
+		
+		return configuracaoNivelCompetencia;
+	}
+	
 	public static ConfiguracaoNivelCompetencia getEntity(Character tipo)
 	{
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntity();
 		configuracaoNivelCompetencia.setTipoCompetencia(tipo);
+		return configuracaoNivelCompetencia;
+	}
+
+	public static ConfiguracaoNivelCompetencia getEntityColaborador(ConfiguracaoNivelCompetenciaColaborador cncColaborador,	NivelCompetencia nivelCompetencia, Long competenciaId, Character tipoCompetencia) 
+	{
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntity();
+		configuracaoNivelCompetencia.setNivelCompetencia(nivelCompetencia);
+		configuracaoNivelCompetencia.setCompetenciaId(competenciaId);
+		configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaColaborador(cncColaborador);
+		configuracaoNivelCompetencia.setTipoCompetencia(tipoCompetencia);
+		
+		return configuracaoNivelCompetencia;
+	}
+
+	public static ConfiguracaoNivelCompetencia getEntityCandidato(Candidato candidato, FaixaSalarial faixaSalarial, NivelCompetencia nivelCompetencia, Long competenciaId, Character tipoCompetencia) 
+	{
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntity();
+		configuracaoNivelCompetencia.setNivelCompetencia(nivelCompetencia);
+		configuracaoNivelCompetencia.setCompetenciaId(competenciaId);
+		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetencia.setTipoCompetencia(tipoCompetencia);
+		configuracaoNivelCompetencia.setCandidato(candidato);
+		
 		return configuracaoNivelCompetencia;
 	}
 }

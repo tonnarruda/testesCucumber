@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.DateUtil;
 
 public class ConfiguracaoNivelCompetenciaColaboradorFactory
 {
@@ -18,6 +21,16 @@ public class ConfiguracaoNivelCompetenciaColaboradorFactory
 	{
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = getEntity();
 		configuracaoNivelCompetenciaColaborador.setId(id);
+
+		return configuracaoNivelCompetenciaColaborador;
+	}
+	
+	public static ConfiguracaoNivelCompetenciaColaborador getEntity(Colaborador colaborador, FaixaSalarial faixaSalarial, String Data)
+	{
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = getEntity();
+		configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
+		configuracaoNivelCompetenciaColaborador.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetenciaColaborador.setData(DateUtil.criarDataDiaMesAno(Data));
 
 		return configuracaoNivelCompetenciaColaborador;
 	}

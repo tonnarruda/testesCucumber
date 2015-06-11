@@ -562,20 +562,43 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 
 	public void atualizarConfiguracaoNivelCompetenciaColaborador(Long faixaSalarialId, Date data) 
 	{
-		getSession().flush();
+		String dataFormatada = "'" + DateUtil.formataDiaMesAno(data) + "' ";
+		StringBuffer sql = new StringBuffer();
+		sql.append("DELETE FROM configuracaonivelcompetencia cnc ");
+		sql.append("	WHERE cnc.configuracaonivelcompetenciacolaborador_id in ");
+		sql.append("	   (SELECT id FROM configuracaonivelcompetenciacolaborador cncc ");
+		sql.append("   			WHERE cncc.faixasalarial_id = " + faixaSalarialId );
+		sql.append("   			and cncc.data >= " + dataFormatada );
+		sql.append("			and (cncc.data < (coalesce ((SELECT min(data) FROM configuracaonivelcompetenciafaixasalarial WHERE faixasalarial_id = " + faixaSalarialId + " and data > " + dataFormatada + " ), '01-01-2300'))) ");
+		sql.append("		) ");
+		sql.append("	 and cnc.competencia_id || cnc.tipocompetencia not in ");
+		sql.append("		(SELECT distinct competencia_id || tipocompetencia FROM configuracaonivelcompetencia ");
+		sql.append("	 		WHERE configuracaonivelcompetenciafaixasalarial_id in ( ");
+		sql.append("				SELECT id FROM configuracaonivelcompetenciafaixasalarial cncf WHERE cncf.faixasalarial_id = " + faixaSalarialId + " and cncf.data = " + dataFormatada + ") ");
+		sql.append("     	) ");		 		
 		
-		String dataFormatada = DateUtil.formataDiaMesAno(data);
-		String[] sql = new String[] {"DELETE FROM configuracaonivelcompetencia cnc "
-									+ "			WHERE cnc.configuracaonivelcompetenciacolaborador_id in ( "
-									+ " 				   SELECT id FROM configuracaonivelcompetenciacolaborador cncc "
-									+ "		    			WHERE cncc.faixasalarial_id = " + faixaSalarialId + " and cncc.data >= '" + dataFormatada + "' "
-									+ "							and (cncc.data <= (coalesce ((SELECT min(data) FROM configuracaonivelcompetenciafaixasalarial WHERE faixasalarial_id = " + faixaSalarialId + " and data > '" + dataFormatada + "'), '01-01-2300'))) "
-									+ "					) "
-									+ "					and cnc.competencia_id || cnc.tipocompetencia not in (SELECT distinct competencia_id || tipocompetencia FROM configuracaonivelcompetencia WHERE configuracaonivelcompetenciafaixasalarial_id in ( "
-									+ "													SELECT id FROM configuracaonivelcompetenciafaixasalarial cncf WHERE cncf.faixasalarial_id = " + faixaSalarialId + " and cncf.data = '" + dataFormatada + "') "
-									+ "		 									   ) " };
-		
-		JDBCConnection.executeQuery(sql);
+		JDBCConnection.executeQuery(new String[] {sql.toString()});
+	}
+	
+	public void atualizarConfiguracaoNivelCompetenciaCandidato(Long faixaSalarialId, Date data) 
+	{
+		String dataFormatada = "'" + DateUtil.formataDiaMesAno(data) + "' ";
+		StringBuffer sql = new StringBuffer();
+		sql.append("delete from ConfiguracaoNivelCompetencia ");
+		sql.append("where id in (  ");
+		sql.append("select cnc.id from ConfiguracaoNivelCompetencia cnc ");
+		sql.append("inner join Solicitacao s on s.id = cnc.solicitacao_id ");
+		sql.append("WHERE cnc.candidato_id is not null ");
+		sql.append(" and s.faixaSalarial_id = " + faixaSalarialId);
+		sql.append(" and s.data >= " +  dataFormatada );
+		sql.append(" and s.data < (coalesce ((SELECT min(data) FROM ConfiguracaoNivelCompetenciaFaixaSalarial cncfsub WHERE cncfsub.faixaSalarial_id = " + faixaSalarialId + " and cncfsub.data > " + dataFormatada + " ), '01-01-2300')) ");
+		sql.append(" and cnc.competencia_id || cnc.tipoCompetencia not in ");
+		sql.append("	(SELECT distinct cncsub.competencia_id || cncsub.tipoCompetencia FROM ConfiguracaoNivelCompetencia as cncsub ");
+		sql.append("	WHERE cncsub.configuracaoNivelCompetenciaFaixaSalarial_id in ");
+		sql.append("		(SELECT id FROM ConfiguracaoNivelCompetenciaFaixaSalarial cncf WHERE cncf.faixaSalarial_id = " + faixaSalarialId + " and cncf.data = " + dataFormatada + " )) ");
+		sql.append(") ");
+
+		JDBCConnection.executeQuery(new String[]{sql.toString()});
 	}
 
 	public boolean existeDependenciaComCompetenciasDaCandidato(Long faixaSalarialId, Date dataInicial, Date dataFinal)
@@ -586,14 +609,14 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		criteria.createCriteria("cs.solicitacao", "s", Criteria.INNER_JOIN);
 		
 		criteria.setProjection(Projections.count("s.data"));
-				
+		
 		criteria.add(Expression.eq("cnc.faixaSalarial.id", faixaSalarialId));
 		criteria.add(Expression.eq("cs.triagem", false));
 		criteria.add(Expression.ge("s.data", dataInicial));
 		
 		if(dataFinal != null)
 			criteria.add(Expression.lt("s.data", dataFinal));
-
+		
 		return ((Integer) criteria.uniqueResult()) > 0;		
 	}
 }
