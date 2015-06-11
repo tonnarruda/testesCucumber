@@ -228,7 +228,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			
 			configuracaoNivelCompetenciaManager.saveCompetenciasFaixaSalarial(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaFaixaSalarial);
 			configuracaoNivelCompetenciaManager.atualizarConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
-			addActionSuccess("Níveis de competência da faixa salarial salvos com sucesso.");
+			setActionMsg("Níveis de competência da faixa salarial salvos com sucesso.");
 		}
 		catch (DataIntegrityViolationException e)
 		{
@@ -364,7 +364,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		try
 		{
 			configuracaoNivelCompetenciaManager.saveCompetenciasColaboradorAndRecalculaPerformance(getEmpresaSistema().getId(), niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaColaborador);
-			addActionSuccess("Níveis de competência do colaborador salvos com sucesso.");
+			setActionMsg("Níveis de competência do colaborador salvos com sucesso.");
 		}
 		catch (Exception e)
 		{

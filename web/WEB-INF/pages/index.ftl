@@ -51,7 +51,7 @@
 				modal: true,
 				zIndex: 99999,
 				minWidth: 430,
-				create: function (event, ui) { $(".ui-dialog-titlebar").hide(); },
+				create: function (event, ui) {  },
 			  	close: function() {
 			  		if ( $('#naoExibirMsg').is(':checked') ) 
 			  			$.cookie("pgInicialSplashMarca", false, { expires: 30 }); 
