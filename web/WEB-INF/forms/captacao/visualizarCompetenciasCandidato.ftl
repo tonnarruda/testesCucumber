@@ -42,7 +42,7 @@
 		{
 			$(data).each(function(i, nivelSugerido) {
 				var linhaSugerida = $('tr').has('td.competencia-' + nivelSugerido.competenciaId).has('td.tipo-competencia-' + nivelSugerido.tipoCompetencia);
-				linhaSugerida.find('.nivel-' + nivelSugerido.nivelCompetencia.id).css('background-color', '#ececec');			
+				linhaSugerida.find('.nivel-' + nivelSugerido.nivelCompetencia.id).css('background-color', '#BFC0C3');			
 			});
 		}
 	</script>
@@ -54,13 +54,12 @@
 		<#if niveisCompetenciaFaixaSalariaisSalvos?exists && 0 < niveisCompetenciaFaixaSalariaisSalvos?size>
 			<p>Comparar as competências do candidato com as exigidas pelo Cargo da seguinte solicitação:</p>
 
-			<div id="legendas" style="float:right;">
-				<span style='background-color: #ececec;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial
-			</div>
-
-			<@ww.select label="Solicitação" name="solicitacao.id" id="solicitacao" headerKey="" headerValue="Selecione" listKey="id" listValue="descricao" list="solicitacoes" theme="simple"/>
+			<div style='width: 710px;'>
+				<@ww.select label="Solicitação" name="solicitacao.id" id="solicitacao" headerKey="" headerValue="Selecione" listKey="id" listValue="descricao" list="solicitacoes" theme="simple"/>
+				<span style='float: right;'>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial</span></span><span style='background-color: #BFC0C3; float: right;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			<div/>
 		
-			<br /><br />
+			<br />
 		
 			<@display.table name="niveisCompetenciaFaixaSalariaisSalvos" id="configuracaoNivelCompetencia" class="dados">
 				<@display.column title="Competência" property="competenciaDescricao" class="competencia-${configuracaoNivelCompetencia.competenciaId} tipo-competencia-${configuracaoNivelCompetencia.tipoCompetencia}"/>

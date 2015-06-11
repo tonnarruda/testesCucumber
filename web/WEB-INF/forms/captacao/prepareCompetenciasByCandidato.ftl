@@ -60,7 +60,7 @@
 	
 	
 	<div id="legendas" style="float:right;">
-		<span style='background-color: #ececec;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial
+		<span style='background-color: #BFC0C3;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial
 	</div>
 	
 	<b>Candidato:</b> ${candidato.nome}
@@ -84,7 +84,7 @@
 			<#list nivelCompetencias as nivel>
 				<#if configuracaoNivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.id?exists && configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
 					<#assign class="nivelFaixa"/>
-					<#assign bgcolor="background-color: #ececec;"/>
+					<#assign bgcolor="background-color: #BFC0C3;"/>
 				<#else>
 					<#assign class=""/>
 					<#assign bgcolor=""/>
