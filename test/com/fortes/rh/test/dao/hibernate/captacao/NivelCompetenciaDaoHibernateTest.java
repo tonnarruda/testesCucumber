@@ -1359,11 +1359,10 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertFalse("Sem data final e data da solicitação menor que data início)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("02/01/2019"), null));
 		assertTrue("Sem data final e data da solicitação maior que data início)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("03/01/2019"), DateUtil.criarDataDiaMesAno("02/01/2019"), null));
 		
+		assertFalse("Com data final e data da solicitação menor que data início)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("01/02/2019"), DateUtil.criarDataDiaMesAno("02/02/2019"), DateUtil.criarDataDiaMesAno("01/03/2019")));
 		assertTrue("Com data final e data da solicitação igual à data início)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/02/2019")));
 		assertTrue("Com data final e data da solicitação entre início e fim)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("01/02/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/03/2019")));
 		assertFalse("Com data final e data da solicitação igual à data final)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("01/02/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/02/2019")));
-		
-		assertFalse("Com data final e data da solicitação menor que data início)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("01/02/2019"), DateUtil.criarDataDiaMesAno("02/02/2019"), DateUtil.criarDataDiaMesAno("01/03/2019")));
 		assertFalse("Com data final e data da solicitação maior que data final)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("02/02/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/02/2019")));
 	}
 	
