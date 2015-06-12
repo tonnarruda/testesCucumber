@@ -226,9 +226,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findColaboradorPesquisa(id, empresaId);
 	}
 
-	public boolean insert(Colaborador colaborador, Double salarioColaborador, Long idCandidato, Collection<Formacao> formacaos,
-			Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Solicitacao solicitacao, Empresa empresa) throws Exception
-			{
+	public boolean insert(Colaborador colaborador, Double salarioColaborador, Long idCandidato, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias, Solicitacao solicitacao, Empresa empresa) throws Exception
+	{
 		colaborador.setUsuario(null);
 
 		if (colaborador.getPessoal().getCtps().getCtpsUf().getId() == null)
@@ -271,6 +270,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			experienciaManager.removeCandidato(new Candidato(idCandidato, null));//vai ser salvo logo abaixo com id de candidato e colaborador, fazendo compartilhamento das experiências.
 
 			// Copia as competências do candidato para o colaborador
+			Qual competência do candidato escolher, tendo em vista que ele pode ter várias de acordo com a solicitação?
 			Collection<ConfiguracaoNivelCompetencia> configuracoesNiveisCompetencias = configuracaoNivelCompetenciaManager.findByCandidato(idCandidato);
 			if (configuracoesNiveisCompetencias != null && configuracoesNiveisCompetencias.size() > 0)
 			{
