@@ -227,7 +227,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			atualizaNivelCometenciaFaixaSalarial(niveisCompetenciaFaixaSalariaisAtitude);
 			
 			configuracaoNivelCompetenciaManager.saveCompetenciasFaixaSalarial(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaFaixaSalarial);
-			configuracaoNivelCompetenciaManager.atualizarConfiguracaoNivelCompetenciaColaboradorAndCandidato(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 			setActionMsg("Níveis de competência da faixa salarial salvos com sucesso.");
 		}
 		catch (DataIntegrityViolationException e)
@@ -387,6 +386,10 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			configuracaoNivelCompetenciaManager.removeConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId());
 			addActionSuccess("Competências excluídas com sucesso.");
 		}
+		catch(FortesException fe)
+		{
+			addActionWarning(fe.getMessage());
+		}
 		catch (Exception e)
 		{
 			addActionError("Não foi possível excluir as competências.");
@@ -403,7 +406,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		try
 		{
 			configuracaoNivelCompetenciaManager.removeConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getId());
-//			configuracaoNivelCompetenciaManager.atualizarConfiguracaoNivelCompetenciaColaboradorAndCandidato(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 			addActionSuccess("Competências excluídas com sucesso");
 		}
 		catch (FortesException e)

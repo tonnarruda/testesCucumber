@@ -603,6 +603,7 @@ import com.fortes.rh.test.web.dwr.ColaboradorDWRTest;
 import com.fortes.rh.test.web.dwr.ComissaoPeriodoDWRTest;
 import com.fortes.rh.test.web.dwr.ComissaoPlanoTrabalhoDWRTest;
 import com.fortes.rh.test.web.dwr.ComissaoReuniaoDWRTest;
+import com.fortes.rh.test.web.dwr.CompetenciaDWRTest;
 import com.fortes.rh.test.web.dwr.ConfiguracaoPerformanceDWRTest;
 import com.fortes.rh.test.web.dwr.ConhecimentoDWRTest;
 import com.fortes.rh.test.web.dwr.DiaTurmaDWRTest;
@@ -710,6 +711,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ConfiguracaoNivelCompetenciaManagerTest.class);
         suite.addTestSuite(ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest.class);
         suite.addTestSuite(CompetenciaDaoHibernateTest.class);
+        suite.addTestSuite(CompetenciaDWRTest.class);
 
         suite.addTestSuite(CtpsTest.class);
 

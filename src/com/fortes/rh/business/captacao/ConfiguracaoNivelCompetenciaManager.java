@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
@@ -29,7 +31,7 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 	Collection<ConfiguracaoNivelCompetenciaVO> montaMatrizCompetenciaCandidato(Long empresaId, Long faixaSalarialId, Long solicitacaoId);
 	void removeByFaixas(Long[] faixaSalarialIds);
 	void removeColaborador(Colaborador colaborador);
-	void removeConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelColaboradorId);
+	void removeConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelColaboradorId) throws Exception, FortesException;
 	void removeConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelFaixaSalarialId) throws Exception;
 	void removeByCandidato(Long candidatoId);
 	Long[] findCompetenciasIdsConfiguradasByFaixaSolicitacao(Long faixaSalarialId);
@@ -39,6 +41,7 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 	void removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixaSalarial(Long[] faixaIds);
 	void removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixaSalarial(Long[] faixaIds);
 	Collection<Competencia> findCompetenciasColaboradorByFaixaSalarialAndPeriodo(Long faixaId, Date dataIni, Date dataFim);
-	void atualizarConfiguracaoNivelCompetenciaColaboradorAndCandidato(Long faixaSalarialId , Date data);
 	void saveCompetenciasColaboradorAndRecalculaPerformance(Long empresaId, Collection<ConfiguracaoNivelCompetencia> configuracaoNiveisCompetencias, ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador);
+	Collection<Colaborador> findDependenciaComColaborador(Long faixaSalarialId,	Date data);
+	Collection<Candidato> findDependenciaComCandidato(Long faixaSalarialId, Date data);
 }

@@ -9,6 +9,9 @@
 	</style>
 	
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CompetenciaDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 
 	<script type="text/javascript">
 		$(function() {
@@ -100,24 +103,33 @@
 				return false;
 			}
 		
-			var linhasSemRadioMarcadoConhecimento = $('tr').has('.checkNivelConhecimento:enabled').not(':has(.checkNivelConhecimento:checked)');
-			var linhasSemRadioMarcadoHabilidade = $('tr').has('.checkNivelHabilidade:enabled').not(':has(.checkNivelHabilidade:checked)');
-			var linhasSemRadioMarcadoAtitude = $('tr').has('.checkNivelAtitude:enabled').not(':has(.checkNivelAtitude:checked)');
-			
-			if(linhasSemRadioMarcadoConhecimento.size() == 0 && linhasSemRadioMarcadoHabilidade.size() == 0 && linhasSemRadioMarcadoAtitude.size() == 0) {
-				$('#form').submit();
-				return true;
-			}
+			CompetenciaDWR.findVinculosCompetencia(pendeciasCompetencias, ${faixaSalarial.id}, $('#data').val());
+		}
 				
-			$('tr.even').css('background-color', '#EFEFEF');
-			$('tr.odd').css('background-color', '#FFF');
-		
-			jAlert('Selecione os níveis para as competências indicadas.');
-			linhasSemRadioMarcadoConhecimento.css('background-color', '#FFEEC2');
-			linhasSemRadioMarcadoHabilidade.css('background-color', '#FFEEC2');
-			linhasSemRadioMarcadoAtitude.css('background-color', '#FFEEC2');
+		function pendeciasCompetencias(data)
+		{
+			if(data){   
+				jAlert(data);
+			}else{
+				var linhasSemRadioMarcadoConhecimento = $('tr').has('.checkNivelConhecimento:enabled').not(':has(.checkNivelConhecimento:checked)');
+				var linhasSemRadioMarcadoHabilidade = $('tr').has('.checkNivelHabilidade:enabled').not(':has(.checkNivelHabilidade:checked)');
+				var linhasSemRadioMarcadoAtitude = $('tr').has('.checkNivelAtitude:enabled').not(':has(.checkNivelAtitude:checked)');
+				
+				if(linhasSemRadioMarcadoConhecimento.size() == 0 && linhasSemRadioMarcadoHabilidade.size() == 0 && linhasSemRadioMarcadoAtitude.size() == 0) {
+					$('#form').submit();
+					return true;
+				}
+					
+				$('tr.even').css('background-color', '#EFEFEF');
+				$('tr.odd').css('background-color', '#FFF');
+			
+				jAlert('Selecione os níveis para as competências indicadas.');
+				linhasSemRadioMarcadoConhecimento.css('background-color', '#FFEEC2');
+				linhasSemRadioMarcadoHabilidade.css('background-color', '#FFEEC2');
+				linhasSemRadioMarcadoAtitude.css('background-color', '#FFEEC2');
 
-			return false;
+				return false;
+			}
 		}
 	
 	</script>

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
@@ -33,7 +34,7 @@ public interface ConfiguracaoNivelCompetenciaDao extends GenericDao<Configuracao
 	void removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixasSalariais(Long[] faixaIds);
 	Collection<ConfiguracaoNivelCompetencia> findCompetenciasFaixaSalarial(Long[] competenciaIds, Long faixaSalarialId);
 	Collection<Competencia> findCompetenciasColaboradorByFaixaSalarialAndPeriodo(Long faixaId, Date dataIni, Date dataFim);
-	void atualizarConfiguracaoNivelCompetenciaColaborador(Long faixaSalarialId, Date data);
-	void atualizarConfiguracaoNivelCompetenciaCandidato(Long faixaSalarialId,Date data);
 	boolean existeDependenciaComCompetenciasDaCandidato(Long faixaSalarialId, Date dataInicial, Date dataFinal);
+	Collection<Colaborador> findDependenciaComColaborador(Long faixaSalarialId,	Date data);
+	Collection<Candidato> findDependenciaComCandidato(Long faixaSalarialId, Date data);
 }

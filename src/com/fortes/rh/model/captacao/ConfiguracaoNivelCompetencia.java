@@ -33,6 +33,8 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	private ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial;
 	@ManyToOne
 	private NivelCompetencia nivelCompetencia;
+	@ManyToOne
+	private Solicitacao solicitacao;
 	@Column
 	private Character tipoCompetencia;
 	@Column(name="competencia_id", nullable=false)
@@ -408,5 +410,15 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 			this.configuracaoNivelCompetenciaFaixaSalarial = new ConfiguracaoNivelCompetenciaFaixaSalarial();
 		
 		this.configuracaoNivelCompetenciaFaixaSalarial.setData(ConfiguracaoNivelCompetenciaFaixaSalarialData);
+	}
+
+	public Solicitacao getSolicitacao() 
+	{
+		return solicitacao;
+	}
+
+	public void setSolicitacao(Solicitacao solicitacao) 
+	{
+		this.solicitacao = solicitacao;
 	}
 }

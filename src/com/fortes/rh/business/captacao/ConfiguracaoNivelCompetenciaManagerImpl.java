@@ -11,6 +11,7 @@ import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.exception.FortesException;
+import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
@@ -138,12 +139,6 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		}
 	}
 	
-	public void atualizarConfiguracaoNivelCompetenciaColaboradorAndCandidato(Long faixaSalarialId , Date data)
-	{
-		getDao().atualizarConfiguracaoNivelCompetenciaColaborador(faixaSalarialId, data);
-		getDao().atualizarConfiguracaoNivelCompetenciaCandidato(faixaSalarialId, data);
-	}
-
 	public Collection<ConfiguracaoNivelCompetencia> getCompetenciasCandidato(Long candidatoId, Long empresaId) {
 		Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvos = getDao().findByCandidato(candidatoId);
 
@@ -446,8 +441,13 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
 
-	public void removeConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelColaboradorId)
+	public void removeConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelColaboradorId) throws Exception, FortesException
 	{
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findByIdProjection(configuracaoNivelColaboradorId);
+		
+		if(configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario() != null && configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getId() != null)
+			throw new FortesException("Esta configuração de competência não pode ser excluída, pois existe dependência com avaliação de desempenho.");
+		
 		getDao().removeByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelColaboradorId);
 		configuracaoNivelCompetenciaColaboradorManager.remove(configuracaoNivelColaboradorId);
 	}
@@ -520,6 +520,16 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	public void removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixaSalarial(Long[] faixaIds)
 	{
 		getDao().removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixasSalariais(faixaIds);
+	}
+
+	public Collection<Colaborador> findDependenciaComColaborador(Long faixaSalarialId, Date data) 
+	{
+		return getDao().findDependenciaComColaborador(faixaSalarialId, data);
+	}
+	
+	public Collection<Candidato> findDependenciaComCandidato(Long faixaSalarialId, Date data)
+	{
+		return getDao().findDependenciaComCandidato(faixaSalarialId, data);
 	}
 
 	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager)
