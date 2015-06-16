@@ -247,6 +247,7 @@
 		<Item visivel="N" motivo="P20140900110"><![CDATA[BUG: Utilitários > Cadastros > Empresas: Impedir a inserção de aspas simples(') no nome da empresa, pois o mesmo invalida o javascript em vários locais do sistema.]]></Item>
 		<Item visivel="N" motivo="P20140800224"><![CDATA[BUG: Utilitários > Configurações > Gerenciador de Comunicação: Ao enviar mensagem e email de aviso de desligamento, o nome do colaborador era preenchido com "null".]]></Item>
 		<Item visivel="N" motivo="S20140900063"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Melhoria na descrição da permissão para visualizar problemas de comunicação com o AC Pessoal.]]></Item>
+		<Item visivel="N" motivo="S20150500019"><![CDATA[Utilitários > Inserir Nono Dígito em Celulares: Nova funcionalidade que atualiza os números dos celulares, acresentando o nono dígito.]]></Item>
 		<Item visivel="N" motivo="S20140800142"><![CDATA[Envio de emails automáticos ao concluir pendências e solicitações para que seja iniciada a homologação.]]></Item>
 	</Versao>
 	<Versao id="1.1.133.160" bd="" data="08/09/2014">

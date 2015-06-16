@@ -37,12 +37,12 @@ public class InsereNonoDigitoEditAction extends MyActionSupportEdit
 			colaboradorManager.insereNonoDigitoCelular(estadosCheck);
 			candidatoManager.inserirNonoDigitoCelular(estadosCheck);
 		} catch (Exception e) {
-			addActionError("Erro tentar inserir o nono dígito nos telefones.");
+			addActionError("Erro tentar inserir o nono dígito.");
 		} finally {
 			prepareInsert();
 		}
 		
-		addActionSuccess("Nono dígito inserido nos telefones com sucesso.");
+		addActionSuccess("Nono dígito inserido com sucesso.");
 
 		return Action.SUCCESS;
 	}
