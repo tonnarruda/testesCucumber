@@ -15,6 +15,7 @@ import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.dwr.CompetenciaDWR;
 
 public class CompetenciaDWRTest extends MockObjectTestCase{
@@ -37,6 +38,7 @@ public class CompetenciaDWRTest extends MockObjectTestCase{
 		FaixaSalarial faixa = FaixaSalarialFactory.getEntity(1L);
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setDataAtualizacao(DateUtil.criarDataDiaMesAno(dataString));
 		colaborador.setNome("Nome Colaborador");
 		
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
@@ -57,6 +59,7 @@ public class CompetenciaDWRTest extends MockObjectTestCase{
 		FaixaSalarial faixa = FaixaSalarialFactory.getEntity(1L);
 		
 		Candidato candidato = CandidatoFactory.getCandidato(1L);
+		candidato.setDataAtualizacao(DateUtil.criarDataDiaMesAno(dataString));
 		candidato.setNome("Nome Candidato");
 		
 		Collection<Candidato> candidatos = new ArrayList<Candidato>();
@@ -81,6 +84,7 @@ public class CompetenciaDWRTest extends MockObjectTestCase{
 
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setAvaliacaoDesempenhoTitulo(avaliacaoDesempenho.getTitulo());
+		colaborador.setDataAtualizacao(DateUtil.criarDataDiaMesAno(dataString));
 		colaborador.setNome("Nome Colaborador");
 		
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
@@ -105,9 +109,11 @@ public class CompetenciaDWRTest extends MockObjectTestCase{
 
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setAvaliacaoDesempenhoTitulo(avaliacaoDesempenho.getTitulo());
+		colaborador.setDataAtualizacao(DateUtil.criarDataDiaMesAno(dataString));
 		colaborador.setNome("Nome Colaborador");
 		
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setDataAtualizacao(DateUtil.criarDataDiaMesAno(dataString));
 		colaborador2.setNome("Nome Colaborador 2");
 		
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
@@ -115,6 +121,7 @@ public class CompetenciaDWRTest extends MockObjectTestCase{
 		colaboradores.add(colaborador2);
 		
 		Candidato candidato = CandidatoFactory.getCandidato(1L);
+		candidato.setDataAtualizacao(DateUtil.criarDataDiaMesAno(dataString));
 		candidato.setNome("Nome Candidato");
 		
 		Collection<Candidato> candidatos = new ArrayList<Candidato>();

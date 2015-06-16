@@ -210,7 +210,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarial.getId(), solicitacao.getData());
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		
-		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByCandidato(candidato.getId());
+		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByCandidatoAndSolicitacao(candidato.getId(), solicitacao.getId());
 		
 		return Action.SUCCESS;
 	}
@@ -262,7 +262,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		try
 		{
-			configuracaoNivelCompetenciaManager.saveCompetenciasCandidato(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), candidato.getId());
+			configuracaoNivelCompetenciaManager.saveCompetenciasCandidato(niveisCompetenciaFaixaSalariais, faixaSalarial.getId(), candidato.getId(), solicitacao.getId());
 			addActionSuccess("Níveis de competência do candidato salvos com sucesso");
 		}
 		catch (Exception e)

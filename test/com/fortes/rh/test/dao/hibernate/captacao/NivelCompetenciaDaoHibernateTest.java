@@ -148,17 +148,21 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		Candidato candidato = CandidatoFactory.getCandidato();
 		candidatoDao.save(candidato);
 		
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
+		solicitacaoDao.save(solicitacao);
+		
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivel, habilidade.getId(), null, null, null, null);
 		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial);
 		configuracaoNivelCompetencia.setCandidato(candidato);
+		configuracaoNivelCompetencia.setSolicitacao(solicitacao);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
 
-		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findByCandidato(candidato.getId());
+		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato.getId(), solicitacao.getId());
 		assertEquals(1, configs.size());
 		
-		configuracaoNivelCompetenciaDao.deleteConfiguracaoByCandidatoFaixa(candidato.getId(), faixaSalarial.getId());
+		configuracaoNivelCompetenciaDao.deleteConfiguracaoByCandidatoFaixa(candidato.getId(), faixaSalarial.getId(), solicitacao.getId());
 		
-		configs = configuracaoNivelCompetenciaDao.findByCandidato(candidato.getId());
+		configs = configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato.getId(), null);
 		assertEquals(0, configs.size());	
 	}
 	
@@ -416,13 +420,13 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configNivelComp2.setCompetenciaId(habilidade.getId());
 		configuracaoNivelCompetenciaDao.save(configNivelComp2);
 		
-		assertEquals(1,configuracaoNivelCompetenciaDao.findByCandidato(candidato1.getId()).size());
-		assertEquals(1, configuracaoNivelCompetenciaDao.findByCandidato(candidato2.getId()).size());
+		assertEquals(1,configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato1.getId(), null).size());
+		assertEquals(1, configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato2.getId(), null).size());
 		
 		configuracaoNivelCompetenciaDao.removeByCandidato(candidato1.getId());
 		
-		assertEquals(0,configuracaoNivelCompetenciaDao.findByCandidato(candidato1.getId()).size());
-		assertEquals(1, configuracaoNivelCompetenciaDao.findByCandidato(candidato2.getId()).size());
+		assertEquals(0,configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato1.getId(), null).size());
+		assertEquals(1, configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato2.getId(), null).size());
 	}
 	
 	public void testFindByFaixa()
@@ -511,7 +515,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		nivelCompetenciaCandidatoDiferente.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
 		configuracaoNivelCompetenciaDao.save(nivelCompetenciaCandidatoDiferente);
 		
-		assertEquals(2, configuracaoNivelCompetenciaDao.findByCandidato(candidato1.getId()).size());
+		assertEquals(2, configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato1.getId(), null).size());
 	}
 	
 	public void testFindByConfiguracaoNivelCompetenciaColaborador()
@@ -745,13 +749,13 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		
 		Long[] faixaSalarialIds = new Long[]{faixaSalarial.getId()};
 		
-		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = configuracaoNivelCompetenciaDao.findByCandidato(jose.getId());
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(jose.getId(), null);
 		
 		assertEquals(2, configuracaoNivelCompetencias.size());
 		
 		configuracaoNivelCompetenciaDao.removeByFaixas(faixaSalarialIds);
 		
-		configuracaoNivelCompetencias = configuracaoNivelCompetenciaDao.findByCandidato(jose.getId());
+		configuracaoNivelCompetencias = configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(jose.getId(), null);
 		
 		assertEquals(0, configuracaoNivelCompetencias.size());
 	}

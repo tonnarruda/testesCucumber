@@ -58,11 +58,15 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<ConfiguracaoNivelCompetencia> findByCandidato(Long candidatoId) 
+	public Collection<ConfiguracaoNivelCompetencia> findByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId) 
 	{
 		Criteria criteria = createCriteria();
 
 		criteria.add(Expression.eq("cnc.candidato.id", candidatoId));
+		
+		if(solicitacaoId != null)
+			criteria.add(Expression.eq("cnc.solicitacao.id", solicitacaoId));
+		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetencia.class));
 
@@ -91,11 +95,11 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return criteria;
 	}
 
-	public void deleteConfiguracaoByCandidatoFaixa(Long candidatoId, Long faixaSalarialId) 
+	public void deleteConfiguracaoByCandidatoFaixa(Long candidatoId, Long faixaSalarialId, Long solicitacaoId) 
 	{
-		String queryHQL = "delete from ConfiguracaoNivelCompetencia where candidato.id = :candidatoId and faixaSalarial.id = :faixaSalarialId";
+		String queryHQL = "delete from ConfiguracaoNivelCompetencia where candidato.id = :candidatoId and faixaSalarial.id = :faixaSalarialId and solicitacao.id = :solicitacaoId";
 		
-		getSession().createQuery(queryHQL).setLong("candidatoId", candidatoId).setLong("faixaSalarialId", faixaSalarialId).executeUpdate();		
+		getSession().createQuery(queryHQL).setLong("candidatoId", candidatoId).setLong("faixaSalarialId", faixaSalarialId).setLong("solicitacaoId", solicitacaoId).executeUpdate();		
 	}
 	
 	public void deleteByConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelCompetenciaColaboradorId) 

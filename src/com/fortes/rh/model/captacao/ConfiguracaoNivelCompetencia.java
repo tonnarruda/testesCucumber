@@ -421,4 +421,12 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	{
 		this.solicitacao = solicitacao;
 	}
+
+	public void setSolicitacaoId(Long solicitacaoId)
+	{
+		if(this.solicitacao == null) 
+			this.solicitacao = new Solicitacao();
+		
+		this.solicitacao.setId(solicitacaoId);
+	}
 }

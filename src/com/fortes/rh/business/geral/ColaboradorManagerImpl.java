@@ -269,26 +269,25 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			candidatoManager.updateSetContratado(idCandidato, empresa.getId());
 			experienciaManager.removeCandidato(new Candidato(idCandidato, null));//vai ser salvo logo abaixo com id de candidato e colaborador, fazendo compartilhamento das experiências.
 
-			// Copia as competências do candidato para o colaborador
-			Qual competência do candidato escolher, tendo em vista que ele pode ter várias de acordo com a solicitação?
-			Collection<ConfiguracaoNivelCompetencia> configuracoesNiveisCompetencias = configuracaoNivelCompetenciaManager.findByCandidato(idCandidato);
-			if (configuracoesNiveisCompetencias != null && configuracoesNiveisCompetencias.size() > 0)
-			{
-				for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracoesNiveisCompetencias)
-					configuracaoNivelCompetencia.setCandidato(null);
+			Collection<ConfiguracaoNivelCompetencia> configuracoesNiveisCompetencias = new ArrayList<ConfiguracaoNivelCompetencia>();
 
-				ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
-				configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
-				configuracaoNivelCompetenciaColaborador.setFaixaSalarial(historico.getFaixaSalarial());
-				configuracaoNivelCompetenciaColaborador.setData(historico.getData());
-
-				configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(configuracoesNiveisCompetencias, configuracaoNivelCompetenciaColaborador);
-			}
-
-			// Contratação COM solicitação
 			if (solicitacao.getId() != null)
 			{
 				colaborador.setSolicitacao(solicitacao);
+		
+				configuracoesNiveisCompetencias = configuracaoNivelCompetenciaManager.findByCandidatoAndSolicitacao(idCandidato, solicitacao.getId());
+				if (configuracoesNiveisCompetencias != null && configuracoesNiveisCompetencias.size() > 0)
+				{
+					for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracoesNiveisCompetencias)
+						configuracaoNivelCompetencia.setCandidato(null);
+
+					ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+					configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
+					configuracaoNivelCompetenciaColaborador.setFaixaSalarial(historico.getFaixaSalarial());
+					configuracaoNivelCompetenciaColaborador.setData(historico.getData());
+
+					configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(configuracoesNiveisCompetencias, configuracaoNivelCompetenciaColaborador);
+				}
 			}
 		}
 

@@ -35,18 +35,19 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return getDao().findByFaixa(faixaSalarialId, data);
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> findByCandidato(Long candidatoId) {
-		return getDao().findByCandidato(candidatoId);
+	public Collection<ConfiguracaoNivelCompetencia> findByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId) {
+		return getDao().findByCandidatoAndSolicitacao(candidatoId, solicitacaoId);
 	}
 
-	public void saveCompetenciasCandidato(Collection<ConfiguracaoNivelCompetencia> configuracaoNiveisCompetencias, Long faixaSalarialId, Long candidatoId) 
+	public void saveCompetenciasCandidato(Collection<ConfiguracaoNivelCompetencia> configuracaoNiveisCompetencias, Long faixaSalarialId, Long candidatoId, Long solicitacaoId) 
 	{
-		getDao().deleteConfiguracaoByCandidatoFaixa(candidatoId, faixaSalarialId);
+		getDao().deleteConfiguracaoByCandidatoFaixa(candidatoId, faixaSalarialId, solicitacaoId);
 
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNiveisCompetencias) {
 			if (configuracaoNivelCompetencia.getCompetenciaId() != null) {
 				configuracaoNivelCompetencia.setFaixaSalarialIdProjection(faixaSalarialId);
 				configuracaoNivelCompetencia.setCandidatoIdProjection(candidatoId);
+				configuracaoNivelCompetencia.setSolicitacaoId(solicitacaoId);
 
 				getDao().save(configuracaoNivelCompetencia);
 			}
@@ -140,7 +141,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	}
 	
 	public Collection<ConfiguracaoNivelCompetencia> getCompetenciasCandidato(Long candidatoId, Long empresaId) {
-		Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvos = getDao().findByCandidato(candidatoId);
+		Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvos = getDao().findByCandidatoAndSolicitacao(candidatoId, null);
 
 		if (!niveisCompetenciaFaixaSalariaisSalvos.isEmpty()) {
 			Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(null, empresaId);

@@ -988,11 +988,11 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		queryHQL = "delete from ConfiguracaoNivelCompetencia cnc where cnc.configuracaoNivelCompetenciaColaborador.id in (select id from ConfiguracaoNivelCompetenciaColaborador cncc where cncc.colaboradorQuestionario.id = :colaboradorQuestionarioId)";
 		getSession().createQuery(queryHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
 
+		String queryUpdateHQL = "update ColaboradorQuestionario cq set cq.respondida = false, cq.respondidaEm = null, cq.performance = null, cq.performanceNivelCompetencia = null, cq.observacao = null, cq.configuracaoNivelCompetenciaColaborador.id = null  where cq.id = :colaboradorQuestionarioId";
+		getSession().createQuery(queryUpdateHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
+
 		queryHQL = "delete from ConfiguracaoNivelCompetenciaColaborador cncc where cncc.colaboradorQuestionario.id = :colaboradorQuestionarioId";
 		getSession().createQuery(queryHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
-		
-		String queryUpdateHQL = "update ColaboradorQuestionario cq set cq.respondida = false, cq.respondidaEm = null, cq.performance = null, cq.performanceNivelCompetencia = null, cq.observacao = null where cq.id = :colaboradorQuestionarioId";
-		getSession().createQuery(queryUpdateHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
 	}
 
 	public Collection<ColaboradorQuestionario> findForRankingPerformanceAvaliacaoCurso(Long[] cursosIds, Long[] turmasIds, Long[] avaliacaoCursosIds) 
