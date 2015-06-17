@@ -9,8 +9,6 @@ import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Competencia;
-import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
-import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
@@ -113,15 +111,6 @@ public class CompetenciaDWR
 		return msg;
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> getSugestoesBySolicitacao(Long solicitacaoId) 
-	{
-		Solicitacao solicitacao = solicitacaoManager.findByIdProjectionAreaFaixaSalarial(solicitacaoId);
-		
-		Collection<ConfiguracaoNivelCompetencia> configuracoes =  configuracaoNivelCompetenciaManager.findByFaixa(solicitacao.getFaixaSalarial().getId(), new Date());
-
-		return configuracoes;
-	}
-	
 	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}

@@ -51,6 +51,8 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	@Transient
 	private NivelCompetencia nivelCompetenciaColaborador;
 	@Transient
+	private NivelCompetencia nivelCompetenciaFaixaSalarial;
+	@Transient
 	private Colaborador colaborador;
 	
 	public ConfiguracaoNivelCompetencia()
@@ -200,9 +202,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	
 	public void setFaixaSalarialIdProjection(Long faixaSalarialId) 
 	{
-		if (this.faixaSalarial == null)
-			this.faixaSalarial = new FaixaSalarial();
-		
+		inicializaFaixaSalarial();
 		this.faixaSalarial.setId(faixaSalarialId);
 	}
 	
@@ -424,9 +424,51 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 
 	public void setSolicitacaoId(Long solicitacaoId)
 	{
+		inicializaSolicitacao();
+		this.solicitacao.setId(solicitacaoId);
+	}
+	
+	public void setSolicitacaoDescricao(String solicitacaoDescricao)
+	{
+		inicializaSolicitacao();
+		this.solicitacao.setDescricao(solicitacaoDescricao);
+	}
+	
+	public void setSolicitacaoData(Date solicitacaoData)
+	{
+		inicializaSolicitacao();
+		this.solicitacao.setData(solicitacaoData);
+	}
+
+	private void inicializaSolicitacao() 
+	{
 		if(this.solicitacao == null) 
 			this.solicitacao = new Solicitacao();
-		
-		this.solicitacao.setId(solicitacaoId);
+	}
+	
+	public void setFaixaSalarialNome(String faixaSalarialNome)
+	{
+		inicializaFaixaSalarial();
+		this.faixaSalarial.setNome(faixaSalarialNome);
+	}
+	
+	public void setCargoNome(String cargoNome)
+	{
+		inicializaFaixaSalarial();
+		this.faixaSalarial.setNomeCargo(cargoNome);
+	}
+
+	private void inicializaFaixaSalarial() 
+	{
+		if(this.faixaSalarial == null)
+			this.faixaSalarial = new FaixaSalarial();
+	}
+
+	public NivelCompetencia getNivelCompetenciaFaixaSalarial() {
+		return nivelCompetenciaFaixaSalarial;
+	}
+
+	public void setNivelCompetenciaFaixaSalarial(NivelCompetencia nivelCompetenciaFaixaSalarial) {
+		this.nivelCompetenciaFaixaSalarial = nivelCompetenciaFaixaSalarial;
 	}
 }

@@ -42,8 +42,8 @@
 		#content3 th,
 		#content4 th,
 		#content5 th {
-			background-color:#6B2323;
-			color:#FFCB03;
+			background-color:#999999;
+			color:#FFF;
 			font-weight:bold;
 			padding:8px 15px;
 		}

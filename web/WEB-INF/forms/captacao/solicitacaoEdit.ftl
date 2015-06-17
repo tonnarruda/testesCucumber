@@ -263,6 +263,10 @@
 					content: 'Digite ao lado o nome do colaborador que será substituído, para que o sistema valide se o mesmo tem estabilidade ou não na CIPA.'
 				});
 			</#if>
+			
+			$('#dataHelp').qtip({
+				content: 'A data da solicitação não pode ser editada, pois existem competências para os candidatos.'
+			});
 		});
 	</script>
 
@@ -280,7 +284,12 @@
 			<@ww.textfield readonly="true" label="Descrição" name="solicitacao.descricao" id="descricao" cssClass="inputNome" cssStyle="background: #EBEBEB;" />
 			<@ww.textfield readonly="true" label="Horário de Trabalho" name="solicitacao.horarioComercial" id="horarioComercial" cssClass="inputNome" cssStyle="background: #EBEBEB;" />
 		<#else>
-			<@ww.datepicker label="Data" name="solicitacao.data" required="true" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData"/>
+			<#if existeCompetenciaRespondida>
+				<@ww.textfield readonly="true" label="Data" name="solicitacao.data" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData" cssStyle="background: #EBEBEB;" liClass='liLeft'/>
+				<img id="dataHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-top: 17px" /></br></br>
+			<#else>
+				<@ww.datepicker label="Data" name="solicitacao.data" required="true" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData"/>
+			</#if>	
 			
 			<@ww.textfield label="Descrição" name="solicitacao.descricao" id="descricao" cssClass="inputNome" maxlength="67" required="true"/>
 			<@ww.textfield label="Horário de Trabalho" name="solicitacao.horarioComercial" id="horarioComercial" cssClass="inputNome" maxlength="255" required="true"/>

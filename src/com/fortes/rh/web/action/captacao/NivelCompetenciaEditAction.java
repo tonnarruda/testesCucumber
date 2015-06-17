@@ -68,6 +68,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisHabilidade;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisAtitude;
 	
+	private Collection<Solicitacao> solicitacoesNiveisCompetenciaFaixaSalariaisSalvos;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvos;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvosConhecimento;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvosHabilidade;
@@ -279,8 +280,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	{
 		solicitacoes = solicitacaoManager.findAllByCandidato(candidato.getId());
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
-		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.getCompetenciasCandidato(candidato.getId(), getEmpresaSistema().getId());
-		
+		solicitacoesNiveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.getCompetenciasCandidato(getEmpresaSistema().getId(), candidato.getId());
 		return Action.SUCCESS;
 	}
 	
@@ -726,5 +726,10 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	public boolean getEdicao()
 	{
 		return edicao;
+	}
+
+	public Collection<Solicitacao> getSolicitacoesNiveisCompetenciaFaixaSalariaisSalvos() 
+	{
+		return solicitacoesNiveisCompetenciaFaixaSalariaisSalvos;
 	}
 }

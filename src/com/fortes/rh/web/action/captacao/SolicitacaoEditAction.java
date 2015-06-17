@@ -13,6 +13,7 @@ import java.util.ResourceBundle;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.EtapaSeletivaManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
@@ -93,6 +94,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     private ColaboradorManager colaboradorManager;
     private SolicitacaoAvaliacaoManager solicitacaoAvaliacaoManager;
     private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+    private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 
     private Solicitacao solicitacao = new Solicitacao();
     private MotivoSolicitacao motivoSolicitacao;
@@ -158,6 +160,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	private boolean obrigarAmbienteFuncao;
 	private Date dataIni;
 	private Date dataFim;
+	private boolean existeCompetenciaRespondida;
 
     private void prepare() throws Exception
     {
@@ -212,6 +215,8 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 			avaliacoesCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacoesCheckList, solicitacaoAvaliacaos, "getAvaliacaoId");
 			
 			qtdAvaliacoesRespondidas = colaboradorQuestionarioManager.findBySolicitacaoRespondidas(solicitacao.getId()).size();
+			
+			existeCompetenciaRespondida = configuracaoNivelCompetenciaManager.findByCandidatoAndSolicitacao(null, solicitacao.getId()).size() > 0;
         }
 
     	Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
@@ -926,5 +931,14 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public boolean isObrigaDadosComplementares() {
 		return obrigaDadosComplementares;
+	}
+
+	public boolean isExisteCompetenciaRespondida() {
+		return existeCompetenciaRespondida;
+	}
+
+	public void setConfiguracaoNivelCompetenciaManager(
+			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 }

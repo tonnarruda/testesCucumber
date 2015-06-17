@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.captacao;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
@@ -537,8 +538,16 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 	
 	public void testGetCompetenciasCandidato()
 	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
+		
 		ConfiguracaoNivelCompetencia nivelConhecimento = new ConfiguracaoNivelCompetencia(TipoCompetencia.CONHECIMENTO, 1L, "", null);
+		nivelConhecimento.setFaixaSalarial(faixaSalarial);
+		nivelConhecimento.setSolicitacao(solicitacao);
+
 		ConfiguracaoNivelCompetencia nivelAtitude = new ConfiguracaoNivelCompetencia(TipoCompetencia.ATITUDE, 3L, "", null);
+		nivelAtitude.setFaixaSalarial(faixaSalarial);
+		nivelAtitude.setSolicitacao(solicitacao);
 
 		Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaCandidato = Arrays.asList(nivelConhecimento, nivelAtitude);
 
@@ -546,16 +555,19 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		nivelAtitude.setCompetenciaDescricao("proatividade");
 		ConfiguracaoNivelCompetencia nivelHabilidade = new ConfiguracaoNivelCompetencia(TipoCompetencia.HABILIDADE, 2L, "comunicacao", null);
 		
-		Collection<ConfiguracaoNivelCompetencia> niveisCompetencia = Arrays.asList(nivelConhecimento, nivelHabilidade, nivelAtitude);
+		Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaEmpresa = Arrays.asList(nivelConhecimento, nivelHabilidade, nivelAtitude);
 
 		configuracaoNivelCompetenciaDao.expects(once()).method("findByCandidatoAndSolicitacao").withAnyArguments().will(returnValue(niveisCompetenciaCandidato));
-		nivelCompetenciaManager.expects(once()).method("findByCargoOrEmpresa").with(ANYTHING,ANYTHING).will(returnValue(niveisCompetencia));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findByFaixa").withAnyArguments().will(returnValue(new ArrayList<ConfiguracaoNivelCompetencia>()));
+		nivelCompetenciaManager.expects(once()).method("findByCargoOrEmpresa").with(ANYTHING,ANYTHING).will(returnValue(niveisCompetenciaEmpresa));
 		
-		Collection<ConfiguracaoNivelCompetencia> niveisComDescricao = configuracaoNivelCompetenciaManager.getCompetenciasCandidato(1L, 1L); 
+		Collection<Solicitacao> solicitacaoCoimConhecimento = configuracaoNivelCompetenciaManager.getCompetenciasCandidato(1L, 1L); 
+		assertEquals(1, solicitacaoCoimConhecimento.size());
 		
-		assertEquals(2, niveisComDescricao.size());
-		assertEquals("java", ((ConfiguracaoNivelCompetencia)niveisComDescricao.toArray()[0]).getCompetenciaDescricao());
-		assertEquals("proatividade", ((ConfiguracaoNivelCompetencia)niveisComDescricao.toArray()[1]).getCompetenciaDescricao());
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = ((Solicitacao ) solicitacaoCoimConhecimento.toArray()[0]).getConfiguracaoNivelCompetencias();
+		assertEquals(2, configuracaoNivelCompetencias.size());
+		assertEquals("java", ((ConfiguracaoNivelCompetencia)configuracaoNivelCompetencias.toArray()[0]).getCompetenciaDescricao());
+		assertEquals("proatividade", ((ConfiguracaoNivelCompetencia)configuracaoNivelCompetencias.toArray()[1]).getCompetenciaDescricao());
 	}
 	
 	public void testFindColaboradorAbaixoNivel()

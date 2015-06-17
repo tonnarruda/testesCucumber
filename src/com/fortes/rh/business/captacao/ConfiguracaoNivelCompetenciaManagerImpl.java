@@ -19,6 +19,7 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaVO;
 import com.fortes.rh.model.captacao.MatrizCompetenciaNivelConfiguracao;
 import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.DateUtil;
@@ -140,23 +141,60 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		}
 	}
 	
-	public Collection<ConfiguracaoNivelCompetencia> getCompetenciasCandidato(Long candidatoId, Long empresaId) {
-		Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvos = getDao().findByCandidatoAndSolicitacao(candidatoId, null);
+	public Collection<Solicitacao> getCompetenciasCandidato(Long empresaId, Long candidatoId) 
+	{
+		Collection<Solicitacao> solicitacoesComConfigNiveisCompetenciaCandidato = new ArrayList<Solicitacao>();
+		Collection<ConfiguracaoNivelCompetencia> cncsCandidato = getDao().findByCandidatoAndSolicitacao(candidatoId, null);
 
-		if (!niveisCompetenciaFaixaSalariaisSalvos.isEmpty()) {
-			Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(null, empresaId);
-			for (ConfiguracaoNivelCompetencia nivelCompetenciaCandidato : niveisCompetenciaFaixaSalariaisSalvos) {
-				for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariais) {
-					if (nivelCompetenciaCandidato.getCompetenciaId().equals(configuracaoNivelCompetencia.getCompetenciaId())
-							&& nivelCompetenciaCandidato.getTipoCompetencia().equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
-						nivelCompetenciaCandidato.setCompetenciaDescricao(configuracaoNivelCompetencia.getCompetenciaDescricao());
+		if (!cncsCandidato.isEmpty()) 
+		{
+			Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaEmpresa = nivelCompetenciaManager.findByCargoOrEmpresa(null, empresaId);
+
+			for (ConfiguracaoNivelCompetencia cncCandidato : cncsCandidato) 
+			{
+				for (ConfiguracaoNivelCompetencia nivelCompetenciaEmpresa : niveisCompetenciaEmpresa) 
+				{
+					if (cncCandidato.getCompetenciaId().equals(nivelCompetenciaEmpresa.getCompetenciaId())
+							&& cncCandidato.getTipoCompetencia().equals(nivelCompetenciaEmpresa.getTipoCompetencia())) {
+						cncCandidato.setCompetenciaDescricao(nivelCompetenciaEmpresa.getCompetenciaDescricao());
 						break;
+					}
+				}
+			}
+
+			Solicitacao solicitacao = new Solicitacao();
+			for (ConfiguracaoNivelCompetencia cncCandidato : cncsCandidato) 
+			{
+				if(!cncCandidato.getSolicitacao().getId().equals(solicitacao.getId())){
+
+					if(solicitacao.getId() != null)
+						solicitacoesComConfigNiveisCompetenciaCandidato.add(solicitacao);
+
+					solicitacao = cncCandidato.getSolicitacao();
+					solicitacao.setFaixaSalarial(cncCandidato.getFaixaSalarial());
+					solicitacao.setConfiguracaoNivelCompetencias(new ArrayList<ConfiguracaoNivelCompetencia>());
+				}
+
+				solicitacao.getConfiguracaoNivelCompetencias().add(cncCandidato);	
+			}
+			solicitacoesComConfigNiveisCompetenciaCandidato.add(solicitacao);
+		
+			for (Solicitacao solicitacaoConf : solicitacoesComConfigNiveisCompetenciaCandidato) 
+			{
+				Collection<ConfiguracaoNivelCompetencia> configuracoesNivelCompetenciaDaFaixa = getDao().findByFaixa(solicitacaoConf.getFaixaSalarial().getId(), solicitacaoConf.getData());
+			
+				for(ConfiguracaoNivelCompetencia configuracaoNivelCompetenciaSolicitacao : solicitacaoConf.getConfiguracaoNivelCompetencias())
+				{
+					for (ConfiguracaoNivelCompetencia configuracaoNivelCompetenciaDaFaixa : configuracoesNivelCompetenciaDaFaixa) 
+					{
+						if(configuracaoNivelCompetenciaDaFaixa.getCompetenciaDescricao() != null && configuracaoNivelCompetenciaDaFaixa.getCompetenciaDescricao().equals(configuracaoNivelCompetenciaSolicitacao.getCompetenciaDescricao()))
+							configuracaoNivelCompetenciaSolicitacao.setNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaDaFaixa.getNivelCompetencia());
 					}
 				}
 			}
 		}
 
-		return niveisCompetenciaFaixaSalariaisSalvos;
+		return solicitacoesComConfigNiveisCompetenciaCandidato;
 	}
 
 	public void setNivelCompetenciaManager(NivelCompetenciaManager nivelCompetenciaManager) {

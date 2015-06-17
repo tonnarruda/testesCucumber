@@ -19,7 +19,6 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
-import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Competencia;
@@ -29,7 +28,6 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.util.DateUtil;
 
 public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetencia> implements ConfiguracaoNivelCompetenciaDao
 {
@@ -62,7 +60,8 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	{
 		Criteria criteria = createCriteria();
 
-		criteria.add(Expression.eq("cnc.candidato.id", candidatoId));
+		if(candidatoId != null)
+			criteria.add(Expression.eq("cnc.candidato.id", candidatoId));
 		
 		if(solicitacaoId != null)
 			criteria.add(Expression.eq("cnc.solicitacao.id", solicitacaoId));
@@ -77,6 +76,9 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	{
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetencia.class,"cnc");
 		criteria.createCriteria("cnc.nivelCompetencia", "nc", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cnc.solicitacao", "s", Criteria.LEFT_JOIN);
+		criteria.createCriteria("s.faixaSalarial", "f", Criteria.LEFT_JOIN);
+		criteria.createCriteria("f.cargo", "c", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cnc.id"), "id");
@@ -90,6 +92,12 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		p.add(Projections.property("cnc.competenciaId"), "competenciaId");
 		p.add(Projections.sqlProjection("(select nome from competencia where id = {alias}.competencia_id and {alias}.tipoCompetencia = tipo) as competenciaDescricao", new String[] {"competenciaDescricao"}, new Type[] {Hibernate.STRING}), "competenciaDescricao");
 		p.add(Projections.property("cnc.tipoCompetencia"), "tipoCompetencia");
+		p.add(Projections.property("s.id"), "solicitacaoId");
+		p.add(Projections.property("s.descricao"), "solicitacaoDescricao");
+		p.add(Projections.property("s.data"), "solicitacaoData");
+		p.add(Projections.property("f.nome"), "faixaSalarialNome");
+		p.add(Projections.property("f.id"), "faixaSalarialIdProjection");
+		p.add(Projections.property("c.nome"), "cargoNome");
 
 		criteria.setProjection(p);
 		return criteria;

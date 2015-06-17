@@ -122,6 +122,9 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private Integer qtdAvaliacoes;
 	
+	@Transient
+	private Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias;
+	
 	public Solicitacao()
 	{
 
@@ -867,5 +870,15 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	public void setDataStatus(Date dataStatus)
 	{
 		this.dataStatus = dataStatus;
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> getConfiguracaoNivelCompetencias() 
+	{
+		return configuracaoNivelCompetencias;
+	}
+
+	public void setConfiguracaoNivelCompetencias(Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias) 
+	{
+		this.configuracaoNivelCompetencias = configuracaoNivelCompetencias;
 	}
 }

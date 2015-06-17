@@ -15,63 +15,53 @@
 		.dados td { border: none; }
 	</style>
 	
-	<script type="text/javascript">
-		$(function() {
-			DWRUtil.useLoadingMessage('Carregando...');
-			
-			<#if solicitacao?exists && solicitacao.id?exists>
-				$('#solicitacao').val(${solicitacao.id});
-				getNiveisCargo(${solicitacao.id});
-			</#if>
-			
-			$('#solicitacao').change(function() {
-				getNiveisCargo(this.value);
-			});
-		});
-		
-		function getNiveisCargo(solicitacaoId)
-		{
-			$('tr.even > td').css('background-color', '#EFEFEF');
-			$('tr.odd > td').css('background-color', '#FFF');
-		
-			if (solicitacaoId != '')
-				CompetenciaDWR.getSugestoesBySolicitacao(sugerirNiveisCargo, solicitacaoId);
-		}
-		
-		function sugerirNiveisCargo(data)
-		{
-			$(data).each(function(i, nivelSugerido) {
-				var linhaSugerida = $('tr').has('td.competencia-' + nivelSugerido.competenciaId).has('td.tipo-competencia-' + nivelSugerido.tipoCompetencia);
-				linhaSugerida.find('.nivel-' + nivelSugerido.nivelCompetencia.id).css('background-color', '#BFC0C3');			
-			});
-		}
-	</script>
-
 	<title>Competências do Candidato</title>
 </head>
 <body>
 	<div class="tabelaCompetencias">
-		<#if niveisCompetenciaFaixaSalariaisSalvos?exists && 0 < niveisCompetenciaFaixaSalariaisSalvos?size>
-			<p>Comparar as competências do candidato com as exigidas pelo Cargo da seguinte solicitação:</p>
-
-			<div style='width: 710px;'>
-				<@ww.select label="Solicitação" name="solicitacao.id" id="solicitacao" headerKey="" headerValue="Selecione" listKey="id" listValue="descricao" list="solicitacoes" theme="simple"/>
-				<span style='float: right;'>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial</span></span><span style='background-color: #BFC0C3; float: right;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-			<div/>
+		<#if solicitacoesNiveisCompetenciaFaixaSalariaisSalvos?exists && 0 < solicitacoesNiveisCompetenciaFaixaSalariaisSalvos?size>
+			<span style='background-color: #BFC0C3; float: left;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			<span style='float: left;'>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial</span><br /><br /><br />
 		
-			<br />
-		
-			<@display.table name="niveisCompetenciaFaixaSalariaisSalvos" id="configuracaoNivelCompetencia" class="dados">
-				<@display.column title="Competência" property="competenciaDescricao" class="competencia-${configuracaoNivelCompetencia.competenciaId} tipo-competencia-${configuracaoNivelCompetencia.tipoCompetencia}"/>
-				
-				<#list nivelCompetencias as nivel>			
-					<@display.column title="${nivel.descricao}" class="nivel-${nivel.id}" style="text-align: center;">
-						<#if nivel.id == configuracaoNivelCompetencia.nivelCompetencia.id>
-							<img border="0" style="align: top;" src="<@ww.url includeParams="none" value="/imgs/check_ok.gif"/>">
-						</#if>
-					</@display.column>
-				</#list>
-			</@display.table>
+			<#assign i = 0/>
+			<#list solicitacoesNiveisCompetenciaFaixaSalariaisSalvos as solicitacaonivelCompetencia>
+				<caption>
+					<div style="text-align:center;line-height: 20px;; background-color: #999999;font-weight: bold; color: #FFF; height: 20px">Soicitação: ${solicitacaonivelCompetencia.descricao}&nbsp&nbsp&nbsp&nbsp&nbsp&nbspCargo/Faixa Salarial: ${solicitacaonivelCompetencia.faixaSalarial.nomeDeCargoEFaixa}</div>
+				</caption> 
+				<table id="configuracaoNivelCompetencia" class="dados">
+					<thead>
+						<tr>
+							<th>Competência</th>
+							<#list nivelCompetencias as nivel>
+								<th>${nivel.descricao}</th>
+							</#list>
+						</tr>
+					</thead> 
+					<#list solicitacaonivelCompetencia.configuracaoNivelCompetencias as configuracaoNivelCompetencia>
+						<tbody>
+							<#if (i%2) == 0>
+								<tr class="old">
+							<#else>
+								<tr class="even">
+							</#if>
+								<td class="competencia-${configuracaoNivelCompetencia.competenciaId} tipo-competencia-${configuracaoNivelCompetencia.tipoCompetencia}">${configuracaoNivelCompetencia.competenciaDescricao}</td>
+								<#list nivelCompetencias as nivel>
+									<#if configuracaoNivelCompetencia.nivelCompetenciaFaixaSalarial?exists && nivel.id == configuracaoNivelCompetencia.nivelCompetenciaFaixaSalarial.id>
+										<td style="text-align: center; background-color:#BFC0C3" class="nivel-${nivel.id}">
+									<#else>	
+										<td style="text-align: center;" class="nivel-${nivel.id}">
+									</#if>
+									<#if nivel.id == configuracaoNivelCompetencia.nivelCompetencia.id>
+										<img border="0" style="align: top;" src="<@ww.url includeParams="none" value="/imgs/check_ok.gif"/>">
+									</#if>
+									</td>
+								</#list>
+							</tr>
+						</tbody>
+					<#assign i = i + 1/>
+					</#list>
+				</table>
+			</#list>
 		</#if>
 	</div>
 </body>
