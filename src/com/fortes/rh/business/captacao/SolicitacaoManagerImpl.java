@@ -12,6 +12,7 @@ import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
+import com.fortes.rh.model.captacao.PausaPreenchimentoVagas;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -30,6 +31,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	private AnuncioManager anuncioManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private EmpresaManager empresaManager;
+	private PausaPreenchimentoVagasManager pausaPreenchimentoVagasManager;
 
 	public Integer getCount(char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds)
 	{
@@ -114,6 +116,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	{
     	getDao().updateEncerraSolicitacao(true, solicitacao.getDataEncerramento(), solicitacao.getId(), solicitacao.getObservacaoLiberador());
     	gerenciadorComunicacaoManager.enviaEmailCandidatosNaoAptos(empresa, solicitacao.getId());
+    	pausarPreenchimentoVagas(true, solicitacao.getId());
 	}
 
 	public void encerrarSolicitacaoAoPreencherTotalVagas(Solicitacao solicitacao, Empresa empresa) throws Exception
@@ -136,6 +139,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	public void updateEncerraSolicitacao(boolean encerrar, Date dataEncerramento, Long solicitacaoId)
 	{
 		getDao().updateEncerraSolicitacao(encerrar, dataEncerramento, solicitacaoId, null);
+		pausarPreenchimentoVagas(encerrar, solicitacaoId);
 	}
 
 	public Solicitacao findByIdProjectionAreaFaixaSalarial(Long solicitacaoId)
@@ -146,6 +150,30 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	public void updateSuspendeSolicitacao(boolean suspender, String obsSuspensao, Long solicitacaoId)
 	{
 		getDao().updateSuspendeSolicitacao(suspender, obsSuspensao, solicitacaoId);
+		
+		pausarPreenchimentoVagas(suspender, solicitacaoId);
+	}
+
+	private void pausarPreenchimentoVagas(boolean suspender, Long solicitacaoId) {
+		PausaPreenchimentoVagas pausaPreenchimentoVagas;
+		if (suspender) {
+			pausaPreenchimentoVagas = new PausaPreenchimentoVagas();
+			pausaPreenchimentoVagas.setSolicitacao(getDao().findById(solicitacaoId));
+			pausaPreenchimentoVagas.setDataPausa(new Date());
+			pausaPreenchimentoVagasManager.save(pausaPreenchimentoVagas);
+		} else {
+			pausaPreenchimentoVagas =  pausaPreenchimentoVagasManager.findUltimaPausaBySolicitacaoId(solicitacaoId);
+			if (pausaPreenchimentoVagas == null) {
+				pausaPreenchimentoVagas = new PausaPreenchimentoVagas();
+				pausaPreenchimentoVagas.setSolicitacao(getDao().findById(solicitacaoId));
+				pausaPreenchimentoVagas.setDataPausa(new Date());
+				pausaPreenchimentoVagas.setDataReinicio(new Date());
+				pausaPreenchimentoVagasManager.save(pausaPreenchimentoVagas);
+			} else {
+				pausaPreenchimentoVagas.setDataReinicio(new Date());
+				pausaPreenchimentoVagasManager.update(pausaPreenchimentoVagas);
+			}
+		}
 	}
 	
 	public void updateSolicitacao(Solicitacao solicitacao, Long[] avaliacaoIds, Empresa empresa, Usuario usuario) throws Exception 
@@ -322,4 +350,10 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
 	}
+
+	public void setPausaPreenchimentoVagasManager(PausaPreenchimentoVagasManager pausaPreenchimentoVagasManager) {
+		this.pausaPreenchimentoVagasManager = pausaPreenchimentoVagasManager;
+	}
+
+
 }

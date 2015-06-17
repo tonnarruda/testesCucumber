@@ -60,6 +60,7 @@
     <mapping class="com.fortes.rh.model.captacao.Anuncio" />
     <mapping class="com.fortes.rh.model.captacao.MotivoSolicitacao" />
     <mapping class="com.fortes.rh.model.captacao.CandidatoCurriculo" />
+    <mapping class="com.fortes.rh.model.captacao.PausaPreenchimentoVagas" />
     <!-- CARGOS E SALARIOS -->
     <mapping class="com.fortes.rh.model.cargosalario.Cargo" />
     <mapping class="com.fortes.rh.model.cargosalario.HistoricoColaborador" />

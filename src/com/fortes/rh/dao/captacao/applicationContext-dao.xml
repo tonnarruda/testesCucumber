@@ -178,6 +178,14 @@
       <ref bean="configuracaoNivelCompetenciaFaixaSalarialDaoTarget" />
     </property>
   </bean>
+    <bean id="pausaPreenchimentoVagasDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.captacao.PausaPreenchimentoVagasDao</value>
+    </property>
+    <property name="target">
+      <ref bean="pausaPreenchimentoVagasDaoTarget" />
+    </property>
+  </bean>
 </beans>
 
 

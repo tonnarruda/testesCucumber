@@ -112,6 +112,11 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+    <bean id="pausaPreenchimentoVagasDaoTarget" class="com.fortes.rh.dao.hibernate.captacao.PausaPreenchimentoVagasDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
 
 

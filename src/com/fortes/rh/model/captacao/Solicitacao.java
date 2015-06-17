@@ -112,6 +112,9 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	
 	@OneToMany (mappedBy="solicitacao", fetch=FetchType.LAZY)
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios;
+	
+	@OneToMany (mappedBy="solicitacao", fetch=FetchType.LAZY)
+	private Collection<PausaPreenchimentoVagas> pausasPreenchimentoVagas;
 
 	@Transient
 	private String valorPromocao;
@@ -880,5 +883,14 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	public void setConfiguracaoNivelCompetencias(Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias) 
 	{
 		this.configuracaoNivelCompetencias = configuracaoNivelCompetencias;
+	}
+	
+	public Collection<PausaPreenchimentoVagas> getPausasPreenchimentoVagas() {
+		return pausasPreenchimentoVagas;
+	}
+
+	public void setPausasPreenchimentoVagas(
+			Collection<PausaPreenchimentoVagas> pausasPreenchimentoVagas) {
+		this.pausasPreenchimentoVagas = pausasPreenchimentoVagas;
 	}
 }

@@ -130,6 +130,9 @@
     <property name="empresaManager">
       <ref bean="empresaManager" />
     </property>
+    <property name="pausaPreenchimentoVagasManager">
+      <ref bean="pausaPreenchimentoVagasManager" />
+    </property>
   </bean>
   <bean id="solicitacaoManager" parent="parentManager">
     <property name="proxyInterfaces">
@@ -420,6 +423,19 @@
     </property>
     <property name="target">
       <ref bean="configuracaoNivelCompetenciaFaixaSalarialManagerTarget" />
+    </property>
+  </bean>
+  <bean id="pausaPreenchimentoVagasManagerTarget" class="com.fortes.rh.business.captacao.PausaPreenchimentoVagasManagerImpl">
+    <property name="dao">
+      <ref bean="pausaPreenchimentoVagasDao" />
+    </property>
+  </bean>
+  <bean id="pausaPreenchimentoVagasManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.captacao.PausaPreenchimentoVagasManager</value>
+    </property>
+    <property name="target">
+      <ref bean="pausaPreenchimentoVagasManagerTarget" />
     </property>
   </bean>
 </beans>

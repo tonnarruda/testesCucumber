@@ -12,6 +12,7 @@ import com.fortes.rh.dao.acesso.UsuarioDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.dao.captacao.MotivoSolicitacaoDao;
+import com.fortes.rh.dao.captacao.PausaPreenchimentoVagasDao;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
@@ -25,6 +26,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
+import com.fortes.rh.model.captacao.PausaPreenchimentoVagas;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -69,6 +71,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 	private MotivoSolicitacaoDao motivoSolicitacaoDao;
 	private CandidatoDao candidatoDao;
 	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
+	private PausaPreenchimentoVagasDao pausaPreenchimentoVagasDao;
 	
 	public Solicitacao getEntity()
 	{
@@ -919,6 +922,9 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Date data = DateUtil.criarDataMesAno(1, 3, 2010);
 		Date dataEncerramento = DateUtil.criarDataMesAno(15, 3, 2010);
 		
+		Date dataPausa = DateUtil.criarDataMesAno(7, 3, 2010);
+		Date dataReinicio = DateUtil.criarDataMesAno(10, 3, 2010);
+		
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
@@ -957,6 +963,22 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao2.setQuantidade(1);
 		solicitacaoDao.save(solicitacao2);
 		
+		Solicitacao solicitacaoComPausa = getEntity();
+		solicitacaoComPausa.setAreaOrganizacional(areaOrganizacional);
+		solicitacaoComPausa.setEstabelecimento(estabelecimento);
+		solicitacaoComPausa.setData(data);
+		solicitacaoComPausa.setDataEncerramento(dataEncerramento);
+		solicitacaoComPausa.setEmpresa(empresa);
+		solicitacaoComPausa.setFaixaSalarial(faixaSalarial);
+		solicitacaoComPausa.setQuantidade(1);
+		solicitacaoDao.save(solicitacaoComPausa);
+		
+		PausaPreenchimentoVagas pausaPreenchimentoVagas = new PausaPreenchimentoVagas();
+		pausaPreenchimentoVagas.setDataReinicio(dataReinicio);
+		pausaPreenchimentoVagas.setDataPausa(dataPausa);
+		pausaPreenchimentoVagas.setSolicitacao(solicitacaoComPausa);
+		pausaPreenchimentoVagasDao.save(pausaPreenchimentoVagas);
+		
 		// contratado 6 dias após início da solicitação
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setDataAdmissao(DateUtil.criarDataMesAno(7, 3, 2010));
@@ -994,17 +1016,21 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Collection<Long> areasIds = Arrays.asList(areaOrganizacional.getId());
 		Collection<Long> estabelecimentosIds = Arrays.asList(estabelecimento.getId());
 		Long[] solicitacaoIds = new Long[]{solicitacao2.getId()};
+		Long[] solicitacaoIdComPausa = new Long[]{solicitacaoComPausa.getId()};
 		
 		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresSemSolicitacao = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, null );
 		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresComSolicitacao = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, solicitacaoIds );
+		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresComPausa = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, solicitacaoIdComPausa );
 		
 		assertEquals(1, indicadoresSemSolicitacao.size());
 		IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVaga = (IndicadorDuracaoPreenchimentoVaga) indicadoresSemSolicitacao.toArray()[0];
 		IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVagaComSolicitacao = (IndicadorDuracaoPreenchimentoVaga) indicadoresComSolicitacao.toArray()[0];
+		IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVagaComPausa = (IndicadorDuracaoPreenchimentoVaga) indicadoresComPausa.toArray()[0];
 		
-		assertEquals("deve retornar a média de dias", 14.0, indicadorDuracaoPreenchimentoVaga.getMediaDias());
+		assertEquals("deve retornar a média de dias", 11.0, indicadorDuracaoPreenchimentoVaga.getMediaDias());
 		assertEquals("deve retornar qtd contratados sem solicitação especificada", 2, indicadorDuracaoPreenchimentoVaga.getQtdContratados().intValue());
 		assertEquals("deve retornar qtd contratados com solicitação especificada", 0, indicadorDuracaoPreenchimentoVagaComSolicitacao.getQtdContratados().intValue());
+		assertEquals("deve retornar qtd contratados com solicitação especificada (com pausa)", 11.0, indicadorDuracaoPreenchimentoVagaComPausa.getMediaDias());
 	}
 	
 	public void testGetIndicadorQtdCandidatos()
@@ -1299,6 +1325,10 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 	public void setHistoricoColaboradorDao(
 			HistoricoColaboradorDao historicoColaboradorDao) {
 		this.historicoColaboradorDao = historicoColaboradorDao;
+	}
+	
+	public void setPausaPreenchimentoVagasDao(PausaPreenchimentoVagasDao pausaPreenchimentoVagasDao){
+		this.pausaPreenchimentoVagasDao = pausaPreenchimentoVagasDao;
 	}
 
 }

@@ -462,10 +462,12 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 
 	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds, Long[] solicitacaoIds)
 	{
-		StringBuilder consulta = new StringBuilder("select new com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga(s.estabelecimento.id, s.areaOrganizacional.id, fs.cargo.id,count(co.solicitacao.id), coalesce(avg(s.dataEncerramento - s.data), 0)) ");
+		StringBuilder consulta = new StringBuilder("select new com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga(s.estabelecimento.id, s.areaOrganizacional.id, fs.cargo.id,count(co.solicitacao.id), ");
+		consulta.append("coalesce(avg(s.dataEncerramento - s.data),0) - coalesce(cast(sum(to_number(to_char(((case when (p.dataReinicio is null) then now() else p.dataReinicio end) - p.dataPausa), 'DDD'), '999')) as integer), 0)) ");
 		consulta.append("from Colaborador co ");
 		consulta.append("join co.historicoColaboradors hc ");
 		consulta.append("right join co.solicitacao s ");
+		consulta.append("left join s.pausasPreenchimentoVagas p ");
 		consulta.append("join s.faixaSalarial fs ");
 		consulta.append("where ");
 		consulta.append("	s.dataEncerramento >= :dataDe ");

@@ -10,11 +10,11 @@ import mockit.Mockit;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
-import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.PausaPreenchimentoVagasManager;
 import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -61,6 +61,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 	private Mock gerenciadorComunicacaoManager;
 	private Mock solicitacaoAvaliacaoManager;
 	private Mock colaboradorQuestionarioManager;
+	private Mock pausaPreenchimentoVagasManager;
 
 	protected void setUp() throws Exception
 	{
@@ -88,6 +89,9 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
+		
+		pausaPreenchimentoVagasManager = new Mock(PausaPreenchimentoVagasManager.class);
+		solicitacaoManager.setPausaPreenchimentoVagasManager((PausaPreenchimentoVagasManager) pausaPreenchimentoVagasManager.proxy());
 		
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
@@ -249,6 +253,8 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		Empresa empresa = new Empresa();
 		empresa.setId(1L);
 
+		pausaPreenchimentoVagasManager.expects(once()).method("save").with(ANYTHING);
+		solicitacaoDao.expects(once()).method("findById").with(ANYTHING);
 		gerenciadorComunicacaoManager.expects(once()).method("enviaEmailCandidatosNaoAptos").with(eq(empresa), eq(solicitacao.getId()));
 		solicitacaoDao.expects(once()).method("updateEncerraSolicitacao").with(eq(true), eq(solicitacao.getDataEncerramento()), eq(solicitacao.getId()), ANYTHING);
 
@@ -263,6 +269,8 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		solicitacao.setId(1L);
 		solicitacao.setDataEncerramento(DateUtil.criarAnoMesDia(2008, 1, 1));
 
+		pausaPreenchimentoVagasManager.expects(once()).method("save").with(ANYTHING);
+		solicitacaoDao.expects(once()).method("findById").with(ANYTHING);
 		solicitacaoDao.expects(once()).method("updateEncerraSolicitacao").with(eq(true), eq(solicitacao.getDataEncerramento()), eq(solicitacao.getId()), ANYTHING);
 
 		solicitacaoManager.updateEncerraSolicitacao(true, solicitacao.getDataEncerramento(), solicitacao.getId());
@@ -276,6 +284,8 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		solicitacao.setId(1L);
 
 		solicitacaoDao.expects(once()).method("updateSuspendeSolicitacao").with(eq(true), eq("suspender"), eq(solicitacao.getId()));
+		solicitacaoDao.expects(once()).method("findById").with(eq(1L)).will(returnValue(solicitacao));
+		pausaPreenchimentoVagasManager.expects(once()).method("save").with(ANYTHING);
 
 		solicitacaoManager.updateSuspendeSolicitacao(true, "suspender", solicitacao.getId());
 	}
