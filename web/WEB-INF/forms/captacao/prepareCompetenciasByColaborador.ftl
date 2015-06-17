@@ -80,6 +80,12 @@
 					montaAlerta();
 				</#if>
 				
+			<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario?exists && 
+				configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.avaliacaoDesempenho?exists>
+				$('#data').attr("disabled","disabled");
+				$('#data_button').hide();
+			</#if>
+				
 			});
 			
 			var options = {
@@ -380,6 +386,9 @@
 			</div>
 			
 			<@ww.datepicker label="A partir de" name="configuracaoNivelCompetenciaColaborador.data" value="${data}" id="data" cssClass="mascaraData" onchange="repopulaConfiguracaoNivelCompetencia();"/>
+			<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.avaliacaoDesempenho?exists>
+				<@ww.hidden name="configuracaoNivelCompetenciaColaborador.data" value="${data}"/>
+			</#if>
 			
 			<#if configuracaoNivelCompetenciaColaborador?exists && 	configuracaoNivelCompetenciaColaborador.id?exists>
 				<@ww.hidden name="configuracaoNivelCompetenciaColaborador.avaliador.id" id="avaliador" value="${avaliadorId}"/>
