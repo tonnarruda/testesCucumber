@@ -856,9 +856,19 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 	
 	public void setConfiguracaoNivelCompetenciaColaboradorId(Long configuracaoNivelCompetenciaColaboradorId) 
 	{
+		inicializaConfiguracaoNivelCompetenciaColaborador();
+		this.configuracaoNivelCompetenciaColaborador.setId(configuracaoNivelCompetenciaColaboradorId);
+	}
+	
+	public void setConfiguracaoNivelCompetenciaColaboradorData(Date configuracaoNivelCompetenciaColaboradorData) 
+	{
+		inicializaConfiguracaoNivelCompetenciaColaborador();
+		this.configuracaoNivelCompetenciaColaborador.setData(configuracaoNivelCompetenciaColaboradorData);
+	}
+
+	private void inicializaConfiguracaoNivelCompetenciaColaborador() 
+	{
 		if(this.configuracaoNivelCompetenciaColaborador == null)
 			this.configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
-	
-		this.configuracaoNivelCompetenciaColaborador.setId(configuracaoNivelCompetenciaColaboradorId);
 	}
 }

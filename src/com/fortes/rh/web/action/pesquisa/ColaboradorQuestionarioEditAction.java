@@ -279,9 +279,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	{
 		colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionario.getId());
 		
-		if (colaboradorQuestionario.getRespondidaEm() == null)
-			colaboradorQuestionario.setRespondidaEm(new Date());
-		
 		colaborador = colaboradorManager.findByIdDadosBasicos(colaboradorQuestionario.getColaborador().getId(), StatusRetornoAC.CONFIRMADO);
 		
 		if (colaboradorQuestionario.getAvaliador() != null)
@@ -296,13 +293,16 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		if (colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo())
 		{
-			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaborador.getFaixaSalarial().getId(), new Date());
 			nivelCompetencias = nivelCompetenciaManager.findAllSelect(colaborador.getEmpresa().getId());
 			
-			if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() != null)
+			if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() != null){	
 				niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId());
-			else
+				niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaborador.getFaixaSalarial().getId(), colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getData());
+			}else{
 				niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByColaborador(colaborador.getId(), avaliador.getId(), colaboradorQuestionario.getId());
+				niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaborador.getFaixaSalarial().getId(), new Date());
+			}
+				
 		}
 		
 		return Action.SUCCESS;
@@ -319,7 +319,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 				throw new FortesException("Esta avaliação foi bloqueada e suas respostas não foram gravadas. Entre em contato com o administrador do sistema.");
 			
 			if(colaboradorQuestionario.getRespondidaEm() == null)
-				colaboradorQuestionario.setRespondidaEm(new Date()); 
+				colaboradorQuestionario.setRespondidaEm(hoje); 
 			
 			exibeResultadoAutoavaliacao();//usado em avaliacaodesempenhoQuestionariolist.action
 
@@ -334,12 +334,13 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 				if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() != null)
 					configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findById(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId());
 				else
-					configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findByData(hoje, colaborador.getId(), avaliador.getId(), colaboradorQuestionario.getId());
+					configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findByData(colaboradorQuestionario.getRespondidaEm(), colaborador.getId(), avaliador.getId(), colaboradorQuestionario.getId());
 
-				if (configuracaoNivelCompetenciaColaborador == null)
+				if (configuracaoNivelCompetenciaColaborador == null){
 					configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+					configuracaoNivelCompetenciaColaborador.setData(hoje);
+				}
 				
-				configuracaoNivelCompetenciaColaborador.setData(hoje);
 				configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
 				configuracaoNivelCompetenciaColaborador.setColaboradorQuestionario(colaboradorQuestionario);
 				configuracaoNivelCompetenciaColaborador.setAvaliador(avaliador);

@@ -366,6 +366,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		criteria.createCriteria("cq.candidato", "cand", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.avaliacaoDesempenho", "avaliacaoDesempenho", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.avaliacao", "avaliacao", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cq.configuracaoNivelCompetenciaColaborador", "cncc", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cq.id"), "id");
@@ -374,7 +375,8 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("cq.observacao"), "observacao");
 		p.add(Projections.property("cq.performance"), "performance");
 		p.add(Projections.property("cq.performanceNivelCompetencia"), "performanceNivelCompetencia");
-		p.add(Projections.property("cq.configuracaoNivelCompetenciaColaborador.id"), "configuracaoNivelCompetenciaColaboradorId");
+		p.add(Projections.property("cncc.id"), "configuracaoNivelCompetenciaColaboradorId");
+		p.add(Projections.property("cncc.data"), "configuracaoNivelCompetenciaColaboradorData");
 		p.add(Projections.property("colab.id"), "projectionColaboradorId");
 		p.add(Projections.property("colab.nome"), "projectionColaboradorNome");
 		p.add(Projections.property("cand.id"), "projectionCandidatoId");
