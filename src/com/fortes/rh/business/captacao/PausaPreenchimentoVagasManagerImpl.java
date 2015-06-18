@@ -12,5 +12,10 @@ public class PausaPreenchimentoVagasManagerImpl extends GenericManagerImpl<Pausa
 	public PausaPreenchimentoVagas findUltimaPausaBySolicitacaoId(Long solicitacaoId) {
 		return getDao().findUltimaPausaBySolicitacaoId(solicitacaoId);
 	}
+
+	public void removeBySolicitacaoId(Long solicitacaoId) {
+		getDao().removeBySolicitacaoId(solicitacaoId);
+		
+	}
 	
 }

@@ -22,5 +22,11 @@ public class PausaPreenchimentoVagasDaoHibernate extends GenericDaoHibernate<Pau
 		
 		return (PausaPreenchimentoVagas) criteria.uniqueResult();
 	}
+
+	public void removeBySolicitacaoId(Long solicitacaoId) {
+		Query query = getSession().createQuery("delete from PausaPreenchimentoVagas p where p.solicitacao.id = :solicitacaoId");
+		query.setLong("solicitacaoId", solicitacaoId);
+		query.executeUpdate();
+	}
 	
 }

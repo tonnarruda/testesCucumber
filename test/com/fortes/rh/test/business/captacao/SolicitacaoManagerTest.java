@@ -198,6 +198,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		anuncios.add(anuncio);
 
 		candidatoSolicitacaoManager.expects(once()).method("verifyExists").with(ANYTHING, ANYTHING).will(returnValue(false));
+		pausaPreenchimentoVagasManager.expects(once()).method("removeBySolicitacaoId").with(ANYTHING);
 		anuncioManager.expects(once()).method("removeBySolicitacao").with(ANYTHING);
 		solicitacaoDao.expects(once()).method("remove").with(ANYTHING);
 		MockSpringUtil.mocks.put("colaboradorQuestionarioManager", colaboradorQuestionarioManager);
@@ -253,8 +254,6 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		Empresa empresa = new Empresa();
 		empresa.setId(1L);
 
-		pausaPreenchimentoVagasManager.expects(once()).method("save").with(ANYTHING);
-		solicitacaoDao.expects(once()).method("findById").with(ANYTHING);
 		gerenciadorComunicacaoManager.expects(once()).method("enviaEmailCandidatosNaoAptos").with(eq(empresa), eq(solicitacao.getId()));
 		solicitacaoDao.expects(once()).method("updateEncerraSolicitacao").with(eq(true), eq(solicitacao.getDataEncerramento()), eq(solicitacao.getId()), ANYTHING);
 
@@ -269,8 +268,6 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		solicitacao.setId(1L);
 		solicitacao.setDataEncerramento(DateUtil.criarAnoMesDia(2008, 1, 1));
 
-		pausaPreenchimentoVagasManager.expects(once()).method("save").with(ANYTHING);
-		solicitacaoDao.expects(once()).method("findById").with(ANYTHING);
 		solicitacaoDao.expects(once()).method("updateEncerraSolicitacao").with(eq(true), eq(solicitacao.getDataEncerramento()), eq(solicitacao.getId()), ANYTHING);
 
 		solicitacaoManager.updateEncerraSolicitacao(true, solicitacao.getDataEncerramento(), solicitacao.getId());

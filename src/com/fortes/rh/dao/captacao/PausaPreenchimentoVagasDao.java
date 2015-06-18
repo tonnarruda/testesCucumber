@@ -9,5 +9,6 @@ import com.fortes.rh.model.captacao.PausaPreenchimentoVagas;
 public interface PausaPreenchimentoVagasDao extends GenericDao<PausaPreenchimentoVagas> {
 	
 	PausaPreenchimentoVagas findUltimaPausaBySolicitacaoId(Long solicitacaoId);
+	void removeBySolicitacaoId(Long solicitacaoId);
 	
 }

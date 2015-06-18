@@ -89,6 +89,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		{
 			ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
 			colaboradorQuestionarioManager.removeBySolicitacaoId(solicitacaoId);
+			pausaPreenchimentoVagasManager.removeBySolicitacaoId(solicitacaoId);
 			solicitacaoAvaliacaoManager.removeBySolicitacaoId(solicitacaoId);
 			anuncioManager.removeBySolicitacao(solicitacaoId);
 			getDao().remove(new Long[]{solicitacaoId});
@@ -116,7 +117,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	{
     	getDao().updateEncerraSolicitacao(true, solicitacao.getDataEncerramento(), solicitacao.getId(), solicitacao.getObservacaoLiberador());
     	gerenciadorComunicacaoManager.enviaEmailCandidatosNaoAptos(empresa, solicitacao.getId());
-    	pausarPreenchimentoVagas(true, solicitacao.getId());
 	}
 
 	public void encerrarSolicitacaoAoPreencherTotalVagas(Solicitacao solicitacao, Empresa empresa) throws Exception
@@ -139,7 +139,6 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	public void updateEncerraSolicitacao(boolean encerrar, Date dataEncerramento, Long solicitacaoId)
 	{
 		getDao().updateEncerraSolicitacao(encerrar, dataEncerramento, solicitacaoId, null);
-		pausarPreenchimentoVagas(encerrar, solicitacaoId);
 	}
 
 	public Solicitacao findByIdProjectionAreaFaixaSalarial(Long solicitacaoId)

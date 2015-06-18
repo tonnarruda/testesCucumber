@@ -9,5 +9,6 @@ import com.fortes.rh.model.captacao.PausaPreenchimentoVagas;
 public interface PausaPreenchimentoVagasManager extends GenericManager<PausaPreenchimentoVagas> {
 	
 	PausaPreenchimentoVagas findUltimaPausaBySolicitacaoId(Long solicitacaoId);
+	void removeBySolicitacaoId(Long solicitacaoId);
 	
 }
