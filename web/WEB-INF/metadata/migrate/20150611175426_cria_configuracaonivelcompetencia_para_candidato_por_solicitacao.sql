@@ -9,7 +9,11 @@ CREATE OR REPLACE FUNCTION criar_historico_cncCandidatoPorSolicitacao() RETURNS 
 					SELECT nextval('configuracaonivelcompetencia_sequence'), mv.faixasalarial_id, mv.nivelcompetencia_id, mv.competencia_id, mv.candidato_id, mv.tipocompetencia, null, null, s.id
 					FROM candidatosolicitacao cs
 					INNER JOIN solicitacao s on s.id = cs.solicitacao_id
-					WHERE cs.candidato_id = mv.candidato_id AND s.faixasalarial_id = mv.faixasalarial_id AND cs.triagem = false;
+					WHERE cs.candidato_id = mv.candidato_id AND s.faixasalarial_id = mv.faixasalarial_id AND cs.triagem = false
+					AND EXISTS (SELECT 1 FROM configuracaonivelcompetenciafaixasalarial cncf 
+						    	INNER JOIN configuracaonivelcompetencia cnc ON cnc.configuracaonivelcompetenciafaixasalarial_id = cncf.id
+						    	WHERE cncf.data <= s.data AND cncf.faixasalarial_id = mv.faixasalarial_id AND cnc.competencia_id = mv.competencia_id);
+					
 			END LOOP;  
 	    RETURN 1;  
 	END;  
