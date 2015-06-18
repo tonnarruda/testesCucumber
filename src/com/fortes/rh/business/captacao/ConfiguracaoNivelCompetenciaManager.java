@@ -13,6 +13,7 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaVO;
 import com.fortes.rh.model.captacao.MatrizCompetenciaNivelConfiguracao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 
 public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<ConfiguracaoNivelCompetencia>
@@ -46,4 +47,5 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 	Collection<Colaborador> findDependenciaComColaborador(Long faixaSalarialId,	Date data);
 	Collection<Candidato> findDependenciaComCandidato(Long faixaSalarialId, Date data);
 	void removeByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId);
+	void criaCNCColaboradorByCNCCnadidato(Colaborador colaborador,Long idCandidato, Solicitacao solicitacao,	HistoricoColaborador historico);
 }

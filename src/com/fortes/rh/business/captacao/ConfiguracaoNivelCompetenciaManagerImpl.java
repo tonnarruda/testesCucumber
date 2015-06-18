@@ -20,6 +20,7 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaVO;
 import com.fortes.rh.model.captacao.MatrizCompetenciaNivelConfiguracao;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.DateUtil;
@@ -38,6 +39,38 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 
 	public Collection<ConfiguracaoNivelCompetencia> findByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId) {
 		return getDao().findByCandidatoAndSolicitacao(candidatoId, solicitacaoId);
+	}
+	
+	public void criaCNCColaboradorByCNCCnadidato(Colaborador colaborador, Long idCandidato, Solicitacao solicitacao, HistoricoColaborador historico) 
+	{
+		Collection<ConfiguracaoNivelCompetencia> cNCCandidatoVincuadasComCNCFaixaSalarial = new ArrayList<ConfiguracaoNivelCompetencia>();
+		Collection<ConfiguracaoNivelCompetencia> cncsCandidato = findByCandidatoAndSolicitacao(idCandidato, solicitacao.getId());
+		Collection<ConfiguracaoNivelCompetencia> cncsFaixaSalarial = getDao().findByFaixa(historico.getFaixaSalarial().getId(), historico.getData());
+	
+		for (ConfiguracaoNivelCompetencia cncCandidato : cncsCandidato) 
+		{
+			for (ConfiguracaoNivelCompetencia cncFaixaSalarial : cncsFaixaSalarial) 
+			{
+				if (cncCandidato.getCompetenciaId().equals(cncFaixaSalarial.getCompetenciaId()) && cncCandidato.getTipoCompetencia().equals(cncFaixaSalarial.getTipoCompetencia()))
+				{
+					cncCandidato.setId(null);
+					cncCandidato.setCandidato(null);
+					cncCandidato.setFaixaSalarial(null);
+					cncCandidato.setConfiguracaoNivelCompetenciaFaixaSalarial(null);
+					cNCCandidatoVincuadasComCNCFaixaSalarial.add(cncCandidato);
+				}
+			}
+		}
+		
+		if (cNCCandidatoVincuadasComCNCFaixaSalarial != null && cNCCandidatoVincuadasComCNCFaixaSalarial.size() > 0)
+		{
+			ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+			configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
+			configuracaoNivelCompetenciaColaborador.setFaixaSalarial(historico.getFaixaSalarial());
+			configuracaoNivelCompetenciaColaborador.setData(historico.getData());
+
+			saveCompetenciasColaborador(cNCCandidatoVincuadasComCNCFaixaSalarial, configuracaoNivelCompetenciaColaborador);
+		}
 	}
 
 	public void saveCompetenciasCandidato(Collection<ConfiguracaoNivelCompetencia> configuracaoNiveisCompetencias, Long faixaSalarialId, Long candidatoId, Long solicitacaoId) 

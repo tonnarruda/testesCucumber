@@ -80,8 +80,7 @@
 					montaAlerta();
 				</#if>
 				
-			<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario?exists && 
-				configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.avaliacaoDesempenho?exists>
+			<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.id?exists>
 				$('#data').attr("disabled","disabled");
 				$('#data_button').hide();
 			</#if>

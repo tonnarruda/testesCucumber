@@ -274,20 +274,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			if (solicitacao.getId() != null)
 			{
 				colaborador.setSolicitacao(solicitacao);
-		
-				configuracoesNiveisCompetencias = configuracaoNivelCompetenciaManager.findByCandidatoAndSolicitacao(idCandidato, solicitacao.getId());
-				if (configuracoesNiveisCompetencias != null && configuracoesNiveisCompetencias.size() > 0)
-				{
-					for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracoesNiveisCompetencias)
-						configuracaoNivelCompetencia.setCandidato(null);
-
-					ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
-					configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
-					configuracaoNivelCompetenciaColaborador.setFaixaSalarial(historico.getFaixaSalarial());
-					configuracaoNivelCompetenciaColaborador.setData(historico.getData());
-
-					configuracaoNivelCompetenciaManager.saveCompetenciasColaborador(configuracoesNiveisCompetencias, configuracaoNivelCompetenciaColaborador);
-				}
+				configuracaoNivelCompetenciaManager.criaCNCColaboradorByCNCCnadidato(colaborador, idCandidato, solicitacao, historico);
 			}
 		}
 

@@ -28,10 +28,12 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaVO;
 import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.captacao.MatrizCompetenciaNivelConfiguracao;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -46,9 +48,11 @@ import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFactory;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
 import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -595,5 +599,61 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciasFaixaSalarial").with(ANYTHING, eq(faixaSalarial.getId())).will(returnValue(configuracaoNivelCompetenciaFaixas));
 		
 		assertEquals(1, configuracaoNivelCompetenciaManager.findColaboradorAbaixoNivel(new Long[]{1L, 2L}, faixaSalarial.getId(), null).size());
+	}
+	
+	public void testCriaCNCColaboradorByCNCCnadidato()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		Candidato candidato = CandidatoFactory.getCandidato(2L);
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(3L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(22L);
+		
+		HistoricoColaborador historico = HistoricoColaboradorFactory.getEntity(33L);
+		historico.setFaixaSalarial(faixaSalarial);
+		historico.setData(DateUtil.criarDataDiaMesAno("01/06/2015"));
+		
+		Atitude atitude = AtitudeFactory.getEntity(1L);
+		atitude.setNome("Prestativo");
+		
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento(1L);
+		conhecimento.setNome("Java");
+		
+		Habilidade habilidade= HabilidadeFactory.getEntity(6L);
+		habilidade.setNome("Magica");
+		
+		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity(4L);
+		nivelBom.setDescricao("pessimo");
+		nivelBom.setOrdem(1);
+		
+		NivelCompetencia nivelRuim = NivelCompetenciaFactory.getEntity(5L);
+		nivelRuim.setDescricao("ruim");
+		nivelRuim.setOrdem(2);
+		
+		ConfiguracaoNivelCompetencia cncCandidato1 = ConfiguracaoNivelCompetenciaFactory.getEntityCandidato(candidato, solicitacao, faixaSalarial, nivelBom, conhecimento.getId(), TipoCompetencia.CONHECIMENTO);
+		ConfiguracaoNivelCompetencia cncCandidato2 = ConfiguracaoNivelCompetenciaFactory.getEntityCandidato(candidato, solicitacao, faixaSalarial, nivelBom, atitude.getId(), TipoCompetencia.ATITUDE);
+		Collection<ConfiguracaoNivelCompetencia> cncscandidato = Arrays.asList(cncCandidato1, cncCandidato2);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixa = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(10L); 
+		ConfiguracaoNivelCompetencia cncFaixaSalarial1 = ConfiguracaoNivelCompetenciaFactory.getEntityFaixaSalarial(cncFaixa, nivelRuim, atitude.getId(), TipoCompetencia.ATITUDE);
+		ConfiguracaoNivelCompetencia cncFaixaSalarial2 = ConfiguracaoNivelCompetenciaFactory.getEntityFaixaSalarial(cncFaixa, nivelRuim, habilidade.getId(), TipoCompetencia.HABILIDADE);
+		Collection<ConfiguracaoNivelCompetencia> cncsFaixaSalarial = Arrays.asList(cncFaixaSalarial1, cncFaixaSalarial2);
+		
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(1L);
+		configuracaoNivelCompetenciaColaborador.setColaboradorQuestionario(null);
+		configuracaoNivelCompetenciaColaborador.setAvaliador(null);
+		
+		configuracaoNivelCompetenciaColaboradorManager.expects(once()).method("save").withAnyArguments().isVoid();
+		configuracaoNivelCompetenciaDao.expects(once()).method("save").with(ANYTHING).isVoid();
+		configuracaoNivelCompetenciaDao.expects(once()).method("findByCandidatoAndSolicitacao").with(eq(candidato.getId()), eq(solicitacao.getId())).will(returnValue(cncscandidato));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findByFaixa").with(eq(faixaSalarial.getId()), ANYTHING).will(returnValue(cncsFaixaSalarial));
+		
+		Exception ex = null;
+		try {
+			configuracaoNivelCompetenciaManager.criaCNCColaboradorByCNCCnadidato(colaborador, candidato.getId(), solicitacao, historico);
+		} catch (Exception e) {
+			ex = e;
+		}
+		
+		assertNull(ex);
 	}
 }
