@@ -633,4 +633,12 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		
 		return criteria.list();
 	}
+
+	public void removeByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId) 
+	{
+		Query query = getSession().createQuery("delete from ConfiguracaoNivelCompetencia cnc where cnc.solicitacao.id = :solicitacaoId and cnc.candidato.id = :candidatoId");
+		query.setLong("candidatoId", candidatoId);
+		query.setLong("solicitacaoId", solicitacaoId);
+		query.executeUpdate();
+	}
 }

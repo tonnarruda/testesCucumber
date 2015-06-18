@@ -571,6 +571,11 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return getDao().findDependenciaComCandidato(faixaSalarialId, data);
 	}
 
+	public void removeByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId) 
+	{
+		getDao().removeByCandidatoAndSolicitacao(candidatoId, solicitacaoId);
+	}
+	
 	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager)
 	{
 		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;

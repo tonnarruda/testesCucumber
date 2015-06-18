@@ -26,6 +26,7 @@ import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Candidato;
@@ -38,6 +39,7 @@ import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -50,6 +52,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
@@ -1383,7 +1386,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		solicitacao.setData(DateUtil.criarDataDiaMesAno("01/03/2015"));
 		solicitacaoDao.save(solicitacao);
 		
-		ConfiguracaoNivelCompetencia cncCandidato = ConfiguracaoNivelCompetenciaFactory.getEntityCandidato(candidato, faixaSalarial, nivelCompetencia, atitude.getId(), TipoCompetencia.ATITUDE);
+		ConfiguracaoNivelCompetencia cncCandidato = ConfiguracaoNivelCompetenciaFactory.getEntityCandidato(candidato, null, faixaSalarial, nivelCompetencia, atitude.getId(), TipoCompetencia.ATITUDE);
 		cncCandidato.setSolicitacao(solicitacao);
 		configuracaoNivelCompetenciaDao.save(cncCandidato);
 		
@@ -1393,6 +1396,72 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		retorno = configuracaoNivelCompetenciaDao.findDependenciaComCandidato(faixaSalarial.getId(), DateUtil.criarDataDiaMesAno("01/01/2015"));
 		assertEquals(1, retorno.size());
 		assertEquals(candidato.getNome(), ((Candidato) retorno.toArray()[0]).getNome());
+	}
+	
+	public void testRemoveByCandidatoAndSolicitacao()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+
+		Atitude atitude = criaAtitude();
+		
+		Candidato candidato1 = CandidatoFactory.getCandidato();
+		candidato1.setNome("Nome Colaborador");
+		candidatoDao.save(candidato1);
+		
+		Candidato candidato2 = CandidatoFactory.getCandidato();
+		candidato2.setNome("Nome Colaborador");
+		candidatoDao.save(candidato2);
+		
+		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
+		nivelCompetenciaDao.save(nivelCompetencia);
+		
+		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
+		solicitacao1.setFaixaSalarial(faixaSalarial);
+		solicitacao1.setData(DateUtil.criarDataDiaMesAno("01/03/2015"));
+		solicitacaoDao.save(solicitacao1);
+		
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
+		solicitacao2.setFaixaSalarial(faixaSalarial);
+		solicitacao2.setData(DateUtil.criarDataDiaMesAno("01/03/2015"));
+		solicitacaoDao.save(solicitacao2);
+		
+		ConfiguracaoNivelCompetencia cncCandidato1 = ConfiguracaoNivelCompetenciaFactory.getEntityCandidato(candidato1, solicitacao1, faixaSalarial, nivelCompetencia, atitude.getId(), TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetenciaDao.save(cncCandidato1);
+		
+		ConfiguracaoNivelCompetencia cncCandidato2 = ConfiguracaoNivelCompetenciaFactory.getEntityCandidato(candidato1, solicitacao2, faixaSalarial, nivelCompetencia, atitude.getId(), TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetenciaDao.save(cncCandidato2);
+		
+		ConfiguracaoNivelCompetencia cncCandidato3 = ConfiguracaoNivelCompetenciaFactory.getEntityCandidato(candidato2, solicitacao2, faixaSalarial, nivelCompetencia, atitude.getId(), TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetenciaDao.save(cncCandidato3);
+		
+		Collection<ConfiguracaoNivelCompetencia> cncSolicitacao1 =  configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato1.getId(), solicitacao1.getId());
+		Collection<ConfiguracaoNivelCompetencia> cncSolicitacao2 =  configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato1.getId(), solicitacao2.getId());
+		Collection<ConfiguracaoNivelCompetencia> cncSolicitacao3 =  configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato2.getId(), solicitacao2.getId());
+		
+		assertEquals(1, cncSolicitacao1.size());
+		assertEquals(1, cncSolicitacao2.size());
+		assertEquals(1, cncSolicitacao3.size());
+
+		configuracaoNivelCompetenciaDao.removeByCandidatoAndSolicitacao(candidato1.getId(), solicitacao1.getId());
+		
+		cncSolicitacao1 =  configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato1.getId(), solicitacao1.getId());
+		cncSolicitacao2 =  configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato1.getId(), solicitacao2.getId());
+		cncSolicitacao3 =  configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato2.getId(), solicitacao2.getId());
+		
+		assertEquals(0, cncSolicitacao1.size());
+		assertEquals(1, cncSolicitacao2.size());
+		assertEquals(1, cncSolicitacao3.size());
+		
+		configuracaoNivelCompetenciaDao.removeByCandidatoAndSolicitacao(candidato2.getId(), solicitacao2.getId());
+		
+		cncSolicitacao1 =  configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato1.getId(), solicitacao1.getId());
+		cncSolicitacao2 =  configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato1.getId(), solicitacao2.getId());
+		cncSolicitacao3 =  configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(candidato2.getId(), solicitacao2.getId());
+		
+		assertEquals(0, cncSolicitacao1.size());
+		assertEquals(1, cncSolicitacao2.size());
+		assertEquals(0, cncSolicitacao3.size());
 	}
 
 	public GenericDao<NivelCompetencia> getGenericDao()

@@ -126,6 +126,7 @@ public class CandidatoSolicitacaoListAction extends MyActionSupportList
 		
 		historicoColaboradorManager.removeCandidatoSolicitacao(candidatoSolicitacao.getId());
 		historicoCandidatoManager.removeByCandidatoSolicitacao(candidatoSolicitacao.getId());
+		configuracaoNivelCompetenciaManager.removeByCandidatoAndSolicitacao(candidatoSolicitacao.getCandidato().getId(), candidatoSolicitacao.getSolicitacao().getId());
 		
 		candidatoSolicitacaoManager.remove(new Long[]{candidatoSolicitacao.getId()});
 		solicitacao = candidatoSolicitacao.getSolicitacao();

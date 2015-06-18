@@ -354,6 +354,4 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	public void setPausaPreenchimentoVagasManager(PausaPreenchimentoVagasManager pausaPreenchimentoVagasManager) {
 		this.pausaPreenchimentoVagasManager = pausaPreenchimentoVagasManager;
 	}
-
-
 }

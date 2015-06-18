@@ -5,6 +5,7 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 
 public class ConfiguracaoNivelCompetenciaFactory
@@ -65,7 +66,7 @@ public class ConfiguracaoNivelCompetenciaFactory
 		return configuracaoNivelCompetencia;
 	}
 
-	public static ConfiguracaoNivelCompetencia getEntityCandidato(Candidato candidato, FaixaSalarial faixaSalarial, NivelCompetencia nivelCompetencia, Long competenciaId, Character tipoCompetencia) 
+	public static ConfiguracaoNivelCompetencia getEntityCandidato(Candidato candidato, Solicitacao solicitacao, FaixaSalarial faixaSalarial, NivelCompetencia nivelCompetencia, Long competenciaId, Character tipoCompetencia) 
 	{
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = getEntity();
 		configuracaoNivelCompetencia.setNivelCompetencia(nivelCompetencia);
@@ -73,6 +74,7 @@ public class ConfiguracaoNivelCompetenciaFactory
 		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial);
 		configuracaoNivelCompetencia.setTipoCompetencia(tipoCompetencia);
 		configuracaoNivelCompetencia.setCandidato(candidato);
+		configuracaoNivelCompetencia.setSolicitacao(solicitacao);
 		
 		return configuracaoNivelCompetencia;
 	}
