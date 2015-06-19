@@ -255,13 +255,30 @@ public class SolicitacaoExameDaoHibernateTest extends GenericDaoHibernateTest<So
 	
 	public void testFindAllSelect()
 	{
+		Date dataAdmissao = DateUtil.criarDataMesAno(10, 01, 2015);
+		Date dataSolicitacao = DateUtil.criarDataMesAno(01, 01, 2015);
+
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
+				
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setDataAdmissao(dataAdmissao);
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
 		
-		Date dataIni = DateUtil.criarDataMesAno(01, 01, 2010);
-		Date dataFim = DateUtil.criarDataMesAno(01, 05, 2010);
-		
-		solicitacaoExameDao.findAllSelect(1, 15, empresa.getId(), dataIni, dataFim, TipoPessoa.TODOS, "", "", "", null, null);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setData(dataAdmissao);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaboradorDao.save(historicoColaborador);
+
+		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity();
+		solicitacaoExame.setColaborador(colaborador);
+		solicitacaoExame.setData(dataSolicitacao);
+		solicitacaoExame.setEmpresa(empresa);
+		solicitacaoExameDao.save(solicitacaoExame);
+
+		solicitacaoExameDao.findAllSelect(0, 1, empresa.getId(), dataSolicitacao, dataAdmissao, TipoPessoa.TODOS, "", "", "", null, null);
+
 	}
 
 	public void testTransferirCandidatoToColaborador()

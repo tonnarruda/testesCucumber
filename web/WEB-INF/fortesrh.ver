@@ -13,6 +13,7 @@
 		<Item visivel="S" motivo="S20150300258"><![CDATA[T&D > Painel de Indicadores: Exibir o total de horas dos cursos realizados por colaboradores.]]></Item>
 		<Item visivel="S" motivo="P20150500060"><![CDATA[Info. Funcionais > Cadastros > Motivos de Desligamento > Inserir/Editar: Exibir campo "Considerar para cálculo de turnover" somente quando a configuração de turnover estiver marcado no cadastro da empresa.]]></Item>
 		<Item visivel="S" motivo="P20150500047"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão: Identificar as situações do colaborador que estão aguardando confirmação no AC.]]></Item>
+		<Item visivel="S" motivo="P20150600039"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos: Visualizar solicitações/atendimentos médicos que são inseridos com data inferior a data de admissão do colaborador.]]></Item>
 		<Item visivel="S" motivo="P20150500090"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Ajuste de inconsistência no relatório quando a empresa controla o risco pela função.]]></Item>
 		<Item visivel="S" motivo="S20150500190"><![CDATA[SESMT > Relatórios > Atendimentos médicos: Novo filtro por situação, o qual possibilita a impressão somente dos atendimentos médicos ou das solicitações de atendimentos ou ambas as situações.]]></Item>
 	</Versao>
