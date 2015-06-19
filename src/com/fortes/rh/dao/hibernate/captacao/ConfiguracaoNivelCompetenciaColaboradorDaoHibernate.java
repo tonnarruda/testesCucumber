@@ -152,4 +152,20 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 
 		return ((Integer) criteria.uniqueResult()) > 0;	
 	}
+
+	public boolean existeConfigCompetenciaParaAFaixaDestehistorico(Long historicoColaboradorId) 
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select cncc.id "); 
+		hql.append("from ConfiguracaoNivelCompetenciaColaborador cncc "); 
+		hql.append("where cncc.faixaSalarial.id in ( ");
+		hql.append("								select hc.faixaSalarial.id from HistoricoColaborador hc ");
+		hql.append("								where hc.colaborador.id = cncc.colaborador.id and hc.id = :historicoColaboradorId ");
+		hql.append("								) ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("historicoColaboradorId", historicoColaboradorId);
+		
+		return query.list().size() > 0;
+	}
 }

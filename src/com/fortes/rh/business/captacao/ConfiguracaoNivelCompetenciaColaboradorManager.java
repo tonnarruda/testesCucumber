@@ -17,4 +17,5 @@ public interface ConfiguracaoNivelCompetenciaColaboradorManager extends GenericM
 	ConfiguracaoNivelCompetenciaColaborador findByData(Date data, Long colaboradorId, Long avaliadorId, Long colaboradorQuestionarioId);
 	void verificaAvaliadorAnonimo(ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador);
 	boolean existeDependenciaComCompetenciasDaFaixaSalarial(Long faixaSalarialId, Date dataInicial, Date dataFinal);
+	boolean existeConfigCompetenciaParaAFaixaDestehistorico(Long historicoColaboradorId);
 }

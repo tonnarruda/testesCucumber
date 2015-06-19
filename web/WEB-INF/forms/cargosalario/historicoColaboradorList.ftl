@@ -38,7 +38,7 @@
 		<@display.column title="Estabelecimento">
 			${historicoColaborador.estabelecimento.nome}
 		</@display.column>
-		<@display.column title="Cargo">
+		<@display.column title="Cargo/Faixa Salarial">
 			${historicoColaborador.faixaSalarial.descricao}
 		</@display.column>
 		<@display.column property="areaOrganizacional.descricao" title="Área Organizacional" style="width:250px"/>

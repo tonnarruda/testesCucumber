@@ -17,6 +17,8 @@ import java.util.ResourceBundle;
 import org.apache.commons.beanutils.BeanComparator;
 import org.springframework.core.NestedRuntimeException;
 
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaturamentoMensalManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
@@ -66,6 +68,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private CargoManager cargoManager;
 	private FaturamentoMensalManager faturamentoMensalManager;
+	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 
 	private Collection<HistoricoColaborador> historicoColaboradors;
 
@@ -442,6 +445,11 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	{
 		try
 		{
+			if(configuracaoNivelCompetenciaColaboradorManager.existeConfigCompetenciaParaAFaixaDestehistorico(historicoColaborador.getId())){
+				addActionWarning("Este histórico não pode ser removido, pois o colaborador perderá o vínculo de sua cargo/faixa salarial com suas competências.");
+				return historicoColaboradorList();
+			}
+			
 			historicoColaboradorManager.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), getEmpresaSistema());
 			addActionSuccess("Situação excluída com sucesso.");
 		}
@@ -1075,5 +1083,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	
 	public void setEmpresasPermitidas(Long[] empresasPermitidas) {
 		this.empresasPermitidas = empresasPermitidas;
+	}
+
+	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
+		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
 	}
 }
