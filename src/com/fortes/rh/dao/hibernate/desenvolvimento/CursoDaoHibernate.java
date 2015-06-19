@@ -142,7 +142,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		getSession().flush();
 		
 		StringBuilder sql = new StringBuilder("select tur.id, coalesce(tur.qtdparticipantesprevistos, 0), cast(coalesce(count(ct.id), 0) as integer) as qtdeInscritosFiltrado, ct3.qtdeInscritosTotal, ");
-		sql.append("cast(coalesce((cur.cargaHoraria/60) * count(ct.id), 0) as double precision) as cargaHoraria, ");
+		sql.append("cast(coalesce(round((cur.cargaHoraria/60.0),1) * count(ct.id), 0) as double precision) as cargaHoraria, ");
 		sql.append("CASE when diasTurmaTotal > 0 ");
 		sql.append("	then cast(coalesce(((cur.cargaHoraria/60)/dt.diasTurmaTotal)* dt2.diasTurmaRealizado * count(ct.id),0) as double precision) "); 
 		sql.append("	else cast(coalesce((cur.cargaHoraria/60) * count(ct.id),0) as double precision) ");

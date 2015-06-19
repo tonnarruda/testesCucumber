@@ -246,6 +246,8 @@
 								<dd>${indicadorTreinamento.percentualFrequencia?string(",##0.00")}%</dd>
 							</dl>
 							<dl>
+								<dt>Total de horas de treinamento</dt>
+								<dd>${indicadorTreinamento.somaHoras}</dd>
 								<dt>Investimento médio da hora de treinamento (R$)</dt>
 								<dd>${indicadorTreinamento.custoMedioHoraFmt}</dd>
 								<dt>Investimento per capita (R$)</dt>
