@@ -627,6 +627,7 @@ import com.fortes.rh.test.web.dwr.SolicitacaoExameDWRTest;
 import com.fortes.rh.test.web.dwr.TurmaDWRTest;
 import com.fortes.rh.test.web.dwr.UsuarioMensagemDWRTest;
 import com.fortes.rh.test.web.dwr.UtilDWRTest;
+import com.fortes.rh.web.action.captacao.ConhecimentoListActionTest;
 import com.fortes.rh.web.action.exportacao.ExportacaoActionTest;
 import com.fortes.test.web.tags.LinkTagTest;
 
@@ -661,6 +662,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ConhecimentoEditActionTest.class);
         suite.addTestSuite(ConhecimentoDaoHibernateTest.class);
         suite.addTestSuite(ConhecimentoManagerTest.class);
+        suite.addTestSuite(ConhecimentoListActionTest.class);
         
         suite.addTestSuite(AtitudeEditActionTest.class);
         suite.addTestSuite(AtitudeDaoHibernateTest.class);
