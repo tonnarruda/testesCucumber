@@ -11,7 +11,7 @@
 		@import url('<@ww.url value="/css/displaytag.css"/>');
 		
 		.tabelaCompetencias { padding: 10px; }
-		.dados { width: 710px; }
+		.dados { width: 100%; }
 		.dados td { border: none; }
 	</style>
 	
