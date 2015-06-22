@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.14x.17x" db="" data="xx/xx/2015">
+		<Item visivel="S" motivo="S20150500191"><![CDATA[R&S > Relatórios > Duração para preenchimento de vagas: Considerar as pausas da solicitação de pessoal na média de dias.]]></Item>
+	</Versao>
 	<Versao id="1.1.145.175" db="" data="08/06/2015">
 		<Item visivel="S" motivo="S20150500254"><![CDATA[Mudança da marca ENTE Tecnologia para Fortes RH]]></Item>
 		<Item visivel="S" motivo="P20150500060"><![CDATA[R&S > Cadastros > Motivos de Solicitação de Pessoal > Inserir/Editar: Exibir campo "Considerar para cálculo de turnover" somente quando a configuração de turnover estiver marcado no cadastro da empresa.]]></Item>
