@@ -1261,18 +1261,18 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 	
 	public void testExisteDependenciaComCompetenciasDaCandidato()
 	{
-		assertTrue("Sem data final e data da solicitação igual à data início)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), null));
-		assertFalse("Sem data final e data da solicitação menor que data início)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("02/01/2019"), null));
-		assertTrue("Sem data final e data da solicitação maior que data início)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("03/01/2019"), DateUtil.criarDataDiaMesAno("02/01/2019"), null));
+		assertTrue("Sem data final e data da solicitação igual à data início)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), null));
+		assertFalse("Sem data final e data da solicitação menor que data início)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("02/01/2019"), null));
+		assertTrue("Sem data final e data da solicitação maior que data início)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("03/01/2019"), DateUtil.criarDataDiaMesAno("02/01/2019"), null));
 		
-		assertFalse("Com data final e data da solicitação menor que data início)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("01/02/2019"), DateUtil.criarDataDiaMesAno("02/02/2019"), DateUtil.criarDataDiaMesAno("01/03/2019")));
-		assertTrue("Com data final e data da solicitação igual à data início)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/02/2019")));
-		assertTrue("Com data final e data da solicitação entre início e fim)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("01/02/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/03/2019")));
-		assertFalse("Com data final e data da solicitação igual à data final)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("01/02/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/02/2019")));
-		assertFalse("Com data final e data da solicitação maior que data final)", setUpTestExisteDependenciaComCompetenciasDaCandidato(DateUtil.criarDataDiaMesAno("02/02/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/02/2019")));
+		assertFalse("Com data final e data da solicitação menor que data início)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("01/02/2019"), DateUtil.criarDataDiaMesAno("02/02/2019"), DateUtil.criarDataDiaMesAno("01/03/2019")));
+		assertTrue("Com data final e data da solicitação igual à data início)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/02/2019")));
+		assertTrue("Com data final e data da solicitação entre início e fim)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("01/02/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/03/2019")));
+		assertFalse("Com data final e data da solicitação igual à data final)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("01/02/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/02/2019")));
+		assertFalse("Com data final e data da solicitação maior que data final)", setUpTestExisteDependenciaComCompetenciasDoCandidato(DateUtil.criarDataDiaMesAno("02/02/2019"), DateUtil.criarDataDiaMesAno("01/01/2019"), DateUtil.criarDataDiaMesAno("01/02/2019")));
 	}
 	
-	private boolean setUpTestExisteDependenciaComCompetenciasDaCandidato(Date dataSolicitacao, Date dataInicio, Date dataFinal)
+	private boolean setUpTestExisteDependenciaComCompetenciasDoCandidato(Date dataSolicitacao, Date dataInicio, Date dataFinal)
 	{
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarialDao.save(faixaSalarial);
@@ -1301,7 +1301,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		ConfiguracaoNivelCompetencia cncFaixa = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, atitude.getId(), null, null, candidato, faixaSalarial);
 		configuracaoNivelCompetenciaDao.save(cncFaixa);
 
-		return configuracaoNivelCompetenciaDao.existeDependenciaComCompetenciasDaCandidato(faixaSalarial.getId(), dataInicio, dataFinal);
+		return configuracaoNivelCompetenciaDao.existeDependenciaComCompetenciasDoCandidato(faixaSalarial.getId(), dataInicio, dataFinal);
 		
 	}
 	
@@ -1352,15 +1352,12 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		Atitude atitude = criaAtitude();
 		
 		Candidato candidato = CandidatoFactory.getCandidato();
-		candidato.setNome("Nome Colaborador");
 		candidatoDao.save(candidato);
 		
 		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
 		nivelCompetenciaDao.save(nivelCompetencia);
 		
-		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
-		solicitacao.setFaixaSalarial(faixaSalarial);
-		solicitacao.setData(DateUtil.criarDataDiaMesAno("01/03/2015"));
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(faixaSalarial, DateUtil.criarDataDiaMesAno("01/03/2015"));
 		solicitacaoDao.save(solicitacao);
 		
 		ConfiguracaoNivelCompetencia cncCandidato = ConfiguracaoNivelCompetenciaFactory.getEntityCandidato(candidato, null, faixaSalarial, nivelCompetencia, atitude.getId(), TipoCompetencia.ATITUDE);
@@ -1383,24 +1380,18 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		Atitude atitude = criaAtitude();
 		
 		Candidato candidato1 = CandidatoFactory.getCandidato();
-		candidato1.setNome("Nome Colaborador");
 		candidatoDao.save(candidato1);
 		
 		Candidato candidato2 = CandidatoFactory.getCandidato();
-		candidato2.setNome("Nome Colaborador");
 		candidatoDao.save(candidato2);
 		
 		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
 		nivelCompetenciaDao.save(nivelCompetencia);
 		
-		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
-		solicitacao1.setFaixaSalarial(faixaSalarial);
-		solicitacao1.setData(DateUtil.criarDataDiaMesAno("01/03/2015"));
+		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao(faixaSalarial, DateUtil.criarDataDiaMesAno("01/03/2015"));
 		solicitacaoDao.save(solicitacao1);
 		
-		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
-		solicitacao2.setFaixaSalarial(faixaSalarial);
-		solicitacao2.setData(DateUtil.criarDataDiaMesAno("01/03/2015"));
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao(faixaSalarial, DateUtil.criarDataDiaMesAno("01/03/2015"));
 		solicitacaoDao.save(solicitacao2);
 		
 		ConfiguracaoNivelCompetencia cncCandidato1 = ConfiguracaoNivelCompetenciaFactory.getEntityCandidato(candidato1, solicitacao1, faixaSalarial, nivelCompetencia, atitude.getId(), TipoCompetencia.ATITUDE);

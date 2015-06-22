@@ -34,7 +34,7 @@ public interface ConfiguracaoNivelCompetenciaDao extends GenericDao<Configuracao
 	void removeDependenciasComConfiguracaoNivelCompetenciaFaixaSalarialByFaixasSalariais(Long[] faixaIds);
 	Collection<ConfiguracaoNivelCompetencia> findCompetenciasFaixaSalarial(Long[] competenciaIds, Long faixaSalarialId);
 	Collection<Competencia> findCompetenciasColaboradorByFaixaSalarialAndPeriodo(Long faixaId, Date dataIni, Date dataFim);
-	boolean existeDependenciaComCompetenciasDaCandidato(Long faixaSalarialId, Date dataInicial, Date dataFinal);
+	boolean existeDependenciaComCompetenciasDoCandidato(Long faixaSalarialId, Date dataInicial, Date dataFinal);
 	Collection<Colaborador> findDependenciaComColaborador(Long faixaSalarialId,	Date data);
 	Collection<Candidato> findDependenciaComCandidato(Long faixaSalarialId, Date data);
 	void removeByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId);

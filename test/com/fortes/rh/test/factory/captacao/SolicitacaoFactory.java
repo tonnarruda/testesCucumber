@@ -3,7 +3,9 @@ package com.fortes.rh.test.factory.captacao;
 import java.util.Date;
 
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.util.DateUtil;
 
 public class SolicitacaoFactory
 {
@@ -33,6 +35,15 @@ public class SolicitacaoFactory
 	{
 		Solicitacao solicitacao = getSolicitacao();
 		solicitacao.setId(id);
+		
+		return solicitacao;
+	}
+
+	public static Solicitacao getSolicitacao(FaixaSalarial faixaSalarial, Date data)
+	{
+		Solicitacao solicitacao = getSolicitacao();
+		solicitacao.setFaixaSalarial(faixaSalarial);
+		solicitacao.setData(data);
 		
 		return solicitacao;
 	}

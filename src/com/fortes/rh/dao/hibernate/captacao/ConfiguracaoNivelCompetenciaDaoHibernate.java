@@ -576,7 +576,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return lista;				
 	}
 
-	public boolean existeDependenciaComCompetenciasDaCandidato(Long faixaSalarialId, Date dataInicial, Date dataFinal)
+	public boolean existeDependenciaComCompetenciasDoCandidato(Long faixaSalarialId, Date dataInicial, Date dataFinal)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cnc");
 		criteria.createCriteria("cnc.candidato", "ca", Criteria.INNER_JOIN);
