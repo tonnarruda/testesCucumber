@@ -1,4 +1,4 @@
-package com.fortes.rh.web.action.captacao;
+package com.fortes.rh.test.web.action.captacao;
 
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
@@ -11,8 +11,10 @@ import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.web.action.captacao.ConhecimentoListAction;
 
 public class ConhecimentoListActionTest extends MockObjectTestCase
+
 {
 	private ConhecimentoListAction action;
 	private Mock configuracaoNivelCompetenciaManager;
