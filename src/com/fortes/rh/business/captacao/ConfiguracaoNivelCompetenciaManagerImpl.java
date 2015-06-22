@@ -541,10 +541,10 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		Date dataDaProximaConfiguracaodaFaixaSalarial = (proximasConfiguracoesDafaixaSalarial.size() == 0 ? null : ((ConfiguracaoNivelCompetenciaFaixaSalarial) proximasConfiguracoesDafaixaSalarial.toArray()[0]).getData());
 
 		if(existeDependenciaComCompetenciasDoColaborador(configuracaoNivelCompetenciaFaixaSalarial, dataDaProximaConfiguracaodaFaixaSalarial))
-			throw new FortesException("Esta configuração de competência não pode ser excluída, pois existem competências do colaborador que dependem da mesma.");
+			throw new FortesException("Esta configuração de competência não pode ser excluída, pois existe dependência com competências do colaborador.");
 
 		if(existeDependenciaComCompetenciasDoCandidato(configuracaoNivelCompetenciaFaixaSalarial, dataDaProximaConfiguracaodaFaixaSalarial))
-			throw new FortesException("Esta configuração de competência não pode ser excluída, pois existem competências do candidato que dependem da mesma.");
+			throw new FortesException("Esta configuração de competência não pode ser excluída, pois existe dependência com competências do candidato.");
 	}
 		
 	private boolean existeDependenciaComCompetenciasDoColaborador(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial, Date dataDaProximaConfiguracaodaFaixaSalarial) 

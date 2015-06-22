@@ -414,7 +414,8 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("inner join faixaSalarial fs on fs.id = hc.faixasalarial_id ");
 		sql.append("inner join estabelecimento est on est.id = hc.estabelecimento_id ");
 		
-		sql.append("left join configuracaoNivelCompetencia cnc on cnc.faixasalarial_id = fs.id and cnc.candidato_id is null and cnc.configuracaoNivelCompetenciaColaborador_id is null ");
+		sql.append("left join configuracaoNivelCompetenciaFaixaSalarial cncfs on cncfs.faixasalarial_id = fs.id  ");
+		sql.append("left join configuracaoNivelCompetencia cnc on cnc.configuracaoNivelCompetenciaFaixaSalarial_id = cncfs.id  ");
 		sql.append("inner join nivelCompetencia nc on nc.id = cnc.nivelCompetencia_id ");
 		
 		sql.append("left join Atitude a on a.id = cnc.competencia_id and 'A' = cnc.tipocompetencia ");
@@ -435,6 +436,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		
 		sql.append("where c.desligado = false ");
 		sql.append("and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador_id = hc.colaborador_id and hc2.status = :status and hc2.data <= :hoje) ");
+		sql.append("and cncfs.data = (select max(cncfs2.data) from ConfiguracaoNivelCompetenciaFaixaSalarial cncfs2 where cncfs2.faixaSalarial_id = fs.id and cncfs2.data <= :hoje) ");
 		sql.append("and (cncc.data = (select max(cncc2.data) from ConfiguracaoNivelCompetenciaColaborador cncc2 where cncc2.colaborador_id = c.id and cncc2.data <= :hoje) or cncc.data is null) ");
 		sql.append("and COALESCE (cconhe.id, chabil.id, cati.id ) is not null ");
 		

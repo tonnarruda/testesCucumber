@@ -206,7 +206,7 @@ public class TurmaListAction extends MyActionSupportList
 		configuracaoNivelCompetencias = configuracaoNivelCompetenciaManager.findColaboradoresCompetenciasAbaixoDoNivel(empresaId, LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), BooleanUtil.getValueCombo(colaboradoresAvaliados), agruparPor);
 		
 		if(configuracaoNivelCompetencias.isEmpty())
-			addActionMessage("Não existem Colaboradores para o filtro informado.");
+			addActionMessage("Não existem colaboradores para o filtro informado.");
 		
 		return SUCCESS;
 	}

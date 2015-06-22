@@ -244,8 +244,6 @@
 				NivelCompetenciaDWR.findCompetenciaByFaixaSalarialAndData(repopulaConfiguracaoNivelCompetenciaByDados, ${faixaSalarial.id}, $('#data').val());
 			}
 
-
-
 			function repopulaConfiguracaoNivelCompetenciaByDados(dados)
 			{
 				if(dados == '')	{

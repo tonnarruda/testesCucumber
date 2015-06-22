@@ -66,7 +66,7 @@ public class AtitudeEditAction extends MyActionSupportList
 	{
 		if (competenciaManager.existeNome(atitude.getNome(), null, null, getEmpresaSistema().getId()))
 		{
-			addActionMessage("Já existe um Conhecimento, Habilidade ou Atitude com o nome \"" + atitude.getNome() +"\".");
+			addActionWarning("Já existe um conhecimento, habilidade ou atitude com o nome \"" + atitude.getNome() +"\".");
 			prepareInsert();
 			return Action.INPUT;
 		}
@@ -83,7 +83,7 @@ public class AtitudeEditAction extends MyActionSupportList
 	{
 		if (competenciaManager.existeNome(atitude.getNome(), atitude.getId(), Competencia.ATITUDE, getEmpresaSistema().getId()))
 		{
-			addActionMessage("Já existe um Conhecimento, Habilidade ou Atitude com o nome \"" + atitude.getNome() +"\".");
+			addActionWarning("Já existe um conhecimento, habilidade ou atitude com o nome \"" + atitude.getNome() +"\".");
 			prepareInsert();
 			return Action.INPUT;
 		}
@@ -114,7 +114,7 @@ public class AtitudeEditAction extends MyActionSupportList
 	{
 		if(!configuracaoNivelCompetenciaManager.existeConfiguracaoNivelCompetencia(atitude.getId(), TipoCompetencia.ATITUDE)){
 			atitudeManager.remove(atitude.getId());
-			addActionMessage("Atitude excluída com sucesso.");
+			addActionSuccess("Atitude excluída com sucesso.");
 			return Action.SUCCESS;
 		}
 		else{

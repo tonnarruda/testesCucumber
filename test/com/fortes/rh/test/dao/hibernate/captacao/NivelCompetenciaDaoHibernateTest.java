@@ -26,7 +26,6 @@ import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
-import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Candidato;
@@ -39,7 +38,6 @@ import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.Solicitacao;
-import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
@@ -52,7 +50,6 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
-import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
@@ -1005,39 +1002,28 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		atitudeDao.save(atitude);
 
 		NivelCompetencia nivelPessimo = NivelCompetenciaFactory.getEntity();
-		nivelPessimo.setDescricao("pessimo");
 		nivelPessimo.setOrdem(1);
 		nivelCompetenciaDao.save(nivelPessimo);
 
 		NivelCompetencia nivelRegular = NivelCompetenciaFactory.getEntity();
-		nivelRegular.setDescricao("regular");
 		nivelRegular.setOrdem(2);
 		nivelCompetenciaDao.save(nivelRegular);
 		
 		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity();
-		nivelBom.setDescricao("bom");
 		nivelBom.setOrdem(3);
 		nivelCompetenciaDao.save(nivelBom);
 		
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarialDao.save(faixaSalarial);
 		
-		ConfiguracaoNivelCompetencia configFaixa1 = new ConfiguracaoNivelCompetencia();
-		configFaixa1.setConfiguracaoNivelCompetenciaColaborador(null);
-		configFaixa1.setCandidato(null);
-		configFaixa1.setFaixaSalarial(faixaSalarial);
-		configFaixa1.setNivelCompetencia(nivelBom);
-		configFaixa1.setCompetenciaId(atitude.getId());
-		configFaixa1.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
+		configuracaoNivelCompetenciaFaixaSalarial.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
+		
+		ConfiguracaoNivelCompetencia configFaixa1 = ConfiguracaoNivelCompetenciaFactory.getEntityFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial, nivelBom, atitude.getId(), TipoCompetencia.ATITUDE);
 		configuracaoNivelCompetenciaDao.save(configFaixa1);
 		
-		ConfiguracaoNivelCompetencia configFaixa2 = new ConfiguracaoNivelCompetencia();
-		configFaixa2.setConfiguracaoNivelCompetenciaColaborador(null);
-		configFaixa2.setCandidato(null);
-		configFaixa2.setFaixaSalarial(faixaSalarial);
-		configFaixa2.setNivelCompetencia(nivelRegular);
-		configFaixa2.setCompetenciaId(conhecimento.getId());
-		configFaixa2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		ConfiguracaoNivelCompetencia configFaixa2 = ConfiguracaoNivelCompetenciaFactory.getEntityFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial, nivelRegular, conhecimento.getId(), TipoCompetencia.CONHECIMENTO);
 		configuracaoNivelCompetenciaDao.save(configFaixa2);
 		
 		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
@@ -1072,19 +1058,10 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		
 		ConfiguracaoNivelCompetenciaColaborador configAtaliba = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, ataliba, DateUtil.criarDataMesAno(17, 8, 2011), null, null);
 		
-		ConfiguracaoNivelCompetencia configAtaliba1 = new ConfiguracaoNivelCompetencia();
-		configAtaliba1.setConfiguracaoNivelCompetenciaColaborador(configAtaliba);
-		configAtaliba1.setFaixaSalarial(faixaSalarial);
-		configAtaliba1.setNivelCompetencia(nivelBom);
-		configAtaliba1.setCompetenciaId(atitude.getId());
-		configAtaliba1.setTipoCompetencia(TipoCompetencia.ATITUDE);
+		ConfiguracaoNivelCompetencia configAtaliba1 = ConfiguracaoNivelCompetenciaFactory.getEntityColaborador(configAtaliba, nivelBom, atitude.getId(), TipoCompetencia.ATITUDE);
 		configuracaoNivelCompetenciaDao.save(configAtaliba1);
 		
-		ConfiguracaoNivelCompetencia configAtaliba2 = new ConfiguracaoNivelCompetencia();
-		configAtaliba2.setConfiguracaoNivelCompetenciaColaborador(configAtaliba);
-		configAtaliba2.setNivelCompetencia(nivelPessimo);
-		configAtaliba2.setCompetenciaId(conhecimento.getId());
-		configAtaliba2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		ConfiguracaoNivelCompetencia configAtaliba2 = ConfiguracaoNivelCompetenciaFactory.getEntityColaborador(configAtaliba, nivelPessimo, conhecimento.getId(), TipoCompetencia.CONHECIMENTO);
 		configuracaoNivelCompetenciaDao.save(configAtaliba2);
 		
 		criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, tiburcio, DateUtil.criarDataMesAno(17, 8, 2011), null, null);
