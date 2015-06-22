@@ -36,7 +36,7 @@ public class ProntuarioManagerImpl extends GenericManagerImpl<Prontuario, Prontu
 
 	public ProntuarioRelatorio findRelatorioProntuario(Empresa empresa, Colaborador colaborador) throws ColecaoVaziaException
 	{
-		colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId(), StatusRetornoAC.CONFIRMADO);
+		colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId(), null);
 
 		Collection<Prontuario> prontuarios = findByColaborador(colaborador);
 		CollectionUtil<Prontuario> collectionUtil = new CollectionUtil<Prontuario>();
