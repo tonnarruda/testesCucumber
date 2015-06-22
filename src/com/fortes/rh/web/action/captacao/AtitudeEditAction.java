@@ -5,10 +5,12 @@ import java.util.Collection;
 
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.CompetenciaManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Competencia;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -18,9 +20,10 @@ import com.opensymphony.xwork.Action;
 public class AtitudeEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
-	private AtitudeManager atitudeManager;
-	private CompetenciaManager competenciaManager;
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager = null;
+	private CompetenciaManager competenciaManager;
+	private AtitudeManager atitudeManager;
 	private CursoManager cursoManager;
 	
 	private Atitude atitude;
@@ -109,10 +112,15 @@ public class AtitudeEditAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		atitudeManager.remove(atitude.getId());
-		addActionMessage("Atitude excluída com sucesso.");
-		
-		return Action.SUCCESS;
+		if(!configuracaoNivelCompetenciaManager.existeConfiguracaoNivelCompetencia(atitude.getId(), TipoCompetencia.ATITUDE)){
+			atitudeManager.remove(atitude.getId());
+			addActionMessage("Atitude excluída com sucesso.");
+			return Action.SUCCESS;
+		}
+		else{
+			addActionWarning("Não é possível excluir esta atitude pois possui dependência com o nível de competencia do cargo/faixa salarial.");
+			return Action.INPUT;
+		}
 	}
 
 	public Atitude getAtitude()
@@ -196,10 +204,13 @@ public class AtitudeEditAction extends MyActionSupportList
 	{
 		this.cursosCheck = cursosCheck;
 	}
-
 	
 	public void setCursoManager(CursoManager cursoManager)
 	{
 		this.cursoManager = cursoManager;
+	}
+
+	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 }

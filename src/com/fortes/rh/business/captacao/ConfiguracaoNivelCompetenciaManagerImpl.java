@@ -613,4 +613,8 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	{
 		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
 	}
+
+	public boolean existeConfiguracaoNivelCompetencia(Long competenciaId, char tipoCompetencia) {
+		return getDao().verifyExists(new String[]{"competenciaId", "tipoCompetencia"}, new Object[]{competenciaId, tipoCompetencia});
+	}
 }

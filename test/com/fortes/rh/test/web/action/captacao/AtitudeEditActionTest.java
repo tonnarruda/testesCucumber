@@ -11,10 +11,12 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.CompetenciaManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
@@ -26,6 +28,7 @@ import com.fortes.web.tags.CheckBox;
 public class AtitudeEditActionTest extends MockObjectTestCase
 {
 	private AtitudeEditAction action;
+	private Mock configuracaoNivelCompetenciaManager;
 	private Mock areaOrganizacionalManager;
 	private Mock atitudeManager;
 	private Mock competenciaManager;
@@ -39,12 +42,14 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
 		cursoManager = new Mock(CursoManager.class);
 		competenciaManager = new Mock(CompetenciaManager.class);
+		configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class);
 
 		action.setAtitude(new Atitude());
 		action.setAtitudeManager((AtitudeManager) atitudeManager.proxy());
 		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 		action.setCursoManager((CursoManager) cursoManager.proxy());
 		action.setCompetenciaManager((CompetenciaManager) competenciaManager.proxy());
+		action.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 	}
@@ -108,8 +113,18 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		Atitude atitude = AtitudeFactory.getEntity(1L);
 		action.setAtitude(atitude);
 
+		configuracaoNivelCompetenciaManager.expects(once()).method("existeConfiguracaoNivelCompetencia").with(eq(atitude.getId()), eq(TipoCompetencia.ATITUDE)).will(returnValue(false));
 		atitudeManager.expects(once()).method("remove");
 		assertEquals("success", action.delete());
+	}
+	
+	public void testDeleteComDependenciaConfiguracaoNivelCompetencia() throws Exception
+	{
+		Atitude atitude = AtitudeFactory.getEntity(1L);
+		action.setAtitude(atitude);
+
+		configuracaoNivelCompetenciaManager.expects(once()).method("existeConfiguracaoNivelCompetencia").with(eq(atitude.getId()), eq(TipoCompetencia.ATITUDE)).will(returnValue(true));
+		assertEquals("input", action.delete());
 	}
 	
 	public void testDeleteException() throws Exception
@@ -117,13 +132,13 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		Atitude atitude = AtitudeFactory.getEntity(1L);
 		action.setAtitude(atitude);
 		
+		configuracaoNivelCompetenciaManager.expects(once()).method("existeConfiguracaoNivelCompetencia").with(eq(atitude.getId()), eq(TipoCompetencia.ATITUDE)).will(returnValue(false));
 		atitudeManager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		try {
 			action.delete();
 		} catch (Exception e) {
 			return;
 		}
-		
 		fail("Deveria ter lançado uma exceçao");
 	}
 

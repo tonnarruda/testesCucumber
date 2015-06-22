@@ -1463,6 +1463,33 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals(1, cncSolicitacao2.size());
 		assertEquals(0, cncSolicitacao3.size());
 	}
+	
+	public void testExisteConfiguracaoNivelCompetencia()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+
+		Conhecimento conhecimento = criaConhecimento();
+		Habilidade habilidade = criaHabilidade();
+		Atitude atitude = criaAtitude();
+		
+		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
+		nivelCompetenciaDao.save(nivelCompetencia);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixa = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(); 
+		cncFaixa.setFaixaSalarial(faixaSalarial);
+		cncFaixa.setData(new Date());
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(cncFaixa);
+
+		ConfiguracaoNivelCompetencia cncConhecimento = ConfiguracaoNivelCompetenciaFactory.getEntityFaixaSalarial(cncFaixa, nivelCompetencia, conhecimento.getId(), TipoCompetencia.CONHECIMENTO);
+		configuracaoNivelCompetenciaDao.save(cncConhecimento);
+		ConfiguracaoNivelCompetencia cncHabilidade = ConfiguracaoNivelCompetenciaFactory.getEntityFaixaSalarial(cncFaixa, nivelCompetencia, habilidade.getId(), TipoCompetencia.HABILIDADE);
+		configuracaoNivelCompetenciaDao.save(cncHabilidade);
+
+		assertEquals(true, configuracaoNivelCompetenciaDao.verifyExists(new String[]{"competenciaId", "tipoCompetencia"}, new Object[]{conhecimento.getId(), TipoCompetencia.CONHECIMENTO}));
+		assertEquals(true, configuracaoNivelCompetenciaDao.verifyExists(new String[]{"competenciaId", "tipoCompetencia"}, new Object[]{habilidade.getId(), TipoCompetencia.HABILIDADE}));
+		assertEquals(false, configuracaoNivelCompetenciaDao.verifyExists(new String[]{"competenciaId", "tipoCompetencia"}, new Object[]{atitude.getId(), TipoCompetencia.ATITUDE}));
+	}
 
 	public GenericDao<NivelCompetencia> getGenericDao()
 	{

@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.business.captacao.CompetenciaManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.Habilidade;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -23,6 +25,7 @@ public class HabilidadeEditAction extends MyActionSupportList
 	private CompetenciaManager competenciaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager = null;
 	private CursoManager cursoManager;
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 
 	private Habilidade habilidade;
 	private Collection<Habilidade> habilidades;
@@ -108,10 +111,15 @@ public class HabilidadeEditAction extends MyActionSupportList
 	
 	public String delete() throws Exception
 	{
-		habilidadeManager.remove(habilidade.getId());
-		addActionMessage("Habilidade excluída com sucesso.");
-
-		return Action.SUCCESS;
+		if(!configuracaoNivelCompetenciaManager.existeConfiguracaoNivelCompetencia(habilidade.getId(), TipoCompetencia.HABILIDADE)){
+			habilidadeManager.remove(habilidade.getId());
+			addActionMessage("Habilidade excluída com sucesso.");
+			return Action.SUCCESS;
+		}
+		else{
+			addActionWarning("Não é possível excluir esta habilidade pois possui dependência com o nível de competencia do cargo/faixa salarial.");
+			return Action.INPUT;
+		}
 	}
 	
 	public Habilidade getHabilidade()
@@ -210,4 +218,10 @@ public class HabilidadeEditAction extends MyActionSupportList
 	{
 		this.cursoManager = cursoManager;
 	}
+
+	public void setConfiguracaoNivelCompetenciaManager(
+			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
+	}
+	
 }

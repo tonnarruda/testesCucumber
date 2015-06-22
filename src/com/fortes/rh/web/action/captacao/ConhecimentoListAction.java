@@ -2,14 +2,17 @@ package com.fortes.rh.web.action.captacao;
 
 import java.util.Collection;
 
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
 @SuppressWarnings("serial")
 public class ConhecimentoListAction extends MyActionSupportList
 {
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private ConhecimentoManager conhecimentoManager;
 	private Collection<Conhecimento> conhecimentos;
 	private Conhecimento conhecimento;
@@ -35,10 +38,15 @@ public class ConhecimentoListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		conhecimentoManager.remove(conhecimento.getId());
-		addActionMessage("Conhecimento excluído com sucesso.");
-
-		return Action.SUCCESS;
+		if(!configuracaoNivelCompetenciaManager.existeConfiguracaoNivelCompetencia(conhecimento.getId(), TipoCompetencia.CONHECIMENTO)){
+			conhecimentoManager.remove(conhecimento.getId());
+			addActionMessage("Conhecimento excluído com sucesso.");
+			return Action.SUCCESS;
+		}
+		else{
+			addActionWarning("Não é possível excluir este conhecimento pois possui dependência com o nível de competencia do cargo/faixa salarial.");
+			return Action.INPUT;
+		}
 	}
 
 	public Collection<Conhecimento> getConhecimentos() {
@@ -59,5 +67,9 @@ public class ConhecimentoListAction extends MyActionSupportList
 
 	public void setConhecimentoManager(ConhecimentoManager conhecimentoManager){
 		this.conhecimentoManager=conhecimentoManager;
+	}
+
+	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 }

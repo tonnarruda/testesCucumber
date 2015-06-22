@@ -10,6 +10,7 @@
 		<action name="delete" class="com.fortes.rh.web.action.captacao.HabilidadeEditAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack"/>
 			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="redirect">list.action</result>
 			<result name="error" type="redirect">list.action</result>
 		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.captacao.HabilidadeEditAction" method="prepareInsert">

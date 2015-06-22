@@ -10,11 +10,13 @@ import org.jmock.MockObjectTestCase;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.captacao.CompetenciaManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -26,6 +28,7 @@ import com.fortes.web.tags.CheckBox;
 public class HabilidadeEditActionTest extends MockObjectTestCase
 {
 	private HabilidadeEditAction action;
+	private Mock configuracaoNivelCompetenciaManager;
 	private Mock areaOrganizacionalManager;
 	private Mock habilidadeManager;
 	private Mock competenciaManager;
@@ -39,12 +42,14 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
 		cursoManager = new Mock(CursoManager.class);
 		competenciaManager = new Mock(CompetenciaManager.class);
+		configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class);
 		
 		action.setHabilidade(new Habilidade());
 		action.setHabilidadeManager((HabilidadeManager) habilidadeManager.proxy());
 		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 		action.setCursoManager((CursoManager) cursoManager.proxy());
 		action.setCompetenciaManager((CompetenciaManager) competenciaManager.proxy());
+		action.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 	}
@@ -105,18 +110,29 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 
 	public void testDelete() throws Exception
 	{
-		Habilidade Habilidade = HabilidadeFactory.getEntity(1L);
-		action.setHabilidade(Habilidade);
+		Habilidade habilidade = HabilidadeFactory.getEntity(1L);
+		action.setHabilidade(habilidade);
 
+		configuracaoNivelCompetenciaManager.expects(once()).method("existeConfiguracaoNivelCompetencia").with(eq(habilidade.getId()), eq(TipoCompetencia.HABILIDADE)).will(returnValue(false));
 		habilidadeManager.expects(once()).method("remove");
 		assertEquals("success", action.delete());
 	}
 	
+	public void testDeleteComDependenciaConfiguracaoNivelCompetencia() throws Exception
+	{
+		Habilidade habilidade = HabilidadeFactory.getEntity(1L);
+		action.setHabilidade(habilidade);
+
+		configuracaoNivelCompetenciaManager.expects(once()).method("existeConfiguracaoNivelCompetencia").with(eq(habilidade.getId()), eq(TipoCompetencia.HABILIDADE)).will(returnValue(true));
+		assertEquals("input", action.delete());
+	}
+	
 	public void testDeleteException() throws Exception
 	{
-		Habilidade Habilidade = HabilidadeFactory.getEntity(1L);
-		action.setHabilidade(Habilidade);
+		Habilidade habilidade = HabilidadeFactory.getEntity(1L);
+		action.setHabilidade(habilidade);
 		
+		configuracaoNivelCompetenciaManager.expects(once()).method("existeConfiguracaoNivelCompetencia").with(eq(habilidade.getId()), eq(TipoCompetencia.HABILIDADE)).will(returnValue(false));
 		habilidadeManager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		
 		try {

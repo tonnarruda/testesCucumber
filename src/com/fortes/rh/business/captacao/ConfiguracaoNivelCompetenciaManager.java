@@ -3,6 +3,8 @@ package com.fortes.rh.business.captacao;
 import java.util.Collection;
 import java.util.Date;
 
+import org.hibernate.Query;
+
 import com.fortes.business.GenericManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.captacao.Candidato;
@@ -48,4 +50,5 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 	Collection<Candidato> findDependenciaComCandidato(Long faixaSalarialId, Date data);
 	void removeByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId);
 	void criaCNCColaboradorByCNCCnadidato(Colaborador colaborador,Long idCandidato, Solicitacao solicitacao,	HistoricoColaborador historico);
+	public boolean existeConfiguracaoNivelCompetencia(Long competenciaId, char tipoCompetencia);
 }
