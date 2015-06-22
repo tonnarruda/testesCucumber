@@ -59,7 +59,6 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.CertificadoMilitar;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
-import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.Ctps;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
@@ -1690,11 +1689,17 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		return getDao().findByIdHistoricoAtual(colaboradorId, exibirSomenteAtivos);
 	}
+	
 	public Collection<Colaborador> findByIdHistoricoAtual(Collection<Long> colaboradorIds)
 	{
 		return getDao().findByIdHistoricoAtual(colaboradorIds);
 	}
 
+	public Colaborador findColaboradorByDataHistorico(Long colaboradorId, Date dataHistorico)
+	{
+		return getDao().findColaboradorByDataHistorico(colaboradorId, dataHistorico);
+	}
+	
 	public void migrarBairro(String bairro, String bairroDestino)
 	{
 		getDao().migrarBairro(bairro, bairroDestino);

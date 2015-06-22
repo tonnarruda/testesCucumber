@@ -2753,6 +2753,30 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		return query.list();
 	}
+	
+	public Colaborador findColaboradorByDataHistorico(Long colaboradorId, Date dataHistorico)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new Colaborador(c.id, c.nome, c.nomeComercial, e.id, ");
+		hql.append("ao.id, ao.nome, fs.id, fs.nome, ca.id, ca.nome ) ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as c ");
+		hql.append("left join c.empresa as e ");
+		hql.append("left join hc.faixaSalarial fs ");
+		hql.append("left join fs.cargo as ca ");
+		hql.append("left join hc.areaOrganizacional as ao ");
+		hql.append("where c.id = :id ");
+		
+		subSelectHistoricoAtual(hql, null, null, null);
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("id", colaboradorId);
+		query.setDate("data", dataHistorico);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+
+		return (Colaborador) query.uniqueResult();
+	}
+	
 
 	public Colaborador findByIdHistoricoAtual(Long colaboradorId, boolean exibirSomenteAtivos)
 	{

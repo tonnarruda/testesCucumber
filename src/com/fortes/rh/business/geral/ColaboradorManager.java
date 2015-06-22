@@ -127,6 +127,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByAreaOrganizacionalIdsNome(Collection<Long> areasIds, Colaborador colaborador);
 	public Collection<Colaborador> findByIdHistoricoAtual(Collection<Long> colaboradorIds);
 	public Colaborador findByIdHistoricoAtual(Long colaboradorId, boolean exibirSomenteAtivos);
+	public Colaborador findColaboradorByDataHistorico(Long colaboradorId, Date dataHistorico);
 	public void contratarColaboradorNoAC(Colaborador colaborador, HistoricoColaborador historico, Empresa empresa, boolean enviarEmailContratacao) throws AddressException, MessagingException,Exception;
 	public void migrarBairro(String bairro, String bairroDestino);
 	public Integer getCountAtivosEstabelecimento(Long estabelecimentoId);

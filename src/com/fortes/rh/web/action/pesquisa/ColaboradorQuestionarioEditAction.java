@@ -279,15 +279,17 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	{
 		colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionario.getId());
 		
-		colaborador = colaboradorManager.findByIdDadosBasicos(colaboradorQuestionario.getColaborador().getId(), StatusRetornoAC.CONFIRMADO);
-		
 		if (colaboradorQuestionario.getAvaliador() != null)
 			avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
 		
-		if (colaboradorQuestionario.getRespondida())
+		if (colaboradorQuestionario.getRespondida()){
+			colaborador = colaboradorManager.findColaboradorByDataHistorico(colaboradorQuestionario.getColaborador().getId(), colaboradorQuestionario.getRespondidaEm());
 			colaboradorRespostas = colaboradorRespostaManager.findByColaboradorQuestionario(colaboradorQuestionario.getId());
-		else
+		}
+		else{
+			colaborador = colaboradorManager.findColaboradorByDataHistorico(colaboradorQuestionario.getColaborador().getId(), new Date());
 			colaboradorRespostas = colaboradorQuestionarioManager.populaQuestionario(colaboradorQuestionario.getAvaliacao());
+		}
 		
 		montaPerguntasRespostas();
 		
@@ -299,7 +301,9 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 				niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId());
 				niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaborador.getFaixaSalarial().getId(), colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getData());
 			}else{
-				niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByColaborador(colaborador.getId(), avaliador.getId(), colaboradorQuestionario.getId());
+				if(colaboradorQuestionario.getRespondida())
+					niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByColaborador(colaborador.getId(), avaliador.getId(), colaboradorQuestionario.getId());
+				
 				niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaborador.getFaixaSalarial().getId(), new Date());
 			}
 				
@@ -333,8 +337,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 				
 				if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() != null)
 					configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findById(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId());
-				else
-					configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findByData(colaboradorQuestionario.getRespondidaEm(), colaborador.getId(), avaliador.getId(), colaboradorQuestionario.getId());
 
 				if (configuracaoNivelCompetenciaColaborador == null){
 					configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();

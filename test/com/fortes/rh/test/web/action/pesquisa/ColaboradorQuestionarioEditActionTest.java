@@ -441,7 +441,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		
 		colaboradorQuestionarioManager.expects(once()).method("findByIdProjection").will(returnValue(colaboradorQuestionario));
 		colaboradorManager.expects(atLeastOnce()).method("findByIdProjectionEmpresa").with(ANYTHING).will(returnValue(colaborador));
-		colaboradorManager.expects(atLeastOnce()).method("findByIdDadosBasicos").with(ANYTHING,ANYTHING).will(returnValue(colaborador));
+		colaboradorManager.expects(atLeastOnce()).method("findColaboradorByDataHistorico").with(ANYTHING,ANYTHING).will(returnValue(colaborador));
 		colaboradorQuestionarioManager.expects(once()).method("populaQuestionario").will(returnValue(new ArrayList<ColaboradorResposta>()));
 		perguntaManager.expects(once()).method("getPerguntasRespostaByQuestionarioAgrupadosPorAspecto").with(eq(10L), ANYTHING).will(returnValue(new ArrayList<Pergunta>()));
 		

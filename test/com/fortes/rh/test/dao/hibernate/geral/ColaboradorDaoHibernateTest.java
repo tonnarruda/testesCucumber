@@ -2165,6 +2165,51 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals("Teste I", colaboradorTmp.getFaixaSalarial().getDescricao());
 		assertEquals(areaOrganizacional, colaboradorTmp.getAreaOrganizacional());
 	}
+
+	public void testFindColaboradorByDataHistorico() {
+		Colaborador colaborador = getColaborador();
+		colaborador.setNome("Maria João");
+		colaboradorDao.save(colaborador);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Cargo cargo1 = CargoFactory.getEntity();
+		cargo1.setNome("Analista de Sistemas");
+		cargoDao.save(cargo1);
+		
+		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity();
+		faixaSalarial1.setNome("Júnior");
+		faixaSalarial1.setCargo(cargo1);
+		faixaSalarialDao.save(faixaSalarial1);
+		
+		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity();
+		faixaSalarial2.setCargo(cargo1);
+		faixaSalarial2.setNome("Sênior");
+		faixaSalarialDao.save(faixaSalarial2);
+		
+		HistoricoColaborador historicoColaboradorAntigo = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorAntigo.setData(DateUtil.criarDataMesAno(1, 1, 2014));
+		historicoColaboradorAntigo.setColaborador(colaborador);
+		historicoColaboradorAntigo.setFaixaSalarial(faixaSalarial1);
+		historicoColaboradorAntigo = historicoColaboradorDao.save(historicoColaboradorAntigo);
+
+		HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorAtual.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2015));
+		historicoColaboradorAtual.setColaborador(colaborador);
+		historicoColaboradorAtual.setFaixaSalarial(faixaSalarial2);
+		historicoColaboradorAtual = historicoColaboradorDao.save(historicoColaboradorAtual);
+		
+		Colaborador colaboradorComHistoricoAntigo = colaboradorDao.findColaboradorByDataHistorico(colaborador.getId(), historicoColaboradorAntigo.getData());
+		Colaborador colaboradorComHistoricoAtual = colaboradorDao.findColaboradorByDataHistorico(colaborador.getId(), historicoColaboradorAtual.getData());
+		Colaborador colaboradorFindDataAtual = colaboradorDao.findColaboradorByDataHistorico(colaborador.getId(), new Date());
+		
+		assertEquals(faixaSalarial1.getDescricao(), colaboradorComHistoricoAntigo.getFaixaSalarial().getDescricao());
+		assertEquals(faixaSalarial2.getDescricao(), colaboradorComHistoricoAtual.getFaixaSalarial().getDescricao());
+		assertEquals(faixaSalarial2.getDescricao(), colaboradorFindDataAtual.getFaixaSalarial().getDescricao());
+	}
+	
 	public void testFindByIdHistoricoAtual() {
 		Colaborador colaborador = getColaborador();
 		colaborador.setNome("TESTE");

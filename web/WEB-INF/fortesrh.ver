@@ -2,6 +2,8 @@
 <Versoes>
 	<Versao id="1.1.14x.17x" db="" data="xx/xx/2015">
 		<Item visivel="S" motivo="S20150500191"><![CDATA[R&S > Relatórios > Duração para preenchimento de vagas: Considerar as pausas da solicitação de pessoal na média de dias.]]></Item>
+		<Item visivel="S" motivo="S20150300258"><![CDATA[T&D > Painel de Indicadores: Exibir o total de horas dos cursos realizados por colaboradores.]]></Item>
+		<Item visivel="S" motivo="P20150600039"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos: Visualizar solicitações/atendimentos médicos que são inseridos com data inferior a data de admissão do colaborador.]]></Item>
 	</Versao>
 	<Versao id="1.1.145.175" db="" data="08/06/2015">
 		<Item visivel="S" motivo="S20150500254"><![CDATA[Mudança da marca ENTE Tecnologia para Fortes RH]]></Item>
@@ -13,10 +15,8 @@
 		<Item visivel="S" motivo="P20150400203"><![CDATA[C&S > Movimentações > Planejamento de Realinhamentos: Ajuste na inconsistência para exibição do ícone "Imprimir" somente quando o usuário possuir a permissão.]]></Item>
 		<Item visivel="S" motivo="S20150500138"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Possibilidade de imprimir a avaliação por ordem de aspectos ou por ordem de perguntas.]]></Item>
 		<Item visivel="S" motivo="S20150400047"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Guardar as opções do filtro ao realizar pesquisa.]]></Item>
-		<Item visivel="S" motivo="S20150300258"><![CDATA[T&D > Painel de Indicadores: Exibir o total de horas dos cursos realizados por colaboradores.]]></Item>
 		<Item visivel="S" motivo="P20150500060"><![CDATA[Info. Funcionais > Cadastros > Motivos de Desligamento > Inserir/Editar: Exibir campo "Considerar para cálculo de turnover" somente quando a configuração de turnover estiver marcado no cadastro da empresa.]]></Item>
 		<Item visivel="S" motivo="P20150500047"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão: Identificar as situações do colaborador que estão aguardando confirmação no AC.]]></Item>
-		<Item visivel="S" motivo="P20150600039"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos: Visualizar solicitações/atendimentos médicos que são inseridos com data inferior a data de admissão do colaborador.]]></Item>
 		<Item visivel="S" motivo="P20150500090"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Ajuste de inconsistência no relatório quando a empresa controla o risco pela função.]]></Item>
 		<Item visivel="S" motivo="S20150500190"><![CDATA[SESMT > Relatórios > Atendimentos médicos: Novo filtro por situação, o qual possibilita a impressão somente dos atendimentos médicos ou das solicitações de atendimentos ou ambas as situações.]]></Item>
 	</Versao>
