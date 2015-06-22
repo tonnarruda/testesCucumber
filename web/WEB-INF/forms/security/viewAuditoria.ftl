@@ -30,8 +30,8 @@
 				background-color:white;
 			}
 			.waDivTitulo {
-				background-color:#6B2323;
-				color:#FFCB03;
+				background-color:#999999;
+				color:white;
 				font-weight:bold;
 				padding:8px 15px;
 			}
