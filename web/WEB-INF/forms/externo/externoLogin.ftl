@@ -15,7 +15,7 @@
 		input { border: 1px solid #FFF !important; }
 		a { color: blue; }
 		.loginExternoForm { background-color: #E9E9E9; border: 1px solid #000000; width: 210px; }
-		.loginExternoTable { border: 4px solid #E9E9E9; }
+		.loginExternoTable { border: 4px solid #E9E9E9; background-color: white; }
 		.linkCadastro a { text-decoration: none; }
 	</style>
 

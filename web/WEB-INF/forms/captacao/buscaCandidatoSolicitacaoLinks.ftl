@@ -4,8 +4,6 @@
 		margin: -16px;
 		color: #FFCB03;
 		background: #E0DFDF;
-		/* background-color: #6B2323;
-		border-top: 1px solid #953232;  Sombra clara */
 	}
 	#menuBusca a 
 	{

@@ -7,7 +7,7 @@
 .errorLabel {font-style:italic; color:red; }
 .errorMessage
 {
-	border: 1#999999d #B35B5B;
+	border: 1px solid #B35B5B;
 	background-color: #FFFCE9;
 	padding: 1em;
 	text-align: center;
