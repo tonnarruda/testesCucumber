@@ -1,10 +1,12 @@
 package com.fortes.rh.test.web.action.geral;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
 import mockit.Mockit;
 
+import org.hibernate.mapping.Collection;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -27,6 +29,8 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -167,6 +171,15 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	}
 	
 	public void testPrepareInsert() throws Exception {
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		Cargo cargo = CargoFactory.getEntity(1L);
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		faixaSalarial.setCargo(cargo);
+		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		funcaoManager.expects(once()).method("findByCargo").with(ANYTHING).will(returnValue(new ArrayList<FaixaSalarial>()));
+		ambienteManager.expects(once()).method("findByEstabelecimento").with(ANYTHING).will(returnValue(new ArrayList<Ambiente>()));
 		
 		// comportamente do prepareInsert()
 		dadoQueExisteHistoricoAtualParaColaborador();

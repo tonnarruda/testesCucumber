@@ -124,6 +124,8 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
 			historicoColaborador.setId(null);
 			historicoColaborador.setData(new Date());
+			ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
+			funcaos = funcaoManager.findByCargo(historicoColaborador.getFaixaSalarial().getCargo().getId());
 		}
 
 		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, faixaInativaId), "cargo.nome");
