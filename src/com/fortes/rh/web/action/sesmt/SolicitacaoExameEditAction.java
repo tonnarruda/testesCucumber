@@ -185,7 +185,7 @@ public class SolicitacaoExameEditAction extends MyActionSupportEdit
 		if (examesPara == 'C')
 		{
 			colaborador.setPessoalCpf(StringUtil.removeMascara(colaborador.getPessoal().getCpf()));
-			colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), false, null);
+			colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), false, null, null);
 			if (colaboradors == null || colaboradors.isEmpty())
 				addActionMessage("Nenhum colaborador para o filtro informado.");
 		}

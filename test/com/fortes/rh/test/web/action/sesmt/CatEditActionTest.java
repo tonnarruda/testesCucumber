@@ -220,7 +220,7 @@ public class CatEditActionTest extends MockObjectTestCase
 		ambienteManager.expects(once()).method("findByEmpresa").with(eq(1L));
 		naturezaLesaoManager.expects(once()).method("findAllSelect").with(eq(1L));
 
-		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(ANYTHING, eq(action.getEmpresaSistema().getId()), ANYTHING, eq(null)).will(returnValue(colecao));
+		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(new Constraint[]{ANYTHING, eq(action.getEmpresaSistema().getId()), ANYTHING, eq(null), eq(null)}).will(returnValue(colecao));
 
 		assertEquals("success", action.filtrarColaboradores());
 
@@ -238,7 +238,7 @@ public class CatEditActionTest extends MockObjectTestCase
 		ambienteManager.expects(once()).method("findByEmpresa").with(eq(1L));
 		naturezaLesaoManager.expects(once()).method("findAllSelect").with(eq(1L));
 
-		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(ANYTHING, eq(action.getEmpresaSistema().getId()), ANYTHING, eq(null)).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(new Constraint[]{ANYTHING, eq(action.getEmpresaSistema().getId()), ANYTHING, eq(null), eq(null)}).will(returnValue(new ArrayList<Colaborador>()));
 
 		assertEquals("success", action.filtrarColaboradores());
 		assertEquals("Nenhum colaborador para o filtro informado.", action.getActionMessages().toArray()[0]);

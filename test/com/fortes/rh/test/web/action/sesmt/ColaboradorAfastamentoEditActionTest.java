@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.geral.CidManager;
@@ -13,6 +14,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
@@ -132,12 +134,12 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 		Collection<Colaborador> colecao = new ArrayList<Colaborador>();
 		colecao.add(colaborador);
 
-		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(ANYTHING, eq(action.getEmpresaSistema().getId()), ANYTHING, eq(null)).will(returnValue(colecao));
+		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(new Constraint[]{ANYTHING, eq(action.getEmpresaSistema().getId()), ANYTHING, eq(null), eq(StatusRetornoAC.CONFIRMADO)}).will(returnValue(colecao));
 		afastamentoManager.expects(once()).method("findAll");
 
 		assertEquals("success", action.filtrarColaboradores());
-
 	}
+
 	public void testFiltrarColaboradoresSemColaborador() throws Exception
 	{
 		Pessoal pessoal = new Pessoal();
@@ -145,7 +147,7 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setPessoal(pessoal);
 
-		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(ANYTHING, eq(action.getEmpresaSistema().getId()), ANYTHING, eq(null)).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(new Constraint[]{ANYTHING, eq(action.getEmpresaSistema().getId()), ANYTHING, eq(null), eq(StatusRetornoAC.CONFIRMADO)}).will(returnValue(new ArrayList<Colaborador>()));
 
 		assertEquals("input", action.filtrarColaboradores());
 	}

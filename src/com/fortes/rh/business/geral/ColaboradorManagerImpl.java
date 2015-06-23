@@ -1541,9 +1541,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 	}
 
-	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Long empresaId, Boolean somenteAtivos, String[] colabsNaoHomonimoHa)
+	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Long empresaId, Boolean somenteAtivos, String[] colabsNaoHomonimoHa, Integer statusRetornoAC)
 	{
-		return getDao().findByNomeCpfMatricula(colaborador, empresaId, somenteAtivos, colabsNaoHomonimoHa);
+		return getDao().findByNomeCpfMatricula(colaborador, empresaId, somenteAtivos, colabsNaoHomonimoHa, statusRetornoAC);
 	}
 
 	public String getNome(Long id)

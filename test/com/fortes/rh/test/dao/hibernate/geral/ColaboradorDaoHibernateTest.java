@@ -1599,27 +1599,41 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 	public void testFindByNomeCpfMatricula() {
 		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresa = empresaDao.save(empresa);
+		empresaDao.save(empresa);
 
-		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
 		colaborador1.setEmpresa(empresa);
 		colaborador1.setNome("teste");
 		colaborador1.setMatricula("1234");
 		colaboradorDao.save(colaborador1);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador1.setColaborador(colaborador1);
+		historicoColaboradorDao.save(historicoColaborador1);
 
-		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(2L);
 		colaborador2.setEmpresa(empresa);
 		colaboradorDao.save(colaborador2);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(2L);
+		historicoColaborador2.setColaborador(colaborador2);
+		historicoColaboradorDao.save(historicoColaborador2);
 
-		Colaborador colaborador3 = ColaboradorFactory.getEntity();
+		Colaborador colaborador3 = ColaboradorFactory.getEntity(3L);
 		colaborador3.setEmpresa(empresa);
 		colaborador3.setNome("Eva");
 		colaboradorDao.save(colaborador3);
+		
+		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity(3L);
+		historicoColaborador3.setColaborador(colaborador3);
+		historicoColaboradorDao.save(historicoColaborador3);
+		
+		Collection<Colaborador> colaboradors = colaboradorDao.findByNomeCpfMatricula(null, empresa.getId(), false, null, null);
 
-		assertEquals(0, colaboradorDao.findByNomeCpfMatricula(colaborador1, empresa.getId(), false, new String[]{"teste"}).size());
-		assertEquals(1, colaboradorDao.findByNomeCpfMatricula(colaborador1, empresa.getId(), false, null).size());
-		assertEquals(2, colaboradorDao.findByNomeCpfMatricula(null, empresa.getId(), false, new String[]{"Eva"}).size());
-		assertEquals(3, colaboradorDao.findByNomeCpfMatricula(null, empresa.getId(), false, null).size());
+		assertEquals(0, colaboradorDao.findByNomeCpfMatricula(colaborador1, empresa.getId(), false, new String[]{"teste"}, null).size());
+		assertEquals(1, colaboradorDao.findByNomeCpfMatricula(colaborador1, empresa.getId(), false, null, null).size());
+		assertEquals(2, colaboradorDao.findByNomeCpfMatricula(null, empresa.getId(), false, new String[]{"Eva"}, null).size());
+		assertEquals(3, colaboradorDao.findByNomeCpfMatricula(null, empresa.getId(), false, null, null).size());
 	}
 
 	public void testFindByNomeCpfMatriculaComHistoricoComfirmado() 

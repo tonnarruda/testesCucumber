@@ -8,6 +8,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.Afastamento;
 import com.fortes.rh.model.sesmt.ColaboradorAfastamento;
@@ -110,7 +111,7 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 	public String filtrarColaboradores() throws Exception
 	{
 		colaborador.setPessoalCpf(StringUtil.removeMascara(colaborador.getPessoal().getCpf()));
-		colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), false, null);
+		colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), false, null, StatusRetornoAC.CONFIRMADO);
 
 		if (colaboradors == null || colaboradors.isEmpty())
 		{

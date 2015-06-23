@@ -255,7 +255,7 @@ public class CatEditAction extends MyActionSupportList
 	public String filtrarColaboradores() throws Exception
 	{
 		colaborador.setPessoalCpf(StringUtil.removeMascara(colaborador.getPessoal().getCpf()));
-		colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), false, null);
+		colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), false, null, null);
 
 		if (colaboradors == null || colaboradors.isEmpty())
 			addActionMessage("Nenhum colaborador para o filtro informado.");

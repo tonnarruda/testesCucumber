@@ -2622,44 +2622,54 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Long empresaId, Boolean somenteAtivos, String[] colabsNaoHomonimoHa)
+	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Long empresaId, Boolean somenteAtivos, String[] colabsNaoHomonimoHa, Integer statusRetornoAC)
 	{
-		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		StringBuilder hql = new StringBuilder();
 
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("c.id"), "id");
-		p.add(Projections.property("c.nome"), "nome");
-		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
-		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
-		p.add(Projections.property("c.matricula"), "matricula");
-		p.add(Projections.property("c.desligado"), "desligado");
-		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
-
-		criteria.setProjection(p);
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.pessoal.cpf, co.matricula, co.desligado, co.dataAdmissao) ");
+		hql.append("from HistoricoColaborador as hc ");
+		hql.append("left join hc.colaborador as co ");
+		hql.append("left join co.empresa as e ");
+		hql.append("where 1=1 ");
 		
 		if(empresaId != null && !empresaId.equals(-1L))
-			criteria.add(Expression.eq("c.empresa.id", empresaId));
-
+			hql.append("and e.id = :empresaId ");
+		
+		if(statusRetornoAC != null)
+			hql.append("and hc.status = :status ");
+		
 		if(colaborador != null && StringUtils.isNotBlank(colaborador.getNome()))
-			criteria.add(Expression.like("c.nome", "%" + colaborador.getNome() + "%").ignoreCase());
+			hql.append("and lower(co.nome) like :colaboradorNome ");
 
 		if(colaborador != null && StringUtils.isNotBlank(colaborador.getMatricula()))
-			criteria.add(Expression.like("c.matricula", "%" + colaborador.getMatricula() + "%").ignoreCase());
+			hql.append("and lower(co.matricula) like :colaboradorMatricula ");
 
 		if(colaborador != null && colaborador.getPessoal() != null && StringUtils.isNotBlank(colaborador.getPessoal().getCpf()))
-			criteria.add(Expression.like("c.pessoal.cpf", "%" + colaborador.getPessoal().getCpf() + "%").ignoreCase());
+			hql.append("and lower(co.pessoal.cpf) like :colaboradorCpf ");
 
 		if(somenteAtivos != null && somenteAtivos)
-			criteria.add(Expression.eq("c.desligado", false));
+			hql.append("and co.desligado = false ");
 
 		if(colabsNaoHomonimoHa != null && colabsNaoHomonimoHa.length > 0)
-			criteria.add(Expression.not(Expression.in("c.nome", colabsNaoHomonimoHa)));
+			hql.append("and co.nome not in (:colabsNaoHomonimoHa) ");
 
-		criteria.addOrder(Order.asc("nome"));
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+		Query query = getSession().createQuery(hql.toString());
+		if(statusRetornoAC != null) 
+			query.setInteger("status", statusRetornoAC);
+		if(empresaId != null && !empresaId.equals(-1L)) 
+			query.setLong("empresaId", empresaId);
+		if(colaborador != null && StringUtils.isNotBlank(colaborador.getNome()))
+			query.setString("colaboradorNome", "%"+colaborador.getNome().toLowerCase()+"%");
+		if(colaborador != null && StringUtils.isNotBlank(colaborador.getMatricula()))
+			query.setString("colaboradorMatricula", "%"+colaborador.getMatricula().toLowerCase()+"%");
+		if(colaborador != null && colaborador.getPessoal() != null && StringUtils.isNotBlank(colaborador.getPessoal().getCpf()))
+			query.setString("colaboradorCpf", "%"+colaborador.getPessoal().getCpf().toLowerCase()+"%");
+		if(somenteAtivos != null && somenteAtivos)
+			query.setBoolean("colaboradorDesligado", false);
+		if(colabsNaoHomonimoHa != null && colabsNaoHomonimoHa.length > 0)
+			query.setParameterList("colabsNaoHomonimoHa", colabsNaoHomonimoHa);
 
-		return criteria.list();
+		return query.list();
 	}
 
 	public Colaborador findByIdHistoricoProjection(Long id)

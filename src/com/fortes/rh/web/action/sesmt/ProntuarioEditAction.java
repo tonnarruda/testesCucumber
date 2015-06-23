@@ -53,7 +53,7 @@ public class ProntuarioEditAction extends MyActionSupportEdit
 
 		if(colaborador != null)
 		{
-			colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), false, null);
+			colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), false, null, null);
 			if(colaborador.getId() != null)
 				colaboradorNome = colaboradorManager.getNome(colaborador.getId());
 		}

@@ -216,7 +216,7 @@ public class ColaboradorDWR
 		colaborador.setMatricula(matricula);
 		colaborador.setPessoal(pessoal);
 		
-		Collection<Colaborador> colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, empresaId, somenteAtivos, null);
+		Collection<Colaborador> colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, empresaId, somenteAtivos, null, null);
 		
 		return new CollectionUtil<Colaborador>().convertCollectionToMap(colaboradors,"getId","getNomeCpfMatricula");
 	}
@@ -224,7 +224,7 @@ public class ColaboradorDWR
 	public Collection<Object> findByNome(String nome, Long empresaId, boolean incluirColaboradoresDesligados)
 	{
 		Collection<String> nomesColabJaSubstituidos = solicitacaoManager.getNomesColabSubstituidosSolicitacaoEncerrada(empresaId);
-		Collection<Colaborador> colaboradores = colaboradorManager.findByNomeCpfMatricula(new Colaborador(nome), empresaId, !incluirColaboradoresDesligados, StringUtil.converteCollectionToArrayString(nomesColabJaSubstituidos));
+		Collection<Colaborador> colaboradores = colaboradorManager.findByNomeCpfMatricula(new Colaborador(nome), empresaId, !incluirColaboradoresDesligados, StringUtil.converteCollectionToArrayString(nomesColabJaSubstituidos), null);
 		
 		Collection<Object> retorno = new ArrayList<Object>();
 		Map<String, String> colaboradorMap;
