@@ -4,6 +4,7 @@
 		<Item visivel="S" motivo="S20150500191"><![CDATA[R&S > Relatórios > Duração para preenchimento de vagas: Considerar as pausas da solicitação de pessoal na média de dias.]]></Item>
 		<Item visivel="S" motivo="S20150300258"><![CDATA[T&D > Painel de Indicadores: Exibir o total de horas dos cursos realizados por colaboradores.]]></Item>
 		<Item visivel="S" motivo="P20150600039"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos: Visualizar solicitações/atendimentos médicos que são inseridos com data inferior a data de admissão do colaborador.]]></Item>
+		<Item visivel="S" motivo="P20150500161"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Correção de inconsistência ao listar os colaboradores com o filtro para todas as empresas.]]></Item>
 	</Versao>
 	<Versao id="1.1.145.175" db="" data="08/06/2015">
 		<Item visivel="S" motivo="S20150500254"><![CDATA[Mudança da marca ENTE Tecnologia para Fortes RH]]></Item>
