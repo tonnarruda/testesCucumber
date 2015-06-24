@@ -319,20 +319,6 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		setCargoNomeProjection(cargoNome);
 	}
 
-	public Colaborador(Long id, String nome, String nomeComercial, String cpf, String matricula, boolean desligado, Date dataAdmissao)
-	{
-		this.setId(id);
-		this.setNome(nome);
-		this.setNomeComercial(nomeComercial);
-		this.setMatricula(matricula);
-		this.setDesligado(desligado);
-		this.setDataAdmissao(dataAdmissao);
-		
-		if(this.pessoal == null)
-			this.pessoal = new Pessoal();
-		this.pessoal.setCpf(cpf);
-	}
-	
 	public Colaborador(Long id, Date avaliacaoRespondidaEm, Double performance, Integer qtdDiasRespondeuAvExperiencia, Long periodoExperienciaId)
 	{
 		this.setId(id);

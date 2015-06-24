@@ -833,7 +833,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	
 	public Colaborador findByCodigoAC(String codigoAC, Empresa empresa)
 	{
-		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date());
+		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
 
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
 		criteria.createCriteria("c.empresa", "e");
@@ -2624,52 +2624,48 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Long empresaId, Boolean somenteAtivos, String[] colabsNaoHomonimoHa, Integer statusRetornoAC)
 	{
-		StringBuilder hql = new StringBuilder();
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		
+		if(statusRetornoAC != null){
+			criteria.createCriteria("c.historicoColaboradors", "hc");
+			DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), statusRetornoAC);
+			criteria.add(Property.forName("hc.data").eq(subQueryHc));			
+		}
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("c.nomeComercial"), "nomeComercial");
+		p.add(Projections.property("c.pessoal.cpf"), "pessoalCpf");
+		p.add(Projections.property("c.matricula"), "matricula");
+		p.add(Projections.property("c.desligado"), "desligado");
+		p.add(Projections.property("c.dataAdmissao"), "dataAdmissao");
 
-		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.pessoal.cpf, co.matricula, co.desligado, co.dataAdmissao) ");
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("left join hc.colaborador as co ");
-		hql.append("left join co.empresa as e ");
-		hql.append("where 1=1 ");
+		criteria.setProjection(p);
 		
 		if(empresaId != null && !empresaId.equals(-1L))
-			hql.append("and e.id = :empresaId ");
-		
-		if(statusRetornoAC != null)
-			hql.append("and hc.status = :status ");
-		
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
+
 		if(colaborador != null && StringUtils.isNotBlank(colaborador.getNome()))
-			hql.append("and lower(co.nome) like :colaboradorNome ");
+			criteria.add(Expression.like("c.nome", "%" + colaborador.getNome() + "%").ignoreCase());
 
 		if(colaborador != null && StringUtils.isNotBlank(colaborador.getMatricula()))
-			hql.append("and lower(co.matricula) like :colaboradorMatricula ");
+			criteria.add(Expression.like("c.matricula", "%" + colaborador.getMatricula() + "%").ignoreCase());
 
 		if(colaborador != null && colaborador.getPessoal() != null && StringUtils.isNotBlank(colaborador.getPessoal().getCpf()))
-			hql.append("and lower(co.pessoal.cpf) like :colaboradorCpf ");
+			criteria.add(Expression.like("c.pessoal.cpf", "%" + colaborador.getPessoal().getCpf() + "%").ignoreCase());
 
 		if(somenteAtivos != null && somenteAtivos)
-			hql.append("and co.desligado = false ");
+			criteria.add(Expression.eq("c.desligado", false));
 
 		if(colabsNaoHomonimoHa != null && colabsNaoHomonimoHa.length > 0)
-			hql.append("and co.nome not in (:colabsNaoHomonimoHa) ");
+			criteria.add(Expression.not(Expression.in("c.nome", colabsNaoHomonimoHa)));
 
-		Query query = getSession().createQuery(hql.toString());
-		if(statusRetornoAC != null) 
-			query.setInteger("status", statusRetornoAC);
-		if(empresaId != null && !empresaId.equals(-1L)) 
-			query.setLong("empresaId", empresaId);
-		if(colaborador != null && StringUtils.isNotBlank(colaborador.getNome()))
-			query.setString("colaboradorNome", "%"+colaborador.getNome().toLowerCase()+"%");
-		if(colaborador != null && StringUtils.isNotBlank(colaborador.getMatricula()))
-			query.setString("colaboradorMatricula", "%"+colaborador.getMatricula().toLowerCase()+"%");
-		if(colaborador != null && colaborador.getPessoal() != null && StringUtils.isNotBlank(colaborador.getPessoal().getCpf()))
-			query.setString("colaboradorCpf", "%"+colaborador.getPessoal().getCpf().toLowerCase()+"%");
-		if(somenteAtivos != null && somenteAtivos)
-			query.setBoolean("colaboradorDesligado", false);
-		if(colabsNaoHomonimoHa != null && colabsNaoHomonimoHa.length > 0)
-			query.setParameterList("colabsNaoHomonimoHa", colabsNaoHomonimoHa);
+		criteria.addOrder(Order.asc("nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 
-		return query.list();
+		return criteria.list();
 	}
 
 	public Colaborador findByIdHistoricoProjection(Long id)
@@ -2999,7 +2995,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Colaborador> findByNomeCpfMatriculaComHistoricoComfirmado(Colaborador colaborador, Long empresaId, Long[] areasIds)
 	{
-		DetachedCriteria subQuery = montaSubQueryHistoricoColaborador(new Date());
+		DetachedCriteria subQuery = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
 
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "c");
@@ -3110,7 +3106,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(Long avaliacaoDesempenhoId, boolean isAvaliados, Long empresaId, Long[] areasIds, Long[] cargosIds)
 	{
 		// subQuery
-		DetachedCriteria subQuery = montaSubQueryHistoricoColaborador(new Date());
+		DetachedCriteria subQuery = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
 		
 		// Query
 		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
@@ -3669,7 +3665,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	private Criteria configuraCriteriaParaPainelDeIncadores(Criteria criteria, Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, boolean consideradaDataAdmissaoAndDesligado)
 	{
-		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(data);
+		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(data, StatusRetornoAC.CONFIRMADO);
 
 		criteria.createCriteria("hc.colaborador", "c");
 		criteria.createCriteria("hc.faixaSalarial", "fs");
@@ -4181,7 +4177,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public int findQtdVagasPreenchidas(Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] solicitacaoIds, Date dataIni, Date dataFim)
 	{
-		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date());
+		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
 
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		criteria.createCriteria("c.historicoColaboradors", "hc");
@@ -4446,7 +4442,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				.add(Restrictions.le("hf2.data", new Date()))
 				.add(Restrictions.eqProperty("hf2.funcao.id", "f.id"));
 		
-		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date());
+		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
 
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "c");
@@ -4475,7 +4471,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Colaborador> findAguardandoEntregaEpi(Collection<Integer> diasLembrete, Long empresaId)
 	{
-		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date());
+		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
 
 		Criteria criteria = getSession().createCriteria(SolicitacaoEpi.class, "se");
 		criteria.createCriteria("se.colaborador", "c");
@@ -4562,7 +4558,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	
 	public Collection<Colaborador> findParaLembreteTerminoContratoTemporario(Collection<Integer> diasLembrete, Long empresaId)
 	{
-		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date());
+		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
 
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
 		criteria.createCriteria("c.historicoColaboradors", "hc");
@@ -4586,7 +4582,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Colaborador> findHabilitacaAVencer(Collection<Integer> diasLembrete, Long empresaId)
 	{
-		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date());
+		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
 		
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
 		criteria.createCriteria("c.historicoColaboradors", "hc");
@@ -4728,7 +4724,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId, Long[] areasIdsPorResponsavel) 
 	{
-		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date());
+		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
 
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
 		criteria.createCriteria("c.empresa", "e");
@@ -4840,7 +4836,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds)
 	{
-		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date());
+		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(new Date(), StatusRetornoAC.CONFIRMADO);
 
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
 		criteria.createCriteria("c.usuario", "u");
@@ -4866,13 +4862,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	private DetachedCriteria montaSubQueryHistoricoColaborador(Date data)
+	private DetachedCriteria montaSubQueryHistoricoColaborador(Date data, Integer status)
 	{
 		return DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
 				.setProjection(Projections.max("hc2.data"))
 				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
 				.add(Restrictions.le("hc2.data", data))
-				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+				.add(Restrictions.eq("hc2.status", status));
 	}
 
 	public Collection<Colaborador> findColaboradoresByCodigoAC(Long empresaId, boolean joinComHistorico, String... codigosACColaboradores) 

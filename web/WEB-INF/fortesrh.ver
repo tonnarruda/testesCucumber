@@ -6,7 +6,8 @@
 		<Item visivel="S" motivo="P20150600057"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão > Editar Situações > Incluir/Editar: Ajuste de inconsistências, contemplando o preenchimento dos ambientes e funções, bloqueio na edição do motivo de reajuste em históricos importados pelo AC, motivos de reajuste sem a opção de contratação na inserção.]]></Item>
 		<Item visivel="S" motivo="P20150500161"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Ajuste da inconsistência ao listar os colaboradores com o filtro para todas as empresas.]]></Item>
 		<Item visivel="S" motivo="P20150600039"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos: Visualizar solicitações/atendimentos médicos que são inseridos com data inferior a data de admissão do colaborador.]]></Item>
-		<Item visivel="S" motivo="P20150600022"><![CDATA[SESMT > Relatórios > Prontuários: Ajuste da inconsistência ao imprimir protuário de colaboradores]]></Item>
+		<Item visivel="S" motivo="P20150600038"><![CDATA[SESMT > Movimentações > Afastamentos > Inserir: Considerar somente os colaboradores que tenham algum histórico confirmado pelo AC Pessoal.]]></Item>
+		<Item visivel="S" motivo="P20150600022"><![CDATA[SESMT > Relatórios > Prontuários: Ajuste da inconsistência ao imprimir protuário de colaboradores.]]></Item>
 	</Versao>
 	<Versao id="1.1.145.175" db="" data="08/06/2015">
 		<Item visivel="S" motivo="S20150500254"><![CDATA[Mudança da marca ENTE Tecnologia para Fortes RH]]></Item>
