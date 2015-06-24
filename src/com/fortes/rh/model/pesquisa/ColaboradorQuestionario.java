@@ -866,6 +866,11 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 		this.configuracaoNivelCompetenciaColaborador.setData(configuracaoNivelCompetenciaColaboradorData);
 	}
 
+	public void setConfiguracaoNivelCompetenciaColaboradorFaixaSalarialId(Long faixaSalarialId){
+		inicializaConfiguracaoNivelCompetenciaColaborador();
+		this.configuracaoNivelCompetenciaColaborador.setProjectionFaixaSalarialId(faixaSalarialId);
+	}
+	
 	private void inicializaConfiguracaoNivelCompetenciaColaborador() 
 	{
 		if(this.configuracaoNivelCompetenciaColaborador == null)
