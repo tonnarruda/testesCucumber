@@ -473,6 +473,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		if(tipoAvaliacaoCurso == TipoAvaliacaoCurso.AVALIACAO){
 			criteria = getSession().createCriteria(ColaboradorQuestionario.class,"cq");
 			criteria.createCriteria("cq.turma", "join");
+			criteria.add(Expression.isNull("cq.questionario.id"));
 		} else {
 			criteria = getSession().createCriteria(AproveitamentoAvaliacaoCurso.class,"a");
 			criteria.createCriteria("a.colaboradorTurma", "join");
