@@ -37,5 +37,20 @@
 				<param name="documentName">configuracaoLimiteColaborador.pdf</param>
 			</result>
 		</action>
+		
+		<action name="exportar" class="com.fortes.rh.web.action.geral.ConfiguracaoLimiteColaboradorEditAction" method="exportar">
+			<result name="success" type="xls">
+				<param name="dataSource">quantidadeLimiteColaboradoresPorCargos</param>
+				<param name="documentName">configuracaoLimiteColaborador.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Área Organizacional (Contrato),Cargo,Limite,Qtd. Cad.</param>
+				<param name="propertiesGroup">areaOrganizacional.id</param>
+				<param name="properties">areaOAreaOrganizacionalContratoDescricao,cargo.nome,limite,qtdColaboradoresCadastrados</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>					
+		</action>
+		
+		
+		
 	</package>
 </xwork>

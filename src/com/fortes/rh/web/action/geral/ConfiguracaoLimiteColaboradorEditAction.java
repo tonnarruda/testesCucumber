@@ -32,6 +32,7 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 	private Collection<Cargo> cargos;
 	private Long[] idsFamiliasAreasJaConfiguradas;
 	private Long empresaId;
+	private String reportTitle;
 	
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 
@@ -57,9 +58,18 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 	
 	public String imprimir() throws Exception
 	{
+		reportTitle = "Configuração do limite de Colaboradores por Cargo ";
 		quantidadeLimiteColaboradoresPorCargos = quantidadeLimiteColaboradoresPorCargoManager.findByEmpresa(getEmpresaSistema().getId());
-		parametros = RelatorioUtil.getParametrosRelatorio("Configuração do limite de Colaboradores por Cargo", getEmpresaSistema(), "");
+		parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), "");
 	
+		return Action.SUCCESS;
+	}
+	
+	public String exportar() throws Exception{
+		
+		reportTitle = "Configuração do limite de Colaboradores por Cargo \n*Quantidade de colaboradores cadastrados maior que o Limite configurado.";
+		quantidadeLimiteColaboradoresPorCargos = quantidadeLimiteColaboradoresPorCargoManager.findByEmpresa(getEmpresaSistema().getId());
+		
 		return Action.SUCCESS;
 	}
 
@@ -184,5 +194,13 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 
 	public Map<String, Object> getParametros() {
 		return parametros;
+	}
+
+	public String getReportTitle() {
+		return reportTitle;
+	}
+
+	public void setReportTitle(String reportTitle) {
+		this.reportTitle = reportTitle;
 	}
 }

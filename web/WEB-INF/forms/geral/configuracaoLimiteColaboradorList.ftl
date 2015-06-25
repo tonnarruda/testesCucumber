@@ -24,6 +24,7 @@
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
 		<button class="btnRelatorio" onclick="window.location='imprimir.action'"></button>
+		<button class="btnRelatorioExportar" onclick="window.location='exportar.action'"></button>
 	</div>
 </body>
 </html>

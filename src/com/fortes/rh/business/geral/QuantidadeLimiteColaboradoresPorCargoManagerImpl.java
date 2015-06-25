@@ -135,6 +135,10 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 					Collection<AreaOrganizacional> descendentes = areaOrganizacionalManager.findAreasPossiveis(areaOrganizacionais, limite.getAreaOrganizacional().getId());
 					limite.setQtdColaboradoresCadastrados(colaboradorManager.countAtivosPeriodo(hoje, Arrays.asList(empresaId), null, LongUtil.collectionToCollectionLong(descendentes), Arrays.asList(limite.getCargo().getId()), null, false, null, false));
 					limite.setDescricao(configuracao.getDescricao());
+					limite.setAreaOAreaOrganizacionalContratoDescricao(limite.getAreaOrganizacional().getDescricao() +" ("+limite.getDescricao() + ") ");
+					if (limite.getLimite() < limite.getQtdColaboradoresCadastrados()) {
+						limite.getCargo().setNome("*" + limite.getCargo().getNome());
+					}
 					break;
 				}				
 			}
