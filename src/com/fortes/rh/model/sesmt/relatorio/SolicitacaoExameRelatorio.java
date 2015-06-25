@@ -31,6 +31,7 @@ public class SolicitacaoExameRelatorio
 	private String exames = "";
 	private File medicoAssinatura;
 	private int contExames = 0;
+	private String solicitacaoExameObs;
 
 	public int getContExames()
 	{
@@ -60,7 +61,7 @@ public class SolicitacaoExameRelatorio
 	{
 	}
 
-	public SolicitacaoExameRelatorio(String medicoNome, String medicoCrm, File medicoAssinatura, String clinicaNome, String clinicaTipo, String clinicaOutro, String clinicaTelefone, String clinicaHorario, String clinicaEndereco, String exameNome, String colaboradorNome, String candidatoNome, Date colaboradorDataNascimento, Date candidatoDataNascimento, String exameMotivo, String colaboradorMatricula, String colaboradorFuncao, String candidatoFuncao)
+	public SolicitacaoExameRelatorio(String medicoNome, String medicoCrm, File medicoAssinatura, String clinicaNome, String clinicaTipo, String clinicaOutro, String clinicaTelefone, String clinicaHorario, String clinicaEndereco, String exameNome, String colaboradorNome, String candidatoNome, Date colaboradorDataNascimento, Date candidatoDataNascimento, String exameMotivo, String colaboradorMatricula, String colaboradorFuncao, String candidatoFuncao, String solicitacaoExameObs)
 	{
 		this.medicoNome = medicoNome;
 		this.medicoCrm = medicoCrm;
@@ -85,6 +86,7 @@ public class SolicitacaoExameRelatorio
 		this.colaboradorMatricula = colaboradorMatricula;
 		this.colaboradorFuncao = colaboradorFuncao;
 		this.candidatoFuncao = candidatoFuncao;
+		this.solicitacaoExameObs = solicitacaoExameObs;
 	}
 
 	public String getPessoaNome()
@@ -227,5 +229,13 @@ public class SolicitacaoExameRelatorio
 			return colaboradorFuncao;
 
 		return "";
+	}
+
+	public String getSolicitacaoExameObs() {
+		return solicitacaoExameObs;
+	}
+
+	public void setSolicitacaoExameObs(String solicitacaoExameObs) {
+		this.solicitacaoExameObs = solicitacaoExameObs;
 	}
 }

@@ -46,7 +46,7 @@
 	<detail>
 		<band height="385" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement uuid="a5cb9802-5db9-4b95-a830-100c7547778e" key="subreport-1" x="3" y="0" width="290" height="377"/>
+				<reportElement key="subreport-1" x="3" y="0" width="290" height="377" uuid="a5cb9802-5db9-4b95-a830-100c7547778e"/>
 				<subreportParameter name="CABECALHO">
 					<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
 				</subreportParameter>
