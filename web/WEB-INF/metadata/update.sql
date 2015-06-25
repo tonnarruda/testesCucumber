@@ -22892,3 +22892,77 @@ SELECT criar_historico_cncFaixa();--.go
 DROP FUNCTION criar_historico_cncFaixa();--.go
 insert into migrations values('20150608111109');--.go
 update parametrosdosistema set appversao = '1.1.145.175';--.go
+-- versao 1.1.146.176
+
+ALTER TABLE colaboradorquestionario ADD COLUMN configuracaonivelcompetenciacolaborador_id bigint;--.go
+ALTER TABLE colaboradorquestionario ADD CONSTRAINT colaboradorquestionario_cnccolaborador_fk FOREIGN KEY (configuracaonivelcompetenciacolaborador_id) REFERENCES configuracaonivelcompetenciacolaborador(id);--.go
+update colaboradorquestionario cq set configuracaonivelcompetenciacolaborador_id = (select cncc.id from configuracaonivelcompetenciacolaborador cncc where cncc.avaliador_id = cq.avaliador_id and cncc.colaboradorquestionario_id = cq.id and cncc.data = cq.respondidaem);--.go
+insert into migrations values('20150609141743');--.go
+alter table configuracaonivelcompetencia add column solicitacao_id bigint;--.go
+ALTER TABLE ONLY configuracaonivelcompetencia ADD CONSTRAINT configuracaonivelcompetencia_solicitacao_fk FOREIGN KEY (solicitacao_id) REFERENCES solicitacao(id);--.go 
+insert into migrations values('20150611111342');--.go
+CREATE OR REPLACE FUNCTION criar_historico_cncCandidatoPorSolicitacao() RETURNS integer AS $$   
+	DECLARE 
+	    mv RECORD; 
+	BEGIN 
+	    FOR mv IN 
+			SELECT * FROM configuracaonivelcompetencia cnc WHERE cnc.candidato_id IS NOT NULL
+			LOOP  
+				INSERT INTO configuracaonivelcompetencia 
+					SELECT nextval('configuracaonivelcompetencia_sequence'), mv.faixasalarial_id, mv.nivelcompetencia_id, mv.competencia_id, mv.candidato_id, mv.tipocompetencia, null, null, s.id
+					FROM candidatosolicitacao cs
+					INNER JOIN solicitacao s on s.id = cs.solicitacao_id
+					WHERE cs.candidato_id = mv.candidato_id AND s.faixasalarial_id = mv.faixasalarial_id AND cs.triagem = false
+					AND EXISTS (SELECT 1 FROM configuracaonivelcompetenciafaixasalarial cncf 
+						    	INNER JOIN configuracaonivelcompetencia cnc ON cnc.configuracaonivelcompetenciafaixasalarial_id = cncf.id
+						    	WHERE cncf.data <= s.data AND cncf.faixasalarial_id = mv.faixasalarial_id AND cnc.competencia_id = mv.competencia_id);
+					
+			END LOOP;  
+	    RETURN 1;  
+	END;  
+$$ LANGUAGE plpgsql;--.go 
+
+SELECT criar_historico_cncCandidatoPorSolicitacao();--.go
+DROP FUNCTION criar_historico_cncCandidatoPorSolicitacao();--.go
+DELETE FROM configuracaonivelcompetencia WHERE candidato_id IS NOT NULL AND solicitacao_id IS NULL;--.go
+
+insert into migrations values('20150611175426');--.go
+CREATE TABLE pausapreenchimentovagas (
+id bigint NOT NULL,
+solicitacao_id bigint NOT NULL,
+dataPausa Date,
+dataReinicio Date
+);--.go 
+
+ALTER TABLE pausapreenchimentovagas ADD CONSTRAINT pausapreenchimentovagas_pkey PRIMARY KEY(id);--.go 
+ALTER TABLE pausapreenchimentovagas ADD CONSTRAINT pausapreenchimentovagas_solicitacao_fk FOREIGN KEY (solicitacao_id) REFERENCES solicitacao(id);--.go 
+
+CREATE SEQUENCE pausapreenchimentovagas_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go 
+
+insert into migrations values('20150615154707');--.go
+CREATE OR REPLACE FUNCTION monta_familia_areas_filhas_by_usuario_and_empresa(usuarioId BIGINT, empresaId BIGINT) RETURNS TABLE(areaId BIGINT, areaNome TEXT, areaAtivo BOOLEAN) AS $$  
+DECLARE 
+mviews RECORD;
+BEGIN 
+     FOR mviews IN 
+		select area.id as area_id from areaorganizacional as area  
+		left join colaborador c on c.id = area.responsavel_id 
+		left join usuario u on u.id = c.usuario_id 
+		where u.id = usuarioId and area.empresa_id = empresaId 
+		LOOP 
+		RETURN QUERY 
+		    (select id, cast(monta_familia_area(id) as text) as nome, ativo from areaorganizacional where id = mviews.area_id) union 
+		    ((WITH RECURSIVE areaorganizacional_recursiva AS ( 
+		        SELECT id, nome, areamae_id, CAST(nome AS TEXT) AS nomeHierarquico, ativo 
+		        FROM areaorganizacional WHERE areamae_id = mviews.area_id 
+		        UNION ALL  
+		        SELECT ao.id, ao.nome, ao.areamae_id, CAST((ao_r.nomeHierarquico || ' > ' || ao.nome) AS TEXT) AS nomeHierarquico, ao.ativo  
+		        FROM areaorganizacional ao  
+		        INNER JOIN areaorganizacional_recursiva ao_r ON ao.areamae_id = ao_r.id  
+		    ) SELECT id, cast(((select monta_familia_area(id) as nome from areaorganizacional where id = mviews.area_id ) || ' > ' || nomeHierarquico) as text) as nome, ativo FROM areaorganizacional_recursiva) ORDER BY nome); 
+      END LOOP; 
+    RETURN;  
+END;  
+$$ LANGUAGE plpgsql; --.go 
+insert into migrations values('20150622105335');--.go
+update parametrosdosistema set appversao = '1.1.146.176';--.go

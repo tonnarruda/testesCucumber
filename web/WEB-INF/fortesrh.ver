@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.14x.17x" db="" data="xx/xx/2015">
+	<Versao id="1.1.146.176" db="" data="24/06/2015">
 		<Item visivel="S" motivo="S20150500191"><![CDATA[R&S > Relatórios > Duração para preenchimento de vagas: Considerar as pausas da solicitação de pessoal na média de dias.]]></Item>
 		<Item visivel="S" motivo="P20150600050"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Editar: Ajuste de inconsistência ao exibir opções de avaliações dos alunos.]]></Item>
 		<Item visivel="S" motivo="S20150300258"><![CDATA[T&D > Painel de Indicadores: Exibir o total de horas dos cursos realizados por colaboradores.]]></Item>
-		<Item visivel="S" motivo="P20150600057"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão > Editar Situações > Incluir/Editar: Ajuste de inconsistências, contemplando o preenchimento dos ambientes e funções, bloqueio na edição do motivo de reajuste em históricos importados pelo AC, motivos de reajuste sem a opção de contratação na inserção.]]></Item>
+		<Item visivel="S" motivo="P20150600057"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão > Editar Situações > Incluir/Editar: Ajuste de inconsistências, contemplando o preenchimento dos ambientes e funções, bloqueio na edição do motivo de reajuste em históricos importados pelo Fortes AC, motivos de reajuste sem a opção de contratação na inserção.]]></Item>
 		<Item visivel="S" motivo="P20150500161"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Ajuste da inconsistência ao listar os colaboradores com o filtro para todas as empresas.]]></Item>
 		<Item visivel="S" motivo="P20150600039"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos: Visualizar solicitações/atendimentos médicos que são inseridos com data inferior a data de admissão do colaborador.]]></Item>
-		<Item visivel="S" motivo="P20150600038"><![CDATA[SESMT > Movimentações > Afastamentos > Inserir: Considerar somente os colaboradores que tenham algum histórico confirmado pelo AC Pessoal.]]></Item>
-		<Item visivel="S" motivo="P20150600022"><![CDATA[SESMT > Relatórios > Prontuários: Ajuste da inconsistência ao imprimir protuário de colaboradores.]]></Item>
+		<Item visivel="S" motivo="P20150600038"><![CDATA[SESMT > Movimentações > Afastamentos > Inserir: Considerar somente os colaboradores que tenham algum histórico confirmado pelo Fortes AC.]]></Item>
+		<Item visivel="S" motivo="P20150600022"><![CDATA[SESMT > Relatórios > Prontuários: Ajuste da inconsistência ao imprimir prontuário de colaboradores.]]></Item>
 	</Versao>
 	<Versao id="1.1.145.175" db="" data="08/06/2015">
 		<Item visivel="S" motivo="S20150500254"><![CDATA[Mudança da marca ENTE Tecnologia para Fortes RH]]></Item>

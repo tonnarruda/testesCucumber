@@ -194,9 +194,7 @@ Funcionalidade: Cadastrar Colaborador
     E eu devo ver o alert "Selecione um avaliador" e clico no ok
     E eu seleciono "Anônimo" de "Avaliador"
     E eu clico no botão "Gravar"
-    E eu devo ver "Níveis de competência do colaborador salvos com sucesso"
-    E eu clico no botão "Voltar"
-    E eu devo ver "Competências do Colaborador"
+    E eu devo ver "ncia do colaborador salvos com sucesso"
     E eu clico no botão "Voltar"
     E eu devo ver "Colaboradores"
 

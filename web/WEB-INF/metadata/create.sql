@@ -101,6 +101,40 @@ $$;
 ALTER FUNCTION public.monta_familia_area(area_id bigint) OWNER TO postgres;
 
 --
+-- Name: monta_familia_areas_filhas_by_usuario_and_empresa(bigint, bigint); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION monta_familia_areas_filhas_by_usuario_and_empresa(usuarioid bigint, empresaid bigint) RETURNS TABLE(areaid bigint, areanome text, areaativo boolean)
+    LANGUAGE plpgsql
+    AS $$  
+DECLARE 
+mviews RECORD;
+BEGIN 
+     FOR mviews IN 
+		select area.id as area_id from areaorganizacional as area  
+		left join colaborador c on c.id = area.responsavel_id 
+		left join usuario u on u.id = c.usuario_id 
+		where u.id = usuarioId and area.empresa_id = empresaId 
+		LOOP 
+		RETURN QUERY 
+		    (select id, cast(monta_familia_area(id) as text) as nome, ativo from areaorganizacional where id = mviews.area_id) union 
+		    ((WITH RECURSIVE areaorganizacional_recursiva AS ( 
+		        SELECT id, nome, areamae_id, CAST(nome AS TEXT) AS nomeHierarquico, ativo 
+		        FROM areaorganizacional WHERE areamae_id = mviews.area_id 
+		        UNION ALL  
+		        SELECT ao.id, ao.nome, ao.areamae_id, CAST((ao_r.nomeHierarquico || ' > ' || ao.nome) AS TEXT) AS nomeHierarquico, ao.ativo  
+		        FROM areaorganizacional ao  
+		        INNER JOIN areaorganizacional_recursiva ao_r ON ao.areamae_id = ao_r.id  
+		    ) SELECT id, cast(((select monta_familia_area(id) as nome from areaorganizacional where id = mviews.area_id ) || ' > ' || nomeHierarquico) as text) as nome, ativo FROM areaorganizacional_recursiva) ORDER BY nome); 
+      END LOOP; 
+    RETURN;  
+END;  
+$$;
+
+
+ALTER FUNCTION public.monta_familia_areas_filhas_by_usuario_and_empresa(usuarioid bigint, empresaid bigint) OWNER TO postgres;
+
+--
 -- Name: normalizar(text); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -1948,7 +1982,8 @@ CREATE TABLE colaboradorquestionario (
     avaliador_id bigint,
     solicitacao_id bigint,
     avaliacaocurso_id bigint,
-    performancenivelcompetencia double precision
+    performancenivelcompetencia double precision,
+    configuracaonivelcompetenciacolaborador_id bigint
 );
 
 
@@ -2563,7 +2598,8 @@ CREATE TABLE configuracaonivelcompetencia (
     candidato_id bigint,
     tipocompetencia character(1),
     configuracaonivelcompetenciacolaborador_id bigint,
-    configuracaonivelcompetenciafaixasalarial_id bigint
+    configuracaonivelcompetenciafaixasalarial_id bigint,
+    solicitacao_id bigint
 );
 
 
@@ -5549,6 +5585,41 @@ ALTER TABLE public.parametrosdosistema_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('parametrosdosistema_sequence', 2, false);
+
+
+--
+-- Name: pausapreenchimentovagas; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pausapreenchimentovagas (
+    id bigint NOT NULL,
+    solicitacao_id bigint NOT NULL,
+    datapausa date,
+    datareinicio date
+);
+
+
+ALTER TABLE public.pausapreenchimentovagas OWNER TO postgres;
+
+--
+-- Name: pausapreenchimentovagas_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE pausapreenchimentovagas_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pausapreenchimentovagas_sequence OWNER TO postgres;
+
+--
+-- Name: pausapreenchimentovagas_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pausapreenchimentovagas_sequence', 1, false);
 
 
 --
@@ -30741,6 +30812,11 @@ INSERT INTO migrations (name) VALUES ('20150511151651');
 INSERT INTO migrations (name) VALUES ('20150518162625');
 INSERT INTO migrations (name) VALUES ('20150608111027');
 INSERT INTO migrations (name) VALUES ('20150608111109');
+INSERT INTO migrations (name) VALUES ('20150609141743');
+INSERT INTO migrations (name) VALUES ('20150611111342');
+INSERT INTO migrations (name) VALUES ('20150611175426');
+INSERT INTO migrations (name) VALUES ('20150615154707');
+INSERT INTO migrations (name) VALUES ('20150622105335');
 
 
 --
@@ -31115,7 +31191,13 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.145.175', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.146.176', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1);
+
+
+--
+-- Data for Name: pausapreenchimentovagas; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
 
 
 --
@@ -32731,6 +32813,14 @@ ALTER TABLE ONLY parametrosdosistema
 
 
 --
+-- Name: pausapreenchimentovagas_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY pausapreenchimentovagas
+    ADD CONSTRAINT pausapreenchimentovagas_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: pcmat_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -34010,6 +34100,14 @@ ALTER TABLE ONLY colaboradorquestionario
 
 
 --
+-- Name: colaboradorquestionario_cnccolaborador_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY colaboradorquestionario
+    ADD CONSTRAINT colaboradorquestionario_cnccolaborador_fk FOREIGN KEY (configuracaonivelcompetenciacolaborador_id) REFERENCES configuracaonivelcompetenciacolaborador(id);
+
+
+--
 -- Name: colaboradorquestionario_colaborador_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -34303,6 +34401,14 @@ ALTER TABLE ONLY configuracaonivelcompetencia
 
 ALTER TABLE ONLY configuracaonivelcompetencia
     ADD CONSTRAINT configuracaonivelcompetencia_nivelcompetencia_fk FOREIGN KEY (nivelcompetencia_id) REFERENCES nivelcompetencia(id);
+
+
+--
+-- Name: configuracaonivelcompetencia_solicitacao_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY configuracaonivelcompetencia
+    ADD CONSTRAINT configuracaonivelcompetencia_solicitacao_fk FOREIGN KEY (solicitacao_id) REFERENCES solicitacao(id);
 
 
 --
@@ -35391,6 +35497,14 @@ ALTER TABLE ONLY papel
 
 ALTER TABLE ONLY parametrosdosistema
     ADD CONSTRAINT parametrosdosistema_perfil_fk FOREIGN KEY (perfilpadrao_id) REFERENCES perfil(id);
+
+
+--
+-- Name: pausapreenchimentovagas_solicitacao_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pausapreenchimentovagas
+    ADD CONSTRAINT pausapreenchimentovagas_solicitacao_fk FOREIGN KEY (solicitacao_id) REFERENCES solicitacao(id);
 
 
 --
