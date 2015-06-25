@@ -2,7 +2,7 @@
 <Versoes>
 	<Versao id="1.1.14x.17x" db="" data="xx/xx/2015">
 		<Item visivel="S" motivo="P20150600165"><![CDATA[Pesquisa > Movimentações > Pesquisas > Colaboradores > Exportar: Corrigindo inconsistência ao exportar colaboradores da pesquisa.]]></Item>
-		<Item visivel="S" motivo="P20150600070"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Liberar avaliações em lote: Ajuste para impossibilitar a duplicação de questionários ao liberar avaliações em lote.]]></Item>
+		<Item visivel="S" motivo="P20150600070"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Liberar avaliações em lote: Ajuste para impossibilitar a duplicação das avaliações dos colaboradores.]]></Item>
 	</Versao>
 	<Versao id="1.1.146.176" db="" data="24/06/2015">
 		<Item visivel="S" motivo="S20150500191"><![CDATA[R&S > Relatórios > Duração para preenchimento de vagas: Considerar as pausas da solicitação de pessoal na média de dias.]]></Item>
