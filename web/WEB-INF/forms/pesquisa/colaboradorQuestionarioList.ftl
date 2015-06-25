@@ -50,7 +50,7 @@
             <#if compartilharColaboradores>
 	            <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" liClass="liLeft"  disabled="!compartilharColaboradores" onchange="populaEstabelecimento(this.value);"/>
 			<#else>
-				<@ww.hidden id="empresa" name="empresaId"/>
+				<@ww.hidden id="empresaId" name="empresaId"/>
 				<li class="wwgrp">
 					<label>Empresa:</label><br />
 					<strong><@authz.authentication operation="empresaNome"/></strong>
