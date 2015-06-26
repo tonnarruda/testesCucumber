@@ -1,12 +1,12 @@
 <html>
 	<head>
 		<link type="text/css" rel="stylesheet" href="<@ww.url value="/css/syntaxhighlighter/shCore.css"/>"/>
-		<link type="text/css" rel="stylesheet" href="<@ww.url value="/css/syntaxhighlighter/shThemeDefault.css"/>"/>
+		<link type="text/css" rel="stylesheet" href="<@ww.url value="/css/syntaxhighlighter/shThemedefault.css?version=${versao}"/>"/>
 		<script src='<@ww.url includeParams="none" value="/js/syntaxhighlighter/shCore.js"/>'></script>
 		<script src='<@ww.url includeParams="none" value="/js/syntaxhighlighter/shBrushPlain.js"/>'></script>
 		
 		<style type="text/css">
-			@import url('<@ww.url includeParams="none" value="/css/botoes.css"/>');
+			@import url('<@ww.url includeParams="none" value="/css/botoes.css?version=${versao}"/>');
 			* {
 				font-family:verdana, sans-serif;
 				font-size: 12px;

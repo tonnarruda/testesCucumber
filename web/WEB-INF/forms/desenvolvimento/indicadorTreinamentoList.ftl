@@ -4,9 +4,9 @@
 <head>
 <@ww.head/>
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/painelIndicadoresTreinamentos.css"/>');
-		@import url('<@ww.url value="/css/indicadores.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/painelIndicadoresTreinamentos.css?version=${versao}"/>');
+		@import url('<@ww.url value="/css/indicadores.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 		
 		.gogDivEsq div.legend > table, .gogDivDir div.legend > table {
 		    border-spacing: 0 !important;
@@ -28,15 +28,15 @@
 	<#include "../ftl/mascarasImports.ftl" />
 	<#include "../ftl/showFilterImports.ftl" />
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/qtip.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>'></script>
 	
 	<script type='text/javascript'>
 		DWREngine.setAsync(true);

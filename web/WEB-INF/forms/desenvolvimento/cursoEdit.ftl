@@ -16,7 +16,7 @@
 <#include "../ftl/mascarasImports.ftl" />
 
 <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>'></script>
 <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script><!-- Usado para o function.js cssClass=hora-->
 
 <script>

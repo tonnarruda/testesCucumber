@@ -7,7 +7,7 @@
 	<title>Avaliações de Desempenho</title>
 
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 </head>
 <body>

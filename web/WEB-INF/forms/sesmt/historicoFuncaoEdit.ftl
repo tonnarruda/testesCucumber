@@ -25,7 +25,7 @@
 <#assign empresaControlaRiscoPor><@authz.authentication operation="empresaControlaRiscoPor"/></#assign>
 
 <style type="text/css">
-	@import url('<@ww.url value="/css/displaytag.css"/>');
+	@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 </style>
 
 <script type="text/javascript">

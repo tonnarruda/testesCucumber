@@ -24,7 +24,7 @@
 </#if>
 
 	<#include "../ftl/mascarasImports.ftl" />
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
 	<style type="text/css">@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');</style>
 	

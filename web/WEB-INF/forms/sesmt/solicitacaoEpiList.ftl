@@ -5,11 +5,11 @@
 <head>
 	<@ww.head/>
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 
 	<#include "../ftl/mascarasImports.ftl" />
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 		<#assign validarCampos="return validaFormulario('form', null, new Array('dataIni','dataFim'), true)"/>
@@ -28,7 +28,7 @@
 
 	<#if entrega>
 		<title>Entrega de EPIs</title>
-	<#else><script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<#else><script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 		<title>Solicitações de EPIs</title>
 	</#if>
 	

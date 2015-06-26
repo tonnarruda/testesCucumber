@@ -4,17 +4,17 @@
 <@ww.head/>
 
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 		#importar { display: none; }
 	</style>
 
 	<title>Importar Cadastros</title>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EmpresaDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/OcorrenciaDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EmpresaDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/OcorrenciaDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	
 	<script type="text/javascript">
 	

@@ -22,7 +22,7 @@
 	<#assign aspectoPerguntaAnterior="_"/>
 	<link rel="stylesheet" href="${request.contextPath}/externo/layout?tipo=trafego" />
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/perguntasAvaliacao.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/perguntasAvaliacao.js?version=${versao}"/>'></script>
 </#if>
 
 <style type="text/css">

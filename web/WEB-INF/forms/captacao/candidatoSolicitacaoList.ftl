@@ -7,7 +7,7 @@
 	<title>Candidatos da Seleção</title>
 
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 		
 		#legendas { float: right; margin-bottom: 10px; }
 		.naoApto { color: #F00 !important; }
@@ -20,9 +20,9 @@
 	
 	<#assign baseUrl><@ww.url includeParams="none" value="/"/></#assign>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	
 	<script type="text/javascript">
 		function contrataCandOutraEmpresa(candidatoId, candidatoSolicitacaoId, nomeCandidato)

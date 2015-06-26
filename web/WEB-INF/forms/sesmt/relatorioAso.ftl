@@ -2,7 +2,7 @@
 <head>
 <@ww.head/>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
 
 	<#include "../ftl/mascarasImports.ftl" />
 

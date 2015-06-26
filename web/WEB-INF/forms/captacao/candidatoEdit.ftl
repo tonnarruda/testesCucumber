@@ -7,14 +7,14 @@
 
 	 <style type="text/css">
 		<#if moduloExterno>
-			@import url('<@ww.url includeParams="none" value="/css/displaytagModuloExterno.css"/>');
+			@import url('<@ww.url includeParams="none" value="/css/displaytagModuloExterno.css?version=${versao}"/>');
 		<#else>
-			@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+			@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 		</#if>
  		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/candidato.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/botoes.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/candidato.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/botoes.css?version=${versao}"/>');
 		@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');
 		
 		#parentesDialog { display: none; }
@@ -48,19 +48,19 @@
   </style>
   <![endif]-->
 
-  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EnderecoDWR.js"/>'></script>
-  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PessoaDWR.js"/>'></script>
-  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
-  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js"/>'></script>
-  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
-  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js"/>'></script>
-  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EnderecoDWR.js?version=${versao}"/>'></script>
+  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PessoaDWR.js?version=${versao}"/>'></script>
+  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
+  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js?version=${versao}"/>'></script>
+  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
+  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js?version=${versao}"/>'></script>
+  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+  <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 
-  <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/candidato.js"/>"></script>
-  <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js"/>"></script>
+  <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/candidato.js?version=${versao}"/>"></script>
+  <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>"></script>
 
-  <script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.form.js"/>'></script>
+  <script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.form.js?version=${versao}"/>'></script>
 
 	<#if moduloExterno?exists && moduloExterno>
 			<#assign edicao="false"/>
@@ -859,7 +859,7 @@
     </script>
 
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/forms/geral/bairros.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/forms/geral/bairros.js?version=${versao}"/>'></script>
 	<div id="parentesDialog"></div>
 </body>
 </html>

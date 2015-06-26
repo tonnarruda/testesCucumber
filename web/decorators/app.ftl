@@ -31,21 +31,21 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.alerts.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.numberformatter-1.1.0.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.dateFormat-1.0.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/init.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/init.js?version=${versao}"/>'></script>
 
 	<style type="text/css">
 		<#if pgInicial?exists && pgInicial>
-			@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+			@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 		</#if>
 
 		@import url('<@ww.url value="/css/jquery-ui/jquery-ui-1.8.9.custom.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/jquery.alerts.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/default.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/botoes.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/menu.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/default.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/botoes.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/menu.css?version=${versao}"/>');
 		
 		.buttonGroup { width: 970px; }
 		.buttonGroupRelative { position: relative; }

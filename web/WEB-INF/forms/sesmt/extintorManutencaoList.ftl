@@ -4,7 +4,7 @@
 <head>
 <@ww.head/>
 <style type="text/css">
-	@import url('<@ww.url value="/css/displaytag.css"/>');
+	@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 </style>
 <title>Extintores - Manutenção</title>
 
@@ -14,10 +14,10 @@
 
 	<#include "../ftl/showFilterImports.ftl" />
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ExtintorDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/qtip.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ExtintorDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>'></script>
 
 	<script type="text/javascript">
 

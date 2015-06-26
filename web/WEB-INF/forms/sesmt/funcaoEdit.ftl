@@ -6,7 +6,7 @@
 <@ww.head/>
 	<#include "../ftl/mascarasImports.ftl" />
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 	<#if funcao.id?exists>
 		<title>Editar Função - ${cargoTmp.nome}</title>

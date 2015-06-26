@@ -1,6 +1,6 @@
 <html>
 <head>
-<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js"/>"></script>
+<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>"></script>
 <@ww.head/>
 <#if historicoBeneficio.id?exists>
 	<title>Editar Histórico do Benefício - ${beneficio.nome}</title>

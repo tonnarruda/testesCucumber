@@ -5,9 +5,9 @@
 	<title>Matriz comparativa de competências de Colaborador X Cargo/Faixa</title>
 	<#assign validarCampos="return validaFormulario('form', new Array('faixa', '@competenciasCheck', 'dataIni', 'dataFim'), new Array('dataIni', 'dataFim'))"/>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CompetenciaDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CompetenciaDWR.js?version=${versao}"/>'></script>
 	<#include "../ftl/mascarasImports.ftl" />
 	
 	<script type='text/javascript'>

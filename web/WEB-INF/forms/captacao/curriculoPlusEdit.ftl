@@ -4,12 +4,12 @@
 <head>
 <@ww.head/>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PessoaDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/PessoaDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CandidatoDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CidadeDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/BairroDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 			
 	<#if candidato?exists && candidato.id?exists>
 		<#assign avisoAnexo = "Caso deseje substituir os arquivos existentes, selecione os arquivos novamente.<br>"/>
@@ -25,7 +25,7 @@
 	
 	<title>${titulo}</title>
 
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/candidato.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/candidato.js?version=${versao}"/>"></script>
 
 	<#if candidato?exists && candidato.pessoal.dataNascimento?exists>
 		<#assign data = candidato.pessoal.dataNascimento?date/>
@@ -35,8 +35,8 @@
 	
 
 	<#include "../ftl/mascarasImports.ftl" />
-	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/candidato.css"/>" media="screen" type="text/css">
-	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/botoes.css"/>" media="screen" type="text/css">
+	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/candidato.css?version=${versao}"/>" media="screen" type="text/css">
+	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/botoes.css?version=${versao}"/>" media="screen" type="text/css">
 	<style type="text/css">
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
 	</style>
@@ -162,7 +162,7 @@
 	</div>
 
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/forms/geral/bairros.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/forms/geral/bairros.js?version=${versao}"/>'></script>
 	
 </body>
 </html>

@@ -7,7 +7,7 @@
 
 		<#include "../ftl/mascarasImports.ftl" />
 		<style type="text/css">
-			@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+			@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 		</style>
 	<#assign validarCampos="return validaFormulario('form', new Array('dataIni','dataFim'), new Array('dataIni','dataFim'), true)"/>
 	<#if dataIni?exists>

@@ -3,9 +3,9 @@
 <@ww.head/>
 	<title>Erro na configuração do RH</title>
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/default.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/botoes.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/default.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/botoes.css?version=${versao}"/>');
 	</style>
 	
 	<!--[if IE]>

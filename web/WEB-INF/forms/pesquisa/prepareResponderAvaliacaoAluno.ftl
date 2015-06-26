@@ -5,10 +5,10 @@
 <@ww.head/>
 	<title>Responder Avaliação do Aluno</title>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/perguntasAvaliacao.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/perguntasAvaliacao.js?version=${versao}"/>'></script>
 	
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 		.pergunta { padding: 5px; }
 		.dados th:first-child { text-align: left; padding-left: 5px; }
 	</style>

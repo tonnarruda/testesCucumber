@@ -66,6 +66,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 //			papelManager.atualizarPapeis(parametrosDoSistema.getAtualizaPapeisIdsAPartirDe());
 			
 			String contexto = parametrosDoSistema.getAppContext();
+			String versao = parametrosDoSistema.getAppVersao();
 
 			Collection<Papel> roles = new ArrayList<Papel>();
 			
@@ -111,6 +112,7 @@ public class MyDaoAuthenticationProvider extends DaoAuthenticationProvider
 			((UserDetailsImpl)userDetails).setEmpresa(empresa);
 			((UserDetailsImpl)userDetails).setAuthorities(arrayAuths);
 			((UserDetailsImpl)userDetails).setMenuFormatado(menu);
+			((UserDetailsImpl)userDetails).setVersao(versao);
 		}
 		else
 		{

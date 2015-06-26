@@ -5,7 +5,7 @@
 <@ww.head/>
 <title>${pesquisa.titulo}</title>
 <style type="text/css">
-	@import url('<@ww.url includeParams="none" value="/css/preview.css"/>');
+	@import url('<@ww.url includeParams="none" value="/css/preview.css?version=${versao}"/>');
 </style>
 <script type="text/javascript">
 	function CallPrint(strid)
@@ -17,7 +17,7 @@
 
 		var cssLink = "";
 		cssLink	+=	"<style type='text/css'>";
-		cssLink	+=	"@import url('<@ww.url includeParams="none" value="/css/preview.css"/>');";
+		cssLink	+=	"@import url('<@ww.url includeParams="none" value="/css/preview.css?version=${versao}"/>');";
 		cssLink	+=	"ul{list-style-type:none;}";
 		cssLink	+=	"</style>";
 

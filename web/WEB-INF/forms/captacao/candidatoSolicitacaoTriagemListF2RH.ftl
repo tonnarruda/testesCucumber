@@ -3,7 +3,7 @@
 <head>
 <@ww.head/>
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 	<title>Candidatos da Seleção - Triagem</title>
 

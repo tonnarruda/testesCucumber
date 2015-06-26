@@ -21,12 +21,12 @@
 
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.numberformatter-1.1.0.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}">'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
 
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/trafego.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/botoes.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/trafego.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/botoes.css?version=${versao}"/>');
 
 		#topDiv {
 			width: 100%;

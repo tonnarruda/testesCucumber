@@ -4,7 +4,7 @@
 <head>
 <@ww.head/>
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 	<#if cargoTmp?exists && cargoTmp.nome?exists>
 		<title>Funções - ${cargoTmp.nome}</title>

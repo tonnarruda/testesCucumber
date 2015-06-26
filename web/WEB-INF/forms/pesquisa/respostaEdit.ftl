@@ -10,8 +10,8 @@
 	<#assign voltarAction="../pesquisa/list.action?tipoAvaliacao=${pesquisa.tipoAvaliacao}"/>
 </#if>
 
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 <script type="text/javascript">
 
 	function createInputText() {

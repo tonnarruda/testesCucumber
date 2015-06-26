@@ -2,7 +2,7 @@
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <html>
 <head>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/formataValores.js?version=${versao}"/>"></script>
 	<#include "../ftl/mascarasImports.ftl" />
 <@ww.head/>
 <#if beneficio.id?exists>
@@ -24,7 +24,7 @@
 </#if>
 
 <style type="text/css">
-	@import url('<@ww.url value="/css/displaytag.css"/>');
+	@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 </style>
 </head>
 <body>

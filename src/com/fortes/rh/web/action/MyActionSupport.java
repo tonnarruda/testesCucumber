@@ -26,6 +26,7 @@ public abstract class MyActionSupport extends ActionSupport
 	private Long videoAjuda = null;
 	private String actionErr = null;
 	private String actionMsg = null;
+	private String versao = null;
 	
 	public static final String MESSAGE = "message";
 	
@@ -148,9 +149,15 @@ public abstract class MyActionSupport extends ActionSupport
 		if (session.get(Noticia.ULTIMAS_NOTICIAS) == null)
 		{
 			NoticiaManager noticiaManager = (NoticiaManager) SpringUtil.getBean("noticiaManager");
-			noticiaManager.carregarUltimasNoticias(getUsuarioLogado().getId());
+			noticiaManager.carregarUltimasNoticias(getUsuarioLogado().getId()); 
 		}
 			
 		return (String) session.get(Noticia.ULTIMAS_NOTICIAS);
+	}
+	
+	public String getVersao() {
+		if (versao == null)
+			versao = SecurityUtil.getVersao(ActionContext.getContext().getSession());
+		return versao;
 	}
 }

@@ -150,4 +150,16 @@ public class SecurityUtil
 
 		return ((UserDetailsImpl) sc.getAuthentication().getPrincipal()).getEmpresa();
 	}
+	
+	public static String getVersao(Map session) {
+		if (session == null)
+			return null;
+		
+		SecurityContext sc = (SecurityContext) session.get("ACEGI_SECURITY_CONTEXT");
+		
+		if(sc == null)
+			return null;
+
+		return ((UserDetailsImpl) sc.getAuthentication().getPrincipal()).getVersao();
+	}
 }

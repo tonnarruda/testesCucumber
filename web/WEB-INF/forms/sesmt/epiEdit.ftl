@@ -2,13 +2,13 @@
 <html>
 <head>
 
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.autocomplete.js"/>"></script>
 	
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 		@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
 		@import url('<@ww.url includeParams="none" value="/css/jquery.autocomplete.css"/>');
 		@import url('<@ww.url includeParams='none' value='/webwork/jscalendar/calendar-blue.css' encode='false'/>');

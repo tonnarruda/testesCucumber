@@ -4,7 +4,7 @@
 <@ww.head/>
 <title>Pesquisa concluída</title>
 <style type="text/css">
-	@import url('<@ww.url includeParams="none" value="/css/preview.css"/>');
+	@import url('<@ww.url includeParams="none" value="/css/preview.css?version=${versao}"/>');
 </style>
 </head>
 <body>

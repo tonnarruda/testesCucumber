@@ -12,12 +12,12 @@
 </#if>
 
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
   	</style>
 
 	<#assign validarCampos="return validaFormulario('form', new Array('nome'), null)"/>
-	<script src='<@ww.url includeParams="none" value="/js/arvoreCheck.js"/>'></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script src='<@ww.url includeParams="none" value="/js/arvoreCheck.js?version=${versao}"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	<script type="text/javascript">
 		$(function() {
 			<#list papeisComHelp as papel>

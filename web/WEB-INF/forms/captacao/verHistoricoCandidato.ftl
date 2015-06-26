@@ -1,7 +1,7 @@
 <html>
 <head>
 <style type="text/css">
-	@import url('<@ww.url includeParams="none" value="/css/curriculo.css"/>');
+	@import url('<@ww.url includeParams="none" value="/css/curriculo.css?version=${versao}"/>');
 </style>
 <title></title>
 </head>

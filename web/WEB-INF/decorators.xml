@@ -42,6 +42,7 @@
 		<pattern>/cargosalario/historicoColaborador/grfSalarioAreasFilhas.action*</pattern>		
 		<pattern>/grafico.jsp*</pattern>
 		<pattern>/conteudo.jsp*</pattern>
+		<pattern>/index.jsp*</pattern>
 	</excludes>
 
 	<decorator name="login" page="login.ftl">

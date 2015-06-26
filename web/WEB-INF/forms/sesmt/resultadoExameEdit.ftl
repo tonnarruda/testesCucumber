@@ -4,9 +4,9 @@
 <@ww.head/>
 
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
 
 	<script type='text/javascript'>
 	    function limpaData()

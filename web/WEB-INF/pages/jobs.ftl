@@ -11,7 +11,7 @@
 	<title>Tarefas Agendadas</title>
 	
 	<style>
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 </head>
 

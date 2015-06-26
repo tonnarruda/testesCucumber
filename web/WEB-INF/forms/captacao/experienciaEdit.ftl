@@ -44,8 +44,8 @@
 		<#assign dataDesl = ""/>
 	</#if>
 	
-	<script src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
-	<script src='<@ww.url includeParams="none" value="/js/fortes.js"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}">'></script>
+	<script src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
 	
 	<script type='text/javascript'>
 	    function voltarExperiencia()
@@ -84,7 +84,7 @@
 	</script>
 	
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
 	</style>
 
 

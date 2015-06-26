@@ -34,7 +34,7 @@
 	
 	<#include "../ftl/mascarasImports.ftl" />
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/perguntasAvaliacao.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/perguntasAvaliacao.js?version=${versao}"/>'></script>
 	
 </head>
 <body>

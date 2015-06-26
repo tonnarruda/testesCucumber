@@ -18,7 +18,7 @@
 	</#if>
 
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 		
 		.info { margin-bottom: 10px; }
 		.info ul { margin-left: 15px; }

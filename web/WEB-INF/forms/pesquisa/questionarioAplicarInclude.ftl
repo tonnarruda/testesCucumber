@@ -4,7 +4,7 @@
 <@ww.head/>
 
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 
 		input.radio { border: 0; }
 		.aspecto { margin: 10px 0; padding: 3px 8px; background-color: #DDDDDD; font-weight: bold; }

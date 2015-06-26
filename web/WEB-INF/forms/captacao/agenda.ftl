@@ -5,9 +5,9 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.dateFormat-1.0.js"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/weekcalendar.js"/>'></script>
 	
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/HistoricoCandidatoDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>	
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/HistoricoCandidatoDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>	
 	
 	
 	<style type="text/css">

@@ -5,10 +5,10 @@
 	<title>Relatório de Pesquisa</title>
 	<#assign formAction="imprimirRelatorioColaboradoresPesquisa.action"/>
 	<#assign accessKey="I"/>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorPesquisaDWR.js"/>'></script>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-<script src='<@ww.url includeParams="none" value="/js/fortes.js"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorPesquisaDWR.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+<script src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
 <script>
 	function populaColaborador()
 	{

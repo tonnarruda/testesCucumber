@@ -9,7 +9,7 @@
 </#if>
 
 <style type="text/css">
-	@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+	@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 </style>
 <script type='text/javascript'>
 	function verificaSelecao(frm)

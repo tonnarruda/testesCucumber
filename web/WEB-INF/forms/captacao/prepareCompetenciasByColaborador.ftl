@@ -3,7 +3,7 @@
 	<head>
 		<@ww.head/>
 		<style type="text/css">
-			@import url('<@ww.url value="/css/displaytag.css"/>');
+			@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 			
 			.dados th:first-child { text-align: left; padding-left: 5px; }
 			#boxgrafico { width: 966px; border: 1px solid #BEBEBE; margin-top: 15px; padding-top: 10px; }
@@ -26,8 +26,8 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.highlighter.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.spider.js"/>'></script>
-		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
-		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/nivelCompetencia.js"/>"></script>
+		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
+		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/nivelCompetencia.js?version=${versao}"/>"></script>
 		
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/NivelCompetenciaDWR.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>

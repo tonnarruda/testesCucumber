@@ -4,14 +4,14 @@
 <head>
 	<@ww.head/>
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 	<title>Exame Palográfico</title>
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<#include "../ftl/showFilterImports.ftl" />
 	
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 

@@ -7,7 +7,7 @@
 	<meta http-equiv="Expires" content="0" />
 	<@ww.head />
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/curriculo.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/curriculo.css?version=${versao}"/>');
 	</style>
 </head>
 <body>

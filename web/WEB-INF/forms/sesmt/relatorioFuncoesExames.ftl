@@ -4,7 +4,7 @@
 <head>
 	<title>Funções por Exames</title>
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 
 	<#include "../ftl/mascarasImports.ftl" />

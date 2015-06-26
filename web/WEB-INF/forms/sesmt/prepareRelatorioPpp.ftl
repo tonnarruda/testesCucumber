@@ -5,7 +5,7 @@
 	<#include "../ftl/mascarasImports.ftl" />
 <@ww.head/>
 <style type="text/css">
-	@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+	@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 </style>
 
 <title>PPP do colaborador - ${colaborador.nome}</title>

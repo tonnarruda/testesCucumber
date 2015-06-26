@@ -6,7 +6,7 @@
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 
 	<#include "../ftl/showFilterImports.ftl" />

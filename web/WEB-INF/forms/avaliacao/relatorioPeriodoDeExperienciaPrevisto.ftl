@@ -4,8 +4,8 @@
 <head>
 <@ww.head/>
 	<title>Acompanhamento de Experiência Previsto</title>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	<script type="text/javascript">
 		$(function() {
 			$('#tooltipHelp').qtip({

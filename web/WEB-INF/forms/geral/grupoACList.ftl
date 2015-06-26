@@ -3,7 +3,7 @@
 <head>
 	<@ww.head/>
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 
 	<title>Grupo AC (Utilizado no AC Pessoal)</title>

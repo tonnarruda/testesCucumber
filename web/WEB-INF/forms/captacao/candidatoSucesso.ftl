@@ -9,7 +9,7 @@
 	<meta http-equiv="Expires" content="0" />
 
 	<style type="text/css">
-	@import url('<@ww.url includeParams="none" value="/css/candidato.css"/>');
+	@import url('<@ww.url includeParams="none" value="/css/candidato.css?version=${versao}"/>');
 	#cv {
 		overflow:auto;
 		padding: 10px;

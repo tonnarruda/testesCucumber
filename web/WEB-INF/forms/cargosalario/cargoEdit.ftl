@@ -5,7 +5,7 @@
 <head>
 <@ww.head/>
 <style type="text/css">
-	@import url('<@ww.url value="/css/displaytag.css"/>');
+	@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 </style>
 <#if cargo.id?exists>
 	<title>Editar Cargo</title>
@@ -17,17 +17,17 @@
 
 <#assign validarCampos="return validaFormulario('form', new Array('nome','nomeMercado','@areasCheck'), null)"/>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ConhecimentoDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/HabilidadeDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AtitudeDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js"/>'></script>
-	<script src='<@ww.url includeParams="none" value="/js/fortes.js"/>'></script>
-	<script src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ConhecimentoDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/HabilidadeDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AtitudeDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/autoCompleteFortes.js?version=${versao}"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
 	
 	<style type="text/css">
-	    @import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
+	    @import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
 	    @import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
 	    
 	    #wwgrp_descricaoCBO

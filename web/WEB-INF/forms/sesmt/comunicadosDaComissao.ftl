@@ -4,7 +4,7 @@
   <style type="text/css">
     #menuComissao a.ativaDocumentos{border-bottom: 2px solid #5292C0;}
   </style>
-  <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+  <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 
   <title></title>
   

@@ -3,17 +3,17 @@
 	<@ww.head/>
 	<title>Licença de Uso</title>
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/login.css" />');
-		@import url('<@ww.url includeParams="none" value="/css/botoes.css" />');
-		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/default.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/login.css?version=${versao}" />');
+		@import url('<@ww.url includeParams="none" value="/css/botoes.css?version=${versao}" />');
+		@import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/default.css?version=${versao}"/>');
 		
 		.errorMessage { width: 320px; margin: 0px auto; }
 		.errorMessage ul { padding: 0px; }
 		.errorMessage li {  font-size: 13px; padding: 5px; color: red; }
 		form ul { padding: 0px; }
 	</style>
-	<script src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
 </head>
 <body>
 <@ww.actionerror />

@@ -3,9 +3,9 @@
 <@ww.head/>
 
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/pergunta.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/questionario.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/pergunta.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/questionario.css?version=${versao}"/>');
 	</style>
 
 	<script type="text/javascript">

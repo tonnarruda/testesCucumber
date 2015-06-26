@@ -3,7 +3,7 @@
 <head>
 <@ww.head/>
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 		#legendas { float: right; margin-bottom: 10px; }
 		.naoApto { color: #F00 !important; }
 		.apto { color: #0000FF !important; }

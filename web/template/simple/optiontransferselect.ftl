@@ -1,9 +1,9 @@
 <#if !stack.findValue("#optiontransferselect_js_included")?exists>
-	<script language="javascript" src="<@ww.url includeParams="none" value="/webwork/optiontransferselect/optiontransferselect.js" encode='false' />"></script>
+	<script language="javascript" src="<@ww.url includeParams="none" value="/webwork/optiontransferselect/optiontransferselect.js?version=${versao}" encode='false' />"></script>
 	<#assign temporaryVariable = stack.setValue("#optiontransferselect_js_included", "true") />
 </#if>
 <#if !stack.findValue("#buttonsOnclick_js_included")?exists>
-	<script language="javascript" src="<@ww.url includeParams="none" value="/webwork/optiontransferselect/buttonsOnclick.js" encode='false' />"></script>
+	<script language="javascript" src="<@ww.url includeParams="none" value="/webwork/optiontransferselect/buttonsOnclick.js?version=${versao}" encode='false' />"></script>
 	<#assign temporaryVariable = stack.setValue("#buttonsOnclick_js_included", "true") />
 </#if>
 <table border="0">

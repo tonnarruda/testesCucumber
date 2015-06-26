@@ -4,7 +4,7 @@
 		<@ww.head/>
 		
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 		
 		<title>Configurações de Campos Extras</title>

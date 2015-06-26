@@ -1,7 +1,7 @@
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <html>
 <head>
-<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/displaytag.css"/>" type="text/css">
+<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>" type="text/css">
 <@ww.head/>
 	<title>Clonar Investimentos da Empresa - por Colaborador</title>
 	<#assign validarCampos="return validaFormulario('form', null, null)"/>

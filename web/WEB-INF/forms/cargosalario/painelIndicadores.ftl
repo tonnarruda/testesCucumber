@@ -5,8 +5,8 @@
 	<@ww.head/>
 	
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
-		@import url('<@ww.url value="/css/indicadores.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
+		@import url('<@ww.url value="/css/indicadores.css?version=${versao}"/>');
 		
 		.formula { margin: 7px 5px; }
 		.icoImprimir { float: right; cursor: pointer; }
@@ -38,16 +38,16 @@
 	</style>
 	
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
-		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
+		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js?version=${versao}"/>'></script>
 		
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 		
 		<#include "../ftl/showFilterImports.ftl" />
 		

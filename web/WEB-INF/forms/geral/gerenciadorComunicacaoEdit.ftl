@@ -17,15 +17,15 @@
 		<#include "../ftl/showFilterImports.ftl" />
 		<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
 	
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioDWR.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/GerenciadorComunicacaoDWR.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioDWR.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/GerenciadorComunicacaoDWR.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 		
 		<style type="text/css">
-	    	@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
+	    	@import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
 	    	@import url('<@ww.url includeParams="none" value="/css/cssYui/fonts-min.css"/>');
-	    	@import url('<@ww.url value="/css/displaytag.css"/>');
+	    	@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	    	
 	    	.addDias { margin-left: 7px; }
 	    	.dias { background-color: #DEDEDE; padding: 2px 5px; }

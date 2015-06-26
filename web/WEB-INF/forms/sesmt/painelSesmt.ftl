@@ -6,8 +6,8 @@
 		<@ww.head/>
 		
 		<style type="text/css">
-			@import url('<@ww.url value="/css/displaytag.css"/>');
-			@import url('<@ww.url value="/css/indicadores.css"/>');
+			@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
+			@import url('<@ww.url value="/css/indicadores.css?version=${versao}"/>');
 			
 			.semAcidentes { text-align: center; color: #060; border: 2px solid #060; background-color: #EFE; }
 			.semAcidentes p { font-size: 14px; font-weight: bold; }
@@ -19,7 +19,7 @@
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.pie.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js?version=${versao}"/>'></script>
 		
 		<title>Painel de Indicadores de SESMT</title>
 

@@ -11,16 +11,16 @@
 	<title>Caixa de Mensagens de ${action.getDescricaoTipo(tipo)}</title>
 	
 	<style>
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 		.dados a { text-decoration: none; font-family: Arial, Helvetica, sans-serif !important; color: #000 !important; }
 		.dados td { font-size: 11px !important; }
 		.dados td .tituloMensagem { font-size: 11px !important; width: 590px; white-space: nowrap; overflow: hidden; }
 		.remetenteHora { color: #069; }
 	</style>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioMensagemDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/UsuarioMensagemDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	
 	<script type='text/javascript'>
 		function marcarMensagemLida(usuarioMensagemId)

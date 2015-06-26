@@ -3,7 +3,7 @@
 <@ww.head/>
 	<title>Acesso aos Módulos</title>
 	
-	<script src='<@ww.url includeParams="none" value="/js/arvoreCheck.js"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/arvoreCheck.js?version=${versao}"/>'></script>
 </head>
 <body>
 	<@ww.actionerror />

@@ -6,7 +6,7 @@
 <head>
 	<@ww.head/>
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 		
 		ul.aviso { list-style-type: disc; list-style-position: outside; margin-left: 20px; }
 	</style>

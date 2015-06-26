@@ -12,7 +12,7 @@
 
 		var cssLink = "";
 		cssLink	+=	"<style type='text/css'>";
-		cssLink	+=	"@import url('<@ww.url includeParams="none" value="/css/gastoEmpresa.css"/>');";
+		cssLink	+=	"@import url('<@ww.url includeParams="none" value="/css/gastoEmpresa.css?version=${versao}"/>');";
 		cssLink	+=	"</style>";
 
 		WinPrint.document.write(cssLink + prtContent.innerHTML);
@@ -26,7 +26,7 @@
 <title>Investimentos da Empresa</title>
 
 <style type="text/css">
-	@import url('<@ww.url includeParams="none" value="/css/gastoEmpresa.css"/>');
+	@import url('<@ww.url includeParams="none" value="/css/gastoEmpresa.css?version=${versao}"/>');
 </style>
 </head>
 <body>

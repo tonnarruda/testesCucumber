@@ -3,17 +3,17 @@
 <head>
 <@ww.head/>
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
-		@import url('<@ww.url value="/css/formModal.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
+		@import url('<@ww.url value="/css/formModal.css?version=${versao}"/>');
 	</style>
 	<style type="text/css">#menuComissao a.ativaReuniao{border-bottom: 2px solid #5292C0;}</style>
 
-	<script src='<@ww.url includeParams="none" value="/js/formModal.js"/>'></script>
-	<script src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
-	<script src='<@ww.url includeParams="none" value="/js/fortes.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoReuniaoDWR.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/formModal.js?version=${versao}"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoReuniaoDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<title></title>
 	<#assign validarCampos="return validaFormulario('form',new Array('reuniaoData','reuniaoHorario','reuniaoTipo'),new Array('reuniaoData'));"/>
 	<script type="text/javascript">

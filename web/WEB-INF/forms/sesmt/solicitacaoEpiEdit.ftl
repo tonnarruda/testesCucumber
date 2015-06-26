@@ -4,7 +4,7 @@
 	<@ww.head/>
 
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 		
 		.blue { color: blue; }
 		.gray { color: #454C54; }

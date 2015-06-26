@@ -22,11 +22,12 @@ public class UserDetailsImpl implements UserDetails
 	private GrantedAuthority[] authorities;
 	private boolean accountNonExpired;
 	private boolean accountNonLocked;
-	private boolean credentialsNonExpired;
+	private boolean credentialsNonExpired; 
 	private boolean enabled;
 	private String menuFormatado;
 	private Empresa empresa;
 	private Colaborador colaborador;
+	private String versao;
 
 	public UserDetailsImpl(Long id, String nome, String username, String password, boolean superAdmin, Date ultimoLogin, 
 			GrantedAuthority[] authorities, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled, 
@@ -172,4 +173,11 @@ public class UserDetailsImpl implements UserDetails
 		this.superAdmin = superAdmin;
 	}
 
+	public String getVersao() {
+		return versao;
+	}
+
+	public void setVersao(String versao) {
+		this.versao = versao;
+	}
 }

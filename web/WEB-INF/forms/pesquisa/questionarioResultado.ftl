@@ -3,7 +3,7 @@
 <head>
 	<title>Resultado da ${tipoQuestionario.getDescricaoMaisc(questionario.tipo)}</title>
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/questionario.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/questionario.css?version=${versao}"/>');
 	</style>
 </head>
 
@@ -73,7 +73,7 @@
 		</div>
 	</div>
 
-	<button onclick="imprimir('resultadoPesquisa', false, '<@ww.url includeParams="none" value="/css/questionario.css"/>')" class="btnRelatorio" accesskey="m"></button>
+	<button onclick="imprimir('resultadoPesquisa', false, '<@ww.url includeParams="none" value="/css/questionario.css?version=${versao}"/>')" class="btnRelatorio" accesskey="m"></button>
 	<#if urlVoltar?exists && urlVoltar == "menu">
 		<button onclick="window.location='prepareResultadoEntrevista.action?questionario.id=${questionario.id}'" class="btnVoltar" accesskey="V"></button>
 	<#else>

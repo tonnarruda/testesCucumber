@@ -6,7 +6,7 @@
 	<title>Exportar dados para o AC Pessoal</title>
 	
 	<style>
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 		ol { padding: 10px; margin-bottom: 20px; background-color: #eee; list-style: decimal inside none; }
 	</style>
 	

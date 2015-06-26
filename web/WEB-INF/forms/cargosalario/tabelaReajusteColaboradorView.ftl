@@ -5,7 +5,7 @@
 <head>
 	<@ww.head/>
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 		.dados tfoot td { background-color: #f3f3f3; color: #333; }
 	</style>
 	

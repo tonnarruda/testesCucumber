@@ -1,4 +1,4 @@
-<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/indice.js"/>"></script>
+<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/indice.js?version=${versao}"/>"></script>
 
 <#function preparaSalario model>
 

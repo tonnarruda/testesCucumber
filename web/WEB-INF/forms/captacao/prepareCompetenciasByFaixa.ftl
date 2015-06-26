@@ -7,6 +7,9 @@
 		
 		.dados th:first-child { text-align: left; padding-left: 5px; }
 	</style>
+	
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/nivelCompetencia.js?version=${versao}"/>"></script>
 
 	<script type="text/javascript">
 		$(function() {
@@ -29,7 +32,12 @@
 		
 		function enviarForm()
 		{
-		 	if ($('.checkNivel').size() == 0)
+			if ($('.checkCompetencia').size() == 0)
+			{
+				jAlert('Não existem competências cadastradas para o cargo.');
+				return false;
+			}
+			else if ($('.checkNivel').size() == 0)
 			{
 				jAlert('Não existem níveis de competência cadastrados.');
 				return false;
@@ -42,7 +50,7 @@
 				return true;
 			}
 				
-			$('tr.even').css('background-color', '#EFEFEF');
+			$('tr.even').css('background-color', '#E4F0FE');
 			$('tr.odd').css('background-color', '#FFF');
 		
 			jAlert('Selecione os níveis para as competências indicadas.');
@@ -50,48 +58,36 @@
 
 			return false;
 		}
+	
 	</script>
 
-	<title>Competências do Candidato</title>
+	<title>Competências da Faixa Salarial</title>
 </head>
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
 	
+	<p><b>Cargo:</b> ${faixaSalarial.cargo.nome} &nbsp;&nbsp;&nbsp; <b>Faixa:</b> ${faixaSalarial.nome}</p>
 	
-	<div id="legendas" style="float:right;">
-		<span style='background-color: #BFC0C3;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial
-	</div>
-	
-	<b>Candidato:</b> ${candidato.nome}
-	
-	<div style="clear: both;"></div><br />
-	
-	<@ww.form name="form" id="form" action="../../captacao/nivelCompetencia/saveCompetenciasByCandidato.action" method="POST">
-		<@ww.hidden name="candidato.id"/>
+	<@ww.form name="form" id="form" action="saveCompetenciasByFaixa.action" method="POST">
 		<@ww.hidden name="faixaSalarial.id"/>
-		<@ww.hidden name="solicitacao.id"/>
-				
+		
 		<#assign i = 0/>
 		<@display.table name="niveisCompetenciaFaixaSalariais" id="configuracaoNivelCompetencia" class="dados">
 		
 			<@display.column title="<input type='checkbox' id='checkAllCompetencia'/> Competência" >
 				<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
-				<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
+				<input type="checkbox"  id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
 				<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
+				
+				<#if configuracaoNivelCompetencia.competenciaObservacao?exists && configuracaoNivelCompetencia.competenciaObservacao != "">
+					<img id="competencia_${i}_obs" onLoad="toolTipCompetenciaObs(${i}, '${configuracaoNivelCompetencia.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
+				</#if>
+				
 			</@display.column>
 			
-			<#list nivelCompetencias as nivel>
-				<#if configuracaoNivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.id?exists && configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
-					<#assign class="nivelFaixa"/>
-					<#assign bgcolor="background-color: #BFC0C3;"/>
-				<#else>
-					<#assign class=""/>
-					<#assign bgcolor=""/>
-				</#if>
-					
-				<#-- <@display.column title="${nivel.descricao}" style="width: 100px; text-align: center;"> -->
-				<@display.column title="${nivel.descricao}" style="${bgcolor} width: 100px; text-align: center;" class="${class}">
+			<#list nivelCompetencias as nivel>			
+				<@display.column title="${nivel.descricao}" style="width: 100px; text-align: center;">
 					<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" />
 				</@display.column>
 			</#list>
@@ -102,7 +98,7 @@
 	
 	<div class="buttonGroup">
 		<button class="btnGravar" onclick="enviarForm();"></button>
-		<button class="btnVoltar" onclick="window.location='../candidatoSolicitacao/list.action?solicitacao.id=${solicitacao.id}'"></button>
+		<button class="btnVoltar" onclick="window.location='../../cargosalario/faixaSalarial/list.action?cargo.id=${faixaSalarial.cargo.id}'"></button>
 	</div>
 </body>
 </html>

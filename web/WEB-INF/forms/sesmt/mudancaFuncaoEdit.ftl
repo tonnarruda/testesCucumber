@@ -5,7 +5,7 @@
 	<#include "../ftl/mascarasImports.ftl" />
 <@ww.head/>
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 
 	<title>Mudança de Função</title>

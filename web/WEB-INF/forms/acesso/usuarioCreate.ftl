@@ -3,7 +3,7 @@
 	<@ww.head/>
 	<title>Inserir Usuário</title>
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/botoes.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/botoes.css?version=${versao}"/>');
 	</style>
 </head>
 <body>

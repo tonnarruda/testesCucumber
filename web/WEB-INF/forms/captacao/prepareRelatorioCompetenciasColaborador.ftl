@@ -5,9 +5,9 @@
 	<title>Relatório de Colaboradores com Nível de Competência inferior ao exigido pela Faixa Salarial</title>
 	<#assign validarCampos="return validaFormulario('form', new Array('data', 'faixa', '@competenciasCheck'), new Array('data'))"/>	
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CompetenciaDWR.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CompetenciaDWR.js?version=${versao}"/>'></script>
 	
 	<script type='text/javascript'>
 		$(function() {

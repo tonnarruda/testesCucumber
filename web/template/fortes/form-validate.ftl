@@ -1,5 +1,5 @@
 <#if parameters.validate?default(false) == true>
-<script src="${base}/webwork/css_xhtml/validation.js" type="text/javascript"></script>
+<script src="${base}/webwork/css_xhtml/validation.js?version=${versao}" type="text/javascript"></script>
     <#if parameters.onsubmit?exists>
         ${tag.addParameter('onsubmit', "${parameters.onsubmit};  return validateForm_${parameters.id}();")}
     <#else>

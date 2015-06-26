@@ -5,9 +5,9 @@
 <head>
 <#assign validarCampos="return validaFormularioEPeriodoMesAno('form', null, new Array('dataIni', 'dataFim'))"/>
 
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 
 	<#include "../ftl/mascarasImports.ftl" />
 <script type='text/javascript'>

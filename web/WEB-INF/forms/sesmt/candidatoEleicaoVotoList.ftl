@@ -3,8 +3,8 @@
 <head>
 <@ww.head/>
 	<style type="text/css">
-		@import url('<@ww.url value="/css/displaytag.css"/>');
-		#menuEleicao a.ativaResultado{  border-bottom: 2px solid #5292C0;}
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
+		#menuEleicao a.ativaResultado{border-bottom: 2px solid #5292C0;}
 		#eleicao { height: 25px; }
 		
 	</style>

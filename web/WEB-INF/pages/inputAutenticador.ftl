@@ -3,11 +3,11 @@
 	<@ww.head/>
 	<title>Licença de Uso</title>
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/login.css" />');
-		@import url('<@ww.url includeParams="none" value="/css/botoes.css" />');
-		@import url('<@ww.url includeParams="none" value="/css/default.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/login.css?version=${versao}" />');
+		@import url('<@ww.url includeParams="none" value="/css/botoes.css?version=${versao}" />');
+		@import url('<@ww.url includeParams="none" value="/css/default.css?version=${versao}"/>');
 	</style>
-	<script src='<@ww.url includeParams="none" value="/js/functions.js"/>'></script>
+	<script src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
 	<#assign validarCampos="return validaFormulario('form', new Array('cnpj', 'nome'), null, true)"/>
 
 	<script type="text/javascript">

@@ -3,7 +3,7 @@
 	<title>Frequência</title>
 	<@ww.head />
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/matriz.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/matriz.css?version=${versao}"/>');
 	</style>
 	<script type="text/javascript">
 	function vertical(valor)

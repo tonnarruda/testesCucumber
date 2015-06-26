@@ -4,8 +4,8 @@
 	<head>
 	
 		<style type="text/css">
-			@import url('<@ww.url value="/css/displaytag.css"/>');
-			@import url('<@ww.url value="/css/formModal.css"/>');
+			@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
+			@import url('<@ww.url value="/css/formModal.css?version=${versao}"/>');
 			
 			<#if isAvaliados>
 		    	#menuParticipantes a.ativaAvaliado{border-bottom: 2px solid #5292C0;}
@@ -35,12 +35,12 @@
 		
 		<#assign validarCamposModal="return validaFormulario('formModal', new Array('@colaboradorsCheck'), null)"/>
 		
-		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
-		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 		
 		<script type="text/javascript">
 		$(function() {

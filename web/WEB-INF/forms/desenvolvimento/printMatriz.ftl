@@ -3,7 +3,7 @@
 	<title>Matriz de Qualificação</title>
 	<@ww.head />
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/matriz.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/matriz.css?version=${versao}"/>');
 	</style>
 	<script type="text/javascript">
 	function vertical(valor)
@@ -23,7 +23,7 @@
 
 		var cssLink = "";
 		cssLink	+=	"<style type='text/css'>";
-		cssLink	+=	"@import url('<@ww.url includeParams="none" value="/css/matriz.css"/>');";
+		cssLink	+=	"@import url('<@ww.url includeParams="none" value="/css/matriz.css?version=${versao}"/>');";
 		cssLink	+=	"</style>";
 		cssLink	+=	"<script type='text/javascript'>";
 		cssLink +=	"function vertical(){}";

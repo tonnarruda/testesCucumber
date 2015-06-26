@@ -6,10 +6,10 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery-1.4.4.min.js"/>'></script>
 	
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/fortes.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/botoes.css"/>');
-		@import url('<@ww.url includeParams="none" value="/css/candidato.css"/>');
-		@import url('<@ww.url value="/css/formModal.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/fortes.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/botoes.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/candidato.css?version=${versao}"/>');
+		@import url('<@ww.url value="/css/formModal.css?version=${versao}"/>');
 
 		body {
 			background-color: #EBECF1;
@@ -90,7 +90,7 @@
 			<#assign forma=""/>
 		</#if>
 		
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js?version=${versao}"/>'></script>
 	<script language="javascript">
 		function mudaAba(id)
 		{

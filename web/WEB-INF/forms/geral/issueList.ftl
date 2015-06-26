@@ -5,8 +5,8 @@
 <head>
 	<@ww.head/>
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
-		@import url('<@ww.url value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
+		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 		.label { padding: 3px 4px 3px 12px; cursor: pointer; border-radius: 3px; border: 1px solid transparent; }
 		.label:hover, .marcado { 
 			border-color: #BBB;

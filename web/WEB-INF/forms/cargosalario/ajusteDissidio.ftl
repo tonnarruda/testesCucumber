@@ -6,12 +6,12 @@
 	<title>Alteração de Promoção para Dissídio</title>
 	
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
-		@import url('<@ww.url value="/css/formModal.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
+		@import url('<@ww.url value="/css/formModal.css?version=${versao}"/>');
 	</style>
 
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js"/>"></script>
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js?version=${versao}"/>'></script>
 	
 	<#assign showFilter = true/>
 	<#include "../ftl/showFilterImports.ftl" />

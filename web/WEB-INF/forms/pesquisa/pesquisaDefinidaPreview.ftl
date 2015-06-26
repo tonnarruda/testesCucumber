@@ -4,7 +4,7 @@
 <@ww.head/>
 <title>${pesquisa.titulo}</title>
 <style type="text/css">
-	@import url('<@ww.url includeParams="none" value="/css/preview.css"/>');
+	@import url('<@ww.url includeParams="none" value="/css/preview.css?version=${versao}"/>');
 </style>
 <script type='text/javascript'>
 	function prepareSubmit()

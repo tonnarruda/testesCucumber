@@ -16,7 +16,7 @@
 		<#assign retorno=voltarPara/>
 	</#if>
 
-	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/perguntasAvaliacao.js"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/perguntasAvaliacao.js?version=${versao}"/>'></script>
 	<script type='text/javascript'>
 		function exibirQuestionario() {
 			var colaboradorId = $('#colaborador').val();

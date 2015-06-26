@@ -2,8 +2,8 @@
 
 <html>
 <head>
-	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/candidato.css"/>" media="screen" type="text/css">
-	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/botoes.css"/>" media="screen" type="text/css">
+	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/candidato.css?version=${versao}"/>" media="screen" type="text/css">
+	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/botoes.css?version=${versao}"/>" media="screen" type="text/css">
 <@ww.head/>
 	<title>Currículo Escaneado - ${candidato.nome}</title>
 	<script>

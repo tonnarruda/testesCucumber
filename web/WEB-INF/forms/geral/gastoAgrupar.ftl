@@ -4,8 +4,8 @@
 <head>
 <@ww.head/>
 <style type="text/css">
-	@import url('<@ww.url value="/css/displaytag.css"/>');
-	@import url('<@ww.url includeParams="none" value="/css/backUpList.css"/>');
+	@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
+	@import url('<@ww.url includeParams="none" value="/css/backUpList.css?version=${versao}"/>');
 </style>
 <title>Agrupar Investimentos</title>
 <#assign formAction="agrupar.action"/>

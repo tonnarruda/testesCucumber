@@ -8,11 +8,11 @@
 	<title>Avaliadores e Avaliados</title>
 
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/displaytag.css"/>');
+		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 	</style>
-	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/avaliadoresAvaliados.css"/>" media="screen" type="text/css">
+	<link rel="stylesheet" href="<@ww.url includeParams="none" value="/css/avaliadoresAvaliados.css?version=${versao}"/>" media="screen" type="text/css">
 
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/avaliadoresAvaliados.js"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/avaliadoresAvaliados.js?version=${versao}"/>"></script>
 
 	<#assign edicao="true"/>
 
