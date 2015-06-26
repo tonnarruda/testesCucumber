@@ -103,6 +103,11 @@
 	<@ww.actionmessage />
 	
 	<@ww.form name="form" action="${formAction}" onsubmit="enviaForm();" method="POST">
+		
+		<#if origem?exists>
+			<@ww.hidden name="origem" value="${origem}" />
+		</#if>
+		
 		<@ww.textfield label="Nome" name="usuario.nome" id="nome" cssStyle="width:445px;" required="true" cssClass="inputNome" maxLength="100"/>
 		<@ww.textfield label="Login" name="usuario.login" cssClass="inputLogin" maxLength="25" id="login" required="true"/>
 		

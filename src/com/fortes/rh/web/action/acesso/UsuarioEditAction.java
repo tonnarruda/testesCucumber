@@ -268,7 +268,12 @@ public class UsuarioEditAction extends MyActionSupportEdit
 			if (colaborador != null && colaborador.getId() != null) {
 				colaborador = colaboradorManager.findByIdProjectionUsuario(colaboradorId);
 				gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema(usuario.getLogin(), senha, colaborador.getContato().getEmail(), getEmpresaSistema());
-				return "usuarioColaborador";
+				System.out.println(origem);
+				
+				if(origem.equals("C"))
+					return "usuarioColaborador";
+				else
+					return Action.SUCCESS;
 			} else
 				return Action.SUCCESS;
 		}
@@ -301,7 +306,10 @@ public class UsuarioEditAction extends MyActionSupportEdit
 			usuarioManager.update(usuario, colaboradorId, empresasId, selectPerfils);
 
 			if (colaborador != null && colaborador.getId() != null)
-				return "usuarioColaborador";
+				if(origem.equals("C"))
+					return "usuarioColaborador";
+				else 
+					return Action.SUCCESS;
 			else
 				return Action.SUCCESS;
 		}
