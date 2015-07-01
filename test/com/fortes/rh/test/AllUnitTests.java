@@ -26,6 +26,7 @@ import com.fortes.rh.test.business.acesso.PapelManagerTest;
 import com.fortes.rh.test.business.acesso.PerfilManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioEmpresaManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioManagerTest;
+import com.fortes.rh.test.business.auditoria.ManagerAuditaTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoDesempenhoManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoManagerTest;
 import com.fortes.rh.test.business.avaliacao.PeriodoExperienciaManagerTest;
@@ -417,6 +418,7 @@ import com.fortes.rh.test.util.MathUtilTest;
 import com.fortes.rh.test.util.MontaRelatorioItextTest;
 import com.fortes.rh.test.util.SpringUtilTest;
 import com.fortes.rh.test.util.StringUtilTest;
+import com.fortes.rh.test.util.TestsNoIncludeAllUnitTest;
 import com.fortes.rh.test.util.ZipTest;
 import com.fortes.rh.test.web.action.IndexTest;
 import com.fortes.rh.test.web.action.MyActionSupportEditTest;
@@ -1408,6 +1410,10 @@ public class AllUnitTests extends TestSuite
         //SERVICES
         suite.addTestSuite(RHServiceTest.class);
         suite.addTestSuite(RHServiceIntranetTest.class);
+        
+        //NoAllUnitTests (Deixar comentado pois não funciona no jenkins é só para o coverage)
+//        suite.addTestSuite(ManagerAuditaTest.class);
+//        suite.addTestSuite(TestsNoIncludeAllUnitTest.class);
         
         return suite;
     }

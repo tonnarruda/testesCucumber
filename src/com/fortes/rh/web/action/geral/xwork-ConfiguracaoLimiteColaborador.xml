@@ -47,6 +47,7 @@
 				<param name="propertiesGroup">areaOrganizacional.id</param>
 				<param name="properties">areaOAreaOrganizacionalContratoDescricao,cargo.nome,limite,qtdColaboradoresCadastrados</param>
 				<param name="reportTitle">reportTitle</param>
+				<param name="msgFinalRelatorioXls">msgFinalRelatorioXls</param>
 			</result>					
 		</action>
 		

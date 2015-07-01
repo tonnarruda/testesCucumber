@@ -4,6 +4,7 @@
 		<Item visivel="S" motivo="P20150600165"><![CDATA[Pesquisa > Movimentações > Pesquisas > Colaboradores > Exportar: Correção de inconsistência ao exportar colaboradores da pesquisa.]]></Item>
 		<Item visivel="S" motivo="P20150600070"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Liberar avaliações em lote: Ajuste para impossibilitar a duplicação das avaliações dos colaboradores.]]></Item>
 		<Item visivel="S" motivo="S20150600019"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitações de Exames: Exibição da observação da solicitação no relatório.]]></Item>
+		<Item visivel="S" motivo="S20150500240"><![CDATA[Utilitários > Configurações > Limite de Colab. por Cargo: Nova opção de gerar o relatório no formato xls.]]></Item>
 	</Versao>
 	<Versao id="1.1.146.176" db="" data="24/06/2015">
 		<Item visivel="S" motivo="S20150500191"><![CDATA[R&S > Relatórios > Duração para preenchimento de vagas: Considerar as pausas da solicitação de pessoal na média de dias.]]></Item>
