@@ -22872,6 +22872,8 @@ ALTER TABLE configuracaoNivelCompetencia ADD COLUMN configuracaoNivelCompetencia
 
 ALTER TABLE configuracaoNivelCompetencia ADD CONSTRAINT configNivelCompetencia_configNivelCompetenciaFaixasalarial_fk FOREIGN KEY (configuracaoNivelCompetenciaFaixaSalarial_id) REFERENCES configuracaoNivelCompetenciaFaixaSalarial(id);--.go
 insert into migrations values('20150608111027');--.go
+
+delete from configuracaoNivelCompetencia where faixaSalarial_id not in (select id from faixaSalarial);--.go
 CREATE FUNCTION criar_historico_cncFaixa() RETURNS integer AS $$   
 	DECLARE 
 	    mv RECORD; 

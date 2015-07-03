@@ -1,0 +1,4 @@
+update configuracaonivelcompetenciacolaborador set colaboradorquestionario_id = null where colaboradorquestionario_id not in(select id from colaboradorquestionario) and colaboradorquestionario_id is not null;--.go
+ALTER TABLE configuracaonivelcompetenciacolaborador DROP CONSTRAINT IF EXISTS configNivelCompetenciaColaborador_colaboradorquestionario_fk;--.go
+ALTER TABLE configuracaonivelcompetenciacolaborador DROP CONSTRAINT IF EXISTS configNivelCompColab_colaboradorquestionario_fk;--.go
+ALTER TABLE configuracaonivelcompetenciacolaborador ADD CONSTRAINT configNivelCompColab_colaboradorquestionario_fk FOREIGN KEY (colaboradorquestionario_id) REFERENCES colaboradorquestionario(id); --.go

@@ -1,3 +1,5 @@
+
+delete from configuracaoNivelCompetencia where faixaSalarial_id not in (select id from faixaSalarial);--.go 
 CREATE FUNCTION criar_historico_cncFaixa() RETURNS integer AS $$   
 	DECLARE 
 	    mv RECORD; 
