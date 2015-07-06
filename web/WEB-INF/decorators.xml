@@ -60,6 +60,7 @@
 		<pattern>/externo/**</pattern>
 		<pattern>/pesquisa/trafego/**</pattern>
 		<pattern>/browsersCompativeis.action*</pattern>
+		<pattern>/javasCompativeis.action*</pattern>
 	</decorator>
 
 	<decorator name="trafego" page="trafego.ftl">

@@ -216,6 +216,7 @@
 				/validaTicket.action*=ROLE_ANONYMOUS,ROLE_USER
 				/validaCodigoResposta.action*=ROLE_ANONYMOUS,ROLE_USER
 				/browsersCompativeis.action*=ROLE_ANONYMOUS,ROLE_USER
+				/javasCompativeis.action*=ROLE_ANONYMOUS,ROLE_USER
 				/videoteca.action*=ROLE_USER
 				/contatos.action*=ROLE_USER
 				/geral/cartao/**=ROLE_USER

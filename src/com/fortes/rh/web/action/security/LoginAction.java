@@ -1,5 +1,8 @@
 package com.fortes.rh.web.action.security;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -34,6 +37,9 @@ public class LoginAction extends MyActionSupport
 		try {
 			if (SecurityUtil.hasLoggedUser())
 				return "index";
+
+			if(!verificaCompatibilidadeDoJava())
+				return "javasCompativeis";
 
 			if(demonstracao){
 				ActionContext.getContext().getSession().put("REG_MSG", Autenticador.getMsgPadrao());
@@ -114,6 +120,39 @@ public class LoginAction extends MyActionSupport
 		
 		return Action.SUCCESS;
 	}
+	
+	public String javasCompativeis()
+	{
+		return Action.SUCCESS;
+	}
+	
+	public boolean verificaCompatibilidadeDoJava()
+	{
+		boolean statusVersaoJava = false;
+			try {
+	             
+	            Process p = Runtime.getRuntime().exec("java -version");
+	            BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+	            BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+	 
+	            String versaoJava = "";
+	            if(stdInput.readLine() != null)
+	            	versaoJava = stdInput.readLine().toString();
+	            
+	            if(stdError.readLine() != null)
+	            	versaoJava = stdError.readLine().toString();
+	            
+	            statusVersaoJava = versaoJava.contains("1.6") || versaoJava.contains("1.7");
+	            
+	        }
+	        catch (IOException e) {
+	            System.out.println("exception happened - here's what I know: ");
+	            e.printStackTrace();
+	        }
+		
+		return statusVersaoJava;
+	}
+	
 	
 	public Collection<Empresa> getEmpresas()
 	{

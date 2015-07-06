@@ -182,12 +182,16 @@
       <result name="success" type="redirect">/index.action</result>
       <result name="input" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>
     </action>
+    <action name="javasCompativeis" class="com.fortes.rh.web.action.security.LoginAction" method="javasCompativeis">
+      <result name="success" type="freemarker">/WEB-INF/pages/javasCompativeis.ftl</result>
+    </action>
     <action name="login" class="com.fortes.rh.web.action.security.LoginAction" method="login">
       <result name="success">/WEB-INF/pages/acegilogin.jsp</result>
       <result name="input" type="freemarker">/WEB-INF/pages/bdError.ftl</result>
       <result name="not_registered" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>
       <result name="not_conect" type="freemarker">/WEB-INF/pages/configuracaoAutenticador.ftl</result>
       <result name="index" type="redirect">index.action</result>
+      <result name="javasCompativeis" type="redirect">javasCompativeis.action</result>
     </action>
     <action name="updateConf" class="com.fortes.rh.web.action.security.LoginAction" method="updateConf">
       <result name="success" type="freemarker">/WEB-INF/pages/bdError.ftl</result>
