@@ -30,5 +30,4 @@ public class ParametrosDoSistemaFactory
 
 		return parametrosDoSistema;
 	}
-
 }

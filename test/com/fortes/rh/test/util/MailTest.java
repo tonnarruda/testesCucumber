@@ -9,8 +9,6 @@ import mockit.Mockit;
 import org.apache.commons.lang.SystemUtils;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.geral.Empresa;
@@ -32,9 +30,6 @@ public class MailTest extends MockObjectTestCase
 
 		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
 		mail.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager.proxy());
-
-		mail.setMessage(new SimpleMailMessage());
-		mail.setMailSender(new JavaMailSenderImpl());
 
 		Mockit.redefineMethods(Transport.class, MockTransport.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);

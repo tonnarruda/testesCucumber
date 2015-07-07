@@ -53,13 +53,13 @@
     </property>
   </bean>
 
-  <!-- EMAIL -->
+   <!-- EMAILSENDRUNNABLE -->
   <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" />
   <bean id="mailMessage" class="org.springframework.mail.SimpleMailMessage" />
+
+  <!-- EMAIL -->
   <bean id="mail" class="com.fortes.rh.util.Mail">
   	<property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
-    <property name="mailSender" ref="mailSender" />
-    <property name="message" ref="mailMessage" />
   </bean>
 
   <!-- WS INTEGRAÇÃO AC PESSOAL -->

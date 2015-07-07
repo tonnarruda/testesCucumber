@@ -175,7 +175,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
 					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.SOLICITANTE_SOLICITACAO.getId())){
 	    				String[] emails = (gerenciadorComunicacao.getEmpresa().getEmailRespRH()+";"+colaboradorSolicitante.getContato().getEmail()).split(";");
-						mail.send(empresa, parametrosDoSistema, subject, body.toString(), emails);
+						mail.send(empresa, parametrosDoSistema, subject, body.toString(), true, emails);
 					} 		
 				}
 			}
@@ -207,7 +207,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				
 				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
 					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.AVALIADOR_AVALIACAO_DESEMPENHO.getId())){
-						mail.send(avaliador.getEmpresa(), parametros, "[RH] - Lembrete - Responder avaliação de desempenho", corpo.toString(), avaliador.getContato().getEmail());
+						mail.send(avaliador.getEmpresa(), parametros, "[RH] - Lembrete - Responder avaliação de desempenho", corpo.toString(), true, avaliador.getContato().getEmail());
 					} 		
 				}
 
@@ -232,7 +232,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				StringBuilder corpo = new StringBuilder();
 				corpo.append("ATENÇÃO:<br>");
 				corpo.append("Existe uma avaliação de desempenho para ser respondida.<br>Por favor acesse <a href=\" "+ parametros.getAppUrl() + "\">RH</a>") ;
-				mail.send(empresa, parametros, "[RH] - Lembrete - Responder avaliação de desempenho", corpo.toString(), avaliador.getContato().getEmail());
+				mail.send(empresa, parametros, "[RH] - Lembrete - Responder avaliação de desempenho", corpo.toString(), false, avaliador.getContato().getEmail());
 			}
 			catch (Exception e)
 			{
@@ -272,7 +272,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
             {
                 try {
                 	if(colaboradorQuestionario.getColaborador() != null && !colaboradorQuestionario.getColaborador().isDesligado())
-                		mail.send(empresa, parametros, "[RH] - Nova " + label, corpo.toString(), colaboradorQuestionario.getColaborador().getContato().getEmail());
+                		mail.send(empresa, parametros, "[RH] - Nova " + label, corpo.toString(), false, colaboradorQuestionario.getColaborador().getContato().getEmail());
                 } catch (Exception e){
                     e.printStackTrace();
                 }
@@ -1603,7 +1603,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				if(emailsMarcados !=null && emailsMarcados.length > 0)
 				{
 					Collection<String> emailsMarcadosNoCadastroDeSolicitacaoPessoal = new CollectionUtil<String>().convertArrayToCollection(emailsMarcados);
-					mail.send(empresa, parametrosDoSistema, subject, body.toString(), StringUtil.converteCollectionToArrayString(emailsMarcadosNoCadastroDeSolicitacaoPessoal));
+					mail.send(empresa, parametrosDoSistema, subject, body.toString(), true, StringUtil.converteCollectionToArrayString(emailsMarcadosNoCadastroDeSolicitacaoPessoal));
 				}
 
 				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
@@ -1617,7 +1617,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 						bodyResponsavel += "<a href='" + parametrosDoSistema.getAppUrl() + "'>RH</a>";
 						
 						if (emailsRH != null && emailsRH.size() > 0) 
-							mail.send(empresa, parametrosDoSistema, subject, bodyResponsavel, StringUtil.converteCollectionToArrayString(emailsRH));
+							mail.send(empresa, parametrosDoSistema, subject, bodyResponsavel, true, StringUtil.converteCollectionToArrayString(emailsRH));
 					}
 					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_PESSOAL.getId()))
 					{
@@ -1629,7 +1629,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 						bodyAprovarReprovar += "<br><br>Acesse o RH para aprovar ou reprovar a solicitação:<br>";
 						bodyAprovarReprovar += "<a href='" + link + "'>RH</a>";
 						
-						mail.send(empresa, parametrosDoSistema, subject, bodyAprovarReprovar, emailsByUsuario);
+						mail.send(empresa, parametrosDoSistema, subject, bodyAprovarReprovar, true, emailsByUsuario);
 					}
 					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_PESSOAL_AND_GESTOR.getId()))
 					{
@@ -1642,7 +1642,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 								bodyAprovarReprovar += "<br><br>Acesse o RH para aprovar ou reprovar a solicitação:<br>";
 								bodyAprovarReprovar += "<a href='" + link + "'>RH</a>";
 								
-								mail.send(empresa, parametrosDoSistema, subject, bodyAprovarReprovar, emailsByUsuario);
+								mail.send(empresa, parametrosDoSistema, subject, bodyAprovarReprovar, true, emailsByUsuario);
 							}
 					}
 				}
@@ -1748,7 +1748,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos)
 				{
 					if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.APROVAR_REPROVAR_SOLICITACAO_DESLIGAMENTO.getId())) {
-						mail.send(empresa, parametrosDoSistema, subject, body.toString(), emailsByUsuario);
+						mail.send(empresa, parametrosDoSistema, subject, body.toString(), true, emailsByUsuario);
 					}
 				}
 			}
@@ -1782,7 +1782,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.SOLICITANTE_DESLIGAMENTO.getId())) 
 				{
 					Colaborador solicitante = colaboradorManager.findColaboradorByIdProjection(solicitanteDemissaoId);
-					mail.send(empresa, parametrosDoSistema, subject, body.toString(), solicitante.getContato().getEmail());
+					mail.send(empresa, parametrosDoSistema, subject, body.toString(), true, solicitante.getContato().getEmail());
 				}
 			}
 			
@@ -1808,7 +1808,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CRIAR_ACESSO_SISTEMA.getId(), empresa.getId());
 				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
 					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
-						mail.send(empresa, parametros, "[RH] - Liberação de acesso ao sistema RH", corpo.toString(), email);
+						mail.send(empresa, parametros, "[RH] - Liberação de acesso ao sistema RH", corpo.toString(), true, email);
 					}
 				} 		
 			}

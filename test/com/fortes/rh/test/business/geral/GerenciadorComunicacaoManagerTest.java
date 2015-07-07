@@ -323,7 +323,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("findByUsuarioProjection").with(eq(solicitacao.getSolicitante().getId()), eq(true)).will(returnValue(solicitante));
 		colaboradorManager.expects(once()).method("findByUsuarioProjection").with(eq(usuarioLiberador.getId()), eq(null)).will(returnValue(liberador));
 		gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.ALTERAR_STATUS_SOLICITACAO.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
-		mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		mail.expects(atLeastOnce()).method("send").withAnyArguments();
 
 		Exception exception = null;
 		try {
@@ -358,7 +358,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 colaboradorManager.expects(once()).method("findColaboradorDeAvaliacaoDesempenhoNaoRespondida").will(returnValue(Arrays.asList(colaborador1, colaborador2)));
 		 parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametros));
 		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.AVALIACAO_DESEMPENHO_A_RESPONDER.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
-		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 mail.expects(atLeastOnce()).method("send").withAnyArguments();
 
 		 Exception exception = null;
 		 try {
@@ -404,7 +404,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 
 		 parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametros));
 		 gerenciadorComunicacaoDao.expects(atLeastOnce()).method("findByOperacaoId").with(eq(Operacao.LIBERAR_PESQUISA.getId()), eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
-		 mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		 mail.expects(atLeastOnce()).method("send").withAnyArguments();
 		 
 		 Exception exception = null;
 		 try {
@@ -1522,11 +1522,11 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		colaboradorManager.expects(atLeastOnce()).method("findByUsuarioProjection").with(eq(solicitacao.getSolicitante().getId()), eq(true)).will(returnValue(colabSolicitante));
 		motivoSolicitacaoManager.expects(atLeastOnce()).method("findById").with(eq(solicitacao.getMotivoSolicitacao().getId())).will(returnValue(motivoSolicitacao));
 		estabelecimentoManager.expects(atLeastOnce()).method("findById").with(eq(solicitacao.getEstabelecimento().getId())).will(returnValue(estabelecimento));
-		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema),ANYTHING,ANYTHING,ANYTHING});
+		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema),ANYTHING,ANYTHING,eq(true),ANYTHING});
 		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CADASTRAR_SOLICITACAO.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
-		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema),ANYTHING,ANYTHING,ANYTHING});
+		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema),ANYTHING,ANYTHING,eq(true),ANYTHING});
 		usuarioManager.expects(once()).method("findEmailsByPerfil").with(eq("ROLE_LIBERA_SOLICITACAO"),eq(empresa.getId())).will(returnValue(emailsByUsuario));
-		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema),ANYTHING,ANYTHING,ANYTHING});
+		mail.expects(once()).method("send").with(new Constraint[]{eq(empresa),eq(parametroSistema),ANYTHING,ANYTHING,eq(true),ANYTHING});
 			
 		gerenciadorComunicacaoManager.enviarEmailParaResponsaveisSolicitacaoPessoal(solicitacao, empresa, emailsmMrcados);
 	}
@@ -1588,7 +1588,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		motivoSolicitacaoManager.expects(atLeastOnce()).method("findById").with(eq(solicitacao.getMotivoSolicitacao().getId())).will(returnValue(motivoSolicitacao));
 		estabelecimentoManager.expects(atLeastOnce()).method("findById").with(eq(solicitacao.getEstabelecimento().getId())).will(returnValue(estabelecimento));
 		usuarioManager.expects(once()).method("findEmailByPerfilAndGestor").with(eq("ROLE_LIBERA_SOLICITACAO"), eq(empresa.getId()), eq(solicitacao.getAreaOrganizacional().getId()), eq(false)).will(returnValue(emailsByUsuario));
-		mail.expects(atLeastOnce()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
+		mail.expects(atLeastOnce()).method("send").withAnyArguments();
 			
 		gerenciadorComunicacaoManager.enviarEmailParaResponsaveisSolicitacaoPessoal(solicitacao, empresa, emailsmMrcados);
 	}
