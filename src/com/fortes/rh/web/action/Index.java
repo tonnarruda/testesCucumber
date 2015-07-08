@@ -83,6 +83,8 @@ public class Index extends MyActionSupport
 	private Colaborador colaborador;
 	private ParametrosDoSistema parametrosDoSistema;
 	private Long empresaId;
+	private Long colaboradorId;
+	private Long historicoColaboradorId;
     private String actionMsg;
 
 	private boolean pgInicial = true;
@@ -309,6 +311,48 @@ public class Index extends MyActionSupport
 				pendenciaACs.addAll(colaboradorManager.findPendencias(empresaId));
 			}
 		}
+	}
+	
+	public String removePendenciaACHistoricoColaborador()
+	{
+		try {
+			historicoColaboradorManager.removeHistoricoAndReajuste(historicoColaboradorId, colaboradorId, getEmpresaSistema(), false);
+			addActionSuccess("Histórico do colaborador excluído com sucesso.");
+		}catch (Exception e)
+		{
+			String message = "Não foi possível excluir o histórico do colaborador.";
+
+			if(e.getMessage() != null)
+				message = e.getMessage();
+			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
+				message = e.getCause().getLocalizedMessage();
+
+			addActionMessage(message);
+		}
+		index();
+		return Action.SUCCESS;
+	}
+	
+	public String removePendenciaACColaborador()
+	{
+		try {
+			Colaborador colaborador = colaboradorManager.findColaboradorByIdProjection(colaboradorId);
+			colaboradorManager.removeColaboradorDependencias(colaborador);
+			addActionSuccess("Colaborador excluído com sucesso.");
+		}catch (Exception e)
+		{
+			String message = "Não foi possível excluir o colaborador.";
+
+			if(e.getMessage() != null)
+				message = e.getMessage();
+			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
+				message = e.getCause().getLocalizedMessage();
+
+			addActionMessage(message);
+		}
+		
+		index();
+		return Action.SUCCESS;
 	}
 	
 	public String browsersCompativeis()
@@ -553,5 +597,13 @@ public class Index extends MyActionSupport
 
 	public void setUsuarioNoticiaManager(UsuarioNoticiaManager usuarioNoticiaManager) {
 		this.usuarioNoticiaManager = usuarioNoticiaManager;
+	}
+
+	public void setColaboradorId(Long colaboradorId) {
+		this.colaboradorId = colaboradorId;
+	}
+
+	public void setHistoricoColaboradorId(Long historicoColaboradorId) {
+		this.historicoColaboradorId = historicoColaboradorId;
 	}
 }

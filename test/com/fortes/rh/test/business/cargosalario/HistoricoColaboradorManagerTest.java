@@ -1236,7 +1236,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			historicoColaboradorManager.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), empresa);
+			historicoColaboradorManager.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), empresa, true);
 		}
 		catch (Exception e)
 		{
@@ -1266,7 +1266,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			historicoColaboradorManager.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), empresa);
+			historicoColaboradorManager.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), empresa, true);
 		}
 		catch (Exception e)
 		{

@@ -755,7 +755,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	}
 
 	// TODO Mensagem de erro usando HTML... achar solução para o problema, chorarrrr
-	public void removeHistoricoAndReajuste(Long historicoColaboradorId, Long colaboradorId, Empresa empresa) throws Exception
+	public void removeHistoricoAndReajuste(Long historicoColaboradorId, Long colaboradorId, Empresa empresa, boolean removerDoAC) throws Exception
 	{
 		HistoricoColaborador historicoColaboradorTmp = findByIdProjection(historicoColaboradorId);
 		
@@ -784,7 +784,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		
 		getDao().getHibernateTemplateByGenericDao().flush();
 
-		if(empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc())
+		if(removerDoAC && empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc())
 		{
 			TSituacao situacao = bindSituacao(historicoColaboradorTmp, empresa.getCodigoAC());
 			acPessoalClientTabelaReajuste.deleteHistoricoColaboradorAC(empresa, situacao);
@@ -869,7 +869,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		for (HistoricoColaborador historicoColaborador : historicoColaboradors)
 		{
 			PendenciaAC pendenciaAC = new PendenciaAC(historicoColaborador);
-			
 			pendenciaAC.montarDetalhes();
 
 			pendenciaACs.add(pendenciaAC);

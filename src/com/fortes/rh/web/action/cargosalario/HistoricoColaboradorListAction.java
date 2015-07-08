@@ -450,7 +450,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 				return historicoColaboradorList();
 			}
 			
-			historicoColaboradorManager.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), getEmpresaSistema());
+			historicoColaboradorManager.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), getEmpresaSistema(), true);
 			addActionSuccess("Situação excluída com sucesso.");
 		}
 		catch (NestedRuntimeException e) // TODO rever necessidade desse catch

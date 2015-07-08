@@ -28,7 +28,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public void updateHistorico(HistoricoColaborador historicoColaborador, Empresa empresa) throws Exception;
 	
 	@Audita(operacao="Remoção", auditor=HistoricoColaboradorAuditorCallbackImpl.class)
-	public void removeHistoricoAndReajuste(Long historicoColaboradorId, Long colaboradorId, Empresa empresa) throws Exception;
+	public void removeHistoricoAndReajuste(Long historicoColaboradorId, Long colaboradorId, Empresa empresa, boolean removerDoAC) throws Exception;
 	
 	public void saveHistoricoColaboradorNoAc(Collection<HistoricoColaborador> historicosColaboradores, Empresa empresa) throws Exception;
 	

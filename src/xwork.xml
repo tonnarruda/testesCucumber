@@ -162,6 +162,12 @@
     <action name="index" class="com.fortes.rh.web.action.Index" method="index">
       <result name="success" type="freemarker">/WEB-INF/pages/index.ftl</result>
     </action>
+    <action name="removePendenciaACHistoricoColaborador" class="com.fortes.rh.web.action.Index" method="removePendenciaACHistoricoColaborador">
+      <result name="success" type="freemarker">/WEB-INF/pages/index.ftl</result>
+    </action>
+    <action name="removePendenciaACColaborador" class="com.fortes.rh.web.action.Index" method="removePendenciaACColaborador">
+      <result name="success" type="freemarker">/WEB-INF/pages/index.ftl</result>
+    </action>
     <action name="registraNovaLicenca" class="com.fortes.rh.web.action.security.Autenticador" method="registraNovaLicenca">
       <result name="success" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>
       <result name="input" type="freemarker">/WEB-INF/pages/inputAutenticador.ftl</result>

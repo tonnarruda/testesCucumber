@@ -11,12 +11,13 @@ public class PendenciaAC
 	private String pendencia;
 	private String detalhes;
 	private String status;
+	private String linkExcluir;
 	
 	private HistoricoColaborador historicoColaborador;
 	
 	public PendenciaAC() {
-		
 	}
+	
 	public PendenciaAC(HistoricoColaborador historicoColaborador)
 	{
 		this.historicoColaborador = historicoColaborador;
@@ -34,7 +35,7 @@ public class PendenciaAC
 			String dataAdmissao = DateUtil.formataDiaMesAno(historicoColaborador.getColaborador().getDataAdmissao());
 			String nomeCargo = historicoColaborador.getFaixaSalarial().getNomeDoCargo();
 			detalhes.append(" Admissão: ").append(dataAdmissao).append(". Cargo: ").append(nomeCargo);
-			
+			setLinkExcluir("newConfirm('Confirma exclusão da pendência da contratação do colaborador?', function(){window.location='removePendenciaACColaborador.action?colaboradorId=" + historicoColaborador.getColaborador().getId() + "'});");
 		}
 		else
 		{
@@ -43,6 +44,7 @@ public class PendenciaAC
 			detalhes.append("Situação do colaborador "+historicoColaborador.getColaborador().getNomeComercial() + ".");
 			String dataHistorico = DateUtil.formataDiaMesAno(historicoColaborador.getData());
 			detalhes.append(" Data: ").append(dataHistorico);
+			setLinkExcluir("newConfirm('Confirma exclusão da pendência do novo histórico de colaborador?', function(){window.location='removePendenciaACHistoricoColaborador.action?historicoColaboradorId=" + historicoColaborador.getId() + "&colaboradorId=" + historicoColaborador.getColaborador().getId() + "'});");
 		}
 		
 		this.detalhes = detalhes.toString();
@@ -72,5 +74,11 @@ public class PendenciaAC
 	}
 	public void setDetalhes(String detalhes) {
 		this.detalhes = detalhes;
+	}
+	public String getLinkExcluir() {
+		return this.linkExcluir;
+	}
+	public void setLinkExcluir(String linkExcluir) {
+		this.linkExcluir = linkExcluir;
 	}
 }

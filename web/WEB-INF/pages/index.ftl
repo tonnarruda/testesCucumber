@@ -205,6 +205,11 @@
 							<span>Nenhuma pendência</span>
 						<#else>
 							<@display.table name="pendenciaACs" id="pendenciaAC" class="dados portlet" defaultsort=2 sort="list">
+								<@display.column title="Ações" style="text-align:center; width: 80px;" media="html">
+									<#if pendenciaAC.linkExcluir?exists>						
+										<a href="#" onclick="${pendenciaAC.linkExcluir}"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+									</#if>
+								</@display.column>
 								<@display.column property="pendencia" title="Pendência" style="width: 200px; text-align: center;"/>
 								<@display.column property="detalhes" title="Detalhes" style="width: 550px; text-align: center;"/>
 								<@display.column property="status" title="Status" style="width: 200px; text-align: center;"/>
