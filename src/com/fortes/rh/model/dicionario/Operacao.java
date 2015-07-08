@@ -360,6 +360,23 @@ public enum Operacao
 			
 			return this.getListMeioComunicacao();
 		}
+	},
+	CURSOS_A_VENCER(36, "Notificar quando existir cursos a vencer", "T&D"){
+		public TreeMap<Integer, String> meioComunicação(){
+			this.add(MeioComunicacao.EMAIL);
+			MeioComunicacao.EMAIL.add(EnviarPara.COLABORADOR);
+			MeioComunicacao.EMAIL.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.EMAIL.add(EnviarPara.COGESTOR_AREA);
+			MeioComunicacao.EMAIL.add(EnviarPara.RESPONSAVEL_RH);
+			MeioComunicacao.EMAIL.add(EnviarPara.USUARIOS);
+			
+			this.add(MeioComunicacao.CAIXA_MENSAGEM);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.GESTOR_AREA);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.COGESTOR_AREA);
+			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.USUARIOS);
+			
+			return this.getListMeioComunicacao();
+		}
 	};
 	
 	private int id;

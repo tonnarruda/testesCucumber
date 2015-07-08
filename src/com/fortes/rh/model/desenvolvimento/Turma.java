@@ -79,8 +79,10 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	private char status;
 	@Transient
 	private Collection<AvaliacaoTurma> avaliacaoTurmas;
-	
-	
+	@Transient
+	private Date vencimento;
+	@Transient
+	private boolean vencido;
 
 	public Turma()
 	{
@@ -354,6 +356,14 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 
 		return periodo;
 	}
+	
+	public String getVencimentoFormatado(){
+		String vencimento = "";
+		if (this.vencimento != null)
+			vencimento += DateUtil.formataDiaMesAno(this.vencimento);
+
+		return vencimento;
+	}
 
 	public String getData()
 	{
@@ -465,4 +475,17 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	public void setAssinaturaDigitalUrl(String assinaturaDigitalUrl) {
 		this.assinaturaDigitalUrl = assinaturaDigitalUrl;
 	}
+
+	public void setVencimento(Date vencimento) {
+		this.vencimento = vencimento;
+	}
+
+	public void setVencido(boolean vencido) {
+		this.vencido = vencido;
+	}
+
+	public boolean getVencido() {
+		return vencido;
+	}
+	
 }

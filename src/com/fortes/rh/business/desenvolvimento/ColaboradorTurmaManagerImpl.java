@@ -701,7 +701,9 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
 			throw new ColecaoVaziaException();
 		
-		// monta aprovados e não aprovados
+		/**
+		 *monta aprovados e não aprovados
+		 */
 		carregaResultados(colaboradorTurmas);
 		
 		setFamiliaAreas(colaboradorTurmas, empresaId);
@@ -1079,5 +1081,13 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	public void setEmpresaManager(EmpresaManager empresaManager) 
 	{
 		this.empresaManager = empresaManager;
+	}
+
+	public Collection<ColaboradorTurma> findCursosVencidosAVencer(Long[] empresasIds, Long[] cursosIds, Date dataReferencia, char filtroAgrupamento, char filtroSituacao) {
+		return getDao().findCursosVencidosAVencer(empresasIds, cursosIds, dataReferencia, filtroAgrupamento, filtroSituacao);
+	}
+
+	public Collection<ColaboradorTurma> findCursosCertificacoesAVencer(Date dataReferencia, Long empresaId) {
+		return getDao().findCursosCertificacoesAVencer(dataReferencia, empresaId);
 	}
 }

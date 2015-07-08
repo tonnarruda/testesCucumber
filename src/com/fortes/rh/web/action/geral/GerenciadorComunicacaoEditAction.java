@@ -182,6 +182,11 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 		return Operacao.HABILITACAO_A_VENCER.getId();
 	}
 	
+	public int getNotificarCursosAVencer()
+	{
+		return Operacao.CURSOS_A_VENCER.getId();
+	}
+	
 	public GerenciadorComunicacao getGerenciadorComunicacao()
 	{
 		if(gerenciadorComunicacao == null)

@@ -1,15 +1,15 @@
 package com.fortes.rh.test.dao.hibernate.desenvolvimento;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
-
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.GrupoOcupacionalDao;
@@ -29,11 +29,14 @@ import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
+import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -41,6 +44,8 @@ import com.fortes.rh.model.desenvolvimento.DNT;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.FiltroAgrupamentoCursoColaborador;
+import com.fortes.rh.model.dicionario.FiltroSituacaoCurso;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusTAula;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -58,6 +63,7 @@ import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.GrupoOcupacionalFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.AvaliacaoCursoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorPresencaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
@@ -87,6 +93,9 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 	private FaixaSalarialDao faixaSalarialDao;
 	private AvaliacaoCursoDao avaliacaoCursoDao;
 	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
+	private CertificacaoDao certificacaoDao;
+	private AvaliacaoDao avaliacaoDao;
+	private AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao;
 
     public ColaboradorTurma getEntity()
     {
@@ -1748,6 +1757,537 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	assertEquals(1, colabTurmaRetorno.size());
     }
     
+	public void testFindCursosVencidosAVencerSemFrequencia(){
+		
+		Date dataInicioVencida = DateUtil.criarDataMesAno(1, 1, 2015);
+		Date dataFimVencida = DateUtil.criarDataMesAno(15, 1, 2015);
+		Date dataReferencia = DateUtil.criarDataMesAno(1, 7, 2015);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Curso curso = CursoFactory.getEntity();
+		curso.setNome("Curso de Introdução a Java");
+		curso.setEmpresa(empresa);
+		curso.setPeriodicidade(5);
+		curso.setPercentualMinimoFrequencia(50.0);
+		cursoDao.save(curso);
+		
+		Colaborador colaboradorCursoVencido = ColaboradorFactory.getEntity();
+		colaboradorCursoVencido.setNome("Antônio vencido");
+		colaboradorCursoVencido.setEmpresa(empresa);
+		colaboradorDao.save(colaboradorCursoVencido);
+		
+		Colaborador colaboradorCursoAVencer = ColaboradorFactory.getEntity();
+		colaboradorCursoAVencer.setNome("Antônio à vencer");
+		colaboradorCursoAVencer.setEmpresa(empresa);
+		colaboradorDao.save(colaboradorCursoAVencer);
+		
+		Turma turmaVencida = TurmaFactory.getEntity();
+		turmaVencida.setCurso(curso);
+		turmaVencida.setDescricao("Turma vencida");
+		turmaVencida.setDataPrevIni(dataInicioVencida);
+		turmaVencida.setDataPrevFim(dataFimVencida);
+		turmaVencida.setRealizada(true);
+		turmaDao.save(turmaVencida);
+		
+		ColaboradorTurma colaboradorTurmaVencida = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurmaVencida.setTurma(turmaVencida);
+		colaboradorTurmaVencida.setCurso(curso);
+		colaboradorTurmaVencida.setColaborador(colaboradorCursoVencido);
+		colaboradorTurmaDao.save(colaboradorTurmaVencida);
+		
+		ColaboradorPresenca colaboradorPresencaPresenteCursoVencido = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaPresenteCursoVencido.setColaboradorTurma(colaboradorTurmaVencida);
+		colaboradorPresencaPresenteCursoVencido.setPresenca(true);
+		colaboradorPresencaDao.save(colaboradorPresencaPresenteCursoVencido);
+		
+		ColaboradorPresenca colaboradorPresencaAusenteCursoVencido = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaAusenteCursoVencido.setColaboradorTurma(colaboradorTurmaVencida);
+		colaboradorPresencaAusenteCursoVencido.setPresenca(false);
+		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoVencido);
+		
+		Turma turmaAVencer = TurmaFactory.getEntity();
+		turmaAVencer.setCurso(curso);
+		turmaAVencer.setDescricao("Turma a vencer");
+		turmaAVencer.setDataPrevIni(DateUtil.criarDataMesAno(1, 5, 2015));
+		turmaAVencer.setDataPrevFim(DateUtil.criarDataMesAno(15, 5, 2015));
+		turmaAVencer.setRealizada(true);
+		turmaDao.save(turmaAVencer);
+		
+		ColaboradorTurma colaboradorTurmaAVencer = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurmaAVencer.setTurma(turmaAVencer);
+		colaboradorTurmaAVencer.setCurso(curso);
+		colaboradorTurmaAVencer.setColaborador(colaboradorCursoAVencer);
+		colaboradorTurmaDao.save(colaboradorTurmaAVencer);
+		
+		ColaboradorPresenca colaboradorPresencaPresenteCursoAVencer = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaPresenteCursoAVencer.setColaboradorTurma(colaboradorTurmaAVencer);
+		colaboradorPresencaDao.save(colaboradorPresencaPresenteCursoAVencer);
+		
+		ColaboradorPresenca colaboradorPresencaAusenteCursoAVencer = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaAusenteCursoAVencer.setColaboradorTurma(colaboradorTurmaAVencer);
+		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoAVencer);
+		
+		Collection<ColaboradorTurma> colaboradorTurmasVencidas = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.VENCIDOS.getOpcao());
+		Collection<ColaboradorTurma> colaboradorTurmasAVencer = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.A_VENCER.getOpcao());
+		Collection<ColaboradorTurma> colaboradorTurmasTodos = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.TODOS.getOpcao());
+		
+		assertEquals(1, colaboradorTurmasVencidas.size());
+		assertEquals(1, colaboradorTurmasAVencer.size());
+		assertEquals(2, colaboradorTurmasTodos.size());
+		
+	}
+	
+	public void testFindCursosVencidosAVencerComFrequencia(){
+		
+		Date dataInicioVencida = DateUtil.criarDataMesAno(1, 1, 2015);
+		Date dataFimVencida = DateUtil.criarDataMesAno(15, 1, 2015);
+		Date dataInicioAVencer = DateUtil.criarDataMesAno(1, 5, 2015);
+		Date dataFimAVencer = DateUtil.criarDataMesAno(15, 5, 2015);
+		Date dataReferencia = DateUtil.criarDataMesAno(1, 7, 2015);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Curso curso = CursoFactory.getEntity();
+		curso.setNome("Curso de Introdução a Java");
+		curso.setEmpresa(empresa);
+		curso.setPeriodicidade(5);
+		curso.setPercentualMinimoFrequencia(50.0);
+		cursoDao.save(curso);
+		
+		Colaborador colaboradorCursoVencido = ColaboradorFactory.getEntity();
+		colaboradorCursoVencido.setNome("Antônio vencido");
+		colaboradorCursoVencido.setEmpresa(empresa);
+		colaboradorDao.save(colaboradorCursoVencido);
+		
+		Colaborador colaboradorCursoAVencer = ColaboradorFactory.getEntity();
+		colaboradorCursoAVencer.setNome("Antônio à vencer");
+		colaboradorCursoAVencer.setEmpresa(empresa);
+		colaboradorDao.save(colaboradorCursoAVencer);
+		
+		Turma turmaVencida = TurmaFactory.getEntity();
+		turmaVencida.setCurso(curso);
+		turmaVencida.setDescricao("Turma vencida");
+		turmaVencida.setDataPrevIni(dataInicioVencida);
+		turmaVencida.setDataPrevFim(dataFimVencida);
+		turmaVencida.setRealizada(true);
+		turmaDao.save(turmaVencida);
+		
+		DiaTurma diaTurmaInicioVencida = DiaTurmaFactory.getEntity();
+		diaTurmaInicioVencida.setTurma(turmaVencida);
+		diaTurmaInicioVencida.setDia(dataInicioVencida);
+		diaTurmaDao.save(diaTurmaInicioVencida);
+		
+		DiaTurma diaTurmaFimVencida = DiaTurmaFactory.getEntity();
+		diaTurmaFimVencida.setTurma(turmaVencida);
+		diaTurmaFimVencida.setDia(dataFimVencida);
+		diaTurmaDao.save(diaTurmaFimVencida);
+		
+		ColaboradorTurma colaboradorTurmaVencida = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurmaVencida.setTurma(turmaVencida);
+		colaboradorTurmaVencida.setCurso(curso);
+		colaboradorTurmaVencida.setColaborador(colaboradorCursoVencido);
+		colaboradorTurmaDao.save(colaboradorTurmaVencida);
+		
+		ColaboradorPresenca colaboradorPresencaPresenteCursoVencido = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaPresenteCursoVencido.setColaboradorTurma(colaboradorTurmaVencida);
+		colaboradorPresencaPresenteCursoVencido.setDiaTurma(diaTurmaInicioVencida);
+		colaboradorPresencaPresenteCursoVencido.setPresenca(true);
+		colaboradorPresencaDao.save(colaboradorPresencaPresenteCursoVencido);
+		
+		ColaboradorPresenca colaboradorPresencaAusenteCursoVencido = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaAusenteCursoVencido.setColaboradorTurma(colaboradorTurmaVencida);
+		colaboradorPresencaAusenteCursoVencido.setDiaTurma(diaTurmaFimVencida);
+		colaboradorPresencaAusenteCursoVencido.setPresenca(false);
+		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoVencido);
+		
+		Turma turmaAVencer = TurmaFactory.getEntity();
+		turmaAVencer.setCurso(curso);
+		turmaAVencer.setDescricao("Turma a vencer");
+		turmaAVencer.setDataPrevIni(dataInicioAVencer);
+		turmaAVencer.setDataPrevFim(dataFimAVencer);
+		turmaAVencer.setRealizada(true);
+		turmaDao.save(turmaAVencer);
+		
+		DiaTurma diaTurmaInicioAVencer = DiaTurmaFactory.getEntity();
+		diaTurmaInicioAVencer.setTurma(turmaAVencer);
+		diaTurmaInicioAVencer.setDia(dataInicioAVencer);
+		diaTurmaDao.save(diaTurmaInicioAVencer);
+		
+		DiaTurma diaTurmaFimAVencer = DiaTurmaFactory.getEntity();
+		diaTurmaFimAVencer.setTurma(turmaAVencer);
+		diaTurmaFimAVencer.setDia(dataFimAVencer);
+		diaTurmaDao.save(diaTurmaFimAVencer);
+		
+		ColaboradorTurma colaboradorTurmaAVencer = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurmaAVencer.setTurma(turmaAVencer);
+		colaboradorTurmaAVencer.setCurso(curso);
+		colaboradorTurmaAVencer.setColaborador(colaboradorCursoAVencer);
+		colaboradorTurmaDao.save(colaboradorTurmaAVencer);
+		
+		ColaboradorPresenca colaboradorPresencaPresenteCursoAVencer = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaPresenteCursoAVencer.setColaboradorTurma(colaboradorTurmaAVencer);
+		colaboradorPresencaPresenteCursoAVencer.setDiaTurma(diaTurmaInicioVencida);
+		colaboradorPresencaPresenteCursoAVencer.setPresenca(true);
+		colaboradorPresencaDao.save(colaboradorPresencaPresenteCursoAVencer);
+		
+		ColaboradorPresenca colaboradorPresencaAusenteCursoAVencer = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaAusenteCursoAVencer.setColaboradorTurma(colaboradorTurmaAVencer);
+		colaboradorPresencaAusenteCursoAVencer.setDiaTurma(diaTurmaInicioVencida);
+		colaboradorPresencaAusenteCursoAVencer.setPresenca(false);
+		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoAVencer);
+		
+		Collection<ColaboradorTurma> colaboradorTurmasVencidas = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.VENCIDOS.getOpcao());
+		Collection<ColaboradorTurma> colaboradorTurmasAVencer = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.A_VENCER.getOpcao());
+		Collection<ColaboradorTurma> colaboradorTurmasTodos = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.TODOS.getOpcao());
+		
+		assertEquals(1, colaboradorTurmasVencidas.size());
+		assertEquals(1, colaboradorTurmasAVencer.size());
+		assertEquals(2, colaboradorTurmasTodos.size());
+		
+	}
+	
+	public void testFindCursosVencidosAVencerComAvaliacao(){
+		
+		Date dataInicioVencida = DateUtil.criarDataMesAno(1, 1, 2015);
+		Date dataFimVencida = DateUtil.criarDataMesAno(15, 1, 2015);
+		Date dataInicioAVencer = DateUtil.criarDataMesAno(1, 5, 2015);
+		Date dataFimAVencer = DateUtil.criarDataMesAno(15, 5, 2015);
+		Date dataReferencia = DateUtil.criarDataMesAno(1, 7, 2015);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Avaliacao avaliacao = new Avaliacao();
+		avaliacao.setTitulo("Avaliação");
+		avaliacao.setPercentualAprovacao(50.0);
+		avaliacaoDao.save(avaliacao);
+		
+		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCurso.setTipo('a');
+		avaliacaoCurso.setAvaliacao(avaliacao);
+		avaliacaoCursoDao.save(avaliacaoCurso);
+		
+		Curso curso = CursoFactory.getEntity();
+		curso.setNome("Curso de Introdução a Java");
+		curso.setEmpresa(empresa);
+		curso.setPeriodicidade(5);
+		curso.setPercentualMinimoFrequencia(50.0);
+		curso.setAvaliacaoCursos(Arrays.asList(avaliacaoCurso));
+		cursoDao.save(curso);
+		
+		Colaborador colaboradorCursoVencido = ColaboradorFactory.getEntity();
+		colaboradorCursoVencido.setNome("Antônio vencido");
+		colaboradorCursoVencido.setEmpresa(empresa);
+		colaboradorDao.save(colaboradorCursoVencido);
+		
+		ColaboradorQuestionario colaboradorQuestionarioCursoVencido = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioCursoVencido.setPerformance(50.0);
+		colaboradorQuestionarioCursoVencido.setColaborador(colaboradorCursoVencido);
+		colaboradorQuestionarioCursoVencido.setAvaliacao(avaliacao);
+		colaboradorQuestionarioCursoVencido.setAvaliacaoCurso(avaliacaoCurso);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioCursoVencido);
+		
+		Colaborador colaboradorCursoAVencer = ColaboradorFactory.getEntity();
+		colaboradorCursoAVencer.setNome("Antônio à vencer");
+		colaboradorCursoAVencer.setEmpresa(empresa);
+		colaboradorDao.save(colaboradorCursoAVencer);
+		
+		ColaboradorQuestionario colaboradorQuestionarioCursoAVencer = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioCursoAVencer.setPerformance(50.0);
+		colaboradorQuestionarioCursoAVencer.setColaborador(colaboradorCursoAVencer);
+		colaboradorQuestionarioCursoAVencer.setAvaliacao(avaliacao);
+		colaboradorQuestionarioCursoAVencer.setAvaliacaoCurso(avaliacaoCurso);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioCursoAVencer);
+		
+		Turma turmaVencida = TurmaFactory.getEntity();
+		turmaVencida.setCurso(curso);
+		turmaVencida.setDescricao("Turma vencida");
+		turmaVencida.setDataPrevIni(dataInicioVencida);
+		turmaVencida.setDataPrevFim(dataFimVencida);
+		turmaVencida.setRealizada(true);
+		turmaDao.save(turmaVencida);
+		
+		ColaboradorTurma colaboradorTurmaVencida = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurmaVencida.setTurma(turmaVencida);
+		colaboradorTurmaVencida.setCurso(curso);
+		colaboradorTurmaVencida.setColaborador(colaboradorCursoVencido);
+		colaboradorTurmaDao.save(colaboradorTurmaVencida);
+		
+		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCursoVencido = new AproveitamentoAvaliacaoCurso();
+		aproveitamentoAvaliacaoCursoVencido.setAvaliacaoCurso(avaliacaoCurso);
+		aproveitamentoAvaliacaoCursoVencido.setColaboradorTurma(colaboradorTurmaVencida);
+		aproveitamentoAvaliacaoCursoVencido.setValor(50.0);
+		aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCursoVencido);
+		
+		ColaboradorPresenca colaboradorPresencaPresenteCursoVencido = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaPresenteCursoVencido.setColaboradorTurma(colaboradorTurmaVencida);
+		colaboradorPresencaPresenteCursoVencido.setPresenca(true);
+		colaboradorPresencaDao.save(colaboradorPresencaPresenteCursoVencido);
+		
+		ColaboradorPresenca colaboradorPresencaAusenteCursoVencido = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaAusenteCursoVencido.setColaboradorTurma(colaboradorTurmaVencida);
+		colaboradorPresencaAusenteCursoVencido.setPresenca(false);
+		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoVencido);
+		
+		Turma turmaAVencer = TurmaFactory.getEntity();
+		turmaAVencer.setCurso(curso);
+		turmaAVencer.setDescricao("Turma a vencer");
+		turmaAVencer.setDataPrevIni(dataInicioAVencer);
+		turmaAVencer.setDataPrevFim(dataFimAVencer);
+		turmaAVencer.setRealizada(true);
+		turmaDao.save(turmaAVencer);
+		
+		ColaboradorTurma colaboradorTurmaAVencer = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurmaAVencer.setTurma(turmaAVencer);
+		colaboradorTurmaAVencer.setCurso(curso);
+		colaboradorTurmaAVencer.setColaborador(colaboradorCursoAVencer);
+		colaboradorTurmaDao.save(colaboradorTurmaAVencer);
+		
+		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCursoAVencer = new AproveitamentoAvaliacaoCurso();
+		aproveitamentoAvaliacaoCursoAVencer.setAvaliacaoCurso(avaliacaoCurso);
+		aproveitamentoAvaliacaoCursoAVencer.setColaboradorTurma(colaboradorTurmaAVencer);
+		aproveitamentoAvaliacaoCursoAVencer.setValor(50.0);
+		aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCursoAVencer);
+		
+		ColaboradorPresenca colaboradorPresencaPresenteCursoAVencer = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaPresenteCursoAVencer.setColaboradorTurma(colaboradorTurmaAVencer);
+		colaboradorPresencaPresenteCursoAVencer.setPresenca(true);
+		colaboradorPresencaDao.save(colaboradorPresencaPresenteCursoAVencer);
+		
+		ColaboradorPresenca colaboradorPresencaAusenteCursoAVencer = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaAusenteCursoAVencer.setColaboradorTurma(colaboradorTurmaAVencer);
+		colaboradorPresencaAusenteCursoAVencer.setPresenca(false);
+		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoAVencer);
+		
+		Collection<ColaboradorTurma> colaboradorTurmasVencidas = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.VENCIDOS.getOpcao());
+		Collection<ColaboradorTurma> colaboradorTurmasAVencer = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.A_VENCER.getOpcao());
+		Collection<ColaboradorTurma> colaboradorTurmasTodos = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.TODOS.getOpcao());
+		
+		assertEquals(1, colaboradorTurmasVencidas.size());
+		assertEquals(1, colaboradorTurmasAVencer.size());
+		assertEquals(2, colaboradorTurmasTodos.size());
+		
+	}
+	
+	public void testFindCursosVencidosAVencerComAvaliacaoEFrenquencia(){
+		
+		Date dataInicioVencida = DateUtil.criarDataMesAno(1, 1, 2015);
+		Date dataFimVencida = DateUtil.criarDataMesAno(15, 1, 2015);
+		Date dataInicioAVencer = DateUtil.criarDataMesAno(1, 5, 2015);
+		Date dataFimAVencer = DateUtil.criarDataMesAno(15, 5, 2015);
+		Date dataReferencia = DateUtil.criarDataMesAno(1, 7, 2015);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Avaliacao avaliacao = new Avaliacao();
+		avaliacao.setTitulo("Avaliação");
+		avaliacao.setPercentualAprovacao(50.0);
+		avaliacaoDao.save(avaliacao);
+		
+		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCurso.setTipo('a');
+		avaliacaoCurso.setAvaliacao(avaliacao);
+		avaliacaoCursoDao.save(avaliacaoCurso);
+		
+		Curso curso = CursoFactory.getEntity();
+		curso.setNome("Curso de Introdução a Java");
+		curso.setEmpresa(empresa);
+		curso.setPeriodicidade(5);
+		curso.setPercentualMinimoFrequencia(50.0);
+		curso.setAvaliacaoCursos(Arrays.asList(avaliacaoCurso));
+		cursoDao.save(curso);
+		
+		Colaborador colaboradorCursoVencido = ColaboradorFactory.getEntity();
+		colaboradorCursoVencido.setNome("Antônio vencido");
+		colaboradorCursoVencido.setEmpresa(empresa);
+		colaboradorDao.save(colaboradorCursoVencido);
+		
+		ColaboradorQuestionario colaboradorQuestionarioCursoVencido = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioCursoVencido.setPerformance(50.0);
+		colaboradorQuestionarioCursoVencido.setColaborador(colaboradorCursoVencido);
+		colaboradorQuestionarioCursoVencido.setAvaliacao(avaliacao);
+		colaboradorQuestionarioCursoVencido.setAvaliacaoCurso(avaliacaoCurso);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioCursoVencido);
+		
+		Colaborador colaboradorCursoAVencer = ColaboradorFactory.getEntity();
+		colaboradorCursoAVencer.setNome("Antônio à vencer");
+		colaboradorCursoAVencer.setEmpresa(empresa);
+		colaboradorDao.save(colaboradorCursoAVencer);
+		
+		ColaboradorQuestionario colaboradorQuestionarioCursoAVencer = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioCursoAVencer.setPerformance(50.0);
+		colaboradorQuestionarioCursoAVencer.setColaborador(colaboradorCursoAVencer);
+		colaboradorQuestionarioCursoAVencer.setAvaliacao(avaliacao);
+		colaboradorQuestionarioCursoAVencer.setAvaliacaoCurso(avaliacaoCurso);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioCursoAVencer);
+		
+		Turma turmaVencida = TurmaFactory.getEntity();
+		turmaVencida.setCurso(curso);
+		turmaVencida.setDescricao("Turma vencida");
+		turmaVencida.setDataPrevIni(dataInicioVencida);
+		turmaVencida.setDataPrevFim(dataFimVencida);
+		turmaVencida.setRealizada(true);
+		turmaDao.save(turmaVencida);
+		
+		DiaTurma diaTurmaInicio = DiaTurmaFactory.getEntity();
+		diaTurmaInicio.setTurma(turmaVencida);
+		diaTurmaInicio.setDia(dataInicioVencida);
+		diaTurmaDao.save(diaTurmaInicio);
+		
+		DiaTurma diaTurmaFim = DiaTurmaFactory.getEntity();
+		diaTurmaFim.setTurma(turmaVencida);
+		diaTurmaFim.setDia(dataFimVencida);
+		diaTurmaDao.save(diaTurmaFim);
+		
+		ColaboradorTurma colaboradorTurmaVencida = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurmaVencida.setTurma(turmaVencida);
+		colaboradorTurmaVencida.setCurso(curso);
+		colaboradorTurmaVencida.setColaborador(colaboradorCursoVencido);
+		colaboradorTurmaDao.save(colaboradorTurmaVencida);
+		
+		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCursoVencido = new AproveitamentoAvaliacaoCurso();
+		aproveitamentoAvaliacaoCursoVencido.setAvaliacaoCurso(avaliacaoCurso);
+		aproveitamentoAvaliacaoCursoVencido.setColaboradorTurma(colaboradorTurmaVencida);
+		aproveitamentoAvaliacaoCursoVencido.setValor(50.0);
+		aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCursoVencido);
+		
+		ColaboradorPresenca colaboradorPresencaPresenteCursoVencido = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaPresenteCursoVencido.setColaboradorTurma(colaboradorTurmaVencida);
+		colaboradorPresencaPresenteCursoVencido.setPresenca(true);
+		colaboradorPresencaDao.save(colaboradorPresencaPresenteCursoVencido);
+		
+		ColaboradorPresenca colaboradorPresencaAusenteCursoVencido = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaAusenteCursoVencido.setColaboradorTurma(colaboradorTurmaVencida);
+		colaboradorPresencaAusenteCursoVencido.setPresenca(false);
+		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoVencido);
+		
+		Turma turmaAVencer = TurmaFactory.getEntity();
+		turmaAVencer.setCurso(curso);
+		turmaAVencer.setDescricao("Turma a vencer");
+		turmaAVencer.setDataPrevIni(DateUtil.criarDataMesAno(1, 5, 2015));
+		turmaAVencer.setDataPrevFim(DateUtil.criarDataMesAno(15, 5, 2015));
+		turmaAVencer.setRealizada(true);
+		turmaDao.save(turmaAVencer);
+		
+		DiaTurma diaTurmaInicioAVencer = DiaTurmaFactory.getEntity();
+		diaTurmaInicioAVencer.setTurma(turmaAVencer);
+		diaTurmaInicioAVencer.setDia(dataInicioAVencer);
+		diaTurmaDao.save(diaTurmaInicioAVencer);
+		
+		DiaTurma diaTurmaFimAVencer = DiaTurmaFactory.getEntity();
+		diaTurmaFimAVencer.setTurma(turmaAVencer);
+		diaTurmaFimAVencer.setDia(dataFimAVencer);
+		diaTurmaDao.save(diaTurmaFimAVencer);
+		
+		ColaboradorTurma colaboradorTurmaAVencer = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurmaAVencer.setTurma(turmaAVencer);
+		colaboradorTurmaAVencer.setCurso(curso);
+		colaboradorTurmaAVencer.setColaborador(colaboradorCursoAVencer);
+		colaboradorTurmaDao.save(colaboradorTurmaAVencer);
+		
+		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCursoAVencer = new AproveitamentoAvaliacaoCurso();
+		aproveitamentoAvaliacaoCursoAVencer.setAvaliacaoCurso(avaliacaoCurso);
+		aproveitamentoAvaliacaoCursoAVencer.setColaboradorTurma(colaboradorTurmaAVencer);
+		aproveitamentoAvaliacaoCursoAVencer.setValor(50.0);
+		aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCursoAVencer);
+		
+		ColaboradorPresenca colaboradorPresencaPresenteCursoAVencer = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaPresenteCursoAVencer.setColaboradorTurma(colaboradorTurmaAVencer);
+		colaboradorPresencaPresenteCursoAVencer.setPresenca(true);
+		colaboradorPresencaDao.save(colaboradorPresencaPresenteCursoAVencer);
+		
+		ColaboradorPresenca colaboradorPresencaAusenteCursoAVencer = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaAusenteCursoAVencer.setColaboradorTurma(colaboradorTurmaAVencer);
+		colaboradorPresencaAusenteCursoAVencer.setPresenca(false);
+		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoAVencer);
+		
+		Collection<ColaboradorTurma> colaboradorTurmasVencidas = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.VENCIDOS.getOpcao());
+		Collection<ColaboradorTurma> colaboradorTurmasAVencer = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.A_VENCER.getOpcao());
+		Collection<ColaboradorTurma> colaboradorTurmasTodos = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.TODOS.getOpcao());
+		
+		assertEquals(1, colaboradorTurmasVencidas.size());
+		assertEquals(1, colaboradorTurmasAVencer.size());
+		assertEquals(2, colaboradorTurmasTodos.size());
+		
+	}
+	
+	public void testFindCursosCertificacoesAVencer(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+
+		Curso curso = CursoFactory.getEntity();
+		curso.setNome("Curso de Introdução a Java");
+		curso.setEmpresa(empresa);
+		curso.setPeriodicidade(5);
+		curso.setPercentualMinimoFrequencia(50.0);
+		cursoDao.save(curso);
+		
+		Colaborador colaboradorAntonio = ColaboradorFactory.getEntity();
+		colaboradorAntonio.setNome("Antônio à vencer");
+		colaboradorAntonio.setEmpresa(empresa);
+		colaboradorDao.save(colaboradorAntonio);
+
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaboradorAntonio);
+		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2001));
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		Turma turmaAVencer = TurmaFactory.getEntity();
+		turmaAVencer.setCurso(curso);
+		turmaAVencer.setDescricao("Turma a vencer");
+		turmaAVencer.setDataPrevIni(DateUtil.criarDataMesAno(1, 1, 2015));
+		turmaAVencer.setDataPrevFim(DateUtil.criarDataMesAno(15, 1, 2015));
+		turmaAVencer.setRealizada(true);
+		turmaDao.save(turmaAVencer);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma.setTurma(turmaAVencer);
+		colaboradorTurma.setCurso(curso);
+		colaboradorTurma.setColaborador(colaboradorAntonio);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		ColaboradorPresenca colaboradorPresencaPresente = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaPresente.setColaboradorTurma(colaboradorTurma);
+		colaboradorPresencaPresente.setPresenca(true);
+		colaboradorPresencaDao.save(colaboradorPresencaPresente);
+		
+		ColaboradorPresenca colaboradorPresencaAusente = ColaboradorPresencaFactory.getEntity();
+		colaboradorPresencaAusente.setColaboradorTurma(colaboradorTurma);
+		colaboradorPresencaAusente.setPresenca(true);
+		colaboradorPresencaDao.save(colaboradorPresencaAusente);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacao.setEmpresa(empresa);
+		Collection<Curso> cursos = new ArrayList<Curso>();
+		cursos.add(curso);
+		certificacao.setCursos(cursos);
+		certificacaoDao.save(certificacao);
+		
+		Collection<ColaboradorTurma> colaboradorTurmasComCertificacaoAVencer = colaboradorTurmaDao.findCursosCertificacoesAVencer(DateUtil.criarDataMesAno(15, 06, 2015), empresa.getId());
+		Collection<ColaboradorTurma> colaboradorTurmasSemCertificacaoAVencer = colaboradorTurmaDao.findCursosCertificacoesAVencer(new Date(), empresa.getId());
+		
+		assertTrue(colaboradorTurmasComCertificacaoAVencer.size()>=1);
+		assertTrue(colaboradorTurmasSemCertificacaoAVencer.isEmpty());
+		
+	}
+    
     public GenericDao<ColaboradorTurma> getGenericDao()
     {
         return colaboradorTurmaDao;
@@ -1838,4 +2378,18 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 			ColaboradorQuestionarioDao colaboradorQuestionarioDao) {
 		this.colaboradorQuestionarioDao = colaboradorQuestionarioDao;
 	}
+
+	public void setCertificacaoDao(CertificacaoDao certificacaoDao) {
+		this.certificacaoDao = certificacaoDao;
+	}
+
+	public void setAvaliacaoDao(AvaliacaoDao avaliacaoDao) {
+		this.avaliacaoDao = avaliacaoDao;
+	}
+
+	public void setAproveitamentoAvaliacaoCursoDao(
+			AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao) {
+		this.aproveitamentoAvaliacaoCursoDao = aproveitamentoAvaliacaoCursoDao;
+	}
+	
 }

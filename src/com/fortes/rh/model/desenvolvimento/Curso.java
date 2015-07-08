@@ -11,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -57,6 +58,12 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 
 	@ManyToMany(fetch=FetchType.LAZY)
 	private Collection<Empresa> empresasParticipantes;
+	
+	@Column
+	private Integer periodicidade;
+	
+	@Transient
+	private String certificacaoNome;
 
 	public Curso()
 	{
@@ -280,5 +287,24 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 
 	public void setEmpresasParticipantes(Collection<Empresa> empresasParticipantes) {
 		this.empresasParticipantes = empresasParticipantes;
+	}
+
+	public Integer getPeriodicidade() {
+		if (periodicidade == null) {
+			periodicidade = 0;
+		}
+		return periodicidade;
+	}
+
+	public void setPeriodicidade(Integer periodicidade) {
+		this.periodicidade = periodicidade;
+	}
+
+	public void setCertificacaoNome(String certificacaoNome) {
+		this.certificacaoNome = certificacaoNome;
+	}
+	
+	public String getCertificacaoNome() {
+		return this.certificacaoNome;
 	}
 }

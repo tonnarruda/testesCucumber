@@ -487,6 +487,13 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		curso.setNome(cursoNome);
 	}
 
+	public void setCursoPeriodicidade(Integer cursoPeriodicidade)
+	{
+		if(curso == null)
+			this.curso = new Curso();
+		curso.setPeriodicidade(cursoPeriodicidade);
+	}
+	
 	public void setProjectionCursoConteudoProgramatico(String projectionCursoConteudoProgramatico)
 	{
 		if(curso == null)
@@ -514,6 +521,29 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 			this.prioridadeTreinamento = new PrioridadeTreinamento();
 		prioridadeTreinamento.setDescricao(prioridadeTreinamentoDescricao);
 	}
+	
+	public void setVencimento(Date vencimento){
+		if(this.turma == null)
+			this.turma = new Turma();
+		
+		turma.setVencimento(vencimento);
+	}
+
+	public void setVencido(boolean vencido){
+		if(this.turma == null)
+			this.turma = new Turma();
+		
+		turma.setVencido(vencido);
+	}
+	
+	public void setCertificacaoNome(String certificacaoNome){
+		if (this.curso == null) {
+			this.curso = new Curso();
+		}
+		
+		curso.setCertificacaoNome(certificacaoNome);
+	}
+
 	public Curso getCurso()
 	{
 		return curso;
@@ -883,5 +913,59 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 
 	public void setDiaTurmaHoraFim(String diaTurmaHoraFim) {
 		this.diaTurmaHoraFim = diaTurmaHoraFim;
+	}
+	
+	public void setEmpresaId(Long empresaId){
+		if(this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		this.colaborador.setEmpresaId(empresaId);
+	}
+	
+	public void setEmpresaNome(String empresaNome){
+		if(this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		this.colaborador.setEmpresaNome(empresaNome);
+	}
+	
+	public void setCursoPercentualMinimoFrequencia(Double percentualMinimoFrequencia){
+		if (this.curso == null) {
+			this.curso = new Curso();
+		}
+		
+		this.curso.setPercentualMinimoFrequencia(percentualMinimoFrequencia);
+	}
+	
+	public void setAreaOrganizacionalId(Long areaOrganizacionalId){
+		if(this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		this.colaborador.setAreaOrganizacionalId(areaOrganizacionalId);
+	}
+	
+	public void setAreaOrganizacionalNome(String areaOrganizacionalNome){
+		if(this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		this.colaborador.setAreaOrganizacionalNome(areaOrganizacionalNome);
+	}
+	
+	public void setFaixaSalarialNome(String faixaSalarialNome){
+		if(this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		this.colaborador.setFaixaSalarialNomeProjection(faixaSalarialNome);
+	}
+	
+	public void setCargoNome(String cargoNome){
+		if(this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		if(this.colaborador.getFaixaSalarial() == null)
+			this.colaborador.setFaixaSalarial(new FaixaSalarial());
+		
+		this.colaborador.getFaixaSalarial().setCargo(new Cargo());
+		this.colaborador.getFaixaSalarial().getCargo().setNome(cargoNome);
 	}
 }

@@ -248,6 +248,21 @@
 		</map>
 	</property>
   </bean>
+  
+  <bean name="enviarNotificacaoCursosAVencerJob" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
+    <property name="dao" ref="gerenciadorComunicacaoDaoTarget" />
+    <property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
+    <property name="areaOrganizacionalManager" ref="areaOrganizacionalManager" />
+    <property name="usuarioMensagemManager" ref="usuarioMensagemManager" />
+    <property name="usuarioEmpresaManager" ref="usuarioEmpresaManager" />
+    <property name="mail" ref="mail" />
+  </bean>
+  <bean name="enviarNotificacaoCursosAVencer" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  	 <property name="name" value="Notificar cursos à vencer"/>
+    <property name="targetObject" ref="enviarNotificacaoCursosAVencerJob"/>
+    <property name="targetMethod" value="enviarNotificacaoCursosAVencer"/>
+  </bean>
+
   <bean id="cronTriggerBackup" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="backupJob" />
     <property name="cronExpression" value="0 0 0/1 * * ?"/> <!-- A cada 1 hora --> 
@@ -311,6 +326,11 @@
     <property name="jobDetail" ref="importarUltimasNoticias" />
 	<property name="cronExpression" value="0 0 0/1 * * ?" /> <!-- A cada 1 hora -->
   </bean>
+  <bean id="cronTriggerEnviarNotificacaoCursosAVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="enviarNotificacaoCursosAVencer" />
+    <property name="cronExpression" value="0 0 7 * * ?" /> <!-- Todo os dias as 07:00h am -->
+  </bean>
+  
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
     <property name="triggers">
       <list>
@@ -329,6 +349,7 @@
 		<ref bean="cronTriggerlembreteContratoTemporarioColaborador" />
 		<ref bean="cronTriggerlembreteHabilitacaoAVencer" />
 		<ref bean="cronTriggerImportarUltimasNoticias" />
+		<ref bean="cronTriggerEnviarNotificacaoCursosAVencer" />
       </list>
     </property>
   </bean>

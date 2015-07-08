@@ -97,6 +97,9 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 		
 		curso.setEmpresasParticipantes(empresasParticipantes);
 		curso.setEmpresa(getEmpresaSistema());
+		if (curso.getPeriodicidade() == null) {
+			curso.setPeriodicidade(0);
+		}
 		cursoManager.save(curso);
 
 		return Action.SUCCESS;
@@ -112,7 +115,10 @@ public class CursoEditAction extends MyActionSupportEdit implements ModelDriven
 				empresasParticipantes.add(getEmpresaSistema());
 			}
 			curso.setEmpresasParticipantes(empresasParticipantes);
-			
+		
+			if (curso.getPeriodicidade() == null) {
+				curso.setPeriodicidade(0);
+			}
 			cursoManager.update(curso, getEmpresaSistema(), avaliacaoCursoCheck);
 		}
 		catch (Exception e)

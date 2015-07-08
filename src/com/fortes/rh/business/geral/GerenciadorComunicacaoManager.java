@@ -63,4 +63,5 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviaAvisoAoCadastrarSolicitacaoRealinhamentoColaborador(Long empresaId, Colaborador colaborador, Long tabelaReajusteColaboradorId) throws Exception;
 	void enviaAvisoAprovacaoSolicitacaoDesligamento(String colaboradorNome, Long solicitanteDemissaoId, Empresa empresa, boolean aprovado);
 	void enviarEmailAoCriarAcessoSistema(String login, String senha, String email, Empresa empresa);
+	void enviarNotificacaoCursosAVencer();
 }

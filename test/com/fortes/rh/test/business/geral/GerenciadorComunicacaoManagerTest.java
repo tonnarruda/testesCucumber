@@ -47,6 +47,7 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
@@ -86,6 +87,7 @@ import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
+import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
@@ -1081,6 +1083,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 try {
 			 gerenciadorComunicacaoManager.enviarAvisoEmail(turma, empresa.getId());
 		 } catch (Exception e) {
+			 e.printStackTrace();
 			 exception = e;
 		 }
 		 
@@ -1654,6 +1657,51 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CRIAR_ACESSO_SISTEMA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
 		
 		gerenciadorComunicacaoManager.enviarEmailAoCriarAcessoSistema("login", "senha", "email@email.com", empresa);
+	}
+	
+	public void testEnviarNotificacaoCursosAVencer() {
+		
+		Empresa empresa = criaEmpresa();
+		
+		GerenciadorComunicacao gerenciadorComunicacao = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.COLABORADOR);
+		gerenciadorComunicacao.setQtdDiasLembrete("1");
+		
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
+		Collection<ColaboradorTurma> colaboradoresTurmas  = Arrays.asList(criarColaboradorTurma());
+		
+		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));
+		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CURSOS_A_VENCER.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
+		colaboradorTurmaManager.expects(once()).method("findCursosCertificacoesAVencer").with(ANYTHING, eq(gerenciadorComunicacao.getEmpresa().getId())).will(returnValue(colaboradoresTurmas));
+		mail.expects(once()).method("send").withAnyArguments().isVoid();
+		gerenciadorComunicacaoManager.enviarNotificacaoCursosAVencer();
+	}
+	
+	private ColaboradorTurma criarColaboradorTurma(){
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		Cargo cargo = CargoFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmailColaborador("email@email.com");
+		Curso curso = CursoFactory.getEntity();
+		
+		colaborador.setAreaOrganizacional(areaOrganizacional);
+		colaborador.setFaixaSalarial(faixaSalarial);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacao.setNome("Java Básico");
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setVencimento(DateUtil.incrementa(new Date(),1, 2));
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurma.setTurma(turma);
+		colaboradorTurma.setCurso(curso);
+		colaboradorTurma.setCertificacaoNome(certificacao.getNome());
+		
+		return colaboradorTurma;
 	}
 
 	private Empresa criaEmpresa()

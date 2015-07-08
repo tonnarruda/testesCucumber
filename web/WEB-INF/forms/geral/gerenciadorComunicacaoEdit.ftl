@@ -73,7 +73,8 @@
 				}
 				
 				if($('#operacao').val() == ${lembreteQuestionarioNaoLiberadoId} || $('#operacao').val() == ${avaliacaoPeriodoExperienciaVencendoId} || $('#operacao').val() == ${habilitacaoAVencerId} ||
-				   $('#operacao').val() == ${lembreteAberturaSolicitacaoEpiId} || $('#operacao').val() == ${lembreteEntregaSolicitacaoEpiId} || $('#operacao').val() == ${lembreteTerminoContratoTemporarioColaboradorId})
+				   $('#operacao').val() == ${lembreteAberturaSolicitacaoEpiId} || $('#operacao').val() == ${lembreteEntregaSolicitacaoEpiId} || $('#operacao').val() == ${lembreteTerminoContratoTemporarioColaboradorId} ||
+				   $('#operacao').val() == ${notificarCursosAVencer})
 				{
 					if($('.dias').size() == 0 )
 					{
@@ -188,7 +189,8 @@
 			function exibeCampoQtdDiasLembrete(operacaoId)
 			{
 				$('#camposQtdDiasLembrete').toggle(operacaoId == ${lembreteQuestionarioNaoLiberadoId} || operacaoId == ${avaliacaoPeriodoExperienciaVencendoId} || operacaoId == ${habilitacaoAVencerId} ||
-												   operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId} || operacaoId == ${lembreteTerminoContratoTemporarioColaboradorId});
+												   operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId} || operacaoId == ${lembreteTerminoContratoTemporarioColaboradorId} || 
+												   operacaoId == ${notificarCursosAVencer});
 										   
 				var label = (operacaoId == ${lembreteAberturaSolicitacaoEpiId} || operacaoId == ${lembreteEntregaSolicitacaoEpiId}) ? 'Dias de prazo para o aviso:' : 'Dias de antecedência para o aviso:';
 				$('#camposQtdDiasLembrete label').text(label);

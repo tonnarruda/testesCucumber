@@ -141,4 +141,5 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId);
 	public Colaborador findColaboradorComTodosOsDados(Long id);
 	public Collection<Colaborador> findByEstadosCelularOitoDigitos(Long[] ufId);
+
 }

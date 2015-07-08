@@ -27,6 +27,8 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.FiltroAgrupamentoCursoColaborador;
+import com.fortes.rh.model.dicionario.FiltroSituacaoCurso;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.TipoDespesa;
@@ -36,6 +38,7 @@ import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -106,6 +109,13 @@ public class TurmaListAction extends MyActionSupportList
 	private char colaboradoresAvaliados;
 	private char agruparPor;
 	private boolean compartilharColaboradores;
+	
+	private Date dataReferencia;
+	
+	private Long[] empresasPermitidas;
+	private Empresa empresa;
+	private char filtroAgrupamento;
+	private char filtroSituacao;
 
 	public String filtroPlanoTreinamento() throws Exception
 	{
@@ -177,7 +187,7 @@ public class TurmaListAction extends MyActionSupportList
 
 	public String preparePdi()
 	{
-		prepareEmpresas("ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL");
+		prepareEmpresas(false, "ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL");
 		
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresaIds);
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(empresaIds);
@@ -187,7 +197,7 @@ public class TurmaListAction extends MyActionSupportList
 	
 	public String pdi()
 	{
-		prepareEmpresas("ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL");
+		prepareEmpresas(false, "ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL");
 		
 		if (empresaId != null)
 		{
@@ -226,7 +236,7 @@ public class TurmaListAction extends MyActionSupportList
 		if(getEmpresaByfiltro() != null)
 			empresaIds = new Long[]{ empresaId };
 		else
-			prepareEmpresas("ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL");
+			prepareEmpresas(false, "ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL");
 
 		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, empresaIds, new String[]{"descricao"});
 		avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(true, empresaIds);
@@ -327,9 +337,9 @@ public class TurmaListAction extends MyActionSupportList
 		return SUCCESS;
 	}
 
-	private void prepareEmpresas(String role)
+	private void prepareEmpresas(Boolean compartilhado, String role)
 	{
-		empresas = empresaManager.findEmpresasPermitidas(false , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), role);
+		empresas = empresaManager.findEmpresasPermitidas(compartilhado , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), role);
 		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
 		empresaIds = clu.convertCollectionToArrayIds(empresas);
 	}
@@ -443,6 +453,61 @@ public class TurmaListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
+	public String prepareImprimirCursosVencidosAVencer() throws Exception{
+		
+		empresa = getEmpresaSistema();
+		prepareEmpresas(true, "ROLE_REL_CURSOS_VENCIDOS_A_VENCER");
+		
+		return Action.SUCCESS;
+	}
+	
+	public String imprimirCursosVencidosAVencer() throws Exception {
+		
+		dataSource = colaboradorTurmaManager.findCursosVencidosAVencer(EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas), LongUtil.arrayStringToArrayLong(cursosCheck), dataReferencia, filtroAgrupamento, filtroSituacao);
+		
+		try {
+			if (dataSource.isEmpty())
+				throw new ColecaoVaziaException();
+		
+		} catch (ColecaoVaziaException e) {
+			addActionMessage("Não existem dados para o filtro informado.");
+			prepareImprimirCursosVencidosAVencer();
+			return Action.INPUT;
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Ocorreu um erro ao gerar o relatório.");
+			prepareImprimirCursosVencidosAVencer();
+			return Action.INPUT;
+		}
+		
+		String retorno;
+		String tituloRelatorio;
+		String tituloSituacao = "";
+		boolean exibeSituacao = false;
+		if (filtroSituacao == FiltroSituacaoCurso.A_VENCER.getOpcao()) {
+			tituloSituacao = FiltroSituacaoCurso.A_VENCER.getDescricao();
+		} else if (filtroSituacao == FiltroSituacaoCurso.VENCIDOS.getOpcao()){
+			tituloSituacao = FiltroSituacaoCurso.VENCIDOS.getDescricao();
+		} else {
+			tituloSituacao = FiltroSituacaoCurso.VENCIDOS.getDescricao() + " e " + FiltroSituacaoCurso.A_VENCER.getDescricao();
+			exibeSituacao = true;
+		}
+		
+		if (filtroAgrupamento == FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao()) {
+			tituloRelatorio = "Relatorio de Cursos " + tituloSituacao + " por Cursos";
+			retorno = "successAgrupadoPorCurso";
+		} else{
+			tituloRelatorio = "Relatorio de Cursos " + tituloSituacao + " por Colaboradores";
+			retorno = "successAgrupadoPorColaborador";
+		}
+		
+		parametros = RelatorioUtil.getParametrosRelatorio(tituloRelatorio, getEmpresaSistema(),  getDataReferenciaFormatada());
+		parametros.put("EXIBESITUACAO", exibeSituacao);
+		
+		return retorno;
+	}
+	
 	private String getPeriodoFormatado()
 	{
 		String periodoFormatado = "-";
@@ -450,6 +515,14 @@ public class TurmaListAction extends MyActionSupportList
 			periodoFormatado = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " - " + DateUtil.formataDiaMesAno(dataFim);
 
 		return periodoFormatado;
+	}
+	
+	private String getDataReferenciaFormatada(){
+		String dataReferenciaFormatada = "-";
+		if (dataReferencia != null)
+			dataReferenciaFormatada = "Data de Referência: " + DateUtil.formataDiaMesAno(dataReferencia);
+
+		return dataReferenciaFormatada;
 	}
 	
 	public Map<String, Object> getParametros()
@@ -789,5 +862,41 @@ public class TurmaListAction extends MyActionSupportList
 
 	public Collection<String[]> getHorariosFim() {
 		return horariosFim;
+	}
+
+	public Date getDataReferencia() {
+		return dataReferencia;
+	}
+
+	public void setDataReferencia(Date dataReferencia) {
+		this.dataReferencia = dataReferencia;
+	}
+
+	public void setEmpresasPermitidas(Long[] empresasPermitidas) {
+		this.empresasPermitidas = empresasPermitidas;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+
+	public char getFiltroAgrupamento() {
+		return filtroAgrupamento;
+	}
+
+	public void setFiltroAgrupamento(char filtroAgrupamento) {
+		this.filtroAgrupamento = filtroAgrupamento;
+	}
+
+	public char getFiltroSituacao() {
+		return filtroSituacao;
+	}
+
+	public void setFiltroSituacao(char filtroSituacao) {
+		this.filtroSituacao = filtroSituacao;
 	}
 }

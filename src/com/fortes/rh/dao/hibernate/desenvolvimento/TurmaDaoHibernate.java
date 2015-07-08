@@ -612,4 +612,5 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         
     	return valor == null ? 0.0 : valor;
 	}
+
 }

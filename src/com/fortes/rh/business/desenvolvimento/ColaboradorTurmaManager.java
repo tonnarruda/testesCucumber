@@ -73,4 +73,6 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<ColaboradorTurma> filtraAprovadoReprovado(Collection<ColaboradorTurma> colaboradorTurmaIds, char aprovado);
 	public TAula[] getTreinamentosPrevistoParaTRU(String colaboradorCodigoAC, Empresa empresa, String periodoIni, String periodoFim);
 	public TAula[] getTreinamentosRealizadosParaTRU(String colaboradorCodigoAC, Empresa empresa, String periodoIni, String periodoFim);
+	public Collection<ColaboradorTurma> findCursosVencidosAVencer(Long[] empresasIds, Long[] cursosIds, Date dataReferencia, char filtroAgrupamento, char filtroSituacao);
+	public Collection<ColaboradorTurma> findCursosCertificacoesAVencer(Date dataReferencia, Long empresaId);
 }

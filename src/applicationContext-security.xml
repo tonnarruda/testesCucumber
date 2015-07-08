@@ -518,6 +518,8 @@
 				/desenvolvimento/certificacao/imprimirMatrizTreinamento.action*=ROLE_REL_MATRIZ_TREINAMENTO
 				/desenvolvimento/certificacao/*/**=ROLE_CAD_CERTIFICACAO
 				/desenvolvimento/indicadores/*/**=ROLE_MOV_CURSO,ROLE_TED_PAINEL_IND
+				/desenvolvimento/turma/prepareImprimirCursosVencidosAVencer.action*=ROLE_REL_CURSOS_VENCIDOS_A_VENCER
+				/desenvolvimento/turma/imprimirCursosVencidosAVencer.action*=ROLE_REL_CURSOS_VENCIDOS_A_VENCER
 
 				/pesquisa/trafego/*/**=ROLE_ANONYMOUS,ROLE_USER
 				

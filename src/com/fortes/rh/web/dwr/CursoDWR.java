@@ -14,6 +14,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.EmpresaUtil;
 import com.opensymphony.webwork.dispatcher.SessionMap;
 
 public class CursoDWR
@@ -44,6 +45,15 @@ public class CursoDWR
 			Collection<Empresa> empresas = empresaManager.findEmpresasPermitidas(true , null, SecurityUtil.getIdUsuarioLoged(new SessionMap(request)), role);
 			cursos = cursoManager.findAllByEmpresasParticipantes(new CollectionUtil<Empresa>().convertCollectionToArrayIds(empresas));
 		}
+		
+		return new CollectionUtil<Curso>().convertCollectionToMap(cursos,"getId","getNome");
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Map<Long,String> getCursosByEmpresasParticipantes(Long[] empresasIds, Long empresaId, HttpServletRequest request) throws Exception
+	{
+		Collection<Curso> cursos;
+		cursos = cursoManager.findAllByEmpresasParticipantes(EmpresaUtil.empresasSelecionadas(empresaId, empresasIds));		
 		
 		return new CollectionUtil<Curso>().convertCollectionToMap(cursos,"getId","getNome");
 	}

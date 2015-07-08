@@ -228,5 +228,26 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/planoTreinamentoIndividual.ftl</result>
 		</action>
 		<action name="showAssinatura" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="showAssinatura" />
+		
+		<action name="prepareImprimirCursosVencidosAVencer" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="prepareImprimirCursosVencidosAVencer">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioCursosVencidosAVencer.ftl</result>
+		</action>
+		
+		<action name="imprimirCursosVencidosAVencer" class="com.fortes.rh.web.action.desenvolvimento.TurmaListAction" method="imprimirCursosVencidosAVencer">
+			<result name="successAgrupadoPorColaborador" type="jasper">
+				<param name="location">WEB-INF/report/colaboradores_com_cursos_vencidos.jasper</param>
+				<param name="dataSource">dataSource</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradoresComCursosVencidos.pdf</param>
+			</result>
+			<result name="successAgrupadoPorCurso" type="jasper">
+				<param name="location">WEB-INF/report/colaboradores_por_cursos_vencidos.jasper</param>
+				<param name="dataSource">dataSource</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradoresPorCursosVencidos.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioCursosVencidosAVencer.ftl</result>
+		</action>
+		
 	</package>
 </xwork>

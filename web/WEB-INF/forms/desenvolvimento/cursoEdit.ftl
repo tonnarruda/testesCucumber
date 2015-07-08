@@ -20,11 +20,20 @@
 <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/jQuery/jquery.price_format.1.6.min.js"/>"></script><!-- Usado para o function.js cssClass=hora-->
 
 <script>
+	$(document).ready(function($){
+		<#if curso?exists && curso.periodicidade?exists >
+			if( ${curso.periodicidade} != null && ${curso.periodicidade} == 0){
+				$("#periodicidade").val("");
+			} 
+		</#if>			
+	});
+
 	$(function() {
 		$('#avaliacaoCursoCheckToolTipHelp').qtip({
 			content: 'Não será possível desmarcar nenhuma das avaliações dos alunos quando houver resposta para pelo menos uma das avaliações.'
 		});
 	});
+	
 </script>
 
 <style>
@@ -53,11 +62,14 @@
 		</#if>
 	
 		<@ww.textfield label="Carga Horária" name="curso.cargaHorariaMinutos" cssStyle="width:55px;text-align:right" maxLength="7" cssClass="hora"/>
-		<@ww.textfield label="Percentual mínimo de frequência para aprovação (%)" id ="percentualMinimoFrequencia" name="curso.percentualMinimoFrequencia" maxLength="6" cssStyle="width:50px;text-align: right;" onblur="validaPercentual()"/>
 		
+		
+		<@ww.textfield label="Percentual mínimo de frequência para aprovação (%)" id ="percentualMinimoFrequencia" name="curso.percentualMinimoFrequencia" maxLength="6" cssStyle="width:50px;text-align: right;" onblur="validaPercentual()"/>
 		<div style="display:<#if compartilharCursos>block<#else>none</#if>">
 			<@frt.checkListBox label="Compartilhar com as empresas" name="empresasCheck" list="empresasCheckList"/>
 		</div>
+		
+		<@ww.textfield label="Periodicidade em meses" name="curso.periodicidade" id="periodicidade" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/>
 		
 		<@ww.textarea label="Conteúdo Programático" name="curso.conteudoProgramatico" cssStyle="width:500px;"/>
 		<@ww.textarea label="Critérios de Avaliação" name="curso.criterioAvaliacao" cssStyle="width:500px;"/>

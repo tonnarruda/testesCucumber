@@ -380,6 +380,4 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	{
 		this.colaboradorPresencaManager = colaboradorPresencaManager;
 	}
-
-	
 }
