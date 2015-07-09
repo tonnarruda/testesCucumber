@@ -8,6 +8,7 @@ import com.fortes.rh.model.captacao.Habilitacao;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
 import com.fortes.rh.model.geral.Pessoal;
 
@@ -72,6 +73,17 @@ public class ColaboradorFactory
 		colaborador.setNome(nome);
 		colaborador.setNomeComercial(nomeComercial);
 		colaborador.setMatricula(matricula);
+		
+		return colaborador;
+	}
+	
+	public static Colaborador getEntity(String nome, Empresa empresa, Date dataAdmissao, Date dataDesligamento)
+	{
+		Colaborador colaborador = getEntity();
+		colaborador.setNome(nome);
+		colaborador.setEmpresa(empresa);
+		colaborador.setDataAdmissao(dataAdmissao);
+		colaborador.setDataDesligamento(dataDesligamento);
 		
 		return colaborador;
 	}

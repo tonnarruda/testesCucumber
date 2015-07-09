@@ -3,6 +3,9 @@ package com.fortes.rh.test.factory.pesquisa;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
 public class ColaboradorQuestionarioFactory
@@ -21,6 +24,17 @@ public class ColaboradorQuestionarioFactory
 		ColaboradorQuestionario colaboradorQuestionario = getEntity();
 		colaboradorQuestionario.setId(id);
 
+		return colaboradorQuestionario;
+	}
+	
+	public static ColaboradorQuestionario getEntity(Colaborador colaborador, Avaliacao avaliacao, AvaliacaoDesempenho avaliacaoDesempenho, Boolean respondida)
+	{
+		ColaboradorQuestionario colaboradorQuestionario = getEntity();
+		colaboradorQuestionario.setColaborador(colaborador);
+		colaboradorQuestionario.setAvaliacao(avaliacao);
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionario.setRespondida(respondida);
+		
 		return colaboradorQuestionario;
 	}
 

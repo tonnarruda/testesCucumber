@@ -2,9 +2,12 @@ package com.fortes.rh.test.factory.cargosalario;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.geral.Colaborador;
 
 public class HistoricoColaboradorFactory
 {
@@ -26,6 +29,16 @@ public class HistoricoColaboradorFactory
 	{
 		HistoricoColaborador historicoColaborador = getEntity();
 		historicoColaborador.setId(id);
+		
+		return historicoColaborador;
+	}
+	
+	public static HistoricoColaborador getEntity(Colaborador colaborador, FaixaSalarial faixaSalarial, Date data)
+	{
+		HistoricoColaborador historicoColaborador = getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setData(data);
 		
 		return historicoColaborador;
 	}
