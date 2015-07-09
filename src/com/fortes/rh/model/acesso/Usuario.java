@@ -46,6 +46,9 @@ public class Usuario extends AbstractModel implements Serializable, Cloneable
 	private String novaSenha = new String();//tem que ser inicializado, Francisco Barroso.
 	@Transient
 	private String confNovaSenha = new String();//tem que ser inicializado, Francisco Barroso.
+	
+	@Transient
+	private boolean usuarioFortes;
 
 	@Transient
 	private Colaborador colaborador;
@@ -207,5 +210,9 @@ public class Usuario extends AbstractModel implements Serializable, Cloneable
 
 	public void setCaixasMensagens(String caixasMensagens) {
 		this.caixasMensagens = caixasMensagens;
+	}
+
+	public boolean isUsuarioFortes() {
+		return getId() == 1;
 	}
 }

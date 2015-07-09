@@ -85,6 +85,7 @@ public class Index extends MyActionSupport
 	private Long empresaId;
 	private Long colaboradorId;
 	private Long historicoColaboradorId;
+	private Long faixaSalarialHistoricoId;
     private String actionMsg;
 
 	private boolean pgInicial = true;
@@ -308,7 +309,7 @@ public class Index extends MyActionSupport
 			{
 				pendenciaACs.addAll(historicoColaboradorManager.findPendenciasByHistoricoColaborador(empresaId));
 				pendenciaACs.addAll(faixaSalarialHistoricoManager.findPendenciasByFaixaSalarialHistorico(empresaId));
-				pendenciaACs.addAll(colaboradorManager.findPendencias(empresaId));
+				pendenciaACs.addAll(colaboradorManager.findPendenciasSolicitacaoDesligamento(empresaId));
 			}
 		}
 	}
@@ -351,6 +352,46 @@ public class Index extends MyActionSupport
 			addActionMessage(message);
 		}
 		
+		index();
+		return Action.SUCCESS;
+	}
+	
+	public String removePendenciaACHistoricoFaixaSalarial()
+	{
+		try {
+			faixaSalarialHistoricoManager.remove(faixaSalarialHistoricoId);
+			addActionSuccess("Histórico da faixa salarial excluída com sucesso.");
+		}catch (Exception e)
+		{
+			String message = "Não foi possível excluir o histórico da faixa salarial.";
+
+			if(e.getMessage() != null)
+				message = e.getMessage();
+			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
+				message = e.getCause().getLocalizedMessage();
+
+			addActionMessage(message);
+		}
+		index();
+		return Action.SUCCESS;
+	}
+	
+	public String removePendenciaACSolicitacaoDesligamento()
+	{
+		try {
+			colaboradorManager.religaColaborador(colaboradorId);
+			addActionSuccess("Solicitação de desligamento excluída com sucesso.");
+		}catch (Exception e)
+		{
+			String message = "Não foi possível excluir a solicitação de desligamento.";
+
+			if(e.getMessage() != null)
+				message = e.getMessage();
+			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
+				message = e.getCause().getLocalizedMessage();
+
+			addActionMessage(message);
+		}
 		index();
 		return Action.SUCCESS;
 	}
@@ -605,5 +646,9 @@ public class Index extends MyActionSupport
 
 	public void setHistoricoColaboradorId(Long historicoColaboradorId) {
 		this.historicoColaboradorId = historicoColaboradorId;
+	}
+
+	public void setFaixaSalarialHistoricoId(Long faixaSalarialHistoricoId) {
+		this.faixaSalarialHistoricoId = faixaSalarialHistoricoId;
 	}
 }

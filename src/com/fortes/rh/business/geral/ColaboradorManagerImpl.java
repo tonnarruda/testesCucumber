@@ -2491,7 +2491,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findFuncaoAmbiente(colaboradorId);
 	}
 
-	public Collection<PendenciaAC> findPendencias(Long empresaId) {
+	public Collection<PendenciaAC> findPendenciasSolicitacaoDesligamento(Long empresaId) {
 		Collection<PendenciaAC> pendenciaACs = new ArrayList<PendenciaAC>();
 
 		Collection<Colaborador> colaboradors = getDao().findPendenciasSolicitacaoDesligamentoAC(empresaId);
@@ -2501,7 +2501,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 			pendenciaAC.setPendencia("Solicitação de Desligamento");
 			pendenciaAC.setDetalhes("Solicitação de desligamento do colaborador "+colaborador.getNome());
-			pendenciaAC.setStatus(StatusRetornoAC.getDescricao(StatusRetornoAC.AGUARDANDO));
+			pendenciaAC.setStatus(StatusRetornoAC.AGUARDANDO);
+			pendenciaAC.setRole("ROLE_COLAB_LIST_DESLIGAR");
+			pendenciaAC.setLinkExcluir("newConfirm('Confirma exclusão da pendência da solicitação de desligamento?', function(){window.location='removePendenciaACSolicitacaoDesligamento.action?colaboradorId="+ colaborador.getId() + "'});");
 
 			pendenciaACs.add(pendenciaAC);
 		}

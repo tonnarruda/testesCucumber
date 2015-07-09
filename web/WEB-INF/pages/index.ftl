@@ -1,3 +1,4 @@
+<#assign frt=JspTaglibs["/WEB-INF/tlds/fortes.tld"]/>
 <#assign ww=JspTaglibs["/WEB-INF/tlds/webwork.tld"] />
 <#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] /> 
@@ -206,13 +207,25 @@
 						<#else>
 							<@display.table name="pendenciaACs" id="pendenciaAC" class="dados portlet" defaultsort=2 sort="list">
 								<@display.column title="Ações" style="text-align:center; width: 80px;" media="html">
-									<#if pendenciaAC.linkExcluir?exists>						
-										<a href="#" onclick="${pendenciaAC.linkExcluir}"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+									<#if pendenciaAC.linkExcluir?exists && pendenciaAC.role?exists>						
+										<@authz.authorize ifAllGranted="${pendenciaAC.role}">
+											<#if pendenciaAC.statusCancelado>
+												<#assign opacityDisabled = false />
+											<#else>
+												<#assign opacityDisabled = !usuario.usuarioFortes />
+											</#if>
+										</@authz.authorize>
+										
+										<@authz.authorize ifNotGranted="${pendenciaAC.role}">
+											<#assign opacityDisabled = true />
+										</@authz.authorize>
+								
+										<@frt.link href="#" onclick="${pendenciaAC.linkExcluir}" imgTitleDisabled="Você não tem permição de remover esse ítem." imgTitle="Excluir" imgName="delete.gif" opacity=opacityDisabled disabled=opacityDisabled/>
 									</#if>
 								</@display.column>
 								<@display.column property="pendencia" title="Pendência" style="width: 200px; text-align: center;"/>
 								<@display.column property="detalhes" title="Detalhes" style="width: 550px; text-align: center;"/>
-								<@display.column property="status" title="Status" style="width: 200px; text-align: center;"/>
+								<@display.column property="statusDescricao" title="Status" style="width: 200px; text-align: center;"/>
 							</@display.table>
 						</#if>
 					</div>

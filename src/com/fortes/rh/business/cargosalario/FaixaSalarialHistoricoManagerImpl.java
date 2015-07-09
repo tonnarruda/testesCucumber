@@ -322,7 +322,9 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 
 			pendenciaAC.setPendencia("Novo Histórico de Faixa");
 			pendenciaAC.setDetalhes("Cadastro do histórico da faixa salarial "+faixaSalarialHistorico.getFaixaSalarial().getNome()+ " do cargo "+faixaSalarialHistorico.getFaixaSalarial().getCargo().getNome());
-			pendenciaAC.setStatus(StatusRetornoAC.getDescricao(faixaSalarialHistorico.getStatus()));
+			pendenciaAC.setStatus(faixaSalarialHistorico.getStatus());
+			pendenciaAC.setRole("ROLE_CAD_CARGO");
+			pendenciaAC.setLinkExcluir("newConfirm('Confirma exclusão da pendência do novo histórico da faixa salarial?', function(){window.location='removePendenciaACHistoricoFaixaSalarial.action?faixaSalarialHistoricoId="+ faixaSalarialHistorico.getId() + "'});");
 
 			pendenciaACs.add(pendenciaAC);
 		}

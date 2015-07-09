@@ -10,8 +10,10 @@ public class PendenciaAC
 {
 	private String pendencia;
 	private String detalhes;
-	private String status;
+	private int status;
 	private String linkExcluir;
+	private String role;
+	private boolean statusCancelado;
 	
 	private HistoricoColaborador historicoColaborador;
 	
@@ -35,21 +37,23 @@ public class PendenciaAC
 			String dataAdmissao = DateUtil.formataDiaMesAno(historicoColaborador.getColaborador().getDataAdmissao());
 			String nomeCargo = historicoColaborador.getFaixaSalarial().getNomeDoCargo();
 			detalhes.append(" Admissão: ").append(dataAdmissao).append(". Cargo: ").append(nomeCargo);
+			setRole("ROLE_COLAB_LIST_EXCLUIR");
 			setLinkExcluir("newConfirm('Confirma exclusão da pendência da contratação do colaborador?', function(){window.location='removePendenciaACColaborador.action?colaboradorId=" + historicoColaborador.getColaborador().getId() + "'});");
 		}
 		else
 		{
-			this.pendencia = "Nova Situação de Colaborador";
+			this.pendencia = "Nova Histórico de Colaborador";
 			
-			detalhes.append("Situação do colaborador "+historicoColaborador.getColaborador().getNomeComercial() + ".");
+			detalhes.append("Histórico do colaborador "+historicoColaborador.getColaborador().getNomeComercial() + ".");
 			String dataHistorico = DateUtil.formataDiaMesAno(historicoColaborador.getData());
 			detalhes.append(" Data: ").append(dataHistorico);
+			setRole("ROLE_CAD_HISTORICOCOLABORADOR");
 			setLinkExcluir("newConfirm('Confirma exclusão da pendência do novo histórico de colaborador?', function(){window.location='removePendenciaACHistoricoColaborador.action?historicoColaboradorId=" + historicoColaborador.getId() + "&colaboradorId=" + historicoColaborador.getColaborador().getId() + "'});");
 		}
 		
 		this.detalhes = detalhes.toString();
 		
-		this.status = StatusRetornoAC.getDescricao(historicoColaborador.getStatus());
+		this.status = historicoColaborador.getStatus();
 	}
 	
 	public String getDetalhes()
@@ -64,21 +68,39 @@ public class PendenciaAC
 	{
 		this.pendencia = pendencia;
 	}
-	public String getStatus()
+	public int getStatus()
 	{
 		return status;
 	}
-	public void setStatus(String status)
+	public String getStatusDescricao()
 	{
+		return StatusRetornoAC.getDescricao(status);
+	}	
+	public void setStatus(int status) {
 		this.status = status;
 	}
-	public void setDetalhes(String detalhes) {
+	public void setDetalhes(String detalhes) 
+	{
 		this.detalhes = detalhes;
 	}
-	public String getLinkExcluir() {
+	public String getLinkExcluir() 
+	{
 		return this.linkExcluir;
 	}
-	public void setLinkExcluir(String linkExcluir) {
+	public void setLinkExcluir(String linkExcluir) 
+	{
 		this.linkExcluir = linkExcluir;
+	}
+	public String getRole() 
+	{
+		return role;
+	}
+	public void setRole(String role) 
+	{
+		this.role = role;
+	}
+	public boolean isStatusCancelado() 
+	{
+		return StatusRetornoAC.CANCELADO == status;
 	}
 }

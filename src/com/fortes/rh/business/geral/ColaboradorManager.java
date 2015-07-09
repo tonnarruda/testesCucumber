@@ -185,7 +185,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findParentesByNome(Long colaboradorId, Long empresaId, String... nomes);
 	public Collection<Object> montaParentesByNome(Collection<Colaborador> colaboradores);
 	public String avisoQtdCadastros() throws Exception;
-	public Collection<PendenciaAC> findPendencias(Long empresaId);
+	public Collection<PendenciaAC> findPendenciasSolicitacaoDesligamento(Long empresaId);
 	public void cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem, String empresaCodigoAC, String grupoAC) throws Exception;
 	public String getVinculo(String admissaoTipo, Integer admissaoVinculo, Integer admissaoCategoria);
 	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId);
