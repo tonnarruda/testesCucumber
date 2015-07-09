@@ -73,7 +73,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoManagerImpl extends GenericMa
 
 	public void enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo() 
 	{
-		Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradores = getDao().getColaboradoresComAvaliacaoVencidaHoje();
+		Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradores = getDao().findColaboradoresComAvaliacaoNaoRespondida();
 		gerenciadorComunicacaoManager.enviaLembreteColaboradorAvaliacaoPeriodoExperienciaVencendo(colaboradores);
 	}
 

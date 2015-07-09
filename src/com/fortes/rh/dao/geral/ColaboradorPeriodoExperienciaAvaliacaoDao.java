@@ -9,6 +9,6 @@ public interface ColaboradorPeriodoExperienciaAvaliacaoDao extends GenericDao<Co
 {
 	void removeByColaborador(Long... colaboradorIds);
 	Collection<ColaboradorPeriodoExperienciaAvaliacao> findByColaborador(Long colaboradorId);
-	Collection<ColaboradorPeriodoExperienciaAvaliacao> getColaboradoresComAvaliacaoVencidaHoje();
+	Collection<ColaboradorPeriodoExperienciaAvaliacao> findColaboradoresComAvaliacaoNaoRespondida();
 	void removeByAvaliacao(Long avaliacaoId);
 }

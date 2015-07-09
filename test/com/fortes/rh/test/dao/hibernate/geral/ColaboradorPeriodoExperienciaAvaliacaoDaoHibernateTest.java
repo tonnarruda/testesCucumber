@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDao;
+import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.dao.avaliacao.PeriodoExperienciaDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
@@ -14,15 +15,18 @@ import com.fortes.rh.dao.geral.ColaboradorPeriodoExperienciaAvaliacaoDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.avaliacao.PeriodoExperienciaFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -38,6 +42,7 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 	private ColaboradorPeriodoExperienciaAvaliacaoDao colaboradorPeriodoExperienciaAvaliacaoDao;
 	private ColaboradorDao colaboradorDao;
 	private PeriodoExperienciaDao periodoExperienciaDao;
+	private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
 	private AvaliacaoDao avaliacaoDao;
 	private EmpresaDao empresaDao;
 	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
@@ -97,14 +102,14 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		assertEquals(2, configs.size());
 	}
 	
-	public void testGetColaboradoresComAvaliacaoVencidaHoje()
+	public void testFindColaboradoresComAvaliacaoNaoRespondida()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
-		avaliacao.setTitulo("experiencia");
-		avaliacaoDao.save(avaliacao);
+		Avaliacao avPeriodoExperiencia = AvaliacaoFactory.getEntity();
+		avPeriodoExperiencia.setTipoModeloAvaliacao(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA);
+		avaliacaoDao.save(avPeriodoExperiencia);
 		
 		PeriodoExperiencia periodo1 = PeriodoExperienciaFactory.getEntity();
 		periodo1.setDias(1);
@@ -168,40 +173,172 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		ColaboradorQuestionario colaboradorQuestionarioMaria = ColaboradorQuestionarioFactory.getEntity();
 		colaboradorQuestionarioMaria.setRespondida(true);
 		colaboradorQuestionarioMaria.setColaborador(maria);
-		colaboradorQuestionarioMaria.setAvaliacao(avaliacao);
+		colaboradorQuestionarioMaria.setAvaliacao(avPeriodoExperiencia);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioMaria);
 			
 		ColaboradorPeriodoExperienciaAvaliacao config1Joao = new ColaboradorPeriodoExperienciaAvaliacao();
 		config1Joao.setColaborador(joao);
 		config1Joao.setPeriodoExperiencia(periodo1);
-		config1Joao.setAvaliacao(avaliacao);
+		config1Joao.setAvaliacao(avPeriodoExperiencia);
 		config1Joao.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(config1Joao);
 		
 		ColaboradorPeriodoExperienciaAvaliacao config2Joao = new ColaboradorPeriodoExperienciaAvaliacao();
 		config2Joao.setColaborador(joao);
 		config2Joao.setPeriodoExperiencia(periodo60);
-		config2Joao.setAvaliacao(avaliacao);
+		config2Joao.setAvaliacao(avPeriodoExperiencia);
 		config2Joao.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(config2Joao);
 
 		ColaboradorPeriodoExperienciaAvaliacao configMaria = new ColaboradorPeriodoExperienciaAvaliacao();
 		configMaria.setColaborador(maria);
 		configMaria.setPeriodoExperiencia(periodo1);
-		configMaria.setAvaliacao(avaliacao);
+		configMaria.setAvaliacao(avPeriodoExperiencia);
 		configMaria.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(configMaria);
 		
 		ColaboradorPeriodoExperienciaAvaliacao configPedro = new ColaboradorPeriodoExperienciaAvaliacao();
 		configPedro.setColaborador(pedro);
 		configPedro.setPeriodoExperiencia(periodo1);
-		configPedro.setAvaliacao(avaliacao);
+		configPedro.setAvaliacao(avPeriodoExperiencia);
 		configPedro.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(configPedro);
 		
-		Collection<ColaboradorPeriodoExperienciaAvaliacao> configs = colaboradorPeriodoExperienciaAvaliacaoDao.getColaboradoresComAvaliacaoVencidaHoje();
+		Collection<ColaboradorPeriodoExperienciaAvaliacao> configs = colaboradorPeriodoExperienciaAvaliacaoDao.findColaboradoresComAvaliacaoNaoRespondida();
 		
-		assertTrue(configs.size() >= 2);
+		int resultado = filtraColaboradorPeriodoExperienciaAvaliacao(avPeriodoExperiencia, configs);
+		
+		assertEquals(2, resultado);
+	}
+
+	public void testFindColaboradoresComAvaliacaoNaoRespondidaComAvaliacaoDesempenhoComMesmaAvaliacao()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Avaliacao avPeriodoExperiencia = AvaliacaoFactory.getEntity();
+		avPeriodoExperiencia.setTipoModeloAvaliacao(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA);
+		avaliacaoDao.save(avPeriodoExperiencia);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenho.setAvaliacao(avPeriodoExperiencia);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
+		PeriodoExperiencia periodo1 = PeriodoExperienciaFactory.getEntity();
+		periodo1.setDias(1);
+		periodoExperienciaDao.save(periodo1);
+		
+		PeriodoExperiencia periodo60 = PeriodoExperienciaFactory.getEntity();
+		periodo60.setDias(60);
+		periodoExperienciaDao.save(periodo60);
+		
+		Date hoje = new Date();
+		Date ontem = DateUtil.retornaDataDiaAnterior(hoje);
+		Date amanha = DateUtil.incrementaDias(hoje, 1);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
+		Colaborador joao = ColaboradorFactory.getEntity();
+		joao.setNome("João");
+		joao.setEmpresa(empresa);
+		joao.setDataAdmissao(ontem);
+		joao.setDataDesligamento(hoje);
+		colaboradorDao.save(joao);
+		
+		HistoricoColaborador historicoColaboradorJoao = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorJoao.setColaborador(joao);
+		historicoColaboradorJoao.setFaixaSalarial(faixaSalarial);
+		historicoColaboradorJoao.setData(ontem);
+		historicoColaboradorDao.save(historicoColaboradorJoao);
+		
+		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setNome("Maria");
+		maria.setEmpresa(empresa);
+		maria.setDataAdmissao(ontem);
+		maria.setDataDesligamento(amanha);
+		colaboradorDao.save(maria);
+		
+		HistoricoColaborador historicoColaboradorMaria = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorMaria.setColaborador(maria);
+		historicoColaboradorMaria.setFaixaSalarial(faixaSalarial);
+		historicoColaboradorMaria.setData(ontem);
+		historicoColaboradorDao.save(historicoColaboradorMaria);
+		
+		Colaborador pedro = ColaboradorFactory.getEntity();
+		pedro.setNome("Pedro");
+		pedro.setEmpresa(empresa);
+		pedro.setDataAdmissao(ontem);
+		pedro.setDataDesligamento(ontem);
+		pedro.setEmailColaborador("");
+		colaboradorDao.save(pedro);
+		
+		HistoricoColaborador historicoColaboradorPedro = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorPedro.setColaborador(pedro);
+		historicoColaboradorPedro.setFaixaSalarial(faixaSalarial);
+		historicoColaboradorPedro.setData(ontem);
+		historicoColaboradorDao.save(historicoColaboradorPedro);
+		
+		ColaboradorQuestionario colaboradorQuestionarioJoao = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioJoao.setRespondida(false);
+		colaboradorQuestionarioJoao.setColaborador(joao);
+		colaboradorQuestionarioJoao.setAvaliacao(avPeriodoExperiencia);
+		colaboradorQuestionarioJoao.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioJoao);
+		
+		ColaboradorQuestionario colaboradorQuestionarioMaria = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioMaria.setRespondida(true);
+		colaboradorQuestionarioMaria.setColaborador(maria);
+		colaboradorQuestionarioMaria.setAvaliacao(avPeriodoExperiencia);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioMaria);
+		
+		ColaboradorPeriodoExperienciaAvaliacao config1Joao = new ColaboradorPeriodoExperienciaAvaliacao();
+		config1Joao.setColaborador(joao);
+		config1Joao.setPeriodoExperiencia(periodo1);
+		config1Joao.setAvaliacao(avPeriodoExperiencia);
+		config1Joao.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
+		colaboradorPeriodoExperienciaAvaliacaoDao.save(config1Joao);
+		
+		ColaboradorPeriodoExperienciaAvaliacao config2Joao = new ColaboradorPeriodoExperienciaAvaliacao();
+		config2Joao.setColaborador(joao);
+		config2Joao.setPeriodoExperiencia(periodo60);
+		config2Joao.setAvaliacao(avPeriodoExperiencia);
+		config2Joao.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
+		colaboradorPeriodoExperienciaAvaliacaoDao.save(config2Joao);
+		
+		ColaboradorPeriodoExperienciaAvaliacao configMaria = new ColaboradorPeriodoExperienciaAvaliacao();
+		configMaria.setColaborador(maria);
+		configMaria.setPeriodoExperiencia(periodo1);
+		configMaria.setAvaliacao(avPeriodoExperiencia);
+		configMaria.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
+		colaboradorPeriodoExperienciaAvaliacaoDao.save(configMaria);
+		
+		ColaboradorPeriodoExperienciaAvaliacao configPedro = new ColaboradorPeriodoExperienciaAvaliacao();
+		configPedro.setColaborador(pedro);
+		configPedro.setPeriodoExperiencia(periodo1);
+		configPedro.setAvaliacao(avPeriodoExperiencia);
+		configPedro.setTipo(ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
+		colaboradorPeriodoExperienciaAvaliacaoDao.save(configPedro);
+		
+		Collection<ColaboradorPeriodoExperienciaAvaliacao> configs = colaboradorPeriodoExperienciaAvaliacaoDao.findColaboradoresComAvaliacaoNaoRespondida();
+		
+		int resultado = filtraColaboradorPeriodoExperienciaAvaliacao(avPeriodoExperiencia, configs);
+		
+		assertEquals(2, resultado);
+	}
+
+	private int filtraColaboradorPeriodoExperienciaAvaliacao(Avaliacao avaliacao, Collection<ColaboradorPeriodoExperienciaAvaliacao> colaboradorPeriodoExperienciaAvaliacaos)
+	{
+		int resultado = 0;
+		for (ColaboradorPeriodoExperienciaAvaliacao colaboradorPeriodoExperienciaAvaliacao : colaboradorPeriodoExperienciaAvaliacaos) {
+			if(colaboradorPeriodoExperienciaAvaliacao.getAvaliacao().equals(avaliacao))
+				resultado++;
+		}
+		return resultado;
 	}
 
 	public void testRemoveByAvaliacao()
@@ -264,6 +401,11 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 
 	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao) {
 		this.faixaSalarialDao = faixaSalarialDao;
+	}
+
+	public void setAvaliacaoDesempenhoDao(AvaliacaoDesempenhoDao avaliacaoDesempenhoDao)
+	{
+		this.avaliacaoDesempenhoDao = avaliacaoDesempenhoDao;
 	}
 	
 }
