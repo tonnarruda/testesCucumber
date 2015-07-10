@@ -24,7 +24,7 @@ public class LoginAction extends MyActionSupport
 	private Collection<Empresa> empresas = new ArrayList<Empresa>();
 	private String msgRemprot = "";
 	private String senhaBD;
-	private String versao;
+	private String versao = "";
 	private Boolean demonstracao = false;
 	private String servidorRemprot;
 
