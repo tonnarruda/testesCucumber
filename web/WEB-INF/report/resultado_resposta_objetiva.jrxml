@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2015-07-10T15:06:07 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resultado_resposta_objetiva" pageWidth="529" pageHeight="802" whenNoDataType="AllSectionsNoDetail" columnWidth="529" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="a7595e7a-ec2d-4b34-b8d0-21f188906232">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
@@ -36,7 +38,7 @@
 	<detail>
 		<band height="16" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="d9fc0e43-8301-46bb-bcf7-d1435418ed22" key="textField" x="0" y="0" width="529" height="12" isPrintInFirstWholeBand="true"/>
+				<reportElement key="textField" x="0" y="0" width="529" height="12" isPrintInFirstWholeBand="true" uuid="d9fc0e43-8301-46bb-bcf7-d1435418ed22"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -57,10 +59,10 @@
 		<band splitType="Stretch"/>
 	</pageFooter>
 	<summary>
-		<band height="102" splitType="Stretch">
-			<pie3DChart>
-				<chart isShowLegend="false">
-					<reportElement uuid="43f83135-dcb0-4ee4-9eb7-8bbc89896f77" key="element-2" mode="Opaque" x="51" y="-1" width="426" height="102" isPrintInFirstWholeBand="true"/>
+		<band height="163" splitType="Stretch">
+			<pieChart>
+				<chart isShowLegend="false" evaluationTime="Report">
+					<reportElement key="element-2" mode="Opaque" x="40" y="10" width="426" height="131" isPrintInFirstWholeBand="true" uuid="758da07d-6d56-4da8-adcb-23623929e618"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
@@ -70,11 +72,11 @@
 					<valueExpression><![CDATA[$F{qtdRespostas}]]></valueExpression>
 					<labelExpression><![CDATA[$F{legenda}]]></labelExpression>
 				</pieDataset>
-				<pie3DPlot>
+				<piePlot>
 					<plot backcolor="#FFFFFF" foregroundAlpha="1.0"/>
 					<itemLabel/>
-				</pie3DPlot>
-			</pie3DChart>
+				</piePlot>
+			</pieChart>
 		</band>
 	</summary>
 </jasperReport>

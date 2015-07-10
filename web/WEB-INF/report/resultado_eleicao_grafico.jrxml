@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2015-07-10T15:14:33 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resultado_eleicao_grafico" pageWidth="529" pageHeight="802" whenNoDataType="AllSectionsNoDetail" columnWidth="529" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="75618bb7-3d7f-4b55-96d4-0e9b22452a15">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
@@ -41,9 +43,9 @@
 	</pageFooter>
 	<summary>
 		<band height="217" splitType="Stretch">
-			<pie3DChart>
-				<chart isShowLegend="false">
-					<reportElement uuid="0656659a-7c9d-4ed6-8d75-7ae8b2c81fdc" key="element-1" mode="Opaque" x="0" y="0" width="529" height="217" isPrintInFirstWholeBand="true"/>
+			<pieChart>
+				<chart isShowLegend="false" evaluationTime="Report">
+					<reportElement key="element-1" mode="Opaque" x="0" y="0" width="529" height="217" isPrintInFirstWholeBand="true" uuid="d64ff04a-d468-46b1-bc93-5588e3f19037"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
@@ -53,11 +55,11 @@
 					<valueExpression><![CDATA[new Double(($F{qtdVoto}.doubleValue() / $P{VOTOS_TOTAL}.doubleValue())*100)]]></valueExpression>
 					<labelExpression><![CDATA[$F{candidato.nomeComercial} + " (" + $F{percentualVotoFmt} + "%)"]]></labelExpression>
 				</pieDataset>
-				<pie3DPlot>
+				<piePlot>
 					<plot backcolor="#FFFFFF" orientation="Horizontal" backgroundAlpha="0.0" foregroundAlpha="1.0"/>
 					<itemLabel/>
-				</pie3DPlot>
-			</pie3DChart>
+				</piePlot>
+			</pieChart>
 		</band>
 	</summary>
 </jasperReport>
