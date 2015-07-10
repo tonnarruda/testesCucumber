@@ -205,7 +205,7 @@
 						<#if pendenciaACs?size < 1>
 							<span>Nenhuma pendência</span>
 						<#else>
-							<@display.table name="pendenciaACs" id="pendenciaAC" class="dados portlet" defaultsort=2 sort="list">
+						<@display.table name="pendenciaACs" id="pendenciaAC" class="dados portlet" defaultsort=2 sort="list">
 								<@display.column title="Ações" style="text-align:center; width: 80px;" media="html">
 									<#if pendenciaAC.linkExcluir?exists && pendenciaAC.role?exists>						
 										<@authz.authorize ifAllGranted="${pendenciaAC.role}">
