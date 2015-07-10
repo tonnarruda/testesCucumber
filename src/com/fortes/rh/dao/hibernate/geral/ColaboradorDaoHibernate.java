@@ -4220,6 +4220,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("   where hc2.colaborador.id = co.id ");
 		hql.append("   and hc2.status = :status ");
 		hql.append("  ) ");
+		hql.append("and co.desligado = false ");
 		hql.append("and co.codigoAC is null ");
 		hql.append("and co.naoIntegraAc = :naoIntegraAc ");
 		
