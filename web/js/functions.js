@@ -1355,8 +1355,9 @@ function naoInseririrCharacterComValor(e,value)
 
 function checkListBoxSearch(name)
 {
-	var filtroTexto = $('#listCheckBoxFilter' + name).val();
-	var filtroAtivo = $('#listCheckBoxActive' + name).val();
+	nameReplaced=name.replace("[", "\\[").replace("]","\\]");
+	var filtroTexto = $('#listCheckBoxFilter' + nameReplaced).val();
+	var filtroAtivo = $('#listCheckBoxActive' + nameReplaced).val();
 	var nomeTeste;
 	
 	$("input:checkbox[name='" + name + "']").each(function() {

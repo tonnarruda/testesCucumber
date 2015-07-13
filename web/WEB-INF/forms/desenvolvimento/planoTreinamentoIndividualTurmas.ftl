@@ -65,6 +65,14 @@
 					fset.find('#listCheckBoxdiasTurmasCheck\\[' + i + '\\]').empty().removeAttr('disabled');
 				}
 			});
+			
+			function checkListBoxDiasSearch(filter) {
+		        var texto = removerAcento( $( filter ).val().toUpperCase() );
+			    $( filter ).parents( '.listCheckBoxContainer' ).find( ':checkbox' ).each( function() {
+			    	 nomeTeste = removerAcento( $( this ).parents( 'tr' ).text().toUpperCase() );
+					 $( filter ).parents('tr').toggle( nomeTeste.indexOf( texto ) >= 0 );
+		    	});
+			}
 		});
 		
 		$.datepicker.setDefaults({ dayNames: ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'] });
