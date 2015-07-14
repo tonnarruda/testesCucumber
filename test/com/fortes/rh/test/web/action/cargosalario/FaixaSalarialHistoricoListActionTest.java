@@ -53,7 +53,7 @@ public class FaixaSalarialHistoricoListActionTest extends MockObjectTestCase
     	FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(1L);
     	action.setFaixaSalarialHistorico(faixaSalarialHistorico);
     	
-    	manager.expects(once()).method("remove").with(eq(faixaSalarialHistorico.getId()), eq(empresa));
+    	manager.expects(once()).method("remove").with(eq(faixaSalarialHistorico.getId()), eq(empresa), eq(true));
     	
     	assertEquals("success", action.delete());
     }

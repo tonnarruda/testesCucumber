@@ -33,7 +33,7 @@ public interface FaixaSalarialHistoricoManager extends GenericManager<FaixaSalar
 	boolean verifyHistoricoIndiceNaData(Date data, Long indiceId);
 	boolean setStatus(Long faixaSalarialHistoricoId, boolean aprovado);
 	@Audita(operacao="Remoção", auditor=FaixaSalarialHistoricoAuditorCallbackImpl.class)
-	void remove(Long faixaSalarialHistoricoId, Empresa empresa) throws Exception;
+	void remove(Long faixaSalarialHistoricoId, Empresa empresa, boolean removerDoAC) throws Exception;
 	void removeByFaixas(Long[] faixaSalarialIds);
 	Collection<PendenciaAC> findPendenciasByFaixaSalarialHistorico(Long empresaId);
 	FaixaSalarialHistorico sincronizar(Long faixaSalarialOrigemId, Long faixaSalarialDestinoId, Empresa empresaDestino) throws FaixaJaCadastradaException;

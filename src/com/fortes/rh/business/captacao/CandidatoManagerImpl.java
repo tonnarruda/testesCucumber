@@ -1350,6 +1350,10 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		getDao().inserirNonoDigitoCelular(ufIds);
 	}
 
+	public boolean existeCamposExtras(Long camposExtrasId) {
+		return getDao().existeCamposExtras(camposExtrasId);
+	}
+	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
 	{
 		this.transactionManager = transactionManager;

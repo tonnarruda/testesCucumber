@@ -2834,7 +2834,11 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.solicitacao.setId(solicitacaoId);
 	}
 	
-	public boolean isStatusAcPessoalAguardandoConfirmacao() {
+	public boolean isStatusAcPessoalAguardandoConfirmacao() 
+	{
+		if(statusAcPessoal == null)
+			statusAcPessoal = StatusRetornoAC.CONFIRMADO;
+		
 		return statusAcPessoal == StatusRetornoAC.AGUARDANDO;
 	}
 		

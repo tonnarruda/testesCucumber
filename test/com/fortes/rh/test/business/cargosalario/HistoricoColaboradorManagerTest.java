@@ -1372,7 +1372,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		PendenciaAC pendenciaAC1 = (PendenciaAC) pendenciaACs.toArray()[0];
 		PendenciaAC pendenciaAC2 = (PendenciaAC) pendenciaACs.toArray()[1];
 		assertEquals("Contratação", pendenciaAC1.getPendencia());
-		assertEquals("Nova Histórico de Colaborador", pendenciaAC2.getPendencia());
+		assertEquals("Novo Histórico de Colaborador", pendenciaAC2.getPendencia());
 	}
 
 	public void testUpdateHistoricoAndReajuste()

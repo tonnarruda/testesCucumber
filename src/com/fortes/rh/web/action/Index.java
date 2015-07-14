@@ -11,6 +11,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -104,6 +106,7 @@ public class Index extends MyActionSupport
 	
 	private String modulo;
 	private String contexto;
+	private String[] pendenciasAcsSerRemovida;
 	
 	private Noticia noticia;
 	
@@ -314,14 +317,49 @@ public class Index extends MyActionSupport
 		}
 	}
 	
+	public String removerMultiplasPendenciasAC()
+	{
+		for (String pendenciaAc : pendenciasAcsSerRemovida) 
+		{
+			Collection<String> ids = StringUtil.getSomenteNumero(pendenciaAc);
+
+			if(pendenciaAc.contains("removePendenciaACHistoricoColaborador") && ids.size() == 2){
+				historicoColaboradorId = new Long ((String) ids.toArray()[0]);
+				colaboradorId = new Long ((String) ids.toArray()[1]);
+				removePendenciaACHistoricoColaborador();
+			} else if(pendenciaAc.contains("removePendenciaACColaborador") && ids.size() == 1){
+				colaboradorId = new Long ((String) ids.toArray()[0]);
+				removePendenciaACColaborador();
+			} else if(pendenciaAc.contains("removePendenciaACHistoricoFaixaSalarial") && ids.size() == 1){
+				faixaSalarialHistoricoId = new Long ((String) ids.toArray()[0]);
+				removePendenciaACHistoricoFaixaSalarial();
+			} else if(pendenciaAc.contains("removePendenciaACSolicitacaoDesligamento") && ids.size() == 1){
+				colaboradorId = new Long ((String) ids.toArray()[0]);
+				removePendenciaACSolicitacaoDesligamento();
+			}
+		}
+		
+		getActionSuccess().clear();
+		if(getActionMessages().size() == 0){
+			addActionSuccess("Pendências excluídas com sucesso.");
+		}else{
+			getActionMessages().clear();
+			addActionMessage("Não foi possível excluir todas as pendências selecionadas.");
+		}
+		
+		pendenciaACs.clear();
+		index();
+		return Action.SUCCESS;
+	}
+	
 	public String removePendenciaACHistoricoColaborador()
 	{
 		try {
 			historicoColaboradorManager.removeHistoricoAndReajuste(historicoColaboradorId, colaboradorId, getEmpresaSistema(), false);
-			addActionSuccess("Histórico do colaborador excluído com sucesso.");
+			addActionSuccess("Novo histórico do colaborador excluído com sucesso.");
 		}catch (Exception e)
 		{
-			String message = "Não foi possível excluir o histórico do colaborador.";
+			String message = "Não foi possível excluir o novo histórico do colaborador.";
 
 			if(e.getMessage() != null)
 				message = e.getMessage();
@@ -337,12 +375,11 @@ public class Index extends MyActionSupport
 	public String removePendenciaACColaborador()
 	{
 		try {
-			Colaborador colaborador = colaboradorManager.findColaboradorByIdProjection(colaboradorId);
-			colaboradorManager.removeColaboradorDependencias(colaborador);
-			addActionSuccess("Colaborador excluído com sucesso.");
+			colaboradorManager.removeComDependencias(colaboradorId);
+			addActionSuccess("Contratação do colaborador excluído com sucesso.");
 		}catch (Exception e)
 		{
-			String message = "Não foi possível excluir o colaborador.";
+			String message = "Não foi possível excluir a contratação do colaborador.";
 
 			if(e.getMessage() != null)
 				message = e.getMessage();
@@ -359,11 +396,11 @@ public class Index extends MyActionSupport
 	public String removePendenciaACHistoricoFaixaSalarial()
 	{
 		try {
-			faixaSalarialHistoricoManager.remove(faixaSalarialHistoricoId);
-			addActionSuccess("Histórico da faixa salarial excluída com sucesso.");
+			faixaSalarialHistoricoManager.remove(faixaSalarialHistoricoId, getEmpresaSistema(), false);
+			addActionSuccess("Novo histórico, da faixa salarial, excluído com sucesso.");
 		}catch (Exception e)
 		{
-			String message = "Não foi possível excluir o histórico da faixa salarial.";
+			String message = "Não foi possível excluir o nov histórico da faixa salarial.";
 
 			if(e.getMessage() != null)
 				message = e.getMessage();
@@ -380,10 +417,10 @@ public class Index extends MyActionSupport
 	{
 		try {
 			colaboradorManager.religaColaborador(colaboradorId);
-			addActionSuccess("Solicitação de desligamento excluída com sucesso.");
+			addActionSuccess("Solicitação de desligamento removida com sucesso.");
 		}catch (Exception e)
 		{
-			String message = "Não foi possível excluir a solicitação de desligamento.";
+			String message = "Não foi possível remover a solicitação de desligamento.";
 
 			if(e.getMessage() != null)
 				message = e.getMessage();
@@ -650,5 +687,9 @@ public class Index extends MyActionSupport
 
 	public void setFaixaSalarialHistoricoId(Long faixaSalarialHistoricoId) {
 		this.faixaSalarialHistoricoId = faixaSalarialHistoricoId;
+	}
+
+	public void setPendenciasAcsSerRemovida(String[] pendenciasAcsSerRemovida) {
+		this.pendenciasAcsSerRemovida = pendenciasAcsSerRemovida;
 	}
 }

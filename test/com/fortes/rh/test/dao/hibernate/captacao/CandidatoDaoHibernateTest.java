@@ -27,6 +27,7 @@ import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.geral.AreaInteresseDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.BairroDao;
+import com.fortes.rh.dao.geral.CamposExtrasDao;
 import com.fortes.rh.dao.geral.CidadeDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.ComoFicouSabendoVagaDao;
@@ -53,6 +54,7 @@ import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
+import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
@@ -77,6 +79,7 @@ import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.geral.AreaInteresseFactory;
+import com.fortes.rh.test.factory.geral.CamposExtrasFactory;
 import com.fortes.rh.test.factory.geral.CandidatoIdiomaFactory;
 import com.fortes.rh.test.factory.geral.CidadeFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
@@ -108,6 +111,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 	private FaixaSalarialDao faixaSalarialDao;
 	private FormacaoDao formacaoDao;
 	private ComoFicouSabendoVagaDao comoFicouSabendoVagaDao;
+	private CamposExtrasDao camposExtrasDao;
 
 	public Candidato getEntity()
 	{
@@ -2586,6 +2590,20 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertNull(ex);
 	}
 	
+	public void testExisteCamposExtras()
+	{
+		CamposExtras camposExtras = CamposExtrasFactory.getEntity(1L);
+		camposExtrasDao.save(camposExtras);
+		
+		assertFalse(candidatoDao.existeCamposExtras(camposExtras.getId()));
+		
+		Candidato candidato = CandidatoFactory.getCandidato();
+		candidato.setCamposExtras(camposExtras);
+		candidatoDao.save(candidato);
+		
+		assertTrue(candidatoDao.existeCamposExtras(camposExtras.getId()));
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		 this.empresaDao = empresaDao;
@@ -2687,5 +2705,10 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 	public void setFormacaoDao(FormacaoDao formacaoDao)
 	{
 		this.formacaoDao = formacaoDao;
+	}
+
+	public void setCamposExtrasDao(CamposExtrasDao camposExtrasDao) 
+	{
+		this.camposExtrasDao = camposExtrasDao;
 	}
 }

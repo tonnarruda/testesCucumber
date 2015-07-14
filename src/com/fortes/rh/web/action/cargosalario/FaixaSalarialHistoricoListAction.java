@@ -24,7 +24,7 @@ public class FaixaSalarialHistoricoListAction extends MyActionSupportList
 	{
 		try
 		{
-			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), getEmpresaSistema());
+			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), getEmpresaSistema(), true);
 		}
 		catch(IntegraACException e)
 		{

@@ -176,63 +176,71 @@
 		<br />
 	</#if>
 	
-	<form id="formMensagens">
-		<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_MSG">
-			<#if caixasMensagens?exists>
-				<div class="caixas">
-					<div class="column left">
-						<#list configuracaoCaixasMensagens.caixasEsquerda as tipo>
-							<#include "caixaMensagens.ftl"/>
-						</#list>
-					</div>
-
-					<div class="column right">
-						<#list configuracaoCaixasMensagens.caixasDireita as tipo>
-							<#include "caixaMensagens.ftl"/>
-						</#list>
-					</div>
+	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_MSG">
+		<#if caixasMensagens?exists>
+			<div class="caixas">
+				<div class="column left">
+					<#list configuracaoCaixasMensagens.caixasEsquerda as tipo>
+						<#include "caixaMensagens.ftl"/>
+					</#list>
 				</div>
-			</#if>
-		</@authz.authorize>
-		
-		<div style="clear:both;"></div>
-		
-		<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_PENDENCIA_AC">
-			<#if integradoAC && pendenciaACs?exists>
+
+				<div class="column right">
+					<#list configuracaoCaixasMensagens.caixasDireita as tipo>
+						<#include "caixaMensagens.ftl"/>
+					</#list>
+				</div>
+			</div>
+		</#if>
+	</@authz.authorize>
+	
+	<div style="clear:both;"></div>
+	
+	<@authz.authorize ifAllGranted="ROLE_VISUALIZAR_PENDENCIA_AC">
+		<#if integradoAC && pendenciaACs?exists>
+			<form action="removerMultiplasPendenciasAC.action" id="removerMultiplasPendenciasAC" method="post">
 				<div class="portlet">
 					<div class="portlet-header">Pendências com o AC Pessoal</div>
 					<div class="portlet-content">
 						<#if pendenciaACs?size < 1>
 							<span>Nenhuma pendência</span>
 						<#else>
-						<@display.table name="pendenciaACs" id="pendenciaAC" class="dados portlet" defaultsort=2 sort="list">
-								<@display.column title="Ações" style="text-align:center; width: 80px;" media="html">
-									<#if pendenciaAC.linkExcluir?exists && pendenciaAC.role?exists>						
-										<@authz.authorize ifAllGranted="${pendenciaAC.role}">
-											<#if pendenciaAC.statusCancelado>
-												<#assign opacityDisabled = false />
-											<#else>
-												<#assign opacityDisabled = !usuario.usuarioFortes />
-											</#if>
-										</@authz.authorize>
-										
-										<@authz.authorize ifNotGranted="${pendenciaAC.role}">
-											<#assign opacityDisabled = true />
-										</@authz.authorize>
+							<@display.table name="pendenciaACs" id="pendenciaAC" class="dados portlet" defaultsort=2 sort="list">
+								<#if pendenciaAC.msg?exists && pendenciaAC.action?exists && pendenciaAC.role?exists>						
 								
-										<@frt.link href="#" onclick="${pendenciaAC.linkExcluir}" imgTitleDisabled="Você não tem permição de remover esse ítem." imgTitle="Excluir" imgName="delete.gif" opacity=opacityDisabled disabled=opacityDisabled/>
+									<#assign opacityDisabled = true />
+									<@authz.authorize ifAllGranted="${pendenciaAC.role}">
+										<#if pendenciaAC.statusCancelado>
+											<#assign opacityDisabled = false />
+										<#else>
+											<#assign opacityDisabled = !usuario.usuarioFortes />
+										</#if>
+									</@authz.authorize>
+									
+									<#if usuario.usuarioFortes>
+										<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkPendenciasAc\", this.checked);' />" style="width: 30px; text-align: center;">
+											<input type="checkbox" class="checkPendenciasAc" value="${pendenciaAC.action}" name="pendenciasAcsSerRemovida"/>
+										</@display.column>
 									</#if>
-								</@display.column>
+									
+									<@display.column title="Ações" style="text-align:center; width: 80px;" media="html">
+										<@frt.link href="#" onclick="newConfirm('${pendenciaAC.msg}', function(){window.location='${pendenciaAC.action}'});" imgTitleDisabled="Você não tem permição para remover esse ítem." imgTitle="Excluir" imgName="delete.gif" opacity=opacityDisabled disabled=opacityDisabled/>
+									</@display.column>
+		
+								</#if>
 								<@display.column property="pendencia" title="Pendência" style="width: 200px; text-align: center;"/>
 								<@display.column property="detalhes" title="Detalhes" style="width: 550px; text-align: center;"/>
 								<@display.column property="statusDescricao" title="Status" style="width: 200px; text-align: center;"/>
 							</@display.table>
+							<#if usuario.usuarioFortes>
+								<button onclick="javascript: newConfirm('Confirma exclusão de todas as pendências selecioandas?', function(){$('.btnExcluir').css({ opacity: 0.4 }); $('.btnExcluir').attr('disabled', 'disabled'); $('#removerMultiplasPendenciasAC').submit();});" class="btnExcluir" type="button" ></button>
+							</#if>
 						</#if>
 					</div>
 				</div>
-			</#if>
-		</@authz.authorize>
-	</form>
+			</form>
+		</#if>
+	</@authz.authorize>
 	
 	<div id="splash" style="display: none;">
 		<a id="fecharSplash" title="Fechar" href="javascript:;" onclick="$('#splash').dialog('close');" style="float: right; color: red;">

@@ -600,4 +600,17 @@ public final class StringUtil
 		}
 		return ret;
 	}
+	
+	public static Collection<String> getSomenteNumero(String string)
+	{
+		Collection<String> retorno = new ArrayList<String>();
+		
+		Pattern p = Pattern.compile("-?\\d+");
+		Matcher m = p.matcher(string);
+		while (m.find()) {
+			retorno.add(m.group());
+		}
+		
+		return retorno;
+	}
 }

@@ -58,6 +58,9 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public boolean desligaColaboradorAC(Empresa empresa, Date dataDesligamento, String... codigosACColaboradores) throws FortesException, Exception;
 	@Audita(operacao="Solicitação Deslig", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Character gerouSubstituicao, Long colaboradorId, Empresa empresa) throws Exception, IntegraACException;
+	@Audita(operacao="Remoção", auditor=ColaboradorAuditorCallbackImpl.class)
+	public void removeComDependencias(Long id) throws Exception;
+	public Colaborador removeColaboradorDependencias(Colaborador colaborador);
 	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Character gerouSubstituicao, Long solicitanteDemissaoId, Long colaboradorId) throws Exception;
 	public void cancelarContratacaoNoAC(Colaborador colaborador, HistoricoColaborador historicoColaborador, String mensagem) throws Exception;
 	public Collection<Colaborador> findByAreasOrganizacionalIds(Long[] idsLong);
@@ -172,7 +175,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
 	public Collection<Colaborador> findColabPeriodoExperienciaAgrupadoPorModelo(Long id, Date periodoIni, Date periodoFim, Long avaliacaoId, String[] areasCheck, String[] estabelecimentoCheck, String[] colaboradorsCheck, boolean considerarAutoAvaliacao) throws Exception;
 	public Collection<Colaborador> findByAvaliacoes(Long... avaliacaoIds);
-	public Colaborador removeColaboradorDependencias(Colaborador colaborador);
 	public Colaborador findByCodigoACEmpresaCodigoAC(String codigoAC, String empresaCodigoAC, String grupoAC);
 	public void enviaEmailAniversariantes(Collection<Empresa> empresas) throws Exception;
 	public Collection<Colaborador> findByEstabelecimentoDataAdmissao(Long estabelecimentoId, Date dataAdmissao, Long empresaId);
@@ -207,7 +209,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC, boolean semcodigoAc);
 	public void desvinculaCandidato(Long candidatoId);
 	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId, Long[] areasIdsPorResponsavel);
-	public void removeComDependencias(Long id) throws Exception;
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds);
 	public Collection<Colaborador> findColaboradoresByCodigoAC(Long empresaId, boolean joinComHistorico, String... codigosACColaboradores);
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId);

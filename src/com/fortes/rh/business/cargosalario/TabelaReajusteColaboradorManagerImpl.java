@@ -273,7 +273,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 		Collection<FaixaSalarialHistorico> historicos = faixaSalarialHistoricoManager.findByTabelaReajusteId(tabelaReajusteColaboradorId);
 		
 		for (FaixaSalarialHistorico faixaSalarialHistorico : historicos) 
-			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), empresa);
+			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), empresa, true);
 		
 		getDao().updateSetAprovada(tabelaReajusteColaboradorId, false);
 	}

@@ -366,4 +366,12 @@ public class StringUtilTest extends TestCase
     	assertFalse(StringUtil.equalsIgnoreCaseAcento("Escobar", "ESCOBARr"));
     }
     
+    public void testGetSomenteNumero()
+    {
+    	Collection<String> retorno = StringUtil.getSomenteNumero("There are more than -2 and less than 12 numbers here");
+    	
+    	assertEquals(2, retorno.size());
+    	assertEquals("-2", (String) retorno.toArray()[0]);
+    	assertEquals("12", (String) retorno.toArray()[1]);
+    }
 }

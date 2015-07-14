@@ -52,9 +52,21 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		Colaborador colaborador = (Colaborador) metodo.getParametros()[0];
 		colaborador = carregaEntidade(metodo, colaborador);
 		
+		String dados = new GeraDadosAuditados(new Object[]{colaborador}, null).gera();
+
 		metodo.processa();
 		
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
+	}
+	
+	public Auditavel removeComDependencias(MetodoInterceptado metodo) throws Throwable {
+		
+		Colaborador colaborador = new Colaborador("", (Long) metodo.getParametros()[0]);
+		colaborador = carregaEntidade(metodo, colaborador);
+		
 		String dados = new GeraDadosAuditados(new Object[]{colaborador}, null).gera();
+
+		metodo.processa();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
 	}

@@ -283,7 +283,7 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		this.transactionManager = transactionManager;
 	}
 
-	public void remove(Long faixaSalarialHistoricoId, Empresa empresa) throws Exception
+	public void remove(Long faixaSalarialHistoricoId, Empresa empresa, boolean removerDoAC) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -291,7 +291,7 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 
 		try
 		{
-			if(empresa.isAcIntegra())
+			if(removerDoAC && empresa.isAcIntegra())
 				acPessoalClientCargo.deleteFaixaSalarialHistorico(faixaSalarialHistoricoId, empresa);
 
 			remove(faixaSalarialHistoricoId);
@@ -324,7 +324,8 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 			pendenciaAC.setDetalhes("Cadastro do histórico da faixa salarial "+faixaSalarialHistorico.getFaixaSalarial().getNome()+ " do cargo "+faixaSalarialHistorico.getFaixaSalarial().getCargo().getNome());
 			pendenciaAC.setStatus(faixaSalarialHistorico.getStatus());
 			pendenciaAC.setRole("ROLE_CAD_CARGO");
-			pendenciaAC.setLinkExcluir("newConfirm('Confirma exclusão da pendência do novo histórico da faixa salarial?', function(){window.location='removePendenciaACHistoricoFaixaSalarial.action?faixaSalarialHistoricoId="+ faixaSalarialHistorico.getId() + "'});");
+			pendenciaAC.setMsg("Confirma exclusão da pendência do novo histórico da faixa salarial?");
+			pendenciaAC.setAction("removePendenciaACHistoricoFaixaSalarial.action?faixaSalarialHistoricoId="+ faixaSalarialHistorico.getId());
 
 			pendenciaACs.add(pendenciaAC);
 		}

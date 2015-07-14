@@ -253,7 +253,7 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		faixaSalarialHistoricoDao.expects(once()).method("remove").with(eq(faixaSalarialHistorico.getId()));
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 
-		faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), empresa);
+		faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), empresa, true);
 	}
 
 	public void testRemoveException() throws Exception
@@ -272,7 +272,7 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 
 		try
 		{
-			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), empresa);
+			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), empresa, true);
 		}
 		catch (Exception e)
 		{

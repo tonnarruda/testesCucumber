@@ -11,8 +11,9 @@ public class PendenciaAC
 	private String pendencia;
 	private String detalhes;
 	private int status;
-	private String linkExcluir;
-	private String role;
+	private String action;
+	private String msg;
+	private String role = "";
 	private boolean statusCancelado;
 	
 	private HistoricoColaborador historicoColaborador;
@@ -38,17 +39,20 @@ public class PendenciaAC
 			String nomeCargo = historicoColaborador.getFaixaSalarial().getNomeDoCargo();
 			detalhes.append(" Admissão: ").append(dataAdmissao).append(". Cargo: ").append(nomeCargo);
 			setRole("ROLE_COLAB_LIST_EXCLUIR");
-			setLinkExcluir("newConfirm('Confirma exclusão da pendência da contratação do colaborador?', function(){window.location='removePendenciaACColaborador.action?colaboradorId=" + historicoColaborador.getColaborador().getId() + "'});");
+			setMsg("Confirma exclusão da pendência da contratação do colaborador?");
+			setAction("removePendenciaACColaborador.action?colaboradorId=" + historicoColaborador.getColaborador().getId());
+			
 		}
 		else
 		{
-			this.pendencia = "Nova Histórico de Colaborador";
+			this.pendencia = "Novo Histórico de Colaborador";
 			
 			detalhes.append("Histórico do colaborador "+historicoColaborador.getColaborador().getNomeComercial() + ".");
 			String dataHistorico = DateUtil.formataDiaMesAno(historicoColaborador.getData());
 			detalhes.append(" Data: ").append(dataHistorico);
 			setRole("ROLE_CAD_HISTORICOCOLABORADOR");
-			setLinkExcluir("newConfirm('Confirma exclusão da pendência do novo histórico de colaborador?', function(){window.location='removePendenciaACHistoricoColaborador.action?historicoColaboradorId=" + historicoColaborador.getId() + "&colaboradorId=" + historicoColaborador.getColaborador().getId() + "'});");
+			setMsg("Confirma exclusão da pendência do novo histórico de colaborador?");
+			setAction("removePendenciaACHistoricoColaborador.action?historicoColaboradorId=" + historicoColaborador.getId() + "&colaboradorId=" + historicoColaborador.getColaborador().getId());
 		}
 		
 		this.detalhes = detalhes.toString();
@@ -83,14 +87,6 @@ public class PendenciaAC
 	{
 		this.detalhes = detalhes;
 	}
-	public String getLinkExcluir() 
-	{
-		return this.linkExcluir;
-	}
-	public void setLinkExcluir(String linkExcluir) 
-	{
-		this.linkExcluir = linkExcluir;
-	}
 	public String getRole() 
 	{
 		return role;
@@ -102,5 +98,21 @@ public class PendenciaAC
 	public boolean isStatusCancelado() 
 	{
 		return StatusRetornoAC.CANCELADO == status;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
 	}
 }

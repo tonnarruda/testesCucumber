@@ -1649,7 +1649,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			transactionManager.rollback(status);
 		}
 
-		if(colaboradorTmp.getCamposExtras() != null && colaboradorTmp.getCamposExtras().getId() != null)
+		if(colaboradorTmp.getCamposExtras() != null && colaboradorTmp.getCamposExtras().getId() != null && !candidatoManager.existeCamposExtras(colaboradorTmp.getCamposExtras().getId()))
 			camposExtrasManager.remove(colaboradorTmp.getCamposExtras().getId());
 
 		
@@ -2509,7 +2509,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			pendenciaAC.setDetalhes("Solicitação de desligamento do colaborador "+colaborador.getNome());
 			pendenciaAC.setStatus(StatusRetornoAC.AGUARDANDO);
 			pendenciaAC.setRole("ROLE_COLAB_LIST_DESLIGAR");
-			pendenciaAC.setLinkExcluir("newConfirm('Confirma exclusão da pendência da solicitação de desligamento?', function(){window.location='removePendenciaACSolicitacaoDesligamento.action?colaboradorId="+ colaborador.getId() + "'});");
+			pendenciaAC.setMsg("Confirma exclusão da pendência da solicitação de desligamento?");
+			pendenciaAC.setAction("removePendenciaACSolicitacaoDesligamento.action?colaboradorId="+ colaborador.getId());
 
 			pendenciaACs.add(pendenciaAC);
 		}

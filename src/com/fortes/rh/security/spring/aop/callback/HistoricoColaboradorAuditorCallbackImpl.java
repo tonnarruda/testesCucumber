@@ -48,9 +48,9 @@ public class HistoricoColaboradorAuditorCallbackImpl implements AuditorCallback 
 		hist.setId(historicoId);
 		HistoricoColaborador historico = carregaEntidade(metodo, hist);
 		
-		metodo.processa();
-		
 		String dados = new GeraDadosAuditados(new Object[]{historico}, null).gera();
+		
+		metodo.processa();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), "", dados);
 	}

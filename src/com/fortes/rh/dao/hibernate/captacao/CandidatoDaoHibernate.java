@@ -1438,4 +1438,17 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		
 		query.executeUpdate();
 	}
+
+	public boolean existeCamposExtras(Long camposExtrasId) 
+	{
+		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("c.camposExtras.id", camposExtrasId));
+
+		return criteria.list().size() > 0;
+	}
 }
