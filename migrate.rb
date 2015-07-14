@@ -57,6 +57,25 @@ elsif ARGV[0] == '--deploy'
 	File.open("#{fortesrh_home}/web/WEB-INF/metadata/update.sql",'a'){|f| f.write "\n-- versao #{version}\n" + sql_migrates + close_version}
 	puts "update editado com sucesso."
 	
+elsif ARGV[0] == '--valida_migrates'
+	fortesrh_home = ARGV[1] || '.'
+	
+	migrates_update = File.readlines("#{fortesrh_home}/web/WEB-INF/metadata/update.sql").grep(/insert into migrations values\('(\d{14})'\);--.go/){$1}
+
+  migrates_nao_contidas_no_update = []
+	Dir.glob("#{fortesrh_home}/web/WEB-INF/metadata/migrate/*.sql").sort_by {|f| File.basename f}.each do |file| 
+    unless migrates_update.include?(file.match(/\d{14}/).to_s)
+      migrates_nao_contidas_no_update << file.match(/\d{14}.*/)
+    end
+	end
+  
+  if migrates_nao_contidas_no_update.size > 0
+    puts "Migrates nao contidas no update.sql."
+    migrates_nao_contidas_no_update.each{|nome| puts nome}
+  else
+    puts "As migrates foram avaliadas com sucesso e nao existem divergencias."
+  end
+  
 elsif ARGV[0] == '--update-db-vazio'
   	version = ARGV[1] || 'INSIRA_NUMERO_VERSAO'
   	fortesrh_home = ARGV[2] || '.'

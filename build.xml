@@ -181,6 +181,17 @@
 			<arg value="${versao.atualizador}" />
 			<arg value="${ant.project.name}" />
 		</exec>
+		
+		<antcall target="verifica-migrates-update-sql"></antcall>
+	</target>
+
+	<target name="verifica-migrates-update-sql">
+		<echo message="----------------- Verificacao de migrates que constam na pasta do FortesRH e nao constam no update.sql -----------------" />
+		<exec executable="ruby">
+			<arg value="${ant.project.name}/migrate.rb" />
+			<arg value="--valida_migrates" />
+			<arg value="${ant.project.name}" />
+		</exec>
 	</target>
 	
 	<target name="recreate-bd-vazio">

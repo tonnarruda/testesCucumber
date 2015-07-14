@@ -82,5 +82,4 @@ public class ArquivoUtilTest extends TestCase
     {
     	assertNotNull(ArquivoUtil.getPathExterno());
     }
-    
 }

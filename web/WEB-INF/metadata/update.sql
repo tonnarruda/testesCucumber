@@ -18396,6 +18396,7 @@ update parametrosdosistema set appversao = '1.1.64.56';--.go
 
 insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (529, 'LIST_SEM_CODIGOAC', 'Apaga Reg. sem Código AC', '/geral/parametrosDoSistema/prepareDeleteSemCodigoAC.action', 9, true, 37);--.go
 insert into perfil_papel(perfil_id, papeis_id) values (1, 529); --.go
+insert into migrations values('20111111141724');--.go
 
 update curso set cargahoraria = cargahoraria*60;--.go
 insert into migrations values('20111219162029');--.go

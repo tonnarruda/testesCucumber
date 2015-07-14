@@ -1,1 +1,0 @@
-alter table avaliacao add column avaliarCompetenciasCargo boolean not null default false;--.go
