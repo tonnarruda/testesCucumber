@@ -18,7 +18,6 @@ import org.apache.commons.beanutils.BeanComparator;
 import org.springframework.core.NestedRuntimeException;
 
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
-import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaturamentoMensalManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
@@ -75,6 +74,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private HistoricoColaborador historicoColaborador;
 	private Colaborador colaborador;
 
+	private Collection<CheckBox> ocorrenciasCheckList = new ArrayList<CheckBox>();
+	private String[] ocorrenciasCheck;
 	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
 	private String[] empresasCheck;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
@@ -169,6 +170,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Long[] areasIds = LongUtil.arrayStringToArrayLong(areasCheck);
 		Long[] cargosIds = LongUtil.arrayStringToArrayLong(cargosCheck);
 		Long[] estabelecimentosIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
+		Long[] ocorrenciasIds = LongUtil.arrayStringToArrayLong(ocorrenciasCheck);
 		
 		Date hoje = new Date();
 		dataBase = (dataBase == null) ? hoje : dataBase;
@@ -208,7 +210,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
 		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
 		
-		Collection<DataGrafico> graficoOcorrencia = colaboradorManager.countOcorrencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItensOcorrencia);
+		Collection<DataGrafico> graficoOcorrencia = colaboradorManager.countOcorrencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, ocorrenciasIds, qtdItensOcorrencia);
 		Collection<DataGrafico> graficoProvidencia = colaboradorManager.countProvidencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItensOcorrencia);
 
 		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIniDeslig, dataFimDeslig, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItensDesligamento);
@@ -1087,5 +1089,21 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setConfiguracaoNivelCompetenciaColaboradorManager(ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
 		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
+	}
+
+	public Collection<CheckBox> getOcorrenciasCheckList() {
+		return ocorrenciasCheckList;
+	}
+
+	public void setOcorrenciasCheckList(Collection<CheckBox> ocorrenciasCheckList) {
+		this.ocorrenciasCheckList = ocorrenciasCheckList;
+	}
+
+	public String[] getOcorrenciasCheck() {
+		return ocorrenciasCheck;
+	}
+
+	public void setOcorrenciasCheck(String[] ocorrenciasCheck) {
+		this.ocorrenciasCheck = ocorrenciasCheck;
 	}
 }

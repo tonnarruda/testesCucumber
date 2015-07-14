@@ -44,6 +44,7 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/grafico.js?version=${versao}"/>'></script>
 		
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/EstabelecimentoDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
@@ -120,9 +121,23 @@
 				<#list 0..(tempoServicoIni?size-1) as i>
 					addPeriodo(${tempoServicoIni[i]}, ${tempoServicoFim[i]});
 				</#list>
+				
 			});
 			
 			var popup;
+			
+			function populaOcorrencias() {
+				DWRUtil.useLoadingMessage('Carregando...');
+				var dataIni = $("#dataIni").val();
+				var dataFim = $("#dataFim").val();
+				var qtdItens = $("#qtdItensOcorrencia").val();
+				var areasIds = getArrayCheckeds(document.forms[0],'areasCheck');
+				var empresaIds = getArrayCheckeds(document.forms[0],'empresasCheck');
+				var estabelecimentosIds =  getArrayCheckeds(document.forms[0],'estabelecimentosIds');
+				var cargosIds =  getArrayCheckeds(document.forms[0],'cargosIds');
+
+				ColaboradorDWR.getOcorrenciasByPeriodo(createListOcorrenciasByPeriodo, dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItens, "getDescricao", 0);
+			}
 			
 			function montaGraficoLinha(dados, obj, titulo, precisao)
 			{
@@ -219,7 +234,7 @@
 	
 			function createListAreas(data)
 			{
-				addChecks('areasCheck', data, 'populaCargosByAreaVinculados()');
+				addChecks('areasCheck', data, 'populaCargosByAreaVinculados();populaOcorrencias();');
 			}
 			
 			function populaCargosByAreaVinculados()
@@ -244,6 +259,11 @@
 			function createListCargosByArea(data)
 			{
 				addChecks('cargosCheck',data);
+			}
+			
+			function createListOcorrenciasByPeriodo(data)
+			{
+				addChecks('ocorrenciasCheck',data);
 			}
 			
 			function delPeriodo(item)
@@ -342,18 +362,18 @@
 						</tr>
 						<tr>
 							<td>
-								<@frt.checkListBox label="Empresas" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" onClick="populaAreas();populaEstabelecimentos();" width="450" filtro="true"/>
+								<@frt.checkListBox label="Empresas" name="empresasCheck" list="empresasCheckList" form="document.getElementById('formBusca')" onClick="populaAreas();populaEstabelecimentos();populaOcorrencias();" width="450" filtro="true"/>
 							</td>
 							<td>
-								<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" form="document.getElementById('formBusca')" width="450" filtro="true"/>
+								<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" onClick="populaOcorrencias();" form="document.getElementById('formBusca')" width="450" filtro="true"/>
 							</td>
 						</tr>
 					    <tr>
 							<td>
-								<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" onClick="populaCargosByAreaVinculados();" width="450" filtro="true" selectAtivoInativo="true"/>
+								<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" onClick="populaCargosByAreaVinculados();populaOcorrencias();" width="450" filtro="true" selectAtivoInativo="true"/>
 							</td>
 							<td>
-								<@frt.checkListBox label="Cargos" name="cargosCheck" id="cargosCheck" list="cargosCheckList" width="450" filtro="true" selectAtivoInativo="true"/>
+								<@frt.checkListBox label="Cargos" name="cargosCheck" id="cargosCheck" list="cargosCheckList" onClick="populaOcorrencias();" width="450" filtro="true" selectAtivoInativo="true"/>
 							</td>
 						</tr>
 						<tr>
@@ -377,17 +397,21 @@
 										<table>
 											<tr>
 												<td>
-													<@ww.datepicker label="Data Início" name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
-													<@ww.datepicker label="Data Fim" name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" liClass="liLeft"/>
+													<@ww.datepicker label="Data Início" name="dataIni" id="dataIni" value="${dateIni}" cssClass="mascaraData validaDataIni" liClass="liLeft" onchange="populaOcorrencias()" onblur="populaOcorrencias()" />
+													<@ww.datepicker label="Data Fim" name="dataFim" id="dataFim" value="${dateFim}" onchange="populaOcorrencias()" onblur="populaOcorrencias()"  cssClass="mascaraData validaDataFim" liClass="liLeft"/>
 												</td>
 												<td valign="bottom">
 													Exibir os
-													<@ww.textfield theme="simple" name="qtdItensOcorrencia" value="${qtdItensOcorrencia}" id="qtdItensOcorrencia" cssStyle="width:20px; text-align:right;" maxLength="2" onkeypress="return(somenteNumeros(event,''));"/> 
+													<@ww.textfield theme="simple" name="qtdItensOcorrencia" value="${qtdItensOcorrencia}" id="qtdItensOcorrencia" onchange="populaOcorrencias()" cssStyle="width:20px; text-align:right;" maxLength="2" onkeypress="return(somenteNumeros(event,''));"/> 
 													itens de maior percentual.
 												</td>
 											</tr>
 										</table>
 									</fieldset>
+									
+									<div>
+										<@frt.checkListBox label="Ocorrências" name="ocorrenciasCheck" id="ocorrenciasCheck" list="ocorrenciasCheckList" width="450" filtro="true" selectAtivoInativo="true"/>
+									</div>
 								</div>
 								
 								<div class="conteudo-3 conteudo-aba">
@@ -541,6 +565,7 @@
 							 	</div>
 							</td>
 						</tr>
+						
 					</table>
 				</div>
 				

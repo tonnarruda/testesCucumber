@@ -21,6 +21,7 @@ import com.fortes.rh.model.dicionario.VerificacaoParentesco;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
@@ -314,6 +315,27 @@ public class ColaboradorDWR
     	
     	return dados;
     }
+    
+    public Map getOcorrenciasByPeriodo(String dataIni, String dataFim, Long[] empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, int qtdItens){
+    	Date dataInicio = null;
+    	Date dataFinal = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		
+		try
+		{
+			dataInicio = sdf.parse(dataIni);
+			dataFinal = sdf.parse(dataFim);
+		} 
+		catch (ParseException e) {
+			return null;
+		}
+    	
+		Collection<Long> empresas = new CollectionUtil<Long>().convertArrayToCollection(empresaIds);
+		
+		Collection<Ocorrencia> ocorrencias = colaboradorManager.getOcorrenciasByPeriodo(dataInicio, dataFinal, empresas, estabelecimentosIds, areasIds, cargosIds, qtdItens);
+		
+		return new CollectionUtil<Ocorrencia>().convertCollectionToMap(ocorrencias,"getId","getDescricao");
+	}
     
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{

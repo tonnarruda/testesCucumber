@@ -50,6 +50,7 @@ import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -3969,23 +3970,32 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 	
-	public Collection<DataGrafico> countOcorrencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
-	{
+	public Criteria criteriaOcorrenciaByPeriodo(Date dataIni, Date dataFim, int qtdItens) {
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("c.colaboradorOcorrencia", "co", Criteria.LEFT_JOIN);
 		criteria.createCriteria("co.ocorrencia", "o");
 		
 		ProjectionList projections = Projections.projectionList().create();
-		projections.add(Projections.groupProperty("o.descricao"));
+		projections.add(Projections.groupProperty("o.descricao"), "descricao");
 		projections.add(Projections.count("co.id"));
+		projections.add(Projections.groupProperty("o.id"), "id");
 		criteria.setProjection(projections);
 		
 		criteria.add(Expression.between("co.dataIni", dataIni, dataFim));
 		
-		criteria.addOrder(OrderBySql.sql("2 asc"));
+		criteria.addOrder(OrderBySql.sql("2 desc"));
 		criteria.addOrder(Order.asc("o.descricao"));
 		
 		criteria.setMaxResults(qtdItens);
+		
+		return criteria;
+	}
+	
+	public Collection<DataGrafico> countOcorrencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Long[] ocorrenciasIds, int qtdItens) 
+	{
+		Criteria criteria = criteriaOcorrenciaByPeriodo(dataIni, dataFim, qtdItens);
+		if (LongUtil.arrayIsNotEmpty(ocorrenciasIds))
+			criteria.add(Restrictions.in("o.id", ocorrenciasIds));
 		
 		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, true).list();
 		
@@ -4000,6 +4010,17 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			dataGraficos.add(new DataGrafico(null, ocorrencia, qtd, ""));
 		}
 		return dataGraficos;
+	}
+	
+	public Collection<Ocorrencia> getOcorrenciasByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
+	{
+		Criteria criteria = criteriaOcorrenciaByPeriodo(dataIni, dataFim, qtdItens);
+		
+		criteria = configuraCriteriaParaPainelDeIncadores(criteria, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, true);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Ocorrencia.class));
+		List<Ocorrencia> resultado = criteria.list();
+		
+		return resultado;
 	}
 	
 	public Collection<DataGrafico> countProvidencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
