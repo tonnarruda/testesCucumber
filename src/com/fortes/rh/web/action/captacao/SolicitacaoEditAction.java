@@ -256,7 +256,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
         bairrosCheckList = CheckListBoxUtil.marcaCheckListBox(bairrosCheckList, bairroManager.getBairrosBySolicitacao(solicitacao.getId()), "getId");
         
-        if(solicitacao.getStatus() != 'I' && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"})) {
+        if(solicitacao.getStatus() != StatusAprovacaoSolicitacao.ANALISE && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"})) {
         	addActionMessage("Esta solicitação está aprovada ou reprovada. Só é possível visualizá-la.");
         	somenteLeitura = true;
         } else if ( SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}) &&

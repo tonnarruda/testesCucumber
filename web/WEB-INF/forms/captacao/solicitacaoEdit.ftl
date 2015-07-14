@@ -288,7 +288,12 @@
 				<@ww.textfield readonly="true" label="Data" name="solicitacao.data" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData" cssStyle="background: #EBEBEB;" liClass='liLeft'/>
 				<img id="dataHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-top: 17px" /></br></br>
 			<#else>
-				<@ww.datepicker label="Data" name="solicitacao.data" required="true" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData"/>
+				<@authz.authorize ifAllGranted="ROLE_EDITA_DATA_SOLICITACAO">
+					<@ww.datepicker label="Data" name="solicitacao.data" required="true" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData"/>
+				</@authz.authorize>
+				<@authz.authorize ifNotGranted="ROLE_EDITA_DATA_SOLICITACAO">
+					<@ww.textfield readonly="true" label="Data" name="solicitacao.data" id="dataSol" value="${DataSolicitacao}" cssClass="mascaraData" cssStyle="background: #EBEBEB;"/>
+				</@authz.authorize>
 			</#if>	
 			
 			<@ww.textfield label="Descrição" name="solicitacao.descricao" id="descricao" cssClass="inputNome" maxlength="67" required="true"/>
