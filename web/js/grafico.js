@@ -40,7 +40,7 @@ function montaLine(data, idGrafico, precisao, options) {
 	});
 }
 
-function montaPie(data, clazz, options) {
+function montaPie(data, clazz, options, showDatasCombine) {
 	var config = {
         radius: 0.8,
         radiusLabel: 1, 
@@ -106,6 +106,21 @@ function montaPie(data, clazz, options) {
 			labelFormatter : config.legendLabelFormatter
 		}
 	});
+	
+	
+	if ( showDatasCombine && $(clazz+"Legenda").find(".legend").last().html().indexOf("Outros") >= 0 ) {
+		var sum = 0;
+		$(data).each(function(){
+			sum+= this.data;
+		});
+		
+		$(data).each(function(){
+			var percent = 100*this.data/sum;
+			if (percent <= config.combinePercentMin*100)
+				$(clazz+"Legenda").find(".legendLabel").last().append("<span class=\"legend\">"+ this.label + " - " + percent.toFixed(2) +"% ("+this.data+")</span>");
+		});
+	}
+	
 }
 
 function showTooltip(x, y, contents) 

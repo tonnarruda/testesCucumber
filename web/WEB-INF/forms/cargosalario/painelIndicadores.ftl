@@ -35,6 +35,10 @@
 		fieldset { padding: 10px; margin-bottom: 10px; background: inherit; }
 		
 		.subForm { width: 100%; }
+		
+		.legend { float: left; width: 100%; }
+		.grid-cell table tr td { vertical-align: top;}
+		.grid-cell table tr td.legendLabel { min-width: 150px;}
 	</style>
 	
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
@@ -79,7 +83,7 @@
 				montaGraficoPizza(${grfEstadoCivil}, "#estadoCivil", {percentMin: 0.02}, "Estado Civil");
 				montaGraficoPizza(${grfDeficiencia}, "#deficiencia", {percentMin: 0.03}, "Deficiência");
 				montaGraficoPizza(${grfColocacao}, "#colocacao", {percentMin: 0.02}, "Colocação");
-				montaGraficoPizza(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, combinePercentMin: 0.03}, "Ocorrências");
+				montaGraficoPizza(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, combinePercentMin: 0.03}, "Ocorrências", true);
 				montaGraficoPizza(${grfProvidencia}, "#providencia", {percentMin: 0.02, radiusLabel:0.9}, "Providências");
 				montaGraficoPizza(${grfFormacaoEscolars}, "#formacaoEscolar", {pieLeft:-190}, "Formação Escolar");
 				montaGraficoPizza(${grfSexo}, "#sexo", {percentMin:0}, "Sexo");
@@ -126,6 +130,13 @@
 			
 			var popup;
 			
+			function montaGraficoPizzaOcorrencia(exibeOutros) {
+				if (exibeOutros)
+					montaGraficoPizza(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, combinePercentMin: 0.00}, "Ocorrências");
+				else
+					montaGraficoPizza(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, combinePercentMin: 0.03}, "Ocorrências");
+			}
+			
 			function populaOcorrencias() {
 				DWRUtil.useLoadingMessage('Carregando...');
 				var dataIni = $("#dataIni").val();
@@ -162,12 +173,12 @@
 			}
 			
 			
-			function montaGraficoPizza(dados, obj, configGrafico, titulo)
+			function montaGraficoPizza(dados, obj, configGrafico, titulo, showDatasCombine)
 			{
 				configGrafico.noColumns = 2;
 				configGrafico.container = obj + "Legenda"; 
 
-				montaPie(dados, obj, configGrafico);
+				montaPie(dados, obj, configGrafico, showDatasCombine);
 				
 				$(obj + "Imprimir")
 						.unbind()
