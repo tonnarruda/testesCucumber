@@ -270,9 +270,9 @@
 				<param name="dataSource">colaboradors</param>
 				<param name="documentName">relatorio_de_admitidos.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Estabelecimento,Área Organizacional,Colaborador,Cargo/Faixa,Admissão,Motivo da Admissão,Turnover</param>
+				<param name="columns">Estabelecimento,Área Organizacional,Colaborador,Matrícula,Cargo/Faixa,Admissão,Motivo da Admissão,Turnover</param>
 				<param name="propertiesGroup">estabelecimento.id,areaOrganizacional.id</param>
-				<param name="properties">estabelecimento.nome,areaOrganizacional.nome,nome,faixaSalarial.nomesDeCargoEFaixa,dataAdmissaoFormatada,solicitacao.motivoSolicitacao.descricao,solicitacao.motivoSolicitacao.turnoverFormatado</param>
+				<param name="properties">estabelecimento.nome,areaOrganizacional.nome,nomeComercialDesligado,matricula,faixaSalarial.nomesDeCargoEFaixa,dataAdmissaoFormatada,solicitacao.motivoSolicitacao.descricao,solicitacao.motivoSolicitacao.turnoverFormatado</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>		

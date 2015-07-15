@@ -402,7 +402,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		if (nome.equals(nomeComercial))
 			this.nomeComercial = "";
 		else
-			this.nomeComercial = " (" + nomeComercial + ")";
+			this.nomeComercial = nomeComercial;
 
 		if(this.faixaSalarial == null)
 			this.faixaSalarial = new FaixaSalarial();
