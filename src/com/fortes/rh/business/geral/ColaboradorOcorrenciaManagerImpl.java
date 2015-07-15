@@ -228,7 +228,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		return getDao().verifyExistsMesmaData(colaboradorOcorrenciaId, colaboradorId, ocorrenciaId, empresaId, dataIni);
 	}
 
-	public Collection<Absenteismo> montaAbsenteismo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasIds, Collection<Long> afastamentosIds, Collection<Long> cargosIds, boolean considerarSabadoNoAbsenteismo) throws Exception 
+	public Collection<Absenteismo> montaAbsenteismo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> ocorrenciasIds, Collection<Long> afastamentosIds, Collection<Long> cargosIds, Empresa empresaLogada) throws Exception 
 	{
 		Collection<Absenteismo> absenteismos = getDao().countFaltasByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, ocorrenciasIds);
 		Collection<Absenteismo> afastamentos = colaboradorAfastamentoManager.countAfastamentosByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, afastamentosIds);
@@ -241,8 +241,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 				{
 					Date inicioDoMes = DateUtil.criarDataMesAno(1, Integer.parseInt(absenteismo.getMes()), Integer.parseInt(absenteismo.getAno()));
 					absenteismo.setQtdAtivos(colaboradorManager.countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(inicioDoMes), empresaIds, estabelecimentosIds, areasIds, cargosIds, ocorrenciasIds, true, null, true));
-					absenteismo.setQtdDiasTrabalhados(DateUtil.contaDiasUteisMes(inicioDoMes, considerarSabadoNoAbsenteismo));
-		
+					setQtdDiasTrabalhados(empresaLogada, absenteismo, inicioDoMes);
 					absenteismo.setQtdTotalFaltas(absenteismo.getQtdTotalFaltas() + afastamento.getQtdTotalFaltas());
 					
 					if(!absenteismo.getQtdTotalFaltas().equals(0))
@@ -255,6 +254,19 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 			throw new ColecaoVaziaException();
 		
 		return absenteismos;
+	}
+
+	private void setQtdDiasTrabalhados(Empresa empresaLogada, Absenteismo absenteismo, Date inicioDoMes) 
+	{
+		boolean considerarSabadoNoAbsenteismo = false;
+		boolean considerarDomingoNoAbsenteismo = false;
+		
+		if(empresaLogada != null){
+			considerarSabadoNoAbsenteismo = empresaLogada.isConsiderarSabadoNoAbsenteismo();
+			considerarDomingoNoAbsenteismo = empresaLogada.isConsiderarDomingoNoAbsenteismo();
+		}
+		
+		absenteismo.setQtdDiasTrabalhados(DateUtil.contaDiasUteisMes(inicioDoMes, considerarSabadoNoAbsenteismo, considerarDomingoNoAbsenteismo));
 	}
 	
 	public void setTransactionManager(PlatformTransactionManager transactionManager)
@@ -275,14 +287,14 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		this.acPessoalClientColaboradorOcorrencia = acPessoalClientColaboradorOcorrencia;
 	}
 
-	public Collection<Object[]> montaGraficoAbsenteismo(String dataMesAnoIni, String dataMesAnoFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, boolean considerarSabadoNoAbsenteismo) 
+	public Collection<Object[]> montaGraficoAbsenteismo(String dataMesAnoIni, String dataMesAnoFim, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Empresa empresaLogada) 
 	{
 		Collection<Object[]>  graficoEvolucaoAbsenteismo = new ArrayList<Object[]>();
 		Date dataIni = DateUtil.criarDataMesAno(dataMesAnoIni);
 		Date dataFim = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(dataMesAnoFim));
 
 		try {
-			Collection<Absenteismo> absenteismos = montaAbsenteismo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, null, null, cargosIds, considerarSabadoNoAbsenteismo);
+			Collection<Absenteismo> absenteismos = montaAbsenteismo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, null, null, cargosIds, empresaLogada);
 			
 			for (Absenteismo absenteismo : absenteismos) 
 			{

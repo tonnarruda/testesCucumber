@@ -855,7 +855,7 @@ public class DateUtil
 		return (data.compareTo(inicio) >= 0 && data.compareTo(fim) <= 0);
 	}
 
-	public static int contaDiasUteisMes(Date data, boolean considerarSabadoNoAbsenteismo)
+	public static int contaDiasUteisMes(Date data, boolean considerarSabadoNoAbsenteismo, boolean considerarDomingoNoAbsenteismo)
 	{  
 		Date dataInicial = getInicioMesData(data);
 		Date dataFinal = getUltimoDiaMes(data);
@@ -870,6 +870,9 @@ public class DateUtil
 	        	diasUteis++;  
 	        
 	        if ( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY && considerarSabadoNoAbsenteismo) 
+	        	diasUteis++;
+	        
+	        if ( calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY && considerarDomingoNoAbsenteismo) 
 	        	diasUteis++;
 	       
 	        calendar.add( Calendar.DATE, 1);  

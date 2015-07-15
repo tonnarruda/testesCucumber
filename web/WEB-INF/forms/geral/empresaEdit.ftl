@@ -198,7 +198,8 @@
 			<@ww.div cssClass="divInfo">
 				<h2>Cálculo de Absenteísmo</h2>
 				<ul>
-					<@ww.checkbox label="Considerar sábado como dia útil" id="considerarSabadoNoAbsenteismo" name="empresa.considerarSabadoNoAbsenteismo" liClass="liLeft" labelPosition="left"/>
+					<@ww.checkbox label="Considerar sábado como dia útil" name="empresa.considerarSabadoNoAbsenteismo" liClass="liLeft" labelPosition="left"/>
+					<@ww.checkbox label="Considerar domingo como dia útil" name="empresa.considerarDomingoNoAbsenteismo" liClass="liLeft" labelPosition="left"/>
 				</ul>
 			</@ww.div>
 		</li>
