@@ -30,6 +30,7 @@ public class ComissaoPlanoTrabalhoDWR
 			retorno.put("detalhes", comissaoPlanoTrabalho.getDetalhes());
 			retorno.put("situacao", comissaoPlanoTrabalho.getSituacao());
 			retorno.put("responsavelId", comissaoPlanoTrabalho.getResponsavel().getId());
+			retorno.put("coresponsavelId", comissaoPlanoTrabalho.getCoresponsavel().getId());
 
 		} catch (Exception e)
 		{

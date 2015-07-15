@@ -40,6 +40,8 @@ public class ComissaoPlanoTrabalho extends AbstractModel implements Serializable
 	private Comissao comissao;
 	@ManyToOne
 	private Colaborador responsavel;
+	@ManyToOne
+	private Colaborador coresponsavel;
 
 	public String getPrazoFormatado()
     {
@@ -58,6 +60,7 @@ public class ComissaoPlanoTrabalho extends AbstractModel implements Serializable
 
 		comissao.setId(comissaoId);
 	}
+	
 	public void setProjectionResponsavelId(Long responsavelId)
 	{
 		if (responsavel == null)
@@ -71,6 +74,21 @@ public class ComissaoPlanoTrabalho extends AbstractModel implements Serializable
 			responsavel = new Colaborador();
 
 		responsavel.setNome(responsavelNome);
+	}
+	
+	public void setProjectionCoResponsavelId(Long coresponsavelId)
+	{
+		if (coresponsavel == null)
+			coresponsavel = new Colaborador();
+
+		coresponsavel.setId(coresponsavelId);
+	}
+	public void setProjectionCoResponsavelNome(String coresponsavelNome)
+	{
+		if (coresponsavel == null)
+			coresponsavel = new Colaborador();
+
+		coresponsavel.setNome(coresponsavelNome);
 	}
 
 	public String getSituacaoDic()
@@ -174,6 +192,12 @@ public class ComissaoPlanoTrabalho extends AbstractModel implements Serializable
 		this.responsavel = responsavel;
 	}
 
+	public Colaborador getCoresponsavel() {
+		return coresponsavel;
+	}
 
+	public void setCoresponsavel(Colaborador coresponsavel) {
+		this.coresponsavel = coresponsavel;
+	}
 
 }

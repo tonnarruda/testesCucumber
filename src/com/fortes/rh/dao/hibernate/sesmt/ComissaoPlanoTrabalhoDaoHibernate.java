@@ -25,7 +25,8 @@ public class ComissaoPlanoTrabalhoDaoHibernate extends GenericDaoHibernate<Comis
 	public Collection<ComissaoPlanoTrabalho> findByComissao(Long comissaoId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"cp");
-		criteria.createCriteria("cp.responsavel", "co", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cp.responsavel", "r", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cp.coresponsavel", "cr", CriteriaSpecification.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cp.id"), "id");
@@ -35,8 +36,10 @@ public class ComissaoPlanoTrabalhoDaoHibernate extends GenericDaoHibernate<Comis
 		p.add(Projections.property("cp.prioridade"), "prioridade");
 		p.add(Projections.property("cp.parecer"), "parecer");
 		p.add(Projections.property("cp.comissao.id"), "projectionComissaoId");
-		p.add(Projections.property("co.id"), "projectionResponsavelId");
-		p.add(Projections.property("co.nome"), "projectionResponsavelNome");
+		p.add(Projections.property("r.id"), "projectionResponsavelId");
+		p.add(Projections.property("r.nome"), "projectionResponsavelNome");
+		p.add(Projections.property("cr.id"), "projectionCoResponsavelId");
+		p.add(Projections.property("cr.nome"), "projectionCoResponsavelNome");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("cp.comissao.id", comissaoId));
@@ -49,7 +52,8 @@ public class ComissaoPlanoTrabalhoDaoHibernate extends GenericDaoHibernate<Comis
 	public ComissaoPlanoTrabalho findByIdProjection(Long id)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"cp");
-		criteria.createCriteria("cp.responsavel", "co", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cp.responsavel", "r", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cp.coresponsavel", "cr", CriteriaSpecification.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cp.id"), "id");
@@ -60,8 +64,10 @@ public class ComissaoPlanoTrabalhoDaoHibernate extends GenericDaoHibernate<Comis
 		p.add(Projections.property("cp.prioridade"), "prioridade");
 		p.add(Projections.property("cp.parecer"), "parecer");
 		p.add(Projections.property("cp.comissao.id"), "projectionComissaoId");
-		p.add(Projections.property("co.id"), "projectionResponsavelId");
-		p.add(Projections.property("co.nome"), "projectionResponsavelNome");
+		p.add(Projections.property("r.id"), "projectionResponsavelId");
+		p.add(Projections.property("r.nome"), "projectionResponsavelNome");
+		p.add(Projections.property("cr.id"), "projectionCoResponsavelId");
+		p.add(Projections.property("cr.nome"), "projectionCoResponsavelNome");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("cp.id", id));

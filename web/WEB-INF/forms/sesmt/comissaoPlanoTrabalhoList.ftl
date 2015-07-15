@@ -47,6 +47,7 @@
 			document.getElementById("detalhes").value = data.detalhes;
 			document.getElementById("situacao").value = data.situacao;
 			document.getElementById("responsavelId").value = data.responsavelId;
+			document.getElementById("coresponsavelId").value = data.coresponsavelId;
 			document.getElementById("comissaoPlanoTrabalhoId").value = data.comissaoPlanoTrabalhoId;
 			//action
 			document.form.action="update.action"
@@ -69,6 +70,7 @@
 		<@display.column property="descricao" title="Descrição" style="width:480px;"/>
 		<@display.column property="situacaoDic" title="Situação" style="width:90px;"/>
 		<@display.column property="responsavel.nome" title="Responsável" />
+		<@display.column property="coresponsavel.nome" title="Corresponsável" />
 	</@display.table>
 
 	<div class="buttonGroup">
@@ -92,6 +94,7 @@
 			<@ww.select label="Prioridade" id="prioridade" name="comissaoPlanoTrabalho.prioridade" list=r"#{'A':'Alta','M':'Média','B':'Baixa'}" required="true"/>
 			<@ww.select label="Parecer da empresa" id="parecer" name="comissaoPlanoTrabalho.parecer" list=r"#{'E':'Em estudo','I':'Inviável','V':'Viável'}" required="true"/>
 			<@ww.select label="Responsável" name="comissaoPlanoTrabalho.responsavel.id" id="responsavelId" listKey="id" listValue="nome" list="colaboradors" headerKey="" headerValue="" cssStyle="width: 280px;"/>
+			<@ww.select label="Corresponsável" name="comissaoPlanoTrabalho.coresponsavel.id" id="coresponsavelId" listKey="id" listValue="nome" list="colaboradors" headerKey="" headerValue="" cssStyle="width: 280px;"/>
 
 			<@ww.hidden name="comissaoPlanoTrabalho.id" id="comissaoPlanoTrabalhoId" value=""/>
 			<@ww.hidden name="comissao.id" id="comissaoId" />

@@ -28,6 +28,7 @@ public class ComissaoPlanoTrabalhoDWRTest extends MockObjectTestCase
 		Long comissaoPlanoTrabalhoId = 1L;
 		ComissaoPlanoTrabalho comissaoPlanoTrabalho = ComissaoPlanoTrabalhoFactory.getEntity(1L);
 		comissaoPlanoTrabalho.setResponsavel(new Colaborador());
+		comissaoPlanoTrabalho.setCoresponsavel(new Colaborador());
 
 		comissaoPlanoTrabalhoManager.expects(once()).method("findByIdProjection").with(eq(comissaoPlanoTrabalhoId)).will(returnValue(comissaoPlanoTrabalho));
 		Exception exception = null;

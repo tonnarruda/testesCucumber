@@ -1,0 +1,2 @@
+alter table comissaoplanotrabalho add column coresponsavel_id bigint;--.go
+ALTER TABLE comissaoplanotrabalho ADD CONSTRAINT comissaoplanotrabalho_coresponsavel_fk FOREIGN KEY (coresponsavel_id) REFERENCES colaborador(id);--.go
