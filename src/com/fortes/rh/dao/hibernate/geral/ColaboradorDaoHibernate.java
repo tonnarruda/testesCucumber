@@ -4803,6 +4803,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				"DELETE FROM ComissaoEleicao WHERE colaborador.id = :id",
 				"DELETE FROM ComissaoMembro WHERE colaborador.id = :id",
 				"UPDATE ComissaoPlanoTrabalho SET responsavel.id = NULL WHERE responsavel.id = :id",
+				"UPDATE ComissaoPlanoTrabalho SET coresponsavel.id = NULL WHERE coresponsavel.id = :id",
 				"DELETE FROM ComissaoReuniaoPresenca WHERE colaborador.id = :id",
 				"DELETE FROM Dependente WHERE colaborador.id = :id",
 				"DELETE FROM Prontuario WHERE colaborador.id = :id",
