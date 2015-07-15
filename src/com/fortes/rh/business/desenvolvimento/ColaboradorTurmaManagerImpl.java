@@ -492,7 +492,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	{
 		// Remove os Questionarios/Respostas vinculados ao colaborador nesta turma
 		colaboradorQuestionarioManager.removeByColaboradorETurma(colaboradorTurma.getColaborador().getId(), colaboradorTurma.getTurma().getId());
-		aproveitamentoAvaliacaoCursoManager.removeByTurma(colaboradorTurma.getTurma().getId());
+		aproveitamentoAvaliacaoCursoManager.removeByColaboradorTurma(colaboradorTurma.getId());
 		super.remove(colaboradorTurma);
 	}
 

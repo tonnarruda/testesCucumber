@@ -28,7 +28,8 @@ public interface AproveitamentoAvaliacaoCursoManager extends GenericManager<Apro
 	Collection<Long> findReprovados(Date dataIni, Date dataFim, Long empresaId);
 
 	void removeByTurma(Long turmaId);
-
+	
+	void removeByColaboradorTurma(Long colaboradorTurmaId);
 	
 	Collection<ColaboradorTurma> findColaboradorTurma(Long id, int qtdAvaliacao, String wherePor, Boolean aprovado);
 	Collection<AproveitamentoAvaliacaoCurso> findByColaboradorCurso(Long colaboradorId, Long cursoId);

@@ -262,6 +262,16 @@ public class AproveitamentoAvaliacaoCursoDaoHibernate extends GenericDaoHibernat
 
 		query.executeUpdate();
 	}
+	
+	public void removeByColaboradorTurma(Long colaboradorTurmaId)
+	{
+		String hql = "delete from AproveitamentoAvaliacaoCurso where colaboradorTurma.id  = :colaboradorTurmaId ";
+
+		Query query = getSession().createQuery(hql);
+		query.setLong("colaboradorTurmaId", colaboradorTurmaId);
+
+		query.executeUpdate();
+	}
 
 	public Collection<AproveitamentoAvaliacaoCurso> findByColaboradorCurso(Long colaboradorId, Long cursoId) 
 	{

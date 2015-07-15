@@ -121,6 +121,11 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 	{
 		getDao().removeByTurma(turmaId);
 	}
+	
+	public void removeByColaboradorTurma(Long colaboradorTurmaId)
+	{
+		getDao().removeByColaboradorTurma(colaboradorTurmaId);
+	}
 
 	public void saveNotas(ColaboradorTurma colaboradorTurma, String[] notas, Long[] avaliacaoCursoIds)
 	{

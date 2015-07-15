@@ -235,6 +235,39 @@ public class AproveitamentoAvaliacaoCursoDaoHibernateTest extends GenericDaoHibe
 		assertEquals(null, aproveitamentoAvaliacaoCursoDao.findByColaboradorTurmaAvaliacaoId(colaboradorTurma.getId(), avaliacaoCurso1.getId()));
 	}
 
+	public void testRemoveByColaboradorTurma()
+	{
+		AvaliacaoCurso avaliacaoCurso1 = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCursoDao.save(avaliacaoCurso1);
+
+		AvaliacaoCurso avaliacaoCurso2 = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCursoDao.save(avaliacaoCurso2);
+
+		Collection<AvaliacaoCurso> avaliacaoCursos = new ArrayList<AvaliacaoCurso>();
+		avaliacaoCursos.add(avaliacaoCurso1);
+
+		Curso curso = CursoFactory.getEntity();
+		curso.setAvaliacaoCursos(avaliacaoCursos);
+		cursoDao.save(curso);
+
+		Turma turma = TurmaFactory.getEntity();
+		turmaDao.save(turma);
+
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma.setTurma(turma);
+		colaboradorTurma.setCurso(curso);
+		colaboradorTurmaDao.save(colaboradorTurma);
+
+		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCurso1 = new AproveitamentoAvaliacaoCurso();
+		aproveitamentoAvaliacaoCurso1.setAvaliacaoCurso(avaliacaoCurso1);
+		aproveitamentoAvaliacaoCurso1.setColaboradorTurma(colaboradorTurma);
+		aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCurso1);
+
+		aproveitamentoAvaliacaoCursoDao.removeByColaboradorTurma(colaboradorTurma.getId());
+
+		assertEquals(null, aproveitamentoAvaliacaoCursoDao.findByColaboradorTurmaAvaliacaoId(colaboradorTurma.getId(), avaliacaoCurso1.getId()));
+	}
+	
 	public void testFindAprovadoByCursos()
 	{
 		Curso curso1 = CursoFactory.getEntity();
