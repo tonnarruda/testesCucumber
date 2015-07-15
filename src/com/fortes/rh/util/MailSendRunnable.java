@@ -182,7 +182,7 @@ public class MailSendRunnable implements Runnable {
 				header.append("<td align='center'>");
 					header.append("<table cellpadding='0' cellspacing='0' align='center' class='table'>");
 					header.append("<thead><tr>");
-					header.append("<td colspan='2' bgcolor='#FFFFFF'><a href='http://www.fortesinformatica.com.br'><img src='http://www.fortesinformatica.com.br/fortesrh/images/topo.gif' /></a></td></tr></thead>");
+					header.append("<td colspan='2' bgcolor='#FFFFFF'><a href='http://www.fortesinformatica.com.br'><img src='http://www.fortesinformatica.com.br/fortesrh/images/topo_fortesrh.gif' /></a></td></tr></thead>");
 
 			return header.toString();
 		}
