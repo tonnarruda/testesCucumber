@@ -4254,36 +4254,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(0, colaboradorDao.findEmailsDeColaboradoresByPerfis(new Long[] { perfil.getId() }, empresa.getId()).size());
 	}
 
-	public void testFindAdmitidosHaDias() 
-	{
-		Calendar trintaNoveDiasAtras = Calendar.getInstance();
-		trintaNoveDiasAtras.add(Calendar.DAY_OF_YEAR, -39);
-
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimento.setNome("Estabelecimento");
-		estabelecimentoDao.save(estabelecimento);
-
-		Colaborador colaborador = ColaboradorFactory.getEntity();
-		colaborador.setEmpresa(empresa);
-		colaborador.setDataAdmissao(trintaNoveDiasAtras.getTime());
-		colaboradorDao.save(colaborador);
-
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador.setColaborador(colaborador);
-		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2005));
-		historicoColaborador.setEstabelecimento(estabelecimento);
-		historicoColaboradorDao.save(historicoColaborador);
-
-		Collection <Colaborador> colabsRetorno = colaboradorDao.findAdmitidosHaDias(40, empresa, 6L);
-		Colaborador colabRetorno = (Colaborador) colabsRetorno.toArray()[0];
-		
-		assertEquals(1, colaboradorDao.findAdmitidosHaDias(40, empresa, 6L).size());
-		assertEquals("Estabelecimento", colabRetorno.getEstabelecimento().getNome());
-	}
-	
 	public void testFindAdmitidosHaDiasPeriodoExperiencia() 
 	{
 		Calendar trintaNoveDiasAtras = Calendar.getInstance();
@@ -4302,11 +4272,11 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		joseAvaliado.setDataAdmissao(trintaNoveDiasAtras.getTime());
 		colaboradorDao.save(joseAvaliado);
 
-		Colaborador mariaJaRespondido = ColaboradorFactory.getEntity();
-		mariaJaRespondido.setNome("Maria");
-		mariaJaRespondido.setEmpresa(empresa);
-		mariaJaRespondido.setDataAdmissao(trintaNoveDiasAtras.getTime());
-		colaboradorDao.save(mariaJaRespondido);
+		Colaborador maria = ColaboradorFactory.getEntity();
+		maria.setNome("Maria");
+		maria.setEmpresa(empresa);
+		maria.setDataAdmissao(trintaNoveDiasAtras.getTime());
+		colaboradorDao.save(maria);
 		
 		Colaborador colabDesligado = ColaboradorFactory.getEntity();
 		colabDesligado.setNome("ColabDesligadoFuturo");
@@ -4322,7 +4292,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaboradorDao.save(historicoJoseAvaliado);
 		
 		HistoricoColaborador historicoMariaJaRespondido = HistoricoColaboradorFactory.getEntity();
-		historicoMariaJaRespondido.setColaborador(mariaJaRespondido);
+		historicoMariaJaRespondido.setColaborador(maria);
 		historicoMariaJaRespondido.setData(DateUtil.criarDataMesAno(01, 01, 2005));
 		historicoMariaJaRespondido.setEstabelecimento(estabelecimento);
 		historicoColaboradorDao.save(historicoMariaJaRespondido);
@@ -4350,22 +4320,29 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		ColaboradorPeriodoExperienciaAvaliacao colabPeriodoExperienciaAvaliacaoJoseAvaliado2 = ColaboradorPeriodoExperienciaAvaliacaoFactory.getEntity(joseAvaliado, periodoExperiencia, avaliacao, ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(colabPeriodoExperienciaAvaliacaoJoseAvaliado2);
 		
-		ColaboradorPeriodoExperienciaAvaliacao colabPeriodoExperienciaAvaliacaoMariaJaRespondido = ColaboradorPeriodoExperienciaAvaliacaoFactory.getEntity(mariaJaRespondido, periodoExperiencia, avaliacao, ColaboradorPeriodoExperienciaAvaliacao.TIPO_GESTOR);
+		ColaboradorPeriodoExperienciaAvaliacao colabPeriodoExperienciaAvaliacaoMariaJaRespondido = ColaboradorPeriodoExperienciaAvaliacaoFactory.getEntity(maria, periodoExperiencia, avaliacao, ColaboradorPeriodoExperienciaAvaliacao.TIPO_GESTOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(colabPeriodoExperienciaAvaliacaoMariaJaRespondido);
 		
 		ColaboradorPeriodoExperienciaAvaliacao colabDesligadoPeriodoExperienciaAvaliacao = ColaboradorPeriodoExperienciaAvaliacaoFactory.getEntity(colabDesligado, periodoExperiencia, avaliacao, ColaboradorPeriodoExperienciaAvaliacao.TIPO_COLABORADOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(colabDesligadoPeriodoExperienciaAvaliacao);
 		
-		ColaboradorQuestionario colaboradorQuestionarioJoseAvaliado = ColaboradorQuestionarioFactory.getEntity();
-		colaboradorQuestionarioJoseAvaliado.setColaborador(joseAvaliado);
-		colaboradorQuestionarioJoseAvaliado.setAvaliacao(avaliacao);
+		ColaboradorQuestionario colaboradorQuestionarioJoseAvaliado = ColaboradorQuestionarioFactory.getEntity(joseAvaliado, avaliacao, null, false);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioJoseAvaliado);
 		
-		ColaboradorQuestionario colaboradorQuestionarioMariaAvDesempenho = ColaboradorQuestionarioFactory.getEntity();
-		colaboradorQuestionarioMariaAvDesempenho.setColaborador(mariaJaRespondido);
-		colaboradorQuestionarioMariaAvDesempenho.setAvaliacao(avaliacao);
-		colaboradorQuestionarioMariaAvDesempenho.setAvaliacaoDesempenho(avaliacaoDesempenho);
-		colaboradorQuestionarioDao.save(colaboradorQuestionarioMariaAvDesempenho);
+		ColaboradorQuestionario colaboradorQuestionarioMariaAvalDesempenho = ColaboradorQuestionarioFactory.getEntity(maria, avaliacao, avaliacaoDesempenho, false);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioMariaAvalDesempenho);
+		
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turmaDao.save(turma);
+		
+		ColaboradorQuestionario colaboradorQuestionarioMariaAvalTurma = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioMariaAvalTurma.setColaborador(maria);
+		colaboradorQuestionarioMariaAvalTurma.setTurma(turma);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioMariaAvalTurma);
 		
 		Collection <Colaborador> colabsRetorno = colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId());
 		Colaborador colabRetorno = (Colaborador) colabsRetorno.toArray()[0];

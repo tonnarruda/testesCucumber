@@ -126,19 +126,19 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		Colaborador joao = ColaboradorFactory.getEntity("João", empresa, ontem, hoje);
 		colaboradorDao.save(joao);
 		
-		HistoricoColaborador historicoColaboradorJoao = HistoricoColaboradorFactory.getEntity(joao, faixaSalarial, ontem);
+		HistoricoColaborador historicoColaboradorJoao = HistoricoColaboradorFactory.getEntity(joao, ontem, faixaSalarial, null);
 		historicoColaboradorDao.save(historicoColaboradorJoao);
 		
 		Colaborador maria = ColaboradorFactory.getEntity("Maria", empresa, ontem, amanha);
 		colaboradorDao.save(maria);
 		
-		HistoricoColaborador historicoColaboradorMaria = HistoricoColaboradorFactory.getEntity(maria, faixaSalarial, ontem);
+		HistoricoColaborador historicoColaboradorMaria = HistoricoColaboradorFactory.getEntity(maria, ontem, faixaSalarial, null);
 		historicoColaboradorDao.save(historicoColaboradorMaria);
 		
 		Colaborador pedro = ColaboradorFactory.getEntity("Pedro", empresa, ontem, ontem);
 		colaboradorDao.save(pedro);
 		
-		HistoricoColaborador historicoColaboradorPedro = HistoricoColaboradorFactory.getEntity(pedro, faixaSalarial, ontem);
+		HistoricoColaborador historicoColaboradorPedro = HistoricoColaboradorFactory.getEntity(pedro, ontem, faixaSalarial, null);
 		historicoColaboradorDao.save(historicoColaboradorPedro);
 		
 		ColaboradorQuestionario colaboradorQuestionarioMaria = ColaboradorQuestionarioFactory.getEntity(maria, avPeriodoExperiencia, null, true);
@@ -198,19 +198,19 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		Colaborador joao = ColaboradorFactory.getEntity("João", empresa, ontem, hoje);
 		colaboradorDao.save(joao);
 		
-		HistoricoColaborador historicoColaboradorJoao = HistoricoColaboradorFactory.getEntity(joao, faixaSalarial, ontem);
+		HistoricoColaborador historicoColaboradorJoao = HistoricoColaboradorFactory.getEntity(joao, ontem, faixaSalarial, null);
 		historicoColaboradorDao.save(historicoColaboradorJoao);
 		
 		Colaborador maria = ColaboradorFactory.getEntity("Maria", empresa, ontem, amanha);
 		colaboradorDao.save(maria);
 		
-		HistoricoColaborador historicoColaboradorMaria = HistoricoColaboradorFactory.getEntity(maria, faixaSalarial, ontem);
+		HistoricoColaborador historicoColaboradorMaria = HistoricoColaboradorFactory.getEntity(maria, ontem, faixaSalarial, null);
 		historicoColaboradorDao.save(historicoColaboradorMaria);
 		
 		Colaborador pedro = ColaboradorFactory.getEntity("Pedro", empresa, ontem, ontem);
 		colaboradorDao.save(pedro);
 		
-		HistoricoColaborador historicoColaboradorPedro = HistoricoColaboradorFactory.getEntity(pedro, faixaSalarial, ontem);
+		HistoricoColaborador historicoColaboradorPedro = HistoricoColaboradorFactory.getEntity(pedro, ontem, faixaSalarial, null);
 		historicoColaboradorDao.save(historicoColaboradorPedro);
 		
 		ColaboradorQuestionario colaboradorQuestionarioJoao = ColaboradorQuestionarioFactory.getEntity(joao, avPeriodoExperiencia, avaliacaoDesempenho, false);

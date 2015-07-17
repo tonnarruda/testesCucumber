@@ -2914,7 +2914,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc.estabelecimento as es ");
 		hql.append("left join ao.areaMae as am ");
 		hql.append("left join fs.cargo as cg ");
-		hql.append("left join co.colaboradorQuestionarios as cq ");
+		hql.append("left join co.colaboradorQuestionarios as cq with cq.avaliacao.id is not null and cq.turma.id is null ");
 		hql.append("left join cq.avaliacao as av with av.tipoModeloAvaliacao = 'A' ");
 		hql.append("left join co.colaboradorPeriodoExperienciaAvaliacaos cpea with cpea.periodoExperiencia = :periodoExperienciaId and cpea.tipo = 'G' ");
 		hql.append("where ");
@@ -2928,7 +2928,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("and (co.dataDesligamento >= current_date or co.dataDesligamento is null) ");
 		hql.append("and co.empresa.id = :empresaId ");
 		hql.append("and :hoje - (co.dataAdmissao - 1) = :dias ");
-		hql.append("and co.id not in (select cq.colaborador.id from ColaboradorQuestionario cq2 where cq2.avaliacao.id = av.id and cq2.colaborador.id = co.id and cq2.avaliacaoDesempenho.id is null) ");
+		hql.append("and co.id not in (select cq2.colaborador.id from ColaboradorQuestionario cq2 where cq2.avaliacao.id = av.id and cq2.colaborador.id = co.id and cq2.avaliacaoDesempenho.id is null) ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresa.getId());

@@ -8,6 +8,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Estabelecimento;
 
 public class HistoricoColaboradorFactory
 {
@@ -33,11 +34,12 @@ public class HistoricoColaboradorFactory
 		return historicoColaborador;
 	}
 	
-	public static HistoricoColaborador getEntity(Colaborador colaborador, FaixaSalarial faixaSalarial, Date data)
+	public static HistoricoColaborador getEntity(Colaborador colaborador, Date data, FaixaSalarial faixaSalarial, Estabelecimento estabelecimento)
 	{
 		HistoricoColaborador historicoColaborador = getEntity();
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setEstabelecimento(estabelecimento);
 		historicoColaborador.setData(data);
 		
 		return historicoColaborador;
