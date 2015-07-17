@@ -78,7 +78,13 @@
 						
 						<#assign exibirBotaoExcluir = true/>
 					<#else>
-						<#if msg.tipo == 'A'>
+						<#if msg.tipo == 'T'>
+							<@display.column title="<input type='checkbox'/>" style="width: 30px; text-align: center;" />
+							<@display.column title="Ações" media="html" style="text-align:center; width:50px;" />
+							<@display.column title="De" style="${style} text-align:center; width:70px;"/>
+							<@display.column title="Data" style="${style} text-align:center; width:100px;" />
+						</#if>
+						<#if msg.tipo == 'A' >
 							<@display.column title="<input type='checkbox'/>" style="width: 30px; text-align: center;" />
 							<@display.column title="Ações" media="html" style="text-align:center; width:50px;" />
 							
@@ -104,7 +110,7 @@
 						</div>
 					</@display.column>
 					
-					<#if msg.usuarioMensagemId?exists || msg.tipo == 'A'>
+					<#if msg.usuarioMensagemId?exists || msg.tipo == 'A' || msg.tipo == 'T'>
 						<@display.column title="Lida" style="${style} text-align:center; width:40px;">
 							${status}
 						</@display.column>
