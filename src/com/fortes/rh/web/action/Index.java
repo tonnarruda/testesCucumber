@@ -106,7 +106,7 @@ public class Index extends MyActionSupport
 	
 	private String modulo;
 	private String contexto;
-	private String[] pendenciasAcsSerRemovida;
+	private String[] pendenciasAcsSerRemovida = {};
 	
 	private Noticia noticia;
 	
@@ -397,10 +397,10 @@ public class Index extends MyActionSupport
 	{
 		try {
 			faixaSalarialHistoricoManager.remove(faixaSalarialHistoricoId, getEmpresaSistema(), false);
-			addActionSuccess("Novo histórico, da faixa salarial, excluído com sucesso.");
+			addActionSuccess("Novo histórico da faixa salarial excluído com sucesso.");
 		}catch (Exception e)
 		{
-			String message = "Não foi possível excluir o nov histórico da faixa salarial.";
+			String message = "Não foi possível excluir o novo histórico da faixa salarial.";
 
 			if(e.getMessage() != null)
 				message = e.getMessage();

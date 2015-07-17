@@ -233,7 +233,7 @@
 								<@display.column property="statusDescricao" title="Status" style="width: 200px; text-align: center;"/>
 							</@display.table>
 							<#if usuario.usuarioFortes>
-								<button onclick="javascript: newConfirm('Confirma exclusão de todas as pendências selecioandas?', function(){$('.btnExcluir').css({ opacity: 0.4 }); $('.btnExcluir').attr('disabled', 'disabled'); $('#removerMultiplasPendenciasAC').submit();});" class="btnExcluir" type="button" ></button>
+								<button onclick="javascript: newConfirm('Confirma exclusão de todas as pendências selecionadas?', function(){$('.btnExcluir').css({ opacity: 0.4 }); $('.btnExcluir').attr('disabled', 'disabled'); $('#removerMultiplasPendenciasAC').submit(); DWRUtil.useLoadingMessage('Carregando...');});" class="btnExcluir" type="button" ></button>
 							</#if>
 						</#if>
 					</div>

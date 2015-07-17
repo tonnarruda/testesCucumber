@@ -2510,7 +2510,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			pendenciaAC.setDetalhes("Solicitação de desligamento do colaborador "+colaborador.getNome());
 			pendenciaAC.setStatus(StatusRetornoAC.AGUARDANDO);
 			pendenciaAC.setRole("ROLE_COLAB_LIST_DESLIGAR");
-			pendenciaAC.setMsg("Confirma exclusão da pendência da solicitação de desligamento?");
+			pendenciaAC.setMsg("Confirma exclusão da solicitação de desligamento?");
 			pendenciaAC.setAction("removePendenciaACSolicitacaoDesligamento.action?colaboradorId="+ colaborador.getId());
 
 			pendenciaACs.add(pendenciaAC);

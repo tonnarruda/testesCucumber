@@ -760,7 +760,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		HistoricoColaborador historicoColaboradorTmp = findByIdProjection(historicoColaboradorId);
 		
 		if(getCount(new String[]{"colaborador.id"}, new Object[]{colaboradorId}) <= 1)
-			throw new Exception("Não é permitido deletar o último histórico.");
+			throw new Exception("<div>Histórico do colaborador "+historicoColaboradorTmp.getColaborador().getNome()+"</div>Não é permitido deletar o último histórico.");
 		
 		if(empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc())
 		{
@@ -768,7 +768,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 				throw new Exception("Cadastro do Colaborador pendente no AC Pessoal.");
 
 			if(!existeHistoricoAprovado(historicoColaboradorTmp.getId(), historicoColaboradorTmp.getColaborador().getId()))
-				throw new Exception("<div>Não existe outro histórico aprovado pelo AC Pessoal.<br>Não é permitido excluir.</div>");
+				throw new Exception("<div>Histórico do colaborador "+historicoColaboradorTmp.getColaborador().getNome()+"</div><div>Não existe outro histórico aprovado pelo AC Pessoal.<br>Não é permitido excluir.</div>");
 
 			if(verificaHistoricoNaFolhaAC(historicoColaboradorId, historicoColaboradorTmp.getColaborador().getCodigoAC(), empresa))
 				throw new Exception("<div>Uma Folha de Pagamento foi processada no AC Pessoal com este Histórico.<br>Não é permitido excluir.</div>");

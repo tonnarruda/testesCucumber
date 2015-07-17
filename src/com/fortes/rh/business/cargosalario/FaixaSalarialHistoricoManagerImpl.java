@@ -324,7 +324,7 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 			pendenciaAC.setDetalhes("Cadastro do histórico da faixa salarial "+faixaSalarialHistorico.getFaixaSalarial().getNome()+ " do cargo "+faixaSalarialHistorico.getFaixaSalarial().getCargo().getNome());
 			pendenciaAC.setStatus(faixaSalarialHistorico.getStatus());
 			pendenciaAC.setRole("ROLE_CAD_CARGO");
-			pendenciaAC.setMsg("Confirma exclusão da pendência do novo histórico da faixa salarial?");
+			pendenciaAC.setMsg("Confirma exclusão do novo histórico da faixa salarial?");
 			pendenciaAC.setAction("removePendenciaACHistoricoFaixaSalarial.action?faixaSalarialHistoricoId="+ faixaSalarialHistorico.getId());
 
 			pendenciaACs.add(pendenciaAC);

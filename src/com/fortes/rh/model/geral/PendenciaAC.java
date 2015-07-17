@@ -39,7 +39,7 @@ public class PendenciaAC
 			String nomeCargo = historicoColaborador.getFaixaSalarial().getNomeDoCargo();
 			detalhes.append(" Admissão: ").append(dataAdmissao).append(". Cargo: ").append(nomeCargo);
 			setRole("ROLE_COLAB_LIST_EXCLUIR");
-			setMsg("Confirma exclusão da pendência da contratação do colaborador?");
+			setMsg("Confirma exclusão da contratação do colaborador?");
 			setAction("removePendenciaACColaborador.action?colaboradorId=" + historicoColaborador.getColaborador().getId());
 			
 		}
@@ -51,7 +51,7 @@ public class PendenciaAC
 			String dataHistorico = DateUtil.formataDiaMesAno(historicoColaborador.getData());
 			detalhes.append(" Data: ").append(dataHistorico);
 			setRole("ROLE_CAD_HISTORICOCOLABORADOR");
-			setMsg("Confirma exclusão da pendência do novo histórico de colaborador?");
+			setMsg("Confirma exclusão do novo histórico de colaborador?");
 			setAction("removePendenciaACHistoricoColaborador.action?historicoColaboradorId=" + historicoColaborador.getId() + "&colaboradorId=" + historicoColaborador.getColaborador().getId());
 		}
 		
