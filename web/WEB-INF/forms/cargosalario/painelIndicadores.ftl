@@ -130,13 +130,6 @@
 			
 			var popup;
 			
-			function montaGraficoPizzaOcorrencia(exibeOutros) {
-				if (exibeOutros)
-					montaGraficoPizza(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, combinePercentMin: 0.00}, "Ocorrências");
-				else
-					montaGraficoPizza(${grfOcorrencia}, "#ocorrencia", {percentMin: 0.02, radiusLabel:0.9, combinePercentMin: 0.03}, "Ocorrências");
-			}
-			
 			function populaOcorrencias() {
 				DWRUtil.useLoadingMessage('Carregando...');
 				var dataIni = $("#dataIni").val();
@@ -194,6 +187,9 @@
 									configGrafico.noColumns = 1;
 									configGrafico.container = popup.document.getElementById('popupGraficoLegenda');
 									
+									if(showDatasCombine)
+										configGrafico.combinePercentMin = 0;
+										
 									popup.window.opener.montaPie(dados, popup.document.getElementById('popupGrafico'), configGrafico);
 									popup.window.print();
 									popup.window.close();
@@ -396,14 +392,7 @@
 								</div>
 								
 								<div class="conteudo-2 conteudo-aba">
-									<fieldset style="float:left;width:200px;margin-right:10px;">
-										<legend>Absenteísmo</legend>
-				
-										<@ww.textfield label="Mês/Ano" name="dataMesAnoIni" id="dataMesAnoIni" cssClass="mascaraMesAnoData validaDataIni" liClass="liLeft"/>
-										<@ww.textfield label="Mês/Ano" name="dataMesAnoFim" id="dataMesAnoFim" cssClass="mascaraMesAnoData validaDataFim"/>
-									</fieldset>
-									
-									<fieldset>
+									<fieldset style="float:left;margin-right:10px;">
 										<legend>Ocorrências e Providêcias</legend>
 										<table>
 											<tr>
@@ -417,12 +406,23 @@
 													itens de maior percentual.
 												</td>
 											</tr>
+											<tr>
+												<td colspan="2">
+													<div>
+														<@frt.checkListBox label="Ocorrências" name="ocorrenciasCheck" id="ocorrenciasCheck" list="ocorrenciasCheckList" width="500" filtro="true" selectAtivoInativo="true"/>
+													</div>
+												</td>
+											</tr>
 										</table>
 									</fieldset>
 									
-									<div>
-										<@frt.checkListBox label="Ocorrências" name="ocorrenciasCheck" id="ocorrenciasCheck" list="ocorrenciasCheckList" width="450" filtro="true" selectAtivoInativo="true"/>
-									</div>
+									<fieldset style="float:left;width:200px;margin-right:10px;">
+										<legend>Absenteísmo</legend>
+				
+										<@ww.textfield label="Mês/Ano" name="dataMesAnoIni" id="dataMesAnoIni" cssClass="mascaraMesAnoData validaDataIni" liClass="liLeft"/>
+										<@ww.textfield label="Mês/Ano" name="dataMesAnoFim" id="dataMesAnoFim" cssClass="mascaraMesAnoData validaDataFim"/>
+									</fieldset>
+									
 								</div>
 								
 								<div class="conteudo-3 conteudo-aba">

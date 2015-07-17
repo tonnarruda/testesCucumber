@@ -107,8 +107,7 @@ function montaPie(data, clazz, options, showDatasCombine) {
 		}
 	});
 	
-	
-	if ( showDatasCombine && $(clazz+"Legenda").find(".legend").last().html().indexOf("Outros") >= 0 ) {
+	if ( showDatasCombine && $(clazz+"Legenda").find(".legend").last().size() > 0 && $(clazz+"Legenda").find(".legend").last().html().indexOf("Outros") >= 0 ) {
 		var sum = 0;
 		$(data).each(function(){
 			sum+= this.data;
