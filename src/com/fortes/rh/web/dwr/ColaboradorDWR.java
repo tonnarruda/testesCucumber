@@ -334,7 +334,7 @@ public class ColaboradorDWR
 		
 		Collection<Ocorrencia> ocorrencias = colaboradorManager.getOcorrenciasByPeriodo(dataInicio, dataFinal, empresas, estabelecimentosIds, areasIds, cargosIds, qtdItens);
 		
-		return new CollectionUtil<Ocorrencia>().convertCollectionToMap(ocorrencias,"getId","getDescricao");
+		return new CollectionUtil<Ocorrencia>().convertCollectionToMap(ocorrencias,"getId","getDescricaoComEmpresa");
 	}
     
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)

@@ -26,6 +26,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
@@ -38,6 +39,7 @@ import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.security.SecurityUtil;
@@ -172,6 +174,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Long[] estabelecimentosIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
 		Long[] ocorrenciasIds = LongUtil.arrayStringToArrayLong(ocorrenciasCheck);
 		
+		
 		Date hoje = new Date();
 		dataBase = (dataBase == null) ? hoje : dataBase;
 		dataFim = (dataFim == null) ? hoje : dataFim;
@@ -197,7 +200,11 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 			empresasCheck = new String[]{Long.toString(getEmpresaSistema().getId())};
 			empresaIds = Arrays.asList(getEmpresaSistema().getId());
 		}
-
+		
+		Collection<Ocorrencia> ocorrencias  = colaboradorManager.getOcorrenciasByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItensOcorrencia);
+		ocorrenciasCheckList = CheckListBoxUtil.populaCheckListBox(ocorrencias, "getId", "getDescricaoComEmpresa");
+		ocorrenciasCheckList = CheckListBoxUtil.marcaCheckListBox(ocorrenciasCheckList, ocorrenciasCheck);
+		
 		empresasCheckList = CheckListBoxUtil.marcaCheckListBox(empresasCheckList, empresasCheck);
 		
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(LongUtil.collectionStringToArrayLong(empresaIds));
@@ -211,7 +218,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
 		
 		Collection<DataGrafico> graficoOcorrencia = colaboradorManager.countOcorrencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, ocorrenciasIds, qtdItensOcorrencia);
-		Collection<DataGrafico> graficoProvidencia = colaboradorManager.countProvidencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItensOcorrencia);
+		Collection<DataGrafico> graficoProvidencia = colaboradorManager.countProvidencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, ocorrenciasIds, qtdItensOcorrencia);
 
 		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIniDeslig, dataFimDeslig, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItensDesligamento);
 		

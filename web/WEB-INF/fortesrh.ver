@@ -7,6 +7,7 @@
 		<Item visivel="S" motivo="P20150600070"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Liberar avaliações em lote: Ajuste para impossibilitar a duplicação das avaliações dos colaboradores.]]></Item>
 		<Item visivel="S" motivo="P20150500195"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos: Ajuste na inconsistência ao excluir colaborador da turma que removia todas as notas da turma.]]></Item>
 		<Item visivel="S" motivo="S20150500170"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Novo campo de "Matrícula" ao gerar relatório.]]></Item>
+		<Item visivel="S" motivo="S20150700003"><![CDATA[Info. Funcionais > Painel de Indicadores > Ocorrências/Absenteísmo: Novo filtro por ocorrências para os gráficos de ocorrência e providência.]]></Item>
 		<Item visivel="S" motivo="S20150600168"><![CDATA[Info. Funcionais > Painel de Indicadores > Ocorrências/Absenteísmo: Exibir descrição detatlhada do gráfico de ocorrências agrupadas como "Outros".]]></Item>
 		<Item visivel="S" motivo="S20150600019"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitações de Exames: Exibição da observação da solicitação no relatório.]]></Item>
 		<Item visivel="S" motivo="S20150500240"><![CDATA[Utilitários > Configurações > Limite de Colab. por Cargo: Nova opção de gerar o relatório no formato xls.]]></Item>

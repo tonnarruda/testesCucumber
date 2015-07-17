@@ -3973,12 +3973,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Criteria criteriaOcorrenciaByPeriodo(Date dataIni, Date dataFim, int qtdItens) {
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("c.colaboradorOcorrencia", "co", Criteria.LEFT_JOIN);
-		criteria.createCriteria("co.ocorrencia", "o");
+		criteria.createCriteria("co.ocorrencia", "o", Criteria.LEFT_JOIN);
+		criteria.createCriteria("o.empresa", "e", Criteria.LEFT_JOIN);
 		
 		ProjectionList projections = Projections.projectionList().create();
 		projections.add(Projections.groupProperty("o.descricao"), "descricao");
 		projections.add(Projections.count("co.id"));
 		projections.add(Projections.groupProperty("o.id"), "id");
+		projections.add(Projections.groupProperty("e.nome"), "empresaNome");
 		criteria.setProjection(projections);
 		
 		criteria.add(Expression.between("co.dataIni", dataIni, dataFim));
@@ -4023,7 +4025,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return resultado;
 	}
 	
-	public Collection<DataGrafico> countProvidencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
+	public Collection<DataGrafico> countProvidencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Long[] ocorrenciasIds, int qtdItens) 
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("c.colaboradorOcorrencia", "co", Criteria.LEFT_JOIN);
@@ -4035,8 +4037,11 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.setProjection(projections);
 		
 		criteria.add(Expression.between("co.dataIni", dataIni, dataFim));
+
+		if (LongUtil.arrayIsNotEmpty(ocorrenciasIds))
+			criteria.add(Restrictions.in("co.ocorrencia.id", ocorrenciasIds));
 		
-		criteria.addOrder(OrderBySql.sql("2 asc"));
+		criteria.addOrder(OrderBySql.sql("2 desc"));
 		criteria.addOrder(Order.asc("p.descricao"));
 		
 		criteria.setMaxResults(qtdItens);

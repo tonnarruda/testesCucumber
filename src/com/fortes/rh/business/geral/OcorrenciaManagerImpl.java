@@ -168,5 +168,4 @@ public class OcorrenciaManagerImpl extends GenericManagerImpl<Ocorrencia, Ocorre
 	public Collection<Ocorrencia> findComCodigoAC(Long empresaId) {
 		return getDao().findComCodigoAC(empresaId);
 	}
-
 }

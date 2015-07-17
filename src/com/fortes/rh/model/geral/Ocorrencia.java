@@ -33,7 +33,7 @@ public class Ocorrencia extends AbstractModel implements Serializable, Cloneable
 		if (this.empresa != null)
 			return this.empresa.getNome() + " - " + this.descricao;
 			
-		return "";	
+		return this.descricao;	
 	}
 	
 	public void setProjectionEmpresaId(Long empresaId)
@@ -94,10 +94,20 @@ public class Ocorrencia extends AbstractModel implements Serializable, Cloneable
 	
 	public void setEmpresaId(Long empresaId)
 	{
+		iniciaEmpresa();
+		this.empresa.setId(empresaId);
+	}
+
+	public void setEmpresaNome(String empresaNome)
+	{
+		iniciaEmpresa();
+		this.empresa.setNome(empresaNome);
+	}
+
+	private void iniciaEmpresa() 
+	{
 		if (this.empresa == null)
 			this.empresa = new Empresa();
-		
-		this.empresa.setId(empresaId);
 	}
 
 	public boolean isAbsenteismo() {

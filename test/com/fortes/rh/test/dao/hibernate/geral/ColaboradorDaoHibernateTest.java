@@ -6211,8 +6211,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorOcorrencia2.setDataFim(dataFim);
 		colaboradorOcorrenciaDao.save(colaboradorOcorrencia2);
 		
-		assertEquals(2, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()),  new Long[]{estabelecimento.getId()}, null, null, 2).size());
-		assertEquals(2, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()),  null, null, null, 2).size());
+		assertEquals(2, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()),  new Long[]{estabelecimento.getId()}, null, null, null, 2).size());
+		assertEquals(2, colaboradorDao.countProvidencia(hoje, dataFim, Arrays.asList(empresa.getId()),  null, null, null, null, 2).size());
 	}
 	
 	

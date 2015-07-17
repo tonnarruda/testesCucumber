@@ -2133,12 +2133,13 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	
 	public Collection<Ocorrencia> getOcorrenciasByPeriodo(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
 	{
-		return getDao().getOcorrenciasByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItens);
+		Collection<Ocorrencia> ocorrenciasRetorno = getDao().getOcorrenciasByPeriodo(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItens); 
+		return new CollectionUtil<Ocorrencia>().sortCollectionStringIgnoreCase(ocorrenciasRetorno, "descricaoComEmpresa");
 	}
 
-	public Collection<DataGrafico> countProvidencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, int qtdItens) 
+	public Collection<DataGrafico> countProvidencia(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, Long[] ocorrenciasIds, int qtdItens) 
 	{
-		return getDao().countProvidencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItens);
+		return getDao().countProvidencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, ocorrenciasIds, qtdItens);
 	}
 
 	public int getCountAtivos(Date dataBase, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds) 
