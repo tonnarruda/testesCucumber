@@ -39,8 +39,8 @@ public class ComissaoPlanoTrabalhoEditAction extends MyActionSupport
 		if (comissaoPlanoTrabalho.getResponsavel() != null && comissaoPlanoTrabalho.getResponsavel().getId() == null)
 			comissaoPlanoTrabalho.setResponsavel(null);
 		
-		if (comissaoPlanoTrabalho.getCoresponsavel() != null && comissaoPlanoTrabalho.getCoresponsavel().getId() == null)
-			comissaoPlanoTrabalho.setCoresponsavel(null);
+		if (comissaoPlanoTrabalho.getCorresponsavel() != null && comissaoPlanoTrabalho.getCorresponsavel().getId() == null)
+			comissaoPlanoTrabalho.setCorresponsavel(null);
 
 		comissaoPlanoTrabalho.setComissao(comissao);
 		comissaoPlanoTrabalhoManager.save(comissaoPlanoTrabalho);
@@ -52,8 +52,8 @@ public class ComissaoPlanoTrabalhoEditAction extends MyActionSupport
 		if (comissaoPlanoTrabalho.getResponsavel() != null && comissaoPlanoTrabalho.getResponsavel().getId() == null)
 			comissaoPlanoTrabalho.setResponsavel(null);
 		
-		if (comissaoPlanoTrabalho.getCoresponsavel() != null && comissaoPlanoTrabalho.getCoresponsavel().getId() == null)
-			comissaoPlanoTrabalho.setCoresponsavel(null);
+		if (comissaoPlanoTrabalho.getCorresponsavel() != null && comissaoPlanoTrabalho.getCorresponsavel().getId() == null)
+			comissaoPlanoTrabalho.setCorresponsavel(null);
 
 		comissaoPlanoTrabalho.setComissao(comissao);
 		comissaoPlanoTrabalhoManager.update(comissaoPlanoTrabalho);

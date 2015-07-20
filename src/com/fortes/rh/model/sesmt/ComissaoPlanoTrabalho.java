@@ -41,7 +41,7 @@ public class ComissaoPlanoTrabalho extends AbstractModel implements Serializable
 	@ManyToOne
 	private Colaborador responsavel;
 	@ManyToOne
-	private Colaborador coresponsavel;
+	private Colaborador corresponsavel;
 
 	public String getPrazoFormatado()
     {
@@ -63,32 +63,37 @@ public class ComissaoPlanoTrabalho extends AbstractModel implements Serializable
 	
 	public void setProjectionResponsavelId(Long responsavelId)
 	{
-		if (responsavel == null)
-			responsavel = new Colaborador();
-
+		iniciaResponsavel();
 		responsavel.setId(responsavelId);
 	}
 	public void setProjectionResponsavelNome(String responsavelNome)
 	{
-		if (responsavel == null)
-			responsavel = new Colaborador();
-
+		iniciaResponsavel();
 		responsavel.setNome(responsavelNome);
 	}
-	
-	public void setProjectionCoResponsavelId(Long coresponsavelId)
-	{
-		if (coresponsavel == null)
-			coresponsavel = new Colaborador();
 
-		coresponsavel.setId(coresponsavelId);
+	private void iniciaResponsavel() 
+	{
+		if (responsavel == null)
+			responsavel = new Colaborador();
 	}
-	public void setProjectionCoResponsavelNome(String coresponsavelNome)
+	
+	private void iniciaCorresponsavel() 
 	{
-		if (coresponsavel == null)
-			coresponsavel = new Colaborador();
+		if (corresponsavel == null)
+			corresponsavel = new Colaborador();
+	}
+	
+	public void setProjectionCorresponsavelId(Long coresponsavelId)
+	{
+		iniciaCorresponsavel();
+		corresponsavel.setId(coresponsavelId);
+	}
 
-		coresponsavel.setNome(coresponsavelNome);
+	public void setProjectionCorresponsavelNome(String coresponsavelNome)
+	{
+		iniciaCorresponsavel();
+		corresponsavel.setNome(coresponsavelNome);
 	}
 
 	public String getSituacaoDic()
@@ -192,12 +197,13 @@ public class ComissaoPlanoTrabalho extends AbstractModel implements Serializable
 		this.responsavel = responsavel;
 	}
 
-	public Colaborador getCoresponsavel() {
-		return coresponsavel;
+	public Colaborador getCorresponsavel() 
+	{
+		return corresponsavel;
 	}
 
-	public void setCoresponsavel(Colaborador coresponsavel) {
-		this.coresponsavel = coresponsavel;
+	public void setCorresponsavel(Colaborador corresponsavel) 
+	{
+		this.corresponsavel = corresponsavel;
 	}
-
 }

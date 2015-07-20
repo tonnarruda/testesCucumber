@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="plano_trabalho" pageWidth="842" pageHeight="596" orientation="Landscape" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="33faf546-e87b-43b7-a65d-3ea42fb40de5">
 	<property name="ireport.scriptlethandling" value="2"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.3310000000000013"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="8.140274938684009"/>
+	<property name="ireport.x" value="235"/>
+	<property name="ireport.y" value="676"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -15,7 +15,7 @@
 	<field name="responsavel.nome" class="java.lang.String"/>
 	<field name="prioridadeDic" class="java.lang.String"/>
 	<field name="parecerDic" class="java.lang.String"/>
-	<field name="coresponsavel.nome" class="java.lang.String"/>
+	<field name="corresponsavel.nome" class="java.lang.String"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{prazo}]]></variableExpression>
 	</variable>
@@ -55,9 +55,9 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="20" splitType="Stretch">
+		<band height="32" splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText-2" x="1" y="3" width="57" height="16" uuid="d12c76ca-8083-4e6b-a359-c0f2d7fc71d7"/>
+				<reportElement key="staticText-2" x="1" y="16" width="57" height="13" uuid="d12c76ca-8083-4e6b-a359-c0f2d7fc71d7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -65,12 +65,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Prazo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-4" x="61" y="3" width="178" height="16" uuid="dffa13db-3d8b-4284-950f-f9f994b13fcd"/>
+				<reportElement key="staticText-4" x="60" y="16" width="170" height="13" uuid="dffa13db-3d8b-4284-950f-f9f994b13fcd"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -78,12 +78,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left">
-					<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Descrição]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-5" x="242" y="3" width="87" height="16" uuid="6ebcd1d3-3108-4a95-81e4-eda2ef7614ff"/>
+				<reportElement key="staticText-5" x="232" y="16" width="87" height="13" uuid="6ebcd1d3-3108-4a95-81e4-eda2ef7614ff"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -91,12 +91,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left">
-					<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Situação]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-6" x="332" y="3" width="138" height="16" uuid="b96aacd1-6763-45f5-8b61-672eada587dd"/>
+				<reportElement key="staticText-6" x="483" y="16" width="160" height="13" uuid="b96aacd1-6763-45f5-8b61-672eada587dd"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -104,12 +104,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left">
-					<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Responsável]]></text>
+				<text><![CDATA[Corresponsável]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-7" x="613" y="3" width="57" height="16" uuid="78f5967f-2c6d-486e-850c-08b38878771d"/>
+				<reportElement key="staticText-7" x="645" y="16" width="60" height="13" uuid="78f5967f-2c6d-486e-850c-08b38878771d"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -117,12 +117,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left">
-					<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Prioridade]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-8" x="673" y="3" width="109" height="16" uuid="18f6399d-e069-4c4f-9feb-da0bde850362"/>
+				<reportElement key="staticText-8" x="707" y="3" width="75" height="26" uuid="18f6399d-e069-4c4f-9feb-da0bde850362"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -130,12 +130,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left">
-					<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Parecer da Empresa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-6" x="473" y="3" width="138" height="16" uuid="ae33e6d5-9550-47c0-ba1c-35bb04b1cbdb"/>
+				<reportElement key="staticText-6" x="321" y="16" width="160" height="13" uuid="08154d7d-0a72-470d-b5f1-f6ebc4986a9a"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -143,16 +143,16 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Left">
-					<font size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Corresponsável]]></text>
+				<text><![CDATA[Responsável]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="20" splitType="Stretch">
+		<band height="17" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-1" stretchType="RelativeToTallestObject" x="1" y="2" width="781" height="18" isPrintWhenDetailOverflows="true" backcolor="#EEEEEE" uuid="242f235c-8fd7-499d-b002-8be6c2ffc8f2">
+				<reportElement key="rectangle-1" stretchType="RelativeToTallestObject" x="0" y="2" width="782" height="15" isPrintWhenDetailOverflows="true" backcolor="#EEEEEE" uuid="242f235c-8fd7-499d-b002-8be6c2ffc8f2">
 					<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
@@ -160,7 +160,7 @@
 				</graphicElement>
 			</rectangle>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
-				<reportElement key="textField" x="1" y="3" width="57" height="16" uuid="effce8cc-d6a8-4803-8424-f41bf4240e15"/>
+				<reportElement key="textField" x="1" y="3" width="57" height="13" uuid="effce8cc-d6a8-4803-8424-f41bf4240e15"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -168,12 +168,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="11"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{prazo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField" x="61" y="2" width="178" height="16" uuid="232c037b-6afb-45ee-a7ee-33e3e07a4584"/>
+				<reportElement key="textField" x="60" y="3" width="170" height="13" uuid="232c037b-6afb-45ee-a7ee-33e3e07a4584"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -181,12 +181,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="11"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{descricao}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="242" y="2" width="87" height="16" uuid="999d3723-b101-4d32-ad1c-03cb9b64cd76"/>
+				<reportElement key="textField" x="232" y="3" width="87" height="13" uuid="999d3723-b101-4d32-ad1c-03cb9b64cd76"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -194,12 +194,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="11"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{situacaoDic}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField" x="332" y="2" width="138" height="16" uuid="39f84500-0d52-43d5-82b7-c66fdb63023a"/>
+				<reportElement key="textField" x="483" y="3" width="160" height="13" uuid="39f84500-0d52-43d5-82b7-c66fdb63023a"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -207,12 +207,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="11"/>
+					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{responsavel.nome}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{corresponsavel.nome}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="613" y="2" width="57" height="16" uuid="cbbe99ca-c855-474a-9f8c-9cf07ae8b4a0"/>
+				<reportElement key="textField" x="645" y="3" width="60" height="13" uuid="cbbe99ca-c855-474a-9f8c-9cf07ae8b4a0"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -220,12 +220,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="11"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{prioridadeDic}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="673" y="2" width="109" height="16" uuid="42a04e44-bd0f-4c88-a849-3684324d3f2f"/>
+				<reportElement key="textField" x="707" y="3" width="75" height="13" uuid="42a04e44-bd0f-4c88-a849-3684324d3f2f"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -233,12 +233,12 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="11"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{parecerDic}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField" x="473" y="2" width="138" height="16" uuid="2a0a311c-3648-4209-87e5-90846f58ea94"/>
+				<reportElement key="textField" x="321" y="3" width="160" height="13" uuid="d0480676-a48b-48d4-bc47-8cc038b892d7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -246,9 +246,9 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement>
-					<font size="11"/>
+					<font size="10"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{coresponsavel.nome}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{responsavel.nome}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

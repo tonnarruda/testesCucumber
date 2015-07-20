@@ -26,7 +26,7 @@ public class ComissaoPlanoTrabalhoDaoHibernate extends GenericDaoHibernate<Comis
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"cp");
 		criteria.createCriteria("cp.responsavel", "r", CriteriaSpecification.LEFT_JOIN);
-		criteria.createCriteria("cp.coresponsavel", "cr", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cp.corresponsavel", "cr", CriteriaSpecification.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cp.id"), "id");
@@ -38,8 +38,8 @@ public class ComissaoPlanoTrabalhoDaoHibernate extends GenericDaoHibernate<Comis
 		p.add(Projections.property("cp.comissao.id"), "projectionComissaoId");
 		p.add(Projections.property("r.id"), "projectionResponsavelId");
 		p.add(Projections.property("r.nome"), "projectionResponsavelNome");
-		p.add(Projections.property("cr.id"), "projectionCoResponsavelId");
-		p.add(Projections.property("cr.nome"), "projectionCoResponsavelNome");
+		p.add(Projections.property("cr.id"), "projectionCorresponsavelId");
+		p.add(Projections.property("cr.nome"), "projectionCorresponsavelNome");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("cp.comissao.id", comissaoId));
@@ -53,7 +53,7 @@ public class ComissaoPlanoTrabalhoDaoHibernate extends GenericDaoHibernate<Comis
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"cp");
 		criteria.createCriteria("cp.responsavel", "r", CriteriaSpecification.LEFT_JOIN);
-		criteria.createCriteria("cp.coresponsavel", "cr", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cp.corresponsavel", "cr", CriteriaSpecification.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cp.id"), "id");
@@ -66,8 +66,8 @@ public class ComissaoPlanoTrabalhoDaoHibernate extends GenericDaoHibernate<Comis
 		p.add(Projections.property("cp.comissao.id"), "projectionComissaoId");
 		p.add(Projections.property("r.id"), "projectionResponsavelId");
 		p.add(Projections.property("r.nome"), "projectionResponsavelNome");
-		p.add(Projections.property("cr.id"), "projectionCoResponsavelId");
-		p.add(Projections.property("cr.nome"), "projectionCoResponsavelNome");
+		p.add(Projections.property("cr.id"), "projectionCorresponsavelId");
+		p.add(Projections.property("cr.nome"), "projectionCorresponsavelNome");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("cp.id", id));
