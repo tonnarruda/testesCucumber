@@ -1,21 +1,22 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.14x.17x" db="" data="xx/xx/2015">
-		<Item visivel="S" motivo="P20150700116"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir: Correção da inconsistência ao exibir as opções de áreas organizacionais para os corresponsáveis das áreas organizacionais.]]></Item>
-		<Item visivel="S" motivo="P20150600165"><![CDATA[Pesquisa > Movimentações > Pesquisas > Colaboradores > Exportar: Correção de inconsistência ao exportar colaboradores da pesquisa.]]></Item>
+	<Versao id="1.1.147.177" db="" data="21/07/2015">
+		<Item visivel="S" motivo="P20150600148"><![CDATA[R&S > Cadastros > Candidatos > Visualizar Currículo > Imprimir: Ajuste da inconsistência ao exibir os cargos das experiências profissionais do candidato.]]></Item>
+		<Item visivel="S" motivo="P20150700116"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir: Ajuste da inconsistência ao exibir as opções de áreas organizacionais para os corresponsáveis das áreas organizacionais.]]></Item>
+		<Item visivel="S" motivo="P20150600165"><![CDATA[Pesquisa > Movimentações > Pesquisas > Colaboradores > Exportar: Ajuste da inconsistência ao exportar colaboradores da pesquisa.]]></Item>
 		<Item visivel="S" motivo="P20150700089"><![CDATA[Pesquisa > Movimentações > Pesquisas > Relatório da Pesquisa > Relatório: Ajuste na renderização do gráficos, para melhorar a visualização dos rótulos de forma a evitar que os mesmos se sobreponham.]]></Item>
 		<Item visivel="S" motivo="P20150600070"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Liberar avaliações em lote: Ajuste para impossibilitar a duplicação das avaliações dos colaboradores.]]></Item>
-		<Item visivel="S" motivo="P20150500195"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos: Ajuste na inconsistência ao excluir colaborador da turma que removia todas as notas da turma.]]></Item>
-		<Item visivel="S" motivo="P20150700125"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Incluir em Solicitação: Correção de inconsistência ao tentar incluir colaborador em uma solicitação de pessoal.]]></Item>
+		<Item visivel="S" motivo="P20150500195"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos: Ajuste da inconsistência ao excluir colaborador da turma que removia todas as notas da turma.]]></Item>
+		<Item visivel="S" motivo="P20150700125"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Incluir em Solicitação: Ajuste da inconsistência ao tentar incluir colaborador em uma solicitação de pessoal.]]></Item>
 		<Item visivel="S" motivo="S20150500170"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Novo campo de "Matrícula" ao gerar relatório.]]></Item>
 		<Item visivel="S" motivo="S20150700003"><![CDATA[Info. Funcionais > Painel de Indicadores > Ocorrências/Absenteísmo: Novo filtro por ocorrências para os gráficos de ocorrência e providência.]]></Item>
-		<Item visivel="S" motivo="S20150600168"><![CDATA[Info. Funcionais > Painel de Indicadores > Ocorrências/Absenteísmo: Exibir descrição detatlhada do gráfico de ocorrências agrupadas como "Outros".]]></Item>
+		<Item visivel="S" motivo="S20150600168"><![CDATA[Info. Funcionais > Painel de Indicadores > Ocorrências/Absenteísmo: Exibir descrição detalhada do gráfico de ocorrências agrupadas como "Outros".]]></Item>
 		<Item visivel="S" motivo="S20150600111"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Plano de Trabalho: Novo opção de inserir um corresponsável.]]></Item>
 		<Item visivel="S" motivo="S20150600019"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitações de Exames: Exibição da observação da solicitação no relatório.]]></Item>
 		<Item visivel="S" motivo="S20150700042"><![CDATA[Utilitários > Cadastros > Empresas > Inserir/Editar > Cálculo de Absenteísmo: Nova opção de "Considerar domingo como dia útil" para o cálculo de absenteísmo.]]></Item>
 		<Item visivel="S" motivo="S20150600114"><![CDATA[Utilitários > Cadastros > Perfis: Nova permissão para editar a data de uma solicitação de pessoal.]]></Item>
 		<Item visivel="S" motivo="S20150500240"><![CDATA[Utilitários > Configurações > Limite de Colab. por Cargo: Nova opção de gerar o relatório no formato xls.]]></Item>
-		<Item visivel="S" motivo="P20150600187"><![CDATA[Correção de inconsistência ao notificar avaliações do período de experiência a vencer (Notificação periódica).]]></Item>
+		<Item visivel="S" motivo="P20150600187"><![CDATA[Ajuste da inconsistência ao notificar avaliações do período de experiência a vencer (Notificação periódica).]]></Item>
 		<Item visivel="S" motivo="S20130900269"><![CDATA[Nova opção para excluir pendências com o AC Pessoal. Apenas para o usuário fortes, demais usuários só poderão excluir pendências com o status de cancelado.]]></Item>
 	</Versao>
 	<Versao id="1.1.146.176" db="" data="24/06/2015">
@@ -40,7 +41,7 @@
 		<Item visivel="S" motivo="S20150400047"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores: Guardar as opções do filtro ao realizar pesquisa.]]></Item>
 		<Item visivel="S" motivo="P20150500060"><![CDATA[Info. Funcionais > Cadastros > Motivos de Desligamento > Inserir/Editar: Exibir campo "Considerar para cálculo de turnover" somente quando a configuração de turnover estiver marcado no cadastro da empresa.]]></Item>
 		<Item visivel="S" motivo="P20150500047"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão: Identificar as situações do colaborador que estão aguardando confirmação no AC.]]></Item>
-		<Item visivel="S" motivo="P20150500090"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Ajuste de inconsistência no relatório quando a empresa controla o risco pela função.]]></Item>
+		<Item visivel="S" motivo="P20150500090"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Ajuste da inconsistência no relatório quando a empresa controla o risco pela função.]]></Item>
 		<Item visivel="S" motivo="S20150500190"><![CDATA[SESMT > Relatórios > Atendimentos médicos: Novo filtro por situação, o qual possibilita a impressão somente dos atendimentos médicos ou das solicitações de atendimentos ou ambas as situações.]]></Item>
 	</Versao>
 	<Versao id="1.1.144.174" bd="" data="19/05/2015">

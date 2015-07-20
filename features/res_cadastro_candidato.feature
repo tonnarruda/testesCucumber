@@ -50,7 +50,7 @@ Funcionalidade: Cadastrar Candidato
     E eu preencho o campo (JS) "CEP" com "60320-104"
     E eu saio do campo "CEP"
     E eu espero 2 segundos
-    Entao o campo "Logradouro" deve conter "Rua Haroldo Torres - de 501/502 a 1"
+    Entao o campo "Logradouro" deve conter "Rua Haroldo Torres - de 501"
     E o campo "Estado" deve ter "CE" selecionado
     E o campo "Cidade" deve ter "Fortaleza" selecionado
     E o campo "Bairro" deve conter "São Gerardo"

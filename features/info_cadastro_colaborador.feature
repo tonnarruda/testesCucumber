@@ -80,7 +80,7 @@ Funcionalidade: Cadastrar Colaborador
     E eu preencho o campo (JS) "CEP" com "60320-104"
     E eu saio do campo "CEP"
     E eu espero 4 segundos
-    Então o campo "Logradouro" deve conter "Rua Haroldo Torres - de 501/502 a 1"
+    Então o campo "Logradouro" deve conter "Rua Haroldo Torres - de 501"
     E o campo "Estado" deve ter "CE" selecionado
     E o campo "cidade" deve ter "Fortaleza" selecionado
     E o campo "bairroNome" deve conter "São Gerardo"
@@ -134,7 +134,7 @@ Funcionalidade: Cadastrar Colaborador
     E eu devo ver "Estado Civil: Casado - Comunhão Parcial"
     E eu devo ver "Escolaridade: Sem escolaridade"
     E eu devo ver "Bairro: São Gerardo"
-    E eu devo ver "Endereço: Rua Haroldo Torres - de 501/502 a 1149/1, 11 - apto"
+    E eu devo ver "Endereço: Rua Haroldo Torres - de 501"
     E eu devo ver "Cidade/Estado: Fortaleza / CE"
     E eu devo ver "CEP: 60.320-104"
     E eu devo ver "Telefone: (85) 8843-8383"

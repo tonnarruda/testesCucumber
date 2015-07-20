@@ -22968,3 +22968,88 @@ END;
 $$ LANGUAGE plpgsql; --.go 
 insert into migrations values('20150622105335');--.go
 update parametrosdosistema set appversao = '1.1.146.176';--.go
+
+-- versao 1.1.147.177
+CREATE FUNCTION remove_respostas_duplicadas() RETURNS integer AS $$
+DECLARE
+	mviews RECORD;
+	BEGIN
+	FOR mviews IN 	
+		WITH questionario_duplicado AS (
+			SELECT colaborador_id, avaliacaodesempenho_id, avaliador_id FROM colaboradorquestionario cq1 WHERE avaliacaodesempenho_id IS NOT NULL 
+			GROUP BY cq1.colaborador_id, cq1.avaliacaodesempenho_id, cq1.avaliador_id HAVING COUNT(cq1.colaborador_id)>1 
+		)
+		SELECT  DISTINCT ON(colaborador_id, avaliacaodesempenho_id, avaliador_id) cq.id, colaborador_id, avaliacaodesempenho_id, avaliador_id FROM colaboradorquestionario cq 
+			WHERE cq.colaborador_id IN(SELECT colaborador_id FROM questionario_duplicado) AND cq.avaliacaodesempenho_id IN (SELECT avaliacaodesempenho_id FROM questionario_duplicado) 
+			AND cq.avaliador_id IN (SELECT avaliador_id FROM questionario_duplicado) 
+		LOOP 
+			IF (SELECT NOT EXISTS( 
+				SELECT COUNT(cr.pergunta_id) FROM colaboradorresposta cr  
+					INNER JOIN colaboradorquestionario cq ON cq.id = cr.colaboradorquestionario_id 
+					WHERE cq.colaborador_id = mviews.colaborador_id AND avaliacaodesempenho_id = mviews.avaliacaodesempenho_id AND avaliador_id = mviews.avaliador_id 
+					GROUP BY cq.colaborador_id, cq.avaliacaodesempenho_id, cq.avaliador_id, cr.pergunta_id, cr.resposta_id 
+					HAVING COUNT(cr.pergunta_id) = 1) 
+				) = true 
+			THEN
+				DELETE FROM colaboradorresposta WHERE colaboradorquestionario_id = mviews.id;
+				UPDATE colaboradorquestionario SET respondida = false WHERE id = mviews.id;   			
+			END IF;				
+		END LOOP;
+	RETURN 1;
+END;
+$$ LANGUAGE plpgsql;--.go
+SELECT remove_respostas_duplicadas();--.go
+DROP FUNCTION remove_respostas_duplicadas();--.go
+
+DELETE FROM colaboradorquestionario WHERE id IN ( 
+WITH questionario_duplicado AS ( 
+	SELECT colaborador_id, avaliacaodesempenho_id, avaliador_id FROM colaboradorquestionario cq1 WHERE avaliacaodesempenho_id IS NOT NULL
+	GROUP BY cq1.colaborador_id, cq1.avaliacaodesempenho_id, cq1.avaliador_id HAVING COUNT(cq1.colaborador_id)>1
+     ) 
+SELECT  DISTINCT ON(colaborador_id, avaliacaodesempenho_id, avaliador_id) cq.id 
+FROM colaboradorquestionario cq 
+WHERE cq.colaborador_id IN(SELECT colaborador_id FROM questionario_duplicado) AND cq.avaliacaodesempenho_id IN (SELECT avaliacaodesempenho_id FROM questionario_duplicado)  
+AND cq.avaliador_id IN (SELECT avaliador_id FROM questionario_duplicado) AND cq.respondida= false  
+);--.go
+insert into migrations values('20150625102918');--.go
+update configuracaonivelcompetenciacolaborador set colaboradorquestionario_id = null where colaboradorquestionario_id not in(select id from colaboradorquestionario) and colaboradorquestionario_id is not null;--.go
+ALTER TABLE configuracaonivelcompetenciacolaborador DROP CONSTRAINT IF EXISTS configNivelCompetenciaColaborador_colaboradorquestionario_fk;--.go
+ALTER TABLE configuracaonivelcompetenciacolaborador DROP CONSTRAINT IF EXISTS configNivelCompColab_colaboradorquestionario_fk;--.go
+ALTER TABLE configuracaonivelcompetenciacolaborador ADD CONSTRAINT configNivelCompColab_colaboradorquestionario_fk FOREIGN KEY (colaboradorquestionario_id) REFERENCES colaboradorquestionario(id); --.go
+insert into migrations values('20150703141003');--.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (633, 'ROLE_EDITA_DATA_SOLICITACAO', 'Editar data da solicitação', '#', 1, false, 612); --.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 633 from perfil_papel where papeis_id = 612;
+alter sequence papel_sequence restart with 634;--.go
+insert into migrations values('20150714144219');--.go
+CREATE OR REPLACE FUNCTION monta_familia_areas_filhas_by_usuario_and_empresa(usuarioId BIGINT, empresaId BIGINT) RETURNS TABLE(areaId BIGINT, areaNome TEXT, areaAtivo BOOLEAN) AS $$  
+DECLARE 
+mviews RECORD;
+BEGIN  
+     FOR mviews IN  
+		select area.id as area_id from areaorganizacional as area   
+		left join colaborador c on c.id = area.responsavel_id 
+		left join colaborador co on co.id = area.coresponsavel_id  
+		left join usuario u on u.id = c.usuario_id or u.id = co.usuario_id  
+		where u.id = usuarioId and area.empresa_id = empresaId  
+		LOOP  
+		RETURN QUERY  
+		    (select id, cast(monta_familia_area(id) as text) as nome, ativo from areaorganizacional where id = mviews.area_id) union  
+		    ((WITH RECURSIVE areaorganizacional_recursiva AS ( 
+		        SELECT id, nome, areamae_id, CAST(nome AS TEXT) AS nomeHierarquico, ativo 
+		        FROM areaorganizacional WHERE areamae_id = mviews.area_id 
+		        UNION ALL  
+		        SELECT ao.id, ao.nome, ao.areamae_id, CAST((ao_r.nomeHierarquico || ' > ' || ao.nome) AS TEXT) AS nomeHierarquico, ao.ativo   
+		        FROM areaorganizacional ao  
+		        INNER JOIN areaorganizacional_recursiva ao_r ON ao.areamae_id = ao_r.id  
+		    ) SELECT id, cast(((select monta_familia_area(id) as nome from areaorganizacional where id = mviews.area_id ) || ' > ' || nomeHierarquico) as text) as nome, ativo FROM areaorganizacional_recursiva) ORDER BY nome); 
+      END LOOP; 
+    RETURN;  
+END;  
+$$ LANGUAGE plpgsql; --.go 
+insert into migrations values('20150714163103');--.go
+alter table empresa add column considerardomingonoabsenteismo boolean NOT NULL DEFAULT false; --.go
+insert into migrations values('20150715105905');--.go
+alter table comissaoplanotrabalho add column corresponsavel_id bigint;--.go
+ALTER TABLE comissaoplanotrabalho ADD CONSTRAINT comissaoplanotrabalho_corresponsavel_fk FOREIGN KEY (corresponsavel_id) REFERENCES colaborador(id);--.go
+insert into migrations values('20150715114951');--.go
+update parametrosdosistema set appversao = '1.1.147.177';--.go

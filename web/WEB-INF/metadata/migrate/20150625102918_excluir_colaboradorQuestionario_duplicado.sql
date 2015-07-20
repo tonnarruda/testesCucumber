@@ -29,14 +29,13 @@ $$ LANGUAGE plpgsql;--.go
 SELECT remove_respostas_duplicadas();--.go
 DROP FUNCTION remove_respostas_duplicadas();--.go
 
-
-DELETE FROM colaboradorquestionario WHERE id IN (
-WITH questionario_duplicado AS (
-	SELECT colaborador_id, avaliacaodesempenho_id, avaliador_id FROM colaboradorquestionario cq1 WHERE avaliacaodesempenho_id IS NOT NULL
-	GROUP BY cq1.colaborador_id, cq1.avaliacaodesempenho_id, cq1.avaliador_id HAVING COUNT(cq1.colaborador_id)>1
-     )
-SELECT  DISTINCT ON(colaborador_id, avaliacaodesempenho_id, avaliador_id) cq.id
-FROM colaboradorquestionario cq
-WHERE cq.colaborador_id IN(SELECT colaborador_id FROM questionario_duplicado) AND cq.avaliacaodesempenho_id IN (SELECT avaliacaodesempenho_id FROM questionario_duplicado)
-AND cq.avaliador_id IN (SELECT avaliador_id FROM questionario_duplicado) AND cq.respondida= false  
+DELETE FROM colaboradorquestionario WHERE id IN ( 
+WITH questionario_duplicado AS ( 
+	SELECT colaborador_id, avaliacaodesempenho_id, avaliador_id FROM colaboradorquestionario cq1 WHERE avaliacaodesempenho_id IS NOT NULL 
+	GROUP BY cq1.colaborador_id, cq1.avaliacaodesempenho_id, cq1.avaliador_id HAVING COUNT(cq1.colaborador_id)>1 
+     ) 
+SELECT  DISTINCT ON(colaborador_id, avaliacaodesempenho_id, avaliador_id) cq.id 
+FROM colaboradorquestionario cq 
+WHERE cq.colaborador_id IN(SELECT colaborador_id FROM questionario_duplicado) AND cq.avaliacaodesempenho_id IN (SELECT avaliacaodesempenho_id FROM questionario_duplicado) 
+AND cq.avaliador_id IN (SELECT avaliador_id FROM questionario_duplicado) AND cq.respondida= false   
 );--.go

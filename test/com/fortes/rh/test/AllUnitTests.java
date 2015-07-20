@@ -1248,7 +1248,6 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(LongUtilTest.class);
         suite.addTestSuite(IntegerUtilTest.class);
         suite.addTestSuite(MailTest.class);
-        suite.addTestSuite(MailSendRunnableTest.class);
         suite.addTestSuite(MathUtilTest.class);
         suite.addTestSuite(MontaRelatorioItextTest.class);
         suite.addTestSuite(SpringUtilTest.class);
