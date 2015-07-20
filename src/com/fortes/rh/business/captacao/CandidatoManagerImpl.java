@@ -601,9 +601,12 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	   	if(candidato.getId() == null)
 	   		candidato = save(candidato);
 	   	
-	   	
-    	if (colaborador.getFormacao() != null && !colaborador.getFormacao().isEmpty()) 
+    	if (colaborador.getFormacao() != null && !colaborador.getFormacao().isEmpty()){
+    		for (Formacao formacao : colaborador.getFormacao()) 
+				formacao.setCandidato(candidato);
+    		formacaoManager.saveOrUpdate(colaborador.getFormacao());
     		candidato.setFormacao(colaborador.getFormacao());
+    	}
 
     	if (colaborador.getExperiencias() != null && !colaborador.getExperiencias().isEmpty()) 
     		candidato.setExperiencias(colaborador.getExperiencias());

@@ -1125,8 +1125,10 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	candidatoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(candidato));
     	candidatoDao.expects(once()).method("update").with(ANYTHING);
     	candidatoIdiomaManager.expects(once()).method("montaCandidatoIdiomaByColaboradorIdioma").with(ANYTHING, ANYTHING).will(returnValue(candIdiomas));
+    	formacaoManager.expects(once()).method("saveOrUpdate").with(eq(c.getFormacao())).isVoid();
 
     	candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(c);
+    	formacaoManager.expects(once()).method("saveOrUpdate").with(eq(c.getFormacao())).isVoid();
     	candidatoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(candidato));
     	candidatoDao.expects(once()).method("update").with(ANYTHING);
     	candidatoIdiomaManager.expects(once()).method("montaCandidatoIdiomaByColaboradorIdioma").with(ANYTHING, ANYTHING).will(returnValue(candIdiomas));
@@ -1148,6 +1150,7 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
     	candidatoDao.expects(once()).method("update").with(ANYTHING);
     	candidatoIdiomaManager.expects(once()).method("montaCandidatoIdiomaByColaboradorIdioma").with(ANYTHING, ANYTHING).will(returnValue(candIdiomas));
+    	formacaoManager.expects(once()).method("saveOrUpdate").with(eq(c.getFormacao())).isVoid();
     	
     	candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(c);
     	
