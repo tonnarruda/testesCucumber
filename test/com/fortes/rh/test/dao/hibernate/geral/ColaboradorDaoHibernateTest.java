@@ -4303,16 +4303,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColabDesligado.setEstabelecimento(estabelecimento);
 		historicoColaboradorDao.save(historicoColabDesligado);
 		
-		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity();
-		periodoExperienciaDao.save(periodoExperiencia);
-		
 		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
 		avaliacao.setTipoModeloAvaliacao('A');
 		avaliacaoDao.save(avaliacao);
 
-		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
-		avaliacaoDesempenho.setAvaliacao(avaliacao);
-		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity();
+		periodoExperienciaDao.save(periodoExperiencia);
 		
 		ColaboradorPeriodoExperienciaAvaliacao colabPeriodoExperienciaAvaliacaoJoseAvaliado = ColaboradorPeriodoExperienciaAvaliacaoFactory.getEntity(joseAvaliado, periodoExperiencia, avaliacao, ColaboradorPeriodoExperienciaAvaliacao.TIPO_GESTOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(colabPeriodoExperienciaAvaliacaoJoseAvaliado);
@@ -4329,9 +4325,15 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		ColaboradorQuestionario colaboradorQuestionarioJoseAvaliado = ColaboradorQuestionarioFactory.getEntity(joseAvaliado, avaliacao, null, false);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioJoseAvaliado);
 		
+		//Avaliação Desempenho
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenho.setAvaliacao(avaliacao);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
 		ColaboradorQuestionario colaboradorQuestionarioMariaAvalDesempenho = ColaboradorQuestionarioFactory.getEntity(maria, avaliacao, avaliacaoDesempenho, false);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioMariaAvalDesempenho);
 		
+		//Avaliação Curso
 		Curso curso = CursoFactory.getEntity();
 		cursoDao.save(curso);
 		
@@ -4343,6 +4345,32 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorQuestionarioMariaAvalTurma.setColaborador(maria);
 		colaboradorQuestionarioMariaAvalTurma.setTurma(turma);
 		colaboradorQuestionarioDao.save(colaboradorQuestionarioMariaAvalTurma);
+		
+		//Avaliação do Aluno
+		Questionario questionario = QuestionarioFactory.getEntity();
+		questionarioDao.save(questionario);
+		
+		Avaliacao avaliacao2 = AvaliacaoFactory.getEntity();
+		avaliacao2.setTipoModeloAvaliacao('L');
+		avaliacaoDao.save(avaliacao2);
+		
+		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCurso.setTipo(TipoAvaliacaoCurso.AVALIACAO);
+		avaliacaoCursoDao.save(avaliacaoCurso);
+		
+		ColaboradorQuestionario colaboradorQuestionarioMariaAvalAluno = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioMariaAvalAluno.setColaborador(maria);
+		colaboradorQuestionarioMariaAvalAluno.setTurma(turma);
+		colaboradorQuestionarioMariaAvalAluno.setQuestionario(questionario);
+		colaboradorQuestionarioMariaAvalAluno.setAvaliacao(avaliacao2);
+		colaboradorQuestionarioMariaAvalAluno.setAvaliacaoCurso(avaliacaoCurso);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioMariaAvalAluno);
+		
+		//Entrevista de Desligamento (Mesmo cenário para pesquisa)
+		ColaboradorQuestionario colaboradorQuestionarioEntrevistaDesligamento = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioEntrevistaDesligamento.setColaborador(colabDesligado);
+		colaboradorQuestionarioEntrevistaDesligamento.setQuestionario(questionario);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioEntrevistaDesligamento);
 		
 		Collection <Colaborador> colabsRetorno = colaboradorDao.findAdmitidosHaDias(40, empresa, periodoExperiencia.getId());
 		Colaborador colabRetorno = (Colaborador) colabsRetorno.toArray()[0];

@@ -11,10 +11,11 @@
 		<Item visivel="S" motivo="S20150600168"><![CDATA[Info. Funcionais > Painel de Indicadores > Ocorrências/Absenteísmo: Exibir descrição detatlhada do gráfico de ocorrências agrupadas como "Outros".]]></Item>
 		<Item visivel="S" motivo="S20150600111"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Plano de Trabalho: Novo opção de inserir um corresponsável.]]></Item>
 		<Item visivel="S" motivo="S20150600019"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitações de Exames: Exibição da observação da solicitação no relatório.]]></Item>
-		<Item visivel="S" motivo="S20150500240"><![CDATA[Utilitários > Configurações > Limite de Colab. por Cargo: Nova opção de gerar o relatório no formato xls.]]></Item>
 		<Item visivel="S" motivo="S20150700042"><![CDATA[Utilitários > Cadastros > Empresas > Inserir/Editar > Cálculo de Absenteísmo: Nova opção de "Considerar domingo como dia útil" para o cálculo de absenteísmo.]]></Item>
 		<Item visivel="S" motivo="S20150600114"><![CDATA[Utilitários > Cadastros > Perfis: Nova permissão para editar a data de uma solicitação de pessoal.]]></Item>
-		<Item visivel="S" motivo="S20130900269"><![Nova opção para excluir pendências com o AC Pessoal. Apenas para o usuário fortes, demais usuários só poderão excluir pendências com o status de cancelado.]]></Item>
+		<Item visivel="S" motivo="S20150500240"><![CDATA[Utilitários > Configurações > Limite de Colab. por Cargo: Nova opção de gerar o relatório no formato xls.]]></Item>
+		<Item visivel="S" motivo="P20150600187"><![CDATA[Correção de inconsistência ao notificar avaliações do período de experiência a vencer (Notificação periódica).]]></Item>
+		<Item visivel="S" motivo="S20130900269"><![CDATA[Nova opção para excluir pendências com o AC Pessoal. Apenas para o usuário fortes, demais usuários só poderão excluir pendências com o status de cancelado.]]></Item>
 	</Versao>
 	<Versao id="1.1.146.176" db="" data="24/06/2015">
 		<Item visivel="S" motivo="S20150500191"><![CDATA[R&S > Relatórios > Duração para preenchimento de vagas: Considerar as pausas da solicitação de pessoal na média de dias.]]></Item>
