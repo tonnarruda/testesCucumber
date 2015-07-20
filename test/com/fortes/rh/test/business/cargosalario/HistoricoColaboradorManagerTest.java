@@ -1211,12 +1211,14 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		empresa.setAcIntegra(true);
 
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		DateUtil.criarDataMesAno(02, 02, 2000);
 		colaborador.setCodigoAC("43232342");
 
 		ReajusteColaborador reajusteColaborador = ReajusteColaboradorFactory.getReajusteColaborador(1L);
 
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
 		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setData(DateUtil.criarDataMesAno(03, 02, 2000));
 		historicoColaborador.setReajusteColaborador(reajusteColaborador);
 
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
@@ -1232,6 +1234,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradorDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
 		reajusteColaboradorManager.expects(once()).method("remove").with(ANYTHING);
 		acPessoalClientTabelaReajuste.expects(once()).method("deleteHistoricoColaboradorAC").with(ANYTHING, ANYTHING);
+		colaboradorManager.expects(once()).method("findColaboradorByIdProjection").with(eq(colaborador.getId())).will(returnValue(colaborador));
 
 		Exception exception = null;
 		try

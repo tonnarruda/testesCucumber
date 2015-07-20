@@ -26,6 +26,7 @@ import com.fortes.model.AbstractModel;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
@@ -758,6 +759,12 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public void removeHistoricoAndReajuste(Long historicoColaboradorId, Long colaboradorId, Empresa empresa, boolean removerDoAC) throws Exception
 	{
 		HistoricoColaborador historicoColaboradorTmp = findByIdProjection(historicoColaboradorId);
+		
+		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+		Colaborador colaborador = colaboradorManager.findColaboradorByIdProjection(colaboradorId);
+		
+		if (historicoColaboradorTmp.getData().equals(colaborador.getDataAdmissao()))
+			throw new Exception("Este histórico não pode ser removido, pois é o primeiro histórico do colaborador.");
 		
 		if(getCount(new String[]{"colaborador.id"}, new Object[]{colaboradorId}) <= 1)
 			throw new Exception("<div>Histórico do colaborador "+historicoColaboradorTmp.getColaborador().getNome()+"</div>Não é permitido deletar o último histórico.");
