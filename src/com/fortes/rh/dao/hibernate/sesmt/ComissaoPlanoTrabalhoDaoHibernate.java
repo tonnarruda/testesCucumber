@@ -22,7 +22,7 @@ import com.fortes.rh.model.sesmt.ComissaoPlanoTrabalho;
 @SuppressWarnings("unchecked")
 public class ComissaoPlanoTrabalhoDaoHibernate extends GenericDaoHibernate<ComissaoPlanoTrabalho> implements ComissaoPlanoTrabalhoDao
 {
-	public Collection<ComissaoPlanoTrabalho> findByComissao(Long comissaoId)
+	public Collection<ComissaoPlanoTrabalho> findByComissao(Long comissaoId, String situacao, Long responsavelId, Long corresponsavelId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"cp");
 		criteria.createCriteria("cp.responsavel", "r", CriteriaSpecification.LEFT_JOIN);
@@ -43,6 +43,13 @@ public class ComissaoPlanoTrabalhoDaoHibernate extends GenericDaoHibernate<Comis
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("cp.comissao.id", comissaoId));
+		if (situacao != null && !situacao.equals("TODAS"))
+			criteria.add(Expression.eq("cp.situacao", situacao));
+		if (responsavelId != null && responsavelId != -1)
+			criteria.add(Expression.eq("r.id", responsavelId));
+		if (corresponsavelId != null && corresponsavelId != -1)
+			criteria.add(Expression.eq("cr.id", corresponsavelId));
+		
 		criteria.addOrder(Order.asc("cp.prazo"));
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));

@@ -42,9 +42,9 @@ public class ComissaoPlanoTrabalhoManagerTest extends MockObjectTestCase
 		Collection<ComissaoPlanoTrabalho> colecao = new ArrayList<ComissaoPlanoTrabalho>();
 		colecao.add(comissaoPlanoTrabalho);
 
-		comissaoPlanoTrabalhoDao.expects(once()).method("findByComissao").with(eq(comissaoId)).will(returnValue(colecao));
+		comissaoPlanoTrabalhoDao.expects(once()).method("findByComissao").with(eq(comissaoId),ANYTHING, ANYTHING, ANYTHING).will(returnValue(colecao));
 
-		colecao = comissaoPlanoTrabalhoManager.findByComissao(comissaoId);
+		colecao = comissaoPlanoTrabalhoManager.findByComissao(comissaoId, null, null, null);
 		ComissaoPlanoTrabalho resultado = ((ComissaoPlanoTrabalho)colecao.toArray()[0]);
 		assertEquals(Long.valueOf(1), resultado.getId());
 	}
@@ -67,18 +67,18 @@ public class ComissaoPlanoTrabalhoManagerTest extends MockObjectTestCase
 	{
 		Collection<ComissaoPlanoTrabalho> colecao = new ArrayList<ComissaoPlanoTrabalho>();
 		colecao.add(ComissaoPlanoTrabalhoFactory.getEntity());
-		comissaoPlanoTrabalhoDao.expects(once()).method("findByComissao").with(eq(1L)).will(returnValue(colecao));
-		assertEquals(1, comissaoPlanoTrabalhoManager.findImprimirPlanoTrabalho(1L).size());
+		comissaoPlanoTrabalhoDao.expects(once()).method("findByComissao").with(eq(1L),ANYTHING,ANYTHING,ANYTHING).will(returnValue(colecao));
+		assertEquals(1, comissaoPlanoTrabalhoManager.findImprimirPlanoTrabalho(1L, null, null, null).size());
 	}
 
 	public void testFindImprimirPlanoTrabalhoException()
 	{
-		comissaoPlanoTrabalhoDao.expects(once()).method("findByComissao").with(eq(1L)).will(returnValue(new ArrayList<ComissaoPlanoTrabalho>()));
+		comissaoPlanoTrabalhoDao.expects(once()).method("findByComissao").with(eq(1L),ANYTHING,ANYTHING,ANYTHING).will(returnValue(new ArrayList<ComissaoPlanoTrabalho>()));
 
 		Exception exception = null;
 		try
 		{
-			comissaoPlanoTrabalhoManager.findImprimirPlanoTrabalho(1L);
+			comissaoPlanoTrabalhoManager.findImprimirPlanoTrabalho(1L, null, null, null);
 		}
 		catch (ColecaoVaziaException e)
 		{

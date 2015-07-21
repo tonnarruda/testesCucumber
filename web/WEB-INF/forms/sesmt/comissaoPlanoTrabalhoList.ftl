@@ -53,13 +53,44 @@
 			document.form.action="update.action"
 			openbox('Editar Plano de Trabalho', 'descricao');
 		}
+		
+		function imprimir()
+		{
+			var situacao = $('#situacaoFiltro').val();
+			var responsavelId = $('#responsavelId').val();
+			var corresponsavelId = $('#responsavelId').val();
+			window.location='imprimirPlanoTrabalho.action?comissao.id=${comissao.id}&situacao='+situacao+'&responsavelId='+responsavelId+'&corresponsavelId='+corresponsavelId;
+		}
 	</script>
 
 	<#assign validarCampos="return validaFormulario('form',new Array('prazo'),new Array('prazo'));"/>
+	
+	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+	
+	<#include "../ftl/showFilterImports.ftl" />
+	
+	<#if situacao?exists && responsavelId?exists && corresponsavelId?exists>
+		<#assign labelFiltro="Ocultar Filtro"/>
+		<#assign imagemFiltro="/imgs/arrow_up.gif"/>
+		<#assign classHidden="">
+	</#if>
 </head>
+
 <body>
 	<#include "comissaoLinks.ftl" />
 	<#include "../ftl/mascarasImports.ftl" />
+	<#include "../util/topFiltro.ftl" />
+		<@ww.form name="formBusca" action="list.action" validate="true" method="POST" id="formBusca">
+			<@ww.select label="Situação" id="situacaoFiltro" name="situacao" list=r"#{'TODAS':'Todas','NAO_INICIOU':'Não Iniciado','ANDAMENTO':'Em andamento','CONCLUIDO':'Concluído'}"/>
+			<@ww.select label="Responsável" name="responsavelId" list="colaboradors" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1" cssStyle="width:445px;"/>
+			<@ww.select label="Corresponsável" name="corresponsavelId" list="colaboradors" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1" cssStyle="width:445px;"/>
+			<@ww.hidden id="comissaoId" name="comissao.id" value="${comissao.id}"/>
+			<@ww.hidden id="pagina" name="page"/>
+			<@ww.hidden id="showFilter" name="showFilter"/>
+			<input type="submit" value="" class="btnPesquisar grayBGE">
+		</@ww.form>
+	<#include "../util/bottomFiltro.ftl" />
+	<br>
 
 	<@display.table name="comissaoPlanoTrabalhos" id="comissaoPlanoTrabalho" class="dados">
 		<@display.column title="Ações" class="acao">
@@ -76,7 +107,7 @@
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="limpaForm(); openbox('Inserir Plano de Trabalho', 'descricao');" accesskey="N">
 		</button>
-		<button class="btnImprimirPdf" onclick="window.location='imprimirPlanoTrabalho.action?comissao.id=${comissao.id}'" accesskey="N">
+		<button class="btnImprimirPdf" onclick="imprimir();" accesskey="N">
 		</button>
 	</div>
 

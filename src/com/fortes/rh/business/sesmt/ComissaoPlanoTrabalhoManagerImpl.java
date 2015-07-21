@@ -9,11 +9,11 @@ import com.fortes.rh.model.sesmt.ComissaoPlanoTrabalho;
 
 public class ComissaoPlanoTrabalhoManagerImpl extends GenericManagerImpl<ComissaoPlanoTrabalho, ComissaoPlanoTrabalhoDao> implements ComissaoPlanoTrabalhoManager
 {
-	public Collection<ComissaoPlanoTrabalho> findByComissao(Long comissaoId)
+	public Collection<ComissaoPlanoTrabalho> findByComissao(Long comissaoId, String situacao, Long responsavelId, Long corresponsavelId)
 	{
-		return getDao().findByComissao(comissaoId);
+		return getDao().findByComissao(comissaoId, situacao, responsavelId, corresponsavelId);
 	}
-
+	
 	public ComissaoPlanoTrabalho findByIdProjection(Long id)
 	{
 		return getDao().findByIdProjection(id);
@@ -24,9 +24,9 @@ public class ComissaoPlanoTrabalhoManagerImpl extends GenericManagerImpl<Comissa
 		getDao().removeByComissao(comissaoId);
 	}
 
-	public Collection<ComissaoPlanoTrabalho> findImprimirPlanoTrabalho(Long comissaoId) throws ColecaoVaziaException
+	public Collection<ComissaoPlanoTrabalho> findImprimirPlanoTrabalho(Long comissaoId, String situacao, Long responsavelId, Long corresponsavelId) throws ColecaoVaziaException
 	{
-		Collection<ComissaoPlanoTrabalho> colecao = getDao().findByComissao(comissaoId);
+		Collection<ComissaoPlanoTrabalho> colecao = getDao().findByComissao(comissaoId, situacao, responsavelId, corresponsavelId);
 
 		if (colecao.isEmpty())
 		{

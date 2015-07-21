@@ -51,7 +51,7 @@ public class ComissaoPlanoTrabalhoEditActionTest extends MockObjectTestCase
     {
     	Comissao comissao = ComissaoFactory.getEntity(1L);
     	action.setComissao(comissao);
-    	manager.expects(once()).method("findByComissao").with(ANYTHING).will(returnValue(new ArrayList<ComissaoPlanoTrabalho>()));
+    	manager.expects(once()).method("findByComissao").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ComissaoPlanoTrabalho>()));
     	comissaoMembroManager.expects(once()).method("findColaboradorByComissao").with(ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
     	assertEquals(action.list(), "success");
     	assertNotNull(action.getComissaoPlanoTrabalhos());
@@ -124,7 +124,7 @@ public class ComissaoPlanoTrabalhoEditActionTest extends MockObjectTestCase
     	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
     	Comissao comissao = ComissaoFactory.getEntity(1L);
     	action.setComissao(comissao);
-    	manager.expects(once()).method("findImprimirPlanoTrabalho").with(eq(comissao.getId())).will(returnValue(new ArrayList<ComissaoPlanoTrabalho>()));
+    	manager.expects(once()).method("findImprimirPlanoTrabalho").with(eq(comissao.getId()), ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ComissaoPlanoTrabalho>()));
 
     	String ret = "";
     	try {
@@ -136,8 +136,8 @@ public class ComissaoPlanoTrabalhoEditActionTest extends MockObjectTestCase
 
     	// Exception
 
-    	manager.expects(once()).method("findImprimirPlanoTrabalho").with(eq(comissao.getId())).will(throwException(new ColecaoVaziaException("")));
-    	manager.expects(once()).method("findByComissao").with(ANYTHING).will(returnValue(new ArrayList<ComissaoPlanoTrabalho>()));
+    	manager.expects(once()).method("findImprimirPlanoTrabalho").with(eq(comissao.getId()), ANYTHING, ANYTHING, ANYTHING).will(throwException(new ColecaoVaziaException("")));
+    	manager.expects(once()).method("findByComissao").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ComissaoPlanoTrabalho>()));
     	comissaoMembroManager.expects(once()).method("findColaboradorByComissao").with(ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
     	ret = "";
     	try {

@@ -23,6 +23,10 @@ public class ComissaoPlanoTrabalhoEditAction extends MyActionSupport
 	private Collection<ComissaoPlanoTrabalho> comissaoPlanoTrabalhos;
 	private Collection<Colaborador> colaboradors;
 	private Comissao comissao;
+	
+	private String situacao = "TODAS";
+	private Long responsavelId;
+	private Long corresponsavelId;
 
 	private Map<String, Object> parametros;
 
@@ -62,7 +66,7 @@ public class ComissaoPlanoTrabalhoEditAction extends MyActionSupport
 
 	public String list() throws Exception
 	{
-		comissaoPlanoTrabalhos = comissaoPlanoTrabalhoManager.findByComissao(comissao.getId());
+		comissaoPlanoTrabalhos = comissaoPlanoTrabalhoManager.findByComissao(comissao.getId(), situacao, responsavelId, corresponsavelId);
 		colaboradors = comissaoMembroManager.findColaboradorByComissao(comissao.getId());
 		return SUCCESS;
 	}
@@ -77,7 +81,7 @@ public class ComissaoPlanoTrabalhoEditAction extends MyActionSupport
 	{
 		try
 		{
-			comissaoPlanoTrabalhos = comissaoPlanoTrabalhoManager.findImprimirPlanoTrabalho(comissao.getId());
+			comissaoPlanoTrabalhos = comissaoPlanoTrabalhoManager.findImprimirPlanoTrabalho(comissao.getId(), situacao, responsavelId, corresponsavelId);
 		}
 		catch (ColecaoVaziaException e)
 		{
@@ -143,5 +147,29 @@ public class ComissaoPlanoTrabalhoEditAction extends MyActionSupport
 	public Map<String, Object> getParametros()
 	{
 		return parametros;
+	}
+
+	public String getSituacao() {
+		return situacao;
+	}
+
+	public void setSituacao(String situacao) {
+		this.situacao = situacao;
+	}
+
+	public Long getResponsavelId() {
+		return responsavelId;
+	}
+
+	public void setResponsavelId(Long responsavelId) {
+		this.responsavelId = responsavelId;
+	}
+
+	public Long getCorresponsavelId() {
+		return corresponsavelId;
+	}
+
+	public void setCorresponsavelId(Long corresponsavelId) {
+		this.corresponsavelId = corresponsavelId;
 	}
 }

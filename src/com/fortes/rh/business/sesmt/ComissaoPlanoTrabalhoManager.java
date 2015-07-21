@@ -8,8 +8,8 @@ import com.fortes.rh.model.sesmt.ComissaoPlanoTrabalho;
 
 public interface ComissaoPlanoTrabalhoManager extends GenericManager<ComissaoPlanoTrabalho>
 {
+	Collection<ComissaoPlanoTrabalho> findByComissao(Long comissaoId, String situacao, Long responsavelId, Long corresponsavelId);
 	ComissaoPlanoTrabalho findByIdProjection(Long id);
-	Collection<ComissaoPlanoTrabalho> findByComissao(Long comissaoId);
 	void removeByComissao(Long id);
-	Collection<ComissaoPlanoTrabalho> findImprimirPlanoTrabalho(Long comissaoId) throws ColecaoVaziaException;
+	Collection<ComissaoPlanoTrabalho> findImprimirPlanoTrabalho(Long comissaoId, String situacao, Long responsavelId, Long corresponsavelId) throws ColecaoVaziaException;
 }

@@ -7,7 +7,7 @@ import com.fortes.rh.model.sesmt.ComissaoPlanoTrabalho;
 
 public interface ComissaoPlanoTrabalhoDao extends GenericDao<ComissaoPlanoTrabalho>
 {
+	public Collection<ComissaoPlanoTrabalho> findByComissao(Long comissaoId, String situacao, Long responsavelId, Long corresponsavelId);
 	ComissaoPlanoTrabalho findByIdProjection(Long id);
-	Collection<ComissaoPlanoTrabalho> findByComissao(Long comissaoId);
 	void removeByComissao(Long comissaoId);
 }
