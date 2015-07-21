@@ -242,6 +242,12 @@ public class CargoEditAction extends MyActionSupportEdit
 		} catch (ColecaoVaziaException e) {
 			addActionMessage(e.getMessage());
 			e.printStackTrace();
+			prepareRelatorioColaboradorCargo();
+			return Action.INPUT;
+		}catch (Exception e) {
+			addActionMessage(e.getMessage());
+			e.printStackTrace();
+			prepareRelatorioColaboradorCargo();
 			return Action.INPUT;
 		}
 		

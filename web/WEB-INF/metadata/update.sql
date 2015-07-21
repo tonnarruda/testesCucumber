@@ -23052,4 +23052,11 @@ insert into migrations values('20150715105905');--.go
 alter table comissaoplanotrabalho add column corresponsavel_id bigint;--.go
 ALTER TABLE comissaoplanotrabalho ADD CONSTRAINT comissaoplanotrabalho_corresponsavel_fk FOREIGN KEY (corresponsavel_id) REFERENCES colaborador(id);--.go
 insert into migrations values('20150715114951');--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (634, 'ROLE_UTI', 'Inserir Nono Dígito em Celulares', '/geral/insereNonoDigito/prepareInsert.action', 18, true, 37);--.go 
+alter sequence papel_sequence restart with 635;--.go 
+
+insert into perfil_papel(perfil_id, papeis_id) values(1, 634);--.go 
+insert into migrations values('20150715115000');--.go
+
 update parametrosdosistema set appversao = '1.1.147.177';--.go

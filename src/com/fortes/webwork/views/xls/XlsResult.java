@@ -83,7 +83,7 @@ public class XlsResult extends WebWorkResultSupport {
 		propertiesArray = properties.split(",");
 		propertiesGroupArray = new String[]{};
 		String[] columnsArray = columns.split(",");
-		
+				
 		if(propertiesGroup != null)
 			propertiesGroupArray = propertiesGroup.split(",");
 
@@ -106,6 +106,12 @@ public class XlsResult extends WebWorkResultSupport {
 	    
 	    CellStyle columnStyle = wb.createCellStyle();
 	    columnStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_TOP);
+	    
+	    CellStyle columnDouble = wb.createCellStyle();
+	    columnDouble.setDataFormat(wb.createDataFormat().getFormat("#.##0,##"));
+	    
+	    CellStyle columnInteger = wb.createCellStyle();
+	    columnInteger.setDataFormat(wb.createDataFormat().getFormat("#.###"));
 	    
 	    CellStyle styleUltimaColuna = wb.createCellStyle();
 	    if(considerarUltimaColunaComo!=null && considerarUltimaColunaComo.equals("Percentual"))
@@ -161,7 +167,7 @@ public class XlsResult extends WebWorkResultSupport {
 		    for (int i = 0; i < propertiesArray.length; i++)
 		    {
 		    	prop = BeanUtils.getValue(obj, propertiesArray[i]);
-		    	propName = prop!=null?prop.toString():"";
+	    		propName = prop!=null?prop.toString():"";
 				
 				if(propertiesGroupArray.length > i)
 				{
@@ -175,8 +181,19 @@ public class XlsResult extends WebWorkResultSupport {
 				}
 				
 				cell = row.createCell(i);
-				cell.setCellValue(propName);
-				cell.setCellStyle(columnStyle);
+				
+				if(prop.getClass() == Double.class){
+					cell.setCellValue(new Double(propName));
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellStyle(columnDouble);
+				}else if(prop.getClass() == Integer.class){
+					cell.setCellValue(new Integer(propName));
+					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+					cell.setCellStyle(columnInteger);
+				}else{
+					cell.setCellValue(propName);
+					cell.setCellStyle(columnStyle);
+				}
 				
 				if((propertiesArray.length - 1)  == i  && propertiesCalculo != null && propName != null && !propName.equals(""))
 				{
@@ -209,15 +226,14 @@ public class XlsResult extends WebWorkResultSupport {
 	    	
 	    	if(propertiesCalculo != null &&  celMesclada.getFirstColumn() == 0)//Somente Primeiro Agrupador
 	    	{
-		    	tempRow = sheet.getRow(celMesclada.getLastRow() + 1);
+	    		NumberFormat formata = new DecimalFormat("#0.0000");
+	    		tempRow = sheet.getRow(celMesclada.getLastRow() + 1);
 				cell = tempRow.createCell(celMesclada.getFirstColumn());
 				cell.setCellValue(operacao);
 				cell.setCellStyle(columnStyleOperacao);
 				
 				cell = tempRow.createCell(propertiesArray.length - 1);
-			
 				soma = somaCelulas(celMesclada.getFirstRow(), celMesclada.getLastRow());
-				NumberFormat formata = new DecimalFormat("#0.0000");
 				
 				if(operacao != null && operacao.equals("Soma"))
 				{
