@@ -99,6 +99,7 @@ public class XlsResult extends WebWorkResultSupport {
 	    fontBold.setBoldweight(Font.BOLDWEIGHT_BOLD);
 	    
 	    CellStyle boldStyle = wb.createCellStyle();
+	    boldStyle.setWrapText(true);
 	    boldStyle.setFont(fontBold);
 
 	    CellStyle columnHeaderStyle = wb.createCellStyle();
@@ -126,6 +127,7 @@ public class XlsResult extends WebWorkResultSupport {
 	    cell.setCellValue(reportTitleRef);
 	    
 	    row = sheet.createRow(1);
+	    row.setHeight((short)700);
 	    cell = row.createCell(0);
 	    cell.setCellStyle(boldStyle);
 	    cell.setCellValue(reportFilterRef);
