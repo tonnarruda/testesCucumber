@@ -1,6 +1,7 @@
 package com.fortes.rh.test.web.action.desenvolvimento;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import mockit.Mockit;
@@ -10,6 +11,7 @@ import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.desenvolvimento.CursoManager;
+import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
@@ -22,13 +24,17 @@ public class CursoListActionTest extends MockObjectTestCase
 {
 	private CursoListAction action;
 	private Mock cursoManager;
+	private Mock empresaManager;
+	
 
     protected void setUp() throws Exception
     {
         super.setUp();
         action = new CursoListAction();
         cursoManager = new Mock(CursoManager.class);
+        empresaManager = new Mock(EmpresaManager.class);
         action.setCursoManager((CursoManager) cursoManager.proxy());
+        action.setEmpresaManager((EmpresaManager) empresaManager.proxy());
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
     }
@@ -54,6 +60,8 @@ public class CursoListActionTest extends MockObjectTestCase
 
     	cursoManager.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(1));
     	cursoManager.expects(once()).method("findByFiltro").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(cursos));
+    	empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(new ArrayList<Empresa>()));
+       	
     	assertEquals("success", action.list());
     	assertEquals(cursos, action.getCursos());
     }
@@ -97,7 +105,7 @@ public class CursoListActionTest extends MockObjectTestCase
     	
     	cursoManager.expects(once()).method("clonar").with(eq(curso.getId()), eq(empresaSistema.getId()), ANYTHING).isVoid();
 		assertEquals("success", action.clonar());
-		assertEquals("Curso clonado com sucesso.", action.getActionSuccess());
+		assertEquals("Curso clonado com sucesso.", action.getActionSuccess().iterator().next());
 	}
 	public void testClonarException()
 	{
