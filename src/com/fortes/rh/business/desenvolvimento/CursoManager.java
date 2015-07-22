@@ -36,4 +36,5 @@ public interface CursoManager extends GenericManager<Curso>
 	public Collection<Empresa> findAllEmpresasParticipantes(Long cursoId);
 	public boolean existeAvaliacaoAlunoDeTipoNotaOuPorcentagemRespondida(Long cursoId);
 	public boolean existeAvaliacaoAlunoDeTipoAvaliacaoRespondida(Long cursoId);
+	public void clonar(Long id, Long empresaSistemaId, Long[] empresasIds) throws Exception;
 }

@@ -25,8 +25,8 @@ import com.fortes.web.tags.CheckBox;
 
 public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implements CursoManager
 {
-	private PlatformTransactionManager transactionManager;
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
+	private PlatformTransactionManager transactionManager;
 	private ColaboradorManager colaboradorManager;
 
 	public Curso findByIdProjection(Long cursoId)
@@ -240,7 +240,36 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 	{
 		return getDao().existeAvaliacaoAlunoRespondida(cursoId, TipoAvaliacaoCurso.AVALIACAO);
 	}
-	
+
+	public void clonar(Long id, Long empresaSistemaId, Long[] empresasIds) throws Exception {
+		if (empresasIds != null && empresasIds.length > 0)
+			for (Long empresaId : empresasIds)
+				clonarCurso(id, empresaId);
+		else
+			clonarCurso(id, empresaSistemaId);
+	}
+
+	private void clonarCurso(Long id, Long empresaId) throws Exception{
+		Empresa empresa = new Empresa();
+		empresa.setId(empresaId);
+
+		Curso curso = (Curso) getDao().findById(id).clone();
+
+		CollectionUtil<AvaliacaoCurso> collectionUtil = new CollectionUtil<AvaliacaoCurso>();
+		curso.setAvaliacaoCursos(collectionUtil.convertArrayStringToCollection(AvaliacaoCurso.class, collectionUtil.convertCollectionToArrayIdsString(curso.getAvaliacaoCursos())));
+		
+		curso.setNome(curso.getNome() + " (Clone)");
+		curso.setEmpresa(empresa);
+		curso.setId(null);
+		curso.setCertificacaos(null);
+		curso.setAtitudes(null);
+		curso.setHabilidades(null);
+		curso.setConhecimentos(null);
+		curso.setTurmas(null);
+		curso.setEmpresasParticipantes(null);
+		getDao().save(curso);
+	}
+
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;

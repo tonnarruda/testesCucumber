@@ -27,7 +27,8 @@ public class AvaliacaoDaoHibernate extends GenericDaoHibernate<Avaliacao> implem
 	{
 		Criteria criteria = getSession().createCriteria(Avaliacao.class, "a");
 		
-		criteria.add(Expression.eq("a.empresa.id", empresaId));
+		if(modeloAvaliacao != TipoModeloAvaliacao.AVALIACAO_ALUNO)
+			criteria.add(Expression.eq("a.empresa.id", empresaId));
 		
 		if (TipoModeloAvaliacao.DESEMPENHO == modeloAvaliacao)
 			criteria.add(Expression.or(

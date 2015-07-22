@@ -5,7 +5,6 @@ import java.util.Collection;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
-import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
 
 public class AvaliacaoCursoManagerImpl extends GenericManagerImpl<AvaliacaoCurso, AvaliacaoCursoDao> implements AvaliacaoCursoManager
 {

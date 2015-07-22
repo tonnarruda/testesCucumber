@@ -35,7 +35,7 @@ public class AvaliacaoCursoEditAction extends MyActionSupport implements ModelDr
 			existeAvaliacaoRespondida =  avaliacaoCursoManager.existeAvaliacaoCursoRespondida(avaliacaoCurso.getId(), avaliacaoCurso.getTipo());
 		}
 		
-		avaliacoes = avaliacaoManager.findToList(new String[] { "id", "titulo" }, new String[] { "id", "titulo" }, new String[] { "tipoModeloAvaliacao", "empresa.id" }, new Object[] { "L", getEmpresaSistema().getId() });
+		avaliacoes = avaliacaoManager.findToList(new String[] { "id", "titulo" }, new String[] { "id", "titulo" }, new String[] { "tipoModeloAvaliacao" }, new Object[] { "L" });
 	}
 
 	public String prepareInsert() throws Exception

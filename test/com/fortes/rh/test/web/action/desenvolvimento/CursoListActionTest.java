@@ -11,7 +11,9 @@ import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.web.action.desenvolvimento.CursoListAction;
@@ -84,4 +86,30 @@ public class CursoListActionTest extends MockObjectTestCase
     	action.setNomeCursoBusca("Treinamento");
     	assertEquals("Treinamento",action.getNomeCursoBusca());
     }
+    
+    public void testClonar()
+	{
+    	Curso curso = CursoFactory.getEntity(1L);
+    	Empresa empresaSistema = EmpresaFactory.getEmpresa(1L);
+
+    	action.setCurso(curso);
+    	action.setEmpresaSistema(empresaSistema);
+    	
+    	cursoManager.expects(once()).method("clonar").with(eq(curso.getId()), eq(empresaSistema.getId()), ANYTHING).isVoid();
+		assertEquals("success", action.clonar());
+		assertEquals("Curso clonado com sucesso.", action.getActionSuccess());
+	}
+	public void testClonarException()
+	{
+		Curso curso = CursoFactory.getEntity(1L);
+    	Empresa empresaSistema = EmpresaFactory.getEmpresa(1L);
+
+    	action.setCurso(curso);
+    	action.setEmpresaSistema(empresaSistema);
+    	
+    	cursoManager.expects(once()).method("clonar").with(eq(curso.getId()), eq(empresaSistema.getId()), ANYTHING).will(throwException(new Exception()));
+		action.clonar();
+		assertEquals(1, action.getActionErrors().size());
+		assertEquals("Não foi possível clonar o curso.",action.getActionErrors().iterator().next());
+	}
 }

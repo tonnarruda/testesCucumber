@@ -11,8 +11,15 @@
 			<interceptor-ref name="showFilterStack">
 	    		<param name="scope.session">nomeCursoBusca</param>
 	    	</interceptor-ref>	
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/cursoList.ftl</result>
 		</action>
+		
+		<action name="clonar" class="com.fortes.rh.web.action.desenvolvimento.CursoListAction" method="clonar">
+			<interceptor-ref name="defaultDeleteStack"/>
+			<result name="success" type="redirect">list.action</result>
+		</action>
+		
 		<action name="delete" class="com.fortes.rh.web.action.desenvolvimento.CursoListAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack">
 				<param name="scope.session">nomeCursoBusca</param>

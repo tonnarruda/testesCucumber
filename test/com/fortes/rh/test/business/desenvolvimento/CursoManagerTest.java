@@ -2,17 +2,26 @@ package com.fortes.rh.test.business.desenvolvimento;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import java.util.Arrays;
+
 import com.fortes.rh.business.desenvolvimento.CursoManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
+import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Curso;
-import com.fortes.rh.model.desenvolvimento.IndicadorTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.test.factory.captacao.AtitudeFactory;
+import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
+import com.fortes.rh.test.factory.desenvolvimento.AvaliacaoCursoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 
@@ -102,4 +111,65 @@ public class CursoManagerTest extends MockObjectTestCase
 		assertEquals("4:30", cursoManager.somaCargaHoraria(turmas));
 	}
 	
+	public void testClonarParaAMesmaEmpresa(){
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Curso curso = CursoFactory.getEntity(1L);
+		curso.setEmpresa(empresa);
+		curso.setAvaliacaoCursos(Arrays.asList(AvaliacaoCursoFactory.getEntity()));
+		curso.setAtitudes(Arrays.asList(AtitudeFactory.getEntity()));
+		curso.setConhecimentos(ConhecimentoFactory.getCollection());
+		curso.setHabilidades(HabilidadeFactory.getCollection());
+		curso.setCertificacaos(Arrays.asList(CertificacaoFactory.getEntity()));
+		curso.setTurmas(Arrays.asList(TurmaFactory.getEntity()));
+		curso.setEmpresasParticipantes(Arrays.asList(EmpresaFactory.getEmpresa()));
+		
+		cursoDao.expects(once()).method("findById").with(eq(curso.getId())).will(returnValue(curso));
+		cursoDao.expects(once()).method("save").with(ANYTHING);
+		
+		Exception exception = null;
+
+    	try
+		{
+    		cursoManager.clonar(curso.getId(), empresa.getId(), null);
+		}
+		catch (Exception e)
+		{
+			exception = e;
+		}
+		
+    	assertNull(exception);
+    	
+	}
+	
+	public void testClonarParaOutraEmpresa(){
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Curso curso = CursoFactory.getEntity(1L);
+		curso.setEmpresa(empresa);
+		curso.setAvaliacaoCursos(Arrays.asList(AvaliacaoCursoFactory.getEntity()));
+		curso.setAtitudes(Arrays.asList(AtitudeFactory.getEntity()));
+		curso.setConhecimentos(ConhecimentoFactory.getCollection());
+		curso.setHabilidades(HabilidadeFactory.getCollection());
+		curso.setCertificacaos(Arrays.asList(CertificacaoFactory.getEntity()));
+		curso.setTurmas(Arrays.asList(TurmaFactory.getEntity()));
+		curso.setEmpresasParticipantes(Arrays.asList(EmpresaFactory.getEmpresa()));
+		
+		cursoDao.expects(atLeastOnce()).method("findById").with(eq(curso.getId())).will(returnValue(curso));
+		cursoDao.expects(atLeastOnce()).method("save").with(ANYTHING);
+		
+		Exception exception = null;
+
+    	try
+		{
+    		cursoManager.clonar(curso.getId(), empresa.getId(), new Long[]{2L,3L});
+		}
+		catch (Exception e)
+		{
+			exception = e;
+		}
+
+    	assertNull(exception);
+    	
+	}
 }
