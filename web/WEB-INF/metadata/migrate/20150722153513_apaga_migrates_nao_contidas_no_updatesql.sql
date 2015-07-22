@@ -1,0 +1,9 @@
+delete from migrations WHERE name = '20111031134658'; --.go 
+delete from migrations WHERE name = '20120208145017'; --.go 
+delete from migrations WHERE name = '20120822141810'; --.go 
+delete from migrations WHERE name = '20120918141127'; --.go 
+delete from migrations WHERE name = '20120918180748'; --.go 
+delete from migrations WHERE name = '20120918180941'; --.go 
+delete from migrations WHERE name = '20120919100106'; --.go 
+delete from migrations WHERE name = '20121003102005'; --.go 
+delete from migrations WHERE name = '20121029062342'; --.go 
