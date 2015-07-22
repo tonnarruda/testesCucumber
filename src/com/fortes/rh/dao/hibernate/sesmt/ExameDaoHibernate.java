@@ -79,7 +79,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		return query.list();
 	}
 
-	public Collection<ExamesPrevistosRelatorio> findExamesPeriodicosPrevistos(Long empresaId, Date data, Long[] exameIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] colaboradorIds, boolean imprimirAfastados, boolean imprimirDesligados)
+	public Collection<ExamesPrevistosRelatorio> findExamesPeriodicosPrevistos(Long empresaId, Date dataInicio, Date dataFim, Long[] exameIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] colaboradorIds, boolean imprimirAfastados, boolean imprimirDesligados)
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio(co.id,e.id,ao.id,ca.nome,co.matricula,co.nome,co.nomeComercial,e.nome,se.data,re.data,ese.periodicidade, se.motivo, es.id, es.nome) ");
@@ -96,7 +96,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		hql.append("left join hc.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as ca ");
 		hql.append("where se.empresa.id = :empresaId ");
-		hql.append("and se.data <= :data ");
+		hql.append("and se.data between :dataInicio and :dataFim ");
 		hql.append("and ese.periodicidade > 0 ");
 
 		if (areaIds != null && areaIds.length > 0)
@@ -112,7 +112,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 			hql.append("and e.id in (:exameIds) ");
 		
 		if (imprimirAfastados)
-			hql.append("and (afa.fim = null or afa.fim >= :data) ");
+			hql.append("and (afa.fim = null or (afa.fim between :dataInicio and :dataFim)) ");
 		
 		if (!imprimirDesligados)
 			hql.append("and co.desligado = :imprimirDesligados ");
@@ -129,7 +129,8 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 		Query query = getSession().createQuery(hql.toString());
 
 		query.setDate("hoje", new Date());
-		query.setDate("data", data);
+		query.setDate("dataInicio", dataInicio);
+		query.setDate("dataFim", dataFim);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		query.setLong("empresaId", empresaId);
 		

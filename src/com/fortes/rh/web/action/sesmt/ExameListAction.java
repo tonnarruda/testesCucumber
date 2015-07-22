@@ -76,7 +76,6 @@ public class ExameListAction extends MyActionSupportList
 	private String[] colaboradoresCheck;
 	private Collection<CheckBox> colaboradoresCheckList = new ArrayList<CheckBox>();
 
-	private Date data;
 	private char agruparPor; 
 	
 	// Relatório de Exames Realizados
@@ -216,12 +215,12 @@ public class ExameListAction extends MyActionSupportList
 
 		try
 		{
-			colecaoExamesPrevistos = exameManager.findRelatorioExamesPrevistos(getEmpresaSistema().getId(), data, examesIds, estabelecimentosIds, areasIds, colaboradoresIds, agruparPor, imprimirAfastados, imprimirDesligados);
+			colecaoExamesPrevistos = exameManager.findRelatorioExamesPrevistos(getEmpresaSistema().getId(), inicio, fim, examesIds, estabelecimentosIds, areasIds, colaboradoresIds, agruparPor, imprimirAfastados, imprimirDesligados);
 			
 			if(colecaoExamesPrevistos == null || colecaoExamesPrevistos.size() == 0)
 				throw new ColecaoVaziaException();
 			
-			parametros = RelatorioUtil.getParametrosRelatorio("Exames Previstos até " + DateUtil.formataDiaMesAno(data), getEmpresaSistema(), nomeEstabelecimento );
+			parametros = RelatorioUtil.getParametrosRelatorio("Exames Previstos de " + DateUtil.formataDiaMesAno(inicio) + " até " + DateUtil.formataDiaMesAno(fim), getEmpresaSistema(), nomeEstabelecimento );
 			
 			switch (agruparPor) {
 			case 'A':
@@ -481,17 +480,7 @@ public class ExameListAction extends MyActionSupportList
 	{
 		return colecaoExamesPrevistos;
 	}
-
-	public Date getData()
-	{
-		return data;
-	}
-
-	public void setData(Date data)
-	{
-		this.data = data;
-	}
-
+	
 	public Date getInicio() {
 		return inicio;
 	}
@@ -607,4 +596,5 @@ public class ExameListAction extends MyActionSupportList
 	public void setExibirCampoObservacao(boolean exibirCampoObservacao) {
 		this.exibirCampoObservacao = exibirCampoObservacao;
 	}
+
 }

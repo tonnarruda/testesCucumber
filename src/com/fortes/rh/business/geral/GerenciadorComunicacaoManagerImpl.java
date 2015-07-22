@@ -507,7 +507,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			    	parametros.put("CABECALHO", cabecalho);
 			    	parametros.put("SUBREPORT_DIR", path);
 			    	
-			    	colecaoExamesPrevistos = exameManager.findRelatorioExamesPrevistos(empresa.getId(), ultimoDiaDoMesPosterior, null, null, null, null, 'N', true, false);
+			    	colecaoExamesPrevistos = exameManager.findRelatorioExamesPrevistos(empresa.getId(), ultimoDiaDoMesPosterior, null, null, null, null, null, 'N', true, false);
 
 					if (!colecaoExamesPrevistos.isEmpty())
 					{

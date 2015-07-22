@@ -98,13 +98,13 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 	}
 
 	//TODO BACALHAU, consulta gigante e uns forsss
-	public Collection<ExamesPrevistosRelatorio> findRelatorioExamesPrevistos(Long empresaId, Date data, Long[] examesChecks, Long[] estabelecimentosChecks, Long[] areasChecks, Long[] colaboradoresChecks, char agruparPor, boolean imprimirAfastados, boolean imprimirDesligados) throws Exception
+	public Collection<ExamesPrevistosRelatorio> findRelatorioExamesPrevistos(Long empresaId, Date dataInicio, Date dataFim, Long[] examesChecks, Long[] estabelecimentosChecks, Long[] areasChecks, Long[] colaboradoresChecks, char agruparPor, boolean imprimirAfastados, boolean imprimirDesligados) throws Exception
 	{
-		Collection<ExamesPrevistosRelatorio> examesRealizadosAteData = getDao().findExamesPeriodicosPrevistos(empresaId, data, examesChecks, estabelecimentosChecks, areasChecks, colaboradoresChecks, imprimirAfastados, imprimirDesligados);
+		Collection<ExamesPrevistosRelatorio> examesRealizadosAteData = getDao().findExamesPeriodicosPrevistos(empresaId, dataInicio, dataFim, examesChecks, estabelecimentosChecks, areasChecks, colaboradoresChecks, imprimirAfastados, imprimirDesligados);
 
-		Collection<ExamesPrevistosRelatorio> examesAVencer = this.prepararExamesAVencer(data, examesRealizadosAteData);
+		Collection<ExamesPrevistosRelatorio> examesAVencer = this.prepararExamesAVencer(dataInicio, dataFim, examesRealizadosAteData);
 		
-		examesAVencer = this.filtrarApenasExamesVencidos(data, examesRealizadosAteData, examesAVencer);
+		examesAVencer = this.filtrarApenasExamesVencidos(dataInicio, dataFim, examesRealizadosAteData, examesAVencer);
 		
 		if (examesAVencer.isEmpty())
 			return examesAVencer;
@@ -124,8 +124,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		return examesAVencer;
 	}
 
-	private Collection<ExamesPrevistosRelatorio> prepararExamesAVencer(Date data, Collection<ExamesPrevistosRelatorio> colecaoExamesRealizadosAteData) 
-	{
+	private Collection<ExamesPrevistosRelatorio> prepararExamesAVencer(Date dataInicio, Date dataFim, Collection<ExamesPrevistosRelatorio> colecaoExamesRealizadosAteData) {
 		Collection<ExamesPrevistosRelatorio> colecaoExamesAVencer = new ArrayList<ExamesPrevistosRelatorio>();
 		
 		ExamesPrevistosRelatorio examesPrevistosAnterior = null;
@@ -136,7 +135,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 
 			// A consulta recupera todos os exames realizados até a data. 
 			// Essa condição filtra apenas os resultados com data do Próximo exame dentro do período.
-			if (dataProximoExame.compareTo(data) <= 0)
+			if (dataProximoExame.compareTo(dataInicio) >= 0 && dataProximoExame.compareTo(dataFim) <= 0)
 			{
 				boolean adicionar = true;
 				if (examesPrevistosAnterior != null)
@@ -167,7 +166,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		return colecaoExamesAVencer;
 	}
 
-	private Collection<ExamesPrevistosRelatorio> filtrarApenasExamesVencidos(Date data, Collection<ExamesPrevistosRelatorio> colecaoExamesRealizadosAteData, Collection<ExamesPrevistosRelatorio> colecaoExamesAVencer)
+	private Collection<ExamesPrevistosRelatorio> filtrarApenasExamesVencidos(Date dataInicio, Date dataFim, Collection<ExamesPrevistosRelatorio> colecaoExamesRealizadosAteData, Collection<ExamesPrevistosRelatorio> colecaoExamesAVencer)
 	{
 		Collection<ExamesPrevistosRelatorio> colecaoResultado = new ArrayList<ExamesPrevistosRelatorio>();
 
@@ -186,7 +185,7 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 						&& examePrevistoRelatorio.getColaboradorId().equals(examesPrevistosRelatorio.getColaboradorId())
 						&& examePrevistoRelatorio.getExameId().equals(examesPrevistosRelatorio.getExameId()))
 				{
-					if ((examePrevistoRelatorio.getDataProximoExame().compareTo(data) > 0)
+					if ((examePrevistoRelatorio.getDataProximoExame().compareTo(dataInicio) < 0) && (examePrevistoRelatorio.getDataProximoExame().compareTo(dataFim) > 0)
 						&& (examePrevistoRelatorio.getDataRealizacaoExame().compareTo(examesPrevistosRelatorio.getDataRealizacaoExame()) > 0))
 					{
 						examesPrevistosRelatorio.setAdicionar(false);

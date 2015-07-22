@@ -521,9 +521,11 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 	public void testFindByConfiguracaoNivelCompetenciaColaborador()
 	{
 		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimento.setNome("Conhecimento");
 		conhecimentoDao.save(conhecimento);
 		
 		Atitude atitude = AtitudeFactory.getEntity();
+		atitude.setNome("Atitude");
 		atitudeDao.save(atitude);
 		
 		Candidato candidato1 = CandidatoFactory.getCandidato();

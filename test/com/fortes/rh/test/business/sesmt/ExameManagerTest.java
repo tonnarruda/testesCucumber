@@ -69,7 +69,7 @@ public class ExameManagerTest extends MockObjectTestCase
     public void testFindRelatorioExamesPrevistos() throws Exception
     {
     	Date hoje = new Date();
-		Calendar doisMesesAtras = Calendar.getInstance();
+    	Calendar doisMesesAtras = Calendar.getInstance();
     	doisMesesAtras.add(Calendar.MONTH, -2);
     	Calendar tresMesesAtras = Calendar.getInstance();
     	tresMesesAtras.add(Calendar.MONTH, -3);
@@ -77,32 +77,28 @@ public class ExameManagerTest extends MockObjectTestCase
     	Long[] areasCheck={1L}, estabelecimentosCheck={1L}, colaboradoresCheck={1L}, examesCheck = {1L};
     	Collection<ExamesPrevistosRelatorio> colecao = new ArrayList<ExamesPrevistosRelatorio>();
 
-    	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1Fora = new ExamesPrevistosRelatorio(1L,1L,3L,"Cargo","","","","",tresMesesAtras.getTime(),tresMesesAtras.getTime(),1,"PERIODICO",1L,"EST");
-    	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1Atual = new ExamesPrevistosRelatorio(1L,1L,3L,"Cargo","","","","",doisMesesAtras.getTime(),doisMesesAtras.getTime(),1,"PERIODICO",1L,"EST");
-    	ExamesPrevistosRelatorio examesPrevistosColaborador2Exame2 = new ExamesPrevistosRelatorio(2L,2L,3L,"Cargo","","","","",doisMesesAtras.getTime(),doisMesesAtras.getTime(),1,"PERIODICO",1L,"EST");
-//    	ExamesPrevistosRelatorio examesPrevistosColaborador2Exame2Fora = new ExamesPrevistosRelatorio(2L,2L,"","",hoje,hoje,1);
+    	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1Fora = new ExamesPrevistosRelatorio(1L,1L,2L,"Cargo","","","","",tresMesesAtras.getTime(),tresMesesAtras.getTime(),1, "PERIODICO",1L,"EST");
+    	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1Atual = new ExamesPrevistosRelatorio(1L,1L,1L,"Cargo","","","","",doisMesesAtras.getTime(),hoje,1, "PERIODICO",1L,"EST");
     	colecao.add(examesPrevistosColaborador1Exame1Fora);
     	colecao.add(examesPrevistosColaborador1Exame1Atual);
-    	colecao.add(examesPrevistosColaborador2Exame2);
-//    	colecao.add(examesPrevistosColaborador2Exame2Fora);
     	
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-
-    	exameDao.expects(once()).method("findExamesPeriodicosPrevistos").with(new Constraint[]{eq(empresa.getId()),eq(hoje),ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
-
+    	
+    	exameDao.expects(once()).method("findExamesPeriodicosPrevistos").with(new Constraint[]{eq(empresa.getId()),eq(doisMesesAtras.getTime()),eq(hoje),ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
+    	
     	Collection<ExamesPrevistosRelatorio> resultado = null;
 
     	Exception exception = null;
-		try
-		{
-			resultado = exameManager.findRelatorioExamesPrevistos(empresa.getId(), hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, 'N', false, false);
-		}
-		catch (ColecaoVaziaException e)
-		{
-			exception = e;
-		}
+    	try
+    	{
+    		resultado = exameManager.findRelatorioExamesPrevistos(empresa.getId(), doisMesesAtras.getTime(), hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, 'N', false, false );
+    	}
+    	catch (ColecaoVaziaException e)
+    	{
+    		exception = e;
+    	}
 
-    	assertEquals(2, resultado.size());
+    	assertEquals(1, resultado.size());
     	assertNull(exception);
     }
     
@@ -122,13 +118,11 @@ public class ExameManagerTest extends MockObjectTestCase
     	Collection<ExamesPrevistosRelatorio> colecaoFiltrada = new ArrayList<ExamesPrevistosRelatorio>();
     	
     	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1Fora = new ExamesPrevistosRelatorio(1L,1L,2L,"Cargo","","","","",tresMesesAtras.getTime(),tresMesesAtras.getTime(),1, "PERIODICO",1L,"EST");
-    	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1Atual = new ExamesPrevistosRelatorio(1L,1L,1L,"Cargo","","","","",doisMesesAtras.getTime(),doisMesesAtras.getTime(),1, "PERIODICO",1L,"EST");
-    	ExamesPrevistosRelatorio examesPrevistosColaborador2Exame2 = new ExamesPrevistosRelatorio(2L,2L,2L,"Cargo","","","","",doisMesesAtras.getTime(),doisMesesAtras.getTime(),1, "PERIODICO",1L,"EST");
-//    	ExamesPrevistosRelatorio examesPrevistosColaborador2Exame2Fora = new ExamesPrevistosRelatorio(2L,2L,"","",hoje,hoje,1);
+    	ExamesPrevistosRelatorio examesPrevistosColaborador1Exame1Atual = new ExamesPrevistosRelatorio(1L,1L,1L,"Cargo","","","","",doisMesesAtras.getTime(),hoje,1, "PERIODICO",1L,"EST");
+    	ExamesPrevistosRelatorio examesPrevistosColaborador2Exame2 = new ExamesPrevistosRelatorio(2L,2L,2L,"Cargo","","","","",doisMesesAtras.getTime(),hoje,1, "PERIODICO",1L,"EST");
     	colecao.add(examesPrevistosColaborador1Exame1Fora);
     	colecao.add(examesPrevistosColaborador1Exame1Atual);
     	colecao.add(examesPrevistosColaborador2Exame2);
-//    	colecao.add(examesPrevistosColaborador2Exame2Fora);
     	
     	//setando nome das áreas para simular a ordenação
     	examesPrevistosColaborador1Exame1Atual.getAreaOrganizacional().setNome("Cabaré");
@@ -141,7 +135,7 @@ public class ExameManagerTest extends MockObjectTestCase
     	
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	
-    	exameDao.expects(once()).method("findExamesPeriodicosPrevistos").with(new Constraint[]{eq(empresa.getId()),eq(hoje),ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
+    	exameDao.expects(once()).method("findExamesPeriodicosPrevistos").with(new Constraint[]{eq(empresa.getId()),eq(doisMesesAtras.getTime()),eq(hoje),ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(colecao));
     	
     	// Cabaré > Administração
     	Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
@@ -156,7 +150,7 @@ public class ExameManagerTest extends MockObjectTestCase
     	Exception exception = null;
     	try
     	{
-    		resultado = exameManager.findRelatorioExamesPrevistos(empresa.getId(), hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, 'A', imprimirAfastados, false );
+    		resultado = exameManager.findRelatorioExamesPrevistos(empresa.getId(), doisMesesAtras.getTime(), hoje, examesCheck, estabelecimentosCheck, areasCheck, colaboradoresCheck, 'A', imprimirAfastados, false );
     	}
     	catch (ColecaoVaziaException e)
     	{
@@ -170,9 +164,9 @@ public class ExameManagerTest extends MockObjectTestCase
     public void testFindRelatorioExamesPrevistosColecaoVaziaException() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
-    	exameDao.expects(once()).method("findExamesPeriodicosPrevistos").with(new Constraint[]{eq(empresa.getId()),ANYTHING,ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ExamesRealizadosRelatorio>()));
+    	exameDao.expects(once()).method("findExamesPeriodicosPrevistos").with(new Constraint[]{eq(empresa.getId()),ANYTHING,ANYTHING,ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ExamesRealizadosRelatorio>()));
 
-		assertTrue(exameManager.findRelatorioExamesPrevistos(empresa.getId(), null, null, null, null, null,'N', false, false).isEmpty());
+		assertTrue(exameManager.findRelatorioExamesPrevistos(empresa.getId(), null, null, null, null, null,null, 'N', false, false).isEmpty());
     }
 
     public void testFindBySolicitacaoExame()

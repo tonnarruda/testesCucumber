@@ -273,7 +273,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		Long[] areaIds = {areaOrganizacional1.getId(), areaOrganizacional2.getId()};
 		Long[] estabelecimentoIds = {estabelecimento1.getId(), estabelecimento2.getId()};
 
-		Collection<ExamesPrevistosRelatorio> examesPrevistos = exameDao.findExamesPeriodicosPrevistos(empresa.getId(), hoje, null, estabelecimentoIds, areaIds, null, false, false);
+		Collection<ExamesPrevistosRelatorio> examesPrevistos = exameDao.findExamesPeriodicosPrevistos(empresa.getId(), dataTresMesesAtras.getTime(), hoje, null, estabelecimentoIds, areaIds, null, false, false);
 
 		assertEquals(2, examesPrevistos.size());
 	}

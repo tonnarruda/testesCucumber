@@ -11,10 +11,15 @@
 
 	<@ww.head/>
 
-	<#if data?exists>
-		<#assign dateIni = data?date/>
+	<#if inicio?exists>
+		<#assign dateIni = inicio?date/>
 	<#else>
 		<#assign dateIni = ""/>
+	</#if>
+	<#if fim?exists>
+		<#assign dateFim = fim?date/>
+	<#else>
+		<#assign dateFim = ""/>
 	</#if>
 
 <#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
@@ -26,8 +31,10 @@
 
 	<@ww.form name="form" action="relatorioExamesPrevistos.action" onsubmit="enviaForm();" method="POST" id="formBusca">
 
-		Data:*
-		<@ww.datepicker name="data" id="data" value="${dateIni}" required="true" cssClass="mascaraData"/>
+		Período:*<br>
+		<@ww.datepicker name="inicio" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
+		<@ww.label value="a" liClass="liLeft" />
+		<@ww.datepicker name="fim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
 
 		<@frt.checkListBox name="examesCheck" label="Exames" list="examesCheckList" filtro="true"/>
 		<@frt.checkListBox name="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true" />
@@ -39,7 +46,7 @@
 		<@ww.checkbox label="Imprimir desligados" id="imprimirDesligados" name="imprimirDesligados" labelPosition="left"/>
 
 		<div class="buttonGroup">
-			<input type="button" value="" onclick="validaFormulario('form',new Array('data'),new Array('data'));" class="btnRelatorio" />
+			<input type="button" value="" onclick="validaFormularioEPeriodo('form',new Array('dataIni','dataFim'),new Array('dataIni','dataFim'));" class="btnRelatorio" />
 		</div>
 
 	</@ww.form>

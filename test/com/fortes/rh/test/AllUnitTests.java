@@ -412,7 +412,6 @@ import com.fortes.rh.test.util.HistoricoColaboradorUtilTest;
 import com.fortes.rh.test.util.ImportacaoCSVUtilTest;
 import com.fortes.rh.test.util.IntegerUtilTest;
 import com.fortes.rh.test.util.LongUtilTest;
-import com.fortes.rh.test.util.MailSendRunnableTest;
 import com.fortes.rh.test.util.MailTest;
 import com.fortes.rh.test.util.MathUtilTest;
 import com.fortes.rh.test.util.MontaRelatorioItextTest;
