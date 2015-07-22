@@ -77,7 +77,7 @@
 		<#if avaliacaoAlunoRespondida>
 			<@frt.checkListBox label="Avaliações dos Alunos" name="avaliacaoCursoCheck" id="avaliacaoCursoCheck" list="avaliacaoCursoCheckList" readonly=true />
 			<div style="width: 500px;">
-				<strong>Não é possível desmarcar nenhuma das avaliações dos alunos, pois já existe resposta para pelo menos uma das avaliações acima.</strong>
+				<strong>Não é possível modificar as avaliações dos alunos, pois já existe resposta para pelo menos uma das avaliações acima.</strong>
 			</div>
 		<#else>
 			<@frt.checkListBox label="Avaliações dos Alunos" name="avaliacaoCursoCheck" id="avaliacaoCursoCheck" list="avaliacaoCursoCheckList" filtro="true" readonly=false tooltipHelp="true"/>
