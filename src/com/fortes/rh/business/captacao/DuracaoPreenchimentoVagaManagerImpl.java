@@ -38,7 +38,7 @@ public class DuracaoPreenchimentoVagaManagerImpl implements DuracaoPreenchimento
 		Map<Long, String> mapNomesAreas = getAreas(empresaId);
 		Map<Long, String> mapNomesEstabelecimentos = getEstabelecimentos(empresaId);
 		
-		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresDuracaoPreenchimentoVagas = solicitacaoManager.getIndicadorMediaDiasPreenchimentoVagas(dataDe, dataAte, areasIds, estabelecimentosIds, solicitacaoIds);
+		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresDuracaoPreenchimentoVagas = solicitacaoManager.getIndicadorMediaDiasPreenchimentoVagas(dataDe, dataAte, areasIds, estabelecimentosIds, solicitacaoIds, empresaId);
 		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresQtdCandidatos = solicitacaoManager.getIndicadorQtdCandidatos(dataDe, dataAte, areasIds, estabelecimentosIds, solicitacaoIds);
 		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresVagas = solicitacaoManager.getIndicadorQtdVagas(dataDe, dataAte, areasIds, estabelecimentosIds, solicitacaoIds);
 		

@@ -33,9 +33,10 @@
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Estabelecimento,Área Organizacional,Cargo,Qtd Vagas,Qtd Candidatos,Qtd Contratados,Média de Dias</param>
 				<param name="propertiesGroup">estabelecimento.id,areaOrganizacional.id</param>
-				<param name="properties">estabelecimento.nome,areaOrganizacional.nome,cargo.nome,qtdVagas,qtdCandidatos,qtdContratados,mediaDiasFormatada</param>
+				<param name="properties">estabelecimento.nome,areaOrganizacional.nome,cargo.nome,qtdVagas,qtdCandidatos,qtdContratados,mediaDias</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
+				<param name="formatoDouble">#,##0.##</param>
 			</result>							
 			<result name="acessonegado" type="freemarker">/WEB-INF/forms/indicador/prepareIndicadorDuracaoPreechimentoVagas.ftl</result>
 			<result name="error" type="redirect">prepare.action?actionMsg=${actionMsg}</result>

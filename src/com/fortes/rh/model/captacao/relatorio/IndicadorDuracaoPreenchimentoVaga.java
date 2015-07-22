@@ -99,12 +99,6 @@ public class IndicadorDuracaoPreenchimentoVaga implements Serializable
 		return mediaDias;
 	}
 	
-	public String getMediaDiasFormatada()
-	{
-		NumberFormat formata = new DecimalFormat("##0");
-		return formata.format(mediaDias); 		
-	}
-	
 	public Integer getQtdCandidatos() {
 		return qtdCandidatos;
 	}

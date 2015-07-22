@@ -57,6 +57,8 @@ public class XlsResult extends WebWorkResultSupport {
     protected String propertiesCalculo;
     protected String operacao;
     protected String considerarUltimaColunaComo;
+    protected String formatoDouble = "#,##0.00";
+    protected String formatoInteiro = "#,##0";
     
 	@Override
 	@SuppressWarnings("unchecked")
@@ -108,10 +110,10 @@ public class XlsResult extends WebWorkResultSupport {
 	    columnStyle.setVerticalAlignment(HSSFCellStyle.VERTICAL_TOP);
 	    
 	    CellStyle columnDouble = wb.createCellStyle();
-	    columnDouble.setDataFormat(wb.createDataFormat().getFormat("#.##0,##"));
+	    columnDouble.setDataFormat(wb.createDataFormat().getFormat(formatoDouble));
 	    
 	    CellStyle columnInteger = wb.createCellStyle();
-	    columnInteger.setDataFormat(wb.createDataFormat().getFormat("#.###"));
+	    columnInteger.setDataFormat(wb.createDataFormat().getFormat(formatoInteiro));
 	    
 	    CellStyle styleUltimaColuna = wb.createCellStyle();
 	    if(considerarUltimaColunaComo!=null && considerarUltimaColunaComo.equals("Percentual"))
@@ -182,11 +184,11 @@ public class XlsResult extends WebWorkResultSupport {
 				
 				cell = row.createCell(i);
 				
-				if(prop.getClass() == Double.class){
+				if(prop != null && prop.getClass() == Double.class){
 					cell.setCellValue(new Double(propName));
 					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 					cell.setCellStyle(columnDouble);
-				}else if(prop.getClass() == Integer.class){
+				}else if(prop != null && prop.getClass() == Integer.class){
 					cell.setCellValue(new Integer(propName));
 					cell.setCellType(Cell.CELL_TYPE_NUMERIC);
 					cell.setCellStyle(columnInteger);
@@ -410,5 +412,13 @@ public class XlsResult extends WebWorkResultSupport {
 
 	public void setConsiderarUltimaColunaComo(String considerarUltimaColunaComo) {
 		this.considerarUltimaColunaComo = considerarUltimaColunaComo;
+	}
+
+	public void setFormatoDouble(String formatoDouble) {
+		this.formatoDouble = formatoDouble;
+	}
+
+	public void setFormatoInteiro(String formatoInteiro) {
+		this.formatoInteiro = formatoInteiro;
 	}
 }

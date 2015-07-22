@@ -460,7 +460,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
         return query.list();
 	}
 
-	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds, Long[] solicitacaoIds)
+	public List<IndicadorDuracaoPreenchimentoVaga> getIndicadorMediaDiasPreenchimentoVagas(Date inicio, Date fim, Collection<Long> areasIds, Collection<Long> estabelecimentosIds, Long[] solicitacaoIds, Long empresaId)
 	{
 		StringBuilder consulta = new StringBuilder("select new com.fortes.rh.model.captacao.relatorio.IndicadorDuracaoPreenchimentoVaga(s.estabelecimento.id, s.areaOrganizacional.id, fs.cargo.id,count(co.solicitacao.id), ");
 		consulta.append("coalesce(avg(s.dataEncerramento - s.data),0) - coalesce(cast(sum(to_number(to_char(((case when (p.dataReinicio is null) then now() else p.dataReinicio end) - p.dataPausa), 'DDD'), '999')) as integer), 0)) ");
@@ -473,6 +473,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		consulta.append("	s.dataEncerramento >= :dataDe ");
 		consulta.append("	and s.dataEncerramento <= :dataAte ");
 		consulta.append("	and (hc.data = ( select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = hc.colaborador.id and hc2.data <= :hoje and hc2.status = :status ) or hc.data is null) ");
+		
+		if (empresaId != null) 
+    		consulta.append("	and co.empresa.id = :empresaId ");
 		
 		if (areasIds != null && !areasIds.isEmpty())
             consulta.append("	and s.areaOrganizacional.id in (:areasOrganizacionais) ");
@@ -497,6 +500,9 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
         query.setDate("dataAte", fim);
         query.setDate("hoje", new Date());
         query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+        
+        if (empresaId != null) 
+        	query.setLong("empresaId", empresaId);
         
         if (areasIds != null && !areasIds.isEmpty())
 			query.setParameterList("areasOrganizacionais", areasIds);

@@ -2590,13 +2590,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	{
 		return com.fortes.rh.model.dicionario.TipoAplicacaoIndice.getDescricao(historicoColaborador.getTipoSalario());
 	}
-	
+
 	@NaoAudita
-	public String getSalarioHistoricoFormatado() 
+	public Double getSalarioHistorico() 
 	{
-		NumberFormat formata = new DecimalFormat("#,##0.00");
-		return formata.format(historicoColaborador.getSalarioCalculado()).toString(); 
+		return historicoColaborador.getSalarioCalculado(); 
 	}
+	
 	@NaoAudita
 	public AreaOrganizacional getAreaOrganizacionalMatriarca() {
 		return areaOrganizacionalMatriarca;

@@ -457,7 +457,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 
     	solicitacaoDao.expects(once()).method("getIndicadorMediaDiasPreenchimentoVagas").will(returnValue(list));
 
-    	assertEquals(list, solicitacaoManager.getIndicadorMediaDiasPreenchimentoVagas(new Date(), new Date(), null,null, null));
+    	assertEquals(list, solicitacaoManager.getIndicadorMediaDiasPreenchimentoVagas(new Date(), new Date(), null,null, null, null));
 	}
 	
 	public void testGetIndicadorQtdVagas(){

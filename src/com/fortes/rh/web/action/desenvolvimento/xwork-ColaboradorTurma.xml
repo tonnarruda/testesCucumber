@@ -155,6 +155,7 @@
 				<param name="dataSource">colaboradoresCertificacoes</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">colaboradores_certificacoes.pdf</param>
+				<param name="documentName">colaboradores_certificacoes.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorCertificacao.ftl</result>
 		</action>
@@ -168,6 +169,7 @@
 				<param name="properties">colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,colaborador.nome,curso.nome,turma.descricao,turma.periodoFormatado,aprovado,valorAvaliacao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
+				<param name="formatoDouble">#,##0.##</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorCertificacao.ftl</result>
 		</action>

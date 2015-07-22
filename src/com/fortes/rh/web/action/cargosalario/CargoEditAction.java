@@ -208,7 +208,9 @@ public class CargoEditAction extends MyActionSupportEdit
 		
 		String retorno = relatorioColaboradorCargo();
 		
-		if (exibirSalario && !exibirSalarioVariavel && !exibirAreaOrganizacional)
+		if(Action.INPUT.equals(retorno))
+			return Action.INPUT;
+		else if (exibirSalario && !exibirSalarioVariavel && !exibirAreaOrganizacional)
 			return "successRemuneracaoNoRH";
 		else if (exibirSalario && !exibirSalarioVariavel && exibirAreaOrganizacional)
 			return "successRemuneracaoNoRHAreaOrganizacional";

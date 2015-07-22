@@ -104,7 +104,7 @@ public class DuracaoPreenchimentoVagaManagerTest extends MockObjectTestCase
     	indicadoresQtdVagas.add(qtdVagas1);
     	indicadoresQtdVagas.add(qtdVagas2);
     	
-    	solicitacaoManager.expects(once()).method("getIndicadorMediaDiasPreenchimentoVagas").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areaIds), eq(estabelecimentoIds), eq(solicitacaoIds)}).will(returnValue(indicadores));
+    	solicitacaoManager.expects(once()).method("getIndicadorMediaDiasPreenchimentoVagas").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areaIds), eq(estabelecimentoIds), eq(solicitacaoIds), eq(empresaId)}).will(returnValue(indicadores));
     	solicitacaoManager.expects(once()).method("getIndicadorQtdCandidatos").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areaIds), eq(estabelecimentoIds), eq(solicitacaoIds)}).will(returnValue(indicadoresQtdCandidatos));
 		solicitacaoManager.expects(once()).method("getIndicadorQtdVagas").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areaIds), eq(estabelecimentoIds), eq(solicitacaoIds)}).will(returnValue(indicadoresQtdVagas));
 		

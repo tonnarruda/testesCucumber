@@ -124,6 +124,7 @@
 			<result name="error" type="redirect">prepareRelatorioColaboradorCargo.action</result>
 		</action>
 		<action name="relatorioColaboradorCargoXLS" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="relatorioColaboradorCargoXLS">
+			<interceptor-ref name="defaultDeleteStack"/>
 			<result name="success" type="xls">
 				<param name="dataSource">historicoColaboradors</param>
 				<param name="documentName">colaboradoresPorCargos.xls</param>
