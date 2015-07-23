@@ -13,6 +13,11 @@
 				content: 'Não foi possível obter o salário. Verifique se o índice/faixa possui histórico nesta data.'
 			});
 		});
+		$(function() {
+			$('.tooltipHelpHistoricoFaixa').qtip({
+				content: 'Não foi possível obter o histórico da faixa salarial. Verifique se a mesma possui histórico nesta data.'
+			});
+		});
 	</script>
 	
 	<title>Editar Situações do Colaborador - ${colaborador.nome}</title>
@@ -44,7 +49,7 @@
 		<@display.column property="areaOrganizacional.descricao" title="Área Organizacional" style="width:250px"/>
 
 		<@display.column property="descricaoTipoSalario" title="Tipo" style="width:100px;"/>
-		<@display.column style="text-align:right; width:80px;">
+		<@display.column title="Salário" style="text-align:right; width:80px;">
 			<#if historicoColaborador.salarioCalculado?exists>
 				${historicoColaborador.salarioCalculado?string.currency}
 			<#else>
@@ -57,8 +62,14 @@
 		<#if integradoAC>
 			<@display.column title="Status no AC" style="width: 50px;text-align: center;">
 				<#if historicoColaborador.tipoSalario == 1>
-					<img border="0" title="${statusRetornoAC.getDescricao(historicoColaborador.status)}"
-					src="<@ww.url includeParams="none" value="/imgs/"/>${statusRetornoAC.getImg(historicoColaborador.faixaSalarial.faixaSalarialHistoricoAtual.status)}">
+					<#if historicoColaborador.faixaSalarial.faixaSalarialHistoricoAtual.status?exists>
+						<img border="0" title="${statusRetornoAC.getDescricao(historicoColaborador.status)}"
+						src="<@ww.url includeParams="none" value="/imgs/"/>${statusRetornoAC.getImg(historicoColaborador.faixaSalarial.faixaSalarialHistoricoAtual.status)}">
+					<#else>
+						<div style="width: 100%; text-align: center;">
+							<img class="tooltipHelpHistoricoFaixa" src="<@ww.url value="/imgs/iconWarning.gif"/>" />
+						</div>
+					</#if>
 				<#else>
 					<img border="0" title="${statusRetornoAC.getDescricao(historicoColaborador.status)}"
 					src="<@ww.url includeParams="none" value="/imgs/"/>${statusRetornoAC.getImg(historicoColaborador.status)}">
