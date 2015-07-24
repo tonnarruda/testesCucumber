@@ -44,9 +44,23 @@
 					$('#exibirComposicaoSesmt').removeAttr('disabled');
 				else
 					$('#exibirComposicaoSesmt').attr("disabled", true);
+					
+				if (this.checked && $(ltcat).attr("checked"))
+					$('#quebrarPagina').removeAttr('disabled');
+				else
+					$('#quebrarPagina').attr("disabled", true);
 			});
 			
 			$('#ppra').change();
+		});
+	
+	   $(function(){
+			$('#ltcat').change(function() {
+				if (this.checked && $(ppra).attr("checked"))
+					$('#quebrarPagina').removeAttr('disabled');
+				else
+					$('#quebrarPagina').attr("disabled", true);
+			});
 		});
 	</script>
 
@@ -72,6 +86,7 @@
 		<@ww.checkbox label="PPRA" id="ppra" name="gerarPpra" labelPosition="left"/>
 		<@ww.checkbox label="Exibir Composição do SESMT" id="exibirComposicaoSesmt" name="exibirComposicaoSesmt" labelPosition="right"  cssStyle="float:left; margin-left: 15px;"/>
 		<@ww.checkbox label="LTCAT" id="ltcat" name="gerarLtcat" labelPosition="left"/>
+		<@ww.checkbox label="Imprimir PPRA e LTCAT em páginas individuais" id="quebrarPagina" name="quebrarPagina" labelPosition="left"/>
 	</@ww.form>
 
 	<div class="buttonGroup">

@@ -35,6 +35,7 @@ public class PpraEditAction extends MyActionSupportEdit
 	private boolean gerarPpra;
 	private boolean gerarLtcat;
 	private boolean exibirComposicaoSesmt;
+	private boolean quebrarPagina;
 	
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private Collection<PpraLtcatRelatorio> dataSource = new ArrayList<PpraLtcatRelatorio>();
@@ -65,6 +66,9 @@ public class PpraEditAction extends MyActionSupportEdit
 			parametros.put("EXIBIR_LOGO_EMPRESA", getEmpresaSistema().isExibirLogoEmpresaPpraLtcat());
 			parametros.put("EXIBIR_COMPOSICAO_SESMT", exibirComposicaoSesmt);
 			parametros.put("AGRUPADO_POR_AMBIENTE", getEmpresaSistema().getControlaRiscoPor() == 'A');
+			parametros.put("QUEBRAR_PAGINA", isQuebrarPagina());
+			
+			
 			dataSource = ambienteManager.montaRelatorioPpraLtcat(getEmpresaSistema(), estabelecimento.getId(), data, ambienteCheck, gerarPpra, gerarLtcat, exibirComposicaoSesmt);
 		}
 		catch (ColecaoVaziaException e)
@@ -155,5 +159,13 @@ public class PpraEditAction extends MyActionSupportEdit
 
 	public void setExibirComposicaoSesmt(boolean exibirComposicaoSesmt) {
 		this.exibirComposicaoSesmt = exibirComposicaoSesmt;
+	}
+
+	public boolean isQuebrarPagina() {
+		return quebrarPagina;
+	}
+
+	public void setQuebrarPagina(boolean quebrarPagina) {
+		this.quebrarPagina = quebrarPagina;
 	}
 }
