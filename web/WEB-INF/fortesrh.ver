@@ -3,6 +3,7 @@
 	<Versao id="1.1.14x.17x" db="" data="xx/xx/2015">
 		<Item visivel="S" motivo="S20150600112"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Plano de Trabalho: Inserção de filtro por situação, responsável e corresponsável.]]></Item>
 		<Item visivel="S" motivo="S20150400123"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Inserir/Editar: Nova funcionalidade para inserir periodicidade em meses no curso.]]></Item>
+	    <Item visivel="S" motivo="P20150700126"><![CDATA[Nova forma de apresentar coluna numérica no relatório de xml.]]></Item>
 	</Versao>
 	<Versao id="1.1.147.177" db="" data="21/07/2015">
 		<Item visivel="S" motivo="P20150600148"><![CDATA[R&S > Cadastros > Candidatos > Visualizar Currículo > Imprimir: Ajuste da inconsistência ao exibir os cargos das experiências profissionais do candidato.]]></Item>
