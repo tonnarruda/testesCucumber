@@ -376,7 +376,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	Certificacao certificacao = CertificacaoFactory.getEntity(1L);  
     	certificacao.setNome("Cerificação");
     	action.setCertificacao(certificacao);
-    	colaboradorTurmaManager.expects(once()).method("montaRelatorioColaboradorCertificacao").with(ANYTHING, eq(certificacao), ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorCertificacaoRelatorio>()));
+    	colaboradorTurmaManager.expects(once()).method("montaRelatorioColaboradorCertificacao").with(new Constraint[] {ANYTHING, eq(certificacao), ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ColaboradorCertificacaoRelatorio>()));
     	
     	assertEquals("success", action.relatorioColaboradorCertificacao());
     }
@@ -389,7 +389,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
     	
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
-    	colaboradorTurmaManager.expects(once()).method("montaRelatorioColaboradorCertificacao").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<ColaboradorCertificacaoRelatorio>()));
+    	colaboradorTurmaManager.expects(once()).method("montaRelatorioColaboradorCertificacao").with(new Constraint[] {ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ColaboradorCertificacaoRelatorio>()));
     	certificacaoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Certificacao>()));
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
     	estabelecimentoManager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<CheckBox>()));
@@ -415,7 +415,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
     	
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
-    	colaboradorTurmaManager.expects(once()).method("montaRelatorioColaboradorCertificacao").with(ANYTHING, eq(certificacao), ANYTHING, ANYTHING).will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
+    	colaboradorTurmaManager.expects(once()).method("montaRelatorioColaboradorCertificacao").with(new Constraint[] {ANYTHING, eq(certificacao), ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(throwException(new ColecaoVaziaException("Não existem treinamentos para o colaborador informado.")));
     	certificacaoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(new ArrayList<Certificacao>()));
     	areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
     	estabelecimentoManager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<CheckBox>()));

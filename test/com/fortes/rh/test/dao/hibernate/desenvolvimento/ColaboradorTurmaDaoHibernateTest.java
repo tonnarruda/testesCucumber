@@ -55,6 +55,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.ws.TAula;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -2287,6 +2288,162 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		assertTrue(colaboradorTurmasSemCertificacaoAVencer.isEmpty());
 		
 	}
+	
+	public void testFindAprovadosReprovadosComCertificacao()
+    {
+		Date hoje = new Date();
+		Date dataFim = DateUtil.incrementaMes(hoje, 6);
+		
+		Date dataIniFora = DateUtil.incrementaMes(hoje, 7);
+		Date dataFimFora = DateUtil.incrementaMes(hoje, 12);
+		
+        Empresa empresa = EmpresaFactory.getEmpresa();
+    	empresaDao.save(empresa);
+    	
+    	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+        areaOrganizacionalDao.save(areaOrganizacional);
+        
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+
+        Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+        estabelecimentoDao.save(estabelecimento);
+        
+        Avaliacao avaliacao = new Avaliacao();
+		avaliacao.setTitulo("Avaliação");
+		avaliacao.setPercentualAprovacao(10.0);
+		avaliacaoDao.save(avaliacao);
+		
+		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCurso.setTipo('a');
+		avaliacaoCurso.setAvaliacao(avaliacao);
+		avaliacaoCursoDao.save(avaliacaoCurso);
+        
+        Curso curso = CursoFactory.getEntity();
+    	curso.setNome("Como Programar");
+    	curso.setEmpresa(empresa);
+    	curso.setPercentualMinimoFrequencia(10.0);
+    	curso.setAvaliacaoCursos(Arrays.asList(avaliacaoCurso));
+        cursoDao.save(curso);
+        
+    	Turma java = TurmaFactory.getEntity();
+    	java.setCurso(curso);
+    	java.setDataPrevIni(DateUtil.incrementaDias(hoje, 5));
+    	java.setDataPrevFim(DateUtil.incrementaDias(hoje, 15));
+    	java.setRealizada(true);
+    	turmaDao.save(java);
+    	
+    	Turma ruby = TurmaFactory.getEntity();
+    	ruby.setCurso(curso);
+    	ruby.setDataPrevIni(dataIniFora);
+    	ruby.setDataPrevFim(dataFimFora);
+    	ruby.setRealizada(true);
+    	turmaDao.save(ruby);
+    	
+    	Colaborador joao = ColaboradorFactory.getEntity();
+    	joao.setDesligado(false);
+    	joao.setEmailColaborador("b@b.com.br");
+    	joao.setEmpresa(empresa);
+    	colaboradorDao.save(joao);
+    	
+    	Colaborador luis = ColaboradorFactory.getEntity();
+    	luis.setDesligado(false);
+    	luis.setEmailColaborador("luis@b.com.br");
+    	luis.setEmpresa(empresa);
+    	colaboradorDao.save(luis);
+    	
+        HistoricoColaborador htJoao = HistoricoColaboradorFactory.getEntity();
+        htJoao.setColaborador(joao);
+        htJoao.setEstabelecimento(estabelecimento);
+        htJoao.setData(hoje);
+        htJoao.setAreaOrganizacional(areaOrganizacional);
+        htJoao.setStatus(StatusRetornoAC.CONFIRMADO);
+        htJoao.setFaixaSalarial(faixaSalarial);
+        htJoao = historicoColaboradorDao.save(htJoao);
+        
+        HistoricoColaborador htLuis = HistoricoColaboradorFactory.getEntity();
+        htLuis.setColaborador(luis);
+        htLuis.setEstabelecimento(estabelecimento);
+        htLuis.setData(hoje);
+        htLuis.setAreaOrganizacional(areaOrganizacional);
+        htLuis.setStatus(StatusRetornoAC.CONFIRMADO);
+        htLuis.setFaixaSalarial(faixaSalarial);
+        htLuis = historicoColaboradorDao.save(htLuis);
+        
+    	ColaboradorTurma colaboradorTurmaJoao = getEntity();
+    	colaboradorTurmaJoao.setColaborador(joao);
+    	colaboradorTurmaJoao.setTurma(java);
+    	colaboradorTurmaJoao.setCurso(curso);
+    	colaboradorTurmaDao.save(colaboradorTurmaJoao);
+    	
+    	ColaboradorTurma colaboradorTurmaLuis = getEntity();
+    	colaboradorTurmaLuis.setColaborador(luis);
+    	colaboradorTurmaLuis.setTurma(ruby);
+    	colaboradorTurmaLuis.setCurso(curso);
+    	colaboradorTurmaDao.save(colaboradorTurmaLuis);
+    	
+    	DiaTurma diaTurmaJoao = DiaTurmaFactory.getEntity();
+    	diaTurmaJoao.setDia(new Date());
+    	diaTurmaJoao.setTurma(java);
+    	diaTurmaDao.save(diaTurmaJoao);
+    	
+    	DiaTurma diaTurmaLuis = DiaTurmaFactory.getEntity();
+    	diaTurmaLuis.setDia(new Date());
+    	diaTurmaLuis.setTurma(ruby);
+    	diaTurmaDao.save(diaTurmaLuis);
+    	
+    	ColaboradorPresenca colaboradorPresencaJoao = ColaboradorPresencaFactory.getEntity();
+    	colaboradorPresencaJoao.setColaboradorTurma(colaboradorTurmaJoao);
+    	colaboradorPresencaJoao.setDiaTurma(diaTurmaJoao);
+    	colaboradorPresencaJoao.setPresenca(true);
+    	colaboradorPresencaDao.save(colaboradorPresencaJoao);
+    	
+    	ColaboradorPresenca colaboradorPresencaLuis = ColaboradorPresencaFactory.getEntity();
+    	colaboradorPresencaLuis.setColaboradorTurma(colaboradorTurmaLuis);
+    	colaboradorPresencaLuis.setDiaTurma(diaTurmaLuis);
+    	colaboradorPresencaLuis.setPresenca(true);
+    	colaboradorPresencaDao.save(colaboradorPresencaLuis);
+    	
+    	ColaboradorQuestionario colaboradorQuestionarioJoao = ColaboradorQuestionarioFactory.getEntity();
+    	colaboradorQuestionarioJoao.setPerformance(50.0);
+    	colaboradorQuestionarioJoao.setColaborador(joao);
+    	colaboradorQuestionarioJoao.setAvaliacao(avaliacao);
+    	colaboradorQuestionarioJoao.setAvaliacaoCurso(avaliacaoCurso);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioJoao);
+		
+		ColaboradorQuestionario colaboradorQuestionarioLuis = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioLuis.setPerformance(50.0);
+		colaboradorQuestionarioLuis.setColaborador(luis);
+		colaboradorQuestionarioLuis.setAvaliacao(avaliacao);
+		colaboradorQuestionarioLuis.setAvaliacaoCurso(avaliacaoCurso);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioLuis);
+		
+		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCursoJoao = new AproveitamentoAvaliacaoCurso();
+		aproveitamentoAvaliacaoCursoJoao.setAvaliacaoCurso(avaliacaoCurso);
+		aproveitamentoAvaliacaoCursoJoao.setColaboradorTurma(colaboradorTurmaJoao);
+		aproveitamentoAvaliacaoCursoJoao.setValor(50.0);
+		aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCursoJoao);
+		
+		AproveitamentoAvaliacaoCurso aproveitamentoAvaliacaoCursoLuis = new AproveitamentoAvaliacaoCurso();
+		aproveitamentoAvaliacaoCursoLuis.setAvaliacaoCurso(avaliacaoCurso);
+		aproveitamentoAvaliacaoCursoLuis.setColaboradorTurma(colaboradorTurmaLuis);
+		aproveitamentoAvaliacaoCursoLuis.setValor(50.0);
+		aproveitamentoAvaliacaoCursoDao.save(aproveitamentoAvaliacaoCursoLuis);
+    	
+    	Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacao.setEmpresa(empresa);
+		certificacao.setCursos(Arrays.asList(curso));
+		certificacaoDao.save(certificacao);
+		
+		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
+		
+    	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findAprovadosReprovados(empresa.getId(), certificacao, null, new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, hoje, dataFim, " e.nome, a.nome, co.nome, c.nome ", true, null);
+    	assertEquals(1, retorno.size());
+    }
     
     public GenericDao<ColaboradorTurma> getGenericDao()
     {

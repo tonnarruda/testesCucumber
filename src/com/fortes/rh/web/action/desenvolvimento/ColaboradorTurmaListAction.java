@@ -418,17 +418,18 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	{
 		try
 		{
+			String periodo = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " até " + DateUtil.formataDiaMesAno(dataFim);
 			reportTitle = "Colaboradores x Certificações";
-			reportFilter = "Emitido em: " + DateUtil.formataDiaMesAno(new Date());
+			reportFilter = "Emitido em: " + DateUtil.formataDiaMesAno(new Date()) + "\n" + periodo;
 			
-			colaboradoresCertificacoes = colaboradorTurmaManager.montaRelatorioColaboradorCertificacao(getEmpresaSistema().getId(), certificacao, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck));
-			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), "Certificação: " + certificacao.getNome());
+			colaboradoresCertificacoes = colaboradorTurmaManager.montaRelatorioColaboradorCertificacao(getEmpresaSistema().getId(), certificacao, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim);
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), "Certificação: " + certificacao.getNome() + "\n" + periodo);
 			
 			return SUCCESS;
 		}
 		catch (ColecaoVaziaException e)
 		{
-			addActionError(e.getMessage());
+			addActionMessage(e.getMessage());
 			prepareRelatorioColaboradorCertificacao();
 			
 			return Action.INPUT;

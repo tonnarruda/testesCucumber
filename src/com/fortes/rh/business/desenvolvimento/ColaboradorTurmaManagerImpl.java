@@ -691,12 +691,12 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	}
 	
 	//TODO BACALHAU refatorar todo o metodo, tem varios metodos dependentes, criar teste
-	public Collection<ColaboradorCertificacaoRelatorio> montaRelatorioColaboradorCertificacao(Long empresaId, Certificacao certificacao, Long[] areaIds, Long[] estabelecimentoIds) throws Exception
+	public Collection<ColaboradorCertificacaoRelatorio> montaRelatorioColaboradorCertificacao(Long empresaId, Certificacao certificacao, Long[] areaIds, Long[] estabelecimentoIds, Date dataInicio, Date dataFim) throws Exception
 	{
 		certificacao.setNome(certificacaoManager.findById(certificacao.getId()).getNome());
 		Collection<Curso> cursos = cursoManager.findByCertificacao(certificacao.getId());
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, certificacao, null, areaIds, estabelecimentoIds, null, null, " e.nome, a.nome, co.nome, c.nome ", true, "A");
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, certificacao, null, areaIds, estabelecimentoIds, dataInicio, dataFim, " e.nome, a.nome, co.nome, c.nome ", true, SituacaoColaborador.ATIVO);
 		
 		if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
 			throw new ColecaoVaziaException();
