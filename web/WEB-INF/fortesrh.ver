@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.14x.17x" db="" data="xx/xx/2015">
+		<Item visivel="S" motivo="S20150600112"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Plano de Trabalho: Inserção de filtro por situação, responsável e corresponsável.]]></Item>
+	</Versao>
 	<Versao id="1.1.147.177" db="" data="21/07/2015">
 		<Item visivel="S" motivo="P20150600148"><![CDATA[R&S > Cadastros > Candidatos > Visualizar Currículo > Imprimir: Ajuste da inconsistência ao exibir os cargos das experiências profissionais do candidato.]]></Item>
 		<Item visivel="S" motivo="P20150700116"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir: Ajuste da inconsistência ao exibir as opções de áreas organizacionais para os corresponsáveis das áreas organizacionais.]]></Item>
@@ -11,7 +14,7 @@
 		<Item visivel="S" motivo="S20150500170"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Novo campo de "Matrícula" ao gerar relatório.]]></Item>
 		<Item visivel="S" motivo="S20150700003"><![CDATA[Info. Funcionais > Painel de Indicadores > Ocorrências/Absenteísmo: Novo filtro por ocorrências para os gráficos de ocorrência e providência.]]></Item>
 		<Item visivel="S" motivo="S20150600168"><![CDATA[Info. Funcionais > Painel de Indicadores > Ocorrências/Absenteísmo: Exibir descrição detalhada do gráfico de ocorrências agrupadas como "Outros".]]></Item>
-		<Item visivel="S" motivo="S20150600111"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Plano de Trabalho: Novo opção de inserir um corresponsável.]]></Item>
+		<Item visivel="S" motivo="S20150600111"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Plano de Trabalho > Inserir/Editar: Nova opção de inserir um corresponsável.]]></Item>
 		<Item visivel="S" motivo="S20150600019"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > Imprimir Solicitações de Exames: Exibição da observação da solicitação no relatório.]]></Item>
 		<Item visivel="S" motivo="S20150700042"><![CDATA[Utilitários > Cadastros > Empresas > Inserir/Editar > Cálculo de Absenteísmo: Nova opção de "Considerar domingo como dia útil" para o cálculo de absenteísmo.]]></Item>
 		<Item visivel="S" motivo="S20150600114"><![CDATA[Utilitários > Cadastros > Perfis: Nova permissão para editar a data de uma solicitação de pessoal.]]></Item>

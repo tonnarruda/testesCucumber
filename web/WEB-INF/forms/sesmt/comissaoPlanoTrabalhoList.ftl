@@ -57,8 +57,8 @@
 		function imprimir()
 		{
 			var situacao = $('#situacaoFiltro').val();
-			var responsavelId = $('#responsavelId').val();
-			var corresponsavelId = $('#responsavelId').val();
+			var responsavelId = $('#responsavelIdSelect').val();
+			var corresponsavelId = $('#corresponsavelIdSelect').val();
 			window.location='imprimirPlanoTrabalho.action?comissao.id=${comissao.id}&situacao='+situacao+'&responsavelId='+responsavelId+'&corresponsavelId='+corresponsavelId;
 		}
 	</script>
@@ -82,8 +82,8 @@
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="formBusca" action="list.action" validate="true" method="POST" id="formBusca">
 			<@ww.select label="Situação" id="situacaoFiltro" name="situacao" list=r"#{'TODAS':'Todas','NAO_INICIOU':'Não Iniciado','ANDAMENTO':'Em andamento','CONCLUIDO':'Concluído'}"/>
-			<@ww.select label="Responsável" name="responsavelId" list="colaboradors" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1" cssStyle="width:445px;"/>
-			<@ww.select label="Corresponsável" name="corresponsavelId" list="colaboradors" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1" cssStyle="width:445px;"/>
+			<@ww.select label="Responsável" id="responsavelIdSelect" name="responsavelId" list="colaboradors" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1" cssStyle="width:445px;"/>
+			<@ww.select label="Corresponsável" id="corresponsavelIdSelect" name="corresponsavelId" list="colaboradors" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1" cssStyle="width:445px;"/>
 			<@ww.hidden id="comissaoId" name="comissao.id" value="${comissao.id}"/>
 			<@ww.hidden id="pagina" name="page"/>
 			<@ww.hidden id="showFilter" name="showFilter"/>
