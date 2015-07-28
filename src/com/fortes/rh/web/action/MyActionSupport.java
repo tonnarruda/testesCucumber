@@ -27,6 +27,7 @@ public abstract class MyActionSupport extends ActionSupport
 	private String actionErr = null;
 	private String actionMsg = null;
 	private String versao = null;
+	private String msgHelp = null;
 	
 	public static final String MESSAGE = "message";
 	
@@ -159,5 +160,13 @@ public abstract class MyActionSupport extends ActionSupport
 		if (versao == null)
 			versao = SecurityUtil.getVersao(ActionContext.getContext().getSession());
 		return versao;
+	}
+
+	public String getMsgHelp() {
+		return msgHelp;
+	}
+
+	public void setMsgHelp(String msgHelp) {
+		this.msgHelp = msgHelp;
 	}
 }

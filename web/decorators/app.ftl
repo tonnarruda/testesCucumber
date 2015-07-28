@@ -34,6 +34,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/functions.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/fortes.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/init.js?version=${versao}"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 
 	<style type="text/css">
 		<#if pgInicial?exists && pgInicial>
@@ -107,6 +108,9 @@
 							<img title="Vídeo de ajuda" onclick="javascript:popupVideo(${videoAjuda}, '${calculoHash}');" src="<@ww.url includeParams="none" value="/imgs/video.png"/>" style="cursor:pointer;"/>
 						</span>
 					</#if>
+					<#if msgHelp?exists>
+						<img  id="tooltipHelp" height="17" width="17" align="right" src="<@ww.url includeParams="none" value="/imgs/infoHelp.png"/>" style="cursor:pointer;"/>
+					</#if>
 				</div>
 			</#if>
 			<div class="waDivFormulario">
@@ -119,4 +123,30 @@
 		<br /><br />
 	</div>
 </body>
+<#if msgHelp?exists>
+	<script>
+		$(document).ready(function($){
+			$('#tooltipHelp').qtip({
+				content: '${msgHelp}',
+				position: {
+					corner: {
+						target: 'bottomLeft',
+						tooltip: 'topRight'
+					}
+				},
+				style: { 
+					width: 400,
+					textAlign: 'justify',
+					border: {
+						radius: 4,
+						color: '#e7e7e7'
+					},
+					background: '#F9F9F9',
+					tip: 'topRight',
+					name: 'light'
+				}
+			});
+		});
+	</script>
+</#if>	
 </html>

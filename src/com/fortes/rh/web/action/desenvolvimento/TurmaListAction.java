@@ -454,9 +454,10 @@ public class TurmaListAction extends MyActionSupportList
 	}
 	
 	public String prepareImprimirCursosVencidosAVencer() throws Exception{
-		
+
 		empresa = getEmpresaSistema();
 		prepareEmpresas(true, "ROLE_REL_CURSOS_VENCIDOS_A_VENCER");
+		setMsgHelp("Para que o relatório seja gerado, o curso tem que ter uma periodicidade, a turma tem que possuir colaboradores aprovados (nota e presença) e o curso ainda não esteja vencido.");
 		
 		return Action.SUCCESS;
 	}

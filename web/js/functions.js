@@ -784,25 +784,6 @@ function GetWidth() {
     return x;
 }
 
-//Francisco Barroso, comentei. Não sei  para que estava servindo, erro no desmarcar todos
-
-// Forca o envio de um hidden com mesmo nome contendo uma string vazia caso
-// nenhum checkbox dentro de um 'div.listCheckBox' esteja selecionado.
-//jQuery(document).ready(function() {
-//	var container = 'div.listCheckBox';
-//	jQuery(container + ' input[type=checkbox]').change(function() {		
-//		var name = jQuery(this).attr('name');
-//		var form = jQuery(this).parents('form:first');
-//		var checkedItems = form.find('input[type=checkbox][name=' + name + ']:checked');
-//		var hiddenId = '__' + name;
-//		
-//		if (checkedItems.length > 0)
-//			form.find('#' + hiddenId).remove();			
-//		else
-//			form.append('<input type="hidden" id="' + hiddenId + '" name="' + name + '" value="[]"/>');
-//	});
-//});
-
 function atualizaChecks(classCheck, valor)
 {
 	jQuery('.' + classCheck).each(function () {
