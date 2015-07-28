@@ -90,6 +90,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String[] vinculosCheck;
 	private Collection<CheckBox> vinculosTurnoverCheckList = new ArrayList<CheckBox>();
 	private String[] vinculosTurnoverCheck;
+	private Collection<CheckBox> areasPieChartCheckList = new ArrayList<CheckBox>();
+	private String[] areasPieChartCheck;
 	private Date dataBase;
 	private Date dataIni;
 	private Date dataFim;
@@ -144,6 +146,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	private Double percentualDissidio;
 	private String grfSalarioAreas;
+	private String grfPromocaoAreas;
 	private String json;
 	private Long[] retiraDissidioIds;
 	private int mesesSemReajuste;
@@ -263,6 +266,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresa.getId());
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		
+		areasPieChartCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresa.getId());
+		areasPieChartCheckList = CheckListBoxUtil.marcaCheckListBox(areasPieChartCheckList, areasPieChartCheck);
+		
 		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(),SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_CES_PAINEL_IND");
 		
@@ -285,6 +291,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Collection<DataGrafico> graficoSalarioArea  = colaboradorManager.montaSalarioPorArea(dataBase, empresa.getId(), area);
 		
 		Long[] areasIds = LongUtil.arrayStringToArrayLong(areasCheck);
+		
+		Long[] areasPieChartIds = LongUtil.arrayStringToArrayLong(areasPieChartCheck);
 
 		/*
 		 * Grafico de Evolucao Salarial
@@ -308,6 +316,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		
 		Map<Character, Collection<Object[]>> graficosPromocao = historicoColaboradorManager.montaPromocoesHorizontalEVertical(dataIni, dataFim, empresa.getId(), areasIds);
 		
+		Map<Character, Collection<Object[]>> graficoPromocaoAreas = historicoColaboradorManager.montaPromocoesHorizontalEVertical(dataIni, dataFim, empresa.getId(), areasPieChartIds);
+//		grfPromocaoAreas  = StringUtil.toJSON(graficoPromocaoAreas, null);
+		
 		grfPromocaoHorizontal = StringUtil.toJSON(graficosPromocao.get('H'), null);
 		grfPromocaoVertical = StringUtil.toJSON(graficosPromocao.get('V'), null);
 		
@@ -322,6 +333,17 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		
 		Collection<DataGrafico> graficoSalarioArea  = colaboradorManager.montaSalarioPorArea(dataBase, getEmpresaSistema().getId(), area);
 		json = StringUtil.toJSON(graficoSalarioArea, null);
+		
+		return Action.SUCCESS;
+	}
+	
+	public String grfPromocaoAreasFilhas() throws Exception{
+//		AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areaId);
+//		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(null, null, null);
+//		AreaOrganizacional area = areaOrganizacionalManager.getAreaMae(areas, areaOrganizacional);
+//		
+//		Map<Character, Collection<Object[]>> graficoPromocaoAreas = historicoColaboradorManager.montaPromocoesHorizontalEVertical(dataIni, dataFim, empresa.getId(), new Long[]{area.getId()});
+//		json = StringUtil.toJSON(graficoPromocaoAreas, null);
 		
 		return Action.SUCCESS;
 	}
@@ -1126,5 +1148,26 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setOcorrenciasCheck(String[] ocorrenciasCheck) {
 		this.ocorrenciasCheck = ocorrenciasCheck;
+	}
+
+	public void setAreasPieChartCheckList(
+			Collection<CheckBox> areasPieChartCheckList) {
+		this.areasPieChartCheckList = areasPieChartCheckList;
+	}
+
+	public void setAreasPieChartCheck(String[] areasPieChartCheck) {
+		this.areasPieChartCheck = areasPieChartCheck;
+	}
+
+	public Collection<CheckBox> getAreasPieChartCheckList() {
+		return areasPieChartCheckList;
+	}
+
+	public String[] getAreasPieChartCheck() {
+		return areasPieChartCheck;
+	}
+
+	public String getGrfPromocaoAreas() {
+		return grfPromocaoAreas;
 	}
 }

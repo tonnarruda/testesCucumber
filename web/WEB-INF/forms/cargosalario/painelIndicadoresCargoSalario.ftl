@@ -106,7 +106,13 @@
 					return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
 				});
 				
+				promocoesAreasOrdered = ${grfSalarioAreas}.sort(function (a, b){
+					return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
+				});
+				
 				graficoPizza(salarioAreasOrdered, '#salarioAreas', '#salarioAreasLegenda', '#salarioAreasImprimir', 2);
+				
+				graficoPizza(promocoesAreasOrdered, '#promocoesAreas', '#promocoesAreasLegenda', '#promocoesAreasImprimir', 2);
 			
 				var folha = ${grfEvolucaoFolha};
 				var faturamento = ${grfEvolucaoFaturamento};
@@ -233,6 +239,8 @@
 			
 			function pieClick(event, pos, obj)
 			{
+			
+				console.log(event.currentTarget.id)
 				if(event.currentTarget.id == "salarioAreas")
 					var areaId_ = salarioAreasOrdered[obj.seriesIndex].id;
 				else
@@ -312,6 +320,36 @@
 			{
 				addChecks('areasCheck', data);
 			}
+			
+			function populaAreasPieChart(empresaId)	{
+				DWRUtil.useLoadingMessage('Carregando...');
+				AreaOrganizacionalDWR.getByEmpresa(createListAreasPieChart, empresaId);
+				$('.empresa').val(empresaId);
+			}
+	
+			function createListAreasPieChart(data){
+				addChecks('areasPieChartCheck', data, 'escondeFilhas(this)');
+			}
+			
+			var areaChecked;
+			function escondeFilhas(area)
+			{
+				areaChecked = area.checked; 
+				AreaOrganizacionalDWR.excluiFilhas(populaFilhas, area.value);
+			}
+			 
+			function populaFilhas(data)
+			{
+				for (var key in data){
+					if(areaChecked){
+						$('#checkGroupareasPieChartCheck' + data[key]).removeAttr('checked').attr('disabled', true);
+						$('#checkGroupareasPieChartCheck' + data[key]).parent().hide();
+					} else {
+						$('#checkGroupareasPieChartCheck' + data[key]).removeAttr('disabled');
+						$('#checkGroupareasPieChartCheck' + data[key]).parent().show();
+					}
+				}	
+			}
 		</script>
 	
 		<#include "../ftl/mascarasImports.ftl" />
@@ -320,7 +358,7 @@
 	<body>
 		<#include "../util/topFiltro.ftl" />
 			<@ww.form name="formBusca" id="formBusca" action="painelIndicadoresCargoSalario.action" method="POST">
-				<@ww.select label="Empresa" name="empresa.id" id="empresa" cssClass="empresa" listKey="id" listValue="nome" list="empresas" onchange="populaAreas(this.value);" />
+				<@ww.select label="Empresa" name="empresa.id" id="empresa" cssClass="empresa" listKey="id" listValue="nome" list="empresas" onchange="populaAreas(this.value);populaAreasPieChart(this.value);" />
 			
 				<li>&nbsp;</li>
 				<li><strong>Indicador de Salário por Área Organizacional</strong></li>
@@ -333,6 +371,7 @@
 				<@ww.label value="a" liClass="liLeft" />
 				<@ww.textfield label="Mês/Ano" name="dataMesAnoFim" id="mesAnoFim" cssClass="mascaraMesAnoData"/>
 				<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
+				<@frt.checkListBox label="Áreas Organizacionais para o grafico de pizza" name="areasPieChartCheck" id="areasPieChartCheck" list="areasPieChartCheckList" filtro="true" selectAtivoInativo="true" onClick="escondeFilhas(this);"/>
 
 				<button onclick="return enviaForm();" class="btnPesquisar grayBGE"></button>
 			</@ww.form>
@@ -346,6 +385,17 @@
 			</h1>
 		    <div id="salarioAreas" class="graph"></div>
 		    <div id="salarioAreasLegenda"></div>
+		</div>
+		
+		<div style="clear: both"></div>
+		
+		<div class="fieldGraph">
+			<h1>
+				Promoções por Área Organizacional
+				<img id="promocoesAreasImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+			</h1>
+		    <div id="promocoesAreas" class="graph"></div>
+		    <div id="promocoesAreasLegenda"></div>
 		</div>
 		
 		<div style="clear: both"></div>

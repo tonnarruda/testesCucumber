@@ -60,6 +60,10 @@ public class AreaOrganizacionalDWR
 
 		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricaoComEmpresaStatusAtivo");
 	}
+	
+	public Collection<Long> excluiFilhas(Long areasOrganizacionaisId) throws Exception{
+		return areaOrganizacionalManager.findIdsAreasFilhas(Arrays.asList(areasOrganizacionaisId));
+	}
 
 	@SuppressWarnings("unchecked")
 	public Map<Long, String> findAllListAndInativas(Long empresaId, Long areaOrganizacionalInativaId) throws Exception
