@@ -328,7 +328,7 @@
   </bean>
   <bean id="cronTriggerEnviarNotificacaoCursosAVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="enviarNotificacaoCursosAVencer" />
-    <property name="cronExpression" value="0 0 7 * * ?" /> <!-- Todo os dias as 07:00h am -->
+    <property name="cronExpression" value="0 20 7 * * ?" /> <!-- Todo os dias as 07:00h am -->
   </bean>
   
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">

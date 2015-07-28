@@ -1820,35 +1820,40 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	public void enviarNotificacaoCursosAVencer() {
 		
+		Calendar data;
 		ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
 		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBeanOld("colaboradorTurmaManager");
-		Collection<ColaboradorTurma> colaboradoresTurmas; 
+		Collection<ColaboradorTurma> colaboradoresTurmas = new ArrayList<ColaboradorTurma>();
+		Collection<Integer> diasLembrete = new ArrayList<Integer>();
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CURSOS_A_VENCER.getId(), null);
+		StringBuilder mensagemTitulo;
+		StringBuilder mensagem;
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		{
 			try 
 			{
-				Collection<Integer> diasLembrete = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
+				diasLembrete = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
 				for (Integer diaLembrete : diasLembrete)
 				{
-					Calendar data = Calendar.getInstance();
+					data = Calendar.getInstance();
 					data.setTime(new Date());
 					data.add(Calendar.DAY_OF_MONTH, +diaLembrete);
 
 					colaboradoresTurmas = colaboradorTurmaManager.findCursosCertificacoesAVencer(data.getTime(), gerenciadorComunicacao.getEmpresa().getId());
-
+					colaboradoresTurmas = agrupaCertificacoes(colaboradoresTurmas);
+					
 					for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas)
 					{
-						StringBuilder mensagemTitulo = new StringBuilder();
+						mensagemTitulo = new StringBuilder();
 						mensagemTitulo.append("[RH] - Falta(m) ")
 								.append(diaLembrete)
 								.append(" dia(s) para o curso ").append(colaboradorTurma.getCurso().getNome()).append(" do colaborador ")
 								.append(colaboradorTurma.getColaboradorNome()).append(" vencer.");
 						
-						StringBuilder mensagem = new StringBuilder();
+						mensagem = new StringBuilder();
 						mensagem.append("Curso a Vencer: ").append(colaboradorTurma.getCurso().getNome());
 						if (colaboradorTurma.getCurso().getCertificacaoNome() != null && !colaboradorTurma.getCurso().getCertificacaoNome().isEmpty()) {
-					 		mensagem.append("<br>Certificação: ").append(colaboradorTurma.getCurso().getCertificacaoNome());
+					 		mensagem.append("<br>Certificação(ões): ").append(colaboradorTurma.getCurso().getCertificacaoNome());
 					 	}
 					 	mensagem.append("<br>Vencimento: ").append(colaboradorTurma.getTurma().getVencimentoFormatado())
 					 		    .append("<br>Colaborador: ").append(colaboradorTurma.getColaboradorNome())
@@ -1904,6 +1909,20 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				e.printStackTrace();
 			}
 		}
+	}
+
+	private Collection<ColaboradorTurma> agrupaCertificacoes(Collection<ColaboradorTurma> colaboradoresTurmas) 
+	{
+		Map<Long, ColaboradorTurma> colaboradoresTurmasMap = new HashMap<Long, ColaboradorTurma>();
+		
+		for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas){
+			if(!colaboradoresTurmasMap.containsKey(colaboradorTurma.getColaborador().getId()))
+				colaboradoresTurmasMap.put(colaboradorTurma.getColaborador().getId(), colaboradorTurma);
+			else
+				colaboradoresTurmasMap.get(colaboradorTurma.getColaborador().getId()).setCertificacaoNome(colaboradoresTurmasMap.get(colaboradorTurma.getColaborador().getId()).getCurso().getCertificacaoNome() + ", " + colaboradorTurma.getCurso().getCertificacaoNome());
+		}
+
+		return (Collection<ColaboradorTurma>) colaboradoresTurmasMap.values();
 	}
 			
 	

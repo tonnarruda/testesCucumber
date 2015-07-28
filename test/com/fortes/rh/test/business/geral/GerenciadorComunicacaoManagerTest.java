@@ -1667,7 +1667,22 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		gerenciadorComunicacao.setQtdDiasLembrete("1");
 		
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacao);
-		Collection<ColaboradorTurma> colaboradoresTurmas  = Arrays.asList(criarColaboradorTurma());
+		
+		Certificacao certificacao1 =  CertificacaoFactory.getEntity();
+		certificacao1.setNome("certificacaoNome1");
+		
+		Certificacao certificacao2 =  CertificacaoFactory.getEntity();
+		certificacao2.setNome("certificacaoNome1");
+		
+		Curso curso = CursoFactory.getEntity();
+		curso.setCertificacaos(Arrays.asList(certificacao1, certificacao2));
+		
+		ColaboradorTurma colaboradorTurma1 = criarColaboradorTurma();
+		colaboradorTurma1.setCurso(curso);
+		ColaboradorTurma colaboradorTurma2 = criarColaboradorTurma();
+		colaboradorTurma2.setCurso(curso);
+		
+		Collection<ColaboradorTurma> colaboradoresTurmas  = Arrays.asList(colaboradorTurma1, colaboradorTurma2);
 		
 		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));
 		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CURSOS_A_VENCER.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));

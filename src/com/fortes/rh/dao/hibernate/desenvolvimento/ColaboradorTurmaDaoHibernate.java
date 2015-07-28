@@ -1461,7 +1461,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.property("e.nome"), "empresaNome");
 		p.add(Projections.property("cb.id"), "colaboradorId");
 		p.add(Projections.property("cb.nome"), "colaboradorNome");
-		p.add(Projections.property("cb.matricula"), "colaboradorMatricula");
+		p.add(Projections.property("cb.nomeComercial"), "colaboradorNomeComercial");
 		p.add(Projections.property("c.id"), "cursoId");
 		p.add(Projections.property("c.nome"), "cursoNome");
 		p.add(Projections.property("c.periodicidade"), "cursoPeriodicidade");
@@ -1513,8 +1513,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	public Collection<ColaboradorTurma> findCursosCertificacoesAVencer(Date dataReferencia, Long empresaId) {
 		
 		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
-		criteria.createCriteria("cb.empresa", "e", Criteria.INNER_JOIN);
 		criteria.createCriteria("ct.colaborador", "cb", Criteria.INNER_JOIN);
+		criteria.createCriteria("cb.empresa", "e", Criteria.INNER_JOIN);
 		criteria.createCriteria("ct.curso", "c", Criteria.INNER_JOIN);
 		criteria.createCriteria("ct.turma", "t", Criteria.INNER_JOIN);
 		criteria.createCriteria("cb.historicoColaboradors", "hc", Criteria.INNER_JOIN);
@@ -1554,8 +1554,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	    
 		criteria.add(criterionCursosAVencer(dataReferencia, "="));
 		
-		criteria.addOrder(Order.asc("c.nome"));			
+		criteria.addOrder(Order.asc("c.nome"));
 		criteria.addOrder(Order.asc("cb.nome"));
+		criteria.addOrder(Order.asc("cb.id"));
+		criteria.addOrder(Order.asc("cc.nome"));
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
 		

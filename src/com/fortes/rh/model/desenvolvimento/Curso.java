@@ -305,6 +305,6 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 	}
 	
 	public String getCertificacaoNome() {
-		return this.certificacaoNome;
+		return this.certificacaoNome == null ? "" : this.certificacaoNome;
 	}
 }

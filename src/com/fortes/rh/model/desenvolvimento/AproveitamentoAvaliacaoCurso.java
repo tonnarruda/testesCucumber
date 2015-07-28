@@ -22,7 +22,6 @@ public class AproveitamentoAvaliacaoCurso extends AbstractModel implements Seria
 
     public AproveitamentoAvaliacaoCurso()
 	{
-
 	}
 
     public AproveitamentoAvaliacaoCurso(ColaboradorTurma colaboradorTurma, AvaliacaoCurso avaliacaoCurso, Double valor)
@@ -72,6 +71,4 @@ public class AproveitamentoAvaliacaoCurso extends AbstractModel implements Seria
 	{
 		this.valor = valor;
 	}
-
-
 }
