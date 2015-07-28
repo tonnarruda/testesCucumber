@@ -114,9 +114,9 @@
 				<param name="dataSource">colaboradorTurmas</param>
 				<param name="documentName">colaboradores_com_treinamento.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Empresa,Estabelecimento,Área Organizacional,Colaborador,Matrícula,Turma,Período,Aprovado,Carga Horária</param>
-				<param name="propertiesGroup">colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao</param>
-				<param name="properties">colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,colaborador.nome,colaborador.matricula,turma.descricao,turma.periodoFormatado,aprovadoMaisNota,curso.CargaHorariaEmHora</param>
+				<param name="columns">Curso, Empresa,Estabelecimento,Área Organizacional,Colaborador,Matrícula,Turma,Período,Aprovado,Carga Horária</param>
+				<param name="propertiesGroup">curso.nome, colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao</param>
+				<param name="properties">curso.nome,colaborador.empresa.nome,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,colaborador.nome,colaborador.matricula,turma.descricao,turma.periodoFormatado,aprovadoMaisNota,curso.CargaHorariaEmHora</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
 			<result name="successExibirCargos" type="xls">

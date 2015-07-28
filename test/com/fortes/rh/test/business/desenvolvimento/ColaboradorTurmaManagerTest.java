@@ -941,9 +941,9 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllListAndInativas").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 		
-		assertEquals(7, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, null, null, 'T', SituacaoColaborador.ATIVO).size());		
-		assertEquals(4, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, null, null, 'S', SituacaoColaborador.ATIVO).size());		
-		assertEquals(3, colaboradorTurmaManager.findRelatorioComTreinamento(null, CursoFactory.getEntity(1L), null, null, null, null, 'N', SituacaoColaborador.ATIVO).size());		
+		assertEquals(7, colaboradorTurmaManager.findRelatorioComTreinamento(null, new Long[]{CursoFactory.getEntity(1L).getId()}, null, null, null, null, 'T', SituacaoColaborador.ATIVO).size());		
+		assertEquals(4, colaboradorTurmaManager.findRelatorioComTreinamento(null, new Long[]{CursoFactory.getEntity(1L).getId()}, null, null, null, null, 'S', SituacaoColaborador.ATIVO).size());		
+		assertEquals(3, colaboradorTurmaManager.findRelatorioComTreinamento(null, new Long[]{CursoFactory.getEntity(1L).getId()}, null, null, null, null, 'N', SituacaoColaborador.ATIVO).size());		
 	}
 	
 	public void testFindRelatorioSemTreinamento() throws Exception
@@ -962,9 +962,8 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		colaboradorTurma.setColaborador(colaborador);
 		
 		colaboradorTurmaDao.expects(once()).method("findRelatorioSemTreinamento").will(returnValue(colaboradorTurmas));
-		mockValidaRelatorio(curso, empresasPermitidas);
 		
-		Collection<ColaboradorTurma> resultado = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, curso, areaIds, estabelecimentoIds, null);
+		Collection<ColaboradorTurma> resultado = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, new Long[]{curso.getId()}, areaIds, estabelecimentoIds, null);
 		
 		assertEquals(1, resultado.size());
 	}
@@ -983,7 +982,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, curso, areaIds, estabelecimentoIds, null);
+			colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, new Long[]{curso.getId()}, areaIds, estabelecimentoIds, null);
 		}
 		catch (Exception e) { exception = e; }
 		

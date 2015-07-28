@@ -2,9 +2,7 @@ package com.fortes.rh.dao.hibernate.desenvolvimento;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -15,6 +13,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
@@ -621,51 +620,76 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return (Integer)query.list().size();
 	}
 
-	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, Date data)
+	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date data)
 	{
-		StringBuilder hql = new StringBuilder();
+		StringBuilder sql = new StringBuilder();
 
-		hql.append("select distinct new ColaboradorTurma(c.id, c.nome, c.matricula, ao.id, ao.nome, es.nome, emp.nome, t.dataPrevFim) " );
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("left join hc.areaOrganizacional as ao ");
-		hql.append("left join hc.estabelecimento as es ");
-		hql.append("left join hc.colaborador as c ");
-		hql.append("left join c.colaboradorTurmas as ct ");
-		hql.append("left join ct.turma as t with ( t.dataPrevFim = (select max(t1.dataPrevFim) from ColaboradorTurma ct2 ");
-		hql.append("												inner join ct2.turma t1 ");
-		hql.append("												inner join t1.curso c1 ");
-		hql.append("												where c1.id = :cursoId  ");
-		hql.append("												and ct2.colaborador.id = c.id) ");
-		hql.append("							 or t.dataPrevFim is null)");
+		sql.append("select distinct co.id as colaboradorId, co.nome as colaboradorNome, co.matricula as matricula, ao.id as areaId, monta_familia_area(ao.id) as areaNome, es.nome as estabelecimentoNome, emp.nome as empresaNome, t.dataPrevFim as dataPrevFim, c.id as cursoId, c.nome as cursoNome ");
+		sql.append("from curso as c ");
+		sql.append("left join colaborador as co on co.id not in (");
 		
-		hql.append("left join c.empresa as emp ");
-		hql.append("where c.desligado = false  " );
+		sql.append("	select distinct co2.id from colaborador as co2 ");
+		sql.append("	left join colaboradorturma as ct on ct.colaborador_id = co2.id ");
+		sql.append("	left join turma as t2 on t2.id = ct.turma_id and t2.dataPrevFim = (");
+		sql.append("	             select ");
+		sql.append("	                     max(t3.dataPrevFim)  ");
+		sql.append("	             from ");
+		sql.append("	                  ColaboradorTurma co3  ");
+		sql.append("	              inner join ");
+		sql.append("	                  Turma t3  ");
+		sql.append("	                     on co3.turma_id=t3.id  ");
+		sql.append("	              where ");
+		sql.append("	                   co3.colaborador_id=co2.id  ");
+		sql.append("	                and co3.curso_id = c.id ");
+		sql.append("	             ) ");
+		sql.append("	left join curso as c2 on t2.curso_id = c2.id ");
+		sql.append("	where c2.id = c.id and t2.dataPrevFim>=:data and t2.dataPrevFim<=current_date ");
+		
+		sql.append(") ");
+
+		sql.append("left join historicocolaborador as hc on hc.colaborador_id = co.id and hc.data=(");
+		sql.append("        select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador_id=co.id and hc2.data <= :hoje and hc2.status = :status ");
+		sql.append(") ");
+		
+		sql.append("left join areaOrganizacional as ao on ao.id = hc.areaorganizacional_id ");
+		sql.append("left join estabelecimento as es on es.id = hc.estabelecimento_id ");
+		sql.append("left join empresa as emp on emp.id = co.empresa_id ");
+		
+		sql.append("left join turma as t on t.dataPrevFim = ( ");
+		
+		sql.append("select ");
+		sql.append("        max(t3.dataPrevFim)  ");
+		sql.append("from ");
+		sql.append("    ColaboradorTurma co3  ");
+		sql.append("inner join ");
+		sql.append("    Turma t3  ");
+		sql.append("        on co3.turma_id=t3.id  ");
+		sql.append("inner join ");
+		sql.append("    Curso c3  ");
+		sql.append("        on t3.curso_id=c3.id  ");
+		sql.append("where ");
+		sql.append("    co3.colaborador_id=co.id  ");
+		sql.append("    and c3.id = c.id ");
+		
+		sql.append(") ");
+		
+		sql.append("where co.desligado = false  " );
 		
 		if(empresaId != null)
-			hql.append(	"and c.empresa.id = :empresaId ");
+			sql.append(	"and co.empresa_id = :empresaId ");
 
 		if (areaIds.length > 0)
-			hql.append("and ao.id in (:areasId) ");
+			sql.append("and ao.id in (:areasId) ");
 
 		if (estabelecimentoIds.length > 0)
-			hql.append("and es.id in (:estabelecimentosId) ");
+			sql.append("and es.id in (:estabelecimentosId) ");
 
-		hql.append("and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id=c.id and hc2.data <= :hoje and hc2.status = :status ) ");
+		if (cursosIds != null && cursosIds.length > 0)
+			sql.append("and c.id in (:cursosIds) ");
 		
-		if(data != null){
-			hql.append("and c.id not in ( ");
-			hql.append("		select ct1.colaborador.id ");
-			hql.append("		from ColaboradorTurma ct1 join ct1.turma t2 ");
-			hql.append("		where t2.dataPrevFim >= :data and t2.dataPrevFim <= current_date ");
-			hql.append("		and ct1.curso.id = :cursoId) ");
-		} else {
-			hql.append("and not exists (select ct1.colaborador.id from ColaboradorTurma as ct1 where ct1.colaborador.id=c.id ");
-			hql.append("and ct1.curso.id = :cursoId) ");
-		}
-		
-		hql.append(" order by emp.nome, es.nome, ao.nome, c.nome ");
+		sql.append(" order by c.nome, emp.nome, es.nome, areaNome, co.nome ");
 
-		Query query = getSession().createQuery(hql.toString());
+		SQLQuery query = getSession().createSQLQuery(sql.toString());
 
 		query.setDate("hoje", new Date());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
@@ -673,7 +697,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if(empresaId != null)
 			query.setLong("empresaId", empresaId);
 		
-		query.setLong("cursoId", curso.getId());
+		if (cursosIds != null && cursosIds.length > 0)
+			query.setParameterList("cursosIds", cursosIds);
 
 		if (areaIds.length > 0)
 			query.setParameterList("areasId", areaIds, Hibernate.LONG);
@@ -684,7 +709,47 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if(data != null)
 			query.setDate("data", data);
 
-		return query.list();
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+		List resultado = query.list();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			ColaboradorTurma ct = new ColaboradorTurma();
+			
+			Object[] res = it.next();
+			
+			if(res[0] != null)
+				ct.setColaboradorId(((BigInteger)res[0]).longValue());
+			if(res[1] != null)
+				ct.setColaboradorNome(res[1].toString());
+			if(res[2] != null)
+				ct.setColaboradorMatricula(res[2].toString());
+			
+			if(res[3] != null)
+				ct.setAreaOrganizacionalId(((BigInteger)res[3]).longValue());
+			if(res[4] != null)
+				ct.setAreaOrganizacionalNome(res[4].toString());
+			
+			if(res[5] != null) {
+				ct.getColaborador().setEstabelecimento(new Estabelecimento());
+				ct.getColaborador().getEstabelecimento().setNome(res[5].toString());
+			}
+			
+			if(res[6] != null)
+				ct.setEmpresaNome(res[6].toString());
+
+			if(res[7] != null)
+				ct.setTurmaDataPrevFim((Date)res[7]);
+			
+			if(res[8] != null)
+				ct.setCursoId(((BigInteger)res[8]).longValue());
+			if(res[9] != null)
+				ct.setCursoNome(res[9].toString());
+			
+			colaboradorTurmas.add(ct);
+		}
+		
+		return colaboradorTurmas;
 	}
 
 	public Collection<ColaboradorTurma> findColaboradoresComCustoTreinamentos(Long colaboradorId, Date dataIni, Date dataFim, Boolean turmaRealizada)
@@ -770,7 +835,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return query.list();
 	}
 	
-	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long cursoId, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, String orderBy, boolean comHistColaboradorFuturo, String situacao, Long... turmaIds)
+	public Collection<ColaboradorTurma> findAprovadosReprovados(Long empresaId, Certificacao certificacao, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, String orderBy, boolean comHistColaboradorFuturo, String situacao, Long... turmaIds)
 	{
 		StringBuilder sql = new StringBuilder();		
 		sql.append("select ");
@@ -869,8 +934,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if (turmaIds != null && turmaIds.length > 0)
 			sql.append("	and t.id in (:turmaId) ");
 
-		if (cursoId != null)
-			sql.append("	and c.id = :cursoId ");
+		if (cursosIds != null && cursosIds.length > 0)
+			sql.append("	and c.id in (:cursosIds) ");
 		
 		if (empresaId != null)
 			sql.append("	and co.empresa_id = :empresaId ");
@@ -897,8 +962,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if(turmaIds != null && turmaIds.length > 0)
 			query.setParameterList("turmaId", turmaIds, Hibernate.LONG);
 		
-		if(cursoId != null)
-			query.setLong("cursoId", cursoId);
+		if(cursosIds != null && cursosIds.length > 0)
+			query.setParameterList("cursosIds", cursosIds);
 		
 		if (areaIds != null && areaIds.length > 0)
 			query.setParameterList("areasId", areaIds, Hibernate.LONG);

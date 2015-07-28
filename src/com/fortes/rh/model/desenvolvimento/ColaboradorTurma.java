@@ -110,7 +110,7 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	}
 
 	//findRelatorioSemTreinamento
-	public ColaboradorTurma(Long colaboradorId, String colaboradorNome, String colaboradorMatricula, Long areaId, String areaNome, String estabelecimentoNome, String empresaNome, Date dataPrevFim )
+	public ColaboradorTurma(Long colaboradorId, String colaboradorNome, String colaboradorMatricula, Long areaId, String areaNome, String estabelecimentoNome, String empresaNome, Date dataPrevFim, Long cursoId, String cursoNome )
 	{
 		this.colaborador = new Colaborador();
 		this.colaborador.setId(colaboradorId);
@@ -129,6 +129,10 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		
 		this.setTurma(new Turma());
 		this.getTurma().setDataPrevFim(dataPrevFim);
+		
+		this.curso = new Curso();
+		this.curso.setId(cursoId);
+		this.curso.setNome(cursoNome);
 	}
 
 	public ColaboradorTurma(Long colaboradorId, String colaboradorNome, String colaboradorMatricula, Long areaId, String estabelecimentoNome, String turmaDescricao, Date dataPrevIni, Date dataPrevFim, Long id, Boolean aprovado)

@@ -1329,17 +1329,27 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	historicoColaboradorDao.save(historicoColaboradorFuturoNaoInscrito);
 
     	Curso curso = CursoFactory.getEntity();
+    	curso.setEmpresa(empresa);
     	cursoDao.save(curso);
 
+    	Turma turma = TurmaFactory.getEntity();
+    	turma.setDataPrevFim(DateUtil.criarDataMesAno(1, 11, 2014));
+    	turma.setCurso(curso);
+    	turmaDao.save(turma);
+    	
     	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
     	colaboradorTurma.setColaborador(colaboradorInscritoCurso);
+    	colaboradorTurma.setTurma(turma);
     	colaboradorTurma.setCurso(curso);
     	colaboradorTurmaDao.save(colaboradorTurma);
 
     	Long[] estabelecimentoIds = new Long[]{estabelecimento.getId()};
     	Long[] areaIds = new Long[]{areaOrganizacional2.getId()};
+    	Long[] cursoIds = new Long[]{curso.getId()};
 
-    	Collection<ColaboradorTurma> colaboradoresSemTreinamento = colaboradorTurmaDao.findRelatorioSemTreinamento(empresa.getId(), curso, areaIds, estabelecimentoIds, null);
+    	colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
+    	
+    	Collection<ColaboradorTurma> colaboradoresSemTreinamento = colaboradorTurmaDao.findRelatorioSemTreinamento(empresa.getId(), cursoIds, areaIds, estabelecimentoIds, new Date());
     	assertEquals(1, colaboradoresSemTreinamento.size());
 
     	ColaboradorTurma colaboradorSemTreinamento = (ColaboradorTurma) colaboradoresSemTreinamento.toArray()[0];
@@ -1397,14 +1407,15 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	historicoColaboradorFuturoNaoInscrito.setAreaOrganizacional(areaOrganizacional2);
     	historicoColaboradorDao.save(historicoColaboradorFuturoNaoInscrito);
     	
+    	Curso curso = CursoFactory.getEntity();
+//    	curso.setTurmas(Arrays.asList(new Turma[]{turma}));
+    	cursoDao.save(curso);
+    	
     	Turma turma = TurmaFactory.getEntity();
     	turma.setDataPrevIni(DateUtil.criarDataMesAno(01, 10, 2013));
     	turma.setDataPrevFim(DateUtil.criarDataMesAno(20, 10, 2013));
+    	turma.setCurso(curso);
     	turmaDao.save(turma);
-    	
-    	Curso curso = CursoFactory.getEntity();
-    	curso.setTurmas(Arrays.asList(new Turma[]{turma}));
-    	cursoDao.save(curso);
     	
     	ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
     	colaboradorTurma.setColaborador(colaboradorInscritoCurso);
@@ -1415,11 +1426,13 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	Long[] estabelecimentoIds = new Long[]{};
     	Long[] areaIds = new Long[]{};
     	
-    	Collection<ColaboradorTurma> colaboradoresSemTreinamento = colaboradorTurmaDao.findRelatorioSemTreinamento(empresa.getId(), curso, areaIds, estabelecimentoIds, DateUtil.criarDataMesAno(22, 10, 2013));
+    	colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
+    	
+    	Collection<ColaboradorTurma> colaboradoresSemTreinamento = colaboradorTurmaDao.findRelatorioSemTreinamento(empresa.getId(), new Long[]{curso.getId()}, areaIds, estabelecimentoIds, DateUtil.criarDataMesAno(22, 10, 2013));
     	assertEquals(2, colaboradoresSemTreinamento.size());
 
     	//fora da data de realização do curso
-    	colaboradoresSemTreinamento = colaboradorTurmaDao.findRelatorioSemTreinamento(empresa.getId(), curso, areaIds, estabelecimentoIds, DateUtil.criarDataMesAno(19, 10, 2013));
+    	colaboradoresSemTreinamento = colaboradorTurmaDao.findRelatorioSemTreinamento(empresa.getId(), new Long[]{curso.getId()}, areaIds, estabelecimentoIds, DateUtil.criarDataMesAno(19, 10, 2013));
     	assertEquals(1, colaboradoresSemTreinamento.size());
 
     	ColaboradorTurma colaboradorSemTreinamento = (ColaboradorTurma) colaboradoresSemTreinamento.toArray()[0];

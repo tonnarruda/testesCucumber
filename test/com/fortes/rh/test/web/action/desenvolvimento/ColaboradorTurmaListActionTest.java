@@ -228,23 +228,12 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	curso.setNome("Como programar");
     	action.setCurso(curso);
 
+    	Long[] cursos = new Long[]{curso.getId()};
+    	
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
-    	colaboradorTurmaManager.expects(once()).method("findRelatorioSemTreinamento").with(new Constraint[]{ANYTHING, eq(curso), ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ColaboradorTurma>()));
+    	colaboradorTurmaManager.expects(once()).method("findRelatorioSemTreinamento").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ColaboradorTurma>()));
     	
     	assertEquals("success", action.relatorioColaboradorSemTreinamento());
-    }
-    
-    public void testRelatorioColaboradorSemTreinamentoException() throws Exception
-    {
-    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
-    	colaboradorTurmaManager.expects(once()).method("findRelatorioSemTreinamento").withAnyArguments().will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	
-		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
-    	parametrosDoSistema.setCompartilharCandidatos(true);
-		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
-		empresaManager.expects(once()).method("findEmpresasPermitidas");
-    	
-    	assertEquals("input", action.relatorioColaboradorSemTreinamento());
     }
 
     public void testRelatorioColaboradorSemTreinamentoExceptionCllectioVazia() throws Exception
@@ -276,19 +265,6 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 //    	
 //    	assertEquals("success", action.relatorioColaboradorComTreinamento());
 //    }
-    
-    public void testRelatorioColaboradorComTreinamentoException() throws Exception
-    {
-		ParametrosDoSistema parametrosDoSistema = new ParametrosDoSistema();
-    	parametrosDoSistema.setCompartilharCandidatos(true);
-		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
-		empresaManager.expects(once()).method("findEmpresasPermitidas");
-    	
-    	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").withAnyArguments().will(returnValue(new ArrayList<ColaboradorTurma>()));
-    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
-    	
-    	assertEquals("input", action.relatorioColaboradorComTreinamento());
-    }
     
     public void testRelatorioColaboradorComTreinamentoExceptionCllectioVazia() throws Exception
     {

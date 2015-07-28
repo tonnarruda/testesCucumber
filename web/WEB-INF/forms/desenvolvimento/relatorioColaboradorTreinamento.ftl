@@ -15,6 +15,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 	<script type='text/javascript'>
 		var empresaIds = new Array();
 		<#if empresas?exists>
@@ -31,7 +32,7 @@
 		
 		function createListCurso(data)
 		{
-			addOptionsByMap('curso',data,'Selecione...');
+			addChecks('cursosCheck',data);
 		}
 		
 		function populaEstabelecimento(empresaId)
@@ -68,9 +69,9 @@
 					return false;
 				}
 				
-				return validaFormularioEPeriodo('form', new Array('curso'), new Array('inicio','fim'));
+				return validaFormularioEPeriodo('form', new Array(), new Array('inicio','fim'));
 			<#else>
-				return validaFormulario('form', new Array('curso'), null);
+				return validaFormulario('form', new Array(), null);
 			</#if>
 		}
 		
@@ -83,6 +84,10 @@
 			populaCurso(empresaValue);
 			populaArea(empresaValue);
 			populaEstabelecimento(empresaValue);
+			
+			$('#cursosCheckToolTipHelp').qtip({
+				content: 'Será gerado um relatório individual para cada curso selecionado em um único arquivo.'
+			});
 		});
 	</script>
 	
@@ -112,7 +117,9 @@
 	
 	<@ww.form name="form" action="${formAction}" onsubmit="return validar()" method="POST">
 		<@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1"  onchange="populaCurso(this.value);populaEstabelecimento(this.value);populaArea(this.value);" disabled="!compartilharColaboradores"/>		
-		<@ww.select name="curso.id" id="curso" list="cursos" listKey="id" required="true" listValue="nome" label="Curso" headerKey="" headerValue="Selecione..."/>
+		
+		<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos" list="cursosCheckList" filtro="true" tooltipHelp="true"/>
+		
 		<@ww.select label="Situação da turma" name="situacao" id="situacao" list="situacoes" cssStyle="width: 160px;"/>
 		
 		<#if comTreinamento>

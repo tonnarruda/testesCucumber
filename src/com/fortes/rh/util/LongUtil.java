@@ -97,7 +97,7 @@ public class LongUtil
 	
 	public static boolean arrayIsNotEmpty(Long[] ids)
 	{
-		return ids != null && ids.length > 0;
+		return ids != null && ids.length > 0 && ids[0] != null;
 	}
 	
 	public static boolean isNotEmpty(Collection<Long> ids)

@@ -345,30 +345,24 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return colaboradorTurmas;
 	}
 
-	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, Integer qtdMesesSemCurso) throws Exception
+	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Integer qtdMesesSemCurso) throws Exception
 	{
 		Date data = null;
 		if(qtdMesesSemCurso != null && qtdMesesSemCurso >= 0)
 			data = criaDataDiminuindoMeses(qtdMesesSemCurso).getTime();
 		
-		Collection<ColaboradorTurma> colaboradorTurmasTemp = getDao().findRelatorioSemTreinamento(empresaId, curso, areaIds, estabelecimentoIds, data);
-		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-		Collection<Long> colaboradorIdsTurmas = new ArrayList<Long>();
-		
-		for (ColaboradorTurma colaboradorTurma : colaboradorTurmasTemp) {
-			if (!colaboradorIdsTurmas.contains(colaboradorTurma.getColaborador().getId())) {
-				colaboradorIdsTurmas.add(colaboradorTurma.getColaborador().getId());
-				colaboradorTurmas.add(colaboradorTurma);
-			}
-		}
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findRelatorioSemTreinamento(empresaId, cursosIds, areaIds, estabelecimentoIds, data);
 
-		return validaRelatorioTreinamento(empresaId, curso, colaboradorTurmas);
+		if(colaboradorTurmas == null || colaboradorTurmas.isEmpty())
+			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
+		
+		return colaboradorTurmas;
 	}
 
-	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Curso curso, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, char aprovadoFiltro, String situacao) throws Exception
+	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, char aprovadoFiltro, String situacao) throws Exception
 	{
 		Boolean aprovado = aprovadoFiltro == 'T' ? null : aprovadoFiltro == 'S';
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, curso.getId(), areaIds, estabelecimentoIds, dataIni, dataFim, " emp.nome, e.nome, a.nome, co.nome, c.nome ", true, situacao);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, cursosIds, areaIds, estabelecimentoIds, dataIni, dataFim, " c.nome, emp.nome, e.nome, a.nome, co.nome ", true, situacao);
 		
 		if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
 			throw new ColecaoVaziaException();
@@ -410,16 +404,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		}
 	}
 
-	private Collection<ColaboradorTurma> validaRelatorioTreinamento(Long empresaId, Curso curso, Collection<ColaboradorTurma> colaboradorTurmas) throws ColecaoVaziaException, Exception
-	{
-		if(colaboradorTurmas == null || colaboradorTurmas.isEmpty())
-			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
-
-		if (!curso.getId().equals(-1L))
-			curso.setNome(cursoManager.findByIdProjection(curso.getId()).getNome());
-
-		return setFamiliaAreas(colaboradorTurmas, empresaId);
-	}
 	public Collection<ColaboradorTurma> findByTurmaSemPresenca(Long turmaId, Long diaTurmaId)
 	{
 		return getDao().findByTurmaSemPresenca(turmaId, diaTurmaId);

@@ -2,13 +2,14 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="cabecalho" pageWidth="550" pageHeight="612" whenNoDataType="AllSectionsNoDetail" columnWidth="550" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8c7d05da-015b-412d-a7a1-708c2d28dfaa">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.zoom" value="1.9487171000000014"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
+	<parameter name="pageGroup" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -18,7 +19,7 @@
 	<pageHeader>
 		<band height="70" splitType="Stretch">
 			<textField evaluationTime="Report" pattern="dd/MM/yyyy HH:mm" isBlankWhenNull="false">
-				<reportElement uuid="e4f604f7-5692-40b7-a67f-9dd288654eb4" key="textField" x="396" y="0" width="140" height="16">
+				<reportElement key="textField" x="396" y="0" width="140" height="16" uuid="e4f604f7-5692-40b7-a67f-9dd288654eb4">
 					<printWhenExpression><![CDATA[new Boolean($P{CABECALHO}.getMsgAutenticado().equals(""))]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -33,7 +34,7 @@
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="9321b618-44f1-4c73-9a50-362a57684191" key="textField" positionType="Float" x="71" y="1" width="323" height="14"/>
+				<reportElement key="textField" positionType="Float" x="71" y="1" width="323" height="14" uuid="9321b618-44f1-4c73-9a50-362a57684191"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -46,7 +47,7 @@
 				<textFieldExpression><![CDATA[$P{CABECALHO}.getNomeEmpresa()]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="0848108f-c33e-414d-bb76-e13d1e4f3a19" key="textField" x="396" y="48" width="140" height="16"/>
+				<reportElement key="textField" x="396" y="48" width="140" height="16" uuid="0848108f-c33e-414d-bb76-e13d1e4f3a19"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -59,7 +60,7 @@
 				<textFieldExpression><![CDATA[$P{CABECALHO}.getMsgAutenticado() == "" ? "Licenciado para: " + $P{CABECALHO}.getLicenciadoPara():"Sistema não licenciado"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="f5882c96-01d9-4dda-9865-c483d63a0b2b" key="textField" x="71" y="17" width="323" height="14"/>
+				<reportElement key="textField" x="71" y="17" width="323" height="14" uuid="f5882c96-01d9-4dda-9865-c483d63a0b2b"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -72,7 +73,7 @@
 				<textFieldExpression><![CDATA[$P{CABECALHO}.getTitulo()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="7e1f0209-3b5d-4cba-83de-9076e6a0a0b1" key="textField" x="396" y="32" width="140" height="16"/>
+				<reportElement key="textField" x="396" y="32" width="140" height="16" uuid="7e1f0209-3b5d-4cba-83de-9076e6a0a0b1"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -85,7 +86,7 @@
 				<textFieldExpression><![CDATA[$P{CABECALHO}.getVersaoSistema() == null ? "RH" : "RH - versão " + $P{CABECALHO}.getVersaoSistema()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="b421b4c9-df66-45a7-9625-6d3ce2318538" key="textField" x="396" y="16" width="140" height="16"/>
+				<reportElement key="textField" x="396" y="16" width="140" height="16" uuid="b421b4c9-df66-45a7-9625-6d3ce2318538"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -98,7 +99,7 @@
 				<textFieldExpression><![CDATA["Impresso por " + $P{CABECALHO}.getUsuario()]]></textFieldExpression>
 			</textField>
 			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle">
-				<reportElement uuid="14a61421-6117-4032-b486-581990b13048" key="image-1" stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="2" width="67" height="46" isRemoveLineWhenBlank="true">
+				<reportElement key="image-1" stretchType="RelativeToTallestObject" mode="Transparent" x="0" y="2" width="67" height="46" isRemoveLineWhenBlank="true" uuid="14a61421-6117-4032-b486-581990b13048">
 					<printWhenExpression><![CDATA[new Boolean($P{CABECALHO}.getLogoUrl() != null && !$P{CABECALHO}.getLogoUrl().equals(""))]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -110,7 +111,7 @@
 				<imageExpression><![CDATA[$P{CABECALHO}.getLogoUrl()]]></imageExpression>
 			</image>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="24f31ff8-52a9-4321-b703-71b1ad3887ba" key="textField-1" x="9" y="26" width="536" height="25"/>
+				<reportElement key="textField-1" x="9" y="26" width="536" height="25" uuid="24f31ff8-52a9-4321-b703-71b1ad3887ba"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -123,7 +124,7 @@
 				<textFieldExpression><![CDATA[$P{CABECALHO}.getMsgAutenticado()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" pattern="" isBlankWhenNull="false">
-				<reportElement uuid="a025e3c9-ec77-4358-b724-ee62c6308843" key="textField-2" x="412" y="1" width="124" height="16">
+				<reportElement key="textField-2" x="412" y="1" width="124" height="16" uuid="a025e3c9-ec77-4358-b724-ee62c6308843">
 					<printWhenExpression><![CDATA[new Boolean(!$P{CABECALHO}.getMsgAutenticado().equals(""))]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -138,7 +139,7 @@
 				<textFieldExpression><![CDATA["##/##/2000"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="9757f741-c631-469b-a83b-d4e700aaadc9" key="textField-3" x="71" y="33" width="323" height="31"/>
+				<reportElement key="textField-3" x="71" y="33" width="323" height="31" uuid="9757f741-c631-469b-a83b-d4e700aaadc9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -149,6 +150,19 @@
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{CABECALHO}.getFiltro()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField-3" x="71" y="33" width="323" height="31" uuid="0274ff51-bc85-4ca3-9972-96e2262ad9f2"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pageGroup}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

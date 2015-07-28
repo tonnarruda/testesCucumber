@@ -37,7 +37,6 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
-import com.fortes.rh.model.relatorio.Cabecalho;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
@@ -91,8 +90,8 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private Collection<PrioridadeTreinamento> prioridadeTreinamentos;
 	private FiltroPlanoTreinamento filtroPlanoTreinamento;
 
-	private Collection<Curso> cursos = new ArrayList<Curso>();
-
+	private String[] cursosCheck;
+	private Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentosCheck;
@@ -311,8 +310,9 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		{
 			empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 			
-			colaboradorTurmas = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, curso, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), qtdMesesSemCurso);
-			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores que não fizeram o treinamento", getEmpresaSistema(), curso.getNome());
+			colaboradorTurmas = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, LongUtil.arrayStringToArrayLong(cursosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), qtdMesesSemCurso);
+			
+			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores que não fizeram o treinamento", getEmpresaSistema(), "");
 
 			return Action.SUCCESS;
 		}
@@ -339,9 +339,8 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		{
 			empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 			
-			colaboradorTurmas = colaboradorTurmaManager.findRelatorioComTreinamento(empresaId, curso, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim, aprovado, situacao);
-			curso = cursoManager.findByIdProjection(curso.getId());
-			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores que fizeram o treinamento", getEmpresaSistema(), curso.getNome());
+			colaboradorTurmas = colaboradorTurmaManager.findRelatorioComTreinamento(empresaId, LongUtil.arrayStringToArrayLong(cursosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim, aprovado, situacao);
+			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores que fizeram o treinamento", getEmpresaSistema(), "");
 			
 			reportTitle = "Colaboradores que fizeram um treinamento ";
 
@@ -567,6 +566,14 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	{
 		this.aprovado = aprovado;
 	}
+	
+	public String[] getCursosCheck() {
+		return cursosCheck;
+	}
+
+	public void setCursosCheck(String[] cursosCheck) {
+		this.cursosCheck = cursosCheck;
+	}
 
 	public String[] getAreasCheck()
 	{
@@ -603,9 +610,9 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		return areasCheckList;
 	}
 
-	public Collection<Curso> getCursos()
+	public Collection<CheckBox> getCursosCheckList()
 	{
-		return cursos;
+		return cursosCheckList;
 	}
 
 	public Collection<CheckBox> getEstabelecimentosCheckList()
