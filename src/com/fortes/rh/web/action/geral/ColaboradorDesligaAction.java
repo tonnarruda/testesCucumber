@@ -242,7 +242,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 	public String reprovarSolicitacaoDesligamento() throws Exception
 	{
 		try {
-			colaboradorManager.solicitacaoDesligamento(null, null, null, null, null, colaborador.getId());
+			colaboradorManager.reprovaSolicitacaoDesligamento(colaborador.getId());
 			
 			gerenciadorComunicacaoManager.enviaAvisoAprovacaoSolicitacaoDesligamento(colaborador.getNome(), colaborador.getSolicitanteDemissao().getId(), getEmpresaSistema(), false);
 			

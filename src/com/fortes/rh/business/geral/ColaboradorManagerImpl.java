@@ -2740,6 +2740,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		
 	}
 	
+	public void reprovaSolicitacaoDesligamento(Long colaboradorId) throws Exception{
+		getDao().atualizaSolicitacaoDesligamento(null, null, null, null, null, null, colaboradorId);
+	}
+	
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId) 
 	{
 		getDao().setSolicitacao(colaboradorId, solicitacaoId);

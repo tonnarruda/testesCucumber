@@ -104,6 +104,70 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 			
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaboradoresDesligados, dados);
 	}
+	
+	public Auditavel solicitacaoDesligamento(MetodoInterceptado metodo) throws Throwable{
+		metodo.processa();
+		Map<String, Object> desligamento;
+		Collection<Map<String, Object>> solicitacaoDesligamento = new ArrayList<Map<String,Object>>();
+		Date dataSolicitacao = (Date) metodo.getParametros()[0];
+		String observacaoDemissao = (String) metodo.getParametros()[1];
+		Long motivoDemissaoId = (Long) metodo.getParametros()[2];
+		Character gerouSubstituicao = (Character) metodo.getParametros()[3];
+		
+		
+		Long colaboradorId = (Long) metodo.getParametros()[5];
+		Colaborador colab;
+		colab = new Colaborador();
+		colab.setId(colaboradorId);
+		Colaborador colaborador = carregaEntidade(metodo, colab);
+		
+		desligamento = new LinkedHashMap<String, Object>();
+		desligamento.put("Colaborador ID", colaborador.getId());
+		desligamento.put("Colaborador", colaborador.getNome());
+		desligamento.put("Data de solicitacao", dataSolicitacao);
+		desligamento.put("Observação", observacaoDemissao);
+		desligamento.put("Motivo", motivoDemissaoId);
+		desligamento.put("Gerou substituição", gerouSubstituicao.toString());
+
+		Long solicitanteDemissaoId = (Long) metodo.getParametros()[4];
+		if (solicitanteDemissaoId != null) {
+			Colaborador solicitDemissao;
+			solicitDemissao = new Colaborador();
+			solicitDemissao.setId(solicitanteDemissaoId);
+			Colaborador solicitanteDemissao = carregaEntidade(metodo, solicitDemissao); 
+			desligamento.put("Solicitante Id", solicitanteDemissao.getId());
+			desligamento.put("Solicitante", solicitanteDemissao.getNome());
+		}
+		
+		solicitacaoDesligamento.add(desligamento);
+		
+		String dados = new GeraDadosAuditados(null, solicitacaoDesligamento.toArray()).gera();
+			
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
+	}
+	
+	public Auditavel reprovaSolicitacaoDesligamento(MetodoInterceptado metodo) throws Throwable {
+		metodo.processa();
+		Map<String, Object> desligamento;
+		Collection<Map<String, Object>> desligamentos = new ArrayList<Map<String,Object>>();
+		
+		Long colaboradorId = (Long) metodo.getParametros()[0];
+		Colaborador colab;
+		
+		colab = new Colaborador();
+		colab.setId(colaboradorId);
+		Colaborador colaborador = carregaEntidade(metodo, colab);
+		
+		desligamento = new LinkedHashMap<String, Object>();
+		desligamento.put("Colaborador ID", colaborador.getId());
+		desligamento.put("Colaborador", colaborador.getNome());
+		desligamento.put("Data de cancelamento", new Date());
+		desligamentos.add(desligamento);
+		
+		String dados = new GeraDadosAuditados(null, desligamentos.toArray()).gera();
+			
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
+	}
 
 	public Auditavel religaColaborador(MetodoInterceptado metodo) throws Throwable 
 	{

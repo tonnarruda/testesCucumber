@@ -61,6 +61,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	@Audita(operacao="Remoção", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void removeComDependencias(Long id) throws Exception;
 	public Colaborador removeColaboradorDependencias(Colaborador colaborador);
+	@Audita(operacao="Solicitação Desligamento", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Character gerouSubstituicao, Long solicitanteDemissaoId, Long colaboradorId) throws Exception;
 	public void cancelarContratacaoNoAC(Colaborador colaborador, HistoricoColaborador historicoColaborador, String mensagem) throws Exception;
 	public Collection<Colaborador> findByAreasOrganizacionalIds(Long[] idsLong);
@@ -214,4 +215,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId);
 	public void populaEscolaridade(Colaborador colaborador, TEmpregado empregado);
 	public void insereNonoDigitoCelular(Long[] ufId) throws Exception;
+	@Audita(operacao="Solicitação Desligamento Cancelada", auditor=ColaboradorAuditorCallbackImpl.class)
+	public void reprovaSolicitacaoDesligamento(Long colaboradorId) throws Exception;
 }
