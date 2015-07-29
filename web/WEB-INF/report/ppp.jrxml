@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2015-07-29T15:23:30 -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ppp" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="4f52595a-9564-46ff-b86d-6e0646439479">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
@@ -51,7 +53,7 @@
 			<band height="61" splitType="Stretch">
 				<printWhenExpression><![CDATA[$P{IMPRIMIR_RECIBO}]]></printWhenExpression>
 				<textField isBlankWhenNull="false">
-					<reportElement uuid="8ade130b-8c6f-47a5-83eb-f4dc4b5ad837" key="textField-10" positionType="Float" x="2" y="4" width="529" height="18">
+					<reportElement key="textField-10" positionType="Float" x="2" y="4" width="529" height="18" uuid="8ade130b-8c6f-47a5-83eb-f4dc4b5ad837">
 						<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
 					</reportElement>
 					<box>
@@ -66,7 +68,7 @@
 					<textFieldExpression><![CDATA["Eu, " + $F{colaborador.nome} + ", recebi cópia do meu PPP em   ____/____/________"]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
-					<reportElement uuid="9f40616b-50c8-4c73-a411-5d4f7f35a83e" key="textField-11" positionType="Float" x="2" y="45" width="302" height="15">
+					<reportElement key="textField-11" positionType="Float" x="2" y="45" width="302" height="15" uuid="9f40616b-50c8-4c73-a411-5d4f7f35a83e">
 						<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
 					</reportElement>
 					<box>
@@ -91,7 +93,7 @@
 		<groupFooter>
 			<band height="61" splitType="Stretch">
 				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-					<reportElement uuid="0831d9f7-c5b9-41c4-aecf-dffafdc9548c" key="textField" positionType="Float" stretchType="RelativeToBandHeight" x="3" y="21" width="529" height="37"/>
+					<reportElement key="textField" positionType="Float" stretchType="RelativeToBandHeight" x="3" y="21" width="529" height="37" uuid="0831d9f7-c5b9-41c4-aecf-dffafdc9548c"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -105,10 +107,10 @@
 					<textFieldExpression><![CDATA[$F{observacoes}]]></textFieldExpression>
 				</textField>
 				<line>
-					<reportElement uuid="ddf09823-891c-42fc-a049-5cbc697b9e57" key="line-116" positionType="Float" x="1" y="4" width="534" height="1"/>
+					<reportElement key="line-116" positionType="Float" x="1" y="4" width="534" height="1" uuid="ddf09823-891c-42fc-a049-5cbc697b9e57"/>
 				</line>
 				<staticText>
-					<reportElement uuid="13afc76a-714b-42b8-b35d-9895c1723731" key="staticText-66" positionType="Float" x="3" y="5" width="106" height="15">
+					<reportElement key="staticText-66" positionType="Float" x="3" y="5" width="106" height="15" uuid="13afc76a-714b-42b8-b35d-9895c1723731">
 						<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
 					</reportElement>
 					<box>
@@ -121,22 +123,22 @@
 					<text><![CDATA[OBSERVAÇÕES]]></text>
 				</staticText>
 				<line>
-					<reportElement uuid="23207e56-a3cd-4e53-b117-b7adcb095d4e" key="line-117" positionType="Float" x="1" y="5" width="1" height="15"/>
+					<reportElement key="line-117" positionType="Float" x="1" y="5" width="1" height="15" uuid="23207e56-a3cd-4e53-b117-b7adcb095d4e"/>
 				</line>
 				<line>
-					<reportElement uuid="4b9f01bd-56a7-4c83-b33a-b1baf916b47e" key="line-118" positionType="Float" x="1" y="19" width="534" height="1"/>
+					<reportElement key="line-118" positionType="Float" x="1" y="19" width="534" height="1" uuid="4b9f01bd-56a7-4c83-b33a-b1baf916b47e"/>
 				</line>
 				<line>
-					<reportElement uuid="a3051a63-eca0-403b-9679-8aa13fb7cf85" key="line-119" positionType="Float" x="534" y="4" width="1" height="16"/>
+					<reportElement key="line-119" positionType="Float" x="534" y="4" width="1" height="16" uuid="a3051a63-eca0-403b-9679-8aa13fb7cf85"/>
 				</line>
 				<line>
-					<reportElement uuid="dd114243-a9d5-454a-84eb-354ba304e9bd" key="line-156" positionType="Float" x="1" y="58" width="534" height="1"/>
+					<reportElement key="line-156" positionType="Float" x="1" y="58" width="534" height="1" uuid="dd114243-a9d5-454a-84eb-354ba304e9bd"/>
 				</line>
 				<line>
-					<reportElement uuid="ce8fb01a-1009-4d1a-8849-cd7c3b726734" key="line-157" positionType="Float" x="1" y="20" width="1" height="39"/>
+					<reportElement key="line-157" positionType="Float" x="1" y="20" width="1" height="39" uuid="ce8fb01a-1009-4d1a-8849-cd7c3b726734"/>
 				</line>
 				<line>
-					<reportElement uuid="ba6f6498-52e9-45b9-bbf6-72fbc863975b" key="line-158" positionType="Float" x="534" y="20" width="1" height="39"/>
+					<reportElement key="line-158" positionType="Float" x="534" y="20" width="1" height="39" uuid="ba6f6498-52e9-45b9-bbf6-72fbc863975b"/>
 				</line>
 			</band>
 		</groupFooter>
@@ -149,7 +151,7 @@
 		<groupFooter>
 			<band height="140" splitType="Stretch">
 				<staticText>
-					<reportElement uuid="58c3e583-7e7f-4edf-98d2-39170ede4df8" key="staticText-67" positionType="Float" x="17" y="2" width="517" height="15">
+					<reportElement key="staticText-67" positionType="Float" x="17" y="2" width="517" height="15" uuid="58c3e583-7e7f-4edf-98d2-39170ede4df8">
 						<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
 					</reportElement>
 					<box>
@@ -162,7 +164,7 @@
 					<text><![CDATA[  RESPONSÁVEL PELAS INFORMAÇÕES]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="8b7d3c0f-8dbf-423f-abcf-234406efce56" key="staticText-68" positionType="Float" x="1" y="2" width="16" height="15">
+					<reportElement key="staticText-68" positionType="Float" x="1" y="2" width="16" height="15" uuid="8b7d3c0f-8dbf-423f-abcf-234406efce56">
 						<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
 					</reportElement>
 					<box>
@@ -175,27 +177,27 @@
 					<text><![CDATA[IV]]></text>
 				</staticText>
 				<line>
-					<reportElement uuid="6cb09a4d-d55e-4a49-9a40-343db8c7599d" key="line-120" positionType="Float" x="1" y="2" width="534" height="1">
+					<reportElement key="line-120" positionType="Float" x="1" y="2" width="534" height="1" uuid="6cb09a4d-d55e-4a49-9a40-343db8c7599d">
 						<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
 					</reportElement>
 				</line>
 				<line>
-					<reportElement uuid="a47bf309-506c-46ad-94d1-e889aee0f547" key="line-121" positionType="Float" x="1" y="17" width="534" height="1">
+					<reportElement key="line-121" positionType="Float" x="1" y="17" width="534" height="1" uuid="a47bf309-506c-46ad-94d1-e889aee0f547">
 						<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
 					</reportElement>
 				</line>
 				<line>
-					<reportElement uuid="091cdf78-7824-4fe1-a859-2c216f01d414" key="line-122" positionType="Float" x="1" y="2" width="1" height="15">
+					<reportElement key="line-122" positionType="Float" x="1" y="2" width="1" height="15" uuid="091cdf78-7824-4fe1-a859-2c216f01d414">
 						<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
 					</reportElement>
 				</line>
 				<line>
-					<reportElement uuid="c0c8c87f-f2e8-4050-9d88-4eca367863ab" key="line-123" positionType="Float" x="17" y="2" width="1" height="15">
+					<reportElement key="line-123" positionType="Float" x="17" y="2" width="1" height="15" uuid="c0c8c87f-f2e8-4050-9d88-4eca367863ab">
 						<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
 					</reportElement>
 				</line>
 				<staticText>
-					<reportElement uuid="c15c8ab0-91c8-42b2-81ca-9e969e63637a" key="staticText-69" positionType="Float" x="3" y="19" width="529" height="32"/>
+					<reportElement key="staticText-69" positionType="Float" x="3" y="19" width="529" height="32" uuid="c15c8ab0-91c8-42b2-81ca-9e969e63637a"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -208,19 +210,19 @@
 					<text><![CDATA[Declaramos, para todos os fins de direito, que as informações prestadas neste documento são verídicas e foram transcritas fielmente dos registros administrativos, das demonstrações ambientais e dos programas médicos de responsabilidade da empresa. É de nosso conhecimento que a prestação de informações falsas neste documento constitui crime de falsificação de documento público, no termos do art. 297 do Código Penal e, também, que tais informações são de caráter privativo do trabalhador, constituindo crime, nos termos da Lei n° 9.029/95, práticas discriminatórias decorrentes de sua exigibilidade por outrem, bem como de sua divulgação para terceiros, ressalvado quando exigida por orgãos públicos competentes.]]></text>
 				</staticText>
 				<line>
-					<reportElement uuid="a6c4f1f9-096b-4659-9ef3-3af7f88002ce" key="line-124" positionType="Float" x="1" y="17" width="1" height="36"/>
+					<reportElement key="line-124" positionType="Float" x="1" y="17" width="1" height="36" uuid="a6c4f1f9-096b-4659-9ef3-3af7f88002ce"/>
 				</line>
 				<line>
-					<reportElement uuid="6e63b3de-8527-4470-9e92-b2a0388dfaa6" key="line-125" positionType="Float" x="1" y="17" width="534" height="1"/>
+					<reportElement key="line-125" positionType="Float" x="1" y="17" width="534" height="1" uuid="6e63b3de-8527-4470-9e92-b2a0388dfaa6"/>
 				</line>
 				<line>
-					<reportElement uuid="4ad1a0ee-d643-4007-a8fc-ed23c3216579" key="line-126" positionType="Float" x="534" y="17" width="1" height="36"/>
+					<reportElement key="line-126" positionType="Float" x="534" y="17" width="1" height="36" uuid="4ad1a0ee-d643-4007-a8fc-ed23c3216579"/>
 				</line>
 				<line>
-					<reportElement uuid="909fabe7-9abf-435b-b203-c05e25c0682d" key="line-127" positionType="Float" x="1" y="51" width="534" height="1"/>
+					<reportElement key="line-127" positionType="Float" x="1" y="51" width="534" height="1" uuid="909fabe7-9abf-435b-b203-c05e25c0682d"/>
 				</line>
 				<staticText>
-					<reportElement uuid="e7859ce2-27c9-4195-a520-5429370b779c" key="staticText-70" positionType="Float" x="3" y="53" width="110" height="15"/>
+					<reportElement key="staticText-70" positionType="Float" x="3" y="53" width="110" height="15" uuid="e7859ce2-27c9-4195-a520-5429370b779c"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -233,7 +235,7 @@
 					<text><![CDATA[19 - Data da Emissão PPP]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="2d4dc281-698c-4a68-99a8-f4c8afd3c0d8" key="staticText-71" positionType="Float" x="117" y="53" width="268" height="15"/>
+					<reportElement key="staticText-71" positionType="Float" x="117" y="53" width="268" height="15" uuid="2d4dc281-698c-4a68-99a8-f4c8afd3c0d8"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -246,16 +248,16 @@
 					<text><![CDATA[20 - REPRESENTANTE LEGAL DA EMPRESA]]></text>
 				</staticText>
 				<line>
-					<reportElement uuid="6f341ca0-e8c4-4f52-81dd-debb824172af" key="line-129" positionType="Float" x="534" y="3" width="1" height="14"/>
+					<reportElement key="line-129" positionType="Float" x="534" y="3" width="1" height="14" uuid="6f341ca0-e8c4-4f52-81dd-debb824172af"/>
 				</line>
 				<line>
-					<reportElement uuid="2f2b07c9-2ddb-4c89-9bd6-51e6d3136c96" key="line-130" positionType="Float" x="1" y="69" width="534" height="1"/>
+					<reportElement key="line-130" positionType="Float" x="1" y="69" width="534" height="1" uuid="2f2b07c9-2ddb-4c89-9bd6-51e6d3136c96"/>
 				</line>
 				<line>
-					<reportElement uuid="3afe0699-55d7-47f9-80e4-d562e61e927c" key="line-131" positionType="Float" x="115" y="93" width="419" height="1"/>
+					<reportElement key="line-131" positionType="Float" x="115" y="93" width="419" height="1" uuid="3afe0699-55d7-47f9-80e4-d562e61e927c"/>
 				</line>
 				<staticText>
-					<reportElement uuid="5557b0d4-86af-4154-a799-80b401899c5f" key="staticText-72" positionType="Float" x="117" y="70" width="102" height="9"/>
+					<reportElement key="staticText-72" positionType="Float" x="117" y="70" width="102" height="9" uuid="5557b0d4-86af-4154-a799-80b401899c5f"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -268,7 +270,7 @@
 					<text><![CDATA[20.1 - NIT]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="035b9eee-94e5-4642-a254-bb48ca4ed1b0" key="staticText-73" positionType="Float" x="243" y="70" width="39" height="9"/>
+					<reportElement key="staticText-73" positionType="Float" x="243" y="70" width="39" height="9" uuid="035b9eee-94e5-4642-a254-bb48ca4ed1b0"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -281,7 +283,7 @@
 					<text><![CDATA[20.2 - Nome]]></text>
 				</staticText>
 				<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
-					<reportElement uuid="e4b4ebc2-afe8-4012-87b4-77f7d9661fd3" key="textField-2" positionType="Float" x="20" y="96" width="84" height="12"/>
+					<reportElement key="textField-2" positionType="Float" x="20" y="96" width="84" height="12" uuid="e4b4ebc2-afe8-4012-87b4-77f7d9661fd3"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -294,7 +296,7 @@
 					<textFieldExpression><![CDATA[$F{data}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
-					<reportElement uuid="c418fce2-21fa-4975-9dde-c84b13670d38" key="textField-3" positionType="Float" x="243" y="80" width="286" height="12"/>
+					<reportElement key="textField-3" positionType="Float" x="243" y="80" width="286" height="12" uuid="c418fce2-21fa-4975-9dde-c84b13670d38"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -307,7 +309,7 @@
 					<textFieldExpression><![CDATA[$F{responsavel}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="false">
-					<reportElement uuid="8ddfb93d-5c9a-4fad-9a7a-b2504aefbd36" key="textField-4" positionType="Float" x="117" y="80" width="122" height="12"/>
+					<reportElement key="textField-4" positionType="Float" x="117" y="80" width="122" height="12" uuid="8ddfb93d-5c9a-4fad-9a7a-b2504aefbd36"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -320,22 +322,22 @@
 					<textFieldExpression><![CDATA[$F{nit}]]></textFieldExpression>
 				</textField>
 				<line>
-					<reportElement uuid="b832d8a7-a11e-4080-a769-6d49e4ad2323" key="line-133" positionType="Float" x="316" y="122" width="141" height="1"/>
+					<reportElement key="line-133" positionType="Float" x="316" y="122" width="141" height="1" uuid="b832d8a7-a11e-4080-a769-6d49e4ad2323"/>
 				</line>
 				<line>
-					<reportElement uuid="6a8c88b3-1cb3-4073-9da9-898e9aa63391" key="line-135" positionType="Float" x="1" y="51" width="1" height="18"/>
+					<reportElement key="line-135" positionType="Float" x="1" y="51" width="1" height="18" uuid="6a8c88b3-1cb3-4073-9da9-898e9aa63391"/>
 				</line>
 				<line>
-					<reportElement uuid="2f5c27d5-1700-4795-ab31-d505d2686344" key="line-138" positionType="Float" x="534" y="52" width="1" height="17"/>
+					<reportElement key="line-138" positionType="Float" x="534" y="52" width="1" height="17" uuid="2f5c27d5-1700-4795-ab31-d505d2686344"/>
 				</line>
 				<line>
-					<reportElement uuid="4c7da4ce-6a0b-4732-a279-e53551ebbf90" key="line-139" positionType="Float" x="115" y="52" width="1" height="17"/>
+					<reportElement key="line-139" positionType="Float" x="115" y="52" width="1" height="17" uuid="4c7da4ce-6a0b-4732-a279-e53551ebbf90"/>
 				</line>
 				<line>
-					<reportElement uuid="970a9aa5-cb6a-48cd-bff1-35fc71abfb93" key="line-140" positionType="Float" x="1" y="138" width="534" height="1"/>
+					<reportElement key="line-140" positionType="Float" x="1" y="138" width="534" height="1" uuid="970a9aa5-cb6a-48cd-bff1-35fc71abfb93"/>
 				</line>
 				<staticText>
-					<reportElement uuid="7eba533f-b2dc-40ae-b39b-297de90446c8" key="staticText-74" positionType="Float" x="165" y="126" width="29" height="9"/>
+					<reportElement key="staticText-74" positionType="Float" x="165" y="126" width="29" height="9" uuid="7eba533f-b2dc-40ae-b39b-297de90446c8"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -348,7 +350,7 @@
 					<text><![CDATA[(Carimbo)]]></text>
 				</staticText>
 				<staticText>
-					<reportElement uuid="02411294-7556-4a61-b048-8508d85e6a32" key="staticText-75" positionType="Float" x="385" y="126" width="39" height="9"/>
+					<reportElement key="staticText-75" positionType="Float" x="385" y="126" width="39" height="9" uuid="02411294-7556-4a61-b048-8508d85e6a32"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -361,16 +363,16 @@
 					<text><![CDATA[Assinatura]]></text>
 				</staticText>
 				<line>
-					<reportElement uuid="c198543e-c410-4d0c-9cb3-79a30f0602fa" key="line-141" positionType="Float" x="1" y="69" width="1" height="70"/>
+					<reportElement key="line-141" positionType="Float" x="1" y="69" width="1" height="70" uuid="c198543e-c410-4d0c-9cb3-79a30f0602fa"/>
 				</line>
 				<line>
-					<reportElement uuid="52d5b75b-3135-40c3-a172-86b103f52a2d" key="line-142" positionType="Float" x="115" y="69" width="1" height="70"/>
+					<reportElement key="line-142" positionType="Float" x="115" y="69" width="1" height="70" uuid="52d5b75b-3135-40c3-a172-86b103f52a2d"/>
 				</line>
 				<line>
-					<reportElement uuid="611d70fa-b9a0-402d-a67b-a01cc0436509" key="line-143" positionType="Float" x="241" y="69" width="1" height="69"/>
+					<reportElement key="line-143" positionType="Float" x="241" y="69" width="1" height="69" uuid="611d70fa-b9a0-402d-a67b-a01cc0436509"/>
 				</line>
 				<line>
-					<reportElement uuid="5427aca2-c86f-4d5b-a7c8-a7aeffe4a4d5" key="line-144" positionType="Float" x="534" y="69" width="1" height="70"/>
+					<reportElement key="line-144" positionType="Float" x="534" y="69" width="1" height="70" uuid="5427aca2-c86f-4d5b-a7c8-a7aeffe4a4d5"/>
 				</line>
 			</band>
 		</groupFooter>
@@ -388,9 +390,10 @@
 		<band splitType="Stretch"/>
 	</columnHeader>
 	<detail>
-		<band height="479" splitType="Stretch">
+		<band height="453" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 			<staticText>
-				<reportElement uuid="f353c11d-cf61-4a53-a1cb-7ce25470a63e" key="staticText-1" x="1" y="86" width="534" height="14"/>
+				<reportElement key="staticText-1" x="1" y="62" width="534" height="14" uuid="f353c11d-cf61-4a53-a1cb-7ce25470a63e"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -403,7 +406,7 @@
 				<text><![CDATA[PERFIL PROFISSIOGRÁFICO PREVIDENCIÁRIO - PPP]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="1d71a1be-b324-46d6-99fc-3bbbad3748c7" key="textField" positionType="Float" mode="Opaque" x="3" y="127" width="110" height="15"/>
+				<reportElement key="textField" positionType="Float" mode="Opaque" x="3" y="103" width="110" height="15" uuid="1d71a1be-b324-46d6-99fc-3bbbad3748c7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -416,7 +419,7 @@
 				<textFieldExpression><![CDATA[$F{cnpjFormatado}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="17e04018-598b-4d40-beb4-39ed196340c7" key="textField" positionType="Float" x="116" y="127" width="298" height="15"/>
+				<reportElement key="textField" positionType="Float" x="116" y="103" width="298" height="15" uuid="17e04018-598b-4d40-beb4-39ed196340c7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -429,7 +432,7 @@
 				<textFieldExpression><![CDATA[$F{colaborador.empresa.razaoSocial}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="f14dc5fc-7f7d-43f2-82c5-89f701bf4788" key="textField" positionType="Float" x="419" y="127" width="116" height="15"/>
+				<reportElement key="textField" positionType="Float" x="419" y="103" width="116" height="15" uuid="f14dc5fc-7f7d-43f2-82c5-89f701bf4788"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -442,7 +445,7 @@
 				<textFieldExpression><![CDATA[$F{colaborador.empresa.cnae}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="0471a578-2ec7-4927-a7f3-506a57c01e3c" key="staticText-17" x="0" y="1" width="535" height="52"/>
+				<reportElement key="staticText-17" x="0" y="1" width="535" height="25" uuid="0471a578-2ec7-4927-a7f3-506a57c01e3c"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -453,12 +456,10 @@
 					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[ANEXO XV
-INSTRUÇÃO NORMATIVA INSS/PRES Nº 27, DE 30 DE ABRIL DE 2008
-INSTRUÇÃO NORMATIVA Nº 20/INSS/PRES, DE 10 DE OUTUBRO DE 2007
-INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
+INSTRUÇÃO NORMATIVA Nº 77 PRES/INSS, DE 21 DE JANEIRO DE 2015]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="c85e3575-ea79-44a3-bd16-0490017b6be3" key="staticText-18" x="17" y="102" width="518" height="15"/>
+				<reportElement key="staticText-18" x="17" y="78" width="518" height="15" uuid="c85e3575-ea79-44a3-bd16-0490017b6be3"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -469,7 +470,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[  SEÇÃO DE DADOS ADMINISTRATIVOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="e72a5d3c-98d6-4379-8396-38dbb14c9bd7" key="staticText-19" x="1" y="102" width="16" height="15"/>
+				<reportElement key="staticText-19" x="1" y="78" width="16" height="15" uuid="e72a5d3c-98d6-4379-8396-38dbb14c9bd7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -480,7 +481,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[I]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="90e7ee21-61b7-4641-a5b5-840a8470a9f4" key="staticText-20" x="3" y="117" width="110" height="9"/>
+				<reportElement key="staticText-20" x="3" y="93" width="110" height="9" uuid="90e7ee21-61b7-4641-a5b5-840a8470a9f4"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -493,7 +494,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 1 - CNPJ do Domicílio Tributário/CEI]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="3477c24b-337d-42cc-aeab-7f72065f7198" key="staticText-21" x="116" y="117" width="300" height="9"/>
+				<reportElement key="staticText-21" x="116" y="93" width="300" height="9" uuid="3477c24b-337d-42cc-aeab-7f72065f7198"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -506,7 +507,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 2 - Nome Empresarial]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="b8587668-ffef-423d-8fa1-f432c4bb9b94" key="staticText-22" x="419" y="117" width="116" height="9"/>
+				<reportElement key="staticText-22" x="419" y="93" width="116" height="9" uuid="b8587668-ffef-423d-8fa1-f432c4bb9b94"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -519,7 +520,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 3 - CNAE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="da7df957-7e4d-42ff-9326-2616d134b95f" key="staticText-23" x="419" y="144" width="116" height="9"/>
+				<reportElement key="staticText-23" x="419" y="120" width="116" height="9" uuid="da7df957-7e4d-42ff-9326-2616d134b95f"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -532,7 +533,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 6-NIT]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="edadff43-bd05-46c5-a020-6730ed6b465c" key="staticText-24" x="317" y="144" width="41" height="9"/>
+				<reportElement key="staticText-24" x="317" y="120" width="41" height="9" uuid="edadff43-bd05-46c5-a020-6730ed6b465c"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -545,7 +546,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 5-BR/PDH]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="82313878-f6db-4f4e-9ff1-7616adb0bab6" key="staticText-25" x="3" y="144" width="312" height="9"/>
+				<reportElement key="staticText-25" x="3" y="120" width="312" height="9" uuid="82313878-f6db-4f4e-9ff1-7616adb0bab6"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -558,7 +559,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 4 - Nome do Trabalhador]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="7652273b-56a6-4165-b928-d48d40fdc1d9" key="textField-1" positionType="Float" mode="Opaque" x="3" y="154" width="312" height="15"/>
+				<reportElement key="textField-1" positionType="Float" mode="Opaque" x="3" y="130" width="312" height="15" uuid="7652273b-56a6-4165-b928-d48d40fdc1d9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -571,7 +572,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<textFieldExpression><![CDATA[$F{colaborador.nome}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="fe52447e-e781-4130-9c4f-07b594727183" key="textField" x="419" y="154" width="116" height="15"/>
+				<reportElement key="textField" x="419" y="130" width="116" height="15" uuid="fe52447e-e781-4130-9c4f-07b594727183"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -584,7 +585,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<textFieldExpression><![CDATA[$F{colaborador.pessoal.pis}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="fb139f6e-9b11-4807-85c9-9483cfbf1a72" key="staticText-26" x="115" y="172" width="51" height="9"/>
+				<reportElement key="staticText-26" x="115" y="148" width="51" height="9" uuid="fb139f6e-9b11-4807-85c9-9483cfbf1a72"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -597,7 +598,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 8 - Sexo(F/M)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="2d2d3539-35bb-4f6c-9023-3ab3d098e3ad" key="staticText-27" x="177" y="172" width="109" height="9"/>
+				<reportElement key="staticText-27" x="177" y="148" width="109" height="9" uuid="2d2d3539-35bb-4f6c-9023-3ab3d098e3ad"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -610,7 +611,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 9 - CTPS (N°, Series e UF)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="789c9d5a-5136-4a6f-b49a-d74804b48efe" key="staticText-28" x="3" y="172" width="83" height="9"/>
+				<reportElement key="staticText-28" x="3" y="148" width="83" height="9" uuid="789c9d5a-5136-4a6f-b49a-d74804b48efe"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -623,7 +624,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 7 - Data do Nascimento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="a7409d29-1b73-4a72-aede-28c2b0bcced0" key="staticText-29" x="317" y="172" width="100" height="9"/>
+				<reportElement key="staticText-29" x="317" y="148" width="100" height="9" uuid="a7409d29-1b73-4a72-aede-28c2b0bcced0"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -636,7 +637,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 10 - Data de Admissão]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="fdea9c27-a64a-4328-ac09-37b39ac2ad6c" key="staticText-30" x="419" y="172" width="116" height="9"/>
+				<reportElement key="staticText-30" x="419" y="148" width="116" height="9" uuid="fdea9c27-a64a-4328-ac09-37b39ac2ad6c"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -649,7 +650,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 11 - Regime Revezamento]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
-				<reportElement uuid="f9e68c44-84a5-49b0-85cc-7ab4ea1d565c" key="textField" x="3" y="182" width="106" height="15"/>
+				<reportElement key="textField" x="3" y="158" width="106" height="15" uuid="f9e68c44-84a5-49b0-85cc-7ab4ea1d565c"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -662,7 +663,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<textFieldExpression><![CDATA[$F{colaborador.pessoal.dataNascimento}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="false">
-				<reportElement uuid="884d6a42-1017-49e7-8f11-cf17de88ece6" key="textField" x="317" y="182" width="98" height="15"/>
+				<reportElement key="textField" x="317" y="158" width="98" height="15" uuid="884d6a42-1017-49e7-8f11-cf17de88ece6"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -675,7 +676,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<textFieldExpression><![CDATA[$F{colaborador.dataAdmissao}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="71b71c7e-7fbc-44cd-aeeb-c8cc18ca8c13" key="textField" x="419" y="182" width="116" height="15"/>
+				<reportElement key="textField" x="419" y="158" width="116" height="15" uuid="71b71c7e-7fbc-44cd-aeeb-c8cc18ca8c13"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -688,7 +689,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<textFieldExpression><![CDATA[$F{colaborador.regimeRevezamento}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="f5ad7fd6-9558-41d3-a205-f0c8511896d9" key="textField" x="115" y="182" width="48" height="15"/>
+				<reportElement key="textField" x="115" y="158" width="48" height="15" uuid="f5ad7fd6-9558-41d3-a205-f0c8511896d9"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -701,7 +702,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<textFieldExpression><![CDATA[""+$F{colaborador.pessoal.sexo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="3a7415b0-53f0-40be-a0f7-04928b9c6420" key="staticText-33" x="1" y="202" width="534" height="15" isRemoveLineWhenBlank="true">
+				<reportElement key="staticText-33" x="1" y="178" width="534" height="15" isRemoveLineWhenBlank="true" uuid="3a7415b0-53f0-40be-a0f7-04928b9c6420">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($F{cats} != null)]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -716,7 +717,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 12   CAT REGISTRADA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="89a17c38-e9fe-4c6d-83f4-a237b4f39b90" key="staticText-34" positionType="Float" x="1" y="233" width="533" height="15"/>
+				<reportElement key="staticText-34" positionType="Float" x="1" y="209" width="533" height="15" uuid="89a17c38-e9fe-4c6d-83f4-a237b4f39b90"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -729,14 +730,14 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 13   LOTAÇÃO E ATRIBUIÇÃO]]></text>
 			</staticText>
 			<subreport isUsingCache="true">
-				<reportElement uuid="0028d3fa-4dd6-4d68-a972-9de8c22cc0d9" key="subreport-2" positionType="Float" x="1" y="248" width="533" height="12"/>
+				<reportElement key="subreport-2" positionType="Float" x="1" y="224" width="533" height="12" uuid="0028d3fa-4dd6-4d68-a972-9de8c22cc0d9"/>
 				<subreportParameter name="REPORT_DATA_SOURCE">
 					<subreportParameterExpression><![CDATA[$F{historicos}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ppp_historicos.jasper"]]></subreportExpression>
 			</subreport>
 			<staticText>
-				<reportElement uuid="f52d0b83-9398-48d5-bd22-92fe4bdba84a" key="staticText-35" positionType="Float" x="1" y="263" width="534" height="15"/>
+				<reportElement key="staticText-35" positionType="Float" x="1" y="239" width="534" height="15" uuid="f52d0b83-9398-48d5-bd22-92fe4bdba84a"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -749,69 +750,69 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 14   PROFISSIOGRAFIA]]></text>
 			</staticText>
 			<subreport isUsingCache="true">
-				<reportElement uuid="b04c0163-f268-44e1-a928-da9526cba294" key="subreport-3" positionType="Float" x="1" y="278" width="533" height="13"/>
+				<reportElement key="subreport-3" positionType="Float" x="1" y="254" width="533" height="13" uuid="b04c0163-f268-44e1-a928-da9526cba294"/>
 				<subreportParameter name="REPORT_DATA_SOURCE">
 					<subreportParameterExpression><![CDATA[$F{historicoFuncaos}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ppp_profissiografia.jasper"]]></subreportExpression>
 			</subreport>
 			<line>
-				<reportElement uuid="1c3323e6-5ea1-425f-80a8-ee8ef830c590" key="line-1" x="1" y="101" width="534" height="1"/>
+				<reportElement key="line-1" x="1" y="77" width="534" height="1" uuid="1c3323e6-5ea1-425f-80a8-ee8ef830c590"/>
 			</line>
 			<line>
-				<reportElement uuid="be8ad0f4-182c-4ca9-924a-e3e79e59fef1" key="line-2" x="2" y="117" width="533" height="1"/>
+				<reportElement key="line-2" x="2" y="93" width="533" height="1" uuid="be8ad0f4-182c-4ca9-924a-e3e79e59fef1"/>
 			</line>
 			<line>
-				<reportElement uuid="bf9a71c2-9023-4dfb-9ed1-cb20b011b20b" key="line-4" x="2" y="143" width="533" height="1"/>
+				<reportElement key="line-4" x="2" y="119" width="533" height="1" uuid="bf9a71c2-9023-4dfb-9ed1-cb20b011b20b"/>
 			</line>
 			<line>
-				<reportElement uuid="f951b54b-2b12-456a-9f67-06b2d890b0f9" key="line-6" x="2" y="171" width="533" height="1"/>
+				<reportElement key="line-6" x="2" y="147" width="533" height="1" uuid="f951b54b-2b12-456a-9f67-06b2d890b0f9"/>
 			</line>
 			<line>
-				<reportElement uuid="8ef4f2d2-212a-4c8f-9929-627a515b26b6" key="line-8" x="1" y="199" width="534" height="1"/>
+				<reportElement key="line-8" x="1" y="175" width="534" height="1" uuid="8ef4f2d2-212a-4c8f-9929-627a515b26b6"/>
 			</line>
 			<line>
-				<reportElement uuid="dff4ec9d-25f3-4ecb-be41-59f39de0f912" key="line-9" x="17" y="101" width="1" height="16"/>
+				<reportElement key="line-9" x="17" y="77" width="1" height="16" uuid="dff4ec9d-25f3-4ecb-be41-59f39de0f912"/>
 			</line>
 			<line>
-				<reportElement uuid="ff2e363f-9348-482e-98b2-d18530013b59" key="line-10" x="1" y="101" width="1" height="98"/>
+				<reportElement key="line-10" x="1" y="77" width="1" height="98" uuid="ff2e363f-9348-482e-98b2-d18530013b59"/>
 			</line>
 			<line>
-				<reportElement uuid="6cfb3e6d-0271-4e1a-9009-c73f6ec8b1f9" key="line-11" x="114" y="117" width="1" height="26"/>
+				<reportElement key="line-11" x="114" y="93" width="1" height="26" uuid="6cfb3e6d-0271-4e1a-9009-c73f6ec8b1f9"/>
 			</line>
 			<line>
-				<reportElement uuid="3d4e19ee-f3db-4665-a3fb-b925cd1e84fd" key="line-12" x="417" y="117" width="1" height="82"/>
+				<reportElement key="line-12" x="417" y="93" width="1" height="82" uuid="3d4e19ee-f3db-4665-a3fb-b925cd1e84fd"/>
 			</line>
 			<line>
-				<reportElement uuid="294adcda-23ee-4755-92fe-30ebdde38527" key="line-13" x="315" y="144" width="1" height="55"/>
+				<reportElement key="line-13" x="315" y="120" width="1" height="55" uuid="294adcda-23ee-4755-92fe-30ebdde38527"/>
 			</line>
 			<line>
-				<reportElement uuid="fc929a66-e6ba-4b61-9e46-c93c1164c2f5" key="line-14" x="534" y="101" width="1" height="99"/>
+				<reportElement key="line-14" x="534" y="77" width="1" height="99" uuid="fc929a66-e6ba-4b61-9e46-c93c1164c2f5"/>
 			</line>
 			<line>
-				<reportElement uuid="5d02f5de-ac83-4da0-9804-b50e78486bf9" key="line-15" x="113" y="171" width="1" height="29"/>
+				<reportElement key="line-15" x="113" y="147" width="1" height="29" uuid="5d02f5de-ac83-4da0-9804-b50e78486bf9"/>
 			</line>
 			<line>
-				<reportElement uuid="5994ae64-6a63-4b47-8ca5-4b584ec40018" key="line-16" x="175" y="171" width="1" height="29"/>
+				<reportElement key="line-16" x="175" y="147" width="1" height="29" uuid="5994ae64-6a63-4b47-8ca5-4b584ec40018"/>
 			</line>
 			<line>
-				<reportElement uuid="7410ecc5-53a9-45fe-b640-f77f9de648c2" key="line-18" x="1" y="202" width="1" height="16">
+				<reportElement key="line-18" x="1" y="178" width="1" height="16" uuid="7410ecc5-53a9-45fe-b640-f77f9de648c2">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($F{cats} != null)]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement uuid="84459890-8332-48cd-a656-2a628e7c754e" key="line-20" positionType="Float" x="17" y="233" width="1" height="15"/>
+				<reportElement key="line-20" positionType="Float" x="17" y="209" width="1" height="15" uuid="84459890-8332-48cd-a656-2a628e7c754e"/>
 			</line>
 			<line>
-				<reportElement uuid="96b3c0cb-d909-4c09-8971-aea63d3ac349" key="line-21" positionType="Float" x="1" y="233" width="1" height="15"/>
+				<reportElement key="line-21" positionType="Float" x="1" y="209" width="1" height="15" uuid="96b3c0cb-d909-4c09-8971-aea63d3ac349"/>
 			</line>
 			<line>
-				<reportElement uuid="bb4e4bce-e747-4240-bba8-7bff33ea8ce5" key="line-19" x="17" y="203" width="1" height="15">
+				<reportElement key="line-19" x="17" y="179" width="1" height="15" uuid="bb4e4bce-e747-4240-bba8-7bff33ea8ce5">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($F{cats} != null)]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<subreport isUsingCache="true">
-				<reportElement uuid="283211a5-6975-4671-96ce-80a0a2509be6" key="subreport-1" positionType="Float" x="1" y="217" width="533" height="13" isRemoveLineWhenBlank="true">
+				<reportElement key="subreport-1" positionType="Float" x="1" y="193" width="533" height="13" isRemoveLineWhenBlank="true" uuid="283211a5-6975-4671-96ce-80a0a2509be6">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($F{cats} != null)]]></printWhenExpression>
 				</reportElement>
 				<subreportParameter name="REPORT_DATA_SOURCE">
@@ -820,24 +821,24 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ppp_cats.jasper"]]></subreportExpression>
 			</subreport>
 			<line>
-				<reportElement uuid="0b8afec9-9573-4d55-af0c-d48de9d6a503" key="line-22" x="1" y="202" width="534" height="1">
+				<reportElement key="line-22" x="1" y="178" width="534" height="1" uuid="0b8afec9-9573-4d55-af0c-d48de9d6a503">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($F{cats} != null)]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement uuid="c8b68f70-ca13-4535-8086-530ea0ccdfea" key="line-23" positionType="Float" x="1" y="233" width="534" height="1"/>
+				<reportElement key="line-23" positionType="Float" x="1" y="209" width="534" height="1" uuid="c8b68f70-ca13-4535-8086-530ea0ccdfea"/>
 			</line>
 			<line>
-				<reportElement uuid="bce37111-73f7-47b6-9b06-3270bbdf672f" key="line-24" positionType="Float" x="1" y="263" width="534" height="1"/>
+				<reportElement key="line-24" positionType="Float" x="1" y="239" width="534" height="1" uuid="bce37111-73f7-47b6-9b06-3270bbdf672f"/>
 			</line>
 			<line>
-				<reportElement uuid="06a224c6-f3e9-4214-bc3f-ffb5c536cbad" key="line-25" positionType="Float" x="1" y="263" width="1" height="15"/>
+				<reportElement key="line-25" positionType="Float" x="1" y="239" width="1" height="15" uuid="06a224c6-f3e9-4214-bc3f-ffb5c536cbad"/>
 			</line>
 			<line>
-				<reportElement uuid="50d3bdb7-96cb-497a-893a-83c2e96860c7" key="line-26" positionType="Float" x="17" y="263" width="1" height="15"/>
+				<reportElement key="line-26" positionType="Float" x="17" y="239" width="1" height="15" uuid="50d3bdb7-96cb-497a-893a-83c2e96860c7"/>
 			</line>
 			<image>
-				<reportElement uuid="16460115-2453-40ac-a9b0-4e9c88142759" key="image-1" x="241" y="53" width="53" height="33" forecolor="#FFFFFF"/>
+				<reportElement key="image-1" x="241" y="29" width="53" height="33" forecolor="#FFFFFF" uuid="16460115-2453-40ac-a9b0-4e9c88142759"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -847,7 +848,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<imageExpression><![CDATA[$P{IMG_DIR}+"previdencia.jpg"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement uuid="b228a351-631a-4291-8f22-9a610cad8fb0" key="staticText-36" positionType="Float" x="17" y="294" width="518" height="14">
+				<reportElement key="staticText-36" positionType="Float" x="17" y="270" width="518" height="14" uuid="b228a351-631a-4291-8f22-9a610cad8fb0">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -860,7 +861,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[  SEÇÃO DE REGISTROS AMBIENTAIS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="16ef45ed-22cb-4677-87f5-f88d66a34dea" key="staticText-37" positionType="Float" x="1" y="294" width="16" height="15">
+				<reportElement key="staticText-37" positionType="Float" x="1" y="270" width="16" height="15" uuid="16ef45ed-22cb-4677-87f5-f88d66a34dea">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -873,27 +874,27 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[II]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="a1254534-973b-43dc-ab3d-6171f3f4aafe" key="line-27" positionType="Float" x="1" y="294" width="534" height="1">
+				<reportElement key="line-27" positionType="Float" x="1" y="270" width="534" height="1" uuid="a1254534-973b-43dc-ab3d-6171f3f4aafe">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement uuid="61e9dd8b-bda3-4e5b-a17d-bb383abb89c1" key="line-28" positionType="Float" x="1" y="309" width="534" height="1">
+				<reportElement key="line-28" positionType="Float" x="1" y="285" width="534" height="1" uuid="61e9dd8b-bda3-4e5b-a17d-bb383abb89c1">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement uuid="d25ad100-0419-4a84-b65b-d89bd04a40ee" key="line-30" positionType="Float" x="1" y="294" width="1" height="15">
+				<reportElement key="line-30" positionType="Float" x="1" y="270" width="1" height="15" uuid="d25ad100-0419-4a84-b65b-d89bd04a40ee">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement uuid="4cdce6cf-bb6a-4aca-8413-b1027f6475d3" key="line-33" positionType="Float" x="17" y="294" width="1" height="15">
+				<reportElement key="line-33" positionType="Float" x="17" y="270" width="1" height="15" uuid="4cdce6cf-bb6a-4aca-8413-b1027f6475d3">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($F{fatoresRiscos} != null)]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<staticText>
-				<reportElement uuid="6fb0ffb7-c359-46b3-9381-cbcc1cca4960" key="staticText-38" positionType="Float" x="1" y="308" width="534" height="15"/>
+				<reportElement key="staticText-38" positionType="Float" x="1" y="284" width="534" height="15" uuid="6fb0ffb7-c359-46b3-9381-cbcc1cca4960"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -906,19 +907,19 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 15   EXPOSIÇÃO A FATORES DE RISCO]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="fbff1938-5bb6-49a5-b58a-65d2f376dd6a" key="line-34" positionType="Float" x="17" y="309" width="1" height="15"/>
+				<reportElement key="line-34" positionType="Float" x="17" y="285" width="1" height="15" uuid="fbff1938-5bb6-49a5-b58a-65d2f376dd6a"/>
 			</line>
 			<line>
-				<reportElement uuid="e9c45692-7e84-4f0f-b524-47bdb0dec2dc" key="line-35" positionType="Float" x="1" y="309" width="1" height="15"/>
+				<reportElement key="line-35" positionType="Float" x="1" y="285" width="1" height="15" uuid="e9c45692-7e84-4f0f-b524-47bdb0dec2dc"/>
 			</line>
 			<line>
-				<reportElement uuid="c2716890-f61b-4002-aaf6-827bbe8591e5" key="line-36" positionType="Float" x="1" y="309" width="533" height="1"/>
+				<reportElement key="line-36" positionType="Float" x="1" y="285" width="533" height="1" uuid="c2716890-f61b-4002-aaf6-827bbe8591e5"/>
 			</line>
 			<line>
-				<reportElement uuid="b6959b36-5d8e-44db-af0f-9bec0b29797c" key="line-37" positionType="Float" x="1" y="323" width="534" height="1"/>
+				<reportElement key="line-37" positionType="Float" x="1" y="299" width="534" height="1" uuid="b6959b36-5d8e-44db-af0f-9bec0b29797c"/>
 			</line>
 			<subreport isUsingCache="true">
-				<reportElement uuid="30fbfbab-b300-42fb-b1ee-20011bfec978" key="subreport-4" positionType="Float" x="1" y="323" width="533" height="14"/>
+				<reportElement key="subreport-4" positionType="Float" x="1" y="299" width="533" height="14" uuid="30fbfbab-b300-42fb-b1ee-20011bfec978"/>
 				<subreportParameter name="REPORT_DATA_SOURCE">
 					<subreportParameterExpression><![CDATA[$F{fatoresRiscos}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -940,24 +941,24 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ppp_fatoresrisco.jasper"]]></subreportExpression>
 			</subreport>
 			<line>
-				<reportElement uuid="3b6afa44-0ed6-4414-8599-20d6b0ddb45f" key="line-70" x="534" y="202" width="1" height="16">
+				<reportElement key="line-70" x="534" y="178" width="1" height="16" uuid="3b6afa44-0ed6-4414-8599-20d6b0ddb45f">
 					<printWhenExpression><![CDATA[new java.lang.Boolean($F{cats} != null)]]></printWhenExpression>
 				</reportElement>
 			</line>
 			<line>
-				<reportElement uuid="2d2fe70c-41c9-460f-a430-01dee9c28e3b" key="line-75" positionType="Float" x="534" y="234" width="1" height="14"/>
+				<reportElement key="line-75" positionType="Float" x="534" y="210" width="1" height="14" uuid="2d2fe70c-41c9-460f-a430-01dee9c28e3b"/>
 			</line>
 			<line>
-				<reportElement uuid="a8d8b411-2c2e-4049-85cd-5e7342cfd5c2" key="line-76" positionType="Float" x="534" y="264" width="1" height="14"/>
+				<reportElement key="line-76" positionType="Float" x="534" y="240" width="1" height="14" uuid="a8d8b411-2c2e-4049-85cd-5e7342cfd5c2"/>
 			</line>
 			<line>
-				<reportElement uuid="8f527a58-14e8-48f4-a248-696bef8dd48a" key="line-77" positionType="Float" x="534" y="295" width="1" height="14"/>
+				<reportElement key="line-77" positionType="Float" x="534" y="271" width="1" height="14" uuid="8f527a58-14e8-48f4-a248-696bef8dd48a"/>
 			</line>
 			<line>
-				<reportElement uuid="05c40aec-f594-4dfb-a994-0bbd4a8aa509" key="line-78" positionType="Float" x="534" y="309" width="1" height="14"/>
+				<reportElement key="line-78" positionType="Float" x="534" y="285" width="1" height="14" uuid="05c40aec-f594-4dfb-a994-0bbd4a8aa509"/>
 			</line>
 			<staticText>
-				<reportElement uuid="0c5cbc2c-6fec-4647-b2ee-8c20b331019a" key="staticText-51" positionType="Float" x="1" y="341" width="534" height="15"/>
+				<reportElement key="staticText-51" positionType="Float" x="1" y="317" width="534" height="15" uuid="0c5cbc2c-6fec-4647-b2ee-8c20b331019a"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -970,19 +971,19 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 16   RESPONSÁVEL PELOS REGISTROS AMBIENTAIS]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="a0121e57-9eec-46a7-8dd0-c66b6c5e82e5" key="line-85" positionType="Float" x="17" y="342" width="1" height="15"/>
+				<reportElement key="line-85" positionType="Float" x="17" y="318" width="1" height="15" uuid="a0121e57-9eec-46a7-8dd0-c66b6c5e82e5"/>
 			</line>
 			<line>
-				<reportElement uuid="a478fb19-4127-4e11-809f-e0a726d129e1" key="line-86" positionType="Float" x="1" y="342" width="1" height="15"/>
+				<reportElement key="line-86" positionType="Float" x="1" y="318" width="1" height="15" uuid="a478fb19-4127-4e11-809f-e0a726d129e1"/>
 			</line>
 			<line>
-				<reportElement uuid="ab1add7f-edee-4a1b-8aee-1fc104696646" key="line-87" positionType="Float" x="1" y="341" width="533" height="1"/>
+				<reportElement key="line-87" positionType="Float" x="1" y="317" width="533" height="1" uuid="ab1add7f-edee-4a1b-8aee-1fc104696646"/>
 			</line>
 			<line>
-				<reportElement uuid="745e9767-d980-48f2-9d66-d7f9cd1c71cb" key="line-88" positionType="Float" x="2" y="356" width="533" height="1"/>
+				<reportElement key="line-88" positionType="Float" x="2" y="332" width="533" height="1" uuid="745e9767-d980-48f2-9d66-d7f9cd1c71cb"/>
 			</line>
 			<staticText>
-				<reportElement uuid="48d7e6dd-eb17-47eb-8d72-4503a3d527bc" key="staticText-77" positionType="Float" x="17" y="375" width="518" height="15"/>
+				<reportElement key="staticText-77" positionType="Float" x="17" y="351" width="518" height="15" uuid="48d7e6dd-eb17-47eb-8d72-4503a3d527bc"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -993,7 +994,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[  SEÇÃO DE RESULTADOS DE MONITORAÇÃO BIOLÓGICA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="f0677c3d-6e2f-43cd-ab4d-c1ccaeb4972d" key="staticText-78" positionType="Float" x="2" y="375" width="16" height="15"/>
+				<reportElement key="staticText-78" positionType="Float" x="2" y="351" width="16" height="15" uuid="f0677c3d-6e2f-43cd-ab4d-c1ccaeb4972d"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1004,16 +1005,16 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[III]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="47317ed6-f5f6-4811-a0a2-f69d215b8312" key="line-159" positionType="Float" x="1" y="374" width="534" height="1"/>
+				<reportElement key="line-159" positionType="Float" x="1" y="350" width="534" height="1" uuid="47317ed6-f5f6-4811-a0a2-f69d215b8312"/>
 			</line>
 			<line>
-				<reportElement uuid="dabb851a-da1f-4a98-828e-c231435c584e" key="line-160" positionType="Float" x="1" y="375" width="1" height="15"/>
+				<reportElement key="line-160" positionType="Float" x="1" y="351" width="1" height="15" uuid="dabb851a-da1f-4a98-828e-c231435c584e"/>
 			</line>
 			<line>
-				<reportElement uuid="ac1472a1-b68d-4b01-af7a-d882c9f74c2d" key="line-161" positionType="Float" x="17" y="375" width="1" height="15"/>
+				<reportElement key="line-161" positionType="Float" x="17" y="351" width="1" height="15" uuid="ac1472a1-b68d-4b01-af7a-d882c9f74c2d"/>
 			</line>
 			<staticText>
-				<reportElement uuid="0bad4c94-d24a-4129-b5d5-0c044cbc7d68" key="staticText-79" positionType="Float" x="1" y="389" width="534" height="15"/>
+				<reportElement key="staticText-79" positionType="Float" x="1" y="365" width="534" height="15" uuid="0bad4c94-d24a-4129-b5d5-0c044cbc7d68"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1026,25 +1027,25 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 17   EXAMES MÉDICOS CLÍNICOS E COMPLEMENTARES]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="a114975a-3a26-4344-b077-90ddd953f3d5" key="line-162" positionType="Float" x="17" y="390" width="1" height="15"/>
+				<reportElement key="line-162" positionType="Float" x="17" y="366" width="1" height="15" uuid="a114975a-3a26-4344-b077-90ddd953f3d5"/>
 			</line>
 			<line>
-				<reportElement uuid="37a0e604-fc81-43dd-9cf8-3010882bdc77" key="line-163" positionType="Float" x="1" y="390" width="1" height="15"/>
+				<reportElement key="line-163" positionType="Float" x="1" y="366" width="1" height="15" uuid="37a0e604-fc81-43dd-9cf8-3010882bdc77"/>
 			</line>
 			<line>
-				<reportElement uuid="7764a488-41e5-4806-aea1-5a0ccd852056" key="line-164" positionType="Float" x="1" y="388" width="533" height="1"/>
+				<reportElement key="line-164" positionType="Float" x="1" y="364" width="533" height="1" uuid="7764a488-41e5-4806-aea1-5a0ccd852056"/>
 			</line>
 			<line>
-				<reportElement uuid="dcf76134-ea9a-4c90-bc2a-5d6495301c74" key="line-165" positionType="Float" x="2" y="404" width="533" height="1"/>
+				<reportElement key="line-165" positionType="Float" x="2" y="380" width="533" height="1" uuid="dcf76134-ea9a-4c90-bc2a-5d6495301c74"/>
 			</line>
 			<line>
-				<reportElement uuid="bce98158-0e90-477d-89f8-85024ec4151c" key="line-166" positionType="Float" x="534" y="375" width="1" height="14"/>
+				<reportElement key="line-166" positionType="Float" x="534" y="351" width="1" height="14" uuid="bce98158-0e90-477d-89f8-85024ec4151c"/>
 			</line>
 			<line>
-				<reportElement uuid="0e86f2ad-71b6-4648-9c23-9c3fb6bc1cb6" key="line-167" positionType="Float" x="534" y="389" width="1" height="15"/>
+				<reportElement key="line-167" positionType="Float" x="534" y="365" width="1" height="15" uuid="0e86f2ad-71b6-4648-9c23-9c3fb6bc1cb6"/>
 			</line>
 			<staticText>
-				<reportElement uuid="c84dac32-2cb3-4326-839a-e3c8a6bd1ead" key="staticText-80" positionType="Float" x="3" y="405" width="110" height="13"/>
+				<reportElement key="staticText-80" positionType="Float" x="3" y="381" width="110" height="13" uuid="c84dac32-2cb3-4326-839a-e3c8a6bd1ead"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1057,7 +1058,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[17.1 - Data]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="fca8728b-cc60-46ca-9ead-e98d5ba86d03" key="staticText-81" positionType="Float" x="116" y="405" width="42" height="13"/>
+				<reportElement key="staticText-81" positionType="Float" x="116" y="381" width="42" height="13" uuid="fca8728b-cc60-46ca-9ead-e98d5ba86d03"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1070,22 +1071,22 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[17.2 - Tipo]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="70bb1f24-f362-4727-860c-6eb9b2a1e75d" key="line-168" positionType="Float" x="1" y="403" width="1" height="40"/>
+				<reportElement key="line-168" positionType="Float" x="1" y="379" width="1" height="40" uuid="70bb1f24-f362-4727-860c-6eb9b2a1e75d"/>
 			</line>
 			<line>
-				<reportElement uuid="ddd1271c-46e7-4b4d-968a-a03c0f7d332a" key="line-169" positionType="Float" x="114" y="405" width="1" height="26"/>
+				<reportElement key="line-169" positionType="Float" x="114" y="381" width="1" height="26" uuid="ddd1271c-46e7-4b4d-968a-a03c0f7d332a"/>
 			</line>
 			<line>
-				<reportElement uuid="1ab06349-9020-405f-8928-8bd3a0590f1c" key="line-170" positionType="Float" x="534" y="404" width="1" height="40"/>
+				<reportElement key="line-170" positionType="Float" x="534" y="380" width="1" height="40" uuid="1ab06349-9020-405f-8928-8bd3a0590f1c"/>
 			</line>
 			<line>
-				<reportElement uuid="294c08a7-e267-4a3a-a437-e281e5a34949" key="line-171" positionType="Float" x="1" y="443" width="534" height="1"/>
+				<reportElement key="line-171" positionType="Float" x="1" y="419" width="534" height="1" uuid="294c08a7-e267-4a3a-a437-e281e5a34949"/>
 			</line>
 			<line>
-				<reportElement uuid="2b92da38-73c1-4d96-827d-c14bc4ccc769" key="line-172" positionType="Float" x="160" y="404" width="1" height="27"/>
+				<reportElement key="line-172" positionType="Float" x="160" y="380" width="1" height="27" uuid="2b92da38-73c1-4d96-827d-c14bc4ccc769"/>
 			</line>
 			<staticText>
-				<reportElement uuid="c7c93c20-781f-49f7-ba6a-a9abc1ff7552" key="staticText-82" positionType="Float" x="161" y="405" width="74" height="13"/>
+				<reportElement key="staticText-82" positionType="Float" x="161" y="381" width="74" height="13" uuid="c7c93c20-781f-49f7-ba6a-a9abc1ff7552"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1098,7 +1099,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[17.3 - Natureza]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="8f694e53-d451-460b-876a-53c3f5ce51c7" key="staticText-83" positionType="Float" x="372" y="405" width="57" height="13"/>
+				<reportElement key="staticText-83" positionType="Float" x="372" y="381" width="57" height="13" uuid="8f694e53-d451-460b-876a-53c3f5ce51c7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1111,10 +1112,10 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[17.4 - Exame(R/S)]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="d50e6404-ffb1-4a27-b7e0-3f24c58c6433" key="line-173" positionType="Float" x="371" y="405" width="1" height="26"/>
+				<reportElement key="line-173" positionType="Float" x="371" y="381" width="1" height="26" uuid="d50e6404-ffb1-4a27-b7e0-3f24c58c6433"/>
 			</line>
 			<staticText>
-				<reportElement uuid="fc0b6748-e28d-408b-b3b7-4bbf5b842730" key="staticText-84" positionType="Float" x="431" y="405" width="102" height="13"/>
+				<reportElement key="staticText-84" positionType="Float" x="431" y="381" width="102" height="13" uuid="fc0b6748-e28d-408b-b3b7-4bbf5b842730"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1127,16 +1128,16 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[17.5 - Indicação dos Resultados]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="1182d9d8-6d3d-492c-a1d2-c2c0063c75b3" key="line-174" positionType="Float" x="429" y="405" width="1" height="26"/>
+				<reportElement key="line-174" positionType="Float" x="429" y="381" width="1" height="26" uuid="1182d9d8-6d3d-492c-a1d2-c2c0063c75b3"/>
 			</line>
 			<line>
-				<reportElement uuid="a94f88b7-5459-434a-99c1-0f3fd7b52b4c" key="line-175" positionType="Float" x="1" y="418" width="534" height="1"/>
+				<reportElement key="line-175" positionType="Float" x="1" y="394" width="534" height="1" uuid="a94f88b7-5459-434a-99c1-0f3fd7b52b4c"/>
 			</line>
 			<line>
-				<reportElement uuid="0785654d-4c95-4e54-8749-9cebcc6c3722" key="line-176" positionType="Float" x="1" y="431" width="534" height="1"/>
+				<reportElement key="line-176" positionType="Float" x="1" y="407" width="534" height="1" uuid="0785654d-4c95-4e54-8749-9cebcc6c3722"/>
 			</line>
 			<staticText>
-				<reportElement uuid="5b83531a-b543-410c-ba95-35eb0343f292" key="staticText-85" positionType="Float" x="3" y="430" width="382" height="13"/>
+				<reportElement key="staticText-85" positionType="Float" x="3" y="406" width="382" height="13" uuid="5b83531a-b543-410c-ba95-35eb0343f292"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1149,14 +1150,14 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[Exame (s) Médico(s) não preenchido(s) de acordo com a resolução n° 1715 / 2004 do CFM - Conselho Federal de Medicina]]></text>
 			</staticText>
 			<subreport isUsingCache="true">
-				<reportElement uuid="80a0fb42-694e-44df-9991-820dea67c674" key="subreport-5" positionType="Float" x="1" y="356" width="533" height="14"/>
+				<reportElement key="subreport-5" positionType="Float" x="1" y="332" width="533" height="14" uuid="80a0fb42-694e-44df-9991-820dea67c674"/>
 				<subreportParameter name="REPORT_DATA_SOURCE">
 					<subreportParameterExpression><![CDATA[$F{engenheirosResponsaveis}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ppp_eng_responsaveis.jasper"]]></subreportExpression>
 			</subreport>
 			<staticText>
-				<reportElement uuid="e0a47802-b18a-45c3-b6e7-d49327904570" key="staticText-86" positionType="Float" x="1" y="448" width="534" height="15"/>
+				<reportElement key="staticText-86" positionType="Float" x="1" y="424" width="534" height="15" uuid="e0a47802-b18a-45c3-b6e7-d49327904570"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1169,29 +1170,29 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 				<text><![CDATA[ 18   RESPONSÁVEL PELA MONITORAÇÃO BIOLÓGICA]]></text>
 			</staticText>
 			<line>
-				<reportElement uuid="4547a6ea-318f-41ef-bc97-fb1c5e3f2a4b" key="line-177" positionType="Float" x="17" y="449" width="1" height="15"/>
+				<reportElement key="line-177" positionType="Float" x="17" y="425" width="1" height="15" uuid="4547a6ea-318f-41ef-bc97-fb1c5e3f2a4b"/>
 			</line>
 			<line>
-				<reportElement uuid="766d991d-a19a-459d-b851-3a1b86f83c50" key="line-178" positionType="Float" x="1" y="449" width="1" height="15"/>
+				<reportElement key="line-178" positionType="Float" x="1" y="425" width="1" height="15" uuid="766d991d-a19a-459d-b851-3a1b86f83c50"/>
 			</line>
 			<line>
-				<reportElement uuid="57d3c53d-7f62-4d97-bcc5-075cd7550648" key="line-179" positionType="Float" x="1" y="448" width="533" height="1"/>
+				<reportElement key="line-179" positionType="Float" x="1" y="424" width="533" height="1" uuid="57d3c53d-7f62-4d97-bcc5-075cd7550648"/>
 			</line>
 			<line>
-				<reportElement uuid="3802e2ee-2cdc-42e3-a628-eb01242c8cd8" key="line-180" positionType="Float" x="2" y="463" width="533" height="1"/>
+				<reportElement key="line-180" positionType="Float" x="2" y="439" width="533" height="1" uuid="3802e2ee-2cdc-42e3-a628-eb01242c8cd8"/>
 			</line>
 			<line>
-				<reportElement uuid="a7995d6f-6f2d-472e-9069-d81376edeb7e" key="line-181" positionType="Float" x="534" y="448" width="1" height="15"/>
+				<reportElement key="line-181" positionType="Float" x="534" y="424" width="1" height="15" uuid="a7995d6f-6f2d-472e-9069-d81376edeb7e"/>
 			</line>
 			<subreport isUsingCache="true">
-				<reportElement uuid="b3406650-68f2-4eef-bba0-4e9e736ea073" key="subreport-6" positionType="Float" x="1" y="463" width="533" height="14"/>
+				<reportElement key="subreport-6" positionType="Float" x="1" y="439" width="533" height="14" uuid="b3406650-68f2-4eef-bba0-4e9e736ea073"/>
 				<subreportParameter name="REPORT_DATA_SOURCE">
 					<subreportParameterExpression><![CDATA[$F{medicosCoordenadores}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "ppp_medicos.jasper"]]></subreportExpression>
 			</subreport>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="15680576-e62a-4686-b318-43a20079edc1" key="textField-5" positionType="Float" mode="Opaque" x="177" y="182" width="127" height="15"/>
+				<reportElement key="textField-5" positionType="Float" mode="Opaque" x="177" y="158" width="127" height="15" uuid="15680576-e62a-4686-b318-43a20079edc1"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1206,7 +1207,7 @@ INSTRUÇÃO NORMATIVA Nº 45 INSS/PRES, DE 6 DE AGOSTO DE 2010]]></text>
 ( $F{colaborador.pessoal.ctps.ctpsUf.sigla} == null ? "" : $F{colaborador.pessoal.ctps.ctpsUf.sigla} )]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="6643e82a-4c19-4112-a657-22a1f84d09c4" key="textField-9" x="424" y="182" width="32" height="15">
+				<reportElement key="textField-9" x="424" y="158" width="32" height="15" uuid="6643e82a-4c19-4112-a657-22a1f84d09c4">
 					<printWhenExpression><![CDATA[new Boolean($F{colaborador.regimeRevezamento} == null || $F{colaborador.regimeRevezamento}.equals(""))]]></printWhenExpression>
 				</reportElement>
 				<box>

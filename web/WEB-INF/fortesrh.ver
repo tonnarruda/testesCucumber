@@ -7,6 +7,7 @@
 	    <Item visivel="S" motivo="P20150700239"><![CDATA[T&D > Cadastros > Cursos/Treinamentos: Correção de inconsistência na contagem dos cursos e páginas.]]></Item>
 	    <Item visivel="S" motivo="P20150700178"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão > Editar Situações: Ajuste da inconsistência ao tentar editar a situação que se referencia a um histórico da faixa salarial que não existe.]]></Item>
 	    <Item visivel="S" motivo="P20150700182"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Nova opção para imprimir PPRA e LTCAT em páginas separadas.]]></Item>
+	    <Item visivel="S" motivo="P20150700182"><![CDATA[SESMT > Relatórios > PPP > Relatório: Inserir a informação "INSTRUÇÃO NORMATIVA Nº 77 PRES/INSS, DE 21 DE JANEIRO DE 2015" no cabeçalho.]]></Item>
 	    <Item visivel="S" motivo="P20150700126"><![CDATA[Nova forma de apresentar coluna numérica no relatório de xml.]]></Item>
 	</Versao>
 	<Versao id="1.1.147.177" db="" data="21/07/2015">
