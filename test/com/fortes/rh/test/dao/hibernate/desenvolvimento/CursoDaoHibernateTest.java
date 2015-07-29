@@ -1,6 +1,7 @@
 package com.fortes.rh.test.dao.hibernate.desenvolvimento;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -715,9 +716,13 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
 		Curso curso = CursoFactory.getEntity();
 		curso.setNome("Curso de direção");
 		curso.setEmpresa(empresa);
+		curso.setEmpresasParticipantes(Arrays.asList(empresa, empresa2));
 		cursoDao.save(curso);
 
 		Curso cursoFiltroBusca = new Curso();
