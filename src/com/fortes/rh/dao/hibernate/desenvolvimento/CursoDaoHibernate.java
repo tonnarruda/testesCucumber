@@ -297,7 +297,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"c");
 		criteria.createCriteria("c.empresasParticipantes", "e", Criteria.LEFT_JOIN);
-		criteria.setProjection(Projections.rowCount());
+		criteria.setProjection(Projections.countDistinct("c.id"));
 
 		criteria.add( Expression.or( Expression.eq("c.empresa.id", empresaId), Expression.eq("e.id", empresaId) ) );
 		if (curso != null && StringUtils.isNotBlank(curso.getNome()))

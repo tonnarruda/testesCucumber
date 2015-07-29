@@ -6,7 +6,7 @@
 	    <Item visivel="S" motivo="P20150700178"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão > Editar Situações: Ajuste da inconsistência ao tentar editar a situação que se referencia a um histórico da faixa salarial que não existe.]]></Item>
 	    <Item visivel="S" motivo="P20150700182"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Nova opção para imprimir PPRA e LTCAT em páginas separadas.]]></Item>
 	    <Item visivel="S" motivo="P20150700126"><![CDATA[Nova forma de apresentar coluna numérica no relatório de xml.]]></Item>
-	    <Item visivel="S" motivo="S20150500174"><![CDATA[T&D > Relatórios > Colaboradores x Certificações: Novo filtro de período de realização dos cursos.]]></Item>
+	    <Item visivel="S" motivo="S20150500174"><![CDATA[T&D > Relatórios > Colaboradores x Certificações: Nova opção de filtro pelo período de realização dos cursos.]]></Item>
 	</Versao>
 	<Versao id="1.1.147.177" db="" data="21/07/2015">
 		<Item visivel="S" motivo="P20150600148"><![CDATA[R&S > Cadastros > Candidatos > Visualizar Currículo > Imprimir: Ajuste da inconsistência ao exibir os cargos das experiências profissionais do candidato.]]></Item>
