@@ -217,9 +217,6 @@
     <property name="dao">
       <ref bean="exameDao" />
     </property>
-    <property name="areaOrganizacionalManager">
-      <ref bean="areaOrganizacionalManager" />
-    </property>
     <property name="gerenciadorComunicacaoManager">
       <ref bean="gerenciadorComunicacaoManager" />
     </property>    

@@ -58,6 +58,11 @@ public class ExamesPrevistosRelatorio {
 		calendar.add(Calendar.MONTH, +examePeriodicidade);
 		this.dataProximoExame = calendar.getTime();
 	}
+	
+	public void setDataProximoExame(Date dataProximoExame)
+	{
+		this.dataProximoExame = dataProximoExame;
+	}
 
 	public String getDataProximoExameFmt()
 	{
@@ -174,5 +179,69 @@ public class ExamesPrevistosRelatorio {
 	public void setColaboradorMatricula(String colaboradorMatricula)
 	{
 		this.colaboradorMatricula = colaboradorMatricula;
+	}
+	
+	public void setColaboradorId(Long colaboradorId){
+		this.colaboradorId = colaboradorId;
+	}
+
+	public void setExameId(Long exameId) {
+		this.exameId = exameId;
+	}
+
+	public void setExameNome(String exameNome) {
+		this.exameNome = exameNome;
+	}
+
+	public void setColaboradorNomeComercial(String colaboradorNomeComercial) {
+		this.colaboradorNomeComercial = colaboradorNomeComercial;
+	}
+
+	public void setExamePeriodicidade(Integer examePeriodicidade) {
+		this.examePeriodicidade = examePeriodicidade;
+	}
+
+	public void setDataSolicitacaoExame(Date dataSolicitacaoExame) {
+		this.dataSolicitacaoExame = dataSolicitacaoExame;
+	}
+
+	public void setDataRealizacaoExame(Date dataRealizacaoExame) {
+		this.dataRealizacaoExame = dataRealizacaoExame;
+	}
+
+	public void setCargoNome(String cargoNome) {
+		this.cargoNome = cargoNome;
+	}
+
+	public void setMotivoSolicitacaoExame(String motivoSolicitacaoExame) {
+		this.motivoSolicitacaoExame = motivoSolicitacaoExame;
+	}
+	
+	public void setAreaOrganizacionalId(Long areaOrganizacionalId){
+		if(this.areaOrganizacional == null)
+			this.areaOrganizacional = new AreaOrganizacional();
+		
+		this.areaOrganizacional.setId(areaOrganizacionalId);
+	}
+	
+	public void setAreaOrganizacionalNome(String areaOrganizacionalNome){
+		if(this.areaOrganizacional == null)
+			this.areaOrganizacional = new AreaOrganizacional();
+		
+		this.areaOrganizacional.setNome(areaOrganizacionalNome);
+	}
+	
+	public void setEstabelecimentolId(Long estabelecimentoId){
+		if(this.estabelecimento == null)
+			this.estabelecimento = new Estabelecimento();
+		
+		this.estabelecimento.setId(estabelecimentoId);
+	}
+	
+	public void setEstabelecimentolNome(String estabelecimentoNome){
+		if(this.estabelecimento == null)
+			this.estabelecimento = new Estabelecimento();
+		
+		this.estabelecimento.setNome(estabelecimentoNome);
 	}
 }

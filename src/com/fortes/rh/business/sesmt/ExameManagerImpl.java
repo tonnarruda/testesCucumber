@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.dao.sesmt.ExameDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
@@ -24,7 +23,6 @@ import com.fortes.web.tags.CheckBox;
 
 public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implements ExameManager
 {
-	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	Map<String,Object> parametros = new HashMap<String, Object>();
 	
@@ -97,110 +95,24 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		return new ArrayList<CheckBox>();
 	}
 
-	//TODO BACALHAU, consulta gigante e uns forsss
 	public Collection<ExamesPrevistosRelatorio> findRelatorioExamesPrevistos(Long empresaId, Date dataInicio, Date dataFim, Long[] examesChecks, Long[] estabelecimentosChecks, Long[] areasChecks, Long[] colaboradoresChecks, char agruparPor, boolean imprimirAfastados, boolean imprimirDesligados) throws Exception
 	{
-		Collection<ExamesPrevistosRelatorio> examesRealizadosAteData = getDao().findExamesPeriodicosPrevistos(empresaId, dataInicio, dataFim, examesChecks, estabelecimentosChecks, areasChecks, colaboradoresChecks, imprimirAfastados, imprimirDesligados);
-
-		Collection<ExamesPrevistosRelatorio> examesAVencer = this.prepararExamesAVencer(dataInicio, dataFim, examesRealizadosAteData);
+		Collection<ExamesPrevistosRelatorio> examesPrevistos = getDao().findExamesPeriodicosPrevistos(empresaId, dataInicio, dataFim, examesChecks, estabelecimentosChecks, areasChecks, colaboradoresChecks, imprimirAfastados, imprimirDesligados);
 		
-		examesAVencer = this.filtrarApenasExamesVencidos(dataInicio, dataFim, examesRealizadosAteData, examesAVencer);
-		
-		if (examesAVencer.isEmpty())
-			return examesAVencer;
+		if (examesPrevistos.isEmpty())
+			return examesPrevistos;
 
 		CollectionUtil<ExamesPrevistosRelatorio> collectionUtil = new CollectionUtil<ExamesPrevistosRelatorio>();
 		
-		examesAVencer = collectionUtil.sortCollectionDate(examesAVencer, "dataProximoExame", "asc");
-		examesAVencer = collectionUtil.sortCollectionStringIgnoreCase(examesAVencer, "colaboradorNome");
+		examesPrevistos = collectionUtil.sortCollectionDate(examesPrevistos, "dataProximoExame", "asc");
+		examesPrevistos = collectionUtil.sortCollectionStringIgnoreCase(examesPrevistos, "colaboradorNome");
 		
 		if (agruparPor == 'A'){
-			examesAVencer = areaOrganizacionalManager.setFamiliaAreas(examesAVencer, empresaId);
-			examesAVencer = collectionUtil.sortCollectionStringIgnoreCase(examesAVencer, "areaOrganizacional.nome");			
+			examesPrevistos = collectionUtil.sortCollectionStringIgnoreCase(examesPrevistos, "areaOrganizacional.nome");			
 		} else 	if (agruparPor == 'E')
-			examesAVencer = collectionUtil.sortCollectionStringIgnoreCase(examesAVencer, "estabelecimento.nome");			
+			examesPrevistos = collectionUtil.sortCollectionStringIgnoreCase(examesPrevistos, "estabelecimento.nome");	
 		
-		
-		return examesAVencer;
-	}
-
-	private Collection<ExamesPrevistosRelatorio> prepararExamesAVencer(Date dataInicio, Date dataFim, Collection<ExamesPrevistosRelatorio> colecaoExamesRealizadosAteData) {
-		Collection<ExamesPrevistosRelatorio> colecaoExamesAVencer = new ArrayList<ExamesPrevistosRelatorio>();
-		
-		ExamesPrevistosRelatorio examesPrevistosAnterior = null;
-
-		for (ExamesPrevistosRelatorio examesPrevistosRelatorio : colecaoExamesRealizadosAteData)
-		{
-			Date dataProximoExame = examesPrevistosRelatorio.getDataProximoExame();
-
-			// A consulta recupera todos os exames realizados até a data. 
-			// Essa condição filtra apenas os resultados com data do Próximo exame dentro do período.
-			if (dataProximoExame.compareTo(dataInicio) >= 0 && dataProximoExame.compareTo(dataFim) <= 0)
-			{
-				boolean adicionar = true;
-				if (examesPrevistosAnterior != null)
-				{
-					if (examesPrevistosAnterior.getColaboradorId().equals(examesPrevistosRelatorio.getColaboradorId())
-							&& examesPrevistosAnterior.getExameId().equals(examesPrevistosRelatorio.getExameId()))
-					{
-						if (examesPrevistosAnterior.getDataProximoExame().compareTo(examesPrevistosRelatorio.getDataProximoExame()) == -1)
-						{
-							colecaoExamesAVencer.remove(examesPrevistosAnterior);
-						}
-						else
-						{
-							adicionar = false;
-						}
-					}
-				}
-
-				examesPrevistosRelatorio.setAdicionar(adicionar);
-
-				if (adicionar)
-				{
-					colecaoExamesAVencer.add(examesPrevistosRelatorio);
-					examesPrevistosAnterior = examesPrevistosRelatorio;
-				}
-			}
-		}
-		return colecaoExamesAVencer;
-	}
-
-	private Collection<ExamesPrevistosRelatorio> filtrarApenasExamesVencidos(Date dataInicio, Date dataFim, Collection<ExamesPrevistosRelatorio> colecaoExamesRealizadosAteData, Collection<ExamesPrevistosRelatorio> colecaoExamesAVencer)
-	{
-		Collection<ExamesPrevistosRelatorio> colecaoResultado = new ArrayList<ExamesPrevistosRelatorio>();
-
-		// Em seguida, são considerados os exames que foram realizados após os filtrados, e que não venceram ainda na data.
-		// Neste caso, o exame previamente filtrado é descartado.
-		
-		Collection<ExamesPrevistosRelatorio> colecaoExamesPrevistos = new ArrayList<ExamesPrevistosRelatorio>();
-		colecaoExamesPrevistos.addAll(colecaoExamesRealizadosAteData);
-		colecaoExamesPrevistos.removeAll(colecaoExamesAVencer);
-		
-		for (ExamesPrevistosRelatorio examesPrevistosRelatorio : colecaoExamesAVencer)
-		{
-			for (ExamesPrevistosRelatorio examePrevistoRelatorio : colecaoExamesPrevistos)
-			{
-				if (examesPrevistosRelatorio.getAdicionar()
-						&& examePrevistoRelatorio.getColaboradorId().equals(examesPrevistosRelatorio.getColaboradorId())
-						&& examePrevistoRelatorio.getExameId().equals(examesPrevistosRelatorio.getExameId()))
-				{
-					if ((examePrevistoRelatorio.getDataProximoExame().compareTo(dataInicio) < 0) && (examePrevistoRelatorio.getDataProximoExame().compareTo(dataFim) > 0)
-						&& (examePrevistoRelatorio.getDataRealizacaoExame().compareTo(examesPrevistosRelatorio.getDataRealizacaoExame()) > 0))
-					{
-						examesPrevistosRelatorio.setAdicionar(false);
-					}
-				}
-			}
-		}
-
-		// Setando o resultado final (exames vencidos).
-		for (ExamesPrevistosRelatorio examesPrevistosRelatorio : colecaoExamesAVencer)
-		{
-			if (examesPrevistosRelatorio.getAdicionar())
-				colecaoResultado.add(examesPrevistosRelatorio);
-		}
-		return colecaoResultado;
+		return examesPrevistos;
 	}
 
 	public Collection<ExamesRealizadosRelatorio> findRelatorioExamesRealizados(Long empresaId, String nomeBusca, Date inicio, Date fim, String motivo, String exameResultado, Long clinicaAutorizadaId, Long[] examesIds, Long[] estabelecimentosIds, Character tipoPessoa) throws ColecaoVaziaException
@@ -245,10 +157,6 @@ public class ExameManagerImpl extends GenericManagerImpl<Exame, ExameDao> implem
 		return getDao().findPriorizandoExameRelacionado(empresaId, colaboradorId);
 	}
 
-	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
-		this.areaOrganizacionalManager = areaOrganizacionalManager;
-	}
-	
 	public void setParametros(Map<String, Object> parametros) {
 		this.parametros = parametros;
 	}

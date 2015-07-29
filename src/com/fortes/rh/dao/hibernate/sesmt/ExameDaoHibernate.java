@@ -12,18 +12,24 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.ExameDao;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.sesmt.ClinicaAutorizada;
 import com.fortes.rh.model.sesmt.Exame;
+import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.model.sesmt.relatorio.ExamesRealizadosRelatorio;
 
@@ -78,77 +84,87 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 
 		return query.list();
 	}
-
+	
 	public Collection<ExamesPrevistosRelatorio> findExamesPeriodicosPrevistos(Long empresaId, Date dataInicio, Date dataFim, Long[] exameIds, Long[] estabelecimentoIds, Long[] areaIds, Long[] colaboradorIds, boolean imprimirAfastados, boolean imprimirDesligados)
 	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select new com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio(co.id,e.id,ao.id,ca.nome,co.matricula,co.nome,co.nomeComercial,e.nome,se.data,re.data,ese.periodicidade, se.motivo, es.id, es.nome) ");
-		hql.append("from SolicitacaoExame se ");
-		hql.append("join se.exameSolicitacaoExames ese ");
-		hql.append("join ese.exame e ");
-		hql.append("left join ese.realizacaoExame re ");
-		hql.append("join se.colaborador co ");
-		if (imprimirAfastados)
-			hql.append("left join co.colaboradorAfastamento afa ");
-		hql.append("left join co.historicoColaboradors as hc ");
-		hql.append("left join hc.estabelecimento as es ");
-		hql.append("left join hc.areaOrganizacional as ao ");
-		hql.append("left join hc.faixaSalarial as fs ");
-		hql.append("left join fs.cargo as ca ");
-		hql.append("where se.empresa.id = :empresaId ");
-		hql.append("and se.data between :dataInicio and :dataFim ");
-		hql.append("and ese.periodicidade > 0 ");
+		Criteria criteria = getSession().createCriteria(SolicitacaoExame.class, "se");
+		criteria.createCriteria("se.exameSolicitacaoExames", "ese", Criteria.INNER_JOIN);
+		criteria.createCriteria("ese.exame", "e", Criteria.INNER_JOIN);
+		criteria.createCriteria("ese.realizacaoExame", "re", Criteria.LEFT_JOIN);
+		criteria.createCriteria("se.colaborador", "co", Criteria.INNER_JOIN);
+		criteria.createCriteria("co.historicoColaboradors", "hc", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.estabelecimento", "es", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.areaOrganizacional", "ao", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.LEFT_JOIN);
+		criteria.createCriteria("fs.cargo", "ca", Criteria.LEFT_JOIN);
 
+		if(imprimirAfastados)
+			criteria.createCriteria("co.colaboradorAfastamento", "afa", Criteria.LEFT_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("co.id"), "colaboradorId");
+		p.add(Projections.property("e.id"), "exameId");
+		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
+		p.add(Projections.sqlProjection("monta_familia_area(ao7_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome");
+		p.add(Projections.property("ca.nome"), "cargoNome");
+		p.add(Projections.property("co.matricula"), "colaboradorMatricula");
+		p.add(Projections.property("co.nome"), "colaboradorNome");
+		p.add(Projections.property("co.nomeComercial"), "colaboradorNomeComercial");
+		p.add(Projections.property("e.nome"), "exameNome");
+		p.add(Projections.property("se.data"), "dataSolicitacaoExame");
+		p.add(Projections.property("re.data"), "dataRealizacaoExame");
+		p.add(Projections.property("ese.periodicidade"), "examePeriodicidade");
+		p.add(Projections.property("se.motivo"), "motivoSolicitacaoExame");
+		p.add(Projections.property("es.id"), "estabelecimentolId");
+		p.add(Projections.property("es.nome"), "estabelecimentolNome");
+		p.add(Projections.sqlProjection("(re3_.data + (ese1_.periodicidade || ' month')::interval) as dataProximoExame", new String[]{"dataProximoExame"}, new Type[]{Hibernate.DATE}));
+		criteria.setProjection(p);
+		
+		
+		criteria.add(Expression.eq("se.empresa.id", empresaId ));
+		criteria.add(Expression.le("se.data", dataFim ));
+		criteria.add(Expression.gt("ese.periodicidade", 0 ));
+		
 		if (areaIds != null && areaIds.length > 0)
-			hql.append("and ao.id in (:areaIds) ");
+			criteria.add(Expression.in("ao.id", areaIds ));
 		
 		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			hql.append("and es.id in (:estabelecimentoIds) ");
+			criteria.add(Expression.in("es.id", estabelecimentoIds ));
 		
 		if (colaboradorIds != null && colaboradorIds.length > 0)
-			hql.append("and co.id in (:colaboradorIds) ");
+			criteria.add(Expression.in("co.id", colaboradorIds ));
 		
 		if (exameIds != null && exameIds.length > 0)
-			hql.append("and e.id in (:exameIds) ");
+			criteria.add(Expression.in("e.id", exameIds ));
 		
 		if (imprimirAfastados)
-			hql.append("and (afa.fim = null or (afa.fim between :dataInicio and :dataFim)) ");
+			criteria.add(Expression.disjunction().add(Expression.isNull("afa.fim")).add(Expression.eq("afa.fim",dataFim))); 
 		
 		if (!imprimirDesligados)
-			hql.append("and co.desligado = :imprimirDesligados ");
+			criteria.add(Expression.eq("co.desligado", imprimirDesligados ));
 		
-		hql.append("	and hc.data = ( ");
-		hql.append("		select max(hc2.data) " );
-		hql.append("		from HistoricoColaborador as hc2 ");
-		hql.append("		where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :hoje and hc2.status = :status ");
-		hql.append("	) ");
-		hql.append("and re.resultado != :naoRealizado ");
-		hql.append("order by co.id,e.id ");
+		DetachedCriteria subSelect = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+	    		.setProjection(Projections.max("hc2.data"))
+	    		.add(Restrictions.eqProperty("hc2.colaborador.id", "co.id"))
+	    		.add(Restrictions.le("hc2.data", dataFim))
+	    		.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+		subSelect.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+	    
+	    criteria.add(Subqueries.propertyEq("hc.data", subSelect));
+	    criteria.add(Expression.ne("re.resultado",ResultadoExame.NAO_REALIZADO.toString() ));
+	    
+	    criteria.add(Expression.sqlRestriction("(re3_.data + (ese1_.periodicidade || ' month')::interval) between ? and ? ", new Date[]{dataInicio,dataFim}, new Type[]{Hibernate.DATE, Hibernate.DATE}));
 
-		Query query = getSession().createQuery(hql.toString());
-
-		query.setDate("hoje", new Date());
-		query.setDate("dataInicio", dataInicio);
-		query.setDate("dataFim", dataFim);
-		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
-		query.setLong("empresaId", empresaId);
+	    criteria.add(Expression.sqlRestriction("this_.data = (select max(se2.data) from solicitacaoexame as se2 " 
+																	+ "join examesolicitacaoexame ese2 on se2.id = ese2.solicitacaoexame_id " 
+																	+ "join realizacaoexame as re2 on re2.id = ese2.realizacaoexame_id " 
+																	+ "where se2.colaborador_id = co4_.id  and re2.resultado<>'Não Informado' and ese2.exame_id = e2_.id) "));
+	    
+	    criteria.addOrder(Order.asc("co.nome"));
+	    
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ExamesPrevistosRelatorio.class));
 		
-		if(!imprimirDesligados)
-			query.setBoolean("imprimirDesligados", imprimirDesligados);
-
-		query.setString("naoRealizado", ResultadoExame.NAO_REALIZADO.toString());
-		
-		if (areaIds != null && areaIds.length > 0)
-			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
-		if (estabelecimentoIds != null && estabelecimentoIds.length > 0)
-			query.setParameterList("estabelecimentoIds", estabelecimentoIds, Hibernate.LONG);
-		if (colaboradorIds != null && colaboradorIds.length > 0)
-			query.setParameterList("colaboradorIds", colaboradorIds, Hibernate.LONG);
-		if (exameIds != null && exameIds.length > 0)
-			query.setParameterList("exameIds", exameIds, Hibernate.LONG);
-
-		return query.list();
+		return criteria.list();
 	}
 
 	public Collection<ExamesRealizadosRelatorio> findExamesRealizadosRelatorioResumido(Long empresaId, Date dataInicio, Date dataFim, ClinicaAutorizada clinicaAutorizada, Long[] examesIds)

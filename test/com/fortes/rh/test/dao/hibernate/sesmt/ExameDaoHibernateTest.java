@@ -239,10 +239,11 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 		SolicitacaoExame solicitacaoExame1 = SolicitacaoExameFactory.getEntity();
 		solicitacaoExame1.setEmpresa(empresa);
 		solicitacaoExame1.setColaborador(colaborador1);
+		solicitacaoExame1.setData(DateUtil.incrementaMes(new Date(), -6));
 		solicitacaoExameDao.save(solicitacaoExame1);
 
 		RealizacaoExame realizacaoExame1 = RealizacaoExameFactory.getEntity();
-		realizacaoExame1.setData(hoje);
+		realizacaoExame1.setData(DateUtil.incrementaMes(new Date(), -6));
 		realizacaoExame1.setResultado(ResultadoExame.NORMAL.toString());
 		realizacaoExameDao.save(realizacaoExame1);
 
@@ -255,11 +256,12 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 
 		SolicitacaoExame solicitacaoExame2 = SolicitacaoExameFactory.getEntity();
 		solicitacaoExame2.setEmpresa(empresa);
+		solicitacaoExame2.setData(DateUtil.incrementaMes(new Date(), -12));
 		solicitacaoExame2.setColaborador(colaborador2);
 		solicitacaoExameDao.save(solicitacaoExame2);
 
 		RealizacaoExame realizacaoExame2 = RealizacaoExameFactory.getEntity();
-		realizacaoExame2.setData(hoje);
+		realizacaoExame2.setData(DateUtil.incrementaMes(new Date(), -12));
 		realizacaoExame2.setResultado(ResultadoExame.NORMAL.toString());
 		realizacaoExameDao.save(realizacaoExame2);
 
@@ -445,6 +447,7 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 
 		ExameSolicitacaoExame exameSolicitacaoExame1 = new ExameSolicitacaoExame();
 		exameSolicitacaoExame1.setExame(exame1);
+		exameSolicitacaoExame1.setPeriodicidade(exame1.getPeriodicidade());
 		exameSolicitacaoExame1.setSolicitacaoExame(solicitacaoExame1);
 		exameSolicitacaoExame1.setRealizacaoExame(realizacaoExame1);
 		exameSolicitacaoExameDao.save(exameSolicitacaoExame1);
@@ -469,7 +472,6 @@ public class ExameDaoHibernateTest extends GenericDaoHibernateTest<Exame>
 
 		ExameSolicitacaoExame exameSolicitacaoExame2 = new ExameSolicitacaoExame();
 		exameSolicitacaoExame2.setExame(exame2);
-		exameSolicitacaoExame2.setPeriodicidade(exame2.getPeriodicidade());
 		exameSolicitacaoExame2.setSolicitacaoExame(solicitacaoExame2);
 		exameSolicitacaoExame2.setRealizacaoExame(realizacaoExame2);
 		exameSolicitacaoExameDao.save(exameSolicitacaoExame2);
