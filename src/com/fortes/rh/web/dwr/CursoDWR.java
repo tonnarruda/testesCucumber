@@ -1,9 +1,12 @@
 package com.fortes.rh.web.dwr;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.hibernate.mapping.Array;
 
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
@@ -15,6 +18,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.EmpresaUtil;
+import com.fortes.rh.util.LongUtil;
 import com.opensymphony.webwork.dispatcher.SessionMap;
 
 public class CursoDWR
@@ -50,12 +54,14 @@ public class CursoDWR
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Map<Long,String> getCursosByEmpresasParticipantes(Long[] empresasIds, Long empresaId, HttpServletRequest request) throws Exception
+	public Map<Long,String> getCursosByEmpresasIds(Long[] empresasIds) throws Exception
 	{
-		Collection<Curso> cursos;
-		cursos = cursoManager.findAllByEmpresasParticipantes(EmpresaUtil.empresasSelecionadas(empresaId, empresasIds));		
+		Collection<Curso> cursos = new ArrayList<Curso>();
 		
-		return new CollectionUtil<Curso>().convertCollectionToMap(cursos,"getId","getNome");
+		if(LongUtil.arrayIsNotEmpty(empresasIds))
+			cursos = cursoManager.findAllByEmpresasParticipantes(empresasIds);		
+		
+		return new CollectionUtil<Curso>().convertCollectionToMap(cursos,"getId","getEmpresaNomeMaisNome");
 	}
 	
 	public Collection<AvaliacaoCurso> getAvaliacaoCursos(Long[] cursosIds)

@@ -88,8 +88,7 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 
 	public void setProjectionEmpresaId(Long empresaId)
 	{
-		if (this.empresa == null)
-			this.empresa = new Empresa();
+		iniciaEmpresa();
 
 		empresa.setId(empresaId);
 	}
@@ -132,6 +131,10 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 	public String getNome()
 	{
 		return nome;
+	}
+	public String getEmpresaNomeMaisNome()
+	{
+		return this.empresa.getNome() + "-" + nome;
 	}
 	public void setNome(String nome)
 	{
@@ -205,10 +208,20 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 	
 	public void setEmpresaId(Long empresaId)
 	{
+		iniciaEmpresa();
+		this.empresa.setId(empresaId);
+	}
+
+	public void setEmpresaNome(String empresaNome)
+	{
+		iniciaEmpresa();
+		this.empresa.setNome(empresaNome);
+	}
+
+	private void iniciaEmpresa() 
+	{
 		if (this.empresa == null)
 			this.empresa = new Empresa();
-		
-		this.empresa.setId(empresaId);
 	}
 
 	public Long getEmpresaId()

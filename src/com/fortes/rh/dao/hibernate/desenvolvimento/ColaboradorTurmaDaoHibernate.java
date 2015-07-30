@@ -40,6 +40,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.FiltroAgrupamentoCursoColaborador;
 import com.fortes.rh.model.dicionario.FiltroSituacaoCurso;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
+import com.fortes.rh.model.dicionario.StatusAprovacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusTAula;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -1513,13 +1514,14 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
         return criteria.list();
 	}
 	
-	public Collection<ColaboradorTurma> findCursosVencidosAVencer(Long[] empresasIds, Long[] cursosIds, Date dataReferencia, char filtroAgrupamento, char filtroSituacao) {
+	public Collection<ColaboradorTurma> findCursosVencidosAVencer(Long[] empresasIds, Long[] cursosIds, Date dataReferencia, char filtroAgrupamento, char filtroSituacao, char filtroAprovado) {
 	    
 		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
 		criteria.createCriteria("ct.colaborador", "cb", Criteria.INNER_JOIN);
 		criteria.createCriteria("cb.empresa", "e", Criteria.INNER_JOIN);
 		criteria.createCriteria("ct.curso", "c", Criteria.INNER_JOIN);
 		criteria.createCriteria("ct.turma", "t", Criteria.INNER_JOIN);
+		criteria.createCriteria("c.empresasParticipantes", "ep", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("e.id"), "empresaId");
@@ -1536,6 +1538,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.property("t.dataPrevFim"), "turmaDataPrevFim");
 		p.add(Projections.property("t.realizada"), "turmaRealizada");
 		p.add(Projections.property("ct.id"), "id");
+		p.add(Projections.sqlProjection("verifica_aprovacao(c3_.id, t4_.id, this_.id, c3_.percentualMinimoFrequencia) as aprovacao", new String[] {"aprovacao"}, new Type[] {Hibernate.BOOLEAN}), "aprovado");
 		p.add(Projections.sqlProjection("( t4_.dataprevfim + (c3_.periodicidade || ' month')::interval) as vencimento", new String[] {"vencimento"}, new Type[] {Hibernate.DATE}), "vencimento");
 				
 		if(filtroSituacao ==FiltroSituacaoCurso.TODOS.getOpcao())
@@ -1543,7 +1546,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		
 		criteria.setProjection(p);
 
-		criteria.add(Expression.in("c.empresa.id", empresasIds));
+		criteria.add(Expression.or(Expression.in("ep.id", empresasIds),Expression.in("c.empresa.id", empresasIds)));
 		criteria.add(Expression.eq("t.realizada", true));
 		criteria.add(Expression.eq("cb.desligado", false));
 		criteria.add(Expression.gt("c.periodicidade", 0));
@@ -1551,11 +1554,11 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			criteria.add(Expression.in("c.id", cursosIds));
 		
 		if (filtroSituacao == FiltroSituacaoCurso.A_VENCER.getOpcao()) {
-			criteria.add(criterionCursosAVencer(dataReferencia, ">="));
+			criteria.add(criterionCursosAVencer(dataReferencia, ">=", filtroAprovado));
 		} else if (filtroSituacao == FiltroSituacaoCurso.VENCIDOS.getOpcao()) {
 			criteria.add(criterionCursosVencidos(dataReferencia));
 		} else {
-			criteria.add(Restrictions.or(criterionCursosAVencer(dataReferencia, ">="), criterionCursosVencidos(dataReferencia)));
+			criteria.add(Restrictions.or(criterionCursosAVencer(dataReferencia, ">=", filtroAprovado), criterionCursosVencidos(dataReferencia)));
 		}
 		
 		criteria.addOrder(Order.asc("e.nome"));
@@ -1617,7 +1620,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	    
 	    criteria.add(Subqueries.propertyEq("hc.data", subSelect));
 	    
-		criteria.add(criterionCursosAVencer(dataReferencia, "="));
+		criteria.add(criterionCursosAVencer(dataReferencia, "=", StatusAprovacao.APROVADO));
 		
 		criteria.addOrder(Order.asc("c.nome"));
 		criteria.addOrder(Order.asc("cb.nome"));
@@ -1632,8 +1635,17 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		
 	}
 	
-	private Criterion criterionCursosAVencer(Date dataReferencia, String operador){
-		return Expression.sqlRestriction("(select max(tr.dataprevfim) + (c3_.periodicidade || ' month')::interval from colaboradorturma ct2 join turma tr on ct2.turma_id = tr.id where ct2.id = this_.id and tr.realizada = true and verifica_aprovacao(c3_.id, tr.id, this_.id, c3_.percentualMinimoFrequencia) ) " + operador + " ?", dataReferencia, Hibernate.DATE);
+	private Criterion criterionCursosAVencer(Date dataReferencia, String operador, char filtroAprovado){
+		StringBuilder str = new StringBuilder();
+		str.append("(select max(tr.dataprevfim) + (c3_.periodicidade || ' month')::interval from colaboradorturma ct2 join turma tr on ct2.turma_id = tr.id where ct2.id = this_.id and tr.realizada = true ");
+				
+		if(StatusAprovacao.APROVADO == filtroAprovado)
+			str.append("and verifica_aprovacao(c3_.id, tr.id, this_.id, c3_.percentualMinimoFrequencia) ");
+		else if(StatusAprovacao.REPROVADO == filtroAprovado)
+			str.append("and not verifica_aprovacao(c3_.id, tr.id, this_.id, c3_.percentualMinimoFrequencia) ");
+		
+		str.append(" ) " + operador + " ?");
+		return Expression.sqlRestriction(str.toString(), dataReferencia, Hibernate.DATE);
 	}
 	
 	private Criterion criterionCursosVencidos(Date dataReferencia){

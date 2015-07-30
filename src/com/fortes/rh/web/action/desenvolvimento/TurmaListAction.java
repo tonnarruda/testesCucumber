@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -29,6 +30,7 @@ import com.fortes.rh.model.desenvolvimento.FiltroPlanoTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.FiltroAgrupamentoCursoColaborador;
 import com.fortes.rh.model.dicionario.FiltroSituacaoCurso;
+import com.fortes.rh.model.dicionario.StatusAprovacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.TipoDespesa;
@@ -38,7 +40,6 @@ import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
-import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -87,6 +88,8 @@ public class TurmaListAction extends MyActionSupportList
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentosCheck;
+	private String[] empresasCheck;
+	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 	private Collection<String[]> avaliacaoTurmasCheck;
 	private Collection<CheckBox> avaliacaoTurmasCheckList = new ArrayList<CheckBox>();
@@ -112,10 +115,10 @@ public class TurmaListAction extends MyActionSupportList
 	
 	private Date dataReferencia;
 	
-	private Long[] empresasPermitidas;
 	private Empresa empresa;
 	private char filtroAgrupamento;
 	private char filtroSituacao;
+	private char filtroAprovado;
 
 	public String filtroPlanoTreinamento() throws Exception
 	{
@@ -453,23 +456,48 @@ public class TurmaListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String prepareImprimirCursosVencidosAVencer() throws Exception{
-
-		empresa = getEmpresaSistema();
+	public String prepareImprimirCursosVencidosAVencer() throws Exception
+	{
 		prepareEmpresas(true, "ROLE_REL_CURSOS_VENCIDOS_A_VENCER");
-		setMsgHelp("Para que o relatório seja gerado, o curso tem que ter uma periodicidade, a turma tem que possuir colaboradores aprovados (nota e presença) e o curso ainda não esteja vencido.");
+		empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
+		CheckListBoxUtil.marcaCheckListBox(empresasCheckList, empresasCheck);
+		
+		setMsgHelp("Para que o relatório seja gerado, o curso tem que ter uma periodicidade e possuir colaboradores.");
 		
 		return Action.SUCCESS;
 	}
 	
-	public String imprimirCursosVencidosAVencer() throws Exception {
-		
-		dataSource = colaboradorTurmaManager.findCursosVencidosAVencer(EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas), LongUtil.arrayStringToArrayLong(cursosCheck), dataReferencia, filtroAgrupamento, filtroSituacao);
-		
+	public String imprimirCursosVencidosAVencer() throws Exception 
+	{
 		try {
+			dataSource = colaboradorTurmaManager.findCursosVencidosAVencer(LongUtil.arrayStringToArrayLong(empresasCheck), LongUtil.arrayStringToArrayLong(cursosCheck), dataReferencia, filtroAgrupamento, filtroSituacao, filtroAprovado);
+		
 			if (dataSource.isEmpty())
 				throw new ColecaoVaziaException();
-		
+			
+			String retorno;
+			String tituloRelatorio;
+			String tituloSituacao = "";
+
+			if (filtroSituacao == FiltroSituacaoCurso.A_VENCER.getOpcao()) {
+				tituloSituacao = FiltroSituacaoCurso.A_VENCER.getDescricao();
+			} else if (filtroSituacao == FiltroSituacaoCurso.VENCIDOS.getOpcao()){
+				tituloSituacao = FiltroSituacaoCurso.VENCIDOS.getDescricao();
+			} else {
+				tituloSituacao = FiltroSituacaoCurso.VENCIDOS.getDescricao() + " e " + FiltroSituacaoCurso.A_VENCER.getDescricao();
+			}
+			
+			if (filtroAgrupamento == FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao()) {
+				tituloRelatorio = "Relatorio de Cursos " + tituloSituacao + " por Cursos";
+				retorno = "successAgrupadoPorCurso";
+			} else{
+				tituloRelatorio = "Relatorio de Cursos " + tituloSituacao + " por Colaboradores";
+				retorno = "successAgrupadoPorColaborador";
+			}
+			
+			parametros = RelatorioUtil.getParametrosRelatorio(tituloRelatorio, getEmpresaSistema(),  getDataReferenciaFormatada());
+
+			return retorno;
 		} catch (ColecaoVaziaException e) {
 			addActionMessage("Não existem dados para o filtro informado.");
 			prepareImprimirCursosVencidosAVencer();
@@ -481,32 +509,6 @@ public class TurmaListAction extends MyActionSupportList
 			prepareImprimirCursosVencidosAVencer();
 			return Action.INPUT;
 		}
-		
-		String retorno;
-		String tituloRelatorio;
-		String tituloSituacao = "";
-		boolean exibeSituacao = false;
-		if (filtroSituacao == FiltroSituacaoCurso.A_VENCER.getOpcao()) {
-			tituloSituacao = FiltroSituacaoCurso.A_VENCER.getDescricao();
-		} else if (filtroSituacao == FiltroSituacaoCurso.VENCIDOS.getOpcao()){
-			tituloSituacao = FiltroSituacaoCurso.VENCIDOS.getDescricao();
-		} else {
-			tituloSituacao = FiltroSituacaoCurso.VENCIDOS.getDescricao() + " e " + FiltroSituacaoCurso.A_VENCER.getDescricao();
-			exibeSituacao = true;
-		}
-		
-		if (filtroAgrupamento == FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao()) {
-			tituloRelatorio = "Relatorio de Cursos " + tituloSituacao + " por Cursos";
-			retorno = "successAgrupadoPorCurso";
-		} else{
-			tituloRelatorio = "Relatorio de Cursos " + tituloSituacao + " por Colaboradores";
-			retorno = "successAgrupadoPorColaborador";
-		}
-		
-		parametros = RelatorioUtil.getParametrosRelatorio(tituloRelatorio, getEmpresaSistema(),  getDataReferenciaFormatada());
-		parametros.put("EXIBESITUACAO", exibeSituacao);
-		
-		return retorno;
 	}
 	
 	private String getPeriodoFormatado()
@@ -873,10 +875,6 @@ public class TurmaListAction extends MyActionSupportList
 		this.dataReferencia = dataReferencia;
 	}
 
-	public void setEmpresasPermitidas(Long[] empresasPermitidas) {
-		this.empresasPermitidas = empresasPermitidas;
-	}
-
 	public Empresa getEmpresa() {
 		return empresa;
 	}
@@ -899,5 +897,21 @@ public class TurmaListAction extends MyActionSupportList
 
 	public void setFiltroSituacao(char filtroSituacao) {
 		this.filtroSituacao = filtroSituacao;
+	}
+
+	public void setEmpresasCheck(String[] empresasCheck) {
+		this.empresasCheck = empresasCheck;
+	}
+
+	public Collection<CheckBox> getEmpresasCheckList() {
+		return empresasCheckList;
+	}
+	
+	public LinkedHashMap<Character, String> getStatusAprovacao(){
+		return new StatusAprovacao();
+	}
+
+	public void setFiltroAprovado(char filtroAprovado) {
+		this.filtroAprovado = filtroAprovado;
 	}
 }

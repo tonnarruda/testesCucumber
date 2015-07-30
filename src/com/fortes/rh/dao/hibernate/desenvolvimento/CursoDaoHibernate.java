@@ -405,10 +405,12 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"c");
 		criteria.createCriteria("c.empresasParticipantes", "e", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.empresa", "emp", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("c.id"), "id");
 		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("emp.nome"), "empresaNome");
 
 		criteria.setProjection(Projections.distinct(p));
 		criteria.add( Expression.or( Expression.in("c.empresa.id", empresasIds), Expression.in("e.id", empresasIds) ) );

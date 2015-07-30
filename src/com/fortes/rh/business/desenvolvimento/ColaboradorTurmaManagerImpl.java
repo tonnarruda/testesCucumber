@@ -1067,8 +1067,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		this.empresaManager = empresaManager;
 	}
 
-	public Collection<ColaboradorTurma> findCursosVencidosAVencer(Long[] empresasIds, Long[] cursosIds, Date dataReferencia, char filtroAgrupamento, char filtroSituacao) {
-		return getDao().findCursosVencidosAVencer(empresasIds, cursosIds, dataReferencia, filtroAgrupamento, filtroSituacao);
+	public Collection<ColaboradorTurma> findCursosVencidosAVencer(Long[] empresasIds, Long[] cursosIds, Date dataReferencia, char filtroAgrupamento, char filtroSituacao, char filtroAprovado) {
+		return getDao().findCursosVencidosAVencer(empresasIds, cursosIds, dataReferencia, filtroAgrupamento, filtroSituacao, filtroAprovado);
 	}
 
 	public Collection<ColaboradorTurma> findCursosCertificacoesAVencer(Date dataReferencia, Long empresaId) {

@@ -8,25 +8,21 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js?version=${versao}"/>'></script>
 		<#include "../ftl/mascarasImports.ftl" />
 		
-		<#assign validaCampos="return validaFormulario('form', new Array('dataReferencia'), new Array('dataReferencia'))"/>
+		<#assign validaCampos="return validaFormulario('form', new Array('dataReferencia', '@empresasCheck'), new Array('dataReferencia'))"/>
 		
 		<script>
-			DWREngine.setAsync(true);
-			
-			var empresaIds = new Array();
-			<#if empresas?exists>
-				<#list empresas as empresa>
-					empresaIds.push(${empresa.id});
-				</#list>
-			</#if>
-		
 			$(document).ready(function($){
-				populaCursos($('#empresas').val());
+				populaCursos();
 				$('#dataReferencia').val($.datepicker.formatDate('dd/mm/yy',new Date()));		
 			});
 			
-			function populaCursos(empresaId)	{
-				CursoDWR.getCursosByEmpresasParticipantes(empresaIds, empresaId, createListCursos);
+			function populaCursos()	
+			{
+				var empresasIds = $("input[name='empresasCheck']:checked").map(function(){
+										return this.value;
+									}).get();
+			
+				CursoDWR.getCursosByEmpresasIds(empresasIds, createListCursos);
 			}
 			
 			function createListCursos(data) {
@@ -39,26 +35,16 @@
 		<@ww.actionmessage />
 		<@ww.form name="form" action="imprimirCursosVencidosAVencer.action" onsubmit="${validaCampos}" method="POST">
 		
-			<#list empresas as empresa>	
-					<input type="hidden" name="empresasPermitidas" value="${empresa.id}" />
-			</#list>
-		
-			<@ww.select label="Empresa" name="empresa.id" list="empresas" id="empresas" listKey="id" listValue="nome" onchange="populaCursos(this.value)" headerKey="-1" headerValue="Todas" />
-			
 			<@ww.datepicker label="Data de Referência" id="dataReferencia" name="dataReferencia" required="true" cssClass="mascaraData" />
-		
+			<@frt.checkListBox name="empresasCheck" id="empresasCheck" label="Empresas*" list="empresasCheckList" filtro="true" onClick="populaCursos();" />
 			<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos" list="cursosCheckList" filtro="true"  />
-			
-			<@ww.select id="filtroAgrupamento" name="filtroAgrupamento" label="Agrupar por" list=r"#{'0':'Cursos','1':'Colaboradores'}" />
-				
-			<@ww.select id="filtroSituacao" name="filtroSituacao" label="Situação" list=r"#{'0':'Todos','1':'a vencer', '2':'vencidos'}"/>
-			
+			<@ww.select name="filtroAprovado" label="Considerar colaboradores" list="statusAprovacao" cssStyle="width: 500px;"/>
+			<@ww.select name="filtroSituacao" label="Considerar colaboradores que possuem cursos" list=r"#{'0':'Vencidos e a vencer','1':'A vencer', '2':'Vencidos'}" cssStyle="width: 500px;"/>
+			<@ww.select name="filtroAgrupamento" label="Agrupar relatório por" list=r"#{'0':'Cursos','1':'Colaboradores'}" cssStyle="width: 500px;"/>
 		
-		<div class="buttonGroup">
-			<button onclick="${validaCampos};" class="btnRelatorio"></button>
-		</div>
-		
+			<div class="buttonGroup">
+				<button onclick="${validaCampos};" class="btnRelatorio"></button>
+			</div>
 		</@ww.form>
-		
 	</body>
 </html>

@@ -46,6 +46,7 @@ import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.FiltroAgrupamentoCursoColaborador;
 import com.fortes.rh.model.dicionario.FiltroSituacaoCurso;
+import com.fortes.rh.model.dicionario.StatusAprovacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.StatusTAula;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -1843,9 +1844,9 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		colaboradorPresencaAusenteCursoAVencer.setColaboradorTurma(colaboradorTurmaAVencer);
 		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoAVencer);
 		
-		Collection<ColaboradorTurma> colaboradorTurmasVencidas = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.VENCIDOS.getOpcao());
-		Collection<ColaboradorTurma> colaboradorTurmasAVencer = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.A_VENCER.getOpcao());
-		Collection<ColaboradorTurma> colaboradorTurmasTodos = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.TODOS.getOpcao());
+		Collection<ColaboradorTurma> colaboradorTurmasVencidas = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.VENCIDOS.getOpcao(), StatusAprovacao.APROVADO);
+		Collection<ColaboradorTurma> colaboradorTurmasAVencer = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.A_VENCER.getOpcao(), StatusAprovacao.APROVADO);
+		Collection<ColaboradorTurma> colaboradorTurmasTodos = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.TODOS.getOpcao(), StatusAprovacao.APROVADO);
 		
 		assertEquals(1, colaboradorTurmasVencidas.size());
 		assertEquals(1, colaboradorTurmasAVencer.size());
@@ -1953,9 +1954,9 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		colaboradorPresencaAusenteCursoAVencer.setPresenca(false);
 		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoAVencer);
 		
-		Collection<ColaboradorTurma> colaboradorTurmasVencidas = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.VENCIDOS.getOpcao());
-		Collection<ColaboradorTurma> colaboradorTurmasAVencer = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.A_VENCER.getOpcao());
-		Collection<ColaboradorTurma> colaboradorTurmasTodos = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.TODOS.getOpcao());
+		Collection<ColaboradorTurma> colaboradorTurmasVencidas = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.VENCIDOS.getOpcao(), StatusAprovacao.APROVADO);
+		Collection<ColaboradorTurma> colaboradorTurmasAVencer = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.A_VENCER.getOpcao(), StatusAprovacao.APROVADO);
+		Collection<ColaboradorTurma> colaboradorTurmasTodos = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.TODOS.getOpcao(), StatusAprovacao.APROVADO);
 		
 		assertEquals(1, colaboradorTurmasVencidas.size());
 		assertEquals(1, colaboradorTurmasAVencer.size());
@@ -2076,9 +2077,9 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		colaboradorPresencaAusenteCursoAVencer.setPresenca(false);
 		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoAVencer);
 		
-		Collection<ColaboradorTurma> colaboradorTurmasVencidas = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.VENCIDOS.getOpcao());
-		Collection<ColaboradorTurma> colaboradorTurmasAVencer = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.A_VENCER.getOpcao());
-		Collection<ColaboradorTurma> colaboradorTurmasTodos = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.TODOS.getOpcao());
+		Collection<ColaboradorTurma> colaboradorTurmasVencidas = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.VENCIDOS.getOpcao(), StatusAprovacao.APROVADO);
+		Collection<ColaboradorTurma> colaboradorTurmasAVencer = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.A_VENCER.getOpcao(), StatusAprovacao.APROVADO);
+		Collection<ColaboradorTurma> colaboradorTurmasTodos = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.TODOS.getOpcao(), StatusAprovacao.APROVADO);
 		
 		assertEquals(1, colaboradorTurmasVencidas.size());
 		assertEquals(1, colaboradorTurmasAVencer.size());
@@ -2219,9 +2220,9 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		colaboradorPresencaAusenteCursoAVencer.setPresenca(false);
 		colaboradorPresencaDao.save(colaboradorPresencaAusenteCursoAVencer);
 		
-		Collection<ColaboradorTurma> colaboradorTurmasVencidas = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.VENCIDOS.getOpcao());
-		Collection<ColaboradorTurma> colaboradorTurmasAVencer = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.A_VENCER.getOpcao());
-		Collection<ColaboradorTurma> colaboradorTurmasTodos = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.TODOS.getOpcao());
+		Collection<ColaboradorTurma> colaboradorTurmasVencidas = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.VENCIDOS.getOpcao(), StatusAprovacao.APROVADO);
+		Collection<ColaboradorTurma> colaboradorTurmasAVencer = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.A_VENCER.getOpcao(), StatusAprovacao.APROVADO);
+		Collection<ColaboradorTurma> colaboradorTurmasTodos = colaboradorTurmaDao.findCursosVencidosAVencer(new Long[]{empresa.getId()}, new Long[]{curso.getId()}, dataReferencia, FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao(), FiltroSituacaoCurso.TODOS.getOpcao(), StatusAprovacao.APROVADO);
 		
 		assertEquals(1, colaboradorTurmasVencidas.size());
 		assertEquals(1, colaboradorTurmasAVencer.size());
