@@ -155,10 +155,19 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 	    
 	    criteria.add(Expression.sqlRestriction("(re3_.data + (ese1_.periodicidade || ' month')::interval) between ? and ? ", new Date[]{dataInicio,dataFim}, new Type[]{Hibernate.DATE, Hibernate.DATE}));
 
-	    criteria.add(Expression.sqlRestriction("this_.data = (select max(se2.data) from solicitacaoexame as se2 " 
+	    criteria.add(Expression.sqlRestriction("this_.data = (select se2.data from solicitacaoexame as se2 " 
 																	+ "join examesolicitacaoexame ese2 on se2.id = ese2.solicitacaoexame_id " 
 																	+ "join realizacaoexame as re2 on re2.id = ese2.realizacaoexame_id " 
-																	+ "where se2.colaborador_id = co4_.id  and re2.resultado<>'Não Informado' and ese2.exame_id = e2_.id) "));
+																	+ "where se2.colaborador_id = co4_.id and ese2.exame_id = e2_.id "
+																		+ "and re2.data = ("
+																			+ "select max(re4.data) from examesolicitacaoexame ese4 "
+																			+ "left join solicitacaoexame se4 on se4.id = ese4.solicitacaoexame_id "
+																			+ "left join realizacaoexame re4 on re4.id = ese4.realizacaoexame_id "
+																			+ "where se4.colaborador_id = co4_.id "
+																			+ "and re4.resultado<> ? "
+																			+ "and ese4.exame_id = e2_.id "
+																		+ ")"
+																	+ ") ", new String[]{ResultadoExame.NAO_REALIZADO.toString()}, new Type[]{Hibernate.STRING}));
 	    
 	    criteria.addOrder(Order.asc("co.nome"));
 	    

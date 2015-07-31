@@ -224,9 +224,9 @@ public class ExameListAction extends MyActionSupportList
 			
 			switch (agruparPor) {
 			case 'A':
-				return "successAguparPorArea";
+				return "successAgruparPorArea";
 			case 'E':
-				return "successAguparPorEstabelecimento";
+				return "successAgruparPorEstabelecimento";
 			default:
 				return SUCCESS;
 			}

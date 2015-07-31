@@ -60,13 +60,13 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">examesPrevistos.pdf</param>
 			</result>
-			<result name="successAguparPorArea" type="jasper">
+			<result name="successAgruparPorArea" type="jasper">
 				<param name="dataSource">colecaoExamesPrevistos</param>
 				<param name="location">WEB-INF/report/exames_previstos_agrupaArea.jasper</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">examesPrevistos.pdf</param>
 			</result>
-			<result name="successAguparPorEstabelecimento" type="jasper">
+			<result name="successAgruparPorEstabelecimento" type="jasper">
 				<param name="dataSource">colecaoExamesPrevistos</param>
 				<param name="location">WEB-INF/report/exames_previstos_agrupaEstabelecimento.jasper</param>
 				<param name="parametersMap">parametros</param>
