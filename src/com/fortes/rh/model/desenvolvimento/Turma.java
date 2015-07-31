@@ -479,6 +479,10 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	public void setVencimento(Date vencimento) {
 		this.vencimento = vencimento;
 	}
+	
+	public Date getVencimento() {
+		return this.vencimento;
+	}
 
 	public void setVencido(boolean vencido) {
 		this.vencido = vencido;

@@ -113,8 +113,6 @@ public class TurmaListAction extends MyActionSupportList
 	private char agruparPor;
 	private boolean compartilharColaboradores;
 	
-	private Date dataReferencia;
-	
 	private Empresa empresa;
 	private char filtroAgrupamento;
 	private char filtroSituacao;
@@ -462,6 +460,8 @@ public class TurmaListAction extends MyActionSupportList
 		empresasCheckList = CheckListBoxUtil.populaCheckListBox(empresas, "getId", "getNome");
 		CheckListBoxUtil.marcaCheckListBox(empresasCheckList, empresasCheck);
 		
+		if(dataIni==null) dataIni = new Date();
+		if(dataFim==null) dataFim = DateUtil.incrementaAno(dataIni, 1);
 		setMsgHelp("Para que o relatório seja gerado, o curso tem que ter uma periodicidade e possuir colaboradores.");
 		
 		return Action.SUCCESS;
@@ -470,7 +470,7 @@ public class TurmaListAction extends MyActionSupportList
 	public String imprimirCursosVencidosAVencer() throws Exception 
 	{
 		try {
-			dataSource = colaboradorTurmaManager.findCursosVencidosAVencer(LongUtil.arrayStringToArrayLong(empresasCheck), LongUtil.arrayStringToArrayLong(cursosCheck), dataReferencia, filtroAgrupamento, filtroSituacao, filtroAprovado);
+			dataSource = colaboradorTurmaManager.findCursosVencidosAVencer(dataIni, dataFim, LongUtil.arrayStringToArrayLong(empresasCheck), LongUtil.arrayStringToArrayLong(cursosCheck), filtroAgrupamento, filtroSituacao, filtroAprovado);
 		
 			if (dataSource.isEmpty())
 				throw new ColecaoVaziaException();
@@ -514,8 +514,8 @@ public class TurmaListAction extends MyActionSupportList
 	
 	private String getDataReferenciaFormatada(){
 		String dataReferenciaFormatada = "-";
-		if (dataReferencia != null)
-			dataReferenciaFormatada = "Data de Referência: " + DateUtil.formataDiaMesAno(dataReferencia);
+		if (dataIni != null && dataFim != null)
+			dataReferenciaFormatada = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim);
 
 		return dataReferenciaFormatada;
 	}
@@ -857,14 +857,6 @@ public class TurmaListAction extends MyActionSupportList
 
 	public Collection<String[]> getHorariosFim() {
 		return horariosFim;
-	}
-
-	public Date getDataReferencia() {
-		return dataReferencia;
-	}
-
-	public void setDataReferencia(Date dataReferencia) {
-		this.dataReferencia = dataReferencia;
 	}
 
 	public Empresa getEmpresa() {

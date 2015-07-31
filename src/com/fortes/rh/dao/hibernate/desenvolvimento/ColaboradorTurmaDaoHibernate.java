@@ -1514,7 +1514,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
         return criteria.list();
 	}
 	
-	public Collection<ColaboradorTurma> findCursosVencidosAVencer(Long[] empresasIds, Long[] cursosIds, Date dataReferencia, char filtroAgrupamento, char filtroSituacao, char filtroAprovado) {
+	public Collection<ColaboradorTurma> findCursosVencidosAVencer(Date dataIni, Long[] empresasIds, Long[] cursosIds, char filtroAgrupamento, char filtroSituacao, char filtroAprovado) {
 	    
 		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
 		criteria.createCriteria("ct.colaborador", "cb", Criteria.INNER_JOIN);
@@ -1542,7 +1542,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.sqlProjection("( t4_.dataprevfim + (c3_.periodicidade || ' month')::interval) as vencimento", new String[] {"vencimento"}, new Type[] {Hibernate.DATE}), "vencimento");
 				
 		if(filtroSituacao ==FiltroSituacaoCurso.TODOS.getOpcao())
-		    p.add(Projections.sqlProjection("case when (t4_.dataprevfim + (c3_.periodicidade || ' month')::interval) < to_timestamp('"+ DateUtil.formataAnoMesDia(dataReferencia) +"', 'YYYY-MM-DD') then true else false end as vencido", new String[] {"vencido"}, new Type[] {Hibernate.BOOLEAN}), "vencido");
+		    p.add(Projections.sqlProjection("case when (t4_.dataprevfim + (c3_.periodicidade || ' month')::interval) < to_timestamp('"+ DateUtil.formataAnoMesDia(dataIni) +"', 'YYYY-MM-DD') then true else false end as vencido", new String[] {"vencido"}, new Type[] {Hibernate.BOOLEAN}), "vencido");
 		
 		criteria.setProjection(p);
 
@@ -1554,11 +1554,11 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			criteria.add(Expression.in("c.id", cursosIds));
 		
 		if (filtroSituacao == FiltroSituacaoCurso.A_VENCER.getOpcao()) {
-			criteria.add(criterionCursosAVencer(dataReferencia, ">=", filtroAprovado));
+			criteria.add(criterionCursosAVencer(dataIni, ">=", filtroAprovado));
 		} else if (filtroSituacao == FiltroSituacaoCurso.VENCIDOS.getOpcao()) {
-			criteria.add(criterionCursosVencidos(dataReferencia));
+			criteria.add(criterionCursosVencidos(dataIni));
 		} else {
-			criteria.add(Restrictions.or(criterionCursosAVencer(dataReferencia, ">=", filtroAprovado), criterionCursosVencidos(dataReferencia)));
+			criteria.add(Restrictions.or(criterionCursosAVencer(dataIni, ">=", filtroAprovado), criterionCursosVencidos(dataIni)));
 		}
 		
 		criteria.addOrder(Order.asc("e.nome"));

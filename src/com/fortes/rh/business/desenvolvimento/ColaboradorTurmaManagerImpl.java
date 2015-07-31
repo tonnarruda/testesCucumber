@@ -1067,8 +1067,15 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		this.empresaManager = empresaManager;
 	}
 
-	public Collection<ColaboradorTurma> findCursosVencidosAVencer(Long[] empresasIds, Long[] cursosIds, Date dataReferencia, char filtroAgrupamento, char filtroSituacao, char filtroAprovado) {
-		return getDao().findCursosVencidosAVencer(empresasIds, cursosIds, dataReferencia, filtroAgrupamento, filtroSituacao, filtroAprovado);
+	public Collection<ColaboradorTurma> findCursosVencidosAVencer(Date dataIni, Date dataFim, Long[] empresasIds, Long[] cursosIds, char filtroAgrupamento, char filtroSituacao, char filtroAprovado) {
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findCursosVencidosAVencer(dataIni, empresasIds, cursosIds, filtroAgrupamento, filtroSituacao, filtroAprovado);
+		Collection<ColaboradorTurma> colaboradorTurmasRetorno = new ArrayList<ColaboradorTurma>();
+		
+		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
+			if(colaboradorTurma.getTurma()!= null && colaboradorTurma.getTurma().getVencimento() != null && colaboradorTurma.getTurma().getVencimento().before(dataFim))
+				colaboradorTurmasRetorno.add(colaboradorTurma);
+		
+		return colaboradorTurmasRetorno;
 	}
 
 	public Collection<ColaboradorTurma> findCursosCertificacoesAVencer(Date dataReferencia, Long empresaId) {
