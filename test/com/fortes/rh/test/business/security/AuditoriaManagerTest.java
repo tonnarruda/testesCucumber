@@ -1,18 +1,24 @@
 package com.fortes.rh.test.business.security;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.security.AuditoriaManagerImpl;
 import com.fortes.rh.dao.security.AuditoriaDao;
 import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.security.Auditoria;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class AuditoriaManagerTest extends MockObjectTestCase
 {
@@ -81,4 +87,39 @@ public class AuditoriaManagerTest extends MockObjectTestCase
 		auditoriaManager.audita(recurso, operacao, chave, dados);
 	}
 	
+	public void testAuditaConfirmacaoDesligamentoNoAC()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		
+		Colaborador colab1 = ColaboradorFactory.getEntity();
+		colab1.setCodigoAC("001");
+		colab1.setNome("José");
+		
+		Colaborador colab2 = ColaboradorFactory.getEntity();
+		colab2.setCodigoAC("002");
+		colab2.setNome("Maria");
+		
+		Colaborador colab3 = ColaboradorFactory.getEntity();
+		colab3.setCodigoAC("003");
+		colab3.setNome("Raimundo");
+		
+		Colaborador colab4 = ColaboradorFactory.getEntity();
+		colab4.setCodigoAC("004");
+		colab4.setNome("joaquim");
+		
+		Collection<Colaborador> colaboradores = Arrays.asList(colab1, colab2, colab3, colab4);
+		
+		Date dataDesligamento = DateUtil.criarDataMesAno(1, 1, 2015);
+		
+		auditoriaDao.expects(once()).method("save").withAnyArguments().isVoid();
+		
+		Exception ex = null;
+		try {
+			auditoriaManager.auditaConfirmacaoDesligamentoNoAC(colaboradores, dataDesligamento, empresa);
+		} catch (Exception e) {
+			ex = e;
+		}
+		
+		assertNull(ex);
+	} 
 }

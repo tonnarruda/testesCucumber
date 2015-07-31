@@ -477,21 +477,13 @@ public class TurmaListAction extends MyActionSupportList
 			
 			String retorno;
 			String tituloRelatorio;
-			String tituloSituacao = "";
-
-			if (filtroSituacao == FiltroSituacaoCurso.A_VENCER.getOpcao()) {
-				tituloSituacao = FiltroSituacaoCurso.A_VENCER.getDescricao();
-			} else if (filtroSituacao == FiltroSituacaoCurso.VENCIDOS.getOpcao()){
-				tituloSituacao = FiltroSituacaoCurso.VENCIDOS.getDescricao();
-			} else {
-				tituloSituacao = FiltroSituacaoCurso.VENCIDOS.getDescricao() + " e " + FiltroSituacaoCurso.A_VENCER.getDescricao();
-			}
+			String tituloSituacao = FiltroSituacaoCurso.VENCIDOS.getDescricao() + " e " + FiltroSituacaoCurso.A_VENCER.getDescricao();
 			
 			if (filtroAgrupamento == FiltroAgrupamentoCursoColaborador.CURSOS.getOpcao()) {
-				tituloRelatorio = "Relatorio de Cursos " + tituloSituacao + " por Cursos";
+				tituloRelatorio = "Relatorio de Cursos " + tituloSituacao + " agrupado por Cursos";
 				retorno = "successAgrupadoPorCurso";
 			} else{
-				tituloRelatorio = "Relatorio de Cursos " + tituloSituacao + " por Colaboradores";
+				tituloRelatorio = "Relatorio de Cursos " + tituloSituacao + " agrupado por Colaboradores";
 				retorno = "successAgrupadoPorColaborador";
 			}
 			

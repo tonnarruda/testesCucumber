@@ -12,6 +12,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.spring.aop.AuditavelImpl;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.security.auditoria.Auditavel;
 import com.fortes.security.auditoria.AuditorCallback;
 import com.fortes.security.auditoria.MetodoInterceptado;
@@ -113,11 +114,9 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		String observacaoDemissao = (String) metodo.getParametros()[1];
 		Long motivoDemissaoId = (Long) metodo.getParametros()[2];
 		Character gerouSubstituicao = (Character) metodo.getParametros()[3];
-		
-		
+				
 		Long colaboradorId = (Long) metodo.getParametros()[5];
-		Colaborador colab;
-		colab = new Colaborador();
+		Colaborador colab = new Colaborador();
 		colab.setId(colaboradorId);
 		Colaborador colaborador = carregaEntidade(metodo, colab);
 		
@@ -146,15 +145,14 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
 	}
 	
-	public Auditavel reprovaSolicitacaoDesligamento(MetodoInterceptado metodo) throws Throwable {
+	public Auditavel reprovaSolicitacaoDesligamento(MetodoInterceptado metodo) throws Throwable 
+	{
 		metodo.processa();
 		Map<String, Object> desligamento;
 		Collection<Map<String, Object>> desligamentos = new ArrayList<Map<String,Object>>();
 		
 		Long colaboradorId = (Long) metodo.getParametros()[0];
-		Colaborador colab;
-		
-		colab = new Colaborador();
+		Colaborador colab = new Colaborador();
 		colab.setId(colaboradorId);
 		Colaborador colaborador = carregaEntidade(metodo, colab);
 		
@@ -215,13 +213,11 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 
 	public Auditavel solicitacaoDesligamentoAc(MetodoInterceptado metodo) throws Throwable 
 	{
-		
 		metodo.processa();
 		
 		Date dataSolicitacaoDesligamento = (Date) metodo.getParametros()[0];
 		String observacaoDemissao = (String) metodo.getParametros()[1];
 		Long motivoId = (Long) metodo.getParametros()[2];
-		
 		
 		Map<String, Object> solicitaDesligamento = new LinkedHashMap<String, Object>();
 		solicitaDesligamento.put("Data Solicitação Desligamento", dataSolicitacaoDesligamento);
@@ -231,6 +227,18 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		String dados = new GeraDadosAuditados(null, solicitaDesligamento).gera();
 		
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), null, dados);
+	}
+	
+	public Auditavel cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String obsservacao) throws Throwable 
+	{
+		Map<String, Object> solicitaDesligamento = new LinkedHashMap<String, Object>();
+		solicitaDesligamento.put("Colaborador nome", colaborador.getNome());
+		solicitaDesligamento.put("Data do cancelamento da solicitação de desligamento", DateUtil.criarDataMesAno(new Date()));
+		solicitaDesligamento.put("Observação do cancelamento", obsservacao);
+		
+		String dados = new GeraDadosAuditados(null, solicitaDesligamento).gera();
+		
+		return new AuditavelImpl("Colaborador", "Solicitação de desligamento cancelada", null, dados);
 	}
 	
 	private Colaborador carregaEntidade(MetodoInterceptado metodo, Colaborador colaborador) {

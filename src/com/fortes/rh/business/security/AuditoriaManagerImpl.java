@@ -1,6 +1,7 @@
 package com.fortes.rh.business.security;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import com.fortes.rh.model.security.Auditoria;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
 import com.fortes.rh.security.spring.aop.ProcuraChaveNaEntidade;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.opensymphony.xwork.ActionContext;
 
@@ -169,7 +171,7 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 			return chaveParaAuditoria;
 	}
 
-	public void auditaCancelarContratacaoNoAC(Colaborador colaborador,	String mensagem) 
+	public void auditaCancelarContratacaoNoAC(Colaborador colaborador, String mensagem) 
 	{
 		Map<String, Object> cancelamentoContratacaoAC = new LinkedHashMap<String, Object>();
 		cancelamentoContratacaoAC.put("Colaborador", colaborador.getNome());
@@ -180,6 +182,38 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 		
 		Auditoria auditoria = new Auditoria();
 		auditoria.audita(null, empresa, "Colaborador", "Cancel. Contrat.AC", colaborador.getNome(), dados);
+		
+		this.getDao().save(auditoria);
+	}
+	
+	public void auditaConfirmacaoDesligamentoNoAC(Collection<Colaborador> colaboradores,Date dataDesligamento, Empresa empresa) 
+	{
+		Map<String, Object> desligamentoContratacaoAC = new LinkedHashMap<String, Object>();
+		desligamentoContratacaoAC.put("Data desligamento:", DateUtil.formataDiaMesAno(dataDesligamento));
+		desligamentoContratacaoAC.put("Colaborador(es)", "");
+		
+		for (Colaborador colaborador : colaboradores) 
+			desligamentoContratacaoAC.put(colaborador.getCodigoAC(), colaborador.getNome());
+		
+		String dados = new GeraDadosAuditados(null, desligamentoContratacaoAC).gera();
+		
+		Auditoria auditoria = new Auditoria();
+		auditoria.audita(null, empresa, "Colaborador", "Desligamento no AC", "", dados);
+		
+		this.getDao().save(auditoria);
+	}
+	
+	public void auditaCancelamentoSolicitacoNoAC(Colaborador colaborador,String mensagem) 
+	{
+		Map<String, Object> cancelamentoSolicitacaoAC = new LinkedHashMap<String, Object>();
+		cancelamentoSolicitacaoAC.put("Colaborador", colaborador.getNome());
+		cancelamentoSolicitacaoAC.put("Mensagem", "Cancelamento da solicitação de desligamento no AC Pessoal. Obs: "+mensagem);
+		
+		String dados = new GeraDadosAuditados(null, cancelamentoSolicitacaoAC).gera();
+		Empresa empresa = colaborador.getEmpresa();
+		
+		Auditoria auditoria = new Auditoria();
+		auditoria.audita(null, empresa, "Colaborador", "Cancel.solicitação desligamento", colaborador.getNome(), dados);
 		
 		this.getDao().save(auditoria);
 	}

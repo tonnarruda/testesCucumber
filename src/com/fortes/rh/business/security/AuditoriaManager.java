@@ -1,11 +1,13 @@
 package com.fortes.rh.business.security;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.security.Auditoria;
 
 public interface AuditoriaManager extends GenericManager<Auditoria>
@@ -36,5 +38,7 @@ public interface AuditoriaManager extends GenericManager<Auditoria>
 	 */
 	public List<String> findOperacoesPeloModulo(String modulo);
 	public String getDetalhes(String dados);
-	public void auditaCancelarContratacaoNoAC(Colaborador colaborador,String mensagem);	
+	public void auditaCancelarContratacaoNoAC(Colaborador colaborador,String mensagem);
+	public void auditaCancelamentoSolicitacoNoAC(Colaborador colaborador,String mensagem);
+	public void auditaConfirmacaoDesligamentoNoAC(Collection<Colaborador> colaboradores,Date dataDesligamento, Empresa empresa);
 }

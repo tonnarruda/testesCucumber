@@ -99,9 +99,12 @@ import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
+import com.fortes.rh.model.security.Auditoria;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TSituacao;
+import com.fortes.rh.security.spring.aop.AuditavelImpl;
+import com.fortes.rh.security.spring.aop.callback.ColaboradorAuditorCallbackImpl;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -113,6 +116,7 @@ import com.fortes.rh.util.MathUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
+import com.fortes.security.auditoria.Auditavel;
 import com.fortes.web.tags.CheckBox;
 
 @SuppressWarnings("unchecked")
@@ -211,7 +215,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	}
 
 	@SuppressWarnings("rawtypes")
-	public Collection findList(int page, int pagingSize, Map parametros)
+	public Collection<Colaborador> findList(int page, int pagingSize, Map parametros)
 	{
 		return getDao().findList(page, pagingSize, parametros, TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
 	}
@@ -1077,6 +1081,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			Long[] colaboradoresIds = new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradores);
 			desligaColaborador(true, dataDesligamento, "", null, null, true, true, colaboradoresIds);
 			removeVinculos(colaboradoresIds);
+			auditoriaManager.auditaConfirmacaoDesligamentoNoAC(colaboradores, dataDesligamento, empresa);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
@@ -2523,6 +2528,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		this.religaColaborador(colaborador.getId());
 		gerenciadorComunicacaoManager.enviaMensagemCancelamentoSolicitacaoDesligamentoAC(colaborador, mensagem, empresaCodigoAC, grupoAC);
+		auditoriaManager.auditaCancelamentoSolicitacoNoAC(colaborador, mensagem);
 	}
 
 	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId)

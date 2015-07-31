@@ -56,18 +56,21 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void religaColaborador(Long colaboradorId) throws Exception;
 	@Audita(operacao="Desligamento no AC", auditor=ColaboradorAuditorCallbackImpl.class)
 	public boolean desligaColaboradorAC(Empresa empresa, Date dataDesligamento, String... codigosACColaboradores) throws FortesException, Exception;
-	@Audita(operacao="Solicitação Deslig", auditor=ColaboradorAuditorCallbackImpl.class)
+	@Audita(operacao="Solicitação Desligamento", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void solicitacaoDesligamentoAc(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Character gerouSubstituicao, Long colaboradorId, Empresa empresa) throws Exception, IntegraACException;
 	@Audita(operacao="Remoção", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void removeComDependencias(Long id) throws Exception;
 	public Colaborador removeColaboradorDependencias(Colaborador colaborador);
 	@Audita(operacao="Solicitação Desligamento", auditor=ColaboradorAuditorCallbackImpl.class)
 	public void solicitacaoDesligamento(Date dataSolicitacaoDesligamento, String observacaoDemissao, Long motivoId, Character gerouSubstituicao, Long solicitanteDemissaoId, Long colaboradorId) throws Exception;
+	@Audita(operacao="Solicitação Desligamento Cancelada", auditor=ColaboradorAuditorCallbackImpl.class)
+	public void reprovaSolicitacaoDesligamento(Long colaboradorId) throws Exception;
+	public void cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem, String empresaCodigoAC, String grupoAC) throws Exception;
 	public void cancelarContratacaoNoAC(Colaborador colaborador, HistoricoColaborador historicoColaborador, String mensagem) throws Exception;
 	public Collection<Colaborador> findByAreasOrganizacionalIds(Long[] idsLong);
 	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario);
 	public Integer getCount(Map parametros);
-	public Collection findList(int page, int pagingSize, Map parametros);
+	public Collection<Colaborador> findList(int page, int pagingSize, Map parametros);
 	public Collection<Colaborador> findByAreasOrganizacionalIds(Integer page, Integer pagingSize, Long[] areasIds, Long[] cargosIds, Long[] estabelecimentosIds, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean somenteHistoricoAtualEPassado);
 	public Colaborador findColaboradorPesquisa(Long id,Long empresaId);
 	public void saveDetalhes(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias);
@@ -191,7 +194,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Object> montaParentesByNome(Collection<Colaborador> colaboradores);
 	public String avisoQtdCadastros() throws Exception;
 	public Collection<PendenciaAC> findPendenciasSolicitacaoDesligamento(Long empresaId);
-	public void cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String mensagem, String empresaCodigoAC, String grupoAC) throws Exception;
 	public String getVinculo(String admissaoTipo, Integer admissaoVinculo, Integer admissaoCategoria);
 	public Collection<Colaborador> findAdmitidosHaDiasSemEpi(Collection<Integer> dias, Long empresaId);
 	public Collection<Colaborador> findAguardandoEntregaEpi(Collection<Integer> diasLembrete, Long empresaId);
@@ -215,6 +217,4 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId);
 	public void populaEscolaridade(Colaborador colaborador, TEmpregado empregado);
 	public void insereNonoDigitoCelular(Long[] ufId) throws Exception;
-	@Audita(operacao="Solicitação Desligamento Cancelada", auditor=ColaboradorAuditorCallbackImpl.class)
-	public void reprovaSolicitacaoDesligamento(Long colaboradorId) throws Exception;
 }

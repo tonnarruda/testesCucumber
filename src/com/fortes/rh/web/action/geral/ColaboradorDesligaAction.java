@@ -114,7 +114,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			if (dataDesligamento.before(colaborador.getDataAdmissao()))
 				throw new Exception("Data de desligamento anterior à data de admissão");
 			
-			observacaoDemissao = (getEmpresaSistema().isSolicitarConfirmacaoDesligamento() ? "Aprovado por: " : "Solicitado por: ") + getUsuarioLogado().getNome() + ".  " +  observacaoDemissao;
+			observacaoDemissao = (getEmpresaSistema().isSolicitarConfirmacaoDesligamento() ? "Aprovado por: " : "Solicitado por: ") + getUsuarioLogado().getNome() + ".  Obs: " +  observacaoDemissao;
 			
 			colaboradorManager.solicitacaoDesligamentoAc(dataDesligamento, observacaoDemissao, motDemissao.getId(), gerouSubstituicao, colaborador.getId(), getEmpresaSistema());
 			
