@@ -5,6 +5,27 @@
 	
 		<@frt.checkListBox label="EPCs existentes no Ambiente" name="epcCheck" list="epcCheckList" filtro="true"/>
 		
+		<script>
+			function validaRiscosExistentes(){
+				var validaRiscosExistentes = true;
+				$("input[name=riscoChecks]").each(function(){
+					var idRisco = $(this).val();
+					$(this).parent().parent().find("#grauDeRisco"+idRisco).css("background-color", "");
+					
+					if ($(this).is(":checked") ) {
+						if ($(this).parent().parent().find("#grauDeRisco"+idRisco).val() == '' ){
+							$(this).parent().parent().find("#grauDeRisco"+idRisco).css("background-color", "rgb(255, 238, 194)");
+							validaRiscosExistentes = false;
+						}
+					}
+				});
+				
+				if (!validaRiscosExistentes)
+					jAlert("Selecione um valor para os campos indicados.");
+				return validaRiscosExistentes;
+			}
+		</script>
+		
 		<#assign i = 0/>
 		<#if empresaControlaRiscoPor == 'A'> 
 			Riscos existentes:<br>
@@ -14,6 +35,9 @@
 				</@display.column>
 				<@display.column property="risco.descricao" title="Risco" style="width: 240px;"/>
 				<@display.column property="risco.descricaoGrupoRisco" title="Tipo" style="width: 240px;"/>
+				<@display.column title="Grau" style="text-align:center;">
+					<@ww.select name="riscosAmbientes[${i}].grauDeRisco" id="grauDeRisco${riscoAmbiente.risco.id}" headerKey="" headerValue="Selecione" list=r"#{'P':'Pequeno','M':'Médio','G':'Grande'}" disabled="true"/>
+				</@display.column>
 				<@display.column title="EPI Eficaz" style="width: 140px;text-align:center;">
 					<#if riscoAmbiente.risco.epiEficaz == true> 
 						Sim
@@ -36,6 +60,7 @@
 			</@display.table>
 		<#else>
 			<#list riscosAmbientes as riscoAmbiente>
+				<@ww.hidden name="riscosAmbientes[${i}].grauDeRisco" />
 				<@ww.hidden name="riscosAmbientes[${i}].periodicidadeExposicao" />
 				<@ww.hidden name="riscosAmbientes[${i}].epcEficaz" />
 				<@ww.hidden name="riscosAmbientes[${i}].medidaDeSeguranca" />

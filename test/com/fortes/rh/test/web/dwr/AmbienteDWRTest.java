@@ -35,7 +35,7 @@ public class AmbienteDWRTest extends MockObjectTestCase
 		
 		Long estabelecimentoId = 2L;
 		
-		ambienteManager.expects(once()).method("findByEstabelecimento").with(eq(estabelecimentoId)).will(returnValue(ambientes));
+		ambienteManager.expects(once()).method("findByEstabelecimento").with(eq(new Long[]{estabelecimentoId})).will(returnValue(ambientes));
 		
 		Map<Object, Object> resultado = ambienteDWR.getAmbienteByEstabelecimento(estabelecimentoId); 
 		

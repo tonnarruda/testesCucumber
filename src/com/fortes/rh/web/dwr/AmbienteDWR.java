@@ -8,6 +8,7 @@ import java.util.Map;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
 public class AmbienteDWR
@@ -40,6 +41,13 @@ public class AmbienteDWR
 		Collection<Ambiente> ambientes = ambienteManager.findByEstabelecimento(estabelecimentoId);
 		
 		return  new CollectionUtil<Ambiente>().convertCollectionToMap(ambientes,"getId","getNome");
+	}
+	
+	public Map<Object, Object> getAmbientesByEstabelecimentos(String[] estabelecimentosIds, Date data)
+	{
+		Collection<Ambiente> ambientes = ambienteManager.findByEstabelecimento(LongUtil.arrayStringToArrayLong(estabelecimentosIds));
+		
+		return  new CollectionUtil<Ambiente>().convertCollectionToMap(ambientes,"getId","getNomeComEstabelecimento");
 	}
 
 	public void setAmbienteManager(AmbienteManager ambienteManager) {

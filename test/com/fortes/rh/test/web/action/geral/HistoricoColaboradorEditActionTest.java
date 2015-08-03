@@ -414,7 +414,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 
 	private void dadoQueExistemAmbientesCadastrados() {
 		ambienteManager.expects(once()).method("findByEstabelecimento")
-			.with(eq(historicoColaborador.getEstabelecimento().getId()))
+			.with(eq(new Long[]{historicoColaborador.getEstabelecimento().getId()}))
 				.will(returnValue(Collections.EMPTY_LIST));
 	}
 

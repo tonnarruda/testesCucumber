@@ -85,6 +85,14 @@ public class Ambiente extends AbstractModel implements Serializable
 	{
 		this.nome = nome;
 	}
+	public String getNomeComEstabelecimento()
+	{
+		String nomeComEstabelecimento = nome;
+		if (estabelecimento != null && estabelecimento.getNome() != null)
+			nomeComEstabelecimento = estabelecimento.getNome() + " - " + nome;
+		return nomeComEstabelecimento;
+	}
+	
 	public Collection<HistoricoAmbiente> getHistoricoAmbientes()
 	{
 		return historicoAmbientes;

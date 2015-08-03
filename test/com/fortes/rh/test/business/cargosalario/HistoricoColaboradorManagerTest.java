@@ -2178,7 +2178,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 
 		
 		historicoColaboradorDao.expects(once()).method("findAllByColaborador").with(eq(1L)).will(returnValue(historicoColaboradors));
-		ambienteManager.expects(once()).method("findByEstabelecimento").with(eq(1L)).will(returnValue(new ArrayList<Ambiente>()));
+		ambienteManager.expects(once()).method("findByEstabelecimento").with(eq(new Long[]{1L})).will(returnValue(new ArrayList<Ambiente>()));
 		funcaoManager.expects(once()).method("findByCargo").with(eq(1L)).will(returnValue(new ArrayList<Funcao>()));
 		
 		assertEquals(1, historicoColaboradorManager.getHistoricosComAmbienteEFuncao(1L).size());

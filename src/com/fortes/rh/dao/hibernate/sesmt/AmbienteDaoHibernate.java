@@ -19,6 +19,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.AmbienteDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
 public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implements AmbienteDao
@@ -70,7 +71,7 @@ public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implemen
 			criteria.add(Expression.sqlRestriction("normalizar({alias}.nome) ilike normalizar(?)", "%" + ambiente.getNome() + "%", Hibernate.STRING));
 	}
 
-	public Collection<Ambiente> findByEstabelecimento(Long estabelecimentoId)
+	public Collection<Ambiente> findByEstabelecimento(Long... estabelecimentoIds)
 	{
 		Criteria criteria = getSession().createCriteria(Ambiente.class,"a");
 		criteria.createCriteria("a.estabelecimento", "e");
@@ -78,9 +79,10 @@ public class AmbienteDaoHibernate extends GenericDaoHibernate<Ambiente> implemen
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("a.id"), "id");
 		p.add(Projections.property("a.nome"), "nome");
+		p.add(Projections.property("e.nome"), "projectionEstabelecimentoNome");
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("e.id", estabelecimentoId));
+		criteria.add(Expression.in("e.id", estabelecimentoIds));
 		
 		criteria.addOrder(Order.asc("a.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

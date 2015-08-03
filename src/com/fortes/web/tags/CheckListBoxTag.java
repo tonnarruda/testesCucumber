@@ -23,6 +23,7 @@ public class CheckListBoxTag extends TagSupport
 	private String width = "";
 	private String height = "";
 	private String liClass = "";
+	private boolean required = false;
 	private boolean valueString = false;
 	private boolean readonly = false;
 	private boolean filtro = false;
@@ -64,6 +65,8 @@ public class CheckListBoxTag extends TagSupport
 			}
 
 			String labelFormatado = label + (StringUtils.isBlank(label)?"":":");
+			if (required)
+				labelFormatado+= "*";
 			
 			String clss = "wwgrp";
 			if (StringUtils.isNotEmpty(liClass))
@@ -236,6 +239,10 @@ public class CheckListBoxTag extends TagSupport
 
 	public void setFiltro(String filtro) {
 		this.filtro = Boolean.valueOf(filtro);
+	}
+	
+	public void setRequired(String required) {
+		this.required = Boolean.valueOf(required);
 	}
 
 	public String getLiClass() {

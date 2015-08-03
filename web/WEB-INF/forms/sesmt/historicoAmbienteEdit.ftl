@@ -17,7 +17,7 @@
 		<#assign formAction="insert.action"/>
 		<#assign accessKey="I"/>
 	</#if>
-	<#assign validarCampos="return validaFormulario('form', new Array('dataHist','descricao'), new Array('dataHist'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('dataHist','descricao'), new Array('dataHist'), !validaRiscosExistentes())"/>
 	<#assign empresaControlaRiscoPor><@authz.authentication operation="empresaControlaRiscoPor"/></#assign>
 	
 
@@ -32,6 +32,9 @@
 			<#if historicoAmbiente?exists && historicoAmbiente.riscoAmbientes?exists>
 				<#list historicoAmbiente.riscoAmbientes as riscoAmbiente>
 					$('#check' + ${riscoAmbiente.risco.id}).attr('checked', true).parent().parent().find('input, select, textarea').attr('disabled', false);
+					<#if riscoAmbiente.periodicidadeExposicao?exists>
+						$('#grauDeRisco' + ${riscoAmbiente.risco.id}).val('${riscoAmbiente.grauDeRisco}');
+					</#if>
 					<#if riscoAmbiente.periodicidadeExposicao?exists>
 						$('#perExposicao' + ${riscoAmbiente.risco.id}).val('${riscoAmbiente.periodicidadeExposicao}');
 					</#if>

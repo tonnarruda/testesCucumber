@@ -182,7 +182,7 @@ public class AmbienteManagerTest extends MockObjectTestCase
 		ambiente.setEstabelecimento(estabelecimento);
 		colecao.add(ambiente);
 
-		ambienteDao.expects(once()).method("findByEstabelecimento").with(eq(estabelecimento.getId())).will(returnValue(colecao));
+		ambienteDao.expects(once()).method("findByEstabelecimento").with(eq(new Long[]{estabelecimento.getId()})).will(returnValue(colecao));
 		
 		Collection<Ambiente> retorno = ambienteManager.findByEstabelecimento(estabelecimento.getId());
 		

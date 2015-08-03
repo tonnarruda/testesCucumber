@@ -18,7 +18,7 @@ public interface AmbienteManager extends GenericManager<Ambiente>
 	Collection<Ambiente> findAmbientes(Long empresaId);
 	Collection<Ambiente> findAmbientes(int page, int pagingSize, Long empresaId, Ambiente ambiente);
 	void saveAmbienteHistorico(Ambiente ambiente, HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck, char controlaRiscoPor) throws Exception;
-	Collection<Ambiente> findByEstabelecimento(Long estabelecimentoId);
+	Collection<Ambiente> findByEstabelecimento(Long... estabelecimentoIds);
 	Collection<Ambiente> findByEmpresa(Long empresaId);
 	Collection<CheckBox> getAmbientes(Empresa empresa) throws Exception;
 	public Collection<Long> getIdsAmbientes(Collection<HistoricoColaborador> colhc);

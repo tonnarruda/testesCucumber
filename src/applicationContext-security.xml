@@ -571,6 +571,8 @@
 				/sesmt/epi/prepareImprimirFicha*/**=ROLE_REL_FICHA_EPI
 				/sesmt/epi/*/**=ROLE_CAD_EPI
 				/sesmt/epiHistorico/*/**=ROLE_CAD_EPI
+				/sesmt/ambiente/prepareRelatorioMapaDeRisco.action*=ROLE_REL_MAPA_DE_RISCO
+				/sesmt/ambiente/imprimirRelatorioMapaDeRisco**=ROLE_REL_MAPA_DE_RISCO
 				/sesmt/ambiente/*/**=ROLE_CAD_AMBIENTE
 				/sesmt/historicoAmbiente/*/**=ROLE_CAD_AMBIENTE
 				/sesmt/risco/*/**=ROLE_CAD_RISCO

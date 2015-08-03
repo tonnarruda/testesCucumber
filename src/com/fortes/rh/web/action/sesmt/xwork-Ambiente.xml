@@ -12,6 +12,18 @@
 	    	</interceptor-ref>	
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/ambienteList.ftl</result>
 		</action>
+		<action name="prepareRelatorioMapaDeRisco" class="com.fortes.rh.web.action.sesmt.AmbienteEditAction" method="prepareRelatorioMapaDeRisco">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/prepareRelatorioMapaDeRisco.ftl</result>
+		</action>
+		<action name="imprimirRelatorioMapaDeRisco" class="com.fortes.rh.web.action.sesmt.AmbienteEditAction" method="imprimirRelatorioMapaDeRisco">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/ambientes.jasper</param>
+				<param name="dataSource">ambientes</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">ambientes.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/prepareRelatorioMapaDeRisco.ftl</result>
+		</action>
 		<action name="imprimirLista" class="com.fortes.rh.web.action.sesmt.AmbienteEditAction" method="imprimirLista">
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/ambientes.jasper</param>

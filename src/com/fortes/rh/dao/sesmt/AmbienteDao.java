@@ -10,7 +10,7 @@ public interface AmbienteDao extends GenericDao<Ambiente>
 {
 	Integer getCount(Long empresaId, Ambiente ambiente);
 	Collection<Ambiente> findAmbientes(int page, int pagingSize, Long empresaId, Ambiente ambiente);
-	Collection<Ambiente> findByEstabelecimento(Long estabelecimentoId);
+	Collection<Ambiente> findByEstabelecimento(Long... estabelecimentoIds);
 	Ambiente findByIdProjection(Long ambienteId);
 	Collection<Ambiente> findByIds(Collection<Long> ambienteIds, Date data, Long estabelecimentoId);
 	int getQtdColaboradorByAmbiente(Long ambienteId, Date data, String sexo, Long funcaoId);

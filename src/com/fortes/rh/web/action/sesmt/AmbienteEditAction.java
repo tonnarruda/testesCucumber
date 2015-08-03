@@ -8,6 +8,7 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.EpcManager;
 import com.fortes.rh.business.sesmt.HistoricoAmbienteManager;
+import com.fortes.rh.business.sesmt.RiscoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
@@ -15,6 +16,7 @@ import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -29,6 +31,7 @@ public class AmbienteEditAction extends MyActionSupportList
 	private EstabelecimentoManager estabelecimentoManager;
 	private EpcManager epcManager;
 	private RiscoManager riscoManager;
+	private RiscoAmbienteManager riscoAmbienteManager;
 
 	private Ambiente ambiente;
 	private HistoricoAmbiente historicoAmbiente;
@@ -43,6 +46,10 @@ public class AmbienteEditAction extends MyActionSupportList
 
 	private Collection<CheckBox> epcCheckList = new ArrayList<CheckBox>();
 	private String[] epcCheck;
+	private String[] estabelecimentoCheck;
+	private Collection<CheckBox> estabelecimentoCheckList = new ArrayList<CheckBox>();
+	private Long[] ambienteCheck;
+	private Collection<CheckBox> ambienteCheckList = new ArrayList<CheckBox>();
 	
 	private String[] riscoChecks;
 	private String[] epcEficazChecks;
@@ -120,6 +127,28 @@ public class AmbienteEditAction extends MyActionSupportList
 	public String imprimirLista() throws Exception
 	{
 		ambientes = ambienteManager.findAmbientes(0, 0, getEmpresaSistema().getId(), ambiente);
+		if (ambientes.isEmpty()) 
+		{
+			addActionMessage("Não existem dados para o filtro informado");
+			list();
+			return Action.INPUT;
+		}
+		parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Ambientes", getEmpresaSistema(),"");
+		
+		return Action.SUCCESS;
+	}
+	
+	public String prepareRelatorioMapaDeRisco()
+	{
+		estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+		estabelecimentoCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentoCheckList, estabelecimentoCheck);
+		
+		return Action.SUCCESS;
+	}
+	
+	public String imprimirRelatorioMapaDeRisco() throws Exception
+	{
+		riscosAmbientes = riscoAmbienteManager.findRiscoAmbienteByAmbientes(ambienteCheck);
 		if (ambientes.isEmpty()) 
 		{
 			addActionMessage("Não existem dados para o filtro informado");
@@ -250,7 +279,43 @@ public class AmbienteEditAction extends MyActionSupportList
 		this.riscosAmbientes = riscosAmbientes;
 	}
 
-	
+	public String[] getEstabelecimentosCheck() {
+		return estabelecimentoCheck;
+	}
+
+	public void setEstabelecimentoCheck(String[] estabelecimentoCheck) {
+		this.estabelecimentoCheck = estabelecimentoCheck;
+	}
+
+	public Collection<CheckBox> getEstabelecimentoCheckList() {
+		return estabelecimentoCheckList;
+	}
+
+	public void setEstabelecimentoCheckList(
+			Collection<CheckBox> estabelecimentoCheckList) {
+		this.estabelecimentoCheckList = estabelecimentoCheckList;
+	}
+
+	public Long[] getAmbienteCheck() {
+		return ambienteCheck;
+	}
+
+	public void setAmbienteCheck(Long[] ambienteCheck) {
+		this.ambienteCheck = ambienteCheck;
+	}
+
+	public Collection<CheckBox> getAmbienteCheckList() {
+		return ambienteCheckList;
+	}
+
+	public void setAmbienteCheckList(Collection<CheckBox> ambienteCheckList) {
+		this.ambienteCheckList = ambienteCheckList;
+	}
+
+	public void setRiscoAmbienteManager(RiscoAmbienteManager riscoAmbienteManager) {
+		this.riscoAmbienteManager = riscoAmbienteManager;
+	}
+
 	public Map<String, Object> getParametros()
 	{
 		return parametros;

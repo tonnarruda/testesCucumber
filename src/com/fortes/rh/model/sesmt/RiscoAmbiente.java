@@ -24,6 +24,7 @@ public class RiscoAmbiente extends AbstractModel implements Serializable
 
 	@ManyToOne
 	private Risco risco;
+	private Character grauDeRisco;
 	
 	@Transient
 	private boolean epiEficaz;
@@ -46,6 +47,20 @@ public class RiscoAmbiente extends AbstractModel implements Serializable
 		this.historicoAmbiente = new HistoricoAmbiente();
 		this.historicoAmbiente.setData(data);
 		this.historicoAmbiente.setAmbiente(ambiente);
+	}
+	
+	public RiscoAmbiente(Long ambienteId, String ambienteNome, String riscoDescricao, String riscoGrupoRisco, Character grauDeRisco, Date data, Long id)
+	{
+		setId(id);
+		this.grauDeRisco = grauDeRisco;
+		this.risco = new Risco();
+		this.risco.setDescricao(riscoDescricao);
+		this.risco.setGrupoRisco(riscoGrupoRisco);
+		this.historicoAmbiente = new HistoricoAmbiente();
+		this.historicoAmbiente.setData(data);
+		this.historicoAmbiente.setAmbiente(new Ambiente());
+		this.historicoAmbiente.getAmbiente().setId(ambienteId);
+		this.historicoAmbiente.getAmbiente().setNome(ambienteNome);
 	}
 
 	public boolean isEpiEficaz() {
@@ -88,6 +103,14 @@ public class RiscoAmbiente extends AbstractModel implements Serializable
 		this.periodicidadeExposicao = periodicidadeExposicao;
 	}
 	
+	public Character getGrauDeRisco() {
+		return grauDeRisco;
+	}
+
+	public void setGrauDeRisco(Character grauDeRisco) {
+		this.grauDeRisco = grauDeRisco;
+	}
+
 	public String getMedidaDeSeguranca()
 	{
 		return medidaDeSeguranca;

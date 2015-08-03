@@ -182,9 +182,9 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		getDao().remove(ambiente);
 	}
 	
-	public Collection<Ambiente> findByEstabelecimento(Long estabelecimentoId)
+	public Collection<Ambiente> findByEstabelecimento(Long... estabelecimentoIds)
 	{
-		return getDao().findByEstabelecimento(estabelecimentoId);
+		return getDao().findByEstabelecimento(estabelecimentoIds);
 	}
 
 	public Collection<Ambiente> findByEmpresa(Long empresaId)
