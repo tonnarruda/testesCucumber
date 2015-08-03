@@ -653,8 +653,8 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		
 		if( ( colaboradorAvaliado.getDataDesligamento() == null  || 
 				(colaboradorAvaliado.getDataDesligamento().after(new Date()) || DateUtil.equals(colaboradorAvaliado.getDataDesligamento(), new Date()))	) 
-			&& avaliador != null)
-			{
+				&& avaliador != null)
+		{
 			String avaliadorNome = avaliador !=null ? avaliador.getNomeMaisNomeComercial():usuario.getNome();
 			
 			StringBuilder mensagem = new StringBuilder();
@@ -672,10 +672,26 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA.getId(), empresa.getId());
 			for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 			{
-				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
-				{	
-					Collection<UsuarioEmpresa> usuarioEmpresaPeriodoExperiencia = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
-					usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), avaliadorNome, link, usuarioEmpresaPeriodoExperiencia, avaliador, TipoMensagem.AVALIACAO_DESEMPENHO, null);
+				try 
+				{
+					Collection<UsuarioEmpresa> usuariosConfigurados = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
+
+					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
+					{	
+						usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), avaliadorNome, link, usuariosConfigurados, avaliador, TipoMensagem.AVALIACAO_DESEMPENHO, null);
+					}
+					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
+					{	
+						String[] emails = colaboradorManager.findEmailsByUsuarios(LongUtil.collectionToCollectionLong(usuariosConfigurados));
+						
+						ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
+						mensagem.append("<br /><br>Acesse o RH para ver a resposta:<br />");
+						mensagem.append("<a href='" + parametrosDoSistema.getAppUrl() + "/" + link + "'>RH</a>");
+						
+						mail.send(empresa, "[RH] - Resposta de avaliação do período de experiência", mensagem.toString().replace("\n", "<br />"), null, emails);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		}
