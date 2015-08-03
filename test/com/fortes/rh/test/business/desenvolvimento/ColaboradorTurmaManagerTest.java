@@ -22,7 +22,6 @@ import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManagerImpl;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
-import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -47,7 +46,6 @@ import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.ws.TAula;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -74,11 +72,9 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 	private Mock aproveitamentoAvaliacaoCursoManager;
 	private Mock cursoManager;
 	private Mock empresaManager;
-	private Mock diaTurmaManager;
 	private Mock certificacaoManager;
 	Mock turmaManager;
 	Mock colaboradorPresencaManager;
-	private Mock mail;
 
 	protected void setUp() throws Exception
 	{
@@ -109,7 +105,6 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		turmaManager = new Mock(TurmaManager.class);
 
 		colaboradorPresencaManager = new Mock(ColaboradorPresencaManager.class);
-		diaTurmaManager = new Mock(DiaTurmaManager.class);
 		
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 		
@@ -950,7 +945,6 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 	{
 		Curso curso = CursoFactory.getEntity(10L);
 		Long empresaId=1L;
-		Long[] empresasPermitidas = new Long[]{empresaId};
 		Long[] areaIds=null;
 		Long[] estabelecimentoIds=null;
 		
@@ -989,6 +983,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		assertTrue(exception instanceof ColecaoVaziaException);
 	}
 
+	@SuppressWarnings("unused")
 	private void mockValidaRelatorio(Curso curso, Long[] empresasIds) {
 		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
 		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(ANYTHING, ANYTHING, eq(empresasIds)).will(returnValue(areas));
@@ -1149,8 +1144,6 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		certificadoA.setConteudo("mamae quer #NOMECOLABORADOR#");
 		certificadoA.setNomeColaborador(marlus.getNome());
 		
-		Certificado certificadoB = new Certificado();
-		
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 		colaboradores.add(marlus);
 		
@@ -1161,5 +1154,43 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Certificado certificadoClonado = (Certificado) certificadosResults.toArray()[0];
 		
 		assertEquals("mamae quer Marlus", certificadoClonado.getConteudo());
+	}
+	
+	public void testFindCursosVencidosAVencer()
+	{
+		Date dataVencimento1 = DateUtil.criarDataMesAno(1, 1, 2015);
+		Date dataVencimento2 = DateUtil.criarDataMesAno(1, 2, 2015);
+		Date dataVencimento3 = DateUtil.criarDataMesAno(1, 3, 2015);
+		
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setVencimento(dataVencimento1);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setVencimento(dataVencimento2);
+		
+		Turma turma3 = TurmaFactory.getEntity();
+		turma3.setVencimento(dataVencimento3);
+		
+		ColaboradorTurma colaboradorTurma1 = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma1.setTurma(turma1);
+		
+		ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma2.setTurma(turma2);
+		
+		ColaboradorTurma colaboradorTurma3 = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma3.setTurma(turma3);
+		
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+		colaboradorTurmas.add(colaboradorTurma1);
+		colaboradorTurmas.add(colaboradorTurma2);
+		colaboradorTurmas.add(colaboradorTurma3);
+		
+		colaboradorTurmaDao.expects(once()).method("findCursosVencidosAVencer").withAnyArguments().will(returnValue(colaboradorTurmas));
+		
+		Collection<ColaboradorTurma> colaboradorTurmasRetrono = colaboradorTurmaManager.findCursosVencidosAVencer(dataVencimento1, dataVencimento2, null, null, 'T', 'T', 'T');
+		
+		assertEquals(2, colaboradorTurmasRetrono.size());
+		assertEquals(dataVencimento1, ((ColaboradorTurma) colaboradorTurmasRetrono.toArray()[0]).getTurma().getVencimento() );
+		assertEquals(dataVencimento2, ((ColaboradorTurma) colaboradorTurmasRetrono.toArray()[1]).getTurma().getVencimento() );
 	}
 }

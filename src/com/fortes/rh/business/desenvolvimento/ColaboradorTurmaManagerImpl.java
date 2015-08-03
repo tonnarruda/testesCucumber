@@ -1067,12 +1067,13 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		this.empresaManager = empresaManager;
 	}
 
-	public Collection<ColaboradorTurma> findCursosVencidosAVencer(Date dataIni, Date dataFim, Long[] empresasIds, Long[] cursosIds, char filtroAgrupamento, char filtroSituacao, char filtroAprovado) {
+	public Collection<ColaboradorTurma> findCursosVencidosAVencer(Date dataIni, Date dataFim, Long[] empresasIds, Long[] cursosIds, char filtroAgrupamento, char filtroSituacao, char filtroAprovado) 
+	{
 		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findCursosVencidosAVencer(dataIni, empresasIds, cursosIds, filtroAgrupamento, filtroSituacao, filtroAprovado);
 		Collection<ColaboradorTurma> colaboradorTurmasRetorno = new ArrayList<ColaboradorTurma>();
 		
 		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
-			if(colaboradorTurma.getTurma()!= null && colaboradorTurma.getTurma().getVencimento() != null && colaboradorTurma.getTurma().getVencimento().before(dataFim))
+			if(colaboradorTurma.getTurma()!= null && colaboradorTurma.getTurma().getVencimento() != null && colaboradorTurma.getTurma().getVencimento().compareTo(dataFim) <= 0 )
 				colaboradorTurmasRetorno.add(colaboradorTurma);
 		
 		return colaboradorTurmasRetorno;
