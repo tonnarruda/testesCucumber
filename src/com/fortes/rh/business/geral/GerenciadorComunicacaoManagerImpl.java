@@ -849,7 +849,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		for (Colaborador colaborador : colaboradores)
 		{
 			String link = "pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=" + colaborador.getId() + "&voltarPara=../../index.action";
-			String msgGeral = "O Colaborador " + colaborador.getNomeEOuNomeComercial() + " foi desligado no AC Pessoal.";
+			String msgGeral = "O Colaborador " + colaborador.getNomeEOuNomeComercial() + " da empresa "+empresa.getNome()+" foi desligado no AC Pessoal.";
 			
 			if(colaboradoresComEstabilidade != null && colaboradoresComEstabilidade.containsKey(colaborador.getId()))
 				msgGeral += "\nEste colaborador faz parte da CIPA e possui estabilidade até o dia " + DateUtil.formataDiaMesAno(colaboradoresComEstabilidade.get(colaborador.getId())) + ".";
@@ -1736,7 +1736,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				StringBuilder body = new StringBuilder(); 
 				body.append("Existe uma solicitação de desligamento para o colaborador <b>");
 				body.append(colaborador.getNome());
-				body.append("</b> pendente. Para aprovar ou reprovar essa solicitação, acesse o sistema <a href='"+link+"'>RH</a>.<br/><br />");
+				body.append("</b> da empresa <b>"+empresa.getNome()+"</b> pendente. Para aprovar ou reprovar essa solicitação, acesse o sistema <a href='"+link+"'>RH</a>.<br/><br />");
 				body.append("<b>Data da Solicitação:</b><br />");
 				body.append(DateUtil.formataDate(colaborador.getDataSolicitacaoDesligamento(), "dd/MM/yyyy") + "<br /><br />");
 				body.append("<b>Motivo:</b><br />");
@@ -1772,6 +1772,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			
 			body.append("<br />Sua solicitação de desligamento para o(a) colaborador(a) <b>");
 			body.append(colaboradorNome);
+			body.append("</b> da empresa <b>" + empresa.getNome());
 			body.append("</b> foi ");
 			body.append(status);
 			body.append(".<br /><br />");
