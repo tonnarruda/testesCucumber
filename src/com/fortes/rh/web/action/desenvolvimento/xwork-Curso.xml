@@ -24,8 +24,8 @@
 			<interceptor-ref name="defaultDeleteStack">
 				<param name="scope.session">nomeCursoBusca</param>
 			</interceptor-ref>
-			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/cursoList.ftl</result>
-			<result name="error" type="freemarker">/WEB-INF/forms/desenvolvimento/cursoList.ftl</result>
+			<result name="success" type="redirect">list.action</result>
+			<result name="error" type="redirect">list.action</result>
 		</action>
 		
 		<action name="prepareInsert" class="com.fortes.rh.web.action.desenvolvimento.CursoEditAction" method="prepareInsert">
