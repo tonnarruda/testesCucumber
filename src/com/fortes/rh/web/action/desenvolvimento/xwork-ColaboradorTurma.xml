@@ -155,7 +155,12 @@
 				<param name="dataSource">colaboradoresCertificacoes</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">colaboradores_certificacoes.pdf</param>
-				<param name="documentName">colaboradores_certificacoes.pdf</param>
+			</result>
+			<result name="successAgrupadoPorCurso" type="jasper">
+				<param name="location">WEB-INF/report/colaboradores_certificacoes_por_curso.jasper</param>
+				<param name="dataSource">colaboradoresCertificacoes</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">colaboradores_certificacoes_por_curso.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/relatorioColaboradorCertificacao.ftl</result>
 		</action>
@@ -167,6 +172,17 @@
 				<param name="columns">Estabelecimento,Área Organizacional,Colaborador,Curso,Turma,Período,Aprovado,Nota</param>
 				<param name="propertiesGroup">colaborador.estabelecimento.id,colaborador.areaOrganizacional.id,colaborador.id,curso.id</param>
 				<param name="properties">colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,colaborador.nome,curso.nome,turma.descricao,turma.periodoFormatado,aprovado,valorAvaliacao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+				<param name="formatoDouble">#,##0.##</param>
+			</result>
+			<result name="successAgrupadoPorCurso" type="xls">
+				<param name="dataSource">colaboradoresCertificacoes</param>
+				<param name="documentName">colaboradores_certificacoes.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Estabelecimento,Área Organizacional,Curso,Colaborador,Turma,Período,Aprovado,Nota</param>
+				<param name="propertiesGroup">colaborador.estabelecimento.id,colaborador.areaOrganizacional.id,curso.id,colaborador.id</param>
+				<param name="properties">colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,curso.nome,colaborador.nome,turma.descricao,turma.periodoFormatado,aprovado,valorAvaliacao</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 				<param name="formatoDouble">#,##0.##</param>

@@ -137,6 +137,8 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private String situacao;
 	
 	private boolean exibeCargo;
+	
+	private char filtroAgrupamento;
 
 	public String getMsgAlert()
 	{
@@ -417,14 +419,21 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	{
 		try
 		{
+			String retorno = SUCCESS;
+			String titleAgrupamento = " por Colaborador";
+			if (filtroAgrupamento == '1') {
+				titleAgrupamento = " por Curso";
+				retorno = "successAgrupadoPorCurso";
+			}
+			
 			String periodo = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " até " + DateUtil.formataDiaMesAno(dataFim);
-			reportTitle = "Colaboradores x Certificações";
+			reportTitle = "Colaboradores x Certificações" + titleAgrupamento;
 			reportFilter = "Emitido em: " + DateUtil.formataDiaMesAno(new Date()) + "\n" + periodo;
 			
-			colaboradoresCertificacoes = colaboradorTurmaManager.montaRelatorioColaboradorCertificacao(getEmpresaSistema().getId(), certificacao, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim);
+			colaboradoresCertificacoes = colaboradorTurmaManager.montaRelatorioColaboradorCertificacao(getEmpresaSistema().getId(), certificacao, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim, filtroAgrupamento);
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), "Certificação: " + certificacao.getNome() + "\n" + periodo);
 			
-			return SUCCESS;
+			return retorno;
 		}
 		catch (ColecaoVaziaException e)
 		{
@@ -905,5 +914,13 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 
 	public void setExibeCargo(boolean exibeCargo) {
 		this.exibeCargo = exibeCargo;
+	}
+
+	public char getFiltroAgrupamento() {
+		return filtroAgrupamento;
+	}
+
+	public void setFiltroAgrupamento(char filtroAgrupamento) {
+		this.filtroAgrupamento = filtroAgrupamento;
 	}
 }

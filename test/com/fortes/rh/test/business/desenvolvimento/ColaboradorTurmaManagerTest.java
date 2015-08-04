@@ -914,14 +914,14 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		
 		Exception ex=null;
 		try {
-			colaboradorTurmaManager.montaRelatorioColaboradorCertificacao(1L, certificacao, new Long[]{1L}, new Long[]{1L}, null, null);
+			colaboradorTurmaManager.montaRelatorioColaboradorCertificacao(1L, certificacao, new Long[]{1L}, new Long[]{1L}, null, null, '0');
 		}
 		catch (ColecaoVaziaException e) { ex = e; }
 		assertNotNull(ex);
 		
 		ex=null;
 		try {
-			colaboradorTurmaManager.montaRelatorioColaboradorCertificacao(1L, certificacao, new Long[]{1L}, new Long[]{1L}, null, null);
+			colaboradorTurmaManager.montaRelatorioColaboradorCertificacao(1L, certificacao, new Long[]{1L}, new Long[]{1L}, null, null, '0');
 		}
 		catch (ColecaoVaziaException e) { ex = e; }
 		assertNotNull(ex);

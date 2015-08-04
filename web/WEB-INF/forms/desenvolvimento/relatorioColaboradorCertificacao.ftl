@@ -41,7 +41,7 @@
 		<@ww.select name="certificacao.id" id="certificacao" list="certificacoes" listKey="id" required="true" listValue="nome" label="Certificação" headerKey="" headerValue="Selecione..."/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
-		
+		<@ww.select name="filtroAgrupamento" label="Agrupar relatório por" list=r"#{'0':'Colaboradores','1':'Cursos'}" cssStyle="width: 500px;"/>
 		
 	</@ww.form>
 	
