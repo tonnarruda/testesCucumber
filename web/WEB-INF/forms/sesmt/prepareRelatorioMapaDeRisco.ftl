@@ -25,7 +25,7 @@
 
 	    function createListAmbientes(data)
 	    {
-	      addChecks("ambienteCheck", data);
+	      addChecksByMap("ambienteCheck", data);
 	    }
 	    
 	</script>

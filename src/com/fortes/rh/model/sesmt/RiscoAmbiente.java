@@ -49,18 +49,13 @@ public class RiscoAmbiente extends AbstractModel implements Serializable
 		this.historicoAmbiente.setAmbiente(ambiente);
 	}
 	
-	public RiscoAmbiente(Long ambienteId, String ambienteNome, String riscoDescricao, String riscoGrupoRisco, Character grauDeRisco, Date data, Long id)
+	public RiscoAmbiente(Long id, String riscoDescricao, String riscoGrupoRisco, Character grauDeRisco)
 	{
 		setId(id);
 		this.grauDeRisco = grauDeRisco;
 		this.risco = new Risco();
 		this.risco.setDescricao(riscoDescricao);
 		this.risco.setGrupoRisco(riscoGrupoRisco);
-		this.historicoAmbiente = new HistoricoAmbiente();
-		this.historicoAmbiente.setData(data);
-		this.historicoAmbiente.setAmbiente(new Ambiente());
-		this.historicoAmbiente.getAmbiente().setId(ambienteId);
-		this.historicoAmbiente.getAmbiente().setNome(ambienteNome);
 	}
 
 	public boolean isEpiEficaz() {

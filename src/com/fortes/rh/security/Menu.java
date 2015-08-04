@@ -73,7 +73,7 @@ public abstract class Menu
 		menu.append("<li style='float: right; line-height: 0.8em;'><a href='" + contexto + "/geral/documentoVersao/list.action' class='versao'> Versão: "  +  parametros.getAppVersao() +"</a></li>\n");
 		
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='contatos.action' title='Contatos'>" +
+				"<a href='contatos.action' title='Coequalsntatos'>" +
 				"<img src='"+ contexto + "/imgs/telefone.gif' style='vertical-align: middle;'></a></li>\n");
 
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
@@ -113,7 +113,8 @@ public abstract class Menu
 		
 		for(Papel papel : roles)
 		{
-			if (papel.getPapelMae() != null && papel.getPapelMae().getId() == id)
+			boolean exibeMenu = !(papel.getNome().equals("Mapa de Risco") && empresaLogada.getControlaRiscoPor() == 'F');
+			if (papel.getPapelMae() != null && papel.getPapelMae().getId() == id && exibeMenu )
 			{
 				String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
 				

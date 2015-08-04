@@ -17,7 +17,7 @@
 		<#assign formAction="insert.action"/>
 		<#assign accessKey="I"/>
 	</#if>
-	<#assign validarCampos="return validaFormulario('form', new Array('dataHist','descricao'), new Array('dataHist'), !validaRiscosExistentes())"/>
+	<#assign validarCamp="return validaFormulario('form', new Array('dataHist','descricao'), new Array('dataHist'), !validaRiscosExistentes())"/>
 	<#assign empresaControlaRiscoPor><@authz.authentication operation="empresaControlaRiscoPor"/></#assign>
 	
 
@@ -32,7 +32,7 @@
 			<#if historicoAmbiente?exists && historicoAmbiente.riscoAmbientes?exists>
 				<#list historicoAmbiente.riscoAmbientes as riscoAmbiente>
 					$('#check' + ${riscoAmbiente.risco.id}).attr('checked', true).parent().parent().find('input, select, textarea').attr('disabled', false);
-					<#if riscoAmbiente.periodicidadeExposicao?exists>
+					<#if riscoAmbiente.grauDeRisco?exists>
 						$('#grauDeRisco' + ${riscoAmbiente.risco.id}).val('${riscoAmbiente.grauDeRisco}');
 					</#if>
 					<#if riscoAmbiente.periodicidadeExposicao?exists>
@@ -65,7 +65,7 @@
 </head>
 <body>
 	<@ww.actionerror />
-	<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
+	<@ww.form name="form" action="${formAction}" onsubmit="${validarCamp}" validate="true" method="POST">
 
 		<#include "includeHistoricoAmbiente.ftl" />
 
@@ -76,7 +76,7 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}"></button>
+		<button onclick="${validarCamp};" class="btnGravar" accesskey="${accessKey}"></button>
 		<button onclick="window.location='../ambiente/prepareUpdate.action?ambiente.id=${ambiente.id}'" class="btnCancelar" accesskey="V"></button>
 	</div>
 </body>

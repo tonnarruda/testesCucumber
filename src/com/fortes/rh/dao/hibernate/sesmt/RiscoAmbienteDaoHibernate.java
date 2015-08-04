@@ -87,17 +87,17 @@ public class RiscoAmbienteDaoHibernate extends GenericDaoHibernate<RiscoAmbiente
 		return query.list();
 	}
 
-	public Collection<RiscoAmbiente> findRiscoAmbienteByAmbientes(Long[] ambienteIds) {
-		StringBuilder hql = new StringBuilder("select new RiscoAmbiente(a.id, a.nome, r.descricao, r.grupoRisco, ra.grauDeRisco, ha.data, ra.id) ");
+	public Collection<RiscoAmbiente> findRiscoAmbienteByAmbiente(Long ambienteId) {
+		StringBuilder hql = new StringBuilder("select new RiscoAmbiente(ra.id, r.descricao, r.grupoRisco, ra.grauDeRisco ) ");
 		hql.append("from RiscoAmbiente ra join ra.risco r join ra.historicoAmbiente ha join ha.ambiente a join ra.risco r ");
-		hql.append("where a.id in (:ambienteIds) ");
+		hql.append("where a.id = :ambienteId ");
 		hql.append("and ha.data = (select max(ha2.data) " +
 								"from HistoricoAmbiente ha2 " +
 								"where ha2.ambiente.id = a.id and ha2.data <= current_date) ");
 
 		
 		Query query = getSession().createQuery(hql.toString());
-		query.setParameterList("ambienteIds", ambienteIds);
+		query.setLong("ambienteId", ambienteId);
 		
 		return query.list();
 	}

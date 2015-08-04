@@ -90,6 +90,10 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		return relatorios;
 	}
 	
+	public int getQtdColaboradorByAmbiente(Long ambienteId, Date data, String sexo){
+		return getDao().getQtdColaboradorByAmbiente(ambienteId, data, sexo, null);
+	}
+	
 	private void populaRelatorioPor(Ambiente ambiente, Date data, ComposicaoSesmt composicaoSesmt, PpraLtcatRelatorio ppraLtcatRelatorio) 
 	{
 		ppraLtcatRelatorio.setComposicaoSesmts(Arrays.asList(composicaoSesmt));
@@ -214,8 +218,36 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 	{
 		return getDao().findByIdProjection(ambienteId);
 	}
-
+	
 	public Collection<CheckBox> populaCheckBox(Long estabelecimentoId) 
+	{
+		try
+		{
+			Collection<Ambiente> ambientes = getDao().findByEstabelecimento(estabelecimentoId);
+			return CheckListBoxUtil.populaCheckListBox(ambientes, "getId", "getNome");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return new ArrayList<CheckBox>();
+		}
+	}
+	
+	public Collection<CheckBox> populaCheckBoxByEstabelecimentos(Long[] estabelecimentoIds) 
+	{
+		try
+		{
+			Collection<Ambiente> ambientes = getDao().findByEstabelecimento(estabelecimentoIds);
+			return CheckListBoxUtil.populaCheckListBox(ambientes, "getId", "getNomeComEstabelecimento");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			return new ArrayList<CheckBox>();
+		}
+	}
+
+	public Collection<CheckBox> populaCheckBox(Long... estabelecimentoId) 
 	{
 		try
 		{

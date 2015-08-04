@@ -18,7 +18,7 @@
 		<title>Inserir Ambiente</title>
 		<#assign formAction="insert.action"/>
 		<#assign accessKey="I"/>
-		<#assign validarCampos="return validaFormulario('form', new Array('estabelecimento','dataHist','nome','descricao'), new Array('dataHist'), validaRiscosExistentes())"/>
+		<#assign validarCampos="return validaFormulario('form', new Array('estabelecimento','dataHist','nome','descricao'), new Array('dataHist'), !validaRiscosExistentes())"/>
 	</#if>
 	
 	<#if historicoAmbiente?exists && historicoAmbiente.data?exists>

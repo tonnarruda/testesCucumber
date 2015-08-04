@@ -17,10 +17,10 @@
 		</action>
 		<action name="imprimirRelatorioMapaDeRisco" class="com.fortes.rh.web.action.sesmt.AmbienteEditAction" method="imprimirRelatorioMapaDeRisco">
 			<result name="success" type="jasper">
-				<param name="location">WEB-INF/report/ambientes.jasper</param>
-				<param name="dataSource">ambientes</param>
+				<param name="location">WEB-INF/report/mapaDeRisco.jasper</param>
+				<param name="dataSource">mapasDeRisco</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">ambientes.pdf</param>
+				<param name="documentName">mapaDeRisco.pdf</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/prepareRelatorioMapaDeRisco.ftl</result>
 		</action>

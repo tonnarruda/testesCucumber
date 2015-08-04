@@ -2,21 +2,26 @@ package com.fortes.rh.web.action.sesmt;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.EpcManager;
+import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.HistoricoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
+import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Epc;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
+import com.fortes.rh.model.sesmt.relatorio.MapaDeRisco;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
@@ -32,11 +37,13 @@ public class AmbienteEditAction extends MyActionSupportList
 	private EpcManager epcManager;
 	private RiscoManager riscoManager;
 	private RiscoAmbienteManager riscoAmbienteManager;
+	private EpiManager epiManager;
 
 	private Ambiente ambiente;
 	private HistoricoAmbiente historicoAmbiente;
 
 	private Collection<HistoricoAmbiente> historicoAmbientes = new ArrayList<HistoricoAmbiente>();
+	private Collection<MapaDeRisco> mapasDeRisco = new ArrayList<MapaDeRisco>();
 	
 	private Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
 	private Collection<Estabelecimento> estabelecimentos;
@@ -48,7 +55,7 @@ public class AmbienteEditAction extends MyActionSupportList
 	private String[] epcCheck;
 	private String[] estabelecimentoCheck;
 	private Collection<CheckBox> estabelecimentoCheckList = new ArrayList<CheckBox>();
-	private Long[] ambienteCheck;
+	private String[] ambienteCheck;
 	private Collection<CheckBox> ambienteCheckList = new ArrayList<CheckBox>();
 	
 	private String[] riscoChecks;
@@ -148,13 +155,30 @@ public class AmbienteEditAction extends MyActionSupportList
 	
 	public String imprimirRelatorioMapaDeRisco() throws Exception
 	{
-		riscosAmbientes = riscoAmbienteManager.findRiscoAmbienteByAmbientes(ambienteCheck);
-		if (ambientes.isEmpty()) 
+		for (Long ambienteId : LongUtil.arrayStringToArrayLong(ambienteCheck)) {
+			MapaDeRisco mapaDeRisco = new MapaDeRisco();
+			mapaDeRisco.setAmbiente(ambienteManager.findByIdProjection(ambienteId));
+			mapaDeRisco.setRiscoAmbientes(riscoAmbienteManager.findRiscoAmbienteByAmbiente(ambienteId));
+			mapaDeRisco.setEpis(epiManager.findEpisDoAmbiente(ambienteId, new Date()));
+			mapaDeRisco.setQtdDeColaboradoresHomens(ambienteManager.getQtdColaboradorByAmbiente(ambienteId, new Date(), Sexo.MASCULINO));
+			mapaDeRisco.setQtdDeColaboradoresMulheres(ambienteManager.getQtdColaboradorByAmbiente(ambienteId, new Date(), Sexo.FEMININO));
+			if ( !mapaDeRisco.getRiscoAmbientes().isEmpty() )
+				mapasDeRisco.add(mapaDeRisco);
+		}
+		
+		if (mapasDeRisco.isEmpty()) 
 		{
-			addActionMessage("Não existem dados para o filtro informado");
+			estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+			estabelecimentoCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentoCheckList, estabelecimentoCheck);
+			
+			ambienteCheckList = ambienteManager.populaCheckBoxByEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentoCheck));
+			ambienteCheckList = CheckListBoxUtil.marcaCheckListBox(ambienteCheckList, ambienteCheck);
+			
+			addActionMessage("Não existem dados para o filtro informado.");
 			list();
 			return Action.INPUT;
 		}
+		
 		parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Ambientes", getEmpresaSistema(),"");
 		
 		return Action.SUCCESS;
@@ -203,6 +227,14 @@ public class AmbienteEditAction extends MyActionSupportList
 	public void setHistoricoAmbientes(Collection<HistoricoAmbiente> historicoAmbientes)
 	{
 		this.historicoAmbientes = historicoAmbientes;
+	}
+
+	public Collection<MapaDeRisco> getMapasDeRisco() {
+		return mapasDeRisco;
+	}
+
+	public void setMapasDeRisco(Collection<MapaDeRisco> mapasDeRisco) {
+		this.mapasDeRisco = mapasDeRisco;
 	}
 
 	public void setHistoricoAmbienteManager(HistoricoAmbienteManager historicoAmbienteManager)
@@ -296,11 +328,11 @@ public class AmbienteEditAction extends MyActionSupportList
 		this.estabelecimentoCheckList = estabelecimentoCheckList;
 	}
 
-	public Long[] getAmbienteCheck() {
+	public String[] getAmbienteCheck() {
 		return ambienteCheck;
 	}
 
-	public void setAmbienteCheck(Long[] ambienteCheck) {
+	public void setAmbienteCheck(String[] ambienteCheck) {
 		this.ambienteCheck = ambienteCheck;
 	}
 
@@ -314,6 +346,10 @@ public class AmbienteEditAction extends MyActionSupportList
 
 	public void setRiscoAmbienteManager(RiscoAmbienteManager riscoAmbienteManager) {
 		this.riscoAmbienteManager = riscoAmbienteManager;
+	}
+	
+	public void setEpiManager(EpiManager epiManager) {
+		this.epiManager = epiManager;
 	}
 
 	public Map<String, Object> getParametros()
