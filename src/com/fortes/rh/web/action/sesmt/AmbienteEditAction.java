@@ -144,44 +144,52 @@ public class AmbienteEditAction extends MyActionSupportList
 		
 		return Action.SUCCESS;
 	}
-	
+
 	public String prepareRelatorioMapaDeRisco()
 	{
 		estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		estabelecimentoCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentoCheckList, estabelecimentoCheck);
-		
+
+		ambienteCheckList = ambienteManager.populaCheckBoxByEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentoCheck));
+		ambienteCheckList = CheckListBoxUtil.marcaCheckListBox(ambienteCheckList, ambienteCheck);
+
 		return Action.SUCCESS;
 	}
-	
+
 	public String imprimirRelatorioMapaDeRisco() throws Exception
 	{
-		for (Long ambienteId : LongUtil.arrayStringToArrayLong(ambienteCheck)) {
-			MapaDeRisco mapaDeRisco = new MapaDeRisco();
-			mapaDeRisco.setAmbiente(ambienteManager.findByIdProjection(ambienteId));
-			mapaDeRisco.setRiscoAmbientes(riscoAmbienteManager.findRiscoAmbienteByAmbiente(ambienteId));
-			mapaDeRisco.setEpis(epiManager.findEpisDoAmbiente(ambienteId, new Date()));
-			mapaDeRisco.setQtdDeColaboradoresHomens(ambienteManager.getQtdColaboradorByAmbiente(ambienteId, new Date(), Sexo.MASCULINO));
-			mapaDeRisco.setQtdDeColaboradoresMulheres(ambienteManager.getQtdColaboradorByAmbiente(ambienteId, new Date(), Sexo.FEMININO));
-			if ( !mapaDeRisco.getRiscoAmbientes().isEmpty() )
+		try	{
+			Collection<RiscoAmbiente> riscosAmbientes = new ArrayList<RiscoAmbiente>();
+			for (Long ambienteId : LongUtil.arrayStringToArrayLong(ambienteCheck)) {
+				riscosAmbientes = riscoAmbienteManager.findRiscoAmbienteByAmbiente(ambienteId); 
+				
+				if (riscosAmbientes.isEmpty() )	continue;
+				
+				MapaDeRisco mapaDeRisco = new MapaDeRisco();
+				mapaDeRisco.setAmbiente(ambienteManager.findByIdProjection(ambienteId));
+				mapaDeRisco.setRiscoAmbientes(riscosAmbientes);
+				mapaDeRisco.setEpis(epiManager.findEpisDoAmbiente(ambienteId, new Date()));
+				mapaDeRisco.setQtdDeColaboradoresHomens(ambienteManager.getQtdColaboradorByAmbiente(ambienteId, new Date(), Sexo.MASCULINO));
+				mapaDeRisco.setQtdDeColaboradoresMulheres(ambienteManager.getQtdColaboradorByAmbiente(ambienteId, new Date(), Sexo.FEMININO));
 				mapasDeRisco.add(mapaDeRisco);
-		}
-		
-		if (mapasDeRisco.isEmpty()) 
-		{
-			estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
-			estabelecimentoCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentoCheckList, estabelecimentoCheck);
-			
-			ambienteCheckList = ambienteManager.populaCheckBoxByEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentoCheck));
-			ambienteCheckList = CheckListBoxUtil.marcaCheckListBox(ambienteCheckList, ambienteCheck);
-			
-			addActionMessage("Não existem dados para o filtro informado.");
-			list();
+			}
+
+			if (mapasDeRisco.isEmpty()) 
+			{
+				addActionMessage("Não existem riscos ou o grau dos riscos não foi definido para os ambientes selecionados.");
+				prepareRelatorioMapaDeRisco();
+				return Action.INPUT;
+			}
+
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Ambientes", getEmpresaSistema(),"");
+
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			addActionError("Ocorreu uma inconsistência ao gerar o relatório.");
+			e.printStackTrace();
+			prepareRelatorioMapaDeRisco();
 			return Action.INPUT;
 		}
-		
-		parametros = RelatorioUtil.getParametrosRelatorio("Relatório de Ambientes", getEmpresaSistema(),"");
-		
-		return Action.SUCCESS;
 	}
 
 	public String delete() throws Exception
