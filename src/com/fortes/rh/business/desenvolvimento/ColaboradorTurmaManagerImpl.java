@@ -684,7 +684,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		if (tipoAgrupamento == '0') {
 			ordenacao = " e.nome, a.nome, co.nome, c.nome ";
 		} else {
-			ordenacao = " e.nome, a.nome, c.nome, co.nome ";
+			ordenacao = " c.nome, e.nome, a.nome, co.nome ";
 		}
 		
 		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, certificacao, null, areaIds, estabelecimentoIds, dataInicio, dataFim, ordenacao, true, SituacaoColaborador.ATIVO);
@@ -701,7 +701,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		
 		Collection<ColaboradorCertificacaoRelatorio> colaboradoresCertificacoes = new ArrayList<ColaboradorCertificacaoRelatorio>();
 		
-		setColaboradoresDaCertificacao(certificacao, cursos, colaboradorTurmas, colaboradoresCertificacoes);
+		setColaboradoresDaCertificacao(certificacao, cursos, colaboradorTurmas, colaboradoresCertificacoes, tipoAgrupamento);
 		
 		for (ColaboradorCertificacaoRelatorio colaboradorCertificacao : colaboradoresCertificacoes)
 		{
@@ -838,21 +838,32 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	}
 	
 	private void setColaboradoresDaCertificacao(Certificacao certificacao, Collection<Curso> cursos, Collection<ColaboradorTurma> colaboradorTurmas,
-			Collection<ColaboradorCertificacaoRelatorio> colaboradoresCertificacoes) {
+			Collection<ColaboradorCertificacaoRelatorio> colaboradoresCertificacoes, Character tipoAgrupamento) {
 		
 		Collection<Long> colabIds = new TreeSet<Long>();
 		
-		for (ColaboradorTurma  colaboradorTurma : colaboradorTurmas)
-		{
-			if (colabIds.contains(colaboradorTurma.getColaborador().getId()))
-					continue;
-			else
-				colabIds.add(colaboradorTurma.getColaborador().getId());
-			
+		if ( tipoAgrupamento == '0' ) {
+			for (ColaboradorTurma  colaboradorTurma : colaboradorTurmas)
+			{
+				if (colabIds.contains(colaboradorTurma.getColaborador().getId()))
+						continue;
+				else
+					colabIds.add(colaboradorTurma.getColaborador().getId());
+				
+				for (Curso curso : cursos)
+				{
+					ColaboradorCertificacaoRelatorio relatorio = new ColaboradorCertificacaoRelatorio(colaboradorTurma.getColaborador(), certificacao, curso);
+					colaboradoresCertificacoes.add(relatorio);
+				}
+			}
+		} else {
 			for (Curso curso : cursos)
 			{
-				ColaboradorCertificacaoRelatorio relatorio = new ColaboradorCertificacaoRelatorio(colaboradorTurma.getColaborador(), certificacao, curso);
-				colaboradoresCertificacoes.add(relatorio);
+				for (ColaboradorTurma  colaboradorTurma : colaboradorTurmas)
+				{
+					ColaboradorCertificacaoRelatorio relatorio = new ColaboradorCertificacaoRelatorio(colaboradorTurma.getColaborador(), certificacao, curso);
+					colaboradoresCertificacoes.add(relatorio);
+				}
 			}
 		}
 	}

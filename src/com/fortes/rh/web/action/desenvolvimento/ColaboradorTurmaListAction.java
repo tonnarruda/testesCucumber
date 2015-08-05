@@ -420,14 +420,12 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		try
 		{
 			String retorno = SUCCESS;
-			String titleAgrupamento = " por Colaborador";
 			if (filtroAgrupamento == '1') {
-				titleAgrupamento = " por Curso";
 				retorno = "successAgrupadoPorCurso";
 			}
 			
 			String periodo = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " até " + DateUtil.formataDiaMesAno(dataFim);
-			reportTitle = "Colaboradores x Certificações" + titleAgrupamento;
+			reportTitle = "Colaboradores x Certificações";
 			reportFilter = "Emitido em: " + DateUtil.formataDiaMesAno(new Date()) + "\n" + periodo;
 			
 			colaboradoresCertificacoes = colaboradorTurmaManager.montaRelatorioColaboradorCertificacao(getEmpresaSistema().getId(), certificacao, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim, filtroAgrupamento);
