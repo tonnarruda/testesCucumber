@@ -30,4 +30,5 @@ public interface EmpresaDao extends GenericDao<Empresa>
 	Empresa getCnae(Long empresaId);
 	void updateCodigoAC(Long empresaId, String codigoAC, String grupoAC);
 	Collection<Empresa> findByGruposAC(String... gruposAC);
+	String getCodigoGrupoAC(Long empresaId);
 }

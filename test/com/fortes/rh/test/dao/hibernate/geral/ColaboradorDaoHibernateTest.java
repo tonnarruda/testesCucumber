@@ -6459,6 +6459,9 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		criarColaboradorHistorico("Demosval", null, empresa2, DateUtil.criarDataMesAno(1, 5, 2009), DateUtil.criarDataMesAno(1, 11, 2009), null, null, null, null, a2, fs1, null, null);
 		
 		Collection<Colaborador> colaboradores = colaboradorDao.findByEmpresaAndStatusAC(empresa1.getId(), null, null, StatusRetornoAC.CONFIRMADO, true, null, true, "c.nome");
+
+		//Ver Samuel
+		//		Collection<Colaborador> colaboradores = colaboradorDao.findByEmpresaAndStatusAC(empresa1.getId(), StatusRetornoAC.CONFIRMADO, true, SituacaoColaborador.ATIVO);
 		
 		assertEquals(2, colaboradores.size());
 		assertEquals("Airton", ((Colaborador)colaboradores.toArray()[0]).getNome());
@@ -6603,6 +6606,42 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador = colaboradorDao.save(colaborador);
 		
 		assertEquals(1, colaboradorDao.findByEstadosCelularOitoDigitos(new Long[]{estado.getId()}).size());
+		
+	}
+	
+	public void testListColaboradorComDataSolDesligamentoAcAndCodigoAc(){
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
+
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial fs1 = FaixaSalarialFactory.getEntity();
+		fs1.setCargo(cargo);
+		faixaSalarialDao.save(fs1);
+		
+		AreaOrganizacional a1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(a1);
+		
+		Estabelecimento e1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(e1);
+		
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome("Demosval");
+		colaborador.setEmpresa(empresa1);
+		colaborador.setVinculo(Vinculo.EMPREGO);
+		colaborador.setDataAdmissao(new Date());
+		colaborador.setDataDesligamento(new Date());
+		colaborador.setDataSolicitacaoDesligamentoAc(new Date());
+		colaborador.setCodigoAC("000012");
+		colaboradorDao.save(colaborador);
+		
+		Collection<Colaborador> colaboradores = colaboradorDao.listColaboradorComDataSolDesligamentoAC(empresa1.getId(), true);
+		assertEquals(1, colaboradores.size());
 		
 	}
 	

@@ -21,6 +21,7 @@ import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -32,6 +33,7 @@ import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupport;
+import com.fortes.rh.web.ws.AcPessoalClientColaborador;
 
 @SuppressWarnings("serial")
 public class ExportacaoACAction extends MyActionSupport
@@ -50,6 +52,7 @@ public class ExportacaoACAction extends MyActionSupport
 	private FaixaSalarialHistoricoManager faixaSalarialHistoricoManager;
 	private OcorrenciaManager ocorrenciaManager;
 	private ColaboradorOcorrenciaManager colaboradorOcorrenciaManager;
+	private AcPessoalClientColaborador acPessoalClientColaborador;
 	
 	private List<String> codigosACs;
 	private Collection<Empresa> empresas;
@@ -81,6 +84,7 @@ public class ExportacaoACAction extends MyActionSupport
 			verificarHistoricosPorIndice();
 			verificarEmpresaAC();
 			verificarEstabelecimentoAC();
+			atualizarDataSolicitacaoDesligamentoAC();
 			exportarAreasOrganizacionaisAC();
 			exportarFaixasSalariaisAC();
 			exportarColaboradoresAC();
@@ -93,6 +97,7 @@ public class ExportacaoACAction extends MyActionSupport
 			{
 				exportarHistoricosColaboardoresAC();
 				exportarColaboradoresOcorrenciasAc();
+				exportarDesligamentos();
 				addActionSuccess("Exportação concluída com sucesso.<br />Confirme os registros pendentes no AC Pessoal referentes à integração com RH." +
 						"<br />Finalize a exportação marcando a integração da empresa exportada no sistema RH .");
 			}
@@ -142,6 +147,23 @@ public class ExportacaoACAction extends MyActionSupport
 		if(colaboradoresIds != null && colaboradoresIds.size() > 0)
 			historicoColaboradorManager.updateStatusAcByEmpresaAndStatusAtual(StatusRetornoAC.PENDENTE, StatusRetornoAC.CONFIRMADO, new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradoresIds));
 	}
+	
+	private void exportarDesligamentos(){
+		Collection<Colaborador> colaboradores = colaboradorManager.listColaboradorComDataSolDesligamentoAC(empresaId, true);
+
+		for (Colaborador colaborador : colaboradores) {
+			Collection<HistoricoColaborador> historicosColaborador = new ArrayList<HistoricoColaborador>();
+			HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());
+			historicoColaborador.setDataSolicitacaoDesligamento(colaborador.getDataDesligamento());
+			historicoColaborador.setObsACPessoal(colaborador.getObservacaoDemissao());
+			historicosColaborador.add(historicoColaborador);
+			try {
+				acPessoalClientColaborador.solicitacaoDesligamentoAc(historicosColaborador, empresa);
+			} catch (IntegraACException e) {
+				e.printStackTrace();
+			} 
+		}
+	} 
 
 	private boolean registrosNaoForamConfirmadosNoAC()
 	{
@@ -202,6 +224,10 @@ public class ExportacaoACAction extends MyActionSupport
 		
 		if (!estabelecimentos.isEmpty())
 			throw new EstabelecimentosSemCodigoACException("Existe estabelecimento que ainda não foi vinculado a um estabelecimento do AC Pessoal.<br />Em empresas integradas, apenas o AC Pessoal controla os estabelecimentos.");
+	}
+	
+	private void atualizarDataSolicitacaoDesligamentoAC(){
+		colaboradorManager.setDataSolicitacaoDesligamentoACByDataDesligamento(empresaId);
 	}
 	
 	public String prepareExportarEstabelecimentoAC()
@@ -299,6 +325,9 @@ public class ExportacaoACAction extends MyActionSupport
 	private void exportarColaboradoresAC() throws Exception
 	{
 		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, null, null, StatusRetornoAC.PENDENTE, true, false, true, "c.nome");
+
+		//Ver Samuel
+		//		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, StatusRetornoAC.PENDENTE, true, SituacaoColaborador.TODOS);
 		for (Colaborador colaborador : colaboradores)
 		{
 			colaborador.getHistoricoColaborador().setAreaOrganizacional(colaborador.getAreaOrganizacional());
@@ -481,5 +510,10 @@ public class ExportacaoACAction extends MyActionSupport
 	public void setColaboradorOcorrenciaManager(
 			ColaboradorOcorrenciaManager colaboradorOcorrenciaManager) {
 		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
+	}
+	
+	public void setAcPessoalClientColaborador(
+			AcPessoalClientColaborador acPessoalClientColaborador) {
+		this.acPessoalClientColaborador = acPessoalClientColaborador;
 	}
 }

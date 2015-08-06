@@ -1005,6 +1005,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().atualizaSolicitacaoDesligamento(dataSolicitacaoDesligamento, null, observacaoDemissao, motivoId, gerouSubstituicao, solicitanteDemissaoId, colaboradorId);
 	}
 	
+	public Collection<Colaborador> listColaboradorComDataSolDesligamentoAC(Long empresaId, boolean existeCodigoAC){
+		return getDao().listColaboradorComDataSolDesligamentoAC(empresaId, existeCodigoAC);
+	}
+
 	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Character gerouSubstituicao, boolean desligaByAC, boolean integradoAC, Long... colaboradoresIds) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
@@ -2691,9 +2695,15 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 	}
 
+//<<<<<<< HEAD
 	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, int statusAC, boolean semcodigoAc, Boolean desligado, boolean primeiroHistorico, String... order)
 	{
 		return getDao().findByEmpresaAndStatusAC(empresaId, estabelecimentosIds, areasIds, statusAC, semcodigoAc, desligado, primeiroHistorico, order);
+//ver samuel
+//	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC, boolean semcodigoAc, String situacao)
+//	{
+//		return getDao().findByEmpresaAndStatusAC(empresaId, statusAC, semcodigoAc, situacao);
+//>>>>>>> S20150700102 - Exportação dos colaboradores desligados para o Fortes
 	}
 
 	public void desvinculaCandidato(Long candidatoId) 
@@ -2741,6 +2751,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	
 	public void reprovaSolicitacaoDesligamento(Long colaboradorId) throws Exception{
 		getDao().atualizaSolicitacaoDesligamento(null, null, null, null, null, null, colaboradorId);
+	}
+	
+	public void setDataSolicitacaoDesligamentoACByDataDesligamento(Long empresaId){
+		getDao().setDataSolicitacaoDesligamentoACByDataDesligamento(empresaId);
 	}
 	
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId) 

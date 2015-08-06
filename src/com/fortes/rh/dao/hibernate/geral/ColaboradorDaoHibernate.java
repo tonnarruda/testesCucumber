@@ -4247,7 +4247,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("   where hc2.colaborador.id = co.id ");
 		hql.append("   and hc2.status = :status ");
 		hql.append("  ) ");
-		hql.append("and co.desligado = false ");
 		hql.append("and co.codigoAC is null ");
 		hql.append("and co.naoIntegraAc = :naoIntegraAc ");
 		
@@ -4642,6 +4641,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	}
 
 	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, int statusAC, boolean semcodigoAc, Boolean desligado, boolean primeiroHistorico, String... order)
+
+//	ver Samuel
+	//	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC, boolean semcodigoAc, String situacao)
 	{
 		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2");
 
@@ -4746,6 +4748,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		if(desligado != null)
 			criteria.add(Expression.eq("c.desligado", desligado));
+//ver samuel
+//		if(situacao == SituacaoColaborador.ATIVO)
+//			criteria.add(Expression.eq("c.desligado", false));
 		
 		if(semcodigoAc)
 			criteria.add(Expression.isNull("c.codigoAC"));
@@ -4992,5 +4997,38 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Collection<Colaborador> colaboradores = query.list(); 
 		
 		return colaboradores;
+	}
+	
+	public void setDataSolicitacaoDesligamentoACByDataDesligamento(Long empresaId){
+		Query query = getSession().createQuery("update Colaborador set dataSolicitacaoDesligamentoAc = dataDesligamento where codigoAC is null and empresa.id = :empresaId and dataDesligamento is not null");
+		
+		query.setLong("empresaId", empresaId);
+		
+		query.executeUpdate();
+	}
+	
+	public Collection<Colaborador> listColaboradorComDataSolDesligamentoAC(Long empresaId, boolean existeCodigoAC){
+		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
+		
+		ProjectionList p = Projections.projectionList().create();
+			p.add(Projections.property("c.dataDesligamento"), "dataDesligamento")
+					.add(Projections.property("c.id"), "id")
+					.add(Projections.property("c.observacaoDemissao"), "observacaoDemissao")
+					.add(Projections.property("c.demissaoGerouSubstituicao"), "demissaoGerouSubstituicao")
+					.add(Projections.property("c.motivoDemissao.id"), "projectionMotivoDemissaoId");
+					
+			criteria.setProjection(p);
+
+			if(existeCodigoAC)
+				criteria.add(Expression.isNotNull("c.codigoAC"));
+			else
+				criteria.add(Expression.isNull("c.codigoAC"));
+				
+			criteria.add(Expression.isNotNull("c.dataSolicitacaoDesligamentoAc"))
+			.add(Expression.isNotNull("c.dataDesligamento"))
+			.add(Expression.eq("c.empresa.id", empresaId));
+			
+			criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+			return criteria.list();
 	}
 }

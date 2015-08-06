@@ -211,6 +211,8 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findDemitidosTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Long empresaId, Date dataIni, Date dataFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor);
 	public Collection<Colaborador> findFormacaoEscolar(Long empresaId, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> cargoIds) throws Exception;
 	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, int statusAC, boolean semcodigoAc, Boolean desligado, boolean primeiroHistorico, String... order);
+//ver samuel
+	//	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC, boolean semcodigoAc, String situacao);
 	public void desvinculaCandidato(Long candidatoId);
 	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId, Long[] areasIdsPorResponsavel);
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds);
@@ -221,4 +223,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void reenviaAguardandoContratacao(Empresa empresa) throws Exception;
 	public void reenviaSolicitacaoDesligamento(Empresa empresa) throws Exception;
 	public void confirmaReenvios(TFeedbackPessoalWebService tFeedbackPessoalWebService, Empresa empresa) throws Exception;
+	public void setDataSolicitacaoDesligamentoACByDataDesligamento(Long empresaId);
+	public Collection<Colaborador> listColaboradorComDataSolDesligamentoAC(Long empresaId, boolean existeCodigoAC);
 }

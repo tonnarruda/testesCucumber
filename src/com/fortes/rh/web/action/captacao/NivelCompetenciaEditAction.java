@@ -25,6 +25,7 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaVO;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
@@ -315,6 +316,9 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		colaboradores = new ArrayList<Colaborador>();
 		colaboradores.add(new Colaborador("Anônimo", 0L));
 		colaboradores.addAll(colaboradorManager.findByEmpresaAndStatusAC(getEmpresaSistema().getId(), null, null, StatusRetornoAC.CONFIRMADO, false, false, true, "c.nome"));
+
+		//ver Samuel
+		//		colaboradores.addAll(colaboradorManager.findByEmpresaAndStatusAC(getEmpresaSistema().getId(), StatusRetornoAC.CONFIRMADO, false, SituacaoColaborador.ATIVO));
 		faixaSalarial = colaborador.getHistoricoColaborador().getFaixaSalarial();
 		
 		prepareCompetenciasColaborador();

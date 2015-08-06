@@ -504,6 +504,10 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return getDao().findByGruposAC(gruposAC);
 	}
 	
+	public String getCodigoGrupoAC(Long empresaId){
+		return getDao().getCodigoGrupoAC(empresaId);
+	}
+	
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
 		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
 	}

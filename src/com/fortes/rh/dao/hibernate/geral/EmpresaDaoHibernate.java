@@ -500,4 +500,17 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		
 		return query.list();
 	}
+	
+	public String getCodigoGrupoAC(Long empresaId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("e.grupoAC"), "grupoAC");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("e.id", empresaId));
+		
+		return (String) criteria.uniqueResult();
+	}
 }
