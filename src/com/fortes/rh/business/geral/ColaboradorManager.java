@@ -217,4 +217,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId);
 	public void populaEscolaridade(Colaborador colaborador, TEmpregado empregado);
 	public void insereNonoDigitoCelular(Long[] ufId) throws Exception;
+	public void reenviaAguardandoContratacao(Empresa empresa);
+	public void reenviaSolicitacaoDesligamento(Empresa empresa) throws Exception;
 }

@@ -45,6 +45,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
@@ -1470,6 +1471,22 @@ public class RHServiceImpl implements RHService
 		}
 	}
 	
+	public void reSincronizarTabelaTemporariaAC (String gruposAC)
+	{
+		try {
+			Collection<Empresa> empresas = empresaManager.findByGruposAC(gruposAC);
+			for (Empresa empresa : empresas) 
+			{
+				faixaSalarialHistoricoManager.reenviaAguardandoConfirmacao(empresa);
+				colaboradorManager.reenviaAguardandoContratacao(empresa);
+				historicoColaboradorManager.reenviaAguardandoConfirmacao(empresa);
+				colaboradorManager.reenviaSolicitacaoDesligamento(empresa);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void setCidadeManager(CidadeManager cidadeManager)
 	{
 		this.cidadeManager = cidadeManager;
@@ -1571,8 +1588,7 @@ public class RHServiceImpl implements RHService
 		this.transactionManager = transactionManager;
 	}
 
-	public void setColaboradorTurmaManager(
-			ColaboradorTurmaManager colaboradorTurmaManager) {
+	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
 		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
 

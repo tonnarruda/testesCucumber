@@ -498,6 +498,11 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	{
 		getDao().updateCodigoAC(empresaId, codigoAC, grupoAC);
 	}
+
+	public Collection<Empresa> findByGruposAC(String... gruposAC) 
+	{
+		return getDao().findByGruposAC(gruposAC);
+	}
 	
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
 		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;

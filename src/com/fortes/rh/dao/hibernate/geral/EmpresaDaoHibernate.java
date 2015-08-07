@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
@@ -489,5 +490,14 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		query.setLong("empresaId", empresaId);
 
 		query.executeUpdate();
+	}
+
+	public Collection<Empresa> findByGruposAC(String... gruposAC) 
+	{
+		String hql = "select emp from Empresa as emp where emp.grupoAC in (:grupoAC) ";
+		Query query = getSession().createQuery(hql);
+		query.setParameterList("grupoAC", gruposAC, Hibernate.STRING);
+		
+		return query.list();
 	}
 }

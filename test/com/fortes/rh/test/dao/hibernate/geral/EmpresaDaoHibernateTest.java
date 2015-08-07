@@ -397,6 +397,39 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals("Codigo AC", empresa.getCodigoAC(), retorno.getCodigoAC());
 		assertEquals("Grupo AC", empresa.getGrupoAC(), retorno.getGrupoAC());
 	}
+	
+	public void testFindByGruposAC()
+	{
+		GrupoAC grupoAC1 = GrupoACFactory.getEntity();
+		grupoAC1.setCodigo("111");
+		grupoACDao.save(grupoAC1);
+		
+		GrupoAC grupoAC2 = GrupoACFactory.getEntity();
+		grupoAC2.setCodigo("222");
+		grupoACDao.save(grupoAC2);
+		
+		GrupoAC grupoAC3 = GrupoACFactory.getEntity();
+		grupoAC3.setCodigo("333");
+		grupoACDao.save(grupoAC3);
+		
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresa1.setGrupoAC(grupoAC1.getCodigo());
+		empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2.setGrupoAC(grupoAC2.getCodigo());
+		empresaDao.save(empresa2);
+		
+		Empresa empresa3 = EmpresaFactory.getEmpresa();
+		empresa3.setGrupoAC(grupoAC3.getCodigo());
+		empresaDao.save(empresa3);
+		
+		Collection<Empresa> empresas = empresaDao.findByGruposAC(new String[]{grupoAC1.getCodigo(), grupoAC3.getCodigo()});
+		
+		assertEquals(2, empresas.size());
+		assertEquals("111", ((Empresa) empresas.toArray()[0]).getGrupoAC());
+		assertEquals("333", ((Empresa) empresas.toArray()[1]).getGrupoAC());
+	}
 
 	public void setCidadeDao(CidadeDao cidadeDao)
 	{

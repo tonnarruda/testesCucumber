@@ -9,7 +9,6 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
-import org.hibernate.criterion.CountProjection;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -52,6 +51,30 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("faixaId", faixaSalarialId);
 		query.setDate("data", new Date());
+
+		return query.list();
+	}
+	
+	public Collection<FaixaSalarialHistorico> findByEmpresaIdAndStatus(Long empresaId, Integer status)
+	{
+		StringBuilder hql = new StringBuilder();
+
+		hql.append("select new FaixaSalarialHistorico(fsh.id, fsh.data, fsh.tipo, fsh.valor, fsh.quantidade, i.codigoAC, fs.codigoAC) ");
+		hql.append("from FaixaSalarialHistorico fsh ");
+		hql.append("inner join fsh.faixaSalarial fs ");
+		hql.append("inner join fs.cargo c ");
+		hql.append("left join fsh.indice i ");
+		hql.append("left join i.indiceHistoricos ih with ih.data = (select max(ih2.data) ");
+		hql.append("                                                from IndiceHistorico ih2 ");
+		hql.append("                                                where ih2.indice.id = i.id) ");
+		
+		hql.append("where c.empresa.id = :empresaId ");
+		hql.append("and fsh.status = :status ");
+		hql.append("order by fsh.data asc ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("empresaId", empresaId);
+		query.setInteger("status", status);
 
 		return query.list();
 	}

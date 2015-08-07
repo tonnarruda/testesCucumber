@@ -25,7 +25,6 @@ import com.fortes.rh.web.action.MyActionSupport;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
 
-@SuppressWarnings("unchecked")
 public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 {
 	private static final long serialVersionUID = 1L;

@@ -414,4 +414,11 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		
 		return false;
 	}
+
+	public void reenviaAguardandoConfirmacao(Empresa empresa) throws Exception 
+	{
+		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = getDao().findByEmpresaIdAndStatus(empresa.getId(), StatusRetornoAC.AGUARDANDO);
+		for (FaixaSalarialHistorico faixaSalarialHistorico : faixaSalarialHistoricos) 
+			acPessoalClientCargo.criarFaixaSalarialHistorico(faixaSalarialHistorico, empresa);
+	}
 }

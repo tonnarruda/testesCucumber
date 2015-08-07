@@ -53,4 +53,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	Collection<Empresa> findEmpresasIntegradas() ;
 	Empresa getCnae(Long empresaId);
 	void updateCodigoGrupoAC(Long empresaId, String codigoAC, String grupoAC);
+	Collection<Empresa> findByGruposAC(String... gruposAC);
 }

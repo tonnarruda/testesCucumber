@@ -326,7 +326,7 @@ public class ExportacaoACAction extends MyActionSupport
 
 	private void exportarHistoricosColaboardoresAC() throws Exception
 	{
-		Collection<HistoricoColaborador> historicos = historicoColaboradorManager.findByEmpresaComHistoricoPendente(empresaId);
+		Collection<HistoricoColaborador> historicos = historicoColaboradorManager.findByEmpresaComHistorico(empresaId, StatusRetornoAC.PENDENTE);
 		historicoColaboradorManager.saveHistoricoColaboradorNoAc(historicos, empresa);
 
 		if(historicos != null && historicos.size() > 0)

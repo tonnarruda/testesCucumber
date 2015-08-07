@@ -1807,9 +1807,26 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaborador.setStatus(StatusRetornoAC.PENDENTE);
 		historicoColaboradorDao.save(historicoColaborador);
 		
-		Collection<HistoricoColaborador> historicos = historicoColaboradorDao.findByEmpresaComHistoricoPendente(empresa.getId());
+		Collection<HistoricoColaborador> historicos = historicoColaboradorDao.findByEmpresaComHistorico(empresa.getId(), StatusRetornoAC.PENDENTE, false);
 		
 		assertEquals(1, historicos.size());
+	}
+	
+	public void testFindByEmpresaComDataSolicitacaoDesligamento()
+	{
+		inicializaColaboradorComHistorico();
+		
+		
+		Date dataSolDesligamentoAC = DateUtil.criarDataMesAno(1, 1, 2015);
+		colaborador.setDataSolicitacaoDesligamentoAc(dataSolDesligamentoAC);
+		
+		historicoColaborador.setStatus(StatusRetornoAC.PENDENTE);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		Collection<HistoricoColaborador> historicos = historicoColaboradorDao.findByEmpresaComHistorico(empresa.getId(), StatusRetornoAC.PENDENTE, true);
+		
+		assertEquals(1, historicos.size());
+		assertEquals(dataSolDesligamentoAC, ((HistoricoColaborador)historicos.toArray()[0]).getDataSolicitacaoDesligamento());
 	}
 
 	private Empresa inicializaColaboradorComHistorico() 

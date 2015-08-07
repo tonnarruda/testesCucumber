@@ -221,6 +221,7 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		
 		assertEquals(reajuste1.getId(), ((ReajusteFaixaSalarial) faixaSalarialHistoricoDao.findReajusteFaixaSalarial(data, faixa1.getId())).getId());
 	}
+	
 	public void testfindHistoricoAtual() {
 		
 		FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity();
@@ -759,6 +760,54 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		faixaSalarialHistorico.setIndice(indice);
 		faixaSalarialHistorico.setStatus(status);
 		faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+	}
+
+	public void testFindByEmpresaIdAndStatus() 
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setEmpresa(empresa);
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity();
+		faixa1.setCargo(cargo);
+		faixaSalarialDao.save(faixa1);
+		
+		FaixaSalarial faixa2 = FaixaSalarialFactory.getEntity();
+		faixa2.setCargo(cargo);
+		faixaSalarialDao.save(faixa2);
+		
+		FaixaSalarial faixa3 = FaixaSalarialFactory.getEntity();
+		faixa3.setCargo(cargo);
+		faixaSalarialDao.save(faixa3);
+		
+		FaixaSalarialHistorico historico1 = FaixaSalarialHistoricoFactory.getEntity();
+		historico1.setFaixaSalarial(faixa1);
+		historico1.setData(DateUtil.criarDataMesAno(01, 01, 2010));
+		historico1.setStatus(StatusRetornoAC.CONFIRMADO);
+		faixaSalarialHistoricoDao.save(historico1);
+		
+		FaixaSalarialHistorico historico2 = FaixaSalarialHistoricoFactory.getEntity();
+		historico2.setFaixaSalarial(faixa2);
+		historico2.setStatus(StatusRetornoAC.CONFIRMADO);
+		historico2.setData(DateUtil.criarDataMesAno(01, 01, 2010));
+		faixaSalarialHistoricoDao.save(historico2);
+		
+		FaixaSalarialHistorico historico3 = FaixaSalarialHistoricoFactory.getEntity();
+		historico3.setFaixaSalarial(faixa2);
+		historico3.setStatus(StatusRetornoAC.AGUARDANDO);
+		historico3.setData(DateUtil.criarDataMesAno(1,1, 2011));
+		faixaSalarialHistoricoDao.save(historico3);
+		
+		FaixaSalarialHistorico historico4 = FaixaSalarialHistoricoFactory.getEntity();
+		historico4.setFaixaSalarial(faixa3);
+		historico4.setStatus(StatusRetornoAC.AGUARDANDO);
+		historico4.setData(DateUtil.criarDataMesAno(1,1, 2011));
+		faixaSalarialHistoricoDao.save(historico4);
+		
+		assertEquals(2, faixaSalarialHistoricoDao.findByEmpresaIdAndStatus(empresa.getId(), StatusRetornoAC.AGUARDANDO).size());
 	}
 	
 	public GenericDao<FaixaSalarialHistorico> getGenericDao()

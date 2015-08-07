@@ -4643,7 +4643,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC, boolean semcodigoAc)
 	{
 		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
-				.setProjection(Projections.min("hc2.data")) // Menor data
+				.setProjection(Projections.min("hc2.data")) // Menor data - não mexer
 				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
 				.add(Restrictions.eq("hc2.status", statusAC));
 
@@ -4652,8 +4652,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.createCriteria("c.endereco.cidade", "ci", Criteria.LEFT_JOIN);
 		criteria.createCriteria("c.endereco.uf", "u", Criteria.LEFT_JOIN);
 		criteria.createCriteria("hc.areaOrganizacional", "ao");
-		criteria.createCriteria("hc.faixaSalarial", "fs");
 		criteria.createCriteria("hc.estabelecimento", "e");
+		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.indice", "i", Criteria.LEFT_JOIN);
 		criteria.createCriteria("fs.cargo", "ca");
 		criteria.createCriteria("c.pessoal.ctps.ctpsUf", "ctpsUf", Criteria.LEFT_JOIN);
 		criteria.createCriteria("c.pessoal.rgUf", "rgUf", Criteria.LEFT_JOIN);
@@ -4690,7 +4691,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("c.endereco.numero"), "enderecoNumero");
 		p.add(Projections.property("c.endereco.bairro"), "enderecoBairro");
 		p.add(Projections.property("c.endereco.cep"), "enderecoCep");
-		p.add(Projections.property("ci.nome"), "enderecoCidadeNome");
 		p.add(Projections.property("u.sigla"), "enderecoUfSigla");
 		p.add(Projections.property("u.id"), "enderecoUfId");
 		p.add(Projections.property("c.pessoal.tituloEleitoral.titEleitNumero"), "projectionTituloNumero");
@@ -4722,9 +4722,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("hc.status"), "historicoColaboradorStatusProjection");
 		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
 		p.add(Projections.property("ao.nome"), "areaOrganizacionalNome");
+		p.add(Projections.property("ao.codigoAC"), "areaOrganizacionalCodigoAC");
 		p.add(Projections.property("ca.id"), "cargoIdProjection");
 		p.add(Projections.property("fs.id"), "faixaSalarialIdProjection");
+		p.add(Projections.property("fs.codigoAC"), "faixaSalarialCodigoACProjection");
 		p.add(Projections.property("e.id"), "estabelecimentoIdProjection");
+		p.add(Projections.property("e.codigoAC"), "estabelecimentoCodigoACProjection");
+		p.add(Projections.property("i.codigoAC"), "indiceCodigoAC");
 		criteria.setProjection(p);
 
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));

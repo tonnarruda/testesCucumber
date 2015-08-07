@@ -320,7 +320,6 @@ public class ColaboradorListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-	@SuppressWarnings("unchecked")
 	public String prepareRelatorioAniversariantes()
 	{
 		prepareEmpresas("ROLE_REL_ANIVERSARIANTES");

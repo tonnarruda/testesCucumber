@@ -402,6 +402,14 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.indice = indice;
 	}
 
+	public void setProjectionIndiceCodigoAC(String codigoAC)
+	{
+		if(this.indice == null)
+			this.indice = new Indice();
+		
+		this.indice.setCodigoAC(codigoAC);
+	}
+	
 	public Double getQuantidadeIndice()
 	{
 		return quantidadeIndice;
@@ -534,7 +542,8 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		colaborador.setDesligado(colaboradorDesligado);
 	}
 
-	private void inicializaColaborador() {
+	private void inicializaColaborador() 
+	{
 		if (colaborador == null)
 			colaborador = new Colaborador();
 	}

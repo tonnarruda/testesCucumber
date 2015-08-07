@@ -1476,9 +1476,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		getDao().updateStatusAc(statusRetornoAC, id);
 	}
 
-	public Collection<HistoricoColaborador> findByEmpresaComHistoricoPendente(Long empresaId) 
+	public Collection<HistoricoColaborador> findByEmpresaComHistorico(Long empresaId, Integer status) 
 	{
-		return getDao().findByEmpresaComHistoricoPendente(empresaId) ;
+		return getDao().findByEmpresaComHistorico(empresaId, status, false) ;
 	}
 
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Long indiceId) 
@@ -1493,6 +1493,12 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return false;
 	}
 
+	public void reenviaAguardandoConfirmacao(Empresa empresa) throws Exception  
+	{
+		Collection<HistoricoColaborador> historicosColaboradores = getDao().findByEmpresaComHistorico(empresa.getId(), StatusRetornoAC.AGUARDANDO, true);
+		acPessoalClientTabelaReajuste.saveHistoricoColaborador(historicosColaboradores, empresa, null, false);
+	}
+	
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
 	}
@@ -1504,4 +1510,5 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
 	}
+
 }
