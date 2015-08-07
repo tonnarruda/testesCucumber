@@ -152,14 +152,20 @@ public class SecurityUtil
 	}
 	
 	public static String getVersao(Map session) {
-		if (session == null)
-			return null;
-		
-		SecurityContext sc = (SecurityContext) session.get("ACEGI_SECURITY_CONTEXT");
-		
-		if(sc == null)
-			return null;
+		try {
+			if (session == null)
+				return "";
 
-		return ((UserDetailsImpl) sc.getAuthentication().getPrincipal()).getVersao();
+			SecurityContext sc = (SecurityContext) session.get("ACEGI_SECURITY_CONTEXT");
+
+			if(sc == null)
+				return "";
+
+			return ((UserDetailsImpl) sc.getAuthentication().getPrincipal()).getVersao();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "";
+		}
 	}
 }

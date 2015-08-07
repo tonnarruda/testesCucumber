@@ -27,7 +27,7 @@ public class UserDetailsImpl implements UserDetails
 	private String menuFormatado;
 	private Empresa empresa;
 	private Colaborador colaborador;
-	private String versao;
+	private String versao = "";
 
 	public UserDetailsImpl(Long id, String nome, String username, String password, boolean superAdmin, Date ultimoLogin, 
 			GrantedAuthority[] authorities, boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired, boolean enabled, 

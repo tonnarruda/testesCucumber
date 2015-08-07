@@ -14,6 +14,7 @@
 	    <Item visivel="S" motivo="S20150600199"><![CDATA[SESMT > Relatórios > Exames Previstos: Novo filtro por período.]]></Item>
 	    <Item visivel="S" motivo="S20150500024"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Nova opção de configuração para notificar quando "Responder avaliação do período de experiência" através de email para usuários.]]></Item>
 		<Item visivel="S" motivo="P20150700201"><![CDATA[Utilitários > Auditoria: Auditar os dados da solicitação, cancelamento e confirmação do desligamento no sistema Fortes Pessoal.]]></Item>
+		<Item visivel="S" motivo="S20150800042"><![CDATA[Módulo Externo: Ajuste da inconsistência ao tentar efetuar o cadastro.]]></Item>
 	    <Item visivel="S" motivo="P20150700126"><![CDATA[Nova forma de apresentar coluna numérica no relatório de xml.]]></Item>
 	</Versao>
 	<Versao id="1.1.147.177" db="" data="21/07/2015">
