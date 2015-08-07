@@ -60,6 +60,8 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	private final char CID = 'C';
 	private final char AREA = 'A';
 	
+	private boolean exibirTempoServico;
+	
 	public String list() throws Exception
 	{
 		if (!validaPeriodo())
@@ -108,7 +110,11 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	}
 	
 	public String relatorioAfastamentosXls() throws Exception{
-		return relatorioAfastamentos() + "Xls";
+		String tempoServico = "";
+		if (exibirTempoServico) {
+			tempoServico = "_tempo_servico";
+		}
+		return relatorioAfastamentos() + tempoServico + "Xls";
 	}
 	
 	@SuppressWarnings("static-access")
@@ -378,5 +384,13 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 
 	public String getReportTitle() {
 		return reportTitle;
+	}
+
+	public boolean isExibirTempoServico() {
+		return exibirTempoServico;
+	}
+
+	public void setExibirTempoServico(boolean exibirTempoServico) {
+		this.exibirTempoServico = exibirTempoServico;
 	}
 }

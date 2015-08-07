@@ -57,7 +57,7 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 	
 	public ColaboradorAfastamento() { }
 
-	public ColaboradorAfastamento(Long id, Date inicio, Date fim, String afastamentoDescricao, String colaboradorNome, String colaboradorMatricula, String estabelecimentoNome, Long areaOrganizacionalId, String cid, String medicoNome)
+	public ColaboradorAfastamento(Long id, Date inicio, Date fim, String afastamentoDescricao, String colaboradorNome, String colaboradorMatricula, String estabelecimentoNome, Long areaOrganizacionalId, String cid, String medicoNome, Date dataAdmissao, String dataFimRelatorio)
 	{
 		setId(id);
 		this.inicio = inicio;
@@ -73,6 +73,8 @@ public class ColaboradorAfastamento extends AbstractModel implements Serializabl
 		colaborador.setMatricula(colaboradorMatricula);
 		colaborador.setEstabelecimentoNomeProjection(estabelecimentoNome);
 		colaborador.setAreaOrganizacionalId(areaOrganizacionalId);
+		colaborador.setDataAdmissao(dataAdmissao);
+		colaborador.setTempoServicoString(DateUtil.formataTempoExtenso(dataAdmissao, DateUtil.criarDataDiaMesAno(dataFimRelatorio)));
 	}
 	
 	// usado em findRelatorioResumoAfastamentos

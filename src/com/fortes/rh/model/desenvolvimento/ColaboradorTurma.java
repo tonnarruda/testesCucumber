@@ -25,6 +25,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -647,64 +648,8 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 		this.custoRateado = custoRateado;
 	}
 
-	public String getTempoSemCurso()
-	{
-		String anoMes = "";
-		if (turma != null && turma.getDataPrevFim() != null)
-		{
-			GregorianCalendar dataAtual = new GregorianCalendar();
-
-			int anoAtual = dataAtual.get(GregorianCalendar.YEAR);
-			int mesAtual = dataAtual.get(GregorianCalendar.MONTH);
-			int diaAtual = dataAtual.get(GregorianCalendar.DAY_OF_MONTH);
-
-			int anoUltimo = (turma.getDataPrevFim().getYear() + 1900);
-			int mesUltimo = turma.getDataPrevFim().getMonth();
-			int diaUltimo = turma.getDataPrevFim().getDate();
-
-			int anos = anoAtual - anoUltimo;
-			int meses;
-
-			if (anos > 0)
-			{
-				if (mesAtual < mesUltimo)
-					anos--;
-				else
-				{
-					if (mesAtual == mesUltimo)
-					{
-						if (diaAtual < diaUltimo)
-							anos--;
-					}
-				}
-			}
-
-			if (mesAtual > mesUltimo)
-				meses = mesAtual - mesUltimo;
-			else
-				meses = (12 - mesUltimo) + mesAtual;
-
-			if (diaAtual < diaUltimo)
-				meses--;
-
-			if (anos > 0)
-			{
-				if(anos == 1)
-					anoMes += anos + " ano ";
-				else
-					anoMes += anos + " anos ";
-			}
-
-			if (meses > 0)
-			{
-				if(meses == 1)
-					anoMes += (anos > 0 ?"e ":"") + meses + " mês";
-				else
-					anoMes += (anos > 0 ?"e ":"") + meses + " meses";
-			}
-		}
-
-		return anoMes.trim();
+	public String getTempoSemCurso(){
+		return DateUtil.formataTempoExtenso(turma.getDataPrevFim(), new Date());
 	}
 
 	public void setTempoSemCurso(String tempoSemCurso)

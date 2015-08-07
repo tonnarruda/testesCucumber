@@ -144,6 +144,70 @@
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
+			
+			
+			<result name="afastamentos_tempo_servicoXls" type="xls">
+				<param name="dataSource">colaboradorAfastamentos</param>
+				<param name="documentName">afastamentos.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Matrícula,Colaborador,Período,Dias,Tempo de Serviço,Estabelecimento,Área Organizacional,Médico,Motivo,CID</param>
+				<param name="properties">colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.tempoServicoString,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,medicoNome,afastamento.descricao,cid</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="afastamentos_por_cid_tempo_servicoXls" type="xls">
+				<param name="dataSource">colaboradorAfastamentos</param>
+				<param name="documentName">afastamentos_cid.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">CID,Matrícula,Colaborador,Período,Dias,Tempo de Serviço,Estabelecimento,Área Organizacional,Médico,Motivo</param>
+				<param name="propertiesGroup">cid</param>
+				<param name="properties">cid,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.tempoServicoString,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,medicoNome,afastamento.descricao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>	
+			<result name="afastamentos_por_colaborador_tempo_servicoXls" type="xls">
+				<param name="dataSource">colaboradorAfastamentos</param>
+				<param name="documentName">afastamentos_cid.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Colaborador,Matrícula,Estabelecimento,Área Organizacional,Período,Dias,Tempo de Serviço,Médico,Motivo</param>
+				<param name="propertiesGroup">colaborador.nome</param>
+				<param name="properties">colaborador.nome,colaborador.matricula,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,periodoFormatado,dias,colaborador.tempoServicoString,medicoNome,afastamento.descricao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="afastamentos_por_mes_colab_tempo_servicoXls" type="xls">
+				<param name="dataSource">colaboradorAfastamentos</param>
+				<param name="documentName">afastamentos_cid.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Mês/Ano,Matrícula,Colaborador,Período,Dias,Tempo de Serviço,Estabelecimento,Área Organizacional,Médico,Motivo</param>
+				<param name="propertiesGroup">mesAno</param>
+				<param name="properties">mesAno,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.tempoServicoString,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,medicoNome,afastamento.descricao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>	
+			<result name="afastamentos_por_mes_data_tempo_servicoXls" type="xls">
+				<param name="dataSource">colaboradorAfastamentos</param>
+				<param name="documentName">afastamentos_cid.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Mês/Ano,Matrícula,Colaborador,Período,Dias,Tempo de Serviço,Estabelecimento,Área Organizacional,Médico,Motivo</param>
+				<param name="propertiesGroup">mesAno</param>
+				<param name="properties">mesAno,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.tempoServicoString,colaborador.estabelecimento.nome,colaborador.areaOrganizacional.descricao,medicoNome,afastamento.descricao</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>	
+			<result name="afastamentos_por_area_tempo_servicoXls" type="xls">
+				<param name="dataSource">colaboradorAfastamentos</param>
+				<param name="documentName">afastamentos_area.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Área Organizacional,Matrícula,Colaborador,Período,Dias,Tempo de Serviço,Estabelecimento,Médico,Motivo,CID</param>
+				<param name="propertiesGroup">colaborador.areaOrganizacional.descricao</param>
+				<param name="properties">colaborador.areaOrganizacional.descricao,colaborador.matricula,colaborador.nome,periodoFormatado,dias,colaborador.tempoServicoString,colaborador.estabelecimento.nome,medicoNome,afastamento.descricao,cid</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			
+			
+			
 			<result name="inputXls" type="freemarker">/WEB-INF/forms/sesmt/relatorioAfastamentos.ftl</result>
 		</action>
 		<action name="prepareRelatorioResumoAfastamentos" class="com.fortes.rh.web.action.sesmt.ColaboradorAfastamentoListAction" method="prepareRelatorioResumoAfastamentos">

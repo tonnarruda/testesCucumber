@@ -2,7 +2,7 @@
 <html>
 <head>
 	<@ww.head/>
-	<title>Afastamentos</title>
+	<title>Afastamentosz</title>
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
@@ -22,6 +22,20 @@
 		function submeterAction(action){
 			$('form[name=form]').attr('action', action);
 			return validaFormularioEPeriodo('form', null, new Array('inicio','fim'));
+		}
+		
+		function exibirBtnRelatorio(){
+			var exibirTempoServico = $('#exibirTempoServico').is(':checked');
+			//$('.btnRelatorio').disabled( !exibirTempoServico );
+			if (exibirTempoServico){
+				$('#btnRelatorioPDF').attr("disabled", "disabled");
+				$('#btnRelatorioPDF').removeClass('btnRelatorio');
+				$('#btnRelatorioPDF').addClass('btnRelatorioDesabilitado').css("cursor", "default");
+			}else{
+				$('#btnRelatorioPDF').removeAttr("disabled");
+				$('#btnRelatorioPDF').removeClass('btnRelatorioDesabilitado');
+				$('#btnRelatorioPDF').addClass('btnRelatorio').css("cursor", "pointer");
+			}
 		}
 	</script>
 
@@ -46,10 +60,12 @@
 
 		<@ww.select label="INSS" name="afastadoPeloINSS" id="afastadoPeloINSS" list=r"#{'T':'Todos','A':'Afastados','N':'Não afastados'}" required="true"/>
 		<@ww.select label="Agrupar por" id="agruparPor" name="agruparPor" list=r"#{'N':'Sem Agrupamento','C':'CID','M':'Mês','O':'Colaborador','A':'Área Organizacional'}" />
+		
+		<@ww.checkbox label="exibir tempo de serviço" id="exibirTempoServico" name="exibirTempoServico" labelPosition="left" onchange="exibirBtnRelatorio();" />
 
 		<div class="buttonGroup">
-			<button onclick="return submeterAction('relatorioAfastamentos.action');" class="btnRelatorio" ></button>
-			<button onclick="return submeterAction('relatorioAfastamentosXls.action');" class="btnRelatorioExportar"></button>
+				<button id='btnRelatorioPDF' onclick="return submeterAction('relatorioAfastamentos.action');" class="btnRelatorio" ></button>
+				<button onclick="return submeterAction('relatorioAfastamentosXls.action');" class="btnRelatorioExportar"></button>
 		</div>
 	</@ww.form>
 </body>

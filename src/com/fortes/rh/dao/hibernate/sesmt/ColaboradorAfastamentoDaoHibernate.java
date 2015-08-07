@@ -62,7 +62,7 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		if (isCount)
 			hql = new StringBuilder("select count(ca.id) ");
 		else
-			hql = new StringBuilder("select new ColaboradorAfastamento(ca.id, ca.inicio, ca.fim, a.descricao, co.nome, co.matricula, es.nome, ao.id, upper(trim(coalesce(ca.cid,''))), ca.medicoNome ) ");
+			hql = new StringBuilder("select new ColaboradorAfastamento(ca.id, ca.inicio, ca.fim, a.descricao, co.nome, co.matricula, es.nome, ao.id, upper(trim(coalesce(ca.cid,''))), ca.medicoNome, co.dataAdmissao, cast('" + DateUtil.formataDiaMesAno(ultimaData) + "' as text) ) ");
 
 		hql.append("from ColaboradorAfastamento ca ");
 		hql.append("join ca.afastamento a ");

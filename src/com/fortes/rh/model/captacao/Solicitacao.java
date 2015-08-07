@@ -673,6 +673,14 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 			return area.getDescricao();
 		return "";
 	}
+	
+	public String getDescricaoDoMotivoSolicitacao(){
+		MotivoSolicitacao motivoSolicitacao = getMotivoSolicitacao();
+		if (motivoSolicitacao != null) {
+			return motivoSolicitacao.getDescricao();
+		}
+		return "";
+	}
 
 	public Anuncio getAnuncio()
 	{
@@ -892,5 +900,12 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	public void setPausasPreenchimentoVagas(
 			Collection<PausaPreenchimentoVagas> pausasPreenchimentoVagas) {
 		this.pausasPreenchimentoVagas = pausasPreenchimentoVagas;
+	}
+	
+	public void setDescricaoMotivoSolicitacao(String descricaoMotivoSolicitacao){
+		if (this.motivoSolicitacao == null) {
+			this.motivoSolicitacao = new MotivoSolicitacao();
+		}
+		this.motivoSolicitacao.setDescricao(descricaoMotivoSolicitacao);
 	}
 }

@@ -914,4 +914,68 @@ public class DateUtil
 	{
 		return incrementaDias(data, -1);
 	}
+	
+	public static String formataTempoExtenso(Date inicio, Date fim){
+		
+		String tempoExtenso = "";
+		if (inicio != null && fim != null){
+			GregorianCalendar dataFinal = new GregorianCalendar();
+			
+			dataFinal.setTime(fim);
+			
+			int anoFim = dataFinal.get(GregorianCalendar.YEAR);
+			int mesFim = dataFinal.get(GregorianCalendar.MONTH);
+			int diaFim = dataFinal.get(GregorianCalendar.DAY_OF_MONTH);
+
+			int anoInicio = (inicio.getYear() + 1900);
+			int mesInicio = inicio.getMonth();
+			int diaInicio = inicio.getDate();
+
+			int anos = anoFim - anoInicio;
+			int meses;
+
+			if (anos > 0){
+				if (mesFim < mesInicio)
+					anos--;
+				else{
+					if (mesFim == mesInicio){
+						if (diaFim < diaInicio)
+							anos--;
+					}
+				}
+			}
+
+			if (mesFim > mesInicio)
+				meses = mesFim - mesInicio;
+			else
+				meses = (12 - mesInicio) + mesFim;
+
+			if (diaFim < diaInicio)
+				meses--;
+
+			if (anos > 0){
+				if(anos == 1)
+					tempoExtenso += anos + " ano ";
+				else
+					tempoExtenso += anos + " anos ";
+			}
+
+			if (meses > 0){
+				if(meses == 1)
+					tempoExtenso += (anos > 0 ?"e ":"") + meses + " mês";
+				else
+					tempoExtenso += (anos > 0 ?"e ":"") + meses + " meses";
+			}
+		}
+		
+		return tempoExtenso.trim();
+	}
+	
+	public static void main(String[] args) {
+		
+		Date inicio = new Date(1990, 1, 01);
+		Date fim = new Date(2015, 01, 01);
+		
+		System.out.println(DateUtil.formataTempoExtenso(inicio, fim));
+	}
 }
