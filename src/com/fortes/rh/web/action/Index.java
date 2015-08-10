@@ -91,6 +91,7 @@ public class Index extends MyActionSupport
 	private boolean pgInicial = true;
 	private boolean primeiraExecucao;
 	private boolean idiomaIncorreto;
+	private boolean bancoConsistente;
 	
 	private boolean integradoAC;
 	private Collection<Solicitacao> solicitacaos = new ArrayList<Solicitacao>();
@@ -122,6 +123,8 @@ public class Index extends MyActionSupport
 			ActionContext.getContext().getSession().put("primeiraExecucao", "sim");
 			primeiraExecucao = true;
 		}
+		
+		bancoConsistente = parametrosDoSistema.isBancoConsistente();
 
 		try
 		{
@@ -689,5 +692,9 @@ public class Index extends MyActionSupport
 
 	public void setPendenciasAcsSerRemovida(String[] pendenciasAcsSerRemovida) {
 		this.pendenciasAcsSerRemovida = pendenciasAcsSerRemovida;
+	}
+	
+	public boolean isBancoConsistente(){
+		return this.bancoConsistente;
 	}
 }

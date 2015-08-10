@@ -65,6 +65,8 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private boolean inibirGerarRelatorioPesquisaAnonima;
     private int quantidadeColaboradoresRelatorioPesquisaAnonima;
     private boolean suporteVeica;
+    private boolean bancoConsistente;
+    private int quantidadeConstraints;
 
     private Integer sessionTimeout;
     
@@ -375,12 +377,30 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	{
 		this.quantidadeColaboradoresRelatorioPesquisaAnonima = quantidadeColaboradoresRelatorioPesquisaAnonima;
 	}
+	
 	public boolean isInibirGerarRelatorioPesquisaAnonima() 
 	{
 		return inibirGerarRelatorioPesquisaAnonima;
 	}
+	
 	public void setInibirGerarRelatorioPesquisaAnonima(	boolean inibirGerarRelatorioPesquisaAnonima) 
 	{
 		this.inibirGerarRelatorioPesquisaAnonima = inibirGerarRelatorioPesquisaAnonima;
+	}
+	
+	public boolean isBancoConsistente() {
+		return bancoConsistente;
+	}
+	
+	public void setBancoConsistente(boolean bancoConsistente) {
+		this.bancoConsistente = bancoConsistente;
+	}
+	
+	public int getQuantidadeConstraints() {
+		return quantidadeConstraints;
+	}
+	
+	public void setQuantidadeConstraints(int quantidadeConstraints) {
+		this.quantidadeConstraints = quantidadeConstraints;
 	}
 }

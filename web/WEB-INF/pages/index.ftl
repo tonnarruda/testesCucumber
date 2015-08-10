@@ -161,6 +161,15 @@
 		</ul>
 	</div>
 	
+	<#if !bancoConsistente >
+		<div id="bancoconsistente" class="warning">
+			<div style="float:right;"><a title="Ocultar" href="javascript:;" onclick="$(this).parent().parent().remove();">x</a></div>
+			<ul>
+				<li>O banco de dados não está consistente. Entre em contato com o suporte para ajustá-lo.</li>
+			</ul>
+		</div>
+	</#if>
+	
 	<#if avaliacaos?exists && 0 < avaliacaos?size>
 		<div class="waDivTituloX">Aviso!</div>
 		<div class="waDivFormularioX">

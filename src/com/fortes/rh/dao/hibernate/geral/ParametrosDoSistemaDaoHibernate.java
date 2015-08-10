@@ -1,5 +1,7 @@
 package com.fortes.rh.dao.hibernate.geral;
 
+import java.math.BigInteger;
+
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
@@ -60,6 +62,28 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		Query query = getSession().createQuery(hql);
 		query.setString("servidorRemprot", servidorRemprot);
 		query.executeUpdate();
+	}
+	
+	public void updateBancoConsistente(boolean bancoConsistente) 
+	{
+		String hql = "UPDATE ParametrosDoSistema SET bancoConsistente = :bancoConsistente";
+		Query query = getSession().createQuery(hql);
+		query.setBoolean("bancoConsistente", bancoConsistente );
+		query.executeUpdate();
+	}
+	
+	public Integer getQuantidadeConstraintsDoBanco() 
+	{
+		String sql = "SELECT COUNT(*) FROM information_schema.table_constraints WHERE constraint_type = 'FOREIGN KEY'";
+		Query query = getSession().createSQLQuery(sql);
+		return ((BigInteger) query.list().get(0)).intValue();
+	}
+	
+	public Integer getQuantidadeConstraintsQueOBancoDeveriaTer() 
+	{
+		String sql = "SELECT quantidadeconstraints from parametrosdosistema ";
+		Query query = getSession().createSQLQuery(sql);
+		return (Integer) query.list().get(0);
 	}
 
 	public String getContexto() 

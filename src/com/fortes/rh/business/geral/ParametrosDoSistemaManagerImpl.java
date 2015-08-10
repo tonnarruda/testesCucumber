@@ -92,4 +92,9 @@ public class ParametrosDoSistemaManagerImpl extends GenericManagerImpl<Parametro
 	public void updateServidorRemprot(String servidorRemprot) {
 		getDao().updateServidorRemprot(servidorRemprot);
 	}
+
+	public void verificaBancoConsistente() {
+		boolean bancoConsistente = (getDao().getQuantidadeConstraintsDoBanco() == getDao().getQuantidadeConstraintsQueOBancoDeveriaTer());
+		getDao().updateBancoConsistente(bancoConsistente);
+	}
 }
