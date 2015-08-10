@@ -2693,9 +2693,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 	}
 
-	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC, boolean semcodigoAc)
+	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, int statusAC, boolean semcodigoAc, Boolean desligado, boolean primeiroHistorico, String... order)
 	{
-		return getDao().findByEmpresaAndStatusAC(empresaId, statusAC, semcodigoAc);
+		return getDao().findByEmpresaAndStatusAC(empresaId, estabelecimentosIds, areasIds, statusAC, semcodigoAc, desligado, primeiroHistorico, order);
 	}
 
 	public void desvinculaCandidato(Long candidatoId) 
@@ -2757,7 +2757,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void reenviaAguardandoContratacao(Empresa empresa) 
 	{
-		Collection<Colaborador> colaboradores = getDao().findByEmpresaAndStatusAC(empresa.getId(), StatusRetornoAC.AGUARDANDO, true);
+		Collection<Colaborador> colaboradores = getDao().findByEmpresaAndStatusAC(empresa.getId(), null, null, StatusRetornoAC.AGUARDANDO, true, false, true, "c.nome");
 
 		for (Colaborador colaborador : colaboradores){
 			colaborador.getHistoricoColaborador().setAreaOrganizacional(colaborador.getAreaOrganizacional());

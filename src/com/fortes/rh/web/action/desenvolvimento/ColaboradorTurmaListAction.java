@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
@@ -13,7 +14,6 @@ import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
-import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -32,6 +32,7 @@ import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCertificacaoRelatorio;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
+import com.fortes.rh.model.dicionario.StatusAprovacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -56,7 +57,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private EmpresaManager empresaManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private CursoManager cursoManager;
 	private EstabelecimentoManager estabelecimentoManager;
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private CargoManager cargoManager;
@@ -134,7 +134,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	private Boolean compartilharColaboradores;
 	
 	private Map<String,String> situacoes = new SituacaoColaborador();
-	private String situacao;
+	private String situacao = null;
 	
 	private boolean exibeCargo;
 	
@@ -311,8 +311,9 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		try
 		{
 			empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
+			Boolean desligado = situacao == null ? null : ("A".equals(situacao) ? false : ("D".equals(situacao)? true : null));  
 			
-			colaboradorTurmas = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, LongUtil.arrayStringToArrayLong(cursosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), qtdMesesSemCurso);
+			colaboradorTurmas = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, LongUtil.arrayStringToArrayLong(cursosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), qtdMesesSemCurso, desligado, aprovado);
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores que não fizeram o treinamento", getEmpresaSistema(), "");
 
@@ -637,11 +638,6 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
-	public void setCursoManager(CursoManager cursoManager)
-	{
-		this.cursoManager = cursoManager;
-	}
-
 	public void setEstabelecimentoManager(EstabelecimentoManager estabelecimentoManager)
 	{
 		this.estabelecimentoManager = estabelecimentoManager;
@@ -921,4 +917,8 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 	public void setFiltroAgrupamento(char filtroAgrupamento) {
 		this.filtroAgrupamento = filtroAgrupamento;
 	}
+	
+	public LinkedHashMap<Character, String> getStatusAprovacao(){
+		return new StatusAprovacao();
+	} 
 }

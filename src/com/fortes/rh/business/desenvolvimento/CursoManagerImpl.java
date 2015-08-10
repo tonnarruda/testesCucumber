@@ -270,6 +270,12 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		getDao().save(curso);
 	}
 
+	@Override
+	public Collection<Curso> findByEmpresaIdAndCursosId(Long empresaId,	Long... cursosIds) 
+	{
+		return getDao().findByEmpresaIdAndCursosId( empresaId, cursosIds);
+	}
+	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;

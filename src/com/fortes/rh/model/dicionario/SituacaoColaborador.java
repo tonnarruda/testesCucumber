@@ -15,4 +15,16 @@ public class SituacaoColaborador extends LinkedHashMap<String, String>
 		put(TODOS, "Todos");
 		put(DESLIGADO, "Desligado");
 	}
+
+	public static String getTodos() {
+		return TODOS;
+	}
+
+	public static String getDesligado() {
+		return DESLIGADO;
+	}
+
+	public static String getAtivo() {
+		return ATIVO;
+	}
 }

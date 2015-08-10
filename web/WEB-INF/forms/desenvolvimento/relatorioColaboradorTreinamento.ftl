@@ -16,6 +16,14 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
+	
+	<style>
+		.div{
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+	</style>
+	
 	<script type='text/javascript'>
 		var empresaIds = new Array();
 		<#if empresas?exists>
@@ -69,9 +77,9 @@
 					return false;
 				}
 				
-				return validaFormularioEPeriodo('form', new Array(), new Array('inicio','fim'));
+				return validaFormularioEPeriodo('form', new Array('@cursosCheck'), new Array('inicio','fim'));
 			<#else>
-				return validaFormulario('form', new Array(), null);
+				return validaFormulario('form', new Array('@cursosCheck'), null);
 			</#if>
 		}
 		
@@ -116,29 +124,29 @@
 	</#if>
 	
 	<@ww.form name="form" action="${formAction}" onsubmit="return validar()" method="POST">
-		<@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1"  onchange="populaCurso(this.value);populaEstabelecimento(this.value);populaArea(this.value);" disabled="!compartilharColaboradores"/>		
-		
-		<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos" list="cursosCheckList" filtro="true" tooltipHelp="true"/>
-		
-		<@ww.select label="Situação da turma" name="situacao" id="situacao" list="situacoes" cssStyle="width: 160px;"/>
-		
 		<#if comTreinamento>
 			<label>Período de realização da turma:</label><br />
 			<@ww.datepicker value="${inicio}" name="dataIni" id="inicio" cssClass="mascaraData validaDataIni" after="a" liClass="liLeft"/>
 			<@ww.datepicker value="${fim}" name="dataFim" id="fim" cssClass="mascaraData validaDataFim"/>
 		<#else>
-			<@ww.textfield id="meses" label="Colaboradores sem treinamentos há mais de" name="qtdMesesSemCurso" onkeypress="return(somenteNumeros(event,''));" maxLength="3" after="meses" cssStyle="width:30px; text-align:right;" />			
+			<@ww.div cssClass="div">
+				Considerar colaboradores sem treinamentos há mais de
+				<@ww.textfield id="meses" theme="simple" name="qtdMesesSemCurso" onkeypress="return(somenteNumeros(event,''));" maxLength="3" cssStyle="width:30px; text-align:right;" />
+				meses.
+			</@ww.div>
 		</#if>
-		
+
+		<@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1"  onchange="populaCurso(this.value);populaEstabelecimento(this.value);populaArea(this.value);" disabled="!compartilharColaboradores" cssStyle="width: 500px;"/>		
+		<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos*" list="cursosCheckList" filtro="true" tooltipHelp="true"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
-	
-		<#if comTreinamento>
-			<@ww.select label="Aprovado" name="aprovado" list=r"#{'T':'Todos','S':'Sim','N':'Não'}" />
-		</#if>
+		<@ww.select label="Situação do colaborador" name="situacao" id="situacao" list="situacoes" cssStyle="width: 500px;"/>
 		
 		<#if comTreinamento>
-			<@ww.checkbox label="Exibir cargos" name="exibeCargo" id="exibeCargo" labelPosition="left"/>
+			<@ww.select name="aprovado" label="Considerar colaboradores" list="statusAprovacao" cssStyle="width: 500px;"/>
+			<@ww.checkbox label="Exibir cargos no relatório" name="exibeCargo" id="exibeCargo" labelPosition="left"/>
+		<#else>
+			<@ww.select label="Listar" name="aprovado" list=r"#{'T':'Todos os colaboradores','S':'Somente colaboradores aprovados', 'N':'Somente colaboradores reprovados'}" cssStyle="width: 500px;"/>
 		</#if>
 		
 		<@ww.hidden name="comTreinamento"/>

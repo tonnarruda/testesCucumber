@@ -920,6 +920,43 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		
 		return curso;
 	}
+	
+	public void testFindByEmpresaIdAndCursosId()
+	{
+		Empresa emp1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(emp1);
+
+		Empresa emp2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(emp2);
+
+		Curso curso1 = CursoFactory.getEntity();
+		curso1.setNome("Curso de direção");
+		curso1.setEmpresa(emp1);
+		cursoDao.save(curso1);
+		
+		Curso curso2 = CursoFactory.getEntity();
+		curso2.setNome("Direção");
+		curso2.setEmpresa(emp2);
+		cursoDao.save(curso2);
+		
+		Collection<Curso> cursos = cursoDao.findByEmpresaIdAndCursosId(emp1.getId(), null);
+		assertEquals(1, cursos.size());
+		
+		cursos = cursoDao.findByEmpresaIdAndCursosId(null, curso1.getId());
+		assertEquals(1, cursos.size());
+		
+		cursos = cursoDao.findByEmpresaIdAndCursosId(emp1.getId(), curso1.getId());
+		assertEquals(1, cursos.size());
+
+		cursos = cursoDao.findByEmpresaIdAndCursosId(emp2.getId(), null);
+		assertEquals(1, cursos.size());
+		
+		cursos = cursoDao.findByEmpresaIdAndCursosId(emp2.getId(), curso2.getId());
+		assertEquals(1, cursos.size());
+		
+		cursos = cursoDao.findByEmpresaIdAndCursosId(null, null);
+		assertTrue(cursos.size() >= 2);
+	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{

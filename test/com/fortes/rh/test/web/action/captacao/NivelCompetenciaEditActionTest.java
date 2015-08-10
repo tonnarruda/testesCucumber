@@ -9,6 +9,7 @@ import mockit.Mockit;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 
 import com.fortes.rh.business.captacao.CandidatoManager;
@@ -436,7 +437,7 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		
 		configuracaoNivelCompetenciaManager.expects(once()).method("saveCompetenciasColaboradorAndRecalculaPerformance").with(ANYTHING, eq(configuracoes), eq(configuracaoNivelCompetenciaColaborador)).isVoid();
 		colaboradorManager.expects(once()).method("findById").with(eq(colaborador.getId())).will(returnValue(colaborador));
-		colaboradorManager.expects(once()).method("findByEmpresaAndStatusAC").with(eq(empresa.getId()), eq(StatusRetornoAC.CONFIRMADO), eq(false)).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorManager.expects(once()).method("findByEmpresaAndStatusAC").with(new Constraint[]{eq(empresa.getId()),eq(null),eq(null),eq(StatusRetornoAC.CONFIRMADO), eq(false), eq(false) , eq(true), ANYTHING}).will(returnValue(new ArrayList<Colaborador>()));
 		configuracaoNivelCompetenciaManager.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId()), ANYTHING).will(returnValue(configuracoes));
 		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(configuracoes));
 		

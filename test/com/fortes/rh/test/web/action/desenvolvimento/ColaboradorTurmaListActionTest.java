@@ -15,7 +15,6 @@ import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
-import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -71,7 +70,6 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 	private Mock areaOrganizacionalManager;
 	private Mock cargoManager;
 	private Mock grupoOcupacionalManager;
-	private Mock cursoManager;
 	private Mock estabelecimentoManager;
 	private Mock certificacaoManager;
 	private Mock colaboradorManager;
@@ -104,9 +102,6 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
 
         grupoOcupacionalManager = new Mock(GrupoOcupacionalManager.class);
         action.setGrupoOcupacionalManager((GrupoOcupacionalManager) grupoOcupacionalManager.proxy());
-
-        cursoManager = new Mock(CursoManager.class);
-        action.setCursoManager((CursoManager) cursoManager.proxy());
 
         estabelecimentoManager = new Mock(EstabelecimentoManager.class);
         action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
@@ -231,7 +226,7 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	Long[] cursos = new Long[]{curso.getId()};
     	
     	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));
-    	colaboradorTurmaManager.expects(once()).method("findRelatorioSemTreinamento").with(new Constraint[]{ANYTHING, ANYTHING, ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ColaboradorTurma>()));
+    	colaboradorTurmaManager.expects(once()).method("findRelatorioSemTreinamento").withAnyArguments().will(returnValue(new ArrayList<ColaboradorTurma>()));
     	
     	assertEquals("success", action.relatorioColaboradorSemTreinamento());
     }
@@ -252,19 +247,6 @@ public class ColaboradorTurmaListActionTest extends MockObjectTestCase
     	
     	assertEquals("input", action.relatorioColaboradorSemTreinamento());
     }
-
-//    public void testRelatorioColaboradorComTreinamento() throws Exception
-//    {
-//    	Curso curso = CursoFactory.getEntity(1L);
-//    	curso.setNome("Como programar");
-//    	action.setCurso(curso);
-//    	
-//    	empresaManager.expects(atLeastOnce()).method("ajustaCombo").with(ANYTHING, ANYTHING).will(returnValue(null));    	
-//    	colaboradorTurmaManager.expects(once()).method("findRelatorioComTreinamento").withAnyArguments().will(returnValue(new ArrayList<ColaboradorTurma>()));
-//    	cursoManager.expects(once()).method("findByIdProjection").withAnyArguments().will(returnValue(curso));
-//    	
-//    	assertEquals("success", action.relatorioColaboradorComTreinamento());
-//    }
     
     public void testRelatorioColaboradorComTreinamentoExceptionCllectioVazia() throws Exception
     {

@@ -930,11 +930,8 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 	public void testFindRelatorioComTreinamento() throws Exception
 	{
 		Collection<ColaboradorTurma> colaboradorTurmas = montaAprovadosReprovados();
-		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
 		
 		colaboradorTurmaDao.expects(atLeastOnce()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colaboradorTurmas));
-		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllListAndInativas").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(areas));
-		areaOrganizacionalManager.expects(atLeastOnce()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 		
 		assertEquals(7, colaboradorTurmaManager.findRelatorioComTreinamento(null, new Long[]{CursoFactory.getEntity(1L).getId()}, null, null, null, null, 'T', SituacaoColaborador.ATIVO).size());		
 		assertEquals(4, colaboradorTurmaManager.findRelatorioComTreinamento(null, new Long[]{CursoFactory.getEntity(1L).getId()}, null, null, null, null, 'S', SituacaoColaborador.ATIVO).size());		
@@ -948,18 +945,81 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Long[] areaIds=null;
 		Long[] estabelecimentoIds=null;
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(100L);
-		colaboradorTurmas.add(colaboradorTurma);
-		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(10L);
+		colaborador.setNome("Colab Inscrito");
 		colaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(22L);
+		colaborador2.setNome("Colab NÂO Inscrito");
+		colaborador2.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(100L);
 		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurma.setCurso(curso);
+
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+		colaboradorTurmas.add(colaboradorTurma);
+		
+		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+		colaboradores.add(colaborador);
+		colaboradores.add(colaborador2);
+		
+		Collection<Curso> cursos = new ArrayList<Curso>();
+		cursos.add(curso);
+		
+		colaboradorTurmaDao.expects(once()).method("findRelatorioSemTreinamento").will(returnValue(colaboradorTurmas));
+		colaboradorManager.expects(once()).method("findByEmpresaAndStatusAC").withAnyArguments().will(returnValue(colaboradores));
+		cursoManager.expects(once()).method("findByEmpresaIdAndCursosId").withAnyArguments().will(returnValue(cursos));
+		
+		Collection<ColaboradorTurma> resultado = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, new Long[]{curso.getId()}, areaIds, estabelecimentoIds, null, null, 'T');
+		
+		assertEquals(1, resultado.size());
+		assertEquals("Colab NÂO Inscrito", ((ColaboradorTurma)resultado.toArray()[0]).getColaborador().getNome());
+	}
+	
+	public void testFindRelatorioSemTreinamentoAprovado() throws Exception
+	{
+		Long empresaId=1L;
+		Long[] areaIds=null;
+		Long[] estabelecimentoIds=null;
+
+		Curso curso = CursoFactory.getEntity(10L);
+		curso.setPercentualMinimoFrequencia(50.0);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(10L);
+		colaborador.setNome("Colab Aprovado");
+		colaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(22L);
+		colaborador2.setNome("Colab NÂO Aprovado");
+		colaborador2.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
+		
+		ColaboradorTurma colaboradorTurma1 = ColaboradorTurmaFactory.getEntity(100L);
+		colaboradorTurma1.setColaborador(colaborador);
+		colaboradorTurma1.setTotalDias(10);
+		colaboradorTurma1.setQtdPresenca(9);
+		colaboradorTurma1.setQtdAvaliacoesCurso(1);
+		colaboradorTurma1.setQtdAvaliacoesAprovadasPorNota(1);
+		colaboradorTurma1.setCurso(curso);
+		
+		ColaboradorTurma colaboradorTurmaReprovadoPorFalta = ColaboradorTurmaFactory.getEntity(100L);
+		colaboradorTurmaReprovadoPorFalta.setColaborador(colaborador2);
+		colaboradorTurmaReprovadoPorFalta.setTotalDias(10);
+		colaboradorTurmaReprovadoPorFalta.setQtdPresenca(1);
+		colaboradorTurmaReprovadoPorFalta.setQtdAvaliacoesCurso(1);
+		colaboradorTurmaReprovadoPorFalta.setQtdAvaliacoesAprovadasPorNota(1);
+		colaboradorTurmaReprovadoPorFalta.setCurso(curso);
+
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+		colaboradorTurmas.add(colaboradorTurma1);
+		colaboradorTurmas.add(colaboradorTurmaReprovadoPorFalta);
 		
 		colaboradorTurmaDao.expects(once()).method("findRelatorioSemTreinamento").will(returnValue(colaboradorTurmas));
 		
-		Collection<ColaboradorTurma> resultado = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, new Long[]{curso.getId()}, areaIds, estabelecimentoIds, null);
+		Collection<ColaboradorTurma> resultado = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, new Long[]{curso.getId()}, areaIds, estabelecimentoIds, null, null, 'S');
 		
 		assertEquals(1, resultado.size());
+		assertEquals("Colab Aprovado", ((ColaboradorTurma)resultado.toArray()[0]).getColaborador().getNome());
 	}
 	
 	public void testFindRelatorioSemTreinamentoColecaoVazia() throws Exception
@@ -972,11 +1032,13 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		
 		colaboradorTurmaDao.expects(once()).method("findRelatorioSemTreinamento").will(returnValue(colaboradorTurmas));
+		cursoManager.expects(once()).method("findByEmpresaIdAndCursosId").withAnyArguments().will(returnValue(new ArrayList<Curso>()));
+		colaboradorManager.expects(once()).method("findByEmpresaAndStatusAC").withAnyArguments().will(returnValue(new ArrayList<Colaborador>()));
 		
 		Exception exception = null;
 		try
 		{
-			colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, new Long[]{curso.getId()}, areaIds, estabelecimentoIds, null);
+			colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, new Long[]{curso.getId()}, areaIds, estabelecimentoIds, null, null, 'T');
 		}
 		catch (Exception e) { exception = e; }
 		

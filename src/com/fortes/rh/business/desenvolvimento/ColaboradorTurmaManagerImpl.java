@@ -30,6 +30,7 @@ import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCursoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.CursoPontuacaoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -345,46 +346,83 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return colaboradorTurmas;
 	}
 
-	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Integer qtdMesesSemCurso) throws Exception
+	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Integer qtdMesesSemCurso, Boolean desligado, char aprovadoFiltro) throws Exception
 	{
-		Date data = null;
+		Date data = new Date();
 		if(qtdMesesSemCurso != null && qtdMesesSemCurso >= 0)
-			data = criaDataDiminuindoMeses(qtdMesesSemCurso).getTime();
+			data = DateUtil.incrementaMes(data, -1*qtdMesesSemCurso); 
 		
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findRelatorioSemTreinamento(empresaId, cursosIds, areaIds, estabelecimentoIds, data);
+		Collection<ColaboradorTurma> colaboradorTurmasRetorno = new ArrayList<ColaboradorTurma>();
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findRelatorioSemTreinamento(empresaId, cursosIds, areaIds, estabelecimentoIds, data, desligado);
+		
+		if(aprovadoFiltro != 'T')
+			colaboradorTurmasRetorno = filtraColaboradorTurmaAprovadosOuReprovadosByFiltroAprovado(aprovadoFiltro, colaboradorTurmas);
+		else
+		{
+			ColaboradorTurma ct;
+			Collection<Curso> cursos = cursoManager.findByEmpresaIdAndCursosId(empresaId, cursosIds);
+			Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, estabelecimentoIds, areaIds, StatusRetornoAC.CONFIRMADO, false, desligado, false, new String[]{"emp.nome", "e.nome","areaOrganizacionalNome", "c.nome"});
+			boolean adicionarColaboardorTurma = true; 
 
-		if(colaboradorTurmas == null || colaboradorTurmas.isEmpty())
+			for (Curso curso : cursos) 
+			{
+				for (Colaborador colaborador : colaboradores) 
+				{
+					for (ColaboradorTurma colaboradorTurma : colaboradorTurmas)
+					{
+						if(curso.getId().equals(colaboradorTurma.getCurso().getId()) && colaborador.getId().equals(colaboradorTurma.getColaborador().getId()))
+						{
+							adicionarColaboardorTurma = false;
+							break;
+						}
+					}	
+						
+					if(adicionarColaboardorTurma)
+					{
+						ct = new ColaboradorTurma();
+						ct.setColaborador(colaborador);
+						ct.setCurso(curso);
+						colaboradorTurmasRetorno.add(ct);
+					}
+
+					adicionarColaboardorTurma = true;
+				}
+			}		
+		}
+		
+		if(colaboradorTurmasRetorno == null || colaboradorTurmasRetorno.isEmpty())
 			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
 		
-		return colaboradorTurmas;
+		return colaboradorTurmasRetorno;
 	}
 
 	public Collection<ColaboradorTurma> findRelatorioComTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date dataIni, Date dataFim, char aprovadoFiltro, String situacao) throws Exception
 	{
-		Boolean aprovado = aprovadoFiltro == 'T' ? null : aprovadoFiltro == 'S';
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, cursosIds, areaIds, estabelecimentoIds, dataIni, dataFim, " c.nome, emp.nome, e.nome, a.nome, co.nome ", true, situacao);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, null, cursosIds, areaIds, estabelecimentoIds, dataIni, dataFim, " c.nome, emp.nome, e.nome, areaNome, co.nome ", true, situacao);
 		
 		if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
 			throw new ColecaoVaziaException();
 		
-		// monta aprovados e não aprovados
-		carregaResultados(colaboradorTurmas);
-		setFamiliaAreas(colaboradorTurmas, empresaId);
-		
+		return filtraColaboradorTurmaAprovadosOuReprovadosByFiltroAprovado(aprovadoFiltro, colaboradorTurmas);
+	}
+
+	private Collection<ColaboradorTurma> filtraColaboradorTurmaAprovadosOuReprovadosByFiltroAprovado(char aprovadoFiltro, Collection<ColaboradorTurma> colaboradorTurmas) 
+	{
+		Boolean aprovado = aprovadoFiltro == 'T' ? null : aprovadoFiltro == 'S';
 		if(aprovado != null)
 		{
 			Collection<ColaboradorTurma> retorno = new ArrayList<ColaboradorTurma>();
 			
 			for (ColaboradorTurma ct : colaboradorTurmas) 
 			{
+				ct.setAprovado(verificaAprovacao(ct));
 				if(ct.isAprovado() == aprovado)
 					retorno.add(ct);
 			}
 
 			return retorno;
 		}
-
-		return colaboradorTurmas;
+		return colaboradorTurmas; 
 	}
 	
 	private void setReprovadosMaisNota(Long cursoOuTurmaId, Integer qtdAvaliacoes, String porCursoOuTurma, Collection<ColaboradorTurma> colaboradorTurmas)
@@ -682,9 +720,9 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	
 		String ordenacao = "";
 		if (tipoAgrupamento == '0') {
-			ordenacao = " e.nome, a.nome, co.nome, c.nome ";
+			ordenacao = " e.nome, areaNome, co.nome, c.nome ";
 		} else {
-			ordenacao = " c.nome, e.nome, a.nome, co.nome ";
+			ordenacao = " c.nome, e.nome, areaNome, co.nome ";
 		}
 		
 		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(empresaId, certificacao, null, areaIds, estabelecimentoIds, dataInicio, dataFim, ordenacao, true, SituacaoColaborador.ATIVO);
@@ -696,8 +734,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		 *monta aprovados e não aprovados
 		 */
 		carregaResultados(colaboradorTurmas);
-		
-		setFamiliaAreas(colaboradorTurmas, empresaId);
 		
 		Collection<ColaboradorCertificacaoRelatorio> colaboradoresCertificacoes = new ArrayList<ColaboradorCertificacaoRelatorio>();
 		

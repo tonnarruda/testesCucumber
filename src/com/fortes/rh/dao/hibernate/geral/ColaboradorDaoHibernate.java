@@ -28,6 +28,7 @@ import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.ColaboradorDao;
@@ -4640,12 +4641,17 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();	
 	}
 
-	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC, boolean semcodigoAc)
+	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, int statusAC, boolean semcodigoAc, Boolean desligado, boolean primeiroHistorico, String... order)
 	{
-		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
-				.setProjection(Projections.min("hc2.data")) // Menor data - não mexer
-				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
-				.add(Restrictions.eq("hc2.status", statusAC));
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2");
+
+		if(primeiroHistorico)
+			subQueryHc.setProjection(Projections.min("hc2.data")); // Menor data
+		else
+			subQueryHc.setProjection(Projections.max("hc2.data")); // Maior data
+		
+		subQueryHc.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"));
+		subQueryHc.add(Restrictions.eq("hc2.status", statusAC));
 
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
 		criteria.createCriteria("c.historicoColaboradors", "hc");
@@ -4658,6 +4664,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.createCriteria("fs.cargo", "ca");
 		criteria.createCriteria("c.pessoal.ctps.ctpsUf", "ctpsUf", Criteria.LEFT_JOIN);
 		criteria.createCriteria("c.pessoal.rgUf", "rgUf", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.empresa", "emp", Criteria.LEFT_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.distinct(Projections.property("c.id")), "id");
@@ -4721,24 +4728,37 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		p.add(Projections.property("hc.tipoSalario"), "historicoColaboradorTipoSalarioProjection");
 		p.add(Projections.property("hc.status"), "historicoColaboradorStatusProjection");
 		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
-		p.add(Projections.property("ao.nome"), "areaOrganizacionalNome");
 		p.add(Projections.property("ao.codigoAC"), "areaOrganizacionalCodigoAC");
+		p.add(Projections.alias(Projections.sqlProjection("monta_familia_area(ao4_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome"));
 		p.add(Projections.property("ca.id"), "cargoIdProjection");
 		p.add(Projections.property("fs.id"), "faixaSalarialIdProjection");
 		p.add(Projections.property("fs.codigoAC"), "faixaSalarialCodigoACProjection");
 		p.add(Projections.property("e.id"), "estabelecimentoIdProjection");
 		p.add(Projections.property("e.codigoAC"), "estabelecimentoCodigoACProjection");
 		p.add(Projections.property("i.codigoAC"), "indiceCodigoAC");
+		p.add(Projections.property("e.nome"), "estabelecimentoNomeProjection");
+		p.add(Projections.property("emp.id"), "empresaId");
+		p.add(Projections.property("emp.nome"), "empresaNome");
 		criteria.setProjection(p);
 
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
-		criteria.add(Expression.eq("c.desligado", false));
+		
+		if(desligado != null)
+			criteria.add(Expression.eq("c.desligado", desligado));
 		
 		if(semcodigoAc)
 			criteria.add(Expression.isNull("c.codigoAC"));
+		
+		if(!ArrayUtils.isEmpty(areasIds))
+			criteria.add(Expression.in("hc.areaOrganizacional.id", areasIds));
+		
+		if(!ArrayUtils.isEmpty(estabelecimentosIds))
+			criteria.add(Expression.in("hc.estabelecimento.id", estabelecimentosIds));
 
-		criteria.addOrder(Order.asc("c.nome"));
+		if(!ArrayUtils.isEmpty(order))
+			for (String od : order) 
+				criteria.addOrder(Order.asc(od));
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 

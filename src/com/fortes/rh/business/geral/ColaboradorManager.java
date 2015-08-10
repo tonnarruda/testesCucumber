@@ -209,7 +209,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<DataGrafico> montaGraficoTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Date dataIni, Date dataFim, Collection<Long> empresasIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos);
 	public Collection<Colaborador> findDemitidosTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Long empresaId, Date dataIni, Date dataFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor);
 	public Collection<Colaborador> findFormacaoEscolar(Long empresaId, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> cargoIds) throws Exception;
-	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC, boolean semcodigoAc);
+	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, int statusAC, boolean semcodigoAc, Boolean desligado, boolean primeiroHistorico, String... order);
 	public void desvinculaCandidato(Long candidatoId);
 	public Collection<Colaborador> findAguardandoDesligamento(Long empresaId, Long[] areasIdsPorResponsavel);
 	public Collection<Usuario> findUsuarioByAreaEstabelecimento(Long[] areasIds, Long[] estabelecimentosIds);

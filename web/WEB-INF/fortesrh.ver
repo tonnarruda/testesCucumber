@@ -7,6 +7,8 @@
 	    <Item visivel="S" motivo="P20150700239"><![CDATA[T&D > Cadastros > Cursos/Treinamentos: Correção de inconsistência na contagem dos cursos e páginas.]]></Item>
 		<Item visivel="S" motivo="S20150500172"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Clonar: Nova opção de clonagem para mais de uma empresa.]]></Item>
 	    <Item visivel="S" motivo="S20150400189"><![CDATA[T&D > Relatórios > Colaboradores x Certificações: Nova opção de agrupamento por curso.]]></Item>
+		<Item visivel="S" motivo="S20150600089"><![CDATA[T&D > Relatórios > Colaboradores sem treinamento: Nova opção de selecionar mais de um curso e novo filtro por aprovação.]]></Item>
+		<Item visivel="S" motivo="S20150600089"><![CDATA[T&D > Relatórios > Colaboradores com treinamento: Nova opção de selecionar mais de um curso e novo filtro por aprovação.]]></Item>
 	    <Item visivel="S" motivo="P20150700178"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão > Editar Situações: Ajuste da inconsistência ao tentar editar a situação que se referencia a um histórico da faixa salarial que não existe.]]></Item>
 	    <Item visivel="S" motivo="S20150700147"><![CDATA[Info. Funcionais > Movimentações > Aprovar/Reprovar Solicitações de Desligamento: Exibição do nome da empresa nos emails relacionados a solicitação de desligamento.]]></Item>
 	    <Item visivel="S" motivo="P20150700182"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Nova opção para imprimir PPRA e LTCAT em páginas separadas.]]></Item>

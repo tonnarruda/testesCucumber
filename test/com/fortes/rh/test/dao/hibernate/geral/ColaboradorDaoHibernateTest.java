@@ -6442,21 +6442,28 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		faixaSalarialDao.save(fs1);
 		
 		AreaOrganizacional a1 = AreaOrganizacionalFactory.getEntity();
+		a1.setNome("Mãe");
 		areaOrganizacionalDao.save(a1);
+		
+		AreaOrganizacional a2 = AreaOrganizacionalFactory.getEntity();
+		a2.setAreaMae(a1);
+		a2.setNome("Filha");
+		areaOrganizacionalDao.save(a2);
 		
 		Estabelecimento e1 = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(e1);
 		
-		criarColaboradorHistorico("Airton", null, empresa1, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 3, 2012), null, null, null, e1, a1, fs1, null, null);
-		criarColaboradorHistorico("Bruna", null, empresa1, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 8, 2010), null, null, null, e1, a1, fs1, null, null);
-		criarColaboradorHistorico("Chico", null, empresa2, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, null, null, null, a1, fs1, null, null);
-		criarColaboradorHistorico("Demosval", null, empresa2, DateUtil.criarDataMesAno(1, 5, 2009), DateUtil.criarDataMesAno(1, 11, 2009), null, null, null, null, a1, fs1, null, null);
+		criarColaboradorHistorico("Airton", null, empresa1, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 3, 2012), null, null, null, e1, a2, fs1, null, null);
+		criarColaboradorHistorico("Bruna", null, empresa1, DateUtil.criarDataMesAno(1, 2, 2010), DateUtil.criarDataMesAno(1, 8, 2010), null, null, null, e1, a2, fs1, null, null);
+		criarColaboradorHistorico("Chico", null, empresa2, DateUtil.criarDataMesAno(1, 5, 2011), DateUtil.criarDataMesAno(1, 11, 2011), null, null, null, null, a2, fs1, null, null);
+		criarColaboradorHistorico("Demosval", null, empresa2, DateUtil.criarDataMesAno(1, 5, 2009), DateUtil.criarDataMesAno(1, 11, 2009), null, null, null, null, a2, fs1, null, null);
 		
-		Collection<Colaborador> colaboradores = colaboradorDao.findByEmpresaAndStatusAC(empresa1.getId(), StatusRetornoAC.CONFIRMADO, true);
+		Collection<Colaborador> colaboradores = colaboradorDao.findByEmpresaAndStatusAC(empresa1.getId(), null, null, StatusRetornoAC.CONFIRMADO, true, null, true, "c.nome");
 		
 		assertEquals(2, colaboradores.size());
 		assertEquals("Airton", ((Colaborador)colaboradores.toArray()[0]).getNome());
 		assertEquals("Bruna", ((Colaborador)colaboradores.toArray()[1]).getNome());
+		assertEquals("Mãe > Filha", ((Colaborador)colaboradores.toArray()[0]).getAreaOrganizacional().getNome());
 	}
 	
 	public void testDesvinculaCandidato() 

@@ -27,6 +27,7 @@ import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
+import com.fortes.rh.util.ArrayUtil;
 import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
@@ -323,8 +324,11 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		if (curso != null && StringUtils.isNotBlank(curso.getNome()))
 			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + curso.getNome() + "%", Hibernate.STRING));
 
-		criteria.setFirstResult(((page - 1) * pagingSize));
-		criteria.setMaxResults(pagingSize);
+		if(page != null && pagingSize != null){
+			criteria.setFirstResult(((page - 1) * pagingSize));
+			criteria.setMaxResults(pagingSize);
+		}
+		
 		criteria.addOrder(Order.asc("c.nome"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));
 
@@ -492,5 +496,27 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		}
 		
 		return ((Integer) criteria.uniqueResult()) > 0;
+	}
+
+	public Collection<Curso> findByEmpresaIdAndCursosId(Long empresaId,	Long... cursosIds) 
+	{
+		Criteria criteria = getSession().createCriteria(Curso.class,"c");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		criteria.setProjection(p);
+
+		if(empresaId != null && !empresaId.equals(-1L))
+			criteria.add(Expression.eq("c.empresa.id", empresaId));
+		
+		if(LongUtil.arrayIsNotEmpty(cursosIds))
+			criteria.add(Expression.in("c.id", cursosIds));
+
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));
+
+		return criteria.list();
 	}
 }

@@ -314,7 +314,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		colaborador = colaboradorManager.findById(colaborador.getId());
 		colaboradores = new ArrayList<Colaborador>();
 		colaboradores.add(new Colaborador("Anônimo", 0L));
-		colaboradores.addAll(colaboradorManager.findByEmpresaAndStatusAC(getEmpresaSistema().getId(), StatusRetornoAC.CONFIRMADO, false));
+		colaboradores.addAll(colaboradorManager.findByEmpresaAndStatusAC(getEmpresaSistema().getId(), null, null, StatusRetornoAC.CONFIRMADO, false, false, true, "c.nome"));
 		faixaSalarial = colaborador.getHistoricoColaborador().getFaixaSalarial();
 		
 		prepareCompetenciasColaborador();

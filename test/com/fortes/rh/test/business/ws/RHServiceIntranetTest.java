@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -13,11 +14,9 @@ import com.fortes.rh.business.ws.RHServiceIntranetImpl;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
-import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
-import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.ws.UnidadeIntranet;
 import com.fortes.rh.model.ws.UsuarioIntranet;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
@@ -72,9 +71,9 @@ public class RHServiceIntranetTest extends MockObjectTestCase
 		colaborador2.setCargoNomeProjection(cargo.getNome());
 		colaborador2.setEstabelecimento(estabelecimento);
 		
-		colaboradorManager.expects(once()).method("findByEmpresaAndStatusAC").with(eq(empresa.getId()),eq(StatusRetornoAC.CONFIRMADO), eq(false)).will(returnValue(Arrays.asList(colaborador1, colaborador2)));
+		colaboradorManager.expects(once()).method("findByEmpresaAndStatusAC").with(new Constraint[]{eq(empresa.getId()),eq(null),eq(null),eq(StatusRetornoAC.CONFIRMADO),eq(false), eq(false),eq(true), ANYTHING}).will(returnValue(Arrays.asList(colaborador1, colaborador2)));
 		
-		Collection<UsuarioIntranet> usuarioIntranets =  rHServiceIntranetImpl.usuariosIntranetList(empresa.getId().toString());
+		Collection<UsuarioIntranet> usuarioIntranets = rHServiceIntranetImpl.usuariosIntranetList(empresa.getId().toString());
 		
 		assertEquals(2 ,usuarioIntranets.size());
 	}
