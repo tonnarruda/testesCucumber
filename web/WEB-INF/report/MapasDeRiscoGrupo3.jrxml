@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MapasDeRiscoGrupo1" pageWidth="490" pageHeight="410" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="490" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="12fc8dfd-ce39-4e20-a669-6c6910747aaa">
+	<property name="ireport.zoom" value="1.3310000000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="COR_RISCO_1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_1}.equals("A")]]></conditionExpression>
+			<style backcolor="#0064FF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_1}.equals("E")]]></conditionExpression>
+			<style backcolor="#FFC800"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_1}.equals("B")]]></conditionExpression>
+			<style backcolor="#895931"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_1}.equals("Q")]]></conditionExpression>
+			<style backcolor="#C91D01"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_1}.equals("F")]]></conditionExpression>
+			<style backcolor="#64A401"/>
+		</conditionalStyle>
+	</style>
+	<style name="COR_RISCO_2">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_2}.equals("A")]]></conditionExpression>
+			<style backcolor="#0064FF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_2}.equals("E")]]></conditionExpression>
+			<style backcolor="#FFC800"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_2}.equals("B")]]></conditionExpression>
+			<style backcolor="#895931"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_2}.equals("Q")]]></conditionExpression>
+			<style backcolor="#C91D01"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_2}.equals("F")]]></conditionExpression>
+			<style backcolor="#64A401"/>
+		</conditionalStyle>
+	</style>
+	<style name="COR_RISCO_3">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_3}.equals("A")]]></conditionExpression>
+			<style backcolor="#0064FF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_3}.equals("E")]]></conditionExpression>
+			<style backcolor="#FFC800"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_3}.equals("B")]]></conditionExpression>
+			<style backcolor="#895931"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_3}.equals("Q")]]></conditionExpression>
+			<style backcolor="#C91D01"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_3}.equals("F")]]></conditionExpression>
+			<style backcolor="#64A401"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="RISCO_AND_GRAU" class="java.lang.String"/>
+	<variable name="TIPO_RISCO_1" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{RISCO_AND_GRAU}.split( ";" )[0].split("-")[0]]]></initialValueExpression>
+	</variable>
+	<variable name="TIPO_RISCO_2" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{RISCO_AND_GRAU}.split( ";" )[1].split("-")[0]]]></initialValueExpression>
+	</variable>
+	<variable name="TIPO_RISCO_3" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{RISCO_AND_GRAU}.split( ";" )[2].split("-")[0]]]></initialValueExpression>
+	</variable>
+	<variable name="GRAU_RISCO_1" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{RISCO_AND_GRAU}.split( ";" )[0].split("-")[1]]]></initialValueExpression>
+	</variable>
+	<variable name="GRAU_RISCO_2" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{RISCO_AND_GRAU}.split( ";" )[1].split("-")[1]]]></initialValueExpression>
+	</variable>
+	<variable name="GRAU_RISCO_3" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{RISCO_AND_GRAU}.split( ";" )[2].split("-")[1]]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="410" splitType="Stretch">
+			<ellipse>
+				<reportElement style="COR_RISCO_3" x="327" y="165" width="80" height="80" forecolor="#898989" uuid="5d6af1df-2514-47e3-9d4e-09d93a0f3842">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_3}.equals("3")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_1" x="82" y="165" width="80" height="80" forecolor="#898989" uuid="f4e6150b-76c0-4f87-ba78-a21637964c5a">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_1}.equals("3")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_1" x="92" y="175" width="60" height="60" forecolor="#898989" uuid="6a19c262-e9af-4971-84a7-0a807dbd4432">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_1}.equals("2")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_1" x="100" y="183" width="45" height="45" forecolor="#898989" uuid="abc61418-5148-4717-a216-0c0fd21c4943">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_1}.equals("1")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_2" x="205" y="165" width="80" height="80" forecolor="#898989" uuid="250d4775-b9fd-4476-b42d-525caa1c680f">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_2}.equals("3")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_2" x="215" y="175" width="60" height="60" forecolor="#898989" uuid="13358c75-209b-461f-846b-17d626241d10">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_2}.equals("2")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_2" x="223" y="183" width="45" height="45" forecolor="#898989" uuid="f446ef88-0834-41e6-813c-8a51a3b2c407">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_2}.equals("1")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_3" x="337" y="175" width="60" height="60" forecolor="#898989" uuid="83c5b567-abe3-44ef-98ed-ee9ebd67ae57">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_3}.equals("2")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_3" x="345" y="183" width="45" height="45" forecolor="#898989" uuid="424211dd-9159-4a92-a51d-d56880d61b9c">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_3}.equals("1")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

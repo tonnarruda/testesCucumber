@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MapasDeRiscoGrupo1" pageWidth="490" pageHeight="410" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="490" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="12fc8dfd-ce39-4e20-a669-6c6910747aaa">
+	<property name="ireport.zoom" value="1.3310000000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="COR_RISCO_1">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_1}.equals("A")]]></conditionExpression>
+			<style backcolor="#0064FF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_1}.equals("E")]]></conditionExpression>
+			<style backcolor="#FFC800"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_1}.equals("B")]]></conditionExpression>
+			<style backcolor="#895931"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_1}.equals("Q")]]></conditionExpression>
+			<style backcolor="#C91D01"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_1}.equals("F")]]></conditionExpression>
+			<style backcolor="#64A401"/>
+		</conditionalStyle>
+	</style>
+	<style name="COR_RISCO_2">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_2}.equals("A")]]></conditionExpression>
+			<style backcolor="#0064FF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_2}.equals("E")]]></conditionExpression>
+			<style backcolor="#FFC800"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_2}.equals("B")]]></conditionExpression>
+			<style backcolor="#895931"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_2}.equals("Q")]]></conditionExpression>
+			<style backcolor="#C91D01"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_2}.equals("F")]]></conditionExpression>
+			<style backcolor="#64A401"/>
+		</conditionalStyle>
+	</style>
+	<style name="COR_RISCO_3">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_3}.equals("A")]]></conditionExpression>
+			<style backcolor="#0064FF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_3}.equals("E")]]></conditionExpression>
+			<style backcolor="#FFC800"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_3}.equals("B")]]></conditionExpression>
+			<style backcolor="#895931"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_3}.equals("Q")]]></conditionExpression>
+			<style backcolor="#C91D01"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_3}.equals("F")]]></conditionExpression>
+			<style backcolor="#64A401"/>
+		</conditionalStyle>
+	</style>
+	<style name="COR_RISCO_4">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_4}.equals("A")]]></conditionExpression>
+			<style backcolor="#0064FF"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_4}.equals("E")]]></conditionExpression>
+			<style backcolor="#FFC800"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_4}.equals("B")]]></conditionExpression>
+			<style backcolor="#895931"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_4}.equals("Q")]]></conditionExpression>
+			<style backcolor="#C91D01"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{TIPO_RISCO_4}.equals("F")]]></conditionExpression>
+			<style backcolor="#64A401"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="RISCO_AND_GRAU" class="java.lang.String"/>
+	<variable name="TIPO_RISCO_1" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{RISCO_AND_GRAU}.split( ";" )[0].split("-")[0]]]></initialValueExpression>
+	</variable>
+	<variable name="TIPO_RISCO_2" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{RISCO_AND_GRAU}.split( ";" )[1].split("-")[0]]]></initialValueExpression>
+	</variable>
+	<variable name="TIPO_RISCO_3" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{RISCO_AND_GRAU}.split( ";" )[2].split("-")[0]]]></initialValueExpression>
+	</variable>
+	<variable name="TIPO_RISCO_4" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{RISCO_AND_GRAU}.split( ";" )[3].split("-")[0]]]></initialValueExpression>
+	</variable>
+	<variable name="GRAU_RISCO_1" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{RISCO_AND_GRAU}.split( ";" )[0].split("-")[1]]]></initialValueExpression>
+	</variable>
+	<variable name="GRAU_RISCO_2" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{RISCO_AND_GRAU}.split( ";" )[1].split("-")[1]]]></initialValueExpression>
+	</variable>
+	<variable name="GRAU_RISCO_3" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{RISCO_AND_GRAU}.split( ";" )[2].split("-")[1]]]></initialValueExpression>
+	</variable>
+	<variable name="GRAU_RISCO_4" class="java.lang.String">
+		<variableExpression><![CDATA[]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{RISCO_AND_GRAU}.split( ";" )[3].split("-")[1]]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="410" splitType="Stretch">
+			<ellipse>
+				<reportElement style="COR_RISCO_4" x="327" y="270" width="80" height="80" forecolor="#898989" uuid="b492f60e-8513-43f6-b1ce-39d19a754148">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_4}.equals("3")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_1" x="82" y="63" width="80" height="80" forecolor="#898989" uuid="d9a90f68-9769-463b-9753-28847fc65db7">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_1}.equals("3")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_3" x="82" y="269" width="80" height="80" forecolor="#898989" uuid="aea72bdf-5cc5-45c0-9547-bdd459cc69af">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_3}.equals("3")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_2" x="327" y="64" width="80" height="80" forecolor="#898989" uuid="d7985b5f-acb6-430f-98c7-ab07eda0ce09">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_2}.equals("3")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_1" x="92" y="73" width="60" height="60" forecolor="#898989" uuid="c2a6577b-9892-4e0d-9c31-60471e8bfd2a">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_1}.equals("2")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_2" x="337" y="74" width="60" height="60" forecolor="#898989" uuid="991483a7-e10f-43fb-9ee5-8281c400ad9d">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_2}.equals("2")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_1" x="100" y="81" width="45" height="45" forecolor="#898989" uuid="333f1bd0-8805-4b7d-89df-5c9d6970a878">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_1}.equals("1")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_2" x="345" y="82" width="45" height="45" forecolor="#898989" uuid="7eb9f6cb-3ef0-4fde-9bdf-53818d738a81">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_2}.equals("1")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_3" x="92" y="279" width="60" height="60" forecolor="#898989" uuid="3f1d46cb-f221-417a-91da-89229e2d3624">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_3}.equals("2")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_3" x="100" y="287" width="45" height="45" forecolor="#898989" uuid="fea556e0-05fb-4b7c-ad43-83678ce993fd">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_3}.equals("1")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_4" x="337" y="280" width="60" height="60" forecolor="#898989" uuid="c57c7fa1-3dac-4abd-aac3-43ed048ca295">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_4}.equals("2")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+			<ellipse>
+				<reportElement style="COR_RISCO_4" x="345" y="288" width="45" height="45" forecolor="#898989" uuid="2d4e0d07-cc16-4d5e-a973-70d649db3564">
+					<printWhenExpression><![CDATA[$V{GRAU_RISCO_4}.equals("1")]]></printWhenExpression>
+				</reportElement>
+			</ellipse>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

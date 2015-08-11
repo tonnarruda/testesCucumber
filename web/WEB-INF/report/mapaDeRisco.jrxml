@@ -1,22 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="certificadoGrande" pageWidth="843" pageHeight="595" orientation="Landscape" columnWidth="843" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5779cba3-1701-4079-9332-4809e88e98c5">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MapaDeRisco" pageWidth="843" pageHeight="595" orientation="Landscape" columnWidth="843" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5779cba3-1701-4079-9332-4809e88e98c5">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.100000000000015"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="722"/>
+	<property name="ireport.y" value="41"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
-	<field name="titulo" class="java.lang.String"/>
-	<field name="data" class="java.lang.String"/>
-	<field name="conteudo" class="java.lang.String"/>
-	<field name="ass1" class="java.lang.String"/>
-	<field name="ass2" class="java.lang.String"/>
-	<field name="imprimirMoldura" class="java.lang.Boolean"/>
-	<field name="imprimirLogo" class="java.lang.Boolean"/>
-	<field name="imprimirLogoCertificado" class="java.lang.Boolean"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/marcelocarvalheiro/Workspaces/workspaceRH/FortesRH/web/WEB-INF/report/"]]></defaultValueExpression>
+	</parameter>
 	<field name="qtdTiposRiscos" class="java.lang.Integer"/>
 	<field name="qtdDeColaboradoresHomens" class="java.lang.Integer"/>
 	<field name="qtdDeColaboradoresMulheres" class="java.lang.Integer"/>
@@ -27,7 +22,7 @@
 	<field name="biologico" class="java.lang.String"/>
 	<field name="quimico" class="java.lang.String"/>
 	<field name="fisico" class="java.lang.String"/>
-	<field name="grauAcidente" class="java.lang.Integer"/>
+	<field name="riscoAndGrau" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -73,30 +68,30 @@
 				<reportElement mode="Opaque" x="529" y="10" width="290" height="235" forecolor="#CDCDCD" backcolor="#E8E8E8" uuid="746bb20a-81a5-4063-a52b-9895a0a2f0fa"/>
 			</rectangle>
 			<ellipse>
-				<reportElement x="551" y="35" width="45" height="45" forecolor="#898989" uuid="b669bcf1-58fd-4148-8848-42f3d207bfde"/>
+				<reportElement x="556" y="36" width="45" height="45" forecolor="#898989" uuid="b669bcf1-58fd-4148-8848-42f3d207bfde"/>
 			</ellipse>
 			<ellipse>
-				<reportElement x="543" y="91" width="60" height="60" forecolor="#898989" uuid="c1b0cf5e-66f9-452a-88dc-b872adffb1d9"/>
+				<reportElement x="548" y="91" width="60" height="60" forecolor="#898989" uuid="c1b0cf5e-66f9-452a-88dc-b872adffb1d9"/>
 			</ellipse>
 			<ellipse>
-				<reportElement x="533" y="161" width="80" height="80" forecolor="#898989" uuid="449123fb-c931-4564-ae2d-c008aac5e96d"/>
+				<reportElement x="538" y="161" width="80" height="80" forecolor="#898989" uuid="449123fb-c931-4564-ae2d-c008aac5e96d"/>
 			</ellipse>
 			<staticText>
-				<reportElement x="628" y="35" width="91" height="45" forecolor="#5C5C5A" uuid="13d19607-16a7-4cb3-a2e8-a5929ac8f52d"/>
+				<reportElement x="633" y="36" width="91" height="45" forecolor="#5C5C5A" uuid="13d19607-16a7-4cb3-a2e8-a5929ac8f52d"/>
 				<textElement verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Risco Pequeno]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="628" y="91" width="91" height="60" forecolor="#5C5C5A" uuid="2d47c729-0da8-477b-bd2f-9747448987f1"/>
+				<reportElement x="633" y="91" width="91" height="60" forecolor="#5C5C5A" uuid="2d47c729-0da8-477b-bd2f-9747448987f1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Risco Médio]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="628" y="161" width="91" height="80" forecolor="#5C5C5A" uuid="0a938415-30d4-4b48-9e90-148e061011ad"/>
+				<reportElement x="633" y="161" width="91" height="80" forecolor="#5C5C5A" uuid="0a938415-30d4-4b48-9e90-148e061011ad"/>
 				<textElement verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
@@ -109,7 +104,7 @@
 				<reportElement x="379" y="514" width="463" height="26" forecolor="#E8E8E8" backcolor="#E8E8E8" uuid="720420d0-311c-4da6-bc2a-1a1d995c4493"/>
 			</rectangle>
 			<rectangle>
-				<reportElement mode="Opaque" x="0" y="438" width="126" height="100" forecolor="#E8E8E8" backcolor="#E8E8E8" uuid="e9593b22-a841-4ab5-b561-b89629f79dda"/>
+				<reportElement mode="Opaque" x="0" y="439" width="126" height="100" forecolor="#E8E8E8" backcolor="#E8E8E8" uuid="e9593b22-a841-4ab5-b561-b89629f79dda"/>
 			</rectangle>
 			<staticText>
 				<reportElement x="411" y="442" width="100" height="14" uuid="a98122b3-9389-4e8d-bae6-7cca2133bc17"/>
@@ -167,7 +162,7 @@
 				<reportElement x="394" y="504" width="425" height="20" forecolor="#F6F6F6" backcolor="#F6F6F6" uuid="5ef6d487-565d-4445-80b7-a6897760fef0"/>
 			</rectangle>
 			<rectangle>
-				<reportElement x="19" y="10" width="490" height="410" forecolor="#CDCDCD" uuid="67218815-311c-4e7c-82a0-fc71f829bdbb"/>
+				<reportElement x="18" y="17" width="490" height="410" forecolor="#CDCDCD" uuid="67218815-311c-4e7c-82a0-fc71f829bdbb"/>
 			</rectangle>
 			<textField>
 				<reportElement x="18" y="463" width="375" height="61" uuid="33d58343-a1c4-439a-959a-e589b5d9b595"/>
@@ -180,7 +175,7 @@
 				<reportElement mode="Opaque" x="529" y="257" width="290" height="254" forecolor="#CDCDCD" backcolor="#E8E8E8" uuid="cebed33b-2775-4f0f-b7d2-53b768b0f023"/>
 			</rectangle>
 			<rectangle radius="5">
-				<reportElement x="534" y="299" width="78" height="25" forecolor="#FFFFFF" backcolor="#0184D5" uuid="136eb19a-bc8f-47d3-ba99-b8badbb5b473"/>
+				<reportElement x="534" y="299" width="78" height="25" forecolor="#FFFFFF" backcolor="#0064FF" uuid="136eb19a-bc8f-47d3-ba99-b8badbb5b473"/>
 			</rectangle>
 			<staticText>
 				<reportElement x="534" y="299" width="78" height="25" forecolor="#000000" uuid="66af3091-339e-4c0c-bb67-df7d5b8b06c4"/>
@@ -271,18 +266,66 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{fisico}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="207" y="132" width="100" height="20" uuid="f056c558-e9db-46af-a887-6a15eb2416c0"/>
-				<textFieldExpression><![CDATA[$F{qtdTiposRiscos}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="209" y="233" width="100" height="20" uuid="606a3c37-f980-4129-ae53-6c34d3063712"/>
-				<text><![CDATA[grauAcidente]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="309" y="233" width="100" height="20" uuid="ea46db6d-8621-4a95-b09c-8fb63f917196"/>
-				<textFieldExpression><![CDATA[$F{grauAcidente}]]></textFieldExpression>
-			</textField>
+			<subreport>
+				<reportElement positionType="Float" x="18" y="17" width="490" height="410" isPrintWhenDetailOverflows="true" uuid="2b14f7fe-2a2c-4120-a4ff-9c032efb4a51">
+					<printWhenExpression><![CDATA[$F{qtdTiposRiscos} == 1]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="RISCO_AND_GRAU">
+					<subreportParameterExpression><![CDATA[$F{riscoAndGrau}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "MapasDeRiscoGrupo1.jasper"
+
+
+]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="18" y="17" width="490" height="410" isPrintWhenDetailOverflows="true" uuid="d2278077-c66f-46a6-9da3-fc51b5681215">
+					<printWhenExpression><![CDATA[$F{qtdTiposRiscos} == 2]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="RISCO_AND_GRAU">
+					<subreportParameterExpression><![CDATA[$F{riscoAndGrau}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "MapasDeRiscoGrupo2.jasper"
+
+
+]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="18" y="17" width="490" height="410" isPrintWhenDetailOverflows="true" uuid="aa7b43ff-502b-4a53-ba6c-a78caeaaea4f">
+					<printWhenExpression><![CDATA[$F{qtdTiposRiscos} == 3]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="RISCO_AND_GRAU">
+					<subreportParameterExpression><![CDATA[$F{riscoAndGrau}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "MapasDeRiscoGrupo3.jasper"
+
+
+]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="18" y="17" width="490" height="410" isPrintWhenDetailOverflows="true" uuid="798aaad0-475b-4a17-8bf6-df49629cf57d">
+					<printWhenExpression><![CDATA[$F{qtdTiposRiscos} == 4]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="RISCO_AND_GRAU">
+					<subreportParameterExpression><![CDATA[$F{riscoAndGrau}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "MapasDeRiscoGrupo4.jasper"
+
+
+]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement positionType="Float" x="21" y="17" width="490" height="410" isPrintWhenDetailOverflows="true" uuid="9016d3d9-c14a-4f17-b3ac-9c0eb943dc85">
+					<printWhenExpression><![CDATA[$F{qtdTiposRiscos} == 5]]></printWhenExpression>
+				</reportElement>
+				<subreportParameter name="RISCO_AND_GRAU">
+					<subreportParameterExpression><![CDATA[$F{riscoAndGrau}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "MapasDeRiscoGrupo5.jasper"
+
+
+]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 	<columnFooter>

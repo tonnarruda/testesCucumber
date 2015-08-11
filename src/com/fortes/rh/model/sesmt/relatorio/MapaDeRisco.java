@@ -123,7 +123,7 @@ public class MapaDeRisco {
 		if(listaNome.length() == 0)
 			return "";
 
-		return listaNome.substring(0, listaNome.length()-3) + ".";
+		return listaNome.substring(0, listaNome.length()-2) + ".";
 	}
 	
 	public Integer getGrauAcidente()
@@ -162,5 +162,22 @@ public class MapaDeRisco {
 		}
 
 		return grau;
+	}
+
+	public String getRiscoAndGrau(){
+		String risco = "";
+		
+		if(getGrauAcidente() != 0)
+			risco = ";A-" + getGrauAcidente();
+		if(getGrauErgonomico() != 0)
+			risco += ";E-" + getGrauErgonomico();
+		if(getGrauBiologico() != 0)
+			risco += ";B-" + getGrauBiologico();
+		if(getGrauQuimico() != 0)
+			risco += ";Q-" + getGrauQuimico();
+		if (getGrauFisico() != 0)
+			risco += ";F-" + getGrauFisico();
+		
+		return risco.substring(1);
 	}
 }

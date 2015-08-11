@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.1435888100000016"/>
-	<property name="ireport.x" value="21"/>
-	<property name="ireport.y" value="44"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="150"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
