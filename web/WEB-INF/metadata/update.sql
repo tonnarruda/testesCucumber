@@ -23061,3 +23061,56 @@ insert into perfil_papel(perfil_id, papeis_id) values(1, 634);--.go
 insert into migrations values('20150715115000');--.go
 
 update parametrosdosistema set appversao = '1.1.147.177';--.go
+-- versao 1.1.148.178
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (635, 'ROLE_REL_CURSOS_VENCIDOS_A_VENCER', 'Cursos Vencidos e a Vencer', '/desenvolvimento/turma/prepareImprimirCursosVencidosAVencer.action', 15, true, 368);--.go 
+INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 635);--.go
+ALTER sequence papel_sequence restart WITH 636;--.go 
+insert into migrations values('20150720154730');--.go
+
+alter table curso add column periodicidade integer default 0;--.go 
+insert into migrations values('20150720155218');--.go
+CREATE OR REPLACE FUNCTION verifica_aprovacao(id_curso BIGINT, id_turma BIGINT, id_colaboradorturma BIGINT, percentualMinimoFrequencia DOUBLE PRECISION) RETURNS BOOLEAN AS $$  
+DECLARE aprovado BOOLEAN; 
+BEGIN 
+
+	select (
+			(
+				coalesce(cast( (select count(avaliacaocursos_id) from curso_avaliacaocurso where cursos_id = id_curso group by cursos_id) as Integer ), 0) = 0 
+			 	or coalesce(( select count(avaliacaocursos_id) from curso_avaliacaocurso where cursos_id = id_curso group by cursos_id), 0)  =
+				coalesce((select rct.qtdavaliacoesaprovadaspornota from View_CursoNota as rct where colaboradorturma_id = id_colaboradorturma), 0) 
+			 ) 
+			 and 
+				case when (coalesce((select count(dia) from diaturma where turma_id = id_turma group by turma_id), 0)) > 0 THEN
+				(
+					(
+						 cast(coalesce((select count(id) from colaboradorpresenca where presenca=true and colaboradorturma_id = id_colaboradorturma group by colaboradorturma_id), 0) as DOUBLE PRECISION) / 
+						 cast(coalesce((select count(dia) from diaturma where turma_id = id_turma group by turma_id), 0) as DOUBLE PRECISION)
+					 ) * 100 
+				) >= coalesce(percentualMinimoFrequencia, 0)
+				else 
+					true
+				end 
+			) as situacao INTO aprovado;
+	
+	RETURN aprovado;
+	
+END; 
+ 
+$$ LANGUAGE plpgsql; --.go  
+insert into migrations values('20150720155715');--.go
+update areaorganizacional set coresponsavel_id = null where coresponsavel_id not in (select id from colaborador);--.go
+ALTER TABLE areaorganizacional DROP CONSTRAINT IF EXISTS areaorganizacional_coresponsavel_fk;--.go
+ALTER TABLE ONLY areaorganizacional ADD CONSTRAINT areaorganizacional_coResponsavel_fk FOREIGN KEY (coResponsavel_id) REFERENCES colaborador(id);--.go
+insert into migrations values('20150721151803');--.go
+delete from migrations WHERE name = '20111031134658'; --.go 
+delete from migrations WHERE name = '20120208145017'; --.go 
+delete from migrations WHERE name = '20120822141810'; --.go 
+delete from migrations WHERE name = '20120918141127'; --.go 
+delete from migrations WHERE name = '20120918180748'; --.go 
+delete from migrations WHERE name = '20120918180941'; --.go 
+delete from migrations WHERE name = '20120919100106'; --.go 
+delete from migrations WHERE name = '20121003102005'; --.go 
+delete from migrations WHERE name = '20121029062342'; --.go 
+insert into migrations values('20150722153513');--.go
+update parametrosdosistema set appversao = '1.1.148.178';--.go

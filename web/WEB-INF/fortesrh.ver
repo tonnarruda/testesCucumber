@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.14x.17x" db="" data="xx/xx/2015">
-		<Item visivel="S" motivo="S20150600112"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Plano de Trabalho: Inserção de filtro por situação, responsável e corresponsável.]]></Item>
+	<Versao id="1.1.148.178" db="" data="11/08/2015">
+		<Item visivel="S" motivo="S20150600112"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Plano de Trabalho: Nova opção de filtro por situação, responsável e corresponsável.]]></Item>
 		<Item visivel="S" motivo="S20150400123"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Inserir/Editar: Nova funcionalidade para inserir periodicidade em meses no curso.]]></Item>
 	    <Item visivel="S" motivo="S20150500174"><![CDATA[T&D > Relatórios > Colaboradores x Certificações: Nova opção de filtro pelo período de realização dos cursos.]]></Item>
-	    <Item visivel="S" motivo="P20150700239"><![CDATA[T&D > Cadastros > Cursos/Treinamentos: Correção de inconsistência na contagem dos cursos e páginas.]]></Item>
-		<Item visivel="S" motivo="S20150500172"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Clonar: Nova opção de clonagem para mais de uma empresa.]]></Item>
+	    <Item visivel="S" motivo="P20150700239"><![CDATA[T&D > Cadastros > Cursos/Treinamentos: Ajuste da inconsistência na contagem dos cursos e páginas.]]></Item>
+		<Item visivel="S" motivo="S20150500172"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Clonar: Nova opção de clonar para mais de uma empresa.]]></Item>
 	    <Item visivel="S" motivo="S20150400189"><![CDATA[T&D > Relatórios > Colaboradores x Certificações: Nova opção de agrupamento por curso.]]></Item>
 		<Item visivel="S" motivo="S20150600089"><![CDATA[T&D > Relatórios > Colaboradores sem treinamento: Nova opção de selecionar mais de um curso e novo filtro por aprovação.]]></Item>
 		<Item visivel="S" motivo="S20150600089"><![CDATA[T&D > Relatórios > Colaboradores com treinamento: Nova opção de selecionar mais de um curso e novo filtro por aprovação.]]></Item>

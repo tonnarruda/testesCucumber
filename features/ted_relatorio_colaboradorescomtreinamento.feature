@@ -15,11 +15,10 @@ Funcionalidade: Relatório de colaboradores que fizeram um treinamento
     E eu clico no botão "Relatorio"
     E eu devo ver o alert do valida campos e clico no ok
 
-    Então eu seleciono "java" de "Curso"
+    Então eu marco "java"
     E eu seleciono "Empresa Padrão" de "Empresa"
     E eu marco "Empresa Padrão - matriz"
     E eu marco "adm"
-    E eu seleciono "Sim" de "Aprovado"
-    
+        
     E eu clico no botão "Relatorio"
     E eu devo ver "Não existem dados para o filtro informado."

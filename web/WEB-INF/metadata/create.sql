@@ -160,6 +160,44 @@ CREATE FUNCTION to_ascii(bytea, name) RETURNS text
 
 ALTER FUNCTION public.to_ascii(bytea, name) OWNER TO postgres;
 
+--
+-- Name: verifica_aprovacao(bigint, bigint, bigint, double precision); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION verifica_aprovacao(id_curso bigint, id_turma bigint, id_colaboradorturma bigint, percentualminimofrequencia double precision) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$  
+DECLARE aprovado BOOLEAN; 
+BEGIN 
+
+	select (
+			(
+				coalesce(cast( (select count(avaliacaocursos_id) from curso_avaliacaocurso where cursos_id = id_curso group by cursos_id) as Integer ), 0) = 0 
+			 	or coalesce(( select count(avaliacaocursos_id) from curso_avaliacaocurso where cursos_id = id_curso group by cursos_id), 0)  =
+				coalesce((select rct.qtdavaliacoesaprovadaspornota from View_CursoNota as rct where colaboradorturma_id = id_colaboradorturma), 0) 
+			 ) 
+			 and 
+				case when (coalesce((select count(dia) from diaturma where turma_id = id_turma group by turma_id), 0)) > 0 THEN
+				(
+					(
+						 cast(coalesce((select count(id) from colaboradorpresenca where presenca=true and colaboradorturma_id = id_colaboradorturma group by colaboradorturma_id), 0) as DOUBLE PRECISION) / 
+						 cast(coalesce((select count(dia) from diaturma where turma_id = id_turma group by turma_id), 0) as DOUBLE PRECISION)
+					 ) * 100 
+				) >= coalesce(percentualMinimoFrequencia, 0)
+				else 
+					true
+				end 
+			) as situacao INTO aprovado;
+	
+	RETURN aprovado;
+	
+END; 
+ 
+$$;
+
+
+ALTER FUNCTION public.verifica_aprovacao(id_curso bigint, id_turma bigint, id_colaboradorturma bigint, percentualminimofrequencia double precision) OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -2827,7 +2865,8 @@ CREATE TABLE curso (
     cargahoraria integer,
     percentualminimofrequencia double precision,
     criterioavaliacao text,
-    codigotru character varying(3)
+    codigotru character varying(3),
+    periodicidade integer DEFAULT 0
 );
 
 
@@ -5521,7 +5560,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 635, false);
+SELECT pg_catalog.setval('papel_sequence', 636, false);
 
 
 --
@@ -30495,7 +30534,6 @@ INSERT INTO migrations (name) VALUES ('20111201094013');
 INSERT INTO migrations (name) VALUES ('20111201144635');
 INSERT INTO migrations (name) VALUES ('20111201150059');
 INSERT INTO migrations (name) VALUES ('20110802145553');
-INSERT INTO migrations (name) VALUES ('20111031134658');
 INSERT INTO migrations (name) VALUES ('20111104144924');
 INSERT INTO migrations (name) VALUES ('20111111141724');
 INSERT INTO migrations (name) VALUES ('20111214104255');
@@ -30826,6 +30864,11 @@ INSERT INTO migrations (name) VALUES ('20150714144219');
 INSERT INTO migrations (name) VALUES ('20150714163103');
 INSERT INTO migrations (name) VALUES ('20150715105905');
 INSERT INTO migrations (name) VALUES ('20150715114951');
+INSERT INTO migrations (name) VALUES ('20150720154730');
+INSERT INTO migrations (name) VALUES ('20150720155218');
+INSERT INTO migrations (name) VALUES ('20150720155715');
+INSERT INTO migrations (name) VALUES ('20150721151803');
+INSERT INTO migrations (name) VALUES ('20150722153513');
 
 
 --
@@ -31196,12 +31239,14 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (620, 'ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO', 'Aprovar/Reprovar Solicitações de Desligamento', '/geral/colaborador/prepareAprovarReprovarSolicitacaoDesligamento.action', 3, true, NULL, 469, 'Para visualizar as solicitações de desligamento, o usuário deverá ser gestor de uma área organizacional ou ter no perfil a permissão de visualizar todos os colaboradores.');
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (633, 'ROLE_EDITA_DATA_SOLICITACAO', 'Editar data da solicitação', '#', 1, false, NULL, 612, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (634, 'ROLE_UTI', 'Inserir Nono Dígito em Celulares', '/geral/insereNonoDigito/prepareInsert.action', 18, true, NULL, 37, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (635, 'ROLE_REL_CURSOS_VENCIDOS_A_VENCER', 'Cursos Vencidos e a Vencer', '/desenvolvimento/turma/prepareImprimirCursosVencidosAVencer.action', 15, true, NULL, 368, NULL);
+
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.147.177', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.148.178', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1);
 
 
 --
@@ -31492,6 +31537,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 629);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 630);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 631);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 633);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 635);
 
 
 --
