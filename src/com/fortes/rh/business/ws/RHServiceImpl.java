@@ -45,7 +45,6 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
-import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
@@ -66,6 +65,7 @@ import com.fortes.rh.model.ws.TCidade;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TEmpresa;
 import com.fortes.rh.model.ws.TEstabelecimento;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TGrupo;
 import com.fortes.rh.model.ws.TIndice;
 import com.fortes.rh.model.ws.TIndiceHistorico;
@@ -114,6 +114,8 @@ public class RHServiceImpl implements RHService
 	private final String MSG_ERRO_REMOVER_SITUACAO_CARGO = "Erro ao excluir situação do cargo, existem outros cadastros utilizando essa situação.";
 	private final String MSG_ERRO_REMOVER_CARGO = "Erro ao excluir cargo, existem outros cadastros utilizando esse cargo.";
 	private final String MSG_ERRO_REMOVER_EMPREGADO = "Erro ao excluir empregado, existem outros cadastros utilizando esse empregado.";
+	
+	private static boolean sincronizar = true;
 	
 	private String formataException(String parametros, Exception e) 
 	{
@@ -1471,19 +1473,27 @@ public class RHServiceImpl implements RHService
 		}
 	}
 	
-	public void reSincronizarTabelaTemporariaAC (String gruposAC)
+	public void reSincronizarTabelaTemporariaAC (String gruposAC) throws Exception
 	{
-		try {
+		if(sincronizar)	{	
 			Collection<Empresa> empresas = empresaManager.findByGruposAC(gruposAC);
 			for (Empresa empresa : empresas) 
 			{
-				faixaSalarialHistoricoManager.reenviaAguardandoConfirmacao(empresa);
-				colaboradorManager.reenviaAguardandoContratacao(empresa);
-				historicoColaboradorManager.reenviaAguardandoConfirmacao(empresa);
-				colaboradorManager.reenviaSolicitacaoDesligamento(empresa);
+				sincronizar = false;
+				try {
+					colaboradorManager.reenviaAguardandoContratacao(empresa);
+					colaboradorManager.confirmaReenvios(new TFeedbackPessoalWebService(true, "Reenvio das pendências realizada com sucesso", null), empresa);
+
+					if(false){//NÃO REMOVER SERVIRÁ PARA A FUNCIONALIDADE FUTURA
+						faixaSalarialHistoricoManager.reenviaAguardandoConfirmacao(empresa);
+						historicoColaboradorManager.reenviaAguardandoConfirmacao(empresa);
+						colaboradorManager.reenviaSolicitacaoDesligamento(empresa);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					colaboradorManager.confirmaReenvios(new TFeedbackPessoalWebService(false, e.getMessage(), formataException("GrupoAC: " + empresa.getGrupoAC() + "  Empresa: " + empresa.getCodigoAC(), e)), empresa);
+				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 	

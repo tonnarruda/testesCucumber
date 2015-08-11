@@ -35,6 +35,7 @@ import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.security.spring.aop.callback.ColaboradorAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
@@ -217,6 +218,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void setSolicitacao(Long colaboradorId, Long solicitacaoId);
 	public void populaEscolaridade(Colaborador colaborador, TEmpregado empregado);
 	public void insereNonoDigitoCelular(Long[] ufId) throws Exception;
-	public void reenviaAguardandoContratacao(Empresa empresa);
+	public void reenviaAguardandoContratacao(Empresa empresa) throws Exception;
 	public void reenviaSolicitacaoDesligamento(Empresa empresa) throws Exception;
+	public void confirmaReenvios(TFeedbackPessoalWebService tFeedbackPessoalWebService, Empresa empresa) throws Exception;
 }

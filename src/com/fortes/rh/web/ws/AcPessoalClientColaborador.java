@@ -28,4 +28,6 @@ public interface AcPessoalClientColaborador
 	public TFeedbackPessoalWebService solicitacaoDesligamentoAc(Collection<HistoricoColaborador> historicosAc, Empresa empresa) throws IntegraACException;
 
 	public String getReciboPagamento(Colaborador colaborador, Date mesAno) throws Exception;
+	
+	public void confirmarReenvio(TFeedbackPessoalWebService tFeedbackPessoalWebService, Empresa empresa) throws Exception;
 }

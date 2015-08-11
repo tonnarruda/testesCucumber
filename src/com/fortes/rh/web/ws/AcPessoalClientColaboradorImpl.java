@@ -312,4 +312,29 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
        	
        	return result.getRetorno();
 	}
+	
+	public void confirmarReenvio(TFeedbackPessoalWebService tFeedbackPessoalWebService, Empresa empresa) throws Exception 
+	{
+		try {
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(empresa, token, grupoAC, "ConfirmarSucessoResincronizacao");
+
+			QName qname = new QName(grupoAC.getAcUrlWsdl(), "TFeedbackPessoalWebService");
+			call.registerTypeMapping(TFeedbackPessoalWebService.class, qname, new BeanSerializerFactory(TFeedbackPessoalWebService.class, qname), new BeanDeserializerFactory(TFeedbackPessoalWebService.class, qname));
+
+			QName xmltype = new QName("xs:TFeedbackPessoalWebService");
+			QName xmlstring = new QName("xs:string");
+
+			call.addParameter("token", xmlstring, ParameterMode.IN);
+			call.addParameter("FeedBack", xmltype, ParameterMode.IN);
+
+			Object[] param = new Object[] { token.toString(), tFeedbackPessoalWebService };
+
+			call.invoke(param);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new IntegraACException(e, "Não foi possível confirmar reenvio dos dados da tabela temporária.");
+		}
+	}
 }

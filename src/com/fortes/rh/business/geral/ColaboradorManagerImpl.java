@@ -2755,16 +2755,22 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findUsuarioByAreaEstabelecimento(areasIds, estabelecimentosIds);
 	}
 
-	public void reenviaAguardandoContratacao(Empresa empresa) 
+	public void reenviaAguardandoContratacao(Empresa empresa) throws Exception 
 	{
 		Collection<Colaborador> colaboradores = getDao().findByEmpresaAndStatusAC(empresa.getId(), null, null, StatusRetornoAC.AGUARDANDO, true, false, true, "c.nome");
 
 		for (Colaborador colaborador : colaboradores){
-			colaborador.getHistoricoColaborador().setAreaOrganizacional(colaborador.getAreaOrganizacional());
-			colaborador.getHistoricoColaborador().setEstabelecimento(colaborador.getEstabelecimento());
-			colaborador.getHistoricoColaborador().setFaixaSalarial(colaborador.getFaixaSalarial());
-			colaborador.getHistoricoColaborador().setIndice(colaborador.getIndice());
-			acPessoalClientColaborador.contratar(bindEmpregado(colaborador, empresa.getCodigoAC()), historicoColaboradorManager.bindSituacao(colaborador.getHistoricoColaborador(), empresa.getCodigoAC()), empresa);
+			try {
+
+				colaborador.getHistoricoColaborador().setAreaOrganizacional(colaborador.getAreaOrganizacional());
+				colaborador.getHistoricoColaborador().setEstabelecimento(colaborador.getEstabelecimento());
+				colaborador.getHistoricoColaborador().setFaixaSalarial(colaborador.getFaixaSalarial());
+				colaborador.getHistoricoColaborador().setIndice(colaborador.getIndice());
+				acPessoalClientColaborador.contratar(bindEmpregado(colaborador, empresa.getCodigoAC()), historicoColaboradorManager.bindSituacao(colaborador.getHistoricoColaborador(), empresa.getCodigoAC()), empresa);
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new Exception("Erro ao tentar enciar colaborador: " + colaborador.getNome() + " (Código AC: " + colaborador.getCodigoAC() + ").");
+			}
 		}
 	}
 
@@ -2772,6 +2778,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		Collection<HistoricoColaborador> historicosColaboradores = historicoColaboradorManager.findByEmpresaComHistorico(empresa.getId(), StatusRetornoAC.AGUARDANDO);
 		acPessoalClientColaborador.solicitacaoDesligamentoAc(historicosColaboradores, empresa);
+	}
+
+	public void confirmaReenvios(TFeedbackPessoalWebService tFeedbackPessoalWebService, Empresa empresa) throws Exception 
+	{
+		acPessoalClientColaborador.confirmarReenvio(tFeedbackPessoalWebService, empresa);
 	}
 	
 	public void setColaboradorPeriodoExperienciaAvaliacaoManager(ColaboradorPeriodoExperienciaAvaliacaoManager colaboradorPeriodoExperienciaAvaliacaoManager) 
