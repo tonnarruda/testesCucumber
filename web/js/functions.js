@@ -1347,3 +1347,14 @@ function checkListBoxSearch(name)
 				&& ( typeof filtroAtivo == "undefined" || nomeTeste.indexOf( filtroAtivo ) > -1 ));
 	});
 }
+
+(function($) {
+    $.fn.toggleDisabled = function(disabled){
+        return this.each(function(){
+        	if (typeof disabled == "undefined")
+        		this.disabled = !this.disabled;
+        	else
+        		this.disabled = disabled;
+        });
+    };
+})(jQuery);

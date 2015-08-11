@@ -2,7 +2,7 @@
 <html>
 <head>
 	<@ww.head/>
-	<title>Afastamentosz</title>
+	<title>Afastamentos</title>
 
 	<#include "../ftl/mascarasImports.ftl" />
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
@@ -26,16 +26,9 @@
 		
 		function exibirBtnRelatorio(){
 			var exibirTempoServico = $('#exibirTempoServico').is(':checked');
-			//$('.btnRelatorio').disabled( !exibirTempoServico );
-			if (exibirTempoServico){
-				$('#btnRelatorioPDF').attr("disabled", "disabled");
-				$('#btnRelatorioPDF').removeClass('btnRelatorio');
-				$('#btnRelatorioPDF').addClass('btnRelatorioDesabilitado').css("cursor", "default");
-			}else{
-				$('#btnRelatorioPDF').removeAttr("disabled");
-				$('#btnRelatorioPDF').removeClass('btnRelatorioDesabilitado');
-				$('#btnRelatorioPDF').addClass('btnRelatorio').css("cursor", "pointer");
-			}
+			$('#btnRelatorioPDF').toggleDisabled(exibirTempoServico);
+			$('#btnRelatorioPDF').toggleClass('btnRelatorio', !exibirTempoServico);
+			$('#btnRelatorioPDF').toggleClass('btnRelatorioDesabilitado', exibirTempoServico);
 		}
 	</script>
 
@@ -61,7 +54,7 @@
 		<@ww.select label="INSS" name="afastadoPeloINSS" id="afastadoPeloINSS" list=r"#{'T':'Todos','A':'Afastados','N':'Não afastados'}" required="true"/>
 		<@ww.select label="Agrupar por" id="agruparPor" name="agruparPor" list=r"#{'N':'Sem Agrupamento','C':'CID','M':'Mês','O':'Colaborador','A':'Área Organizacional'}" />
 		
-		<@ww.checkbox label="exibir tempo de serviço" id="exibirTempoServico" name="exibirTempoServico" labelPosition="left" onchange="exibirBtnRelatorio();" />
+		<@ww.checkbox label="Exibir tempo de serviço" id="exibirTempoServico" name="exibirTempoServico" labelPosition="left" onchange="exibirBtnRelatorio();" />
 
 		<div class="buttonGroup">
 				<button id='btnRelatorioPDF' onclick="return submeterAction('relatorioAfastamentos.action');" class="btnRelatorio" ></button>
