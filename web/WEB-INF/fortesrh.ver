@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.1xx.1xx" db="" data="xx/xx/2015">
+		<Item visivel="S" motivo="S20150700196"><![CDATA[Verificação de incosistência no banco de dados.]]></Item>		
+	</Versao>
 	<Versao id="1.1.148.178" db="" data="11/08/2015">
 		<Item visivel="S" motivo="S20150600112"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Plano de Trabalho: Nova opção de filtro por situação, responsável e corresponsável.]]></Item>
 		<Item visivel="S" motivo="S20150400123"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Inserir/Editar: Nova funcionalidade para inserir periodicidade em meses no curso.]]></Item>
