@@ -115,7 +115,7 @@ public class RHServiceImpl implements RHService
 	private final String MSG_ERRO_REMOVER_CARGO = "Erro ao excluir cargo, existem outros cadastros utilizando esse cargo.";
 	private final String MSG_ERRO_REMOVER_EMPREGADO = "Erro ao excluir empregado, existem outros cadastros utilizando esse empregado.";
 	
-	private static boolean sincronizar = true;
+	private static boolean realizandoReenvioPendencias = false;
 	
 	private String formataException(String parametros, Exception e) 
 	{
@@ -1475,15 +1475,15 @@ public class RHServiceImpl implements RHService
 	
 	public void reSincronizarTabelaTemporariaAC (String gruposAC) throws Exception
 	{
-		if(sincronizar)	{	
+		if(!realizandoReenvioPendencias)	{	
+			realizandoReenvioPendencias = true;
 			Collection<Empresa> empresas = empresaManager.findByGruposAC(gruposAC);
 			for (Empresa empresa : empresas) 
 			{
-				sincronizar = false;
 				try {
 					colaboradorManager.reenviaAguardandoContratacao(empresa);
 					colaboradorManager.confirmaReenvios(new TFeedbackPessoalWebService(true, "Reenvio das pendências realizada com sucesso", null), empresa);
-
+					realizandoReenvioPendencias = false;
 					if(false){//NÃO REMOVER SERVIRÁ PARA A FUNCIONALIDADE FUTURA
 						faixaSalarialHistoricoManager.reenviaAguardandoConfirmacao(empresa);
 						historicoColaboradorManager.reenviaAguardandoConfirmacao(empresa);
@@ -1491,6 +1491,7 @@ public class RHServiceImpl implements RHService
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
+					realizandoReenvioPendencias = false;
 					colaboradorManager.confirmaReenvios(new TFeedbackPessoalWebService(false, e.getMessage(), formataException("GrupoAC: " + empresa.getGrupoAC() + "  Empresa: " + empresa.getCodigoAC(), e)), empresa);
 				}
 			}
