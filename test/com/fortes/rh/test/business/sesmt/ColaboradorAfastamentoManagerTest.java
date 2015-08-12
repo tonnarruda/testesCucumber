@@ -62,13 +62,13 @@ public class ColaboradorAfastamentoManagerTest extends MockObjectTestCase
 	public void testGetCount()
 	{
 		colaboradorAfastamentoDao.expects(once()).method("getCount").will(returnValue(1));
-		assertEquals(Integer.valueOf(1),colaboradorAfastamentoManager.getCount(1L, "", estabelecimentoCheck, colaboradorAfastamento));
+		assertEquals(Integer.valueOf(1),colaboradorAfastamentoManager.getCount(1L, "", "", estabelecimentoCheck, colaboradorAfastamento));
 	}
 
 	public void testFindAllSelect()
 	{
 		colaboradorAfastamentoDao.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<ColaboradorAfastamento>()));
-		assertNotNull(colaboradorAfastamentoManager.findAllSelect(0, 0, 1L, "", estabelecimentoCheck, null, colaboradorAfastamento, new String[]{"colaboradorNome"}, false, 'T'));
+		assertNotNull(colaboradorAfastamentoManager.findAllSelect(0, 0, 1L, null, "", estabelecimentoCheck, null, colaboradorAfastamento, new String[]{"colaboradorNome"}, false, 'T'));
 	}
 
 	public void testFindRelatorioAfastamentos() throws Exception

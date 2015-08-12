@@ -34,15 +34,15 @@ import com.fortes.rh.util.DateUtil;
 @SuppressWarnings("unchecked")
 public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<ColaboradorAfastamento> implements ColaboradorAfastamentoDao
 {
-	public Integer getCount(Long empresaId, Long afastamentoId, String nomeBusca, Long[] estabelecimentoIds, Date inicio, Date fim)
+	public Integer getCount(Long empresaId, Long afastamentoId, String matriculaBusca, String nomeBusca, Long[] estabelecimentoIds, Date inicio, Date fim)
 	{
-		Query query = montaConsultaFind(true, false, empresaId, inicio, fim, nomeBusca, estabelecimentoIds, null, afastamentoId, null, 'T');
+		Query query = montaConsultaFind(true, false, empresaId, inicio, fim, matriculaBusca, nomeBusca, estabelecimentoIds, null, afastamentoId, null, 'T');
 		return (Integer)query.uniqueResult();
 	}
 
-	public Collection<ColaboradorAfastamento> findAllSelect(int page, int pagingSize, boolean isListagemColaboradorAfastamento, Long empresaId, Long afastamentoId, String nomeBusca, Long[] estabelecimentoIds, Long[] areaIds, Date inicio, Date fim, String[] ordenarPor, char afastadoPeloINSS)
+	public Collection<ColaboradorAfastamento> findAllSelect(int page, int pagingSize, boolean isListagemColaboradorAfastamento, Long empresaId, Long afastamentoId, String matriculaBusca, String nomeBusca, Long[] estabelecimentoIds, Long[] areaIds, Date inicio, Date fim, String[] ordenarPor, char afastadoPeloINSS)
 	{
-		Query query = montaConsultaFind(false, isListagemColaboradorAfastamento, empresaId, inicio, fim, nomeBusca, estabelecimentoIds, areaIds, afastamentoId, ordenarPor, afastadoPeloINSS);
+		Query query = montaConsultaFind(false, isListagemColaboradorAfastamento, empresaId, inicio, fim, matriculaBusca, nomeBusca, estabelecimentoIds, areaIds, afastamentoId, ordenarPor, afastadoPeloINSS);
 
 		if(pagingSize != 0)
         {
@@ -53,7 +53,7 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		return query.list();
 	}
 
-	private Query montaConsultaFind(boolean isCount, boolean isListagemColaboradorAfastamento, Long empresaId, Date inicio, Date fim, String nomeBusca, Long[] estabelecimentoIds, Long[] areaIds, Long afastamentoId, String[] ordenarPor, char afastadoPeloINSS)
+	private Query montaConsultaFind(boolean isCount, boolean isListagemColaboradorAfastamento, Long empresaId, Date inicio, Date fim, String matriculaBusca, String nomeBusca, Long[] estabelecimentoIds, Long[] areaIds, Long afastamentoId, String[] ordenarPor, char afastadoPeloINSS)
 	{
 		StringBuilder hql = null;
 
@@ -75,6 +75,9 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		if (afastamentoId != null)
 			hql.append("and a.id = :afastamentoId ");
 
+		if(isNotBlank(matriculaBusca))
+			hql.append("and upper(co.matricula) like :matricula ");
+			
 		if (isNotBlank(nomeBusca))
 			hql.append("and lower(co.nome) like :nome ");
 
@@ -143,6 +146,9 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		query.setLong("empresaId", empresaId);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
+		if(isNotBlank(matriculaBusca))
+			query.setString("matricula", "%" + matriculaBusca + "%" );
+		
 		if (isNotBlank(nomeBusca))
 			query.setString("nome", "%" + nomeBusca.toLowerCase() + "%");
 

@@ -35,6 +35,7 @@
 		<@ww.label value="a" liClass="liLeft" />
 		<@ww.datepicker name="colaboradorAfastamento.fim" id="fim" value="${fim}" cssClass="mascaraData" />
 
+		<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" cssStyle="width: 260px;"/>
 		<@ww.textfield label="Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
 		<@ww.select label="Motivo" name="colaboradorAfastamento.afastamento.id" id="tipo" list="afastamentos" listKey="id" listValue="descricao" headerKey="" headerValue="Todos"/>
 
@@ -49,6 +50,7 @@
 			<a href="prepareUpdate.action?colaboradorAfastamento.id=${colaboradorAfastamento.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaboradorAfastamento.id=${colaboradorAfastamento.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
+		<@display.column property="colaborador.matricula" title="Matrícula" style="width:45px;"/>
 		<@display.column property="colaborador.nome" title="Colaborador" style="width:310px;"/>
 		<@display.column property="periodoFormatado" title="Período" style="width:153px;" />
 		<@display.column property="colaborador.estabelecimento.nome" title="Estabelecimento" style="width:180px;"/>

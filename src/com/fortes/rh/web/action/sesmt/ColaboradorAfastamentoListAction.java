@@ -42,6 +42,7 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	private Collection<Afastamento> afastamentos;
 	private ColaboradorAfastamento colaboradorAfastamento;
 	private Collection<ColaboradorAfastamentoMatriz> colaboradorAfastamentoMatrizes;
+	private String matriculaBusca;
 	private String nomeBusca;
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	
@@ -67,8 +68,8 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 		if (!validaPeriodo())
 			return SUCCESS;
 
-		setTotalSize(colaboradorAfastamentoManager.getCount(getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, colaboradorAfastamento));
-		colaboradorAfastamentos = colaboradorAfastamentoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), nomeBusca, estabelecimentosCheck, null, colaboradorAfastamento, new String[]{"data","colaboradorNome"}, true, 'T');
+		setTotalSize(colaboradorAfastamentoManager.getCount(getEmpresaSistema().getId(), matriculaBusca, nomeBusca, estabelecimentosCheck, colaboradorAfastamento));
+		colaboradorAfastamentos = colaboradorAfastamentoManager.findAllSelect(getPage(), getPagingSize(), getEmpresaSistema().getId(), matriculaBusca, nomeBusca, estabelecimentosCheck, null, colaboradorAfastamento, new String[]{"data","colaboradorNome"}, true, 'T');
 	
 		afastamentos = afastamentoManager.findAll(new String[] {"descricao"});
 
@@ -284,6 +285,14 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	public void setAfastamentoManager(AfastamentoManager afastamentoManager)
 	{
 		this.afastamentoManager = afastamentoManager;
+	}
+	
+	public String getMatriculaBusca() {
+		return matriculaBusca;
+	}
+
+	public void setMatriculaBusca(String matriculaBusca) {
+		this.matriculaBusca = matriculaBusca;
 	}
 
 	public String getNomeBusca()

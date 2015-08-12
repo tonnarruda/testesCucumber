@@ -17,8 +17,8 @@ import com.fortes.security.auditoria.Modulo;
 @Modulo("Afastamento do Colaborador")
 public interface ColaboradorAfastamentoManager extends GenericManager<ColaboradorAfastamento>
 {
-	Integer getCount(Long empresaId, String nomeBusca, String[] estabelecimentoCheck, ColaboradorAfastamento colaboradorAfastamento);
-	Collection<ColaboradorAfastamento> findAllSelect(int page, int pagingSize, Long empresaId, String nomeBusca, String[] estabelecimentoCheck, String[] areasCheck, ColaboradorAfastamento colaboradorAfastamento, String[] ordenarPor, boolean isListagemColaboradorAfastamento, char afastadoPeloINSS) throws Exception;
+	Integer getCount(Long empresaId, String matriculaBusca, String nomeBusca, String[] estabelecimentoCheck, ColaboradorAfastamento colaboradorAfastamento);
+	Collection<ColaboradorAfastamento> findAllSelect(int page, int pagingSize, Long empresaId, String matriculaBusca, String nomeBusca, String[] estabelecimentoCheck, String[] areasCheck, ColaboradorAfastamento colaboradorAfastamento, String[] ordenarPor, boolean isListagemColaboradorAfastamento, char afastadoPeloINSS) throws Exception;
 	Collection<ColaboradorAfastamento> findRelatorioAfastamentos(Long empresaId, String nomeBusca, String[] estabelecimentoCheck, String[] areasCheck, ColaboradorAfastamento colaboradorAfastamento, String[] ordenarPor, char afastadoPeloINSS) throws ColecaoVaziaException;
 	Collection<ColaboradorAfastamento> findRelatorioResumoAfastamentos(Long empresaId, String[] estabelecimentosCheck, String[] areasCheck, String[] motivosCheck, ColaboradorAfastamento colaboradorAfastamento) throws ColecaoVaziaException;
 	void importarCSV(File arquivo, Map<String, Long> afastamentos, Empresa empresa) throws Exception;

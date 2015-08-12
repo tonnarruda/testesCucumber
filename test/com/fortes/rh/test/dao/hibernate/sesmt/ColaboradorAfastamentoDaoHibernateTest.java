@@ -61,6 +61,7 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setNome("Ana");
 		colaborador.setEmpresa(empresa);
+		colaborador.setMatricula("12345");
 		colaboradorDao.save(colaborador);
 
 		Estabelecimento estabelecimentoAtual = EstabelecimentoFactory.getEntity();
@@ -105,24 +106,24 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 
 		String[] ordem = new String[]{"colaboradorNome"};
 		
-		Collection<ColaboradorAfastamento> teste = colaboradorAfastamentoDao.findAllSelect(0, 0, false, empresa.getId(), afastamento.getId(), "a", estabelecimentoIds, null, DateUtil.criarDataMesAno(1, 3, 2009), DateUtil.criarDataMesAno(1, 6, 2009), ordem, afastadoPeloINSS);
+		Collection<ColaboradorAfastamento> teste = colaboradorAfastamentoDao.findAllSelect(0, 0, false, empresa.getId(), afastamento.getId(), colaborador.getMatricula(), "a", estabelecimentoIds, null, DateUtil.criarDataMesAno(1, 3, 2009), DateUtil.criarDataMesAno(1, 6, 2009), ordem, afastadoPeloINSS);
 		assertEquals(1, teste.size());
 
-		Collection<ColaboradorAfastamento> teste2 = colaboradorAfastamentoDao.findAllSelect(1, 15, false, empresa.getId(), null, "", estabelecimentoIds, null, null, null, ordem, afastadoPeloINSS);
+		Collection<ColaboradorAfastamento> teste2 = colaboradorAfastamentoDao.findAllSelect(1, 15, false, empresa.getId(), null, colaborador.getMatricula(), "", estabelecimentoIds, null, null, null, ordem, afastadoPeloINSS);
 		assertEquals(1, teste2.size());
 
 		//Não afastados pelo inss
 		afastadoPeloINSS = 'N';
 		afastamento.setInss(false);
 		afastamentoDao.save(afastamento);
-		Collection<ColaboradorAfastamento> teste3 = colaboradorAfastamentoDao.findAllSelect(1, 15, false, empresa.getId(), null, "", estabelecimentoIds, null, null, null, ordem, afastadoPeloINSS);
+		Collection<ColaboradorAfastamento> teste3 = colaboradorAfastamentoDao.findAllSelect(1, 15, false, empresa.getId(), null, null, "", estabelecimentoIds, null, null, null, ordem, afastadoPeloINSS);
 		assertEquals(1, teste3.size());
 
 		//Afastados por inss
 		afastadoPeloINSS = 'A';
 		afastamento.setInss(true);
 		afastamentoDao.save(afastamento);
-		Collection<ColaboradorAfastamento> teste4 = colaboradorAfastamentoDao.findAllSelect(1, 15, false, empresa.getId(), null, "", estabelecimentoIds, null, null, null, ordem, afastadoPeloINSS);
+		Collection<ColaboradorAfastamento> teste4 = colaboradorAfastamentoDao.findAllSelect(1, 15, false, empresa.getId(), null, "", "", estabelecimentoIds, null, null, null, ordem, afastadoPeloINSS);
 		assertEquals(1, teste4.size());
 	}
 
@@ -134,6 +135,7 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setNome("Ana");
 		colaborador.setEmpresa(empresa);
+		colaborador.setMatricula("01101");
 		colaboradorDao.save(colaborador);
 
 		Estabelecimento estabelecimentoAtual = EstabelecimentoFactory.getEntity();
@@ -161,7 +163,7 @@ public class ColaboradorAfastamentoDaoHibernateTest extends GenericDaoHibernateT
 		colaboradorAfastamentoDao.save(colaboradorAfastamento);
 
 		assertEquals((Integer)1,
-				colaboradorAfastamentoDao.getCount(empresa.getId(), afastamento.getId(), "", new Long[0], null, null));
+				colaboradorAfastamentoDao.getCount(empresa.getId(), afastamento.getId(), colaborador.getMatricula(), "", new Long[0], null, null));
 	}
 	
 	public void testFindByColaborador()
