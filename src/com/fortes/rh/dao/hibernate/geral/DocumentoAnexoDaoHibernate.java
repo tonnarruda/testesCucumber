@@ -11,6 +11,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.geral.DocumentoAnexoDao;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.OrigemAnexo;
 import com.fortes.rh.model.geral.DocumentoAnexo;
 
@@ -76,5 +77,26 @@ public class DocumentoAnexoDaoHibernate extends GenericDaoHibernate<DocumentoAne
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(DocumentoAnexo.class));
 		
 		return (DocumentoAnexo) criteria.uniqueResult();
+	}
+	
+	public Collection<DocumentoAnexo> findByTurma(Long turmaId) 
+	{
+		Criteria criteria = getSession().createCriteria(Turma.class, "t");
+		criteria.createCriteria("t.documentoAnexos", "tda");
+		criteria.createCriteria("tda.documentoAnexos", "da");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("da.id"), "id");
+		p.add(Projections.property("da.descricao"), "descricao");
+
+		criteria.setProjection(Projections.distinct(p));
+		criteria.add(Expression.eq("t.id", turmaId));
+
+		criteria.addOrder(Order.asc("da.descricao"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
 	}
 }

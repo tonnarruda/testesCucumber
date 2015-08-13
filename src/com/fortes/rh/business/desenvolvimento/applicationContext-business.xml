@@ -114,6 +114,19 @@
       <ref bean="turmaAvaliacaoTurmaManagerTarget" />
     </property>
   </bean>
+  <bean id="turmaDocumentoAnexoManagerTarget" class="com.fortes.rh.business.desenvolvimento.TurmaDocumentoAnexoManagerImpl">
+    <property name="dao">
+      <ref bean="turmaDocumentoAnexoDao" />
+    </property>
+  </bean>
+  <bean id="turmaDocumentoAnexoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.TurmaDocumentoAnexoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="turmaDocumentoAnexoManagerTarget" />
+    </property>
+  </bean>
   <bean id="cursoManagerTarget" class="com.fortes.rh.business.desenvolvimento.CursoManagerImpl">
     <property name="dao">
       <ref bean="cursoDao" />

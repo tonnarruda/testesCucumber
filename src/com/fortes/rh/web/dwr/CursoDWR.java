@@ -6,18 +6,16 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.hibernate.mapping.Array;
-
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
+import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Curso;
-import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.LongUtil;
 import com.opensymphony.webwork.dispatcher.SessionMap;
 
@@ -26,6 +24,7 @@ public class CursoDWR
 	private CursoManager cursoManager;
 	private EmpresaManager empresaManager;
 	private AvaliacaoCursoManager avaliacaoCursoManager;
+	private DocumentoAnexoManager documentoAnexoManager;
 
 	@SuppressWarnings("unchecked")
 	public Map<Long,String> getCursosByEmpresa(Long empresaId) throws Exception
@@ -59,7 +58,7 @@ public class CursoDWR
 		Collection<Curso> cursos = new ArrayList<Curso>();
 		
 		if(LongUtil.arrayIsNotEmpty(empresasIds))
-			cursos = cursoManager.findAllByEmpresasParticipantes(empresasIds);		
+			cursos = cursoManager.findAllByEmpresasParticipantes(empresasIds);
 		
 		return new CollectionUtil<Curso>().convertCollectionToMap(cursos,"getId","getEmpresaNomeMaisNome");
 	}
@@ -72,6 +71,13 @@ public class CursoDWR
 		return avaliacaoCursoManager.findByCursos(cursosIds);
 	}
 	
+	@SuppressWarnings("unchecked")
+	public Map<Long,String> getDocumentoAnexos(Long cursoId) 
+	{
+		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, 'U', cursoId);
+		return new CollectionUtil<DocumentoAnexo>().convertCollectionToMap(documentoAnexos,"getId","getDescricao");
+	}
+	
 	public void setCursoManager(CursoManager cursoManager) {
 		this.cursoManager = cursoManager;
 	}
@@ -82,5 +88,9 @@ public class CursoDWR
 
 	public void setEmpresaManager(EmpresaManager empresaManager) {
 		this.empresaManager = empresaManager;
+	}
+
+	public void setDocumentoAnexoManager(DocumentoAnexoManager documentoAnexoManager) {
+		this.documentoAnexoManager = documentoAnexoManager;
 	}
 }

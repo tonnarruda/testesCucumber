@@ -34,6 +34,14 @@
       <ref bean="turmaAvaliacaoTurmaDaoTarget" />
     </property>
   </bean>
+  <bean id="turmaDocumentoAnexoDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.desenvolvimento.TurmaDocumentoAnexoDao</value>
+    </property>
+    <property name="target">
+      <ref bean="turmaDocumentoAnexoDaoTarget" />
+    </property>
+  </bean>
   <bean id="cursoDao" class="org.springframework.aop.framework.ProxyFactoryBean">
     <property name="proxyInterfaces">
       <value>com.fortes.rh.dao.desenvolvimento.CursoDao</value>

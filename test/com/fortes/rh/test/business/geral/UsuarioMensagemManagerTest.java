@@ -12,6 +12,7 @@ import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
+import com.fortes.rh.business.desenvolvimento.TurmaDocumentoAnexoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.MensagemManager;
@@ -24,7 +25,7 @@ import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Solicitacao;
-import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.desenvolvimento.TurmaDocumentoAnexo;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.CaixaMensagem;
 import com.fortes.rh.model.geral.Colaborador;
@@ -60,6 +61,7 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 	private Mock avaliacaoDesempenhoManager = null;
 	private Mock solicitacaoManager = null;
 	private Mock gerenciadorComunicacaoManager = null;
+	private Mock turmaDocumentoAnexoManager = null;
 
     protected void setUp() throws Exception
     {
@@ -81,10 +83,14 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
         solicitacaoManager = new Mock(SolicitacaoManager.class);
         gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class);
         
+        turmaDocumentoAnexoManager = new Mock(TurmaDocumentoAnexoManager.class);
+        
         Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 		Mockit.redefineMethods(ArquivoUtil.class, MockArquivoUtil.class);
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
+		
+		MockSpringUtil.mocks.put("turmaDocumentoAnexoManager", turmaDocumentoAnexoManager);
 	}
 
 	protected void tearDown() throws Exception
@@ -125,11 +131,12 @@ public class UsuarioMensagemManagerTest extends MockObjectTestCase
 		
 		usuarioMensagemDao.expects(once()).method("listaUsuarioMensagem").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(usuarioMensagems));
 		colaboradorQuestionarioManager.expects(once()).method("findQuestionarioByTurmaLiberadaPorUsuario").with(ANYTHING).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
-		questionarioManager.expects(once()).method("findQuestionarioPorUsuario").with(ANYTHING).will(returnValue(new ArrayList<Questionario>()));
+		questionarioManager.expects(once()).method("findQuestionarioPorUsuario").with(ANYTHING).will(returnValue(new ArrayList<Questionario>()));	
 		avaliacaoDesempenhoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
 		solicitacaoManager.expects(once()).method("findSolicitacaoList").withAnyArguments().will(returnValue(new ArrayList<Solicitacao>()));
 		gerenciadorComunicacaoManager.expects(once()).method("existeConfiguracaoParaCandidatosModuloExterno").withAnyArguments().will(returnValue(false));
-
+		turmaDocumentoAnexoManager.expects(once()).method("findByColaborador").with(ANYTHING).will(returnValue(new ArrayList<TurmaDocumentoAnexo>()));
+		
 		Map<Character, CaixaMensagem> retorno = usuarioMensagemManager.listaMensagens(usuario.getId(), empresa.getId(), 1L);
 
 		assertEquals(new TipoMensagem().size(), retorno.size());

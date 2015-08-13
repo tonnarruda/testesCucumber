@@ -13,6 +13,7 @@
 	.invalido { background-color: #FFEEC2 !important; }
 </style>
 
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CursoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/TurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/DiaTurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
@@ -53,7 +54,17 @@
 		String.prototype.capitalize = function() {
 		    return this.charAt(0).toUpperCase() + this.slice(1);
 		}
-
+		
+		function getDocumentoAnexos(cursoId) {	
+			CursoDWR.getDocumentoAnexos(populaDocumentoAnexos, cursoId);
+		};
+		
+		function populaDocumentoAnexos(data)
+		{
+			console.log(data);
+			addChecks('documentoAnexoCheck', data, 'descricao');
+		}
+		
 		function populaDias(frm)
 		{
 			$('#diasTable').empty();
@@ -353,7 +364,7 @@
 	<@ww.form id="formTurma" name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST" enctype="multipart/form-data">
 		
 		<#if turmaPertenceAEmpresaLogada>
-			<@ww.select label="Curso" name="turma.curso.id" list="cursos" id="curso" listKey="id" listValue="nome"  headerKey="" headerValue="Selecione..." cssStyle="width: 611px;"/>
+			<@ww.select label="Curso" name="turma.curso.id" list="cursos" id="curso" listKey="id" listValue="nome"  headerKey="" headerValue="Selecione..." onchange="getDocumentoAnexos(this.value);" cssStyle="width: 611px;"/>
 		<#else>
 			<strong>Curso: ${turma.curso.nome}</strong>
 			<img id="tooltipCurso" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -3px; margin-top: -9px;" />
@@ -461,6 +472,7 @@
 
 		<#if turmaPertenceAEmpresaLogada>
 			<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList" width="607" filtro="true"/>
+			<@frt.checkListBox label="Anexos disponíveis para os colaboradores da turma" name="documentoAnexoCheck" list="documentoAnexoCheckList" width="607" filtro="true"/>
 		<#else>
 			<img id="tooltipAvaliacao" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 250px; margin-bottom:-18px" />
 			<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList" readonly=true  width="607" filtro="true"/>

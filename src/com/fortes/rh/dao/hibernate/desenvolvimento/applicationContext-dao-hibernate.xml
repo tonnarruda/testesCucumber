@@ -22,6 +22,11 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="turmaDocumentoAnexoDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.TurmaDocumentoAnexoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
   <bean id="cursoDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.CursoDaoHibernate">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />

@@ -88,6 +88,10 @@ public class DocumentoAnexoManagerImpl extends GenericManagerImpl<DocumentoAnexo
 		}
 
 	}
+	
+	public Collection<DocumentoAnexo> findByTurma(Long turmaId) {
+		return getDao().findByTurma(turmaId);
+	}
 
 	private void setEtapaSeletivaETipoDocumento(DocumentoAnexo documentoAnexo) {
 		if(documentoAnexo.getEtapaSeletiva() != null && documentoAnexo.getEtapaSeletiva().getId() == null)

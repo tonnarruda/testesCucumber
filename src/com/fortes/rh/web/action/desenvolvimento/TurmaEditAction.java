@@ -27,6 +27,7 @@ import com.fortes.rh.business.desenvolvimento.TurmaAvaliacaoTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.DocumentoAnexoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.TipoDespesaManager;
@@ -49,6 +50,7 @@ import com.fortes.rh.model.desenvolvimento.relatorio.CertificacaoTreinamentosRel
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCursoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.DocumentoAnexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.TipoDespesa;
 import com.fortes.rh.model.pesquisa.AvaliacaoTurma;
@@ -87,6 +89,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private EmpresaManager empresaManager;
 	private TipoDespesaManager tipoDespesaManager;
 	private TurmaTipoDespesaManager turmaTipoDespesaManager;
+	private DocumentoAnexoManager documentoAnexoManager;
 
 	private Turma turma;
 	private Colaborador colaborador;
@@ -138,6 +141,8 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	private Collection<CheckBox> colaboradoresCheckList;
 	private String[] avaliacaoTurmasCheck;
 	private Collection<CheckBox> avaliacaoTurmasCheckList;
+	private String[] documentoAnexoCheck;
+	private Collection<CheckBox> documentoAnexoCheckList = new ArrayList<CheckBox>();
 	
 	private Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 	private Collection<AproveitamentoAvaliacaoCurso> aproveitamentos;
@@ -215,6 +220,9 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	
 		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao"});
 		
+		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, 'U', curso.getId());
+		documentoAnexoCheckList = CheckListBoxUtil.populaCheckListBox(documentoAnexos, "getId", "getDescricao");
+		
 		avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(true, getEmpresaSistema().getId());
 		avaliacaoTurmasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoTurmas, "getId", "getQuestionarioTitulo");
 	}
@@ -250,6 +258,9 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 		Collection<AvaliacaoTurma> avaliacaoTurmasMarcadas = avaliacaoTurmaManager.findByTurma(turma.getId());
 		avaliacaoTurmasCheckList = CheckListBoxUtil.marcaCheckListBoxString(avaliacaoTurmasCheckList, avaliacaoTurmasMarcadas, "getQuestionarioTitulo");
+		
+		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.findByTurma(turma.getId());
+		documentoAnexoCheckList = CheckListBoxUtil.marcaCheckListBoxString(documentoAnexoCheckList, documentoAnexos, "getDescricao");
 				
 		turma.setTemPresenca(colaboradorPresencaManager.existPresencaByTurma(turma.getId()));
 		contemCustosDetalhados = !turmaTipoDespesaManager.findTipoDespesaTurma(turma.getId()).isEmpty();
@@ -272,7 +283,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 		turma = turmaManager.setAssinaturaDigital(false, turma, assinaturaDigital, "assinaturas");
 		
-		turmaManager.inserir(turma, diasCheck, custos, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), horariosIni, horariosFim);
+		turmaManager.inserir(turma, diasCheck, custos, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), LongUtil.arrayStringToArrayLong(documentoAnexoCheck), horariosIni, horariosFim);
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
@@ -281,7 +292,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	{
 		turma = turmaManager.setAssinaturaDigital(manterAssinatura, turma, assinaturaDigital, "assinaturas");
 		
-		turmaManager.atualizar(turma, diasCheck, horariosIni, horariosFim, colaboradorTurma, selectPrioridades, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), getEmpresaSistema().getId().equals(turma.getEmpresa().getId()));
+		turmaManager.atualizar(turma, diasCheck, horariosIni, horariosFim, colaboradorTurma, selectPrioridades, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), LongUtil.arrayStringToArrayLong(documentoAnexoCheck), getEmpresaSistema().getId().equals(turma.getEmpresa().getId()));
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}
@@ -1210,6 +1221,23 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 			Collection<CheckBox> avaliacaoTurmasCheckList) {
 		this.avaliacaoTurmasCheckList = avaliacaoTurmasCheckList;
 	}
+	
+	public String[] getDocumentoAnexoCheck() {
+		return documentoAnexoCheck;
+	}
+
+	public void setDocumentoAnexoCheck(String[] documentoAnexoCheck) {
+		this.documentoAnexoCheck = documentoAnexoCheck;
+	}
+
+	public Collection<CheckBox> getDocumentoAnexoCheckList() {
+		return documentoAnexoCheckList;
+	}
+
+	public void setDocumentoAnexoCheckList(
+			Collection<CheckBox> documentoAnexoCheckList) {
+		this.documentoAnexoCheckList = documentoAnexoCheckList;
+	}
 
 	public void setTipoDespesaManager(TipoDespesaManager tipoDespesaManager) {
 		this.tipoDespesaManager = tipoDespesaManager;
@@ -1237,6 +1265,10 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) {
 		this.turmaTipoDespesaManager = turmaTipoDespesaManager;
+	}
+
+	public void setDocumentoAnexoManager(DocumentoAnexoManager documentoAnexoManager) {
+		this.documentoAnexoManager = documentoAnexoManager;
 	}
 
 	public boolean isContemCustosDetalhados() {

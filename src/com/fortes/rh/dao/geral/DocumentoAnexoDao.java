@@ -10,4 +10,6 @@ public interface DocumentoAnexoDao extends GenericDao<DocumentoAnexo>
 	Collection<DocumentoAnexo> getDocumentoAnexoByOrigemId(Boolean moduloExterno, char origem, Long origemId, Long origemCandidatoId);
 
 	DocumentoAnexo findByIdProjection(Long documentoAnexoId);
+	
+	Collection<DocumentoAnexo> findByTurma(Long turmaId);
 }

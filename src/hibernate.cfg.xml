@@ -177,6 +177,7 @@
     <mapping class="com.fortes.rh.model.geral.GerenciadorComunicacao" />
     <mapping class="com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega" />
     <mapping class="com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma" />
+    <mapping class="com.fortes.rh.model.desenvolvimento.TurmaDocumentoAnexo" />
     <mapping class="com.fortes.rh.model.desenvolvimento.SituacaoAvaliacaoTurma" />
     <mapping class="com.fortes.rh.model.sesmt.Pcmat" />
     <mapping class="com.fortes.rh.model.sesmt.Fase" />

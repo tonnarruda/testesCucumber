@@ -9,6 +9,7 @@ public class MensagemVO implements Serializable {
 	private Long usuarioMensagemId;
 	private String remetente;
 	private String link;
+	private boolean anexo;
 	private Character tipo;
 	private Date data;
 	private String texto;
@@ -80,5 +81,13 @@ public class MensagemVO implements Serializable {
 
 	public void setUsuarioMensagemId(Long usuarioMensagemId) {
 		this.usuarioMensagemId = usuarioMensagemId;
+	}
+
+	public boolean isAnexo() {
+		return anexo;
+	}
+
+	public void setAnexo(boolean anexo) {
+		this.anexo = anexo;
 	}
 }

@@ -13,4 +13,5 @@ public interface DocumentoAnexoManager extends GenericManager<DocumentoAnexo>
 	public void deletarDocumentoAnexo(String diretorio, DocumentoAnexo documentoAnexo) throws Exception;
 	public DocumentoAnexo findByIdProjection(Long documentoAnexoId);
 	public String getNome(char origem, Long id);
+	public Collection<DocumentoAnexo> findByTurma(Long turmaId);
 }

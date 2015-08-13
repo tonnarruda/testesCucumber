@@ -10,6 +10,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
+import com.fortes.rh.business.desenvolvimento.TurmaDocumentoAnexoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.dao.geral.UsuarioMensagemDao;
@@ -20,6 +21,7 @@ import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
+import com.fortes.rh.model.desenvolvimento.TurmaDocumentoAnexo;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.CaixaMensagem;
@@ -161,6 +163,19 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 					vo.setTexto(colaboradorQuestionario.getNomeCursoTurmaAvaliacao());
 					vo.setLink("pesquisa/colaboradorResposta/prepareResponderQuestionario.action?colaborador.id=" + colaboradorId + "&questionario.id=" + colaboradorQuestionario.getQuestionario().getId() + "&turmaId=" + colaboradorQuestionario.getTurma().getId() + "&voltarPara=../../index.action");
 					vo.setTipo(TipoMensagem.TED);
+
+					caixasMensagens.get(TipoMensagem.TED).getMensagens().add(vo);
+					caixasMensagens.get(TipoMensagem.TED).incrementaNaoLidas();
+				}
+				
+				TurmaDocumentoAnexoManager turmaDocumentoAnexoManager = (TurmaDocumentoAnexoManager) SpringUtil.getBean("turmaDocumentoAnexoManager");
+				Collection<TurmaDocumentoAnexo> anexos = turmaDocumentoAnexoManager.findByColaborador(colaboradorId);
+				for (TurmaDocumentoAnexo anexo : anexos) {
+					vo = new MensagemVO();
+					vo.setTexto( anexo.getDocumentoAnexos().getDescricao() + " disponível para download do curso " + anexo.getTurma().getCurso().getNome());
+					vo.setLink("geral/documentoAnexo/showDocumento.action?documentoAnexo.id="+anexo.getDocumentoAnexos().getId());
+					vo.setTipo(TipoMensagem.TED);
+					vo.setAnexo(true);
 
 					caixasMensagens.get(TipoMensagem.TED).getMensagens().add(vo);
 					caixasMensagens.get(TipoMensagem.TED).incrementaNaoLidas();

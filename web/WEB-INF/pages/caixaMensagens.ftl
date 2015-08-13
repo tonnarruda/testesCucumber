@@ -38,7 +38,7 @@
 								
 								<div class="tituloMensagem">
 									<#if msg.link?exists && msg.link != "">
-										<a href="${msg.link}" title="${msg.textoAbreviado}" <#if msg.usuarioMensagemId?exists> onclick="marcarMensagemLida(${msg.usuarioMensagemId});" </#if> style="text-decoration:underline; ${style}">
+										<a href="${msg.link}" <#if msg.usuarioMensagemId?exists> onclick="marcarMensagemLida(${msg.usuarioMensagemId});" </#if> style="text-decoration:underline; ${style}" <#if msg.anexo>download title="Disponível apenas durante o período de realização do curso."<#else>title="${msg.textoAbreviado}"</#if>>
 											${msg.textoAbreviado}
 										</a>
 									<#else>

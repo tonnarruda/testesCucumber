@@ -25,6 +25,7 @@ import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.desenvolvimento.DiaTurmaManager;
 import com.fortes.rh.business.desenvolvimento.TurmaAvaliacaoTurmaManager;
+import com.fortes.rh.business.desenvolvimento.TurmaDocumentoAnexoManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManagerImpl;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.TurmaTipoDespesaManager;
@@ -67,6 +68,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 	Mock turmaTipoDespesaManager;
 	Mock faturamentoMensalManager;
 	Mock turmaAvaliacaoTurmaManager;
+	Mock turmaDocumentoAnexoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -102,6 +104,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		turmaManager.setFaturamentoMensalManager((FaturamentoMensalManager) faturamentoMensalManager.proxy());
 		
 		turmaAvaliacaoTurmaManager = new Mock(TurmaAvaliacaoTurmaManager.class);
+		turmaDocumentoAnexoManager = new Mock(TurmaDocumentoAnexoManager.class);
 		
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
@@ -109,6 +112,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Mockit.redefineMethods(ServletActionContext.class, MockServletActionContext.class);
 		
 		MockSpringUtil.mocks.put("turmaAvaliacaoTurmaManager", turmaAvaliacaoTurmaManager);
+		MockSpringUtil.mocks.put("turmaDocumentoAnexoManager", turmaDocumentoAnexoManager);
 	}
 
     protected void tearDown() throws Exception
@@ -305,6 +309,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		String[] diasCheck = new String[]{"1"};
 		String despesa = "200,00";
 		Long[] avaliacaoTurmaIds = {1L};
+		Long[] documentoAnexosIds = {1L};
 
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
@@ -314,11 +319,12 @@ public class TurmaManagerTest extends MockObjectTestCase
 		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck), ANYTHING, ANYTHING).isVoid();
 		turmaTipoDespesaManager.expects(once()).method("save").with(eq(despesa),eq(turma.getId())).isVoid();
 		turmaAvaliacaoTurmaManager.expects(once()).method("salvarAvaliacaoTurmas").with(eq(turma.getId()),eq(avaliacaoTurmaIds)).isVoid();
+		turmaDocumentoAnexoManager.expects(once()).method("salvarDocumentoAnexos").with(eq(turma.getId()),eq(documentoAnexosIds)).isVoid();
 		
 		Exception ex = null;
 		try
 		{
-			turmaManager.inserir(turma, diasCheck, despesa, avaliacaoTurmaIds, null, null);
+			turmaManager.inserir(turma, diasCheck, despesa, avaliacaoTurmaIds, documentoAnexosIds, null, null);
 		}
 		catch (Exception e)
 		{
@@ -335,6 +341,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		String[] diasCheck = new String[]{"1"};
 		String[] selectPrioridades = null;
 		Long[] avaliacaoTurmaIds = {1L};
+		Long[] documentoAnexosIds = {1L};
 		
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
 		String[] colaboradorTurmas = {colaboradorTurma.getId().toString()};
@@ -346,11 +353,12 @@ public class TurmaManagerTest extends MockObjectTestCase
 		diaTurmaManager.expects(once()).method("saveDiasTurma").with(eq(turma), eq(diasCheck), ANYTHING, ANYTHING).isVoid();
 		
 		turmaAvaliacaoTurmaManager.expects(once()).method("salvarAvaliacaoTurmas").with(eq(turma.getId()),eq(avaliacaoTurmaIds)).isVoid();
+		turmaDocumentoAnexoManager.expects(once()).method("salvarDocumentoAnexos").with(eq(turma.getId()),eq(documentoAnexosIds)).isVoid();
 		
 		Exception ex = null;
 		try
 		{
-			turmaManager.atualizar(turma, diasCheck, null, null, colaboradorTurmas, selectPrioridades, avaliacaoTurmaIds, true);
+			turmaManager.atualizar(turma, diasCheck, null, null, colaboradorTurmas, selectPrioridades, avaliacaoTurmaIds, documentoAnexosIds, true);
 		}
 		catch (Exception e)
 		{
