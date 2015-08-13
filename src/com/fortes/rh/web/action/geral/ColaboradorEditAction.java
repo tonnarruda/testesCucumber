@@ -591,7 +591,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 			if(idCandidato != null && colaborador.getFoto() == null)
 				colaborador.setFoto(candidatoManager.getFoto(idCandidato));
-
+			
+			if(colaborador.getVinculo().equals(Vinculo.SOCIO))
+				colaborador.setNaoIntegraAc(true);
 				
 			setDadosHistoricoColaborador();
 
@@ -754,6 +756,9 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 				colaborador.setCamposExtras(null);
 				
 			setDadosHistoricoColaborador();
+			
+			if(colaborador.getVinculo().equals(Vinculo.SOCIO))
+				colaborador.setNaoIntegraAc(true);
 			
 			colaboradorManager.update(colaborador, formacaos, idiomas, experiencias, getEmpresaSistema(),editarHistorico, salarioColaborador);
 			

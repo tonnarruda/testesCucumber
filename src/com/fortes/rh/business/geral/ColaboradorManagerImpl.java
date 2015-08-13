@@ -58,7 +58,6 @@ import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColabora
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.CertificadoMilitar;
-import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.Ctps;
 import com.fortes.rh.model.captacao.Experiencia;
 import com.fortes.rh.model.captacao.Formacao;
@@ -243,7 +242,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		if(idCandidato != null)
 			getDao().setCandidatoNull(idCandidato);
-
+			
 		save(colaborador);
 
 		// Inicia historico do colaborador
@@ -268,8 +267,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		{
 			candidatoManager.updateSetContratado(idCandidato, empresa.getId());
 			experienciaManager.removeCandidato(new Candidato(idCandidato, null));//vai ser salvo logo abaixo com id de candidato e colaborador, fazendo compartilhamento das experiências.
-
-			Collection<ConfiguracaoNivelCompetencia> configuracoesNiveisCompetencias = new ArrayList<ConfiguracaoNivelCompetencia>();
 
 			if (solicitacao.getId() != null)
 			{
@@ -554,6 +551,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	{
 		verificaEntidadeIdNulo(colaborador);
 		colaborador.setEmpresa(empresa);
+		
 		update(colaborador);
 		salvarBairro(colaborador);
 

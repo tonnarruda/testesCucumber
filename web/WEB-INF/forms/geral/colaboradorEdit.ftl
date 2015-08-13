@@ -64,6 +64,7 @@
 		#parentesDialog .xz { background-color:#fbfa99; color:red; }
 		#parentesDialog table { width: 100%; }
 		#parentesDialog td { width: 50%; vertical-align: top; }
+		#wwgrp_dt_encerramentoContrato { margin-top: 5px; }
 	</style>
 
 	<#include "../cargosalario/calculaSalarioInclude.ftl" />
@@ -182,7 +183,6 @@
 		
 		$(function() {
 			
-				
 			$("#idioma").load('<@ww.url includeParams="none" value="/captacao/idioma/list.action"/>');
 			$("#formacao").load('<@ww.url includeParams="none" value="/captacao/formacao/list.action"/>');
 			$("#expProfissional").load('<@ww.url includeParams="none" value="/captacao/experiencia/list.action"/>');
@@ -199,7 +199,9 @@
 			
 			$('#dataAdmissaoTooltipHelp').qtip({ content: 'Não é possível alterar a data de admissão quando integrado com o AC Pessoal.' });
 			$('#vinculoTooltipHelp').qtip({ content: 'Não é possível alterar o vínculo quando integrado com o AC Pessoal.' });
-			
+
+			$('#vinculoSocioTooltipHelp').qtip({ content: 'Colaboradores com a colocação Sócio, não serão integrados com o AC Pessoal.' });
+						
 			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
 
 			<#if avaliacoes?exists>
@@ -243,6 +245,7 @@
 			</@authz.authorize>
 			
 			habilitaDtEncerramentoContrato();
+			checkNaoIntegraAC();
 		});
 		
 		function habilitaDtEncerramentoContrato()
@@ -257,6 +260,13 @@
 				$('#dt_encerramentoContrato_button').show();
 				
 			}
+		}
+
+		function checkNaoIntegraAC(){
+			 var isVinculoSocio = $('#vinculo').val() == 'O';
+			 $("#naoIntegraACSocio").parent().parent().parent().toggle(isVinculoSocio);
+			 $("#naoIntegraAc").parent().parent().parent().toggle(!isVinculoSocio);
+			 $("#naoIntegraACSocio").attr('checked', 'checked');
 		}
 		
 		function populaAmbiente(estabelecimentoId, ambienteId)
@@ -422,6 +432,7 @@
 			<#if integraAc>
 				<#if !colaborador.id?exists>
 					<@ww.checkbox label="Não enviar este colaborador para o AC Pessoal" id="naoIntegraAc" name="colaborador.naoIntegraAc" liClass="liLeft" labelPosition="left" onchange="$('#wwgrp_obsACPessoal').toggle(!this.checked)"/>
+					<@ww.checkbox label="Este colaborador não será enviado para o AC Pessoal" id="naoIntegraACSocio" name="naoIntegra" liClass="liLeft" disabled="true" labelPosition="left"/>				
 				<#else>
 					<@ww.hidden id="naoIntegraAc" name="colaborador.naoIntegraAc"/>
 					<#if colaborador.naoIntegraAc>
@@ -524,7 +535,11 @@
 					<br clear="all"/>
 				</#if>
 			
-				<@ww.select label="Colocação" name="colaborador.vinculo" list="vinculos" cssStyle="width: 150px;"  id="vinculo" onchange="habilitaDtEncerramentoContrato();" />
+				<label for="colocacao">Colocação:</label><br />
+				<@ww.select theme="simple" label="Colocação" name="colaborador.vinculo" list="vinculos" cssStyle="width: 150px;"  id="vinculo" onchange="habilitaDtEncerramentoContrato(),checkNaoIntegraAC();" />
+				<#if integraAc>
+					<img id="vinculoSocioTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" />
+				</#if>
 			</#if>
 			<@ww.datepicker label="Encerramento do Contrato" name="colaborador.dataEncerramentoContrato" value="${dataEncerramentoContrato}" id="dt_encerramentoContrato" cssClass="mascaraData"/>
 			

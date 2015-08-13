@@ -9,6 +9,7 @@ public class Vinculo extends LinkedHashMap<String,String>
 	public static final String ESTAGIO = "S";
 	public static final String APRENDIZ = "A";
 	public static final String TEMPORARIO = "T";
+	public static final String SOCIO = "O";
 
 	public Vinculo()
 	{
@@ -16,5 +17,6 @@ public class Vinculo extends LinkedHashMap<String,String>
 		put(ESTAGIO, "Estágio");
 		put(APRENDIZ, "Aprendiz");
 		put(TEMPORARIO, "Temporário");
+		put(SOCIO, "Sócio");
 	}
 }
