@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.1xx.1xx" db="" data="xx/xx/2015">
+		<Item visivel="S" motivo="S20150700310"><![CDATA[SESMT > Movimentações > Afastamentos: Nova opção de filtro por matrícula do colaborador.]]></Item>
 		<Item visivel="S" motivo="S20150700102"><![CDATA[Utilitários > Exportar dados para o Fortes Pessoal: Exportar colaboradores desligados.]]></Item>		
 		<Item visivel="S" motivo="S20150700196"><![CDATA[Verificação de incosistência no banco de dados.]]></Item>
 	</Versao>
