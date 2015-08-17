@@ -111,86 +111,43 @@
 				var folha = ${grfEvolucaoFolha};
 				var faturamento = ${grfEvolucaoFaturamento};
 				
-			    var plot = $.plot(	$("#evolucaoFolha"), 
-			    					[
-			    						{label: 'Evolução Salarial', data: folha}, 
-			    						{label: 'Faturamento', data: faturamento }
-			    					], 
-			    					{
-									    series: {
-						                   lines: { show: true },
-						                   points: { show: true }
-						                },
-						                grid: { hoverable: true },
-								        xaxis: { 
-								        	mode: "time",
-								        	ticks: $.map( folha, function(item, i) { return item[0] }),
-								        	timeformat: '%b/%y ',
-								        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
-								        },
-								        yaxis: { 
-								        	 tickFormatter: function (v) {return formataNumero(v);}
-								        }
-								    });
-
-				var previousPoint = null;				
-				$("#evolucaoFolha").bind("plothover", function (event, pos, item) {
-		            if (item) 
-		            {
-		            	if (previousPoint != item.dataIndex) 
-		            	{
-                    		previousPoint = item.dataIndex;
-		                    $("#tooltip").remove();
-		                    var y = item.datapoint[1].toFixed(2);		                    
-		                    showTooltip(item.pageX, item.pageY, formataNumero(y));
-	                    }
-		            }
-					else 
-					{
-	                	$("#tooltip").remove();
-	                	previousPoint = null;            
-		            }
-				});
-		        
-		        var promocaoHorizontal = ${grfPromocaoHorizontal};
+				var dadosLinha = [{label: 'Evolução Salarial', data: folha}, {label: 'Faturamento', data: faturamento }];
+				
+				graficoLinha(dadosLinha, "#evolucaoFolha", "Evolução Salarial - Faturamento ");
+				
+				var promocaoHorizontal = ${grfPromocaoHorizontal};
 		        var promocaoVertical = ${grfPromocaoVertical};
-			    
-			    $.plot($("#faixaSalarial"), 
-			    		[
+		        
+		        var dadosBarra = [
 					        {label: 'Horizontal', data: promocaoHorizontal , bars:{align : "right", barWidth: 900000020}},
 					        {label: 'Vertical', data: promocaoVertical, bars:{align : "left", barWidth: 900000000} }
-					    ], 
-			    		{
-			    			series: {
-				                bars: {
-				                	show: true, 
-				                 	align: 'center'
-				                }
-					        },
-					        grid: { hoverable: true },
-					        xaxis: { 
-					         	mode: "time",
-					        	ticks: $.map( promocaoHorizontal, function(item, i) { return item[0] }),
-					        	timeformat: '%b/%y ',
-					        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
-					        }
-				    	});
-			    
-			    $("#faixaSalarial").bind("plothover", function (event, pos, item) {
-		            if (item) 
-		            {
-                		previousPoint = item.dataIndex;
-	                    $("#tooltip").remove();
-	                    var y = item.datapoint[1].toFixed(0);		                    
-	                    showTooltip(item.pageX, item.pageY, y);
-		            }
-					else 
-					{
-	                	$("#tooltip").remove();
-	                	previousPoint = null;            
-		            }
-				});
+					    ];
+				
+		        graficoBarra(dadosBarra, "#faixaSalarial", "#faixaSalarialImprimir");
 			});
+			
+			function graficoLinha(dados, obj, titulo)
+			{
+				montaLine(dados, obj, null);
+				
+				$(obj + "Imprimir")
+						.unbind()
+						.bind('click', 
+							function(event) 
+							{ 
+								popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/>");
+								popup.window.onload = function() 
+								{
+									popup.focus();
+									popup.document.getElementById('popupTitulo').innerHTML = titulo;
+									popup.document.getElementById('popupGraficoLegenda').innerHTML = '<br />' + $(obj + 'Info .formula').text()+'<br /><br />' + $(obj + 'Info .fieldDados').text();
+									popup.window.opener.montaLine(dados, popup.document.getElementById('popupGrafico'));
+									popup.window.print();
+									popup.window.close();
+								}
+							}
+						);
+			}
 			
 			function graficoPizza(dados, divGrafico, divLegenda, btnImprimir, numColunas, titulo, divTitulo)
 			{
@@ -217,6 +174,20 @@
 					$(btnImprimir).unbind().bind('click', { dados: dados }, function(event) { imprimirPizza(event.data.dados); });
 			}
 			
+			function graficoBarra(dados, divGrafico, btnImprimir, titulo, divTitulo, obs, divObs)
+			{
+				montaBar(dados, divGrafico);
+				
+				if (titulo && divTitulo)
+					$(divTitulo).text(titulo);
+					
+				if (obs && divObs)
+					$(divObs).text(obs);
+				
+				if (btnImprimir) 
+					$(btnImprimir).unbind().bind('click', function(event) { imprimirBarra(dados); });
+			}
+			
 			var popup;
 			function imprimirPizza(dados) 
 			{
@@ -232,6 +203,23 @@
 					popup.document.getElementById('info').innerHTML = infoPopup;
 					
 					popup.window.opener.graficoPizza(dados, popup.document.getElementById('popupGrafico'), popup.document.getElementById('popupGraficoLegenda'), false, 1, 'Salário por Área Organizacional', popup.document.getElementById('popupTitulo'));
+					popup.window.print();
+					popup.window.close();
+				}
+
+			}
+			
+			function imprimirBarra(dados) 
+			{
+				popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/>");
+				
+				popup.window.onload = function() 
+				{
+					popup.focus();
+					if($("#box").dialog("isOpen"))
+						infoPopup = $('.ui-dialog-titlebar').text().replace('close','');
+						
+					popup.window.opener.graficoBarra(dados, popup.document.getElementById('popupGrafico'), false, 'Promoção', popup.document.getElementById('popupTitulo'), "* Promoção Horizontal: Mudança de Faixa Salarial ou Salário. / Promoção Vertical: Mudança de Cargo.", popup.document.getElementById('popupObs'));
 					popup.window.print();
 					popup.window.close();
 				}
@@ -368,14 +356,20 @@
 		<div style="clear: both"></div>
 
 		<div class="fieldGraph bigger">
-			<h1>Evolução Salarial - Faturamento</h1>
+			<h1>
+				Evolução Salarial - Faturamento
+				<img id="evolucaoFolhaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+			</h1>
 	   		<div id="evolucaoFolha" style="margin: 25px; height: 300px; width: 900px"></div>
 	    </div>
 
 		<div class="fieldGraph bigger">
-			<h1>Promoção</h1>
+			<h1>
+				Promoção
+				<img id="faixaSalarialImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+			</h1>
 	   		<div id="faixaSalarial" style="margin: 25px; height: 300px; width: 900px"></div>
-	   		<div style="margin: 5px;text-align: right;">
+	   		<div class="obs" style="margin: 5px;text-align: right;">
 		   		 * Promoção Horizontal: Mudança de Faixa Salarial ou Salário. / Promoção Vertical: Mudança de Cargo.
 	   		</div>
 	    </div>

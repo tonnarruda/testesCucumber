@@ -40,6 +40,45 @@ function montaLine(data, idGrafico, precisao, options) {
 	});
 }
 
+function montaBar(data, idGrafico) {
+    var config = {
+		series: {
+			bars: {
+				show: true, 
+         		align: 'center'
+			}
+    	},
+        grid: { hoverable: true },
+        xaxis: {
+        	tickSize: [1, "month"],
+        	mode: 'time',
+        	timeformat: '%b/%y ',
+        	monthNames: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+        }
+    };			
+
+    var plot = $.plot($(idGrafico), data, config);
+
+	var previousPoint = null;				
+	$(idGrafico).bind("plothover", function (event, pos, item) {
+        if (item) 
+        {
+        	if (previousPoint != item.dataIndex) 
+        	{
+        		previousPoint = item.dataIndex;
+                $("#tooltip").remove();
+                var y = formataNumero(item.datapoint[1], precisao);		                    
+                showTooltip(item.pageX, item.pageY, y);
+            }
+        }
+		else 
+		{
+        	$("#tooltip").remove();
+        	previousPoint = null;            
+        }
+	});
+}
+
 function montaPie(data, clazz, options, showDatasCombine) {
 	var config = {
         radius: 0.8,

@@ -19,10 +19,12 @@
 		* { font-family: Arial, Helvetica, sans-serif; }
 		h3 { font-size: 16px; }
 		table { width: 100%; }
+		.legend table{ width: auto !important;}
 		table tr td { vertical-align: top; }
 		table tr td.dadosSistema { width: 180px; text-align: right; font-size: 12px; }
 		#popupGrafico { width: 800px; height: 300px; }
-		#popupGraficoLegenda { width: 800px; height: 300px; text-align: left}
+		#popupGraficoLegenda { width: 800px; max-height: 300px; text-align: left}
+		#popupObs { width: 100%; float:left; text-align: right; font-size: 13px;}
 	</style>
 </head>
 <body>
@@ -42,5 +44,6 @@
 	<div id="info"></div>
 	<div id="popupGrafico"></div>
 	<div id="popupGraficoLegenda"></div>
+	<div id="popupObs"></div>
 </body>
 </html>
