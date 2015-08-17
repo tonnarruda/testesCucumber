@@ -111,6 +111,7 @@ public class Empresa extends AbstractModel implements Serializable
 
     private boolean considerarSabadoNoAbsenteismo;
     private boolean considerarDomingoNoAbsenteismo;
+    private boolean processoExportacaoAC;
     
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
@@ -599,5 +600,13 @@ public class Empresa extends AbstractModel implements Serializable
 	public void setConsiderarDomingoNoAbsenteismo(
 			boolean considerarDomingoNoAbsenteismo) {
 		this.considerarDomingoNoAbsenteismo = considerarDomingoNoAbsenteismo;
+	}
+
+	public boolean isProcessoExportacaoAC() {
+		return processoExportacaoAC;
+	}
+
+	public void setProcessoExportacaoAC(boolean processoExportacaoAC) {
+		this.processoExportacaoAC = processoExportacaoAC;
 	}
 }

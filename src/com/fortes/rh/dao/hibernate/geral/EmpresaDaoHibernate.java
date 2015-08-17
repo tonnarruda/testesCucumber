@@ -513,4 +513,26 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		
 		return (String) criteria.uniqueResult();
 	}
+
+	public boolean emProcessoExportacaoAC(Long empresaId) {
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"e");
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("e.processoExportacaoAC"), "processoExportacaoAC");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("e.id", empresaId));
+		
+		return (Boolean) criteria.uniqueResult();
+	}
+
+	public void setProcessoExportacaoAC(Long empresaId, boolean processoExportacaoAC) 
+	{
+		String hql = "update Empresa e set e.processoExportacaoAC = :processoExportacaoAC where e.id = :empresaId";
+		Query query = getSession().createQuery(hql);
+		query.setBoolean("processoExportacaoAC", processoExportacaoAC);
+		query.setLong("empresaId", empresaId);
+
+		query.executeUpdate();
+	}
 }

@@ -1,7 +1,10 @@
 package com.fortes.webwork.interceptor;
 
+import java.io.IOException;
 import java.sql.BatchUpdateException;
 import java.util.Vector;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
@@ -10,9 +13,16 @@ import org.hibernate.validator.InvalidStateException;
 import org.hibernate.validator.InvalidValue;
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.dicionario.Entidade;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.action.MyActionSupport;
+import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ActionInvocation;
 import com.opensymphony.xwork.interceptor.Interceptor;
 
@@ -39,6 +49,7 @@ public class ValidationExceptionInterceptor implements Interceptor
 		if (action instanceof MyActionSupport)
 		{
 			actionSuport = (MyActionSupport) action;
+			verificaPendenciaExportacaoAC(actionSuport);
 		}
 		
 		try
@@ -109,6 +120,26 @@ public class ValidationExceptionInterceptor implements Interceptor
 		}
 		
 		return result;
+	}
+
+	private void verificaPendenciaExportacaoAC(MyActionSupport actionSuport) 
+	{
+		if(!actionSuport.toString().contains("com.fortes.rh.web.action.exportacao.ExportacaoACAction"))
+		{
+			try {
+				Empresa empresa = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession());
+				EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBean("empresaManager");
+				if(empresa != null && empresa.getId() != null && empresaManager.emProcessoExportacaoAC(empresa.getId()))
+				{
+					ParametrosDoSistemaManager parametrosDoSistemaManager = (ParametrosDoSistemaManager) SpringUtil.getBean("parametrosDoSistemaManager");
+
+					HttpServletResponse response = ServletActionContext.getResponse();
+					response.sendRedirect(parametrosDoSistemaManager.getContexto() + "/exportacao/prepareExportarAC.action");
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void logaErros(Exception e)

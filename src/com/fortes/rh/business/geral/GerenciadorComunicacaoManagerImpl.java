@@ -824,7 +824,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void enviarEmailContratacaoColaborador(String colaboradorNome, Empresa empresa) throws Exception 
 	{
 		String body = "<br>O candidato <b>" + colaboradorNome + "</b> foi contratado e seus dados "
-		+ "estão disponíveis no <b>AC Pessoal</b> para complemento de suas informações.<br><br>";
+		+ "estão disponíveis no <b>Fortes Pessoal</b> para complemento de suas informações.<br><br>";
 
 		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CONTRATAR_COLABORADOR_AC.getId(), empresa.getId());
 		
@@ -847,7 +847,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos)
 		{
 			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId()))
-				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal, "AC Pessoal", link, usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null);
+				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal, "Fortes Pessoal", link, usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null);
 		}
 	}
 	
@@ -865,7 +865,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		for (Colaborador colaborador : colaboradores)
 		{
 			String link = "pesquisa/entrevista/prepareResponderEntrevista.action?colaborador.id=" + colaborador.getId() + "&voltarPara=../../index.action";
-			String msgGeral = "O Colaborador " + colaborador.getNomeEOuNomeComercial() + " da empresa "+empresa.getNome()+" foi desligado no AC Pessoal.";
+			String msgGeral = "O Colaborador " + colaborador.getNomeEOuNomeComercial() + " da empresa "+empresa.getNome()+" foi desligado no Fortes Pessoal.";
 			
 			if(colaboradoresComEstabilidade != null && colaboradoresComEstabilidade.containsKey(colaborador.getId()))
 				msgGeral += "\nEste colaborador faz parte da CIPA e possui estabilidade até o dia " + DateUtil.formataDiaMesAno(colaboradoresComEstabilidade.get(colaborador.getId())) + ".";
@@ -878,7 +878,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			{
 				try {
 					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId()))
-						usuarioMensagemManager.saveMensagemAndUsuarioMensagem(msgGeral+msgDetalhe, "AC Pessoal", link, usuarioEmpresas, colaborador, TipoMensagem.INFO_FUNCIONAIS, null);
+						usuarioMensagemManager.saveMensagemAndUsuarioMensagem(msgGeral+msgDetalhe, "Fortes Pessoal", link, usuarioEmpresas, colaborador, TipoMensagem.INFO_FUNCIONAIS, null);
 	
 					if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())){
 						emails = gerenciadorComunicacao.getEmpresa().getEmailRespRH().split(";");
@@ -1063,7 +1063,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	public void enviaMensagemCancelamentoContratacao(Colaborador colaborador, String mensagem) 
 	{
 		StringBuilder mensagemFinal = new StringBuilder();
-		mensagemFinal.append("Cancelamento da contratação no AC Pessoal do colaborador " + colaborador.getNome() + StringUtils.rightPad(" ", 100));
+		mensagemFinal.append("Cancelamento da contratação no Fortes Pessoal do colaborador " + colaborador.getNome() + StringUtils.rightPad(" ", 100));
 		mensagemFinal.append("\r\n\r\n");
 		mensagemFinal.append("<b>Motivo do cancelamento:</b> ");
 		mensagemFinal.append("\r\n");
@@ -1088,7 +1088,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos)
 			{
 				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId()) && usuarioEmpresas.size() > 0)
-					usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal.toString(), "AC Pessoal", null, usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null);
+					usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal.toString(), "Fortes Pessoal", null, usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null);
 			}
 		}
 	}
@@ -1113,7 +1113,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos)
 		{
 			if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL.getId()) && usuarioEmpresas.size() > 0)
-				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal.toString(), "AC Pessoal", null, usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null);
+				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal.toString(), "Fortes Pessoal", null, usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null);
 		}
 	}
 	
@@ -1380,7 +1380,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CADASTRAR_SITUACAO_AC.getId(), empresa.getId());
 
 			String mensagem = "Foi inserido um novo histórico para o colaborador "+nomeColaborador+" na data "+situacao.getData()+".";
-			String subject = "[RH] - Cadastro de histórico de colaborador no AC Pessoal";
+			String subject = "[RH] - Cadastro de histórico de colaborador no Fortes Pessoal";
 
 
 			for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
@@ -1411,17 +1411,17 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())) {
 						
 						AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(situacao.getLotacaoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
-						usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem, "AC Pessoal", null, areaOrganizacional.getDescricaoIds(), TipoMensagem.INFO_FUNCIONAIS, null);
+						usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem, "Fortes Pessoal", null, areaOrganizacional.getDescricaoIds(), TipoMensagem.INFO_FUNCIONAIS, null);
 
 					} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())) {
 						
 						AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findAreaOrganizacionalByCodigoAc(situacao.getLotacaoCodigoAC(), situacao.getEmpresaCodigoAC(), situacao.getGrupoAC());
-						usuarioMensagemManager.saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(mensagem, "AC Pessoal", null, areaOrganizacional.getDescricaoIds(), TipoMensagem.INFO_FUNCIONAIS, null);
+						usuarioMensagemManager.saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(mensagem, "Fortes Pessoal", null, areaOrganizacional.getDescricaoIds(), TipoMensagem.INFO_FUNCIONAIS, null);
 						
 					} else if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {
 						
 						Collection<UsuarioEmpresa> usuarioEmpresas = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
-						usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem, "AC Pessoal", null, usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null);
+						usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem, "Fortes Pessoal", null, usuarioEmpresas, null, TipoMensagem.INFO_FUNCIONAIS, null);
 
 					}
 				} catch (Exception e) {

@@ -6,7 +6,7 @@
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 
-	<title>Grupo AC (Utilizado no AC Pessoal)</title>
+	<title>Grupo AC (Utilizado no Fortes Pessoal)</title>
 </head>
 <body>
 	<@ww.actionmessage />

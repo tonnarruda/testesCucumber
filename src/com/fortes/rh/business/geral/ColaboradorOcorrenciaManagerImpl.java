@@ -70,7 +70,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 	}
 
 	/**
-	 * Recebe uma ou mais Ocorrências em lote do AC Pessoal.
+	 * Recebe uma ou mais Ocorrências em lote do Fortes Pessoal.
 	 */
 	public void saveOcorrenciasFromAC(Collection<ColaboradorOcorrencia> colaboradorOcorrencias) throws Exception
 	{
@@ -127,7 +127,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 	}
 
 	/**
-	 * Remove Ocorrências recebidas do AC Pessoal.
+	 * Remove Ocorrências recebidas do Fortes Pessoal.
 	 */
 	public void removeFromAC(Collection<ColaboradorOcorrencia> colaboradorOcorrencias) throws Exception
 	{

@@ -64,11 +64,17 @@ public class ExportacaoACAction extends MyActionSupport
 	private Long empresaId;
 	private String grupoAC;
 	private String codigoAC;
+	private Boolean emProcessoExportacaoAC;
 	
 	public String prepareExportarAC()
 	{
 		empresas = empresaManager.findTodasEmpresas();
 		gruposACs = grupoACManager.findAll(new String[]{"codigo"});
+		
+		emProcessoExportacaoAC = empresaManager.emProcessoExportacaoAC(getEmpresaSistema().getId());
+		if(emProcessoExportacaoAC)
+			addActionWarning("O sistema esta em processo de exportação para o sistema Fortes Pessoal.</br>"
+					+ "Para continuar a utilizar o sistema RH, as pendências no controle de integração com o sistema RH no sistema Fortes Pessoal devem ser confirmadas.");
 		
 		return INDEX;
 	}
@@ -78,27 +84,32 @@ public class ExportacaoACAction extends MyActionSupport
 		try
 		{
 			empresa = empresaManager.findById(empresaId);
-			empresa.setAcIntegra(true);
+			empresa.setAcIntegra(true);//Não remover dessa posição
 			
-			atualizarHistoricosParaPendente();
 			verificarHistoricosPorIndice();
 			verificarEmpresaAC();
 			verificarEstabelecimentoAC();
+			
+			atualizarHistoricosParaPendente();
 			atualizarDataSolicitacaoDesligamentoAC();
+			
 			exportarAreasOrganizacionaisAC();
 			exportarFaixasSalariaisAC();
 			exportarColaboradoresAC();
 			exportarOcorrenciasAC();
 			
+			empresaManager.setProcessoExportacaoAC(empresaId, true);
+			
 			if(registrosNaoForamConfirmadosNoAC())
-				addActionSuccess("Primeira fase da exportação concluída com sucesso.<br />Confirme todos os registros pendentes no AC Pessoal referentes à integração com RH." +
-						"<br />Após confirmar todos os registros no AC Pessoal, clique no botão \"Exportar\" novamente.");
+				addActionSuccess("Primeira fase da exportação concluída com sucesso.<br />Confirme todos os registros pendentes no Fortes Pessoal referentes à integração com RH." +
+						"<br />Após confirmar todos os registros no Fortes Pessoal, clique no botão \"Exportar\" novamente.");
 			else
 			{
 				exportarHistoricosColaboardoresAC();
 				exportarColaboradoresOcorrenciasAc();
 				exportarDesligamentos();
-				addActionSuccess("Exportação concluída com sucesso.<br />Confirme os registros pendentes no AC Pessoal referentes à integração com RH." +
+				empresaManager.setProcessoExportacaoAC(empresaId, false);
+				addActionSuccess("Exportação concluída com sucesso.<br />Confirme os registros pendentes no Fortes Pessoal referentes à integração com RH." +
 						"<br />Finalize a exportação marcando a integração da empresa exportada no sistema RH .");
 			}
 		}
@@ -148,48 +159,51 @@ public class ExportacaoACAction extends MyActionSupport
 			historicoColaboradorManager.updateStatusAcByEmpresaAndStatusAtual(StatusRetornoAC.PENDENTE, StatusRetornoAC.CONFIRMADO, new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradoresIds));
 	}
 	
-	private void exportarDesligamentos(){
-		Collection<Colaborador> colaboradores = colaboradorManager.listColaboradorComDataSolDesligamentoAC(empresaId, true);
-
-		for (Colaborador colaborador : colaboradores) {
-			Collection<HistoricoColaborador> historicosColaborador = new ArrayList<HistoricoColaborador>();
-			HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());
-			historicoColaborador.setDataSolicitacaoDesligamento(colaborador.getDataDesligamento());
-			historicoColaborador.setObsACPessoal(colaborador.getObservacaoDemissao());
-			historicosColaborador.add(historicoColaborador);
-			try {
-				acPessoalClientColaborador.solicitacaoDesligamentoAc(historicosColaborador, empresa);
-			} catch (IntegraACException e) {
-				e.printStackTrace();
-			} 
-		}
-	} 
-
-	private boolean registrosNaoForamConfirmadosNoAC()
+	private void exportarDesligamentos()
 	{
-		boolean existeHistoricoColaboradorPendenteNoAC = historicoColaboradorManager.findPendenciasByHistoricoColaborador(empresaId, new Integer[]{StatusRetornoAC.AGUARDANDO}).size() > 0;
-		boolean existeHistoricoFaixaPendenteNoAC = faixaSalarialHistoricoManager.findPendenciasByFaixaSalarialHistorico(empresaId).size() > 0;
-		return existeHistoricoColaboradorPendenteNoAC || existeHistoricoFaixaPendenteNoAC;
+		try {
+			Collection<Colaborador> colaboradores = colaboradorManager.listColaboradorComDataSolDesligamentoAC(empresaId);
+			Collection<HistoricoColaborador> historicosColaborador = new ArrayList<HistoricoColaborador>();
+
+			for (Colaborador colaborador : colaboradores){
+				HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());
+				historicoColaborador.setDataSolicitacaoDesligamento(colaborador.getDataDesligamento());
+				historicoColaborador.setObsACPessoal(colaborador.getObservacaoDemissao());
+				historicosColaborador.add(historicoColaborador);
+			}
+			
+			acPessoalClientColaborador.solicitacaoDesligamentoAc(historicosColaborador, empresa);
+		} catch (IntegraACException e) {
+			e.printStackTrace();
+		} 
 	}
-	
+
 	private void verificarHistoricosPorIndice() throws ExisteHistoricoIndiceException
 	{
 		
 		if (historicoColaboradorManager.existeHistoricoPorIndice(empresaId))
 		{
-			throw new ExisteHistoricoIndiceException("Existem históricos de colaboradores por índice no RH.<br />Em empresas integradas, apenas o AC Pessoal controla os índices.<br />Não é possível prosseguir.");
+			throw new ExisteHistoricoIndiceException("Existem históricos de colaboradores por índice no RH.<br />Em empresas integradas, apenas o Fortes Pessoal controla os índices.<br />Não é possível prosseguir.");
 		}
 		else if (faixaSalarialHistoricoManager.existeHistoricoPorIndice(empresaId))
 		{
-			throw new ExisteHistoricoIndiceException("Existem históricos de faixas salariais por índice no RH.<br />Em empresas integradas, apenas o AC Pessoal controla os índices.<br />Não é possível prosseguir.");
+			throw new ExisteHistoricoIndiceException("Existem históricos de faixas salariais por índice no RH.<br />Em empresas integradas, apenas o Fortes Pessoal controla os índices.<br />Não é possível prosseguir.");
 		}
 	}
 	
 	private void verificarEmpresaAC() throws EmpresaSemCodigoACException
 	{
 		if (StringUtil.isBlank(empresa.getCodigoAC()))
-			throw new EmpresaSemCodigoACException("A empresa do RH selecionada ainda não foi vinculada a uma empresa criada no AC Pessoal");
+			throw new EmpresaSemCodigoACException("A empresa do RH selecionada ainda não foi vinculada a uma empresa criada no Fortes Pessoal");
 	}
+	
+	private boolean registrosNaoForamConfirmadosNoAC() 
+	{
+		boolean existeHistoricoColaboradorPendenteNoAC = historicoColaboradorManager.findPendenciasByHistoricoColaborador(empresaId, new Integer[]{StatusRetornoAC.AGUARDANDO}).size() > 0;
+		boolean existeHistoricoFaixaPendenteNoAC = faixaSalarialHistoricoManager.findPendenciasByFaixaSalarialHistorico(empresaId).size() > 0;
+		return existeHistoricoColaboradorPendenteNoAC || existeHistoricoFaixaPendenteNoAC;
+	}
+
 	
 	public String prepareExportarEmpresaAC()
 	{
@@ -223,7 +237,7 @@ public class ExportacaoACAction extends MyActionSupport
 		estabelecimentos = estabelecimentoManager.findSemCodigoAC(empresaId);
 		
 		if (!estabelecimentos.isEmpty())
-			throw new EstabelecimentosSemCodigoACException("Existe estabelecimento que ainda não foi vinculado a um estabelecimento do AC Pessoal.<br />Em empresas integradas, apenas o AC Pessoal controla os estabelecimentos.");
+			throw new EstabelecimentosSemCodigoACException("Existe estabelecimento que ainda não foi vinculado a um estabelecimento do Fortes Pessoal.<br />Em empresas integradas, apenas o Fortes Pessoal controla os estabelecimentos.");
 	}
 	
 	private void atualizarDataSolicitacaoDesligamentoAC(){
@@ -276,12 +290,12 @@ public class ExportacaoACAction extends MyActionSupport
 		if (maxNiveisRH > maxNiveisAC){
 			StringBuffer msgPassos = new StringBuffer(); 	
 			msgPassos.append("<ol>");
-			msgPassos.append("  <li>Desmarque a integração no AC Pessoal;</li>");
-			msgPassos.append("  <li>Altere a máscara das lotações para "+maxNiveisRH+" níveis no AC Pessoal;</li>");
-			msgPassos.append("  <li>Marque novamente a integração no AC Pessoal;</li>");
+			msgPassos.append("  <li>Desmarque a integração no Fortes Pessoal;</li>");
+			msgPassos.append("  <li>Altere a máscara das lotações para "+maxNiveisRH+" níveis no Fortes Pessoal;</li>");
+			msgPassos.append("  <li>Marque novamente a integração no Fortes Pessoal;</li>");
 			msgPassos.append("</ol>");
 			
-			throw new AreaNaoInseridaACException("A máscara de lotações no AC Pessoal não é compatível com a quantidade máxima de níveis da hierarquia de áreas organizacionais.<br />Quantidade de níveis da hierarquia de áreas organizacionais: "+maxNiveisRH + msgPassos);
+			throw new AreaNaoInseridaACException("A máscara de lotações no Fortes Pessoal não é compatível com a quantidade máxima de níveis da hierarquia de áreas organizacionais.<br />Quantidade de níveis da hierarquia de áreas organizacionais: "+maxNiveisRH + msgPassos);
 		}
 		
 		for (AreaOrganizacional areaOrganizacional : areas) 
@@ -292,7 +306,7 @@ public class ExportacaoACAction extends MyActionSupport
 					areaOrganizacionalManager.insertLotacaoAC(areaOrganizacional, empresa);
 			} 
 			catch (Exception e) {
-				throw new AreaNaoInseridaACException("Não foi possível inserir a área organizacional " + areaOrganizacional.getNome() + " no AC Pessoal");
+				throw new AreaNaoInseridaACException("Não foi possível inserir a área organizacional " + areaOrganizacional.getNome() + " no Fortes Pessoal");
 			}
 		}
 	}
@@ -324,10 +338,8 @@ public class ExportacaoACAction extends MyActionSupport
 	
 	private void exportarColaboradoresAC() throws Exception
 	{
-		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, null, null, StatusRetornoAC.PENDENTE, true, false, true, "c.nome");
+		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, null, null, StatusRetornoAC.PENDENTE, true, SituacaoColaborador.TODOS, true, "c.nome");
 
-		//Ver Samuel
-		//		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, StatusRetornoAC.PENDENTE, true, SituacaoColaborador.TODOS);
 		for (Colaborador colaborador : colaboradores)
 		{
 			colaborador.getHistoricoColaborador().setAreaOrganizacional(colaborador.getAreaOrganizacional());
@@ -515,5 +527,9 @@ public class ExportacaoACAction extends MyActionSupport
 	public void setAcPessoalClientColaborador(
 			AcPessoalClientColaborador acPessoalClientColaborador) {
 		this.acPessoalClientColaborador = acPessoalClientColaborador;
+	}
+
+	public Boolean getEmProcessoExportacaoAC() {
+		return emProcessoExportacaoAC;
 	}
 }

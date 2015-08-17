@@ -621,7 +621,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return (Integer)query.list().size();
 	}
 
-	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date data, Boolean desligado)
+	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Date data, String situacaoColaborador)
 	{
 		StringBuilder sql = new StringBuilder();
 		sql.append(" select c.id as colaboradorId, c.nome as colaboradorNome, c.matricula as matricula, ao.id as areaId, monta_familia_area(ao.id) as areaNome, ");
@@ -663,6 +663,24 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append(" left join estabelecimento as es on es.id = hc.estabelecimento_id  ");
 		sql.append(" left join empresa as emp on emp.id = c.empresa_id  ");
 		sql.append(" where c.desligado = false  " );
+		
+		if (situacaoColaborador != null)
+		{
+			if (situacaoColaborador.equalsIgnoreCase(SituacaoColaborador.ATIVO))
+			{
+				sql.append("	and (c.dataDesligamento is null ");
+				if (data != null)
+					sql.append("	or c.dataDesligamento > :data ");
+				sql.append("	) ");
+			}
+			else if (situacaoColaborador.equalsIgnoreCase(SituacaoColaborador.DESLIGADO))
+			{
+				sql.append("	and (c.dataDesligamento is not null ");
+				if (data != null)
+					sql.append("	and c.dataDesligamento <= :data ");
+				sql.append("	) ");
+			}
+		}
 		
 		if(empresaId != null)
 			sql.append(	"and c.empresa_id = :empresaId ");

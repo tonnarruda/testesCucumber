@@ -120,7 +120,7 @@ public class ReajusteDWR
     	if(integraAC && !colaborador.isNaoIntegraAc())
     	{
     		if(colaborador.getCodigoAC() == null || colaborador.getCodigoAC().equals(""))
-    			throw new Exception("Antes de fazer uma solicitação de realinhamento, o cadastro deste colaborador precisa ser concluído no AC Pessoal.");
+    			throw new Exception("Antes de fazer uma solicitação de realinhamento, o cadastro deste colaborador precisa ser concluído no Fortes Pessoal.");
     	}
 
 		if(reajusteColaboradorManager.verifyExists(new String[]{"colaborador.id", "tabelaReajusteColaborador.id"}, new Object[]{colaboradorId, tabelaId}))

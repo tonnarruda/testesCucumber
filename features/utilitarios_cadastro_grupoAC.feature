@@ -6,14 +6,14 @@ Funcionalidade: Cadastrar Grupo AC
     Dado que eu esteja logado com o usuário "fortes"
 
     Quando eu acesso o menu "Utilitários > Cadastros > Grupos AC"
-    Então eu devo ver o título "Grupo AC (Utilizado no AC Pessoal)"
+    Então eu devo ver o título "Grupo AC (Utilizado no Fortes Pessoal)"
     E eu clico no botão "Inserir"
     Então eu devo ver o título "Inserir Grupo AC"
     E eu clico no botão "Gravar"
     Então eu devo ver o alert do valida campos e clico no ok
     E eu clico no botão "Voltar"
 
-    Então eu devo ver o título "Grupo AC (Utilizado no AC Pessoal)"
+    Então eu devo ver o título "Grupo AC (Utilizado no Fortes Pessoal)"
     E eu clico no botão "Inserir"
     E eu preencho "Descrição" com "grupoAC"
     E eu preencho "Código" com "005"
@@ -22,7 +22,7 @@ Funcionalidade: Cadastrar Grupo AC
     E eu preencho "URL WS" com "http://localhost:1024/soap/IAcPessoal"
     E eu preencho "URL WSDL" com "http://localhost:1024/wsdl/IAcPessoal"
     E eu clico no botão "Gravar"
-    Então eu devo ver o título "Grupo AC (Utilizado no AC Pessoal)"
+    Então eu devo ver o título "Grupo AC (Utilizado no Fortes Pessoal)"
     Então eu devo ver "grupoAC"
 
     Entao eu clico em editar "grupoAC"
@@ -30,7 +30,7 @@ Funcionalidade: Cadastrar Grupo AC
     E o campo "Descrição" deve conter "grupoAC"
       E eu preencho "Descrição" com "FortesAc"
     E eu clico no botão "Gravar"
-    Então eu devo ver o título "Grupo AC (Utilizado no AC Pessoal)"
+    Então eu devo ver o título "Grupo AC (Utilizado no Fortes Pessoal)"
     E eu não devo ver "grupoAC"
     Então eu devo ver "FortesAc"
 

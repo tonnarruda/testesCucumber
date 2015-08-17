@@ -472,7 +472,7 @@ new Boolean(
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[- Informação aguardando confirmação no AC Pessoal.]]></text>
+				<text><![CDATA[- Informação aguardando confirmação no Fortes Pessoal.]]></text>
 			</staticText>
 			<staticText>
 				<reportElement uuid="c8795461-78a5-450a-83ca-5d877331075c" key="staticText-17" x="4" y="29" width="17" height="11">

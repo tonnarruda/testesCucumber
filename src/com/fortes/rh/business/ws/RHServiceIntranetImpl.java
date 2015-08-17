@@ -65,10 +65,7 @@ public class RHServiceIntranetImpl implements RHServiceIntranet
 	
 	public Collection<UsuarioIntranet> usuariosIntranetList(String empresaId)
 	{
-		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(Long.valueOf(empresaId), null, null, StatusRetornoAC.CONFIRMADO, false, false, true, "c.nome");
-
-		//ver samuel
-		//		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(Long.valueOf(empresaId), StatusRetornoAC.CONFIRMADO, false, SituacaoColaborador.ATIVO);
+		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(Long.valueOf(empresaId), null, null, StatusRetornoAC.CONFIRMADO, false, SituacaoColaborador.ATIVO, true, "c.nome");
 		Collection<UsuarioIntranet> usuarioIntranets = new ArrayList<UsuarioIntranet>();
 		
 		UsuarioIntranet usuarioIntranet;

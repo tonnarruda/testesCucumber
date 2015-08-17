@@ -915,7 +915,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		if (StringUtils.isNotBlank(this.motivo))
 		{
 			if (this.motivo.equals(MotivoHistoricoColaborador.IMPORTADO))
-					origem = "AC Pessoal";
+					origem = "Fortes Pessoal";
 			else
 				origem = "Fortes RH";
 		}

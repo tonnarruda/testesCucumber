@@ -23,7 +23,7 @@ public class MotivoHistoricoColaborador extends LinkedHashMap<String, String>
 		put(PROMOCAO, "Promoção");
 		put(REAJUSTE, "Reajuste");
 		put(TRANSFERENCIA, "Transferência");
-		put(IMPORTADO, "Importado do AC Pessoal");
+		put(IMPORTADO, "Importado do Fortes Pessoal");
 		put(MUDANCA_FUNCAO, "Mudança de Função");
 		put(DISSIDIO, "Dissídio");
 		put(SEM_MOTIVO, "Sem Motivo");

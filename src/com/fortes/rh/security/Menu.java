@@ -29,40 +29,42 @@ public abstract class Menu
 
 		StringBuilder menu = new StringBuilder("<ul id='menuDropDown'>\n");
 
-		for(Papel papel : roles)
-		{
-			if (papel.getPapelMae() == null)
+		if(!empresaLogada.isProcessoExportacaoAC()){
+			for(Papel papel : roles)
 			{
-				String accesskey = "";
-				String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
-				String nome = papel.getNome();
-				boolean exibeMenuTru = nome.equals("Utilitários") && empresaLogada.isCodigoTruCurso();
-				
-				if(papel.getAccesskey() != null)
-				{					
-					accesskey = "accesskey='" + papel.getAccesskey() + "'";
-					nome = papel.getNome().replaceFirst(papel.getAccesskey(), "<u>" +papel.getAccesskey()+ "</u>");
-				}
-				
-				menu.append("<li><a href='" + url + "' " + accesskey + " >" + nome +  "</a>\n");
-				menu.append("<ul>\n");
-				
-				if (empresasDoUsuario != null && papel.getCodigo().equals("ROLE_UTI"))
+				if (papel.getPapelMae() == null)
 				{
-					menu.append("<li><a href='#'>Alterar Empresa</a>");
-					menu.append("<ul>\n");
-					for (Empresa emp : empresasDoUsuario) 
-						menu.append("<li><a href='" + contexto + "/index.action?empresaId=" + emp.getId() + "'>" + emp.getNome() + "</a>");
-					menu.append("</li>\n");
-					menu.append("</ul>\n");
-				}
+					String accesskey = "";
+					String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
+					String nome = papel.getNome();
+					boolean exibeMenuTru = nome.equals("Utilitários") && empresaLogada.isCodigoTruCurso();
 
-				menu.append(getFilhos(papel.getId(), contexto, empresaLogada));
-				
-				if (exibeMenuTru)
-					menu.append("<li><a href='" + contexto + "/exportacao/prepareExportacaoTreinamentos.action'>Exportar Curso/Turma como ocorrência para o TRU</a>");
-				
-				menu.append("</ul>\n</li>\n");
+					if(papel.getAccesskey() != null)
+					{					
+						accesskey = "accesskey='" + papel.getAccesskey() + "'";
+						nome = papel.getNome().replaceFirst(papel.getAccesskey(), "<u>" +papel.getAccesskey()+ "</u>");
+					}
+
+					menu.append("<li><a href='" + url + "' " + accesskey + " >" + nome +  "</a>\n");
+					menu.append("<ul>\n");
+
+					if (empresasDoUsuario != null && papel.getCodigo().equals("ROLE_UTI"))
+					{
+						menu.append("<li><a href='#'>Alterar Empresa</a>");
+						menu.append("<ul>\n");
+						for (Empresa emp : empresasDoUsuario) 
+							menu.append("<li><a href='" + contexto + "/index.action?empresaId=" + emp.getId() + "'>" + emp.getNome() + "</a>");
+						menu.append("</li>\n");
+						menu.append("</ul>\n");
+					}
+
+					menu.append(getFilhos(papel.getId(), contexto, empresaLogada));
+
+					if (exibeMenuTru)
+						menu.append("<li><a href='" + contexto + "/exportacao/prepareExportacaoTreinamentos.action'>Exportar Curso/Turma como ocorrência para o TRU</a>");
+
+					menu.append("</ul>\n</li>\n");
+				}
 			}
 		}
 

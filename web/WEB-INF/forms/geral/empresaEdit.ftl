@@ -80,7 +80,7 @@
 			}
 			else
 			{
-				jAlert("Opção: Integra com AC Pessoal não selecionada.");
+				jAlert("Opção: Integra com o Fortes Pessoal não selecionada.");
 			}
 		}
 		
@@ -226,7 +226,7 @@
 					<@ww.checkbox label="Exibir valor do salário" name="empresa.solPessoalExibirSalario" labelPosition="right" />
 					<@ww.checkbox label="Exibir o campo Colaborador Substituído" name="empresa.solPessoalExibirColabSubstituido" labelPosition="right" />
 					<@ww.checkbox label="Tornar obrigatório os dados complementares" name="empresa.solPessoalObrigarDadosComplementares" labelPosition="right" />
-					<@ww.checkbox label="Reabrir solicitação após cancelar contratação ou promoção no AC Pessoal (Somente quando integrado)" name="empresa.solPessoalReabrirSolicitacao" id="solPessoalReabrirSolicitacao" labelPosition="right" />
+					<@ww.checkbox label="Reabrir solicitação após cancelar contratação ou promoção no Fortes Pessoal (Somente quando integrado)" name="empresa.solPessoalReabrirSolicitacao" id="solPessoalReabrirSolicitacao" labelPosition="right" />
 				</ul>
 			</@ww.div>
 		</li>
@@ -279,10 +279,10 @@
 				
 		<li>
 			<@ww.div cssClass="divInfo">
-				<h2>Integração com AC Pessoal</h2>
+				<h2>Integração com o Fortes Pessoal</h2>
 				<ul>
 					<div style="float:right;"><img id="btnTransferir" border="0" title="Testar Conexão com AC" onclick="testaConexaoAC();" src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>" style="cursor:pointer;"></div>
-					<@ww.checkbox label="Integra com AC Pessoal" name="empresa.acIntegra" id="integra" labelPosition="right"  />
+					<@ww.checkbox label="Integra com o Fortes Pessoal" name="empresa.acIntegra" id="integra" labelPosition="right"  />
 					<@ww.select label="Grupo AC" name="empresa.grupoAC" id="grupoAC" list="grupoACs" listKey="codigo" listValue="codigoDescricao" headerKey="" headerValue="Selecione..."/>
 				</ul>
 			</@ww.div>

@@ -128,7 +128,7 @@ public class OcorrenciaEditAction extends MyActionSupportEdit
 			e.printStackTrace();
 			
 			if (e instanceof InvocationTargetException && ((InvocationTargetException)e).getTargetException() instanceof IntegraACException) 
-				addActionError("Cadastro não pôde ser realizado no AC Pessoal.");
+				addActionError("Cadastro não pôde ser realizado no Fortes Pessoal.");
 			else 
 				addActionError("Cadastro não pôde ser realizado.");
 

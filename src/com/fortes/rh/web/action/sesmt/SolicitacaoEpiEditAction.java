@@ -139,7 +139,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 			this.colaborador = colaboradorManager.findByIdDadosBasicos(colaborador.getId(), null);
 			
 			if(this.entregue && colaborador.getHistoricoColaborador().getStatus() != StatusRetornoAC.CONFIRMADO)
-				throw new FortesException("Não é permitido entregar um EPI para um colaborador ainda não confirmado no AC Pessoal.");
+				throw new FortesException("Não é permitido entregar um EPI para um colaborador ainda não confirmado no Fortes Pessoal.");
 			
 			solicitacaoEpi.setColaborador(colaborador);
 			solicitacaoEpi.setCargo(colaborador.getFaixaSalarial().getCargo());

@@ -16,7 +16,7 @@ public enum EnviarPara
 	RESPONSAVEL_RH (7, "Responsável do RH"),
 	RESPONSAVEL_SETOR_PESSOAL (8, "Responsável do setor pessoal"),
 	RESPONSAVEL_TECNICO (12, "Responsável Técnico"),
-	RECEBE_MENSAGEM_AC_PESSOAL (13, "Usuários com perfil de receber mensagem do AC Pessoal"),
+	RECEBE_MENSAGEM_AC_PESSOAL (13, "Usuários com perfil de receber mensagem do Fortes Pessoal"),
 	PERFIL_AUTORIZADO_VISUALIZAR_SOLICITACAO_PESSOAL (14, "Usuários com permissão de visualizar solicitação pessoal"),
 	RESPONSAVEL_LIMITE_CONTRATO (15, "Responsável pelo limite de colaboradores por cargo"),
 	APROVAR_REPROVAR_SOLICITACAO_PESSOAL (19, "Usuários com perfil de aprovar/reprovar solicitação de pessoal"),

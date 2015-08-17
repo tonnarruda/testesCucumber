@@ -25,7 +25,7 @@ public class IndiceHistoricoListAction extends MyActionSupportList
 	{
 		integradoAC = getEmpresaSistema().isAcIntegra();
 		if(integradoAC)
-			addActionMessage("A manutenção no cadastro de índice deve ser realizada no AC Pessoal.");
+			addActionMessage("A manutenção no cadastro de índice deve ser realizada no Fortes Pessoal.");
 		else
 			indiceHistoricoManager.remove(indiceHistorico.getId());
 		

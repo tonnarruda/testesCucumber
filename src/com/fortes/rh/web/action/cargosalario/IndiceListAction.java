@@ -26,7 +26,7 @@ public class IndiceListAction extends MyActionSupportList
 		integradoAC = getEmpresaSistema().isAcIntegra();
 		
 		if(integradoAC)
-			addActionMessage("A manutenção do Cadastro de Índices deve ser realizada no AC Pessoal.");
+			addActionMessage("A manutenção do Cadastro de Índices deve ser realizada no Fortes Pessoal.");
 
 		return Action.SUCCESS;
 	}

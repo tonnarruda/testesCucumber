@@ -1,0 +1,1 @@
+alter table empresa add column processoExportacaoAC boolean NOT NULL DEFAULT false; --.go

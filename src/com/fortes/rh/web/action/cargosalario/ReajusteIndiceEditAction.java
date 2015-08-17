@@ -36,7 +36,7 @@ public class ReajusteIndiceEditAction extends MyActionSupportEdit
 	public String prepareInsert() throws Exception
 	{
 		if (getEmpresaSistema().isAcIntegra())
-			addActionMessage("A manutenção do Cadastro de Índices deve ser realizada no AC Pessoal.");
+			addActionMessage("A manutenção do Cadastro de Índices deve ser realizada no Fortes Pessoal.");
 		
 		tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(getEmpresaSistema().getId(), TipoReajuste.INDICE);
 		
@@ -93,7 +93,7 @@ public class ReajusteIndiceEditAction extends MyActionSupportEdit
 	public String prepareDissidio() throws Exception
 	{
 		if (getEmpresaSistema().isAcIntegra())
-			addActionMessage("A manutenção do Cadastro de Índices deve ser realizada no AC Pessoal.");
+			addActionMessage("A manutenção do Cadastro de Índices deve ser realizada no Fortes Pessoal.");
 
 		tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(getEmpresaSistema().getId(), TipoReajuste.INDICE);
 		

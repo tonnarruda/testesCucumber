@@ -62,7 +62,7 @@
   	<property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
   </bean>
 
-  <!-- WS INTEGRAÇÃO AC PESSOAL -->
+  <!-- WS INTEGRAÇÃO Fortes Pessoal -->
   <bean id="service" class="org.apache.axis.client.Service" />
   <bean id="acPessoalClient" class="com.fortes.rh.web.ws.AcPessoalClientImpl">
     <property name="service" ref="service" />
@@ -138,7 +138,7 @@
     <property name="acPessoalImportadorGastos" ref="acPessoalImportadorGastos" />
   </bean>
   <bean name="importadorGastosAC" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-  	<property name="name" value="Importar de gastos do AC Pessoal"/>
+  	<property name="name" value="Importar de gastos do Fortes Pessoal"/>
     <property name="targetObject" ref="importadorGastosACJob"/>
     <property name="targetMethod" value="execute"/>
   </bean>

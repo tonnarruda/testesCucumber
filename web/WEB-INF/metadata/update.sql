@@ -391,7 +391,7 @@ ALTER TABLE historicocolaborador DROP CONSTRAINT historicocolaborador_tabelareaj
 alter table historicocolaborador drop column tabelareajustecolaborador_id; --.go
 alter table historicocolaborador add column status Integer; --.go
 update historicocolaborador set status=1; --.go
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (410, 'RECEBE_ALERTA_SETORPESSOAL', 'Recebe Mensagem do AC Pessoal', '', 12, false, 37); --.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (410, 'RECEBE_ALERTA_SETORPESSOAL', 'Recebe Mensagem do Fortes Pessoal', '', 12, false, 37); --.go
 insert into perfil_papel(perfil_id, papeis_id) values(1, 410); --.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (411, 'ROLE_VISUALIZAR_PENDENCIA_AC', 'Visualizar as pendências do AC', '', 13, false, 37); --.go
 insert into perfil_papel(perfil_id, papeis_id) values(1, 411); --.go
@@ -1304,7 +1304,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (39, 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (44, 'ROLE_UTI_HISTORICO_VERSAO', 'Histórico de Versões', '/geral/documentoVersao/list.action', 4, true, 391);--.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (409, 'ROLE_UTI', 'Enviar Mensagem', '/geral/usuarioMensagem/prepareUpdate.action', 5, true, 391);--.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (408, 'ROLE_MOV_SOLICITACAO_REALINHAMENTO', 'Pode Solicitar Realinhamento', '', 4, false, 361);--.go
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (410, 'RECEBE_ALERTA_SETORPESSOAL', 'Recebe Mensagem do AC Pessoal', '', 4, false, 37);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (410, 'RECEBE_ALERTA_SETORPESSOAL', 'Recebe Mensagem do Fortes Pessoal', '', 4, false, 37);--.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (411, 'ROLE_VISUALIZAR_PENDENCIA_AC', 'Visualizar as pendências do AC', '', 4, false, 37);--.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (59, 'ROLE_PESQUISA', 'Pode ver e responder Pesquisa', '#', 4, false, 353);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (385, 'ROLE_SESMT', 'Cadastros', '#', 1, true, 75);--.go
@@ -19323,7 +19323,7 @@ update parametrosdosistema set acversaowebservicecompativel = '1.1.51.2';--.go
 insert into migrations values('20121112152919');--.go
 update gerenciadorcomunicacao set enviarpara = 13 where operacao = 14 and meiocomunicacao =1 and enviarpara = 14;--.go
 insert into migrations values('20121112154945');--.go
-update mensagem set tipo = 'F' where texto ilike '%foi desligado no AC Pessoal%';--.go
+update mensagem set tipo = 'F' where texto ilike '%foi desligado no Fortes Pessoal%';--.go
 insert into migrations values('20121112161335');--.go
 update mensagem set tipo = 'A' where texto ilike 'Período de Experiência:%';--.go
 insert into migrations values('20121112162450');--.go
@@ -22472,7 +22472,7 @@ insert into migrations values('20140623105452');--.go
 update papel set ordem = ordem + 1 where papelmae_id = 37 and ordem >= 8 and ordem < 100 and id <> 451;--.go
 update papel set ordem = ordem + 1 where papelmae_id = 37 and ordem >= 10 and ordem < 15 and id <> 529;--.go
 
-insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (618, 'ROLE_UTI_EXPORTAR_AC', 'Exportar dados para o AC Pessoal', '/exportacao/prepareExportarAC.action', 17, true, 37);--.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (618, 'ROLE_UTI_EXPORTAR_AC', 'Exportar dados para o Fortes Pessoal', '/exportacao/prepareExportarAC.action', 17, true, 37);--.go
 insert into perfil_papel(perfil_id, papeis_id) values(1, 618);--.go
 
 insert into migrations values('20140630100907');--.go
@@ -22569,7 +22569,7 @@ ALTER TABLE ONLY mensagem ADD CONSTRAINT mensagem_avaliacao_fk FOREIGN KEY (aval
 insert into migrations values('20140912070420');--.go
 alter table periodoexperiencia add column ativo boolean default true; --.go
 insert into migrations values('20140914130222');--.go
-update papel set codigo = 'RECEBE_ALERTA_ERRO_CONEXAO_ACPESSOAL', nome = 'Recebe mensagem de problema de comunicação com o AC Pessoal' where id = 410;--.go
+update papel set codigo = 'RECEBE_ALERTA_ERRO_CONEXAO_ACPESSOAL', nome = 'Recebe mensagem de problema de comunicação com o Fortes Pessoal' where id = 410;--.go
 insert into migrations values('20140916143559');--.go
 CREATE FUNCTION atualiza_mensagem_com_avaliacaoId() RETURNS integer AS $$
 	DECLARE

@@ -995,7 +995,7 @@ public class RHServiceImpl implements RHService
 			{
 				String mensagemFinal = mensagemManager.formataMensagemCancelamentoFaixaSalarialHistorico(mensagem, faixaSalarialHistorico);
 				Collection<UsuarioEmpresa> usuarioEmpresas = usuarioEmpresaManager.findUsuariosByEmpresaRoleSetorPessoal(empresaCodigoAC, grupoAC);
-				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal, "AC Pessoal", null, usuarioEmpresas, null, TipoMensagem.CARGO_SALARIO, null);
+				usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagemFinal, "Fortes Pessoal", null, usuarioEmpresas, null, TipoMensagem.CARGO_SALARIO, null);
 			}
 		}
 

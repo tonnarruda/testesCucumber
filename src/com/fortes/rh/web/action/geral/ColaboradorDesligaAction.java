@@ -124,7 +124,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			if(e.getCause() != null && e.getCause().getMessage() != null)
 				addActionError(e.getCause().getMessage());
 			else
-				addActionError("Erro ao tentar desligar colaborador no Ac Pessoal " + e.getMessage());
+				addActionError("Erro ao tentar desligar colaborador no Fortes Pessoal " + e.getMessage());
 			
 			prepareUpdate();
 			return Action.INPUT;
@@ -160,7 +160,7 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			String titulo = "Desligar Colaborador";
 			
 			if(getEmpresaSistema().isAcIntegra())
-				titulo = "Solicitação de Desligamento de Colaborador no AC Pessoal";
+				titulo = "Solicitação de Desligamento de Colaborador no Fortes Pessoal";
 			
 			parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), "");
 			MotivoDemissao motivo = motivoDemissaoManager.findById(motDemissao.getId());

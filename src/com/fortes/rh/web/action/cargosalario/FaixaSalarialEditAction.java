@@ -126,7 +126,7 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 		}
 		catch(IntegraACException e)
 		{
-			addActionError("O Cargo não pôde ser cadastrado no AC Pessoal.");
+			addActionError("O Cargo não pôde ser cadastrado no Fortes Pessoal.");
 			prepareInsert();
 			return Action.INPUT;
 		}
@@ -163,7 +163,7 @@ public class FaixaSalarialEditAction extends MyActionSupportEdit implements Mode
 		}
 		catch(IntegraACException e)
 		{
-			addActionError("O Cargo não pôde ser atualizado no AC Pessoal.");
+			addActionError("O Cargo não pôde ser atualizado no Fortes Pessoal.");
 			return Action.INPUT;
 		}
 		catch(Exception e)

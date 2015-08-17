@@ -209,7 +209,7 @@
 		<#if integradoAC && pendenciaACs?exists>
 			<form action="removerMultiplasPendenciasAC.action" id="removerMultiplasPendenciasAC" method="post">
 				<div class="portlet">
-					<div class="portlet-header">Pendências com o AC Pessoal</div>
+					<div class="portlet-header">Pendências com o Fortes Pessoal</div>
 					<div class="portlet-content">
 						<#if pendenciaACs?size < 1>
 							<span>Nenhuma pendência</span>

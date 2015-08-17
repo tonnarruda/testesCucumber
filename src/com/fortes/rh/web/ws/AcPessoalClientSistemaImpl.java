@@ -61,9 +61,9 @@ public class AcPessoalClientSistemaImpl implements AcPessoalClientSistema
 		{
 			e.printStackTrace();
 			if(e.getMessage().equals("Usuário Não Autenticado!"))
-				throw new IntegraACException("Não foi possivel autenticar o serviço no AC Pessoal.");
+				throw new IntegraACException("Não foi possivel autenticar o serviço no Fortes Pessoal.");
 			else
-				throw new IntegraACException("Não foi possivel se conectar com o serviço do AC Pessoal.");
+				throw new IntegraACException("Não foi possivel se conectar com o serviço do Fortes Pessoal.");
 		}
 	}
 

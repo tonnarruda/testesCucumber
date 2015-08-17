@@ -59,7 +59,7 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new IntegraACException(e, "Não foi possível atualizar este colaborador no AC Pessoal.");
+			throw new IntegraACException(e, "Não foi possível atualizar este colaborador no Fortes Pessoal.");
 		}
 	}
 

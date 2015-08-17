@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.1xx.1xx" db="" data="xx/xx/2015">
-		<Item visivel="S" motivo="S20150700196"><![CDATA[Verificação de incosistência no banco de dados.]]></Item>		
+		<Item visivel="S" motivo="S20150700102"><![CDATA[Utilitários > Exportar dados para o Fortes Pessoal: Exportar colaboradores desligados.]]></Item>		
+		<Item visivel="S" motivo="S20150700196"><![CDATA[Verificação de incosistência no banco de dados.]]></Item>
 	</Versao>
 	<Versao id="1.1.148.178" db="" data="11/08/2015">
 		<Item visivel="S" motivo="S20150600112"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Plano de Trabalho: Nova opção de filtro por situação, responsável e corresponsável.]]></Item>
@@ -79,7 +80,7 @@
 		<Item visivel="S" motivo="S20150300156"><![CDATA[SESMT > Movimentações > Solicitação de EPIs: Nova opção no filtro para ordenação por data ou por nome.]]></Item>
 		<Item visivel="S" motivo="P20150400230"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos: Exibição do cargo do colaborador considerando sua situação na data da solicitação.]]></Item>
 		<Item visivel="S" motivo="S20150500126"><![CDATA[Utilitários > Configurações > Sistema: Nova opção para impossibilitar gerar relatório de uma pesquisa anônima que possua no mínimo uma certa quantidade resposta.]]></Item>
-		<Item visivel="S" motivo="S20150400007"><![CDATA[Integração com o AC Pessoal: Excluir dependências de solicitações/atendimentos médicos e período de experiência ao cancelar contratação do colaborador pelo sistema Ac Pessoal.]]></Item>
+		<Item visivel="S" motivo="S20150400007"><![CDATA[Integração com o Fortes Pessoal: Excluir dependências de solicitações/atendimentos médicos e período de experiência ao cancelar contratação do colaborador pelo sistema Fortes Pessoal.]]></Item>
 	</Versao>
 	<Versao id="1.1.143.173" bd="" data="27/04/2015">
 		<Item visivel="S" motivo="P20150400076"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Imprimir Avaliação: Ajuste na impressão das justificativas das respostas.]]></Item>
@@ -124,7 +125,7 @@
 		<Item visivel="S" motivo="S20140300177"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir > Dados Funcionais: Listar ambientes em ordem alfabética.]]></Item>
 		<Item visivel="S" motivo="S20140300178"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Refletir as alterações do colaborador no seu respectivo candidato.]]></Item>
 		<Item visivel="S" motivo="S20150300009"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Criar acesso ao sistema: Notificar colaborador por email ao criar acesso ao sistema.]]></Item>
-		<Item visivel="S" motivo="P20150200223"><![CDATA[Info. Funcionais > Cadastros > Tipos de Ocorrência: Habilitar check "Enviar para o AC Pessoal" em sua edição.]]></Item>
+		<Item visivel="S" motivo="P20150200223"><![CDATA[Info. Funcionais > Cadastros > Tipos de Ocorrência: Habilitar check "Enviar para o Fortes Pessoal" em sua edição.]]></Item>
 		<Item visivel="S" motivo="P20150300108"><![CDATA[Info. Funcionais > Movimentações > Aprovar/Reprovar Solicitações de Desligamento: Exibir apenas os colaboradores cujo o usuário seja o responsável de sua área organizacional ou tenha a permissão de visualizar todos os colaboradores.]]></Item>
 		<Item visivel="S" motivo="S20150200111"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Ajuste na inconsistência ao apresentar função e ambiente no relatório dinâmico.]]></Item>
 		<Item visivel="S" motivo="S20150200179"><![CDATA[SESMT > Relatórios > EPIs Entregues: Nova opção de gerar o relatório no formato xls.]]></Item>
@@ -146,7 +147,7 @@
 		<Item visivel="S" motivo="P20150200083"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações da Turma > Resultado das Avaliações: Após gerar o relatório, o mesmo desconfigurava a empresa da sessão.]]></Item>
 		<Item visivel="S" motivo="S20150100127"><![CDATA[T&D > Relatórios > Colaboradores x Certificações > Exportar: Nova opção de gerar o relatório no formato xls.]]></Item>
 		<Item visivel="S" motivo="S20150100106"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Novo campo para informar se o desligamento gera substituição de colaborador.]]></Item>
-		<Item visivel="S" motivo="P20150200212"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Ajuste na inconsistência ao solicitar desligamento para o colaborador que tiver a opção de "Não enviar este colaborador para o AC Pessoal" marcada.]]></Item>
+		<Item visivel="S" motivo="P20150200212"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Ajuste na inconsistência ao solicitar desligamento para o colaborador que tiver a opção de "Não enviar este colaborador para o Fortes Pessoal" marcada.]]></Item>
 		<Item visivel="S" motivo="P20150100179"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Excluir: Ajuste da inconsistência ao excluir colaborador que possui mensagens com o usuário fortes.]]></Item>
 		<Item visivel="S" motivo="P20150200069"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Ajuste da inconsistência ao contratar um colaborador através de uma solicitação de pessoal cujo campo horário de trabalho tivesse um valor maior do que 50 caracteres.]]></Item>
 		<Item visivel="S" motivo="S20150100079"><![CDATA[Info. Funcionais > Movimentações > Aprovar/Reprovar Solicitações de Desligamento: Data de solicitação de desligamento inserida na lista.]]></Item>
@@ -162,7 +163,7 @@
 		<Item visivel="S" motivo="P20150100299"><![CDATA[Utilitários > Auditoria: Auditar dados da inserção e edição da solicitação de pessoal.]]></Item>
 		<Item visivel="S" motivo="P20150100182"><![CDATA[Utilitários > Auditoria: Auditar a data e a mudança do status de uma solicitação de pessoal.]]></Item>
 		<Item visivel="S" motivo="S20150200052"><![CDATA[Módulo Externo: Não exibir o email do suporte da Fortes nas telas de erro.]]></Item>
-		<Item visivel="S" motivo="P20150100259"><![CDATA[Tratamento de mensagens ao cancelar contratação pelo AC Pessoal.]]></Item>
+		<Item visivel="S" motivo="P20150100259"><![CDATA[Tratamento de mensagens ao cancelar contratação pelo Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="P20150200019"><![CDATA[Ajuste na contagem de dias para o envio de lembretes de avaliações de período de experiência.]]></Item>
 	</Versao>
 	<Versao id="1.1.140.169" bd="" data="26/01/2015">
@@ -180,8 +181,8 @@
 		<Item visivel="N" motivo="P20150100103"><![CDATA[Info. Funcionais > Relatórios > Formação Escolar: Tratamento de erro quando as listas de idiomas e de formação escolar do colaborador estavam vazias.]]></Item>
 		<Item visivel="N" motivo="P20141200187"><![CDATA[SESMT > Cadastros > Extintores: Correção da paginação dos resultados e no formulário que não gravava as horas ao inserir um novo histórico.]]></Item>
 		<Item visivel="N" motivo="P20150100011"><![CDATA[SESMT > Relatórios > Exames Previstos: Melhoria na performance para consultar os registros a serem impressos.]]></Item>
-		<Item visivel="N" motivo="P20141200182"><![CDATA[Ao cancelar o desligamento de um colaborador na tabela temporária do AC Pessoal, indisponibilizando o candidato e reabilitando o acesso do usuário]]></Item>
-		<Item visivel="N" motivo="P20150100035"><![CDATA[Ao atualizar/importar dados vindos do AC Pessoal, havia possibilidade da escolaridade não ser atualizada corretamente.]]></Item>
+		<Item visivel="N" motivo="P20141200182"><![CDATA[Ao cancelar o desligamento de um colaborador na tabela temporária do Fortes Pessoal, indisponibilizando o candidato e reabilitando o acesso do usuário]]></Item>
+		<Item visivel="N" motivo="P20150100035"><![CDATA[Ao atualizar/importar dados vindos do Fortes Pessoal, havia possibilidade da escolaridade não ser atualizada corretamente.]]></Item>
 	</Versao>
 	<Versao id="1.1.139.168" bd="" data="05/01/2015">
 		<Item visivel="S" motivo="S20141200086"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Novo filtro de solicitação por estabelecimento.]]></Item>
@@ -223,7 +224,7 @@
 		<Item visivel="N" motivo="P20141100131"><![CDATA[Pesquisas > Movimentações > Pesquisas > Colaboradores > Responder: Melhoria na auditoria.]]></Item>
 		<Item visivel="N" motivo="P20141100219"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Liberar avaliações em lote: Correção de inconsistência ao liberar avaliações em lote.]]></Item>
 		<Item visivel="N" motivo="P20141100176"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir: Correção de inconformidade ao clicar em gravar se a opção para preenchimento obrigatório de ambiente e função estivesse configurada na empresa e o perfil do usuário não possuísse permissão para visualizar as informações de SESMT.]]></Item>
-		<Item visivel="N" motivo="P20141100119"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Excluir: Correção na exclusão de colaboradores quando o sistema está integrado com o AC Pessoal.]]></Item>
+		<Item visivel="N" motivo="P20141100119"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Excluir: Correção na exclusão de colaboradores quando o sistema está integrado com o Fortes Pessoal.]]></Item>
 		<Item visivel="N" motivo="P20141100170"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Correção do envio de email ao liberar avaliação da turma.]]></Item>
 		<Item visivel="N" motivo="P20140900232"><![CDATA[Utilitários > Backup do Banco de Dados: Correção de erro ao gerar backup quando o banco de dados usa uma porta diferente da padrão (5432).]]></Item>
 	</Versao>
@@ -234,11 +235,11 @@
 		<Item visivel="S" motivo="S20141000197"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Aumento do limite do campo "Horário de Trabalho" para 255 caracteres.]]></Item>
 		<Item visivel="S" motivo="P20141000111"><![CDATA[R&S > Relatórios > Estatísticas de Vagas por Motivo: Nova opção de referenciar o período do filtro pela data da solicitação ou pela data de aprovação.]]></Item>
 		<Item visivel="S" motivo="P20141000111"><![CDATA[R&S > Painel de Indicadores: Nova opção de referenciar o período do filtro pela data da solicitação ou pela data de aprovação.]]></Item>
-		<Item visivel="S" motivo="S20141000113"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Possibilidade de responder a entrevista antes de finalizar o processo de desligamento no AC Pessoal.]]></Item>
+		<Item visivel="S" motivo="S20141000113"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Entrevista de Desligamento: Possibilidade de responder a entrevista antes de finalizar o processo de desligamento no Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="P20141000280"><![CDATA[Info. Funcionais > Relatórios > Admitidos: Exibir o nome da empresa e do estabelecimento ao gerar o relatório.]]></Item>
 		<Item visivel="S" motivo="S20141000244"><![CDATA[SESMT > Cadastros > Motivos de Solicitação de EPI: Novo cadastro.]]></Item>
 		<Item visivel="S" motivo="S20141000244"><![CDATA[SESMT > Movimentações > Solicitação de EPIs > Inserir/Editar: Novo campo "Motivo da Solicitação" na lista de EPIs.]]></Item>
-		<Item visivel="S" motivo="P20141000200"><![CDATA[Utilitários > Cadastros > Empresas: Nova configuração para reabertura da solicitação de pessoal relacionada ao cancelar a contratação ou promoção no AC Pessoal (se integrado).]]></Item>
+		<Item visivel="S" motivo="P20141000200"><![CDATA[Utilitários > Cadastros > Empresas: Nova configuração para reabertura da solicitação de pessoal relacionada ao cancelar a contratação ou promoção no Fortes Pessoal (se integrado).]]></Item>
 		<Item visivel="N" motivo="P20141000275"><![CDATA[Aval. Desempenho > Movimentações > Avaliações de Desempenho > Resultado da Avaliação de Desempenho: Mesmo marcando a opção "desconsiderar auto-avaliação" o relatório continuava a apresentar as respostas para perguntas objetivas e de múltipla escolha.]]></Item>
 		<Item visivel="N" motivo="P20141100008"><![CDATA[Info. Funcionais > Painel de Indicadores: Correção da contagem do total de colaboradores.]]></Item>
 		<Item visivel="N" motivo="P20141100014"><![CDATA[Info. Funcionais > Relatórios > Absenteísmo: Correção de inconsistência na contagem dos dias trabalhados no mês de início do horário de verão.]]></Item>
@@ -263,8 +264,8 @@
 		<Item visivel="N" motivo="P20141000131"><![CDATA[BUG: T&D > Cadastros > Modelos de Avaliação do Aluno > Inserir: Correção de inconsistência nos pesos inseridos para as respostas da avaliação do aluno.]]></Item>
 	</Versao>
 	<Versao id="1.1.135.163" bd="" data="20/10/2014">
-		<Item visivel="S" motivo="S20140900134"><![CDATA[Integração com o AC Pessoal: Implementação da transferência de colaboradores em lote a partir do AC Pessoal.]]></Item>
-		<Item visivel="S" motivo="P20140900107"><![CDATA[Integração com o AC Pessoal:Considerar regras sobre a colocação temporária do cadastro de colaborador.]]></Item>
+		<Item visivel="S" motivo="S20140900134"><![CDATA[Integração com o Fortes Pessoal: Implementação da transferência de colaboradores em lote a partir do Fortes Pessoal.]]></Item>
+		<Item visivel="S" motivo="P20140900107"><![CDATA[Integração com o Fortes Pessoal:Considerar regras sobre a colocação temporária do cadastro de colaborador.]]></Item>
 		<Item visivel="S" motivo="S20140900122"><![CDATA[C&S > Painel de Indicadores: Inserindo seleção de área organizacional no filtro para o Indicador de Salário por Área Organizacional.]]></Item>
 		<Item visivel="S" motivo="S20140700225"><![CDATA[C&S > Relatórios > Ranking de Performance das Avaliações de Desempenho: Nova opção de agrupar por área organizacional e totalizador no relatório gerado por XLS.]]></Item>
 		<Item visivel="S" motivo="S20141000057"><![CDATA[T&D > Cadastros > Curso/Treinamentos > Liberar Avaliação: Alterando corpo do email recebido ao liberar avaliação (Adicionando link para respondê-la).]]></Item>
@@ -298,7 +299,7 @@
 		<Item visivel="N" motivo="P20140900094"><![CDATA[BUG: T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos: Correção na paginação não reiniciava quando havia mudança de turma.]]></Item>
 		<Item visivel="N" motivo="P20140900110"><![CDATA[BUG: Utilitários > Cadastros > Empresas: Impedir a inserção de aspas simples(') no nome da empresa, pois o mesmo invalida o javascript em vários locais do sistema.]]></Item>
 		<Item visivel="N" motivo="P20140800224"><![CDATA[BUG: Utilitários > Configurações > Gerenciador de Comunicação: Ao enviar mensagem e email de aviso de desligamento, o nome do colaborador era preenchido com "null".]]></Item>
-		<Item visivel="N" motivo="S20140900063"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Melhoria na descrição da permissão para visualizar problemas de comunicação com o AC Pessoal.]]></Item>
+		<Item visivel="N" motivo="S20140900063"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Melhoria na descrição da permissão para visualizar problemas de comunicação com o Fortes Pessoal.]]></Item>
 		<Item visivel="N" motivo="S20150500019"><![CDATA[Utilitários > Inserir Nono Dígito em Celulares: Nova funcionalidade que atualiza os números dos celulares, acresentando o nono dígito.]]></Item>
 		<Item visivel="N" motivo="S20140800142"><![CDATA[Envio de emails automáticos ao concluir pendências e solicitações para que seja iniciada a homologação.]]></Item>
 	</Versao>
@@ -307,7 +308,7 @@
 		<Item visivel="S" motivo="S20140800179"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Enviar mensagem ou email somente se houver avaliações não respondidas do período de experiência a vencer (Notificação periódica).]]></Item>
 		<Item visivel="S" motivo="S20140800155"><![CDATA[T&D > Relatórios > Colaboradores com Treinamentos e T&D > Relatórios > Colaboradores sem Treinamentos:  para colaboradores ativos ou desligados.]]></Item>
 		<Item visivel="N" motivo="P20140800105"><![CDATA[BUG: Ao sugerir respostas em Aval. de Desempenho, as respostas seguintes continuavam sendo sugeridas, mesmo que não estivesse marcada a opção de sugerir.]]></Item>
-		<Item visivel="N" motivo="S20140900134"><![CDATA[Integração com o AC Pessoal: Implementação da transferência de colaboradores em lote a partir do AC Pessoal.]]></Item>
+		<Item visivel="N" motivo="S20140900134"><![CDATA[Integração com o Fortes Pessoal: Implementação da transferência de colaboradores em lote a partir do Fortes Pessoal.]]></Item>
 	</Versao>
 	<Versao id="1.1.133.159" bd="" data="26/08/2014">
 		<Item visivel="S" motivo="S20140700118"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Substituição da regra de acesso unificada de 'Inserir/Editar' por regras específicas para 'Inserir' e 'Editar'.]]></Item>
@@ -317,7 +318,7 @@
 		<Item visivel="S" motivo="S20140800125"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas: Ordenação de 'Dias Previstos' por data]]></Item>
 		<Item visivel="S" motivo="S20140600182"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho: Novo cálculo da performance considerando os níveis de competência e exibir somente as competência definidas para a faixa.]]></Item>
 		<Item visivel="N" motivo="P20140700138"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Não permitir que sejam selecionados colaboradores já inseridos como colaboradores substituídos.]]></Item>
-		<Item visivel="N" motivo="P20140800106"><![CDATA[C&S > Cadastros > Áreas Organizacionais > Inserir: Ajuste na mensagem de erro ao tentar gravar no AC Pessoal.]]></Item>
+		<Item visivel="N" motivo="P20140800106"><![CDATA[C&S > Cadastros > Áreas Organizacionais > Inserir: Ajuste na mensagem de erro ao tentar gravar no Fortes Pessoal.]]></Item>
 		<Item visivel="N" motivo="P20140800050"><![CDATA[BUG: Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Clonar: Erro ao tentar clonar aval. desempenho com título com grandes descrições.]]></Item>
 		<Item visivel="N" motivo="------------"><![CDATA[BUG: SESMT > Relatórios > Afastamentos: Falta de ordenação ao gerar relatório.]]></Item>
 		<Item visivel="N" motivo="P20140800149"><![CDATA[BUG: T&D > Cadastros > Cursos/Treinamentos > Turmas > Avaliações da Turma > Resultado das Avaliações: Erro no cálculo dos percentuais por pergunta.]]></Item>
@@ -383,7 +384,7 @@
 		<Item visivel="S" motivo="S20140200281"><![CDATA[R&S > Cadastros > Candidatos: Novos filtros pelos números de telefone fixo e celular.]]></Item>
 		<Item visivel="S" motivo="S20140100018"><![CDATA[SESMT > Relatórios > PPP: Nova opção de selecionar o CNAE a ser impresso.]]></Item>
 		<Item visivel="S" motivo="S20140100018"><![CDATA[Utilitários > Cadastros > Empresas: Novo campo CNAE 2.]]></Item>
-		<Item visivel="N" motivo="S20140200159"><![CDATA[Utilitários > Exportar dados para o AC Pessoal: Nova funcionalidade para exportar dados do sistema RH para o sistema AC Pessoal.]]></Item>
+		<Item visivel="N" motivo="S20140200159"><![CDATA[Utilitários > Exportar dados para o Fortes Pessoal: Nova funcionalidade para exportar dados do sistema RH para o sistema Fortes Pessoal.]]></Item>
 		<Item visivel="N" motivo="S20140500053"><![CDATA[Info. Funcionais > Movimentações > Solicitações de Desligamento: Menu renomeado para Aprovar/Reprovar Solicitações de Desligamento.]]></Item>
 		<Item visivel="N" motivo="S20140500011"><![CDATA[Videoteca > Correção dos títulos de alguns vídeos e inclusão da categoria "Integração" no filtro.]]></Item>
 		<Item visivel="N" motivo="S20140500038"><![CDATA[Info. Funcionais > Relatórios > Resultados das Entrevistas: Imprimir somente a relação dos estabelecimentos da empresa logada.]]></Item>
@@ -396,7 +397,7 @@
 		<Item visivel="S" motivo="S20131200084"><![CDATA[Info. Funcionais > Movimentações > Solicitações de Desligamento: Nova tela para aprovar ou reprovar solicitações de desligamento. (Disponível quando o campo "Solicitar confirmação de gestores ao desligar colaboradores" estiver marcado na empresa)]]></Item>
 		<Item visivel="S" motivo="S20140400116"><![CDATA[Info. Funcionais > Relatórios > Resultados das Entrevistas: Novo filtro de busca de múltipla escolha da área organizacional e do cargo.]]></Item>
 		<Item visivel="S" motivo="S20131200084"><![CDATA[Utilitários > Cadastros > Empresas > Inserir/Editar: Novo campo para solicitar confirmação de gestores ao desligar colaboradores.]]></Item>
-		<Item visivel="N" motivo="S20140400233"><![CDATA[Integração com AC Pessoal: Melhoria na mensagem enviada ao AC Pessoal ao tentar atualizar o colaborador com uma cidade não cadastrada no RH.]]></Item>
+		<Item visivel="N" motivo="S20140400233"><![CDATA[Integração com Fortes Pessoal: Melhoria na mensagem enviada ao Fortes Pessoal ao tentar atualizar o colaborador com uma cidade não cadastrada no RH.]]></Item>
 	</Versao>
 	<Versao id="1.1.125.150" bd="" data="22/04/2014">
 		<Item visivel="S" motivo="S20140300133"><![CDATA[R&S > Cadastros > Candidatos > Visualizar Currículo > Imprimir: Adição do campo "data de cadastro" na impressão do currículo.]]></Item>
@@ -457,7 +458,7 @@
 		<Item visivel="S" motivo=""><![CDATA[SESMT > Relatórios > Ficha de EPI: Nova possibilidade de inserir EPIs entregues no relatório ao selecionar uma solicitação de EPI.]]></Item>
 	</Versao>
 	<Versao id="1.1.121.140" bd="" data="16/12/2013">
-		<Item visivel="S" motivo=""><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de configuração para notificar quando "Desligar colaborador no AC Pessoal", através de email para o responsável do RH, gestor e cogestor da área organizacional.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de configuração para notificar quando "Desligar colaborador no Fortes Pessoal", através de email para o responsável do RH, gestor e cogestor da área organizacional.]]></Item>
 	</Versao>
 	<Versao id="1.1.121.139" bd="" data="09/12/2013">
 		<Item visivel="S" motivo=""><![CDATA[Info. Funcionais > Relatórios > Ocorrências: Opção de filtragem no campo de seleção de colaboradores.]]></Item>
@@ -583,8 +584,8 @@
 	</Versao>
 	<Versao id="1.1.106.113" bd="" data="06/05/2013">
 		<Item visivel="S" motivo=""><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem : Novo popup de aviso para candidatos com o mesmo CPF de colaboradores ao inserir os candidatos selecionados (Exceto na aba "Triagem de Colaboradores").]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova coluna para impressão "Enviado AC" em campos disponíveis (Somente para empresas integradas com AC Pessoal).]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Utilitários > Importar Cadastros: Ao importar os cadastros de cargo, área organizacional e tipo de ocorrência os mesmos serão enviados para o AC Pessoal quando a empresa destino for integrada.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Nova coluna para impressão "Enviado AC" em campos disponíveis (Somente para empresas integradas com Fortes Pessoal).]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Utilitários > Importar Cadastros: Ao importar os cadastros de cargo, área organizacional e tipo de ocorrência os mesmos serão enviados para o Fortes Pessoal quando a empresa destino for integrada.]]></Item>
 	</Versao>
 	<Versao id="1.1.106.112" bd="" data="22/04/2013">
 		<Item visivel="S" motivo=""><![CDATA[C&S > Relatórios > Descrição de Cargos: Novo layout do relatório.]]></Item>
@@ -594,7 +595,7 @@
 	<Versao id="1.1.106.111" bd="" data="11/04/2013">
 		<Item visivel="S" motivo=""><![CDATA[R&S > Cadastros > Candidatos > Inserir/Editar > Documentos: Novo campo para registrar a informação do numero do PIS.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[R&S > Movimentações > Solicitação de Realinhamento: Renomeação deste menu para Solicitação de Realinhamento para Colaborador e remoção das opções de realinhamento individual para Faixa Salarial e índice. Esses podem ser realizados via Reajuste Coletivo.]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Novo filtro por colaboradores enviados para AC Pessoal(Esta opção aparece somente quando a empresa estiver integrada com o AC Pessoal).]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Novo filtro por colaboradores enviados para Fortes Pessoal(Esta opção aparece somente quando a empresa estiver integrada com o Fortes Pessoal).]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[SESMT > Movimentações > Ambiente e Função do Colaborador: Novo filtro por situação do colaborador e novas colunas por estabelecimento e Área Organizacional na listagem.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[SESMT > Relatórios > PPP: Links que facilitam a solução de pendências para geração do PPP.]]></Item>
 	</Versao>
@@ -635,7 +636,7 @@
 		<Item visivel="S" motivo=""><![CDATA[T&D > Movimentações > Plano de Treinamento > Colaboradores Inscritos na Turma: Novo filtro para listar colaboradores aprovados ou reprovados.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Competências > Inserir/Editar: Novo gráfico radial de competências.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Utilitários > Configurações > Sistema: Novo campo para armazenar o caminho da "Réplica do Backup do Banco de Dados".]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de configuração para notificar quando "Cadastrar situação no AC Pessoal".]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de configuração para notificar quando "Cadastrar situação no Fortes Pessoal".]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação > Inserir/Editar: Nova opção de enviar emails e mensagens para "Cogestor da área organizacional".(somente para configurações que permitem enviar emails e mensagens para gestor da área organizacional).]]></Item>
 	</Versao>
 	<Versao id="1.1.99.103" bd="" data="04/02/2013">
@@ -688,7 +689,7 @@
 		<Item visivel="S" motivo=""><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Possibilidade de seleção de mais de uma avaliação para uma solicitação de pessoal.]]></Item>
 	</Versao>
 	<Versao id="1.1.93.91" bd="" data="12/11/2012">
-		<Item visivel="S" motivo=""><![CDATA[Melhoria nas configurações de integração com AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Melhoria nas configurações de integração com Fortes Pessoal.]]></Item>
 	</Versao>
 	<Versao id="1.1.93.90" bd="" data="05/11/2012">
 		<Item visivel="S" motivo=""><![CDATA[R&S > Cadastros > Candidatos > Inserir : Novas opções no campo [Escolaridade](Curso Técnico em andamento e Curso Técnico completo).]]></Item>
@@ -834,7 +835,7 @@
 		<Item visivel="S" motivo=""><![CDATA[T&D > Cadastro > Cursos/Treinamentos > Turmas > Avaliações: Novo submenu com as opções de liberar/bloquear, exibir resultados e imprimir.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[T&D > Relatórios > Histórico de Treinamentos: Novo filtro por nome comercial do colaborador.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[T&D > Painel de Indicadores: Ícone de ajuda sobre os indicadores.]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Possibilidade de solicitação de desligamento do colaborador quando integrado ao AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Possibilidade de solicitação de desligamento do colaborador quando integrado ao Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[SESMT > Cadastros > Ambientes > Histórico do Ambiente: Novo campo de Medida de Segurança na definição dos riscos, para a empresa que controla os riscos por Ambiente.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[SESMT > Cadastros > Funções > Histórico da Função: Novo campo de Medida de Segurança na definição dos riscos, para a empresa que controla os riscos por Função.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Utilitários > Configurações > Gerenciador de comunicação: Definição dos dias de antecedência para os avisos na configuração de aviso automático das avaliações do período de experiência a vencer.]]></Item>
@@ -843,7 +844,7 @@
 		<Item visivel="S" motivo=""><![CDATA[Utilitários > Configurações > Gerenciador de comunicação: Nova configuração de notificação de não entrega da solicitação de EPI.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Utilitários > Configurações > Gerenciador de comunicação: Nova configuração de aviso de cadastro de ocorrência.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Utilitários > Importar afastamentos: Nova funcionalidade de relacionamento de motivos de afastamento entre RH e TRU.]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Integração AC Pessoal e RH > Cancelamento de histórico do colaborador pelo AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Integração Fortes Pessoal e RH > Cancelamento de histórico do colaborador pelo Fortes Pessoal.]]></Item>
 	</Versao>
 	<Versao id="1.1.72.66" bd="" data="28/03/2012">
 		<Item visivel="S" motivo=""><![CDATA[T&D > Cadastro > Cursos/Treinamentos > Turmas > Colaboradores Inscritos: Nova opção do filtro por nome do colaborador.]]></Item>
@@ -893,13 +894,13 @@
 		<Item visivel="S" motivo=""><![CDATA[Utilitários > Backup do Banco de Dados: Nova opção de gerar backup do banco de dados.]]></Item>
 	</Versao>
 	<Versao id="1.1.67.61" bd="" data="27/01/2012">
-		<Item visivel="S" motivo=""><![CDATA[Possibilidade de efetuar atualização do histórico do colaborador em Lote no AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Possibilidade de efetuar atualização do histórico do colaborador em Lote no Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Tratamento dos erros do sistema 500,404 e 403.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[R&S > Cadastros > Candidatos > Excluir: Possibilidade de excluir candidato com vínculos.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Info. Funcionais > Painel de Indicadores: Novo filtro de empresas, possibilitando selecionar mais de uma empresa.]]></Item>
 	</Versao>
 	<Versao id="1.1.67.60" bd="" data="23/01/2012">
-		<Item visivel="S" motivo=""><![CDATA[Tratamento de erros do RH para o AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Tratamento de erros do RH para o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Módulo Externo: Checagem de versão de browser e redirecionamento para pagina de aviso.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Edição: Nova forma de alterar status, para o liberador.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Alterar Status: Nova opção de alterar status, para o liberador.]]></Item>
@@ -946,7 +947,7 @@
 		<Item visivel="S" motivo=""><![CDATA[SESMT > Relatórios > PCMSO: Nova opção de inclusão da Composição do SESMT no relatório.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[SESMT > Painel de Indicadores: Novo indicador de estatísticas de resultados de exames.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[SESMT > Painel de Indicadores: Novo filtro por empresa.]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Utilitários > Cadastros > Empresas: Validação ao marcar integração com AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Utilitários > Cadastros > Empresas: Validação ao marcar integração com Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Utilitários > Apaga Reg. Sem Código AC: Nova ferramenta para ajuste de integração.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Utilitários > Apaga Reg. Sem Código AC: Nova ferramenta para backup do banco de dados.]]></Item>
 	</Versao>
@@ -980,7 +981,7 @@
 		<Item visivel="S" motivo=""><![CDATA[Melhorias no processo de auditoria.]]></Item>
 	</Versao>
 	<Versao id="1.1.59.50" bd="" data="20/10/2011">
-		<Item visivel="S" motivo=""><![CDATA[ATENÇÃO: Novo WebService do AC Pessoal versão: 1.1.46.1. Obs.: Essa versão do Fortes RH só irá funcionar com essa nova versão do WebService.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[ATENÇÃO: Novo WebService do Fortes Pessoal versão: 1.1.46.1. Obs.: Essa versão do Fortes RH só irá funcionar com essa nova versão do WebService.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[C&S > Movimentações > Faturamentos: Novo cadastro de faturamentos da empresa, utilizado no Painel de Indicadores de CeS.]]></Item>
 	</Versao>
 	<Versao id="1.1.58.49" bd="" data="17/10/2011">
@@ -1149,7 +1150,7 @@
 	</Versao>
 	<Versao id="1.1.43.35" bd="" data="18/04/2011">
 		<Item visivel="S" motivo=""><![CDATA[Pesquisas > Movimentações > Pesquisas: Novo filtro por [Título] da pesquisa.]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Cadastro de Colaborador e Situação do Colaborador: Novo campo [Observação para o Setor Pessoal] quando o sistema estiver integrado com o AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Cadastro de Colaborador e Situação do Colaborador: Novo campo [Observação para o Setor Pessoal] quando o sistema estiver integrado com o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Info. Funcionais > Indicadores > Turnover(rotatividade): Relatório reformulado.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[R&S > Movimentações > Candidatos da Seleção: Liberação da visualização dos candidatos para usuário que tem a permissão: Recrutador(a).]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Info. Funcionais > Painel de Indicadores: Novos gráficos: Faixa Etária, Estado Civil, Deficiência, Colocação, Formação Escolar, Sexo e Motivos de Desligamentos.]]></Item>
@@ -1165,7 +1166,7 @@
 		<Item visivel="S" motivo=""><![CDATA[Avaliação de Desempenho > Cadastros > Avaliação de Desempenho/Acompanhamento do Per. de Experiência: Novo campo quando o tipo de avaliação for "Acompanhamento do Per. de Experiência", Períodos de Acompanhamento de Experiência.]]></Item>
 	</Versao>
 	<Versao id="1.1.42.33" bd="" data="15/03/2011">
-		<Item visivel="S" motivo=""><![CDATA[Integração com múltiplos AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Integração com múltiplos Fortes Pessoal.]]></Item>
 	</Versao>
 	<Versao id="1.1.41.32" bd="" data="25/02/2011">
 		<Item visivel="S" motivo=""><![CDATA[Pesquisas > Movimentações > Incluir Colaboradores na pesquisa. Novo filtro por nome do colaborador.]]></Item>
@@ -1223,7 +1224,7 @@
 	<Versao id="1.1.33.22" bd="" data="04/11/2010">
 		<Item visivel="S" motivo=""><![CDATA[Legenda (regular e irregular) na tela de inspeção de extintores com filtros para facilitar controle e indicação para manutenção.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Relatórios de inspeção de extintores :  opção para acompanhar extintores que precisam ser enviados para manutenção com opções de itens irregulares.]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Novo filtro na listagem de Colaborador: Status no AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Novo filtro na listagem de Colaborador: Status no Fortes Pessoal.]]></Item>
 	</Versao>
 	<Versao id="1.1.32.21" bd="" data="20/10/2010">
 		<Item visivel="S" motivo=""><![CDATA[Página Inicial: Opção para acessar o suporte da Fortes Informática via Chat.]]></Item>
@@ -1236,8 +1237,8 @@
 		<Item visivel="S" motivo=""><![CDATA[Relatorio de EPI com CA a vencer: opção para filtrar por categoria de EPI.]]></Item>
 	</Versao>
 	<Versao id="1.1.31.20" bd="" data="23/09/2010">
-		<Item visivel="S" motivo=""><![CDATA[Faixa Salarial: criado campo Descrição no AC Pessoal.]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Integração de cargo do AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Faixa Salarial: criado campo Descrição no Fortes Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Integração de cargo do Fortes Pessoal.]]></Item>
 	</Versao>
 	<Versao id="1.1.31.19" bd="" data="30/08/2010">
 		<Item visivel="S" motivo=""><![CDATA[Relatório de Avaliação de Turma: opção para ocultar nomes dos colaboradores nas respostas e comentários.]]></Item>
@@ -1314,9 +1315,9 @@
 	</Versao>
 	<Versao id="1.1.26.13" bd="" data="22/04/2010">
 		<Item visivel="S" motivo=""><![CDATA[Situação do Colaborador: campo "Exposição a Agentes Nocivos" agora é obrigatório.]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Integração com o AC Pessoal: campo "Nome Comercial" do colaborador foi integrado (aberto para edição no FortesRH e AC Pessoal).]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Integração com o AC Pessoal: campo "Exposição a Agentes Nocivos" da situação foi integrado (aberto para edição no FortesRH e AC Pessoal).]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Integração com o AC Pessoal: cadastro de Área Organizacional agora é permitido também no AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Integração com o Fortes Pessoal: campo "Nome Comercial" do colaborador foi integrado (aberto para edição no FortesRH e Fortes Pessoal).]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Integração com o Fortes Pessoal: campo "Exposição a Agentes Nocivos" da situação foi integrado (aberto para edição no FortesRH e Fortes Pessoal).]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Integração com o Fortes Pessoal: cadastro de Área Organizacional agora é permitido também no Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Ajustes na edição de Cargo.]]></Item>
 	</Versao>
 	<Versao id="1.1.26.12" bd="" data="14/04/2010">
@@ -1364,7 +1365,7 @@
 		<Item visivel="S" motivo=""><![CDATA[Edição de Currículo Escaneado: possibilidade de substituir apenas a imagem ou apenas o arquivo OCR.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Relatório de Cargos renomeado para "Descrição de Cargos".]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[CIPA > Etapas do Processo Eleitoral: nova funcionalidade "Sugerir Etapas" (se não houver nenhuma cadastrada ainda).]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Novas informações na lista de pendências com o AC Pessoal (página inicial): data de admissão e cargo nas Contratações; data do histórico nas mudanças de Histórico de Colaborador.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Novas informações na lista de pendências com o Fortes Pessoal (página inicial): data de admissão e cargo nas Contratações; data do histórico nas mudanças de Histórico de Colaborador.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Nova funcionalidade: Inserir Histórico de Colaborador (possibilidade de criar histórico de colaborador sem a necessidade de criar uma tabela de realinhamentos).]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[SESMT > Relatório de Exames Previstos: nova opção para agrupar por Área Organizacional e adicionada nova coluna Cargo.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Acompanhamento do Período de Experiência: nova seção Cadastro de Período de Acompanhamento, novo campo "Alertar para avaliação" nas configurações do sistema, nova seção Cadastro de Avaliação do Período de Experiência.]]></Item>
@@ -1383,12 +1384,12 @@
 		<Item visivel="S" motivo=""><![CDATA[Relatório de Áreas Organizacionais: adicionado totalizador de colaboradores ao final de cada área.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[O Relatório de Motivos de Desligamentos foi reformulado e renomeado para Relatório de Desligamentos.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[No relatório de Entrevistas de Desligamento foi adicionada a opção "Exibir nomes dos colaboradores nas respostas e comentários".]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[No aviso de desligamento vindo do AC Pessoal foi configurado um link para a Entrevista de Desligamento.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[No aviso de desligamento vindo do Fortes Pessoal foi configurado um link para a Entrevista de Desligamento.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Listagem de Candidatos: adicionado filtro "Exibir contratados".]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Triagem de Candidatos: adicionado filtro para trazer "apenas candidatos que nunca participaram de processos seletivos".]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Cadastro de Candidatos: novo campo "Contato".]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Pesquisas: foi retirada a obrigatoriedade de preenchimento em perguntas subjetivas.]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Integração com o AC Pessoal: o campo CBO foi aberto para edição no cadastro de cargos do AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Integração com o Fortes Pessoal: o campo CBO foi aberto para edição no cadastro de cargos do Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Nova funcionalidade: Cadastro de Currículo Digitado.]]></Item>
 	</Versao>
 	<Versao id="1.1.21.7" bd="" data="12/01/2010">
@@ -1533,7 +1534,7 @@
 		<Item visivel="S" motivo=""><![CDATA[Inclusão de busca por data de cadastro ou atualização no filtro da listagem de candidatos.]]></Item>
 	</Versao>
 	<Versao id="1.0.7.0" bd="" data="20/05/2009">
-		<Item visivel="S" motivo=""><![CDATA[Ampliação da integração com o AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Ampliação da integração com o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Criação automática de usuários.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Edição de login.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Atualização de dados pessoais.]]></Item>
@@ -1543,15 +1544,15 @@
 		<Item visivel="S" motivo=""><![CDATA[Nova paginação no histórico dos candidatos da solicitação conservando filtro ao voltar nas páginas.]]></Item>
 	</Versao>
 	<Versao id="1.0.6.0" bd="" data="20/02/2009">
-		<Item visivel="S" motivo=""><![CDATA[Integração com o AC Pessoal completamente reformulada.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Integração com o Fortes Pessoal completamente reformulada.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Solicitação de Reajuste foi reformulada e chama-se agora Solicitação de Realinhamento de Cargos e Salários.]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Possibilidade de trabalhar com salários propostos por índice ou por cargo, totalmente integrado com o AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Possibilidade de trabalhar com salários propostos por índice ou por cargo, totalmente integrado com o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Solicitação de confirmação do setor pessoal para operações financeiras (promoções, reajustes de salários de cargos etc.).]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Possibilidade de cancelar solicitações do RH no AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Possibilidade de cancelar solicitações do RH no Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Caixa de Mensagens para notificações importantes (cancelamentos, rescisões etc.).]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Possibilidade de editar/excluir históricos de colaborador.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Relatório de Projeção Salarial, onde é possível exibir o relatório completo de salários em qualquer data.]]></Item>
-		<Item visivel="S" motivo=""><![CDATA[Listagem de Pendências com o AC Pessoal na página principal do RH.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Listagem de Pendências com o Fortes Pessoal na página principal do RH.]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Criação dos históricos de faixa salarial (para acompanhar a evolução do salário do cargo).]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Progressão do Colaborador reformulada (ajustes no gráfico e novos detalhes nos históricos).]]></Item>
 		<Item visivel="S" motivo=""><![CDATA[Ajustes na Entrevista de Desligamento (possibilidade de edição, obrigatoriedade dos campos retirada etc.).]]></Item>
@@ -1614,7 +1615,7 @@
 		<Item visivel="S" motivo=""><![CDATA[Ajuste na atualização das solicitações de pessoal.]]></Item>
 	</Versao>
 	<Versao id="1.0.1.1" bd="" data="16/09/2008">
-		<Item visivel="S" motivo=""><![CDATA[Ajuste na integração do Colaborador com o AC Pessoal.]]></Item>
+		<Item visivel="S" motivo=""><![CDATA[Ajuste na integração do Colaborador com o Fortes Pessoal.]]></Item>
 	</Versao>
 	<Versao id="1.0.1.0" bd="" data="04/09/2008">
 		<Item visivel="S" motivo=""><![CDATA[Colaboradores: Liberada edição de campos se só houver um histórico.]]></Item>

@@ -56,7 +56,7 @@ public class AcPessoalImportadorGastos
 	private static void enviaEmailParaRespSetorPessoal(String erro, Empresa empresa)
 	{
 		StringBuilder corpo = new StringBuilder();
-		corpo.append("Houve erro na sincronização com o sistema Ac Pessoal.<br><br>");
+		corpo.append("Houve erro na sincronização com o sistema Fortes Pessoal.<br><br>");
 		corpo.append("Mensagem de erro:<br>" + erro);
 
 		Mail mail = (Mail) SpringUtil.getBean("mail");

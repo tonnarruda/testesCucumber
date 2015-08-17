@@ -33,7 +33,7 @@ public class GrupoACEditAction extends MyActionSupportList
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
-		addActionMessage("Cuidado ao alterar o código, ele pode estar sendo utilizado no AC Pessoal.");
+		addActionMessage("Cuidado ao alterar o código, ele pode estar sendo utilizado no Fortes Pessoal.");
 		return Action.SUCCESS;
 	}
 

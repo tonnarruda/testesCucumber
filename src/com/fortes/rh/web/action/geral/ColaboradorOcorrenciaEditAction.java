@@ -147,7 +147,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		catch (IntegraACException e)
 		{
 			e.printStackTrace();
-			addActionError("Cadastro não pôde ser realizado no AC Pessoal.");
+			addActionError("Cadastro não pôde ser realizado no Fortes Pessoal.");
 
 			prepare();
 
@@ -158,7 +158,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 			e.printStackTrace();
 
 			if (e.getTargetException() != null && e.getTargetException() instanceof IntegraACException)
-				addActionError("Cadastro não pôde ser realizado no AC Pessoal.");
+				addActionError("Cadastro não pôde ser realizado no Fortes Pessoal.");
 			else
 				addActionError("Cadastro não pôde ser realizado.");
 			
@@ -207,7 +207,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 		}
 		catch (IntegraACException ie)
 		{
-			addActionError("A ocorrência deste colaborador não pôde ser removida no AC Pessoal.");
+			addActionError("A ocorrência deste colaborador não pôde ser removida no Fortes Pessoal.");
 			ie.printStackTrace();
 		}
 		catch (Exception e)

@@ -775,7 +775,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 //		}
 		catch (IntegraACException e)
 		{
-			addActionError("Erro ao gravar as informações do colaborador no AC Pessoal.");
+			addActionError("Erro ao gravar as informações do colaborador no Fortes Pessoal.");
 			prepareUpdate();
 			
 			return Action.INPUT;

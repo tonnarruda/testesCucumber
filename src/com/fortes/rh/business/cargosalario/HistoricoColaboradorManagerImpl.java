@@ -772,13 +772,13 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if(empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc())
 		{
 			if(historicoColaboradorTmp.getColaborador().getCodigoAC() == null)
-				throw new Exception("Cadastro do Colaborador pendente no AC Pessoal.");
+				throw new Exception("Cadastro do Colaborador pendente no Fortes Pessoal.");
 
 			if(!existeHistoricoAprovado(historicoColaboradorTmp.getId(), historicoColaboradorTmp.getColaborador().getId()))
-				throw new Exception("<div>Histórico do colaborador "+historicoColaboradorTmp.getColaborador().getNome()+"</div><div>Não existe outro histórico aprovado pelo AC Pessoal.<br>Não é permitido excluir.</div>");
+				throw new Exception("<div>Histórico do colaborador "+historicoColaboradorTmp.getColaborador().getNome()+"</div><div>Não existe outro histórico aprovado pelo Fortes Pessoal.<br>Não é permitido excluir.</div>");
 
 			if(verificaHistoricoNaFolhaAC(historicoColaboradorId, historicoColaboradorTmp.getColaborador().getCodigoAC(), empresa))
-				throw new Exception("<div>Uma Folha de Pagamento foi processada no AC Pessoal com este Histórico.<br>Não é permitido excluir.</div>");
+				throw new Exception("<div>Uma Folha de Pagamento foi processada no Fortes Pessoal com este Histórico.<br>Não é permitido excluir.</div>");
 		}
 
 		Long reajusteColaboradorId = getDao().findReajusteByHistoricoColaborador(historicoColaboradorId);
@@ -804,7 +804,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	public void removeHistoricoAndReajusteAC(HistoricoColaborador historicoColaborador) throws Exception
 	{
 		if(!existeHistoricoAprovado(historicoColaborador.getId(), historicoColaborador.getColaborador().getId()))
-			throw new Exception("Não existe outro histórico aprovado pelo AC Pessoal. Não é permitido excluir.");
+			throw new Exception("Não existe outro histórico aprovado pelo Fortes Pessoal. Não é permitido excluir.");
 
 		if(getCount(new String[]{"colaborador.id"}, new Object[]{historicoColaborador.getColaborador().getId()}) <= 1)
 			throw new Exception("Não é permitido deletar o último histórico.");

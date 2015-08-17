@@ -197,11 +197,10 @@
 				style: {  width: '100px' }
 			});
 			
-			$('#dataAdmissaoTooltipHelp').qtip({ content: 'Não é possível alterar a data de admissão quando integrado com o AC Pessoal.' });
-			$('#vinculoTooltipHelp').qtip({ content: 'Não é possível alterar o vínculo quando integrado com o AC Pessoal.' });
-
-			$('#vinculoSocioTooltipHelp').qtip({ content: 'Colaboradores com a colocação Sócio, não serão integrados com o AC Pessoal.' });
-						
+			$('#vinculoSocioTooltipHelp').qtip({ content: 'Colaboradores com a colocação Sócio, não serão integrados com o Fortes Pessoal.' });
+			$('#dataAdmissaoTooltipHelp').qtip({ content: 'Não é possível alterar a data de admissão quando integrado com o Fortes Pessoal.' });
+			$('#vinculoTooltipHelp').qtip({ content: 'Não é possível alterar o vínculo quando integrado com o Fortes Pessoal.' });
+			
 			addBuscaCEP('cep', 'ende', 'bairroNome', 'cidade', 'uf');
 
 			<#if avaliacoes?exists>
@@ -431,14 +430,14 @@
 
 			<#if integraAc>
 				<#if !colaborador.id?exists>
-					<@ww.checkbox label="Não enviar este colaborador para o AC Pessoal" id="naoIntegraAc" name="colaborador.naoIntegraAc" liClass="liLeft" labelPosition="left" onchange="$('#wwgrp_obsACPessoal').toggle(!this.checked)"/>
-					<@ww.checkbox label="Este colaborador não será enviado para o AC Pessoal" id="naoIntegraACSocio" name="naoIntegra" liClass="liLeft" disabled="true" labelPosition="left"/>				
+					<@ww.checkbox label="Não enviar este colaborador para o Fortes Pessoal" id="naoIntegraAc" name="colaborador.naoIntegraAc" liClass="liLeft" labelPosition="left" onchange="$('#wwgrp_obsACPessoal').toggle(!this.checked)"/>
+					<@ww.checkbox label="Este colaborador não será enviado para o Fortes Pessoal" id="naoIntegraACSocio" name="naoIntegra" liClass="liLeft" disabled="true" labelPosition="left"/>				
 				<#else>
 					<@ww.hidden id="naoIntegraAc" name="colaborador.naoIntegraAc"/>
 					<#if colaborador.naoIntegraAc>
-						Este colaborador não está integrado com o AC Pessoal
+						Este colaborador não está integrado com o Fortes Pessoal
 					<#else>
-						Este colaborador está integrado com o AC Pessoal
+						Este colaborador está integrado com o Fortes Pessoal
 					</#if>
 				</#if>
 

@@ -55,4 +55,6 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	void updateCodigoGrupoAC(Long empresaId, String codigoAC, String grupoAC);
 	Collection<Empresa> findByGruposAC(String... gruposAC);
 	String getCodigoGrupoAC(Long empresaId);
+	boolean emProcessoExportacaoAC(Long empresaId);
+	void setProcessoExportacaoAC(Long empresaId, boolean processoExportacaoAC);
 }

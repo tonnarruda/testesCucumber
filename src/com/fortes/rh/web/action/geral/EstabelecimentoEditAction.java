@@ -45,7 +45,7 @@ public class EstabelecimentoEditAction extends MyActionSupportEdit implements Mo
 
 		integradoAC = getEmpresaSistema().isAcIntegra();
 		if (integradoAC)
-			addActionMessage("A manutenção no cadastro de estabelecimento deve ser realizada no AC Pessoal.");
+			addActionMessage("A manutenção no cadastro de estabelecimento deve ser realizada no Fortes Pessoal.");
 
 	}
 

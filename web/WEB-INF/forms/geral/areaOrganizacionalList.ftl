@@ -46,7 +46,7 @@
 				<li>Existem algumas dependências que não podem ser excluídas automaticamente. Se estas existirem, será exibido um alerta e a área não será excluída.</li>
 				<li>Essa exclusão não poderá ser desfeita.</li>
 				<li>Recomendamos que seja efetuado um backup antes da realização desse procedimento.</li>
-				<li>A lotação correspondente não será removida do AC Pessoal, mesmo que os sistemas estejam integrados.</li>
+				<li>A lotação correspondente não será removida do Fortes Pessoal, mesmo que os sistemas estejam integrados.</li>
 			</ul>
 			Deseja realmente continuar?
 		</#assign>

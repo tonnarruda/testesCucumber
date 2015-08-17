@@ -2,7 +2,7 @@
 <html>
 <head>
 	<@ww.head/>
-	<title>Exportar dados para o AC Pessoal</title>
+	<title>Exportar dados para o Fortes Pessoal</title>
 	
 	<style>
 		ol { padding: 10px; margin-bottom: 20px; background-color: #eee; list-style: decimal inside none; }
@@ -17,9 +17,9 @@
 	<@ww.form name="form" action="exportarEmpresaAC.action"  onsubmit="${validarCampos}" method="POST">
 	
 		<ol>
-			<li>Crie uma nova empresa no AC Pessoal;</li>
-			<li>Informe no campo abaixo o código gerado pelo AC Pessoal para a empresa criada;</li>
-			<li><strong>Atenção!</strong> Informar o código incorreto causará inconsistências irreversíveis no banco de dados do AC Pessoal.</li>
+			<li>Crie uma nova empresa no Fortes Pessoal;</li>
+			<li>Informe no campo abaixo o código gerado pelo Fortes Pessoal para a empresa criada;</li>
+			<li><strong>Atenção!</strong> Informar o código incorreto causará inconsistências irreversíveis no banco de dados do Fortes Pessoal.</li>
 		</ol>
 		
 		<@ww.hidden name="empresaId"/>

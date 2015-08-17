@@ -129,7 +129,7 @@
 				<li>O colaborador será excluído permanentemente com as suas dependências.</li>
 				<li>Essa exclusão não poderá ser desfeita.</li>
 				<li>Recomendamos que seja efetuado um backup antes da realização desse procedimento.</li>
-				<li>O colaborador não será removido do AC Pessoal, mesmo que os sistemas estejam integrados.</li>
+				<li>O colaborador não será removido do Fortes Pessoal, mesmo que os sistemas estejam integrados.</li>
 			</ul>
 			Deseja realmente continuar?
 		</#assign>
@@ -201,13 +201,13 @@
 				<#assign statusSolicitacao="A"/>
 				<#if integraAc && !colaborador.naoIntegraAc>
 					<#if colaborador.dataSolicitacaoDesligamentoAc?exists>
-						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:;" imgTitle="Solicitação de desligamento aguardando confirmação no AC Pessoal" imgName="desliga_colab.gif" opacity=true />
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:;" imgTitle="Solicitação de desligamento aguardando confirmação no Fortes Pessoal" imgName="desliga_colab.gif" opacity=true />
 					<#elseif colaborador.dataSolicitacaoDesligamento?exists>
 						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:;" imgTitle="Aguardando confirmação de desligamento" imgName="desliga_colab.gif" opacity=true />
 					<#elseif empresaSistema.solicitarConfirmacaoDesligamento>
 						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Solicitar desligamento" imgName="desliga_colab.gif" />
 					<#else>
-						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="prepareDesligaAC.action?colaborador.id=${colaborador.id}" imgTitle="Solicitação de desligamento no AC Pessoal" imgName="desliga_colab.gif"/>
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="prepareDesligaAC.action?colaborador.id=${colaborador.id}" imgTitle="Solicitação de desligamento no Fortes Pessoal" imgName="desliga_colab.gif"/>
 					</#if>
 				<#else>
 					<#if empresaSistema.solicitarConfirmacaoDesligamento && !colaborador.dataSolicitacaoDesligamento?exists>

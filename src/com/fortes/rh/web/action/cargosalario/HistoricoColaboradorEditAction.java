@@ -236,7 +236,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		{
 			transactionManager.rollback(status);
 
-			String msg = "Não foi possível atualizar esta Situação no AC Pessoal.";
+			String msg = "Não foi possível atualizar esta Situação no Fortes Pessoal.";
 			if (e.getMensagemDetalhada() != null)
 				msg = e.getMensagemDetalhada();
 
@@ -276,7 +276,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			if(historicoColaboradorManager.verificaHistoricoNaFolhaAC(historicoColaborador.getId(), historicoColaborador.getColaborador().getCodigoAC(), getEmpresaSistema()))
 			{
 				folhaProcessada = true;
-				setActionMsg("<div>Uma Folha de Pagamento foi processada no AC Pessoal com este Histórico.<br>Só é permitido editar Função e Ambiente.</div>");
+				setActionMsg("<div>Uma Folha de Pagamento foi processada no Fortes Pessoal com este Histórico.<br>Só é permitido editar Função e Ambiente.</div>");
 			}
 		}		
 
@@ -297,7 +297,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		}
 		catch (IntegraACException e)
 		{
-			String msg = "Não foi possível atualizar esta Situação no AC Pessoal.";
+			String msg = "Não foi possível atualizar esta Situação no Fortes Pessoal.";
 			if (e.getMensagemDetalhada() != null)
 				msg = e.getMensagemDetalhada();
 

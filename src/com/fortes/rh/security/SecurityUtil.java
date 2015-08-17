@@ -168,4 +168,16 @@ public class SecurityUtil
 			return "";
 		}
 	}
+
+	public static void removeSessaoFiltrosConfiguracoes() 
+	{
+		Map<Object, Object> session = ActionContext.getContext().getSession();
+		for (Map.Entry<Object, Object> entry : session.entrySet()) 
+		{
+			if (entry.getKey().toString().startsWith("webwork.ScopeInterceptor"))
+			{
+				session.remove(entry.getKey());
+			}
+		}
+	}
 }

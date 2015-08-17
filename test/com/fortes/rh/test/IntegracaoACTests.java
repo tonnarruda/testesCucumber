@@ -21,7 +21,7 @@ public class IntegracaoACTests extends TestSuite
         // Testes do serviço WS do RH
         suite.addTestSuite(RHServiceManagerTest.class);
 
-        // Testes dos Clientes do WS do AC Pessoal
+        // Testes dos Clientes do WS do Fortes Pessoal
         suite.addTestSuite(AcPessoalClientCargoTest.class);
         suite.addTestSuite(AcPessoalClientColaboradorOcorrenciaTest.class);
         suite.addTestSuite(AcPessoalClientColaboradorTest.class);

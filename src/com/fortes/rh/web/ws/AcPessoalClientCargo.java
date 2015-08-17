@@ -61,7 +61,7 @@ public class AcPessoalClientCargo
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new Exception("Erro ao remover Cargo no AC Pessoal.");
+			throw new Exception("Erro ao remover Cargo no Fortes Pessoal.");
 		}
 	}
 
@@ -206,7 +206,7 @@ public class AcPessoalClientCargo
         	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
         	boolean retorno = result.getSucesso("SetRhCargos", param, this.getClass()); 
             if(!retorno)
-            	throw new IntegraACException("Erro ao cadastrar histórico da faixa salarial no AC Pessoal.");
+            	throw new IntegraACException("Erro ao cadastrar histórico da faixa salarial no Fortes Pessoal.");
             
             return true;
         }
@@ -239,7 +239,7 @@ public class AcPessoalClientCargo
         	TFeedbackPessoalWebService result =  (TFeedbackPessoalWebService) call.invoke(param);
         	boolean retorno = result.getSucesso("DelRhCargos", param, this.getClass()); 
             if(!retorno)
-            	throw new Exception("Erro ao deletar historico da faixa salarial no AC Pessoal");
+            	throw new Exception("Erro ao deletar historico da faixa salarial no Fortes Pessoal");
             
             return true;
         }

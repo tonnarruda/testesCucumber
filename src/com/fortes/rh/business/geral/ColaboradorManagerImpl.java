@@ -517,7 +517,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		else
 		{
 			//ta mó GAMBI, futrique muito não (chico barroso)
-			String strException = "Não foi possível contratar este colaborador no AC Pessoal.";
+			String strException = "Não foi possível contratar este colaborador no Fortes Pessoal.";
 			Throwable cause = new Throwable(strException);
 			Exception exception = new Exception(strException, cause );
 			throw exception;
@@ -996,7 +996,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			getDao().atualizaSolicitacaoDesligamento(null, dataSolicitacaoDesligamento, null, null, null, null, colaboradorId);
 			desligaColaborador(null, null, observacaoDemissao, motivoId, gerouSubstituicao, false, empresa.isAcIntegra(), colaboradorId);
 		}else{
-			throw new IntegraACException("Colaborador não encontrado no Ac Pessoal");
+			throw new IntegraACException("Colaborador não encontrado no Fortes Pessoal");
 		}
 	}
 
@@ -1005,8 +1005,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		getDao().atualizaSolicitacaoDesligamento(dataSolicitacaoDesligamento, null, observacaoDemissao, motivoId, gerouSubstituicao, solicitanteDemissaoId, colaboradorId);
 	}
 	
-	public Collection<Colaborador> listColaboradorComDataSolDesligamentoAC(Long empresaId, boolean existeCodigoAC){
-		return getDao().listColaboradorComDataSolDesligamentoAC(empresaId, existeCodigoAC);
+	public Collection<Colaborador> listColaboradorComDataSolDesligamentoAC(Long empresaId){
+		return getDao().listColaboradorComDataSolDesligamentoAC(empresaId);
 	}
 
 	public void desligaColaborador(Boolean desligado, Date dataDesligamento, String observacaoDemissao, Long motivoDemissaoId, Character gerouSubstituicao, boolean desligaByAC, boolean integradoAC, Long... colaboradoresIds) throws Exception
@@ -1185,7 +1185,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (colaboradoresSemCodigoAC.length() > 0)
 		{
 			colaboradoresSemCodigoAC = colaboradoresSemCodigoAC.replace(colaboradoresSemCodigoAC.length() - 2, colaboradoresSemCodigoAC.length(), ".");
-			throw new ColecaoVaziaException("O reajuste não pode ser aplicado enquanto os cadastros destes colaboradores não for concluído no AC Pessoal:<br>"
+			throw new ColecaoVaziaException("O reajuste não pode ser aplicado enquanto os cadastros destes colaboradores não for concluído no Fortes Pessoal:<br>"
 					+ colaboradoresSemCodigoAC);
 		}
 	}
@@ -1581,7 +1581,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			if(empresa.isAcIntegra())
 			{
 				if( ! acPessoalClientColaborador.remove(colaboradorTmp, empresa))
-					throw new IntegraACException("Não foi possível remover o colaborador no AC Pessoal.");
+					throw new IntegraACException("Não foi possível remover o colaborador no Fortes Pessoal.");
 			}
 		}
 	}
@@ -2695,15 +2695,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaboradores;
 	}
 
-//<<<<<<< HEAD
-	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, int statusAC, boolean semcodigoAc, Boolean desligado, boolean primeiroHistorico, String... order)
+	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, int statusAC, boolean semcodigoAc, String situacaoColaborador, boolean primeiroHistorico, String... order)
 	{
-		return getDao().findByEmpresaAndStatusAC(empresaId, estabelecimentosIds, areasIds, statusAC, semcodigoAc, desligado, primeiroHistorico, order);
-//ver samuel
-//	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC, boolean semcodigoAc, String situacao)
-//	{
-//		return getDao().findByEmpresaAndStatusAC(empresaId, statusAC, semcodigoAc, situacao);
-//>>>>>>> S20150700102 - Exportação dos colaboradores desligados para o Fortes
+		return getDao().findByEmpresaAndStatusAC(empresaId, estabelecimentosIds, areasIds, statusAC, semcodigoAc, situacaoColaborador, primeiroHistorico, order);
 	}
 
 	public void desvinculaCandidato(Long candidatoId) 
@@ -2769,7 +2763,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public void reenviaAguardandoContratacao(Empresa empresa) throws Exception 
 	{
-		Collection<Colaborador> colaboradores = getDao().findByEmpresaAndStatusAC(empresa.getId(), null, null, StatusRetornoAC.AGUARDANDO, true, false, true, "c.nome");
+		Collection<Colaborador> colaboradores = getDao().findByEmpresaAndStatusAC(empresa.getId(), null, null, StatusRetornoAC.AGUARDANDO, true, SituacaoColaborador.ATIVO, true, "c.nome");
 
 		for (Colaborador colaborador : colaboradores){
 			try {

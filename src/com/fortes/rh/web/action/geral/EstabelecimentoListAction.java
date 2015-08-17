@@ -51,7 +51,7 @@ public class EstabelecimentoListAction extends MyActionSupportList
 				addActionError("O Estabelecimento solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
 		}
 		else
-			addActionError("O Estabelecimento não pode ser excluído por conta da integração com o AC Pessoal.");
+			addActionError("O Estabelecimento não pode ser excluído por conta da integração com o Fortes Pessoal.");
 
 		return Action.SUCCESS;
 	}

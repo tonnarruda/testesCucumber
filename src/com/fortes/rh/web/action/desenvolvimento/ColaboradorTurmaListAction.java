@@ -311,10 +311,7 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 		try
 		{
 			empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
-			Boolean desligado = situacao == null ? null : ("A".equals(situacao) ? false : ("D".equals(situacao)? true : null));  
-			
-			colaboradorTurmas = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, LongUtil.arrayStringToArrayLong(cursosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), qtdMesesSemCurso, desligado, aprovado);
-			
+			colaboradorTurmas = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, LongUtil.arrayStringToArrayLong(cursosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), qtdMesesSemCurso, situacao, aprovado);
 			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores que não fizeram o treinamento", getEmpresaSistema(), "");
 
 			return Action.SUCCESS;

@@ -175,7 +175,7 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 	{
 		Map<String, Object> cancelamentoContratacaoAC = new LinkedHashMap<String, Object>();
 		cancelamentoContratacaoAC.put("Colaborador", colaborador.getNome());
-		cancelamentoContratacaoAC.put("Mensagem", "Contratação cancelada no AC Pessoal. Obs: "+mensagem);
+		cancelamentoContratacaoAC.put("Mensagem", "Contratação cancelada no Fortes Pessoal. Obs: "+mensagem);
 		
 		String dados = new GeraDadosAuditados(null, cancelamentoContratacaoAC).gera();
 		Empresa empresa = colaborador.getEmpresa();
@@ -207,7 +207,7 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 	{
 		Map<String, Object> cancelamentoSolicitacaoAC = new LinkedHashMap<String, Object>();
 		cancelamentoSolicitacaoAC.put("Colaborador", colaborador.getNome());
-		cancelamentoSolicitacaoAC.put("Mensagem", "Cancelamento da solicitação de desligamento no AC Pessoal. Obs: "+mensagem);
+		cancelamentoSolicitacaoAC.put("Mensagem", "Cancelamento da solicitação de desligamento no Fortes Pessoal. Obs: "+mensagem);
 		
 		String dados = new GeraDadosAuditados(null, cancelamentoSolicitacaoAC).gera();
 		Empresa empresa = colaborador.getEmpresa();

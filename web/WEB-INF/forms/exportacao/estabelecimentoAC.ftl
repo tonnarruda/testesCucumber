@@ -3,7 +3,7 @@
 <html>
 <head>
 	<@ww.head/>
-	<title>Exportar dados para o AC Pessoal</title>
+	<title>Exportar dados para o Fortes Pessoal</title>
 	
 	<style>
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
@@ -24,10 +24,10 @@
 	<@ww.form name="form" id="form" action="exportarEstabelecimentoAC.action"  onsubmit="enviar()" method="POST">
 	
 		<ol>
-			<li>Crie esses estabelecimentos no AC Pessoal;</li>
-			<li>Marque a integarção com o RH no AC Pessoal;</li>
-			<li>Informe na tabela abaixo os códigos gerados pelo AC Pessoal para os respectivos estabelecimentos;</li>
-			<li><strong>Atenção!</strong> Informar códigos incorretos causará inconsistências irreversíveis no banco de dados do AC Pessoal.</li>
+			<li>Crie esses estabelecimentos no Fortes Pessoal;</li>
+			<li>Marque a integarção com o RH no Fortes Pessoal;</li>
+			<li>Informe na tabela abaixo os códigos gerados pelo Fortes Pessoal para os respectivos estabelecimentos;</li>
+			<li><strong>Atenção!</strong> Informar códigos incorretos causará inconsistências irreversíveis no banco de dados do Fortes Pessoal.</li>
 		</ol>
 		
 		<@ww.hidden name="empresaId"/>

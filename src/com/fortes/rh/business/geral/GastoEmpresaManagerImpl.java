@@ -473,7 +473,7 @@ public class GastoEmpresaManagerImpl extends GenericManagerImpl<GastoEmpresa, Ga
 		Empresa empresa = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession());
 
 		StringBuilder corpo = new StringBuilder();
-		corpo.append("Houve erro na sincronização com o sistema Ac Pessoal.<br><br>");
+		corpo.append("Houve erro na sincronização com o sistema Fortes Pessoal.<br><br>");
 		corpo.append(log);
 
 		mail.send(empresa, "[RH] Erro na sincronização", corpo.toString(), null, empresa.getEmailRespSetorPessoal());

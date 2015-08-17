@@ -337,7 +337,7 @@ public class CargoEditAction extends MyActionSupportEdit
 	{
 //		if (!getEmpresaSistema().isAcIntegra())
 //		{
-//			addActionMessage("O RH não está integrado com o AC Pessoal.");
+//			addActionMessage("O RH não está integrado com o Fortes Pessoal.");
 //			return Action.SUCCESS;
 //		}
 		

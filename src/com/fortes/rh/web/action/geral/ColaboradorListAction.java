@@ -249,7 +249,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		
 		if(!getEmpresaSistema().isAcIntegra())
 		{
-			addActionWarning("Esta empresa não está integrada com AC Pessoal.");
+			addActionWarning("Esta empresa não está integrada com Fortes Pessoal.");
 		}
 		else if(colaborador == null)
 		{

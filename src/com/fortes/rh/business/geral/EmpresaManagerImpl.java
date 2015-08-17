@@ -482,7 +482,8 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	}
 
 	//utilizado apenas para auditar a integração com AC
-	public void auditaIntegracao(Empresa empresa, boolean tavaIntegradaComAC) {
+	public void auditaIntegracao(Empresa empresa, boolean tavaIntegradaComAC) 
+	{
 		Logger logger = Logger.getLogger(Empresa.class);
 		logger.info("Auditoria da integração");
 		logger.info("Empresa: " + empresa.getNome() + " id: " + empresa.getId());
@@ -490,7 +491,8 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		logger.info("Depois: " + empresa.isAcIntegra() + " Grupo AC: " + empresa.getGrupoAC());
 	}
 
-	public boolean isControlaRiscoPorAmbiente(Long empresaId) {
+	public boolean isControlaRiscoPorAmbiente(Long empresaId) 
+	{
 		return getDao().isControlaRiscoPorAmbiente(empresaId);
 	}
 	
@@ -504,8 +506,19 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return getDao().findByGruposAC(gruposAC);
 	}
 	
-	public String getCodigoGrupoAC(Long empresaId){
+	public String getCodigoGrupoAC(Long empresaId)
+	{
 		return getDao().getCodigoGrupoAC(empresaId);
+	}
+	
+	public boolean emProcessoExportacaoAC(Long empresaId) 
+	{
+		return getDao().emProcessoExportacaoAC(empresaId);
+	}
+
+	public void setProcessoExportacaoAC(Long empresaId, boolean processoExportacaoAC)
+	{
+		getDao().setProcessoExportacaoAC(empresaId, processoExportacaoAC);
 	}
 	
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {

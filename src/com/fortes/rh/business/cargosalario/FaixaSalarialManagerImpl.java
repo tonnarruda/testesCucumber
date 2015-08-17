@@ -75,7 +75,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 			{
 				String codigoAC = acPessoalClientCargo.criarCargo(faixaSalarial, faixaSalarialHistorico, empresa);
 				if (codigoAC == null || codigoAC.equals(""))
-					throw new Exception("O cargo não pôde ser cadastrado no AC Pessoal. <br>Possíveis Motivos: <br>&nbsp&nbsp&nbsp- Cargo existente com a mesma descrição no AC Pessoal. <br>&nbsp&nbsp&nbsp- Limite de cadastros de cargos excedido no AC Pessoal.");
+					throw new Exception("O cargo não pôde ser cadastrado no Fortes Pessoal. <br>Possíveis Motivos: <br>&nbsp&nbsp&nbsp- Cargo existente com a mesma descrição no Fortes Pessoal. <br>&nbsp&nbsp&nbsp- Limite de cadastros de cargos excedido no Fortes Pessoal.");
 
 				getDao().updateCodigoAC(codigoAC, faixaSalarial.getId());
 			}
@@ -168,7 +168,7 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		}
 
 		if (empresa.isAcIntegra() && !acPessoalClientCargo.deleteCargo(new String[]{codigoAc}, empresa))
-			throw new Exception("Erro ao remover Faixa Salarial no AC Pessoal.");
+			throw new Exception("Erro ao remover Faixa Salarial no Fortes Pessoal.");
 	}
 
 	private Long[] pegaOsIdsDosHistoricosDaFaixa(Long faixaSalarialId)

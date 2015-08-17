@@ -65,7 +65,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	CONTRATAR_COLABORADOR_AC(12, "Contratar colaborador (Integração com AC Pessoal)", "R&S") {
+	CONTRATAR_COLABORADOR_AC(12, "Contratar colaborador (Integração com Fortes Pessoal)", "R&S") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			
@@ -173,7 +173,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	CADASTRAR_SITUACAO_AC(28, "Cadastrar situação no AC Pessoal", "Info. Funcionais") {
+	CADASTRAR_SITUACAO_AC(28, "Cadastrar situação no Fortes Pessoal", "Info. Funcionais") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.EMAIL);
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
@@ -207,7 +207,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	CANCELAR_SITUACAO_AC(13, "Cancelar situação no AC Pessoal", "Info. Funcionais") {
+	CANCELAR_SITUACAO_AC(13, "Cancelar situação no Fortes Pessoal", "Info. Funcionais") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
@@ -217,7 +217,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	CANCELAR_CONTRATACAO_AC(18, "Cancelar contratação no AC Pessoal", "Info. Funcionais") {
+	CANCELAR_CONTRATACAO_AC(18, "Cancelar contratação no Fortes Pessoal", "Info. Funcionais") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
@@ -226,7 +226,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	CANCELAR_SOLICITACAO_DESLIGAMENTO_AC(21, "Cancelar solicitação de desligamento no AC Pessoal", "Info. Funcionais") {
+	CANCELAR_SOLICITACAO_DESLIGAMENTO_AC(21, "Cancelar solicitação de desligamento no Fortes Pessoal", "Info. Funcionais") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			
@@ -235,7 +235,7 @@ public enum Operacao
 			return this.getListMeioComunicacao();
 		}
 	},
-	DESLIGAR_COLABORADOR_AC(14, "Desligar colaborador no AC Pessoal", "Info. Funcionais") {
+	DESLIGAR_COLABORADOR_AC(14, "Desligar colaborador no Fortes Pessoal", "Info. Funcionais") {
 		public TreeMap<Integer, String> meioComunicação(){
 			this.add(MeioComunicacao.CAIXA_MENSAGEM);
 			MeioComunicacao.CAIXA_MENSAGEM.add(EnviarPara.RECEBE_MENSAGEM_AC_PESSOAL);

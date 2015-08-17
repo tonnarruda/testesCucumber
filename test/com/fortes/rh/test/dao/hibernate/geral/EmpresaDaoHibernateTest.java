@@ -431,6 +431,33 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		assertEquals("333", ((Empresa) empresas.toArray()[1]).getGrupoAC());
 	}
 
+	public void testGetCodigoGrupoAC()
+	{
+		GrupoAC grupoAC = GrupoACFactory.getEntity();
+		grupoAC.setCodigo("777");
+		grupoACDao.save(grupoAC);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setCodigoAC("7777");
+		empresa.setGrupoAC("777");
+		empresaDao.save(empresa);
+
+		assertEquals("777", empresaDao.getCodigoGrupoAC(empresa.getId()));
+	}
+	
+	public void testEmProcessoExportacaoAC()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		assertFalse(empresaDao.emProcessoExportacaoAC(empresa.getId()));
+		
+		empresa.setProcessoExportacaoAC(true);
+		empresaDao.update(empresa);
+		
+		assertTrue(empresaDao.emProcessoExportacaoAC(empresa.getId()));
+	}
+
 	public void setCidadeDao(CidadeDao cidadeDao)
 	{
 		this.cidadeDao = cidadeDao;

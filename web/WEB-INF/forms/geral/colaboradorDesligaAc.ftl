@@ -2,7 +2,7 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Solicitação de Desligamento de Colaborador no AC Pessoal</title>
+	<title>Solicitação de Desligamento de Colaborador no Fortes Pessoal</title>
 
 	<#include "../ftl/mascarasImports.ftl" />
 

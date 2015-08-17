@@ -39,7 +39,7 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new IntegraACException("Erro ao remover lotação no AC Pessoal.");
+			throw new IntegraACException("Erro ao remover lotação no Fortes Pessoal.");
 		}
 	}
 
@@ -85,7 +85,7 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
         catch(Exception e)
         {
             e.printStackTrace();
-            throw new Exception("Erro ao cadastrar/atualizar lotação no AC Pessoal.");
+            throw new Exception("Erro ao cadastrar/atualizar lotação no Fortes Pessoal.");
         }
 	}
 	
@@ -113,7 +113,7 @@ public class AcPessoalClientLotacaoImpl implements AcPessoalClientLotacao
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new IntegraACException("Erro ao obter a máscara de lotações do AC Pessoal.");
+			throw new IntegraACException("Erro ao obter a máscara de lotações do Fortes Pessoal.");
 		}
 	}
 

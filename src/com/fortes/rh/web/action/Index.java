@@ -132,16 +132,7 @@ public class Index extends MyActionSupport
 			
 			if (empresaId != null)
 			{
-				// remove da sessão filtros configurados via webwork
-				Map<Object, Object> session = ActionContext.getContext().getSession();
-				for (Map.Entry<Object, Object> entry : session.entrySet()) 
-				{
-					if (entry.getKey().toString().startsWith("webwork.ScopeInterceptor"))
-					{
-						session.remove(entry.getKey());
-					}
-				}
-				
+				SecurityUtil.removeSessaoFiltrosConfiguracoes();
 				SecurityUtil.setEmpresaSession(ActionContext.getContext().getSession(), empresaManager.findById(empresaId));
 				((MyDaoAuthenticationProvider)authenticationProvider).configuraPapeis(SecurityUtil.getUserDetails(ActionContext.getContext().getSession()), empresaId);
 			}
@@ -289,14 +280,14 @@ public class Index extends MyActionSupport
 				try
 				{
 					if(! parametrosDoSistemaManager.isACIntegrado(SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession())))
-						addActionError("Atenção: A integração está ativa no RH mas não no AC Pessoal. Por favor, comunique ao administrador do sistema.");
+						addActionError("Atenção: A integração está ativa no RH mas não no Fortes Pessoal. Por favor, comunique ao administrador do sistema.");
 					versaoWebServiceAC = parametrosDoSistemaManager.getVersaoWebServiceAC(SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession()));
 				}
 				catch (Exception e)
 				{
 					e.printStackTrace();
 					String msg = (e.getCause() instanceof java.net.ConnectException) ? "Verifique se o mesmo está funcionando corretamente." : e.getMessage();
-					throw new Exception("Erro ao verificar conexão com o webservice do AC Pessoal. " + msg);
+					throw new Exception("Erro ao verificar conexão com o webservice do Fortes Pessoal. " + msg);
 				}
 
 				parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
@@ -306,7 +297,7 @@ public class Index extends MyActionSupport
 				boolean rhCompativelComAC  = parametrosDoSistemaManager.verificaCompatibilidadeComWebServiceAC(versaoWebServiceAC, versaoMinimaWebServicxeCompativel);
 
 				if(!rhCompativelComAC)
-					addActionError("A versão do webservice do AC Pessoal é incompatível com essa versão do RH. Atualize a versão do webservice do AC Pessoal para que a integração funcione corretamente.");
+					addActionError("A versão do webservice do Fortes Pessoal é incompatível com essa versão do RH. Atualize a versão do webservice do Fortes Pessoal para que a integração funcione corretamente.");
 			}
 
 			if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VISUALIZAR_PENDENCIA_AC"}))

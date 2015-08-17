@@ -10676,7 +10676,7 @@ COPY papel (id, codigo, nome, url, ordem, menu, papelmae_id) FROM stdin;
 35	ROLE_REL_SIMULACAOREAJUSTE	Realinhamentos	/cargosalario/reajusteRelatorio/formFiltro.action	24	t	361
 407	ROLE_MOV_SOLICITACAO_REALINHAMENTO	Pode Solicitar Realinhamento	--	13	f	361
 408	ROLE_UTI	Enviar Mensagem	/geral/usuarioMensagem/prepareUpdate.action	9	t	37
-409	RECEBE_ALERTA_SETORPESSOAL	Recebe Mensagem do AC Pessoal		12	f	37
+409	RECEBE_ALERTA_SETORPESSOAL	Recebe Mensagem do Fortes Pessoal		12	f	37
 410	ROLE_VISUALIZAR_PENDENCIA_AC	Visualizar as pendências do AC		13	f	37
 \.
 

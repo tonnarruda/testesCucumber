@@ -6460,9 +6460,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 		Collection<Colaborador> colaboradores = colaboradorDao.findByEmpresaAndStatusAC(empresa1.getId(), null, null, StatusRetornoAC.CONFIRMADO, true, null, true, "c.nome");
 
-		//Ver Samuel
-		//		Collection<Colaborador> colaboradores = colaboradorDao.findByEmpresaAndStatusAC(empresa1.getId(), StatusRetornoAC.CONFIRMADO, true, SituacaoColaborador.ATIVO);
-		
 		assertEquals(2, colaboradores.size());
 		assertEquals("Airton", ((Colaborador)colaboradores.toArray()[0]).getNome());
 		assertEquals("Bruna", ((Colaborador)colaboradores.toArray()[1]).getNome());
@@ -6609,7 +6606,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 	}
 	
-	public void testListColaboradorComDataSolDesligamentoAcAndCodigoAc(){
+	public void testListColaboradorComDataSolDesligamentoAcAndCodigoAc()
+	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa1);
 
@@ -6629,7 +6627,6 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Estabelecimento e1 = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(e1);
 		
-		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setNome("Demosval");
 		colaborador.setEmpresa(empresa1);
@@ -6640,9 +6637,8 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaborador.setCodigoAC("000012");
 		colaboradorDao.save(colaborador);
 		
-		Collection<Colaborador> colaboradores = colaboradorDao.listColaboradorComDataSolDesligamentoAC(empresa1.getId(), true);
+		Collection<Colaborador> colaboradores = colaboradorDao.listColaboradorComDataSolDesligamentoAC(empresa1.getId());
 		assertEquals(1, colaboradores.size());
-		
 	}
 	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)

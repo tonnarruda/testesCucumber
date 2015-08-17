@@ -28,7 +28,7 @@ public class IndiceHistoricoEditAction extends MyActionSupportEdit implements Mo
 		integradoAC = getEmpresaSistema().isAcIntegra();
 		if(integradoAC)
 		{			
-			addActionMessage("A manutenção no cadastro de índice deve ser realizada no AC Pessoal.");
+			addActionMessage("A manutenção no cadastro de índice deve ser realizada no Fortes Pessoal.");
 		}
 		else
 		{
@@ -44,7 +44,7 @@ public class IndiceHistoricoEditAction extends MyActionSupportEdit implements Mo
 		integradoAC = getEmpresaSistema().isAcIntegra();
 		if(integradoAC)
 		{			
-			addActionMessage("A manutenção no cadastro de índice deve ser realizada no AC Pessoal.");
+			addActionMessage("A manutenção no cadastro de índice deve ser realizada no Fortes Pessoal.");
 		}
 		else
 		{
@@ -63,7 +63,7 @@ public class IndiceHistoricoEditAction extends MyActionSupportEdit implements Mo
 		integradoAC = getEmpresaSistema().isAcIntegra();
 		if(integradoAC)
 		{			
-			addActionMessage("A manutenção no cadastro de índice deve ser realizada no AC Pessoal.");
+			addActionMessage("A manutenção no cadastro de índice deve ser realizada no Fortes Pessoal.");
 		}
 		else
 		{
@@ -85,7 +85,7 @@ public class IndiceHistoricoEditAction extends MyActionSupportEdit implements Mo
 		integradoAC = getEmpresaSistema().isAcIntegra();
 		if(integradoAC)
 		{			
-			addActionMessage("A manutenção no cadastro de índice deve ser realizada no AC Pessoal.");
+			addActionMessage("A manutenção no cadastro de índice deve ser realizada no Fortes Pessoal.");
 		}
 		else
 		{

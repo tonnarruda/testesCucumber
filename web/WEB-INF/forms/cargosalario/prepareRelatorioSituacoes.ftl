@@ -26,7 +26,7 @@
 	<@ww.actionmessage />
 
 	<@ww.form name="form" action="relatorioSituacoes.action" onsubmit="${validarCampos}" method="POST">
-		<@ww.select label="Origem" id="origem" name="origemSituacao" list=r"#{'T':'Todos','RH':'RH', 'AC':'AC Pessoal'}" cssStyle="width: 96px;"/>
+		<@ww.select label="Origem" id="origem" name="origemSituacao" list=r"#{'T':'Todos','RH':'RH', 'AC':'Fortes Pessoal'}" cssStyle="width: 96px;"/>
 		<div>Período*:</div>
 		<@ww.datepicker name="dataIni" id="dataIni" liClass="liLeft" value="${valueDataIni}"  cssClass="mascaraData"/>
 		<@ww.label value="a" liClass="liLeft"/>

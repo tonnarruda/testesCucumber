@@ -32,9 +32,9 @@ public class AcPessoalClientTabelaReajuste implements AcPessoalClientTabelaReaju
 	{
 		String exceptionMessage = "";
 		 if (ehRealinhamento)
-			 exceptionMessage = "Inserção do Planejamento de Realinhamento falhou no AC Pessoal";
+			 exceptionMessage = "Inserção do Planejamento de Realinhamento falhou no Fortes Pessoal";
 		 else
-			 exceptionMessage = "Erro ao inserir Situação no AC Pessoal";
+			 exceptionMessage = "Erro ao inserir Situação no Fortes Pessoal";
 		
 		try
 		{
@@ -137,7 +137,7 @@ public class AcPessoalClientTabelaReajuste implements AcPessoalClientTabelaReaju
 		catch (Exception e)
 		{
 			e.printStackTrace();
-			throw new IntegraACException(e, "Erro ao excluir Situação no AC Pessoal.");
+			throw new IntegraACException(e, "Erro ao excluir Situação no Fortes Pessoal.");
 		}
 	}
 

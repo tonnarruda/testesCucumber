@@ -566,7 +566,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			transactionManager.commit(status);
 		}catch (IntegraACException e)
 		{
-			mensagens.add("Ocorreu um erro ao importar a área organizacional para o AC Pessoal.");
+			mensagens.add("Ocorreu um erro ao importar a área organizacional para o Fortes Pessoal.");
 			transactionManager.rollback(status);
 		}catch (Exception e)
 		{

@@ -346,14 +346,14 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return colaboradorTurmas;
 	}
 
-	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Integer qtdMesesSemCurso, Boolean desligado, char aprovadoFiltro) throws Exception
+	public Collection<ColaboradorTurma> findRelatorioSemTreinamento(Long empresaId, Long[] cursosIds, Long[] areaIds, Long[] estabelecimentoIds, Integer qtdMesesSemCurso, String situacaoColaborador, char aprovadoFiltro) throws Exception
 	{
 		Date data = new Date();
 		if(qtdMesesSemCurso != null && qtdMesesSemCurso >= 0)
 			data = DateUtil.incrementaMes(data, -1*qtdMesesSemCurso); 
 		
 		Collection<ColaboradorTurma> colaboradorTurmasRetorno = new ArrayList<ColaboradorTurma>();
-		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findRelatorioSemTreinamento(empresaId, cursosIds, areaIds, estabelecimentoIds, data, desligado);
+		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findRelatorioSemTreinamento(empresaId, cursosIds, areaIds, estabelecimentoIds, data, situacaoColaborador);
 		
 		if(aprovadoFiltro != 'T')
 			colaboradorTurmasRetorno = filtraColaboradorTurmaAprovadosOuReprovadosByFiltroAprovado(aprovadoFiltro, colaboradorTurmas);
@@ -361,7 +361,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		{
 			ColaboradorTurma ct;
 			Collection<Curso> cursos = cursoManager.findByEmpresaIdAndCursosId(empresaId, cursosIds);
-			Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, estabelecimentoIds, areaIds, StatusRetornoAC.CONFIRMADO, false, desligado, false, new String[]{"emp.nome", "e.nome","areaOrganizacionalNome", "c.nome"});
+			Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, estabelecimentoIds, areaIds, StatusRetornoAC.CONFIRMADO, false, situacaoColaborador, false, new String[]{"emp.nome", "e.nome","areaOrganizacionalNome", "c.nome"});
 			boolean adicionarColaboardorTurma = true; 
 
 			for (Curso curso : cursos) 

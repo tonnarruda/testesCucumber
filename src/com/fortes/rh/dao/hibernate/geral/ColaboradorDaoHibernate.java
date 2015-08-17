@@ -4640,10 +4640,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();	
 	}
 
-	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, int statusAC, boolean semcodigoAc, Boolean desligado, boolean primeiroHistorico, String... order)
-
-//	ver Samuel
-	//	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, int statusAC, boolean semcodigoAc, String situacao)
+	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, int statusAC, boolean semcodigoAc, String situacaoColaborador, boolean primeiroHistorico, String... order)
 	{
 		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2");
 
@@ -4746,11 +4743,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 		
-		if(desligado != null)
-			criteria.add(Expression.eq("c.desligado", desligado));
-//ver samuel
-//		if(situacao == SituacaoColaborador.ATIVO)
-//			criteria.add(Expression.eq("c.desligado", false));
+		if(SituacaoColaborador.ATIVO.equals(situacaoColaborador))
+			criteria.add(Expression.eq("c.desligado", false));
+		else if (SituacaoColaborador.DESLIGADO.equals(situacaoColaborador))
+			criteria.add(Expression.eq("c.desligado", true));
 		
 		if(semcodigoAc)
 			criteria.add(Expression.isNull("c.codigoAC"));
@@ -5007,7 +5003,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.executeUpdate();
 	}
 	
-	public Collection<Colaborador> listColaboradorComDataSolDesligamentoAC(Long empresaId, boolean existeCodigoAC){
+	public Collection<Colaborador> listColaboradorComDataSolDesligamentoAC(Long empresaId){
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		
 		ProjectionList p = Projections.projectionList().create();
@@ -5019,11 +5015,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 					
 			criteria.setProjection(p);
 
-			if(existeCodigoAC)
-				criteria.add(Expression.isNotNull("c.codigoAC"));
-			else
-				criteria.add(Expression.isNull("c.codigoAC"));
-				
+			criteria.add(Expression.isNotNull("c.codigoAC"));
 			criteria.add(Expression.isNotNull("c.dataSolicitacaoDesligamentoAc"))
 			.add(Expression.isNotNull("c.dataDesligamento"))
 			.add(Expression.eq("c.empresa.id", empresaId));

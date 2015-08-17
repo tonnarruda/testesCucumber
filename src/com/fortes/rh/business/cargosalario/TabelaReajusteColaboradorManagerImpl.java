@@ -196,7 +196,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 	public void aplicarPorIndice(Long tabelaReajusteColaboradorId, Empresa empresa) throws Exception, FortesException 
 	{
 		if(empresa.isAcIntegra())
-			throw new FortesException("A manutenção no cadastro de índice deve ser realizada no AC Pessoal.");
+			throw new FortesException("A manutenção no cadastro de índice deve ser realizada no Fortes Pessoal.");
 		
 		TabelaReajusteColaborador tabelaReajusteColaborador = findByIdProjection(tabelaReajusteColaboradorId);
 		Collection<ReajusteIndice> reajustes = reajusteIndiceManager.findByTabelaReajusteColaboradorId(tabelaReajusteColaboradorId);

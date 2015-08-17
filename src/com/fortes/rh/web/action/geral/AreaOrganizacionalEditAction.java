@@ -102,7 +102,7 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 			e.printStackTrace();
 
 			if (e instanceof InvocationTargetException && ((InvocationTargetException)e).getTargetException() instanceof IntegraACException) 
-				addActionError(ExceptionUtil.getMensagem(e, "Cadastro não pôde ser realizado no AC Pessoal."));
+				addActionError(ExceptionUtil.getMensagem(e, "Cadastro não pôde ser realizado no Fortes Pessoal."));
 			else if (e instanceof InvocationTargetException && ((InvocationTargetException)e).getTargetException() instanceof AreaColaboradorException)
 				addActionWarning(((InvocationTargetException)e).getTargetException().getLocalizedMessage());
 			else 
@@ -130,7 +130,7 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 		{
 			prepare();
 			e.printStackTrace();
-			addActionError("Cadastro não pôde ser realizado no AC Pessoal.");
+			addActionError("Cadastro não pôde ser realizado no Fortes Pessoal.");
 			return Action.INPUT;
 		}
 		catch (Exception e)

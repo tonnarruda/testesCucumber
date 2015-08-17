@@ -372,7 +372,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 				transactionManager.commit(status);
 			}catch (IntegraACException e)
 			{
-				mensagens.add("Não foi possível importar o cargo <strong>" + cargo.getNome() + "</strong> por pendências no AC Pessoal.");
+				mensagens.add("Não foi possível importar o cargo <strong>" + cargo.getNome() + "</strong> por pendências no Fortes Pessoal.");
 				transactionManager.rollback(status);
 			}catch (FaixaJaCadastradaException e)
 			{

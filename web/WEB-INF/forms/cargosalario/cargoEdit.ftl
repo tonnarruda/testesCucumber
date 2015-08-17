@@ -71,7 +71,7 @@
 			
 			<#if empresaSistema.acIntegra>
 				$('#codigoCBO, #descricaoCBO').attr('readOnly','readOnly')
-												.attr('title','Não é possível alterar o CBO quando integrado com o AC Pessoal.')
+												.attr('title','Não é possível alterar o CBO quando integrado com o Fortes Pessoal.')
 												.css('background-color','#F2F2F2');
 				
 			<#else>

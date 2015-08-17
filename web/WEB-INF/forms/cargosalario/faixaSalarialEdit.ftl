@@ -52,7 +52,7 @@
 
 		<@ww.textfield label="Faixa" name="faixaSalarialAux.nome" id="nome" cssStyle="width: 220px;"  maxLength="30" required="true"/>
 		<#if integradoAC>
-			<@ww.textfield label="Descrição no AC Pessoal" name="faixaSalarialAux.nomeACPessoal" id="nomeACPessoal" cssStyle="width: 220px;"  maxLength="30" required="true"/>
+			<@ww.textfield label="Descrição no Fortes Pessoal" name="faixaSalarialAux.nomeACPessoal" id="nomeACPessoal" cssStyle="width: 220px;"  maxLength="30" required="true"/>
 		<#else>
 			<@ww.hidden	name="faixaSalarialAux.nomeACPessoal" />
 		</#if>

@@ -124,7 +124,7 @@
 	</@ww.form>
 	<div id="importar" title="Importar Cadastros">
 		<@ww.form name="formOcorrencia" id="formOcorrencia" action="importarCadastros.action" method="POST">
-			Selecione as ocorrências que deseja Importar para o AC Pessoal.<br />
+			Selecione as ocorrências que deseja Importar para o Fortes Pessoal.<br />
 			<@frt.checkListBox name="ocorrenciaCheckFom1" label="Ocorrência" list="ocorrenciaCheckList" width="500" height="120" form="document.getElementById('formOcorrencia')"/>
 		</@ww.form>
 	</div>

@@ -19,7 +19,7 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 {
 	/**
 	 * @author Igo Coelho
-	 * @param codigo do AC Pessoal
+	 * @param codigo do Fortes Pessoal
 	 * @param id da Empresa do RH
 	 * @since 09/06/2008
 	 */
@@ -35,8 +35,8 @@ public class EstabelecimentoDaoHibernate extends GenericDaoHibernate<Estabelecim
 
 	/**
 	 * @author Igo Coelho
-	 * @param codigo do AC Pessoal
-	 * @param codigo da Empresa no AC Pessoal
+	 * @param codigo do Fortes Pessoal
+	 * @param codigo da Empresa no Fortes Pessoal
 	 * @since 11/06/2008
 	 */
 	public Estabelecimento findByCodigo(String codigo, String empCodigo, String grupoAC)

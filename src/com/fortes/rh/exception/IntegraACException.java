@@ -53,7 +53,7 @@ public class IntegraACException extends Exception
 //				mensagemDetalhada += " - " + axisFault.getMessage();
 				
 				if ( axisFault.detail instanceof ConnectException)
-					mensagemDetalhada += " - Não foi possível conectar ao AC Pessoal.";
+					mensagemDetalhada += " - Não foi possível conectar ao Fortes Pessoal.";
 				
 			}			
 		}

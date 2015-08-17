@@ -104,7 +104,7 @@
 		$(document).ready(function($)
 		{
 			$('#tooltipHelp').qtip({
-				content: 'Este filtro está relacionado ao campo <strong>"Não enviar este colaborador para o AC Pessoal"</strong> contido na tela de cadastro dos colaboradores.'
+				content: 'Este filtro está relacionado ao campo <strong>"Não enviar este colaborador para o Fortes Pessoal"</strong> contido na tela de cadastro dos colaboradores.'
 			});
 			
 			DWREngine.setAsync(false);
@@ -376,7 +376,7 @@
 		
 		<div id="enviadosAC"> 
 			Considerar colaboradores:<br />
-			<@ww.select id="enviadoParaAC" name="enviadoParaAC" list=r"#{'1':'Enviados e Não Enviados para o AC Pessoal', '2':'Não Enviados para o AC Pessoal', '3':'Enviados para o AC Pessoal'}"  theme="simple"/>
+			<@ww.select id="enviadoParaAC" name="enviadoParaAC" list=r"#{'1':'Enviados e Não Enviados para o Fortes Pessoal', '2':'Não Enviados para o Fortes Pessoal', '3':'Enviados para o Fortes Pessoal'}"  theme="simple"/>
 			<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  /><br />
 			
 			<br clear="all"/>
