@@ -4,6 +4,7 @@
 		<Item visivel="S" motivo="S20150700310"><![CDATA[SESMT > Movimentações > Afastamentos: Nova opção de filtro por matrícula do colaborador.]]></Item>
 		<Item visivel="S" motivo="S20150700102"><![CDATA[Utilitários > Exportar dados para o Fortes Pessoal: Exportar colaboradores desligados.]]></Item>		
 		<Item visivel="S" motivo="S20150700196"><![CDATA[Verificação de incosistência no banco de dados.]]></Item>
+		<Item visivel="S" motivo="S20150700330"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Nova opção de colocação do empregado como sócio.]]></Item>
 	</Versao>
 	<Versao id="1.1.148.178" db="" data="11/08/2015">
 		<Item visivel="S" motivo="S20150600112"><![CDATA[SESMT > Cadastros > CIPA > Comissões > Editar > Plano de Trabalho: Nova opção de filtro por situação, responsável e corresponsável.]]></Item>
