@@ -214,19 +214,32 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 	public Auditavel solicitacaoDesligamentoAc(MetodoInterceptado metodo) throws Throwable 
 	{
 		metodo.processa();
-		
-		Date dataSolicitacaoDesligamento = (Date) metodo.getParametros()[0];
+
+		Map<String, Object> desligamento;
+		Collection<Map<String, Object>> solicitacaoDesligamento = new ArrayList<Map<String,Object>>();
+		Date dataSolicitacao = (Date) metodo.getParametros()[0];
 		String observacaoDemissao = (String) metodo.getParametros()[1];
-		Long motivoId = (Long) metodo.getParametros()[2];
+		Long motivoDemissaoId = (Long) metodo.getParametros()[2];
+		Character gerouSubstituicao = (Character) metodo.getParametros()[3];
+				
+		Long colaboradorId = (Long) metodo.getParametros()[4];
+		Colaborador colab = new Colaborador();
+		colab.setId(colaboradorId);
+		Colaborador colaborador = carregaEntidade(metodo, colab);
 		
-		Map<String, Object> solicitaDesligamento = new LinkedHashMap<String, Object>();
-		solicitaDesligamento.put("Data Solicitação Desligamento", dataSolicitacaoDesligamento);
-		solicitaDesligamento.put("Observação Demissão", observacaoDemissao);
-		solicitaDesligamento.put("Motivo ID", motivoId);
+		desligamento = new LinkedHashMap<String, Object>();
+		desligamento.put("Colaborador ID", colaborador.getId());
+		desligamento.put("Colaborador", colaborador.getNome());
+		desligamento.put("Data de solicitacao", dataSolicitacao);
+		desligamento.put("Observação", observacaoDemissao);
+		desligamento.put("Motivo", motivoDemissaoId);
+		desligamento.put("Gerou substituição", gerouSubstituicao.toString());
 		
-		String dados = new GeraDadosAuditados(null, solicitaDesligamento).gera();
+		solicitacaoDesligamento.add(desligamento);
 		
-		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), null, dados);
+		String dados = new GeraDadosAuditados(null, solicitacaoDesligamento.toArray()).gera();
+		
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
 	}
 	
 	public Auditavel cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String obsservacao) throws Throwable 
