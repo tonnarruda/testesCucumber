@@ -414,15 +414,15 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			{
 				if(!foto.getContentType().substring(0, 5).equals("image"))
 				{
-					addActionError("Tipo de arquivo não suportado");
+					addActionError("Tipo da foto não suportado");
 					fotoValida = false;
 				}
 
-				if(foto.getSize() > 524288)
-				{
-					addActionError("Tamanho do arquivo maior que o suportado");
+				parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+				if (parametrosDoSistema.getTamanhoMaximoUpload() != null && foto.getSize() > parametrosDoSistema.getTamanhoMaximoUpload()*1024*1024) {
+					addActionError("Tamanho da foto maior que o suportado ("+parametrosDoSistema.getTamanhoMaximoUpload()+"Mb)");
 					fotoValida = false;
-				}
+				} 
 			}
 		}
 

@@ -36,6 +36,7 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		p.add(Projections.property("ps.camposCandidatoVisivel"), "camposCandidatoVisivel");
 		p.add(Projections.property("ps.camposCandidatoObrigatorio"), "camposCandidatoObrigatorio");
 		p.add(Projections.property("ps.camposCandidatoTabs"), "camposCandidatoTabs");
+		p.add(Projections.property("ps.tamanhoMaximoUpload"), "tamanhoMaximoUpload");
 		p.add(Projections.property("ps.enviarEmail"), "enviarEmail");
 		p.add(Projections.property("ps.emailSmtp"), "emailSmtp");
 		p.add(Projections.property("ps.emailPort"), "emailPort");

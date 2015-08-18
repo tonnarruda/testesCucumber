@@ -69,6 +69,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private int quantidadeConstraints;
 
     private Integer sessionTimeout;
+    private Integer tamanhoMaximoUpload;
     
     // Forçar caixa alta no módulo externo
     private Boolean upperCase = false;
@@ -402,5 +403,13 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	
 	public void setQuantidadeConstraints(int quantidadeConstraints) {
 		this.quantidadeConstraints = quantidadeConstraints;
+	}
+	
+	public Integer getTamanhoMaximoUpload() {
+		return tamanhoMaximoUpload;
+	}
+	
+	public void setTamanhoMaximoUpload(Integer tamanhoMaximoUpload) {
+		this.tamanhoMaximoUpload = tamanhoMaximoUpload;
 	}
 }

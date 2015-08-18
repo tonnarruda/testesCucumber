@@ -15,14 +15,14 @@
 		
 		<#assign buttonLabel="<u>A</u>tualizar"/>
 		<#assign accessKey="A"/>
-		<#assign validarCampos="return validaFormulario('form', new Array('descricao'));"/>
+		<#assign validarCampos="return validaFormulario('form', new Array('descricao'), null, !checkSize());"/>
 	<#else>
 		<title>Novo Documento</title>
 		<#assign formAction="insertDocumentoAnexo.action"/>
 		
 		<#assign buttonLabel="<u>I</u>nserir"/>
 		<#assign accessKey="I"/>
-		<#assign validarCampos="return validaFormulario('form', new Array('descricao','documento'));"/>
+		<#assign validarCampos="return validaFormulario('form', new Array('descricao','documento'), null, !checkSize());"/>
 	</#if>
 </head>
 <body>
@@ -31,6 +31,7 @@
 <@ww.actionmessage/>
 
 <@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST" enctype="multipart/form-data">
+
 	<@ww.textfield label="Descrição" name="documentoAnexo.descricao" id="descricao" required="true" cssClass="inputNome" maxLength="100"/>
 
 	<#if documentoAnexo.id?exists>
@@ -60,5 +61,23 @@
 	<button onclick="window.location='listDocumentosAnexos.action'" class="btnCancelar"></button>
 </button>
 
+<script type="text/javascript">
+	function checkSize()
+	{
+	    var input = document.getElementById("documento");
+	    // check for browser support (may need to be modified)
+	    if(input.files && input.files.length == 1)
+	    {           
+	        if (${max_file_size} != 0 && input.files[0].size > ${max_file_size}*1024*1024) 
+	        {
+	        	$(input).after('<div id="max_size_fail" style="color: red;">O arquivo deve ser menor que ' + ${max_file_size} + 'MB</div>');
+	            return false;
+	        }
+	    }
+	
+		$("#max_size_fail").remove();
+	    return true;
+	}
+</script>
 </body>
 </html>

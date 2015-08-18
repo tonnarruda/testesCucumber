@@ -1,0 +1,1 @@
+alter table parametrosdosistema add column tamanhoMaximoUpload integer; --.go

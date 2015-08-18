@@ -73,6 +73,7 @@ public class ExternoAction extends MyActionSupport
 	private CandidatoSolicitacao candidatoSolicitacao;
 	private DocumentoAnexo documentoAnexo;
 	private com.fortes.model.type.File documento;
+	private Integer max_file_size;
 
 	private boolean moduloExterno = true; // flag para regra em recuperaSenhaLogin
 	private boolean sucessoEnvioCurriculo; // flag de alerta ftl
@@ -413,6 +414,9 @@ public class ExternoAction extends MyActionSupport
 	
 	private void prepareDocumentoAnexo() throws Exception
 	{
+		ParametrosDoSistema parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
+		max_file_size = parametrosDoSistema.getTamanhoMaximoUpload();
+		
 		if(documentoAnexo != null && documentoAnexo.getId() != null)
 		{	
 			documentoAnexo = (DocumentoAnexo) documentoAnexoManager.findById(documentoAnexo.getId());
@@ -639,5 +643,12 @@ public class ExternoAction extends MyActionSupport
 
 	public void setDocumento(com.fortes.model.type.File documento) {
 		this.documento = documento;
+	}
+
+	public Integer getMax_file_size() {
+		if (max_file_size == null)
+			return 0;
+		else
+			return max_file_size;
 	}
 }
