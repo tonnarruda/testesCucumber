@@ -458,10 +458,21 @@
 					<#if somenteLeitura>
 						<@ww.textfield readonly="true" label="Data" name="solicitacao.dataStatus" value="${DataStatusSolicitacao}" cssClass="mascaraData" cssStyle="background: #EBEBEB;"/>
 					<#else>
-						<@ww.datepicker label="Data" name="solicitacao.dataStatus" value="${DataStatusSolicitacao}" cssClass="mascaraData" />
+						
+						<#if dataStatusSomenteLeitura>
+							<@ww.textfield disabled="true" readonly="true" label="Data" name="solicitacao.dataStatus" id="dataStatusSol" value="${DataStatusSolicitacao}" cssClass="mascaraData" cssStyle="background: #EBEBEB;"/>
+						<#else>
+							<@ww.datepicker label="Data" name="solicitacao.dataStatus" value="${DataStatusSolicitacao}" cssClass="mascaraData" />
+						</#if>
+						
 					</#if>
 					
 					<@ww.textarea label="Observação" name="solicitacao.observacaoLiberador" id="obsAprova" disabled="true" />
+					
+					<@ww.hidden name="statusSolicitacaoAnterior" id="statusSolicitacaoAnterior" />
+					<@ww.hidden name="dataStatusSolicitacaoAnterior" id="dataStatusSolicitacaoAnterior" />
+					<@ww.hidden name="obsStatusSolicitacaoAnterior" id="obsStatusSolicitacaoAnterior" />
+					
 				</ul>
 			</@ww.div>
 		</li>

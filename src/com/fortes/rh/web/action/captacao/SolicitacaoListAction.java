@@ -303,14 +303,19 @@ public class SolicitacaoListAction extends MyActionSupportList
     	return Action.SUCCESS;
     }
 
-    public String updateStatusSolicitacao() throws Exception
-    {
-		if((solicitacao.getStatus() != statusSolicitacaoAnterior || (solicitacao.getDataStatus() != null && !solicitacao.getDataStatus().equals(dataStatusSolicitacaoAnterior))) && SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}))
-        {
+    public String updateStatusSolicitacao() throws Exception {
+		if((solicitacao.getStatus() != statusSolicitacaoAnterior || (solicitacao.getDataStatus() != null && !solicitacao.getDataStatus().equals(dataStatusSolicitacaoAnterior))) && SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"})) {
     		solicitacao.setLiberador(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()));
+    		if (solicitacao.getDataStatus() == null) {
+				solicitacao.setDataStatus(new Date());
+			}
         	solicitacaoManager.updateStatusSolicitacao(solicitacao);
     		
         	new EnviaEmailSolicitanteThread(solicitacao, getEmpresaSistema(), getUsuarioLogado()).start();
+        } else {
+        	Solicitacao solicitacaoSomenteObs = solicitacaoManager.findById(solicitacao.getId());
+        	solicitacaoSomenteObs.setObservacaoLiberador(solicitacao.getObservacaoLiberador());
+        	solicitacaoManager.update(solicitacaoSomenteObs);
         }
 		
     	return Action.SUCCESS;

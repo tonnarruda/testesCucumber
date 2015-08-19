@@ -64,10 +64,12 @@
 
 		function setDateStatus(dataStatus)
 		{
-			if(dataStatus)
+			if(dataStatus) {
+				$('#dataStatusSol').val(dataStatus);
 				$('#dataStatus').val(dataStatus);
-			else
+			} else {
 				$('#dataStatus').val($.datepicker.formatDate('dd/mm/yy',new Date()));
+			}
 		}
 		
 		function aprovarSolicitacao(solicitacaoId, statusAnterior, dataStatusAnterior) 
@@ -75,6 +77,12 @@
 			$('#solicitacaoIdAlterarStatus').val(solicitacaoId);
 			$('#statusSolicitacaoAnterior').val(statusAnterior);
 			$('#dataStatusSolicitacaoAnterior').val(dataStatusAnterior);
+			
+			$('#obsAprova').val("");
+			$('#observacaoLiberador').val("");
+			$('#statusSolicitcao').val("");
+			$('#dataStatusSol').val("");
+			$('#dataStatus').val("");
 		
 			$('#alterarStatusDiv').dialog({ modal: true, 
 											width: 500,
@@ -271,8 +279,16 @@
 	</div>
 	<div id="alterarStatusDiv" class="alterarStatusDiv">
 		<@ww.form name="formUpdateStatusSolicitacao" action="updateStatusSolicitacao.action" method="post" onsubmit="${validarCamposUpdateStatus}">
+			
 			<@ww.select  label="Status"  name="solicitacao.status"  list="status" id="statusSolicitcao" liClass="liLeft"/>
-			<@ww.datepicker label="Data" name="solicitacao.dataStatus" id="dataStatus" cssClass="mascaraData" />
+			
+			<@authz.authorize ifAllGranted="ROLE_EDITA_DATA_STATUS_SOLICITACAO">
+				<@ww.datepicker label="Data" name="solicitacao.dataStatus" id="dataStatus" cssClass="mascaraData" />
+			</@authz.authorize>
+			<@authz.authorize ifNotGranted="ROLE_EDITA_DATA_STATUS_SOLICITACAO">
+				<@ww.textfield disabled="true" readonly="true" label="Data" name="solicitacao.dataStatus" id="dataStatusSol" value="solicitacao.dataStatus" cssClass="mascaraData" cssStyle="background: #EBEBEB;"/>
+			</@authz.authorize>
+	
 			<@ww.textarea label="Observações" name="solicitacao.observacaoLiberador" id="observacaoLiberador" />
 			<@ww.hidden name="solicitacao.id" id="solicitacaoIdAlterarStatus"/>
 			<@ww.hidden name="statusSolicitacaoAnterior" id="statusSolicitacaoAnterior" />

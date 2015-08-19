@@ -149,6 +149,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	private boolean obrigaDadosComplementares;
 	private boolean clone;
 	private boolean somenteLeitura;
+	private boolean dataStatusSomenteLeitura;
 	private boolean possuiCandidatoSolicitacao;
 	private boolean imprimirObservacao;
 
@@ -161,6 +162,10 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	private Date dataIni;
 	private Date dataFim;
 	private boolean existeCompetenciaRespondida;
+	
+	private char statusSolicitacaoAnterior;
+    private Date dataStatusSolicitacaoAnterior;
+    private String obsStatusSolicitacaoAnterior;
 
     private void prepare() throws Exception
     {
@@ -253,7 +258,11 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     public String prepareUpdate() throws Exception
     {
         prepare();
-
+        
+        this.setStatusSolicitacaoAnterior(solicitacao.getStatus());
+        this.setDataStatusSolicitacaoAnterior(solicitacao.getDataStatus());
+        this.setObsStatusSolicitacaoAnterior(solicitacao.getObservacaoLiberador());
+        
         bairrosCheckList = CheckListBoxUtil.marcaCheckListBox(bairrosCheckList, bairroManager.getBairrosBySolicitacao(solicitacao.getId()), "getId");
         
         if(solicitacao.getStatus() != StatusAprovacaoSolicitacao.ANALISE && !SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"})) {
@@ -262,6 +271,10 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         } else if ( SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_LIBERA_SOLICITACAO"}) &&
         		!SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_EDITAR"}) ) {
         	somenteLeitura = true;
+        }
+        
+        if(!SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_EDITA_DATA_STATUS_SOLICITACAO"})) {
+        	dataStatusSomenteLeitura = true;
         }
         
         return Action.SUCCESS;
@@ -319,6 +332,19 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
     public String update() throws Exception
     {
+    	if (solicitacao.getDataStatus() == null) {
+    		if (solicitacao.getObservacaoLiberador() != null && solicitacao.getObservacaoLiberador().equals(obsStatusSolicitacaoAnterior)) {
+    			solicitacao.setDataStatus(dataStatusSolicitacaoAnterior);
+			} else {
+				solicitacao.setDataStatus(new Date());
+			}
+		}
+    	
+    	if (solicitacao.getStatus() != statusSolicitacaoAnterior) {
+    		solicitacao.setLiberador(getUsuarioLogado());
+		}
+    	
+    	
         if (bairrosCheck != null)
         	solicitacao.setBairros(montaBairros());
         else
@@ -334,7 +360,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
         	
         	new EnviaEmailSolicitanteThread(solicitacao, getEmpresaSistema(), getUsuarioLogado()).start();
 		} else
-			solicitacaoManager.updateSolicitacao(solicitacao, LongUtil.arrayStringToArrayLong(avaliacoesCheck), getEmpresaSistema(), getUsuarioLogado());
+			solicitacaoManager.updateSolicitacao(solicitacao, LongUtil.arrayStringToArrayLong(avaliacoesCheck), getEmpresaSistema(), solicitacao.getLiberador());
         
         return Action.SUCCESS;
     }
@@ -940,5 +966,39 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 	public void setConfiguracaoNivelCompetenciaManager(
 			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
+	}
+
+	public boolean isDataStatusSomenteLeitura() {
+		return dataStatusSomenteLeitura;
+	}
+
+	public void setDataStatusSomenteLeitura(boolean dataStatusSomenteLeitura) {
+		this.dataStatusSomenteLeitura = dataStatusSomenteLeitura;
+	}
+
+	public char getStatusSolicitacaoAnterior() {
+		return statusSolicitacaoAnterior;
+	}
+
+	public void setStatusSolicitacaoAnterior(char statusSolicitacaoAnterior) {
+		this.statusSolicitacaoAnterior = statusSolicitacaoAnterior;
+	}
+
+	public Date getDataStatusSolicitacaoAnterior() {
+		return dataStatusSolicitacaoAnterior;
+	}
+
+	public void setDataStatusSolicitacaoAnterior(
+			Date dataStatusSolicitacaoAnterior) {
+		this.dataStatusSolicitacaoAnterior = dataStatusSolicitacaoAnterior;
+	}
+
+	public String getObsStatusSolicitacaoAnterior() {
+		return obsStatusSolicitacaoAnterior;
+	}
+
+	public void setObsStatusSolicitacaoAnterior(
+			String obsStatusSolicitacaoAnterior) {
+		this.obsStatusSolicitacaoAnterior = obsStatusSolicitacaoAnterior;
 	}
 }
