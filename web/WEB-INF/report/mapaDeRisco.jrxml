@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MapaDeRisco" pageWidth="843" pageHeight="595" orientation="Landscape" columnWidth="843" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5779cba3-1701-4079-9332-4809e88e98c5">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="722"/>
-	<property name="ireport.y" value="41"/>
+	<property name="ireport.zoom" value="0.8481952367449697"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -38,7 +38,7 @@
 	<detail>
 		<band height="55" splitType="Stretch">
 			<textField>
-				<reportElement x="85" y="2" width="757" height="52" forecolor="#5C5C5A" uuid="cacf5535-c031-4395-a9b2-ffb81f42dde8"/>
+				<reportElement x="85" y="2" width="674" height="52" forecolor="#5C5C5A" uuid="cacf5535-c031-4395-a9b2-ffb81f42dde8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="20" isBold="true"/>
 				</textElement>
@@ -273,10 +273,7 @@
 				<subreportParameter name="RISCO_AND_GRAU">
 					<subreportParameterExpression><![CDATA[$F{riscoAndGrau}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "MapasDeRiscoGrupo1.jasper"
-
-
-]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "MapasDeRiscoGrupo1.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
 				<reportElement positionType="Float" x="18" y="17" width="490" height="410" isPrintWhenDetailOverflows="true" uuid="d2278077-c66f-46a6-9da3-fc51b5681215">
@@ -285,10 +282,7 @@
 				<subreportParameter name="RISCO_AND_GRAU">
 					<subreportParameterExpression><![CDATA[$F{riscoAndGrau}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "MapasDeRiscoGrupo2.jasper"
-
-
-]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "MapasDeRiscoGrupo2.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
 				<reportElement positionType="Float" x="18" y="17" width="490" height="410" isPrintWhenDetailOverflows="true" uuid="aa7b43ff-502b-4a53-ba6c-a78caeaaea4f">
@@ -297,10 +291,7 @@
 				<subreportParameter name="RISCO_AND_GRAU">
 					<subreportParameterExpression><![CDATA[$F{riscoAndGrau}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "MapasDeRiscoGrupo3.jasper"
-
-
-]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "MapasDeRiscoGrupo3.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
 				<reportElement positionType="Float" x="18" y="17" width="490" height="410" isPrintWhenDetailOverflows="true" uuid="798aaad0-475b-4a17-8bf6-df49629cf57d">
@@ -309,10 +300,7 @@
 				<subreportParameter name="RISCO_AND_GRAU">
 					<subreportParameterExpression><![CDATA[$F{riscoAndGrau}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "MapasDeRiscoGrupo4.jasper"
-
-
-]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "MapasDeRiscoGrupo4.jasper"]]></subreportExpression>
 			</subreport>
 			<subreport>
 				<reportElement positionType="Float" x="21" y="17" width="490" height="410" isPrintWhenDetailOverflows="true" uuid="9016d3d9-c14a-4f17-b3ac-9c0eb943dc85">
@@ -321,10 +309,7 @@
 				<subreportParameter name="RISCO_AND_GRAU">
 					<subreportParameterExpression><![CDATA[$F{riscoAndGrau}]]></subreportParameterExpression>
 				</subreportParameter>
-				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "MapasDeRiscoGrupo5.jasper"
-
-
-]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "MapasDeRiscoGrupo5.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>
