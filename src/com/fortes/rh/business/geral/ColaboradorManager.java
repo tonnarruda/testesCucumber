@@ -83,7 +83,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public boolean candidatoEhColaborador(Long id,Long empresaId);
 	public Collection<Colaborador> findByArea(AreaOrganizacional areaFiltro);
 	public Collection<Colaborador> findByFuncaoAmbiente(Long funcaoId, Long ambienteId);
-	public boolean setCodigoColaboradorAC(String codigo, Long id);
+	public boolean setCodigoColaboradorAC(String codigo, Long id, Empresa empresa);
 	public Colaborador findByCodigoAC(String codigoAC, Empresa empresa);
 	public Colaborador findColaboradorById(Long id);
 	public Colaborador findAllRelacionamentos(Long id);

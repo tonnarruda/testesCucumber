@@ -535,4 +535,17 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 
 		query.executeUpdate();
 	}
+
+	public boolean getFlagVincularMatriculaCodigoFortesPessoal(Long empresaId) 
+	{
+		Query query = getSession().createQuery("select e.vincularMatriculaCodigoFortesPessoal from Empresa e where e.id = :empresaId");
+		query.setLong("empresaId", empresaId);
+		return (Boolean) query.uniqueResult();
+	}
+
+	public void vincularMatriculaComCodigoFortesPessoal(Long empresaId, Integer percentualMinimoCompatibilidadeMatriculaCodigoFortesPessoal) 
+	{
+		String[] sqls = new String[]{"select atualiza_matricula_to_codigofortespessoal(array["+ empresaId +"], " + percentualMinimoCompatibilidadeMatriculaCodigoFortesPessoal + "); "};
+		JDBCConnection.executeQuery(sqls);
+	}
 }

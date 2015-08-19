@@ -1337,10 +1337,12 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	cidade.setId(1L);
     	cidade.setUf(estado);
     	colaborador.setPessoal(pessoal);
+    	colaborador.setEmpresa(EmpresaFactory.getEmpresa(1L));
 
     	cidadeManager.expects(once()).method("findByCodigoAC").with(ANYTHING, ANYTHING).will(returnValue(cidade));
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
     	estadoManager.expects(once()).method("findBySigla").with(ANYTHING).will(returnValue(estado));
+    	empresaManager.expects(once()).method("getFlagVincularMatriculaCodigoFortesPessoal").with(eq(colaborador.getEmpresa().getId())).will(returnValue(true));
     	colaboradorDao.expects(once()).method("findByIdComHistorico").with(ANYTHING,eq(null)).will(returnValue(colaborador));
     	colaboradorDao.expects(once()).method("update").with(eq(colaborador));
 

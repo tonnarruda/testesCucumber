@@ -366,15 +366,16 @@ public class RHServiceImpl implements RHService
 		}
 	}
 
-	public FeedbackWebService atualizarCodigoEmpregado(String grupoAC, String empresa, String codigo, String codigoNovo) 
+	public FeedbackWebService atualizarCodigoEmpregado(String grupoAC, String empresaCodigo, String codigo, String codigoNovo) 
 	{
-		String parametros = "empCodigo: " + empresa + "\ngrupoAC: " + grupoAC + "\ncodigo empregado: " +codigo+ "\nnovo codigo empregado: " + codigoNovo;
+		String parametros = "empCodigo: " + empresaCodigo + "\ngrupoAC: " + grupoAC + "\ncodigo empregado: " +codigo+ "\nnovo codigo empregado: " + codigoNovo;
 		try {
-			Colaborador colaborador = colaboradorManager.findByCodigoAC(codigo, empresa, grupoAC);
+			Colaborador colaborador = colaboradorManager.findByCodigoAC(codigo, empresaCodigo, grupoAC);
 			if(colaborador == null || colaborador.getId() == null)
 				return new FeedbackWebService(false, "Erro ao alterar código do empregado.", "Colaborador não encontrado no RH.\n" + parametros);
-				
-			colaboradorManager.setCodigoColaboradorAC(codigoNovo, colaborador.getId());
+			
+			Empresa empresa = empresaManager.findByCodigoAC(empresaCodigo, grupoAC);
+			colaboradorManager.setCodigoColaboradorAC(codigoNovo, colaborador.getId(), empresa);
 			
 			return new FeedbackWebService(true);
 		} catch (Exception e) {

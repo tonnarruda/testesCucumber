@@ -57,4 +57,6 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	String getCodigoGrupoAC(Long empresaId);
 	boolean emProcessoExportacaoAC(Long empresaId);
 	void setProcessoExportacaoAC(Long empresaId, boolean processoExportacaoAC);
+	boolean getFlagVincularMatriculaCodigoFortesPessoal(Long empresaId);
+	void vincularMatriculaComCodigoFortesPessoal(Long empresaId, Integer percentualMinimoCompatibilidadeMatriculaCodigoFortesPessoal);
 }

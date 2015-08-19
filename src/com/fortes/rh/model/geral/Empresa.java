@@ -71,6 +71,7 @@ public class Empresa extends AbstractModel implements Serializable
     private boolean obrigarAmbienteFuncao;
     private boolean codigoTruCurso; 
     private boolean solicitarConfirmacaoDesligamento;
+    private boolean vincularMatriculaCodigoFortesPessoal;
     
     private char verificaParentesco = 'N';
     @Column(length=400)
@@ -608,5 +609,14 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setProcessoExportacaoAC(boolean processoExportacaoAC) {
 		this.processoExportacaoAC = processoExportacaoAC;
+	}
+
+	public boolean isVincularMatriculaCodigoFortesPessoal() {
+		return vincularMatriculaCodigoFortesPessoal;
+	}
+
+	public void setVincularMatriculaCodigoFortesPessoal(
+			boolean vincularMatriculaCodigoFortesPessoal) {
+		this.vincularMatriculaCodigoFortesPessoal = vincularMatriculaCodigoFortesPessoal;
 	}
 }

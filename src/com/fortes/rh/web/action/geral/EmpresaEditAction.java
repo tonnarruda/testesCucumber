@@ -183,18 +183,23 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			throw new Exception("Já existe uma empresa com o mesmo código AC no grupo AC especificado");
 		}
 		
-		if (empresaManager.verificaInconcistenciaIntegracaoAC(empresa))
+		if (!empresaManager.verificaInconcistenciaIntegracaoAC(empresa))
 		{
 			setActionMsg("Não foi possível habilitar a integração com o Fortes Pessoal devido a cadastros realizados no período desintegrado.<br />Entre em contato com o suporte técnico.");
 			empresa.setAcIntegra(false);
+			empresa.setVincularMatriculaCodigoFortesPessoal(false);
 			empresaManager.update(empresa);
 			atualizaEmpresaSessao();
 			prepareUpdate();
 			return Action.INPUT;
 		}
 		
-		boolean tavaIntegradaComAC = empresaManager.findIntegracaoAC(empresa.getId());
+		boolean flagVincularMatriculaCodigoAnterior = empresaManager.getFlagVincularMatriculaCodigoFortesPessoal(empresa.getId());
+		if(empresa.isVincularMatriculaCodigoFortesPessoal() && !flagVincularMatriculaCodigoAnterior)
+			empresaManager.vincularMatriculaComCodigoFortesPessoal(empresa.getId(), 0);
+		
 		empresaManager.update(empresa);
+		boolean tavaIntegradaComAC = empresaManager.findIntegracaoAC(empresa.getId());
 		empresaManager.auditaIntegracao(empresa, tavaIntegradaComAC);
 		atualizaEmpresaSessao();
 

@@ -457,6 +457,19 @@ public class EmpresaDaoHibernateTest extends GenericDaoHibernateTest<Empresa>
 		
 		assertTrue(empresaDao.emProcessoExportacaoAC(empresa.getId()));
 	}
+	
+	public void testGetVincularMatriculaCodigoFoertesPessoal()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		assertFalse(empresaDao.getFlagVincularMatriculaCodigoFortesPessoal(empresa.getId()));
+		
+		empresa.setVincularMatriculaCodigoFortesPessoal(true);
+		empresaDao.save(empresa);
+		
+		assertTrue(empresaDao.getFlagVincularMatriculaCodigoFortesPessoal(empresa.getId()));
+	}
 
 	public void setCidadeDao(CidadeDao cidadeDao)
 	{

@@ -807,8 +807,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findColaboradorComTodosOsDados(id);
 	}
 	
-	public boolean setCodigoColaboradorAC(String codigo, Long id)
+	public boolean setCodigoColaboradorAC(String codigo, Long id, Empresa empresa)
 	{
+		if(empresa.isVincularMatriculaCodigoFortesPessoal())
+			getDao().setMatriculaColaborador(id, codigo);
+			
 		return getDao().setCodigoColaboradorAC(codigo, id);
 	}
 
@@ -1326,6 +1329,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		if(colaborador != null)//Colaborador não existe na base do rh, pode ser um empregado com data de demissao (não importado)
 		{
+			if(colaborador.getEmpresa() != null && empresaManager.getFlagVincularMatriculaCodigoFortesPessoal(colaborador.getEmpresa().getId()))
+				colaborador.setMatricula(colaborador.getCodigoAC());
+			
 			colaborador = bindColaborador(colaborador, empregado);
 			getDao().update(colaborador);
 		}
@@ -1340,6 +1346,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			Colaborador colaborador = new Colaborador();
 			bindColaborador(colaborador, tEmpregado);
 			colaborador.setCodigoAC(tEmpregado.getCodigoACDestino());
+			
+			if(empresa.isVincularMatriculaCodigoFortesPessoal())
+				colaborador.setMatricula(colaborador.getCodigoAC());
+			
 			colaborador.setEmpresa(empresa);
 			getDao().save(colaborador);
 			

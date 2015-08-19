@@ -44,7 +44,7 @@ public interface RHService
 	FeedbackWebService desligarEmpregado(String codigo, String empCodigo, String dataDesligamento, String grupoAC);
 	FeedbackWebService desligarEmpregadosEmLote(String[] codigosAC, String empCodigo, String dataDesligamento, String grupoAC);
 	FeedbackWebService religarEmpregado(String codigo, String empCodigo, String grupoAC);
-	FeedbackWebService atualizarCodigoEmpregado(String grupoAC, String empresa, String codigo, String codigoNovo);
+	FeedbackWebService atualizarCodigoEmpregado(String grupoAC, String empresaCodigo, String codigo, String codigoNovo);
 	FeedbackWebService cancelarContratacao(TEmpregado empregado, TSituacao situacao,  String mensagem);
 	FeedbackWebService cancelarSolicitacaoDesligamentoAC(TEmpregado empregado, String mensagem);
 	void reSincronizarTabelaTemporariaAC (String gruposAC) throws Exception;
