@@ -260,7 +260,8 @@ public class TurmaManagerTest extends MockObjectTestCase
 		colaboradorTurmaManager.expects(once()).method("remove").with(ANYTHING).isVoid();
 
 		diaTurmaManager.expects(once()).method("deleteDiasTurma").isVoid();
-		turmaAvaliacaoTurmaManager.expects(once()).method("removeByTurma").with(eq(turma.getId())).isVoid();
+		turmaAvaliacaoTurmaManager.expects(once()).method("removeByTurma").with(eq(turma.getId()), eq(null)).isVoid();
+		turmaDocumentoAnexoManager.expects(once()).method("removeByTurma").with(eq(turma.getId())).isVoid();
 		turmaDao.expects(once()).method("remove").with(eq(turma.getId())).isVoid();
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 

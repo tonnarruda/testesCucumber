@@ -541,6 +541,8 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		if (LongUtil.arrayIsNotEmpty(cursoIds))
 			criteria.add(Expression.in("c.id", cursoIds));
 		
+		criteria.addOrder(Order.desc("totalDespesas"));
+		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));
 		
 		return  criteria.list();

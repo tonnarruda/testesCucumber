@@ -7,5 +7,5 @@ public interface TurmaAvaliacaoTurmaDao extends GenericDao<TurmaAvaliacaoTurma>
 {
 	boolean verificaAvaliacaoliberada(Long turmaId);
 	void updateLiberada(Long turmaId, Long avaliacaoTurmaId, Boolean liberada);
-	void removeByTurma(Long turmaId);
+	void removeByTurma(Long turmaId, Long[] avaliacaoTurmaIds);
 }

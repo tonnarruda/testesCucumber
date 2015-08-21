@@ -70,7 +70,10 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			diaTurmaManager.deleteDiasTurma(turmaId);
 			
 			TurmaAvaliacaoTurmaManager turmaAvaliacaoTurmaManager = (TurmaAvaliacaoTurmaManager) SpringUtil.getBean("turmaAvaliacaoTurmaManager");
-			turmaAvaliacaoTurmaManager.removeByTurma(turmaId);
+			turmaAvaliacaoTurmaManager.removeByTurma(turmaId, null);
+			
+			TurmaDocumentoAnexoManager turmaDocumentoAnexoManager = (TurmaDocumentoAnexoManager) SpringUtil.getBean("turmaDocumentoAnexoManager");
+			turmaDocumentoAnexoManager.removeByTurma(turmaId);
 
 			remove(turmaId);
 

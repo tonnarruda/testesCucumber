@@ -9,6 +9,7 @@ import org.hibernate.criterion.Projections;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.TurmaAvaliacaoTurmaDao;
 import com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma;
+import com.fortes.rh.util.LongUtil;
 
 public class TurmaAvaliacaoTurmaDaoHibernate extends GenericDaoHibernate<TurmaAvaliacaoTurma> implements TurmaAvaliacaoTurmaDao
 {
@@ -40,11 +41,15 @@ public class TurmaAvaliacaoTurmaDaoHibernate extends GenericDaoHibernate<TurmaAv
 		query.executeUpdate();
 	}
 
-	public void removeByTurma(Long turmaId) {
+	public void removeByTurma(Long turmaId, Long[] avaliacaoTurmaIdsQueNaoDevemSerRemovidas) {
 		String hql = "delete from TurmaAvaliacaoTurma where turma.id = :turmaId ";
+		if(LongUtil.arrayIsNotEmpty(avaliacaoTurmaIdsQueNaoDevemSerRemovidas))
+			hql+="and avaliacaoTurma.id not in(:avaliacaoTurmaIds)"; 
 
 		Query query = getSession().createQuery(hql);
 		query.setLong("turmaId", turmaId);
+		if(LongUtil.arrayIsNotEmpty(avaliacaoTurmaIdsQueNaoDevemSerRemovidas))
+			query.setParameterList("avaliacaoTurmaIds", avaliacaoTurmaIdsQueNaoDevemSerRemovidas);
 
 		query.executeUpdate();
 	}
