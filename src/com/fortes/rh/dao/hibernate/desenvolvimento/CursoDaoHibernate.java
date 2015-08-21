@@ -27,7 +27,6 @@ import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
-import com.fortes.rh.util.ArrayUtil;
 import com.fortes.rh.util.LongUtil;
 
 @SuppressWarnings("unchecked")
@@ -518,5 +517,32 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));
 
 		return criteria.list();
+	}
+	
+	public Collection<Curso> somaDespesasPorCurso(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds) 
+	{
+		Criteria criteria = getSession().createCriteria(Curso.class,"c");
+		criteria.createCriteria("c.turmas", "t");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.alias(Projections.groupProperty("c.id"), "id"));
+		p.add(Projections.alias(Projections.groupProperty("c.nome"), "nome"));
+		p.add(Projections.sum("t.custo"), "totalDespesas");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("t.realizada", true));
+		criteria.add(Expression.ge("t.dataPrevIni", dataIni));
+		criteria.add(Expression.le("t.dataPrevFim", dataFim));
+		criteria.add(Expression.ne("t.custo", 0.0));
+		
+		if (LongUtil.arrayIsNotEmpty(empresaIds))
+			criteria.add(Expression.in("c.empresa.id", empresaIds));
+		
+		if (LongUtil.arrayIsNotEmpty(cursoIds))
+			criteria.add(Expression.in("c.id", cursoIds));
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Curso.class));
+		
+		return  criteria.list();
 	}
 }

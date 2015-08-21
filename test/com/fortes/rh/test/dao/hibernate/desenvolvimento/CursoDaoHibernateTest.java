@@ -958,6 +958,61 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		assertTrue(cursos.size() >= 2);
 	}
 
+	public void testSomaDespesasPorCurso() 
+	{
+		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2012);
+		Date dataFim = DateUtil.criarDataMesAno(2, 1, 2012);
+		
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa2);
+		
+		Curso curso1 = CursoFactory.getEntity();
+		curso1.setEmpresa(empresa1);
+		cursoDao.save(curso1);
+		
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setEmpresa(empresa1);
+		turma1.setDataPrevIni(dataIni);
+		turma1.setDataPrevFim(dataFim);
+		turma1.setRealizada(true);
+		turma1.setCurso(curso1);
+		turma1.setCusto(150.0);
+		turmaDao.save(turma1);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setEmpresa(empresa1);
+		turma2.setDataPrevIni(dataIni);
+		turma2.setDataPrevFim(dataFim);
+		turma2.setRealizada(true);
+		turma2.setCurso(curso1);
+		turma2.setCusto(250.0);
+		turmaDao.save(turma2);
+		
+		Curso curso2 = CursoFactory.getEntity();
+		curso2.setEmpresa(empresa2);
+		cursoDao.save(curso2);
+		
+		Turma turma3 = TurmaFactory.getEntity();
+		turma3.setEmpresa(empresa2);	
+		turma3.setDataPrevIni(dataIni);
+		turma3.setDataPrevFim(dataFim);
+		turma3.setRealizada(true);
+		turma3.setCurso(curso2);
+		turma3.setCusto(300.0);
+		turmaDao.save(turma3);
+		
+		Collection<Curso> cursos = cursoDao.somaDespesasPorCurso(dataIni, dataFim, new Long[]{empresa1.getId(), empresa2.getId()},  null);
+		Collection<Curso> cursosOutraEmpresa = cursoDao.somaDespesasPorCurso(dataIni, dataFim, new Long[]{1111111111111L}, null);
+		
+		assertEquals(2, cursos.size());
+		assertEquals(400.0, ((Curso)cursos.toArray()[0]).getTotalDespesas());
+		assertEquals(300.0, ((Curso)cursos.toArray()[1]).getTotalDespesas());
+		assertEquals(0, cursosOutraEmpresa.size());
+	}
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		this.empresaDao = empresaDao;

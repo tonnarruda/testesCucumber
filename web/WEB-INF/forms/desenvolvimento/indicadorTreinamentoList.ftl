@@ -4,11 +4,11 @@
 <head>
 <@ww.head/>
 	<style type="text/css">
-		@import url('<@ww.url includeParams="none" value="/css/painelIndicadoresTreinamentos.css?version=${versao}"/>');
 		@import url('<@ww.url value="/css/indicadores.css?version=${versao}"/>');
+		@import url('<@ww.url includeParams="none" value="/css/painelIndicadoresTreinamentos.css?version=${versao}"/>');
 		@import url('<@ww.url includeParams="none" value="/css/displaytag.css?version=${versao}"/>');
 		
-		.gogDivEsq div.legend > table, .gogDivDir div.legend > table {
+		.grid-cell div.legend > table {
 		    border-spacing: 0 !important;
 		    left: 240px;
             width: 240px;
@@ -17,10 +17,29 @@
 		.legendColorBox { width: 20px; border: none; }
 		.legendColorBox > div { border: 1px solid #fff !important; }
 		
-		#custo { width: 220px !important; }
-		#custoLegenda { float: right; width: 220px; height: 195px; overflow-y: auto; }
+		#custo, #custoPorCurso { width: 220px !important; }
+		#custoLegenda, #custoPorCursoLegenda { float: right; width: 220px; height: 195px; overflow-y: auto; }
 		
 		#formBusca { padding: 5px; }
+		
+		#box{
+			width: 450px;
+			height: 300px;
+		}
+		#box a{
+			color: #85B5D9 !important;
+			text-decoration: none;
+		}
+		#pieBox{
+			float: left;
+			width: 300px;
+			height: 250px;
+		}
+		#pieLegendBox{
+			float: left;
+			width: 350px;
+			height: 250px !important;
+		}
 	</style>
 
 	<title>Painel de Indicadores de T&D</title>
@@ -56,6 +75,8 @@
 		}
 		
 		$(function () {
+			$("#box").dialog({autoOpen: false});
+		
 	        var participantes = ${grfFrequenciaParticipantes};
 	        var inscritos = ${grfFrequenciaInscritos};
 	        var presentes = ${grfFrequenciaPresentes};
@@ -117,9 +138,16 @@
 		        }).appendTo("body").fadeIn(0);
 		    }
 			
+			cursosOrdered = ${grfCustoPorCurso}.sort(function (a, b){
+					return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
+				});
+			
 			montaPie(${grfTreinamento}, "#treinamento", {combinePercentMin: -1, percentMin: 0} );
 			montaPie(${grfDesempenho}, "#desempenho", {combinePercentMin: -1, percentMin: 0} );
 			montaPie(${grfCusto}, "#custo", { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto, container:'#custoLegenda' });
+			montaPie(cursosOrdered, "#custoPorCurso", { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto, clickable: true, hoverable: true, container:'#custoPorCursoLegenda' });
+			
+			$("#custoPorCurso").bind("plothover", plotPieHover).bind("plotclick", pieClick);
 			
 	    	$('#tooltipHelpIndicadoresTeD').qtip({
 				content:'<strong>O resultado dos indicadores de T&D são obtidos através dos seguintes cálculos:</strong>'+
@@ -159,8 +187,64 @@
 		        	 width: '100px'
 		        }
 			});
-			
 		});
+		
+		var urlFind = "<@ww.url includeParams="none" value="/desenvolvimento/indicadores/grfTipoDespesaPorCurso.action"/>";
+		
+		function plotPieHover(event, pos, item) {
+            if (item) 
+            {
+        		previousIndex = item.dataIndex;
+                $("#tooltip").remove();
+                showTooltip(pos.pageX, pos.pageY, "Clique para exibir as despesas.");
+            }
+			else {
+            	$("#tooltip").remove();
+            }
+		}
+		
+		function pieClick(event, pos, obj)
+		{
+			var cursoId_ = cursosOrdered[obj.seriesIndex].id;
+			var dataIni_ = $("#dataIni").val();
+			var dataFim_ = $("#dataFim").val();
+			var indicadorTreinamento = {cursoId: cursoId_, dataIni: dataIni_, dataFim: dataFim_};
+			
+			$.ajax({
+				url: urlFind,
+				contentType: 'application/json; charset=utf-8',
+			    dataType: 'text json',
+				async: false,
+				data: {cursoId: cursoId_, dataIni: dataIni_, dataFim: dataFim_},
+				success: function(data){
+					if(data.length == 0)
+					{
+						jAlert("O curso não possui despesas detalhadas.");
+						return false;
+					}
+					
+					$('#pieBox, #pieLegendBox').empty();
+					
+					var tipoDespesaPorCurso = JSON.parse(data).sort(function (a, b){
+						return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
+					});
+					
+					montaPie(tipoDespesaPorCurso, "#pieBox", { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto, container:'#pieLegendBox' });
+					
+					//graficoPizza(cursosOrderedBox, '#pieBox', '#pieLegendBox', '#pieImprimirBox', 1);
+					
+					//var percent = parseFloat(obj.series.percent).toFixed(2);
+					//var descricaoArea = data[0].descricao;
+					//var titleSubArea = descricaoArea + ' &#x2013; '+ percent + '% (' + formataNumero(obj.series.datapoints.points[1]) + ')';
+					
+					$("#box").dialog("option", { zIndex: 9999, title: 'Curso', width: 700, height: 350 });
+					$("#box").dialog("open");
+				},
+				error: function(data) {
+					console.log(data);
+				}
+			});
+		}		
 		
 		function formataLegendaCusto(label, series)
 		{
@@ -227,66 +311,84 @@
 			<button onclick="return enviaForm(1);" class="btnPesquisar grayBGE"></button>
 		</@ww.form>
 	<#include "../util/bottomFiltro.ftl" />
-	</div></div>
-		<br>
-			<@ww.div>
-				<div id="gogDiv">
-					<div class="gogDivTotal">
-						<div class="gogDivTituloX">
-							Indicadores de T&D
-							<img id="tooltipHelpIndicadoresTeD" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
-						</div>
-						<div class="gogDivFormulario">
-							<dl style="float:right;">
-								<dt>Total de investimentos dos treinamentos realizados (R$)</dt>
-								<dd>${indicadorTreinamento.custoTotalFmt}</dd>
-								<dt>Percentual de investimentos em relação ao faturamento</dt>
-								<dd>${indicadorTreinamento.percentualInvestimento?string(",##0.00")}%</dd>
-								<dt>Percentual de frequência (aprovados) </dt>
-								<dd>${indicadorTreinamento.percentualFrequencia?string(",##0.00")}%</dd>
-							</dl>
-							<dl>
-								<dt>Total de horas de treinamento</dt>
-								<dd>${indicadorTreinamento.somaHoras}</dd>
-								<dt>Investimento médio da hora de treinamento (R$)</dt>
-								<dd>${indicadorTreinamento.custoMedioHoraFmt}</dd>
-								<dt>Investimento per capita (R$)</dt>
-								<dd>${indicadorTreinamento.custoPerCapitaFmt}</dd>
-								<dt>Horas de treinamento per capita</dt>
-								<dd>${indicadorTreinamento.horasPerCapitaFmt}</dd>
-							</dl>
-						</div>
-						<br />
-					</div>
-				
-					<div class="gogDivEsq">
-						<div class="gogDivTituloX">Qtd. Prevista de Participantes x Inscritos x Presentes</div>
-						<div class="gogDivFormularioX">
-							<div id="frequencia" class="graph" ></div>
-						</div>
-						<br />
-						<div class="gogDivTituloX">Aproveitamento dos Treinamentos</div>
-						<div class="gogDivFormularioX">
-							<div id="desempenho" class="graph" ></div>
-						</div>
-						<br />
-					</div>
-					
-					<div class="gogDivDir">
-						<div class="gogDivTituloX">Cumprimento do Plano de Treinamento</div>
-						<div class="gogDivFormularioX">
-							<div id="treinamento" class="graph"></div>
-						</div>
-						<br />
-						<div class="gogDivTituloX">Custo por Tipo de Despesa</div>
-						<div class="gogDivFormularioX">
-							<div id="custoLegenda"></div>
-							<div id="custo" class="graph"></div>
-						</div>
-						<br />
-					</div>
-				</div>
-			</@ww.div>
 	
+	<br>
+	<@ww.div>
+		<table class="grid" cellspacing="5">
+			<tbody>
+				<tr>
+					<td id="gogDiv" class="grid-cell" colspan="2">
+						<div class="cell-title">
+								Indicadores de T&D
+								<img id="tooltipHelpIndicadoresTeD" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" /><br>
+						</div>
+						<dl style="float:right;">
+							<dt>Total de investimentos dos treinamentos realizados (R$)</dt>
+							<dd>${indicadorTreinamento.custoTotalFmt}</dd>
+							<dt>Percentual de investimentos em relação ao faturamento</dt>
+							<dd>${indicadorTreinamento.percentualInvestimento?string(",##0.00")}%</dd>
+							<dt>Percentual de frequência (aprovados) </dt>
+							<dd>${indicadorTreinamento.percentualFrequencia?string(",##0.00")}%</dd>
+						</dl>
+						<dl>
+							<dt>Total de horas de treinamento</dt>
+							<dd>${indicadorTreinamento.somaHoras}</dd>
+							<dt>Investimento médio da hora de treinamento (R$)</dt>
+							<dd>${indicadorTreinamento.custoMedioHoraFmt}</dd>
+							<dt>Investimento per capita (R$)</dt>
+							<dd>${indicadorTreinamento.custoPerCapitaFmt}</dd>
+							<dt>Horas de treinamento per capita</dt>
+							<dd>${indicadorTreinamento.horasPerCapitaFmt}</dd>
+						</dl>
+					</td>
+				</tr>
+				<tr>
+					<td class="grid-cell">
+						<div class="cell-title">
+							Qtd. Prevista de Participantes x Inscritos x Presentes
+						</div>
+						<div id="frequencia" class="graph" ></div>
+					</td>
+					<td class="grid-cell">
+						<div class="cell-title">
+							Cumprimento do Plano de Treinamento
+						</div>
+						<div id="treinamento" class="graph"></div>
+					</td>
+				</tr>
+				<tr>
+					<td class="grid-cell">
+						<div class="cell-title">
+							Aproveitamento dos Treinamentos
+						</div>
+						<div id="desempenho" class="graph" ></div>
+					</td>
+					<td class="grid-cell">
+						<div class="cell-title">
+							Custo por Tipo de Despesa
+						</div>
+						<div id="custoLegenda"></div>
+						<div id="custo" class="graph"></div>
+					</td>
+				</tr>	
+				<tr>
+					<td class="grid-cell" >
+						<div class="cell-title">
+							Custo por Curso
+						</div>
+						<div id="custoPorCursoLegenda"></div>
+						<div id="custoPorCurso" class="graph"></div>
+					</td>
+				</tr>	
+			</tbody>
+		</table>
+	</@ww.div>
+	</div></div>
+	<div id="box">
+		<div id="pieBox"></div>
+		<div id="pieLegendBox"></div>
+
+		<div style="clear: both"></div>
+	</div>
 </body>
 </html>

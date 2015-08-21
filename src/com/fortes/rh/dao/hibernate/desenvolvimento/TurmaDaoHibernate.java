@@ -585,7 +585,8 @@ public class TurmaDaoHibernate extends GenericDaoHibernate<Turma> implements Tur
         criteria.setProjection(Projections.sum("t.custo"));
         criteria.add(Expression.ge("t.dataPrevIni", dataIni));
         criteria.add(Expression.le("t.dataPrevFim", dataFim));
-        criteria.add(Expression.in("t.empresa.id", empresaIds));
+        if(LongUtil.arrayIsNotEmpty(empresaIds))
+        	criteria.add(Expression.in("t.empresa.id", empresaIds));
         criteria.add(Subqueries.propertyNotIn("t.id", subQuery));
         
         if (LongUtil.arrayIsNotEmpty(cursoIds))

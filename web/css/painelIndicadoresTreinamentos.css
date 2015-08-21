@@ -1,6 +1,4 @@
 #gogDiv {
-	left: 50%;
-	margin-left: -500px;
 	position: relative;
 	width: 1000px;
 }
@@ -10,10 +8,10 @@
 	height: 15px;
 }
 #gogDiv dl {
-	width: 480px;
+	width: 460px;
 	margin: 0;
 	margin-top: -10px;
-	padding: 5px;
+	padding: 10px;
 }
 #gogDiv dt {
 	margin-top: 10px;
@@ -58,4 +56,14 @@
 }
 .gogDivFormularioX .grafico {
 	float: left;
+}
+
+.grid .graph {
+	float: left !important;
+	width: 454px !important;
+	padding: 5px !important;
+}
+
+.grid .graph .tickLabel {
+	margin-top: 4px !important; 
 }

@@ -93,7 +93,7 @@
 		</#if>
 
 		<script type="text/javascript">
-			$(function () {
+			$(function() {
 			
 				BrowserDetect.init( function ( informacaoesDesteBrowser ){
 				    if(informacaoesDesteBrowser.name == 'Explorer')

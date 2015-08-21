@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.desenvolvimento;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +31,7 @@ import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.webwork.ServletActionContext;
+import com.opensymphony.xwork.Action;
 
 public class IndicadorTreinamentosListAction extends MyActionSupportList
 {
@@ -46,7 +48,11 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	private JFreeChart chart;
 	private IndicadorTreinamento indicadorTreinamento = new IndicadorTreinamento();
-
+	
+	private Long cursoId;
+	private Date dataIni;
+	private Date dataFim;
+	
 	//dados dos graficos
 	private Integer qtdAprovados;
 	private Integer qtdReprovados;
@@ -62,6 +68,8 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	private String grfFrequenciaInscritos="";
 	private String grfDesempenho="";
 	private String grfCusto="";
+	private String grfCustoPorCurso="";
+	private String json="";
 
 	private Long[] empresasCheck;
 	private Collection<CheckBox> empresasCheckList = new ArrayList<CheckBox>();
@@ -102,6 +110,7 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		prepareGraficoCumprimentoPlanoTreinamento();
 		prepareGraficoDesempenho();
 		prepareGraficoCustoCursoPorTipoDespesa();
+		prepareGraficoCustoCursoPorCurso();
 
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setHeader("Pragma", "no-cache");
@@ -185,6 +194,34 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 		grfCusto = StringUtil.toJSON(grfCustoTipoDespesa, null);
 	}
 	
+	private void prepareGraficoCustoCursoPorCurso()
+	{
+		Collection<DataGrafico> grfCustoCurso = new ArrayList<DataGrafico>();
+		
+		Collection<Curso> cursos = cursoManager.somaDespesasPorCurso(indicadorTreinamento.getDataIni(), indicadorTreinamento.getDataFim(), empresasCheck, cursosCheck);
+		for (Curso curso : cursos) {
+			grfCustoCurso.add(new DataGrafico(curso.getId(), curso.getNome(), curso.getTotalDespesas() , ""));
+		}
+		
+		grfCustoPorCurso = StringUtil.toJSON(grfCustoCurso, null);
+	}
+	
+	public String grfTipoDespesaPorCurso() throws Exception
+	{
+		Collection<DataGrafico> grfCustoTipoDespesa = new ArrayList<DataGrafico>();
+
+		Double custosNaoDetalhados = turmaManager.somaCustosNaoDetalhados(dataIni, dataFim, empresasCheck, new Long[]{cursoId});
+		grfCustoTipoDespesa.add(new DataGrafico(null, "Não detalhado", custosNaoDetalhados, ""));
+		
+		Collection<TipoDespesa> tipoDespesas = turmaTipoDespesaManager.somaDespesasPorTipo(dataIni, dataFim, empresasCheck, new Long[]{cursoId});
+		for (TipoDespesa tipoDespesa : tipoDespesas)
+			grfCustoTipoDespesa.add(new DataGrafico(null, tipoDespesa.getDescricao(), tipoDespesa.getTotalDespesas(), ""));
+			
+		json = StringUtil.toJSON(grfCustoTipoDespesa, null);
+		
+		return Action.SUCCESS;
+	}
+	
 	public void setCursoManager(CursoManager cursoManager)
 	{
 		this.cursoManager = cursoManager;
@@ -242,6 +279,18 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	public String getGrfCusto() {
 		return grfCusto;
+	}
+	
+	public String getGrfCustoPorCurso() {
+		return grfCustoPorCurso;
+	}
+	
+	public String getJson() {
+		return json;
+	}
+
+	public void setJson(String json) {
+		this.json = json;
 	}
 
 	public void setTurmaTipoDespesaManager(TurmaTipoDespesaManager turmaTipoDespesaManager) {
@@ -326,5 +375,17 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 
 	public void setEstabelecimentosCheck(Long[] estabelecimentosCheck) {
 		this.estabelecimentosCheck = estabelecimentosCheck;
+	}
+
+	public void setCursoId(Long cursoId) {
+		this.cursoId = cursoId;
+	}
+
+	public void setDataIni(Date dataIni) {
+		this.dataIni = dataIni;
+	}
+
+	public void setDataFim(Date dataFim) {
+		this.dataFim = dataFim;
 	}
 }

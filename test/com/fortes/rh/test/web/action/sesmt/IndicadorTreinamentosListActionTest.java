@@ -99,6 +99,7 @@ public class IndicadorTreinamentosListActionTest extends MockObjectTestCase
 		turmaTipoDespesaManager.expects(once()).method("somaDespesasPorTipo").with(ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}), eq(null)).will(returnValue(new ArrayList<TipoDespesa>()));
 		cursoManager.expects(once()).method("countTreinamentos").with(new Constraint[] {ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}), eq(null), ANYTHING}).will(returnValue(new Integer(3)));
 		cursoManager.expects(once()).method("countTreinamentos").with(new Constraint[] {ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}), eq(null), ANYTHING}).will(returnValue(new Integer(2)));
+		cursoManager.expects(once()).method("somaDespesasPorCurso").with(new Constraint[] {ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}), eq(null)}).will(returnValue(new ArrayList<Curso>()));
 		estabelecimentoManager.expects(once()).method("populaCheckBox").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
 		
 		HashMap<String, Integer> resultados = new HashMap<String, Integer>();
@@ -107,6 +108,5 @@ public class IndicadorTreinamentosListActionTest extends MockObjectTestCase
 		colaboradorTurmaManager.expects(once()).method("getResultado").with(new Constraint[] { ANYTHING, ANYTHING, eq(new Long[]{empresa.getId()}), eq(null), eq(null), eq(null) }).will(returnValue(resultados));
 		
 		assertEquals("success", action.list());
-		
 	}
 }

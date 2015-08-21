@@ -64,6 +64,9 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 	
 	@Transient
 	private String certificacaoNome;
+	
+	@Transient
+	private Double totalDespesas;
 
 	public Curso()
 	{
@@ -319,5 +322,13 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 	
 	public String getCertificacaoNome() {
 		return this.certificacaoNome == null ? "" : this.certificacaoNome;
+	}
+
+	public Double getTotalDespesas() {
+		return totalDespesas;
+	}
+
+	public void setTotalDespesas(Double totalDespesas) {
+		this.totalDespesas = totalDespesas;
 	}
 }

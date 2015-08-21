@@ -240,6 +240,11 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 	{
 		return getDao().existeAvaliacaoAlunoRespondida(cursoId, TipoAvaliacaoCurso.AVALIACAO);
 	}
+	
+	public Collection<Curso> somaDespesasPorCurso(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds) 
+	{
+		return getDao().somaDespesasPorCurso(dataIni, dataFim, empresaIds, cursoIds);
+	}
 
 	public void clonar(Long id, Long empresaSistemaId, Long[] empresasIds) throws Exception {
 		if (empresasIds != null && empresasIds.length > 0)
