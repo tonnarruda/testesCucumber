@@ -53,4 +53,6 @@ public interface QuestionarioManager extends GenericManager<Questionario>
 	public void enviaEmailNaoRespondida(Empresa empresa, Long questionarioId) throws Exception;
 	public Collection<PerguntaFichaMedica> montaPerguntasComRespostas(Collection<Pergunta> perguntas, Collection<ColaboradorResposta> colaboradorRespostas, boolean exibeNumeroQuestao, boolean quebraLinha);
 	public Collection<Questionario> findQuestionarioNaoLiberados(Date time);
+	public PerguntaManager getPerguntaManager();
+	public RespostaManager getRespostaManager();
 }

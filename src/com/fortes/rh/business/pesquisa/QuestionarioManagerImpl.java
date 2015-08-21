@@ -218,13 +218,21 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
     {
         this.perguntaManager = perguntaManager;
     }
+    
+    public PerguntaManager getPerguntaManager() {
+		return perguntaManager;
+	}
 
-    public void setRespostaManager(RespostaManager respostaManager)
+	public void setRespostaManager(RespostaManager respostaManager)
     {
         this.respostaManager = respostaManager;
     }
 
-    public void enviaLembreteDeQuestionarioNaoLiberado()
+    public RespostaManager getRespostaManager() {
+		return respostaManager;
+	}
+
+	public void enviaLembreteDeQuestionarioNaoLiberado()
     {
     	gerenciadorComunicacaoManager.enviaLembreteDeQuestionarioNaoLiberado();
     }

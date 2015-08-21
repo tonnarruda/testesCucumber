@@ -14,11 +14,15 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
+import com.fortes.rh.model.acesso.Usuario;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -46,11 +50,12 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	
 	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private ColaboradorRespostaManager colaboradorRespostaManager;
-	private ColaboradorManager colaboradorManager;
-	private QuestionarioManager questionarioManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
-	private EstabelecimentoManager estabelecimentoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private EstabelecimentoManager estabelecimentoManager;
+	private QuestionarioManager questionarioManager;
+	private ColaboradorManager colaboradorManager;
 	private AvaliacaoManager avaliacaoManager;
 
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
@@ -197,9 +202,16 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	public String delete() throws Exception
 	{
 		//TODO: Este metodo tambem remove o "colaboradorQuestionario" relacionado. O ideal seria
-		//      que o "colaboradorQuestionarioManager" removesse as respostas e nao o contrario. 
-		colaboradorRespostaManager.removeFicha(colaboradorQuestionario.getId());
+		//      que o "colaboradorQuestionarioManager" removesse as respostas e nao o contrario.
 		
+		ColaboradorQuestionario colaboradorQuestionarioTemp = colaboradorQuestionarioManager.findById(colaboradorQuestionario.getId());
+		
+		colaboradorRespostaManager.removeFicha(colaboradorQuestionario.getId());
+				
+		if(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA == colaboradorQuestionarioTemp.getAvaliacao().getTipoModeloAvaliacao()){
+			gerenciadorComunicacaoManager.enviarMensagemAoExluirRespostasAvaliacaoPeriodoDeExperiencia(colaboradorQuestionarioTemp, getUsuarioLogado(), colaboradorQuestionarioTemp.getColaborador().getEmpresa());
+		
+		}
 		return Action.SUCCESS;
 	}
 	
@@ -571,5 +583,18 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 
 	public void setAgruparPorAspecto(boolean agruparPorAspecto) {
 		this.agruparPorAspecto = agruparPorAspecto;
+	}
+
+	public ParametrosDoSistemaManager getParametrosDoSistemaManager() {
+		return parametrosDoSistemaManager;
+	}
+
+	public GerenciadorComunicacaoManager getGerenciadorComunicacaoManager() {
+		return gerenciadorComunicacaoManager;
+	}
+
+	public void setGerenciadorComunicacaoManager(
+			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 }

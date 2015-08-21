@@ -84,14 +84,17 @@
 					<#break/>
 				</#if> 
 			</#list>
-			
-			<textarea name="perguntas[${i}].colaboradorRespostas[0].comentario" class="opcaoResposta${pergunta.id}" style="height:75px;width:730px;overflow-y:scroll">${valueResposta}</textarea><br>
+			<#if colaboradorQuestionario?exists && colaboradorQuestionario.avaliacao?exists && colaboradorQuestionario.avaliacao.tipoModeloAvaliacao=="A" && !colaboradorQuestionario.avaliacaoDesempenho?exists && valueResposta == "" >
+				<ul style="color: #9F6000;background-color: #FEEFB3;width: 155px;margin: -10px 0 2px 0;">
+					<li style="text-align: center;">Pergunta não respondida.</li>
+				</ul>
+			</#if>
+			<textarea name="perguntas[${i}].colaboradorRespostas[0].comentario" class="opcaoResposta${pergunta.id} respostaSubjetiva" style="height:75px;width:730px;overflow-y:scroll">${valueResposta}</textarea><br>
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.id" />
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.tipo" value="${pergunta.tipo}"/>
-			
 		</#if>
 		
-		<#if pergunta.tipo == tipoPergunta.nota >
+		<#if pergunta.tipo == tipoPergunta.nota>
 		
 			<#if perguntas[i].colaboradorRespostas[0].comentario?exists>
 				<#assign valueComentario = perguntas[i].colaboradorRespostas[0].comentario />

@@ -36,6 +36,45 @@
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/perguntasAvaliacao.js?version=${versao}"/>'></script>
 	
+	<script type="text/javascript">
+		function validaRespostasSubjetivas(){
+			var possuiResposta = true ;
+			
+			var respostasSubjetivas = $(".respostaSubjetiva");
+			
+			$(respostasSubjetivas).each(function (i, resposta) {
+				if($(resposta).val() == "")
+					possuiResposta = false;
+			});
+			
+			if(!possuiResposta){
+				$(".popup").dialog({title: 'Existem perguntas subjetivas sem respostas.', modal: true,height: 150,width: 400,
+									buttons: [
+									    {
+									        text: "Sim",
+									        click: function() { document.form.submit(); }
+									    },
+									    {
+									        text: "Não",
+									        click: function() { $(this).dialog("close"); }
+									    }
+									] 
+				});
+			}
+			else{
+				document.form.submit();
+			}
+		}
+
+		function validaForm(){
+			var validarRespostas = validaRespostas(new Array('data'), new Array('data'), false, true, false, false, true);
+			var validarFormulario = validaFormulario('form', new Array('data'), new Array('data'), true)
+			
+			if(validarRespostas && validarFormulario)
+				validaRespostasSubjetivas();
+		}
+	</script>
+	
 </head>
 <body>
 	<@ww.actionerror />
@@ -49,6 +88,9 @@
 	
 	<@ww.div cssClass="${class}" cssStyle="width: 500px;">
 		<#if colaborador?exists && colaborador.id?exists>
+			<#if colaboradorQuestionario?exists && colaboradorQuestionario.avaliador?exists && colaboradorQuestionario.avaliador.nome?exists>
+				<h4>Avaliador: ${colaboradorQuestionario.avaliador.nome}</h4>
+			</#if>
 			<h4>Colaborador: ${colaborador.nome}</h4>
 		
 			<@ww.form name="formAvaliacao" action="prepareInsertAvaliacaoExperiencia.action" method="POST">
@@ -91,7 +133,7 @@
 
 		<div class="buttonGroup">
 			<#if !preview>
-				<button onclick="validaRespostas(new Array('data'), new Array('data'), true, true, false, false, true);" class="btnGravar"></button>
+				<button onclick="validaForm();" class="btnGravar"></button>
 			</#if>
 	<#else>
 		<div class="buttonGroup">
@@ -108,5 +150,10 @@
 				<button class="btnCancelar" onclick="window.location='list.action?solicitacao.id=${solicitacao.id}'"></button>		
 			</#if>
 		</div> <!-- Fecha div aberta dentro do if/else -->
+		
+
+		<div class='popup' style="display:none">
+			Deseja realmente gravar o questionário sem responder todas as perguntas?
+		</div>
 </body>
 </html>

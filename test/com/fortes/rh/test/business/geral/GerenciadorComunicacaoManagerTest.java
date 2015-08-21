@@ -840,6 +840,55 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 assertNull(exception);
 	 }
 
+	 public void testEnviaMensagemAoExluirRespostasAvaliacaoPeriodoDeExperiencia() throws Exception
+	 {
+		 Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		 empresa.setNome("Empresa I");
+
+		 Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		 colaborador.setNome("Elivaldo");
+		 colaborador.setNomeComercial("Eli");
+		 colaborador.setEmailColaborador("email@gmail.com");
+		 colaborador.setEmpresa(empresa);
+		 
+		 Colaborador avaliado = ColaboradorFactory.getEntity(1L);
+		 avaliado.setNome("Cristovão");
+		 avaliado.setNomeComercial("Cris");
+		 avaliado.setEmailColaborador("email@gmail.com");
+		 avaliado.setEmpresa(empresa);
+
+		 Usuario usuario = UsuarioFactory.getEntity();
+		 usuario.setColaborador(colaborador);
+		 Collection<Usuario> usuarios = Arrays.asList(usuario);
+
+		 Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		 
+		 ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		 colaboradorQuestionario.setColaborador(avaliado);
+		 colaboradorQuestionario.setAvaliacao(avaliacao);
+		 
+		 GerenciadorComunicacao gerenciadorComunicacaoCaixaDeMensagem = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.CAIXA_MENSAGEM, EnviarPara.USUARIOS);
+		 GerenciadorComunicacao gerenciadorComunicacaoEmail = GerenciadorComunicacaoFactory.getEntity(empresa, MeioComunicacao.EMAIL, EnviarPara.USUARIOS);
+		 gerenciadorComunicacaoEmail.setUsuarios(usuarios);
+		 
+		 Collection<GerenciadorComunicacao> gerenciadorComunicacaos = Arrays.asList(gerenciadorComunicacaoCaixaDeMensagem, gerenciadorComunicacaoEmail);
+
+		 gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA.getId()),eq(empresa.getId())).will(returnValue(gerenciadorComunicacaos));
+		 usuarioEmpresaManager.expects(once()).method("findUsuariosAtivo").withAnyArguments();
+		 usuarioMensagemManager.expects(once()).method("saveMensagemAndUsuarioMensagem").withAnyArguments().isVoid();
+		 colaboradorManager.expects(once()).method("findEmailsByUsuarios").with(ANYTHING);
+		 mail.expects(atLeastOnce()).method("send").withAnyArguments();
+		 
+		 Exception exception = null;
+		 try {
+			 gerenciadorComunicacaoManager.enviarMensagemAoExluirRespostasAvaliacaoPeriodoDeExperiencia(colaboradorQuestionario, UsuarioFactory.getEntity(), empresa);
+		 } catch (Exception e) {
+			 exception = e;
+		 }
+		 
+		 assertNull(exception);
+	 }
+	 
 	 public void testEnviaMensagemCancelamentoSituacao() throws Exception
 	 {
 		 Empresa empresa = EmpresaFactory.getEmpresa(1L);

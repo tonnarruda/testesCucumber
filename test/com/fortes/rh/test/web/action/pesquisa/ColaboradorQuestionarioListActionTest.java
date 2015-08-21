@@ -15,6 +15,7 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
+import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -110,7 +111,9 @@ public class ColaboradorQuestionarioListActionTest extends MockObjectTestCase
     {
     	ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(1L);
     	colaboradorQuestionarioAction.setColaboradorQuestionario(colaboradorQuestionario);
+    	colaboradorQuestionario.setAvaliacao(new Avaliacao());
 
+    	colaboradorQuestionarioManager.expects(once()).method("findById").with(eq(colaboradorQuestionario.getId())).will(returnValue(colaboradorQuestionario));
     	colaboradorRespostaManager.expects(once()).method("removeFicha").with(eq(colaboradorQuestionario.getId()));
 
     	assertEquals("success", colaboradorQuestionarioAction.delete());

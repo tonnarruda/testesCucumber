@@ -665,7 +665,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	{
 		this.avaliacaoManager = avaliacaoManager;
 	}
-	
+
 	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager)
 	{
 		this.historicoColaboradorManager = historicoColaboradorManager;

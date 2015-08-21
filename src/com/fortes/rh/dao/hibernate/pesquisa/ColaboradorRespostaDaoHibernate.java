@@ -531,6 +531,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		cr.add(Projections.property("p.notaMaxima"), "projectionPerguntaNotaMaxima");
 		cr.add(Projections.property("p.peso"), "projectionPerguntaPeso");
 		cr.add(Projections.property("r.peso"), "projectionRespostaPeso");
+		cr.add(Projections.property("r.texto"),"projectionRespostaTexto");
 
 		criteria.setProjection(cr);
 

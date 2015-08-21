@@ -696,7 +696,49 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			}
 		}
 	}
-	
+
+	public void enviarMensagemAoExluirRespostasAvaliacaoPeriodoDeExperiencia(ColaboradorQuestionario colaboradorQuestionario, Usuario usuario, Empresa empresa) 
+	{
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.RESPONDER_AVALIACAO_PERIODO_EXPERIENCIA.getId(), empresa.getId());
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
+		{
+			try 
+			{
+				Collection<UsuarioEmpresa> usuariosConfigurados = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);
+
+				if(gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId()))
+				{	
+					StringBuilder mensagem = new StringBuilder();
+					mensagem.append("As respostas da avaliação do período de experiência do colaborador ")
+								.append(colaboradorQuestionario.getColaborador().getNomeMaisNomeComercial())
+								.append(" foram excluídas pelo usuário ").append(usuario.getNome());
+					
+					mensagem.append("\n\nAvaliação do Período de Experiência: " + colaboradorQuestionario.getAvaliacao().getTitulo());
+					mensagem.append("\nColaborador Avaliado: " + colaboradorQuestionario.getColaborador().getNomeMaisNomeComercial());
+					
+					usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), usuario.getNome(), null, usuariosConfigurados, null, TipoMensagem.AVALIACAO_DESEMPENHO, null);
+				}
+				else
+				{	
+					StringBuilder mensagem = new StringBuilder();
+					mensagem.append("As respostas da avaliação do período de experiência do colaborador ")
+								.append(colaboradorQuestionario.getColaborador().getNomeMaisNomeComercial())
+								.append(" foram excluídas pelo usuário ").append(usuario.getNome());
+					
+					mensagem.append("<br/><br/>Avaliação do Período de Experiência: " + colaboradorQuestionario.getAvaliacao().getTitulo());
+					mensagem.append("<br/>Colaborador Avaliado: " + colaboradorQuestionario.getColaborador().getNomeMaisNomeComercial());
+					
+					ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
+					String[] emails = colaboradorManager.findEmailsByUsuarios(LongUtil.collectionToCollectionLong(usuariosConfigurados));
+					
+					mail.send(empresa, "[RH] - Exclusão das resposta da avaliação do período de experiência, do colaborador -" + colaboradorQuestionario.getColaborador().getNomeMaisNomeComercial(), mensagem.toString(), null, emails);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public void enviaAvisoOcorrenciaCadastrada(ColaboradorOcorrencia colaboradorOcorrencia, Long empresaId) 
 	{
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBean("colaboradorManager");
