@@ -526,13 +526,22 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		return  StringUtil.converteCollectionToString(query.list());
 	}
 
-	public Collection<FaixaSalarial> colaboradoresPorCargoFaixa(boolean isAreaOrganizacional, Long... empresasIds) {
+	public Collection<FaixaSalarial> colaboradoresPorCargoFaixa(boolean isEstabelecimento, boolean isAreaOrganizacional, Long... empresasIds) {
 		
 		StringBuilder hql = new StringBuilder();
 		
-		if (isAreaOrganizacional) {
+		if (isAreaOrganizacional && !isEstabelecimento) {
 			hql.append("select new FaixaSalarial(cg.nome, fs.nome, cast(count(c.id) as integer), ao.nome )");
 			hql.append("from HistoricoColaborador hc ");
+			hql.append("inner join hc.areaOrganizacional as ao ");
+		} else if (!isAreaOrganizacional && isEstabelecimento) {
+			hql.append("select new FaixaSalarial(cg.nome, fs.nome, e.nome, cast(count(c.id) as integer) )");
+			hql.append("from HistoricoColaborador hc ");
+			hql.append("inner join hc.estabelecimento as e ");
+		} else if (isAreaOrganizacional && isEstabelecimento) {
+			hql.append("select new FaixaSalarial(cg.nome, fs.nome, cast(count(c.id) as integer), e.nome, ao.nome )");
+			hql.append("from HistoricoColaborador hc ");
+			hql.append("inner join hc.estabelecimento as e ");
 			hql.append("inner join hc.areaOrganizacional as ao ");
 		} else {
 			hql.append("select new FaixaSalarial(cg.nome, fs.nome, cast(count(c.id) as integer))");
@@ -552,8 +561,12 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		
 		hql.append("and c.desligado = false ");
 		
-		if (isAreaOrganizacional) {
+		if (isAreaOrganizacional && !isEstabelecimento) {
 			hql.append("group by cg.nome, fs.nome, ao.nome ");
+		} else if (!isAreaOrganizacional && isEstabelecimento) {
+			hql.append("group by cg.nome, fs.nome, e.nome ");
+		} else if (isAreaOrganizacional && isEstabelecimento) {
+			hql.append("group by cg.nome, fs.nome, e.nome, ao.nome ");
 		} else {
 			hql.append("group by cg.nome, fs.nome ");
 		}

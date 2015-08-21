@@ -11,10 +11,12 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
 	<parameter name="EXIBIRAREAORGANIZACIONAL" class="java.lang.Boolean" isForPrompting="false"/>
+	<parameter name="EXIBIRESTABELECIMENTO" class="java.lang.Boolean"/>
 	<field name="faixaSalarial.descricao" class="java.lang.String"/>
 	<field name="colaborador.nome" class="java.lang.String"/>
 	<field name="faixaSalarial.id" class="java.lang.Long"/>
 	<field name="areaOrganizacional.nome" class="java.lang.String"/>
+	<field name="estabelecimento.nome" class="java.lang.String"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="grpCargo" incrementType="Group" incrementGroup="grpCargo" calculation="Count">
 		<variableExpression><![CDATA[$F{faixaSalarial.id}]]></variableExpression>
 	</variable>
@@ -44,7 +46,7 @@
 				<elementGroup>
 					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 						<reportElement key="area-organizacional" x="52" y="1" width="258" height="12" uuid="cc7ee4ef-c9a0-4537-914d-862025346f0c">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRAREAORGANIZACIONAL}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRAREAORGANIZACIONAL}.booleanValue()) && new Boolean (!$P{EXIBIRESTABELECIMENTO}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -59,7 +61,7 @@
 					</textField>
 					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 						<reportElement key="area-organizacional" x="313" y="1" width="222" height="12" uuid="053aae5a-5235-4935-b259-16c3cf390e73">
-							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRAREAORGANIZACIONAL}.booleanValue())]]></printWhenExpression>
+							<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRAREAORGANIZACIONAL}.booleanValue()) && new Boolean (!$P{EXIBIRESTABELECIMENTO}.booleanValue())]]></printWhenExpression>
 						</reportElement>
 						<box>
 							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -75,7 +77,7 @@
 					<elementGroup>
 						<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 							<reportElement key="sem-area" x="52" y="1" width="483" height="12" uuid="8ae78ba6-13a8-47d9-b5ca-51d58514b704">
-								<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRAREAORGANIZACIONAL}.booleanValue())]]></printWhenExpression>
+								<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRAREAORGANIZACIONAL}.booleanValue()) && new Boolean (!$P{EXIBIRESTABELECIMENTO}.booleanValue())]]></printWhenExpression>
 							</reportElement>
 							<box>
 								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -89,6 +91,38 @@
 							<textFieldExpression><![CDATA[$F{faixaSalarial.descricao}]]></textFieldExpression>
 						</textField>
 					</elementGroup>
+				</elementGroup>
+				<elementGroup>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement key="area-organizacional" x="52" y="1" width="258" height="12" uuid="bca63372-8c44-4823-a924-fe0b2c95610c">
+							<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRAREAORGANIZACIONAL}.booleanValue()) && new Boolean ($P{EXIBIRESTABELECIMENTO}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textElement>
+							<font size="8" isBold="false" pdfFontName="Helvetica"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{faixaSalarial.descricao}]]></textFieldExpression>
+					</textField>
+					<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+						<reportElement key="estabelecimento" x="313" y="1" width="222" height="12" isRemoveLineWhenBlank="true" uuid="7372fb44-d704-484f-b30a-23d6980f32bb">
+							<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRAREAORGANIZACIONAL}.booleanValue()) && new Boolean ($P{EXIBIRESTABELECIMENTO}.booleanValue())]]></printWhenExpression>
+						</reportElement>
+						<box>
+							<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						</box>
+						<textElement>
+							<font size="8" isBold="false" pdfFontName="Helvetica"/>
+						</textElement>
+						<textFieldExpression><![CDATA[$F{estabelecimento.nome}]]></textFieldExpression>
+					</textField>
 				</elementGroup>
 			</band>
 		</groupFooter>
@@ -128,7 +162,7 @@
 			<elementGroup>
 				<staticText>
 					<reportElement key="staticText-1" x="52" y="1" width="258" height="12" uuid="dc89d531-7dc1-4d6a-be21-76438caa4b6a">
-						<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRAREAORGANIZACIONAL}.booleanValue())]]></printWhenExpression>
+						<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRAREAORGANIZACIONAL}.booleanValue()) && new Boolean (!$P{EXIBIRESTABELECIMENTO}.booleanValue())]]></printWhenExpression>
 					</reportElement>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -143,7 +177,7 @@
 				</staticText>
 				<staticText>
 					<reportElement mode="Transparent" x="313" y="1" width="222" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="d1255fdb-cabd-4671-b0cc-9b90c456f1f8">
-						<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRAREAORGANIZACIONAL}.booleanValue())]]></printWhenExpression>
+						<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRAREAORGANIZACIONAL}.booleanValue()) && new Boolean (!$P{EXIBIRESTABELECIMENTO}.booleanValue())]]></printWhenExpression>
 					</reportElement>
 					<box>
 						<pen lineStyle="Solid"/>
@@ -162,7 +196,7 @@
 			<elementGroup>
 				<staticText>
 					<reportElement key="sem-area" x="52" y="1" width="483" height="12" uuid="58fa8af5-a5fa-4719-aa39-a52611a67e75">
-						<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRAREAORGANIZACIONAL}.booleanValue())]]></printWhenExpression>
+						<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRAREAORGANIZACIONAL}.booleanValue()) && new Boolean (!$P{EXIBIRESTABELECIMENTO}.booleanValue())]]></printWhenExpression>
 					</reportElement>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -174,6 +208,40 @@
 						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 					</textElement>
 					<text><![CDATA[Cargo / Faixa Salarial]]></text>
+				</staticText>
+			</elementGroup>
+			<elementGroup>
+				<staticText>
+					<reportElement key="staticText-1" x="52" y="1" width="258" height="12" uuid="e9a35892-584b-4313-8def-d32a30b4d6a6">
+						<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRAREAORGANIZACIONAL}.booleanValue()) && new Boolean ($P{EXIBIRESTABELECIMENTO}.booleanValue())]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+					</textElement>
+					<text><![CDATA[Cargo / Faixa Salarial]]></text>
+				</staticText>
+				<staticText>
+					<reportElement key="" mode="Transparent" x="313" y="1" width="222" height="12" forecolor="#000000" backcolor="#FFFFFF" uuid="6b66205b-f70c-49aa-9071-735d6d8ec99a">
+						<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRAREAORGANIZACIONAL}.booleanValue()) && new Boolean ($P{EXIBIRESTABELECIMENTO}.booleanValue())]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<pen lineStyle="Solid"/>
+						<topPen lineStyle="Solid"/>
+						<leftPen lineStyle="Solid"/>
+						<bottomPen lineWidth="0.5" lineStyle="Solid"/>
+						<rightPen lineStyle="Solid"/>
+					</box>
+					<textElement textAlignment="Left" verticalAlignment="Top" rotation="None" markup="none">
+						<font fontName="SansSerif" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+						<paragraph lineSpacing="Single"/>
+					</textElement>
+					<text><![CDATA[Estabelecimento]]></text>
 				</staticText>
 			</elementGroup>
 		</band>

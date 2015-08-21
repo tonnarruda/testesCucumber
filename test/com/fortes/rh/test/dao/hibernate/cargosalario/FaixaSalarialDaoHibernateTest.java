@@ -17,6 +17,7 @@ import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
@@ -33,6 +34,7 @@ import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
@@ -46,6 +48,7 @@ import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
+import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<FaixaSalarial>
@@ -56,6 +59,7 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
     private IndiceHistoricoDao indiceHistoricoDao;
     private CargoDao cargoDao;
     private EmpresaDao empresaDao;
+    private EstabelecimentoDao estabelecimentoDao;
     private GrupoACDao grupoACDao;
     private HabilidadeDao habilidadeDao;
     private NivelCompetenciaDao nivelCompetenciaDao;
@@ -63,11 +67,6 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
     private ColaboradorDao colaboradorDao;
     private HistoricoColaboradorDao historicoColaboradorDao;
     private AreaOrganizacionalDao areaOrganizacionalDao;
-
-    public void setEmpresaDao(EmpresaDao empresaDao)
-    {
-        this.empresaDao = empresaDao;
-    }
 
     public FaixaSalarial getEntity()
     {
@@ -630,6 +629,9 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
 		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacionalDao.save(area);
 		
@@ -654,6 +656,7 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		historicoColaborador1.setData(DateUtil.criarDataMesAno(01, 01, 2014));
 		historicoColaborador1.setColaborador(colaborador1);
 		historicoColaborador1.setFaixaSalarial(faixaSalarial1);
+		historicoColaborador1.setEstabelecimento(estabelecimento);
 		historicoColaborador1.setAreaOrganizacional(area);
 		historicoColaboradorDao.save(historicoColaborador1);
 		
@@ -664,6 +667,7 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2014));
 		historicoColaborador2.setColaborador(colaborador2);
 		historicoColaborador2.setFaixaSalarial(faixaSalarial2);
+		historicoColaborador2.setEstabelecimento(estabelecimento);
 		historicoColaborador2.setAreaOrganizacional(area);
 		historicoColaboradorDao.save(historicoColaborador2);
 		
@@ -674,17 +678,23 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		historicoColaborador3.setData(DateUtil.criarDataMesAno(01, 01, 2014));
 		historicoColaborador3.setColaborador(colaborador3);
 		historicoColaborador3.setFaixaSalarial(faixaSalarial2);
+		historicoColaborador3.setEstabelecimento(estabelecimento);
 		historicoColaborador3.setAreaOrganizacional(area);
 		historicoColaboradorDao.save(historicoColaborador3);
 		
-		Collection<FaixaSalarial> resultado = faixaSalarialDao.colaboradoresPorCargoFaixa(false, new Long[]{empresa.getId()});
+		Collection<FaixaSalarial> resultado = faixaSalarialDao.colaboradoresPorCargoFaixa(false, false, new Long[]{empresa.getId()});
 		
 		assertEquals("Empresa não nula", 2, resultado.size());
 		assertEquals("Empresa não nula", 1, ((FaixaSalarial) resultado.toArray()[0]).getQtdColaboradores());
 		assertEquals("Empresa não nula", 2, ((FaixaSalarial) resultado.toArray()[1]).getQtdColaboradores());
 
-		resultado = faixaSalarialDao.colaboradoresPorCargoFaixa(true, null);
+		resultado = faixaSalarialDao.colaboradoresPorCargoFaixa(false, true, new Long[]{});
+		assertTrue("Empresa nula(todas)", resultado.size() >= 2);
 		
+		resultado = faixaSalarialDao.colaboradoresPorCargoFaixa(true, false, new Long[]{});
+		assertTrue("Empresa nula(todas)", resultado.size() >= 2);
+		
+		resultado = faixaSalarialDao.colaboradoresPorCargoFaixa(true, true, new Long[]{});
 		assertTrue("Empresa nula(todas)", resultado.size() >= 2);
 	}
 
@@ -748,4 +758,12 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
 		this.areaOrganizacionalDao = areaOrganizacionalDao;
 	}
+
+	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
+		this.estabelecimentoDao = estabelecimentoDao;
+	}
+	
+	public void setEmpresaDao(EmpresaDao empresaDao){
+        this.empresaDao = empresaDao;
+    }
 }

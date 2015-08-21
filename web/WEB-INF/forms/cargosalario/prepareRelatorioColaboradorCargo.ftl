@@ -59,6 +59,13 @@
 			
 			$('#cargosVinculadosAreas').attr('checked', true);;		
 		});
+		
+		function exibirBtnRelatorio(){
+			var exibirBtn = $('#exibirEstabelecimento').is(':checked') && $('#exibirAreaOrganizacional').is(':checked');
+			$('#btnRelatorioPDF').toggleDisabled(exibirBtn);
+			$('#btnRelatorioPDF').toggleClass('btnRelatorio', !exibirBtn);
+			$('#btnRelatorioPDF').toggleClass('btnRelatorioDesabilitado', exibirBtn);
+		}
 	</script>
 </head>
 <body>
@@ -124,12 +131,14 @@
 			<@ww.checkbox label="Exibir Salário" name="exibirSalario" id="exibirSalario" labelPosition="left" onchange="desabilitaOutroCheck('exibirSalario', 'resumido')"/>
 		</@authz.authorize>
 
-		<@ww.checkbox label="Exibir área organizacional" name="exibirAreaOrganizacional" id="exibirAreaOrganizacional" labelPosition="left"/>
+		<@ww.checkbox label="Exibir estabelecimento" name="exibirEstabelecimento" id="exibirEstabelecimento" labelPosition="left" onchange="exibirBtnRelatorio();" />
+		
+		<@ww.checkbox label="Exibir área organizacional" name="exibirAreaOrganizacional" id="exibirAreaOrganizacional" labelPosition="left" onchange="exibirBtnRelatorio();" />
 		
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button onclick="return submeterAction('relatorioColaboradorCargo.action');" class="btnRelatorio" ></button>
+		<button id='btnRelatorioPDF' onclick="return submeterAction('relatorioColaboradorCargo.action');" class="btnRelatorio" ></button>
 		<button onclick="return submeterAction('relatorioColaboradorCargoXLS.action');" class="btnRelatorioExportar"></button>
 	</div>
 </body>

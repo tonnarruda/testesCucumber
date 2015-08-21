@@ -66,6 +66,8 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	private Collection<Competencia> competencias;
 	@Transient
 	private String areaOrganizacionalNome;
+	@Transient
+	private String projectionEstabelecimentoNome;
 
 	public FaixaSalarial()
 	{
@@ -114,6 +116,23 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		setNome(faixaNome);
 		setQtdColaboradores(qtdColaboradores);
 		setAreaOrganizacionalNome(areaOrganizacionalNome);
+	}
+	
+	public FaixaSalarial (String cargoNome, String faixaNome, String projectionEstabelecimentoNome, Integer qtdColaboradores)	{
+		setCargo(new Cargo());
+		getCargo().setNome(cargoNome);
+		setNome(faixaNome);
+		setQtdColaboradores(qtdColaboradores);
+		setProjectionEstabelecimentoNome(projectionEstabelecimentoNome);
+	}
+	
+	public FaixaSalarial (String cargoNome, String faixaNome, Integer qtdColaboradores, String projectionEstabelecimentoNome, String areaOrganizacionalNome)	{
+		setCargo(new Cargo());
+		getCargo().setNome(cargoNome);
+		setNome(faixaNome);
+		setQtdColaboradores(qtdColaboradores);
+		setAreaOrganizacionalNome(areaOrganizacionalNome);
+		setProjectionEstabelecimentoNome(projectionEstabelecimentoNome);
 	}
 
 	//findComHistoricoAtualByEmpresa
@@ -479,4 +498,16 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	public void setAreaOrganizacionalNome(String areaOrganizacionalNome) {
 		this.areaOrganizacionalNome = areaOrganizacionalNome;
 	}
+
+
+	public String getProjectionEstabelecimentoNome() {
+		return projectionEstabelecimentoNome;
+	}
+
+
+	public void setProjectionEstabelecimentoNome(
+			String projectionEstabelecimentoNome) {
+		this.projectionEstabelecimentoNome = projectionEstabelecimentoNome;
+	}
+
 }

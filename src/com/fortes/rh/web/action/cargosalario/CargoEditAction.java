@@ -62,6 +62,7 @@ public class CargoEditAction extends MyActionSupportEdit
 
     private boolean exibirSalario;//padrão tem que ser falso
     private boolean exibirAreaOrganizacional;
+    private boolean exibirEstabelecimento;
     
 	private Collection<Cargo> cargos = new ArrayList<Cargo>();
 	private Collection<HistoricoColaborador> historicoColaboradors;
@@ -194,15 +195,17 @@ public class CargoEditAction extends MyActionSupportEdit
 		dataHistorico = new Date();
 	}
 	
-	public String relatorioColaboradorCargoXLS() throws Exception
-	{
-		if(relatorioResumido) 
-		{
+	public String relatorioColaboradorCargoXLS() throws Exception {
+		if(relatorioResumido) {
 			populaTituloFiltro(); 
-			faixasDoCargo = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(exibirAreaOrganizacional, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
-			if (exibirAreaOrganizacional) 
+			faixasDoCargo = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(exibirEstabelecimento, exibirAreaOrganizacional, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
+			if (exibirAreaOrganizacional && !exibirEstabelecimento) 
 				return "successResumidoAreaOrganizacionalXls";
-			 else 
+			else if (!exibirAreaOrganizacional && exibirEstabelecimento)
+				return "successResumidoEstabelecimentoXls";
+			else if (exibirAreaOrganizacional && exibirEstabelecimento)
+				return "successResumidoEstabelecimentoAreaOrganizacionalXls";
+			else 
 				return "successResumidoXls";
 		}
 		
@@ -210,10 +213,14 @@ public class CargoEditAction extends MyActionSupportEdit
 		
 		if(Action.INPUT.equals(retorno))
 			return Action.INPUT;
-		else if (exibirSalario && !exibirSalarioVariavel && !exibirAreaOrganizacional)
+		else if (exibirSalario && !exibirSalarioVariavel && !exibirAreaOrganizacional && !exibirEstabelecimento)
 			return "successRemuneracaoNoRH";
-		else if (exibirSalario && !exibirSalarioVariavel && exibirAreaOrganizacional)
+		else if (exibirSalario && !exibirSalarioVariavel && exibirAreaOrganizacional && !exibirEstabelecimento)
 			return "successRemuneracaoNoRHAreaOrganizacional";
+		else if (exibirSalario && !exibirSalarioVariavel && !exibirAreaOrganizacional && exibirEstabelecimento)
+			return "successRemuneracaoNoRHEstabelecimento";
+		else if (exibirSalario && !exibirSalarioVariavel && exibirAreaOrganizacional && exibirEstabelecimento)
+			return "successRemuneracaoNoRHEstabelecimentoAreaOrganizacional";
 		else
 			return retorno;
 	}
@@ -222,14 +229,22 @@ public class CargoEditAction extends MyActionSupportEdit
 		
 		String retorno = populaDadosRelatorioColaboradorCargo();
 		
-		if (exibirSalarioVariavel && !exibirAreaOrganizacional)
+		if (exibirSalarioVariavel && !exibirEstabelecimento && !exibirAreaOrganizacional)
 			return "successRemuneracaoVariavel";
-		else if (exibirSalarioVariavel && exibirAreaOrganizacional)
-			return "successRemuneracaoVariavelAreaOrganizacional";
+		else if (exibirSalarioVariavel && !exibirAreaOrganizacional && exibirEstabelecimento)
+			return "successRemuneracaoVariavelEstabelecimento";
+		else if (exibirSalarioVariavel && exibirAreaOrganizacional && !exibirEstabelecimento)
+			return "successRemuneracaoVariavelAreaOrganizacional"; //////
+		else if (exibirSalarioVariavel && exibirAreaOrganizacional && exibirEstabelecimento)
+			return "successRemuneracaoVariavelEstabelecimentoAreaOrganizacional"; //////
 		else if(relatorioResumido)
 			return "successResumido";
-		else if (exibirAreaOrganizacional)
+		else if (!exibirAreaOrganizacional && exibirEstabelecimento)
+			return "successEstabelecimento";
+		else if (exibirAreaOrganizacional && !exibirEstabelecimento)
 			return "successAreaOrganizacional";
+		else if (exibirAreaOrganizacional && exibirEstabelecimento)
+			return "successEstabelecimentoAreaOrganizacional";
 		else
 			return retorno;
 	}
@@ -257,6 +272,7 @@ public class CargoEditAction extends MyActionSupportEdit
 		parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
 		parametros.put("EXIBIRSALARIO", exibirSalario);
 		parametros.put("EXIBIRSALARIOVARIAVEL", exibirSalarioVariavel);
+		parametros.put("EXIBIRESTABELECIMENTO", exibirEstabelecimento);
 		parametros.put("EXIBIRAREAORGANIZACIONAL", exibirAreaOrganizacional);
 		
 		return Action.SUCCESS;
@@ -977,5 +993,13 @@ public class CargoEditAction extends MyActionSupportEdit
 	
 	public void setEmpresasPermitidas(Long[] empresasPermitidas) {
 		this.empresasPermitidas = empresasPermitidas;
+	}
+
+	public boolean isExibirEstabelecimento() {
+		return exibirEstabelecimento;
+	}
+
+	public void setExibirEstabelecimento(boolean exibirEstabelecimento) {
+		this.exibirEstabelecimento = exibirEstabelecimento;
 	}
 }
