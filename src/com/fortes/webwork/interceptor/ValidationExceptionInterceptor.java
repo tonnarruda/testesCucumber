@@ -6,6 +6,7 @@ import java.util.Vector;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.acegisecurity.context.SecurityContext;
 import org.apache.log4j.Logger;
 import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.exception.ExceptionUtils;
@@ -124,7 +125,8 @@ public class ValidationExceptionInterceptor implements Interceptor
 
 	private void verificaPendenciaExportacaoAC(MyActionSupport actionSuport) 
 	{
-		if(!actionSuport.toString().contains("com.fortes.rh.web.action.exportacao.ExportacaoACAction"))
+		SecurityContext sc = (SecurityContext) ActionContext.getContext().getSession().get("ACEGI_SECURITY_CONTEXT");
+		if(!actionSuport.toString().contains("com.fortes.rh.web.action.exportacao.ExportacaoACAction") && sc != null && !sc.getAuthentication().getPrincipal().equals("anonymousUser"))
 		{
 			try {
 				Empresa empresa = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession());
