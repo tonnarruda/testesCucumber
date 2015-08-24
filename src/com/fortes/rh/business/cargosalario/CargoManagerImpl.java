@@ -21,6 +21,7 @@ import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.geral.AreaFormacaoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.CodigoCBOManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.QuantidadeLimiteColaboradoresPorCargoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
@@ -37,6 +38,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.GrupoOcupacional;
 import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.CodigoCBO;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -58,8 +60,8 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	private FaixaSalarialManager faixaSalarialManager;
 	private EtapaSeletivaManager etapaSeletivaManager;
 	private ExperienciaManager experienciaManager;
-	private CandidatoManager candidatoManager;
 	private PlatformTransactionManager transactionManager;
+	private CodigoCBOManager codigoCBOManager;
 
 	public Integer getCount(Long empresaId, Long areaId, String cargoNome, Boolean ativo)
 	{
@@ -507,6 +509,9 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 			cargo.setNomeMercado(StringUtils.isEmpty(tCargo.getCargoDescricao()) ? tCargo.getDescricaoACPessoal() : tCargo.getCargoDescricao());
 			cargo.setCboCodigo(tCargo.getCboCodigo());
 			cargo.setEmpresa(empresa);
+
+			if(tCargo.getCboCodigo() != null && tCargo.getCboDescricao() != null && !"".equals(tCargo.getCboCodigo()) && !"".equals(tCargo.getCboDescricao()))
+				codigoCBOManager.saveOrUpdate(new CodigoCBO(tCargo.getCboCodigo(), tCargo.getCboDescricao()));
 			
 			return save(cargo);
 		}
@@ -517,7 +522,6 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 			
 			return cargo;
 		}
-		
 	}
 	
 	public Collection<Cargo> findByEmpresa(Long empresaId) 
@@ -528,6 +532,9 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	public void updateCBO(Long id, TCargo tCargo)
 	{
 		getDao().updateCBO(id, tCargo);
+		
+		if(tCargo.getCboCodigo() != null && tCargo.getCboDescricao() != null && !"".equals(tCargo.getCboCodigo()) && !"".equals(tCargo.getCboDescricao()))
+			codigoCBOManager.saveOrUpdate(new CodigoCBO(tCargo.getCboCodigo(), tCargo.getCboDescricao()));
 	}
 
 	public Collection<Cargo> findAllSelect(Long[] empresaIds)
@@ -625,8 +632,8 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		this.experienciaManager = experienciaManager;
 	}
 
-	public void setCandidatoManager(CandidatoManager candidatoManager)
+	public void setCodigoCBOManager(CodigoCBOManager codigoCBOManager) 
 	{
-		this.candidatoManager = candidatoManager;
+		this.codigoCBOManager = codigoCBOManager;
 	}
 }

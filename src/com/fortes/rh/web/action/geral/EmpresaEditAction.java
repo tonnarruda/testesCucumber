@@ -183,7 +183,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 			throw new Exception("Já existe uma empresa com o mesmo código AC no grupo AC especificado");
 		}
 		
-		if (!empresaManager.verificaInconcistenciaIntegracaoAC(empresa))
+		if (empresaManager.verificaInconcistenciaIntegracaoAC(empresa))
 		{
 			setActionMsg("Não foi possível habilitar a integração com o Fortes Pessoal devido a cadastros realizados no período desintegrado.<br />Entre em contato com o suporte técnico.");
 			empresa.setAcIntegra(false);

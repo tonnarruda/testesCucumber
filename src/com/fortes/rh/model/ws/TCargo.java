@@ -12,6 +12,7 @@ public class TCargo implements Serializable
 	private String descricao;//faixa no rh
 	private String descricaoACPessoal;//ac cargo
 	private String cboCodigo;
+	private String cboDescricao;
 	private String grupoAC;
 	private TFeedbackPessoalWebService feedback;
 
@@ -133,5 +134,13 @@ public class TCargo implements Serializable
 
 	public void setFeedback(TFeedbackPessoalWebService feedback) {
 		this.feedback = feedback;
+	}
+
+	public String getCboDescricao() {
+		return cboDescricao;
+	}
+
+	public void setCboDescricao(String cboDescricao) {
+		this.cboDescricao = cboDescricao;
 	}
 }
