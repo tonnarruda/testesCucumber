@@ -3,7 +3,8 @@ CREATE OR REPLACE FUNCTION atualiza_matricula_to_codigofortespessoal(id_empresas
 		id_empresa BIGINT; 
 	BEGIN  
 		FOR id_empresa IN select unnest(id_empresas) LOOP 
-			IF (select 
+			IF (cast ((select count(id) from colaborador where codigoac is not null and empresa_id = id_empresa) as double precision)) <> 0 
+				and (select 
 				(cast ((select count(id) from colaborador where matricula = codigoac and codigoac is not null and empresa_id = id_empresa) as double precision) 
 				/ cast ((select count(id) from colaborador where codigoac is not null and empresa_id = id_empresa) as double precision))   
 				>= cast(percentualCompatibilidadeMatriculaCodigoFP as double precision)/100)  

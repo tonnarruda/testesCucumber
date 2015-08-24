@@ -48,7 +48,7 @@
 			});
 			
 			if(!possuiResposta){
-				$(".popup").dialog({title: 'Existem perguntas subjetivas sem respostas.', modal: true,height: 150,width: 400,
+				$(".popup").dialog({title: 'Existem perguntas subjetivas sem respostas.', modal: true,height: 150,width: 530,
 									buttons: [
 									    {
 									        text: "Sim",

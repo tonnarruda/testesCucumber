@@ -85,7 +85,7 @@
 				</#if> 
 			</#list>
 			<#if colaboradorQuestionario?exists && colaboradorQuestionario.avaliacao?exists && colaboradorQuestionario.avaliacao.tipoModeloAvaliacao=="A" && !colaboradorQuestionario.avaliacaoDesempenho?exists && valueResposta == "" >
-				<ul style="color: #9F6000;background-color: #FEEFB3;width: 155px;margin: -10px 0 2px 0;">
+				<ul style="color: #9F6000;background-color: #FEEFB3;width: 170px;margin: -10px 0 2px 0;">
 					<li style="text-align: center;">Pergunta não respondida.</li>
 				</ul>
 			</#if>
