@@ -418,9 +418,8 @@ public class CandidatoEditAction extends MyActionSupportEdit
 					fotoValida = false;
 				}
 
-				parametrosDoSistema = parametrosDoSistemaManager.findByIdProjection(1L);
-				if (parametrosDoSistema.getTamanhoMaximoUpload() != null && foto.getSize() > parametrosDoSistema.getTamanhoMaximoUpload()*1024*1024) {
-					addActionError("Tamanho da foto maior que o suportado ("+parametrosDoSistema.getTamanhoMaximoUpload()+"Mb)");
+				if(foto.getSize() > 524288) {
+					addActionError("Tamanho da foto maior que o suportado");
 					fotoValida = false;
 				} 
 			}

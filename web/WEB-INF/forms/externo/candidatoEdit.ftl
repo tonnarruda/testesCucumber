@@ -54,7 +54,9 @@
 		<@ww.select label="Disponível" name="candidato.disponivel" list=r"#{'true':'Sim','false':'Não'}"/>
 
 		<@ww.textarea label="Observação" name="candidato.observacao" cssStyle="width:445px;" />
-		<@ww.hidden label="Id" name="candidato.id" />
+		<#if candidato?exists && candidato.id?exists>
+			<@ww.hidden label="Id" name="candidato.id" />
+		</#if>
 		
 	</@ww.form>
 

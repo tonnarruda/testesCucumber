@@ -158,7 +158,7 @@
 		<#assign div="suporte2"/>
 	</#if>
 	
-	<@ww.textfield label="Tamanho máximo para upload de fotos para os candidatos e documentos anexos do módulo externo (Mb)" name="parametrosDoSistema.tamanhoMaximoUpload" id="tamanhoMaximoUpload" onkeypress="return(somenteNumeros(event,''));" size="4" maxlength="2" required="true"/>
+	<@ww.textfield label="Tamanho máximo para upload de documentos anexos pelo módulo externo (Mb)" name="parametrosDoSistema.tamanhoMaximoUpload" id="tamanhoMaximoUpload" onkeypress="return(somenteNumeros(event,''));" size="4" maxlength="2" required="true"/>
 	<br />
 	
 	<div id="${div}">

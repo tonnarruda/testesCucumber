@@ -184,7 +184,7 @@ public class FileUploadToPropertyInterceptor extends FileUploadInterceptor
 	 * Verifica se o arquivo é do tipo imagem através do content-type.
 	 */
 	private boolean isImage(String contentType) {
-		return contentType.contains("image");
+		return contentType.substring(0, 5).contains("image");
 	}
 
 	/**
