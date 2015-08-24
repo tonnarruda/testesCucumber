@@ -127,7 +127,7 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 
 		assertEquals(areaOrganizacional, areaOrganizacionalDao.findByIdProjection(areaOrganizacional.getId()));
 	}
-
+	
 	public void testFindAreaIdsByAreaInteresse()
 	{
 		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
@@ -456,6 +456,35 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		assertNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional1.getId()).getCoResponsavel().getId());
 		assertNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional2.getId()).getResponsavel().getId());
 		assertNull(areaOrganizacionalDao.findByIdProjection(areaOrganizacional2.getId()).getCoResponsavel().getId());
+	}
+	
+	public void testFindAreasMaesIdsByEmpresaId()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional1.setEmpresa(empresa);
+		areaOrganizacional1.setAtivo(true);
+		areaOrganizacionalDao.save(areaOrganizacional1);
+		
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional2.setEmpresa(empresa);
+		areaOrganizacional2.setAreaMae(areaOrganizacional1);
+		areaOrganizacional2.setAtivo(true);
+		areaOrganizacionalDao.save(areaOrganizacional2);
+		
+		AreaOrganizacional areaOrganizacional3 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional3.setEmpresa(empresa);
+		areaOrganizacional3.setAtivo(true);
+		areaOrganizacionalDao.save(areaOrganizacional3);
+		
+		AreaOrganizacional areaOrganizacional4 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional4.setEmpresa(empresa);
+		areaOrganizacional4.setAtivo(false);
+		areaOrganizacionalDao.save(areaOrganizacional4);
+		
+		assertEquals(2, areaOrganizacionalDao.findAreasMaesIdsByEmpresaId(empresa.getId()).length);
 	}
 	
 	public void setCargoDao(CargoDao cargoDao)

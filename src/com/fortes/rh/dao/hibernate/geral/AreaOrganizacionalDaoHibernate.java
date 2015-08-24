@@ -18,6 +18,7 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.config.JDBCConnection;
@@ -579,5 +580,23 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		};
 		
 		JDBCConnection.executeQuery(sqls);
+	}
+
+	public Long[] findAreasMaesIdsByEmpresaId(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "a");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("a.id"), "id");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("a.empresa.id", empresaId));
+		criteria.add(Expression.isNull("a.areaMae.id"));
+		criteria.add(Expression.eq("a.ativo",true));
+		criteria.addOrder(Order.asc("a.nome"));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+		return LongUtil.collectionStringToArrayLong(criteria.list());
 	}
 }

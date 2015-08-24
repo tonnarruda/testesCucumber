@@ -802,7 +802,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return areasIds;
 	}
 	
-	private Collection<Long> findIdsAreasFilhas(Collection<Long> areasIds) 
+	public Collection<Long> findIdsAreasFilhas(Collection<Long> areasIds) 
 	{
 		Collection<Long> areasFilhasIds = new ArrayList<Long>();
 		Collection<Long> filhasIds = getDao().findIdsAreasFilhas(areasIds);
@@ -961,5 +961,10 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	
 	public Collection<AreaOrganizacional> findAllListAndInativasByUsuarioId(Long empresaId, Long usuarioId, Boolean ativo, Collection<Long> areaInativaIds) {
 		return getDao().findAreasDoResponsavelCoResponsavel(usuarioId, empresaId, ativo, areaInativaIds);
+	}
+
+	public Long[] findAreasMaesIdsByEmpresaId(Long empresaId) 
+	{
+		return getDao().findAreasMaesIdsByEmpresaId(empresaId);
 	}
 }

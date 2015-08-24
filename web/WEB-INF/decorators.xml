@@ -41,6 +41,8 @@
 		<pattern>/captacao/solicitacao/findEventos.action*</pattern>
 		<pattern>/cargosalario/historicoColaborador/grfSalarioAreasFilhas.action*</pattern>
 		<pattern>/desenvolvimento/indicadores/grfTipoDespesaPorCurso.action*</pattern>		
+		<pattern>/cargosalario/historicoColaborador/grfPromocaoHorizontalAreasFilhas.action*</pattern>
+		<pattern>/cargosalario/historicoColaborador/grfPromocaoVerticalAreasFilhas.action*</pattern>
 		<pattern>/grafico.jsp*</pattern>
 		<pattern>/conteudo.jsp*</pattern>
 		<pattern>/index.jsp*</pattern>

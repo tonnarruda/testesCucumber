@@ -117,6 +117,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	private Collection<Empresa> empresas;
 	private Long[] empresaIds;//repassado para o DWR
+	private Long empresaId;
 	private Long[] historicoColaboradorIds;
 	private Empresa empresa;
 	private String grfFormacaoEscolars = "";
@@ -131,6 +132,10 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String grfEvolucaoTurnover = "";
 	private String grfPromocaoHorizontal = "";
 	private String grfPromocaoVertical = "";
+	private String grfPromocaoHorizontalArea = "";
+	private String grfPromocaoVerticalArea = "";
+	private String grfBarraPromocaoHorizontalArea = "";
+	private String grfBarraPromocaoVerticalArea = "";
 	private String grfColocacao = "";
 	private String grfOcorrencia = "";
 	private String grfProvidencia = "";
@@ -262,7 +267,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	{
 		if(empresa == null || empresa.getId() == null)
 			empresa = getEmpresaSistema();
-			
+		
+		empresaId = empresa.getId();//utilizado no ajax do ftl
+		
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresa.getId());
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
 		
@@ -294,9 +301,6 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		
 		Long[] areasPieChartIds = LongUtil.arrayStringToArrayLong(areasPieChartCheck);
 
-		/*
-		 * Grafico de Evolucao Salarial
-		 */
 		Collection<Object[]> graficoEvolucaoFolha   = colaboradorManager.montaGraficoEvolucaoFolha(DateUtil.criarDataMesAno(dataMesAnoIni), DateUtil.criarDataMesAno(dataMesAnoFim), empresa.getId(), areasIds);
 		Collection<Object[]> graficoEvolucaoFaturamento   = faturamentoMensalManager.findByPeriodo(DateUtil.criarDataMesAno(dataMesAnoIni), DateUtil.criarDataMesAno(dataMesAnoFim), empresa.getId());
 		
@@ -307,22 +311,37 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		valorTotalFolha  = 0.0;
 		for (DataGrafico dataGrafico : graficoSalarioArea) 
 			valorTotalFolha += dataGrafico.getData();
-		
-		/*
-		 * Grafico de Promocoes
-		 */
+
 		dataIni = DateUtil.criarDataMesAno(dataMesAnoIni);
 		dataFim = DateUtil.criarDataMesAno(dataMesAnoFim);
 		
 		Map<Character, Collection<Object[]>> graficosPromocao = historicoColaboradorManager.montaPromocoesHorizontalEVertical(dataIni, dataFim, empresa.getId(), areasIds);
-		
-		Map<Character, Collection<Object[]>> graficoPromocaoAreas = historicoColaboradorManager.montaPromocoesHorizontalEVertical(dataIni, dataFim, empresa.getId(), areasPieChartIds);
-//		grfPromocaoAreas  = StringUtil.toJSON(graficoPromocaoAreas, null);
-		
 		grfPromocaoHorizontal = StringUtil.toJSON(graficosPromocao.get('H'), null);
 		grfPromocaoVertical = StringUtil.toJSON(graficosPromocao.get('V'), null);
+
+		Map<Character, Collection<DataGrafico>> graficosPromocaoAreas = historicoColaboradorManager.montaPromocoesHorizontalEVerticalPorArea(dataIni, dataFim, empresa.getId(), false, areasPieChartIds);
+		grfPromocaoHorizontalArea = StringUtil.toJSON(graficosPromocaoAreas.get('H'), null);
+		grfPromocaoVerticalArea = StringUtil.toJSON(graficosPromocaoAreas.get('V'), null);
+		
+		grfBarraPromocaoHorizontalArea = convertDataGraficoInObject(graficosPromocaoAreas.get('H'));
+		grfBarraPromocaoVerticalArea = convertDataGraficoInObject(graficosPromocaoAreas.get('V'));
 		
 		return Action.SUCCESS;
+	}
+
+	private String convertDataGraficoInObject(Collection<DataGrafico> collectionDataGrafico) 
+	{
+		Collection<Object[]>  graficoPromocaoHorizontal = new ArrayList<Object[]>();
+		int i = 1;
+		if(collectionDataGrafico != null && collectionDataGrafico.size()>0)
+		{
+			for (DataGrafico dataGrafico : collectionDataGrafico){ 
+				graficoPromocaoHorizontal.add(new Object[]{i, dataGrafico.getData()});
+				i += 2;
+			}
+		}
+		
+		return  StringUtil.toJSON(graficoPromocaoHorizontal, null);
 	}
 
 	public String grfSalarioAreasFilhas() throws Exception
@@ -337,13 +356,18 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String grfPromocaoAreasFilhas() throws Exception{
-//		AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areaId);
-//		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllListAndInativas(null, null, null);
-//		AreaOrganizacional area = areaOrganizacionalManager.getAreaMae(areas, areaOrganizacional);
-//		
-//		Map<Character, Collection<Object[]>> graficoPromocaoAreas = historicoColaboradorManager.montaPromocoesHorizontalEVertical(dataIni, dataFim, empresa.getId(), new Long[]{area.getId()});
-//		json = StringUtil.toJSON(graficoPromocaoAreas, null);
+	public String grfPromocaoHorizontalAreasFilhas() throws Exception
+	{
+		Map<Character, Collection<DataGrafico>> graficosPromocaoAreas = historicoColaboradorManager.montaPromocoesHorizontalEVerticalPorArea(dataIni, dataFim, empresaId, true, areaId);
+		json = StringUtil.toJSON(graficosPromocaoAreas.get('H'), null);
+		
+		return Action.SUCCESS;
+	}
+	
+	public String grfPromocaoVerticalAreasFilhas() throws Exception
+	{
+		Map<Character, Collection<DataGrafico>> graficosPromocaoAreas = historicoColaboradorManager.montaPromocoesHorizontalEVerticalPorArea(dataIni, dataFim, empresaId, true, areaId);
+		json = StringUtil.toJSON(graficosPromocaoAreas.get('V'), null);
 		
 		return Action.SUCCESS;
 	}
@@ -1169,5 +1193,29 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public String getGrfPromocaoAreas() {
 		return grfPromocaoAreas;
+	}
+
+	public String getGrfPromocaoHorizontalArea() {
+		return grfPromocaoHorizontalArea;
+	}
+
+	public String getGrfPromocaoVerticalArea() {
+		return grfPromocaoVerticalArea;
+	}
+
+	public String getGrfBarraPromocaoHorizontalArea() {
+		return grfBarraPromocaoHorizontalArea;
+	}
+
+	public String getGrfBarraPromocaoVerticalArea() {
+		return grfBarraPromocaoVerticalArea;
+	}
+
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
+	}
+
+	public Long getEmpresaId() {
+		return empresaId;
 	}
 }

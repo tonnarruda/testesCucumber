@@ -135,9 +135,18 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/painelIndicadores.ftl</result>
 		</action>
 		<action name="painelIndicadoresCargoSalario" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="painelIndicadoresCS">
+			<interceptor-ref name="showFilterStack" />
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/painelIndicadoresCargoSalario.ftl</result>
 		</action>
 		<action name="grfSalarioAreasFilhas" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="grfSalarioAreasFilhas">
+		     <result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
+		     <param name="contentType">application/json</param>
+		</action>
+		<action name="grfPromocaoHorizontalAreasFilhas" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="grfPromocaoHorizontalAreasFilhas">
+		     <result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
+		     <param name="contentType">application/json</param>
+		</action>
+		<action name="grfPromocaoVerticalAreasFilhas" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="grfPromocaoVerticalAreasFilhas">
 		     <result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
 		     <param name="contentType">application/json</param>
 		</action>

@@ -15,6 +15,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.PendenciaAC;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.security.spring.aop.callback.HistoricoColaboradorAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
@@ -149,6 +150,8 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	public List<SituacaoColaborador> getColaboradoresSemReajuste(Long[] areasIds, Long[] estabelecimentosIds, Date data, Long empresaId, int mesesSemReajuste);
 	
 	public Map<Character, Collection<Object[]>> montaPromocoesHorizontalEVertical(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds);
+	
+	public Map<Character, Collection<DataGrafico>>  montaPromocoesHorizontalEVerticalPorArea(Date dataIni, Date dataFim, Long empresaId, boolean areasFilhas, Long... areasIds);
 
 	public void deleteHistoricoColaborador(Long[] colaboradorIds) throws Exception;
 	

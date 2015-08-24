@@ -84,4 +84,6 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public void removeComDependencias(Long id) throws FortesException;
 	public Collection<AreaOrganizacional> findAllSelectOrderDescricaoByUsuarioId(Long empresaId, Long usuarioId, Boolean ativo, Long areaInativaId) throws Exception;
 	public Collection<AreaOrganizacional> findAllListAndInativasByUsuarioId(Long empresaId, Long usuarioId, Boolean ativo, Collection<Long> areaInativaIds);
+	public Collection<Long> findIdsAreasFilhas(Collection<Long> areasIds);
+	public Long[] findAreasMaesIdsByEmpresaId(Long empresaId);
 }

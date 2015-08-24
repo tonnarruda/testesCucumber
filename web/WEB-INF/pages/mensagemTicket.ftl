@@ -29,7 +29,7 @@
 		<tr>
 			<td class="corpo" colspan="2" style="padding:10px" height="71px" align="center">
 				Aguarde a confirmação de liberação do técnico.<br />
-				Ticket n&ordm; <span style="font-size:16px;color:#ff0;">${ticket}</span>
+				Ticket n&ordm; <span style="font-weight: bold;font-size:20px;">${ticket}</span>
 			</td>
 		</tr>
 		<tr>
