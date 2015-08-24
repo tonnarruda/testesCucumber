@@ -67,7 +67,7 @@ function montaBar(data, idGrafico) {
         	{
         		previousPoint = item.dataIndex;
                 $("#tooltip").remove();
-                var y = formataNumero(item.datapoint[1], precisao);		                    
+                var y = item.datapoint[1].toFixed(0);
                 showTooltip(item.pageX, item.pageY, y);
             }
         }
