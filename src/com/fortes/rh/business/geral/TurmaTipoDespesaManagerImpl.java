@@ -46,6 +46,7 @@ public class TurmaTipoDespesaManagerImpl extends GenericManagerImpl<TurmaTipoDes
 		return getDao().findTipoDespesaTurma(turmaId);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void save(String json, Long turmaId) 
 	{
 		Collection<TurmaTipoDespesa> despesas = new ArrayList<TurmaTipoDespesa>();

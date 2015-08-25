@@ -209,13 +209,16 @@ public class IndicadorTreinamentosListAction extends MyActionSupportList
 	public String grfTipoDespesaPorCurso() throws Exception
 	{
 		Collection<DataGrafico> grfCustoTipoDespesa = new ArrayList<DataGrafico>();
+		Curso curso = cursoManager.findByIdProjection(cursoId);
 
 		Double custosNaoDetalhados = turmaManager.somaCustosNaoDetalhados(dataIni, dataFim, empresasCheck, new Long[]{cursoId});
-		grfCustoTipoDespesa.add(new DataGrafico(null, "Não detalhado", custosNaoDetalhados, ""));
+		
+		if(custosNaoDetalhados != null & custosNaoDetalhados != 0)
+			grfCustoTipoDespesa.add(new DataGrafico(null, "Não detalhado", custosNaoDetalhados, curso.getNome()));
 		
 		Collection<TipoDespesa> tipoDespesas = turmaTipoDespesaManager.somaDespesasPorTipo(dataIni, dataFim, empresasCheck, new Long[]{cursoId});
 		for (TipoDespesa tipoDespesa : tipoDespesas)
-			grfCustoTipoDespesa.add(new DataGrafico(null, tipoDespesa.getDescricao(), tipoDespesa.getTotalDespesas(), ""));
+			grfCustoTipoDespesa.add(new DataGrafico(tipoDespesa.getId(), tipoDespesa.getDescricao(), tipoDespesa.getTotalDespesas(), curso.getNome()));
 			
 		json = StringUtil.toJSON(grfCustoTipoDespesa, null);
 		

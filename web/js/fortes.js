@@ -567,3 +567,8 @@ function popupDetalhes(videoId)
 {
 	window.open('http://www.fortesinformatica.com.br/portal_videoteca_detalhes.php?id=' + videoId, 'Janela1','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=auto,resizable=no,menubar=no,width=385,height=580')
 }
+
+function formataNumero(value)
+{
+	return 'R$' + $('<span>' + value + '</span>').format({}).text().replace(/,/g,'#').replace(/\./g,',').replace(/#/g,'.');
+}

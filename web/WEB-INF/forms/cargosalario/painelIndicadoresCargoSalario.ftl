@@ -300,11 +300,6 @@
 			{
 				return validaFormulario('formBusca', new Array('dataBase','mesAnoIni','mesAnoFim'), new Array('dataBase','mesAnoIni','mesAnoFim'));
 			}
-			
-			function formataNumero(value)
-			{
-				return 'R$' + $('<span>' + value + '</span>').format({}).text().replace(/,/g,'#').replace(/\./g,',').replace(/#/g,'.');
-			}
 
 			function populaAreas(empresaId)
 			{

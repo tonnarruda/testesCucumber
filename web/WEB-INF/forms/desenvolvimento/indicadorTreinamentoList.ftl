@@ -17,8 +17,11 @@
 		.legendColorBox { width: 20px; border: none; }
 		.legendColorBox > div { border: 1px solid #fff !important; }
 		
-		#custo, #custoPorCurso { width: 220px !important; }
-		#custoLegenda, #custoPorCursoLegenda { float: right; width: 220px; height: 195px; overflow-y: auto; }
+		#custo { width: 220px !important; }
+		#custoLegenda { float: right; width: 220px; height: 195px; overflow-y: auto; }
+		
+		#custoPorCursoLegenda { float: right; width: 500px; height: 400px; overflow-y: auto; }
+		#custoPorCurso { width: 400px !important;   height: 400px !important;}
 		
 		#formBusca { padding: 5px; }
 		
@@ -145,7 +148,7 @@
 			montaPie(${grfTreinamento}, "#treinamento", {combinePercentMin: -1, percentMin: 0} );
 			montaPie(${grfDesempenho}, "#desempenho", {combinePercentMin: -1, percentMin: 0} );
 			montaPie(${grfCusto}, "#custo", { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto, container:'#custoLegenda' });
-			montaPie(cursosOrdered, "#custoPorCurso", { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto, clickable: true, hoverable: true, container:'#custoPorCursoLegenda' });
+			montaPie(cursosOrdered, "#custoPorCurso", {radius: 0.9, radiusLabel: 1, combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto, clickable: true, hoverable: true, container:'#custoPorCursoLegenda' });
 			
 			$("#custoPorCurso").bind("plothover", plotPieHover).bind("plotclick", pieClick);
 			
@@ -189,8 +192,6 @@
 			});
 		});
 		
-		var urlFind = "<@ww.url includeParams="none" value="/desenvolvimento/indicadores/grfTipoDespesaPorCurso.action"/>";
-		
 		function plotPieHover(event, pos, item) {
             if (item) 
             {
@@ -203,6 +204,7 @@
             }
 		}
 		
+		var urlFind = "<@ww.url includeParams="none" value="/desenvolvimento/indicadores/grfTipoDespesaPorCurso.action"/>";
 		function pieClick(event, pos, obj)
 		{
 			var cursoId_ = cursosOrdered[obj.seriesIndex].id;
@@ -231,13 +233,11 @@
 					
 					montaPie(tipoDespesaPorCurso, "#pieBox", { combinePercentMin: -1, percentMin: 0.02, legendLabelFormatter: formataLegendaCusto, container:'#pieLegendBox' });
 					
-					//graficoPizza(cursosOrderedBox, '#pieBox', '#pieLegendBox', '#pieImprimirBox', 1);
+					var percent = parseFloat(obj.series.percent).toFixed(2);
+					var descricaoArea = tipoDespesaPorCurso[0].descricao;
+					var titleSubArea = descricaoArea + ' &#x2013; '+ percent + '% (R$' + formataNumero(obj.series.datapoints.points[1]) + ')';
 					
-					//var percent = parseFloat(obj.series.percent).toFixed(2);
-					//var descricaoArea = data[0].descricao;
-					//var titleSubArea = descricaoArea + ' &#x2013; '+ percent + '% (' + formataNumero(obj.series.datapoints.points[1]) + ')';
-					
-					$("#box").dialog("option", { zIndex: 9999, title: 'Curso', width: 700, height: 350 });
+					$("#box").dialog("option", { zIndex: 9999, title: titleSubArea, width: 700, height: 350 });
 					$("#box").dialog("open");
 				},
 				error: function(data) {
@@ -372,7 +372,7 @@
 					</td>
 				</tr>	
 				<tr>
-					<td class="grid-cell" >
+					<td class="grid-cell" colspan="2">
 						<div class="cell-title">
 							Custo por Curso
 						</div>
