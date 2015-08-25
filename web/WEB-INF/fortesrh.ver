@@ -12,6 +12,7 @@
 		<Item visivel="S" motivo="S20150800044"><![CDATA[Utilitários > Configurações > Sistema: Nova opção para configurar tamanho máximo para upload de documentos anexos pelo módulo externo.]]></Item>
 		<Item visivel="S" motivo="S20150800000"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Atualização do gerenciador "Responder avaliação do período de experiência" para "Responder avaliação do período de experiência/Excluir respostas".]]></Item>
 		<Item visivel="S" motivo="S20150800000"><![CDATA[Utilitários > Auditoria: Auditoria das respostas das avaliações de desempenho, acompanhamento do período de experiência e ficha médica.]]></Item>
+		<Item visivel="S" motivo="P20150800157"><![CDATA[Utilitários > Importar Afastamentos: Menu renomeado para "Importar Afastamentos Fortes Ponto / TRU".]]></Item>
 		<Item visivel="S" motivo="S20150700102"><![CDATA[Utilitários > Exportar dados para o Fortes Pessoal: Exportar colaboradores desligados.]]></Item>		
 		<Item visivel="S" motivo="S20150700330"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Nova opção de colocação do empregado como sócio.]]></Item>
 		<Item visivel="S" motivo="S20150700196"><![CDATA[Verificação de incosistência no banco de dados.]]></Item>
