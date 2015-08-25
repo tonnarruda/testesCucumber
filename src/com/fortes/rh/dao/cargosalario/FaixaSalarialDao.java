@@ -5,7 +5,6 @@ import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
-import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TCargo;
 
@@ -33,5 +32,4 @@ public interface FaixaSalarialDao extends GenericDao<FaixaSalarial>
 	public Collection<FaixaSalarial> findByCargoComCompetencia(Long cargoId);
 	Collection<FaixaSalarial> findByCargos(Long[] cargosIds);
 	Collection<FaixaSalarial> findComHistoricoAtualByEmpresa(Long empresaId, boolean semCodigoAC);
-	public Collection<FaixaSalarial> colaboradoresPorCargoFaixa(boolean isEstabelecimento, boolean isAreaOrganizacional, Long... empresasIds);
 }

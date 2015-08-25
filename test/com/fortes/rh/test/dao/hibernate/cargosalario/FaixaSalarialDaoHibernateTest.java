@@ -26,29 +26,21 @@ import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
-import com.fortes.rh.model.geral.AreaOrganizacional;
-import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
-import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
-import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
-import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
-import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
-import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<FaixaSalarial>
@@ -624,80 +616,6 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		assertEquals("123456",faixaSalarialDao.findCodigoACDuplicado(empresa.getId()));
 	}
 	
-	public void testQtdColaboradoresPorCargoFaixa()
-	{
-		Empresa empresa = EmpresaFactory.getEmpresa();
-		empresaDao.save(empresa);
-		
-		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
-		estabelecimentoDao.save(estabelecimento);
-		
-		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacionalDao.save(area);
-		
-		Cargo cargo = CargoFactory.getEntity();
-		cargo.setEmpresa(empresa);
-		cargoDao.save(cargo);	
-		
-		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity();
-		faixaSalarial1.setCargo(cargo);
-		faixaSalarial1.setNome("faixa1");
-		faixaSalarialDao.save(faixaSalarial1);
-		
-		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity();
-		faixaSalarial2.setCargo(cargo);
-		faixaSalarial2.setNome("faixa2");
-		faixaSalarialDao.save(faixaSalarial2);
-		
-		Colaborador colaborador1 = ColaboradorFactory.getEntity();
-		colaboradorDao.save(colaborador1);
-		
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador1.setData(DateUtil.criarDataMesAno(01, 01, 2014));
-		historicoColaborador1.setColaborador(colaborador1);
-		historicoColaborador1.setFaixaSalarial(faixaSalarial1);
-		historicoColaborador1.setEstabelecimento(estabelecimento);
-		historicoColaborador1.setAreaOrganizacional(area);
-		historicoColaboradorDao.save(historicoColaborador1);
-		
-		Colaborador colaborador2 = ColaboradorFactory.getEntity();
-		colaboradorDao.save(colaborador2);
-		
-		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2014));
-		historicoColaborador2.setColaborador(colaborador2);
-		historicoColaborador2.setFaixaSalarial(faixaSalarial2);
-		historicoColaborador2.setEstabelecimento(estabelecimento);
-		historicoColaborador2.setAreaOrganizacional(area);
-		historicoColaboradorDao.save(historicoColaborador2);
-		
-		Colaborador colaborador3 = ColaboradorFactory.getEntity();
-		colaboradorDao.save(colaborador3);
-		
-		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador3.setData(DateUtil.criarDataMesAno(01, 01, 2014));
-		historicoColaborador3.setColaborador(colaborador3);
-		historicoColaborador3.setFaixaSalarial(faixaSalarial2);
-		historicoColaborador3.setEstabelecimento(estabelecimento);
-		historicoColaborador3.setAreaOrganizacional(area);
-		historicoColaboradorDao.save(historicoColaborador3);
-		
-		Collection<FaixaSalarial> resultado = faixaSalarialDao.colaboradoresPorCargoFaixa(false, false, new Long[]{empresa.getId()});
-		
-		assertEquals("Empresa não nula", 2, resultado.size());
-		assertEquals("Empresa não nula", 1, ((FaixaSalarial) resultado.toArray()[0]).getQtdColaboradores());
-		assertEquals("Empresa não nula", 2, ((FaixaSalarial) resultado.toArray()[1]).getQtdColaboradores());
-
-		resultado = faixaSalarialDao.colaboradoresPorCargoFaixa(false, true, new Long[]{});
-		assertTrue("Empresa nula(todas)", resultado.size() >= 2);
-		
-		resultado = faixaSalarialDao.colaboradoresPorCargoFaixa(true, false, new Long[]{});
-		assertTrue("Empresa nula(todas)", resultado.size() >= 2);
-		
-		resultado = faixaSalarialDao.colaboradoresPorCargoFaixa(true, true, new Long[]{});
-		assertTrue("Empresa nula(todas)", resultado.size() >= 2);
-	}
-
     public GenericDao<FaixaSalarial> getGenericDao()
     {
         return faixaSalarialDao;

@@ -1188,7 +1188,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			
 		return historicoColaboradors;
 	}
-
+	
 	private void getRemuneracaoVariavelByAcPessoal(Date dataHistorico, Collection<HistoricoColaborador> historicoColaboradors) throws Exception 
 	{
 		ArrayList<String> colaboradoresIdsList = new ArrayList<String>();

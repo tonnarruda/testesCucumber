@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.fortes.rh.business.captacao.AtitudeManager;
@@ -198,15 +199,21 @@ public class CargoEditAction extends MyActionSupportEdit
 	public String relatorioColaboradorCargoXLS() throws Exception {
 		if(relatorioResumido) {
 			populaTituloFiltro(); 
-			faixasDoCargo = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(exibirEstabelecimento, exibirAreaOrganizacional, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
-			if (exibirAreaOrganizacional && !exibirEstabelecimento) 
-				return "successResumidoAreaOrganizacionalXls";
-			else if (!exibirAreaOrganizacional && exibirEstabelecimento)
-				return "successResumidoEstabelecimentoXls";
-			else if (exibirAreaOrganizacional && exibirEstabelecimento)
-				return "successResumidoEstabelecimentoAreaOrganizacionalXls";
-			else 
+			try {
+				List<HistoricoColaborador> historicoColaboradores = (List<HistoricoColaborador>) historicoColaboradorManager.relatorioColaboradorCargo(dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo, exibirSalarioVariavel, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
+				faixasDoCargo = faixaSalarialManager.geraDadosRelatorioResumidoColaboradoresPorCargoXLS(historicoColaboradores);
 				return "successResumidoXls";
+			} catch (ColecaoVaziaException e) {
+				addActionMessage(e.getMessage());
+				e.printStackTrace();
+				prepareRelatorioColaboradorCargo();
+				return Action.INPUT;
+			}catch (Exception e) {
+				addActionMessage(e.getMessage());
+				e.printStackTrace();
+				prepareRelatorioColaboradorCargo();
+				return Action.INPUT;
+			}
 		}
 		
 		String retorno = relatorioColaboradorCargo();
@@ -221,6 +228,10 @@ public class CargoEditAction extends MyActionSupportEdit
 			return "successRemuneracaoNoRHEstabelecimento";
 		else if (exibirSalario && !exibirSalarioVariavel && exibirAreaOrganizacional && exibirEstabelecimento)
 			return "successRemuneracaoNoRHEstabelecimentoAreaOrganizacional";
+		else if (exibirSalarioVariavel && exibirAreaOrganizacional && exibirEstabelecimento)
+			return "successRemuneracaoVariavelEstabelecimentoAreaOrganizacional"; 
+		else if (exibirAreaOrganizacional && exibirEstabelecimento)
+			return "successEstabelecimentoAreaOrganizacional";
 		else
 			return retorno;
 	}
@@ -229,22 +240,20 @@ public class CargoEditAction extends MyActionSupportEdit
 		
 		String retorno = populaDadosRelatorioColaboradorCargo();
 		
-		if (exibirSalarioVariavel && !exibirEstabelecimento && !exibirAreaOrganizacional)
+		if(Action.INPUT.equals(retorno))
+			return Action.INPUT;
+		else if (exibirSalarioVariavel && !exibirEstabelecimento && !exibirAreaOrganizacional)
 			return "successRemuneracaoVariavel";
 		else if (exibirSalarioVariavel && !exibirAreaOrganizacional && exibirEstabelecimento)
 			return "successRemuneracaoVariavelEstabelecimento";
 		else if (exibirSalarioVariavel && exibirAreaOrganizacional && !exibirEstabelecimento)
-			return "successRemuneracaoVariavelAreaOrganizacional"; //////
-		else if (exibirSalarioVariavel && exibirAreaOrganizacional && exibirEstabelecimento)
-			return "successRemuneracaoVariavelEstabelecimentoAreaOrganizacional"; //////
+			return "successRemuneracaoVariavelAreaOrganizacional"; 
 		else if(relatorioResumido)
 			return "successResumido";
 		else if (!exibirAreaOrganizacional && exibirEstabelecimento)
 			return "successEstabelecimento";
 		else if (exibirAreaOrganizacional && !exibirEstabelecimento)
 			return "successAreaOrganizacional";
-		else if (exibirAreaOrganizacional && exibirEstabelecimento)
-			return "successEstabelecimentoAreaOrganizacional";
 		else
 			return retorno;
 	}

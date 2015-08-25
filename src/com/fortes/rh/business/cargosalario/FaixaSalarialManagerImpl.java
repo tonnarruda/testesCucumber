@@ -3,6 +3,7 @@ package com.fortes.rh.business.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -21,6 +22,7 @@ import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TCargo;
@@ -333,9 +335,33 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 			
 			getDao().remove(faixaIds);
 		}
-		
 	}
 
+	public Collection<FaixaSalarial> geraDadosRelatorioResumidoColaboradoresPorCargoXLS(List<HistoricoColaborador> historicoColaboradores){
+		Collection<FaixaSalarial> faixas = new ArrayList<FaixaSalarial>();
+		FaixaSalarial faixaSalarialAnterior = new FaixaSalarial();
+		FaixaSalarial faixaSalarialAtual = new FaixaSalarial();
+		
+		int qtdColaboradoresPorFaixa = 1;
+		
+		for (int indice = 1; indice < historicoColaboradores.size(); indice++) {
+			faixaSalarialAnterior = historicoColaboradores.get(indice-1).getFaixaSalarial();
+			faixaSalarialAtual = historicoColaboradores.get(indice).getFaixaSalarial();
+			
+			if(faixaSalarialAtual.getId().equals(faixaSalarialAnterior.getId()))
+				qtdColaboradoresPorFaixa++;
+			else{
+				faixaSalarialAnterior.setQtdColaboradores(qtdColaboradoresPorFaixa);
+				faixas.add(faixaSalarialAnterior);
+				qtdColaboradoresPorFaixa = 1;
+			}
+		}
+		faixaSalarialAtual.setQtdColaboradores(qtdColaboradoresPorFaixa);
+		faixas.add(faixaSalarialAtual);
+		
+		return faixas;
+	}
+	
 	public void updateAC(TCargo tCargo)
 	{
 		getDao().updateAC(tCargo);
@@ -371,10 +397,6 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		return getDao().findComHistoricoAtualByEmpresa(empresaId, semCodigoAC);
 	}
 
-	public Collection<FaixaSalarial> relatorioColaboradoresPorCargoResumidoXLS(boolean exibirEstabelecimento, boolean exibirAreaOrganizacional, Long... empresasIds){
-		return getDao().colaboradoresPorCargoFaixa(exibirEstabelecimento, exibirAreaOrganizacional, empresasIds);
-	}
-	
 	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}

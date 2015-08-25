@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.1xx.1xx" db="" data="xx/xx/2015">
+		<Item visivel="S" motivo="S20150100136"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Novo campo para exibir o estabelecimento nos relatórios.]]></Item>
 		<Item visivel="S" motivo="S20150700319"><![CDATA[C&S > Painel de Indicadores: Nova opção para imprimir os gráficos dos indicadores de evoluções salariais e promoções.]]></Item>
 		<Item visivel="S" motivo="S20150800000"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência> Inserir/Editar: Novo alerta para validar perguntas subjetivas sem respostas.]]></Item>
 		<Item visivel="S" motivo="S20150500088"><![CDATA[T&D > Painel de Indicadores: Novo gráfico de custo por curso.]]></Item>
@@ -122,7 +123,7 @@
 	<Versao id="1.1.142.171" bd="" data="24/03/2015">
 		<Item visivel="S" motivo="S20141200045"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Novas opções de filtragem por área organizacional e motivo da solicitação.]]></Item>
 		<Item visivel="S" motivo="S20140800023"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Inserir/Editar: Exibir somente as áreas organizacionais que estão sob a responsabilidade do usuário logado.]]></Item>
-		<Item visivel="S" motivo="S20150100136"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Novo campo para exibir a área organizacional no relatório em formato xls.]]></Item>
+		<Item visivel="S" motivo="S20150100136"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Novo campo para exibir a área organizacional nos relatórios.]]></Item>
 		<Item visivel="S" motivo="P20150300112"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Perguntas > Editar: Ajuste na inconsistência ao tentar adicionar novas opções de respostas nas perguntas objetivas.]]></Item>
 		<Item visivel="S" motivo="S20150300008"><![CDATA[Aval. Desempenho > Cadastros > Avaliações de Desempenho/Acomp. do Período de Experiência > Imprimir: Possibilidade de escolher a impressão das perguntas por ordem ou por aspecto.]]></Item>
 		<Item visivel="S" motivo="S20140700206"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho > Imprimir questionário: Nova opção para impressão do questionário das avaliações não respondidas, contendo as competências exigidas pelo cargo.]]></Item>

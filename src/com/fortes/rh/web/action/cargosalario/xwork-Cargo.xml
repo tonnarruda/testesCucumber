@@ -266,33 +266,6 @@
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
-			<result name="successResumidoAreaOrganizacionalXls" type="xls">
-				<param name="dataSource">faixasDoCargo</param>
-				<param name="documentName">colaboradoresPorCargosResumido.xls</param>
-				<param name="sheetName">Planilha1</param>
-				<param name="columns">Quantidade,Cargo / Faixa Salarial,Área Organizacional</param>
-				<param name="properties">qtdColaboradores,descricao,areaOrganizacionalNome</param>
-				<param name="reportFilter">reportFilter</param>
-				<param name="reportTitle">reportTitle</param>
-			</result>
-			<result name="successResumidoEstabelecimentoXls" type="xls">
-				<param name="dataSource">faixasDoCargo</param>
-				<param name="documentName">colaboradoresPorCargosResumido.xls</param>
-				<param name="sheetName">Planilha1</param>
-				<param name="columns">Quantidade,Cargo / Faixa Salarial,Estabelecimento</param>
-				<param name="properties">qtdColaboradores,descricao,projectionEstabelecimentoNome</param>
-				<param name="reportFilter">reportFilter</param>
-				<param name="reportTitle">reportTitle</param>
-			</result>
-			<result name="successResumidoEstabelecimentoAreaOrganizacionalXls" type="xls">
-				<param name="dataSource">faixasDoCargo</param>
-				<param name="documentName">colaboradoresPorCargosResumido.xls</param>
-				<param name="sheetName">Planilha1</param>
-				<param name="columns">Quantidade,Cargo / Faixa Salarial,Estabelecimento,Área Organizacional</param>
-				<param name="properties">qtdColaboradores,descricao,projectionEstabelecimentoNome,areaOrganizacionalNome</param>
-				<param name="reportFilter">reportFilter</param>
-				<param name="reportTitle">reportTitle</param>
-			</result>
 			<result name="input" type="redirect">prepareRelatorioColaboradorCargo.action</result>
 			<result name="error" type="redirect">prepareRelatorioColaboradorCargo.action</result>
 		</action>

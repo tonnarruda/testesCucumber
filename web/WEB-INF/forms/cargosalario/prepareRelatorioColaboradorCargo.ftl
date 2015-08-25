@@ -35,9 +35,17 @@
 			}
 		}
 		
-		function desabilitaOutroCheck(esseCheck , outroCheck)
+		function desabilitaOutroCheck(esseCheck , outrosChecks)
 		{
-			$("#" + outroCheck).attr('disabled', $("#" + esseCheck).attr("checked"));
+			var checks= outrosChecks.split(",");
+			$(checks).each(function (i, check) {
+				$("#" + check).attr('disabled', $("#" + esseCheck).attr("checked"));
+			});
+		}
+		
+		function desabilitaResumido()
+		{
+			$('#resumido').toggleDisabled($('#exibirEstabelecimento').is(':checked') || $('#exibirAreaOrganizacional').is(':checked') || $('#exibirSalario').is(':checked'));	
 		}
 		
 		function submeterAction(action)
@@ -125,15 +133,15 @@
 		<@frt.checkListBox name="cargosCheck" id="cargosCheck" label="Cargos" list="cargosCheckList" filtro="true" selectAtivoInativo="true" />
 		
 		<@ww.select label="Colocação do Colaborador" name="vinculo" id="vinculo" list="vinculos" headerKey="" headerValue="Todas" cssStyle="width: 180px;" />
-		<@ww.checkbox label="Exibir relatório resumido" name="relatorioResumido" id="resumido" labelPosition="left" onchange="desabilitaOutroCheck('resumido', 'exibirSalario')"/>
+		<@ww.checkbox label="Exibir relatório resumido" name="relatorioResumido" id="resumido" labelPosition="left" onchange="desabilitaOutroCheck('resumido', 'exibirSalario,exibirEstabelecimento,exibirAreaOrganizacional');"/>
 		
 		<@authz.authorize ifAllGranted="EXIBIR_SALARIO_RELAT_COLAB_CARGO">
-			<@ww.checkbox label="Exibir Salário" name="exibirSalario" id="exibirSalario" labelPosition="left" onchange="desabilitaOutroCheck('exibirSalario', 'resumido')"/>
+			<@ww.checkbox label="Exibir Salário" name="exibirSalario" id="exibirSalario" labelPosition="left" onchange="desabilitaOutroCheck('exibirSalario', 'resumido'),desabilitaResumido()"/>
 		</@authz.authorize>
 
-		<@ww.checkbox label="Exibir estabelecimento" name="exibirEstabelecimento" id="exibirEstabelecimento" labelPosition="left" onchange="exibirBtnRelatorio();" />
+		<@ww.checkbox label="Exibir estabelecimento" name="exibirEstabelecimento" id="exibirEstabelecimento" labelPosition="left" onchange="exibirBtnRelatorio(),desabilitaOutroCheck('exibirEstabelecimento', 'resumido'),desabilitaResumido();" />
 		
-		<@ww.checkbox label="Exibir área organizacional" name="exibirAreaOrganizacional" id="exibirAreaOrganizacional" labelPosition="left" onchange="exibirBtnRelatorio();" />
+		<@ww.checkbox label="Exibir área organizacional" name="exibirAreaOrganizacional" id="exibirAreaOrganizacional" labelPosition="left" onchange="exibirBtnRelatorio(),desabilitaOutroCheck('exibirAreaOrganizacional', 'resumido'),desabilitaResumido();" />
 		
 	</@ww.form>
 

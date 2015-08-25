@@ -1,8 +1,10 @@
 package com.fortes.rh.test.business.cargosalario;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
@@ -16,12 +18,14 @@ import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.web.ws.AcPessoalClientCargo;
 
 public class FaixaSalarialManagerTest extends MockObjectTestCase
@@ -712,56 +716,90 @@ public class FaixaSalarialManagerTest extends MockObjectTestCase
 		assertEquals(tCargo.getDescricaoACPessoal(), faixaSalarial.getNomeACPessoal());
 	}
 	
-	public void testQtdColaboradoresPorCargoFaixa() {
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-
-		Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
-		faixaSalarials.add(FaixaSalarialFactory.getEntity(1L));
-
-		faixaSalarialDao.expects(once()).method("colaboradoresPorCargoFaixa").with(eq(false), eq(false), ANYTHING).will(returnValue(faixaSalarials));
-
-		Collection<FaixaSalarial> retorno = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(false, false, empresa.getId());
-
-		assertEquals(faixaSalarials.size(), retorno.size());
+	public void testGeraDadosRelatorioResumidoColaboradoresPorCargoXLSComVariosColaboradoresNoUltimoCargo() {
+		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity(1L);
+		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity(2L);
+		FaixaSalarial faixaSalarial3 = FaixaSalarialFactory.getEntity(3L);
+		FaixaSalarial faixaSalarial4 = FaixaSalarialFactory.getEntity(4L);
+		FaixaSalarial faixaSalarial5 = FaixaSalarialFactory.getEntity(5L);
+		
+		HistoricoColaborador historicoColaborador1FaixaSalarial1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1FaixaSalarial1.setFaixaSalarial(faixaSalarial1);
+		HistoricoColaborador historicoColaborador2FaixaSalarial1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2FaixaSalarial1.setFaixaSalarial(faixaSalarial1);
+		
+		HistoricoColaborador historicoColaborador1FaixaSalarial2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1FaixaSalarial2.setFaixaSalarial(faixaSalarial2);
+			
+		HistoricoColaborador historicoColaborador1FaixaSalarial3 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1FaixaSalarial3.setFaixaSalarial(faixaSalarial3);
+		HistoricoColaborador historicoColaborador2FaixaSalarial3 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2FaixaSalarial3.setFaixaSalarial(faixaSalarial3);
+		HistoricoColaborador historicoColaborador3FaixaSalarial3 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador3FaixaSalarial3.setFaixaSalarial(faixaSalarial3);
+		
+		HistoricoColaborador historicoColaborador1FaixaSalarial4 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1FaixaSalarial4.setFaixaSalarial(faixaSalarial4);
+		
+		HistoricoColaborador historicoColaborador1FaixaSalarial5 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1FaixaSalarial5.setFaixaSalarial(faixaSalarial5);
+		HistoricoColaborador historicoColaborador2FaixaSalarial5 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2FaixaSalarial5.setFaixaSalarial(faixaSalarial5);
+		HistoricoColaborador historicoColaborador3FaixaSalarial5 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador3FaixaSalarial5.setFaixaSalarial(faixaSalarial5);
+		HistoricoColaborador historicoColaborador4FaixaSalarial5 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador4FaixaSalarial5.setFaixaSalarial(faixaSalarial5);
+		HistoricoColaborador historicoColaborador5FaixaSalarial5 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador5FaixaSalarial5.setFaixaSalarial(faixaSalarial5);
+		
+		List<HistoricoColaborador> historicoColaboradores = Arrays.asList(historicoColaborador1FaixaSalarial1, historicoColaborador2FaixaSalarial1, historicoColaborador1FaixaSalarial2, historicoColaborador1FaixaSalarial3,
+				historicoColaborador2FaixaSalarial3, historicoColaborador3FaixaSalarial3, historicoColaborador1FaixaSalarial4, historicoColaborador1FaixaSalarial5, historicoColaborador2FaixaSalarial5,
+				historicoColaborador3FaixaSalarial5, historicoColaborador4FaixaSalarial5,historicoColaborador5FaixaSalarial5);
+		
+		List<FaixaSalarial> faixaSalarials = (List<FaixaSalarial>) faixaSalarialManager.geraDadosRelatorioResumidoColaboradoresPorCargoXLS(historicoColaboradores);
+		assertEquals(5, faixaSalarials.size());
+		assertEquals(2, faixaSalarials.get(0).getQtdColaboradores());
+		assertEquals(1, faixaSalarials.get(1).getQtdColaboradores());
+		assertEquals(3, faixaSalarials.get(2).getQtdColaboradores());
+		assertEquals(1, faixaSalarials.get(3).getQtdColaboradores());
+		assertEquals(5, faixaSalarials.get(4).getQtdColaboradores());
 	}
 	
-	public void testQtdColaboradoresPorCargoFaixaAreaOrganizacional() {
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-
-		Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
-		faixaSalarials.add(FaixaSalarialFactory.getEntity(1L));
-
-		faixaSalarialDao.expects(once()).method("colaboradoresPorCargoFaixa").with(eq(false), eq(true), eq(new Long[]{empresa.getId()})).will(returnValue(faixaSalarials));
-
-		Collection<FaixaSalarial> retorno = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(false, true, empresa.getId());
-
-		assertEquals(faixaSalarials.size(), retorno.size());
-	}
-	
-	public void testQtdColaboradoresPorCargoFaixaEstabelecimento() {
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-
-		Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
-		faixaSalarials.add(FaixaSalarialFactory.getEntity(1L));
-
-		faixaSalarialDao.expects(once()).method("colaboradoresPorCargoFaixa").with(eq(true), eq(false), eq(new Long[]{empresa.getId()})).will(returnValue(faixaSalarials));
-
-		Collection<FaixaSalarial> retorno = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(true, false, empresa.getId());
-
-		assertEquals(faixaSalarials.size(), retorno.size());
-	}
-	
-	public void testQtdColaboradoresPorCargoFaixaEstabelecimentoAreaOrganizacional() {
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-
-		Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
-		faixaSalarials.add(FaixaSalarialFactory.getEntity(1L));
-
-		faixaSalarialDao.expects(once()).method("colaboradoresPorCargoFaixa").with(eq(true), eq(true), eq(new Long[]{empresa.getId()})).will(returnValue(faixaSalarials));
-
-		Collection<FaixaSalarial> retorno = faixaSalarialManager.relatorioColaboradoresPorCargoResumidoXLS(true, true, empresa.getId());
-
-		assertEquals(faixaSalarials.size(), retorno.size());
+	public void testGeraDadosRelatorioResumidoColaboradoresPorCargoXLSComApenasUmColaboradorNoUltimoCargo() {
+		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity(1L);
+		FaixaSalarial faixaSalarial2 = FaixaSalarialFactory.getEntity(2L);
+		FaixaSalarial faixaSalarial3 = FaixaSalarialFactory.getEntity(3L);
+		FaixaSalarial faixaSalarial4 = FaixaSalarialFactory.getEntity(5L);
+		
+		HistoricoColaborador historicoColaborador1FaixaSalarial1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1FaixaSalarial1.setFaixaSalarial(faixaSalarial1);
+		HistoricoColaborador historicoColaborador2FaixaSalarial1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2FaixaSalarial1.setFaixaSalarial(faixaSalarial1);
+		
+		HistoricoColaborador historicoColaborador1FaixaSalarial2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1FaixaSalarial2.setFaixaSalarial(faixaSalarial2);
+			
+		HistoricoColaborador historicoColaborador1FaixaSalarial3 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1FaixaSalarial3.setFaixaSalarial(faixaSalarial3);
+		HistoricoColaborador historicoColaborador2FaixaSalarial3 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2FaixaSalarial3.setFaixaSalarial(faixaSalarial3);
+		HistoricoColaborador historicoColaborador3FaixaSalarial3 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador3FaixaSalarial3.setFaixaSalarial(faixaSalarial3);
+		
+		HistoricoColaborador historicoColaborador1FaixaSalarial4 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1FaixaSalarial4.setFaixaSalarial(faixaSalarial4);
+		HistoricoColaborador historicoColaborador2FaixaSalarial4 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2FaixaSalarial4.setFaixaSalarial(faixaSalarial4);
+		
+		List<HistoricoColaborador> historicoColaboradores = Arrays.asList(historicoColaborador1FaixaSalarial1, historicoColaborador2FaixaSalarial1, historicoColaborador1FaixaSalarial2, historicoColaborador1FaixaSalarial3,
+				historicoColaborador2FaixaSalarial3, historicoColaborador3FaixaSalarial3, historicoColaborador1FaixaSalarial4,historicoColaborador2FaixaSalarial4);
+		
+		List<FaixaSalarial> faixaSalarials = (List<FaixaSalarial>) faixaSalarialManager.geraDadosRelatorioResumidoColaboradoresPorCargoXLS(historicoColaboradores);
+		assertEquals(4, faixaSalarials.size());
+		assertEquals(2, faixaSalarials.get(0).getQtdColaboradores());
+		assertEquals(1, faixaSalarials.get(1).getQtdColaboradores());
+		assertEquals(3, faixaSalarials.get(2).getQtdColaboradores());
+		assertEquals(2, faixaSalarials.get(3).getQtdColaboradores());
 	}
 }
 

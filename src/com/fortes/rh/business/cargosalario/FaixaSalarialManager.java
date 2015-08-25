@@ -2,12 +2,14 @@ package com.fortes.rh.business.cargosalario;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.fortes.business.GenericManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.security.spring.aop.callback.FaixaSalarialAuditorCallbackImpl;
@@ -45,5 +47,6 @@ public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 	Collection<FaixaSalarial> findByCargos(Long[] cargosIds);
 	Collection<FaixaSalarial> findComHistoricoAtual(Long[] faixasSalariaisIds);
 	Collection<FaixaSalarial> findComHistoricoAtualByEmpresa(Long empresaId, boolean semCodigoAC);
-	Collection<FaixaSalarial> relatorioColaboradoresPorCargoResumidoXLS(boolean exibirEstabelecimento, boolean exibirAreaOrganizacional, Long... empresasIds);
+	public Collection<FaixaSalarial> geraDadosRelatorioResumidoColaboradoresPorCargoXLS(List<HistoricoColaborador> historicoColaboradores);
+
 }
