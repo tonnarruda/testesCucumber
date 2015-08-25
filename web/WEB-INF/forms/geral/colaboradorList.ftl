@@ -58,9 +58,19 @@
 		
 		function resultComissaoByColaborador(data, colaboradorId, colaboradorNome)
 		{
-			link = "prepareDesliga.action?colaborador.id="+colaboradorId+
-					"&nomeBusca="+document.getElementById('nomeBusca').value+
-					"&cpfBusc="+limpaCamposMascaraCpf(document.getElementById('cpfBusca').value);
+			<#if integraAc && !colaborador.naoIntegraAc>
+				<#if empresaSistema.solicitarConfirmacaoDesligamento>
+					link = "prepareDesliga.action?colaborador.id="+colaboradorId+
+						"&nomeBusca="+document.getElementById('nomeBusca').value+
+						"&cpfBusc="+limpaCamposMascaraCpf(document.getElementById('cpfBusca').value);
+				<#else>
+					link = "prepareDesligaAC.action?colaborador.id="+colaboradorId;
+				</#if>
+			<#else>
+				link = "prepareDesliga.action?colaborador.id="+colaboradorId+
+						"&nomeBusca="+document.getElementById('nomeBusca').value+
+						"&cpfBusc="+limpaCamposMascaraCpf(document.getElementById('cpfBusca').value);
+			</#if>
 			
 			if (data != null){
 				enviarPrepareDesliga(colaboradorId, colaboradorNome, link, data);
@@ -207,7 +217,7 @@
 					<#elseif empresaSistema.solicitarConfirmacaoDesligamento>
 						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Solicitar desligamento" imgName="desliga_colab.gif" />
 					<#else>
-						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="prepareDesligaAC.action?colaborador.id=${colaborador.id}" imgTitle="Solicitação de desligamento no Fortes Pessoal" imgName="desliga_colab.gif"/>
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Solicitação de desligamento no Fortes Pessoal" imgName="desliga_colab.gif" />
 					</#if>
 				<#else>
 					<#if empresaSistema.solicitarConfirmacaoDesligamento && !colaborador.dataSolicitacaoDesligamento?exists>
