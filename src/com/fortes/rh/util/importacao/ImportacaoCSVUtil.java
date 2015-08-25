@@ -58,6 +58,27 @@ public class ImportacaoCSVUtil
 				setCampos(campos, opcao);
 			}
 		}
+		
+		validaExportação(opcao); 
+	}
+
+	private void validaExportação(OpcaoImportacao opcao) throws FortesException 
+	{
+		switch (opcao)
+		{
+			case AFASTAMENTOS_TRU: 
+				if (afastamentos.size() == 0)
+					throw new FortesException("Não foram encontradas linhas válidas. Verifique o arquivo.");
+				break;
+			case COLABORADORES_DADOS_PESSOAIS:
+				if (colaboradores.size() == 0)
+					throw new FortesException("Não foram encontradas linhas válidas. Verifique o arquivo.");
+				break;
+			case EPIS:
+				if (episMap.isEmpty())
+					throw new FortesException("Não foram encontradas linhas com dados de EPI válidos. Verifique o arquivo.");
+				break;
+		}
 	}
 	
 	private void setCampos(String[] campos, OpcaoImportacao opcaoImportacao) throws Exception
@@ -79,7 +100,6 @@ public class ImportacaoCSVUtil
 	//Cód. Empregado;Nome Completo;Nome Comercial;Doença(Motivo Afastamento);Data Inicial;Data Final;Médico;CRM;CID;Observação
 	private void setAfastamento(String[] campos) throws Exception
 	{	
-		boolean naoAchouLinhaValida = true;
 		// linhas válidas começam com o código do empregado. O resto é cabeçalho, etc.
 		if (campos.length == 10 && StringUtils.isNumeric(campos[0]))
 		{
@@ -99,17 +119,12 @@ public class ImportacaoCSVUtil
 			colaboradorAfastamento.setObservacao(campos[9]);
 
 			afastamentos.add(colaboradorAfastamento);
-			naoAchouLinhaValida = false;
 		}
-		
-		if (naoAchouLinhaValida)
-			throw new FortesException("Não foram encontradas linhas válidas. Verifique o arquivo.");
 	}
 	
 	//"Matricula;CPF;Endereço;Numero;Complemento Endereço;Cidade(ID);Estado(ID);Bairro;Cep;ddd;telefone;Celular;Grau Instrução(COD. DICIONARIO)"
 	private void setColaborador(String[] campos) throws FortesException {
 		
-		boolean naoAchouLinhaValida = true;
 		if (campos.length >= 13 && campos[1] != null)
 		{
 			Colaborador colaborador = new Colaborador();
@@ -176,19 +191,13 @@ public class ImportacaoCSVUtil
 			colaborador.setPessoalEscolaridade(campos[12]);
 			
 			colaboradores.add(colaborador);
-			
-			naoAchouLinhaValida = false;
 		}
-		
-		if (naoAchouLinhaValida)
-			throw new FortesException("Não foram encontradas linhas válidas. Verifique o arquivo.");
 	}
 	
 	//Código EPI|#|Nome do EPI|#|Nome do Fabricante|#|Status|#|É Fardamento|#|Data do Histórico EPI|#|Data de Vencimento|#|Número do CA|#| Percentual de Atenuação do Risco|#|Período Recomendado de Uso|#|Código da Categoria|#|Nome da Categoria
 	private void setEpi(String[] campos) throws Exception
 	{	
-		boolean naoAchouLinhaValida = true;
-		if (campos.length == 12)
+		if (campos.length == 12 && StringUtils.isNumeric(campos[0]))
 		{
 			Epi epi;
 			EpiHistorico epiHistorico;
@@ -216,12 +225,7 @@ public class ImportacaoCSVUtil
 			epiHistorico.setAtenuacao(campos[8]);
 			epiHistorico.setValidadeUso(new Integer(campos[9]));
 			epi.getEpiHistoricos().add(epiHistorico);
-
-			naoAchouLinhaValida = false;
 		}
-		
-		if (naoAchouLinhaValida)
-			throw new FortesException("Não foram encontradas linhas com dados de EPI válidos. Verifique o arquivo.");
 	}
 
 	public Collection<ColaboradorAfastamento> getAfastamentos() {

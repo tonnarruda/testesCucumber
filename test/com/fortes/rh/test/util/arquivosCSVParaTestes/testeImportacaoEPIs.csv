@@ -1,0 +1,9 @@
+Empresa Bla;Teste de arquivo;em 25/08/2015;;;;;;;;;
+Cód.;Nome;Fabricante;Ativo;Fardamento;Data;VencimentoCA;CA;Atenuação;Validade de Uso;TipoEpi Codigo;TipoEpi Nome
+123;Bota;Me acuda;true;false;01/06/2015;10/05/2020;12132156489;Sei lá o que é;3;001;Tipo 1
+kdasjfksj dlskf dskfçlds;;;;;;;;;;;
+256;Luva;Me acuda;true;false;01/07/2015;01/01/2019;105648548;Sei lá o que é;60;001;Tipo 1
+123;Bota;Me acuda;false;false;01/08/2015;10/05/2020;2141564;Sei lá o que é;20;001;Tipo 1
+258;Camisa;Farrapos;true;true;10/07/2015;10/05/2020;54545456;Sei lá o que é;5;002;Tipo 2
+linha invalida;;;;;;;;;;;
+123;Bota;Me acuda;false;false;01/10/2015;10/05/2020;2141564;Sei lá o que é;20;001;Tipo 1
