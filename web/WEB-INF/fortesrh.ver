@@ -4,6 +4,7 @@
 		<Item visivel="S" motivo="S20150100136"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Novo campo para exibir o estabelecimento nos relatórios.]]></Item>
 		<Item visivel="S" motivo="S20150700319"><![CDATA[C&S > Painel de Indicadores: Nova opção para imprimir os gráficos dos indicadores de evoluções salariais e promoções.]]></Item>
 		<Item visivel="S" motivo="S20150800000"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência> Inserir/Editar: Novo alerta para validar perguntas subjetivas sem respostas.]]></Item>
+		<Item visivel="S" motivo="S20150700181"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Inserir/Editar: Nova opção para disponibilizar anexos do curso para os colaboradores da turma.]]></Item>
 		<Item visivel="S" motivo="S20150500088"><![CDATA[T&D > Painel de Indicadores: Novo gráfico de custo por curso.]]></Item>
 		<Item visivel="S" motivo="S20150700330"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Nova opção de colocação do empregado como sócio.]]></Item>
 		<Item visivel="S" motivo="S20150700310"><![CDATA[SESMT > Movimentações > Afastamentos: Nova opção de filtro por matrícula do colaborador.]]></Item>

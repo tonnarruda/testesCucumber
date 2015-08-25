@@ -5,7 +5,6 @@ import java.util.Collection;
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.TurmaDocumentoAnexoDao;
 import com.fortes.rh.model.desenvolvimento.TurmaDocumentoAnexo;
-import com.fortes.rh.model.geral.DocumentoAnexo;
 
 public class TurmaDocumentoAnexoManagerImpl extends GenericManagerImpl<TurmaDocumentoAnexo, TurmaDocumentoAnexoDao> implements TurmaDocumentoAnexoManager
 {

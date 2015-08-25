@@ -65,6 +65,7 @@ import com.fortes.rh.test.business.desenvolvimento.ColaboradorTurmaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.CursoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.DNTManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.DiaTurmaManagerTest;
+import com.fortes.rh.test.business.desenvolvimento.TurmaDocumentoAnexoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.TurmaManagerTest;
 import com.fortes.rh.test.business.geral.AreaFormacaoManagerTest;
 import com.fortes.rh.test.business.geral.AreaInteresseManagerTest;
@@ -221,6 +222,7 @@ import com.fortes.rh.test.dao.hibernate.desenvolvimento.CursoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.DNTDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.DiaTurmaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.TurmaDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.desenvolvimento.TurmaDocumentoAnexoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.AreaFormacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.AreaInteresseDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.geral.AreaOrganizacionalDaoHibernateTest;
@@ -786,6 +788,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(TurmaEditActionTest.class);
         suite.addTestSuite(TurmaListActionTest.class);
         suite.addTestSuite(TurmaManagerTest.class);
+        
+        suite.addTestSuite(TurmaDocumentoAnexoDaoHibernateTest.class);
+        suite.addTestSuite(TurmaDocumentoAnexoManagerTest.class);
 
         suite.addTestSuite(DNTDaoHibernateTest.class);
         suite.addTestSuite(DNTManagerTest.class);

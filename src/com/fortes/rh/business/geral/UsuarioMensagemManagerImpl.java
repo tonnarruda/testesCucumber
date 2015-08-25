@@ -44,8 +44,6 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 	public Map<Character, CaixaMensagem> listaMensagens(Long usuarioId, Long empresaId, Long colaboradorId)
 	{
 		Map<Character, CaixaMensagem> caixasMensagens = new LinkedHashMap<Character, CaixaMensagem>();
-		MensagemVO vo;
-		char tp;
 
 		TipoMensagem tipoMensagemPermitidas = new TipoMensagem(true);
 		Character[] arrayTipos = new Character[0];

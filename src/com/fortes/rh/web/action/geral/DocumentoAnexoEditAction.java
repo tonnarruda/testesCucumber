@@ -204,7 +204,7 @@ public class DocumentoAnexoEditAction extends MyActionSupportEdit
 					response.addHeader("Expires", "0");
 					response.addHeader("Pragma", "no-cache");
 					response.addHeader("Content-type", arquivo.getContentType());
-					response.addHeader("Content-Disposition", "filename=" + documentoAnexo.getDescricao() + arquivo.getContentType());
+					response.addHeader("Content-Disposition", "attachment; filename=" + documentoAnexo.getDescricao() + arquivo.getContentType());
 					response.addHeader("Content-Transfer-Encoding", "binary");
 
 					response.getOutputStream().write(arquivo.getBytes());

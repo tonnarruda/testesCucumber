@@ -23,6 +23,7 @@ public class TurmaDocumentoAnexoDaoHibernate extends GenericDaoHibernate<TurmaDo
 		query.executeUpdate();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Collection<TurmaDocumentoAnexo> findByColaborador(Long colaboradorId) 
 	{
 		Criteria criteria = getSession().createCriteria(TurmaDocumentoAnexo.class, "tda");
