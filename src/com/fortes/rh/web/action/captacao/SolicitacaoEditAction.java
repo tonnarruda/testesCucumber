@@ -332,18 +332,11 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
     public String update() throws Exception
     {
-    	if (solicitacao.getDataStatus() == null) {
-    		if (solicitacao.getObservacaoLiberador() != null && solicitacao.getObservacaoLiberador().equals(obsStatusSolicitacaoAnterior)) {
-    			solicitacao.setDataStatus(dataStatusSolicitacaoAnterior);
-			} else {
-				solicitacao.setDataStatus(new Date());
-			}
-		}
+    	if (solicitacao.getDataStatus() == null && solicitacao.getStatus() != statusSolicitacaoAnterior)
+			solicitacao.setDataStatus(new Date());
     	
-    	if (solicitacao.getStatus() != statusSolicitacaoAnterior) {
+    	if (solicitacao.getStatus() != statusSolicitacaoAnterior)
     		solicitacao.setLiberador(getUsuarioLogado());
-		}
-    	
     	
         if (bairrosCheck != null)
         	solicitacao.setBairros(montaBairros());
