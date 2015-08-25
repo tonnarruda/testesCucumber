@@ -50,6 +50,7 @@ public class ImportacaoCSVUtil
 		{
 			String[] campos = null;
 			linha = br.readLine();
+			linha = linha.replaceAll("\"","");
 			
 			if (linha != null && linha.indexOf(delimitador) != -1) 
 			{
