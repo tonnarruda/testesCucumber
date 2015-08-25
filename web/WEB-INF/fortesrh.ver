@@ -7,6 +7,7 @@
 		<Item visivel="S" motivo="S20150700181"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Inserir/Editar: Nova opção para disponibilizar anexos do curso para os colaboradores da turma.]]></Item>
 		<Item visivel="S" motivo="S20150500088"><![CDATA[T&D > Painel de Indicadores: Novo gráfico de custo por curso.]]></Item>
 		<Item visivel="S" motivo="S20150700330"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Nova opção de colocação do empregado como sócio.]]></Item>
+		<Item visivel="S" motivo="P15080000142"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Ajuste da inconsitência ao tentar desligar colaboradores eleitos para a CIPA.]]></Item>
 		<Item visivel="S" motivo="S20150700310"><![CDATA[SESMT > Movimentações > Afastamentos: Nova opção de filtro por matrícula do colaborador.]]></Item>
 		<Item visivel="S" motivo="S20150400194"><![CDATA[Utilitários > Cadastros > Perfis: Nova permissão para alterar a data do status da solicitação.]]></Item>
 		<Item visivel="S" motivo="S20150800044"><![CDATA[Utilitários > Configurações > Sistema: Nova opção para configurar tamanho máximo para upload de documentos anexos pelo módulo externo.]]></Item>
