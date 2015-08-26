@@ -43,7 +43,8 @@
 		
 	<#else>
 		<#if emProcessoExportacaoAC>
-			<P>Se todas as pendências do controle de integração com o sistema RH no sistema Fortes Pessoal tiverem sido confirmadas, favor entrar em contato com o suporte do sistema RH para concluir a exportação dos dados.</p>   
+			<P>Se todas as pendências do controle de integração com o sistema RH no sistema Fortes Pessoal tiverem sido confirmadas, favor entrar em contato com o suporte do sistema RH para concluir a exportação dos dados.</p>
+			<P>Suporte RH: (85) 4005.1127</P>   
 		<#else>
 			<p>Usuário sem permissão de acesso.<br />
 			Uso exclusivo para o suporte técnico.</p>

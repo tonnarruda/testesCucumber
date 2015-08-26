@@ -125,10 +125,13 @@ public class ValidationExceptionInterceptor implements Interceptor
 
 	private void verificaPendenciaExportacaoAC(MyActionSupport actionSuport) 
 	{
-		SecurityContext sc = (SecurityContext) ActionContext.getContext().getSession().get("ACEGI_SECURITY_CONTEXT");
-		if(!actionSuport.toString().contains("com.fortes.rh.web.action.exportacao.ExportacaoACAction") && sc != null && !sc.getAuthentication().getPrincipal().equals("anonymousUser"))
-		{
-			try {
+		try {
+			String action = ServletActionContext.getRequest().getServletPath();
+			SecurityContext sc = (SecurityContext) ActionContext.getContext().getSession().get("ACEGI_SECURITY_CONTEXT");
+			
+			if(!actionSuport.toString().contains("com.fortes.rh.web.action.exportacao.ExportacaoACAction") && !action.contains("/contatos.action") 
+					&& sc != null && !sc.getAuthentication().getPrincipal().equals("anonymousUser"))
+			{
 				Empresa empresa = SecurityUtil.getEmpresaSession(ActionContext.getContext().getSession());
 				EmpresaManager empresaManager = (EmpresaManager) SpringUtil.getBean("empresaManager");
 				if(empresa != null && empresa.getId() != null && empresaManager.emProcessoExportacaoAC(empresa.getId()))
@@ -138,9 +141,9 @@ public class ValidationExceptionInterceptor implements Interceptor
 					HttpServletResponse response = ServletActionContext.getResponse();
 					response.sendRedirect(parametrosDoSistemaManager.getContexto() + "/exportacao/prepareExportarAC.action");
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
