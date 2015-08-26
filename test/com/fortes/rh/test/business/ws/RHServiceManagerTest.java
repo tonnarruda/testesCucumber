@@ -315,6 +315,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 	public void testAtualizarCodigoEmpregado() throws Exception
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
 		String empresaCodigoAC = "123456";
 		String grupoAC = "121";
 		String colaboradorCodigoAC = "123123";
@@ -325,7 +327,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		colaborador.setCodigoAC(colaboradorCodigoAC);
 		
 		colaboradorManager.expects(once()).method("findByCodigoAC").with(eq(colaboradorCodigoAC), eq(empresaCodigoAC), eq(grupoAC)).will(returnValue(colaborador));
-		colaboradorManager.expects(once()).method("setCodigoColaboradorAC").with(eq(codigoNovo), eq(colaborador.getId())).will(returnValue(true));
+		colaboradorManager.expects(once()).method("setCodigoColaboradorAC").with(eq(codigoNovo), eq(colaborador.getId()), eq(empresa)).will(returnValue(true));
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresaCodigoAC), eq(grupoAC)).will(returnValue(empresa));
 	
 		assertEquals(true, rHServiceManager.atualizarCodigoEmpregado(grupoAC, empresaCodigoAC, colaboradorCodigoAC, codigoNovo).isSucesso());
 	}

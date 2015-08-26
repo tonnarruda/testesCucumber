@@ -40,6 +40,36 @@ $_$;
 ALTER FUNCTION public.alter_trigger(character, character) OWNER TO postgres;
 
 --
+-- Name: atualiza_matricula_to_codigofortespessoal(bigint[], double precision); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION atualiza_matricula_to_codigofortespessoal(id_empresas bigint[], percentualcompatibilidadematriculacodigofp double precision) RETURNS void
+    LANGUAGE plpgsql
+    AS $$     
+	DECLARE 
+		id_empresa BIGINT; 
+	BEGIN  
+		FOR id_empresa IN select unnest(id_empresas) LOOP 
+			IF (cast ((select count(id) from colaborador where codigoac is not null and empresa_id = id_empresa) as double precision)) <> 0 
+				and (select 
+				(cast ((select count(id) from colaborador where matricula = codigoac and codigoac is not null and empresa_id = id_empresa) as double precision) 
+				/ cast ((select count(id) from colaborador where codigoac is not null and empresa_id = id_empresa) as double precision))   
+				>= cast(percentualCompatibilidadeMatriculaCodigoFP as double precision)/100)  
+			THEN 
+				update colaborador set matricula = codigoac where empresa_id = id_empresa;  
+
+				IF (select acIntegra from empresa where id = id_empresa) THEN 
+					update empresa set vincularMatriculaCodigoFortesPessoal = true where id = id_empresa; 
+				END IF;  
+			END IF;  
+		END LOOP; 	
+	END;   
+$$;
+
+
+ALTER FUNCTION public.atualiza_matricula_to_codigofortespessoal(id_empresas bigint[], percentualcompatibilidadematriculacodigofp double precision) OWNER TO postgres;
+
+--
 -- Name: dependent_tables(character varying, bigint); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
@@ -3172,6 +3202,8 @@ CREATE TABLE empresa (
     considerarsabadonoabsenteismo boolean DEFAULT false NOT NULL,
     solpessoalreabrirsolicitacao boolean DEFAULT false,
     considerardomingonoabsenteismo boolean DEFAULT false NOT NULL,
+    processoexportacaoac boolean DEFAULT false NOT NULL,
+    vincularmatriculacodigofortespessoal boolean DEFAULT false NOT NULL,
     CONSTRAINT no_blank_codigoac_empresa CHECK (((codigoac)::text <> ''::text)),
     CONSTRAINT no_blank_grupoac_empresa CHECK (((grupoac)::text <> ''::text))
 );
@@ -5560,7 +5592,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 636, false);
+SELECT pg_catalog.setval('papel_sequence', 637, false);
 
 
 --
@@ -5602,7 +5634,10 @@ CREATE TABLE parametrosdosistema (
     suporteveica boolean DEFAULT false,
     horariosbackup text DEFAULT '2'::text,
     inibirgerarrelatoriopesquisaanonima boolean DEFAULT false,
-    quantidadecolaboradoresrelatoriopesquisaanonima integer DEFAULT 1
+    quantidadecolaboradoresrelatoriopesquisaanonima integer DEFAULT 1,
+    bancoconsistente boolean DEFAULT true NOT NULL,
+    quantidadeconstraints integer DEFAULT 0,
+    tamanhomaximoupload integer
 );
 
 
@@ -7009,6 +7044,40 @@ ALTER TABLE public.turma_avaliacaoturma_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('turma_avaliacaoturma_sequence', 1, false);
+
+
+--
+-- Name: turma_documentoanexo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE turma_documentoanexo (
+    id bigint NOT NULL,
+    turma_id bigint NOT NULL,
+    documentoanexos_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.turma_documentoanexo OWNER TO postgres;
+
+--
+-- Name: turma_documentoanexo_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE turma_documentoanexo_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.turma_documentoanexo_sequence OWNER TO postgres;
+
+--
+-- Name: turma_documentoanexo_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('turma_documentoanexo_sequence', 1, false);
 
 
 --
@@ -30020,7 +30089,7 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 -- Data for Name: empresa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, exibirdadosambiente, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, emailresplimitecontrato, imganiversarianteurl, mensagemcartaoaniversariante, turnoverporsolicitacao, obrigarambientefuncao, verificaparentesco, controlariscopor, solpessoalexibircolabsubstituido, codigotrucurso, exibirlogoempresappraltcat, solpessoalexibirsalario, solpessoalobrigardadoscomplementares, formulaturnover, solicitarconfirmacaodesligamento, cnae2, considerarsabadonoabsenteismo, solpessoalreabrirsolicitacao, considerardomingonoabsenteismo) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', false, NULL, '001', false, false, NULL, '', 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', false, false, 'N', 'A', false, false, false, true, false, 1, false, NULL, false, false, false);
+INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, exibirdadosambiente, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, emailresplimitecontrato, imganiversarianteurl, mensagemcartaoaniversariante, turnoverporsolicitacao, obrigarambientefuncao, verificaparentesco, controlariscopor, solpessoalexibircolabsubstituido, codigotrucurso, exibirlogoempresappraltcat, solpessoalexibirsalario, solpessoalobrigardadoscomplementares, formulaturnover, solicitarconfirmacaodesligamento, cnae2, considerarsabadonoabsenteismo, solpessoalreabrirsolicitacao, considerardomingonoabsenteismo, processoexportacaoac, vincularmatriculacodigofortespessoal) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', false, NULL, '001', false, false, NULL, '', 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', false, false, 'N', 'A', false, false, false, true, false, 1, false, NULL, false, false, false, false, false);
 
 
 --
@@ -30869,6 +30938,15 @@ INSERT INTO migrations (name) VALUES ('20150720155218');
 INSERT INTO migrations (name) VALUES ('20150720155715');
 INSERT INTO migrations (name) VALUES ('20150721151803');
 INSERT INTO migrations (name) VALUES ('20150722153513');
+INSERT INTO migrations (name) VALUES ('20150806155637');
+INSERT INTO migrations (name) VALUES ('20150811111034');
+INSERT INTO migrations (name) VALUES ('20150813102231');
+INSERT INTO migrations (name) VALUES ('20150814132817');
+INSERT INTO migrations (name) VALUES ('20150817140951');
+INSERT INTO migrations (name) VALUES ('20150817152345');
+INSERT INTO migrations (name) VALUES ('20150818094233');
+INSERT INTO migrations (name) VALUES ('20150818150631');
+INSERT INTO migrations (name) VALUES ('20150825172731');
 
 
 --
@@ -31028,7 +31106,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (466, 'ROLE_UTI_EMPRESA', 'Sobre...', '/geral/empresa/sobre.action', 9, true, NULL, 37, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (408, 'ROLE_MOV_SOLICITACAO_REALINHAMENTO', 'Pode Solicitar Realinhamento', '', 4, false, NULL, 361, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (451, 'ROLE_LOGGING', 'Logs', '/logging/list.action', 8, true, NULL, 37, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (535, 'ROLE_IMPORTACAO_AFASTAMENTO', 'Importar Afastamentos', '/importacao/prepareImportarAfastamentos.action', 12, true, NULL, 37, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (385, 'ROLE_SESMT', 'Cadastros', '#', 2, true, NULL, 75, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (452, 'ROLE_CAD_EVENTO', 'Eventos', '/sesmt/evento/list.action', 1, true, NULL, 456, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (453, 'ROLE_CAD_AGENDA', 'Agenda', '/sesmt/agenda/list.action', 2, true, NULL, 456, NULL);
@@ -31098,7 +31175,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (361, 'ROLE_C&S', 'C&S', '#', 5, true, 'C', NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (353, 'ROLE_PES', 'Pesquisas', '#', 6, true, 'P', NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (357, 'ROLE_R&S', 'R&S', '#', 4, true, 'R', NULL, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (562, 'ROLE_VISUALIZAR_ATUALIZACAO_SISTEMA', 'Visualizar mensagem de atualização do sistema', '', 3, false, NULL, NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (525, 'ROLE_INFORM_CANDIDATO_COMPETENCIA', 'Visualizar Competência', '--', 3, false, NULL, 2, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (580, 'ROLE_REL_FORMACAOESCOLAR', 'Formação Escolar', '/geral/colaborador/prepareRelatorioFormacaoEscolar.action', 10, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (563, 'ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL', 'Plano de Desenvolvimento Individual (PDI)', '/desenvolvimento/turma/preparePdi.action', 5, true, NULL, 367, NULL);
@@ -31191,7 +31267,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (45, 'ROLE_MOV_SOLICITACAO_SELECAO', 'Ver todas', '#', 1, false, NULL, 21, 'Caso essa opção seja desmarcada, o usuário visualizará somente as solicitações para as áreas organizacionais das quais ele seja um dos responsáveis');
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (470, 'ROLE_MOV_PERIODOEXPERIENCIA', 'Acompanhamento do Período de Experiência', '/avaliacao/avaliacaoExperiencia/periodoExperienciaQuestionarioList.action', 3, true, NULL, 384, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (619, 'ROLE_MOV_MINHASAVALIACOES', 'Minhas Avaliações', '/avaliacao/modelo/minhasAvaliacoesList.action', 4, true, NULL, 384, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (618, 'ROLE_UTI_EXPORTAR_AC', 'Exportar dados para o Fortes Pessoal', '/exportacao/prepareExportarAC.action', 17, true, NULL, 37, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (621, 'ROLE_IMPORTACAO_EPI', 'Importar EPIs', '/importacao/prepareImportarEPIs.action', 13, true, NULL, 37, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (622, 'ROLE_CAND_SOL_MATRIZ_COMPETENCIA_SOLICITACAO', 'Imprimir Matriz de Competências', '#', 15, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (613, 'ROLE_MOV_SOLICITACAO_EXCLUIR', 'Excluir', '#', 5, false, NULL, 21, NULL);
@@ -31204,7 +31279,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (612, 'ROLE_MOV_SOLICITACAO_EDITAR', 'Editar', '#', 4, false, NULL, 21, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (623, 'ROLE_MOV_SOLICITACAO_INSERIR', 'Inserir', '#', 3, false, NULL, 21, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (624, 'ROLE_MOV_ATUALIZAR_MODELO_AVALIACAO_COLABORADOR', 'Atualizar Modelos de Avaliação', '/geral/colaborador/prepareAtualizarModeloAvaliacao.action', 4, true, NULL, 469, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (410, 'RECEBE_ALERTA_ERRO_CONEXAO_ACPESSOAL', 'Recebe mensagem de problema de comunicação com o Fortes Pessoal', '', 15, false, NULL, 37, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (625, 'ROLE_CAD_AREA_INSERIR', 'Inserir', '#', 1, false, NULL, 9, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (626, 'ROLE_CAD_AREA_EDITAR', 'Editar', '#', 2, false, NULL, 9, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (627, 'ROLE_CAD_AREA_EXCLUIR', 'Excluir', '#', 3, false, NULL, 9, NULL);
@@ -31240,13 +31314,18 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (633, 'ROLE_EDITA_DATA_SOLICITACAO', 'Editar data da solicitação', '#', 1, false, NULL, 612, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (634, 'ROLE_UTI', 'Inserir Nono Dígito em Celulares', '/geral/insereNonoDigito/prepareInsert.action', 18, true, NULL, 37, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (635, 'ROLE_REL_CURSOS_VENCIDOS_A_VENCER', 'Cursos Vencidos e a Vencer', '/desenvolvimento/turma/prepareImprimirCursosVencidosAVencer.action', 15, true, NULL, 368, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (562, 'ROLE_VISUALIZAR_ATUALIZACAO_SISTEMA', 'Visualizar mensagem de atualização/inconsistência do sistema', '', 3, false, NULL, NULL, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (618, 'ROLE_UTI_EXPORTAR_AC', 'Exportar dados para o Fortes Pessoal', '/exportacao/prepareExportarAC.action', 17, true, NULL, 37, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (410, 'RECEBE_ALERTA_ERRO_CONEXAO_ACPESSOAL', 'Recebe mensagem de problema de comunicação com o Fortes Pessoal', '', 15, false, NULL, 37, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (636, 'ROLE_EDITA_DATA_STATUS_SOLICITACAO', 'Editar data do status da solicitação', '#', 1, false, NULL, 56, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (535, 'ROLE_IMPORTACAO_AFASTAMENTO', 'Importar Afastamentos Fortes Ponto / TRU', '/importacao/prepareImportarAfastamentos.action', 12, true, NULL, 37, NULL);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.148.178', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.149.179', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL);
 
 
 --
@@ -31538,6 +31617,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 630);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 631);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 633);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 635);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 636);
 
 
 --
@@ -31746,6 +31826,12 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 635);
 
 --
 -- Data for Name: turma_avaliacaoturma; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: turma_documentoanexo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -36226,6 +36312,22 @@ ALTER TABLE ONLY turma_avaliacaoturma
 
 ALTER TABLE ONLY turma
     ADD CONSTRAINT turma_curso_fk FOREIGN KEY (curso_id) REFERENCES curso(id);
+
+
+--
+-- Name: turma_documentoanexo_documentoanexo_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY turma_documentoanexo
+    ADD CONSTRAINT turma_documentoanexo_documentoanexo_fk FOREIGN KEY (documentoanexos_id) REFERENCES documentoanexo(id);
+
+
+--
+-- Name: turma_documentoanexo_turma_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY turma_documentoanexo
+    ADD CONSTRAINT turma_documentoanexo_turma_fk FOREIGN KEY (turma_id) REFERENCES turma(id);
 
 
 --

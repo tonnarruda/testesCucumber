@@ -23114,3 +23114,58 @@ delete from migrations WHERE name = '20121003102005'; --.go
 delete from migrations WHERE name = '20121029062342'; --.go 
 insert into migrations values('20150722153513');--.go
 update parametrosdosistema set appversao = '1.1.148.178';--.go
+
+-- versao 1.1.149.179
+
+ALTER TABLE parametrosdosistema ADD COLUMN bancoconsistente boolean NOT NULL DEFAULT true;--.go
+ALTER TABLE parametrosdosistema ADD COLUMN quantidadeconstraints integer DEFAULT 0;--.go
+update papel set nome = 'Visualizar mensagem de atualização/inconsistência do sistema' where id = 562;--.go
+insert into migrations values('20150806155637');--.go
+CREATE TABLE turma_documentoanexo (
+	id bigint NOT NULL,
+    turma_id bigint NOT NULL,
+    documentoanexos_id bigint NOT NULL
+); --.go
+ALTER TABLE turma_documentoanexo ADD CONSTRAINT turma_documentoanexo_documentoanexo_fk FOREIGN KEY (documentoanexos_id) REFERENCES documentoanexo(id); --.go
+ALTER TABLE turma_documentoanexo ADD CONSTRAINT turma_documentoanexo_turma_fk FOREIGN KEY (turma_id) REFERENCES turma(id); --.go
+CREATE SEQUENCE turma_documentoanexo_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+insert into migrations values('20150811111034');--.go
+alter table empresa add column processoExportacaoAC boolean NOT NULL DEFAULT false; --.go
+insert into migrations values('20150813102231');--.go
+update papel set nome = 'Exportar dados para o Fortes Pessoal' where id = 618;--.go
+update papel set nome = 'Recebe mensagem de problema de comunicação com o Fortes Pessoal' where id = 410;--.go
+insert into migrations values('20150814132817');--.go
+alter table empresa add column vincularMatriculaCodigoFortesPessoal boolean NOT NULL DEFAULT false;--.go
+insert into migrations values('20150817140951');--.go
+CREATE OR REPLACE FUNCTION atualiza_matricula_to_codigofortespessoal(id_empresas BIGINT[], percentualCompatibilidadeMatriculaCodigoFP DOUBLE PRECISION) RETURNS void AS $$     
+	DECLARE 
+		id_empresa BIGINT; 
+	BEGIN  
+		FOR id_empresa IN select unnest(id_empresas) LOOP 
+			IF (cast ((select count(id) from colaborador where codigoac is not null and empresa_id = id_empresa) as double precision)) <> 0 
+				and (select 
+				(cast ((select count(id) from colaborador where matricula = codigoac and codigoac is not null and empresa_id = id_empresa) as double precision) 
+				/ cast ((select count(id) from colaborador where codigoac is not null and empresa_id = id_empresa) as double precision))   
+				>= cast(percentualCompatibilidadeMatriculaCodigoFP as double precision)/100)  
+			THEN 
+				update colaborador set matricula = codigoac where empresa_id = id_empresa;  
+
+				IF (select acIntegra from empresa where id = id_empresa) THEN 
+					update empresa set vincularMatriculaCodigoFortesPessoal = true where id = id_empresa; 
+				END IF;  
+			END IF;  
+		END LOOP; 	
+	END;   
+$$ LANGUAGE plpgsql;--.go
+
+select atualiza_matricula_to_codigofortespessoal(array[(select array_agg(id::BIGINT) from empresa)], 70);--.go
+insert into migrations values('20150817152345');--.go
+alter table parametrosdosistema add column tamanhoMaximoUpload integer; --.go
+insert into migrations values('20150818094233');--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (636, 'ROLE_EDITA_DATA_STATUS_SOLICITACAO', 'Editar data do status da solicitação', '#', 1, false, 56); --.go
+INSERT INTO perfil_papel(perfil_id, papeis_id) select perfil_id, 636 from perfil_papel where papeis_id = 56; --.go
+ALTER sequence papel_sequence restart WITH 637; --.go
+insert into migrations values('20150818150631');--.go
+update papel set nome = 'Importar Afastamentos Fortes Ponto / TRU' where id=535;--.go 
+insert into migrations values('20150825172731');--.go
+update parametrosdosistema set appversao = '1.1.149.179';--.go

@@ -213,14 +213,20 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 	public void prepare() throws Exception
 	{
-		if (turma != null && turma.getId() != null)
+		Long cursoId = 0L;
+		
+		if (turma != null && turma.getId() != null){
 			turma = (Turma) turmaManager.findByIdProjection(turma.getId());
+			cursoId = turma.getCurso().getId();
+		}else if(curso != null && curso.getId() != null){
+			cursoId = curso.getId();
+		}
 
 		cursos = cursoManager.findAllByEmpresasParticipantes(getEmpresaSistema().getId());
 	
 		tipoDespesas = tipoDespesaManager.find(new String[]{"empresa.id"}, new Object[]{getEmpresaSistema().getId()}, new String[]{"descricao"});
 		
-		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, 'U', curso.getId());
+		Collection<DocumentoAnexo> documentoAnexos = documentoAnexoManager.getDocumentoAnexoByOrigemId(null, 'U', cursoId);
 		documentoAnexoCheckList = CheckListBoxUtil.populaCheckListBox(documentoAnexos, "getId", "getDescricao");
 		
 		avaliacaoTurmas = avaliacaoTurmaManager.findAllSelect(true, getEmpresaSistema().getId());

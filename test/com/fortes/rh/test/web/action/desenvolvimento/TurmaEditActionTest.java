@@ -168,12 +168,14 @@ public class TurmaEditActionTest extends MockObjectTestCase
 
     public void testPrepareUpdate() throws Exception
     {
+    	
     	Empresa empresa = EmpresaFactory.getEmpresa(1L);
     	Curso curso = CursoFactory.getEntity(1L);
     	action.setCurso(curso);
     	Turma turma = TurmaFactory.getEntity(1L);
     	turma.setEmpresa(empresa);
     	turma.setDataPrevIni(new Date());
+    	turma.setCurso(curso);
     	action.setTurma(turma);
 
     	Collection<DiaTurma> diaTurmas = new ArrayList<DiaTurma>();
