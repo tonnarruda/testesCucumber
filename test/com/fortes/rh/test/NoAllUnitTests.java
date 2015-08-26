@@ -4,6 +4,7 @@ package com.fortes.rh.test;
 import junit.framework.TestSuite;
 
 import com.fortes.rh.test.business.auditoria.ManagerAuditaTest;
+import com.fortes.rh.test.util.ImportacaoCSVUtilTest;
 import com.fortes.rh.test.util.MailSendRunnableTest;
 import com.fortes.rh.test.util.TestsNoIncludeAllUnitTest;
 
@@ -15,6 +16,7 @@ public class NoAllUnitTests extends TestSuite
         suite.addTestSuite(ManagerAuditaTest.class);
         suite.addTestSuite(TestsNoIncludeAllUnitTest.class);
         suite.addTestSuite(MailSendRunnableTest.class);
+        suite.addTestSuite(ImportacaoCSVUtilTest.class);
 
         return suite;
     }

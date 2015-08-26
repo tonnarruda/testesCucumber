@@ -1259,7 +1259,6 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(BooleanUtilTest.class);
         suite.addTestSuite(ZipTest.class);
         suite.addTestSuite(ArquivoUtilTest.class);
-        suite.addTestSuite(ImportacaoCSVUtilTest.class);
         suite.addTestSuite(NoticiaDaoHibernateTest.class);
 
         // Avaliacao
