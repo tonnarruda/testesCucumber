@@ -90,6 +90,24 @@ public class RiscoAmbiente extends AbstractModel implements Serializable
 		this.risco = risco;
 	}
 
+	public void setRiscoDescricao(String descricao)
+	{
+		riscoTratado().setDescricao(descricao);
+	}
+	
+	public void setRiscoGrupoRisco(String grupoRisco)
+	{
+		riscoTratado().setGrupoRisco(grupoRisco);
+	}
+	
+	private Risco riscoTratado()
+	{
+		if(this.risco == null)
+			this.risco = new Risco();
+		
+		return this.risco;
+	}
+	
 	public Character getPeriodicidadeExposicao() {
 		return periodicidadeExposicao;
 	}

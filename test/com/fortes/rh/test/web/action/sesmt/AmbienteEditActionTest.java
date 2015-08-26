@@ -12,8 +12,11 @@ import org.jmock.core.Constraint;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.AmbienteManager;
 import com.fortes.rh.business.sesmt.EpcManager;
+import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.HistoricoAmbienteManager;
+import com.fortes.rh.business.sesmt.RiscoAmbienteManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
+import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.HistoricoAmbiente;
@@ -35,13 +38,14 @@ public class AmbienteEditActionTest extends MockObjectTestCase
 	private Mock riscoManager;
 	private Mock epcManager;
 	private Mock estabelecimentoManager;
+	private Mock riscoAmbienteManager;
+	private Mock epiManager;
 
     protected void setUp() throws Exception
     {
         super.setUp();
         manager = new Mock(AmbienteManager.class);
         historicoAmbienteManager = new Mock(HistoricoAmbienteManager.class);
-        Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 
         action = new AmbienteEditAction();
         action.setAmbienteManager((AmbienteManager) manager.proxy());
@@ -56,8 +60,15 @@ public class AmbienteEditActionTest extends MockObjectTestCase
         estabelecimentoManager = mock(EstabelecimentoManager.class);
         action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
         
+        riscoAmbienteManager = mock(RiscoAmbienteManager.class);
+        action.setRiscoAmbienteManager((RiscoAmbienteManager) riscoAmbienteManager.proxy());
+        
+        epiManager = mock(EpiManager.class);
+        action.setEpiManager((EpiManager) epiManager.proxy());
+        
         action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
         
+        Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
         Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
     }
 
@@ -190,7 +201,7 @@ public class AmbienteEditActionTest extends MockObjectTestCase
     	assertEquals(action.getAmbientes(), ambientes);
     }
     
-    public void testImprimirList() throws Exception
+    public void testImprimirLista() throws Exception
     {
     	Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
     	Ambiente a1 = new Ambiente();
@@ -209,7 +220,7 @@ public class AmbienteEditActionTest extends MockObjectTestCase
     	assertEquals(action.getAmbientes(), ambientes);
     }
 
-    public void testImprimirListErro() throws Exception
+    public void testImprimirListaErro() throws Exception
     {
     	Collection<Ambiente> ambientes = new ArrayList<Ambiente>();
     	
@@ -219,6 +230,82 @@ public class AmbienteEditActionTest extends MockObjectTestCase
     	
     	assertEquals("input", action.imprimirLista());
     	assertEquals(action.getAmbientes(), ambientes);
+    }
+    
+    public void testPrepareRelatorioMapaDeRisco() throws Exception
+    {
+    	String[] estabelecimentoCheck = {};
+    	action.setEstabelecimentoCheck(estabelecimentoCheck);
+    	
+    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(eq(action.getEmpresaSistema().getId()));
+    	manager.expects(once()).method("populaCheckBoxByEstabelecimentos").with(eq(estabelecimentoCheck));
+    	
+    	assertEquals("success", action.prepareRelatorioMapaDeRisco());
+    }
+    
+    public void testImprimirRelatorioMapaDeRisco() throws Exception
+    {
+    	String[] ambientesCheck = {"1","2"};
+    	action.setAmbienteCheck(ambientesCheck);
+    	
+    	Collection<RiscoAmbiente> riscoAmbientes = new ArrayList<RiscoAmbiente>();
+    	riscoAmbientes.add(new RiscoAmbiente());
+    	
+    	riscoAmbienteManager.expects(atLeastOnce()).method("findByAmbiente").with(ANYTHING).will(returnValue(riscoAmbientes));
+    	manager.expects(atLeastOnce()).method("findByIdProjection").with(ANYTHING);
+    	epiManager.expects(atLeastOnce()).method("findEpisDoAmbiente").with(ANYTHING, ANYTHING);
+    	manager.expects(atLeastOnce()).method("getQtdColaboradorByAmbiente").with(ANYTHING, ANYTHING, eq(Sexo.MASCULINO)).will(returnValue(2));
+    	manager.expects(atLeastOnce()).method("getQtdColaboradorByAmbiente").with(ANYTHING, ANYTHING, eq(Sexo.FEMININO)).will(returnValue(1));
+    	
+    	assertEquals("success", action.imprimirRelatorioMapaDeRisco());
+    }
+    
+    public void testImprimirRelatorioMapaDeRiscoSemRiscoAmbiente() throws Exception
+    {
+    	CheckBox checkBox = new CheckBox();
+    	checkBox.setId("1");
+    	
+    	Collection<CheckBox> ambientesCheckList = new ArrayList<CheckBox>();
+    	ambientesCheckList.add(checkBox);
+    	
+    	String[] ambientesCheck = {"1"};
+    	String[] estabelecimentoCheck = {};
+    	
+    	action.setAmbienteCheck(ambientesCheck);
+    	action.setAmbienteCheckList(ambientesCheckList);
+    	action.setEstabelecimentoCheck(estabelecimentoCheck);
+    	
+    	Collection<RiscoAmbiente> riscoAmbientes = new ArrayList<RiscoAmbiente>();
+    	
+    	riscoAmbienteManager.expects(once()).method("findByAmbiente").with(ANYTHING).will(returnValue(riscoAmbientes));
+    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(eq(action.getEmpresaSistema().getId()));
+    	manager.expects(once()).method("populaCheckBoxByEstabelecimentos").with(eq(estabelecimentoCheck)).will(returnValue(ambientesCheckList));
+
+    	assertEquals("input", action.imprimirRelatorioMapaDeRisco());
+    }
+    
+    public void testImprimirRelatorioMapaDeRiscoException() throws Exception
+    {
+    	CheckBox checkBox = new CheckBox();
+    	checkBox.setId("1");
+    	
+    	Collection<CheckBox> ambientesCheckList = new ArrayList<CheckBox>();
+    	ambientesCheckList.add(checkBox);
+    	
+    	String[] ambientesCheck = {"1"};
+    	String[] estabelecimentoCheck = {};
+    	
+    	action.setAmbienteCheck(ambientesCheck);
+    	action.setAmbienteCheckList(ambientesCheckList);
+    	action.setEstabelecimentoCheck(estabelecimentoCheck);
+    	
+    	Collection<RiscoAmbiente> riscoAmbientes = null;
+    	
+    	riscoAmbienteManager.expects(once()).method("findByAmbiente").with(ANYTHING).will(returnValue(riscoAmbientes));
+    	estabelecimentoManager.expects(once()).method("populaCheckBox").with(eq(action.getEmpresaSistema().getId()));
+    	manager.expects(once()).method("populaCheckBoxByEstabelecimentos").with(eq(estabelecimentoCheck)).will(returnValue(ambientesCheckList));
+    	
+    	assertEquals("input", action.imprimirRelatorioMapaDeRisco());
     }
     
     public void testGetSet() throws Exception

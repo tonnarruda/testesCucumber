@@ -14,6 +14,7 @@ import com.fortes.rh.dao.sesmt.HistoricoAmbienteDao;
 import com.fortes.rh.dao.sesmt.RiscoAmbienteDao;
 import com.fortes.rh.dao.sesmt.RiscoDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.GrauRiscoDoAmbiente;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -26,10 +27,12 @@ import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.AmbienteFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoAmbienteFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoAmbienteFactory;
 import com.fortes.rh.test.factory.sesmt.RiscoFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class RiscoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<RiscoAmbiente>
 {
@@ -148,30 +151,29 @@ public class RiscoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<Risco
 		Colaborador colaborador1 = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador1);
 		
-		//Não precisa apagar historicoColaborador1Fora, ..., serve para entender melhor o teste "Fora, Atual"
-		HistoricoColaborador historicoColaborador1Fora = criaHistoricoColaborador(colaborador1, tresMesesAntes.getTime(), ambiente, null, estabelecimento1);
+		criaHistoricoColaborador(colaborador1, tresMesesAntes.getTime(), ambiente, null, estabelecimento1); // Fora
 		
-		HistoricoColaborador historicoColaborador1Atual = criaHistoricoColaborador(colaborador1, doisMesesAntes.getTime(), ambiente, null, estabelecimento1);
+		criaHistoricoColaborador(colaborador1, doisMesesAntes.getTime(), ambiente, null, estabelecimento1); // Atual
 		
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
 		colaborador2.setNome("teste");
 		colaboradorDao.save(colaborador2);
 		
-		HistoricoColaborador historicoColaborador2Fora = criaHistoricoColaborador(colaborador2, tresMesesAntes.getTime(), null, null, estabelecimento1);
+		criaHistoricoColaborador(colaborador2, tresMesesAntes.getTime(), null, null, estabelecimento1); // Fora
 
 		Colaborador colaborador3 = ColaboradorFactory.getEntity();
 		colaborador3.setNome("teste3");
 		colaborador3.setDataDesligamento(hoje);
 		colaboradorDao.save(colaborador3);
 		
-		HistoricoColaborador historicoColaborador3DentroComDataDesligamentoAnterior = criaHistoricoColaborador(colaborador3, tresMesesAntes.getTime(), null, null, estabelecimento1);
+		criaHistoricoColaborador(colaborador3, tresMesesAntes.getTime(), null, null, estabelecimento1); // Dentro com data desligamento anterior 
 
 		Colaborador colaborador4 = ColaboradorFactory.getEntity();
 		colaborador4.setNome("teste3");
 		colaborador4.setDataDesligamento(tresMesesAntes.getTime());
 		colaboradorDao.save(colaborador4);
 		
-		HistoricoColaborador historicoColaborador4ForaComDataDesligamentoAnterior = criaHistoricoColaborador(colaborador4, tresMesesAntes.getTime(), null, null, estabelecimento1);
+		criaHistoricoColaborador(colaborador4, tresMesesAntes.getTime(), null, null, estabelecimento1); // Fora com data desligamento anterior
 		
 		Collection<String> nomes = riscoAmbienteDao.findColaboradoresSemAmbiente(hoje, estabelecimento1.getId());
 		
@@ -181,10 +183,8 @@ public class RiscoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<Risco
 	public void testFindFuncaoAtualDosColaboradores()
 	{
 		Date hoje = Calendar.getInstance().getTime();
-		Calendar doisMesesAntes = Calendar.getInstance();
-		doisMesesAntes.add(Calendar.MONTH, -2);
-		Calendar tresMesesAntes = Calendar.getInstance();
-		tresMesesAntes.add(Calendar.MONTH, -3);
+		Date doisMesesAntes = DateUtil.incrementaData(hoje, Calendar.MONTH, -2, true); 
+		Date tresMesesAntes = DateUtil.incrementaData(hoje, Calendar.MONTH, -3, true);
 		
 		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(estabelecimento1);
@@ -196,25 +196,22 @@ public class RiscoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<Risco
 		HistoricoAmbiente Historicoambiente = new HistoricoAmbiente();
 		Historicoambiente.setAmbiente(ambiente);
 		Historicoambiente.setData(hoje);
-		Historicoambiente.setDescricao("Piso metálico");
 		historicoAmbienteDao.save(Historicoambiente);
 		
 		Ambiente ambiente2 = AmbienteFactory.getEntity();
-		ambiente2.setNome("recepcao");
 		ambienteDao.save(ambiente2);
 		
 		Colaborador colaborador1 = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador1);
 		
-		//Não precisa apagar historicoColaborador1Fora, ..., serve para entender melhor o teste "Fora, Atual"
-		HistoricoColaborador historicoColaborador1Fora = criaHistoricoColaborador(colaborador1, tresMesesAntes.getTime(), ambiente, null, estabelecimento1);
+		criaHistoricoColaborador(colaborador1, tresMesesAntes, ambiente, null, estabelecimento1); // Fora
 		
-		HistoricoColaborador historicoColaborador1Atual = criaHistoricoColaborador(colaborador1, doisMesesAntes.getTime(), ambiente2, null, estabelecimento1);
+		criaHistoricoColaborador(colaborador1, doisMesesAntes, ambiente2, null, estabelecimento1); // Atual
 		
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador2);
 		
-		HistoricoColaborador historicoColaborador2Fora = criaHistoricoColaborador(colaborador2, tresMesesAntes.getTime(), ambiente, null, estabelecimento1);
+		criaHistoricoColaborador(colaborador2, tresMesesAntes, ambiente, null, estabelecimento1); // Fora
 		
 		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
 		estabelecimentoDao.save(estabelecimento2);
@@ -222,12 +219,54 @@ public class RiscoAmbienteDaoHibernateTest extends GenericDaoHibernateTest<Risco
 		Colaborador colaborador3 = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador3);
 		
-		HistoricoColaborador historicoColaborador3Fora = criaHistoricoColaborador(colaborador2, hoje, ambiente2, null, estabelecimento2);
+		criaHistoricoColaborador(colaborador2, hoje, ambiente2, null, estabelecimento2); // Fora
 		
 		Collection<Long> ids = riscoAmbienteDao.findAmbienteAtualDosColaboradores(hoje, estabelecimento1.getId());
 		
 		assertEquals(1, ids.size());
 		assertEquals(ambiente2.getId(), ids.toArray()[0]);
+	}
+	
+	public void testFindByAmbiente()
+	{
+		Ambiente ambiente1 = AmbienteFactory.getEntity();
+		ambienteDao.save(ambiente1);
+		
+		HistoricoAmbiente historicoAntigoAmbiente1 = HistoricoAmbienteFactory.getEntity(ambiente1, DateUtil.incrementaDias(new Date(), -2));
+		historicoAmbienteDao.save(historicoAntigoAmbiente1);
+		
+		HistoricoAmbiente historicoAtualAmbiente1 = HistoricoAmbienteFactory.getEntity(ambiente1, new Date());
+		historicoAmbienteDao.save(historicoAtualAmbiente1);
+		
+		Ambiente ambiente2 = AmbienteFactory.getEntity();
+		ambienteDao.save(ambiente2);
+		
+		HistoricoAmbiente historicoAmbiente2 = HistoricoAmbienteFactory.getEntity(ambiente2, new Date());
+		historicoAmbienteDao.save(historicoAmbiente2);
+		
+		Risco risco1 = RiscoFactory.getEntity();
+		riscoDao.save(risco1);
+		
+		Risco risco2 = RiscoFactory.getEntity();
+		riscoDao.save(risco2);
+		
+		Risco risco3 = RiscoFactory.getEntity();
+		riscoDao.save(risco3);
+		
+		RiscoAmbiente riscoAmbiente1 = RiscoAmbienteFactory.getEntity(risco1, historicoAtualAmbiente1, GrauRiscoDoAmbiente.PEQUENO);
+		riscoAmbienteDao.save(riscoAmbiente1);
+		
+		RiscoAmbiente riscoAmbiente2 = RiscoAmbienteFactory.getEntity(risco2, historicoAtualAmbiente1, GrauRiscoDoAmbiente.MEDIO);
+		riscoAmbienteDao.save(riscoAmbiente2);
+		
+		RiscoAmbiente riscoAmbiente3 = RiscoAmbienteFactory.getEntity(risco2, historicoAmbiente2, GrauRiscoDoAmbiente.GRANDE);
+		riscoAmbienteDao.save(riscoAmbiente3);
+		
+		Collection<RiscoAmbiente> riscosAmbiente1 = riscoAmbienteDao.findByAmbiente(ambiente1.getId());
+		Collection<RiscoAmbiente> riscosAmbiente2 = riscoAmbienteDao.findByAmbiente(ambiente2.getId());
+		
+		assertEquals(2, riscosAmbiente1.size());
+		assertEquals(1, riscosAmbiente2.size());
 	}
 	
 	

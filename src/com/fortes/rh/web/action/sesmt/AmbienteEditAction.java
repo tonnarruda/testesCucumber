@@ -161,9 +161,10 @@ public class AmbienteEditAction extends MyActionSupportList
 		try	{
 			Collection<RiscoAmbiente> riscosAmbientes = new ArrayList<RiscoAmbiente>();
 			for (Long ambienteId : LongUtil.arrayStringToArrayLong(ambienteCheck)) {
-				riscosAmbientes = riscoAmbienteManager.findRiscoAmbienteByAmbiente(ambienteId); 
+				riscosAmbientes = riscoAmbienteManager.findByAmbiente(ambienteId); 
 				
-				if (riscosAmbientes.isEmpty() )	continue;
+				if (riscosAmbientes.isEmpty()) 
+					continue;
 				
 				MapaDeRisco mapaDeRisco = new MapaDeRisco();
 				mapaDeRisco.setAmbiente(ambienteManager.findByIdProjection(ambienteId));

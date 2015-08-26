@@ -13,5 +13,5 @@ public interface RiscoAmbienteManager extends GenericManager<RiscoAmbiente>
 	Collection<Risco> findRiscosByAmbienteData(Long ambienteId, Date data);
 	Collection<String> findColaboradoresSemAmbiente(Date data, Long estabelecimentoId);
 	Collection<Long> findAmbienteAtualDosColaboradores(Date data, Long estabelecimentoId);
-	Collection<RiscoAmbiente> findRiscoAmbienteByAmbiente(Long ambienteId);
+	Collection<RiscoAmbiente> findByAmbiente(Long ambienteId);
 }

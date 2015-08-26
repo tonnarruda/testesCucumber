@@ -30,8 +30,8 @@ public class RiscoAmbienteManagerImpl extends GenericManagerImpl<RiscoAmbiente, 
 		return getDao().findAmbienteAtualDosColaboradores(data, estabelecimentoId);
 	}
 
-	public Collection<RiscoAmbiente> findRiscoAmbienteByAmbiente(Long ambienteId) 
+	public Collection<RiscoAmbiente> findByAmbiente(Long ambienteId) 
 	{
-		return getDao().findRiscoAmbienteByAmbiente(ambienteId);
+		return getDao().findByAmbiente(ambienteId);
 	}
 }

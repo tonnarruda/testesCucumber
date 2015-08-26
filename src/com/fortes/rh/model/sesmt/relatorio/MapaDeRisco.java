@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.fortes.rh.model.dicionario.GrauRiscoDoAmbiente;
 import com.fortes.rh.model.dicionario.TipoRisco;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Epi;
@@ -19,9 +22,7 @@ public class MapaDeRisco {
 	HashMap<Character, Integer> mapGrausRisco = new HashMap<Character, Integer>();
 	
 	public MapaDeRisco() {
-		mapGrausRisco.put('P',1);
-		mapGrausRisco.put('M',2);
-		mapGrausRisco.put('G',3);
+		mapGrausRisco = new GrauRiscoDoAmbiente();
 	}
 
 	public Ambiente getAmbiente() {
@@ -78,14 +79,14 @@ public class MapaDeRisco {
 	public String getEpisNomes() 
 	{
 		if(epis.isEmpty())
-			return "";
+			return StringUtils.EMPTY;
 		
-		String episNome = "";
+		StringBuilder episNome = new StringBuilder();
 		for (Epi epi : epis) {
-			episNome += epi.getNome() + ", ";
+			episNome.append(epi.getNome() + ", ");
 		}
-		
-		return episNome.substring(0, episNome.length()-3) + ".";
+	
+		return StringUtils.removeEnd(episNome.toString(), ", ")+".";
 	}
 	
 	public String getAcidentes()

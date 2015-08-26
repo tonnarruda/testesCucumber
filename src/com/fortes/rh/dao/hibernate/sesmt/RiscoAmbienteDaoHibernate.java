@@ -3,11 +3,20 @@ package com.fortes.rh.dao.hibernate.sesmt;
 import java.util.Collection;
 import java.util.Date;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
+import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.RiscoAmbienteDao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.sesmt.HistoricoAmbiente;
 import com.fortes.rh.model.sesmt.Risco;
 import com.fortes.rh.model.sesmt.RiscoAmbiente;
 
@@ -87,20 +96,32 @@ public class RiscoAmbienteDaoHibernate extends GenericDaoHibernate<RiscoAmbiente
 		return query.list();
 	}
 
-	public Collection<RiscoAmbiente> findRiscoAmbienteByAmbiente(Long ambienteId)
+	public Collection<RiscoAmbiente> findByAmbiente(Long ambienteId)
 	{
-		StringBuilder hql = new StringBuilder("select new RiscoAmbiente(ra.id, r.descricao, r.grupoRisco, ra.grauDeRisco ) ");
-		hql.append("from RiscoAmbiente ra join ra.risco r join ra.historicoAmbiente ha join ha.ambiente a join ra.risco r ");
-		hql.append("where a.id = :ambienteId ");
-		hql.append("and ha.data = (select max(ha2.data) " +
-								"from HistoricoAmbiente ha2 " +
-								"where ha2.ambiente.id = a.id and ha2.data <= current_date) ");
-		hql.append("and ra.grauDeRisco is not null ");
 
+		DetachedCriteria subQueryHa = DetachedCriteria.forClass(HistoricoAmbiente.class, "ha2")
+				.setProjection(Projections.max("ha2.data"))
+				.add(Restrictions.eqProperty("ha2.ambiente.id", "ha.ambiente.id"))
+				.add(Restrictions.le("ha2.data", new Date()));
 		
-		Query query = getSession().createQuery(hql.toString());
-		query.setLong("ambienteId", ambienteId);
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "ra");
+		criteria.createCriteria("ra.risco", "r");
+		criteria.createCriteria("ra.historicoAmbiente", "ha");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ra.id"), "id");
+		p.add(Projections.property("ra.grauDeRisco"), "grauDeRisco");
+		p.add(Projections.property("r.descricao"), "riscoDescricao");
+		p.add(Projections.property("r.grupoRisco"), "riscoGrupoRisco");
+		criteria.setProjection(p);
+
+		criteria.add(Subqueries.propertyEq("ha.data", subQueryHa));
+		criteria.add(Expression.eq("ha.ambiente.id", ambienteId));
+		criteria.add(Expression.isNotNull("ra.grauDeRisco"));
 		
-		return query.list();
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
 	}
 }
