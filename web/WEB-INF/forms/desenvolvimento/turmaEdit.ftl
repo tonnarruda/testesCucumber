@@ -338,7 +338,7 @@
 			$('#tooltipDias').qtip({
 				content: 'Não é possível editar os dias previstos, pois existem presenças.'
 			});
-			$('#tooltipAvaliacao').qtip({
+			$('#tooltipAvaliacao, #tooltipDocumentoAnexo').qtip({
 				content: 'A alteração da avaliação do curso está restrita à empresa que o criou.'
 			});
 			
@@ -476,6 +476,8 @@
 		<#else>
 			<img id="tooltipAvaliacao" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 250px; margin-bottom:-18px" />
 			<@frt.checkListBox label="Questionários de Avaliação do Curso" name="avaliacaoTurmasCheck" list="avaliacaoTurmasCheckList" readonly=true  width="607" filtro="true"/>
+			<img id="tooltipDocumentoAnexo" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 350px; margin-bottom:-18px" />
+			<@frt.checkListBox label="Anexos disponíveis para os colaboradores da turma" name="documentoAnexoCheck" list="documentoAnexoCheckList"  readonly=true width="607" filtro="true"/>
 		</#if>
 
 		<@ww.hidden name="turma.id" id="turmaId" />
