@@ -26,7 +26,6 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
-import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
@@ -88,6 +87,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String[] cargosCheck;
 	private Collection<CheckBox> vinculosCheckList = new ArrayList<CheckBox>();
 	private String[] vinculosCheck;
+	private Collection<CheckBox> vinculosTurnoverCheckList = new ArrayList<CheckBox>();
+	private String[] vinculosTurnoverCheck;
 	private Date dataBase;
 	private Date dataIni;
 	private Date dataFim;
@@ -165,6 +166,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		
 		vinculosCheckList = CheckListBoxUtil.populaCheckListBox(new Vinculo());
 		vinculosCheckList = CheckListBoxUtil.marcaCheckListBox(vinculosCheckList, vinculosCheck);
+		
+		vinculosTurnoverCheckList = CheckListBoxUtil.populaCheckListBox(new Vinculo());
+		vinculosTurnoverCheckList = CheckListBoxUtil.marcaCheckListBox(vinculosTurnoverCheckList, vinculosTurnoverCheck);
    		
 		if(empresa == null || empresa.getId() == null)
 			empresa = getEmpresaSistema();
@@ -173,7 +177,6 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		Long[] cargosIds = LongUtil.arrayStringToArrayLong(cargosCheck);
 		Long[] estabelecimentosIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
 		Long[] ocorrenciasIds = LongUtil.arrayStringToArrayLong(ocorrenciasCheck);
-		
 		
 		Date hoje = new Date();
 		dataBase = (dataBase == null) ? hoje : dataBase;
@@ -210,19 +213,19 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(LongUtil.collectionStringToArrayLong(empresaIds));
 		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		
-		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
-		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
-		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
-		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
-		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
-		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds);
+		Collection<DataGrafico> graficoformacaoEscolars = colaboradorManager.countFormacaoEscolar(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds, vinculosCheck);
+		Collection<DataGrafico> graficofaixaEtaria = colaboradorManager.countFaixaEtaria(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds, vinculosCheck);
+		Collection<DataGrafico> graficoSexo = colaboradorManager.countSexo(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds, vinculosCheck);
+		Collection<DataGrafico> graficoEstadoCivil = colaboradorManager.countEstadoCivil(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds, vinculosCheck);
+		Collection<DataGrafico> graficoDeficiencia = colaboradorManager.countDeficiencia(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds, vinculosCheck);
+		Collection<DataGrafico> graficoColocacao = colaboradorManager.countColocacao(dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds, vinculosCheck);
 		
 		Collection<DataGrafico> graficoOcorrencia = colaboradorManager.countOcorrencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, ocorrenciasIds, qtdItensOcorrencia);
 		Collection<DataGrafico> graficoProvidencia = colaboradorManager.countProvidencia(dataIni, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, ocorrenciasIds, qtdItensOcorrencia);
 
 		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIniDeslig, dataFimDeslig, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItensDesligamento);
 		
-		Collection<DataGrafico> graficoTurnoverTempoServico = colaboradorManager.montaGraficoTurnoverTempoServico(tempoServicoIni, tempoServicoFim, dataIniTurn, dataFimTurn, empresaIds, LongUtil.arrayLongToCollectionLong(estabelecimentosIds), LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), new CollectionUtil<String>().convertArrayToCollection(vinculosCheck));
+		Collection<DataGrafico> graficoTurnoverTempoServico = colaboradorManager.montaGraficoTurnoverTempoServico(tempoServicoIni, tempoServicoFim, dataIniTurn, dataFimTurn, empresaIds, LongUtil.arrayLongToCollectionLong(estabelecimentosIds), LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), new CollectionUtil<String>().convertArrayToCollection(vinculosTurnoverCheck));
 		
 		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, empresaIds, LongUtil.arrayLongToCollectionLong(estabelecimentosIds), LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), getEmpresaSistema());
 		grfEvolucaoAbsenteismo = StringUtil.toJSON(graficoEvolucaoAbsenteismo, null);
@@ -244,7 +247,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		
 		turnOverCollections = new ArrayList<TurnOverCollection>();
 		for (Long empresaId: empresaIds) 
-			turnOverCollections.add(colaboradorManager.montaTurnOver(dataIniTurn, dataFimTurn, empresaId, LongUtil.arrayLongToCollectionLong(estabelecimentosIds), LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), new CollectionUtil<String>().convertArrayToCollection(vinculosCheck), 3));
+			turnOverCollections.add(colaboradorManager.montaTurnOver(dataIniTurn, dataFimTurn, empresaId, LongUtil.arrayLongToCollectionLong(estabelecimentosIds), LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), new CollectionUtil<String>().convertArrayToCollection(vinculosTurnoverCheck), 3));
 		
 		grfEvolucaoTurnover = colaboradorManager.montaGraficoTurnover(turnOverCollections, empresas);
 		
@@ -977,6 +980,14 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	public void setVinculosCheckList(Collection<CheckBox> vinculosCheckList) {
 		this.vinculosCheckList = vinculosCheckList;
 	}
+	
+	public Collection<CheckBox> getVinculosTurnoverCheckList() {
+		return vinculosTurnoverCheckList;
+	}
+	
+	public void setVinculosTurnoverCheckList(Collection<CheckBox> vinculosTurnoverCheckList) {
+		this.vinculosTurnoverCheckList = vinculosTurnoverCheckList;
+	}
 
 	public String[] getVinculosCheck() {
 		return vinculosCheck;
@@ -984,6 +995,14 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setVinculosCheck(String[] vinculosCheck) {
 		this.vinculosCheck = vinculosCheck;
+	}
+	
+	public String[] getVinculosTurnoverCheck() {
+		return vinculosTurnoverCheck;
+	}
+
+	public void setVinculosTurnoverCheck(String[] vinculosTurnoverCheck) {
+		this.vinculosTurnoverCheck = vinculosTurnoverCheck;
 	}
 
 	public Date getDataIniTurn() {

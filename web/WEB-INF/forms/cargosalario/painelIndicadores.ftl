@@ -388,6 +388,7 @@
 								<div class="conteudo-1 conteudo-aba">
 									<fieldset>
 										<@ww.datepicker label="Colaboradores admitidos até" name="dataBase" value="${dateBase}" id="dataBase" cssClass="mascaraData" />
+										<@frt.checkListBox name="vinculosCheck" id="vinculosCheck" label="Colocação" list="vinculosCheckList" height="105" width="300"/>
 									</fieldset>
 								</div>
 								
@@ -443,7 +444,7 @@
 												<td>
 													<@ww.datepicker label="Data Início" name="dataIniTurn" id="dataIniTurn" value="${dateIniTurn}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 													<@ww.datepicker label="Data Fim" name="dataFimTurn" id="dataFimTurn" value="${dateFimTurn}" cssClass="mascaraData validaDataFim"/>
-													<@frt.checkListBox name="vinculosCheck" id="vinculosCheck" label="Colocação" list="vinculosCheckList" height="105" width="300"/>
+													<@frt.checkListBox name="vinculosTurnoverCheck" id="vinculosTurnoverCheck" label="Colocação" list="vinculosTurnoverCheckList" height="105" width="300"/>
 												</td>
 												<td>
 													Períodos de tempo de serviço:
