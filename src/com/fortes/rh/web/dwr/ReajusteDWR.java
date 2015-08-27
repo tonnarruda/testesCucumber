@@ -57,7 +57,7 @@ public class ReajusteDWR
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
 		historicoColaboradors.add(historicoColaborador);
 
-		historicoColaboradorManager.montaAreaOrganizacional(historicoColaborador.getColaborador().getEmpresa().getId(), historicoColaboradors);
+		historicoColaboradorManager.montaAreaOrganizacional(historicoColaboradors, historicoColaborador.getColaborador().getEmpresa().getId());
 
 		retorno.put("areaOrganizacionalAtualId", historicoColaborador.getAreaOrganizacional().getId());
 		retorno.put("areaOrganizacionalAtualNome", historicoColaborador.getAreaOrganizacional().getDescricao());

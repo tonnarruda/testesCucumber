@@ -31,7 +31,7 @@
 
 	<script type="text/javascript">
 		var empresaIds = new Array();
-		<#if empresas?exists && 0 < empresas?size>
+		<#if empresas?exists>
 			<#list empresas as empresa>
 				empresaIds.push(${empresa.id});
 			</#list>
@@ -39,6 +39,7 @@
 		
 		$(function() {
 			$('#empresaId').change(function() {
+				getEstabelecimentos(this.value);
 				getAreasOrganizacionais(this.value);
 			});
 			
@@ -60,7 +61,7 @@
 		function getEstabelecimentos(empresaId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			EstabelecimentoDWR.getByEmpresa(createListEstabelecimentos, empresaId);
+			EstabelecimentoDWR.getByEmpresas(createListEstabelecimentos, empresaId,empresaIds);
 			return false;
 		}
 		

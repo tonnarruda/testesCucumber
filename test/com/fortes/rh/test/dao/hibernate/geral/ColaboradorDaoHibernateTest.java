@@ -1646,12 +1646,12 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColaborador3.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador3);
 		
-		assertEquals(0, colaboradorDao.findByNomeCpfMatricula(colaborador1, empresa.getId(), false, new String[]{"teste"}, null).size());
-		assertEquals(1, colaboradorDao.findByNomeCpfMatricula(colaborador1, empresa.getId(), false, null, null).size());
-		assertEquals(2, colaboradorDao.findByNomeCpfMatricula(null, empresa.getId(), false, new String[]{"Eva"}, null).size());
-		assertEquals(3, colaboradorDao.findByNomeCpfMatricula(null, empresa.getId(), false, null, null).size());
-		assertEquals(1, colaboradorDao.findByNomeCpfMatricula(null, empresa.getId(), false, null, StatusRetornoAC.CONFIRMADO).size());
-		assertEquals(1, colaboradorDao.findByNomeCpfMatricula(null, empresa.getId(), false, null, StatusRetornoAC.AGUARDANDO).size());
+		assertEquals(0, colaboradorDao.findByNomeCpfMatricula(colaborador1, false, new String[]{"teste"}, null, new Long[]{empresa.getId()}).size());
+		assertEquals(1, colaboradorDao.findByNomeCpfMatricula(colaborador1, false, null, null, new Long[]{empresa.getId()}).size());
+		assertEquals(2, colaboradorDao.findByNomeCpfMatricula(null, false, new String[]{"Eva"}, null, new Long[]{empresa.getId()}).size());
+		assertEquals(3, colaboradorDao.findByNomeCpfMatricula(null, false, null, null, new Long[]{empresa.getId()}).size());
+		assertEquals(1, colaboradorDao.findByNomeCpfMatricula(null, false, null, StatusRetornoAC.CONFIRMADO, new Long[]{empresa.getId()}).size());
+		assertEquals(1, colaboradorDao.findByNomeCpfMatricula(null, false, null, StatusRetornoAC.AGUARDANDO, new Long[]{empresa.getId()}).size());
 	}
 
 	public void testFindByNomeCpfMatriculaComHistoricoComfirmado() 

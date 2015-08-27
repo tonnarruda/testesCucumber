@@ -1706,7 +1706,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		Long[] grupoOcupacionalIds = new Long[]{gerentes.getId()};
 		String vinculo = Vinculo.EMPREGO;
 		
-		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findByAreaGrupoCargo(empresa.getId(), DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds, areaOrganizacionalIds, null, grupoOcupacionalIds, vinculo);
+		Collection<HistoricoColaborador> historicoColaboradors = historicoColaboradorDao.findByAreaGrupoCargo(new Long[]{empresa.getId()}, DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds, areaOrganizacionalIds, null, grupoOcupacionalIds, vinculo);
 		assertEquals(3, historicoColaboradors.size());
 		
 		HistoricoColaborador resultado1 = (HistoricoColaborador) historicoColaboradors.toArray()[0];
@@ -1724,7 +1724,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals("Desenvolvedor A", resultado3.getFaixaSalarial().getDescricao());
 		assertEquals("Gerentes", resultado3.getFaixaSalarial().getCargo().getGrupoOcupacional().getNome());
 		
-		historicoColaboradors = historicoColaboradorDao.findByAreaGrupoCargo(empresa.getId(), DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds, areaOrganizacionalIds, true, grupoOcupacionalIds, vinculo);
+		historicoColaboradors = historicoColaboradorDao.findByAreaGrupoCargo(new Long[]{empresa.getId()}, DateUtil.criarDataMesAno(20, 2, 2010), cargoIds, estabelecimentoIds, areaOrganizacionalIds, true, grupoOcupacionalIds, vinculo);
 		assertEquals("Somente áreas ativas", 2, historicoColaboradors.size());
 	}
 	

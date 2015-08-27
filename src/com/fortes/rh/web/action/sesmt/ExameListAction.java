@@ -143,7 +143,7 @@ public class ExameListAction extends MyActionSupportList
 		if (emitirPara == 'C')
 		{
 			colaborador.setPessoalCpf(StringUtil.removeMascara(colaborador.getPessoal().getCpf()));
-			colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), false, null, null);
+			colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, false, null, null, getEmpresaSistema().getId());
 			if (colaboradors == null || colaboradors.isEmpty())
 				addActionMessage("Nenhum colaborador para o filtro informado.");
 		}

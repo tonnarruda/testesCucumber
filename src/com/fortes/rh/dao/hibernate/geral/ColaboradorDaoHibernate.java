@@ -2626,7 +2626,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Long empresaId, Boolean somenteAtivos, String[] colabsNaoHomonimoHa, Integer statusRetornoAC)
+	public Collection<Colaborador> findByNomeCpfMatricula(Colaborador colaborador, Boolean somenteAtivos, String[] colabsNaoHomonimoHa, Integer statusRetornoAC, Long[] empresaIds)
 	{
 		Criteria criteria = getSession().createCriteria(Colaborador.class, "c");
 		
@@ -2647,8 +2647,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		criteria.setProjection(p);
 		
-		if(empresaId != null && !empresaId.equals(-1L))
-			criteria.add(Expression.eq("c.empresa.id", empresaId));
+		if(empresaIds != null && empresaIds.length > 0)//Quanto terminar de contemplar empresasPermitidas esse if não será mais necessário.
+			criteria.add(Expression.in("c.empresa.id", empresaIds));
 
 		if(colaborador != null && StringUtils.isNotBlank(colaborador.getNome()))
 			criteria.add(Expression.like("c.nome", "%" + colaborador.getNome() + "%").ignoreCase());

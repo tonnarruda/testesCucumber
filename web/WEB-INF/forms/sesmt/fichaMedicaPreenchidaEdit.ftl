@@ -46,7 +46,7 @@
 			else if (value == 'C')
 			{
 				var matricula = document.getElementById("matricula").value;
-				ColaboradorDWR.find(createListColaborador, nome, cpf, matricula, empresaId, false);
+				ColaboradorDWR.find(createListColaborador, nome, cpf, matricula, empresaId, false, null);
 			}
 
 			return false;

@@ -68,7 +68,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public Collection<HistoricoColaborador> progressaoColaborador(Long colaboradorId, Long empresaId) throws Exception;
 
-	void montaAreaOrganizacional(Long empresaId, Collection<HistoricoColaborador> historicoColaboradors) throws Exception;
+	void montaAreaOrganizacional(Collection<HistoricoColaborador> historicoColaboradors, Long... empresaIds) throws Exception;
 
 	public Collection<HistoricoColaborador> findByColaboradorProjection(Long colaboradorId, Integer statusRetornoAC);
 
@@ -157,7 +157,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 	
 	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId);
 
-	public Collection<HistoricoColaborador> relatorioColaboradorGrupoOcupacional(Long empresaId, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, String[] areaOrganizacionalsCheck, Boolean areasAtivas, String[] gruposCheck, String vinculo) throws Exception;
+	public Collection<HistoricoColaborador> relatorioColaboradorGrupoOcupacional(Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, String[] areaOrganizacionalsCheck, Boolean areasAtivas, String[] gruposCheck, String vinculo, Long... empresaIds) throws Exception;
 	
 	public Collection<HistoricoColaborador> filtraHistoricoColaboradorParaPPP(Collection<HistoricoColaborador> todosHistoricos) throws Exception;
 

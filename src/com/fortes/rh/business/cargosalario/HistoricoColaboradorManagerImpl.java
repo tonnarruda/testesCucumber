@@ -638,16 +638,16 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			proximo++;
 		}
 
-		montaAreaOrganizacional(empresaId, retorno);
+		montaAreaOrganizacional(retorno, empresaId);
 
 		return retorno;
 	}
 
-	public void montaAreaOrganizacional(Long empresaId, Collection<HistoricoColaborador> retorno) throws Exception
+	public void montaAreaOrganizacional(Collection<HistoricoColaborador> retorno, Long... empresaIds) throws Exception
 	{
-		if (empresaId != null)
+		if (empresaIds != null && empresaIds.length > 0)
 		{
-			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, empresaId);
+			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, empresaIds);
 			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 
 			for (HistoricoColaborador historico : retorno)
@@ -685,7 +685,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	{
 		Collection<HistoricoColaborador> historicos = getDao().findPromocaoByColaborador(colaboradorId);
 
-		montaAreaOrganizacional(empresaId, historicos);
+		montaAreaOrganizacional(historicos, empresaId);
 
 		return historicos;
 	}
@@ -1495,13 +1495,13 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		getDao().removeCandidatoSolicitacao(candidatoSolicitacaoId);		
 	}
 	
-	public Collection<HistoricoColaborador> relatorioColaboradorGrupoOcupacional(Long empresaId, Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, String[] areaOrganizacionalsCheck, Boolean areasAtivas, String[] gruposCheck, String vinculo) throws Exception
+	public Collection<HistoricoColaborador> relatorioColaboradorGrupoOcupacional(Date dataHistorico, String[] cargosCheck, String[] estabelecimentosCheck, String[] areaOrganizacionalsCheck, Boolean areasAtivas, String[] gruposCheck, String vinculo, Long... empresaIds) throws Exception
 	{
-		Collection<HistoricoColaborador> historicos = getDao().findByAreaGrupoCargo(empresaId, dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areaOrganizacionalsCheck), areasAtivas, LongUtil.arrayStringToArrayLong(gruposCheck), vinculo);
+		Collection<HistoricoColaborador> historicos = getDao().findByAreaGrupoCargo(empresaIds, dataHistorico, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areaOrganizacionalsCheck), areasAtivas, LongUtil.arrayStringToArrayLong(gruposCheck), vinculo);
 		if (historicos.isEmpty())
 			throw new ColecaoVaziaException("Não existem dados para o filtro informado.");
 		
-		montaAreaOrganizacional(empresaId, historicos);
+		montaAreaOrganizacional(historicos, empresaIds);
 		
 		return historicos;
 	}

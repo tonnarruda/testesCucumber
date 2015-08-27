@@ -55,7 +55,7 @@ public class ProntuarioEditActionTest extends MockObjectTestCase
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 
 		prontuarioManager.expects(once()).method("findByColaborador").with(eq(colaborador)).will(returnValue(prontuarios));
-		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(new Constraint[]{eq(colaborador), ANYTHING, ANYTHING, eq(null), eq(null)}).will(returnValue(colaboradors));
+		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(new Constraint[]{eq(colaborador), ANYTHING, eq(null), eq(null), ANYTHING}).will(returnValue(colaboradors));
 		colaboradorManager.expects(once()).method("getNome").with(eq(colaborador.getId())).will(returnValue("teste"));
 	}
 

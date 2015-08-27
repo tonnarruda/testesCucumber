@@ -268,7 +268,7 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
 		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").withAnyArguments().will(returnValue(colaboradors));
 
-		Map retorno = colaboradorDWR.find("nome", "cpf", "matricula", 1L, false);
+		Map retorno = colaboradorDWR.find("nome", "cpf", "matricula", 1L, false, new Long[]{1L});
 
 		assertEquals(0, retorno.size());
 	}

@@ -207,7 +207,7 @@ public class ColaboradorDWR
     	return CollectionUtil.convertCollectionToMap(colaboradores, "getId", "getNomeMaisNomeComercial", Colaborador.class);
     }
 
-	public Map<Long, String> find(String nome, String cpf, String matricula, Long empresaId, boolean somenteAtivos)
+	public Map<Long, String> find(String nome, String cpf, String matricula, Long empresaId, boolean somenteAtivos, Long[] empresaIds)
 	{
 		Pessoal pessoal = new Pessoal();
 		pessoal.setCpf(StringUtil.removeMascara(cpf));
@@ -217,15 +217,19 @@ public class ColaboradorDWR
 		colaborador.setMatricula(matricula);
 		colaborador.setPessoal(pessoal);
 		
-		Collection<Colaborador> colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, empresaId, somenteAtivos, null, null);
+		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+		if(empresaId == null || empresaId == 0 || empresaId == -1 )
+			colaboradores = colaboradorManager.findByNomeCpfMatricula(colaborador, somenteAtivos, null, null, empresaIds);
+		else
+			colaboradores = colaboradorManager.findByNomeCpfMatricula(colaborador, somenteAtivos, null, null, empresaId);
 		
-		return new CollectionUtil<Colaborador>().convertCollectionToMap(colaboradors,"getId","getNomeCpfMatricula");
+		return new CollectionUtil<Colaborador>().convertCollectionToMap(colaboradores,"getId","getNomeCpfMatricula");
 	}
 	
 	public Collection<Object> findByNome(String nome, Long empresaId, boolean incluirColaboradoresDesligados)
 	{
 		Collection<String> nomesColabJaSubstituidos = solicitacaoManager.getNomesColabSubstituidosSolicitacaoEncerrada(empresaId);
-		Collection<Colaborador> colaboradores = colaboradorManager.findByNomeCpfMatricula(new Colaborador(nome), empresaId, !incluirColaboradoresDesligados, StringUtil.converteCollectionToArrayString(nomesColabJaSubstituidos), null);
+		Collection<Colaborador> colaboradores = colaboradorManager.findByNomeCpfMatricula(new Colaborador(nome), !incluirColaboradoresDesligados, StringUtil.converteCollectionToArrayString(nomesColabJaSubstituidos), null, empresaId);
 		
 		Collection<Object> retorno = new ArrayList<Object>();
 		Map<String, String> colaboradorMap;

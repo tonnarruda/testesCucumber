@@ -1256,7 +1256,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		}
 	}
 
-	public Collection<HistoricoColaborador> findByAreaGrupoCargo(Long empresaId, Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Long[] areaIds, Boolean areasAtivas, Long[] grupoOcupacionalIds, String vinculo)
+	public Collection<HistoricoColaborador> findByAreaGrupoCargo(Long[] empresaIds, Date dataHistorico, Long[] cargoIds, Long[] estabelecimentoIds, Long[] areaIds, Boolean areasAtivas, Long[] grupoOcupacionalIds, String vinculo)
 	{
 
 		StringBuilder hql = new StringBuilder();
@@ -1288,8 +1288,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		if(grupoOcupacionalIds != null && grupoOcupacionalIds.length>0)
 			hql.append(" and go.id in (:grupoOcupacionalIds) ");
 
-		if(empresaId != null )
-			hql.append("and co.empresa.id = :empresaId ");
+		hql.append("and co.empresa.id in(:empresaIds) ");
 
 		if(vinculo != null && !vinculo.equals("") )
 			hql.append("and co.vinculo = :vinculo ");
@@ -1319,8 +1318,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		if(grupoOcupacionalIds != null && grupoOcupacionalIds.length>0)
 			query.setParameterList("grupoOcupacionalIds", grupoOcupacionalIds, Hibernate.LONG);
 
-		if(empresaId != null)
-			query.setLong("empresaId", empresaId);
+		query.setParameterList("empresaIds", empresaIds);
 
 		if(vinculo != null && !vinculo.equals("") )
 			query.setString("vinculo", vinculo);

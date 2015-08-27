@@ -21,7 +21,7 @@ function populaCargosByArea()
 	}
 }
 
-function populaCargosByAreaVinculados()
+function populaCargosByAreaVinculados(empresaId, empresaIds)
 {
 	DWREngine.setAsync(true);
 	DWRUtil.useLoadingMessage('Carregando...');
@@ -64,16 +64,24 @@ function changeEmpresa(value)
 	$('#cargoSemArea').attr('checked', false);
 }
 
-function newChangeEmpresa(value)
+function newChangeEmpresa(empresaId)
 {
 	$("input[name='areasCheck']:checked").attr('checked',false);
-	
-	populaAreaComCargoVinculado(value);
-	populaEstabelecimento(value);
-	populaCargosByAreaVinculados(value);
+	var empresaIds = new Array();
+	if(empresaId == null || empresaId == 0 || empresaId == -1 ){
+		var optionsEmpresaIds = $(".empresaSelect").find("option");
+		$(optionsEmpresaIds).each(function (i, option) {
+			if($(option).val() != "" && $(option).val() != -1 && $(option).val() != 0 )
+				empresaIds.push($(option).val());
+		});
+	}
+
+	populaAreaComCargoVinculado(empresaId, empresaIds);
+	populaEstabelecimento(empresaId, empresaIds);
+	populaCargosByAreaVinculados(empresaId, empresaIds);
 }
 
-function populaEstabelecimento(empresaId)
+function populaEstabelecimento(empresaId, empresaIds)
 {
 	DWREngine.setAsync(true);
 	DWRUtil.useLoadingMessage('Carregando...');
@@ -97,7 +105,7 @@ function createListArea(data)
 	addChecks('areasCheck',data, 'populaCargosByArea();');
 }
 
-function populaAreaComCargoVinculado(empresaId)
+function populaAreaComCargoVinculado(empresaId,empresaIds)
 {
 	DWREngine.setAsync(true);
 	DWRUtil.useLoadingMessage('Carregando...');

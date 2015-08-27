@@ -26,6 +26,13 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
     
     <script type="text/javascript">
+    	var empresaIds = new Array();
+		<#if empresas?exists>
+			<#list empresas as empresa>
+				empresaIds.push(${empresa.id});
+			</#list>
+		</#if>
+		
 		var avaliacoes = new Array();
 		<#if turma.turmaAvaliacaoTurmas?exists>
 			<#list turma.turmaAvaliacaoTurmas as turmaAvaliacaoTurma>
@@ -78,7 +85,7 @@
 		{
 			DWREngine.setAsync(true);
 			DWRUtil.useLoadingMessage('Carregando...');
-			EstabelecimentoDWR.getByEmpresa(createListEstabelecimento, empresaId);
+			EstabelecimentoDWR.getByEmpresas(createListEstabelecimento, empresaId,empresaIds);
 		}
 
 		function createListEstabelecimento(data)

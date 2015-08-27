@@ -25,9 +25,9 @@
 			var empresa = $('#empresa').val();
 			
 			populaArea();
-			populaCargo(empresa);
 			populaGrupo(empresa);
 			populaEstabelecimento(empresa);
+			populaCargo(empresa);
 			
 			$("input[name='areaOrganizacionalsCheck'], input[name='gruposCheck']").live('click', populaCargoByAreaGrupo);
 		});
@@ -99,9 +99,11 @@
 	</#if>
 
 	<@ww.form name="form" action="relatorioColaboradorGrupoOcupacional.action" onsubmit="${validarCampos}" validate="true" method="POST">
-		
+		<#list empresas as empresa>	
+				<input type="hidden" name="empresasPermitidas" value="${empresa.id}" />
+		</#list>
 		<#if compartilharColaboradores>
-			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea();"/>
+			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea();populaCargo(this.value);populaGrupo(this.value);"/>
 		<#else>
 			<@ww.hidden id="empresa" name="empresa.id"/>
 			<li class="wwgrp">

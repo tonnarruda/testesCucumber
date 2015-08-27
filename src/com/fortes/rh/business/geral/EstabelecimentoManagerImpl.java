@@ -57,7 +57,7 @@ public class EstabelecimentoManagerImpl extends GenericManagerImpl<Estabelecimen
 		try
 		{
 			Collection<Estabelecimento> estabelecimentosTmp = getDao().findAllSelect(empresaId);
-			return CheckListBoxUtil.populaCheckListBox(estabelecimentosTmp, "getId", "getNome");
+			return CheckListBoxUtil.populaCheckListBox(estabelecimentosTmp, "getId", "getDescricaoComEmpresa");
 		}
 		catch (Exception e)
 		{

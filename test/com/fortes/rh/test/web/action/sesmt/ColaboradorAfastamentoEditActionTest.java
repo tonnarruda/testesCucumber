@@ -134,7 +134,7 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 		Collection<Colaborador> colecao = new ArrayList<Colaborador>();
 		colecao.add(colaborador);
 
-		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(new Constraint[]{ANYTHING, eq(action.getEmpresaSistema().getId()), ANYTHING, eq(null), eq(StatusRetornoAC.CONFIRMADO)}).will(returnValue(colecao));
+		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(new Constraint[]{ANYTHING, ANYTHING, eq(null), eq(StatusRetornoAC.CONFIRMADO), eq(new Long[]{action.getEmpresaSistema().getId()})}).will(returnValue(colecao));
 		afastamentoManager.expects(once()).method("findAll");
 
 		assertEquals("success", action.filtrarColaboradores());
@@ -147,7 +147,7 @@ public class ColaboradorAfastamentoEditActionTest extends MockObjectTestCase
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		colaborador.setPessoal(pessoal);
 
-		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(new Constraint[]{ANYTHING, eq(action.getEmpresaSistema().getId()), ANYTHING, eq(null), eq(StatusRetornoAC.CONFIRMADO)}).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(new Constraint[]{ANYTHING, ANYTHING, eq(null), eq(StatusRetornoAC.CONFIRMADO), eq(new Long[]{action.getEmpresaSistema().getId()})}).will(returnValue(new ArrayList<Colaborador>()));
 
 		assertEquals("input", action.filtrarColaboradores());
 	}

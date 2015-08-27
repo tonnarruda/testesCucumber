@@ -16,10 +16,17 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	
 	<script type='text/javascript'>
+		var empresaIds = new Array();
+		<#if empresas?exists>
+			<#list empresas as empresa>
+				empresaIds.push(${empresa.id});
+			</#list>
+		</#if>
+		
 		function populaColaborador()
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			ColaboradorDWR.find(createListColaborador, $('#nome').val(), "", $('#matricula').val(), $('#empresaId').val(), true);
+			ColaboradorDWR.find(createListColaborador, $('#nome').val(), "", $('#matricula').val(), $('#empresaId').val(), true, empresaIds);
 		}
 		
 		function createListColaborador(data)

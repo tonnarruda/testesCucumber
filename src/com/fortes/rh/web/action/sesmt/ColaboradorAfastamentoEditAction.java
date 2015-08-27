@@ -111,7 +111,7 @@ public class ColaboradorAfastamentoEditAction extends MyActionSupportEdit
 	public String filtrarColaboradores() throws Exception
 	{
 		colaborador.setPessoalCpf(StringUtil.removeMascara(colaborador.getPessoal().getCpf()));
-		colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, getEmpresaSistema().getId(), false, null, StatusRetornoAC.CONFIRMADO);
+		colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, false, null, StatusRetornoAC.CONFIRMADO, getEmpresaSistema().getId());
 
 		if (colaboradors == null || colaboradors.isEmpty())
 		{

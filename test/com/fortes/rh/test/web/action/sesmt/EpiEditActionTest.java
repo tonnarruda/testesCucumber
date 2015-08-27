@@ -221,7 +221,7 @@ public class EpiEditActionTest extends MockObjectTestCase
 		String cpf = "123.456.789-10";
 
 		StringUtil.removeMascara(cpf);
-		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(new Constraint[]{ANYTHING, eq(empresaId), ANYTHING, eq(null), eq(null)}).will(returnValue(new ArrayList<Colaborador>()));
+		colaboradorManager.expects(once()).method("findByNomeCpfMatricula").with(new Constraint[]{ANYTHING, ANYTHING, eq(null), eq(null), eq(new Long[]{empresaId})}).will(returnValue(new ArrayList<Colaborador>()));
 
 		assertEquals("success", action.filtroImprimirFicha());
     }

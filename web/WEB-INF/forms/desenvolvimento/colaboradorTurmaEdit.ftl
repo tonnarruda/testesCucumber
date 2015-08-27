@@ -117,7 +117,7 @@
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="form" action="listFiltro.action" onsubmit="enviaForm();" method="POST" id="formBusca">
 
-            <@ww.select label="Empresa" name="empresaId" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" onchange="newChangeEmpresa(this.value);" disabled="!compartilharColaboradores"/>
+            <@ww.select label="Empresa" name="empresaId" id="empresa" list="empresas" cssClass="empresaSelect" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" onchange="newChangeEmpresa(this.value);" disabled="!compartilharColaboradores"/>
 			
 			<label>Admitidos entre:</label><br />
 			<@ww.datepicker name="dataAdmissaoIni" value="${dataAdmIni}" id="admIni" cssClass="mascaraData validaDataIni" liClass="liLeft"/>

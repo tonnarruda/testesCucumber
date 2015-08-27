@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.HashSet;
 
 import com.fortes.rh.business.cargosalario.CargoManager;
-import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
 import com.fortes.rh.business.desenvolvimento.AvaliacaoCursoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;

@@ -314,7 +314,7 @@ public class CargoEditAction extends MyActionSupportEdit
 			if (empresa.getId() != null)
 				empresa = empresaManager.findByIdProjection(empresa.getId());
 			
-			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorGrupoOcupacional(empresa.getId(), dataHistorico, cargosCheck, estabelecimentosCheck, areaOrganizacionalsCheck, BooleanUtil.getValueCombo(ativa), gruposCheck, vinculo);
+			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorGrupoOcupacional(dataHistorico, cargosCheck, estabelecimentosCheck, areaOrganizacionalsCheck, BooleanUtil.getValueCombo(ativa), gruposCheck, vinculo,EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
 			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores por Grupo Ocupacional", getEmpresaSistema(), "");
 			parametros.put("SELECTCOLUNA", selectColuna);
 			
