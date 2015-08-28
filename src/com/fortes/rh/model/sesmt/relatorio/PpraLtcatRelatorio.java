@@ -78,6 +78,7 @@ public class PpraLtcatRelatorio
 			StringBuilder riscoMedido = new StringBuilder();
 			String quebraDeLinha="\n";
 			
+			riscoMedido.append(riscoMedicao.getPeriodicidadeExposicao() != null ? styleTag.concat("Periodicidade da exposição: ").concat(styleTagClosing).concat( riscoMedicao.getPeriodicidadeExposicao().toString() ).concat(". ") : "");
 			riscoMedido.append(!StringUtil.isBlank(riscoMedicao.getIntensidadeMedida()) ? styleTag.concat("Intensidade/Concentração: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getIntensidadeMedida()) ).concat(". ") : "");
 			riscoMedido.append(!StringUtil.isBlank(riscoMedicao.getTecnicaUtilizada()) ? styleTag.concat("Técnica utilizada: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getTecnicaUtilizada()) ).concat(". ") : "");
 			riscoMedido.append(!StringUtil.isBlank(riscoMedicao.getDescricaoPpra()) ? styleTag.concat("Descrição: ").concat(styleTagClosing).concat( StringUtil.replaceXml(riscoMedicao.getDescricaoPpra()) ).concat(". ") : "");

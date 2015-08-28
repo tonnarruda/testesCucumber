@@ -29,7 +29,7 @@ public class RiscoMedicaoRiscoDaoHibernate extends GenericDaoHibernate<RiscoMedi
 	{
 		StringBuilder hql = new StringBuilder();
 		
-		hql.append("select new RiscoMedicaoRisco(rm.descricaoPpra, rm.descricaoLtcat, rm.tecnicaUtilizada, rm.intensidadeMedida, r.descricao, r.grupoRisco, r, m.data, ra.medidaDeSeguranca) ");
+		hql.append("select new RiscoMedicaoRisco(rm.descricaoPpra, rm.descricaoLtcat, rm.tecnicaUtilizada, rm.intensidadeMedida, r.descricao, r.grupoRisco, r, m.data, ra.medidaDeSeguranca, ra.periodicidadeExposicao) ");
 		hql.append("from RiscoMedicaoRisco rm ");
 		hql.append("	join rm.risco r ");
 		hql.append("	join rm.medicaoRisco m ");
@@ -79,10 +79,9 @@ public class RiscoMedicaoRiscoDaoHibernate extends GenericDaoHibernate<RiscoMedi
 	}
 
 	public Collection<RiscoMedicaoRisco> findMedicoesDeRiscosDaFuncao(Long funcaoId, Date data) {
-		
 		StringBuilder hql = new StringBuilder();
 		
-		hql.append("select new RiscoMedicaoRisco(rm.descricaoPpra, rm.descricaoLtcat, rm.tecnicaUtilizada, rm.intensidadeMedida, r.descricao, r.grupoRisco, r, m.data, rf.medidaDeSeguranca) ");
+		hql.append("select new RiscoMedicaoRisco(rm.descricaoPpra, rm.descricaoLtcat, rm.tecnicaUtilizada, rm.intensidadeMedida, r.descricao, r.grupoRisco, r, m.data, rf.medidaDeSeguranca, rf.periodicidadeExposicao) ");
 		hql.append("from RiscoMedicaoRisco rm ");
 		hql.append("	join rm.risco r ");
 		hql.append("	join rm.medicaoRisco m ");

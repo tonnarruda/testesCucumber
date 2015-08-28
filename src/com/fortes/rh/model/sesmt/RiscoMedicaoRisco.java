@@ -2,6 +2,8 @@ package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,7 +44,8 @@ public class RiscoMedicaoRisco extends AbstractModel implements Serializable
 	private boolean naoAdicionar;
 	@Transient
 	private String medidaDeSeguranca;
-	
+	@Transient
+	private Character periodicidadeExposicao;
 	
 	public RiscoMedicaoRisco() {
 	}
@@ -53,7 +56,7 @@ public class RiscoMedicaoRisco extends AbstractModel implements Serializable
 		this.risco = risco2;
 	}
 	
-	public RiscoMedicaoRisco(String descricaoPpra, String descricaoLtcat, String tecnicaUtilizada, String intensidadeMedida, String riscoDescricao, String riscoGrupoRisco, Risco risco, Date medicaoData, String medidaDeSeguranca) 
+	public RiscoMedicaoRisco(String descricaoPpra, String descricaoLtcat, String tecnicaUtilizada, String intensidadeMedida, String riscoDescricao, String riscoGrupoRisco, Risco risco, Date medicaoData, String medidaDeSeguranca, Character periodicidadeExposicao) 
 	{
 		this.descricaoPpra = descricaoPpra;
 		this.descricaoLtcat = descricaoLtcat;
@@ -65,6 +68,7 @@ public class RiscoMedicaoRisco extends AbstractModel implements Serializable
 		this.medicaoRisco = new MedicaoRisco();
 		this.medicaoRisco.setData(medicaoData);
 		this.medidaDeSeguranca = medidaDeSeguranca;
+		this.periodicidadeExposicao = periodicidadeExposicao;
 	}
 	
 	//RiscoMedicaoRisco(rm.tecnicaUtilizada, rm.intensidadeMedida, m.data)
@@ -181,5 +185,18 @@ public class RiscoMedicaoRisco extends AbstractModel implements Serializable
 	public void setMedidaDeSeguranca(String medidaDeSeguranca)
 	{
 		this.medidaDeSeguranca = medidaDeSeguranca;
+	}
+
+	public String getPeriodicidadeExposicao() {
+		Map<Character, String> periodicidades = new HashMap<Character, String>();
+		periodicidades.put('C',"Contínua");
+		periodicidades.put('I',"Intermitente");
+		periodicidades.put('E',"Eventual");
+		
+		return periodicidades.get(periodicidadeExposicao);
+	}
+
+	public void setPeriodicidadeExposicao(Character periodicidadeExposicao) {
+		this.periodicidadeExposicao = periodicidadeExposicao;
 	}
 }

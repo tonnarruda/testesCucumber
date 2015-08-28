@@ -125,7 +125,6 @@ public class AmbienteManagerImpl extends GenericManagerImpl<Ambiente, AmbienteDa
 		return ppraLtcatRelatorio;
 	}
 
-
 	private PpraLtcatRelatorio populaRelatorioPorFuncao(Empresa empresa, Estabelecimento estabelecimento, Ambiente ambiente, Date data, ComposicaoSesmt composicaoSesmt, Funcao funcao) 
 	{
 		Ppra ppra = new Ppra();
