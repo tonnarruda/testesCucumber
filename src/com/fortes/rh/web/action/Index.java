@@ -124,7 +124,7 @@ public class Index extends MyActionSupport
 			primeiraExecucao = true;
 		}
 		
-		bancoConsistente = parametrosDoSistema.isBancoConsistente();
+		//bancoConsistente = parametrosDoSistema.isBancoConsistente();
 
 		try
 		{

@@ -250,6 +250,7 @@
 			<arg value="fortesrh_create_temp" />
 		</exec>
 		
+		<!--
 		<echo message="Verificando quantidade de constraints" />
 		<sql driver="org.postgresql.Driver"
 			url="jdbc:postgresql://localhost:5432/fortesrh_create_temp"
@@ -267,6 +268,7 @@
 				WHERE constraint_type = 'FOREIGN KEY'
 			</transaction>
 		</sql>
+		-->
 		
 		<copy file="${metadados.dir}/create.sql" todir="${ant.project.name}/dist" />
 
@@ -291,6 +293,7 @@
 
 	<!-- Gera Atualizador -->
 	<target name="build_atualizador">
+		<!--
 		<loadfile property="constraints" srcfile="${ant.project.name}/dist/output-qtd-constraints-tmp.txt">
 			<filterchain>
 				<headfilter lines="-1" skip="1" />
@@ -298,12 +301,13 @@
 				<deletecharacters chars="\t\r\n" />
 			</filterchain>
 		</loadfile>
+		-->
 		
 		<ant dir="EquipeRH/FortesRH_Atualizador" antfile="gera_atualizador_build.xml">
 			<property name="tomcat.versao" value="Tomcat6" /> <!-- Versão do tomcat -->
 			<property name="fortesrh.war.file" location="${ant.project.name}/dist/fortesrh.war" /> <!-- Origem -->
 			<property name="fortesrh.pack.dir" location="${ant.project.name}/dist" /> <!-- Destino -->
-			<property name="qtd_constraints" value="${constraints}" /> <!-- Versão do tomcat -->
+			<!--<property name="qtd_constraints" value="${constraints}" />  Versão do tomcat -->
 		</ant>
 	</target>
 

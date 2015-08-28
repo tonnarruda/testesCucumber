@@ -161,6 +161,7 @@
 		</ul>
 	</div>
 	
+	<!--
 	<#if !bancoConsistente >
 		<div id="bancoconsistente" class="warning">
 			<div style="float:right;"><a title="Ocultar" href="javascript:;" onclick="$(this).parent().parent().remove();">x</a></div>
@@ -173,6 +174,7 @@
 			</ul>
 		</div>
 	</#if>
+	-->
 	
 	<#if avaliacaos?exists && 0 < avaliacaos?size>
 		<div class="waDivTituloX">Aviso!</div>

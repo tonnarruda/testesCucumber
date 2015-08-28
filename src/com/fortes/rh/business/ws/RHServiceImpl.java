@@ -32,6 +32,7 @@ import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.PesquisaManager;
 import com.fortes.rh.exception.FortesException;
@@ -102,6 +103,7 @@ public class RHServiceImpl implements RHService
 	private PlatformTransactionManager transactionManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private PesquisaManager pesquisaManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 
 	private final String MSG_ERRO_REMOVER_SITUACAO_LOTE = "Erro ao excluir situação dos empregados, existem outros cadastros utilizando essa situação.";
 	private final String MSG_ERRO_REMOVER_SITUACAO = "Erro ao excluir situação do empregado, existem outros cadastros utilizando essa situação.";
@@ -1485,7 +1487,7 @@ public class RHServiceImpl implements RHService
 					colaboradorManager.reenviaAguardandoContratacao(empresa);
 					colaboradorManager.confirmaReenvios(new TFeedbackPessoalWebService(true, "Reenvio das pendências realizada com sucesso", null), empresa);
 					realizandoReenvioPendencias = false;
-					if(false){//NÃO REMOVER SERVIRÁ PARA A FUNCIONALIDADE FUTURA
+					if(false){//NÃO REMOVER SERVIRÁ PARA A FUNCIONALIDADE FUTURA DE ALINHAMENTO DA TABELA TEMPORÁRIA DO FORTES PESSOAL
 						faixaSalarialHistoricoManager.reenviaAguardandoConfirmacao(empresa);
 						historicoColaboradorManager.reenviaAguardandoConfirmacao(empresa);
 						colaboradorManager.reenviaSolicitacaoDesligamento(empresa);
@@ -1497,6 +1499,11 @@ public class RHServiceImpl implements RHService
 				}
 			}
 		}
+	}
+	
+	public String verscaoSistema()
+	{
+		return parametrosDoSistemaManager.findById(1L).getAppVersao();
 	}
 	
 	public void setCidadeManager(CidadeManager cidadeManager)
@@ -1606,5 +1613,9 @@ public class RHServiceImpl implements RHService
 
 	public void setPesquisaManager(PesquisaManager pesquisaManager) {
 		this.pesquisaManager = pesquisaManager;
+	}
+
+	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
 }
