@@ -223,10 +223,10 @@ public class HistoricoCandidatoManagerImpl extends GenericManagerImpl<HistoricoC
 		this.candidatoManager = candidatoManager;
 	}
 
-	public Collection<ProcessoSeletivoRelatorio> relatorioProcessoSeletivo(String ano, Long cargoId, Long[] etapaIds)
+	public Collection<ProcessoSeletivoRelatorio> relatorioProcessoSeletivo(String ano, Long empresaId, Long cargoId, Long[] etapaIds)
 	{
-		Collection<ProcessoSeletivoRelatorio> processosSeletivos = etapaSeletivaManager.montaProcessosSeletivos(etapaIds);
-		Collection<HistoricoCandidato> historicoCandidatos = getDao().findQtdParticipantes(ano, cargoId, etapaIds);
+		Collection<ProcessoSeletivoRelatorio> processosSeletivos = etapaSeletivaManager.montaProcessosSeletivos(empresaId, etapaIds);
+		Collection<HistoricoCandidato> historicoCandidatos = getDao().findQtdParticipantes(ano, empresaId, cargoId, etapaIds);
 		// consulta acima em ordem ligado a regra deste manager.
 		
 		int countExibirTarja = 1;

@@ -204,6 +204,7 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		empresa = empresaDao.save(empresa);
 
 		Cargo cargo = CargoFactory.getEntity();
+		cargo.setEmpresa(empresa);
 		cargo = cargoDao.save(cargo);
 
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
@@ -262,7 +263,7 @@ public class HistoricoCandidatoDaoHibernateTest extends GenericDaoHibernateTest<
 		historicoCandidato4.setData(hoje);
 		historicoCandidato4 = historicoCandidatoDao.save(historicoCandidato4);
 
-		Collection<HistoricoCandidato> historicos = historicoCandidatoDao.findQtdParticipantes("2010", cargo.getId(), new Long[]{etapaSeletiva.getId(), etapaSeletiva1.getId()});
+		Collection<HistoricoCandidato> historicos = historicoCandidatoDao.findQtdParticipantes("2010", empresa.getId(), cargo.getId(), new Long[]{etapaSeletiva.getId(), etapaSeletiva1.getId()});
 
 		assertEquals(1, historicos.size());
 	}

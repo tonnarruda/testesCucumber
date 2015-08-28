@@ -121,9 +121,9 @@ public class EtapaSeletivaManagerImpl extends GenericManagerImpl<EtapaSeletiva, 
 		return getDao().getCount(empresaId);
 	}
 
-	public Collection<ProcessoSeletivoRelatorio> montaProcessosSeletivos(Long[] etapaIds)
+	public Collection<ProcessoSeletivoRelatorio> montaProcessosSeletivos(Long empresaId, Long[] etapaIds)
 	{
-		Collection<EtapaSeletiva> etapas = getDao().findByIdProjection(etapaIds);
+		Collection<EtapaSeletiva> etapas = getDao().findByIdProjection(empresaId, etapaIds);
 		Collection<ProcessoSeletivoRelatorio> processosSeletivos = new ArrayList<ProcessoSeletivoRelatorio>();
 		
 		for (EtapaSeletiva etapaSeletiva : etapas)

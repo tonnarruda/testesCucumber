@@ -365,9 +365,9 @@ public class HistoricoCandidatoManagerTest extends MockObjectTestCase
     	HistoricoCandidato historicoCandidato = HistoricoCandidatoFactory.getEntity();
     	historicoCandidato.setEtapaSeletiva(etapaSeletiva);
     	
-		etapaSeletivaManager.expects(once()).method("montaProcessosSeletivos").with(ANYTHING).will(returnValue(processosSeletivos));
-		historicoCandidatoDao.expects(once()).method("findQtdParticipantes").with(ANYTHING,ANYTHING,ANYTHING).will(returnValue(historicoCandidatos));
+		etapaSeletivaManager.expects(once()).method("montaProcessosSeletivos").with(ANYTHING, ANYTHING).will(returnValue(processosSeletivos));
+		historicoCandidatoDao.expects(once()).method("findQtdParticipantes").with(ANYTHING,ANYTHING,ANYTHING,ANYTHING).will(returnValue(historicoCandidatos));
 		
-    	assertEquals(2, historicoCandidatoManager.relatorioProcessoSeletivo("2010", 1L, new Long[]{1L}).size());
+    	assertEquals(2, historicoCandidatoManager.relatorioProcessoSeletivo("2010", 1L, 1L, new Long[]{1L}).size());
     }
 }

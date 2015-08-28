@@ -391,7 +391,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
 
 	public String imprimirRelatorioProcessoSeletivo() throws Exception
     {
-        processoSeletivoRelatorios = historicoCandidatoManager.relatorioProcessoSeletivo(ano, cargoId, StringUtil.stringToLong(etapaCheck));
+        processoSeletivoRelatorios = historicoCandidatoManager.relatorioProcessoSeletivo(ano, getEmpresaSistema().getId(), cargoId, StringUtil.stringToLong(etapaCheck));
 
 		String nomeCargo = cargoId==null? "Todos" : cargoManager.findByIdProjection(cargoId).getNome();
 		String filtro = "Cargo: " + nomeCargo;

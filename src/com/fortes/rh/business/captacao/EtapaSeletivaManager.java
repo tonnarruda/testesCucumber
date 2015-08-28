@@ -34,7 +34,7 @@ public interface EtapaSeletivaManager extends GenericManager<EtapaSeletiva>
 
 	public EtapaSeletiva findByIdProjection(Long etapaSeletivaId);
 
-	Collection<ProcessoSeletivoRelatorio> montaProcessosSeletivos(Long[] etapaIds);
+	Collection<ProcessoSeletivoRelatorio> montaProcessosSeletivos(Long empresaId, Long[] etapaIds);
 	
 	public Collection<CheckBox> populaCheckOrderNome(long empresaId);
 	
