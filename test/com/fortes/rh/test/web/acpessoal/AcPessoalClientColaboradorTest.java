@@ -89,7 +89,7 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		
 		assertTrue(acPessoalClientColaboradorImpl.contratar(tEmpregado, tSituacao, empresa));
 
-		ResultSet result = query("select nome,nomecomercial,dataadmissao,datanascimento,sal_tipo , salariovalor from ctt where id = "+ tEmpregado.getId() +" and empcodigoac = '" + empCodigo + "'");
+		ResultSet result = query("select nome,nomecomercial,dataadmissao,datanascimento,sal_tipo , salariovalor from ctt where id_externo = "+ tEmpregado.getId() +" and emp_codigo = '" + empCodigo + "'");
 		if (result.next())
 		{
 			assertEquals("Fulano da Silva", result.getString("nome"));			
@@ -115,7 +115,7 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		
 		assertTrue(acPessoalClientColaboradorImpl.contratar(tEmpregado, tSituacao, empresa));
 		
-		ResultSet result = query("select nome,nomecomercial,dataadmissao,datanascimento,sal_tipo , ind_codigo_salario from ctt where id = "+ tEmpregado.getId() +" and empcodigoac = '" + empCodigo + "'");
+		ResultSet result = query("select nome,nomecomercial,dataadmissao,datanascimento,sal_tipo , ind_codigo_salario from ctt where id_externo = "+ tEmpregado.getId() +" and emp_codigo = '" + empCodigo + "'");
 		if (result.next())
 		{
 			assertEquals("Fulano da Silva", result.getString("nome"));			
@@ -141,7 +141,7 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		
 		assertTrue(acPessoalClientColaboradorImpl.contratar(tEmpregado, tSituacao, empresa));
 		
-		ResultSet result = query("select nome,nomecomercial,dataadmissao,datanascimento,sal_tipo , car_codigo from ctt where id = "+ tEmpregado.getId() +" and empcodigoac = '" + empCodigo + "'");
+		ResultSet result = query("select nome,nomecomercial,dataadmissao,datanascimento,sal_tipo , car_codigo from ctt where id_externo = "+ tEmpregado.getId() +" and emp_codigo = '" + empCodigo + "'");
 		if (result.next())
 		{
 			assertEquals("Fulano da Silva", result.getString("nome"));			
@@ -176,7 +176,7 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		
 		acPessoalClientColaboradorImpl.contratar(tEmpregado, tSituacao, empresa);
 		
-		ResultSet result = query("select nome,nomecomercial,dataadmissao,datanascimento,sal_tipo , salariovalor from ctt where id = "+ tEmpregado.getId() +" and empcodigoac = '" + empCodigo + "'");
+		ResultSet result = query("select nome,nomecomercial,dataadmissao,datanascimento,sal_tipo , salariovalor from ctt where id_externo = "+ tEmpregado.getId() +" and emp_codigo = '" + empCodigo + "'");
 		if (result.next())
 		{
 			assertEquals("Fulano da Silva Sauro", result.getString("nome"));			
@@ -289,7 +289,7 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		colaborador.setId(1L);
 		assertEquals(true, acPessoalClientColaboradorImpl.remove(colaborador, empresa));
 
-		ResultSet result = query("select nome from ctt where id = "+ tEmpregado.getId() +" and empcodigoac = '" + empCodigo + "'");
+		ResultSet result = query("select nome from ctt where id_externo = "+ tEmpregado.getId() +" and emp_codigo = '" + empCodigo + "'");
 		if (result.next())
 			fail("Consulta RETORNOU algo...");
 	}

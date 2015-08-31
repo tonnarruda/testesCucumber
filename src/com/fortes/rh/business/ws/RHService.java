@@ -102,5 +102,5 @@ public interface RHService
 	TAula[] getTreinamentosCursados(String empregadoCodigo, String empresaCodigo, String empresaGrupo, String dataIni, String dataFim);
 	boolean existePesquisaParaSerRespondida(String empregadoCodigo, String empresaCodigo, String empresaGrupo);
 	
-	String verscaoSistema();
+	String versaoDoSistema();
 }

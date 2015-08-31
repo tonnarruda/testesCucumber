@@ -1501,7 +1501,7 @@ public class RHServiceImpl implements RHService
 		}
 	}
 	
-	public String verscaoSistema()
+	public String versaoDoSistema()
 	{
 		return parametrosDoSistemaManager.findById(1L).getAppVersao();
 	}

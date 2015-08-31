@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.149.180" db="" data="31/08/2015">
+		<Item visivel="S" motivo="S20150800000"><![CDATA[Melhorias na integração do sistema com o Fortes Pessoal.]]></Item>
+	</Versao>
 	<Versao id="1.1.149.179" db="" data="26/08/2015">
 		<Item visivel="S" motivo="S20150100136"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Novo campo para exibir o estabelecimento nos relatórios.]]></Item>
 		<Item visivel="S" motivo="S20150700319"><![CDATA[C&S > Painel de Indicadores: Nova opção para imprimir os gráficos dos indicadores de evoluções salariais e promoções.]]></Item>

@@ -25715,6 +25715,7 @@ INSERT INTO migrations (name) VALUES ('20150817152345');
 INSERT INTO migrations (name) VALUES ('20150818094233');
 INSERT INTO migrations (name) VALUES ('20150818150631');
 INSERT INTO migrations (name) VALUES ('20150825172731');
+INSERT INTO migrations (name) VALUES ('20150828100057');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
@@ -25922,6 +25923,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (525, 'ROLE_INFORM_CANDIDATO_COMPETENCIA', 'Visualizar Competência', '--', 3, false, NULL, 2, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (580, 'ROLE_REL_FORMACAOESCOLAR', 'Formação Escolar', '/geral/colaborador/prepareRelatorioFormacaoEscolar.action', 10, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (563, 'ROLE_MOV_PLANO_DESENVOLVIMENTO_INDIVIDUAL', 'Plano de Desenvolvimento Individual (PDI)', '/desenvolvimento/turma/preparePdi.action', 5, true, NULL, 367, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (582, 'ROLE_CX_MENSAGEM_PESQUISAS', 'Pesquisas', '', 2, false, NULL, 495, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (484, 'ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO', 'Pode Ver e Responder Aval. Desempenho Por Outro Usuário', '#', 1, false, NULL, 483, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (487, 'ROLE_RESPONDER_AVALIACAO_TURMA_POR_OUTRO_USUARIO', 'Pode Responder Avaliação De Turma Por Outro Usuário', '#', 14, false, NULL, 365, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (560, 'ROLE_AVAL_DESEMP_DELETE_RESPOSTA', 'Excluir Respostas', '#', 2, false, NULL, 483, NULL);
@@ -25975,7 +25977,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (524, 'ROLE_INFORM_CANDIDATO_HISTORICO', 'Visualizar Histórico', '--', 2, false, NULL, 2, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (496, 'ROLE_CX_MENSAGEM_RES', 'R&S', '#', 1, false, NULL, 495, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (581, 'ROLE_CX_MENSAGEM_CES', 'C&S', '', 1, false, NULL, 495, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (582, 'ROLE_CX_MENSAGEM_PESQUISAS', 'Pesquisas', '', 2, false, NULL, 495, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (583, 'ROLE_CX_MENSAGEM_AV_DESMPENHO', 'Aval. Desempenho', '', 3, false, NULL, 495, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (584, 'ROLE_CX_MENSAGEM_TED', 'T&D', '', 4, false, NULL, 495, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (585, 'ROLE_CX_MENSAGEM_INFO_FUNCIONAIS', 'Info. Funcionais', '', 5, false, NULL, 495, NULL);
@@ -26085,7 +26086,7 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.149.179', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.54.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.149.180', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.55.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL);
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;

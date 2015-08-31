@@ -23169,3 +23169,8 @@ insert into migrations values('20150818150631');--.go
 update papel set nome = 'Importar Afastamentos Fortes Ponto / TRU' where id=535;--.go 
 insert into migrations values('20150825172731');--.go
 update parametrosdosistema set appversao = '1.1.149.179';--.go
+-- versao 1.1.149.180
+
+update parametrosdosistema set acversaowebservicecompativel='1.1.55.1';--.go
+insert into migrations values('20150828100057');--.go
+update parametrosdosistema set appversao = '1.1.149.180';--.go
