@@ -12,6 +12,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
@@ -36,7 +37,7 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
 	{
 	}
 
-	public SolicitacaoEpiItemEntrega(Long id, Integer qtdEntregue, Date dataEntrega, Integer qtdSolicitado, String epiNome, Boolean epiAtivo, String cargoNome, String colaboradorNome, boolean colaboradorDesligado, Date dataVencimentoCA)
+	public SolicitacaoEpiItemEntrega(Long id, Integer qtdEntregue, Date dataEntrega, Integer qtdSolicitado, String epiNome, Boolean epiAtivo, String cargoNome, String colaboradorNome, boolean colaboradorDesligado, String areaNome, Date dataVencimentoCA)
 	{
 		this.setId(id);
 		this.setQtdEntregue(qtdEntregue);
@@ -53,6 +54,7 @@ public class SolicitacaoEpiItemEntrega extends AbstractModel implements Serializ
 		this.solicitacaoEpiItem.getSolicitacaoEpi().setCargoNome(cargoNome);
 		this.solicitacaoEpiItem.getSolicitacaoEpi().setColaboradorNome(colaboradorNome);
 		this.solicitacaoEpiItem.getSolicitacaoEpi().setColaboradorDesligado(colaboradorDesligado);
+		this.solicitacaoEpiItem.getSolicitacaoEpi().getColaborador().setAreaOrganizacionalNome(areaNome);
 		
 		this.epiHistorico = new EpiHistorico();
 		this.epiHistorico.setVencimentoCA(dataVencimentoCA);

@@ -23,6 +23,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.sesmt.SolicitacaoEpiDao;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoSolicitacaoEpi;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
@@ -244,19 +245,29 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		return query.list();
 	}
 
-	public Collection<SolicitacaoEpiItemEntrega> findEntregaEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiIds, Long[] colaboradorCheck, char agruparPor, boolean exibirDesligados)
+	public Collection<SolicitacaoEpiItemEntrega> findEntregaEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiIds, Long[] areaIds, Long[] colaboradorCheck, char agruparPor, boolean exibirDesligados)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new SolicitacaoEpiItemEntrega(ent.id, ent.qtdEntregue, ent.dataEntrega, item.qtdSolicitado, e.nome, e.ativo, ca.nome, co.nome, co.desligado, eh.vencimentoCA) ");
+		hql.append("select new SolicitacaoEpiItemEntrega(ent.id, ent.qtdEntregue, ent.dataEntrega, item.qtdSolicitado, e.nome, e.ativo, ca.nome, co.nome, co.desligado, a.nome, eh.vencimentoCA) ");
 		hql.append("from SolicitacaoEpiItemEntrega ent ");
 		hql.append("left join ent.epiHistorico eh ");
 		hql.append("join ent.solicitacaoEpiItem item ");
 		hql.append("join item.solicitacaoEpi s ");
 		hql.append("join s.colaborador co ");
+		hql.append("join co.historicoColaboradors hc ");
+		hql.append("join hc.areaOrganizacional a ");
 		hql.append("join s.cargo ca ");
 		hql.append("join item.epi e ");
 		hql.append("where e.empresa.id = :empresaId ");
 		hql.append("and ent.dataEntrega >= :dataIni ");
+		
+		hql.append("and hc.data = ("); 
+		hql.append("	select max(hc2.data) "); 
+		hql.append("	from HistoricoColaborador as hc2 ");
+		hql.append("	where hc2.colaborador.id = co.id ");
+		hql.append("	and hc2.data <= :hoje and hc2.status = :status ");
+		hql.append(" ) ");
+		
 		
 		if (dataFim != null)
 			hql.append("and ent.dataEntrega <= :dataFim ");
@@ -266,6 +277,9 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		
 		if(colaboradorCheck != null && colaboradorCheck.length != 0)
 			hql.append("and co.id in (:colaboradorCheck) ");
+		
+		if(areaIds != null && areaIds.length > 0)
+			hql.append("and a.id in (:areaIds) ");
 		
 		if (!exibirDesligados)
 			hql.append("and co.desligado = false ");
@@ -278,6 +292,8 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresaId);
 		query.setDate("dataIni", dataIni);
+		query.setDate("hoje", new Date());
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 		
 		if (dataFim != null)
 			query.setDate("dataFim", dataFim);
@@ -287,6 +303,9 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		
 		if (colaboradorCheck != null && colaboradorCheck.length != 0)
 			query.setParameterList("colaboradorCheck", colaboradorCheck, Hibernate.LONG);
+		
+		if(areaIds != null && areaIds.length > 0)
+			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
 
 		return query.list();
 	}

@@ -16,6 +16,7 @@ import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
@@ -47,6 +48,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private Long tipoEpi;
 	private Collection<TipoEPI> tipoEpis;
 	private Colaborador colaborador = new Colaborador();
+	private Empresa empresa;
 	
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EstabelecimentoManager estabelecimentoManager;
@@ -138,6 +140,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
     	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		tipoEPICheckList = tipoEPIManager.getByEmpresa(getEmpresaSistema().getId());
+		
 		return SUCCESS;
 	}
 
@@ -171,7 +174,10 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	public String prepareRelatorioEntregaEpi()
 	{
 		epiCheckList = epiManager.populaCheckToEpi(getEmpresaSistema().getId(), null);
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		colaboradorCheckList = colaboradorManager.populaCheckBox(getEmpresaSistema().getId());
+		
+		empresa = getEmpresaSistema();
 		return SUCCESS;
 	}
 	
@@ -187,7 +193,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 			reportTitle = "EPIs Entregues " + DateUtil.formataDiaMesAno(vencimento);
 			reportFilter = "";
 			
-			dataSourceEntrega = solicitacaoEpiManager.findRelatorioEntregaEpi(getEmpresaSistema().getId(), dataIni, dataFim, epiCheck, colaboradorCheck, agruparPor, exibirDesligados);
+			dataSourceEntrega = solicitacaoEpiManager.findRelatorioEntregaEpi(getEmpresaSistema().getId(), dataIni, dataFim, epiCheck, areasCheck, colaboradorCheck, agruparPor, exibirDesligados);
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), null);
 			
 			switch (agruparPor)
@@ -250,6 +256,10 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	public Colaborador getColaborador()
 	{
 		return colaborador;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
 	}
 
 	public String getMatriculaBusca()

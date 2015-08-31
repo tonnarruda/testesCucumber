@@ -130,9 +130,9 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		return solicitacaoEpis;
 	}
 
-	public Collection<SolicitacaoEpiItemEntrega> findRelatorioEntregaEpi(Long empresaId, Date dataIni, Date dataFim, String[] epiCheck, String[] colaboradorCheck, char agruparPor, boolean exibirDesligados) throws ColecaoVaziaException
+	public Collection<SolicitacaoEpiItemEntrega> findRelatorioEntregaEpi(Long empresaId, Date dataIni, Date dataFim, String[] epiCheck, String[] areaIds, String[] colaboradorCheck, char agruparPor, boolean exibirDesligados) throws ColecaoVaziaException
 	{
-		Collection<SolicitacaoEpiItemEntrega> solicitacaoEpis = getDao().findEntregaEpi(empresaId, dataIni, dataFim, LongUtil.arrayStringToArrayLong(epiCheck), LongUtil.arrayStringToArrayLong(colaboradorCheck), agruparPor, exibirDesligados);
+		Collection<SolicitacaoEpiItemEntrega> solicitacaoEpis = getDao().findEntregaEpi(empresaId, dataIni, dataFim, LongUtil.arrayStringToArrayLong(epiCheck), LongUtil.arrayStringToArrayLong(areaIds), LongUtil.arrayStringToArrayLong(colaboradorCheck), agruparPor, exibirDesligados);
 		
 		if (solicitacaoEpis == null || solicitacaoEpis.isEmpty())
 			throw new ColecaoVaziaException("Não existem EPIs a serem listados para os filtros informados.");

@@ -189,6 +189,15 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		colaborador.setNome("nometeste");
 		colaboradorDao.save(colaborador);
 		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setData(hoje);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorDao.save(historicoColaborador);
+		
 		Cargo cargo = CargoFactory.getEntity();
 		cargo.setNome("cargo");
 		cargoDao.save(cargo);
@@ -224,12 +233,98 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Long[] epiCheck = {epi.getId()};
 		char agruparPor = 'E';//agrupar por EPI
 		
-		Collection<SolicitacaoEpiItemEntrega> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), DateUtil.criarDataMesAno(01, 01, 2011), DateUtil.criarDataMesAno(01, 03, 2020), epiCheck, null, agruparPor, false);
+		Collection<SolicitacaoEpiItemEntrega> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), DateUtil.criarDataMesAno(01, 01, 2011), DateUtil.criarDataMesAno(01, 03, 2020), epiCheck, null, null, agruparPor, false);
 		
 		assertEquals(1, colecao.size());
 		assertEquals(vencCA, ((SolicitacaoEpiItemEntrega)colecao.toArray()[0]).getEpiHistorico().getVencimentoCA());
 	}
 	
+	public void montaSaveSolicitacaoEpiEntregue(Empresa empresa, Colaborador colaborador, AreaOrganizacional areaOrganizacional, Cargo cargo, Date hoje, Date vencCA) {
+		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
+		solicitacaoEpi.setData(hoje);
+		solicitacaoEpi.setColaborador(colaborador);
+		solicitacaoEpi.setCargo(cargo);
+		solicitacaoEpiDao.save(solicitacaoEpi);
+		
+		Epi epi = EpiFactory.getEntity();
+		epi.setEmpresa(empresa);
+		epi.setNome("teste");
+		epiDao.save(epi);
+		
+		EpiHistorico epiHistorico = new EpiHistorico();
+		epiHistorico.setEpi(epi);
+		epiHistorico.setVencimentoCA(vencCA);
+		epiHistoricoDao.save(epiHistorico);
+		
+		SolicitacaoEpiItem solicitacaoEpiItem = new SolicitacaoEpiItem();
+		solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
+		solicitacaoEpiItem.setEpi(epi);
+		solicitacaoEpiItemDao.save(solicitacaoEpiItem);
+		
+		SolicitacaoEpiItemEntrega entrega = SolicitacaoEpiItemEntregaFactory.getEntity();
+		entrega.setEpiHistorico(epiHistorico);
+		entrega.setSolicitacaoEpiItem(solicitacaoEpiItem);
+		entrega.setDataEntrega(hoje);
+		entrega.setQtdEntregue(3);
+		solicitacaoEpiItemEntregaDao.save(entrega);
+	}
+	
+	public void testFindEntregaEpiComArea()
+	{
+		Date hoje = DateUtil.criarDataMesAno(2, 2, 2012);
+		Date vencCA = DateUtil.criarDataMesAno(2, 5, 2012);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setDesligado(false);
+		colaborador.setNome("nometeste");
+		colaboradorDao.save(colaborador);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setData(hoje);
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setNome("cargo");
+		cargoDao.save(cargo);
+		
+		montaSaveSolicitacaoEpiEntregue(empresa, colaborador, areaOrganizacional, cargo, hoje, vencCA);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setDesligado(false);
+		colaborador2.setNome("nometeste");
+		colaboradorDao.save(colaborador2);
+		
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional2);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2.setData(hoje);
+		historicoColaborador2.setColaborador(colaborador2);
+		historicoColaborador2.setAreaOrganizacional(areaOrganizacional2);
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		Cargo cargo2 = CargoFactory.getEntity();
+		cargo2.setNome("cargo");
+		cargoDao.save(cargo2);
+		
+		montaSaveSolicitacaoEpiEntregue(empresa, colaborador2, areaOrganizacional2, cargo2, hoje, vencCA);
+		
+		Long[] areaCheck = {areaOrganizacional.getId()};
+		char agruparPor = 'E';//agrupar por EPI
+		
+		Collection<SolicitacaoEpiItemEntrega> colecao = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), DateUtil.criarDataMesAno(01, 01, 2011), DateUtil.criarDataMesAno(01, 03, 2020), null, areaCheck, null, agruparPor, false);
+		
+		assertEquals(1, colecao.size());
+		assertEquals(vencCA, ((SolicitacaoEpiItemEntrega)colecao.toArray()[0]).getEpiHistorico().getVencimentoCA());
+	}
 	
 	public void testFindEntregaEpiComColaborador()
 	{
@@ -249,6 +344,15 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Cargo cargo = CargoFactory.getEntity();
 		cargo.setNome("cargo");
 		cargoDao.save(cargo);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setData(hoje);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorDao.save(historicoColaborador);
 		
 		SolicitacaoEpi solicitacaoEpi = SolicitacaoEpiFactory.getEntity();
 		solicitacaoEpi.setData(hoje);
@@ -307,8 +411,8 @@ public class SolicitacaoEpiDaoHibernateTest extends GenericDaoHibernateTest<Soli
 		Long[] colaboradorCheck = {colaborador.getId()};
 		char agruparPor = 'C';//agrupar por colaborador
 		
-		Collection<SolicitacaoEpiItemEntrega> entregasParciais = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), hoje, data2, null, colaboradorCheck, agruparPor, false);
-		Collection<SolicitacaoEpiItemEntrega> entregasTotais = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), hoje, null, null, colaboradorCheck, agruparPor, false);
+		Collection<SolicitacaoEpiItemEntrega> entregasParciais = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), hoje, data2, null, null, colaboradorCheck, agruparPor, false);
+		Collection<SolicitacaoEpiItemEntrega> entregasTotais = solicitacaoEpiDao.findEntregaEpi(empresa.getId(), hoje, null, null, null, colaboradorCheck, agruparPor, false);
 		
 		assertEquals(2, entregasParciais.size());
 		assertEquals(3, entregasTotais.size());

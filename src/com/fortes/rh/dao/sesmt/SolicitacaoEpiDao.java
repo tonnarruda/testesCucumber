@@ -18,7 +18,7 @@ public interface SolicitacaoEpiDao extends GenericDao<SolicitacaoEpi>
 	Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem);
 	SolicitacaoEpi findByIdProjection(Long solicitacaoEpiId);
 	Collection<SolicitacaoEpi> findVencimentoEpi(Long empresaId, Date data, boolean exibirVencimentoCA, Long[] tipoEPIIds, Long[] areasIds, Long[] estabelecimentoIds, char agruparPor);
-	public Collection<SolicitacaoEpiItemEntrega> findEntregaEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiCheck, Long[] colaboradorCheck, char agruparPor, boolean exibirDesligados);
+	public Collection<SolicitacaoEpiItemEntrega> findEntregaEpi(Long empresaId, Date dataIni, Date dataFim, Long[] epiCheck, Long[] areaIds, Long[] colaboradorCheck, char agruparPor, boolean exibirDesligados);
 	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao, Colaborador colaborador, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem);
 	Collection<SolicitacaoEpi> findByColaboradorId(Long colaboradorId);
 }

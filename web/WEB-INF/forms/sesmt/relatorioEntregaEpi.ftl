@@ -3,6 +3,10 @@
 <head>
 <@ww.head/>
 	<#include "../ftl/mascarasImports.ftl" />
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	
 	<title>EPIs Entregues</title>
 
 	<#if dataIni?exists>
@@ -21,6 +25,20 @@
 			$('form[name=form]').attr('action', action);
 			return validaFormularioEPeriodo('form', new Array('periodoIni'), new Array('periodoIni','periodoFim'));
 		}
+		
+		function populaColaboradores(empresaId)
+		{
+			DWRUtil.useLoadingMessage('Carregando...');
+			var areasIds = getArrayCheckeds(document.forms[0], 'areasCheck');
+			
+			ColaboradorDWR.getColaboradoresByArea(createListcolaborador, areasIds, empresaId);
+		}
+
+		function createListcolaborador(data)
+		{
+			addChecksByMap('colaboradorCheck',data)
+		}
+		
 	</script>
 
 </head>
@@ -32,8 +50,10 @@
 		Período:<br>
 		<@ww.datepicker label="Início" name="dataIni" id="periodoIni" cssClass="mascaraData validaDataIni" liClass="liLeft" after="a" value="${dataIni}" required="true"/>
 		<@ww.datepicker label="Fim" name="dataFim" id="periodoFim" cssClass="mascaraData validaDataFim" value="${dataFim}"/>
-		
+		<@ww.hidden id="empresa" name="empresa.id" value="${empresa.id}"/>
+					
 		<@frt.checkListBox name="epiCheck" label="EPIs" list="epiCheckList" filtro="true"/>
+		<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" onClick="populaColaboradores($('#empresa').val());" filtro="true" selectAtivoInativo="true"/>
 		<@frt.checkListBox name="colaboradorCheck" label="Colaboradores" list="colaboradorCheckList" filtro="true"/>
 		<@ww.select label="Agrupar por" id="agruparPor" name="agruparPor" list=r"#{'E':'Epi','C':'Colaborador'}" />
 		
