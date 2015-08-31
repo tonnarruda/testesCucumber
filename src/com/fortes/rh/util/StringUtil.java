@@ -613,4 +613,9 @@ public final class StringUtil
 		
 		return retorno;
 	}
+	
+	public static boolean arrayIsNotEmpty(String[] array)
+	{
+		return array != null && array.length > 0 && array[0] != null;
+	}
 }

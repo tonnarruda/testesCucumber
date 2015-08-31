@@ -131,9 +131,12 @@ public class EtapaSeletivaDaoHibernateTest extends GenericDaoHibernateTest<Etapa
 
 		Long[] ids = {etapa.getId(),etapa2.getId()};
 
-		Collection<EtapaSeletiva> etapaSeletivas = etapaSeletivaDao.findByIdProjection(ids);
-
+		Collection<EtapaSeletiva> etapaSeletivas = etapaSeletivaDao.findByIdProjection(empresa.getId(), ids);
 		assertEquals(2, etapaSeletivas.size());
+
+		etapaSeletivas = etapaSeletivaDao.findByIdProjection(empresa.getId(), null);
+		assertEquals(2, etapaSeletivas.size());
+		
 	}
 
 	public void testFindPrimeiraEtapa()

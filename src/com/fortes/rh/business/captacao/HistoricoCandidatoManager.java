@@ -24,7 +24,7 @@ public interface HistoricoCandidatoManager extends GenericManager<HistoricoCandi
 	void save(HistoricoCandidato historicoCandidato, String[] candidatosCheck)throws Exception;
 	void saveHistoricos(HistoricoCandidato historicoCandidato, String[] candidatosCheck, boolean blacklist) throws Exception;
 	HistoricoCandidato findByIdProjection(Long historicoId);
-	Collection<ProcessoSeletivoRelatorio> relatorioProcessoSeletivo(String ano, Long cargoId, Long[] etapaIds);
+	Collection<ProcessoSeletivoRelatorio> relatorioProcessoSeletivo(String ano, Long empresaId, Long cargoId, Long[] etapaIds);
 	String[] findResponsaveis();
 	boolean updateAgenda(Long id, Date data, String horaIni, String horaFim, String observacao);
 	Collection<EventoAgenda> getEventos(String responsavel, Long empresaId);

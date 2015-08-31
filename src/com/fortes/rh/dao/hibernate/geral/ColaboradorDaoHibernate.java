@@ -3666,7 +3666,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query.list();
 	}
 
-	private Criteria configuraCriteriaParaPainelDeIncadores(Criteria criteria, Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, boolean consideradaDataAdmissaoAndDesligado)
+	private Criteria configuraCriteriaParaPainelDeIncadores(Criteria criteria, Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, boolean consideradaDataAdmissaoAndDesligado, String[] vinculos)
 	{
 		DetachedCriteria subQueryHc = montaSubQueryHistoricoColaborador(data, StatusRetornoAC.CONFIRMADO);
 
@@ -3691,12 +3691,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if(LongUtil.arrayIsNotEmpty(cargosIds))
 			criteria.add(Expression.in("fs.cargo.id", cargosIds));
 		
+		if(StringUtil.arrayIsNotEmpty(vinculos))
+			criteria.add(Expression.in("c.vinculo", vinculos));
+		
 		criteria.add(Subqueries.propertyEq("hc.data", subQueryHc));
 		
 		return criteria;		
 	}
 	
-	public Collection<DataGrafico> countSexo(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds) 
+	public Collection<DataGrafico> countSexo(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, String[] vinculos) 
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		
@@ -3711,7 +3714,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
 		
-		List resultado = configuraCriteriaParaPainelDeIncadores(criteria, data, empresaIds, estabelecimentosIds, areasIds, cargosIds, true).list();
+		List resultado = configuraCriteriaParaPainelDeIncadores(criteria, data, empresaIds, estabelecimentosIds, areasIds, cargosIds, true, vinculos).list();
 		
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
@@ -3732,7 +3735,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 
-	public Collection<DataGrafico> countEstadoCivil(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds) 
+	public Collection<DataGrafico> countEstadoCivil(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, String[] vinculos) 
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		
@@ -3743,7 +3746,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		criteria.addOrder(Order.asc("c.pessoal.estadoCivil"));
 		
-		List resultado = configuraCriteriaParaPainelDeIncadores(criteria, data, empresaIds, estabelecimentosIds, areasIds, cargosIds, true).list();
+		List resultado = configuraCriteriaParaPainelDeIncadores(criteria, data, empresaIds, estabelecimentosIds, areasIds, cargosIds, true, vinculos).list();
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
 		
@@ -3776,7 +3779,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 
-	public Collection<DataGrafico> countFormacaoEscolar(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds) 
+	public Collection<DataGrafico> countFormacaoEscolar(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, String[] vinculos) 
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		
@@ -3787,7 +3790,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		criteria.addOrder(Order.asc("c.pessoal.escolaridade"));
 		
-		List resultado = configuraCriteriaParaPainelDeIncadores(criteria, data, empresaIds, estabelecimentosIds, areasIds, cargosIds, true).list();
+		List resultado = configuraCriteriaParaPainelDeIncadores(criteria, data, empresaIds, estabelecimentosIds, areasIds, cargosIds, true, vinculos).list();
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
 		
@@ -3822,7 +3825,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			hql.append("and fs.cargo.id in (:cargosIds) ");
 	}
 	
-	public Collection<DataGrafico> countFaixaEtaria(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds)
+	public Collection<DataGrafico> countFaixaEtaria(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, String[] vinculos)
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		
@@ -3830,7 +3833,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		projections.add(Projections.property("c.pessoal.dataNascimento"));
 		criteria.setProjection(projections);
 		
-		List resultado = configuraCriteriaParaPainelDeIncadores(criteria, data, empresaIds, estabelecimentosIds, areasIds, cargosIds, true).list();
+		List resultado = configuraCriteriaParaPainelDeIncadores(criteria, data, empresaIds, estabelecimentosIds, areasIds, cargosIds, true, vinculos).list();
 
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
 		
@@ -3870,7 +3873,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 
-	public Collection<DataGrafico> countDeficiencia(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds) 
+	public Collection<DataGrafico> countDeficiencia(Date data, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, String[] vinculos) 
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		
@@ -3881,7 +3884,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		criteria.addOrder(Order.asc("c.pessoal.deficiencia"));
 		
-		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, data, empresaIds, estabelecimentosIds, areasIds, cargosIds, true).list();
+		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, data, empresaIds, estabelecimentosIds, areasIds, cargosIds, true, vinculos).list();
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
 
@@ -3927,7 +3930,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.addOrder(OrderBySql.sql("2 desc"));
 		criteria.addOrder(Order.asc("m.motivo"));
 		
-		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, false).list();
+		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, false, null).list();
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
 		
@@ -3940,7 +3943,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return dataGraficos;
 	}
 
-	public Collection<DataGrafico> countColocacao(Date dataBase, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds) 
+	public Collection<DataGrafico> countColocacao(Date dataBase, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, String[] vinculos) 
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		
@@ -3951,7 +3954,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		criteria.addOrder(OrderBySql.sql("2 desc"));
 		
-		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds, true).list();
+		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataBase, empresaIds, estabelecimentosIds, areasIds, cargosIds, true, vinculos).list();
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
 		
@@ -4000,7 +4003,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if (LongUtil.arrayIsNotEmpty(ocorrenciasIds))
 			criteria.add(Restrictions.in("o.id", ocorrenciasIds));
 		
-		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, true).list();
+		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, true, null).list();
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
 		
@@ -4019,7 +4022,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	{
 		Criteria criteria = criteriaOcorrenciaByPeriodo(dataIni, dataFim, qtdItens);
 		
-		criteria = configuraCriteriaParaPainelDeIncadores(criteria, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, true);
+		criteria = configuraCriteriaParaPainelDeIncadores(criteria, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, true, null);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Ocorrencia.class));
 		List<Ocorrencia> resultado = criteria.list();
 		
@@ -4047,7 +4050,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		criteria.setMaxResults(qtdItens);
 		
-		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, false).list();
+		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, false, null).list();
 
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
 		

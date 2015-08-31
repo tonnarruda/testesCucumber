@@ -166,7 +166,7 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		return (Integer) criteria.uniqueResult();
 	}
 
-	public Collection<HistoricoCandidato> findQtdParticipantes(String ano, Long cargoId, Long[] etapaIds)
+	public Collection<HistoricoCandidato> findQtdParticipantes(String ano, Long empresaId, Long cargoId, Long[] etapaIds)
 	{	
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new HistoricoCandidato(e.id, e.nome, count(hc.id), month(hc.data), coalesce(hc.apto, 'N')) ");
@@ -175,9 +175,12 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 		hql.append("left join hc.candidatoSolicitacao as cs ");
 		hql.append("left join cs.solicitacao as s ");
 		hql.append("left join s.faixaSalarial as fs ");
-
+		hql.append("left join fs.cargo c ");
+		
 		hql.append("where date_part('year', hc.data) = :ano ");
 		hql.append("and hc.data >= s.data ");
+		hql.append("and c.empresa.id = :empresaId ");
+		
 		if(cargoId != null)
 			hql.append("and fs.cargo.id = :cargoId ");
 		
@@ -189,6 +192,7 @@ public class HistoricoCandidatoDaoHibernate extends GenericDaoHibernate<Historic
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setDouble("ano", Double.parseDouble(ano));
+		query.setLong("empresaId", empresaId);
 
 		if(cargoId != null)
 			query.setLong("cargoId", cargoId);

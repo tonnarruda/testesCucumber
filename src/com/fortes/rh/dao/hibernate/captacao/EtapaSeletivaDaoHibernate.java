@@ -7,7 +7,6 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -114,7 +113,7 @@ public class EtapaSeletivaDaoHibernate extends GenericDaoHibernate<EtapaSeletiva
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<EtapaSeletiva> findByIdProjection(Long[] etapaIds)
+	public Collection<EtapaSeletiva> findByIdProjection(Long empresaId, Long[] etapaIds)
 	{
 		Criteria criteria = getSession().createCriteria(EtapaSeletiva.class, "es");
 
@@ -124,10 +123,12 @@ public class EtapaSeletivaDaoHibernate extends GenericDaoHibernate<EtapaSeletiva
 		p.add(Projections.property("es.ordem"), "ordem");
 		criteria.setProjection(p);
 
-		criteria.addOrder(Order.asc("es.ordem"));
+		criteria.add(Expression.eq("es.empresa.id", empresaId));
 
 		if(etapaIds != null && etapaIds.length != 0)
 			criteria.add(Expression.in("es.id", etapaIds));
+		
+		criteria.addOrder(Order.asc("es.ordem"));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(EtapaSeletiva.class));

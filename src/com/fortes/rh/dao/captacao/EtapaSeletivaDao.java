@@ -22,7 +22,7 @@ public interface EtapaSeletivaDao extends GenericDao<EtapaSeletiva>
 
 	Collection<EtapaSeletiva> findAllSelect(int page, int pagingSize, Long empresaId);
 
-	Collection<EtapaSeletiva> findByIdProjection(Long[] etapaIds);
+	Collection<EtapaSeletiva> findByIdProjection(Long empresaId, Long[] etapaIds);
 
 	EtapaSeletiva findByEtapaSeletivaId(Long etapaSeletivaId, Long empresaId);
 
