@@ -14,4 +14,14 @@ public class BeneficioFactory
 
 		return beneficio;
 	}
+	
+	public static Beneficio getEntity(Long id, String nome)
+	{
+		Beneficio beneficio = getEntity();
+		
+		beneficio.setId(id);
+		beneficio.setNome(nome);
+		
+		return beneficio;
+	}
 }

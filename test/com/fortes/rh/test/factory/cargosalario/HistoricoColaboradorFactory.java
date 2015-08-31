@@ -7,6 +7,7 @@ import java.util.Date;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 
@@ -34,11 +35,12 @@ public class HistoricoColaboradorFactory
 		return historicoColaborador;
 	}
 	
-	public static HistoricoColaborador getEntity(Colaborador colaborador, Date data, FaixaSalarial faixaSalarial, Estabelecimento estabelecimento)
+	public static HistoricoColaborador getEntity(Colaborador colaborador, Date data, FaixaSalarial faixaSalarial, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional)
 	{
 		HistoricoColaborador historicoColaborador = getEntity();
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
 		historicoColaborador.setEstabelecimento(estabelecimento);
 		historicoColaborador.setData(data);
 		

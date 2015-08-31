@@ -3904,22 +3904,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			Object[] res = it.next();
 			char deficiencia = (Character) res[0];
 			int qtd = (Integer) res[1];
-		
 			
-			if(Deficiencia.SEM_DEFICIENCIA == deficiencia)
-				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.SEM_DEFICIENCIA).toString(), qtd, ""));
-			else if(Deficiencia.AUDITIVA == deficiencia)
-				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.AUDITIVA).toString(), qtd, ""));
-			else if(Deficiencia.FISICA == deficiencia)
-				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.FISICA).toString(), qtd, ""));
-			else if(Deficiencia.MENTAL == deficiencia)
-				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.MENTAL).toString(), qtd, ""));
-			else if(Deficiencia.VISUAL == deficiencia)
-				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.VISUAL).toString(), qtd, ""));
-			else if(Deficiencia.MULTIPLA == deficiencia)
-				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.MULTIPLA).toString(), qtd, ""));
-			else if(Deficiencia.REABILITADO == deficiencia)
-				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(Deficiencia.REABILITADO).toString(), qtd, ""));
+			if(new Deficiencia().containsKey(deficiencia))
+				dataGraficos.add(new DataGrafico(null,deficienciaMap.get(deficiencia).toString(), qtd, ""));
 		}
 		return dataGraficos;
 	}

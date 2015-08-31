@@ -214,16 +214,15 @@ public class SolicitacaoListAction extends MyActionSupportList
 			if(solicitacaosCheckIds != null && solicitacaosCheckIds.length > 0)
 				candidatoManager.updateDisponivel(true, candidato.getId());
 
-			for(String id : solicitacaosCheckIds)
-			{
+			for (String id : solicitacaosCheckIds) {
+				
 				solicitacao = new Solicitacao();
 				solicitacao.setId(Long.parseLong(id));
 
 				candidatoSolicitacaoManager.insertCandidatos(new String[]{Long.toString(candidato.getId())}, solicitacao,statusCandSol);
 			}
 
-			if(voltarPara != null && voltarPara.equals("../../geral/colaborador/list.action") && !SecurityUtil.verifyRole((SessionMap) ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO"}))
-			{
+			if(voltarPara != null && voltarPara.equals("../../geral/colaborador/list.action") && !SecurityUtil.verifyRole((SessionMap) ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO"})) {
 				setActionMsg("Colaborador inserido na solicitação com sucesso.");
 				return "successColaboradorList";
 			}

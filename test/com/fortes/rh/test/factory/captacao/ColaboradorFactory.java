@@ -87,6 +87,18 @@ public class ColaboradorFactory
 		
 		return colaborador;
 	}
+	
+	public static Colaborador getEntity(Boolean desligado, Date dataAdmissao, Empresa empresa, String vinculo, Character deficiencia)
+	{
+		Colaborador colaborador = getEntity();
+		colaborador.setDesligado(desligado);
+		colaborador.setDataAdmissao(dataAdmissao);
+		colaborador.setEmpresa(empresa);
+		colaborador.setVinculo(vinculo);
+		colaborador.getPessoal().setDeficiencia(deficiencia);
+		
+		return colaborador;
+	}
 
 	public static Collection<Colaborador> getCollection()
 	{

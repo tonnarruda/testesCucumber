@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.desenvolvimento;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,6 +40,7 @@ import com.fortes.rh.model.desenvolvimento.DNT;
 import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCertificacaoRelatorio;
 import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCursoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.CursoPontuacaoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
@@ -903,10 +905,43 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		assertEquals("<span style='color: red;'>Maria (Não certificado)</span>", colabs[4].getNome());
 	}
 
+	public void testMontaRelatorioColaboradorCertificacao() throws Exception
+	{
+		Certificacao certificacao = CertificacaoFactory.getEntity(5L);
+		certificacao.setNome("Certificação I");
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Chico", null, null);
+		
+		Curso curso = CursoFactory.getEntity(1L);
+		curso.setNome("Curso I");
+		
+		Turma turma = TurmaFactory.getEntity(1L);
+		turma.setDescricao("Turma I");
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurma.setTurma(turma);
+		colaboradorTurma.setCurso(curso);
+		colaboradorTurma.setTotalDias(null);
+		colaboradorTurma.setQtdAvaliacoesCurso(null);
+
+		certificacaoManager.expects(atLeastOnce()).method("findById").with(eq(5L)).will(returnValue(certificacao));
+		cursoManager.expects(atLeastOnce()).method("findByCertificacao").will(returnValue(Arrays.asList(curso)));
+		colaboradorTurmaDao.expects(once()).method("findAprovadosReprovados").will(returnValue(Arrays.asList(colaboradorTurma)));
+		
+		Collection<ColaboradorCertificacaoRelatorio> colaboradorCertificacaoRelatorios = colaboradorTurmaManager.montaRelatorioColaboradorCertificacao(1L, certificacao, new Long[]{1L}, new Long[]{1L}, null, null, '0');
+		
+		assertEquals(1, colaboradorCertificacaoRelatorios.size());
+		assertEquals(certificacao.getNome(), ((ColaboradorCertificacaoRelatorio) colaboradorCertificacaoRelatorios.toArray()[0]).getCertificacaoNome());
+		assertEquals(colaborador.getNome(), ((ColaboradorCertificacaoRelatorio) colaboradorCertificacaoRelatorios.toArray()[0]).getColaborador().getNome());
+		assertEquals(curso.getNome(), ((ColaboradorCertificacaoRelatorio) colaboradorCertificacaoRelatorios.toArray()[0]).getCurso().getNome());
+		assertEquals(turma.getDescricao(), ((ColaboradorCertificacaoRelatorio) colaboradorCertificacaoRelatorios.toArray()[0]).getTurma().getDescricao());
+	}
+	
 	public void testMontaRelatorioColaboradorCertificacaoColecaoVazia() throws Exception
 	{
 		Certificacao certificacao = CertificacaoFactory.getEntity(5L);
-
+		
 		certificacaoManager.expects(atLeastOnce()).method("findById").with(eq(5L)).will(returnValue(certificacao));
 		cursoManager.expects(atLeastOnce()).method("findByCertificacao").will(returnValue(new ArrayList<Curso>()));
 		colaboradorTurmaDao.expects(once()).method("findAprovadosReprovados").will(returnValue(new ArrayList<ColaboradorTurma>()));

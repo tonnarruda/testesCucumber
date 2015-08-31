@@ -47,6 +47,7 @@ import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.ComparatorString;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.EmpresaUtil;
+import com.fortes.rh.util.ExceptionUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
@@ -455,8 +456,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		try
-		{
+		try	{
+			
 			if(configuracaoNivelCompetenciaColaboradorManager.existeConfigCompetenciaParaAFaixaDestehistorico(historicoColaborador.getId())){
 				addActionWarning("Este histórico não pode ser removido, pois o colaborador perderá o vínculo de sua cargo/faixa salarial com suas competências.");
 				return historicoColaboradorList();
@@ -464,28 +465,22 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 			
 			historicoColaboradorManager.removeHistoricoAndReajuste(historicoColaborador.getId(), colaborador.getId(), getEmpresaSistema(), true);
 			addActionSuccess("Situação excluída com sucesso.");
-		}
-		catch (NestedRuntimeException e) // TODO rever necessidade desse catch
-		{
+			
+		} catch (NestedRuntimeException e) { // TODO rever necessidade desse catch
+			
 			addActionError("Não foi possível excluir a situação.");
-		}
-		catch (IntegraACException e)
-		{
+			
+		} catch (IntegraACException e) {
+			
 			if (e.getMensagemDetalhada() != null)
 				addActionError(e.getMensagemDetalhada());
 			else
 				addActionError(e.getMessage());
-		}
-		catch (Exception e)
-		{
-			String message = "Não foi possível excluir a situação.";
 			
-			if(e.getMessage() != null)
-				message = e.getMessage();
-			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
-				message = e.getCause().getLocalizedMessage();
+		} catch (Exception e) {
 			
-			addActionMessage(message);
+			addActionMessage(ExceptionUtil.getMensagem(e, "Não foi possível excluir a situação."));
+			
 		}
 
 		return historicoColaboradorList();

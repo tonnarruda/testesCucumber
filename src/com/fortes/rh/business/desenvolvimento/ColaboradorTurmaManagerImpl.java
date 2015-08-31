@@ -739,6 +739,13 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		
 		setColaboradoresDaCertificacao(certificacao, cursos, colaboradorTurmas, colaboradoresCertificacoes, tipoAgrupamento);
 		
+		setTurmasColaboradorCertificacao(colaboradorTurmas, colaboradoresCertificacoes);
+		
+		return colaboradoresCertificacoes;
+	}
+
+	private void setTurmasColaboradorCertificacao(Collection<ColaboradorTurma> colaboradorTurmas, Collection<ColaboradorCertificacaoRelatorio> colaboradoresCertificacoes)
+	{
 		for (ColaboradorCertificacaoRelatorio colaboradorCertificacao : colaboradoresCertificacoes)
 		{
 			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas) 
@@ -755,8 +762,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 				}
 			}
 		}
-		
-		return colaboradoresCertificacoes;
 	}
 	
 	public void carregaResultados(Collection<ColaboradorTurma> colaboradorTurmas) 
@@ -882,9 +887,9 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			for (ColaboradorTurma  colaboradorTurma : colaboradorTurmas)
 			{
 				if (colabIds.contains(colaboradorTurma.getColaborador().getId()))
-						continue;
-				else
-					colabIds.add(colaboradorTurma.getColaborador().getId());
+					continue;
+
+				colabIds.add(colaboradorTurma.getColaborador().getId());
 				
 				for (Curso curso : cursos)
 				{

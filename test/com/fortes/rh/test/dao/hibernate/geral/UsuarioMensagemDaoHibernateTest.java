@@ -22,6 +22,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.MensagemFactory;
 import com.fortes.rh.test.factory.geral.UsuarioMensagemFactory;
 
+@SuppressWarnings("rawtypes")
 public class UsuarioMensagemDaoHibernateTest extends GenericDaoHibernateTest
 {
 	private UsuarioDao usuarioDao;
@@ -49,9 +50,7 @@ public class UsuarioMensagemDaoHibernateTest extends GenericDaoHibernateTest
 		Colaborador colab = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colab);
 		
-		Mensagem mensagem = MensagemFactory.getEntity();
-		mensagem.setColaborador(colab);
-		mensagem.setTipo(TipoMensagem.INFO_FUNCIONAIS);
+		Mensagem mensagem = MensagemFactory.getEntity(colab, TipoMensagem.INFO_FUNCIONAIS);
 		mensagem = mensagemDao.save(mensagem);
 
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -60,10 +59,7 @@ public class UsuarioMensagemDaoHibernateTest extends GenericDaoHibernateTest
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario = usuarioDao.save(usuario);
 
-		UsuarioMensagem usuarioMensagem = new UsuarioMensagem();
-		usuarioMensagem.setUsuario(usuario);
-		usuarioMensagem.setMensagem(mensagem);
-		usuarioMensagem.setEmpresa(empresa);
+		UsuarioMensagem usuarioMensagem = UsuarioMensagemFactory.getEntity(usuario, mensagem, empresa, false);
 		usuarioMensagem.setLida(false);
 
 		usuarioMensagem = usuarioMensagemDao.save(usuarioMensagem);
@@ -81,14 +77,10 @@ public class UsuarioMensagemDaoHibernateTest extends GenericDaoHibernateTest
 		Colaborador colab = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colab);
 		
-		Mensagem mensagem = MensagemFactory.getEntity();
-		mensagem.setColaborador(colab);
-		mensagem.setTipo(TipoMensagem.INFO_FUNCIONAIS);
+		Mensagem mensagem = MensagemFactory.getEntity(colab, TipoMensagem.INFO_FUNCIONAIS);
 		mensagem = mensagemDao.save(mensagem);
 
-		Mensagem mensagem2 = MensagemFactory.getEntity();
-		mensagem2.setColaborador(colab);
-		mensagem2.setTipo(TipoMensagem.TED);
+		Mensagem mensagem2 = MensagemFactory.getEntity(colab, TipoMensagem.TED);
 		mensagem2 = mensagemDao.save(mensagem2);
 		
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -97,18 +89,10 @@ public class UsuarioMensagemDaoHibernateTest extends GenericDaoHibernateTest
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario = usuarioDao.save(usuario);
 		
-		UsuarioMensagem usuarioMensagem = new UsuarioMensagem();
-		usuarioMensagem.setUsuario(usuario);
-		usuarioMensagem.setMensagem(mensagem);
-		usuarioMensagem.setEmpresa(empresa);
-		usuarioMensagem.setLida(false);
+		UsuarioMensagem usuarioMensagem = UsuarioMensagemFactory.getEntity(usuario, mensagem, empresa, false);
 		usuarioMensagemDao.save(usuarioMensagem);
 
-		UsuarioMensagem usuarioMensagem2 = new UsuarioMensagem();
-		usuarioMensagem2.setUsuario(usuario);
-		usuarioMensagem2.setMensagem(mensagem2);
-		usuarioMensagem2.setEmpresa(empresa);
-		usuarioMensagem2.setLida(false);
+		UsuarioMensagem usuarioMensagem2 = UsuarioMensagemFactory.getEntity(usuario, mensagem2, empresa, false);
 		usuarioMensagemDao.save(usuarioMensagem2);
 		
 		Collection<UsuarioMensagem> usuarioMensagems = new ArrayList<UsuarioMensagem>();
@@ -130,10 +114,7 @@ public class UsuarioMensagemDaoHibernateTest extends GenericDaoHibernateTest
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario = usuarioDao.save(usuario);
 
-		UsuarioMensagem usuarioMensagem = new UsuarioMensagem();
-		usuarioMensagem.setUsuario(usuario);
-		usuarioMensagem.setMensagem(mensagem);
-		usuarioMensagem.setEmpresa(empresa);
+		UsuarioMensagem usuarioMensagem = UsuarioMensagemFactory.getEntity(usuario, mensagem, empresa, false);
 		usuarioMensagem.setLida(false);
 
 		usuarioMensagem = usuarioMensagemDao.save(usuarioMensagem);
@@ -151,16 +132,10 @@ public class UsuarioMensagemDaoHibernateTest extends GenericDaoHibernateTest
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuario = usuarioDao.save(usuario);
 
-		UsuarioMensagem usuarioMensagem1 = new UsuarioMensagem();
-		usuarioMensagem1.setUsuario(usuario);
-		usuarioMensagem1.setLida(false);
-		usuarioMensagem1.setEmpresa(empresa);
+		UsuarioMensagem usuarioMensagem1 = UsuarioMensagemFactory.getEntity(usuario, null, empresa, false);
 		usuarioMensagem1 = usuarioMensagemDao.save(usuarioMensagem1);
 
-		UsuarioMensagem usuarioMensagem2 = new UsuarioMensagem();
-		usuarioMensagem2.setUsuario(usuario);
-		usuarioMensagem2.setLida(false);
-		usuarioMensagem2.setEmpresa(empresa);
+		UsuarioMensagem usuarioMensagem2 = UsuarioMensagemFactory.getEntity(usuario, null, empresa, false);
 		usuarioMensagem2 = usuarioMensagemDao.save(usuarioMensagem2);
 
 		Collection<UsuarioMensagem> usuarioMensagems = new ArrayList<UsuarioMensagem>();

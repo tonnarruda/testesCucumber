@@ -4841,46 +4841,54 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
-		estabelecimento1.setNome("Estabelecimento A");
-		estabelecimento1.setEmpresa(empresa);
-		estabelecimentoDao.save(estabelecimento1);
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setEmpresa(empresa);
+		estabelecimentoDao.save(estabelecimento);
 		
 		FaixaSalarial faixa = FaixaSalarialFactory.getEntity();
 		faixaSalarialDao.save(faixa);
 		
-		Colaborador colaborador = getColaborador();
-		colaborador.setNome("Xica ");
-		colaborador.setDesligado(false);
-		colaborador.setDataAdmissao(hoje);
-		colaborador.setEmpresa(empresa);
-		colaborador.setVinculo(Vinculo.EMPREGO);
-		colaborador.getPessoal().setDeficiencia(Deficiencia.AUDITIVA);
-		colaboradorDao.save(colaborador);
-		
-		Colaborador colaborador2 = getColaborador();
-		colaborador2.setNome("Xica ");
-		colaborador2.setDesligado(false);
-		colaborador2.setDataAdmissao(hoje);
-		colaborador2.setEmpresa(empresa);
-		colaborador2.setVinculo(Vinculo.ESTAGIO);
-		colaborador2.getPessoal().setDeficiencia(Deficiencia.AUDITIVA);
-		colaboradorDao.save(colaborador2);
-		
 		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
 		areaOrganizacionalDao.save(area);
 		
-		HistoricoColaborador historicoColaboradorAtual = HistoricoColaboradorFactory.getEntity();
-		historicoColaboradorAtual.setAreaOrganizacional(area);
-		historicoColaboradorAtual.setData(DateUtil.criarDataMesAno(1, 1, 2008));
-		historicoColaboradorAtual.setColaborador(colaborador);
-		historicoColaboradorAtual.setFaixaSalarial(faixa);
-		historicoColaboradorAtual.setEstabelecimento(estabelecimento1);
-		historicoColaboradorDao.save(historicoColaboradorAtual);
+		criaColaboradorHistoricoParaCountDeficiencia(hoje, empresa, estabelecimento, faixa, area);
 		
-		assertEquals(1, colaboradorDao.countDeficiencia(hoje, Arrays.asList(empresa.getId()), null, null, null, new String[]{Vinculo.EMPREGO}).size());
-		assertEquals(1, colaboradorDao.countDeficiencia(hoje, null, new Long[]{estabelecimento1.getId()}, new Long[]{area.getId()}, null, new String[]{Vinculo.EMPREGO}).size());
-		assertEquals(1, colaboradorDao.countDeficiencia(hoje, Arrays.asList(empresa.getId()), new Long[]{estabelecimento1.getId()}, new Long[]{area.getId()}, null, new String[]{Vinculo.EMPREGO}).size());
+		Collection<DataGrafico> graficos = colaboradorDao.countDeficiencia(hoje, Arrays.asList(empresa.getId()), null, null, null, new String[]{Vinculo.EMPREGO, Vinculo.ESTAGIO});
+		
+		assertEquals(2, graficos.size());
+		
+		assertEquals(new Deficiencia().get(Deficiencia.FISICA), ((DataGrafico) graficos.toArray()[0]).getLabel());
+		assertEquals(2.0, ((DataGrafico) graficos.toArray()[0]).getData());
+		
+		assertEquals(new Deficiencia().get(Deficiencia.AUDITIVA), ((DataGrafico) graficos.toArray()[1]).getLabel());
+		assertEquals(1.0, ((DataGrafico) graficos.toArray()[1]).getData());
+		
+		assertEquals(1, colaboradorDao.countDeficiencia(hoje, null, new Long[]{estabelecimento.getId()}, new Long[]{area.getId()}, null, new String[]{Vinculo.EMPREGO}).size());
+		assertEquals(1, colaboradorDao.countDeficiencia(hoje, Arrays.asList(empresa.getId()), new Long[]{estabelecimento.getId()}, new Long[]{area.getId()}, null, new String[]{Vinculo.EMPREGO}).size());
+	}
+
+	private void criaColaboradorHistoricoParaCountDeficiencia(Date hoje, Empresa empresa, Estabelecimento estabelecimento1, FaixaSalarial faixa, AreaOrganizacional area)
+	{
+		Colaborador colaborador1 = ColaboradorFactory.getEntity(false, hoje, empresa, Vinculo.EMPREGO, Deficiencia.AUDITIVA);
+		colaboradorDao.save(colaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(false, hoje, empresa, Vinculo.ESTAGIO, Deficiencia.AUDITIVA);
+		colaboradorDao.save(colaborador2);
+		
+		Colaborador colaborador3 = ColaboradorFactory.getEntity(false, hoje, empresa, Vinculo.ESTAGIO, Deficiencia.FISICA);
+		colaboradorDao.save(colaborador3);
+		
+		Colaborador colaborador4 = ColaboradorFactory.getEntity(false, hoje, empresa, Vinculo.ESTAGIO, Deficiencia.FISICA);
+		colaboradorDao.save(colaborador4);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador1, hoje, faixa, estabelecimento1, area);
+		historicoColaboradorDao.save(historicoColaborador1);
+		
+		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity(colaborador3, hoje, faixa, estabelecimento1, area);
+		historicoColaboradorDao.save(historicoColaborador3);
+		
+		HistoricoColaborador historicoColaborador4 = HistoricoColaboradorFactory.getEntity(colaborador4, hoje, faixa, estabelecimento1, area);
+		historicoColaboradorDao.save(historicoColaborador4);
 	}
 	
 	public void testFindEmailsByPapel() 

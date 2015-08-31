@@ -1,6 +1,7 @@
 package com.fortes.rh.test.factory.geral;
 
 import com.fortes.rh.model.dicionario.TipoMensagem;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Mensagem;
 import com.fortes.rh.util.DateUtil;
 
@@ -24,6 +25,15 @@ public class MensagemFactory
 		Mensagem mensagem = getEntity();
 		mensagem.setId(id);
 
+		return mensagem;
+	}
+	
+	public static Mensagem getEntity(Colaborador colaborador, char tipoMensagem)
+	{
+		Mensagem mensagem = getEntity();
+		mensagem.setColaborador(colaborador);
+		mensagem.setTipo(tipoMensagem);
+		
 		return mensagem;
 	}
 

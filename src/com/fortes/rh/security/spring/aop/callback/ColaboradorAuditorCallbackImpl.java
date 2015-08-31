@@ -108,7 +108,9 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 	
 	public Auditavel solicitacaoDesligamento(MetodoInterceptado metodo) throws Throwable{
 		metodo.processa();
+		
 		Map<String, Object> desligamento;
+		
 		Collection<Map<String, Object>> solicitacaoDesligamento = new ArrayList<Map<String,Object>>();
 		Date dataSolicitacao = (Date) metodo.getParametros()[0];
 		String observacaoDemissao = (String) metodo.getParametros()[1];
@@ -120,13 +122,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		colab.setId(colaboradorId);
 		Colaborador colaborador = carregaEntidade(metodo, colab);
 		
-		desligamento = new LinkedHashMap<String, Object>();
-		desligamento.put("Colaborador ID", colaborador.getId());
-		desligamento.put("Colaborador", colaborador.getNome());
-		desligamento.put("Data de solicitacao", dataSolicitacao);
-		desligamento.put("Observação", observacaoDemissao);
-		desligamento.put("Motivo", motivoDemissaoId);
-		desligamento.put("Gerou substituição", gerouSubstituicao.toString());
+		desligamento = inicializaDesligamento(dataSolicitacao, observacaoDemissao, motivoDemissaoId, gerouSubstituicao, colaborador);
 
 		Long solicitanteDemissaoId = (Long) metodo.getParametros()[4];
 		if (solicitanteDemissaoId != null) {
@@ -227,7 +223,18 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		colab.setId(colaboradorId);
 		Colaborador colaborador = carregaEntidade(metodo, colab);
 		
-		desligamento = new LinkedHashMap<String, Object>();
+		desligamento = inicializaDesligamento(dataSolicitacao, observacaoDemissao, motivoDemissaoId, gerouSubstituicao, colaborador);
+		
+		solicitacaoDesligamento.add(desligamento);
+		
+		String dados = new GeraDadosAuditados(null, solicitacaoDesligamento.toArray()).gera();
+		
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
+	}
+
+	private Map<String, Object> inicializaDesligamento(Date dataSolicitacao, String observacaoDemissao, Long motivoDemissaoId, Character gerouSubstituicao, Colaborador colaborador)
+	{
+		Map<String, Object> desligamento = new LinkedHashMap<String, Object>();
 		desligamento.put("Colaborador ID", colaborador.getId());
 		desligamento.put("Colaborador", colaborador.getNome());
 		desligamento.put("Data de solicitacao", dataSolicitacao);
@@ -235,11 +242,7 @@ public class ColaboradorAuditorCallbackImpl implements AuditorCallback {
 		desligamento.put("Motivo", motivoDemissaoId);
 		desligamento.put("Gerou substituição", gerouSubstituicao.toString());
 		
-		solicitacaoDesligamento.add(desligamento);
-		
-		String dados = new GeraDadosAuditados(null, solicitacaoDesligamento.toArray()).gera();
-		
-		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaborador.getNome(), dados);
+		return desligamento;
 	}
 	
 	public Auditavel cancelarSolicitacaoDesligamentoAC(Colaborador colaborador, String obsservacao) throws Throwable 

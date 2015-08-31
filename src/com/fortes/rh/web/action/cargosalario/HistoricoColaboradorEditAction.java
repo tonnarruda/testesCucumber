@@ -103,8 +103,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		Long areaInativaId = null;
 		CollectionUtil<FaixaSalarial> faixaSalarialUtil = new CollectionUtil<FaixaSalarial>();
 
-		if(historicoColaborador != null)
-		{
+		if (historicoColaborador != null) {
 			if(historicoColaborador.getFaixaSalarial() != null && historicoColaborador.getFaixaSalarial().getCargo() != null && historicoColaborador.getFaixaSalarial().getCargo().getId() != null)
 				funcaos = funcaoManager.findByCargo(historicoColaborador.getFaixaSalarial().getCargo().getId());
 
@@ -118,9 +117,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 			faixaInativaId = historicoColaborador.getFaixaSalarial().getId();
 			areaInativaId = historicoColaborador.getAreaOrganizacional().getId();
-		}
-		else
-		{
+		} else {
 			historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
 			historicoColaborador.setId(null);
 			historicoColaborador.setData(new Date());
@@ -286,35 +283,33 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 	public String update() throws Exception
 	{
-		try
-		{
+		try {
 			quantidadeLimiteColaboradoresPorCargoManager.validaLimite(historicoColaborador.getAreaOrganizacional().getId(), historicoColaborador.getFaixaSalarial().getId(), getEmpresaSistema().getId(), historicoColaborador.getColaborador().getId());
 
 			historicoColaborador = historicoColaboradorManager.ajustaAmbienteFuncao(historicoColaborador);
 			historicoColaboradorManager.updateHistorico(historicoColaborador, getEmpresaSistema());
 
 			return Action.SUCCESS;
-		}
-		catch (IntegraACException e)
-		{
+			
+		} catch (IntegraACException e) {
+			
 			String msg = "Não foi possível atualizar esta Situação no Fortes Pessoal.";
 			if (e.getMensagemDetalhada() != null)
 				msg = e.getMensagemDetalhada();
 
 			addActionError(msg);
 			prepareUpdate();
+			
 			return Action.INPUT;
-		}
-		catch (LimiteColaboradorExceditoException e)
-		{
+			
+		} catch (LimiteColaboradorExceditoException e) {
 			e.printStackTrace();
 			addActionWarning(e.getMessage());
 			prepareUpdate();
 
 			return Action.INPUT;
-		}
-		catch (Exception e)
-		{
+			
+		} catch (Exception e) {
 			e.printStackTrace();
 			addActionError("Não foi possível atualizar esta Situação.");
 			prepareUpdate();

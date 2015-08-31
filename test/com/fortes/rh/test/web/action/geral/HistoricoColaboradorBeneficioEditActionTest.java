@@ -8,6 +8,7 @@ import mockit.Mockit;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
+import org.mozilla.javascript.edu.emory.mathcs.backport.java.util.Arrays;
 
 import com.fortes.rh.business.geral.BeneficioManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -16,6 +17,8 @@ import com.fortes.rh.model.geral.Beneficio;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.HistoricoColaboradorBeneficio;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.geral.BeneficioFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.geral.HistoricoColaboradorBeneficioEditAction;
@@ -182,27 +185,21 @@ public class HistoricoColaboradorBeneficioEditActionTest extends MockObjectTestC
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public void testInsertDataExiste() throws Exception
 	{
-		Colaborador c1 = new Colaborador();
-		c1.setId(1L);
+		Colaborador c1 = ColaboradorFactory.getEntity(1L);
 		action.setColaborador(c1);
 
-		Beneficio b1 = new Beneficio();
-		b1.setId(1L);
-		b1.setNome("b1");
+		Beneficio b1 = BeneficioFactory.getEntity(1L, "b1");
 
-		Beneficio b2 = new Beneficio();
-		b2.setId(2L);
-		b2.setNome("b2");
+		Beneficio b2 = BeneficioFactory.getEntity(2L, "b2");
 
 		HistoricoColaboradorBeneficio historico = new HistoricoColaboradorBeneficio();
 		historico.setColaborador(c1);
 		historico.setDataMesAno("01/2001");
 
-		Collection<Beneficio> beneficios = new ArrayList<Beneficio>();
-		beneficios.add(b1);
-		beneficios.add(b2);
+		Collection<Beneficio> beneficios = Arrays.asList(new Beneficio[] {b1, b2});
 
 		historico.setBeneficios(beneficios);
 

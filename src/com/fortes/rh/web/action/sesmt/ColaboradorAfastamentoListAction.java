@@ -191,16 +191,13 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 	
 	public String relatorioResumoAfastamentos() throws Exception
 	{
-		try
-		{
-			if (!validaPeriodo())
-			{
-				prepareRelatorioResumoAfastamentos();				
+		try {
+			if (!validaPeriodo()) {
+				prepareRelatorioResumoAfastamentos();
 				return Action.INPUT;
 			}
 			
-			if (DateUtil.mesesEntreDatas(colaboradorAfastamento.getInicio(), colaboradorAfastamento.getFim()) >= 12)//imundo, tem que ser maior igual
-			{
+			if (DateUtil.mesesEntreDatas(colaboradorAfastamento.getInicio(), colaboradorAfastamento.getFim()) >= 12) { //imundo, tem que ser maior igual
 				prepareRelatorioResumoAfastamentos();
 				addActionWarning("Não é permitido um período maior que 12 meses para a geração deste relatório");
 				return Action.INPUT;
@@ -210,16 +207,13 @@ public class ColaboradorAfastamentoListAction extends MyActionSupportList
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("Afastamentos", getEmpresaSistema(), getPeriodoFormatado());
 			parametros.put("AGRUPAR_POR_AREA", agruparPorArea);
-		}
-		catch (ColecaoVaziaException e)
-		{
-			addActionMessage(e.getMessage());
-			prepareRelatorioResumoAfastamentos();
-			return INPUT;
-		}
-		catch (Exception e)
-		{
-			addActionError(e.getMessage());
+		
+		} catch (Exception e) {
+			if (e instanceof ColecaoVaziaException)
+				addActionMessage(e.getMessage());
+			else
+				addActionError(e.getMessage());
+
 			prepareRelatorioResumoAfastamentos();
 			return INPUT;
 		}

@@ -114,37 +114,29 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 
 	public String update() throws Exception
 	{
-		if(areaOrganizacional == null || areaOrganizacional.getEmpresa() == null || areaOrganizacional.getEmpresa().getId() == null || !getEmpresaSistema().getId().equals(areaOrganizacional.getEmpresa().getId()))
-		{
-			setActionMsg("A Área Organizacional solicitada não existe na empresa " + getEmpresaSistema().getNome() +".");
+		if(areaOrganizacional == null || areaOrganizacional.getEmpresa() == null || areaOrganizacional.getEmpresa().getId() == null || !getEmpresaSistema().getId().equals(areaOrganizacional.getEmpresa().getId())){
+			setActionMsg("A área organizacional solicitada não existe na empresa " + getEmpresaSistema().getNome() +".");
 			return "error.area";
 		}
 
-		try
-		{
+		try {
 			areaOrganizacional.setEmailsNotificacoes(StringUtils.deleteWhitespace(StringUtils.join(emailsNotificacoes, ";")));
 			areaOrganizacionalManager.editarLotacaoAC(areaOrganizacional, getEmpresaSistema());
+			
 			return Action.SUCCESS;
-		}
-		catch (IntegraACException e)
-		{
+			
+		} catch (IntegraACException e) {
 			prepare();
 			e.printStackTrace();
 			addActionError("Cadastro não pôde ser realizado no Fortes Pessoal.");
+			
 			return Action.INPUT;
-		}
-		catch (Exception e)
-		{
+			
+		} catch (Exception e) {
 			prepareInsert();
 			e.printStackTrace();
-			String message = "Cadastro não pôde ser realizado.";
+			addActionError(ExceptionUtil.getMensagem(e, "Cadastro não pôde ser realizado."));
 			
-			if(e.getMessage() != null)
-				message = e.getMessage();
-			else if(e.getCause() != null && e.getCause().getLocalizedMessage() != null)
-				message = e.getCause().getLocalizedMessage();
-			
-			addActionError(message);
 			return Action.INPUT;
 		}
 	}
