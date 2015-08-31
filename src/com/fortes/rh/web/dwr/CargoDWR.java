@@ -9,7 +9,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class CargoDWR
 {
 	private CargoManager cargoManager;
@@ -97,18 +97,18 @@ public class CargoDWR
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId", label);
 	}
 	
-	public Map getByEmpresa(Long empresaId)
+	public Map getByEmpresa(Long empresaId, Long[] empresaIds)
 	{
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 		String getParametro = "getId";
 		
 		if(empresaId == -1)//Caso a empresa passada seja -1, vai trazer todos os cargos dando distinct pelo nomeMercado
 		{
-			cargos = cargoManager.findAllSelectDistinctNome();
+			cargos = cargoManager.findAllSelectDistinctNome(empresaIds);
 			getParametro = "getNomeMercadoComStatus";
 		}
 		else
-			cargos = cargoManager.findAllSelect(empresaId, "nomeMercado", null, Cargo.TODOS);
+			cargos = cargoManager.findAllSelect("nomeMercado", null, Cargo.TODOS, empresaId);
 
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos, getParametro, "getNomeMercadoComStatus");
 	}
@@ -120,7 +120,7 @@ public class CargoDWR
 		if(empresaId == 0 || empresaId == -1)
 			cargos = cargoManager.findAllSelect(empresaIds);
 		else
-			cargos = cargoManager.findAllSelect(empresaId, "nomeMercado", null, Cargo.TODOS);
+			cargos = cargoManager.findAllSelect("nomeMercado", null, Cargo.TODOS, empresaId);
 		return cargos;
 	}
 	

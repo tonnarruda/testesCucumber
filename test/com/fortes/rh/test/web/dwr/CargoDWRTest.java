@@ -17,7 +17,7 @@ import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.GrupoOcupacionalFactory;
 import com.fortes.rh.web.dwr.CargoDWR;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class CargoDWRTest extends MockObjectTestCase
 {
 	private CargoDWR cargoDWR;
@@ -82,7 +82,7 @@ public class CargoDWRTest extends MockObjectTestCase
 		
 		cargoManager.expects(once()).method("findAllSelect").with(ANYTHING, ANYTHING,ANYTHING,ANYTHING).will(returnValue(cargos));
 		
-		Map retorno = cargoDWR.getByEmpresa(empresaId);		
+		Map retorno = cargoDWR.getByEmpresa(empresaId, new Long[]{empresaId});		
 		assertEquals(1, retorno.size());
 	}
 
@@ -94,7 +94,7 @@ public class CargoDWRTest extends MockObjectTestCase
 		
 		cargoManager.expects(once()).method("findAllSelectDistinctNome").will(returnValue(cargos));
 		
-		Map retorno = cargoDWR.getByEmpresa(-1L);		
+		Map retorno = cargoDWR.getByEmpresa(-1L, new Long[]{1L});		
 		assertEquals(1, retorno.size());
 	}
 	

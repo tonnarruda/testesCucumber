@@ -70,7 +70,7 @@ import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class CandidatoEditAction extends MyActionSupportEdit
 {
 	private static final String CPF_JA_CADASTRADO = "CPF já cadastrado!";
@@ -186,7 +186,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 				abaExtra = ",abaExtra";
 
 			empresaId = getEmpresaSistema().getId();
-			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(empresaId, "nomeMercado", null, Cargo.ATIVO), "getId", "getNomeMercado");
+			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect("nomeMercado", null, Cargo.ATIVO, empresaId), "getId", "getNomeMercado");
 			
 			parametrosDoSistema.setCamposCandidatoVisivel("nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps,pis,comoFicouSabendoVaga");
 			parametrosDoSistema.setCamposCandidatoObrigatorio("nome,escolaridade,ende,num,cidade,ddd,fone");
@@ -200,7 +200,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 			empresaId = this.empresaId;
 			habilitaCampoExtra = empresaManager.findById(empresaId).isCampoExtraCandidato();
 			
-			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(empresaId, "nomeMercado", true, Cargo.ATIVO), "getId", "getNomeMercado");
+			cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect("nomeMercado", true, Cargo.ATIVO, empresaId), "getId", "getNomeMercado");
 		}
 
 		if(habilitaCampoExtra)
@@ -526,7 +526,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		if(candidato != null && candidato.getEndereco() != null && candidato.getEndereco().getUf() != null && candidato.getEndereco().getUf().getId() != null)
 			cidades = cidadeManager.find(new String[]{"uf"}, new Object[]{candidato.getEndereco().getUf()}, new String[]{"nome"});
 		
-		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado", null, Cargo.ATIVO), "getId", "getNomeMercado");
+		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect("nomeMercado", null, Cargo.ATIVO, getEmpresaSistema().getId()), "getId", "getNomeMercado");
 		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, candidato.getCargos(), "getId");
 		
 		sexos = new SexoCadastro();
@@ -544,7 +544,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 		maxCandidataCargo = empresa.getMaxCandidataCargo();
 
 		ufs = estadoManager.findAll(new String[]{"sigla"});
-		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado", null, Cargo.ATIVO), "getId", "getNomeMercado");
+		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargoManager.findAllSelect("nomeMercado", null, Cargo.ATIVO, getEmpresaSistema().getId()), "getId", "getNomeMercado");
 		sexos = new SexoCadastro();
 		
 		return Action.SUCCESS;
@@ -1422,7 +1422,7 @@ public class CandidatoEditAction extends MyActionSupportEdit
 	
 }
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 class FileImageFilter implements FileFilter {
 
 		public boolean accept(File pathname) {

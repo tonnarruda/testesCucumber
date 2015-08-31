@@ -28,14 +28,14 @@ public class ConhecimentoManagerImpl extends GenericManagerImpl<Conhecimento, Co
 		return getDao().findByAreaOrganizacionalIds(areasOrganizacionais,empresaId);
 	}
 
-	public Collection<Conhecimento> findByAreaInteresse(Long[] longs, Long empresaId)
+	public Collection<Conhecimento> findByAreaInteresse(Long[] areasChek, Long empresaId)
 	{
-		return getDao().findByAreaInteresse(longs, empresaId);
+		return getDao().findByAreaInteresse(areasChek, empresaId);
 	}
 
-	public Collection<Conhecimento> findAllSelect(Long empresaId)
+	public Collection<Conhecimento> findAllSelect(Long... empresaIds)
 	{
-		return getDao().findAllSelect(empresaId);
+		return getDao().findAllSelect(empresaIds);
 	}
 
 	public Collection<Conhecimento> findByCargo(Long cargoId)
@@ -43,12 +43,12 @@ public class ConhecimentoManagerImpl extends GenericManagerImpl<Conhecimento, Co
 		return getDao().findByCargo(cargoId);
 	}
 
-	public Collection<CheckBox> populaCheckOrderNome(Long empresaId)
+	public Collection<CheckBox> populaCheckOrderNome(Long... empresaIds)
 	{
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();
 		try
 		{
-			Collection<Conhecimento> conhecimentos = getDao().findAllSelect(empresaId);
+			Collection<Conhecimento> conhecimentos = getDao().findAllSelect(empresaIds);
 			checks = CheckListBoxUtil.populaCheckListBox(conhecimentos, "getId", "getNome");
 		}
 		catch (Exception e)
@@ -114,9 +114,9 @@ public class ConhecimentoManagerImpl extends GenericManagerImpl<Conhecimento, Co
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
-	public Collection<Conhecimento> findAllSelectDistinctNome()
+	public Collection<Conhecimento> findAllSelectDistinctNome(Long[] empresaIds)
 	{
-		return getDao().findAllSelectDistinctNome();
+		return getDao().findAllSelectDistinctNome(empresaIds);
 	}
 
 	public Collection<Conhecimento> findByCandidato(Long candidatoId)

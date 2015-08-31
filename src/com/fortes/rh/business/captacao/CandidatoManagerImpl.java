@@ -76,7 +76,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, CandidatoDao> implements CandidatoManager
 {
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
@@ -105,17 +105,14 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	}
 	
 	//TODO refatorar
-	public Collection<Candidato> busca(Map<String, Object> parametros, Long empresaId, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar) throws Exception
+	public Collection<Candidato> busca(Map<String, Object> parametros, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar, Long... empresaIds) throws Exception
 	{
 		Collection<Candidato> candidatos = null;
 		// Experiencia
 		if( parametros.get("experiencias") != null && !parametros.get("tempoExperiencia").equals("") && !parametros.get("tempoExperiencia").equals("0"))
 		{
 			Collection<Candidato> candidatosExperiencia;
-			if (empresaId != null && empresaId == -1L)
-				candidatosExperiencia = getDao().getCandidatosByExperiencia(parametros, null);
-			else			
-				candidatosExperiencia = getDao().getCandidatosByExperiencia(parametros, empresaId);
+			candidatosExperiencia = getDao().getCandidatosByExperiencia(parametros, empresaIds);
 			
 			candidatos = new ArrayList<Candidato>();
 
@@ -139,10 +136,7 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 		Collection<Long> idsCandidatos = candidatoSolicitacaoManager.getCandidatosBySolicitacao(solicitacaoId);
 
-		if (empresaId != null && empresaId != -1)
-			retorno = getDao().findBusca(parametros, empresaId, idsCandidatos, somenteSemSolicitacao, qtdRegistros, ordenar);
-		else
-			retorno = getDao().findBusca(parametros, null, idsCandidatos, somenteSemSolicitacao, qtdRegistros, ordenar);
+		retorno = getDao().findBusca(parametros, empresaIds, idsCandidatos, somenteSemSolicitacao, qtdRegistros, ordenar);
 		
 		return retorno;
 	}
@@ -1065,13 +1059,10 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		getDao().migrarBairro(bairro, bairroDestino);
 	}
 
-	public Collection<Candidato> buscaSimplesDaSolicitacao(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long[] cidadesCheck, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistro, String ordenar)
+	public Collection<Candidato> buscaSimplesDaSolicitacao(String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long[] cidadesCheck, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistro, String ordenar, boolean todasEmpresasPermitidas, Long... empresaIds)
 	{
 		Collection<Long> candidatosJaSelecionados = candidatoSolicitacaoManager.getCandidatosBySolicitacao(solicitacaoId);
-		if(empresaId == -1L)
-			return getDao().findCandidatosForSolicitacaoAllEmpresas(indicadoPor, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, cargosCheck, conhecimentosCheck, candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro, ordenar);
-		else
-			return getDao().findCandidatosForSolicitacaoByEmpresa(empresaId, indicadoPor, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, StringUtil.stringToLong(cargosCheck), StringUtil.stringToLong(conhecimentosCheck), candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro, ordenar);
+		return  getDao().findCandidatosForSolicitacao(indicadoPor, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, cargosCheck, conhecimentosCheck, candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro, ordenar, empresaIds, todasEmpresasPermitidas);
 	}
 
 	public Candidato verifyCPF(String cpf, Long empresaId, Long candidatoId, Boolean contratado) throws Exception 

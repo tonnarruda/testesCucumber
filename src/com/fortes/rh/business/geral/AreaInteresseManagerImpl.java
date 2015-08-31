@@ -22,9 +22,9 @@ public class AreaInteresseManagerImpl extends GenericManagerImpl<AreaInteresse, 
 		return getDao().findAreasInteresseByAreaOrganizacional(areaOrganizacional);
 	}
 	
-	public Collection<AreaInteresse> findAllSelect(Long empresaId)
+	public Collection<AreaInteresse> findAllSelect(Long... empresaIds)
 	{
-		return getDao().findAllSelect(empresaId);
+		return getDao().findAllSelect(empresaIds);
 	}
 
 	public AreaInteresse findByIdProjection(Long areaInteresseId)

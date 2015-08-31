@@ -43,7 +43,7 @@ public class ReajusteFaixaSalarialEditAction extends MyActionSupportEdit
 	{
 		tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelectByNaoAprovada(getEmpresaSistema().getId(), TipoReajuste.FAIXA_SALARIAL);
 		
-		cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado", null, Cargo.TODOS);
+		cargos = cargoManager.findAllSelect("nomeMercado", null, Cargo.TODOS, getEmpresaSistema().getId());
 		
 		return Action.SUCCESS;
 	}

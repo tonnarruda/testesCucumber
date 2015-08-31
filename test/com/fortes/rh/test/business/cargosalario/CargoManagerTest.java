@@ -205,9 +205,9 @@ public class CargoManagerTest extends MockObjectTestCase
 		String ordenarPor = "nome";
 		boolean isModuloExterno = true;
 		
-		cargoDao.expects(once()).method("findAllSelect").with(eq(empresaId), eq(ordenarPor), eq(true), eq(isModuloExterno)).will(returnValue(Collections.EMPTY_LIST));
+		cargoDao.expects(once()).method("findAllSelect").with(eq(new Long[]{empresaId}), eq(ordenarPor), eq(true), eq(isModuloExterno)).will(returnValue(Collections.EMPTY_LIST));
 		
-		cargoManager.findAllSelect(empresaId, ordenarPor, true, Cargo.ATIVO);
+		cargoManager.findAllSelect(ordenarPor, true, Cargo.ATIVO, empresaId);
 		
 		cargoDao.verify();
 	}
@@ -253,7 +253,7 @@ public class CargoManagerTest extends MockObjectTestCase
 	public void testFindAllSelectDistinctNome()
 	{
 		cargoDao.expects(once()).method("findAllSelectDistinctNomeMercado").will(returnValue(new ArrayList<Cargo>()));
-		assertTrue(cargoManager.findAllSelectDistinctNome().isEmpty());
+		assertTrue(cargoManager.findAllSelectDistinctNome(null).isEmpty());
 	}
 
 	public void testFindCargos()
@@ -479,9 +479,9 @@ public class CargoManagerTest extends MockObjectTestCase
 		String ordenarPor = "a";
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
 
-		cargoDao.expects(once()).method("findAllSelect").with(eq(empresaId), eq(ordenarPor), eq(null), eq(Cargo.TODOS)).will(returnValue(cargos));
+		cargoDao.expects(once()).method("findAllSelect").with(eq(new Long[]{empresaId}), eq(ordenarPor), eq(null), eq(Cargo.TODOS)).will(returnValue(cargos));
 
-		assertEquals(cargos, cargoManager.findAllSelect(empresaId, ordenarPor, null, Cargo.TODOS));
+		assertEquals(cargos, cargoManager.findAllSelect(ordenarPor, null, Cargo.TODOS, empresaId));
 	}
 
 	public void testFindByIdProjection()
@@ -523,26 +523,6 @@ public class CargoManagerTest extends MockObjectTestCase
 		cargoDao.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(cargos));
 
 		assertEquals(1, cargoManager.populaCheckBox(false, 1L).size());
-	}
-	
-	public void testPopulaCheckBoxAllCargos()
-	{
-		Cargo cargo = new Cargo();
-		cargo.setId(1L);
-		cargo.setNome("cargo");
-		
-		Collection<Cargo> cargos = new ArrayList<Cargo>();
-		cargos.add(cargo);
-		
-		cargoDao.expects(once()).method("findAllSelectDistinctNomeMercado").will(returnValue(cargos));
-		assertEquals(1, cargoManager.populaCheckBoxAllCargos().size());
-	}
-
-	public void testPopulaCheckBoxAllCargosException()
-	{
-		cargoManager.setDao(null);
-		
-		assertTrue(cargoManager.populaCheckBoxAllCargos().isEmpty());
 	}
 	
 	public void testFindByAreaDoHistoricoColaborador()
@@ -606,9 +586,7 @@ public class CargoManagerTest extends MockObjectTestCase
 	
 	public void testSincronizar()
 	{
-		
 		Long empresaOrigemId = 1L;
-		Long empresaDestinoId = 2L;
 		Map<Long, Long> areaIds = new HashMap<Long, Long>();
 		Map<Long, Long> areaInteresseIds = new HashMap<Long, Long>();
 		Map<Long, Long> conhecimentoIds = new HashMap<Long, Long>();

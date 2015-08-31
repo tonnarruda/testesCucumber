@@ -43,7 +43,7 @@ public class AreaInteresseDaoHibernate extends GenericDaoHibernate<AreaInteresse
 		return criteria.list();
 	}
 	
-	public Collection<AreaInteresse> findAllSelect(Long empresaId)
+	public Collection<AreaInteresse> findAllSelect(Long[] empresaIds)
 	{
 		Criteria criteria = getSession().createCriteria(AreaInteresse.class, "ai");
 
@@ -52,8 +52,8 @@ public class AreaInteresseDaoHibernate extends GenericDaoHibernate<AreaInteresse
 		p.add(Projections.property("ai.nome"), "nome");
 
 		criteria.setProjection(p);
-		if(empresaId != null)
-			criteria.add(Expression.eq("ai.empresa.id", empresaId));
+		if(empresaIds != null && empresaIds.length > 0)
+			criteria.add(Expression.in("ai.empresa.id", empresaIds));
 
 		criteria.addOrder(Order.asc("ai.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

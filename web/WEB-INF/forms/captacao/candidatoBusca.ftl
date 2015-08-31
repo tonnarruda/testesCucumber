@@ -36,6 +36,13 @@
 	</style>
 	
 	<script type="text/javascript">
+		var empresaIds = new Array();
+		<#if empresas?exists>
+			<#list empresas as empresa>
+				empresaIds.push(${empresa.id});
+			</#list>
+		</#if>
+		
 		$(function(){
 			$('#tooltipPalavraChave').qtip({
 				content: 'Este filtro irá incidir sobre os campos "Curso" e "Outros Cursos" contidos na aba "FORMAÇÃO ESCOLAR" e nos campos "Outro Cargo" e "Informações Adicionais" contidos na aba "EXPERIÊNCIAS".'
@@ -56,7 +63,14 @@
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			<!-- Caso a empresa passada seja -1, vai trazer todos os cargos dando distinct pelo nomeMercado -->
-			ConhecimentoDWR.getByEmpresa(createListConhecimentos, empresaId);
+			CargoDWR.getByEmpresa(createListCargo, empresaId, empresaIds);
+			ConhecimentoDWR.getByEmpresa(createListConhecimentos, empresaId,empresaIds);
+			$("#todasEmpresasPermitidas").val(empresaId == -1);
+		}
+		
+		function createListCargo(data)
+		{
+			addChecks('cargosCheck',data);
 		}
 		
 		function createListConhecimentos(data)
@@ -134,6 +148,11 @@
 		<button onclick="limparFiltro();" class="btnLimparFiltro grayBGE"></button>
 
 		<@ww.form name="formBusca" id="formBusca" action="busca.action" onsubmit="${validarCampos}" method="POST">
+			<@ww.hidden name="todasEmpresasPermitidas" id="todasEmpresasPermitidas" value=""/>
+
+			<#list empresas as empresa>	
+				<input type="hidden" name="empresasPermitidas" value="${empresa.id}" />
+			</#list>
 
 			<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" listKey="id" listValue="nome" required="true" onchange="enviaEmpresa(this.value)" liClass="liLeft" headerKey="-1" headerValue="Todas" disabled="!compartilharCandidatos"/>
 

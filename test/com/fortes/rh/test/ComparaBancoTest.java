@@ -92,7 +92,7 @@ import com.fortes.rh.test.dao.BaseDaoHibernateTest;
  * Mudar o banco de dados no arquivo hibernate.properties
  *
  */
-
+@SuppressWarnings("rawtypes")
 public class ComparaBancoTest extends BaseDaoHibernateTest
 {
 	AmbienteDao ambienteDao;

@@ -52,9 +52,9 @@ import com.fortes.rh.model.dicionario.StatusSolicitacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
 import com.fortes.rh.util.ArquivoUtil;
-import com.fortes.rh.util.ArrayUtil;
+import com.fortes.rh.util.StringUtil;
 
-@SuppressWarnings({ "deprecation", "unchecked" })
+@SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
 public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implements CandidatoDao
 {
     public Collection<Candidato> findByCPF(String cpf, Long empresaId, 	Long candidatoId, Boolean contratado) 
@@ -294,7 +294,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		return query;
 	}
 
-	public Collection<Candidato> findBusca(Map parametros, Long empresaId, Collection<Long> idsCandidatos, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar) throws Exception
+	public Collection<Candidato> findBusca(Map parametros, Long[] empresaId, Collection<Long> idsCandidatos, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar) throws Exception
 	{
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
 		
@@ -326,29 +326,29 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		return criteria.list();
 	}
 
-	public Integer getCount(Map parametros, long empresaId)
+	public Integer getCount(Map parametros, Long[] empresaIds)
 	{
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
 		criteria = criteria.createCriteria("c.endereco.cidade", "cd", Criteria.LEFT_JOIN);
 		criteria = criteria.createCriteria("c.endereco.uf", "uf", Criteria.LEFT_JOIN);
 		criteria = criteria.createCriteria("c.experiencias", "ex", Criteria.LEFT_JOIN);
 
-		montaCriteriaFiltros(parametros, empresaId, criteria);
+		montaCriteriaFiltros(parametros, empresaIds, criteria);
 
 		criteria.setProjection(Projections.rowCount());
 
 		return (Integer) criteria.list().get(0);
 	}
 
-	private void montaCriteriaFiltros(Map parametros, Long empresaId, Criteria criteria)
+	private void montaCriteriaFiltros(Map parametros, Long[] empresaIds, Criteria criteria)
 	{
 	//	lista candidatos (disponivel = true , contratado = false)
 		criteria.add(Expression.eq("c.disponivel", true));
 		criteria.add(Expression.eq("c.contratado", false));
 		criteria.add(Expression.eq("c.blackList", false));
 		
-		if (empresaId != null)
-			criteria.add(Expression.eq("c.empresa.id", empresaId));
+		if (empresaIds != null && empresaIds.length > 0)
+			criteria.add(Expression.in("c.empresa.id", empresaIds));
 		
 		if(parametros.get("candidatosComExperiencia") != null && ((Long[])parametros.get("candidatosComExperiencia")).length > 0)
 			criteria.add(Expression.in("c.id", (Long[])parametros.get("candidatosComExperiencia")));
@@ -362,12 +362,15 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		if(parametros.get("cargosIds")  != null && ((Long[])parametros.get("cargosIds")).length > 0)
 			criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.id", (Long[])parametros.get("cargosIds")));
 
-		if(parametros.get("cargosNomes")  != null && ((String[])parametros.get("cargosNomes")).length > 0)
-			criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.nome", (String[]) parametros.get("cargosNomes")));
+		if(parametros.get("cargosNomeMercado")  != null && ((String[])parametros.get("cargosNomeMercado")).length > 0)
+			criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.nomeMercado", (String[]) parametros.get("cargosNomeMercado")));
 
 		if(parametros.get("conhecimentosIds")  != null && ((Long[])parametros.get("conhecimentosIds")).length > 0)
 			criteria.createCriteria("c.conhecimentos", "con", Criteria.LEFT_JOIN).add(Expression.in("con.id", (Long[])parametros.get("conhecimentosIds")));
 
+		if(parametros.get("conhecimentosNomes")  != null && ((Long[])parametros.get("conhecimentosNomes")).length > 0)
+			criteria.createCriteria("c.conhecimentos", "con", Criteria.LEFT_JOIN).add(Expression.in("con.nome", (String[]) parametros.get("conhecimentosNomes")));
+		
 		// Idioma
 		if(parametros.get("idioma") != null)
 		{
@@ -762,7 +765,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		return criteria.list();
 	}
 
-	public Collection<Candidato> getCandidatosByExperiencia(Map parametros, Long empresa)
+	public Collection<Candidato> getCandidatosByExperiencia(Map parametros, Long[] empresaIds)
 	{
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
 		criteria.createCriteria("c.experiencias", "e", Criteria.LEFT_JOIN);
@@ -794,7 +797,7 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		param.putAll(parametros);
 		param.remove("experiencias");
 
-		montaCriteriaFiltros(param, empresa, criteria);
+		montaCriteriaFiltros(param, empresaIds, criteria);
 
 		Collection<Candidato> result = new ArrayList<Candidato>();
 		
@@ -944,7 +947,8 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		query.executeUpdate();
 	}
 
-	public Collection<Candidato> findCandidatosForSolicitacaoAllEmpresas(String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long[] cidadesCheck, String[] cargosCheck, String[] conhecimentosCheck, Collection<Long> candidatosJaSelecionados, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar)
+	public Collection<Candidato> findCandidatosForSolicitacao(String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long[] cidadesCheck, String[] cargosCheck, 
+			String[] conhecimentosCheck, Collection<Long> candidatosJaSelecionados, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar, Long[] empresaIds, boolean todasEmpresasPermitidas)
 	{
 		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
 		
@@ -955,46 +959,23 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		criteria = montaProjectionGroup(criteria, p);
 
 		whereBusca(indicadoPor, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, candidatosJaSelecionados, criteria);
-
-		if(cargosCheck != null && cargosCheck.length > 0)
-			criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.nomeMercado", cargosCheck));
-
-		if(conhecimentosCheck != null && conhecimentosCheck.length > 0)
-			criteria.createCriteria("c.conhecimentos", "con", Criteria.LEFT_JOIN).add(Expression.in("con.nome", conhecimentosCheck));
-
-		if(qtdRegistros!=null)
-			criteria.setMaxResults(qtdRegistros);
 		
-		if(ordenar!=null && ordenar.equals("dataAtualizacao"))
-			criteria.addOrder(Order.desc("c." + ordenar));
-		else
-			criteria.addOrder(Order.asc("c.nome"));
+		if(todasEmpresasPermitidas){
+			if(cargosCheck != null && cargosCheck.length > 0)
+				criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.nomeMercado", cargosCheck));
+	
+			if(conhecimentosCheck != null && conhecimentosCheck.length > 0)
+				criteria.createCriteria("c.conhecimentos", "con", Criteria.LEFT_JOIN).add(Expression.in("con.nome", conhecimentosCheck));
+		}else{
+			if(cargosCheck != null && cargosCheck.length > 0)
+				criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.id", StringUtil.stringToLong(cargosCheck)));
+
+			if(conhecimentosCheck != null && conhecimentosCheck.length > 0)
+				criteria.createCriteria("c.conhecimentos", "con", Criteria.LEFT_JOIN).add(Expression.in("con.id", StringUtil.stringToLong(conhecimentosCheck)));
+		}
 		
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
-
-		return criteria.list();
-	}
-
-	public Collection<Candidato> findCandidatosForSolicitacaoByEmpresa(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long[] cidadesCheck, Long[] cargosCheck, Long[] conhecimentosCheck, Collection<Long> candidatosJaSelecionados, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar)
-	{
-		Criteria criteria = getSession().createCriteria(Candidato.class, "c");
+		criteria.add(Expression.in("c.empresa.id", empresaIds));
 		
-		if (somenteSemSolicitacao)
-			criteria.createCriteria("c.candidatoSolicitacaos", "cs", Criteria.LEFT_JOIN).add(Expression.isNull("cs.id"));
-		
-		ProjectionList p = Projections.projectionList().create();
-		criteria = montaProjectionGroup(criteria, p);
-
-		criteria.add(Expression.eq("c.empresa.id", empresaId));
-		whereBusca(indicadoPor, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, candidatosJaSelecionados, criteria);
-
-		if(cargosCheck != null && cargosCheck.length > 0)
-			criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.id", cargosCheck));
-
-		if(conhecimentosCheck != null && conhecimentosCheck.length > 0)
-			criteria.createCriteria("c.conhecimentos", "con", Criteria.LEFT_JOIN).add(Expression.in("con.id", conhecimentosCheck));
-
 		if(qtdRegistros!=null)
 			criteria.setMaxResults(qtdRegistros);
 		

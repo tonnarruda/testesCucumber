@@ -85,7 +85,7 @@ import com.opensymphony.webwork.ServletActionContext;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class CandidatoListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
@@ -249,6 +249,10 @@ public class CandidatoListAction extends MyActionSupportList
 	private CamposExtras camposExtras;
 	
 	private boolean modoImpressao;
+
+	private boolean todasEmpresasPermitidas = false;
+
+	private Long[] empresasPermitidas;
 	
 	public String list() throws Exception
 	{
@@ -286,10 +290,10 @@ public class CandidatoListAction extends MyActionSupportList
 
 	private void prepareBuscaCandidato() throws Exception
 	{
+		populaEmpresas();
+		
 		if(empresaId == null)		
 			empresaId = getEmpresaSistema().getId();
-		else if(empresaId.equals(-1L))//todas as empresas
-			empresaId = null;
 		
 		deficiencias = new Deficiencia();
 		deficiencias.put(100, "Qualquer Deficiência");
@@ -300,13 +304,13 @@ public class CandidatoListAction extends MyActionSupportList
 
 		idiomas = idiomaManager.findAll(new String[]{"nome"});
 
-		Collection<Cargo> cargos = cargoManager.findAllSelect(empresaId, "nomeMercado", null, Cargo.TODOS);
+		Collection<Cargo> cargos = cargoManager.findAllSelect("nomeMercado", null, Cargo.TODOS, EmpresaUtil.empresasSelecionadas(empresaId, empresas));
 		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercadoComStatus");
 
-		Collection<AreaInteresse> areaInteressesAux = areaInteresseManager.findAllSelect(empresaId);
+		Collection<AreaInteresse> areaInteressesAux = areaInteresseManager.findAllSelect(EmpresaUtil.empresasSelecionadas(empresaId, empresas));
 		areasCheckList = CheckListBoxUtil.populaCheckListBox(areaInteressesAux, "getId", "getNome");
 		
-		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(empresaId);
+		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(EmpresaUtil.empresasSelecionadas(empresaId, empresas));
 
 		experienciasCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercado");
 
@@ -356,8 +360,6 @@ public class CandidatoListAction extends MyActionSupportList
 					cb.setSelecionado(true);
 			}
 		}
-		
-		populaEmpresas();
 	}
 
 	private void populaEmpresas() {
@@ -386,7 +388,7 @@ public class CandidatoListAction extends MyActionSupportList
 			empresaId = getEmpresaSistema().getId();
 		
 		cargosCheckList = cargoManager.populaCheckBox(false, empresaId);
-		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(empresaId);
+		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(EmpresaUtil.empresasSelecionadas(empresaId, empresas));
 
 		if(solicitacao != null && solicitacao.getId() != null && montaFiltroBySolicitacao)
 		{
@@ -564,7 +566,7 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public String busca() throws Exception
 	{
-		empresas = empresaManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"});
+//		empresas = empresaManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"});
 		
 		cpfBusca = StringUtil.removeMascara(cpfBusca);
 		Map<String, Object> parametros = new HashMap<String, Object>();
@@ -588,13 +590,18 @@ public class CandidatoListAction extends MyActionSupportList
 		parametros.put("deficiencia", deficiencia);
 
 		Long[] areasCheckLong = StringUtil.stringToLong(areasCheck);
-		Long[] cargosCheckLong = StringUtil.stringToLong(cargosCheck);
-		Long[] conhecimentosCheckLong = StringUtil.stringToLong(conhecimentosCheck);
+		if(todasEmpresasPermitidas){
+			parametros.put("cargosNomeMercado", cargosCheck);
+			parametros.put("conhecimentosNomes", conhecimentosCheck);
+		}
+		else{
+			parametros.put("cargosIds", StringUtil.stringToLong(cargosCheck));
+			parametros.put("conhecimentosIds", StringUtil.stringToLong(conhecimentosCheck));
+		}
+		
 		Long[] bairrosCheckLong = StringUtil.stringToLong(bairrosCheck);
 		Long[] experienciasCheckLong = StringUtil.stringToLong(experienciasCheck);
 		parametros.put("areasIds", areasCheckLong);
-		parametros.put("cargosIds", cargosCheckLong);
-		parametros.put("conhecimentosIds", conhecimentosCheckLong);
 		parametros.put("bairrosIds", bairrosCheckLong);
 		parametros.put("cidadesIds", cidadesCheck);
 		
@@ -604,7 +611,7 @@ public class CandidatoListAction extends MyActionSupportList
 		if (BDS)
 			empresaId = getEmpresaSistema().getId();
 		
-		candidatos = candidatoManager.busca(parametros, empresaId, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros, ordenar);
+		candidatos = candidatoManager.busca(parametros, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros, ordenar, EmpresaUtil.empresasSelecionadas(empresaId, empresasPermitidas));
 
 		prepareBusca();
 
@@ -640,7 +647,7 @@ public class CandidatoListAction extends MyActionSupportList
 		montaFiltroBySolicitacao = false;
 		prepareBuscaSimples();
 
-		candidatos = candidatoManager.buscaSimplesDaSolicitacao(empresaId, indicadoPorBusca, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, cargosCheck, conhecimentosCheck, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros, ordenar);
+		candidatos = candidatoManager.buscaSimplesDaSolicitacao(indicadoPorBusca, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, cargosCheck, conhecimentosCheck, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros, ordenar, todasEmpresasPermitidas, EmpresaUtil.empresasSelecionadas(empresaId, empresas));
 
 		if(candidatos == null || candidatos.size() == 0)
 			addActionMessage("Não existem candidatos a serem listados");
@@ -1890,6 +1897,14 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setModoImpressao(boolean modoImpressao) {
 		this.modoImpressao = modoImpressao;
+	}
+	
+	public void setTodasEmpresasPermitidas(boolean todasEmpresasPermitidas) {
+		this.todasEmpresasPermitidas = todasEmpresasPermitidas;
+	}
+	
+	public void setEmpresasPermitidas(Long[] empresasPermitidas) {
+		this.empresasPermitidas = empresasPermitidas;
 	}
 
 	public String getDdd() {

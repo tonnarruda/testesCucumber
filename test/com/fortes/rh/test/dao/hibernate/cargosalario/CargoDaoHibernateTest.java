@@ -277,7 +277,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		cargo2.setEmpresa(empresa);
 		cargo2 = cargoDao.save(cargo2);
 
-		Collection<Cargo> retorno = cargoDao.findAllSelect(empresa.getId(), "nomeMercado", null, Cargo.TODOS);
+		Collection<Cargo> retorno = cargoDao.findAllSelect(new Long[]{empresa.getId()}, "nomeMercado", null, Cargo.TODOS);
 
 		assertEquals(2, retorno.size());
 	}
@@ -307,7 +307,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		cargo4.setEmpresa(empresa);
 		cargo4 = cargoDao.save(cargo4);
 		
-		Collection<Cargo> retorno = cargoDao.findAllSelect(empresa.getId(), "nomeMercado", null, Cargo.ATIVO);
+		Collection<Cargo> retorno = cargoDao.findAllSelect(new Long[]{empresa.getId()}, "nomeMercado", null, Cargo.ATIVO);
 		
 		assertEquals(3, retorno.size());
 	}
@@ -471,7 +471,7 @@ public class CargoDaoHibernateTest extends GenericDaoHibernateTest<Cargo>
 		cargo3.setNomeMercado("Desenvolvedor");
 		cargoDao.save(cargo3);
 
-		Collection<Cargo> cargos = cargoDao.findAllSelectDistinctNomeMercado();
+		Collection<Cargo> cargos = cargoDao.findAllSelectDistinctNomeMercado(new Long[]{empresa1.getId(), empresa2.getId()});
 
 		int cont = 0;
 		for (Cargo cargo : cargos)

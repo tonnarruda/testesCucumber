@@ -71,12 +71,12 @@ public class ConhecimentoDaoHibernateTest extends GenericDaoHibernateTest<Conhec
 		ai3.setEmpresa(empresa2);
 		ai3 = conhecimentoDao.save(ai3);
 
-		Collection<Conhecimento> retorno = conhecimentoDao.findAllSelect(empresa1.getId());
+		Collection<Conhecimento> retorno = conhecimentoDao.findAllSelect(new Long[]{empresa1.getId()});
 
 		assertEquals("teste1", 2, retorno.size());
 		assertEquals("teste2", ai2.getId(), retorno.toArray(new Conhecimento[]{})[1].getId());
 
-		retorno = conhecimentoDao.findAllSelect(empresa2.getId());
+		retorno = conhecimentoDao.findAllSelect(new Long[]{empresa2.getId()});
 		assertEquals("teste3", 1, retorno.size());
 		assertEquals("teste4", ai3.getId(), retorno.toArray(new Conhecimento[]{})[0].getId());
 	}
@@ -245,7 +245,7 @@ public class ConhecimentoDaoHibernateTest extends GenericDaoHibernateTest<Conhec
 		conhecimento4.setEmpresa(empresa2);
 		conhecimentoDao.save(conhecimento4);
 
-		Collection<Conhecimento> conhecimentos = conhecimentoDao.findAllSelectDistinctNome();
+		Collection<Conhecimento> conhecimentos = conhecimentoDao.findAllSelectDistinctNome(new Long[]{});
 		int cont = 0;
 		for (Conhecimento conhecimento : conhecimentos)
 		{

@@ -17,7 +17,6 @@ import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.PausaPreenchimentoVagasManager;
 import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManagerImpl;
-import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
@@ -56,8 +55,6 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 	private Mock candidatoSolicitacaoManager = null;
 	private Mock anuncioManager = null;
 	//private Mock mail = null;
-	private Mock parametrosDoSistemaManager;
-	private Mock colaboradorManager;
 	private Mock gerenciadorComunicacaoManager;
 	private Mock solicitacaoAvaliacaoManager;
 	private Mock colaboradorQuestionarioManager;
@@ -87,7 +84,6 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		anuncioManager = new Mock(AnuncioManager.class);
 		solicitacaoManager.setAnuncioManager((AnuncioManager) anuncioManager.proxy());
 		
-		colaboradorManager = new Mock(ColaboradorManager.class);
 		colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
 		
 		pausaPreenchimentoVagasManager = new Mock(PausaPreenchimentoVagasManager.class);

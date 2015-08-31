@@ -17,6 +17,7 @@ import com.fortes.rh.security.spring.aop.callback.CargoAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
 import com.fortes.web.tags.CheckBox;
 
+@SuppressWarnings("rawtypes")
 public interface CargoManager extends GenericManager<Cargo>
 {
 	@Audita(operacao="Remoção", auditor=CargoAuditorCallbackImpl.class)
@@ -27,7 +28,7 @@ public interface CargoManager extends GenericManager<Cargo>
 	public Collection<Cargo> findByGrupoOcupacionalIdsProjection(Long[] idsLong, Long empresaId, Boolean cargoAtivo);
 	public Collection<Cargo> findByAreasOrganizacionalIdsProjection(Long[] idsLong, Long empresaId);
 	public Collection<Cargo> getCargosByIds(Long[] cargoDoubleList, Long empresaId) throws Exception;
-	public Collection<Cargo> findAllSelect(Long empresaId, String ordenarPor, Boolean exibirModuloExterno, Boolean ativo);
+	public Collection<Cargo> findAllSelect(String ordenarPor, Boolean exibirModuloExterno, Boolean ativo, Long... empresaIds);
 	public Cargo findByIdProjection(Long id);
 	public Collection<Cargo> populaCargos(String[] cargosCheck);
 	public Collection<Cargo> populaCargos(Long[] ids);
@@ -37,10 +38,9 @@ public interface CargoManager extends GenericManager<Cargo>
 	boolean verifyExistCargoNome(String cargoNome, Long empresaId);
 	public Collection<Cargo> findByGrupoOcupacional(Long grupoOcupacionalId);
 	public Map findByAreaDoHistoricoColaborador(String[] areaOrganizacionalIds);
-	public Collection<CheckBox> populaCheckBoxAllCargos();
 	public Collection<CheckBox> populaCheckBox(boolean exibirNomeEmpresa, Long... empresaIds);
 	public Collection<Cargo> findBySolicitacao(Long solicitacaoId);
-	public Collection<Cargo> findAllSelectDistinctNome();
+	public Collection<Cargo> findAllSelectDistinctNome(Long[] empresaIds);
 	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino, Map<Long, Long> areaIds, Map<Long, Long> areaInteresseIds, Map<Long, Long> conhecimentoIds, Map<Long, Long> habilidadeIds, Map<Long, Long> atitudeIds, List<String> mensagens);
 	public Collection<Cargo> findByEmpresaAC(String empCodigo, String codigo, String grupoAC);
 	public Cargo preparaCargoDoAC(TCargo tCargo);

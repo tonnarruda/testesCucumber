@@ -74,7 +74,7 @@ public class ConhecimentoManagerTest extends MockObjectTestCase
     	Empresa empresa = new Empresa();
     	empresa.setId(1L);
 
-    	conhecimentoDao.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(ConhecimentoFactory.getCollection()));
+    	conhecimentoDao.expects(once()).method("findAllSelect").with(eq(new Long[]{empresa.getId()})).will(returnValue(ConhecimentoFactory.getCollection()));
 
     	assertEquals(1, conhecimentoManager.findAllSelect(empresa.getId()).size());
     }
@@ -94,7 +94,7 @@ public class ConhecimentoManagerTest extends MockObjectTestCase
     	Empresa empresa = new Empresa();
     	empresa.setId(1L);
 
-    	conhecimentoDao.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(ConhecimentoFactory.getCollection()));
+    	conhecimentoDao.expects(once()).method("findAllSelect").with(eq(new Long[]{empresa.getId()})).will(returnValue(ConhecimentoFactory.getCollection()));
 
     	assertEquals(1, conhecimentoManager.populaCheckOrderNome(empresa.getId()).size());
     }
@@ -157,7 +157,7 @@ public class ConhecimentoManagerTest extends MockObjectTestCase
 	public void testFindAllSelectDistinctNome()
 	{
 		conhecimentoDao.expects(once()).method("findAllSelectDistinctNome").will(returnValue(new ArrayList<Conhecimento>()));
-		assertTrue(conhecimentoManager.findAllSelectDistinctNome().isEmpty());
+		assertTrue(conhecimentoManager.findAllSelectDistinctNome(new Long[]{}).isEmpty());
 	}
 	
 	public void testFindByCandidato()

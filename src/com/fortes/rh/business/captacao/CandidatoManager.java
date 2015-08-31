@@ -33,7 +33,7 @@ public interface CandidatoManager extends GenericManager<Candidato>
     //public void importa(File xmlFile);
 	public Collection<Candidato> list(int page, int pagingSize, String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds);
 	public Integer getCount(String nomeBusca, String cpfBusca, String ddd, String foneFixo, String foneCelular, String indicadoPor, char visualizar, Date dataIni, Date dataFim, String observacaoRH, boolean exibeContratados, boolean exibeExterno, Long... empresasIds);
-	public Collection<Candidato> busca(Map<String, Object> parametros, Long empresa, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar) throws Exception;
+	public Collection<Candidato> busca(Map<String, Object> parametros, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistros, String ordenar, Long... empresaIds) throws Exception;
 	public File getFoto(Long id) throws Exception;
 	public void updateSenha(Candidato candidato);
 	public boolean exportaCandidatosBDS(Empresa empresa, Collection<Candidato> candidatos, String[] empresasCheck, String emailAvulso, String anuncioBDS) throws Throwable;
@@ -60,7 +60,7 @@ public interface CandidatoManager extends GenericManager<Candidato>
 	public Collection<AvaliacaoCandidatosRelatorio> findRelatorioAvaliacaoCandidatos(Date dataIni, Date dataFim, Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, char statusSolicitacao) throws ColecaoVaziaException;
 	public Collection<Candidato> findByNomeCpf(Candidato candidato, Long empresaId);
 	public void migrarBairro(String bairro, String bairroDestino);
-	public Collection<Candidato> buscaSimplesDaSolicitacao(Long empresaId, String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long[] cidadesCheck, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistro, String ordenar);
+	public Collection<Candidato> buscaSimplesDaSolicitacao(String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long[] cidadesCheck, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistro, String ordenar, boolean todasEmpresasPermitidas, Long... empresaIds);
 	public Collection<Candidato> findByNomeCpfAllEmpresas(Candidato candidato);
 	public Candidato verifyCPF(String cpf, Long empresId, Long candidatoId, Boolean contratado) throws Exception;
 	public void ajustaSenha(Candidato candidato);

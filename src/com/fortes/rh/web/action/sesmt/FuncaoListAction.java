@@ -84,7 +84,7 @@ public class FuncaoListAction extends MyActionSupportList
 		if(cargoTmp != null && cargoTmp.getId() != null)
 			list();
 			
-		cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado", null, Cargo.TODOS);
+		cargos = cargoManager.findAllSelect("nomeMercado", null, Cargo.TODOS, getEmpresaSistema().getId());
 		
 		return Action.SUCCESS;
 	}

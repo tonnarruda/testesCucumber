@@ -16,6 +16,7 @@ import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.web.dwr.ConhecimentoDWR;
 
+@SuppressWarnings("rawtypes")
 public class ConhecimentoDWRTest extends MockObjectTestCase
 {
 	private ConhecimentoDWR conhecimentoDWR;
@@ -84,7 +85,7 @@ public class ConhecimentoDWRTest extends MockObjectTestCase
 		
 		conhecimentoManager.expects(once()).method("findAllSelect").with(ANYTHING).will(returnValue(conhecimentos));
 		
-		Map retorno = conhecimentoDWR.getByEmpresa(empresaId);		
+		Map retorno = conhecimentoDWR.getByEmpresa(empresaId, new Long[]{empresaId});		
 		assertEquals(1, retorno.size());
 	}
 
@@ -96,7 +97,7 @@ public class ConhecimentoDWRTest extends MockObjectTestCase
 		
 		conhecimentoManager.expects(once()).method("findAllSelectDistinctNome").will(returnValue(conhecimentos));
 		
-		Map retorno = conhecimentoDWR.getByEmpresa(-1L);		
+		Map retorno = conhecimentoDWR.getByEmpresa(-1L, new Long[]{1L});		
 		assertEquals(1, retorno.size());
 	}
 }

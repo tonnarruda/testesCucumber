@@ -387,7 +387,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     public String prepareRelatorioProcessoSeletivo() throws Exception
     {
     	setVideoAjuda(785L);
-        cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome", null, Cargo.TODOS);
+        cargos = cargoManager.findAllSelect("nome", null, Cargo.TODOS, getEmpresaSistema().getId());
         etapaSeletivaCheckList = CheckListBoxUtil.populaCheckListBox(etapaSeletivaManager.findAllSelect(getEmpresaSistema().getId()), "getId", "getNome");
         return Action.SUCCESS;
     }

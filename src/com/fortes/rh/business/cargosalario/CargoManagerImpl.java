@@ -135,9 +135,9 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return cargos;
 	}
 	
-	public Collection<Cargo> findAllSelect(Long empresaId, String ordenarPor, Boolean exibirModuloExterno, Boolean ativo)
+	public Collection<Cargo> findAllSelect(String ordenarPor, Boolean exibirModuloExterno, Boolean ativo, Long... empresaIds)
 	{
-		return getDao().findAllSelect(empresaId, ordenarPor, exibirModuloExterno, ativo);
+		return getDao().findAllSelect(empresaIds, ordenarPor, exibirModuloExterno, ativo);
 	}
 
 	public Cargo findByIdProjection(Long cargoId)
@@ -290,6 +290,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return getDao().findByGrupoOcupacional(grupoOcupacionalId);
 	}
 
+	@SuppressWarnings("rawtypes")
 	public Map findByAreaDoHistoricoColaborador(String[] areaOrganizacionalIds)
 	{
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
@@ -302,29 +303,14 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 		return new CollectionUtil<Cargo>().convertCollectionToMap(cargos,"getId","getNomeMercadoComStatus");
 	}
 
-	public Collection<CheckBox> populaCheckBoxAllCargos()
-	{
-		try
-		{
-			Collection<Cargo> cargos = getDao().findAllSelectDistinctNomeMercado();
-			return CheckListBoxUtil.populaCheckListBox(cargos, "getNomeMercado", "getNomeMercadoComStatus");
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
-		return new ArrayList<CheckBox>();
-	}
-
 	public Collection<Cargo> findBySolicitacao(Long solicitacaoId)
 	{
 		return getDao().findBySolicitacao(solicitacaoId);
 	}
 
-	public Collection<Cargo> findAllSelectDistinctNome()
+	public Collection<Cargo> findAllSelectDistinctNome(Long[] empresaIds)
 	{
-		return getDao().findAllSelectDistinctNomeMercado();
+		return getDao().findAllSelectDistinctNomeMercado(empresaIds);
 	}
 
 	public void sincronizar(Long empresaOrigemId, Empresa empresaDestino, Map<Long, Long> areaIds, Map<Long, Long> areaInteresseIds, Map<Long, Long> conhecimentoIds, Map<Long, Long> habilidadeIds, Map<Long, Long> atitudeIds, List<String> mensagens)

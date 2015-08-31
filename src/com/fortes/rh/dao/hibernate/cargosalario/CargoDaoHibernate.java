@@ -190,7 +190,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		return criteria.list();
 	}
 
-	public Collection<Cargo> findAllSelect(Long empresaId, String ordenarPor, Boolean exibirModuloExterno, Boolean ativo)
+	public Collection<Cargo> findAllSelect(Long[] empresaIds, String ordenarPor, Boolean exibirModuloExterno, Boolean ativo)
 	{
 		Criteria criteria = getSession().createCriteria(Cargo.class, "c");
 		criteria.createCriteria("empresa", "e", Criteria.LEFT_JOIN);
@@ -205,8 +205,8 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 
 		criteria.setProjection(p);
 		
-		if(empresaId != null)
-			criteria.add(Expression.eq("c.empresa.id", empresaId));
+		if(empresaIds != null && empresaIds.length > 0)
+			criteria.add(Expression.in("c.empresa.id", empresaIds));
 		
 		if (exibirModuloExterno != null)
 			criteria.add(Expression.eq("c.exibirModuloExterno", exibirModuloExterno));
@@ -338,7 +338,7 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		return query.list();
 	}
 
-	public Collection<Cargo> findAllSelectDistinctNomeMercado()
+	public Collection<Cargo> findAllSelectDistinctNomeMercado(Long[] empresaIds)
 	{
 		Criteria criteria = getSession().createCriteria(Cargo.class, "c");
 
@@ -346,6 +346,9 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 		p.add(Projections.distinct(Projections.property("c.nomeMercado")), "nomeMercado");
 		p.add(Projections.property("c.ativo"), "ativo");
 		criteria.setProjection(p);
+		
+		if(empresaIds != null && empresaIds.length > 0)
+			criteria.add(Expression.in("c.empresa.id", empresaIds));
 		
 		criteria.addOrder(Order.asc("c.nomeMercado"));
 

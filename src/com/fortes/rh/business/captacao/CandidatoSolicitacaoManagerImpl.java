@@ -18,7 +18,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class CandidatoSolicitacaoManagerImpl extends GenericManagerImpl<CandidatoSolicitacao, CandidatoSolicitacaoDao> implements CandidatoSolicitacaoManager
 {
     public CandidatoSolicitacao findByCandidatoSolicitacao(CandidatoSolicitacao cand)

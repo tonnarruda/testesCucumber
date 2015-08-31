@@ -11,11 +11,11 @@ import com.fortes.rh.model.captacao.Conhecimento;
 public interface ConhecimentoDao extends GenericDao<Conhecimento>
 {
 	Collection<Conhecimento> findByAreaOrganizacionalIds(Long[] areasOrganizacionais, Long empresasId);
-	Collection<Conhecimento> findByAreaInteresse(Long[] longs,Long empresaId);
-	Collection<Conhecimento> findAllSelect(Long empresaId);
+	Collection<Conhecimento> findByAreaInteresse(Long[] areasChecks,Long empresaId);
+	Collection<Conhecimento> findAllSelect(Long[] empresaIds);
 	Collection<Conhecimento> findByCargo(Long cargoId);
 	Conhecimento findByIdProjection(Long conhecimentoId);
-	Collection<Conhecimento> findAllSelectDistinctNome();
+	Collection<Conhecimento> findAllSelectDistinctNome(Long[] empresaIds);
 	Collection<Conhecimento> findByCandidato(Long candidatoId);
 	Collection<Conhecimento> findSincronizarConhecimentos(Long empresaOrigemId);
 	void deleteByAreaOrganizacional(Long[] areaIds) throws Exception;

@@ -100,12 +100,12 @@ public class AreaInteresseDaoHibernateTest extends GenericDaoHibernateTest<AreaI
 		ai3.setEmpresa(empresa2);
 		ai3 = areaInteresseDao.save(ai3);
 
-		Collection<AreaInteresse> retorno = areaInteresseDao.findAllSelect(empresa1.getId());
+		Collection<AreaInteresse> retorno = areaInteresseDao.findAllSelect(new Long[]{empresa1.getId()});
 
 		assertEquals("teste1", 2, retorno.size());
 		assertEquals("teste2", ai2.getId(), retorno.toArray(new AreaInteresse[]{})[1].getId());
 
-		retorno = areaInteresseDao.findAllSelect(empresa2.getId());
+		retorno = areaInteresseDao.findAllSelect(new Long[]{empresa2.getId()});
 		assertEquals("teste3", 1, retorno.size());
 		assertEquals("teste4", ai3.getId(), retorno.toArray(new AreaInteresse[]{})[0].getId());
 	}

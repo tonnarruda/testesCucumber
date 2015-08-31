@@ -27,6 +27,13 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/buscaCandidatoSolicitacao.js?version=${versao}"/>'></script>
 
 	<script type='text/javascript'>
+		var empresaIds = new Array();
+		<#if empresas?exists>
+			<#list empresas as empresa>
+				empresaIds.push(${empresa.id});
+			</#list>
+		</#if>
+	
 		$(function() {
 			$('#empresaSelect').change(function() {
 				populaCargosConhecimentos($(this).val());
@@ -40,9 +47,10 @@
 		function populaCargosConhecimentos(empresaId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			<!-- Caso a empresa passada seja -1, vai trazer todos os cargos dando distinct pelo nomeMercado -->
-			CargoDWR.getByEmpresa(createListCargo, empresaId);
-			ConhecimentoDWR.getByEmpresa(createListConhecimentos, empresaId);
+			<!-- Caso a empresa passada seja -1, vai trazer todos os cargos das empresas permitidas dando distinct pelo nomeMercado -->
+			CargoDWR.getByEmpresa(createListCargo, empresaId, empresaIds);
+			ConhecimentoDWR.getByEmpresa(createListConhecimentos, empresaId, empresaIds);
+			$("#todasEmpresasPermitidas").val(empresaId == -1);
 		}
 		
 		function createListCargo(data)
@@ -94,6 +102,7 @@
 		<button onclick="limparFiltro();" class="btnLimparFiltro grayBGE"></button>		
 
 		<@ww.form name="formBusca" id="formBusca" action="buscaSimples.action" onsubmit="${validarCampos}" method="POST">
+			<@ww.hidden name="todasEmpresasPermitidas" id="todasEmpresasPermitidas" value=""/>
 			
 			<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" listKey="id" listValue="nome" required="true" liClass="liLeft" headerKey="-1" headerValue="Todas" disabled="!compartilharCandidatos"/>
 			<@ww.textfield label="Indicado Por" id="indicadoPor" name="indicadoPorBusca" cssStyle="width: 350px;"/>

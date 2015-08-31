@@ -367,7 +367,7 @@ public class CargoEditAction extends MyActionSupportEdit
 //		}
 		
 		cargo = cargoManager.findByIdProjection(cargo.getId());
-		cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome", null, Cargo.TODOS);
+		cargos = cargoManager.findAllSelect("nome", null, Cargo.TODOS, getEmpresaSistema().getId());
 		cargos.remove(cargo);
 		faixasDoCargo = faixaSalarialManager.findFaixaSalarialByCargo(cargo.getId());
 		return Action.SUCCESS;

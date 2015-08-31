@@ -50,7 +50,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.ws.TAula;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<ColaboradorTurma> implements ColaboradorTurmaDao
 {
 	//pega apenas os colaboradores que não estao em nenhuma turma

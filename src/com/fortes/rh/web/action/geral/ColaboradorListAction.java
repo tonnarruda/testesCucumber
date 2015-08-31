@@ -199,7 +199,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		areasList = cu1.sortCollectionStringIgnoreCase(areasList, "descricao");
 
 		estabelecimentosList = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
-		cargosList = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nomeMercado", null, Cargo.TODOS);
+		cargosList = cargoManager.findAllSelect("nomeMercado", null, Cargo.TODOS, getEmpresaSistema().getId());
 
 		if(StringUtils.isNotBlank(cpfBusca))
 			cpfBusca = StringUtil.removeMascara(cpfBusca);

@@ -13,7 +13,7 @@ public class ConhecimentoDWR
 {
 	private ConhecimentoManager conhecimentoManager;
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("rawtypes")
 	public Map getConhecimentos(String[] areaOrganizacionalIds, Long empresaId)
 	{
 		Collection<Conhecimento> conhecimentos;
@@ -26,12 +26,13 @@ public class ConhecimentoDWR
 		return new CollectionUtil<Conhecimento>().convertCollectionToMap(conhecimentos,"getId","getNome");
 	}
 
-	public Map getByEmpresa(Long empresaId)
+	@SuppressWarnings("rawtypes")
+	public Map getByEmpresa(Long empresaId, Long[] empresaIds)
 	{
 		Collection<Conhecimento> conhecimentos = new ArrayList<Conhecimento>();
 		
 		if(empresaId == null || empresaId == -1)//Caso a empresa passada seja -1, vai trazer todos os conhecimentos dando distinct pelo nome
-			conhecimentos =  conhecimentoManager.findAllSelectDistinctNome();
+			conhecimentos =  conhecimentoManager.findAllSelectDistinctNome(empresaIds);
 		else
 			conhecimentos =  conhecimentoManager.findAllSelect(empresaId);			
 				

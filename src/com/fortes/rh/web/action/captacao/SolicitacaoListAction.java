@@ -135,7 +135,7 @@ public class SolicitacaoListAction extends MyActionSupportList
 		if(solicitacaos == null || solicitacaos.size() == 0)
 			addActionMessage("Não existem solicitações a serem visualizadas!");
 
-		cargos = cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome", null, Cargo.TODOS);
+		cargos = cargoManager.findAllSelect("nome", null, Cargo.TODOS, getEmpresaSistema().getId());
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		
 		if(roleMovSolicitacaoSelecao)

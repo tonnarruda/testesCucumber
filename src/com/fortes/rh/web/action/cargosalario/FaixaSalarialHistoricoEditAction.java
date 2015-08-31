@@ -111,7 +111,7 @@ public class FaixaSalarialHistoricoEditAction extends MyActionSupport
 		
 		grupoOcupacionalsCheckList = grupoOcupacionalManager.populaCheckOrderNome(getEmpresaSistema().getId());
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect(getEmpresaSistema().getId(), "nome", null, Cargo.TODOS), "getId", "getNomeMercadoComStatus");
+		cargosCheckList = populaCheckListBox(cargoManager.findAllSelect("nome", null, Cargo.TODOS, getEmpresaSistema().getId()), "getId", "getNomeMercadoComStatus");
 		
 		grupoOcupacionalsCheckList = CheckListBoxUtil.marcaCheckListBox(grupoOcupacionalsCheckList, grupoOcupacionalsCheck);
 		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);

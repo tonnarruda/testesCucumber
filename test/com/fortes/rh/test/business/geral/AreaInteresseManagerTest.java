@@ -65,7 +65,7 @@ public class AreaInteresseManagerTest extends MockObjectTestCase
     	Collection<AreaInteresse> areaInteresses = new ArrayList<AreaInteresse>();
     	areaInteresses.add(areaInteresse);
 
-    	areaInteresseDao.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(areaInteresses));
+    	areaInteresseDao.expects(once()).method("findAllSelect").with(eq(new Long[]{empresa.getId()})).will(returnValue(areaInteresses));
 
     	assertEquals(1, areaInteresseManager.findAllSelect(empresa.getId()).size());
     }
