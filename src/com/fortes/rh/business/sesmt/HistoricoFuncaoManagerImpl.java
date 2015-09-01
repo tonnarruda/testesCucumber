@@ -42,7 +42,7 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 		this.funcaoManager = funcaoManager;
 	}
 
-	public void saveFuncaoHistorico(Funcao funcao, HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, String[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes, char controlaRiscoPor) throws Exception
+	public void saveFuncaoHistorico(Funcao funcao, HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, String[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -61,17 +61,7 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 			Long[] riscosMarcados = LongUtil.arrayStringToArrayLong(riscoChecks);
 			
 			if (historicoFuncao.getId() != null)
-			{
-				if (controlaRiscoPor == 'F'){
-					Collection<RiscoFuncao> riscosMarcadosAux = riscoFuncaoManager.findToList(new String[] {"id"},new String[] {"id"}, new String[]{"historicoFuncao.id"}, new Object[]{historicoFuncao.getId()});
-					
-					CollectionUtil<RiscoFuncao> cut = new CollectionUtil<RiscoFuncao>();
-					riscosMarcados = cut.convertCollectionToArrayIds(riscosMarcadosAux);
-					
-				} else {
-					riscoFuncaoManager.removeByHistoricoFuncao(historicoFuncao.getId());
-				}
-			}
+				riscoFuncaoManager.removeByHistoricoFuncao(historicoFuncao.getId());
 			
 			Collection<RiscoFuncao> riscoFuncoesSelecionados = new ArrayList<RiscoFuncao>();
 			
@@ -236,7 +226,7 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 //		return historicoFuncoes;
 //	}
 
-	public void saveHistorico(HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, Long[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes, char controlaRiscoPor) throws FortesException, Exception 
+	public void saveHistorico(HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, Long[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes) throws FortesException, Exception 
 	{
 		if (this.findByData(historicoFuncao.getData(), historicoFuncao.getId(), historicoFuncao.getFuncao().getId()) != null)
 			throw new FortesException("Já existe um histórico para a data informada");			
@@ -246,17 +236,7 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 		historicoFuncao.setEpis(collectionUtil.convertArrayLongToCollection(Epi.class, episChecked));
 		
 		if (historicoFuncao.getId() != null)
-		{
-			if (controlaRiscoPor == 'A'){
-				Collection<RiscoFuncao> riscosMarcadosAux = riscoFuncaoManager.findToList(new String[] {"id"},new String[] {"id"}, new String[]{"historicoFuncao.id"}, new Object[]{historicoFuncao.getId()});
-				
-				CollectionUtil<RiscoFuncao> cut = new CollectionUtil<RiscoFuncao>();
-				riscoChecks = cut.convertCollectionToArrayIds(riscosMarcadosAux);
-				
-			} else {
-				riscoFuncaoManager.removeByHistoricoFuncao(historicoFuncao.getId());
-			}
-		}
+			riscoFuncaoManager.removeByHistoricoFuncao(historicoFuncao.getId());
 		
 		Collection<RiscoFuncao> riscoFuncoesSelecionados = new ArrayList<RiscoFuncao>();
 		

@@ -86,7 +86,7 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 	{
 		try {
 			historicoAmbiente.setAmbiente(ambiente);
-			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck, getEmpresaSistema().getControlaRiscoPor());
+			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
 	
 			return Action.SUCCESS;
 		
@@ -105,7 +105,7 @@ public class HistoricoAmbienteEditAction extends MyActionSupportEdit
 	public String update() throws Exception
 	{
 		try {
-			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck, getEmpresaSistema().getControlaRiscoPor());
+			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
 	
 			return Action.SUCCESS;
 		

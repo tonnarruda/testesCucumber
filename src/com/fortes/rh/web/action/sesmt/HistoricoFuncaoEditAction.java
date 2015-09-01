@@ -84,7 +84,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	{
 		try {
 			historicoFuncao.setFuncao(funcao);
-			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes, getEmpresaSistema().getControlaRiscoPor());
+			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes);
 	
 			if(veioDoSESMT)
 				return "SUCESSO_VEIO_SESMT";
@@ -106,7 +106,7 @@ public class HistoricoFuncaoEditAction extends MyActionSupportEdit
 	public String update() throws Exception
 	{
 		try {
-			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes, getEmpresaSistema().getControlaRiscoPor());
+			historicoFuncaoManager.saveHistorico(historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes);
 	
 			if(veioDoSESMT)
 				return "SUCESSO_VEIO_SESMT";

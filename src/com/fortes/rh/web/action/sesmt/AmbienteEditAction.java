@@ -101,7 +101,7 @@ public class AmbienteEditAction extends MyActionSupportList
 	public String insert() throws Exception
 	{
 		ambiente.setEmpresa(getEmpresaSistema());
-		ambienteManager.saveAmbienteHistorico(ambiente, historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck, getEmpresaSistema().getControlaRiscoPor());
+		ambienteManager.saveAmbienteHistorico(ambiente, historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
 
 		return Action.SUCCESS;
 	}

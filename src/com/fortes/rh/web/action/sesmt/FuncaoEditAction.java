@@ -125,7 +125,7 @@ public class FuncaoEditAction extends MyActionSupportEdit
 	public String insert() throws Exception
 	{
 		funcao.setCargo(cargoTmp);
-		historicoFuncaoManager.saveFuncaoHistorico(funcao, historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes, getEmpresaSistema().getControlaRiscoPor());
+		historicoFuncaoManager.saveFuncaoHistorico(funcao, historicoFuncao, examesChecked, episChecked, riscoChecks, riscosFuncoes);
 
 		if(veioDoSESMT)
 			return "SUCESSO_VEIO_SESMT";

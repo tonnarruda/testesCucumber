@@ -12,7 +12,7 @@ import com.fortes.rh.model.sesmt.relatorio.DadosAmbienteRisco;
 
 public interface HistoricoAmbienteManager extends GenericManager<HistoricoAmbiente>
 {
-	void save(HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck, char controlaRiscoPor) throws FortesException, Exception;
+	void save(HistoricoAmbiente historicoAmbiente, String[] riscoChecks, Collection<RiscoAmbiente> riscosAmbientes, String[] epcCheck) throws FortesException, Exception;
 	boolean removeByAmbiente(Long ambienteId);
 	Collection<HistoricoAmbiente> findByAmbiente(Long ambienteId);
 	void removeCascade(Long id);

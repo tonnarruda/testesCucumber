@@ -113,8 +113,7 @@ public abstract class Menu
 		
 		for(Papel papel : roles)
 		{
-			boolean exibeMenu = !(papel.getNome().equals("Mapa de Risco") && empresaLogada.getControlaRiscoPor() == 'F');
-			if (papel.getPapelMae() != null && papel.getPapelMae().getId() == id && exibeMenu )
+			if (papel.getPapelMae() != null && papel.getPapelMae().getId() == id )
 			{
 				String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
 				

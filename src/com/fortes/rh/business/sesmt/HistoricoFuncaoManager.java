@@ -12,11 +12,11 @@ import com.fortes.rh.model.sesmt.RiscoFuncao;
 
 public interface HistoricoFuncaoManager extends GenericManager<HistoricoFuncao>
 {
-	void saveFuncaoHistorico(Funcao funcao, HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, String[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes, char controlaRiscoPor) throws Exception;
+	void saveFuncaoHistorico(Funcao funcao, HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, String[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes) throws Exception;
 	Collection<HistoricoFuncao> findHistoricoFuncaoColaborador(Collection<HistoricoColaborador> historicosColaborador, Date data, Date dataDesligamento);
 	Collection<HistoricoFuncao> inserirPeriodos(Collection<HistoricoFuncao> historicoFuncaos);
 	Collection<HistoricoFuncao> getUltimoHistoricosByDateFuncaos(Collection<Long> funcaoIds, Date data);
-	void saveHistorico(HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, Long[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes, char controlaRiscoPor) throws FortesException, Exception;
+	void saveHistorico(HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, Long[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes) throws FortesException, Exception;
 //	Collection<ExameRelatorio> getHistoricoFuncaoAreaExameByData(Long empresaId, Date data);
 	void removeByFuncoes(Long[] funcaoIds);
 	HistoricoFuncao findByIdProjection(Long historicoFuncaoId);

@@ -22,7 +22,6 @@
 	<#include "../ftl/mascarasImports.ftl" />
 
 <#assign validarCampos="return validaFormulario('form', new Array('dataHist','descricao'), new Array('dataHist'))"/>
-<#assign empresaControlaRiscoPor><@authz.authentication operation="empresaControlaRiscoPor"/></#assign>
 
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
@@ -32,17 +31,17 @@
 	$(function() {
 		<#if historicoFuncao?exists && historicoFuncao.riscoFuncaos?exists>
 			<#list historicoFuncao.riscoFuncaos as riscoFuncao>
-					$('#check' + ${riscoFuncao.risco.id}).attr('checked', true).parent().parent().find('input, select, textarea').attr('disabled', false);
-					<#if riscoFuncao.periodicidadeExposicao?exists>
-						$('#perExposicao' + ${riscoFuncao.risco.id}).val('${riscoFuncao.periodicidadeExposicao}');
-					</#if>
-					<#if riscoFuncao.epcEficaz>
-						$('#epcEficaz' + ${riscoFuncao.risco.id}).attr('checked', true);
-					</#if>
-					<#if riscoFuncao.medidaDeSeguranca?exists>
-						$('#medidaDeSeguranca' + ${riscoFuncao.risco.id}).val('${riscoFuncao.medidaDeSeguranca}');
-					</#if>
-				</#list>
+				$('#check' + ${riscoFuncao.risco.id}).attr('checked', true).parent().parent().find('input, select, textarea').attr('disabled', false);
+				<#if riscoFuncao.periodicidadeExposicao?exists>
+					$('#perExposicao' + ${riscoFuncao.risco.id}).val('${riscoFuncao.periodicidadeExposicao}');
+				</#if>
+				<#if riscoFuncao.epcEficaz>
+					$('#epcEficaz' + ${riscoFuncao.risco.id}).attr('checked', true);
+				</#if>
+				<#if riscoFuncao.medidaDeSeguranca?exists>
+					$('#medidaDeSeguranca' + ${riscoFuncao.risco.id}).val('${riscoFuncao.medidaDeSeguranca}');
+				</#if>
+			</#list>
 		</#if>
 
 		$('#md').click(function() {

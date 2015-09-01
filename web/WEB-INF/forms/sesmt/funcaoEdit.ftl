@@ -26,7 +26,6 @@
 		<#assign data = "">
 	</#if>
 	
-	<#assign empresaControlaRiscoPor><@authz.authentication operation="empresaControlaRiscoPor"/></#assign>
 	<script type="text/javascript">
 		$(function() {
 			$('#md').click(function() {

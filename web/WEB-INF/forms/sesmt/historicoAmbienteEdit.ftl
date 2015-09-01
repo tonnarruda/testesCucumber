@@ -18,8 +18,6 @@
 		<#assign accessKey="I"/>
 	</#if>
 	<#assign validarCamp="return validaFormulario('form', new Array('dataHist','descricao'), new Array('dataHist'), !validaRiscosExistentes())"/>
-	<#assign empresaControlaRiscoPor><@authz.authentication operation="empresaControlaRiscoPor"/></#assign>
-	
 
 	<#if historicoAmbiente.data?exists>
 			<#assign data = historicoAmbiente.data>
