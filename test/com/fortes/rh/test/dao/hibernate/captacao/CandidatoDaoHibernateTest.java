@@ -776,6 +776,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		Cargo cargo = CargoFactory.getEntity();
 		cargo.setNome("carpinteiro");
 		cargo.setNomeMercado("carpinteiro");
+		cargo.setAtivo(true);
 		cargo = cargoDao.save(cargo);
 
 		Collection<Cargo> cargos = new ArrayList<Cargo>();
@@ -821,7 +822,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 		assertEquals(1, candidatos.size());
 
 		parametros = new HashMap();
-		String[] cargosNomes = {cargo.getNome()};
+		String[] cargosNomes = {cargo.getNomeMercadoComStatus()};
 		parametros.put("cargosNomeMercado", cargosNomes);
 		candidatos = candidatoDao.findBusca(parametros, new Long[]{empresa.getId()}, idsCandidatos, false, null, null);
 		
@@ -2284,7 +2285,7 @@ public class CandidatoDaoHibernateTest extends GenericDaoHibernateTest<Candidato
 
 		montaBuscaTest(empresa, estado, cidade, conhecimento, cargo);
 
-		String[] cargosCheck = new String[]{cargo.getNomeMercado()};
+		String[] cargosCheck = new String[]{cargo.getNomeMercadoComStatus()};
 		String[] conhecimentosCheck = new String[]{conhecimento.getNome()};
 		Long[] cidadesIds = new Long[]{cidade.getId()};
 

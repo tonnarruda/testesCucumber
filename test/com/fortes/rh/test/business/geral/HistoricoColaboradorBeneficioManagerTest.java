@@ -23,6 +23,7 @@ import com.fortes.rh.test.factory.geral.BeneficioFactory;
 import com.fortes.rh.test.factory.geral.HistoricoBeneficioFactory;
 import com.fortes.rh.util.DateUtil;
 
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class HistoricoColaboradorBeneficioManagerTest extends MockObjectTestCase
 {
 	private HistoricoColaboradorBeneficioManagerImpl manager = new HistoricoColaboradorBeneficioManagerImpl();
@@ -41,7 +42,6 @@ public class HistoricoColaboradorBeneficioManagerTest extends MockObjectTestCase
         manager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
     }
 
-	@SuppressWarnings("unchecked")
 	public void testFiltroRelatorioByColaborador() throws Exception
 	{
 		Colaborador colaborador = new Colaborador();
@@ -82,7 +82,6 @@ public class HistoricoColaboradorBeneficioManagerTest extends MockObjectTestCase
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testFiltroRelatorioByAreas() throws Exception
 	{
 		Colaborador colaborador = new Colaborador();
@@ -171,7 +170,6 @@ public class HistoricoColaboradorBeneficioManagerTest extends MockObjectTestCase
 
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testGetHistoricoByColaboradorData() throws Exception
 	{
 		Colaborador colaborador = new Colaborador();
@@ -189,7 +187,6 @@ public class HistoricoColaboradorBeneficioManagerTest extends MockObjectTestCase
 		assertEquals(hc.getId(), hcbRetorno.getId());
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testFiltraBeneficioByPeriodo()
 	{
 		Object[] b1 = new Object[7];
@@ -248,7 +245,6 @@ public class HistoricoColaboradorBeneficioManagerTest extends MockObjectTestCase
 		assertEquals(3, retorno.size());
 	}
 
-	@SuppressWarnings("unchecked")
 	public void testSetHistoricosEntrePeriodos()
 	{
 		Object[] b1 = new Object[7];

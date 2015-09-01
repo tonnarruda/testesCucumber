@@ -11,13 +11,9 @@ import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
-import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
-import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
-import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
-import com.fortes.rh.dao.geral.EstabelecimentoDao;
 import com.fortes.rh.dao.geral.GrupoACDao;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
@@ -51,14 +47,10 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
     private IndiceHistoricoDao indiceHistoricoDao;
     private CargoDao cargoDao;
     private EmpresaDao empresaDao;
-    private EstabelecimentoDao estabelecimentoDao;
     private GrupoACDao grupoACDao;
     private HabilidadeDao habilidadeDao;
     private NivelCompetenciaDao nivelCompetenciaDao;
     private ConfiguracaoNivelCompetenciaDao configuracaoNivelCompetenciaDao;
-    private ColaboradorDao colaboradorDao;
-    private HistoricoColaboradorDao historicoColaboradorDao;
-    private AreaOrganizacionalDao areaOrganizacionalDao;
 
     public FaixaSalarial getEntity()
     {
@@ -664,23 +656,6 @@ public class FaixaSalarialDaoHibernateTest extends GenericDaoHibernateTest<Faixa
 		this.indiceHistoricoDao = indiceHistoricoDao;
 	}
 
-	public void setHistoricoColaboradorDao(
-			HistoricoColaboradorDao historicoColaboradorDao) {
-		this.historicoColaboradorDao = historicoColaboradorDao;
-	}
-
-	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
-		this.colaboradorDao = colaboradorDao;
-	}
-
-	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao) {
-		this.areaOrganizacionalDao = areaOrganizacionalDao;
-	}
-
-	public void setEstabelecimentoDao(EstabelecimentoDao estabelecimentoDao) {
-		this.estabelecimentoDao = estabelecimentoDao;
-	}
-	
 	public void setEmpresaDao(EmpresaDao empresaDao){
         this.empresaDao = empresaDao;
     }

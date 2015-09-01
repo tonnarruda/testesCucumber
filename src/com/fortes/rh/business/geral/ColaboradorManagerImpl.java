@@ -2575,7 +2575,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return colaborador.getEmpresa().getId().equals(empresaId);
 	}
 
-	public Collection<Colaborador> triar(Long solicitacaoId, Long empresaId, String escolaridade, String sexo, String idadeMin, String idadeMax, String[] cargosCheck, String[] areasCheck, boolean exibeCompatibilidade, Integer percentualMinimo) throws Exception 
+	public Collection<Colaborador> triar(Long solicitacaoId, String escolaridade, String sexo, String idadeMin, String idadeMax, String[] faixasCheck, String[] areasCheck, boolean exibeCompatibilidade, Integer percentualMinimo, boolean opcaoTodasEmpresas, Long... empresaIds) throws Exception 
 	{
 		Date dataNascIni = null;
 		Date dataNascFim = null;
@@ -2596,7 +2596,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if(exibeCompatibilidade && pontuacaoMaxima == null)
 			throw new Exception("Não existe configuração de nível de competência para a faixa salarial desta solictação.");
 
-		Collection<Colaborador> colaboradores = getDao().triar(empresaId, escolaridade, sexo, dataNascIni, dataNascFim, LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(areasCheck), competenciasIdsFaixaSolicitacao, exibeCompatibilidade);
+		Collection<Colaborador> colaboradores = getDao().triar(empresaIds, escolaridade, sexo, dataNascIni, dataNascFim, faixasCheck, LongUtil.arrayStringToArrayLong(areasCheck), competenciasIdsFaixaSolicitacao, exibeCompatibilidade, opcaoTodasEmpresas);
 		double compatibilidade;
 
 		if (exibeCompatibilidade && pontuacaoMaxima > 0)

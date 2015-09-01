@@ -250,7 +250,7 @@ public class CandidatoListAction extends MyActionSupportList
 	
 	private boolean modoImpressao;
 
-	private boolean todasEmpresasPermitidas = false;
+	private boolean opcaoTodasEmpresas = false;
 
 	private Long[] empresasPermitidas;
 	
@@ -387,7 +387,7 @@ public class CandidatoListAction extends MyActionSupportList
 		if(empresaId==null)
 			empresaId = getEmpresaSistema().getId();
 		
-		cargosCheckList = cargoManager.populaCheckBox(false, empresaId);
+		cargosCheckList = cargoManager.populaCheckBox(false, EmpresaUtil.empresasSelecionadas(empresaId, empresas));
 		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(EmpresaUtil.empresasSelecionadas(empresaId, empresas));
 
 		if(solicitacao != null && solicitacao.getId() != null && montaFiltroBySolicitacao)
@@ -439,10 +439,11 @@ public class CandidatoListAction extends MyActionSupportList
 
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		
-		Collection<FaixaSalarial> faixas = faixaSalarialManager.findAllSelectByCargo((empresaId == null || empresaId == -1 ? null : empresaId));
+		Collection<FaixaSalarial> faixas = faixaSalarialManager.findAllSelectByCargo(getEmpresaSistema().getId());
 		faixasCheckList = CheckListBoxUtil.populaCheckListBox(faixas, "getId", "getDescricaoComStatus");
 
 		populaEmpresas();
+		empresaId = getEmpresaSistema().getId();
 	
 		setShowFilter(true);
 
@@ -454,7 +455,7 @@ public class CandidatoListAction extends MyActionSupportList
 		percentualMinimo = (percentualMinimo == null) ? 0 : percentualMinimo;
 		
 		try {
-			colaboradores = colaboradorManager.triar(solicitacao.getId(), empresaId, escolaridade, sexo, idadeMin, idadeMax, cargosCheck, areasCheck, exibeCompatibilidade, percentualMinimo);
+			colaboradores = colaboradorManager.triar(solicitacao.getId(), escolaridade, sexo, idadeMin, idadeMax, faixasCheck, areasCheck, exibeCompatibilidade, percentualMinimo, opcaoTodasEmpresas, EmpresaUtil.empresasSelecionadas(empresaId, empresasPermitidas));
 
 			if(colaboradores == null || colaboradores.size() == 0)
 				addActionMessage("Não existem colaboradores a serem listados!");
@@ -566,8 +567,6 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public String busca() throws Exception
 	{
-//		empresas = empresaManager.findToList(new String[]{"id", "nome"}, new String[]{"id", "nome"}, new String[]{"nome"});
-		
 		cpfBusca = StringUtil.removeMascara(cpfBusca);
 		Map<String, Object> parametros = new HashMap<String, Object>();
 		parametros.put("indicadoPor", indicadoPorBusca);
@@ -590,7 +589,7 @@ public class CandidatoListAction extends MyActionSupportList
 		parametros.put("deficiencia", deficiencia);
 
 		Long[] areasCheckLong = StringUtil.stringToLong(areasCheck);
-		if(todasEmpresasPermitidas){
+		if(opcaoTodasEmpresas){
 			parametros.put("cargosNomeMercado", cargosCheck);
 			parametros.put("conhecimentosNomes", conhecimentosCheck);
 		}
@@ -647,7 +646,7 @@ public class CandidatoListAction extends MyActionSupportList
 		montaFiltroBySolicitacao = false;
 		prepareBuscaSimples();
 
-		candidatos = candidatoManager.buscaSimplesDaSolicitacao(indicadoPorBusca, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, cargosCheck, conhecimentosCheck, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros, ordenar, todasEmpresasPermitidas, EmpresaUtil.empresasSelecionadas(empresaId, empresas));
+		candidatos = candidatoManager.buscaSimplesDaSolicitacao(indicadoPorBusca, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, cargosCheck, conhecimentosCheck, solicitacao.getId(), somenteCandidatosSemSolicitacao, qtdRegistros, ordenar, opcaoTodasEmpresas, EmpresaUtil.empresasSelecionadas(empresaId, empresas));
 
 		if(candidatos == null || candidatos.size() == 0)
 			addActionMessage("Não existem candidatos a serem listados");
@@ -1899,8 +1898,8 @@ public class CandidatoListAction extends MyActionSupportList
 		this.modoImpressao = modoImpressao;
 	}
 	
-	public void setTodasEmpresasPermitidas(boolean todasEmpresasPermitidas) {
-		this.todasEmpresasPermitidas = todasEmpresasPermitidas;
+	public void setopcaoTodasEmpresas(boolean opcaoTodasEmpresas) {
+		this.opcaoTodasEmpresas = opcaoTodasEmpresas;
 	}
 	
 	public void setEmpresasPermitidas(Long[] empresasPermitidas) {

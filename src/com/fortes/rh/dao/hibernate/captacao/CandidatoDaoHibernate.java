@@ -363,7 +363,8 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 			criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.id", (Long[])parametros.get("cargosIds")));
 
 		if(parametros.get("cargosNomeMercado")  != null && ((String[])parametros.get("cargosNomeMercado")).length > 0)
-			criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.nomeMercado", (String[]) parametros.get("cargosNomeMercado")));
+			criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(
+					Expression.sqlRestriction("cg5_.nomemercado || (CASE cg5_.ativo WHEN true THEN ' (Ativo)' ELSE ' (Inativo)' END) in ("  +  "'" + StringUtils.join((String[]) parametros.get("cargosNomeMercado"), "','") +  "'" + ")"));
 
 		if(parametros.get("conhecimentosIds")  != null && ((Long[])parametros.get("conhecimentosIds")).length > 0)
 			criteria.createCriteria("c.conhecimentos", "con", Criteria.LEFT_JOIN).add(Expression.in("con.id", (Long[])parametros.get("conhecimentosIds")));
@@ -961,9 +962,10 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		whereBusca(indicadoPor, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, candidatosJaSelecionados, criteria);
 		
 		if(todasEmpresasPermitidas){
-			if(cargosCheck != null && cargosCheck.length > 0)
-				criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.nomeMercado", cargosCheck));
-	
+			if(cargosCheck != null && cargosCheck.length > 0){
+				criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(
+						Expression.sqlRestriction("cg5_.nomemercado || (CASE cg5_.ativo WHEN true THEN ' (Ativo)' ELSE ' (Inativo)' END) in ("  +  "'" + StringUtils.join(cargosCheck, "','") + "'" + ")"));
+			}
 			if(conhecimentosCheck != null && conhecimentosCheck.length > 0)
 				criteria.createCriteria("c.conhecimentos", "con", Criteria.LEFT_JOIN).add(Expression.in("con.nome", conhecimentosCheck));
 		}else{
@@ -986,7 +988,6 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Candidato.class));
-
 		return criteria.list();
 	}
 

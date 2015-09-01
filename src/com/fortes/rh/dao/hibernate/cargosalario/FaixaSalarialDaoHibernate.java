@@ -69,6 +69,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 	public Collection<FaixaSalarial> findAllSelectByCargo(Long empresaId)
 	{
 		Criteria criteria = getSession().createCriteria(FaixaSalarial.class, "fs");
+		
 		criteria.createCriteria("fs.cargo", "c");
 
 		ProjectionList p = Projections.projectionList().create();
@@ -92,6 +93,28 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		return criteria.list();
 	}
 
+	public Collection<FaixaSalarial> findDistinctDescricao(Long[] empresaIds){
+		Criteria criteria = getSession().createCriteria(FaixaSalarial.class, "fs");
+		criteria.createCriteria("fs.cargo", "c");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.distinct(Projections.property("c.nome")), "nomeCargo");
+		p.add(Projections.property("fs.nome"), "nome");
+		p.add(Projections.property("c.ativo"), "ativoCargo");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.in("c.empresa.id", empresaIds));
+		
+		criteria.addOrder(Order.asc("c.nome"));
+		criteria.addOrder(Order.asc("fs.nome"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(FaixaSalarial.class));
+		
+		return criteria.list();
+	}
+	
+	
 	public FaixaSalarial findByFaixaSalarialId(Long faixaSalarialId)
 	{
 		Criteria criteria = getCriteriaFaixaSalarial(faixaSalarialId, FAIXASALARIAL);

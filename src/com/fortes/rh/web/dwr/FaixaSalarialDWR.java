@@ -10,7 +10,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.web.tags.Option;
 
-
+@SuppressWarnings("rawtypes")
 public class FaixaSalarialDWR
 {
 	private FaixaSalarialManager faixaSalarialManager;
@@ -53,20 +53,20 @@ public class FaixaSalarialDWR
 		return faixasRetorno;
 	}
 
-	public Map getByEmpresa(Long empresaId)
+	public Map getByEmpresas(Long empresaId, Long[] empresaIds)
 	{
-		Collection<FaixaSalarial> faixas = new ArrayList<FaixaSalarial>();
-		String getParametro = "getId";
-		
-		if(empresaId == -1)//Caso a empresa passada seja -1, vai trazer todos os cargos/faixas 
-		{
-			faixas = faixaSalarialManager.findAllSelectByCargo(null);
-			getParametro = "getDescricao";
+		Collection<FaixaSalarial> faixas;
+		String parametroKey;
+		if(empresaId == -1L){
+			faixas = faixaSalarialManager.findDistinctDescricao(empresaIds);
+			parametroKey = "getDescricaoComStatus";
 		}
-		else
+		else{
 			faixas = faixaSalarialManager.findAllSelectByCargo(empresaId);
-
-		return new CollectionUtil<FaixaSalarial>().convertCollectionToMap(faixas, getParametro, "getDescricao");
+			parametroKey = "getId";
+		}
+		
+		return new CollectionUtil<FaixaSalarial>().convertCollectionToMap(faixas, parametroKey, "getDescricaoComStatus");
 	}
 	
 	public Map getByCargo(String cargoId)

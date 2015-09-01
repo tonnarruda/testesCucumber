@@ -22,6 +22,13 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 
 	<script type='text/javascript'>
+		var empresaIds = new Array();
+		<#if empresas?exists>
+			<#list empresas as empresa>
+				empresaIds.push(${empresa.id});
+			</#list>
+		</#if>
+		
 		$(function() {
 			$('#empresaSelect').change(function() {
 				populaFaixasAreas($(this).val());
@@ -35,8 +42,9 @@
 			DWREngine.setAsync(false);
 			DWRUtil.useLoadingMessage('Carregando...');
 			<!-- Caso a empresa passada seja -1, vai trazer todos os cargos dando distinct pelo nomeMercado -->
-			FaixaSalarialDWR.getByEmpresa(createListFaixa, empresaId);
-			AreaOrganizacionalDWR.getByEmpresa(createListArea, empresaId);
+			FaixaSalarialDWR.getByEmpresas(createListFaixa, empresaId, empresaIds);
+			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds);
+			$("#opcaoTodasEmpresas").val(empresaId == -1);
 		}
 		
 		function createListFaixa(data)
@@ -117,8 +125,11 @@
 		<button onclick="limparFiltro();" class="btnLimparFiltro grayBGE"></button>		
 
 		<@ww.form name="formBusca" id="formBusca" action="triagemColaboradores.action" method="POST">
-			
+			<@ww.hidden name="opcaoTodasEmpresas" id="opcaoTodasEmpresas" value=""/>
 			<@ww.hidden name="solicitacao.id"/>
+			<#list empresas as empresa>	
+				<input type="hidden" name="empresasPermitidas" value="${empresa.id}" />
+			</#list>
 
 			<@ww.select label="Empresa" name="empresaId" list="empresas" id="empresaSelect" listKey="id" listValue="nome" required="true" liClass="liLeft" headerKey="-1" headerValue="Todas" disabled="!compartilharCandidatos"/>
 			<@ww.select label="Escolaridade mínima" name="escolaridade" id="escolaridade" list="escolaridades" liClass="liLeft" cssStyle="width: 220px;" headerKey="" headerValue=""/>

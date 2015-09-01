@@ -65,7 +65,7 @@
 			<!-- Caso a empresa passada seja -1, vai trazer todos os cargos dando distinct pelo nomeMercado -->
 			CargoDWR.getByEmpresa(createListCargo, empresaId, empresaIds);
 			ConhecimentoDWR.getByEmpresa(createListConhecimentos, empresaId,empresaIds);
-			$("#todasEmpresasPermitidas").val(empresaId == -1);
+			$("#opcaoTodasEmpresas").val(empresaId == -1);
 		}
 		
 		function createListCargo(data)
@@ -148,7 +148,7 @@
 		<button onclick="limparFiltro();" class="btnLimparFiltro grayBGE"></button>
 
 		<@ww.form name="formBusca" id="formBusca" action="busca.action" onsubmit="${validarCampos}" method="POST">
-			<@ww.hidden name="todasEmpresasPermitidas" id="todasEmpresasPermitidas" value=""/>
+			<@ww.hidden name="opcaoTodasEmpresas" id="opcaoTodasEmpresas" value=""/>
 
 			<#list empresas as empresa>	
 				<input type="hidden" name="empresasPermitidas" value="${empresa.id}" />

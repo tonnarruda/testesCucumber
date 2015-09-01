@@ -56,7 +56,7 @@ public class FaixaSalarialDWRTest extends MockObjectTestCase
 		
 		faixaSalarialManager.expects(once()).method("findAllSelectByCargo").with(eq(empresa.getId())).will(returnValue(cargo.getFaixaSalarials()));
 		
-		assertEquals(1, faixaSalarialDWR.getByEmpresa(empresa.getId()).size());
+		assertEquals(1, faixaSalarialDWR.getByEmpresas(empresa.getId(), null).size());
 	}
 
 }

@@ -1059,10 +1059,10 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		getDao().migrarBairro(bairro, bairroDestino);
 	}
 
-	public Collection<Candidato> buscaSimplesDaSolicitacao(String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long[] cidadesCheck, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistro, String ordenar, boolean todasEmpresasPermitidas, Long... empresaIds)
+	public Collection<Candidato> buscaSimplesDaSolicitacao(String indicadoPor, String nomeBusca, String cpfBusca, String escolaridade, Long uf, Long[] cidadesCheck, String[] cargosCheck, String[] conhecimentosCheck, Long solicitacaoId, boolean somenteSemSolicitacao, Integer qtdRegistro, String ordenar, boolean opcaoTodasEmpresas, Long... empresaIds)
 	{
 		Collection<Long> candidatosJaSelecionados = candidatoSolicitacaoManager.getCandidatosBySolicitacao(solicitacaoId);
-		return  getDao().findCandidatosForSolicitacao(indicadoPor, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, cargosCheck, conhecimentosCheck, candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro, ordenar, empresaIds, todasEmpresasPermitidas);
+		return  getDao().findCandidatosForSolicitacao(indicadoPor, nomeBusca, cpfBusca, escolaridade, uf, cidadesCheck, cargosCheck, conhecimentosCheck, candidatosJaSelecionados, somenteSemSolicitacao, qtdRegistro, ordenar, empresaIds, opcaoTodasEmpresas);
 	}
 
 	public Candidato verifyCPF(String cpf, Long empresaId, Long candidatoId, Boolean contratado) throws Exception 

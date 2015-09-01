@@ -326,6 +326,12 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		return descricao;
 	}
 	
+	public String getDescricaoComEmpresa()
+	{
+		this.descricao = cargo.getEmpresa().getNome() + " - " + getDescricao();
+		return this.descricao;
+	}
+	
 	public String getDescricaoComStatus()
 	{
 		descricao = this.cargo.getNome() + " " + this.nome + (this.cargo.isAtivo() ? " (Ativo)" : " (Inativo)");

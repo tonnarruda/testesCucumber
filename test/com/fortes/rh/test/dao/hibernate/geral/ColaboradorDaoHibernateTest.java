@@ -6090,7 +6090,57 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(1, colaboradorDao.findParaLembreteTerminoContratoTemporario(Arrays.asList(1, 3), empresa.getId()).size());
 	}
 
-	public void testTriar() 
+	public void testTriarColaboradorPorFaixasEspecificas() 
+	{
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresa1 = empresaDao.save(empresa1);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+		empresa2 = empresaDao.save(empresa2);
+		
+		Date data = DateUtil.criarDataMesAno(1, 1, 2012);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargo.setNome("Cargo");
+		cargo.setAtivo(true);
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarial.setNome("Faixa");
+		faixaSalarialDao.save(faixaSalarial);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setEmpresa(empresa1);
+		colaboradorDao.save(colaborador1);
+		
+		HistoricoColaborador hist1 = new HistoricoColaborador();
+		hist1.setData(data);
+		hist1.setColaborador(colaborador1);
+		hist1.setStatus(StatusRetornoAC.CONFIRMADO);
+		hist1.setFaixaSalarial(faixaSalarial);
+		historicoColaboradorDao.save(hist1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmpresa(empresa2);
+		colaboradorDao.save(colaborador2);
+		
+		HistoricoColaborador hist2 = new HistoricoColaborador();
+		hist2.setData(data);
+		hist2.setColaborador(colaborador2);
+		hist2.setStatus(StatusRetornoAC.CONFIRMADO);
+		hist2.setFaixaSalarial(faixaSalarial);
+		historicoColaboradorDao.save(hist2);
+		
+		Collection<Colaborador> colaboradores = colaboradorDao.triar(new Long[]{empresa1.getId(), empresa2.getId()}, null, null, null, null, new String[]{faixaSalarial.getDescricaoComStatus()}, new Long[]{}, null, false, true);
+		assertEquals(2, colaboradores.size());
+		
+		colaboradores = colaboradorDao.triar(new Long[]{empresa1.getId()}, null, null, null, null, new String[]{String.valueOf(faixaSalarial.getId())}, new Long[]{}, null, false, false);
+		assertEquals(1, colaboradores.size());
+		
+	}
+
+	public void testTriarColaboradorPorTodasAsFaixas() 
 	{
 		Empresa empresa1 = EmpresaFactory.getEmpresa();
 		empresa1 = empresaDao.save(empresa1);
@@ -6129,12 +6179,10 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		hist2.setFaixaSalarial(faixaSalarial);
 		historicoColaboradorDao.save(hist2);
 		
-		Collection<Colaborador> colaboradores = colaboradorDao.triar(empresa1.getId(), null, null, null, null, new Long[]{}, new Long[]{}, null, false);
-		
-		assertEquals(1, colaboradores.size());
-		
+		Collection<Colaborador> colaboradores = colaboradorDao.triar(new Long[]{empresa1.getId()}, null, null, null, null, new String[]{}, new Long[]{}, null, false, true);
+		assertEquals(1, colaboradores.size());		
 	}
-
+	
 	public void testCountOcorrencia() 
 	{
 		Date hoje = new Date();

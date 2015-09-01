@@ -582,12 +582,12 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	solicitacaoManager.expects(once()).method("findByIdProjection").with(eq(solicitacao.getId())).will(returnValue(solicitacao));
     	configuracaoNivelCompetenciaManager.expects(once()).method("findCompetenciasIdsConfiguradasByFaixaSolicitacao").with(ANYTHING).will(returnValue(new Long[] { 1L }));
     	configuracaoNivelCompetenciaManager.expects(once()).method("somaConfiguracoesByFaixa").with(ANYTHING).will(returnValue(1));
-    	colaboradorDao.expects(once()).method("triar").with(new Constraint[] { eq(empresa.getId()), ANYTHING, eq(Sexo.INDIFERENTE), ANYTHING, ANYTHING, eq(new String[0]), eq(new String[0]), eq(new Long[] { 1L }), eq(false) }).will(returnValue(new ArrayList<Colaborador>()));
+    	colaboradorDao.expects(once()).method("triar").with(new Constraint[] { eq(new Long[]{empresa.getId()}), ANYTHING, eq(Sexo.INDIFERENTE), ANYTHING, ANYTHING, eq(new String[0]), eq(new String[0]), eq(new Long[] { 1L }), eq(false), eq(true)}).will(returnValue(new ArrayList<Colaborador>()));
     	
     	Exception exception = null;
     	
     	try {
-			colaboradorManager.triar(solicitacao.getId(), empresa.getId(), null, Sexo.INDIFERENTE, null, null, new String[0], new String[0], false, null);
+			colaboradorManager.triar(solicitacao.getId(), null, Sexo.INDIFERENTE, null, null, new String[0], new String[0], false, null, true, empresa.getId());
 		} catch (Exception e) {
 			exception = e;
 			e.printStackTrace();

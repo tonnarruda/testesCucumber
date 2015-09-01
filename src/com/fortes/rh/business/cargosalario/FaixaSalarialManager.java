@@ -25,6 +25,7 @@ public interface FaixaSalarialManager extends GenericManager<FaixaSalarial>
 	void updateFaixaSalarial(FaixaSalarial faixaSalarial, Empresa empresa, String[] certificacaosCheck) throws Exception;
 	void deleteFaixaSalarial(Long id, Empresa empresa) throws Exception;
 	Collection<FaixaSalarial> findAllSelectByCargo(Long empresaId);
+	Collection<FaixaSalarial> findDistinctDescricao(Long[] empresaIds);
 	FaixaSalarial findByFaixaSalarialId(Long faixaSalarialId);
 	Collection<FaixaSalarial> findFaixaSalarialByCargo(Long cargoId);
 	public Collection<FaixaSalarial> findFaixas(Empresa empresa, Boolean ativo, Long faixaInativaId);

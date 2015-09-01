@@ -62,7 +62,7 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.StringUtil;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked","rawtypes"})
 public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> implements ColaboradorDao
 {
 	private static final int AREA_ORGANIZACIONAL = 1;
@@ -294,7 +294,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 	
-	@SuppressWarnings("rawtypes")
 	public Integer getCount(Map parametros, int tipoBuscaHistorico)
 	{
 		Query query = montaConsulta(parametros, true, tipoBuscaHistorico);
@@ -302,7 +301,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Integer) Integer.parseInt(query.uniqueResult().toString());
 	}
 
-	@SuppressWarnings("rawtypes")
 	private Query montaConsulta(Map parametros, boolean count, int tipoBuscaHistorico)
 	{
 		String nomeBusca = (String) parametros.get("nomeBusca");
@@ -411,7 +409,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return query;
 	}
 
-	@SuppressWarnings("rawtypes")
 	public Collection<Colaborador> findList(int page, int pagingSize, Map parametros, int tipoBuscaHistorico)
 	{
 		Query query = montaConsulta(parametros, false, tipoBuscaHistorico);
@@ -460,7 +457,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return result;
 	}
 
-	@SuppressWarnings("rawtypes")
 	public Colaborador findColaboradorPesquisa(Long id, Long empresaId)
 	{
 		Colaborador colaborador = new Colaborador();
@@ -658,7 +654,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) criteria.uniqueResult();
 	}
 
-	@SuppressWarnings("rawtypes")
 	public Colaborador findByUsuario(Usuario usuario, Long empresaId)
 	{
 		Colaborador colaborador = new Colaborador();
@@ -1450,7 +1445,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Colaborador) criteria.uniqueResult();
 	}
 	
-	@SuppressWarnings("rawtypes")
 	public Collection<TurnOver> countAdmitidosDemitidosPeriodoTurnover(Date dataIni, Date dataFim, Empresa empresa, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, boolean isAdmitidos)
 	{
 		StringBuilder sql = new StringBuilder();
@@ -2351,7 +2345,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 
-	@SuppressWarnings("rawtypes")
 	public Collection<Colaborador> findComNotaDoCurso(Collection<Long> colaboradorIds, Long turmaId)
 	{
 		StringBuilder sql = new StringBuilder();
@@ -3256,7 +3249,6 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Integer) query.uniqueResult();
 	}
 
-	@SuppressWarnings("rawtypes")
 	public Collection<Object> findComHistoricoFuturoSQL(Map parametros, Integer pagingSize, Integer page)
 	{
 		String nomeBusca = (String) parametros.get("nomeBusca");
@@ -4521,13 +4513,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();
 	}
 	
-	public Collection<Colaborador> triar(Long empresaId, String escolaridade, String sexo, Date dataNascIni, Date dataNascFim, Long[] cargosIds, Long[] areasIds, Long[] competenciasIds, boolean exibeCompatibilidade) 
+	public Collection<Colaborador> triar(Long[] empresaIds, String escolaridade, String sexo, Date dataNascIni, Date dataNascFim, String[] faixasCheck, Long[] areasIds, Long[] competenciasIds, boolean exibeCompatibilidade, boolean opcaoTodasEmpresas) 
 	{
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador (co.id, co.nome, co.pessoal.dataNascimento, co.pessoal.sexo, co.pessoal.escolaridade, coalesce(sum(nc.ordem),0) as somaCompetencias) ");
 		hql.append("from HistoricoColaborador hc ");
 		hql.append("inner join hc.colaborador co  ");
 		hql.append("inner join hc.faixaSalarial fs ");
+		hql.append("inner join fs.cargo c ");
 		hql.append("left join co.configuracaoNivelCompetenciaColaboradors cncc "); 
 		hql.append("left join cncc.configuracaoNivelCompetencias cnc "); 
 		hql.append("left join cnc.nivelCompetencia nc ");
@@ -4538,16 +4531,21 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("and co.desligado = false "); 
 		hql.append("and (cncc.data = (select max(cncc2.data) from ConfiguracaoNivelCompetenciaColaborador cncc2 where cncc2.colaborador.id = co.id) or cncc.data is null) ");
 
-		if (empresaId != null && !empresaId.equals(-1L))
-			hql.append("and co.empresa.id = :empresaId ");
+		if (empresaIds != null && empresaIds.length > 0)
+			hql.append("and co.empresa.id in(:empresaIds) ");
 		if (sexo != null && !sexo.equals("I"))
 			hql.append("and co.pessoal.sexo = :sexo "); 
 		if (!StringUtil.isBlank(escolaridade))
 			hql.append("and cast(co.pessoal.escolaridade as integer) >= :escolaridade "); 
 		if (areasIds.length > 0)
 			hql.append("and hc.areaOrganizacional.id in (:areasIds) ");
-		if (cargosIds.length > 0)
-			hql.append("and fs.cargo.id in (:cargosIds) ");
+		if (faixasCheck != null && faixasCheck.length > 0){
+			if(opcaoTodasEmpresas)
+				hql.append("and c.nome || ' ' || fs.nome ||' ' || (CASE c.ativo WHEN true THEN '(Ativo)' ELSE '(Inativo)' END) in ( :faixasDescricaoComAtivo) ");
+			else
+				hql.append("and fs.id in (:faixasIds) ");
+		}
+		
 		if (dataNascIni != null)
 			hql.append("and co.pessoal.dataNascimento <= :dataNascIni ");
 		if (dataNascFim != null)
@@ -4566,21 +4564,26 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		if (competenciasIds != null && competenciasIds.length > 0)
 			query.setParameterList("competenciasIds", competenciasIds);
-		if (empresaId != null && !empresaId.equals(-1L))
-			query.setLong("empresaId", empresaId);
+		if (empresaIds != null && empresaIds.length > 0)
+			query.setParameterList("empresaIds", empresaIds);
 		if (sexo != null && !sexo.equals("I"))
 			query.setString("sexo", sexo);
 		if (!StringUtil.isBlank(escolaridade))
 			query.setInteger("escolaridade", Integer.parseInt(escolaridade));
 		if (areasIds.length > 0)
 			query.setParameterList("areasIds", areasIds);
-		if (cargosIds.length > 0)
-			query.setParameterList("cargosIds", cargosIds);
+		
+		if (faixasCheck != null && faixasCheck.length > 0){
+			if(opcaoTodasEmpresas){
+				query.setParameterList("faixasDescricaoComAtivo",faixasCheck);
+			}
+			else
+				query.setParameterList("faixasIds", LongUtil.arrayStringToArrayLong(faixasCheck));
+		}
 		if (dataNascIni != null)
 			query.setDate("dataNascIni", dataNascIni);
 		if (dataNascFim != null)
 			query.setDate("dataNascFim", dataNascFim);
-		
 		return query.list();
 	}
 	

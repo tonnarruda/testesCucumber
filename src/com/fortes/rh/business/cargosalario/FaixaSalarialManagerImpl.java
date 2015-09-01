@@ -207,6 +207,11 @@ public class FaixaSalarialManagerImpl extends GenericManagerImpl<FaixaSalarial, 
 		return getDao().findAllSelectByCargo(empresaId);
 	}
 
+	public Collection<FaixaSalarial> findDistinctDescricao(Long[] empresaIds){
+		return getDao().findDistinctDescricao(empresaIds);
+	}
+	
+	
 	public void setAcPessoalClientCargo(AcPessoalClientCargo acPessoalClientCargo)
 	{
 		this.acPessoalClientCargo = acPessoalClientCargo;

@@ -19,7 +19,7 @@ import org.apache.commons.beanutils.BeanComparator;
  * @since 29/08/2006
  *
  * Classe de utilidades para trabalho com o framework collections */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public final class CollectionUtil<T>
 {
 	/** Responsável por converter um Collection informado em um Map */
