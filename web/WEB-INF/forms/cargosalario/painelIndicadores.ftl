@@ -388,7 +388,7 @@
 								<div class="conteudo-1 conteudo-aba">
 									<fieldset>
 										<@ww.datepicker label="Colaboradores admitidos até" name="dataBase" value="${dateBase}" id="dataBase" cssClass="mascaraData" />
-										<@frt.checkListBox name="vinculosCheck" id="vinculosCheck" label="Colocação" list="vinculosCheckList" height="105" width="300"/>
+										<@frt.checkListBox name="vinculosCheck" id="vinculosCheck" label="Colocação" list="vinculosCheckList" height="115" width="300"/>
 									</fieldset>
 								</div>
 								
@@ -427,7 +427,7 @@
 								</div>
 								
 								<div class="conteudo-3 conteudo-aba">
-									<fieldset style="float:left;width:300px;height:192px;margin-right:10px;">
+									<fieldset style="float:left;width:300px;height:195px;margin-right:10px;">
 										<legend>Motivo de Desligamento</legend>
 										
 										<@ww.datepicker label="Data Início" name="dataIniDeslig" id="dataIniDeslig" value="${dateIniDeslig}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
@@ -444,7 +444,7 @@
 												<td>
 													<@ww.datepicker label="Data Início" name="dataIniTurn" id="dataIniTurn" value="${dateIniTurn}" cssClass="mascaraData validaDataIni" liClass="liLeft"/>
 													<@ww.datepicker label="Data Fim" name="dataFimTurn" id="dataFimTurn" value="${dateFimTurn}" cssClass="mascaraData validaDataFim"/>
-													<@frt.checkListBox name="vinculosTurnoverCheck" id="vinculosTurnoverCheck" label="Colocação" list="vinculosTurnoverCheckList" height="105" width="300"/>
+													<@frt.checkListBox name="vinculosTurnoverCheck" id="vinculosTurnoverCheck" label="Colocação" list="vinculosTurnoverCheckList" height="115" width="300"/>
 												</td>
 												<td>
 													Períodos de tempo de serviço:

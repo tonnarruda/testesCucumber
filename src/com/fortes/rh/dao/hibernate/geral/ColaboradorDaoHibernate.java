@@ -3771,10 +3771,14 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				qtdCasado += qtd;
 		}
 
-		dataGraficos.add(new DataGrafico(null, "Casado", qtdCasado, ""));
-		dataGraficos.add(new DataGrafico(null, "Divorciado", qtdDivorciado, ""));
-		dataGraficos.add(new DataGrafico(null, "Solteiro", qtdSolteiro, ""));
-		dataGraficos.add(new DataGrafico(null, "Viúvo", qtdViuvo, ""));
+		if(qtdCasado > 0)
+			dataGraficos.add(new DataGrafico(null, "Casado", qtdCasado, ""));
+		if(qtdDivorciado > 0)
+			dataGraficos.add(new DataGrafico(null, "Divorciado", qtdDivorciado, ""));
+		if(qtdSolteiro > 0)
+			dataGraficos.add(new DataGrafico(null, "Solteiro", qtdSolteiro, ""));
+		if(qtdViuvo > 0)
+			dataGraficos.add(new DataGrafico(null, "Viúvo", qtdViuvo, ""));
 		
 		return dataGraficos;
 	}
@@ -3862,13 +3866,18 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			else if(idade >= 60)
 				qtdFaixa6++;
 		}
-		
-		dataGraficos.add(new DataGrafico(null, "Até 19", qtdFaixa1, ""));
-		dataGraficos.add(new DataGrafico(null, "20 a 29", qtdFaixa2, ""));
-		dataGraficos.add(new DataGrafico(null, "30 a 39", qtdFaixa3, ""));
-		dataGraficos.add(new DataGrafico(null, "40 a 49", qtdFaixa4, ""));
-		dataGraficos.add(new DataGrafico(null, "50 a 59", qtdFaixa5, ""));
-		dataGraficos.add(new DataGrafico(null, "Acima de 60", qtdFaixa6, ""));
+		if(qtdFaixa1 > 0)
+			dataGraficos.add(new DataGrafico(null, "Até 19", qtdFaixa1, ""));
+		if(qtdFaixa2 > 0)
+			dataGraficos.add(new DataGrafico(null, "20 a 29", qtdFaixa2, ""));
+		if(qtdFaixa3 > 0)
+			dataGraficos.add(new DataGrafico(null, "30 a 39", qtdFaixa3, ""));
+		if(qtdFaixa4 > 0)
+			dataGraficos.add(new DataGrafico(null, "40 a 49", qtdFaixa4, ""));
+		if(qtdFaixa5 > 0)
+			dataGraficos.add(new DataGrafico(null, "50 a 59", qtdFaixa5, ""));
+		if(qtdFaixa6 > 0)
+			dataGraficos.add(new DataGrafico(null, "Acima de 60", qtdFaixa6, ""));
 		
 		return dataGraficos;
 	}
