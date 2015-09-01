@@ -436,6 +436,13 @@
 				/cargosalario/cargo/relatorioCargo.action*=ROLE_REL_CARGO
 				/cargosalario/cargo/prepareRelatorioColaboradorCargo.action*=ROLE_REL_COLAB_CARGO
 				/cargosalario/cargo/relatorioColaboradorCargo.action*=ROLE_REL_COLAB_CARGO
+				/cargosalario/cargo/prepareInsert.action*=ROLE_CAD_CARGO_INSERIR
+				/cargosalario/cargo/insert.action*=ROLE_CAD_CARGO_INSERIR
+				/cargosalario/cargo/prepareUpdate.action*=ROLE_CAD_CARGO_EDITAR
+				/cargosalario/cargo/update.action*=ROLE_CAD_CARGO_EDITAR
+				/cargosalario/cargo/delete.action*=ROLE_CAD_CARGO_EXCLUIR
+				/cargosalario/cargo/imprimir.action*=ROLE_CAD_CARGO_IMPRIMIR
+				/cargosalario/cargo/prepareTransferirFaixasCargo.action*=ROLE_TRANSFERIR_FAIXAS_AC
 				/cargosalario/cargo/*/**=ROLE_CAD_CARGO
 				/cargosalario/faixaSalarial/*/**=ROLE_CAD_CARGO
 				/cargosalario/faixaSalarialHistorico/analiseTabelaSalarialFiltro*/**=ROLE_MOV_TABELA

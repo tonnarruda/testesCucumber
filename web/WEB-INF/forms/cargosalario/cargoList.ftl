@@ -51,15 +51,23 @@
 			</@authz.authorize>
 		
 			<#if possuiSESMT>
-				<a href="../../sesmt/funcao/list.action?cargoTmp.id=${cargo.id}"><img border="0" title="Funções" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
+				<@authz.authorize ifAllGranted="ROLE_CAD_CARGO_FUNCOES">
+					<a href="../../sesmt/funcao/list.action?cargoTmp.id=${cargo.id}"><img border="0" title="Funções" src="<@ww.url includeParams="none" value="/imgs/db_add.gif"/>"></a>
+				</@authz.authorize>
 			</#if>
 		
 			<@authz.authorize ifAllGranted="ROLE_CAD_FAIXA_SALARIAL">
 				<a href="../faixaSalarial/list.action?cargo.id=${cargo.id}"><img border="0" title="Faixas Salariais" src="<@ww.url includeParams="none" value="/imgs/insertCell.gif"/>"></a>
 			</@authz.authorize>
-			<a href="prepareUpdate.action?cargo.id=${cargo.id}&page=${page}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?cargo.id=${cargo.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
-			<a href="imprimir.action?cargo.id=${cargo.id}"><img border="0" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+			<@authz.authorize ifAllGranted="ROLE_CAD_CARGO_EDITAR">
+				<a href="prepareUpdate.action?cargo.id=${cargo.id}&page=${page}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+			</@authz.authorize>
+			<@authz.authorize ifAllGranted="ROLE_CAD_CARGO_EXCLUIR">
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?cargo.id=${cargo.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+			</@authz.authorize>
+			<@authz.authorize ifAllGranted="ROLE_CAD_CARGO_IMPRIMIR">
+				<a href="imprimir.action?cargo.id=${cargo.id}"><img border="0" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+			</@authz.authorize>
 		</@display.column>
 		<@display.column property="nome" title="Nomenclatura"/>
 		<@display.column property="nomeMercado" title="Nomenclatura Mercado"/>
@@ -69,7 +77,9 @@
 	<@frt.fortesPaging url="${urlImgs}" totalSize="${totalSize}" pagingSize="${pagingSize}" link="" page='${page}' idFormulario="formBusca"/>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
+		<@authz.authorize ifAllGranted="ROLE_CAD_CARGO_INSERIR">
+			<button class="btnInserir" onclick="window.location='prepareInsert.action'" accesskey="I"></button>
+		</@authz.authorize>
 		<button class="btnImprimir" onclick="imprimir();" accesskey="P"></button>
 	</div>
 </body>
