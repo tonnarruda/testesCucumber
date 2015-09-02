@@ -66,9 +66,11 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private SolicitacaoEpi solicitacaoEpi;
 	private boolean entrega;
 
-	//Relatório EPIs a vencer
+	/**vencimento: data utilizada no Relatório EPI's a vencer
+	 * agruparPor: Ordenação do Relatório de Entregas de EPI's (E: Epi; C: Colaborador)
+	 * */
 	private Date vencimento;
-	private char agruparPor = 'E'; // Ordenação do relatório (Epi ou Colaborador)
+	private char agruparPor = 'E'; 
 	private Collection<SolicitacaoEpi> dataSource;
 	private Collection<SolicitacaoEpiItemEntrega> dataSourceEntrega;
 	private Collection<SolicitacaoEpiItemVO> dataSourceLista;

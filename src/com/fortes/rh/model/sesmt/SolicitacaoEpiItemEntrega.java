@@ -12,7 +12,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")

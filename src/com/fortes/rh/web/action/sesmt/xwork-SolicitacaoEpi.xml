@@ -115,9 +115,9 @@
 				<param name="dataSource">dataSourceEntrega</param>
 				<param name="documentName">Epi_Entregues.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">EPI,Colaborador,Cargo,Qtd. Solicitada,Qtd. Entregue,Entrega,Venc. CA</param>
-				<param name="propertiesGroup">solicitacaoEpiItem.epi.nomeInativo,solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome,solicitacaoEpiItem.qtdSolicitado</param>
-				<param name="properties">solicitacaoEpiItem.epi.nomeInativo,solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome,solicitacaoEpiItem.qtdSolicitado,qtdEntregue,dataEntrega,epiHistorico.vencimentoCA</param>
+				<param name="columns">EPI,Área Organizacional,Colaborador,Cargo,Qtd. Solicitada,Qtd. Entregue,Entrega,Venc. CA</param>
+				<param name="propertiesGroup">solicitacaoEpiItem.epi.nomeInativo,solicitacaoEpiItem.solicitacaoEpi.colaborador.areaOrganizacional.nome,solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome,solicitacaoEpiItem.qtdSolicitado</param>
+				<param name="properties">solicitacaoEpiItem.epi.nomeInativo,solicitacaoEpiItem.solicitacaoEpi.colaborador.areaOrganizacional.nome,solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome,solicitacaoEpiItem.qtdSolicitado,qtdEntregue,dataEntrega,epiHistorico.vencimentoCA</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>	
@@ -125,9 +125,9 @@
 				<param name="dataSource">dataSourceEntrega</param>
 				<param name="documentName">Epi_Entregues_agrupaColab.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Colaborador,Cargo,EPI,Qtd. Solicitada,Qtd. Entregue,Entrega,Venc. CA</param>
-				<param name="propertiesGroup">solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome,solicitacaoEpiItem.epi.nomeInativo,solicitacaoEpiItem.qtdSolicitado</param>
-				<param name="properties">solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome,solicitacaoEpiItem.epi.nomeInativo,solicitacaoEpiItem.qtdSolicitado,qtdEntregue,dataEntrega,epiHistorico.vencimentoCA</param>
+				<param name="columns">Área Organizacional,Colaborador,Cargo,EPI,Qtd. Solicitada,Qtd. Entregue,Entrega,Venc. CA</param>
+				<param name="propertiesGroup">solicitacaoEpiItem.solicitacaoEpi.colaborador.areaOrganizacional.nome,solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome,solicitacaoEpiItem.epi.nomeInativo,solicitacaoEpiItem.qtdSolicitado</param>
+				<param name="properties">solicitacaoEpiItem.solicitacaoEpi.colaborador.areaOrganizacional.nome,solicitacaoEpiItem.solicitacaoEpi.colaborador.nomeDesligado,solicitacaoEpiItem.solicitacaoEpi.cargo.nome,solicitacaoEpiItem.epi.nomeInativo,solicitacaoEpiItem.qtdSolicitado,qtdEntregue,dataEntrega,epiHistorico.vencimentoCA</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>
