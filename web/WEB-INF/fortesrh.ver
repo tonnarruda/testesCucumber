@@ -3,6 +3,7 @@
 	<Versao id="1.1.149.180" db="" data="31/08/2015">
 		<Item visivel="S" motivo="S20150800000"><![CDATA[Melhorias na integração do sistema com o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S20150600185"><![CDATA[ Info. Funcionais > Painel de Indicadores > Informações Sociais: Novo filtro por colocação.]]></Item>
+		<Item visivel="S" motivo="S20150800059"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Nova informação de periodicidade dos riscos]]></Item>
 	</Versao>
 	<Versao id="1.1.149.179" db="" data="26/08/2015">
 		<Item visivel="S" motivo="S20150100136"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Novo campo para exibir o estabelecimento nos relatórios.]]></Item>
