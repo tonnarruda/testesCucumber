@@ -59,6 +59,7 @@ import com.fortes.rh.model.geral.Pessoal;
 import com.fortes.rh.model.geral.SocioEconomica;
 import com.fortes.rh.model.ws.FeedbackWebService;
 import com.fortes.rh.model.ws.TAreaOrganizacional;
+import com.fortes.rh.model.ws.TAuditoria;
 import com.fortes.rh.model.ws.TAula;
 import com.fortes.rh.model.ws.TCandidato;
 import com.fortes.rh.model.ws.TCargo;
@@ -1412,6 +1413,15 @@ public class RHServiceImpl implements RHService
 		{
 			return new FeedbackWebService(false, "Erro ao excluir empregado.", formataException(parametros, e));
 		}
+	}
+	
+	public FeedbackWebService removerEmpregadoComDependencia(TEmpregado empregado, TAuditoria tAuditoria)
+	{
+		System.out.println(tAuditoria.getModulo());
+		System.out.println(tAuditoria.getUsuario());
+		System.out.println(tAuditoria.getOperacao());
+		
+		return new FeedbackWebService(false, "Funcionalidade ainda não desenvolvida.", "Modulo: " + tAuditoria.getModulo() + " Usuário: " + tAuditoria.getUsuario() + " Operação: " + tAuditoria.getOperacao());
 	}
 
 	public TGrupo[] getGrupos() 

@@ -2,6 +2,7 @@ package com.fortes.rh.business.ws;
 
 import com.fortes.rh.model.ws.FeedbackWebService;
 import com.fortes.rh.model.ws.TAreaOrganizacional;
+import com.fortes.rh.model.ws.TAuditoria;
 import com.fortes.rh.model.ws.TAula;
 import com.fortes.rh.model.ws.TCandidato;
 import com.fortes.rh.model.ws.TCargo;
@@ -39,6 +40,7 @@ public interface RHService
 
 	//Tabela empregado no AC -> EPG
 	FeedbackWebService removerEmpregado(TEmpregado empregado);
+	public FeedbackWebService removerEmpregadoComDependencia(TEmpregado empregado, TAuditoria tAuditoria);
 	FeedbackWebService atualizarEmpregado(TEmpregado empregado);
 	FeedbackWebService atualizarEmpregadoAndSituacao(TEmpregado empregado, TSituacao situacao);//O AC confirma cadastro de empregado que estava na CTT
 	FeedbackWebService desligarEmpregado(String codigo, String empCodigo, String dataDesligamento, String grupoAC);
