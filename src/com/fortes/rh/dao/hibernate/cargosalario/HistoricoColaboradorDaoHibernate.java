@@ -560,6 +560,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		p.add(Projections.property("am.nome"), "ambienteNome");
 		p.add(Projections.property("e.id"), "projectionEstabelecimentoId");
 		p.add(Projections.property("e.nome"), "projectionEstabelecimentoNome");
+		p.add(Projections.property("emp.id"), "empresaId");
 		p.add(Projections.property("emp.nome"), "empresaNome");
 		p.add(Projections.property("ao.id"), "areaId");
 		p.add(Projections.property("ao.nome"), "areaOrganizacionalNome");

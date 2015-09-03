@@ -4881,13 +4881,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colaborador4 = ColaboradorFactory.getEntity(false, hoje, empresa, Vinculo.ESTAGIO, Deficiencia.FISICA);
 		colaboradorDao.save(colaborador4);
 		
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador1, hoje, faixa, estabelecimento1, area);
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador1, hoje, faixa, estabelecimento1, area, null, null);
 		historicoColaboradorDao.save(historicoColaborador1);
 		
-		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity(colaborador3, hoje, faixa, estabelecimento1, area);
+		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity(colaborador3, hoje, faixa, estabelecimento1, area, null, null);
 		historicoColaboradorDao.save(historicoColaborador3);
 		
-		HistoricoColaborador historicoColaborador4 = HistoricoColaboradorFactory.getEntity(colaborador4, hoje, faixa, estabelecimento1, area);
+		HistoricoColaborador historicoColaborador4 = HistoricoColaboradorFactory.getEntity(colaborador4, hoje, faixa, estabelecimento1, area, null, null);
 		historicoColaboradorDao.save(historicoColaborador4);
 	}
 	

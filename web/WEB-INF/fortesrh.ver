@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.1xx.18x" db="" data="xx/09/2015">
+		<Item visivel="S" motivo="P15080000204"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Ajuste de inconsistência na configuração "Contratar colaborador" para não enviar emails aos usuários não configurados.]]></Item>
+	</Versao>
 	<Versao id="1.1.149.180" db="" data="31/08/2015">
 		<Item visivel="S" motivo="S20150800000"><![CDATA[Melhorias na integração do sistema com o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S20150600185"><![CDATA[Info. Funcionais > Painel de Indicadores > Informações Sociais: Novo filtro por colocação.]]></Item>
@@ -18,7 +21,7 @@
 		<Item visivel="S" motivo="S20150700310"><![CDATA[SESMT > Movimentações > Afastamentos: Nova opção de filtro por matrícula do colaborador.]]></Item>
 		<Item visivel="S" motivo="S20150400194"><![CDATA[Utilitários > Cadastros > Perfis: Nova permissão para alterar a data do status da solicitação.]]></Item>
 		<Item visivel="S" motivo="S20150800044"><![CDATA[Utilitários > Configurações > Sistema: Nova opção para configurar tamanho máximo para upload de documentos anexos pelo módulo externo.]]></Item>
-		<Item visivel="S" motivo="S20150800000"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Atualização do gerenciador "Responder avaliação do período de experiência" para "Responder avaliação do período de experiência/Excluir respostas".]]></Item>
+		<Item visivel="S" motivo="S20150800000"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Atualização da configuração "Responder avaliação do período de experiência" para "Responder avaliação do período de experiência/Excluir respostas".]]></Item>
 		<Item visivel="S" motivo="S20150800000"><![CDATA[Utilitários > Auditoria: Auditoria das respostas das avaliações de desempenho, acompanhamento do período de experiência e ficha médica.]]></Item>
 		<Item visivel="S" motivo="P20150800157"><![CDATA[Utilitários > Importar Afastamentos: Menu renomeado para "Importar Afastamentos Fortes Ponto / TRU".]]></Item>
 		<Item visivel="S" motivo="S20150700102"><![CDATA[Utilitários > Exportar dados para o Fortes Pessoal: Exportar colaboradores desligados.]]></Item>		

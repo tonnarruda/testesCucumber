@@ -10,6 +10,8 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.sesmt.Ambiente;
+import com.fortes.rh.model.sesmt.Funcao;
 
 public class HistoricoColaboradorFactory
 {
@@ -35,13 +37,15 @@ public class HistoricoColaboradorFactory
 		return historicoColaborador;
 	}
 	
-	public static HistoricoColaborador getEntity(Colaborador colaborador, Date data, FaixaSalarial faixaSalarial, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional)
+	public static HistoricoColaborador getEntity(Colaborador colaborador, Date data, FaixaSalarial faixaSalarial, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, Funcao funcao, Ambiente ambiente)
 	{
 		HistoricoColaborador historicoColaborador = getEntity();
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setFaixaSalarial(faixaSalarial);
 		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
 		historicoColaborador.setEstabelecimento(estabelecimento);
+		historicoColaborador.setFuncao(funcao);
+		historicoColaborador.setAmbiente(ambiente);
 		historicoColaborador.setData(data);
 		
 		return historicoColaborador;

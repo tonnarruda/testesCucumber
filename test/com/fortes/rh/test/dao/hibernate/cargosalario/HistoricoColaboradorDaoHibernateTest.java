@@ -399,11 +399,17 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador = colaboradorDao.save(colaborador);
 
-		HistoricoColaborador historico = HistoricoColaboradorFactory.getEntity();
-		historico.setColaborador(colaborador);
-		historico = historicoColaboradorDao.save(historico);
+		HistoricoColaborador historico1 = HistoricoColaboradorFactory.getEntity();
+		historico1.setColaborador(colaborador);
+		historico1.setData(DateUtil.incrementaDias(new Date(), -5));
+		historico1 = historicoColaboradorDao.save(historico1);
 
-		assertEquals(historico, historicoColaboradorDao.findByIdProjection(historico.getId()));
+		HistoricoColaborador historico2 = HistoricoColaboradorFactory.getEntity();
+		historico2.setColaborador(colaborador);
+		historico2.setData(new Date());
+		historico2 = historicoColaboradorDao.save(historico2);
+		
+		assertEquals(historico1, historicoColaboradorDao.findByIdProjection(historico1.getId()));
 	}
 
 	public void testFindByIdProjectionHistorico()

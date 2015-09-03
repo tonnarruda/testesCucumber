@@ -1205,6 +1205,47 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		assertEquals(6, retorno.size());
 	}
 
+	public void  testFindByIdProjectionSemReajusteColaborador()
+	{
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setReajusteColaborador(null);
+		
+		historicoColaboradorDao.expects(once()).method("findByIdProjection").with(eq(historicoColaborador.getId())).will(returnValue(historicoColaborador));
+		
+		HistoricoColaborador retorno = historicoColaboradorManager.findByIdProjection(historicoColaborador.getId());
+		
+		assertNull(retorno.getReajusteColaborador());
+	}
+	
+	public void  testFindByIdProjectionComReajusteColaboradorIdNulo()
+	{
+		ReajusteColaborador reajusteColaborador = ReajusteColaboradorFactory.getReajusteColaborador();
+		reajusteColaborador.setId(null);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setReajusteColaborador(reajusteColaborador);
+		
+		historicoColaboradorDao.expects(once()).method("findByIdProjection").with(eq(historicoColaborador.getId())).will(returnValue(historicoColaborador));
+		
+		HistoricoColaborador retorno = historicoColaboradorManager.findByIdProjection(historicoColaborador.getId());
+		
+		assertNull(retorno.getReajusteColaborador());
+	}
+	
+	public void  testFindByIdProjectionComReajusteColaborador()
+	{
+		ReajusteColaborador reajusteColaborador = ReajusteColaboradorFactory.getReajusteColaborador(1L);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setReajusteColaborador(reajusteColaborador);
+		
+		historicoColaboradorDao.expects(once()).method("findByIdProjection").with(eq(historicoColaborador.getId())).will(returnValue(historicoColaborador));
+		
+		HistoricoColaborador retorno = historicoColaboradorManager.findByIdProjection(historicoColaborador.getId());
+		
+		assertEquals(reajusteColaborador.getId(), retorno.getReajusteColaborador().getId());
+	}
+	
 	public void  testRemoveHistoricoAndReajuste()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);

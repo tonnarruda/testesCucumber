@@ -1081,13 +1081,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 colaborador.setNome("Teo");
 		 colaborador.setEmpresa(empresa);
 		 
-		 HistoricoColaborador historico = HistoricoColaboradorFactory.getEntity();
-		 historico.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity());
-		 historico.setFaixaSalarial(faixaSalarial);
-		 historico.setEstabelecimento(estabelecimento);
-		 historico.setColaborador(colaborador);
-		 historico.setFuncao(FuncaoFactory.getEntity());
-		 historico.setAmbiente(AmbienteFactory.getEntity());
+		 HistoricoColaborador historico = HistoricoColaboradorFactory.getEntity(colaborador, new Date(), faixaSalarial, estabelecimento, AreaOrganizacionalFactory.getEntity(), FuncaoFactory.getEntity(), AmbienteFactory.getEntity());
 
 		 Usuario usuario = UsuarioFactory.getEntity();
 		 
