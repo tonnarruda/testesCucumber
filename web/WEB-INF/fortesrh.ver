@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.1xx.18x" db="" data="xx/09/2015">
+		<Item visivel="S" motivo="S20150400198"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Clonar: Configurar a solicitação de pessoal clonada com o status da solicitação como "Em Análise".]]></Item>
 		<Item visivel="S" motivo="P15080000204"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Ajuste de inconsistência na configuração "Contratar colaborador" para não enviar emails aos usuários não configurados.]]></Item>
 	</Versao>
 	<Versao id="1.1.149.180" db="" data="31/08/2015">

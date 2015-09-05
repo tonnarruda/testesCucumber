@@ -291,7 +291,10 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     	solicitacao.setId(null);
     	solicitacao.setSolicitante(null);
     	solicitacao.setLiberador(null);
+    	solicitacao.setObservacaoLiberador(null);
     	solicitacao.setData(null);
+    	solicitacao.setDataStatus(null);
+    	solicitacao.setStatus(StatusAprovacaoSolicitacao.ANALISE);
 
     	clone = true;
 
