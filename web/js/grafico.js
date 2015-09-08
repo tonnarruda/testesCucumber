@@ -58,25 +58,42 @@ function montaBar(data, idGrafico) {
     };			
 
     var plot = $.plot($(idGrafico), data, config);
+}
 
-	var previousPoint = null;				
-	$(idGrafico).bind("plothover", function (event, pos, item) {
-        if (item) 
-        {
-        	if (previousPoint != item.dataIndex) 
-        	{
-        		previousPoint = item.dataIndex;
-                $("#tooltip").remove();
-                var y = item.datapoint[1].toFixed(0);
-                showTooltip(item.pageX, item.pageY, y);
-            }
+function montaBarDuploCategoria(data, idGrafico, nomesParaRelacionar, distanciaTexto) 
+{
+	var config = {
+		series: {
+			bars: {
+				show: true, 
+				barWidth: 0.6,
+         		align: 'center'
+			}
+    	},
+        grid: { hoverable: true },
+        xaxis: {
+        	minTickSize: 1,
+        	tickLength: distanciaTexto
         }
-		else 
-		{
-        	$("#tooltip").remove();
-        	previousPoint = null;            
-        }
-	});
+    };			
+
+    var plot = $.plot($(idGrafico), data, config);
+
+    if(typeof idGrafico == 'object')
+    	idGrafico = '#' + idGrafico.id;
+    
+    $(idGrafico + ' .xAxis .tickLabel').each(function(){
+    	var i =  parseInt($(this).text().replace('.0',''));
+    	$(this).text(nomesParaRelacionar[i]);
+    });
+
+    $(idGrafico +' .xAxis .tickLabel').css({
+        '-moz-transform':'rotate(315deg)',
+        '-webkit-transform':'rotate(315deg)',
+        '-o-transform':'rotate(315deg)',
+        '-ms-transform':'rotate(315deg)',
+        'transform':'rotate(315deg)'
+   });
 }
 
 function montaPie(data, clazz, options, showDatasCombine) {

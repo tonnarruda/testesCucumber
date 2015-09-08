@@ -24,7 +24,7 @@
 		table tr td.dadosSistema { width: 180px; text-align: right; font-size: 12px; }
 		#popupGrafico { width: 800px; height: 300px; }
 		#popupGraficoLegenda { width: 800px; max-height: 300px; text-align: left}
-		#popupObs { width: 100%; float:left; text-align: right; font-size: 13px;}
+		#popupObs { width: 600px; float:left; text-align: left; font-size: 13px;}
 	</style>
 </head>
 <body>

@@ -79,7 +79,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return descendentes;
 	}
 
-	private Collection<AreaOrganizacional> getFilhos(Collection<AreaOrganizacional> areas, Long id)
+	public Collection<AreaOrganizacional> getFilhos(Collection<AreaOrganizacional> areas, Long id)
 	{
 		Collection<AreaOrganizacional> filhos = new ArrayList<AreaOrganizacional>();
 

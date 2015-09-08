@@ -1,16 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-<<<<<<< HEAD
 	<Versao id="1.1.1xx.18x" db="" data="xx/09/2015">
 		<Item visivel="S" motivo="S20150400198"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Clonar: Configurar a solicitação de pessoal clonada com o status da solicitação como "Em Análise".]]></Item>
-		<Item visivel="S" motivo="P15080000204"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Ajuste de inconsistência na configuração "Contratar colaborador" para não enviar emails aos usuários não configurados.]]></Item>
-	</Versao>
-	<Versao id="1.1.149.180" db="" data="31/08/2015">
-		<Item visivel="S" motivo="S20150800000"><![CDATA[Melhorias na integração do sistema com o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S20150600185"><![CDATA[Info. Funcionais > Painel de Indicadores > Informações Sociais: Novo filtro por colocação.]]></Item>
 		<Item visivel="S" motivo="S20150800059"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Nova informação de periodicidade dos riscos.]]></Item>
 		<Item visivel="S" motivo="S20150800018"><![CDATA[SESMT > Relatórios > EPIs Entregues: Novo filtro pela área organizacional e novo campo de área organizacional no relatório.]]></Item>
 		<Item visivel="S" motivo="S15080000110"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Novas permissões de inserir, editar, excluir, transferir faixas, exibir funções e imprimir para a listagem de cargos e salários.]]></Item>
+		<Item visivel="S" motivo="P15080000204"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Ajuste de inconsistência na configuração "Contratar colaborador" para não enviar emails aos usuários não configurados.]]></Item>
+	</Versao>
+	<Versao id="1.1.149.180" db="" data="31/08/2015">
+		<Item visivel="S" motivo="S20150800000"><![CDATA[Melhorias na integração do sistema com o Fortes Pessoal.]]></Item>
 	</Versao>
 	<Versao id="1.1.149.179" db="" data="26/08/2015">
 		<Item visivel="S" motivo="S20150100136"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Novo campo para exibir o estabelecimento nos relatórios.]]></Item>
@@ -18,32 +17,14 @@
 		<Item visivel="S" motivo="S20150800000"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência> Inserir/Editar: Novo alerta para validar perguntas subjetivas sem respostas.]]></Item>
 		<Item visivel="S" motivo="S20150700181"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Inserir/Editar: Nova opção para disponibilizar anexos do curso para os colaboradores da turma.]]></Item>
 		<Item visivel="S" motivo="S20150500088"><![CDATA[T&D > Painel de Indicadores: Novo gráfico de custo por curso.]]></Item>
-=======
-	<Versao id="1.1.1xx.1xx" db="" data="xx/xx/2015">
-		<Item visivel="S" motivo="S20150700319"><![CDATA[C&S > Painel de Indicadores: Nova opção para imprimir os gráficos dos indicadores de evoluções salariais e promoções.]]></Item>
-		<Item visivel="S" motivo="S20150800000"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência> Inserir/Editar: Novo alerta para validar perguntas subjetivas sem respostas.]]></Item>
-<<<<<<< HEAD
->>>>>>> Utilitários > Auditoria: Auditoria das respostas das avaliações de desempenho, acompanhamento do período de experiência e ficha médica. </br>Utilitários > Configurações > Gerenciador de Comunicação: Atualização do gerenciador "Responder avaliação do período de experiência" para "Responder avaliação do período de experiência/Excluir respostas". </br>Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência> Inserir/Editar: Novo alerta para validar perguntas subjetivas sem respostas.
-=======
-		<Item visivel="S" motivo="S20150500088"><![CDATA[T&D > Painel de Indicadores: Novo gráfico de custo por curso.]]></Item>
->>>>>>> [S20150500088] T&D > Painel de Indicadores: Novo gráfico de custo por curso.
 		<Item visivel="S" motivo="S20150700330"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Nova opção de colocação do empregado como sócio.]]></Item>
 		<Item visivel="S" motivo="P15080000142"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Ajuste da inconsistência ao tentar desligar colaboradores eleitos para a CIPA.]]></Item>
 		<Item visivel="S" motivo="S20150700310"><![CDATA[SESMT > Movimentações > Afastamentos: Nova opção de filtro por matrícula do colaborador.]]></Item>
-<<<<<<< HEAD
 		<Item visivel="S" motivo="S20150400194"><![CDATA[Utilitários > Cadastros > Perfis: Nova permissão para alterar a data do status da solicitação.]]></Item>
 		<Item visivel="S" motivo="S20150800044"><![CDATA[Utilitários > Configurações > Sistema: Nova opção para configurar tamanho máximo para upload de documentos anexos pelo módulo externo.]]></Item>
 		<Item visivel="S" motivo="S20150800000"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Atualização da configuração "Responder avaliação do período de experiência" para "Responder avaliação do período de experiência/Excluir respostas".]]></Item>
 		<Item visivel="S" motivo="S20150800000"><![CDATA[Utilitários > Auditoria: Auditoria das respostas das avaliações de desempenho, acompanhamento do período de experiência e ficha médica.]]></Item>
 		<Item visivel="S" motivo="P20150800157"><![CDATA[Utilitários > Importar Afastamentos: Menu renomeado para "Importar Afastamentos Fortes Ponto / TRU".]]></Item>
-=======
-		<Item visivel="S" motivo="S20150800000"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Atualização do gerenciador "Responder avaliação do período de experiência" para "Responder avaliação do período de experiência/Excluir respostas".]]></Item>
-<<<<<<< HEAD
-		<Item visivel="S" motivo="S20150800000"><![CDATA[Utilitários > Auditoriafor: Auditoria das respostas das avaliações de desempenho, acompanhamento do período de experiência e ficha médica.]]></Item>
->>>>>>> Utilitários > Auditoria: Auditoria das respostas das avaliações de desempenho, acompanhamento do período de experiência e ficha médica. </br>Utilitários > Configurações > Gerenciador de Comunicação: Atualização do gerenciador "Responder avaliação do período de experiência" para "Responder avaliação do período de experiência/Excluir respostas". </br>Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência> Inserir/Editar: Novo alerta para validar perguntas subjetivas sem respostas.
-=======
-		<Item visivel="S" motivo="S20150800000"><![CDATA[Utilitários > Auditoria: Auditoria das respostas das avaliações de desempenho, acompanhamento do período de experiência e ficha médica.]]></Item>
->>>>>>> [S20150500088] T&D > Painel de Indicadores: Novo gráfico de custo por curso.
 		<Item visivel="S" motivo="S20150700102"><![CDATA[Utilitários > Exportar dados para o Fortes Pessoal: Exportar colaboradores desligados.]]></Item>		
 		<Item visivel="S" motivo="S20150700330"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Nova opção de colocação do empregado como sócio.]]></Item>
 		<Item visivel="S" motivo="S20150700196"><![CDATA[Verificação de inconsistência no banco de dados.]]></Item>

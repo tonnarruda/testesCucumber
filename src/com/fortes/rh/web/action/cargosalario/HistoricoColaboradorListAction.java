@@ -315,30 +315,44 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		dataIni = DateUtil.criarDataMesAno(dataMesAnoIni);
 		dataFim = DateUtil.criarDataMesAno(dataMesAnoFim);
 		
+		calculaGraficosPromocao(areasIds, areasPieChartIds);
+		
+		return Action.SUCCESS;
+	}
+
+	private void calculaGraficosPromocao(Long[] areasIds, Long[] areasPieChartIds) 
+	{
 		Map<Character, Collection<Object[]>> graficosPromocao = historicoColaboradorManager.montaPromocoesHorizontalEVertical(dataIni, dataFim, empresa.getId(), areasIds);
 		grfPromocaoHorizontal = StringUtil.toJSON(graficosPromocao.get('H'), null);
 		grfPromocaoVertical = StringUtil.toJSON(graficosPromocao.get('V'), null);
 
 		Map<Character, Collection<DataGrafico>> graficosPromocaoAreas = historicoColaboradorManager.montaPromocoesHorizontalEVerticalPorArea(dataIni, dataFim, empresa.getId(), false, areasPieChartIds);
-		grfPromocaoHorizontalArea = StringUtil.toJSON(graficosPromocaoAreas.get('H'), null);
-		grfPromocaoVerticalArea = StringUtil.toJSON(graficosPromocaoAreas.get('V'), null);
 		
 		grfBarraPromocaoHorizontalArea = convertDataGraficoInObject(graficosPromocaoAreas.get('H'));
 		grfBarraPromocaoVerticalArea = convertDataGraficoInObject(graficosPromocaoAreas.get('V'));
+
+		grfPromocaoHorizontalArea = StringUtil.toJSON(removeValoresVaziosDataGrafico(graficosPromocaoAreas.get('H')), null);
+		grfPromocaoVerticalArea = StringUtil.toJSON(removeValoresVaziosDataGrafico(graficosPromocaoAreas.get('V')), null);
+	}
+
+	private Collection<DataGrafico> removeValoresVaziosDataGrafico(Collection<DataGrafico> dataGraficos) 
+	{
+		Collection<DataGrafico>  dataGraficosRetorno = new ArrayList<DataGrafico>();
 		
-		return Action.SUCCESS;
+		if(dataGraficos != null && dataGraficos.size()>0){
+			for (DataGrafico dataGrafico : dataGraficos) 
+				if(dataGrafico.getData() > 0)
+					dataGraficosRetorno.add(dataGrafico);
+		}
+		return dataGraficosRetorno;
 	}
 
 	private String convertDataGraficoInObject(Collection<DataGrafico> collectionDataGrafico) 
 	{
 		Collection<Object[]>  graficoPromocaoHorizontal = new ArrayList<Object[]>();
-		int i = 1;
-		if(collectionDataGrafico != null && collectionDataGrafico.size()>0)
-		{
-			for (DataGrafico dataGrafico : collectionDataGrafico){ 
-				graficoPromocaoHorizontal.add(new Object[]{i, dataGrafico.getData()});
-				i += 2;
-			}
+		if(collectionDataGrafico != null && collectionDataGrafico.size()>0){
+			for (DataGrafico dataGrafico : collectionDataGrafico) 
+				graficoPromocaoHorizontal.add(new Object[]{dataGrafico.getLabel(), dataGrafico.getData()});
 		}
 		
 		return  StringUtil.toJSON(graficoPromocaoHorizontal, null);

@@ -169,7 +169,7 @@
 					        {label: 'Vertical', data: promocaoVerticalArea, bars:{align : "left"} }
 					    ];
 				
-		        graficoBarra(dadosBarraArea, "#faixaSalarialArea", "#faixaSalarialAreaImprimir");
+		        graficoBarraCategoria(dadosBarraArea, "#faixaSalarialArea", "#faixaSalarialAreaImprimir");
 		        
 		        $('.conteudo-aba').hide();
 				
@@ -205,17 +205,19 @@
 									popup.document.getElementById('popupGraficoLegenda').innerHTML = '<br />' + $(obj + 'Info .formula').text()+'<br /><br />' + $(obj + 'Info .fieldDados').text();
 									popup.window.opener.montaLine(dados, popup.document.getElementById('popupGrafico'));
 									popup.window.print();
-									popup.window.close();
+									
+									if($.browser.mozilla)
+										popup.window.close();
 								}
 							}
 						);
 			}
 			
-			function graficoPizza(dados, divGrafico, divLegenda, btnImprimir, numColunas, titulo, divTitulo, valorEmDinheiro)
+			function graficoPizza(dados, divGrafico, divLegenda, btnImprimir, numColunas, titulo, divTitulo, valorEmDinheiro, descricaoTitulo)
 			{
 				montaPie(dados, divGrafico, {
 					radiusLabel:0.9, 
-					percentMin: 0.02, 
+					percentMin: 0.02,
 					pieLeft: 0, 
 					noColumns: numColunas, 
 					container: divLegenda,
@@ -232,8 +234,17 @@
 				if (titulo && divTitulo)
 					$(divTitulo).text(titulo);
 				
-				if (btnImprimir) 
-					$(btnImprimir).unbind().bind('click', { dados: dados }, function(event) { imprimirPizza(event.data.dados); });
+				if (btnImprimir) {
+					var infoPopup = '';
+					
+					if(valorEmDinheiro)
+						var infoPopup = $('.legendTotal').text();
+						
+					if(!descricaoTitulo)
+						descricaoTitulo = "";
+					
+					$(btnImprimir).unbind().bind('click', { dados: dados }, function(event) { imprimirPizza(event.data.dados, descricaoTitulo, infoPopup); });
+				}
 			}
 			
 			function graficoBarra(dados, divGrafico, btnImprimir, titulo, divTitulo, obs, divObs)
@@ -250,31 +261,89 @@
 					$(btnImprimir).unbind().bind('click', function(event) { imprimirBarra(dados); });
 			}
 			
+			var tamanhoTexto = 0;
+			var nomesParaRelacionar = new Array();
+			function preparaDadosGraficoBarraCategoria(data)
+			{
+				for (var keyData in data) 
+				{	
+					for (var key in data[keyData].data) 
+					{
+						if(nomesParaRelacionar.indexOf(data[keyData].data[key][0]) == -1)
+						{	
+							nomesParaRelacionar[key] = data[keyData].data[key][0];
+						
+							var texts = nomesParaRelacionar[key].split(' ');
+							for (var keyText in texts)
+								if(texts[keyText].length > tamanhoTexto)
+									tamanhoTexto = texts[keyText].length; 
+						}
+						
+						data[keyData].data[key][0] = key.toString();
+					}
+				}
+			}
+			
+			function graficoBarraCategoria(data, divGrafico, btnImprimir, titulo, divTitulo, obs, divObs)
+			{
+				if(btnImprimir)	
+					preparaDadosGraficoBarraCategoria(data);
+				
+				montaBarDuploCategoria(data, divGrafico, nomesParaRelacionar, ((tamanhoTexto/2)*9));
+				
+				if (titulo && divTitulo)
+					$(divTitulo).text(titulo);
+					
+				if (obs && divObs)
+					$(divObs).text(obs);
+				
+				if (btnImprimir){ 
+					$(btnImprimir).unbind().bind('click', function(event) { imprimirBarraCategoria(data); });
+					plothoverGrafico(divGrafico);
+				}
+			}
+			
+			function plothoverGrafico(divGrafico)
+			{
+				var previousPoint = null;				
+				$(divGrafico).bind("plothover", function (event, pos, item) {
+			        if (item) 
+			        {
+			        	if (previousPoint != item.dataIndex) 
+			        	{
+			        		previousPoint = item.dataIndex;
+			                $("#tooltip").remove();
+			                var y = formataNumero(item.datapoint[1]);
+			                showTooltip(item.pageX, item.pageY, y);
+			            }
+			        }
+					else 
+					{
+			        	$("#tooltip").remove();
+			        	previousPoint = null;            
+			        }
+				});
+			}
+			
 			var popup;
-			function imprimirPizza(dados) 
+			function imprimirPizza(dados, descricaoTitulo, info) 
 			{
 				popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/>");
-				
 				popup.window.onload = function() 
 				{
 					popup.focus();
-					var infoPopup = $('.legendTotal').text();
-					if($("#divBoxSalario").dialog("isOpen"))
-						infoPopup = $('.ui-dialog-titlebar').text().replace('close','');
-						
-					popup.document.getElementById('info').innerHTML = infoPopup;
-					
-					popup.window.opener.graficoPizza(dados, popup.document.getElementById('popupGrafico'), popup.document.getElementById('popupGraficoLegenda'), false, 1, 'Salário por Área Organizacional', popup.document.getElementById('popupTitulo'));
+					popup.document.getElementById('info').innerHTML = info;
+					popup.window.opener.graficoPizza(dados, popup.document.getElementById('popupGrafico'), popup.document.getElementById('popupGraficoLegenda'), false, 1, descricaoTitulo, popup.document.getElementById('popupTitulo'));
 					popup.window.print();
-					popup.window.close();
+					
+					if($.browser.mozilla)
+						popup.window.close();
 				}
-
 			}
 			
 			function imprimirBarra(dados) 
 			{
 				popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/>");
-				
 				popup.window.onload = function() 
 				{
 					popup.focus();
@@ -283,7 +352,34 @@
 						
 					popup.window.opener.graficoBarra(dados, popup.document.getElementById('popupGrafico'), false, 'Promoção', popup.document.getElementById('popupTitulo'), "* Promoção Horizontal: Mudança de Faixa Salarial ou Salário. / Promoção Vertical: Mudança de Cargo.", popup.document.getElementById('popupObs'));
 					popup.window.print();
-					popup.window.close();
+					
+					if($.browser.mozilla)
+						popup.window.close();
+				}
+			}
+			
+			function imprimirBarraCategoria(data) 
+			{
+				popup = window.open("<@ww.url includeParams="none" value="/grafico.jsp"/>");
+				popup.window.onload = function() 
+				{
+					popup.focus();
+					if($("#divBoxSalario").dialog("isOpen"))
+						infoPopup = $('.ui-dialog-titlebar').text().replace('close','');
+						
+					popup.window.opener.graficoBarraCategoria(data, popup.document.getElementById('popupGrafico'), false, 'Promoções verticais e horizontais agrupadas por área organizacional', popup.document.getElementById('popupTitulo'), "*Promoção Horizontal: Mudança de Faixa Salarial ou Salário./ Promoção Vertical: Mudança de Cargo.", popup.document.getElementById('popupObs'));
+					
+					for (var key in nomesParaRelacionar){
+						popup.window.document.querySelectorAll('.tickLabel')[key].textContent = nomesParaRelacionar[key];
+						popup.window.document.querySelectorAll('.tickLabel')[key].style.transform = 'rotate(315deg)';
+					}
+
+					var dist = tamanhoTexto + 20;
+					popup.window.document.querySelectorAll('#popupObs')[0].style.margin = dist + 'px';
+					popup.window.print();
+					
+					if($.browser.mozilla)
+						popup.window.close();
 				}
 			}
 
@@ -292,26 +388,32 @@
 			var empresaId_ = '${empId}';
 			var dataIni_ = '${dateIni}';
 			var dataFim_ = '${dateFim}';
+			var urlFind = "";
+			var areaId_ = 0;
+			var popap = "";
+			var valorEmDinheiro = false;
+			var descricaoTitulo = "";
 			
 			function pieClick(event, pos, obj)
 			{
-				var areaId_ = 0;
-				var popap = "Salario";
-				var valorEmDinheiro = true;
-				var urlFind = "<@ww.url includeParams="none" value="/cargosalario/historicoColaborador/grfSalarioAreasFilhas.action"/>";
-				
 				if(event.currentTarget.id == "salarioAreas"){
 					areaId_ = salarioAreasOrdered[obj.seriesIndex].id;
+					valorEmDinheiro = true;
+					popap = "Salario";
+					urlFind = "<@ww.url includeParams="none" value="/cargosalario/historicoColaborador/grfSalarioAreasFilhas.action"/>";
+					descricaoTitulo = $('#' + event.currentTarget.id).parent().find('h1').text().trim().trim();
 				}else if(event.currentTarget.id == "promocoesHorizontaisAreas"){
 					areaId_ = promocaoHorizontalOrdered[obj.seriesIndex].id;
 					valorEmDinheiro = false;
 					popap = 'PromoHorizontal';
 					urlFind = "<@ww.url includeParams="none" value="/cargosalario/historicoColaborador/grfPromocaoHorizontalAreasFilhas.action"/>";
+					descricaoTitulo = $('#' + event.currentTarget.id).parent().find('h1').text().trim().trim();
 				}else if(event.currentTarget.id == "promocoesVerticaisAreas"){
 					areaId_ = promocaoVerticalOrdered[obj.seriesIndex].id;
 					valorEmDinheiro = false;
 					popap = 'PromoVertical';
 					urlFind = "<@ww.url includeParams="none" value="/cargosalario/historicoColaborador/grfPromocaoVerticalAreasFilhas.action"/>";
+					descricaoTitulo = $('#' + event.currentTarget.id).parent().find('h1').text().trim().trim();
 				}else{
 					areaId_ = box_[obj.seriesIndex].id;
 				}
@@ -335,7 +437,7 @@
 							return (a.data > b.data) ? -1 : (a.data < b.data) ? 1 : 0;
 						});
 						
-						graficoPizza(box_, '#box' + popap, '#box' + popap + 'Legend', '#box' + popap + 'Imprimir', 1, null, null, valorEmDinheiro);
+						graficoPizza(box_, '#box' + popap, '#box' + popap + 'Legend', '#box' + popap + 'Imprimir', 1, null, null, valorEmDinheiro, descricaoTitulo);
 						
 						var percent = parseFloat(obj.series.percent).toFixed(2);
 						var descricaoArea = data[0].descricao;
@@ -347,7 +449,8 @@
 				});
 			}		
 			
-			function plotPieHover(event, pos, item) {
+			function plotPieHover(event, pos, item) 
+			{
 	            if (item) 
 	            {
             		previousIndex = item.dataIndex;
@@ -372,7 +475,6 @@
 		            'z-index': 20000
 		        }).appendTo("body").fadeIn(0);
 		    }
-
 			
 			function enviaForm()
 			{
@@ -436,10 +538,9 @@
 	</head>
 	<body>
 		
-		
 		<div id="abas">
-			<div id="aba1" class="aba"><a href="javascript:;">Salários</a></div>
-			<div id="aba2" class="aba"><a href="javascript:;">Promoções</a></div>
+			<div id="aba1" class="aba"><a href="javascript:;">Evolução Salarial</a></div>
+			<div id="aba2" class="aba"><a href="javascript:;">Promoções por áreas organizacionais</a></div>
 		</div>
 		
 		<div class="conteudo">
@@ -453,9 +554,9 @@
 					<li><strong>Indicador de Salário por Área Organizacional</strong></li>
 					<@ww.datepicker label="Data" name="dataBase" value="${dateBase}" id="dataBase"  cssClass="mascaraData" />
 					<@ww.select label="Área Organizacional" name="areaOrganizacioanal.id" list="areasCheckList" listKey="id" listValue="nome" headerValue="Selecione..." headerKey=""/>
+					<li>&nbsp;</li>
+					<li><strong>Indicadores de Evolução Salarial e Promoção</strong></li>
 				</div>
-				<li>&nbsp;</li>
-				<li><strong>Indicadores de Evolução Salarial e Promoção</strong></li>
 				<@ww.textfield label="Mês/Ano" name="dataMesAnoIni" id="mesAnoIni" cssClass="mascaraMesAnoData" liClass="liLeft"/>
 				<@ww.label value="a" liClass="liLeft" />
 				<@ww.textfield label="Mês/Ano" name="dataMesAnoFim" id="mesAnoFim" cssClass="mascaraMesAnoData"/>
@@ -464,7 +565,7 @@
 					<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 				</div>
 				<div class="conteudo-2 conteudo-aba">
-					<@frt.checkListBox label="Áreas Organizacionais para o grafico de pizza" name="areasPieChartCheck" id="areasPieChartCheck" list="areasPieChartCheckList" filtro="true" selectAtivoInativo="true" onClick="escondeFilhas(this);"/>
+					<@frt.checkListBox label="Áreas Organizacionais" name="areasPieChartCheck" id="areasPieChartCheck" list="areasPieChartCheckList" filtro="true" selectAtivoInativo="true" onClick="escondeFilhas(this);"/>
 				</div>
 		
 				<button onclick="return enviaForm();" class="btnPesquisar grayBGE"></button>
@@ -508,7 +609,7 @@
 			   
 			   	<div class="fieldGraph">
 					<h1>
-						Promoções Horizontais
+						Promoções horizontais agrupadas por área organizacional
 						<img id="promocoesHorizontaisAreasImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 					</h1>
 				    <div id="promocoesHorizontaisAreas" class="graph"></div>
@@ -519,7 +620,7 @@
 			   
 			   	<div class="fieldGraph">
 					<h1>
-						Promoções Verticais
+						Promoções verticais agrupadas por área organizacional
 						<img id="promocoesVerticaisAreasImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 					</h1>
 				    <div id="promocoesVerticaisAreas" class="graph"></div>
@@ -530,14 +631,16 @@
 			   
 			   <div class="fieldGraph bigger">
 					<h1>
-						Promoção por área
+						Promoções verticais e horizontais agrupadas por área organizacional
 						<img id="faixaSalarialAreaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 					</h1>
-			   		<div id="faixaSalarialArea" style="margin: 25px; height: 300px; width: 900px"></div>
+			   		<div id="faixaSalarialArea" style="margin: 25px; height: 400px; width: 900px"></div>
+			   		<ul><li>&nbsp;</li></ul>
 			   		<div class="obs" style="margin: 5px;text-align: right;">
 				   		 * Promoção Horizontal: Mudança de Faixa Salarial ou Salário. / Promoção Vertical: Mudança de Cargo.
 			   		</div>
 			    </div>
+			    
 			</div>
 		
 			<div style="clear: both"></div>

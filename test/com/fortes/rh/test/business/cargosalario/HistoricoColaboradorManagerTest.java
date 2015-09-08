@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import mockit.Mockit;
+import net.sf.ezmorph.test.ArrayAssertions;
 
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
@@ -53,6 +55,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.PendenciaAC;
+import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.sesmt.Ambiente;
 import com.fortes.rh.model.sesmt.Funcao;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
@@ -73,6 +76,7 @@ import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.util.mockObjects.MockHibernateTemplate;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaborador;
@@ -2285,4 +2289,145 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		assertTrue(existeDependencia);
 	}
 	
+	private void montaPromocoesHorizontalEVerticalPorArea(boolean somenteAreasFilhas, AreaOrganizacional areaMae1, AreaOrganizacional area1, AreaOrganizacional area2, Empresa empresa) 
+	{
+		Collection<SituacaoColaborador> situacoes = new ArrayList<SituacaoColaborador>();
+		
+		Collection<AreaOrganizacional> areasOrganizacionais = new ArrayList<AreaOrganizacional>();
+		areasOrganizacionais.add(areaMae1);
+		areasOrganizacionais.add(area1);
+		areasOrganizacionais.add(area2);
+		
+		Estabelecimento parajana = EstabelecimentoFactory.getEntity(1L);
+		
+		Cargo cobrador = CargoFactory.getEntity(1L);
+		FaixaSalarial faixaUmCobrador = FaixaSalarialFactory.getEntity(1L);
+		FaixaSalarial faixaDoisCobrador = FaixaSalarialFactory.getEntity(2L);
+		
+		Cargo motorista = CargoFactory.getEntity(2L);
+		FaixaSalarial faixaAMotorista = FaixaSalarialFactory.getEntity(3L);
+		
+		Colaborador joao = ColaboradorFactory.getEntity(11L);
+		Colaborador maria = ColaboradorFactory.getEntity(22L);
+		
+		SituacaoColaborador joaoCobradorFaixaUm = new SituacaoColaborador(500.0, DateUtil.criarDataMesAno(02, 02, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, area1, joao, MotivoHistoricoColaborador.CONTRATADO, 1L);
+		SituacaoColaborador joaoCobradorFaixaUmAumentoSalario = new SituacaoColaborador(600.0, DateUtil.criarDataMesAno(03, 02, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, area1, joao, MotivoHistoricoColaborador.PROMOCAO, 1L);
+		SituacaoColaborador joaoCobradorFaixaDois = new SituacaoColaborador(500.0, DateUtil.criarDataMesAno(01, 04, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaDoisCobrador, parajana, area1, joao, MotivoHistoricoColaborador.PROMOCAO, 2L);
+		SituacaoColaborador joaoCobradorFaixaDoisAumentoSalario = new SituacaoColaborador(650.0, DateUtil.criarDataMesAno(05, 04, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaDoisCobrador, parajana, area1, joao, MotivoHistoricoColaborador.PROMOCAO, 2L);
+		SituacaoColaborador joaoCobradorFaixaDoisMudouArea = new SituacaoColaborador(650.0, DateUtil.criarDataMesAno(01, 05, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaDoisCobrador, parajana, area2, joao, MotivoHistoricoColaborador.PROMOCAO, 3L);
+		SituacaoColaborador joaoMotoristaFaixaA = new SituacaoColaborador(650.0, DateUtil.criarDataMesAno(06, 06, 2001), TipoAplicacaoIndice.CARGO, motorista, faixaAMotorista, parajana, area2, joao, MotivoHistoricoColaborador.PROMOCAO, 4L);
+		
+		SituacaoColaborador mariaCobradorFaixaUm = new SituacaoColaborador(500.0, DateUtil.criarDataMesAno(01, 02, 2000), TipoAplicacaoIndice.CARGO, cobrador, faixaUmCobrador, parajana, area1, maria, MotivoHistoricoColaborador.CONTRATADO, 5L);
+		SituacaoColaborador mariaCobradorFaixaUmAumentoSalario = new SituacaoColaborador(555.0, DateUtil.criarDataMesAno(9, 02, 2000), TipoAplicacaoIndice.CARGO, motorista, faixaAMotorista, parajana, area1, maria, MotivoHistoricoColaborador.PROMOCAO, 5L);
+		SituacaoColaborador mariaCobradorFaixaUmAumentoSalarioNovamente = new SituacaoColaborador(600.0, DateUtil.criarDataMesAno(05, 05, 2000), TipoAplicacaoIndice.VALOR, motorista, faixaAMotorista, parajana, area1, maria, MotivoHistoricoColaborador.PROMOCAO, 6L);
+		
+		situacoes.add(joaoCobradorFaixaUm);
+		situacoes.add(joaoCobradorFaixaUmAumentoSalario);
+		situacoes.add(joaoCobradorFaixaDois);
+		situacoes.add(joaoCobradorFaixaDoisAumentoSalario);
+		situacoes.add(joaoCobradorFaixaDoisMudouArea);
+		situacoes.add(joaoMotoristaFaixaA);
+		
+		situacoes.add(mariaCobradorFaixaUm);
+		situacoes.add(mariaCobradorFaixaUmAumentoSalario);
+		situacoes.add(mariaCobradorFaixaUmAumentoSalarioNovamente);
+		
+		areaOrganizacionalManager.expects(once()).method("findAllList").withAnyArguments().will(returnValue(areasOrganizacionais));
+		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, eq(area1.getId())).will(returnValue(area1));
+		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, eq(area2.getId())).will(returnValue(area2));
+		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllListAndInativas").withAnyArguments().will(returnValue(areasOrganizacionais));
+		areaOrganizacionalManager.expects(atLeastOnce()).method("montaFamilia").with(eq(areasOrganizacionais)).will(returnValue(areasOrganizacionais));
+		historicoColaboradorDao.expects(atLeastOnce()).method("getPromocoes").will(returnValue(situacoes));
+	}
+	
+	public void testMontaPromocoesHorizontalEVerticalPorArea()
+	{
+		boolean somenteAreasFilhas = false;
+
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		AreaOrganizacional areaMae1 = AreaOrganizacionalFactory.getEntity(1L);
+		areaMae1.setNome("AreaMae1");
+	
+		AreaOrganizacional area1 = AreaOrganizacionalFactory.getEntity(2L);
+		area1.setAreaMae(areaMae1);
+		area1.setNome("Area1");
+		
+		AreaOrganizacional area2 = AreaOrganizacionalFactory.getEntity(3L);
+		area2.setNome("Area2");
+		
+		Collection<AreaOrganizacional> areasOrganizacionais = new ArrayList<AreaOrganizacional>();
+		areasOrganizacionais.add(areaMae1);
+		areasOrganizacionais.add(area1);
+		areasOrganizacionais.add(area2);
+		
+		Collection<AreaOrganizacional> areasOrganizacionaisDecendentesAreaMae1 = new ArrayList<AreaOrganizacional>();
+		areasOrganizacionaisDecendentesAreaMae1.add(area1);
+		
+		montaPromocoesHorizontalEVerticalPorArea(somenteAreasFilhas, areaMae1, area1, area2, empresa);
+
+		areaOrganizacionalManager.expects(once()).method("findByIdProjection").with(eq(areaMae1.getId())).will(returnValue(areaMae1));
+		areaOrganizacionalManager.expects(once()).method("getDescendentes").with(eq(areasOrganizacionais), eq(areaMae1.getId()), ANYTHING).will(returnValue(areasOrganizacionaisDecendentesAreaMae1));
+		areaOrganizacionalManager.expects(once()).method("findByIdProjection").with(eq(area2.getId())).will(returnValue(area2));
+		areaOrganizacionalManager.expects(once()).method("getDescendentes").with(eq(areasOrganizacionais), eq(area2.getId()), ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
+
+		Map<Character, Collection<DataGrafico>> promocoes = historicoColaboradorManager.montaPromocoesHorizontalEVerticalPorArea(DateUtil.criarDataMesAno(01, 01, 2000), DateUtil.criarDataMesAno(01, 05, 2000), empresa.getId(), somenteAreasFilhas, new Long[]{areaMae1.getId(), area2.getId()});
+		
+		Collection<DataGrafico> promocaoHorizontal = promocoes.get('H');
+		Collection<DataGrafico> promocaovertical = promocoes.get('V');
+		
+		assertEquals("AreaMae1", ((DataGrafico) promocaoHorizontal.toArray()[0]).getLabel());
+		assertEquals(4.0, ((DataGrafico) promocaoHorizontal.toArray()[0]).getData());
+		
+		assertEquals("Area2", ((DataGrafico) promocaoHorizontal.toArray()[1]).getLabel());
+		assertEquals(4.0, ((DataGrafico) promocaoHorizontal.toArray()[1]).getData());
+		
+		assertEquals("AreaMae1", ((DataGrafico) promocaovertical.toArray()[0]).getLabel());
+		assertEquals(1.0, ((DataGrafico) promocaovertical.toArray()[0]).getData());
+		
+		assertEquals("Area2", ((DataGrafico) promocaovertical.toArray()[1]).getLabel());
+		assertEquals(1.0, ((DataGrafico) promocaovertical.toArray()[1]).getData());
+	}
+	
+	public void testMontaPromocoesHorizontalEVerticalPorAreasomenteAreasFilhas()
+	{
+		boolean somenteAreasFilhas = true;
+
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		AreaOrganizacional areaMae1 = AreaOrganizacionalFactory.getEntity(1L);
+		areaMae1.setNome("AreaMae1");
+	
+		AreaOrganizacional area1 = AreaOrganizacionalFactory.getEntity(2L);
+		area1.setAreaMae(areaMae1);
+		area1.setNome("Area1");
+		
+		AreaOrganizacional area2 = AreaOrganizacionalFactory.getEntity(3L);
+		area2.setNome("Area2");
+		
+		Collection<AreaOrganizacional> areasOrganizacionais = new ArrayList<AreaOrganizacional>();
+		areasOrganizacionais.add(areaMae1);
+		areasOrganizacionais.add(area1);
+		areasOrganizacionais.add(area2);
+		
+		Collection<AreaOrganizacional> areasOrganizacionaisDecendentesAreaMae1 = new ArrayList<AreaOrganizacional>();
+		areasOrganizacionaisDecendentesAreaMae1.add(area1);
+		
+		montaPromocoesHorizontalEVerticalPorArea(somenteAreasFilhas, areaMae1, area1, area2, empresa);
+		
+		areaOrganizacionalManager.expects(once()).method("getFilhos").with(eq(areasOrganizacionais),eq(areaMae1.getId())).will(returnValue(areasOrganizacionaisDecendentesAreaMae1));
+		areaOrganizacionalManager.expects(once()).method("findByIdProjection").with(eq(areaMae1.getId())).will(returnValue(areaMae1));
+		areaOrganizacionalManager.expects(once()).method("getDescendentes").with(eq(areasOrganizacionais), eq(area1.getId()), ANYTHING).will(returnValue(new ArrayList<AreaOrganizacional>()));
+		
+		Map<Character, Collection<DataGrafico>> promocoes = historicoColaboradorManager.montaPromocoesHorizontalEVerticalPorArea(DateUtil.criarDataMesAno(01, 01, 2000), DateUtil.criarDataMesAno(01, 05, 2000), empresa.getId(), somenteAreasFilhas, new Long[]{areaMae1.getId()});
+		
+		Collection<DataGrafico> promocaoHorizontal = promocoes.get('H');
+		Collection<DataGrafico> promocaovertical = promocoes.get('V');
+		
+		assertEquals("Area1", ((DataGrafico) promocaoHorizontal.toArray()[0]).getLabel());
+		assertEquals(4.0, ((DataGrafico) promocaoHorizontal.toArray()[0]).getData());
+		
+		assertEquals("Area1", ((DataGrafico) promocaovertical.toArray()[0]).getLabel());
+		assertEquals(1.0, ((DataGrafico) promocaovertical.toArray()[0]).getData());
+	}
 }

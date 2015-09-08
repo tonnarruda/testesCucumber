@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.persistence.PersistenceException;
 
@@ -346,80 +345,78 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return map;
 	}
 	
-	public Map<Character, Collection<DataGrafico>> montaPromocoesHorizontalEVerticalPorArea(Date dataIni, Date dataFim, Long empresaId, boolean areasFilhas, Long... areasIds)
+	public Map<Character, Collection<DataGrafico>> montaPromocoesHorizontalEVerticalPorArea(Date dataIni, Date dataFim, Long empresaId, boolean somenteAreasFilhas, Long... areasIds)
 	{
 		Date dataInicioTemp = DateUtil.getInicioMesData(dataIni);
 		Date dataFimTemp = DateUtil.getUltimoDiaMes(dataFim);
 
-		Map<Character, Collection<DataGrafico>> mapRetorno = new HashMap<Character, Collection<DataGrafico>>();
 		Collection<AreaOrganizacional> areasDescendentes = new ArrayList<AreaOrganizacional>();
 		Collection<DataGrafico>  graficoPromocaoHorizontal = new ArrayList<DataGrafico>();
 		Collection<DataGrafico>  graficoPromocaoVertical = new ArrayList<DataGrafico>();
+		List<RelatorioPromocoes> promocoes = new ArrayList<RelatorioPromocoes>();
+		AreaOrganizacional areaOrganizacional = null;
 		
-		if(areasFilhas){
-			HashMap<Long, RelatorioPromocoes> mapPromocao = new HashMap<Long, RelatorioPromocoes>();
-			areasDescendentes = areaOrganizacionalManager.getDescendentes(areaOrganizacionalManager.findAllList(0, 0, null, empresaId, null), areasIds[0], new ArrayList<AreaOrganizacional>());
-			List<RelatorioPromocoes> promocoes = getPromocoes(new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areasDescendentes), null, dataInicioTemp, dataFimTemp, empresaId);
-			AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areasIds[0]);
-			
-			if(promocoes != null && promocoes.size()>0)
-			{
-				Long areaId;
-				for (RelatorioPromocoes promocao : promocoes) 
+		Collection<AreaOrganizacional> areasOrganizacionais = areaOrganizacionalManager.findAllList(0, 0, null, empresaId, null);
+		
+		if(somenteAreasFilhas)
+		{
+			Collection<AreaOrganizacional> areasOrganizacionaisFilhas = areaOrganizacionalManager.getFilhos(areasOrganizacionais, areasIds[0]);
+
+			if(areasOrganizacionaisFilhas.size() != 0)
+			{	
+				areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areasIds[0]);
+
+				for (AreaOrganizacional areaOrganizacionalFilha : areasOrganizacionaisFilhas) 
 				{
-					areaId = promocao.getArea().getId();
-					
-					if(mapPromocao.containsKey(areaId))
-					{
-						promocao.setQtdHorizontal(promocao.getQtdHorizontal() + mapPromocao.get(areaId).getQtdHorizontal());
-						promocao.setQtdVertical(promocao.getQtdVertical() + mapPromocao.get(areaId).getQtdVertical());
-					}
-					
-					mapPromocao.put(areaId, promocao);
-				}
-				
-				RelatorioPromocoes promocao;
-				for(Entry<Long, RelatorioPromocoes> entry : mapPromocao.entrySet())
-				{ 
-					areaId = entry.getKey();
-					promocao = entry.getValue(); 
-					
-					graficoPromocaoHorizontal.add(new DataGrafico(promocao.getArea().getId(), promocao.getArea().getNome(), promocao.getQtdHorizontal(), areaOrganizacional.getDescricao()));
-					graficoPromocaoVertical.add(new DataGrafico(promocao.getArea().getId(), promocao.getArea().getNome(), promocao.getQtdVertical(), areaOrganizacional.getDescricao()));
+					areasDescendentes = areaOrganizacionalManager.getDescendentes(areasOrganizacionais, areaOrganizacionalFilha.getId(), new ArrayList<AreaOrganizacional>());
+					areasDescendentes.add(areaOrganizacional);
+					areasDescendentes.add(areaOrganizacionalFilha);
+
+					promocoes = getPromocoes(new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areasDescendentes), null, dataInicioTemp, dataFimTemp, empresaId);
+					calculaPromocaoVerticalHorizontalDaArea(graficoPromocaoHorizontal, graficoPromocaoVertical,	areaOrganizacionalFilha, promocoes, false);
 				}
 			}
-		}else{
+		}else
+		{
 			if(!LongUtil.arrayIsNotEmpty(areasIds))
 				areasIds = areaOrganizacionalManager.findAreasMaesIdsByEmpresaId(empresaId);
-			
+
 			for (Long areaId : areasIds) 
 			{
-				areasDescendentes = areaOrganizacionalManager.getDescendentes(areaOrganizacionalManager.findAllList(0, 0, null, empresaId, null), areaId, new ArrayList<AreaOrganizacional>());
-				AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areaId); 
-				
-				List<RelatorioPromocoes> promocoes = getPromocoes(new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areasDescendentes), null, dataInicioTemp, dataFimTemp, empresaId);
-				
-				int qtdPromocaoHorizontal = 0;
-				int qtdPromocaoVertical = 0;
-				
-				for (RelatorioPromocoes promocao : promocoes)
-				{
-					qtdPromocaoHorizontal += promocao.getQtdHorizontal();
-					qtdPromocaoVertical += promocao.getQtdVertical();
-				}
-				
-				graficoPromocaoHorizontal.add(new DataGrafico(areaOrganizacional.getId(), areaOrganizacional.getNome(), qtdPromocaoHorizontal, areaOrganizacional.getNome()));
-				graficoPromocaoVertical.add(new DataGrafico(areaOrganizacional.getId(), areaOrganizacional.getNome(), qtdPromocaoVertical, areaOrganizacional.getNome()));
+				areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areaId);
+				areasDescendentes = areaOrganizacionalManager.getDescendentes(areasOrganizacionais, areaId, new ArrayList<AreaOrganizacional>());
+				areasDescendentes.add(areaOrganizacional);
+
+				promocoes = getPromocoes(new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areasDescendentes), null, dataInicioTemp, dataFimTemp, empresaId);
+				calculaPromocaoVerticalHorizontalDaArea(graficoPromocaoHorizontal, graficoPromocaoVertical,	areaOrganizacional, promocoes, true);
 			}
 		}
 
+		Map<Character, Collection<DataGrafico>> mapRetorno = new HashMap<Character, Collection<DataGrafico>>();
 		mapRetorno.put('H', graficoPromocaoHorizontal);
 		mapRetorno.put('V', graficoPromocaoVertical);
 
 		return mapRetorno;
 	}
 
-	private Collection<AreaOrganizacional> ajustaFamilia(Long... empresasIds) {
+	private void calculaPromocaoVerticalHorizontalDaArea(Collection<DataGrafico> graficoPromocaoHorizontal, Collection<DataGrafico> graficoPromocaoVertical, AreaOrganizacional areaOrganizacional,	List<RelatorioPromocoes> promocoes, boolean considerarValoresVazios) 
+	{
+		int qtdPromocaoHorizontal = 0;
+		int qtdPromocaoVertical = 0;
+
+		for (RelatorioPromocoes promocao : promocoes){
+			qtdPromocaoHorizontal += promocao.getQtdHorizontal();
+			qtdPromocaoVertical += promocao.getQtdVertical();
+		}
+		
+		if(qtdPromocaoHorizontal > 0 || considerarValoresVazios)
+			graficoPromocaoHorizontal.add(new DataGrafico(areaOrganizacional.getId(), areaOrganizacional.getNome(), qtdPromocaoHorizontal, areaOrganizacional.getNome()));
+		if(qtdPromocaoVertical > 0 || considerarValoresVazios)
+			graficoPromocaoVertical.add(new DataGrafico(areaOrganizacional.getId(), areaOrganizacional.getNome(), qtdPromocaoVertical, areaOrganizacional.getNome()));
+	}
+
+	private Collection<AreaOrganizacional> ajustaFamilia(Long... empresasIds) 
+	{
 		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, empresasIds);
 		try {
 			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
