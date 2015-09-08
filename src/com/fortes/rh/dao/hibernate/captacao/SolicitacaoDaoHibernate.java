@@ -39,17 +39,17 @@ import com.fortes.rh.util.LongUtil;
 @SuppressWarnings("unchecked")
 public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> implements SolicitacaoDao
 {
-	public Integer getCount(char visualizar, Long empresaId, Usuario usuario, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds)
+	public Integer getCount(char visualizar, Long empresaId, Usuario usuario, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim)
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.setProjection(Projections.rowCount());
 
-		montaConsulta(criteria, visualizar, empresaId, usuario, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds);
+		montaConsulta(criteria, visualizar, empresaId, usuario, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds, codigoBusca, dataInicio, dataFim);
 
 		return (Integer) criteria.list().get(0);
 	}
 
-	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Usuario usuario, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds)
+	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Usuario usuario, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim)
 	{
 		Criteria criteria = getSession().createCriteria(Solicitacao.class, "s");
 		criteria.createCriteria("s.anuncio", "an", Criteria.LEFT_JOIN);
@@ -73,8 +73,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		p.add(Projections.property("ms.descricao"), "projectionMotivoSolicitacaoDescricao");
 		p.add(Projections.property("s.liberador"), "liberador");
 		
-
-		montaConsulta(criteria, visualizar, empresaId, usuario, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds);
+		montaConsulta(criteria, visualizar, empresaId, usuario, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds, codigoBusca, dataInicio, dataFim);
 
 		criteria.setProjection(p);
 		criteria.addOrder(Order.desc("s.data"));
@@ -88,7 +87,7 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		return criteria.list();
 	}
 
-	private void montaConsulta(Criteria criteria, char visualizar, Long empresaId, Usuario usuario, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds)
+	private void montaConsulta(Criteria criteria, char visualizar, Long empresaId, Usuario usuario, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim)
 	{
 		criteria.createCriteria("s.areaOrganizacional", "a", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.solicitante", "us", Criteria.LEFT_JOIN);
@@ -116,9 +115,17 @@ public class SolicitacaoDaoHibernate extends GenericDaoHibernate<Solicitacao> im
 		if(descricaoBusca != null && !descricaoBusca.equals(""))
 			criteria.add(Expression.sqlRestriction("normalizar({alias}.descricao) ilike normalizar(?)", "%"+descricaoBusca+"%", Hibernate.STRING)); 
 
+		if(codigoBusca != null && !codigoBusca.equals(""))
+			criteria.add(Expression.sqlRestriction("cast({alias}.id as character varying) ilike (?)", "%"+codigoBusca+"%", Hibernate.STRING)); 
+		
 		if(statusBusca != 'T')
 			criteria.add(Expression.eq("s.status", statusBusca)); 
 
+		if(dataInicio != null)
+			criteria.add(Expression.ge("s.data", dataInicio));
+		if(dataFim != null)
+			criteria.add(Expression.le("s.data", dataFim));
+		
 		if(areasIds != null && areasIds.length > 0)
 		{
 			Disjunction disjunction = Expression.disjunction();

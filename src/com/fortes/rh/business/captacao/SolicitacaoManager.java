@@ -38,10 +38,10 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	Solicitacao findByIdProjection(Long solicitacaoId);
 	Solicitacao findByIdProjectionForUpdate(Long solicitacaoId);
 	void updateEncerraSolicitacao(boolean encerrar, Date dataEncerramento, Long solicitacaoId);
-	Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca);
-	Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds);
-	Integer getCount(char visualizar, Long empresaId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca);
-	Integer getCount(char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds);
+	Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, String codigoBusca, Date dataInicio, Date dataFim);
+	Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim);
+	Integer getCount(char visualizar, Long empresaId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, String codigoBusca, Date dataInicio, Date dataFim);
+	Integer getCount(char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim);
 	Solicitacao findByIdProjectionAreaFaixaSalarial(Long solicitacaoId);
 	void updateSuspendeSolicitacao(boolean suspender, String obsSuspensao, Long solicitacaoId);
 	void migrarBairro(Long bairroId, Long bairroDestinoId);

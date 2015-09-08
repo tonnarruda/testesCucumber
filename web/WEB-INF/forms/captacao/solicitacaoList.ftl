@@ -27,6 +27,19 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	
+	<#assign validarCampos="return validaFormularioEPeriodo('form', new Array(), new Array('dataIni','dataFim'), true)"/>
+	
+	<#if dataIni?exists >
+		<#assign dateIni = dataIni?date/>
+	<#else>
+		<#assign dateIni = ""/>
+	</#if>
+	<#if dataFim?exists>
+		<#assign dateFim = dataFim?date/>
+	<#else>
+		<#assign dateFim = ""/>
+	</#if>
+	
 	<script type='text/javascript'>
 		$(function() {
 			var obj = document.getElementById("legendas");
@@ -110,15 +123,20 @@
 	<@ww.actionerror />
 
 	<#include "../util/topFiltro.ftl" />
-		<@ww.form name="form" action="list.action" validate="true" onsubmit="setPage();" method="POST" id="formBusca">
+		<@ww.form name="form" action="list.action" validate="true" onsubmit="${validarCampos}" method="POST" id="formBusca">
 			<@ww.hidden id="pagina" name="page"/>
 				<div>
+					Período da Solicitação:<br/>
+					<@ww.datepicker name="dataIni" id="dataIni"  value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
+					<@ww.label value="a" liClass="liLeft" />
+					<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
+					<@ww.textfield label="Código" name="codigoBusca" id="codigoBusca" cssStyle="width: 465px;"/>
 					<@ww.textfield label="Descrição" name="descricaoBusca" id="descricaoBusca" cssStyle="width: 465px;"/>
 					<@ww.select id="visualizacao" label="Visualizar" name="visualizar" list=r"#{'T':'Todas','A':'Abertas em andamento','S':'Abertas suspensas','E':'Encerradas'}" cssStyle="width: 465px;"/>
 					<@ww.select id="status" label="Status" name="statusBusca" list="status" headerValue="Todos" headerKey="T" cssStyle="width: 465px;"/>
-					<@ww.select id="motivoSolicitacao" label="Motivo da Solicitação" name="motivoSolicitacao.id" list="motivosSolicitacoes" listKey="id" listValue="descricao" headerValue="Todos" headerKey="-1" cssStyle="width: 465px;" />
 				</div>
-				<div style="float: right;margin-top: -156px;"/>
+				<div style="float: right;margin-top: -151px;"/>
+					<@ww.select id="motivoSolicitacao" label="Motivo da Solicitação" name="motivoSolicitacao.id" list="motivosSolicitacoes" listKey="id" listValue="descricao" headerValue="Todos" headerKey="-1" cssStyle="width: 465px;" />
 					<@ww.select id="areaOrganizacional" label="Área Organizacional" name="areaOrganizacional.id" list="areasOrganizacionais" listKey="id" listValue="descricao" headerValue="Todos" headerKey="-1"cssStyle="width: 465px;" />
 					<@ww.select id="estabelecimento" label="Estabelecimento" name="estabelecimento.id" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1"cssStyle="width: 465px;" />
 					<@ww.select id="cargo" label="Cargo" name="cargo.id" list="cargos" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1" cssStyle="width: 465px;"/><br>

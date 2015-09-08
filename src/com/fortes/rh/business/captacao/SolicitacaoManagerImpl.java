@@ -33,30 +33,30 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	private EmpresaManager empresaManager;
 	private PausaPreenchimentoVagasManager pausaPreenchimentoVagasManager;
 
-	public Integer getCount(char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds)
+	public Integer getCount(char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim)
 	{
 		Usuario usuario = new Usuario();
 		usuario.setId(usuarioId);
 
-		return getDao().getCount(visualizar, empresaId, usuario, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds);
+		return getDao().getCount(visualizar, empresaId, usuario, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds, codigoBusca, dataInicio, dataFim);
 	}
 	
-	public Integer getCount(char visualizar, Long empresaId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca)
+	public Integer getCount(char visualizar, Long empresaId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, String codigoBusca, Date dataInicio, Date dataFim)
 	{
-		return getDao().getCount(visualizar, empresaId, null, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, null);
+		return getDao().getCount(visualizar, empresaId, null, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, null, codigoBusca, dataInicio, dataFim);
 	}
 
-	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds)
+	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim)
 	{
 		Usuario usuario = new Usuario();
 		usuario.setId(usuarioId);
 
-		return getDao().findAllByVisualizacao(page, pagingSize, visualizar, empresaId, usuario, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds);
+		return getDao().findAllByVisualizacao(page, pagingSize, visualizar, empresaId, usuario, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, areasIds, codigoBusca, dataInicio, dataFim);
 	}
 
-	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca)
+	public Collection<Solicitacao> findAllByVisualizacao(int page, int pagingSize, char visualizar, Long empresaId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, String codigoBusca, Date dataInicio, Date dataFim)
 	{
-		return getDao().findAllByVisualizacao(page, pagingSize, visualizar,empresaId, null, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, null);
+		return getDao().findAllByVisualizacao(page, pagingSize, visualizar,empresaId, null, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, descricaoBusca, statusBusca, null, codigoBusca, dataInicio, dataFim);
 	}
 
 	@Override
@@ -319,6 +319,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		return getDao().findByEmpresaEstabelecimentosAreas(empresaId, estabelecimentosIds, areasIds);
 	}
 
+	@SuppressWarnings("deprecation")
 	public void atualizaStatusSolicitacaoByColaborador(Colaborador colaborador,	char status, boolean disponibilizarCandidato) 
 	{
 		if(colaborador.getSolicitacao() != null && colaborador.getSolicitacao().getId() != null)

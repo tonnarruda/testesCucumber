@@ -98,8 +98,9 @@ public class SolicitacaoListAction extends MyActionSupportList
     private Cargo cargo = new Cargo();
     private String descricaoBusca;
     private char statusBusca = 'T';
+    private String codigoBusca;
     
-    private String json;
+	private String json;
     private char statusSolicitacaoAnterior;
     private Date dataStatusSolicitacaoAnterior;
     private char statusCandSol;
@@ -121,16 +122,16 @@ public class SolicitacaoListAction extends MyActionSupportList
 		
 		if(roleMovSolicitacaoSelecao)
 		{
-			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca));
-			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca);
+			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, codigoBusca, dataIni, dataFim));
+			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, codigoBusca, dataIni, dataFim);
 		}
 		else
 		{
 			Usuario usuario = getUsuarioLogado();
 			Long[] areasIdsComFilhas = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(usuario, getEmpresaSistema().getId());
 			
-			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), usuario.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, areasIdsComFilhas));
-			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), usuario.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, areasIdsComFilhas);
+			setTotalSize(solicitacaoManager.getCount(visualizar, getEmpresaSistema().getId(), usuario.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, areasIdsComFilhas, codigoBusca, dataIni, dataFim));
+			solicitacaos = solicitacaoManager.findAllByVisualizacao(getPage(), getPagingSize(), visualizar, getEmpresaSistema().getId(), usuario.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), descricaoBusca, statusBusca, areasIdsComFilhas, codigoBusca, dataIni, dataFim);
 		}
 
 		if(solicitacaos == null || solicitacaos.size() == 0)
@@ -525,9 +526,17 @@ public class SolicitacaoListAction extends MyActionSupportList
 	public void setDataIni(Date dataIni) {
 		this.dataIni = dataIni;
 	}
+	
+	public Date getDataIni() {
+		return dataIni;
+	}
 
 	public void setDataFim(Date dataFim) {
 		this.dataFim = dataFim;
+	}
+
+	public Date getDataFim() {
+		return dataFim;
 	}
 
 	public HashMap getStatus() {
@@ -568,6 +577,14 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public void setStatusBusca(char statusBusca) {
 		this.statusBusca = statusBusca;
+	}
+	
+	public String getCodigoBusca() {
+		return codigoBusca;
+	}
+
+	public void setCodigoBusca(String codigoBusca) {
+		this.codigoBusca = codigoBusca;
 	}
 
 	public void setTransactionManager(PlatformTransactionManager transactionManager) {

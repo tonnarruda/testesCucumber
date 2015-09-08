@@ -11,7 +11,7 @@
 		<!-- SOLICITACAO MAE -->
 		<action name="list" class="com.fortes.rh.web.action.captacao.SolicitacaoListAction" method="list">
 			<interceptor-ref name="defaultListStack">
-	    		<param name="scope.session">descricaoBusca,visualizar,statusBusca,motivoSolicitacao.id,areaOrganizacional.id,estabelecimento.id,cargo.id,page,showFilter</param>
+	    		<param name="scope.session">codigoBusca,descricaoBusca,visualizar,statusBusca,motivoSolicitacao.id,areaOrganizacional.id,estabelecimento.id,cargo.id,page,showFilter</param>
 	    	</interceptor-ref>	
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/solicitacaoList.ftl</result>
 		</action>

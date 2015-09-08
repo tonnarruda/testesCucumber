@@ -330,8 +330,10 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 
 		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
 		solicitacao1.setId(1L);
+		solicitacao1.setData(new Date());
 		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
 		solicitacao2.setId(2L);
+		solicitacao2.setData(new Date());
 
 		Collection<Solicitacao> solicitacaos = new ArrayList<Solicitacao>();
 		solicitacaos.add(solicitacao1);
@@ -340,10 +342,10 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		char visualizar = 'E';
 		char status = 'T';
 
-		solicitacaoDao.expects(once()).method("getCount").with(new Constraint[] { eq(visualizar), eq(empresa.getId()), eq(usuario), eq(estabelecimento.getId()), eq(areaOrganizacional.getId()), eq(cargo.getId()), eq(motivoSolicitacao.getId()), ANYTHING, eq(status), ANYTHING })
+		solicitacaoDao.expects(once()).method("getCount").with(new Constraint[] { eq(visualizar), eq(empresa.getId()), eq(usuario), eq(estabelecimento.getId()), eq(areaOrganizacional.getId()), eq(cargo.getId()), eq(motivoSolicitacao.getId()), ANYTHING, eq(status), ANYTHING, eq(null), ANYTHING, eq(null) })
 				.will(returnValue(solicitacaos.size()));
 
-		int resutado = solicitacaoManager.getCount(visualizar, empresa.getId(), usuario.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), "desc", status, null);
+		int resutado = solicitacaoManager.getCount(visualizar, empresa.getId(), usuario.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivoSolicitacao.getId(), "desc", status, null, null, new Date(), null);
 
 		assertEquals(solicitacaos.size(), resutado);
 	}
@@ -367,19 +369,18 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		solicitacao2.setId(2L);
 		Solicitacao solicitacao3 = SolicitacaoFactory.getSolicitacao();
 		solicitacao3.setId(3L);
+		solicitacao3.setData(new Date());
 
 		Collection<Solicitacao> solicitacaos = new ArrayList<Solicitacao>();
-		solicitacaos.add(solicitacao1);
-		solicitacaos.add(solicitacao2);
 		solicitacaos.add(solicitacao3);
 
 		char visualizar = 'E';
 		char status = 'T';
 
 		solicitacaoDao.expects(once()).method("findAllByVisualizacao").with(
-				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(empresa.getId()), eq(usuario), eq(estabelecimento.getId()), eq(areaOrganizacional.getId()), eq(cargo.getId()), eq(motivo.getId()), eq(null), eq(status), ANYTHING }).will(returnValue(solicitacaos));
+				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(empresa.getId()), eq(usuario), eq(estabelecimento.getId()), eq(areaOrganizacional.getId()), eq(cargo.getId()), eq(motivo.getId()), eq(null), eq(status), ANYTHING, eq("3"), eq(null), ANYTHING }).will(returnValue(solicitacaos));
 
-		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, empresa.getId(), usuario.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivo.getId(), null, status, null);
+		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, empresa.getId(), usuario.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivo.getId(), null, status, null, "3", null, new Date() );
 
 		assertEquals(solicitacaos.size(), resultado.size());
 	}
@@ -398,8 +399,10 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 
 		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
 		solicitacao1.setId(1L);
+		solicitacao1.setData(DateUtil.criarAnoMesDia(2015, 01, 01));
 		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
 		solicitacao2.setId(2L);
+		solicitacao2.setData(DateUtil.criarAnoMesDia(2015, 01, 31));
 
 		Collection<Solicitacao> solicitacaos = new ArrayList<Solicitacao>();
 		solicitacaos.add(solicitacao1);
@@ -408,10 +411,10 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		char visualizar = 'E';
 		char status = 'T';
 
-		solicitacaoDao.expects(once()).method("getCount").with(new Constraint[] { eq(visualizar), eq(empresa.getId()), ANYTHING, eq(estabelecimento.getId()), eq(areaOrganizacional.getId()), eq(cargo.getId()), eq(motivo.getId()), ANYTHING, eq(status), ANYTHING }).will(
+		solicitacaoDao.expects(once()).method("getCount").with(new Constraint[] { eq(visualizar), eq(empresa.getId()), ANYTHING, eq(estabelecimento.getId()), eq(areaOrganizacional.getId()), eq(cargo.getId()), eq(motivo.getId()), ANYTHING, eq(status), ANYTHING, eq(null), eq(DateUtil.criarAnoMesDia(2015, 01, 01)), eq(DateUtil.criarAnoMesDia(2015, 01, 31)) }).will(
 				returnValue(solicitacaos.size()));
 
-		int resultado = solicitacaoManager.getCount(visualizar, empresa.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivo.getId(), null, status);
+		int resultado = solicitacaoManager.getCount(visualizar, empresa.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivo.getId(), null, status, null, DateUtil.criarAnoMesDia(2015, 01, 01), DateUtil.criarAnoMesDia(2015, 01, 31));
 
 		assertEquals(solicitacaos.size(), resultado);
 	}
@@ -444,9 +447,9 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		char status = 'T';
 
 		solicitacaoDao.expects(once()).method("findAllByVisualizacao").with(
-				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(empresa.getId()), eq(null), eq(estabelecimento.getId()), eq(areaOrganizacional.getId()), eq(cargo.getId()), eq(motivo.getId()), eq(null), eq(status), eq(null) }).will(returnValue(solicitacaos));
+				new Constraint[] { eq(1), eq(15), eq(visualizar), eq(empresa.getId()), eq(null), eq(estabelecimento.getId()), eq(areaOrganizacional.getId()), eq(cargo.getId()), eq(motivo.getId()), eq(null), eq(status), eq(null), eq(""), eq(null), eq(null) }).will(returnValue(solicitacaos));
 
-		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, empresa.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivo.getId(), null, status);
+		Collection<Solicitacao> resultado = solicitacaoManager.findAllByVisualizacao(1, 15, visualizar, empresa.getId(), estabelecimento.getId(), areaOrganizacional.getId(), cargo.getId(), motivo.getId(), null, status, "", null, null);
 
 		assertEquals(solicitacaos.size(), resultado.size());
 	}
