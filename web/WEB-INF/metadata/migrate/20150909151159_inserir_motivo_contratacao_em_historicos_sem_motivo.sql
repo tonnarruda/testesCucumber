@@ -1,0 +1,1 @@
+update historicocolaborador set motivo = 'C' where motivo = '' or motivo is null;

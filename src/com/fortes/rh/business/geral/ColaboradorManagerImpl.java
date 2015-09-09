@@ -1365,6 +1365,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			HistoricoColaborador historicoColaborador = new HistoricoColaborador();
 			historicoColaborador.setColaborador(colaborador);
 			historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+			historicoColaborador.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
 			historicoColaboradorManager.bindSituacao(tSituacao, historicoColaborador);
 			historicoColaboradorManager.save(historicoColaborador);
 		}
