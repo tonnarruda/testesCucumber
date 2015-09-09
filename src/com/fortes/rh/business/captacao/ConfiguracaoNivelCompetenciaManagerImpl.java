@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -418,7 +419,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId, data);
 		Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId);
 
-		Map<String, String> competenciaNiveis = new HashMap<String, String>();
+		Map<String, String> competenciaNiveis = new TreeMap<String, String>();
 		for (ConfiguracaoNivelCompetencia competencia : configuracaoNivelCompetencias) 
 			competenciaNiveis.put(competencia.getCompetenciaDescricao(), competencia.getNivelCompetencia().getDescricao());
 
@@ -437,6 +438,44 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		}
 
 		return matrizModelo;
+	}
+	
+	public Collection<MatrizCompetenciaNivelConfiguracao> montaMatrizCNCByQuestionario(ColaboradorQuestionario colaboradorQuestionario, Long empresaId) 
+	{
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.findByData(colaboradorQuestionario.getRespondidaEm(), colaboradorQuestionario.getColaborador().getId(), colaboradorQuestionario.getAvaliador().getId(), colaboradorQuestionario.getId());
+		if(configuracaoNivelCompetenciaColaborador != null){
+			Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasExigidasPelaFaixa = getDao().findCompetenciaByFaixaSalarial(configuracaoNivelCompetenciaColaborador.getFaixaSalarial().getId(), colaboradorQuestionario.getRespondidaEm());
+				
+			Collection<ConfiguracaoNivelCompetencia> competenciasDoColaborador = getDao().findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId());
+			
+			Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId);
+	
+			Map<String, String> competenciaNiveis = new TreeMap<String, String>();
+			for (ConfiguracaoNivelCompetencia competencia : configuracaoNivelCompetenciasExigidasPelaFaixa) 
+				competenciaNiveis.put(competencia.getCompetenciaDescricao(), competencia.getNivelCompetencia().getDescricao());
+	
+			Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
+			for (Map.Entry<String, String> competenciaNivel : competenciaNiveis.entrySet()) 
+			{
+				for (NivelCompetencia nivel : niveis) 
+				{
+					boolean isConfiguracaoColaborador = false;
+					for (ConfiguracaoNivelCompetencia competenciaDoColaborador : competenciasDoColaborador) {
+						if(competenciaNivel.getKey().equals(competenciaDoColaborador.getCompetenciaDescricao()) && competenciaDoColaborador.getNivelCompetencia().getDescricao().equals(nivel.getDescricao())){
+							competenciasDoColaborador.remove(configuracaoNivelCompetenciaColaborador);
+							isConfiguracaoColaborador = true;
+							break;
+						}
+					}
+	
+					boolean isConfiguracaoFaixa = competenciaNivel.getValue().equals(nivel.getDescricao());
+					matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaNivel.getKey(), nivel.getOrdem() + " - " + nivel.getDescricao(), isConfiguracaoFaixa, isConfiguracaoColaborador));
+	
+				}
+			}
+			return matrizModelo;
+		}
+		else return null;
 	}
 
 	public Collection<ConfiguracaoNivelCompetenciaVO> montaMatrizCompetenciaCandidato(Long empresaId, Long faixaSalarialId, Long solicitacaoId) 

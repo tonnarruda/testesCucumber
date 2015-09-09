@@ -2,9 +2,9 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="respostasAvaliacao" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="7be2f284-932e-4ab4-bec3-a53166b68b58">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.5937424601000028"/>
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -12,90 +12,11 @@
 	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
 	<parameter name="observacoes" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="observacoes_modelo" class="java.lang.String" isForPrompting="false"/>
-	<field name="colaboradorQuestionarioId" class="java.lang.Long"/>
-	<field name="perguntaId" class="java.lang.Long"/>
-	<field name="perguntaOrdem" class="java.lang.Integer"/>
-	<field name="perguntaTexto" class="java.lang.String"/>
-	<field name="perguntaHasComentario" class="java.lang.Boolean"/>
-	<field name="perguntaTipo" class="java.lang.Integer"/>
-	<field name="respostaId" class="java.lang.Long"/>
-	<field name="respostaFormatada" class="java.lang.String"/>
-	<field name="aspectoId" class="java.lang.Long"/>
-	<field name="aspectoNome" class="java.lang.String"/>
-	<field name="colaboradorQuestionarioObservacao" class="java.lang.String"/>
-	<field name="colaboradorRespostaRespostaId" class="java.lang.Long"/>
-	<field name="colaboradorRespostaValor" class="java.lang.Integer"/>
-	<field name="comentarioResposta" class="java.lang.String"/>
-	<field name="pathImage" class="java.lang.String"/>
-	<field name="perguntaTextoComentario" class="java.lang.String"/>
-	<field name="colaboradorQuestionarioPerformanceFormatada" class="java.lang.String"/>
+	<parameter name="NOME_DO_CARGO" class="java.lang.String"/>
+	<field name="respostasQuestionario" class="java.lang.Object"/>
+	<field name="matrizCompetecias" class="java.lang.Object"/>
+	<field name="colaboradorQuestionarioPerformance" class="java.lang.String"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count"/>
-	<group name="grp_aspecto">
-		<groupExpression><![CDATA[$F{aspectoId}]]></groupExpression>
-		<groupHeader>
-			<band height="19" splitType="Stretch">
-				<textField isBlankWhenNull="false">
-					<reportElement uuid="1c54959f-9b36-4d90-ae33-40746ca3c34a" key="textField" mode="Opaque" x="0" y="5" width="534" height="14" backcolor="#EEEEEE"/>
-					<box leftPadding="5" rightPadding="5">
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement verticalAlignment="Middle"/>
-					<textFieldExpression><![CDATA[( $F{aspectoNome} != null ? $F{aspectoNome} : "Sem aspecto" )]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band splitType="Stretch"/>
-		</groupFooter>
-	</group>
-	<group name="grp_pergunta">
-		<groupExpression><![CDATA[$F{perguntaId}]]></groupExpression>
-		<groupHeader>
-			<band height="30" splitType="Stretch">
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement uuid="0bd7f140-f7fc-4ea1-acc3-eb24e9dbd149" key="textField" positionType="Float" x="15" y="14" width="519" height="14"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement/>
-					<textFieldExpression><![CDATA[$F{perguntaOrdem} + ") " + $F{perguntaTexto}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupHeader>
-		<groupFooter>
-			<band height="33" splitType="Prevent">
-				<printWhenExpression><![CDATA[new Boolean($F{perguntaTipo}.intValue() != 3 && $F{comentarioResposta} != null && $F{comentarioResposta} != "")]]></printWhenExpression>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-					<reportElement uuid="2909ea9e-a252-4b42-9e7b-9705e78a0d00" key="textField-3" positionType="Float" x="31" y="15" width="503" height="18"/>
-					<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
-						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement/>
-					<textFieldExpression><![CDATA[$F{comentarioResposta}]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-					<reportElement uuid="ca591076-f646-4035-8913-bedd0f109618" key="textField" x="31" y="1" width="503" height="14"/>
-					<box>
-						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					</box>
-					<textElement/>
-					<textFieldExpression><![CDATA[$F{perguntaTextoComentario}]]></textFieldExpression>
-				</textField>
-			</band>
-		</groupFooter>
-	</group>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -105,7 +26,7 @@
 	<pageHeader>
 		<band height="54" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement uuid="a1bec533-f035-49f4-b5da-712f4768fed0" key="subreport-1" x="0" y="0" width="534" height="50"/>
+				<reportElement key="subreport-1" x="0" y="0" width="534" height="50" uuid="a1bec533-f035-49f4-b5da-712f4768fed0"/>
 				<subreportParameter name="CABECALHO">
 					<subreportParameterExpression><![CDATA[$P{CABECALHO}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -116,7 +37,7 @@
 	<columnHeader>
 		<band height="33" splitType="Stretch">
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement uuid="44340212-f343-4153-a235-434a968101ad" key="textField-4" positionType="Float" x="285" y="19" width="249" height="14"/>
+				<reportElement key="textField-4" positionType="Float" x="285" y="19" width="249" height="14" uuid="44340212-f343-4153-a235-434a968101ad"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -124,10 +45,10 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA["Performance: " + $F{colaboradorQuestionarioPerformanceFormatada}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Performance: " + $F{colaboradorQuestionarioPerformance}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement uuid="ec4fe9da-0f26-456f-b519-b18face5329c" key="textField-5" x="2" y="0" width="532" height="14" isRemoveLineWhenBlank="true"/>
+				<reportElement key="textField-5" x="2" y="0" width="532" height="14" isRemoveLineWhenBlank="true" uuid="ec4fe9da-0f26-456f-b519-b18face5329c"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -140,30 +61,17 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="16" splitType="Prevent">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="40093067-0b83-4662-bf6e-3dd47f268199" key="textField" positionType="Float" x="31" y="2" width="502" height="14"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement/>
-				<textFieldExpression><![CDATA[$F{respostaFormatada}]]></textFieldExpression>
-			</textField>
-			<image scaleImage="FillFrame">
-				<reportElement uuid="4f73df60-7861-4d6c-8dd9-3966aa8bdbce" key="image-1" positionType="Float" x="17" y="4" width="9" height="9">
-					<printWhenExpression><![CDATA[new Boolean($F{pathImage} != null)]]></printWhenExpression>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<imageExpression><![CDATA[$F{pathImage}]]></imageExpression>
-			</image>
+		<band height="44" splitType="Stretch">
+			<subreport>
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="2" width="534" height="41" isPrintWhenDetailOverflows="true" uuid="8e2839ae-8a5d-4185-9576-622620f80ac4"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[$F{respostasQuestionario}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "respostasAvaliacao_sub.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</detail>
 	<columnFooter>
@@ -172,7 +80,7 @@
 	<pageFooter>
 		<band height="15" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="33f39832-aae5-427b-b92d-b494e05cf601" key="textField-1" x="308" y="2" width="186" height="13"/>
+				<reportElement key="textField-1" x="308" y="2" width="186" height="13" uuid="33f39832-aae5-427b-b92d-b494e05cf601"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -183,34 +91,31 @@
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement uuid="313e3d55-69eb-49f5-8e1e-0d123165d8a4" key="textField-2" x="501" y="2" width="32" height="13"/>
+				<reportElement key="textField-2" x="501" y="2" width="32" height="13" uuid="313e3d55-69eb-49f5-8e1e-0d123165d8a4"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
 				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="44" splitType="Prevent">
-			<printWhenExpression><![CDATA[new Boolean($P{observacoes} != null)]]></printWhenExpression>
+		<band height="103" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
-				<reportElement uuid="948ad7e3-0d89-4dcc-8bf6-3e8c2c5168b3" key="textField" x="2" y="28" width="532" height="16"/>
+				<reportElement key="textField" x="2" y="28" width="532" height="16" uuid="948ad7e3-0d89-4dcc-8bf6-3e8c2c5168b3"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
 				<textFieldExpression><![CDATA[$P{observacoes}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="6275f1f5-e1c8-4ce5-be17-e7ea0f1cb8b0" key="staticText-1" x="2" y="13" width="116" height="14"/>
+				<reportElement key="staticText-1" x="2" y="13" width="116" height="14" uuid="6275f1f5-e1c8-4ce5-be17-e7ea0f1cb8b0"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -220,6 +125,25 @@
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Observações:]]></text>
 			</staticText>
+			<subreport>
+				<reportElement x="0" y="57" width="535" height="40" uuid="89eba27f-14c5-4a3b-8a28-d3865ca252d7"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NOME_DO_CARGO">
+					<subreportParameterExpression><![CDATA[$P{NOME_DO_CARGO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="EXIBIR_COMPETENCIAS_COLABORADOR">
+					<subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="IS_AUTO_AVALIACAO">
+					<subreportParameterExpression><![CDATA[false]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_DATA_SOURCE">
+					<subreportParameterExpression><![CDATA[$F{matrizCompetecias}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "questionario_avaliacao_competencias_sub.jasper"]]></subreportExpression>
+			</subreport>
 		</band>
 	</summary>
 </jasperReport>

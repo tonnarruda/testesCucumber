@@ -121,6 +121,7 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		p.add(Projections.property("cncc.data"), "data");
 		p.add(Projections.property("co.nome"), "projectionColaboradorNome");
 		p.add(Projections.property("ca.nome"), "projectionCargoNome");
+		p.add(Projections.property("fs.id"), "projectionFaixaSalarialId");
 		p.add(Projections.property("fs.nome"), "projectionFaixaSalarialNome");
 
 		criteria.setProjection(p);

@@ -29,7 +29,7 @@ import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
-import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
+import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionario;
 
 @SuppressWarnings("unchecked")
 public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<ColaboradorResposta> implements ColaboradorRespostaDao
@@ -674,7 +674,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		return query.list();
 	}
 
-	public Collection<RespostaQuestionarioVO> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId) 
+	public Collection<RespostaQuestionario> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId) 
 	{
 		StringBuffer hql = new StringBuffer();
 		hql.append("select cq.id, cq.performance, p.id as pergunta_id, p.ordem as pergunta_ordem, p.texto as pergunta_texto, p.comentario as pergunta_comentario, p.textocomentario as pergunta_textocomentario, p.tipo as pergunta_tipo, ");
@@ -713,12 +713,12 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		query.addScalar("cr_resposta_valor", Hibernate.INTEGER);
 		query.addScalar("cr_comentario", Hibernate.STRING);
 		
-		Collection<RespostaQuestionarioVO> vos = new ArrayList<RespostaQuestionarioVO>();
+		Collection<RespostaQuestionario> vos = new ArrayList<RespostaQuestionario>();
 		Collection<Object[]> lista = query.list();
 		int i;
 		for (Object[] obj : lista) {
 			i = 0;
-			vos.add(new RespostaQuestionarioVO((Long)obj[i++], (Double)obj[i++], (Long)obj[i++], (Integer)obj[i++], (String)obj[i++], (Boolean)obj[i++], (String)obj[i++], (Integer)obj[i++], (Long)obj[i++], (Integer)obj[i++], (String)obj[i++], (Integer)obj[i++], (Long)obj[i++], (String)obj[i++], (String)obj[i++], (Long)obj[i++], (Integer)obj[i++], (String)obj[i++]));
+			vos.add(new RespostaQuestionario((Long)obj[i++], (Double)obj[i++], (Long)obj[i++], (Integer)obj[i++], (String)obj[i++], (Boolean)obj[i++], (String)obj[i++], (Integer)obj[i++], (Long)obj[i++], (Integer)obj[i++], (String)obj[i++], (Integer)obj[i++], (Long)obj[i++], (String)obj[i++], (String)obj[i++], (Long)obj[i++], (Integer)obj[i++], (String)obj[i++]));
 		}
 		return vos;
 	}

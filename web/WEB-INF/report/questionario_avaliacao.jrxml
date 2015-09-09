@@ -13,6 +13,7 @@
 	</parameter>
 	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
 	<parameter name="IS_AUTO_AVALIACAO" class="java.lang.Boolean"/>
+	<parameter name="NOME_DO_CARGO" class="java.lang.String"/>
 	<field name="questionarioRelatorio.avaliacaoExperiencia.titulo" class="java.lang.String"/>
 	<field name="questionarioRelatorio.avaliacaoExperiencia.dataInicio" class="java.util.Date"/>
 	<field name="questionarioRelatorio.avaliacaoExperiencia.dataFim" class="java.util.Date"/>
@@ -188,6 +189,12 @@
 				<reportElement key="subreport-5" positionType="Float" x="0" y="124" width="533" height="38" isPrintWhenDetailOverflows="true" uuid="eecadda2-e015-4477-a306-a884487baebc"/>
 				<subreportParameter name="SUBREPORT_DIR">
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="NOME_DO_CARGO">
+					<subreportParameterExpression><![CDATA[$P{NOME_DO_CARGO}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="EXIBIR_COMPETENCIAS_COLABORADOR">
+					<subreportParameterExpression><![CDATA[false]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="IS_AUTO_AVALIACAO">
 					<subreportParameterExpression><![CDATA[$P{IS_AUTO_AVALIACAO}]]></subreportParameterExpression>

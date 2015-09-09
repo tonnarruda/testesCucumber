@@ -13,7 +13,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjetiva;
-import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
+import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionario;
 import com.fortes.rh.security.spring.aop.callback.ColaboradorRespostaAuditorCallbackImpl;
 import com.fortes.security.auditoria.Audita;
 
@@ -42,7 +42,7 @@ public interface ColaboradorRespostaManager extends GenericManager<ColaboradorRe
 	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostas(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao);
 	Collection<QuestionarioResultadoPerguntaObjetiva> calculaPercentualRespostasMultipla(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao);
 	void removeFichas(Long[] colaboradorQuestionarioIds);
-	Collection<RespostaQuestionarioVO> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId);
+	Collection<RespostaQuestionario> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId);
 	Usuario findUsuarioParaAuditoria(Long usuarioId);
 	Integer countColaboradorAvaliacaoRespondida(Long avaliacaoId);
 	boolean existeRespostaSemCargo(Long[] perguntasIds);

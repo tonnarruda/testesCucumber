@@ -48,6 +48,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
+import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionario;
 import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -101,7 +102,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	
 	private Collection<ColaboradorResposta> colaboradorRespostas;
 	private Collection<CandidatoSolicitacao> candidatoSolicitacaos;
-	private Collection<RespostaQuestionarioVO> respostaQuestionarioVOs;
+	private RespostaQuestionarioVO questionarioVO;
 	private Collection<Pergunta> perguntas;
 	private Collection<Avaliacao> avaliacaoExperiencias = new ArrayList<Avaliacao>();
 	private Collection<QuestionarioAvaliacaoVO> questionarioAvaliacaoVOs;
@@ -380,16 +381,24 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	public String imprimirAvaliacaoDesempenhoRespondida()
 	{
 		colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionario.getId());
-		colaborador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getColaborador().getId());
+		colaborador = colaboradorManager.findColaboradorByDataHistorico(colaboradorQuestionario.getColaborador().getId(), colaboradorQuestionario.getRespondidaEm());
 		avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
+
+		Collection<RespostaQuestionario> respostaQuestionario = colaboradorRespostaManager.findRespostasAvaliacaoDesempenho(colaboradorQuestionario.getId());
 		
-		respostaQuestionarioVOs = colaboradorRespostaManager.findRespostasAvaliacaoDesempenho(colaboradorQuestionario.getId());
+		questionarioVO = new RespostaQuestionarioVO();
+		questionarioVO.setRespostasQuestionario(respostaQuestionario);
+		questionarioVO.setMatrizCompetecias(configuracaoNivelCompetenciaManager.montaMatrizCNCByQuestionario(colaboradorQuestionario, colaborador.getEmpresa().getId()));
+		questionarioVO.setColaboradorQuestionarioPerformance(respostaQuestionario.iterator().next().getColaboradorQuestionarioPerformanceFormatada());
+		
+		
 		String filtro = colaboradorQuestionario.getAvaliacaoDesempenho().getTitulo();
 		filtro += "\nAvaliador: " + avaliador.getNome();
 		filtro += "\nAvaliado: " + colaborador.getNome();
 
 		parametros = RelatorioUtil.getParametrosRelatorio("Avaliação de Desempenho", getEmpresaSistema(), filtro);
 		parametros.put("observacoes", colaboradorQuestionario.getObservacao());
+		parametros.put("NOME_DO_CARGO", colaborador.getFaixaSalarial().getNomeDeCargoEFaixa());
 		
 		if (colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getCabecalho() != null)
 			parametros.put("observacoes_modelo", colaboradorQuestionario.getAvaliacao().getCabecalho());
@@ -422,6 +431,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		parametros = RelatorioUtil.getParametrosRelatorio(titulo, getEmpresaSistema(), filtro);
 		parametros.put("IS_AUTO_AVALIACAO", colaborador.getId().equals(avaliador.getId()));
+		parametros.put("NOME_DO_CARGO", colaborador.getHistoricoColaborador().getFaixaSalarial().getNomeDeCargoEFaixa());
 		
 		return Action.SUCCESS;
 	}
@@ -955,10 +965,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		this.preview = preview;
 	}
 
-	public Collection<RespostaQuestionarioVO> getRespostaQuestionarioVOs() {
-		return respostaQuestionarioVOs;
-	}
-
 	public void setConfiguracaoNivelCompetenciaColaboradorManager(
 			ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager) {
 		this.configuracaoNivelCompetenciaColaboradorManager = configuracaoNivelCompetenciaColaboradorManager;
@@ -1004,6 +1010,14 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	
 	public Collection<QuestionarioAvaliacaoVO> getQuestionarioAvaliacaoVOs() {
 		return questionarioAvaliacaoVOs;
+	}
+
+	public RespostaQuestionarioVO getQuestionarioVO() {
+		return questionarioVO;
+	}
+
+	public void setQuestionarioVO(RespostaQuestionarioVO questionarioVO) {
+		this.questionarioVO = questionarioVO;
 	}
 
 	public void setCandidatoSolicitacaoManager(

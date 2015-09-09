@@ -7,7 +7,7 @@ import java.util.List;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
 import com.fortes.rh.model.pesquisa.Questionario;
-import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
+import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionario;
 
 public interface ColaboradorRespostaDao extends GenericDao<ColaboradorResposta>
 {
@@ -36,7 +36,7 @@ public interface ColaboradorRespostaDao extends GenericDao<ColaboradorResposta>
 	
 	List<Object[]> countRespostasMultiplas(Long avaliadoId, Long avaliacaoDesempenhoId, boolean desconsiderarAutoAvaliacao);
 
-	Collection<RespostaQuestionarioVO> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId);
+	Collection<RespostaQuestionario> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId);
 
 	Integer countColaboradorAvaliacaoRespondida(Long avaliacaoId);
 

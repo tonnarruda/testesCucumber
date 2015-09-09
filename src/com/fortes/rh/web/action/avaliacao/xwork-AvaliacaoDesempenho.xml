@@ -105,7 +105,7 @@
 		<action name="imprimirAvaliacaoDesempenhoRespondida" class="com.fortes.rh.web.action.pesquisa.ColaboradorQuestionarioEditAction" method="imprimirAvaliacaoDesempenhoRespondida">
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/respostasAvaliacao.jasper</param>
-				<param name="dataSource">respostaQuestionarioVOs</param>
+				<param name="dataSource">questionarioVO</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">respostasAvaliacao.pdf</param>
 			</result>

@@ -457,6 +457,69 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		assertEquals(9, result.size());
 	}
 
+	public void testMontaMatrizCNCByQuestionario(){
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+		
+		Colaborador avaliado = ColaboradorFactory.getEntity(1L);
+		avaliado.setNome("Avaliado");
+		
+		Colaborador avaliador = ColaboradorFactory.getEntity(1L);
+		avaliador.setNome("Avaliador");
+
+		NivelCompetencia nivelRuim = NivelCompetenciaFactory.getEntity();
+		nivelRuim.setDescricao("ruim");
+		nivelRuim.setOrdem(1);
+		
+		NivelCompetencia nivelPessimo = NivelCompetenciaFactory.getEntity();
+		nivelPessimo.setDescricao("Péssimo");
+		nivelPessimo.setOrdem(2);
+		
+		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity();
+		nivelBom.setDescricao("bom");
+		nivelBom.setOrdem(3);
+
+		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(1L);
+		configuracaoNivelCompetenciaColaborador.setFaixaSalarial(faixaSalarial);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(1L);
+		colaboradorQuestionario.setRespondidaEm(new Date());
+		colaboradorQuestionario.setColaborador(avaliado);
+		colaboradorQuestionario.setAvaliador(avaliador);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1ExigidoPelaFaixa = criaConfigCompetencia("Comunicação", faixaSalarial, nivelRuim, TipoCompetencia.ATITUDE, null);
+		configuracaoNivelCompetencia1ExigidoPelaFaixa.setId(1L);
+
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2ExigidoPelaFaixa = criaConfigCompetencia("Conhecimento Técnico", faixaSalarial, nivelBom, TipoCompetencia.CONHECIMENTO, null);
+		configuracaoNivelCompetencia2ExigidoPelaFaixa.setId(2L);
+
+
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1DoColaborador = criaConfigCompetencia("Comunicação", faixaSalarial, nivelPessimo, TipoCompetencia.ATITUDE, null);
+		configuracaoNivelCompetencia1DoColaborador.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
+		configuracaoNivelCompetencia1DoColaborador.setId(3L);
+
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2DoColaborador = criaConfigCompetencia("Conhecimento Técnico", faixaSalarial, nivelBom, TipoCompetencia.CONHECIMENTO, null);
+		configuracaoNivelCompetencia2DoColaborador.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
+		configuracaoNivelCompetencia2DoColaborador.setId(4L);
+		
+		Collection<NivelCompetencia> niveisCompetencia = Arrays.asList(nivelBom, nivelRuim, nivelPessimo);
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasDoColaborador = Arrays.asList(configuracaoNivelCompetencia1DoColaborador, configuracaoNivelCompetencia2DoColaborador);
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasExigidasPelaFaixa = Arrays.asList(configuracaoNivelCompetencia1ExigidoPelaFaixa,configuracaoNivelCompetencia2ExigidoPelaFaixa);
+
+		configuracaoNivelCompetenciaColaboradorManager.expects(once()).method("findByData").with(eq(colaboradorQuestionario.getRespondidaEm()), eq(colaboradorQuestionario.getColaborador().getId()), eq(colaboradorQuestionario.getAvaliador().getId()), eq(colaboradorQuestionario.getId())).will(returnValue(configuracaoNivelCompetenciaColaborador));
+		
+		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(configuracaoNivelCompetenciaColaborador.getId()), eq(colaboradorQuestionario.getRespondidaEm())).will(returnValue(configuracaoNivelCompetenciasExigidasPelaFaixa));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findByConfiguracaoNivelCompetenciaColaborador").with(eq(configuracaoNivelCompetenciaColaborador.getId())).will(returnValue(configuracaoNivelCompetenciasDoColaborador));
+		
+		nivelCompetenciaManager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(niveisCompetencia));
+		
+		Collection<MatrizCompetenciaNivelConfiguracao> matrizCompetencias = configuracaoNivelCompetenciaManager.montaMatrizCNCByQuestionario(colaboradorQuestionario, empresa.getId()); 
+		
+		assertEquals(6, matrizCompetencias.size());
+	}	
+
 	public void testMontaMatrizCompetenciaCandidato()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);

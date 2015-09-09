@@ -41,7 +41,7 @@ import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Pesquisa;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.model.pesquisa.Resposta;
-import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionarioVO;
+import com.fortes.rh.model.pesquisa.relatorio.RespostaQuestionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
@@ -817,7 +817,7 @@ public class ColaboradorRespostaDaoHibernateTest extends GenericDaoHibernateTest
 
 		colaboradorRespostaDao.findEntidadeComAtributosSimplesById(colaboradorResposta1.getId());
 		
-		Collection<RespostaQuestionarioVO> colaboradorRespostas = colaboradorRespostaDao.findRespostasAvaliacaoDesempenho(colaboradorQuestionario.getId());
+		Collection<RespostaQuestionario> colaboradorRespostas = colaboradorRespostaDao.findRespostasAvaliacaoDesempenho(colaboradorQuestionario.getId());
 		assertEquals(2, colaboradorRespostas.size());
 	}
 	
