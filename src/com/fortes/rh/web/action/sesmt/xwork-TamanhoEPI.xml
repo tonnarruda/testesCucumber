@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="tamanhoEPI" extends="default" namespace="/sesmt/tamanhoEPI">
+		<action name="list" class="com.fortes.rh.web.action.sesmt.TamanhoEPIListAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/tamanhoEPIList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.sesmt.TamanhoEPIListAction" method="delete">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/tamanhoEPIList.ftl</result>
+		</action>
+		<action name="prepareInsert" class="com.fortes.rh.web.action.sesmt.TamanhoEPIEditAction" method="prepareInsert">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/tamanhoEPIEdit.ftl</result>
+		</action>
+		<action name="prepareUpdate" class="com.fortes.rh.web.action.sesmt.TamanhoEPIEditAction" method="prepareUpdate">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/tamanhoEPIEdit.ftl</result>
+		</action>
+		<action name="insert" class="com.fortes.rh.web.action.sesmt.TamanhoEPIEditAction" method="insert">
+			<result name="success" type="redirect">list.action</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/tamanhoEPIEdit.ftl</result>
+		</action>
+		<action name="update" class="com.fortes.rh.web.action.sesmt.TamanhoEPIEditAction" method="update">
+			<result name="success" type="redirect">list.action</result>
+			<result name="error" type="freemarker">/WEB-INF/forms/sesmt/tamanhoEPIEdit.ftl</result>
+		</action>
+	</package>
+</xwork>

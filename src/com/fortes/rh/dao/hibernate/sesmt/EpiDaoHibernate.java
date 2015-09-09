@@ -277,9 +277,10 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 		getSession().flush();
 		
 		StringBuilder sql = new StringBuilder();
-		sql.append("select e.id, e.nome, e.fabricante, e.ativo, eh.CA, eh.vencimentoCA, true as relacionadoAoColaborador ");
+		sql.append("select e.id, e.nome, e.fabricante, e.ativo, eh.CA, eh.vencimentoCA, true as relacionadoAoColaborador, te.id as tipoEPIId ");
 		sql.append("from historicofuncao_epi hfe ");
 		sql.append("inner join epi e on hfe.epis_id = e.id ");
+		sql.append("inner join tipoepi te on e.tipoepi_id = te.id ");
 		sql.append("inner join epihistorico eh on eh.epi_id = e.id ");
 		sql.append("inner join historicofuncao hf on hfe.historicofuncao_id = hf.id ");
 		sql.append("inner join historicocolaborador hc on hc.funcao_id = hf.funcao_id ");
@@ -288,9 +289,10 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 		sql.append("and hc.data = (select max(hc2.data) from historicocolaborador hc2 where hc2.colaborador_id=hc.colaborador_id ) ");
 		sql.append("and eh.data = (select max(eh2.data) from epihistorico eh2 where eh2.epi_id=e.id group by eh2.id order by eh2.id desc limit 1) ");
 		sql.append("union ");
-		sql.append("select e.id, e.nome, e.fabricante, e.ativo, eh.CA, eh.vencimentoCA, false as relacionadoAoColaborador ");
+		sql.append("select e.id, e.nome, e.fabricante, e.ativo, eh.CA, eh.vencimentoCA, false as relacionadoAoColaborador, te.id  ");
 		sql.append("from epi e ");
 		sql.append("inner join epihistorico eh on eh.epi_id = e.id ");
+		sql.append("inner join tipoepi te on e.tipoepi_id = te.id ");
 		sql.append("where e.empresa_id = :empresaId ");
 		if (somenteAtivos)
 			sql.append("and e.ativo = true ");
@@ -325,9 +327,11 @@ public class EpiDaoHibernate extends GenericDaoHibernate<Epi> implements EpiDao
 			
 			try {
 				epi.getEpiHistorico().setVencimentoCA(sDF.parse(obj[++i].toString()));
+				System.out.println(obj[i].toString());
 			} catch (Exception e) {e.printStackTrace();}
 			
 			epi.setRelacionadoAoColaborador(new Boolean(obj[++i].toString()));
+			epi.setTipoEPIId(new BigInteger(obj[++i].toString()).longValue());
 			epis.add(epi);
 		}
 		

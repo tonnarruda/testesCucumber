@@ -10,8 +10,9 @@ import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 public interface SolicitacaoEpiItemManager extends GenericManager<SolicitacaoEpiItem>
 {
 	Collection<SolicitacaoEpiItem> findBySolicitacaoEpi(Long solicitacaoEpiId);
-	void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, String[] selectMotivoSolicitacaoEpi, Date dataEntrega, boolean entregue);
+	void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, String[] selectMotivoSolicitacaoEpi, Date dataEntrega, boolean entregue, String[] selectTamanhoEpi);
 	void removeAllBySolicitacaoEpi(Long solicitacaoEpiId);
 	Collection<SolicitacaoEpiItem> findAllEntregasBySolicitacaoEpi(Long solicitacaoEpiId);
 	SolicitacaoEpiItem findByIdProjection(Long id);
+	Integer countByTipoEPIAndTamanhoEPI(Long tipoEPIId, Long tamanhoEPIId);
 }

@@ -1099,5 +1099,31 @@
       <ref bean="motivoSolicitacaoEpiManagerTarget" />
     </property>
   </bean>
+  <bean id="tamanhoEPIManagerTarget" class="com.fortes.rh.business.sesmt.TamanhoEPIManagerImpl">
+    <property name="dao">
+      <ref bean="tamanhoEPIDao" />
+    </property>
+  </bean>
+  <bean id="tamanhoEPIManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.TamanhoEPIManager</value>
+    </property>
+    <property name="target">
+      <ref bean="tamanhoEPIManagerTarget" />
+    </property>
+  </bean>  
+  <bean id="tipoTamanhoEPIManagerTarget" class="com.fortes.rh.business.sesmt.TipoTamanhoEPIManagerImpl">
+    <property name="dao">
+      <ref bean="tipoTamanhoEPIDao" />
+    </property>
+  </bean>
+  <bean id="tipoTamanhoEPIManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.TipoTamanhoEPIManager</value>
+    </property>
+    <property name="target">
+      <ref bean="tipoTamanhoEPIManagerTarget" />
+    </property>
+  </bean>  
 </beans>
 

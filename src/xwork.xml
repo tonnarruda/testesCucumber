@@ -334,6 +334,7 @@
   <include file="/com/fortes/rh/web/action/sesmt/xwork-HistoricoAmbiente.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-Cat.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-TipoEPI.xml" />
+  <include file="/com/fortes/rh/web/action/sesmt/xwork-TamanhoEPI.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-Risco.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-Anexo.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-Ppra.xml" />

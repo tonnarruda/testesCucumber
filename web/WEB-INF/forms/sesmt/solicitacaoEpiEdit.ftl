@@ -8,10 +8,12 @@
 		
 		.blue { color: blue; }
 		.gray { color: #454C54; }
+		
+		option.inativo { background-color: rgb(236, 236, 236); }
 	</style>
 
 	<#include "../ftl/mascarasImports.ftl" />
-	<#assign showFilter = true/>
+	<#assign showFilter = true />
 	<#include "../ftl/showFilterImports.ftl" />
 
 	<#if solicitacaoEpi.id?exists>
@@ -25,6 +27,9 @@
 	</#if>
 
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
+
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 
 	<script>
 		$(function() {
@@ -40,6 +45,8 @@
 			check = validaCheck(document.forms[1], 'epiIds', "Selecione pelo menos um EPI.");
 			if (check)
 			{
+				$(".inativo").removeAttr("disabled");
+				
 				idsQtdSolicitado = getIdsInputQtdSolicitado(document.forms[1]);
 				validaDatas = new Array('data');
 							
@@ -58,9 +65,18 @@
 					}				
 				}
 				
+				var selectTamanhosAtivos = $("form:eq(1)").find("select[name=selectTamanhoEpi]").not(":disabled");
+				
+				$(selectTamanhosAtivos).each(function(){
+					idsQtdSolicitado.push($(this).attr("id"));
+				});
+				
 				validaForm = validaFormulario('form', idsQtdSolicitado, validaDatas);
 			}
-	
+			
+			if(!validaForm)
+				$(".inativo").attr("disabled", "disabled");
+			
 			return check && validaForm;
 		}
 	
@@ -129,9 +145,11 @@
 		{
 			var idCheckbox = "selectQtdSolicitado_" + elementCheck.value;
 			var idSelect = "selectMotivoSolicitacaoEpi_" + elementCheck.value;
+			var idTamanho = "selectTamanhoEpi_" + elementCheck.value;
 			
 			var quantidade = document.getElementById(idCheckbox);
 			var motivo = document.getElementById(idSelect);
+			var tamanho = document.getElementById(idTamanho);
 	
 			if(quantidade.disabled)
 			{
@@ -148,6 +166,11 @@
 				motivo.disabled = false;
 			else
 				motivo.disabled = true;
+			
+			if(tamanho.disabled)
+				tamanho.disabled = false;
+			else
+				tamanho.disabled = true;
 		}
 	
 		function configuraCampos()
@@ -161,8 +184,10 @@
 					var elementForm = document.forms[1].elements[i];
 					if ((elementForm != null) && (elementForm.type == 'checkbox') && (elementForm.checked))
 					{
-						id1 = "selectQtdSolicitado_" + elementForm.value;
-						id2 = "selectMotivoSolicitacaoEpi_" + elementForm.value;
+						var idCheck = elementForm.value;
+						id1 = "selectQtdSolicitado_" + idCheck;
+						id2 = "selectMotivoSolicitacaoEpi_" + idCheck;
+						id3 = "selectTamanhoEpi_" + idCheck;
 	
 						if(id1 != "selectQtdSolicitado_on")
 						{
@@ -174,6 +199,30 @@
 							var elementSelect = document.getElementById(id2);
 							elementSelect.disabled = false;
 						}
+						
+						if(id3 != "selectTamanhoEpi_on") {
+							var elementSelect = document.getElementById(id3);
+							elementSelect.disabled = false;
+						}
+						
+						/*
+						if(id3 != "selectTamanhoEpi_on") {
+							idTipoEPI = "#update_tipoEPI" + idCheck;
+							tamanhoEPIUSelect = "#update_tamanhoEPISelected" + idCheck;
+							
+							var elementSelect = document.getElementById(id3);
+							var valorIdTipoEPI = $(idTipoEPI).val();
+							var valorTamanhoEPISelect = $(tamanhoEPIUSelect).val(); 
+							
+							console.log(valorIdTipoEPI);
+							console.log(idCheck);
+							console.log(valorTamanhoEPISelect);
+							
+							buscaTamanhos(valorIdTipoEPI, idCheck, valorTamanhoEPISelect);
+							
+							elementSelect.disabled = false;
+						}
+						*/
 					}
 				}
 			}
@@ -190,6 +239,7 @@
 			$('#colaboradorId').val(''); 
 			validaFormulario('formFiltro', null, null);
 		}
+		
 	</script>
 	
 	<#if solicitacaoEpi?exists && solicitacaoEpi.data?exists>
@@ -240,7 +290,7 @@
 						<#assign class="gray"/>
 					</#if>
 					
-					<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.forms[1]);' />" style="width: 30px; text-align: center;">
+					<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.forms[1]);' />" style="width: 25px; text-align: center;">
 						<#assign checked=""/>
 						<#if epiIds?exists>
 							<#list epiIds as epiId>
@@ -249,12 +299,39 @@
 								</#if>
 							</#list>
 						</#if>
+						
+						<#if lista[1].tamanhoEPI?exists && lista[1].tamanhoEPI.id?exists>
+							<#assign tamanhoEPIId=lista[1].tamanhoEPI.id/>
+						<#else>
+							<#assign tamanhoEPIId=-1/>
+						</#if>
+						
+						<@ww.hidden name="tipoEPI${lista[0].id}" value="${lista[0].tipoEPIId}" />
+						<@ww.hidden name="tamanhoEPISelected${lista[0].id}" value="${tamanhoEPIId}" />
 						<input type="checkbox" value="${lista[0].id}" id="check${lista[0].id}" name="epiIds" onclick="habilitaCampos(this);" ${checked}/>
 					</@display.column>
 	
-					<@display.column title="EPI" style="width:300px;">
+					<@display.column title="EPI" style="width:250px;">
 						<label for="check${lista[0].id}" class="${class}">${lista[0].nomeInativo}</label>
 					</@display.column>
+					
+					<@display.column title="Tamanho" style="width:100px; text-align: center;">
+						<#if (lista[0].tipoEPI.tamanhoEPIs.size() > 0) >
+							<select name="selectTamanhoEpi" id="selectTamanhoEpi_${lista[0].id}" style="width:100px" disabled>
+								<option value="" selected="selected" >Selecione...</option>
+								<#list lista[0].tipoEPI.tamanhoEPIs as tipoTamanhoEPI>
+									<#if lista[1].tamanhoEPI?exists && lista[1].tamanhoEPI.id?exists && tipoTamanhoEPI.tamanhoEPIs.id == lista[1].tamanhoEPI.id>
+										<option value="${tipoTamanhoEPI.tamanhoEPIs.id}" selected="selected" <#if !tipoTamanhoEPI.ativo >disabled="disabled" class="inativo"</#if> >${tipoTamanhoEPI.tamanhoEPIs.descricao}</option>
+									<#else>
+										<option value="${tipoTamanhoEPI.tamanhoEPIs.id}" <#if !tipoTamanhoEPI.ativo >disabled="disabled" class="inativo"</#if>>${tipoTamanhoEPI.tamanhoEPIs.descricao}</option>
+									</#if>
+								</#list>
+							</select>
+						<#else>
+						 	– 
+						</#if>
+					</@display.column>
+					
 	
 					<@display.column title="Fabricante">
 						<label for="check${lista[0].id}" class="${class}">${lista[0].fabricante}</label>
@@ -264,7 +341,7 @@
 						<label for="check${lista[0].id}" class="${class}">${lista[0].epiHistorico.CA}</label>
 					</@display.column>
 	
-					<@display.column title="Quantidade" style="width:50px;">
+					<@display.column title="Quantidade" style="width:40px;">
 						<#if lista[1].qtdSolicitado?exists>
 							<#assign qtdSolicitado = lista[1].qtdSolicitado?string />
 						<#else>
@@ -273,8 +350,8 @@
 						<input type="text" name="selectQtdSolicitado" onkeypress="return somenteNumeros(event,'')" value="${qtdSolicitado}" id="selectQtdSolicitado_${lista[0].id}" disabled style="text-align:right; vertical-align:top; width: 80px;border:1px solid #BEBEBE;"/>
 					</@display.column>
 	
-					<@display.column title="Motivo da Solicitação" style="width:200px">
-						<select name="selectMotivoSolicitacaoEpi" id="selectMotivoSolicitacaoEpi_${lista[0].id}"  style="width:200px" disabled>
+					<@display.column title="Motivo da Solicitação" style="width:150px">
+						<select name="selectMotivoSolicitacaoEpi" id="selectMotivoSolicitacaoEpi_${lista[0].id}"  style="width:150px" disabled>
 							<option value="" selected="selected" >Selecione...</option>
 							<#list motivoSolicitacaoEpis as motivo>
 								<#if lista[1].motivoSolicitacaoEpi?exists && lista[1].motivoSolicitacaoEpi.id?exists && motivo.id == lista[1].motivoSolicitacaoEpi.id>

@@ -490,6 +490,21 @@
       <ref bean="motivoSolicitacaoEpiDaoTarget" />
     </property>
   </bean>
+  <bean id="tamanhoEPIDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.sesmt.TamanhoEPIDao</value>
+    </property>
+    <property name="target">      <ref bean="tamanhoEPIDaoTarget" />
+    </property>
+  </bean>
+  <bean id="tipoTamanhoEPIDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.sesmt.TipoTamanhoEPIDao</value>
+    </property>
+    <property name="target">
+      <ref bean="tipoTamanhoEPIDaoTarget" />
+    </property>
+  </bean>
 </beans>
 
 

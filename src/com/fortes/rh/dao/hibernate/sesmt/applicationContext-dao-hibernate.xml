@@ -320,6 +320,16 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="tamanhoEPIDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.TamanhoEPIDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
+  <bean id="tipoTamanhoEPIDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.TipoTamanhoEPIDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
 
 

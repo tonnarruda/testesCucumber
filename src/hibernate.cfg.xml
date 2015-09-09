@@ -94,6 +94,7 @@
     <mapping class="com.fortes.rh.model.sesmt.Ambiente" />
     <mapping class="com.fortes.rh.model.sesmt.Cat" />
     <mapping class="com.fortes.rh.model.sesmt.TipoEPI" />
+    <mapping class="com.fortes.rh.model.sesmt.TamanhoEPI" />
     <mapping class="com.fortes.rh.model.sesmt.HistoricoAmbiente" />
     <mapping class="com.fortes.rh.model.sesmt.Risco" />
     <mapping class="com.fortes.rh.model.sesmt.Anexo" />
@@ -192,6 +193,7 @@
     <mapping class="com.fortes.rh.model.sesmt.EpcPcmat" />
     <mapping class="com.fortes.rh.model.sesmt.SinalizacaoPcmat" />
     <mapping class="com.fortes.rh.model.sesmt.MotivoSolicitacaoEpi" />
+    <mapping class="com.fortes.rh.model.sesmt.TipoTamanhoEPI" />
   </session-factory>
 
 

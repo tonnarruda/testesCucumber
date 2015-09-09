@@ -1,15 +1,19 @@
 package com.fortes.rh.model.sesmt;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
 
+@SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="tipoepi_sequence", allocationSize=1)
 public class TipoEPI extends AbstractModel implements Serializable
@@ -20,6 +24,9 @@ public class TipoEPI extends AbstractModel implements Serializable
     private String codigo;
     @ManyToOne
     private Empresa empresa;
+    
+    @OneToMany(fetch=FetchType.LAZY, mappedBy="tipoEPI")
+	private Collection<TipoTamanhoEPI> tamanhoEPIs;
 
     public TipoEPI() 
     {
@@ -67,5 +74,13 @@ public class TipoEPI extends AbstractModel implements Serializable
 		if (this.empresa == null)
 			this.empresa = new Empresa();
 		this.empresa.setId(empresaIdProjection);
+	}
+
+	public Collection<TipoTamanhoEPI> getTamanhoEPIs() {
+		return tamanhoEPIs;
+	}
+
+	public void setTamanhoEPIs(Collection<TipoTamanhoEPI> tamanhoEPIs) {
+		this.tamanhoEPIs = tamanhoEPIs;
 	}
 }

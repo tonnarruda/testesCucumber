@@ -11,6 +11,7 @@ import com.fortes.rh.business.sesmt.MotivoSolicitacaoEpiManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemEntregaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
+import com.fortes.rh.business.sesmt.TipoEPIManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.Colaborador;
@@ -20,6 +21,7 @@ import com.fortes.rh.model.sesmt.MotivoSolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
+import com.fortes.rh.model.sesmt.TamanhoEPI;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.opensymphony.xwork.Action;
@@ -34,6 +36,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
 	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
 	private MotivoSolicitacaoEpiManager motivoSolicitacaoEpiManager;
+	private TipoEPIManager tipoEPIManager;
 
 	private Colaborador colaborador;
 	private SolicitacaoEpi solicitacaoEpi;
@@ -49,12 +52,14 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	private String[] selectQtdEntregue;
 	private String[] epiIds;
 	private String[] selectMotivoSolicitacaoEpi;
+	private String[] selectTamanhoEpi;
 
 	private Date dataEntrega;
 	private boolean entregue;
 	private boolean insert;
 	private Collection<EpiHistorico> epiHistoricos;
 	private Collection<MotivoSolicitacaoEpi> motivoSolicitacaoEpis; 
+	private Collection<TamanhoEPI> tamanhoEpis; 
 
 	public String execute() throws Exception
 	{
@@ -83,6 +88,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	
 			for (Epi epi : epis)
 			{
+				epi.setTipoEPI(tipoEPIManager.findById(epi.getTipoEPIId()));
 				listaEpis[i][0] = epi;
 				listaEpis[i][1] = new SolicitacaoEpiItem();
 				i++;
@@ -110,7 +116,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
-		solicitacaoEpiItems = solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacaoEpi.getId());
+		solicitacaoEpiItems = solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacaoEpi.getId()); ////aqui problema
 		epiIds = new String[solicitacaoEpiItems.size()];
 
 		// Preparando os EPIs marcados e as quantidades solicitadas
@@ -146,7 +152,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 			solicitacaoEpi.setEstabelecimento(colaborador.getEstabelecimento());
 			solicitacaoEpi.setEmpresa(getEmpresaSistema());
 
-			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, selectMotivoSolicitacaoEpi, dataEntrega, entregue);
+			solicitacaoEpiManager.save(solicitacaoEpi, epiIds, selectQtdSolicitado, selectMotivoSolicitacaoEpi, dataEntrega, entregue, selectTamanhoEpi);
 			
 			addActionSuccess("Solicitação gravada com sucesso.");
 			return SUCCESS;
@@ -169,7 +175,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	public String update() throws Exception
 	{
-		solicitacaoEpiManager.update(solicitacaoEpi, epiIds, selectQtdSolicitado, selectMotivoSolicitacaoEpi);
+		solicitacaoEpiManager.update(solicitacaoEpi, epiIds, selectQtdSolicitado, selectMotivoSolicitacaoEpi, selectTamanhoEpi);
 		return SUCCESS;
 	}
 	
@@ -441,5 +447,21 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	public void setSelectMotivoSolicitacaoEpi(String[] selectMotivoSolicitacaoEpi)
 	{
 		this.selectMotivoSolicitacaoEpi = selectMotivoSolicitacaoEpi;
+	}
+
+	public String[] getSelectTamanhoEpi() {
+		return selectTamanhoEpi;
+	}
+
+	public void setSelectTamanhoEpi(String[] selectTamanhoEpi) {
+		this.selectTamanhoEpi = selectTamanhoEpi;
+	}
+
+	public Collection<TamanhoEPI> getTamanhoEpis() {
+		return tamanhoEpis;
+	}
+
+	public void setTipoEPIManager(TipoEPIManager tipoEPIManager) {
+		this.tipoEPIManager = tipoEPIManager;
 	}
 }

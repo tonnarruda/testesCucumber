@@ -30,6 +30,9 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 	@ManyToOne(fetch = FetchType.EAGER)
 	private MotivoSolicitacaoEpi motivoSolicitacaoEpi;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	private TamanhoEPI tamanhoEPI;
+	
 	private Integer qtdSolicitado=0;
 	
 	@OneToMany(mappedBy="solicitacaoEpiItem", cascade=CascadeType.ALL)
@@ -52,6 +55,24 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 			this.solicitacaoEpi = new SolicitacaoEpi();
 
 		this.solicitacaoEpi.setData(data);
+	}
+	
+	public void setIdTamanhoEPI(Long id){
+		
+		if (this.tamanhoEPI == null) {
+			this.tamanhoEPI = new TamanhoEPI();
+		}
+		
+		this.tamanhoEPI.setId(id);
+	}
+	
+	public void setDescricaoTamanhoEPI(String descricao){
+		
+		if (this.tamanhoEPI == null) {
+			this.tamanhoEPI = new TamanhoEPI();
+		}
+		
+		this.tamanhoEPI.setDescricao(descricao);
 	}
 
 	private void inicializaEpi() {
@@ -149,5 +170,13 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 	public void setMotivoSolicitacaoEpi(MotivoSolicitacaoEpi motivoSolicitacaoEpi)
 	{
 		this.motivoSolicitacaoEpi = motivoSolicitacaoEpi;
+	}
+
+	public TamanhoEPI getTamanhoEPI() {
+		return tamanhoEPI;
+	}
+
+	public void setTamanhoEPI(TamanhoEPI tamanhoEPI) {
+		this.tamanhoEPI = tamanhoEPI;
 	}
 }

@@ -60,10 +60,8 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 	private Date vencimentoCA;
 	@Transient
 	private String informativo;
-//	@Transient
-//	private Estabelecimento estabelecimento;
-//	@Transient
-//	private char situacao;
+	@Transient
+	private TamanhoEPI tamanhoEPI;
 
 	public SolicitacaoEpi()
 	{
@@ -266,5 +264,13 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 	public void setEstabelecimento(Estabelecimento estabelecimento)
 	{
 		this.estabelecimento = estabelecimento;
+	}
+
+	public TamanhoEPI getTamanhoEPI() {
+		return tamanhoEPI;
+	}
+
+	public void setTamanhoEPI(TamanhoEPI tamanhoEPI) {
+		this.tamanhoEPI = tamanhoEPI;
 	}
 }

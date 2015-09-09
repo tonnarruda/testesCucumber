@@ -577,6 +577,7 @@
 				/sesmt/historicoAmbiente/*/**=ROLE_CAD_AMBIENTE
 				/sesmt/risco/*/**=ROLE_CAD_RISCO
 				/sesmt/tipoEPI/*/**=ROLE_CAD_TIPO_EPI
+				/sesmt/tamanhoEPI/*/**=ROLE_CAD_TAMANHO_EPI
 				/sesmt/risco/*/**=ROLE_CAD_RISCO
 				/sesmt/epc/*/**=ROLE_CAD_EPC
 				/sesmt/exame/prepareRelatorioExamesRealizados*/**=ROLE_CAD_SOLICITACAOEXAME

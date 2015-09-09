@@ -201,7 +201,9 @@ public class Entidade extends LinkedHashMap<String, String> {
 		put("tabelareajustecolaborador", "planejamento de realinhamento");
 		put("tipodespesa", "tipo de despesa");
 		put("tipodocumento", "tipo de documento");
-		put("tipoepi", "tipo de EPI");
+		put("tipoepi", "tipo de EPI/Fardamento");
+		put("tamanhoepi", "tamanho de EPI/Fardamento ");
+		put("tamanhoepi_tipoepi", "tamanho dos tipos de EPI/Fardamento");
 		put("turma", "turma");
 		put("turma_avaliacaoturma", "avaliações de curso da turma");
 		put("turmatipodespesa", "despesas da turma");

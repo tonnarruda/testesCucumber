@@ -289,7 +289,6 @@ function addOptionsByCollection(selectId, dados, prompt, label)
 	var label = label ? label : 'nome';
 
 	dados.sort(function(a,b) {
-		console.log(a);
 		if (a[label].toLowerCase() < b[label].toLowerCase()) return -1;
 	    if (a[label].toLowerCase() > b[label].toLowerCase()) return 1;
 	    return 0;

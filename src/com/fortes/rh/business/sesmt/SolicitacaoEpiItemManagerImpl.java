@@ -13,6 +13,7 @@ import com.fortes.rh.model.sesmt.MotivoSolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
+import com.fortes.rh.model.sesmt.TamanhoEPI;
 
 public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<SolicitacaoEpiItem, SolicitacaoEpiItemDao> implements SolicitacaoEpiItemManager
 {
@@ -35,7 +36,7 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 		return solicitacaoEpiItems;
 	}
 
-	public void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, String[] selectMotivoSolicitacaoEpi, Date dataEntrega, boolean entregue)
+	public void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, String[] selectMotivoSolicitacaoEpi, Date dataEntrega, boolean entregue, String[] selectTamanhoEpi)
 	{
 		if (epiIds != null && selectQtdSolicitado != null)
 		{
@@ -55,8 +56,17 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 				else 
 					motivoSolicitacaoEpi.setId(Long.valueOf(selectMotivoSolicitacaoEpi[i]));
 				
+				TamanhoEPI tamanhoEPI;
+				if (StringUtils.isBlank(selectTamanhoEpi[i])) {
+					tamanhoEPI = null;
+				} else {
+					tamanhoEPI = new TamanhoEPI();
+					tamanhoEPI.setId(Long.valueOf(selectTamanhoEpi[i]));
+				}
+				
 				solicitacaoEpiItem.setQtdSolicitado(Integer.valueOf(selectQtdSolicitado[i]));
 				solicitacaoEpiItem.setMotivoSolicitacaoEpi(motivoSolicitacaoEpi);
+				solicitacaoEpiItem.setTamanhoEPI(tamanhoEPI);
 				
 				solicitacaoEpiItem.setEpi(epiTmp);
 				solicitacaoEpiItem.setSolicitacaoEpi(solicitacaoEpi);
@@ -92,6 +102,10 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 	public SolicitacaoEpiItem findByIdProjection(Long id) 
 	{
 		return getDao().findByIdProjection(id);
+	}
+	
+	public Integer countByTipoEPIAndTamanhoEPI(Long tipoEPIId, Long tamanhoEPIId) {
+		return getDao().countByTipoEPIAndTamanhoEPI(tipoEPIId, tamanhoEPIId);
 	}
 	
 	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {

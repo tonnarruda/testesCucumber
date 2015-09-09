@@ -37,9 +37,9 @@
 	</#if>
 
 	<#if avaliacaoRespondida == true>
-		<#assign somenteLeitura = true/>
+		<#assign somenteLeitura = true />
 	<#else>
-		<#assign somenteLeitura = false/>
+		<#assign somenteLeitura = false />
 	</#if>
 
 	<#if turma.custo?exists>

@@ -46,6 +46,9 @@ public class Epi extends AbstractModel implements Serializable
 
     @OneToMany(fetch=FetchType.LAZY, mappedBy="epi")
     private Collection<SolicitacaoEpiItem> solicitacaoEpiItems;
+    
+    @Transient
+    private Long tipoEPIId;
 
     public Epi()
     { }
@@ -195,5 +198,13 @@ public class Epi extends AbstractModel implements Serializable
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
+	}
+
+	public Long getTipoEPIId() {
+		return tipoEPIId;
+	}
+
+	public void setTipoEPIId(Long tipoEPIId) {
+		this.tipoEPIId = tipoEPIId;
 	}
 }
