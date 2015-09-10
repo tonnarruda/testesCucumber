@@ -24,7 +24,7 @@ public interface SolicitacaoExameManager extends GenericManager<SolicitacaoExame
 	void transferirCandidatoToColaborador(Long empresaId, Long candidatoId, Long colaboradorId);
 	void transferirColaboradorToCandidato(Long empresaId, Long candidatoId, Long colaboradorId);
 	Collection<SolicitacaoExame> getRelatorioAtendimentos(Date inicio, Date fim, SolicitacaoExame solicitacaoExame, Empresa empresa, boolean agruparPorMotivo, boolean ordenarPorNome, String[] motivos, char situacao) throws ColecaoVaziaException;
-	AsoRelatorio montaRelatorioAso(Empresa empresa, SolicitacaoExame solicitacaoExame) throws ColecaoVaziaException;
+	AsoRelatorio montaRelatorioAso(Empresa empresa, SolicitacaoExame solicitacaoExame, String imprimirAsoComRiscoPor) throws ColecaoVaziaException;
 	MedicoCoordenador setMedicoByQuantidade(Collection<MedicoCoordenador> medicoCoordenadors);
 	SolicitacaoExame findByIdProjection(Long id);
 	void removeByCandidato(Long candidatoId);

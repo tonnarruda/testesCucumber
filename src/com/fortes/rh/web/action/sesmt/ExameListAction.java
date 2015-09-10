@@ -96,6 +96,7 @@ public class ExameListAction extends MyActionSupportList
 
 	private boolean imprimirAfastados = false;
 	private boolean imprimirDesligados = false;
+	private String imprimirASOComRiscoPor = "AF";
 
 	private Character tipoPessoa = 'T';
 	private boolean relatorioExamesPrevistosResumido;
@@ -161,7 +162,7 @@ public class ExameListAction extends MyActionSupportList
 	{
 		try
 		{
-			asoRelatorio = solicitacaoExameManager.montaRelatorioAso(getEmpresaSistema(), solicitacaoExame);
+			asoRelatorio = solicitacaoExameManager.montaRelatorioAso(getEmpresaSistema(), solicitacaoExame, imprimirASOComRiscoPor);
 			parametros = RelatorioUtil.getParametrosRelatorio("SERVIÇO DE MEDICINA OCUPACIONAL", getEmpresaSistema(), "ATESTADO DE SAÚDE OCUPACIONAL - ASO");
 			
 			boolean existeExames = false;
@@ -595,6 +596,11 @@ public class ExameListAction extends MyActionSupportList
 
 	public void setExibirCampoObservacao(boolean exibirCampoObservacao) {
 		this.exibirCampoObservacao = exibirCampoObservacao;
+	}
+
+	public void setImprimirASOComRiscoPor(String imprimirASOComRiscoPor)
+	{
+		this.imprimirASOComRiscoPor = imprimirASOComRiscoPor;
 	}
 
 }

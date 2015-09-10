@@ -1,7 +1,10 @@
 package com.fortes.rh.business.sesmt;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.PersistenceException;
 
@@ -150,7 +153,8 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 		return resultado;
 	}
 
-	public AsoRelatorio montaRelatorioAso(Empresa empresa, SolicitacaoExame solicitacaoExame) throws ColecaoVaziaException 
+	@SuppressWarnings("unchecked")
+	public AsoRelatorio montaRelatorioAso(Empresa empresa, SolicitacaoExame solicitacaoExame, String considerarRiscoPor) throws ColecaoVaziaException 
 	{
 		if (solicitacaoExame == null || solicitacaoExame.getId() == null)
 			throw new ColecaoVaziaException("Solicitação/Atendimento médico inválido.");
@@ -163,7 +167,6 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 		
 		if(solicitacaoExame.getColaborador() != null && solicitacaoExame.getColaborador().getId() != null)
 		{
-			Collection<Risco> riscos = null;
 			HistoricoColaborador historicoColaborador = historicoColaboradorManager.getHistoricoAtual(solicitacaoExame.getColaborador().getId());
 			if (historicoColaborador == null) {
 				historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(solicitacaoExame.getColaborador().getId());
@@ -172,19 +175,34 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 			if (historicoColaborador != null && historicoColaborador.getFuncao() != null && asoRelatorio != null && asoRelatorio.getColaborador() != null)
 				asoRelatorio.getColaborador().setFuncao(historicoColaborador.getFuncao());
 
-			if (empresa.getControlaRiscoPor() == 'A' && empresa.isExibirDadosAmbiente() && historicoColaborador != null && historicoColaborador.getAmbiente() != null && historicoColaborador.getAmbiente().getId() != null)
-			{
-				riscos = riscoAmbienteManager.findRiscosByAmbienteData(historicoColaborador.getAmbiente().getId(), solicitacaoExame.getData());
-				asoRelatorio.formataRiscos(riscos);
-			}
-			else if (empresa.getControlaRiscoPor() == 'F' && historicoColaborador != null && historicoColaborador.getFuncao() != null && historicoColaborador.getFuncao().getId() != null)
-			{
-				riscos = riscoFuncaoManager.findRiscosByFuncaoData(historicoColaborador.getFuncao().getId(), solicitacaoExame.getData());
-				asoRelatorio.formataRiscos(riscos);
-			}
+			configuraRiscos(empresa, solicitacaoExame, considerarRiscoPor, asoRelatorio, historicoColaborador);
 		}
 		
 		return asoRelatorio;
+	}
+
+	private void configuraRiscos(Empresa empresa, SolicitacaoExame solicitacaoExame, String considerarRiscoPor, AsoRelatorio asoRelatorio, HistoricoColaborador historicoColaborador)
+	{
+		Collection<Risco> riscos = null;
+		if (considerarRiscoPor.equals("A") && historicoColaborador != null && historicoColaborador.getAmbiente() != null && historicoColaborador.getAmbiente().getId() != null)
+		{
+			riscos = riscoAmbienteManager.findRiscosByAmbienteData(historicoColaborador.getAmbiente().getId(), solicitacaoExame.getData());
+			asoRelatorio.formataRiscos(riscos);
+		}
+		else if(considerarRiscoPor.equals("F") && historicoColaborador != null && historicoColaborador.getFuncao() != null && historicoColaborador.getFuncao().getId() != null)
+		{
+			riscos = riscoFuncaoManager.findRiscosByFuncaoData(historicoColaborador.getFuncao().getId(), solicitacaoExame.getData());
+			asoRelatorio.formataRiscos(riscos);
+		}
+		else if(considerarRiscoPor.equals("AF") && historicoColaborador != null && 
+				(historicoColaborador.getAmbiente() != null && historicoColaborador.getAmbiente().getId() != null)  && 
+				(historicoColaborador.getFuncao() != null && historicoColaborador.getFuncao().getId() != null))
+		{
+			Set<Risco> riscosAmbienteFuncao = new HashSet<Risco>( riscoAmbienteManager.findRiscosByAmbienteData(historicoColaborador.getAmbiente().getId(), solicitacaoExame.getData()) );
+			riscosAmbienteFuncao.addAll( riscoFuncaoManager.findRiscosByFuncaoData(historicoColaborador.getFuncao().getId(), solicitacaoExame.getData()) );
+			
+			asoRelatorio.formataRiscos(new ArrayList<Risco>(riscosAmbienteFuncao));
+		}
 	}
 	
 	/**
@@ -272,4 +290,5 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 	public void setRiscoFuncaoManager(RiscoFuncaoManager riscoFuncaoManager) {
 		this.riscoFuncaoManager = riscoFuncaoManager;
 	}
+	
 }

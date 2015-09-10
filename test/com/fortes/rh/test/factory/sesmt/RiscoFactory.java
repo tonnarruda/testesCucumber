@@ -23,4 +23,14 @@ public class RiscoFactory
 		
 		return risco;
 	}
+	
+	public static Risco getEntity(Long id, String descricao, String grupoRisco)
+	{
+		Risco risco= getEntity();
+		risco.setId(id);
+		risco.setDescricao(descricao);
+		risco.setGrupoRisco(grupoRisco);
+		
+		return risco;
+	}
 }

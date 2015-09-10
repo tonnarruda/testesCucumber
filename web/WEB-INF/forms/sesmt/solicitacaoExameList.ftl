@@ -55,6 +55,12 @@
 				}
 			}
 		}
+		
+		function selecionarRiscoPor(solicitacaoExameId){
+			$('#solicitacaoExameId').val(solicitacaoExameId);
+			$('#considerarRiscoPorDialog').dialog({ title: 'Imprimir ASO', modal: true, width: 550, height: 150 });
+		}
+		
 	</script>
 
 	<#assign urlImgs><@ww.url includeParams="none" value="/imgs/"/></#assign>
@@ -142,7 +148,7 @@
 			</#if>
 			
 			<#if solicitacaoExame.motivo != motivoCONSULTA && solicitacaoExame.motivo != motivoATESTADO>
-				<a href="../exame/imprimirAso.action?solicitacaoExame.id=${solicitacaoExame.id}"><img border="0" title="Imprimir ASO" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+				<a href="#" onclick="selecionarRiscoPor('${solicitacaoExame.id}')"><img border="0" title="Imprimir ASO" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 			<#else>
 				<img border="0" title="Não é possível imprimir ASO para este tipo de atendimento" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">				
 			</#if>
@@ -188,6 +194,17 @@
 	<div class="buttonGroup">
 		<button onclick="window.location='prepareInsert.action?nomeBusca='+escape($('#nomeBusca').val()) + '&vinculo=' +$('#vinculo').val()+'&primeiraExecucao=true'" accesskey="N" class="btnInserir"></button>
 	</div>
+	
+	<div id="considerarRiscoPorDialog">
+		<@ww.form name="formConsiderarRiscoPor" id="formConsiderarRiscoPor" action="../exame/imprimirAso.action" method="" >
+			<@ww.select label="Imprimir ASO considerando risco por:" name="imprimirASOComRiscoPor" list=r"#{'A':'Ambiente', 'F':'Função', 'AF':'Ambiente e Função', 'N':'Nenhum'}" cssStyle="width: 200px; margin-top: 6px;" />
+			<@ww.hidden name="solicitacaoExame.id" id="solicitacaoExameId"/>
+			
+			<button type="submit" class="btnImprimir grayBG" onclick="$('#considerarRiscoPorDialog').dialog('close');"></button>
+			<button type="button" onclick="$('#considerarRiscoPorDialog').dialog('close'); $('#considerarRiscoPorDialog input').val(''); $('#considerarRiscoPorDialog select').val('');" class="btnCancelar grayBG">	</button>
+		</@ww.form>
+	</div>
+	
 	<script>
 		filtrarOpcao();
 	</script>

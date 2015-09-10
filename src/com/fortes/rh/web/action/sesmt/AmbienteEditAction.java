@@ -177,7 +177,7 @@ public class AmbienteEditAction extends MyActionSupportList
 
 			if (mapasDeRisco.isEmpty()) 
 			{
-				addActionMessage("Não existem riscos ou o grau dos riscos não foi definido para os ambientes selecionados.");
+				addActionMessage("Não existem riscos vinculados ou o grau dos riscos não foi definido para os ambientes selecionados.");
 				prepareRelatorioMapaDeRisco();
 				return Action.INPUT;
 			}

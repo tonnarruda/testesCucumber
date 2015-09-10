@@ -66,7 +66,6 @@ public class Empresa extends AbstractModel implements Serializable
 	private boolean solPessoalReabrirSolicitacao;
 	
 	private boolean exibirSalario;
-	private boolean exibirDadosAmbiente;
     private boolean acIntegra;
     private boolean obrigarAmbienteFuncao;
     private boolean codigoTruCurso; 
@@ -377,14 +376,6 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setMensagemModuloExterno(String mensagemModuloExterno) {
 		this.mensagemModuloExterno = mensagemModuloExterno;
-	}
-
-	public boolean isExibirDadosAmbiente() {
-		return exibirDadosAmbiente;
-	}
-
-	public void setExibirDadosAmbiente(boolean exibirDadosAmbiente) {
-		this.exibirDadosAmbiente = exibirDadosAmbiente;
 	}
 
 	public void setLogoCertificadoUrl(String logoCertificadoUrl)

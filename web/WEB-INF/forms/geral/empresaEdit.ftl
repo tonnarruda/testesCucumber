@@ -237,7 +237,7 @@
 				<h2>SESMT</h2>
 				<ul>
 					<@ww.select label="Controlar risco por" name="empresa.controlaRiscoPor" id="controlaRiscoPor" list=r"#{'A':'Ambiente','F':'Função'}" cssStyle="width: 442px;"/>
-					<br><@ww.checkbox label="Exibir dados do Ambiente nos Relatórios do SESMT" name="empresa.exibirDadosAmbiente" id="exibirDadosAmbiente" labelPosition="right" /><br>
+					<br>
 					<@ww.checkbox label="Tornar obrigatório o preenchimento dos campos de Ambiente e Função para o histórico do colaborador e solicitação de pessoal" name="empresa.obrigarAmbienteFuncao" id="obrigarAmbienteFuncao" labelPosition="right" /><br>
 					<@ww.checkbox label="Exibir logo da empresa ao emitir PPRA e LTCAT" name="empresa.exibirLogoEmpresaPpraLtcat" id="exibirLogoEmpresaPpraLtcat" labelPosition="right" />
 				</ul>
