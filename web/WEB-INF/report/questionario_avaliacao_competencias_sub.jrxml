@@ -4,7 +4,7 @@
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="6.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="88"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -49,7 +49,7 @@
 	<summary>
 		<band height="79" splitType="Prevent">
 			<crosstab>
-				<reportElement key="crosstab-1" stretchType="RelativeToBandHeight" mode="Opaque" x="0" y="56" width="535" height="20" uuid="a00533ba-b1b0-4f81-a359-ccb5b4959b1a"/>
+				<reportElement key="crosstab-1" positionType="Float" mode="Opaque" x="0" y="56" width="535" height="20" uuid="a00533ba-b1b0-4f81-a359-ccb5b4959b1a"/>
 				<crosstabParameter name="IS_AUTO_AVALIACAO" class="java.lang.Boolean">
 					<parameterValueExpression><![CDATA[$P{IS_AUTO_AVALIACAO}]]></parameterValueExpression>
 				</crosstabParameter>
@@ -178,7 +178,7 @@
 							</reportElement>
 						</rectangle>
 						<line direction="BottomUp">
-							<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="13" y="6" width="7" height="10" uuid="1d36385e-f3e6-4eed-82fe-f38441184d33">
+							<reportElement positionType="Float" isPrintRepeatedValues="false" x="13" y="8" width="7" height="10" uuid="1d36385e-f3e6-4eed-82fe-f38441184d33">
 								<printWhenExpression><![CDATA[$V{isConfiguracao}]]></printWhenExpression>
 							</reportElement>
 							<graphicElement>
@@ -186,7 +186,7 @@
 							</graphicElement>
 						</line>
 						<line>
-							<reportElement positionType="Float" stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="8" y="12" width="6" height="4" uuid="bb9f198e-1945-4c3e-a452-5e05608cf8cf">
+							<reportElement positionType="Float" isPrintRepeatedValues="false" x="8" y="14" width="6" height="4" uuid="bb9f198e-1945-4c3e-a452-5e05608cf8cf">
 								<printWhenExpression><![CDATA[$V{isConfiguracao}]]></printWhenExpression>
 							</reportElement>
 							<graphicElement>
