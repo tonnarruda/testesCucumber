@@ -27,6 +27,7 @@ import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
 import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.exception.AreaColaboradorException;
 import com.fortes.rh.exception.FortesException;
@@ -141,13 +142,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 				
 				try
 				{
-					boolean maeSemColaboradores = true;
-					if (areaOrganizacional.getAreaMae() != null && areaOrganizacional.getAreaMae().getId() != null)
-						maeSemColaboradores = verificarColaboradoresAreaMae(areaOrganizacional.getAreaMae());
-
-					if (!maeSemColaboradores)
-						throw new AreaColaboradorException("Não é possível cadastrar área organizacional cuja área mãe tenha colaboradores vinculados.");
-
 					String retorno = acPessoalClientLotacao.criarLotacao(areaOrganizacional, empresa);
 					if (retorno == null || retorno.isEmpty())
 						throw new IntegraACException("Método: AcPessoalClientLotacao.criarLotacao, codigoAC retornou codigo nulo ou vazio.");
@@ -156,6 +150,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 					
 					areaOrganizacional.setCodigoAC(retorno);
 					getDao().saveOrUpdate(areaOrganizacional);
+					
 					// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterar o outro banco.
 					getDao().getHibernateTemplateByGenericDao().flush();
 				}
@@ -183,10 +178,14 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		else
 		{
 			getDao().saveOrUpdate(areaOrganizacional);
+			getDao().getHibernateTemplateByGenericDao().flush();
 		}
+		
+		HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBean("historicoColaboradorManager");
+		historicoColaboradorManager.updateArea(areaOrganizacional.getAreaMae().getId(), areaOrganizacional.getId());
 	}
 
-	private boolean verificarColaboradoresAreaMae(AreaOrganizacional areaMae)
+	public boolean verificarColaboradoresAreaMae(AreaOrganizacional areaMae)
 	{
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 
@@ -212,6 +211,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		update(areaOrganizacional);
 		// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterar o outro banco.
 		getDao().getHibernateTemplateByGenericDao().flush();
+		
+		HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBean("historicoColaboradorManager");
+		historicoColaboradorManager.updateArea(areaOrganizacional.getAreaMae().getId(), areaOrganizacional.getId());
 
 		if(empresa.isAcIntegra())
 		{
@@ -686,22 +688,16 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 		if("".equals(lotacao.getAreaMaeCodigo()))
 			areaOrganizacional.setAreaMae(null);
-		else
-			areaOrganizacional.setAreaMae(getDao().findAreaOrganizacionalByCodigoAc(lotacao.getAreaMaeCodigo(), lotacao.getEmpresaCodigo(), lotacao.getGrupoAC()));
+		else {
+			AreaOrganizacional areaMae = getDao().findAreaOrganizacionalByCodigoAc(lotacao.getAreaMaeCodigo(), lotacao.getEmpresaCodigo(), lotacao.getGrupoAC());
+			areaOrganizacional.setAreaMae(areaMae);
+		}
 		
-		boolean maeSemColaboradores = true;
-		
-		if(areaOrganizacional.getAreaMae() != null && areaOrganizacional.getAreaMae().getId() != null)
-			maeSemColaboradores = verificarColaboradoresAreaMae(areaOrganizacional.getAreaMae());
-
 		if(areaOrganizacional.getResponsavel() == null || areaOrganizacional.getResponsavel().getId() == null)
 			areaOrganizacional.setResponsavel(null);
 
 		if(areaOrganizacional.getCoResponsavel() == null || areaOrganizacional.getCoResponsavel().getId() == null)
 			areaOrganizacional.setCoResponsavel(null);
-		
-		if(!maeSemColaboradores)
-			throw new Exception("Não é possível cadastrar área filha para áreas com colaboradores cadastrados.");
 	}
 
 	public Collection<AreaOrganizacional> getAncestrais(Collection<AreaOrganizacional> areas, Long id) 

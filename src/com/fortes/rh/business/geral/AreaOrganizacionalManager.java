@@ -86,4 +86,5 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Collection<AreaOrganizacional> findAllListAndInativasByUsuarioId(Long empresaId, Long usuarioId, Boolean ativo, Collection<Long> areaInativaIds);
 	public Collection<Long> findIdsAreasFilhas(Collection<Long> areasIds);
 	public Long[] findAreasMaesIdsByEmpresaId(Long empresaId);
+	public boolean verificarColaboradoresAreaMae(AreaOrganizacional areaMae);
 }

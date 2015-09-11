@@ -127,7 +127,6 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	tAreaOrganizacional.setGrupoAC("1");
     	
     	areaOrganizacionalDao.expects(atLeastOnce()).method("findAreaOrganizacionalByCodigoAc").with(eq(tAreaOrganizacional.getAreaMaeCodigo()), eq(tAreaOrganizacional.getEmpresaCodigo()), eq(tAreaOrganizacional.getGrupoAC())).will(returnValue(areaMae));
-    	colaboradorManager.expects(atLeastOnce()).method("findByArea").with(eq(areaMae)).will(returnValue(new ArrayList<Colaborador>()));
     	
     	Exception exp = null;
     	try {
@@ -154,7 +153,6 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	tAreaOrganizacional.setGrupoAC("1");
     	
     	areaOrganizacionalDao.expects(atLeastOnce()).method("findAreaOrganizacionalByCodigoAc").with(eq(tAreaOrganizacional.getAreaMaeCodigo()), eq(tAreaOrganizacional.getEmpresaCodigo()), eq(tAreaOrganizacional.getGrupoAC())).will(returnValue(areaMae));
-    	colaboradorManager.expects(atLeastOnce()).method("findByArea").with(eq(areaMae)).will(returnValue(Arrays.asList(ColaboradorFactory.getEntity())));
     	
     	String msg = "";
     	try {

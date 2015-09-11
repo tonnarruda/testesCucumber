@@ -24,7 +24,7 @@
 	<#assign editaAreaMae="false"/>
 </#if>
 
-<#assign validarCampos="validarCampos();"/>
+<#assign validarCampos="areaMaeSemColaboradores();"/>
 
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
@@ -32,9 +32,9 @@
 <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 
 <script type="text/javascript">
-	function validarCampos()
+	function validarCampos(areaMaeSemColaboradores)
 	{
-		if (validaFormulario('form', new Array('nome'), null, true))
+		if (validaFormulario('form', new Array('nome'), null, true) && areaMaeSemColaboradores)
 		{
 			$('.emailsNotificacoes').each(function() {
 				if ($(this).val() == '')
@@ -82,6 +82,36 @@
 		</#if>
 	}
 	
+	function areaMaeSemColaboradores()
+	{
+		AreaOrganizacionalDWR.areaSemColaboradores( $("#areaMaeId").val(), function(areaSemColaboradores) {  
+			if(!areaSemColaboradores) {
+				$("#areaMaeId").css("background","rgb(255, 238, 194)");
+				$('#areaSemColaboradores').dialog({
+					modal: true,
+					title: 'Aviso',
+					width: 400,
+					buttons: {
+						'Sim': function() {
+							$("#areaMaeId").css("background", "");
+							$(".msgAreaComColaboradores").hide();
+							$('#areaSemColaboradores').dialog('close');
+							validarCampos(true);
+						},
+						'Não': function() {
+							$(".msgAreaComColaboradores").show();
+							$('#areaSemColaboradores').dialog('close');
+							validarCampos(false);
+						}
+					}
+				});
+			} else {
+				$("#areaMaeId").css("background", "");
+				validarCampos(true);
+			}
+		});
+	}
+	
 	$(function() 
 	{
 		$('#tooltipEmailsExtras').qtip({
@@ -105,6 +135,13 @@
 <body>
 	<@ww.actionmessage />
 	<@ww.actionerror />
+	
+	<div class="warning msgAreaComColaboradores" style="display: none;">
+		<div style="float:right;"><a title="Ocultar" href="javascript:;" onclick="$(this).parent().parent().hide();">x</a></div>
+		<ul>
+				<li>Não é possível cadastrar área organizacional cuja área mãe tenha colaboradores vinculados.</li>
+		</ul>
+	</div>
 
 	<@ww.form name="form" id="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 
@@ -120,7 +157,7 @@
 		</#if>
 		
 		<@ww.textfield label="Nome" name="areaOrganizacional.nome" id="nome" cssClass="inputNome" maxLength="60" required="true" disabled="${editaAreaMae}"/>
-		<@ww.select label="Área Mãe" name="areaOrganizacional.areaMae.id" disabled="${editaAreaMae}" list="areas" listKey="id" listValue="descricao" headerValue="" headerKey="-1" cssStyle="width:445px;"/>
+		<@ww.select label="Área Mãe" id="areaMaeId" name="areaOrganizacional.areaMae.id" disabled="${editaAreaMae}" list="areas" listKey="id" listValue="descricao" headerValue="" headerKey="-1" cssStyle="width:445px;"/>
 		<@ww.select label="Responsável" name="areaOrganizacional.responsavel.id" id="responsavel" list="responsaveis" listKey="id" headerValue="" headerKey="" listValue="nomeMaisNomeComercial" onchange="habilitaCoResponsavel(this.value);"/>
 		
 		<@ww.select label="Corresponsável" name="areaOrganizacional.coResponsavel.id" id="coResponsavel" list="coResponsaveis" listKey="id" headerValue="" headerKey="" listValue="nomeMaisNomeComercial" disabled = "${desabilitado}"/>
@@ -135,6 +172,11 @@
 	<@ww.token/>
 	</@ww.form>
 
+	<div id="areaSemColaboradores" style="display:none;">
+		A área mãe possui colaboradores vinculados.
+		</br></br>
+		Deseja transferir os colaboradores da área mãe para a área organizacional que está sendo gravada?
+	</div>
 
 	<div class="buttonGroup">
 		<button onclick="${validarCampos};" class="btnGravar" accesskey="${accessKey}"></button>

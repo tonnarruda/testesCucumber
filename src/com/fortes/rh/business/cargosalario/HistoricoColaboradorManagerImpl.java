@@ -1523,6 +1523,10 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	{
 		getDao().updateStatusAc(statusRetornoAC, id);
 	}
+	
+	public void updateArea(Long areaIdMae, Long areaId) {
+		getDao().updateArea(areaIdMae, areaId);	
+	}
 
 	public Collection<HistoricoColaborador> findByEmpresaComHistorico(Long empresaId, Integer status) 
 	{

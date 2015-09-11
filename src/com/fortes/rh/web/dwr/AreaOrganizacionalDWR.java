@@ -158,6 +158,11 @@ public class AreaOrganizacionalDWR
 		return StringUtil.toJSON(dados, null);
 	}
 	
+	public boolean areaSemColaboradores(Long areaOrganizacionalId) {
+		AreaOrganizacional areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areaOrganizacionalId);
+		return areaOrganizacionalManager.verificarColaboradoresAreaMae(areaOrganizacional);
+	}
+	
 	private void setFilhas(Collection<AreaOrganizacional> areas, AreaOrganizacionalOrganograma areaOrg)
 	{
 		AreaOrganizacionalOrganograma areaOrgFilha = null;
@@ -176,6 +181,7 @@ public class AreaOrganizacionalDWR
 			}
 		}
 	}
+	
 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
 	{

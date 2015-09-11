@@ -1940,6 +1940,31 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		assertEquals(1, historicos.size());
 	}
 	
+	public void testUpdateArea()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional2.setAreaMae(areaOrganizacional);
+		areaOrganizacionalDao.save(areaOrganizacional2);
+		
+		historicoColaboradorDao.updateArea(areaOrganizacional.getId(), areaOrganizacional2.getId());
+
+		HistoricoColaborador historico = historicoColaboradorDao.findByIdProjection(historicoColaborador.getId());
+		
+		assertEquals(areaOrganizacional2.getId(), historico.getAreaOrganizacional().getId());
+	}
+	
 	public void testFindByEmpresa()
 	{
 		inicializaColaboradorComHistorico();

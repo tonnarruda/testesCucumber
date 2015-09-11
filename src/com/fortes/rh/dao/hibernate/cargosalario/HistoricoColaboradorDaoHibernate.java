@@ -1498,6 +1498,16 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.executeUpdate();
 		
 	}
+	
+	public void updateArea(Long areaIdMae, Long areaId) 
+	{
+		Query query = getSession().createQuery("update HistoricoColaborador set areaOrganizacional.id = :areaId where areaOrganizacional.id = :areaIdMae");
+		
+		query.setLong("areaIdMae", areaIdMae);
+		query.setLong("areaId", areaId);
+		
+		query.executeUpdate();
+	}
 
 	public boolean existeDependenciaComHistoricoIndice(Date dataHistoricoExcluir, Date dataSegundoHistoricoIndice, Long indiceId) 
 	{

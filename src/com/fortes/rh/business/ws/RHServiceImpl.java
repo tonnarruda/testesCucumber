@@ -78,6 +78,7 @@ import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.model.ws.TSituacaoCargo;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 
 public class RHServiceImpl implements RHService
@@ -1173,6 +1174,15 @@ public class RHServiceImpl implements RHService
 			areaOrganizacionalManager.bind(areaOrganizacionalTmp, areaOrganizacional);
 			
 			areaOrganizacionalManager.save(areaOrganizacionalTmp);
+			
+			if(areaOrganizacionalTmp.getAreaMae() != null && areaOrganizacionalTmp.getAreaMae().getId() != null) {
+				ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
+				if (colaboradorManager.findByArea(areaOrganizacionalTmp.getAreaMae()).size() > 0 ) {
+					HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
+					historicoColaboradorManager.updateArea(areaOrganizacionalTmp.getAreaMae().getId(), areaOrganizacionalTmp.getId());
+				}
+			}
+			
 			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
