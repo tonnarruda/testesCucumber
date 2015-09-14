@@ -53,7 +53,7 @@ public class HistoricoAmbienteManagerTest extends MockObjectTestCase
 		
 		try 
 		{
-			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck, 'A');
+			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
 		} 
 		catch (Exception e)  { exception = e; }	
 		
@@ -83,7 +83,7 @@ public class HistoricoAmbienteManagerTest extends MockObjectTestCase
 		
 		try 
 		{
-			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck, 'A');
+			historicoAmbienteManager.save(historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
 		} 
 		catch (Exception e) { exception = e; }
 		

@@ -197,35 +197,6 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 		return historicoFuncaosRetorno;
 	}
 
-//	public Collection<HistoricoFuncao> montaHistoricoFuncao(Collection<Ghe> ghes, Collection<HistoricoFuncao> historicosFuncaos)
-//	{
-//		Collection<HistoricoFuncao> historicoFuncoes =  new ArrayList<HistoricoFuncao>();
-//		HistoricoFuncao historicoFuncaoTemp;
-//
-//		for (Ghe ghe : ghes)
-//		{
-//			if(ghe.getFuncoes() != null)
-//			{
-//				for (Funcao funcaoGhe : ghe.getFuncoes())
-//				{
-//					for (HistoricoFuncao historicoFuncao : historicosFuncaos)
-//					{
-//						if (historicoFuncao.getFuncao().getId().equals(funcaoGhe.getId()))
-//						{
-//							historicoFuncaoTemp = new HistoricoFuncao();
-//							historicoFuncaoTemp.setDescricao(historicoFuncao.getDescricao());
-//							historicoFuncaoTemp.setFuncao(historicoFuncao.getFuncao());
-//							historicoFuncaoTemp.setGheNome(ghe.getNome());
-//
-//							historicoFuncoes.add(historicoFuncaoTemp);
-//						}
-//					}
-//				}
-//			}
-//		}
-//		return historicoFuncoes;
-//	}
-
 	public void saveHistorico(HistoricoFuncao historicoFuncao, Long[] examesChecked, Long[] episChecked, Long[] riscoChecks, Collection<RiscoFuncao> riscoFuncoes) throws FortesException, Exception 
 	{
 		if (this.findByData(historicoFuncao.getData(), historicoFuncao.getId(), historicoFuncao.getFuncao().getId()) != null)

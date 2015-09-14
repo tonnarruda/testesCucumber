@@ -108,17 +108,17 @@ public class RHServiceImpl implements RHService
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private AuditoriaManager auditoriaManager;
 
-	private final String MSG_ERRO_REMOVER_SITUACAO_LOTE = "Erro ao excluir situação dos empregados, existem outros cadastros utilizando essa situação.";
-	private final String MSG_ERRO_REMOVER_SITUACAO = "Erro ao excluir situação do empregado, existem outros cadastros utilizando essa situação.";
-	private final String MSG_ERRO_REMOVER_LOTACAO = "Erro ao excluir lotação, existem outros cadastros utilizando essa lotação.";
-	private final String MSG_ERRO_REMOVER_ESTABELECIMENTO = "Erro ao excluir estabelecimento, existem outros cadastros utilizando esse estabelecimento.";
-	private final String MSG_ERRO_REMOVER_INDICE = "Erro ao excluir índice, existem outros cadastros utilizando esse índice.";
-	private final String MSG_ERRO_REMOVER_INDICE_HISTORICO = "Erro ao excluir histórico desse índice, existem outros cadastros utilizando esse histórico.";
-	private final String MSG_ERRO_REMOVER_OCORRENCIA = "Erro ao excluir ocorrência, existem outros cadastros utilizando essa ocorrência.";
-	private final String MSG_ERRO_REMOVER_OCORRENCIA_EMPREGADO = "Erro ao excluir ocorrência do empregado, existem outros cadastros utilizando essa ocorrência.";
-	private final String MSG_ERRO_REMOVER_SITUACAO_CARGO = "Erro ao excluir situação do cargo, existem outros cadastros utilizando essa situação.";
-	private final String MSG_ERRO_REMOVER_CARGO = "Erro ao excluir cargo, existem outros cadastros utilizando esse cargo.";
-	private final String MSG_ERRO_REMOVER_EMPREGADO = "Erro ao excluir empregado, existem outros cadastros utilizando esse empregado.";
+	private final String MSG_ERRO_REMOVER_SITUACAO_LOTE = "Não é possível excluir situação dos empregados, existem outros cadastros utilizando essa situação.";
+	private final String MSG_ERRO_REMOVER_SITUACAO = "Não é possível excluir situação do empregado, existem outros cadastros utilizando essa situação.";
+	private final String MSG_ERRO_REMOVER_LOTACAO = "Não é possível excluir lotação, existem cadastros utilizando essa lotação.";
+	private final String MSG_ERRO_REMOVER_ESTABELECIMENTO = "Não é possível excluir estabelecimento, existem outros cadastros utilizando esse estabelecimento.";
+	private final String MSG_ERRO_REMOVER_INDICE = "Não é possível excluir índice, existem outros cadastros utilizando esse índice.";
+	private final String MSG_ERRO_REMOVER_INDICE_HISTORICO = "Não é possível excluir histórico desse índice, existem outros cadastros utilizando esse histórico.";
+	private final String MSG_ERRO_REMOVER_OCORRENCIA = "Não é possível excluir ocorrência, existem outros cadastros utilizando essa ocorrência.";
+	private final String MSG_ERRO_REMOVER_OCORRENCIA_EMPREGADO = "Não é possível excluir ocorrência do empregado, existem outros cadastros utilizando essa ocorrência.";
+	private final String MSG_ERRO_REMOVER_SITUACAO_CARGO = "Não é possível excluir situação do cargo, existem outros cadastros utilizando essa situação.";
+	private final String MSG_ERRO_REMOVER_CARGO = "Não é possível excluir cargo, existem outros cadastros utilizando esse cargo.";
+	private final String MSG_ERRO_REMOVER_EMPREGADO = "Não é possível excluir empregado, existem outros cadastros utilizando esse empregado.";
 	
 	private static boolean realizandoReenvioPendencias = false;
 	

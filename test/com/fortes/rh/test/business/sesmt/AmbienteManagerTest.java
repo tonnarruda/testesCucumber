@@ -142,7 +142,7 @@ public class AmbienteManagerTest extends MockObjectTestCase
 		ambienteDao.expects(atLeastOnce()).method("save").will(returnValue(ambiente));
 		historicoAmbienteManager.expects(atLeastOnce()).method("save").with(new Constraint[] {eq(historicoAmbiente),eq(riscoChecks),eq(riscosAmbientes),eq(epcCheck),eq(controlaRiscoPor)}).isVoid();
 
-		ambienteManager.saveAmbienteHistorico(ambiente, historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck, 'A');
+		ambienteManager.saveAmbienteHistorico(ambiente, historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
 		
 		assertEquals(Long.valueOf(1L), ambiente.getId());
 	}
