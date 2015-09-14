@@ -73,7 +73,7 @@ public abstract class Menu
 		menu.append("<li style='float: right; line-height: 0.8em;'><a href='" + contexto + "/geral/documentoVersao/list.action' class='versao'> Versão: "  +  parametros.getAppVersao() +"</a></li>\n");
 		
 		menu.append("<li style='float: right; line-height: 0.8em'>" +
-				"<a href='contatos.action' title='Coequalsntatos'>" +
+				"<a href='contatos.action' title='Contatos'>" +
 				"<img src='"+ contexto + "/imgs/telefone.gif' style='vertical-align: middle;'></a></li>\n");
 
 		menu.append("<li style='float: right; line-height: 0.8em'>" +

@@ -128,7 +128,6 @@ public class AmbienteEditActionTest extends MockObjectTestCase
     public void testInsert() throws Exception
     {
     	Empresa empresa = EmpresaFactory.getEmpresa();
-    	empresa.setControlaRiscoPor('A');
     	action.setEmpresaSistema(empresa);
     	
     	Ambiente ambiente = new Ambiente();
@@ -146,7 +145,7 @@ public class AmbienteEditActionTest extends MockObjectTestCase
 		action.setRiscosAmbientes(riscosAmbientes);
 		action.setEpcCheck(epcCheck);
 		
-		manager.expects(once()).method("saveAmbienteHistorico").with(new Constraint[]{eq(ambiente), eq(historicoAmbiente), eq(riscoChecks), eq(riscosAmbientes), eq(epcCheck), eq(empresa.getControlaRiscoPor())});
+		manager.expects(once()).method("saveAmbienteHistorico").with(new Constraint[]{eq(ambiente), eq(historicoAmbiente), eq(riscoChecks), eq(riscosAmbientes), eq(epcCheck)});
 
     	assertEquals("success", action.insert());
     	assertEquals(action.getAmbiente().getEmpresa(), action.getEmpresaSistema());

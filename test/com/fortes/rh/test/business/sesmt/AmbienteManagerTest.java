@@ -135,12 +135,10 @@ public class AmbienteManagerTest extends MockObjectTestCase
 		String[] riscoChecks = new String[]{"822", "823"};
 		String[] epcCheck = new String[]{"100"};
 		
-		char controlaRiscoPor = 'A';
-		
 		Collection<RiscoAmbiente> riscosAmbientes = RiscoAmbienteFactory.getCollection();
 
 		ambienteDao.expects(atLeastOnce()).method("save").will(returnValue(ambiente));
-		historicoAmbienteManager.expects(atLeastOnce()).method("save").with(new Constraint[] {eq(historicoAmbiente),eq(riscoChecks),eq(riscosAmbientes),eq(epcCheck),eq(controlaRiscoPor)}).isVoid();
+		historicoAmbienteManager.expects(atLeastOnce()).method("save").with(new Constraint[] {eq(historicoAmbiente),eq(riscoChecks),eq(riscosAmbientes),eq(epcCheck)}).isVoid();
 
 		ambienteManager.saveAmbienteHistorico(ambiente, historicoAmbiente, riscoChecks, riscosAmbientes, epcCheck);
 		

@@ -20,6 +20,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.TipoPessoa;
+import com.fortes.rh.model.dicionario.TipoRiscoSistema;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.MedicoCoordenador;
 import com.fortes.rh.model.sesmt.Risco;
@@ -184,17 +185,17 @@ public class SolicitacaoExameManagerImpl extends GenericManagerImpl<SolicitacaoE
 	private void configuraRiscos(Empresa empresa, SolicitacaoExame solicitacaoExame, String considerarRiscoPor, AsoRelatorio asoRelatorio, HistoricoColaborador historicoColaborador)
 	{
 		Collection<Risco> riscos = null;
-		if (considerarRiscoPor.equals("A") && historicoColaborador != null && historicoColaborador.getAmbiente() != null && historicoColaborador.getAmbiente().getId() != null)
+		if (considerarRiscoPor.equals(TipoRiscoSistema.AMBIENTE) && historicoColaborador != null && historicoColaborador.getAmbiente() != null && historicoColaborador.getAmbiente().getId() != null)
 		{
 			riscos = riscoAmbienteManager.findRiscosByAmbienteData(historicoColaborador.getAmbiente().getId(), solicitacaoExame.getData());
 			asoRelatorio.formataRiscos(riscos);
 		}
-		else if(considerarRiscoPor.equals("F") && historicoColaborador != null && historicoColaborador.getFuncao() != null && historicoColaborador.getFuncao().getId() != null)
+		else if(considerarRiscoPor.equals(TipoRiscoSistema.FUNCAO) && historicoColaborador != null && historicoColaborador.getFuncao() != null && historicoColaborador.getFuncao().getId() != null)
 		{
 			riscos = riscoFuncaoManager.findRiscosByFuncaoData(historicoColaborador.getFuncao().getId(), solicitacaoExame.getData());
 			asoRelatorio.formataRiscos(riscos);
 		}
-		else if(considerarRiscoPor.equals("AF") && historicoColaborador != null && 
+		else if(considerarRiscoPor.equals(TipoRiscoSistema.AMBIENTE_FUNCAO) && historicoColaborador != null && 
 				(historicoColaborador.getAmbiente() != null && historicoColaborador.getAmbiente().getId() != null)  && 
 				(historicoColaborador.getFuncao() != null && historicoColaborador.getFuncao().getId() != null))
 		{

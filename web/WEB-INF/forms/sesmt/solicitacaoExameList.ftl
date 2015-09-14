@@ -197,8 +197,9 @@
 	
 	<div id="considerarRiscoPorDialog">
 		<@ww.form name="formConsiderarRiscoPor" id="formConsiderarRiscoPor" action="../exame/imprimirAso.action" method="" >
-			<@ww.select label="Imprimir ASO considerando risco por:" name="imprimirASOComRiscoPor" list=r"#{'A':'Ambiente', 'F':'Função', 'AF':'Ambiente e Função', 'N':'Nenhum'}" cssStyle="width: 200px; margin-top: 6px;" />
+
 			<@ww.hidden name="solicitacaoExame.id" id="solicitacaoExameId"/>
+			<@ww.select label="Imprimir ASO considerando risco por:" name="imprimirASOComRiscoPor" list="tiposRiscoSistema" cssStyle="width: 200px; margin-top: 6px;" />
 			
 			<button type="submit" class="btnImprimir grayBG" onclick="$('#considerarRiscoPorDialog').dialog('close');"></button>
 			<button type="button" onclick="$('#considerarRiscoPorDialog').dialog('close'); $('#considerarRiscoPorDialog input').val(''); $('#considerarRiscoPorDialog select').val('');" class="btnCancelar grayBG">	</button>

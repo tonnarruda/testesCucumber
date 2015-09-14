@@ -15,6 +15,7 @@ import com.fortes.rh.business.sesmt.SolicitacaoExameManager;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
 import com.fortes.rh.model.dicionario.ResultadoExame;
 import com.fortes.rh.model.dicionario.TipoPessoa;
+import com.fortes.rh.model.dicionario.TipoRiscoSistema;
 import com.fortes.rh.model.sesmt.ExameSolicitacaoExame;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -37,6 +38,7 @@ public class SolicitacaoExameListAction extends MyActionSupportList
 	private Collection<SolicitacaoExame> solicitacaoExames;
 	private Collection<ExameSolicitacaoExame> exameSolicitacaoExames;
 	private SolicitacaoExame solicitacaoExame;
+	private Map<String, String> tiposRiscoSistema = TipoRiscoSistema.getInstance();
 	
 	private Date dataIni;
 	private Date dataFim;
@@ -233,5 +235,9 @@ public class SolicitacaoExameListAction extends MyActionSupportList
 	}
 	public void setResultado(String resultado) {
 		this.resultado = resultado;
+	}
+
+	public Map<String, String> getTiposRiscoSistema() {
+		return tiposRiscoSistema;
 	}
 }

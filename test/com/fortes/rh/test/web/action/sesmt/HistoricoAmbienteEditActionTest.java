@@ -112,7 +112,7 @@ public class HistoricoAmbienteEditActionTest extends MockObjectTestCase
 		
     	action.setHistoricoAmbiente(historicoAmbiente);
     	
-    	manager.expects(once()).method("save").with(new Constraint[]{eq(historicoAmbiente), eq(riscoChecks), eq(riscosAmbientes), eq(epcCheck), eq(empresa.getControlaRiscoPor())});
+    	manager.expects(once()).method("save").with(new Constraint[]{eq(historicoAmbiente), eq(riscoChecks), eq(riscosAmbientes), eq(epcCheck)});
     	assertEquals(action.insert(), "success");
     }
 
@@ -133,7 +133,7 @@ public class HistoricoAmbienteEditActionTest extends MockObjectTestCase
 		action.setEmpresaSistema(empresa);
 
     	action.setHistoricoAmbiente(historicoAmbiente);
-    	manager.expects(once()).method("save").with(new Constraint[]{eq(historicoAmbiente), eq(riscoChecks), eq(riscosAmbientes), eq(epcCheck), eq(empresa.getControlaRiscoPor())});
+    	manager.expects(once()).method("save").with(new Constraint[]{eq(historicoAmbiente), eq(riscoChecks), eq(riscosAmbientes), eq(epcCheck)});
     	assertEquals(action.update(), "success");
     }
     

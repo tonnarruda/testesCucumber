@@ -111,7 +111,7 @@ public class HistoricoFuncaoEditActionTest extends MockObjectTestCase
     	Long[] episChecked = new Long[]{1L};
     	action.setEpisChecked(episChecked);
 
-    	manager.expects(once()).method("saveHistorico").with(new Constraint[] {eq(historicoFuncao),eq(examesChecked), eq(episChecked), ANYTHING, ANYTHING, ANYTHING});
+    	manager.expects(once()).method("saveHistorico").with(new Constraint[] {eq(historicoFuncao),eq(examesChecked), eq(episChecked), ANYTHING, ANYTHING});
     	assertEquals(action.insert(), "success");
     }
 
@@ -127,7 +127,7 @@ public class HistoricoFuncaoEditActionTest extends MockObjectTestCase
     	Long[] episChecked = new Long[]{1L};
     	action.setEpisChecked(episChecked);
 
-    	manager.expects(once()).method("saveHistorico").with(new Constraint[] {eq(historicoFuncao),eq(examesChecked), eq(episChecked), ANYTHING, ANYTHING, ANYTHING});
+    	manager.expects(once()).method("saveHistorico").with(new Constraint[] {eq(historicoFuncao),eq(examesChecked), eq(episChecked), ANYTHING, ANYTHING});
     	assertEquals(action.update(), "success");
     }
 

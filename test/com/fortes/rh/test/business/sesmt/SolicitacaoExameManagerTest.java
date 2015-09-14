@@ -25,6 +25,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.GrupoRisco;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
 import com.fortes.rh.model.dicionario.TipoPessoa;
+import com.fortes.rh.model.dicionario.TipoRiscoSistema;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.Ambiente;
@@ -258,7 +259,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		
 		Exception exception = null;
 		try {
-			solicitacaoExameManager.montaRelatorioAso(empresa , null, "N");
+			solicitacaoExameManager.montaRelatorioAso(empresa , null, TipoRiscoSistema.NEHUM);
 		} catch (ColecaoVaziaException e) {
 			exception=e;
 		}
@@ -273,7 +274,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		Ambiente ambiente = AmbienteFactory.getEntity(1L);
 		Funcao funcao = FuncaoFactory.getEntity(1L);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, ambiente, funcao);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, null, funcao, ambiente);
 		
 		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(2L);
 		solicitacaoExame.setColaborador(colaborador);
@@ -288,7 +289,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		historicoColaboradorManager.expects(once()).method("getHistoricoAtualOuFuturo").will(returnValue(historicoColaborador));
 		riscoAmbienteManager.expects(once()).method("findRiscosByAmbienteData").with(eq(historicoColaborador.getAmbiente().getId()), eq(solicitacaoExame.getData())).will(returnValue(Arrays.asList(risco1, risco2)));
 		
-		AsoRelatorio asoRelatorio = solicitacaoExameManager.montaRelatorioAso(empresa , solicitacaoExame, "A");
+		AsoRelatorio asoRelatorio = solicitacaoExameManager.montaRelatorioAso(empresa , solicitacaoExame, TipoRiscoSistema.AMBIENTE);
 		
 		assertEquals(solicitacaoExame.getColaborador(), asoRelatorio.getPessoa());
 		assertEquals(asoRelatorio.getGrpRiscoFisico(), "Físicos: "+risco1.getDescricao());
@@ -303,7 +304,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		
 		Funcao funcao = FuncaoFactory.getEntity(1L);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, null, funcao);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, null, funcao, null);
 		
 		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(2L);
 		solicitacaoExame.setColaborador(colaborador);
@@ -318,7 +319,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		historicoColaboradorManager.expects(once()).method("getHistoricoAtualOuFuturo").will(returnValue(historicoColaborador));
 		riscoFuncaoManager.expects(once()).method("findRiscosByFuncaoData").with(eq(historicoColaborador.getFuncao().getId()), eq(solicitacaoExame.getData())).will(returnValue(Arrays.asList(risco1, risco2)));
 		
-		AsoRelatorio asoRelatorio = solicitacaoExameManager.montaRelatorioAso(empresa , solicitacaoExame, "F");
+		AsoRelatorio asoRelatorio = solicitacaoExameManager.montaRelatorioAso(empresa , solicitacaoExame, TipoRiscoSistema.FUNCAO);
 		
 		assertEquals(solicitacaoExame.getColaborador(), asoRelatorio.getPessoa());
 		assertEquals(asoRelatorio.getGrpRiscoErgonomico(), "Ergonômicos: "+risco1.getDescricao());
@@ -333,7 +334,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		Ambiente ambiente = AmbienteFactory.getEntity(1L);
 		Funcao funcao = FuncaoFactory.getEntity(1L);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, ambiente, funcao);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, null, funcao, ambiente);
 		
 		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(2L);
 		solicitacaoExame.setColaborador(colaborador);
@@ -351,7 +352,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		riscoAmbienteManager.expects(once()).method("findRiscosByAmbienteData").with(eq(historicoColaborador.getAmbiente().getId()), eq(solicitacaoExame.getData())).will(returnValue(Arrays.asList(risco1, risco2, risco3)));
 		riscoFuncaoManager.expects(once()).method("findRiscosByFuncaoData").with(eq(historicoColaborador.getFuncao().getId()), eq(solicitacaoExame.getData())).will(returnValue(Arrays.asList(risco1, risco2, risco4)));
 		
-		AsoRelatorio asoRelatorio = solicitacaoExameManager.montaRelatorioAso(empresa , solicitacaoExame, "AF");
+		AsoRelatorio asoRelatorio = solicitacaoExameManager.montaRelatorioAso(empresa , solicitacaoExame, TipoRiscoSistema.AMBIENTE_FUNCAO);
 		
 		assertEquals(solicitacaoExame.getColaborador(), asoRelatorio.getPessoa());
 		assertEquals(asoRelatorio.getGrpRiscoErgonomico(), "Ergonômicos: "+risco1.getDescricao());
@@ -368,7 +369,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		Ambiente ambiente = AmbienteFactory.getEntity(1L);
 		Funcao funcao = FuncaoFactory.getEntity(1L);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, ambiente, funcao);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, null, funcao, ambiente);
 		
 		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(2L);
 		solicitacaoExame.setColaborador(colaborador);
@@ -379,7 +380,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		historicoColaboradorManager.expects(once()).method("getHistoricoAtual").will(returnValue(null));
 		historicoColaboradorManager.expects(once()).method("getHistoricoAtualOuFuturo").will(returnValue(historicoColaborador));
 		
-		AsoRelatorio asoRelatorio = solicitacaoExameManager.montaRelatorioAso(empresa , solicitacaoExame, "N");
+		AsoRelatorio asoRelatorio = solicitacaoExameManager.montaRelatorioAso(empresa , solicitacaoExame, TipoRiscoSistema.NEHUM);
 		
 		assertEquals(solicitacaoExame.getColaborador(), asoRelatorio.getPessoa());
 		assertEquals(asoRelatorio.getGrpRiscoAcidente()+asoRelatorio.getGrpRiscoBiologico()+asoRelatorio.getGrpRiscoErgonomico()+asoRelatorio.getGrpRiscoFisico()+asoRelatorio.getGrpRiscoQuimico(), StringUtils.EMPTY);

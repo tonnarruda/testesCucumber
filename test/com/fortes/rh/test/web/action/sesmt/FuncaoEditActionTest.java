@@ -206,7 +206,7 @@ public class FuncaoEditActionTest extends MockObjectTestCase
     	action.setRiscoChecks(riscoChecks);
 		action.setRiscosFuncoes(riscosFuncoes);
 
-    	historicoFuncaoManager.expects(once()).method("saveFuncaoHistorico").with(new Constraint[]{ eq(funcaoRetorno), eq(historicoFuncao), eq(examesChecked), eq(episChecked), eq(riscoChecks), eq(riscosFuncoes), eq(empresa.getControlaRiscoPor()) });
+    	historicoFuncaoManager.expects(once()).method("saveFuncaoHistorico").with(new Constraint[]{ eq(funcaoRetorno), eq(historicoFuncao), eq(examesChecked), eq(episChecked), eq(riscoChecks), eq(riscosFuncoes)});
 
     	assertEquals(action.insert(), "success");
     }

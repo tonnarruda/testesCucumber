@@ -5,6 +5,7 @@
 		<Item visivel="S" motivo="S20150600185"><![CDATA[Info. Funcionais > Painel de Indicadores > Informações Sociais: Novo filtro por colocação.]]></Item>
 		<Item visivel="S" motivo="S20150800059"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Nova informação de periodicidade dos riscos.]]></Item>
 		<Item visivel="S" motivo="S20150800018"><![CDATA[SESMT > Relatórios > EPIs Entregues: Novo filtro pela área organizacional e novo campo de área organizacional no relatório.]]></Item>
+		<Item visivel="S" motivo="S20150800000"><![CDATA[SESMT > Relatórios > Mapa de Riscos: Novo relatório para indicar os riscos e os níveis dos riscos por ambiente.]]></Item>
 		<Item visivel="S" motivo="S15080000110"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Novas permissões de inserir, editar, excluir, transferir faixas, exibir funções e imprimir para a listagem de cargos e salários.]]></Item>
 		<Item visivel="S" motivo="P15080000204"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Ajuste de inconsistência na configuração "Contratar colaborador" para não enviar emails aos usuários não configurados.]]></Item>
 		<Item visivel="S" motivo="P15080000204"><![CDATA[Ajuste de inconsistência na transferência de colaboradores entre Fortes Pessoal e Fortes RH.]]></Item>
