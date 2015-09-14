@@ -116,9 +116,12 @@ public class ColaboradorDesligaAction extends MyActionSupport implements ModelDr
 			
 			observacaoDemissao = (getEmpresaSistema().isSolicitarConfirmacaoDesligamento() ? "Aprovado por: " : "Solicitado por: ") + getUsuarioLogado().getNome() + ".  Obs: " +  observacaoDemissao;
 			
-			colaboradorManager.solicitacaoDesligamentoAc(dataDesligamento, observacaoDemissao, motDemissao.getId(), gerouSubstituicao, colaborador.getId(), getEmpresaSistema());
-			
-			addActionSuccess("Solicitação de desligamento enviada com sucesso.");
+			if(colaboradorManager.findByIdProjectionEmpresa(colaborador.getId()).isNaoIntegraAc()){
+				addActionSuccess("Colaboardor não integrado com o Fortes Pessoal.");
+			}else{
+				colaboradorManager.solicitacaoDesligamentoAc(dataDesligamento, observacaoDemissao, motDemissao.getId(), gerouSubstituicao, colaborador.getId(), getEmpresaSistema());
+				addActionSuccess("Solicitação de desligamento enviada com sucesso.");
+			}
 			
 		} catch (Exception e) {
 			if(e.getCause() != null && e.getCause().getMessage() != null)

@@ -48,17 +48,19 @@
 		}
 		
 		
-		function verificaComissaoByColaborador(colaboradorId, colaboradorNome)
+		function verificaComissaoByColaborador(colaboradorId, colaboradorNome, colaboradorNaoIntegraAc)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
 			ComissaoDWR.dataEstabilidade(               function(data){
-															resultComissaoByColaborador(data, colaboradorId, colaboradorNome);
+															resultComissaoByColaborador(data, colaboradorId, colaboradorNome, colaboradorNaoIntegraAc);
 														}, colaboradorId);
 		}
 		
-		function resultComissaoByColaborador(data, colaboradorId, colaboradorNome)
+		function resultComissaoByColaborador(data, colaboradorId, colaboradorNome, colaboradorNaoIntegraAc)
 		{
-			<#if integraAc && !colaborador.naoIntegraAc>
+			var integradoComAc = ${integraAc?string};
+			
+			if(integradoComAc && !colaboradorNaoIntegraAc){
 				<#if empresaSistema.solicitarConfirmacaoDesligamento>
 					link = "prepareDesliga.action?colaborador.id="+colaboradorId+
 						"&nomeBusca="+document.getElementById('nomeBusca').value+
@@ -66,11 +68,11 @@
 				<#else>
 					link = "prepareDesligaAC.action?colaborador.id="+colaboradorId;
 				</#if>
-			<#else>
+			}else{
 				link = "prepareDesliga.action?colaborador.id="+colaboradorId+
 						"&nomeBusca="+document.getElementById('nomeBusca').value+
 						"&cpfBusc="+limpaCamposMascaraCpf(document.getElementById('cpfBusca').value);
-			</#if>
+			}
 			
 			if (data != null){
 				enviarPrepareDesliga(colaboradorId, colaboradorNome, link, data);
@@ -215,17 +217,17 @@
 					<#elseif colaborador.dataSolicitacaoDesligamento?exists>
 						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:;" imgTitle="Aguardando confirmação de desligamento" imgName="desliga_colab.gif" opacity=true />
 					<#elseif empresaSistema.solicitarConfirmacaoDesligamento>
-						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Solicitar desligamento" imgName="desliga_colab.gif" />
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}', ${colaborador.naoIntegraAc?string})" imgTitle="Solicitar desligamento" imgName="desliga_colab.gif" />
 					<#else>
-						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Solicitação de desligamento no Fortes Pessoal" imgName="desliga_colab.gif" />
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}', ${colaborador.naoIntegraAc?string})" imgTitle="Solicitação de desligamento no Fortes Pessoal" imgName="desliga_colab.gif" />
 					</#if>
 				<#else>
 					<#if empresaSistema.solicitarConfirmacaoDesligamento && !colaborador.dataSolicitacaoDesligamento?exists>
-						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Solicitar desligamento" imgName="desliga_colab.gif"/>
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}', ${colaborador.naoIntegraAc?string})" imgTitle="Solicitar desligamento" imgName="desliga_colab.gif"/>
 					<#elseif empresaSistema.solicitarConfirmacaoDesligamento && colaborador.dataSolicitacaoDesligamento?exists>
 						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:;" imgTitle="Aguardando confirmação de desligamento" imgName="desliga_colab.gif" opacity=true/>
 					<#else>
-						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Desligar colaborador" imgName="desliga_colab.gif"/>
+						<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}', ${colaborador.naoIntegraAc?string})" imgTitle="Desligar colaborador" imgName="desliga_colab.gif"/>
 					</#if>
 				</#if>
 				
@@ -246,9 +248,9 @@
 						<#assign imgMotivoDeslig="desliga_colab.gif"/>
 					</#if>
 					
-					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Inserir motivo de desligamento" imgName="${imgMotivoDeslig}"/>
+					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}', ${colaborador.naoIntegraAc?string})" imgTitle="Inserir motivo de desligamento" imgName="${imgMotivoDeslig}"/>
 				<#else>
-					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}')" imgTitle="Colaborador já desligado" imgName="desliga_colab.gif" opacity=true/>
+					<@frt.link verifyRole="ROLE_COLAB_LIST_DESLIGAR" href="javascript:verificaComissaoByColaborador('${colaborador.id}', '${colaborador.nome}', ${colaborador.naoIntegraAc?string})" imgTitle="Colaborador já desligado" imgName="desliga_colab.gif" opacity=true/>
 				</#if>
 
 				<@authz.authorize ifAllGranted="ROLE_COLAB_LIST_ENTREVISTA"><!--Tem que existir esse authorize devido a um bug. Não remover-->
