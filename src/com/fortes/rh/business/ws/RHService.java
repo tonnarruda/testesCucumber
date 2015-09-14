@@ -40,7 +40,7 @@ public interface RHService
 
 	//Tabela empregado no AC -> EPG
 	FeedbackWebService removerEmpregado(TEmpregado empregado);
-	public FeedbackWebService removerEmpregadoComDependencia(TEmpregado empregado, TAuditoria tAuditoria);
+	FeedbackWebService removerEmpregadoComDependencia(TEmpregado empregado, TAuditoria tAuditoria);
 	FeedbackWebService atualizarEmpregado(TEmpregado empregado);
 	FeedbackWebService atualizarEmpregadoAndSituacao(TEmpregado empregado, TSituacao situacao);//O AC confirma cadastro de empregado que estava na CTT
 	FeedbackWebService desligarEmpregado(String codigo, String empCodigo, String dataDesligamento, String grupoAC);

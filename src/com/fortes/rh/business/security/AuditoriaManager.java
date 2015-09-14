@@ -9,6 +9,7 @@ import com.fortes.business.GenericManager;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.security.Auditoria;
+import com.fortes.rh.model.ws.TAuditoria;
 
 public interface AuditoriaManager extends GenericManager<Auditoria>
 {
@@ -41,4 +42,5 @@ public interface AuditoriaManager extends GenericManager<Auditoria>
 	public void auditaCancelarContratacaoNoAC(Colaborador colaborador,String mensagem);
 	public void auditaCancelamentoSolicitacoNoAC(Colaborador colaborador,String mensagem);
 	public void auditaConfirmacaoDesligamentoNoAC(Collection<Colaborador> colaboradores,Date dataDesligamento, Empresa empresa);
+	public void auditaRemoverEnpregadoFortesPessoal(Empresa empresa, TAuditoria tAuditoria, Colaborador colaborador);
 }

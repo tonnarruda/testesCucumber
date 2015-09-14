@@ -46,6 +46,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.ws.FeedbackWebService;
 import com.fortes.rh.model.ws.TAreaOrganizacional;
+import com.fortes.rh.model.ws.TAuditoria;
 import com.fortes.rh.model.ws.TCandidato;
 import com.fortes.rh.model.ws.TCargo;
 import com.fortes.rh.model.ws.TEmpregado;
@@ -1195,4 +1196,45 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		historicoColaboradorManager.expects(once()).method("cancelarSituacao").will(throwException(new Exception()));
 		assertFalse(rHServiceManager.cancelarSituacao(situacao, mensagem).isSucesso());
 	}
+	
+    public void testRemoverEmpregadoComDependenciaException() throws Exception
+    {
+    	TAuditoria tAuditoria = new TAuditoria();
+    	tAuditoria.setModulo("modulo");
+    	tAuditoria.setOperacao("operacao");
+    	tAuditoria.setUsuario("usuario");
+    	
+    	TEmpregado tEmpregado = new TEmpregado();
+    	tEmpregado.setCodigoAC("01");
+    	tEmpregado.setEmpresaCodigoAC("12");
+    	tEmpregado.setGrupoAC("004");
+    	
+    	colaboradorManager.expects(once()).method("findByCodigoACEmpresaCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+    	FeedbackWebService feedback = rHServiceManager.removerEmpregadoComDependencia(tEmpregado, tAuditoria);
+    	
+    	assertEquals(false, feedback.isSucesso());
+    	assertEquals("Erro ao excluir empregado.", feedback.getMensagem());
+    }
+    
+    public void testRemoverEmpregadoComDependencia() throws Exception
+    {
+    	TAuditoria tAuditoria = new TAuditoria();
+    	tAuditoria.setModulo("modulo");
+    	tAuditoria.setOperacao("operacao");
+    	tAuditoria.setUsuario("usuario");
+    	
+    	TEmpregado tEmpregado = new TEmpregado();
+    	tEmpregado.setCodigoAC("01");
+    	tEmpregado.setEmpresaCodigoAC("12");
+    	tEmpregado.setGrupoAC("004");
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	
+    	colaboradorManager.expects(once()).method("findByCodigoACEmpresaCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaborador));
+    	colaboradorManager.expects(once()).method("removeComDependencias").with(eq(colaborador.getId())).isVoid();
+    	
+    	FeedbackWebService feedback = rHServiceManager.removerEmpregadoComDependencia(tEmpregado, tAuditoria);
+    	
+    	assertEquals(true, feedback.isSucesso());
+    }
 }

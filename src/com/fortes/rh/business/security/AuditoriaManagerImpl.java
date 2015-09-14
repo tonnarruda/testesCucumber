@@ -19,6 +19,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.security.Auditoria;
+import com.fortes.rh.model.ws.TAuditoria;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.security.spring.aop.GeraDadosAuditados;
 import com.fortes.rh.security.spring.aop.ProcuraChaveNaEntidade;
@@ -214,6 +215,26 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 		
 		Auditoria auditoria = new Auditoria();
 		auditoria.audita(null, empresa, "Colaborador", "Cancel.solicitação desligamento", colaborador.getNome(), dados);
+		
+		this.getDao().save(auditoria);
+	}
+	
+	public void auditaRemoverEnpregadoFortesPessoal(Empresa empresa, TAuditoria tAuditoria, Colaborador colaborador) 
+	{
+		Map<String, Object> cancelamentoSolicitacaoAC = new LinkedHashMap<String, Object>();
+		cancelamentoSolicitacaoAC.put("Colaborador", colaborador.getNome());
+		cancelamentoSolicitacaoAC.put("Usuário Fortes Pessoal", tAuditoria.getUsuario());
+		cancelamentoSolicitacaoAC.put("Módulo Fortes Pessoal", tAuditoria.getModulo());
+		cancelamentoSolicitacaoAC.put("Operação Fortes Pessoal", tAuditoria.getOperacao());
+		cancelamentoSolicitacaoAC.put("Mensagem", "Colaborador Removido a partir do Fortes Pessoal.");
+		
+		String dados = new GeraDadosAuditados(null, cancelamentoSolicitacaoAC).gera();
+		
+		Usuario usuario = new Usuario();
+		usuario.setNome(tAuditoria.getUsuario());
+
+		Auditoria auditoria = new Auditoria();
+		auditoria.audita(usuario, empresa, "Colaborador", "Colaborador Removido a partir do Fortes Pessoal.", colaborador.getNome(), dados);
 		
 		this.getDao().save(auditoria);
 	}

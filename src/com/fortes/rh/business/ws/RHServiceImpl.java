@@ -35,6 +35,7 @@ import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
 import com.fortes.rh.business.pesquisa.PesquisaManager;
+import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
@@ -105,6 +106,7 @@ public class RHServiceImpl implements RHService
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private PesquisaManager pesquisaManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private AuditoriaManager auditoriaManager;
 
 	private final String MSG_ERRO_REMOVER_SITUACAO_LOTE = "Erro ao excluir situação dos empregados, existem outros cadastros utilizando essa situação.";
 	private final String MSG_ERRO_REMOVER_SITUACAO = "Erro ao excluir situação do empregado, existem outros cadastros utilizando essa situação.";
@@ -1417,11 +1419,33 @@ public class RHServiceImpl implements RHService
 	
 	public FeedbackWebService removerEmpregadoComDependencia(TEmpregado empregado, TAuditoria tAuditoria)
 	{
-		System.out.println(tAuditoria.getModulo());
-		System.out.println(tAuditoria.getUsuario());
-		System.out.println(tAuditoria.getOperacao());
+		String parametros = "empregado: " + empregado.getCodigoAC() + "\nempresa: " + empregado.getEmpresaCodigoAC() + "\ngrupoAC: " + empregado.getGrupoAC();
 		
-		return new FeedbackWebService(false, "Funcionalidade ainda não desenvolvida.", "Modulo: " + tAuditoria.getModulo() + " Usuário: " + tAuditoria.getUsuario() + " Operação: " + tAuditoria.getOperacao());
+		if(StringUtils.isEmpty(empregado.getCodigoAC()) || StringUtils.isEmpty(empregado.getEmpresaCodigoAC()) ||  StringUtils.isEmpty(empregado.getGrupoAC()))
+			return new FeedbackWebService(false, "Dados do empregado invalidos", formataException(parametros, null));
+		
+		try {
+			Colaborador colaborador = colaboradorManager.findByCodigoACEmpresaCodigoAC(empregado.getCodigoAC(), empregado.getEmpresaCodigoAC(), empregado.getGrupoAC());		
+
+			if(colaborador == null)
+				return new FeedbackWebService(true);
+			
+			colaboradorManager.removeComDependencias(colaborador.getId());
+			
+			Empresa empresa = empresaManager.findByCodigoAC(empregado.getEmpresaCodigoAC() , empregado.getGrupoAC());
+			auditoriaManager.auditaRemoverEnpregadoFortesPessoal(empresa, tAuditoria, colaborador);
+			
+			return new FeedbackWebService(true);
+		}
+		catch (ConstraintViolationException e)
+		{
+			e.printStackTrace();
+			return new FeedbackWebService(false, MSG_ERRO_REMOVER_EMPREGADO, formataException(parametros, e));
+		}
+		catch (Exception e) 
+		{
+			return new FeedbackWebService(false, "Erro ao excluir empregado.", formataException(parametros, e));
+		}
 	}
 
 	public TGrupo[] getGrupos() 
@@ -1497,7 +1521,7 @@ public class RHServiceImpl implements RHService
 					colaboradorManager.reenviaAguardandoContratacao(empresa);
 					colaboradorManager.confirmaReenvios(new TFeedbackPessoalWebService(true, "Reenvio das pendências realizada com sucesso", null), empresa);
 					realizandoReenvioPendencias = false;
-					if(false){//NÃO REMOVER SERVIRÁ PARA A FUNCIONALIDADE FUTURA DE ALINHAMENTO DA TABELA TEMPORÁRIA DO FORTES PESSOAL
+					if(false){//NÃO REMOVER SERVIRÁ PARA A FUNCIONALIDADE FUTURA DE ALINHAMENTO DA TABELA TEMPORÁRIA COM O FORTES PESSOAL
 						faixaSalarialHistoricoManager.reenviaAguardandoConfirmacao(empresa);
 						historicoColaboradorManager.reenviaAguardandoConfirmacao(empresa);
 						colaboradorManager.reenviaSolicitacaoDesligamento(empresa);
@@ -1627,5 +1651,9 @@ public class RHServiceImpl implements RHService
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public void setAuditoriaManager(AuditoriaManager auditoriaManager) {
+		this.auditoriaManager = auditoriaManager;
 	}
 }
