@@ -91,14 +91,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		sql.append("from ( ");
 		sql.append("select se.id as id, se.empresa_id, c.matricula, c.nome, c.desligado, hc.status, hc.motivo, se.data, ca.nome as nomeCargo,  "); 
 		sql.append("  (select sum(sei2.qtdSolicitado) from solicitacaoepi_item sei2 "); 
-		sql.append("    left join solicitacaoepiitementrega seie2 on seie2.solicitacaoepiitem_id=sei2.id "); 
-		sql.append("    left join epihistorico ehist2 on ehist2.id=seie2.epihistorico_id ");
-		sql.append("    left join epi e2 on e2.id=ehist2.epi_id "); 
 		sql.append("   where sei2.solicitacaoepi_id = se.id "); 
-
-		if (tipoEpi != null)
-			sql.append("  and e2.tipoepi_id = :tipoEpi ");
-		
 		sql.append("  ) as qtdSolicitado,  "); 
 		sql.append("coalesce(sum(seie.qtdEntregue), 0) as qtdEntregue "); 
 		sql.append("from solicitacaoepi as se ");
@@ -111,6 +104,9 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		sql.append("left join cargo as ca on se.cargo_id=ca.id ");
 		sql.append("where hc.data = (select max(hc2.data) from historicocolaborador as hc2 where hc2.colaborador_id = c.id) ");
 		
+		if (tipoEpi != null)
+			sql.append("and se.id in( select sei3.solicitacaoepi_id from solicitacaoepi_item  sei3 join epi e2 on sei3.epi_id = e2.id where e2.tipoepi_id  = :tipoEpi) ");
+		
 		if(LongUtil.arrayIsNotEmpty(estabelecimentoCheck))
 			sql.append("and se.estabelecimento_id in (:estabelecimentoCheck)");
 		
@@ -119,9 +115,6 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		} else if (situacaoColaborador.equals(SituacaoColaborador.DESLIGADO)) {
 			sql.append("and c.desligado = true "); 
 		}
-		
-		if (tipoEpi != null)
-			sql.append("and e.tipoepi_id = :tipoEpi ");
 
 		sql.append("group by se.id, c.matricula, c.id, c.nome, c.desligado, hc.status, hc.motivo, se.data, ca.id, ca.nome, se.empresa_id ");
 		sql.append(") as sub ");
@@ -317,12 +310,15 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		StringBuilder sql = new StringBuilder();
 		sql.append("select sse.solicitacaoepiid, sse.empresaid, sse.estabelecimentoid, sse.estabelecimentonome, sse.colaboradorid, sse.colaboradormatricula, sse.colaboradornome, sse.colaboradordesligado, ");
 		sql.append("       e.nome as epinome,  sse.solicitacaoepidata, sse.cargonome, sse.qtdsolicitado as qtdsolicitadototal, item.id as itemId, item.qtdsolicitado as qtdsolicitadoitem, mse.descricao, ");
-		sql.append("       sse.qtdentregue, (select coalesce(sum(qtdentregue), 0) from solicitacaoepiitementrega where solicitacaoepiitem_id = item.id) as qtdentrgueitem, sse.solicitacaoepisituacao ");
+		sql.append("       sse.qtdentregue, (select coalesce(sum(qtdentregue), 0) from solicitacaoepiitementrega where solicitacaoepiitem_id = item.id) as qtdentrgueitem, sse.solicitacaoepisituacao, ");
+		sql.append("	   te.descricao as descricaoTamanhoEpi ");
 		sql.append("from situacaosolicitacaoepi sse ");
 		sql.append("join solicitacaoepi_item item on item.solicitacaoepi_id = sse.solicitacaoepiid ");
 		sql.append("left join motivosolicitacaoepi mse on mse.id = item.motivosolicitacaoepi_id ");
 		sql.append("join epi e on item.epi_id = e.id ");
 		sql.append("join colaborador c on sse.colaboradorid = c.id ");
+		sql.append("left join tamanhoepi te on item.tamanhoepi_id = te.id ");
+		
 		sql.append("where sse.empresaid = :empresaId ");
 		
 		if (situacao != SituacaoSolicitacaoEpi.TODAS)
@@ -420,6 +416,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			vo.setQtdEntregue(new Integer(obj[++countCampo].toString()));
 			vo.setQtdEntregueItem((new Integer(obj[++countCampo].toString())));
 			vo.setSolicitacaoEpiSituacao(obj[++countCampo].toString().charAt(0));
+			vo.setDescricaoTamanhoEpi(((String) obj[++countCampo]));
 			
 			lista.add(vo);
 		}

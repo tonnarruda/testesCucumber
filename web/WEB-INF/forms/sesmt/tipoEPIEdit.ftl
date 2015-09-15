@@ -16,6 +16,14 @@
 	select[disabled=disabled], select[disabled] { background-color: rgb(236, 236, 236); }
 </style>
 
+<#assign existeTamanhoInativo="false"/>
+
+<#list tamanhosCheckList as tamanhoCheck>
+		<#if tamanhoCheck.desabilitado>
+			<#assign existeTamanhoInativo="true"/>
+		</#if>	
+</#list>
+
 </head>
 <body>
 	<@ww.actionerror />
@@ -24,6 +32,7 @@
 		<@ww.textfield label="Nome" name="tipoEPI.nome" id="nome" cssClass="inputNome" maxLength="100"  required="true" />
 		
 		<div id="wwctrl_tamanhosCheck" class="wwctrl">
+			Tamanhos: </br>
 			<div class="listCheckBoxContainer" style="width: 450px;">
 				<div class="listCheckBoxBarra">
 					<input id="listCheckBoxFilterTamanhosCheck" class="listCheckBoxFilter" title="Digite para filtrar" type="text">
@@ -49,9 +58,12 @@
 			</div>
 		</div>
 		
-		<div style="width: 450px; margin-top: 5px; font-weight: bold;">
-			Os tamanhos desabilitados representam que foram utilizados em alguma solicitação de EPI.
-		</div>
+		
+		<#if '${existeTamanhoInativo}' == "true">
+			<div style="width: 450px; margin-top: 5px; font-weight: bold;">
+				Os tamanhos desabilitados representam que foram utilizados em alguma solicitação de EPI.
+			</div>
+		</#if>
 		
 		<!-- @frt.checkListBox name="tamanhosCheck" id="tamanhosCheck" label="Tamanhos" list="tamanhosCheckList" filtro="true" selectAtivoInativo="false" / -->
 		
@@ -65,10 +77,12 @@
 	</div>
 	
 	<script>
-		<#list tipoEPI.tamanhoEPIs as tipoTamanhoEPI>
-			$("#tamanhosCheck_${tipoTamanhoEPI.tamanhoEPIs.id}").attr("checked", "checked");
-			$("#tamanhosCheck_${tipoTamanhoEPI.tamanhoEPIs.id}").parents("tr").find("select").val("${tipoTamanhoEPI.ativoString}");
-		</#list>
+		<#if tipoEPI?exists && tipoEPI.tamanhoEPIs?exists>
+			<#list tipoEPI.tamanhoEPIs as tipoTamanhoEPI>
+				$("#tamanhosCheck_${tipoTamanhoEPI.tamanhoEPIs.id}").attr("checked", "checked");
+				$("#tamanhosCheck_${tipoTamanhoEPI.tamanhoEPIs.id}").parents("tr").find("select").val("${tipoTamanhoEPI.ativoString}");
+			</#list>
+		</#if>
 		organizarElementosTamanhoEPIs();
 	
 		$('#listCheckBoxFilterTamanhosCheck').unbind('keyup').keyup(function() {

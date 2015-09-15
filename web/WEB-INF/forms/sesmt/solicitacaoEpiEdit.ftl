@@ -167,10 +167,19 @@
 			else
 				motivo.disabled = true;
 			
-			if(tamanho.disabled)
-				tamanho.disabled = false;
-			else
-				tamanho.disabled = true;
+			if(tamanho.type != "hidden"){
+				if(tamanho.disabled){
+					tamanho.disabled = false;
+				}
+				else{
+					tamanho.disabled = true;
+				}
+			}else if(tamanho.value == ''){
+				if(elementCheck.checked)
+					tamanho.setAttribute("name", "selectTamanhoEpi");
+				if(!elementCheck.checked)
+					tamanho.removeAttribute("name");
+			}
 		}
 	
 		function configuraCampos()
@@ -203,26 +212,9 @@
 						if(id3 != "selectTamanhoEpi_on") {
 							var elementSelect = document.getElementById(id3);
 							elementSelect.disabled = false;
+							if(elementSelect.value == '')
+								elementSelect.setAttribute("name", "selectTamanhoEpi");
 						}
-						
-						/*
-						if(id3 != "selectTamanhoEpi_on") {
-							idTipoEPI = "#update_tipoEPI" + idCheck;
-							tamanhoEPIUSelect = "#update_tamanhoEPISelected" + idCheck;
-							
-							var elementSelect = document.getElementById(id3);
-							var valorIdTipoEPI = $(idTipoEPI).val();
-							var valorTamanhoEPISelect = $(tamanhoEPIUSelect).val(); 
-							
-							console.log(valorIdTipoEPI);
-							console.log(idCheck);
-							console.log(valorTamanhoEPISelect);
-							
-							buscaTamanhos(valorIdTipoEPI, idCheck, valorTamanhoEPISelect);
-							
-							elementSelect.disabled = false;
-						}
-						*/
 					}
 				}
 			}
@@ -328,6 +320,7 @@
 								</#list>
 							</select>
 						<#else>
+							<@ww.hidden value="" id="selectTamanhoEpi_${lista[0].id}" name=""/>
 						 	– 
 						</#if>
 					</@display.column>

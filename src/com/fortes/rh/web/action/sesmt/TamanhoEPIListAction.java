@@ -32,11 +32,11 @@ public class TamanhoEPIListAction extends MyActionSupportList
 			addActionMessage("Tamanho excluído com sucesso.");
 
 		} catch (DataIntegrityViolationException e) {
-			addActionError("Não é possível excluir o Tamanho, pois este possui dependências.");
+			addActionWarning("Não é possível excluir o Tamanho, pois possui dependências.");
 			e.printStackTrace();
 
 		} catch (ConstraintViolationException e) {
-			addActionError("Não é possível excluir o Tamanho, pois este possui dependências.");
+			addActionError("Não é possível excluir o Tamanho, pois possui dependências.");
 			e.printStackTrace();
 		
 		} catch (Exception e) {

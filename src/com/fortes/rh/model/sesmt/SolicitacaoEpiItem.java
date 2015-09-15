@@ -179,4 +179,11 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 	public void setTamanhoEPI(TamanhoEPI tamanhoEPI) {
 		this.tamanhoEPI = tamanhoEPI;
 	}
+	
+	public String getNomeEpiComTamanho(){
+		if(tamanhoEPI != null &&  !tamanhoEPI.getDescricao().isEmpty())
+			return epi.getNomeInativo() + " (" + tamanhoEPI.getDescricao() +")";
+		else
+			return epi.getNomeInativo();
+	}
 }

@@ -83,7 +83,7 @@
 			<#list solicitacaoEpiItems as item>
 				<tr class="<#if i%2 == 0>odd<#else>even</#if>">
 					<td valign="top">
-						${item.epi.nomeInativo}
+						${item.nomeEpiComTamanho}
 					</td>
 					<td valign="top" width="100" align="right">
 						${item.qtdSolicitado}

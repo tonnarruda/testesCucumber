@@ -28,6 +28,7 @@ public class SolicitacaoEpiItemVO
 	private Integer qtdSolicitadoItem;
 	private Integer qtdEntregueItem;
 	private String descricaoMotivoSolicitacaoEpi;
+	private String descricaoTamanhoEpi;
 
 	public Long getSolicitacaoEpiId() {
 		return solicitacaoEpiId;
@@ -189,5 +190,15 @@ public class SolicitacaoEpiItemVO
 	public void setDescricaoMotivoSolicitacaoEpi(String descricaoMotivoSolicitacaoEpi)
 	{
 		this.descricaoMotivoSolicitacaoEpi = descricaoMotivoSolicitacaoEpi;
+	}
+
+	public void setDescricaoTamanhoEpi(String descricaoTamanhoEpi) {
+		this.descricaoTamanhoEpi = descricaoTamanhoEpi;
+	}
+	
+	public String getEpiNomeComTamanho(){
+		if(this.descricaoTamanhoEpi != null && !this.descricaoTamanhoEpi.isEmpty())
+			return getEpiNome() + " (" + descricaoTamanhoEpi + ")";
+		else return getEpiNome();
 	}
 }

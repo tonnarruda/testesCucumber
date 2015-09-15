@@ -40,12 +40,17 @@ public class TipoEPIListAction extends MyActionSupportList
 
 	public String delete() throws Exception
 	{
-		if(tipoEPI == null || tipoEPI.getId() == null || !tipoEPIManager.verifyExists(new String[]{"id","empresa.id"}, new Object[]{tipoEPI.getId(),getEmpresaSistema().getId()}))
-			addActionError("O Tipo de EPI solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
-		else
-		{
-			tipoEPIManager.remove(new Long[]{tipoEPI.getId()});
-			addActionMessage("Tipo de EPI excluído com sucesso.");
+		try{
+			if(tipoEPI == null || tipoEPI.getId() == null || !tipoEPIManager.verifyExists(new String[]{"id","empresa.id"}, new Object[]{tipoEPI.getId(),getEmpresaSistema().getId()}))
+				addActionError("O Tipo de EPI solicitado não existe na empresa " + getEmpresaSistema().getNome() +".");
+			else
+			{
+				tipoEPIManager.remove(new Long[]{tipoEPI.getId()});
+				addActionMessage("Tipo de EPI excluído com sucesso.");
+			}
+		}
+		catch (Exception e){
+			addActionWarning("O Tipo de EPI não pode ser excluído pois possue dependência com 'EPI' ");
 		}
 
 		return list();

@@ -116,7 +116,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
-		solicitacaoEpiItems = solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacaoEpi.getId()); ////aqui problema
+		solicitacaoEpiItems = solicitacaoEpiItemManager.findBySolicitacaoEpi(solicitacaoEpi.getId());
 		epiIds = new String[solicitacaoEpiItems.size()];
 
 		// Preparando os EPIs marcados e as quantidades solicitadas

@@ -22,9 +22,9 @@ CREATE SEQUENCE tipo_tamanhoepi_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE
 ----------------------------------------------------------------------------------------------------------------------------------
 
 UPDATE papel set ordem = ordem + 1 where papelmae_id = 385;--.go  
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (637, 'ROLE_CAD_TAMANHO_EPI', 'Tamanhos de EPI/Fardamento', '/sesmt/tamanhoEPI/list.action', 1, true, 385);--.go  
-INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 637);--.go
-ALTER sequence papel_sequence restart WITH 638;--.go 
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (642, 'ROLE_CAD_TAMANHO_EPI', 'Tamanhos de EPI/Fardamento', '/sesmt/tamanhoEPI/list.action', 1, true, 385);--.go  
+INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 642);--.go
+ALTER sequence papel_sequence restart WITH 643;--.go 
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
