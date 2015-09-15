@@ -11,6 +11,7 @@ public class RespostaQuestionario
 {
 	private Long colaboradorQuestionarioId;
 	private Double colaboradorQuestionarioPerformance;
+	private Double colaboradorQuestionarioPerformanceNivelCompetencia;
 	private Long perguntaId;
 	private Integer perguntaOrdem;
 	private String perguntaTexto;
@@ -32,12 +33,13 @@ public class RespostaQuestionario
 	
 	public RespostaQuestionario() {}
 	
-	public RespostaQuestionario(Long colaboradorQuestionarioId, Double colaboradorQuestionarioPerformance, Long perguntaId, Integer perguntaOrdem, String perguntaTexto, Boolean perguntaHasComentario, String perguntaTextoComentario, Integer perguntaTipo, Long respostaId,
+	public RespostaQuestionario(Long colaboradorQuestionarioId, Double colaboradorQuestionarioPerformance, Double colaboradorQuestionarioPerformanceNivelCompetencia, Long perguntaId, Integer perguntaOrdem, String perguntaTexto, Boolean perguntaHasComentario, String perguntaTextoComentario, Integer perguntaTipo, Long respostaId,
 			Integer respostaOrdem, String respostaTexto, Integer respostaPeso, Long aspectoId, String aspectoNome, String colaboradorQuestionarioObservacao, Long colaboradorRespostaRespostaId,
 			Integer colaboradorRespostaValor, String colaboradorRespostaComentario) {
 		super();
 		this.colaboradorQuestionarioId = colaboradorQuestionarioId;
 		this.colaboradorQuestionarioPerformance = colaboradorQuestionarioPerformance;
+		this.colaboradorQuestionarioPerformanceNivelCompetencia = colaboradorQuestionarioPerformanceNivelCompetencia;
 		this.perguntaId = perguntaId;
 		this.perguntaOrdem = perguntaOrdem;
 		this.perguntaTexto = perguntaTexto;
@@ -247,12 +249,30 @@ public class RespostaQuestionario
 	    DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt","BR"));//new DecimalFormat("0.##");
 	    df.applyPattern("0.##");
          
-		String performanceFmt = df.format((colaboradorQuestionarioPerformance * 100)) + "%";
-		
-		return performanceFmt;
+		return df.format((colaboradorQuestionarioPerformance * 100)) + "%";
 	}
 
 	public void setColaboradorQuestionarioPerformance(Double colaboradorQuestionarioPerformance) {
 		this.colaboradorQuestionarioPerformance = colaboradorQuestionarioPerformance;
+	}
+
+	
+	public String getColaboradorQuestionarioPerformanceNivelCompetenciaFormatada() {
+		if (colaboradorQuestionarioPerformanceNivelCompetencia == null)
+			return "0%";
+
+	    DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt","BR"));//new DecimalFormat("0.##");
+	    df.applyPattern("0.##");
+         
+		return df.format((colaboradorQuestionarioPerformanceNivelCompetencia * 100)) + "%";
+	}
+
+	public Double getColaboradorQuestionarioPerformanceNivelCompetencia() {
+		return colaboradorQuestionarioPerformanceNivelCompetencia;
+	}
+
+	public void setColaboradorQuestionarioPerformanceNivelCompetencia(
+			Double colaboradorQuestionarioPerformanceNivelCompetencia) {
+		this.colaboradorQuestionarioPerformanceNivelCompetencia = colaboradorQuestionarioPerformanceNivelCompetencia;
 	}
 }

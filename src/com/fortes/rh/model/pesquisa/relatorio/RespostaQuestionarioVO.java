@@ -9,6 +9,7 @@ public class RespostaQuestionarioVO {
 	private Collection<RespostaQuestionario> respostasQuestionario;
 	private Collection<MatrizCompetenciaNivelConfiguracao> matrizCompetecias;
 	private String colaboradorQuestionarioPerformance;
+	private String colaboradorQuestionarioPerformanceNivelCompetencia;
 	
 	public Collection<RespostaQuestionario> getRespostasQuestionario() {
 		return respostasQuestionario;
@@ -32,5 +33,13 @@ public class RespostaQuestionarioVO {
 
 	public void setColaboradorQuestionarioPerformance(String colaboradorQuestionarioPerformance) {
 		this.colaboradorQuestionarioPerformance = colaboradorQuestionarioPerformance;
+	}
+
+	public String getColaboradorQuestionarioPerformanceNivelCompetencia() {
+		return colaboradorQuestionarioPerformanceNivelCompetencia;
+	}
+
+	public void setColaboradorQuestionarioPerformanceNivelCompetencia(String colaboradorQuestionarioPerformanceNivelCompetencia) {
+		this.colaboradorQuestionarioPerformanceNivelCompetencia = colaboradorQuestionarioPerformanceNivelCompetencia;
 	}
 }

@@ -677,7 +677,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 	public Collection<RespostaQuestionario> findRespostasAvaliacaoDesempenho(Long colaboradorQuestionarioId) 
 	{
 		StringBuffer hql = new StringBuffer();
-		hql.append("select cq.id, cq.performance, p.id as pergunta_id, p.ordem as pergunta_ordem, p.texto as pergunta_texto, p.comentario as pergunta_comentario, p.textocomentario as pergunta_textocomentario, p.tipo as pergunta_tipo, ");
+		hql.append("select cq.id, cq.performance, cq.performanceNivelCompetencia, p.id as pergunta_id, p.ordem as pergunta_ordem, p.texto as pergunta_texto, p.comentario as pergunta_comentario, p.textocomentario as pergunta_textocomentario, p.tipo as pergunta_tipo, ");
 		hql.append("r.id as resposta_id, r.ordem as resposta_ordem, r.texto as resposta_texto, r.peso as resposta_peso, ");
 		hql.append("a.id as aspecto_id, a.nome as aspecto_nome, cq.observacao, ");
 		hql.append("cr.resposta_id as cr_resposta_id, cr.valor as cr_resposta_valor, cr.comentario as cr_comentario ");  
@@ -696,6 +696,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		
 		query.addScalar("id", Hibernate.LONG);
 		query.addScalar("performance", Hibernate.DOUBLE);
+		query.addScalar("performanceNivelCompetencia", Hibernate.DOUBLE);
 		query.addScalar("pergunta_id", Hibernate.LONG);
 		query.addScalar("pergunta_ordem", Hibernate.INTEGER);
 		query.addScalar("pergunta_texto", Hibernate.STRING);
@@ -718,7 +719,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 		int i;
 		for (Object[] obj : lista) {
 			i = 0;
-			vos.add(new RespostaQuestionario((Long)obj[i++], (Double)obj[i++], (Long)obj[i++], (Integer)obj[i++], (String)obj[i++], (Boolean)obj[i++], (String)obj[i++], (Integer)obj[i++], (Long)obj[i++], (Integer)obj[i++], (String)obj[i++], (Integer)obj[i++], (Long)obj[i++], (String)obj[i++], (String)obj[i++], (Long)obj[i++], (Integer)obj[i++], (String)obj[i++]));
+			vos.add(new RespostaQuestionario((Long)obj[i++], (Double)obj[i++], (Double)obj[i++], (Long)obj[i++], (Integer)obj[i++], (String)obj[i++], (Boolean)obj[i++], (String)obj[i++], (Integer)obj[i++], (Long)obj[i++], (Integer)obj[i++], (String)obj[i++], (Integer)obj[i++], (Long)obj[i++], (String)obj[i++], (String)obj[i++], (Long)obj[i++], (Integer)obj[i++], (String)obj[i++]));
 		}
 		return vos;
 	}

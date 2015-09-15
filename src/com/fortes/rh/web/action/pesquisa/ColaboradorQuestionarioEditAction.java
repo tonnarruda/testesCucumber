@@ -384,13 +384,14 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		colaborador = colaboradorManager.findColaboradorByDataHistorico(colaboradorQuestionario.getColaborador().getId(), colaboradorQuestionario.getRespondidaEm());
 		avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
 
-		Collection<RespostaQuestionario> respostaQuestionario = colaboradorRespostaManager.findRespostasAvaliacaoDesempenho(colaboradorQuestionario.getId());
+		Collection<RespostaQuestionario> respostaQuestionarios = colaboradorRespostaManager.findRespostasAvaliacaoDesempenho(colaboradorQuestionario.getId());
+		RespostaQuestionario respostaQuestionario = respostaQuestionarios.iterator().next();
 		
 		questionarioVO = new RespostaQuestionarioVO();
-		questionarioVO.setRespostasQuestionario(respostaQuestionario);
+		questionarioVO.setRespostasQuestionario(respostaQuestionarios);
 		questionarioVO.setMatrizCompetecias(configuracaoNivelCompetenciaManager.montaMatrizCNCByQuestionario(colaboradorQuestionario, colaborador.getEmpresa().getId()));
-		questionarioVO.setColaboradorQuestionarioPerformance(respostaQuestionario.iterator().next().getColaboradorQuestionarioPerformanceFormatada());
-		
+		questionarioVO.setColaboradorQuestionarioPerformance(respostaQuestionario.getColaboradorQuestionarioPerformanceFormatada());
+		questionarioVO.setColaboradorQuestionarioPerformanceNivelCompetencia(respostaQuestionario.getColaboradorQuestionarioPerformanceNivelCompetenciaFormatada());
 		
 		String filtro = colaboradorQuestionario.getAvaliacaoDesempenho().getTitulo();
 		filtro += "\nAvaliador: " + avaliador.getNome();

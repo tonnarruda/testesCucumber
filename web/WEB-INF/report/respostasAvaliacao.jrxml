@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="respostasAvaliacao" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="7be2f284-932e-4ab4-bec3-a53166b68b58">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.8150000000000024"/>
+	<property name="ireport.x" value="84"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -16,6 +16,7 @@
 	<field name="respostasQuestionario" class="java.lang.Object"/>
 	<field name="matrizCompetecias" class="java.lang.Object"/>
 	<field name="colaboradorQuestionarioPerformance" class="java.lang.String"/>
+	<field name="colaboradorQuestionarioPerformanceNivelCompetencia" class="java.lang.String"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count"/>
 	<background>
 		<band splitType="Stretch"/>
@@ -35,17 +36,19 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="33" splitType="Stretch">
+		<band height="27" splitType="Stretch">
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement key="textField-4" positionType="Float" x="285" y="19" width="249" height="14" uuid="44340212-f343-4153-a235-434a968101ad"/>
+				<reportElement key="textField-4" positionType="Float" x="308" y="14" width="226" height="12" uuid="44340212-f343-4153-a235-434a968101ad"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA["Performance: " + $F{colaboradorQuestionarioPerformance}]]></textFieldExpression>
+				<textElement textAlignment="Right" verticalAlignment="Bottom">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Performance Questionário: " + $F{colaboradorQuestionarioPerformance}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
 				<reportElement key="textField-5" x="2" y="0" width="532" height="14" isRemoveLineWhenBlank="true" uuid="ec4fe9da-0f26-456f-b519-b18face5329c"/>
@@ -103,7 +106,7 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="103" splitType="Stretch">
+		<band height="101" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
 				<reportElement key="textField" x="2" y="28" width="532" height="16" uuid="948ad7e3-0d89-4dcc-8bf6-3e8c2c5168b3"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
@@ -135,6 +138,9 @@
 				</subreportParameter>
 				<subreportParameter name="EXIBIR_COMPETENCIAS_COLABORADOR">
 					<subreportParameterExpression><![CDATA[true]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="PERFORMANCENIVELCOMPETENCIA">
+					<subreportParameterExpression><![CDATA[$F{colaboradorQuestionarioPerformanceNivelCompetencia}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="IS_AUTO_AVALIACAO">
 					<subreportParameterExpression><![CDATA[false]]></subreportParameterExpression>
