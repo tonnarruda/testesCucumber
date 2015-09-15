@@ -4,6 +4,9 @@
 		<Item visivel="S" motivo="S20150400200"><![CDATA[R&S > Movimentações > Solicitação de pessoal: Novos filtros por período e código.]]></Item>
 		<Item visivel="S" motivo="S20150400198"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Clonar: Configurar a solicitação de pessoal clonada com o status da solicitação como "Em Análise".]]></Item>
 		<Item visivel="S" motivo="S20150600185"><![CDATA[Info. Funcionais > Painel de Indicadores > Informações Sociais: Novo filtro por colocação.]]></Item>
+		<Item visivel="S" motivo="S20150800050"><![CDATA[SESMT > Cadastros > Categorias de EPI: Menu renomeado para "Categorias de EPI/Fardamento".]]></Item>
+		<Item visivel="S" motivo="S20150800050"><![CDATA[SESMT > Cadastros > Motivos de Solicitação de EPI: Menu renomeado para "Motivos de Solicitação de EPI/Fardamento".]]></Item>
+		<Item visivel="S" motivo="S20150800050"><![CDATA[SESMT > Movimentações > Solicitação de EPI: Nova opção para inserir tamanho dos EPIs]]></Item>
 		<Item visivel="S" motivo="S20150800059"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Nova informação de periodicidade dos riscos.]]></Item>
 		<Item visivel="S" motivo="S20150800018"><![CDATA[SESMT > Relatórios > EPIs Entregues: Novo filtro pela área organizacional e novo campo de área organizacional no relatório.]]></Item>
 		<Item visivel="S" motivo="S20150800000"><![CDATA[SESMT > Relatórios > Mapa de Riscos: Novo relatório para indicar os riscos e os níveis dos riscos por ambiente.]]></Item>
