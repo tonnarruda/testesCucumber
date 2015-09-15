@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.1xx.18x" db="" data="xx/09/2015">
+		<Item visivel="S" motivo="S20150400200"><![CDATA[R&S > Movimentações > Solicitação de pessoal: Novos filtros por período e código.]]></Item>
 		<Item visivel="S" motivo="S20150400198"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Clonar: Configurar a solicitação de pessoal clonada com o status da solicitação como "Em Análise".]]></Item>
 		<Item visivel="S" motivo="S20150600185"><![CDATA[Info. Funcionais > Painel de Indicadores > Informações Sociais: Novo filtro por colocação.]]></Item>
 		<Item visivel="S" motivo="S20150800059"><![CDATA[SESMT > Relatórios > PPRA e LTCAT: Nova informação de periodicidade dos riscos.]]></Item>

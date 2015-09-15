@@ -646,7 +646,39 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 
 		Collection<Solicitacao> solicitacaosBucaComPeriodo = solicitacaoDao.findAllByVisualizacao(1, 10,'S', empresa.getId(), solicitante, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, null, 'T', null, String.valueOf(solicitacao.getId()), new Date(), null);
 		assertEquals(1, solicitacaosBucaComPeriodo.size());
+	}
+	
+	public void testFindAllByVisualizacaoByCodigoAndData()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
 
+		Usuario solicitante = null;
+		Long cargoId = null;
+		Long estabelecimentoId = null;
+		Long areaOrganizacionalId = null;
+		Long motivoId = null;
+
+		Solicitacao solicitacao1 = getEntity();
+		solicitacao1.setEmpresa(empresa);
+		solicitacao1.setData(DateUtil.criarDataMesAno(1, 1, 2014));
+		solicitacaoDao.save(solicitacao1);
+		
+		Solicitacao solicitacao2 = getEntity();
+		solicitacao2.setEmpresa(empresa);
+		solicitacao2.setData(DateUtil.criarDataMesAno(1, 5, 2015));
+		solicitacaoDao.save(solicitacao2);
+		
+		Solicitacao solicitacao3 = getEntity();
+		solicitacao3.setEmpresa(empresa);
+		solicitacao3.setData(DateUtil.criarDataMesAno(1, 8, 2015));
+		solicitacaoDao.save(solicitacao3);
+		
+		Collection<Solicitacao> solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', empresa.getId(), solicitante, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, null, 'T', null, null, DateUtil.criarDataMesAno(1, 1, 2015), DateUtil.criarDataMesAno(1, 8, 2015));
+		assertEquals(2, solicitacaos.size());
+		
+		solicitacaos = solicitacaoDao.findAllByVisualizacao(1, 10,'A', empresa.getId(), solicitante, estabelecimentoId, areaOrganizacionalId, cargoId, motivoId, null, 'T', null, String.valueOf(solicitacao2.getId()), DateUtil.criarDataMesAno(1, 1, 2015), DateUtil.criarDataMesAno(1, 8, 2015));
+		assertEquals(1, solicitacaos.size());
 	}
 	
 	public void testFindAllByVisualizacaoComStatus()

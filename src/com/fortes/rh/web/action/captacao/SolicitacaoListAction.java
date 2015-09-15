@@ -20,7 +20,6 @@ import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.HistoricoCandidatoManager;
 import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
-import com.fortes.rh.business.captacao.PausaPreenchimentoVagasManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -68,7 +67,6 @@ public class SolicitacaoListAction extends MyActionSupportList
     private CandidatoManager candidatoManager;
     private CargoManager cargoManager;
     private ColaboradorManager colaboradorManager;
-    private PausaPreenchimentoVagasManager pausaPreenchimentoVagasManager;
     private Anuncio anuncio;
     
     private Map<String,Object> parametros = new HashMap<String, Object>();
@@ -616,10 +614,5 @@ public class SolicitacaoListAction extends MyActionSupportList
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
-	}
-
-	public void setPausaPreenchimentoVagasManager(
-			PausaPreenchimentoVagasManager pausaPreenchimentoVagasManager) {
-		this.pausaPreenchimentoVagasManager = pausaPreenchimentoVagasManager;
 	}
 }
