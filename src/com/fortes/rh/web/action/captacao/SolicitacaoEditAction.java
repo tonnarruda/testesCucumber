@@ -229,7 +229,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     	
     	boolean roleMovSolicitacaoSelecao = SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_MOV_SOLICITACAO_SELECAO"});
 		if(roleMovSolicitacaoSelecao)
-			areas = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaSistemaId, AreaOrganizacional.ATIVA, areaInativaId);
+			areas = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaSistemaId, AreaOrganizacional.ATIVA, areaInativaId, false);
 		else
 			areas = areaOrganizacionalManager.findAllSelectOrderDescricaoByUsuarioId(empresaSistemaId, usuarioLogado.getId(), AreaOrganizacional.ATIVA, areaInativaId);
 		
@@ -285,7 +285,7 @@ public class SolicitacaoEditAction extends MyActionSupportEdit
     	prepare();
 
     	bairrosCheckList = CheckListBoxUtil.marcaCheckListBox(bairrosCheckList, bairroManager.getBairrosBySolicitacao(solicitacao.getId()), "getId");
-    	areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null);
+    	areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.TODAS, null, false);
     	estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 
     	solicitacao.setId(null);

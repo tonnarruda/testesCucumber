@@ -44,11 +44,11 @@ public class ConfiguracaoLimiteColaboradorEditAction extends MyActionSupportList
 		{
 			configuracaoLimiteColaborador = (ConfiguracaoLimiteColaborador) configuracaoLimiteColaboradorManager.findById(configuracaoLimiteColaborador.getId());
 
-			areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, configuracaoLimiteColaborador.getAreaOrganizacional().getId());
+			areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, configuracaoLimiteColaborador.getAreaOrganizacional().getId(), false);
 			configuracaoLimiteColaborador.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionais, configuracaoLimiteColaborador.getAreaOrganizacional().getId()));
 		}
 		else
-			areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, null);
+			areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, null, false);
 		
 		Collection<Long> idsAreasConfiguradas = configuracaoLimiteColaboradorManager.findIdAreas(getEmpresaSistema().getId());
 		idsFamiliasAreasJaConfiguradas = areaOrganizacionalManager.selecionaFamilia(areaOrganizacionais, idsAreasConfiguradas);

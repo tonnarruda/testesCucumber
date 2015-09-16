@@ -54,7 +54,7 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 			areaId = areaOrganizacional.getAreaMaeId();
 		}
 
-		areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaId);
+		areas = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaId, false);
 		responsaveis = colaboradorManager.findAllSelect(getEmpresaSistema().getId(), "nome");
 		coResponsaveis = responsaveis;
 	}

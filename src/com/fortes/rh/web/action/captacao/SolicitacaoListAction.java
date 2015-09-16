@@ -139,7 +139,7 @@ public class SolicitacaoListAction extends MyActionSupportList
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		
 		if(roleMovSolicitacaoSelecao)
-			areasOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, null);
+			areasOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, null, false);
 		else
 			areasOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricaoByUsuarioId(getEmpresaSistema().getId(), getUsuarioLogado().getId(), AreaOrganizacional.ATIVA, null);
 		

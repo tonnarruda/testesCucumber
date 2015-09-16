@@ -45,7 +45,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public AreaOrganizacional findAreaOrganizacionalCodigoAc(Long idAreaOrganizacional);
 	public AreaOrganizacional getAreaMae(Collection<AreaOrganizacional> todasAreas, AreaOrganizacional area);
 	public Collection<AreaOrganizacional> montaFamilia(Collection<AreaOrganizacional> areaOrganizacionals) throws Exception;
-	public Collection<AreaOrganizacional> findAllSelectOrderDescricao(Long empresaId, Boolean ativo, Long faixaInativaId) throws Exception;
+	public Collection<AreaOrganizacional> findAllSelectOrderDescricao(Long empresaId, Boolean ativo, Long faixaInativaId, boolean somenteFolhas) throws Exception;
 	public Collection<AreaOrganizacional> getDistinctAreaMae(Collection<AreaOrganizacional> todasAreas, Collection<AreaOrganizacional> areaOrganizacionals);
 	public Collection<AreaOrganizacional> findByCargo(Long cargoId);
 	public Collection<AreaOrganizacional> montaAllSelect(Long empresaId);

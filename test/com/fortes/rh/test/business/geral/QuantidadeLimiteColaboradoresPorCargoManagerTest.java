@@ -106,7 +106,7 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerTest extends MockObject
 		Empresa empresa = EmpresaFactory.getEmpresa(3L);
 		
 		faixaSalarialManager.expects(atLeastOnce()).method("findByFaixaSalarialId").with(eq(faixa.getId())).will(returnValue(faixa));
-		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllSelectOrderDescricao").with(eq(empresa.getId()), eq(Boolean.TRUE), ANYTHING).will(returnValue(areasOrganizacionais));
+		areaOrganizacionalManager.expects(atLeastOnce()).method("findAllSelectOrderDescricao").with(eq(empresa.getId()), eq(Boolean.TRUE), ANYTHING, ANYTHING).will(returnValue(areasOrganizacionais));
 		quantidadeLimiteColaboradoresPorCargoDao.expects(once()).method("findLimite").with(eq(cargo.getId()), eq(areasIds)).will(returnValue(configuracaoLimite));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("findAreasPossiveis").with(eq(areasOrganizacionais), eq(configuracaoLimite.getAreaOrganizacional().getId())).will(returnValue(areasOrganizacionais));
 		

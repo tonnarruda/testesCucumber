@@ -468,7 +468,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return areaOrganizacionalTmp;
 	}
 
-	public Collection<AreaOrganizacional> findAllSelectOrderDescricao(Long empresaId, Boolean ativo, Long areaInativaId) throws Exception
+	public Collection<AreaOrganizacional> findAllSelectOrderDescricao(Long empresaId, Boolean ativo, Long areaInativaId, boolean somenteFolhas) throws Exception
 	{
 		Collection<Long> areasInativas = null;
 		if(areaInativaId != null)
@@ -477,12 +477,42 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		Collection<AreaOrganizacional> areaOrganizacionals = findAllListAndInativas(ativo, areasInativas, empresaId);
 		areaOrganizacionals = montaFamilia(areaOrganizacionals);
 
+		if(somenteFolhas)
+			areaOrganizacionals = getSomenteFolhas(areaOrganizacionals, areaInativaId);
+		
 		CollectionUtil<AreaOrganizacional> cUtil = new CollectionUtil<AreaOrganizacional>();
 		areaOrganizacionals = cUtil.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricao");
 
 		return areaOrganizacionals;
 	}
 	
+	private Collection<AreaOrganizacional> getSomenteFolhas(Collection<AreaOrganizacional> areaOrganizacionals,Long areaInativaId) 
+	{
+		Collection<AreaOrganizacional> areasRetorno = new ArrayList<AreaOrganizacional>();
+		
+		boolean possuiAreaFilha;
+		for (AreaOrganizacional areaOrganizacional : areaOrganizacionals) 
+		{
+			possuiAreaFilha = false;
+
+			if(areaInativaId == null || !areaOrganizacional.getId().equals(areaInativaId))
+			{
+				for (AreaOrganizacional areaOrganizacionalMae : areasRetorno) 
+				{
+					if(areaOrganizacional.getId().equals(areaOrganizacionalMae.getAreaMaeId())){
+						possuiAreaFilha = true;
+						break;
+					}
+				}
+			}
+			
+			if(!possuiAreaFilha)
+				areasRetorno.add(areaOrganizacional);
+		}
+		
+		return areasRetorno;
+	}
+
 	public Collection<AreaOrganizacional> findAllSelectOrderDescricaoByUsuarioId(Long empresaId, Long usuarioId, Boolean ativo, Long areaInativaId) throws Exception{
 		Collection<Long> areasInativas = null;
 		if(areaInativaId != null)

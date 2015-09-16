@@ -438,7 +438,7 @@ public class HistoricoColaboradorEditActionTest extends MockObjectTestCase
 	}
 
 	private void dadoQueExistemAreasOrganizacionaisParaEmpresaDoSistema() {
-		areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresaDoSistema.getId()), eq(AreaOrganizacional.ATIVA), ANYTHING).will(returnValue(Collections.EMPTY_LIST));
+		areaOrganizacionalManager.expects(once()).method("findAllSelectOrderDescricao").with(eq(empresaDoSistema.getId()), eq(AreaOrganizacional.ATIVA), ANYTHING, ANYTHING).will(returnValue(Collections.EMPTY_LIST));
 	}
 
 	private void dadoQueExistemFaixasSalariaisAtivasParaEmpresaDoSistema() {

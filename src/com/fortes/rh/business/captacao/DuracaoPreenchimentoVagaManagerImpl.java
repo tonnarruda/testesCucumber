@@ -24,7 +24,7 @@ public class DuracaoPreenchimentoVagaManagerImpl implements DuracaoPreenchimento
 	private SolicitacaoManager solicitacaoManager;
 	
 	private Map<Long, String> getAreas(Long empresaId) throws Exception {
-		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, null, null);
+		Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, null, null, false);
 		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areas, "getId", "getDescricao");
 	}
 	

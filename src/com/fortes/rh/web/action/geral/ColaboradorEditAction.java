@@ -329,7 +329,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 
 		faixas = faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, faixaInativaId);
 
-		areaOrganizacionals = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaInativaId);
+		areaOrganizacionals = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaInativaId, true);
 
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		

@@ -69,7 +69,7 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 		Collection<AreaOrganizacional> areaOrganizacionais = new ArrayList<AreaOrganizacional>();
 		
 		try {
-			areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.ATIVA, areaId);
+			areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.ATIVA, areaId, false);
 		} catch (Exception e) {e.printStackTrace();}
 		
 		Collection<Long> areasIds = new ArrayList<Long>();
@@ -114,7 +114,7 @@ public class QuantidadeLimiteColaboradoresPorCargoManagerImpl extends GenericMan
 	public Collection<QuantidadeLimiteColaboradoresPorCargo> findByEmpresa(Long empresaId) throws Exception 
 	{
 		Collection<ConfiguracaoLimiteColaborador> configuracaos = configuracaoLimiteColaboradorManager.findAllSelect(empresaId);
-		Collection<AreaOrganizacional> areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.ATIVA, null);
+		Collection<AreaOrganizacional> areaOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricao(empresaId, AreaOrganizacional.ATIVA, null, false);
 		Collection<QuantidadeLimiteColaboradoresPorCargo> limites = getDao().findByEmpresa(empresaId);
 		Date hoje = new Date();
 		for (QuantidadeLimiteColaboradoresPorCargo limite : limites) 
