@@ -497,7 +497,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 			if(areaInativaId == null || !areaOrganizacional.getId().equals(areaInativaId))
 			{
-				for (AreaOrganizacional areaOrganizacionalMae : areasRetorno) 
+				for (AreaOrganizacional areaOrganizacionalMae : areaOrganizacionals) 
 				{
 					if(areaOrganizacional.getId().equals(areaOrganizacionalMae.getAreaMaeId())){
 						possuiAreaFilha = true;

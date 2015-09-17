@@ -543,6 +543,16 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     	assertEquals(5, areaOrganizacionalManager.findAllSelectOrderDescricao(empresa.getId(), AreaOrganizacional.TODAS, null, false).size());
     }
+    
+    public void testFindAllSelectOrderDescricaoSomenteFolhas() throws Exception
+    {
+    	Empresa empresa = new Empresa();
+    	empresa.setId(1L);
+
+    	areaOrganizacionalDao.expects(once()).method("findAllList").with(new Constraint[] {eq(0), eq(0), eq(null), eq(null), eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{empresa.getId()})}).will(returnValue(preparaCollection()));
+
+    	assertEquals(2, areaOrganizacionalManager.findAllSelectOrderDescricao(empresa.getId(), AreaOrganizacional.TODAS, null, true).size());
+    }
 
     public void testGetNaoFamilia() throws Exception
     {
