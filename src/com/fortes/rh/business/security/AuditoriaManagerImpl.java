@@ -226,15 +226,12 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 		cancelamentoSolicitacaoAC.put("Usuário Fortes Pessoal", tAuditoria.getUsuario());
 		cancelamentoSolicitacaoAC.put("Módulo Fortes Pessoal", tAuditoria.getModulo());
 		cancelamentoSolicitacaoAC.put("Operação Fortes Pessoal", tAuditoria.getOperacao());
-		cancelamentoSolicitacaoAC.put("Mensagem", "Colaborador Removido a partir do Fortes Pessoal.");
+		cancelamentoSolicitacaoAC.put("Mensagem", "Colaborador Removido atravez do Fortes Pessoal.");
 		
 		String dados = new GeraDadosAuditados(null, cancelamentoSolicitacaoAC).gera();
-		
-		Usuario usuario = new Usuario();
-		usuario.setNome(tAuditoria.getUsuario());
 
 		Auditoria auditoria = new Auditoria();
-		auditoria.audita(usuario, empresa, "Colaborador", "Colaborador Removido a partir do Fortes Pessoal.", colaborador.getNome(), dados);
+		auditoria.audita(null, empresa, "Colaborador", "Remoção atravez do Fortes Pessoal.", colaborador.getNome(), dados);
 		
 		this.getDao().save(auditoria);
 	}

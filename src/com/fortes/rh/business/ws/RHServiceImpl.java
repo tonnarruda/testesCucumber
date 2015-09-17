@@ -1432,8 +1432,13 @@ public class RHServiceImpl implements RHService
 			
 			colaboradorManager.removeComDependencias(colaborador.getId());
 			
-			Empresa empresa = empresaManager.findByCodigoAC(empregado.getEmpresaCodigoAC() , empregado.getGrupoAC());
-			auditoriaManager.auditaRemoverEnpregadoFortesPessoal(empresa, tAuditoria, colaborador);
+			try {
+				Empresa empresa = empresaManager.findByCodigoAC(empregado.getEmpresaCodigoAC() , empregado.getGrupoAC());
+				auditoriaManager.auditaRemoverEnpregadoFortesPessoal(empresa, tAuditoria, colaborador);
+			} catch (Exception e) {
+				System.out.println("Problema na auditoria ao remover empregado com dependência do Fortes Pessoal.");
+				e.printStackTrace();
+			}
 			
 			return new FeedbackWebService(true);
 		}
