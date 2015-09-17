@@ -588,7 +588,7 @@
 						<@ww.select label="Salário Proposto" name="salarioPropostoPor" id="tipoSalario" list="tiposSalarios"  headerValue="Selecione..." headerKey="" disabled="${somenteLeitura}" required="true" onchange="alteraTipoSalario(this.value);calculaSalario();alteraArrayValidacao(this.value);"/>
 						<div id="valorDiv" style="display:none">
 							<ul>
-								<@ww.textfield label="Valor" name="salarioColaborador" required="true" id="salarioProposto" cssClass="currency" cssStyle="width:85px; text-align:right;" maxLength="12" disabled="${somenteLeitura}"/>
+								<@ww.textfield label="Valor" name="salarioColaborador" required="true" id="salarioProposto" cssClass="currency" cssStyle="width:85px; text-align:right;" maxLength="12" disabled="${somenteLeitura}" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
 							</ul>
 						</div>
 						<div id="indiceDiv" style="display:none">

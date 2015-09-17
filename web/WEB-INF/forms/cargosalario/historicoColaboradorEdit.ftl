@@ -222,7 +222,7 @@
 
 		<div id="valorDiv" style="display:none; _margin-top: 10px;">
 			<ul>
-				<@ww.textfield label="Valor" name="historicoColaborador.salario" required="true" id="salario" cssClass="currency" cssStyle="width:85px; text-align:right;" maxLength="12" disabled="${somenteLeitura}"/>
+				<@ww.textfield label="Valor" name="historicoColaborador.salario" required="true" id="salario" cssClass="currency" cssStyle="width:85px; text-align:right;" maxLength="12" disabled="${somenteLeitura}" onkeypress = "return(somenteNumeros(event,'{,}'));"/>
 			</ul>
 		</div>
 		<div id="indiceDiv" style="display:none; _margin-top: 10px;">
