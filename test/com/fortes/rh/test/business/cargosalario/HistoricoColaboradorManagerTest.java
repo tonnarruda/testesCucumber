@@ -949,9 +949,9 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 	{
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 
-		historicoColaboradorDao.expects(once()).method("findByColaboradorProjection").with(eq(colaborador.getId())).will(returnValue(HistoricoColaboradorFactory.getCollection()));
+		historicoColaboradorDao.expects(once()).method("findByColaboradorProjection").with(eq(colaborador.getId()), ANYTHING).will(returnValue(HistoricoColaboradorFactory.getCollection()));
 
-		assertNotNull(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId()));
+		assertNotNull(historicoColaboradorManager.findByColaboradorProjection(colaborador.getId(), null));
 	}
 
 	public void testFindByColaborador()
@@ -1265,14 +1265,19 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setData(DateUtil.criarDataMesAno(03, 02, 2000));
 		historicoColaborador.setReajusteColaborador(reajusteColaborador);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(2L);
+		historicoColaborador2.setColaborador(colaborador);
+		historicoColaborador2.setData(DateUtil.criarDataMesAno(03, 02, 2005));
 
 		Collection<HistoricoColaborador> historicoColaboradors = new ArrayList<HistoricoColaborador>();
 		historicoColaboradors.add(historicoColaborador);
+		historicoColaboradors.add(historicoColaborador2);
 
 		historicoColaboradorDao.expects(once()).method("findByIdProjection").with(eq(historicoColaborador.getId())).will(returnValue(historicoColaborador));
 		historicoColaboradorDao.expects(once()).method("findHistoricoAprovado").with(eq(historicoColaborador.getId()), eq(colaborador.getId())).will(returnValue(historicoColaboradors));
 		acPessoalClientColaborador.expects(once()).method("verificaHistoricoNaFolhaAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(false));
-		historicoColaboradorDao.expects(once()).method("getCount").with(ANYTHING, ANYTHING).will(returnValue(2));
+		historicoColaboradorDao.expects(once()).method("findByColaboradorProjection").with(eq(colaborador.getId()), eq(StatusRetornoAC.CONFIRMADO)).will(returnValue(historicoColaboradors));
 		historicoColaboradorDao.expects(once()).method("findReajusteByHistoricoColaborador").with(eq(historicoColaborador.getId())).will(returnValue(1L));
 		historicoColaboradorDao.expects(once()).method("remove").with(eq(historicoColaborador.getId()));
 		historicoColaboradorDao.expects(once()).method("setaContratadoNoPrimeiroHistorico").with(eq(colaborador.getId()));

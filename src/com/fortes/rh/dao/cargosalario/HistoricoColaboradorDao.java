@@ -21,7 +21,7 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public Collection<HistoricoColaborador> findByColaboradorData(Long idColaborador, Date data);
 	public HistoricoColaborador getHistoricoProximo(HistoricoColaborador hist);
 	public Collection<HistoricoColaborador> getHistoricosAtuaisByEstabelecimentoAreaGrupo(Long[] estabelecimentoIds, char filtrarPor, Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId, Date dataTabela);
-	public Collection<HistoricoColaborador> findByColaboradorProjection(Long colaboradorId);
+	public Collection<HistoricoColaborador> findByColaboradorProjection(Long colaboradorId, Integer statusRetornoAC);
 	public HistoricoColaborador findByIdHQL(Long historicoColaboradorId);
 	public boolean setStatus(Long historicoColaboradorId, Boolean aprovado);
 	public HistoricoColaborador findByIdProjectionMinimo(Long historicoColaboradorId);

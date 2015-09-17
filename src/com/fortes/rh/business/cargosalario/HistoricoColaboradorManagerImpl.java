@@ -676,9 +676,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		this.indiceHistoricoManager = indiceHistoricoManager;
 	}
 
-	public Collection<HistoricoColaborador> findByColaboradorProjection(Long colaboradorId)
+	public Collection<HistoricoColaborador> findByColaboradorProjection(Long colaboradorId, Integer statusRetornoAC)
 	{
-		return getDao().findByColaboradorProjection(colaboradorId);
+		return getDao().findByColaboradorProjection(colaboradorId, statusRetornoAC);
 	}
 
 	public Collection<HistoricoColaborador> findByColaborador(Long colaboradorId, Long empresaId) throws Exception
@@ -838,8 +838,18 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if (historicoColaboradorTmp.getData().equals(colaborador.getDataAdmissao()))
 			throw new Exception("Este histórico não pode ser removido, pois é o primeiro histórico do colaborador.");
 		
-		if(getCount(new String[]{"colaborador.id"}, new Object[]{colaboradorId}) <= 1)
-			throw new Exception("<div>Histórico do colaborador "+historicoColaboradorTmp.getColaborador().getNome()+"</div>Não é permitido deletar o último histórico.");
+		Collection<HistoricoColaborador> historicoColaboradors = findByColaboradorProjection(colaboradorId, StatusRetornoAC.CONFIRMADO);
+		if(historicoColaboradors.size() <= 1)
+		{
+			String msg = "<div>Histórico do colaborador "+historicoColaboradorTmp.getColaborador().getNome()+"</div>Não é permitido deletar o único histórico";
+
+			if(empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc())
+				msg += " confirmado.";
+			else
+				msg += ".";
+			
+			throw new Exception(msg);
+		}
 		
 		if(empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc())
 		{

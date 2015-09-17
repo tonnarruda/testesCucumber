@@ -459,7 +459,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return query.list();
 	}
 
-	public Collection<HistoricoColaborador> findByColaboradorProjection(Long colaboradorId)
+	public Collection<HistoricoColaborador> findByColaboradorProjection(Long colaboradorId, Integer statusRetornoAC)
 	{
 		Criteria criteria = getSession().createCriteria(HistoricoColaborador.class, "hc");
 		criteria.createCriteria("hc.colaborador", "c");
@@ -469,6 +469,9 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("c.id", colaboradorId));
+		
+		if(statusRetornoAC != null)
+			criteria.add(Expression.eq("hc.status", statusRetornoAC));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(HistoricoColaborador.class));

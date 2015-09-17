@@ -163,7 +163,27 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historico.setColaborador(colaborador);
 		historico = historicoColaboradorDao.save(historico);
 
-		assertEquals(1, historicoColaboradorDao.findByColaboradorProjection(colaborador.getId()).size());
+		assertEquals(1, historicoColaboradorDao.findByColaboradorProjection(colaborador.getId(), null).size());
+	}
+	
+	public void testFindByColaboradorProjectionHistoricoConfirmado()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador = colaboradorDao.save(colaborador);
+
+		HistoricoColaborador historico = HistoricoColaboradorFactory.getEntity();
+		historico.setColaborador(colaborador);
+		historico.setStatus(StatusRetornoAC.CANCELADO);
+		historicoColaboradorDao.save(historico);
+		
+		HistoricoColaborador historico2 = HistoricoColaboradorFactory.getEntity();
+		historico2.setData(DateUtil.criarDataMesAno(1, 1, 2006));
+		historico2.setColaborador(colaborador);
+		historico2.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historico2);
+
+		assertEquals(2, historicoColaboradorDao.findByColaboradorProjection(colaborador.getId(), null).size());
+		assertEquals(1, historicoColaboradorDao.findByColaboradorProjection(colaborador.getId(), StatusRetornoAC.CONFIRMADO).size());
 	}
 	
 	public void testGetPromocoes()
@@ -1322,7 +1342,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaboradorDao.save(historicoColaborador);
 
 		historicoColaboradorDao.removeColaborador(colaborador.getId());
-		assertTrue(historicoColaboradorDao.findByColaboradorProjection(colaborador.getId()).isEmpty());
+		assertTrue(historicoColaboradorDao.findByColaboradorProjection(colaborador.getId(), null).isEmpty());
 	}
 	
 	public void testFindHistoricoAdmissao()

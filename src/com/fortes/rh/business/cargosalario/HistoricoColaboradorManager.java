@@ -70,7 +70,7 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	void montaAreaOrganizacional(Long empresaId, Collection<HistoricoColaborador> historicoColaboradors) throws Exception;
 
-	public Collection<HistoricoColaborador> findByColaboradorProjection(Long colaboradorId);
+	public Collection<HistoricoColaborador> findByColaboradorProjection(Long colaboradorId, Integer statusRetornoAC);
 
 	public Collection<HistoricoColaborador> findByColaborador(Long colaboradorId, Long empresaId) throws Exception;
 
