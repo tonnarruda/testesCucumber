@@ -31,7 +31,7 @@
 		<tr>
 			<td class="corpo" colspan="3" style="padding-left:10px" height="71px" colspan="3" align="center">
 			<font style="font-weight:bold; color:#9F6000;">Verifique a localização do serviço de autenticação.</font><br><br>
-			Entre em contato com a Fortes pelo telefone (85)4005.1114 para obter mais informações.<br><br>
+			Entre em contato com a Fortes pelo telefone (85)4005.1127 para obter mais informações.<br><br>
 			</td>
 		</tr>
 		<tr>
