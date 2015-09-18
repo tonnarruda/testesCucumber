@@ -30,6 +30,7 @@ import com.fortes.rh.model.desenvolvimento.relatorio.ColaboradorCursoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.CursoPontuacaoMatriz;
 import com.fortes.rh.model.desenvolvimento.relatorio.SomatorioCursoMatriz;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
+import com.fortes.rh.model.dicionario.StatusAprovacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -372,6 +373,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 					{
 						if(curso.getId().equals(colaboradorTurma.getCurso().getId()) && colaborador.getId().equals(colaboradorTurma.getColaborador().getId()))
 						{
+							colaboradorTurmasRetorno.add(colaboradorTurma);
 							adicionarColaboardorTurma = false;
 							break;
 						}
@@ -408,21 +410,23 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 	private Collection<ColaboradorTurma> filtraColaboradorTurmaAprovadosOuReprovadosByFiltroAprovado(char aprovadoFiltro, Collection<ColaboradorTurma> colaboradorTurmas) 
 	{
-		Boolean aprovado = aprovadoFiltro == 'T' ? null : aprovadoFiltro == 'S';
-		if(aprovado != null)
+		Boolean aprovado = null;
+		if(aprovadoFiltro == StatusAprovacao.APROVADO)
+			aprovado = true;
+		if(aprovadoFiltro == StatusAprovacao.REPROVADO)
+			aprovado = false;
+		
+		Collection<ColaboradorTurma> retorno = new ArrayList<ColaboradorTurma>();
+		
+		for (ColaboradorTurma ct : colaboradorTurmas) 
 		{
-			Collection<ColaboradorTurma> retorno = new ArrayList<ColaboradorTurma>();
-			
-			for (ColaboradorTurma ct : colaboradorTurmas) 
-			{
-				ct.setAprovado(verificaAprovacao(ct));
-				if(ct.isAprovado() == aprovado)
-					retorno.add(ct);
-			}
-
-			return retorno;
+			ct.setAprovado(verificaAprovacao(ct));
+			if(aprovado == null)
+				retorno.add(ct);
+			if(aprovado != null && ct.isAprovado() == aprovado)
+				retorno.add(ct);
 		}
-		return colaboradorTurmas; 
+		return retorno;
 	}
 	
 	private void setReprovadosMaisNota(Long cursoOuTurmaId, Integer qtdAvaliacoes, String porCursoOuTurma, Collection<ColaboradorTurma> colaboradorTurmas)

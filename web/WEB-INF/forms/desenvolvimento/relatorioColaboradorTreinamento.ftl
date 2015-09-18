@@ -146,7 +146,7 @@
 			<@ww.select name="aprovado" label="Considerar colaboradores" list="statusAprovacao" cssStyle="width: 500px;"/>
 			<@ww.checkbox label="Exibir cargos no relatório" name="exibeCargo" id="exibeCargo" labelPosition="left"/>
 		<#else>
-			<@ww.select label="Listar" name="aprovado" list=r"#{'T':'Todos os colaboradores','S':'Somente colaboradores aprovados', 'N':'Somente colaboradores reprovados'}" cssStyle="width: 500px;"/>
+			<@ww.select label="Listar" name="aprovado" list=r"#{'T':'Todos os colaboradores','A':'Somente colaboradores aprovados', 'R':'Somente colaboradores reprovados'}" cssStyle="width: 500px;"/>
 		</#if>
 		
 		<@ww.hidden name="comTreinamento"/>

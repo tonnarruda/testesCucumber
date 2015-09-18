@@ -662,37 +662,78 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append(" left join areaOrganizacional as ao on ao.id = hc.areaorganizacional_id  ");
 		sql.append(" left join estabelecimento as es on es.id = hc.estabelecimento_id  ");
 		sql.append(" left join empresa as emp on emp.id = c.empresa_id  ");
-		sql.append(" where c.desligado = false  " );
+		
+		boolean isadicionouCondicaoWhere = false;
 		
 		if (situacaoColaborador != null)
 		{
 			if (situacaoColaborador.equalsIgnoreCase(SituacaoColaborador.ATIVO))
 			{
-				sql.append("	and (c.dataDesligamento is null ");
-				if (data != null)
-					sql.append("	or c.dataDesligamento > :data ");
-				sql.append("	) ");
+				if(isadicionouCondicaoWhere){
+					sql.append("	and (c.dataDesligamento is null ");
+					if (data != null)
+						sql.append("	or c.dataDesligamento > :data ");
+					sql.append("	) ");
+					isadicionouCondicaoWhere = true;
+				}
+				else{
+					sql.append(" where (c.dataDesligamento is null ");
+					if (data != null)
+						sql.append("	or c.dataDesligamento > :data ");
+					sql.append("	) ");
+					isadicionouCondicaoWhere = true;
+				}
 			}
 			else if (situacaoColaborador.equalsIgnoreCase(SituacaoColaborador.DESLIGADO))
 			{
-				sql.append("	and (c.dataDesligamento is not null ");
-				if (data != null)
-					sql.append("	and c.dataDesligamento <= :data ");
-				sql.append("	) ");
+				if(isadicionouCondicaoWhere){
+					sql.append("	and (c.dataDesligamento is not null ");
+					if (data != null)
+						sql.append("	and c.dataDesligamento <= :data ");
+					sql.append("	) ");
+					isadicionouCondicaoWhere = true;
+				}
+				else{
+					sql.append("	where (c.dataDesligamento is not null ");
+					if (data != null)
+						sql.append("	and c.dataDesligamento <= :data ");
+					sql.append("	) ");
+					isadicionouCondicaoWhere = true;
+				}
 			}
 		}
 		
 		if(empresaId != null)
-			sql.append(	"and c.empresa_id = :empresaId ");
+			if(isadicionouCondicaoWhere)
+				sql.append(	" and c.empresa_id = :empresaId ");
+			else{
+				sql.append(	" where c.empresa_id = :empresaId ");
+				isadicionouCondicaoWhere = true;
+			}
 
 		if (LongUtil.arrayIsNotEmpty(cursosIds))
-			sql.append("and colabTurmaRealizadaPeriodo.cursoId in (:cursosIds) ");
+			if(isadicionouCondicaoWhere)
+				sql.append(" and colabTurmaRealizadaPeriodo.cursoId in (:cursosIds) ");
+			else{
+				sql.append(" where colabTurmaRealizadaPeriodo.cursoId in (:cursosIds) ");
+				isadicionouCondicaoWhere = true;
+			}
 
 		if (LongUtil.arrayIsNotEmpty(areaIds))
-			sql.append("and ao.id in (:areasId) ");
+			if(isadicionouCondicaoWhere)
+				sql.append(" and ao.id in (:areasId) ");
+			else{
+				sql.append(" where ao.id in (:areasId) ");
+				isadicionouCondicaoWhere = true;
+			}
 
 		if (LongUtil.arrayIsNotEmpty(estabelecimentoIds))
-			sql.append("and es.id in (:estabelecimentosId) ");
+			if(isadicionouCondicaoWhere)
+				sql.append(" and es.id in (:estabelecimentosId) ");
+			else{
+				sql.append(" where es.id in (:estabelecimentosId) ");
+				isadicionouCondicaoWhere = true;
+			}
 		
 		sql.append(" group by colabTurmaRealizadaPeriodo.cursoId, colabTurmaRealizadaPeriodo.cursoNome, emp.nome ,es.nome, ao.id, areaNome, c.id, c.nome, c.matricula, ");
 		sql.append(" colabTurmaRealizadaPeriodo.qtdpresenca, colabTurmaRealizadaPeriodo.totaldias, colabTurmaRealizadaPeriodo.percentualMinimoFrequencia, ");

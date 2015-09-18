@@ -3,7 +3,6 @@ package com.fortes.rh.model.desenvolvimento;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -649,7 +648,10 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	}
 
 	public String getTempoSemCurso(){
-		return DateUtil.formataTempoExtenso(turma.getDataPrevFim(), new Date());
+		if(turma != null)
+			return DateUtil.formataTempoExtenso(turma.getDataPrevFim(), new Date());
+		else
+			return "";
 	}
 
 	public void setTempoSemCurso(String tempoSemCurso)

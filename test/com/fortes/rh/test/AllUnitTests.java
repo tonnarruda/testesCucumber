@@ -169,6 +169,7 @@ import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemEntregaManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoExameManagerTest;
+import com.fortes.rh.test.business.sesmt.TamanhoEPIManagerTest;
 import com.fortes.rh.test.business.ws.RHServiceIntranetTest;
 import com.fortes.rh.test.business.ws.RHServiceTest;
 import com.fortes.rh.test.dao.hibernate.acesso.PapelDaoHibernateTest;
@@ -331,6 +332,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiItemDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiItemEntregaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoExameDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.TipoTamanhoEPIDaoHibernateTest;
 import com.fortes.rh.test.dicionario.AptoTest;
 import com.fortes.rh.test.dicionario.AreasFormacaoTest;
 import com.fortes.rh.test.dicionario.DeficienciaTest;
@@ -588,6 +590,8 @@ import com.fortes.rh.test.web.action.sesmt.ProntuarioEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.RiscoEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.SolicitacaoExameEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.SolicitacaoExameListActionTest;
+import com.fortes.rh.test.web.action.sesmt.TamanhoEPIListActionTest;
+import com.fortes.rh.test.web.action.sesmt.TamanhoEpiEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.TipoEpiEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.TipoEpiListActionTest;
 import com.fortes.rh.test.web.chart.ProgressaoColaboradorTest;
@@ -1237,6 +1241,14 @@ public class AllUnitTests extends TestSuite
         
         suite.addTestSuite(MotivoSolicitacaoEpiDaoHibernateTest.class);
         suite.addTestSuite(MotivoSolicitacaoEpiEditActionTest.class);
+        
+        suite.addTestSuite(TamanhoEPIManagerTest.class);
+        suite.addTestSuite(TamanhoEpiEditActionTest.class);
+        suite.addTestSuite(TamanhoEPIListActionTest.class);
+
+        suite.addTestSuite(TipoTamanhoEPIDaoHibernateTest.class);
+        suite.addTestSuite(TipoEpiEditActionTest.class);
+        suite.addTestSuite(TipoEpiListActionTest.class);
         
         // UTILITARIOS
         suite.addTestSuite(AutenticadorTest.class);

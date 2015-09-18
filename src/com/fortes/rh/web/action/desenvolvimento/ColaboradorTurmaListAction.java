@@ -340,8 +340,10 @@ public class ColaboradorTurmaListAction extends MyActionSupportList
 			empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 			
 			colaboradorTurmas = colaboradorTurmaManager.findRelatorioComTreinamento(empresaId, LongUtil.arrayStringToArrayLong(cursosCheck), LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), dataIni, dataFim, aprovado, situacao);
+			if (colaboradorTurmas == null || colaboradorTurmas.isEmpty())
+				throw new ColecaoVaziaException();
+
 			parametros = RelatorioUtil.getParametrosRelatorio("Colaboradores que fizeram o treinamento", getEmpresaSistema(), "");
-			
 			reportTitle = "Colaboradores que fizeram um treinamento ";
 
 			String retorno = Action.SUCCESS;

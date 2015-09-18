@@ -24,12 +24,28 @@ public class TipoTamanhoEPIDaoHibernateTest extends GenericDaoHibernateTest<Tipo
 
 	@Override
 	public TipoTamanhoEPI getEntity() {
-		return new TipoTamanhoEPI();
+		TipoTamanhoEPI tipoTamanhoEPI = new TipoTamanhoEPI();
+		TamanhoEPI tamanhoEPI = new TamanhoEPI();
+		tamanhoEPI.setId(1L);
+		tamanhoEPI.setDescricao("Tamanho");
+		tamanhoEPIDao.save(tamanhoEPI);
+		
+		TipoEPI tipoEPI = TipoEpiFactory.getEntity();
+		tipoEPIDao.save(tipoEPI);
+		
+		tipoTamanhoEPI.setId(1L);
+		tipoTamanhoEPI.setTipoEPI(tipoEPI);
+		tipoTamanhoEPI.setTamanhoEPIs(tamanhoEPI);
+		tipoTamanhoEPI.setAtivo(true);
+		tipoTamanhoEPIDao.save(tipoTamanhoEPI);
+		
+		return tipoTamanhoEPI;
 	}
 	
 	public void testRemoveByTipoEPI()
 	{
 		TamanhoEPI tamanhoEPI = new TamanhoEPI();
+		tamanhoEPI.setId(1L);
 		tamanhoEPI.setDescricao("Tamanho");
 		tamanhoEPIDao.save(tamanhoEPI);
 		
@@ -37,6 +53,7 @@ public class TipoTamanhoEPIDaoHibernateTest extends GenericDaoHibernateTest<Tipo
 		tipoEPIDao.save(tipoEPI);
 		
 		TipoTamanhoEPI tipoTamanhoEPI = new TipoTamanhoEPI();
+		tipoTamanhoEPI.setId(1L);
 		tipoTamanhoEPI.setTipoEPI(tipoEPI);
 		tipoTamanhoEPI.setTamanhoEPIs(tamanhoEPI);
 		tipoTamanhoEPI.setAtivo(true);

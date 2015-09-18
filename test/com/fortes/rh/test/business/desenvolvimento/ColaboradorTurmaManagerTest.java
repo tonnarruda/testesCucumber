@@ -969,8 +969,8 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		colaboradorTurmaDao.expects(atLeastOnce()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colaboradorTurmas));
 		
 		assertEquals(7, colaboradorTurmaManager.findRelatorioComTreinamento(null, new Long[]{CursoFactory.getEntity(1L).getId()}, null, null, null, null, 'T', SituacaoColaborador.ATIVO).size());		
-		assertEquals(4, colaboradorTurmaManager.findRelatorioComTreinamento(null, new Long[]{CursoFactory.getEntity(1L).getId()}, null, null, null, null, 'S', SituacaoColaborador.ATIVO).size());		
-		assertEquals(3, colaboradorTurmaManager.findRelatorioComTreinamento(null, new Long[]{CursoFactory.getEntity(1L).getId()}, null, null, null, null, 'N', SituacaoColaborador.ATIVO).size());		
+		assertEquals(4, colaboradorTurmaManager.findRelatorioComTreinamento(null, new Long[]{CursoFactory.getEntity(1L).getId()}, null, null, null, null, 'A', SituacaoColaborador.ATIVO).size());		
+		assertEquals(3, colaboradorTurmaManager.findRelatorioComTreinamento(null, new Long[]{CursoFactory.getEntity(1L).getId()}, null, null, null, null, 'R', SituacaoColaborador.ATIVO).size());		
 	}
 	
 	public void testFindRelatorioSemTreinamento() throws Exception
@@ -981,11 +981,11 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Long[] estabelecimentoIds=null;
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity(10L);
-		colaborador.setNome("Colab Inscrito");
+		colaborador.setNome("Colaborador que fez o treinamento a Zero meses");
 		colaborador.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
 		
 		Colaborador colaborador2 = ColaboradorFactory.getEntity(22L);
-		colaborador2.setNome("Colab NÂO Inscrito");
+		colaborador2.setNome("Colababorador não inscrito");
 		colaborador2.setAreaOrganizacional(AreaOrganizacionalFactory.getEntity(1L));
 		
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(100L);
@@ -1008,8 +1008,9 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		
 		Collection<ColaboradorTurma> resultado = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, new Long[]{curso.getId()}, areaIds, estabelecimentoIds, null, null, 'T');
 		
-		assertEquals(1, resultado.size());
-		assertEquals("Colab NÂO Inscrito", ((ColaboradorTurma)resultado.toArray()[0]).getColaborador().getNome());
+		assertEquals(2, resultado.size());
+		assertEquals("Colaborador que fez o treinamento a Zero meses", ((ColaboradorTurma)resultado.toArray()[0]).getColaborador().getNome());
+		assertEquals("Colababorador não inscrito", ((ColaboradorTurma)resultado.toArray()[1]).getColaborador().getNome());
 	}
 	
 	public void testFindRelatorioSemTreinamentoAprovado() throws Exception
@@ -1051,7 +1052,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		
 		colaboradorTurmaDao.expects(once()).method("findRelatorioSemTreinamento").will(returnValue(colaboradorTurmas));
 		
-		Collection<ColaboradorTurma> resultado = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, new Long[]{curso.getId()}, areaIds, estabelecimentoIds, null, null, 'S');
+		Collection<ColaboradorTurma> resultado = colaboradorTurmaManager.findRelatorioSemTreinamento(empresaId, new Long[]{curso.getId()}, areaIds, estabelecimentoIds, null, null, 'A');
 		
 		assertEquals(1, resultado.size());
 		assertEquals("Colab Aprovado", ((ColaboradorTurma)resultado.toArray()[0]).getColaborador().getNome());
