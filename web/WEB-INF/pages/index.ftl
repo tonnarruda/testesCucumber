@@ -46,7 +46,7 @@
 	
 	<script type='text/javascript'>
 		$(function () {
-			
+			/*
 			$( "#splash" ).dialog({
 				autoOpen: false,
 				modal: true,
@@ -63,7 +63,7 @@
 			{
 				$("#splash").dialog("open");
 			}
-			
+			*/
 			
 			$( ".column" ).sortable({
 				connectWith: ".column",
@@ -257,6 +257,7 @@
 		</#if>
 	</@authz.authorize>
 	
+	<!--
 	<div id="splash" style="display: none;">
 		<a id="fecharSplash" title="Fechar" href="javascript:;" onclick="$('#splash').dialog('close');" style="float: right; color: red;">
 			FECHAR
@@ -266,6 +267,7 @@
 		<input type="checkbox" id="naoExibirMsg" name="naoExibirMsg"/>
 		<label for="naoExibirMsg">Não exibir esta mensagem novamente</label>
 	</div>
+	-->
 
 	<script type="text/javascript">
 		<#if idiomaIncorreto?exists && !idiomaIncorreto>
