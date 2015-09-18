@@ -27,6 +27,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.PendenciaAC;
@@ -245,34 +246,49 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		empresa.setAcIntegra(true);
-
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(1L);
+		faixaSalarialHistorico.setStatus(StatusRetornoAC.CONFIRMADO);
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity(1L);
+		faixaSalarialHistorico2.setStatus(StatusRetornoAC.CONFIRMADO);
+		faixaSalarialHistorico2.setFaixaSalarial(faixaSalarial);
 
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
-		acPessoalClientCargo.expects(once()).method("deleteFaixaSalarialHistorico").with(ANYTHING, ANYTHING);
-		faixaSalarialHistoricoDao.expects(once()).method("remove").with(eq(faixaSalarialHistorico.getId()));
-		transactionManager.expects(once()).method("commit").with(ANYTHING);
+		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = new ArrayList<FaixaSalarialHistorico>();
+		faixaSalarialHistoricos.add(faixaSalarialHistorico);
+		faixaSalarialHistoricos.add(faixaSalarialHistorico2);
 
-		faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), empresa, true);
+		faixaSalarialHistoricoDao.expects(atLeastOnce()).method("findHistoricosByFaixaSalarialId").with(eq(faixaSalarial.getId()), eq(StatusRetornoAC.CONFIRMADO)).will(returnValue(faixaSalarialHistoricos));
+		faixaSalarialHistoricoDao.expects(atLeastOnce()).method("findByIdProjection").withAnyArguments().will(returnValue(faixaSalarialHistorico2));
+		transactionManager.expects(atLeastOnce()).method("getTransaction").with(ANYTHING);
+		acPessoalClientCargo.expects(atLeastOnce()).method("deleteFaixaSalarialHistorico").with(ANYTHING, ANYTHING);
+		
+		remove(empresa, faixaSalarialHistorico2);
+		removeException(empresa, faixaSalarialHistorico2);
+		removeExceptionUnicoHistorico(empresa, faixaSalarialHistorico2);
+	}
+	
+
+	private void remove(Empresa empresa, FaixaSalarialHistorico faixaSalarialHistorico2) throws Exception 
+	{
+		faixaSalarialHistoricoDao.expects(once()).method("remove").with(eq(faixaSalarialHistorico2.getId()));
+		transactionManager.expects(once()).method("commit").withAnyArguments();
+
+		faixaSalarialHistoricoManager.remove(faixaSalarialHistorico2.getId(), empresa, true);
 	}
 
-	public void testRemoveException() throws Exception
+	private void removeException(Empresa empresa, FaixaSalarialHistorico faixaSalarialHistorico2) throws Exception
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-		empresa.setAcIntegra(true);
-
-		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(1L);
-
-		transactionManager.expects(once()).method("getTransaction").with(ANYTHING);
-		acPessoalClientCargo.expects(once()).method("deleteFaixaSalarialHistorico").with(ANYTHING, ANYTHING);
-		faixaSalarialHistoricoDao.expects(once()).method("remove").with(eq(faixaSalarialHistorico.getId())).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(faixaSalarialHistorico.getId(),""))));;
+		faixaSalarialHistoricoDao.expects(once()).method("remove").with(eq(faixaSalarialHistorico2.getId())).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(faixaSalarialHistorico2,""))));;
 		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 
 		Exception exception = null;
 
 		try
 		{
-			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), empresa, true);
+			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico2.getId(), empresa, true);
 		}
 		catch (Exception e)
 		{
@@ -281,21 +297,29 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 
 		assertNotNull(exception);
 	}
+	
+	private void removeExceptionUnicoHistorico(Empresa empresa, FaixaSalarialHistorico faixaSalarialHistorico2) throws Exception 
+	{
+		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = new ArrayList<FaixaSalarialHistorico>();
+		faixaSalarialHistoricos.add(faixaSalarialHistorico2);
+		
+		faixaSalarialHistoricoDao.expects(atLeastOnce()).method("findHistoricosByFaixaSalarialId").with(ANYTHING, eq(StatusRetornoAC.CONFIRMADO)).will(returnValue(faixaSalarialHistoricos));
+		transactionManager.expects(once()).method("rollback").with(ANYTHING);
+		
+		Exception exception = null;
 
-//	public void testRemoveIds() throws Exception
-//	{
-//		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-//		empresa.setAcIntegra(true);
-//
-//		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity(1L);
-//		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity(2L);
-//
-//		Long[] ids = new Long[]{faixaSalarialHistorico1.getId(), faixaSalarialHistorico2.getId()};
-//
-//		acPessoalClientCargo.expects(atLeastOnce()).method("deleteFaixaSalarialHistorico").with(ANYTHING, ANYTHING);
-//
-//		faixaSalarialHistoricoManager.removeAC(ids, empresa);
-//	}
+		try
+		{
+			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico2.getId(), empresa, true);
+		}
+		catch (Exception e)
+		{
+			exception = e;
+		}
+
+		assertNotNull(exception);
+		assertEquals("Não é permitido deletar o único histórico da faixa salarial confirmado.", exception.getMessage());
+	}
 
 	public void testVerifyDataUpdate()
 	{
@@ -330,7 +354,6 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		indiceHistoricoManager.expects(once()).method("findUltimoSalarioIndice").with(ANYTHING).will(returnValue(valor));
 
 		assertEquals(750.00, faixaSalarialHistoricoManager.findUltimoHistoricoFaixaSalarial(faixaSalarial.getId()));
-
 	}
 
 	@SuppressWarnings("static-access")

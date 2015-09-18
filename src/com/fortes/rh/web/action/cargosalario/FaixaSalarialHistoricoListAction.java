@@ -1,6 +1,9 @@
 package com.fortes.rh.web.action.cargosalario;
 
+import java.lang.reflect.InvocationTargetException;
+
 import com.fortes.rh.business.cargosalario.FaixaSalarialHistoricoManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
@@ -26,15 +29,22 @@ public class FaixaSalarialHistoricoListAction extends MyActionSupportList
 		{
 			faixaSalarialHistoricoManager.remove(faixaSalarialHistorico.getId(), getEmpresaSistema(), true);
 		}
-		catch(IntegraACException e)
+
+		catch(InvocationTargetException e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir o histórico da faixa salarial no Fortes Pessoal.");
+
+			if(e.getTargetException() instanceof FortesException)
+				setActionMsg(e.getTargetException().getMessage());
+			
+			if(e.getTargetException() instanceof IntegraACException)
+				setActionMsg("Não foi possível excluir o histórico da faixa salarial no Fortes Pessoal.");
 		}
+		
 		catch(Exception e)
 		{
 			e.printStackTrace();
-			addActionError("Não foi possível excluir o histórico faixa salarial.");
+			setActionMsg("Não foi possível excluir o histórico faixa salarial. Pois possui dependências.");
 		}
 		
 		return Action.SUCCESS;

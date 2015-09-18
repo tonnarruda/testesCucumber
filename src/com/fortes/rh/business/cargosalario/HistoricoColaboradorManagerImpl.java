@@ -838,18 +838,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		if (historicoColaboradorTmp.getData().equals(colaborador.getDataAdmissao()))
 			throw new Exception("Este histórico não pode ser removido, pois é o primeiro histórico do colaborador.");
 		
-		Collection<HistoricoColaborador> historicoColaboradors = findByColaboradorProjection(colaboradorId, StatusRetornoAC.CONFIRMADO);
-		if(historicoColaboradors.size() <= 1)
-		{
-			String msg = "<div>Histórico do colaborador "+historicoColaboradorTmp.getColaborador().getNome()+"</div>Não é permitido deletar o único histórico";
-
-			if(empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc())
-				msg += " confirmado.";
-			else
-				msg += ".";
-			
-			throw new Exception(msg);
-		}
+		verificaUnicoHistorico(colaboradorId, empresa, historicoColaboradorTmp);
 		
 		if(empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc())
 		{
@@ -881,6 +870,18 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		
 		if(historicoColaboradorTmp.getCandidatoSolicitacao() != null && historicoColaboradorTmp.getCandidatoSolicitacao().getId() != null)
 			candidatoSolicitacaoManager.setStatus(historicoColaboradorTmp.getCandidatoSolicitacao().getId(), StatusCandidatoSolicitacao.APROMOVER);
+	}
+
+	private void verificaUnicoHistorico(Long colaboradorId, Empresa empresa, HistoricoColaborador historicoColaboradorTmp) throws Exception 
+	{
+		if(historicoColaboradorTmp.getStatus() == StatusRetornoAC.CONFIRMADO){
+			Collection<HistoricoColaborador> historicoColaboradors = findByColaboradorProjection(colaboradorId, StatusRetornoAC.CONFIRMADO);
+			if(historicoColaboradors.size() <= 1)
+			{
+				String msg = "<div>Histórico do colaborador "+historicoColaboradorTmp.getColaborador().getNome()+"</div>Não é permitido deletar o único histórico do colaborador" + ((empresa.isAcIntegra() && !historicoColaboradorTmp.getColaborador().isNaoIntegraAc())?" confirmado.":".");
+				throw new Exception(msg);
+			}
+		}
 	}
 
 	public void removeHistoricoAndReajusteAC(HistoricoColaborador historicoColaborador) throws Exception

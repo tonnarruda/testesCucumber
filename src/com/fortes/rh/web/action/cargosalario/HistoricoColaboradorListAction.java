@@ -528,7 +528,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 			
 		} catch (NestedRuntimeException e) { // TODO rever necessidade desse catch
 			
-			addActionError("Não foi possível excluir a situação.");
+			addActionMessage("Não foi possível excluir a situação.");
 			
 		} catch (IntegraACException e) {
 			

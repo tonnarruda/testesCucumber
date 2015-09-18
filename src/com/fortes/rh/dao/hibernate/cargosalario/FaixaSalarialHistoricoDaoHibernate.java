@@ -227,7 +227,7 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		return (FaixaSalarialHistorico) criteria.uniqueResult();
 	}
 	
-	public Collection<FaixaSalarialHistorico> findHistoricosByFaixaSalarialId(Long faixaSalarialId)
+	public Collection<FaixaSalarialHistorico> findHistoricosByFaixaSalarialId(Long faixaSalarialId, Integer statusRetornoAC)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "f");
 		criteria.createCriteria("f.faixaSalarial", "fs", Criteria.LEFT_JOIN);
@@ -250,6 +250,9 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 
 		criteria.add(Expression.eq("fs.id", faixaSalarialId));
 		criteria.add(Expression.le("f.data", new Date()));
+		
+		if(statusRetornoAC != null)
+			criteria.add(Expression.eq("f.status",statusRetornoAC));
 
 		criteria.addOrder(Order.desc("f.data"));
 

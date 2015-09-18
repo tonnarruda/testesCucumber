@@ -353,7 +353,7 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		faixaSalarialHistorico.setData(new Date());
 		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
 		
-		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findHistoricosByFaixaSalarialId(faixaSalarial.getId());
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findHistoricosByFaixaSalarialId(faixaSalarial.getId(), null);
 		
 		assertEquals(1, retorno.size());
 	}

@@ -19,7 +19,7 @@ public interface FaixaSalarialHistoricoDao extends GenericDao<FaixaSalarialHisto
 	boolean setStatus(Long faixaSalarialHistoricoId, boolean aprovado);
 	void removeByFaixas(Long[] faixaSalarialIds);
 	Collection<FaixaSalarialHistorico> findPendenciasByFaixaSalarialHistorico(Long empresaId);
-	Collection<FaixaSalarialHistorico> findHistoricosByFaixaSalarialId(Long faixaSalarialId);
+	Collection<FaixaSalarialHistorico> findHistoricosByFaixaSalarialId(Long faixaSalarialId, Integer confirmado);
 	Long findIdByDataFaixa(FaixaSalarialHistorico faixaSalarialHistorico);
 	Collection<FaixaSalarialHistoricoVO> findAllComHistoricoIndice(Long faixaSalarialId);
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;

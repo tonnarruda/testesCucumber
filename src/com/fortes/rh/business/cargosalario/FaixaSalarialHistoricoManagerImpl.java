@@ -14,6 +14,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FaixaJaCadastradaException;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
@@ -291,6 +292,8 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 
 		try
 		{
+			verificaUnicoHistorico(faixaSalarialHistoricoId, empresa);
+			
 			if(removerDoAC && empresa.isAcIntegra())
 				acPessoalClientCargo.deleteFaixaSalarialHistorico(faixaSalarialHistoricoId, empresa);
 
@@ -298,10 +301,27 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 
 			transactionManager.commit(status);
 		}
+		catch (FortesException e)
+		{
+			transactionManager.rollback(status);
+			throw e;
+		}
 		catch (Exception e)
 		{
 			transactionManager.rollback(status);
 			throw e;
+		}
+	}
+
+	private void verificaUnicoHistorico(Long faixaSalarialHistoricoId, Empresa empresa) throws FortesException 
+	{
+		FaixaSalarialHistorico faixaSalarialHistorico = findByIdProjection(faixaSalarialHistoricoId); 
+		if(faixaSalarialHistorico.getStatus() == StatusRetornoAC.CONFIRMADO){
+			Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = getDao().findHistoricosByFaixaSalarialId(faixaSalarialHistorico.getFaixaSalarial().getId(), StatusRetornoAC.CONFIRMADO);
+			if(faixaSalarialHistoricos.size() <= 1){
+				String msg = "Não é permitido deletar o único histórico da faixa salarial" + (empresa.isAcIntegra()?" confirmado.":".");
+				throw new FortesException(msg);
+			}
 		}
 	}
 
