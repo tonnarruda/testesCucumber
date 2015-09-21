@@ -13,7 +13,7 @@ public class ErroFeedBackACPessoal extends LinkedHashMap<Object, Object>
 	private static Map<String, String> mensagens = new HashMap<String, String>(); 
 
 	static{
-		mensagens.put(AREAORGANIZACIONAL_NIVEL_EXCEDIDO, "Esta área organizacional não poderá ser cadastrada contendo a área mãe selecionada, pois o nível de hierarquia será excedido de acordo com as configurações de mascara da lotação no Fortes Pessoal.");
+		mensagens.put(AREAORGANIZACIONAL_NIVEL_EXCEDIDO, "Esta área organizacional não poderá ser cadastrada contendo a área mãe selecionada, pois a configuração da mascara das lotações no Fortes Pessoal não permite inserir um novo nível hierárquico.");
 	}
 	
 	public static String getMensagem(String tipo)

@@ -17,6 +17,8 @@ import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.fortes.rh.business.cargosalario.CargoManager;
+import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManagerImpl;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -61,6 +63,8 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 	Mock parametrosDoSistemaManager;
 	Mock colaboradorManager;
 	Mock transactionManager;
+	Mock historicoColaboradorManager;
+	Mock cargoManager;
 
     protected void setUp() throws Exception
     {
@@ -80,6 +84,12 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		MockSpringUtil.mocks.put("colaboradorManager", colaboradorManager);
+		
+		historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
+		MockSpringUtil.mocks.put("historicoColaboradorManager", historicoColaboradorManager);
+		
+		cargoManager = new Mock(CargoManager.class);
+		MockSpringUtil.mocks.put("cargoManager", cargoManager);
 		
 		Mockit.redefineMethods(HibernateTemplate.class, MockHibernateTemplate.class);
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
@@ -136,32 +146,6 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		}
     	
     	assertNull(exp);
-    }
-
-    public void testBindException()
-    {
-    	AreaOrganizacional areaMae = AreaOrganizacionalFactory.getEntity(2L);
-    	
-    	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(2L);
-    	
-    	TAreaOrganizacional tAreaOrganizacional = new TAreaOrganizacional();
-    	tAreaOrganizacional.setNome("Area do ac");
-    	tAreaOrganizacional.setId(2L);
-    	tAreaOrganizacional.setCodigo("00102");
-    	tAreaOrganizacional.setAreaMaeCodigo("001");
-    	tAreaOrganizacional.setEmpresaCodigo("002");
-    	tAreaOrganizacional.setGrupoAC("1");
-    	
-    	areaOrganizacionalDao.expects(atLeastOnce()).method("findAreaOrganizacionalByCodigoAc").with(eq(tAreaOrganizacional.getAreaMaeCodigo()), eq(tAreaOrganizacional.getEmpresaCodigo()), eq(tAreaOrganizacional.getGrupoAC())).will(returnValue(areaMae));
-    	
-    	String msg = "";
-    	try {
-    		areaOrganizacionalManager.bind(areaOrganizacional, tAreaOrganizacional);
-    	} catch (Exception e) {
-    		msg = e.getMessage();
-    	}
-    	
-    	assertEquals(msg, "Não é possível cadastrar área filha para áreas com colaboradores cadastrados.");
     }
 
     public void testVerificaMaternidade()
@@ -467,7 +451,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     public void testInsertLotacaoAC() throws Exception
     {
-    	AreaOrganizacional areaMae = AreaOrganizacionalFactory.getEntity(-1L);
+    	AreaOrganizacional areaMae = AreaOrganizacionalFactory.getEntity(2L);
     	
     	AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
     	areaOrganizacional.setAreaMae(areaMae);
@@ -478,7 +462,11 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	empresa.setAcIntegra(false);
 
     	areaOrganizacionalDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
-    	areaOrganizacionalManager.insertLotacaoAC(areaOrganizacional, empresa);
+    	areaOrganizacionalDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
+    	historicoColaboradorManager.expects(once()).method("updateArea").withAnyArguments().isVoid();
+    	cargoManager.expects(once()).method("insereAreaRelacionada").withAnyArguments().isVoid();
+    	
+    	areaOrganizacionalManager.insert(areaOrganizacional, empresa);
     	assertEquals("001", areaOrganizacional.getCodigoAC());
     }
     
@@ -498,7 +486,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	areaOrganizacionalDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
     	areaOrganizacionalDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
     	
-    	areaOrganizacionalManager.insertLotacaoAC(areaOrganizacional, empresa);
+    	areaOrganizacionalManager.insert(areaOrganizacional, empresa);
     	assertEquals("001", areaOrganizacional.getCodigoAC());
     }
 
@@ -773,13 +761,12 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
 		areaOrganizacionalDao.expects(once()).method("update").with(ANYTHING);
 		areaOrganizacionalDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
-
 		acPessoalClientLotacao.expects(once()).method("criarLotacao").with(ANYTHING, ANYTHING);
 
 		Exception exception = null;
 		try
 		{
-			areaOrganizacionalManager.editarLotacaoAC(areaOrganizacional, empresa);
+			areaOrganizacionalManager.update(areaOrganizacional, empresa);
 		}
 		catch (Exception e)
 		{
@@ -805,7 +792,7 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		Exception exception = null;
 		try
 		{
-			areaOrganizacionalManager.editarLotacaoAC(areaOrganizacional, empresa);
+			areaOrganizacionalManager.update(areaOrganizacional, empresa);
 		}
 		catch (Exception e)
 		{

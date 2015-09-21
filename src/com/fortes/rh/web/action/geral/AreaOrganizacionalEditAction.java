@@ -95,7 +95,7 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 	{
 		try {
 			areaOrganizacional.setEmailsNotificacoes(StringUtils.deleteWhitespace(StringUtils.join(emailsNotificacoes, ";")));
-			areaOrganizacionalManager.insertLotacaoAC(areaOrganizacional, getEmpresaSistema());
+			areaOrganizacionalManager.insert(areaOrganizacional, getEmpresaSistema());
 			return Action.SUCCESS;
 		} catch (Exception e) {
 			prepareInsert();
@@ -121,7 +121,7 @@ public class AreaOrganizacionalEditAction extends MyActionSupportEdit implements
 
 		try {
 			areaOrganizacional.setEmailsNotificacoes(StringUtils.deleteWhitespace(StringUtils.join(emailsNotificacoes, ";")));
-			areaOrganizacionalManager.editarLotacaoAC(areaOrganizacional, getEmpresaSistema());
+			areaOrganizacionalManager.update(areaOrganizacional, getEmpresaSistema());
 			
 			return Action.SUCCESS;
 			

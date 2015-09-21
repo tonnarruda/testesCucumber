@@ -556,6 +556,11 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 	{
 		return getDao().findByAreaGrupo(areaOrganizacionalIds, grupoOcupacionalIds, empresaId);
 	}
+
+	public void insereAreaRelacionada(Long areaMaeId, Long areaId) 
+	{
+		getDao().insereAreaRelacionada(areaMaeId, areaId);
+	}
 	
 	public void setHabilidadeManager(HabilidadeManager habilidadeManager) 
 	{

@@ -120,17 +120,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return areas;
 	}
 
-	public void insertLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception
+	public void insert(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception
 	{
-		if(areaOrganizacional.getAreaMae() == null || areaOrganizacional.getAreaMae().getId() == null || areaOrganizacional.getAreaMae().getId() == -1)
-			areaOrganizacional.setAreaMae(null);
-
-		if(areaOrganizacional.getResponsavel() == null || areaOrganizacional.getResponsavel().getId() == null)
-			areaOrganizacional.setResponsavel(null);
-		
-		if(areaOrganizacional.getCoResponsavel() == null || areaOrganizacional.getCoResponsavel().getId() == null)
-			areaOrganizacional.setCoResponsavel(null);
-
+		ajustaEntidadeIdNulo(areaOrganizacional);
 		areaOrganizacional.setEmpresa(empresa);
 
 		if(empresa.isAcIntegra())
@@ -181,8 +173,25 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			getDao().getHibernateTemplateByGenericDao().flush();
 		}
 		
-		HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBean("historicoColaboradorManager");
-		historicoColaboradorManager.updateArea(areaOrganizacional.getAreaMae().getId(), areaOrganizacional.getId());
+		transferirColabDaAreaMaeParaAreaFilha(areaOrganizacional);
+	}
+
+	@SuppressWarnings("deprecation")
+	public void transferirColabDaAreaMaeParaAreaFilha(AreaOrganizacional areaOrganizacional) 
+	{
+		try {
+			if(areaOrganizacional.getAreaMae() != null && areaOrganizacional.getAreaMae().getId() != null)
+			{
+				HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBeanOld("historicoColaboradorManager");
+				historicoColaboradorManager.updateArea(areaOrganizacional.getAreaMae().getId(), areaOrganizacional.getId());
+				
+				CargoManager cargoManager = (CargoManager) SpringUtil.getBeanOld("cargoManager");
+				cargoManager.insereAreaRelacionada(areaOrganizacional.getAreaMae().getId(), areaOrganizacional.getId());
+			}
+		} catch (Exception e) {
+			System.out.println("Problema ao transferir colaboradores de área vindo do Fortes Pessoal.");
+			e.printStackTrace();
+		}
 	}
 
 	public boolean verificarColaboradoresAreaMae(AreaOrganizacional areaMae)
@@ -197,9 +206,23 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return true;
 	}
 
-	public void editarLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception
+	public void update(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception
 	{
-		if(areaOrganizacional.getAreaMae() == null || areaOrganizacional.getAreaMae().getId() == -1)
+		ajustaEntidadeIdNulo(areaOrganizacional);
+		update(areaOrganizacional);
+
+		transferirColabDaAreaMaeParaAreaFilha(areaOrganizacional);
+
+		// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterar o outro banco.
+		getDao().getHibernateTemplateByGenericDao().flush();
+
+		if(empresa.isAcIntegra())
+			acPessoalClientLotacao.criarLotacao(areaOrganizacional, empresa);
+	}
+
+	private void ajustaEntidadeIdNulo(AreaOrganizacional areaOrganizacional) 
+	{
+		if(areaOrganizacional.getAreaMae() == null || areaOrganizacional.getAreaMae().getId() == null || areaOrganizacional.getAreaMae().getId() == -1)
 			areaOrganizacional.setAreaMae(null);
 
 		if(areaOrganizacional.getResponsavel() == null || areaOrganizacional.getResponsavel().getId() == null)
@@ -207,18 +230,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 		if(areaOrganizacional.getCoResponsavel() == null || areaOrganizacional.getCoResponsavel().getId() == null)
 			areaOrganizacional.setCoResponsavel(null);
-
-		update(areaOrganizacional);
-		// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterar o outro banco.
-		getDao().getHibernateTemplateByGenericDao().flush();
-		
-		HistoricoColaboradorManager historicoColaboradorManager = (HistoricoColaboradorManager) SpringUtil.getBean("historicoColaboradorManager");
-		historicoColaboradorManager.updateArea(areaOrganizacional.getAreaMae().getId(), areaOrganizacional.getId());
-
-		if(empresa.isAcIntegra())
-		{
-			acPessoalClientLotacao.criarLotacao(areaOrganizacional, empresa);
-		}
 	}
 
 	public void deleteLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws IntegraACException, Exception
@@ -473,7 +484,8 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	{
 		AreaOrganizacional areaOrganizacionalTmp = getDao().findAreaOrganizacionalByCodigoAc(areaCodigoAC, empresaCodigoAC, grupoAC); 
 
-		correcaoTransientObjectException(areaOrganizacionalTmp);
+		if(areaOrganizacionalTmp != null)
+			correcaoTransientObjectException(areaOrganizacionalTmp);
 
 		return areaOrganizacionalTmp;
 	}
@@ -693,11 +705,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			areaOrganizacional.setAreaMae(areaMae);
 		}
 		
-		if(areaOrganizacional.getResponsavel() == null || areaOrganizacional.getResponsavel().getId() == null)
-			areaOrganizacional.setResponsavel(null);
-
-		if(areaOrganizacional.getCoResponsavel() == null || areaOrganizacional.getCoResponsavel().getId() == null)
-			areaOrganizacional.setCoResponsavel(null);
+		ajustaEntidadeIdNulo(areaOrganizacional);
 	}
 
 	public Collection<AreaOrganizacional> getAncestrais(Collection<AreaOrganizacional> areas, Long id) 

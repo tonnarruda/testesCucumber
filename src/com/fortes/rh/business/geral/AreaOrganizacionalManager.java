@@ -26,9 +26,9 @@ import com.fortes.web.tags.CheckBox;
 public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizacional>
 {
 	@Audita(operacao="Inserção", auditor=AreaOrganizacionalAuditorCallbackImpl.class)
-	public void insertLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception, AreaColaboradorException;
+	public void insert(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception, AreaColaboradorException;
 	@Audita(operacao="Atualização", auditor=AreaOrganizacionalAuditorCallbackImpl.class)
-	public void editarLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception;
+	public void update(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception;
 	@Audita(operacao="Remoção", auditor=AreaOrganizacionalAuditorCallbackImpl.class)
 	public void deleteLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws IntegraACException, Exception;
 	
@@ -87,4 +87,5 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public Collection<Long> findIdsAreasFilhas(Collection<Long> areasIds);
 	public Long[] findAreasMaesIdsByEmpresaId(Long empresaId);
 	public boolean verificarColaboradoresAreaMae(AreaOrganizacional areaMae);
+	public void transferirColabDaAreaMaeParaAreaFilha(AreaOrganizacional areaOrganizacional);
 }

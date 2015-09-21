@@ -38,4 +38,5 @@ public interface CargoDao extends GenericDao<Cargo>
 	public Collection<Cargo> findByAreaGrupo(Long[] areaOrganizacionalIds, Long[] grupoOcupacionalIds, Long empresaId);
 	public Collection<Cargo> getCargosSemGrupoRelacionado(Long empresaId);
 	public Collection<Cargo> findByEmpresa(Long empresaId);
+	public void insereAreaRelacionada(Long areaMaeId, Long areaId);
 }

@@ -303,7 +303,7 @@ public class ExportacaoACAction extends MyActionSupport
 			try 
 			{
 				if (areaOrganizacional.getCodigoAC() == null)
-					areaOrganizacionalManager.insertLotacaoAC(areaOrganizacional, empresa);
+					areaOrganizacionalManager.insert(areaOrganizacional, empresa);
 			} 
 			catch (Exception e) {
 				throw new AreaNaoInseridaACException("Não foi possível inserir a área organizacional " + areaOrganizacional.getNome() + " no Fortes Pessoal");

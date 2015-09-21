@@ -615,4 +615,13 @@ public class CargoDaoHibernate extends GenericDaoHibernate<Cargo> implements Car
 
 		return criteria.list();
 	}
+
+	public void insereAreaRelacionada(Long areaMaeId, Long areaId) 
+	{
+		if(areaMaeId != null && areaId != null)
+		{
+			String[] sql = new String[] {"insert into cargo_areaorganizacional (cargo_id, areasorganizacionais_id) select cargo_id, " + areaId + " from cargo_areaorganizacional where areasorganizacionais_id = " + areaMaeId + ";"};
+			JDBCConnection.executeQuery(sql);
+		}
+	}
 }

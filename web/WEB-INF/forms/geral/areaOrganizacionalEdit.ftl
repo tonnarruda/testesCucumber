@@ -173,9 +173,9 @@
 	</@ww.form>
 
 	<div id="areaSemColaboradores" style="display:none;">
-		A área mãe possui colaboradores vinculados.
+		A área organizacional mãe selecionada, possui colaboradores vinculados.
 		</br></br>
-		Deseja transferir os colaboradores da área mãe para a área organizacional que está sendo gravada?
+		Deseja transferir os colaboradores da área organizacional mãe para a área organizacional que está sendo criada?
 	</div>
 
 	<div class="buttonGroup">

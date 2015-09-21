@@ -1524,7 +1524,8 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		getDao().updateStatusAc(statusRetornoAC, id);
 	}
 	
-	public void updateArea(Long areaIdMae, Long areaId) {
+	public void updateArea(Long areaIdMae, Long areaId) 
+	{
 		getDao().updateArea(areaIdMae, areaId);	
 	}
 
