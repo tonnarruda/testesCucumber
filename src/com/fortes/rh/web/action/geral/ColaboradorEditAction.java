@@ -728,6 +728,7 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			if (manterFoto)
 			{
 				colaborador.setFoto(colaboradorManager.getFoto(colaborador.getId()));
+				colaborador.setManterFoto(manterFoto);
 			}
 			else if(!fotoValida(colaborador.getFoto()))
 			{

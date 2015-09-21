@@ -19,6 +19,7 @@ import javax.activation.DataSource;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -146,6 +147,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	private AuditoriaManager auditoriaManager;
 	private CandidatoIdiomaManager candidatoIdiomaManager;
 	private SolicitacaoExameManager solicitacaoExameManager;
+	
+	private static final String RETIRAFOTO = "S";
+	private static final String NAORETIRAFOTO = "N";
 
 	public void enviaEmailAniversariantes(Collection<Empresa> empresas) throws Exception
 	{
@@ -328,6 +332,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		empregado.setFoneFixo(colaborador.getContato().getFoneFixo());
 		empregado.setFoneCelular(colaborador.getContato().getFoneCelular());
 		empregado.setEmail(colaborador.getContato().getEmail());
+		
+		empregado.setRetiraFoto(colaborador.isManterFoto()?NAORETIRAFOTO:RETIRAFOTO);
+		if(colaborador.getFoto() != null && colaborador.getFoto().getBytes() != null && !"".equals(colaborador.getFoto())){
+			byte[] encode = Base64.encodeBase64(colaborador.getFoto().getBytes());
+			empregado.setFoto(new String(encode));
+		}
 
 		bindIdentidadeEmpregado(colaborador, empregado);
 		bindTituloEleitoralEmpregado(colaborador, empregado);
@@ -546,8 +556,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	}
 
-	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias,
-			Empresa empresa, boolean editarHistorico, Double salarioColaborador) throws Exception
+	public void update(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias,	Empresa empresa, boolean editarHistorico, Double salarioColaborador) throws Exception
 	{
 		verificaEntidadeIdNulo(colaborador);
 		colaborador.setEmpresa(empresa);
@@ -1470,11 +1479,33 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		if (StringUtils.isNotBlank(empregado.getCtpsDV()))
 			colaborador.getPessoal().getCtps().setCtpsDv(empregado.getCtpsDV().charAt(0));
 
-
 		String vinculo = getVinculo(empregado.getTipoAdmissao(), empregado.getVinculo(), empregado.getCategoria());
 		colaborador.setVinculo(vinculo);
+		
+		bindFoto(colaborador, empregado);
 
 		return colaborador;
+	}
+
+	private void bindFoto(Colaborador colaborador, TEmpregado empregado) 
+	{
+		if(empregado.getRetiraFoto() != null && RETIRAFOTO.equals(empregado.getRetiraFoto()))
+			colaborador.setFoto(null);
+		else if (StringUtils.isNotBlank(empregado.getFoto()))
+			colaborador.setFoto(montaImagemBYFortesPessoal(empregado.getFoto()));
+	}
+	
+	private File montaImagemBYFortesPessoal(String foto)
+	{
+		byte[] decoded = Base64.decodeBase64(foto.getBytes());
+		
+		File file = new File();
+		file.setName("Pessoal_" + new Date().getTime());
+		file.setContentType("image/jpeg"); 
+		file.setBytes(decoded);
+		file.setSize(1000L);
+		
+		return file;
 	}
 	
 	private void defineEscolaridade(Colaborador colaborador, TEmpregado empregado) 

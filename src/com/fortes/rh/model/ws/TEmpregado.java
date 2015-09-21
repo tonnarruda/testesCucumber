@@ -59,6 +59,8 @@ public class TEmpregado implements Serializable
 	private String grupoAC;
 	private String tipoAdmissao;
 	private String chaveAC_RH;
+	private String foto;
+	private String retiraFoto;
 	private Integer vinculo;
 	private Integer categoria;
 
@@ -514,5 +516,20 @@ public class TEmpregado implements Serializable
 	public void setCodigoACDestino(String codigoACDestino) {
 		this.codigoACDestino = codigoACDestino;
 	}
-	
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+	public String getRetiraFoto() {
+		return retiraFoto;
+	}
+
+	public void setRetiraFoto(String retiraFoto) {
+		this.retiraFoto = retiraFoto;
+	}
 }

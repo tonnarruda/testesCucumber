@@ -235,6 +235,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Integer statusAcPessoal;
 	@Transient
 	private BigDecimal nota;
+	@Transient
+	private boolean manterFoto;
 
 	public Colaborador()
 	{
@@ -2911,5 +2913,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setIndice(Indice indice) {
 		this.indice = indice;
+	}
+
+	public boolean isManterFoto() {
+		return manterFoto;
+	}
+
+	public void setManterFoto(boolean manterFoto) {
+		this.manterFoto = manterFoto;
 	}
 }

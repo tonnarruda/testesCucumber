@@ -606,7 +606,7 @@ public class RHServiceImpl implements RHService
 			Colaborador colaborador = colaboradorManager.findByCodigoACEmpresaCodigoAC(empregado.getCodigoAC(), empregado.getEmpresaCodigoAC(), empregado.getGrupoAC());		
 			
 			if(colaborador == null)
-				return new FeedbackWebService(false, "Erro ao cancelar solicitação de desligamento do empregado.", formataException("Empregado inexistente no RH", null ));
+				return new FeedbackWebService(true);
 			
 			colaboradorManager.cancelarSolicitacaoDesligamentoAC(colaborador, mensagem, empregado.getEmpresaCodigoAC(), empregado.getGrupoAC());
 			
