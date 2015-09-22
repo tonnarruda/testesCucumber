@@ -662,78 +662,37 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append(" left join areaOrganizacional as ao on ao.id = hc.areaorganizacional_id  ");
 		sql.append(" left join estabelecimento as es on es.id = hc.estabelecimento_id  ");
 		sql.append(" left join empresa as emp on emp.id = c.empresa_id  ");
-		
-		boolean isadicionouCondicaoWhere = false;
+		sql.append(" where 1=1  ");
 		
 		if (situacaoColaborador != null)
 		{
 			if (situacaoColaborador.equalsIgnoreCase(SituacaoColaborador.ATIVO))
 			{
-				if(isadicionouCondicaoWhere){
-					sql.append("	and (c.dataDesligamento is null ");
-					if (data != null)
-						sql.append("	or c.dataDesligamento > :data ");
-					sql.append("	) ");
-					isadicionouCondicaoWhere = true;
-				}
-				else{
-					sql.append(" where (c.dataDesligamento is null ");
-					if (data != null)
-						sql.append("	or c.dataDesligamento > :data ");
-					sql.append("	) ");
-					isadicionouCondicaoWhere = true;
-				}
+				sql.append("	and (c.dataDesligamento is null ");
+				if (data != null)
+					sql.append("	or c.dataDesligamento > :data ");
+				sql.append("	) ");
 			}
 			else if (situacaoColaborador.equalsIgnoreCase(SituacaoColaborador.DESLIGADO))
 			{
-				if(isadicionouCondicaoWhere){
-					sql.append("	and (c.dataDesligamento is not null ");
-					if (data != null)
-						sql.append("	and c.dataDesligamento <= :data ");
-					sql.append("	) ");
-					isadicionouCondicaoWhere = true;
-				}
-				else{
-					sql.append("	where (c.dataDesligamento is not null ");
-					if (data != null)
-						sql.append("	and c.dataDesligamento <= :data ");
-					sql.append("	) ");
-					isadicionouCondicaoWhere = true;
-				}
+				sql.append("	and (c.dataDesligamento is not null ");
+				if (data != null)
+					sql.append("	and c.dataDesligamento <= :data ");
+				sql.append("	) ");
 			}
 		}
 		
 		if(empresaId != null)
-			if(isadicionouCondicaoWhere)
-				sql.append(	" and c.empresa_id = :empresaId ");
-			else{
-				sql.append(	" where c.empresa_id = :empresaId ");
-				isadicionouCondicaoWhere = true;
-			}
+			sql.append(	" and c.empresa_id = :empresaId ");
 
 		if (LongUtil.arrayIsNotEmpty(cursosIds))
-			if(isadicionouCondicaoWhere)
-				sql.append(" and colabTurmaRealizadaPeriodo.cursoId in (:cursosIds) ");
-			else{
-				sql.append(" where colabTurmaRealizadaPeriodo.cursoId in (:cursosIds) ");
-				isadicionouCondicaoWhere = true;
-			}
+			sql.append(" and colabTurmaRealizadaPeriodo.cursoId in (:cursosIds) ");
 
 		if (LongUtil.arrayIsNotEmpty(areaIds))
-			if(isadicionouCondicaoWhere)
-				sql.append(" and ao.id in (:areasId) ");
-			else{
-				sql.append(" where ao.id in (:areasId) ");
-				isadicionouCondicaoWhere = true;
-			}
+			sql.append(" and ao.id in (:areasId) ");
 
 		if (LongUtil.arrayIsNotEmpty(estabelecimentoIds))
-			if(isadicionouCondicaoWhere)
-				sql.append(" and es.id in (:estabelecimentosId) ");
-			else{
-				sql.append(" where es.id in (:estabelecimentosId) ");
-				isadicionouCondicaoWhere = true;
-			}
+			sql.append(" and es.id in (:estabelecimentosId) ");
 		
 		sql.append(" group by colabTurmaRealizadaPeriodo.cursoId, colabTurmaRealizadaPeriodo.cursoNome, emp.nome ,es.nome, ao.id, areaNome, c.id, c.nome, c.matricula, ");
 		sql.append(" colabTurmaRealizadaPeriodo.qtdpresenca, colabTurmaRealizadaPeriodo.totaldias, colabTurmaRealizadaPeriodo.percentualMinimoFrequencia, ");
@@ -774,25 +733,32 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 				ct.setColaboradorNome(res[1].toString());
 			if(res[2] != null)
 				ct.setColaboradorMatricula(res[2].toString());
-			
 			if(res[3] != null)
 				ct.setAreaOrganizacionalId(((BigInteger)res[3]).longValue());
 			if(res[4] != null)
 				ct.setAreaOrganizacionalNome(res[4].toString());
-			
 			if(res[5] != null) 
 				ct.getColaborador().setEstabelecimentoNomeProjection(res[5].toString());
-			
 			if(res[6] != null)
 				ct.setEmpresaNome(res[6].toString());
-
 			if(res[7] != null)
 				ct.setTurmaDataPrevFim((Date)res[7]);
-			
 			if(res[8] != null)
 				ct.setCursoId(((BigInteger)res[8]).longValue());
 			if(res[9] != null)
 				ct.setCursoNome(res[9].toString());
+			if(res[10] != null)
+				ct.setQtdPresenca(new Integer(res[10].toString()));
+			if(res[11] != null)
+				ct.setTotalDias(new Integer(res[11].toString()));
+			if(res[12] != null && ct.getCurso() != null)
+				ct.getCurso().setPercentualMinimoFrequencia((Double) res[12]);
+			if(res[13] != null)
+				ct.setQtdAvaliacoesCurso(new Integer(res[13].toString()));
+			if(res[14] != null)
+				ct.setQtdAvaliacoesAprovadasPorNota(new Integer(res[14].toString()));
+			if(res[15] != null)
+				ct.setNota((Double)res[15]);
 			
 			colaboradorTurmas.add(ct);
 		}
@@ -959,6 +925,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		if(!comHistColaboradorFuturo)
 			sql.append("	and hc2.data <= :hoje ");
 		sql.append("	and hc2.status <> :statusCancelado ) ");
+		
+		sql.append("	and t.realizada = true ");
 		
 		if (situacao != null)
 		{

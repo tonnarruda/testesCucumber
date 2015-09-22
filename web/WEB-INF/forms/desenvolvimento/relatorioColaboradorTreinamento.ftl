@@ -141,12 +141,10 @@
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 		<@ww.select label="Situação do colaborador" name="situacao" id="situacao" list="situacoes" cssStyle="width: 500px;"/>
+		<@ww.select name="aprovado" label="Considerar colaboradores" list="statusAprovacao" cssStyle="width: 500px;"/>
 		
 		<#if comTreinamento>
-			<@ww.select name="aprovado" label="Considerar colaboradores" list="statusAprovacao" cssStyle="width: 500px;"/>
 			<@ww.checkbox label="Exibir cargos no relatório" name="exibeCargo" id="exibeCargo" labelPosition="left"/>
-		<#else>
-			<@ww.select label="Listar" name="aprovado" list=r"#{'T':'Todos os colaboradores','A':'Somente colaboradores aprovados', 'R':'Somente colaboradores reprovados'}" cssStyle="width: 500px;"/>
 		</#if>
 		
 		<@ww.hidden name="comTreinamento"/>

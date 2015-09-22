@@ -4,6 +4,7 @@
 		<Item visivel="S" motivo="S20150400200"><![CDATA[R&S > Movimentações > Solicitação de pessoal: Novos filtros por período e código.]]></Item>
 		<Item visivel="S" motivo="S20150400198"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Clonar: Configurar a solicitação de pessoal clonada com o status da solicitação como "Em Análise".]]></Item>
 		<Item visivel="S" motivo="S20150600190"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho > Imprimir respostas: Exibir respostas das competências do colaborador.]]></Item>
+		<Item visivel="S" motivo="P15090000102"><![CDATA[T&D > Relatórios > Colaboradores sem treinamento/Colaboradores com treinamento: Ajuste da inconsistência no filtro considerar colaboradores aprovados e/ou reprovados.]]></Item>
 		<Item visivel="S" motivo="S20150600185"><![CDATA[Info. Funcionais > Painel de Indicadores > Informações Sociais: Novo filtro por colocação.]]></Item>
 		<Item visivel="S" motivo="P15090000069"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Ajuste da inconsistência ao desligar colaborador não integrado com o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S20150800050"><![CDATA[SESMT > Cadastros > Categorias de EPI: Menu renomeado para "Categorias de EPI/Fardamento".]]></Item>
