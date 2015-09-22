@@ -166,7 +166,7 @@ public class ExameDaoHibernate extends GenericDaoHibernate<Exame> implements Exa
 																			+ "where se4.colaborador_id = co4_.id "
 																			+ "and re4.resultado<> ? "
 																			+ "and ese4.exame_id = e2_.id "
-																		+ ")"
+																		+ ") limit 1 "
 																	+ ") ", new String[]{ResultadoExame.NAO_REALIZADO.toString()}, new Type[]{Hibernate.STRING}));
 	    
 	    criteria.addOrder(Order.asc("co.nome"));
