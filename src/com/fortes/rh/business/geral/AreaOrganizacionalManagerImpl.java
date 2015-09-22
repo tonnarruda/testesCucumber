@@ -259,11 +259,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return getDao().findAllList(page, pagingSize, null, nome, ativo, null, empresaId);
 	}
 
-	public Integer getCount(String nome, Long empresaId)
-	{
-		return getDao().getCount(nome, empresaId);
-	}
-
 	public Collection<CheckBox> populaCheckOrderDescricao(long empresaId)
 	{
 		Collection<CheckBox> checks = new ArrayList<CheckBox>();

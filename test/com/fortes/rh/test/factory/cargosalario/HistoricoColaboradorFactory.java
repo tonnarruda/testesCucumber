@@ -37,7 +37,7 @@ public class HistoricoColaboradorFactory
 		return historicoColaborador;
 	}
 	
-	public static HistoricoColaborador getEntity(Colaborador colaborador, Date data, FaixaSalarial faixaSalarial, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, Funcao funcao, Ambiente ambiente)
+	public static HistoricoColaborador getEntity(Colaborador colaborador, Date data, FaixaSalarial faixaSalarial, Estabelecimento estabelecimento, AreaOrganizacional areaOrganizacional, Funcao funcao, Ambiente ambiente, Integer status)
 	{
 		HistoricoColaborador historicoColaborador = getEntity();
 		historicoColaborador.setColaborador(colaborador);
@@ -47,6 +47,7 @@ public class HistoricoColaboradorFactory
 		historicoColaborador.setAmbiente(ambiente);
 		historicoColaborador.setFuncao(funcao);
 		historicoColaborador.setData(data);
+		historicoColaborador.setStatus(status);
 		
 		return historicoColaborador;
 	}

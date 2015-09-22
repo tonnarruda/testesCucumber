@@ -78,8 +78,6 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 			}
 			
 			historicoFuncao.setRiscoFuncaos(riscoFuncoesSelecionados);
-			//historicoFuncao.setEpcs(epcs);
-			
 			
 			getDao().save(historicoFuncao);
 
@@ -233,33 +231,6 @@ public class HistoricoFuncaoManagerImpl extends GenericManagerImpl<HistoricoFunc
 		else
 			update(historicoFuncao);
 	}
-
-//	@SuppressWarnings("unchecked")
-//	public Collection<ExameRelatorio> getHistoricoFuncaoAreaExameByData(Long empresaId ,Date data)
-//	{
-//		Collection<ExameRelatorio> examesRelatorios = new ArrayList<ExameRelatorio>();
-//
-//		List exames = getDao().getHistoricoNaData(empresaId ,data);
-//		ExameRelatorio exame;
-//
-//		for (Iterator<Object[]> it = exames.iterator(); it.hasNext();)
-//		{
-//			Object[] array = it.next();
-//			exame = new ExameRelatorio();
-//			exame.setAreaNome((String) array[0]);
-//			exame.setFuncaoNome((String) array[1]);
-//			exame.setFuncaoDescricao((String) array[2]);
-//			if(array[3] != null)
-//				exame.setExameNome((String) array[3]);
-//			if(array[4] != null)
-//				exame.setExamePeriodicidade((Integer) array[4]);
-//
-//			if(array[3] != null)
-//				examesRelatorios.add(exame);
-//		}
-//
-//		return examesRelatorios;
-//	}
 
 	public HistoricoFuncao findByData(Date data, Long historicoFuncaoId, Long funcaoId) 
 	{

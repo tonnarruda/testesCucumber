@@ -89,6 +89,10 @@ import com.opensymphony.xwork.ActionContext;
 public class CandidatoListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
+	
+	private Boolean compartilharCadastros;
+	private static final byte COLABORADOR = 1;
+	private static final byte CANDIDATO = 2;
 
 	private CandidatoManager candidatoManager;
 	private ColaboradorManager colaboradorManager;
@@ -234,7 +238,6 @@ public class CandidatoListAction extends MyActionSupportList
 	private Collection<Curriculo> curriculos = new ArrayList<Curriculo>();
 	private Curriculo curriculo;
 
-	private Boolean compartilharCandidatos;
 	private Integer qtdRegistros = 100;
 	private Integer percentualMinimo;
 	private char statusSolicitacao;
@@ -256,7 +259,7 @@ public class CandidatoListAction extends MyActionSupportList
 	
 	public String list() throws Exception
 	{
-		populaEmpresas();
+		populaEmpresas(CANDIDATO);
 		
 		if(empresaId == null)
 			empresaId = getEmpresaSistema().getId();
@@ -290,7 +293,7 @@ public class CandidatoListAction extends MyActionSupportList
 
 	private void prepareBuscaCandidato() throws Exception
 	{
-		populaEmpresas();
+		populaEmpresas(CANDIDATO);
 		
 		if(empresaId == null)		
 			empresaId = getEmpresaSistema().getId();
@@ -362,9 +365,11 @@ public class CandidatoListAction extends MyActionSupportList
 		}
 	}
 
-	private void populaEmpresas() {
-		compartilharCandidatos = parametrosDoSistemaManager.findById(1L).getCompartilharCandidatos();
-        empresas = empresaManager.findEmpresasPermitidas(compartilharCandidatos, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
+	private void populaEmpresas(byte compartilharDados) 
+	{
+		parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
+		compartilharCadastros = (compartilharDados == CANDIDATO ? parametrosDoSistema.getCompartilharCandidatos() : parametrosDoSistema.getCompartilharColaboradores());
+        empresas = empresaManager.findEmpresasPermitidas(compartilharCadastros, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
 	}
 
 	public String prepareBusca() throws Exception
@@ -382,7 +387,7 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public String prepareBuscaSimples() throws Exception
 	{
-		populaEmpresas();
+		populaEmpresas(CANDIDATO);
 		
 		if(empresaId==null)
 			empresaId = getEmpresaSistema().getId();
@@ -442,7 +447,7 @@ public class CandidatoListAction extends MyActionSupportList
 		Collection<FaixaSalarial> faixas = faixaSalarialManager.findAllSelectByCargo(getEmpresaSistema().getId());
 		faixasCheckList = CheckListBoxUtil.populaCheckListBox(faixas, "getId", "getDescricaoComStatus");
 
-		populaEmpresas();
+		populaEmpresas(COLABORADOR);
 		empresaId = getEmpresaSistema().getId();
 	
 		setShowFilter(true);
@@ -1724,7 +1729,7 @@ public class CandidatoListAction extends MyActionSupportList
 	}
 
 	public Boolean getCompartilharCandidatos() {
-		return compartilharCandidatos;
+		return compartilharCadastros;
 	}
 
 	public Integer getQtdRegistros() {

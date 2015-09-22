@@ -12,7 +12,6 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 public interface AreaOrganizacionalDao extends GenericDao<AreaOrganizacional>
 {
 	public AreaOrganizacional findAreaOrganizacionalCodigoAc(Long id);
-	public Integer getCount(String nome, Long empresaId);
 	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, Long usuarioId, String nome, Boolean ativo, Collection<Long> areaInativaIds, Long... empresasIds);
 	public AreaOrganizacional findIdMaeById(long idArea);
 	public Collection<AreaOrganizacional> findByCargo(Long cargoId);

@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.geral.Empresa;
 
 public class AreaOrganizacionalFactory
 {
@@ -35,6 +36,15 @@ public class AreaOrganizacionalFactory
 		AreaOrganizacional areaOrganizacional = getEntity();
 		areaOrganizacional.setId(id);
 
+		return areaOrganizacional;
+	}
+	
+	public static AreaOrganizacional getEntity(Long id, String nome, Boolean ativo, Empresa empresa)
+	{
+		AreaOrganizacional areaOrganizacional = getEntity(id);
+		areaOrganizacional.setNome(nome);
+		areaOrganizacional.setEmpresa(empresa);;
+		
 		return areaOrganizacional;
 	}
 

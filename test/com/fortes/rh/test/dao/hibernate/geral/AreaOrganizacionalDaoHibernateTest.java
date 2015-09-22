@@ -79,14 +79,6 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		assertEquals(areaOrganizacional.getCodigoAC(), retorno.getCodigoAC());
 	}
 
-	public void testGetCount()
-	{
-		Collection<AreaOrganizacional> lista = areaOrganizacionalDao.find(new String[]{"empresa.id"}, new Object[] {1L});
-		int result = areaOrganizacionalDao.getCount("", 1L);
-
-		assertEquals(result, lista.size());
-	}
-
 	public void testFindByCargo()
 	{
 		Cargo cargo = CargoFactory.getEntity();
@@ -198,16 +190,43 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
-		areaOrganizacional.setCodigoAC("010203");
-		areaOrganizacional.setEmpresa(empresa);
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(null, null, null, empresa);
 		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
 
-		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
-
-		areaOrganizacionals = areaOrganizacionalDao.findAllList(0, 0, null, null, AreaOrganizacional.TODAS, null, empresa.getId());
+		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalDao.findAllList(0, 0, null, null, AreaOrganizacional.TODAS, null, empresa.getId());
 
 		assertEquals(1, areaOrganizacionals.size());
+	}
+	
+	public void testFindAllListPorNome()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(null, "Área I", null, empresa);
+		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
+		
+		Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalDao.findAllList(0, 0, null, "I", AreaOrganizacional.TODAS, null, empresa.getId());
+		
+		assertEquals(areaOrganizacional.getNome(), ((AreaOrganizacional) areaOrganizacionals.toArray()[0]).getNome());
+	}
+	
+	public void testFindAllListAtivas()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacionalAtiva = AreaOrganizacionalFactory.getEntity(null, "Área I", Boolean.TRUE, empresa);
+		areaOrganizacionalAtiva = areaOrganizacionalDao.save(areaOrganizacionalAtiva);
+		
+		AreaOrganizacional areaOrganizacionalInativa = AreaOrganizacionalFactory.getEntity(null, "Área II", Boolean.FALSE, empresa);
+		areaOrganizacionalInativa = areaOrganizacionalDao.save(areaOrganizacionalInativa);
+		
+		Collection<AreaOrganizacional> areasOrganizacionaisAtivas = areaOrganizacionalDao.findAllList(0, 0, null, "I", AreaOrganizacional.ATIVA, null, empresa.getId());
+		Collection<AreaOrganizacional> areasOrganizacionalsAtivasInativas = areaOrganizacionalDao.findAllList(0, 0, null, "I", AreaOrganizacional.ATIVA, Arrays.asList(areaOrganizacionalInativa.getId()), empresa.getId());
+		
+		assertEquals(areaOrganizacionalAtiva.getNome(), ((AreaOrganizacional) areasOrganizacionaisAtivas.toArray()[0]).getNome());
+		assertEquals(2, areasOrganizacionalsAtivasInativas.size());
 	}
 
 	public void testFindIdMaeById()

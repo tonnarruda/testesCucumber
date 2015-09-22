@@ -20,6 +20,7 @@ import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorPeriodoExperienciaAvaliacao;
@@ -123,22 +124,22 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		faixaSalarial.setCargo(cargo);
 		faixaSalarialDao.save(faixaSalarial);
 		
-		Colaborador joao = ColaboradorFactory.getEntity("João", empresa, ontem, hoje);
+		Colaborador joao = ColaboradorFactory.getEntity(null, "João", empresa, ontem, hoje);
 		colaboradorDao.save(joao);
 		
-		HistoricoColaborador historicoColaboradorJoao = HistoricoColaboradorFactory.getEntity(joao, ontem, faixaSalarial, null, null, null, null);
+		HistoricoColaborador historicoColaboradorJoao = HistoricoColaboradorFactory.getEntity(joao, ontem, faixaSalarial, null, null, null, null, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaboradorJoao);
 		
-		Colaborador maria = ColaboradorFactory.getEntity("Maria", empresa, ontem, amanha);
+		Colaborador maria = ColaboradorFactory.getEntity(null, "Maria", empresa, ontem, amanha);
 		colaboradorDao.save(maria);
 		
-		HistoricoColaborador historicoColaboradorMaria = HistoricoColaboradorFactory.getEntity(maria, ontem, faixaSalarial, null, null, null, null);
+		HistoricoColaborador historicoColaboradorMaria = HistoricoColaboradorFactory.getEntity(maria, ontem, faixaSalarial, null, null, null, null, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaboradorMaria);
 		
-		Colaborador pedro = ColaboradorFactory.getEntity("Pedro", empresa, ontem, ontem);
+		Colaborador pedro = ColaboradorFactory.getEntity(null, "Pedro", empresa, ontem, ontem);
 		colaboradorDao.save(pedro);
 		
-		HistoricoColaborador historicoColaboradorPedro = HistoricoColaboradorFactory.getEntity(pedro, ontem, faixaSalarial, null, null, null, null);
+		HistoricoColaborador historicoColaboradorPedro = HistoricoColaboradorFactory.getEntity(pedro, ontem, faixaSalarial, null, null, null, null, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaboradorPedro);
 		
 		ColaboradorQuestionario colaboradorQuestionarioMaria = ColaboradorQuestionarioFactory.getEntity(maria, avPeriodoExperiencia, null, true);
@@ -195,22 +196,22 @@ public class ColaboradorPeriodoExperienciaAvaliacaoDaoHibernateTest extends Gene
 		faixaSalarial.setCargo(cargo);
 		faixaSalarialDao.save(faixaSalarial);
 		
-		Colaborador joao = ColaboradorFactory.getEntity("João", empresa, ontem, hoje);
+		Colaborador joao = ColaboradorFactory.getEntity(null, "João", empresa, ontem, hoje);
 		colaboradorDao.save(joao);
 		
-		HistoricoColaborador historicoColaboradorJoao = HistoricoColaboradorFactory.getEntity(joao, ontem, faixaSalarial, null, null, null, null);
+		HistoricoColaborador historicoColaboradorJoao = HistoricoColaboradorFactory.getEntity(joao, ontem, faixaSalarial, null, null, null, null, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaboradorJoao);
 		
-		Colaborador maria = ColaboradorFactory.getEntity("Maria", empresa, ontem, amanha);
+		Colaborador maria = ColaboradorFactory.getEntity(null, "Maria", empresa, ontem, amanha);
 		colaboradorDao.save(maria);
 		
-		HistoricoColaborador historicoColaboradorMaria = HistoricoColaboradorFactory.getEntity(maria, ontem, faixaSalarial, null, null, null, null);
+		HistoricoColaborador historicoColaboradorMaria = HistoricoColaboradorFactory.getEntity(maria, ontem, faixaSalarial, null, null, null, null, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaboradorMaria);
 		
-		Colaborador pedro = ColaboradorFactory.getEntity("Pedro", empresa, ontem, ontem);
+		Colaborador pedro = ColaboradorFactory.getEntity(null, "Pedro", empresa, ontem, ontem);
 		colaboradorDao.save(pedro);
 		
-		HistoricoColaborador historicoColaboradorPedro = HistoricoColaboradorFactory.getEntity(pedro, ontem, faixaSalarial, null, null, null, null);
+		HistoricoColaborador historicoColaboradorPedro = HistoricoColaboradorFactory.getEntity(pedro, ontem, faixaSalarial, null, null, null, null, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaboradorPedro);
 		
 		ColaboradorQuestionario colaboradorQuestionarioJoao = ColaboradorQuestionarioFactory.getEntity(joao, avPeriodoExperiencia, avaliacaoDesempenho, false);

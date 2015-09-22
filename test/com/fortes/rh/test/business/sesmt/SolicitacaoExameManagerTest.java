@@ -24,6 +24,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.GrupoRisco;
 import com.fortes.rh.model.dicionario.MotivoSolicitacaoExame;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoPessoa;
 import com.fortes.rh.model.dicionario.TipoRiscoSistema;
 import com.fortes.rh.model.geral.Colaborador;
@@ -274,7 +275,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		Ambiente ambiente = AmbienteFactory.getEntity(1L);
 		Funcao funcao = FuncaoFactory.getEntity(1L);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, null, funcao, ambiente);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, null, funcao, ambiente, StatusRetornoAC.CONFIRMADO);
 		
 		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(2L);
 		solicitacaoExame.setColaborador(colaborador);
@@ -304,7 +305,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		
 		Funcao funcao = FuncaoFactory.getEntity(1L);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, null, funcao, null);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, null, funcao, null, StatusRetornoAC.CONFIRMADO);
 		
 		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(2L);
 		solicitacaoExame.setColaborador(colaborador);
@@ -334,7 +335,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		Ambiente ambiente = AmbienteFactory.getEntity(1L);
 		Funcao funcao = FuncaoFactory.getEntity(1L);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, null, funcao, ambiente);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, null, funcao, ambiente, StatusRetornoAC.CONFIRMADO);
 		
 		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(2L);
 		solicitacaoExame.setColaborador(colaborador);
@@ -369,7 +370,7 @@ public class SolicitacaoExameManagerTest extends MockObjectTestCase
 		Ambiente ambiente = AmbienteFactory.getEntity(1L);
 		Funcao funcao = FuncaoFactory.getEntity(1L);
 		Colaborador colaborador = ColaboradorFactory.getEntity(1000L);
-		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, null, funcao, ambiente);
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(colaborador, null, null, null, null, funcao, ambiente, StatusRetornoAC.CONFIRMADO);
 		
 		SolicitacaoExame solicitacaoExame = SolicitacaoExameFactory.getEntity(2L);
 		solicitacaoExame.setColaborador(colaborador);

@@ -77,9 +77,10 @@ public class ColaboradorFactory
 		return colaborador;
 	}
 	
-	public static Colaborador getEntity(String nome, Empresa empresa, Date dataAdmissao, Date dataDesligamento)
+	public static Colaborador getEntity(String matricula, String nome, Empresa empresa, Date dataAdmissao, Date dataDesligamento)
 	{
 		Colaborador colaborador = getEntity();
+		colaborador.setMatricula(matricula);
 		colaborador.setNome(nome);
 		colaborador.setEmpresa(empresa);
 		colaborador.setDataAdmissao(dataAdmissao);

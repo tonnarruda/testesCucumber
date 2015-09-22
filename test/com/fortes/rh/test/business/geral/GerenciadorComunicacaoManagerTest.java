@@ -55,6 +55,7 @@ import com.fortes.rh.model.dicionario.EnviarPara;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
@@ -1081,7 +1082,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		 colaborador.setNome("Teo");
 		 colaborador.setEmpresa(empresa);
 		 
-		 HistoricoColaborador historico = HistoricoColaboradorFactory.getEntity(colaborador, new Date(), faixaSalarial, estabelecimento, AreaOrganizacionalFactory.getEntity(), FuncaoFactory.getEntity(), AmbienteFactory.getEntity());
+		 HistoricoColaborador historico = HistoricoColaboradorFactory.getEntity(colaborador, new Date(), faixaSalarial, estabelecimento, AreaOrganizacionalFactory.getEntity(), FuncaoFactory.getEntity(), AmbienteFactory.getEntity(), StatusRetornoAC.CONFIRMADO);
 
 		 Usuario usuario = UsuarioFactory.getEntity();
 		 

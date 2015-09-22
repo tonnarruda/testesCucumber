@@ -17,6 +17,7 @@
 		<Item visivel="S" motivo="P15080000204"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Ajuste de inconsistência na configuração "Contratar colaborador" para não enviar emails aos usuários não configurados.]]></Item>
 		<Item visivel="S" motivo="P15080000204"><![CDATA[Ajuste de inconsistência na transferência de colaboradores entre Fortes Pessoal e Fortes RH.]]></Item>
 		<Item visivel="S" motivo="S20150900088"><![CDATA[Integração com o Fortes Pessoal: Alteração das mensagens de retorno para o Fortes Pessoal quando não for possível excluir um registro que possua dependência.]]></Item>
+		<Item visivel="N" motivo="P20150100303"><![CDATA[Gerar dados apenas das empresas cujo usuário logado tenha permissão ao selecionar a opção “todas” no filtro de empresas.]]></Item>
 	</Versao>
 	<Versao id="1.1.149.180" db="" data="31/08/2015">
 		<Item visivel="S" motivo="S20150800000"><![CDATA[Melhorias na integração do sistema com o Fortes Pessoal.]]></Item>

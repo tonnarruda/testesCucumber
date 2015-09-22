@@ -82,16 +82,6 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		return (AreaOrganizacional) criteria.uniqueResult();
 	}
 
-	public Integer getCount(String nome, Long empresaId)
-	{
-		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "ao");
-		criteria.setProjection(Projections.rowCount());
-
-		montaConsulta(criteria, null, nome, AreaOrganizacional.TODAS, null, empresaId);
-
-		return (Integer) criteria.list().get(0);
-	}
-
 	public Collection<AreaOrganizacional> findAllList(int page, int pagingSize, Long colaboradorId, String nome, Boolean ativo, Collection<Long> areaInativaIds, Long... empresasIds)
 	{
 		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class,"ao");
@@ -134,18 +124,18 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 		return criteria.list();
 	}
 
-	private void montaConsulta(Criteria criteria, Long colaboradorId, String nome, Boolean ativo, Collection<Long> areaInativaIds, Long... empresasIds)
+	private void montaConsulta(Criteria criteria, Long colaboradorResponsavelId, String nome, Boolean ativo, Collection<Long> areaInativaIds, Long... empresasIds)
 	{
 		criteria.createCriteria("areaMae", "am", Criteria.LEFT_JOIN);
 		criteria.createCriteria("responsavel", "r", Criteria.LEFT_JOIN);
 		criteria.createCriteria("coResponsavel", "cor", Criteria.LEFT_JOIN);
 		criteria.createCriteria("ao.empresa", "e");
 
-		if(colaboradorId != null)
-			criteria.add(Expression.eq("r.id", colaboradorId));
+		if(colaboradorResponsavelId != null)
+			criteria.add(Expression.eq("r.id", colaboradorResponsavelId));
 
 		if(nome != null && !nome.equals(""))
-			criteria.add(Restrictions.sqlRestriction("normalizar(this_.nome) ilike  normalizar(?)", "%" + nome.trim() + "%", Hibernate.STRING));
+			criteria.add(Restrictions.sqlRestriction("normalizar({alias}.nome) ilike  normalizar(?)", "%" + nome.trim() + "%", Hibernate.STRING));
 
 		if(ativo != null)
 		{

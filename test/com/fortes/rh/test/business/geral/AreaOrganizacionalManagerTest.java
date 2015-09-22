@@ -174,15 +174,6 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
     	assertTrue(areaOrganizacionalManager.verificaMaternidade(areaOrganizacional.getId(), null));
     }
 
-    public void testGetCount()
-    {
-    	Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
-
-    	areaOrganizacionalDao.expects(once()).method("getCount").with(eq(""), eq(1L)).will(returnValue(areas.size()));
-
-    	assertEquals((int)areaOrganizacionalManager.getCount("", 1L), areas.size());
-    }
-
     public void testFindAllList()
     {
     	Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();

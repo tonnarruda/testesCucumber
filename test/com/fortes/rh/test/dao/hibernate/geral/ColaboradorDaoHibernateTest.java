@@ -1613,37 +1613,23 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
-		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L);
-		colaborador1.setEmpresa(empresa);
-		colaborador1.setNome("teste");
-		colaborador1.setMatricula("1234");
+		Colaborador colaborador1 = ColaboradorFactory.getEntity("1234", "teste", empresa, null, null);
 		colaboradorDao.save(colaborador1);
 		
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador1.setColaborador(colaborador1);
-		historicoColaborador1.setData(new Date());
-		historicoColaborador1.setStatus(StatusRetornoAC.AGUARDANDO);
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador1, new Date(), null, null, null, null, null, StatusRetornoAC.AGUARDANDO);
 		historicoColaboradorDao.save(historicoColaborador1);
 
 		Colaborador colaborador2 = ColaboradorFactory.getEntity(2L);
 		colaborador2.setEmpresa(empresa);
 		colaboradorDao.save(colaborador2);
 		
-		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador2.setColaborador(colaborador2);
-		historicoColaborador2.setData(new Date());
-		historicoColaborador2.setStatus(StatusRetornoAC.CONFIRMADO);
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(colaborador2, new Date(), null, null, null, null, null, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador2);
 
-		Colaborador colaborador3 = ColaboradorFactory.getEntity(3L);
-		colaborador3.setEmpresa(empresa);
-		colaborador3.setNome("Eva");
+		Colaborador colaborador3 = ColaboradorFactory.getEntity(null, "Eva", empresa, null, null);
 		colaboradorDao.save(colaborador3);
 		
-		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity();
-		historicoColaborador3.setColaborador(colaborador3);
-		historicoColaborador3.setData(DateUtil.incrementaDias(new Date(), 1));
-		historicoColaborador3.setStatus(StatusRetornoAC.CONFIRMADO);
+		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity(colaborador3, DateUtil.incrementaDias(new Date(), 1), null, null, null, null, null, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador3);
 		
 		assertEquals(0, colaboradorDao.findByNomeCpfMatricula(colaborador1, false, new String[]{"teste"}, null, new Long[]{empresa.getId()}).size());
@@ -4881,13 +4867,13 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Colaborador colaborador4 = ColaboradorFactory.getEntity(false, hoje, empresa, Vinculo.ESTAGIO, Deficiencia.FISICA);
 		colaboradorDao.save(colaborador4);
 		
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador1, hoje, faixa, estabelecimento1, area, null, null);
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(colaborador1, hoje, faixa, estabelecimento1, area, null, null, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador1);
 		
-		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity(colaborador3, hoje, faixa, estabelecimento1, area, null, null);
+		HistoricoColaborador historicoColaborador3 = HistoricoColaboradorFactory.getEntity(colaborador3, hoje, faixa, estabelecimento1, area, null, null, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador3);
 		
-		HistoricoColaborador historicoColaborador4 = HistoricoColaboradorFactory.getEntity(colaborador4, hoje, faixa, estabelecimento1, area, null, null);
+		HistoricoColaborador historicoColaborador4 = HistoricoColaboradorFactory.getEntity(colaborador4, hoje, faixa, estabelecimento1, area, null, null, StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoColaborador4);
 	}
 	

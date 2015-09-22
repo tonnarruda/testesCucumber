@@ -569,7 +569,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 
 	public Collection<HistoricoColaborador> progressaoColaborador(Long colaboradorId, Long empresaId) throws Exception
 	{
-		Collection<HistoricoColaborador> retorno = new ArrayList<HistoricoColaborador>();
+		Collection<HistoricoColaborador> historicosColaboradoresProgressao = new ArrayList<HistoricoColaborador>();
 		List<HistoricoColaborador> historicoColaboradors = (List<HistoricoColaborador>) findPromocaoByColaborador(colaboradorId);
 
 		int proximo = 1;
@@ -582,7 +582,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			{
 				case TipoAplicacaoIndice.VALOR:
 				{
-					retorno.add(historicoColaboradorTmp);
+					historicosColaboradoresProgressao.add(historicoColaboradorTmp);
 					break;
 				}
 				case TipoAplicacaoIndice.INDICE:
@@ -592,7 +592,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 					Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoManager.findByPeriodo(historicoColaboradorTmp.getIndice().getId(),
 							historicoColaboradorTmp.getData(), dataProximo);
 
-					retorno.add(historicoColaboradorTmp);
+					historicosColaboradoresProgressao.add(historicoColaboradorTmp);
 					for (IndiceHistorico indiceHistorico : indiceHistoricos)
 					{
 						HistoricoColaborador historicoColaboradorClone = (HistoricoColaborador) historicoColaboradorTmp.clone();
@@ -600,7 +600,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 						historicoColaboradorClone.getIndice().setIndiceHistoricoAtual(indiceHistorico);
 						historicoColaboradorClone.setMotivo("Reajuste do Índice");
 
-						retorno.add(historicoColaboradorClone);
+						historicosColaboradoresProgressao.add(historicoColaboradorClone);
 					}
 
 					break;
@@ -612,7 +612,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 					Collection<FaixaSalarialHistorico> faixaHistoricos = faixaSalarialHistoricoManager.findByPeriodo(historicoColaboradorTmp.getFaixaSalarial()
 							.getId(), historicoColaboradorTmp.getData(), dataProximo);
 
-					retorno.add(historicoColaboradorTmp);
+					historicosColaboradoresProgressao.add(historicoColaboradorTmp);
 					for (FaixaSalarialHistorico faixaHistorico : faixaHistoricos)
 					{
 						if (faixaHistorico.getData().before(historicoColaboradorTmp.getData()))
@@ -628,7 +628,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 						else
 							historicoColaboradorClone.setMotivo(faixaHistorico.getObsReajuste());
 
-						retorno.add(historicoColaboradorClone);
+						historicosColaboradoresProgressao.add(historicoColaboradorClone);
 					}
 
 					break;
@@ -638,19 +638,19 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 			proximo++;
 		}
 
-		montaAreaOrganizacional(retorno, empresaId);
+		montaAreaOrganizacional(historicosColaboradoresProgressao, empresaId);
 
-		return retorno;
+		return historicosColaboradoresProgressao;
 	}
 
-	public void montaAreaOrganizacional(Collection<HistoricoColaborador> retorno, Long... empresaIds) throws Exception
+	public void montaAreaOrganizacional(Collection<HistoricoColaborador> historicosColaboradores, Long... empresaIds) throws Exception
 	{
 		if (empresaIds != null && empresaIds.length > 0)
 		{
 			Collection<AreaOrganizacional> areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, empresaIds);
 			areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 
-			for (HistoricoColaborador historico : retorno)
+			for (HistoricoColaborador historico : historicosColaboradores)
 				historico.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, historico.getAreaOrganizacional().getId()));
 		}
 	}
