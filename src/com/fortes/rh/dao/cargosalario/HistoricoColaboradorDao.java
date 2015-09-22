@@ -7,6 +7,7 @@ import java.util.List;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.SituacaoColaborador;
+import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
 
@@ -51,6 +52,7 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public void ajustaMotivoContratado(Long colaboradorId);
 	public void setaContratadoNoPrimeiroHistorico(Long colaboradorId);
 	public Collection<SituacaoColaborador> getPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim, Long... empresasIds);
+	public List<RelatorioPromocoes> getRelatorioPromocoes(Long[] areaIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim, Long... empresasIds);
 	public List<SituacaoColaborador> getUltimasPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataBase, Long empresaId);
 	public void deleteHistoricoColaborador(Long[] colaboradorIds) throws Exception;
 	public void removeCandidatoSolicitacao(Long candidatoSolicitacaoId);

@@ -376,6 +376,19 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 		return areasRetorno;
 	}
+	
+	public Collection<AreaOrganizacional> montaHierarquiaDeDescendentes(Collection<AreaOrganizacional> areas) throws Exception
+	{
+		Collection<AreaOrganizacional> areasRetorno = new ArrayList<AreaOrganizacional>();
+
+		for(AreaOrganizacional areaTmp : areas)
+		{
+			insereMae(areas, areaTmp);
+			areasRetorno.add(areaTmp);
+		}
+
+		return areasRetorno;
+	}
 
 	private void insereMae(Collection<AreaOrganizacional> areas, AreaOrganizacional area)
 	{

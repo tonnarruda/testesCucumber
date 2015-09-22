@@ -227,43 +227,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 	
 	public List<RelatorioPromocoes> getPromocoes(Long[] areasIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim, Long... empresasIds)
 	{
-		List<RelatorioPromocoes> promocoes = new ArrayList<RelatorioPromocoes>();
-		Collection<SituacaoColaborador> situacaoColaboradors = getDao().getPromocoes(areasIds, estabelecimentosIds, null, dataFim, empresasIds);
-
-		if (situacaoColaboradors == null || situacaoColaboradors.isEmpty())
-			return promocoes;
-		
-		Iterator<SituacaoColaborador> iterator = situacaoColaboradors.iterator();
-		SituacaoColaborador proximaSituacao = (SituacaoColaborador) iterator.next();
-			
-		Collection<AreaOrganizacional> areaOrganizacionals = ajustaFamilia(empresasIds);
-		
-		for (SituacaoColaborador situacao : situacaoColaboradors) 
-		{
-			
-			if(iterator.hasNext())
-			{
-				proximaSituacao = (SituacaoColaborador) iterator.next();
-				proximaSituacao.setAreaOrganizacional(areaOrganizacionalManager.getAreaOrganizacional(areaOrganizacionals, proximaSituacao.getAreaOrganizacional().getId()));
-				//a ordem dos ifs são importantes
-				if(!proximaSituacao.getColaborador().equals(situacao.getColaborador()))
-					continue;
-				
-				if(!situacao.getCargo().equals(proximaSituacao.getCargo()))
-				{
-					if(proximaSituacao.getData().getTime() >= dataIni.getTime() && proximaSituacao.getData().getTime() <= dataFim.getTime())
-						addPromocao(promocoes, proximaSituacao.getEstabelecimento(), proximaSituacao.getAreaOrganizacional(), MotivoHistoricoColaborador.PROMOCAO);
-					continue;				
-				}
-				
-				if(!situacao.getFaixaSalarial().equals(proximaSituacao.getFaixaSalarial()) || !situacao.getSalario().equals(proximaSituacao.getSalario()))
-					if(proximaSituacao.getData().getTime() >= dataIni.getTime() && proximaSituacao.getData().getTime() <= dataFim.getTime())
-						addPromocao(promocoes, proximaSituacao.getEstabelecimento(), proximaSituacao.getAreaOrganizacional(), MotivoHistoricoColaborador.PROMOCAO_HORIZONTAL);
-			}
-		}
-		
-		Collections.sort(promocoes);
-		return promocoes;
+		return getDao().getRelatorioPromocoes(areasIds, estabelecimentosIds, dataIni, dataFim, empresasIds);
 	}
 	
 	private List<RelatorioPromocoes> countPromocoesMesAno(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds)
@@ -386,8 +350,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 				areaOrganizacional = areaOrganizacionalManager.findByIdProjection(areaId);
 				areasDescendentes = areaOrganizacionalManager.getDescendentes(areasOrganizacionais, areaId, new ArrayList<AreaOrganizacional>());
 				areasDescendentes.add(areaOrganizacional);
-
+				
 				promocoes = getPromocoes(new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areasDescendentes), null, dataInicioTemp, dataFimTemp, empresaId);
+				
 				calculaPromocaoVerticalHorizontalDaArea(graficoPromocaoHorizontal, graficoPromocaoVertical,	areaOrganizacional, promocoes, true);
 			}
 		}
@@ -410,9 +375,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		}
 		
 		if(qtdPromocaoHorizontal > 0 || considerarValoresVazios)
-			graficoPromocaoHorizontal.add(new DataGrafico(areaOrganizacional.getId(), areaOrganizacional.getNome(), qtdPromocaoHorizontal, areaOrganizacional.getNome()));
+			graficoPromocaoHorizontal.add(new DataGrafico(areaOrganizacional.getId(), areaOrganizacional.getDescricao(), qtdPromocaoHorizontal, areaOrganizacional.getDescricao()));
 		if(qtdPromocaoVertical > 0 || considerarValoresVazios)
-			graficoPromocaoVertical.add(new DataGrafico(areaOrganizacional.getId(), areaOrganizacional.getNome(), qtdPromocaoVertical, areaOrganizacional.getNome()));
+			graficoPromocaoVertical.add(new DataGrafico(areaOrganizacional.getId(), areaOrganizacional.getDescricao(), qtdPromocaoVertical, areaOrganizacional.getDescricao()));
 	}
 
 	private Collection<AreaOrganizacional> ajustaFamilia(Long... empresasIds) 

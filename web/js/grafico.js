@@ -62,18 +62,19 @@ function montaBar(data, idGrafico) {
 
 function montaBarDuploCategoria(data, idGrafico, nomesParaRelacionar, distanciaTexto) 
 {
+    $(idGrafico).width(data[0].data.length * 140);
 	var config = {
 		series: {
 			bars: {
 				show: true, 
-				barWidth: 0.6,
+				barWidth: 0.3,
          		align: 'center'
 			}
     	},
         grid: { hoverable: true },
         xaxis: {
         	minTickSize: 1,
-        	tickLength: distanciaTexto
+        	tickLength: 20
         }
     };			
 
@@ -84,16 +85,18 @@ function montaBarDuploCategoria(data, idGrafico, nomesParaRelacionar, distanciaT
     
     $(idGrafico + ' .xAxis .tickLabel').each(function(){
     	var i =  parseInt($(this).text().replace('.0',''));
-    	$(this).text(nomesParaRelacionar[i]);
+    	
+    	var elementArray = nomesParaRelacionar[i].split(">");
+    	elementArray.splice(-1,1);
+ 	    var hierarquia = elementArray.join(">") + "> ";
+ 	    $(this).html( nomesParaRelacionar[i].replace(hierarquia, "<span style='display: none;'>"+hierarquia+"</span>") );
+ 	    $(this).attr("title", $(this).text());
+ 	    $(this).qtip();
     });
 
-    $(idGrafico +' .xAxis .tickLabel').css({
-        '-moz-transform':'rotate(315deg)',
-        '-webkit-transform':'rotate(315deg)',
-        '-o-transform':'rotate(315deg)',
-        '-ms-transform':'rotate(315deg)',
-        'transform':'rotate(315deg)'
-   });
+   $(idGrafico +' .yAxis .tickLabel').css({'right': 'inherit'});
+   
+   //$(".legend div, .legend table").css({ 'top': $("#scrollBar").position().top, 'left': $("#scrollBar").position().left });
 }
 
 function montaPie(data, clazz, options, showDatasCombine) {

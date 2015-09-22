@@ -1334,14 +1334,14 @@ function naoInseririrCharacterComValor(e,value)
 	return true;
 }
 
-function checkListBoxSearch(name)
+function checkListBoxSearch(name) 
 {
 	nameReplaced=name.replace("[", "\\[").replace("]","\\]");
 	var filtroTexto = $('#listCheckBoxFilter' + nameReplaced).val();
 	var filtroAtivo = $('#listCheckBoxActive' + nameReplaced).val();
 	var nomeTeste;
 	
-	$("input:checkbox[name='" + name + "']").each(function() {
+	$("input:checkbox[name='" + name + "']").not(":disabled").each(function() {
 		nomeTeste = removerAcento( $( this ).parent( 'label' ).text().toUpperCase() );
 		$( this ).parent().toggle( ( typeof filtroTexto == "undefined" || nomeTeste.indexOf(removerAcento(filtroTexto.toUpperCase())) > -1)
 				&& ( typeof filtroAtivo == "undefined" || nomeTeste.indexOf( filtroAtivo ) > -1 ));

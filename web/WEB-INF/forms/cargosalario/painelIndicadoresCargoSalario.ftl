@@ -79,6 +79,8 @@
 		#abas { position: relative; z-index: 500; margin-bottom: 2px; }
 		
 		.conteudo { background-color: #F6F6F6; padding: 10px; border: 1px solid #CCC; }
+		
+		.x1Axis .tickLabel { cursor: default; }
 	</style>
 		<!--[if lte IE 8]><script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/excanvas.min.js"/>'></script><![endif]-->
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/jQuery/jquery.flot.js"/>'></script>
@@ -116,6 +118,8 @@
 
 		<script type="text/javascript">
 			$(function() {
+			
+				//escondeAreasFilhas();
 			
 				BrowserDetect.init( function ( informacaoesDesteBrowser ){
 				    if(informacaoesDesteBrowser.name == 'Explorer')
@@ -165,7 +169,7 @@
 		        var promocaoVerticalArea = ${grfBarraPromocaoVerticalArea};
 		        
 		        var dadosBarraArea = [
-					        {label: 'Horizontal', data: promocaoHorizontalArea , bars:{align : "right"}},
+					        {label: 'Horizontal', data: promocaoHorizontalArea, bars:{align : "right"}},
 					        {label: 'Vertical', data: promocaoVerticalArea, bars:{align : "left"} }
 					    ];
 				
@@ -367,15 +371,15 @@
 					if($("#divBoxSalario").dialog("isOpen"))
 						infoPopup = $('.ui-dialog-titlebar').text().replace('close','');
 						
-					popup.window.opener.graficoBarraCategoria(data, popup.document.getElementById('popupGrafico'), false, 'Promoções verticais e horizontais agrupadas por área organizacional', popup.document.getElementById('popupTitulo'), "*Promoção Horizontal: Mudança de Faixa Salarial ou Salário./ Promoção Vertical: Mudança de Cargo.", popup.document.getElementById('popupObs'));
+					popup.window.opener.graficoBarraCategoria(data, popup.document.getElementById('popupGrafico'), false, 'Promoções verticais e horizontais agrupadas por área organizacional', popup.document.getElementById('popupTitulo'), "*Promoção Horizontal: Mudança de Faixa Salarial ou Salário./ Promoção Vertical: Mudança de Cargo.", popup.document.getElementById('info'));
 					
 					for (var key in nomesParaRelacionar){
 						popup.window.document.querySelectorAll('.tickLabel')[key].textContent = nomesParaRelacionar[key];
-						popup.window.document.querySelectorAll('.tickLabel')[key].style.transform = 'rotate(315deg)';
 					}
 
 					var dist = tamanhoTexto + 20;
 					popup.window.document.querySelectorAll('#popupObs')[0].style.margin = dist + 'px';
+					popup.window.document.querySelectorAll('#info')[0].style.margin = '10px 30px';
 					popup.window.print();
 					
 					if($.browser.mozilla)
@@ -509,27 +513,24 @@
 			}
 	
 			function createListAreasPieChart(data){
-				addChecks('areasPieChartCheck', data, 'escondeFilhas(this)');
+				addChecks('areasPieChartCheck', data, 'escondeFilhas()');
 			}
 			
 			var areaChecked;
-			function escondeFilhas(area)
+			function escondeAreasFilhas()
 			{
-				areaChecked = area.checked; 
-				AreaOrganizacionalDWR.excluiFilhas(populaFilhas, area.value);
-			}
-			 
-			function populaFilhas(data)
-			{
-				for (var key in data){
-					if(areaChecked){
-						$('#checkGroupareasPieChartCheck' + data[key]).removeAttr('checked').attr('disabled', true);
-						$('#checkGroupareasPieChartCheck' + data[key]).parent().hide();
-					} else {
-						$('#checkGroupareasPieChartCheck' + data[key]).removeAttr('disabled');
-						$('#checkGroupareasPieChartCheck' + data[key]).parent().show();
+				var labels = $("input[name=areasPieChartCheck]").parent().clone();
+				$(labels).find("input").remove();
+				$(labels).each(function(){
+					var checkboxId = $(this).attr("for");
+					if ( $("#"+checkboxId).is(":visible") ) {
+						var descricaoArea = $(this).text().replace("(Ativa)","").replace("(Inativa)","").trim();
+						var isChecked = $("#"+checkboxId).is(":checked");
+						
+						$("#listCheckBoxareasPieChartCheck label:contains("+descricaoArea+" >)").toggle(!isChecked);
+						$("#listCheckBoxareasPieChartCheck label:contains("+descricaoArea+" >) input").toggleDisabled(isChecked);
 					}
-				}	
+				});
 			}
 		</script>
 	
@@ -540,7 +541,7 @@
 		
 		<div id="abas">
 			<div id="aba1" class="aba"><a href="javascript:;">Evolução Salarial</a></div>
-			<div id="aba2" class="aba"><a href="javascript:;">Promoções por áreas organizacionais</a></div>
+			<div id="aba2" class="aba"><a href="javascript:;">Promoções por área organizacional</a></div>
 		</div>
 		
 		<div class="conteudo">
@@ -565,7 +566,7 @@
 					<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areasCheck" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 				</div>
 				<div class="conteudo-2 conteudo-aba">
-					<@frt.checkListBox label="Áreas Organizacionais" name="areasPieChartCheck" id="areasPieChartCheck" list="areasPieChartCheckList" filtro="true" selectAtivoInativo="true" onClick="escondeFilhas(this);"/>
+					<@frt.checkListBox label="Áreas Organizacionais" name="areasPieChartCheck" id="areasPieChartCheck" list="areasPieChartCheckList" filtro="true" selectAtivoInativo="true" onClick="escondeAreasFilhas();"/>
 				</div>
 		
 				<button onclick="return enviaForm();" class="btnPesquisar grayBGE"></button>
@@ -609,7 +610,7 @@
 			   
 			   	<div class="fieldGraph">
 					<h1>
-						Promoções horizontais agrupadas por área organizacional
+						Promoções horizontais
 						<img id="promocoesHorizontaisAreasImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 					</h1>
 				    <div id="promocoesHorizontaisAreas" class="graph"></div>
@@ -620,7 +621,7 @@
 			   
 			   	<div class="fieldGraph">
 					<h1>
-						Promoções verticais agrupadas por área organizacional
+						Promoções verticais
 						<img id="promocoesVerticaisAreasImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 					</h1>
 				    <div id="promocoesVerticaisAreas" class="graph"></div>
@@ -631,18 +632,19 @@
 			   
 			   <div class="fieldGraph bigger">
 					<h1>
-						Promoções verticais e horizontais agrupadas por área organizacional
+						Promoções verticais e horizontais
 						<img id="faixaSalarialAreaImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
 					</h1>
-			   		<div id="faixaSalarialArea" style="margin: 25px; height: 400px; width: 900px"></div>
-			   		<ul><li>&nbsp;</li></ul>
-			   		<div class="obs" style="margin: 5px;text-align: right;">
+					<div class="obs" style="margin: 15px 25px 5px 10px; text-align: right;">
 				   		 * Promoção Horizontal: Mudança de Faixa Salarial ou Salário. / Promoção Vertical: Mudança de Cargo.
 			   		</div>
+					<div id="scrollBar" style="width: 900px; height:500px; margin: 0 auto; overflow-x: auto; overflow-y: hidden;">
+			   			<div id="faixaSalarialArea" style="margin: 5px; min-height: 400px; min-width: 890px;"></div>
+			   		</div>
+			   		<ul><li>&nbsp;</li></ul>
 			    </div>
-			    
 			</div>
-		
+			
 			<div style="clear: both"></div>
 		    <div style="clear: both"></div>
 			<a name="pagebottom"></a>

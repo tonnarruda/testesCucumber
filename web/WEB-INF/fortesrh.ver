@@ -3,6 +3,7 @@
 	<Versao id="1.1.1xx.18x" db="" data="xx/09/2015">
 		<Item visivel="S" motivo="S20150400200"><![CDATA[R&S > Movimentações > Solicitação de pessoal: Novos filtros por período e código.]]></Item>
 		<Item visivel="S" motivo="S20150400198"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Clonar: Configurar a solicitação de pessoal clonada com o status da solicitação como "Em Análise".]]></Item>
+		<Item visivel="N" motivo="S20150700002"><![CDATA[C&S > Painel de Indicadores: Novos gráficos de pizza e barra das promoções verticais e horizontais agrupadas por áreas organizacionais.]]></Item>
 		<Item visivel="S" motivo="S20150600190"><![CDATA[Aval. Desempenho > Movimentações > Responder Avaliações de Desempenho > Imprimir respostas: Exibir respostas das competências do colaborador.]]></Item>
 		<Item visivel="S" motivo="P15090000102"><![CDATA[T&D > Relatórios > Colaboradores sem treinamento/Colaboradores com treinamento: Ajuste da inconsistência no filtro considerar colaboradores aprovados e/ou reprovados.]]></Item>
 		<Item visivel="S" motivo="S20150600185"><![CDATA[Info. Funcionais > Painel de Indicadores > Informações Sociais: Novo filtro por colocação.]]></Item>

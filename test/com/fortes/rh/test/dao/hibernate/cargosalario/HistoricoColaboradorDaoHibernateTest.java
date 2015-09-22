@@ -39,6 +39,7 @@ import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.SituacaoColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
+import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
@@ -221,6 +222,118 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		
 		Collection<SituacaoColaborador> situacoes = historicoColaboradorDao.getPromocoes(null, null, DateUtil.criarDataMesAno(01, 01, 1999), DateUtil.criarDataMesAno(03, 05, 2005), empresa.getId());
 		assertEquals(2, situacoes.size());
+	}
+	
+	public void testGetRelatorioPromocoes()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+
+		Estabelecimento parajana = EstabelecimentoFactory.getEntity(1L);
+		parajana.setEmpresa(empresa);
+		estabelecimentoDao.save(parajana);
+		
+		AreaOrganizacional garagem = AreaOrganizacionalFactory.getEntity(1L);
+		garagem.setNome("GARAGEM");
+		areaOrganizacionalDao.save(garagem);
+		
+		AreaOrganizacional lavajato = AreaOrganizacionalFactory.getEntity(2L);
+		garagem.setNome("LAVAJATO");
+		areaOrganizacionalDao.save(lavajato);
+		
+		Cargo cobrador = CargoFactory.getEntity(1L);
+		cobrador.setNome("COBRADOR");
+		cobrador.setEmpresa(empresa);
+		cargoDao.save(cobrador);
+		
+		FaixaSalarial faixaUmCobrador = FaixaSalarialFactory.getEntity(1L);
+		faixaUmCobrador.setNome("I");
+		faixaUmCobrador.setCargo(cobrador);
+		faixaSalarialDao.save(faixaUmCobrador);
+		
+		FaixaSalarial faixaDoisCobrador = FaixaSalarialFactory.getEntity(2L);
+		faixaDoisCobrador.setNome("II");
+		faixaDoisCobrador.setCargo(cobrador);
+		faixaSalarialDao.save(faixaDoisCobrador);
+
+		Cargo motorista = CargoFactory.getEntity(2L);
+		motorista.setNome("MOTORISTA");
+		motorista.setEmpresa(empresa);
+		cargoDao.save(motorista);
+		
+		FaixaSalarial faixaAMotorista = FaixaSalarialFactory.getEntity(3L);
+		faixaAMotorista.setNome("I");
+		faixaAMotorista.setCargo(motorista);
+		faixaSalarialDao.save(faixaAMotorista);
+		
+		Colaborador joao = ColaboradorFactory.getEntity(11L);
+		joao.setEmpresa(empresa);
+		colaboradorDao.save(joao);
+		
+		Colaborador maria = ColaboradorFactory.getEntity(22L);
+		maria.setEmpresa(empresa);
+		colaboradorDao.save(maria);
+		
+		HistoricoColaborador joaoCobradorFaixaUm = HistoricoColaboradorFactory.getEntity(joao, DateUtil.criarDataMesAno(01, 02, 1998), faixaUmCobrador, parajana, garagem, null, null);
+		joaoCobradorFaixaUm.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
+		joaoCobradorFaixaUm.setSalario(500.0);
+		historicoColaboradorDao.save(joaoCobradorFaixaUm);
+		
+		HistoricoColaborador joaoCobradorFaixaUmAumentoSalario = HistoricoColaboradorFactory.getEntity(joao, DateUtil.criarDataMesAno(02, 02, 2000), faixaUmCobrador, parajana, garagem, null, null);
+		joaoCobradorFaixaUmAumentoSalario.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		joaoCobradorFaixaUmAumentoSalario.setSalario(600.0);
+		historicoColaboradorDao.save(joaoCobradorFaixaUmAumentoSalario);
+
+		HistoricoColaborador joaoCobradorFaixaDois = HistoricoColaboradorFactory.getEntity(joao, DateUtil.criarDataMesAno(01, 04, 2000), faixaDoisCobrador, parajana, garagem, null, null);
+		joaoCobradorFaixaDois.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		joaoCobradorFaixaDois.setSalario(500.0);
+		historicoColaboradorDao.save(joaoCobradorFaixaDois);
+
+		HistoricoColaborador joaoCobradorFaixaDoisAumentoSalario = HistoricoColaboradorFactory.getEntity(joao, DateUtil.criarDataMesAno(02, 04, 2000), faixaDoisCobrador, parajana, garagem, null, null);
+		joaoCobradorFaixaDoisAumentoSalario.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		joaoCobradorFaixaDoisAumentoSalario.setSalario(650.0);
+		historicoColaboradorDao.save(joaoCobradorFaixaDoisAumentoSalario);
+		
+		HistoricoColaborador joaoCobradorFaixaDoisMudouArea = HistoricoColaboradorFactory.getEntity(joao, DateUtil.criarDataMesAno(01, 05, 2000), faixaDoisCobrador, parajana, lavajato, null, null);
+		joaoCobradorFaixaDoisMudouArea.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		joaoCobradorFaixaDoisMudouArea.setSalario(650.0);
+		historicoColaboradorDao.save(joaoCobradorFaixaDoisMudouArea);
+
+		HistoricoColaborador joaoMotoristaFaixaA = HistoricoColaboradorFactory.getEntity(joao, DateUtil.criarDataMesAno(06, 06, 2001), faixaAMotorista, parajana, lavajato, null, null);
+		joaoMotoristaFaixaA.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		joaoMotoristaFaixaA.setSalario(650.0);
+		historicoColaboradorDao.save(joaoMotoristaFaixaA);
+		
+		
+		HistoricoColaborador mariaCobradorFaixaUm = HistoricoColaboradorFactory.getEntity(maria, DateUtil.criarDataMesAno(01, 02, 2000), faixaUmCobrador, parajana, garagem, null, null);
+		mariaCobradorFaixaUm.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
+		mariaCobradorFaixaUm.setSalario(500.0);
+		historicoColaboradorDao.save(mariaCobradorFaixaUm);
+		
+		HistoricoColaborador mariaCobradorFaixaUmAumentoSalario = HistoricoColaboradorFactory.getEntity(maria, DateUtil.criarDataMesAno(02, 02, 2000), faixaAMotorista, parajana, garagem, null, null);
+		mariaCobradorFaixaUmAumentoSalario.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		mariaCobradorFaixaUmAumentoSalario.setSalario(555.0);
+		historicoColaboradorDao.save(mariaCobradorFaixaUmAumentoSalario);
+		
+		HistoricoColaborador mariaCobradorFaixaUmAumentoSalarioNovamente = HistoricoColaboradorFactory.getEntity(maria, DateUtil.criarDataMesAno(05, 05, 2000), faixaAMotorista, parajana, garagem, null, null);
+		mariaCobradorFaixaUmAumentoSalarioNovamente.setMotivo(MotivoHistoricoColaborador.PROMOCAO);
+		mariaCobradorFaixaUmAumentoSalarioNovamente.setSalario(600.0);
+		historicoColaboradorDao.save(mariaCobradorFaixaUmAumentoSalarioNovamente);
+		
+		Date dataIni = DateUtil.criarDataMesAno(1, 1, 1999);
+		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2300);
+		
+		colaboradorDao.getHibernateTemplateByGenericDao().flush();
+		
+		List<RelatorioPromocoes> relatorioPromocoes = historicoColaboradorDao.getRelatorioPromocoes(null, null, dataIni, dataFim, empresa.getId());
+		assertEquals(2, relatorioPromocoes.size());
+		
+		assertEquals(4, relatorioPromocoes.get(0).getQtdHorizontal());
+		assertEquals(0, relatorioPromocoes.get(1).getQtdHorizontal());
+
+		assertEquals(1, relatorioPromocoes.get(0).getQtdVertical());
+		assertEquals(1, relatorioPromocoes.get(1).getQtdVertical());
+		
 	}
 	
 	public void testUltimasPromocoes()

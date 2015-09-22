@@ -23,6 +23,22 @@ public class RelatorioPromocoes implements Comparable<RelatorioPromocoes>
 			qtdHorizontal++;
 	}
 
+	public RelatorioPromocoes(Long estabelecimentoId, String estabelecimentoNome, Long areaId, String areaNome, int qtdVertical , int qtdHorizontal) 
+	{
+		if (this.estabelecimento == null)
+			this.estabelecimento = new Estabelecimento();
+		this.estabelecimento.setId(estabelecimentoId);
+		this.estabelecimento.setNome(estabelecimentoNome);
+		
+		if (this.area == null)
+			this.area = new AreaOrganizacional();
+		this.area.setId(areaId);
+		this.area.setNome(areaNome);
+		
+		this.qtdHorizontal = qtdHorizontal;
+		this.qtdVertical = qtdVertical;
+	}
+	
 	public RelatorioPromocoes(Estabelecimento estabelecimento, AreaOrganizacional area, String tipoPromocao) 
 	{
 		super();
@@ -30,6 +46,7 @@ public class RelatorioPromocoes implements Comparable<RelatorioPromocoes>
 		this.area = area;
 		incrementa(tipoPromocao);
 	}
+	
 	public RelatorioPromocoes() 
 	{
 		super();

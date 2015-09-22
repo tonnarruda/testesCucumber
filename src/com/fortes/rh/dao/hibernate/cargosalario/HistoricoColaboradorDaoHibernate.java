@@ -26,6 +26,7 @@ import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
 import com.fortes.rh.model.cargosalario.SituacaoColaborador;
+import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
@@ -287,6 +288,91 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(SituacaoColaborador.class));
 		
 		return criteria.list();
+	}
+	
+	public List<RelatorioPromocoes> getRelatorioPromocoes(Long[] areaIds, Long[] estabelecimentosIds, Date dataIni, Date dataFim, Long... empresasIds)
+	{
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("select rp.estabelecimentoId, rp.estabelecimentoNome, rp.areaorganizacional_id, monta_familia_area(rp.areaorganizacional_id) as areaNome, ");
+		sql.append("	count(rp.vertical) as qtdVertical, ");
+		sql.append("	count(rp.horizontal) as qtdHorizontal ");
+		sql.append("from ( ");
+		sql.append("  select *,");
+		sql.append("	case when sc.promocao = 'VERTICAL' then sc.promocao end as vertical, ");
+		sql.append("	case when sc.promocao = 'HORIZONTAL' then sc.promocao end as horizontal ");
+		sql.append("  from ( ");
+		sql.append("	select  ");
+		sql.append("		data, ");
+		sql.append("		e.id as estabelecimentoId, ");
+		sql.append("		e.nome as estabelecimentoNome, ");
+		sql.append("		areaorganizacional_id,  ");
+		sql.append("		CASE WHEN colaborador_id = lag(colaborador_id) OVER (ORDER BY colaborador_id, data) and cargo_id != lag(cargo_id) OVER (ORDER BY colaborador_id, data) THEN ");
+		sql.append("			'VERTICAL' ");
+		sql.append("			ELSE ");
+		sql.append("			 CASE WHEN colaborador_id = lag(colaborador_id) OVER (ORDER BY colaborador_id, data) and (faixasalarial_id != lag(faixasalarial_id) OVER (ORDER BY colaborador_id, data) or (salario != lag(salario) OVER (ORDER BY colaborador_id, data))) ");
+		sql.append("			 THEN 'HORIZONTAL' ");
+		sql.append("			 END ");
+		sql.append("			END AS promocao ");
+		sql.append("	from SituacaoColaborador ");
+		sql.append("	join Estabelecimento e on estabelecimento_id=e.id ");
+		sql.append("	where ");
+		sql.append("		not motivo='D'  ");
+		sql.append("		and not motivo='S' ");
+		sql.append("		and e.empresa_id in ( ");
+		sql.append("		    :empresaIds ");
+		sql.append("		)  ");
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0) {
+			sql.append("		and e.id in ( ");
+			sql.append("		    :estabelecimentosIds ");
+			sql.append("		)  ");
+		}
+		if(areaIds != null && areaIds.length > 0) {
+			sql.append("		and areaorganizacional_id in ( ");
+			sql.append("		    :areaIds ");
+			sql.append("		)  ");
+		}
+		sql.append("	ORDER BY colaborador_id, data ");
+		sql.append("  ) as sc ");
+		sql.append("  where sc.promocao is not null ");
+		if (dataFim != null)
+			sql.append("		and sc.data<=:dataFim ");
+		if (dataIni != null)
+			sql.append("		and sc.data >= :dataIni ");
+		sql.append(") as rp ");
+		sql.append("group by rp.estabelecimentoId, rp.estabelecimentoNome, rp.areaorganizacional_id ");
+		sql.append("order by rp.estabelecimentoNome, areaNome ");
+		
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setParameterList("empresaIds", empresasIds, Hibernate.LONG);
+		
+		if(areaIds != null && areaIds.length > 0)
+			query.setParameterList("areaIds", areaIds, Hibernate.LONG);
+		if(estabelecimentosIds != null && estabelecimentosIds.length > 0)
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+		if (dataIni != null)
+			query.setDate("dataIni", dataIni);
+		if (dataFim != null)
+			query.setDate("dataFim", dataFim);
+		
+		
+		Collection<Object[]> resultado = query.list();
+		List<RelatorioPromocoes> lista = new ArrayList<RelatorioPromocoes>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+
+			lista.add(new RelatorioPromocoes( ((BigInteger) res[0]).longValue(), 
+												(String) res[1], 
+												((BigInteger) res[2]).longValue(), 
+												(String) res[3], 
+												res[4] != null ? ((BigInteger) res[4]).intValue() : 0 ,
+												res[5] != null ? ((BigInteger) res[5]).intValue() : 0  ));
+		}
+
+		return lista;
 	}
 	
 	public List<SituacaoColaborador> getUltimasPromocoes(Long[] areaIds, Long[] estabelecimentosIds, Date data, Long empresaId)

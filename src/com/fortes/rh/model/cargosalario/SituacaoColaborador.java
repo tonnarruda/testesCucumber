@@ -36,7 +36,7 @@ public class SituacaoColaborador implements Comparable<SituacaoColaborador>
 	
 	@Transient
 	private String dataExtenso;
-	
+
 	public int compareTo(SituacaoColaborador situacaoColaborador) 
 	{
 		return (estabelecimento.getNome() + " " + areaOrganizacional.getDescricao() + " " + colaborador.getNome()).compareTo(situacaoColaborador.getEstabelecimento().getNome() + " " + situacaoColaborador.getAreaOrganizacional().getDescricao() + " " + situacaoColaborador.getColaborador().getNome());
