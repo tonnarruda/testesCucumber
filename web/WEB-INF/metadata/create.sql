@@ -3178,7 +3178,6 @@ CREATE TABLE empresa (
     cidade_id bigint,
     atividade character varying(200),
     mensagemmoduloexterno character varying(400),
-    exibirdadosambiente boolean DEFAULT false,
     logocertificadourl character varying(200),
     grupoac character varying(3),
     campoextracolaborador boolean DEFAULT false,
@@ -5592,7 +5591,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 637, false);
+SELECT pg_catalog.setval('papel_sequence', 644, false);
 
 
 --
@@ -6335,7 +6334,8 @@ CREATE TABLE riscoambiente (
     historicoambiente_id bigint,
     risco_id bigint,
     periodicidadeexposicao character(1),
-    medidadeseguranca text
+    medidadeseguranca text,
+    grauderisco character(1)
 );
 
 
@@ -6588,7 +6588,8 @@ CREATE TABLE solicitacaoepi_item (
     epi_id bigint,
     solicitacaoepi_id bigint,
     qtdsolicitado integer NOT NULL,
-    motivosolicitacaoepi_id bigint
+    motivosolicitacaoepi_id bigint,
+    tamanhoepi_id bigint
 );
 
 
@@ -6921,6 +6922,74 @@ ALTER TABLE public.tabelareajustecolaborador_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('tabelareajustecolaborador_sequence', 1, false);
+
+
+--
+-- Name: tamanhoepi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tamanhoepi (
+    id bigint NOT NULL,
+    descricao character varying(30) NOT NULL
+);
+
+
+ALTER TABLE public.tamanhoepi OWNER TO postgres;
+
+--
+-- Name: tamanhoepi_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE tamanhoepi_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tamanhoepi_sequence OWNER TO postgres;
+
+--
+-- Name: tamanhoepi_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('tamanhoepi_sequence', 1, false);
+
+
+--
+-- Name: tipo_tamanhoepi; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE tipo_tamanhoepi (
+    id bigint NOT NULL,
+    tipoepi_id bigint NOT NULL,
+    tamanhoepis_id bigint NOT NULL,
+    ativo boolean DEFAULT true NOT NULL
+);
+
+
+ALTER TABLE public.tipo_tamanhoepi OWNER TO postgres;
+
+--
+-- Name: tipo_tamanhoepi_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE tipo_tamanhoepi_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tipo_tamanhoepi_sequence OWNER TO postgres;
+
+--
+-- Name: tipo_tamanhoepi_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('tipo_tamanhoepi_sequence', 1, false);
 
 
 --
@@ -30089,7 +30158,7 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 -- Data for Name: empresa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, exibirdadosambiente, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, emailresplimitecontrato, imganiversarianteurl, mensagemcartaoaniversariante, turnoverporsolicitacao, obrigarambientefuncao, verificaparentesco, controlariscopor, solpessoalexibircolabsubstituido, codigotrucurso, exibirlogoempresappraltcat, solpessoalexibirsalario, solpessoalobrigardadoscomplementares, formulaturnover, solicitarconfirmacaodesligamento, cnae2, considerarsabadonoabsenteismo, solpessoalreabrirsolicitacao, considerardomingonoabsenteismo, processoexportacaoac, vincularmatriculacodigofortespessoal) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', false, NULL, '001', false, false, NULL, '', 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', false, false, 'N', 'A', false, false, false, true, false, 1, false, NULL, false, false, false, false, false);
+INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, emailresplimitecontrato, imganiversarianteurl, mensagemcartaoaniversariante, turnoverporsolicitacao, obrigarambientefuncao, verificaparentesco, controlariscopor, solpessoalexibircolabsubstituido, codigotrucurso, exibirlogoempresappraltcat, solpessoalexibirsalario, solpessoalobrigardadoscomplementares, formulaturnover, solicitarconfirmacaodesligamento, cnae2, considerarsabadonoabsenteismo, solpessoalreabrirsolicitacao, considerardomingonoabsenteismo, processoexportacaoac, vincularmatriculacodigofortespessoal) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', NULL, '001', false, false, NULL, '', 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', false, false, 'N', 'A', false, false, false, true, false, 1, false, NULL, false, false, false, false, false);
 
 
 --
@@ -30948,6 +31017,15 @@ INSERT INTO migrations (name) VALUES ('20150818094233');
 INSERT INTO migrations (name) VALUES ('20150818150631');
 INSERT INTO migrations (name) VALUES ('20150825172731');
 INSERT INTO migrations (name) VALUES ('20150828100057');
+INSERT INTO migrations (name) VALUES ('20150831161538');
+INSERT INTO migrations (name) VALUES ('20150909151159');
+INSERT INTO migrations (name) VALUES ('20150914163119');
+INSERT INTO migrations (name) VALUES ('20150915125913');
+INSERT INTO migrations (name) VALUES ('20150915130054');
+INSERT INTO migrations (name) VALUES ('20150915130235');
+INSERT INTO migrations (name) VALUES ('20150915130436');
+INSERT INTO migrations (name) VALUES ('20150915132405');
+INSERT INTO migrations (name) VALUES ('20150915133747');
 
 
 --
@@ -31026,7 +31104,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (494, 'ROLE_CAD_ATITUDE', 'Atitudes', '/captacao/atitude/list.action', 5, true, NULL, 362, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (516, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Níveis de Competência', '/captacao/nivelCompetencia/list.action', 6, true, NULL, 362, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (11, 'ROLE_CAD_CARGO', 'Cargos e Faixas', '/cargosalario/cargo/list.action', 7, true, NULL, 362, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (499, 'ROLE_CAD_FAIXA_SALARIAL', 'Exibir Faixa Salarial de Cargos', '', 8, false, NULL, 362, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (404, 'ROLE_CAD_INDICE', 'Índices', '/cargosalario/indice/list.action', 9, true, NULL, 362, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (363, 'ROLE_C&S_MOV', 'Movimentações', '#', 2, true, NULL, 361, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (26, 'ROLE_MOV_SIMULACAOREAJUSTE', 'Planejamentos de Realinhamentos', '/cargosalario/tabelaReajusteColaborador/list.action', 1, true, NULL, 363, NULL);
@@ -31149,7 +31226,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (463, 'INATIVOS', 'Inativos', '#', 101, true, NULL, 37, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (539, 'ROLE_BACKUP', 'Backup do Banco de Dados', '/backup/list.action', 14, true, NULL, 37, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (474, 'ROLE_COMPROU_SESMT', 'Exibir informações do SESMT', '#', 7, false, NULL, 75, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (417, 'ROLE_TRANSFERIR_FAIXAS_AC', 'Transferir Faixas entre Cargos', '', 7, false, NULL, 361, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (546, 'ROLE_COLAB_LIST_DESLIGAR', 'Desligar', '#', 2, false, NULL, 8, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (547, 'ROLE_COLAB_LIST_ENTREVISTA', 'Entrevista de desligamento', '#', 3, false, NULL, 8, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (548, 'ROLE_COLAB_LIST_EDITAR', 'Editar', '#', 4, false, NULL, 8, NULL);
@@ -31287,25 +31363,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (413, 'ROLE_MOV_AVALIACAO_CURSO', 'Avaliações dos Alunos', '/desenvolvimento/avaliacaoCurso/list.action', 3, true, NULL, 366, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (419, 'ROLE_AVALIACAO_TURMA', 'Modelos de Avaliação de Curso', '/pesquisa/avaliacaoTurma/list.action', 5, true, NULL, 366, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (589, 'ROLE_CAD_MOD_AVALIACAO_ALUNO', 'Modelos de Avaliação de Aluno', '/avaliacao/modelo/list.action?modeloAvaliacao=L', 4, true, NULL, 366, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (77, 'ROLE_CAD_TIPO_EPI', 'Categorias de EPI', '/sesmt/tipoEPI/list.action', 1, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (78, 'ROLE_CAD_EPI', 'EPI', '/sesmt/epi/list.action', 3, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (86, 'ROLE_CAD_EPC', 'EPC', '/sesmt/epc/list.action', 4, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (79, 'ROLE_CAD_RISCO', 'Riscos', '/sesmt/risco/list.action', 5, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (76, 'ROLE_CAD_AMBIENTE', 'Ambientes', '/sesmt/ambiente/list.action', 6, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (89, 'ROLE_CAD_ENGENHEIRO_TRABALHO', 'Engenheiros Responsáveis', '/sesmt/engenheiroResponsavel/list.action', 7, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (445, 'ROLE_CAD_EXTINTOR', 'Extintores', '/sesmt/extintor/list.action', 8, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (455, 'ROLE_CAD_ELEICAO', 'CIPA', '#', 9, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (456, 'ROLE_CAD_PCMSO', 'PCMSO', '#', 10, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (605, 'ROLE_CAD_PCMAT', 'PCMAT', '#', 11, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (87, 'ROLE_CAD_EXAME', 'Exames', '/sesmt/exame/list.action', 12, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (90, 'ROLE_CAD_MEDICO_COORDENADOR', 'Médicos Coordenadores', '/sesmt/medicoCoordenador/list.action', 13, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (91, 'ROLE_CAD_CLINICA_AUTORIZADA', 'Clínicas e Médicos Autorizados', '/sesmt/clinicaAutorizada/list.action', 14, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (427, 'ROLE_CAD_FICHAMEDICA', 'Modelos de Fichas Médicas', '/sesmt/fichaMedica/list.action', 15, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (440, 'ROLE_CAD_AFASTAMENTO', 'Motivos de Afastamentos', '/sesmt/afastamento/list.action', 16, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (530, 'ROLE_CAD_NATUREZALESAO', 'Natureza da Lesão', '/sesmt/naturezaLesao/list.action', 17, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (476, 'ROLE_FUNCAO', 'Funções', '/sesmt/funcao/listFiltro.action', 18, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (532, 'ROLE_COMPOSICAO_SESMT', 'Composição do SESMT', '/sesmt/composicaoSesmt/list.action', 19, true, NULL, 385, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (628, 'ROLE_CAD_MOTIVO_SOLICITACAO_EPI', 'Motivos de Solicitação de EPI', '/sesmt/motivoSolicitacaoEpi/list.action', 2, true, NULL, 385, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (505, 'ROLE_CES_PAINEL_IND', 'Painel de Indicadores', '/cargosalario/historicoColaborador/painelIndicadoresCargoSalario.action', 4, true, NULL, 361, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (461, 'ROLE_RES_PAINEL_IND', 'Painel de Indicadores', '/indicador/duracaoPreenchimentoVaga/painel.action', 4, true, NULL, 357, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (629, 'ROLE_MOV_APLICARREALINHAMENTO', 'Aplicar Realinhamento', '#', 1, false, NULL, 26, NULL);
@@ -31320,13 +31377,41 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (410, 'RECEBE_ALERTA_ERRO_CONEXAO_ACPESSOAL', 'Recebe mensagem de problema de comunicação com o Fortes Pessoal', '', 15, false, NULL, 37, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (636, 'ROLE_EDITA_DATA_STATUS_SOLICITACAO', 'Editar data do status da solicitação', '#', 1, false, NULL, 56, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (535, 'ROLE_IMPORTACAO_AFASTAMENTO', 'Importar Afastamentos Fortes Ponto / TRU', '/importacao/prepareImportarAfastamentos.action', 12, true, NULL, 37, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (637, 'ROLE_CAD_CARGO_INSERIR', 'Inserir', '#', 1, false, NULL, 11, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (638, 'ROLE_CAD_CARGO_EDITAR', 'Editar', '#', 2, false, NULL, 11, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (639, 'ROLE_CAD_CARGO_EXCLUIR', 'Excluir', '#', 3, false, NULL, 11, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (640, 'ROLE_CAD_CARGO_FUNCOES', 'Exibir Funções', '#', 4, false, NULL, 11, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (641, 'ROLE_CAD_CARGO_IMPRIMIR', 'Imprimir', '#', 5, false, NULL, 11, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (499, 'ROLE_CAD_FAIXA_SALARIAL', 'Exibir Faixa Salarial de Cargos', '', 6, false, NULL, 11, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (417, 'ROLE_TRANSFERIR_FAIXAS_AC', 'Transferir Faixas entre Cargos', '', 7, false, NULL, 11, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (642, 'ROLE_REL_MAPA_DE_RISCO', 'Mapa de Risco', '/sesmt/ambiente/prepareRelatorioMapaDeRisco.action', 19, true, NULL, 387, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (78, 'ROLE_CAD_EPI', 'EPI', '/sesmt/epi/list.action', 4, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (86, 'ROLE_CAD_EPC', 'EPC', '/sesmt/epc/list.action', 5, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (79, 'ROLE_CAD_RISCO', 'Riscos', '/sesmt/risco/list.action', 6, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (76, 'ROLE_CAD_AMBIENTE', 'Ambientes', '/sesmt/ambiente/list.action', 7, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (89, 'ROLE_CAD_ENGENHEIRO_TRABALHO', 'Engenheiros Responsáveis', '/sesmt/engenheiroResponsavel/list.action', 8, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (445, 'ROLE_CAD_EXTINTOR', 'Extintores', '/sesmt/extintor/list.action', 9, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (455, 'ROLE_CAD_ELEICAO', 'CIPA', '#', 10, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (456, 'ROLE_CAD_PCMSO', 'PCMSO', '#', 11, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (605, 'ROLE_CAD_PCMAT', 'PCMAT', '#', 12, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (87, 'ROLE_CAD_EXAME', 'Exames', '/sesmt/exame/list.action', 13, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (90, 'ROLE_CAD_MEDICO_COORDENADOR', 'Médicos Coordenadores', '/sesmt/medicoCoordenador/list.action', 14, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (91, 'ROLE_CAD_CLINICA_AUTORIZADA', 'Clínicas e Médicos Autorizados', '/sesmt/clinicaAutorizada/list.action', 15, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (427, 'ROLE_CAD_FICHAMEDICA', 'Modelos de Fichas Médicas', '/sesmt/fichaMedica/list.action', 16, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (440, 'ROLE_CAD_AFASTAMENTO', 'Motivos de Afastamentos', '/sesmt/afastamento/list.action', 17, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (530, 'ROLE_CAD_NATUREZALESAO', 'Natureza da Lesão', '/sesmt/naturezaLesao/list.action', 18, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (476, 'ROLE_FUNCAO', 'Funções', '/sesmt/funcao/listFiltro.action', 19, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (532, 'ROLE_COMPOSICAO_SESMT', 'Composição do SESMT', '/sesmt/composicaoSesmt/list.action', 20, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (643, 'ROLE_CAD_TAMANHO_EPI', 'Tamanhos de EPI/Fardamento', '/sesmt/tamanhoEPI/list.action', 1, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (77, 'ROLE_CAD_TIPO_EPI', 'Categorias de EPI/Fardamento', '/sesmt/tipoEPI/list.action', 2, true, NULL, 385, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (628, 'ROLE_CAD_MOTIVO_SOLICITACAO_EPI', 'Motivos de Solicitação de EPI/Fardamento', '/sesmt/motivoSolicitacaoEpi/list.action', 3, true, NULL, 385, NULL);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.149.180', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.55.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.150.181', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.55.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL);
 
 
 --
@@ -31619,6 +31704,13 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 631);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 633);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 635);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 636);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 637);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 638);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 639);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 640);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 641);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 642);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 643);
 
 
 --
@@ -31797,6 +31889,18 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 636);
 
 --
 -- Data for Name: tabelareajustecolaborador; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: tamanhoepi; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: tipo_tamanhoepi; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -33202,6 +33306,14 @@ ALTER TABLE ONLY solicitacaoexame
 
 ALTER TABLE ONLY tabelareajustecolaborador
     ADD CONSTRAINT tabelareajustecolaborador_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tamanhoepi_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY tamanhoepi
+    ADD CONSTRAINT tamanhoepi_pkey PRIMARY KEY (id);
 
 
 --
@@ -36212,6 +36324,14 @@ ALTER TABLE ONLY solicitacaoepi_item
 
 
 --
+-- Name: solicitacaoepi_item_tamanhoepi_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY solicitacaoepi_item
+    ADD CONSTRAINT solicitacaoepi_item_tamanhoepi_fk FOREIGN KEY (tamanhoepi_id) REFERENCES tamanhoepi(id);
+
+
+--
 -- Name: solicitacaoepiitementrega_epihistorico_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -36265,6 +36385,22 @@ ALTER TABLE ONLY solicitacaoexame
 
 ALTER TABLE ONLY tabelareajustecolaborador
     ADD CONSTRAINT tabelareajustecolaborador_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
+-- Name: tipo_tamanhoepi_tamanhoepi_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY tipo_tamanhoepi
+    ADD CONSTRAINT tipo_tamanhoepi_tamanhoepi_fk FOREIGN KEY (tamanhoepis_id) REFERENCES tamanhoepi(id);
+
+
+--
+-- Name: tipo_tamanhoepi_tipoepi_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY tipo_tamanhoepi
+    ADD CONSTRAINT tipo_tamanhoepi_tipoepi_fk FOREIGN KEY (tipoepi_id) REFERENCES tipoepi(id);
 
 
 --

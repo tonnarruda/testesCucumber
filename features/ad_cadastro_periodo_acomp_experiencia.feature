@@ -30,7 +30,7 @@ Funcionalidade: Período de Acompanhamento de Experiência
     E eu clico no botão "Gravar"
     E eu devo ver o título "Períodos de Acompanhamento de Experiência"
     E eu não devo ver na listagem "90"
-    E eu devo ver "180"
+    E eu devo ver "188"
 
     Então eu clico em excluir "188"
     E eu devo ver o alert do confirmar exclusão e clico no ok

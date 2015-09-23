@@ -29,6 +29,7 @@ import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.MensagemManager;
 import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.geral.UsuarioMensagemManager;
+import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.business.ws.RHServiceImpl;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
@@ -95,6 +96,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 	private Mock usuarioManager;
 	private Mock gerenciadorComunicacaoManager;
 	private Mock transactionManager;
+	private Mock auditoriaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -142,6 +144,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		rHServiceManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
 		transactionManager = new Mock(PlatformTransactionManager.class);
 		rHServiceManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
+		auditoriaManager = new Mock(AuditoriaManager.class);
+		rHServiceManager.setAuditoriaManager((AuditoriaManager) auditoriaManager.proxy());
 	}
 	
 	public void testBindColaboradorOcorrencias() throws Exception
@@ -1232,6 +1236,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
     	
     	colaboradorManager.expects(once()).method("findByCodigoACEmpresaCodigoAC").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(colaborador));
     	colaboradorManager.expects(once()).method("removeComDependencias").with(eq(colaborador.getId())).isVoid();
+    	empresaManager.expects(once()).method("findByCodigoAC").withAnyArguments().will(returnValue(EmpresaFactory.getEmpresa()));
+    	auditoriaManager.expects(once()).method("auditaRemoverEnpregadoFortesPessoal").withAnyArguments().isVoid();
     	
     	FeedbackWebService feedback = rHServiceManager.removerEmpregadoComDependencia(tEmpregado, tAuditoria);
     	

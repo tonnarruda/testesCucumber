@@ -23174,3 +23174,67 @@ update parametrosdosistema set appversao = '1.1.149.179';--.go
 update parametrosdosistema set acversaowebservicecompativel='1.1.55.1';--.go
 insert into migrations values('20150828100057');--.go
 update parametrosdosistema set appversao = '1.1.149.180';--.go
+-- versao 1.1.150.181
+
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (637, 'ROLE_CAD_CARGO_INSERIR', 'Inserir', '#', 1, false, 11); --.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (638, 'ROLE_CAD_CARGO_EDITAR', 'Editar', '#', 2, false, 11); --.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (639, 'ROLE_CAD_CARGO_EXCLUIR', 'Excluir', '#', 3, false, 11); --.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (640, 'ROLE_CAD_CARGO_FUNCOES', 'Exibir Funções', '#', 4, false, 11); --.go
+insert into papel (id, codigo, nome, url, ordem, menu, papelmae_id) values (641, 'ROLE_CAD_CARGO_IMPRIMIR', 'Imprimir', '#', 5, false, 11); --.go
+
+update papel set papelmae_id = 11, ordem = 6 where id = 499;
+update papel set papelmae_id = 11, ordem = 7 where id = 417;
+
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 637 from perfil_papel where papeis_id = 11;--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 638 from perfil_papel where papeis_id = 11;--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 639 from perfil_papel where papeis_id = 11;--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 640 from perfil_papel where papeis_id = 11;--.go
+insert into perfil_papel(perfil_id, papeis_id) select perfil_id, 641 from perfil_papel where papeis_id = 11;--.go
+alter sequence papel_sequence restart with 642;--.go
+insert into migrations values('20150831161538');--.go
+update historicocolaborador set motivo = 'C' where motivo = '' or motivo is null;--.go
+insert into migrations values('20150909151159');--.go
+alter table riscoambiente add column grauderisco character(1);--.go
+  
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id, help) VALUES (642, 'ROLE_REL_MAPA_DE_RISCO', 'Mapa de Risco', '/sesmt/ambiente/prepareRelatorioMapaDeRisco.action', 19, true, 387, null);--.go 
+INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 642);--.go
+ALTER sequence papel_sequence restart WITH 643;--.go 
+
+ALTER TABLE empresa DROP COLUMN exibirDadosAmbiente;--.go
+insert into migrations values('20150914163119');--.go
+CREATE TABLE tamanhoepi (
+	id bigint NOT NULL,
+    descricao character varying(30) NOT NULL
+); --.go
+
+ALTER TABLE tamanhoepi ADD CONSTRAINT tamanhoepi_pkey PRIMARY KEY(id);--.go
+CREATE SEQUENCE tamanhoepi_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+insert into migrations values('20150915125913');--.go
+
+CREATE TABLE tipo_tamanhoepi (
+	id bigint NOT NULL,
+	tipoepi_id bigint NOT NULL,
+    tamanhoEPIs_id bigint NOT NULL,
+    ativo boolean NOT NULL default true
+); --.go
+
+ALTER TABLE tipo_tamanhoepi ADD CONSTRAINT tipo_tamanhoepi_tipoepi_fk FOREIGN KEY (tipoepi_id) REFERENCES tipoepi(id);--.go
+ALTER TABLE tipo_tamanhoepi ADD CONSTRAINT tipo_tamanhoepi_tamanhoepi_fk FOREIGN KEY (tamanhoEPIs_id) REFERENCES tamanhoepi(id);--.go
+CREATE SEQUENCE tipo_tamanhoepi_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+insert into migrations values('20150915130054');--.go
+UPDATE papel set ordem = ordem + 1 where papelmae_id = 385;--.go  
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (643, 'ROLE_CAD_TAMANHO_EPI', 'Tamanhos de EPI/Fardamento', '/sesmt/tamanhoEPI/list.action', 1, true, 385);--.go  
+INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 643);--.go
+ALTER sequence papel_sequence restart WITH 644;--.go 
+insert into migrations values('20150915130235');--.go
+ALTER TABLE solicitacaoepi_item ADD COLUMN tamanhoepi_id bigint;--.go 
+ALTER TABLE solicitacaoepi_item ADD CONSTRAINT solicitacaoepi_item_tamanhoepi_fk FOREIGN KEY (tamanhoepi_id) REFERENCES tamanhoepi(id);--.go
+
+insert into migrations values('20150915130436');--.go
+update papel set nome = 'Categorias de EPI/Fardamento' where id=77;--.go
+insert into migrations values('20150915132405');--.go
+update papel set nome = 'Motivos de Solicitação de EPI/Fardamento' where id=628;--.go
+insert into migrations values('20150915133747');--.go
+update parametrosdosistema set appversao = '1.1.150.181';--.go

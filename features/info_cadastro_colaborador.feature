@@ -57,10 +57,7 @@ Funcionalidade: Cadastrar Colaborador
     E eu preencho o campo (JS) "Admissão" com "21/12/2010"
     E eu saio do campo "Admissão"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
-    E eu seleciono "Financeiro" de "Área Organizacional"
-    Então eu devo ver o alert "Não é possível alocar colaboradores em áreas que possuem sub-áreas." e clico no ok
-
-    Então eu seleciono "Financeiro > Compras" de "Área Organizacional"
+    E eu seleciono "Financeiro > Compras" de "Área Organizacional"
     E eu seleciono "Contador I" de "Cargo/Faixa"
     E eu seleciono "Por valor" de "Salário Proposto"
     E eu preencho "Valor" com "100"

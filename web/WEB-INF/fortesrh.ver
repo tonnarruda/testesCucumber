@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.1xx.18x" db="" data="xx/09/2015">
+	<Versao id="1.1.150.181" db="" data="23/09/2015">
 		<Item visivel="S" motivo="S20150400200"><![CDATA[R&S > Movimentações > Solicitação de pessoal: Novos filtros por período e código.]]></Item>
 		<Item visivel="S" motivo="S20150400198"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Clonar: Configurar a solicitação de pessoal clonada com o status da solicitação como "Em Análise".]]></Item>
 		<Item visivel="N" motivo="S20150700002"><![CDATA[C&S > Painel de Indicadores: Novos gráficos de pizza e barra das promoções verticais e horizontais agrupadas por áreas organizacionais.]]></Item>
@@ -16,9 +16,9 @@
 		<Item visivel="S" motivo="S20150800000"><![CDATA[SESMT > Relatórios > Mapa de Riscos: Novo relatório para indicar os riscos e os níveis dos riscos por ambiente.]]></Item>
 		<Item visivel="S" motivo="S15080000110"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Novas permissões de inserir, editar, excluir, transferir faixas, exibir funções e imprimir para a listagem de cargos e salários.]]></Item>
 		<Item visivel="S" motivo="P15080000204"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Ajuste de inconsistência na configuração "Contratar colaborador" para não enviar emails aos usuários não configurados.]]></Item>
-		<Item visivel="S" motivo="P15080000204"><![CDATA[Ajuste de inconsistência na transferência de colaboradores entre Fortes Pessoal e Fortes RH.]]></Item>
+		<Item visivel="S" motivo="P15080000204"><![CDATA[Integração com o Fortes Pessoal: Ajuste de inconsistência na transferência de colaboradores entre Fortes Pessoal e Fortes RH.]]></Item>
 		<Item visivel="S" motivo="S20150900088"><![CDATA[Integração com o Fortes Pessoal: Alteração das mensagens de retorno para o Fortes Pessoal quando não for possível excluir um registro que possua dependência.]]></Item>
-		<Item visivel="N" motivo="P20150100303"><![CDATA[Gerar dados apenas das empresas cujo usuário logado tenha permissão ao selecionar a opção “todas” no filtro de empresas.]]></Item>
+		<Item visivel="N" motivo="P20150100303"><![CDATA[Sistema: Gerar dados apenas das empresas cujo usuário logado tenha permissão ao selecionar a opção “todas” no filtro de empresas.]]></Item>
 	</Versao>
 	<Versao id="1.1.149.180" db="" data="31/08/2015">
 		<Item visivel="S" motivo="S20150800000"><![CDATA[Melhorias na integração do sistema com o Fortes Pessoal.]]></Item>

@@ -6,7 +6,7 @@
 <style type="text/css">
 	@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 </style>
-<title>Categorias de EPI</title>
+<title>Categorias de EPI/Fardamento</title>
 </head>
 <body>
 	<@ww.actionerror />
