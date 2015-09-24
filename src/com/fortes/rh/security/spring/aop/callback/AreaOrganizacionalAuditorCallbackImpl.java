@@ -18,7 +18,7 @@ public class AreaOrganizacionalAuditorCallbackImpl implements AuditorCallback {
 		return (Auditavel) method.invoke(this, metodo);
 	}
 
-	public Auditavel insertLotacaoAC(MetodoInterceptado metodo) throws Throwable 
+	public Auditavel insert(MetodoInterceptado metodo) throws Throwable 
 	{
 		AreaOrganizacional area = (AreaOrganizacional) metodo.getParametros()[0];
 		
@@ -29,7 +29,7 @@ public class AreaOrganizacionalAuditorCallbackImpl implements AuditorCallback {
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), area.getDescricao(), dados);
 	}
 	
-	public Auditavel editarLotacaoAC(MetodoInterceptado metodo) throws Throwable {
+	public Auditavel update(MetodoInterceptado metodo) throws Throwable {
 		
 		AreaOrganizacional area = (AreaOrganizacional) metodo.getParametros()[0];
 		AreaOrganizacional areaAnterior = (AreaOrganizacional) carregaEntidade(metodo, area);
