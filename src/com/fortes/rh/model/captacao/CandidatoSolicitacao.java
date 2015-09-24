@@ -310,12 +310,13 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 	}
 
-		public void setSolicitacaoQtd(int qtd)
+	public void setSolicitacaoQtd(int qtd)
 	{
 		if (solicitacao == null)
 			solicitacao = new Solicitacao();
 		solicitacao.setQuantidade(qtd);
 	}
+
 	public void setSolicitanteId(Long id)
 	{
 		if (solicitacao == null)
@@ -324,6 +325,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 			solicitacao.setSolicitante(new Usuario());
 		solicitacao.getSolicitante().setId(id);
 	}
+
 	public void setSolicitanteNome(String nome)
 	{
 		if (solicitacao == null)
@@ -332,6 +334,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 			solicitacao.setSolicitante(new Usuario());
 		solicitacao.getSolicitante().setNome(nome);
 	}
+
 	public void setAreaOrganizacionalId(Long id)
 	{
 		if (solicitacao == null)
@@ -340,6 +343,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 			solicitacao.setAreaOrganizacional(new AreaOrganizacional());
 		solicitacao.getAreaOrganizacional().setId(id);
 	}
+
 	public void setAreaOrganizacionalNome(String nome)
 	{
 		if (solicitacao == null)
@@ -348,6 +352,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 			solicitacao.setAreaOrganizacional(new AreaOrganizacional());
 		solicitacao.getAreaOrganizacional().setNome(nome);
 	}
+
 	public void setFaixaId(Long id)
 	{
 		if (solicitacao == null)
@@ -357,6 +362,7 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 		solicitacao.getFaixaSalarial().setId(id);
 	}
+
 	public void setFaixaNome(String nome)
 	{
 		if (solicitacao == null)
@@ -366,34 +372,47 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 
 		solicitacao.getFaixaSalarial().setNome(nome);
 	}
+
 	public void setCargoId(Long id)
 	{
 		if (solicitacao == null)
 			solicitacao = new Solicitacao();
 		if (solicitacao.getFaixaSalarial() == null)
 			solicitacao.setFaixaSalarial(new FaixaSalarial());
-		if(solicitacao.getFaixaSalarial().getCargo() == null)
+		if (solicitacao.getFaixaSalarial().getCargo() == null)
 			solicitacao.getFaixaSalarial().setCargo(new Cargo());
 
 		solicitacao.getFaixaSalarial().getCargo().setId(id);
 	}
+
 	public void setCargoNome(String nome)
 	{
 		if (solicitacao == null)
 			solicitacao = new Solicitacao();
 		if (solicitacao.getFaixaSalarial() == null)
 			solicitacao.setFaixaSalarial(new FaixaSalarial());
-		if(solicitacao.getFaixaSalarial().getCargo() == null)
+		if (solicitacao.getFaixaSalarial().getCargo() == null)
 			solicitacao.getFaixaSalarial().setCargo(new Cargo());
 
 		solicitacao.getFaixaSalarial().getCargo().setNome(nome);
 	}
+
 	public void setSolicitacaoObservacaoLiberador(String observacaoLiberador)
 	{
 		if (solicitacao == null)
 			solicitacao = new Solicitacao();
-		
+
 		solicitacao.setObservacaoLiberador(observacaoLiberador);
+	}
+
+	public void setDescricaoMotivoSolicitacao(String descricaoMotivoSolicitacao)
+	{
+		if (solicitacao == null)
+			solicitacao = new Solicitacao();
+		if (solicitacao.getMotivoSolicitacao() == null)
+			solicitacao.setMotivoSolicitacao(new MotivoSolicitacao());
+
+		solicitacao.getMotivoSolicitacao().setDescricao(descricaoMotivoSolicitacao);
 	}
 
 	//get usado pelo populaCheckListBox
@@ -604,6 +623,4 @@ public class CandidatoSolicitacao extends AbstractModel implements Serializable
 			return "";
 		}
 	}
-
-
 }

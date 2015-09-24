@@ -226,7 +226,7 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 		cancelamentoSolicitacaoAC.put("Usuário Fortes Pessoal", tAuditoria.getUsuario());
 		cancelamentoSolicitacaoAC.put("Módulo Fortes Pessoal", tAuditoria.getModulo());
 		cancelamentoSolicitacaoAC.put("Operação Fortes Pessoal", tAuditoria.getOperacao());
-		cancelamentoSolicitacaoAC.put("Mensagem", "Colaborador Removido atravez do Fortes Pessoal.");
+		cancelamentoSolicitacaoAC.put("Mensagem", "Colaborador Removido através do Fortes Pessoal.");
 		
 		String dados = new GeraDadosAuditados(null, cancelamentoSolicitacaoAC).gera();
 

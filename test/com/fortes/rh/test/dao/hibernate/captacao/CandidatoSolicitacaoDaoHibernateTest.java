@@ -9,10 +9,12 @@ import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
 import com.fortes.rh.dao.captacao.EtapaSeletivaDao;
 import com.fortes.rh.dao.captacao.HistoricoCandidatoDao;
+import com.fortes.rh.dao.captacao.MotivoSolicitacaoDao;
 import com.fortes.rh.dao.captacao.SolicitacaoAvaliacaoDao;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
+import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.CidadeDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
@@ -23,6 +25,7 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.EtapaSeletiva;
 import com.fortes.rh.model.captacao.HistoricoCandidato;
+import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.SolicitacaoAvaliacao;
 import com.fortes.rh.model.cargosalario.Cargo;
@@ -30,6 +33,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.Apto;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
+import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -38,12 +42,14 @@ import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
+import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoFactory;
 import com.fortes.rh.test.factory.captacao.CandidatoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.EtapaSeletivaFactory;
 import com.fortes.rh.test.factory.captacao.HistoricoCandidatoFactory;
+import com.fortes.rh.test.factory.captacao.MotivoSolicitacaoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
@@ -72,6 +78,8 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 	private EmpresaDao empresaDao;
 	private CargoDao cargoDao;
 	private FaixaSalarialDao faixaSalarialDao;
+	private AreaOrganizacionalDao areaOrganizacionalDao;
+	private MotivoSolicitacaoDao motivoSolicitacaoDao;
 
 	public CandidatoSolicitacao getEntity()
 	{
@@ -94,10 +102,18 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		faixaSalarial.setCargo(cargo);
 		faixaSalarialDao.save(faixaSalarial);
 
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		MotivoSolicitacao motivoSolicitacao = MotivoSolicitacaoFactory.getEntity();
+		motivoSolicitacaoDao.save(motivoSolicitacao);
+		
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao.setEncerrada(false);
 		solicitacao.setEmpresa(empresa);
 		solicitacao.setFaixaSalarial(faixaSalarial);
+		solicitacao.setAreaOrganizacional(areaOrganizacional);
+		solicitacao.setMotivoSolicitacao(motivoSolicitacao);
 		solicitacaoDao.save(solicitacao);
 
 		Candidato candidato = CandidatoFactory.getCandidato();
@@ -631,33 +647,48 @@ public class CandidatoSolicitacaoDaoHibernateTest extends GenericDaoHibernateTes
 		this.etapaSeletivaDao = etapaSeletivaDao;
 	}
 
-	public void setEmpresaDao(EmpresaDao empresaDao) {
+	public void setEmpresaDao(EmpresaDao empresaDao)
+	{
 		this.empresaDao = empresaDao;
 	}
 
-	public void setCargoDao(CargoDao cargoDao) {
+	public void setCargoDao(CargoDao cargoDao)
+	{
 		this.cargoDao = cargoDao;
 	}
 
-	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao) {
+	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao)
+	{
 		this.faixaSalarialDao = faixaSalarialDao;
 	}
 
-	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
+	public void setColaboradorDao(ColaboradorDao colaboradorDao)
+	{
 		this.colaboradorDao = colaboradorDao;
 	}
 
-	public void setAvaliacaoDao(AvaliacaoDao avaliacaoDao) {
+	public void setAvaliacaoDao(AvaliacaoDao avaliacaoDao)
+	{
 		this.avaliacaoDao = avaliacaoDao;
 	}
 
-	public void setSolicitacaoAvaliacaoDao(
-			SolicitacaoAvaliacaoDao solicitacaoAvaliacaoDao) {
+	public void setSolicitacaoAvaliacaoDao(SolicitacaoAvaliacaoDao solicitacaoAvaliacaoDao)
+	{
 		this.solicitacaoAvaliacaoDao = solicitacaoAvaliacaoDao;
 	}
 
-	public void setColaboradorQuestionarioDao(
-			ColaboradorQuestionarioDao colaboradorQuestionarioDao) {
+	public void setColaboradorQuestionarioDao(ColaboradorQuestionarioDao colaboradorQuestionarioDao)
+	{
 		this.colaboradorQuestionarioDao = colaboradorQuestionarioDao;
+	}
+
+	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
+	{
+		this.areaOrganizacionalDao = areaOrganizacionalDao;
+	}
+
+	public void setMotivoSolicitacaoDao(MotivoSolicitacaoDao motivoSolicitacaoDao)
+	{
+		this.motivoSolicitacaoDao = motivoSolicitacaoDao;
 	}
 }

@@ -15,6 +15,7 @@ import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
@@ -481,8 +482,10 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		criteria.createCriteria("cs.solicitacao", "s");
 		criteria.createCriteria("s.faixaSalarial", "fs");
 		criteria.createCriteria("fs.cargo", "c");
+		criteria.createCriteria("s.areaOrganizacional", "ao");
 		criteria.createCriteria("cs.candidato", "ca");
 		criteria.createCriteria("hc.etapaSeletiva", "es");
+		criteria.createCriteria("s.motivoSolicitacao", "ms");
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cs.id"), "id");
@@ -492,7 +495,9 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 		p.add(Projections.property("hc.data"), "data");
 		p.add(Projections.property("hc.apto"), "apto");
 		p.add(Projections.property("c.nome"), "cargoNome");
+		p.add(Projections.sqlProjection("monta_familia_area(ao5_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome");
 		p.add(Projections.property("s.observacaoLiberador"), "solicitacaoObservacaoLiberador");
+		p.add(Projections.property("ms.descricao"), "descricaoMotivoSolicitacao");
 		
 		criteria.setProjection(p);
 
@@ -513,6 +518,7 @@ public class CandidatoSolicitacaoDaoHibernate extends GenericDaoHibernate<Candid
 			criteria.add(Expression.between("hc.data", dataIni, dataFim));
 		
 		criteria.addOrder(Order.asc("es.nome"));
+		criteria.addOrder(Order.asc("ao.nome"));
 		criteria.addOrder(Order.asc("ca.nome"));
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
