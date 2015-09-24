@@ -333,11 +333,12 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		empregado.setFoneCelular(colaborador.getContato().getFoneCelular());
 		empregado.setEmail(colaborador.getContato().getEmail());
 		
-		empregado.setRetiraFoto(colaborador.isManterFoto()?NAORETIRAFOTO:RETIRAFOTO);
 		if(colaborador.getFoto() != null && colaborador.getFoto().getBytes() != null && !"".equals(colaborador.getFoto())){
 			byte[] encode = Base64.encodeBase64(colaborador.getFoto().getBytes());
 			empregado.setFoto(new String(encode));
-		}
+			empregado.setRetiraFoto(NAORETIRAFOTO);
+		}else if(!colaborador.isManterFoto())
+			empregado.setRetiraFoto(RETIRAFOTO);
 
 		bindIdentidadeEmpregado(colaborador, empregado);
 		bindTituloEleitoralEmpregado(colaborador, empregado);
