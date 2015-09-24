@@ -12,6 +12,7 @@
 	<#assign validarCampos="return validaFormulario('form', new Array('colaborador'), null)"/>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorTurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 	
@@ -54,6 +55,43 @@
 	  		});
 		}
 		
+		function verificaSelecao()
+		{
+			if($('#colaborador').val())
+			{
+				colaboradoresIds = new Array($('#colaborador').val());
+				DWRUtil.useLoadingMessage('Carregando...');
+				ColaboradorTurmaDWR.checaColaboradorInscritoEmOutraTurma(colabNaOutraTurma, ${turma.id}, ${turma.curso.id}, colaboradoresIds);
+			}
+			else
+			{
+				jAlert('Selecione ao menos um colaborador!');
+				return false;
+			}
+		}
+		
+		function colabNaOutraTurma(msg)
+		{
+			if (msg != "")
+				$('<div>' + msg + '<br /><br />Deseja realmente incluí-los nesta turma?</div>').dialog({title: 'O colaborador já inscrito no curso.',
+													modal: true, 
+													height: 180,
+													width: 430,
+													buttons: [
+													    {
+													        text: "Sim",
+													        click: function() { document.form.submit(); }
+													    },
+													    {
+													        text: "Não",
+													        click: function() { $(this).dialog("close"); }
+													    }
+													] 
+													});
+			else 
+				document.form.submit();
+		}
+		
 	</script>
 </head>
 <body>
@@ -89,7 +127,7 @@
 	</@ww.form>
 
 	<div class="buttonGroup">
-		<button class="btnInserir" onclick="${validarCampos};"> </button>
+		<button onclick="javascript: verificaSelecao();" class="btnInserir"></button>
 		<button onclick="window.location='list.action?turma.id=${turma.id}&curso.id=${turma.curso.id}&planoTreinamento=${planoTreinamento?string}'" class="btnVoltar"></button>
 	</div>
 </body>

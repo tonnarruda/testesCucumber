@@ -66,7 +66,6 @@
 
 		function colabNaOutraTurma(msg)
 		{
-			//newConfirm(msg, function() { document.formColab.submit(); });
 			if (msg != "")
 				$('<div>' + msg + '</div>').dialog({title: 'Os seguintes colaboradores já estão inscritos neste curso.<br />Deseja realmente incluí-los nesta turma?',
 													modal: true, 

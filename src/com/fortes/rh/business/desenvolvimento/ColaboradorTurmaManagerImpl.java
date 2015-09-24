@@ -18,7 +18,6 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Certificado;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
@@ -914,17 +913,6 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 	public void saveColaboradorTurmaNota(Turma turma, Colaborador colaborador, Long[] avaliacaoCursoIds, String[] notas) throws Exception
 	{
-		Collection<ColaboradorTurma> colaboradoresTurmas = findByTurmaCurso(turma.getCurso().getId());
-		
-		for (ColaboradorTurma cTurma : colaboradoresTurmas)
-		{
-			if (cTurma.getColaborador().getId().equals(colaborador.getId())
-				&& !cTurma.getTurma().getId().equals(turma.getId()))
-			{
-				throw new FortesException("Colaborador já inscrito em outra turma deste curso");
-			}
-		}
-		
 		ColaboradorTurma colaboradorTurma = getDao().findByColaboradorAndTurma(turma.getId(), colaborador.getId());
 		
 		if(colaboradorTurma == null || colaboradorTurma.getId() == null)

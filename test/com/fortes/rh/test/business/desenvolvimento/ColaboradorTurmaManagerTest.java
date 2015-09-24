@@ -29,7 +29,6 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Certificado;
@@ -746,51 +745,10 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		
 		String[] notas = new String[]{"","3.1","5,5"};
 		
-		colaboradorTurmaDao.expects(once()).method("findByTurmaCurso").with(eq(turma.getCurso().getId())).will(returnValue(new ArrayList<ColaboradorTurma>()));
 		colaboradorTurmaDao.expects(once()).method("findByColaboradorAndTurma").with(eq(turma.getId()), eq(colaborador.getId())).will(returnValue(null));
 		colaboradorTurmaDao.expects(once()).method("save").with(ANYTHING).isVoid();
 		aproveitamentoAvaliacaoCursoManager.expects(once()).method("saveNotas").with(ANYTHING, eq(notas), eq(avaliacaoCursoIds)).isVoid();
 		colaboradorTurmaManager.saveColaboradorTurmaNota(turma, colaborador, avaliacaoCursoIds, notas);
-	}
-
-	public void testSaveColaboradorOutraTurmaNotaMesmoCurso() throws Exception
-	{
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
-		Turma turma = TurmaFactory.getEntity(1L);
-		Turma turma2 = TurmaFactory.getEntity(2L);
-		
-		turma.setCurso(CursoFactory.getEntity(32L));
-		turma2.setCurso(CursoFactory.getEntity(32L));
-		
-		AvaliacaoCurso avaliacaoCurso1 = AvaliacaoCursoFactory.getEntity(1L);
-		AvaliacaoCurso avaliacaoCurso2 = AvaliacaoCursoFactory.getEntity(2L);
-		AvaliacaoCurso avaliacaoCurso3 = AvaliacaoCursoFactory.getEntity(3L);
-		
-		Long[] avaliacaoCursoIds = new Long[]{avaliacaoCurso1.getId(), avaliacaoCurso2.getId(), avaliacaoCurso3.getId()};
-		
-		String[] notas = new String[]{"","3.1","5,5"};
-		
-		ColaboradorTurma colaboradorTurma = new ColaboradorTurma(1L);
-		colaboradorTurma.setColaborador(colaborador);
-		colaboradorTurma.setTurma(turma2);
-		
-		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-		colaboradorTurmas.add(colaboradorTurma);
-		
-		colaboradorTurmaDao.expects(once()).method("findByTurmaCurso").with(eq(turma.getCurso().getId())).will(returnValue(colaboradorTurmas));
-		
-		FortesException fortesException = null;
-		
-		try
-		{
-			colaboradorTurmaManager.saveColaboradorTurmaNota(turma, colaborador, avaliacaoCursoIds, notas);
-		}
-		catch (FortesException e) 
-		{
-			fortesException = e;
-		}
-		
-		assertEquals("Colaborador já inscrito em outra turma deste curso", fortesException.getMessage());
 	}
 
 	public void testFindAprovadosByCertificacao()
