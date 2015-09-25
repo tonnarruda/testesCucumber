@@ -344,7 +344,7 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 				Collection<Atitude> atitudes = popularAtitudesComIds(atitudeIds, cargoOrigemId);
 				cargo.setAtitudes(atitudes);
 
-				Collection<AreaFormacao> areaFormacaos = clonarAreasFormacao(cargoOrigemId);
+				Collection<AreaFormacao> areaFormacaos = areaFormacaoManager.findByCargo(cargoOrigemId);
 				cargo.setAreaFormacaos(areaFormacaos);
 
 				if (grupoOcupacionalOrigem != null)
@@ -373,17 +373,6 @@ public class CargoManagerImpl extends GenericManagerImpl<Cargo, CargoDao> implem
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	private Collection<AreaFormacao> clonarAreasFormacao(Long cargoOrigemId) {
-		
-		Collection<AreaFormacao> areaFormacaos = areaFormacaoManager.findByCargo(cargoOrigemId);
-		
-		for (AreaFormacao areaFormacao : areaFormacaos) {
-			areaFormacao.setId(null);
-			areaFormacaoManager.save(areaFormacao);
-		}
-		return areaFormacaos;
 	}
 
 	private GrupoOcupacional clonarGrupoOcupacional(GrupoOcupacional grupoOcupacional, Long empresaDestinoId) 
