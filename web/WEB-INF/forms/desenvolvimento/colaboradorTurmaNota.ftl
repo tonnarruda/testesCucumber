@@ -9,12 +9,13 @@
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
 	
-	<#assign validarCampos="return validaFormulario('form', new Array('colaborador'), null)"/>
+	<#assign validarCampos="return validaFormulario('formColab', new Array('colaborador'), null)"/>
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorTurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/colaboradorTurma.js?version=${versao}"/>"></script>
 	
 	<script type='text/javascript'>
 		var empresaIds = new Array();
@@ -61,35 +62,16 @@
 			{
 				colaboradoresIds = new Array($('#colaborador').val());
 				DWRUtil.useLoadingMessage('Carregando...');
-				ColaboradorTurmaDWR.checaColaboradorInscritoEmOutraTurma(colabNaOutraTurma, ${turma.id}, ${turma.curso.id}, colaboradoresIds);
+				ColaboradorTurmaDWR.checaColaboradorInscritoEmOutraTurma(function(data){
+																				colabNaOutraTurma(data, 180, 430, 'Colaborador já inscrito no curso<br />Deseja realmente incluí-lo nesta turma?');
+																			}, ${turma.id}, ${turma.curso.id}, colaboradoresIds);																			
+				
 			}
 			else
 			{
-				jAlert('Selecione ao menos um colaborador!');
+				jAlert('Selecione um colaborador!');
 				return false;
 			}
-		}
-		
-		function colabNaOutraTurma(msg)
-		{
-			if (msg != "")
-				$('<div>' + msg + '<br /><br />Deseja realmente incluí-los nesta turma?</div>').dialog({title: 'O colaborador já inscrito no curso.',
-													modal: true, 
-													height: 180,
-													width: 430,
-													buttons: [
-													    {
-													        text: "Sim",
-													        click: function() { document.form.submit(); }
-													    },
-													    {
-													        text: "Não",
-													        click: function() { $(this).dialog("close"); }
-													    }
-													] 
-													});
-			else 
-				document.form.submit();
 		}
 		
 	</script>
@@ -98,7 +80,7 @@
 
 	<@ww.actionmessage />
 	<@ww.actionerror />
-	<@ww.form name="form" action="insertColaboradorNota.action" onsubmit="${validarCampos}" validate="true" method="POST">
+	<@ww.form name="formColab" action="insertColaboradorNota.action" onsubmit="${validarCampos}" validate="true" method="POST">
 	
 	<div class="divFiltro">
 	    <@ww.select label="Empresa" name="empresaId" id="empresaId" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" disabled="!compartilharColaboradores"/>

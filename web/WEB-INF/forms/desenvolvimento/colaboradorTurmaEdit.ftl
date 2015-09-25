@@ -16,8 +16,8 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/CargoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
-
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/populaEstabAreaCargo.js?version=${versao}"/>"></script>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/colaboradorTurma.js?version=${versao}"/>"></script>
 
 	<script type='text/javascript'>
 		var empresaIds = new Array();
@@ -55,35 +55,15 @@
 			if(colabsIds.length > 0)
 			{
 				DWRUtil.useLoadingMessage('Carregando...');
-				ColaboradorTurmaDWR.checaColaboradorInscritoEmOutraTurma(colabNaOutraTurma, $("input[name='turma.id']").val(), $("input[name='turma.curso.id']").val(), colabsIds.toArray());
+				ColaboradorTurmaDWR.checaColaboradorInscritoEmOutraTurma(function(data){
+																				colabNaOutraTurma(data, 400, 700, 'Os seguintes colaboradores já estão inscritos neste curso.<br />Deseja realmente incluí-los nesta turma?');
+																			}, $("input[name='turma.id']").val(), $("input[name='turma.curso.id']").val(), colabsIds.toArray());
 			}
 			else
 			{
 				jAlert('Selecione ao menos um colaborador!');
 				return false;
 			}
-		}
-
-		function colabNaOutraTurma(msg)
-		{
-			if (msg != "")
-				$('<div>' + msg + '</div>').dialog({title: 'Os seguintes colaboradores já estão inscritos neste curso.<br />Deseja realmente incluí-los nesta turma?',
-													modal: true, 
-													height: 400,
-													width: 700,
-													buttons: [
-													    {
-													        text: "Sim",
-													        click: function() { document.formColab.submit(); }
-													    },
-													    {
-													        text: "Não",
-													        click: function() { $(this).dialog("close"); }
-													    }
-													] 
-													});
-			else 
-				document.formColab.submit();
 		}
 	</script>
 
