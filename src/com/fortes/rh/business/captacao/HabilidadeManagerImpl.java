@@ -88,10 +88,12 @@ public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, Habili
 			clonar(habilidade, empresaDestinoId);
 			habilidadeIds.put(habilidadeOrigemId, habilidade.getId());
 			
-			Collection<AreaOrganizacional> areasOrigem = areaOrganizacionalManager.findByHabilidade(habilidadeOrigemId);
-			popularAreasComIds(areaIds, areasOrigem);
-			
-			habilidade.setAreaOrganizacionals(areasOrigem);
+			if(areaIds != null && areaIds.size() > 0)
+			{
+				Collection<AreaOrganizacional> areasOrigem = areaOrganizacionalManager.findByHabilidade(habilidadeOrigemId);
+				popularAreasComIds(areaIds, areasOrigem);
+				habilidade.setAreaOrganizacionals(areasOrigem);
+			}
 			update(habilidade);
 		}
 	}

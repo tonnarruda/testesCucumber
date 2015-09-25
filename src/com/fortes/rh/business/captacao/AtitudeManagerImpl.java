@@ -87,10 +87,12 @@ public class AtitudeManagerImpl extends GenericManagerImpl<Atitude, AtitudeDao> 
 			clonar(atitude, empresaDestinoId);
 			conhecimentoIds.put(atitudeOrigemId, atitude.getId());
 			
-			Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findByAtitude(atitudeOrigemId);
-			popularAreasComIds(areaIds, areas);
-			
-			atitude.setAreaOrganizacionals(areas);
+			if(areaIds != null  && areaIds.size() > 0)
+			{
+				Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findByAtitude(atitudeOrigemId);
+				popularAreasComIds(areaIds, areas);
+				atitude.setAreaOrganizacionals(areas);
+			}
 			update(atitude);
 		}
 	}

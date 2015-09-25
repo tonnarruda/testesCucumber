@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.150.181" db="" data="23/09/2015">
 		<Item visivel="S" motivo="P15090000967"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Ajuste da inconsistência ao inserir motivo de desligamento em colaboradores desligados, quando integrado com o Fortes Pessoal.]]></Item>
+		<Item visivel="S" motivo="P15090000989"><![CDATA[Utilitários > Importar Cadastros: Ajuste da inconsistência que ocasionava a duplicação de áreas de formação ao importar cargos.]]></Item>
 	</Versao>
 	<Versao id="1.1.150.181" db="" data="23/09/2015">
 		<Item visivel="S" motivo="S20150400200"><![CDATA[R&S > Movimentações > Solicitação de pessoal: Novos filtros por período e código.]]></Item>

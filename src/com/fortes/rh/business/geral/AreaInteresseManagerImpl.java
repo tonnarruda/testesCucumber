@@ -42,10 +42,12 @@ public class AreaInteresseManagerImpl extends GenericManagerImpl<AreaInteresse, 
 			clonar(areaInteresse, empresaDestinoId);
 			areaInteresseIds.put(areaInteresseOrigemId, areaInteresse.getId());
 			
-			Collection<AreaOrganizacional> areasOrganizacionais = areaOrganizacionalManager.getAreasByAreaInteresse(areaInteresseOrigemId);
-			popularAreasComIds(areaIds, areasOrganizacionais);
-			
-			areaInteresse.setAreasOrganizacionais(areasOrganizacionais);
+			if(areaIds != null && areaIds.size() > 0)
+			{
+				Collection<AreaOrganizacional> areasOrganizacionais = areaOrganizacionalManager.getAreasByAreaInteresse(areaInteresseOrigemId);
+				popularAreasComIds(areaIds, areasOrganizacionais);
+				areaInteresse.setAreasOrganizacionais(areasOrganizacionais);
+			}
 			update(areaInteresse);
 		}
 	}

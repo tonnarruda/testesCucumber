@@ -133,9 +133,12 @@ public class ConhecimentoManagerImpl extends GenericManagerImpl<Conhecimento, Co
 			Long conhecimentoOrigemId = conhecimento.getId();
 			clonar(conhecimento, empresaDestinoId);
 			conhecimentoIds.put(conhecimentoOrigemId, conhecimento.getId());
-			Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findByConhecimento(conhecimentoOrigemId);
-			popularAreasComIds(areaIds, areas);
-			conhecimento.setAreaOrganizacionals(areas);
+			if(areaIds != null && areaIds.size() > 0)
+			{
+				Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findByConhecimento(conhecimentoOrigemId);
+				popularAreasComIds(areaIds, areas);
+				conhecimento.setAreaOrganizacionals(areas);
+			}
 			update(conhecimento);
 		}
 	}
