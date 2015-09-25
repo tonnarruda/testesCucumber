@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.150.181" db="" data="23/09/2015">
-		<Item visivel="S" motivo="P 15090000967"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Ajuste da inconsistência ao inserir motivo de desligamento em colaboradores desligados, quando integrado com o Fortes Pessoal.]]></Item>
+		<Item visivel="S" motivo="P15090000967"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Ajuste da inconsistência ao inserir motivo de desligamento em colaboradores desligados, quando integrado com o Fortes Pessoal.]]></Item>
 	</Versao>
 	<Versao id="1.1.150.181" db="" data="23/09/2015">
 		<Item visivel="S" motivo="S20150400200"><![CDATA[R&S > Movimentações > Solicitação de pessoal: Novos filtros por período e código.]]></Item>
