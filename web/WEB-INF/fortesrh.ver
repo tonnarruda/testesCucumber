@@ -1,6 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.150.181" db="" data="23/09/2015">
+		<Item visivel="S" motivo="P 15090000967"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Ajuste da inconsistência ao inserir motivo de desligamento em colaboradores desligados, quando integrado com o Fortes Pessoal.]]></Item>
+	</Versao>
+	<Versao id="1.1.150.181" db="" data="23/09/2015">
 		<Item visivel="S" motivo="S20150400200"><![CDATA[R&S > Movimentações > Solicitação de pessoal: Novos filtros por período e código.]]></Item>
 		<Item visivel="S" motivo="S20150400198"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Clonar: Configurar a solicitação de pessoal clonada com o status da solicitação como "Em Análise".]]></Item>
 		<Item visivel="N" motivo="S20150700002"><![CDATA[C&S > Painel de Indicadores: Novos gráficos de pizza e barra das promoções verticais e horizontais agrupadas por áreas organizacionais.]]></Item>
