@@ -172,8 +172,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			getDao().saveOrUpdate(areaOrganizacional);
 			getDao().getHibernateTemplateByGenericDao().flush();
 		}
-		
-		transferirColabDaAreaMaeParaAreaFilha(areaOrganizacional);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -209,13 +207,11 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	public void update(AreaOrganizacional areaOrganizacional, Empresa empresa) throws Exception
 	{
 		ajustaEntidadeIdNulo(areaOrganizacional);
-		update(areaOrganizacional);
-
-		transferirColabDaAreaMaeParaAreaFilha(areaOrganizacional);
+		getDao().update(areaOrganizacional);
 
 		// Isso garante que qualquer erro relacionado ao banco do RH levantará uma Exception antes de alterar o outro banco.
 		getDao().getHibernateTemplateByGenericDao().flush();
-
+		
 		if(empresa.isAcIntegra())
 			acPessoalClientLotacao.criarLotacao(areaOrganizacional, empresa);
 	}

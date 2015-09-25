@@ -231,7 +231,7 @@ public class AuditoriaManagerImpl extends GenericManagerImpl<Auditoria, Auditori
 		String dados = new GeraDadosAuditados(null, cancelamentoSolicitacaoAC).gera();
 
 		Auditoria auditoria = new Auditoria();
-		auditoria.audita(null, empresa, "Colaborador", "Remoção atravez do Fortes Pessoal.", colaborador.getNome(), dados);
+		auditoria.audita(null, empresa, "Colaborador", "Remoção atraves do Fortes Pessoal.", colaborador.getNome(), dados);
 		
 		this.getDao().save(auditoria);
 	}

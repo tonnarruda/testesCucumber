@@ -463,8 +463,6 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 
     	areaOrganizacionalDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
     	areaOrganizacionalDao.expects(atLeastOnce()).method("getHibernateTemplateByGenericDao").will(returnValue(new HibernateTemplate()));
-    	historicoColaboradorManager.expects(once()).method("updateArea").withAnyArguments().isVoid();
-    	cargoManager.expects(once()).method("insereAreaRelacionada").withAnyArguments().isVoid();
     	
     	areaOrganizacionalManager.insert(areaOrganizacional, empresa);
     	assertEquals("001", areaOrganizacional.getCodigoAC());
