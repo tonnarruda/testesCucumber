@@ -326,8 +326,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfPromocaoHorizontal = StringUtil.toJSON(graficosPromocao.get('H'), null);
 		grfPromocaoVertical = StringUtil.toJSON(graficosPromocao.get('V'), null);
 
-//		Map<Character, Collection<DataGrafico>> graficosPromocaoAreas = historicoColaboradorManager.montaPromocoesHorizontalEVerticalPorArea(dataIni, dataFim, empresa.getId(), false, areasPieChartIds);
-		Map<Character, Collection<DataGrafico>> graficosPromocaoAreas = new HashMap<Character, Collection<DataGrafico>>();
+		Map<Character, Collection<DataGrafico>> graficosPromocaoAreas = historicoColaboradorManager.montaPromocoesHorizontalEVerticalPorArea(dataIni, dataFim, empresa.getId(), false, areasPieChartIds);
 		
 		grfBarraPromocaoHorizontalArea = convertDataGraficoInObject(graficosPromocaoAreas.get('H'));
 		grfBarraPromocaoVerticalArea = convertDataGraficoInObject(graficosPromocaoAreas.get('V'));

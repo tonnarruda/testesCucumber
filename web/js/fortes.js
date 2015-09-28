@@ -76,7 +76,7 @@ BrowserDetect.init( function ( informacaoesDesteBrowser ){
 function marcarDesmarcarListCheckBox(frm, nameCheck, vMarcar)
 {
 	$(frm).find("input[name='" + nameCheck + "']:visible").each(function(i, item) {
-		$(item).attr('checked',vMarcar);
+		$(item).attr('checked',vMarcar).change();
 	});
 }
 

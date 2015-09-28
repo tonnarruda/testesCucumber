@@ -83,16 +83,17 @@ function montaBarDuploCategoria(data, idGrafico, nomesParaRelacionar, distanciaT
     if(typeof idGrafico == 'object')
     	idGrafico = '#' + idGrafico.id;
     
-    $(idGrafico + ' .xAxis .tickLabel').each(function(){
-    	var i =  parseInt($(this).text().replace('.0',''));
-    	
-    	var elementArray = nomesParaRelacionar[i].split(">");
-    	elementArray.splice(-1,1);
- 	    var hierarquia = elementArray.join(">") + "> ";
- 	    $(this).html( nomesParaRelacionar[i].replace(hierarquia, "<span style='display: none;'>"+hierarquia+"</span>") );
- 	    $(this).attr("title", $(this).text());
- 	    $(this).qtip();
-    });
+    if( nomesParaRelacionar.length > 0 )
+	    $(idGrafico + ' .xAxis .tickLabel').each(function(){
+	    	var i =  parseInt($(this).text().replace('.0',''));
+	    	
+	    	var elementArray = nomesParaRelacionar[i].split(">");
+	    	elementArray.splice(-1,1);
+	 	    var hierarquia = elementArray.join(">") + "> ";
+	 	    $(this).html( nomesParaRelacionar[i].replace(hierarquia, "<span style='display: none;'>"+hierarquia+"</span>") );
+	 	    $(this).attr("title", $(this).text());
+	 	    $(this).qtip();
+	    });
 
    $(idGrafico +' .yAxis .tickLabel').css({'right': 'inherit'});
    
