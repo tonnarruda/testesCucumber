@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.15x.18x" db="" data="xx/09/2015">
+		<Item visivel="S" motivo="S20150700261"><![CDATA[R&S > Relatórios > Lista de Candidatos da Seleção > Relatório: Novos campos de "Área Organizacional" e "Motivo da Solicitação".]]></Item>
 		<Item visivel="S" motivo="P15090000985"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaborador + Nota: Possibilitar a inserção de colaboradores inscrito em outra turma.]]></Item>
 		<Item visivel="S" motivo="P15090000967"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Desligar: Ajuste da inconsistência ao inserir motivo de desligamento em colaboradores desligados, quando integrado com o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="P15090000989"><![CDATA[Utilitários > Importar Cadastros: Ajuste da inconsistência que ocasionava a duplicação de áreas de formação ao importar cargos.]]></Item>
