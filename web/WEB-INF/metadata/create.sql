@@ -5636,7 +5636,8 @@ CREATE TABLE parametrosdosistema (
     quantidadecolaboradoresrelatoriopesquisaanonima integer DEFAULT 1,
     bancoconsistente boolean DEFAULT true NOT NULL,
     quantidadeconstraints integer DEFAULT 0,
-    tamanhomaximoupload integer
+    tamanhomaximoupload integer,
+    modulospermitidossomatorio smallint DEFAULT 63
 );
 
 
@@ -31026,6 +31027,9 @@ INSERT INTO migrations (name) VALUES ('20150915130235');
 INSERT INTO migrations (name) VALUES ('20150915130436');
 INSERT INTO migrations (name) VALUES ('20150915132405');
 INSERT INTO migrations (name) VALUES ('20150915133747');
+INSERT INTO migrations (name) VALUES ('20150925094134');
+INSERT INTO migrations (name) VALUES ('20150925155038');
+INSERT INTO migrations (name) VALUES ('20150928083434');
 
 
 --
@@ -31138,6 +31142,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (421, 'ROLE_REL_MATRIZ_TREINAMENTO', 'Matriz de Treinamentos', '/desenvolvimento/certificacao/matrizTreinamento.action', 9, true, NULL, 368, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (450, 'ROLE_CAD_MEDICAORISCO', 'Medição dos Riscos', '/sesmt/medicaoRisco/list.action', 1, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (559, 'ROLE_REL_FUNCAO_EXAME', 'Funções por Exames', '/sesmt/funcao/prepareRelatorioFuncoesExames.action', 18, true, NULL, 387, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (585, 'ROLE_CX_MENSAGEM_INFO_FUNCIONAIS', 'Info. Funcionais', '', 5, false, NULL, 495, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (422, 'ROLE_REL_HISTORICO_TREINAMENTOS', 'Histórico de Treinamentos', '/desenvolvimento/colaboradorTurma/prepareFiltroHistoricoTreinamentos.action', 10, true, NULL, 368, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (465, 'ROLE_REL_COLABORADORES_CERTIFICACOES', 'Colaboradores x Certificações', '/desenvolvimento/colaboradorTurma/prepareRelatorioColaboradorCertificacao.action', 11, true, NULL, 368, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (498, 'ROLE_CRONOGRAMA_TREINAMENTO', 'Investimento em T&D', '/desenvolvimento/turma/relatorioInvestimento.action', 12, true, NULL, 368, NULL);
@@ -31311,7 +31316,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (581, 'ROLE_CX_MENSAGEM_CES', 'C&S', '', 1, false, NULL, 495, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (583, 'ROLE_CX_MENSAGEM_AV_DESMPENHO', 'Aval. Desempenho', '', 3, false, NULL, 495, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (584, 'ROLE_CX_MENSAGEM_TED', 'T&D', '', 4, false, NULL, 495, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (585, 'ROLE_CX_MENSAGEM_INFO_FUNCIONAIS', 'Info. Funcionais', '', 5, false, NULL, 495, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (586, 'ROLE_CX_MENSAGEM_SESMT', 'SESMT', '', 6, false, NULL, 495, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (587, 'ROLE_CX_MENSAGEM_UTILITARIOS', 'Utilitários', '', 7, false, NULL, 495, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (588, 'ROLE_CAND_LIST_DOCUMENTOANEXO', 'Documentos do Candidato', '#', 4, false, NULL, 2, NULL);
@@ -31411,7 +31415,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.150.181', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.55.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.151.182', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.55.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
 
 
 --

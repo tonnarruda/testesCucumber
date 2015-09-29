@@ -23238,3 +23238,52 @@ insert into migrations values('20150915132405');--.go
 update papel set nome = 'Motivos de Solicitação de EPI/Fardamento' where id=628;--.go
 insert into migrations values('20150915133747');--.go
 update parametrosdosistema set appversao = '1.1.150.181';--.go
+-- versao 1.1.151.182
+
+CREATE OR REPLACE FUNCTION removeAreaFormacaoDuplicada() RETURNS integer AS $$
+DECLARE 
+    mviews RECORD; 
+BEGIN 
+    FOR mviews IN 
+		select id,nome from areaformacao  where  id in ( select min(id) from areaformacao  group by nome having count(nome) > 1) order by nome, id
+		LOOP 
+			update formacao set areaformacao_id = mviews.id where areaformacao_id in (select id from areaformacao where nome = mviews.nome);
+			update cargo_areaformacao set areaformacaos_id = mviews.id where areaformacaos_id in (select id from areaformacao where nome = mviews.nome);
+			delete from areaformacao where id in (select id from areaformacao where nome = mviews.nome and id <> mviews.id);
+		END LOOP; 
+		
+    RETURN 1; 
+END; 
+$$ LANGUAGE plpgsql;--.go
+select removeAreaFormacaoDuplicada();--.go
+drop function removeAreaFormacaoDuplicada();--.go
+insert into migrations values('20150925094134');--.go
+CREATE OR REPLACE FUNCTION deleta_lixo_dependencias_com_area_organizacional() RETURNS integer AS $$ 
+DECLARE 
+	id_empresa RECORD; 
+	BEGIN  
+	FOR id_empresa IN SELECT id FROM empresa
+		LOOP 
+			delete from areainteresse_areaorganizacional where areasorganizacionais_id in(select id from areaorganizacional where empresa_id != id_empresa.id)
+															   and areasinteresse_id in (select id from  areainteresse where empresa_id = id_empresa.id);
+
+			delete from conhecimento_areaorganizacional where areaorganizacionals_id in(select id from areaorganizacional where empresa_id != id_empresa.id)
+															  and conhecimentos_id in (select id from  conhecimento where empresa_id = id_empresa.id);
+
+
+			delete from habilidade_areaorganizacional where areaorganizacionals_id in(select id from areaorganizacional where empresa_id != id_empresa.id)
+															and habilidades_id in (select id from habilidade where empresa_id = id_empresa.id);
+
+
+			delete from atitude_areaorganizacional where areaorganizacionals_id in(select id from areaorganizacional where empresa_id != id_empresa.id)
+														 and atitudes_id in (select id from  atitude where empresa_id = id_empresa.id);
+		END LOOP;   
+	RETURN 1;
+END;  
+$$ LANGUAGE plpgsql;--.go
+SELECT deleta_lixo_dependencias_com_area_organizacional();--.go
+DROP FUNCTION deleta_lixo_dependencias_com_area_organizacional();--.go
+insert into migrations values('20150925155038');--.go
+ALTER TABLE parametrosdosistema ADD COLUMN modulosPermitidosSomatorio smallint DEFAULT 63;--.go
+insert into migrations values('20150928083434');--.go
+update parametrosdosistema set appversao = '1.1.151.182';--.go
