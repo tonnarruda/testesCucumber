@@ -8,6 +8,7 @@ import java.sql.BatchUpdateException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -31,6 +32,7 @@ import com.fortes.rh.model.acesso.Perfil;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.Indice;
+import com.fortes.rh.model.dicionario.ModulosSistema;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
@@ -39,6 +41,10 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
+import com.fortes.rh.util.Autenticador;
+import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
@@ -81,6 +87,9 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	private boolean habilitaCampoExtra;
 	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
 	private Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = new ArrayList<ConfiguracaoCampoExtra>();
+	
+	private Collection<CheckBox> modulosSistema = new ArrayList<CheckBox>();
+	private String[] modulosSistemaCheck;
 
 	private Long[] estabelecimentoIds;
 	private Long[] areaIds;
@@ -96,10 +105,43 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 		perfils = perfilManager.findAll();
 		populoHorariosBackupList();
+		populaModulosSitema();
 		
 		return Action.SUCCESS;
 	}
 
+	private void populaModulosSitema()
+	{
+		LinkedHashMap<String, String> modulosDoSistema = new ModulosSistema();
+		modulosSistema = CheckListBoxUtil.populaCheckListBox(modulosDoSistema);
+		int chave = parametrosDoSistema.getModulosPermitidosSomatorio();
+		
+		Collection<String> modulosMarcados = new ArrayList<String>();
+		for (String modulo : modulosDoSistema.keySet())
+		{
+			int moduloValor = (new Integer(modulo)).intValue();
+			if((chave & moduloValor) == moduloValor)
+				modulosMarcados.add(modulo);
+		}
+		
+		modulosSistemaCheck = new CollectionUtil<String>().convertCollectionToArrayString(modulosMarcados);
+		modulosSistema = CheckListBoxUtil.marcaCheckListBox(modulosSistema, modulosSistemaCheck);
+
+		CheckBox moduloInfo = new CheckBox();
+		moduloInfo.setId("99");
+		moduloInfo.setNome("Info. Funcionais");
+		moduloInfo.setSelecionado(true);
+		moduloInfo.setDesabilitado(true);
+		modulosSistema.add(moduloInfo);
+		
+		CheckBox moduloUtilitario = new CheckBox();
+		moduloUtilitario.setId("100");
+		moduloUtilitario.setNome("Utilitários");
+		moduloUtilitario.setSelecionado(true);
+		moduloUtilitario.setDesabilitado(true);
+		modulosSistema.add(moduloUtilitario);
+	}
+	
 	private void populoHorariosBackupList() 
 	{
 		HashMap<String, String> horasBackupMap = new LinkedHashMap<String, String>();
@@ -117,9 +159,16 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		if(StringUtils.isBlank(parametrosDoSistema.getEmailPass()))
 			parametrosDoSistema.setEmailPass(parametrosDoSistemaAux.getEmailPass());
 
-		if(getUsuarioLogado().getId() != 1 && parametrosDoSistema.getProximaVersao() == null)
-			parametrosDoSistema.setProximaVersao(parametrosDoSistemaAux.getProximaVersao());
-		
+		if(getUsuarioLogado().getId() != 1){
+			parametrosDoSistema.setModulosPermitidosSomatorio(parametrosDoSistemaAux.getModulosPermitidosSomatorio());
+			if(parametrosDoSistema.getProximaVersao() == null)
+				parametrosDoSistema.setProximaVersao(parametrosDoSistemaAux.getProximaVersao());
+		}else{
+			parametrosDoSistema.setModulosPermitidosSomatorio(calculaModulosSitema());
+			if(parametrosDoSistema.getProximaVersao() !=  null && DateUtil.diferencaEntreDatas(new Date(), parametrosDoSistema.getProximaVersao(), true) >= 0) 
+				Autenticador.setDemo(false);
+		}
+
 		parametrosDoSistema.setSuporteVeica(parametrosDoSistemaAux.isSuporteVeica());
 		parametrosDoSistema.setHorariosBackup(StringUtil.converteCollectionToString(horariosBackup));
 		
@@ -128,9 +177,21 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		
 		perfils = perfilManager.findAll();
 		populoHorariosBackupList();
+		populaModulosSitema();
 		addActionSuccess("Configurações do sistema atualizadas com sucesso.");
 
 		return Action.SUCCESS;
+	}
+	
+	private Integer calculaModulosSitema()
+	{
+		Integer somatorioModulos = 0;
+		
+		if(modulosSistemaCheck != null)
+			for (String moduloMarcado : modulosSistemaCheck) 
+				somatorioModulos += (new Integer(moduloMarcado)).intValue(); 
+		
+		return somatorioModulos;
 	}
 	
 	public String listCamposCandidato() throws Exception
@@ -392,5 +453,17 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 
 	public void setHorariosBackup(Collection<String> horariosBackup) {
 		this.horariosBackup = horariosBackup;
+	}
+
+	public Collection<CheckBox> getModulosSistema() {
+		return modulosSistema;
+	}
+
+	public void setModulosSistemaCheck(String[] modulosSistemaCheck) {
+		this.modulosSistemaCheck = modulosSistemaCheck;
+	}
+
+	public String[] getModulosSistemaCheck() {
+		return modulosSistemaCheck;
 	}
 }

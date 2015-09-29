@@ -1,0 +1,1 @@
+ALTER TABLE parametrosdosistema ADD COLUMN modulosPermitidosSomatorio bigint DEFAULT 63;--.go

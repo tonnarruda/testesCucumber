@@ -23,6 +23,7 @@ public class Autenticador
 	private static String urlServidorRemprot;
 	private static boolean verificaLicensa;
 	private static boolean demo;
+	private static Integer modulosPermitidos = 0;
 	
 	public static final Collection<Long> modulos = new ArrayList<Long>(8);
 	static {
@@ -41,7 +42,7 @@ public class Autenticador
 		return (!verificaLicensa || getRemprot().getRegistered());
 	}
 	
-	public static void verificaCopia(String url, boolean verificaLicensaRemprot) throws Exception, NotConectAutenticationException
+	public static void verificaCopia(String url, boolean verificaLicensaRemprot, Integer modulosPermitidoSemLicensa) throws Exception, NotConectAutenticationException
 	{
 		/*
 		Passo como parametros de criacao da classe o codigo do sistema para reset (fornecido pelo AG)
@@ -52,6 +53,7 @@ public class Autenticador
 		//TODO remprot
 		urlServidorRemprot = url;
 		verificaLicensa = verificaLicensaRemprot;
+		modulosPermitidos = modulosPermitidoSemLicensa;
 		
 		if (verificaLicensa) {
 			clientRemprot = getRemprot();
@@ -87,7 +89,9 @@ public class Autenticador
 			    // somatorio dos modulos do RH: 1  - Recrut. e Seleção ,2  - Cargos e Salários ,4  - Pesquisa ,
 				//8  - Treina. e Desenvolvimento ,16 - Avaliação de Desempenho ,32 - SESMT
 			modulosNaoConfigurados = getModulosNaoConfigurados(c.getEnabledModules());
-		} 
+		} else if(!Autenticador.isDemo()){
+			modulosNaoConfigurados = getModulosNaoConfigurados(Autenticador.getModulosPermitidos());
+		}
 		
 		return modulosNaoConfigurados;
 	}
@@ -96,9 +100,10 @@ public class Autenticador
 	{
 		Collection<Long> modulosNaoConfigurados = new ArrayList<Long>();
 		
-		if(verificaLicensa) {
+		if(!demo) 
+		{
 			modulosNaoConfigurados.addAll(modulos);
-
+		
 			if((chave & RECRUT_SELECAO) == RECRUT_SELECAO)
 				modulosNaoConfigurados.remove(357L);
 			if((chave & CARGO_SALARIO) == CARGO_SALARIO)
@@ -111,11 +116,10 @@ public class Autenticador
 				modulosNaoConfigurados.remove(382L);
 			if((chave & SESMT) == SESMT)
 				modulosNaoConfigurados.remove(75L);
-			
-			// Estes módulos sempre aparecerão no menu.
-			modulosNaoConfigurados.remove(373L);
-			modulosNaoConfigurados.remove(37L);
 		}
+		// Estes módulos sempre aparecerão no menu.
+		modulosNaoConfigurados.remove(373L);
+		modulosNaoConfigurados.remove(37L);
 		
 		return modulosNaoConfigurados;
 	}
@@ -203,4 +207,7 @@ public class Autenticador
 		return qtdCadastrosVersaoDemo;
 	}
 
+	public static Integer getModulosPermitidos() {
+		return modulosPermitidos;
+	}
 }

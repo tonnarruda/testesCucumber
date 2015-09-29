@@ -124,7 +124,10 @@ public class CheckListBoxTag extends TagSupport
 
 				String disabled = "";
 				if(readonly)
-					disabled = "onclick=\"return false;\"";
+					disabled += " onclick=\"return false;\" ";
+				
+				if(cb.isDesabilitado())
+					disabled += " disabled = \"disabled\" "; 
 
 				checkGroup.append("<label for=\"checkGroup" + name + value + "\"><input name=\"" + name + "\" value=\"" + value + "\" type=\"checkbox\""+disabled+"");
 				checkGroup.append(" id=\"checkGroup" + name + value + "\" " + check + " onclick=\""+ onClick +"\">"); 

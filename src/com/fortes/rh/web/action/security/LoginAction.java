@@ -50,7 +50,7 @@ public class LoginAction extends MyActionSupport
 			if(servidorRemprot == null || "".equals(servidorRemprot)) 
 				return "not_conect";
 			
-			Autenticador.verificaCopia(servidorRemprot, parametrosDoSistema.verificaRemprot());
+			Autenticador.verificaCopia(servidorRemprot, parametrosDoSistema.verificaRemprot(), parametrosDoSistema.getModulosPermitidosSomatorio());
 			
 		} catch (NotRegistredException e) {
 			msgRemprot = e.getMessage();

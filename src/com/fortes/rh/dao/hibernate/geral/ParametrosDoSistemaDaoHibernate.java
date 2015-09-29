@@ -46,6 +46,7 @@ public class ParametrosDoSistemaDaoHibernate extends GenericDaoHibernate<Paramet
 		p.add(Projections.property("ps.caminhoBackup"), "caminhoBackup");
 		p.add(Projections.property("ps.inibirGerarRelatorioPesquisaAnonima"), "inibirGerarRelatorioPesquisaAnonima");
 		p.add(Projections.property("ps.quantidadeColaboradoresRelatorioPesquisaAnonima"), "quantidadeColaboradoresRelatorioPesquisaAnonima");
+		p.add(Projections.property("ps.modulosPermitidosSomatorio"), "modulosPermitidosSomatorio");
 		p.add(Projections.property("p.id"), "projectionPerfilPadraoId");
 		p.add(Projections.property("p.nome"), "projectionPerfilPadraoNome");
 		p.add(Projections.property("ps.proximaVersao"), "proximaVersao");

@@ -41,12 +41,14 @@ public class ParametrosDoSistemaEditActionTest extends MockObjectTestCase
     public void testPrepareUpdate() throws Exception
     {
     	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
+    	parametrosDoSistema.setModulosPermitidosSomatorio(21);// número 21 representa 3 modulos.
     	
     	manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametrosDoSistema));
     	perfilManager.expects(once()).method("findAll").withNoArguments().will(returnValue(new ArrayList<Perfil>()));
 
     	assertEquals(action.prepareUpdate(), "success");
-    	
+    	assertEquals(8, action.getModulosSistema().size());
+    	assertEquals(3, action.getModulosSistemaCheck().length);
     }
   
     public void testUpdate() throws Exception

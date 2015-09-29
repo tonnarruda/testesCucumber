@@ -223,6 +223,7 @@
 		&nbsp;&nbsp;&nbsp;		
 		<@ww.checkbox label="Enviar email" id="enviarEmail" name="parametrosDoSistema.enviarEmail" labelPosition="left"/>	
 		<@ww.datepicker label="Data da versão" id="proximaVersao" name="parametrosDoSistema.proximaVersao" value="${dataVersao}" cssClass="mascaraData" />
+		<@frt.checkListBox name="modulosSistemaCheck" id="modulosSistemaCheck" label="Módulos do Sistema" list="modulosSistema"/>
 	<#else>
 		<@ww.hidden name="parametrosDoSistema.proximaVersao" />
 		<@ww.hidden name="parametrosDoSistema.enviarEmail" />

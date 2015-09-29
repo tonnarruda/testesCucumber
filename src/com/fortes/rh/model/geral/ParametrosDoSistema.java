@@ -84,6 +84,7 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
     private String camposCandidatoTabs;
     private boolean autenticacao;
     private boolean tls;
+    private Integer modulosPermitidosSomatorio = 0;
     
 	public String getAppContext()
 	{
@@ -411,5 +412,13 @@ public class ParametrosDoSistema extends AbstractModel implements Serializable
 	
 	public void setTamanhoMaximoUpload(Integer tamanhoMaximoUpload) {
 		this.tamanhoMaximoUpload = tamanhoMaximoUpload;
+	}
+
+	public Integer getModulosPermitidosSomatorio() {
+		return modulosPermitidosSomatorio;
+	}
+	
+	public void setModulosPermitidosSomatorio(Integer modulosPermitidosSomatorio) {
+		this.modulosPermitidosSomatorio = modulosPermitidosSomatorio;
 	}
 }
