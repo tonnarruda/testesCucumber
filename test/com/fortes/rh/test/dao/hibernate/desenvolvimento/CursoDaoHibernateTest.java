@@ -625,7 +625,44 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 		assertEquals("Treinamentos realizados das empresas", new Integer(1), cursoDao.countTreinamentos(dataTresMesesAtras.getTime(), dataDoisMesesAtras.getTime(), new Long[]{empresa1.getId(), empresa2.getId()}, null, true));
 
 	}
+	
+	public void testFindIndicadorTotalHorasTreinamento()
+	{
+		Date dataInicio = DateUtil.criarDataDiaMesAno("01/01/2015");
+		Date dataFim = DateUtil.criarDataDiaMesAno("31/05/2015");
 
+    	Empresa empresa1 = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa1);
+		
+		Curso curso1 = CursoFactory.getEntity();
+		curso1.setNome("Curso 1");
+		curso1.setCargaHoraria(90);
+		curso1.setEmpresa(empresa1);
+		cursoDao.save(curso1);
+		
+		Turma turmaRealizadaCurso1 = TurmaFactory.getEntity();
+		turmaRealizadaCurso1.setDescricao("Turma1");
+		turmaRealizadaCurso1.setCurso(curso1);
+		turmaRealizadaCurso1.setRealizada(true);
+		turmaRealizadaCurso1.setDataPrevIni(dataInicio);
+		turmaRealizadaCurso1.setDataPrevFim(dataFim);
+		turmaRealizadaCurso1.setEmpresa(empresa1);
+		turmaDao.save(turmaRealizadaCurso1);
+		
+		Turma turmaNaoRealizadaCurso1 = TurmaFactory.getEntity();
+		turmaNaoRealizadaCurso1.setDescricao("Turma2");
+		turmaNaoRealizadaCurso1.setCurso(curso1);
+		turmaNaoRealizadaCurso1.setRealizada(false);
+		turmaNaoRealizadaCurso1.setDataPrevIni(dataInicio);
+		turmaNaoRealizadaCurso1.setDataPrevFim(dataFim);
+		turmaNaoRealizadaCurso1.setEmpresa(empresa1);
+		turmaDao.save(turmaNaoRealizadaCurso1);
+		
+		turmaDao.getHibernateTemplateByGenericDao().flush();
+		
+		assertEquals(new Integer(90), cursoDao.findCargaHorariaTotalTreinamento(new Long[]{curso1.getId()}, new Long[] {empresa1.getId()}, dataInicio, dataFim, true));
+	}
+	
 	public void testFindComAvaliacao()
 	{
 		Date hoje = new Date();

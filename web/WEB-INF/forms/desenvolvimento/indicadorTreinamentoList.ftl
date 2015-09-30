@@ -154,7 +154,12 @@
 			
 	    	$('#tooltipHelpIndicadoresTeD').qtip({
 				content:'<strong>O resultado dos indicadores de T&D são obtidos através dos seguintes cálculos:</strong>'+
-						'<br/><br/><strong>- Investimento médio da hora de treinamento (R$)</strong><br/>'+
+						'<br/><br/><strong>- Total de horas de treinamento (h:min)</strong><br/>'+
+						'&nbsp&nbsp totalHorasTreinamento = &sum; ( CargaHorariaCurso * QtdTurmasRealizadas )<br/>'+
+						'&nbsp&nbsp CargaHorariaCurso: É a carga horária prevista para o curso.<br/>'+
+						'&nbsp&nbsp QtdTurmasRealizadas: É o número de turmas realizadas para cada curso.<br/>'+
+						'<br/>'+
+						'<strong>- Investimento médio da hora de treinamento (R$)</strong><br/>'+
 						'&nbsp&nbsp custoMedioHora = SomaCusto / SomaHoras<br/>'+
 						'&nbsp&nbsp SomaCusto: É a soma do custo de cada turma referente ao filtro.<br/>'+
 						'&nbsp&nbsp SomaHoras: É o somatório de horas do curso vezes a quantidade de colaboradores.<br/>'+
@@ -331,8 +336,8 @@
 							<dd>${indicadorTreinamento.percentualFrequencia?string(",##0.00")}%</dd>
 						</dl>
 						<dl>
-							<dt>Total de horas de treinamento</dt>
-							<dd>${indicadorTreinamento.somaHoras}</dd>
+							<dt>Total de horas de treinamento (h:min)</dt>
+							<dd>${indicadorTreinamento.totalHorasTreinamento}</dd>
 							<dt>Investimento médio da hora de treinamento (R$)</dt>
 							<dd>${indicadorTreinamento.custoMedioHoraFmt}</dd>
 							<dt>Investimento per capita (R$)</dt>

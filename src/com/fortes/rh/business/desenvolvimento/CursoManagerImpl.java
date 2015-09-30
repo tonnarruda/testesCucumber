@@ -75,7 +75,8 @@ public class CursoManagerImpl extends GenericManagerImpl<Curso, CursoDao> implem
 		Double somaCustos = indicadorTreinamento.getSomaCustos();
 
 		indicadorTreinamento.setCustoMedioHora( qtdHoras > 0 ? somaCustos / qtdHoras : 0);
-
+		indicadorTreinamento.setTotalHorasTreinamento(getDao().findCargaHorariaTotalTreinamento(cursoIds, empresaIds, dataIni, dataFim, true));
+		
 		Double custoPerCapita = 0d;
 		Double horasPerCapita = 0d;
 		Double percentualFrequencia = 0d;

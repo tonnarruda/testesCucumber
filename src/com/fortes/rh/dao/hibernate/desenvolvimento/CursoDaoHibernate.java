@@ -1,5 +1,6 @@
 package com.fortes.rh.dao.hibernate.desenvolvimento;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
@@ -218,7 +219,7 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		
 		return new IndicadorTreinamento(qtdColaboradoresPrevistos, qtdColaboradoresFiltrados, qtdColaboradoresInscritos, somaHoras, somaHorasRatiada, somaCustos);
 	}
-
+	
 	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds)
 	{
 		StringBuilder hql = new StringBuilder("select count(ct.id) ");
@@ -275,6 +276,36 @@ public class CursoDaoHibernate extends GenericDaoHibernate<Curso> implements Cur
 		return (Integer)criteria.uniqueResult();
 	}
 
+	public Integer findCargaHorariaTotalTreinamento(Long[] cursosIds, Long[] empresasIds, Date dataInicio, Date dataFim, boolean realizada){
+		StringBuilder hql = new StringBuilder("select coalesce(sum(coalesce(c.cargaHoraria, 0)* (");
+												hql.append("select count(t.id) from Turma as t where t.curso_id = c.id and t.realizada = :realizada ");
+													hql.append("and t.dataPrevIni between :dataInicio and :dataFim ");
+												hql.append(") ");
+												hql.append("), 0) ");
+											hql.append("from Curso c ");
+											hql.append("where 1=1 ");
+												
+		if(cursosIds != null && cursosIds.length > 0)
+			hql.append("and c.id in(:cursosIds) ");
+			
+		if(empresasIds != null && empresasIds.length > 0)
+			hql.append("and c.empresa_id in(:empresasIds) ");
+		
+		Query query = getSession().createSQLQuery(hql.toString());
+		
+		if(cursosIds != null && cursosIds.length > 0)
+			query.setParameterList("cursosIds", cursosIds);
+			
+		if(empresasIds != null && empresasIds.length > 0)
+			query.setParameterList("empresasIds", empresasIds);
+		
+		query.setBoolean("realizada", realizada);
+		query.setDate("dataInicio", dataInicio);
+		query.setDate("dataFim", dataFim);
+		
+		return ((BigDecimal)query.uniqueResult()).intValue();
+	}
+	
 	public Collection<Long> findComAvaliacao(Long empresaId, Date dataIni, Date dataFim)
 	{
 		Criteria criteria = getSession().createCriteria(Curso.class,"c");

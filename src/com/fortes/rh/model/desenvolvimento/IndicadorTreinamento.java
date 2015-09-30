@@ -2,6 +2,8 @@ package com.fortes.rh.model.desenvolvimento;
 
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.fortes.rh.util.MathUtil;
 
 public class IndicadorTreinamento
@@ -22,6 +24,7 @@ public class IndicadorTreinamento
 	private Integer qtdColaboradoresInscritos;
 	private Integer qtdColaboradoresFiltrados;
 	private Integer qtdColaboradoresPrevistos;
+	private Integer totalHorasTreinamento;
 
 	private Integer graficoQtdTreinamentosRealizados = 0;
 	private Integer graficoQtdTreinamentosNaoRealizados = 0;
@@ -131,6 +134,22 @@ public class IndicadorTreinamento
 	public Integer getQtdColaboradoresPrevistos()
 	{
 		return qtdColaboradoresPrevistos;
+	}
+
+	public String getTotalHorasTreinamento() {
+		
+		if(totalHorasTreinamento == null || totalHorasTreinamento.equals(0))
+			return "-";
+		
+		Integer hora = totalHorasTreinamento/60;
+		Integer minutos = totalHorasTreinamento%60;
+		
+		return (StringUtils.leftPad(hora.toString(), 4, "") + ":" +StringUtils.leftPad(minutos.toString(), 2, "0")).trim();	
+	}
+
+	public void setTotalHorasTreinamento(Integer totalHorasTreinamento) {
+		this.totalHorasTreinamento = totalHorasTreinamento;
+		
 	}
 
 	public String getAlertMsg()

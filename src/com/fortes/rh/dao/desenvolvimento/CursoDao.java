@@ -19,6 +19,7 @@ public interface CursoDao extends GenericDao<Curso>
 	public Integer findQtdColaboradoresInscritosTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds);
 	public Integer findSomaColaboradoresPrevistosTreinamentos(Date dataIni, Date dataFim, Long empresaId);
 	public Integer countTreinamentos(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Boolean realizado);
+	public Integer findCargaHorariaTotalTreinamento(Long[] cursosIds, Long[] empresasIds, Date dataInicio, Date dataFim, boolean realizada);
 	public Collection<Long> findComAvaliacao(Long empresaId, Date dataIni, Date dataFim);
 	public Collection<Curso> findByFiltro(Integer page, Integer pagingSize, Curso curso, Long empresaId);
 	public Empresa findEmpresaByCurso(Long cursoId);
