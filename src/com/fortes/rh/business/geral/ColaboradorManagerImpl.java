@@ -2384,6 +2384,45 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		return new CollectionUtil<DataGrafico>().sortCollectionStringIgnoreCase(dados, "label");
 	}
+	
+	public Collection<DataGrafico> montaGraficoColaboradoresTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Integer[] mesesParaMultiplicar, Collection<Long> empresasIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos) 
+	{
+		Map<String, Integer> qtds = new HashMap<String, Integer>();
+		Empresa empresa;
+		String chave;
+		
+		Integer tempoServicoIniEmMeses;
+		Integer tempoServicoFimEmMeses;
+		String tempo;
+		
+		if (tempoServicoIni != null)
+			for (Long empresaId : empresasIds)
+			{
+				empresa = empresaManager.findByIdProjection(empresaId);
+	
+				for (int i = 0; i < tempoServicoIni.length; i++) 
+				{
+					tempoServicoIniEmMeses = tempoServicoIni[i] * mesesParaMultiplicar[i];
+					tempoServicoFimEmMeses = tempoServicoFim[i] * mesesParaMultiplicar[i];
+					tempo = mesesParaMultiplicar[i] == 12 ? "anos" : "meses";
+					
+					Integer qtdColaboradoresPorTempo = getDao().countColaboradoresPorTempoServico(empresa, tempoServicoIniEmMeses, tempoServicoFimEmMeses, estabelecimentosIds, areasIds, cargosIds, vinculos);
+					
+					chave = StringUtils.leftPad(tempoServicoIni[i].toString(), 2, '0') + " a " + StringUtils.leftPad(tempoServicoFim[i].toString(), 2, '0') + " " + tempo;
+					if (!qtds.containsKey(chave))
+						qtds.put(chave, 0);
+					
+					qtds.put(chave, qtds.get(chave) + qtdColaboradoresPorTempo);
+				}
+			}
+		
+		Collection<DataGrafico> dados = new ArrayList<DataGrafico>();
+		
+		for (Map.Entry<String, Integer> entry : qtds.entrySet()) 
+			dados.add(new DataGrafico(null, entry.getKey(), entry.getValue(), null));
+		
+		return new CollectionUtil<DataGrafico>().sortCollectionStringIgnoreCase(dados, "label");
+	}
 
 	public Collection<Colaborador> findByAvaliacoes(Long... avaliacaoIds) 
 	{

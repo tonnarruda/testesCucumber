@@ -88,6 +88,7 @@
 				montaGraficoPizza(${grfFormacaoEscolars}, "#formacaoEscolar", {pieLeft:-190}, "Formação Escolar");
 				montaGraficoPizza(${grfSexo}, "#sexo", {percentMin:0}, "Sexo");
 				montaGraficoPizza(${grfTurnoverTempoServico}, "#turnoverTempoServico", {}, "Turnover por Tempo de Serviço");
+				montaGraficoPizza(${grfColaboradoresTempoServico}, "#colaboradoresTempoServico", {}, "Colaborador por Tempo de Serviço");
 
 				montaGraficoPizza(${grfDesligamento}, "#desligamento", {radiusLabel:0.9, percentMin: 0.02, pieLeft:-190}, "Motivo de Desligamento");
 				
@@ -122,9 +123,15 @@
 				
 				$('#aba${abaMarcada} a').click();
 				
-				<#list 0..(tempoServicoIni?size-1) as i>
-					addPeriodo(${tempoServicoIni[i]}, ${tempoServicoFim[i]});
+				<#list 0..(tempoServicoTurnoverIni?size-1) as i>
+					addPeriodo('#periodosServicoTurnover', false, ${tempoServicoTurnoverIni[i]}, ${tempoServicoTurnoverFim[i]});
 				</#list>
+				
+				<#if (tempoServicoIni?size > 0) >
+					<#list 0..(tempoServicoIni?size-1) as i>
+						addPeriodo('#periodosServico', true, ${tempoServicoIni[i]}, ${tempoServicoFim[i]}, ${mesesParaMultiplicar[i]});
+					</#list>
+				</#if>
 				
 			});
 			
@@ -278,12 +285,16 @@
 				$(item).parent().parent().remove();
 			}
 			
-			function addPeriodo(ini, fim)
+			function addPeriodo(element, comSelectDeMesesAnos, ini, fim, mesesParaMultiplicar)
 			{
-				if ( $('#periodos li').size() >= 12 ) 
-				{
-					jAlert('Não é possível inserir mais do que 12 períodos para esse gráfico.');
-					return false;
+			    var nameInputs = 'tempoServico';
+				if ( element == "#periodosServicoTurnover") {
+					if ( $('#periodos li').size() >= 12 ) 
+					{
+						jAlert('Não é possível inserir mais do que 12 períodos para esse gráfico.');
+						return false;
+					}
+					nameInputs = 'tempoServicoTurnover';
 				}
 				
 				ini = ini != undefined ? ini : "";
@@ -291,12 +302,19 @@
 				
 				var periodo = '<li><span>';
 				periodo += '<img title="Remover período" onclick="delPeriodo(this)" src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" align="absMiddle" style="cursor:pointer;" />&nbsp;';
-				periodo += '<input type="text" name="tempoServicoIni" id="tempoServicoIni" value="' + ini + '" style="width:30px; text-align:right;" maxlength="4" onkeypress="return somenteNumeros(event,\'\');"/>';
+				periodo += '<input type="text" name="'+nameInputs+'Ini" id="tempoServicoIni" value="' + ini + '" style="width:30px; text-align:right;" maxlength="4" onkeypress="return somenteNumeros(event,\'\');"/>';
 				periodo += '&nbsp;a&nbsp;';
-				periodo += '<input type="text" name="tempoServicoFim" id="tempoServicoFim" value="' + fim + '" style="width:30px; text-align:right;" maxlength="4" onkeypress="return somenteNumeros(event,\'\');"/>';
-				periodo += '&nbsp;meses</span></li>';
+				periodo += '<input type="text" name="'+nameInputs+'Fim" id="tempoServicoFim" value="' + fim + '" style="width:30px; text-align:right;" maxlength="4" onkeypress="return somenteNumeros(event,\'\');"/>';
+				
+				var mesesSelected, anosSelected;
+				mesesSelected = mesesParaMultiplicar == 1 ? 'selected="selected"' : mesesSelected;
+				anosSelected = mesesParaMultiplicar == 12 ? 'selected="selected"' : anosSelected;
+				if ( comSelectDeMesesAnos )
+					periodo += '&nbsp;<select name="mesesParaMultiplicar" value="'+mesesParaMultiplicar+'"><option '+mesesSelected+' value="1">meses</option><option '+ anosSelected +' value="12">anos</option></select></span></li>';
+				else
+					periodo += '&nbsp;meses</span></li>';
 			
-				$('#periodos').append(periodo);
+				$(element).find('#periodos').append(periodo);
 				$('#tempoIni, #tempoFim').val('');
 			}
 		</script>
@@ -353,6 +371,7 @@
 				<div id="aba1" class="aba"><a href="javascript:;">Informações Sociais</a></div>
 				<div id="aba2" class="aba"><a href="javascript:;">Ocorrências/Absenteísmo</a></div>
 				<div id="aba3" class="aba"><a href="javascript:;">Turnover</a></div>
+				<div id="aba4" class="aba"><a href="javascript:;">Outros</a></div>
 			</div>
 			
 			<div class="conteudo">
@@ -448,9 +467,9 @@
 												</td>
 												<td>
 													Períodos de tempo de serviço:
-													<div id="periodosServico" style="margin-left:20px">
+													<div id="periodosServicoTurnover" style="margin-left:20px">
 														<ul id="periodos"></ul>
-														<a title="Adicionar período" href="javascript:;" onclick="addPeriodo();">
+														<a title="Adicionar período" href="javascript:;" onclick="addPeriodo('#periodosServicoTurnover', false);">
 															<img src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" align="absMiddle" /> 
 															Adicionar período
 														</a>
@@ -458,6 +477,30 @@
 												</td>
 											</tr>
 										</table>
+									</fieldset>
+								</div>
+								
+								<div class="conteudo-4 conteudo-aba">
+									<fieldset style="float:left; width: 600px; height:195px;margin-right:10px;">
+										<legend>Tempo de serviço</legend>
+										<table>
+											<tr>
+												<td>
+													<@frt.checkListBox name="vinculosTempoServicoCheck" id="vinculosTempoServicoCheck" label="Colocação" list="vinculosTempoServicoCheckList" height="115" width="300"/>
+												</td>
+												<td style="display: table;">
+													Períodos de tempo de serviço:
+													<div id="periodosServico" style="margin: 5px">
+														<ul id="periodos"></ul>
+														<a title="Adicionar período" href="javascript:;" onclick="addPeriodo('#periodosServico', true);">
+															<img src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" align="absMiddle" /> 
+															Adicionar período
+														</a>
+													</div>
+												</td>
+											</tr>
+										</table>
+										
 									</fieldset>
 								</div>
 							</td>
@@ -643,6 +686,22 @@
 					</table>
 				</div>
 				
+				<div class="conteudo-4 conteudo-aba">
+					<table class="grid" cellspacing="5">
+						<tr>
+							<td class="grid-cell" colspan="3">
+								<div class="cell-title">
+									Colaboradores por tempo de serviço
+									<img id="colaboradoresTempoServicoImprimir" title="Imprimir" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>" border="0" class="icoImprimir"/>
+								</div>
+								<div class="graphWrapper" style="height: 390px !important; width: 940px;">
+							    	<div id="colaboradoresTempoServico" class="graph2"></div>
+					    			<div id="colaboradoresTempoServicoLegenda"></div>
+							    </div>
+							</td>
+						</tr>
+					</table>
+				</div>
 			</div>
 		
 		</@ww.form>

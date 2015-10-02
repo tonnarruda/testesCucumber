@@ -130,6 +130,7 @@ public interface ColaboradorDao extends GenericDao<Colaborador>
 	public Collection<Colaborador> findParaLembreteTerminoContratoTemporario(Collection<Integer> diasLembretes, Long empresaId);
 	public Collection<Colaborador> findHabilitacaAVencer(Collection<Integer> diasLembrete, Long empresaId);
 	public Collection<TurnOver> countDemitidosTempoServico(Empresa empresa, Date dataIni, Date dataFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos);
+	public Integer countColaboradoresPorTempoServico(Empresa empresa, Integer tempoServicoIniEmMeses, Integer tempoServicoFimEmMeses, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos);
 	public Collection<Colaborador> findDemitidosTurnover(Empresa empresa, Date dataIni, Date dataFim, Integer[] tempoServicoIni, Integer[] tempoServicoFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos);
 	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, int statusAC, boolean semcodigoAc, String situacaoColaborador, boolean primeiroHistorico, String... order);
 	public void desvinculaCandidato(Long candidatoId);

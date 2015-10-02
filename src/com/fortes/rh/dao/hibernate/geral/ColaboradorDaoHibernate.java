@@ -1592,6 +1592,59 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return (Collection<TurnOver>) query.list();
 	}
 	
+	public Integer countColaboradoresPorTempoServico(Empresa empresa, Integer tempoServicoIniEmMeses, Integer tempoServicoFimEmMeses, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos)
+	{
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("select count(*) ");
+		sql.append("from Colaborador as c ");
+		sql.append("	inner join historicoColaborador as hc on hc.colaborador_id = c.id ");
+		sql.append("	inner join faixaSalarial as fs on fs.id = hc.faixasalarial_id ");
+		sql.append("where (extract(month from age(current_date, c.dataAdmissao)) + (extract(year from age(current_date, c.dataAdmissao)) * 12)) between :tempoServicoIniEmMeses and :tempoServicoFimEmMeses ");
+		sql.append("   and c.desligado = false ");
+		sql.append("   and c.empresa_id = :empresaId ");
+		sql.append("   and hc.data = ( ");
+		sql.append("		select max(hc2.data) ");
+		sql.append("		from HistoricoColaborador as hc2 ");
+		sql.append("		where hc2.colaborador_id = c.id ");
+		sql.append("		and hc2.status = :status ");
+		sql.append("   ) ");
+		
+		if (estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
+			sql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
+		
+		if (areasIds != null && !areasIds.isEmpty())
+			sql.append("and hc.areaOrganizacional_id in (:areasIds) ");
+		
+		if (cargosIds != null && !cargosIds.isEmpty())
+			sql.append("and fs.cargo_id in (:cargosIds) ");
+		
+		if (vinculos != null && !vinculos.isEmpty())
+			sql.append("and c.vinculo in (:vinculos) ");
+
+		SQLQuery query = getSession().createSQLQuery(sql.toString());
+		query.setInteger("tempoServicoIniEmMeses", tempoServicoIniEmMeses);
+		query.setInteger("tempoServicoFimEmMeses", tempoServicoFimEmMeses);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		query.setLong("empresaId", empresa.getId());
+		
+		if (estabelecimentosIds != null && !estabelecimentosIds.isEmpty())
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds, Hibernate.LONG);
+		
+		if (areasIds != null && !areasIds.isEmpty())
+			query.setParameterList("areasIds", areasIds, Hibernate.LONG);
+		
+		if (cargosIds != null && !cargosIds.isEmpty())
+			query.setParameterList("cargosIds", cargosIds, Hibernate.LONG);
+		
+		if (vinculos != null && !vinculos.isEmpty())
+			query.setParameterList("vinculos", vinculos, Hibernate.STRING);
+		
+		Collection count = query.list();
+
+		return ((BigInteger) count.toArray()[0]).intValue();
+	}
+	
 	public Collection<Colaborador> findDemitidosTurnover(Empresa empresa, Date dataIni, Date dataFim, Integer[] tempoServicoIni, Integer[] tempoServicoFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos) 
 	{
 		StringBuilder hql = new StringBuilder("select new Colaborador(co.id, co.nome, co.nomeComercial, co.dataAdmissao, co.dataDesligamento, (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) as tempoServico) from Colaborador co ");

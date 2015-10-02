@@ -6432,6 +6432,40 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		
 	}
 	
+	public void testCountColaboradoresPorTempoServico()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento);
+		
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial fs1 = FaixaSalarialFactory.getEntity();
+		fs1.setCargo(cargo);
+		faixaSalarialDao.save(fs1);
+		
+		AreaOrganizacional a1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(a1);
+		
+		criarColaboradorHistorico(null, null, empresa, DateUtil.incrementaData(new Date(), Calendar.DAY_OF_MONTH, -15, true), null, null, null, null, estabelecimento, a1, fs1, null, null);
+		criarColaboradorHistorico(null, null, empresa, DateUtil.incrementaData(new Date(), Calendar.MONTH, -1, true), null, null, null, null, estabelecimento, a1, fs1, null, null);
+		criarColaboradorHistorico(null, null, empresa, DateUtil.incrementaData(new Date(), Calendar.MONTH, -5, true), null, null, null, null, estabelecimento, a1, fs1, null, null);
+		criarColaboradorHistorico(null, null, empresa, DateUtil.incrementaData(new Date(), Calendar.MONTH, -8, true), null, null, null, null, estabelecimento, a1, fs1, null, null);
+		criarColaboradorHistorico(null, null, empresa, DateUtil.incrementaData(new Date(), Calendar.MONTH, -10, true), null, null, null, null, estabelecimento1, a1, fs1, null, null);
+		
+		empresaDao.getHibernateTemplateByGenericDao().flush();
+		
+		int qtdColaboradoresPorTempoServico = colaboradorDao.countColaboradoresPorTempoServico(empresa, 1, 8, Arrays.asList(estabelecimento.getId()), Arrays.asList(a1.getId()), Arrays.asList(cargo.getId()), Arrays.asList(Vinculo.EMPREGO));
+		
+		assertEquals(3, qtdColaboradoresPorTempoServico);
+	}
+	
 	public void testFindDemitidosTurnover()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();

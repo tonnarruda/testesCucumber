@@ -90,6 +90,8 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String[] vinculosCheck;
 	private Collection<CheckBox> vinculosTurnoverCheckList = new ArrayList<CheckBox>();
 	private String[] vinculosTurnoverCheck;
+	private Collection<CheckBox> vinculosTempoServicoCheckList = new ArrayList<CheckBox>();
+	private String[] vinculosTempoServicoCheck;
 	private Collection<CheckBox> areasPieChartCheckList = new ArrayList<CheckBox>();
 	private String[] areasPieChartCheck;
 	private Date dataBase;
@@ -101,8 +103,11 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private Date dataFimTurn;
 	private String dataMesAnoIni;
 	private String dataMesAnoFim;
+	private Integer[] tempoServicoTurnoverIni;
+	private Integer[] tempoServicoTurnoverFim;
 	private Integer[] tempoServicoIni;
 	private Integer[] tempoServicoFim;
+	private Integer[] mesesParaMultiplicar;
 	
 	private String origemSituacao = "T";
 	private char agruparPor; 
@@ -140,6 +145,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	private String grfOcorrencia = "";
 	private String grfProvidencia = "";
 	private String grfTurnoverTempoServico = "";
+	private String grfColaboradoresTempoServico = "";
 	private int qtdColaborador = 0;
 	private int qtdItensDesligamento = 20;
 	private int qtdItensOcorrencia = 20;
@@ -178,6 +184,9 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		
 		vinculosTurnoverCheckList = CheckListBoxUtil.populaCheckListBox(new Vinculo());
 		vinculosTurnoverCheckList = CheckListBoxUtil.marcaCheckListBox(vinculosTurnoverCheckList, vinculosTurnoverCheck);
+		
+		vinculosTempoServicoCheckList = CheckListBoxUtil.populaCheckListBox(new Vinculo());
+		vinculosTempoServicoCheckList = CheckListBoxUtil.marcaCheckListBox(vinculosTempoServicoCheckList, vinculosTempoServicoCheck);
    		
 		if(empresa == null || empresa.getId() == null)
 			empresa = getEmpresaSistema();
@@ -200,10 +209,17 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		if (dataMesAnoFim == null || dataMesAnoFim.equals("  /    ") || dataMesAnoFim.equals(""))
 			dataMesAnoFim = DateUtil.formataMesAno(DateUtil.incrementaMes(hoje, 3));
 
-		if (tempoServicoIni == null || tempoServicoIni.length == 0)
+		if (tempoServicoTurnoverIni == null || tempoServicoTurnoverIni.length == 0)
 		{
-			tempoServicoIni = new Integer[] { 0, 3, 5, 7, 9, 11 };
-			tempoServicoFim = new Integer[] { 2, 4, 6, 8, 10, 12 };
+			tempoServicoTurnoverIni = new Integer[] { 0, 3, 5, 7, 9, 11 };
+			tempoServicoTurnoverFim = new Integer[] { 2, 4, 6, 8, 10, 12 };
+		}
+		
+		if (tempoServicoIni == null)
+		{
+			tempoServicoIni = new Integer[] {};
+			tempoServicoFim = new Integer[] {};
+			mesesParaMultiplicar = new Integer[] {};
 		}
 			
 		Collection<Long> empresaIds = LongUtil.arrayStringToCollectionLong(empresasCheck);
@@ -234,8 +250,10 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 		Collection<DataGrafico> graficoDesligamento = colaboradorManager.countMotivoDesligamento(dataIniDeslig, dataFimDeslig, empresaIds, estabelecimentosIds, areasIds, cargosIds, qtdItensDesligamento);
 		
-		Collection<DataGrafico> graficoTurnoverTempoServico = colaboradorManager.montaGraficoTurnoverTempoServico(tempoServicoIni, tempoServicoFim, dataIniTurn, dataFimTurn, empresaIds, LongUtil.arrayLongToCollectionLong(estabelecimentosIds), LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), new CollectionUtil<String>().convertArrayToCollection(vinculosTurnoverCheck));
+		Collection<DataGrafico> graficoTurnoverTempoServico = colaboradorManager.montaGraficoTurnoverTempoServico(tempoServicoTurnoverIni, tempoServicoTurnoverFim, dataIniTurn, dataFimTurn, empresaIds, LongUtil.arrayLongToCollectionLong(estabelecimentosIds), LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), new CollectionUtil<String>().convertArrayToCollection(vinculosTurnoverCheck));
 		
+		Collection<DataGrafico> graficoColaboradoresTempoServico = colaboradorManager.montaGraficoColaboradoresTempoServico(tempoServicoIni, tempoServicoFim, mesesParaMultiplicar, empresaIds, LongUtil.arrayLongToCollectionLong(estabelecimentosIds), LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), new CollectionUtil<String>().convertArrayToCollection(vinculosTempoServicoCheck));
+
 		Collection<Object[]> graficoEvolucaoAbsenteismo = colaboradorOcorrenciaManager.montaGraficoAbsenteismo(dataMesAnoIni, dataMesAnoFim, empresaIds, LongUtil.arrayLongToCollectionLong(estabelecimentosIds), LongUtil.arrayLongToCollectionLong(areasIds), LongUtil.arrayLongToCollectionLong(cargosIds), getEmpresaSistema());
 		grfEvolucaoAbsenteismo = StringUtil.toJSON(graficoEvolucaoAbsenteismo, null);
 		
@@ -253,6 +271,7 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 		grfOcorrencia = StringUtil.toJSON(graficoOcorrencia, null);
 		grfProvidencia = StringUtil.toJSON(graficoProvidencia, null);
 		grfTurnoverTempoServico = StringUtil.toJSON(graficoTurnoverTempoServico, null);
+		grfColaboradoresTempoServico = StringUtil.toJSON(graficoColaboradoresTempoServico, null);
 		
 		turnOverCollections = new ArrayList<TurnOverCollection>();
 		for (Long empresaId: empresaIds) 
@@ -1043,6 +1062,15 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	public void setVinculosTurnoverCheckList(Collection<CheckBox> vinculosTurnoverCheckList) {
 		this.vinculosTurnoverCheckList = vinculosTurnoverCheckList;
 	}
+	
+	public Collection<CheckBox> getVinculosTempoServicoCheckList() {
+		return vinculosTempoServicoCheckList;
+	}
+
+	public void setVinculosTempoServicoCheckList(
+			Collection<CheckBox> vinculosTempoServicoCheckList) {
+		this.vinculosTempoServicoCheckList = vinculosTempoServicoCheckList;
+	}
 
 	public String[] getVinculosCheck() {
 		return vinculosCheck;
@@ -1058,6 +1086,14 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 
 	public void setVinculosTurnoverCheck(String[] vinculosTurnoverCheck) {
 		this.vinculosTurnoverCheck = vinculosTurnoverCheck;
+	}
+
+	public String[] getVinculosTempoServicoCheck() {
+		return vinculosTempoServicoCheck;
+	}
+
+	public void setVinculosTempoServicoCheck(String[] vinculosTempoServicoCheck) {
+		this.vinculosTempoServicoCheck = vinculosTempoServicoCheck;
 	}
 
 	public Date getDataIniTurn() {
@@ -1123,9 +1159,37 @@ public class HistoricoColaboradorListAction extends MyActionSupportList
 	public void setTempoServicoFim(Integer[] tempoServicoFim) {
 		this.tempoServicoFim = tempoServicoFim;
 	}
+	
+	public Integer[] getMesesParaMultiplicar() {
+		return mesesParaMultiplicar;
+	}
+	
+	public void setMesesParaMultiplicar(Integer[] mesesParaMultiplicar) {
+		this.mesesParaMultiplicar = mesesParaMultiplicar;
+	}
+
+	public Integer[] getTempoServicoTurnoverIni() {
+		return tempoServicoTurnoverIni;
+	}
+
+	public void setTempoServicoTurnoverIni(Integer[] tempoServicoTurnoverIni) {
+		this.tempoServicoTurnoverIni = tempoServicoTurnoverIni;
+	}
+
+	public Integer[] getTempoServicoTurnoverFim() {
+		return tempoServicoTurnoverFim;
+	}
+
+	public void setTempoServicoTurnoverFim(Integer[] tempoServicoTurnoverFim) {
+		this.tempoServicoTurnoverFim = tempoServicoTurnoverFim;
+	}
 
 	public String getGrfTurnoverTempoServico() {
 		return grfTurnoverTempoServico;
+	}
+	
+	public String getGrfColaboradoresTempoServico() {
+		return grfColaboradoresTempoServico;
 	}
 
 	public Collection<TurnOverCollection> getTurnOverCollections() {
