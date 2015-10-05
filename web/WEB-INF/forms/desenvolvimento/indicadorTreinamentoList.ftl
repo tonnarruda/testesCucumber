@@ -156,6 +156,7 @@
 				content:'<strong>O resultado dos indicadores de T&D são obtidos através dos seguintes cálculos:</strong>'+
 						'<br/><br/><strong>- Total de horas de treinamento (h:min)</strong><br/>'+
 						'&nbsp&nbsp totalHorasTreinamento = &sum; ( CargaHorariaCurso * QtdTurmasRealizadas )<br/>'+
+						'&nbsp&nbsp * Este cálculo realiza o somatório da multiplicação entre CargaHorariaCurso e QtdTurmasRealizadas para todos os cursos filtrados.<br/><br/>'+
 						'&nbsp&nbsp CargaHorariaCurso: É a carga horária prevista para o curso.<br/>'+
 						'&nbsp&nbsp QtdTurmasRealizadas: É o número de turmas realizadas para cada curso.<br/>'+
 						'<br/>'+
