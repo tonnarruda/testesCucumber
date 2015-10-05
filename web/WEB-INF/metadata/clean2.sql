@@ -1,0 +1,17 @@
+update parametrosdosistema set appcontext='/fortesrh', appurl = 'http://127.0.0.1:8080/fortesrh', proximaversao='2020-01-01';
+update grupoac set acurlsoap = 'http://localhost:1024/soap/IAcPessoal',acurlwsdl = 'http://localhost:1024/wsdl/IAcPessoal';
+update empresabds set email='anapaula@entetecnologia.com.br';
+update candidato set email='anapaula@entetecnologia.com.br';
+update colaborador set email='samuelpinheiro@entetecnologia.com.br';
+update parametrosdosistema set emailUser='anapaula@entetecnologia.com.br';
+update empresa set emailRemetente='samuelpinheiro@entetecnologia.com.br';
+update empresa set emailRespSetorPessoal='anapaula@entetecnologia.com.br';
+update empresa set emailresprh='anapaula@entetecnologia.com.br';
+update empresa set emailresplimitecontrato='anapaula@entetecnologia.com.br';
+update areaorganizacional set emailsnotificacoes = '';
+update parametrosdosistema set emailsmtp='smtp.tifortes.com.br', emailport='25', emailuser='', emailpass='', autenticacao = false, tls = false;
+update usuario set senha='MTIzNA==';
+update historicocolaborador set salario=5555.00;
+update gastoempresaitem set valor=25.00;
+update historicobeneficio set valor=55.00;
+update empresa set acintegra=false;
