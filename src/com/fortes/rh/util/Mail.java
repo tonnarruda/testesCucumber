@@ -94,9 +94,9 @@ public class Mail
 				throw new AddressException("Destinatários não informados.");
 			
 			MailSendRunnable mailSendRunnable = new MailSendRunnable(parametros, from, subject, body, attachedFiles, to);
-			Thread threadSendEmail = new Thread(mailSendRunnable);
 			
 			if(utilizarThread){
+				Thread threadSendEmail = new Thread(mailSendRunnable);
 				threadSendEmail.start();
 			}else{
 				try {

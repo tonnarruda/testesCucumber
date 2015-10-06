@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.15x.18x" db="" data="xx/xx/2015">
 		<Item visivel="S" motivo="S20150800126"><![CDATA[T&D > Painel de Indicadores: Nova fórmula para calcular o indicador "Total de horas de treinamento".]]></Item>
+		<Item visivel="N" motivo="P15100000001"><![CDATA[Pesquisas > Movimentações > Pesquisas > Liberar pesquisa: Melhoria da performance ao enviar emails para os colaboradores da pesquisa.]]></Item>
 	</Versao>
 	<Versao id="1.1.151.182" db="" data="29/09/2015">
 		<Item visivel="S" motivo="S20150700261"><![CDATA[R&S > Relatórios > Lista de Candidatos da Seleção > Relatório: Novos campos de "Área Organizacional" e "Motivo da Solicitação".]]></Item>

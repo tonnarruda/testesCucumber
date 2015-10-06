@@ -1,5 +1,6 @@
 package com.fortes.rh.business.pesquisa;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -37,6 +38,7 @@ import com.fortes.rh.model.pesquisa.relatorio.ResultadoQuestionario;
 import com.fortes.rh.model.relatorio.PerguntaFichaMedica;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.GerenciadorComunicacaoRunnable;
 import com.fortes.rh.util.MathUtil;
 import com.fortes.rh.util.SpringUtil;
 
@@ -100,7 +102,11 @@ public class QuestionarioManagerImpl extends GenericManagerImpl<Questionario, Qu
         Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findByQuestionario(questionarioId);
 
         Questionario questionario = getDao().findByIdProjection(questionarioId);
-        gerenciadorComunicacaoManager.enviaEmailQuestionarioLiberado(empresa, questionario, colaboradorQuestionarios);
+        
+        Method method = gerenciadorComunicacaoManager.getClass().getMethod("enviaEmailQuestionarioLiberado", new Class[]{Empresa.class, Questionario.class, Collection.class});
+		GerenciadorComunicacaoRunnable gerenciadorComunicacaoRunnable = new GerenciadorComunicacaoRunnable(method, new Object[]{empresa, questionario, colaboradorQuestionarios});	
+		Thread threadSendEmail = new Thread(gerenciadorComunicacaoRunnable);
+		threadSendEmail.start();
     }
 
 	public void enviaEmailNaoRespondida(Empresa empresa, Long questionarioId) throws Exception 
