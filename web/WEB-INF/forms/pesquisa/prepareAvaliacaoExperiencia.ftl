@@ -98,7 +98,7 @@
 	
 	<#if colaboradorQuestionario?exists && colaboradorQuestionario.respondida && !roleEditar?exists>
 			<@ww.div cssClass="info">
-				<ul style="margin: 20px 20px 20px 0px;" >Esta avalição já foi respondida. Não é possível editar as respostas.</ul>
+				<ul style="margin: 20px 20px 20px 0px;" >Esta avaliação já foi respondida. Não é possível editar as respostas.</ul>
 			</@ww.div>
 	</#if>
 	
