@@ -47,7 +47,9 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 		hql.append("left join s.solicitacaoAvaliacaos sa with sa.responderModuloExterno = true ");
 		hql.append("left join s.colaboradorQuestionarios cq with cq.avaliacao.id = sa.avaliacao.id and cq.candidato.id = :candidatoId ");
 		hql.append("where s.encerrada = false ");
+		hql.append("and s.suspensa = false "); 
 		hql.append("and s.empresa.id = :empresaId ");
+		hql.append("and s.status = :status "); 
 		hql.append("and a.exibirModuloExterno = true "); 
 		hql.append("group by a.id, a.titulo, s.id, s.quantidade, cs.id "); 
 		hql.append("order by a.titulo");
@@ -55,6 +57,7 @@ public class AnuncioDaoHibernate extends GenericDaoHibernate<Anuncio> implements
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresaId);
 		query.setLong("candidatoId", candidatoId);
+		query.setCharacter("status", StatusAprovacaoSolicitacao.APROVADO);
 		
 		return query.list();
 	}
