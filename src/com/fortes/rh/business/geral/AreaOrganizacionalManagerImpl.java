@@ -890,7 +890,8 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			
 			if(area.getEmailsNotificacoes() != null)
 				for (String email : area.getEmailsNotificacoes().split(";"))
-					emailsNotificacoes.add(email);
+					if (!email.equals(""))
+						emailsNotificacoes.add(email);
 		}
 		
 		return StringUtil.converteCollectionToArrayString(emailsNotificacoes);

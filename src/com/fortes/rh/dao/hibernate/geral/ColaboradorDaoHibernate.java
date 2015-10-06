@@ -2963,7 +2963,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join ao.areaMae as am ");
 		hql.append("left join fs.cargo as cg ");
 		hql.append("left join co.colaboradorQuestionarios as cq with cq.avaliacao.id is not null and cq.turma.id is null ");
-		hql.append("left join cq.avaliacao as av with av.tipoModeloAvaliacao = 'A' ");
+		hql.append("left join cq.avaliacao as av with av.tipoModeloAvaliacao = 'A' and av.periodoExperiencia.id = :periodoExperienciaId ");
 		hql.append("left join co.colaboradorPeriodoExperienciaAvaliacaos cpea with cpea.periodoExperiencia = :periodoExperienciaId and cpea.tipo = 'G' ");
 		hql.append("where ");
 		hql.append("		hc.status = :status ");

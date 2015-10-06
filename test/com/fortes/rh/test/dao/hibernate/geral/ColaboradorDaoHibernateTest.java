@@ -4299,13 +4299,14 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		historicoColabDesligado.setData(DateUtil.criarDataMesAno(01, 01, 2005));
 		historicoColabDesligado.setEstabelecimento(estabelecimento);
 		historicoColaboradorDao.save(historicoColabDesligado);
-		
-		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
-		avaliacao.setTipoModeloAvaliacao('A');
-		avaliacaoDao.save(avaliacao);
 
 		PeriodoExperiencia periodoExperiencia = PeriodoExperienciaFactory.getEntity();
 		periodoExperienciaDao.save(periodoExperiencia);
+		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacao.setTipoModeloAvaliacao('A');
+		avaliacao.setPeriodoExperiencia(periodoExperiencia);
+		avaliacaoDao.save(avaliacao);
 		
 		ColaboradorPeriodoExperienciaAvaliacao colabPeriodoExperienciaAvaliacaoJoseAvaliado = ColaboradorPeriodoExperienciaAvaliacaoFactory.getEntity(joseAvaliado, periodoExperiencia, avaliacao, ColaboradorPeriodoExperienciaAvaliacao.TIPO_GESTOR);
 		colaboradorPeriodoExperienciaAvaliacaoDao.save(colabPeriodoExperienciaAvaliacaoJoseAvaliado);
