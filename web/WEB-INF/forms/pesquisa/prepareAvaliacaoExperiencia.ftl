@@ -1,6 +1,16 @@
+<#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <html>
 <head>
 <@ww.head/>
+
+	<@authz.authorize ifAllGranted="ROLE_MOV_AVALIACAO_EDITAR_ACOMPANHAMENTO">
+		<#assign roleEditar = "true"/>
+	</@authz.authorize>
+	
+	<@authz.authorize ifAllGranted="ROLE_MOV_PERIODOEXPERIENCIA ">
+		<#assign roleMovPeriodoexperiencia = "true" />
+	</@authz.authorize>
+
 	<#if colaboradorQuestionario?exists && colaboradorQuestionario.id?exists>
 		<title>Editar Acompanhamento do Período de Experiência</title>
 		<#assign desabilitarAvaliacaoSelect="true"/>
@@ -86,6 +96,12 @@
 		<#assign class=""/>
 	</#if>
 	
+	<#if colaboradorQuestionario?exists && colaboradorQuestionario.respondida && !roleEditar?exists>
+			<@ww.div cssClass="info">
+				<ul style="margin: 20px 20px 20px 0px;" >Esta avalição já foi respondida. Não é possível editar as respostas.</ul>
+			</@ww.div>
+	</#if>
+	
 	<@ww.div cssClass="${class}" cssStyle="width: 500px;">
 		<#if colaborador?exists && colaborador.id?exists>
 			<#if colaboradorQuestionario?exists && colaboradorQuestionario.avaliador?exists && colaboradorQuestionario.avaliador.nome?exists>
@@ -133,7 +149,9 @@
 
 		<div class="buttonGroup">
 			<#if !preview>
-				<button onclick="validaForm();" class="btnGravar"></button>
+				<#if colaboradorQuestionario?exists && !colaboradorQuestionario.respondida || roleEditar?exists || roleMovPeriodoexperiencia?exists >
+					<button onclick="validaForm();" class="btnGravar"></button>
+				</#if>
 			</#if>
 	<#else>
 		<div class="buttonGroup">
