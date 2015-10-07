@@ -481,7 +481,7 @@
 								</div>
 								
 								<div class="conteudo-4 conteudo-aba">
-									<fieldset style="float:left; width: 600px; height:195px;margin-right:10px;">
+									<fieldset style="float:left; width: 600px; height:auto;margin-right:10px;">
 										<legend>Tempo de serviço</legend>
 										<table>
 											<tr>
