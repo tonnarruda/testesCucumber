@@ -8,10 +8,12 @@ import java.util.Collection;
 
 import com.fortes.rh.business.captacao.CompetenciaManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
+import com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -27,6 +29,7 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 	private AreaOrganizacionalManager areaOrganizacionalManager = null;
 	private CompetenciaManager competenciaManager = null;
 	private CursoManager cursoManager;
+	private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
 
 	private String[] areasCheck;
 	private Long[] cursosCheck;
@@ -66,7 +69,23 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 		
 		return Action.SUCCESS;
 	}
-
+	
+	public void montaConhecimento() {
+		conhecimento.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
+		conhecimento.setCursos(cursoManager.populaCursos(cursosCheck));
+		conhecimento.setEmpresa(getEmpresaSistema());
+		
+		Collection<CriterioAvaliacaoCompetencia> criterios = new ArrayList<CriterioAvaliacaoCompetencia>();
+		for (CriterioAvaliacaoCompetencia criterio : conhecimento.getCriteriosAvaliacaoCompetencia()) {
+			if (!criterio.getDescricao().equals("")) {
+				criterio.setConhecimento(conhecimento);
+				criterios.add(criterio);
+			}
+		}
+		
+		conhecimento.setCriteriosAvaliacaoCompetencia(criterios);
+	}
+	
 	public String insert() throws Exception
 	{
 		if (competenciaManager.existeNome(conhecimento.getNome(), null, null, getEmpresaSistema().getId()))
@@ -76,9 +95,7 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 			return Action.INPUT;
 		}
 		
-		conhecimento.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
-		conhecimento.setCursos(cursoManager.populaCursos(cursosCheck));
-		conhecimento.setEmpresa(getEmpresaSistema());
+		montaConhecimento();
 		conhecimentoManager.save(conhecimento);
 		
 		return Action.SUCCESS;
@@ -92,11 +109,12 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 			prepareUpdate();
 			return Action.INPUT;
 		}
-
-		conhecimento.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
-		conhecimento.setCursos(cursoManager.populaCursos(cursosCheck));
-		conhecimento.setEmpresa(getEmpresaSistema());
+		
+		criterioAvaliacaoCompetenciaManager.removeByCompetencia(conhecimento.getId(), Competencia.CONHECIMENTO, conhecimento.getCriteriosAvaliacaoCompetencia());
+		
+		montaConhecimento();
 		conhecimentoManager.update(conhecimento);
+		
 		return Action.SUCCESS;
 	}
 
@@ -202,5 +220,10 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 	public void setCursosCheck(Long[] cursosCheck)
 	{
 		this.cursosCheck = cursosCheck;
+	}
+
+	public void setCriterioAvaliacaoCompetenciaManager(
+			CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
+		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
 	}
 }

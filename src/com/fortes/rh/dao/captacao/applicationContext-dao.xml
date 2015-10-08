@@ -18,6 +18,14 @@
       <ref bean="conhecimentoDaoTarget" />
     </property>
   </bean>
+  <bean id="criterioAvaliacaoCompetenciaDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.captacao.CriterioAvaliacaoCompetenciaDao</value>
+    </property>
+    <property name="target">
+      <ref bean="criterioAvaliacaoCompetenciaDaoTarget" />
+    </property>
+  </bean>
   <bean id="competenciaDao" class="org.springframework.aop.framework.ProxyFactoryBean">
     <property name="proxyInterfaces">
       <value>com.fortes.rh.dao.captacao.CompetenciaDao</value>

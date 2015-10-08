@@ -12,6 +12,11 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="criterioAvaliacaoCompetenciaDaoTarget" class="com.fortes.rh.dao.hibernate.captacao.CriterioAvaliacaoCompetenciaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
   <bean id="competenciaDaoTarget" class="com.fortes.rh.dao.hibernate.captacao.CompetenciaDaoHibernate">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />

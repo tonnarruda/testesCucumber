@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
+import com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -13,6 +14,7 @@ import com.opensymphony.xwork.Action;
 public class ConhecimentoListAction extends MyActionSupportList
 {
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
 	private ConhecimentoManager conhecimentoManager;
 	private Collection<Conhecimento> conhecimentos;
 	private Conhecimento conhecimento;
@@ -39,9 +41,16 @@ public class ConhecimentoListAction extends MyActionSupportList
 	public String delete() throws Exception
 	{
 		if(!configuracaoNivelCompetenciaManager.existeConfiguracaoNivelCompetencia(conhecimento.getId(), TipoCompetencia.CONHECIMENTO)){
-			conhecimentoManager.remove(conhecimento.getId());
-			addActionMessage("Conhecimento excluído com sucesso.");
-			return Action.SUCCESS;
+			try {
+				criterioAvaliacaoCompetenciaManager.removeByCompetencia(conhecimento.getId(), TipoCompetencia.CONHECIMENTO, null);
+				conhecimentoManager.remove(conhecimento.getId());
+				
+				addActionMessage("Conhecimento excluído com sucesso.");
+				return Action.SUCCESS;
+			} catch (Exception e) {
+				addActionMessage("Não foi possível excluir o conhecimento.");
+				return Action.INPUT;
+			}
 		}
 		else{
 			addActionWarning("Não é possível excluir este conhecimento pois possui dependência com o nível de competencia do cargo/faixa salarial.");
@@ -71,5 +80,10 @@ public class ConhecimentoListAction extends MyActionSupportList
 
 	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
+	}
+
+	public void setCriterioAvaliacaoCompetenciaManager(
+			CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
+		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
 	}
 }
