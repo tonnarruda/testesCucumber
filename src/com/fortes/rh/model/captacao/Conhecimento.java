@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -33,6 +35,10 @@ public class Conhecimento extends AbstractModel implements Serializable
 	private Collection<Curso> cursos;
 	@ManyToOne
 	private Empresa empresa;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="conhecimento", cascade=CascadeType.ALL)
+	private Collection<CriterioAvaliacaoCompetencia> criteriosAvaliacaoCompetencia;
+	
 	@Lob
 	private String observacao;
 
@@ -124,5 +130,16 @@ public class Conhecimento extends AbstractModel implements Serializable
 	public void setCursos(Collection<Curso> cursos)
 	{
 		this.cursos = cursos;
+	}
+
+	public Collection<CriterioAvaliacaoCompetencia> getCriteriosAvaliacaoCompetencia() {
+		if (criteriosAvaliacaoCompetencia == null)
+			criteriosAvaliacaoCompetencia = new ArrayList<CriterioAvaliacaoCompetencia>();
+		return criteriosAvaliacaoCompetencia;
+	}
+
+	public void setCriteriosAvaliacaoCompetencia(
+			Collection<CriterioAvaliacaoCompetencia> criteriosAvaliacaoCompetencia) {
+		this.criteriosAvaliacaoCompetencia = criteriosAvaliacaoCompetencia;
 	}
 }

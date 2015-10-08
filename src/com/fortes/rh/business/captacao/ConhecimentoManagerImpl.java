@@ -19,9 +19,11 @@ import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.web.tags.CheckBox;
 
-public class ConhecimentoManagerImpl extends GenericManagerImpl<Conhecimento, ConhecimentoDao> implements ConhecimentoManager
+public class ConhecimentoManagerImpl  extends GenericManagerImpl<Conhecimento, ConhecimentoDao> implements ConhecimentoManager
 {
 	AreaOrganizacionalManager areaOrganizacionalManager;
+	
+	CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
 
 	public Collection<Conhecimento> findByAreasOrganizacionalIds(Long[] areasOrganizacionais, Long empresaId)
 	{
@@ -104,6 +106,7 @@ public class ConhecimentoManagerImpl extends GenericManagerImpl<Conhecimento, Co
 			CursoManager cursoManager = (CursoManager) SpringUtil.getBean("cursoManager");
 			conhecimento.setAreaOrganizacionals(areaOrganizacionalManager.findByConhecimento(conhecimentoId));
 			conhecimento.setCursos(cursoManager.findByCompetencia(conhecimentoId, TipoCompetencia.CONHECIMENTO));
+			conhecimento.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(conhecimentoId, TipoCompetencia.CONHECIMENTO));
 		}
 
 		return conhecimento;
@@ -112,6 +115,11 @@ public class ConhecimentoManagerImpl extends GenericManagerImpl<Conhecimento, Co
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
 	{
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+	
+	public void setCriterioAvaliacaoCompetenciaManager(
+			CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
+		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
 	}
 
 	public Collection<Conhecimento> findAllSelectDistinctNome(Long[] empresaIds)

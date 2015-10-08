@@ -11,9 +11,11 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 
 import com.fortes.rh.business.captacao.CompetenciaManager;
 import com.fortes.rh.business.captacao.ConhecimentoManager;
+import com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
@@ -31,6 +33,7 @@ public class ConhecimentoEditActionTest extends MockObjectTestCase
 	private Mock competenciaManager;
 	Mock areaOrganizacionalManager;
 	private Mock cursoManager;
+	private Mock criterioAvaliacaoCompetenciaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -40,6 +43,7 @@ public class ConhecimentoEditActionTest extends MockObjectTestCase
 		action = new ConhecimentoEditAction();
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
 		cursoManager = new Mock(CursoManager.class);
+		criterioAvaliacaoCompetenciaManager = new Mock(CriterioAvaliacaoCompetenciaManager.class);
 		competenciaManager = new Mock(CompetenciaManager.class);
 		
 		action.setConhecimento(new Conhecimento());
@@ -47,6 +51,7 @@ public class ConhecimentoEditActionTest extends MockObjectTestCase
 		action.setCompetenciaManager((CompetenciaManager) competenciaManager.proxy());
 		action.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 		action.setCursoManager((CursoManager) cursoManager.proxy());
+		action.setCriterioAvaliacaoCompetenciaManager((CriterioAvaliacaoCompetenciaManager) criterioAvaliacaoCompetenciaManager.proxy());
 	}
 
 	public void testPrepareInsert() throws Exception
@@ -148,15 +153,20 @@ public class ConhecimentoEditActionTest extends MockObjectTestCase
 		Collection<Curso> cursos = Arrays.asList(CursoFactory.getEntity(1L));
 
 		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento(1L);
+		CriterioAvaliacaoCompetencia criterio = new CriterioAvaliacaoCompetencia(null, "Criterio");
+		conhecimento.setCriteriosAvaliacaoCompetencia(Arrays.asList(criterio));
 		action.setConhecimento(conhecimento);
+		
 		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
 		areaOrganizacionalManager.expects(once()).method("populaAreas").will(returnValue(areas));
 		cursoManager.expects(once()).method("populaCursos").will(returnValue(cursos));
+		criterioAvaliacaoCompetenciaManager.expects(once()).method("removeByCompetencia");
 		manager.expects(once()).method("update").with(eq(conhecimento));
 
 		assertEquals("success", action.update());
 		assertEquals(areas, action.getConhecimento().getAreaOrganizacionals());
 		assertEquals(cursos, action.getConhecimento().getCursos());
+		assertEquals(1, action.getConhecimento().getCriteriosAvaliacaoCompetencia().size());
 		assertEquals(empresa.getId(), action.getEmpresaSistema().getId());
 	}
 	
@@ -177,6 +187,7 @@ public class ConhecimentoEditActionTest extends MockObjectTestCase
     		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
     		areaOrganizacionalManager.expects(once()).method("populaAreas").will(returnValue(areas));
     		cursoManager.expects(once()).method("populaCursos").will(returnValue(cursos));
+    		criterioAvaliacaoCompetenciaManager.expects(once()).method("removeByCompetencia");
     		manager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
     		action.update();
 		}

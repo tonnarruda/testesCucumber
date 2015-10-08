@@ -82,6 +82,9 @@
     <property name="areaOrganizacionalManager">
       <ref bean="areaOrganizacionalManager" />
     </property>
+    <property name="criterioAvaliacaoCompetenciaManager">
+      <ref bean="criterioAvaliacaoCompetenciaManager" />
+    </property>
   </bean>
   <bean id="conhecimentoManager" parent="parentManager">
     <property name="proxyInterfaces">
@@ -89,6 +92,19 @@
     </property>
     <property name="target">
       <ref bean="conhecimentoManagerTarget" />
+    </property>
+  </bean>
+  <bean id="criterioAvaliacaoCompetenciaManagerTarget" class="com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManagerImpl">
+    <property name="dao">
+      <ref bean="criterioAvaliacaoCompetenciaDao" />
+    </property>
+  </bean>
+  <bean id="criterioAvaliacaoCompetenciaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="criterioAvaliacaoCompetenciaManagerTarget" />
     </property>
   </bean>
   <bean id="competenciaManagerTarget" class="com.fortes.rh.business.captacao.CompetenciaManagerImpl">
