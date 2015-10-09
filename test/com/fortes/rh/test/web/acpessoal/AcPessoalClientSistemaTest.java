@@ -27,14 +27,14 @@ public class AcPessoalClientSistemaTest extends AcPessoalClientTest
 	{
 		montaMockGrupoAC();
 		
-		assertEquals("1.1.55.1", acPessoalClientsistemaImpl.getVersaoWebServiceAC(empresa));
+		assertEquals("1.1.56.1", acPessoalClientsistemaImpl.getVersaoWebServiceAC(empresa));
 	}
 
 	public void testIdACIntegrado() throws Exception
 	{
 		montaMockGrupoAC();
 		
-		assertTrue(acPessoalClientsistemaImpl.idACIntegrado(empresa));
+		assertTrue("O SISTEMA PESSOAL ESTA DESINTEGRADO", acPessoalClientsistemaImpl.idACIntegrado(empresa));
 	}
 
 	public void testVerificaWebService() throws Exception

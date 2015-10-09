@@ -194,6 +194,9 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 	public boolean verificarColaboradoresAreaMae(AreaOrganizacional areaMae)
 	{
+		if(areaMae == null)
+			return true;
+		
 		ColaboradorManager colaboradorManager = (ColaboradorManager) SpringUtil.getBeanOld("colaboradorManager");
 
 		Collection<Colaborador> colaboradores = colaboradorManager.findByArea(areaMae);

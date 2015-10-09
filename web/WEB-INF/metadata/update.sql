@@ -23287,3 +23287,14 @@ insert into migrations values('20150925155038');--.go
 ALTER TABLE parametrosdosistema ADD COLUMN modulosPermitidosSomatorio smallint DEFAULT 63;--.go
 insert into migrations values('20150928083434');--.go
 update parametrosdosistema set appversao = '1.1.151.182';--.go
+-- versao 1.1.152.183
+
+update papel set ordem=ordem+1 where papelmae_id is null and ordem > 3;--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (644, 'ROLE_MOV_AVALIACAO_EDITAR_ACOMPANHAMENTO', 'Editar respostas do acompanhamento do período de experiência por meio de caixa de mensagem ou email', '', 4, false, NULL);--.go  
+INSERT INTO perfil_papel (perfil_id, papeis_id) SELECT id, 644 FROM perfil;--.go
+
+alter sequence papel_sequence restart with 645;--.go
+insert into migrations values('20151005174443');--.go
+update parametrosdosistema set acversaowebservicecompativel='1.1.56.1';--.go
+insert into migrations values('20151008111614');--.go
+update parametrosdosistema set appversao = '1.1.152.183';--.go

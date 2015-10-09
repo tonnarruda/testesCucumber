@@ -649,8 +649,10 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		area.setEmpresaCodigo(empresa.getCodigoAC());
 		
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").withAnyArguments().will(returnValue(null));
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("save").with(ANYTHING);
+		areaOrganizacionalManager.expects(once()).method("transferirColabDaAreaMaeParaAreaFilha").withAnyArguments();
 		
 		assertEquals(true, rHServiceManager.criarAreaOrganizacional(area).isSucesso());
 	}
@@ -664,6 +666,7 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		area.setEmpresaCodigo(empresa.getCodigoAC());
 		
 		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), ANYTHING).will(returnValue(empresa));
+		areaOrganizacionalManager.expects(once()).method("findAreaOrganizacionalByCodigoAc").withAnyArguments().will(returnValue(null));
 		areaOrganizacionalManager.expects(once()).method("bind").with(ANYTHING, ANYTHING);
 		areaOrganizacionalManager.expects(once()).method("save").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException(null,""))));
 		

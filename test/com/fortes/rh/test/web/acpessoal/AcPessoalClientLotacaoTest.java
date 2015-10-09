@@ -2,7 +2,10 @@ package com.fortes.rh.test.web.acpessoal;
 
 import java.sql.ResultSet;
 
+import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
+import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.web.ws.AcPessoalClientLotacaoImpl;
 
@@ -17,7 +20,7 @@ public class AcPessoalClientLotacaoTest extends AcPessoalClientTest
 	protected void setUp() throws Exception
 	{
 		super.setUp();
-
+		
 		acPessoalClientLotacaoImpl = new AcPessoalClientLotacaoImpl();
 		acPessoalClientLotacaoImpl.setAcPessoalClient(acPessoalClientImpl);
 
@@ -36,7 +39,7 @@ public class AcPessoalClientLotacaoTest extends AcPessoalClientTest
 	{
 		ResultSet result = query("select count(*) as total from lot where emp_codigo = '" + getEmpresa().getCodigoAC() + "'");
 		if (result.next())
-			assertEquals(6, result.getInt("total"));
+			assertTrue(result.getInt("total") >= 6);
 		else
 			fail("Consulta não retornou nada...");
 	}
@@ -123,5 +126,42 @@ public class AcPessoalClientLotacaoTest extends AcPessoalClientTest
 	{
 		montaMockGrupoAC();
 		assertEquals("999.99", acPessoalClientLotacaoImpl.getMascara(empresa));
+	}
+	
+	public void testTransfereColaboradoresAreas() throws Exception
+	{
+		montaMockGrupoAC();
+		
+		String empreagdoCodigo = "000001";
+		execute("update cfe set valor = '999.99.99.99' where codigo = 'MASCARAEDLOT' and emp_codigo = '0006'");
+		ResultSet result = query("select lot_codigo from sep where epg_codigo = '" + empreagdoCodigo + "' and emp_codigo = '0006'");
+		
+		if (result.next())
+		{
+			String lotacaoCodigoMae = result.getString("lot_codigo");
+			
+			areaOrganizacional.setCodigoAC(lotacaoCodigoMae);
+			AreaOrganizacional areaOrganizacionalFilha = AreaOrganizacionalFactory.getEntity(2L);
+			areaOrganizacionalFilha.setNome("filha");
+			areaOrganizacionalFilha.setCodigoAC(null);
+			areaOrganizacionalFilha.setAreaMae(areaOrganizacional);
+			String lotacaoCodigoFilha = acPessoalClientLotacaoImpl.criarLotacao(areaOrganizacionalFilha, empresa);
+			
+			ResultSet situacaoEmpregado = query("select lot_codigo from sep where epg_codigo = '" + empreagdoCodigo + "' and emp_codigo = '0006'");
+			if (situacaoEmpregado.next()){
+				assertEquals(lotacaoCodigoFilha, situacaoEmpregado.getString("lot_codigo"));
+				assertFalse(lotacaoCodigoMae.equals(situacaoEmpregado.getString("lot_codigo")));
+				
+				//reajustar
+				execute("update cfe set valor = '999.99' where codigo = 'MASCARAEDLOT' and emp_codigo = '0006'");
+				execute("update SEP set lot_codigo = '" + lotacaoCodigoMae + "'  where epg_codigo = '" + empreagdoCodigo + "' and emp_codigo = '0006'");
+				execute("delete from lot where codigo = '"+ lotacaoCodigoFilha + "'");
+			}else
+				fail("Consulta nova situacaoEmpregado não retornou nada...");
+			
+		}
+		else
+			fail("Consulta não retornou nada...");
+
 	}
 }
