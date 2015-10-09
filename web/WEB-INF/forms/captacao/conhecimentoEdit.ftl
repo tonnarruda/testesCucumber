@@ -76,23 +76,18 @@
 	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais *" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 	<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos/Treinamentos Sugeridos" list="cursosCheckList" filtro="true"/>
 	
-	
-	<li>
-		<div id="update_" class="divInfo" style="width: 490px; margin: 10px 0;">
-			<h2>Critérios para avaliação da competência</h2>
-			<ul>
-				<li id="wwgrp_criterios" class="wwgrp" style="margin: 10px 0;">
-					<div id="wwctrl_criterios" class="wwctrl">
-						<ul id="criterios"></ul>
-						<a title="Adicionar critério" href="javascript:;" onclick="addCriterio();">
-							<img src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" align="absMiddle" /> 
-							Adicionar critério 
-						</a>
-					</div>
-				</li>
-			</ul>
+	<li id="wwgrp_criterios" class="wwgrp" style="margin: 10px 0;">
+		<div id="wwlbl_criterios" class="wwlbl">
+			<label for="criterios" class="desc"> Critérios para avaliação da competência:</label>
+		</div> 
+		<div id="wwctrl_criterios" class="wwctrl" style="border: 1px solid #BEBEBE; padding: 10px 5px; width: 490px;">
+			<ul id="criterios"></ul>
+			<a title="Adicionar critério" href="javascript:;" onclick="addCriterio();">
+				<img src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" align="absMiddle" /> 
+				Adicionar critério 
+			</a>
 		</div>
-	</li>
+	</li>	
 	
 	<@ww.textarea label="Observação" name="conhecimento.observacao" id="observacao" cssStyle="width:500px;"/>
 

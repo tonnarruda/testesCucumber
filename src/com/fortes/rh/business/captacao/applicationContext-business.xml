@@ -358,6 +358,9 @@
     <property name="areaOrganizacionalManager">
       <ref bean="areaOrganizacionalManager" />
     </property>
+    <property name="criterioAvaliacaoCompetenciaManager">
+      <ref bean="criterioAvaliacaoCompetenciaManager" />
+    </property>
     <property name="dao">
       <ref bean="habilidadeDao" />
     </property>
@@ -373,6 +376,9 @@
   <bean id="atitudeManagerTarget" class="com.fortes.rh.business.captacao.AtitudeManagerImpl">
     <property name="areaOrganizacionalManager">
       <ref bean="areaOrganizacionalManager" />
+    </property>
+    <property name="criterioAvaliacaoCompetenciaManager">
+      <ref bean="criterioAvaliacaoCompetenciaManager" />
     </property>
     <property name="dao">
       <ref bean="atitudeDao" />

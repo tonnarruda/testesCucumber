@@ -12,6 +12,7 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.CompetenciaManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
+import com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Atitude;
@@ -33,6 +34,7 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 	private Mock atitudeManager;
 	private Mock competenciaManager;
 	private Mock cursoManager;
+	private Mock criterioAvaliacaoCompetenciaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -42,6 +44,7 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
 		cursoManager = new Mock(CursoManager.class);
 		competenciaManager = new Mock(CompetenciaManager.class);
+		criterioAvaliacaoCompetenciaManager = new Mock(CriterioAvaliacaoCompetenciaManager.class);
 		configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class);
 
 		action.setAtitude(new Atitude());
@@ -50,6 +53,7 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		action.setCursoManager((CursoManager) cursoManager.proxy());
 		action.setCompetenciaManager((CompetenciaManager) competenciaManager.proxy());
 		action.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
+		action.setCriterioAvaliacaoCompetenciaManager((CriterioAvaliacaoCompetenciaManager) criterioAvaliacaoCompetenciaManager.proxy());
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 	}
@@ -114,6 +118,7 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		action.setAtitude(atitude);
 
 		configuracaoNivelCompetenciaManager.expects(once()).method("existeConfiguracaoNivelCompetencia").with(eq(atitude.getId()), eq(TipoCompetencia.ATITUDE)).will(returnValue(false));
+		criterioAvaliacaoCompetenciaManager.expects(once()).method("removeByCompetencia");
 		atitudeManager.expects(once()).method("remove");
 		assertEquals("success", action.delete());
 	}
@@ -133,18 +138,18 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		action.setAtitude(atitude);
 		
 		configuracaoNivelCompetenciaManager.expects(once()).method("existeConfiguracaoNivelCompetencia").with(eq(atitude.getId()), eq(TipoCompetencia.ATITUDE)).will(returnValue(false));
+		criterioAvaliacaoCompetenciaManager.expects(once()).method("removeByCompetencia");
 		atitudeManager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		try {
 			action.delete();
 		} catch (Exception e) {
-			return;
+			fail("Não deveria ter lançado uma exceçao");
 		}
-		fail("Deveria ter lançado uma exceçao");
 	}
 
 	public void testInsert() throws Exception
 	{
-		Atitude atitude = AtitudeFactory.getEntity(1L);
+		Atitude atitude = AtitudeFactory.getEntity();
 		action.setAtitude(atitude);
 
 		Collection<AreaOrganizacional> areas = collectionAreasOrganizacionais();
@@ -198,6 +203,7 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
 		areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));
 		cursoManager.expects(once()).method("populaCursos").will(returnValue(cursos));
+		criterioAvaliacaoCompetenciaManager.expects(once()).method("removeByCompetencia");
 		atitudeManager.expects(once()).method("update").with(eq(atitude)).isVoid();
 
 		assertEquals("success", action.update());
@@ -209,7 +215,7 @@ public class AtitudeEditActionTest extends MockObjectTestCase
 		
     	try
 		{	
-    		Atitude atitude = AtitudeFactory.getEntity();
+    		Atitude atitude = AtitudeFactory.getEntity(1L);
     		atitude.setNome("atitude");
 
     		action.setAtitude(atitude);
@@ -221,6 +227,7 @@ public class AtitudeEditActionTest extends MockObjectTestCase
     		
 			areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));
 			cursoManager.expects(once()).method("populaCursos").will(returnValue(cursos));
+			criterioAvaliacaoCompetenciaManager.expects(once()).method("removeByCompetencia");
     		atitudeManager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
     		action.update();
 		}

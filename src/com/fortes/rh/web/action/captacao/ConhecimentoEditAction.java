@@ -83,6 +83,9 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 			}
 		}
 		
+		if (conhecimento.getId() != null)
+			criterioAvaliacaoCompetenciaManager.removeByCompetencia(conhecimento.getId(), Competencia.CONHECIMENTO, criterios);
+		
 		conhecimento.setCriteriosAvaliacaoCompetencia(criterios);
 	}
 	
@@ -109,8 +112,6 @@ public class ConhecimentoEditAction extends MyActionSupportEdit implements Model
 			prepareUpdate();
 			return Action.INPUT;
 		}
-		
-		criterioAvaliacaoCompetenciaManager.removeByCompetencia(conhecimento.getId(), Competencia.CONHECIMENTO, conhecimento.getCriteriosAvaliacaoCompetencia());
 		
 		montaConhecimento();
 		conhecimentoManager.update(conhecimento);

@@ -1,14 +1,17 @@
 package com.fortes.rh.model.captacao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
@@ -33,6 +36,9 @@ public class Atitude extends AbstractModel implements Serializable {
 	private Collection<AreaOrganizacional> areaOrganizacionals;
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Collection<Curso> cursos;
+	
+	@OneToMany(fetch=FetchType.LAZY, mappedBy="atitude", cascade=CascadeType.ALL)
+	private Collection<CriterioAvaliacaoCompetencia> criteriosAvaliacaoCompetencia;
 
 	public Atitude() {}
 
@@ -97,5 +103,16 @@ public class Atitude extends AbstractModel implements Serializable {
 	public void setCursos(Collection<Curso> cursos)
 	{
 		this.cursos = cursos;
+	}
+
+	public Collection<CriterioAvaliacaoCompetencia> getCriteriosAvaliacaoCompetencia() {
+		if (criteriosAvaliacaoCompetencia == null)
+			criteriosAvaliacaoCompetencia = new ArrayList<CriterioAvaliacaoCompetencia>();
+		return criteriosAvaliacaoCompetencia;
+	}
+
+	public void setCriteriosAvaliacaoCompetencia(
+			Collection<CriterioAvaliacaoCompetencia> criteriosAvaliacaoCompetencia) {
+		this.criteriosAvaliacaoCompetencia = criteriosAvaliacaoCompetencia;
 	}
 }

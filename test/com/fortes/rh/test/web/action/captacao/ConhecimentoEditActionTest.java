@@ -103,7 +103,7 @@ public class ConhecimentoEditActionTest extends MockObjectTestCase
 		Collection<AreaOrganizacional> areas = collectionAreasOrganizacionais();
 		Collection<Curso> cursos = Arrays.asList(CursoFactory.getEntity(1L));
 
-		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento(1L);
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
 		action.setConhecimento(conhecimento);
 		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
 		areaOrganizacionalManager.expects(once()).method("populaAreas").will(returnValue(areas));
@@ -178,7 +178,7 @@ public class ConhecimentoEditActionTest extends MockObjectTestCase
 
     	try
 		{
-    		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+    		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento(1L);
     		conhecimento.setNome("conhecimento");
 
     		action.setConhecimento(conhecimento);
