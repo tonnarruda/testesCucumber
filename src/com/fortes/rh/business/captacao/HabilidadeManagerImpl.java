@@ -19,6 +19,8 @@ import com.fortes.web.tags.CheckBox;
 public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, HabilidadeDao> implements HabilidadeManager
 {
 	AreaOrganizacionalManager areaOrganizacionalManager;
+	
+	CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
 
 	public Collection<Habilidade> populaHabilidades(String[] habilidadesCheck)
 	{
@@ -136,6 +138,7 @@ public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, Habili
 			
 			habilidade.setAreaOrganizacionals(areaOrganizacionalManager.findByHabilidade(habilidadeId));
 			habilidade.setCursos(cursoManager.findByCompetencia(habilidadeId, TipoCompetencia.HABILIDADE));
+			habilidade.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(habilidadeId, TipoCompetencia.HABILIDADE));
 		}
 
 		return habilidade;
@@ -144,5 +147,10 @@ public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, Habili
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
 	{
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setCriterioAvaliacaoCompetenciaManager(
+			CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
+		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
 	}
 }

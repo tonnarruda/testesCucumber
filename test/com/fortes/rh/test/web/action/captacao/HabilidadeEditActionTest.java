@@ -11,6 +11,7 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 
 import com.fortes.rh.business.captacao.CompetenciaManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
+import com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager;
 import com.fortes.rh.business.captacao.HabilidadeManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -33,6 +34,7 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 	private Mock habilidadeManager;
 	private Mock competenciaManager;
 	private Mock cursoManager;
+	private Mock criterioAvaliacaoCompetenciaManager;
 
 	protected void setUp() throws Exception
 	{
@@ -42,6 +44,7 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
 		cursoManager = new Mock(CursoManager.class);
 		competenciaManager = new Mock(CompetenciaManager.class);
+		criterioAvaliacaoCompetenciaManager = new Mock(CriterioAvaliacaoCompetenciaManager.class);
 		configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class);
 		
 		action.setHabilidade(new Habilidade());
@@ -50,6 +53,7 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		action.setCursoManager((CursoManager) cursoManager.proxy());
 		action.setCompetenciaManager((CompetenciaManager) competenciaManager.proxy());
 		action.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
+		action.setCriterioAvaliacaoCompetenciaManager((CriterioAvaliacaoCompetenciaManager) criterioAvaliacaoCompetenciaManager.proxy());
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 	}
@@ -114,6 +118,7 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		action.setHabilidade(habilidade);
 
 		configuracaoNivelCompetenciaManager.expects(once()).method("existeConfiguracaoNivelCompetencia").with(eq(habilidade.getId()), eq(TipoCompetencia.HABILIDADE)).will(returnValue(false));
+		criterioAvaliacaoCompetenciaManager.expects(once()).method("removeByCompetencia");
 		habilidadeManager.expects(once()).method("remove");
 		assertEquals("success", action.delete());
 	}
@@ -133,20 +138,19 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		action.setHabilidade(habilidade);
 		
 		configuracaoNivelCompetenciaManager.expects(once()).method("existeConfiguracaoNivelCompetencia").with(eq(habilidade.getId()), eq(TipoCompetencia.HABILIDADE)).will(returnValue(false));
+		criterioAvaliacaoCompetenciaManager.expects(once()).method("removeByCompetencia");
 		habilidadeManager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		
 		try {
 			action.delete();
 		} catch (Exception e) {
-			return;
+			fail("Não deveria ter lançado uma exceçao");
 		}
-		
-		fail("Deveria ter lançado uma exceçao");
 	}
 
 	public void testInsert() throws Exception
 	{
-		Habilidade habilidade = HabilidadeFactory.getEntity(1L);
+		Habilidade habilidade = HabilidadeFactory.getEntity();
 		action.setHabilidade(habilidade);
 
 		Collection<AreaOrganizacional> areas = collectionAreasOrganizacionais();
@@ -201,6 +205,7 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		competenciaManager.expects(once()).method("existeNome").will(returnValue(false));
 		areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));
 		cursoManager.expects(once()).method("populaCursos").will(returnValue(cursos));
+		criterioAvaliacaoCompetenciaManager.expects(once()).method("removeByCompetencia");
 		habilidadeManager.expects(once()).method("update").with(eq(habilidade)).isVoid();
 
 		assertEquals("success", action.update());
@@ -212,7 +217,7 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
 		
     	try
 		{
-    		Habilidade habilidade = HabilidadeFactory.getEntity();
+    		Habilidade habilidade = HabilidadeFactory.getEntity(1L);
     		habilidade.setNome("habilidade");
 
     		action.setHabilidade(habilidade);
@@ -225,6 +230,7 @@ public class HabilidadeEditActionTest extends MockObjectTestCase
     		
     		areaOrganizacionalManager.expects(once()).method("populaAreas").with(ANYTHING).will(returnValue(areas));
     		cursoManager.expects(once()).method("populaCursos").will(returnValue(cursos));
+    		criterioAvaliacaoCompetenciaManager.expects(once()).method("removeByCompetencia");
     		habilidadeManager.expects(once()).method("update").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
     		action.update();
 		}

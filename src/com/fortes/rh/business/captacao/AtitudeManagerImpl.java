@@ -20,6 +20,8 @@ public class AtitudeManagerImpl extends GenericManagerImpl<Atitude, AtitudeDao> 
 {
 	AreaOrganizacionalManager areaOrganizacionalManager;
 	
+	CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
+	
 	public Collection<Atitude> populaAtitudes(String[] atitudesCheck)
 	{
 		Collection<Atitude> atitudes = new ArrayList<Atitude>();
@@ -134,6 +136,7 @@ public class AtitudeManagerImpl extends GenericManagerImpl<Atitude, AtitudeDao> 
 			
 			atitude.setAreaOrganizacionals(areaOrganizacionalManager.findByAtitude(atitudeId));
 			atitude.setCursos(cursoManager.findByCompetencia(atitudeId, TipoCompetencia.ATITUDE));
+			atitude.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(atitudeId, TipoCompetencia.ATITUDE));
 		}
 
 		return atitude;
@@ -142,5 +145,10 @@ public class AtitudeManagerImpl extends GenericManagerImpl<Atitude, AtitudeDao> 
 	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager)
 	{
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setCriterioAvaliacaoCompetenciaManager(
+			CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
+		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
 	}
 }

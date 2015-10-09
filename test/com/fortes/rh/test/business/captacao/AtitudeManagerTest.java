@@ -12,6 +12,7 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
 import com.fortes.rh.business.captacao.AtitudeManagerImpl;
+import com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.captacao.AtitudeDao;
@@ -32,6 +33,7 @@ public class AtitudeManagerTest extends MockObjectTestCase
 	Mock atitudeDao;
 	Mock areaOrganizacionalManager ;
 	private Mock cursoManager;
+	private Mock criterioAvaliacaoCompetenciaManager;
 
     protected void setUp() throws Exception
     {
@@ -42,6 +44,9 @@ public class AtitudeManagerTest extends MockObjectTestCase
 
         areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
         atitudeManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
+        
+        criterioAvaliacaoCompetenciaManager = new Mock(CriterioAvaliacaoCompetenciaManager.class);
+        atitudeManager.setCriterioAvaliacaoCompetenciaManager((CriterioAvaliacaoCompetenciaManager) criterioAvaliacaoCompetenciaManager.proxy());
         
         cursoManager = new Mock(CursoManager.class);
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
@@ -135,6 +140,8 @@ public class AtitudeManagerTest extends MockObjectTestCase
 		
 		areaOrganizacionalManager.expects(once()).method("findByAtitude").with(eq(atitude.getId())).will(returnValue(areas));
 		cursoManager.expects(once()).method("findByCompetencia").with(eq(atitude.getId()), eq(TipoCompetencia.ATITUDE)).will(returnValue(areas));
+		criterioAvaliacaoCompetenciaManager.expects(once()).method("findByCompetencia").with(eq(atitude.getId()), eq(TipoCompetencia.ATITUDE));
+
 		
 		assertEquals(atitude, atitudeManager.findByIdProjection(atitude.getId()));
 	}

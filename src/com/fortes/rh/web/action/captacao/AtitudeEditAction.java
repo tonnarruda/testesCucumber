@@ -6,10 +6,12 @@ import java.util.Collection;
 import com.fortes.rh.business.captacao.AtitudeManager;
 import com.fortes.rh.business.captacao.CompetenciaManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
+import com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Competencia;
+import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -25,6 +27,7 @@ public class AtitudeEditAction extends MyActionSupportList
 	private CompetenciaManager competenciaManager;
 	private AtitudeManager atitudeManager;
 	private CursoManager cursoManager;
+	private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
 	
 	private Atitude atitude;
 	private Collection<Atitude> atitudes;
@@ -62,6 +65,25 @@ public class AtitudeEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
+	public void montaAtitude() {
+		atitude.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
+		atitude.setCursos(cursoManager.populaCursos(cursosCheck));
+		atitude.setEmpresa(getEmpresaSistema());
+		
+		Collection<CriterioAvaliacaoCompetencia> criterios = new ArrayList<CriterioAvaliacaoCompetencia>();
+		for (CriterioAvaliacaoCompetencia criterio : atitude.getCriteriosAvaliacaoCompetencia()) {
+			if (!criterio.getDescricao().equals("")) {
+				criterio.setAtitude(atitude);
+				criterios.add(criterio);
+			}
+		}
+		
+		if ( atitude.getId() != null )
+			criterioAvaliacaoCompetenciaManager.removeByCompetencia(atitude.getId(), Competencia.ATITUDE, atitude.getCriteriosAvaliacaoCompetencia());
+		
+		atitude.setCriteriosAvaliacaoCompetencia(criterios);
+	}
+	
 	public String insert() throws Exception
 	{
 		if (competenciaManager.existeNome(atitude.getNome(), null, null, getEmpresaSistema().getId()))
@@ -71,9 +93,7 @@ public class AtitudeEditAction extends MyActionSupportList
 			return Action.INPUT;
 		}
 		
-		atitude.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
-		atitude.setCursos(cursoManager.populaCursos(cursosCheck));
-		atitude.setEmpresa(getEmpresaSistema());
+		montaAtitude();
 		atitudeManager.save(atitude);
 		
 		return Action.SUCCESS;
@@ -88,9 +108,7 @@ public class AtitudeEditAction extends MyActionSupportList
 			return Action.INPUT;
 		}
 		
-		atitude.setAreaOrganizacionals(areaOrganizacionalManager.populaAreas(areasCheck));
-		atitude.setCursos(cursoManager.populaCursos(cursosCheck));
-		atitude.setEmpresa(getEmpresaSistema());
+		montaAtitude();
 		atitudeManager.update(atitude);
 		
 		return Action.SUCCESS;
@@ -113,9 +131,16 @@ public class AtitudeEditAction extends MyActionSupportList
 	public String delete() throws Exception
 	{
 		if(!configuracaoNivelCompetenciaManager.existeConfiguracaoNivelCompetencia(atitude.getId(), TipoCompetencia.ATITUDE)){
-			atitudeManager.remove(atitude.getId());
-			addActionSuccess("Atitude excluída com sucesso.");
-			return Action.SUCCESS;
+			try {
+				criterioAvaliacaoCompetenciaManager.removeByCompetencia(atitude.getId(), TipoCompetencia.ATITUDE, null);
+				atitudeManager.remove(atitude.getId());
+				
+				addActionSuccess("Atitude excluída com sucesso.");
+				return Action.SUCCESS;
+			} catch (Exception e) {
+				addActionMessage("Não foi possível excluir a atitude.");
+				return Action.INPUT;
+			}
 		}
 		else{
 			addActionWarning("Não é possível excluir esta atitude pois possui dependência com o nível de competencia do cargo/faixa salarial.");
@@ -212,5 +237,10 @@ public class AtitudeEditAction extends MyActionSupportList
 
 	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
+	}
+
+	public void setCriterioAvaliacaoCompetenciaManager(
+			CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
+		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
 	}
 }
