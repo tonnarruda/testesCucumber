@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.15x.18x" db="" data="xx/xx/2015">
+		<Item visivel="S" motivo="P15100000092"><![CDATA[C&S > Relatórios > Descrição de Cargos: Ajuste de inconsistência ao exibir as competências e os níveis exigidos pelo cargo.]]></Item>
+	</Versao>
 	<Versao id="1.1.152.183" db="" data="09/10/2015">
 		<Item visivel="S" motivo="S15090000000"><![CDATA[C&S > Cadastros > Áreas Organizacionais > Inserir: Possibilidade de transferir colaboradores da área organizacional alocado para sua respectiva área organizacional filha a ser criada.]]></Item>
 		<Item visivel="S" motivo="P15100000001"><![CDATA[Pesquisas > Movimentações > Pesquisas > Liberar pesquisa: Melhoria da performance ao enviar emails para os colaboradores da pesquisa.]]></Item>
