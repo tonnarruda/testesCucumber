@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.3579476910000023"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="595"/>
+	<property name="ireport.x" value="360"/>
+	<property name="ireport.y" value="574"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -15,6 +15,7 @@
 		<field name="competencias" class="java.lang.Object"/>
 		<field name="nome" class="java.lang.String"/>
 		<field name="historicoFaixaValorFormatado" class="java.lang.String"/>
+		<field name="dataConfiguracaoNivelCompetenciaFaixaSalarial" class="java.lang.String"/>
 	</subDataset>
 	<subDataset name="competencias" uuid="898df8de-a7f1-4fb6-bc27-fe31cfcf1c4e">
 		<field name="nome" class="java.lang.String"/>
@@ -54,7 +55,7 @@
 	<columnHeader>
 		<band height="50" splitType="Stretch">
 			<subreport isUsingCache="true">
-				<reportElement uuid="f022475f-d526-4f9f-a0f9-50464d27cb09" key="subreport-1" x="0" y="0" width="535" height="50"/>
+				<reportElement key="subreport-1" x="0" y="0" width="535" height="50" uuid="f022475f-d526-4f9f-a0f9-50464d27cb09"/>
 				<subreportParameter name="SUBREPORT_DIR">
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -68,7 +69,7 @@
 	<detail>
 		<band height="39" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-18" positionType="Float" mode="Transparent" x="0" y="15" width="66" height="24" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-18" positionType="Float" mode="Transparent" x="0" y="15" width="66" height="24" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -82,7 +83,7 @@
 				<text><![CDATA[Código CBO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-18" positionType="Float" mode="Transparent" x="66" y="15" width="242" height="24" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-18" positionType="Float" mode="Transparent" x="66" y="15" width="242" height="24" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -96,7 +97,7 @@
 				<text><![CDATA[Nomenclatura de Mercado]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="66" y="25" width="242" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="66" y="25" width="242" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -109,7 +110,7 @@
 				<textFieldExpression><![CDATA[$F{nomeMercado}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="0" y="25" width="66" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="0" y="25" width="66" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -122,7 +123,7 @@
 				<textFieldExpression><![CDATA[$F{cboCodigo}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-18" positionType="Float" mode="Transparent" x="308" y="15" width="227" height="24" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-18" positionType="Float" mode="Transparent" x="308" y="15" width="227" height="24" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -136,7 +137,7 @@
 				<text><![CDATA[Grupo Ocupacional]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="308" y="25" width="227" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="308" y="25" width="227" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -149,7 +150,7 @@
 				<textFieldExpression><![CDATA[$F{grupoOcupacional.nome}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="0" y="1" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="0" y="1" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -162,12 +163,12 @@
 				<textFieldExpression><![CDATA["Cargo: " + $F{nome}]]></textFieldExpression>
 			</textField>
 			<break>
-				<reportElement uuid="47f2a93e-a563-4bdc-9ab3-8fdf5631e2b5" x="0" y="0" width="535" height="1"/>
+				<reportElement x="0" y="0" width="535" height="1" uuid="47f2a93e-a563-4bdc-9ab3-8fdf5631e2b5"/>
 			</break>
 		</band>
 		<band height="24">
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -181,7 +182,7 @@
 				<text><![CDATA[Áreas Organizacionais]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -196,7 +197,7 @@
 		</band>
 		<band height="24">
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -210,7 +211,7 @@
 				<text><![CDATA[Missão do Cargo]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -225,7 +226,7 @@
 		</band>
 		<band height="24">
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -239,7 +240,7 @@
 				<text><![CDATA[Fontes de Recrutamento]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -254,7 +255,7 @@
 		</band>
 		<band height="24">
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -268,7 +269,7 @@
 				<text><![CDATA[Etapas Seletivas]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -283,7 +284,7 @@
 		</band>
 		<band height="24">
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -297,7 +298,7 @@
 				<text><![CDATA[Responsabilidades Correlatas]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -312,7 +313,7 @@
 		</band>
 		<band height="40" splitType="Prevent">
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-18" positionType="Float" mode="Transparent" x="0" y="0" width="535" height="16" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-18" positionType="Float" mode="Transparent" x="0" y="0" width="535" height="16" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -326,7 +327,7 @@
 				<text><![CDATA[Conhecimentos, Habilidades e Atitudes (CHA)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="16" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="16" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -340,7 +341,7 @@
 				<text><![CDATA[Conhecimentos Requeridos]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="0" y="26" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="0" y="26" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -355,7 +356,7 @@
 		</band>
 		<band height="24">
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -369,7 +370,7 @@
 				<text><![CDATA[Habilidades]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -384,7 +385,7 @@
 		</band>
 		<band height="24">
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -398,7 +399,7 @@
 				<text><![CDATA[Atitudes]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -413,7 +414,7 @@
 		</band>
 		<band height="24">
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -427,7 +428,7 @@
 				<text><![CDATA[Escolaridade]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -442,7 +443,7 @@
 		</band>
 		<band height="24">
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -456,7 +457,7 @@
 				<text><![CDATA[Áreas de Formação]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -471,7 +472,7 @@
 		</band>
 		<band height="24">
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-19" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-19" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -485,7 +486,7 @@
 				<text><![CDATA[Experiência]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -498,9 +499,9 @@
 				<textFieldExpression><![CDATA[$F{experiencia}]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="53">
+		<band height="66">
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-20" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="53" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-20" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="63" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -514,7 +515,7 @@
 				<text><![CDATA[Faixas Salariais]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement uuid="bdf358a4-3d38-4fcd-b059-1caa3a95371e" mode="Transparent" x="0" y="13" width="535" height="38" backcolor="#FFFFFF"/>
+				<reportElement mode="Transparent" x="0" y="13" width="535" height="51" backcolor="#FFFFFF" uuid="bdf358a4-3d38-4fcd-b059-1caa3a95371e"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="faixas" uuid="82662b86-d71b-4637-8160-3c00d1a66632">
 						<datasetParameter name="EXIBIR_VALOR_FAIXASALARIAL">
@@ -522,9 +523,9 @@
 						</datasetParameter>
 						<dataSourceExpression><![CDATA[$F{faixaSalarials}]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="38" width="535">
+					<jr:listContents height="51" width="535">
 						<textField>
-							<reportElement uuid="244a3449-3cef-47a7-a8a6-f5512bc366b2" x="0" y="0" width="533" height="13" isPrintWhenDetailOverflows="true"/>
+							<reportElement x="0" y="0" width="533" height="13" isPrintWhenDetailOverflows="true" uuid="244a3449-3cef-47a7-a8a6-f5512bc366b2"/>
 							<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1"/>
 							<textElement>
 								<font size="8"/>
@@ -532,14 +533,14 @@
 							<textFieldExpression><![CDATA["Faixa Salarial : " + $F{nome}+ ( $P{EXIBIR_VALOR_FAIXASALARIAL} ? "  (Valor : "+$F{historicoFaixaValorFormatado}+")" : "" )]]></textFieldExpression>
 						</textField>
 						<componentElement>
-							<reportElement uuid="f4288dda-ecd0-4d1e-b8e0-aa620aa6ff08" mode="Transparent" x="16" y="25" width="503" height="12"/>
+							<reportElement mode="Transparent" x="16" y="38" width="503" height="12" uuid="f4288dda-ecd0-4d1e-b8e0-aa620aa6ff08"/>
 							<jr:list printOrder="Vertical">
 								<datasetRun subDataset="competencias" uuid="2cb7eb80-8398-45cb-a2f8-4978c1e9a069">
 									<dataSourceExpression><![CDATA[$F{competencias}]]></dataSourceExpression>
 								</datasetRun>
 								<jr:listContents height="12" width="503">
 									<textField>
-										<reportElement uuid="3c8531ab-c8e4-466b-893b-652c1d11d049" x="0" y="0" width="276" height="12"/>
+										<reportElement x="0" y="0" width="276" height="12" uuid="3c8531ab-c8e4-466b-893b-652c1d11d049"/>
 										<box leftPadding="5">
 											<topPen lineWidth="0.5"/>
 											<leftPen lineWidth="0.5"/>
@@ -552,7 +553,7 @@
 										<textFieldExpression><![CDATA[$F{nome}]]></textFieldExpression>
 									</textField>
 									<textField>
-										<reportElement uuid="2e95a2ed-4e98-4a9d-a21e-443e033bce6a" x="276" y="0" width="227" height="12"/>
+										<reportElement x="276" y="0" width="227" height="12" uuid="2e95a2ed-4e98-4a9d-a21e-443e033bce6a"/>
 										<box leftPadding="5">
 											<topPen lineWidth="0.5"/>
 											<bottomPen lineWidth="0.5"/>
@@ -567,7 +568,7 @@
 							</jr:list>
 						</componentElement>
 						<staticText>
-							<reportElement uuid="bc0768dc-c1eb-46a3-acaf-8b6371e6d82b" positionType="Float" x="16" y="13" width="276" height="12" isPrintWhenDetailOverflows="true"/>
+							<reportElement positionType="Float" x="16" y="26" width="276" height="12" isPrintWhenDetailOverflows="true" uuid="bc0768dc-c1eb-46a3-acaf-8b6371e6d82b"/>
 							<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 								<topPen lineWidth="0.5"/>
 								<leftPen lineWidth="0.5"/>
@@ -580,7 +581,7 @@
 							<text><![CDATA[Competência Exigida]]></text>
 						</staticText>
 						<staticText>
-							<reportElement uuid="c8201c96-ccdd-46b4-9bc4-06a08cd17347" x="292" y="13" width="227" height="12" isPrintWhenDetailOverflows="true"/>
+							<reportElement x="292" y="26" width="227" height="12" isPrintWhenDetailOverflows="true" uuid="c8201c96-ccdd-46b4-9bc4-06a08cd17347"/>
 							<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 								<topPen lineWidth="0.5"/>
 								<bottomPen lineWidth="0.5"/>
@@ -591,13 +592,20 @@
 							</textElement>
 							<text><![CDATA[Nível de Competência]]></text>
 						</staticText>
+						<textField>
+							<reportElement x="5" y="13" width="530" height="13" isPrintWhenDetailOverflows="true" uuid="e5f8864d-7216-4ec5-855c-9b09275a882c"/>
+							<textElement markup="none">
+								<font size="8"/>
+							</textElement>
+							<textFieldExpression><![CDATA["Data do histórico das competências da faixa salarial : " + ($F{dataConfiguracaoNivelCompetenciaFaixaSalarial} != null ? $F{dataConfiguracaoNivelCompetenciaFaixaSalarial} : "-")]]></textFieldExpression>
+						</textField>
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
 		</band>
 		<band height="24">
 			<staticText>
-				<reportElement uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6" key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF"/>
+				<reportElement key="staticText-18" positionType="Float" stretchType="RelativeToBandHeight" mode="Transparent" x="0" y="0" width="535" height="24" isPrintWhenDetailOverflows="true" backcolor="#FFFFFF" uuid="4b7e0ae9-63c8-4a07-8039-6e6c87fd12b6"/>
 				<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
 					<pen lineWidth="0.5"/>
 					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
@@ -611,7 +619,7 @@
 				<text><![CDATA[Observação]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b" key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF"/>
+				<reportElement key="textField" positionType="Float" mode="Transparent" x="0" y="10" width="535" height="14" forecolor="#000000" backcolor="#FFFFFF" uuid="af9bf3d8-1bc7-4581-885b-c3599be0774b"/>
 				<box topPadding="1" leftPadding="5" bottomPadding="1" rightPadding="1">
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -631,7 +639,7 @@
 	<pageFooter>
 		<band height="15" splitType="Stretch">
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="3a4cf5f1-7028-4c91-9b4b-85c0d0393f05" key="textField-1" x="308" y="2" width="186" height="13"/>
+				<reportElement key="textField-1" x="308" y="2" width="186" height="13" uuid="3a4cf5f1-7028-4c91-9b4b-85c0d0393f05"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -642,14 +650,13 @@
 				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER} + " de "]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" isBlankWhenNull="false">
-				<reportElement uuid="6635c195-66d2-4603-b533-6b07ab3b92b5" key="textField-2" x="501" y="2" width="32" height="13"/>
+				<reportElement key="textField-2" x="501" y="2" width="32" height="13" uuid="6635c195-66d2-4603-b533-6b07ab3b92b5"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
 				<textFieldExpression><![CDATA["" + $V{PAGE_NUMBER} + ""]]></textFieldExpression>
 			</textField>
 		</band>

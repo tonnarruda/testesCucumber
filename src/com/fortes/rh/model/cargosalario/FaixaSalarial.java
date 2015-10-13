@@ -26,6 +26,7 @@ import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -68,12 +69,13 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	private String areaOrganizacionalNome;
 	@Transient
 	private String projectionEstabelecimentoNome;
-
+	@Transient
+	private Date dataConfiguracaoNivelCompetenciaFaixaSalarial;
+	
 	public FaixaSalarial()
 	{
 	}
 	
-
 	public FaixaSalarial(Long id, Long historicoFaixaId, Date historicoFaixaData, Integer historicoFaixaTipo, Double historicoFaixaValor, Double historicoFaixaQuantidade, Long indiceId, Double historicoIndiceValor, Date historicoIndiceData)
 	{
 		setId(id);
@@ -495,25 +497,28 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		this.qtdColaboradores = qtdColaboradores;
 	}
 
-
 	public String getAreaOrganizacionalNome() {
 		return areaOrganizacionalNome;
 	}
-
 
 	public void setAreaOrganizacionalNome(String areaOrganizacionalNome) {
 		this.areaOrganizacionalNome = areaOrganizacionalNome;
 	}
 
-
 	public String getProjectionEstabelecimentoNome() {
 		return projectionEstabelecimentoNome;
 	}
-
 
 	public void setProjectionEstabelecimentoNome(
 			String projectionEstabelecimentoNome) {
 		this.projectionEstabelecimentoNome = projectionEstabelecimentoNome;
 	}
-
+	
+	public void setDataConfiguracaoNivelCompetenciaFaixaSalariall(Date dataConfiguracaoNivelCompetenciaFaixaSalarial){
+		this.dataConfiguracaoNivelCompetenciaFaixaSalarial = dataConfiguracaoNivelCompetenciaFaixaSalarial;
+	}
+	
+	public String getDataConfiguracaoNivelCompetenciaFaixaSalarial(){
+		return DateUtil.formataDiaMesAno(this.dataConfiguracaoNivelCompetenciaFaixaSalarial);
+	}
 }

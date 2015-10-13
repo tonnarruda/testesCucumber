@@ -362,7 +362,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		sql.append("      when "+TipoAplicacaoIndice.INDICE+" then hf.quantidade*hi.valor ");
 		sql.append("      else 0.0 ");
 		sql.append("   end as valor, ");
-		sql.append("   comp.nome as compNome, nc.descricao ");
+		sql.append("   comp.nome as compNome, nc.descricao, cncf.data ");
 		sql.append("from faixasalarial fs "); 
 		sql.append("left join faixaSalarialHistorico hf on hf.faixaSalarial_id = fs.id and hf.data = (select max(hf2.data) ");
 		sql.append("                                                                                         from FaixaSalarialHistorico hf2 ");
@@ -374,7 +374,8 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		sql.append("                                                                         from IndiceHistorico hi2 ");
 		sql.append("                                                                         where hi2.indice_id = i.id ");
 		sql.append("                                                                         and hi2.data <= current_date) ");
-		sql.append("   left join configuracaonivelcompetencia cnc on cnc.faixasalarial_id = fs.id "); 
+		sql.append("left join configuracaonivelcompetenciafaixasalarial cncf on cncf.faixasalarial_id = fs.id and cncf.data = (select max(cncf2.data) from configuracaonivelcompetenciafaixasalarial cncf2 where cncf.faixasalarial_id = fs.id ) ");
+		sql.append("   left join configuracaonivelcompetencia cnc on cnc.configuracaonivelcompetenciafaixasalarial_id = cncf.id"); 
 		sql.append("   left join competencia comp on comp.id = cnc.competencia_id and comp.tipo = cnc.tipocompetencia "); 
 		sql.append("   left join nivelcompetencia nc on nc.id = cnc.nivelcompetencia_id "); 
 		sql.append("where  fs.cargo_id = :cargoId "); 
@@ -426,7 +427,8 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 
 				faixaSalarial.getCompetencias().add(comp);
 			}
-			
+			if ((Date)faixa[5] != null)
+				faixaSalarial.setDataConfiguracaoNivelCompetenciaFaixaSalariall((Date)faixa[5]);
 		}
 		
 		return faixaSalarials;
