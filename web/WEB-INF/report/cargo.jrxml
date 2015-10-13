@@ -597,7 +597,7 @@
 							<textElement markup="none">
 								<font size="8"/>
 							</textElement>
-							<textFieldExpression><![CDATA["Data do histórico das competências da faixa salarial : " + ($F{dataConfiguracaoNivelCompetenciaFaixaSalarial} != null ? $F{dataConfiguracaoNivelCompetenciaFaixaSalarial} : "-")]]></textFieldExpression>
+							<textFieldExpression><![CDATA["Data do Histórico das Competências da Faixa Salarial : " + ($F{dataConfiguracaoNivelCompetenciaFaixaSalarial} != null ? $F{dataConfiguracaoNivelCompetenciaFaixaSalarial} : "")]]></textFieldExpression>
 						</textField>
 					</jr:listContents>
 				</jr:list>
