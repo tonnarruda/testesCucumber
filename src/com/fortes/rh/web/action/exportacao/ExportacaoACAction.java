@@ -338,7 +338,7 @@ public class ExportacaoACAction extends MyActionSupport
 	
 	private void exportarColaboradoresAC() throws Exception
 	{
-		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, null, null, StatusRetornoAC.PENDENTE, true, SituacaoColaborador.TODOS, true, "c.nome");
+		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, null, null, StatusRetornoAC.PENDENTE, true, false, SituacaoColaborador.TODOS, true, "c.nome");
 
 		for (Colaborador colaborador : colaboradores)
 		{

@@ -72,7 +72,7 @@ public class RHServiceIntranetTest extends MockObjectTestCase
 		colaborador2.setCargoNomeProjection(cargo.getNome());
 		colaborador2.setEstabelecimento(estabelecimento);
 		
-		colaboradorManager.expects(once()).method("findByEmpresaAndStatusAC").with(new Constraint[]{eq(empresa.getId()),eq(null),eq(null),eq(StatusRetornoAC.CONFIRMADO),eq(false), eq(SituacaoColaborador.ATIVO),eq(true), ANYTHING}).will(returnValue(Arrays.asList(colaborador1, colaborador2)));
+		colaboradorManager.expects(once()).method("findByEmpresaAndStatusAC").with(new Constraint[]{eq(empresa.getId()),eq(null),eq(null),eq(StatusRetornoAC.CONFIRMADO),eq(false), eq(false), eq(SituacaoColaborador.ATIVO),eq(true), ANYTHING}).will(returnValue(Arrays.asList(colaborador1, colaborador2)));
 		
 		Collection<UsuarioIntranet> usuarioIntranets = rHServiceIntranetImpl.usuariosIntranetList(empresa.getId().toString());
 		

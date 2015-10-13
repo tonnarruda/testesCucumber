@@ -4696,7 +4696,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		return criteria.list();	
 	}
 
-	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, int statusAC, boolean semcodigoAc, String situacaoColaborador, boolean primeiroHistorico, String... order)
+	public Collection<Colaborador> findByEmpresaAndStatusAC(Long empresaId, Long[] estabelecimentosIds, Long[] areasIds, int statusAC, boolean semCodigoAc, boolean comNaoIntegraAC, String situacaoColaborador, boolean primeiroHistorico, String... order)
 	{
 		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2");
 
@@ -4799,12 +4799,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		criteria.add(Property.forName("hc.data").eq(subQueryHc));
 		criteria.add(Expression.eq("c.empresa.id", empresaId));
 		
+		if(comNaoIntegraAC)
+			criteria.add(Expression.eq("c.naoIntegraAc", false));
+		
 		if(SituacaoColaborador.ATIVO.equals(situacaoColaborador))
 			criteria.add(Expression.eq("c.desligado", false));
 		else if (SituacaoColaborador.DESLIGADO.equals(situacaoColaborador))
 			criteria.add(Expression.eq("c.desligado", true));
 		
-		if(semcodigoAc)
+		if(semCodigoAc)
 			criteria.add(Expression.isNull("c.codigoAC"));
 		
 		if(!ArrayUtils.isEmpty(areasIds))

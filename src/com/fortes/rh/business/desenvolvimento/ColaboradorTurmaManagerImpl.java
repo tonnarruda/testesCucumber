@@ -361,7 +361,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		{
 			ColaboradorTurma ct;
 			Collection<Curso> cursos = cursoManager.findByEmpresaIdAndCursosId(empresaId, cursosIds);
-			Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, estabelecimentoIds, areaIds, StatusRetornoAC.CONFIRMADO, false, situacaoColaborador, false, new String[]{"emp.nome", "e.nome","areaOrganizacionalNome", "c.nome"});
+			Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, estabelecimentoIds, areaIds, StatusRetornoAC.CONFIRMADO, false, false, situacaoColaborador, false, new String[]{"emp.nome", "e.nome","areaOrganizacionalNome", "c.nome"});
 			boolean adicionarColaboardorTurma = true; 
 
 			for (Curso curso : cursos) 
