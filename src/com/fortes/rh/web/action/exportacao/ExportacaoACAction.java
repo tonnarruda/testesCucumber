@@ -74,7 +74,7 @@ public class ExportacaoACAction extends MyActionSupport
 		emProcessoExportacaoAC = empresaManager.emProcessoExportacaoAC(getEmpresaSistema().getId());
 		if(emProcessoExportacaoAC)
 			addActionWarning("O sistema esta em processo de exportação para o sistema Fortes Pessoal.</br>"
-					+ "Para continuar a utilizar o sistema RH, as pendências no controle de integração com o sistema RH no sistema Fortes Pessoal devem ser confirmadas.");
+					+ "Para continuar a utilizar o sistema RH, as pendências no controle de integração com o sistema RH devem ser confirmadas no Fortes Pessoal.");
 		
 		return INDEX;
 	}
@@ -338,7 +338,7 @@ public class ExportacaoACAction extends MyActionSupport
 	
 	private void exportarColaboradoresAC() throws Exception
 	{
-		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, null, null, StatusRetornoAC.PENDENTE, true, false, SituacaoColaborador.TODOS, true, "c.nome");
+		Collection<Colaborador> colaboradores = colaboradorManager.findByEmpresaAndStatusAC(empresaId, null, null, StatusRetornoAC.PENDENTE, true, true, SituacaoColaborador.TODOS, true, "c.nome");
 
 		for (Colaborador colaborador : colaboradores)
 		{
