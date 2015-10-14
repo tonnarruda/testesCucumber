@@ -9,9 +9,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
-import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
-import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
@@ -23,22 +21,13 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 	@SuppressWarnings("unchecked")
 	public Collection<NivelCompetencia> findAllSelect(Long empresaId) 
 	{
-		Criteria criteria = getSession().createCriteria(NivelCompetencia.class,"nc");
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("nc.id"), "id");
-		p.add(Projections.property("nc.ordem"), "ordem");
-		p.add(Projections.property("nc.descricao"), "descricao");
-
-		criteria.setProjection(p);
+		Criteria criteria = getSession().createCriteria(NivelCompetencia.class);
 
 		if(empresaId != null)
-			criteria.add(Expression.eq("nc.empresa.id", empresaId));
+			criteria.add(Expression.eq("empresa.id", empresaId));
 
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(NivelCompetencia.class));
-		criteria.addOrder(Order.asc("nc.ordem"));
+		criteria.addOrder(Order.asc("ordem"));
+		criteria.addOrder(Order.asc("descricao"));
 
 		return criteria.list();
 	}
@@ -98,5 +87,28 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		
 		Integer result = (Integer) criteria.uniqueResult();
 		return (int) (result == null ? 0 : result);
+	}
+
+	public boolean existePercentual(Long nivelCompetenciaId, Long empresaId, Double percentual) 
+	{
+		Criteria criteria = getSession().createCriteria(NivelCompetencia.class,"nc");
+
+		if(nivelCompetenciaId != null)
+			criteria.add(Expression.ne("nc.id", nivelCompetenciaId));
+		
+		criteria.add(Expression.eq("nc.percentual", percentual));
+		criteria.add(Expression.eq("nc.empresa.id", empresaId));
+
+		return criteria.list().size() > 0;
+	}
+
+	public boolean existeNivelCompetenciaSemPercentual(Long empresaId) 
+	{
+		Criteria criteria = getSession().createCriteria(NivelCompetencia.class,"nc");
+
+		criteria.add(Expression.eq("nc.empresa.id", empresaId));
+		criteria.add(Expression.isNull("nc.percentual"));
+
+		return criteria.list().size() > 0;
 	}
 }

@@ -192,6 +192,8 @@
 	</bean>
 	<bean id="nivelCompetenciaDWR" class="com.fortes.rh.web.dwr.NivelCompetenciaDWR">
 		<property name="configuracaoNivelCompetenciaManager" ref="configuracaoNivelCompetenciaManager"/>
+		<property name="nivelCompetenciaManager" ref="nivelCompetenciaManager"/>
+		<property name="criterioAvaliacaoCompetenciaManager" ref="criterioAvaliacaoCompetenciaManager"/>
 	</bean>
 	<bean id="certificacaoDWR" class="com.fortes.rh.web.dwr.CertificacaoDWR">
 		<property name="colaboradorCertificacaoManager" ref="colaboradorCertificacaoManager"/>

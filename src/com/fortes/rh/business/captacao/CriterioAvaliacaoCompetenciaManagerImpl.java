@@ -20,4 +20,8 @@ public class CriterioAvaliacaoCompetenciaManagerImpl extends GenericManagerImpl<
 	public void removeByCompetencia(Long competenciaId, Character tipoCompetencia, Collection<CriterioAvaliacaoCompetencia> criteriosQuePermanecem) {
 		getDao().removeByCompetencia(competenciaId, tipoCompetencia, new CollectionUtil<CriterioAvaliacaoCompetencia>().convertCollectionToArrayIds(criteriosQuePermanecem) );
 	}
+
+	public boolean existeCriterioAvaliacaoCompetencia(Long empresaId) {
+		return getDao().existeCriterioAvaliacaoCompetencia(empresaId);
+	}
 }

@@ -11,3 +11,10 @@ ALTER TABLE criterioavaliacaocompetencia ADD CONSTRAINT criterioavaliacaocompete
 ALTER TABLE criterioavaliacaocompetencia ADD CONSTRAINT criterioavaliacaocompetencia_habilidade_fk FOREIGN KEY (habilidade_id) REFERENCES habilidade(id);--.go
 ALTER TABLE criterioavaliacaocompetencia ADD CONSTRAINT criterioavaliacaocompetencia_atitude_fk FOREIGN KEY (atitude_id) REFERENCES atitude(id);--.go
 CREATE SEQUENCE criterioavaliacaocompetencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+
+ALTER TABLE nivelCompetencia ADD COLUMN percentual double precision;--.go
+
+ALTER TABLE conhecimento ADD COLUMN peso smallint DEFAULT 1;--.go
+ALTER TABLE habilidade ADD COLUMN peso smallint DEFAULT 1;--.go
+ALTER TABLE atitude ADD COLUMN peso smallint DEFAULT 1;--.go

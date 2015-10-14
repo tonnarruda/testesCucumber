@@ -82,4 +82,12 @@ public class MathUtil {
 		
 		return "";
 	}
+	
+	public static String formataPercentual(Double numero) 
+	{
+		DecimalFormat df = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt","BR"));//new DecimalFormat("0.##");
+		df.applyPattern("0.##");
+		
+		return df.format((numero * 100)) + "%";
+	}
 }

@@ -9,6 +9,7 @@ import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.MathUtil;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 
 @SuppressWarnings("serial")
@@ -21,7 +22,8 @@ public class NivelCompetencia extends AbstractModel implements Serializable
 	private Integer ordem;
 	@ManyToOne
 	private Empresa empresa;
-	
+	private Double percentual;
+
 	@ChaveDaAuditoria
 	public String getDescricao() {
 		return descricao;
@@ -40,5 +42,17 @@ public class NivelCompetencia extends AbstractModel implements Serializable
 	}
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+	public Double getPercentual() {
+		return percentual;
+	}
+	public void setPercentual(Double percentual) {
+		this.percentual = percentual;
+	}
+	public String getPercentualFormatado(){
+		if(percentual != null)
+			return MathUtil.formataPercentual(percentual/100);
+		
+		return "";
 	}
 }
