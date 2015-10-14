@@ -119,6 +119,7 @@
 			marcarDesmarcarListCheckBox(document.forms[0], 'bairrosCheck',false);
 			marcarDesmarcarListCheckBox(document.forms[0], 'cargosCheck',false);
 			marcarDesmarcarListCheckBox(document.forms[0], 'areasCheck',false);
+			marcarDesmarcarListCheckBox(document.forms[0], 'areasFormacaoCheck',false);
 			marcarDesmarcarListCheckBox(document.forms[0], 'conhecimentosCheck',false);
 			marcarDesmarcarListCheckBox(document.forms[0], 'experienciasCheck',false);
 		}
@@ -199,6 +200,8 @@
 			<@ww.select label="Possui Veículo" name="veiculo" id="veiculo" list=r"#{'I':'Indiferente','S':'Sim','N':'Não'}" cssStyle="width: 100px;" />
 			<@frt.checkListBox label="Cargo / Função Pretendida" name="cargosCheck" list="cargosCheckList" filtro="true" selectAtivoInativo="true"/>
 			<@frt.checkListBox label="Áreas de Interesse" name="areasCheck" list="areasCheckList" filtro="true"/>
+			<@frt.checkListBox label="Áreas de Formação" name="areasFormacaoCheck" list="areasFormacaoCheckList" filtro="true"/>
+			
 			<@frt.checkListBox label="Conhecimentos" name="conhecimentosCheck" list="conhecimentosCheckList" filtro="true"/>
 			<br />
 			<#if solicitacao?exists && solicitacao.id?exists && solicitacao.experiencia?exists>

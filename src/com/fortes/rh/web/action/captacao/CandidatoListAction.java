@@ -29,6 +29,7 @@ import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.GrupoOcupacionalManager;
+import com.fortes.rh.business.geral.AreaFormacaoManager;
 import com.fortes.rh.business.geral.AreaInteresseManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.BairroManager;
@@ -59,6 +60,7 @@ import com.fortes.rh.model.dicionario.Sexo;
 import com.fortes.rh.model.dicionario.SolicitacaoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
 import com.fortes.rh.model.dicionario.StatusSolicitacao;
+import com.fortes.rh.model.geral.AreaFormacao;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Bairro;
 import com.fortes.rh.model.geral.CamposExtras;
@@ -100,6 +102,7 @@ public class CandidatoListAction extends MyActionSupportList
 	private FaixaSalarialManager faixaSalarialManager;
 	private AnuncioManager anuncioManager;
 	private AreaInteresseManager areaInteresseManager;
+	private AreaFormacaoManager areaFormacaoManager;
 	private ConhecimentoManager conhecimentoManager;
 	private IdiomaManager idiomaManager;
 	private EstadoManager estadoManager;
@@ -143,6 +146,8 @@ public class CandidatoListAction extends MyActionSupportList
 	private Map session;
 
 	//Variaveis do listCheckBox
+	private String[] areasFormacaoCheck;
+	private Collection<CheckBox> areasFormacaoCheckList = new ArrayList<CheckBox>();
 	private String[] cargosCheck;
 	private Collection<CheckBox> cargosCheckList = new ArrayList<CheckBox>();
 	private String[] areasCheck;
@@ -309,13 +314,20 @@ public class CandidatoListAction extends MyActionSupportList
 
 		Collection<Cargo> cargos = cargoManager.findAllSelect("nomeMercado", null, Cargo.TODOS, EmpresaUtil.empresasSelecionadas(empresaId, empresas));
 		cargosCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercadoComStatus");
+		cargosCheckList = CheckListBoxUtil.marcaCheckListBox(cargosCheckList, cargosCheck);
 
 		Collection<AreaInteresse> areaInteressesAux = areaInteresseManager.findAllSelect(EmpresaUtil.empresasSelecionadas(empresaId, empresas));
 		areasCheckList = CheckListBoxUtil.populaCheckListBox(areaInteressesAux, "getId", "getNome");
+		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+		
+		Collection<AreaFormacao> areaFormacaoAux = areaFormacaoManager.findAll();
+		areasFormacaoCheckList = CheckListBoxUtil.populaCheckListBox(areaFormacaoAux, "getId", "getNome");
+		areasFormacaoCheckList = CheckListBoxUtil.marcaCheckListBox(areasFormacaoCheckList, areasFormacaoCheck);
 		
 		conhecimentosCheckList = conhecimentoManager.populaCheckOrderNome(EmpresaUtil.empresasSelecionadas(empresaId, empresas));
 
 		experienciasCheckList = CheckListBoxUtil.populaCheckListBox(cargos, "getId", "getNomeMercado");
+		experienciasCheckList = CheckListBoxUtil.marcaCheckListBox(experienciasCheckList, experienciasCheck);
 
 		if(!filtro && solicitacao != null && solicitacao.getId() != null)
 		{
@@ -605,9 +617,11 @@ public class CandidatoListAction extends MyActionSupportList
 		
 		Long[] bairrosCheckLong = StringUtil.stringToLong(bairrosCheck);
 		Long[] experienciasCheckLong = StringUtil.stringToLong(experienciasCheck);
+		Long[] areasFormacaoCheckLong = StringUtil.stringToLong(areasFormacaoCheck);
 		parametros.put("areasIds", areasCheckLong);
 		parametros.put("bairrosIds", bairrosCheckLong);
 		parametros.put("cidadesIds", cidadesCheck);
+		parametros.put("areasFormacaoIds", areasFormacaoCheckLong);
 		
 		if (experienciasCheckLong.length > 0)
 			parametros.put("experiencias", experienciasCheckLong);
@@ -1933,5 +1947,17 @@ public class CandidatoListAction extends MyActionSupportList
 
 	public void setFoneCelular(String foneCelular) {
 		this.foneCelular = foneCelular;
+	}
+
+	public void setAreaFormacaoManager(AreaFormacaoManager areaFormacaoManager) {
+		this.areaFormacaoManager = areaFormacaoManager;
+	}
+
+	public Collection<CheckBox> getAreasFormacaoCheckList() {
+		return areasFormacaoCheckList;
+	}
+
+	public void setAreasFormacaoCheck(String[] areasFormacaoCheck) {
+		this.areasFormacaoCheck = areasFormacaoCheck;
 	}
 }

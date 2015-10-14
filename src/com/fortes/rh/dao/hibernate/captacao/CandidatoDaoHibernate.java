@@ -358,6 +358,11 @@ public class CandidatoDaoHibernate extends GenericDaoHibernate<Candidato> implem
 
 		if(parametros.get("areasIds")  != null && ((Long[])parametros.get("areasIds")).length > 0)
 			criteria.createCriteria("c.areasInteresse", "a", Criteria.LEFT_JOIN).add(Expression.in("a.id", (Long[])parametros.get("areasIds")));
+		
+		if(parametros.get("areasFormacaoIds")  != null && ((Long[])parametros.get("areasFormacaoIds")).length > 0){
+			criteria.createCriteria("c.formacao", "formacao", Criteria.LEFT_JOIN);
+			criteria.createCriteria("formacao.areaFormacao", "aFormacao", Criteria.LEFT_JOIN).add(Expression.in("aFormacao.id", (Long[])parametros.get("areasFormacaoIds")));
+		}
 
 		if(parametros.get("cargosIds")  != null && ((Long[])parametros.get("cargosIds")).length > 0)
 			criteria.createCriteria("c.cargos", "cg", Criteria.LEFT_JOIN).add(Expression.in("cg.id", (Long[])parametros.get("cargosIds")));
