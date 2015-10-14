@@ -1501,6 +1501,55 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals(false, configuracaoNivelCompetenciaDao.verifyExists(new String[]{"competenciaId", "tipoCompetencia"}, new Object[]{atitude.getId(), TipoCompetencia.ATITUDE}));
 	}
 
+	public void testExistePercentual()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia1.setOrdem(1);
+		nivelCompetencia1.setEmpresa(empresa);
+		nivelCompetencia1.setPercentual(90.0);
+		nivelCompetenciaDao.save(nivelCompetencia1);
+		
+		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia2.setOrdem(4);
+		nivelCompetencia2.setEmpresa(empresa);
+		nivelCompetencia2.setPercentual(20.0);
+		nivelCompetenciaDao.save(nivelCompetencia2);
+
+		assertFalse(nivelCompetenciaDao.existePercentual(nivelCompetencia1.getId(), empresa.getId(), 90.0));
+		assertFalse(nivelCompetenciaDao.existePercentual(nivelCompetencia1.getId(), empresa.getId(), 85.0));
+		assertFalse(nivelCompetenciaDao.existePercentual(null, empresa.getId(), 85.0));
+		assertTrue(nivelCompetenciaDao.existePercentual(nivelCompetencia2.getId(), empresa.getId(), 90.0));
+		assertTrue(nivelCompetenciaDao.existePercentual(null, empresa.getId(), 90.0));
+	}
+	
+	public void testExisteNivelCompetenciaSemPercentual()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia1.setOrdem(1);
+		nivelCompetencia1.setEmpresa(empresa);
+		nivelCompetencia1.setPercentual(90.0);
+		nivelCompetenciaDao.save(nivelCompetencia1);
+		
+		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia2.setOrdem(4);
+		nivelCompetencia2.setEmpresa(empresa);
+		nivelCompetencia2.setPercentual(null);
+		nivelCompetenciaDao.save(nivelCompetencia2);
+
+		assertTrue(nivelCompetenciaDao.existeNivelCompetenciaSemPercentual(empresa.getId()));
+		
+		nivelCompetencia2.setPercentual(10.0);
+		nivelCompetenciaDao.update(nivelCompetencia2);
+		
+		assertFalse(nivelCompetenciaDao.existeNivelCompetenciaSemPercentual(empresa.getId()));
+	}
+	
 	public GenericDao<NivelCompetencia> getGenericDao()
 	{
 		return nivelCompetenciaDao;

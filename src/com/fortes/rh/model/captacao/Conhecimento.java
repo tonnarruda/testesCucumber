@@ -41,6 +41,7 @@ public class Conhecimento extends AbstractModel implements Serializable
 	
 	@Lob
 	private String observacao;
+	private Integer peso = 1;
 
 	public Conhecimento()
 	{
@@ -141,5 +142,13 @@ public class Conhecimento extends AbstractModel implements Serializable
 	public void setCriteriosAvaliacaoCompetencia(
 			Collection<CriterioAvaliacaoCompetencia> criteriosAvaliacaoCompetencia) {
 		this.criteriosAvaliacaoCompetencia = criteriosAvaliacaoCompetencia;
+	}
+
+	public Integer getPeso() {
+		return peso;
+	}
+
+	public void setPeso(Integer peso) {
+		this.peso = peso;
 	}
 }

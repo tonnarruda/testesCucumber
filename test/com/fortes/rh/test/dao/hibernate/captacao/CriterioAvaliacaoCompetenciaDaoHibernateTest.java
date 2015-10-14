@@ -6,20 +6,24 @@ import java.util.Collection;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.dao.captacao.CriterioAvaliacaoCompetenciaDao;
+import com.fortes.rh.dao.captacao.HabilidadeDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
+import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
 
 public class CriterioAvaliacaoCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<CriterioAvaliacaoCompetencia>
 {
 	private CriterioAvaliacaoCompetenciaDao criterioAvaliacaoCompetenciaDao;
 	private EmpresaDao empresaDao;
 	private ConhecimentoDao conhecimentoDao;
+	private HabilidadeDao habilidadeDao;
 
 	public CriterioAvaliacaoCompetencia getEntity()
 	{
@@ -45,7 +49,7 @@ public class CriterioAvaliacaoCompetenciaDaoHibernateTest extends GenericDaoHibe
 	public void setConhecimentoDao(ConhecimentoDao conhecimentoDao) {
 		this.conhecimentoDao = conhecimentoDao;
 	}
-
+	
 	public void testFindByCompetencia()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
@@ -86,4 +90,37 @@ public class CriterioAvaliacaoCompetenciaDaoHibernateTest extends GenericDaoHibe
 		
 		assertEquals(1, criterioAvaliacaoCompetenciaDao.findByCompetencia(conhecimento.getId(), TipoCompetencia.CONHECIMENTO).size());
 	}
+	
+	public void testExisteCriterioAvaliacaoCompetencia()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Habilidade habilidade = HabilidadeFactory.getEntity();
+		habilidade.setEmpresa(empresa);
+		habilidadeDao.save(habilidade);
+
+		assertFalse(criterioAvaliacaoCompetenciaDao.existeCriterioAvaliacaoCompetencia(empresa.getId()));
+		
+		CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia1 = new CriterioAvaliacaoCompetencia(null, "Criterio 1");
+		CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia2 = new CriterioAvaliacaoCompetencia(null, "Criterio 2");
+
+		Collection<CriterioAvaliacaoCompetencia> criterioAvaliacaoCompetencias = new ArrayList<CriterioAvaliacaoCompetencia>();
+		criterioAvaliacaoCompetencias.add(criterioAvaliacaoCompetencia1);
+		criterioAvaliacaoCompetencias.add(criterioAvaliacaoCompetencia2);
+
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimento.setEmpresa(empresa);
+		criterioAvaliacaoCompetencia1.setConhecimento(conhecimento);
+		criterioAvaliacaoCompetencia2.setConhecimento(conhecimento);
+		conhecimento.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetencias);
+		conhecimentoDao.save(conhecimento);
+		
+		assertTrue(criterioAvaliacaoCompetenciaDao.existeCriterioAvaliacaoCompetencia(empresa.getId()));
+	}
+
+	public void setHabilidadeDao(HabilidadeDao habilidadeDao) {
+		this.habilidadeDao = habilidadeDao;
+	}
+	
 }

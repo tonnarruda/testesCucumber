@@ -13,4 +13,8 @@ public interface NivelCompetenciaDao extends GenericDao<NivelCompetencia>
 	Collection<ConfiguracaoNivelCompetencia> findByCargoOrEmpresa(Long cargoId, Long empresaId);
 
 	int getOrdemMaxima(Long empresaId);
+
+	boolean existePercentual(Long nivelCompetenciaId, Long empresaId, Double percentual);
+
+	boolean existeNivelCompetenciaSemPercentual(Long empresaId);
 }

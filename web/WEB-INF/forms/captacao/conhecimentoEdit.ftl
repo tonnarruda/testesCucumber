@@ -10,60 +10,22 @@
 	<#assign formAction="insert.action"/>
 </#if>
 
-<#assign validarCampos="return validaFormulario('form', new Array('nome','@areasCheck'), null)"/>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/NivelCompetenciaDWR.js"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js"/>'></script>
+<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
+<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/CHA.js?version=${versao}"/>"></script>
+	
+<#assign validarCampos="return validaFormulario('form', new Array('nome','peso', '@areasCheck'), null)"/>
 
-	<script>
+	<script type='text/javascript'>
 		$(function(){
 			<#if conhecimento.id?exists && conhecimento.criteriosAvaliacaoCompetencia?exists && (conhecimento.criteriosAvaliacaoCompetencia?size > 0) >
 				<#list 0..(conhecimento.criteriosAvaliacaoCompetencia?size-1) as i>
-					addCriterio("${conhecimento.criteriosAvaliacaoCompetencia[i].descricao}", ${conhecimento.criteriosAvaliacaoCompetencia[i].id});
+					addCriterio("conhecimento", "${conhecimento.criteriosAvaliacaoCompetencia[i].descricao}", ${conhecimento.criteriosAvaliacaoCompetencia[i].id});
 				</#list>
 			</#if>
-			createEventClickAddCriterio();
+			createEventClickAddCriterio('conhecimento');
 		});
-	
-		function createEventClickAddCriterio() {
-			$(".inputCriterioDescricao").unbind();
-			$(".inputCriterioDescricao").keypress(function(event){
-				if ( event.which == 13 ) {
-					addCriterio();
-				}
-			});
-		}
-		
-		function reorganizeListaDeCriterios(addNew) {
-			$("#criterios li").each(function(i){
-				if( addNew && $(this).find(".inputCriterioDescricao").attr("name") == "" )
-					$(this).find(".inputCriterioDescricao").focus();
-					
-				$(this).find(".inputCriterioId").attr("name", "conhecimento.criteriosAvaliacaoCompetencia["+i+"].id");
-				$(this).find(".inputCriterioDescricao").attr("name", "conhecimento.criteriosAvaliacaoCompetencia["+i+"].descricao");
-			});
-			
-		}
-	
-		function delCriterio(item)
-		{
-			$(item).parent().parent().remove();
-			reorganizeListaDeCriterios();
-		}
-		
-		function addCriterio(criterioDescricao, criterioId)
-		{
-			criterioId = criterioId != undefined ? criterioId : "";
-			criterioDescricao = criterioDescricao != undefined ? criterioDescricao : "";
-			
-			var criterio = '<li style="margin: 2px 0;"><span>';
-			criterio += '<img title="Remover critério" onclick="delCriterio(this)" src="<@ww.url includeParams="none" value="/imgs/remove.png"/>" border="0" align="absMiddle" style="cursor:pointer;" />&nbsp;';
-			criterio += '<input type="hidden" value="' + criterioId + '" class="inputCriterioId" >';
-			criterio += '<input type="text" maxlength="100" value="' + criterioDescricao + '" class="inputCriterioDescricao" style="width:468px;">';
-			criterio += '</span></li>';
-		
-			$('#criterios').append(criterio);
-			
-			reorganizeListaDeCriterios(!criterioId);
-			createEventClickAddCriterio();
-		}
 	</script>
 </head>
 <body>
@@ -72,6 +34,7 @@
 <@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 
 	<@ww.textfield label="Nome" name="conhecimento.nome" id="nome" required="true" cssClass="inputNome" maxLength="100" cssStyle="width:500px;"/>
+	<@ww.textfield label="Peso" name="conhecimento.peso" id="peso" size="4"  maxLength="4" required="true" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:40px; text-align:right;"/>
 
 	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais *" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 	<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos/Treinamentos Sugeridos" list="cursosCheckList" filtro="true"/>
@@ -82,7 +45,7 @@
 		</div> 
 		<div id="wwctrl_criterios" class="wwctrl" style="border: 1px solid #BEBEBE; padding: 10px 5px; width: 490px;">
 			<ul id="criterios"></ul>
-			<a title="Adicionar critério" href="javascript:;" onclick="addCriterio();">
+			<a title="Adicionar critério" href="javascript:;" onclick="validaAddCriterio(${empresaSistema.id}, 'conhecimento');">
 				<img src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" align="absMiddle" /> 
 				Adicionar critério 
 			</a>

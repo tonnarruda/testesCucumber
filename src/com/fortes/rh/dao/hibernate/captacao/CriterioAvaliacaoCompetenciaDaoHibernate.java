@@ -2,11 +2,16 @@ package com.fortes.rh.dao.hibernate.captacao;
 
 import java.util.Collection;
 
+import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
+import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Expression;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.CriterioAvaliacaoCompetenciaDao;
 import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
+import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.util.LongUtil;
 
@@ -54,5 +59,17 @@ public class CriterioAvaliacaoCompetenciaDaoHibernate extends GenericDaoHibernat
 			query.setParameterList("criteriosQuePermanecem", criteriosQuePermanecem);
 
 		query.executeUpdate();
+	}
+
+	public boolean existeCriterioAvaliacaoCompetencia(Long empresaId) {
+		Criteria criteria = getSession().createCriteria(CriterioAvaliacaoCompetencia.class,"cac");
+		criteria.createCriteria("cac.conhecimento", "c", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cac.habilidade", "h", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cac.atitude", "a", Criteria.LEFT_JOIN);
+		
+		criteria.add(Expression.or(Expression.or(Expression.eq("c.empresa.id", empresaId),Expression.eq("h.empresa.id", empresaId)), Expression.eq("a.empresa.id", empresaId)));
+
+		return criteria.list().size() > 0;
+
 	}
 }

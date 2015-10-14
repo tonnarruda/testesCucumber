@@ -9,4 +9,5 @@ public interface CriterioAvaliacaoCompetenciaDao extends GenericDao<CriterioAval
 {
 	public Collection<CriterioAvaliacaoCompetencia> findByCompetencia(Long competenciaId, Character tipoCompetencia);
 	public void removeByCompetencia(Long competenciaId, Character tipoCompetencia, Long[] criteriosQuePermanecem);
+	public boolean existeCriterioAvaliacaoCompetencia(Long empresaId);
 }
