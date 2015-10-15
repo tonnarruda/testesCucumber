@@ -24,7 +24,7 @@
 	
 	<div class="buttonGroup">
 		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
-		<button class="btnInserir" onclick="window.location='gerarPercentualIgualmente.action'"></button>
+		<button class="btnDividirPercentualIgualmente" onclick="newConfirm('Tem certeza que deseja dividir o percentual mínimo igualmente?</br>Isso acarretará na alteração de todos os percentuais mínimo dos níveis de competência.', function(){window.location='gerarPercentualIgualmente.action'});"></button>
 	</div>
 </body>
 </html>

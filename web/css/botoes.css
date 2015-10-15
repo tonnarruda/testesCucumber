@@ -643,6 +643,12 @@
 	width: 130px !important;
 }
 
+.btnDividirPercentualIgualmente
+{
+	background-image:url(../imgs/btnDividirPercentualIgualmente.gif);
+	width: 225px !important;
+}
+
 .btnExportar,
 .btnVoltarInicial,
 .btnExcluir,
@@ -773,7 +779,8 @@
 .btnCriarTurmas,
 .btnTrocaExtintores,
 .btnEnviarParaAmigo,
-.btnInserirEditar
+.btnInserirEditar,
+.btnDividirPercentualIgualmente
 {
 	border: 0;
 	background-repeat: no-repeat;
