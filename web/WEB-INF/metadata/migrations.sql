@@ -18,3 +18,17 @@ ALTER TABLE nivelCompetencia ADD COLUMN percentual double precision;--.go
 ALTER TABLE conhecimento ADD COLUMN peso smallint DEFAULT 1;--.go
 ALTER TABLE habilidade ADD COLUMN peso smallint DEFAULT 1;--.go
 ALTER TABLE atitude ADD COLUMN peso smallint DEFAULT 1;--.go
+
+-----
+
+CREATE TABLE configuracaonivelcompetenciacriterio (
+	id bigint NOT NULL,
+	criterio_id bigint,
+    criterio_descricao character varying(100) NOT NULL,
+    configuracaonivelcompetencia_id bigint,
+    nivelcompetencia_id bigint
+); --.go
+
+ALTER TABLE configuracaonivelcompetenciacriterio ADD CONSTRAINT configuracaonivelcompetenciacriterio_pkey PRIMARY KEY(id);--.go
+ALTER TABLE configuracaonivelcompetenciacriterio ADD CONSTRAINT configuracaonivelcompetenciacriterio_cnc_fk FOREIGN KEY (configuracaonivelcompetencia_id) REFERENCES configuracaonivelcompetencia(id);--.go
+ALTER TABLE configuracaonivelcompetenciacriterio ADD CONSTRAINT configuracaonivelcompetenciacriterio_nivelcompetencia_fk FOREIGN KEY (nivelcompetencia_id) REFERENCES nivelcompetencia(id);--.go

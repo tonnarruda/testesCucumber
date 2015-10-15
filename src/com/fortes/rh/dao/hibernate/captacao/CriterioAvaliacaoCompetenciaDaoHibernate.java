@@ -3,15 +3,12 @@ package com.fortes.rh.dao.hibernate.captacao;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
-import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Expression;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.CriterioAvaliacaoCompetenciaDao;
 import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
-import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.util.LongUtil;
 

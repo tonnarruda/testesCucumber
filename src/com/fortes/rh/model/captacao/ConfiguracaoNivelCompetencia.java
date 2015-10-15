@@ -2,11 +2,14 @@ package com.fortes.rh.model.captacao;
 
 import java.io.Serializable;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
@@ -40,10 +43,15 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	@Column(name="competencia_id", nullable=false)
 	private Long competenciaId;
 	
+	@OneToMany(mappedBy="configuracaoNivelCompetencia", cascade=CascadeType.ALL)
+	private Collection<ConfiguracaoNivelCompetenciaCriterio> configuracaoNivelCompetenciaCriterios;
+	
 	@Transient
 	private String competenciaDescricao;	
 	@Transient
 	private String competenciaObservacao;	
+	@Transient
+	private Collection<CriterioAvaliacaoCompetencia> criteriosAvaliacaoCompetencia;
 	@Transient
 	private Long cursoId;	
 	@Transient
@@ -54,6 +62,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	private NivelCompetencia nivelCompetenciaFaixaSalarial;
 	@Transient
 	private Colaborador colaborador;
+	
 	
 	public ConfiguracaoNivelCompetencia()
 	{
@@ -474,5 +483,23 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 
 	public void setNivelCompetenciaFaixaSalarial(NivelCompetencia nivelCompetenciaFaixaSalarial) {
 		this.nivelCompetenciaFaixaSalarial = nivelCompetenciaFaixaSalarial;
+	}
+
+	public Collection<CriterioAvaliacaoCompetencia> getCriteriosAvaliacaoCompetencia() {
+		return criteriosAvaliacaoCompetencia;
+	}
+
+	public void setCriteriosAvaliacaoCompetencia(
+			Collection<CriterioAvaliacaoCompetencia> criteriosAvaliacaoCompetencia) {
+		this.criteriosAvaliacaoCompetencia = criteriosAvaliacaoCompetencia;
+	}
+
+	public Collection<ConfiguracaoNivelCompetenciaCriterio> getConfiguracaoNivelCompetenciaCriterios() {
+		return configuracaoNivelCompetenciaCriterios;
+	}
+
+	public void setConfiguracaoNivelCompetenciaCriterios(
+			Collection<ConfiguracaoNivelCompetenciaCriterio> configuracaoNivelCompetenciaCriterios) {
+		this.configuracaoNivelCompetenciaCriterios = configuracaoNivelCompetenciaCriterios;
 	}
 }
