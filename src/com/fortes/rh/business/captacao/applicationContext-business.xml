@@ -421,6 +421,9 @@
     <property name="candidatoSolicitacaoManager">
       <ref bean="candidatoSolicitacaoManager" />
     </property>
+    <property name="criterioAvaliacaoCompetenciaManager">
+      <ref bean="criterioAvaliacaoCompetenciaManager" />
+    </property>
   </bean>
   <bean id="configuracaoNivelCompetenciaManager" parent="parentManager">
     <property name="proxyInterfaces">

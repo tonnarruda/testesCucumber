@@ -121,40 +121,71 @@
 		
 					<br /><br />
 					
-					<#assign i = 0/>
-					<@display.table name="niveisCompetenciaFaixaSalariais" id="configuracaoNivelCompetencia" class="dados">
-						<@display.column title="<input type='checkbox' id='checkAllCompetencia'/> Competência" >
-							<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
-							<#-- não utilizar decorator no hidden abaixo -->
-							<input type="hidden" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.ordem" id="ordem_${i}" class="ordem" value=""/>
-							
-							<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
-							<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
-							
-							<#if configuracaoNivelCompetencia.competenciaObservacao?exists && configuracaoNivelCompetencia.competenciaObservacao != "">
-								<img id="competencia_${i}_obs" onLoad="toolTipCompetenciaObs(${i}, '${configuracaoNivelCompetencia.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
-							</#if>
-							
-						</@display.column>
-						
-						<#list nivelCompetencias as nivel>
-						
-							<#if configuracaoNivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.id?exists && configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
-								<#assign class="nivelFaixa"/>
-								<#assign bgcolor="background-color: #BFC0C3;"/>
-							<#else>
-								<#assign class=""/>
-								<#assign bgcolor=""/>
-							</#if>
+					<table id="configuracaoNivelCompetencia" class="dados">
+						<thead>
+							<tr>
+								<th><input type="checkbox" id="checkAllCompetencia"> Competência</th>
+								<#list nivelCompetencias as nivel>
+									<th>${nivel.descricao}</th>
+								</#list>
+							</tr>
+						</thead>
+						<tbody>
+							<#assign i = 0/>
+							<#list niveisCompetenciaFaixaSalariais as configuracaoNivelCompetencia>
+								<tr class="even">
+									<td>
+										<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
+										<#-- não utilizar decorator no hidden abaixo -->
+										<input type="hidden" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.ordem" id="ordem_${i}" class="ordem" value=""/>
+										
+										<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
+										<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
+										
+										<#if configuracaoNivelCompetencia.competenciaObservacao?exists && configuracaoNivelCompetencia.competenciaObservacao != "">
+											<img id="competencia_${i}_obs" onLoad="toolTipCompetenciaObs(${i}, '${configuracaoNivelCompetencia.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
+										</#if>					
+									</td>
 									
-							<@display.column title="${nivel.descricao}" style="${bgcolor} width: 100px; text-align: center;" class="${class}">
-								<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" onchange="setOrdem(${i}, ${nivel.ordem})"/>
-							</@display.column>
-						</#list>
-						
-						<#assign i = i + 1/>
-						
-					</@display.table>
+									<#list nivelCompetencias as nivel>
+										<#if configuracaoNivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.id?exists && configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
+											<#assign class="nivelFaixa"/>
+											<#assign bgcolor="background-color: #BFC0C3;"/>
+										<#else>
+											<#assign class=""/>
+											<#assign bgcolor=""/>
+										</#if>
+										
+										<td style="${bgcolor} width: 100px; text-align: center;" class="${class}">
+											<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" onchange="setOrdem(${i}, ${nivel.ordem})"/>
+										</td>
+									</#list>
+								</tr>
+								
+								
+								<#assign y = 0/>
+								<#list configuracaoNivelCompetencia.criteriosAvaliacaoCompetencia as criterio>
+									<tr class="odd">
+										<td style="padding: 5px 25px;">
+											<input type="hidden" id="competencia_${i}_criterio_${y}" name="niveisCompetenciaFaixaSalariais[${i}].configuracoesNivelCompetenciaCriterio[${y}].criterioDescricao" value="${criterio.descricao}" />
+											<input type="checkbox" id="competencia_${i}_criterio_${y}" name="niveisCompetenciaFaixaSalariais[${i}].configuracoesNivelCompetenciaCriterio[${y}].criterioId" value="${criterio.id}" class="checkCompetenciaCriterio" />
+											<label for="competencia_${i}_criterio_${y}">${criterio.descricao}</label>
+										</td>
+										
+										<#list nivelCompetencias as nivelCriterio>
+											<td style="width: 100px; text-align: center;">
+												<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].configuracoesNivelCompetenciaCriterio[${y}].nivelCompetencia.id" value="${nivelCriterio.id}" />
+											</td>
+										</#list>
+									</tr>
+									
+									<#assign y = y + 1/>
+								</#list>
+								
+								<#assign i = i + 1/>
+							</#list>
+						</tbody>
+					</table>
 					
 					<#if niveisCompetenciaFaixaSalariais?exists && niveisCompetenciaFaixaSalariais?size == 0>
 						<ul style="height:20px; margin-top: 5px; margin-left: 20px;">

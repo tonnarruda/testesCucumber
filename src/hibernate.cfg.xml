@@ -196,6 +196,6 @@
     <mapping class="com.fortes.rh.model.sesmt.TipoTamanhoEPI" />
     <mapping class="com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao" />
     <mapping class="com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia" />
-	<mapping class="com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao" />
+    <mapping class="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio" />
   </session-factory>
 </hibernate-configuration>

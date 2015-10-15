@@ -16,6 +16,7 @@ import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaVO;
 import com.fortes.rh.model.captacao.MatrizCompetenciaNivelConfiguracao;
@@ -33,6 +34,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
 	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
+	private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
 
 	public Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId, Date data) {
 		return getDao().findByFaixa(faixaSalarialId, data);
@@ -107,6 +109,9 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				if (configuracaoNivelCompetencia.getCompetenciaId() != null) 
 				{
 					configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
+					for (ConfiguracaoNivelCompetenciaCriterio configuracaoNivelCompetenciaCriterio : configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios()) {
+						configuracaoNivelCompetenciaCriterio.setConfiguracaoNivelCompetencia(configuracaoNivelCompetencia);
+					}
 					getDao().save(configuracaoNivelCompetencia);
 				}
 			}
@@ -249,7 +254,13 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	}
 
 	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId, Date data) {
-		return getDao().findCompetenciaByFaixaSalarial(faixaId, data);
+		Collection<ConfiguracaoNivelCompetencia> configuracoesNiveisCompetencia = getDao().findCompetenciaByFaixaSalarial(faixaId, data);
+		
+		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracoesNiveisCompetencia) {
+			configuracaoNivelCompetencia.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(configuracaoNivelCompetencia.getCompetenciaId(), configuracaoNivelCompetencia.getTipoCompetencia().charValue()));
+		}
+		
+		return configuracoesNiveisCompetencia;
 	}
 
 	public Collection<ConfiguracaoNivelCompetencia> findColaboradorAbaixoNivel(Long[] competenciasIds, Long faixaSalarialId, Date data) 
@@ -660,5 +671,13 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	public void removeBySolicitacaoId(Long solicitacaoId) 
 	{
 		getDao().removeBySolicitacaoId(solicitacaoId);
+	}
+	
+	public CriterioAvaliacaoCompetenciaManager getCriterioAvaliacaoCompetenciaManager() {
+		return criterioAvaliacaoCompetenciaManager;
+	}
+
+	public void setCriterioAvaliacaoCompetenciaManager(CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager){
+		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
 	}
 }

@@ -123,7 +123,7 @@ public class NivelCompetenciaManagerTest extends MockObjectTestCase
 	{
 		Long empresaId = 1L;
 		
-		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresaId)).will(returnValue(new ArrayList<>()));
+		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresaId)).will(returnValue(new ArrayList<NivelCompetencia>()));
 		
 		Exception exception = null;
 		try {
