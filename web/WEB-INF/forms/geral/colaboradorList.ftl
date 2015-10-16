@@ -12,6 +12,7 @@
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ComissaoDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/FaixaSalarialDWR.js?version=${versao}"/>'></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>"></script>
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>"></script>
 	
@@ -50,10 +51,31 @@
 		
 		function verificaComissaoByColaborador(colaboradorId, colaboradorNome, colaboradorNaoIntegraAc, colaboradorDesligado)
 		{
-			DWRUtil.useLoadingMessage('Carregando...');
-			ComissaoDWR.dataEstabilidade(               function(data){
-															resultComissaoByColaborador(data, colaboradorId, colaboradorNome, colaboradorNaoIntegraAc, colaboradorDesligado);
-														}, colaboradorId);
+			ColaboradorDWR.existeHistoricoAguardandoConfirmacaoNoFortesPessoal(colaboradorId, function(data){
+				if(data){
+						var msg = 'O Colaborador '+ colaboradorNome +', possui uma situação aguardando confirmação no Fortes Pessoal.' +  
+						'</br>Para desligar este colaborador é necessário confirmar ou cancelar esta situação no Fortes Pessoal.';
+			
+						$('<div>'+ msg +'</div>').dialog({title: 'Alerta!',
+																modal: true, 
+																height: 135,
+																width: 800,
+																buttons: [
+																    {
+																        text: "OK",
+																        click: function() { $(this).dialog("close"); }
+																    }
+																] 
+																});
+					
+				}
+				else{
+					DWRUtil.useLoadingMessage('Carregando...');
+					ComissaoDWR.dataEstabilidade(               function(data){
+																	resultComissaoByColaborador(data, colaboradorId, colaboradorNome, colaboradorNaoIntegraAc, colaboradorDesligado);
+																}, colaboradorId);
+				}
+			});
 		}
 		
 		function resultComissaoByColaborador(data, colaboradorId, colaboradorNome, colaboradorNaoIntegraAc, colaboradorDesligado)

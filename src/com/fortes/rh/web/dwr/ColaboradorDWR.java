@@ -12,11 +12,13 @@ import org.apache.commons.lang.StringUtils;
 
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
+import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ConfiguracaoRelatorioDinamicoManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.VerificacaoParentesco;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
@@ -30,11 +32,12 @@ import com.fortes.rh.util.StringUtil;
 @SuppressWarnings("unchecked")
 public class ColaboradorDWR
 {
-    private ColaboradorManager colaboradorManager;
+	private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
+    private HistoricoColaboradorManager historicoColaboradorManager;
+	private ColaboradorManager colaboradorManager;
+    private SolicitacaoManager solicitacaoManager;
     private EmpresaManager empresaManager;
     private UsuarioManager usuarioManager;
-    private ConfiguracaoRelatorioDinamicoManager configuracaoRelatorioDinamicoManager;
-    private SolicitacaoManager solicitacaoManager;
 
 	public Map<Long, String> getColaboradores(String[] areaOrganizacionalIds, Long empresaId)
     {
@@ -341,6 +344,10 @@ public class ColaboradorDWR
 		return new CollectionUtil<Ocorrencia>().convertCollectionToMap(ocorrencias,"getId","getDescricaoComEmpresa");
 	}
     
+    public boolean existeHistoricoAguardandoConfirmacaoNoFortesPessoal(Long colobaoradorId){
+    	return (historicoColaboradorManager.findByColaboradorProjection(colobaoradorId, StatusRetornoAC.AGUARDANDO)).size() > 0;
+    }
+    
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;
@@ -360,5 +367,9 @@ public class ColaboradorDWR
 
 	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) {
 		this.solicitacaoManager = solicitacaoManager;
+	}
+	
+	public void setHistoricoColaboradorManager(HistoricoColaboradorManager historicoColaboradorManager) {
+		this.historicoColaboradorManager = historicoColaboradorManager;
 	}
 }

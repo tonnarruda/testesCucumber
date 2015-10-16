@@ -9,14 +9,17 @@
 		</action>
 	
 		<action name="list" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="list">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaborador.ftl</result>
 			<result name="input" type="freemarker">error</result>
 		</action>
 		<action name="historicoColaboradorList" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorListAction" method="historicoColaboradorList">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorList.ftl</result>
 		</action>
 		<action name="prepareUpdate" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="prepareUpdate">
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorEdit.ftl</result>
+			<result name="input" type="redirect"><![CDATA[/cargosalario/historicoColaborador/historicoColaboradorList.action?colaborador.id=${colaborador.id}&actionMsg=${actionMsg}]]></result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="update">
 			<result name="success" type="redirect">historicoColaboradorList.action?colaborador.id=${colaborador.id}</result>
@@ -54,8 +57,11 @@
 		</action-->
 		
 		<action name="prepareInsert" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="prepareInsert">
+			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/historicoColaboradorEdit.ftl</result>
+			<result name="input" type="redirect"><![CDATA[/cargosalario/historicoColaborador/historicoColaboradorList.action?colaborador.id=${colaborador.id}&actionMsg=${actionMsg}]]></result>
 		</action>
+		
 		<action name="insert" class="com.fortes.rh.web.action.cargosalario.HistoricoColaboradorEditAction" method="insert">
 			<interceptor-ref name="defaultUpdateStack"/>
 			<interceptor-ref name="tokenWebStack" />

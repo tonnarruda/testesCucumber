@@ -9,9 +9,11 @@ import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
+import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.VerificacaoParentesco;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -33,7 +35,7 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 	private ColaboradorDWR colaboradorDWR;
 	private Mock colaboradorManager;
 	private Mock empresaManager;
-//	private Mock historicoColaboradorManager;
+	private Mock historicoColaboradorManager;
 
 	protected void setUp() throws Exception
 	{
@@ -42,11 +44,11 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 
 		colaboradorManager = new Mock(ColaboradorManager.class);
 		empresaManager = new Mock(EmpresaManager.class);
-//		historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
+		historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
 
 		colaboradorDWR.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
 		colaboradorDWR.setEmpresaManager((EmpresaManager) empresaManager.proxy());
-//		colaboradorDWR.setHistoricoColaboradorManager((HistoricoColaboradorManager) historicoColaboradorManager.proxy());
+		colaboradorDWR.setHistoricoColaboradorManager((HistoricoColaboradorManager) historicoColaboradorManager.proxy());
 	}
 
 	public void testGetColaboradores()
@@ -326,4 +328,36 @@ public class ColaboradorDWRTest extends MockObjectTestCase
 		assertEquals(1, colaboradorDWR.findParentesByNome(colab1.getId(), empresaBuscaMesmaEmpresa.getId(), "joao").size());
 		assertEquals(2, colaboradorDWR.findParentesByNome(colab2.getId(), empresaBuscaTodasAsEmpresas.getId(), "joao").size());
 	}
+	
+	public void testExisteHistoricoAguardandoConfirmacaoNoFortesPessoalSemHistorico()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Colaborador colaboradorPedro = ColaboradorFactory.getEntity(2L);
+		colaboradorPedro.setNome("Pedro");
+		colaboradorPedro.setEmpresa(empresa);
+		
+		historicoColaboradorManager.expects(once()).method("findByColaboradorProjection").with(eq(colaboradorPedro.getId()), eq(StatusRetornoAC.AGUARDANDO)).will(returnValue(new ArrayList<HistoricoColaborador>()));
+		
+		assertFalse(colaboradorDWR.existeHistoricoAguardandoConfirmacaoNoFortesPessoal(colaboradorPedro.getId()));
+	}
+	
+	public void testExisteHistoricoAguardandoConfirmacaoNoFortesPessoalComHistorico()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Colaborador colaboradorJoao = ColaboradorFactory.getEntity(1L);
+		colaboradorJoao.setNome("Joao");
+		colaboradorJoao.setEmpresa(empresa);
+
+		HistoricoColaborador historicoColaboradorJoao = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorJoao.setStatus(StatusRetornoAC.AGUARDANDO);
+		
+		Collection<HistoricoColaborador> historicoColaboradores = Arrays.asList(historicoColaboradorJoao);
+		
+		historicoColaboradorManager.expects(once()).method("findByColaboradorProjection").with(eq(colaboradorJoao.getId()), eq(StatusRetornoAC.AGUARDANDO)).will(returnValue(historicoColaboradores));
+		
+		assertTrue(colaboradorDWR.existeHistoricoAguardandoConfirmacaoNoFortesPessoal(colaboradorJoao.getId()));
+	}
+	
 }

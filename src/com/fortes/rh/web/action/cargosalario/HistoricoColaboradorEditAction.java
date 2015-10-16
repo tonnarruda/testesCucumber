@@ -34,6 +34,7 @@ import com.fortes.rh.model.dicionario.CodigoGFIP;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusCandidatoSolicitacao;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -132,10 +133,15 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 	public String prepareInsert() throws Exception
 	{
+		if((historicoColaboradorManager.findByColaboradorProjection(colaborador.getId(), StatusRetornoAC.AGUARDANDO).size() > 0 )){
+			setActionMsg("Não é possível inserir uma nova situação, pois existe situação aguardando confirmação no Fortes Pessoal.");
+			return Action.INPUT;
+		}
+
 		dataPrimeiroHist = historicoColaboradorManager.getPrimeiroHistorico(colaborador.getId()).getData();
 
 		HistoricoColaborador historicoColaboradorAtual = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());
-		
+						
 		if (solicitacao != null && solicitacao.getId() != null && solicitacao.getId() > 0) {
 			historicoColaborador = new HistoricoColaborador();
 			historicoColaborador.setColaborador(historicoColaboradorAtual.getColaborador());
@@ -266,7 +272,13 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 
 	public String prepareUpdate() throws Exception
 	{
+		Collection<HistoricoColaborador> historicosColaboradores = historicoColaboradorManager.findByColaboradorProjection(colaborador.getId(), StatusRetornoAC.AGUARDANDO);
 		historicoColaborador = historicoColaboradorManager.findByIdHQL(historicoColaborador.getId());
+		
+		if(historicosColaboradores.size() > 0  && !historicosColaboradores.contains(historicoColaborador)){
+			setActionMsg("Não é possível editar esta situação, enquanto existir outra situação aguardando confirmação no Fortes Pessoal.");
+			return Action.INPUT;
+		}
 
 		if(getEmpresaSistema().isAcIntegra() && !historicoColaborador.getColaborador().isNaoIntegraAc())
 		{
