@@ -58,4 +58,22 @@ public class ConfiguracaoNivelCompetenciaCriterio extends AbstractModel implemen
 	public void setCriterioDescricao(String criterioDescricao) {
 		this.criterioDescricao = criterioDescricao;
 	}
+	
+	public void setConfiguracaoNivelCompetenciaId(Long configuracaoNivelCompetenciaId) {
+		if(configuracaoNivelCompetencia == null)
+			this.configuracaoNivelCompetencia = new ConfiguracaoNivelCompetencia();
+		this.configuracaoNivelCompetencia.setId(configuracaoNivelCompetenciaId);
+	}
+	
+	public void setNivelCompetenciaId(Long nivelCompetenciaId) {
+		if(nivelCompetencia == null)
+			this.nivelCompetencia = new NivelCompetencia();
+		this.nivelCompetencia.setId(nivelCompetenciaId);
+	}
+	
+	public void setNivelCompetenciaPercentual(Double percentual) {
+		if(nivelCompetencia == null)
+			this.nivelCompetencia = new NivelCompetencia();
+		this.nivelCompetencia.setPercentual(percentual);
+	}
 }

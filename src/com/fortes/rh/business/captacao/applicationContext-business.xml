@@ -107,6 +107,19 @@
       <ref bean="criterioAvaliacaoCompetenciaManagerTarget" />
     </property>
   </bean>
+  <bean id="configuracaoNivelCompetenciaCriterioManagerTarget" class="com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaCriterioManagerImpl">
+    <property name="dao">
+      <ref bean="configuracaoNivelCompetenciaCriterioDao" />
+    </property>
+  </bean>
+  <bean id="configuracaoNivelCompetenciaCriterioManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaCriterioManager</value>
+    </property>
+    <property name="target">
+      <ref bean="configuracaoNivelCompetenciaCriterioManagerTarget" />
+    </property>
+  </bean>
   <bean id="competenciaManagerTarget" class="com.fortes.rh.business.captacao.CompetenciaManagerImpl">
     <property name="dao">
       <ref bean="competenciaDao" />
@@ -423,6 +436,9 @@
     </property>
     <property name="criterioAvaliacaoCompetenciaManager">
       <ref bean="criterioAvaliacaoCompetenciaManager" />
+    </property>
+    <property name="configuracaoNivelCompetenciaCriterioManager">
+      <ref bean="configuracaoNivelCompetenciaCriterioManager" />
     </property>
   </bean>
   <bean id="configuracaoNivelCompetenciaManager" parent="parentManager">

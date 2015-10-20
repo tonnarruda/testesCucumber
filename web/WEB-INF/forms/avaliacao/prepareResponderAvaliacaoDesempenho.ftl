@@ -17,13 +17,22 @@
 	<script type="text/javascript">
 		$(function() {
 			<#if colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
-				$('.checkCompetencia').click(function() {
+				$('.checkCompetencia.changed').change(function() {
 					$(this).parent().parent().find(".checkNivel").attr('disabled', !($(this).attr('checked')));
 				});
 				
+				$('.checkCompetenciaCriterio').change(function() {
+					$(this).parent().parent().find(".checkNivelCriterio").attr('disabled', !($(this).attr('checked')));
+					calculaNivelDaCompetenciaPeloPercentual( $(this).parent().parent().find(".checkNivelCriterio:eq(0)").attr('competencia') );
+				});
+				
+				$('.checkNivelCriterio').change(function(){
+					calculaNivelDaCompetenciaPeloPercentual($(this).attr("competencia"));
+				});
+				
 				$('#checkAllCompetencia').click(function() {
-					$('.checkNivel').attr('disabled', !($(this).attr('checked')));
-					$('.checkCompetencia').attr('checked', $(this).attr('checked'));
+					$('.checkNivel.changed,.checkNivelCriterio').attr('disabled', !($(this).attr('checked')));
+					$('.checkCompetencia.changed,.checkCompetenciaCriterio').attr('checked', $(this).attr('checked')).change();
 				});
 
 				<#if niveisCompetenciaFaixaSalariaisSalvos?exists>
@@ -42,18 +51,54 @@
 						
 						<#list niveisCompetenciaFaixaSalariais as nivelSugerido>
 							if('${nivelSugerido.competenciaId}' == '${nivelSalvo.competenciaId}' && '${nivelSugerido.tipoCompetencia}' == '${nivelSalvo.tipoCompetencia}' && '${nivelSugerido.nivelCompetencia.id}' == '${nivelSalvo.nivelCompetencia.id}'){
-								linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').parent().css('background-color','#A4E2DB');
+								linha.find('.checkNivelCriterio[value="${nivelSalvo.nivelCompetencia.id}"]').parent().css('background-color','#A4E2DB');
 							}
 						</#list>
-
+						
+						<#if nivelSalvo.configuracaoNivelCompetenciaCriterios?exists>
+							<#list nivelSalvo.configuracaoNivelCompetenciaCriterios as criterio >
+								$(".checkCompetenciaCriterio[value=${criterio.criterioId}]").parent().parent().find(".checkNivelCriterio[value='${criterio.nivelCompetencia.id}").attr("checked", "checked");
+								$(".checkCompetenciaCriterio[value=${criterio.criterioId}]").attr("checked", "checked").change();
+							</#list>
+						</#if>
 					</#list>
 				</#if>
 			</#if>
 		});
 		
+		function calculaNivelDaCompetenciaPeloPercentual(competenciaId){
+			var niveisSelecionadosDosCriterios = $("input[competencia="+competenciaId+"]:checked").not(":disabled");
+			var somaPescetualDosCriterios = 0;
+			$(niveisSelecionadosDosCriterios).each(function(){
+				somaPescetualDosCriterios += parseInt($(this).attr("percentual"));
+			});
+			var media = somaPescetualDosCriterios/niveisSelecionadosDosCriterios.length;
+			var niveis = $("#competencia_"+competenciaId).parent().parent().find(".checkNivel");
+			
+			var percentualFinal = 0;
+			$(niveis).filter(function() {
+			  return $(this).attr("percentual") <= media;
+			}).each(function() {
+			  var value = parseFloat($(this).attr("percentual"));
+			  percentualFinal = (value > percentualFinal) ? value : percentualFinal;
+			});
+			
+			if(niveisSelecionadosDosCriterios.length > 0) {
+				$("#competencia_"+competenciaId).attr("checked", "checked");
+				$("#competencia_"+competenciaId).parent().parent().find(".checkNivel").removeAttr("disabled");
+			} else {
+				$("#competencia_"+competenciaId).removeAttr("checked");
+				$("#competencia_"+competenciaId).parent().parent().find(".checkNivel").attr("disabled", "disabled");
+			}
+			
+			$("#competencia_"+competenciaId).parent().parent().find(".checkNivel[percentual="+percentualFinal+"]").attr("checked","checked").change();
+		};
+		
 		function enviarForm()
 		{
 			var linhasSemRadioMarcado = $('tr').has('.checkNivel:enabled').not(':has(.checkNivel:checked)');
+			linhasSemRadioMarcado = $.merge(linhasSemRadioMarcado, $('tr').has('.checkNivelCriterio:enabled').not(':has(.checkNivelCriterio:checked)'));
+			console.log(linhasSemRadioMarcado);
 			if (linhasSemRadioMarcado.size() == 0)
 			{
 				validaRespostas(null, null, true, true, false, false, true);
@@ -124,7 +169,7 @@
 					<table id="configuracaoNivelCompetencia" class="dados">
 						<thead>
 							<tr>
-								<th><input type="checkbox" id="checkAllCompetencia"> Competência</th>
+								<th><input type="checkbox" id="checkAllCompetencia"> Competência/Critério para avaliação</th>
 								<#list nivelCompetencias as nivel>
 									<th>${nivel.descricao}</th>
 								</#list>
@@ -133,13 +178,17 @@
 						<tbody>
 							<#assign i = 0/>
 							<#list niveisCompetenciaFaixaSalariais as configuracaoNivelCompetencia>
+								<#assign hasCriterios = (configuracaoNivelCompetencia.criteriosAvaliacaoCompetencia.size() >0) />
 								<tr class="even">
 									<td>
 										<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
 										<#-- não utilizar decorator no hidden abaixo -->
 										<input type="hidden" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.ordem" id="ordem_${i}" class="ordem" value=""/>
 										
-										<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
+										<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId"
+										<#if hasCriterios > onclick="return false;" class="checkCompetencia" <#else> class="checkCompetencia changed" </#if>
+										value="${configuracaoNivelCompetencia.competenciaId}" />
+										
 										<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
 										
 										<#if configuracaoNivelCompetencia.competenciaObservacao?exists && configuracaoNivelCompetencia.competenciaObservacao != "">
@@ -157,7 +206,9 @@
 										</#if>
 										
 										<td style="${bgcolor} width: 100px; text-align: center;" class="${class}">
-											<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" onchange="setOrdem(${i}, ${nivel.ordem})"/>
+											<input type="radio" disabled="disabled" class="checkNivel radio" percentual="${nivel.percentual}" 
+											<#if hasCriterios > onclick="return false;" </#if>
+											name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" onchange="setOrdem(${i}, ${nivel.ordem})"/>
 										</td>
 									</#list>
 								</tr>
@@ -167,14 +218,14 @@
 								<#list configuracaoNivelCompetencia.criteriosAvaliacaoCompetencia as criterio>
 									<tr class="odd">
 										<td style="padding: 5px 25px;">
-											<input type="hidden" id="competencia_${i}_criterio_${y}" name="niveisCompetenciaFaixaSalariais[${i}].configuracoesNivelCompetenciaCriterio[${y}].criterioDescricao" value="${criterio.descricao}" />
-											<input type="checkbox" id="competencia_${i}_criterio_${y}" name="niveisCompetenciaFaixaSalariais[${i}].configuracoesNivelCompetenciaCriterio[${y}].criterioId" value="${criterio.id}" class="checkCompetenciaCriterio" />
+											<input type="hidden" name="niveisCompetenciaFaixaSalariais[${i}].configuracaoNivelCompetenciaCriterios[${y}].criterioDescricao" value="${criterio.descricao}" />
+											<input type="checkbox" id="competencia_${i}_criterio_${y}" name="niveisCompetenciaFaixaSalariais[${i}].configuracaoNivelCompetenciaCriterios[${y}].criterioId" value="${criterio.id}" class="checkCompetenciaCriterio" />
 											<label for="competencia_${i}_criterio_${y}">${criterio.descricao}</label>
 										</td>
 										
 										<#list nivelCompetencias as nivelCriterio>
 											<td style="width: 100px; text-align: center;">
-												<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].configuracoesNivelCompetenciaCriterio[${y}].nivelCompetencia.id" value="${nivelCriterio.id}" />
+												<input type="radio" disabled="disabled" class="checkNivelCriterio radio" competencia="${i}" percentual="${nivelCriterio.percentual}" name="niveisCompetenciaFaixaSalariais[${i}].configuracaoNivelCompetenciaCriterios[${y}].nivelCompetencia.id" value="${nivelCriterio.id}" />
 											</td>
 										</#list>
 									</tr>

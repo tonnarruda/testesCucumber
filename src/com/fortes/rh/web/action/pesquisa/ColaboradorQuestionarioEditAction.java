@@ -307,7 +307,6 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 				
 				niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaborador.getFaixaSalarial().getId(), new Date());
 			}
-				
 		}
 		
 		return Action.SUCCESS;
