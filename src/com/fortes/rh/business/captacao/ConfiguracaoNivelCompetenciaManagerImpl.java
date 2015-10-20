@@ -35,6 +35,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
+	private ConfiguracaoNivelCompetenciaCriterioManager configuracaoNivelCompetenciaCriterioManager;
 
 	public Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId, Date data) {
 		return getDao().findByFaixa(faixaSalarialId, data);
@@ -99,6 +100,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			configuracaoNivelCompetenciaColaborador = configuracaoNivelCompetenciaColaboradorManager.save(configuracaoNivelCompetenciaColaborador);
 		} else {
 			configuracaoNivelCompetenciaColaboradorManager.update(configuracaoNivelCompetenciaColaborador);
+			configuracaoNivelCompetenciaCriterioManager.removeByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId());
 			getDao().deleteByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId());
 		} 
 
@@ -109,10 +111,24 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				if (configuracaoNivelCompetencia.getCompetenciaId() != null) 
 				{
 					configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
-					for (ConfiguracaoNivelCompetenciaCriterio configuracaoNivelCompetenciaCriterio : configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios()) {
-						configuracaoNivelCompetenciaCriterio.setConfiguracaoNivelCompetencia(configuracaoNivelCompetencia);
-					}
+					setConfiguracaoNivelCompetenciaCriterios(configuracaoNivelCompetencia);
 					getDao().save(configuracaoNivelCompetencia);
+				}
+			}
+		}
+	}
+
+	private void setConfiguracaoNivelCompetenciaCriterios(	ConfiguracaoNivelCompetencia configuracaoNivelCompetencia) 
+	{
+		if (configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios() != null && configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios().size() > 0) {
+			Collection<ConfiguracaoNivelCompetenciaCriterio> criterios = new ArrayList<ConfiguracaoNivelCompetenciaCriterio>();
+			criterios.addAll(configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios());
+			
+			configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios().clear();
+			for (ConfiguracaoNivelCompetenciaCriterio configuracaoNivelCompetenciaCriterio : criterios) {
+				if (configuracaoNivelCompetenciaCriterio.getCriterioId() != null ) {
+					configuracaoNivelCompetenciaCriterio.setConfiguracaoNivelCompetencia(configuracaoNivelCompetencia);
+					configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaCriterios().add(configuracaoNivelCompetenciaCriterio);
 				}
 			}
 		}
@@ -245,7 +261,13 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	}
 
 	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelCompetenciaColaboradorId) {
-		return getDao().findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaboradorId);
+		Collection<ConfiguracaoNivelCompetencia> configuracoesNiveisCompetencia = getDao().findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaboradorId);
+		
+		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracoesNiveisCompetencia) {
+			configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaCriterios(configuracaoNivelCompetenciaCriterioManager.findByConfiguracaoNivelCompetencia(configuracaoNivelCompetencia.getId()));
+		}
+		
+		return configuracoesNiveisCompetencia;
 	}
 	
 	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelCompetenciaFaixaSalarialId)
@@ -677,7 +699,11 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return criterioAvaliacaoCompetenciaManager;
 	}
 
-	public void setCriterioAvaliacaoCompetenciaManager(CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager){
+	public void setCriterioAvaliacaoCompetenciaManager(CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
 		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
+	}
+
+	public void setConfiguracaoNivelCompetenciaCriterioManager(ConfiguracaoNivelCompetenciaCriterioManager configuracaoNivelCompetenciaCriterioManager) {
+		this.configuracaoNivelCompetenciaCriterioManager = configuracaoNivelCompetenciaCriterioManager;
 	}
 }

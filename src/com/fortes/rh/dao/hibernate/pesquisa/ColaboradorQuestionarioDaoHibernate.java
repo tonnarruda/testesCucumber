@@ -988,6 +988,9 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		String queryHQL = "delete from ColaboradorResposta ce where ce.colaboradorQuestionario.id = :colaboradorQuestionarioId";
 		getSession().createQuery(queryHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
 
+		queryHQL = "delete from ConfiguracaoNivelCompetenciaCriterio crit where crit.configuracaoNivelCompetencia.id in ( select cnc.id from ConfiguracaoNivelCompetencia cnc where cnc.configuracaoNivelCompetenciaColaborador.id in (select id from ConfiguracaoNivelCompetenciaColaborador cncc where cncc.colaboradorQuestionario.id = :colaboradorQuestionarioId ) ) ";
+		getSession().createQuery(queryHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
+
 		queryHQL = "delete from ConfiguracaoNivelCompetencia cnc where cnc.configuracaoNivelCompetenciaColaborador.id in (select id from ConfiguracaoNivelCompetenciaColaborador cncc where cncc.colaboradorQuestionario.id = :colaboradorQuestionarioId)";
 		getSession().createQuery(queryHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
 

@@ -78,6 +78,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetencia.class,"cnc");
 		criteria.createCriteria("cnc.nivelCompetencia", "nc", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cnc.solicitacao", "s", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cnc.configuracaoNivelCompetenciaCriterios", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.faixaSalarial", "f", Criteria.LEFT_JOIN);
 		criteria.createCriteria("f.cargo", "c", Criteria.LEFT_JOIN);
 
@@ -87,6 +88,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		p.add(Projections.property("cnc.candidato.id"), "candidatoIdProjection");
 		p.add(Projections.property("cnc.configuracaoNivelCompetenciaColaborador.id"), "projectionConfiguracaoNivelCompetenciaColaboradorId");
 		p.add(Projections.property("cnc.configuracaoNivelCompetenciaFaixaSalarial.id"), "configuracaoNivelCompetenciaFaixaSalarialId");
+		p.add(Projections.property("cnc.configuracaoNivelCompetenciaCriterios"), "configuracaoNivelCompetenciaCriterios");
 		p.add(Projections.property("nc.id"), "nivelCompetenciaIdProjection");
 		p.add(Projections.property("nc.descricao"), "projectionNivelCompetenciaDescricao");
 		p.add(Projections.property("nc.ordem"), "projectionNivelCompetenciaOrdem");
