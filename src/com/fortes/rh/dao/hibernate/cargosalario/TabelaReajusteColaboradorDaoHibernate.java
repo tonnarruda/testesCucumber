@@ -103,6 +103,7 @@ public class TabelaReajusteColaboradorDaoHibernate extends GenericDaoHibernate<T
 
 		montaConsulta(criteria, empresaId);
 		criteria.addOrder(Order.desc("trc.data"));
+		criteria.addOrder(Order.desc("trc.id"));
 
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(TabelaReajusteColaborador.class));
 

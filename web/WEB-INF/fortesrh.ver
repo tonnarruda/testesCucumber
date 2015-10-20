@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.15x.18x" db="" data="xx/xx/2015">
+		<Item visivel="S" motivo="P15090000938"><![CDATA[C&S > Movimentações > Planejamentos de Realinhamentos: Ajuste da inconsistência ao listar planejamento de realinhamento.]]></Item>
 		<Item visivel="S" motivo="P15100000092"><![CDATA[C&S > Relatórios > Descrição de Cargos: Ajuste de inconsistência ao exibir as competências e os níveis exigidos pelo cargo.]]></Item>
 		<Item visivel="S" motivo="P15100000075"><![CDATA[Utilitários > Exportar dados para o Fortes Pessoal: Não exportar colaborador marcado como não integrado com o Fortes Pessoal.]]></Item>
 	</Versao>
