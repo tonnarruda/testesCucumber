@@ -7,6 +7,8 @@ public class MatrizCompetenciaNivelConfiguracao implements Cloneable
 	private String competencia;
 	private String nivel;
 	private Boolean configuracaoFaixa;
+	private Boolean possuiCriterio;
+	private Boolean criterio;
 	private Boolean configuracao;
 	private Integer gap;
 	private Integer nivelDaFaixa;
@@ -37,6 +39,11 @@ public class MatrizCompetenciaNivelConfiguracao implements Cloneable
 		this.configuracao = configuracao;
 	}
 	
+	public MatrizCompetenciaNivelConfiguracao(String competencia, String nivel, Boolean configuracaoFaixa, Boolean configuracao, Boolean possuiCriterio, Boolean criterio) {
+		this(competencia, nivel, configuracaoFaixa, configuracao);
+		this.possuiCriterio = possuiCriterio;
+		this.criterio = criterio;
+	}
 
 	public Object clone()
 	{
@@ -98,5 +105,21 @@ public class MatrizCompetenciaNivelConfiguracao implements Cloneable
 
 	public void setNivelDaFaixa(Integer nivelDaFaixa) {
 		this.nivelDaFaixa = nivelDaFaixa;
+	}
+
+	public Boolean getPossuiCriterio() {
+		return possuiCriterio;
+	}
+
+	public void setPossuiCriterio(Boolean possuiCriterio) {
+		this.possuiCriterio = possuiCriterio;
+	}
+
+	public Boolean getCriterio() {
+		return criterio;
+	}
+
+	public void setCriterio(Boolean criterio) {
+		this.criterio = criterio;
 	}
 }
