@@ -20,10 +20,10 @@ public class ConfiguracaoNivelCompetenciaCriterio extends AbstractModel implemen
 	@ManyToOne
 	private NivelCompetencia nivelCompetencia;
 
-	@Column(name="criterio_id", nullable=false)
+	@Column(name="criterio_id")
 	private Long criterioId;
 
-	@Column(name="criterio_descricao", nullable=false)
+	@Column(name="criterio_descricao")
 	private String criterioDescricao;
 
 	public ConfiguracaoNivelCompetencia getConfiguracaoNivelCompetencia() {
@@ -69,6 +69,12 @@ public class ConfiguracaoNivelCompetenciaCriterio extends AbstractModel implemen
 		if(nivelCompetencia == null)
 			this.nivelCompetencia = new NivelCompetencia();
 		this.nivelCompetencia.setId(nivelCompetenciaId);
+	}
+	
+	public void setNivelCompetenciaDescricao(String nivelCompetenciaDescricao) {
+		if(nivelCompetencia == null)
+			this.nivelCompetencia = new NivelCompetencia();
+		this.nivelCompetencia.setDescricao(nivelCompetenciaDescricao);
 	}
 	
 	public void setNivelCompetenciaPercentual(Double percentual) {
