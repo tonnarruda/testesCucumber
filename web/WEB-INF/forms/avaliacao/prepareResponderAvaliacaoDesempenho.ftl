@@ -31,7 +31,7 @@
 				});
 				
 				$('#checkAllCompetencia').click(function() {
-					$('.checkNivel.changed,.checkNivelCriterio').attr('disabled', !($(this).attr('checked')));
+					$('.checkNivel,.checkNivelCriterio').attr('disabled', !($(this).attr('checked')));
 					$('.checkCompetencia.changed,.checkCompetenciaCriterio').attr('checked', $(this).attr('checked')).change();
 				});
 
@@ -85,9 +85,11 @@
 			
 			if(niveisSelecionadosDosCriterios.length > 0) {
 				$("#competencia_"+competenciaId).attr("checked", "checked");
+				$("#competencia_"+competenciaId).removeAttr("disabled");
 				$("#competencia_"+competenciaId).parent().parent().find(".checkNivel").removeAttr("disabled");
 			} else {
 				$("#competencia_"+competenciaId).removeAttr("checked");
+				$("#competencia_"+competenciaId).attr("disabled", "disabled");
 				$("#competencia_"+competenciaId).parent().parent().find(".checkNivel").attr("disabled", "disabled");
 			}
 			
@@ -108,7 +110,7 @@
 			$('tr.even').css('background-color', '#EFEFEF');
 			$('tr.odd').css('background-color', '#FFF');
 		
-			jAlert('Selecione os níveis para as competências indicadas.');
+			jAlert('Selecione os níveis para as competências ou critérios indicados.');
 			linhasSemRadioMarcado.css('background-color', '#FFEEC2');
 
 			return false;
@@ -186,7 +188,7 @@
 										<input type="hidden" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.ordem" id="ordem_${i}" class="ordem" value=""/>
 										
 										<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId"
-										<#if hasCriterios > onclick="return false;" class="checkCompetencia" <#else> class="checkCompetencia changed" </#if>
+										<#if hasCriterios > onclick="return false;" class="checkCompetencia" disabled="disabled"<#else> class="checkCompetencia changed" </#if>
 										value="${configuracaoNivelCompetencia.competenciaId}" />
 										
 										<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
@@ -206,8 +208,8 @@
 										</#if>
 										
 										<td style="${bgcolor} width: 100px; text-align: center;" class="${class}">
-											<input type="radio" disabled="disabled" class="checkNivel radio" percentual="${nivel.percentual}" 
-											<#if hasCriterios > onclick="return false;" </#if>
+											<input type="radio" disabled="disabled" percentual="${nivel.percentual}" 
+											<#if hasCriterios > onclick="return false;"  class="checkNivel radio" <#else>  class="checkNivel changed radio" </#if>
 											name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" onchange="setOrdem(${i}, ${nivel.ordem})"/>
 										</td>
 									</#list>
