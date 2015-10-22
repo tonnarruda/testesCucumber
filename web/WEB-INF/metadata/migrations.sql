@@ -26,3 +26,23 @@ CREATE TABLE certificacao_avaliacaopratica (
 ALTER TABLE certificacao_avaliacaopratica ADD CONSTRAINT certificacao_avaliacaopratica_certificacao_fk FOREIGN KEY (certificacao_id) REFERENCES certificacao(id);--.go
 ALTER TABLE certificacao_avaliacaopratica ADD CONSTRAINT certificacao_avaliacaopratica_avaliacaoPraticas_fk FOREIGN KEY (avaliacoespraticas_id) REFERENCES avaliacaopratica(id);--.go
 CREATE SEQUENCE certificacao_avaliacaopratica_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+
+//consulta
+WITH cursoCertificados AS (
+		select distinct cc.cursos_id as cusosIds from certificacao  c
+		inner join certificacao_avaliacaopratica cap on cap.certificacao_id = c.id
+		inner join certificacao_curso cc on cc.certificacaos_id = c.id
+		where c.id =  4295 and cap.avaliacoespraticas_id = 4	
+		)
+
+select col.id, col.nome from colaboradorturma  ct
+inner join colaborador col on col.id = ct.colaborador_id
+inner join turma t on t.id = ct.turma_id
+inner join cursoCertificados on ct.curso_id = cursoCertificados.cusosIds
+where dataprevfim between '01/01/2009' and '30/10/2015'
+group by col.id, col.nome
+having count(ct.curso_id) = (select count(*) from cursoCertificados)
+order by col.id, col.nome
+
+
