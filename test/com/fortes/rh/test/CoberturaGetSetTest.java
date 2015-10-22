@@ -11,6 +11,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.captacao.Anuncio;
@@ -971,6 +972,7 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new EpiPcmat());
 		cobreGetSet(new EpcPcmat());
 		cobreGetSet(new MotivoSolicitacaoEpi());
+		cobreGetSet(new AvaliacaoPratica());
 	}
 	
 	private void cobreGetSet(Object obj)

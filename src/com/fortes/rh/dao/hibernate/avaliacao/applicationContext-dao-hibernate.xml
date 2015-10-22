@@ -18,7 +18,13 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="avaliacaoPraticaDaoTarget" class="com.fortes.rh.dao.hibernate.avaliacao.AvaliacaoPraticaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

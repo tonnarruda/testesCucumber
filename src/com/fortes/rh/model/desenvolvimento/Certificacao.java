@@ -3,6 +3,7 @@ package com.fortes.rh.model.desenvolvimento;
 import java.io.Serializable;
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
@@ -11,6 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Empresa;
 
@@ -27,6 +29,10 @@ public class Certificacao extends AbstractModel implements Serializable
 	private Collection<FaixaSalarial> faixaSalarials;
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Empresa empresa;
+	@Column
+	private Integer periodicidade;
+	@ManyToMany(fetch=FetchType.LAZY)
+	private Collection<AvaliacaoPratica> avaliacoesPraticas;
 
 	public String getNome()
 	{
@@ -68,4 +74,19 @@ public class Certificacao extends AbstractModel implements Serializable
 		this.empresa = empresa;
 	}
 
+	public Integer getPeriodicidade() {
+		return periodicidade;
+	}
+
+	public void setPeriodicidade(Integer periodicidade) {
+		this.periodicidade = periodicidade;
+	}
+
+	public Collection<AvaliacaoPratica> getAvaliacoesPraticas() {
+		return avaliacoesPraticas;
+	}
+
+	public void setAvaliacoesPraticas(Collection<AvaliacaoPratica> avaliacoesPraticas) {
+		this.avaliacoesPraticas = avaliacoesPraticas;
+	}
 }

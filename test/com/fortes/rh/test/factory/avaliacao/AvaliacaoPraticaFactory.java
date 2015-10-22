@@ -1,0 +1,40 @@
+package com.fortes.rh.test.factory.avaliacao;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
+
+public class AvaliacaoPraticaFactory
+{
+	public static AvaliacaoPratica getEntity()
+	{
+		AvaliacaoPratica avaliacaoPratica = new AvaliacaoPratica();
+		avaliacaoPratica.setId(null);
+		return avaliacaoPratica;
+	}
+
+	public static AvaliacaoPratica getEntity(Long id)
+	{
+		AvaliacaoPratica avaliacaoPratica = getEntity();
+		avaliacaoPratica.setId(id);
+
+		return avaliacaoPratica;
+	}
+
+	public static Collection<AvaliacaoPratica> getCollection()
+	{
+		Collection<AvaliacaoPratica> avaliacaoPraticas = new ArrayList<AvaliacaoPratica>();
+		avaliacaoPraticas.add(getEntity());
+
+		return avaliacaoPraticas;
+	}
+	
+	public static Collection<AvaliacaoPratica> getCollection(Long id)
+	{
+		Collection<AvaliacaoPratica> avaliacaoPraticas = new ArrayList<AvaliacaoPratica>();
+		avaliacaoPraticas.add(getEntity(id));
+		
+		return avaliacaoPraticas;
+	}
+}

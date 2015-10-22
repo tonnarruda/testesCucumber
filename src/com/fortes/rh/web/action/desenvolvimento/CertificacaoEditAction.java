@@ -3,8 +3,10 @@ package com.fortes.rh.web.action.desenvolvimento;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
+import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -20,13 +22,16 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	
 	private CertificacaoManager certificacaoManager;
 	private CursoManager cursoManager;
+	private AvaliacaoPraticaManager avaliacaoPraticaManager;
 
 	private Certificacao certificacao;
 	
-	private Collection<Curso> cursos;
 	private String[] cursosCheck;
 	private Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
 	
+	private String[] avaliacoesPraticasCheck;
+	private Collection<CheckBox> avaliacoesPraticasCheckList = new ArrayList<CheckBox>();
+		
 	private String nomeBusca;//filtro listagem
 
 	private void prepare() throws Exception
@@ -34,8 +39,11 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		if (certificacao != null && certificacao.getId() != null)
 			certificacao = (Certificacao) certificacaoManager.findById(certificacao.getId());
 		
-		cursos = cursoManager.findAllByEmpresasParticipantes(getEmpresaSistema().getId());
+		Collection<Curso> cursos = cursoManager.findAllByEmpresasParticipantes(getEmpresaSistema().getId());
 		cursosCheckList = CheckListBoxUtil.populaCheckListBox(cursos, "getId", "getNome");
+		
+		Collection<AvaliacaoPratica> avaliacaoPraticas = avaliacaoPraticaManager.find(new String[] {"empresa.id"}, new Object[] { getEmpresaSistema().getId() }, new String[] { "titulo" });
+		avaliacoesPraticasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoPraticas, "getId", "getTitulo");
 	}
 
 	public String prepareInsert() throws Exception
@@ -50,6 +58,8 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		{
 			prepare();
 			cursosCheckList = CheckListBoxUtil.marcaCheckListBox(cursosCheckList, certificacao.getCursos(), "getId");
+			avaliacoesPraticasCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacoesPraticasCheckList, certificacao.getAvaliacoesPraticas(), "getId");
+			
 		}
 		else
 			addActionError("A Certificação solicitada não existe na empresa " + getEmpresaSistema().getNome() +".");
@@ -59,10 +69,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public String insert() throws Exception
 	{
-		CollectionUtil<Curso> util = new CollectionUtil<Curso>();
-		certificacao.setCursos(util.convertArrayStringToCollection(Curso.class, cursosCheck));
-
-		certificacao.setEmpresa(getEmpresaSistema());
+		populaCertificacao();
 		certificacaoManager.save(certificacao);
 		
 		return Action.SUCCESS;
@@ -70,13 +77,21 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public String update() throws Exception
 	{
-		CollectionUtil<Curso> util = new CollectionUtil<Curso>();
-		certificacao.setCursos(util.convertArrayStringToCollection(Curso.class, cursosCheck));
-		
-		certificacao.setEmpresa(getEmpresaSistema());
+		populaCertificacao();
 		certificacaoManager.update(certificacao);
 		
 		return Action.SUCCESS;
+	}
+
+	private void populaCertificacao() throws Exception 
+	{
+		CollectionUtil<Curso> util = new CollectionUtil<Curso>();
+		certificacao.setCursos(util.convertArrayStringToCollection(Curso.class, cursosCheck));
+		
+		CollectionUtil<AvaliacaoPratica> utilAvaliacoesPraticas = new CollectionUtil<AvaliacaoPratica>();
+		certificacao.setAvaliacoesPraticas(utilAvaliacoesPraticas.convertArrayStringToCollection(AvaliacaoPratica.class, avaliacoesPraticasCheck));
+		
+		certificacao.setEmpresa(getEmpresaSistema());
 	}
 
 	public Object getModel()
@@ -106,11 +121,6 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		return cursosCheckList;
 	}
 
-	public Collection<Curso> getCursos()
-	{
-		return cursos;
-	}
-
 	public void setCursoManager(CursoManager cursoManager)
 	{
 		this.cursoManager = cursoManager;
@@ -132,5 +142,18 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public void setNomeBusca(String nomeBusca) {
 		this.nomeBusca = nomeBusca;
+	}
+
+	public Collection<CheckBox> getAvaliacoesPraticasCheckList() {
+		return avaliacoesPraticasCheckList;
+	}
+
+	public void setAvaliacaoPraticaManager(
+			AvaliacaoPraticaManager avaliacaoPraticaManager) {
+		this.avaliacaoPraticaManager = avaliacaoPraticaManager;
+	}
+
+	public void setAvaliacoesPraticasCheck(String[] avaliacoesPraticasCheck) {
+		this.avaliacoesPraticasCheck = avaliacoesPraticasCheck;
 	}
 }

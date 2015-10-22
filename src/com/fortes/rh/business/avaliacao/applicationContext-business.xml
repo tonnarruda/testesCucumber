@@ -90,4 +90,18 @@
       <ref bean="avaliacaoDesempenhoManagerTarget" />
     </property>
   </bean>
+  <bean id="avaliacaoPraticaManagerTarget" class="com.fortes.rh.business.avaliacao.AvaliacaoPraticaManagerImpl">
+    <property name="dao">
+      <ref bean="avaliacaoPraticaDao" />
+    </property>
+  </bean>
+  <bean id="avaliacaoPraticaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="avaliacaoPraticaManagerTarget" />
+    </property>
+  </bean>
 </beans>
+

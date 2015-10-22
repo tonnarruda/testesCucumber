@@ -28,6 +28,7 @@ import com.fortes.rh.test.business.acesso.UsuarioEmpresaManagerTest;
 import com.fortes.rh.test.business.acesso.UsuarioManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoDesempenhoManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoManagerTest;
+import com.fortes.rh.test.business.avaliacao.AvaliacaoPraticaManagerTest;
 import com.fortes.rh.test.business.avaliacao.PeriodoExperienciaManagerTest;
 import com.fortes.rh.test.business.captacao.AnuncioManagerTest;
 import com.fortes.rh.test.business.captacao.AtitudeManagerTest;
@@ -179,6 +180,7 @@ import com.fortes.rh.test.dao.hibernate.acesso.UsuarioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.acesso.UsuarioEmpresaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.avaliacao.AvaliacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.avaliacao.AvaliacaoDesempenhoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.avaliacao.AvaliacaoPraticaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.avaliacao.PeriodoExperienciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.AnuncioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.AtitudeDaoHibernateTest;
@@ -432,6 +434,7 @@ import com.fortes.rh.test.web.action.acesso.UsuarioEditActionTest;
 import com.fortes.rh.test.web.action.avaliacao.AvaliacaoDesempenhoEditActionTest;
 import com.fortes.rh.test.web.action.avaliacao.AvaliacaoEditActionTest;
 import com.fortes.rh.test.web.action.avaliacao.AvaliacaoExperienciaEditActionTest;
+import com.fortes.rh.test.web.action.avaliacao.AvaliacaoPraticaEditActionTest;
 import com.fortes.rh.test.web.action.avaliacao.PerguntaAvaliacaoEditActionTest;
 import com.fortes.rh.test.web.action.avaliacao.PeriodoExperienciaEditActionTest;
 import com.fortes.rh.test.web.action.backup.BackupActionTest;
@@ -1298,6 +1301,11 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(AvaliacaoDesempenhoManagerTest.class);
         suite.addTestSuite(AvaliacaoDesempenhoEditActionTest.class);
 
+        //Avaliação Prática
+        suite.addTestSuite(AvaliacaoPraticaDaoHibernateTest.class);
+        suite.addTestSuite(AvaliacaoPraticaManagerTest.class);
+        suite.addTestSuite(AvaliacaoPraticaEditActionTest.class);
+        
         // DICIONARIO
         suite.addTestSuite(StatusRetornoACTest.class);
         suite.addTestSuite(TipoAplicacaoIndiceTest.class);

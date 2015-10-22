@@ -27,5 +27,14 @@
       <ref bean="avaliacaoDesempenhoDaoTarget" />
     </property>
   </bean>
+  <bean id="avaliacaoPraticaDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.avaliacao.AvaliacaoPraticaDao</value>
+    </property>
+    <property name="target">
+      <ref bean="avaliacaoPraticaDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 

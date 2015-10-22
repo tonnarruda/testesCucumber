@@ -414,7 +414,9 @@
   <include file="/com/fortes/rh/web/action/sesmt/xwork-SinalizacaoPcmat.xml" />
   <include file="/com/fortes/rh/web/action/sesmt/xwork-MotivoSolicitacaoEpi.xml" />
   <include file="/com/fortes/rh/web/action/geral/xwork-InsereNonoDigito.xml" />
+  <include file="/com/fortes/rh/web/action/avaliacao/xwork-AvaliacaoPratica.xml" />
 </xwork>
+
 
 
 

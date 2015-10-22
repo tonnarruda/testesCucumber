@@ -667,6 +667,8 @@
 				/avaliacao/modelo/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO
 				/avaliacao/modeloCandidato/*/**=ROLE_CAD_PERIODOEXPERIENCIA,ROLE_CAD_AVALIACAO,ROLE_MOV_SOLICITACAO,ROLE_MOV_SOLICITACAO_MODELO_AVALIACAO
 				
+				/avaliacao/avaliacaoPratica/*/**=ROLE_AVALIACAO_PRATICA
+				
 				/geral/cliente/*/**=ROLE_CAD_CLIENTE
 				
 				/thumb/**=ROLE_ANONYMOUS,ROLE_USER

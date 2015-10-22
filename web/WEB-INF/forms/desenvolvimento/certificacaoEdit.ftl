@@ -15,7 +15,9 @@
 		<@ww.actionerror />
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<@ww.textfield label="Nome" id="nome" name="certificacao.nome"  cssStyle="width:500px" maxLength="100" required="true"/>
+			<@ww.textfield label="Periodicidade em meses" name="certificacao.periodicidade" id="periodicidade" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/>
 	        <@frt.checkListBox label="Cursos" name="cursosCheck" list="cursosCheckList" filtro="true" />
+	        <@frt.checkListBox label="Avaliações Práticas" name="avaliacoesPraticasCheck" list="avaliacoesPraticasCheckList" filtro="true" />
 			
 			<@ww.hidden name="certificacao.id" />
 			<@ww.token/>
