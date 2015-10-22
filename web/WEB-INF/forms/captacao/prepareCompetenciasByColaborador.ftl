@@ -42,15 +42,24 @@
 			var compColab = [];
 			
 			$(function() {
-				$('.checkCompetencia').click(function() {
+				$('.checkCompetencia.changed').change(function() {
 					$(this).parent().parent().find(".checkNivel").attr('disabled', !($(this).attr('checked')));
 				});
 				
-				$('#checkAllCompetencia').click(function() {
-					$('.checkNivel').attr('disabled', !($(this).attr('checked')));
-					$('.checkCompetencia').attr('checked', $(this).attr('checked'));
+				$('.checkCompetenciaCriterio').change(function() {
+					$(this).parent().parent().find(".checkNivelCriterio").attr('disabled', !($(this).attr('checked')));
+					calculaNivelDaCompetenciaPeloPercentual( $(this).parent().parent().find(".checkNivelCriterio:eq(0)").attr('competencia') );
 				});
 				
+				$('.checkNivelCriterio').change(function(){
+					calculaNivelDaCompetenciaPeloPercentual($(this).attr("competencia"));
+				});
+				
+				$('#checkAllCompetencia').click(function() {
+					$('.checkNivel,.checkNivelCriterio').attr('disabled', !($(this).attr('checked')));
+					$('.checkCompetencia.changed,.checkCompetenciaCriterio').attr('checked', $(this).attr('checked')).change();
+				});
+			
 				<#if niveisCompetenciaFaixaSalariaisSalvos?exists>
 					<#list niveisCompetenciaFaixaSalariaisSalvos as nivelSalvo>
 						var linha = $('tr').has('.checkCompetencia[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
@@ -58,6 +67,13 @@
 						linha.find('.checkNivel').removeAttr('disabled');
 						linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
 						linha.find('.ordem').val(${nivelSalvo.nivelCompetencia.ordem});
+						
+						<#if nivelSalvo.configuracaoNivelCompetenciaCriterios?exists>
+							<#list nivelSalvo.configuracaoNivelCompetenciaCriterios as criterio >
+								$(".checkCompetenciaCriterio[value=${criterio.criterioId}]").parent().parent().find(".checkNivelCriterio[value='${criterio.nivelCompetencia.id}").attr("checked", "checked");
+								$(".checkCompetenciaCriterio[value=${criterio.criterioId}]").attr("checked", "checked").change();
+							</#list>
+						</#if>
 					</#list>
 				</#if>
 				 
@@ -72,7 +88,7 @@
 					<#assign j = j + 1/>
 				</#list>
 				
-				$('.checkCompetencia, #checkAllCompetencia, .checkNivel').click(atualizarGrafico);
+				$('.checkCompetencia.changed, #checkAllCompetencia, .checkNivel.changed').change(atualizarGrafico);
 				
 				atualizarGrafico();
 				
@@ -86,6 +102,37 @@
 			</#if>
 				
 			});
+			
+			function calculaNivelDaCompetenciaPeloPercentual(competenciaId){
+				var niveisSelecionadosDosCriterios = $("input[competencia="+competenciaId+"]:checked").not(":disabled");
+				var somaPescetualDosCriterios = 0;
+				$(niveisSelecionadosDosCriterios).each(function(){
+					somaPescetualDosCriterios += parseInt($(this).attr("percentual"));
+				});
+				var media = somaPescetualDosCriterios/niveisSelecionadosDosCriterios.length;
+				var niveis = $("#competencia_"+competenciaId).parent().parent().find(".checkNivel");
+				
+				var percentualFinal = 0;
+				$(niveis).filter(function() {
+				  return $(this).attr("percentual") <= media;
+				}).each(function() {
+				  var value = parseFloat($(this).attr("percentual"));
+				  percentualFinal = (value > percentualFinal) ? value : percentualFinal;
+				});
+				
+				if(niveisSelecionadosDosCriterios.length > 0) {
+					$("#competencia_"+competenciaId).attr("checked", "checked");
+					$("#competencia_"+competenciaId).removeAttr("disabled");
+					$("#competencia_"+competenciaId).parent().parent().find(".checkNivel").removeAttr("disabled");
+				} else {
+					$("#competencia_"+competenciaId).removeAttr("checked");
+					$("#competencia_"+competenciaId).attr("disabled", "disabled");
+					$("#competencia_"+competenciaId).parent().parent().find(".checkNivel").attr("disabled", "disabled");
+				}
+				
+				$("#competencia_"+competenciaId).parent().parent().find(".checkNivel[percentual="+percentualFinal+"]").attr("checked","checked").change();
+				$("#competencia_"+competenciaId).change();
+			};
 			
 			var options = {
 				series:{
@@ -197,6 +244,7 @@
 				}
 				
 				var linhasSemRadioMarcado = $('tr').has('.checkNivel:enabled').not(':has(.checkNivel:checked)');
+				linhasSemRadioMarcado = $.merge(linhasSemRadioMarcado, $('tr').has('.checkNivelCriterio:enabled').not(':has(.checkNivelCriterio:checked)'));
 				if (linhasSemRadioMarcado.size() == 0)
 				{
 					$('#form').submit();
@@ -206,7 +254,7 @@
 				$('tr.even').css('background-color', '#EFEFEF');
 				$('tr.odd').css('background-color', '#FFF');
 			
-				jAlert('Selecione os níveis para as competências indicadas.');
+				jAlert('Selecione os níveis para as competências ou critérios indicados.');
 				linhasSemRadioMarcado.css('background-color', '#FFEEC2');
 	
 				return false;
@@ -313,11 +361,11 @@
 				
 				$('#checkAllCompetencia').attr('checked', false);
 				
-				$('.checkCompetencia').click(function() {
+				$('.checkCompetencia.changed').change(function() {
 					$(this).parent().parent().find(".checkNivel").attr('disabled', !($(this).attr('checked')));
 				});
 			
-				$('.checkCompetencia, #checkAllCompetencia, .checkNivel').click(atualizarGrafico);
+				$('.checkCompetencia.changed, #checkAllCompetencia, .checkNivel.changed').change(atualizarGrafico);
 				
 				$.each(onLoad, function(key, value) {
     				toolTipCompetenciaObs(key, value);
@@ -403,44 +451,86 @@
 			<br />
 			
 			<div id="niveisCompetenciaFaixaSalariais">
-				<#assign i = 0/>
-				<@display.table name="niveisCompetenciaFaixaSalariais" id="configuracaoNivelCompetencia" class="dados">
-				
-				
-					<@display.column title="<input type='checkbox' id='checkAllCompetencia'/>" style="width: 20px;">
-						<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
-						<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetencia" />
-						<input type="hidden" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.ordem" id="ordem_${i}" class="ordem" value=""/>
-					</@display.column>
-	
-					<@display.column title="#" style="width: 20px; text-align: center;">
-						${i+1}
-					</@display.column>
-	
-					<@display.column title="Competência" >
-						<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
-						<#if configuracaoNivelCompetencia.competenciaObservacao?exists && configuracaoNivelCompetencia.competenciaObservacao != "">
-							<img id="competencia_${i}_obs" onLoad="toolTipCompetenciaObs(${i}, '${configuracaoNivelCompetencia.competenciaObservacao?j_string?replace('\"','&quot;')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
-						</#if>
-					</@display.column>
-					
-					<#list nivelCompetencias as nivel>
-						
-						<#if configuracaoNivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
-							<#assign class="nivelFaixa"/>
-							<#assign bgcolor="background-color: #BFC0C3;"/>
-						<#else>
-							<#assign class=""/>
-							<#assign bgcolor=""/>
-						</#if>
-						
-						<@display.column title="${nivel.descricao}" style="${bgcolor} width: 100px; text-align: center;" class="${class}">
-							<input type="radio" disabled="disabled" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" nivelcolaborador="${nivel.ordem}" nivelfaixa="${configuracaoNivelCompetencia.nivelCompetencia.ordem}" onchange="setOrdem(${i}, ${nivel.ordem})"/>
-						</@display.column>
-					</#list>
-					
-					<#assign i = i + 1/>
-				</@display.table>
+				<table id="configuracaoNivelCompetencia" class="dados">
+					<thead>
+						<tr>
+							<th><input type="checkbox" id="checkAllCompetencia"></th>
+							<th style="width: 20px; text-align: center;">#</th>
+							<th>Competência/Critério para avaliação</th>
+							<#list nivelCompetencias as nivel>
+								<th>${nivel.descricao}</th>
+							</#list>
+						</tr>
+					</thead>
+					<tbody>
+						<#assign i = 0/>
+						<#list niveisCompetenciaFaixaSalariais as configuracaoNivelCompetencia>
+							<#assign hasCriterios = (configuracaoNivelCompetencia.criteriosAvaliacaoCompetencia.size() >0) />
+							<tr class="even">
+								<td style="width: 20px;">
+									<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
+									<#-- não utilizar decorator no hidden abaixo -->
+									<input type="hidden" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.ordem" id="ordem_${i}" class="ordem" value=""/>
+									
+									<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId"
+									<#if hasCriterios > onclick="return false;" class="checkCompetencia" disabled="disabled"<#else> class="checkCompetencia changed" </#if>
+									value="${configuracaoNivelCompetencia.competenciaId}" />
+								</td>
+								
+								<td style="text-align: center;">${i+1}</td>
+								<td>
+									<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
+									<#if configuracaoNivelCompetencia.competenciaObservacao?exists && configuracaoNivelCompetencia.competenciaObservacao != "">
+										<img id="competencia_${i}_obs" onLoad="toolTipCompetenciaObs(${i}, '${configuracaoNivelCompetencia.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
+									</#if>		
+								</td>
+								
+								<#list nivelCompetencias as nivel>
+									<#if configuracaoNivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia?exists && configuracaoNivelCompetencia.nivelCompetencia.id?exists && configuracaoNivelCompetencia.nivelCompetencia.id == nivel.id>
+										<#assign class="nivelFaixa"/>
+										<#assign bgcolor="background-color: #BFC0C3;"/>
+									<#else>
+										<#assign class=""/>
+										<#assign bgcolor=""/>
+									</#if>
+									
+									<td style="${bgcolor} width: 100px; text-align: center;" class="${class}">
+										<input type="radio" disabled="disabled" percentual="${nivel.percentual}" 
+										<#if hasCriterios > onclick="return false;"  class="checkNivel radio" <#else>  class="checkNivel changed radio" </#if>
+										name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" nivelcolaborador="${nivel.ordem}" nivelfaixa="${configuracaoNivelCompetencia.nivelCompetencia.ordem}" onchange="setOrdem(${i}, ${nivel.ordem})"/>
+									</td>
+								</#list>
+							</tr>
+							
+							
+							<#assign y = 0/>
+							<#list configuracaoNivelCompetencia.criteriosAvaliacaoCompetencia as criterio>
+								<tr class="odd">
+									<td >
+										
+									</td>
+									
+									<td style="text-align: center;">
+										<input type="hidden" name="niveisCompetenciaFaixaSalariais[${i}].configuracaoNivelCompetenciaCriterios[${y}].criterioDescricao" value="${criterio.descricao}" />
+										<input type="checkbox" id="competencia_${i}_criterio_${y}" name="niveisCompetenciaFaixaSalariais[${i}].configuracaoNivelCompetenciaCriterios[${y}].criterioId" value="${criterio.id}" class="checkCompetenciaCriterio" />
+									</td>
+									<td><label for="competencia_${i}_criterio_${y}">${criterio.descricao}</label></td>
+									
+									<#list nivelCompetencias as nivelCriterio>
+										<td style="width: 100px; text-align: center;">
+											<input type="radio" disabled="disabled" class="checkNivelCriterio radio" competencia="${i}" percentual="${nivelCriterio.percentual}" name="niveisCompetenciaFaixaSalariais[${i}].configuracaoNivelCompetenciaCriterios[${y}].nivelCompetencia.id" value="${nivelCriterio.id}" />
+										</td>
+									</#list>
+								</tr>
+								
+								<#assign y = y + 1/>
+							</#list>
+							
+							<#assign i = i + 1/>
+						</#list>
+					</tbody>
+				</table>	
+			
 			</div>
 			
 			<@ww.token/>
