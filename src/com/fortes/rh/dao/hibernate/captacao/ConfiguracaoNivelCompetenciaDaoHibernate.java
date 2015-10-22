@@ -78,7 +78,6 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetencia.class,"cnc");
 		criteria.createCriteria("cnc.nivelCompetencia", "nc", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cnc.solicitacao", "s", Criteria.LEFT_JOIN);
-		criteria.createCriteria("cnc.configuracaoNivelCompetenciaCriterios", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.faixaSalarial", "f", Criteria.LEFT_JOIN);
 		criteria.createCriteria("f.cargo", "c", Criteria.LEFT_JOIN);
 

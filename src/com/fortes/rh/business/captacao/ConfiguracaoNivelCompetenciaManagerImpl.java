@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -451,35 +449,27 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	
 	public Collection<MatrizCompetenciaNivelConfiguracao> montaConfiguracaoNivelCompetenciaByFaixa(Long empresaId, Long faixaSalarialId, Date data) 
 	{
-		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId, data);
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasExigidasPelaFaixa = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId, data);
 		Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId);
 
-		Map<ConfiguracaoNivelCompetencia, String> competenciaNiveis = new LinkedHashMap<ConfiguracaoNivelCompetencia, String>();
-		for (ConfiguracaoNivelCompetencia competencia : configuracaoNivelCompetencias) {
-			competencia.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(competencia.getCompetenciaId(), competencia.getTipoCompetencia().charValue()));
-			competenciaNiveis.put(competencia, competencia.getNivelCompetencia().getDescricao());
-		}
-
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
-		for (Map.Entry<ConfiguracaoNivelCompetencia, String> competenciaNivel : competenciaNiveis.entrySet()) 
+		for (ConfiguracaoNivelCompetencia competenciaExigidaPelaFaixa : configuracaoNivelCompetenciasExigidasPelaFaixa) 
 		{
+			competenciaExigidaPelaFaixa.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(competenciaExigidaPelaFaixa.getCompetenciaId(), competenciaExigidaPelaFaixa.getTipoCompetencia().charValue()));
 			for (NivelCompetencia nivel : niveis) 
 			{
-				boolean isConfiguracaoFaixa = competenciaNivel.getValue().equals(nivel.getDescricao());
-				boolean hasCriterios = (competenciaNivel.getKey().getCriteriosAvaliacaoCompetencia() != null && competenciaNivel.getKey().getCriteriosAvaliacaoCompetencia().size() > 0);
-				matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaNivel.getKey().getCompetenciaDescricao(), nivel.getOrdem() + " - " + nivel.getDescricao(), isConfiguracaoFaixa, false, hasCriterios, false));
+				boolean isConfiguracaoFaixa = competenciaExigidaPelaFaixa.getNivelCompetencia().getDescricao().equals(nivel.getDescricao());
+				boolean hasCriterios = (competenciaExigidaPelaFaixa.getCriteriosAvaliacaoCompetencia() != null && competenciaExigidaPelaFaixa.getCriteriosAvaliacaoCompetencia().size() > 0);
+				matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaExigidaPelaFaixa.getCompetenciaDescricao(), nivel.getOrdem() + " - " + nivel.getDescricao(), isConfiguracaoFaixa, false, hasCriterios, false));
 			}
 			
-			if ( competenciaNivel.getKey().getCriteriosAvaliacaoCompetencia() != null ) {
-				for( CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia : competenciaNivel.getKey().getCriteriosAvaliacaoCompetencia() ) {
-					for (NivelCompetencia nivel : niveis) 
-					{
+			if ( competenciaExigidaPelaFaixa.getCriteriosAvaliacaoCompetencia() != null ) {
+				for( CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia : competenciaExigidaPelaFaixa.getCriteriosAvaliacaoCompetencia() ) {
+					for (NivelCompetencia nivel : niveis)
 						matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(criterioAvaliacaoCompetencia.getDescricao(), nivel.getOrdem() + " - " + nivel.getDescricao(), false, false, false, true));
-					}
 				}
 			}
 		}
-
 		return matrizModelo;
 	}
 	
@@ -491,61 +481,66 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				
 			Collection<ConfiguracaoNivelCompetencia> competenciasDoColaborador = getDao().findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId());
 			
-			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : competenciasDoColaborador) {
-				configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaCriterios(configuracaoNivelCompetenciaCriterioManager.findByConfiguracaoNivelCompetencia(configuracaoNivelCompetencia.getId()));
-			}
-			
 			Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId);
-	
-			Map<ConfiguracaoNivelCompetencia, String> competenciaNiveis = new LinkedHashMap<ConfiguracaoNivelCompetencia, String>();
-			for (ConfiguracaoNivelCompetencia competencia : configuracaoNivelCompetenciasExigidasPelaFaixa)  {
-				competencia.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(competencia.getCompetenciaId(), competencia.getTipoCompetencia().charValue()));
-				competenciaNiveis.put(competencia, competencia.getNivelCompetencia().getDescricao());
-			}
-	
+			
 			Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
-			for (Map.Entry<ConfiguracaoNivelCompetencia, String> competenciaNivel : competenciaNiveis.entrySet()) 
+			for (ConfiguracaoNivelCompetencia competenciaExigidaPelaFaixa : configuracaoNivelCompetenciasExigidasPelaFaixa) 
 			{
+				ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = montaCompetencia( competenciasDoColaborador, niveis, matrizModelo, competenciaExigidaPelaFaixa);
 				
-				for (NivelCompetencia nivel : niveis) 
-				{
-					boolean isConfiguracaoColaborador = false;
-					for (ConfiguracaoNivelCompetencia competenciaDoColaborador : competenciasDoColaborador) {
-						if(competenciaNivel.getKey().getCompetenciaDescricao().equals(competenciaDoColaborador.getCompetenciaDescricao()) && competenciaDoColaborador.getNivelCompetencia().getDescricao().equals(nivel.getDescricao())){
-							isConfiguracaoColaborador = true;
-							break;
-						}
-					}
-					
-					boolean isConfiguracaoFaixa = competenciaNivel.getValue().equals(nivel.getDescricao());
-					matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaNivel.getKey().getCompetenciaDescricao(), nivel.getOrdem() + " - " + nivel.getDescricao(), isConfiguracaoFaixa, isConfiguracaoColaborador));
-				}
+				montaCriteriosDaCompetencia(niveis, matrizModelo, competenciaExigidaPelaFaixa, configuracaoNivelCompetencia);
 				
-				if ( competenciaNivel.getKey().getCriteriosAvaliacaoCompetencia() != null ) {
-					for( CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia : competenciaNivel.getKey().getCriteriosAvaliacaoCompetencia() ) {
-						for (NivelCompetencia nivel : niveis) {
-							boolean isConfiguracaoColaborador = false;
-							
-							for (ConfiguracaoNivelCompetencia competenciaDoColaborador : competenciasDoColaborador) {
-								if(competenciaNivel.getKey().getCompetenciaDescricao().equals(competenciaDoColaborador.getCompetenciaDescricao())){
-									if( competenciaDoColaborador.getConfiguracaoNivelCompetenciaCriterios() != null )
-										for (ConfiguracaoNivelCompetenciaCriterio configuracaoNivelCompetenciaCriterio : competenciaDoColaborador.getConfiguracaoNivelCompetenciaCriterios()) {
-											if ( configuracaoNivelCompetenciaCriterio.getCriterioDescricao().equals(criterioAvaliacaoCompetencia.getDescricao())){
-												isConfiguracaoColaborador = configuracaoNivelCompetenciaCriterio.getNivelCompetencia().getDescricao().equals(nivel.getDescricao());
-											}
-										}
-								}
-							}
-							
-							matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(criterioAvaliacaoCompetencia.getDescricao(), nivel.getOrdem() + " - " + nivel.getDescricao(), false, isConfiguracaoColaborador, false, true));
-						}
-						
-					}
-				}
+				competenciaExigidaPelaFaixa.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(competenciaExigidaPelaFaixa.getCompetenciaId(), competenciaExigidaPelaFaixa.getTipoCompetencia().charValue()));
 			}
 			return matrizModelo;
 		}
 		else return null;
+	}
+
+	private ConfiguracaoNivelCompetencia montaCompetencia( Collection<ConfiguracaoNivelCompetencia> competenciasDoColaborador, Collection<NivelCompetencia> niveis, Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo, ConfiguracaoNivelCompetencia competenciaExigidaPelaFaixa) {
+		boolean isConfiguracaoColaborador;
+		boolean isConfiguracaoFaixa;
+
+		competenciaExigidaPelaFaixa.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(competenciaExigidaPelaFaixa.getCompetenciaId(), competenciaExigidaPelaFaixa.getTipoCompetencia().charValue()));
+		
+		ConfiguracaoNivelCompetencia competenciaDoColaboradorIgualExigidaPelaFaixa = null;
+		
+		for (ConfiguracaoNivelCompetencia competenciaDoColaborador : competenciasDoColaborador) 
+			if(competenciaExigidaPelaFaixa.getCompetenciaDescricao().equals(competenciaDoColaborador.getCompetenciaDescricao())){
+				competenciaDoColaborador.setConfiguracaoNivelCompetenciaCriterios(configuracaoNivelCompetenciaCriterioManager.findByConfiguracaoNivelCompetencia(competenciaDoColaborador.getId()));
+				competenciaDoColaboradorIgualExigidaPelaFaixa = competenciaDoColaborador;
+				competenciasDoColaborador.remove(competenciaDoColaborador);
+				break;
+			}
+
+		for (NivelCompetencia nivel : niveis){						
+			isConfiguracaoColaborador = competenciaDoColaboradorIgualExigidaPelaFaixa != null && competenciaDoColaboradorIgualExigidaPelaFaixa.getNivelCompetencia().getDescricao().equals(nivel.getDescricao());
+			isConfiguracaoFaixa = competenciaExigidaPelaFaixa.getNivelCompetencia().getDescricao().equals(nivel.getDescricao());
+			matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaExigidaPelaFaixa.getCompetenciaDescricao(), nivel.getOrdem() + " - " + nivel.getDescricao(), isConfiguracaoFaixa, isConfiguracaoColaborador));
+		}
+		
+		return competenciaDoColaboradorIgualExigidaPelaFaixa;
+	}
+
+	private void montaCriteriosDaCompetencia( Collection<NivelCompetencia> niveis, Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo, ConfiguracaoNivelCompetencia competenciaExigidaPelaFaixa, ConfiguracaoNivelCompetencia competenciaDoColaboradorIgualExigidaPelaFaixa) {
+		boolean isConfiguracaoColaborador;
+		
+		for( CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia : competenciaExigidaPelaFaixa.getCriteriosAvaliacaoCompetencia() ) {
+			ConfiguracaoNivelCompetenciaCriterio configuracaoNivelCompetenciaCriterioAtual = null;
+			if(competenciaDoColaboradorIgualExigidaPelaFaixa != null && competenciaDoColaboradorIgualExigidaPelaFaixa.getConfiguracaoNivelCompetenciaCriterios() != null){
+				for (ConfiguracaoNivelCompetenciaCriterio configuracaoNivelCompetenciaCriterio : competenciaDoColaboradorIgualExigidaPelaFaixa.getConfiguracaoNivelCompetenciaCriterios()) {
+					if ( configuracaoNivelCompetenciaCriterio.getCriterioDescricao().equals(criterioAvaliacaoCompetencia.getDescricao())){
+						competenciaDoColaboradorIgualExigidaPelaFaixa.getConfiguracaoNivelCompetenciaCriterios().remove(configuracaoNivelCompetenciaCriterio);
+						configuracaoNivelCompetenciaCriterioAtual = configuracaoNivelCompetenciaCriterio;
+						break;
+					}
+				}
+			}
+			for (NivelCompetencia nivel : niveis) {
+				isConfiguracaoColaborador = configuracaoNivelCompetenciaCriterioAtual!= null && configuracaoNivelCompetenciaCriterioAtual.getNivelCompetencia().getDescricao().equals(nivel.getDescricao());
+				matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(criterioAvaliacaoCompetencia.getDescricao(), nivel.getOrdem() + " - " + nivel.getDescricao(), false, isConfiguracaoColaborador, false, true));
+			}
+		}
 	}
 
 	public Collection<ConfiguracaoNivelCompetenciaVO> montaMatrizCompetenciaCandidato(Long empresaId, Long faixaSalarialId, Long solicitacaoId) 
