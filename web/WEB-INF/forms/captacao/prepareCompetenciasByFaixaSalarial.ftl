@@ -215,6 +215,14 @@
 				</@display.column>
 			</#list>
 			
+			<#if edicao>
+				<@display.column property="pesoCompetencia" title="Peso" style="width:50px; text-align:right;"/>
+			<#else>
+				<@display.column title="Peso" style="width: 50px; text-align: center;">
+					<input type="text" name="niveisCompetenciaFaixaSalariaisHabilidade[${i}].pesoCompetencia" size="4" maxlength="4" value="1" id="peso" style="width:40px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,''));">
+				</@display.column>
+			</#if>
+			
 			<#assign i = i + 1/>
 		</@display.table>
 
