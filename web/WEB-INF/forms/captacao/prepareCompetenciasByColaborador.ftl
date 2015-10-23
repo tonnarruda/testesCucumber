@@ -88,7 +88,7 @@
 					<#assign j = j + 1/>
 				</#list>
 				
-				$('.checkCompetencia.changed, #checkAllCompetencia, .checkNivel.changed').change(atualizarGrafico);
+				$('.checkCompetencia, #checkAllCompetencia, .checkNivel').change(atualizarGrafico);
 				
 				atualizarGrafico();
 				
@@ -365,7 +365,7 @@
 					$(this).parent().parent().find(".checkNivel").attr('disabled', !($(this).attr('checked')));
 				});
 			
-				$('.checkCompetencia.changed, #checkAllCompetencia, .checkNivel.changed').change(atualizarGrafico);
+				$('.checkCompetencia, #checkAllCompetencia, .checkNivel').change(atualizarGrafico);
 				
 				$.each(onLoad, function(key, value) {
     				toolTipCompetenciaObs(key, value);
