@@ -20,7 +20,6 @@ public class CHAHelperDaoHibernate {
 		p.add(Projections.property("entity.id"), "id");
 		p.add(Projections.property("entity.nome"), "nome");
 		p.add(Projections.property("entity.observacao"), "observacao");
-		p.add(Projections.property("entity.peso"), "peso");
 		p.add(Projections.property("entity.empresa.id"), "empresaId");
 		criteria.setProjection(p);
 		
