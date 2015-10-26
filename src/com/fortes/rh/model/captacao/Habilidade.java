@@ -37,7 +37,6 @@ public class Habilidade extends AbstractModel implements Serializable
 	
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="habilidade", cascade=CascadeType.ALL)
 	private Collection<CriterioAvaliacaoCompetencia> criteriosAvaliacaoCompetencia;
-	private Integer peso = 1;
 	
 	public Habilidade()	{
 	}
@@ -112,13 +111,5 @@ public class Habilidade extends AbstractModel implements Serializable
 	public void setCriteriosAvaliacaoCompetencia(
 			Collection<CriterioAvaliacaoCompetencia> criteriosAvaliacaoCompetencia) {
 		this.criteriosAvaliacaoCompetencia = criteriosAvaliacaoCompetencia;
-	}
-
-	public Integer getPeso() {
-		return peso;
-	}
-
-	public void setPeso(Integer peso) {
-		this.peso = peso;
 	}
 }

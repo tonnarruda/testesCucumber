@@ -12,12 +12,7 @@ ALTER TABLE criterioavaliacaocompetencia ADD CONSTRAINT criterioavaliacaocompete
 ALTER TABLE criterioavaliacaocompetencia ADD CONSTRAINT criterioavaliacaocompetencia_atitude_fk FOREIGN KEY (atitude_id) REFERENCES atitude(id);--.go
 CREATE SEQUENCE criterioavaliacaocompetencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
-
 ALTER TABLE nivelCompetencia ADD COLUMN percentual double precision;--.go
-
-ALTER TABLE conhecimento ADD COLUMN peso smallint DEFAULT 1;--.go
-ALTER TABLE habilidade ADD COLUMN peso smallint DEFAULT 1;--.go
-ALTER TABLE atitude ADD COLUMN peso smallint DEFAULT 1;--.go
 
 -----
 
@@ -34,4 +29,7 @@ ALTER TABLE configuracaonivelcompetenciacriterio ADD CONSTRAINT configuracaonive
 ALTER TABLE configuracaonivelcompetenciacriterio ADD CONSTRAINT configuracaonivelcompetenciacriterio_nivelcompetencia_fk FOREIGN KEY (nivelcompetencia_id) REFERENCES nivelcompetencia(id);--.go
 CREATE SEQUENCE configuracaonivelcompetenciacriterio_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
-ALTER TABLE ConfiguracaoNivelCompetencia ADD COLUMN pesocompetencia smallint DEFAULT 1;--.go
+ALTER TABLE ConfiguracaoNivelCompetencia ADD COLUMN pesocompetencia smallint;--.go
+update configuracaonivelcompetencia set pesocompetencia = 1 where configuracaonivelcompetenciafaixasalarial_id is not null;--.go
+------
+

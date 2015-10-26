@@ -19,7 +19,6 @@
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?habilidade.id=${habilidade.id}&page=${page}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="nome" title="Nome"/>
-		<@display.column property="peso" title="Peso" style="width:50px; text-align:right;"/>
 		<@display.column title="Obs." style="text-align: center;width: 50px">
 			<#if habilidade.observacao?exists && habilidade.observacao?trim != "">
 				<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${habilidade.observacao?j_string}');return false">...</span>

@@ -115,8 +115,8 @@ public class HabilidadeEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		String[] properties = new String[]{"id","nome","observacao", "peso"};
-		String[] sets = new String[]{"id","nome","observacao", "peso"};
+		String[] properties = new String[]{"id","nome","observacao"};
+		String[] sets = new String[]{"id","nome","observacao"};
 		String[] keys = new String[]{"empresa.id"};
 		Object[] values = new Object[]{getEmpresaSistema().getId()};
 		String[] orders = new String[]{"nome"};

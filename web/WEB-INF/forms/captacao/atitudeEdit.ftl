@@ -15,7 +15,7 @@
 <script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js"/>'></script>
 <script type="text/javascript" src="<@ww.url includeParams="none" value="/js/CHA.js?version=${versao}"/>"></script>
 
-<#assign validarCampos="return validaFormulario('form', new Array('nome','peso','@areasCheck'), null)"/>
+<#assign validarCampos="return validaFormulario('form', new Array('nome','@areasCheck'), null)"/>
 	
 	<script type='text/javascript'>
 		$(function(){
@@ -34,7 +34,6 @@
 <@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" validate="true" method="POST">
 
 	<@ww.textfield label="Nome" name="atitude.nome" id="nome" required="true" cssClass="inputNome" maxLength="100" cssStyle="width:500px;"/>
-	<@ww.textfield label="Peso" name="atitude.peso" id="peso" size="4"  maxLength="4" required="true" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:40px; text-align:right;"/>
 	
 	<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais *" list="areasCheckList" filtro="true" />
 	<@frt.checkListBox name="cursosCheck" id="cursosCheck" label="Cursos/Treinamentos Sugeridos" list="cursosCheckList" filtro="true"/>
