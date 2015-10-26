@@ -529,6 +529,7 @@
 				/desenvolvimento/indicadores/*/**=ROLE_MOV_CURSO,ROLE_TED_PAINEL_IND
 				/desenvolvimento/turma/prepareImprimirCursosVencidosAVencer.action*=ROLE_REL_CURSOS_VENCIDOS_A_VENCER
 				/desenvolvimento/turma/imprimirCursosVencidosAVencer.action*=ROLE_REL_CURSOS_VENCIDOS_A_VENCER
+				/desenvolvimento/colaboradorAvaliacaoPratica/*/**=ROLE_COLABORADOR_AVALIACAO_PRATICA
 
 				/pesquisa/trafego/*/**=ROLE_ANONYMOUS,ROLE_USER
 				

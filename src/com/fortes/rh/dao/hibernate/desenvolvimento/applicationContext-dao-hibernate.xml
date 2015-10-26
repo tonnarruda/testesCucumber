@@ -62,5 +62,11 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="colaboradorAvaliacaoPraticaDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.ColaboradorAvaliacaoPraticaDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 

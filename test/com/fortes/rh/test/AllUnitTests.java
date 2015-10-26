@@ -61,6 +61,7 @@ import com.fortes.rh.test.business.cargosalario.ReajusteColaboradorManagerTest;
 import com.fortes.rh.test.business.cargosalario.TabelaReajusteColaboradorManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.AproveitamentoAvaliacaoCursoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.CertificacaoManagerTest;
+import com.fortes.rh.test.business.desenvolvimento.ColaboradorAvaliacaoPraticaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorPresencaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorTurmaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.CursoManagerTest;
@@ -220,6 +221,7 @@ import com.fortes.rh.test.dao.hibernate.cargosalario.TabelaReajusteColaboradorDa
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.AproveitamentoAvaliacaoCursoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.AvaliacaoCursoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.CertificacaoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorAvaliacaoPraticaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorPresencaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorTurmaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.CursoDaoHibernateTest;
@@ -467,6 +469,7 @@ import com.fortes.rh.test.web.action.cargosalario.ReajusteColaboradorEditActionT
 import com.fortes.rh.test.web.action.desenvolvimento.AvaliacaoCursoEditActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.AvaliacaoCursoListActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.CertificacaoListActionTest;
+import com.fortes.rh.test.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.ColaboradorPresencaEditActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.ColaboradorPresencaListActionTest;
 import com.fortes.rh.test.web.action.desenvolvimento.ColaboradorTurmaEditActionTest;
@@ -832,6 +835,10 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(CertificacaoManagerTest.class);
         suite.addTestSuite(CertificacaoListActionTest.class);
         suite.addTestSuite(CertificadoTest.class);
+        
+        suite.addTestSuite(ColaboradorAvaliacaoPraticaDaoHibernateTest.class);
+        suite.addTestSuite(ColaboradorAvaliacaoPraticaManagerTest.class);
+        suite.addTestSuite(ColaboradorAvaliacaoPraticaEditActionTest.class);
 
         // Backup
         suite.addTestSuite(BackupActionTest.class);

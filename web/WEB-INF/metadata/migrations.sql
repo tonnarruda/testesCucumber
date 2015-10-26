@@ -45,4 +45,27 @@ group by col.id, col.nome
 having count(ct.curso_id) = (select count(*) from cursoCertificados)
 order by col.id, col.nome
 
+----
 
+CREATE TABLE colaboradorAvaliacaoPratica (
+id bigint NOT NULL,
+avaliacaoPratica_id bigint,
+certificacao_id bigint,
+colaborador_id bigint,
+data date,
+nota double precision
+);--.go
+
+ALTER TABLE colaboradorAvaliacaoPratica ADD CONSTRAINT colaboradorAvaliacaoPratica_pkey PRIMARY KEY(id);--.go
+ALTER TABLE colaboradorAvaliacaoPratica ADD CONSTRAINT cap_avaliacaoPratica_fk FOREIGN KEY (avaliacaoPratica_id) REFERENCES avaliacaoPratica(id);--.go
+ALTER TABLE colaboradorAvaliacaoPratica ADD CONSTRAINT cap_certificacao_fk FOREIGN KEY (certificacao_id) REFERENCES certificacao(id);--.go
+ALTER TABLE colaboradorAvaliacaoPratica ADD CONSTRAINT cap_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);--.go
+CREATE SEQUENCE colaboradorAvaliacaoPratica_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+--OBS: Remover colaboradorAvaliacaoPratica em remover colaborador com dependências 
+
+
+--Verificar id do papel quando for criar a migrate
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (647,'ROLE_COLABORADOR_AVALIACAO_PRATICA', 'Nota da Avaliação Prática por Colaborador', '/desenvolvimento/colaboradorAvaliacaoPratica/prepare.action', 6, true, 367);--.go
+INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 647);--.go
+alter sequence papel_sequence restart with 648;--.go

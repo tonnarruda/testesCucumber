@@ -98,5 +98,14 @@
       <ref bean="certificacaoDaoTarget" />
     </property>
   </bean>
+  <bean id="colaboradorAvaliacaoPraticaDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.dao.desenvolvimento.ColaboradorAvaliacaoPraticaDao</value>
+    </property>
+    <property name="target">
+      <ref bean="colaboradorAvaliacaoPraticaDaoTarget" />
+    </property>
+  </bean>
 </beans>
+
 

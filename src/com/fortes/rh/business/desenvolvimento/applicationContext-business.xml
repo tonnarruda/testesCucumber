@@ -239,5 +239,19 @@
       <ref bean="certificacaoManagerTarget" />
     </property>
   </bean>
+  <bean id="colaboradorAvaliacaoPraticaManagerTarget" class="com.fortes.rh.business.desenvolvimento.ColaboradorAvaliacaoPraticaManagerImpl">
+    <property name="dao">
+      <ref bean="colaboradorAvaliacaoPraticaDao" />
+    </property>
+  </bean>
+  <bean id="colaboradorAvaliacaoPraticaManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.desenvolvimento.ColaboradorAvaliacaoPraticaManager</value>
+    </property>
+    <property name="target">
+      <ref bean="colaboradorAvaliacaoPraticaManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 
