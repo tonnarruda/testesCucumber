@@ -17,6 +17,7 @@ import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaCriterioManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManagerImpl;
+import com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
@@ -29,6 +30,7 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaVO;
 import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.captacao.MatrizCompetenciaNivelConfiguracao;
 import com.fortes.rh.model.captacao.NivelCompetencia;
@@ -70,6 +72,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 	private Mock configuracaoNivelCompetenciaCriterioManager;
 	private Mock colaboradorRespostaManager;
 	private Mock colaboradorQuestionarioManager;
+	private Mock criterioAvaliacaoCompetenciaManager;
 	
 	protected void setUp() throws Exception
     {
@@ -88,6 +91,9 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
         
         configuracaoNivelCompetenciaCriterioManager = new Mock(ConfiguracaoNivelCompetenciaCriterioManager.class);
         configuracaoNivelCompetenciaManager.setConfiguracaoNivelCompetenciaCriterioManager((ConfiguracaoNivelCompetenciaCriterioManager) configuracaoNivelCompetenciaCriterioManager.proxy());
+        
+        criterioAvaliacaoCompetenciaManager = new Mock(CriterioAvaliacaoCompetenciaManager.class);
+        configuracaoNivelCompetenciaManager.setCriterioAvaliacaoCompetenciaManager((CriterioAvaliacaoCompetenciaManager) criterioAvaliacaoCompetenciaManager.proxy());
         
         colaboradorRespostaManager = new Mock(ColaboradorRespostaManager.class);
         MockSpringUtil.mocks.put("colaboradorRespostaManager", colaboradorRespostaManager);
@@ -459,6 +465,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		
 		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId()), ANYTHING).will(returnValue(configuracaoNivelCompetencias));
 		nivelCompetenciaManager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(nivelCompetencias));
+		criterioAvaliacaoCompetenciaManager.expects(atLeastOnce()).method("findByCompetencia").withAnyArguments().will(returnValue(new ArrayList<CriterioAvaliacaoCompetencia>()));
 		
 		Collection<MatrizCompetenciaNivelConfiguracao> result = configuracaoNivelCompetenciaManager.montaConfiguracaoNivelCompetenciaByFaixa(empresa.getId(), faixaSalarial.getId(), null);
 		
@@ -503,7 +510,6 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2ExigidoPelaFaixa = criaConfigCompetencia("Conhecimento Técnico", faixaSalarial, nivelBom, TipoCompetencia.CONHECIMENTO, null);
 		configuracaoNivelCompetencia2ExigidoPelaFaixa.setId(2L);
 
-
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1DoColaborador = criaConfigCompetencia("Comunicação", faixaSalarial, nivelPessimo, TipoCompetencia.ATITUDE, null);
 		configuracaoNivelCompetencia1DoColaborador.setConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador);
 		configuracaoNivelCompetencia1DoColaborador.setId(3L);
@@ -520,7 +526,8 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		
 		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(configuracaoNivelCompetenciaColaborador.getId()), eq(colaboradorQuestionario.getRespondidaEm())).will(returnValue(configuracaoNivelCompetenciasExigidasPelaFaixa));
 		configuracaoNivelCompetenciaDao.expects(once()).method("findByConfiguracaoNivelCompetenciaColaborador").with(eq(configuracaoNivelCompetenciaColaborador.getId())).will(returnValue(configuracaoNivelCompetenciasDoColaborador));
-		
+		criterioAvaliacaoCompetenciaManager.expects(atLeastOnce()).method("findByCompetencia").withAnyArguments().will(returnValue(new ArrayList<CriterioAvaliacaoCompetencia>()));
+		configuracaoNivelCompetenciaCriterioManager.expects(atLeastOnce()).method("findByConfiguracaoNivelCompetencia").withAnyArguments().will(returnValue(new ArrayList<CriterioAvaliacaoCompetencia>()));
 		nivelCompetenciaManager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(niveisCompetencia));
 		
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizCompetencias = configuracaoNivelCompetenciaManager.montaMatrizCNCByQuestionario(colaboradorQuestionario, empresa.getId()); 
