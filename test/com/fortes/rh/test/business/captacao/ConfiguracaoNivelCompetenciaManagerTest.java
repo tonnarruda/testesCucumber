@@ -623,11 +623,11 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao(1L);
 		
-		ConfiguracaoNivelCompetencia nivelConhecimento = new ConfiguracaoNivelCompetencia(TipoCompetencia.CONHECIMENTO, 1L, "", null);
+		ConfiguracaoNivelCompetencia nivelConhecimento = new ConfiguracaoNivelCompetencia(TipoCompetencia.CONHECIMENTO, 1L, "", null, 1);
 		nivelConhecimento.setFaixaSalarial(faixaSalarial);
 		nivelConhecimento.setSolicitacao(solicitacao);
 
-		ConfiguracaoNivelCompetencia nivelAtitude = new ConfiguracaoNivelCompetencia(TipoCompetencia.ATITUDE, 3L, "", null);
+		ConfiguracaoNivelCompetencia nivelAtitude = new ConfiguracaoNivelCompetencia(TipoCompetencia.ATITUDE, 3L, "", null, 1);
 		nivelAtitude.setFaixaSalarial(faixaSalarial);
 		nivelAtitude.setSolicitacao(solicitacao);
 
@@ -635,7 +635,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 
 		nivelConhecimento.setCompetenciaDescricao("java");
 		nivelAtitude.setCompetenciaDescricao("proatividade");
-		ConfiguracaoNivelCompetencia nivelHabilidade = new ConfiguracaoNivelCompetencia(TipoCompetencia.HABILIDADE, 2L, "comunicacao", null);
+		ConfiguracaoNivelCompetencia nivelHabilidade = new ConfiguracaoNivelCompetencia(TipoCompetencia.HABILIDADE, 2L, "comunicacao", null, 1);
 		
 		Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaEmpresa = Arrays.asList(nivelConhecimento, nivelHabilidade, nivelAtitude);
 

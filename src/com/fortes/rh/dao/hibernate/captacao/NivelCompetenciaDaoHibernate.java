@@ -73,7 +73,7 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
-			lista.add(new ConfiguracaoNivelCompetencia(((String)res[3]).charAt(0), ((BigInteger)res[0]).longValue(), (String)res[1], (String)res[2]));
+			lista.add(new ConfiguracaoNivelCompetencia(((String)res[3]).charAt(0), ((BigInteger)res[0]).longValue(), (String)res[1], (String)res[2], 1));
 		}
 
 		return lista;				

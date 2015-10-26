@@ -88,6 +88,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		p.add(Projections.property("cnc.configuracaoNivelCompetenciaColaborador.id"), "projectionConfiguracaoNivelCompetenciaColaboradorId");
 		p.add(Projections.property("cnc.configuracaoNivelCompetenciaFaixaSalarial.id"), "configuracaoNivelCompetenciaFaixaSalarialId");
 		p.add(Projections.property("cnc.configuracaoNivelCompetenciaCriterios"), "configuracaoNivelCompetenciaCriterios");
+		p.add(Projections.property("cnc.pesoCompetencia"), "pesoCompetencia");
 		p.add(Projections.property("nc.id"), "nivelCompetenciaIdProjection");
 		p.add(Projections.property("nc.descricao"), "projectionNivelCompetenciaDescricao");
 		p.add(Projections.property("nc.ordem"), "projectionNivelCompetenciaOrdem");
