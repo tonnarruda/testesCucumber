@@ -472,13 +472,9 @@
 				<@ww.file label="Foto" name="colaborador.foto" id="foto"/>
 	        </#if>
 
-
 			<@ww.textfield label="Nome" name="colaborador.nome" id="nome" required="true" liClass="liLeft" cssStyle="width: 300px;" maxLength="60" onblur="${funcaoNome}"/>
-
 			<@ww.textfield label="Nome Comercial" name="colaborador.nomeComercial" id="nomeComercial" required="true" cssStyle="width: 300px;" maxLength="30"/>
-
 			<@ww.datepicker label="Nascimento" name="colaborador.pessoal.dataNascimento" value="${dataNasc}" id="nascimento" required="true" liClass="liLeft" cssClass="mascaraData"/>
-
 			<@ww.select label="Sexo"   name="colaborador.pessoal.sexo" list="sexos" cssStyle="width: 85px;" liClass="liLeft" />
 			<@ww.textfield label="CPF" name="colaborador.pessoal.cpf" id="cpf" required="true" cssClass="mascaraCpf"  onchange="verificaCpf(this.value);" onblur="verificaCpf(this.value);" />
 			<@ww.div id="msgCPFDuplicado" cssStyle="display:none;"></@ww.div>
@@ -506,6 +502,9 @@
 		</div>
 
 		<div id="content2" style="display: none;">
+			<#if integraAc && !colaborador.naoIntegraAc>
+				<@ww.textfield label="Código no Fortes Pessoal" name="colaborador.codigoAC" id="codigoAC" disabled="true" cssStyle="width: 80px;"/>
+			</#if>
 			<@ww.textfield label="Matrícula" name="colaborador.matricula" id="matricula" disabled= "${somenteLeituraIntegraAC}" cssStyle="width:150px;" liClass="liLeft" maxLength="20"/>
 
 			<#if somenteLeituraIntegraAC=="true" && edicao=="true">

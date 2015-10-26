@@ -617,7 +617,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		NivelCompetencia nivelCompetencia1 = criaNivelCompetencia("Bom", 4);
 		NivelCompetencia nivelCompetencia2 = criaNivelCompetencia("Péssimo", 1);
 
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "pedro", "pedro", "0123");
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "pedro", "pedro", "0123", null, null, null);
 		colaboradorManager.save(colaborador);
 		
 		ConfiguracaoNivelCompetenciaColaborador configColaborador = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, colaborador, DateUtil.criarDataMesAno(17, 8, 2011), null, null);
@@ -864,10 +864,10 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		NivelCompetencia nivelCompetencia1 = criaNivelCompetencia("Bom", 4);
 		NivelCompetencia nivelCompetencia2 = criaNivelCompetencia("Péssimo", 1);
 
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Pedro", "pedro", "0123");
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Pedro", "pedro", "0123", null, null, null);
 		colaboradorManager.save(colaborador);
 		
-		Colaborador avaliador = ColaboradorFactory.getEntity(2L, "Maria", "pedro", "0123");
+		Colaborador avaliador = ColaboradorFactory.getEntity(2L, "Maria", "pedro", "0123", null, null, null);
 		colaboradorManager.save(avaliador);
 		
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
@@ -900,10 +900,10 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		NivelCompetencia nivelCompetencia1 = criaNivelCompetencia("Bom", 4);
 		NivelCompetencia nivelCompetencia2 = criaNivelCompetencia("Péssimo", 1);
 
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Pedro", "pedro", "0123");
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Pedro", "pedro", "0123", null, null, null);
 		colaboradorManager.save(colaborador);
 		
-		Colaborador avaliador = ColaboradorFactory.getEntity(2L, "Maria", "pedro", "0123");
+		Colaborador avaliador = ColaboradorFactory.getEntity(2L, "Maria", "pedro", "0123", null, null, null);
 		colaboradorManager.save(avaliador);
 		
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
@@ -1032,12 +1032,12 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		estabelecimento.setNome("matriz");
 		estabelecimentoDao.save(estabelecimento);
 		
-		Colaborador ataliba = ColaboradorFactory.getEntity(1L, "ataliba", "ataliba", "0456");
+		Colaborador ataliba = ColaboradorFactory.getEntity(1L, "ataliba", "ataliba", "0456", null, null, null);
 		ataliba.setEmpresa(empresa);
 		ataliba.setDesligado(false);
 		colaboradorManager.save(ataliba);
 
-		Colaborador tiburcio = ColaboradorFactory.getEntity(1L, "tiburcio", "tiburcio", "0123");
+		Colaborador tiburcio = ColaboradorFactory.getEntity(1L, "tiburcio", "tiburcio", "0123", null, null, null);
 		tiburcio.setEmpresa(empresa);
 		tiburcio.setDesligado(false);
 		colaboradorManager.save(tiburcio);

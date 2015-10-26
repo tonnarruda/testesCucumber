@@ -85,8 +85,6 @@ public class ColaboradorListAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private final String NOMENCLATURA_ENVIADO_AC = "Enviado AC";
-	
 	private ColaboradorManager colaboradorManager = null;
 	private EstabelecimentoManager estabelecimentoManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
@@ -98,6 +96,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	private Collection<Colaborador> colaboradors = null;
 	private Colaborador colaborador;
+	private String codigoACBusca;
 	private String nomeBusca;
 	private String nomeComercialBusca;
 	private String cpfBusca;
@@ -183,6 +182,22 @@ public class ColaboradorListAction extends MyActionSupportList
 	private ByteArrayInputStream byteArrayInputStream;
 	private String mesAno;
 
+	private enum Nomenclatura {
+		ENVIADO_FP("Enviado Fortes Pessoal"),
+		CODIGO_FP ("Código Fortes Pessoal");
+		
+		private String descricao;
+		
+		Nomenclatura(String descricao){
+			this.descricao = descricao; 
+		}
+
+		public String getDescricao()
+		{
+			return descricao;
+		}
+	}
+	
 	public String find() throws Exception
 	{
 		data = colaboradorManager.getAutoComplete(descricao, getEmpresaSistema().getId());
@@ -218,6 +233,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		}
 		
 		Map<String, Object> parametros = new HashMap<String, Object>();
+		parametros.put("codigoACBusca", codigoACBusca);
 		parametros.put("nomeBusca", nomeBusca);
 		parametros.put("nomeComercialBusca", nomeComercialBusca);
 		parametros.put("cpfBusca", cpfBusca);
@@ -367,17 +383,17 @@ public class ColaboradorListAction extends MyActionSupportList
 		
 		colunas = ReportColumn.getColumns();
 
-		if(SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_COMPROU_SESMT"}) )
-		{
+		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_COMPROU_SESMT"}) ){
 			colunas.add(new ReportColumn("Função", "funcaoNome", "fun.nome", 100, false));
 			colunas.add(new ReportColumn("Ambiente", "ambienteNome", "amb.nome", 100, false));
 		}
 		
-		if(existeEmpresaIntegradaAc)
-			colunas.add(new ReportColumn(NOMENCLATURA_ENVIADO_AC, "enviadoParaAC", "naoIntegraAc", 25, false));	
-
-		if(habilitaCampoExtra)
-		{
+		if (existeEmpresaIntegradaAc){
+			colunas.add(new ReportColumn(Nomenclatura.ENVIADO_FP.getDescricao(), "enviadoParaAC", "naoIntegraAc", 25, false));	
+			colunas.add(new ReportColumn(Nomenclatura.CODIGO_FP.getDescricao(), "codigoACRelatorio", "co.codigoAC", 8, false));
+		}
+		
+		if (habilitaCampoExtra){
 			configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, getEmpresaSistema().getId()}, new String[]{"ordem"});
 			
 			for (ConfiguracaoCampoExtra configuracaoCampoExtra : configuracaoCampoExtras)
@@ -507,7 +523,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		AbstractColumn aCol;
 		for (ReportColumn coluna : colunasMarcadasRedimensionadas)
 		{
-			if(!integradaAc && coluna.getName().equals(NOMENCLATURA_ENVIADO_AC))
+			if(!integradaAc && (coluna.getName().equals(Nomenclatura.ENVIADO_FP.getDescricao()) || coluna.getName().equals(Nomenclatura.CODIGO_FP.getDescricao())))
 				continue;
 			
 		    aCol = ColumnBuilder.getNew()
@@ -1330,5 +1346,15 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public void setVinculo(String vinculo) {
 		this.vinculo = vinculo;
+	}
+
+	public String getCodigoACBusca()
+	{
+		return codigoACBusca;
+	}
+
+	public void setCodigoACBusca(String codigoACBusca)
+	{
+		this.codigoACBusca = codigoACBusca;
 	}
 }

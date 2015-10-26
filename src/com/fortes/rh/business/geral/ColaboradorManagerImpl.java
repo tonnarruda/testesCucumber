@@ -1922,6 +1922,8 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			if(array[16] != null)
 				colaborador.setStatusAcPessoal(((Integer)array[16]).intValue());
 				
+			colaborador.setCodigoAC((String)array[17]);
+			
 			result.add(colaborador);
 		}
 

@@ -20,14 +20,14 @@
 		</action>
 		<action name="list" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="list">
 			<interceptor-ref name="defaultListStack">
-	    		<param name="scope.session">matriculaBusca,cpfBusca,nomeBusca,situacao,areaOrganizacional.id,estabelecimento.id,cargo.id</param>
+	    		<param name="scope.session">codigoACBusca,matriculaBusca,cpfBusca,nomeBusca,situacao,areaOrganizacional.id,estabelecimento.id,cargo.id</param>
 	    	</interceptor-ref>	
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorList.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="delete">
 			<interceptor-ref name="defaultDeleteStack">
-				<param name="scope.session">matriculaBusca,cpfBusca,nomeBusca,situacao,areaOrganizacional.id,estabelecimento.id,cargo.id</param>
+				<param name="scope.session">codigoACBusca,matriculaBusca,cpfBusca,nomeBusca,situacao,areaOrganizacional.id,estabelecimento.id,cargo.id</param>
 			</interceptor-ref>
 			<result name="success" type="redirect">list.action</result>
 			<result name="error" type="redirect">list.action</result>

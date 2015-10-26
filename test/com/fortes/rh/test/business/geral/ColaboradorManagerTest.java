@@ -1602,10 +1602,10 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	Estabelecimento matriz = EstabelecimentoFactory.getEntity(1L);
 		Date hoje = DateUtil.criarDataMesAno(29, 8, 2011);
 		
-		Colaborador joao = ColaboradorFactory.getEntity(1L, "joao", "joao", "001");
+		Colaborador joao = ColaboradorFactory.getEntity(1L, "joao", "joao", "001", null, null, null);
 		joao.setDataAdmissao(hoje);
 		
-		Colaborador pedro = ColaboradorFactory.getEntity(2L, "pedro", "pedro", "002");
+		Colaborador pedro = ColaboradorFactory.getEntity(2L, "pedro", "pedro", "002", null, null, null);
 		pedro.setDataAdmissao(hoje);
 		
 		Collection<Colaborador> colaboradores = Arrays.asList(joao, pedro);

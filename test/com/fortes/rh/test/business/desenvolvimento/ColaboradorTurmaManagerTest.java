@@ -868,7 +868,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Certificacao certificacao = CertificacaoFactory.getEntity(5L);
 		certificacao.setNome("Certificação I");
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Chico", null, null);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Chico", null, null, null, null, null);
 		
 		Curso curso = CursoFactory.getEntity(1L);
 		curso.setNome("Curso I");

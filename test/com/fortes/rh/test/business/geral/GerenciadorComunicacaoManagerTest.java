@@ -1402,7 +1402,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		
 		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity(1L);
 		
-		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Colaborador", null, null);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Colaborador", null, null, null, null, null);
 		
 		TSituacao situacao = new TSituacao();
 		situacao.setEmpresaCodigoAC("001");
@@ -1489,19 +1489,19 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		Habilitacao habilitacaoComVencimento3DiasDepois = new Habilitacao();
 		habilitacaoComVencimento3DiasDepois.setVencimento(DateUtil.incrementaDias(new Date(), 3));
 		
-		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L, "Colaborador 1", "Nome Comercial 1", null);
+		Colaborador colaborador1 = ColaboradorFactory.getEntity(1L, "Colaborador 1", "Nome Comercial 1", null, null, null, null);
 		colaborador1.setHabilitacao(habilitacaoComVencimento1DiaDepois);
 		colaborador1.setAreaOrganizacional(areaOrganizacional1);
 		
-		Colaborador colaborador2 = ColaboradorFactory.getEntity(2L, "Colaborador 2", "Nome Comercial 2", null);
+		Colaborador colaborador2 = ColaboradorFactory.getEntity(2L, "Colaborador 2", "Nome Comercial 2", null, null, null, null);
 		colaborador2.setHabilitacao(habilitacaoComVencimento1DiaDepois);
 		colaborador2.setAreaOrganizacional(areaOrganizacional1);
 		
-		Colaborador colaborador3 = ColaboradorFactory.getEntity(3L, "Colaborador 3", "Nome Comercial 3", null);
+		Colaborador colaborador3 = ColaboradorFactory.getEntity(3L, "Colaborador 3", "Nome Comercial 3", null, null, null, null);
 		colaborador3.setHabilitacao(habilitacaoComVencimento2DiasDepois);
 		colaborador3.setAreaOrganizacional(areaOrganizacional2);
 		
-		Colaborador colaborador4 = ColaboradorFactory.getEntity(4L, "Colaborador 4", "Nome Comercial 4", null);
+		Colaborador colaborador4 = ColaboradorFactory.getEntity(4L, "Colaborador 4", "Nome Comercial 4", null, null, null, null);
 		colaborador4.setHabilitacao(habilitacaoComVencimento3DiasDepois);
 		colaborador4.setAreaOrganizacional(areaOrganizacional3);
 		

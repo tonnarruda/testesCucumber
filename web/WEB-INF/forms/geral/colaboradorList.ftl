@@ -167,6 +167,13 @@
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="formBusca" action="list.action" onsubmit="${validarCampos}" method="POST" id="formBusca">
 			<table>
+				<#if integraAc>
+					<tr>
+						<td width="370">
+							<@ww.textfield label="Código no Fortes Pessoal" name="codigoACBusca" id="codigoACBusca" cssStyle="width: 100px;"/>
+						</td>
+					</tr>
+				</#if>		
 				<tr>
 					<td width="370">
 						<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" liClass="liLeft" cssStyle="width: 226px;"/>
@@ -174,7 +181,7 @@
 						<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width: 353px;"/>
 						<@ww.textfield label="Nome Comercial" name="nomeComercialBusca" id="nomeComercialBusca" cssStyle="width: 353px;"/>
 						
-						<#if integraAc && !colaborador.naoIntegraAc>
+						<#if integraAc>
 							<@ww.select label="Situação" name="situacao" id="situacao" list="situacaosIntegraAC" cssStyle="width: 355px;"/>
 						<#else>
 							<@ww.select label="Situação" name="situacao" id="situacao" list="situacaos" cssStyle="width: 355px;"/>
@@ -309,6 +316,10 @@
 			<#assign style="color:#e36f6f;"/>
 		</#if>
 
+		<#if integraAc>
+			<@display.column property="codigoAC" title="Código Fortes Pessoal" style='${style}'/>
+		</#if>
+		
 		<@display.column property="matricula" title="Matrícula" style='${style}'/>
 		<@display.column property="nome" title="Nome" style='${style}'/>
 		<@display.column property="nomeComercial" title="Nome Comercial" style='${style}'/>

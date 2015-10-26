@@ -1112,7 +1112,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		
 		StringBuilder hql = new StringBuilder();
 		hql.append("select distinct new Colaborador(es.id, es.nome, ao.id, ao.nome, re.nome, co.id, co.nome, cg.nome, fs.nome, emp.id, emp.nome, emp.acIntegra, " +
-				"co.nomeComercial, co.matricula, co.desligado, co.dataAdmissao, co.dataDesligamento, co.vinculo, co.naoIntegraAc, co.cursos,  " +
+				"co.nomeComercial, co.matricula, co.codigoAC, co.desligado, co.dataAdmissao, co.dataDesligamento, co.vinculo, co.naoIntegraAc, co.cursos,  " +
 				"co.pessoal.estadoCivil, co.pessoal.escolaridade, co.pessoal.mae, co.pessoal.pai, co.pessoal.cpf, co.pessoal.pis, co.pessoal.rg,  " +
 				"co.pessoal.rgOrgaoEmissor, co.pessoal.deficiencia, co.pessoal.rgDataExpedicao, co.pessoal.sexo,  " +
 				"co.pessoal.dataNascimento, co.pessoal.conjuge, co.pessoal.qtdFilhos, co.pessoal.ctps.ctpsNumero, co.pessoal.ctps.ctpsSerie, co.pessoal.ctps.ctpsDv,  " +
@@ -3304,6 +3304,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Object> findComHistoricoFuturoSQL(Map parametros, Integer pagingSize, Integer page)
 	{
+		String codigoACBusca = (String) parametros.get("codigoACBusca");
 		String nomeBusca = (String) parametros.get("nomeBusca");
 		String nomeComercialBusca = (String) parametros.get("nomeComercialBusca");
 		String matriculaBusca = (String) parametros.get("matriculaBusca");
@@ -3321,7 +3322,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("select colab_.id as colabId, colab_.nome as name, colab_.nomeComercial, colab_.matricula, colab_.desligado, colab_.dataAdmissao, colab_.cpf, colab_.usuario_id, colab_.dataDesligamento, md.motivo, colab_.respondeuEntrevista, colab_.candidato_id as candId, colab_.naoIntegraAc, colab_.dataSolicitacaoDesligamento, colab_.dataSolicitacaoDesligamentoAc, a.id, hc.status ");
+		sql.append("select colab_.id as colabId, colab_.nome as name, colab_.nomeComercial, colab_.matricula, colab_.desligado, colab_.dataAdmissao, colab_.cpf, colab_.usuario_id, colab_.dataDesligamento, md.motivo, colab_.respondeuEntrevista, colab_.candidato_id as candId, colab_.naoIntegraAc, colab_.dataSolicitacaoDesligamento, colab_.dataSolicitacaoDesligamentoAc, a.id, hc.status, colab_.codigoAC ");
 		sql.append("from historicoColaborador hc ");
 		sql.append("inner join ");
 		sql.append("( ");
@@ -3413,6 +3414,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		//NomeComercial
 		if(nomeComercialBusca != null && !nomeComercialBusca.trim().equals(""))
 			sql.append("and normalizar(upper(colab_.nomeComercial)) like normalizar(:nomeComercialBusca) ");
+		// Codigo Fortes Pessoal
+		if(codigoACBusca != null && !codigoACBusca.trim().equals(""))
+			sql.append("and colab_.codigoAC like :codigoACBusca ");
 		// Matricula
 		if(matriculaBusca != null && !matriculaBusca.trim().equals(""))
 			sql.append("and upper(colab_.matricula) like :matriculaBusca ");
@@ -3444,6 +3448,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		// NomeComercial
 		if(nomeComercialBusca != null && !nomeComercialBusca.trim().equals(""))
 			query.setString("nomeComercialBusca", "%" + nomeComercialBusca.toUpperCase() + "%");
+		// Código Fortes Pessoal
+		if(codigoACBusca != null && !codigoACBusca.trim().equals(""))
+			query.setString("codigoACBusca", "%" + codigoACBusca + "%");
 		// Matricula
 		if(matriculaBusca != null && !matriculaBusca.trim().equals(""))
 			query.setString("matriculaBusca", "%" + matriculaBusca.toUpperCase() + "%");

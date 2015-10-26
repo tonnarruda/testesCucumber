@@ -3,6 +3,7 @@ package com.fortes.rh.test.factory.cargosalario;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 
 public class FaixaSalarialFactory
@@ -27,6 +28,15 @@ public class FaixaSalarialFactory
 		return faixaSalarial;
 	}
 
+	public static FaixaSalarial getEntity(String nome, Cargo cargo)
+	{
+		FaixaSalarial faixaSalarial = new FaixaSalarial();
+
+		faixaSalarial.setNome(nome);
+		faixaSalarial.setCargo(cargo);
+
+		return faixaSalarial;
+	}
 	public static Collection<FaixaSalarial> getCollection()
 	{
 		Collection<FaixaSalarial> faixaSalarials = new ArrayList<FaixaSalarial>();
