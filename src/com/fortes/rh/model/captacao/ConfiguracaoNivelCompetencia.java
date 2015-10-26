@@ -42,7 +42,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	private Character tipoCompetencia;
 	@Column(name="competencia_id", nullable=false)
 	private Long competenciaId;
-	private Integer pesoCompetencia = 1;
+	private Integer pesoCompetencia;
 	
 	@OneToMany(mappedBy="configuracaoNivelCompetencia", cascade=CascadeType.ALL)
 	private Collection<ConfiguracaoNivelCompetenciaCriterio> configuracaoNivelCompetenciaCriterios;
@@ -108,12 +108,13 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setCompetenciaDescricao(competenciaDescricao);
 	}
 	
-	public ConfiguracaoNivelCompetencia(Character tipoCompetencia, Long competenciaId, String competenciaDescricao, String competenciaObservacao)
+	public ConfiguracaoNivelCompetencia(Character tipoCompetencia, Long competenciaId, String competenciaDescricao, String competenciaObservacao, Integer pesoCompetencia)
 	{
 		this.setTipoCompetencia(tipoCompetencia);
 		this.setCompetenciaId(competenciaId);
 		this.setCompetenciaDescricao(competenciaDescricao);
 		this.setCompetenciaObservacao(competenciaObservacao);
+		this.setPesoCompetencia(pesoCompetencia);
 	}
 	
 	public ConfiguracaoNivelCompetencia(Long id, Character tipoCompetencia, Long competenciaId, String competenciaDescricao, String competenciaObservacao, Long nivelCompetenciaId, String nivelCompetenciaDescricao, Integer nivelCompetenciaOrdem)
