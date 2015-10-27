@@ -42,7 +42,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	private Character tipoCompetencia;
 	@Column(name="competencia_id", nullable=false)
 	private Long competenciaId;
-	private Integer pesoCompetencia;
+	private Integer pesoCompetencia = 1;
 	
 	@OneToMany(mappedBy="configuracaoNivelCompetencia", cascade=CascadeType.ALL)
 	private Collection<ConfiguracaoNivelCompetenciaCriterio> configuracaoNivelCompetenciaCriterios;

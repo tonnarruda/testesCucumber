@@ -216,6 +216,17 @@
 		
 		<li>
 			<@ww.div cssClass="divInfo">
+				<h2>Avaliação de Desempenho</h2>
+				<ul>
+					<@ww.checkbox label="Apresentar performance de forma parcial ao responder avaliação de desempenho" name="empresa.mostrarPerformanceAvalDesempenho" liClass="liLeft" labelPosition="left"/>
+				</ul>
+			</@ww.div>
+		</li>
+
+		<li>&nbsp;</li>
+
+		<li>
+			<@ww.div cssClass="divInfo">
 				<h2>Cálculo de Absenteísmo</h2>
 				<ul>
 					<@ww.checkbox label="Considerar sábado como dia útil" name="empresa.considerarSabadoNoAbsenteismo" liClass="liLeft" labelPosition="left"/>

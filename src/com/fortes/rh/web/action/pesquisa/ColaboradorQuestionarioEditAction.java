@@ -115,6 +115,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private boolean aplicarPorParte;
 	private int quantidade;
 	private String percentual = "";
+	private boolean mostrarPerformanceAvalDesempenho;
 	
 
 	private String[] cargosCheck;
@@ -134,6 +135,8 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	
 	private Long empresaId;
 	private Long anuncioId;
+	private Integer pontuacaoMaximaQuestionario;
+	private Integer pontuacaoMaximaNivelCompetencia;
 	
 	private TipoQuestionario tipoQuestionario = new TipoQuestionario();
 	private Solicitacao solicitacao;
@@ -307,7 +310,11 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 				
 				niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaborador.getFaixaSalarial().getId(), new Date());
 			}
+			
+			pontuacaoMaximaNivelCompetencia = nivelCompetenciaManager.getOrdemMaxima(colaborador.getEmpresa().getId());
 		}
+
+		pontuacaoMaximaQuestionario = avaliacaoManager.getPontuacaoMaximaDaPerformance(colaboradorQuestionario.getAvaliacao().getId(), new Long[]{});
 		
 		return Action.SUCCESS;
 	}
@@ -1070,5 +1077,17 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	public void setAvaliacaoDesempenhoManager(
 			AvaliacaoDesempenhoManager avaliacaoDesempenhoManager) {
 		this.avaliacaoDesempenhoManager = avaliacaoDesempenhoManager;
+	}
+
+	public Integer getPontuacaoMaximaQuestionario() {
+		return pontuacaoMaximaQuestionario;
+	}
+
+	public Integer getPontuacaoMaximaNivelCompetencia() {
+		return pontuacaoMaximaNivelCompetencia;
+	}
+
+	public boolean isMostrarPerformanceAvalDesempenho() {
+		return getEmpresaSistema().isMostrarPerformanceAvalDesempenho();
 	}
 }

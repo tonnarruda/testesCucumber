@@ -17,13 +17,19 @@
 	<script type="text/javascript">
 		$(function() {
 			<#if colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
+				$('.checkNivel').change(function(){
+					calcularPerformance();
+				});
+				
 				$('.checkCompetencia.changed').change(function() {
 					$(this).parent().parent().find(".checkNivel").attr('disabled', !($(this).attr('checked')));
+					calcularPerformance();
 				});
 				
 				$('.checkCompetenciaCriterio').change(function() {
 					$(this).parent().parent().find(".checkNivelCriterio").attr('disabled', !($(this).attr('checked')));
 					calculaNivelDaCompetenciaPeloPercentual( $(this).parent().parent().find(".checkNivelCriterio:eq(0)").attr('competencia') );
+					calcularPerformance();
 				});
 				
 				$('.checkNivelCriterio').change(function(){
@@ -33,6 +39,7 @@
 				$('#checkAllCompetencia').click(function() {
 					$('.checkNivel,.checkNivelCriterio').attr('disabled', !($(this).attr('checked')));
 					$('.checkCompetencia.changed,.checkCompetenciaCriterio').attr('checked', $(this).attr('checked')).change();
+					calcularPerformance();
 				});
 
 				<#if niveisCompetenciaFaixaSalariaisSalvos?exists>
@@ -63,7 +70,10 @@
 						</#if>
 					</#list>
 				</#if>
+
+				calcularPerformance();
 			</#if>
+			
 		});
 		
 		function calculaNivelDaCompetenciaPeloPercentual(competenciaId){
@@ -120,6 +130,32 @@
 		{
 			$('#ordem_' + i).val(ordem);
 		}
+		
+		function calcularPerformance()
+		{
+			<#if mostrarPerformanceAvalDesempenho>
+				var pontuacaoMaximaTotal = ${pontuacaoMaximaQuestionario};
+				
+				<#if colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
+					var pontuacaoMaximaNivelCompetencia = ${pontuacaoMaximaNivelCompetencia};
+				
+					$('#configuracaoNivelCompetencia').find('.performance').text('-');
+					
+					$('#configuracaoNivelCompetencia').find('.checados:checkbox:checked').parent().parent().each(function(){
+						pontuacaoMaximaTotal += $(this).find('#peso').val()*pontuacaoMaximaNivelCompetencia; 
+					});
+					
+					$('#configuracaoNivelCompetencia').find('.checados:checkbox:checked').parent().parent().each(function(){
+						 calculoPerformance = ($(this).find('#peso').val() * $(this).find('.checkNivel:checked').attr('ordem')) /  pontuacaoMaximaTotal;
+						 $(this).find('.performance').text((calculoPerformance * 100).toFixed(2) + "%");
+					});
+				</#if>
+				
+				//calcularquestionario
+				
+				
+			</#if>
+		}
 	</script>
 	
 	<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.data?exists>
@@ -175,6 +211,10 @@
 								<#list nivelCompetencias as nivel>
 									<th>${nivel.descricao}</th>
 								</#list>
+								
+								<#if mostrarPerformanceAvalDesempenho>
+									<th>Performance(%)</th>
+								</#if>
 							</tr>
 						</thead>
 						<tbody>
@@ -184,19 +224,21 @@
 								<tr class="even">
 									<td>
 										<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
-										<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].pesoCompetencia"/>
+										<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].pesoCompetencia" id="peso"/>
 										<#-- não utilizar decorator no hidden abaixo -->
 										<input type="hidden" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.ordem" id="ordem_${i}" class="ordem" value=""/>
 										
 										<input type="checkbox" id="competencia_${i}" name="niveisCompetenciaFaixaSalariais[${i}].competenciaId"
-										<#if hasCriterios > onclick="return false;" class="checkCompetencia" disabled="disabled"<#else> class="checkCompetencia changed" </#if>
+										<#if hasCriterios > onclick="return false;" disabled="disabled" class="checados"<#else> class="checkCompetencia changed checados" </#if>
 										value="${configuracaoNivelCompetencia.competenciaId}" />
 										
 										<label for="competencia_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
 										
 										<#if configuracaoNivelCompetencia.competenciaObservacao?exists && configuracaoNivelCompetencia.competenciaObservacao != "">
 											<img id="competencia_${i}_obs" onLoad="toolTipCompetenciaObs(${i}, '${configuracaoNivelCompetencia.competenciaObservacao?j_string?replace('\"','$#-')?replace('\'','\\\'')}')" src="<@ww.url value='/imgs/help-info.gif'/>" width='16' height='16' style='margin-left: 0px;margin-top: 0px;vertical-align: top;'/>
-										</#if>					
+										</#if>
+										
+																
 									</td>
 									
 									<#list nivelCompetencias as nivel>
@@ -209,11 +251,18 @@
 										</#if>
 										
 										<td style="${bgcolor} width: 100px; text-align: center;" class="${class}">
-											<input type="radio" disabled="disabled" percentual="${nivel.percentual}" 
+											<input type="radio" disabled="disabled" percentual="${nivel.percentual}" ordem="${nivel.ordem}"
 											<#if hasCriterios > onclick="return false;"  class="checkNivel radio" <#else>  class="checkNivel changed radio" </#if>
 											name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.id" value="${nivel.id}" onchange="setOrdem(${i}, ${nivel.ordem})"/>
 										</td>
 									</#list>
+									
+									<#if mostrarPerformanceAvalDesempenho>
+										<td style="width: 100px; text-align: center;" class="${class}">
+											<label class="performance">-</label>
+										</td>
+									</#if>
+									
 								</tr>
 								
 								
