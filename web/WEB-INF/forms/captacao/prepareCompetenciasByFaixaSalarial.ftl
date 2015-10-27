@@ -17,13 +17,23 @@
 		
 		function clicked(check, classe){
 			check.parent().parent().find("." + classe).attr('disabled', !(check.attr('checked'))).attr('checked',false);
-			check.parent().parent().find("#peso").attr('disabled', !(check.attr('checked')));
+			check.parent().parent().find(".peso").attr('disabled', !(check.attr('checked')));
 		}
 		
 		function clickedAll(check, classeNivel, classeCompetencia){
 			$('.' + classeNivel).attr('disabled', !(check.attr('checked')));
-			$('#peso').attr('disabled', !(check.attr('checked')));
 			$('.' + classeCompetencia).attr('checked', check.attr('checked'));
+			$('.' + classeCompetencia).parent().parent().find(".peso").each(function(){
+				$(this).attr('disabled', !(check.attr('checked')));
+			});
+		}
+		
+		function marca(classeCompetencia, classeNivel, nivelSalvoCompetenciaId, nivelSalvoTipoCompetencia, nivelSalvoNivelCompetenciaId){
+			var linha = $('tr').has('.' + classeCompetencia + '[value=' + nivelSalvoCompetenciaId + ']').has('input[type="hidden"][value='+ nivelSalvoTipoCompetencia +']');
+			linha.find('.' + classeCompetencia).attr('checked', 'true');
+			linha.find('.' + classeNivel).removeAttr('disabled');
+			linha.find('.' + classeNivel + '[value=' + nivelSalvoNivelCompetenciaId + ']').attr('checked', 'true');
+			linha.find('.peso').removeAttr('disabled');
 		}
 		
 		$(function() {
@@ -50,33 +60,22 @@
 			$('#checkAllCompetenciaAtitude').click(function() {
 				clickedAll($(this), 'checkNivelAtitude', 'checkCompetenciaAtitude');
 			});
+			
 			<#if niveisCompetenciaFaixaSalariaisSalvosConhecimento?exists>
 				<#list niveisCompetenciaFaixaSalariaisSalvosConhecimento as nivelSalvo>
-					var linhaConhecimento = $('tr').has('.checkCompetenciaConhecimento[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
-					linhaConhecimento.find('.checkCompetenciaConhecimento').attr('checked', 'true');
-					linhaConhecimento.find('.checkNivelConhecimento').removeAttr('disabled');
-					linhaConhecimento.find('#peso').removeAttr('disabled');
-					linhaConhecimento.find('.checkNivelConhecimento[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
+					marca('checkCompetenciaConhecimento', 'checkNivelConhecimento', ${nivelSalvo.competenciaId}, '${nivelSalvo.tipoCompetencia}', ${nivelSalvo.nivelCompetencia.id});
 				</#list>
 			</#if>
 			
 			<#if niveisCompetenciaFaixaSalariaisSalvosHabilidade?exists>
 				<#list niveisCompetenciaFaixaSalariaisSalvosHabilidade as nivelSalvo>
-					var linhaHabilidade = $('tr').has('.checkCompetenciaHabilidade[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
-					linhaHabilidade.find('.checkCompetenciaHabilidade').attr('checked', 'true');
-					linhaHabilidade.find('.checkNivelHabilidade').removeAttr('disabled');
-					linhaHabilidade.find('#peso').removeAttr('disabled');
-					linhaHabilidade.find('.checkNivelHabilidade[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
+					marca('checkCompetenciaHabilidade', 'checkNivelHabilidade', ${nivelSalvo.competenciaId}, '${nivelSalvo.tipoCompetencia}', ${nivelSalvo.nivelCompetencia.id});
 				</#list>
 			</#if>
 			
 			<#if niveisCompetenciaFaixaSalariaisSalvosAtitude?exists>
 				<#list niveisCompetenciaFaixaSalariaisSalvosAtitude as nivelSalvo>
-					var linhaAtitude = $('tr').has('.checkCompetenciaAtitude[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
-					linhaAtitude.find('.checkCompetenciaAtitude').attr('checked', 'true');
-					linhaAtitude.find('.checkNivelAtitude').removeAttr('disabled');
-					linhaAtitude.find('#peso').removeAttr('disabled');
-					linhaAtitude.find('.checkNivelAtitude[value="${nivelSalvo.nivelCompetencia.id}"]').attr('checked', 'true');
+					marca('checkCompetenciaAtitude', 'checkNivelAtitude', ${nivelSalvo.competenciaId}, '${nivelSalvo.tipoCompetencia}', ${nivelSalvo.nivelCompetencia.id});
 				</#list>
 			</#if>
 			
@@ -129,27 +128,28 @@
 				$('tr.even').css('background-color', '#EFEFEF');
 				$('tr.odd').css('background-color', '#FFF');
 			
-				var linhasSemRadioMarcadoConhecimento = $('tr').has('.checkNivelConhecimento:enabled').not(':has(.checkNivelConhecimento:checked)');
-				var linhasSemRadioMarcadoHabilidade = $('tr').has('.checkNivelHabilidade:enabled').not(':has(.checkNivelHabilidade:checked)');
-				var linhasSemRadioMarcadoAtitude = $('tr').has('.checkNivelAtitude:enabled').not(':has(.checkNivelAtitude:checked)');
+				var linhasSemRadioMarcado = $('tr').has('.radio:enabled').not(':has(.radio:checked)');
+				
+				var	checkCompetencia = $('tr').has('.checkCompetencia:enabled');
+				<#if edicao>
+					checkCompetencia = $('td').has('input[type=checkbox]:disabled').parent();
+				</#if>
 				
 				var existeCampoSemPeso = false;
-				$('tr').has('.checkNivelConhecimento:enabled').find("#peso").each(function(){
+				checkCompetencia.find(".peso").each(function(){
 					if(!$(this).val()){
 						$(this).parent().parent().css('background-color', '#FFEEC2');
 						existeCampoSemPeso = true;
 					}
 				});
 				
-				if(!existeCampoSemPeso && linhasSemRadioMarcadoConhecimento.size() == 0 && linhasSemRadioMarcadoHabilidade.size() == 0 && linhasSemRadioMarcadoAtitude.size() == 0 ) {
+				if(!existeCampoSemPeso && linhasSemRadioMarcado.size() == 0){
 					$('#form').submit();
 					return true;
 				}
 			
+				linhasSemRadioMarcado.css('background-color', '#FFEEC2');
 				jAlert('Confira os pesos e os níveis para as competências indicadas.');
-				linhasSemRadioMarcadoConhecimento.css('background-color', '#FFEEC2');
-				linhasSemRadioMarcadoHabilidade.css('background-color', '#FFEEC2');
-				linhasSemRadioMarcadoAtitude.css('background-color', '#FFEEC2');
 
 				return false;
 			}
@@ -190,7 +190,7 @@
 			<@display.caption><div style="background-color: #999999;font-weight: bold; color: #FFF;">Conhecimento</div> </@display.caption>
 			<@display.column title="<input type='checkbox' id='checkAllCompetenciaConhecimento'/> Competência" >
 				<@ww.hidden name="niveisCompetenciaFaixaSalariaisConhecimento[${i}].tipoCompetencia"/>
-				<input type="checkbox" id="competenciaConhecimento_${i}" name="niveisCompetenciaFaixaSalariaisConhecimento[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetenciaConhecimento" />
+				<input type="checkbox" id="competenciaConhecimento_${i}" name="niveisCompetenciaFaixaSalariaisConhecimento[${i}].competenciaId" value="${configuracaoNivelCompetencia.competenciaId}" class="checkCompetenciaConhecimento checkCompetencia" />
 				<label for="competenciaConhecimento_${i}">${configuracaoNivelCompetencia.competenciaDescricao}</label>
 				
 				<#if edicao>
@@ -203,7 +203,7 @@
 			</@display.column>
 				
 			<@display.column title="Peso" style="width: 50px; text-align: center;">
-				<input type="text" disabled="disabled" name="niveisCompetenciaFaixaSalariaisConhecimento[${i}].pesoCompetencia" size="4" maxlength="4" value="${configuracaoNivelCompetencia.pesoCompetencia}" id="peso" style="width:40px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,''));">
+				<input type="text" disabled="disabled" name="niveisCompetenciaFaixaSalariaisConhecimento[${i}].pesoCompetencia" size="4" maxlength="4" value="${configuracaoNivelCompetencia.pesoCompetencia}" class="peso" style="width:40px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,''));">
 			</@display.column>
 			
 			<#list nivelCompetencias as nivel>			
@@ -221,7 +221,7 @@
 			<@display.caption><div style="background-color: #999999;font-weight: bold; color: #FFF;">Habilidade</div> </@display.caption>
 			<@display.column title="<input type='checkbox' id='checkAllCompetenciaHabilidade'/> Competência" >
 				<@ww.hidden name="niveisCompetenciaFaixaSalariaisHabilidade[${i}].tipoCompetencia"/>
-				<input type="checkbox"  id="competenciaHabilidade_${i}" name="niveisCompetenciaFaixaSalariaisHabilidade[${i}].competenciaId" value="${configuracaoNivelCompetenciaHabilidade.competenciaId}" class="checkCompetenciaHabilidade" />
+				<input type="checkbox"  id="competenciaHabilidade_${i}" name="niveisCompetenciaFaixaSalariaisHabilidade[${i}].competenciaId" value="${configuracaoNivelCompetenciaHabilidade.competenciaId}" class="checkCompetenciaHabilidade checkCompetencia" />
 				<label for="competenciaHabilidade_${i}">${configuracaoNivelCompetenciaHabilidade.competenciaDescricao}</label>
 				
 				<#if edicao>
@@ -234,7 +234,7 @@
 			</@display.column>
 			
 			<@display.column title="Peso" style="width: 50px; text-align: center;">
-				<input type="text" name="niveisCompetenciaFaixaSalariaisHabilidade[${i}].pesoCompetencia" size="4" maxlength="4" value="${configuracaoNivelCompetenciaHabilidade.pesoCompetencia}" id="peso" style="width:40px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,''));">
+				<input type="text" disabled="disabled" name="niveisCompetenciaFaixaSalariaisHabilidade[${i}].pesoCompetencia" size="4" maxlength="4" value="${configuracaoNivelCompetenciaHabilidade.pesoCompetencia}" class="peso" style="width:40px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,''));">
 			</@display.column>
 			
 			<#list nivelCompetencias as nivel>			
@@ -252,7 +252,7 @@
 			<@display.caption><div style="background-color: #999999;font-weight: bold; color: #FFF;">Atitude</div> </@display.caption>
 			<@display.column title="<input type='checkbox' id='checkAllCompetenciaAtitude'/> Competência" >
 				<@ww.hidden name="niveisCompetenciaFaixaSalariaisAtitude[${i}].tipoCompetencia"/>
-				<input type="checkbox"  id="competenciaAtitude_${i}" name="niveisCompetenciaFaixaSalariaisAtitude[${i}].competenciaId" value="${configuracaoNivelCompetenciaAtitude.competenciaId}" class="checkCompetenciaAtitude" />
+				<input type="checkbox"  id="competenciaAtitude_${i}" name="niveisCompetenciaFaixaSalariaisAtitude[${i}].competenciaId" value="${configuracaoNivelCompetenciaAtitude.competenciaId}" class="checkCompetenciaAtitude checkCompetencia" />
 				<label for="competenciaAtitude_${i}">${configuracaoNivelCompetenciaAtitude.competenciaDescricao}</label>
 				
 				<#if edicao>
@@ -265,7 +265,7 @@
 			</@display.column>
 
 			<@display.column title="Peso" style="width: 50px; text-align: center;">
-				<input type="text" name="niveisCompetenciaFaixaSalariaisAtitude[${i}].pesoCompetencia" size="4" maxlength="4" value="${configuracaoNivelCompetenciaAtitude.pesoCompetencia}" id="peso" style="width:40px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,''));">
+				<input type="text" disabled="disabled" name="niveisCompetenciaFaixaSalariaisAtitude[${i}].pesoCompetencia" size="4" maxlength="4" value="${configuracaoNivelCompetenciaAtitude.pesoCompetencia}" class="peso" style="width:40px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,''));">
 			</@display.column>
 			
 			<#list nivelCompetencias as nivel>			
