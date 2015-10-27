@@ -121,6 +121,7 @@ public class Empresa extends AbstractModel implements Serializable
     private boolean considerarSabadoNoAbsenteismo;
     private boolean considerarDomingoNoAbsenteismo;
     private boolean processoExportacaoAC;
+    private boolean mostrarPerformanceAvalDesempenho;
     
 	//projection
 	public void setProjectionCidadeNome(String cidadeNome)
@@ -655,5 +656,20 @@ public class Empresa extends AbstractModel implements Serializable
 			result += StringUtil.criarMascaraTelefone(telefone);
 
 		return result;
+	
+	public boolean isVincularMatriculaCodigoFortesPessoal() {
+		return vincularMatriculaCodigoFortesPessoal;
+	}
+
+	public void setVincularMatriculaCodigoFortesPessoal(boolean vincularMatriculaCodigoFortesPessoal) {
+		this.vincularMatriculaCodigoFortesPessoal = vincularMatriculaCodigoFortesPessoal;
+	}
+
+	public boolean isMostrarPerformanceAvalDesempenho() {
+		return mostrarPerformanceAvalDesempenho;
+	}
+
+	public void setMostrarPerformanceAvalDesempenho(boolean mostrarPerformanceAvalDesempenho) {
+		this.mostrarPerformanceAvalDesempenho = mostrarPerformanceAvalDesempenho;
 	}
 }
