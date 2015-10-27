@@ -187,16 +187,11 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		{
 			setActionMsg("Não foi possível habilitar a integração com o Fortes Pessoal devido a cadastros realizados no período desintegrado.<br />Entre em contato com o suporte técnico.");
 			empresa.setAcIntegra(false);
-			empresa.setVincularMatriculaCodigoFortesPessoal(false);
 			empresaManager.update(empresa);
 			atualizaEmpresaSessao();
 			prepareUpdate();
 			return Action.INPUT;
 		}
-		
-		boolean flagVincularMatriculaCodigoAnterior = empresaManager.getFlagVincularMatriculaCodigoFortesPessoal(empresa.getId());
-		if(empresa.isVincularMatriculaCodigoFortesPessoal() && !flagVincularMatriculaCodigoAnterior)
-			empresaManager.vincularMatriculaComCodigoFortesPessoal(empresa.getId(), 0);
 		
 		empresaManager.update(empresa);
 		boolean tavaIntegradaComAC = empresaManager.findIntegracaoAC(empresa.getId());

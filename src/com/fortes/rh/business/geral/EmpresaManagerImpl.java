@@ -131,11 +131,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		return getDao().getIntegracaoAC(id);
 	}
 
-	public boolean getFlagVincularMatriculaCodigoFortesPessoal(Long empresaId)
-	{
-		return getDao().getFlagVincularMatriculaCodigoFortesPessoal(empresaId);
-	}
-
 	public boolean criarEmpresa(TEmpresa empresaAC)
 	{
 		Empresa empresa = new Empresa();
@@ -526,11 +521,6 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		getDao().setProcessoExportacaoAC(empresaId, processoExportacaoAC);
 	}
 
-	public void vincularMatriculaComCodigoFortesPessoal(Long empresaId, Integer percentualMinimoCompatibilidadeMatriculaCodigoFortesPessoal) 
-	{
-		getDao().vincularMatriculaComCodigoFortesPessoal(empresaId, percentualMinimoCompatibilidadeMatriculaCodigoFortesPessoal);
-	}
-	
 	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
 		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
 	}

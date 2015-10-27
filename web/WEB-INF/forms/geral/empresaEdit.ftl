@@ -52,7 +52,6 @@
 			$('#integra').change(function() {
 				var integrado = !$(this).is(":checked");
 				$('#solPessoalReabrirSolicitacao').toggleDisabled(integrado);
-				$('#vincularMatriculaCodigoFortesPessoal').toggleDisabled(integrado);
 			});
 			$('#integra').change();
 			
@@ -282,7 +281,6 @@
 				<ul>
 					<div style="float:right;"><img id="btnTransferir" border="0" title="Testar Conexão com AC" onclick="testaConexaoAC();" src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>" style="cursor:pointer;"></div>
 					<@ww.checkbox label="Integra com o Fortes Pessoal" name="empresa.acIntegra" id="integra" labelPosition="right"/>
-					<@ww.checkbox label="Vincular matrícula com o código do sistema Fortes Pessoal" name="empresa.vincularMatriculaCodigoFortesPessoal" id="vincularMatriculaCodigoFortesPessoal" labelPosition="right" cssStyle="float:left; margin-left:15px"/>
 					<@ww.select label="Grupo AC" name="empresa.grupoAC" id="grupoAC" list="grupoACs" listKey="codigo" listValue="codigoDescricao" headerKey="" headerValue="Selecione..."/>
 				</ul>
 			</@ww.div>
