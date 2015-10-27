@@ -41,6 +41,7 @@ import com.fortes.rh.model.cargosalario.SituacaoColaborador;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.cargosalario.relatorio.RelatorioPromocoes;
 import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
+import com.fortes.rh.model.dicionario.MovimentacaoAC;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
@@ -1025,6 +1026,78 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 	}
 
 
+	public void testUpdateSituacaoByMovimentacao()
+	{
+		GrupoAC grupoAC = new GrupoAC("XXX", "desc");
+		grupoACDao.save(grupoAC);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setCodigoAC("0005");
+		empresa.setGrupoAC(grupoAC.getCodigo());
+		empresa = empresaDao.save(empresa);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity();
+		estabelecimento.setCodigoAC("0003");
+		estabelecimento = estabelecimentoDao.save(estabelecimento);
+		
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+		estabelecimento2.setCodigoAC("0008");
+		estabelecimento2 = estabelecimentoDao.save(estabelecimento2);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional.setCodigoAC("0004");
+		areaOrganizacional.setEmpresa(empresa);
+		areaOrganizacional = areaOrganizacionalDao.save(areaOrganizacional);
+		
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional2.setCodigoAC("0006");
+		areaOrganizacional2.setEmpresa(empresa);
+		areaOrganizacional2 = areaOrganizacionalDao.save(areaOrganizacional2);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setEmpresa(empresa);
+		colaborador1.setCodigoAC("0001");
+		colaborador1.setNaoIntegraAc(false);
+		colaborador1 = colaboradorDao.save(colaborador1);
+
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmpresa(empresa);
+		colaborador2.setCodigoAC("0002");
+		colaborador2.setNaoIntegraAc(false);
+		colaborador2 = colaboradorDao.save(colaborador2);
+		
+		HistoricoColaborador historicoColaboradorColaborador1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorColaborador1.setData(DateUtil.criarAnoMesDia(2008, 04, 1));
+		historicoColaboradorColaborador1.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorColaborador1.setEstabelecimento(estabelecimento);
+		historicoColaboradorColaborador1.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorColaborador1 = historicoColaboradorDao.save(historicoColaboradorColaborador1);
+		
+		HistoricoColaborador historicoColaboradorColaborador2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorColaborador2.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorColaborador2.setEstabelecimento(estabelecimento2);
+		historicoColaboradorColaborador2.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorColaborador2 = historicoColaboradorDao.save(historicoColaboradorColaborador2);
+		
+		HistoricoColaborador historicoColaboradorColaborador3 = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorColaborador3.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorColaborador3.setEstabelecimento(estabelecimento);
+		historicoColaboradorColaborador3.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorColaborador3 = historicoColaboradorDao.save(historicoColaboradorColaborador3);
+
+		historicoColaboradorDao.getHibernateTemplateByGenericDao().flush();
+		
+		Exception exception = null;
+		try {
+			historicoColaboradorDao.updateSituacaoByMovimentacao(colaborador1.getCodigoAC(), (String) new MovimentacaoAC().get(MovimentacaoAC.AREA), areaOrganizacional2.getCodigoAC(), false, empresa.getCodigoAC(), empresa.getGrupoAC());
+			historicoColaboradorDao.updateSituacaoByMovimentacao(colaborador2.getCodigoAC(), (String) new MovimentacaoAC().get(MovimentacaoAC.ESTABELECIMENTO), estabelecimento2.getCodigoAC(), true, empresa.getCodigoAC(), empresa.getGrupoAC());
+		} catch (Exception e) {
+			exception = e;
+		}
+		
+		assertNull(exception);
+	}
+	
 	public void testSetStatus()
 	{
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();

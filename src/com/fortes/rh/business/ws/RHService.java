@@ -98,6 +98,7 @@ public interface RHService
 	
 	//Transferência em lote
 	FeedbackWebService transferir(TEmpresa tEmpresaOrigin, TEmpresa tEmpresaDestino, TEmpregado[] tEmpregados, TSituacao[] tSituacoes, String dataDesligamento);
+	FeedbackWebService atualizarMovimentacaoEmLote(String[] empregadoCodigos, String movimentacao, String valor, boolean atualizarTodasSituacoes, String empCodigo, String grupoAC) throws NumberFormatException, Exception;
 	
 	//TRU
 	TAula[] getTreinamentosPrevistos(String empregadoCodigo, String empresaCodigo, String empresaGrupo, String dataIni, String dataFim);

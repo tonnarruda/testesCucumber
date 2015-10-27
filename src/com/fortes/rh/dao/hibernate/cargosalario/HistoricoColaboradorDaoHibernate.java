@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.hibernate.Criteria;
 import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
@@ -22,6 +23,7 @@ import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
+import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
@@ -33,6 +35,9 @@ import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.ibm.icu.text.DateFormat;
+import com.ibm.icu.text.SimpleDateFormat;
+import com.opensymphony.webwork.components.Form;
 
 @SuppressWarnings("unchecked")
 public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<HistoricoColaborador> implements HistoricoColaboradorDao
@@ -597,6 +602,22 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		query.setLong("historicoColaboradorId", historicoColaboradorId);
 
 		return query.executeUpdate() == 1;
+	}
+	
+	public void updateSituacaoByMovimentacao(String empregadoCodigo, String movimentacao, String valor, boolean atualizarTodasSituacoes, String empCodigo, String grupoAC)
+	{
+		String sql = "update HistoricoColaborador set " + movimentacao +"_id = ( select mov.id from " + WordUtils.capitalize(movimentacao) + " as mov left join empresa as e on e.id = mov.empresa_id where mov.codigoAC = '" + valor + "' and e.codigoAC = '"+empCodigo+"' and e.grupoAC = '"+grupoAC+"' ) " +
+		" where colaborador_id = ( select c.id from Colaborador c left join empresa as emp on emp.id = c.empresa_id where c.codigoAC = '" + empregadoCodigo + "' and emp.codigoAC = '"+empCodigo+"' and emp.grupoAC = '"+grupoAC+"' )";
+		if (!atualizarTodasSituacoes) {
+			sql += " and data = (select max(hc2.data) " +
+				" from HistoricoColaborador as hc2 " +
+				" where hc2.colaborador_id = colaborador_id " +
+				" and hc2.data <= '" + new SimpleDateFormat("dd/MM/yyyy").format(new Date()) + "' and hc2.status = " + StatusRetornoAC.CONFIRMADO + ")";
+		}
+		
+		String[] sqls = new String[] {sql};
+	
+		JDBCConnection.executeQuery(sqls);
 	}
 
 	public String findColaboradorCodigoAC(Long historicoColaboradorId)

@@ -46,6 +46,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
+import com.fortes.rh.model.dicionario.MovimentacaoAC;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -427,6 +428,19 @@ public class RHServiceImpl implements RHService
 		
 		else
 			return new FeedbackWebService(false, "Nenhuma empresa esta integrada com o sistena RH.", "");
+	}
+	
+	public FeedbackWebService atualizarMovimentacaoEmLote(String[] empregadoCodigos, String movimentacao, String valor, boolean atualizarTodasSituacoes, String empCodigo, String grupoAC){
+		try {
+			for (String empregadoCodigo : empregadoCodigos) {
+				historicoColaboradorManager.updateSituacaoByMovimentacao(empregadoCodigo, (String) new MovimentacaoAC().get(movimentacao), valor, atualizarTodasSituacoes, empCodigo, grupoAC);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new FeedbackWebService(false, "Não foi possível realizar a atualização em lote.", "");
+		}
+		
+		return new FeedbackWebService(true, "Atualização realizada com sucesso.", "");
 	}
 
 	private FeedbackWebService desligaInsereEmpregados(TEmpregado[] tEmpregados, TSituacao[] tSituacoes, String dataTransferencia, Empresa empresaOrigin, Empresa empresaDestino) 
