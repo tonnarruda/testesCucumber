@@ -534,7 +534,10 @@ public class RHServiceImpl implements RHService
 	{
 		String parametros = "empregado: " + empregado.getCodigoAC() + " \nsituacao: " + situacao.getData();
 		
-		//TODO: falta transacao
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = transactionManager.getTransaction(def);
+		
 		try
 		{
 			try
@@ -559,11 +562,13 @@ public class RHServiceImpl implements RHService
 				throw new Exception("Erro ao atualizar situação do colaborador.");
 			}
 
+			transactionManager.commit(status);
 			return new FeedbackWebService(true);
 		}
 		catch (Exception e)
 		{
 			e.printStackTrace();
+			transactionManager.rollback(status);
 			return new FeedbackWebService(false, "Erro ao atualizar empregado e situação.",  formataException(parametros, e));
 		}
 	}
