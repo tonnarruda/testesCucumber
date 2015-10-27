@@ -25,8 +25,10 @@ import com.fortes.f2rh.F2rhFacade;
 import com.fortes.f2rh.F2rhFacadeImpl;
 import com.fortes.model.type.File;
 import com.fortes.rh.business.geral.BairroManager;
+import com.fortes.rh.business.geral.CamposExtrasManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -49,14 +51,17 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.relatorio.AvaliacaoCandidatosRelatorio;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.Apto;
+import com.fortes.rh.model.dicionario.CampoExtra;
 import com.fortes.rh.model.dicionario.Escolaridade;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.Bairro;
+import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ComoFicouSabendoVaga;
+import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
@@ -97,6 +102,9 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	private SolicitacaoExameManager solicitacaoExameManager;
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
+	private ConfiguracaoCampoExtraManager configuracaoCampoExtraManager;
+	private CamposExtrasManager camposExtrasManager;
+	
 	private int totalSize;
 
 	public int getTotalSize()
@@ -587,6 +595,12 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		candidato.setEmpresa(colaborador.getEmpresa());
 		candidato.setContato(colaborador.getContato());
 		
+		CamposExtras camposExtras = montaCamposExtras(colaborador.getCamposExtras(), candidato.getCamposExtras(), colaborador.getEmpresa().getId());
+		if(camposExtras != null ){
+			camposExtrasManager.saveOrUpdate(camposExtras);
+			candidato.setCamposExtras(camposExtras);
+		}
+		
 		if(candidato.getId() == null){
 			SocioEconomica socioEconomica = new SocioEconomica();
 			candidato.setSocioEconomica(socioEconomica);
@@ -610,6 +624,65 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 	   	update(candidato);
 
 		return candidato;
+	}
+
+	private CamposExtras montaCamposExtras(CamposExtras camposExtrasColaborador, CamposExtras camposExtrasCandidato, Long empresaId) {
+		Collection<ConfiguracaoCampoExtra> configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoCandidato", "ativoColaborador", "empresa.id"}, new Object[]{true, true, empresaId}, new String[]{"ordem"});
+		
+		if(configuracaoCampoExtras != null && configuracaoCampoExtras.size() > 0 && camposExtrasCandidato == null )
+			camposExtrasCandidato = new CamposExtras();
+		
+		for (ConfiguracaoCampoExtra configuracaoCampoExtra : configuracaoCampoExtras) {
+			if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_1.getDescricao())){
+				camposExtrasCandidato.setTexto1(camposExtrasColaborador.getTexto1());
+			}
+			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_2.getDescricao())){
+				camposExtrasCandidato.setTexto2(camposExtrasColaborador.getTexto2());
+			}
+			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_3.getDescricao())){
+				camposExtrasCandidato.setTexto3(camposExtrasColaborador.getTexto3());
+			}
+			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_4.getDescricao())){
+				camposExtrasCandidato.setTexto4(camposExtrasColaborador.getTexto4());
+			}
+			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_5.getDescricao())){
+				camposExtrasCandidato.setTexto5(camposExtrasColaborador.getTexto5());
+			}
+			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_6.getDescricao())){
+				camposExtrasCandidato.setTexto6(camposExtrasColaborador.getTexto6());
+			}
+			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_7.getDescricao())){
+				camposExtrasCandidato.setTexto7(camposExtrasColaborador.getTexto7());
+			}
+			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_8.getDescricao())){
+				camposExtrasCandidato.setTexto8(camposExtrasColaborador.getTexto8());
+			}
+			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_DATA_1.getDescricao())){
+				camposExtrasCandidato.setData1(camposExtrasColaborador.getData1());
+			}
+			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_DATA_2.getDescricao())){
+				camposExtrasCandidato.setData2(camposExtrasColaborador.getData2());
+			}
+			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_DATA_3.getDescricao())){
+				camposExtrasCandidato.setData3(camposExtrasColaborador.getData3());
+			}
+			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_VALOR_1.getDescricao())){
+				camposExtrasCandidato.setValor1(camposExtrasColaborador.getValor1());
+			}
+			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_VALOR_2.getDescricao())){
+				camposExtrasCandidato.setValor2(camposExtrasColaborador.getValor2());
+			}
+			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_NUMERO.getDescricao())){
+				camposExtrasCandidato.setNumero1(camposExtrasColaborador.getNumero1());
+			}
+			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_LONGO_1.getDescricao())){
+				camposExtrasCandidato.setTextolongo1(camposExtrasColaborador.getTextolongo1());
+			}
+			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_LONGO_2.getDescricao())){
+				camposExtrasCandidato.setTextolongo1(camposExtrasColaborador.getTextolongo1());
+			}
+		}
+		return camposExtrasCandidato;
 	}
 
 	public String recuperaSenha(String cpf, Empresa empresa) 
@@ -1375,5 +1448,13 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
+	}
+
+	public void setConfiguracaoCampoExtraManager(ConfiguracaoCampoExtraManager configuracaoCampoExtraManager) {
+		this.configuracaoCampoExtraManager = configuracaoCampoExtraManager;
+	}
+
+	public void setCamposExtrasManager(CamposExtrasManager camposExtrasManager) {
+		this.camposExtrasManager = camposExtrasManager;
 	}
 }

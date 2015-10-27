@@ -60,6 +60,12 @@
     <property name="gerenciadorComunicacaoManager">
       <ref bean="gerenciadorComunicacaoManager" />
     </property>
+    <property name="configuracaoCampoExtraManager">
+      <ref bean="configuracaoCampoExtraManager" />
+    </property>
+    <property name="camposExtrasManager">
+      <ref bean="camposExtrasManager" />
+    </property>
   </bean>
   <bean id="candidatoManager" parent="parentManager">
     <property name="proxyInterfaces">

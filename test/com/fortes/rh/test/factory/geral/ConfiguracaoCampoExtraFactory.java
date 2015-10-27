@@ -45,4 +45,14 @@ public class ConfiguracaoCampoExtraFactory
 		
 		return configuracaoCampoExtra;
 	}
+	
+	public static ConfiguracaoCampoExtra getEntity(Long id, String descricao, boolean ativoColaborador, boolean ativoCandidato )
+	{
+		ConfiguracaoCampoExtra configuracaoCampoExtra = getEntity();
+		configuracaoCampoExtra.setId(id);
+		configuracaoCampoExtra.setDescricao(descricao);
+		configuracaoCampoExtra.setAtivoColaborador(ativoColaborador);
+		configuracaoCampoExtra.setAtivoCandidato(ativoCandidato);
+		return configuracaoCampoExtra;
+	}
 }

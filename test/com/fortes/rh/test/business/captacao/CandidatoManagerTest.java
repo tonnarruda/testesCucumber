@@ -2,6 +2,7 @@ package com.fortes.rh.test.business.captacao;
 
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -36,8 +37,10 @@ import com.fortes.rh.business.captacao.ExperienciaManager;
 import com.fortes.rh.business.captacao.FormacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.business.geral.BairroManager;
+import com.fortes.rh.business.geral.CamposExtrasManager;
 import com.fortes.rh.business.geral.CidadeManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.business.geral.ConfiguracaoCampoExtraManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
@@ -58,13 +61,16 @@ import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.Apto;
+import com.fortes.rh.model.dicionario.CampoExtra;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
 import com.fortes.rh.model.geral.AreaInteresse;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Bairro;
+import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorIdioma;
+import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
@@ -81,6 +87,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.geral.ConfiguracaoCampoExtraFactory;
 import com.fortes.rh.test.util.mockObjects.MockArquivoUtil;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.ArquivoUtil;
@@ -114,7 +121,9 @@ public class CandidatoManagerTest extends MockObjectTestCase
 	private Mock configuracaoNivelCompetenciaManager;
 	private Mock gerenciadorComunicacaoManager;
 	private Mock cidadeManager;
-
+	private Mock configuracaoCampoExtraManager;
+	private Mock camposExtrasManager;
+	
     protected void setUp() throws Exception
     {
         super.setUp();
@@ -136,6 +145,8 @@ public class CandidatoManagerTest extends MockObjectTestCase
         configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class); 
         gerenciadorComunicacaoManager = new Mock(GerenciadorComunicacaoManager.class); 
         cidadeManager = new Mock(CidadeManager.class); 
+        configuracaoCampoExtraManager = new Mock(ConfiguracaoCampoExtraManager.class);
+        camposExtrasManager = new Mock(CamposExtrasManager.class);
         
         candidatoManager.setCandidatoSolicitacaoManager((CandidatoSolicitacaoManager) candidatoSolicitacaoManager.proxy());
         candidatoManager.setDao((CandidatoDao) candidatoDao.proxy());
@@ -153,6 +164,9 @@ public class CandidatoManagerTest extends MockObjectTestCase
         candidatoManager.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
         candidatoManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
         candidatoManager.setCidadeManager((CidadeManager) cidadeManager.proxy());
+        
+        candidatoManager.setConfiguracaoCampoExtraManager((ConfiguracaoCampoExtraManager) configuracaoCampoExtraManager.proxy());
+        candidatoManager.setCamposExtrasManager((CamposExtrasManager) camposExtrasManager.proxy());
 		
         colaboradorQuestionarioManager = new Mock(ColaboradorQuestionarioManager.class);
         colaboradorManager = new Mock(ColaboradorManager.class);
@@ -1051,6 +1065,8 @@ public class CandidatoManagerTest extends MockObjectTestCase
 
     public void testSaveOrUpdateCandidatoByColaborador()
     {
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	
     	Idioma i = new Idioma();
     	i.setId(1L);
 
@@ -1090,6 +1106,17 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	Collection<Formacao> formacoes = new ArrayList<Formacao>();
     	formacoes.add(formacao);
 
+    	ConfiguracaoCampoExtra configuracaoCampoExtraCampoDeTexto1 = ConfiguracaoCampoExtraFactory.getEntity(1L, CampoExtra.CAMPO_DE_TEXTO_1.getDescricao(), true, true);
+    	
+    	ConfiguracaoCampoExtra configuracaoCampoExtraCampoDeData1 = ConfiguracaoCampoExtraFactory.getEntity(9L, CampoExtra.CAMPO_DE_DATA_1.getDescricao(), true, false);
+    	ConfiguracaoCampoExtra configuracaoCampoExtraCampoDeData2 = ConfiguracaoCampoExtraFactory.getEntity(10L, CampoExtra.CAMPO_DE_DATA_2.getDescricao(), false, true);
+    	
+    	
+    	Collection<ConfiguracaoCampoExtra> configuracaoCamposExtras = Arrays.asList(configuracaoCampoExtraCampoDeData1, configuracaoCampoExtraCampoDeData2, configuracaoCampoExtraCampoDeTexto1); 
+    	CamposExtras camposExtrasColaborador = new CamposExtras();
+    	camposExtrasColaborador.setTexto1("Texto 1");
+    	camposExtrasColaborador.setData1(DateUtil.criarAnoMesDia(2015, 01, 01));
+    	
     	Pessoal pessoal = new Pessoal();
     	pessoal.setCpf("123456789");
 
@@ -1103,36 +1130,43 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	c.setFormacao(formacoes);
     	c.setNome("nome");
     	c.setPessoal(pessoal);
-
-    	Candidato candidato = new Candidato();
-    	candidato.setId(1L);
-
+    	c.setCamposExtras(camposExtrasColaborador);
+    	c.setEmpresa(empresa);
+	
+		Candidato candidato = new Candidato();
+		candidato.setId(1L);
+	
 		candidato.setPessoal(c.getPessoal());
-
+	
 		candidato.setContato(contato);
-
+	
 	   	SocioEconomica socioEconomica = new SocioEconomica();
 	   	candidato.setSocioEconomica(socioEconomica);
-
+	
 	   	candidato.setDataAtualizacao(new Date());
-
-    	candidato.setCursos(c.getCursos());
-    	candidato.setEndereco(c.getEndereco());
-    	candidato.setExperiencias(c.getExperiencias());
-    	candidato.setFormacao(c.getFormacao());
-    	candidato.setNome(c.getNome());
-
+	
+		candidato.setCursos(c.getCursos());
+		candidato.setEndereco(c.getEndereco());
+		candidato.setExperiencias(c.getExperiencias());
+		candidato.setFormacao(c.getFormacao());
+		candidato.setNome(c.getNome());
+    	
     	candidatoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(candidato));
     	candidatoDao.expects(once()).method("update").with(ANYTHING);
     	candidatoIdiomaManager.expects(once()).method("montaCandidatoIdiomaByColaboradorIdioma").with(ANYTHING, ANYTHING).will(returnValue(candIdiomas));
     	formacaoManager.expects(once()).method("saveOrUpdate").with(eq(c.getFormacao())).isVoid();
+    	configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativoCandidato","ativoColaborador", "empresa.id"}),eq(new Object[]{true, true, empresa.getId()}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCamposExtras));
+    	camposExtrasManager.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
 
     	candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(c);
+		
     	formacaoManager.expects(once()).method("saveOrUpdate").with(eq(c.getFormacao())).isVoid();
     	candidatoDao.expects(once()).method("save").with(ANYTHING).will(returnValue(candidato));
     	candidatoDao.expects(once()).method("update").with(ANYTHING);
     	candidatoIdiomaManager.expects(once()).method("montaCandidatoIdiomaByColaboradorIdioma").with(ANYTHING, ANYTHING).will(returnValue(candIdiomas));
-    	
+    	configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativoCandidato","ativoColaborador", "empresa.id"}),eq(new Object[]{true, true, empresa.getId()}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCamposExtras));
+    	camposExtrasManager.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
+
     	candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(c);
 
     	assertTrue("Teste 1", candidatoTemIdioma(i, candidato.getCandidatoIdiomas()));
@@ -1151,7 +1185,9 @@ public class CandidatoManagerTest extends MockObjectTestCase
     	candidatoDao.expects(once()).method("update").with(ANYTHING);
     	candidatoIdiomaManager.expects(once()).method("montaCandidatoIdiomaByColaboradorIdioma").with(ANYTHING, ANYTHING).will(returnValue(candIdiomas));
     	formacaoManager.expects(once()).method("saveOrUpdate").with(eq(c.getFormacao())).isVoid();
-    	
+    	configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativoCandidato","ativoColaborador", "empresa.id"}),eq(new Object[]{true, true, empresa.getId()}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCamposExtras));
+    	camposExtrasManager.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
+
     	candidato = candidatoManager.saveOrUpdateCandidatoByColaborador(c);
     	
     	assertEquals("Teste 10", c.getCandidato().getId(), candidato.getId());    	
