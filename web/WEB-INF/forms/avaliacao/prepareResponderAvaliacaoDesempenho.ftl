@@ -184,6 +184,7 @@
 								<tr class="even">
 									<td>
 										<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
+										<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].pesoCompetencia"/>
 										<#-- não utilizar decorator no hidden abaixo -->
 										<input type="hidden" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.ordem" id="ordem_${i}" class="ordem" value=""/>
 										

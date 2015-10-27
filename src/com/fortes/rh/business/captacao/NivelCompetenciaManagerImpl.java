@@ -31,7 +31,7 @@ public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompete
 		Integer pontuacao = 0;
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaMarcados) {
 			if(configuracaoNivelCompetencia.getNivelCompetencia() != null && configuracaoNivelCompetencia.getNivelCompetencia().getId() != null)
-				pontuacao += configuracaoNivelCompetencia.getNivelCompetencia().getOrdem();
+				pontuacao += configuracaoNivelCompetencia.getNivelCompetencia().getOrdem() * configuracaoNivelCompetencia.getPesoCompetencia();
 		}
 		
 		return pontuacao;

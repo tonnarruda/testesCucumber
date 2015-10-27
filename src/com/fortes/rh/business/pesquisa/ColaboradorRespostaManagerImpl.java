@@ -450,7 +450,11 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		if(niveisCompetenciaMarcados != null)
 		{
 			pontuacaoNivelCompetenciaObtida = nivelCompetenciaManager.getPontuacaoObtidaByConfiguracoesNiveisCompetencia(niveisCompetenciaMarcados);
-			pontuacaoMaximaNivelcompetencia = niveisCompetenciaMarcados.size() * nivelCompetenciaManager.getOrdemMaxima(empresaId); 
+			
+			int pontuacaoMaximaNivelCompetencia = nivelCompetenciaManager.getOrdemMaxima(empresaId);
+			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetenciaMarcado : niveisCompetenciaMarcados) 
+				if(configuracaoNivelCompetenciaMarcado.getNivelCompetencia() != null && configuracaoNivelCompetenciaMarcado.getNivelCompetencia().getId() != null)
+					pontuacaoMaximaNivelcompetencia += configuracaoNivelCompetenciaMarcado.getPesoCompetencia() * pontuacaoMaximaNivelCompetencia;
 		}
 		
 		int pontuacaoMaximaQuestionario = avaliacaoManager.getPontuacaoMaximaDaPerformance(avaliacaoId, new CollectionUtil<Long>().convertCollectionToArrayLong(perguntasIdsComPesoNulo));
