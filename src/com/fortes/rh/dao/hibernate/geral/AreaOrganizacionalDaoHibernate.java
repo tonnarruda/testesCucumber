@@ -589,4 +589,22 @@ public class AreaOrganizacionalDaoHibernate extends GenericDaoHibernate<AreaOrga
 
 		return LongUtil.collectionStringToArrayLong(criteria.list());
 	}
+
+	public boolean possuiAreaFilhasByCodigoAC(String codigoAC, Long empresaId) {
+		Criteria criteria = getSession().createCriteria(AreaOrganizacional.class, "a");
+		criteria.createCriteria("a.areaMae", "areamae");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("a.id"), "id");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.isNotNull("areaMae.id"));
+		criteria.add(Expression.eq("a.empresa.id", empresaId));
+		criteria.add(Expression.eq("areamae.codigoAC",codigoAC));
+		criteria.add(Expression.eq("areamae.ativo",true));
+
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+
+		return criteria.list().size() > 0;
+	}
 }

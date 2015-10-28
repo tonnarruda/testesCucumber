@@ -1059,7 +1059,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		colaborador1.setCodigoAC("0001");
 		colaborador1.setNaoIntegraAc(false);
 		colaborador1 = colaboradorDao.save(colaborador1);
-
+		
 		Colaborador colaborador2 = ColaboradorFactory.getEntity();
 		colaborador2.setEmpresa(empresa);
 		colaborador2.setCodigoAC("0002");
@@ -1071,6 +1071,7 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaboradorColaborador1.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorColaborador1.setEstabelecimento(estabelecimento);
 		historicoColaboradorColaborador1.setAreaOrganizacional(areaOrganizacional);
+		historicoColaboradorColaborador1.setColaborador(colaborador1);
 		historicoColaboradorColaborador1 = historicoColaboradorDao.save(historicoColaboradorColaborador1);
 		
 		HistoricoColaborador historicoColaboradorColaborador2 = HistoricoColaboradorFactory.getEntity();
@@ -1084,13 +1085,12 @@ public class HistoricoColaboradorDaoHibernateTest extends GenericDaoHibernateTes
 		historicoColaboradorColaborador3.setEstabelecimento(estabelecimento);
 		historicoColaboradorColaborador3.setAreaOrganizacional(areaOrganizacional);
 		historicoColaboradorColaborador3 = historicoColaboradorDao.save(historicoColaboradorColaborador3);
-
-		historicoColaboradorDao.getHibernateTemplateByGenericDao().flush();
 		
 		Exception exception = null;
 		try {
-			historicoColaboradorDao.updateSituacaoByMovimentacao(colaborador1.getCodigoAC(), (String) new MovimentacaoAC().get(MovimentacaoAC.AREA), areaOrganizacional2.getCodigoAC(), false, empresa.getCodigoAC(), empresa.getGrupoAC());
-			historicoColaboradorDao.updateSituacaoByMovimentacao(colaborador2.getCodigoAC(), (String) new MovimentacaoAC().get(MovimentacaoAC.ESTABELECIMENTO), estabelecimento2.getCodigoAC(), true, empresa.getCodigoAC(), empresa.getGrupoAC());
+			historicoColaboradorDao.updateSituacaoByMovimentacao(colaborador1.getCodigoAC(), (String) new MovimentacaoAC().get(MovimentacaoAC.AREA), areaOrganizacional2.getCodigoAC(), false, empresa.getId());
+			historicoColaboradorDao.updateSituacaoByMovimentacao(colaborador2.getCodigoAC(), (String) new MovimentacaoAC().get(MovimentacaoAC.ESTABELECIMENTO), estabelecimento2.getCodigoAC(), true, empresa.getId());
+			historicoColaboradorDao.getHibernateTemplateByGenericDao().flush();
 		} catch (Exception e) {
 			exception = e;
 		}

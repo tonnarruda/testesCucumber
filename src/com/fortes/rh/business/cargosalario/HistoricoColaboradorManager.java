@@ -98,8 +98,8 @@ public interface HistoricoColaboradorManager extends GenericManager<HistoricoCol
 
 	public HistoricoColaborador updateSituacao(TSituacao situacao) throws Exception;
 	
-	public void updateSituacaoByMovimentacao(String empregadoCodigo, String movimentacao, String valor, boolean atualizarTodasSituacoes, String empCodigo, String grupoAC);
-
+	public void updateSituacaoByMovimentacao(String codigoEmpregado, String movimentacao, String valor, boolean atualizarTodasSituacoes, Long empresaId);
+	
 	public TSituacao bindSituacao(HistoricoColaborador historicoColaborador, String empresaCodigoAC);
 
 	public HistoricoColaborador bindSituacao(TSituacao situacao, HistoricoColaborador historicoColaborador) throws Exception;

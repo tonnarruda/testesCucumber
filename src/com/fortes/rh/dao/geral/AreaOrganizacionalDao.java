@@ -35,4 +35,5 @@ public interface AreaOrganizacionalDao extends GenericDao<AreaOrganizacional>
 	public void removeComDependencias(Long id);
 	public Collection<AreaOrganizacional> findAreasDoResponsavelCoResponsavel(Long usuarioId, Long empresaId, Boolean ativo, Collection<Long> areaInativaIds);
 	public Long[] findAreasMaesIdsByEmpresaId(Long empresaId);
+	public boolean possuiAreaFilhasByCodigoAC(String codigoAC, Long empresaId);
 }

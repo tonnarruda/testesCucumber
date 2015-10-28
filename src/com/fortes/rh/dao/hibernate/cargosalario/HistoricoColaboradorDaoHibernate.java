@@ -604,20 +604,27 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return query.executeUpdate() == 1;
 	}
 	
-	public void updateSituacaoByMovimentacao(String empregadoCodigo, String movimentacao, String valor, boolean atualizarTodasSituacoes, String empCodigo, String grupoAC)
+	public void updateSituacaoByMovimentacao(String codigoEmpregado, String movimentacao, String valor, boolean atualizarTodasSituacoes, Long empresaId)
 	{
-		String sql = "update HistoricoColaborador set " + movimentacao +"_id = ( select mov.id from " + WordUtils.capitalize(movimentacao) + " as mov left join empresa as e on e.id = mov.empresa_id where mov.codigoAC = '" + valor + "' and e.codigoAC = '"+empCodigo+"' and e.grupoAC = '"+grupoAC+"' ) " +
-		" where colaborador_id = ( select c.id from Colaborador c left join empresa as emp on emp.id = c.empresa_id where c.codigoAC = '" + empregadoCodigo + "' and emp.codigoAC = '"+empCodigo+"' and emp.grupoAC = '"+grupoAC+"' )";
+		String hql = "update HistoricoColaborador set " + movimentacao +".id = ( select id from " + WordUtils.capitalize(movimentacao) + " where codigoAC = :valor and empresa.id = :empresaId ) " +
+		" where colaborador.id = ( select id from Colaborador where codigoAC = :codigoEmpregado and empresa.id = :empresaId )";
 		if (!atualizarTodasSituacoes) {
-			sql += " and data = (select max(hc2.data) " +
-				" from HistoricoColaborador as hc2 " +
-				" where hc2.colaborador_id = colaborador_id " +
-				" and hc2.data <= '" + new SimpleDateFormat("dd/MM/yyyy").format(new Date()) + "' and hc2.status = " + StatusRetornoAC.CONFIRMADO + ")";
+			hql += " and data = (select max(hc2.data) " +
+			" from HistoricoColaborador as hc2 " +
+			" where hc2.colaborador.id = ( select id from Colaborador where codigoAC = :codigoEmpregado and empresa.id = :empresaId ) " +
+			" and hc2.data <= :date and hc2.status = :status)";
 		}
 		
-		String[] sqls = new String[] {sql};
-	
-		JDBCConnection.executeQuery(sqls);
+		Query query = getSession().createQuery(hql);
+		if (!atualizarTodasSituacoes) {
+			query.setDate("date", new Date());
+			query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		}
+		query.setLong("empresaId", empresaId);
+		query.setString("codigoEmpregado", codigoEmpregado);
+		query.setString("valor", valor);
+
+		query.executeUpdate();
 	}
 
 	public String findColaboradorCodigoAC(Long historicoColaboradorId)

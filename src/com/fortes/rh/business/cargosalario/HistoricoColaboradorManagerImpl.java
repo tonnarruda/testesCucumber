@@ -1021,9 +1021,9 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 		return historicoColaborador;
 	}
 	
-	public void updateSituacaoByMovimentacao(String empregadoCodigo, String movimentacao, String valor, boolean atualizarTodasSituacoes, String empCodigo, String grupoAC)
+	public void updateSituacaoByMovimentacao(String codigoEmpregado, String movimentacao, String valor, boolean atualizarTodasSituacoes, Long empresaId)
 	{
-		getDao().updateSituacaoByMovimentacao(empregadoCodigo, movimentacao, valor, atualizarTodasSituacoes, empCodigo, grupoAC);
+		getDao().updateSituacaoByMovimentacao(codigoEmpregado, movimentacao, valor, atualizarTodasSituacoes, empresaId);
 	}
 
 	public HistoricoColaborador prepareSituacao(TSituacao situacao) throws Exception

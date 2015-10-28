@@ -991,6 +991,10 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		
 		getDao().removeComDependencias(id);
 	}
+	
+	public boolean possuiAreaFilhasByCodigoAC(String codigoAC, Long empresaId) {
+		return getDao().possuiAreaFilhasByCodigoAC(codigoAC, empresaId);
+	}
 
 	public String getMascaraLotacoesAC(Empresa empresa) throws Exception 
 	{

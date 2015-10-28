@@ -432,8 +432,13 @@ public class RHServiceImpl implements RHService
 	
 	public FeedbackWebService atualizarMovimentacaoEmLote(String[] empregadoCodigos, String movimentacao, String valor, boolean atualizarTodasSituacoes, String empCodigo, String grupoAC){
 		try {
+			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
+			if(MovimentacaoAC.AREA.equals(movimentacao) && areaOrganizacionalManager.possuiAreaFilhasByCodigoAC(valor, empresa.getId())) {
+				return new FeedbackWebService(false, "Não foi possível realizar a atualização em lote. A lotação é mãe de outras lotações.", "");
+			}
+			
 			for (String empregadoCodigo : empregadoCodigos) {
-				historicoColaboradorManager.updateSituacaoByMovimentacao(empregadoCodigo, (String) new MovimentacaoAC().get(movimentacao), valor, atualizarTodasSituacoes, empCodigo, grupoAC);
+				historicoColaboradorManager.updateSituacaoByMovimentacao(empregadoCodigo, (String) new MovimentacaoAC().get(movimentacao), valor, atualizarTodasSituacoes, empresa.getId());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
