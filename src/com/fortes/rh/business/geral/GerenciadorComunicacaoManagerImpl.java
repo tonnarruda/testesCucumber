@@ -1888,7 +1888,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 	}
 
 	public void enviarNotificacaoCursosAVencer() {
-		
 		Calendar data;
 		ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
 		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBeanOld("colaboradorTurmaManager");
@@ -1979,6 +1978,10 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 			}
 		}
 	}
+	
+	public void enviarNotificacaoCertificacoesAVencer(){
+		
+	}
 
 	private Collection<ColaboradorTurma> agrupaCertificacoes(Collection<ColaboradorTurma> colaboradoresTurmas) 
 	{
@@ -1993,7 +1996,6 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 		return (Collection<ColaboradorTurma>) colaboradoresTurmasMap.values();
 	}
-			
 	
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {
 		this.candidatoSolicitacaoManager = candidatoSolicitacaoManager;
