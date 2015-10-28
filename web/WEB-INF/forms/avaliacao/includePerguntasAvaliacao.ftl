@@ -5,7 +5,7 @@
 
 <#list perguntas as pergunta>
 
-	<div id="perguntaResposta">
+	<div id="perguntaResposta" class="perguntaResposta">
 		<#if pergunta.aspecto.nome?exists>
 			<#if pergunta.aspecto.nome != aspectoAnterior>
 				<div style="background-color: lightgray;color:black;margin-top:5px;margin-bottom:5px;padding:3px;">${pergunta.aspecto.nome}</div>
@@ -19,14 +19,15 @@
 		</#if>
 
 		<p id="tituloPergunta" class="pergunta${pergunta.id}">${pergunta.ordem}) ${pergunta.texto}</p>
+		<@ww.hidden id="pesoPergunta" value=" ${pergunta.peso}"/>
 		
 		<#if pergunta.tipo == tipoPergunta.objetiva >
 			<#list pergunta.respostas as resposta>
-				<input type="radio" class="opcaoResposta${pergunta.id},radio" name="perguntas[${i}].colaboradorRespostas[0].resposta.id" value="${resposta.id}" id="${resposta.id}" <#if perguntas[i].colaboradorRespostas[0].temResposta() && (resposta.id == perguntas[i].colaboradorRespostas[0].resposta.id)>checked</#if>/><label for="${resposta.id}">${resposta.texto}</label><br>
+				<input type="radio" peso="${resposta.peso}" class="opcaoResposta${pergunta.id},radio objetiva pergunta" name="perguntas[${i}].colaboradorRespostas[0].resposta.id" value="${resposta.id}" id="${resposta.id}" <#if perguntas[i].colaboradorRespostas[0].temResposta() && (resposta.id == perguntas[i].colaboradorRespostas[0].resposta.id)>checked</#if>/><label for="${resposta.id}">${resposta.texto}</label><br>
 			</#list>
 			
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.id" />
-			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.tipo" value="${pergunta.tipo}"/>
+			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.tipo" value="${pergunta.tipo}" id= "tipo" />
 			
 			<#if pergunta.comentario>
 				${pergunta.textoComentario}<br>
@@ -61,9 +62,9 @@
 					</#list>
 				</#if>
 					
-				<input type="checkbox" class="opcaoResposta${pergunta.id},radio" name="perguntas[${i}].colaboradorRespostas[${j}].resposta.id" value="${resposta.id}" id="${resposta.id}" ${checked}/><label for="${resposta.id}">${resposta.texto}</label><br>
+				<input type="checkbox" peso="${resposta.peso}" class="opcaoResposta${pergunta.id}, radio multiplaEscolha pergunta" name="perguntas[${i}].colaboradorRespostas[${j}].resposta.id" value="${resposta.id}" id="${resposta.id}" ${checked}/><label for="${resposta.id}">${resposta.texto}</label><br>
 				<@ww.hidden name="perguntas[${i}].colaboradorRespostas[${j}].pergunta.id" value="${pergunta.id}"/>
-				<@ww.hidden name="perguntas[${i}].colaboradorRespostas[${j}].pergunta.tipo" value="${pergunta.tipo}"/>
+				<@ww.hidden name="perguntas[${i}].colaboradorRespostas[${j}].pergunta.tipo" value="${pergunta.tipo}" id= "tipo"/>
 				<@ww.hidden name="perguntas[${i}].colaboradorRespostas[${j}].pergunta.comentario" value="${pergunta.comentario?string}"/>
 				
 				<#assign j = j + 1/>
@@ -91,7 +92,7 @@
 			</#if>
 			<textarea name="perguntas[${i}].colaboradorRespostas[0].comentario" class="opcaoResposta${pergunta.id} respostaSubjetiva" style="height:75px;width:730px;overflow-y:scroll">${valueResposta}</textarea><br>
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.id" />
-			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.tipo" value="${pergunta.tipo}"/>
+			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.tipo" value="${pergunta.tipo}" id= "tipo"/>
 		</#if>
 		
 		<#if pergunta.tipo == tipoPergunta.nota>
@@ -102,9 +103,11 @@
 				<#assign valueComentario = "" />
 			</#if>
 		
-			<@ww.select label="Selecione a nota de ${pergunta.notaMinima} a ${pergunta.notaMaxima}" cssClass="opcaoResposta${pergunta.id}" name="perguntas[${i}].colaboradorRespostas[0].valor" list=perguntas[i].colaboradorRespostas[0].getNotas() headerKey="" headerValue="Selecione..."/>
+			<@ww.select label="Selecione a nota de ${pergunta.notaMinima} a ${pergunta.notaMaxima}" cssClass="opcaoResposta${pergunta.id} nota pergunta" name="perguntas[${i}].colaboradorRespostas[0].valor" list=perguntas[i].colaboradorRespostas[0].getNotas() headerKey="" headerValue="Selecione..."/>
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.id" />
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.tipo" value="${pergunta.tipo}"/>
+			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.tipo" value="${pergunta.tipo}" id= "tipo"/>
+			<@ww.hidden id="peso" value="${pergunta.peso}"/>
 			
 			<#if pergunta.comentario>
 				${pergunta.textoComentario}<br>
