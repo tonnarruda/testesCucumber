@@ -202,7 +202,7 @@
 		<pre><h4>${colaboradorQuestionario.avaliacao.cabecalho}</h4></pre>
 	</#if>
 	<#if mostrarPerformanceAvalDesempenho>
-		<span id="performanceQuestionario" style="margin-left: 745px; font-weight: bold;">Performance Questionário: - </span>
+		<pre id="performanceQuestionario" style="text-align:right; font-weight: bold;">Performance Questionário: - </pre>
 	</#if>
 	
 	<#if perguntas?exists && 0 < perguntas?size>
@@ -234,7 +234,7 @@
 		
 					<br /><br />
 					<#if mostrarPerformanceAvalDesempenho>
-						<span id="performanceCompetencias" style="margin-left: 715px; font-weight: bold;">Performance Competencia: - </span>
+						<pre id="performanceCompetencias" style="text-align:right; font-weight: bold;">Performance Questionário: - </pre>
 					</#if>
 					<table id="configuracaoNivelCompetencia" class="dados">
 						<thead>

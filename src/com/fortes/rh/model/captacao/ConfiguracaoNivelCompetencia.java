@@ -135,7 +135,9 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setTipoCompetencia(tipoCompetencia);
 		this.setCompetenciaId(competenciaId);
 		this.setNivelCompetenciaIdProjection(nivelCompetenciaId);
-		this.nivelCompetencia.setOrdem(nivelCompetenciaOrdem);
+		ver dao que utiliza
+		this.nivelCompetencia.setNivelCompetenciaHistoricoAtual(new NivelCompetenciaHistorico());
+		this.nivelCompetencia.getNivelCompetenciaHistoricoAtual().setOrdem(nivelCompetenciaOrdem);
 	}
 	
 	public ConfiguracaoNivelCompetencia(Long id, String competenciaDescricao)
