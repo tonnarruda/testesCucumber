@@ -18,8 +18,6 @@
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){ window.location='delete.action?nivelCompetencia.id=${nivelCompetencia.id}' });"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="descricao" title="Descrição"/>
-		<@display.column property="ordem" title="Peso" style="width:50px; text-align:right;"/>
-		<@display.column property="percentualFormatado" title="Percentual mínimo" style="width:60px; text-align:right;"/>
 	</@display.table>
 	
 	<div class="buttonGroup">
