@@ -252,6 +252,16 @@
 		</li>
 		
 		<li>&nbsp;</li>
+		<li>
+			<@ww.div cssClass="divInfo">
+				<h2>T&D</h2>
+				<ul>
+					<@ww.select label="Controlar vencimento da certificação por" name="empresa.controlarVencimentoCertificacaoPor" id="controlaPeriodicidadePor" list=r"#{1:'Periodicidade do curso', 2:'Periodicidade da certificação'}" cssStyle="width: 410px;"/>
+				</ul>
+			</@ww.div>
+		</li>
+		
+		<li>&nbsp;</li>
 
 		<li>
 			<@ww.div cssClass="divInfo">

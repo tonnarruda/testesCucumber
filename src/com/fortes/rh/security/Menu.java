@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.apache.axis.utils.StringUtils;
 
 import com.fortes.rh.model.acesso.Papel;
+import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 
@@ -120,23 +121,27 @@ public abstract class Menu
 		{
 			if (papel.getPapelMae() != null && papel.getPapelMae().getId() == id )
 			{
-				String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
-				
-				menuFilho.append("<li>");
-				
-				if (verificaPapeisParaEmpresasIntegradas(papel, empresaLogada) && verificaEmpresaComSolicitacaoDesligamento(papel, empresaLogada)) 
-				{
-					menuFilho.append("<a href='" + url + "'>" + papel.getNome() + "</a>");
+				if(((empresaLogada.getControlarVencimentoCertificacaoPor() == FiltroControleVencimentoCertificacao.CURSO.getOpcao() && !papel.getId().equals(648L)) 
+						|| (empresaLogada.getControlarVencimentoCertificacaoPor() == FiltroControleVencimentoCertificacao.CERTIFICACOES.getOpcao() && !papel.getId().equals(635L)))){
+					
+					String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
+					
+					menuFilho.append("<li>");
+					
+					if (verificaPapeisParaEmpresasIntegradas(papel, empresaLogada) && verificaEmpresaComSolicitacaoDesligamento(papel, empresaLogada)) 
+					{
+						menuFilho.append("<a href='" + url + "'>" + papel.getNome() + "</a>");
+					}
+	
+					maisFilhos = getFilhos(papel.getId(), contexto, empresaLogada);
+	
+					if (!maisFilhos.equals(""))
+					{
+						menuFilho.append("<ul>\n" + maisFilhos+ "</ul>\n");
+					}
+	
+					menuFilho.append("</li>\n");
 				}
-
-				maisFilhos = getFilhos(papel.getId(), contexto, empresaLogada);
-
-				if (!maisFilhos.equals(""))
-				{
-					menuFilho.append("<ul>\n" + maisFilhos+ "</ul>\n");
-				}
-
-				menuFilho.append("</li>\n");
 			}						
 		}
 

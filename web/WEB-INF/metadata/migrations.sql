@@ -69,3 +69,11 @@ CREATE SEQUENCE colaboradorAvaliacaoPratica_sequence START WITH 1 INCREMENT BY 1
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (647,'ROLE_COLABORADOR_AVALIACAO_PRATICA', 'Nota da Avaliação Prática por Colaborador', '/desenvolvimento/colaboradorAvaliacaoPratica/prepare.action', 6, true, 367);--.go
 INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 647);--.go
 alter sequence papel_sequence restart with 648;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id, help) VALUES (648,'ROLE_REL_CERTIFICACOES_VENCIDAS_A_VENCER', 'Certificações Vencidas e a Vencer', '/desenvolvimento/turma/prepareImprimirCertificacoesVencidasAVencer.action', 16, true, 368,'Esta permissão estará visível se a configuração realizada no cadastro da empresa na opção "Controlar vencimento da certificação" estiver por: Periodicidade da certificação');--.go
+INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 648);--.go
+ALTER sequence papel_sequence restart WITH 649;--.go
+
+ALTER TABLE empresa ADD COLUMN controlarVencimentoCertificacaoPor integer default 1;--.go
+
+update papel set help='Esta permissão estará visível se a configuração realizada no cadastro da empresa na opção "Controlar vencimento da certificação" estiver por: Periodicidade do curso' where id = 635;--.go

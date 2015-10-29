@@ -104,6 +104,8 @@ public class Empresa extends AbstractModel implements Serializable
     private int formulaTurnover;
     
     private char controlaRiscoPor = 'A'; // A - Ambiente ; F - Função
+    
+    private int controlarVencimentoCertificacaoPor;
 
     @ManyToMany(mappedBy="empresasParticipantes")
     private Collection<Curso> cursos;
@@ -473,6 +475,15 @@ public class Empresa extends AbstractModel implements Serializable
 
 	public void setControlaRiscoPor(char controlaRiscoPor) {
 		this.controlaRiscoPor = controlaRiscoPor;
+	}
+
+	public int getControlarVencimentoCertificacaoPor() {
+		return controlarVencimentoCertificacaoPor;
+	}
+
+	public void setControlarVencimentoCertificacaoPor(
+			int controlarVencimentoCertificacaoPor) {
+		this.controlarVencimentoCertificacaoPor = controlarVencimentoCertificacaoPor;
 	}
 
 	public boolean isCodigoTruCurso() {
