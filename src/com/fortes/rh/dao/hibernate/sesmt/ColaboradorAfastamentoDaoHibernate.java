@@ -104,7 +104,7 @@ public class ColaboradorAfastamentoDaoHibernate extends GenericDaoHibernate<Cola
 		{
 			hql.append(
 				"AND ( "
-					+ "( ca.fim != null AND (ca.inicio between :inicio and :fim OR ca.fim between :inicio and :fim) ) " +
+					+ "( ca.fim != null AND (ca.inicio between :inicio and :fim OR ca.fim between :inicio and :fim OR (ca.inicio <= :inicio and ca.fim >= :fim) ) ) " +
 				" OR (ca.fim = null AND (ca.inicio <= :fim) )" +
 				" ) ");
 		}
