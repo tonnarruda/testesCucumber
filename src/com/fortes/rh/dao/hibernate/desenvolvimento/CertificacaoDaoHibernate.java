@@ -1,6 +1,9 @@
 package com.fortes.rh.dao.hibernate.desenvolvimento;
 
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -18,6 +21,7 @@ import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
+import com.fortes.rh.model.geral.Colaborador;
 
 @SuppressWarnings("unchecked")
 public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> implements CertificacaoDao
@@ -138,7 +142,37 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 		{
 			String[] sql = new String[] {"delete from faixasalarial_certificacao where  faixasalarials_id in ("+StringUtils.join(faixaIds, ",")+");"};
 			JDBCConnection.executeQuery(sql);
-
 		}
+	}
+
+	public Collection<Colaborador> findColaboradoresNaCertificacoa(Long certificacaoId) 
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("WITH cursoCertificados AS ( ");
+		sql.append("		select distinct cc.cursos_id as cusosIds from certificacao  c ");
+		sql.append("		inner join certificacao_avaliacaopratica cap on cap.certificacao_id = c.id ");
+		sql.append("		inner join certificacao_curso cc on cc.certificacaos_id = c.id ");
+		sql.append("		where c.id = :certificacaoId ");
+		sql.append("		) ");
+		sql.append("select col.id, col.nome from colaboradorturma  ct ");
+		sql.append("inner join colaborador col on col.id = ct.colaborador_id ");
+		sql.append("inner join turma t on t.id = ct.turma_id ");
+		sql.append("inner join cursoCertificados on ct.curso_id = cursoCertificados.cusosIds ");
+		sql.append("group by col.id, col.nome ");
+		sql.append("having count(ct.curso_id) = (select count(*) from cursoCertificados) ");
+		sql.append("order by col.id, col.nome ");
+		
+		Query q = getSession().createSQLQuery(sql.toString());
+		q.setLong("certificacaoId", certificacaoId);
+		Collection<Object[]> resultado = q.list();
+		
+		Collection<Colaborador> lista = new ArrayList<Colaborador>();
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			lista.add(new Colaborador((String) res[1],((BigInteger)res[0]).longValue()));
+		}
+
+		return lista;	
 	}
 }

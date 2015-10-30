@@ -5,6 +5,7 @@ import java.util.Collection;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
+import com.fortes.rh.model.geral.Colaborador;
 
 public interface CertificacaoDao extends GenericDao<Certificacao>
 {
@@ -15,4 +16,5 @@ public interface CertificacaoDao extends GenericDao<Certificacao>
 	Certificacao findByIdProjection(Long id);
 	Integer getCount(Long empresaId, String nomeBusca);
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
+	Collection<Colaborador> findColaboradoresNaCertificacoa(Long certificacaoId);
 }

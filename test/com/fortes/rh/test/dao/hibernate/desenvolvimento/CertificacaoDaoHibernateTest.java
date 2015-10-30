@@ -1,23 +1,36 @@
 package com.fortes.rh.test.dao.hibernate.desenvolvimento;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.avaliacao.AvaliacaoPraticaDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
+import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
+import com.fortes.rh.dao.desenvolvimento.TurmaDao;
+import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
+import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoPraticaFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 
 public class CertificacaoDaoHibernateTest extends GenericDaoHibernateTest<Certificacao>
 {
@@ -25,6 +38,10 @@ public class CertificacaoDaoHibernateTest extends GenericDaoHibernateTest<Certif
 	private EmpresaDao empresaDao;
 	private FaixaSalarialDao faixaSalarialDao;
 	private CursoDao cursoDao;
+	private AvaliacaoPraticaDao avaliacaoPraticaDao;
+	private ColaboradorTurmaDao colaboradorTurmaDao;
+	private ColaboradorDao colaboradorDao;
+	private TurmaDao turmaDao;
 
 	public Certificacao getEntity()
 	{
@@ -168,6 +185,42 @@ public class CertificacaoDaoHibernateTest extends GenericDaoHibernateTest<Certif
 		assertEquals(2, retorno.size());
 	}
 	
+	public void testFindColaboradoresNaCertificacoa()
+	{
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity();
+		avaliacaoPraticaDao.save(avaliacaoPratica);
+		
+		Certificacao certificacao1 = CertificacaoFactory.getEntity();
+		certificacao1.setCursos(Arrays.asList(curso));
+		certificacao1.setAvaliacoesPraticas(Arrays.asList(avaliacaoPratica));
+		certificacaoDao.save(certificacao1);
+		
+		Certificacao certificacao2 = CertificacaoFactory.getEntity();
+		certificacao2.setCursos(Arrays.asList(curso));
+		certificacao2.setAvaliacoesPraticas(Arrays.asList(avaliacaoPratica));
+		certificacaoDao.save(certificacao2);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turmaDao.save(turma);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurma.setTurma(turma);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		certificacaoDao.getHibernateTemplateByGenericDao().flush();
+		
+		Collection<Colaborador> retorno = certificacaoDao.findColaboradoresNaCertificacoa(certificacao1.getId());
+		assertEquals(1, retorno.size());
+	}
+	
 	public void setCertificacaoDao(CertificacaoDao certificacaoDao)
 	{
 		this.certificacaoDao = certificacaoDao;
@@ -184,5 +237,17 @@ public class CertificacaoDaoHibernateTest extends GenericDaoHibernateTest<Certif
 	public void setCursoDao(CursoDao cursoDao)
 	{
 		this.cursoDao = cursoDao;
+	}
+	public void setAvaliacaoPraticaDao(AvaliacaoPraticaDao avaliacaoPraticaDao) {
+		this.avaliacaoPraticaDao = avaliacaoPraticaDao;
+	}
+	public void setColaboradorTurmaDao(ColaboradorTurmaDao colaboradorTurmaDao) {
+		this.colaboradorTurmaDao = colaboradorTurmaDao;
+	}
+	public void setColaboradorDao(ColaboradorDao colaboradorDao) {
+		this.colaboradorDao = colaboradorDao;
+	}
+	public void setTurmaDao(TurmaDao turmaDao) {
+		this.turmaDao = turmaDao;
 	}
 }

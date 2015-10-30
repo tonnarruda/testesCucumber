@@ -2375,6 +2375,56 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
     	Collection<ColaboradorTurma> retorno = colaboradorTurmaDao.findAprovadosReprovados(empresa.getId(), certificacao, null, new Long[]{areaOrganizacional.getId()}, new Long[]{estabelecimento.getId()}, hoje, dataFim, " e.nome, areaNome, co.nome, c.nome ", true, null);
     	assertEquals(1, retorno.size());
     }
+	
+	public void testFindByColaborador()
+	{
+		Colaborador adamastor = ColaboradorFactory.getEntity();
+		colaboradorDao.save(adamastor);
+		
+		Colaborador canabrava = ColaboradorFactory.getEntity();
+		colaboradorDao.save(canabrava);
+		
+		Curso curso = CursoFactory.getEntity();
+		curso.setNome("Javai");
+		curso.setPercentualMinimoFrequencia(20.0);
+		cursoDao.save(curso);
+		
+		Turma turma1 = TurmaFactory.getEntity();
+		turma1.setDescricao("janUeiro");
+		turma1.setDataPrevIni(DateUtil.criarDataMesAno(1,1, 2014));
+		turma1.setDataPrevFim(DateUtil.criarDataMesAno(1,1, 2015));
+		turma1.setRealizada(true);
+		turma1.setCurso(curso);
+		turmaDao.save(turma1);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setDescricao("Mairou");
+		turma2.setDataPrevIni(DateUtil.criarDataMesAno(1,1, 2014));
+		turma2.setDataPrevFim(DateUtil.criarDataMesAno(1,5, 2014));
+		turma2.setRealizada(true);
+		turma2.setCurso(curso);
+		turmaDao.save(turma2);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma.setColaborador(adamastor);
+		colaboradorTurma.setTurma(turma1);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		ColaboradorTurma colaboradorTurma3 = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma3.setColaborador(adamastor);
+		colaboradorTurma3.setTurma(turma2);
+		colaboradorTurmaDao.save(colaboradorTurma3);
+		
+		ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma2.setColaborador(canabrava);
+		colaboradorTurma2.setTurma(turma2);
+		colaboradorTurmaDao.save(colaboradorTurma2);
+		
+		Collection<ColaboradorTurma> resultado = colaboradorTurmaDao.findByColaborador(adamastor.getId());
+		
+		assertEquals(1, resultado.size());
+		assertEquals(turma1.getDataPrevFim(), ((ColaboradorTurma) resultado.toArray()[0]).getTurma().getDataPrevFim());
+	}
     
     public GenericDao<ColaboradorTurma> getGenericDao()
     {

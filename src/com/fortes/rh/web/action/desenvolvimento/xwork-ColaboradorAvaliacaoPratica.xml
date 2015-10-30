@@ -3,32 +3,14 @@
 
 <xwork>
 	<package name="colaboradorAvaliacaoPratica" extends="default" namespace="/desenvolvimento/colaboradorAvaliacaoPratica">
-		<action name="list" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction" method="list">
+		<action name="prepare" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction" method="prepare">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorAvaliacaoPraticaList.ftl</result>
 		</action>
-		<action name="prepare" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction" method="prepare">
+		<action name="buscaColaboradores" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction" method="buscaColaboradores">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorAvaliacaoPraticaList.ftl</result>
 		</action>
 		<action name="delete" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction" method="delete">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorAvaliacaoPraticaList.ftl</result>
-		</action>
-		<action name="prepareInsert" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction" method="prepareInsert">
-			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorAvaliacaoPraticaEdit.ftl</result>
-		</action>
-		<action name="prepareUpdate" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction" method="prepareUpdate">
-			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorAvaliacaoPraticaEdit.ftl</result>
-		</action>
-		<action name="insert" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction" method="insert">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
-			<result name="success" type="redirect">list.action</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorAvaliacaoPraticaEdit.ftl</result>
-		</action>
-		<action name="update" class="com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction" method="update">
-			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
-			<result name="success" type="redirect">list.action</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/colaboradorAvaliacaoPraticaEdit.ftl</result>
 		</action>
 	</package>
 </xwork>

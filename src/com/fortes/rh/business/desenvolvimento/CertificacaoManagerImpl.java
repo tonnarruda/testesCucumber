@@ -9,6 +9,7 @@ import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.LongUtil;
 
 public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, CertificacaoDao> implements CertificacaoManager
@@ -83,5 +84,10 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 
 	public void deleteByFaixaSalarial(Long[] faixaIds) throws Exception {
 		getDao().deleteByFaixaSalarial(faixaIds);
+	}
+
+	public Collection<Colaborador> findColaboradoresNaCertificacoa(Long certificacaoId) 
+	{
+		return getDao().findColaboradoresNaCertificacoa(certificacaoId);
 	}
 }

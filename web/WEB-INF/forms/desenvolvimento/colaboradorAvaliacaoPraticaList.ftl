@@ -18,29 +18,43 @@
 		<li>
 			<@ww.div cssClass="divInfo" cssStyle="width: 950px;">
 				<ul>
-					<@ww.textfield label="Nome" name="colaborador.nome" id="nome" value="" cssClass="inputNome" maxLength="100" cssStyle="width: 400px;"/>
-					<@ww.textfield label="CPF" id="cpf" name="colaborador.pessoal.cpf" liClass="liLeft" maxLength="11" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:150px;"/>
-					<@ww.textfield label="Matrícula" id="matricula" name="colaborador.matricula" cssStyle="width:150px;"  maxLength="20"/>
-					<@ww.select label="Certificações" name="certificacao.id" id="colab" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." />
-
-					<button onclick="${validarCampos};" class="btnPesquisar grayBGDivInfo"></button>
-					<@ww.select label="Colaborador" name="colaborador.id" id="colab" list="colaboradors" listKey="id" listValue="nomeCpf" headerKey="" headerValue="Selecione..." onchange="document.form.submit();" />
+					<@ww.select label="Certificações" name="certificacao.id" id="colab" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." onchange="document.form.submit();" />
+					<@ww.select label="Colaborador" name="colaborador.id" id="colab" list="colaboradores" listKey="id" listValue="nomeCpf" headerKey="" headerValue="Selecione..." onchange="document.form.submit();" />
 					<br><br>
 				</ul>
 			</@ww.div>
 		</li>
 	</@ww.form>
 	
-		<@display.table name="colaboradorAvaliacaoPraticas" id="colaboradorAvaliacaoPratica" class="dados">
-		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?colaboradorAvaliacaoPratica.id=${colaboradorAvaliacaoPratica.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
-			<a href="javascript:;" onclick="javascript:newConfirm('Confirma exclusão?', function(){window.location='delete.action?colaboradorAvaliacaoPratica.id=${colaboradorAvaliacaoPratica.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
-		</@display.column>
-		<@display.column property="" title="Nome"/>
-	</@display.table>
+	<#if colaborador?exists && colaborador.id?exists>
+		<br/>
+		<b>Colaborador: ${colaborador.nome} ${nomeComercialEntreParentese}</b> <br/>
+		<b>Estabelecimento: ${colaborador.estabelecimento.nome}</b> <br/>
+		<b>Cargo: ${colaborador.faixaSalarial.descricao}</b> <br/>
+		<b>Área Organizacional: ${colaborador.areaOrganizacional.descricao}</b> <br/>
+		<b>Data de Admissão: ${colaborador.dataAdmissaoFormatada}</b> <br/>
+		<b>Telefone : ${colaborador.contato.foneContatoFormatado}</b> <br/><br/>
+
+		<@display.table name="colaboradorQuestionarios" id="colaboradorQuestionario" class="dados">
+			<@display.column title="Ações" class="acao">
+				<a href="prepareUpdateAvaliacaoExperiencia.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+				<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteAvaliacaoExperiencia.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+				<a href="#" onclick="escolheTipoAgrupamento('${colaboradorQuestionario.avaliacao.id}', '${colaboradorQuestionario.avaliacao.titulo}','${colaboradorQuestionario.id}', false)"><img border="0" title="Imprimir avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+				<a href="imprimirAvaliacaoRespondida.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}&modoEconomico=true"><img border="0" title="Imprimir avaliação no formato econômico" src="<@ww.url includeParams="none" value="/imgs/iconPrint.gif"/>"></a>
+			</@display.column>
+			<@display.column property="dataMaisTempoPeriodoExperiencia" title="Data" style="width: 140px;"/>
+			<@display.column property="avaliacao.titulo" title="Avaliação" />
+			<@display.column property="performanceFormatada" title="Performance" style="width: 100px;" />
+			<@display.column title="Obs." style="text-align: center;width: 50px">
+				<#if colaboradorQuestionario.observacao?exists && colaboradorQuestionario.observacao?trim != "">
+					<span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover="showTooltip(event,'${colaboradorQuestionario.observacao?j_string}');return false">...</span>
+				</#if>
+			</@display.column>
+		</@display.table>
 	
-	<div class="buttonGroup">
-		<button class="btnInserir" onclick="window.location='prepareInsert.action'"></button>
-	</div>
+		<div class="buttonGroup">
+			<button class="btnInserir" onclick="window.location='prepareInsertAvaliacaoExperiencia.action?colaboradorQuestionario.colaborador.id=${colaborador.id}'"></button>
+		</div>
+	</#if>	
 </body>
 </html>

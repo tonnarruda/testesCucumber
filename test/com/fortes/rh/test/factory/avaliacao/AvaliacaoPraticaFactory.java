@@ -11,6 +11,8 @@ public class AvaliacaoPraticaFactory
 	{
 		AvaliacaoPratica avaliacaoPratica = new AvaliacaoPratica();
 		avaliacaoPratica.setId(null);
+		avaliacaoPratica.setNotaMinima(7.0);
+		avaliacaoPratica.setTitulo("Avaliação Pratica");
 		return avaliacaoPratica;
 	}
 
