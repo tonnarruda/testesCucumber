@@ -3,18 +3,26 @@ package com.fortes.rh.dao.hibernate.captacao;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
+import org.springframework.dao.DataAccessResourceFailureException;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
+import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 
 public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompetencia> implements NivelCompetenciaDao
 {
@@ -26,7 +34,6 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		if(empresaId != null)
 			criteria.add(Expression.eq("empresa.id", empresaId));
 
-		criteria.addOrder(Order.asc("ordem"));
 		criteria.addOrder(Order.asc("descricao"));
 
 		return criteria.list();
@@ -79,10 +86,26 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		return lista;				
 	}
 
+	private Criteria criteriaNivelConfiguracao() throws DataAccessResourceFailureException, IllegalStateException, HibernateException 
+	{
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(NivelCompetenciaHistorico.class, "nch2")
+				.setProjection(Projections.max("nch2.data"))
+				.add(Restrictions.eqProperty("nch2.empresa.id", "nc.empresa.id"))
+				.add(Restrictions.le("nch2.data", new Date()));
+		
+		Criteria criteria = getSession().createCriteria(ConfigHistoricoNivel.class, "chn");
+		criteria.createCriteria("chn.nivelCompetencia", "nc", Criteria.INNER_JOIN);
+		criteria.createCriteria("chn.nivelCompetenciaHistorico", "nch", Criteria.INNER_JOIN);
+		
+		criteria.add(Subqueries.propertyEq("nch.data", subQueryHc));
+		return criteria;
+	}
+	
 	public int getOrdemMaxima(Long empresaId) 
 	{
-		Criteria criteria = getSession().createCriteria(getEntityClass(), "nc");
-		criteria.setProjection(Projections.max("nc.ordem"));
+		Criteria criteria = criteriaNivelConfiguracao();
+		
+		criteria.setProjection(Projections.max("chn.ordem"));
 		criteria.add(Expression.eq("nc.empresa.id", empresaId));
 		
 		Integer result = (Integer) criteria.uniqueResult();
@@ -91,23 +114,25 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 
 	public boolean existePercentual(Long nivelCompetenciaId, Long empresaId, Double percentual) 
 	{
-		Criteria criteria = getSession().createCriteria(NivelCompetencia.class,"nc");
+		Criteria criteria = criteriaNivelConfiguracao();
 
 		if(nivelCompetenciaId != null)
 			criteria.add(Expression.ne("nc.id", nivelCompetenciaId));
 		
-		criteria.add(Expression.eq("nc.percentual", percentual));
+		criteria.add(Expression.eq("chn.percentual", percentual));
 		criteria.add(Expression.eq("nc.empresa.id", empresaId));
 
 		return criteria.list().size() > 0;
 	}
 
+
+
 	public boolean existeNivelCompetenciaSemPercentual(Long empresaId) 
 	{
-		Criteria criteria = getSession().createCriteria(NivelCompetencia.class,"nc");
+		Criteria criteria = criteriaNivelConfiguracao();
 
 		criteria.add(Expression.eq("nc.empresa.id", empresaId));
-		criteria.add(Expression.isNull("nc.percentual"));
+		criteria.add(Expression.isNull("chn.percentual"));
 
 		return criteria.list().size() > 0;
 	}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xwork PUBLIC "-//OpenSymphony Group//XWork 1.0//EN" "http://www.opensymphony.com/xwork/xwork-1.0.dtd">
+
+<xwork>
+	<package name="nivelCompetenciaHistorico" extends="default" namespace="/captacao/nivelCompetenciaHistorico">
+		<action name="list" class="com.fortes.rh.web.action.captacao.NivelCompetenciaHistoricoEditAction" method="list">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/nivelCompetenciaHistoricoList.ftl</result>
+		</action>
+		<action name="delete" class="com.fortes.rh.web.action.captacao.NivelCompetenciaHistoricoEditAction" method="delete">
+			<result name="success" type="freemarker">/WEB-INF/forms/captacao/nivelCompetenciaHistoricoList.ftl</result>
+		</action>
+	</package>
+</xwork>

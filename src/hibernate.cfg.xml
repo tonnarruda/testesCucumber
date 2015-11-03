@@ -197,5 +197,6 @@
     <mapping class="com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao" />
     <mapping class="com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia" />
     <mapping class="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio" />
+    <mapping class="com.fortes.rh.model.captacao.NivelCompetenciaHistorico" />
   </session-factory>
 </hibernate-configuration>

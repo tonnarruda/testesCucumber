@@ -19,6 +19,7 @@ import com.fortes.rh.model.captacao.CandidatoCurriculo;
 import com.fortes.rh.model.captacao.CandidatoIdioma;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.CertificadoMilitar;
+import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
 import com.fortes.rh.model.captacao.ConfiguracaoImpressaoCurriculo;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.Conhecimento;
@@ -32,6 +33,7 @@ import com.fortes.rh.model.captacao.HistoricoCandidato;
 import com.fortes.rh.model.captacao.Idioma;
 import com.fortes.rh.model.captacao.MotivoSolicitacao;
 import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.captacao.SolicitacaoBDS;
 import com.fortes.rh.model.captacao.SolicitacaoBairro;
@@ -971,6 +973,8 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new EpiPcmat());
 		cobreGetSet(new EpcPcmat());
 		cobreGetSet(new MotivoSolicitacaoEpi());
+		cobreGetSet(new ConfigHistoricoNivel());
+		cobreGetSet(new NivelCompetenciaHistorico());
 	}
 	
 	private void cobreGetSet(Object obj)

@@ -126,7 +126,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setCompetenciaObservacao(competenciaObservacao);
 		this.setNivelCompetenciaIdProjection(nivelCompetenciaId);
 		this.setProjectionNivelCompetenciaDescricao(nivelCompetenciaDescricao);
-		this.setProjectionNivelCompetenciaOrdem(nivelCompetenciaOrdem);
+		this.setNivelCompetenciaOrdemProjection(nivelCompetenciaOrdem);
 		this.setPesoCompetencia(pesoCompetencia);
 	}
 	
@@ -135,9 +135,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setTipoCompetencia(tipoCompetencia);
 		this.setCompetenciaId(competenciaId);
 		this.setNivelCompetenciaIdProjection(nivelCompetenciaId);
-		ver dao que utiliza
-		this.nivelCompetencia.setNivelCompetenciaHistoricoAtual(new NivelCompetenciaHistorico());
-		this.nivelCompetencia.getNivelCompetenciaHistoricoAtual().setOrdem(nivelCompetenciaOrdem);
+		this.nivelCompetencia.setOrdem(nivelCompetenciaOrdem);
 	}
 	
 	public ConfiguracaoNivelCompetencia(Long id, String competenciaDescricao)
@@ -171,6 +169,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 			avaliador.setNome(avaliadorNome);
 			configuracaoNivelCompetenciaColaborador.setAvaliador(avaliador);
 		}
+
 		nivelCompetenciaColaborador = new NivelCompetencia();
 		nivelCompetenciaColaborador.setDescricao(colaboradorNivel);
 		nivelCompetenciaColaborador.setOrdem(colaboradorOrden);
@@ -287,13 +286,6 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		inicializaNivelCompetencia();
 		
 		this.nivelCompetencia.setDescricao(descricao);
-	}
-	
-	public void setProjectionNivelCompetenciaOrdem(Integer ordem) 
-	{
-		inicializaNivelCompetencia();
-		
-		this.nivelCompetencia.setOrdem(ordem);
 	}
 	
 	public Long getCompetenciaId() 
