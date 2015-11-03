@@ -51,7 +51,7 @@
 			</button>
 			<button class="btnImprimirPdf" onclick="window.location='imprimirCurriculo.action?candidato.id=${candidato.id}'">
 			</button>
-			<button onclick="window.location='prepareInsertCurriculo.action?candidato.id=${candidato.id}'" class="btnInserirCurriculoEscaneado" accesskey="E">
+			<button onclick="window.location='prepareInsertCurriculoPlus.action?candidato.id=${candidato.id}'" class="btnInserirCurriculoEscaneado" accesskey="E">
 			</button>
 		</span>
 

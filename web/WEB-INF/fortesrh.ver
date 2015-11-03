@@ -3,6 +3,7 @@
 	<Versao id="1.1.15x.18x" db="" data="xx/xx/2015">
 		<Item visivel="S" motivo="S15080000158"><![CDATA[R&S > Cadastros > Candidatos > Triagem: Novo filtro por área de formação.]]></Item>
 		<Item visivel="S" motivo="S15080000158"><![CDATA[R&S > Movimentações > Solicitação de Pessoal > Candidatos da Seleção > Triagem: Novo filtro por área de formação.]]></Item>
+		<Item visivel="S" motivo="P15100000346"><![CDATA[C&S > Cadastros > Candidatos > Inserir Currículo Escaneado: Ajuste de inconsistência ao exibir os campos de sexo e cargo/função pretendida.]]></Item>
 		<Item visivel="S" motivo="P15090000938"><![CDATA[C&S > Movimentações > Planejamentos de Realinhamentos: Ajuste da inconsistência ao listar planejamento de realinhamento.]]></Item>
 		<Item visivel="S" motivo="P15100000092"><![CDATA[C&S > Relatórios > Descrição de Cargos: Ajuste de inconsistência ao exibir as competências e os níveis exigidos pelo cargo.]]></Item>
 		<Item visivel="S" motivo="P15100000162"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Reflexão das alterações dos dados referentes aos campos extras no seu respectivo candidato.]]></Item>
