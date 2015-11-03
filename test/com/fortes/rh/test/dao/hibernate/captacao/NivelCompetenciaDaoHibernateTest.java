@@ -11,12 +11,14 @@ import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.rh.dao.captacao.CandidatoDao;
 import com.fortes.rh.dao.captacao.CandidatoSolicitacaoDao;
+import com.fortes.rh.dao.captacao.ConfigHistoricoNivelDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.dao.captacao.HabilidadeDao;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
+import com.fortes.rh.dao.captacao.NivelCompetenciaHistoricoDao;
 import com.fortes.rh.dao.captacao.SolicitacaoDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
@@ -31,12 +33,14 @@ import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.CandidatoSolicitacao;
 import com.fortes.rh.model.captacao.Competencia;
+import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -61,6 +65,7 @@ import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
 import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
+import com.fortes.rh.test.factory.captacao.NivelCompetenciaHistoricoFactory;
 import com.fortes.rh.test.factory.captacao.SolicitacaoFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
@@ -92,6 +97,8 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 	private SolicitacaoDao solicitacaoDao;
 	private CandidatoSolicitacaoDao candidatoSolicitacaoDao;
 	private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
+	private ConfigHistoricoNivelDao configHistoricoNivelDao;
+	private NivelCompetenciaHistoricoDao nivelCompetenciaHistoricoDao;
 
 	@Override
 	public NivelCompetencia getEntity()
@@ -108,25 +115,21 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		
 		NivelCompetencia nivelRuim = NivelCompetenciaFactory.getEntity();
 		nivelRuim.setDescricao("Ruim");
-		nivelRuim.setOrdem(1);
 		nivelRuim.setEmpresa(empresa1);
 		nivelCompetenciaDao.save(nivelRuim);
 
 		NivelCompetencia nivelRegular = NivelCompetenciaFactory.getEntity();
 		nivelRegular.setDescricao("Regular");
-		nivelRegular.setOrdem(2);
 		nivelRegular.setEmpresa(empresa1);
 		nivelCompetenciaDao.save(nivelRegular);
 
 		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity();
 		nivelBom.setDescricao("Bom");
-		nivelBom.setOrdem(3);
 		nivelBom.setEmpresa(empresa1);
 		nivelCompetenciaDao.save(nivelBom);
 		
 		NivelCompetencia nivelBomEmpresa2 = NivelCompetenciaFactory.getEntity();
 		nivelBomEmpresa2.setDescricao("Bom");
-		nivelBomEmpresa2.setOrdem(3);
 		nivelBomEmpresa2.setEmpresa(empresa2);
 		nivelCompetenciaDao.save(nivelBomEmpresa2);
 		
@@ -561,13 +564,16 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarialDao.save(faixaSalarial);
 		
-		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
-		nivelCompetencia1.setDescricao("bom");
-		nivelCompetenciaDao.save(nivelCompetencia1);
-
-		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity();
-		nivelCompetencia2.setDescricao("dificil");
-		nivelCompetenciaDao.save(nivelCompetencia2);
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresaDao.save(empresa);
+				
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity();
+		nivelCompetenciaHistorico.setData(DateUtil.criarDataMesAno(1, 1, 2005));
+		nivelCompetenciaHistorico.setEmpresa(empresa);
+		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico);
+		
+		NivelCompetencia nivelCompetencia1 = nivelCompetencia(empresa, "bom", null, null, nivelCompetenciaHistorico);
+		NivelCompetencia nivelCompetencia2 = nivelCompetencia(empresa, "dificil", null, null, nivelCompetenciaHistorico);
 		
 		ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial1 = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
 		cncFaixaSalarial1.setData(DateUtil.criarDataMesAno(1, 1, 2015));
@@ -614,8 +620,16 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarialDao.save(faixaSalarial);
 		
-		NivelCompetencia nivelCompetencia1 = criaNivelCompetencia("Bom", 4);
-		NivelCompetencia nivelCompetencia2 = criaNivelCompetencia("Péssimo", 1);
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresaDao.save(empresa);
+				
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity();
+		nivelCompetenciaHistorico.setData(DateUtil.criarDataMesAno(1, 1, 2005));
+		nivelCompetenciaHistorico.setEmpresa(empresa);
+		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico);
+		
+		NivelCompetencia nivelCompetencia1 = nivelCompetencia(empresa, null, 4, null, nivelCompetenciaHistorico);
+		NivelCompetencia nivelCompetencia2 = nivelCompetencia(empresa, null, 1, null, nivelCompetenciaHistorico);
 
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "pedro", "pedro", "0123", null, null, null);
 		colaboradorManager.save(colaborador);
@@ -648,16 +662,36 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		faixaSalarialDao.save(faixaSalarial);
 		
-		NivelCompetencia nivel1 = NivelCompetenciaFactory.getEntity();
-		nivel1.setDescricao("pessimo");
-		nivel1.setOrdem(1);
-		nivelCompetenciaDao.save(nivel1);
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity();
+		nivelCompetenciaHistorico.setData(DateUtil.criarDataMesAno(1, 1, 2015));
+		nivelCompetenciaHistorico.setEmpresa(empresa);
+		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico);
 
 		NivelCompetencia nivel2 = NivelCompetenciaFactory.getEntity();
 		nivel2.setDescricao("bom");
-		nivel2.setOrdem(2);
+		nivel2.setEmpresa(empresa);
 		nivelCompetenciaDao.save(nivel2);
+		
+		ConfigHistoricoNivel configHistoricoNivelRegular = new ConfigHistoricoNivel();
+		configHistoricoNivelRegular.setOrdem(2);
+		configHistoricoNivelRegular.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configHistoricoNivelRegular.setNivelCompetencia(nivel2);
+		configHistoricoNivelDao.save(configHistoricoNivelRegular);
+		
+		NivelCompetencia nivel1 = NivelCompetenciaFactory.getEntity();
+		nivel1.setDescricao("pessimo");
+		nivel1.setEmpresa(empresa);
+		nivelCompetenciaDao.save(nivel1);
 
+		ConfigHistoricoNivel configHistoricoNivelBom= new ConfigHistoricoNivel();
+		configHistoricoNivelBom.setOrdem(3);
+		configHistoricoNivelBom.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configHistoricoNivelBom.setNivelCompetencia(nivel1);
+		configHistoricoNivelDao.save(configHistoricoNivelBom);
+		
 		Candidato joao = CandidatoFactory.getCandidato();
 		joao.setNome("joao");
 		candidatoDao.save(joao);
@@ -811,17 +845,17 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		
 		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
 		nivelCompetencia1.setDescricao("bom");
-		nivelCompetencia1.setOrdem(7);
+//		nivelCompetencia1.setOrdem(7);
 		nivelCompetenciaDao.save(nivelCompetencia1);
 		
 		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity();
 		nivelCompetencia2.setDescricao("dificil");
-		nivelCompetencia2.setOrdem(5);
+//		nivelCompetencia2.setOrdem(5);
 		nivelCompetenciaDao.save(nivelCompetencia2);
 		
 		NivelCompetencia nivelCompetencia3 = NivelCompetenciaFactory.getEntity();
 		nivelCompetencia3.setDescricao("impossivel");
-		nivelCompetencia3.setOrdem(1);
+//		nivelCompetencia3.setOrdem(1);
 		nivelCompetenciaDao.save(nivelCompetencia3);
 		
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = new ConfiguracaoNivelCompetencia();
@@ -928,7 +962,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 	{
 		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
 		nivelCompetencia1.setDescricao("bom");
-		nivelCompetencia1.setOrdem(4);
+//		nivelCompetencia1.setOrdem(4);
 		nivelCompetenciaDao.save(nivelCompetencia1);
 		return nivelCompetencia1;
 	}
@@ -1004,15 +1038,15 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		atitudeDao.save(atitude);
 
 		NivelCompetencia nivelPessimo = NivelCompetenciaFactory.getEntity();
-		nivelPessimo.setOrdem(1);
+//		nivelPessimo.setOrdem(1);
 		nivelCompetenciaDao.save(nivelPessimo);
 
 		NivelCompetencia nivelRegular = NivelCompetenciaFactory.getEntity();
-		nivelRegular.setOrdem(2);
+//		nivelRegular.setOrdem(2);
 		nivelCompetenciaDao.save(nivelRegular);
 		
 		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity();
-		nivelBom.setOrdem(3);
+//		nivelBom.setOrdem(3);
 		nivelCompetenciaDao.save(nivelBom);
 		
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
@@ -1090,27 +1124,57 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
+		NivelCompetenciaHistorico nivelCompetenciaHistorico1 = NivelCompetenciaHistoricoFactory.getEntity();
+		nivelCompetenciaHistorico1.setData(DateUtil.criarDataMesAno(1, 1, 2005));
+		nivelCompetenciaHistorico1.setEmpresa(empresa);
+		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico1);
+		
+		NivelCompetenciaHistorico nivelCompetenciaHistorico2 = NivelCompetenciaHistoricoFactory.getEntity();
+		nivelCompetenciaHistorico2.setData(DateUtil.criarDataMesAno(1, 1, 2015));
+		nivelCompetenciaHistorico2.setEmpresa(empresa);
+		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico2);
+		
 		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
-		nivelCompetencia1.setOrdem(1);
 		nivelCompetencia1.setEmpresa(empresa);
 		nivelCompetenciaDao.save(nivelCompetencia1);
 		
+		ConfigHistoricoNivel configHistoricoNivel1 = new ConfigHistoricoNivel();
+		configHistoricoNivel1.setOrdem(1);
+		configHistoricoNivel1.setNivelCompetenciaHistorico(nivelCompetenciaHistorico1);
+		configHistoricoNivel1.setNivelCompetencia(nivelCompetencia1);
+		configHistoricoNivelDao.save(configHistoricoNivel1);
+		
 		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity();
-		nivelCompetencia2.setOrdem(4);
 		nivelCompetencia2.setEmpresa(empresa);
 		nivelCompetenciaDao.save(nivelCompetencia2);
+		
+		ConfigHistoricoNivel configHistoricoNivel2 = new ConfigHistoricoNivel();
+		configHistoricoNivel2.setOrdem(2);
+		configHistoricoNivel2.setNivelCompetenciaHistorico(nivelCompetenciaHistorico2);
+		configHistoricoNivel2.setNivelCompetencia(nivelCompetencia2);
+		configHistoricoNivelDao.save(configHistoricoNivel2);
 
 		NivelCompetencia nivelCompetencia3 = NivelCompetenciaFactory.getEntity();
-		nivelCompetencia3.setOrdem(4);
 		nivelCompetencia3.setEmpresa(empresa);
 		nivelCompetenciaDao.save(nivelCompetencia3);
+		
+		ConfigHistoricoNivel configHistoricoNivel3 = new ConfigHistoricoNivel();
+		configHistoricoNivel3.setOrdem(3);
+		configHistoricoNivel3.setNivelCompetenciaHistorico(nivelCompetenciaHistorico1);
+		configHistoricoNivel3.setNivelCompetencia(nivelCompetencia3);
+		configHistoricoNivelDao.save(configHistoricoNivel3);
 
 		NivelCompetencia nivelCompetencia4 = NivelCompetenciaFactory.getEntity();
-		nivelCompetencia4.setOrdem(2);
 		nivelCompetencia4.setEmpresa(empresa);
 		nivelCompetenciaDao.save(nivelCompetencia4);
 		
-		assertEquals((int) 4, nivelCompetenciaDao.getOrdemMaxima(empresa.getId()));
+		ConfigHistoricoNivel configHistoricoNivel4 = new ConfigHistoricoNivel();
+		configHistoricoNivel4.setOrdem(3);
+		configHistoricoNivel4.setNivelCompetenciaHistorico(nivelCompetenciaHistorico1);
+		configHistoricoNivel4.setNivelCompetencia(nivelCompetencia4);
+		configHistoricoNivelDao.save(configHistoricoNivel4);
+		
+		assertEquals((int) 2, nivelCompetenciaDao.getOrdemMaxima(empresa.getId()));
 	}
 	
 	public void testFindCompetenciasByFaixa()
@@ -1119,15 +1183,35 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		conhecimento.setNome("conhecimento");
 		conhecimentoDao.save(conhecimento);
 		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity();
+		nivelCompetenciaHistorico.setData(DateUtil.criarDataMesAno(1, 1, 2015));
+		nivelCompetenciaHistorico.setEmpresa(empresa);
+		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico);
+
 		NivelCompetencia nivelRegular = NivelCompetenciaFactory.getEntity();
 		nivelRegular.setDescricao("regular");
-		nivelRegular.setOrdem(2);
+		nivelRegular.setEmpresa(empresa);
 		nivelCompetenciaDao.save(nivelRegular);
+		
+		ConfigHistoricoNivel configHistoricoNivelRegular = new ConfigHistoricoNivel();
+		configHistoricoNivelRegular.setOrdem(2);
+		configHistoricoNivelRegular.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configHistoricoNivelRegular.setNivelCompetencia(nivelRegular);
+		configHistoricoNivelDao.save(configHistoricoNivelRegular);
 		
 		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity();
 		nivelBom.setDescricao("bom");
-		nivelBom.setOrdem(3);
+		nivelBom.setEmpresa(empresa);
 		nivelCompetenciaDao.save(nivelBom);
+
+		ConfigHistoricoNivel configHistoricoNivelBom= new ConfigHistoricoNivel();
+		configHistoricoNivelBom.setOrdem(3);
+		configHistoricoNivelBom.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configHistoricoNivelBom.setNivelCompetencia(nivelBom);
+		configHistoricoNivelDao.save(configHistoricoNivelBom);
 		
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarialDao.save(faixaSalarial);
@@ -1163,7 +1247,8 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals("bom", ((ConfiguracaoNivelCompetencia) retorno.toArray()[0]).getNivelCompetencia().getDescricao());
 	}
 	
-	public void testFindCompetenciasFaixaPorColaborador(){
+	public void testFindCompetenciasFaixaPorColaborador()
+	{
 		
 		Colaborador samuel = ColaboradorFactory.getEntity();
 		colaboradorDao.save(samuel);
@@ -1179,17 +1264,14 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		
 		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
 		nivelCompetencia1.setDescricao("bom");
-		nivelCompetencia1.setOrdem(7);
 		nivelCompetenciaDao.save(nivelCompetencia1);
 		
 		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity();
 		nivelCompetencia2.setDescricao("dificil");
-		nivelCompetencia2.setOrdem(5);
 		nivelCompetenciaDao.save(nivelCompetencia2);
 		
 		NivelCompetencia nivelCompetencia3 = NivelCompetenciaFactory.getEntity();
 		nivelCompetencia3.setDescricao("impossivel");
-		nivelCompetencia3.setOrdem(1);
 		nivelCompetenciaDao.save(nivelCompetencia3);
 		
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador1 = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity();
@@ -1501,22 +1583,36 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals(false, configuracaoNivelCompetenciaDao.verifyExists(new String[]{"competenciaId", "tipoCompetencia"}, new Object[]{atitude.getId(), TipoCompetencia.ATITUDE}));
 	}
 
+	
+	private NivelCompetencia nivelCompetencia(Empresa empresa, String descricao, Integer ordem, Double percentual, NivelCompetenciaHistorico nivelCompetenciaHistorico)
+	{
+		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia.setEmpresa(empresa);
+		nivelCompetencia.setDescricao(descricao);
+		nivelCompetenciaDao.save(nivelCompetencia);
+		
+		ConfigHistoricoNivel configHistoricoNivel = new ConfigHistoricoNivel();
+		configHistoricoNivel.setOrdem(ordem);
+		configHistoricoNivel.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configHistoricoNivel.setNivelCompetencia(nivelCompetencia);
+		configHistoricoNivel.setPercentual(percentual);
+		configHistoricoNivelDao.save(configHistoricoNivel);
+		
+		return nivelCompetencia;
+	}
+	
 	public void testExistePercentual()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
-		nivelCompetencia1.setOrdem(1);
-		nivelCompetencia1.setEmpresa(empresa);
-		nivelCompetencia1.setPercentual(90.0);
-		nivelCompetenciaDao.save(nivelCompetencia1);
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity();
+		nivelCompetenciaHistorico.setData(DateUtil.criarDataMesAno(1, 1, 2005));
+		nivelCompetenciaHistorico.setEmpresa(empresa);
+		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico);
 		
-		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity();
-		nivelCompetencia2.setOrdem(4);
-		nivelCompetencia2.setEmpresa(empresa);
-		nivelCompetencia2.setPercentual(20.0);
-		nivelCompetenciaDao.save(nivelCompetencia2);
+		NivelCompetencia nivelCompetencia1 = nivelCompetencia(empresa, null, 1, 90.0, nivelCompetenciaHistorico);
+		NivelCompetencia nivelCompetencia2 = nivelCompetencia(empresa, null, 4, 20.0, nivelCompetenciaHistorico);
 
 		assertFalse(nivelCompetenciaDao.existePercentual(nivelCompetencia1.getId(), empresa.getId(), 90.0));
 		assertFalse(nivelCompetenciaDao.existePercentual(nivelCompetencia1.getId(), empresa.getId(), 85.0));
@@ -1530,22 +1626,26 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
-		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
-		nivelCompetencia1.setOrdem(1);
-		nivelCompetencia1.setEmpresa(empresa);
-		nivelCompetencia1.setPercentual(90.0);
-		nivelCompetenciaDao.save(nivelCompetencia1);
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity();
+		nivelCompetenciaHistorico.setData(DateUtil.criarDataMesAno(1, 1, 2005));
+		nivelCompetenciaHistorico.setEmpresa(empresa);
+		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico);
 		
-		NivelCompetencia nivelCompetencia2 = NivelCompetenciaFactory.getEntity();
-		nivelCompetencia2.setOrdem(4);
-		nivelCompetencia2.setEmpresa(empresa);
-		nivelCompetencia2.setPercentual(null);
-		nivelCompetenciaDao.save(nivelCompetencia2);
+		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia.setEmpresa(empresa);
+		nivelCompetenciaDao.save(nivelCompetencia);
+		
+		ConfigHistoricoNivel configHistoricoNivel = new ConfigHistoricoNivel();
+		configHistoricoNivel.setOrdem(1);
+		configHistoricoNivel.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configHistoricoNivel.setNivelCompetencia(nivelCompetencia);
+		configHistoricoNivel.setPercentual(null);
+		configHistoricoNivelDao.save(configHistoricoNivel);
 
 		assertTrue(nivelCompetenciaDao.existeNivelCompetenciaSemPercentual(empresa.getId()));
 		
-		nivelCompetencia2.setPercentual(10.0);
-		nivelCompetenciaDao.update(nivelCompetencia2);
+		configHistoricoNivel.setPercentual(10.0);
+		configHistoricoNivelDao.update(configHistoricoNivel);
 		
 		assertFalse(nivelCompetenciaDao.existeNivelCompetenciaSemPercentual(empresa.getId()));
 	}
@@ -1640,5 +1740,13 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 	public void setAvaliacaoDesempenhoDao(AvaliacaoDesempenhoDao avaliacaoDesempenhoDao) 
 	{
 		this.avaliacaoDesempenhoDao = avaliacaoDesempenhoDao;
+	}
+
+	public void setConfigHistoricoNivelDao(ConfigHistoricoNivelDao configHistoricoNivelDao) {
+		this.configHistoricoNivelDao = configHistoricoNivelDao;
+	}
+
+	public void setNivelCompetenciaHistoricoDao(NivelCompetenciaHistoricoDao nivelCompetenciaHistoricoDao) {
+		this.nivelCompetenciaHistoricoDao = nivelCompetenciaHistoricoDao;
 	}
 }

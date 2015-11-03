@@ -488,7 +488,35 @@
       <ref bean="pausaPreenchimentoVagasManagerTarget" />
     </property>
   </bean>
+  <bean id="nivelCompetenciaHistoricoManagerTarget" class="com.fortes.rh.business.captacao.NivelCompetenciaHistoricoManagerImpl">
+    <property name="dao">
+      <ref bean="nivelCompetenciaHistoricoDao" />
+    </property>
+  </bean>
+  <bean id="nivelCompetenciaHistoricoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.captacao.NivelCompetenciaHistoricoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="nivelCompetenciaHistoricoManagerTarget" />
+    </property>
+  </bean>
+  <bean id="configHistoricoNivelManagerTarget" class="com.fortes.rh.business.captacao.ConfigHistoricoNivelManagerImpl">
+    <property name="dao">
+      <ref bean="configHistoricoNivelDao" />
+    </property>
+  </bean>
+  <bean id="configHistoricoNivelManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.captacao.ConfigHistoricoNivelManager</value>
+    </property>
+    <property name="target">
+      <ref bean="configHistoricoNivelManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
+
 
 
 

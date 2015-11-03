@@ -66,20 +66,22 @@ public class ConfiguracaoNivelCompetenciaCriterio extends AbstractModel implemen
 	}
 	
 	public void setNivelCompetenciaId(Long nivelCompetenciaId) {
-		if(nivelCompetencia == null)
-			this.nivelCompetencia = new NivelCompetencia();
+		iniciaNivelCompetencia();
 		this.nivelCompetencia.setId(nivelCompetenciaId);
 	}
 	
 	public void setNivelCompetenciaDescricao(String nivelCompetenciaDescricao) {
-		if(nivelCompetencia == null)
-			this.nivelCompetencia = new NivelCompetencia();
+		iniciaNivelCompetencia();
 		this.nivelCompetencia.setDescricao(nivelCompetenciaDescricao);
 	}
 	
 	public void setNivelCompetenciaPercentual(Double percentual) {
+		iniciaNivelCompetencia();
+		this.nivelCompetencia.setPercentual(percentual);
+	}
+
+	private void iniciaNivelCompetencia() {
 		if(nivelCompetencia == null)
 			this.nivelCompetencia = new NivelCompetencia();
-		this.nivelCompetencia.setPercentual(percentual);
 	}
 }

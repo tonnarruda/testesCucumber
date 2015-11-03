@@ -4,18 +4,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.captacao.ConfigHistoricoNivelDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaColaboradorDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaCriterioDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
+import com.fortes.rh.dao.captacao.NivelCompetenciaHistoricoDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
 import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaColaboradorFactory;
@@ -24,6 +28,8 @@ import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
+import com.fortes.rh.test.factory.captacao.NivelCompetenciaHistoricoFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class ConfiguracaoNivelCompetenciaCriterioDaoHibernateTest extends GenericDaoHibernateTest<ConfiguracaoNivelCompetenciaCriterio>
 {
@@ -33,6 +39,8 @@ public class ConfiguracaoNivelCompetenciaCriterioDaoHibernateTest extends Generi
 	private EmpresaDao empresaDao;
 	private NivelCompetenciaDao nivelCompetenciaDao;
 	private ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao;
+	private NivelCompetenciaHistoricoDao nivelCompetenciaHistoricoDao;
+	private ConfigHistoricoNivelDao configHistoricoNivelDao;
 	
 	public GenericDao<ConfiguracaoNivelCompetenciaCriterio> getGenericDao() {
 		return configuracaoNivelCompetenciaCriterioDao;
@@ -42,8 +50,20 @@ public class ConfiguracaoNivelCompetenciaCriterioDaoHibernateTest extends Generi
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity();
+		nivelCompetenciaHistorico.setData(DateUtil.criarDataMesAno(1, 1, 2015));
+		nivelCompetenciaHistorico.setEmpresa(empresa);
+		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico);
+		
 		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia.setEmpresa(empresa);
 		nivelCompetenciaDao.save(nivelCompetencia);
+		
+		ConfigHistoricoNivel configHistoricoNivel1 = new ConfigHistoricoNivel();
+		configHistoricoNivel1.setOrdem(1);
+		configHistoricoNivel1.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configHistoricoNivel1.setNivelCompetencia(nivelCompetencia);
+		configHistoricoNivelDao.save(configHistoricoNivel1);
 		
 		CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia1 = new CriterioAvaliacaoCompetencia();
 		criterioAvaliacaoCompetencia1.setDescricao("Criterio");
@@ -116,5 +136,13 @@ public class ConfiguracaoNivelCompetenciaCriterioDaoHibernateTest extends Generi
 	public void setConfiguracaoNivelCompetenciaColaboradorDao(
 			ConfiguracaoNivelCompetenciaColaboradorDao configuracaoNivelCompetenciaColaboradorDao) {
 		this.configuracaoNivelCompetenciaColaboradorDao = configuracaoNivelCompetenciaColaboradorDao;
+	}
+
+	public void setNivelCompetenciaHistoricoDao(NivelCompetenciaHistoricoDao nivelCompetenciaHistoricoDao) {
+		this.nivelCompetenciaHistoricoDao = nivelCompetenciaHistoricoDao;
+	}
+
+	public void setConfigHistoricoNivelDao(ConfigHistoricoNivelDao configHistoricoNivelDao) {
+		this.configHistoricoNivelDao = configHistoricoNivelDao;
 	}
 }

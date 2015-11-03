@@ -1,10 +1,13 @@
 package com.fortes.rh.model.captacao;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
@@ -18,15 +21,23 @@ public class NivelCompetencia extends AbstractModel implements Serializable
 {
 	@Column(length=15)
 	private String descricao;
+	
 	@ManyToOne
 	private Empresa empresa;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="nivelCompetencia")
+	private Collection<ConfigHistoricoNivel> configHistoricoNiveis;
+	
 	@Transient
-	private NivelCompetenciaHistorico nivelCompetenciaHistoricoAtual;
+	private Double percentual;
+	
+	@Transient
+	private Integer ordem;
 	
 	public String getDescricao() {
 		return descricao;
 	}
+	
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
@@ -36,11 +47,27 @@ public class NivelCompetencia extends AbstractModel implements Serializable
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
 	}
-	public NivelCompetenciaHistorico getNivelCompetenciaHistoricoAtual() {
-		return nivelCompetenciaHistoricoAtual;
+	public Collection<ConfigHistoricoNivel> getConfigHistoricoNiveis() {
+		return configHistoricoNiveis;
 	}
-	public void setNivelCompetenciaHistoricoAtual(
-			NivelCompetenciaHistorico nivelCompetenciaHistoricoAtual) {
-		this.nivelCompetenciaHistoricoAtual = nivelCompetenciaHistoricoAtual;
+	public void setConfigHistoricoNiveis(
+			Collection<ConfigHistoricoNivel> configHistoricoNiveis) {
+		this.configHistoricoNiveis = configHistoricoNiveis;
+	}
+
+	public Double getPercentual() {
+		return percentual;
+	}
+
+	public void setPercentual(Double percentual) {
+		this.percentual = percentual;
+	}
+
+	public Integer getOrdem() {
+		return ordem;
+	}
+
+	public void setOrdem(Integer ordem) {
+		this.ordem = ordem;
 	}
 }

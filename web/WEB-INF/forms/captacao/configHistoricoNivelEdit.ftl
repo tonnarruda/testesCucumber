@@ -1,11 +1,11 @@
 <html>
 	<head>
 		<@ww.head/>
-		<#if nivelCompetenciaHistorico.id?exists>
-			<title>Editar NivelCompetenciaHistorico</title>
+		<#if configHistoricoNivel.id?exists>
+			<title>Editar ConfigHistoricoNivel</title>
 			<#assign formAction="update.action"/>
 		<#else>
-			<title>Inserir NivelCompetenciaHistorico</title>
+			<title>Inserir ConfigHistoricoNivel</title>
 			<#assign formAction="insert.action"/>
 		</#if>
 	
@@ -14,7 +14,7 @@
 	<body>
 		<@ww.actionerror />
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
-			<@ww.hidden name="nivelCompetenciaHistorico.id" />
+			<@ww.hidden name="configHistoricoNivel.id" />
 			<@ww.token/>
 		</@ww.form>
 	

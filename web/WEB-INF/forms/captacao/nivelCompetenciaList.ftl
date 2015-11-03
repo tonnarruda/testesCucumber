@@ -14,7 +14,7 @@
 	
 	<@display.table name="nivelCompetencias" id="nivelCompetencia" class="dados">
 		<@display.column title="Ações" class="acao">
-			<a href="prepareUpdate.action?nivelCompetencia.id=${nivelCompetencia.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+			<a href="../configHistoricoNivel/prepareUpdate.action?nivelCompetencia.id=${nivelCompetencia.id}"><img border="0" title="Editar" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="#" onclick="newConfirm('Confirma exclusão?', function(){ window.location='delete.action?nivelCompetencia.id=${nivelCompetencia.id}' });"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 		</@display.column>
 		<@display.column property="descricao" title="Descrição"/>

@@ -416,6 +416,8 @@
   <include file="/com/fortes/rh/web/action/geral/xwork-InsereNonoDigito.xml" />
   <include file="/com/fortes/rh/web/action/avaliacao/xwork-AvaliacaoPratica.xml" />
   <include file="/com/fortes/rh/web/action/desenvolvimento/xwork-ColaboradorAvaliacaoPratica.xml" />
+  <include file="/com/fortes/rh/web/action/captacao/xwork-NivelCompetenciaHistorico.xml" />
+  <include file="/com/fortes/rh/web/action/captacao/xwork-ConfigHistoricoNivel.xml" />
 </xwork>
 
 

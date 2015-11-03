@@ -41,7 +41,7 @@ update papel set url = null where id = 516;--.go
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (650, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Cadastros', '/captacao/nivelCompetencia/list.action', 1, true, 516);--.go
 INSERT INTO perfil_papel (perfil_id, papeis_id) SELECT id, 650 FROM perfil where papeis_id = 516;--.go
 
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (651, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Historicos', '/captacao/nivelCompetencia/listHistoricos.action', 2, true, 516);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (651, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Historicos', '/captacao/nivelCompetenciaHistorico/list.action', 2, true, 516);--.go
 INSERT INTO perfil_papel (perfil_id, papeis_id) SELECT id, 651 FROM perfil where papeis_id = 516;--.go
 
 alter sequence papel_sequence restart with 652;--.go
@@ -50,26 +50,45 @@ alter sequence papel_sequence restart with 652;--.go
 
 CREATE TABLE nivelCompetenciaHistorico (
 	id bigint NOT NULL,
-	data date NOT NULL
+	data date NOT NULL,
+	empresa_id bigint NOT NULL
 );--.go
 
 ALTER TABLE nivelCompetenciaHistorico ADD CONSTRAINT nivelCompetenciaHistorico_pkey PRIMARY KEY(id);--.go
+ALTER TABLE nivelCompetenciaHistorico ADD CONSTRAINT nivelCompetenciaHistorico_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
 CREATE SEQUENCE nivelCompetenciaHistorico_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
-CREATE TABLE configNivelCompetenciaHistorico (
+CREATE TABLE ConfigHistoricoNivel (
     id bigint NOT NULL,
     nivelCompetencia_id bigint NOT NULL,
     nivelCompetenciaHistorico_id bigint NOT NULL,
     ordem int,
 	percentual double precision
 );--.go
-ALTER TABLE configNivelCompetenciaHistorico ADD CONSTRAINT configNivelCompetenciaHistorico_pkey PRIMARY KEY(id);--.go
-ALTER TABLE configNivelCompetenciaHistorico ADD CONSTRAINT configNivelCompetenciaHistorico_nivelCompetencia_fk FOREIGN KEY (nivelCompetencia_id) REFERENCES nivelCompetencia(id);--.go 
-ALTER TABLE configNivelCompetenciaHistorico ADD CONSTRAINT configNivelCompetenciaHistorico_nivelCompetenciaHistorico_fk FOREIGN KEY (nivelCompetenciaHistorico_id) REFERENCES nivelCompetenciaHistorico(id);--.go
-CREATE SEQUENCE configNivelCompetenciaHistorico_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+ALTER TABLE ConfigHistoricoNivel ADD CONSTRAINT ConfigHistoricoNivel_pkey PRIMARY KEY(id);--.go
+ALTER TABLE ConfigHistoricoNivel ADD CONSTRAINT ConfigHistoricoNivel_nivelCompetencia_fk FOREIGN KEY (nivelCompetencia_id) REFERENCES nivelCompetencia(id);--.go 
+ALTER TABLE ConfigHistoricoNivel ADD CONSTRAINT ConfigHistoricoNivel_nivelCompetenciaHistorico_fk FOREIGN KEY (nivelCompetenciaHistorico_id) REFERENCES nivelCompetenciaHistorico(id);--.go
+CREATE SEQUENCE ConfigHistoricoNivel_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
-INSERT INTO nivelCompetenciaHistorico(id,data) select id,'2005-01-01' from empresa;--.go
-INSERT INTO configNivelCompetenciaHistorico(id,nivelCompetencia_id,nivelCompetenciaHistorico_id,ordem,percentual) select nextval('configNivelCompetenciaHistorico_sequence'),id,1,ordem,percentual from nivelcompetencia;--.go
+CREATE OR REPLACE FUNCTION criaConfigHistoricoNivel() RETURNS integer AS $$
+DECLARE 
+	mv RECORD; 
+	nch_id BIGINT;
+BEGIN 
+    FOR mv IN 
+		select distinct empresa_id from nivelCompetencia
+		LOOP 
+			nch_id := nextval('nivelCompetenciaHistorico_sequence');
+
+			INSERT INTO nivelCompetenciaHistorico(id,data,empresa_id) values(nch_id,'2005-01-01',mv.empresa_id);--.go
+			INSERT INTO ConfigHistoricoNivel(id,nivelCompetencia_id,nivelCompetenciaHistorico_id,ordem,percentual) select nextval('ConfigHistoricoNivel_sequence'),id, nch_id ,ordem,percentual from nivelcompetencia;--.go
+		END LOOP; 
+		
+    RETURN 1; 
+END; 
+$$ LANGUAGE plpgsql;--.go
+select criaConfigHistoricoNivel();--.go
+drop function criaConfigHistoricoNivel();--.go
 
 ALTER TABLE nivelCompetencia drop COLUMN ordem;--.go
 ALTER TABLE nivelCompetencia drop COLUMN percentual;--.go
