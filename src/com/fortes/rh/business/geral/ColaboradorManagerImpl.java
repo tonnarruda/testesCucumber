@@ -2372,7 +2372,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	
 	public Collection<DataGrafico> montaGraficoTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Date dataIni, Date dataFim, Collection<Long> empresasIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos) 
 	{
-		Map<String, Integer> qtds = new HashMap<String, Integer>();
+		Map<String, Integer> qtdDeColaboradoresPorPeriodoDeMeses = new HashMap<String, Integer>();
 		Empresa empresa;
 		String chave;
 		
@@ -2389,10 +2389,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 					if (turnOver.getTempoServico() >= tempoServicoIni[i] && turnOver.getTempoServico() <= tempoServicoFim[i])
 					{
 						chave = StringUtils.leftPad(tempoServicoIni[i].toString(), 2, '0') + " a " + StringUtils.leftPad(tempoServicoFim[i].toString(), 2, '0') + " meses";
-						if (!qtds.containsKey(chave))
-							qtds.put(chave, 0);
+						if (!qtdDeColaboradoresPorPeriodoDeMeses.containsKey(chave))
+							qtdDeColaboradoresPorPeriodoDeMeses.put(chave, 0);
 						
-						qtds.put(chave, qtds.get(chave) + turnOver.getQtdColaboradores());
+						qtdDeColaboradoresPorPeriodoDeMeses.put(chave, qtdDeColaboradoresPorPeriodoDeMeses.get(chave) + turnOver.getQtdColaboradores());
 					}
 				}
 			}
@@ -2400,7 +2400,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 		Collection<DataGrafico> dados = new ArrayList<DataGrafico>();
 		
-		for (Map.Entry<String, Integer> entry : qtds.entrySet()) 
+		for (Map.Entry<String, Integer> entry : qtdDeColaboradoresPorPeriodoDeMeses.entrySet()) 
 			dados.add(new DataGrafico(null, entry.getKey(), entry.getValue(), null));
 
 		return new CollectionUtil<DataGrafico>().sortCollectionStringIgnoreCase(dados, "label");

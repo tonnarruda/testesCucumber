@@ -1539,10 +1539,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("	inner join hc.faixaSalarial fs ");
 		if (empresa.isTurnoverPorSolicitacao())
 		{
-			hql.append("	inner join co.candidato ca ");
-			hql.append("	inner join ca.candidatoSolicitacaos cs ");
-			hql.append("	inner join cs.solicitacao s ");
-			hql.append("	inner join s.motivoSolicitacao ms ");
+			hql.append("	inner join co.motivoDemissao md ");
 		}
 		hql.append("	where co.empresa.id = :empresaId ");
 		hql.append("	and (co.dataDesligamento between :dataIni and :dataFim)  ");
@@ -1565,8 +1562,9 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if (vinculos != null && !vinculos.isEmpty())
 			hql.append("and co.vinculo in (:vinculos) ");
 
-		if (empresa.isTurnoverPorSolicitacao())
-			hql.append("and ms.turnover = true ");
+		if (empresa.isTurnoverPorSolicitacao()) {
+			hql.append("and md.turnover = true ");
+		}
 		
 		hql.append("group by (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) "); 
 		hql.append("order by (extract(month from age(co.dataDesligamento, co.dataAdmissao)) + (extract(year from age(co.dataDesligamento, co.dataAdmissao)) * 12)) "); 
