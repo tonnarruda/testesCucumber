@@ -1,14 +1,14 @@
 package com.fortes.rh.model.captacao;
 
 import java.io.Serializable;
-
-import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.util.MathUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -36,6 +36,12 @@ public class ConfigHistoricoNivel extends AbstractModel implements Serializable
 	public void setPercentual(Double percentual) {
 		this.percentual = percentual;
 	}
+	public String getPercentualFormatado(){
+		if(percentual != null)
+			return MathUtil.formataValor(percentual);
+		
+		return "";
+	}
 	public NivelCompetencia getNivelCompetencia() {
 		return nivelCompetencia;
 	}
@@ -48,4 +54,16 @@ public class ConfigHistoricoNivel extends AbstractModel implements Serializable
 	public void setNivelCompetenciaHistorico(NivelCompetenciaHistorico nivelCompetenciaHistorico) {
 		this.nivelCompetenciaHistorico = nivelCompetenciaHistorico;
 	}
+	public void setNivelCompetenciaHistoricoData(Date data){
+		if(nivelCompetenciaHistorico == null)
+			nivelCompetenciaHistorico = new NivelCompetenciaHistorico();
+		
+		nivelCompetenciaHistorico.setData(data);
+	}
+	public void setNivelCompetenciaDescricao(String descricao){
+		if(nivelCompetencia == null)
+			nivelCompetencia = new NivelCompetencia();
+		
+		nivelCompetencia.setDescricao(descricao);
+	} 
 }

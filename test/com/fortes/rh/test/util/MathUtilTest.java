@@ -85,8 +85,4 @@ public class MathUtilTest extends TestCase
 		assertEquals("40,00 %", MathUtil.calculaPorcentagem(40, 60));
 		assertEquals("0,00 %", MathUtil.calculaPorcentagem(0, 100));
 	}
-	
-	public void testFormataPercentual(){
-		assertEquals("99%", MathUtil.formataPercentual(0.99));
-	}
 }

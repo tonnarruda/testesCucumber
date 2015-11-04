@@ -6,9 +6,6 @@
 		<action name="list" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="list">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/nivelCompetenciaList.ftl</result>
 		</action>
-		<action name="gerarPercentualIgualmente" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="gerarPercentualIgualmente">
-			<result name="success" type="freemarker">/WEB-INF/forms/captacao/nivelCompetenciaList.ftl</result>
-		</action>
 		<action name="delete" class="com.fortes.rh.web.action.captacao.NivelCompetenciaEditAction" method="delete">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/nivelCompetenciaList.ftl</result>
 		</action>

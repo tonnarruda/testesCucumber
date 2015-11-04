@@ -6,6 +6,7 @@ import java.util.Date;
 
 import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.DateUtil;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -33,6 +34,10 @@ public class NivelCompetenciaHistorico extends AbstractModel implements Serializ
 	}
 	public void setData(Date data) {
 		this.data = data;
+	}
+	public String getDataFormatada() 
+	{
+		return DateUtil.formataDiaMesAno(data);
 	}
 	public Collection<ConfigHistoricoNivel> getConfigHistoricoNiveis() {
 		return configHistoricoNiveis;
