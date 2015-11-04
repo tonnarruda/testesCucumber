@@ -275,16 +275,18 @@
 		
 		<li>&nbsp;</li>
 				
-		<li>
-			<@ww.div cssClass="divInfo">
-				<h2>Integração com o Fortes Pessoal</h2>
-				<ul>
-					<div style="float:right;"><img id="btnTransferir" border="0" title="Testar Conexão com AC" onclick="testaConexaoAC();" src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>" style="cursor:pointer;"></div>
-					<@ww.checkbox label="Integra com o Fortes Pessoal" name="empresa.acIntegra" id="integra" labelPosition="right"/>
-					<@ww.select label="Grupo AC" name="empresa.grupoAC" id="grupoAC" list="grupoACs" listKey="codigo" listValue="codigoDescricao" headerKey="" headerValue="Selecione..."/>
-				</ul>
-			</@ww.div>
-		</li>
+		<@authz.authorize ifAllGranted="ROLE_INTEGRA_FORTES_PESSOAL">
+			<li>
+				<@ww.div cssClass="divInfo">
+					<h2>Integração com o Fortes Pessoal</h2>
+					<ul>
+						<div style="float:right;"><img id="btnTransferir" border="0" title="Testar Conexão com AC" onclick="testaConexaoAC();" src="<@ww.url includeParams="none" value="/imgs/transferencia.gif"/>" style="cursor:pointer;"></div>
+						<@ww.checkbox label="Integra com o Fortes Pessoal" name="empresa.acIntegra" id="integra" labelPosition="right"/>
+						<@ww.select label="Grupo AC" name="empresa.grupoAC" id="grupoAC" list="grupoACs" listKey="codigo" listValue="codigoDescricao" headerKey="" headerValue="Selecione..."/>
+					</ul>
+				</@ww.div>
+			</li>
+		</@authz.authorize>
 
 		<@ww.hidden name="empresa.id" />
 		<@ww.hidden name="empresa.logoUrl" />

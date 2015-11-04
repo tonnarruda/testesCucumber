@@ -174,8 +174,12 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	
 	public String update() throws Exception
 	{
-		empresa.setGrupoAC(StringUtils.stripToNull(empresa.getGrupoAC()));
-		empresa.setCodigoAC(StringUtils.stripToNull(empresa.getCodigoAC()));
+		if ( SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_INTEGRA_FORTES_PESSOAL"}) ) {
+			empresa.setGrupoAC(StringUtils.stripToNull(empresa.getGrupoAC()));
+			empresa.setCodigoAC(StringUtils.stripToNull(empresa.getCodigoAC()));
+		} else {
+			empresa.setAcIntegra(empresaManager.findIntegracaoAC(empresa.getId()));
+		}
 		
 		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert, imgCartaoAniversariante);
 		
