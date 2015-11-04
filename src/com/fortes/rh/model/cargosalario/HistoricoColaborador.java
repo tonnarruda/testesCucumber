@@ -90,6 +90,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	@Transient private Double diferencaSalarialEmPorcentam;
 	@Transient private String obsACPessoal;
 	@Transient private Date dataSolicitacaoDesligamento;
+	@Transient private Double mensalidade;
 	
 	public HistoricoColaborador(String colaborador, String areaOrganizacional) {
 		
@@ -1145,4 +1146,11 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		this.dataSolicitacaoDesligamento = dataSolicitacaoDesligamento;
 	}
 
+	public Double getMensalidade() {
+		return mensalidade;
+	}
+
+	public void setMensalidade(Double mensalidade) {
+		this.mensalidade = mensalidade;
+	}
 }

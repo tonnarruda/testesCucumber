@@ -1282,6 +1282,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 						if (historicoColaborador.getColaborador().getCodigoAC().equals(remuneracaoVariavel.getCodigoEmpregado()))
 						{
 							historicoColaborador.setSalarioVariavel(remuneracaoVariavel.getValor());
+							historicoColaborador.setMensalidade(remuneracaoVariavel.getMensalidade());
 							break;
 						}
 					}

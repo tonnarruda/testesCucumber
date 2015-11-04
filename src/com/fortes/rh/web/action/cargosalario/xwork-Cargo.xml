@@ -115,19 +115,19 @@
 				<param name="documentName">colaboradoresPorCargosResumido.pdf</param>
 			</result>
 			<result name="successRemuneracaoVariavel" type="jasper">
-				<param name="location">WEB-INF/report/colaboradorCargoRemuneracaoVariavel.jasper</param>
+				<param name="location">WEB-INF/report/colaboradorCargoRemuneracaoVariavelIntegrado.jasper</param>
 				<param name="dataSource">historicoColaboradors</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">colaboradoresPorCargosResumido.pdf</param>
+				<param name="documentName">colaboradoresPorCargosExibirSalario.pdf</param>
 			</result>
 			<result name="successRemuneracaoVariavelEstabelecimento" type="jasper">
-				<param name="location">WEB-INF/report/colaboradorCargoRemuneracaoVariavelEstabelecimento.jasper</param>
+				<param name="location">WEB-INF/report/colaboradorCargoIntegradoExibirEstabelecimentoESalario.jasper</param>
 				<param name="dataSource">historicoColaboradors</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">colaboradoresPorCargosResumido.pdf</param>
 			</result>
 			<result name="successRemuneracaoVariavelAreaOrganizacional" type="jasper">
-				<param name="location">WEB-INF/report/colaboradorCargoRemuneracaoVariavelPaisagem.jasper</param>
+				<param name="location">WEB-INF/report/colaboradorCargoExibirAreaESalarioIntegrado.jasper</param>
 				<param name="dataSource">historicoColaboradors</param>
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">colaboradoresPorCargosResumido.pdf</param>

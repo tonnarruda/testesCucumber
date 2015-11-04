@@ -8,6 +8,7 @@ public class TRemuneracaoVariavel implements Serializable
 	private String CodigoEmpregado;
 	private String AnoMes;
 	private Double Valor;
+	private Double Mensalidade;
 	
 	public String getCodigoEmpregado() {
 		return CodigoEmpregado;
@@ -26,5 +27,11 @@ public class TRemuneracaoVariavel implements Serializable
 	}
 	public void setValor(Double valor) {
 		Valor = valor;
+	}
+	public Double getMensalidade() {
+		return Mensalidade;
+	}
+	public void setMensalidade(Double mensalidade) {
+		Mensalidade = mensalidade;
 	}
 }
