@@ -2420,7 +2420,14 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		colaboradorTurma2.setTurma(turma2);
 		colaboradorTurmaDao.save(colaboradorTurma2);
 		
-		Collection<ColaboradorTurma> resultado = colaboradorTurmaDao.findByColaborador(adamastor.getId());
+		Collection<Curso> cursos = new ArrayList<Curso>();
+		cursos.add(curso);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacao.setCursos(cursos);
+		certificacaoDao.save(certificacao);
+		
+		Collection<ColaboradorTurma> resultado = colaboradorTurmaDao.findByColaborador(adamastor.getId(), certificacao.getId());
 		
 		assertEquals(1, resultado.size());
 		assertEquals(turma1.getDataPrevFim(), ((ColaboradorTurma) resultado.toArray()[0]).getTurma().getDataPrevFim());

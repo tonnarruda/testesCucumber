@@ -1133,7 +1133,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return getDao().findCursosCertificacoesAVencer(dataReferencia, empresaId);
 	}
 	
-	public Collection<ColaboradorTurma> findByColaborador(Long colaboradorId){
-		return getDao().findByColaborador(colaboradorId);
+	public Collection<ColaboradorTurma> findByColaborador(Long colaboradorId, Long certificacaoId){
+		return getDao().findByColaborador(colaboradorId, certificacaoId);
 	}
 }

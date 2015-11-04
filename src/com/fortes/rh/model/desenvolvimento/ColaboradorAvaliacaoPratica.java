@@ -59,4 +59,16 @@ public class ColaboradorAvaliacaoPratica extends AbstractModel implements Serial
 	public void setAvaliacaoPratica(AvaliacaoPratica avaliacaoPratica) {
 		this.avaliacaoPratica = avaliacaoPratica;
 	}
+	public void setAvaliacaoPraticaTitulo(String titulo){
+		iniciaAvaliacaoPratica();
+		avaliacaoPratica.setTitulo(titulo);
+	}
+	public void setAvaliacaoPraticaNotaMinima(Double notaMinima){
+		iniciaAvaliacaoPratica();
+		avaliacaoPratica.setNotaMinima(notaMinima);;
+	}
+	private void iniciaAvaliacaoPratica() {
+		if(avaliacaoPratica == null)
+			avaliacaoPratica = new AvaliacaoPratica();
+	}
 }

@@ -342,6 +342,14 @@ public class Turma extends AbstractModel implements Serializable, Cloneable
 	{
 		return realizada;
 	}
+	
+	public String getRealizadaFormatada()
+	{
+		if(realizada)
+			return "Sim";
+		
+		return "Não";
+	}
 
 	public void setRealizada(boolean realizada)
 	{

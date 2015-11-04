@@ -1678,7 +1678,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return Expression.sqlRestriction(sql.toString(), new Date[] {dataReferencia, dataReferencia}, new Type[]{Hibernate.DATE, Hibernate.DATE});
 	}
 	
-	public Collection<ColaboradorTurma> findByColaborador(Long colaboradorId) 
+	public Collection<ColaboradorTurma> findByColaborador(Long colaboradorId, Long certificacaoId) 
 	{
 		  DetachedCriteria subSelect = DetachedCriteria.forClass(Turma.class, "t2")
 		    		.setProjection(Projections.max("t2.dataPrevFim"))
@@ -1687,8 +1687,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
 		criteria.createCriteria("ct.turma", "t", Criteria.INNER_JOIN);
 		criteria.createCriteria("t.curso", "c", Criteria.INNER_JOIN);
+		criteria.createCriteria("c.certificacaos", "ce", Criteria.INNER_JOIN);
 
 		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ct.id"), "id");
 		p.add(Projections.property("c.id"), "cursoId");
 		p.add(Projections.property("c.nome"), "cursoNome");
 		p.add(Projections.property("t.id"), "turmaId");
@@ -1696,11 +1698,11 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.property("t.dataPrevIni"), "turmaDataPrevIni");
 		p.add(Projections.property("t.dataPrevFim"), "turmaDataPrevFim");
 		p.add(Projections.property("t.realizada"), "turmaRealizada");
-		p.add(Projections.property("ct.id"), "id");
 		p.add(Projections.sqlProjection("verifica_aprovacao(c2_.id, t1_.id, this_.id, c2_.percentualMinimoFrequencia) as aprovacao", new String[] {"aprovacao"}, new Type[] {Hibernate.BOOLEAN}), "aprovado");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("ct.colaborador.id", colaboradorId));
+		criteria.add(Expression.eq("ce.id", certificacaoId));
 		criteria.add(Subqueries.propertyEq("t.dataPrevFim", subSelect));
 		
 		criteria.addOrder(Order.asc("c.nome"));

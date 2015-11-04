@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
@@ -33,6 +34,8 @@ public class Certificacao extends AbstractModel implements Serializable
 	private Integer periodicidade;
 	@ManyToMany(fetch=FetchType.LAZY)
 	private Collection<AvaliacaoPratica> avaliacoesPraticas;
+	@OneToMany(fetch=FetchType.LAZY,  mappedBy="certificacao")
+	private Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas;
 
 	public String getNome()
 	{
@@ -88,5 +91,14 @@ public class Certificacao extends AbstractModel implements Serializable
 
 	public void setAvaliacoesPraticas(Collection<AvaliacaoPratica> avaliacoesPraticas) {
 		this.avaliacoesPraticas = avaliacoesPraticas;
+	}
+
+	public Collection<ColaboradorAvaliacaoPratica> getColaboradorAvaliacaoPraticas() {
+		return colaboradorAvaliacaoPraticas;
+	}
+
+	public void setColaboradorAvaliacaoPraticas(
+			Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas) {
+		this.colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticas;
 	}
 }

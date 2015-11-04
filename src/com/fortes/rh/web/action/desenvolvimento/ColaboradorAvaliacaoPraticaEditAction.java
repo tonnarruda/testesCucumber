@@ -54,18 +54,20 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 	
 	public String buscaColaboradores() throws Exception
 	{
-		certificacoes = certificacaoManager.findAllSelect(getEmpresaSistema().getId());
-		Collection<Colaborador> colaboradoresNaCertificacao = certificacaoManager.findColaboradoresNaCertificacoa(certificacao.getId());
-		
-		if(colaborador != null){
+		prepare();
+		if(certificacao == null || certificacao.getId() == null)
+			return Action.SUCCESS;
 
-			colaboradorTurmas = colaboradorTurmaManager.findByColaborador(colaborador.getId());
-			
+		Collection<Colaborador> colaboradoresNaCertificacao = certificacaoManager.findColaboradoresNaCertificacoa(certificacao.getId());
+
+		if(colaborador != null)
+		{
 			Colaborador colaboradorLogado = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
-			
+			Collection<Colaborador> colaboradoresPermitidos = new ArrayList<Colaborador>();
+
 			if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
 			{
-				colaboradores = colaboradorManager.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, getEmpresaSistema().getId(), null);
+				colaboradoresPermitidos = colaboradorManager.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, getEmpresaSistema().getId(), null);
 			}
 			else if (colaboradorLogado != null && colaboradorLogado.getId() != null)
 			{
@@ -73,22 +75,22 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 				Long[] areasIds = new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areas);
 				if (areasIds.length == 0)
 					areasIds = new Long[]{-1L};
-				colaboradores = colaboradorManager.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, getEmpresaSistema().getId(), areasIds);
-			}
-			
-			if(colaborador.getId() != null)
-			{
-				colaborador = colaboradorManager.findByIdHistoricoAtual(colaborador.getId(), Boolean.TRUE);
-				colaboradorManager.setFamiliaAreas(Arrays.asList(colaborador), getEmpresaSistema().getId());
-				
-				if(!colaborador.getNome().equals(colaborador.getNomeComercial()))
-					nomeComercialEntreParentese = " (" + colaborador.getNomeComercial() + ")";
+				colaboradoresPermitidos = colaboradorManager.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, getEmpresaSistema().getId(), areasIds);
 			}
 
-			for (Colaborador colaborador : colaboradoresNaCertificacao) {
-				
+			for (Colaborador colaboradorCertificado : colaboradoresNaCertificacao) 
+			{
+				for (Colaborador colaboradorPermitido : colaboradoresPermitidos) 
+				{
+					if(colaboradorCertificado.getId().equals(colaboradorPermitido.getId()))
+						colaboradores.add(colaboradorPermitido);
+				}
 			}	
 			
+			if(colaborador.getId() != null && certificacao != null && certificacao.getId() != null){
+				colaboradorTurmas = colaboradorTurmaManager.findByColaborador(colaborador.getId(), certificacao.getId());
+				colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId());
+			}
 		}
 		
 		return Action.SUCCESS;
