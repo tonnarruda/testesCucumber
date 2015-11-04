@@ -46,7 +46,6 @@ import com.fortes.rh.test.business.captacao.ExperienciaManagerTest;
 import com.fortes.rh.test.business.captacao.FormacaoManagerTest;
 import com.fortes.rh.test.business.captacao.HabilidadeManagerTest;
 import com.fortes.rh.test.business.captacao.HistoricoCandidatoManagerTest;
-import com.fortes.rh.test.business.captacao.NivelCompetenciaHistoricoManagerTest;
 import com.fortes.rh.test.business.captacao.NivelCompetenciaManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoBDSManagerTest;
 import com.fortes.rh.test.business.captacao.SolicitacaoManagerTest;
@@ -733,7 +732,6 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ConfigHistoricoNivelManagerTest.class);
         suite.addTestSuite(ConfigHistoricoNivelEditActionTest.class);
         suite.addTestSuite(NivelCompetenciaHistoricoDaoHibernateTest.class);
-        suite.addTestSuite(NivelCompetenciaHistoricoManagerTest.class);
         suite.addTestSuite(NivelCompetenciaHistoricoEditActionTest.class);
 
         //Indicadores

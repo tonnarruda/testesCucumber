@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.fortes.rh.business.captacao.ConfigHistoricoNivelManager;
 import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
+import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 
@@ -14,6 +15,14 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 	private ConfigHistoricoNivelManager configHistoricoNivelManager;
 	private ConfigHistoricoNivel configHistoricoNivel;
 	private Collection<ConfigHistoricoNivel> configHistoricoNivels;
+	private NivelCompetenciaHistorico nivelCompetenciaHistorico;
+
+
+	public String list() throws Exception
+	{
+		configHistoricoNivels = configHistoricoNivelManager.findByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico.getId());
+		return Action.SUCCESS;
+	}
 
 	private void prepare() throws Exception
 	{
@@ -24,7 +33,7 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 
 	public String prepareInsert() throws Exception
 	{
-		prepare();
+		configHistoricoNivels = configHistoricoNivelManager.findByEmpresaId(getEmpresaSistema().getId());
 		return Action.SUCCESS;
 	}
 
@@ -66,5 +75,13 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 	public Collection<ConfigHistoricoNivel> getConfigHistoricoNivels()
 	{
 		return configHistoricoNivels;
+	}
+
+	public NivelCompetenciaHistorico getNivelCompetenciaHistorico() {
+		return nivelCompetenciaHistorico;
+	}
+
+	public void setNivelCompetenciaHistorico(NivelCompetenciaHistorico nivelCompetenciaHistorico) {
+		this.nivelCompetenciaHistorico = nivelCompetenciaHistorico;
 	}
 }

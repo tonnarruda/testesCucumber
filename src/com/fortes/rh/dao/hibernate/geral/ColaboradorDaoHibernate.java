@@ -4599,7 +4599,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Collection<Colaborador> triar(Long[] empresaIds, String escolaridade, String sexo, Date dataNascIni, Date dataNascFim, String[] faixasCheck, Long[] areasIds, Long[] competenciasIds, boolean exibeCompatibilidade, boolean opcaoTodasEmpresas) 
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador (co.id, co.nome, co.pessoal.dataNascimento, co.pessoal.sexo, co.pessoal.escolaridade, coalesce(sum(nc.ordem),0) as somaCompetencias) ");
+		hql.append("select new Colaborador (co.id, co.nome, co.pessoal.dataNascimento, co.pessoal.sexo, co.pessoal.escolaridade, coalesce(sum(chn.ordem),0) as somaCompetencias) ");
 		hql.append("from HistoricoColaborador hc ");
 		hql.append("inner join hc.colaborador co  ");
 		hql.append("inner join hc.faixaSalarial fs ");
@@ -4607,12 +4607,15 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join co.configuracaoNivelCompetenciaColaboradors cncc "); 
 		hql.append("left join cncc.configuracaoNivelCompetencias cnc "); 
 		hql.append("left join cnc.nivelCompetencia nc ");
+		hql.append("left join nc.configHistoricoNiveis chn ");
+		hql.append("left join chn.nivelCompetenciaHistorico nch ");
 		if (competenciasIds != null && competenciasIds.length > 0)
 			hql.append("with cnc.competenciaId in (:competenciasIds) ");
 		
 		hql.append("where hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador.id = co.id and hc2.status = :status) "); 
 		hql.append("and co.desligado = false "); 
 		hql.append("and (cncc.data = (select max(cncc2.data) from ConfiguracaoNivelCompetenciaColaborador cncc2 where cncc2.colaborador.id = co.id) or cncc.data is null) ");
+		hql.append("and ( nch.data = (select max(data) from NivelCompetenciaHistorico where empresa.id = nc.empresa.id) or nch.data is null)");
 
 		if (empresaIds != null && empresaIds.length > 0)
 			hql.append("and co.empresa.id in(:empresaIds) ");
@@ -4637,7 +4640,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("group by co.id, co.nome, co.pessoal.dataNascimento, co.pessoal.sexo, co.pessoal.escolaridade ");
 		
 		if (exibeCompatibilidade)
-			hql.append("order by coalesce(sum(nc.ordem), 0) desc, co.nome ");
+			hql.append("order by coalesce(sum(chn.ordem), 0) desc, co.nome ");
 		else
 			hql.append("order by co.nome ");
 		
