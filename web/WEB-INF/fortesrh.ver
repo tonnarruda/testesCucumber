@@ -8,6 +8,7 @@
 		<Item visivel="S" motivo="P15100000092"><![CDATA[C&S > Relatórios > Descrição de Cargos: Ajuste de inconsistência ao exibir as competências e os níveis exigidos pelo cargo.]]></Item>
 		<Item visivel="S" motivo="P15100000162"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Editar: Reflexão das alterações dos dados referentes aos campos extras no seu respectivo candidato.]]></Item>
 		<Item visivel="S" motivo="S15100000322"><![CDATA[SESMT > Relatórios > Afastamentos: Ajuste de inconsitência ao filtrar colaboradores afastados no período especificado.]]></Item>
+		<Item visivel="S" motivo="P15100000134"><![CDATA[SESMT > Movimentações > Solicitações de EPIs: Ajuste de inconsistência ao exibir situação da solicitação.]]></Item>
 		<Item visivel="S" motivo="S20150800180"><![CDATA[Utilitários > Cadastros > Perfis > Inserir/Editar: Nova permissão para integrar empresas com o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="P15100000122"><![CDATA[Utilitários > Configurações > Gerenciador de Comunicação: Ajuste de inconsistência ao notificar avaliações do período de experiência a vencer atráves de caixa de mensagem.]]></Item>
 		<Item visivel="S" motivo="P15100000075"><![CDATA[Utilitários > Exportar dados para o Fortes Pessoal: Não exportar colaborador marcado como não integrado com o Fortes Pessoal.]]></Item>
