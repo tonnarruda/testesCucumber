@@ -34,6 +34,7 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 
 	public String insert() throws Exception
 	{
+		configHistoricoNivelManager.saveOrUpdate(configHistoricoNivels);
 		
 		return Action.SUCCESS;
 	}

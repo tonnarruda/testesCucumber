@@ -8,6 +8,7 @@ import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.DateUtil;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -23,7 +24,7 @@ public class NivelCompetenciaHistorico extends AbstractModel implements Serializ
 {
 	private Date data;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy="nivelCompetenciaHistorico")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="nivelCompetenciaHistorico", cascade=CascadeType.ALL)
 	private Collection<ConfigHistoricoNivel> configHistoricoNiveis;
 	
 	@ManyToOne
