@@ -38,6 +38,7 @@ import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction;
 import com.fortes.web.tags.CheckBox;
@@ -444,6 +445,8 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 	public void testLiberar()
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
+		avaliacaoDesempenho.setInicio(DateUtil.criarDataMesAno(11, 07, 2011));
+		avaliacaoDesempenho.setFim(DateUtil.criarDataMesAno(15, 07, 2011));
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>(){}));
 		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>(){}));

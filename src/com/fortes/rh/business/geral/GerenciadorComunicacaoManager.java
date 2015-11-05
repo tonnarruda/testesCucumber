@@ -29,6 +29,7 @@ public interface GerenciadorComunicacaoManager extends GenericManager<Gerenciado
 	void enviaEmailSolicitanteSolicitacao(Solicitacao solicitacao, Empresa empresa, Usuario usuario);
 	boolean verifyExists(GerenciadorComunicacao gerenciadorComunicacao);
 	void enviarLembreteResponderAvaliacaoDesempenho();
+	void enviarLembreteResponderAvaliacaoDesempenhoAoLiberar(Long avaliacaoDesempenhoId, Empresa empresa);
 	void enviarLembreteAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Empresa empresa);
 	void enviaEmailQuestionarioLiberado(Empresa empresa, Questionario questionario, Collection<ColaboradorQuestionario> colaboradorQuestionarios);
 	void enviaEmailResponsavelRh(String nomeCandidato, Long empresaId);

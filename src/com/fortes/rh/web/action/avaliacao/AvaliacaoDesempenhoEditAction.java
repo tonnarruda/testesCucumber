@@ -29,6 +29,7 @@ import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
@@ -420,6 +421,10 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			colaboradorQuestionarioManager.validaAssociacao(avaliados, avaliadores, avaliacaoDesempenho.isPermiteAutoAvaliacao());
 			
 			avaliacaoDesempenhoManager.liberar(avaliacaoDesempenho, avaliados, avaliadores);
+			
+			if( DateUtil.between(new Date(), avaliacaoDesempenho.getInicio(), avaliacaoDesempenho.getFim()) )
+				avaliacaoDesempenhoManager.enviarLembreteAoLiberar(avaliacaoDesempenho.getId(), getEmpresaSistema());
+			
 			addActionSuccess("Avaliação liberada com sucesso.");
 		}
 		catch (FortesException e)

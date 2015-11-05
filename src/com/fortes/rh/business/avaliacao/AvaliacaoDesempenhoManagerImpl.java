@@ -201,6 +201,11 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		gerenciadorComunicacaoManager.enviarLembreteAvaliacaoDesempenho(avaliacaoDesempenhoId, empresa);
 	}
 	
+	public void enviarLembreteAoLiberar(Long avaliacaoDesempenhoId, Empresa empresa)
+	{
+		gerenciadorComunicacaoManager.enviarLembreteResponderAvaliacaoDesempenhoAoLiberar(avaliacaoDesempenhoId, empresa);
+	}
+	
 	public Collection<AvaliacaoDesempenho> findIdsAvaliacaoDesempenho(Long avaliacaoId) 
 	{
 		return getDao().findIdsAvaliacaoDesempenho(avaliacaoId);
