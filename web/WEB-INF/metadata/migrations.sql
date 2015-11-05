@@ -39,10 +39,10 @@ ALTER TABLE empresa ADD COLUMN mostrarPerformanceAvalDesempenho boolean default 
 update papel set url = null where id = 516;--.go
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (650, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Cadastros', '/captacao/nivelCompetencia/list.action', 1, true, 516);--.go
-INSERT INTO perfil_papel (perfil_id, papeis_id) SELECT id, 650 FROM perfil where papeis_id = 516;--.go
+INSERT INTO perfil_papel (perfil_id, papeis_id) SELECT perfil_id, 650 FROM perfil_papel where papeis_id = 516;--.go
 
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (651, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Historicos', '/captacao/nivelCompetenciaHistorico/list.action', 2, true, 516);--.go
-INSERT INTO perfil_papel (perfil_id, papeis_id) SELECT id, 651 FROM perfil where papeis_id = 516;--.go
+INSERT INTO perfil_papel (perfil_id, papeis_id) SELECT perfil_id, 650 FROM perfil_papel where papeis_id = 516;--.go
 
 alter sequence papel_sequence restart with 652;--.go
 
@@ -81,7 +81,7 @@ BEGIN
 			nch_id := nextval('nivelCompetenciaHistorico_sequence');
 
 			INSERT INTO nivelCompetenciaHistorico(id,data,empresa_id) values(nch_id,'2005-01-01',mv.empresa_id);--.go
-			INSERT INTO ConfigHistoricoNivel(id,nivelCompetencia_id,nivelCompetenciaHistorico_id,ordem,percentual) select nextval('ConfigHistoricoNivel_sequence'),id, nch_id ,ordem,percentual from nivelcompetencia;--.go
+			INSERT INTO ConfigHistoricoNivel(id,nivelCompetencia_id,nivelCompetenciaHistorico_id,ordem) select nextval('ConfigHistoricoNivel_sequence'),id, nch_id ,ordem from nivelcompetencia;--.go
 		END LOOP; 
 		
     RETURN 1; 
@@ -91,4 +91,3 @@ select criaConfigHistoricoNivel();--.go
 drop function criaConfigHistoricoNivel();--.go
 
 ALTER TABLE nivelCompetencia drop COLUMN ordem;--.go
-ALTER TABLE nivelCompetencia drop COLUMN percentual;--.go
