@@ -12,7 +12,7 @@
 	<h3 style="color:red">Já existe um usuário para este colaborador</h3>
 <#else>
 	<@ww.form name="form" action="criarUsuario.action" validate="true" method="POST">
-		<@ww.hidden name="usuario.nome" value="xxx"/>
+		<@ww.hidden name="usuario.nome" value=""/>
 		<@ww.textfield label="Login" name="usuario.login" required="true"/>
 		<@ww.password label="Senha" name="usuario.senha" required="true"/>
 		<@ww.password label="Confirme sua senha" name="confirmacao" required="true"/>

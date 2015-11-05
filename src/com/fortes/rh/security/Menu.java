@@ -120,6 +120,9 @@ public abstract class Menu
 		{
 			if (papel.getPapelMae() != null && papel.getPapelMae().getId() == id )
 			{
+				if(papel.getUrl() == null)
+					papel.setUrl("#");
+				
 				String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
 				
 				menuFilho.append("<li>");

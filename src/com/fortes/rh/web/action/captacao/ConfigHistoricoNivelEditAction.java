@@ -17,41 +17,29 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 	private Collection<ConfigHistoricoNivel> configHistoricoNivels;
 	private NivelCompetenciaHistorico nivelCompetenciaHistorico;
 
-
-	public String list() throws Exception
-	{
-		configHistoricoNivels = configHistoricoNivelManager.findByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico.getId());
-		return Action.SUCCESS;
-	}
-
-	private void prepare() throws Exception
-	{
-		if(configHistoricoNivel != null && configHistoricoNivel.getId() != null)
-			configHistoricoNivel = (ConfigHistoricoNivel) configHistoricoNivelManager.findById(configHistoricoNivel.getId());
-
-	}
-
 	public String prepareInsert() throws Exception
 	{
-		configHistoricoNivels = configHistoricoNivelManager.findByEmpresaId(getEmpresaSistema().getId());
+		configHistoricoNivels = configHistoricoNivelManager.findNiveisCompetenciaByEmpresa(getEmpresaSistema().getId());
+		
 		return Action.SUCCESS;
 	}
 
 	public String prepareUpdate() throws Exception
 	{
-		prepare();
+		if(nivelCompetenciaHistorico != null)
+			configHistoricoNivels = configHistoricoNivelManager.findByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico.getId());
+		
 		return Action.SUCCESS;
 	}
 
 	public String insert() throws Exception
 	{
-		configHistoricoNivelManager.save(configHistoricoNivel);
+		
 		return Action.SUCCESS;
 	}
 
 	public String update() throws Exception
 	{
-		configHistoricoNivelManager.update(configHistoricoNivel);
 		return Action.SUCCESS;
 	}
 	
@@ -83,5 +71,10 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 
 	public void setNivelCompetenciaHistorico(NivelCompetenciaHistorico nivelCompetenciaHistorico) {
 		this.nivelCompetenciaHistorico = nivelCompetenciaHistorico;
+	}
+
+	public void setConfigHistoricoNivels(
+			Collection<ConfigHistoricoNivel> configHistoricoNivels) {
+		this.configHistoricoNivels = configHistoricoNivels;
 	}
 }
