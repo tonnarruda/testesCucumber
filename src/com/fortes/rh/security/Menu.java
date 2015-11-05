@@ -132,6 +132,9 @@ public abstract class Menu
 				if(((empresaLogada.isControlarVencimentoPorCurso() && !papel.getId().equals(648L)) 
 						|| (empresaLogada.isControlarVencimentoPorCertificacao() && !papel.getId().equals(635L)))){
 					
+					if(papel.getUrl() == null)
+						papel.setUrl("#");
+
 					String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
 					
 					menuFilho.append("<li>");

@@ -3,9 +3,6 @@
 
 <xwork>
 	<package name="configHistoricoNivel" extends="default" namespace="/captacao/configHistoricoNivel">
-		<action name="list" class="com.fortes.rh.web.action.captacao.ConfigHistoricoNivelEditAction" method="list">
-			<result name="success" type="freemarker">/WEB-INF/forms/captacao/configHistoricoNivelList.ftl</result>
-		</action>
 		<action name="prepareInsert" class="com.fortes.rh.web.action.captacao.ConfigHistoricoNivelEditAction" method="prepareInsert">
 			<result name="success" type="freemarker">/WEB-INF/forms/captacao/configHistoricoNivelEdit.ftl</result>
 		</action>
@@ -14,14 +11,14 @@
 		</action>
 		<action name="insert" class="com.fortes.rh.web.action.captacao.ConfigHistoricoNivelEditAction" method="insert">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
-			<result name="success" type="redirect">list.action</result>
+			<result name="invalid.token" type="redirect">prepareInsert.action?nivelCompetenciaHistorico.id=${nivelCompetenciaHistorico.id}</result>
+			<result name="success" type="redirect">prepareInsert.action?nivelCompetenciaHistorico.id=${nivelCompetenciaHistorico.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/configHistoricoNivelEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.captacao.ConfigHistoricoNivelEditAction" method="update">
 			<interceptor-ref name="tokenWebStack" />
-			<result name="invalid.token" type="redirect">list.action</result>
-			<result name="success" type="redirect">list.action</result>
+			<result name="invalid.token" type="redirect">prepareUpdate.action?nivelCompetenciaHistorico.id=${nivelCompetenciaHistorico.id}</result>
+			<result name="success" type="redirect">prepareUpdate.action?nivelCompetenciaHistorico.id=${nivelCompetenciaHistorico.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/captacao/configHistoricoNivelEdit.ftl</result>
 		</action>
 	</package>
