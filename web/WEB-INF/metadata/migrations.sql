@@ -81,7 +81,7 @@ BEGIN
 			nch_id := nextval('nivelCompetenciaHistorico_sequence');
 
 			INSERT INTO nivelCompetenciaHistorico(id,data,empresa_id) values(nch_id,'2005-01-01',mv.empresa_id);--.go
-			INSERT INTO ConfigHistoricoNivel(id,nivelCompetencia_id,nivelCompetenciaHistorico_id,ordem) select nextval('ConfigHistoricoNivel_sequence'),id, nch_id ,ordem from nivelcompetencia;--.go
+			INSERT INTO ConfigHistoricoNivel(id,nivelCompetencia_id,nivelCompetenciaHistorico_id,ordem) select nextval('ConfigHistoricoNivel_sequence'),id, nch_id ,ordem from nivelcompetencia where empresa_id = mv.empresa_id;--.go
 		END LOOP; 
 		
     RETURN 1; 
