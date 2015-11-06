@@ -97,8 +97,7 @@ public class Certificacao extends AbstractModel implements Serializable
 		return colaboradorAvaliacaoPraticas;
 	}
 
-	public void setColaboradorAvaliacaoPraticas(
-			Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas) {
+	public void setColaboradorAvaliacaoPraticas(Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas) {
 		this.colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticas;
 	}
 }

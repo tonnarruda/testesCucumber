@@ -13,6 +13,7 @@ import javax.persistence.TemporalType;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -46,6 +47,12 @@ public class ColaboradorAvaliacaoPratica extends AbstractModel implements Serial
 	}
 	public void setData(Date data) {
 		this.data = data;
+	}
+	public String getDataFormatada(){
+		if(data != null)
+			return DateUtil.formataDate(data, "dd/MM/yyyy");
+		
+		return "";
 	}
 	public Double getNota() {
 		return nota;

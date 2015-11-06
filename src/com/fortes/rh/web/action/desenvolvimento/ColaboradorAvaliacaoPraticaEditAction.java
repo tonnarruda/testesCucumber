@@ -2,7 +2,6 @@ package com.fortes.rh.web.action.desenvolvimento;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
@@ -17,6 +16,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
@@ -90,15 +90,18 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 			if(colaborador.getId() != null && certificacao != null && certificacao.getId() != null){
 				colaboradorTurmas = colaboradorTurmaManager.findByColaborador(colaborador.getId(), certificacao.getId());
 				colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId());
+				
+				if(colaboradorAvaliacaoPraticas == null || colaboradorAvaliacaoPraticas.size() == 0)
+					colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(null, certificacao.getId());
 			}
 		}
 		
 		return Action.SUCCESS;
 	}
 	
-	public String update() throws Exception
+	public String insertOrUpdate() throws Exception
 	{
-		colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPratica);
+//		colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPratica);
 		return Action.SUCCESS;
 	}
 

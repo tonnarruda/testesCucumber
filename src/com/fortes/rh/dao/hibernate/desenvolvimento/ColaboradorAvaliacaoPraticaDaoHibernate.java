@@ -26,12 +26,14 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ap.notaMinima"), "avaliacaoPraticaNotaMinima");
 		p.add(Projections.property("ap.titulo"), "avaliacaoPraticaTitulo");
+		p.add(Projections.property("cap.data"), "data");
 		p.add(Projections.property("cap.nota"), "nota");
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("ct.colaborador.id", colaboradorId));
-		criteria.add(Expression.eq("ce.id", certificacaoId));
+		if(colaboradorId != null)
+			criteria.add(Expression.eq("cap.colaborador.id", colaboradorId));
 		
+		criteria.add(Expression.eq("ct.id", certificacaoId));
 		criteria.addOrder(Order.asc("ap.titulo"));
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorAvaliacaoPratica.class));

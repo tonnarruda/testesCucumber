@@ -48,7 +48,7 @@ CREATE SEQUENCE colaboradorAvaliacaoPratica_sequence START WITH 1 INCREMENT BY 1
 
 
 --Verificar id do papel quando for criar a migrate
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (647,'ROLE_COLABORADOR_AVALIACAO_PRATICA', 'Nota da Avaliação Prática por Colaborador', '/desenvolvimento/colaboradorAvaliacaoPratica/prepare.action', 6, true, 367);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (647,'ROLE_COLABORADOR_AVALIACAO_PRATICA', 'Notas da Avaliação Prática', '/desenvolvimento/colaboradorAvaliacaoPratica/prepare.action', 6, true, 367);--.go
 INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 647);--.go
 alter sequence papel_sequence restart with 648;--.go
 
