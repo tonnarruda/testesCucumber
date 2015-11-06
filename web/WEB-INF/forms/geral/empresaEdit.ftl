@@ -287,6 +287,9 @@
 				</@ww.div>
 			</li>
 		</@authz.authorize>
+		<@authz.authorize  ifNotGranted="ROLE_INTEGRA_FORTES_PESSOAL">
+			<@ww.hidden name="empresa.grupoAC" />
+		</@authz.authorize>
 
 		<@ww.hidden name="empresa.id" />
 		<@ww.hidden name="empresa.logoUrl" />

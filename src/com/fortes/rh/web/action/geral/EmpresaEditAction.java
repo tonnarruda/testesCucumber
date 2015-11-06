@@ -174,11 +174,13 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	
 	public String update() throws Exception
 	{
+		boolean tavaIntegradaComAC = empresaManager.findIntegracaoAC(empresa.getId());
+		
 		if ( SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_INTEGRA_FORTES_PESSOAL"}) ) {
 			empresa.setGrupoAC(StringUtils.stripToNull(empresa.getGrupoAC()));
 			empresa.setCodigoAC(StringUtils.stripToNull(empresa.getCodigoAC()));
 		} else {
-			empresa.setAcIntegra(empresaManager.findIntegracaoAC(empresa.getId()));
+			empresa.setAcIntegra(tavaIntegradaComAC);
 		}
 		
 		empresa = empresaManager.setLogo(empresa, logo, "logoEmpresas", logoCert, imgCartaoAniversariante);
@@ -198,7 +200,6 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		}
 		
 		empresaManager.update(empresa);
-		boolean tavaIntegradaComAC = empresaManager.findIntegracaoAC(empresa.getId());
 		empresaManager.auditaIntegracao(empresa, tavaIntegradaComAC);
 		atualizaEmpresaSessao();
 
