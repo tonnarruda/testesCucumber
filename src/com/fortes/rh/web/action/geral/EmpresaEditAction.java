@@ -25,6 +25,7 @@ import com.fortes.rh.business.geral.EstadoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.geral.GrupoACManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.FormulaTurnover;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
@@ -73,6 +74,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	private Map<String,Object> parametros = new HashMap<String, Object>();
 	private Collection<Colaborador> colaboradores;
 	private String ano;
+	private String motivoDesintegracao;
 	
 	public String execute() throws Exception
 	{
@@ -200,7 +202,11 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		}
 		
 		empresaManager.update(empresa);
+		
 		empresaManager.auditaIntegracao(empresa, tavaIntegradaComAC);
+		Usuario usuario = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()) ;
+		empresaManager.enviaEmailInformandoDesintegracao(empresa, tavaIntegradaComAC, motivoDesintegracao, usuario.getNome() + "("+usuario.getLogin()+")" );
+		
 		atualizaEmpresaSessao();
 
 		return Action.SUCCESS;
@@ -456,5 +462,13 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 
 	public String getAno() {
 		return ano;
+	}
+	
+	public void setMotivoDesintegracao(String motivoDesintegracao) {
+		this.motivoDesintegracao= motivoDesintegracao;
+	}
+
+	public String getMotivoDesintegracao() {
+		return motivoDesintegracao;
 	}
 }

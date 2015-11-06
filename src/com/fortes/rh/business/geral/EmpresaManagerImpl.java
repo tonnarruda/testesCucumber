@@ -2,6 +2,7 @@ package com.fortes.rh.business.geral;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,10 +37,13 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.ws.TEmpresa;
 import com.fortes.rh.util.ArquivoUtil;
+import com.fortes.rh.util.Autenticador;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.Mail;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.web.tags.CheckBox;
+import com.ibm.icu.text.SimpleDateFormat;
 
 public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> implements EmpresaManager
 {
@@ -59,6 +63,7 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	private IndiceManager indiceManager;
 	private CidadeManager cidadeManager;
 	private RiscoManager riscoManager;
+	private Mail mail;
 
 	public String[] getEmpresasByUsuarioEmpresa(Long usuarioId)
 	{
@@ -490,6 +495,27 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		logger.info("Antes: " + tavaIntegradaComAC);
 		logger.info("Depois: " + empresa.isAcIntegra() + " Grupo AC: " + empresa.getGrupoAC());
 	}
+	
+	public void enviaEmailInformandoDesintegracao(Empresa empresa, boolean tavaIntegradaComAC, String motivo, String usuario) 
+	{
+		try {
+			if(tavaIntegradaComAC && !empresa.isAcIntegra()) {
+				String subject = "Integração com o Fortes Pessoal desmarcada pelo usuário.";
+				StringBuffer body = new StringBuffer();
+				
+				body.append("<strong>Cliente:</strong> " + Autenticador.getRazaoSocial());
+				body.append("<br /><br />");
+				body.append("<strong>Usuário:</strong> " + usuario + "<br />");
+				body.append("<strong>Empresa:</strong> " + empresa.getCodigoAC() + " - " + empresa.getNome() + "<br />");
+				body.append("<strong>Data:</strong> " + new SimpleDateFormat("dd/MM/yyyy HH:mm").format(new Date()) + "</strong><br />");
+				body.append("<strong>Motivo:</strong> " + motivo);
+			
+				mail.send(empresa, subject, body.toString(), null, "suporte.rh@grupofortes.com.br");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
 
 	public boolean isControlaRiscoPorAmbiente(Long empresaId) 
 	{
@@ -559,5 +585,9 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 
 	public void setRiscoManager(RiscoManager riscoManager) {
 		this.riscoManager = riscoManager;
+	}
+
+	public void setMail(Mail mail) {
+		this.mail = mail;
 	}
 }

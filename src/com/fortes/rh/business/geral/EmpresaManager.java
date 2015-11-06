@@ -57,4 +57,5 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	String getCodigoGrupoAC(Long empresaId);
 	boolean emProcessoExportacaoAC(Long empresaId);
 	void setProcessoExportacaoAC(Long empresaId, boolean processoExportacaoAC);
+	void enviaEmailInformandoDesintegracao(Empresa empresa, boolean tavaIntegradaComAC, String motivo, String usuario);
 }

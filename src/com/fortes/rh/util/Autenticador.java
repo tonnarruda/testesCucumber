@@ -96,6 +96,17 @@ public class Autenticador
 		return modulosNaoConfigurados;
 	}
 	
+	public static String getRazaoSocial() throws NotConectAutenticationException, NotRegistredException
+	{
+		String razaoSocial = "";
+		if(verificaLicensa) {
+			RPClient c = getRemprot();
+			razaoSocial = c.getCustomerName();
+		}
+		
+		return razaoSocial;
+	}
+	
 	public static Collection<Long> getModulosNaoConfigurados(int chave) 
 	{
 		Collection<Long> modulosNaoConfigurados = new ArrayList<Long>();

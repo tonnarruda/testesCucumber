@@ -26,6 +26,7 @@
 	</style>
 	
 	<script type="text/javascript">
+		var solicitaMotivoDesintegracao = true;
 		$(function() {
 			$('#verificaParentescoHelp').qtip({
 				content: '<div style="text-align:justify">Nos cadastros de candidato e colaborador, após preencher os campos Nome do Cônjuge, Nome do Pai ou Nome da Mãe, é realizada uma checagem se há colaboradores com os nomes informados, exibindo um popup com a lista caso seja encontrado.</div>',
@@ -64,7 +65,6 @@
 			
 			$('#nomeHomonimoEmpresa').change();
 			$('#nomeHomonimo').change();
-			
 		});
 		
 		function testaConexaoAC()
@@ -114,10 +114,32 @@
 				return false;
 			}
 						
+			<@authz.authorize ifAllGranted="ROLE_INTEGRA_FORTES_PESSOAL">
+				<#if empresa.acIntegra >
+					if ( !$("#integra").is(":checked") && solicitaMotivoDesintegracao) { 
+						$('#desintegraDialog').dialog({ 
+							modal: true,
+							width: 470,
+							title: 'Integração com o Fortes Pessoal desmarcada',
+						    buttons: [{
+						    	text: "Finalizar", click: function() {
+						    		solicitaMotivoDesintegracao = false;
+						    		$("input[name=motivoDesintegracao]").val($("#motivoDesintegracao").val());
+						    		enviaForm();
+						    		$(this).dialog('close');
+						    	}
+						    }] 
+						});
+						return false;
+					} 
+				</#if>
+			</@authz.authorize>
+			
 			if(document.getElementById('cnpj').value.length == 8)
 		 		return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH', 'formulaTurnover'), new Array('remetente','respSetorPessoal'));
 			else
 				jAlert("Base CNPJ deve ter 8 dígitos.");
+			
 		}
 	</script>
 </head>
@@ -286,8 +308,18 @@
 					</ul>
 				</@ww.div>
 			</li>
+			
+			<input type="hidden" name="motivoDesintegracao"/>
+			<div id="desintegraDialog" style="display: none;">
+				<label>
+					Com a finalidade de melhorar a integração com o Fortes Pessoal, um e-mail será enviado para o suporte RH reportando que a integração com o Fortes Pessoal foi desmarcada.
+					<br><br>
+					Caso deseje, nos informe o motivo pelo qual desabilitou a integração da empresa com o Fortes Pessoal:
+				</label>
+				<textarea id="motivoDesintegracao" style="height:40px; width: 435px !important;"></textarea>
+			</div>
 		</@authz.authorize>
-		<@authz.authorize  ifNotGranted="ROLE_INTEGRA_FORTES_PESSOAL">
+		<@authz.authorize ifNotGranted="ROLE_INTEGRA_FORTES_PESSOAL">
 			<@ww.hidden name="empresa.grupoAC" />
 		</@authz.authorize>
 
