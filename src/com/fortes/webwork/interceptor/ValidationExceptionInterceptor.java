@@ -98,6 +98,22 @@ public class ValidationExceptionInterceptor implements Interceptor
 			
 			return Action.ERROR;			
 		}
+		catch (OutOfMemoryError e)
+		{
+			String warnMessage = "O sistema não possui memória suficiente para trabalhar. Verifique as configurações de memória.";
+			
+			if (actionSuport != null) 
+			{
+				actionSuport.addActionWarning(warnMessage);
+				logger.error(warnMessage);
+			}
+			
+			logger.error(e.getMessage());
+			String stacktrace = ExceptionUtils.getFullStackTrace(e);
+			logger.error(stacktrace);
+			
+			return Action.ERROR;
+		}	
 		catch (Exception e)
 		{
 			if (e.getCause() instanceof ConstraintViolationException) {
