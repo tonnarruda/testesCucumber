@@ -35,6 +35,10 @@ public abstract class Menu
 				if (papel.getPapelMae() == null)
 				{
 					String accesskey = "";
+					
+					if(papel.getUrl() == null)
+						papel.setUrl("#");
+					
 					String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
 					String nome = papel.getNome();
 					boolean exibeMenuTru = nome.equals("Utilitários") && empresaLogada.isCodigoTruCurso();
