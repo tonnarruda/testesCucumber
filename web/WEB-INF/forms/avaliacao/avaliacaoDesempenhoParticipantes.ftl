@@ -100,10 +100,9 @@
 	</head>
 	<body>
 	
-		<#include "avaliacaoDesempenhoLinks.ftl" />
 	
 		<@ww.actionerror />
-		<@ww.form name="form" action="${deleteAction}" method="POST">
+		<!-- <@ww.form name="form" action="${deleteAction}" method="POST">
 			<@display.table name="participantes" id="participante" class="dados">
 			
 				<#if avaliacaoDesempenho.liberada>
@@ -149,6 +148,7 @@
 			
 			<button onclick="window.location='list.action'" class="btnVoltar"></button>
 		</div>
+		-->
 		
 		<!--
 		 Modal para Inserir Participantes
@@ -180,5 +180,219 @@
 		</div>
 	</div>
 		
+	<style>
+		#avaliados, #avaliadores {
+			float: left;
+			width: 350px;
+			margin: 10px;
+		}
+		#avaliados h1, #avaliadores h1 {
+			//background: #E0DFDF !important;
+			background: none;
+			border: 1px solid #e7e7e7;
+			border-bottom: 2px solid #5292C0;
+			padding: 7px 15px;
+			text-align: center;
+			color: #5C5C5A;
+			border-radius: 0;
+			font-size: 12px;
+			font-weight: normal;
+			margin: 0;
+		}
+		
+		#avaliados li {
+			padding: 10px 10px;
+			cursor: copy;
+			list-style: none;
+			border-bottom: 1px solid #e7e7e7;
+			color: #5C5C5A;
+			font-size: 11px;
+		}
+		
+		#avaliadores ul {
+			min-height: 50px !important;
+		}
+		
+		.ui-state-hover, .ui-state-default{
+			background: #f7f7f7 !important;
+			color: #5C5C5A !important;
+		}
+		.ui-state-hover li, .ui-state-default li{
+			font-weight: normal;
+		}
+		.ui-state-default{
+			border-color: #e7e7e7 !important;
+		}
+		
+		.ui-state-hover{
+			border-color: #b2b2b2 !important;
+		}
+		
+		.portlet-header .ui-icon {
+			float: right;
+			cursor: pointer;
+			margin-top: -2px;
+			background-image: url(../../imgs/ui-icons_6da8d5_256x240.png);
+		}
+		
+		.portlet { margin: 5px;}
+		.portlet-header, .portlet-content { padding: 5px; font-size: 11px; color: #5C5C5A; }
+		.portlet-header {
+			background: #f7f7f7;
+			border: 1px solid #e7e7e7;
+			font-weight: bold;
+		}
+		.portlet-content { padding: 5px 10px; border: 1px solid #e7e7e7; }
+		.portlet-content li {
+			padding: 5px;
+			border-bottom: 1px solid #e7e7e7;
+			cursor: default;
+		}
+		.portlet-content li.placeholder {
+			border: none;
+		}
+		
+		.column {
+			padding: 5px 10px;
+			height: 500px;
+			overflow-x: hidden;
+			border: 1px solid #e7e7e7;
+		}
+	
+		#feedback { font-size: 1.4em; }
+	  	#selectable .ui-selecting { background: #FECA40; }
+	  	#selectable .ui-selected { background: #F39814; color: white; }
+	  	#selectable { list-style-type: none; margin: 0; padding: 0;}
+	  	#selectable li { margin: 3px; padding: 7px; }
+	</style>
+	
+	<script>
+	  $(function() {
+	    //$( "#avaliados" ).accordion();
+	    $( "#avaliadores ul" ).droppable({
+	      activeClass: "ui-state-default",
+	      hoverClass: "ui-state-hover",
+	      accept: ":not(.ui-sortable-helper)",
+	      drop: function( event, ui ) {
+	        $( this ).find( ".placeholder" ).remove();
+	        if( $(this).find(".avaliado_"+ui.draggable.attr('id')).length == 0 )
+	        	$( "<li class='avaliado_"+ui.draggable.attr('id')+"'></li>" ).text( ui.draggable.text() ).appendTo( this );
+	      }
+	    }).sortable({
+	      revert: true,
+	      items: "li:not(.placeholder)",
+	      sort: function() {
+	        // gets added unintentionally by droppable interacting with sortable
+	        // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
+	        $( this ).removeClass( "ui-state-default");
+	      }
+	    });
+	    
+	    $( "#avaliados li" ).draggable({
+	      connectToSortable: "#sortable ul",
+	      helper: "clone",
+	      revert: "invalid"
+	    });
+	    
+	    //$("#selectable").selectable();
+	    
+	    $( ".portlet" )
+	      .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+	      .find( ".portlet-header" )
+	        .addClass( "ui-widget-header ui-corner-all" )
+	        .prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
+	 
+	    $( ".portlet-toggle" ).click(function() {
+	      var icon = $( this );
+	      icon.toggleClass( "ui-icon-minusthick ui-icon-plusthick" );
+	      icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
+	    });
+	    
+	    var selecteds = new Array;
+	    var lastSelected;
+	    var activeShift = false;
+	    var activeCtrl = false;
+	    $("#selectable li").click(function(event){
+	    	console.log(lastSelected);
+	    	if (activeCtrl) {
+	    		if( selecteds.indexOf($(this).attr("id")) == -1 ) {
+	    			selecteds.push($(this).attr("id"));
+		    		$(this).addClass("ui-selected");
+		    	} else {
+		    		selecteds.splice(selecteds.indexOf($(this).attr("id")), 1);
+			    	$(this).removeClass("ui-selected");
+		    	}
+	    	} else if (activeShift) {
+	    		console.log($("#selectable li[id="+lastSelected+"]").position());
+	    	} else {
+	    		if (selecteds.length >= 1) {
+	    			$("#selectable li").removeClass("ui-selected");
+	    			selecteds = new Array;
+	    			
+	    			selecteds.push($(this).attr("id"));
+	    			$(this).addClass("ui-selected");
+	    		} else {
+	    			selecteds.push($(this).attr("id"));
+		    		$(this).addClass("ui-selected");
+	    		}
+	    	}
+	    
+	    
+	    	lastSelected= $(this).attr("id");
+	    	//isSelected = $(this);
+	    });
+	    
+	    
+	    $('body').keydown(function(event){
+	    	if ( event.which == 16 )
+	    		activeShift = true;
+	    	if ( event.which == 17 )
+	    		activeCtrl = true;
+	    }).keyup(function(event){
+	    	if ( event.which == 16 )
+	    		activeShift = false;
+	    	if ( event.which == 17 )
+	    		activeCtrl = false;
+	    });;
+	  });
+	</script>
+	  
+		<div style="width: 740px; margin: 0 auto;">
+			<@ww.form name="form" action="${deleteAction}" method="POST">
+				<div id="avaliados">
+				  <h1 class="ui-widget-header">Avaliados</h1>
+				  <div class="ui-widget-content column">
+				    <ol id="selectable">
+				      <#list participantes as avaliado>
+				      	<li class="ui-widget-content" id="${avaliado.id}">${avaliado.nome}</li>
+				      </#list>
+				    </ol>
+				  </div>
+				</div>
+			</@ww.form>
+			 
+			<div id="avaliadores">
+			  <h1 class="ui-widget-header">Avaliadores</h1>
+			  <div class="column ui-widget-content">
+			  	<#list avaliadors as avaliador>
+				  	<div class="portlet avaliador_${avaliador.id}">
+				  		 <div class="portlet-header">${avaliador.nome}</div>
+				  		 <div class="portlet-content">
+				  		 	<ul>
+				  		 		<#if (avaliador.avaliados.size() == 0)> 
+					        		<li class="placeholder">Arraste os avaliados até aqui</li>
+					        	</#if>
+					        	<#list avaliador.avaliados as avaliado>
+						        	<li class="avaliado_${avaliado.id}">${avaliado.nome}</li>
+					        	</#list>
+					      	</ul>
+				  		 </div>
+				  	</div>
+			  	</#list>
+			  </div>
+			</div>
+			<div style="clear: both;"></div>
+		</div>
+	
 	</body>
 </html>

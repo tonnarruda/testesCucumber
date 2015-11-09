@@ -243,6 +243,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private boolean manterFoto;
 	@Transient
 	private Double qtdAnosDeEmpresa;
+	@Transient
+	private Collection<Colaborador> avaliados;
 
 	public Colaborador()
 	{
@@ -2992,5 +2994,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setQtdAnosDeEmpresa(Double qtdAnosDeEmpresa) {
 		this.qtdAnosDeEmpresa = qtdAnosDeEmpresa;
+	}
+
+	public Collection<Colaborador> getAvaliados() {
+		return avaliados;
+	}
+
+	public void setAvaliados(Collection<Colaborador> avaliados) {
+		this.avaliados = avaliados;
 	}
 }
