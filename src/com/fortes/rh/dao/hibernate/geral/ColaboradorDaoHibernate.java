@@ -5087,4 +5087,40 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 			criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 			return criteria.list();
 	}
+	
+	public Integer countDemitidosPeriodo(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, boolean reducaoDeQuadro) 
+	{
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
+				.setProjection(Projections.max("hc2.data"))
+				.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+				.add(Restrictions.le("hc2.data", new Date()))
+				.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
+
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
+		criteria.createCriteria("c.historicoColaboradors", "hc", Criteria.LEFT_JOIN);
+		criteria.createCriteria("hc.faixaSalarial", "f", Criteria.LEFT_JOIN);
+		criteria.createCriteria("c.motivoDemissao", "m", Criteria.LEFT_JOIN);
+		criteria.add(Subqueries.propertyEq("hc.data", subQueryHc));
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.countDistinct("c.id"));
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("c.empresa.id", empresaId));
+		criteria.add(Expression.eq("hc.status", StatusRetornoAC.CONFIRMADO));
+		criteria.add(Expression.between("c.dataDesligamento", dataIni, dataFim));
+
+		if(reducaoDeQuadro)
+			criteria.add(Expression.eq("m.reducaoDeQuadro", reducaoDeQuadro));
+		if(estabelecimentosIds != null && estabelecimentosIds.size() > 0)
+			criteria.add(Expression.in("hc.estabelecimento.id", estabelecimentosIds));
+		if(areasIds != null && areasIds.size() > 0)
+			criteria.add(Expression.in("hc.areaOrganizacional.id", areasIds));
+		if(cargosIds != null && cargosIds.size() > 0)
+			criteria.add(Expression.in("f.cargo.id", cargosIds));
+		if(vinculos != null && vinculos.size() > 0)
+			criteria.add(Expression.in("c.vinculo", vinculos));
+		
+		return (Integer) criteria.uniqueResult();
+	}
 }

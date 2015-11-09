@@ -22,6 +22,7 @@ public class MotivoDemissao extends AbstractModel implements Serializable
 	private Empresa empresa;
 
 	private boolean turnover;
+	private boolean reducaoDeQuadro;
 	
 	@ChaveDaAuditoria
     public String getMotivo()
@@ -73,5 +74,13 @@ public class MotivoDemissao extends AbstractModel implements Serializable
 			empresa = new Empresa();
 		
 		empresa.setId(empresaId);
+	}
+
+	public boolean isReducaoDeQuadro() {
+		return reducaoDeQuadro;
+	}
+
+	public void setReducaoDeQuadro(boolean reducaoDeQuadro) {
+		this.reducaoDeQuadro = reducaoDeQuadro;
 	}
 }

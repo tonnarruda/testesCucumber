@@ -17,6 +17,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.dicionario.Vinculo;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.relatorio.TaxaDemissaoCollection;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -54,6 +55,7 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 
 	private Map<String, Object> parametros = new HashMap<String, Object>();
 	private Collection<TurnOverCollection> dataSource;
+	private Collection<TaxaDemissaoCollection> taxaDemissoesCollection;
 	private Collection<Empresa> empresas;
 	private Collection<Colaborador> colaboradores;
 	private Empresa empresa;
@@ -62,6 +64,7 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 	private boolean agruparPorTempoServico;
 	private Integer[] tempoServicoIni;
 	private Integer[] tempoServicoFim;
+	private String formulaTaxaDemissao = "[ ( Demitidos no perído - Demitidos por Redução de quadro ) / ( ( Ativos Início Mês + Ativos no fim do mês ) / 2 ) ] * 100";
 	
 	private Map<Long, String> empresasFormulas;
 
@@ -79,7 +82,7 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 
-	public String list() throws Exception 
+	public String turnOver() throws Exception 
 	{
 		Date dataIni = DateUtil.criarDataMesAno(dataDe);
 		Date dataFim = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(dataAte));
@@ -124,7 +127,6 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 			parametros = RelatorioUtil.getParametrosRelatorio("Turnover (rotatividade de colaboradores)", empresa, filtro);
 			parametros.put("FORMULA", empresa.getFormulaTurnover());
 			parametros.put("FORMULA_DESCRICAO", empresa.getFormulaTurnoverDescricao());
-			
 
 			if ( agruparPorTempoServico )
 			{
@@ -137,9 +139,65 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 				dataSource = Arrays.asList(turnOverCollection);
 				return Action.SUCCESS;
 			}
-			
 		
 		} catch (ColecaoVaziaException e) {
+
+			addActionMessage(e.getMessage());
+			prepare();
+			return Action.INPUT;
+		}
+	}
+	
+	public String taxaDeDemissao() throws Exception 
+	{
+		Date dataIni = DateUtil.criarDataMesAno(dataDe);
+		Date dataFim = DateUtil.getUltimoDiaMes(DateUtil.criarDataMesAno(dataAte));
+
+		if(empresa == null || empresa.getId() == null)
+			empresa = getEmpresaSistema();
+		
+		if(DateUtil.mesesEntreDatas(dataIni, dataFim) >= 12)
+		{
+			addActionMessage("Não é permitido um período maior que 12 meses para a geração deste relatório");
+			prepare();
+			return Action.INPUT;
+		}
+		
+		try 
+		{
+			CollectionUtil<String> cUtil = new CollectionUtil<String>();
+			
+			String filtro =  "Período: " + dataDe + " a " + dataAte;
+
+			if (estabelecimentosCheck != null && estabelecimentosCheck.length > 0)
+				filtro +=  "\nEstabelecimentos: " + StringUtil.subStr(estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null), 90, "...");
+			else
+				filtro +=  "\nTodos os Estabelecimentos";
+			
+			if (filtrarPor == 1)
+			{
+				if (areasCheck != null && areasCheck.length > 0)
+					filtro +=  "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areasCheck));
+				else
+					filtro +=  "\nTodas as Áreas Organizacionais";
+			}
+			else
+			{
+				if (cargosCheck != null && cargosCheck.length > 0)
+					filtro +=  "\nCargos: " + cargoManager.nomeCargos(LongUtil.arrayStringToArrayLong(cargosCheck));
+				else
+					filtro +=  "\nTodos os Cargos";
+			}
+
+			parametros = RelatorioUtil.getParametrosRelatorio("Taxa de Demissão", empresaManager.findByIdProjection(empresa.getId()), filtro);
+			parametros.put("FORMULA", formulaTaxaDemissao);
+			
+			taxaDemissoesCollection = new ArrayList<TaxaDemissaoCollection>();
+			taxaDemissoesCollection.add(colaboradorManager.montaTaxaDemissao(dataIni, dataFim, empresa.getId(), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(cargosCheck), cUtil.convertArrayToCollection(vinculosCheck), filtrarPor));
+
+			return Action.SUCCESS;
+		} 
+		catch (ColecaoVaziaException e) {
 
 			addActionMessage(e.getMessage());
 			prepare();
@@ -345,5 +403,13 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 
 	public Map<Long, String> getEmpresasFormulas() {
 		return empresasFormulas;
+	}
+
+	public Collection<TaxaDemissaoCollection> getTaxaDemissoesCollection() {
+		return taxaDemissoesCollection;
+	}
+
+	public String getFormulaTaxaDemissao() {
+		return formulaTaxaDemissao;
 	}
 }

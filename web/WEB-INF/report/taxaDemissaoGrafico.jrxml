@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="prontuario_subreportFichaMedica" pageWidth="790" pageHeight="802" whenNoDataType="AllSectionsNoDetail" columnWidth="790" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="30c756db-479d-4fc9-a86d-a6fa8b320f62">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.2100000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="FORMULA" class="java.lang.String"/>
+	<field name="taxaDemissao" class="java.lang.Double"/>
+	<field name="mesAnoFormatado" class="java.lang.String"/>
+	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band height="163" splitType="Stretch">
+			<barChart>
+				<chart isShowLegend="false">
+					<reportElement x="0" y="0" width="790" height="163" uuid="bd3e26ca-4cc2-46e1-85b4-04ba4f3a7e97"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend position="Bottom">
+						<font size="10"/>
+					</chartLegend>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Taxa de Demissão"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{mesAnoFormatado}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{taxaDemissao}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<barPlot>
+					<plot backgroundAlpha="0.6" foregroundAlpha="0.6">
+						<seriesColor seriesOrder="0" color="#C9C9C9"/>
+					</plot>
+					<itemLabel/>
+					<categoryAxisFormat>
+						<axisFormat>
+							<tickLabelFont>
+								<font size="10"/>
+							</tickLabelFont>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</barPlot>
+			</barChart>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

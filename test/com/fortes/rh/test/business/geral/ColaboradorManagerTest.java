@@ -73,6 +73,8 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Estado;
 import com.fortes.rh.model.geral.Pessoal;
+import com.fortes.rh.model.geral.relatorio.TaxaDemissao;
+import com.fortes.rh.model.geral.relatorio.TaxaDemissaoCollection;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.ws.TEmpregado;
@@ -1692,26 +1694,50 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     	
     	
     }
-    
-  //TODO remprot
-//    public void testValidaQtdCadastros()
-//    {
-//    	ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity(1L);
-//    	parametrosDoSistemaManager.expects(once()).method("findByIdProjection").with(ANYTHING).will(returnValue(parametrosDoSistema));
-//    	colaboradorDao.expects(once()).method("getCount").will(returnValue(10));
-//    	
-//    	Exception exception = null;
-//    	
-//    	try
-//		{
-//			colaboradorManager.validaQtdCadastros();
-//		} catch (Exception e)
-//		{
-//			exception = e;
-//		}
-//		
-//		assertNotNull(exception);
-//    }
+
+    public void testmontaTaxaDemissao() throws Exception
+    {
+    	Date dataIni = DateUtil.criarDataMesAno(1, 1, 2015);
+		Date dataFim = DateUtil.getUltimoDiaMes(dataIni);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity(1L);
+		
+		Estabelecimento estabelecimento = EstabelecimentoFactory.getEntity(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		colaborador.setVinculo(Vinculo.EMPREGO);
+		colaborador.setDataDesligamento(DateUtil.criarDataMesAno(10, 1, 2015));
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador1.setData(dataIni);
+		historicoColaborador1.setColaborador(colaborador);
+		historicoColaborador1.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador1.setEstabelecimento(estabelecimento);
+		historicoColaborador1.setAreaOrganizacional(area);
+		
+		Integer qtdAtivosFinalEInicioMes = 20;
+		Integer qtdDemitidosReducaoDeQuadro = 1;
+		Integer qtdDemitidos = 5;
+		
+		colaboradorDao.expects(atLeastOnce()).method("countAtivosPeriodo").withAnyArguments().will(returnValue(qtdAtivosFinalEInicioMes));
+		colaboradorDao.expects(atLeastOnce()).method("countDemitidosPeriodo").with(new Constraint[]{ANYTHING,ANYTHING,eq(empresa.getId()),ANYTHING,ANYTHING,ANYTHING,ANYTHING,eq(false)}).will(returnValue(qtdDemitidos));
+		colaboradorDao.expects(atLeastOnce()).method("countDemitidosPeriodo").with(new Constraint[]{ANYTHING,ANYTHING,eq(empresa.getId()),ANYTHING,ANYTHING,ANYTHING,ANYTHING,eq(true)}).will(returnValue(qtdDemitidosReducaoDeQuadro));
+		
+		TaxaDemissaoCollection taxaDemissaoCollection = colaboradorManager.montaTaxaDemissao(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento.getId()), Arrays.asList(area.getId()), null, Arrays.asList(colaborador.getVinculo()), 1);
+		
+		TaxaDemissao taxaDemissaoRetorno = ((TaxaDemissao) taxaDemissaoCollection.getTaxaDemissoes().toArray()[0]); 
+		Double CalculoTaxaDemissao = (((qtdDemitidos.doubleValue() - qtdDemitidosReducaoDeQuadro.doubleValue()) / ((qtdAtivosFinalEInicioMes.doubleValue() + qtdAtivosFinalEInicioMes.doubleValue()) / 2)) * 100);
+		
+		assertEquals(1, taxaDemissaoCollection.getTaxaDemissoes().size());
+		assertEquals(qtdAtivosFinalEInicioMes.doubleValue(), taxaDemissaoRetorno.getQtdAtivosFinalMes());
+		assertEquals(qtdAtivosFinalEInicioMes.doubleValue(), taxaDemissaoRetorno.getQtdAtivosInicioMes());
+		assertEquals(qtdDemitidos.doubleValue(), taxaDemissaoRetorno.getQtdDemitidos());
+		assertEquals(qtdDemitidosReducaoDeQuadro.doubleValue(), taxaDemissaoRetorno.getQtdDemitidosReducaoQuadro());
+		assertEquals(CalculoTaxaDemissao, taxaDemissaoRetorno.getTaxaDemissao());
+    }
 }
 
 

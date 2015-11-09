@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="turnOverDetalhes" columnCount="12" printOrder="Horizontal" pageWidth="740" pageHeight="535" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="61" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="9a640616-dbc3-41c6-bacd-5d06445cfa61">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<field name="mesAnoFormatado" class="java.lang.String"/>
+	<field name="taxaDemissaoString" class="java.lang.String"/>
+	<field name="qtdDemitidosReducaoQuadro" class="java.lang.Double"/>
+	<field name="qtdDemitidos" class="java.lang.Double"/>
+	<field name="qtdAtivosInicioMes" class="java.lang.Double"/>
+	<field name="qtdAtivosFinalMes" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="18" splitType="Stretch">
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="0" y="0" width="54" height="16" uuid="0383f377-a1ee-4cdc-b072-61226e4ebd12"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{mesAnoFormatado}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="18">
+			<textField pattern="#" isBlankWhenNull="true">
+				<reportElement key="textField" x="0" y="0" width="54" height="16" uuid="131ce6e8-882a-4061-bb10-c3db862073ef"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtdAtivosInicioMes}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="18">
+			<textField pattern="#" isBlankWhenNull="true">
+				<reportElement key="textField" x="0" y="0" width="54" height="16" uuid="7e4b1728-9621-4d22-8fb6-371185e9a17e"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtdAtivosFinalMes}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="18">
+			<textField pattern="#" isBlankWhenNull="true">
+				<reportElement key="textField-2" x="0" y="1" width="54" height="16" uuid="4353285a-e37a-454b-b9ad-ca4a22074442"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtdDemitidos}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="30">
+			<textField pattern="#" isBlankWhenNull="true">
+				<reportElement key="textField-1" x="0" y="1" width="54" height="28" uuid="223d73c8-2bc3-4898-924a-a388c98e8dbc"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qtdDemitidosReducaoQuadro}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="18">
+			<textField pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-3" x="0" y="0" width="61" height="16" uuid="f5d8239d-f325-45cb-9b79-7bf146f76290"/>
+				<box>
+					<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{taxaDemissaoString}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

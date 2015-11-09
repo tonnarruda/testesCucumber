@@ -17,6 +17,8 @@ import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.geral.relatorio.TaxaDemissao;
+import com.fortes.rh.model.geral.relatorio.TaxaDemissaoCollection;
 import com.fortes.rh.model.geral.relatorio.TurnOver;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.security.SecurityUtil;
@@ -100,7 +102,7 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	
     	colaboradorManager.expects(once()).method("montaTurnOver").withAnyArguments().will(returnValue(new TurnOverCollection(Arrays.asList(new TurnOver()))));
     	
-    	assertEquals("success", action.list());
+    	assertEquals("success", action.turnOver());
     }
 
     public void testListVazio() throws Exception
@@ -119,7 +121,7 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	ColecaoVaziaException colecaoVaziaException = new ColecaoVaziaException();
     	colaboradorManager.expects(once()).method("montaTurnOver").withAnyArguments().will(throwException(colecaoVaziaException));
 
-    	assertEquals("input", action.list());
+    	assertEquals("input", action.turnOver());
     }
 
     public void testListPeriodoGrande() throws Exception
@@ -132,9 +134,58 @@ public class IndicadorTurnOverListActionTest extends MockObjectTestCase
     	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(ParametrosDoSistemaFactory.getEntity(1L)));
     	empresaManager.expects(once()).method("findToList");
     	empresaManager.expects(once()).method("findEmpresasPermitidas");
-    	assertEquals("input", action.list());
+    	assertEquals("input", action.turnOver());
     }
 
+    public void testTaxaDemissaoMaisoQue12Meses() throws Exception
+    {
+    	action.setDataDe("01/2008");
+    	action.setDataAte("01/2010");
+
+    	action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
+    	
+    	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(ParametrosDoSistemaFactory.getEntity(1L)));
+    	empresaManager.expects(once()).method("findToList");
+    	empresaManager.expects(once()).method("findEmpresasPermitidas");
+    	assertEquals("input", action.taxaDeDemissao());
+    }
+    
+    public void testTaxaDemissaoVazio() throws Exception
+    {
+    	action.setDataDe("01/2008");
+    	action.setDataAte("12/2008");
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	action.setEmpresaSistema(empresa);
+    	empresaManager.expects(once()).method("findByIdProjection").will(returnValue(empresa));
+    	
+    	parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(ParametrosDoSistemaFactory.getEntity(1L)));
+    	empresaManager.expects(once()).method("findToList");
+    	empresaManager.expects(once()).method("findEmpresasPermitidas");
+    	
+    	ColecaoVaziaException colecaoVaziaException = new ColecaoVaziaException();
+    	colaboradorManager.expects(once()).method("montaTaxaDemissao").withAnyArguments().will(throwException(colecaoVaziaException));
+
+    	assertEquals("input", action.taxaDeDemissao());
+    }
+    
+    public void testTaxaDemissao() throws Exception
+    {
+    	action.setDataDe("01/2008");
+    	action.setDataAte("12/2008");
+    	
+    	Empresa empresa = EmpresaFactory.getEmpresa(1L);
+    	action.setEmpresaSistema(empresa);
+    	empresaManager.expects(once()).method("findByIdProjection").will(returnValue(empresa));
+    	
+    	TaxaDemissaoCollection taxaDemissaoCollection  = new TaxaDemissaoCollection();
+    	taxaDemissaoCollection.setTaxaDemissoes(Arrays.asList(new TaxaDemissao()));
+    	
+    	colaboradorManager.expects(once()).method("montaTaxaDemissao").withAnyArguments().will(returnValue(taxaDemissaoCollection));
+
+    	assertEquals("success", action.taxaDeDemissao());
+    }
+    
     public void testGetsSets()
     {
     	action.getDataAte();

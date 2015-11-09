@@ -226,7 +226,7 @@
 
 				/indicador/duracaoPreenchimentoVaga/prepare*/**=ROLE_IND
 				/indicador/duracaoPreenchimentoVaga/painel.action*=ROLE_IND,ROLE_RES_PAINEL_IND
-				/indicador/indicadorTurnOver*/**=ROLE_REL_TURNOVER
+				/indicador/indicadorTurnOver*/**=ROLE_REL_TURNOVER, ROLE_TAXA_DEMISSAO
 
 				/logging/*/**=ROLE_LOGGING
 				/externo/**=ROLE_ANONYMOUS,ROLE_USER

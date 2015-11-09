@@ -32,6 +32,7 @@ import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.geral.relatorio.CartaoAcompanhamentoExperienciaVO;
 import com.fortes.rh.model.geral.relatorio.MotivoDemissaoQuantidade;
+import com.fortes.rh.model.geral.relatorio.TaxaDemissaoCollection;
 import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
@@ -173,6 +174,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public int getCountAtivos(Date dataBase, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds);
 	public Integer countAdmitidosDemitidosTurnover(Date dataIni, Date dataFim, Collection<Long> empresaIds, Long[] estabelecimentosIds, Long[] areasIds, Long[] cargosIds, boolean isAdmitidos);
 	public TurnOverCollection montaTurnOver(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor) throws Exception;
+	public TaxaDemissaoCollection montaTaxaDemissao(Date dataIni, Date dataFim, Long empresaId, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor) throws Exception;
 	public Collection<DataGrafico> montaSalarioPorArea(Date dataBase, Long empresaId, AreaOrganizacional area);
 	public Collection<Object[]> montaGraficoEvolucaoFolha(Date dataIni, Date dataFim, Long empresaId, Long[] areasIds) throws Exception;
 	public int countAtivosPeriodo(Date dataIni, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> ocorrenciasId, boolean considerarDataAdmissao, Long colaboradorId, boolean isAbsenteismo);

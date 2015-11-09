@@ -6,7 +6,10 @@
 		<action name="prepare" class="com.fortes.rh.web.action.captacao.indicador.IndicadorTurnOverListAction" method="prepare">
 			<result name="success" type="freemarker">/WEB-INF/forms/indicador/prepareIndicadorTurnOver.ftl</result>
 		</action>
-		<action name="list" class="com.fortes.rh.web.action.captacao.indicador.IndicadorTurnOverListAction" method="list">
+		<action name="prepareTaxaDeDemissao" class="com.fortes.rh.web.action.captacao.indicador.IndicadorTurnOverListAction" method="prepare">
+			<result name="success" type="freemarker">/WEB-INF/forms/indicador/prepareTaxaDeDemissao.ftl</result>
+		</action>
+		<action name="turnOver" class="com.fortes.rh.web.action.captacao.indicador.IndicadorTurnOverListAction" method="turnOver">
 			<result name="success" type="jasper">
 				<param name="location">/WEB-INF/report/indicadorTurnOver.jasper</param>
 				<param name="dataSource">dataSource</param>
@@ -21,7 +24,7 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/indicador/prepareIndicadorTurnOver.ftl</result>
 		</action>
-		<action name="listXls" class="com.fortes.rh.web.action.captacao.indicador.IndicadorTurnOverListAction" method="list">
+		<action name="turnOverXls" class="com.fortes.rh.web.action.captacao.indicador.IndicadorTurnOverListAction" method="turnOver">
 			<result name="success" type="jasper">
 				<param name="location">/WEB-INF/report/indicadorTurnOver.jasper</param>
 				<param name="dataSource">dataSource</param>
@@ -33,10 +36,29 @@
 				<param name="location">/WEB-INF/report/indicadorTurnOverTempoServico.jasper</param>
 				<param name="dataSource">colaboradores</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">TurnoverPorTempoServico.pdf</param>
+				<param name="documentName">TurnoverPorTempoServico.xls</param>
 				<param name="format">XLS</param>
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/indicador/prepareIndicadorTurnOver.ftl</result>
+		</action>
+		<action name="taxaDeDemissao" class="com.fortes.rh.web.action.captacao.indicador.IndicadorTurnOverListAction" method="taxaDeDemissao">
+			<result name="success" type="jasper">
+				<param name="location">/WEB-INF/report/indicadorTaxaDemissao.jasper</param>
+				<param name="dataSource">taxaDemissoesCollection</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">TaxaDeDemissao.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/indicador/prepareTaxaDeDemissao.ftl</result>
+		</action>
+		<action name="taxaDeDemissaoXls" class="com.fortes.rh.web.action.captacao.indicador.IndicadorTurnOverListAction" method="taxaDeDemissao">
+			<result name="success" type="jasper">
+				<param name="location">/WEB-INF/report/indicadorTaxaDemissao.jasper</param>
+				<param name="dataSource">taxaDemissoesCollection</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">TaxaDeDemissao.xls</param>
+				<param name="format">XLS</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/indicador/prepareTaxaDeDemissao.ftl</result>
 		</action>
 	</package>
 </xwork>

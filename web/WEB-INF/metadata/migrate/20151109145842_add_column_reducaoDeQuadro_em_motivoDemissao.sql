@@ -1,0 +1,1 @@
+ALTER TABLE motivodemissao ADD COLUMN reducaodequadro boolean NOT NULL DEFAULT false; --.go 

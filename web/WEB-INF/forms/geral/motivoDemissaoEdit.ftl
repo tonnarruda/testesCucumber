@@ -21,6 +21,7 @@
 		<#if exibeFlagTurnover>
 			<@ww.checkbox label="Considerar para cálculo de turnover" name="motivoDemissao.turnover" labelPosition="left"/>
 		</#if>
+		<@ww.checkbox label="Redução de Quadro" name="motivoDemissao.reducaoDeQuadro" labelPosition="left"/>
 		
 	</@ww.form>
 

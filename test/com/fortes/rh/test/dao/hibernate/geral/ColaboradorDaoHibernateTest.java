@@ -6791,6 +6791,92 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		assertEquals(1, colaboradores.size());
 	}
 	
+	public void testCountDemitidosPeriodo()
+	{
+		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2015);
+		Date dataFim = DateUtil.getUltimoDiaMes(dataIni);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		AreaOrganizacional area = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(area);
+		
+		Estabelecimento estabelecimento1 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento1);
+		
+		Estabelecimento estabelecimento2 = EstabelecimentoFactory.getEntity();
+		estabelecimentoDao.save(estabelecimento2);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaborador1.setEmpresa(empresa);
+		colaborador1.setVinculo(Vinculo.EMPREGO);
+		colaborador1.setDataDesligamento(DateUtil.criarDataMesAno(10, 1, 2015));
+		colaboradorDao.save(colaborador1);
+		
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador1.setData(dataIni);
+		historicoColaborador1.setColaborador(colaborador1);
+		historicoColaborador1.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador1.setEstabelecimento(estabelecimento1);
+		historicoColaborador1.setAreaOrganizacional(area);
+		historicoColaboradorDao.save(historicoColaborador1);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaborador2.setEmpresa(empresa);
+		colaborador2.setVinculo(Vinculo.ESTAGIO);
+		colaborador2.setDataDesligamento(DateUtil.criarDataMesAno(10, 1, 2015));
+		colaboradorDao.save(colaborador2);
+		
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2.setData(dataIni);
+		historicoColaborador2.setColaborador(colaborador2);
+		historicoColaborador2.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaborador2.setEstabelecimento(estabelecimento2);
+		historicoColaborador2.setAreaOrganizacional(area);
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		Colaborador colaboradorForaDoPeriodoPassado = ColaboradorFactory.getEntity();
+		colaboradorForaDoPeriodoPassado.setEmpresa(empresa);
+		colaboradorForaDoPeriodoPassado.setVinculo(Vinculo.ESTAGIO);
+		colaboradorForaDoPeriodoPassado.setDataDesligamento(DateUtil.criarDataMesAno(10, 2, 2015));
+		colaboradorDao.save(colaboradorForaDoPeriodoPassado);
+		
+		HistoricoColaborador historicoColaboradorForaDoPeriodoPassado = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorForaDoPeriodoPassado.setData(dataIni);
+		historicoColaboradorForaDoPeriodoPassado.setColaborador(colaboradorForaDoPeriodoPassado);
+		historicoColaboradorForaDoPeriodoPassado.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorForaDoPeriodoPassado.setEstabelecimento(estabelecimento2);
+		historicoColaboradorForaDoPeriodoPassado.setAreaOrganizacional(area);
+		historicoColaboradorDao.save(historicoColaboradorForaDoPeriodoPassado);
+		
+		MotivoDemissao motivoDemissao = MotivoDemissaoFactory.getEntity();
+		motivoDemissao.setReducaoDeQuadro(true);
+		motivoDemissaoDao.save(motivoDemissao);
+		
+		Colaborador colaboradorcomMotivoDesligamentoReducaoQuadro = ColaboradorFactory.getEntity();
+		colaboradorcomMotivoDesligamentoReducaoQuadro.setEmpresa(empresa);
+		colaboradorcomMotivoDesligamentoReducaoQuadro.setVinculo(Vinculo.ESTAGIO);
+		colaboradorcomMotivoDesligamentoReducaoQuadro.setDataDesligamento(DateUtil.criarDataMesAno(15, 1, 2015));
+		colaboradorcomMotivoDesligamentoReducaoQuadro.setMotivoDemissao(motivoDemissao);
+		colaboradorDao.save(colaboradorcomMotivoDesligamentoReducaoQuadro);
+		
+		HistoricoColaborador historicoColaboradorcomMotivoDesligamentoReducaoQuadro = HistoricoColaboradorFactory.getEntity();
+		historicoColaboradorcomMotivoDesligamentoReducaoQuadro.setData(dataIni);
+		historicoColaboradorcomMotivoDesligamentoReducaoQuadro.setColaborador(colaboradorcomMotivoDesligamentoReducaoQuadro);
+		historicoColaboradorcomMotivoDesligamentoReducaoQuadro.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorcomMotivoDesligamentoReducaoQuadro.setEstabelecimento(estabelecimento2);
+		historicoColaboradorcomMotivoDesligamentoReducaoQuadro.setAreaOrganizacional(area);
+		historicoColaboradorDao.save(historicoColaboradorcomMotivoDesligamentoReducaoQuadro);
+		
+		assertEquals(new Integer(2), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento2.getId()), Arrays.asList(area.getId()), null, Arrays.asList(colaborador2.getVinculo()), false));
+		assertEquals("Vinculos nulos", new Integer(3), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento1.getId(), estabelecimento2.getId()), Arrays.asList(area.getId()), null, null, false));
+		assertEquals("Os dois Vinculos", new Integer(3), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento1.getId(), estabelecimento2.getId()), Arrays.asList(area.getId()), null, Arrays.asList(colaborador1.getVinculo(), colaborador2.getVinculo() ), false));
+		assertEquals("Vinculos nulos e um único estabelecimento", new Integer(1), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), Arrays.asList(estabelecimento1.getId()), Arrays.asList(area.getId()), null, null, false));
+		assertEquals("Colaborador com Motivo de desligamento de Redução de quadro", new Integer(1), colaboradorDao.countDemitidosPeriodo(dataIni, dataFim, empresa.getId(), null, null, null, null, true));
+		
+	}
+	
 	public void setAreaOrganizacionalDao(AreaOrganizacionalDao areaOrganizacionalDao)
 	{
 		this.areaOrganizacionalDao = areaOrganizacionalDao;
