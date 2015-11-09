@@ -237,6 +237,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private BigDecimal nota;
 	@Transient
 	private boolean manterFoto;
+	@Transient
+	private Collection<Colaborador> avaliados;
 
 	public Colaborador()
 	{
@@ -2929,5 +2931,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setManterFoto(boolean manterFoto) {
 		this.manterFoto = manterFoto;
+	}
+
+	public Collection<Colaborador> getAvaliados() {
+		return avaliados;
+	}
+
+	public void setAvaliados(Collection<Colaborador> avaliados) {
+		this.avaliados = avaliados;
 	}
 }

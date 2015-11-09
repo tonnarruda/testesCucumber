@@ -133,6 +133,12 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		isAvaliados = true;
 		prepareParticipantes();
 		avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null, null, null);
+		for (Colaborador avaliador : avaliadors) {
+			avaliador.setAvaliados(new ArrayList<Colaborador>());
+			for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), null, false)) {
+				avaliador.getAvaliados().add(colaboradorQuestionario.getColaborador());
+			}
+		}
 		
 		return Action.SUCCESS;
 	}
