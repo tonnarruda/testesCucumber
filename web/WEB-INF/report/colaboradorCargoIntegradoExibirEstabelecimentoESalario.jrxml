@@ -96,21 +96,21 @@
 					<textFieldExpression><![CDATA[$V{salarioSubTotal}]]></textFieldExpression>
 				</textField>
 				<textField pattern=",##0.00" isBlankWhenNull="true">
-					<reportElement x="642" y="1" width="37" height="12" uuid="1a267b60-998a-4b3d-83a0-55f08c28f280"/>
+					<reportElement x="642" y="1" width="44" height="12" uuid="1a267b60-998a-4b3d-83a0-55f08c28f280"/>
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{remuneracaoVariavelSubTotal}]]></textFieldExpression>
 				</textField>
 				<textField pattern=",##0.00" isBlankWhenNull="true">
-					<reportElement x="681" y="1" width="51" height="12" uuid="6ce4a3b3-77e9-4788-891d-b49345f8d55d"/>
+					<reportElement x="686" y="1" width="46" height="12" uuid="6ce4a3b3-77e9-4788-891d-b49345f8d55d"/>
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{mensalidadeSubTotal}]]></textFieldExpression>
 				</textField>
 				<textField pattern=",##0.00" isBlankWhenNull="true">
-					<reportElement x="598" y="1" width="42" height="12" uuid="24905a18-856b-4829-b058-f52fcafd44d2"/>
+					<reportElement x="596" y="1" width="44" height="12" uuid="24905a18-856b-4829-b058-f52fcafd44d2"/>
 					<textElement textAlignment="Right">
 						<font size="8"/>
 					</textElement>
@@ -598,21 +598,21 @@
 				<textFieldExpression><![CDATA[$V{salarioTotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern=",##0.00" isBlankWhenNull="true">
-				<reportElement x="642" y="2" width="37" height="11" uuid="5c3ef161-9cbb-4ee7-809f-437dcaa4f7b6"/>
+				<reportElement x="642" y="2" width="44" height="11" uuid="5c3ef161-9cbb-4ee7-809f-437dcaa4f7b6"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{remuneracaoVariavelTotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern=",##0.00" isBlankWhenNull="true">
-				<reportElement x="598" y="2" width="42" height="11" uuid="925c9250-f58f-46dc-b3b4-7e89d768461c"/>
+				<reportElement x="596" y="2" width="44" height="11" uuid="925c9250-f58f-46dc-b3b4-7e89d768461c"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{salarioContratualTotal}]]></textFieldExpression>
 			</textField>
 			<textField pattern=",##0.00" isBlankWhenNull="true">
-				<reportElement x="681" y="2" width="51" height="11" uuid="8ce4bb0d-f2dd-407b-834a-5950542a88c5"/>
+				<reportElement x="686" y="2" width="46" height="11" uuid="8ce4bb0d-f2dd-407b-834a-5950542a88c5"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>

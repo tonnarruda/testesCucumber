@@ -1101,7 +1101,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 
 	public Double getSalarioCalculadoMaisSalarioVariavel() 
 	{
-		return getSalarioCalculado() + getSalarioVariavel();
+		return getSalarioCalculado() + getSalarioVariavel() + getMensalidade();
 	}
  
 	public String getObsACPessoal() 
@@ -1112,11 +1112,13 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		return obsACPessoal;
 	}
 
-	public void setObsACPessoal(String obsACPessoal) {
+	public void setObsACPessoal(String obsACPessoal)
+	{
 		this.obsACPessoal = obsACPessoal;
 	}
 
-	public Double getDiferencaSalarialEmPorcentam() {
+	public Double getDiferencaSalarialEmPorcentam()
+	{
 		if(diferencaSalarialEmPorcentam != null)
 		{
 			DecimalFormat df = new DecimalFormat("0.00");
@@ -1126,31 +1128,41 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		return diferencaSalarialEmPorcentam;
 	}
 
-	public void setDiferencaSalarialEmPorcentam(Double diferencaSalarialEmPorcentam) {
+	public void setDiferencaSalarialEmPorcentam(Double diferencaSalarialEmPorcentam) 
+	{
 		this.diferencaSalarialEmPorcentam = diferencaSalarialEmPorcentam;
 	}
 
-	public CandidatoSolicitacao getCandidatoSolicitacao() {
+	public CandidatoSolicitacao getCandidatoSolicitacao() 
+	{
 		return candidatoSolicitacao;
 	}
 
-	public void setCandidatoSolicitacao(CandidatoSolicitacao candidatoSolicitacao) {
+	public void setCandidatoSolicitacao(CandidatoSolicitacao candidatoSolicitacao) 
+	{
 		this.candidatoSolicitacao = candidatoSolicitacao;
 	}
 
-	public Date getDataSolicitacaoDesligamento() {
+	public Date getDataSolicitacaoDesligamento()
+	{
 		return dataSolicitacaoDesligamento;
 	}
 
-	public void setDataSolicitacaoDesligamento(Date dataSolicitacaoDesligamento) {
+	public void setDataSolicitacaoDesligamento(Date dataSolicitacaoDesligamento) 
+	{
 		this.dataSolicitacaoDesligamento = dataSolicitacaoDesligamento;
 	}
 
-	public Double getMensalidade() {
+	public Double getMensalidade() 
+	{
+		if(this.mensalidade == null)
+			return 0.0;
+		
 		return mensalidade;
 	}
 
-	public void setMensalidade(Double mensalidade) {
+	public void setMensalidade(Double mensalidade) 
+	{
 		this.mensalidade = mensalidade;
 	}
 }
