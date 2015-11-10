@@ -17,22 +17,30 @@
 		function dataHoje(){
 			return $.datepicker.formatDate('dd/mm/yy',new Date());
 		}
+		
+		function submeter(){
+			$('.mascaraData').each(function(){
+				if ($(this).val() == '  /  /    ')
+		    		$(this).val('');
+			});
+			
+			return validaFormulario('formnota', new Array(), new Array());
+		}
 	</script>
 	
 </head>
 <body>
-	<#assign validarCampos="return validaFormulario('form', null, null)"/>
 	<#include "../ftl/mascarasImports.ftl" />
 
 	<@ww.actionmessage />
 	<@ww.actionerror />
 
-	<@ww.form name="form" action="buscaColaboradores.action" onsubmit="${validarCampos}" validate="true" method="POST">
+	<@ww.form name="formbusca" action="buscaColaboradores.action" validate="true" method="POST">
 		<li>
 			<@ww.div cssClass="divInfo" cssStyle="width: 950px;">
 				<ul>
-					<@ww.select label="Certificações" name="certificacao.id" id="colab" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." onchange="document.form.submit();" />
-					<@ww.select label="Colaborador" name="colaborador.id" id="colab" list="colaboradores" listKey="id" listValue="nomeCpf" headerKey="" headerValue="Selecione..." onchange="document.form.submit();" />
+					<@ww.select label="Certificações" name="certificacao.id" id="colab" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." onchange="document.formbusca.submit();" />
+					<@ww.select label="Colaborador" name="colaborador.id" id="colab" list="colaboradores" listKey="id" listValue="nomeCpf" headerKey="" headerValue="Selecione..." onchange="document.formbusca.submit();" />
 					<br><br>
 				</ul>
 			</@ww.div>
@@ -40,42 +48,41 @@
 	</@ww.form>
 	
 	<#if colaborador?exists && colaborador.id?exists>
-
-		<br/>
-		<#assign i = 0/>		
-		<@display.table name="colaboradorAvaliacaoPraticas" id="colaboradorAvaliacaoPratica" class="dados">
-			<@display.caption><div style="background-color: #EFEFEF;color:#5C5C5A;">Avaliações Práticas</div> </@display.caption>
-			
-			
-			<#if colaboradorAvaliacaoPratica.nota?exists>
-				<#assign aNota = "${colaboradorAvaliacaoPratica.nota}"/>
-			<#else>
-				<#assign aNota = ""/>
-			</#if>
-			
-			<#if colaboradorAvaliacaoPratica.data?exists>
-				<#assign aData = "${colaboradorAvaliacaoPratica.data?date}"/>
-			<#else>
-				<#assign aData = "dataHoje();"/>
-			</#if>
-			
-			<@display.column property="avaliacaoPratica.titulo" title="Título" style="width: 500px;"/>
-			<@display.column property="avaliacaoPratica.notaMinima" title="Nota Mínima Aprovação" style="width: 100px;text-align: center;" />
-			<@display.column title="Realizada em" style="width: 160px;text-align: center;height: 30px !important">
-				<@ww.datepicker name="colaboradorAvaliacaoPraticas[${i}].data" cssClass="mascaraData" value="${aData}" theme="simple"/><br>
-			</@display.column>
-			<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
-				<@ww.textfield id="nota" name="colaboradorAvaliacaoPraticas[${i}].nota" value="${aNota}" maxLength="5" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));" onchange="verificaValor(this.value);"  theme="simple"/>
-			</@display.column>
-			<#assign i = i + 1/>
-		</@display.table>
-		
+		<@ww.form id = "formnota" name="formnota" action="insertOrUpdate.action" onsubmit="submeter();" validate="true" method="POST">
+			<br/>
+			<#assign i = 0/>		
+			<@display.table name="colaboradorAvaliacaoPraticas" id="colaboradorAvaliacaoPratica" class="dados">
+				<@display.caption><div style="background-color: #EFEFEF;color:#5C5C5A;">Avaliações Práticas</div> </@display.caption>
+				
+				<#if colaboradorAvaliacaoPratica.nota?exists>
+					<#assign aNota = "${colaboradorAvaliacaoPratica.nota}"/>
+				<#else>
+					<#assign aNota = ""/>
+				</#if>
+				
+				<#if colaboradorAvaliacaoPratica.data?exists>
+					<#assign aData = "${colaboradorAvaliacaoPratica.data?date}"/>
+				<#else>
+					<#assign aData = ""/>
+				</#if>
+				
+				<@display.column property="avaliacaoPratica.titulo" title="Título" style="width: 500px;"/>
+				<@display.column property="avaliacaoPratica.notaMinima" title="Nota Mínima Aprovação" style="width: 100px;text-align: center;" />
+				<@display.column title="Realizada em" style="width: 160px;text-align: center;height: 30px !important">
+					<@ww.datepicker id="data[${i}]" name="colaboradorAvaliacaoPraticas[${i}].data" cssClass="mascaraData" value="${aData}" theme="simple"/><br>
+				</@display.column>
+				<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
+					<@ww.textfield id="nota" name="colaboradorAvaliacaoPraticas[${i}].nota" value="${aNota}" maxLength="5" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));"  theme="simple"/>
+				</@display.column>
+				<#assign i = i + 1/>
+			</@display.table>
+		</@ww.form>
 	
 		<div class="buttonGroup">
-			<button class="btnGravar" onclick="window.location='insertOrUpdate.action?certificacao.id=${certificacao.id}&colaborador.id=${colaborador.id}'"></button>
+			<button class="btnGravar" onclick="submeter();"></button>
 		</div>
+
 		<br/>
-		
 		<@display.table name="colaboradorTurmas" id="colaboradorTurma" class="dados">
 			<@display.caption><div style="background-color: #EFEFEF;color:#5C5C5A;">Cursos Realizados Para a Certificação</div> </@display.caption>
 			<@display.column property="curso.nome" title="Curso" style="width: 300px;"/>

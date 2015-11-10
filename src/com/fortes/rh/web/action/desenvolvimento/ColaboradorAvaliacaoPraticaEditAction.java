@@ -16,7 +16,6 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
-import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
 import com.opensymphony.xwork.ActionContext;
@@ -40,8 +39,6 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 	private Certificacao certificacao;
 	private Colaborador colaborador; 
 	
-	private String nomeComercialEntreParentese = "";
-
 	public String prepare() throws Exception
 	{
 		certificacoes = certificacaoManager.findAllSelect(getEmpresaSistema().getId());
@@ -101,7 +98,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 	
 	public String insertOrUpdate() throws Exception
 	{
-//		colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPratica);
+		colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPratica);
 		return Action.SUCCESS;
 	}
 
@@ -163,18 +160,16 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		return colaboradorTurmas;
 	}
 
-	public void setColaboradorTurmaManager(
-			ColaboradorTurmaManager colaboradorTurmaManager) {
+	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
 		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
 
-	public void setAreaOrganizacionalManager(
-			AreaOrganizacionalManager areaOrganizacionalManager) {
+	public void setAreaOrganizacionalManager(AreaOrganizacionalManager areaOrganizacionalManager) {
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
-	public String getNomeComercialEntreParentese() {
-		return nomeComercialEntreParentese;
+	public void setColaboradorAvaliacaoPraticas(Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas) {
+		this.colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticas;
 	}
 	
 }
