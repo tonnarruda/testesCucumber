@@ -74,13 +74,13 @@
 				<a href="#" onclick="newConfirm('${avisoExclusao?js_string}', function(){window.location='delete.action?areaOrganizacional.id=${areaOrganizacional.id}&areaOrganizacional.empresa.id=${areaOrganizacional.empresa.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 			</@authz.authorize>
 		</@display.column>
+		<#if integradoAC?exists && integradoAC>
+			<@display.column property="codigoAC" title="Cód. Fortes Pessoal" style='width: 110px'/>
+		</#if>
 		<@display.column property="descricao" title="Descrição"/>
 		<@display.column property="responsavel.nomeComercial" title="Responsável"/>
 		<@display.column property="coResponsavel.nomeComercial" title="Corresponsável"/>
 
-		<#if integradoAC?exists && integradoAC>
-			<@display.column property="codigoAC" title="Código AC" />
-		</#if>
 	</@display.table>
 
 	<div class="buttonGroup">

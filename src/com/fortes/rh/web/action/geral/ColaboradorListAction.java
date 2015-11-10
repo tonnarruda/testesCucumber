@@ -184,7 +184,7 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	private enum Nomenclatura {
 		ENVIADO_FP("Enviado Fortes Pessoal"),
-		CODIGO_FP ("Código Fortes Pessoal");
+		CODIGO_FP ("Cód. Fortes Pessoal");
 		
 		private String descricao;
 		
@@ -390,7 +390,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		
 		if (existeEmpresaIntegradaAc){
 			colunas.add(new ReportColumn(Nomenclatura.ENVIADO_FP.getDescricao(), "enviadoParaAC", "naoIntegraAc", 25, false));	
-			colunas.add(new ReportColumn(Nomenclatura.CODIGO_FP.getDescricao(), "codigoACRelatorio", "co.codigoAC", 8, false));
+			colunas.add(new ReportColumn(Nomenclatura.CODIGO_FP.getDescricao(), "codigoACRelatorio", "co.codigoAC", 10, false));
 		}
 		
 		if (habilitaCampoExtra){

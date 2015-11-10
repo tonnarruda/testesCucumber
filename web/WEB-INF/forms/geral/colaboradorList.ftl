@@ -167,17 +167,16 @@
 	<#include "../util/topFiltro.ftl" />
 		<@ww.form name="formBusca" action="list.action" onsubmit="${validarCampos}" method="POST" id="formBusca">
 			<table>
-				<#if integraAc>
-					<tr>
-						<td width="370">
-							<@ww.textfield label="Código no Fortes Pessoal" name="codigoACBusca" id="codigoACBusca" cssStyle="width: 100px;"/>
-						</td>
-					</tr>
-				</#if>		
 				<tr>
 					<td width="370">
-						<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" liClass="liLeft" cssStyle="width: 226px;"/>
-						<@ww.textfield label="CPF" name="cpfBusca" id="cpfBusca" cssClass="mascaraCpf"/>
+						<#if integraAc>
+							<@ww.textfield label="Cód. Fortes Pessoal" name="codigoACBusca" id="codigoACBusca" cssStyle="width: 135px;" liClass="liLeft"/>
+							<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" liClass="liLeft" cssStyle="width: 95px;"/>
+							<@ww.textfield label="CPF" name="cpfBusca" id="cpfBusca" cssClass="mascaraCpf" cssStyle="width: 110px;"/>
+						<#else>
+							<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" liClass="liLeft" cssStyle="width: 226px;"/>
+							<@ww.textfield label="CPF" name="cpfBusca" id="cpfBusca" cssClass="mascaraCpf"/>
+						</#if>	
 						<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width: 353px;"/>
 						<@ww.textfield label="Nome Comercial" name="nomeComercialBusca" id="nomeComercialBusca" cssStyle="width: 353px;"/>
 						
@@ -317,10 +316,10 @@
 		</#if>
 
 		<#if integraAc>
-			<@display.column property="codigoAC" title="Código Fortes Pessoal" style='${style}'/>
+			<@display.column property="codigoAC" title="Cód. Fortes Pessoal" style='${style}; text-align: center; width: 60px'/>
 		</#if>
 		
-		<@display.column property="matricula" title="Matrícula" style='${style}'/>
+		<@display.column property="matricula" title="Matrícula" style='${style};text-align: center;'/>
 		<@display.column property="nome" title="Nome" style='${style}'/>
 		<@display.column property="nomeComercial" title="Nome Comercial" style='${style}'/>
 		<@display.column property="pessoal.cpf" title="CPF" style='${style}'/>
