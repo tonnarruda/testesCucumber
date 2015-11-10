@@ -33,4 +33,8 @@ public class ConfigHistoricoNivelManagerImpl extends GenericManagerImpl<ConfigHi
 	public void setNivelCompetenciaManager(NivelCompetenciaManager nivelCompetenciaManager) {
 		this.nivelCompetenciaManager = nivelCompetenciaManager;
 	}
+
+	public void removeByNivelConfiguracaoHistorico(Long nivelConfiguracaoHIstoricoId) {
+		getDao().removeByNivelConfiguracaoHistorico(nivelConfiguracaoHIstoricoId);
+	}
 }

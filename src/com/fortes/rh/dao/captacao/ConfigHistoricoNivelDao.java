@@ -8,4 +8,6 @@ import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
 public interface ConfigHistoricoNivelDao extends GenericDao<ConfigHistoricoNivel> 
 {
 	Collection<ConfigHistoricoNivel> findByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId);
+
+	void removeByNivelConfiguracaoHistorico(Long nivelConfiguracaoHIstoricoId);
 }

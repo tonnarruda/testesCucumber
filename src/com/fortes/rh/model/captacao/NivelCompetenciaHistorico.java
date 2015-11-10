@@ -30,6 +30,9 @@ public class NivelCompetenciaHistorico extends AbstractModel implements Serializ
 	@ManyToOne
 	private Empresa empresa;
 	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy="nivelCompetenciaHistorico")
+	private Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> configuracaoNivelCompetenciaFaixaSalariais;
+	
 	public Date getData() {
 		return data;
 	}
@@ -52,5 +55,11 @@ public class NivelCompetenciaHistorico extends AbstractModel implements Serializ
 	}
 	public void setEmpresa(Empresa empresa) {
 		this.empresa = empresa;
+	}
+	public Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> getConfiguracaoNivelCompetenciaFaixaSalariais() {
+		return configuracaoNivelCompetenciaFaixaSalariais;
+	}
+	public void setConfiguracaoNivelCompetenciaFaixaSalariais(Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> configuracaoNivelCompetenciaFaixaSalariais) {
+		this.configuracaoNivelCompetenciaFaixaSalariais = configuracaoNivelCompetenciaFaixaSalariais;
 	}
 }

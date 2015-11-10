@@ -492,6 +492,9 @@
     <property name="dao">
       <ref bean="nivelCompetenciaHistoricoDao" />
     </property>
+     <property name="configHistoricoNivelManager">
+      <ref bean="configHistoricoNivelManager" />
+    </property>
   </bean>
   <bean id="nivelCompetenciaHistoricoManager" parent="parentManager">
     <property name="proxyInterfaces">

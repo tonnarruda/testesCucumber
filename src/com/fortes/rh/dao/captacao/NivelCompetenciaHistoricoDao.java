@@ -6,4 +6,6 @@ import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 public interface NivelCompetenciaHistoricoDao extends GenericDao<NivelCompetenciaHistorico> 
 {
 
+	public boolean existeDependenciaComCompetenciasDaFaixaSalarial(Long nivelConfiguracaoHistoricoId);
+
 }

@@ -4,6 +4,7 @@ package com.fortes.rh.web.action.captacao;
 import java.util.Collection;
 
 import com.fortes.rh.business.captacao.NivelCompetenciaHistoricoManager;
+import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 import com.fortes.rh.web.action.MyActionSupportList;
 import com.opensymphony.xwork.Action;
@@ -25,15 +26,19 @@ public class NivelCompetenciaHistoricoEditAction extends MyActionSupportList
 	{
 		try
 		{
-			nivelCompetenciaHistoricoManager.remove(nivelCompetenciaHistorico.getId());
-			addActionMessage("Histórico do nivel de competância excluído com sucesso.");
+			nivelCompetenciaHistoricoManager.removeNivelConfiguracaoHistorico(nivelCompetenciaHistorico.getId());
+			addActionMessage("Histórico dos níveis de competância excluído com sucesso.");
+		}
+		catch (FortesException e)
+		{
+			addActionWarning(e.getMessage());
+			e.printStackTrace();
 		}
 		catch (Exception e)
 		{
+			addActionError("Não foi possível excluir o histórico dos níveis de competância.");
 			e.printStackTrace();
-			addActionError("Não foi possível excluir este histórico do nivel de competância.");
 		}
-
 		return list();
 	}
 	

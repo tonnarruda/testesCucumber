@@ -57,6 +57,7 @@ CREATE TABLE nivelCompetenciaHistorico (
 ALTER TABLE nivelCompetenciaHistorico ADD CONSTRAINT nivelCompetenciaHistorico_pkey PRIMARY KEY(id);--.go
 ALTER TABLE nivelCompetenciaHistorico ADD CONSTRAINT nivelCompetenciaHistorico_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
 CREATE SEQUENCE nivelCompetenciaHistorico_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+CREATE UNIQUE INDEX nivelCompetenciaHistorico_data_empresa_uk ON nivelCompetenciaHistorico(data,empresa_id);--.go
 
 CREATE TABLE ConfigHistoricoNivel (
     id bigint NOT NULL,
@@ -81,16 +82,21 @@ BEGIN
 			nch_id := nextval('nivelCompetenciaHistorico_sequence');
 
 			INSERT INTO nivelCompetenciaHistorico(id,data,empresa_id) values(nch_id,'2005-01-01',mv.empresa_id);--.go
-			INSERT INTO ConfigHistoricoNivel(id,nivelCompetencia_id,nivelCompetenciaHistorico_id,ordem) select nextval('ConfigHistoricoNivel_sequence'),id, nch_id ,ordem from nivelcompetencia where empresa_id = mv.empresa_id;--.go
+			INSERT INTO ConfigHistoricoNivel(id,nivelCompetencia_id,nivelCompetenciaHistorico_id,ordem) SELECT nextval('ConfigHistoricoNivel_sequence'),id, nch_id ,ordem FROM nivelcompetencia WHERE empresa_id = mv.empresa_id;--.go
+			UPDATE configuracaoNivelCompetenciaFaixaSalarial SET nivelcompetenciahistorico_id = 1 WHERE faixasalarial_id  IN (SELECT fs.id FROM faixasalarial fs JOIN cargo c ON fs.cargo_id = c.id AND c.empresa_id = 1 );.--go
 		END LOOP; 
 		
     RETURN 1; 
 END; 
 $$ LANGUAGE plpgsql;--.go
 select criaConfigHistoricoNivel();--.go
-drop function criaConfigHistoricoNivel();--.go
+drop function criaConfigHistoricoNivel();--.GO
 
 ALTER TABLE nivelCompetencia drop COLUMN ordem;--.go
+
+----------
+ALTER TABLE configuracaoNivelCompetenciaFaixaSalarial ADD COLUMN nivelCompetenciaHistorico_id BIGINT;--.go
+ALTER TABLE configuracaoNivelCompetenciaFaixaSalarial ADD CONSTRAINT configNivelCompFaixaSalarial_nivelCompetenciaHistorico_fk FOREIGN KEY (nivelCompetenciaHistorico_id) REFERENCES nivelCompetenciaHistorico(id);--.go
 
 ----------------
 

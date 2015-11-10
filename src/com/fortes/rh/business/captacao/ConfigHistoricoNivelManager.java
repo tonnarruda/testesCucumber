@@ -9,4 +9,6 @@ public interface ConfigHistoricoNivelManager extends GenericManager<ConfigHistor
 {
 	Collection<ConfigHistoricoNivel> findByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId);
 	Collection<ConfigHistoricoNivel> findNiveisCompetenciaByEmpresa(Long empresaId);
+	public void removeByNivelConfiguracaoHistorico(Long nivelConfiguracaoHIstoricoId);
+	
 }

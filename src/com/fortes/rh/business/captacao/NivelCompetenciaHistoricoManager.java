@@ -5,4 +5,6 @@ import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 
 public interface NivelCompetenciaHistoricoManager extends GenericManager<NivelCompetenciaHistorico>
 {
+	public void removeNivelConfiguracaoHistorico(Long id) throws Exception;
+		
 }

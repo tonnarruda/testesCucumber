@@ -42,23 +42,26 @@
 			percentualAcumulado = 0;
 			$('.configHistoricoNivel:checkbox:checked').parent().parent().find('.percentual').each(function(){
 				percentualAcumulado = percentualAcumulado +  percentualUnitario;
-				$(this).val(percentualAcumulado.toFixed(2));
+				$(this).val((percentualAcumulado.toFixed(2)).replace('.',','));
 			});
 		}
 	</script>
 	
 	</head>
 	<body>
+		<@ww.actionmessage />
 		<@ww.actionerror />
+		
 		<@ww.form name="form" action="${formAction}" onsubmit="${validarCampos}" method="POST">
 			<#if nivelCompetenciaHistorico?exists && nivelCompetenciaHistorico.id?exists>
 				<@ww.hidden name="nivelCompetenciaHistorico.id" value="${nivelCompetenciaHistorico.id}" />
+				<@ww.hidden name="nivelCompetenciaHistorico.empresa.id" value="${nivelCompetenciaHistorico.empresa.id}" />
+				<@ww.hidden name="nivelCompetenciaHistorico.data" value="${nivelCompetenciaHistorico.data}" />
 			</#if>
 
 				<#assign i = 0/>
 				<@display.table name="configHistoricoNivels" id="configHistNivel" class="dados">
-					
-					
+								
 					<#if configHistNivel.id?exists>
 						<#assign configHistNivelId = "${configHistNivel.id}" />
 					<#else>
