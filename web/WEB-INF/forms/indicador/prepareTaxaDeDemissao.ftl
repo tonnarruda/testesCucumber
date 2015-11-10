@@ -81,6 +81,7 @@
 <@ww.actionmessage />
 
 <@ww.form name="form" action="taxaDeDemissao.action" validate="true" method="POST">
+	Fórmula: ${formulaTaxaDemissao}<br/><br/>
 	
 	<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" />
 
@@ -89,11 +90,9 @@
 	<@ww.label value="a" liClass="liLeft"/>
 	<@ww.textfield name="dataAte" id="dataAte" required="true" cssClass="mascaraMesAnoData validaDataFim"/>
 
-	<br/>Fórmula: ${formulaTaxaDemissao}<br/><br/>
-
 	<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
 	
-	<@ww.select id="optFiltro" label="Filtrar Por" name="filtrarPor" list=r"#{'1':'Área Organizacional', '2':'Cargo'}" onchange="filtrarOpt();"/>
+	<@ww.select id="optFiltro" label="Filtrar Por" name="filtrarPor" list=r"#{'1':'Área Organizacional', '2':'Cargo'}" onchange="filtrarOpt();" cssStyle="width: 503px;"/>
 	
 	<div id="divAreas">
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>

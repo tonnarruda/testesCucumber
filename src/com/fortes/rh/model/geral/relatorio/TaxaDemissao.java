@@ -46,7 +46,7 @@ public class TaxaDemissao
 	{
 		try {
 			DecimalFormat df = new DecimalFormat("0.00");
-			return Double.parseDouble(df.format(taxaDemissao).replace(",", "."));
+			return Double.parseDouble(df.format(calculaTaxaDemissao()).replace(",", "."));
 		} catch (Exception e) {
 			return 0.0;
 		}
@@ -55,7 +55,7 @@ public class TaxaDemissao
 	{
 		this.taxaDemissao = taxaDemissao;
 	}
-
+	
 	public Double getQtdDemitidos() {
 		return qtdDemitidos;
 	}
@@ -64,6 +64,10 @@ public class TaxaDemissao
 		this.qtdDemitidos = qtdDemitidos;
 	}
 
+	public void setQtdDemitidos(Integer qtdDemitidos) {
+		this.qtdDemitidos = qtdDemitidos.doubleValue();
+	}
+	
 	public Integer getTempoServico() {
 		return tempoServico;
 	}
@@ -87,6 +91,10 @@ public class TaxaDemissao
 	public void setQtdAtivosInicioMes(Double qtdAtivosInicioMes) {
 		this.qtdAtivosInicioMes = qtdAtivosInicioMes;
 	}
+	
+	public void setQtdAtivosInicioMes(Integer qtdAtivosInicioMes) {
+		this.qtdAtivosInicioMes = qtdAtivosInicioMes.doubleValue();
+	}
 
 	public Double getQtdAtivosFinalMes() {
 		return qtdAtivosFinalMes;
@@ -95,6 +103,10 @@ public class TaxaDemissao
 	public void setQtdAtivosFinalMes(Double qtdAtivosFinalMes) {
 		this.qtdAtivosFinalMes = qtdAtivosFinalMes;
 	}
+	
+	public void setQtdAtivosFinalMes(Integer qtdAtivosFinalMes) {
+		this.qtdAtivosFinalMes = qtdAtivosFinalMes.doubleValue();
+	}
 
 	public Double getQtdDemitidosReducaoQuadro() {
 		return qtdDemitidosReducaoQuadro;
@@ -102,5 +114,17 @@ public class TaxaDemissao
 
 	public void setQtdDemitidosReducaoQuadro(Double qtdDemitidosReducaoQuadro) {
 		this.qtdDemitidosReducaoQuadro = qtdDemitidosReducaoQuadro;
+	}
+	
+	public void setQtdDemitidosReducaoQuadro(Integer qtdDemitidosReducaoQuadro) {
+		this.qtdDemitidosReducaoQuadro = qtdDemitidosReducaoQuadro.doubleValue();
+	}
+	
+	private Double calculaTaxaDemissao(){
+		Double efetivoMedio = (qtdAtivosInicioMes + qtdAtivosFinalMes) / 2;
+		if(efetivoMedio != null && efetivoMedio != 0)
+			return ((qtdDemitidos - qtdDemitidosReducaoQuadro) / efetivoMedio) * 100;
+		else
+			return 0.0;
 	}
 }

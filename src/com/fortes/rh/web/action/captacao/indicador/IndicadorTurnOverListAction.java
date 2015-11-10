@@ -102,27 +102,7 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 			CollectionUtil<String> cUtil = new CollectionUtil<String>();
 			empresa = empresaManager.findByIdProjection(empresa.getId());//os managers/parametroRelatorio precisam da empresa com turnoverPorSolicitacao, logoUrl
 			
-			String filtro =  "Período: " + dataDe + " a " + dataAte;
-
-			if (estabelecimentosCheck != null && estabelecimentosCheck.length > 0)
-				filtro +=  "\nEstabelecimentos: " + StringUtil.subStr(estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null), 90, "...");
-			else
-				filtro +=  "\nTodos os Estabelecimentos";
-			
-			if (filtrarPor == 1)
-			{
-				if (areasCheck != null && areasCheck.length > 0)
-					filtro +=  "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areasCheck));
-				else
-					filtro +=  "\nTodas as Áreas Organizacionais";
-			}
-			else
-			{
-				if (cargosCheck != null && cargosCheck.length > 0)
-					filtro +=  "\nCargos: " + cargoManager.nomeCargos(LongUtil.arrayStringToArrayLong(cargosCheck));
-				else
-					filtro +=  "\nTodos os Cargos";
-			}
+			String filtro = montaFiltroRelatorio();
 			
 			parametros = RelatorioUtil.getParametrosRelatorio("Turnover (rotatividade de colaboradores)", empresa, filtro);
 			parametros.put("FORMULA", empresa.getFormulaTurnover());
@@ -167,27 +147,7 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 		{
 			CollectionUtil<String> cUtil = new CollectionUtil<String>();
 			
-			String filtro =  "Período: " + dataDe + " a " + dataAte;
-
-			if (estabelecimentosCheck != null && estabelecimentosCheck.length > 0)
-				filtro +=  "\nEstabelecimentos: " + StringUtil.subStr(estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null), 90, "...");
-			else
-				filtro +=  "\nTodos os Estabelecimentos";
-			
-			if (filtrarPor == 1)
-			{
-				if (areasCheck != null && areasCheck.length > 0)
-					filtro +=  "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areasCheck));
-				else
-					filtro +=  "\nTodas as Áreas Organizacionais";
-			}
-			else
-			{
-				if (cargosCheck != null && cargosCheck.length > 0)
-					filtro +=  "\nCargos: " + cargoManager.nomeCargos(LongUtil.arrayStringToArrayLong(cargosCheck));
-				else
-					filtro +=  "\nTodos os Cargos";
-			}
+			String filtro = montaFiltroRelatorio();
 
 			parametros = RelatorioUtil.getParametrosRelatorio("Taxa de Demissão", empresaManager.findByIdProjection(empresa.getId()), filtro);
 			parametros.put("FORMULA", formulaTaxaDemissao);
@@ -203,6 +163,31 @@ public class IndicadorTurnOverListAction extends MyActionSupportList
 			prepare();
 			return Action.INPUT;
 		}
+	}
+
+	private String montaFiltroRelatorio() {
+		String filtro =  "Período: " + dataDe + " a " + dataAte;
+
+		if (estabelecimentosCheck != null && estabelecimentosCheck.length > 0)
+			filtro +=  "\nEstabelecimentos: " + StringUtil.subStr(estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null), 90, "...");
+		else
+			filtro +=  "\nTodos os Estabelecimentos";
+		
+		if (filtrarPor == 1)
+		{
+			if (areasCheck != null && areasCheck.length > 0)
+				filtro +=  "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areasCheck));
+			else
+				filtro +=  "\nTodas as Áreas Organizacionais";
+		}
+		else
+		{
+			if (cargosCheck != null && cargosCheck.length > 0)
+				filtro +=  "\nCargos: " + cargoManager.nomeCargos(LongUtil.arrayStringToArrayLong(cargosCheck));
+			else
+				filtro +=  "\nTodos os Cargos";
+		}
+		return filtro;
 	}
 
 	public String getDataAte()

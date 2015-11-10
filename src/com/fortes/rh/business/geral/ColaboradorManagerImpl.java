@@ -2285,32 +2285,17 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		int ate = DateUtil.mesesEntreDatas(dataIni, dataFim);
 		Date dataIniTmp = DateUtil.getInicioMesData(dataIni);
 		Collection<TaxaDemissao> taxaDemissoes = new LinkedList<TaxaDemissao>();
-		double qtdAtivosInicioMes;
-		double qtdAtivosFinalMes;
-		double qtdDemitidosReducaoDeQuadro;
-		double qtdDemitidos;
 
 		for (int i = 0; i <= ate; i++)
 		{
 			dataFim = DateUtil.getUltimoDiaMes(dataIniTmp);
-
-			qtdDemitidos = getDao().countDemitidosPeriodo(dataIniTmp, dataFim, empresaId, estabelecimentosIds, areasIds, cargosIds, vinculos, false);
-			qtdDemitidosReducaoDeQuadro = getDao().countDemitidosPeriodo(dataIniTmp, dataFim, empresaId, estabelecimentosIds, areasIds, cargosIds, vinculos, true);
-			
-			qtdAtivosInicioMes = getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataIniTmp), Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false);
-			qtdAtivosFinalMes = getDao().countAtivosPeriodo(dataFim, Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false);
 			
 			TaxaDemissao taxaDeDemissaoTmp = new TaxaDemissao();
 			taxaDeDemissaoTmp.setMesAno(dataIniTmp);
-			taxaDeDemissaoTmp.setQtdDemitidosReducaoQuadro(qtdDemitidosReducaoDeQuadro);
-			taxaDeDemissaoTmp.setQtdDemitidos(qtdDemitidos);
-			taxaDeDemissaoTmp.setQtdAtivosInicioMes(qtdAtivosInicioMes);
-			taxaDeDemissaoTmp.setQtdAtivosFinalMes(qtdAtivosFinalMes);
-			
-			Double efetivoMedio = (qtdAtivosInicioMes + qtdAtivosFinalMes) / 2;
-			if(efetivoMedio != null && efetivoMedio != 0)
-				taxaDeDemissaoTmp.setTaxaDemissao(((qtdDemitidos - qtdDemitidosReducaoDeQuadro) / efetivoMedio) * 100);
-				
+			taxaDeDemissaoTmp.setQtdDemitidosReducaoQuadro(getDao().countDemitidosPeriodo(dataIniTmp, dataFim, empresaId, estabelecimentosIds, areasIds, cargosIds, vinculos, true));
+			taxaDeDemissaoTmp.setQtdDemitidos(getDao().countDemitidosPeriodo(dataIniTmp, dataFim, empresaId, estabelecimentosIds, areasIds, cargosIds, vinculos, false));
+			taxaDeDemissaoTmp.setQtdAtivosInicioMes(getDao().countAtivosPeriodo(DateUtil.getUltimoDiaMesAnterior(dataIniTmp), Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false));
+			taxaDeDemissaoTmp.setQtdAtivosFinalMes(getDao().countAtivosPeriodo(dataFim, Arrays.asList(empresaId), estabelecimentosIds, areasIds, cargosIds, vinculos, null, false, null, false));
 			taxaDemissoes.add(taxaDeDemissaoTmp);
 			
 			dataIniTmp = DateUtil.setaMesPosterior(dataIniTmp);
