@@ -601,14 +601,6 @@ public class Empresa extends AbstractModel implements Serializable
 	public void setProcessoExportacaoAC(boolean processoExportacaoAC) {
 		this.processoExportacaoAC = processoExportacaoAC;
 	}
-	
-	public boolean isVincularMatriculaCodigoFortesPessoal() {
-		return vincularMatriculaCodigoFortesPessoal;
-	}
-
-	public void setVincularMatriculaCodigoFortesPessoal(boolean vincularMatriculaCodigoFortesPessoal) {
-		this.vincularMatriculaCodigoFortesPessoal = vincularMatriculaCodigoFortesPessoal;
-	}
 
 	public boolean isMostrarPerformanceAvalDesempenho() {
 		return mostrarPerformanceAvalDesempenho;

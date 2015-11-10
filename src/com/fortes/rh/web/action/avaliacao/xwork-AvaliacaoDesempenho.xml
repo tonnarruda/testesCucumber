@@ -68,7 +68,10 @@
 			<result name="success" type="redirect">prepareAvaliados.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}</result>
 		</action>
 		<action name="insertAvaliadores" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="insertAvaliadores">
-			<result name="success" type="redirect">prepareAvaliadores.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}</result>
+			<result name="success" type="redirect">prepareAvaliados.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}</result>
+		</action>
+		<action name="gravaAssociacoesAvaliadoAvaliador" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="gravaAssociacoesAvaliadoAvaliador">
+			<result name="success" type="redirect">prepareAvaliados.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}</result>
 		</action>
 		<action name="gerarAutoAvaliacoesEmLote" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="gerarAutoAvaliacoesEmLote">
 			<result name="success" type="redirect">list.action</result>

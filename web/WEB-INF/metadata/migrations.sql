@@ -91,3 +91,29 @@ select criaConfigHistoricoNivel();--.go
 drop function criaConfigHistoricoNivel();--.go
 
 ALTER TABLE nivelCompetencia drop COLUMN ordem;--.go
+
+-----
+
+CREATE TABLE avaliado (
+	id bigint NOT NULL,
+    colaborador_id bigint,
+    avaliacaodesempenho_id bigint
+); --.go
+
+ALTER TABLE avaliado ADD CONSTRAINT avaliado_pkey PRIMARY KEY(id);--.go
+ALTER TABLE avaliado ADD CONSTRAINT avaliado_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);--.go
+ALTER TABLE avaliado ADD CONSTRAINT avaliado_avaliacaodesempenho_fk FOREIGN KEY (avaliacaodesempenho_id) REFERENCES avaliacaodesempenho(id);--.go
+CREATE SEQUENCE avaliado_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+-----
+
+CREATE TABLE avaliador (
+	id bigint NOT NULL,
+    colaborador_id bigint,
+    avaliacaodesempenho_id bigint
+); --.go
+
+ALTER TABLE avaliador ADD CONSTRAINT avaliador_pkey PRIMARY KEY(id);--.go
+ALTER TABLE avaliador ADD CONSTRAINT avaliador_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);--.go
+ALTER TABLE avaliador ADD CONSTRAINT avaliador_avaliacaodesempenho_fk FOREIGN KEY (avaliacaodesempenho_id) REFERENCES avaliacaodesempenho(id);--.go
+CREATE SEQUENCE avaliador_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go

@@ -5,6 +5,7 @@ import static com.fortes.rh.util.CheckListBoxUtil.populaCheckListBox;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
@@ -135,7 +136,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null, null, null);
 		for (Colaborador avaliador : avaliadors) {
 			avaliador.setAvaliados(new ArrayList<Colaborador>());
-			for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), null, false)) {
+			for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), null, false, false)) {
+				colaboradorQuestionario.getColaborador().setColaboradorQuestionario(colaboradorQuestionario);
 				avaliador.getAvaliados().add(colaboradorQuestionario.getColaborador());
 			}
 		}
@@ -280,8 +282,16 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String insertAvaliadores() throws Exception
 	{
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		colaboradorQuestionarioManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(colaboradorsCheck), isAvaliados);
-		prepareAvaliadores();
+		colaboradorQuestionarioManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(colaboradorsCheck), false);
+		prepareAvaliados();
+		return Action.SUCCESS;
+	}
+	
+	public String gravaAssociacoesAvaliadoAvaliador() throws Exception{
+		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
+		colaboradorQuestionarios.removeAll(Collections.singleton(null));
+		colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionarios);
+		prepareAvaliados();
 		return Action.SUCCESS;
 	}
 	
@@ -481,7 +491,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null, null, null);
 		
 		if(avaliacaoDesempenho != null)
-			colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), filtroRespondida(), false);
+			colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), filtroRespondida(), false, true);
 		
 		if(exibeResultadoAutoavaliacao)
 		{
@@ -607,6 +617,11 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public Collection<ColaboradorQuestionario> getColaboradorQuestionarios() {
 		return colaboradorQuestionarios;
+	}
+	
+	public void setColaboradorQuestionarios(
+			Collection<ColaboradorQuestionario> colaboradorQuestionarios) {
+		this.colaboradorQuestionarios = colaboradorQuestionarios;
 	}
 
 	public char getRespondida()

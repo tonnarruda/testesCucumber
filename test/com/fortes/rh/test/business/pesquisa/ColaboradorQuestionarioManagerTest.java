@@ -460,7 +460,7 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
     	
     	colaboradorQuestionarioDao.expects(once()).method("findAvaliadosByAvaliador").with(eq(1L), eq(1000L), eq(false), eq(true)).will(returnValue(avaliados));
     	
-    	assertNotNull(colaboradorQuestionarioManager.findAvaliadosByAvaliador(1L, 1000L, false, true));
+    	assertNotNull(colaboradorQuestionarioManager.findAvaliadosByAvaliador(1L, 1000L, false, true, true));
     }
     
     public void testGetPerformance()

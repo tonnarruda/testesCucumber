@@ -19,18 +19,7 @@
 		<@ww.head/>
 		<title>Participantes - ${avaliacaoDesempenho.titulo}</title>
 		
-		<#if isAvaliados>
-			<#assign insertAction="insertAvaliados.action"/>
-			<#assign deleteAction="deleteAvaliado.action"/>
-			<#assign tituloModal="Inserir Avaliado"/>
-			<#assign tituloLista="Avaliados"/>
-		<#else>
-			<#assign insertAction="insertAvaliadores.action"/>
-			<#assign deleteAction="deleteAvaliador.action"/>
-			<#assign tituloModal="Inserir Avaliador"/>
-			<#assign tituloLista="Avaliadores"/>
-		</#if>
-		
+		<#assign countColaboradorQuestionarios=0 />
 		<#assign gerarAutoAvaliacoesEmLoteAction="gerarAutoAvaliacoesEmLote.action"/>
 		
 		<#assign validarCamposModal="return validaFormulario('formModal', new Array('@colaboradorsCheck'), null)"/>
@@ -82,7 +71,7 @@
 		function excluir()
 		{
 			newConfirm('Confirma exclusão dos colaboradores selecionados?', function(){ 
-				document.form.action = "${deleteAction}";
+				document.form.action = "";
 				document.form.submit();
 			});
 		}
@@ -102,7 +91,7 @@
 	
 	
 		<@ww.actionerror />
-		<!-- <@ww.form name="form" action="${deleteAction}" method="POST">
+		<!-- <@ww.form name="form" action="" method="POST">
 			<@display.table name="participantes" id="participante" class="dados">
 			
 				<#if avaliacaoDesempenho.liberada>
@@ -119,10 +108,10 @@
 					<#if avaliacaoDesempenho.liberada>
 						<img border="0" title="" src="<@ww.url value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					<#else>
-						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='${deleteAction}?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}&participanteIds=${participante.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
+						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}&participanteIds=${participante.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 					</#if>
 				</@display.column>
-				<@display.column title="${tituloLista}" property="nome" style="width:330px;"/>
+				<@display.column title="" property="nome" style="width:330px;"/>
 				<@display.column title="Cargo" property="faixaSalarial.descricao" style="width:300px;"/>
 				<@display.column title="Área Organizacional" property="areaOrganizacional.nome" style="width:300px;"/>
 			</@display.table>
@@ -130,12 +119,13 @@
 			<@ww.hidden name="avaliacaoDesempenho.id"/>
 		</@ww.form>
 		
+		
 		<div class="buttonGroup">
 			<#if avaliacaoDesempenho.liberada>
 				<button class="btnInserirDesabilitado" disabled="disabled" onmouseover="cursor:pointer;" ></button>
 				<button class="btnExcluirDesabilitado" disabled="disabled" onmouseover="cursor:pointer;" ></button>
 			<#else>
-				<button onclick="openbox('${tituloModal}', 'nomeBusca');" class="btnInserir"></button>
+				<button onclick="openbox('', 'nomeBusca');" class="btnInserir"></button>
 				<button onclick="javascript: excluir();" class="btnExcluir"></button>
 			</#if>
 			
@@ -149,36 +139,9 @@
 			<button onclick="window.location='list.action'" class="btnVoltar"></button>
 		</div>
 		-->
-		
 		<!--
 		 Modal para Inserir Participantes
 		-->
-		
-		<div id="box">
-		<span id="boxtitle"></span>
-		<@ww.form name="formPesquisa" id="formPesquisa" action="" onsubmit="pesquisar();return false;" method="POST">
-			Empresa: <@ww.select theme="simple" label="Empresa" onchange="populaAreas(this.value);" name="empresaId" id="empresa" list="empresas" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" disabled="!compartilharColaboradores" />
-			<br>
-			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" list="areasCheckList" form="document.getElementById('formPesquisa')" filtro="true" selectAtivoInativo="true"/>
-			<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" liClass="liLeft" cssStyle="width:80px;"/>
-			<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width:410px;"/>
-			<button onclick="pesquisar();return false;" class="btnPesquisar"></button>
-			<br><br>
-		</@ww.form>
-
-		<@ww.form name="formModal" id="formModal" action="${insertAction}" method="POST">
-			<@frt.checkListBox label="Colaboradores" name="colaboradorsCheck" list="colaboradorsCheckList" form="document.getElementById('formModal')" filtro="true"/>
-			<@ww.hidden name="avaliacaoDesempenho.id"/>
-			<@ww.hidden name="isAvaliados"/>
-			<@ww.hidden name="empresaId"/>
-			<@ww.token/>
-		</@ww.form>
-
-		<div class="buttonGroup">
-			<button onclick="${validarCamposModal};" class="btnGravar"></button>
-			<button onclick="closebox();" class="btnCancelar"></button>
-		</div>
-	</div>
 		
 	<style>
 		#avaliados, #avaliadores {
@@ -207,8 +170,40 @@
 			border-bottom: 1px solid #e7e7e7;
 			color: #5C5C5A;
 			font-size: 11px;
+			min-height: 13px;
 		}
 		
+		#avaliados li div{
+			font-size: 11px;
+			float: left;
+		}
+
+		.legend {
+			height: 25px;
+			background: #e7e7e7;
+			color: #5C5C5A;
+			display: none;
+		}		
+		
+		.legend div{
+			width: 228px;
+			float: left;
+			border: 1px solid #C6C6C6;
+			padding: 5px;
+			text-align: center;
+			font-size: 11px;
+			font-weight: bold;
+		}
+		
+		.nome {
+			width: 238px;
+		}
+		
+		.faixa, .area {
+			display: none;
+			width: 220px;
+		}
+				
 		#avaliadores ul {
 			min-height: 50px !important;
 		}
@@ -259,14 +254,37 @@
 			border: 1px solid #e7e7e7;
 		}
 	
+		.more-avaliador, .more-avaliado {
+			float: left;
+			cursor: pointer;
+			margin-left: -7px;
+			background-image: url(../../imgs/ui-icons_6da8d5_256x240.png) !important;
+		}
+		
+		.ui-icon-circle-triangle-e {
+			float: right;
+			cursor: pointer;
+			margin-right: -7px;
+			background-image: url(../../imgs/ui-icons_6da8d5_256x240.png) !important;
+		}
+		
+		.ui-icon-circle-triangle-w {
+			float: right;
+			cursor: pointer;
+			margin-right: -7px;
+			display: none;
+			background-image: url(../../imgs/ui-icons_6da8d5_256x240.png) !important;
+		}
+	
 		#feedback { font-size: 1.4em; }
-	  	#selectable .ui-selecting { background: #FECA40; }
-	  	#selectable .ui-selected { background: #F39814; color: white; }
+	  	#selectable .ui-selecting { background: #7BB5DF; }
+	  	#selectable .ui-selected { background: #5292C0; color: white; }
 	  	#selectable { list-style-type: none; margin: 0; padding: 0;}
 	  	#selectable li { margin: 3px; padding: 7px; }
 	</style>
 	
 	<script>
+  	  var countColaboradorQuestionarios = 0;
 	  $(function() {
 	    //$( "#avaliados" ).accordion();
 	    $( "#avaliadores ul" ).droppable({
@@ -274,16 +292,33 @@
 	      hoverClass: "ui-state-hover",
 	      accept: ":not(.ui-sortable-helper)",
 	      drop: function( event, ui ) {
-	        $( this ).find( ".placeholder" ).remove();
-	        if( $(this).find(".avaliado_"+ui.draggable.attr('id')).length == 0 )
-	        	$( "<li class='avaliado_"+ui.draggable.attr('id')+"'></li>" ).text( ui.draggable.text() ).appendTo( this );
+	        <#if !avaliacaoDesempenho.permiteAutoAvaliacao >
+	        if( ui.draggable.attr('id') != $(this).attr('id')) {
+		        $( this ).find( ".placeholder" ).remove();
+	        </#if>
+		        if( $(this).find(".avaliado_"+ui.draggable.attr('id')).length == 0 ) {
+		        	$("<li class='avaliado_"+ui.draggable.attr('id')+"'></li>").text( ui.draggable.find(".nome").text() ).appendTo( this );
+		        	$(".avaliado_"+ui.draggable.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaborador.id" value="' + ui.draggable.attr("id") + '"/>' +
+							        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliador.id" value="' + $(this).attr("id") + '"/>' +
+							        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacao.id" value="${avaliacaoDesempenho.avaliacao.id}"/>' +
+							        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacaoDesempenho.id" value="${avaliacaoDesempenho.id}"/>');
+		        	countColaboradorQuestionarios++;
+		        }
+		    <#if !avaliacaoDesempenho.permiteAutoAvaliacao >
+	        } else {
+	        	$("<div>A avaliação não permite autoavaliação</div>").dialog({
+	        		modal: true,
+	        		height: '120',
+	        		title: "Aviso",
+	        		buttons: { "Ok": function() { $( this ).dialog( "close" );} }
+	        	});
+	        }
+	        </#if>
 	      }
 	    }).sortable({
 	      revert: true,
 	      items: "li:not(.placeholder)",
 	      sort: function() {
-	        // gets added unintentionally by droppable interacting with sortable
-	        // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
 	        $( this ).removeClass( "ui-state-default");
 	      }
 	    });
@@ -323,25 +358,62 @@
 			    	$(this).removeClass("ui-selected");
 		    	}
 	    	} else if (activeShift) {
-	    		console.log($("#selectable li[id="+lastSelected+"]").position());
-	    	} else {
-	    		if (selecteds.length >= 1) {
-	    			$("#selectable li").removeClass("ui-selected");
-	    			selecteds = new Array;
-	    			
+	    		var elements = $("#selectable li");
+	    		if (typeof lastSelected == "undefined") {
 	    			selecteds.push($(this).attr("id"));
 	    			$(this).addClass("ui-selected");
+	    		} else {
+		    		var lastElement = $("#selectable li[id="+lastSelected+"]");
+		    		var element = $(this);
+		    		
+		    		elements = elements.splice(elements.index(lastElement), elements.index(element) - elements.index(lastElement) + 1);
+		    		
+		    		$(elements).each(function(){
+		    			selecteds.push($(this).attr("id"));
+		    			$(this).addClass("ui-selected");
+		    		});
+	    		}
+	    	} else {
+	    		if (selecteds.length >= 1) {
+	    			if ( selecteds.length == 1 && selecteds.indexOf($(this).attr("id")) != -1 ) {
+				    	$(this).removeClass("ui-selected");
+				    	selecteds = new Array;
+	    			} else {
+	    				$("#selectable li").removeClass("ui-selected");
+	    				selecteds = new Array;
+	    			
+	    				selecteds.push($(this).attr("id"));
+	    				$(this).addClass("ui-selected");
+	    			}
 	    		} else {
 	    			selecteds.push($(this).attr("id"));
 		    		$(this).addClass("ui-selected");
 	    		}
 	    	}
-	    
-	    
+	    	
 	    	lastSelected= $(this).attr("id");
-	    	//isSelected = $(this);
 	    });
 	    
+	    $(".ui-icon-circle-triangle-e").click(function(){
+	    	$('#avaliados, #avaliadores').hide();
+	    	$(this).parent().parent().show();
+	    	$(this).parent().parent().css("width","720px");
+	    	$(this).parent().parent().find(".faixa").toggle();
+	    	$(this).parent().parent().find(".area").toggle();
+	    	$(this).hide();
+	    	$(this).parent().find(".ui-icon-circle-triangle-w").toggle();
+	    	$(".legend").toggle();
+	    });
+	    
+	    $(".ui-icon-circle-triangle-w").click(function(){
+	    	$('#avaliados, #avaliadores').show();
+	    	$(this).parent().parent().css("width","350px");
+	    	$(this).parent().parent().find(".faixa").toggle();
+	    	$(this).parent().parent().find(".area").toggle();
+	    	$(this).hide();
+	    	$(this).parent().find(".ui-icon-circle-triangle-e").toggle();
+	    	$(".legend").toggle();
+	    });
 	    
 	    $('body').keydown(function(event){
 	    	if ( event.which == 16 )
@@ -355,42 +427,117 @@
 	    		activeCtrl = false;
 	    });;
 	  });
+	  
+	  function openboxAvaliado() {
+	  	$("#formModal").attr("action", "insertAvaliados.action");
+	  	openbox('Inserir Avaliado', 'nomeBusca');
+	  }
+	  
+	  function openboxAvaliador() {
+	  	$("#formModal").attr("action", "insertAvaliadores.action");
+	  	openbox('Inserir Avaliador', 'nomeBusca');
+	  	
+	  }
 	</script>
 	  
+	  	<div id="box">
+			<span id="boxtitle"></span>
+			<@ww.form name="formPesquisa" id="formPesquisa" action="" onsubmit="pesquisar();return false;" method="POST">
+				Empresa: <@ww.select theme="simple" label="Empresa" onchange="populaAreas(this.value);" name="empresaId" id="empresa" list="empresas" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" disabled="!compartilharColaboradores" />
+				<br>
+				<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" list="areasCheckList" form="document.getElementById('formPesquisa')" filtro="true" selectAtivoInativo="true"/>
+				<@ww.textfield label="Matrícula" name="matriculaBusca" id="matriculaBusca" liClass="liLeft" cssStyle="width:80px;"/>
+				<@ww.textfield label="Nome" name="nomeBusca" id="nomeBusca" cssStyle="width:410px;"/>
+				<button onclick="pesquisar();return false;" class="btnPesquisar"></button>
+				<br><br>
+			</@ww.form>
+	
+			<@ww.form name="formModal" id="formModal" action="" method="POST" style="display: none !important;">
+				<@frt.checkListBox label="Colaboradores" name="colaboradorsCheck" list="colaboradorsCheckList" form="document.getElementById('formModal')" filtro="true"/>
+				<@ww.hidden name="avaliacaoDesempenho.id"/>
+				<@ww.hidden name="isAvaliados"/>
+				<@ww.hidden name="empresaId"/>
+				<@ww.token/>
+			</@ww.form>
+	
+			<div class="buttonGroup">
+				<button onclick="${validarCamposModal};" class="btnGravar"></button>
+				<button onclick="closebox();" class="btnCancelar"></button>
+			</div>
+		</div>
+		
 		<div style="width: 740px; margin: 0 auto;">
-			<@ww.form name="form" action="${deleteAction}" method="POST">
+			<@ww.form name="form" action="" method="POST">
 				<div id="avaliados">
-				  <h1 class="ui-widget-header">Avaliados</h1>
+				  <h1 class="ui-widget-header">
+				  	<span class="ui-icon ui-icon-plusthick more-avaliado" title="Inserir Avaliado" onclick="openboxAvaliado('Inserir Avaliado', 'nomeBusca');"></span>
+				  	Avaliados
+					<span class="ui-icon ui-icon-circle-triangle-e"></span>
+					<span class="ui-icon ui-icon-circle-triangle-w"></span>
+				  </h1>
+				  <div class="legend">
+				  	<div style="width: 247px;">Nome</div>
+				  	<div style="width: 208px;">Cargo</div>
+				  	<div style="width: 229px;">Área Organizacional</div>
+				  </div>
 				  <div class="ui-widget-content column">
 				    <ol id="selectable">
 				      <#list participantes as avaliado>
-				      	<li class="ui-widget-content" id="${avaliado.id}">${avaliado.nome}</li>
+				      	<li class="ui-widget-content" id="${avaliado.id}">
+				      		<div class="nome">${avaliado.nome}</div>
+				      		<div class="faixa">${avaliado.faixaSalarial.descricao}</div>
+				      		<div class="area">${avaliado.areaOrganizacional.nome}</div>
+				      	</li>
 				      </#list>
 				    </ol>
 				  </div>
 				</div>
 			</@ww.form>
 			 
-			<div id="avaliadores">
-			  <h1 class="ui-widget-header">Avaliadores</h1>
-			  <div class="column ui-widget-content">
-			  	<#list avaliadors as avaliador>
-				  	<div class="portlet avaliador_${avaliador.id}">
-				  		 <div class="portlet-header">${avaliador.nome}</div>
-				  		 <div class="portlet-content">
-				  		 	<ul>
-				  		 		<#if (avaliador.avaliados.size() == 0)> 
-					        		<li class="placeholder">Arraste os avaliados até aqui</li>
-					        	</#if>
-					        	<#list avaliador.avaliados as avaliado>
-						        	<li class="avaliado_${avaliado.id}">${avaliado.nome}</li>
-					        	</#list>
-					      	</ul>
-				  		 </div>
+			<@ww.form name="formAvaliadores" id="formAvaliadores" action="gravaAssociacoesAvaliadoAvaliador" method="POST">
+				<div id="avaliadores">
+					<h1 class="ui-widget-header">
+						<span class="ui-icon ui-icon-plusthick more-avaliador" title="Inserir Avaliador" onclick="openboxAvaliador('Inserir Avaliador', 'nomeBusca');"></span>
+						<span>Avaliadores</span>
+						<span class="ui-icon ui-icon-circle-triangle-e"></span>
+						<span class="ui-icon ui-icon-circle-triangle-w"></span>
+					</h1>
+			  		 <div class="legend">
+					  	<div style="width: 247px;">Nome</div>
+					  	<div style="width: 208px;">Cargo</div>
+					  	<div style="width: 229px;">Área Organizacional</div>
+					  </div>
+					<div class="column ui-widget-content">
+					  	<#list avaliadors as avaliador>
+						  	<div class="portlet avaliador_${avaliador.id}">
+						  		 <div class="portlet-header">${avaliador.nome}
+						  		 </div>
+						  		 <div class="portlet-content">
+						  		 	<ul id="${avaliador.id}">
+						  		 		<#if (avaliador.avaliados.size() == 0)> 
+							        		<li class="placeholder">Arraste os avaliados até aqui</li>
+							        	</#if>
+							        	<#list avaliador.avaliados as avaliado>
+								        	<li class="avaliado_${avaliado.id}">
+								        		${avaliado.nome}
+								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].id" value="${avaliado.colaboradorQuestionario.id}"/>
+								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].colaborador.id" value="${avaliado.id}"/>
+								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliador.id" value="${avaliador.id}"/>
+								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacaoDesempenho.id" value="${avaliacaoDesempenho.id}"/>
+								        		<#assign countColaboradorQuestionarios = countColaboradorQuestionarios + 1/>
+								        	</li>
+							        	</#list>
+							      	</ul>
+						  		 </div>
+						  	</div>
+					  	</#list>
 				  	</div>
-			  	</#list>
-			  </div>
-			</div>
+				</div>
+				
+				<script>countColaboradorQuestionarios=${countColaboradorQuestionarios};</script>
+				<@ww.hidden name="avaliacaoDesempenho.id"/>
+				<button type="submit" class="btnGravar"></button>
+			</@ww.form>
 			<div style="clear: both;"></div>
 		</div>
 	
