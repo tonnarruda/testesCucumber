@@ -104,7 +104,7 @@ public class UsuarioMensagemManagerImpl extends GenericManagerImpl<UsuarioMensag
 			Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findAllSelect(null, true, null);
 			for (AvaliacaoDesempenho avaliacaoDesempenho : avaliacaoDesempenhos)
 			{
-				Collection<ColaboradorQuestionario> avaliadosComAvaliacaoPendente = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), colaboradorId, false, true);
+				Collection<ColaboradorQuestionario> avaliadosComAvaliacaoPendente = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), colaboradorId, false, true, true);
 				if (avaliadosComAvaliacaoPendente != null && !avaliadosComAvaliacaoPendente.isEmpty())
 				{
 					for (ColaboradorQuestionario colabQuestionarioAvaliado : avaliadosComAvaliacaoPendente)

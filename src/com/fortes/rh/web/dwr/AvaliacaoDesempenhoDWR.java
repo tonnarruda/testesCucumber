@@ -58,7 +58,7 @@ public class AvaliacaoDesempenhoDWR
 		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(null, null, null, null, empresaId, titulo, null, false);
 		return CollectionUtil.convertCollectionToMap(avaliacaoDesempenhos, "getId", "getTitulo", AvaliacaoDesempenho.class);
 	}
-
+	
 	public void setAvaliacaoDesempenhoManager(AvaliacaoDesempenhoManager avaliacaoDesempenhoManager) {
 		this.avaliacaoDesempenhoManager = avaliacaoDesempenhoManager;
 	}
@@ -66,4 +66,5 @@ public class AvaliacaoDesempenhoDWR
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
 	}
+	
 }

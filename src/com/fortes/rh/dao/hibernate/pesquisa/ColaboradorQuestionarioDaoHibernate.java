@@ -609,7 +609,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return criteria.list();
 	}
 	
-	public Collection<ColaboradorQuestionario> findAvaliadosByAvaliador(Long avaliacaoDesempenhoId, Long avaliadorId, Boolean respondida, boolean considerarPeriodoAvalDesempenho)
+	public Collection<ColaboradorQuestionario> findAvaliadosByAvaliador(Long avaliacaoDesempenhoId, Long avaliadorId, Boolean respondida, boolean considerarPeriodoAvalDesempenho, boolean considerarLiberada)
 	{
 		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
 		
@@ -633,7 +633,8 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("avaliador.id", avaliadorId));
-		criteria.add(Expression.eq("avDesempenho.liberada", true));
+		if (considerarLiberada)
+			criteria.add(Expression.eq("avDesempenho.liberada", true));
 		
 		if (avaliacaoDesempenhoId != null)
 			criteria.add(Expression.eq("avDesempenho.id", avaliacaoDesempenhoId));

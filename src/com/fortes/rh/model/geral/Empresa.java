@@ -656,6 +656,7 @@ public class Empresa extends AbstractModel implements Serializable
 			result += StringUtil.criarMascaraTelefone(telefone);
 
 		return result;
+	}
 	
 	public boolean isVincularMatriculaCodigoFortesPessoal() {
 		return vincularMatriculaCodigoFortesPessoal;

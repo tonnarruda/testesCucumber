@@ -245,6 +245,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Double qtdAnosDeEmpresa;
 	@Transient
 	private Collection<Colaborador> avaliados;
+	@Transient
+	private ColaboradorQuestionario colaboradorQuestionario;
 
 	public Colaborador()
 	{
@@ -3002,5 +3004,14 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setAvaliados(Collection<Colaborador> avaliados) {
 		this.avaliados = avaliados;
+	}
+
+	public ColaboradorQuestionario getColaboradorQuestionario() {
+		return colaboradorQuestionario;
+	}
+
+	public void setColaboradorQuestionario(
+			ColaboradorQuestionario colaboradorQuestionario) {
+		this.colaboradorQuestionario = colaboradorQuestionario;
 	}
 }
