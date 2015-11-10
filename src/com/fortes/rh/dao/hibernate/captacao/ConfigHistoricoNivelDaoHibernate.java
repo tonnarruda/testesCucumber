@@ -3,6 +3,7 @@ package com.fortes.rh.dao.hibernate.captacao;
 import java.util.Collection;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -42,5 +43,13 @@ public class ConfigHistoricoNivelDaoHibernate extends GenericDaoHibernate<Config
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfigHistoricoNivel.class));
 
 		return criteria.list();
+	}
+
+	public void removeByNivelConfiguracaoHistorico(Long nivelConfiguracaoHIstoricoId) {
+		String queryHQL = "DELETE FROM ConfigHistoricoNivel chn where chn.nivelCompetenciaHistorico.id = :nivelConfiguracaoHIstoricoId";
+
+		Query query = getSession().createQuery(queryHQL);
+		query.setLong("nivelConfiguracaoHIstoricoId", nivelConfiguracaoHIstoricoId);
+		query.executeUpdate();
 	}
 }

@@ -26,6 +26,8 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarial extends AbstractModel imp
 	private Date data;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="configuracaoNivelCompetenciaFaixaSalarial")
 	private Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias;
+	@ManyToOne
+	private NivelCompetenciaHistorico nivelCompetenciaHistorico;
 	
 	public FaixaSalarial getFaixaSalarial() {
 		return faixaSalarial;
@@ -42,8 +44,13 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarial extends AbstractModel imp
 	public Collection<ConfiguracaoNivelCompetencia> getConfiguracaoNivelCompetencias() {
 		return configuracaoNivelCompetencias;
 	}
-	public void setConfiguracaoNivelCompetencias(
-			Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias) {
+	public void setConfiguracaoNivelCompetencias(Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias) {
 		this.configuracaoNivelCompetencias = configuracaoNivelCompetencias;
+	}
+	public NivelCompetenciaHistorico getNivelCompetenciaHistorico() {
+		return nivelCompetenciaHistorico;
+	}
+	public void setNivelCompetenciaHistorico(NivelCompetenciaHistorico nivelCompetenciaHistorico) {
+		this.nivelCompetenciaHistorico = nivelCompetenciaHistorico;
 	}
 }
