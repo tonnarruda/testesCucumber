@@ -11,8 +11,8 @@ import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.geral.Colaborador;
 
 @Entity
-@SequenceGenerator(name="sequence", sequenceName="avaliado_sequence", allocationSize=1)//TODO utilizamos a sequence do questionario para não alterar as consultas, Francisco
-public class Avaliador extends AbstractModel implements Serializable, Cloneable
+@SequenceGenerator(name="sequence", sequenceName="participanteavaliacaodesempenho_sequence", allocationSize=1)//TODO utilizamos a sequence do questionario para não alterar as consultas, Francisco
+public class ParticipanteAvaliacaoDesempenho extends AbstractModel implements Serializable, Cloneable
 {
 	@Transient private static final long serialVersionUID = 1L;
 
@@ -21,6 +21,8 @@ public class Avaliador extends AbstractModel implements Serializable, Cloneable
 	
 	@ManyToOne
 	private AvaliacaoDesempenho avaliacaoDesempenho;
+	
+	private char tipo;
 
 	public Colaborador getColaborador() {
 		return colaborador;
@@ -29,6 +31,12 @@ public class Avaliador extends AbstractModel implements Serializable, Cloneable
 	public void setColaborador(Colaborador colaborador) {
 		this.colaborador = colaborador;
 	}
+	
+	public void setColaboradorId(Long id) {
+		if ( colaborador == null )
+			colaborador =  new Colaborador();
+		colaborador.setId(id);
+	}
 
 	public AvaliacaoDesempenho getAvaliacaoDesempenho() {
 		return avaliacaoDesempenho;
@@ -36,5 +44,13 @@ public class Avaliador extends AbstractModel implements Serializable, Cloneable
 
 	public void setAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho) {
 		this.avaliacaoDesempenho = avaliacaoDesempenho;
+	}
+
+	public char getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(char tipo) {
+		this.tipo = tipo;
 	}
 }

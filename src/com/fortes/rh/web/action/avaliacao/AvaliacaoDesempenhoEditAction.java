@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.avaliacao.ParticipanteAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -23,6 +24,7 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
+import com.fortes.rh.model.dicionario.ParticipanteAvaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -50,6 +52,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private ColaboradorManager colaboradorManager;
 	private CargoManager cargoManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
 	private AvaliacaoDesempenho avaliacaoDesempenho;
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;
 	private Collection<Avaliacao> avaliacaos;
@@ -133,7 +136,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		isAvaliados = true;
 		prepareParticipantes();
-		avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null, null, null);
+		avaliadors = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
 		for (Colaborador avaliador : avaliadors) {
 			avaliador.setAvaliados(new ArrayList<Colaborador>());
 			for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), null, false, false)) {
@@ -160,7 +163,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
 		
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), isAvaliados, null, null, null);
+		participantes = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADO);
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 	}
 	
@@ -274,7 +277,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String insertAvaliados() throws Exception
 	{
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		colaboradorQuestionarioManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(colaboradorsCheck), isAvaliados);
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(colaboradorsCheck), ParticipanteAvaliacao.AVALIADO);
 		prepareAvaliados();
 		return Action.SUCCESS;
 	}
@@ -282,7 +285,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String insertAvaliadores() throws Exception
 	{
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		colaboradorQuestionarioManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(colaboradorsCheck), false);
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(colaboradorsCheck), ParticipanteAvaliacao.AVALIADOR);
 		prepareAvaliados();
 		return Action.SUCCESS;
 	}
@@ -705,6 +708,11 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public void setParticipanteAvaliacaoDesempenhoManager(
+			ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager) {
+		this.participanteAvaliacaoDesempenhoManager = participanteAvaliacaoDesempenhoManager;
 	}
 
 	public Boolean getCompartilharColaboradores() {
