@@ -8,4 +8,5 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
 public interface ColaboradorAvaliacaoPraticaManager extends GenericManager<ColaboradorAvaliacaoPratica>
 {
 	Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId);
+	void removeAllByColaboradorId(Long colaboradorId);
 }

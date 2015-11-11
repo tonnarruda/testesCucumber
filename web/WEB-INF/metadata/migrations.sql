@@ -3,9 +3,8 @@ alter table certificacao add column periodicidade integer;--.go
 
 
 --Verificar id do papel quando for criar a migrate
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (646,'ROLE_AVALIACAO_PRATICA', 'Avaliação Prática', '/avaliacao/avaliacaoPratica/list.action', 8, true, 366);--.go
-INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 646);--.go
-alter sequence papel_sequence restart with 647;--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (647,'ROLE_AVALIACAO_PRATICA', 'Avaliação Prática', '/avaliacao/avaliacaoPratica/list.action', 8, true, 366);--.go
+INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 647);--.go
 
 CREATE TABLE avaliacaoPratica (
 id bigint NOT NULL,
@@ -46,15 +45,13 @@ CREATE SEQUENCE colaboradorAvaliacaoPratica_sequence START WITH 1 INCREMENT BY 1
 
 --OBS: Remover colaboradorAvaliacaoPratica em remover colaborador com dependências 
 
-
 --Verificar id do papel quando for criar a migrate
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (647,'ROLE_COLABORADOR_AVALIACAO_PRATICA', 'Notas da Avaliação Prática', '/desenvolvimento/colaboradorAvaliacaoPratica/prepare.action', 6, true, 367);--.go
-INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 647);--.go
-alter sequence papel_sequence restart with 648;--.go
-
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id, help) VALUES (648,'ROLE_REL_CERTIFICACOES_VENCIDAS_A_VENCER', 'Certificações Vencidas e a Vencer', '/desenvolvimento/turma/prepareImprimirCertificacoesVencidasAVencer.action', 16, true, 368,'Esta permissão estará visível se a configuração realizada no cadastro da empresa na opção "Controlar vencimento da certificação" estiver por: Periodicidade da certificação');--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (648,'ROLE_COLABORADOR_AVALIACAO_PRATICA', 'Notas da Avaliação Prática', '/desenvolvimento/colaboradorAvaliacaoPratica/prepare.action', 6, true, 367);--.go
 INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 648);--.go
-ALTER sequence papel_sequence restart WITH 649;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id, help) VALUES (649,'ROLE_REL_CERTIFICACOES_VENCIDAS_A_VENCER', 'Certificações Vencidas e a Vencer', '/desenvolvimento/turma/prepareImprimirCertificacoesVencidasAVencer.action', 16, true, 368,'Esta permissão estará visível se a configuração realizada no cadastro da empresa na opção "Controlar vencimento da certificação" estiver por: Periodicidade da certificação');--.go
+INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 649);--.go
+ALTER sequence papel_sequence restart WITH 650;--.go
 
 ALTER TABLE empresa ADD COLUMN controlarVencimentoCertificacaoPor integer default 1;--.go
 

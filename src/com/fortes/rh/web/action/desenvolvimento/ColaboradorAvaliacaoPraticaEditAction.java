@@ -4,11 +4,13 @@ package com.fortes.rh.web.action.desenvolvimento;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorAvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
+import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
@@ -28,6 +30,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 	private ColaboradorManager colaboradorManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private AvaliacaoPraticaManager avaliacaoPraticaManager;
 
 	private ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica;
 	private Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas;
@@ -86,20 +89,57 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 			
 			if(colaborador.getId() != null && certificacao != null && certificacao.getId() != null){
 				colaboradorTurmas = colaboradorTurmaManager.findByColaborador(colaborador.getId(), certificacao.getId());
-				colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId());
-				
-				if(colaboradorAvaliacaoPraticas == null || colaboradorAvaliacaoPraticas.size() == 0)
-					colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(null, certificacao.getId());
+				populaColaboradorAvaliacaoPratica();
 			}
 		}
 		
 		return Action.SUCCESS;
 	}
+
+	private void populaColaboradorAvaliacaoPratica() 
+	{
+		Collection<AvaliacaoPratica> avaliacoesPraticasDoCertificado = avaliacaoPraticaManager.findByCertificacaoId(certificacao.getId());
+		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId());
+		colaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
+		boolean existeNota = false;
+		
+		for (AvaliacaoPratica avaliacaoPraticaDoCertificado : avaliacoesPraticasDoCertificado) 
+		{
+			existeNota = false;
+			
+			for (ColaboradorAvaliacaoPratica avaliacaoPraticaDoColaboradorRealizada : avaliacoesPraticasDoColaboradorRealizadas) 
+			{
+				if(avaliacaoPraticaDoColaboradorRealizada.getAvaliacaoPratica().getId().equals(avaliacaoPraticaDoCertificado.getId()))
+				{
+					avaliacaoPraticaDoColaboradorRealizada.setAvaliacaoPratica(avaliacaoPraticaDoCertificado);
+					colaboradorAvaliacaoPraticas.add(avaliacaoPraticaDoColaboradorRealizada);
+					existeNota = true;
+					break;
+				}
+			}
+			
+			if(!existeNota){
+				ColaboradorAvaliacaoPratica ColaboradorAvaliacaoPratica = new ColaboradorAvaliacaoPratica();
+				ColaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPraticaDoCertificado);
+				colaboradorAvaliacaoPraticas.add(ColaboradorAvaliacaoPratica);
+			}
+		}
+	}
 	
 	public String insertOrUpdate() throws Exception
 	{
-		colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPratica);
-		return Action.SUCCESS;
+		colaboradorAvaliacaoPraticaManager.removeAllByColaboradorId(colaborador.getId());
+		
+		for (ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica : colaboradorAvaliacaoPraticas) {
+			if(colaboradorAvaliacaoPratica.getData() != null && colaboradorAvaliacaoPratica.getNota() != null){
+				colaboradorAvaliacaoPratica.setId(null);
+				colaboradorAvaliacaoPratica.setCertificacao(certificacao);
+				colaboradorAvaliacaoPratica.setColaborador(colaborador);
+				colaboradorAvaliacaoPraticaManager.save(colaboradorAvaliacaoPratica);
+			}
+		}
+		
+		return buscaColaboradores();
 	}
 
 	public ColaboradorAvaliacaoPratica getColaboradorAvaliacaoPratica()
@@ -170,6 +210,11 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 
 	public void setColaboradorAvaliacaoPraticas(Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas) {
 		this.colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticas;
+	}
+
+	public void setAvaliacaoPraticaManager(
+			AvaliacaoPraticaManager avaliacaoPraticaManager) {
+		this.avaliacaoPraticaManager = avaliacaoPraticaManager;
 	}
 	
 }

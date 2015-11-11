@@ -12,4 +12,9 @@ public class ColaboradorAvaliacaoPraticaManagerImpl extends GenericManagerImpl<C
 	public Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId) {
 		return getDao().findByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId);
 	}
+
+	public void removeAllByColaboradorId(Long colaboradorId) {
+		getDao().removeAllByColaboradorId(colaboradorId);
+		
+	}
 }
