@@ -3,7 +3,7 @@ package com.fortes.rh.model.dicionario;
 public enum FiltroControleVencimentoCertificacao {
 
 	CURSO(1, "Periodicidade do curso"),
-	CERTIFICACOES(2, "Periodicidade da certificação");
+	CERTIFICACAO(2, "Periodicidade da certificação");
 
 	private int opcao;
 	private String descricao;

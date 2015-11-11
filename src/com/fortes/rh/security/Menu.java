@@ -122,7 +122,7 @@ public abstract class Menu
 			if (papel.getPapelMae() != null && papel.getPapelMae().getId() == id )
 			{
 				if(((empresaLogada.getControlarVencimentoCertificacaoPor() == FiltroControleVencimentoCertificacao.CURSO.getOpcao() && !papel.getId().equals(648L)) 
-						|| (empresaLogada.getControlarVencimentoCertificacaoPor() == FiltroControleVencimentoCertificacao.CERTIFICACOES.getOpcao() && !papel.getId().equals(635L)))){
+						|| (empresaLogada.getControlarVencimentoCertificacaoPor() == FiltroControleVencimentoCertificacao.CERTIFICACAO.getOpcao() && !papel.getId().equals(635L)))){
 					
 					String url = papel.getUrl().equals("#") ? "#" : contexto + papel.getUrl();
 					

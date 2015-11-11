@@ -261,4 +261,9 @@ public class GerenciadorComunicacaoEditAction extends MyActionSupportList
 	{
 		this.estabelecimentoManager = estabelecimentoManager;
 	}
+	
+	public Integer getControleVencimentoCertificacao()
+	{
+		return getEmpresaSistema().getControlarVencimentoCertificacaoPor();
+	}
 }

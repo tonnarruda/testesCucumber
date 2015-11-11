@@ -9,6 +9,7 @@ import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -34,6 +35,8 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		
 	private String nomeBusca;//filtro listagem
 
+	private boolean exibirPeriodicidade;
+
 	private void prepare() throws Exception
 	{
 		if (certificacao != null && certificacao.getId() != null)
@@ -44,6 +47,8 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		
 		Collection<AvaliacaoPratica> avaliacaoPraticas = avaliacaoPraticaManager.find(new String[] {"empresa.id"}, new Object[] { getEmpresaSistema().getId() }, new String[] { "titulo" });
 		avaliacoesPraticasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoPraticas, "getId", "getTitulo");
+		
+		setExibirPeriodicidade(getEmpresaSistema().getControlarVencimentoCertificacaoPor() == FiltroControleVencimentoCertificacao.CERTIFICACAO.getOpcao());
 	}
 
 	public String prepareInsert() throws Exception
@@ -155,5 +160,13 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public void setAvaliacoesPraticasCheck(String[] avaliacoesPraticasCheck) {
 		this.avaliacoesPraticasCheck = avaliacoesPraticasCheck;
+	}
+
+	public boolean isExibirPeriodicidade() {
+		return exibirPeriodicidade;
+	}
+
+	public void setExibirPeriodicidade(boolean exibirPeriodicidade) {
+		this.exibirPeriodicidade = exibirPeriodicidade;
 	}
 }
