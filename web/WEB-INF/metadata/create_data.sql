@@ -896,7 +896,7 @@ SELECT pg_catalog.setval('ocorrencia_sequence', 1, false);
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 645, false);
+SELECT pg_catalog.setval('papel_sequence', 647, false);
 
 
 --
@@ -6790,7 +6790,7 @@ ALTER TABLE grupoac ENABLE TRIGGER ALL;
 
 ALTER TABLE empresa DISABLE TRIGGER ALL;
 
-INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, emailresplimitecontrato, imganiversarianteurl, mensagemcartaoaniversariante, turnoverporsolicitacao, obrigarambientefuncao, verificaparentesco, controlariscopor, solpessoalexibircolabsubstituido, codigotrucurso, exibirlogoempresappraltcat, solpessoalexibirsalario, solpessoalobrigardadoscomplementares, formulaturnover, solicitarconfirmacaodesligamento, cnae2, considerarsabadonoabsenteismo, solpessoalreabrirsolicitacao, considerardomingonoabsenteismo, processoexportacaoac, vincularmatriculacodigofortespessoal) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', NULL, '001', false, false, NULL, '', 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', false, false, 'N', 'A', false, false, false, true, false, 1, false, NULL, false, false, false, false, false);
+INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, emailresplimitecontrato, imganiversarianteurl, mensagemcartaoaniversariante, turnoverporsolicitacao, obrigarambientefuncao, verificaparentesco, controlariscopor, solpessoalexibircolabsubstituido, codigotrucurso, exibirlogoempresappraltcat, solpessoalexibirsalario, solpessoalobrigardadoscomplementares, formulaturnover, solicitarconfirmacaodesligamento, cnae2, considerarsabadonoabsenteismo, solpessoalreabrirsolicitacao, considerardomingonoabsenteismo, processoexportacaoac) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', NULL, '001', false, false, NULL, '', 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', false, false, 'N', 'A', false, false, false, true, false, 1, false, NULL, false, false, false, false);
 
 
 ALTER TABLE empresa ENABLE TRIGGER ALL;
@@ -25744,6 +25744,10 @@ INSERT INTO migrations (name) VALUES ('20150925155038');
 INSERT INTO migrations (name) VALUES ('20150928083434');
 INSERT INTO migrations (name) VALUES ('20151005174443');
 INSERT INTO migrations (name) VALUES ('20151008111614');
+INSERT INTO migrations (name) VALUES ('20151027153059');
+INSERT INTO migrations (name) VALUES ('20151103145842');
+INSERT INTO migrations (name) VALUES ('20151109145842');
+INSERT INTO migrations (name) VALUES ('20151109148842');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
@@ -26100,6 +26104,8 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (353, 'ROLE_PES', 'Pesquisas', '#', 7, true, 'P', NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (357, 'ROLE_R&S', 'R&S', '#', 5, true, 'R', NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (644, 'ROLE_MOV_AVALIACAO_EDITAR_ACOMPANHAMENTO', 'Editar respostas do acompanhamento do período de experiência por meio de caixa de mensagem ou email', '', 4, false, NULL, NULL, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (645, 'ROLE_INTEGRA_FORTES_PESSOAL', 'Integra com o Fortes Pessoal', '#', 1, false, NULL, 58, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (646, 'ROLE_TAXA_DEMISSAO', 'Taxa de Demissão', '/indicador/indicadorTurnOver/prepareTaxaDeDemissao.action', 11, true, NULL, 377, NULL);
 
 
 ALTER TABLE papel ENABLE TRIGGER ALL;
@@ -26122,7 +26128,7 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.152.183', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.56.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.153.184', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.56.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;
@@ -26418,6 +26424,8 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 642);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 643);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 644);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (2, 644);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 645);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 646);
 
 
 ALTER TABLE perfil_papel ENABLE TRIGGER ALL;

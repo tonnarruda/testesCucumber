@@ -348,6 +348,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		colaboradorManager.expects(once()).method("updateEmpregado").with(eq(empregado)).will(returnValue(colaborador));
 		historicoColaboradorManager.expects(once()).method("updateSituacao").with(eq(situacao));
+		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
+		transactionManager.expects(once()).method("commit").with(ANYTHING);
 
 		assertEquals(true, rHServiceManager.atualizarEmpregadoAndSituacao(empregado, situacao).isSucesso());
 	}
@@ -360,6 +362,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 		situacao.setEmpresaCodigoAC(empresaCodigoAC);
 
 		colaboradorManager.expects(once()).method("updateEmpregado").with(eq(colaborador)).will(throwException(new Exception()));
+		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
+		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 
 		assertEquals(false, rHServiceManager.atualizarEmpregadoAndSituacao(colaborador, situacao).isSucesso());
 	}
@@ -374,6 +378,8 @@ public class RHServiceManagerTest extends MockObjectTestCase
 
 		colaboradorManager.expects(once()).method("updateEmpregado").with(eq(empregado)).will(returnValue(colaborador));
 		historicoColaboradorManager.expects(once()).method("updateSituacao").with(eq(situacao)).will(throwException(new Exception()));;
+		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
+		transactionManager.expects(once()).method("rollback").with(ANYTHING);
 
 		assertEquals(false, rHServiceManager.atualizarEmpregadoAndSituacao(empregado, situacao).isSucesso());
 	}

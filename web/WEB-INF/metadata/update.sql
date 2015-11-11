@@ -23298,3 +23298,20 @@ insert into migrations values('20151005174443');--.go
 update parametrosdosistema set acversaowebservicecompativel='1.1.56.1';--.go
 insert into migrations values('20151008111614');--.go
 update parametrosdosistema set appversao = '1.1.152.183';--.go
+-- versao 1.1.153.184
+
+ALTER TABLE empresa DROP COLUMN vincularmatriculacodigofortespessoal; --.go
+
+DROP FUNCTION atualiza_matricula_to_codigofortespessoal(bigint[], double precision); --.go
+insert into migrations values('20151027153059');--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (645, 'ROLE_INTEGRA_FORTES_PESSOAL', 'Integra com o Fortes Pessoal', '#', 1, false, 58); --.go
+INSERT INTO perfil_papel(perfil_id, papeis_id) select perfil_id, 645 from perfil_papel where papeis_id = 58; --.go
+ALTER sequence papel_sequence restart WITH 646; --.go
+insert into migrations values('20151103145842');--.go
+ALTER TABLE motivodemissao ADD COLUMN reducaodequadro boolean NOT NULL DEFAULT false; --.go 
+insert into migrations values('20151109145842');--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (646,'ROLE_TAXA_DEMISSAO', 'Taxa de Demissão', '/indicador/indicadorTurnOver/prepareTaxaDeDemissao.action', 11, true, 377);--.go
+INSERT INTO perfil_papel(perfil_id, papeis_id) select perfil_id, 646 from perfil_papel where papeis_id = 398;--.go
+alter sequence papel_sequence restart with 647;--.go
+insert into migrations values('20151109148842');--.go
+update parametrosdosistema set appversao = '1.1.153.184';--.go
