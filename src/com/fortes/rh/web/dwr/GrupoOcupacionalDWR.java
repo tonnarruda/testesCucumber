@@ -29,7 +29,7 @@ public class GrupoOcupacionalDWR
 	public Map<Long, String> getByEmpresas(Long empresaId, Long[] empresaIds) throws Exception
 	{
 		Collection<GrupoOcupacional> grupos = new ArrayList<GrupoOcupacional>();
-		if(empresaId == null || empresaId == 0 || empresaId == -1 )
+		if((empresaId == null || empresaId == 0 || empresaId == -1 ) && empresaIds.length > 0)
 			grupos = grupoOcupacionalManager.findByEmpresasIds(empresaIds);
 		else
 			grupos = grupoOcupacionalManager.findByEmpresasIds(empresaId);

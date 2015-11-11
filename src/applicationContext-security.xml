@@ -430,8 +430,8 @@
 				
 				/cargosalario/tabelaReajusteColaborador/aplicarPor*.action*=ROLE_MOV_APLICARREALINHAMENTO
 				/cargosalario/tabelaReajusteColaborador/*/**=ROLE_MOV_SIMULACAOREAJUSTE
-				
-				/cargosalario/cargo/prepareRelatorioColaboradorGrupoOcupacional.action/*/**=ROLE_REL_COLAB_GRUPOOCUPACIONAL
+				/cargosalario/cargo/prepareRelatorioColaboradorGrupoOcupacional*/**=ROLE_REL_COLAB_GRUPOOCUPACIONAL
+				/cargosalario/cargo/relatorioColaboradorGrupoOcupacional*/**=ROLE_REL_COLAB_GRUPOOCUPACIONAL
 				/cargosalario/cargo/prepareRelatorioCargo.action*=ROLE_REL_CARGO
 				/cargosalario/cargo/relatorioCargo.action*=ROLE_REL_CARGO
 				/cargosalario/cargo/prepareRelatorioColaboradorCargo.action*=ROLE_REL_COLAB_CARGO
