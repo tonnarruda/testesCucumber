@@ -13,6 +13,11 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="participanteAvaliacaoDesempenhoDaoTarget" class="com.fortes.rh.dao.hibernate.avaliacao.ParticipanteAvaliacaoDesempenhoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
   <bean id="avaliacaoDesempenhoDaoTarget" class="com.fortes.rh.dao.hibernate.avaliacao.AvaliacaoDesempenhoDaoHibernate">
     <property name="sessionFactory">
       <ref bean="sessionFactory" />

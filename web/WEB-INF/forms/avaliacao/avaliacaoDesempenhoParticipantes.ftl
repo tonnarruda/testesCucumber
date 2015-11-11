@@ -119,7 +119,6 @@
 			<@ww.hidden name="avaliacaoDesempenho.id"/>
 		</@ww.form>
 		
-		
 		<div class="buttonGroup">
 			<#if avaliacaoDesempenho.liberada>
 				<button class="btnInserirDesabilitado" disabled="disabled" onmouseover="cursor:pointer;" ></button>
@@ -294,11 +293,11 @@
 	      drop: function( event, ui ) {
 	        <#if !avaliacaoDesempenho.permiteAutoAvaliacao >
 	        if( ui.draggable.attr('id') != $(this).attr('id')) {
-		        $( this ).find( ".placeholder" ).remove();
 	        </#if>
+		        $( this ).find( ".placeholder" ).remove();
 		        if( $(this).find(".avaliado_"+ui.draggable.attr('id')).length == 0 ) {
 		        	$("<li class='avaliado_"+ui.draggable.attr('id')+"'></li>").text( ui.draggable.find(".nome").text() ).appendTo( this );
-		        	$(".avaliado_"+ui.draggable.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaborador.id" value="' + ui.draggable.attr("id") + '"/>' +
+		        	$( this ).find(".avaliado_"+ui.draggable.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaborador.id" value="' + ui.draggable.attr("id") + '"/>' +
 							        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliador.id" value="' + $(this).attr("id") + '"/>' +
 							        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacao.id" value="${avaliacaoDesempenho.avaliacao.id}"/>' +
 							        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacaoDesempenho.id" value="${avaliacaoDesempenho.id}"/>');

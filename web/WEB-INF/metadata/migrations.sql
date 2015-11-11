@@ -12,7 +12,7 @@ ALTER TABLE criterioavaliacaocompetencia ADD CONSTRAINT criterioavaliacaocompete
 ALTER TABLE criterioavaliacaocompetencia ADD CONSTRAINT criterioavaliacaocompetencia_atitude_fk FOREIGN KEY (atitude_id) REFERENCES atitude(id);--.go
 CREATE SEQUENCE criterioavaliacaocompetencia_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
------
+---------------
 
 CREATE TABLE configuracaonivelcompetenciacriterio (
 	id bigint NOT NULL,
@@ -33,7 +33,7 @@ update configuracaonivelcompetencia set pesocompetencia = 1 where configuracaoni
 
 ALTER TABLE empresa ADD COLUMN mostrarPerformanceAvalDesempenho boolean default false;--.go
 
--------------
+---------------
 
 --verificar id dos papeis ao criar migrate
 update papel set url = null where id = 516;--.go
@@ -46,7 +46,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) SELECT perfil_id, 650 FROM perfi
 
 alter sequence papel_sequence restart with 652;--.go
 
----------- 
+---------------
 
 CREATE TABLE nivelCompetenciaHistorico (
 	id bigint NOT NULL,
@@ -92,28 +92,78 @@ drop function criaConfigHistoricoNivel();--.go
 
 ALTER TABLE nivelCompetencia drop COLUMN ordem;--.go
 
------
+----------------
 
-CREATE TABLE avaliado (
+CREATE TABLE participanteavaliacaodesempenho (
 	id bigint NOT NULL,
     colaborador_id bigint,
-    avaliacaodesempenho_id bigint
+    avaliacaodesempenho_id bigint,
+    tipo character
 ); --.go
 
-ALTER TABLE avaliado ADD CONSTRAINT avaliado_pkey PRIMARY KEY(id);--.go
-ALTER TABLE avaliado ADD CONSTRAINT avaliado_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);--.go
-ALTER TABLE avaliado ADD CONSTRAINT avaliado_avaliacaodesempenho_fk FOREIGN KEY (avaliacaodesempenho_id) REFERENCES avaliacaodesempenho(id);--.go
-CREATE SEQUENCE avaliado_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+ALTER TABLE participanteavaliacaodesempenho ADD CONSTRAINT participanteavaliacaodesempenho_pkey PRIMARY KEY(id);--.go
+ALTER TABLE participanteavaliacaodesempenho ADD CONSTRAINT participanteavaliacaodesempenho_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);--.go
+ALTER TABLE participanteavaliacaodesempenho ADD CONSTRAINT participanteavaliacaodesempenho_avaliacaodesempenho_fk FOREIGN KEY (avaliacaodesempenho_id) REFERENCES avaliacaodesempenho(id);--.go
+CREATE SEQUENCE participanteavaliacaodesempenho_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
------
+----------------
 
-CREATE TABLE avaliador (
-	id bigint NOT NULL,
-    colaborador_id bigint,
-    avaliacaodesempenho_id bigint
-); --.go
+CREATE FUNCTION relaciona_avaliado_avaliador() RETURNS integer AS '
+DECLARE
+    mviews RECORD;
+BEGIN
+    FOR mviews IN
+		select distinct cq.avaliador_id as avaliadorId, cq.avaliacaodesempenho_id as avaliacaoDesempenhoId, ad.avaliacao_id as avaliacaoId, cq_a.colaborador_id as colaboradorId from colaboradorquestionario cq
+			left join avaliacaodesempenho ad on ad.id = cq.avaliacaodesempenho_id 
+			left join colaboradorquestionario cq_a on cq_a.avaliacaodesempenho_id = cq.avaliacaodesempenho_id and cq_a.avaliador_id is null
+			where
+				cq.avaliacaodesempenho_id is not null
+				and cq.avaliador_id is not null
+				and cq.colaborador_id is null
+				and not(cq.avaliador_id = cq_a.colaborador_id and ad.permiteautoavaliacao = true)
+		LOOP
+			EXECUTE	''insert into colaboradorquestionario(id, colaborador_id, avaliacao_id, avaliacaodesempenho_id, avaliador_id, respondida) values ( nextval('' || quote_literal(''colaboradorquestionario_sequence'') || ''), ''|| quote_literal(mviews.colaboradorId) ||'', ''|| quote_literal(mviews.avaliacaoId) ||'', ''|| quote_literal(mviews.avaliacaoDesempenhoId) ||'', ''|| quote_literal(mviews.avaliadorId) ||'', false)'';
+		END LOOP;
+    RETURN 1;
+END;
+' LANGUAGE plpgsql;--.go
+select relaciona_avaliado_avaliador();--.go
+drop function relaciona_avaliado_avaliador();--.go 
 
-ALTER TABLE avaliador ADD CONSTRAINT avaliador_pkey PRIMARY KEY(id);--.go
-ALTER TABLE avaliador ADD CONSTRAINT avaliador_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);--.go
-ALTER TABLE avaliador ADD CONSTRAINT avaliador_avaliacaodesempenho_fk FOREIGN KEY (avaliacaodesempenho_id) REFERENCES avaliacaodesempenho(id);--.go
-CREATE SEQUENCE avaliador_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+---------------
+
+delete FROM colaboradorquestionario where avaliacaodesempenho_id is not null and (avaliador_id is null or colaborador_id is null);--.go
+
+---------------
+
+CREATE FUNCTION insert_participante_avaliador() RETURNS integer AS '
+DECLARE
+    mviews RECORD;
+BEGIN
+    FOR mviews IN
+		select distinct avaliador_id as colaboradorId, avaliacaodesempenho_id as avaliacaoDesempenhoId, ''R'' as tipo from colaboradorquestionario where avaliacaodesempenho_id is not null
+		LOOP
+			EXECUTE	''insert into participanteavaliacaodesempenho(id, colaborador_id, avaliacaodesempenho_id, tipo) values ( nextval('' || quote_literal(''participanteavaliacaodesempenho_sequence'') || ''), ''|| quote_literal(mviews.colaboradorId) ||'', ''|| quote_literal(mviews.avaliacaoDesempenhoId) ||'', ''|| quote_literal(mviews.tipo) ||'')'';
+		END LOOP;
+    RETURN 1;
+END;
+' LANGUAGE plpgsql;--.go
+select insert_participante_avaliador();--.go
+drop function insert_participante_avaliador();--.go 
+
+---------------
+
+CREATE FUNCTION insert_participante_avaliado() RETURNS integer AS '
+DECLARE
+    mviews RECORD;
+BEGIN
+    FOR mviews IN
+		select distinct colaborador_id as colaboradorId, avaliacaodesempenho_id as avaliacaoDesempenhoId, ''A'' as tipo from colaboradorquestionario where avaliacaodesempenho_id is not null
+		LOOP
+			EXECUTE	''insert into participanteavaliacaodesempenho(id, colaborador_id, avaliacaodesempenho_id, tipo) values ( nextval('' || quote_literal(''participanteavaliacaodesempenho_sequence'') || ''), ''|| quote_literal(mviews.colaboradorId) ||'', ''|| quote_literal(mviews.avaliacaoDesempenhoId) ||'', ''|| quote_literal(mviews.tipo) ||'')'';
+		END LOOP;
+    RETURN 1;
+END;
+' LANGUAGE plpgsql;--.go
+select insert_participante_avaliado();--.go
+drop function insert_participante_avaliado();--.go
