@@ -95,6 +95,22 @@ public class LongUtil
 		return ids;
 	}
 	
+	public static Long[] collectionToArrayLong(Collection<? extends AbstractModel> modelos){
+
+		Long[] arrayDeLong = new Long[modelos.size()];
+
+		if(modelos != null && modelos.size() > 0) {
+			int i = 0;
+			for (AbstractModel model : modelos)
+			{
+				arrayDeLong[i] = model.getId();
+				i++;
+			}
+		}
+		
+		return arrayDeLong;
+	}
+	
 	public static boolean arrayIsNotEmpty(Long[] ids)
 	{
 		return ids != null && ids.length > 0 && ids[0] != null;

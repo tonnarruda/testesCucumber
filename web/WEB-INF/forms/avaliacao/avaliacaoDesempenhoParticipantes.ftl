@@ -207,6 +207,17 @@
 			min-height: 50px !important;
 		}
 		
+		#avaliadores ul .ui-icon-closethick {
+			float: left;
+			margin: -2px 5px 0 -5px;
+			cursor: pointer; 
+		}
+		
+		#avaliadores ul .ui-icon-closethick.disabled {
+			background-image: url(../../imgs/ui-icons_d8e7f3_256x240.png) !important;
+			cursor: default; 
+		}
+		
 		.ui-state-hover, .ui-state-default{
 			background: #f7f7f7 !important;
 			color: #5C5C5A !important;
@@ -274,6 +285,22 @@
 			display: none;
 			background-image: url(../../imgs/ui-icons_6da8d5_256x240.png) !important;
 		}
+		
+		.tag-info {
+			background: #5cb85c;
+			float: right;
+			margin-top: 1px;
+			display: inline;
+			padding: .2em .4em .3em;
+			font-size: 75%;
+			font-weight: 500;
+			line-height: 1;
+			color: #fff;
+			text-align: center;
+			white-space: nowrap;
+			vertical-align: baseline;
+			border-radius: .25em;
+		}
 	
 		#feedback { font-size: 1.4em; }
 	  	#selectable .ui-selecting { background: #7BB5DF; }
@@ -301,6 +328,12 @@
 							        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliador.id" value="' + $(this).attr("id") + '"/>' +
 							        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacao.id" value="${avaliacaoDesempenho.avaliacao.id}"/>' +
 							        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacaoDesempenho.id" value="${avaliacaoDesempenho.id}"/>');
+		        	$( this ).find(".avaliado_"+ui.draggable.attr('id')).prepend('<span class="ui-icon ui-icon-closethick"></span>');
+		        	
+		        	$("#avaliadores ul li .ui-icon-closethick").not(".disabled").click(function(){
+				    	$(this).parent().remove();
+				    });
+				    
 		        	countColaboradorQuestionarios++;
 		        }
 		    <#if !avaliacaoDesempenho.permiteAutoAvaliacao >
@@ -414,6 +447,10 @@
 	    	$(".legend").toggle();
 	    });
 	    
+	    $("#avaliadores ul li .ui-icon-closethick").not(".disabled").click(function(){
+	    	$(this).parent().remove();
+	    });
+	    
 	    $('body').keydown(function(event){
 	    	if ( event.which == 16 )
 	    		activeShift = true;
@@ -518,10 +555,19 @@
 							        	</#if>
 							        	<#list avaliador.avaliados as avaliado>
 								        	<li class="avaliado_${avaliado.id}">
+								        		<#if avaliado.colaboradorQuestionario.respondida>
+								        			<span class="ui-icon ui-icon-closethick disabled"></span>
+								        		<#else>
+								        			<span class="ui-icon ui-icon-closethick"></span>
+								        		</#if>
 								        		${avaliado.nome}
+								        		<#if avaliado.colaboradorQuestionario.respondida>
+								        			<span class="tag-info">Respondida</span>
+								        		</#if>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].id" value="${avaliado.colaboradorQuestionario.id}"/>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].colaborador.id" value="${avaliado.id}"/>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliador.id" value="${avaliador.id}"/>
+								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacao.id" value="${avaliacaoDesempenho.avaliacao.id}"/>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacaoDesempenho.id" value="${avaliacaoDesempenho.id}"/>
 								        		<#assign countColaboradorQuestionarios = countColaboradorQuestionarios + 1/>
 								        	</li>
@@ -536,6 +582,7 @@
 				<script>countColaboradorQuestionarios=${countColaboradorQuestionarios};</script>
 				<@ww.hidden name="avaliacaoDesempenho.id"/>
 				<button type="submit" class="btnGravar"></button>
+				<button onclick="window.location='list.action'" class="btnVoltar"></button>
 			</@ww.form>
 			<div style="clear: both;"></div>
 		</div>

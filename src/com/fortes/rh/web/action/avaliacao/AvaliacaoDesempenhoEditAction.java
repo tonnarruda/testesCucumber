@@ -293,7 +293,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String gravaAssociacoesAvaliadoAvaliador() throws Exception{
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 		colaboradorQuestionarios.removeAll(Collections.singleton(null));
+		
 		colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionarios);
+		colaboradorQuestionarioManager.removeNotIn(colaboradorQuestionarios, avaliacaoDesempenho.getId());
 		prepareAvaliados();
 		return Action.SUCCESS;
 	}
@@ -439,7 +441,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findByIdProjection(avaliacaoDesempenho.getId());
 			colaboradorQuestionarioManager.validaAssociacao(avaliados, avaliadores, avaliacaoDesempenho.isPermiteAutoAvaliacao());
 			
-			avaliacaoDesempenhoManager.liberar(avaliacaoDesempenho, avaliados, avaliadores);
+			avaliacaoDesempenhoManager.liberarOrBloquear(avaliacaoDesempenho, true);
 			
 			if( DateUtil.between(DateUtil.criarDataMesAno(new Date()), avaliacaoDesempenho.getInicio(), avaliacaoDesempenho.getFim()) )
 				avaliacaoDesempenhoManager.enviarLembreteAoLiberar(avaliacaoDesempenho.getId(), getEmpresaSistema());
@@ -462,7 +464,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		try 
 		{
-			avaliacaoDesempenhoManager.bloquear(avaliacaoDesempenho);
+			avaliacaoDesempenhoManager.liberarOrBloquear(avaliacaoDesempenho, false);
 			addActionSuccess("Avaliação bloqueada com sucesso.");
 		}
 		catch (Exception e) 
