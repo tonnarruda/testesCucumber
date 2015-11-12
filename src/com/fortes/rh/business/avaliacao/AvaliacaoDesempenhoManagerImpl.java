@@ -116,19 +116,11 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		return getDao().findByIdProjection(id);
 	}
 
-	public void liberar(AvaliacaoDesempenho avaliacaoDesempenho, Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores) throws Exception
+	public void liberarOrBloquear(AvaliacaoDesempenho avaliacaoDesempenho, boolean liberar) throws Exception
 	{
-		colaboradorQuestionarioManager.desassociarParticipantes(avaliacaoDesempenho);
-		colaboradorQuestionarioManager.associarParticipantes(avaliacaoDesempenho, avaliados, avaliadores);
-		getDao().liberarOrBloquear(avaliacaoDesempenho.getId(), true);
+		getDao().liberarOrBloquear(avaliacaoDesempenho.getId(), liberar);
 	}
 
-	public void bloquear(AvaliacaoDesempenho avaliacaoDesempenho) throws Exception 
-	{
-		colaboradorQuestionarioManager.desassociarParticipantes(avaliacaoDesempenho);
-		getDao().liberarOrBloquear(avaliacaoDesempenho.getId(), false);
-	}
-	
 	public void remover(Long avaliacaoDesempenhoId) throws Exception 
 	{
 		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByAvaliacaoDesempenho(avaliacaoDesempenhoId);
@@ -271,7 +263,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 					}
 
 					if(fortesException.isEmpty())
-						liberar(avaliacaoDesempenho, avaliados, avaliadores);
+						liberarOrBloquear(avaliacaoDesempenho, true);
 				}
 			}
 			

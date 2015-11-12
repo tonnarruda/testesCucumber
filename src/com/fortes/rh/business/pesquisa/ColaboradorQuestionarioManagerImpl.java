@@ -285,6 +285,15 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		getDao().removeByParticipante(avaliacaoDesempenhoId, participanteIds, isAvaliado);
 	}
 	
+	public void removeNotIn(Collection<ColaboradorQuestionario> colaboradorQuestionarios, Long avaliacaoDesempenhoId) throws Exception
+	{
+		Collection<ColaboradorQuestionario> colaboradorQuestionariosOld = getDao().findByAvaliacaoDesempenho(avaliacaoDesempenhoId, null);
+		
+		colaboradorQuestionariosOld.removeAll(colaboradorQuestionarios);
+		
+		getDao().remove( LongUtil.collectionToArrayLong(colaboradorQuestionariosOld) );
+	}
+	
 	public boolean verifyTemParticipantesAssociados(Long avaliacaoDesempenhoId)
 	{
 		return (getDao().getCountParticipantesAssociados(avaliacaoDesempenhoId) > 0);
@@ -332,12 +341,12 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	public void validaAssociacao(Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores, boolean permiteAutoAvaliacao) throws Exception 
 	{
 		if (avaliados.isEmpty() || avaliadores.isEmpty())
-			throw new FortesException("Não foi possível liberar esta avaliação: Número insuficiente de participantes.<br />Verifique se os participantes foram desligados.");
+			throw new FortesException("Não foi possível liberar esta avaliação: Nenhum avaliador possui colaboradores para avaliar. <br />Verifique se participantes foram desligados.");
 		
 		if (!permiteAutoAvaliacao && avaliados.size() == 1 && avaliadores.size() == 1)
 		{
 			if (((Colaborador)avaliados.toArray()[0]).equals((Colaborador)avaliadores.toArray()[0]))
-				throw new FortesException("Não foi possível liberar esta avaliação: <br />Número insuficiente de participantes (não é permitida a autoavaliação).");
+				throw new FortesException("Não foi possível liberar esta avaliação: <br />Nenhum avaliador possui colaboradores para avaliar. (Não é permitida a autoavaliação).");
 		}
 	}
 

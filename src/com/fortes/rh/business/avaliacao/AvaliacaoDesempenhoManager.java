@@ -16,8 +16,7 @@ public interface AvaliacaoDesempenhoManager extends GenericManager<AvaliacaoDese
 	AvaliacaoDesempenho findByIdProjection(Long id);
 	Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao);
 	void clonar(Long avaliacaoDesempenhoId, boolean clonarParticipantes, Long... empresasIds) throws Exception;
-	void liberar(AvaliacaoDesempenho avaliacaoDesempenho, Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores) throws Exception;
-	void bloquear(AvaliacaoDesempenho avaliacaoDesempenho) throws Exception;
+	void liberarOrBloquear(AvaliacaoDesempenho avaliacaoDesempenho, boolean liberar) throws Exception;
 	void remover(Long avaliacaoDesempenhoId) throws Exception;
 	Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada, Long... empresasIds);
 	Collection<ResultadoAvaliacaoDesempenho> montaResultado(Collection<Long> avaliadosIds, AvaliacaoDesempenho avaliacaoDesempenho, boolean agruparPorAspectos, boolean desconsiderarAutoAvaliacao) throws ColecaoVaziaException;
