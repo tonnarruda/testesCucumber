@@ -179,7 +179,7 @@
 
 		.legend {
 			height: 25px;
-			background: #e7e7e7;
+			background: #f7f7f7;
 			color: #5C5C5A;
 			display: none;
 		}		
@@ -187,7 +187,7 @@
 		.legend div{
 			width: 228px;
 			float: left;
-			border: 1px solid #C6C6C6;
+			border: 1px solid #e7e7e7;
 			padding: 5px;
 			text-align: center;
 			font-size: 11px;
