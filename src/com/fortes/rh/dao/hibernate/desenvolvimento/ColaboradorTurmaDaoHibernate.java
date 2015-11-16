@@ -1680,9 +1680,11 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	
 	public Collection<ColaboradorTurma> findByColaborador(Long colaboradorId, Long certificacaoId) 
 	{
-		  DetachedCriteria subSelect = DetachedCriteria.forClass(Turma.class, "t2")
-		    		.setProjection(Projections.max("t2.dataPrevFim"))
-		    		.add(Restrictions.eqProperty("t2.curso.id", "c.id"));
+		  DetachedCriteria subSelect = DetachedCriteria.forClass(ColaboradorTurma.class, "ct2")
+				.createAlias("ct2.turma", "t2")
+				.setProjection(Projections.max("t2.dataPrevFim"))
+		    	.add(Restrictions.eqProperty("t2.curso.id", "c.id"))
+		  		.add(Restrictions.eqProperty("ct2.colaborador.id", "ct.colaborador.id"));
 		
 		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
 		criteria.createCriteria("ct.turma", "t", Criteria.INNER_JOIN);

@@ -3,6 +3,7 @@ package com.fortes.rh.web.action.desenvolvimento;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
@@ -62,30 +63,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 
 		if(colaborador != null)
 		{
-			Colaborador colaboradorLogado = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
-			Collection<Colaborador> colaboradoresPermitidos = new ArrayList<Colaborador>();
-
-			if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
-			{
-				colaboradoresPermitidos = colaboradorManager.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, getEmpresaSistema().getId(), null);
-			}
-			else if (colaboradorLogado != null && colaboradorLogado.getId() != null)
-			{
-				Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAreasByUsuarioResponsavel(getUsuarioLogado(), getEmpresaSistema().getId());
-				Long[] areasIds = new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areas);
-				if (areasIds.length == 0)
-					areasIds = new Long[]{-1L};
-				colaboradoresPermitidos = colaboradorManager.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, getEmpresaSistema().getId(), areasIds);
-			}
-
-			for (Colaborador colaboradorCertificado : colaboradoresNaCertificacao) 
-			{
-				for (Colaborador colaboradorPermitido : colaboradoresPermitidos) 
-				{
-					if(colaboradorCertificado.getId().equals(colaboradorPermitido.getId()))
-						colaboradores.add(colaboradorPermitido);
-				}
-			}	
+			findColaboradoresPermitidosNaCertificacao(colaboradoresNaCertificacao);	
 			
 			if(colaborador.getId() != null && certificacao != null && certificacao.getId() != null){
 				colaboradorTurmas = colaboradorTurmaManager.findByColaborador(colaborador.getId(), certificacao.getId());
@@ -94,6 +72,34 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		}
 		
 		return Action.SUCCESS;
+	}
+
+	private void findColaboradoresPermitidosNaCertificacao(Collection<Colaborador> colaboradoresNaCertificacao) throws Exception 
+	{
+		Colaborador colaboradorLogado = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+		Collection<Colaborador> colaboradoresPermitidos = new ArrayList<Colaborador>();
+
+		if (SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}))
+		{
+			colaboradoresPermitidos = colaboradorManager.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, getEmpresaSistema().getId(), null);
+		}
+		else if (colaboradorLogado != null && colaboradorLogado.getId() != null)
+		{
+			Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findAreasByUsuarioResponsavel(getUsuarioLogado(), getEmpresaSistema().getId());
+			Long[] areasIds = new CollectionUtil<AreaOrganizacional>().convertCollectionToArrayIds(areas);
+			if (areasIds.length == 0)
+				areasIds = new Long[]{-1L};
+			colaboradoresPermitidos = colaboradorManager.findByNomeCpfMatriculaComHistoricoComfirmado(colaborador, getEmpresaSistema().getId(), areasIds);
+		}
+
+		for (Colaborador colaboradorCertificado : colaboradoresNaCertificacao) 
+		{
+			for (Colaborador colaboradorPermitido : colaboradoresPermitidos) 
+			{
+				if(colaboradorCertificado.getId().equals(colaboradorPermitido.getId()))
+					colaboradores.add(colaboradorPermitido);
+			}
+		}
 	}
 
 	private void populaColaboradorAvaliacaoPratica() 
@@ -118,7 +124,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 				}
 			}
 			
-			if(!existeNota){
+			if(!existeNota && avaliacaoPraticaDoCertificado.getId() != null){
 				ColaboradorAvaliacaoPratica ColaboradorAvaliacaoPratica = new ColaboradorAvaliacaoPratica();
 				ColaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPraticaDoCertificado);
 				colaboradorAvaliacaoPraticas.add(ColaboradorAvaliacaoPratica);
@@ -216,5 +222,8 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 			AvaliacaoPraticaManager avaliacaoPraticaManager) {
 		this.avaliacaoPraticaManager = avaliacaoPraticaManager;
 	}
-	
+
+	public Date getHoje() {
+		return new Date();
+	}
 }
