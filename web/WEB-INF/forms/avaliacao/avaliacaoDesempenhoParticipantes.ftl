@@ -6,6 +6,7 @@
 		<style type="text/css">
 			@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 			@import url('<@ww.url value="/css/formModal.css?version=${versao}"/>');
+			@import url('<@ww.url value="/css/avaliacaoDesempenhoParticipantes.css?version=${versao}"/>');
 			
 			<#if isAvaliados>
 		    	#menuParticipantes a.ativaAvaliado{border-bottom: 2px solid #5292C0;}
@@ -22,16 +23,21 @@
 		<#assign countColaboradorQuestionarios=0 />
 		<#assign gerarAutoAvaliacoesEmLoteAction="gerarAutoAvaliacoesEmLote.action"/>
 		
-		<#assign validarCamposModal="return validaFormulario('formModal', new Array('@colaboradorsCheck'), null)"/>
+		<#assign validarCamposModal="return validaFormulario('formModal', new Array('@colaboradorsCheck'), populeList(), true)"/>
 		
 		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js?version=${versao}"/>'></script>
+		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/avaliacaoDesempenhoParticipantes.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/AreaOrganizacionalDWR.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 		
 		<script type="text/javascript">
+		var permiteAutoAvaliacao = ${avaliacaoDesempenho.permiteAutoAvaliacao.toString()};
+		var avaliacaoDesempenhoId = ${avaliacaoDesempenho.id};
+		var avaliacaoId = ${avaliacaoDesempenho.avaliacao.id};
+		
 		$(function() {
 			$('#tooltipHelp').qtip({
 				content: 'Gera uma nova avaliação para cada um dos colaboradores desta avaliação, na qual ele irá avaliar apenas a si próprio.'
@@ -85,397 +91,44 @@
 				document.form.submit();
 			});
 		}
+		
+		var openboxtype = "";
+		function openboxAvaliado() {
+			openboxtype = "avaliados";
+		  	openbox('Inserir Avaliado', 'nomeBusca');
+		}
+		  
+		function openboxAvaliador() {
+			openboxtype = "avaliadores";
+		  	openbox('Inserir Avaliador', 'nomeBusca');
+		}
+		
+		function populeList() {
+			$("input[name=colaboradorsCheck]:checked").each(function(){
+				if ( $("#"+openboxtype+" #"+$(this).val()).length == 0 ) {
+					if(openboxtype == "avaliados") {
+						$("#"+openboxtype+" ol").append('<li class="ui-widget-content ui-draggable" id="'+$(this).val()+'">' +
+															'<input type="hidden" name="avaliados" value="'+$(this).val()+'"/>' +
+												      		'<div class="nome">'+$(this).parent().text()+'</div>' +
+												      		'<div class="faixa"></div>' +
+												      		'<div class="area"></div>' +
+												      	'</li>');
+					} else if (openboxtype == "avaliadores") {
+						createAvaliador( $(this).val(), $(this).parent().text() );
+						portletEvents();
+					}
+				}
+			});
+			
+			//$("#listCheckBoxcolaboradorsCheck").html("");
+			openboxtype = "";
+			closebox();
+		}
 		</script>
 	</head>
 	<body>
-	
-	
 		<@ww.actionerror />
-		<!-- <@ww.form name="form" action="" method="POST">
-			<@display.table name="participantes" id="participante" class="dados">
-			
-				<#if avaliacaoDesempenho.liberada>
-					<@display.column title="">
-						<img border="0" src="<@ww.url value="/imgs/no_check.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-					</@display.column>
-				<#else>
-					<@display.column title="<input type='checkbox' id='md' onclick='atualizaChecks(\"checkParticipante\", this.checked);' />" style="width: 26px; text-align: center;">
-						<input type="checkbox" class="checkParticipante" value="${participante.id}" name="participanteIds" />
-					</@display.column>
-				</#if>
-			
-				<@display.column title="Ações" class="acao" style="width:40px;">
-					<#if avaliacaoDesempenho.liberada>
-						<img border="0" title="" src="<@ww.url value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
-					<#else>
-						<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}&participanteIds=${participante.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-					</#if>
-				</@display.column>
-				<@display.column title="" property="nome" style="width:330px;"/>
-				<@display.column title="Cargo" property="faixaSalarial.descricao" style="width:300px;"/>
-				<@display.column title="Área Organizacional" property="areaOrganizacional.nome" style="width:300px;"/>
-			</@display.table>
-
-			<@ww.hidden name="avaliacaoDesempenho.id"/>
-		</@ww.form>
 		
-		<div class="buttonGroup">
-			<#if avaliacaoDesempenho.liberada>
-				<button class="btnInserirDesabilitado" disabled="disabled" onmouseover="cursor:pointer;" ></button>
-				<button class="btnExcluirDesabilitado" disabled="disabled" onmouseover="cursor:pointer;" ></button>
-			<#else>
-				<button onclick="openbox('', 'nomeBusca');" class="btnInserir"></button>
-				<button onclick="javascript: excluir();" class="btnExcluir"></button>
-			</#if>
-			
-			<#if !avaliacaoDesempenho.liberada && isAvaliados && (!avaliadors?exists || (avaliadors?exists && avaliadors?size == 0))>
-				<button onclick="gerarAutoAvaliacoesEmLote();" class="btnAutoAvaliacoesEmLote"></button>
-				<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -22px" />
-			<#elseif isAvaliados>	
-				<button class="btnAutoAvaliacoesEmLoteDesabilitado" onclick="javascript: jAlert('Não é possível gerar autoavaliações em lote a partir de avaliações onde já foram definidos avaliadores.');" style="cursor:pointer;" ></button>
-			</#if>
-			
-			<button onclick="window.location='list.action'" class="btnVoltar"></button>
-		</div>
-		-->
-		<!--
-		 Modal para Inserir Participantes
-		-->
-		
-	<style>
-		#avaliados, #avaliadores {
-			float: left;
-			width: 350px;
-			margin: 10px;
-		}
-		#avaliados h1, #avaliadores h1 {
-			//background: #E0DFDF !important;
-			background: none;
-			border: 1px solid #e7e7e7;
-			border-bottom: 2px solid #5292C0;
-			padding: 7px 15px;
-			text-align: center;
-			color: #5C5C5A;
-			border-radius: 0;
-			font-size: 12px;
-			font-weight: normal;
-			margin: 0;
-		}
-		
-		#avaliados li {
-			padding: 10px 10px;
-			cursor: copy;
-			list-style: none;
-			border-bottom: 1px solid #e7e7e7;
-			color: #5C5C5A;
-			font-size: 11px;
-			min-height: 13px;
-		}
-		
-		#avaliados li div{
-			font-size: 11px;
-			float: left;
-		}
-
-		.legend {
-			height: 25px;
-			background: #f7f7f7;
-			color: #5C5C5A;
-			display: none;
-		}		
-		
-		.legend div{
-			width: 228px;
-			float: left;
-			border: 1px solid #e7e7e7;
-			padding: 5px;
-			text-align: center;
-			font-size: 11px;
-			font-weight: bold;
-		}
-		
-		.nome {
-			width: 238px;
-		}
-		
-		.faixa, .area {
-			display: none;
-			width: 220px;
-		}
-				
-		#avaliadores ul {
-			min-height: 50px !important;
-		}
-		
-		#avaliadores ul .ui-icon-closethick {
-			float: left;
-			margin: -2px 5px 0 -5px;
-			cursor: pointer; 
-		}
-		
-		#avaliadores ul .ui-icon-closethick.disabled {
-			background-image: url(../../imgs/ui-icons_d8e7f3_256x240.png) !important;
-			cursor: default; 
-		}
-		
-		.ui-state-hover, .ui-state-default{
-			background: #f7f7f7 !important;
-			color: #5C5C5A !important;
-		}
-		.ui-state-hover li, .ui-state-default li{
-			font-weight: normal;
-		}
-		.ui-state-default{
-			border-color: #e7e7e7 !important;
-		}
-		
-		.ui-state-hover{
-			border-color: #b2b2b2 !important;
-		}
-		
-		.portlet-header .ui-icon {
-			float: right;
-			cursor: pointer;
-			margin-top: -2px;
-			background-image: url(../../imgs/ui-icons_6da8d5_256x240.png);
-		}
-		
-		.portlet { margin: 5px;}
-		.portlet-header, .portlet-content { padding: 5px; font-size: 11px; color: #5C5C5A; }
-		.portlet-header {
-			background: #f7f7f7;
-			border: 1px solid #e7e7e7;
-			font-weight: bold;
-		}
-		.portlet-content { padding: 5px 10px; border: 1px solid #e7e7e7; }
-		.portlet-content li {
-			padding: 5px;
-			border-bottom: 1px solid #e7e7e7;
-			cursor: default;
-		}
-		.portlet-content li.placeholder {
-			border: none;
-		}
-		
-		.column {
-			padding: 5px 10px;
-			height: 500px;
-			overflow-x: hidden;
-			border: 1px solid #e7e7e7;
-		}
-	
-		.more-avaliador, .more-avaliado {
-			float: left;
-			cursor: pointer;
-			margin-left: -7px;
-			background-image: url(../../imgs/ui-icons_6da8d5_256x240.png) !important;
-		}
-		
-		.ui-icon-circle-triangle-e {
-			float: right;
-			cursor: pointer;
-			margin-right: -7px;
-			background-image: url(../../imgs/ui-icons_6da8d5_256x240.png) !important;
-		}
-		
-		.ui-icon-circle-triangle-w {
-			float: right;
-			cursor: pointer;
-			margin-right: -7px;
-			display: none;
-			background-image: url(../../imgs/ui-icons_6da8d5_256x240.png) !important;
-		}
-		
-		.tag-info {
-			background: #5cb85c;
-			float: right;
-			margin-top: 1px;
-			display: inline;
-			padding: .2em .4em .3em;
-			font-size: 75%;
-			font-weight: 500;
-			line-height: 1;
-			color: #fff;
-			text-align: center;
-			white-space: nowrap;
-			vertical-align: baseline;
-			border-radius: .25em;
-		}
-	
-		#feedback { font-size: 1.4em; }
-	  	#selectable .ui-selecting { background: #7BB5DF; }
-	  	#selectable .ui-selected { background: #5292C0; color: white; }
-	  	#selectable { list-style-type: none; margin: 0; padding: 0;}
-	  	#selectable li { margin: 3px; padding: 7px; }
-	</style>
-	
-	<script>
-  	  var countColaboradorQuestionarios = 0;
-	  $(function() {
-	    //$( "#avaliados" ).accordion();
-	    $( "#avaliadores ul" ).droppable({
-	      activeClass: "ui-state-default",
-	      hoverClass: "ui-state-hover",
-	      accept: ":not(.ui-sortable-helper)",
-	      drop: function( event, ui ) {
-	        <#if !avaliacaoDesempenho.permiteAutoAvaliacao >
-	        if( ui.draggable.attr('id') != $(this).attr('id')) {
-	        </#if>
-		        $( this ).find( ".placeholder" ).remove();
-		        if( $(this).find(".avaliado_"+ui.draggable.attr('id')).length == 0 ) {
-		        	$("<li class='avaliado_"+ui.draggable.attr('id')+"'></li>").text( ui.draggable.find(".nome").text() ).appendTo( this );
-		        	$( this ).find(".avaliado_"+ui.draggable.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaborador.id" value="' + ui.draggable.attr("id") + '"/>' +
-							        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliador.id" value="' + $(this).attr("id") + '"/>' +
-							        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacao.id" value="${avaliacaoDesempenho.avaliacao.id}"/>' +
-							        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacaoDesempenho.id" value="${avaliacaoDesempenho.id}"/>');
-		        	$( this ).find(".avaliado_"+ui.draggable.attr('id')).prepend('<span class="ui-icon ui-icon-closethick"></span>');
-		        	
-		        	$("#avaliadores ul li .ui-icon-closethick").not(".disabled").click(function(){
-				    	$(this).parent().remove();
-				    });
-				    
-		        	countColaboradorQuestionarios++;
-		        }
-		    <#if !avaliacaoDesempenho.permiteAutoAvaliacao >
-	        } else {
-	        	$("<div>A avaliação não permite autoavaliação</div>").dialog({
-	        		modal: true,
-	        		height: '120',
-	        		title: "Aviso",
-	        		buttons: { "Ok": function() { $( this ).dialog( "close" );} }
-	        	});
-	        }
-	        </#if>
-	      }
-	    }).sortable({
-	      revert: true,
-	      items: "li:not(.placeholder)",
-	      sort: function() {
-	        $( this ).removeClass( "ui-state-default");
-	      }
-	    });
-	    
-	    $( "#avaliados li" ).draggable({
-	      connectToSortable: "#sortable ul",
-	      helper: "clone",
-	      revert: "invalid"
-	    });
-	    
-	    //$("#selectable").selectable();
-	    
-	    $( ".portlet" )
-	      .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
-	      .find( ".portlet-header" )
-	        .addClass( "ui-widget-header ui-corner-all" )
-	        .prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
-	 
-	    $( ".portlet-toggle" ).click(function() {
-	      var icon = $( this );
-	      icon.toggleClass( "ui-icon-minusthick ui-icon-plusthick" );
-	      icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
-	    });
-	    
-	    var selecteds = new Array;
-	    var lastSelected;
-	    var activeShift = false;
-	    var activeCtrl = false;
-	    $("#selectable li").click(function(event){
-	    	console.log(lastSelected);
-	    	if (activeCtrl) {
-	    		if( selecteds.indexOf($(this).attr("id")) == -1 ) {
-	    			selecteds.push($(this).attr("id"));
-		    		$(this).addClass("ui-selected");
-		    	} else {
-		    		selecteds.splice(selecteds.indexOf($(this).attr("id")), 1);
-			    	$(this).removeClass("ui-selected");
-		    	}
-	    	} else if (activeShift) {
-	    		var elements = $("#selectable li");
-	    		if (typeof lastSelected == "undefined") {
-	    			selecteds.push($(this).attr("id"));
-	    			$(this).addClass("ui-selected");
-	    		} else {
-		    		var lastElement = $("#selectable li[id="+lastSelected+"]");
-		    		var element = $(this);
-		    		
-		    		elements = elements.splice(elements.index(lastElement), elements.index(element) - elements.index(lastElement) + 1);
-		    		
-		    		$(elements).each(function(){
-		    			selecteds.push($(this).attr("id"));
-		    			$(this).addClass("ui-selected");
-		    		});
-	    		}
-	    	} else {
-	    		if (selecteds.length >= 1) {
-	    			if ( selecteds.length == 1 && selecteds.indexOf($(this).attr("id")) != -1 ) {
-				    	$(this).removeClass("ui-selected");
-				    	selecteds = new Array;
-	    			} else {
-	    				$("#selectable li").removeClass("ui-selected");
-	    				selecteds = new Array;
-	    			
-	    				selecteds.push($(this).attr("id"));
-	    				$(this).addClass("ui-selected");
-	    			}
-	    		} else {
-	    			selecteds.push($(this).attr("id"));
-		    		$(this).addClass("ui-selected");
-	    		}
-	    	}
-	    	
-	    	lastSelected= $(this).attr("id");
-	    });
-	    
-	    $(".ui-icon-circle-triangle-e").click(function(){
-	    	$('#avaliados, #avaliadores').hide();
-	    	$(this).parent().parent().show();
-	    	$(this).parent().parent().css("width","720px");
-	    	$(this).parent().parent().find(".faixa").toggle();
-	    	$(this).parent().parent().find(".area").toggle();
-	    	$(this).hide();
-	    	$(this).parent().find(".ui-icon-circle-triangle-w").toggle();
-	    	$(".legend").toggle();
-	    });
-	    
-	    $(".ui-icon-circle-triangle-w").click(function(){
-	    	$('#avaliados, #avaliadores').show();
-	    	$(this).parent().parent().css("width","350px");
-	    	$(this).parent().parent().find(".faixa").toggle();
-	    	$(this).parent().parent().find(".area").toggle();
-	    	$(this).hide();
-	    	$(this).parent().find(".ui-icon-circle-triangle-e").toggle();
-	    	$(".legend").toggle();
-	    });
-	    
-	    $("#avaliadores ul li .ui-icon-closethick").not(".disabled").click(function(){
-	    	$(this).parent().remove();
-	    });
-	    
-	    $('body').keydown(function(event){
-	    	if ( event.which == 16 )
-	    		activeShift = true;
-	    	if ( event.which == 17 )
-	    		activeCtrl = true;
-	    }).keyup(function(event){
-	    	if ( event.which == 16 )
-	    		activeShift = false;
-	    	if ( event.which == 17 )
-	    		activeCtrl = false;
-	    });;
-	  });
-	  
-	  function openboxAvaliado() {
-	  	$("#formModal").attr("action", "insertAvaliados.action");
-	  	openbox('Inserir Avaliado', 'nomeBusca');
-	  }
-	  
-	  function openboxAvaliador() {
-	  	$("#formModal").attr("action", "insertAvaliadores.action");
-	  	openbox('Inserir Avaliador', 'nomeBusca');
-	  	
-	  }
-	</script>
-	  
 	  	<div id="box">
 			<span id="boxtitle"></span>
 			<@ww.form name="formPesquisa" id="formPesquisa" action="" onsubmit="pesquisar();return false;" method="POST">
@@ -503,13 +156,24 @@
 		</div>
 		
 		<div style="width: 740px; margin: 0 auto;">
-			<@ww.form name="form" action="" method="POST">
+			<@ww.form name="formAvaliadores" id="formAvaliadores" action="gravaAssociacoesAvaliadoAvaliador" method="POST">
 				<div id="avaliados">
-				  <h1 class="ui-widget-header">
+				  <h1 class="ui-widget-header title">
 				  	<span class="ui-icon ui-icon-plusthick more-avaliado" title="Inserir Avaliado" onclick="openboxAvaliado('Inserir Avaliado', 'nomeBusca');"></span>
 				  	Avaliados
 					<span class="ui-icon ui-icon-circle-triangle-e"></span>
 					<span class="ui-icon ui-icon-circle-triangle-w"></span>
+				  </h1>
+				  <h1 class="ui-widget-header actions" style="display: none;">
+				  	<div class="option" title="Remover selecionados">
+						<span class="ui-icon ui-icon-trash"></span>
+				    </div>
+				  	<div class="option move-all" title="Relacionar selecionados ao avaliadores">
+						<span class="ui-icon ui-icon-arrowthick-1-e"></span>
+				    </div>
+				  	<div class="option generate-autoavaliacao" title="Gerar autoavaliação para selecionados">
+						<span class="ui-icon ui-icon-refresh"></span>
+				    </div>
 				  </h1>
 				  <div class="legend">
 				  	<div style="width: 247px;">Nome</div>
@@ -520,6 +184,7 @@
 				    <ol id="selectable">
 				      <#list participantes as avaliado>
 				      	<li class="ui-widget-content" id="${avaliado.id}">
+					      	<input type="hidden" name="avaliados" value="${avaliado.id}"/>
 				      		<div class="nome">${avaliado.nome}</div>
 				      		<div class="faixa">${avaliado.faixaSalarial.descricao}</div>
 				      		<div class="area">${avaliado.areaOrganizacional.nome}</div>
@@ -528,9 +193,7 @@
 				    </ol>
 				  </div>
 				</div>
-			</@ww.form>
 			 
-			<@ww.form name="formAvaliadores" id="formAvaliadores" action="gravaAssociacoesAvaliadoAvaliador" method="POST">
 				<div id="avaliadores">
 					<h1 class="ui-widget-header">
 						<span class="ui-icon ui-icon-plusthick more-avaliador" title="Inserir Avaliador" onclick="openboxAvaliador('Inserir Avaliador', 'nomeBusca');"></span>
@@ -550,6 +213,7 @@
 						  		 </div>
 						  		 <div class="portlet-content">
 						  		 	<ul id="${avaliador.id}">
+								  		<input type="hidden" name="avaliadores" value="${avaliador.id}"/>
 						  		 		<#if (avaliador.avaliados.size() == 0)> 
 							        		<li class="placeholder">Arraste os avaliados até aqui</li>
 							        	</#if>
