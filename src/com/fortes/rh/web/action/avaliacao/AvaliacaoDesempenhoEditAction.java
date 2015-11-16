@@ -73,6 +73,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private String[] areasCheck;
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] colaboradorsCheck;
+	private String[] avaliados;
+	private String[] avaliadores;
 	private Collection<CheckBox> colaboradorsCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> avaliacoesCheckList = new ArrayList<CheckBox>();
 	private String[] avaliacoesCheck;
@@ -192,7 +194,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			else
 			{
 				colaboradorQuestionarioManager.remove(participanteIds, avaliacaoDesempenho.getId(), isAvaliados);
-				addActionSuccess(msgDelete + " excluído(s) com sucesso.");				
+				addActionSuccess(msgDelete + " excluído(s) com sucesso.");
 			}
 		} 
 		catch (AvaliacaoRespondidaException e) 
@@ -293,6 +295,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String gravaAssociacoesAvaliadoAvaliador() throws Exception{
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 		colaboradorQuestionarios.removeAll(Collections.singleton(null));
+		
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(avaliados), ParticipanteAvaliacao.AVALIADO);
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(avaliadores), ParticipanteAvaliacao.AVALIADOR);
 		
 		colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionarios);
 		colaboradorQuestionarioManager.removeNotIn(colaboradorQuestionarios, avaliacaoDesempenho.getId());
@@ -562,6 +567,22 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setColaboradorsCheck(String[] colaboradorsCheck) {
 		this.colaboradorsCheck = colaboradorsCheck;
+	}
+
+	public String[] getAvaliados() {
+		return avaliados;
+	}
+
+	public void setAvaliados(String[] avaliados) {
+		this.avaliados = avaliados;
+	}
+
+	public String[] getAvaliadores() {
+		return avaliadores;
+	}
+
+	public void setAvaliadores(String[] avaliadores) {
+		this.avaliadores = avaliadores;
 	}
 
 	public String getNomeBusca() {
