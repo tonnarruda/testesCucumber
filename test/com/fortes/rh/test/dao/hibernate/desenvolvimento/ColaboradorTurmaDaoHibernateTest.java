@@ -56,6 +56,7 @@ import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.ws.TAula;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -2384,9 +2385,18 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		Colaborador canabrava = ColaboradorFactory.getEntity();
 		colaboradorDao.save(canabrava);
 		
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
+		avaliacao.setPercentualAprovacao(80.0);
+		avaliacaoDao.save(avaliacao);
+		
+		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity();
+		avaliacaoCurso.setAvaliacao(avaliacao);
+		avaliacaoCursoDao.save(avaliacaoCurso);
+		
 		Curso curso = CursoFactory.getEntity();
-		curso.setNome("Javai");
+		curso.setAvaliacaoCursos(Arrays.asList(avaliacaoCurso));
 		curso.setPercentualMinimoFrequencia(20.0);
+		curso.setNome("Javai");
 		cursoDao.save(curso);
 		
 		Turma turma1 = TurmaFactory.getEntity();
@@ -2407,6 +2417,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
 		colaboradorTurma.setColaborador(adamastor);
+		colaboradorTurma.setNota(100.0);
 		colaboradorTurma.setTurma(turma1);
 		colaboradorTurmaDao.save(colaboradorTurma);
 		
@@ -2426,6 +2437,8 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		Certificacao certificacao = CertificacaoFactory.getEntity();
 		certificacao.setCursos(cursos);
 		certificacaoDao.save(certificacao);
+
+		colaboradorDao.getHibernateTemplateByGenericDao().flush();
 		
 		Collection<ColaboradorTurma> resultado = colaboradorTurmaDao.findByColaborador(adamastor.getId(), certificacao.getId());
 		

@@ -1680,38 +1680,49 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	
 	public Collection<ColaboradorTurma> findByColaborador(Long colaboradorId, Long certificacaoId) 
 	{
-		  DetachedCriteria subSelect = DetachedCriteria.forClass(ColaboradorTurma.class, "ct2")
-				.createAlias("ct2.turma", "t2")
-				.setProjection(Projections.max("t2.dataPrevFim"))
-		    	.add(Restrictions.eqProperty("t2.curso.id", "c.id"))
-		  		.add(Restrictions.eqProperty("ct2.colaborador.id", "ct.colaborador.id"));
+		StringBuilder sql = new StringBuilder();
+		sql.append("select ct.id as ctId, c.id as cursoId, c.nome, t.id as turmaId, t.descricao, t.dataPrevIni, t.dataPrevFim, t.realizada, verifica_aprovacao(c.id, t.id, ct.id, c.percentualMinimoFrequencia) as aprovacao ");
+		sql.append("from ColaboradorTurma as ct ");
+		sql.append("inner join turma as t on ct.turma_id = t.id ");
+		sql.append("inner join curso as c on t.curso_id = c.id ");
+		sql.append("inner join certificacao_curso as cec on cec.cursos_id = c.id ");
+		sql.append("inner join certificacao as ce on cec.certificacaos_id = ce.id ");
+		sql.append("where ct.colaborador_id = :colaboradorId ");
+		sql.append("and ce.id = :certificacaoId ");
+		sql.append("and t.dataPrevFim = ( ");
+		sql.append("                       select max(t2.dataPrevFim) ");
+		sql.append("                       from ColaboradorTurma ct2 ");
+		sql.append("                       inner join turma t2 on ct2.turma_id = t2.id ");
+		sql.append("                       where t2.curso_id = c.id ");
+		sql.append("                       and ct2.colaborador_id = ct.colaborador_id ");
+		sql.append("                     ) ");
+		sql.append("order by c.nome, t.descricao ");
 		
-		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
-		criteria.createCriteria("ct.turma", "t", Criteria.INNER_JOIN);
-		criteria.createCriteria("t.curso", "c", Criteria.INNER_JOIN);
-		criteria.createCriteria("c.certificacaos", "ce", Criteria.INNER_JOIN);
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("colaboradorId", colaboradorId);
+		query.setLong("certificacaoId", certificacaoId);
 
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("ct.id"), "id");
-		p.add(Projections.property("c.id"), "cursoId");
-		p.add(Projections.property("c.nome"), "cursoNome");
-		p.add(Projections.property("t.id"), "turmaId");
-		p.add(Projections.property("t.descricao"), "turmaDescricao");
-		p.add(Projections.property("t.dataPrevIni"), "turmaDataPrevIni");
-		p.add(Projections.property("t.dataPrevFim"), "turmaDataPrevFim");
-		p.add(Projections.property("t.realizada"), "turmaRealizada");
-		p.add(Projections.sqlProjection("verifica_aprovacao(c2_.id, t1_.id, this_.id, c2_.percentualMinimoFrequencia) as aprovacao", new String[] {"aprovacao"}, new Type[] {Hibernate.BOOLEAN}), "aprovado");
-		criteria.setProjection(p);
-
-		criteria.add(Expression.eq("ct.colaborador.id", colaboradorId));
-		criteria.add(Expression.eq("ce.id", certificacaoId));
-		criteria.add(Subqueries.propertyEq("t.dataPrevFim", subSelect));
+		List resultado = query.list();
+		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 		
-		criteria.addOrder(Order.asc("c.nome"));
-		criteria.addOrder(Order.asc("t.descricao"));
+		for(Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			
+			ColaboradorTurma colaboradorTurma = new ColaboradorTurma();
+			colaboradorTurma.setId(((BigInteger)res[0]).longValue());
+			colaboradorTurma.setCursoId(((BigInteger)res[1]).longValue());
+			colaboradorTurma.setCursoNome((String)res[2]);
+			colaboradorTurma.setTurmaId(((BigInteger)res[3]).longValue());
+			colaboradorTurma.setTurmaDescricao((String)res[4]);
+			colaboradorTurma.setTurmaDataPrevIni((Date)res[5]);
+			colaboradorTurma.setTurmaDataPrevFim((Date)res[6]);
+			colaboradorTurma.setTurmaRealizada((Boolean)res[7]);
+			colaboradorTurma.setAprovado((Boolean)res[8]);
+			
+			colaboradorTurmas.add(colaboradorTurma);
+		}
 		
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
-		
-		return criteria.list();
+		return colaboradorTurmas;	
 	}
 }
