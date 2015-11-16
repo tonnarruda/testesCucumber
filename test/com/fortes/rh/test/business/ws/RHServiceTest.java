@@ -5,6 +5,7 @@ import org.jmock.MockObjectTestCase;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
+import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -13,6 +14,7 @@ import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.pesquisa.PesquisaManager;
 import com.fortes.rh.business.ws.RHServiceImpl;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.MovimentacaoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -36,6 +38,7 @@ public class RHServiceTest extends MockObjectTestCase
 	private Mock faixaSalarialManager;
 	private Mock transactionManager;
 	private Mock pesquisaManager;
+	private Mock historicoColaboradorManager;
 
 	protected void setUp() throws Exception
 	{
@@ -64,6 +67,9 @@ public class RHServiceTest extends MockObjectTestCase
 		
 		pesquisaManager = new Mock(PesquisaManager.class);
 		rHServiceImpl.setPesquisaManager((PesquisaManager) pesquisaManager.proxy());
+		
+		historicoColaboradorManager = new Mock(HistoricoColaboradorManager.class);
+		rHServiceImpl.setHistoricoColaboradorManager((HistoricoColaboradorManager) historicoColaboradorManager.proxy());
 	}
 	
 	public void testTransferirSemEmpresaIntegrada() throws Exception
@@ -445,4 +451,78 @@ public class RHServiceTest extends MockObjectTestCase
 		assertFalse("Existe Pesquisa a ser Respondida", rHServiceImpl.existePesquisaParaSerRespondida(empregadoCodigoAC, empresaCodigoAC, grupoAC));
 	}
 
+	public void testAtualizarMovimentacaoEmLote()
+	{
+		String codPessoalEstabOuArea = "001";
+		String[] empregadoCodigos = new String[]{"0025", "0026"};
+		String empresaCodigoAC = null;
+		String grupoAC = null;
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setId(1L);
+		empresa.setCodigoAC(empresaCodigoAC);
+		empresa.setGrupoAC(grupoAC);
+		
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), eq(empresa.getGrupoAC())).will(returnValue(empresa));
+		areaOrganizacionalManager.expects(once()).method("possuiAreaFilhasByCodigoAC").with(eq(codPessoalEstabOuArea),eq(empresa.getId())).will(returnValue(false));
+		historicoColaboradorManager.expects(atLeastOnce()).method("updateSituacaoByMovimentacao").withAnyArguments();
+		
+		FeedbackWebService feedbackWebService = rHServiceImpl.atualizarMovimentacaoEmLote(empregadoCodigos, MovimentacaoAC.AREA, codPessoalEstabOuArea, false, empresa.getCodigoAC(), empresa.getGrupoAC());
+		assertTrue(feedbackWebService.isSucesso());
+	}
+	
+	public void testAtualizarMovimentacaoEmLoteEmpresaNula()
+	{
+		String codPessoalEstabOuArea = "001";
+		String[] empregadoCodigos = new String[]{"0025", "0026"};
+		String empresaCodigoAC = null;
+		String grupoAC = null;
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setId(1L);
+		empresa.setCodigoAC(empresaCodigoAC);
+		empresa.setGrupoAC(grupoAC);
+		
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), eq(empresa.getGrupoAC())).will(returnValue(null));
+		
+		FeedbackWebService feedbackWebService = rHServiceImpl.atualizarMovimentacaoEmLote(empregadoCodigos, MovimentacaoAC.AREA, codPessoalEstabOuArea, false, empresa.getCodigoAC(), empresa.getGrupoAC());
+		assertEquals("Empresa não encontrada no sistema RH.", feedbackWebService.getMensagem());
+	}
+	
+	public void testAtualizarMovimentacaoEmLoteMivimentacaoNaoEncontrada()
+	{
+		String codPessoalEstabOuArea = "001";
+		String[] empregadoCodigos = new String[]{"0025", "0026"};
+		String empresaCodigoAC = null;
+		String grupoAC = null;
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setId(1L);
+		empresa.setCodigoAC(empresaCodigoAC);
+		empresa.setGrupoAC(grupoAC);
+		
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), eq(empresa.getGrupoAC())).will(returnValue(empresa));
+		
+		FeedbackWebService feedbackWebService = rHServiceImpl.atualizarMovimentacaoEmLote(empregadoCodigos, "bla", codPessoalEstabOuArea, false, empresa.getCodigoAC(), empresa.getGrupoAC());
+		assertEquals("Movimentação não encontrada no RH.", feedbackWebService.getMensagem());
+	}
+	
+	public void testAtualizarMovimentacaoEmLotePossuiAreaFilha()
+	{
+		String codPessoalEstabOuArea = "001";
+		String[] empregadoCodigos = new String[]{"0025", "0026"};
+		String empresaCodigoAC = null;
+		String grupoAC = null;
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa.setId(1L);
+		empresa.setCodigoAC(empresaCodigoAC);
+		empresa.setGrupoAC(grupoAC);
+		
+		empresaManager.expects(once()).method("findByCodigoAC").with(eq(empresa.getCodigoAC()), eq(empresa.getGrupoAC())).will(returnValue(empresa));
+		areaOrganizacionalManager.expects(once()).method("possuiAreaFilhasByCodigoAC").with(eq(codPessoalEstabOuArea),eq(empresa.getId())).will(returnValue(true));
+		
+		FeedbackWebService feedbackWebService = rHServiceImpl.atualizarMovimentacaoEmLote(empregadoCodigos, MovimentacaoAC.AREA, codPessoalEstabOuArea, false, empresa.getCodigoAC(), empresa.getGrupoAC());
+		assertEquals("Não foi possível realizar a atualização em lote. A lotação é mãe de outras lotações.", feedbackWebService.getMensagem());
+	}
 }

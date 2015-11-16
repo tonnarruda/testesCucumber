@@ -506,6 +506,43 @@ public class AreaOrganizacionalDaoHibernateTest extends GenericDaoHibernateTest<
 		assertEquals(2, areaOrganizacionalDao.findAreasMaesIdsByEmpresaId(empresa.getId()).length);
 	}
 	
+	public void testPossuiAreaFilhasByCodigoAC()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional1 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional1.setCodigoAC("001");
+		areaOrganizacional1.setEmpresa(empresa);
+		areaOrganizacional1.setAtivo(true);
+		areaOrganizacionalDao.save(areaOrganizacional1);
+		
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional2.setCodigoAC("001.01");
+		areaOrganizacional2.setEmpresa(empresa);
+		areaOrganizacional2.setAreaMae(areaOrganizacional1);
+		areaOrganizacional2.setAtivo(true);
+		areaOrganizacionalDao.save(areaOrganizacional2);
+		
+		AreaOrganizacional areaOrganizacional3 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional3.setCodigoAC("002");
+		areaOrganizacional3.setEmpresa(empresa);
+		areaOrganizacional3.setAtivo(true);
+		areaOrganizacionalDao.save(areaOrganizacional3);
+		
+		AreaOrganizacional areaOrganizacional4 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacional4.setCodigoAC("001.01.01");
+		areaOrganizacional4.setEmpresa(empresa);
+		areaOrganizacional4.setAtivo(false);
+		areaOrganizacional4.setAreaMae(areaOrganizacional2);
+		areaOrganizacionalDao.save(areaOrganizacional4);
+		
+		assertTrue(areaOrganizacionalDao.possuiAreaFilhasByCodigoAC(areaOrganizacional1.getCodigoAC(), empresa.getId()));
+		assertTrue(areaOrganizacionalDao.possuiAreaFilhasByCodigoAC(areaOrganizacional2.getCodigoAC(), empresa.getId()));
+		assertFalse(areaOrganizacionalDao.possuiAreaFilhasByCodigoAC(areaOrganizacional3.getCodigoAC(), empresa.getId()));
+		assertFalse(areaOrganizacionalDao.possuiAreaFilhasByCodigoAC(areaOrganizacional4.getCodigoAC(), empresa.getId()));
+	}
+	
 	public void setCargoDao(CargoDao cargoDao)
 	{
 		this.cargoDao = cargoDao;

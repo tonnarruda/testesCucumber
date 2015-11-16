@@ -430,16 +430,25 @@ public class RHServiceImpl implements RHService
 			return new FeedbackWebService(false, "Nenhuma empresa esta integrada com o sistena RH.", "");
 	}
 	
-	public FeedbackWebService atualizarMovimentacaoEmLote(String[] empregadoCodigos, String movimentacao, String valor, boolean atualizarTodasSituacoes, String empCodigo, String grupoAC){
+	public FeedbackWebService atualizarMovimentacaoEmLote(String[] empregadoCodigos, String movimentacao, String codPessoalEstabOuArea, boolean atualizarTodasSituacoes, String empCodigo, String grupoAC)
+	{
+		String parametros = "\nempCodigo: " + empCodigo + "\ngrupoAC: " + grupoAC;
+
 		try {
 			Empresa empresa = empresaManager.findByCodigoAC(empCodigo, grupoAC);
-			if(MovimentacaoAC.AREA.equals(movimentacao) && areaOrganizacionalManager.possuiAreaFilhasByCodigoAC(valor, empresa.getId())) {
-				return new FeedbackWebService(false, "Não foi possível realizar a atualização em lote. A lotação é mãe de outras lotações.", "");
-			}
 			
-			for (String empregadoCodigo : empregadoCodigos) {
-				historicoColaboradorManager.updateSituacaoByMovimentacao(empregadoCodigo, (String) new MovimentacaoAC().get(movimentacao), valor, atualizarTodasSituacoes, empresa.getId());
-			}
+			if(empresa == null || empresa.getId() == null)
+				return new FeedbackWebService(false, "Empresa não encontrada no sistema RH.", formataException(parametros, null));
+			
+			if(!MovimentacaoAC.AREA.equals(movimentacao) && !MovimentacaoAC.ESTABELECIMENTO.equals(movimentacao))
+				return new FeedbackWebService(false, "Movimentação não encontrada no RH.", "Movimentação: " + movimentacao);
+			
+			if(MovimentacaoAC.AREA.equals(movimentacao) && areaOrganizacionalManager.possuiAreaFilhasByCodigoAC(codPessoalEstabOuArea, empresa.getId())) 
+				return new FeedbackWebService(false, "Não foi possível realizar a atualização em lote. A lotação é mãe de outras lotações.", "");
+			
+			for (String empregadoCodigo : empregadoCodigos) 
+				historicoColaboradorManager.updateSituacaoByMovimentacao(empregadoCodigo, (String) new MovimentacaoAC().get(movimentacao), codPessoalEstabOuArea, atualizarTodasSituacoes, empresa.getId());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new FeedbackWebService(false, "Não foi possível realizar a atualização em lote.", "");

@@ -23,7 +23,6 @@ import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
-import com.fortes.rh.config.JDBCConnection;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.ReajusteColaborador;
@@ -35,9 +34,6 @@ import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.dicionario.TipoBuscaHistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Estabelecimento;
-import com.ibm.icu.text.DateFormat;
-import com.ibm.icu.text.SimpleDateFormat;
-import com.opensymphony.webwork.components.Form;
 
 @SuppressWarnings("unchecked")
 public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<HistoricoColaborador> implements HistoricoColaboradorDao
@@ -604,9 +600,9 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		return query.executeUpdate() == 1;
 	}
 	
-	public void updateSituacaoByMovimentacao(String codigoEmpregado, String movimentacao, String valor, boolean atualizarTodasSituacoes, Long empresaId)
+	public void updateSituacaoByMovimentacao(String codigoEmpregado, String movimentacao, String codPessoalEstabOuArea, boolean atualizarTodasSituacoes, Long empresaId)
 	{
-		String hql = "update HistoricoColaborador set " + movimentacao +".id = ( select id from " + WordUtils.capitalize(movimentacao) + " where codigoAC = :valor and empresa.id = :empresaId ) " +
+		String hql = "update HistoricoColaborador set " + movimentacao +".id = ( select id from " + WordUtils.capitalize(movimentacao) + " where codigoAC = :codPessoalEstabOuArea and empresa.id = :empresaId ) " +
 		" where colaborador.id = ( select id from Colaborador where codigoAC = :codigoEmpregado and empresa.id = :empresaId )";
 		if (!atualizarTodasSituacoes) {
 			hql += " and data = (select max(hc2.data) " +
@@ -622,7 +618,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 		}
 		query.setLong("empresaId", empresaId);
 		query.setString("codigoEmpregado", codigoEmpregado);
-		query.setString("valor", valor);
+		query.setString("codPessoalEstabOuArea", codPessoalEstabOuArea);
 
 		query.executeUpdate();
 	}

@@ -25,7 +25,7 @@ public interface HistoricoColaboradorDao extends GenericDao<HistoricoColaborador
 	public Collection<HistoricoColaborador> findByColaboradorProjection(Long colaboradorId, Integer statusRetornoAC);
 	public HistoricoColaborador findByIdHQL(Long historicoColaboradorId);
 	public boolean setStatus(Long historicoColaboradorId, Boolean aprovado);
-	public void updateSituacaoByMovimentacao(String codigoEmpregado, String movimentacao, String valor, boolean atualizarTodasSituacoes, Long empresaId);
+	public void updateSituacaoByMovimentacao(String codigoEmpregado, String movimentacao, String codPessoalEstabOuArea, boolean atualizarTodasSituacoes, Long empresaId);
 	public HistoricoColaborador findByIdProjectionMinimo(Long historicoColaboradorId);
 	public String findColaboradorCodigoAC(Long historicoColaboradorId);
 	public HistoricoColaborador findByIdProjection(Long historicoColaboradorId);
