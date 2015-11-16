@@ -187,8 +187,11 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	public String getHistoricoFaixaValorFormatado()
 	{
     	NumberFormat df = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+    	if(faixaSalarialHistoricoAtual != null)
+    		return df.format( (faixaSalarialHistoricoAtual.getValorReal() == null ? 0 : faixaSalarialHistoricoAtual.getValorReal()) );
     	
-    	return df.format( (faixaSalarialHistoricoAtual.getValorReal() == null ? 0 : faixaSalarialHistoricoAtual.getValorReal()) );
+    	return "";
+    	
 	}
 	
 	public void setHistoricoFaixaQuantidade(Double historicoFaixaQuantidade)

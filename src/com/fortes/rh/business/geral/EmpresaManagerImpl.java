@@ -20,6 +20,7 @@ import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.cargosalario.IndiceManager;
 import com.fortes.rh.business.desenvolvimento.TurmaManager;
+import com.fortes.rh.business.security.AuditoriaManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.RiscoManager;
 import com.fortes.rh.dao.geral.EmpresaDao;
@@ -339,9 +340,14 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 		this.cargoManager = cargoManager;
 	}
 
-	public void removeEmpresa(long id) 
+	public void removeEmpresa(Empresa empresa) 
 	{
-		getDao().removeEmpresaPadrao(id);
+		getDao().removeEmpresaPadrao(empresa.getId());
+	}
+	
+	public void remove(Empresa empresa) 
+	{
+		getDao().remove(new Long[]{empresa.getId()});
 	}
 
 	public Long ajustaCombo(Long empresaId, Long empresaSistemaId) 
@@ -590,4 +596,5 @@ public class EmpresaManagerImpl extends GenericManagerImpl<Empresa, EmpresaDao> 
 	public void setMail(Mail mail) {
 		this.mail = mail;
 	}
+
 }

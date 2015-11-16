@@ -53,6 +53,20 @@ public class AreaOrganizacionalAuditorCallbackImpl implements AuditorCallback {
 		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), area.getNome(), dados);
 	}
 	
+	public Auditavel removeComDependencias(MetodoInterceptado metodo) throws Throwable {
+		
+		AreaOrganizacional area = new AreaOrganizacional();
+		area.setId((Long)metodo.getParametros()[0]);
+		AreaOrganizacionalManager manager = (AreaOrganizacionalManager) metodo.getComponente();
+		area = manager.findById(area.getId());
+		String dados = new GeraDadosAuditados(new Object[]{area}, null).gera();
+		metodo.processa();
+		
+		
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), area.getNome(), dados);
+	}
+	
+	
 	private AreaOrganizacional carregaEntidade(MetodoInterceptado metodo, AreaOrganizacional area) {
 		AreaOrganizacionalManager manager = (AreaOrganizacionalManager) metodo.getComponente();
 		return manager.findByIdProjection(area.getId());

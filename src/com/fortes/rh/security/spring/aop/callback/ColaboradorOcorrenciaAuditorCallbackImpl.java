@@ -25,9 +25,11 @@ public class ColaboradorOcorrenciaAuditorCallbackImpl implements AuditorCallback
 		
 		metodo.processa();
 		
+		colaboradorOcorrencia = carregaEntidade(metodo, colaboradorOcorrencia);
+		
 		String dados = new GeraDadosAuditados(new Object[]{colaboradorOcorrenciaAnterior}, colaboradorOcorrencia).gera();
 		
-		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), "", dados);
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaboradorOcorrencia.getOcorrencia().getDescricao(), dados);
 	}
 
 	public Auditavel remove(MetodoInterceptado metodo) throws Throwable {
@@ -39,7 +41,7 @@ public class ColaboradorOcorrenciaAuditorCallbackImpl implements AuditorCallback
 		
 		String dados = new GeraDadosAuditados(new Object[]{colaboradorOcorrenciaAnterior}, null).gera();
 		
-		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), "", dados);
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), colaboradorOcorrenciaAnterior.getOcorrencia().getDescricao(), dados);
 	}
 	
 	private ColaboradorOcorrencia carregaEntidade(MetodoInterceptado metodo, ColaboradorOcorrencia colaboradorOcorrencia) {

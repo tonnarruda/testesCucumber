@@ -33,7 +33,8 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	Empresa findByIdProjection(Long id);
 	Collection<Empresa> findByUsuarioPermissao(Long usuarioId, String... roles);
 	Long[] selecionaEmpresa(Empresa empresa, Long usuarioId, String role);
-	void removeEmpresa(long id);
+	@Audita(operacao="Remoção", auditor=EmpresaAuditorCallbackImpl.class)
+	void removeEmpresa(Empresa empresa);
 	Collection<Empresa> findEmailsEmpresa();
 	public Empresa findEmailsEmpresa(Long empresaId);
 	Long ajustaCombo(Long empresaId, Long empresaDoSistemaId);
@@ -58,4 +59,6 @@ public interface EmpresaManager extends GenericManager<Empresa>
 	boolean emProcessoExportacaoAC(Long empresaId);
 	void setProcessoExportacaoAC(Long empresaId, boolean processoExportacaoAC);
 	void enviaEmailInformandoDesintegracao(Empresa empresa, boolean tavaIntegradaComAC, String motivo, String usuario);
+	@Audita(operacao="Remoção", auditor=EmpresaAuditorCallbackImpl.class)
+	void remove(Empresa empresa);
 }

@@ -42,7 +42,7 @@ public class EmpresaListAction extends MyActionSupportList
 		}
 			
 		if(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()).getId().equals(1L) || empresa.getId().equals(1L))
-			empresaManager.removeEmpresa(empresa.getId());
+			empresaManager.removeEmpresa(empresaManager.findByIdProjection(empresa.getId()));
 		else
 			empresaManager.remove(new Long[]{empresa.getId()});
 		

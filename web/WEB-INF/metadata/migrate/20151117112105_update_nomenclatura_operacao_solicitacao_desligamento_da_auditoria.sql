@@ -1,0 +1,1 @@
+UPDATE auditoria SET operacao = 'Solicitação Desligamento' WHERE operacao = 'Solicitação Deslig';--.go

@@ -32,7 +32,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	@Audita(operacao="Remoção", auditor=AreaOrganizacionalAuditorCallbackImpl.class)
 	public void deleteLotacaoAC(AreaOrganizacional areaOrganizacional, Empresa empresa) throws IntegraACException, Exception;
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Collection getNaoFamilia(Collection areas, Long id);
 	public boolean verificaMaternidade(Long areaOrganizacionalId, Boolean ativa);
 	public Collection<AreaOrganizacional> findAllListAndInativas(Boolean ativo, Collection<Long> areaInativaIds, Long... empresasIds);
@@ -81,6 +81,7 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public boolean verificaAlteracaoStatusAtivo(Long areaId, Long areaMaeId);
 	public Collection<AreaOrganizacional> ordenarAreasHierarquicamente(Collection<AreaOrganizacional> areas, Collection<Long> areasIds, int nivelHierarquico);
 	public String getMascaraLotacoesAC(Empresa empresa) throws Exception;
+	@Audita(operacao="Remoção", auditor=AreaOrganizacionalAuditorCallbackImpl.class)
 	public void removeComDependencias(Long id) throws FortesException;
 	public Collection<AreaOrganizacional> findAllSelectOrderDescricaoByUsuarioId(Long empresaId, Long usuarioId, Boolean ativo, Long areaInativaId) throws Exception;
 	public Collection<AreaOrganizacional> findAllListAndInativasByUsuarioId(Long empresaId, Long usuarioId, Boolean ativo, Collection<Long> areaInativaIds);
