@@ -78,7 +78,8 @@ public class EmpresaListActionTest extends MockObjectTestCase
     	action.setEmpresa(fortes);
     	action.setEmpresaSistema(ente);
     	
-    	manager.expects(once()).method("removeEmpresa").with(eq(fortes.getId()));
+    	manager.expects(once()).method("findByIdProjection").with(eq(fortes.getId())).will(returnValue(fortes));
+    	manager.expects(once()).method("removeEmpresa").with(eq(fortes));
     	
     	assertEquals("success", action.delete());
     	assertEquals("Empresa excluída com sucesso.", action.getActionSuccess().toArray()[0]);
