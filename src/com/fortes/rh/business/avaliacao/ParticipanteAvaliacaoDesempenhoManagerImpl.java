@@ -31,4 +31,9 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 	public Collection<Colaborador> findParticipantes(Long avaliacaoDesempenhoId, Character tipo) {
 		return getDao().findParticipantes(avaliacaoDesempenhoId, tipo);
 	}
+	
+	public void removeNotIn(Long[] participantes, Long avaliacaoDesempenhoId, Character tipo) throws Exception
+	{
+		getDao().removeNotIn( participantes, avaliacaoDesempenhoId, tipo );
+	}
 }

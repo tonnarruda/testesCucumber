@@ -9,4 +9,5 @@ import com.fortes.rh.model.geral.Colaborador;
 public interface ParticipanteAvaliacaoDesempenhoDao extends GenericDao<ParticipanteAvaliacaoDesempenho> 
 {
 	public Collection<Colaborador> findParticipantes(Long avaliacaoDesempenhoId, Character tipo);
+	public void removeNotIn(Long[] participantes, Long avaliacaoDesempenhoId, Character tipo) throws Exception;
 }

@@ -297,10 +297,14 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		colaboradorQuestionarios.removeAll(Collections.singleton(null));
 		
 		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(avaliados), ParticipanteAvaliacao.AVALIADO);
+		participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.arrayStringToArrayLong(avaliados), avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADO);
+		
 		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(avaliadores), ParticipanteAvaliacao.AVALIADOR);
+		participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.arrayStringToArrayLong(avaliados), avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
 		
 		colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionarios);
 		colaboradorQuestionarioManager.removeNotIn(colaboradorQuestionarios, avaliacaoDesempenho.getId());
+		
 		prepareAvaliados();
 		return Action.SUCCESS;
 	}
