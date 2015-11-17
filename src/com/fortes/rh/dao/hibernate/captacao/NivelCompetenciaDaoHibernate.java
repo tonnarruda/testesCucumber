@@ -27,14 +27,29 @@ import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompetencia> implements NivelCompetenciaDao
 {
 	@SuppressWarnings("unchecked")
-	public Collection<NivelCompetencia> findAllSelect(Long empresaId) 
+	public Collection<NivelCompetencia> findAllSelect(Long empresaId, Long nivelCompetenciaHistoricoId, Date data) 
 	{
-		Criteria criteria = getSession().createCriteria(NivelCompetencia.class);
+		if(data == null)
+			data = new Date();
+		
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(NivelCompetenciaHistorico.class, "nch2")
+				.setProjection(Projections.max("nch2.data"))
+				.add(Restrictions.eqProperty("nch2.empresa.id", "nc.empresa.id"))
+				.add(Restrictions.le("nch2.data", data));
+		
+		Criteria criteria = getSession().createCriteria(NivelCompetencia.class, "nc");
+		criteria.createCriteria("nc.configHistoricoNiveis", "chn", Criteria.INNER_JOIN);
+		criteria.createCriteria("chn.nivelCompetenciaHistorico", "nch", Criteria.INNER_JOIN);
 
 		if(empresaId != null)
-			criteria.add(Expression.eq("empresa.id", empresaId));
+			criteria.add(Expression.eq("nc.empresa.id", empresaId));
+		
+		if(nivelCompetenciaHistoricoId != null)
+			criteria.add(Expression.eq("chn.nivelCompetenciaHistorico.id", nivelCompetenciaHistoricoId));
+		else
+			criteria.add(Subqueries.propertyEq("nch.data", subQueryHc));
 
-		criteria.addOrder(Order.asc("descricao"));
+		criteria.addOrder(Order.asc("nc.descricao"));
 
 		return criteria.list();
 	}

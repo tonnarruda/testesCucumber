@@ -11,4 +11,5 @@ public interface ConfiguracaoNivelCompetenciaFaixaSalarialManager extends Generi
 	void deleteByFaixaSalarial(Long[] faixaIds);
 	void deleteDependenciasByFaixaSalarial(Long[] faixaIds);
 	Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> findProximasConfiguracoesAposData(Long faixaSalarialId, Date data);
+	boolean existByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId);
 }

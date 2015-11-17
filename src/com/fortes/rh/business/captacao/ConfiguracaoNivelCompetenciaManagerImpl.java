@@ -173,7 +173,6 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 
 	public void saveCompetenciasFaixaSalarial(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) throws Exception
 	{
-		// TODO: Criar teste
 		if (configuracaoNivelCompetenciaFaixaSalarial.getId() != null) 
 		{
 			configuracaoNivelCompetenciaFaixaSalarialManager.update(configuracaoNivelCompetenciaFaixaSalarial);
@@ -319,7 +318,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		Collection<ConfiguracaoNivelCompetenciaVO> vos = new ArrayList<ConfiguracaoNivelCompetenciaVO>();
 
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaColaborador(dataIni, dataFim, competenciasIds, faixaSalarialId, true);
-		Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId);
+		Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId, null, null);
 		
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasFaixas = getDao().findCompetenciasFaixaSalarial(competenciasIds, faixaSalarialId);
 		Map<String, Collection<MatrizCompetenciaNivelConfiguracao>> matrizCompetenciaNivelConfiguracaoMap = new HashMap<String, Collection<MatrizCompetenciaNivelConfiguracao>>();
@@ -450,7 +449,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	public Collection<MatrizCompetenciaNivelConfiguracao> montaConfiguracaoNivelCompetenciaByFaixa(Long empresaId, Long faixaSalarialId, Date data) 
 	{
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasExigidasPelaFaixa = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId, data);
-		Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId);
+		Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId, null, null);
 
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
 		for (ConfiguracaoNivelCompetencia competenciaExigidaPelaFaixa : configuracaoNivelCompetenciasExigidasPelaFaixa) 
@@ -481,7 +480,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 				
 			Collection<ConfiguracaoNivelCompetencia> competenciasDoColaborador = getDao().findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId());
 			
-			Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId);
+			Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId, null, null);
 			
 			Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
 			for (ConfiguracaoNivelCompetencia competenciaExigidaPelaFaixa : configuracaoNivelCompetenciasExigidasPelaFaixa) 
@@ -551,7 +550,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			return tabelasCandidatos;
 		
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaCandidato(faixaSalarialId, candidatosDaSolicitacaoIds);//Ordem da consulta é importantissima, primeiro as competencias da faixa e depois do candidato
-		Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId);
+		Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId, null, null);
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
 		
 		Long idCandidatoAnterior = null;

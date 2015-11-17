@@ -299,7 +299,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		
 		if (colaboradorQuestionario.getAvaliacao().isAvaliarCompetenciasCargo())
 		{
-			nivelCompetencias = nivelCompetenciaManager.findAllSelect(colaborador.getEmpresa().getId());
+			nivelCompetencias = nivelCompetenciaManager.findAllSelect(colaborador.getEmpresa().getId(), null, null);
 			
 			if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() != null){	
 				niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId());

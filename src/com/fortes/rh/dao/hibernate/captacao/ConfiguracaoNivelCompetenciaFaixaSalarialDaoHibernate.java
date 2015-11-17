@@ -46,4 +46,12 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialDaoHibernate extends Gener
 		
 		return criteria.list();
 	}
+
+	public boolean existByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId) 
+	{
+		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaFaixaSalarial.class, "cncfs");
+		criteria.add(Expression.eq("cncfs.nivelCompetenciaHistorico.id", nivelCompetenciaHistoricoId));
+		
+		return criteria.list().size() > 0;
+	}
 }

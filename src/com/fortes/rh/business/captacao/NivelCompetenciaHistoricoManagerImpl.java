@@ -1,5 +1,7 @@
 package com.fortes.rh.business.captacao;
 
+import java.util.Date;
+
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.NivelCompetenciaHistoricoDao;
 import com.fortes.rh.exception.FortesException;
@@ -20,5 +22,10 @@ public class NivelCompetenciaHistoricoManagerImpl extends GenericManagerImpl<Niv
 
 	public void setConfigHistoricoNivelManager( ConfigHistoricoNivelManager configHistoricoNivelManager) {
 		this.configHistoricoNivelManager = configHistoricoNivelManager;
+	}
+
+	public Long findByData(Date date, Long empresaId) 
+	{
+		return getDao().findByData(date, empresaId);
 	}
 }

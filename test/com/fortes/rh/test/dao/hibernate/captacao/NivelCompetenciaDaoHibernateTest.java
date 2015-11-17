@@ -113,28 +113,17 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		Empresa empresa2 = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa2);
 		
-		NivelCompetencia nivelRuim = NivelCompetenciaFactory.getEntity();
-		nivelRuim.setDescricao("Ruim");
-		nivelRuim.setEmpresa(empresa1);
-		nivelCompetenciaDao.save(nivelRuim);
-
-		NivelCompetencia nivelRegular = NivelCompetenciaFactory.getEntity();
-		nivelRegular.setDescricao("Regular");
-		nivelRegular.setEmpresa(empresa1);
-		nivelCompetenciaDao.save(nivelRegular);
-
-		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity();
-		nivelBom.setDescricao("Bom");
-		nivelBom.setEmpresa(empresa1);
-		nivelCompetenciaDao.save(nivelBom);
+		NivelCompetenciaHistorico nivelCompetenciaHistorico1 = iniciaNivelCompetenciaHistorico(empresa1, DateUtil.criarDataMesAno(1, 1, 2005));
+		NivelCompetenciaHistorico nivelCompetenciaHistorico2 = iniciaNivelCompetenciaHistorico(empresa2, DateUtil.criarDataMesAno(1, 1, 2005));
 		
-		NivelCompetencia nivelBomEmpresa2 = NivelCompetenciaFactory.getEntity();
-		nivelBomEmpresa2.setDescricao("Bom");
-		nivelBomEmpresa2.setEmpresa(empresa2);
-		nivelCompetenciaDao.save(nivelBomEmpresa2);
+		nivelCompetencia(empresa1, "Ruim", 1, null, nivelCompetenciaHistorico1);
+		nivelCompetencia(empresa1, "Regular", 2, null, nivelCompetenciaHistorico1);
+		nivelCompetencia(empresa1, "Bom", 3, null, nivelCompetenciaHistorico2);
+		nivelCompetencia(empresa2, "Bom", 2, null, nivelCompetenciaHistorico2);
 		
-		assertEquals(3, nivelCompetenciaDao.findAllSelect(empresa1.getId()).size());
-		assertTrue(nivelCompetenciaDao.findAllSelect(null).size() >= 4);
+		assertEquals(3, nivelCompetenciaDao.findAllSelect(empresa1.getId(), null, null).size());
+		assertEquals(2, nivelCompetenciaDao.findAllSelect(empresa1.getId(), nivelCompetenciaHistorico1.getId(), null).size());
+		assertTrue(nivelCompetenciaDao.findAllSelect(null, null, null).size() >= 4);
 	}
 	
 	public void testDeleteConfiguracaoByCandidatoFaixa()

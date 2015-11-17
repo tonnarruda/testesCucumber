@@ -26,4 +26,9 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialManagerImpl extends Generi
 	{
 		return getDao().findProximasConfiguracoesAposData(faixaSalarialId, data);
 	}
+
+	public boolean existByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId) 
+	{
+		return getDao().existByNivelCompetenciaHistoricoId(nivelCompetenciaHistoricoId);
+	}
 }

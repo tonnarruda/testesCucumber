@@ -37,7 +37,7 @@ public class NivelCompetenciaManagerTest extends MockObjectTestCase
 
 		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresaId)).will(returnValue(nivelCompetencias));
 		
-		assertEquals(nivelCompetencias, nivelCompetenciaManager.findAllSelect(empresaId));
+		assertEquals(nivelCompetencias, nivelCompetenciaManager.findAllSelect(empresaId, null, null));
 	}
 
 	public void testValidaLimite()

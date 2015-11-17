@@ -178,6 +178,10 @@
 		<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.id" id="configuracaoNivelCompetenciaFaixaSalarialId"/>
 		<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.faixaSalarial.id" value="${faixaSalarial.id}"/>
 		
+		<#if nivelCompetenciaHistoricoId?exists>
+			<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.nivelCompetenciaHistorico.id" value="${nivelCompetenciaHistoricoId}"/>
+		</#if>
+		
 		<@ww.datepicker label="A partir de" name="configuracaoNivelCompetenciaFaixaSalarial.data" value="${data}" id="data" cssClass="mascaraData" required="true"/>
 		<#if edicao>
 			<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.data" value="${data}"/>
