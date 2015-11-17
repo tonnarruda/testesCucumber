@@ -1,8 +1,10 @@
 var countColaboradorQuestionarios = 0;
-var selecteds = new Array;
+var selectedsAvaliados = new Array;
+var selectedsAvaliadores = new Array;
 var lastSelected;
 var activeShift = false;
 var activeCtrl = false;
+var notificatedAboutAutoAvaliacao = false;
 
 $(function() {
 	
@@ -10,7 +12,8 @@ $(function() {
 	
     portletEvents();
 	    
-	atualizeSelectables();
+	atualizeSelectables("#avaliados-list", "li");
+	atualizeSelectables(".column", ".portlet");
     
 	$(".ui-icon-circle-triangle-e").click(function(){
 		$('#avaliados, #avaliadores').hide();
@@ -66,6 +69,7 @@ $(function() {
 				createAvaliadoForAvaliador(avaliador, $(this));
 			});
 		});
+		notificatedAboutAutoAvaliacao = false;
 	});
 	
 	$("#avaliados .actions .generate-autoavaliacao").click(function(){
@@ -75,12 +79,13 @@ $(function() {
 			if ( avaliador.length == 0 ) 
 				createAvaliador( $(this).attr("id"), $(this).find(".nome").text() );
 			
-			avaliador = $("#avaliadores .portlet-content ul[id="+$(this).attr("id")+"]");
+			avaliador = $("#avaliadores .portlet-content .portlet[id="+$(this).attr("id")+"] ul");
 			
 			createAvaliadoForAvaliador(avaliador, $(this));
 			conectAvaliadosAvaliadores();
 			portletEvents();
 		});
+		notificatedAboutAutoAvaliacao = false;
 	});
 });
 
@@ -91,6 +96,7 @@ function conectAvaliadosAvaliadores() {
       accept: ":not(.ui-sortable-helper)",
       drop: function( event, ui ) {
     	createAvaliadoForAvaliador($(this), ui.draggable);
+    	notificatedAboutAutoAvaliacao = false;
       }
     }).sortable({
       revert: true,
@@ -123,15 +129,21 @@ function portletEvents() {
 	$(".new-portlet").removeClass("new-portlet");
 }
 
-function atualizeSelectables() {
-	$("#selectable li").not(".ui-selectable").click(function(event){
+function atualizeSelectables(id, item, type) {
+	$(id + " " + item).not(".ui-selectable").click(function(event){
+		var selecteds = new Array;
+		if (type == "avaliados")
+			selecteds = selectedsAvaliados;
+		else if ( type == "avaliadores")
+			selecteds = selectedsAvaliadores;
+		
 		if (activeShift) {
-			var elements = $("#selectable li");
+			var elements = $(id + " " + item);
 			if (typeof lastSelected == "undefined") {
 					selecteds.push($(this).attr("id"));
 					$(this).addClass("ui-selected");
 			} else {
-	    		var lastElement = $("#selectable li[id="+lastSelected+"]");
+	    		var lastElement = $(id + " "+ item +"[id="+lastSelected+"]");
 	    		var element = $(this);
 	    		
 	    		elements = elements.splice(elements.index(lastElement), elements.index(element) - elements.index(lastElement) + 1);
@@ -153,13 +165,17 @@ function atualizeSelectables() {
 	    	}
 		}
 		
-		$(".ui-widget-header.actions").toggle(selecteds.length > 0);
-		$(".ui-widget-header.title").toggle(!(selecteds.length > 0));
+		$(id).parents(".box").find(".ui-widget-header.actions").toggle(selecteds.length > 0);
+		$(id).parents(".box").find(".ui-widget-header.title").toggle(!(selecteds.length > 0));
 		
 		lastSelected= $(this).attr("id");
-		console.log(selecteds);
+		
+		if (type == "avaliados")
+			selectedsAvaliados = selecteds;
+		else if ( type == "avaliadores")
+			selectedsAvaliadores = selecteds;
 	});
-	$("#selectable li").not(".ui-selectable").addClass("ui-selectable");
+	$(id + " li").not(".ui-selectable").addClass("ui-selectable");
 }
 
 function createAvaliador(id, nome) {
@@ -195,12 +211,15 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
 		    
         	countColaboradorQuestionarios++;
         }
-    } else if ( !permiteAutoAvaliacao ) {
+    } else if ( !permiteAutoAvaliacao && !notificatedAboutAutoAvaliacao ) {
     	$("<div>A avaliação não permite autoavaliação</div>").dialog({
     		modal: true,
     		height: '120',
     		title: "Aviso",
-    		buttons: { "Ok": function() { $( this ).dialog( "close" );} }
+    		buttons: { "Ok": function() {
+    			$( this ).dialog( "close" );
+    		} }
     	});
+    	notificatedAboutAutoAvaliacao = true;
     }
 }
