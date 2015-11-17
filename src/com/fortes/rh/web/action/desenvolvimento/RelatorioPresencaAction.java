@@ -203,6 +203,8 @@ public class RelatorioPresencaAction extends MyActionSupport
 
 	public String prepareRelatorio()
 	{
+		setVideoAjuda(1124L);
+		
 		cursos = cursoManager.findAllByEmpresasParticipantes(getEmpresaSistema().getId());
 		diasCheckList = new ArrayList<CheckBox>();
 		exibirSituacaoAtualColaborador = true;

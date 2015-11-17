@@ -102,6 +102,8 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 	
 	public String prepareUpdate() throws Exception
 	{
+		setVideoAjuda(1123L);
+		
 		parametrosDoSistema = parametrosDoSistemaManager.findById(1L);
 		perfils = perfilManager.findAll();
 		populoHorariosBackupList();
@@ -438,8 +440,7 @@ public class ParametrosDoSistemaEditAction extends MyActionSupportEdit
 		this.ocorrenciaIds = ocorrenciaIds;
 	}
 
-	public void setColaboradorOcorrenciaManager(
-			ColaboradorOcorrenciaManager colaboradorOcorrenciaManager) {
+	public void setColaboradorOcorrenciaManager(ColaboradorOcorrenciaManager colaboradorOcorrenciaManager) {
 		this.colaboradorOcorrenciaManager = colaboradorOcorrenciaManager;
 	}
 
