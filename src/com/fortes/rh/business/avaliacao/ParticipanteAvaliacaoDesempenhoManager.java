@@ -11,4 +11,5 @@ public interface ParticipanteAvaliacaoDesempenhoManager extends GenericManager<P
 {
 	public void save(AvaliacaoDesempenho avaliacaoDesempenho, Long[] colaboradorIds, char tipo);
 	public Collection<Colaborador> findParticipantes(Long avaliacaoDesempenhoId, Character tipo);
+	public void removeNotIn(Long[] participantes, Long avaliacaoDesempenhoId, Character tipo) throws Exception;
 }

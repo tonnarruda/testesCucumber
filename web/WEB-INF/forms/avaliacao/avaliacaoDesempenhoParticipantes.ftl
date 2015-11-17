@@ -23,8 +23,6 @@
 		<#assign countColaboradorQuestionarios=0 />
 		<#assign gerarAutoAvaliacoesEmLoteAction="gerarAutoAvaliacoesEmLote.action"/>
 		
-		<#assign validarCamposModal="return validaFormulario('formModal', new Array('@colaboradorsCheck'), populeList(), true)"/>
-		
 		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/formModal.js?version=${versao}"/>'></script>
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/avaliacaoDesempenhoParticipantes.js?version=${versao}"/>'></script>
@@ -109,9 +107,10 @@
 					if(openboxtype == "avaliados") {
 						$("#"+openboxtype+" ol").append('<li class="ui-widget-content ui-draggable" id="'+$(this).val()+'">' +
 															'<input type="hidden" name="avaliados" value="'+$(this).val()+'"/>' +
-												      		'<div class="nome">'+$(this).parent().text()+'</div>' +
+												      		'<div class="nome">'+ $(this).parent().text().replace(/([0-9]*.-.)?(.*)(.\(.*)/g, '$2') +'</div>' +
 												      		'<div class="faixa"></div>' +
 												      		'<div class="area"></div>' +
+												      		'<div style="clear:both;float: none;"></div>' +
 												      	'</li>');
 					} else if (openboxtype == "avaliadores") {
 						createAvaliador( $(this).val(), $(this).parent().text() );
@@ -119,11 +118,20 @@
 					}
 				}
 			});
-			
-			//$("#listCheckBoxcolaboradorsCheck").html("");
-			openboxtype = "";
-			closebox();
+			conectAvaliadosAvaliadores();
+			atualizeSelectables();
 		}
+		
+		function validFormModal() {
+			var validForm = validaFormulario('formModal', new Array('@colaboradorsCheck'), null, true);
+			if ( validForm ) {
+				populeList();
+				$("#listCheckBoxcolaboradorsCheck").html("");
+				openboxtype = "";
+				closebox();
+			}
+		};
+		
 		</script>
 	</head>
 	<body>
@@ -150,7 +158,7 @@
 			</@ww.form>
 	
 			<div class="buttonGroup">
-				<button onclick="${validarCamposModal};" class="btnGravar"></button>
+				<button onclick="validFormModal();" class="btnGravar"></button>
 				<button onclick="closebox();" class="btnCancelar"></button>
 			</div>
 		</div>
@@ -165,7 +173,7 @@
 					<span class="ui-icon ui-icon-circle-triangle-w"></span>
 				  </h1>
 				  <h1 class="ui-widget-header actions" style="display: none;">
-				  	<div class="option" title="Remover selecionados">
+				  	<div class="option remove" title="Remover selecionados">
 						<span class="ui-icon ui-icon-trash"></span>
 				    </div>
 				  	<div class="option move-all" title="Relacionar selecionados ao avaliadores">
@@ -188,6 +196,7 @@
 				      		<div class="nome">${avaliado.nome}</div>
 				      		<div class="faixa">${avaliado.faixaSalarial.descricao}</div>
 				      		<div class="area">${avaliado.areaOrganizacional.nome}</div>
+				      		<div style="clear:both;float: none;"></div>
 				      	</li>
 				      </#list>
 				    </ol>
@@ -246,7 +255,7 @@
 				<script>countColaboradorQuestionarios=${countColaboradorQuestionarios};</script>
 				<@ww.hidden name="avaliacaoDesempenho.id"/>
 				<button type="submit" class="btnGravar"></button>
-				<button onclick="window.location='list.action'" class="btnVoltar"></button>
+				<button type="button" onclick="window.location='list.action'" class="btnVoltar"></button>
 			</@ww.form>
 			<div style="clear: both;"></div>
 		</div>
