@@ -1,6 +1,7 @@
 package com.fortes.rh.business.captacao;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import com.fortes.business.GenericManagerImpl;
@@ -10,14 +11,14 @@ import com.fortes.rh.model.captacao.NivelCompetencia;
 
 public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompetencia, NivelCompetenciaDao> implements NivelCompetenciaManager
 {
-	public Collection<NivelCompetencia> findAllSelect(Long empresaId)
+	public Collection<NivelCompetencia> findAllSelect(Long empresaId, Long nivelCompetenciaHistoricoId, Date data)
 	{
-		return getDao().findAllSelect(empresaId);
+		return getDao().findAllSelect(empresaId, nivelCompetenciaHistoricoId, data);
 	}
 
 	public void validaLimite(Long empresaId) throws Exception 
 	{
-		if (getDao().findAllSelect(empresaId).size() >= 10)
+		if (getDao().findAllSelect(empresaId, null, null).size() >= 10)
 			throw new Exception("Não é permitido cadastrar mais do que dez Níveis de Competência.");
 	}
 
@@ -54,7 +55,7 @@ public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompete
 
 	public void gerarPercentualIgualmente(Long empresaId) 
 	{
-		List<NivelCompetencia> niveisCompetencias = (List<NivelCompetencia>) getDao().findAllSelect(empresaId);
+		List<NivelCompetencia> niveisCompetencias = (List<NivelCompetencia>) getDao().findAllSelect(empresaId, null, null);
 
 		if(niveisCompetencias != null && niveisCompetencias.size() > 0)
 		{

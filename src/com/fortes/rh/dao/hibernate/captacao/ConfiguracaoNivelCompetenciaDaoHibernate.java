@@ -170,13 +170,8 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("select cnc.id, cnc.tipoCompetencia, cnc.competencia_id as competenciaId, COALESCE(a.nome, conhe.nome, h.nome) as competenciaDescricao, COALESCE(a.observacao, conhe.observacao, h.observacao) as competenciaObservacao, cnc.nivelcompetencia_id, nc.descricao, chn.ordem, cnc.pesoCompetencia ");
 		sql.append("from ConfiguracaoNivelCompetencia cnc ");
 		sql.append("join ConfiguracaoNivelCompetenciaFaixaSalarial cncf on cncf.id = cnc.ConfiguracaoNivelCompetenciaFaixaSalarial_id ");
-		sql.append("left join ConfigHistoricoNivel chn on chn.nivelCompetencia_id = cnc.nivelCompetencia_id ");
-		sql.append("left join NivelCompetencia nc on nc.id = chn.nivelCompetencia_id ");
-		sql.append("left join NivelCompetenciaHistorico nch on nch.id=chn.nivelCompetenciaHistorico_id and nch.data = (select max(data) from nivelCompetenciaHistorico where empresa_id = nc.empresa_id ");
-		if(data != null)
-			sql.append("and data <= :dataFim ");
-		
-		sql.append("						) ");
+		sql.append("left join ConfigHistoricoNivel chn on cncf.nivelCompetenciahistorico_id = chn.nivelCompetenciahistorico_id and chn.NivelCompetencia_id=cnc.NivelCompetencia_id ");
+		sql.append("left join NivelCompetencia nc on nc.id=chn.nivelCompetencia_id ");
 		sql.append("left join Atitude a on a.id = cnc.competencia_id and 'A' = cnc.tipocompetencia ");
 		sql.append("left join Conhecimento conhe on conhe.id = cnc.competencia_id and 'C' = cnc.tipocompetencia ");
 		sql.append("left join Habilidade h on h.id = cnc.competencia_id and 'H' = cnc.tipocompetencia ");

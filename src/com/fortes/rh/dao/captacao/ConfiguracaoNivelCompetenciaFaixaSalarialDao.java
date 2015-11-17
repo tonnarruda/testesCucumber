@@ -10,4 +10,5 @@ public interface ConfiguracaoNivelCompetenciaFaixaSalarialDao extends GenericDao
 {
 	void deleteByFaixaSalarial(Long[] faixaIds);
 	Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> findProximasConfiguracoesAposData(Long faixaSalarialId, Date dataConfiguracaoExcluir);
+	boolean existByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId);
 }

@@ -8,6 +8,8 @@ import java.util.Date;
 import org.springframework.dao.DataIntegrityViolationException;
 
 import com.fortes.rh.business.captacao.ConfigHistoricoNivelManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
+import com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaHistoricoManager;
 import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
 import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
@@ -22,10 +24,17 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 	private Collection<ConfigHistoricoNivel> configHistoricoNivels;
 	private NivelCompetenciaHistorico nivelCompetenciaHistorico;
 	private NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager;
+	private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
+	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
+	
+	private boolean podeEditarPeso;
+	private boolean obrigarPercentual;
 
 	public String prepareInsert() throws Exception
 	{
 		configHistoricoNivels = configHistoricoNivelManager.findNiveisCompetenciaByEmpresa(getEmpresaSistema().getId());
+		obrigarPercentual = criterioAvaliacaoCompetenciaManager.existeCriterioAvaliacaoCompetencia(getEmpresaSistema().getId());
+		podeEditarPeso = true;
 		
 		return Action.SUCCESS;
 	}
@@ -35,6 +44,9 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 		if(nivelCompetenciaHistorico != null){
 			nivelCompetenciaHistorico = nivelCompetenciaHistoricoManager.findById(nivelCompetenciaHistorico.getId());
 			configHistoricoNivels = configHistoricoNivelManager.findByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico.getId());
+			
+			podeEditarPeso = !configuracaoNivelCompetenciaFaixaSalarialManager.existByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico.getId());
+			obrigarPercentual = criterioAvaliacaoCompetenciaManager.existeCriterioAvaliacaoCompetencia(getEmpresaSistema().getId());
 		}
 		
 		return Action.SUCCESS;
@@ -131,5 +143,22 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 	public void setNivelCompetenciaHistoricoManager(NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager) {
 		this.nivelCompetenciaHistoricoManager = nivelCompetenciaHistoricoManager;
 	}
-	
+
+	public void setCriterioAvaliacaoCompetenciaManager(
+			CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
+		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
+	}
+
+	public boolean isPodeEditarPeso() {
+		return podeEditarPeso;
+	}
+
+	public boolean isObrigarPercentual() {
+		return obrigarPercentual;
+	}
+
+	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(
+			ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager) {
+		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
+	}
 }
