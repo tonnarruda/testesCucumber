@@ -292,7 +292,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String gravaAssociacoesAvaliadoAvaliador() throws Exception{
+	public String gravaAssociacoesAvaliadoAvaliador() throws Exception {
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 		colaboradorQuestionarios.removeAll(Collections.singleton(null));
 		
@@ -300,9 +300,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.arrayStringToArrayLong(avaliados), avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADO);
 		
 		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(avaliadores), ParticipanteAvaliacao.AVALIADOR);
-		participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.arrayStringToArrayLong(avaliados), avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
+		participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.arrayStringToArrayLong(avaliadores), avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
 		
-		colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionarios);
+		colaboradorQuestionarioManager.save(new ArrayList<ColaboradorQuestionario>(colaboradorQuestionarios), avaliacaoDesempenho.getId());
 		colaboradorQuestionarioManager.removeNotIn(colaboradorQuestionarios, avaliacaoDesempenho.getId());
 		
 		prepareAvaliados();

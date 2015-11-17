@@ -110,16 +110,16 @@
 												      		'<div class="nome">'+ $(this).parent().text().replace(/([0-9]*.-.)?(.*)(.\(.*)/g, '$2') +'</div>' +
 												      		'<div class="faixa"></div>' +
 												      		'<div class="area"></div>' +
-												      		'<div style="clear:both;float: none;"></div>' +
+												      		'<div style="clear:both; float: none;"></div>' +
 												      	'</li>');
 					} else if (openboxtype == "avaliadores") {
-						createAvaliador( $(this).val(), $(this).parent().text() );
+						createAvaliador( $(this).val(), $(this).parent().text().replace(/([0-9]*.-.)?(.*)(.\(.*)/g, '$2') );
 						portletEvents();
 					}
 				}
 			});
 			conectAvaliadosAvaliadores();
-			atualizeSelectables();
+			atualizeSelectables("#avaliados-list");
 		}
 		
 		function validFormModal() {
@@ -165,7 +165,7 @@
 		
 		<div style="width: 740px; margin: 0 auto;">
 			<@ww.form name="formAvaliadores" id="formAvaliadores" action="gravaAssociacoesAvaliadoAvaliador" method="POST">
-				<div id="avaliados">
+				<div id="avaliados" class="box">
 				  <h1 class="ui-widget-header title">
 				  	<span class="ui-icon ui-icon-plusthick more-avaliado" title="Inserir Avaliado" onclick="openboxAvaliado('Inserir Avaliado', 'nomeBusca');"></span>
 				  	Avaliados
@@ -179,9 +179,11 @@
 				  	<div class="option move-all" title="Relacionar selecionados ao avaliadores">
 						<span class="ui-icon ui-icon-arrowthick-1-e"></span>
 				    </div>
-				  	<div class="option generate-autoavaliacao" title="Gerar autoavaliação para selecionados">
-						<span class="ui-icon ui-icon-refresh"></span>
-				    </div>
+				    <#if avaliacaoDesempenho.permiteAutoAvaliacao>
+					  	<div class="option generate-autoavaliacao" title="Gerar autoavaliação para selecionados">
+							<span class="ui-icon ui-icon-refresh"></span>
+					    </div>
+				    </#if>
 				  </h1>
 				  <div class="legend">
 				  	<div style="width: 247px;">Nome</div>
@@ -189,7 +191,7 @@
 				  	<div style="width: 229px;">Área Organizacional</div>
 				  </div>
 				  <div class="ui-widget-content column">
-				    <ol id="selectable">
+				    <ol id="avaliados-list">
 				      <#list participantes as avaliado>
 				      	<li class="ui-widget-content" id="${avaliado.id}">
 					      	<input type="hidden" name="avaliados" value="${avaliado.id}"/>
@@ -203,13 +205,26 @@
 				  </div>
 				</div>
 			 
-				<div id="avaliadores">
+				<div id="avaliadores" class="box">
 					<h1 class="ui-widget-header">
 						<span class="ui-icon ui-icon-plusthick more-avaliador" title="Inserir Avaliador" onclick="openboxAvaliador('Inserir Avaliador', 'nomeBusca');"></span>
 						<span>Avaliadores</span>
 						<span class="ui-icon ui-icon-circle-triangle-e"></span>
 						<span class="ui-icon ui-icon-circle-triangle-w"></span>
 					</h1>
+					<h1 class="ui-widget-header actions" style="display: none;">
+					  	<div class="option remove" title="Remover selecionados">
+							<span class="ui-icon ui-icon-trash"></span>
+					    </div>
+					  	<div class="option move-all" title="Relacionar selecionados ao avaliadores">
+							<span class="ui-icon ui-icon-arrowthick-1-e"></span>
+					    </div>
+					    <#if avaliacaoDesempenho.permiteAutoAvaliacao>
+						  	<div class="option generate-autoavaliacao" title="Gerar autoavaliação para selecionados">
+								<span class="ui-icon ui-icon-refresh"></span>
+						    </div>
+					    </#if>
+					  </h1>
 			  		 <div class="legend">
 					  	<div style="width: 247px;">Nome</div>
 					  	<div style="width: 208px;">Cargo</div>
@@ -217,11 +232,11 @@
 					  </div>
 					<div class="column ui-widget-content">
 					  	<#list avaliadors as avaliador>
-						  	<div class="portlet avaliador_${avaliador.id}">
+						  	<div class="portlet" id="${avaliador.id}">
 						  		 <div class="portlet-header">${avaliador.nome}
 						  		 </div>
 						  		 <div class="portlet-content">
-						  		 	<ul id="${avaliador.id}">
+						  		 	<ul>
 								  		<input type="hidden" name="avaliadores" value="${avaliador.id}"/>
 						  		 		<#if (avaliador.avaliados.size() == 0)> 
 							        		<li class="placeholder">Arraste os avaliados até aqui</li>
