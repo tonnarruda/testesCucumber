@@ -21,6 +21,9 @@
 	        <@frt.checkListBox label="Cursos" name="cursosCheck" list="cursosCheckList" filtro="true" />
 	        <@frt.checkListBox label="Avaliações Práticas" name="avaliacoesPraticasCheck" list="avaliacoesPraticasCheckList" filtro="true" />
 			
+			<@ww.select label="Certificação que será pré-requisito" name="certificacao.certificacaoPreRequisito.id" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 500px;" />
+			
+			
 			<@ww.hidden name="certificacao.id" />
 			<@ww.token/>
 		</@ww.form>

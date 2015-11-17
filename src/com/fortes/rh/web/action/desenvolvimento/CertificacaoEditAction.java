@@ -24,6 +24,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private CertificacaoManager certificacaoManager;
 	private CursoManager cursoManager;
 	private AvaliacaoPraticaManager avaliacaoPraticaManager;
+	private Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
 
 	private Certificacao certificacao;
 	
@@ -49,6 +50,8 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		avaliacoesPraticasCheckList = CheckListBoxUtil.populaCheckListBox(avaliacaoPraticas, "getId", "getTitulo");
 		
 		setExibirPeriodicidade(getEmpresaSistema().getControlarVencimentoCertificacaoPor() == FiltroControleVencimentoCertificacao.CERTIFICACAO.getOpcao());
+		
+		certificacoes = certificacaoManager.findAllSelectNotCertificacaoId(getEmpresaSistema().getId(), certificacao.getId());
 	}
 
 	public String prepareInsert() throws Exception
@@ -96,9 +99,12 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		CollectionUtil<AvaliacaoPratica> utilAvaliacoesPraticas = new CollectionUtil<AvaliacaoPratica>();
 		certificacao.setAvaliacoesPraticas(utilAvaliacoesPraticas.convertArrayStringToCollection(AvaliacaoPratica.class, avaliacoesPraticasCheck));
 		
+		if(!(certificacao.getCertificacaoPreRequisito() != null && certificacao.getCertificacaoPreRequisito().getId() != null))
+			certificacao.setCertificacaoPreRequisito(null);
+		
 		certificacao.setEmpresa(getEmpresaSistema());
 	}
-
+	
 	public Object getModel()
 	{
 		return getCertificacao();
@@ -168,5 +174,9 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public void setExibirPeriodicidade(boolean exibirPeriodicidade) {
 		this.exibirPeriodicidade = exibirPeriodicidade;
+	}
+
+	public Collection<Certificacao> getCertificacoes() {
+		return certificacoes;
 	}
 }

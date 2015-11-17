@@ -53,6 +53,26 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id, help) VALUES
 INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 649);--.go
 ALTER sequence papel_sequence restart WITH 650;--.go
 
+-------
 ALTER TABLE empresa ADD COLUMN controlarVencimentoCertificacaoPor integer default 1;--.go
 
+------
 update papel set help='Esta permissão estará visível se a configuração realizada no cadastro da empresa na opção "Controlar vencimento da certificação" estiver por: Periodicidade do curso' where id = 635;--.go
+
+------
+ALTER TABLE certificacao ADD COLUMN certificacaoPreRequisito_id bigint;--.go
+ALTER TABLE certificacao ADD CONSTRAINT certificacao_certificacaoPreRequisito_fk FOREIGN KEY (certificacaoPreRequisito_id) REFERENCES certificacao(id);--.go
+
+------
+CREATE TABLE colaboradorCertificacao (
+id bigint NOT NULL,
+colaborador_id bigint,
+certificacao_id bigint,
+data date
+);--.go
+
+ALTER TABLE colaboradorCertificacao ADD CONSTRAINT colaboradorCertificacao_pkey PRIMARY KEY(id);--.go
+ALTER TABLE colaboradorCertificacao ADD CONSTRAINT colaborador_id_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);--.go
+ALTER TABLE colaboradorCertificacao ADD CONSTRAINT certificacao_id_fk FOREIGN KEY (certificacao_id) REFERENCES certificacao(id);--.go
+CREATE SEQUENCE colaboradorCertificacao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+

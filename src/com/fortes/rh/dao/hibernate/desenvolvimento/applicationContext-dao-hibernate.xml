@@ -67,6 +67,12 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="colaboradorCertificacaoDaoTarget" class="com.fortes.rh.dao.hibernate.desenvolvimento.ColaboradorCertificacaoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 

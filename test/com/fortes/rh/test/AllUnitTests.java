@@ -62,6 +62,7 @@ import com.fortes.rh.test.business.cargosalario.TabelaReajusteColaboradorManager
 import com.fortes.rh.test.business.desenvolvimento.AproveitamentoAvaliacaoCursoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.CertificacaoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorAvaliacaoPraticaManagerTest;
+import com.fortes.rh.test.business.desenvolvimento.ColaboradorCertificacaoManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorPresencaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.ColaboradorTurmaManagerTest;
 import com.fortes.rh.test.business.desenvolvimento.CursoManagerTest;
@@ -222,6 +223,7 @@ import com.fortes.rh.test.dao.hibernate.desenvolvimento.AproveitamentoAvaliacaoC
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.AvaliacaoCursoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.CertificacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorAvaliacaoPraticaDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorCertificacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorPresencaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.ColaboradorTurmaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.desenvolvimento.CursoDaoHibernateTest;
@@ -839,6 +841,9 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ColaboradorAvaliacaoPraticaDaoHibernateTest.class);
         suite.addTestSuite(ColaboradorAvaliacaoPraticaManagerTest.class);
         suite.addTestSuite(ColaboradorAvaliacaoPraticaEditActionTest.class);
+        
+        suite.addTestSuite(ColaboradorCertificacaoDaoHibernateTest.class);
+        suite.addTestSuite(ColaboradorCertificacaoManagerTest.class);
 
         // Backup
         suite.addTestSuite(BackupActionTest.class);

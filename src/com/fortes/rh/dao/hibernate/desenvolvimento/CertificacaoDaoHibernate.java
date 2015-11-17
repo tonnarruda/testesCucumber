@@ -28,6 +28,21 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 {
 	public Collection<Certificacao> findAllSelect(Long empresaId)
 	{
+		Criteria criteria = createCriteria(empresaId);
+		return criteria.list();
+	}
+	
+	public Collection<Certificacao> findAllSelectNotCertificacaoId(Long empresaId, Long certificacaoId)
+	{
+		Criteria criteria = createCriteria(empresaId);
+		
+		if(certificacaoId != null)
+			criteria.add(Expression.ne("c.id", certificacaoId));
+		
+		return criteria.list();
+	}
+
+	private Criteria createCriteria(Long empresaId) {
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
 
 		ProjectionList p = Projections.projectionList().create();
@@ -39,8 +54,7 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 		criteria.addOrder(Order.asc("c.nome"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
-
-		return criteria.list();
+		return criteria;
 	}
 	
 	public Collection<Certificacao> findAllSelect(Integer page, Integer pagingSize, Long empresaId, String nomeBusca)

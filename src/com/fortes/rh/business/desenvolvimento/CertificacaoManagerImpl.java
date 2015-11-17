@@ -90,4 +90,8 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 	{
 		return getDao().findColaboradoresNaCertificacoa(certificacaoId);
 	}
+
+	public Collection<Certificacao> findAllSelectNotCertificacaoId(Long empresaId, Long certificacaoId) {
+		return getDao().findAllSelectNotCertificacaoId(empresaId, certificacaoId);
+	}
 }

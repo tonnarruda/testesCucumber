@@ -197,5 +197,6 @@
     <mapping class="com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao" />
     <mapping class="com.fortes.rh.model.avaliacao.AvaliacaoPratica" />
     <mapping class="com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica" />
+    <mapping class="com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao" />
   </session-factory>
 </hibernate-configuration>

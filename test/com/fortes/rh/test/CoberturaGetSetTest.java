@@ -61,6 +61,7 @@ import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Certificado;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
+import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -975,6 +976,7 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new MotivoSolicitacaoEpi());
 		cobreGetSet(new AvaliacaoPratica());
 		cobreGetSet(new ColaboradorAvaliacaoPratica());
+		cobreGetSet(new ColaboradorCertificacao());
 	}
 	
 	private void cobreGetSet(Object obj)
