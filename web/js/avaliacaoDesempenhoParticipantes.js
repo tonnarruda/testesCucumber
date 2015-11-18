@@ -12,6 +12,8 @@ $(function() {
 	
     portletEvents();
 	    
+    disableParentsRespondida();
+    
 	atualizeSelectables("#avaliados-list", "li", "avaliados");
 	atualizeSelectables("#avaliadores-list", ".portlet", "avaliadores");
     
@@ -55,36 +57,54 @@ $(function() {
     		activeCtrl = false;
     });
 	
-	$(".actions .remove").click(function(){
-		$(this).parents(".box").find(".ui-selected").each(function(){
-			$(this).remove();
-		});
+	$("#avaliadores .actions .remove").click(function(){
+		if ( !$(this).hasClass("disabled") ) {
+			$(this).parents(".box").find(".ui-selected").remove();
+			$(this).parents(".box").find(".ui-widget-header.actions .only-selectables").addClass("disabled");
+		}
+	});
+	
+	$("#avaliados .actions .remove").click(function(){
+		if ( !$(this).hasClass("disabled") ) {
+			$(this).parents(".box").find(".ui-selected").each(function(){
+				console.log($(this).parent().attr("id"));
+				$("#avaliadores .avaliado_" + $(this).attr("id")).remove();
+			});
+			
+			$(this).parents(".box").find(".ui-selected").remove();
+			$(this).parents(".box").find(".ui-widget-header.actions .only-selectables").addClass("disabled");
+		}
 	});
 	
 	$("#avaliados .actions .move-all").click(function(){
-		$("#avaliadores .portlet-content ul").each(function() {
-			var avaliador = $(this);
-			$(".ui-selected").each(function(){
-				createAvaliadoForAvaliador(avaliador, $(this));
+		if ( !$(this).hasClass("disabled") ) {
+			$("#avaliadores .portlet-content ul").each(function() {
+				var avaliador = $(this);
+				$(".ui-selected").each(function(){
+					createAvaliadoForAvaliador(avaliador, $(this));
+				});
 			});
-		});
-		notificatedAboutAutoAvaliacao = false;
+			notificatedAboutAutoAvaliacao = false;
+		}
 	});
 	
 	$("#avaliados .actions .generate-autoavaliacao").click(function(){
-		$(".ui-selected").each(function(){
-			var avaliador = $("#avaliadores .portlet-content ul[id="+$(this).attr("id")+"]");
-			
-			if ( avaliador.length == 0 ) 
-				createAvaliador( $(this).attr("id"), $(this).find(".nome").text() );
-			
-			avaliador = $("#avaliadores .portlet-content .portlet[id="+$(this).attr("id")+"] ul");
-			
-			createAvaliadoForAvaliador(avaliador, $(this));
-			conectAvaliadosAvaliadores();
-			portletEvents();
-		});
-		notificatedAboutAutoAvaliacao = false;
+		if ( !$(this).hasClass("disabled") ) {
+			$(".ui-selected").each(function(){
+				var avaliador = $("#avaliadores .portlet[id="+$(this).attr("id")+"] ul");
+				
+				if ( avaliador.length == 0 ) 
+					createAvaliador( $(this).attr("id"), $(this).find(".nome").text() );
+				
+				avaliador = $("#avaliadores .portlet[id="+$(this).attr("id")+"] ul");
+				
+				createAvaliadoForAvaliador(avaliador, $(this));
+				conectAvaliadosAvaliadores();
+				portletEvents();
+			});
+			atualizeSelectables("#avaliadores-list", ".portlet", "avaliadores");
+			notificatedAboutAutoAvaliacao = false;
+		}
 	});
 });
 
@@ -164,9 +184,10 @@ function atualizeSelectables(idList, item, type) {
 	    	}
 		}
 		
-		$(idList).parents(".box").find(".ui-widget-header.actions").toggle(selecteds.length > 0);
-		$(idList).parents(".box").find(".ui-widget-header.title").toggle(!(selecteds.length > 0));
-		console.log(idList);
+		if (selecteds.length > 0 )
+			$(idList).parents(".box").find(".ui-widget-header.actions .only-selectables").removeClass("disabled");
+		else
+			$(idList).parents(".box").find(".ui-widget-header.actions .only-selectables").addClass("disabled"); 
 		
 		lastSelected= $(this).attr("id");
 		
@@ -174,18 +195,16 @@ function atualizeSelectables(idList, item, type) {
 			selectedsAvaliados = selecteds;
 		else if ( type == "avaliadores")
 			selectedsAvaliadores = selecteds;
-		
-		console.log(selecteds);
 	});
 	$(idList + " li").not(".ui-selectable").addClass("ui-selectable");
 }
 
 function createAvaliador(id, nome) {
-	$("#avaliadores .column").append('<div class="portlet avaliador_'+ id +'">' +
+	$("#avaliadores .column").append('<div class="portlet" id="'+ id +'">' +
 	  		 '<div class="portlet-header">' + nome + 
 	  		 '</div>' +
 	  		 '<div class="portlet-content">' +
-	  		 	'<ul id="'+ id +'">' +
+	  		 	'<ul>' +
 	  		 			'<input type="hidden" name="avaliadores" value="'+id+'"/>' +
 		        		'<li class="placeholder">Arraste os avaliados até aqui</li>' + 
 		      	'</ul>' +
@@ -224,4 +243,13 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
     	});
     	notificatedAboutAutoAvaliacao = true;
     }
+}
+
+function disableParentsRespondida(idAvaliado, idAvaliador) {
+	$("i.respondida").each(function() {
+		$(this).parents("li").addClass("has-respondida");
+		$(this).parents(".portlet").addClass("has-respondida");
+		$(this).parents(".portlet").removeClass("");
+		$("#avaliados #"+ $(this).attr("class").replace(/(.*)(avaliado_)([0-9]*)(.*)/g, "$3") ).addClass("has-respondida");
+	});
 }
