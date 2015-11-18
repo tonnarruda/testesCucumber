@@ -33,7 +33,7 @@
 }
 
 .ui-widget-header.actions {
-	border-bottom: 2px solid #D5D5D5;
+	border-bottom: 2px solid #D5D5D5 !important;
 	position: relative;
 	height: 15px;
 }
@@ -131,6 +131,7 @@
 	background: #f7f7f7;
 	border: 1px solid #e7e7e7;
 	font-weight: bold;
+	cursor: pointer;
 }
 .portlet-content { padding: 5px 10px; border: 1px solid #e7e7e7; }
 .portlet-content li {
@@ -188,7 +189,11 @@
 }
 
 #feedback { font-size: 1.4em; }
- 	#avaliados-list .ui-selecting { background: #7BB5DF; }
- 	#avaliados-list .ui-selected { background: #5292C0; color: white; }
- 	#avaliados-list { list-style-type: none; margin: 0; padding: 0;}
- 	#avaliados-list li { margin: 3px; padding: 7px; }
+#avaliados-list .ui-selecting { background: #7BB5DF; }
+#avaliados-list .ui-selected { background: #5292C0; color: white; }
+#avaliados-list { list-style-type: none; margin: 0; padding: 0;}
+#avaliados-list li { margin: 3px; padding: 7px; }
+
+#avaliadores .ui-selected .portlet-header { background: #5292C0; color: white; border: 1px solid #5292C0; }
+#avaliadores .ui-selected .portlet-header .ui-icon { background-image: url(../imgs/ui-icons_d8e7f3_256x240.png) !important; }
+#avaliadores .ui-selected .portlet-content { border: 1px solid #9EBDD3; }

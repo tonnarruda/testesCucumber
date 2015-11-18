@@ -119,7 +119,7 @@
 				}
 			});
 			conectAvaliadosAvaliadores();
-			atualizeSelectables("#avaliados-list");
+			atualizeSelectables("#avaliados-list", "li", "avaliados");
 		}
 		
 		function validFormModal() {
@@ -206,7 +206,7 @@
 				</div>
 			 
 				<div id="avaliadores" class="box">
-					<h1 class="ui-widget-header">
+					<h1 class="ui-widget-header title">
 						<span class="ui-icon ui-icon-plusthick more-avaliador" title="Inserir Avaliador" onclick="openboxAvaliador('Inserir Avaliador', 'nomeBusca');"></span>
 						<span>Avaliadores</span>
 						<span class="ui-icon ui-icon-circle-triangle-e"></span>
@@ -216,21 +216,13 @@
 					  	<div class="option remove" title="Remover selecionados">
 							<span class="ui-icon ui-icon-trash"></span>
 					    </div>
-					  	<div class="option move-all" title="Relacionar selecionados ao avaliadores">
-							<span class="ui-icon ui-icon-arrowthick-1-e"></span>
-					    </div>
-					    <#if avaliacaoDesempenho.permiteAutoAvaliacao>
-						  	<div class="option generate-autoavaliacao" title="Gerar autoavaliação para selecionados">
-								<span class="ui-icon ui-icon-refresh"></span>
-						    </div>
-					    </#if>
-					  </h1>
-			  		 <div class="legend">
+					</h1>
+			  		<div class="legend">
 					  	<div style="width: 247px;">Nome</div>
 					  	<div style="width: 208px;">Cargo</div>
 					  	<div style="width: 229px;">Área Organizacional</div>
-					  </div>
-					<div class="column ui-widget-content">
+					</div>
+					<div class="column ui-widget-content" id="avaliadores-list">
 					  	<#list avaliadors as avaliador>
 						  	<div class="portlet" id="${avaliador.id}">
 						  		 <div class="portlet-header">${avaliador.nome}
