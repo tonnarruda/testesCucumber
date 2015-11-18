@@ -134,10 +134,16 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		return Action.SUCCESS;
 	}
 	
-	public String prepareAvaliados() throws Exception
+	public String prepareParticipantes() throws Exception
 	{
-		isAvaliados = true;
-		prepareParticipantes();
+		empresaId = getEmpresaSistema().getId();
+		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
+		
+		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
+		participantes = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADO);
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		
 		avaliadors = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
 		for (Colaborador avaliador : avaliadors) {
 			avaliador.setAvaliados(new ArrayList<Colaborador>());
@@ -148,63 +154,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		}
 		
 		return Action.SUCCESS;
-	}
-
-	public String prepareAvaliadores() throws Exception
-	{
-		isAvaliados = false;
-		prepareParticipantes();
-		
-		return Action.SUCCESS;
-	}
-	
-	private void prepareParticipantes() 
-	{
-		empresaId = getEmpresaSistema().getId();
-		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
-		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
-		
-		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		participantes = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADO);
-		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-	}
-	
-	public String deleteAvaliado()
-	{
-		msgDelete = "Avaliado(s)";
-		isAvaliados = true;
-		deleteParticipante();
-		return Action.SUCCESS;
-	}
-	
-	public String deleteAvaliador() throws Exception
-	{
-		msgDelete = "Avaliador(es)";
-		isAvaliados = false;
-		deleteParticipante();
-		return Action.SUCCESS;
-	}
-	
-	private void deleteParticipante() 
-	{
-		try 
-		{
-			if(participanteIds == null)
-				addActionMessage("Nenhum participante selecionado.");
-			else
-			{
-				colaboradorQuestionarioManager.remove(participanteIds, avaliacaoDesempenho.getId(), isAvaliados);
-				addActionSuccess(msgDelete + " excluído(s) com sucesso.");
-			}
-		} 
-		catch (AvaliacaoRespondidaException e) 
-		{
-			addActionMessage(e.getMessage());
-		} 
-		catch (Exception e) {
-			addActionError("Não foi possível excluir o(s) " + msgDelete + ".");
-			e.printStackTrace();
-		}		
 	}
 	
 	public String prepareResultado()
@@ -276,23 +225,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		return "SUCCESS_CRITERIO";
 	}
 	
-	public String insertAvaliados() throws Exception
-	{
-		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(colaboradorsCheck), ParticipanteAvaliacao.AVALIADO);
-		prepareAvaliados();
-		return Action.SUCCESS;
-	}
-	
-	public String insertAvaliadores() throws Exception
-	{
-		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(colaboradorsCheck), ParticipanteAvaliacao.AVALIADOR);
-		prepareAvaliados();
-		return Action.SUCCESS;
-	}
-	
-	public String gravaAssociacoesAvaliadoAvaliador() throws Exception {
+	public String saveParticipantes() throws Exception {
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 		colaboradorQuestionarios.removeAll(Collections.singleton(null));
 		
@@ -305,20 +238,10 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		colaboradorQuestionarioManager.save(new ArrayList<ColaboradorQuestionario>(colaboradorQuestionarios), avaliacaoDesempenho.getId());
 		colaboradorQuestionarioManager.removeNotIn(colaboradorQuestionarios, avaliacaoDesempenho.getId());
 		
-		prepareAvaliados();
+		prepareParticipantes();
 		return Action.SUCCESS;
 	}
 	
-	public String gerarAutoAvaliacoesEmLote() throws Exception
-	{
-		prepareAvaliados();
-		avaliacaoDesempenhoManager.gerarAutoAvaliacoes(avaliacaoDesempenho, participantes);
-		colaboradorQuestionarioManager.excluirColaboradorQuestionarioByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
-		avaliacaoDesempenhoManager.remove(avaliacaoDesempenho);
-		
-		return Action.SUCCESS;
-	}
-
 	public String prepareInsert() throws Exception
 	{
 		prepare();

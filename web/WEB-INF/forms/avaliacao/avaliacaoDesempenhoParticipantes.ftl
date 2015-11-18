@@ -7,6 +7,7 @@
 			@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 			@import url('<@ww.url value="/css/formModal.css?version=${versao}"/>');
 			@import url('<@ww.url value="/css/avaliacaoDesempenhoParticipantes.css?version=${versao}"/>');
+			@import url('<@ww.url value="/css/font-awesome.min.css?version=${versao}"/>');
 			
 			<#if isAvaliados>
 		    	#menuParticipantes a.ativaAvaliado{border-bottom: 2px solid #5292C0;}
@@ -120,6 +121,7 @@
 			});
 			conectAvaliadosAvaliadores();
 			atualizeSelectables("#avaliados-list", "li", "avaliados");
+			atualizeSelectables("#avaliadores-list", ".portlet", "avaliadores");
 		}
 		
 		function validFormModal() {
@@ -164,7 +166,7 @@
 		</div>
 		
 		<div style="width: 740px; margin: 0 auto;">
-			<@ww.form name="formAvaliadores" id="formAvaliadores" action="gravaAssociacoesAvaliadoAvaliador" method="POST">
+			<@ww.form name="formParticipantes" id="formParticipantes" action="saveParticipantes" method="POST">
 				<div id="avaliados" class="box">
 				  <h1 class="ui-widget-header title">
 				  	<span class="ui-icon ui-icon-plusthick more-avaliado" title="Inserir Avaliado" onclick="openboxAvaliado('Inserir Avaliado', 'nomeBusca');"></span>
@@ -172,15 +174,15 @@
 					<span class="ui-icon ui-icon-circle-triangle-e"></span>
 					<span class="ui-icon ui-icon-circle-triangle-w"></span>
 				  </h1>
-				  <h1 class="ui-widget-header actions" style="display: none;">
-				  	<div class="option remove" title="Remover selecionados">
+				  <h1 class="ui-widget-header actions">
+				  	<div class="option remove only-selectables disabled" title="Remover selecionados">
 						<span class="ui-icon ui-icon-trash"></span>
 				    </div>
-				  	<div class="option move-all" title="Relacionar selecionados ao avaliadores">
+				  	<div class="option move-all only-selectables disabled" title="Relacionar selecionados ao avaliadores">
 						<span class="ui-icon ui-icon-arrowthick-1-e"></span>
 				    </div>
 				    <#if avaliacaoDesempenho.permiteAutoAvaliacao>
-					  	<div class="option generate-autoavaliacao" title="Gerar autoavaliação para selecionados">
+					  	<div class="option generate-autoavaliacao only-selectables disabled" title="Gerar autoavaliação para selecionados">
 							<span class="ui-icon ui-icon-refresh"></span>
 					    </div>
 				    </#if>
@@ -212,8 +214,8 @@
 						<span class="ui-icon ui-icon-circle-triangle-e"></span>
 						<span class="ui-icon ui-icon-circle-triangle-w"></span>
 					</h1>
-					<h1 class="ui-widget-header actions" style="display: none;">
-					  	<div class="option remove" title="Remover selecionados">
+					<h1 class="ui-widget-header actions">
+					  	<div class="option remove only-selectables disabled" title="Remover selecionados">
 							<span class="ui-icon ui-icon-trash"></span>
 					    </div>
 					</h1>
@@ -235,20 +237,15 @@
 							        	</#if>
 							        	<#list avaliador.avaliados as avaliado>
 								        	<li class="avaliado_${avaliado.id}">
-								        		<#if avaliado.colaboradorQuestionario.respondida>
-								        			<span class="ui-icon ui-icon-closethick disabled"></span>
-								        		<#else>
-								        			<span class="ui-icon ui-icon-closethick"></span>
-								        		</#if>
 								        		${avaliado.nome}
-								        		<#if avaliado.colaboradorQuestionario.respondida>
-								        			<span class="tag-info">Respondida</span>
-								        		</#if>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].id" value="${avaliado.colaboradorQuestionario.id}"/>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].colaborador.id" value="${avaliado.id}"/>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliador.id" value="${avaliador.id}"/>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacao.id" value="${avaliacaoDesempenho.avaliacao.id}"/>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacaoDesempenho.id" value="${avaliacaoDesempenho.id}"/>
+								        		<#if avaliado.colaboradorQuestionario.respondida>
+								        			<i class="fa fa-check respondida" title="Respondida"></i>
+								        		</#if>
 								        		<#assign countColaboradorQuestionarios = countColaboradorQuestionarios + 1/>
 								        	</li>
 							        	</#list>

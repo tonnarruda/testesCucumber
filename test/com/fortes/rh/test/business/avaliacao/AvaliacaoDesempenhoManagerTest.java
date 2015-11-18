@@ -128,7 +128,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		colaboradorQuestionarioManager.expects(once()).method("associarParticipantes").with(eq(avaliacaoDesempenho), ANYTHING, ANYTHING);
 		avaliacaoDesempenhoDao.expects(once()).method("liberarOrBloquear").with(eq(3L), eq(true));
 		
-		avaliacaoDesempenhoManager.liberar(avaliacaoDesempenho, null, null);
+		avaliacaoDesempenhoManager.liberarOrBloquear(avaliacaoDesempenho, true);
 	}
 	
 	public void testBloquear() throws Exception
@@ -137,7 +137,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		colaboradorQuestionarioManager.expects(once()).method("desassociarParticipantes").with(eq(avaliacaoDesempenho));
 		avaliacaoDesempenhoDao.expects(once()).method("liberarOrBloquear").with(eq(3L), eq(false));
 		
-		avaliacaoDesempenhoManager.bloquear(avaliacaoDesempenho);
+		avaliacaoDesempenhoManager.liberarOrBloquear(avaliacaoDesempenho, false);
 	}
 	
 	public void testFindByIdProjection()

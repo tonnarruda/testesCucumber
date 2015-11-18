@@ -35,7 +35,7 @@
 		<action name="insert" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="insert">
 			<interceptor-ref name="tokenWebStack" />
 			<result name="invalid.token" type="redirect">list.action</result>
-			<result name="success" type="redirect">prepareAvaliados.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}</result>
+			<result name="success" type="redirect">prepareParticipantes.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoDesempenhoEdit.ftl</result>
 		</action>
 		<action name="update" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="update">
@@ -56,33 +56,12 @@
 		
 		<!--  participantes -->
 		
-		<action name="prepareAvaliados" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="prepareAvaliados">
+		<action name="prepareParticipantes" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="prepareParticipantes">
 			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoDesempenhoParticipantes.ftl</result>
 		</action>
-		<action name="prepareAvaliadores" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="prepareAvaliadores">
-			<interceptor-ref name="defaultListStack"/>
-			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoDesempenhoParticipantes.ftl</result>
-		</action>
-		<action name="insertAvaliados" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="insertAvaliados">
-			<result name="success" type="redirect">prepareAvaliados.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}</result>
-		</action>
-		<action name="insertAvaliadores" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="insertAvaliadores">
-			<result name="success" type="redirect">prepareAvaliados.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}</result>
-		</action>
-		<action name="gravaAssociacoesAvaliadoAvaliador" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="gravaAssociacoesAvaliadoAvaliador">
-			<result name="success" type="redirect">prepareAvaliados.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}</result>
-		</action>
-		<action name="gerarAutoAvaliacoesEmLote" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="gerarAutoAvaliacoesEmLote">
-			<result name="success" type="redirect">list.action</result>
-		</action>
-		<action name="deleteAvaliado" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="deleteAvaliado">
-			<interceptor-ref name="defaultDeleteStack"/>
-			<result name="success" type="redirect">prepareAvaliados.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}</result>
-		</action>
-		<action name="deleteAvaliador" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="deleteAvaliador">
-			<interceptor-ref name="defaultDeleteStack"/>
-			<result name="success" type="redirect">prepareAvaliadores.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}</result>
+		<action name="saveParticipantes" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="saveParticipantes">
+			<result name="success" type="redirect">prepareParticipantes.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}</result>
 		</action>
 		<action name="deleteAvaliacao" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="deleteAvaliacao">
 			<interceptor-ref name="defaultDeleteStack"/>
