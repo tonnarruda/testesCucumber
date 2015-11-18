@@ -12,8 +12,8 @@ $(function() {
 	
     portletEvents();
 	    
-	atualizeSelectables("#avaliados-list", "li");
-	atualizeSelectables(".column", ".portlet");
+	atualizeSelectables("#avaliados-list", "li", "avaliados");
+	atualizeSelectables("#avaliadores-list", ".portlet", "avaliadores");
     
 	$(".ui-icon-circle-triangle-e").click(function(){
 		$('#avaliados, #avaliadores').hide();
@@ -55,11 +55,10 @@ $(function() {
     		activeCtrl = false;
     });
 	
-	$("#avaliados .actions .remove").click(function(){
-		$(".ui-selected").each(function(){
-			$(".avaliado_"+$(this).attr("id")).remove();
+	$(".actions .remove").click(function(){
+		$(this).parents(".box").find(".ui-selected").each(function(){
+			$(this).remove();
 		});
-		$(".ui-selected").remove();
 	});
 	
 	$("#avaliados .actions .move-all").click(function(){
@@ -129,8 +128,8 @@ function portletEvents() {
 	$(".new-portlet").removeClass("new-portlet");
 }
 
-function atualizeSelectables(id, item, type) {
-	$(id + " " + item).not(".ui-selectable").click(function(event){
+function atualizeSelectables(idList, item, type) {
+	$(idList + " " + item).not(".ui-selectable").click(function(event){
 		var selecteds = new Array;
 		if (type == "avaliados")
 			selecteds = selectedsAvaliados;
@@ -138,12 +137,12 @@ function atualizeSelectables(id, item, type) {
 			selecteds = selectedsAvaliadores;
 		
 		if (activeShift) {
-			var elements = $(id + " " + item);
+			var elements = $(idList + " " + item);
 			if (typeof lastSelected == "undefined") {
 					selecteds.push($(this).attr("id"));
 					$(this).addClass("ui-selected");
 			} else {
-	    		var lastElement = $(id + " "+ item +"[id="+lastSelected+"]");
+	    		var lastElement = $(idList + " "+ item +"[id="+lastSelected+"]");
 	    		var element = $(this);
 	    		
 	    		elements = elements.splice(elements.index(lastElement), elements.index(element) - elements.index(lastElement) + 1);
@@ -165,8 +164,9 @@ function atualizeSelectables(id, item, type) {
 	    	}
 		}
 		
-		$(id).parents(".box").find(".ui-widget-header.actions").toggle(selecteds.length > 0);
-		$(id).parents(".box").find(".ui-widget-header.title").toggle(!(selecteds.length > 0));
+		$(idList).parents(".box").find(".ui-widget-header.actions").toggle(selecteds.length > 0);
+		$(idList).parents(".box").find(".ui-widget-header.title").toggle(!(selecteds.length > 0));
+		console.log(idList);
 		
 		lastSelected= $(this).attr("id");
 		
@@ -174,8 +174,10 @@ function atualizeSelectables(id, item, type) {
 			selectedsAvaliados = selecteds;
 		else if ( type == "avaliadores")
 			selectedsAvaliadores = selecteds;
+		
+		console.log(selecteds);
 	});
-	$(id + " li").not(".ui-selectable").addClass("ui-selectable");
+	$(idList + " li").not(".ui-selectable").addClass("ui-selectable");
 }
 
 function createAvaliador(id, nome) {
