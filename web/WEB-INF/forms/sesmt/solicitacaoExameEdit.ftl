@@ -333,7 +333,7 @@
 				 	<@ww.select label="Médico Coordenador" name="solicitacaoExame.medicoCoordenador.id" id="medico" list="medicoCoordenadors" required="true" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width:300px;" />
 			
 					<@ww.textfield label="Observação" name="solicitacaoExame.observacao" id="observacao" maxLength="100" cssClass="inputNome"/>
-					<img id="observacaoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin:-40px 0 35px 75px;"/>
+					<img id="observacaoTooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin:-40px 0 35px 85px;"/>
 					
 					<@ww.hidden name="ordemAnterior" id="ordemAnterior"/>
 					<@ww.hidden name="dataAnterior" id="dataAnterior"/>

@@ -139,6 +139,9 @@
     <property name="pausaPreenchimentoVagasManager">
       <ref bean="pausaPreenchimentoVagasManager" />
     </property>
+    <property name="configuracaoNivelCompetenciaManager">
+      <ref bean="configuracaoNivelCompetenciaManager" />
+    </property>
   </bean>
   <bean id="solicitacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

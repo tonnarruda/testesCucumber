@@ -53,4 +53,5 @@ public interface ConfiguracaoNivelCompetenciaManager extends GenericManager<Conf
 	void removeByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId);
 	void criaCNCColaboradorByCNCCnadidato(Colaborador colaborador,Long idCandidato, Solicitacao solicitacao,	HistoricoColaborador historico);
 	public boolean existeConfiguracaoNivelCompetencia(Long competenciaId, char tipoCompetencia);
+	void removeBySolicitacaoId(Long solicitacaoId);
 }

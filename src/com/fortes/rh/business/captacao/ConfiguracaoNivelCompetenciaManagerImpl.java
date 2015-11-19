@@ -656,4 +656,9 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	public boolean existeConfiguracaoNivelCompetencia(Long competenciaId, char tipoCompetencia) {
 		return getDao().verifyExists(new String[]{"competenciaId", "tipoCompetencia"}, new Object[]{competenciaId, tipoCompetencia});
 	}
+
+	public void removeBySolicitacaoId(Long solicitacaoId) 
+	{
+		getDao().removeBySolicitacaoId(solicitacaoId);
+	}
 }

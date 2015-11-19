@@ -1039,9 +1039,17 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 
 	public void removeBySolicitacaoId(Long solicitacaoId) 
 	{
-			String hql = "delete ColaboradorQuestionario where solicitacao.id = :solicitacaoId";
+			String hql = "delete from ColaboradorResposta where colaboradorQuestionario.id in (select id from  ColaboradorQuestionario where solicitacao.id = :solicitacaoId)";
 
 			Query query = getSession().createQuery(hql);
+
+			query.setLong("solicitacaoId", solicitacaoId);
+			query.executeUpdate();
+		
+		
+			hql = "delete from ColaboradorQuestionario where solicitacao.id = :solicitacaoId";
+
+			query = getSession().createQuery(hql);
 
 			query.setLong("solicitacaoId", solicitacaoId);
 			query.executeUpdate();

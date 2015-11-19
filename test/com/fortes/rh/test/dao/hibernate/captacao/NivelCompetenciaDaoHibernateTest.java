@@ -1434,6 +1434,46 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		assertEquals(0, cncSolicitacao3.size());
 	}
 	
+	public void testRemoveBySolicitacao()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+
+		Atitude atitude = criaAtitude();
+		
+		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
+		nivelCompetenciaDao.save(nivelCompetencia);
+		
+		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao(faixaSalarial, DateUtil.criarDataDiaMesAno("01/03/2015"));
+		solicitacaoDao.save(solicitacao1);
+		
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao(faixaSalarial, DateUtil.criarDataDiaMesAno("01/03/2015"));
+		solicitacaoDao.save(solicitacao2);
+		
+		ConfiguracaoNivelCompetencia cncCandidato1 = ConfiguracaoNivelCompetenciaFactory.getEntityCandidato(null, solicitacao1, faixaSalarial, nivelCompetencia, atitude.getId(), TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetenciaDao.save(cncCandidato1);
+		
+		ConfiguracaoNivelCompetencia cncCandidato2 = ConfiguracaoNivelCompetenciaFactory.getEntityCandidato(null, solicitacao2, faixaSalarial, nivelCompetencia, atitude.getId(), TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetenciaDao.save(cncCandidato2);
+		
+		ConfiguracaoNivelCompetencia cncCandidato3 = ConfiguracaoNivelCompetenciaFactory.getEntityCandidato(null, solicitacao2, faixaSalarial, nivelCompetencia, atitude.getId(), TipoCompetencia.ATITUDE);
+		configuracaoNivelCompetenciaDao.save(cncCandidato3);
+		
+		Collection<ConfiguracaoNivelCompetencia> cncSolicitacao1 =  configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(null, solicitacao1.getId());
+		Collection<ConfiguracaoNivelCompetencia> cncSolicitacao2 =  configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(null, solicitacao2.getId());
+		
+		assertEquals(1, cncSolicitacao1.size());
+		assertEquals(2, cncSolicitacao2.size());
+
+		configuracaoNivelCompetenciaDao.removeBySolicitacaoId(solicitacao2.getId());
+		
+		cncSolicitacao1 =  configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(null, solicitacao1.getId());
+		cncSolicitacao2 =  configuracaoNivelCompetenciaDao.findByCandidatoAndSolicitacao(null, solicitacao2.getId());
+		
+		assertEquals(1, cncSolicitacao1.size());
+		assertEquals(0, cncSolicitacao2.size());
+	}
+	
 	public void testExisteConfiguracaoNivelCompetencia()
 	{
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();

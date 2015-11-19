@@ -32,6 +32,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private EmpresaManager empresaManager;
 	private PausaPreenchimentoVagasManager pausaPreenchimentoVagasManager;
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 
 	public Integer getCount(char visualizar, Long empresaId, Long usuarioId, Long estabelecimentoId, Long areaOrganizacionalId, Long cargoId, Long motivoId, String descricaoBusca, char statusBusca, Long[] areasIds, String codigoBusca, Date dataInicio, Date dataFim)
 	{
@@ -88,6 +89,7 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 		else
 		{
 			ColaboradorQuestionarioManager colaboradorQuestionarioManager = (ColaboradorQuestionarioManager) SpringUtil.getBean("colaboradorQuestionarioManager");
+			configuracaoNivelCompetenciaManager.removeBySolicitacaoId(solicitacaoId);
 			colaboradorQuestionarioManager.removeBySolicitacaoId(solicitacaoId);
 			pausaPreenchimentoVagasManager.removeBySolicitacaoId(solicitacaoId);
 			solicitacaoAvaliacaoManager.removeBySolicitacaoId(solicitacaoId);
@@ -353,5 +355,10 @@ public class SolicitacaoManagerImpl extends GenericManagerImpl<Solicitacao, Soli
 
 	public void setPausaPreenchimentoVagasManager(PausaPreenchimentoVagasManager pausaPreenchimentoVagasManager) {
 		this.pausaPreenchimentoVagasManager = pausaPreenchimentoVagasManager;
+	}
+
+	public void setConfiguracaoNivelCompetenciaManager(
+			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 }

@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
@@ -250,10 +252,23 @@ public class SolicitacaoListAction extends MyActionSupportList
 
     public String delete() throws Exception
     {
-        if(!solicitacaoManager.removeCascade(solicitacao.getId()))
-        	addActionWarning("Não é possível excluir a Solicitação, pois existem candidatos para esta.");
-        else
-        	addActionSuccess("Solicitação excluída com sucesso.");
+    	try {
+	    	if(!solicitacaoManager.removeCascade(solicitacao.getId()))
+	        	addActionWarning("Não é possível excluir a Solicitação, pois existem candidatos para esta.");
+	        else
+	        	addActionSuccess("Solicitação excluída com sucesso.");
+    	} catch (DataIntegrityViolationException e) {
+    		addActionWarning("Não é possível excluir a Solicitação, pois esta possui dependências.");
+			e.printStackTrace();
+
+		} catch (ConstraintViolationException e) {
+			addActionWarning("Não é possível excluir a Solicitação, pois esta possui dependências.");
+			e.printStackTrace();
+		
+		} catch (Exception e) {
+			addActionError(e.getMessage());
+			e.printStackTrace();
+		}
         
         return list();
     }

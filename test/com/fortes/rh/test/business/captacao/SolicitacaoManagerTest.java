@@ -14,6 +14,7 @@ import org.jmock.core.Constraint;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.captacao.AnuncioManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.PausaPreenchimentoVagasManager;
 import com.fortes.rh.business.captacao.SolicitacaoAvaliacaoManager;
 import com.fortes.rh.business.captacao.SolicitacaoManagerImpl;
@@ -54,19 +55,19 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 	private Mock usuarioManager = null;
 	private Mock candidatoSolicitacaoManager = null;
 	private Mock anuncioManager = null;
-	//private Mock mail = null;
 	private Mock gerenciadorComunicacaoManager;
 	private Mock solicitacaoAvaliacaoManager;
 	private Mock colaboradorQuestionarioManager;
 	private Mock pausaPreenchimentoVagasManager;
+	private Mock configuracaoNivelCompetenciaManager;
 
 	protected void setUp() throws Exception
 	{
 		super.setUp();
 		
-//		mail = mock(Mail.class);
-//		solicitacaoManager.setMail((Mail) mail.proxy());
-
+		configuracaoNivelCompetenciaManager = new Mock(ConfiguracaoNivelCompetenciaManager.class);
+		solicitacaoManager.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
+		
 		solicitacaoDao = new Mock(SolicitacaoDao.class);
 		solicitacaoManager.setDao((SolicitacaoDao) solicitacaoDao.proxy());
 
@@ -200,7 +201,7 @@ public class SolicitacaoManagerTest extends MockObjectTestCase
 		MockSpringUtil.mocks.put("colaboradorQuestionarioManager", colaboradorQuestionarioManager);
 		colaboradorQuestionarioManager.expects(once()).method("removeBySolicitacaoId").with(ANYTHING).isVoid();
 		solicitacaoAvaliacaoManager.expects(once()).method("removeBySolicitacaoId").with(ANYTHING).isVoid();
-		
+		configuracaoNivelCompetenciaManager.expects(once()).method("removeBySolicitacaoId").with(ANYTHING).isVoid();
 		
 		solicitacaoManager.removeCascade(1L);
 
