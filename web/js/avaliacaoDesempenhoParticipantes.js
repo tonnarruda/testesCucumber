@@ -286,7 +286,7 @@ function disableParentsRespondida(idAvaliado, idAvaliador) {
 	$("i.respondida").each(function() {
 		$(this).parents("li").addClass("has-respondida");
 		$(this).parents(".portlet").addClass("has-respondida");
-		$(this).parents(".portlet").removeClass("");
+		$(this).parents(".portlet").removeClass("ui-selectable");
 		$("#avaliados #"+ $(this).parents("li").attr("class").replace(/(.*)(avaliado_)([0-9]*)(.*)/g, "$3") ).addClass("has-respondida");
 	});
 	
