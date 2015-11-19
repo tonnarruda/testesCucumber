@@ -22,20 +22,20 @@ public class Escolaridade extends LinkedHashMap<String, String> {
 	public  static final String DOUTORADO = "14";
 
 	public Escolaridade() {
-		put(ANALFABETO, "Sem escolaridade");
-		put(PRIMARIO_EM_ANDAMENTO, "Ensino Fundamental em andamento (até 5ºano)");
-		put(PRIMARIO_COMPLETO, "Ensino Fundamental completo (até 5ºano)");
-		put(GINASIO_EM_ANDAMENTO, "Ensino Fundamental em andamento (até 9ºano)");
-		put(GINASIO_COMPLETO, "Ensino Fundamental completo (até 9ºano)");
-		put(COLEGIAL_EM_ANDAMENTO, "Ensino Médio em andamento");
+		put(ANALFABETO, "Analfabeto, inclusive o que, embora tenha recebido instrução, não se alfabetizou");
+		put(PRIMARIO_EM_ANDAMENTO, "Até o 5º ano incompleto do Ensino Fundamental (antiga 4ª série) ou que se tenha alfabetizado sem ter frequentado escola regular");
+		put(PRIMARIO_COMPLETO, "5º ano completo do Ensino Fundamental");
+		put(GINASIO_EM_ANDAMENTO, "Do 6º ao 9º ano do Ensino Fundamental incompleto (antiga 5ª à 8ª série)");
+		put(GINASIO_COMPLETO, "Ensino Fundamental completo");
+		put(COLEGIAL_EM_ANDAMENTO, "Ensino Médio incompleto");
 		put(COLEGIAL_COMPLETO, "Ensino Médio completo");
-		put(TECNICO_EM_ANDAMENTO, "Curso Técnico em andamento");
-		put(TECNICO_COMPLETO, "Curso Técnico completo");
-		put(SUPERIOR_EM_ANDAMENTO, "Superior em andamento");
-		put(SUPERIOR_COMPLETO, "Superior completo");
-		put(ESPECIALIZACAO, "Especialização");
-		put(MESTRADO, "Mestrado");
-		put(DOUTORADO, "Doutorado");
+		put(TECNICO_EM_ANDAMENTO, "Educação Técnica incompleta");
+		put(TECNICO_COMPLETO, "Educação Técnica completa");
+		put(SUPERIOR_EM_ANDAMENTO, "Educação Superior incompleta");
+		put(SUPERIOR_COMPLETO, "Educação Superior completa");
+		put(ESPECIALIZACAO, "Especialização completa");
+		put(MESTRADO, "Mestrado completo");
+		put(DOUTORADO, "Doutorado completo");
 	}
 
 	public static String bindF2rh(String chave) 
