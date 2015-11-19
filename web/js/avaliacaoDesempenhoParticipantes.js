@@ -12,8 +12,6 @@ $(function() {
 	
     portletEvents();
 	    
-    disableParentsRespondida();
-    
 	atualizeSelectables("#avaliados-list", "li", "avaliados");
 	atualizeSelectables("#avaliadores-list", ".portlet", "avaliadores");
     
@@ -57,6 +55,42 @@ $(function() {
     		activeCtrl = false;
     });
 	
+	$(".actions .select-all").click(function(){
+		$(this).parents(".box").find(".ui-selectable").addClass("ui-selected");
+		
+		var selecteds = new Array;
+		
+		$(this).parents(".box").find(".ui-selected").each(function(){
+			if( selecteds.indexOf($(this).attr("id")) == -1 ) {
+				selecteds.push($(this).attr("id"));
+				$(this).addClass("ui-selected");
+			}
+		});
+		
+		if (selecteds.length > 0 ) {
+			$(this).parents(".box").find(".ui-widget-header.actions .only-selectables").removeClass("disabled");
+			if ($(this).parents(".box").find(".ui-selected").hasClass("has-respondida")) {
+				$(this).parents(".box").find(".actions .remove").addClass("disabled");
+			}
+		}
+		
+		if ( $(this).parents(".box").attr("id") == "avaliadores" )
+			selectedsAvaliadores = selecteds;
+		else
+			selectedsAvaliados = selecteds;
+	});
+	
+	$(".actions .unselect-all").click(function(){
+		$(this).parents(".box").find(".ui-selectable").removeClass("ui-selected");
+		
+		$(this).parents(".box").find(".ui-widget-header.actions .only-selectables").addClass("disabled");
+		
+		if ( $(this).parents(".box").attr("id") == "avaliadores" )
+			selectedsAvaliadores = new Array;
+		else
+			selectedsAvaliados = new Array;
+	});
+	
 	$("#avaliadores .actions .remove").click(function(){
 		if ( !$(this).hasClass("disabled") ) {
 			$(this).parents(".box").find(".ui-selected").remove();
@@ -91,12 +125,9 @@ $(function() {
 	$("#avaliados .actions .generate-autoavaliacao").click(function(){
 		if ( !$(this).hasClass("disabled") ) {
 			$(".ui-selected").each(function(){
+				createAvaliador( $(this).attr("id"), $(this).find(".nome").text() );
+				
 				var avaliador = $("#avaliadores .portlet[id="+$(this).attr("id")+"] ul");
-				
-				if ( avaliador.length == 0 ) 
-					createAvaliador( $(this).attr("id"), $(this).find(".nome").text() );
-				
-				avaliador = $("#avaliadores .portlet[id="+$(this).attr("id")+"] ul");
 				
 				createAvaliadoForAvaliador(avaliador, $(this));
 				conectAvaliadosAvaliadores();
@@ -106,6 +137,8 @@ $(function() {
 			notificatedAboutAutoAvaliacao = false;
 		}
 	});
+	
+	disableParentsRespondida();
 });
 
 function conectAvaliadosAvaliadores() {
@@ -184,9 +217,12 @@ function atualizeSelectables(idList, item, type) {
 	    	}
 		}
 		
-		if (selecteds.length > 0 )
+		if (selecteds.length > 0 ) {
 			$(idList).parents(".box").find(".ui-widget-header.actions .only-selectables").removeClass("disabled");
-		else
+			if ($(idList).find(".ui-selected").hasClass("has-respondida")) {
+				$(idList).parents(".box").find(".actions .remove").addClass("disabled");
+			}
+		} else
 			$(idList).parents(".box").find(".ui-widget-header.actions .only-selectables").addClass("disabled"); 
 		
 		lastSelected= $(this).attr("id");
@@ -196,20 +232,22 @@ function atualizeSelectables(idList, item, type) {
 		else if ( type == "avaliadores")
 			selectedsAvaliadores = selecteds;
 	});
-	$(idList + " li").not(".ui-selectable").addClass("ui-selectable");
+	$(idList + " " + item).not(".ui-selectable").addClass("ui-selectable");
 }
 
 function createAvaliador(id, nome) {
-	$("#avaliadores .column").append('<div class="portlet" id="'+ id +'">' +
-	  		 '<div class="portlet-header">' + nome + 
-	  		 '</div>' +
-	  		 '<div class="portlet-content">' +
-	  		 	'<ul>' +
-	  		 			'<input type="hidden" name="avaliadores" value="'+id+'"/>' +
-		        		'<li class="placeholder">Arraste os avaliados até aqui</li>' + 
-		      	'</ul>' +
-	  		 '</div>' +
-	  	'</div>');
+	if ( $("#avaliadores .portlet[id="+id+"] ul").length == 0 ) {
+		$("#avaliadores .column").append('<div class="portlet" id="'+ id +'">' +
+		  		 '<div class="portlet-header">' + nome + 
+		  		 '</div>' +
+		  		 '<div class="portlet-content">' +
+		  		 	'<ul>' +
+		  		 			'<input type="hidden" name="avaliadores" value="'+id+'"/>' +
+			        		'<li class="placeholder">Arraste os avaliados até aqui</li>' + 
+			      	'</ul>' +
+		  		 '</div>' +
+		  	'</div>');
+	}
 }
 
 function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
@@ -218,10 +256,9 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
         if( $(avaliadorUlTag).find(".avaliado_"+ avaliadorLiTag.attr('id')).length == 0 ) {
         	$("<li class='avaliado_"+avaliadorLiTag.attr('id')+"'></li>").text( avaliadorLiTag.find(".nome").text() ).appendTo( avaliadorUlTag );
         	$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaborador.id" value="' + avaliadorLiTag.attr("id") + '"/>' +
-					        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliador.id" value="' + $(avaliadorUlTag).attr("id") + '"/>' +
+					        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliador.id" value="' + $(avaliadorUlTag).parents(".portlet").attr("id") + '"/>' +
 					        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacao.id" value="' + avaliacaoId + '"/>' +
 					        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacaoDesempenho.id" value="' + avaliacaoDesempenhoId + '"/>');
-        	$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).prepend('<span class="ui-icon ui-icon-closethick"></span>');
         	
         	$("#avaliadores ul li .ui-icon-closethick").not(".disabled").click(function(){
 		    	if( $(this).parent().parent().find("li").length == 1 )
@@ -250,6 +287,8 @@ function disableParentsRespondida(idAvaliado, idAvaliador) {
 		$(this).parents("li").addClass("has-respondida");
 		$(this).parents(".portlet").addClass("has-respondida");
 		$(this).parents(".portlet").removeClass("");
-		$("#avaliados #"+ $(this).attr("class").replace(/(.*)(avaliado_)([0-9]*)(.*)/g, "$3") ).addClass("has-respondida");
+		$("#avaliados #"+ $(this).parents("li").attr("class").replace(/(.*)(avaliado_)([0-9]*)(.*)/g, "$3") ).addClass("has-respondida");
 	});
+	
+	$("#avaliadores .portlet.has-respondida").unbind();
 }
