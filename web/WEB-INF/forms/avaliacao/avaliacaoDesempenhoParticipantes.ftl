@@ -181,6 +181,14 @@
 				  	<div class="option move-all only-selectables disabled" title="Relacionar selecionados ao avaliadores">
 						<span class="ui-icon ui-icon-arrowthick-1-e"></span>
 				    </div>
+				    <div class="option select-all" title="Selecionar todos">
+						<i class="fa fa-long-arrow-down"></i>
+						<i class="fa fa-reorder"></i>
+				    </div>
+				    <div class="option unselect-all" title="Retirar selecão de todos">
+						<i class="fa fa-long-arrow-up"></i>
+						<i class="fa fa-reorder"></i>
+				    </div>
 				    <#if avaliacaoDesempenho.permiteAutoAvaliacao>
 					  	<div class="option generate-autoavaliacao only-selectables disabled" title="Gerar autoavaliação para selecionados">
 							<span class="ui-icon ui-icon-refresh"></span>
@@ -217,6 +225,14 @@
 					<h1 class="ui-widget-header actions">
 					  	<div class="option remove only-selectables disabled" title="Remover selecionados">
 							<span class="ui-icon ui-icon-trash"></span>
+					    </div>
+					    <div class="option select-all" title="Selecionar todos">
+							<i class="fa fa-long-arrow-down"></i>
+							<i class="fa fa-reorder"></i>
+					    </div>
+					    <div class="option unselect-all" title="Retirar selecão de todos">
+							<i class="fa fa-long-arrow-up"></i>
+							<i class="fa fa-reorder"></i>
 					    </div>
 					</h1>
 			  		<div class="legend">
