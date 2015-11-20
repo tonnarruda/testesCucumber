@@ -245,6 +245,20 @@
 						  	<div class="portlet" id="${avaliador.id}">
 						  		 <div class="portlet-header">${avaliador.nome}
 						  		 </div>
+						  		 <div class="portlet-header mini-actions" style="background: #F3F3F3; padding: 0; display: none;">
+						  		 	<div class="mini-option remove only-selectables disabled" title="Remover selecionados" style="padding: 3px 15px; float: left;">
+										<span class="ui-icon ui-icon-trash" style="float: none;"></span>
+								    </div>
+								    <div class="mini-option select-all" title="Selecionar todos" style="padding: 2px 15px; float: left;" >
+										<i class="fa fa-long-arrow-down"></i>
+										<i class="fa fa-reorder"></i>
+								    </div>
+								    <div class="mini-option unselect-all" title="Retirar selecão de todos" style="padding: 2px 15px; float: left;">
+										<i class="fa fa-long-arrow-up"></i>
+										<i class="fa fa-reorder"></i>
+								    </div>
+								    <div style="clear: both;"></div>
+								 </div>
 						  		 <div class="portlet-content">
 						  		 	<ul>
 								  		<input type="hidden" name="avaliadores" value="${avaliador.id}"/>
@@ -279,6 +293,7 @@
 			</@ww.form>
 			<div style="clear: both;"></div>
 		</div>
-	
+		
+		<div id="black-back" style="display:none; /*display: block;*/ top: 0; left: 0; bottom: 0; background: gray; opacity: 0.6; width: 100%; position: absolute; z-index: 1000;"></div>
 	</body>
 </html>
