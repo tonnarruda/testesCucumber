@@ -12,9 +12,11 @@ import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
+import org.hibernate.transform.AliasToBeanResultTransformer;
 import org.springframework.dao.DataAccessResourceFailureException;
 
 import com.fortes.dao.GenericDaoHibernate;
@@ -40,6 +42,14 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		Criteria criteria = getSession().createCriteria(NivelCompetencia.class, "nc");
 		criteria.createCriteria("nc.configHistoricoNiveis", "chn", Criteria.INNER_JOIN);
 		criteria.createCriteria("chn.nivelCompetenciaHistorico", "nch", Criteria.INNER_JOIN);
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("nc.id"), "id");
+		p.add(Projections.property("nc.descricao"), "descricao");
+		p.add(Projections.property("chn.ordem"), "ordem");
+		p.add(Projections.property("chn.percentual"), "percentual");
+
+		criteria.setProjection(p);
 
 		if(empresaId != null)
 			criteria.add(Expression.eq("nc.empresa.id", empresaId));
@@ -51,6 +61,9 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 
 		criteria.addOrder(Order.asc("nc.descricao"));
 
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(NivelCompetencia.class));
+		
 		return criteria.list();
 	}
 	

@@ -114,7 +114,7 @@
 		{
 			var linhasSemRadioMarcado = $('tr').has('.checkNivel:enabled').not(':has(.checkNivel:checked)');
 			linhasSemRadioMarcado = $.merge(linhasSemRadioMarcado, $('tr').has('.checkNivelCriterio:enabled').not(':has(.checkNivelCriterio:checked)'));
-			console.log(linhasSemRadioMarcado);
+
 			if (linhasSemRadioMarcado.size() == 0)
 			{
 				validaRespostas(null, null, true, true, false, false, true);
