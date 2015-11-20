@@ -2,6 +2,7 @@
 <Versoes>
 	<Versao id="1.1.15x.18x" db="" data="xx/xx/2015">
 		<Item visivel="S" motivo="S15110000172"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Ajuste da inconsistência ao deletar uma solicitação de pessoal com dependência.]]></Item>
+		<Item visivel="S" motivo="P15110000175"><![CDATA[C&S > Relatórios > Descrição de Cargos: Ajuste da inconsistência ao tentar exibir as competências exigidas pelas faixas salariais.]]></Item>
 		<Item visivel="S" motivo="S15100000327"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Inserção do campo "Mensalidade" e ajuste da nomenclatura dos campos: "Salário" e "Rem.Variável", para "Salário Contratual" e "Valores da Folha" respectivamente, quando integrado com o sistema Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S15100000191"><![CDATA[T&D > Relatórios > Lista de Presença: Novo vídeo de ajuda da funcionalidade.]]></Item>
 		<Item visivel="S" motivo="S15090000012"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Novas descrições dos graus de instrução da escolaridade.]]></Item>

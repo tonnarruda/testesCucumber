@@ -376,7 +376,7 @@ public class FaixaSalarialDaoHibernate extends GenericDaoHibernate<FaixaSalarial
 		sql.append("                                                                         and hi2.data <= current_date) ");
 		sql.append("left join configuracaonivelcompetenciafaixasalarial cncf on cncf.faixasalarial_id = fs.id and cncf.data = (select max(cncf2.data) ");
 		sql.append("                                                                                         from configuracaonivelcompetenciafaixasalarial cncf2 ");
-		sql.append("                                                                                         where cncf.faixasalarial_id = fs.id ");
+		sql.append("                                                                                         where cncf.faixasalarial_id = cncf2.faixasalarial_id ");
 		sql.append("                                                                                         and cncf.data <= current_date ) ");
 		sql.append("   left join configuracaonivelcompetencia cnc on cnc.configuracaonivelcompetenciafaixasalarial_id = cncf.id"); 
 		sql.append("   left join competencia comp on comp.id = cnc.competencia_id and comp.tipo = cnc.tipocompetencia "); 
