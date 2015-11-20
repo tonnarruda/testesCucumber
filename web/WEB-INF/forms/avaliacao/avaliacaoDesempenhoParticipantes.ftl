@@ -120,8 +120,6 @@
 				}
 			});
 			conectAvaliadosAvaliadores();
-			atualizeSelectables("#avaliados-list", "li", "avaliados");
-			atualizeSelectables("#avaliadores-list", ".portlet", "avaliadores");
 		}
 		
 		function validFormModal() {
