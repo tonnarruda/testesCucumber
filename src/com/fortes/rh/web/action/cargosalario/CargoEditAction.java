@@ -366,12 +366,6 @@ public class CargoEditAction extends MyActionSupportEdit
 
 	public String prepareTransferirFaixasCargo() throws Exception
 	{
-//		if (!getEmpresaSistema().isAcIntegra())
-//		{
-//			addActionMessage("O RH não está integrado com o Fortes Pessoal.");
-//			return Action.SUCCESS;
-//		}
-		
 		cargo = cargoManager.findByIdProjection(cargo.getId());
 		cargos = cargoManager.findAllSelect("nome", null, Cargo.TODOS, getEmpresaSistema().getId());
 		cargos.remove(cargo);
