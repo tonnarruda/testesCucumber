@@ -216,7 +216,7 @@ i.fa {
 
 #feedback { font-size: 1.4em; }
 #avaliados-list .ui-selecting { background: #7BB5DF; }
-#avaliados-list .ui-selected { background: #5292C0; color: white; }
+#avaliados-list .ui-selected, #avaliadores li.ui-selected { background: #5292C0; color: white; }
 #avaliados-list { list-style-type: none; margin: 0; padding: 0;}
 #avaliados-list li { margin: 3px; padding: 7px; }
 
