@@ -1,6 +1,7 @@
 package com.fortes.rh.business.pesquisa;
 
 import java.util.ArrayList;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,7 +25,7 @@ import com.fortes.rh.model.pesquisa.Pergunta;
 import com.fortes.rh.model.pesquisa.Questionario;
 import com.fortes.rh.util.ComparatorString;
 import com.fortes.rh.util.LongUtil;
-
+@SuppressWarnings("rawtypes")
 public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<ColaboradorQuestionario, ColaboradorQuestionarioDao> implements ColaboradorQuestionarioManager
 {
 	private PerguntaManager perguntaManager;
@@ -78,7 +79,7 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 			}
 		}
 
-        Comparator comparator = new BeanComparator("nomeComercial", new ComparatorString());
+		Comparator comparator = new BeanComparator("nomeComercial", new ComparatorString());
 
         Collections.sort((List) result, comparator);
 

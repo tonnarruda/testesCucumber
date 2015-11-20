@@ -19,6 +19,10 @@
 	
 	<script type="text/javascript">
 		$(function() {
+			<#if !podeEditar>
+				$(":checkbox").attr("disabled","disabled");
+			</#if>
+		
 			$('.configHistoricoNivel').click(function(){
 				$(this).parent().parent().find(".campos").attr('disabled', !($(this).attr('checked')));
 			});
@@ -94,26 +98,31 @@
 					</#if>
 					
 					<@display.column title="<input type='checkbox' id='checkAllNiveis'/>" style="width:50px; text-align:center;" >
-						<input type="checkbox" id="configHistoricoNivel_${i}" name="configHistoricoNivels[${i}].id" value="${configHistNivelId}" class="configHistoricoNivel" />
+						<input type="checkbox" id="configHistoricoNivel_${i}" name="configHistoricoNivels[${i}].id" value="${configHistNivelId}" class="configHistoricoNivel" <#if !podeEditar>disabled="disabled" </#if> />
 					</@display.column>
 						
 					<@display.column property="nivelCompetencia.descricao" title="Descrição"/>
 					
 					<@display.column title="Peso" style="width: 50px; text-align: center;">
 						
-						<#if podeEditarPeso>
+						<#if podeEditar>
 							<input type="text" disabled="disabled" id="peso_${i}" name="configHistoricoNivels[${i}].ordem" size="4" maxlength="4" value="${configHistNivelOrdem}" class="campos peso" style="width:40px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,''));">
 						<#else>
 							${configHistNivelOrdem}
+							<@ww.hidden name="configHistoricoNivels[${i}].ordem" value="${configHistNivelOrdem}"/>
 						</#if>
-						
 						<@ww.hidden name="configHistoricoNivels[${i}].nivelCompetencia.id" value="${configHistNivel.nivelCompetencia.id}"/>
 						<#if configHistNivel.nivelCompetenciaHistorico?exists>
 							<@ww.hidden name="configHistoricoNivels[${i}].nivelCompetenciaHistorico.id" value="${configHistNivel.nivelCompetenciaHistorico.id}"/>
 						</#if>
 					</@display.column>
 					<@display.column title="Percentual Mínimo (%)" style="width: 150px; text-align: center;">
-						<input type="text" disabled="disabled" id="percentual_${i}" name="configHistoricoNivels[${i}].percentual" size="5" maxlength="5" value="${configHistNivel.percentualFormatado}" class="campos percentual" style="width:50px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,','));">
+						<#if podeEditar>
+							<input type="text" disabled="disabled" id="percentual_${i}" name="configHistoricoNivels[${i}].percentual" size="5" maxlength="5" value="${configHistNivel.percentualFormatado}" class="campos percentual" style="width:50px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,','));">
+						<#else>
+							${configHistNivel.percentualFormatado}
+							<@ww.hidden name="configHistoricoNivels[${i}].percentual" value="${configHistNivel.percentualFormatado}"/>
+						</#if>
 					</@display.column>
 
 					<#assign i = i + 1/>
@@ -123,8 +132,10 @@
 		</@ww.form>
 	
 		<div class="buttonGroup">
-			<button onclick="submeter();" class="btnGravar"></button>
-			<button class="btnDividirPercentualIgualmente" onclick="gerarPercentual();"></button>
+			<#if podeEditar>
+				<button onclick="submeter();" class="btnGravar"></button>
+				<button class="btnDividirPercentualIgualmente" onclick="gerarPercentual();"></button>
+			</#if>
 			<button onclick="window.location='../nivelCompetenciaHistorico/list.action'" class="btnVoltar"></button>
 		</div>
 	</body>

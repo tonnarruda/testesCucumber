@@ -9,4 +9,5 @@ public interface NivelCompetenciaHistoricoManager extends GenericManager<NivelCo
 {
 	public void removeNivelConfiguracaoHistorico(Long id) throws Exception;
 	public Long findByData(Date date, Long empresaId);
+	public void updateNivelConfiguracaoHistorico(NivelCompetenciaHistorico nivelCompetenciaHistorico);
 }

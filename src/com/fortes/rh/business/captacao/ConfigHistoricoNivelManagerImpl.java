@@ -2,6 +2,7 @@ package com.fortes.rh.business.captacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.ConfigHistoricoNivelDao;
@@ -36,5 +37,13 @@ public class ConfigHistoricoNivelManagerImpl extends GenericManagerImpl<ConfigHi
 
 	public void removeByNivelConfiguracaoHistorico(Long nivelConfiguracaoHIstoricoId) {
 		getDao().removeByNivelConfiguracaoHistorico(nivelConfiguracaoHIstoricoId);
+	}
+
+	public void removeNotIds(Long[] configHistoricoNiveisIds,Long nivelConfiguracaoHIstoricoId) {
+		getDao().removeNotIds(configHistoricoNiveisIds,nivelConfiguracaoHIstoricoId);
+	}
+
+	public Collection<ConfigHistoricoNivel> findByEmpresaAndDataNivelCompetenciaHistorico(Long empresaId, Date dataNivelCompetenciaHistorico) {
+		return getDao().findByEmpresaAndDataNivelCompetenciaHistorico(empresaId, dataNivelCompetenciaHistorico);
 	}
 }
