@@ -148,8 +148,18 @@ function conectAvaliadosAvaliadores() {
       activeClass: "ui-state-default",
       hoverClass: "ui-state-hover",
       accept: ":not(.ui-sortable-helper)",
+      sort: function( event, ui ) {
+    	  
+      },
       drop: function( event, ui ) {
-    	createAvaliadoForAvaliador($(this), ui.draggable);
+    	var ulAvaliadores = $(this);
+    	if ( $("#avaliados li.ui-selected").length > 0 ) {
+	    	$("#avaliados li.ui-selected").each(function(){
+	    		createAvaliadoForAvaliador(ulAvaliadores, $(this));
+	    	});
+    	} else {
+    		createAvaliadoForAvaliador(ulAvaliadores, ui.draggable);
+    	}
     	notificatedAboutAutoAvaliacao = false;
       }
     }).sortable({
@@ -242,6 +252,20 @@ function createAvaliador(id, nome) {
 	if ( $("#avaliadores .portlet[id="+id+"] ul").length == 0 ) {
 		$("#avaliadores .column").append('<div class="portlet" id="'+ id +'">' +
 		  		 '<div class="portlet-header">' + nome + 
+		  		 '</div>' +
+		  		 '<div class="portlet-header mini-actions" style="background: #F3F3F3; padding: 0; display: none;">' +
+		  		 '	<div class="mini-option remove only-selectables disabled" title="Remover selecionados" style="padding: 3px 15px; float: left;">' +
+		  		 '		<span class="ui-icon ui-icon-trash" style="float: none;"></span>' +
+		  		 '  </div>' +
+		  		 '  <div class="mini-option select-all" title="Selecionar todos" style="padding: 2px 15px; float: left;" >' +
+		  		 '		<i class="fa fa-long-arrow-down"></i>' +
+		  		 '		<i class="fa fa-reorder"></i>' +
+		  		 '  </div>' +
+		  		 '  <div class="mini-option unselect-all" title="Retirar selecão de todos" style="padding: 2px 15px; float: left;">' +
+		  		 '		<i class="fa fa-long-arrow-up"></i>' +
+		  		 '		<i class="fa fa-reorder"></i>' +
+		  		 '  </div>' +
+		  		 '  <div style="clear: both;"></div>' +
 		  		 '</div>' +
 		  		 '<div class="portlet-content">' +
 		  		 	'<ul>' +

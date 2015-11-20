@@ -225,3 +225,4 @@ i.fa {
 #avaliadores .ui-selected .portlet-content { border: 1px solid #9EBDD3; }
 #avaliadores ul li { cursor: pointer; }
 #avaliadores ul li.has-respondida { cursor: default; }
+#avaliadores .mini-option:hover { background: white; }
