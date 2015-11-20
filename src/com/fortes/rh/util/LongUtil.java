@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import com.fortes.model.AbstractModel;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings("rawtypes")
 public class LongUtil
 {
 	public static Long[] collectionStringToArrayLong(Collection colecao){

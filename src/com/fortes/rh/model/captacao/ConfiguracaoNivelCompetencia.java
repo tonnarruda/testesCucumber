@@ -221,8 +221,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	
 	public void setCandidatoIdProjection(Long candidatoId) 
 	{
-		if (this.candidato == null)
-			this.candidato = new Candidato();
+		inicializaCandidato();
 		
 		this.candidato.setId(candidatoId);
 	}
@@ -507,4 +506,22 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	public void setPesoCompetencia(Integer pesoCompetencia) {
 		this.pesoCompetencia = pesoCompetencia;
 	}
+	
+	public void setCandidatoNome(String candidatoNome){
+		inicializaCandidato();
+		
+		this.candidato.setNome(candidatoNome);
+	}
+
+	public void setCandidatoId(Long candidatoId){
+		inicializaCandidato();
+	
+		this.candidato.setId(candidatoId);
+	}
+
+	private void inicializaCandidato() {
+		if(this.candidato == null)
+			this.candidato = new Candidato();
+	}
+	
 }

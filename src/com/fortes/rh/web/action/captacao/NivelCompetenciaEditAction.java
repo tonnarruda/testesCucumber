@@ -497,7 +497,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			parametros = RelatorioUtil.getParametrosRelatorio("Matriz comparativa Cargo x Candidato", getEmpresaSistema(), "Cargo/Faixa: " + faixaSalarial.getDescricao());
 			parametros.put("ENTIDADE", "Candidato Avaliado");
 			parametros.put("ISNIVELCOLABORADOR", false);
-			configuracaoNivelCompetenciaVOs = configuracaoNivelCompetenciaManager.montaMatrizCompetenciaCandidato(getEmpresaSistema().getId(), faixaSalarial.getId(), solicitacao.getId());
+			configuracaoNivelCompetenciaVOs = configuracaoNivelCompetenciaManager.montaMatrizCompetenciaCandidato(getEmpresaSistema().getId(), faixaSalarial.getId(), solicitacaoManager.findByIdProjection(solicitacao.getId()));
 			
 			if(configuracaoNivelCompetenciaVOs.size() == 0)
 				throw new FortesException("Não existem competências para os candidatos desta seleção.");

@@ -27,14 +27,14 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 	private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
 	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 	
-	private boolean podeEditarPeso;
+	private boolean podeEditar;
 	private boolean obrigarPercentual;
 
 	public String prepareInsert() throws Exception
 	{
 		configHistoricoNivels = configHistoricoNivelManager.findNiveisCompetenciaByEmpresa(getEmpresaSistema().getId());
 		obrigarPercentual = criterioAvaliacaoCompetenciaManager.existeCriterioAvaliacaoCompetencia(getEmpresaSistema().getId());
-		podeEditarPeso = true;
+		podeEditar = true;
 		
 		return Action.SUCCESS;
 	}
@@ -45,7 +45,7 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 			nivelCompetenciaHistorico = nivelCompetenciaHistoricoManager.findById(nivelCompetenciaHistorico.getId());
 			configHistoricoNivels = configHistoricoNivelManager.findByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico.getId());
 			
-			podeEditarPeso = !configuracaoNivelCompetenciaFaixaSalarialManager.existByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico.getId());
+			podeEditar = !configuracaoNivelCompetenciaFaixaSalarialManager.existByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico.getId());
 			obrigarPercentual = criterioAvaliacaoCompetenciaManager.existeCriterioAvaliacaoCompetencia(getEmpresaSistema().getId());
 		}
 		
@@ -83,7 +83,7 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 	{
 		try {
 			nivelCompetenciaHistorico.setConfigHistoricoNiveis(montaConfigHistoricoNivel());
-			nivelCompetenciaHistoricoManager.update(nivelCompetenciaHistorico);
+			nivelCompetenciaHistoricoManager.updateNivelConfiguracaoHistorico(nivelCompetenciaHistorico);
 			setActionMsg("Histórico de níveis de competência atualizado com sucesso.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -149,8 +149,8 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
 	}
 
-	public boolean isPodeEditarPeso() {
-		return podeEditarPeso;
+	public boolean isPodeEditar() {
+		return podeEditar;
 	}
 
 	public boolean isObrigarPercentual() {

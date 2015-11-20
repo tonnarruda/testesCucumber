@@ -31,13 +31,14 @@ import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
 
+
+@SuppressWarnings("unchecked")
 public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetencia> implements ConfiguracaoNivelCompetenciaDao
 {
 	
-	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId, Date data) 
 	{
-		Criteria criteria = createCriteria();
+		Criteria criteria = createCriteria(data);
 		criteria.createCriteria("cnc.configuracaoNivelCompetenciaFaixaSalarial", "cncfs", Criteria.LEFT_JOIN);
 		
 		criteria.add(Expression.eq("cncfs.faixaSalarial.id", faixaSalarialId));
@@ -57,10 +58,9 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return criteria.list();
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoNivelCompetencia> findByCandidatoAndSolicitacao(Long candidatoId, Long solicitacaoId) 
 	{
-		Criteria criteria = createCriteria();
+		Criteria criteria = createCriteria(null);
 
 		if(candidatoId != null)
 			criteria.add(Expression.eq("cnc.candidato.id", candidatoId));
@@ -74,12 +74,12 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return criteria.list();
 	}
 
-	private Criteria createCriteria() 
+	private Criteria createCriteria(Date data) 
 	{
 		DetachedCriteria subQueryHc = DetachedCriteria.forClass(NivelCompetenciaHistorico.class, "nch2")
 				.setProjection(Projections.max("nch2.data"))
 				.add(Restrictions.eqProperty("nch2.empresa.id", "nc.empresa.id"))
-				.add(Restrictions.le("nch2.data", new Date()));
+				.add(Restrictions.le("nch2.data", data == null ? new Date() : data ));
 		
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetencia.class,"cnc");
 		criteria.createCriteria("cnc.nivelCompetencia", "nc", Criteria.LEFT_JOIN);
@@ -87,6 +87,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		criteria.createCriteria("chn.nivelCompetenciaHistorico", "nch", Criteria.INNER_JOIN);
 		
 		criteria.createCriteria("cnc.solicitacao", "s", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cnc.candidato", "cand", Criteria.LEFT_JOIN);
 		criteria.createCriteria("s.faixaSalarial", "f", Criteria.LEFT_JOIN);
 		criteria.createCriteria("f.cargo", "c", Criteria.LEFT_JOIN);
 		criteria.add(Subqueries.propertyEq("nch.data", subQueryHc));
@@ -111,6 +112,8 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		p.add(Projections.property("f.nome"), "faixaSalarialNome");
 		p.add(Projections.property("f.id"), "faixaSalarialIdProjection");
 		p.add(Projections.property("c.nome"), "cargoNome");
+		p.add(Projections.property("cand.nome"), "candidatoNome");
+		p.add(Projections.property("cand.id"), "candidatoId");
 
 		criteria.setProjection(p);
 		return criteria;
@@ -137,10 +140,9 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		getSession().createQuery(queryHQL).setLong("configuracaoNivelCompetenciaFaixaSalarialId", configuracaoNivelCompetenciaFaixaSalarialId).executeUpdate();		
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelCompetenciaColaboradorId) 
 	{
-		Criteria criteria = createCriteria();
+		Criteria criteria = createCriteria(null);
 
 		criteria.addOrder(Order.asc("competenciaDescricao"));
 		criteria.add(Expression.eq("cnc.configuracaoNivelCompetenciaColaborador.id", configuracaoNivelCompetenciaColaboradorId));
@@ -150,10 +152,9 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return criteria.list();
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelCompetenciaFaixaSalarialId)
 	{
-		Criteria criteria = createCriteria();
+		Criteria criteria = createCriteria(null);
 
 		criteria.add(Expression.eq("cnc.configuracaoNivelCompetenciaFaixaSalarial.id", configuracaoNivelCompetenciaFaixaSalarialId));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -162,7 +163,6 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return criteria.list();
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId, Date data) 
 	{
 		StringBuilder sql = new StringBuilder();
@@ -203,7 +203,6 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return lista;				
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaColaborador(Date dataIni, Date dataFim, Long[] competenciaIds, Long faixaSalarialColaboradorId, boolean ordenarPorNivel) 
 	{
 		StringBuilder sql = new StringBuilder();
@@ -270,7 +269,6 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return lista;				
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaCandidato(Long faixaSalarialId, Collection<Long> candidatosIds) 
 	{
 		StringBuilder sql = new StringBuilder();
@@ -377,7 +375,6 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		getSession().createQuery(queryHQL).setLong("candidatoId", candidatoId).executeUpdate();
 	}
 
-	@SuppressWarnings("unchecked")
 	public Long[] findCompetenciasIdsConfiguradasByFaixaSolicitacao(Long faixaSalarialId) {
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetencia.class, "cnc");
 
@@ -420,7 +417,6 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return (Integer) criteria.uniqueResult();
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoNivelCompetencia> findByColaborador(Long colaboradorId, Long avaliadorId, Long colaboradorQuestionarioId) 
 	{
 		StringBuilder hql = new StringBuilder();
@@ -445,7 +441,6 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return query.list();
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoNivelCompetencia> findColaboradoresCompetenciasAbaixoDoNivel(	Long empresaId, Long[] estabelecimentoIds, Long[] areaIds, Boolean colaboradoresAvaliados, char agruparPor) 
 	{
 		getSession().flush();
@@ -609,7 +604,6 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		if(dataFim != null)
 			query.setDate("dataFim", dataFim);
 		
-		@SuppressWarnings("unchecked")
 		Collection<Object[]> resultado = query.list();
 		Collection<Competencia> lista = new ArrayList<Competencia>();
 		
@@ -698,5 +692,17 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		Query query = getSession().createQuery("delete from ConfiguracaoNivelCompetencia cnc where cnc.solicitacao.id = :solicitacaoId ");
 		query.setLong("solicitacaoId", solicitacaoId);
 		query.executeUpdate();
+	}
+	
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaBySolicitacaoAndCandidatoAndData(Long solicitacaoId, Long candidatoId, Date dataSolicitacao) {
+		Criteria criteria = createCriteria(dataSolicitacao);
+		
+		criteria.add(Expression.eq("cnc.solicitacao.id", solicitacaoId));
+		criteria.add(Expression.eq("cnc.candidato.id", candidatoId));
+		criteria.addOrder(Order.asc("cand.nome"));
+		criteria.addOrder(Order.asc("cand.id"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetencia.class));
+		return criteria.list();
 	}
 }

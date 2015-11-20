@@ -80,12 +80,8 @@
 			</#if>
 			
 			<#if configuracaoNivelCompetenciaFaixaSalarial?exists && configuracaoNivelCompetenciaFaixaSalarial.id?exists>
-				$('#data').attr("disabled","disabled");
-				$('#data_button').hide();
 				$(":checkbox").attr("disabled","disabled");
 			<#else>
-				$('#data').removeAttr("disabled");
-				$('#data_button').show();
 				$(":checkbox").removeAttr("disabled");
 			</#if>
 		});
@@ -182,10 +178,8 @@
 			<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.nivelCompetenciaHistorico.id" value="${nivelCompetenciaHistoricoId}"/>
 		</#if>
 		
-		<@ww.datepicker label="A partir de" name="configuracaoNivelCompetenciaFaixaSalarial.data" value="${data}" id="data" cssClass="mascaraData" required="true"/>
-		<#if edicao>
-			<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.data" value="${data}"/>
-		</#if>
+		<@ww.textfield label="A partir de" name="configuracaoNivelCompetenciaFaixaSalarial.data" value="${data}" id="data" cssClass="mascaraData" disabled="true"/>
+		<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.data" value="${data}"/>
 		<br />
 		
 		<#assign i = 0/>
@@ -206,8 +200,15 @@
 				
 			</@display.column>
 				
+				
 			<@display.column title="Peso" style="width: 50px; text-align: center;">
-				<input type="text" disabled="disabled" name="niveisCompetenciaFaixaSalariaisConhecimento[${i}].pesoCompetencia" size="4" maxlength="4" value="${configuracaoNivelCompetencia.pesoCompetencia}" class="peso" style="width:40px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,''));">
+				<#if !edicao>
+					<input type="text" disabled="disabled" name="niveisCompetenciaFaixaSalariaisConhecimento[${i}].pesoCompetencia" size="4" maxlength="4" value="${configuracaoNivelCompetencia.pesoCompetencia}" class="peso" style="width:40px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,''));">
+				<#else>
+					${configuracaoNivelCompetencia.pesoCompetencia}
+					<@ww.hidden name="niveisCompetenciaFaixaSalariaisConhecimento[${i}].pesoCompetencia" value="${configuracaoNivelCompetencia.pesoCompetencia}"/>
+				</#if>
+				
 			</@display.column>
 			
 			<#list nivelCompetencias as nivel>			
@@ -238,7 +239,12 @@
 			</@display.column>
 			
 			<@display.column title="Peso" style="width: 50px; text-align: center;">
-				<input type="text" disabled="disabled" name="niveisCompetenciaFaixaSalariaisHabilidade[${i}].pesoCompetencia" size="4" maxlength="4" value="${configuracaoNivelCompetenciaHabilidade.pesoCompetencia}" class="peso" style="width:40px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,''));">
+				<#if !edicao>
+					<input type="text" disabled="disabled" name="niveisCompetenciaFaixaSalariaisHabilidade[${i}].pesoCompetencia" size="4" maxlength="4" value="${configuracaoNivelCompetenciaHabilidade.pesoCompetencia}" class="peso" style="width:40px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,''));">
+				<#else>
+					${configuracaoNivelCompetenciaHabilidade.pesoCompetencia}
+					<@ww.hidden name="niveisCompetenciaFaixaSalariaisHabilidade[${i}].pesoCompetencia" value="${configuracaoNivelCompetenciaHabilidade.pesoCompetencia}"/>
+				</#if>
 			</@display.column>
 			
 			<#list nivelCompetencias as nivel>			
@@ -269,7 +275,12 @@
 			</@display.column>
 
 			<@display.column title="Peso" style="width: 50px; text-align: center;">
-				<input type="text" disabled="disabled" name="niveisCompetenciaFaixaSalariaisAtitude[${i}].pesoCompetencia" size="4" maxlength="4" value="${configuracaoNivelCompetenciaAtitude.pesoCompetencia}" class="peso" style="width:40px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,''));">
+				<#if !edicao>
+					<input type="text" disabled="disabled" name="niveisCompetenciaFaixaSalariaisAtitude[${i}].pesoCompetencia" size="4" maxlength="4" value="${configuracaoNivelCompetenciaAtitude.pesoCompetencia}" class="peso" style="width:40px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,''));">
+				<#else>
+					${configuracaoNivelCompetenciaAtitude.pesoCompetencia}
+					<@ww.hidden name="niveisCompetenciaFaixaSalariaisAtitude[${i}].pesoCompetencia" value="${configuracaoNivelCompetenciaAtitude.pesoCompetencia}"/>
+				</#if>
 			</@display.column>
 			
 			<#list nivelCompetencias as nivel>			

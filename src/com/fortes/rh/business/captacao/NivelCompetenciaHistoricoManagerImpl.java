@@ -6,6 +6,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.captacao.NivelCompetenciaHistoricoDao;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
+import com.fortes.rh.util.LongUtil;
 
 public class NivelCompetenciaHistoricoManagerImpl extends GenericManagerImpl<NivelCompetenciaHistorico, NivelCompetenciaHistoricoDao> implements NivelCompetenciaHistoricoManager
 {
@@ -27,5 +28,10 @@ public class NivelCompetenciaHistoricoManagerImpl extends GenericManagerImpl<Niv
 	public Long findByData(Date date, Long empresaId) 
 	{
 		return getDao().findByData(date, empresaId);
+	}
+
+	public void updateNivelConfiguracaoHistorico(NivelCompetenciaHistorico nivelCompetenciaHistorico) {
+		configHistoricoNivelManager.removeNotIds(LongUtil.collectionToArrayLong(nivelCompetenciaHistorico.getConfigHistoricoNiveis()), nivelCompetenciaHistorico.getId());
+		this.update(nivelCompetenciaHistorico);
 	}
 }
