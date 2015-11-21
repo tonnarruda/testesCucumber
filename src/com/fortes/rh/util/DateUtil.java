@@ -841,7 +841,7 @@ public class DateUtil
 	public static boolean between(Date _data, Date _inicio, Date _fim)
 	{
 		Calendar data = Calendar.getInstance();
-		data.setTime(_data);
+		data.setTime(DateUtil.criarDataMesAno(_data));
 		data.set(Calendar.HOUR, 0);
 		
 		Calendar inicio = Calendar.getInstance();
