@@ -422,7 +422,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			
 			avaliacaoDesempenhoManager.liberar(avaliacaoDesempenho, avaliados, avaliadores);
 			
-			if( DateUtil.between(new Date(), avaliacaoDesempenho.getInicio(), avaliacaoDesempenho.getFim()) )
+			if( DateUtil.between(DateUtil.criarDataMesAno(new Date()), avaliacaoDesempenho.getInicio(), avaliacaoDesempenho.getFim()) )
 				avaliacaoDesempenhoManager.enviarLembreteAoLiberar(avaliacaoDesempenho.getId(), getEmpresaSistema());
 			
 			addActionSuccess("Avaliação liberada com sucesso.");
