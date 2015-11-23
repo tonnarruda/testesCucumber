@@ -704,27 +704,6 @@ public class ColaboradorManagerTest extends MockObjectTestCase
         assertEquals(1, colaboradorManager.findByGrupoOcupacionalIdsEstabelecimentoIds(grupoOcupacionalIds, estabelecimentosIds).size());
     }
 
-    public void testGetColaboradoresIntegraAc()
-    {
-        Colaborador c1 = ColaboradorFactory.getEntity();
-        c1.setNaoIntegraAc(false);
-
-        Colaborador c2 = ColaboradorFactory.getEntity();
-        c2.setNaoIntegraAc(false);
-
-        Colaborador c3 = ColaboradorFactory.getEntity();
-        c3.setNaoIntegraAc(true);
-
-        Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-        colaboradores.add(c1);
-        colaboradores.add(c2);
-        colaboradores.add(c3);
-
-        Collection<Colaborador> retorno = colaboradorManager.getColaboradoresIntegraAc(colaboradores);
-
-        assertEquals(2, retorno.size());
-    }
-
 	public void testGetCountParametros()
     {
         Map parametros = new HashMap();

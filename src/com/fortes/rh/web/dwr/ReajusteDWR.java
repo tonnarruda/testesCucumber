@@ -143,7 +143,7 @@ public class ReajusteDWR
 			idsLong[0] = new Long(areaId);
 
 			Collection<Colaborador> colaboradorLista = new LinkedList<Colaborador>();
-			colaboradorLista = colaboradorManager.getColaboradoresIntegraAc(colaboradorManager.findByAreasOrganizacionalIds(idsLong));
+			colaboradorLista = colaboradorManager.findByAreasOrganizacionalIds(idsLong);
 			
 			colaboradores = new CollectionUtil<Colaborador>().sortCollectionStringIgnoreCase(colaboradorLista, "nome");
 

@@ -164,7 +164,7 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 		// garante que um erro no banco do RH levantará uma Exception antes de alterar o outro banco.
 		getDao().getHibernateTemplateByGenericDao().flush();
 
-		if(empresa.isAcIntegra())
+		if(empresa.isAcIntegra() && historicosAc.size() > 0)
 			acPessoalClientTabelaReajuste.aplicaReajuste(historicosAc, empresa);
 	}
 

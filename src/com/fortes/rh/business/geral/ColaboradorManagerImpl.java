@@ -884,19 +884,6 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		this.bairroManager = bairroManager;
 	}
 
-	public Collection<Colaborador> getColaboradoresIntegraAc(Collection<Colaborador> colaboradores)
-	{
-		Collection<Colaborador> retorno = new ArrayList<Colaborador>();
-
-		for (Colaborador colaborador : colaboradores)
-		{
-			if (!colaborador.isNaoIntegraAc())
-				retorno.add(colaborador);
-		}
-
-		return retorno;
-	}
-
 	public Colaborador findByIdProjectionUsuario(Long colaboradorId)
 	{
 		return getDao().findByIdProjectionUsuario(colaboradorId);

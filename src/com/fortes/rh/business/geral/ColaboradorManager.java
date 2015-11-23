@@ -94,7 +94,6 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findByCargoIdsEstabelecimentoIds(Collection<Long> cargoIds, Collection<Long> estabelecimentoIds);
 	public Collection<Colaborador> findByGrupoOcupacionalIdsEstabelecimentoIds(Collection<Long> grupoOcupacionalIds, Collection<Long> estabelecimentoIds);
 	public Collection<Colaborador> findByEstabelecimento(Long[] estabelecimentoIds);
-	public Collection<Colaborador> getColaboradoresIntegraAc(Collection<Colaborador> colaboradores);
 	public Colaborador findByIdProjectionUsuario(Long colaboradorId);
 	public Collection<Colaborador> findAreaOrganizacionalByAreas(boolean habilitaCampoExtra, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, CamposExtras camposExtras, String order, Date dataAdmissaoIni, Date dataAdmissaoFim, String sexo, String deficiencia, Integer[] tempoServicoIni, Integer[] tempoServicoFim, String situacao, Character enviadoParaAC, Long... empresasIds);
 	public Colaborador findColaboradorByIdProjection(Long colaboradorId);
@@ -104,11 +103,9 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<MotivoDemissaoQuantidade> findColaboradoresMotivoDemissaoQuantidade(Long[] estabelecimentoIds, Long[] areaIds, Long[] cargoIds, Date dataIni, Date dataFim, String vinculo)throws Exception;
 	public Collection<Colaborador> getColaboradoresByEstabelecimentoAreaGrupo(char filtrarPor, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, String colaboradorNome, Long empresaId);
 	public Collection<Colaborador> findProjecaoSalarial(Long tabelaReajusteColaboradorId, Date data, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> grupoIds, Collection<Long> cargoIds, String filtro, Long empresaId) throws Exception;
-
 	Collection<Colaborador> ordenaPorEstabelecimentoArea(Collection<Colaborador> colaboradors, Long... empresasIds) throws Exception;
 	public void verificaColaboradoresSemCodigoAC(Collection<ReajusteColaborador> reajustes) throws Exception;
 	void verificaColaboradoresDesligados(Collection<ReajusteColaborador> reajustes) throws Exception;
-
 	void respondeuEntrevista(Long colaboradorId);
 	public boolean setMatriculaColaborador(Long empresaId, String codigoAC, String matricula);
 	public boolean setMatriculaColaborador(Long colaboradorId, String matricula);
