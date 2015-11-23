@@ -7,12 +7,17 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AreaOrganizacionalOrganograma;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.StringUtil;
+import com.opensymphony.webwork.dispatcher.SessionMap;
 
 public class AreaOrganizacionalDWR
 {
@@ -57,6 +62,31 @@ public class AreaOrganizacionalDWR
 		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
 		CollectionUtil<AreaOrganizacional> cu1 = new CollectionUtil<AreaOrganizacional>();
 		areaOrganizacionals = cu1.sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoComEmpresaStatusAtivo");
+
+		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricaoComEmpresaStatusAtivo");
+	}
+	
+	public Map<Object, Object> getPemitidasByEmpresas(String naoApagar, HttpServletRequest request, Long empresaId, Long[] empresaIds) throws Exception
+	{
+		Collection<AreaOrganizacional> areaOrganizacionals = new ArrayList<AreaOrganizacional>();
+
+		Map session = new SessionMap(request);
+		boolean verTodasAreas = SecurityUtil.verifyRole(session, new String[]{"ROLE_VER_AREAS"});
+		Long usuarioLogedId = SecurityUtil.getIdUsuarioLoged(session);
+		Empresa empresaSession = SecurityUtil.getEmpresaSession(session);
+		boolean todasAsEmpresas = (empresaId == null || empresaId == 0 || empresaId == -1); 
+
+		if(verTodasAreas){
+			if(todasAsEmpresas)
+				areaOrganizacionals = areaOrganizacionalManager.findByEmpresasIds(empresaIds, AreaOrganizacional.TODAS);
+			else
+				areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativas(AreaOrganizacional.TODAS, null, empresaId);
+		}else{
+			areaOrganizacionals = areaOrganizacionalManager.findAllListAndInativasByUsuarioId((todasAsEmpresas ? empresaSession.getId() : empresaId), usuarioLogedId, AreaOrganizacional.TODAS, null);
+		}
+
+		areaOrganizacionals = areaOrganizacionalManager.montaFamilia(areaOrganizacionals);
+		areaOrganizacionals = new CollectionUtil<AreaOrganizacional>().sortCollectionStringIgnoreCase(areaOrganizacionals, "descricaoComEmpresaStatusAtivo");
 
 		return new CollectionUtil<AreaOrganizacional>().convertCollectionToMap(areaOrganizacionals, "getId", "getDescricaoComEmpresaStatusAtivo");
 	}

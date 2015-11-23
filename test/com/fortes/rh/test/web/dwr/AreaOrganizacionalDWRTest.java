@@ -13,12 +13,16 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.util.mockObjects.MockBooleanUtil;
+import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
+import com.fortes.rh.test.util.mockObjects.MockSessionMap;
 import com.fortes.rh.util.BooleanUtil;
 import com.fortes.rh.web.dwr.AreaOrganizacionalDWR;
+import com.opensymphony.webwork.dispatcher.SessionMap;
 
 public class AreaOrganizacionalDWRTest extends MockObjectTestCase
 {
@@ -34,6 +38,8 @@ public class AreaOrganizacionalDWRTest extends MockObjectTestCase
 		areaOrganizacionalDWR.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 		
 		Mockit.redefineMethods(BooleanUtil.class, MockBooleanUtil.class);
+		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
+		Mockit.redefineMethods(SessionMap.class, MockSessionMap.class);
 	}
 
 	public void testeGetEmailsResponsaveis()
@@ -152,6 +158,30 @@ public class AreaOrganizacionalDWRTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionals));
 		empresaId = 1L;
 		assertEquals(1, areaOrganizacionalDWR.getByEmpresas(empresaId, new Long[]{1L}, 'T').size());
+	}
+	
+	public void testGetPemitidasByEmpresas() throws Exception
+	{
+		Long empresaId = 0L;
+		Collection<AreaOrganizacional> areaOrganizacionals = AreaOrganizacionalFactory.getCollection();
+		((AreaOrganizacional)areaOrganizacionals.toArray()[0]).setEmpresa(EmpresaFactory.getEmpresa(1L));
+		
+		MockSecurityUtil.roles = new String[]{};
+		
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativasByUsuarioId").will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionals));
+		assertEquals(1, areaOrganizacionalDWR.getPemitidasByEmpresas("", null, empresaId, new Long[]{1L}).size());
+
+		MockSecurityUtil.roles = new String[]{"ROLE_VER_AREAS"};
+		
+		areaOrganizacionalManager.expects(once()).method("findByEmpresasIds").will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionals));
+		assertEquals(1, areaOrganizacionalDWR.getPemitidasByEmpresas("", null, empresaId, new Long[]{1L}).size());
+		
+		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").will(returnValue(areaOrganizacionals));
+		areaOrganizacionalManager.expects(once()).method("montaFamilia").will(returnValue(areaOrganizacionals));
+		empresaId = 1L;
+		assertEquals(1, areaOrganizacionalDWR.getPemitidasByEmpresas("", null, empresaId, new Long[]{1L}).size());
 	}
 	
 	public void testFindAllListAndInativas() throws Exception

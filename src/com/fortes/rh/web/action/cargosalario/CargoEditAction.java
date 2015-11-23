@@ -38,6 +38,7 @@ import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
+import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -124,6 +125,8 @@ public class CargoEditAction extends MyActionSupportEdit
 	private Long[] empresasPermitidas;
 	
 	private boolean exibirSalarioVariavel = false;
+	private boolean verTodasAreas;
+	private boolean podeGerarRelatorioColaboradorPorCargo;
 	
 	private void prepare() throws Exception
 	{
@@ -171,6 +174,12 @@ public class CargoEditAction extends MyActionSupportEdit
 	
 	public String prepareRelatorioColaboradorCargo() throws Exception
 	{
+		verTodasAreas = SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"});
+		podeGerarRelatorioColaboradorPorCargo = verTodasAreas || (areaOrganizacionalManager.findAllListAndInativasByUsuarioId(getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), AreaOrganizacional.TODAS, null).size() > 0); 
+		
+		if(!podeGerarRelatorioColaboradorPorCargo)
+			setActionMsg("Usuário sem permição de gerar relatório, pois o mesmo não é gestor de área organizacional e\\ou não possui em seu perfil \"Visualizar todas as Áreas Organizacionais\". ");
+		
 		prepareRelatoriosColab();
 		return Action.SUCCESS;
 	}
@@ -194,12 +203,15 @@ public class CargoEditAction extends MyActionSupportEdit
 			empresa = getEmpresaSistema();
 		
 		dataHistorico = new Date();
+		
+		
 	}
 	
 	public String relatorioColaboradorCargoXLS() throws Exception {
 		if(relatorioResumido) {
 			populaTituloFiltro(); 
 			try {
+				areasOrganizacionaisPermitidas();
 				List<HistoricoColaborador> historicoColaboradores = (List<HistoricoColaborador>) historicoColaboradorManager.relatorioColaboradorCargo(dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo, exibirSalarioVariavel, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
 				faixasDoCargo = faixaSalarialManager.geraDadosRelatorioResumidoColaboradoresPorCargoXLS(historicoColaboradores);
 				return "successResumidoXls";
@@ -264,6 +276,7 @@ public class CargoEditAction extends MyActionSupportEdit
 			exibirSalarioVariavel = exibirSalarioVariavel();
 		
 		try {
+			areasOrganizacionaisPermitidas();
 			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo, exibirSalarioVariavel, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
 		} catch (ColecaoVaziaException e) {
 			addActionMessage(e.getMessage());
@@ -285,6 +298,20 @@ public class CargoEditAction extends MyActionSupportEdit
 		parametros.put("EXIBIRAREAORGANIZACIONAL", exibirAreaOrganizacional);
 		
 		return Action.SUCCESS;
+	}
+
+	private void areasOrganizacionaisPermitidas() 
+	{
+		verTodasAreas = SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"});
+		if(!verTodasAreas && (areasCheck == null || areasCheck.length == 0))
+		{
+			Long[] areaIds = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()), getEmpresaSistema().getId());
+			
+			if(areaIds.length == 0)
+				areaIds = new Long[]{-1L};
+
+			areasCheck = new StringUtil().LongToString(areaIds);
+		}
 	}
 
 	private void populaTituloFiltro() 
@@ -1010,5 +1037,9 @@ public class CargoEditAction extends MyActionSupportEdit
 
 	public void setExibirEstabelecimento(boolean exibirEstabelecimento) {
 		this.exibirEstabelecimento = exibirEstabelecimento;
+	}
+
+	public boolean isPodeGerarRelatorioColaboradorPorCargo() {
+		return podeGerarRelatorioColaboradorPorCargo;
 	}
 }
