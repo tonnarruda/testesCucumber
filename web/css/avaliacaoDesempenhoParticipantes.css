@@ -220,9 +220,9 @@ i.fa {
 #avaliados-list { list-style-type: none; margin: 0; padding: 0;}
 #avaliados-list li { margin: 3px; padding: 7px; }
 
-#avaliadores .ui-selected .portlet-header { background: #5292C0; color: white; border: 1px solid #5292C0; }
-#avaliadores .ui-selected .portlet-header .ui-icon { background-image: url(../imgs/ui-icons_d8e7f3_256x240.png) !important; }
-#avaliadores .ui-selected .portlet-content { border: 1px solid #9EBDD3; }
+#avaliadores .ui-selected:not(.has-respondida) .portlet-header { background: #5292C0; color: white; border: 1px solid #5292C0; }
+#avaliadores .ui-selected:not(.has-respondida) .portlet-header .ui-icon { background-image: url(../imgs/ui-icons_d8e7f3_256x240.png) !important; }
+#avaliadores .ui-selected:not(.has-respondida) .portlet-content { border: 1px solid #9EBDD3; }
 #avaliadores ul li { cursor: pointer; }
 #avaliadores ul li.has-respondida { cursor: default; }
 #avaliadores .mini-option:hover { background: white; }
