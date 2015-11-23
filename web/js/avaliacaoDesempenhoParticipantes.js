@@ -239,7 +239,7 @@ function atualizeSelectablesMini() {
 			
 			$(this).hasClass("ui-selected") ? $(this).removeClass("ui-selected") : $(this).addClass("ui-selected");
 			
-			$(this).parents(".portlet").find(".mini-actions").toggle( $(this).parents(".box").find("li.ui-selected").length > 0 );
+			$(this).parents(".portlet").find(".mini-actions").toggle( $(this).parents(".portlet").find("li.ui-selected").length > 0 );
 		}
 		
 		event.stopPropagation();
