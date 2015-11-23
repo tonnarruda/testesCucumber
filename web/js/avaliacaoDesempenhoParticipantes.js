@@ -17,24 +17,20 @@ $(function() {
 	atualizeSelectables("#avaliadores-list", ".portlet", "avaliadores");
 	atualizeSelectablesMini();
     
-	$(".ui-icon-circle-triangle-e").click(function(){
+	$(".show-info").click(function(){
 		$('#avaliados, #avaliadores').hide();
 		$(this).parent().parent().show();
-		$(this).parent().parent().css("width","720px");
-		$(this).parent().parent().find(".faixa").toggle();
-		$(this).parent().parent().find(".area").toggle();
+		$(this).parent().parent().addClass("expanded");
 		$(this).hide();
-		$(this).parent().find(".ui-icon-circle-triangle-w").toggle();
+		$(this).parent().find(".hide-info").toggle();
 		$(".legend").toggle();
 	});
 
-	$(".ui-icon-circle-triangle-w").click(function(){
+	$(".hide-info").click(function(){
 		$('#avaliados, #avaliadores').show();
-		$(this).parent().parent().css("width","350px");
-		$(this).parent().parent().find(".faixa").toggle();
-		$(this).parent().parent().find(".area").toggle();
+		$(this).parent().parent().removeClass("expanded");
 		$(this).hide();
-		$(this).parent().find(".ui-icon-circle-triangle-e").toggle();
+		$(this).parent().find(".show-info").toggle();
 		$(".legend").toggle();
 	});
 
@@ -182,11 +178,11 @@ function portletEvents() {
 	    .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all new-portlet" )
 	    .find( ".portlet-header" ).not(".mini-actions")
 	      .addClass( "ui-widget-header ui-corner-all" )
-	      .prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
+	      .prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle hide-when-expand'></span>");
 	
 	$(".new-portlet").find(".portlet-toggle").click(function(e) {
 	    var icon = $( this );
-	    icon.toggleClass( "ui-icon-minusthick ui-icon-plusthick" );
+	    icon.toggleClass( "ui-icon-minusthick ui-icon-plusthick hide-when-expand" );
 	    icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
 	    
 	    e.stopPropagation();
@@ -251,7 +247,8 @@ function atualizeSelectablesMini() {
 function createAvaliador(id, nome) {
 	if ( $("#avaliadores .portlet[id="+id+"] ul").length == 0 ) {
 		$("#avaliadores .column").append('<div class="portlet" id="'+ id +'">' +
-		  		 '<div class="portlet-header">' + nome + 
+		  		 '<div class="portlet-header"><div class="nome">' + nome + '</div>' + 
+		  		 '<div style="clear: both;"></div>' +
 		  		 '</div>' +
 		  		 '<div class="portlet-header mini-actions" style="background: #F3F3F3; padding: 0; display: none;">' +
 		  		 '	<div class="mini-option remove only-selectables disabled" title="Remover selecionados" style="padding: 3px 15px; float: left;">' +
@@ -267,7 +264,7 @@ function createAvaliador(id, nome) {
 		  		 '  </div>' +
 		  		 '  <div style="clear: both;"></div>' +
 		  		 '</div>' +
-		  		 '<div class="portlet-content">' +
+		  		 '<div class="portlet-content hide-when-expand">' +
 		  		 	'<ul>' +
 		  		 			'<input type="hidden" name="avaliadores" value="'+id+'"/>' +
 			        		'<li class="placeholder">Arraste os avaliados até aqui</li>' + 

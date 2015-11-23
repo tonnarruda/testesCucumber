@@ -169,8 +169,8 @@
 				  <h1 class="ui-widget-header title">
 				  	<span class="ui-icon ui-icon-plusthick more-avaliado" title="Inserir Avaliado" onclick="openboxAvaliado('Inserir Avaliado', 'nomeBusca');"></span>
 				  	Avaliados
-					<span class="ui-icon ui-icon-circle-triangle-e"></span>
-					<span class="ui-icon ui-icon-circle-triangle-w"></span>
+					<span class="ui-icon ui-icon-circle-triangle-e show-info"></span>
+					<span class="ui-icon ui-icon-circle-triangle-w hide-info"></span>
 				  </h1>
 				  <h1 class="ui-widget-header actions">
 				  	<div class="option remove only-selectables disabled" title="Remover selecionados">
@@ -193,19 +193,19 @@
 					    </div>
 				    </#if>
 				  </h1>
-				  <div class="legend">
-				  	<div style="width: 247px;">Nome</div>
-				  	<div style="width: 208px;">Cargo</div>
-				  	<div style="width: 229px;">Área Organizacional</div>
-				  </div>
 				  <div class="ui-widget-content column">
+				    <div class="legend">
+				  	  <div>Nome</div>
+				  	  <div>Cargo</div>
+				  	  <div>Área Organizacional</div>
+				    </div>
 				    <ol id="avaliados-list">
 				      <#list participantes as avaliado>
 				      	<li class="ui-widget-content" id="${avaliado.id}">
 					      	<input type="hidden" name="avaliados" value="${avaliado.id}"/>
 				      		<div class="nome">${avaliado.nome}</div>
-				      		<div class="faixa">${avaliado.faixaSalarial.descricao}</div>
-				      		<div class="area">${avaliado.areaOrganizacional.nome}</div>
+				      		<div class="faixa show-when-expand">${avaliado.faixaSalarial.descricao}</div>
+				      		<div class="area show-when-expand">${avaliado.areaOrganizacional.nome}</div>
 				      		<div style="clear:both;float: none;"></div>
 				      	</li>
 				      </#list>
@@ -217,8 +217,8 @@
 					<h1 class="ui-widget-header title">
 						<span class="ui-icon ui-icon-plusthick more-avaliador" title="Inserir Avaliador" onclick="openboxAvaliador('Inserir Avaliador', 'nomeBusca');"></span>
 						<span>Avaliadores</span>
-						<span class="ui-icon ui-icon-circle-triangle-e"></span>
-						<span class="ui-icon ui-icon-circle-triangle-w"></span>
+						<span class="ui-icon ui-icon-circle-triangle-e show-info"></span>
+						<span class="ui-icon ui-icon-circle-triangle-w hide-info"></span>
 					</h1>
 					<h1 class="ui-widget-header actions">
 					  	<div class="option remove only-selectables disabled" title="Remover selecionados">
@@ -233,15 +233,19 @@
 							<i class="fa fa-reorder"></i>
 					    </div>
 					</h1>
-			  		<div class="legend">
-					  	<div style="width: 247px;">Nome</div>
-					  	<div style="width: 208px;">Cargo</div>
-					  	<div style="width: 229px;">Área Organizacional</div>
-					</div>
 					<div class="column ui-widget-content" id="avaliadores-list">
+				  		<div class="legend">
+						  	<div>Nome</div>
+						  	<div>Cargo</div>
+						  	<div>Área Organizacional</div>
+						</div>
 					  	<#list avaliadors as avaliador>
 						  	<div class="portlet" id="${avaliador.id}">
-						  		 <div class="portlet-header">${avaliador.nome}
+						  		 <div class="portlet-header">
+						  		 	<div class="nome">${avaliador.nome}</div>
+						  		 	<div class="faixa show-when-expand">${avaliador.faixaSalarial.descricao}</div>
+						      		<div class="area show-when-expand">${avaliador.areaOrganizacional.nome}</div>
+						      		<div style="clear:both;float: none;"></div>
 						  		 </div>
 						  		 <div class="portlet-header mini-actions" style="background: #F3F3F3; padding: 0; display: none;">
 						  		 	<div class="mini-option remove only-selectables disabled" title="Remover selecionados" style="padding: 3px 15px; float: left;">
@@ -257,7 +261,7 @@
 								    </div>
 								    <div style="clear: both;"></div>
 								 </div>
-						  		 <div class="portlet-content">
+						  		 <div class="portlet-content hide-when-expand">
 						  		 	<ul>
 								  		<input type="hidden" name="avaliadores" value="${avaliador.id}"/>
 						  		 		<#if (avaliador.avaliados.size() == 0)> 
