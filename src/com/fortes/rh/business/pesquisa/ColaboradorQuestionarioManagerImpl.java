@@ -1,7 +1,6 @@
 package com.fortes.rh.business.pesquisa;
 
 import java.util.ArrayList;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,6 +10,7 @@ import java.util.List;
 import org.apache.commons.beanutils.BeanComparator;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.avaliacao.ParticipanteAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.exception.AvaliacaoRespondidaException;
@@ -18,6 +18,7 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.ParticipanteAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
@@ -30,6 +31,7 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 {
 	private PerguntaManager perguntaManager;
 	private ColaboradorManager colaboradorManager;
+	private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
 	
 	public Collection<ColaboradorQuestionario> findByQuestionario(Long questionarioId)
 	{
@@ -399,26 +401,24 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 
 	public void clonarParticipantes(AvaliacaoDesempenho avaliacaoDesempenho, AvaliacaoDesempenho avaliacaoDesempenhoClone) throws Exception
 	{
-		Collection<Colaborador> avaliados = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null);
-		Collection<Colaborador> avaliadores = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null);
+		Collection<Colaborador> avaliados = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADO);
+		Collection<Colaborador> avaliadores = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
+		
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenhoClone, LongUtil.collectionToArrayLong(avaliados), ParticipanteAvaliacao.AVALIADO);
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenhoClone, LongUtil.collectionToArrayLong(avaliadores), ParticipanteAvaliacao.AVALIADOR);
+		
 		Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 		
-		for (Colaborador avaliado : avaliados) 
-		{
-			ColaboradorQuestionario colaboradorQuestionario = new ColaboradorQuestionario(avaliacaoDesempenhoClone);
-			colaboradorQuestionario.setAvaliacao(avaliacaoDesempenho.getAvaliacao());
-			colaboradorQuestionario.setColaborador(avaliado);
-			colaboradorQuestionarios.add(colaboradorQuestionario);
+		for (Colaborador avaliador : avaliadores) {
+			for (ColaboradorQuestionario colaboradorQuestionario : findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), null, false, false)) {
+				ColaboradorQuestionario colaboradorQuestionarioClone = new ColaboradorQuestionario(avaliacaoDesempenhoClone);
+				colaboradorQuestionarioClone.setAvaliacao(colaboradorQuestionario.getAvaliacao());
+				colaboradorQuestionarioClone.setAvaliador(avaliador);
+				colaboradorQuestionarioClone.setColaborador(colaboradorQuestionario.getColaborador());
+				colaboradorQuestionarios.add(colaboradorQuestionarioClone);
+			}
 		}
 	
-		for (Colaborador avaliador : avaliadores) 
-		{
-			ColaboradorQuestionario colaboradorQuestionario = new ColaboradorQuestionario(avaliacaoDesempenhoClone);
-			colaboradorQuestionario.setAvaliacao(avaliacaoDesempenho.getAvaliacao());
-			colaboradorQuestionario.setAvaliador(avaliador);
-			colaboradorQuestionarios.add(colaboradorQuestionario);
-		}
-		
 		getDao().saveOrUpdate(colaboradorQuestionarios);
 	}
 	
@@ -519,5 +519,10 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		}
 		
 		return false;
+	}
+
+	public void setParticipanteAvaliacaoDesempenhoManager(
+			ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager) {
+		this.participanteAvaliacaoDesempenhoManager = participanteAvaliacaoDesempenhoManager;
 	}	
 }

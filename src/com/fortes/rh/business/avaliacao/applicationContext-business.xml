@@ -86,6 +86,9 @@
     <property name="colaboradorManager">
       <ref bean="colaboradorManager" />
     </property>
+    <property name="participanteAvaliacaoDesempenhoManager">
+      <ref bean="participanteAvaliacaoDesempenhoManager" />
+    </property>
   </bean>
   <bean id="participanteAvaliacaoDesempenhoManager" parent="parentManager">
     <property name="proxyInterfaces">

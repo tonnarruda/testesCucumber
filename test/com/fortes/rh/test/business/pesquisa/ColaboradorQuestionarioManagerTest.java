@@ -11,6 +11,7 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 import org.jmock.core.Constraint;
 
+import com.fortes.rh.business.avaliacao.ParticipanteAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManagerImpl;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
@@ -18,6 +19,7 @@ import com.fortes.rh.exception.AvaliacaoRespondidaException;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.ParticipanteAvaliacao;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -40,6 +42,7 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
 	private ColaboradorQuestionarioManagerImpl colaboradorQuestionarioManager = new ColaboradorQuestionarioManagerImpl();
 	private Mock colaboradorQuestionarioDao;
 	private Mock colaboradorManager;
+	private Mock participanteAvaliacaoDesempenhoManager;
 
     protected void setUp() throws Exception
     {
@@ -49,6 +52,9 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
         
         colaboradorManager = mock(ColaboradorManager.class);
         colaboradorQuestionarioManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+        
+        participanteAvaliacaoDesempenhoManager = mock(ParticipanteAvaliacaoDesempenhoManager.class);
+        colaboradorQuestionarioManager.setParticipanteAvaliacaoDesempenhoManager((ParticipanteAvaliacaoDesempenhoManager) participanteAvaliacaoDesempenhoManager.proxy());
 
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
     }
@@ -399,8 +405,12 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
 		AvaliacaoDesempenho avaliacaoDesempenhoClone = AvaliacaoDesempenhoFactory.getEntity(2L);
 		
-		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(true), eq(null)).will(returnValue(new ArrayList<Colaborador>()));
-		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId()), eq(false), eq(null)).will(returnValue(new ArrayList<Colaborador>()));
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("findParticipantes").with(eq(avaliacaoDesempenho.getId()), eq(ParticipanteAvaliacao.AVALIADO)).will(returnValue(new ArrayList<Colaborador>()));
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("findParticipantes").with(eq(avaliacaoDesempenho.getId()), eq(ParticipanteAvaliacao.AVALIADOR)).will(returnValue(new ArrayList<Colaborador>()));
+		
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("save").with(eq(avaliacaoDesempenhoClone), ANYTHING, eq(ParticipanteAvaliacao.AVALIADO)).isVoid();
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("save").with(eq(avaliacaoDesempenhoClone), ANYTHING, eq(ParticipanteAvaliacao.AVALIADOR)).isVoid();
+		
 		colaboradorQuestionarioDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
 		
 		colaboradorQuestionarioManager.clonarParticipantes(avaliacaoDesempenho, avaliacaoDesempenhoClone);
