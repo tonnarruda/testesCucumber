@@ -94,19 +94,10 @@ i.fa {
 	width: 228px;
 	float: left;
 	border: 1px solid #e7e7e7;
-	padding: 5px;
+	padding: 5px 0;
 	text-align: center;
 	font-size: 11px;
 	font-weight: bold;
-}
-
-.nome {
-	width: 238px;
-}
-
-.faixa, .area {
-	display: none;
-	width: 220px;
 }
 		
 #avaliadores ul {
@@ -226,3 +217,16 @@ i.fa {
 #avaliadores ul li { cursor: pointer; }
 #avaliadores ul li.has-respondida { cursor: default; }
 #avaliadores .mini-option:hover { background: white; }
+
+.hide { display: none; }
+.nome { float: left; width: 238px; font-size: 11px; }
+.faixa, .area { float: left; display: none; width: 220px; font-size: 11px; }
+
+.box.expanded { width: 720px !important; }
+.box.expanded .column{ padding: 0 !important; }
+.box.expanded .show-when-expand{ display: block; }
+.box.expanded .hide-when-expand{ display: none; }
+.box.expanded li{ margin: 5px 0; }
+.box.expanded .portlet{ margin: 5px 0; }
+.box.expanded .portlet-header{ background: white; font-weight: normal; border: none; border-bottom: 1px solid #e7e7e7; color: #5C5C5A;}
+.box.expanded .nome, .box.expanded  .faixa, .box.expanded  .area, .legend div{ width: 33%; }
