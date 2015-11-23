@@ -9,6 +9,7 @@ import mockit.Mockit;
 
 import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
+import org.jmock.core.Constraint;
 
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManagerImpl;
@@ -458,7 +459,7 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
     {
     	Collection<ColaboradorQuestionario> avaliados = new ArrayList<ColaboradorQuestionario>();
     	
-    	colaboradorQuestionarioDao.expects(once()).method("findAvaliadosByAvaliador").with(eq(1L), eq(1000L), eq(false), eq(true)).will(returnValue(avaliados));
+    	colaboradorQuestionarioDao.expects(once()).method("findAvaliadosByAvaliador").with(new Constraint[]{eq(1L), eq(1000L), eq(false), eq(true), eq(true)}).will(returnValue(avaliados));
     	
     	assertNotNull(colaboradorQuestionarioManager.findAvaliadosByAvaliador(1L, 1000L, false, true, true));
     }

@@ -20,9 +20,9 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernate extends GenericDaoHiber
 		hql.append("inner join p.colaborador as co ");
 		hql.append("inner join co.empresa as e ");
 		hql.append("inner join co.historicoColaboradors as hc ");
-		hql.append("inner join hc.faixaSalarial as fs ");
-		hql.append("inner join fs.cargo as ca ");
-		hql.append("inner join hc.areaOrganizacional as ao ");
+		hql.append("left join hc.faixaSalarial as fs ");
+		hql.append("left join fs.cargo as ca ");
+		hql.append("left join hc.areaOrganizacional as ao ");
 		hql.append("where ");
 		hql.append("  hc.data = (");
 		hql.append("   select max(hc2.data) ");

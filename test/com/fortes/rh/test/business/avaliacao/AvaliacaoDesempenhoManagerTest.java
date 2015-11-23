@@ -124,8 +124,6 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(3L);
 		
-		colaboradorQuestionarioManager.expects(once()).method("desassociarParticipantes").with(eq(avaliacaoDesempenho));
-		colaboradorQuestionarioManager.expects(once()).method("associarParticipantes").with(eq(avaliacaoDesempenho), ANYTHING, ANYTHING);
 		avaliacaoDesempenhoDao.expects(once()).method("liberarOrBloquear").with(eq(3L), eq(true));
 		
 		avaliacaoDesempenhoManager.liberarOrBloquear(avaliacaoDesempenho, true);
@@ -134,7 +132,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 	public void testBloquear() throws Exception
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(3L);
-		colaboradorQuestionarioManager.expects(once()).method("desassociarParticipantes").with(eq(avaliacaoDesempenho));
+		
 		avaliacaoDesempenhoDao.expects(once()).method("liberarOrBloquear").with(eq(3L), eq(false));
 		
 		avaliacaoDesempenhoManager.liberarOrBloquear(avaliacaoDesempenho, false);

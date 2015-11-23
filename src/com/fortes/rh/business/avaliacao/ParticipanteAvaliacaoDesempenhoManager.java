@@ -7,7 +7,7 @@ import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
 import com.fortes.rh.model.geral.Colaborador;
 
-public interface ParticipanteAvaliacaoDesempenhoManager extends GenericManager<ParticipanteAvaliacaoDesempenho>
+public interface ParticipanteAvaliacaoDesempenhoManager extends GenericManager<ParticipanteAvaliacaoDesempenho> 
 {
 	public void save(AvaliacaoDesempenho avaliacaoDesempenho, Long[] colaboradorIds, char tipo);
 	public Collection<Colaborador> findParticipantes(Long avaliacaoDesempenhoId, Character tipo);
