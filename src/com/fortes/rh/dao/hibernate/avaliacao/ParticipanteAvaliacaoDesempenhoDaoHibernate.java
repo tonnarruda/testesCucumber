@@ -45,15 +45,18 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernate extends GenericDaoHiber
 	
 	public void removeNotIn(Long[] participantes, Long avaliacaoDesempenhoId, Character tipo) throws Exception {
 		String hql = "delete from ParticipanteAvaliacaoDesempenho where ";
-		if(participantes.length > 0)
+		if(participantes != null && participantes.length > 0)
 			hql+="colaborador.id not in (:participantes) and ";
-		hql+="avaliacaoDesempenho.id = :avaliacaoDesempenhoId and tipo = :tipo";
+		hql+="avaliacaoDesempenho.id = :avaliacaoDesempenhoId ";
+		if(tipo != null)
+			hql+="and tipo = :tipo";
 		
 		Query query = getSession().createQuery(hql);
-		if(participantes.length > 0)
+		if(participantes != null && participantes.length > 0)
 			query.setParameterList("participantes", participantes);
 		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
-		query.setCharacter("tipo", tipo);
+		if(tipo != null)
+			query.setCharacter("tipo", tipo);
 		
 		query.executeUpdate();
 	}

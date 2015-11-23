@@ -43,6 +43,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	private AvaliacaoManager avaliacaoManager;
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private ColaboradorManager colaboradorManager;
+	private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
 	
 	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao) 
 	{
@@ -128,6 +129,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			throw new AvaliacaoRespondidaException("Não foi possível excluir, pois já existem respostas para essa avaliação");
 		
 		colaboradorQuestionarioManager.excluirColaboradorQuestionarioByAvaliacaoDesempenho(avaliacaoDesempenhoId);
+		participanteAvaliacaoDesempenhoManager.removeNotIn(null, avaliacaoDesempenhoId, null);
 		remove(avaliacaoDesempenhoId);
 	}
 
@@ -282,5 +284,10 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
+	}
+
+	public void setParticipanteAvaliacaoDesempenhoManager(
+			ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager) {
+		this.participanteAvaliacaoDesempenhoManager = participanteAvaliacaoDesempenhoManager;
 	}
 }
