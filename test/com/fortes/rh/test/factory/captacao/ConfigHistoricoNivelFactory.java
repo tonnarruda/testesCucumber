@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
+import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 
 public class ConfigHistoricoNivelFactory
 {
@@ -37,4 +39,18 @@ public class ConfigHistoricoNivelFactory
 		
 		return configHistoricoNivels;
 	}
+	
+	public static ConfigHistoricoNivel getEntityAndNivelCompetenciaAndNivelCOmpetenciaHistorico(Long id)
+	{
+		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity(1L);
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity(1L);
+		
+		ConfigHistoricoNivel configHistoricoNivel = ConfigHistoricoNivelFactory.getEntity();
+		configHistoricoNivel.setNivelCompetencia(nivelCompetencia);
+		configHistoricoNivel.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		
+		return configHistoricoNivel;
+	}
+	
+	
 }

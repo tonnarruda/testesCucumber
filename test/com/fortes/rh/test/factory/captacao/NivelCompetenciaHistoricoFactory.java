@@ -23,6 +23,14 @@ public class NivelCompetenciaHistoricoFactory
 
 		return nivelCompetenciaHistorico;
 	}
+
+	public static NivelCompetenciaHistorico getEntity(Long id, Date data)
+	{
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = getEntity(1L);
+		nivelCompetenciaHistorico.setData(data);
+
+		return nivelCompetenciaHistorico;
+	}
 	
 	public static NivelCompetenciaHistorico getEntity(Date data, Empresa empresa)
 	{

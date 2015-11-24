@@ -35,7 +35,7 @@ public class NivelCompetenciaManagerTest extends MockObjectTestCase
 		
 		Collection<NivelCompetencia> nivelCompetencias = NivelCompetenciaFactory.getCollection(1L);
 
-		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresaId)).will(returnValue(nivelCompetencias));
+		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresaId), ANYTHING, ANYTHING).will(returnValue(nivelCompetencias));
 		
 		assertEquals(nivelCompetencias, nivelCompetenciaManager.findAllSelect(empresaId, null, null));
 	}
@@ -46,7 +46,7 @@ public class NivelCompetenciaManagerTest extends MockObjectTestCase
 		Long empresaId = 1L;
 		
 		Collection<NivelCompetencia> nivelCompetencias = NivelCompetenciaFactory.getCollection(1L);
-		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresaId)).will(returnValue(nivelCompetencias));
+		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresaId), ANYTHING, ANYTHING).will(returnValue(nivelCompetencias));
 		
 		try {
 			nivelCompetenciaManager.validaLimite(empresaId);
@@ -63,7 +63,7 @@ public class NivelCompetenciaManagerTest extends MockObjectTestCase
 		Long empresaId = 1L;
 		
 		Collection<NivelCompetencia> nivelCompetencias = Arrays.asList(NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity(),NivelCompetenciaFactory.getEntity());
-		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresaId)).will(returnValue(nivelCompetencias));
+		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresaId), ANYTHING, ANYTHING).will(returnValue(nivelCompetencias));
 		
 		try {
 			nivelCompetenciaManager.validaLimite(empresaId);
@@ -106,7 +106,7 @@ public class NivelCompetenciaManagerTest extends MockObjectTestCase
 		nivelCompetencia2.setOrdem(3);
 		
 		Collection<NivelCompetencia> nivelCompetencias = Arrays.asList(nivelCompetencia1, nivelCompetencia2);
-		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(nivelCompetencias));
+		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresa.getId()), ANYTHING, ANYTHING).will(returnValue(nivelCompetencias));
 		nivelCompetenciaDao.expects(atLeastOnce()).method("update");
 		
 		Exception exception = null;
@@ -123,7 +123,7 @@ public class NivelCompetenciaManagerTest extends MockObjectTestCase
 	{
 		Long empresaId = 1L;
 		
-		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresaId)).will(returnValue(new ArrayList<NivelCompetencia>()));
+		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresaId), ANYTHING, ANYTHING).will(returnValue(new ArrayList<NivelCompetencia>()));
 		
 		Exception exception = null;
 		try {
@@ -139,7 +139,7 @@ public class NivelCompetenciaManagerTest extends MockObjectTestCase
 	{
 		Long empresaId = 1L;
 		
-		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresaId)).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		nivelCompetenciaDao.expects(once()).method("findAllSelect").with(eq(empresaId), ANYTHING, ANYTHING).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
 		
 		Exception exception = null;
 		try {

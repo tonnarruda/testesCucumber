@@ -193,7 +193,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			}
 		}
 
-		if(configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico() != null && configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId() != null)
+		if(configuracaoNivelCompetenciaFaixaSalarial != null && configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico() != null && configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId() != null)
 			nivelCompetenciaHistoricoId = configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId();
 		else
 			nivelCompetenciaHistoricoId = nivelCompetenciaHistoricoManager.findByData(new Date(), getEmpresaSistema().getId());

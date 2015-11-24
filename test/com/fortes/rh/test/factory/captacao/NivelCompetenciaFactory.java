@@ -46,4 +46,5 @@ public class NivelCompetenciaFactory
 		
 		return nivelCompetencias;
 	}
+	
 }

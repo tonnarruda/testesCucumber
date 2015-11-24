@@ -100,7 +100,6 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 	private ConfigHistoricoNivelDao configHistoricoNivelDao;
 	private NivelCompetenciaHistoricoDao nivelCompetenciaHistoricoDao;
 
-	@Override
 	public NivelCompetencia getEntity()
 	{
 		return NivelCompetenciaFactory.getEntity();
@@ -578,17 +577,18 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		nivelCompetenciaHistorico.setEmpresa(empresa);
 		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico);
 		
-		NivelCompetencia nivelCompetencia1 = nivelCompetencia(empresa, "bom", null, null, nivelCompetenciaHistorico);
-		NivelCompetencia nivelCompetencia2 = nivelCompetencia(empresa, "dificil", null, null, nivelCompetenciaHistorico);
-		
+		NivelCompetencia nivelCompetencia1 = nivelCompetencia(empresa, "bom", 1, null, nivelCompetenciaHistorico);
+		NivelCompetencia nivelCompetencia2 = nivelCompetencia(empresa, "dificil", 2, null, nivelCompetenciaHistorico);
 		ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial1 = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
 		cncFaixaSalarial1.setData(DateUtil.criarDataMesAno(1, 1, 2015));
 		cncFaixaSalarial1.setFaixaSalarial(faixaSalarial);
+		cncFaixaSalarial1.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
 		configuracaoNivelCompetenciaFaixaSalarialDao.save(cncFaixaSalarial1);
 		
 		ConfiguracaoNivelCompetenciaFaixaSalarial cncFaixaSalarial2 = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
 		cncFaixaSalarial2.setData(DateUtil.criarDataMesAno(1, 2, 2015));
 		cncFaixaSalarial2.setFaixaSalarial(faixaSalarial);
+		cncFaixaSalarial2.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
 		configuracaoNivelCompetenciaFaixaSalarialDao.save(cncFaixaSalarial2);
 
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia1 = new ConfiguracaoNivelCompetencia();
@@ -607,7 +607,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configuracaoNivelCompetencia2.setConfiguracaoNivelCompetenciaFaixaSalarial(cncFaixaSalarial1);
 		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia2);
 		
-		configuracaoNivelCompetenciaDao.findByFaixa(faixaSalarial.getId(), null);//gambi do SQL, precisa disso só para a proxima consulta
+		configuracaoNivelCompetenciaDao.getHibernateTemplateByGenericDao().flush();
 		
 		Collection<ConfiguracaoNivelCompetencia> competenciasDaFaixa = configuracaoNivelCompetenciaDao.findCompetenciaByFaixaSalarial(faixaSalarial.getId(), null);
 		assertEquals(1, competenciasDaFaixa.size());
@@ -1599,6 +1599,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configHistoricoNivel.setPercentual(percentual);
 		configHistoricoNivelDao.save(configHistoricoNivel);
 		
+		nivelCompetencia.setConfigHistoricoNiveis(Arrays.asList(configHistoricoNivel));
 		return nivelCompetencia;
 	}
 	

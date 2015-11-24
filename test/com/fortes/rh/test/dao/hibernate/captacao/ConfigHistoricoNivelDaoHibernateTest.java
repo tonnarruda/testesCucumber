@@ -26,13 +26,11 @@ public class ConfigHistoricoNivelDaoHibernateTest extends GenericDaoHibernateTes
 	private NivelCompetenciaHistoricoDao nivelCompetenciaHistoricoDao;
 	private NivelCompetenciaDao nivelCompetenciaDao;
 
-	@Override
 	public ConfigHistoricoNivel getEntity()
 	{
-		return ConfigHistoricoNivelFactory.getEntity();
+		return ConfigHistoricoNivelFactory.getEntityAndNivelCompetenciaAndNivelCOmpetenciaHistorico(1L);
 	}
 
-	@Override
 	public GenericDao<ConfigHistoricoNivel> getGenericDao()
 	{
 		return configHistoricoNivelDao;
