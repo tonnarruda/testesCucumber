@@ -23,7 +23,8 @@ public class NivelCompetenciaHistoricoDaoHibernateTest extends GenericDaoHiberna
 
 	public NivelCompetenciaHistorico getEntity()
 	{
-		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
 		return NivelCompetenciaHistoricoFactory.getEntity(new Date(), empresa);
 	}
 	

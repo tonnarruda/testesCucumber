@@ -128,6 +128,9 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias;
 	
+	@Transient
+	private Collection<NivelCompetencia> nivelCompetencias;
+	
 	public Solicitacao()
 	{
 
@@ -907,5 +910,13 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 			this.motivoSolicitacao = new MotivoSolicitacao();
 		}
 		this.motivoSolicitacao.setDescricao(descricaoMotivoSolicitacao);
+	}
+
+	public Collection<NivelCompetencia> getNivelCompetencias() {
+		return nivelCompetencias;
+	}
+
+	public void setNivelCompetencias(Collection<NivelCompetencia> nivelCompetencias) {
+		this.nivelCompetencias = nivelCompetencias;
 	}
 }

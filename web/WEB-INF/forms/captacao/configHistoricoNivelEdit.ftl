@@ -109,6 +109,7 @@
 							<input type="text" disabled="disabled" id="peso_${i}" name="configHistoricoNivels[${i}].ordem" size="4" maxlength="4" value="${configHistNivelOrdem}" class="campos peso" style="width:40px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,''));">
 						<#else>
 							${configHistNivelOrdem}
+							<@ww.hidden name="configHistoricoNivels[${i}].id" value="${configHistNivelId}"/> 
 							<@ww.hidden name="configHistoricoNivels[${i}].ordem" value="${configHistNivelOrdem}"/>
 						</#if>
 						<@ww.hidden name="configHistoricoNivels[${i}].nivelCompetencia.id" value="${configHistNivel.nivelCompetencia.id}"/>

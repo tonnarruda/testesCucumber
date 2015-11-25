@@ -32,7 +32,7 @@
 					<thead>
 						<tr>
 							<th>Competência</th>
-							<#list nivelCompetencias as nivel>
+							<#list solicitacaonivelCompetencia.nivelCompetencias as nivel>
 								<th>${nivel.descricao}</th>
 							</#list>
 						</tr>
@@ -45,7 +45,7 @@
 								<tr class="even">
 							</#if>
 								<td class="competencia-${configuracaoNivelCompetencia.competenciaId} tipo-competencia-${configuracaoNivelCompetencia.tipoCompetencia}">${configuracaoNivelCompetencia.competenciaDescricao}</td>
-								<#list nivelCompetencias as nivel>
+								<#list solicitacaonivelCompetencia.nivelCompetencias as nivel>
 									<#if configuracaoNivelCompetencia.nivelCompetenciaFaixaSalarial?exists && nivel.id == configuracaoNivelCompetencia.nivelCompetenciaFaixaSalarial.id>
 										<td style="text-align: center; background-color:#BFC0C3" class="nivel-${nivel.id}">
 									<#else>	

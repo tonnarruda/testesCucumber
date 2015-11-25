@@ -29,7 +29,22 @@ public class ConfigHistoricoNivelDaoHibernateTest extends GenericDaoHibernateTes
 
 	public ConfigHistoricoNivel getEntity()
 	{
-		return ConfigHistoricoNivelFactory.getEntityAndNivelCompetenciaAndNivelCOmpetenciaHistorico(1L);
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
+		nivelCompetenciaDao.save(nivelCompetencia);
+		
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity();
+		nivelCompetenciaHistorico.setEmpresa(empresa);
+		nivelCompetenciaHistorico.setData(new Date());
+		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico);
+		
+		ConfigHistoricoNivel configHistoricoNivel = ConfigHistoricoNivelFactory.getEntity();
+		configHistoricoNivel.setNivelCompetencia(nivelCompetencia);
+		configHistoricoNivel.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		
+		return configHistoricoNivel;
 	}
 
 	public GenericDao<ConfigHistoricoNivel> getGenericDao()

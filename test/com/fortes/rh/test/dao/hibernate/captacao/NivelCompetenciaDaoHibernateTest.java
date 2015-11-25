@@ -1601,13 +1601,16 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 	
 	public void testRemoveBySolicitacao()
 	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarialDao.save(faixaSalarial);
 
 		Atitude atitude = criaAtitude();
 		
-		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
-		nivelCompetenciaDao.save(nivelCompetencia);
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = iniciaNivelCompetenciaHistorico(empresa, DateUtil.criarDataMesAno(1, 1, 2005));
+		NivelCompetencia nivelCompetencia = nivelCompetencia(empresa, null, 1, 90.0, nivelCompetenciaHistorico);
 		
 		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao(faixaSalarial, DateUtil.criarDataDiaMesAno("01/03/2015"));
 		solicitacaoDao.save(solicitacao1);

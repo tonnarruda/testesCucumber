@@ -673,6 +673,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		configuracaoNivelCompetenciaDao.expects(once()).method("findByCandidatoAndSolicitacao").withAnyArguments().will(returnValue(niveisCompetenciaCandidato));
 		configuracaoNivelCompetenciaDao.expects(once()).method("findByFaixa").withAnyArguments().will(returnValue(new ArrayList<ConfiguracaoNivelCompetencia>()));
 		nivelCompetenciaManager.expects(once()).method("findByCargoOrEmpresa").with(ANYTHING,ANYTHING).will(returnValue(niveisCompetenciaEmpresa));
+		nivelCompetenciaManager.expects(once()).method("findAllSelect").withAnyArguments().will(returnValue(new ArrayList<NivelCompetencia>()));
 		
 		Collection<Solicitacao> solicitacaoCoimConhecimento = configuracaoNivelCompetenciaManager.getCompetenciasCandidato(1L, 1L); 
 		assertEquals(1, solicitacaoCoimConhecimento.size());
