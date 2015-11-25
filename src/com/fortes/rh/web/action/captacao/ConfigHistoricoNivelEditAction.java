@@ -67,6 +67,7 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 		{
 			addActionWarning("Já existe uma histórico de níveis de competência cadastrado nesta data ( " + nivelCompetenciaHistorico.getDataFormatada() + " ). ");
 			e.printStackTrace();
+			nivelCompetenciaHistorico = null;
 			prepareInsert();
 			return Action.INPUT;
 		}

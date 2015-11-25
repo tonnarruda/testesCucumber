@@ -117,7 +117,7 @@
 						</#if>
 					</@display.column>
 					<@display.column title="Percentual Mínimo (%)" style="width: 150px; text-align: center;">
-						<#if podeEditar>
+						<#if podeEditar || !obrigarPercentual>
 							<input type="text" disabled="disabled" id="percentual_${i}" name="configHistoricoNivels[${i}].percentual" size="5" maxlength="5" value="${configHistNivel.percentualFormatado}" class="campos percentual" style="width:50px; text-align:right; border: 1px solid #BEBEBE;" onkeypress="return(somenteNumeros(event,','));">
 						<#else>
 							${configHistNivel.percentualFormatado}
@@ -132,7 +132,7 @@
 		</@ww.form>
 	
 		<div class="buttonGroup">
-			<#if podeEditar>
+			<#if podeEditar || !obrigarPercentual>
 				<button onclick="submeter();" class="btnGravar"></button>
 				<button class="btnDividirPercentualIgualmente" onclick="gerarPercentual();"></button>
 			</#if>
