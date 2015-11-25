@@ -77,7 +77,7 @@ ALTER TABLE colaboradorCertificacao ADD CONSTRAINT certificacao_id_fk FOREIGN KE
 CREATE SEQUENCE colaboradorCertificacao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
 
-------25/11/2015
+------25/11/2015 --- CONSULTA ABAIXO UM POUCO LENTA. DECIDIR O QUE FAZER
 
 CREATE OR REPLACE FUNCTION certificaColaboradores() RETURNS integer AS $$
 DECLARE 
@@ -120,75 +120,40 @@ $$ LANGUAGE plpgsql;--.go
 select certificaColaboradores();--.go
 drop function certificaColaboradores();--.go
 
-------
-
-CREATE OR REPLACE FUNCTION verifica_aprovacao(id_curso BIGINT, id_turma BIGINT, id_colaboradorturma BIGINT, percentualMinimoFrequencia DOUBLE PRECISION) RETURNS BOOLEAN AS $$  
-DECLARE aprovado BOOLEAN; 
-BEGIN 
-
-	select (
-			(
-				coalesce(cast( (select count(avaliacaocursos_id) from curso_avaliacaocurso where cursos_id = id_curso group by cursos_id) as Integer ), 0) = 0 
-			 	or coalesce(( select count(avaliacaocursos_id) from curso_avaliacaocurso where cursos_id = id_curso group by cursos_id), 0)  =
-				coalesce((select rct.qtdavaliacoesaprovadaspornota from View_CursoNota as rct where colaboradorturma_id = id_colaboradorturma), 0) 
-			 ) 
-			 and 
-				case when (coalesce((select count(dia) from diaturma where turma_id = id_turma group by turma_id), 0)) > 0 THEN
-				(
-					(
-						 cast(coalesce((select count(id) from colaboradorpresenca where presenca=true and colaboradorturma_id = id_colaboradorturma group by colaboradorturma_id), 0) as DOUBLE PRECISION) / 
-						 cast(coalesce((select count(dia) from diaturma where turma_id = id_turma group by turma_id), 0) as DOUBLE PRECISION)
-					 ) * 100 
-				) >= coalesce(percentualMinimoFrequencia, 0)
-				else 
-					true
-				end 
-			) as situacao INTO aprovado;
-	
-	RETURN aprovado;
-	
-END; 
- 
-$$ LANGUAGE plpgsql; --.go  
-
----Abaixo incompleto
-
-select max(data) from colaboradorcertificacao  where colaborador_id = 74369
-
-
-		(select (select Array(select cursos_id from certificacao_curso where certificacaos_id = 4140 order by cursos_id))
-				=
-				(select Array(select cu.id
-				from colaboradorturma ct
-				inner join turma t on t.id = ct.turma_id and t.dataprevfim = 
-						(select max(dataprevfim) from turma t2 where t2.curso_id = t.curso_id and t2.realizada 
-						and 
-						dataprevfim >= 
-						(coalesce((select max(data) from colaboradorcertificacao  where colaborador_id = 74369), dataprevfim))
-						)
-				inner join curso cu on cu.id = t.curso_id
-				where ct.colaborador_id = 74369
-				and t.realizada
-				and cu.id in (select cursos_id from certificacao_curso where certificacaos_id = 4140)
-				and verifica_aprovacao(cu.id, t.id, ct.id, cu.percentualminimofrequencia)
-				order by cu.id)))
-
-
-
-select (select Array(select avaliacoespraticas_id from certificacao_avaliacaopratica where certificacao_id = 4140 order by avaliacoespraticas_id))
-=
-(select Array( select caval.avaliacaopratica_id
-from colaboradoravaliacaopratica caval
-where caval.colaborador_id = 74369
-and caval.certificacao_id = 4140
-and caval.nota >= (select aval.notaMinima from avaliacaopratica aval where aval.id = caval.avaliacaopratica_id)
-and caval.data >= (coalesce((select max(data) from colaboradorcertificacao  where colaborador_id = 74369), caval.data))
-order by caval.avaliacaopratica_id))
-
-
-
+-----
 
 
 CREATE OR REPLACE FUNCTION verifica_certificacao(id_certificado BIGINT, id_coalborador BIGINT) RETURNS BOOLEAN AS $$  
-DECLARE aprovado BOOLEAN; 
+DECLARE certificado BOOLEAN; 
+BEGIN 
+	select (
+				(select (select Array(select cursos_id from certificacao_curso where certificacaos_id = id_certificado order by cursos_id)) =
+		  		(select Array(
+			  				select cu.id from colaboradorturma ct inner join turma t on t.id = ct.turma_id 
+			  				and t.dataprevfim = (select max(dataprevfim) from turma t2 where t2.curso_id = t.curso_id and t2.realizada 
+							and dataprevfim > (coalesce((select max(data) from colaboradorcertificacao  where colaborador_id = id_coalborador and certificacao_id = id_certificado), '01/01/2000')))
+							inner join curso cu on cu.id = t.curso_id
+							where ct.colaborador_id = id_coalborador
+							and t.realizada
+							and cu.id in (select cursos_id from certificacao_curso where certificacaos_id = id_certificado)
+							and verifica_aprovacao(cu.id, t.id, ct.id, cu.percentualminimofrequencia)
+							order by cu.id
+							)
+				)
+			)
+		and
+		(
+			select (select Array(select avaliacoespraticas_id from certificacao_avaliacaopratica where certificacao_id = id_certificado order by avaliacoespraticas_id)) =
+			(select Array( 
+						select caval.avaliacaopratica_id from colaboradoravaliacaopratica caval where caval.colaborador_id = id_coalborador
+						and caval.certificacao_id = id_certificado
+						and caval.nota >= (select aval.notaMinima from avaliacaopratica aval where aval.id = caval.avaliacaopratica_id)
+						and caval.data > (coalesce((select max(data) from colaboradorcertificacao  where colaborador_id = id_coalborador and certificacao_id = id_certificado), '01/01/2000'))
+						order by caval.avaliacaopratica_id)))
+		) 
+		as situacao INTO certificado;
+	RETURN certificado;
+END; 
+$$ LANGUAGE plpgsql; --.go  
 
+---------------------

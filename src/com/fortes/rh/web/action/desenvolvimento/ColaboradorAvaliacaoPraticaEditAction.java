@@ -64,9 +64,13 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		{
 			findColaboradoresPermitidosNaCertificacao(colaboradoresNaCertificacao);	
 			
+			colaboradorTurmas = new ArrayList<ColaboradorTurma>();
 			if(colaborador.getId() != null && certificacao != null && certificacao.getId() != null){
 				colaboradorTurmas = colaboradorTurmaManager.findByColaborador(colaborador.getId(), certificacao.getId());
 				populaColaboradorAvaliacaoPratica();
+				
+				
+				
 			}
 		}
 		
