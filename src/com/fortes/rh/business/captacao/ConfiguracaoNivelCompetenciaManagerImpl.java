@@ -561,7 +561,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		int totalPontosFaixa;
 		
 		for (Long candidatoId : candidatosDaSolicitacaoIds) {
-			configuracoesNivelCompetenciaCandidato = getDao().findCompetenciaBySolicitacaoAndCandidatoAndData(solicitacao.getId(), candidatoId, solicitacao.getData());
+			configuracoesNivelCompetenciaCandidato = getDao().findBySolicitacaoIdCandidatoIdAndDataNivelCompetenciaHistorico(solicitacao.getId(), candidatoId, solicitacao.getData());
 			
 			if(configuracoesNivelCompetenciaCandidato.size() == 0)
 				break;

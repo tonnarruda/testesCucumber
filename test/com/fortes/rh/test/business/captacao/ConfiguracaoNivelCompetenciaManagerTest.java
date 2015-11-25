@@ -618,7 +618,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 
 		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId()), eq(solicitacao.getData())).will(returnValue(configuracaoNivelCompetenciasFaixaSalarial));
 		configHistoricoNivelManager.expects(once()).method("findByEmpresaAndDataNivelCompetenciaHistorico").with(eq(empresa.getId()), eq(solicitacao.getData())).will(returnValue(configHistoricoNiveis));	
-		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaBySolicitacaoAndCandidatoAndData").with(eq(solicitacao.getId()), eq(joao.getId()), eq(solicitacao.getData())).will(returnValue(configuracaoNivelCompetenciasCandidato));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findBySolicitacaoIdCandidatoIdAndDataNivelCompetenciaHistorico").with(eq(solicitacao.getId()), eq(joao.getId()), eq(solicitacao.getData())).will(returnValue(configuracaoNivelCompetenciasCandidato));
 
 		Collection<ConfiguracaoNivelCompetenciaVO> matrizes = configuracaoNivelCompetenciaManager.montaMatrizCompetenciaCandidato(empresa.getId(), faixaSalarial.getId(), solicitacao);
 		assertEquals(1, matrizes.size());

@@ -1,5 +1,6 @@
 package com.fortes.rh.test.dao.hibernate.captacao;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -50,6 +51,8 @@ public class ConfigHistoricoNivelDaoHibernateTest extends GenericDaoHibernateTes
 		configHistoricoNivel.setPercentual(percentual);
 		configHistoricoNivelDao.save(configHistoricoNivel);
 		
+		nivelCompetencia.setConfigHistoricoNiveis(Arrays.asList(configHistoricoNivel));
+		
 		return nivelCompetencia;
 	}
 	
@@ -81,6 +84,65 @@ public class ConfigHistoricoNivelDaoHibernateTest extends GenericDaoHibernateTes
 		
 		configHistoricoNiveis = configHistoricoNivelDao.findByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico2.getId());
 		assertEquals(2, configHistoricoNiveis.size());
+	}
+	
+	public void testFindByEmpresaAndDataDoNivelCompetenciaHistorico()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		NivelCompetenciaHistorico nivelCompetenciaHistorico1 = iniciaNivelCompetenciaHistorico(empresa, DateUtil.criarDataMesAno(1, 1, 2005));
+		nivelCompetencia(empresa, "Ruim", 1, 10.0, nivelCompetenciaHistorico1);
+		nivelCompetencia(empresa, "Bom", 2, 20.0, nivelCompetenciaHistorico1);
+		
+		NivelCompetenciaHistorico nivelCompetenciaHistorico2 = iniciaNivelCompetenciaHistorico(empresa, DateUtil.criarDataMesAno(1, 1, 2008));
+		nivelCompetencia(empresa, "Normal", 3, 30.0, nivelCompetenciaHistorico2);
+		nivelCompetencia(empresa, "Ótimo", 4, 40.0, nivelCompetenciaHistorico2);
+		nivelCompetencia(empresa, "Excelente", 5, 50.0, nivelCompetenciaHistorico2);
+
+		Collection<ConfigHistoricoNivel> configHistoricoNiveis = configHistoricoNivelDao.findByEmpresaAndDataDoNivelCompetenciaHistorico(empresa.getId(), nivelCompetenciaHistorico1.getData());
+		assertEquals(2, configHistoricoNiveis.size());
+		assertEquals("Ruim", configHistoricoNiveis.iterator().next().getNivelCompetencia().getDescricao());
+		
+		configHistoricoNiveis = configHistoricoNivelDao.findByEmpresaAndDataDoNivelCompetenciaHistorico(empresa.getId(), nivelCompetenciaHistorico2.getData());
+		assertEquals(3, configHistoricoNiveis.size());
+		assertEquals("Normal", configHistoricoNiveis.iterator().next().getNivelCompetencia().getDescricao());
+	}
+	
+	public void testRemoveByNivelConfiguracaoHistorico(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = iniciaNivelCompetenciaHistorico(empresa, DateUtil.criarDataMesAno(1, 1, 2005));
+		nivelCompetencia(empresa, "Ruim", 1, 10.0, nivelCompetenciaHistorico);
+		nivelCompetencia(empresa, "Bom", 2, 20.0, nivelCompetenciaHistorico);
+		
+		Collection<ConfigHistoricoNivel> configHistoricoNiveis = configHistoricoNivelDao.findByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico.getId());
+		assertEquals(2, configHistoricoNiveis.size());
+		
+		configHistoricoNivelDao.removeByNivelConfiguracaoHistorico(nivelCompetenciaHistorico.getId());
+		configHistoricoNiveis = configHistoricoNivelDao.findByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico.getId());
+		assertEquals(0, configHistoricoNiveis.size());
+	}
+	
+	public void testRemoveNotIn(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = iniciaNivelCompetenciaHistorico(empresa, DateUtil.criarDataMesAno(1, 1, 2005));
+		NivelCompetencia nivelCompetenciaRuim =  nivelCompetencia(empresa, "Ruim", 3, 30.0, nivelCompetenciaHistorico);
+		NivelCompetencia nivelCompetenciaOtimo =  nivelCompetencia(empresa, "Ótimo", 4, 40.0, nivelCompetenciaHistorico);
+		nivelCompetencia(empresa, "Excelente", 5, 50.0, nivelCompetenciaHistorico);
+
+		Long configHistoricoNiveisIds[] = new Long[]{nivelCompetenciaRuim.getConfigHistoricoNiveis().iterator().next().getId(), nivelCompetenciaOtimo.getConfigHistoricoNiveis().iterator().next().getId()}; 
+		
+		Collection<ConfigHistoricoNivel> configHistoricoNiveis = configHistoricoNivelDao.findByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico.getId());
+		assertEquals(3, configHistoricoNiveis.size());
+		
+		configHistoricoNivelDao.removeNotIn(configHistoricoNiveisIds, nivelCompetenciaHistorico.getId());
+		
+		configHistoricoNiveis = configHistoricoNivelDao.findByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico.getId());
+		assertEquals(2, configHistoricoNiveis.size());
+
 	}
 
 	public void setConfigHistoricoNivelDao(ConfigHistoricoNivelDao configHistoricoNivelDao){

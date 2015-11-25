@@ -4971,6 +4971,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				"UPDATE Colaborador SET solicitanteDemissao.id = NULL WHERE solicitanteDemissao.id = :id",
 				"DELETE FROM HistoricoColaborador WHERE colaborador.id = :id",
 				"DELETE FROM ReajusteColaborador WHERE colaborador.id = :id",
+				"DELETE FROM ParticipanteAvaliacaoDesempenho WHERE colaborador.id = :id",
 				"DELETE FROM Colaborador WHERE id = :id"
 		};
 		

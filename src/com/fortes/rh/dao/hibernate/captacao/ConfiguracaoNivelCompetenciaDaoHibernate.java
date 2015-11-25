@@ -694,9 +694,8 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		query.executeUpdate();
 	}
 	
-	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaBySolicitacaoAndCandidatoAndData(Long solicitacaoId, Long candidatoId, Date dataSolicitacao) {
-		Criteria criteria = createCriteria(dataSolicitacao);
-		
+	public Collection<ConfiguracaoNivelCompetencia> findBySolicitacaoIdCandidatoIdAndDataNivelCompetenciaHistorico(Long solicitacaoId, Long candidatoId, Date dataNivelCompetenciaHistorico) {
+		Criteria criteria = createCriteria(dataNivelCompetenciaHistorico);
 		criteria.add(Expression.eq("cnc.solicitacao.id", solicitacaoId));
 		criteria.add(Expression.eq("cnc.candidato.id", candidatoId));
 		criteria.addOrder(Order.asc("cand.nome"));

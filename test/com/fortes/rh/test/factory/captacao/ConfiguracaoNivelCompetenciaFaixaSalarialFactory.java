@@ -31,4 +31,11 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialFactory
 		
 		return configuracaoNivelCompetenciaFaixaSalarial;
 	}
+
+	public static ConfiguracaoNivelCompetenciaFaixaSalarial getEntity(FaixaSalarial faixaSalarial, Date data) {
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = getEntity();
+		configuracaoNivelCompetenciaFaixaSalarial.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetenciaFaixaSalarial.setData(data);
+		return configuracaoNivelCompetenciaFaixaSalarial;
+	}
 }
