@@ -4929,6 +4929,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				"DELETE FROM ColaboradorAvaliacaoPratica where colaborador.id = :id ",
 				"DELETE FROM ColaboradorCertificacao where colaborador.id = :id ",
 				
+				"DELETE FROM ParticipanteAvaliacaoDesempenho WHERE colaborador.id = :id",
 				"DELETE FROM Colaborador WHERE id = :id"
 		};
 		

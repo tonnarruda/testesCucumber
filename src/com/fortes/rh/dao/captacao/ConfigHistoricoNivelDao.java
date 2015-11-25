@@ -10,9 +10,9 @@ public interface ConfigHistoricoNivelDao extends GenericDao<ConfigHistoricoNivel
 {
 	Collection<ConfigHistoricoNivel> findByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId);
 	
-	Collection<ConfigHistoricoNivel> findByEmpresaAndDataNivelCompetenciaHistorico(Long empresaId, Date data);
+	Collection<ConfigHistoricoNivel> findByEmpresaAndDataDoNivelCompetenciaHistorico(Long empresaId, Date dataNivelCompetenciaHistorico);
 
-	void removeByNivelConfiguracaoHistorico(Long nivelConfiguracaoHIstoricoId);
+	void removeByNivelConfiguracaoHistorico(Long nivelConfiguracaoHistoricoId);
 
-	void removeNotIds(Long[] configHistoricoNiveisIds, Long nivelConfiguracaoHIstoricoId);
+	void removeNotIn(Long[] configHistoricoNiveisIds, Long nivelConfiguracaoHistoricoId);
 }

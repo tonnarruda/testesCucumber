@@ -40,10 +40,10 @@ public class ConfigHistoricoNivelManagerImpl extends GenericManagerImpl<ConfigHi
 	}
 
 	public void removeNotIds(Long[] configHistoricoNiveisIds,Long nivelConfiguracaoHIstoricoId) {
-		getDao().removeNotIds(configHistoricoNiveisIds,nivelConfiguracaoHIstoricoId);
+		getDao().removeNotIn(configHistoricoNiveisIds,nivelConfiguracaoHIstoricoId);
 	}
 
 	public Collection<ConfigHistoricoNivel> findByEmpresaAndDataNivelCompetenciaHistorico(Long empresaId, Date dataNivelCompetenciaHistorico) {
-		return getDao().findByEmpresaAndDataNivelCompetenciaHistorico(empresaId, dataNivelCompetenciaHistorico);
+		return getDao().findByEmpresaAndDataDoNivelCompetenciaHistorico(empresaId, dataNivelCompetenciaHistorico);
 	}
 }

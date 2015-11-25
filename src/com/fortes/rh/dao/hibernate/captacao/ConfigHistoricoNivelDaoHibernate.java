@@ -58,7 +58,7 @@ public class ConfigHistoricoNivelDaoHibernate extends GenericDaoHibernate<Config
 		query.executeUpdate();
 	}
 
-	public void removeNotIds(Long[] configHistoricoNiveisIds, Long nivelConfiguracaoHistoricoId) {
+	public void removeNotIn(Long[] configHistoricoNiveisIds, Long nivelConfiguracaoHistoricoId) {
 		String queryHQL = "DELETE FROM ConfigHistoricoNivel chn "
 				+ "where chn.id not in(:configHistoricoNiveisIds) and chn.nivelCompetenciaHistorico.id = :nivelConfiguracaoHistoricoId ";
 
@@ -69,7 +69,7 @@ public class ConfigHistoricoNivelDaoHibernate extends GenericDaoHibernate<Config
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<ConfigHistoricoNivel> findByEmpresaAndDataNivelCompetenciaHistorico(Long empresaId, Date dataNivelCompetenciaHistorico) {
+	public Collection<ConfigHistoricoNivel> findByEmpresaAndDataDoNivelCompetenciaHistorico(Long empresaId, Date dataNivelCompetenciaHistorico) {
 
 		DetachedCriteria subQueryHc = DetachedCriteria.forClass(NivelCompetenciaHistorico.class, "nch2")
 				.setProjection(Projections.max("nch2.data"))
