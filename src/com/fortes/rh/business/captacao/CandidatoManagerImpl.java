@@ -632,54 +632,56 @@ public class CandidatoManagerImpl extends GenericManagerImpl<Candidato, Candidat
 		if(configuracaoCampoExtras != null && configuracaoCampoExtras.size() > 0 && camposExtrasCandidato == null )
 			camposExtrasCandidato = new CamposExtras();
 		
-		for (ConfiguracaoCampoExtra configuracaoCampoExtra : configuracaoCampoExtras) {
-			if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_1.getDescricao())){
-				camposExtrasCandidato.setTexto1(camposExtrasColaborador.getTexto1());
-			}
-			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_2.getDescricao())){
-				camposExtrasCandidato.setTexto2(camposExtrasColaborador.getTexto2());
-			}
-			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_3.getDescricao())){
-				camposExtrasCandidato.setTexto3(camposExtrasColaborador.getTexto3());
-			}
-			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_4.getDescricao())){
-				camposExtrasCandidato.setTexto4(camposExtrasColaborador.getTexto4());
-			}
-			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_5.getDescricao())){
-				camposExtrasCandidato.setTexto5(camposExtrasColaborador.getTexto5());
-			}
-			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_6.getDescricao())){
-				camposExtrasCandidato.setTexto6(camposExtrasColaborador.getTexto6());
-			}
-			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_7.getDescricao())){
-				camposExtrasCandidato.setTexto7(camposExtrasColaborador.getTexto7());
-			}
-			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_8.getDescricao())){
-				camposExtrasCandidato.setTexto8(camposExtrasColaborador.getTexto8());
-			}
-			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_DATA_1.getDescricao())){
-				camposExtrasCandidato.setData1(camposExtrasColaborador.getData1());
-			}
-			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_DATA_2.getDescricao())){
-				camposExtrasCandidato.setData2(camposExtrasColaborador.getData2());
-			}
-			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_DATA_3.getDescricao())){
-				camposExtrasCandidato.setData3(camposExtrasColaborador.getData3());
-			}
-			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_VALOR_1.getDescricao())){
-				camposExtrasCandidato.setValor1(camposExtrasColaborador.getValor1());
-			}
-			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_VALOR_2.getDescricao())){
-				camposExtrasCandidato.setValor2(camposExtrasColaborador.getValor2());
-			}
-			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_NUMERO.getDescricao())){
-				camposExtrasCandidato.setNumero1(camposExtrasColaborador.getNumero1());
-			}
-			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_LONGO_1.getDescricao())){
-				camposExtrasCandidato.setTextolongo1(camposExtrasColaborador.getTextolongo1());
-			}
-			else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_LONGO_2.getDescricao())){
-				camposExtrasCandidato.setTextolongo1(camposExtrasColaborador.getTextolongo1());
+		if ( camposExtrasColaborador != null ) {
+			for (ConfiguracaoCampoExtra configuracaoCampoExtra : configuracaoCampoExtras) {
+				if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_1.getDescricao())){
+					camposExtrasCandidato.setTexto1(camposExtrasColaborador.getTexto1());
+				}
+				else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_2.getDescricao())){
+					camposExtrasCandidato.setTexto2(camposExtrasColaborador.getTexto2());
+				}
+				else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_3.getDescricao())){
+					camposExtrasCandidato.setTexto3(camposExtrasColaborador.getTexto3());
+				}
+				else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_4.getDescricao())){
+					camposExtrasCandidato.setTexto4(camposExtrasColaborador.getTexto4());
+				}
+				else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_5.getDescricao())){
+					camposExtrasCandidato.setTexto5(camposExtrasColaborador.getTexto5());
+				}
+				else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_6.getDescricao())){
+					camposExtrasCandidato.setTexto6(camposExtrasColaborador.getTexto6());
+				}
+				else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_7.getDescricao())){
+					camposExtrasCandidato.setTexto7(camposExtrasColaborador.getTexto7());
+				}
+				else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_8.getDescricao())){
+					camposExtrasCandidato.setTexto8(camposExtrasColaborador.getTexto8());
+				}
+				else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_DATA_1.getDescricao())){
+					camposExtrasCandidato.setData1(camposExtrasColaborador.getData1());
+				}
+				else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_DATA_2.getDescricao())){
+					camposExtrasCandidato.setData2(camposExtrasColaborador.getData2());
+				}
+				else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_DATA_3.getDescricao())){
+					camposExtrasCandidato.setData3(camposExtrasColaborador.getData3());
+				}
+				else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_VALOR_1.getDescricao())){
+					camposExtrasCandidato.setValor1(camposExtrasColaborador.getValor1());
+				}
+				else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_VALOR_2.getDescricao())){
+					camposExtrasCandidato.setValor2(camposExtrasColaborador.getValor2());
+				}
+				else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_NUMERO.getDescricao())){
+					camposExtrasCandidato.setNumero1(camposExtrasColaborador.getNumero1());
+				}
+				else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_LONGO_1.getDescricao())){
+					camposExtrasCandidato.setTextolongo1(camposExtrasColaborador.getTextolongo1());
+				}
+				else if(configuracaoCampoExtra.getDescricao().equals(CampoExtra.CAMPO_DE_TEXTO_LONGO_2.getDescricao())){
+					camposExtrasCandidato.setTextolongo1(camposExtrasColaborador.getTextolongo1());
+				}
 			}
 		}
 		return camposExtrasCandidato;

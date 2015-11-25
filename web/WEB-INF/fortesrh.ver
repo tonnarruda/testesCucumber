@@ -7,11 +7,12 @@
 		<Item visivel="S" motivo="S20150800064"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Restrição de gerar o relatório somente para usuários que são gestores das áreas organizacionais e/ou possuir em seu perfil a permissão "Visualizar todas as Áreas Organizacionais".]]></Item>
 		<Item visivel="S" motivo="S15100000191"><![CDATA[T&D > Relatórios > Lista de Presença: Novo vídeo de ajuda da funcionalidade.]]></Item>
 		<Item visivel="S" motivo="S15090000012"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Novas descrições dos graus de instrução da escolaridade.]]></Item>
+		<Item visivel="S" motivo="P15110000253"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Ajuste de inconsistência ao editar colaborador quando a empresa possuía configurações de campos extras, mas não estava habilitado no cadastro de colaboradores.]]></Item>
 		<Item visivel="S" motivo="S15100000298"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > inserir/Editar: Inserção de um help para informar quando o campo "Observação" será impresso.]]></Item>
+		<Item visivel="S" motivo="P15110000236"><![CDATA[SESMT > Relatórios > Afastamentos: Inserção de validação para o período a ser filtrado.]]></Item>
 		<Item visivel="S" motivo="S15100000191"><![CDATA[Utilitários > Configurações > Sistema: Novo vídeo de ajuda de como configurar o sistema para gerar backup automático.]]></Item>
 		<Item visivel="S" motivo="S20150800170"><![CDATA[Utilitários > Auditoria: Melhorias na auditoria de operações integradas com o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S15100000315"><![CDATA[Integração com o Fortes Pessoal: Nova funcionalidade para permitir efetuar ação de “movimentar situações dos empregados” pelo sistema Fortes Pessoal quando integrado.]]></Item>
-		<Item visivel="S" motivo="P15110000236"><![CDATA[SESMT > Relatórios > Afastamentos: ]]></Item>
 	</Versao>
 	<Versao id="1.1.153.184" db="" data="11/11/2015">
 		<Item visivel="S" motivo="S15080000158"><![CDATA[R&S > Cadastros > Candidatos > Triagem: Novo filtro por área de formação.]]></Item>
