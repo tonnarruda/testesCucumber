@@ -356,6 +356,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
     		usuarioDao.expects(once()).method("findByLogin").with(eq(usuario)).will(returnValue(usuario));
     		usuarioDao.expects(once()).method("save").with(eq(usuario)).will(returnValue(usuario));
     		colaboradorManager.expects(once()).method("atualizarUsuario").with(eq(colaboradorId), eq(usuario.getId()));
+    		colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(eq(colaboradorId), ANYTHING);
     		usuarioEmpresaManager.expects(once()).method("save").with(eq(usuario), eq(empresasIds), eq(perfils));
 
     		usuarioRetorno = usuarioManager.save(usuario, colaboradorId, empresasIds, perfils);
@@ -392,6 +393,7 @@ public class UsuarioManagerTest extends MockObjectTestCase
     		usuarioDao.expects(once()).method("update").with(eq(usuario)).isVoid();
     		colaboradorManager.expects(once()).method("atualizarUsuario").with(eq(colaboradorId), eq(usuario.getId()));
     		usuarioEmpresaManager.expects(once()).method("removeAllUsuario").with(eq(usuario)).isVoid();
+    		colaboradorManager.expects(once()).method("findByIdDadosBasicos").with(eq(colaboradorId), ANYTHING);
     		usuarioEmpresaManager.expects(once()).method("save").with(eq(usuario), eq(empresasIds), eq(perfils));
 
     		usuarioManager.update(usuario, colaboradorId, empresasIds, perfils);
