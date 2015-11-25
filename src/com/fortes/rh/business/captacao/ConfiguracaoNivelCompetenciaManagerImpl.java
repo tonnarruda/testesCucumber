@@ -227,6 +227,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 						solicitacoesComConfigNiveisCompetenciaCandidato.add(solicitacao);
 
 					solicitacao = cncCandidato.getSolicitacao();
+					solicitacao.setNivelCompetencias(nivelCompetenciaManager.findAllSelect(empresaId, null, solicitacao.getData()));
 					solicitacao.setFaixaSalarial(cncCandidato.getFaixaSalarial());
 					solicitacao.setConfiguracaoNivelCompetencias(new ArrayList<ConfiguracaoNivelCompetencia>());
 				}

@@ -70,6 +70,8 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetencia.class));
+		criteria.addOrder(Order.asc("cnc.solicitacao.id"));//Não remover importante para currículo de candidato
+		criteria.addOrder(Order.asc("chn.ordem"));
 
 		return criteria.list();
 	}

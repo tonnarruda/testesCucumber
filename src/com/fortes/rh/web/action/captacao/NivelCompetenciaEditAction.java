@@ -301,7 +301,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	public String visualizarCandidato()
 	{
 		solicitacoes = solicitacaoManager.findAllByCandidato(candidato.getId());
-		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId(), null, null);
 		solicitacoesNiveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.getCompetenciasCandidato(getEmpresaSistema().getId(), candidato.getId());
 		return Action.SUCCESS;
 	}

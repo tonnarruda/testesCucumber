@@ -129,6 +129,9 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias;
 	
+	@Transient
+	private Collection<NivelCompetencia> nivelCompetencias;
+	
 	public Solicitacao()
 	{
 
@@ -916,5 +919,13 @@ public class Solicitacao extends AbstractModel implements Serializable, Cloneabl
 
 	public void setInvisivelParaGestor(boolean invisivelParaGestor) {
 		this.invisivelParaGestor = invisivelParaGestor;
+	}
+	
+	public Collection<NivelCompetencia> getNivelCompetencias() {
+		return nivelCompetencias;
+	}
+
+	public void setNivelCompetencias(Collection<NivelCompetencia> nivelCompetencias) {
+		this.nivelCompetencias = nivelCompetencias;
 	}
 }
