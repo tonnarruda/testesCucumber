@@ -11,6 +11,7 @@
 		<Item visivel="S" motivo="S15100000191"><![CDATA[Utilitários > Configurações > Sistema: Novo vídeo de ajuda de como configurar o sistema para gerar backup automático.]]></Item>
 		<Item visivel="S" motivo="S20150800170"><![CDATA[Utilitários > Auditoria: Melhorias na auditoria de operações integradas com o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S15100000315"><![CDATA[Integração com o Fortes Pessoal: Nova funcionalidade para permitir efetuar ação de “movimentar situações dos empregados” pelo sistema Fortes Pessoal quando integrado.]]></Item>
+		<Item visivel="S" motivo="P15110000236"><![CDATA[SESMT > Relatórios > Afastamentos: ]]></Item>
 	</Versao>
 	<Versao id="1.1.153.184" db="" data="11/11/2015">
 		<Item visivel="S" motivo="S15080000158"><![CDATA[R&S > Cadastros > Candidatos > Triagem: Novo filtro por área de formação.]]></Item>

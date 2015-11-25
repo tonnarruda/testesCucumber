@@ -21,7 +21,7 @@
 	<script type='text/javascript'>
 		function submeterAction(action){
 			$('form[name=form]').attr('action', action);
-			return validaFormularioEPeriodo('form', null, new Array('inicio','fim'));
+			return validaFormularioEPeriodo('form', new Array('inicio','fim'), new Array('inicio','fim'));
 		}
 		
 		function exibirBtnRelatorio(){
