@@ -2960,10 +2960,8 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc.estabelecimento as es ");
 		hql.append("left join ao.areaMae as am ");
 		hql.append("left join fs.cargo as cg ");
-		hql.append("left join co.colaboradorQuestionarios as cq with cq.avaliacao.id is not null and cq.turma.id is null ");
-		hql.append("left join cq.avaliacao as av with av.tipoModeloAvaliacao = 'A' and av.periodoExperiencia.id = :periodoExperienciaId ");
-		hql.append("left join co.colaboradorPeriodoExperienciaAvaliacaos cpea with cpea.periodoExperiencia = :periodoExperienciaId and cpea.tipo = 'G' ");
-		hql.append("where ");
+		hql.append("left join co.colaboradorPeriodoExperienciaAvaliacaos as cpea with cpea.periodoExperiencia.id = :periodoExperienciaId and cpea.tipo = 'G' ");
+		hql.append(" where ");
 		hql.append("		hc.status = :status ");
 		hql.append("		and hc.data = (");
 		hql.append("			select max(hc2.data) ");
@@ -2974,8 +2972,13 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("and (co.dataDesligamento >= current_date or co.dataDesligamento is null) ");
 		hql.append("and co.empresa.id = :empresaId ");
 		hql.append("and :hoje - (co.dataAdmissao - 1) = :dias ");
-		hql.append("and av.id is not null ");
-		hql.append("and co.id not in (select cq2.colaborador.id from ColaboradorQuestionario cq2 where cq2.avaliacao.id = av.id and cq2.colaborador.id = co.id and cq2.avaliacaoDesempenho.id is null) ");
+		hql.append("and co.id not in (select cq.colaborador.id from ColaboradorQuestionario cq join cq.avaliacao av with av.tipoModeloAvaliacao = 'A' and av.periodoExperiencia.id = :periodoExperienciaId   ");
+		hql.append("					where cq.avaliacaoDesempenho.id is null and cq.turma.id is null and cq.colaborador.id = co.id ");
+		hql.append("						and (cpea.id is null and cq.avaliacao.id <> coalesce((select cpea2.avaliacao.id from ColaboradorPeriodoExperienciaAvaliacao as cpea2 ");
+		hql.append("																							where cpea2.colaborador.id = co.id and cpea2.tipo ='C'" );
+		hql.append(" 																							and cpea2.periodoExperiencia.id = :periodoExperienciaId),0)) ");
+		hql.append("							or (cpea.avaliacao.id = cq.avaliacao.id)  ");
+		hql.append("				) ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresa.getId());
@@ -2985,6 +2988,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
 
 		return query.list();
+
 	}
 
 	public Collection<Colaborador> findAdmitidos(String vinculo, Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos)
