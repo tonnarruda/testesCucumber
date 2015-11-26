@@ -8,6 +8,7 @@
 		<Item visivel="S" motivo="S15100000191"><![CDATA[T&D > Relatórios > Lista de Presença: Novo vídeo de ajuda da funcionalidade.]]></Item>
 		<Item visivel="S" motivo="S15090000012"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Novas descrições dos graus de instrução da escolaridade.]]></Item>
 		<Item visivel="S" motivo="P15110000253"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar: Ajuste de inconsistência ao editar colaborador quando a empresa possuía configurações de campos extras, mas não estava habilitado no cadastro de colaboradores.]]></Item>
+		<Item visivel="S" motivo="P15110000271"><![CDATA[Info. Funcionais > Cadastros > Colaboradores: Ajuste de inconsistência na ordenação dos colaboradores ao estar integrado com o Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="S15100000298"><![CDATA[SESMT > Movimentações > Solicitações/Atendimentos Médicos > inserir/Editar: Inserção de um help para informar quando o campo "Observação" será impresso.]]></Item>
 		<Item visivel="S" motivo="P15110000236"><![CDATA[SESMT > Relatórios > Afastamentos: Inserção de validação para o período a ser filtrado.]]></Item>
 		<Item visivel="S" motivo="S15100000191"><![CDATA[Utilitários > Configurações > Sistema: Novo vídeo de ajuda de como configurar o sistema para gerar backup automático.]]></Item>
