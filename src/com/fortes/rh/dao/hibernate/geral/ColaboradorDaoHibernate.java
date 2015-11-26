@@ -2945,7 +2945,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		query.setParameterList("perfilIds", perfilIds);
 
 		return query.list();
-	}
+	}	
 
 	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa, Long periodoExperienciaId)
 	{
@@ -2974,11 +2974,12 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("and (co.dataDesligamento >= current_date or co.dataDesligamento is null) ");
 		hql.append("and co.empresa.id = :empresaId ");
 		hql.append("and :hoje - (co.dataAdmissao - 1) = :dias ");
+		hql.append("and av.id is not null ");
 		hql.append("and co.id not in (select cq2.colaborador.id from ColaboradorQuestionario cq2 where cq2.avaliacao.id = av.id and cq2.colaborador.id = co.id and cq2.avaliacaoDesempenho.id is null) ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresa.getId());
-		query.setLong("periodoExperienciaId", periodoExperienciaId);
+		query.setLong("periodoExperienciaId", periodoExperienciaId); 
 		query.setDate("hoje", new Date());
 		query.setInteger("dias", dias);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
