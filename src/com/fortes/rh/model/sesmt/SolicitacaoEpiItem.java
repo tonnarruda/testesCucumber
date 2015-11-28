@@ -37,10 +37,17 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 	
 	@OneToMany(mappedBy="solicitacaoEpiItem", cascade=CascadeType.ALL)
 	private Collection<SolicitacaoEpiItemEntrega> solicitacaoEpiItemEntregas;
+	
+	@OneToMany(mappedBy="solicitacaoEpiItem", cascade=CascadeType.ALL)
+	private Collection<SolicitacaoEpiItemDevolucao> solicitacaoEpiItemDevolucoes;
 
 	@Transient
 	private int totalEntregue=0;
 
+	@Transient
+	private int totalDevolvido=0;
+
+	
 	public void setProjectionSolicitacaoEpiId(Long id)
 	{
 		if (this.solicitacaoEpi == null)
@@ -150,6 +157,15 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 		this.solicitacaoEpiItemEntregas = solicitacaoEpiItemEntregas;
 	}
 
+	public Collection<SolicitacaoEpiItemDevolucao> getSolicitacaoEpiItemDevolucoes() {
+		return solicitacaoEpiItemDevolucoes;
+	}
+
+	public void setSolicitacaoEpiItemDevolucoes(
+			Collection<SolicitacaoEpiItemDevolucao> solicitacaoEpiItemDevolucoes) {
+		this.solicitacaoEpiItemDevolucoes = solicitacaoEpiItemDevolucoes;
+	}
+
 	public int getTotalEntregue()
 	{
 		return totalEntregue;
@@ -162,6 +178,18 @@ public class SolicitacaoEpiItem extends AbstractModel implements Serializable
 		this.totalEntregue = totalEntregue;
 	}
 
+	public int getTotalDevolvido()
+	{
+		return this.totalDevolvido;
+	}
+
+	public void setTotalDevolvido(Integer totalDevolvido)
+	{
+		if (totalDevolvido == null)
+			totalDevolvido = 0;
+		this.totalDevolvido = totalDevolvido;
+	}
+	
 	public MotivoSolicitacaoEpi getMotivoSolicitacaoEpi()
 	{
 		return motivoSolicitacaoEpi;

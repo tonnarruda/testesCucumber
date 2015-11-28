@@ -37,7 +37,7 @@ import com.fortes.rh.util.LongUtil;
 @SuppressWarnings("unchecked")
 public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoEpi> implements SolicitacaoEpiDao
 {
-	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
+	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, String situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
 	{
 		Query query = montaConsultaFind(false, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi, tipoEpi, situacaoColaborador, estabelecimentoCheck, ordem);
 
@@ -67,6 +67,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			solicitacaoEpi.setCargoNome(solicitacaoEpiAux[8].toString());
 			solicitacaoEpi.setQtdEpiSolicitado(new Integer(solicitacaoEpiAux[9].toString()));
 			solicitacaoEpi.setQtdEpiEntregue(new Integer(solicitacaoEpiAux[10].toString()));
+			solicitacaoEpi.setQtdEpiDevolvido(new Integer(solicitacaoEpiAux[11].toString()));
 			
 			solicitacoes.add(solicitacaoEpi);
 		}
@@ -74,13 +75,13 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		return solicitacoes;
 	}
 
-	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
+	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, String situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
 	{
 		Query query = montaConsultaFind(true, empresaId, dataIni, dataFim, colaborador.getNome(), colaborador.getMatricula(), situacaoSolicitacaoEpi, tipoEpi, situacaoColaborador, estabelecimentoCheck, ordem);
 		return new Integer(query.uniqueResult().toString());
 	}
 
-	private Query montaConsultaFind(boolean count, Long empresaId, Date dataIni, Date dataFim, String nomeBusca, String matriculaBusca, char situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
+	private Query montaConsultaFind(boolean count, Long empresaId, Date dataIni, Date dataFim, String nomeBusca, String matriculaBusca, String situacaoSolicitacaoEpi, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
 	{
 		StringBuilder sql = null;
 		if (count)
@@ -93,10 +94,12 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		sql.append("  (select sum(sei2.qtdSolicitado) from solicitacaoepi_item sei2 "); 
 		sql.append("   where sei2.solicitacaoepi_id = se.id "); 
 		sql.append("  ) as qtdSolicitado,  "); 
-		sql.append("coalesce(sum(seie.qtdEntregue), 0) as qtdEntregue "); 
+		sql.append("coalesce(sum(seie.qtdEntregue), 0) as qtdEntregue, "); 
+		sql.append("coalesce(sum(seid.qtdDevolvida), 0) as qtdDevolvida ");
 		sql.append("from solicitacaoepi as se ");
 		sql.append("left join solicitacaoepi_item as sei on sei.solicitacaoepi_id=se.id "); 
-		sql.append("left join solicitacaoepiitementrega seie on seie.solicitacaoepiitem_id=sei.id "); 
+		sql.append("left join solicitacaoepiitementrega seie on seie.solicitacaoepiitem_id=sei.id ");
+		sql.append("left join solicitacaoepiitemdevolucao seid on seid.solicitacaoepiitem_id=sei.id ");
 		sql.append("left join epihistorico ehist on ehist.id=seie.epihistorico_id "); 
 		sql.append("left join epi e on e.id=ehist.epi_id "); 
 		sql.append("left join colaborador as c on se.colaborador_id=c.id ");
@@ -121,12 +124,18 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
  
 		sql.append("where sub.empresa_id = :empresaId ");
 
-		if (situacaoSolicitacaoEpi == SituacaoSolicitacaoEpi.ENTREGUE)
+		if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.ENTREGUE))
 			sql.append("and sub.qtdSolicitado <= sub.qtdEntregue ");
-		else if (situacaoSolicitacaoEpi == SituacaoSolicitacaoEpi.ENTREGUE_PARCIALMENTE)
+		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.ENTREGUE_PARCIALMENTE))
 			sql.append("and sub.qtdEntregue > 0 and sub.qtdEntregue < sub.qtdSolicitado ");
-		else if (situacaoSolicitacaoEpi == SituacaoSolicitacaoEpi.ABERTA)
+		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.ABERTA))
 			sql.append("and sub.qtdEntregue = 0 ");
+		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.DEVOLVIDO))
+			sql.append("and sub.qtdDevolvida = sub.qtdEntregue ");
+		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.DEVOLVIDO_PARCIALMENTE))
+			sql.append("and sub.qtdDevolvida > 0 and  sub.qtdDevolvida < sub.qtdEntregue ");
+		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.SEM_DEVOLUCAO))
+			sql.append("and sub.qtdDevolvida = 0 and sub.qtdEntregue > 0 ");
 		
 		if (StringUtils.isNotBlank(matriculaBusca))
 			sql.append("and lower(sub.matricula) like :matricula ");
@@ -303,14 +312,15 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		return query.list();
 	}
 	
-	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao, Colaborador colaborador, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
+	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, String situacao, Colaborador colaborador, Long tipoEpi, String situacaoColaborador, Long[] estabelecimentoCheck, char ordem)
 	{
 		getSession().flush(); //Necessário para que nos testes a view enxergue os dados inseridos via hibernate 
 
 		StringBuilder sql = new StringBuilder();
 		sql.append("select sse.solicitacaoepiid, sse.empresaid, sse.estabelecimentoid, sse.estabelecimentonome, sse.colaboradorid, sse.colaboradormatricula, sse.colaboradornome, sse.colaboradordesligado, ");
 		sql.append("       e.nome as epinome,  sse.solicitacaoepidata, sse.cargonome, sse.qtdsolicitado as qtdsolicitadototal, item.id as itemId, item.qtdsolicitado as qtdsolicitadoitem, mse.descricao, ");
-		sql.append("       sse.qtdentregue, (select coalesce(sum(qtdentregue), 0) from solicitacaoepiitementrega where solicitacaoepiitem_id = item.id) as qtdentrgueitem, sse.solicitacaoepisituacao, ");
+		sql.append("       sse.qtdentregue, (select coalesce(sum(qtdentregue), 0) from solicitacaoepiitementrega where solicitacaoepiitem_id = item.id) as qtdentrgueitem, sse.solicitacaoepisituacaoentregue, ");
+		sql.append("	   sse.qtddevolvida, (select coalesce(sum(qtddevolvida), 0) from solicitacaoepiitemdevolucao where solicitacaoepiitem_id = item.id) as qtddevolvidaitem, sse.solicitacaoepisituacaodevolvido, ");
 		sql.append("	   te.descricao as descricaoTamanhoEpi ");
 		sql.append("from situacaosolicitacaoepi sse ");
 		sql.append("join solicitacaoepi_item item on item.solicitacaoepi_id = sse.solicitacaoepiid ");
@@ -321,8 +331,10 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		
 		sql.append("where sse.empresaid = :empresaId ");
 		
-		if (situacao != SituacaoSolicitacaoEpi.TODAS)
-			sql.append("and sse.solicitacaoepisituacao = :situacao ");
+		if (situacao.equals(SituacaoSolicitacaoEpi.ENTREGUE) || situacao.equals(SituacaoSolicitacaoEpi.ENTREGUE_PARCIALMENTE) ||  situacao.equals(SituacaoSolicitacaoEpi.ABERTA))
+			sql.append("and sse.solicitacaoepisituacaoEntregue = :situacao ");
+		else if (situacao.equals(SituacaoSolicitacaoEpi.DEVOLVIDO) || situacao.equals(SituacaoSolicitacaoEpi.DEVOLVIDO_PARCIALMENTE) ||  situacao.equals(SituacaoSolicitacaoEpi.SEM_DEVOLUCAO))
+			sql.append("and sse.solicitacaoepisituacaoDevolvido = :situacao ");
 
 		if (situacaoColaborador.equals(SituacaoColaborador.ATIVO)) {
 			sql.append("and c.desligado = false "); 
@@ -358,8 +370,8 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		
 		query.setLong("empresaId", empresaId);
 		
-		if (situacao != SituacaoSolicitacaoEpi.TODAS)
-			query.setCharacter("situacao", situacao);
+		if (!situacao.equals(SituacaoSolicitacaoEpi.TODAS))
+			query.setString("situacao", situacao);
 		
 		if (dataIni != null && dataFim != null)
 		{
@@ -415,7 +427,10 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			vo.setDescricaoMotivoSolicitacaoEpi((String) obj[++countCampo]);
 			vo.setQtdEntregue(new Integer(obj[++countCampo].toString()));
 			vo.setQtdEntregueItem((new Integer(obj[++countCampo].toString())));
-			vo.setSolicitacaoEpiSituacao(obj[++countCampo].toString().charAt(0));
+			vo.setSolicitacaoEpiSituacao(obj[++countCampo].toString());
+			vo.setQtdDevolvida(new Integer(obj[++countCampo].toString()));
+			vo.setQtdDevolvidaItem((new Integer(obj[++countCampo].toString())));
+			vo.setSolicitacaoEpiSituacaoDevolucao(obj[++countCampo].toString());
 			vo.setDescricaoTamanhoEpi(((String) obj[++countCampo]));
 			
 			lista.add(vo);

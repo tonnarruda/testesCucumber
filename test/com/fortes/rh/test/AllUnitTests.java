@@ -165,6 +165,7 @@ import com.fortes.rh.test.business.sesmt.RiscoAmbienteManagerTest;
 import com.fortes.rh.test.business.sesmt.RiscoFuncaoManagerTest;
 import com.fortes.rh.test.business.sesmt.RiscoManagerTest;
 import com.fortes.rh.test.business.sesmt.RiscoMedicaoRiscoManagerTest;
+import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemDevolucaoManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemEntregaManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiItemManagerTest;
 import com.fortes.rh.test.business.sesmt.SolicitacaoEpiManagerTest;
@@ -330,6 +331,7 @@ import com.fortes.rh.test.dao.hibernate.sesmt.RiscoFuncaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.RiscoMedicaoRiscoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiItemDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiItemDevolucaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoEpiItemEntregaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.SolicitacaoExameDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.sesmt.TipoTamanhoEPIDaoHibernateTest;
@@ -588,6 +590,7 @@ import com.fortes.rh.test.web.action.sesmt.PppEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.PpraEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.ProntuarioEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.RiscoEditActionTest;
+import com.fortes.rh.test.web.action.sesmt.SolicitacaoEpiEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.SolicitacaoExameEditActionTest;
 import com.fortes.rh.test.web.action.sesmt.SolicitacaoExameListActionTest;
 import com.fortes.rh.test.web.action.sesmt.TamanhoEPIListActionTest;
@@ -1105,6 +1108,10 @@ public class AllUnitTests extends TestSuite
         
         suite.addTestSuite(SolicitacaoEpiItemEntregaManagerTest.class);
         suite.addTestSuite(SolicitacaoEpiItemEntregaDaoHibernateTest.class);
+
+        suite.addTestSuite(SolicitacaoEpiItemDevolucaoManagerTest.class);
+        suite.addTestSuite(SolicitacaoEpiItemDevolucaoDaoHibernateTest.class);
+        suite.addTestSuite(SolicitacaoEpiEditActionTest.class);
 
         suite.addTestSuite(EtapaProcessoEleitoralTest.class);
         suite.addTestSuite(EtapaProcessoEleitoralDaoHibernateTest.class);

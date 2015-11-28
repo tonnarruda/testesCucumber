@@ -25,12 +25,14 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 	private PlatformTransactionManager transactionManager;
 	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
 
-	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacao, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck, char ordem)
+	public Collection<SolicitacaoEpi> findAllSelect(int page, int pagingSize, Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, String situacao, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck, char ordem)
 	{
 		Collection<SolicitacaoEpi> solicitacaoEpis = getDao().findAllSelect(page, pagingSize, empresaId, dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, LongUtil.arrayStringToArrayLong(estabelecimentoCheck), ordem); 
 
-		for (SolicitacaoEpi solicitacaoEpi : solicitacaoEpis) 
-			solicitacaoEpi.setInformativo(montaInformacaoDeEntregas(solicitacaoEpi));
+		for (SolicitacaoEpi solicitacaoEpi : solicitacaoEpis){ 
+			solicitacaoEpi.setInformativoEntrega(montaInformacaoDeEntregas(solicitacaoEpi));
+			solicitacaoEpi.setInformativoDevolucao(montaInformacaoDeDevolucoes(solicitacaoEpi));
+		}
 		
 		return solicitacaoEpis;
 	}
@@ -67,8 +69,47 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 
 		return epiEntregues.toString() + epiNaoEntregues.toString();
 	}
+	
+	private String montaInformacaoDeDevolucoes(SolicitacaoEpi solicitacaoEpi) 
+	{
+		Collection<SolicitacaoEpiItem> solicitacaoEpiItems = solicitacaoEpiItemManager.findAllDevolucoesBySolicitacaoEpi(solicitacaoEpi.getId());
+		
+		StringBuffer epiDevolvido = new StringBuffer();
+		StringBuffer epiNaoDevolvido = new StringBuffer();
 
-	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, char situacao, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck, char ordem)
+		for (SolicitacaoEpiItem solicitacaoEpiItem : solicitacaoEpiItems) 
+		{
+			if(solicitacaoEpiItem.getTotalDevolvido() > 0){
+				
+				if(epiDevolvido.length()  == 0)
+					epiDevolvido.append("Devolvidos:<br>");
+
+				epiDevolvido.append("- " + solicitacaoEpiItem.getEpi().getNome() + "<br>");
+				if(solicitacaoEpiItem.getTotalDevolvido() > solicitacaoEpiItem.getQtdSolicitado())
+				{
+					if(epiNaoDevolvido.length()  == 0 && solicitacaoEpiItem.getTotalEntregue() < 0 )
+						epiNaoDevolvido.append("A Devolver:<br>");
+				
+					epiNaoDevolvido.append("- " + solicitacaoEpiItem.getEpi().getNome() + "<br>");
+				}
+			}else
+			{
+				if(epiNaoDevolvido.length()  == 0  && solicitacaoEpiItem.getTotalEntregue() > 0)
+					epiNaoDevolvido.append("A Devolver:<br>");
+				
+				if(solicitacaoEpiItem.getTotalEntregue() > 0)
+					epiNaoDevolvido.append("- " + solicitacaoEpiItem.getEpi().getNome() + "<br>");
+			}
+		}
+		
+		if(epiDevolvido.length() == 0 && epiNaoDevolvido.length() == 0){
+			epiDevolvido.append("Sem EPI a ");
+			epiNaoDevolvido.append("devolver");
+		}
+		return epiDevolvido.toString() + epiNaoDevolvido.toString();
+	}
+
+	public Integer getCount(Long empresaId, Date dataIni, Date dataFim, Colaborador colaborador, String situacao, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck, char ordem)
 	{
 		return getDao().getCount(empresaId, dataIni, dataFim, colaborador, situacao, tipoEpi, situacaoColaborador, LongUtil.arrayStringToArrayLong(estabelecimentoCheck), ordem);
 	}
@@ -140,7 +181,7 @@ public class SolicitacaoEpiManagerImpl extends GenericManagerImpl<SolicitacaoEpi
 		return solicitacaoEpis;
 	}
 
-	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, char situacao, Colaborador colaborador, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck, char ordem) {
+	public Collection<SolicitacaoEpiItemVO> findEpisWithItens(Long empresaId, Date dataIni, Date dataFim, String situacao, Colaborador colaborador, Long tipoEpi, String situacaoColaborador, String[] estabelecimentoCheck, char ordem) {
 		return getDao().findEpisWithItens(empresaId, dataIni, dataFim, situacao, colaborador, tipoEpi, situacaoColaborador, LongUtil.arrayStringToArrayLong(estabelecimentoCheck), ordem);
 	}
 	

@@ -85,6 +85,29 @@ public class SolicitacaoEpiItemDaoHibernate extends GenericDaoHibernate<Solicita
 
 		return criteria.list();
 	}
+	
+	public Collection<SolicitacaoEpiItem> findAllDevolucoesBySolicitacaoEpi(Long solicitacaoEpiId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(),"sei");
+		criteria.createCriteria("sei.solicitacaoEpiItemDevolucoes", "seid", Criteria.LEFT_JOIN);
+		criteria.createCriteria("sei.solicitacaoEpiItemEntregas", "seie", Criteria.LEFT_JOIN);
+		criteria.createCriteria("sei.epi", "e", Criteria.LEFT_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("sei.id"), "id");
+		p.add(Projections.property("seid.qtdDevolvida"), "totalDevolvido");
+		p.add(Projections.property("sei.qtdSolicitado"), "qtdSolicitado");
+		p.add(Projections.property("seie.qtdEntregue"), "totalEntregue");
+		p.add(Projections.property("e.nome"), "projectionEpiNome");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("sei.solicitacaoEpi.id", solicitacaoEpiId));
+
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
 
 	public SolicitacaoEpiItem findByIdProjection(Long id) 
 	{

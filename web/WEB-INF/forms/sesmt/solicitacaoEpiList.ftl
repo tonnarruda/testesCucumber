@@ -27,14 +27,15 @@
 	</#if>
 
 	<#if entrega>
-		<title>Entrega de EPIs</title>
+		<title>Entrega/Devolução de EPIs</title>
 	<#else><script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
 		<title>Solicitações de EPIs</title>
 	</#if>
 	
 	<script type="text/javascript">
 		$(function() {
-			insereHelp(4);			
+			insereHelp(4, 'Para exibir informações de EPIs Entregues e A Entregar, coloque o ponteiro do mouse sobre a situação desejada.');		
+			insereHelp(5, 'Para exibir informações de EPIs Devolvidos e A Devolver, coloque o ponteiro do mouse sobre a situação desejada.');
 		});
 		
 		
@@ -63,15 +64,17 @@
 			});
 		}
 	
-		function insereHelp(posicao)
+		function insereHelp(posicao, help)
 		{
 			var id = "tooltipHelp" + posicao;
 			$("#solicitacaoEpi th:eq(" + posicao + ")" ).append('<img id="' + id + '" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: 1px" />');
 			
 			$('#' + id).qtip({
-				content: 'Para exibir informações de EPIs Entregues e A Entregar, coloque o ponteiro do mouse sobre a situação desejada.'
+				content: help
 			});
 		}
+		
+		
 		
 	</script>
 </head>
@@ -80,7 +83,7 @@
 	<#include "../util/topFiltro.ftl" />
 	<@ww.form name="form" id="form" action="list.action" onsubmit="${validarCampos}" method="POST">
 
-		<@ww.select label="Situação da Solicitação" id="situacao" name="situacao" list=r"#{'T':'Todas','A':'Aberta','E':'Entregue','P':'Entregue Parcialmente'}" />
+		<@ww.select label="Situação da Solicitação" id="situacao" name="situacao" list=r'#{"T":"Todas","A":"Aberta","E":"Entregue","P":"Entregue Parcialmente","D":"Devolvido", "DP":"Devolvido Parcialmente","S":"Sem Devolução"}' />
 		<@frt.checkListBox label="Estabelecimento" name="estabelecimentoCheck" id="estabelecimentoCheck" list="estabelecimentoCheckList" filtro="true"/>
 		<@ww.textfield label="Matrícula do Colaborador" name="matriculaBusca" id="matriculaBusca" cssStyle="width: 60px;"/>
 		<@ww.textfield label="Nome do Colaborador" name="nomeBusca" id="nomeBusca" cssStyle="width: 260px;"/>
@@ -104,9 +107,9 @@
 	<@ww.actionmessage />
 
 	<@display.table name="solicitacaoEpis" id="solicitacaoEpi" class="dados" >
-		<@display.column title="Ações" class="acao" style="width: 60px;">
-			<#if solicitacaoEpi.situacao == 'E' || solicitacaoEpi.situacao == 'P'>
-				<a href="prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}"><img border="0" title="Entrega" src="<@ww.url value="/imgs/check.gif"/>"></a>
+		<@display.column title="Ações" class="acao" style="width: 70px;">
+			<#if solicitacaoEpi.situacaoEntrega == 'E' || solicitacaoEpi.situacaoEntrega == 'P'>
+				<a href="prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}"><img border="0" title="Entrega/Devolução" src="<@ww.url value="/imgs/check.gif"/>"></a>
 				<@authz.authorize ifAllGranted="ROLE_CAD_SOLICITACAOEPI" >
 					<img border="0" title="Não é possível editar uma solicitação já entregue, ou com algum item entregue" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 					<img border="0" title="Não é possível excluir uma solicitação já entregue, ou com algum item entregue" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
@@ -126,9 +129,14 @@
 		<@display.column property="colaborador.nomeDesligado" style="width: 320px;" title="Colaborador"/>
 		<@display.column property="data" title="Data" style="width: 70px; text-align: center;" format="{0,date,dd/MM/yyyy}"/>
 		<@display.column property="cargo.nome" title="Cargo" style="width: 220px;"/>
-		<@display.column title="Situação" style="width: 160px;">
-			 <span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover='showTooltip(event,"${solicitacaoEpi.informativo?j_string}");return false;'>
-			 	${solicitacaoEpi.situacaoDescricao} (${solicitacaoEpi.qtdEpiEntregue}/${solicitacaoEpi.qtdEpiSolicitado})
+		<@display.column title="Entrega" style="width: 170px;">
+			 <span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover='showTooltip(event,"${solicitacaoEpi.informativoEntrega?j_string}");return false;'>
+			 	${solicitacaoEpi.situacaoDescricaoEntrega} (${solicitacaoEpi.qtdEpiEntregue}/${solicitacaoEpi.qtdEpiSolicitado})
+			 </span>
+		</@display.column>
+		<@display.column title="Devolução" style="width: 170px;">
+			 <span href=# style="cursor: help;" onmouseout="hideTooltip()" onmouseover='showTooltip(event,"${solicitacaoEpi.informativoDevolucao?j_string}");return false;'>
+			 	${solicitacaoEpi.situacaoDescricaoDevolucao} (${solicitacaoEpi.qtdEpiDevolvido}/${solicitacaoEpi.qtdEpiEntregue})
 			 </span>
 		</@display.column>
 	</@display.table>

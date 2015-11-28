@@ -43,20 +43,39 @@
 		<action name="prepareInsertEntrega" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="prepareInsertEntrega">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntregaEdit.ftl</result>
 		</action>
+		<action name="prepareInsertDevolucao" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="prepareInsertDevolucao">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiDevolucaoEdit.ftl</result>
+		</action>
 		<action name="prepareUpdateEntrega" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="prepareUpdateEntrega">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntregaEdit.ftl</result>
+		</action>
+		<action name="prepareUpdateDevolucao" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="prepareUpdateDevolucao">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiDevolucaoEdit.ftl</result>
 		</action>
 		<action name="insertEntrega" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="insertEntrega">
 			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect">prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntregaEdit.ftl</result>
 		</action>
+		<action name="insertDevolucao" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="insertDevolucao">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiDevolucaoEdit.ftl</result>
+		</action>
 		<action name="updateEntrega" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="updateEntrega">
 			<interceptor-ref name="tokenWebStack" />
 			<result name="success" type="redirect">prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntregaEdit.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiDevolucaoEdit.ftl</result>
+		</action>
+		<action name="updateDevolucao" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="updateDevolucao">
+			<interceptor-ref name="tokenWebStack" />
+			<result name="success" type="redirect">prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiDevolucaoEdit.ftl</result>
 		</action>
 		<action name="deleteEntrega" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="deleteEntrega">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntrega.ftl</result>
+		</action>
+		<action name="deleteDevolucao" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="deleteDevolucao">
 			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/solicitacaoEpiEntrega.ftl</result>
 		</action>
 		<action name="filtroColaboradores" class="com.fortes.rh.web.action.sesmt.SolicitacaoEpiEditAction" method="filtroColaboradores">

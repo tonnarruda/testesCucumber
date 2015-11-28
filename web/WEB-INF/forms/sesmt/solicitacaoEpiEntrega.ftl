@@ -22,7 +22,7 @@
 	</style>
 
 	<#include "../ftl/mascarasImports.ftl" />
-	<title>Entrega de EPIs</title>
+	<title>Entrega/Devolução de EPIs</title>
 	
 	<#-- Não apague, da um erro que nem o babau achou, e ainda mais nem sempre acontece, logo não apague (erro no stack.setValue("#datepicker_js_included", true)) -->
 	<script type="text/javascript" src="<@ww.url includeParams="none" value="/webwork/jscalendar/" encode='false'/>calendar.js"></script>
@@ -69,6 +69,7 @@
 			<tr>
 				<th style="background:#7BA6D3;" colspan="2">Itens da Solicitação</th>
 				<th style="background:#7BA6D3;" colspan="3">Histórico de Entregas</th>
+				<th style="background:#7BA6D3;" colspan="3">Histórico de Devoluções</th>
 			</tr>
 			<tr>
 				<th>Epi</th>
@@ -76,6 +77,9 @@
 				<th width="50">Ações</th>
 				<th width="100">Data</th>
 				<th width="100">Qtd. Entregue</th>
+				<th width="50">Ações</th>
+				<th width="100">Data</th>
+				<th width="100">Qtd. Devolvida</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -115,6 +119,42 @@
 							<a>
 								<img title="Todos os itens foram entregues" src="<@ww.url includeParams="none" value="/imgs/info.png"/>" border="0" align="absMiddle" /> 
 								Todos os itens foram entregues
+							</a>
+						</#if>
+					</td>
+					
+					<td colspan="3" align="center" style="padding:0px">
+						<#if item.solicitacaoEpiItemDevolucoes?exists && 0 < item.solicitacaoEpiItemDevolucoes?size>
+							<table style="margin:0px !important;">
+								<tbody>
+									<#list item.solicitacaoEpiItemDevolucoes as devolucao>
+										<tr>
+											<td width="50" align="center">
+												<a href="prepareUpdateDevolucao.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemDevolucao.id=${devolucao.id}&solicitacaoEpiItem.id=${item.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
+												<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteDevolucao.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemDevolucao.id=${devolucao.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+											</td>
+											<td width="100" align="center">${devolucao.dataDevolucao}</td>
+											<td width="100" align="right">${devolucao.qtdDevolvida}</td>
+										</tr>
+									</#list>
+								</tbody>
+							</table>
+						</#if>
+						
+						<#if (item.totalDevolvido < item.totalEntregue) >
+							<a href="prepareInsertDevolucao.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItem.id=${item.id}">
+								<img title="Inserir Devolução" src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" align="absMiddle" /> 
+								Inserir devolução
+							</a>
+						<#elseif item.totalEntregue == 0>
+							<a>
+								<img title="Todos os itens foram devolvidos" src="<@ww.url includeParams="none" value="/imgs/info.png"/>" border="0" align="absMiddle" /> 
+								Não Existem itens a serem devolvidos
+							</a>
+						<#elseif item.totalDevolvido == item.totalEntregue>	
+							<a>
+								<img title="Todos os itens foram devolvidos" src="<@ww.url includeParams="none" value="/imgs/info.png"/>" border="0" align="absMiddle" /> 
+								Todos os itens foram devolvidos
 							</a>
 						</#if>
 					</td>

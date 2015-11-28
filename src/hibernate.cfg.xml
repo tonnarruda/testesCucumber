@@ -194,10 +194,7 @@
     <mapping class="com.fortes.rh.model.sesmt.SinalizacaoPcmat" />
     <mapping class="com.fortes.rh.model.sesmt.MotivoSolicitacaoEpi" />
     <mapping class="com.fortes.rh.model.sesmt.TipoTamanhoEPI" />
+    <mapping class="com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao" />
   </session-factory>
-
-
-
-
 
 </hibernate-configuration>

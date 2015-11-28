@@ -59,10 +59,14 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 	@Transient
 	private Date vencimentoCA;
 	@Transient
-	private String informativo;
+	private String informativoEntrega;
+	@Transient
+	private String informativoDevolucao;
 	@Transient
 	private TamanhoEPI tamanhoEPI;
-
+	@Transient
+	private Integer qtdEpiDevolvido = 0;
+	
 	public SolicitacaoEpi()
 	{
 		if (this.data == null)
@@ -86,14 +90,24 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 		this.vencimentoCA = vencimentoCA;
 	}
 
-	public String getSituacaoDescricao()
+	public String getSituacaoDescricaoEntrega()
 	{
-		return SituacaoSolicitacaoEpi.getSituacaoDescricao(qtdEpiEntregue, qtdEpiSolicitado);
+		return SituacaoSolicitacaoEpi.getSituacaoDescricaoEntrega(qtdEpiEntregue, qtdEpiSolicitado);
 	}
 
-	public char getSituacao()
+	public String getSituacaoEntrega()
 	{
-		return SituacaoSolicitacaoEpi.getSituacao(qtdEpiEntregue, qtdEpiSolicitado);
+		return SituacaoSolicitacaoEpi.getSituacaoEntrega(qtdEpiEntregue, qtdEpiSolicitado);
+	}
+	
+	public String getSituacaoDescricaoDevolucao()
+	{
+		return SituacaoSolicitacaoEpi.getSituacaoDescricaoDevolucao(qtdEpiDevolvido, qtdEpiEntregue);
+	}
+
+	public String getSituacaoDevolucao()
+	{
+		return SituacaoSolicitacaoEpi.getSituacaoDevolucao(qtdEpiDevolvido, qtdEpiEntregue);
 	}
 	
 	public Date getDataVencimentoEpi()
@@ -248,14 +262,22 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 		this.qtdEpiEntregue = qtdEpiEntregue;
 	}
 
-	public String getInformativo() {
-		return informativo;
+	public String getInformativoEntrega() {
+		return informativoEntrega;
 	}
 
-	public void setInformativo(String informativo) {
-		this.informativo = informativo;
+	public void setInformativoEntrega(String informativoEntrega) {
+		this.informativoEntrega = informativoEntrega;
 	}
 	
+	public String getInformativoDevolucao() {
+		return informativoDevolucao;
+	}
+
+	public void setInformativoDevolucao(String informativoDevolucao) {
+		this.informativoDevolucao = informativoDevolucao;
+	}
+
 	public Estabelecimento getEstabelecimento()
 	{
 		return estabelecimento;
@@ -272,5 +294,13 @@ public class SolicitacaoEpi extends AbstractModel implements Serializable
 
 	public void setTamanhoEPI(TamanhoEPI tamanhoEPI) {
 		this.tamanhoEPI = tamanhoEPI;
+	}
+
+	public Integer getQtdEpiDevolvido() {
+		return qtdEpiDevolvido;
+	}
+
+	public void setQtdEpiDevolvido(Integer qtdEpiDevolvido) {
+		this.qtdEpiDevolvido = qtdEpiDevolvido;
 	}
 }

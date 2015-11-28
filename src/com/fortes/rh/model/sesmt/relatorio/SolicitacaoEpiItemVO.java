@@ -22,13 +22,16 @@ public class SolicitacaoEpiItemVO
 	private String cargoNome;
 	private Integer qtdSolicitadoTotal;
 	private Integer qtdEntregue;
-	private char solicitacaoEpiSituacao;
+	private String solicitacaoEpiSituacaoEntrega;
 	private String epiNome;
 	private Long itemId;
 	private Integer qtdSolicitadoItem;
 	private Integer qtdEntregueItem;
 	private String descricaoMotivoSolicitacaoEpi;
 	private String descricaoTamanhoEpi;
+	private String solicitacaoEpiSituacaoDevolucao;
+	private Integer qtdDevolvida;
+	private Integer qtdDevolvidaItem;
 
 	public Long getSolicitacaoEpiId() {
 		return solicitacaoEpiId;
@@ -149,19 +152,24 @@ public class SolicitacaoEpiItemVO
 		this.itemId = itemId;
 	}
 	
-	public char getSolicitacaoEpiSituacao() {
-		return solicitacaoEpiSituacao;
+	public String getSolicitacaoEpiSituacaoEntrega() {
+		return solicitacaoEpiSituacaoEntrega;
 	}
 
-	public void setSolicitacaoEpiSituacao(char solicitacaoEpiSituacao) {
-		this.solicitacaoEpiSituacao = solicitacaoEpiSituacao;
+	public void setSolicitacaoEpiSituacao(String solicitacaoEpiSituacaoEntrega) {
+		this.solicitacaoEpiSituacaoEntrega = solicitacaoEpiSituacaoEntrega;
 	}
 	
-	public String getSituacaoDescricao()
+	public String getSituacaoDescricaoEntrega()
 	{
-		return SituacaoSolicitacaoEpi.getDescricao(solicitacaoEpiSituacao);
+		return SituacaoSolicitacaoEpi.getDescricao(solicitacaoEpiSituacaoEntrega);
 	}
 
+	public String getSituacaoDescricaoDevolucao()
+	{
+		return SituacaoSolicitacaoEpi.getDescricao(solicitacaoEpiSituacaoDevolucao);
+	}
+	
 	public Long getColaboradorId()
 	{
 		return colaboradorId;
@@ -200,5 +208,29 @@ public class SolicitacaoEpiItemVO
 		if(this.descricaoTamanhoEpi != null && !this.descricaoTamanhoEpi.isEmpty())
 			return getEpiNome() + " (" + descricaoTamanhoEpi + ")";
 		else return getEpiNome();
+	}
+
+	public String getSolicitacaoEpiSituacaoDevolucao() {
+		return solicitacaoEpiSituacaoDevolucao;
+	}
+
+	public void setSolicitacaoEpiSituacaoDevolucao(String solicitacaoEpiSituacaoDevolucao) {
+		this.solicitacaoEpiSituacaoDevolucao = solicitacaoEpiSituacaoDevolucao;
+	}
+
+	public Integer getQtdDevolvida() {
+		return qtdDevolvida;
+	}
+
+	public void setQtdDevolvida(Integer qtdDevolvida) {
+		this.qtdDevolvida = qtdDevolvida;
+	}
+
+	public Integer getQtdDevolvidaItem() {
+		return qtdDevolvidaItem;
+	}
+
+	public void setQtdDevolvidaItem(Integer qtdDevolvidaItem) {
+		this.qtdDevolvidaItem = qtdDevolvidaItem;
 	}
 }

@@ -237,6 +237,7 @@ import com.fortes.rh.model.sesmt.RiscoAmbiente;
 import com.fortes.rh.model.sesmt.RiscoMedicaoRisco;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.SolicitacaoExame;
 import com.fortes.rh.model.sesmt.TipoEPI;
@@ -959,6 +960,7 @@ public class CoberturaGetSetTest extends MockObjectTestCase
 		cobreGetSet(new Providencia());
 		cobreGetSet(new GerenciadorComunicacao());
 		cobreGetSet(new SolicitacaoEpiItemEntrega());
+		cobreGetSet(new SolicitacaoEpiItemDevolucao());
 		cobreGetSet(new Obra());
 		cobreGetSet(new Fase());
 		cobreGetSet(new MedidaSeguranca());

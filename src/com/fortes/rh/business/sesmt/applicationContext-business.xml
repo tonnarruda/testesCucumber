@@ -441,6 +441,9 @@
     <property name="epiHistoricoManager">
       <ref bean="epiHistoricoManager" />
     </property>
+     <property name="solicitacaoEpiItemDevolucaoManager">
+      <ref bean="solicitacaoEpiItemDevolucaoManager" />
+    </property>
   </bean>
   <bean id="solicitacaoEpiItemManager" parent="parentManager">
     <property name="proxyInterfaces">
@@ -1125,5 +1128,19 @@
       <ref bean="tipoTamanhoEPIManagerTarget" />
     </property>
   </bean>  
+  <bean id="solicitacaoEpiItemDevolucaoManagerTarget" class="com.fortes.rh.business.sesmt.SolicitacaoEpiItemDevolucaoManagerImpl">
+    <property name="dao">
+      <ref bean="solicitacaoEpiItemDevolucaoDao" />
+    </property>
+  </bean>
+  <bean id="solicitacaoEpiItemDevolucaoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.sesmt.SolicitacaoEpiItemDevolucaoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="solicitacaoEpiItemDevolucaoManagerTarget" />
+    </property>
+  </bean>
 </beans>
+
 

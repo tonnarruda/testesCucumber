@@ -8,6 +8,7 @@ import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.sesmt.EpiHistoricoManager;
 import com.fortes.rh.business.sesmt.EpiManager;
 import com.fortes.rh.business.sesmt.MotivoSolicitacaoEpiManager;
+import com.fortes.rh.business.sesmt.SolicitacaoEpiItemDevolucaoManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemEntregaManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiItemManager;
 import com.fortes.rh.business.sesmt.SolicitacaoEpiManager;
@@ -20,6 +21,7 @@ import com.fortes.rh.model.sesmt.EpiHistorico;
 import com.fortes.rh.model.sesmt.MotivoSolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.TamanhoEPI;
 import com.fortes.rh.util.StringUtil;
@@ -35,6 +37,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	private EpiHistoricoManager epiHistoricoManager;
 	private SolicitacaoEpiItemManager solicitacaoEpiItemManager;
 	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
+	private SolicitacaoEpiItemDevolucaoManager solicitacaoEpiItemDevolucaoManager;
 	private MotivoSolicitacaoEpiManager motivoSolicitacaoEpiManager;
 	private TipoEPIManager tipoEPIManager;
 
@@ -42,6 +45,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	private SolicitacaoEpi solicitacaoEpi;
 	private SolicitacaoEpiItem solicitacaoEpiItem;
 	private SolicitacaoEpiItemEntrega solicitacaoEpiItemEntrega;
+	private SolicitacaoEpiItemDevolucao solicitacaoEpiItemDevolucao;
 
 	private Collection<Colaborador> colaboradors;
 	private Collection<SolicitacaoEpiItem> solicitacaoEpiItems;
@@ -287,7 +291,103 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 		prepareEntrega();
 		return SUCCESS;
 	}
+	
+	public String prepareInsertDevolucao() throws Exception
+	{
+		solicitacaoEpiItem = solicitacaoEpiItemManager.findByIdProjection(solicitacaoEpiItem.getId());
+		return Action.SUCCESS;
+	}
+	
+	public String prepareUpdateDevolucao() throws Exception
+	{
+		solicitacaoEpiItemDevolucao = solicitacaoEpiItemDevolucaoManager.findById(solicitacaoEpiItemDevolucao.getId());
+		solicitacaoEpiItem = solicitacaoEpiItemManager.findByIdProjection(solicitacaoEpiItem.getId());
+		return Action.SUCCESS;
+	}
 
+	public String insertDevolucao() throws Exception
+	{
+		try
+		{
+			validaDatasEQtdsDevolvidas(solicitacaoEpi.getId(), solicitacaoEpiItem.getId(), solicitacaoEpiItemDevolucao);
+			
+			solicitacaoEpiItemDevolucao.setSolicitacaoEpiItem(solicitacaoEpiItem);
+			solicitacaoEpiItemDevolucaoManager.save(solicitacaoEpiItemDevolucao);
+		}
+		catch (FortesException fE)
+		{
+			addActionWarning(fE.getMessage());
+			fE.printStackTrace();
+			prepareInsertDevolucao();
+			return INPUT;
+		}
+		catch (Exception e)
+		{
+			addActionError("Erro ao gravar a devolução do EPI.");
+			e.printStackTrace();
+			prepareInsertDevolucao();
+			return INPUT;
+		}
+
+		return SUCCESS;
+	}
+	
+	public String updateDevolucao() throws Exception
+	{
+		try
+		{
+			validaDatasEQtdsDevolvidas(solicitacaoEpi.getId(), solicitacaoEpiItem.getId(), solicitacaoEpiItemDevolucao);
+			
+			solicitacaoEpiItemDevolucao.setSolicitacaoEpiItem(solicitacaoEpiItem);
+			solicitacaoEpiItemDevolucaoManager.update(solicitacaoEpiItemDevolucao);
+		}
+		catch (FortesException fE)
+		{
+			addActionWarning(fE.getMessage());
+			fE.printStackTrace();
+			prepareUpdateDevolucao();
+			return INPUT;
+		}
+		catch (Exception e)
+		{
+			addActionError("Erro ao editar a devolução.");
+			e.printStackTrace();
+			prepareUpdateDevolucao();
+			return INPUT;
+		}
+		return SUCCESS;
+	}
+	
+	public String deleteDevolucao() throws Exception
+	{
+		try
+		{
+			solicitacaoEpiItemDevolucaoManager.remove(solicitacaoEpiItemDevolucao.getId());
+			addActionSuccess("Devolução do EPI excluída com sucesso");
+		}
+		catch (Exception e)
+		{
+			addActionError("Erro ao excluir devolução.");
+			e.printStackTrace();
+		}
+		
+		prepareEntrega();
+		return SUCCESS;
+	}
+	
+	private void validaDatasEQtdsDevolvidas(Long solicitacaoEpiId, Long solicitacaoEpiItemId, SolicitacaoEpiItemDevolucao solicitacaoEpiItemDevolucao) throws FortesException
+	{
+		SolicitacaoEpi solicitacaoEpi = solicitacaoEpiManager.findEntidadeComAtributosSimplesById(solicitacaoEpiId);
+		if (solicitacaoEpiItemDevolucao.getDataDevolucao().before(solicitacaoEpi.getData()))
+			throw new FortesException("A data de devolução não pode ser anterior à data de solicitação");
+		
+		int totalEntregue = solicitacaoEpiItemEntregaManager.getTotalEntregue(solicitacaoEpiItemId, null);
+		int totalDevolvido = solicitacaoEpiItemDevolucaoManager.getTotalDevolvido(solicitacaoEpiItemId, solicitacaoEpiItemDevolucao.getId());
+		
+		if (totalDevolvido + solicitacaoEpiItemDevolucao.getQtdDevolvida() > totalEntregue)
+			throw new FortesException("O total de itens devolvidos não pode ser superior à quantidade de itens entregues");
+	}
+	
 	public SolicitacaoEpi getSolicitacaoEpi()
 	{
 		if(solicitacaoEpi == null)
@@ -417,6 +517,15 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 		this.solicitacaoEpiItemEntrega = solicitacaoEpiItemEntrega;
 	}
 
+	public SolicitacaoEpiItemDevolucao getSolicitacaoEpiItemDevolucao() {
+		return solicitacaoEpiItemDevolucao;
+	}
+
+	public void setSolicitacaoEpiItemDevolucao(
+			SolicitacaoEpiItemDevolucao solicitacaoEpiItemDevolucao) {
+		this.solicitacaoEpiItemDevolucao = solicitacaoEpiItemDevolucao;
+	}
+
 	public void setSolicitacaoEpiItemEntregaManager(SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager) {
 		this.solicitacaoEpiItemEntregaManager = solicitacaoEpiItemEntregaManager;
 	}
@@ -463,5 +572,14 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 
 	public void setTipoEPIManager(TipoEPIManager tipoEPIManager) {
 		this.tipoEPIManager = tipoEPIManager;
+	}
+
+	public SolicitacaoEpiItemDevolucaoManager getSolicitacaoEpiItemDevolucaoManager() {
+		return solicitacaoEpiItemDevolucaoManager;
+	}
+
+	public void setSolicitacaoEpiItemDevolucaoManager(
+			SolicitacaoEpiItemDevolucaoManager solicitacaoEpiItemDevolucaoManager) {
+		this.solicitacaoEpiItemDevolucaoManager = solicitacaoEpiItemDevolucaoManager;
 	}
 }

@@ -44,7 +44,7 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	private Date dataFim;
 	private String nomeBusca;
 	private String matriculaBusca;
-	private char situacao = 'T';
+	private String situacao = "T";
 	private Long tipoEpi;
 	private Collection<TipoEPI> tipoEpis;
 	private Colaborador colaborador = new Colaborador();
@@ -430,11 +430,11 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 		this.entrega = entrega;
 	}
 
-	public char getSituacao() {
+	public String getSituacao() {
 		return situacao;
 	}
 
-	public void setSituacao(char situacao) {
+	public void setSituacao(String situacao) {
 		this.situacao = situacao;
 	}
 

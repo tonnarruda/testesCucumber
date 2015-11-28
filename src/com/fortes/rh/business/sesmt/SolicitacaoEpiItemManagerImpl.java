@@ -12,12 +12,14 @@ import com.fortes.rh.model.sesmt.EpiHistorico;
 import com.fortes.rh.model.sesmt.MotivoSolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpi;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItem;
+import com.fortes.rh.model.sesmt.SolicitacaoEpiItemDevolucao;
 import com.fortes.rh.model.sesmt.SolicitacaoEpiItemEntrega;
 import com.fortes.rh.model.sesmt.TamanhoEPI;
 
 public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<SolicitacaoEpiItem, SolicitacaoEpiItemDao> implements SolicitacaoEpiItemManager
 {
 	private SolicitacaoEpiItemEntregaManager solicitacaoEpiItemEntregaManager;
+	private SolicitacaoEpiItemDevolucaoManager solicitacaoEpiItemDevolucaoManager;
 	private EpiHistoricoManager epiHistoricoManager;
 	
 	public Collection<SolicitacaoEpiItem> findBySolicitacaoEpi(Long solicitacaoEpiId)
@@ -29,10 +31,16 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 			Collection<SolicitacaoEpiItemEntrega> entregas =  solicitacaoEpiItemEntregaManager.findBySolicitacaoEpiItem(solicitacaoEpiItem.getId());
 			solicitacaoEpiItem.setSolicitacaoEpiItemEntregas(entregas);
 			
+			Collection<SolicitacaoEpiItemDevolucao> devolucoes =  solicitacaoEpiItemDevolucaoManager.findSolicEpiItemDevolucaoBySolicitacaoEpiItem(solicitacaoEpiItem.getId());
+			solicitacaoEpiItem.setSolicitacaoEpiItemDevolucoes(devolucoes);
+			
 			for (SolicitacaoEpiItemEntrega entrega : entregas)
 				solicitacaoEpiItem.setTotalEntregue(solicitacaoEpiItem.getTotalEntregue() + entrega.getQtdEntregue());
+			
+			for (SolicitacaoEpiItemDevolucao devolucao : devolucoes)
+				solicitacaoEpiItem.setTotalDevolvido(solicitacaoEpiItem.getTotalDevolvido() + devolucao.getQtdDevolvida());
 		}
-		
+
 		return solicitacaoEpiItems;
 	}
 
@@ -99,6 +107,10 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 		return getDao().findAllEntregasBySolicitacaoEpi(solicitacaoEpiId);
 	}
 
+	public Collection<SolicitacaoEpiItem> findAllDevolucoesBySolicitacaoEpi(Long solicitacaoEpiId) {
+		return getDao().findAllDevolucoesBySolicitacaoEpi(solicitacaoEpiId);
+	}
+
 	public SolicitacaoEpiItem findByIdProjection(Long id) 
 	{
 		return getDao().findByIdProjection(id);
@@ -114,5 +126,10 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 
 	public void setEpiHistoricoManager(EpiHistoricoManager epiHistoricoManager) {
 		this.epiHistoricoManager = epiHistoricoManager;
+	}
+
+	public void setSolicitacaoEpiItemDevolucaoManager(
+			SolicitacaoEpiItemDevolucaoManager solicitacaoEpiItemDevolucaoManager) {
+		this.solicitacaoEpiItemDevolucaoManager = solicitacaoEpiItemDevolucaoManager;
 	}
 }

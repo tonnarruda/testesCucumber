@@ -330,7 +330,13 @@
       <ref bean="sessionFactory" />
     </property>
   </bean>
+  <bean id="solicitacaoEpiItemDevolucaoDaoTarget" class="com.fortes.rh.dao.hibernate.sesmt.SolicitacaoEpiItemDevolucaoDaoHibernate">
+    <property name="sessionFactory">
+      <ref bean="sessionFactory" />
+    </property>
+  </bean>
 </beans>
+
 
 
 

@@ -6,8 +6,8 @@ import java.io.IOException;
 public class Principal
 {
 	//Refresh(F5) o projeto e Commit antes de rodar essa classe...
-	public static String NOME_CLASSE = "SinalizacaoPcmat";
-	public static String NOME_CLASSE_MINUSCULO = "sinalizacaoPcmat";
+	public static String NOME_CLASSE = "SolicitacaoEpiItemDevolucao";
+	public static String NOME_CLASSE_MINUSCULO = "solicitacaoEpiItemDevolucao";
 	public static String NOME_PACOTE = "sesmt";
 	public static boolean GERAR_TODOS_ARQUIVOS = false;//gera todos os arquivos ou somente entidade, manager e dao 
 	
