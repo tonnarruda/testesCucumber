@@ -510,6 +510,21 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		
 		return msgAlert;
 	}
+	
+	public String verificaColaboradorCertificado(Long[] colaboradoresId, Long cursoId, Long certificacaoId)
+	{
+		Colaborador colaborador = null;
+		String msgAlert= "";
+		for(int i = 0; i < colaboradoresId.length; i++)
+		{
+			colaborador = getDao().verificaColaboradorCertificado(colaboradoresId[i], cursoId, certificacaoId);
+			if(colaborador != null)
+				msgAlert += colaborador.getNome() + "<br>";
+		}
+		
+		return msgAlert;
+	}
+	
 
 	@Override
 	public void remove(ColaboradorTurma colaboradorTurma)

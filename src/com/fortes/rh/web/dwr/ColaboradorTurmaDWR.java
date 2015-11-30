@@ -18,4 +18,10 @@ public class ColaboradorTurmaDWR
 	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager) {
 		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
+	
+	public String checaColaboradoresAprovadosNaCertificacaoPreRequisito(Long cursoId, Long[] colaboradorIds) throws Exception
+	{
+		return colaboradorTurmaManager.verificaColaboradorCertificado(colaboradorIds, cursoId, null);
+	}
+		
 }
