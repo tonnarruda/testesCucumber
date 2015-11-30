@@ -167,6 +167,9 @@ public class SolicitacaoEpiItemVO
 
 	public String getSituacaoDescricaoDevolucao()
 	{
+		if(solicitacaoEpiSituacaoDevolucao == null)
+			return "Sem EPI a devolver";
+		
 		return SituacaoSolicitacaoEpi.getDescricao(solicitacaoEpiSituacaoDevolucao);
 	}
 	

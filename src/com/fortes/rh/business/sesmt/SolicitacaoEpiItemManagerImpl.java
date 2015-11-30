@@ -27,21 +27,26 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 		Collection<SolicitacaoEpiItem> solicitacaoEpiItems = getDao().findBySolicitacaoEpi(solicitacaoEpiId);
 		
 		for (SolicitacaoEpiItem solicitacaoEpiItem : solicitacaoEpiItems) 
-		{
-			Collection<SolicitacaoEpiItemEntrega> entregas =  solicitacaoEpiItemEntregaManager.findBySolicitacaoEpiItem(solicitacaoEpiItem.getId());
-			solicitacaoEpiItem.setSolicitacaoEpiItemEntregas(entregas);
-			
-			Collection<SolicitacaoEpiItemDevolucao> devolucoes =  solicitacaoEpiItemDevolucaoManager.findSolicEpiItemDevolucaoBySolicitacaoEpiItem(solicitacaoEpiItem.getId());
-			solicitacaoEpiItem.setSolicitacaoEpiItemDevolucoes(devolucoes);
-			
-			for (SolicitacaoEpiItemEntrega entrega : entregas)
-				solicitacaoEpiItem.setTotalEntregue(solicitacaoEpiItem.getTotalEntregue() + entrega.getQtdEntregue());
-			
-			for (SolicitacaoEpiItemDevolucao devolucao : devolucoes)
-				solicitacaoEpiItem.setTotalDevolvido(solicitacaoEpiItem.getTotalDevolvido() + devolucao.getQtdDevolvida());
-		}
+			populaEPIsEntreguesDevolvidos(solicitacaoEpiItem);
 
 		return solicitacaoEpiItems;
+	}
+	
+	public SolicitacaoEpiItem populaEPIsEntreguesDevolvidos(SolicitacaoEpiItem solicitacaoEpiItem)
+	{
+		Collection<SolicitacaoEpiItemEntrega> entregas =  solicitacaoEpiItemEntregaManager.findBySolicitacaoEpiItem(solicitacaoEpiItem.getId());
+		solicitacaoEpiItem.setSolicitacaoEpiItemEntregas(entregas);
+		
+		Collection<SolicitacaoEpiItemDevolucao> devolucoes =  solicitacaoEpiItemDevolucaoManager.findSolicEpiItemDevolucaoBySolicitacaoEpiItem(solicitacaoEpiItem.getId());
+		solicitacaoEpiItem.setSolicitacaoEpiItemDevolucoes(devolucoes);
+		
+		for (SolicitacaoEpiItemEntrega entrega : entregas)
+			solicitacaoEpiItem.setTotalEntregue(solicitacaoEpiItem.getTotalEntregue() + entrega.getQtdEntregue());
+		
+		for (SolicitacaoEpiItemDevolucao devolucao : devolucoes)
+			solicitacaoEpiItem.setTotalDevolvido(solicitacaoEpiItem.getTotalDevolvido() + devolucao.getQtdDevolvida());
+		
+		return solicitacaoEpiItem;
 	}
 
 	public void save(SolicitacaoEpi solicitacaoEpi, String[] epiIds, String[] selectQtdSolicitado, String[] selectMotivoSolicitacaoEpi, Date dataEntrega, boolean entregue, String[] selectTamanhoEpi)

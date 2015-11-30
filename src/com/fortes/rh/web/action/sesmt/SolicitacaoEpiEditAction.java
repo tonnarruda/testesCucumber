@@ -279,8 +279,16 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	{
 		try
 		{
-			solicitacaoEpiItemEntregaManager.remove(solicitacaoEpiItemEntrega.getId());
-			addActionSuccess("Entrega de EPI excluída com sucesso");
+			solicitacaoEpiItem = solicitacaoEpiItemManager.populaEPIsEntreguesDevolvidos(solicitacaoEpiItem);
+			solicitacaoEpiItemEntrega = solicitacaoEpiItemEntregaManager.findById(solicitacaoEpiItemEntrega.getId());
+			
+			if(solicitacaoEpiItem.getTotalDevolvido() != 0 && ((solicitacaoEpiItemEntrega.getQtdEntregue() <= solicitacaoEpiItem.getTotalEntregue() && solicitacaoEpiItem.getTotalEntregue() <= solicitacaoEpiItem.getTotalDevolvido())
+				|| solicitacaoEpiItemEntrega.getQtdEntregue() > solicitacaoEpiItem.getTotalDevolvido()))
+				addActionWarning("A exclusão da entrega não pode ser realizada, pois existem devoluções para o ítem entregue.");
+			else {
+				solicitacaoEpiItemEntregaManager.remove(solicitacaoEpiItemEntrega.getId());
+				addActionSuccess("Entrega de EPI excluída com sucesso");
+			}
 		}
 		catch (Exception e)
 		{

@@ -100,7 +100,7 @@
 										<tr>
 											<td width="50" align="center">
 												<a href="prepareUpdateEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemEntrega.id=${entrega.id}&solicitacaoEpiItem.id=${item.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>"></a>
-												<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemEntrega.id=${entrega.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
+												<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='deleteEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}&solicitacaoEpiItemEntrega.id=${entrega.id}&solicitacaoEpiItem.id=${item.id}'});"><img border="0" title="<@ww.text name="list.del.hint"/>" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>"></a>
 											</td>
 											<td width="100" align="center">${entrega.dataEntrega}</td>
 											<td width="100" align="right">${entrega.qtdEntregue}</td>

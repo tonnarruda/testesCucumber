@@ -47,10 +47,12 @@ public class SituacaoSolicitacaoEpi extends LinkedHashMap<String, String>
 
 	public static final String getSituacaoDescricaoDevolucao(int qtdDevolvido, int qtdEntregue)
 	{
-		if (qtdDevolvido == qtdEntregue)
+		if (qtdDevolvido != 0 && qtdDevolvido == qtdEntregue)
 			return getDescricao(DEVOLVIDO);
 		else if(qtdDevolvido > 0)
 			return getDescricao(DEVOLVIDO_PARCIALMENTE);
+		else if (qtdDevolvido == 0 && qtdEntregue == 0)
+			return "Sem EPI a devolver";
 		else return getDescricao(SEM_DEVOLUCAO);
 	}
 

@@ -16,4 +16,5 @@ public interface SolicitacaoEpiItemManager extends GenericManager<SolicitacaoEpi
 	SolicitacaoEpiItem findByIdProjection(Long id);
 	Integer countByTipoEPIAndTamanhoEPI(Long tipoEPIId, Long tamanhoEPIId);
 	Collection<SolicitacaoEpiItem> findAllDevolucoesBySolicitacaoEpi(Long solicitacaoEpiId);
+	SolicitacaoEpiItem populaEPIsEntreguesDevolvidos(SolicitacaoEpiItem solicitacaoEpiItem);
 }

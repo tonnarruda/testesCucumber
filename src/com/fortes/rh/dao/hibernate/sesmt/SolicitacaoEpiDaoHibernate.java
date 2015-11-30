@@ -131,7 +131,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.ABERTA))
 			sql.append("and sub.qtdEntregue = 0 ");
 		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.DEVOLVIDO))
-			sql.append("and sub.qtdDevolvida = sub.qtdEntregue ");
+			sql.append("and (sub.qtdDevolvida != 0 and sub.qtdDevolvida = sub.qtdEntregue) ");
 		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.DEVOLVIDO_PARCIALMENTE))
 			sql.append("and sub.qtdDevolvida > 0 and  sub.qtdDevolvida < sub.qtdEntregue ");
 		else if (situacaoSolicitacaoEpi.equals(SituacaoSolicitacaoEpi.SEM_DEVOLUCAO))
@@ -430,7 +430,7 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			vo.setSolicitacaoEpiSituacao(obj[++countCampo].toString());
 			vo.setQtdDevolvida(new Integer(obj[++countCampo].toString()));
 			vo.setQtdDevolvidaItem((new Integer(obj[++countCampo].toString())));
-			vo.setSolicitacaoEpiSituacaoDevolucao(obj[++countCampo].toString());
+			vo.setSolicitacaoEpiSituacaoDevolucao(obj[++countCampo]!= null ? obj[++countCampo].toString(): null);
 			vo.setDescricaoTamanhoEpi(((String) obj[++countCampo]));
 			
 			lista.add(vo);
