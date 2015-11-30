@@ -206,6 +206,8 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findParaLembreteTerminoContratoTemporario(Collection<Integer> diasLembretes, Long empresaId);
 	public Collection<Colaborador> findHabilitacaAVencer(Collection<Integer> diasLembrete, Long empresaId);
 	public String getReciboPagamento(Colaborador colaborador, Date mesAno) throws Exception;
+	public String getReciboDeDecimoTerceiro(Colaborador colaborador, String dataCalculo) throws Exception;
+	public String[] getDatasDecimoTerceiroPorEmpregado(Colaborador colaborador) throws Exception;
 	public Collection<DataGrafico> montaGraficoTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Date dataIni, Date dataFim, Collection<Long> empresasIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos);
 	public Collection<DataGrafico> montaGraficoColaboradoresTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Integer[] mesesParaMultiplicar, Collection<Long> empresasIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos); 
 	public Collection<Colaborador> findDemitidosTurnoverTempoServico(Integer[] tempoServicoIni, Integer[] tempoServicoFim, Long empresaId, Date dataIni, Date dataFim, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<String> vinculos, int filtrarPor);

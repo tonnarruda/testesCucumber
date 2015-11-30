@@ -118,6 +118,9 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	private Map<String,String> vinculos = new Vinculo();
 	private String vinculo;
+	
+	private String[] dataCalculos;
+	private String dataCalculo;
 
 	private Collection<String> dinamicColumns;
 	private Collection<String> dinamicProperts;
@@ -298,6 +301,69 @@ public class ColaboradorListAction extends MyActionSupportList
 			response.setContentLength((int)reciboPagamentoBytes.length);
 			response.setHeader("Content-Transfer-Encoding", "binary");
 			response.setHeader("Content-Disposition","attachment; filename=\"recibo_" + mesAno.replace("/", "") + ".pdf\"");
+
+			response.getOutputStream().write(reciboPagamentoBytes);
+		} 
+		catch (IntegraACException e) 
+		{
+			e.printStackTrace();
+			addActionWarning(e.getMessage());
+			prepareReciboPagamento();
+			return Action.INPUT;
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			addActionError(e.getMessage());
+			prepareReciboPagamento();
+			return Action.INPUT;
+		}
+        
+		return Action.SUCCESS;
+	}
+	
+	public String prepareReciboDeDecimoTerceiro() throws Exception
+	{
+		colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+		
+		if(!getEmpresaSistema().isAcIntegra())
+		{
+			addActionWarning("Esta empresa não está integrada com Fortes Pessoal.");
+		}
+		else if(colaborador == null)
+		{
+			addActionWarning("Sua conta de usuário não está vinculada à nenhum colaborador");
+		}
+		else if(!colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId()))
+		{
+			addActionWarning("Só é possível solicitar seu recibo de pagamento pela empresa a qual você foi contratado(a). Acesse a empresa <strong>" + colaborador.getEmpresaNome() + "</strong> para solicitar seu recibo.");
+			colaborador = null;
+		} else {
+			dataCalculos = colaboradorManager.getDatasDecimoTerceiroPorEmpregado(colaborador);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String reciboDeDecimoTerceiro() throws Exception
+	{
+		try {
+			colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+			
+			String reciboDeDecimoTerceiro = colaboradorManager.getReciboDeDecimoTerceiro(colaborador, dataCalculo);
+			
+	        byte[] reciboPagamentoBytes = Base64.decodeBase64(reciboDeDecimoTerceiro.getBytes()); 
+			
+	        HttpServletResponse response = ServletActionContext.getResponse();
+
+			response.addHeader("Expires", "0");
+			response.addHeader("Pragma", "no-cache");
+			response.setContentType("application/force-download");
+			response.setContentLength((int)reciboPagamentoBytes.length);
+			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.setHeader("Content-Disposition","attachment; filename=\"recibo_decimo_terceiro_" + dataCalculo + ".pdf\"");
 
 			response.getOutputStream().write(reciboPagamentoBytes);
 		} 
@@ -1356,5 +1422,17 @@ public class ColaboradorListAction extends MyActionSupportList
 	public void setCodigoACBusca(String codigoACBusca)
 	{
 		this.codigoACBusca = codigoACBusca;
+	}
+	
+	public void setDataCalculo(String dataCalculo) {
+		this.dataCalculo = dataCalculo.replaceAll("([0-9]{2}/[0-9]{2}/[0-9]{4}).*", "$1");
+	}
+
+	public String getDataCalculo() {
+		return dataCalculo;
+	}
+
+	public String[] getDataCalculos() {
+		return dataCalculos;
 	}
 }

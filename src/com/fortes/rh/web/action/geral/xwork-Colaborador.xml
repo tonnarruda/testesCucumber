@@ -18,6 +18,18 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/reciboPagamento.ftl</result>
 		</action>
+		<action name="prepareReciboDeDecimoTerceiro" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareReciboDeDecimoTerceiro">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/reciboDeDecimoTerceiro.ftl</result>
+		</action>
+		<action name="reciboDeDecimoTerceiro" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="reciboDeDecimoTerceiro">
+		    <result name="success" type="stream">
+			    <param name="contentDisposition">filename=reciboDeDecimoTerceiro.pdf</param>
+			    <param name="contentType">application/pdf;charset=UTF-8</param>
+			    <param name="inputName">byteArrayInputStream</param>
+			    <param name="bufferSize">1024</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/reciboDeDecimoTerceiro.ftl</result>
+		</action>
 		<action name="list" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="list">
 			<interceptor-ref name="defaultListStack">
 	    		<param name="scope.session">codigoACBusca,matriculaBusca,cpfBusca,nomeBusca,situacao,areaOrganizacional.id,estabelecimento.id,cargo.id</param>

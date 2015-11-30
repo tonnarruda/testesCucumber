@@ -2770,6 +2770,16 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return acPessoalClientColaborador.getReciboPagamento(colaborador, mesAno);
 	}
 	
+	public String getReciboDeDecimoTerceiro(Colaborador colaborador, String dataCalculo) throws Exception 
+	{
+		return acPessoalClientColaborador.getReciboDeDecimoTerceiro(colaborador, dataCalculo);
+	}
+	
+	public String[] getDatasDecimoTerceiroPorEmpregado(Colaborador colaborador) throws Exception 
+	{
+		return acPessoalClientColaborador.getDatasDecimoTerceiroPorEmpregado(colaborador);
+	}
+	
 	public Collection<Colaborador> findFormacaoEscolar(Long empresaId, Collection<Long> estabelecimentoIds, Collection<Long> areaIds, Collection<Long> cargoIds) throws Exception
 	{
 		Collection<Colaborador> colaboradores = findAreaOrganizacionalByAreas(false, estabelecimentoIds, areaIds, cargoIds, null, null, null, null, null, null, null, null, SituacaoColaborador.ATIVO, null, empresaId);

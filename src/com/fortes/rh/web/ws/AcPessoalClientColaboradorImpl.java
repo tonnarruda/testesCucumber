@@ -8,6 +8,8 @@ import javax.xml.namespace.QName;
 import javax.xml.rpc.ParameterMode;
 
 import org.apache.axis.client.Call;
+import org.apache.axis.encoding.ser.ArrayDeserializerFactory;
+import org.apache.axis.encoding.ser.ArraySerializerFactory;
 import org.apache.axis.encoding.ser.BeanDeserializerFactory;
 import org.apache.axis.encoding.ser.BeanSerializerFactory;
 
@@ -310,6 +312,64 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
         	throw new IntegraACException(result.getMensagem());
        	
        	return result.getRetorno();
+	}
+	
+	public String getReciboDeDecimoTerceiro(Colaborador colaborador, String dataCalculo) throws Exception
+	{
+		StringBuilder token = new StringBuilder();
+		GrupoAC grupoAC = new GrupoAC();
+		Call call = acPessoalClient.createCall(colaborador.getEmpresa(), token, grupoAC, "GetReciboDeDecimoTerceiro");
+
+		QName xmlstring = new QName("xs:string");
+
+		call.addParameter("Token", xmlstring, ParameterMode.IN);
+		call.addParameter("Empresa", xmlstring, ParameterMode.IN);
+		call.addParameter("Empregado", xmlstring, ParameterMode.IN);
+		call.addParameter("DataCalculo", xmlstring, ParameterMode.IN);
+		
+		acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
+		
+		Object[] param = new Object[]{ token.toString(), colaborador.getEmpresa().getCodigoAC(), colaborador.getCodigoAC(), dataCalculo };
+    	
+		TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
+       	Boolean retorno = result.getSucesso("getReciboDeDecimoTerceiro", param, this.getClass());
+		
+       	if (!retorno)
+        	throw new IntegraACException(result.getMensagem());
+       	
+       	return result.getRetorno();
+	}
+	
+	public String[] getDatasDecimoTerceiroPorEmpregado(Colaborador colaborador) throws Exception
+	{
+		String[] result = null;
+		try
+		{
+			StringBuilder token = new StringBuilder();
+			GrupoAC grupoAC = new GrupoAC();
+			Call call = acPessoalClient.createCall(colaborador.getEmpresa(), token, grupoAC, "GetDatasDecimoTerceiroPorEmpregado");
+
+            QName qnameAr = new QName("urn:UnTypesPessoalWebService", "TDatasDecimo");
+            call.registerTypeMapping(String[].class, qnameAr, new ArraySerializerFactory(qnameAr), new ArrayDeserializerFactory(qnameAr));
+
+			QName xmlstring = new QName("xs:string");
+
+			call.addParameter("Token",xmlstring,ParameterMode.IN);
+			call.addParameter("Empresa",xmlstring,ParameterMode.IN);
+			call.addParameter("Empregado",xmlstring,ParameterMode.IN);
+
+			call.setReturnType(qnameAr);
+
+			Object[] params = new Object[]{ token.toString(), colaborador.getEmpresa().getCodigoAC(), colaborador.getCodigoAC() };
+
+			result = (String[]) call.invoke(params);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return result;
 	}
 	
 	public void confirmarReenvio(TFeedbackPessoalWebService tFeedbackPessoalWebService, Empresa empresa) throws Exception 

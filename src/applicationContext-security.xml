@@ -245,6 +245,8 @@
 				/geral/colaborador/relatorioDinamico*/** = ROLE_REL_LISTA_COLAB
 				/geral/colaborador/prepareReciboPagamento.action* = ROLE_REL_RECIBO_PAGAMENTO
 				/geral/colaborador/reciboPagamento.action* = ROLE_REL_RECIBO_PAGAMENTO
+				/geral/colaborador/prepareReciboDeDecimoTerceiro.action* = ROLE_REL_RECIBO_DECIMO_TERCEIRO
+				/geral/colaborador/reciboDeDecimoTerceiro.action* = ROLE_REL_RECIBO_DECIMO_TERCEIRO
 				/geral/colaborador/prepareAtualizarModeloAvaliacao.action* = ROLE_MOV_ATUALIZAR_MODELO_AVALIACAO_COLABORADOR
 				/geral/colaborador/atualizarModeloAvaliacao.action* = ROLE_MOV_ATUALIZAR_MODELO_AVALIACAO_COLABORADOR
 				
