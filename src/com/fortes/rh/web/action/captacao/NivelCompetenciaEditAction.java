@@ -324,7 +324,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	public void prepareCompetenciasColaborador()
 	{
 		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarial.getId(), data);
-		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId(), null, null);
+		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId(), null, data);
 	}
 	
 	public String prepareInsertCompetenciasColaborador()
@@ -360,7 +360,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		faixaSalarial = configuracaoNivelCompetenciaColaborador.getFaixaSalarial();
 		data = configuracaoNivelCompetenciaColaborador.getData();
 		
-		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId());
+		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId(), null);
 		
 		prepareCompetenciasColaborador();
 		

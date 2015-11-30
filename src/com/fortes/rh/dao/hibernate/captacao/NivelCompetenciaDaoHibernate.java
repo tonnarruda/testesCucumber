@@ -59,6 +59,7 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		else
 			criteria.add(Subqueries.propertyEq("nch.data", subQueryHc));
 
+		criteria.addOrder(Order.asc("chn.ordem"));
 		criteria.addOrder(Order.asc("nc.descricao"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
