@@ -105,7 +105,6 @@
 		
 			<@ww.select label="Selecione a nota de ${pergunta.notaMinima} a ${pergunta.notaMaxima}" cssClass="opcaoResposta${pergunta.id} nota pergunta" name="perguntas[${i}].colaboradorRespostas[0].valor" list=perguntas[i].colaboradorRespostas[0].getNotas() headerKey="" headerValue="Selecione..."/>
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.id" />
-			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.tipo" value="${pergunta.tipo}"/>
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.tipo" value="${pergunta.tipo}" id= "tipo"/>
 			<@ww.hidden id="peso" value="${pergunta.peso}"/>
 			
