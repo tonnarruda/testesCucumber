@@ -70,7 +70,7 @@ public class SolicitacaoEpiItemManagerImpl extends GenericManagerImpl<Solicitaca
 					motivoSolicitacaoEpi.setId(Long.valueOf(selectMotivoSolicitacaoEpi[i]));
 				
 				TamanhoEPI tamanhoEPI;
-				if (StringUtils.isBlank(selectTamanhoEpi[i])) {
+				if (selectTamanhoEpi == null || StringUtils.isBlank(selectTamanhoEpi[i])) {
 					tamanhoEPI = null;
 				} else {
 					tamanhoEPI = new TamanhoEPI();
