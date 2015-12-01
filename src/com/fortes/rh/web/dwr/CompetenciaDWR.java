@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
-import com.fortes.rh.business.captacao.SolicitacaoManager;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.geral.Colaborador;
@@ -16,7 +15,6 @@ import com.fortes.rh.util.DateUtil;
 public class CompetenciaDWR
 {
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
-	private SolicitacaoManager solicitacaoManager;
 
 	@SuppressWarnings("rawtypes")
 	public Map getCompetenciasColaboradorByFaixaSalarialAndData(Long faixaId, String data)
@@ -113,10 +111,5 @@ public class CompetenciaDWR
 
 	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
-	}
-
-	public void setSolicitacaoManager(SolicitacaoManager solicitacaoManager) 
-	{
-		this.solicitacaoManager = solicitacaoManager;
 	}
 }

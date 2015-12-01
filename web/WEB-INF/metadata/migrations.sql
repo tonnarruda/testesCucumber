@@ -117,12 +117,14 @@ CREATE SEQUENCE participanteavaliacaodesempenho_sequence START WITH 1 INCREMENT 
 
 ----------------
 
-CREATE FUNCTION relaciona_avaliado_avaliador() RETURNS integer AS '
+CREATE FUNCTION relaciona_avaliado_avaliador() RETURNS integer AS $$
 DECLARE
     mviews RECORD;
 BEGIN
     FOR mviews IN
-		select distinct cq.avaliador_id as avaliadorId, cq.avaliacaodesempenho_id as avaliacaoDesempenhoId, ad.avaliacao_id as avaliacaoId, cq_a.colaborador_id as colaboradorId from colaboradorquestionario cq
+		select distinct cq.id as cqid, cq.avaliador_id as avaliadorId, cq.avaliacaodesempenho_id as avaliacaoDesempenhoId, ad.avaliacao_id as avaliacaoId, 
+			cq_a.colaborador_id as colaboradorId, cq_a.id as cqaid
+			from colaboradorquestionario cq
 			left join avaliacaodesempenho ad on ad.id = cq.avaliacaodesempenho_id 
 			left join colaboradorquestionario cq_a on cq_a.avaliacaodesempenho_id = cq.avaliacaodesempenho_id and cq_a.avaliador_id is null
 			where
@@ -132,49 +134,47 @@ BEGIN
 				and cq_a.colaborador_id is not null
 				and not(cq.avaliador_id = cq_a.colaborador_id and ad.permiteautoavaliacao = true)
 		LOOP
-			EXECUTE	''insert into colaboradorquestionario(id, colaborador_id, avaliacao_id, avaliacaodesempenho_id, avaliador_id, respondida) values ( nextval('' || quote_literal(''colaboradorquestionario_sequence'') || ''), ''|| quote_literal(mviews.colaboradorId) ||'', ''|| quote_literal(mviews.avaliacaoId) ||'', ''|| quote_literal(mviews.avaliacaoDesempenhoId) ||'', ''|| quote_literal(mviews.avaliadorId) ||'', false)'';
+			insert into colaboradorquestionario(id, colaborador_id, avaliacao_id, avaliacaodesempenho_id, avaliador_id, respondida) 
+			values ( nextval('colaboradorquestionario_sequence'), mviews.colaboradorId, mviews.avaliacaoId, mviews.avaliacaoDesempenhoId, mviews.avaliadorId, false);
+			delete from colaboradorquestionario where id in (mviews.cqid, mviews.cqaid);
 		END LOOP;
     RETURN 1;
 END;
-' LANGUAGE plpgsql;--.go
+$$ LANGUAGE plpgsql;--.go
 select relaciona_avaliado_avaliador();--.go
 drop function relaciona_avaliado_avaliador();--.go 
 
 ---------------
 
-delete FROM colaboradorquestionario where avaliacaodesempenho_id is not null and (avaliador_id is null or colaborador_id is null);--.go
-
----------------
-
-CREATE FUNCTION insert_participante_avaliador() RETURNS integer AS '
+CREATE FUNCTION insert_participante_avaliador() RETURNS integer AS $$
 DECLARE
     mviews RECORD;
 BEGIN
     FOR mviews IN
-		select distinct avaliador_id as colaboradorId, avaliacaodesempenho_id as avaliacaoDesempenhoId, ''R'' as tipo from colaboradorquestionario where avaliacaodesempenho_id is not null
+		select distinct avaliador_id as colaboradorId, avaliacaodesempenho_id as avaliacaoDesempenhoId, 'R' as tipo from colaboradorquestionario where avaliacaodesempenho_id is not null
 		LOOP
-			EXECUTE	''insert into participanteavaliacaodesempenho(id, colaborador_id, avaliacaodesempenho_id, tipo) values ( nextval('' || quote_literal(''participanteavaliacaodesempenho_sequence'') || ''), ''|| quote_literal(mviews.colaboradorId) ||'', ''|| quote_literal(mviews.avaliacaoDesempenhoId) ||'', ''|| quote_literal(mviews.tipo) ||'')'';
+			insert into participanteavaliacaodesempenho(id, colaborador_id, avaliacaodesempenho_id, tipo) values (nextval('participanteavaliacaodesempenho_sequence'), mviews.colaboradorId, mviews.avaliacaoDesempenhoId, mviews.tipo);
 		END LOOP;
     RETURN 1;
 END;
-' LANGUAGE plpgsql;--.go
+$$ LANGUAGE plpgsql;--.go
 select insert_participante_avaliador();--.go
 drop function insert_participante_avaliador();--.go 
 
 ---------------
 
-CREATE FUNCTION insert_participante_avaliado() RETURNS integer AS '
+CREATE FUNCTION insert_participante_avaliado() RETURNS integer AS $$
 DECLARE
     mviews RECORD;
 BEGIN
     FOR mviews IN
-		select distinct colaborador_id as colaboradorId, avaliacaodesempenho_id as avaliacaoDesempenhoId, ''A'' as tipo from colaboradorquestionario where avaliacaodesempenho_id is not null
+		select distinct colaborador_id as colaboradorId, avaliacaodesempenho_id as avaliacaoDesempenhoId, 'A' as tipo from colaboradorquestionario where avaliacaodesempenho_id is not null and colaborador_id is not null
 		LOOP
-			EXECUTE	''insert into participanteavaliacaodesempenho(id, colaborador_id, avaliacaodesempenho_id, tipo) values ( nextval('' || quote_literal(''participanteavaliacaodesempenho_sequence'') || ''), ''|| quote_literal(mviews.colaboradorId) ||'', ''|| quote_literal(mviews.avaliacaoDesempenhoId) ||'', ''|| quote_literal(mviews.tipo) ||'')'';
+			insert into participanteavaliacaodesempenho(id, colaborador_id, avaliacaodesempenho_id, tipo) values ( nextval('participanteavaliacaodesempenho_sequence'), mviews.colaboradorId, mviews.avaliacaoDesempenhoId, mviews.tipo);
 		END LOOP;
     RETURN 1;
 END;
-' LANGUAGE plpgsql;--.go
+$$ LANGUAGE plpgsql;--.go
 select insert_participante_avaliado();--.go
 drop function insert_participante_avaliado();--.go
 
@@ -183,3 +183,14 @@ ALTER TABLE participanteavaliacaodesempenho ADD COLUMN produtividade double prec
 
 ---------------
 ALTER TABLE colaboradorquestionario ADD COLUMN pesoAvaliador double precision default 1; --.go
+
+---------
+DELETE from colaboradorquestionario where id in 
+(select cq.id from colaboradorquestionario cq
+	left join avaliacaodesempenho ad on ad.id = cq.avaliacaodesempenho_id 
+	left join colaboradorquestionario cq_a on cq_a.avaliacaodesempenho_id = cq.avaliacaodesempenho_id and cq_a.avaliador_id is null
+	where
+		cq.colaborador_id is null
+		and not(cq.avaliador_id = cq_a.colaborador_id and ad.permiteautoavaliacao = true)
+);--.go
+
