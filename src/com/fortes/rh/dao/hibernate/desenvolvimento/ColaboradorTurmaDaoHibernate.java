@@ -1678,7 +1678,7 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return Expression.sqlRestriction(sql.toString(), new Date[] {dataReferencia, dataReferencia}, new Type[]{Hibernate.DATE, Hibernate.DATE});
 	}
 	
-	public Collection<ColaboradorTurma> findByColaborador(Long colaboradorId, Long certificacaoId) 
+	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId) 
 	{
 		StringBuilder sql = new StringBuilder();
 		sql.append("select ct.id as ctId, c.id as cursoId, c.nome, t.id as turmaId, t.descricao, t.dataPrevIni, t.dataPrevFim, t.realizada, verifica_aprovacao(c.id, t.id, ct.id, c.percentualMinimoFrequencia) as aprovacao ");
@@ -1695,12 +1695,31 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		sql.append("                       inner join turma t2 on ct2.turma_id = t2.id ");
 		sql.append("                       where t2.curso_id = c.id ");
 		sql.append("                       and ct2.colaborador_id = ct.colaborador_id ");
+		
+		if(colaboradorCertificacaoId != null)
+		{
+			sql.append("and ");
+			sql.append("(t2.dataPrevFim between ");
+			sql.append("			coalesce( ");
+			sql.append("						(select data from colaboradorcertificacao where data = (select max(data) from colaboradorcertificacao ");
+			sql.append("								where data < (select data from colaboradorcertificacao where id = :colaboradorCertificacaoId) ");
+			sql.append("								and certificacao_id = :certificacaoId and colaborador_id = :colaboradorId ");
+			sql.append("						) and certificacao_id = :certificacaoId and colaborador_id = :colaboradorId) ");
+			sql.append("					, '01/01/2000' ");
+			sql.append("					) ");
+			sql.append("	and (select data from colaboradorcertificacao where id = :colaboradorCertificacaoId) ");
+			sql.append(") ");
+		}
+		
 		sql.append("                     ) ");
 		sql.append("order by c.nome, t.descricao ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("colaboradorId", colaboradorId);
 		query.setLong("certificacaoId", certificacaoId);
+		
+		if(colaboradorCertificacaoId != null)
+			query.setLong("colaboradorCertificacaoId",colaboradorCertificacaoId);
 
 		List resultado = query.list();
 		Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
@@ -1724,5 +1743,12 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		}
 		
 		return colaboradorTurmas;	
+	}
+
+	@Override
+	public Colaborador verificaColaboradorCertificado(Long colaboradorId,
+			Long cursoId, Long certificacaoId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

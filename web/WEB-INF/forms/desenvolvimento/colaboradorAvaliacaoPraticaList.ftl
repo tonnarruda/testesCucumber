@@ -47,6 +47,7 @@
 				<ul>
 					<@ww.select label="Certificações" name="certificacao.id" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;" />
 					<@ww.select label="Colaborador" name="colaborador.id" list="colaboradores" listKey="id" listValue="nomeCpf" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
+					<@ww.select label="Certificações Realizadas pelo Colaborador" name="colaboradorCertificacao.id" list="colaboradorCertificacaos" listKey="id" listValue="dataFormatada" headerKey="" headerValue="Selecione..." onchange="submeter('buscaColaboradores.action');" cssStyle="width: 800px;"/>
 					<br><br>
 				</ul>
 			</@ww.div>
@@ -57,6 +58,12 @@
 			<@ww.form name="form" action="insertOrUpdate.action" method="POST">
 				<@ww.hidden name="certificacao.id" value="${certificacao.id}"/>
 				<@ww.hidden name="colaborador.id" value="${colaborador.id}"/>
+				
+				<#if colaboradorCertificacao?exists &&  colaboradorCertificacao.id?exists>
+					<@ww.hidden name="colaboradorCertificacao.id" value="${colaboradorCertificacao.id}"/>
+				<#else>
+					<@ww.hidden name="colaboradorCertificacao.id" value=""/>
+				</#if>
 				<br/>
 				<#assign i = 0/>		
 				<@display.table name="colaboradorAvaliacaoPraticas" id="colaboradorAvaliacaoPratica" class="dados">

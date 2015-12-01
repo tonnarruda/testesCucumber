@@ -9,8 +9,8 @@ import com.fortes.rh.dao.desenvolvimento.ColaboradorAvaliacaoPraticaDao;
 
 public class ColaboradorAvaliacaoPraticaManagerImpl extends GenericManagerImpl<ColaboradorAvaliacaoPratica, ColaboradorAvaliacaoPraticaDao> implements ColaboradorAvaliacaoPraticaManager
 {
-	public Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId) {
-		return getDao().findByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId, null);
+	public Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId) {
+		return getDao().findByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId, colaboradorCertificacaoId);
 	}
 
 	public void removeAllByColaboradorId(Long colaboradorId) {

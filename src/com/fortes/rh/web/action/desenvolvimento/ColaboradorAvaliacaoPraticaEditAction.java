@@ -7,12 +7,14 @@ import java.util.Date;
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorAvaliacaoPraticaManager;
+import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
+import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -31,6 +33,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private AvaliacaoPraticaManager avaliacaoPraticaManager;
+	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 
 	private ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica;
 	private Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas;
@@ -38,9 +41,11 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 	private Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
 	private Collection<Colaborador>  colaboradores = new ArrayList<Colaborador>();
 	private Collection<ColaboradorTurma> colaboradorTurmas = new ArrayList<ColaboradorTurma>();
+	private Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>(); 
 	
 	private Certificacao certificacao;
 	private Colaborador colaborador; 
+	private ColaboradorCertificacao colaboradorCertificacao;
 	
 	public String prepare() throws Exception
 	{
@@ -65,12 +70,11 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 			findColaboradoresPermitidosNaCertificacao(colaboradoresNaCertificacao);	
 			
 			colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-			if(colaborador.getId() != null && certificacao != null && certificacao.getId() != null){
-				colaboradorTurmas = colaboradorTurmaManager.findByColaborador(colaborador.getId(), certificacao.getId());
+			if(colaborador.getId() != null && certificacao != null && certificacao.getId() != null)
+			{
+				colaboradorCertificacaos = colaboradorCertificacaoManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId());
+				colaboradorTurmas = colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao.getId());
 				populaColaboradorAvaliacaoPratica();
-				
-				
-				
 			}
 		}
 		
@@ -108,7 +112,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 	private void populaColaboradorAvaliacaoPratica() 
 	{
 		Collection<AvaliacaoPratica> avaliacoesPraticasDoCertificado = avaliacaoPraticaManager.findByCertificacaoId(certificacao.getId());
-		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId());
+		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao.getId());
 		colaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
 		boolean existeNota = false;
 		
@@ -137,15 +141,37 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 	
 	public String insertOrUpdate() throws Exception
 	{
-		colaboradorAvaliacaoPraticaManager.removeAllByColaboradorId(colaborador.getId());
+//		colaboradorAvaliacaoPraticaManager.removeAllByColaboradorId(colaborador.getId());
+		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao.getId());
 		
-		for (ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica : colaboradorAvaliacaoPraticas) {
-			if(colaboradorAvaliacaoPratica.getData() != null && colaboradorAvaliacaoPratica.getNota() != null){
+		boolean edicao;
+		for (ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica : colaboradorAvaliacaoPraticas) 
+		{
+			edicao = false;
+			for (ColaboradorAvaliacaoPratica colaboradorAvaliacaoPraticaRealizada : avaliacoesPraticasDoColaboradorRealizadas) 
+			{
+				if(colaboradorAvaliacaoPraticaRealizada.getId().equals(colaboradorAvaliacaoPratica.getId()))
+				{
+					edicao = true;	
+					
+					if(colaboradorAvaliacaoPratica.getData() != null && colaboradorAvaliacaoPratica.getNota() != null){
+						colaboradorAvaliacaoPraticaRealizada.setNota(colaboradorAvaliacaoPratica.getNota());
+						colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPraticaRealizada);
+					}else{
+						colaboradorAvaliacaoPraticaManager.remove(colaboradorAvaliacaoPraticaRealizada);
+					}
+					
+					break;
+				}
+			}
+
+			if(!edicao && colaboradorAvaliacaoPratica.getData() != null && colaboradorAvaliacaoPratica.getNota() != null)
+			{
 				colaboradorAvaliacaoPratica.setId(null);
 				colaboradorAvaliacaoPratica.setCertificacao(certificacao);
 				colaboradorAvaliacaoPratica.setColaborador(colaborador);
 				colaboradorAvaliacaoPraticaManager.save(colaboradorAvaliacaoPratica);
-			}
+			}	
 		}
 		
 		return buscaColaboradores();
@@ -228,5 +254,23 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 
 	public Date getHoje() {
 		return new Date();
+	}
+
+	public Collection<ColaboradorCertificacao> getColaboradorCertificacaos() {
+		return colaboradorCertificacaos;
+	}
+
+	public void setColaboradorCertificacao(
+			ColaboradorCertificacao colaboradorCertificacao) {
+		this.colaboradorCertificacao = colaboradorCertificacao;
+	}
+
+	public void setColaboradorCertificacaoManager(
+			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
+		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
+	}
+
+	public ColaboradorCertificacao getColaboradorCertificacao() {
+		return colaboradorCertificacao;
 	}
 }

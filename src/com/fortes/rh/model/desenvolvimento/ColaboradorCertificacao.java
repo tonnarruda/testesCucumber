@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.DateUtil;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -44,12 +45,17 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	public void setCertificacao(Certificacao certificacao) {
 		this.certificacao = certificacao;
 	}
-
+	
 	public Date getData() {
 		return data;
 	}
 
 	public void setData(Date data) {
 		this.data = data;
+	}
+	
+	public String getDataFormatada() 
+	{
+		return DateUtil.formataDiaMesAno(data);
 	}
 }

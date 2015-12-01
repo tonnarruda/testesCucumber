@@ -2440,7 +2440,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 
 		colaboradorDao.getHibernateTemplateByGenericDao().flush();
 		
-		Collection<ColaboradorTurma> resultado = colaboradorTurmaDao.findByColaborador(adamastor.getId(), certificacao.getId());
+		Collection<ColaboradorTurma> resultado = colaboradorTurmaDao.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(adamastor.getId(), certificacao.getId(), null);
 		
 		assertEquals(1, resultado.size());
 		assertEquals(turma1.getDataPrevFim(), ((ColaboradorTurma) resultado.toArray()[0]).getTurma().getDataPrevFim());

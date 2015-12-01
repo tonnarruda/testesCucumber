@@ -44,6 +44,7 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 		if(colaboradorCertificacaoId != null)
 			query.setLong("colaboradorCertificacaoId",colaboradorCertificacaoId);
 		
+		@SuppressWarnings("rawtypes")
 		List resultado = query.list();
 		Collection<ColaboradorAvaliacaoPratica> ColaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
 		
