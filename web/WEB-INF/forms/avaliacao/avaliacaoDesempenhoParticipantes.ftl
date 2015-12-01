@@ -177,15 +177,16 @@
 						<span class="ui-icon ui-icon-trash"></span>
 				    </div>
 				  	<div class="option move-all only-selectables disabled" title="Relacionar selecionados ao avaliadores">
-						<span class="ui-icon ui-icon-arrowthick-1-e"></span>
+						<i class="fa fa-users"></i>
+						<i class="fa fa-long-arrow-right"></i>
 				    </div>
 				    <div class="option select-all" title="Selecionar todos">
-						<i class="fa fa-long-arrow-down"></i>
-						<i class="fa fa-reorder"></i>
+						<i class="fa fa-check"></i>
+						<i class="fa fa-align-justify"></i>
 				    </div>
 				    <div class="option unselect-all" title="Retirar selecão de todos">
-						<i class="fa fa-long-arrow-up"></i>
-						<i class="fa fa-reorder"></i>
+						<i class="fa fa-close"></i>
+						<i class="fa fa-align-justify"></i>
 				    </div>
 				    <#if avaliacaoDesempenho.permiteAutoAvaliacao>
 					  	<div class="option generate-autoavaliacao only-selectables disabled" title="Gerar autoavaliação para selecionados">
@@ -225,12 +226,12 @@
 							<span class="ui-icon ui-icon-trash"></span>
 					    </div>
 					    <div class="option select-all" title="Selecionar todos">
-							<i class="fa fa-long-arrow-down"></i>
-							<i class="fa fa-reorder"></i>
+							<i class="fa fa-check"></i>
+							<i class="fa fa-align-justify"></i>
 					    </div>
 					    <div class="option unselect-all" title="Retirar selecão de todos">
-							<i class="fa fa-long-arrow-up"></i>
-							<i class="fa fa-reorder"></i>
+							<i class="fa fa-close"></i>
+							<i class="fa fa-align-justify"></i>
 					    </div>
 					</h1>
 					<div class="column ui-widget-content" id="avaliadores-list">
@@ -252,12 +253,12 @@
 										<span class="ui-icon ui-icon-trash" style="float: none;"></span>
 								    </div>
 								    <div class="mini-option select-all" title="Selecionar todos" style="padding: 2px 15px; float: left;" >
-										<i class="fa fa-long-arrow-down"></i>
-										<i class="fa fa-reorder"></i>
+										<i class="fa fa-check"></i>
+										<i class="fa fa-align-justify"></i>
 								    </div>
 								    <div class="mini-option unselect-all" title="Retirar selecão de todos" style="padding: 2px 15px; float: left;">
-										<i class="fa fa-long-arrow-up"></i>
-										<i class="fa fa-reorder"></i>
+										<i class="fa fa-close"></i>
+										<i class="fa fa-align-justify"></i>
 								    </div>
 								    <div style="clear: both;"></div>
 								 </div>

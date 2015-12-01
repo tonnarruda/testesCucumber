@@ -255,12 +255,12 @@ function createAvaliador(id, nome) {
 		  		 '		<span class="ui-icon ui-icon-trash" style="float: none;"></span>' +
 		  		 '  </div>' +
 		  		 '  <div class="mini-option select-all" title="Selecionar todos" style="padding: 2px 15px; float: left;" >' +
-		  		 '		<i class="fa fa-long-arrow-down"></i>' +
-		  		 '		<i class="fa fa-reorder"></i>' +
+		  		 '		<i class="fa fa-check"></i>' +
+		  		 '		<i class="fa fa-align-justify"></i>' +
 		  		 '  </div>' +
 		  		 '  <div class="mini-option unselect-all" title="Retirar selecão de todos" style="padding: 2px 15px; float: left;">' +
-		  		 '		<i class="fa fa-long-arrow-up"></i>' +
-		  		 '		<i class="fa fa-reorder"></i>' +
+		  		 '		<i class="fa fa-lclose"></i>' +
+		  		 '		<i class="fa fa-align-justify"></i>' +
 		  		 '  </div>' +
 		  		 '  <div style="clear: both;"></div>' +
 		  		 '</div>' +
