@@ -430,7 +430,8 @@ public class SolicitacaoEpiDaoHibernate extends GenericDaoHibernate<SolicitacaoE
 			vo.setSolicitacaoEpiSituacao(obj[++countCampo].toString());
 			vo.setQtdDevolvida(new Integer(obj[++countCampo].toString()));
 			vo.setQtdDevolvidaItem((new Integer(obj[++countCampo].toString())));
-			vo.setSolicitacaoEpiSituacaoDevolucao(obj[++countCampo]!= null ? obj[++countCampo].toString(): null);
+			Object solicitacaoEpiSituacaoDevolucao = obj[++countCampo];
+			vo.setSolicitacaoEpiSituacaoDevolucao(solicitacaoEpiSituacaoDevolucao!= null ? solicitacaoEpiSituacaoDevolucao.toString(): null);
 			vo.setDescricaoTamanhoEpi(((String) obj[++countCampo]));
 			
 			lista.add(vo);
