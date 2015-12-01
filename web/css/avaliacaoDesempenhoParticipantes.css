@@ -56,8 +56,24 @@
 	width: 20px;
 	padding: padding: 5px 25px;
 }
-.ui-widget-header.actions .option.select-all i.fa-reorder, .ui-widget-header.actions .option.unselect-all i.fa-reorder {
+.ui-widget-header.actions .option.select-all i.fa-align-justify, .ui-widget-header.actions .option.unselect-all i.fa-align-justify {
 	margin-left: -3px;
+}
+
+.mini-option.select-all i.fa-check, .mini-option.unselect-all i.fa-close, .option.select-all i.fa-check, .option.unselect-all i.fa-close{
+	font-size: 10px;
+    margin-right: -5px;
+    color: #196AA0;
+}
+
+.mini-option.select-all i.fa-align-justify, .mini-option.unselect-all i.fa-align-justify, .option.select-all i.fa-align-justify, .option.unselect-all i.fa-align-justify{
+    float: right;
+}
+
+.option.move-all.only-selectables i.fa-long-arrow-right{
+	font-weight: bold;
+	margin-left: -2px; 
+	font-size: 11px;	
 }
 
 .ui-widget-header.actions .option.select-all { left: 70px; }
@@ -76,7 +92,7 @@ i.respondida {
 }
 
 i.fa {
-	color: #6CAAD4;
+	color: #62AADA;
 } 
 
 .ui-widget-header.actions .option:hover {

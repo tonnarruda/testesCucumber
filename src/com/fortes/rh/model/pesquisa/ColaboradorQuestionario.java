@@ -74,6 +74,7 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     private AvaliacaoDesempenho avaliacaoDesempenho;
     @OneToOne
     private ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador;
+    private Double pesoAvaliador;
     
     @Transient
     private String pessoaNome;
@@ -875,5 +876,13 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 	{
 		if(this.configuracaoNivelCompetenciaColaborador == null)
 			this.configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
+	}
+
+	public Double getPesoAvaliador() {
+		return pesoAvaliador;
+	}
+
+	public void setPesoAvaliador(Double pesoAvaliador) {
+		this.pesoAvaliador = pesoAvaliador;
 	}
 }

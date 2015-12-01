@@ -24,6 +24,8 @@ public class ParticipanteAvaliacaoDesempenho extends AbstractModel implements Se
 	
 	private char tipo;
 
+	private Double produtividade;
+	
 	public Colaborador getColaborador() {
 		return colaborador;
 	}
@@ -52,5 +54,13 @@ public class ParticipanteAvaliacaoDesempenho extends AbstractModel implements Se
 
 	public void setTipo(char tipo) {
 		this.tipo = tipo;
+	}
+
+	public Double getProdutividade() {
+		return produtividade;
+	}
+
+	public void setProdutividade(Double produtividade) {
+		this.produtividade = produtividade;
 	}
 }
