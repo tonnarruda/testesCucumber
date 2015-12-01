@@ -75,9 +75,15 @@
 					</#list>
 				</#if>
 
-				calcularPerformance();
+			<#else>
+				$('.pergunta').change(function(){calcularPerformance();});
+				$('.checkNivel').change(function(){calcularPerformance();});
+				$('.checkCompetencia.changed').change(function() {calcularPerformance();});
+				$('.checkCompetenciaCriterio').change(function() {calcularPerformance();});
+				$('#checkAllCompetencia').click(function() {calcularPerformance();});
 			</#if>
 			
+			calcularPerformance();
 		});
 		
 		function calculaNivelDaCompetenciaPeloPercentual(competenciaId){
