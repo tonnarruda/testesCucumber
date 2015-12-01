@@ -129,6 +129,7 @@ BEGIN
 				cq.avaliacaodesempenho_id is not null
 				and cq.avaliador_id is not null
 				and cq.colaborador_id is null
+				and cq_a.colaborador_id is not null
 				and not(cq.avaliador_id = cq_a.colaborador_id and ad.permiteautoavaliacao = true)
 		LOOP
 			EXECUTE	''insert into colaboradorquestionario(id, colaborador_id, avaliacao_id, avaliacaodesempenho_id, avaliador_id, respondida) values ( nextval('' || quote_literal(''colaboradorquestionario_sequence'') || ''), ''|| quote_literal(mviews.colaboradorId) ||'', ''|| quote_literal(mviews.avaliacaoId) ||'', ''|| quote_literal(mviews.avaliacaoDesempenhoId) ||'', ''|| quote_literal(mviews.avaliadorId) ||'', false)'';
@@ -182,21 +183,3 @@ ALTER TABLE participanteavaliacaodesempenho ADD COLUMN produtividade double prec
 
 ---------------
 ALTER TABLE colaboradorquestionario ADD COLUMN pesoAvaliador double precision default 1; --.go
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
