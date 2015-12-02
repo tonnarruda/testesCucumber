@@ -2949,46 +2949,66 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 	public Collection<Colaborador> findAdmitidosHaDias(Integer dias, Empresa empresa, Long periodoExperienciaId)
 	{
-		StringBuilder hql = new StringBuilder();
-		hql.append("select distinct new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, cg.nome, fs.nome, ao.id, ao.nome, am.id, am.nome, co.empresa.id, es.nome, cpea.avaliacao.id, emp.nome, fun.nome) ");
-		hql.append("from HistoricoColaborador as hc ");
-		hql.append("inner join hc.colaborador as co ");
-		hql.append("left join hc.faixaSalarial as fs ");
-		hql.append("left join hc.areaOrganizacional as ao ");
-		hql.append("left join hc.funcao as fun "); 
-		hql.append("left join co.empresa as emp ");
-		hql.append("left join hc.estabelecimento as es ");
-		hql.append("left join ao.areaMae as am ");
-		hql.append("left join fs.cargo as cg ");
-		hql.append("left join co.colaboradorPeriodoExperienciaAvaliacaos as cpea with cpea.periodoExperiencia.id = :periodoExperienciaId and cpea.tipo = 'G' ");
-		hql.append(" where ");
-		hql.append("		hc.status = :status ");
-		hql.append("		and hc.data = (");
-		hql.append("			select max(hc2.data) ");
-		hql.append("			from HistoricoColaborador as hc2 ");
-		hql.append("			where hc2.colaborador.id = co.id ");
-		hql.append("			and hc2.data <= :hoje and hc2.status = :status ");
-		hql.append("		) ");
-		hql.append("and (co.dataDesligamento >= current_date or co.dataDesligamento is null) ");
-		hql.append("and co.empresa.id = :empresaId ");
-		hql.append("and :hoje - (co.dataAdmissao - 1) = :dias ");
-		hql.append("and co.id not in (select cq.colaborador.id from ColaboradorQuestionario cq join cq.avaliacao av with av.tipoModeloAvaliacao = 'A' and av.periodoExperiencia.id = :periodoExperienciaId   ");
-		hql.append("					where cq.avaliacaoDesempenho.id is null and cq.turma.id is null and cq.colaborador.id = co.id ");
-		hql.append("						and (cpea.id is null and cq.avaliacao.id <> coalesce((select cpea2.avaliacao.id from ColaboradorPeriodoExperienciaAvaliacao as cpea2 ");
-		hql.append("																							where cpea2.colaborador.id = co.id and cpea2.tipo ='C'" );
-		hql.append(" 																							and cpea2.periodoExperiencia.id = :periodoExperienciaId),0)) ");
-		hql.append("							or (cpea.avaliacao.id = cq.avaliacao.id)  ");
-		hql.append("				) ");
+		StringBuilder sql = new StringBuilder();
+		sql.append("select distinct co.id as coid, co.nome as conome, co.nomeComercial as conomecomercial, co.matricula as comatricula, ");
+		sql.append("cg.nome as cgnome, fs.nome as fsnome, ao.id as aoid, ao.nome as aonome, am.id as amid, am.nome as amnome, ");
+		sql.append("co.empresa_id as empresaid, es.nome as esnome, cpea.avaliacao_id as avalid, emp.nome as empnome, fun.nome as fnome ");
+		sql.append("from HistoricoColaborador as hc ");
+		sql.append("inner join colaborador as co on hc.colaborador_id = co.id ");
+		sql.append("left join faixaSalarial as fs on hc.faixaSalarial_id = fs.id ");
+		sql.append("left join areaOrganizacional as ao on hc.areaOrganizacional_id = ao.id ");
+		sql.append("left join funcao as fun on hc.funcao_id = fun.id "); 
+		sql.append("left join empresa as emp on co.empresa_id = emp.id ");
+		sql.append("left join estabelecimento as es on hc.estabelecimento_id = es.id ");
+		sql.append("left join areaorganizacional as am on ao.areaMae_id = am.id ");
+		sql.append("left join cargo as cg on fs.cargo_id = cg.id ");
+		sql.append("left join colaboradorPeriodoExperienciaAvaliacao as cpea on cpea.colaborador_id = co.id ");
+		sql.append("and cpea.periodoExperiencia_id = :periodoExperienciaId and cpea.tipo = 'G' ");
+		sql.append(" where ");
+		sql.append("		hc.status = :status ");
+		sql.append("		and hc.data = (");
+		sql.append("			select max(hc2.data) ");
+		sql.append("			from HistoricoColaborador as hc2 ");
+		sql.append("			where hc2.colaborador_id = co.id ");
+		sql.append("			and hc2.data <= :hoje and hc2.status = :status ");
+		sql.append("		) ");
+		sql.append("and (co.dataDesligamento >= current_date or co.dataDesligamento is null) ");
+		sql.append("and co.empresa_id = :empresaId ");
+		sql.append("and :hoje - (co.dataAdmissao - 1) = :dias ");
+		sql.append("and co.id not in (select cq.colaborador_id from ColaboradorQuestionario cq join avaliacao av on cq.avaliacao_id = av.id  ");
+		sql.append("					and av.tipoModeloAvaliacao = 'A' and av.periodoExperiencia_id = :periodoExperienciaId   ");
+		sql.append("					where cq.avaliacaoDesempenho_id is null and cq.turma_id is null and cq.colaborador_id = co.id ");
+		sql.append("						and (cpea.id is null and cq.avaliacao_id <> coalesce((select cpea2.avaliacao_id from ColaboradorPeriodoExperienciaAvaliacao as cpea2 ");
+		sql.append("																							where cpea2.colaborador_id = co.id and cpea2.tipo ='C'" );
+		sql.append(" 																							and cpea2.periodoExperiencia_id = :periodoExperienciaId),0)) ");
+		sql.append("							or (cpea.avaliacao_id = cq.avaliacao_id)  ");
+		sql.append("				) ");
 
-		Query query = getSession().createQuery(hql.toString());
+		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("empresaId", empresa.getId());
 		query.setLong("periodoExperienciaId", periodoExperienciaId); 
 		query.setDate("hoje", new Date());
 		query.setInteger("dias", dias);
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		Collection<Colaborador> colaboradores = new LinkedList<Colaborador>();
+		Collection lista = query.list();
 
-		return query.list();
+		for (Iterator<Object[]> it = lista.iterator(); it.hasNext();)
+		{
+			Object[] array = it.next();
+			Colaborador colaborador = new Colaborador(((BigInteger) array[0]).longValue(), 
+					(String) array[1], (String) array[2], (String) array[3], 
+					(String) array[4], (String) array[5], ((BigInteger) array[6]).longValue(), (String) array[7],
+					( array[8] != null ? ((BigInteger) array[8]).longValue(): null), 
+					(String) array[9], ((BigInteger) array[10]).longValue(), (String) array[11], 
+					(array[12] != null ? ((BigInteger) array[12]).longValue(): null),
+					(String) array[13], (String) array[14]); 
+					
+			colaboradores.add(colaborador);
+		}
 
+		return colaboradores;
 	}
 
 	public Collection<Colaborador> findAdmitidos(String vinculo, Date dataIni, Date dataFim, Long[] areasIds, Long[] estabelecimentosIds, boolean exibirSomenteAtivos)
