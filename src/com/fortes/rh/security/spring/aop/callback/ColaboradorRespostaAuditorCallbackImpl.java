@@ -226,17 +226,18 @@ public class ColaboradorRespostaAuditorCallbackImpl implements AuditorCallback {
 				dados.append("		ordem: " + mapPerguntas.get(perguntaId).getOrdem() + "\n");
 				dados.append("		Texto: " + mapPerguntas.get(perguntaId).getTexto() + "\n");
 				
+				contador=1;
+
 				if(i+1 < perguntasRespostas.length){
-					if(perguntasRespostas[i+1].substring(0,1).equals("R")){/**R: É uma Resposta**/
-						contador=1;
+					if(perguntasRespostas[i+1].substring(0,1).equals("R") && !perguntasRespostas[i+1].substring(1,2).equals("C")){/**R: É uma Resposta**/
 						dados.append("	Resposta: \n");
 						
 						switch (mapPerguntas.get(perguntaId).getTipo()) {
 						
 						case TipoPergunta.NOTA:
 								dados.append("		Nota:	" + perguntasRespostas[i+ contador].substring(2) + "\n");
-								if((i + contador + 1) < perguntasRespostas.length &&  perguntasRespostas[i + contador + 1 ].substring(1,2).equals("C"))/**C: É o Comentário**/
-									dados.append("		Comentário:	" + perguntasRespostas[i + ++contador].substring(2) + "\n");
+//								if((i + contador + 1) < perguntasRespostas.length &&  perguntasRespostas[i + contador + 1 ].substring(1,2).equals("C"))/**C: É o Comentário**/
+//									dados.append("		Comentário:	" + perguntasRespostas[i + ++contador].substring(2) + "\n");
 							break;
 							
 						case TipoPergunta.SUBJETIVA:
@@ -253,8 +254,8 @@ public class ColaboradorRespostaAuditorCallbackImpl implements AuditorCallback {
 									if(i+contador < perguntasRespostas.length){
 										respostaId = (Long.parseLong(perguntasRespostas[i + contador].substring(2)));
 										dados.append("		Texto:	" + respostaManager.findById(respostaId).getTexto() + "\n");
-										if((i+contador+1) < perguntasRespostas.length && perguntasRespostas[i+contador+1].substring(1,2).equals("C"))
-											dados.append("		Comentário:	" + perguntasRespostas[i+ ++contador].substring(2) + "\n");
+//										if((i+contador+1) < perguntasRespostas.length && perguntasRespostas[i+contador+1].substring(1,2).equals("C"))
+//											dados.append("		Comentário:	" + perguntasRespostas[i+ ++contador].substring(2) + "\n");
 									}
 									
 									if((i+contador+1) >= perguntasRespostas.length || !perguntasRespostas[i+contador+1].substring(0,1).equals("R"))
@@ -263,10 +264,14 @@ public class ColaboradorRespostaAuditorCallbackImpl implements AuditorCallback {
 							break;
 
 						default:
-								respostaId = (Long.parseLong(perguntasRespostas[i+contador].substring(2)));
-								dados.append("		Texto:	" + respostaManager.findById(respostaId).getTexto() + "\n");
-								if((i+contador+1) < perguntasRespostas.length && perguntasRespostas[i+contador+1].substring(1,2).equals("C"))
-									dados.append("		Comentário:	" + perguntasRespostas[i+ ++contador].substring(2) + "\n");
+								int contResposta = i+contador;
+								if(((String)perguntasRespostas[i+contador].substring(0,2)).equals("RO")){
+									respostaId = (Long.parseLong(perguntasRespostas[i+contador].substring(2)));
+									dados.append("		Texto:	" + respostaManager.findById(respostaId).getTexto() + "\n");
+									contResposta += 1;
+								}									
+//								if((contResposta) < perguntasRespostas.length && perguntasRespostas[contResposta].substring(1,2).equals("C"))
+//									dados.append("		Comentário:	" + perguntasRespostas[contResposta].substring(2) + "\n");
 							break;
 						}
 						i=i+contador;
