@@ -1,9 +1,9 @@
-#avaliados, #avaliadores {
+#competencias, #avaliados, #avaliadores {
 	float: left;
 	width: 350px;
 	margin: 10px;
 }
-#avaliados h1, #avaliadores h1 {
+#competencias h1, #avaliados h1, #avaliadores h1 {
 	//background: #E0DFDF !important;
 	background: none;
 	border: 1px solid #e7e7e7;
@@ -17,7 +17,7 @@
 	margin: 0;
 }
 
-#avaliados li {
+#competencias li, #avaliados li {
 	padding: 10px 10px;
 	cursor: copy;
 	list-style: none;
@@ -27,7 +27,7 @@
 	min-height: 13px;
 }
 
-#avaliados li div{
+#competencias li div, #avaliados li div{
 	font-size: 11px;
 	float: left;
 }
@@ -72,12 +72,15 @@
 
 .option.move-all.only-selectables i.fa-long-arrow-right{
 	font-weight: bold;
-	margin-left: -2px; 
-	font-size: 11px;	
+	margin-left: -2px;
+	font-size: 11px;
 }
 
 .ui-widget-header.actions .option.select-all { left: 70px; }
 .ui-widget-header.actions .option.unselect-all { left: 140px; }
+#competencias .ui-widget-header.actions .option.select-all { left: 0px; }
+#competencias .ui-widget-header.actions .option.unselect-all { left: 70px; }
+#competencias .ui-widget-header.actions .option.move-all { left: 140px; }
 #avaliados .ui-widget-header.actions .option.move-all { left: 210px; }
 #avaliados .ui-widget-header.actions .option.generate-autoavaliacao { left: 280px; }
 
@@ -222,9 +225,12 @@ i.fa {
 }
 
 #feedback { font-size: 1.4em; }
+#competencias-list .ui-selecting,
 #avaliados-list .ui-selecting { background: #7BB5DF; }
-#avaliados-list .ui-selected, #avaliadores li.ui-selected { background: #5292C0; color: white; }
+#competencias-list .ui-selected, #avaliados-list .ui-selected, #avaliadores li.ui-selected { background: #5292C0; color: white; }
+#competencias-list,
 #avaliados-list { list-style-type: none; margin: 0; padding: 0;}
+#competencias-list li,
 #avaliados-list li { margin: 3px; padding: 7px; }
 
 #avaliadores .ui-selected:not(.has-respondida) .portlet-header { background: #5292C0; color: white; border: 1px solid #5292C0; }

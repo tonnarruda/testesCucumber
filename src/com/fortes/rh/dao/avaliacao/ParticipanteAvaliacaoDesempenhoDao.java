@@ -4,10 +4,12 @@ import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
 
 public interface ParticipanteAvaliacaoDesempenhoDao extends GenericDao<ParticipanteAvaliacaoDesempenho> 
 {
 	public Collection<Colaborador> findParticipantes(Long avaliacaoDesempenhoId, Character tipo);
 	public void removeNotIn(Long[] participantes, Long avaliacaoDesempenhoId, Character tipo) throws Exception;
+	public Collection<FaixaSalarial> findFaixasSalariaisDosAvaliadosByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
 }

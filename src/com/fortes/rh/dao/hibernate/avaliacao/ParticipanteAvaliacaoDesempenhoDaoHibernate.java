@@ -7,6 +7,8 @@ import org.hibernate.Query;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.ParticipanteAvaliacaoDesempenhoDao;
 import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.ParticipanteAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 
 public class ParticipanteAvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<ParticipanteAvaliacaoDesempenho> implements ParticipanteAvaliacaoDesempenhoDao
@@ -39,6 +41,33 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernate extends GenericDaoHiber
 		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
 		if(tipo != null)
 			query.setCharacter("tipo", tipo);
+		
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<FaixaSalarial> findFaixasSalariaisDosAvaliadosByAvaliacaoDesempenho(Long avaliacaoDesempenhoId) {
+		StringBuilder hql = new StringBuilder();
+		
+		hql.append("select new FaixaSalarial(fs.id, fs.nome, ca.nome) ");
+		hql.append("from ParticipanteAvaliacaoDesempenho as p ");
+		hql.append("inner join p.colaborador as co ");
+		hql.append("inner join co.historicoColaboradors as hc ");
+		hql.append("left join hc.faixaSalarial as fs ");
+		hql.append("left join fs.cargo as ca ");
+		hql.append("where ");
+		hql.append("  hc.data = ( ");
+		hql.append("   select max(hc2.data) ");
+		hql.append("   from HistoricoColaborador as hc2 ");
+		hql.append("   where hc2.colaborador.id = co.id ");
+		hql.append("   and hc2.data <= current_date  ");
+		hql.append("  ) ");
+		hql.append("and p.avaliacaoDesempenho.id = :avaliacaoDesempenhoId ");
+		hql.append("and tipo = :tipo ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
+		query.setCharacter("tipo", ParticipanteAvaliacao.AVALIADO);
 		
 		return query.list();
 	}
