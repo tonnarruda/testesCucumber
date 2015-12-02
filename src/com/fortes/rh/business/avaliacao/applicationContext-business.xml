@@ -57,6 +57,9 @@
     <property name="dao">
       <ref bean="participanteAvaliacaoDesempenhoDao" />
     </property>
+    <property name="configuracaoNivelCompetenciaManager">
+      <ref bean="configuracaoNivelCompetenciaManager" />
+    </property>
   </bean>
   <bean id="avaliacaoDesempenhoManagerTarget" class="com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManagerImpl">
     <property name="dao">

@@ -35,7 +35,6 @@ import com.fortes.rh.model.geral.Colaborador;
 @SuppressWarnings("unchecked")
 public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetencia> implements ConfiguracaoNivelCompetenciaDao
 {
-	
 	public Collection<ConfiguracaoNivelCompetencia> findByFaixa(Long faixaSalarialId, Date data) 
 	{
 		Criteria criteria = createCriteria(data);

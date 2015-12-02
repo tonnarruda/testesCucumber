@@ -24,6 +24,7 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.ParticipanteAvaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
@@ -56,6 +57,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private AvaliacaoDesempenho avaliacaoDesempenho;
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;
 	private Collection<Avaliacao> avaliacaos;
+	private Collection<FaixaSalarial> faixaSalariais;
 	
 	private Collection<Colaborador> participantes;
 	private Collection<Colaborador> avaliadors;
@@ -159,8 +161,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String prepareCompetencias() throws Exception
 	{
 		empresaId = getEmpresaSistema().getId();
-		compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
-		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
+		
+		faixaSalariais = participanteAvaliacaoDesempenhoManager.findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
 		
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 		participantes = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADO);
@@ -826,5 +828,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setClonarParticipantes(boolean clonarParticipantes) {
 		this.clonarParticipantes = clonarParticipantes;
+	}
+
+	public Collection<FaixaSalarial> getFaixaSalariais() {
+		return faixaSalariais;
 	}
 }
