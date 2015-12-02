@@ -20,5 +20,6 @@ public interface CertificacaoManager extends GenericManager<Certificacao>
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 	Collection<Colaborador> findColaboradoresNaCertificacoa(Long certificacaoId);
 	public Collection<Certificacao> findAllSelectNotCertificacaoId(Long empresaId, Long certificacaoId);
+	Collection<Certificacao> findByCursoId(Long cursoId);
 	
 }

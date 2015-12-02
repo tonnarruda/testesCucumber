@@ -17,6 +17,7 @@ import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.desenvolvimento.AproveitamentoAvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.AvaliacaoCursoDao;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
+import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
@@ -37,6 +38,7 @@ import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
+import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorPresenca;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -66,6 +68,7 @@ import com.fortes.rh.test.factory.cargosalario.GrupoOcupacionalFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.AvaliacaoCursoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.ColaboradorCertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorPresencaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
@@ -98,6 +101,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 	private CertificacaoDao certificacaoDao;
 	private AvaliacaoDao avaliacaoDao;
 	private AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao;
+	private ColaboradorCertificacaoDao colaboradorCertificacaoDao;
 
     public ColaboradorTurma getEntity()
     {
@@ -2445,6 +2449,35 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		assertEquals(1, resultado.size());
 		assertEquals(turma1.getDataPrevFim(), ((ColaboradorTurma) resultado.toArray()[0]).getTurma().getDataPrevFim());
 	}
+	
+	public void testVerificaColaboradorCertificado(){
+		
+		Certificacao certificacaoPreRequisito = CertificacaoFactory.getEntity(1L);
+		certificacaoPreRequisito.setPeriodicidade(12);
+		certificacaoDao.save(certificacaoPreRequisito);
+		
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacao.setCertificacaoPreRequisito(certificacaoPreRequisito);
+		certificacao.setCursos(Arrays.asList(curso));
+		certificacaoDao.save(certificacao);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
+		colaboradorCertificacao.setCertificacao(certificacaoPreRequisito);
+		colaboradorCertificacao.setColaborador(colaborador);
+		colaboradorCertificacao.setData(new Date());
+		colaboradorCertificacaoDao.save(colaboradorCertificacao);
+		
+		colaborador = colaboradorTurmaDao.verificaColaboradorCertificado(colaborador.getId(), certificacao.getCertificacaoPreRequisito().getId());
+				
+		assertEquals(colaborador.getId(), colaborador.getId());
+		
+	}
     
     public GenericDao<ColaboradorTurma> getGenericDao()
     {
@@ -2548,6 +2581,11 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 	public void setAproveitamentoAvaliacaoCursoDao(
 			AproveitamentoAvaliacaoCursoDao aproveitamentoAvaliacaoCursoDao) {
 		this.aproveitamentoAvaliacaoCursoDao = aproveitamentoAvaliacaoCursoDao;
+	}
+
+	public void setColaboradorCertificacaoDao(
+			ColaboradorCertificacaoDao colaboradorCertificacaoDao) {
+		this.colaboradorCertificacaoDao = colaboradorCertificacaoDao;
 	}
 	
 }

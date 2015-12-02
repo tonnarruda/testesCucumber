@@ -33,6 +33,7 @@ import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
+import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DNT;
@@ -1749,10 +1750,31 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		return colaboradorTurmas;	
 	}
 
-	@Override
-	public Colaborador verificaColaboradorCertificado(Long colaboradorId,
-			Long cursoId, Long certificacaoId) {
-		// TODO Auto-generated method stub
-		return null;
+	public Colaborador verificaColaboradorCertificado(Long colaboradorId, Long certificacaoId) {
+		Criteria criteria = getSession().createCriteria(ColaboradorCertificacao.class, "cc");
+		criteria.createCriteria("cc.certificacao", "cert", Criteria.INNER_JOIN);
+		criteria.createCriteria("cc.colaborador", "co", Criteria.INNER_JOIN);
+		
+		StringBuilder sql = new StringBuilder(" (case when coalesce (cert1_.periodicidade,0) > 0 ");
+		sql.append("THEN(this_.data + (cert1_.periodicidade || ' month')::interval  >= now())");
+		sql.append(" else true end )"); 
+		
+		criteria.add(Expression.sqlRestriction( sql.toString()));
+		
+		DetachedCriteria subSelect = DetachedCriteria.forClass(ColaboradorCertificacao.class, "cc2")
+	    		.setProjection(Projections.max("cc2.data"))
+	    		.add(Restrictions.eq("cc2.colaborador.id", colaboradorId))
+	    		.add(Restrictions.eq("cc2.certificacao.id", certificacaoId));
+	    
+	    criteria.add(Subqueries.propertyEq("cc.data", subSelect));
+	    
+	    ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("co.id"), "id");
+		p.add(Projections.property("co.nome"), "nome");
+
+		criteria.setProjection(p);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
+		
+	    return (Colaborador) criteria.uniqueResult();
 	}
 }

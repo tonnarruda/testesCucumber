@@ -58,6 +58,11 @@
 				ColaboradorTurmaDWR.checaColaboradorInscritoEmOutraTurma(function(data){
 																				colabNaOutraTurma(data, 400, 700, 'Os seguintes colaboradores já estão inscritos neste curso.<br />Deseja realmente incluí-los nesta turma?');
 																			}, $("input[name='turma.id']").val(), $("input[name='turma.curso.id']").val(), colabsIds.toArray());
+			
+			ColaboradorTurmaDWR.verificaColaboradorCertificadoNaCertificacaoPreRequisito(function(data){
+																				colabNaOutraTurma(data, 400, 700, 'Este curso está em uma Certificação com pré requisito.<br/> Existem colaboraodres que não estão certificados. Deseja realmente incluí-los neste curso?');
+																			},$("input[name='turma.curso.id']").val(), colabsIds.toArray());
+																			
 			}
 			else
 			{

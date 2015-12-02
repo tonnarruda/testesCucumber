@@ -189,4 +189,24 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 
 		return lista;	
 	}
+	
+	public Collection<Certificacao> findByCursoId(Long cursoId) {
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "c");
+		criteria.createCriteria("c.cursos", "cc");
+		criteria.createCriteria("c.certificacaoPreRequisito", "ccpr");
+		criteria.add(Expression.eq("cc.id", cursoId));
+		criteria.add(Expression.isNotNull("c.certificacaoPreRequisito.id"));
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("c.id"), "id");
+		p.add(Projections.property("c.nome"), "nome");
+		p.add(Projections.property("ccpr.id"), "certificacaoPreRequisitoId");
+		p.add(Projections.property("ccpr.nome"), "certificacaoPreRequisitoNome");
+		criteria.setProjection(p);
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
+	}
 }

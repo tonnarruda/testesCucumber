@@ -19,9 +19,9 @@ public class ColaboradorTurmaDWR
 		this.colaboradorTurmaManager = colaboradorTurmaManager;
 	}
 	
-	public String checaColaboradoresAprovadosNaCertificacaoPreRequisito(Long cursoId, Long[] colaboradorIds) throws Exception
+	public String verificaColaboradorCertificadoNaCertificacaoPreRequisito(Long cursoId, Long[] colaboradorIds) throws Exception
 	{
-		return colaboradorTurmaManager.verificaColaboradorCertificado(colaboradorIds, cursoId, null);
+		return colaboradorTurmaManager.verificaColaboradorCertificado(colaboradorIds, cursoId);
 	}
 		
 }

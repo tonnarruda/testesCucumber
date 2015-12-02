@@ -112,4 +112,19 @@ public class Certificacao extends AbstractModel implements Serializable
 	public void setCertificacaoPreRequisito(Certificacao certificacaoPreRequisito) {
 		this.certificacaoPreRequisito = certificacaoPreRequisito;
 	}
+	
+	public void setCertificacaoPreRequisitoId(Long certificacaoPreRequisitoId){
+		inicializarCertificacaoPreRequisito();
+		this.certificacaoPreRequisito.setId(certificacaoPreRequisitoId);
+	}
+	
+	public void setCertificacaoPreRequisitoNome(String certificacaoPreRequisitoNome){
+		inicializarCertificacaoPreRequisito();
+		this.certificacaoPreRequisito.setNome(certificacaoPreRequisitoNome);
+	}
+	
+	private void inicializarCertificacaoPreRequisito(){
+		if(this.certificacaoPreRequisito == null)
+			this.certificacaoPreRequisito = new Certificacao();
+	}
 }

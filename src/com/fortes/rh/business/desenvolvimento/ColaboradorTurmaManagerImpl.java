@@ -511,20 +511,27 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return msgAlert;
 	}
 	
-	public String verificaColaboradorCertificado(Long[] colaboradoresId, Long cursoId, Long certificacaoId)
+	public String verificaColaboradorCertificado(Long[] colaboradoresId, Long cursoId)
 	{
 		Colaborador colaborador = null;
-		String msgAlert= "";
-		for(int i = 0; i < colaboradoresId.length; i++)
-		{
-			colaborador = getDao().verificaColaboradorCertificado(colaboradoresId[i], cursoId, certificacaoId);
-			if(colaborador != null)
-				msgAlert += colaborador.getNome() + "<br>";
+		Collection<Certificacao> certificacoes = certificacaoManager.findByCursoId(cursoId);
+		String msgAlert = null;
+		String msgAlertColaborador = null;
+
+		for(Certificacao certificacao : certificacoes){
+			for(int i = 0; i < colaboradoresId.length; i++)
+			{
+				colaborador = getDao().verificaColaboradorCertificado(colaboradoresId[i], certificacao.getCertificacaoPreRequisito().getId());
+				if(colaborador != null && colaborador.getNome() != null)
+					msgAlertColaborador += colaborador.getNome() + "<br>";
+			}
+			if(msgAlertColaborador != null )
+				msgAlert = "Certificação " + certificacao.getNome() + " possui a certificação " + certificacao.getCertificacaoPreRequisito().getNome() + "como pre requisito. E os seguintes colaboradores não estão certificados: </br>" + msgAlertColaborador;
+			
+			msgAlertColaborador = null;
 		}
-		
 		return msgAlert;
 	}
-	
 
 	@Override
 	public void remove(ColaboradorTurma colaboradorTurma)
