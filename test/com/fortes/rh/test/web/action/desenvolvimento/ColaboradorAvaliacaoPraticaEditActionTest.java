@@ -11,12 +11,14 @@ import org.jmock.MockObjectTestCase;
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorAvaliacaoPraticaManager;
+import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
+import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -27,6 +29,7 @@ import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorAvaliacaoPraticaFactory;
+import com.fortes.rh.test.factory.desenvolvimento.ColaboradorCertificacaoFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction;
 
@@ -40,6 +43,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 	private Mock colaboradorTurmaManager;
 	private Mock avaliacaoPraticaManager;
 	private Mock colaboradorAvaliacaoPraticaManager;
+	private Mock colaboradorCertificacaoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -67,6 +71,9 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		
 		colaboradorAvaliacaoPraticaManager = new Mock(ColaboradorAvaliacaoPraticaManager.class);
 		action.setColaboradorAvaliacaoPraticaManager((ColaboradorAvaliacaoPraticaManager) colaboradorAvaliacaoPraticaManager.proxy());
+		
+		colaboradorCertificacaoManager = new Mock(ColaboradorCertificacaoManager.class);
+		action.setColaboradorCertificacaoManager((ColaboradorCertificacaoManager) colaboradorCertificacaoManager.proxy());
 		
 		Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
 	}
@@ -104,6 +111,9 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 	
 	public void testBuscaColaboradoresComCertificadoEColaborador() throws Exception
 	{
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
+		action.setColaboradorCertificacao(colaboradorCertificacao);
+		
 		Colaborador colaboradoraMaria = ColaboradorFactory.getEntity(1L);
 		colaboradoraMaria.setNome("Maria");
 		action.setColaborador(colaboradoraMaria);
@@ -141,9 +151,10 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		certificacaoManager.expects(once()).method("findColaboradoresNaCertificacoa").will(returnValue(colaboradoresNaCertificacao));
 		areaOrganizacionalManager.expects(once()).method("findAreasByUsuarioResponsavel").will(returnValue(new ArrayList<AreaOrganizacional>()));
 		colaboradorManager.expects(once()).method("findByNomeCpfMatriculaComHistoricoComfirmado").will(returnValue(colaboradoresPermitidos));
-		colaboradorTurmaManager.expects(once()).method("findByColaborador").will(returnValue(new ArrayList<ColaboradorTurma>()));
+		colaboradorCertificacaoManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(new ArrayList<ColaboradorCertificacao>()));
 		avaliacaoPraticaManager.expects(once()).method("findByCertificacaoId").will(returnValue(avaliacaoPraticas));
 		colaboradorAvaliacaoPraticaManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(colaboradorAvaliacaoPraticas));
+		colaboradorTurmaManager.expects(once()).method("findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId").will(returnValue(new ArrayList<ColaboradorTurma>()));
 		
 		assertEquals("success", action.buscaColaboradores());
 		assertEquals(2, action.getColaboradores().size());

@@ -1709,7 +1709,11 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 			sql.append("					) ");
 			sql.append("	and (select data from colaboradorcertificacao where id = :colaboradorCertificacaoId) ");
 			sql.append(") ");
-		}
+		}else
+		{
+			sql.append("and ");
+			sql.append("t2.dataPrevFim  > coalesce((select max(data) from colaboradorcertificacao where certificacao_id = :certificacaoId and colaborador_id = :colaboradorId),'01/01/2000') ");
+		}	
 		
 		sql.append("                     ) ");
 		sql.append("order by c.nome, t.descricao ");

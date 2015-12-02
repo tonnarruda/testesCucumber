@@ -122,7 +122,6 @@ drop function certificaColaboradores();--.go
 
 -----
 
-
 CREATE OR REPLACE FUNCTION verifica_certificacao(id_certificado BIGINT, id_coalborador BIGINT) RETURNS BOOLEAN AS $$  
 DECLARE certificado BOOLEAN; 
 BEGIN 

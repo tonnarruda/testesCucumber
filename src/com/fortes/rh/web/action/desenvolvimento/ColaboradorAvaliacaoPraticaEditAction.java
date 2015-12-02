@@ -70,7 +70,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 			findColaboradoresPermitidosNaCertificacao(colaboradoresNaCertificacao);	
 			
 			colaboradorTurmas = new ArrayList<ColaboradorTurma>();
-			if(colaborador.getId() != null && certificacao != null && certificacao.getId() != null)
+ 			if(colaborador.getId() != null && certificacao != null && certificacao.getId() != null)
 			{
 				colaboradorCertificacaos = colaboradorCertificacaoManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId());
 				colaboradorTurmas = colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao.getId());
@@ -141,7 +141,6 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 	
 	public String insertOrUpdate() throws Exception
 	{
-//		colaboradorAvaliacaoPraticaManager.removeAllByColaboradorId(colaborador.getId());
 		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId(), colaboradorCertificacao.getId());
 		
 		boolean edicao;
@@ -156,6 +155,8 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 					
 					if(colaboradorAvaliacaoPratica.getData() != null && colaboradorAvaliacaoPratica.getNota() != null){
 						colaboradorAvaliacaoPraticaRealizada.setNota(colaboradorAvaliacaoPratica.getNota());
+						colaboradorAvaliacaoPraticaRealizada.setCertificacao(certificacao);
+						colaboradorAvaliacaoPraticaRealizada.setColaborador(colaborador);
 						colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPraticaRealizada);
 					}else{
 						colaboradorAvaliacaoPraticaManager.remove(colaboradorAvaliacaoPraticaRealizada);
@@ -173,6 +174,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 				colaboradorAvaliacaoPraticaManager.save(colaboradorAvaliacaoPratica);
 			}	
 		}
+		
 		
 		return buscaColaboradores();
 	}

@@ -35,7 +35,11 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 			sql.append("					) ");
 			sql.append("	and (select data from colaboradorcertificacao where id = :colaboradorCertificacaoId) ");
 			sql.append(") ");
-		}
+		}else
+		{
+			sql.append("and ");
+			sql.append("data > coalesce((select max(data) from colaboradorcertificacao where certificacao_id = :certificacaoId and colaborador_id = :colaboradorId),'01/01/2000') ");
+		}	
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("colaboradorId",colaboradorId);
