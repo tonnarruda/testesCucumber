@@ -153,9 +153,9 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return criteria.list();
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelCompetenciaFaixaSalarialId)
+	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelCompetenciaFaixaSalarialId, Date configuracaoNivelCompetenciaFaixaSalarialData)
 	{
-		Criteria criteria = createCriteria(null);
+		Criteria criteria = createCriteria(configuracaoNivelCompetenciaFaixaSalarialData);
 
 		criteria.add(Expression.eq("cnc.configuracaoNivelCompetenciaFaixaSalarial.id", configuracaoNivelCompetenciaFaixaSalarialId));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

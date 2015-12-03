@@ -38,4 +38,10 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialFactory
 		configuracaoNivelCompetenciaFaixaSalarial.setData(data);
 		return configuracaoNivelCompetenciaFaixaSalarial;
 	}
+	
+	public static ConfiguracaoNivelCompetenciaFaixaSalarial getEntity(Long id, FaixaSalarial faixaSalarial, Date data) {
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = getEntity(faixaSalarial, data);
+		configuracaoNivelCompetenciaFaixaSalarial.setId(id);
+		return configuracaoNivelCompetenciaFaixaSalarial;
+	}
 }

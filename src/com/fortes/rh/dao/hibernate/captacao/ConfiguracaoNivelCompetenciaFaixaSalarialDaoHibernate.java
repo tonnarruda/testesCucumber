@@ -31,7 +31,6 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialDaoHibernate extends Gener
 	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> findProximasConfiguracoesAposData(Long faixaSalarialId, Date dataConfiguracaoExcluir)
 	{
-		// TODO: Criar teste
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaFaixaSalarial.class, "cncfs");
 		
 		ProjectionList p = Projections.projectionList().create();
@@ -54,4 +53,20 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialDaoHibernate extends Gener
 		
 		return criteria.list().size() > 0;
 	}
+
+	public ConfiguracaoNivelCompetenciaFaixaSalarial findByFaixaSalarialIdAndData(Long faixaSalarialId, Date data) {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.max("cncfs.data"), "data");
+		
+		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaFaixaSalarial.class, "cncfs");
+		criteria.setProjection(p);
+		
+		if(data != null)
+			criteria.add(Expression.le("cncfs.data", data));
+		
+		criteria.add(Expression.eq("cncfs.faixaSalarial.id", faixaSalarialId));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetenciaFaixaSalarial.class));	
+		return (criteria.uniqueResult() != null ? (ConfiguracaoNivelCompetenciaFaixaSalarial)criteria.uniqueResult() : null);
+	}
+
 }

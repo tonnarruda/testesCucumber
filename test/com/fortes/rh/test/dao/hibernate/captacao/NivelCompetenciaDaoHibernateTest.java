@@ -592,7 +592,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia2 = criaConfiguracaoNivelCompetenciaComCNCF(conhecimento.getId(), nivelCompetencia, configuracaoNivelCompetenciaFaixaSalarial, TipoCompetencia.CONHECIMENTO);
 		criaConfiguracaoNivelCompetencia(conhecimento.getId(), nivelCompetencia, null, TipoCompetencia.CONHECIMENTO);
 		
-		Collection<ConfiguracaoNivelCompetencia> configuracoesNivelCompetencia = configuracaoNivelCompetenciaDao.findByConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getId());
+		Collection<ConfiguracaoNivelCompetencia> configuracoesNivelCompetencia = configuracaoNivelCompetenciaDao.findByConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 
 		assertEquals(2, configuracoesNivelCompetencia.size());
 		assertEquals(configuracaoNivelCompetencia1.getId(), ((ConfiguracaoNivelCompetencia) (configuracoesNivelCompetencia.toArray()[0])).getId());
@@ -1257,7 +1257,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configHistoricoNivel4.setNivelCompetencia(nivelCompetencia4);
 		configHistoricoNivelDao.save(configHistoricoNivel4);
 		
-		assertEquals((int) 2, nivelCompetenciaDao.getOrdemMaxima(empresa.getId()));
+		assertEquals((int) 2, nivelCompetenciaDao.getOrdemMaxima(empresa.getId(), x));
 	}
 	
 	public void testFindCompetenciasByFaixa()

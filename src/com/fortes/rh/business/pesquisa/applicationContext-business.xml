@@ -93,6 +93,9 @@
     <property name="nivelCompetenciaManager">
       <ref bean="nivelCompetenciaManager" />
     </property>
+    <property name="configuracaoNivelCompetenciaFaixaSalarialManager">
+      <ref bean="configuracaoNivelCompetenciaFaixaSalarialManager" />
+    </property>
   </bean>
   <bean id="colaboradorRespostaManager" parent="parentManager">
     <property name="proxyInterfaces">

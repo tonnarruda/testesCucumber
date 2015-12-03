@@ -15,6 +15,11 @@ public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompete
 	{
 		return getDao().findAllSelect(empresaId, nivelCompetenciaHistoricoId, data);
 	}
+	
+	public Collection<NivelCompetencia> findAllSelect(Long empresaId)
+	{
+		return getDao().findAllSelect(empresaId);
+	}
 
 	public void validaLimite(Long empresaId) throws Exception 
 	{
@@ -38,9 +43,9 @@ public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompete
 		return pontuacao;
 	}
 
-	public int getOrdemMaxima(Long empresaId) 
+	public int getOrdemMaxima(Long empresaId, Date data) 
 	{
-		return getDao().getOrdemMaxima(empresaId);
+		return getDao().getOrdemMaxima(empresaId, data);
 	}
 
 	public boolean existePercentual(Long nivelCompetenciaId, Long empresaId, Double percentual) 

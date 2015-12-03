@@ -17,6 +17,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.acesso.UsuarioManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -25,6 +26,7 @@ import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.Turma;
@@ -54,6 +56,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
     private AvaliacaoManager avaliacaoManager;
     private UsuarioManager usuarioManager ;
     private NivelCompetenciaManager nivelCompetenciaManager; 
+    private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 
 	public List<Object[]> countRespostas(Long perguntaId, Long[] estabelecimentosIds, Long[] areasIds, Date periodoIni, Date periodoFim, Long turmaId)
     {
@@ -449,9 +452,12 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		int pontuacaoMaximaNivelcompetencia = 0;
 		if(niveisCompetenciaMarcados != null)
 		{
+			Colaborador colaborador = colaboradorManager.findColaboradorByDataHistorico(colaboradorQuestionario.getColaborador().getId(), new Date());
+			ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial =  configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(colaborador.getFaixaSalarial().getId(), colaboradorQuestionario.getRespondidaEm());
+			
 			pontuacaoNivelCompetenciaObtida = nivelCompetenciaManager.getPontuacaoObtidaByConfiguracoesNiveisCompetencia(niveisCompetenciaMarcados);
 			
-			int pontuacaoMaximaNivelCompetencia = nivelCompetenciaManager.getOrdemMaxima(empresaId);
+			int pontuacaoMaximaNivelCompetencia = nivelCompetenciaManager.getOrdemMaxima(empresaId, configuracaoNivelCompetenciaFaixaSalarial.getData());
 			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetenciaMarcado : niveisCompetenciaMarcados) 
 				if(configuracaoNivelCompetenciaMarcado.getNivelCompetencia() != null && configuracaoNivelCompetenciaMarcado.getNivelCompetencia().getId() != null)
 					pontuacaoMaximaNivelcompetencia += configuracaoNivelCompetenciaMarcado.getPesoCompetencia() * pontuacaoMaximaNivelCompetencia;
@@ -711,5 +717,10 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 
 	public void setCandidatoManager(CandidatoManager candidatoManager) {
 		this.candidatoManager = candidatoManager;
+	}
+
+	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(
+			ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager) {
+		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
 	}
 }
