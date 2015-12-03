@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.geral.Empresa;
 
 public class NivelCompetenciaFactory
 {
@@ -45,6 +46,12 @@ public class NivelCompetenciaFactory
 		nivelCompetencias.add(getEntity(id));
 		
 		return nivelCompetencias;
+	}
+	public static NivelCompetencia getEntity(Long id, String descricao, Empresa empresa){
+		NivelCompetencia nivelCompetencia = getEntity(id);
+		nivelCompetencia.setDescricao(descricao);
+		nivelCompetencia.setEmpresa(empresa);
+		return nivelCompetencia;
 	}
 	
 }
