@@ -162,18 +162,14 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	{
 		empresaId = getEmpresaSistema().getId();
 		
-		faixaSalariais = participanteAvaliacaoDesempenhoManager.findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
-		
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		participantes = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADO);
-		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
-		
+		faixaSalariais = participanteAvaliacaoDesempenhoManager.findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
 		avaliadors = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
+		
 		for (Colaborador avaliador : avaliadors) {
-			avaliador.setAvaliados(new ArrayList<Colaborador>());
-			for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), null, false, false)) {
-				colaboradorQuestionario.getColaborador().setColaboradorQuestionario(colaboradorQuestionario);
-				avaliador.getAvaliados().add(colaboradorQuestionario.getColaborador());
+			avaliador.setFaixaSalariaisAvaliados(new ArrayList<FaixaSalarial>());
+			for (FaixaSalarial faixaSalarialAvaliado : participanteAvaliacaoDesempenhoManager.findFaixasSalariaisDosAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId()) ) {
+				avaliador.getFaixaSalariaisAvaliados().add(faixaSalarialAvaliado);
 			}
 		}
 		
@@ -194,7 +190,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		colaboradorQuestionarioManager.save(new ArrayList<ColaboradorQuestionario>(colaboradorQuestionarios), avaliacaoDesempenho.getId());
 		colaboradorQuestionarioManager.removeNotIn(colaboradorQuestionarios, avaliacaoDesempenho.getId());
 		
-		prepareParticipantes();
+		prepareCompetencias();
 		return Action.SUCCESS;
 	}
 	

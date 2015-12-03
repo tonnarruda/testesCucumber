@@ -194,3 +194,19 @@ DELETE from colaboradorquestionario where id in
 		and not(cq.avaliador_id = cq_a.colaborador_id and ad.permiteautoavaliacao = true)
 );--.go
 
+----------
+
+CREATE TABLE configuracaocompetenciaavaliacaodesempenho (
+	id bigint NOT NULL,
+    avaliador_id bigint,
+    avaliacaodesempenho_id bigint,
+    faixasalarial_id bigint,
+    competencia_id bigint not null,
+    tipoCompetencia character
+); --.go
+
+ALTER TABLE configuracaocompetenciaavaliacaodesempenho ADD CONSTRAINT configuracaocompetenciaavaliacaodesempenho_pkey PRIMARY KEY(id);--.go
+ALTER TABLE configuracaocompetenciaavaliacaodesempenho ADD CONSTRAINT configuracaocompetenciaavaliacaodesempenho_avaliador_fk FOREIGN KEY (avaliador_id) REFERENCES colaborador(id);--.go
+ALTER TABLE configuracaocompetenciaavaliacaodesempenho ADD CONSTRAINT configuracaocompetenciaavaliacaodesempenho_faixasalarial_fk FOREIGN KEY (faixasalarial_id) REFERENCES colaborador(id);--.go
+ALTER TABLE configuracaocompetenciaavaliacaodesempenho ADD CONSTRAINT configuracaocompetenciaavaliacaodesempenho_avaliacaodesempenho_fk FOREIGN KEY (avaliacaodesempenho_id) REFERENCES avaliacaodesempenho(id);--.go
+CREATE SEQUENCE configuracaocompetenciaavaliacaodesempenho_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go

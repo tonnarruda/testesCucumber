@@ -18,13 +18,17 @@
 }
 
 #competencias li, #avaliados li {
+	cursor: pointer;
 	padding: 10px 10px;
-	cursor: copy;
 	list-style: none;
 	border-bottom: 1px solid #e7e7e7;
 	color: #5C5C5A;
 	font-size: 11px;
 	min-height: 13px;
+}
+
+#competencias ul li, #avaliados li {
+	cursor: copy;
 }
 
 #competencias li div, #avaliados li div{
@@ -133,6 +137,8 @@ i.fa {
 	background-image: url(../imgs/ui-icons_d8e7f3_256x240.png) !important;
 	cursor: default; 
 }
+
+#competencias-list > li .faixa-descricao { width: 100%; float: none; }
 
 .option.disabled {
 	cursor: default !important;

@@ -16,6 +16,11 @@ $(function() {
 	atualizeSelectables("#competencias-list ul", "li", "competencias");
 	atualizeSelectablesMini();
     
+	$("#competencias-list > li .faixa-descricao").click(function(){
+		$(this).parent().find("ul").toggle();
+		$(this).find(".fa").toggle();
+	});
+	
 	$(".show-info").click(function(){
 		$('#competencias, #avaliadores').hide();
 		$(this).parent().parent().show();
@@ -215,8 +220,8 @@ function atualizeSelectablesMini() {
 }
 
 function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
-    $( avaliadorUlTag ).find( ".placeholder" ).remove();
     if( $(avaliadorUlTag).find(".competencia_"+ avaliadorLiTag.attr('id')).length == 0 && $(avaliadorUlTag).parent().attr("class") == $(avaliadorLiTag).parent().attr("class") ) {
+    	$( avaliadorUlTag ).find( ".placeholder" ).remove();
     	$("<li class='competencia_"+avaliadorLiTag.attr('id')+"'></li>").text( avaliadorLiTag.find(".nome").text() ).appendTo( avaliadorUlTag );
     	$( avaliadorUlTag ).find(".competencia_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaborador.id" value="' + avaliadorLiTag.attr("id") + '"/>' +
 				        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliador.id" value="' + $(avaliadorUlTag).parents(".portlet").attr("id") + '"/>' +
