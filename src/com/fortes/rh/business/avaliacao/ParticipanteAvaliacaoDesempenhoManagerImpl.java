@@ -41,6 +41,10 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 		return faixaSalarials;
 	}
 	
+	public Collection<FaixaSalarial> findFaixasSalariaisDosAvaliadosByAvaliador(Long avaliacaoDesempenhoId, Long avaliadorId) {
+		return getDao().findFaixasSalariaisDosAvaliadosByAvaliador(avaliacaoDesempenhoId, avaliadorId);
+	}
+	
 	public Collection<Colaborador> findParticipantes(Long avaliacaoDesempenhoId, Character tipo) {
 		return getDao().findParticipantes(avaliacaoDesempenhoId, tipo);
 	}

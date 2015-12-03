@@ -91,11 +91,16 @@
 				    <ol id="competencias-list">
 				    	<#list faixaSalariais as faixa>
 				    		<li>
-					      		<strong>${faixa.descricao}</strong>
-					      		<ul class="faixa_${faixa.id}">
+				    			<div class="faixa-descricao">
+					    			<i class="fa fa-caret-up" style="display: none;"></i>
+					    			<i class="fa fa-caret-down"></i>
+						      		<strong>${faixa.descricao}</strong>
+					      		</div>
+					      		<ul class="faixa_${faixa.id}" style="display: none;">
 					      			<#list faixa.configuracaoNivelCompetencias as cnc>
-								      	<li class="ui-widget-content" id="1">
+								      	<li class="ui-widget-content" id="${cnc.competenciaId}">
 									      	<input type="hidden" name="competenciaId" value="${cnc.competenciaId}"/>
+									      	<input type="hidden" name="competenciaTipo" value="${cnc.tipoCompetencia}"/>
 								      		<div class="nome">${cnc.competenciaDescricao}</div>
 								      		<div style="clear:both;float: none;"></div>
 								      	</li>
@@ -103,26 +108,6 @@
 						      	</ul>
 					      	</li>
 				    	</#list>
-				      	<li>
-				      		<strong>Faixa 1</strong>
-				      		<ul class="faixa_1">
-						      	<li class="ui-widget-content" id="1">
-							      	<input type="hidden" name="competenciaId" value="1"/>
-						      		<div class="nome">PROATIVIDADE</div>
-						      		<div style="clear:both;float: none;"></div>
-						      	</li>
-					      	</ul>
-				      	</li>
-				      	<li>
-				      		<strong>Faixa 2</strong>
-				      		<ul class="faixa_2">
-						      	<li class="ui-widget-content" id="2">
-							      	<input type="hidden" name="competenciaId" value="2"/>
-						      		<div class="nome">LIDERANÇA</div>
-						      		<div style="clear:both; float: none;"></div>
-						      	</li>
-					      	</ul>
-				      	</li>
 				    </ol>
 				  </div>
 				</div>
@@ -164,21 +149,17 @@
 						  		 <div class="portlet-content hide-when-expand">
 						  		 	<ul>
 								  		<input type="hidden" name="avaliadores" value="${avaliador.id}"/>
-						  		 		<#if (avaliador.avaliados.size() == 0)> 
+						  		 		<#if (avaliador.faixaSalariaisAvaliados.size() == 0)> 
 							        		<li class="placeholder">Arraste os competências até aqui</li>
 							        	</#if>
-							        	<li class="faixa_1">
-								      		<strong>Faixa 1</strong>
-								      		<ul class="competencias">
-										      	<li class="placeholder">Arraste os competências até aqui</li>
-									      	</ul>
-								      	</li>
-								      	<li class="faixa_2">
-								      		<strong>Faixa 2</strong>
-								      		<ul class="competencias">
-										      	<li class="placeholder">Arraste as competências até aqui</li>
-									      	</ul>
-								      	</li>
+							        	<#list avaliador.faixaSalariaisAvaliados as faixa>
+								        	<li class="faixa_${faixa.id}">
+									      		<strong>${faixa.descricao}</strong>
+									      		<ul class="competencias">
+											      	<li class="placeholder">Arraste os competências até aqui</li>
+										      	</ul>
+									      	</li>
+								      	</#list>
 							      	</ul>
 						  		 </div>
 						  	</div>

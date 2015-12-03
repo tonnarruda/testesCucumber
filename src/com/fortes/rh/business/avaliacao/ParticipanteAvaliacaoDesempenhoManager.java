@@ -14,4 +14,6 @@ public interface ParticipanteAvaliacaoDesempenhoManager extends GenericManager<P
 	public Collection<Colaborador> findParticipantes(Long avaliacaoDesempenhoId, Character tipo);
 	public void removeNotIn(Long[] participantes, Long avaliacaoDesempenhoId, Character tipo) throws Exception;
 	Collection<FaixaSalarial> findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
+	public Collection<FaixaSalarial> findFaixasSalariaisDosAvaliadosByAvaliador(Long avaliacaoDesempenhoId, Long avaliadorId);
+	
 }
