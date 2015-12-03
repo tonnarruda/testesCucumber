@@ -132,7 +132,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public String list() throws Exception
 	{
-		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId(), null, null);
+		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId());
 		return Action.SUCCESS;
 	}
 
@@ -172,7 +172,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		if(configuracaoNivelCompetenciaFaixaSalarial == null || configuracaoNivelCompetenciaFaixaSalarial.getId() == null)
 			niveisCompetenciaFaixaSalariais = nivelCompetenciaManager.findByCargoOrEmpresa(faixaSalarial.getCargo().getId(), null);
 		else {
-			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getId());
+			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 			
 			if(configuracaoNivelCompetenciaFaixaSalarial != null && configuracaoNivelCompetenciaFaixaSalarial.getId() != null){
 				niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByFaixa(faixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
@@ -360,7 +360,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		faixaSalarial = configuracaoNivelCompetenciaColaborador.getFaixaSalarial();
 		data = configuracaoNivelCompetenciaColaborador.getData();
 		
-		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId(), null);
+		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId(), configuracaoNivelCompetenciaColaborador.getData());
 		
 		prepareCompetenciasColaborador();
 		

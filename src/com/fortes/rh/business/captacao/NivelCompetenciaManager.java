@@ -10,6 +10,8 @@ import com.fortes.rh.model.captacao.NivelCompetencia;
 public interface NivelCompetenciaManager extends GenericManager<NivelCompetencia>
 {
 	Collection<NivelCompetencia> findAllSelect(Long empresaId, Long nivelCompetenciaHistoricoId, Date data);
+	
+	Collection<NivelCompetencia> findAllSelect(Long empresaId);
 
 	void validaLimite(Long empresaId) throws Exception;
 
@@ -17,7 +19,7 @@ public interface NivelCompetenciaManager extends GenericManager<NivelCompetencia
 
 	Integer getPontuacaoObtidaByConfiguracoesNiveisCompetencia(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados);
 
-	int getOrdemMaxima(Long empresaId);
+	int getOrdemMaxima(Long empresaId, Date data);
 
 	boolean existePercentual(Long nivelCompetenciaId, Long empresaId, Double percentual);
 
