@@ -274,7 +274,7 @@ public class ColaboradorRespostaAuditorCallbackImpl implements AuditorCallback {
 						dados.append("		[Sem resposta]\n");
 					}
 					
-					if(TipoPergunta.SUBJETIVA != mapPerguntas.get(perguntaId).getTipo() && ( contador == 0 ? 1 : contador) < perguntasRespostas.length && perguntasRespostas[i+( contador == 0 ? 1 : contador)].substring(1,2).equals("C")){/**C: É um Comentário**/
+					if(( contador == 0 ? 1 : contador) < perguntasRespostas.length && perguntasRespostas[i+( perguntasRespostas.length > 2 ? ( contador == 0 ? 1 : contador) : 0)].substring(1,2).equals("C")){/**C: É um Comentário**/
 							dados.append("		Comentário:	" + perguntasRespostas[i+ (contador == 0 ? 1 : contador)].substring(2) + "\n");
 							i=i+contador+1;
 					}
