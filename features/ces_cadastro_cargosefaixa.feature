@@ -43,7 +43,7 @@ Funcionalidade: Cadastrar Cargos e Faixas
     E eu preencho "Complemento dos Conhecimentos" com "Testes"
     E eu preencho "Complemento das Habilidades" com "Testes"
     E eu preencho "Complemento das Atitudes" com "Testes"
-    E eu seleciono "Especialização" de "Escolaridade"
+    E eu seleciono "Especialização completa" de "Escolaridade"
     E eu marco "Administrativa"
     E eu preencho "Experiência Desejada" com "Testes"
     E eu preencho "Observações" com "Testes"

@@ -23,7 +23,7 @@ Funcionalidade: Campos Extras para Candidato
     E eu clico no botão "Inserir"
     Então eu devo ver a aba "EXTRA"
     Quando eu preencho "nome" com "_Pedro do Teste"
-    E eu seleciono "Sem escolaridade" de "Escolaridade"
+    E eu seleciono "Analfabeto, inclusive o que, embora tenha recebido instrução, não se alfabetizou" de "Escolaridade"
     E eu preencho "Logradouro" com "Eretides"
     E eu preencho "num" com "11"
     E eu seleciono "CE" de "Estado"

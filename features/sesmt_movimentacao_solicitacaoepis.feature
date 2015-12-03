@@ -40,7 +40,7 @@ Funcionalidade: Solicitações de EPI
     E eu devo ver o título "Solicitações de EPI"
 
     Então eu clico na linha "geraldo" da imagem "Entrega"
-    E eu devo ver o título "Entrega de EPIs"
+    E eu devo ver o título "Entrega/Devolução de EPIs"
     E eu clico na imagem com o título "Inserir entrega"
     E eu clico no botão "Gravar"
     E eu devo ver o alert do confirmar e clico no ok
@@ -48,7 +48,7 @@ Funcionalidade: Solicitações de EPI
     E eu preencho "Qtd. Entregue" com "1"
     E eu seleciono "01/02/2011 - a0a1a2a3 - 30" de "epiHistoricoId"
     E eu clico no botão "Gravar"
-    E eu devo ver o título "Entrega de EPIs"
+    E eu devo ver o título "Entrega/Devolução de EPIs"
     Então eu clico no botão "Voltar"
 
     Então eu clico no botão "Inserir"

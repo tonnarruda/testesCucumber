@@ -104,21 +104,22 @@ ALTER FUNCTION public.monta_familia_area(area_id bigint) OWNER TO postgres;
 -- Name: monta_familia_areas_filhas_by_usuario_and_empresa(bigint, bigint); Type: FUNCTION; Schema: public; Owner: postgres
 --
 
-CREATE FUNCTION monta_familia_areas_filhas_by_usuario_and_empresa(usuarioid bigint, empresaid bigint) RETURNS TABLE(areaid bigint, areanome text, areaativo boolean)
+CREATE FUNCTION monta_familia_areas_filhas_by_usuario_and_empresa(usuarioid bigint, empresaid bigint) RETURNS TABLE(areaid bigint, areanome text, areaativo boolean, empresa_nome text)
     LANGUAGE plpgsql
     AS $$  
 DECLARE 
 mviews RECORD;
 BEGIN 
      FOR mviews IN 
-		select area.id as area_id from areaorganizacional as area  
+		select area.id as area_id, e.nome as empresaNome from areaorganizacional as area  
 		left join colaborador c on c.id = area.responsavel_id
 		left join colaborador co on co.id = area.coresponsavel_id 
 		left join usuario u on u.id = c.usuario_id or u.id = co.usuario_id 
+		left join empresa e on e.id = area.empresa_id
 		where u.id = usuarioId and area.empresa_id = empresaId 
 		LOOP 
 		RETURN QUERY 
-		    (select id, cast(monta_familia_area(id) as text) as nome, ativo from areaorganizacional where id = mviews.area_id) union 
+		    (select id, cast(monta_familia_area(id) as text) as nome, ativo, CAST(mviews.empresaNome as text) as empNome from areaorganizacional where id = mviews.area_id) union 
 		    ((WITH RECURSIVE areaorganizacional_recursiva AS ( 
 		        SELECT id, nome, areamae_id, CAST(nome AS TEXT) AS nomeHierarquico, ativo 
 		        FROM areaorganizacional WHERE areamae_id = mviews.area_id 
@@ -126,7 +127,8 @@ BEGIN
 		        SELECT ao.id, ao.nome, ao.areamae_id, CAST((ao_r.nomeHierarquico || ' > ' || ao.nome) AS TEXT) AS nomeHierarquico, ao.ativo  
 		        FROM areaorganizacional ao  
 		        INNER JOIN areaorganizacional_recursiva ao_r ON ao.areamae_id = ao_r.id  
-		    ) SELECT id, cast(((select monta_familia_area(id) as nome from areaorganizacional where id = mviews.area_id ) || ' > ' || nomeHierarquico) as text) as nome, ativo FROM areaorganizacional_recursiva) ORDER BY nome); 
+		    ) SELECT id, cast(((select monta_familia_area(id) as nome from areaorganizacional where id = mviews.area_id ) || ' > ' || nomeHierarquico) as text) as nome, ativo, CAST(mviews.empresaNome as text) as empNome
+		      FROM areaorganizacional_recursiva) ORDER BY nome); 
       END LOOP; 
     RETURN;  
 END;  
@@ -6567,6 +6569,21 @@ CREATE TABLE solicitacaoepi_item (
 ALTER TABLE public.solicitacaoepi_item OWNER TO postgres;
 
 --
+-- Name: solicitacaoepiitemdevolucao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE solicitacaoepiitemdevolucao (
+    id bigint NOT NULL,
+    solicitacaoepiitem_id bigint NOT NULL,
+    qtddevolvida integer NOT NULL,
+    datadevolucao date NOT NULL,
+    observacao text
+);
+
+
+ALTER TABLE public.solicitacaoepiitemdevolucao OWNER TO postgres;
+
+--
 -- Name: solicitacaoepiitementrega; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -6586,7 +6603,7 @@ ALTER TABLE public.solicitacaoepiitementrega OWNER TO postgres;
 --
 
 CREATE VIEW situacaosolicitacaoepi AS
-    SELECT sub.solicitacaoepiid, sub.empresaid, sub.estabelecimentoid, sub.estabelecimentonome, sub.colaboradorid, sub.colaboradormatricula, sub.colaboradornome, sub.colaboradordesligado, sub.solicitacaoepidata, sub.cargonome, sub.qtdsolicitado, sub.qtdentregue, CASE WHEN (sub.qtdsolicitado <= sub.qtdentregue) THEN 'E'::text WHEN ((sub.qtdentregue > 0) AND (sub.qtdentregue < sub.qtdsolicitado)) THEN 'P'::text WHEN (sub.qtdentregue = 0) THEN 'A'::text ELSE NULL::text END AS solicitacaoepisituacao FROM (SELECT se.id AS solicitacaoepiid, se.empresa_id AS empresaid, est.id AS estabelecimentoid, est.nome AS estabelecimentonome, c.id AS colaboradorid, c.matricula AS colaboradormatricula, c.nome AS colaboradornome, c.desligado AS colaboradordesligado, se.data AS solicitacaoepidata, ca.nome AS cargonome, (SELECT sum(sei2.qtdsolicitado) AS sum FROM solicitacaoepi_item sei2 WHERE (sei2.solicitacaoepi_id = se.id)) AS qtdsolicitado, COALESCE(sum(seie.qtdentregue), (0)::bigint) AS qtdentregue FROM ((((((solicitacaoepi se LEFT JOIN solicitacaoepi_item sei ON ((sei.solicitacaoepi_id = se.id))) LEFT JOIN solicitacaoepiitementrega seie ON ((seie.solicitacaoepiitem_id = sei.id))) LEFT JOIN colaborador c ON ((se.colaborador_id = c.id))) LEFT JOIN historicocolaborador hc ON ((c.id = hc.colaborador_id))) LEFT JOIN estabelecimento est ON ((se.estabelecimento_id = est.id))) LEFT JOIN cargo ca ON ((se.cargo_id = ca.id))) WHERE ((hc.data = (SELECT max(hc2.data) AS max FROM historicocolaborador hc2 WHERE (((hc2.colaborador_id = c.id) AND (hc2.status = 1)) AND (hc2.data <= ('now'::text)::date)))) AND (hc.status = 1)) GROUP BY se.id, se.empresa_id, est.id, est.nome, c.matricula, c.id, c.nome, c.desligado, se.data, ca.id, ca.nome) sub;
+    SELECT sub.solicitacaoepiid, sub.empresaid, sub.estabelecimentoid, sub.estabelecimentonome, sub.colaboradorid, sub.colaboradormatricula, sub.colaboradornome, sub.colaboradordesligado, sub.solicitacaoepidata, sub.cargonome, sub.qtdsolicitado, sub.qtdentregue, CASE WHEN (sub.qtdsolicitado <= sub.qtdentregue) THEN 'E'::text WHEN ((sub.qtdentregue > 0) AND (sub.qtdentregue < sub.qtdsolicitado)) THEN 'P'::text WHEN (sub.qtdentregue = 0) THEN 'A'::text ELSE NULL::text END AS solicitacaoepisituacaoentregue, sub.qtddevolvida, CASE WHEN (sub.qtdentregue < sub.qtddevolvida) THEN 'D'::text WHEN ((sub.qtddevolvida > 0) AND (sub.qtddevolvida < sub.qtdentregue)) THEN 'DP'::text WHEN (sub.qtddevolvida = 0) THEN NULL::text ELSE 'S'::text END AS solicitacaoepisituacaodevolvido FROM (SELECT se.id AS solicitacaoepiid, se.empresa_id AS empresaid, est.id AS estabelecimentoid, est.nome AS estabelecimentonome, c.id AS colaboradorid, c.matricula AS colaboradormatricula, c.nome AS colaboradornome, c.desligado AS colaboradordesligado, se.data AS solicitacaoepidata, ca.nome AS cargonome, (SELECT sum(sei2.qtdsolicitado) AS sum FROM solicitacaoepi_item sei2 WHERE (sei2.solicitacaoepi_id = se.id)) AS qtdsolicitado, COALESCE(sum(seie.qtdentregue), (0)::bigint) AS qtdentregue, COALESCE(sum(seid.qtddevolvida), (0)::bigint) AS qtddevolvida FROM (((((((solicitacaoepi se LEFT JOIN solicitacaoepi_item sei ON ((sei.solicitacaoepi_id = se.id))) LEFT JOIN solicitacaoepiitementrega seie ON ((seie.solicitacaoepiitem_id = sei.id))) LEFT JOIN solicitacaoepiitemdevolucao seid ON ((seid.solicitacaoepiitem_id = sei.id))) LEFT JOIN colaborador c ON ((se.colaborador_id = c.id))) LEFT JOIN historicocolaborador hc ON ((c.id = hc.colaborador_id))) LEFT JOIN estabelecimento est ON ((se.estabelecimento_id = est.id))) LEFT JOIN cargo ca ON ((se.cargo_id = ca.id))) WHERE ((hc.data = (SELECT max(hc2.data) AS max FROM historicocolaborador hc2 WHERE (((hc2.colaborador_id = c.id) AND (hc2.status = 1)) AND (hc2.data <= ('now'::text)::date)))) AND (hc.status = 1)) GROUP BY se.id, se.empresa_id, est.id, est.nome, c.matricula, c.id, c.nome, c.desligado, se.data, ca.id, ca.nome) sub;
 
 
 ALTER TABLE public.situacaosolicitacaoepi OWNER TO postgres;
@@ -6793,6 +6810,27 @@ ALTER TABLE public.solicitacaoepi_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('solicitacaoepi_sequence', 1, false);
+
+
+--
+-- Name: solicitacaoepiitemdevolucao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE solicitacaoepiitemdevolucao_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.solicitacaoepiitemdevolucao_sequence OWNER TO postgres;
+
+--
+-- Name: solicitacaoepiitemdevolucao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('solicitacaoepiitemdevolucao_sequence', 1, false);
 
 
 --
@@ -31006,6 +31044,10 @@ INSERT INTO migrations (name) VALUES ('20151027153059');
 INSERT INTO migrations (name) VALUES ('20151103145842');
 INSERT INTO migrations (name) VALUES ('20151109145842');
 INSERT INTO migrations (name) VALUES ('20151109148842');
+INSERT INTO migrations (name) VALUES ('20151116145048');
+INSERT INTO migrations (name) VALUES ('20151117112105');
+INSERT INTO migrations (name) VALUES ('20151123161848');
+INSERT INTO migrations (name) VALUES ('20151130141027');
 
 
 --
@@ -31178,7 +31220,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (425, 'ROLE_CAD_PRONTUARIO', 'Registro de Prontuário', '/sesmt/prontuario/list.action', 6, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (428, 'ROLE_CAD_FICHAMEDICA', 'Fichas Médicas', '/sesmt/fichaMedica/listPreenchida.action', 7, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (433, 'ROLE_CAD_SOLICITACAOEPI', 'Solicitação de EPIs', '/sesmt/solicitacaoEpi/list.action', 2, true, NULL, 386, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (435, 'ROLE_CAD_ENTREGAEPI', 'Entrega de EPIs', '/sesmt/solicitacaoEpi/list.action?entrega=true', 3, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (441, 'ROLE_CAD_AFASTAMENTO', 'Afastamentos', '/sesmt/colaboradorAfastamento/list.action', 8, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (443, 'ROLE_CAT', 'Ficha de Investigação de Acidente(CAT)', '/sesmt/cat/list.action', 9, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (457, 'ROLE_CAD_EXTINTOR', 'Extintores', '#', 4, true, NULL, 386, NULL);
@@ -31388,13 +31429,14 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (644, 'ROLE_MOV_AVALIACAO_EDITAR_ACOMPANHAMENTO', 'Editar respostas do acompanhamento do período de experiência por meio de caixa de mensagem ou email', '', 4, false, NULL, NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (645, 'ROLE_INTEGRA_FORTES_PESSOAL', 'Integra com o Fortes Pessoal', '#', 1, false, NULL, 58, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (646, 'ROLE_TAXA_DEMISSAO', 'Taxa de Demissão', '/indicador/indicadorTurnOver/prepareTaxaDeDemissao.action', 11, true, NULL, 377, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (435, 'ROLE_CAD_ENTREGAEPI', 'Entrega de EPIs/Devolução de EPIs', '/sesmt/solicitacaoEpi/list.action?entrega=true', 3, true, NULL, 386, NULL);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.153.184', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.56.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.154.185', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.57.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
 
 
 --
@@ -31858,6 +31900,12 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 646);
 
 --
 -- Data for Name: solicitacaoepi_item; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: solicitacaoepiitemdevolucao; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -33269,6 +33317,14 @@ ALTER TABLE ONLY solicitacaoepi_item
 
 ALTER TABLE ONLY solicitacaoepi
     ADD CONSTRAINT solicitacaoepi_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: solicitacaoepiitemdevolucao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY solicitacaoepiitemdevolucao
+    ADD CONSTRAINT solicitacaoepiitemdevolucao_pkey PRIMARY KEY (id);
 
 
 --
@@ -36316,6 +36372,14 @@ ALTER TABLE ONLY solicitacaoepi_item
 
 ALTER TABLE ONLY solicitacaoepi_item
     ADD CONSTRAINT solicitacaoepi_item_tamanhoepi_fk FOREIGN KEY (tamanhoepi_id) REFERENCES tamanhoepi(id);
+
+
+--
+-- Name: solicitacaoepiitemdevolucao_solicitacaoepi_item_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY solicitacaoepiitemdevolucao
+    ADD CONSTRAINT solicitacaoepiitemdevolucao_solicitacaoepi_item_fk FOREIGN KEY (solicitacaoepiitem_id) REFERENCES solicitacaoepi_item(id);
 
 
 --

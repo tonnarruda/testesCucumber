@@ -21,7 +21,7 @@ Funcionalidade: Cadastrar Candidato
     E eu preencho o campo (JS) "Nascimento" com "01/01/1987"
     E eu preencho "Naturalidade" com "fortaleza"
     E eu preencho o campo (JS) "CPF" com "881.028.771-11"
-    E eu seleciono "Sem escolaridade" de "Escolaridade"
+    E eu seleciono "Analfabeto, inclusive o que, embora tenha recebido instrução, não se alfabetizou" de "Escolaridade"
     E eu preencho "Logradouro" com "Eretides"
     E eu preencho "num" com "11"
     E eu preencho "Complemento" com "apto"

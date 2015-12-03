@@ -30,7 +30,6 @@ public interface SolicitacaoManager extends GenericManager<Solicitacao>
 	@Audita(operacao="Atualização", auditor=SolicitacaoAuditorCallbackImpl.class)
 	void updateSolicitacao(Solicitacao solicitacao, Long[] avaliacaoIds, Empresa empresa, Usuario usuario) throws Exception;
 
-	
 	boolean removeCascade(Long id);
 	Collection<Solicitacao> findSolicitacaoList(Long empresaId, Boolean encerrada, Character status, Boolean suspensa);
 	Solicitacao getValor(Long id);

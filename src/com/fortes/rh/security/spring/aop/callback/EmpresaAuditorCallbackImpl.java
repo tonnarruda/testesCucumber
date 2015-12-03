@@ -39,7 +39,13 @@ public class EmpresaAuditorCallbackImpl implements AuditorCallback {
 	}
 	
 	public Auditavel removeEmpresa(MetodoInterceptado metodo) throws Throwable {
-		
+		Empresa empresa = (Empresa) metodo.getParametros()[0];
+		String dados = new GeraDadosAuditados(new Object[]{empresa}, null).gera();
+		metodo.processa();
+		return new AuditavelImpl(metodo.getModulo(), metodo.getOperacao(), empresa.getNome() + " (id: " + empresa.getId() + ")", dados);			
+	}
+	
+	public Auditavel remove(MetodoInterceptado metodo) throws Throwable {
 		Empresa empresa = (Empresa) metodo.getParametros()[0];
 		String dados = new GeraDadosAuditados(new Object[]{empresa}, null).gera();
 		metodo.processa();

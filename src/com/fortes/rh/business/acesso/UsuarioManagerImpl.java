@@ -191,7 +191,8 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 			
 		usuario = save(usuario);
 		colaboradorManager.atualizarUsuario(colaboradorId, usuario.getId());
-		usuario.setColaborador(colaboradorManager.findByIdDadosBasicos(colaboradorId, null));
+		if(colaboradorId != null)
+			usuario.setColaborador(colaboradorManager.findByIdDadosBasicos(colaboradorId, null));
 		usuarioEmpresaManager.save(usuario, empresaIds, selectPerfils);
 
 		return usuario;
@@ -208,7 +209,8 @@ public class UsuarioManagerImpl extends GenericManagerImpl<Usuario, UsuarioDao> 
 		colaboradorManager.atualizarUsuario(colaboradorId, usuario.getId());
 
 		usuarioEmpresaManager.removeAllUsuario(usuario);
-		usuario.setColaborador(colaboradorManager.findByIdDadosBasicos(colaboradorId, null));
+		if(colaboradorId != null)
+			usuario.setColaborador(colaboradorManager.findByIdDadosBasicos(colaboradorId, null));
 		usuarioEmpresaManager.save(usuario, empresaIds, selectPerfils);
 	}
 

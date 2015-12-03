@@ -72,9 +72,4 @@ public class TabelaReajusteColaboradorAuditorCallbackImpl implements AuditorCall
 		TabelaReajusteColaboradorManager manager = (TabelaReajusteColaboradorManager) metodo.getComponente();
 		return manager.findEntidadeComAtributosSimplesById(tabelaReajusteColaborador.getId());
 	}
-
-	private TabelaReajusteColaborador carregaEntidade(MetodoInterceptado metodo, Long tabelaReajusteColaboradorId) {
-		TabelaReajusteColaboradorManager manager = (TabelaReajusteColaboradorManager) metodo.getComponente();
-		return manager.findEntidadeComAtributosSimplesById(tabelaReajusteColaboradorId);
-	}
 }

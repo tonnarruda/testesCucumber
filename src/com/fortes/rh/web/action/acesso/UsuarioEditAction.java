@@ -90,7 +90,7 @@ public class UsuarioEditAction extends MyActionSupportEdit
 
 		if(colaborador != null && colaborador.getId() != null)
 			colaboradorId = colaborador.getId();
-		else
+		else if (usuario != null && usuario.getId() != null)
 			colaboradorId = colaboradorManager.findByUsuario(usuario.getId());
 
 		perfils = perfilManager.findAll(new String[]{"nome"});

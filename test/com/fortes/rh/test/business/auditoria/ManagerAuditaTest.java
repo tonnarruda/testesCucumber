@@ -26,7 +26,11 @@ public class ManagerAuditaTest extends MockObjectTestCase
     			if (auditorCallback.getSimpleName().equals("AuditorCallbackImpl") || auditorCallback.getName().startsWith("com.fortes.rh.security.spring.aop.callback.crud"))
     				continue;
     			
-    			Class<?> manager = findManager(auditorCallback.getSimpleName().replace("AuditorCallbackImpl", ""));    			
+    			Class<?> manager = findManagerBusiness(auditorCallback.getSimpleName().replace("AuditorCallbackImpl", ""));    			
+    			
+    			if(manager == null)
+    				manager = findManagerModel(auditorCallback.getSimpleName().replace("AuditorCallbackImpl", ""));
+    			
     			Method[] metodosManager = manager.getDeclaredMethods();
 
     	    	Method[] metodosAuditorCallback = auditorCallback.getDeclaredMethods();
@@ -38,8 +42,10 @@ public class ManagerAuditaTest extends MockObjectTestCase
     	    	for (Method methodManager : metodosManager) 
     	    	{
     	    		if(methodManager.isAnnotationPresent(Audita.class))
-    	    			assertTrue(nomeMetodosCallback.contains(methodManager.getName()));
+  	    				assertTrue("" + methodManager.getName(),nomeMetodosCallback.contains(methodManager.getName()));
     			}
+    	    	
+    	    	String teste = "";
 			}
 	    	
     	} catch (Exception e) {
@@ -100,8 +106,20 @@ public class ManagerAuditaTest extends MockObjectTestCase
         return classes;
     }
     
-    private Class<?> findManager(String entityName) throws ClassNotFoundException, IOException {
+    private Class<?> findManagerBusiness(String entityName) throws ClassNotFoundException, IOException {
     	Class<?>[] managers = getClasses("com.fortes.rh.business");
+    	
+    	for (Class<?> manager : managers) {
+    		if (manager.isInterface() && manager.getSimpleName().replace("Manager", "").equals(entityName)) {
+				return manager;
+			}
+		}
+    	
+    	return null;
+    }
+    
+    private Class<?> findManagerModel(String entityName) throws ClassNotFoundException, IOException {
+    	Class<?>[] managers = getClasses("com.fortes.rh.model");
     	
     	for (Class<?> manager : managers) {
     		if (manager.isInterface() && manager.getSimpleName().replace("Manager", "").equals(entityName)) {

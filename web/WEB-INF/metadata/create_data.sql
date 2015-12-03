@@ -1096,6 +1096,13 @@ SELECT pg_catalog.setval('solicitacaoepi_sequence', 1, false);
 
 
 --
+-- Name: solicitacaoepiitemdevolucao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('solicitacaoepiitemdevolucao_sequence', 1, false);
+
+
+--
 -- Name: solicitacaoepiitementrega_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -25748,6 +25755,10 @@ INSERT INTO migrations (name) VALUES ('20151027153059');
 INSERT INTO migrations (name) VALUES ('20151103145842');
 INSERT INTO migrations (name) VALUES ('20151109145842');
 INSERT INTO migrations (name) VALUES ('20151109148842');
+INSERT INTO migrations (name) VALUES ('20151116145048');
+INSERT INTO migrations (name) VALUES ('20151117112105');
+INSERT INTO migrations (name) VALUES ('20151123161848');
+INSERT INTO migrations (name) VALUES ('20151130141027');
 
 
 ALTER TABLE migrations ENABLE TRIGGER ALL;
@@ -25896,7 +25907,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (425, 'ROLE_CAD_PRONTUARIO', 'Registro de Prontuário', '/sesmt/prontuario/list.action', 6, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (428, 'ROLE_CAD_FICHAMEDICA', 'Fichas Médicas', '/sesmt/fichaMedica/listPreenchida.action', 7, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (433, 'ROLE_CAD_SOLICITACAOEPI', 'Solicitação de EPIs', '/sesmt/solicitacaoEpi/list.action', 2, true, NULL, 386, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (435, 'ROLE_CAD_ENTREGAEPI', 'Entrega de EPIs', '/sesmt/solicitacaoEpi/list.action?entrega=true', 3, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (441, 'ROLE_CAD_AFASTAMENTO', 'Afastamentos', '/sesmt/colaboradorAfastamento/list.action', 8, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (443, 'ROLE_CAT', 'Ficha de Investigação de Acidente(CAT)', '/sesmt/cat/list.action', 9, true, NULL, 386, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (457, 'ROLE_CAD_EXTINTOR', 'Extintores', '#', 4, true, NULL, 386, NULL);
@@ -26106,6 +26116,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (644, 'ROLE_MOV_AVALIACAO_EDITAR_ACOMPANHAMENTO', 'Editar respostas do acompanhamento do período de experiência por meio de caixa de mensagem ou email', '', 4, false, NULL, NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (645, 'ROLE_INTEGRA_FORTES_PESSOAL', 'Integra com o Fortes Pessoal', '#', 1, false, NULL, 58, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (646, 'ROLE_TAXA_DEMISSAO', 'Taxa de Demissão', '/indicador/indicadorTurnOver/prepareTaxaDeDemissao.action', 11, true, NULL, 377, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (435, 'ROLE_CAD_ENTREGAEPI', 'Entrega de EPIs/Devolução de EPIs', '/sesmt/solicitacaoEpi/list.action?entrega=true', 3, true, NULL, 386, NULL);
 
 
 ALTER TABLE papel ENABLE TRIGGER ALL;
@@ -26128,7 +26139,7 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.153.184', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.56.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.154.185', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.57.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;
@@ -26579,6 +26590,16 @@ ALTER TABLE solicitacaoepi_item DISABLE TRIGGER ALL;
 
 
 ALTER TABLE solicitacaoepi_item ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: solicitacaoepiitemdevolucao; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE solicitacaoepiitemdevolucao DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE solicitacaoepiitemdevolucao ENABLE TRIGGER ALL;
 
 --
 -- Data for Name: solicitacaoepiitementrega; Type: TABLE DATA; Schema: public; Owner: postgres

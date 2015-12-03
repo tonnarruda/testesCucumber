@@ -87,7 +87,7 @@ Funcionalidade: Movimentação Solicitações de Pessoal
 
     Então eu devo ver o alert "Preencha os campos indicados." e clico no ok
     E eu preencho "Remuneração (R$)" com "1000"
-    E eu seleciono "Mestrado" de "Escolaridade mínima"
+    E eu seleciono "Mestrado completo" de "Escolaridade mínima"
     E eu preencho o campo (JS) "dataPrevIni" com "18"
     E eu preencho o campo (JS) "dataPrevFim" com "50"
     E eu seleciono "CE" de "Estado"

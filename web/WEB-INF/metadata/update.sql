@@ -23315,3 +23315,92 @@ INSERT INTO perfil_papel(perfil_id, papeis_id) select perfil_id, 646 from perfil
 alter sequence papel_sequence restart with 647;--.go
 insert into migrations values('20151109148842');--.go
 update parametrosdosistema set appversao = '1.1.153.184';--.go
+-- versao 1.1.154.185
+
+update parametrosdosistema set acversaowebservicecompativel='1.1.57.1';--.go
+insert into migrations values('20151116145048');--.go
+UPDATE auditoria SET operacao = 'Solicitação Desligamento' WHERE operacao = 'Solicitação Deslig';--.go
+insert into migrations values('20151117112105');--.go
+
+DROP FUNCTION monta_familia_areas_filhas_by_usuario_and_empresa(usuarioId BIGINT, empresaId BIGINT);--.go
+
+CREATE OR REPLACE FUNCTION monta_familia_areas_filhas_by_usuario_and_empresa(usuarioId BIGINT, empresaId BIGINT) RETURNS TABLE(areaId BIGINT, areaNome TEXT, areaAtivo BOOLEAN, empresa_Nome TEXT) AS $$   
+DECLARE 
+mviews RECORD; 
+BEGIN  
+     FOR mviews IN  
+		select area.id as area_id, e.nome as empresaNome from areaorganizacional as area   
+		left join colaborador c on c.id = area.responsavel_id 
+		left join colaborador co on co.id = area.coresponsavel_id  
+		left join usuario u on u.id = c.usuario_id or u.id = co.usuario_id  
+		left join empresa e on e.id = area.empresa_id 
+		where u.id = usuarioId and area.empresa_id = empresaId  
+		LOOP  
+		RETURN QUERY  
+		    (select id, cast(monta_familia_area(id) as text) as nome, ativo, CAST(mviews.empresaNome as text) as empNome from areaorganizacional where id = mviews.area_id) union  
+		    ((WITH RECURSIVE areaorganizacional_recursiva AS (  
+		        SELECT id, nome, areamae_id, CAST(nome AS TEXT) AS nomeHierarquico, ativo  
+		        FROM areaorganizacional WHERE areamae_id = mviews.area_id  
+		        UNION ALL   
+		        SELECT ao.id, ao.nome, ao.areamae_id, CAST((ao_r.nomeHierarquico || ' > ' || ao.nome) AS TEXT) AS nomeHierarquico, ao.ativo   
+		        FROM areaorganizacional ao   
+		        INNER JOIN areaorganizacional_recursiva ao_r ON ao.areamae_id = ao_r.id   
+		    ) SELECT id, cast(((select monta_familia_area(id) as nome from areaorganizacional where id = mviews.area_id ) || ' > ' || nomeHierarquico) as text) as nome, ativo, CAST(mviews.empresaNome as text) as empNome 
+		      FROM areaorganizacional_recursiva) ORDER BY nome);  
+      END LOOP; 
+    RETURN;  
+END;  
+$$ LANGUAGE plpgsql;--.go 
+
+insert into migrations values('20151123161848');--.go
+CREATE TABLE solicitacaoepiitemdevolucao ( 
+	id bigint NOT NULL,
+	solicitacaoepiitem_id bigint NOT NULL,
+	qtdDevolvida integer NOT NULL,
+	dataDevolucao date NOT NULL,
+	observacao text
+);--.go
+
+ALTER TABLE solicitacaoepiitemdevolucao ADD CONSTRAINT solicitacaoepiitemdevolucao_pkey PRIMARY KEY (id);--.go
+ALTER TABLE solicitacaoepiitemdevolucao ADD CONSTRAINT solicitacaoepiitemdevolucao_solicitacaoepi_item_fk FOREIGN KEY (solicitacaoepiitem_id) REFERENCES solicitacaoepi_item(id);--.go
+CREATE SEQUENCE solicitacaoEpiItemDevolucao_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+UPDATE papel set nome = 'Entrega de EPIs/Devolução de EPIs' where id = 435;--.go
+
+DROP VIEW SituacaoSolicitacaoEpi;--.go
+
+CREATE OR REPLACE VIEW situacaosolicitacaoepi AS  
+ SELECT sub.solicitacaoepiid, sub.empresaid, sub.estabelecimentoid, sub.estabelecimentonome, sub.colaboradorid, sub.colaboradormatricula, sub.colaboradornome, sub.colaboradordesligado, sub.solicitacaoepidata, sub.cargonome, sub.qtdsolicitado, sub.qtdentregue,  
+        CASE 
+            WHEN sub.qtdsolicitado <= sub.qtdentregue THEN 'E'::text 
+            WHEN sub.qtdentregue > 0 AND sub.qtdentregue < sub.qtdsolicitado THEN 'P'::text 
+            WHEN sub.qtdentregue = 0 THEN 'A'::text 
+            ELSE NULL::text 
+        END AS solicitacaoepisituacaoEntregue, 
+        sub.qtdDevolvida, 
+        CASE  
+            WHEN sub.qtdentregue < sub.qtdDevolvida THEN 'D'::text 
+            WHEN sub.qtdDevolvida > 0 AND sub.qtdDevolvida < sub.qtdentregue THEN 'DP'::text 
+            WHEN sub.qtdDevolvida = 0 THEN NULL::text 
+            ELSE 'S'::text 
+        END AS solicitacaoepisituacaoDevolvido 
+        
+   FROM ( SELECT se.id AS solicitacaoepiid, se.empresa_id AS empresaid, est.id AS estabelecimentoid, est.nome AS estabelecimentonome, c.id AS colaboradorid, c.matricula AS colaboradormatricula, c.nome AS colaboradornome, c.desligado AS colaboradordesligado, se.data AS solicitacaoepidata, ca.nome AS cargonome, ( SELECT sum(sei2.qtdsolicitado) AS sum 
+                   FROM solicitacaoepi_item sei2 
+                  WHERE sei2.solicitacaoepi_id = se.id) AS qtdsolicitado, COALESCE(sum(seie.qtdentregue), 0::bigint) AS qtdentregue, COALESCE(sum(seid.qtddevolvida), 0::bigint) AS qtddevolvida 
+           FROM solicitacaoepi se 
+      LEFT JOIN solicitacaoepi_item sei ON sei.solicitacaoepi_id = se.id 
+   LEFT JOIN solicitacaoepiitementrega seie ON seie.solicitacaoepiitem_id = sei.id 
+   LEFT JOIN solicitacaoepiitemdevolucao seid ON seid.solicitacaoepiitem_id = sei.id 
+   LEFT JOIN colaborador c ON se.colaborador_id = c.id 
+   LEFT JOIN historicocolaborador hc ON c.id = hc.colaborador_id 
+   LEFT JOIN estabelecimento est ON se.estabelecimento_id = est.id 
+   LEFT JOIN cargo ca ON se.cargo_id = ca.id 
+  WHERE hc.data = (( SELECT max(hc2.data) AS max 
+   FROM historicocolaborador hc2 
+  WHERE hc2.colaborador_id = c.id AND hc2.status = 1 AND hc2.data <= 'now'::text::date)) AND hc.status = 1 
+  GROUP BY se.id, se.empresa_id, est.id, est.nome, c.matricula, c.id, c.nome, c.desligado, se.data, ca.id, ca.nome) sub;--.go 
+
+insert into migrations values('20151130141027');--.go
+
+update parametrosdosistema set appversao = '1.1.154.185';--.go
