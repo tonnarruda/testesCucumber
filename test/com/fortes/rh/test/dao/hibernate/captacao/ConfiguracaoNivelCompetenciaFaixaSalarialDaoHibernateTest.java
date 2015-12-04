@@ -2,6 +2,12 @@ package com.fortes.rh.test.dao.hibernate.captacao;
 
 import java.util.Date;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+import org.hibernate.transform.AliasToBeanResultTransformer;
+
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialDao;
 import com.fortes.rh.dao.captacao.NivelCompetenciaHistoricoDao;
@@ -80,7 +86,31 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialDaoHibernateTest extends G
 		
 		assertTrue(configuracaoNivelCompetenciaFaixaSalarialDao.existByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico.getId()));
 	}
+	
+	public void testFindByFaixaSalarialIdAndData() {
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = iniciaNivelCompetenciaHistorico(empresa, DateUtil.criarDataMesAno(1, 1, 2005));
+		
+		FaixaSalarial faixaSalarial1 = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial1);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial1 = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
+		configuracaoNivelCompetenciaFaixaSalarial1.setFaixaSalarial(faixaSalarial1);
+		configuracaoNivelCompetenciaFaixaSalarial1.setData(DateUtil.criarDataMesAno(1, 1, 2005));
+		configuracaoNivelCompetenciaFaixaSalarial1.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial1);
 
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial2 = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
+		configuracaoNivelCompetenciaFaixaSalarial2.setFaixaSalarial(faixaSalarial1);
+		configuracaoNivelCompetenciaFaixaSalarial2.setData(DateUtil.criarDataMesAno(10,1,2015));
+		configuracaoNivelCompetenciaFaixaSalarial2.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial2);
+
+		assertEquals(configuracaoNivelCompetenciaFaixaSalarial1.getData(), configuracaoNivelCompetenciaFaixaSalarialDao.findByFaixaSalarialIdAndData(faixaSalarial1.getId(),DateUtil.criarDataMesAno(1, 1, 2005)).getData());
+	}
+	
 	public void setConfiguracaoNivelCompetenciaFaixaSalarialDao(ConfiguracaoNivelCompetenciaFaixaSalarialDao configuracaoNivelCompetenciaFaixaSalarialDao)
 	{
 		this.configuracaoNivelCompetenciaFaixaSalarialDao = configuracaoNivelCompetenciaFaixaSalarialDao;

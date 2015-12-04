@@ -18,6 +18,7 @@ import org.springframework.transaction.TransactionUsageException;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -28,6 +29,7 @@ import com.fortes.rh.dao.pesquisa.ColaboradorRespostaDao;
 import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -49,6 +51,7 @@ import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
@@ -61,6 +64,7 @@ import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
 import com.fortes.rh.test.factory.pesquisa.PerguntaFactory;
 import com.fortes.rh.test.factory.pesquisa.QuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.RespostaFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 {
@@ -73,6 +77,7 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 	private Mock colaboradorManager;
 	private Mock avaliacaoManager;
 	private Mock nivelCompetenciaManager;
+	private Mock configuracaoNivelCompetenciaFaixaSalarialManager;
 
     protected void setUp() throws Exception
     {
@@ -100,6 +105,9 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
         
         nivelCompetenciaManager = mock(NivelCompetenciaManager.class);
         colaboradorRespostaManager.setNivelCompetenciaManager((NivelCompetenciaManager) nivelCompetenciaManager.proxy());
+        
+        configuracaoNivelCompetenciaFaixaSalarialManager = new Mock(ConfiguracaoNivelCompetenciaFaixaSalarialManager.class);
+        colaboradorRespostaManager.setConfiguracaoNivelCompetenciaFaixaSalarialManager((ConfiguracaoNivelCompetenciaFaixaSalarialManager) configuracaoNivelCompetenciaFaixaSalarialManager.proxy());
     }
 
     public void testCountRespostas()
@@ -675,10 +683,19 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
   
     public void testSavePerformanceDaAvaliacaoExperienciaComNivelCompetencia()
     {
+    	ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(1L);
+    	configuracaoNivelCompetenciaFaixaSalarial.setData(DateUtil.criarDataMesAno(1, 1, 2015));
+    	
+    	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	colaborador.setFaixaSalarial(faixaSalarial);
+    	
     	Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
     	
     	ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(22L);
     	colaboradorQuestionario.setAvaliacao(avaliacao);
+    	colaboradorQuestionario.setColaborador(colaborador);
     	
     	Pergunta perguntaObjetiva = PerguntaFactory.getEntity(1L);
     	perguntaObjetiva.setTipo(TipoPergunta.OBJETIVA);
@@ -738,9 +755,16 @@ public class ColaboradorRespostaManagerTest extends MockObjectTestCase
 
 		Collection<ConfiguracaoNivelCompetencia> confgniveisCompetencia = Arrays.asList(configNivelCompetencia1, configNivelCompetencia2);
 		
+		configuracaoNivelCompetenciaFaixaSalarialManager.expects(once()).method("findByFaixaSalarialIdAndData").will(returnValue(configuracaoNivelCompetenciaFaixaSalarial));
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador);
+		
+		colaboradorManager.expects(once()).method("findColaboradorByDataHistorico").will(returnValue(colaborador));
 		nivelCompetenciaManager.expects(once()).method("getPontuacaoObtidaByConfiguracoesNiveisCompetencia").with(eq(confgniveisCompetencia)).will(returnValue(20));
-		nivelCompetenciaManager.expects(once()).method("getOrdemMaxima").with(eq(empresa.getId())).will(returnValue(50));
+		nivelCompetenciaManager.expects(once()).method("getOrdemMaxima").with(eq(empresa.getId()), eq(configuracaoNivelCompetenciaFaixaSalarial.getData())).will(returnValue(50));
     	
+		historicoColaboradorManager.expects(once()).method("getHistoricoAtual").will(returnValue(historicoColaborador));
     	avaliacaoManager.expects(once()).method("getPontuacaoMaximaDaPerformance").will(returnValue(pontuacaoMaxima));
     	colaboradorRespostaDao.expects(once()).method("findByColaboradorQuestionario").will(returnValue(colaboradorRespostas));
     	colaboradorRespostaDao.expects(once()).method("removeByColaboradorQuestionario").isVoid();
