@@ -57,6 +57,8 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialDaoHibernate extends Gener
 	public ConfiguracaoNivelCompetenciaFaixaSalarial findByFaixaSalarialIdAndData(Long faixaSalarialId, Date data) {
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.max("cncfs.data"), "data");
+		p.add(Projections.property("cncfs.nivelCompetenciaHistorico.id"), "nivelCompetenciaHistoricoId");
+		p.add(Projections.groupProperty("cncfs.nivelCompetenciaHistorico.id"));
 		
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaFaixaSalarial.class, "cncfs");
 		criteria.setProjection(p);
@@ -66,7 +68,7 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialDaoHibernate extends Gener
 		
 		criteria.add(Expression.eq("cncfs.faixaSalarial.id", faixaSalarialId));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetenciaFaixaSalarial.class));	
-		return (criteria.uniqueResult() != null ? (ConfiguracaoNivelCompetenciaFaixaSalarial)criteria.uniqueResult() : null);
+		return (ConfiguracaoNivelCompetenciaFaixaSalarial)criteria.uniqueResult();
 	}
 
 }

@@ -103,7 +103,7 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		action.setEmpresaSistema(empresa);
 		
-		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId()), ANYTHING, ANYTHING).will(returnValue(new ArrayList<NivelCompetencia>()));
+		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(new ArrayList<NivelCompetencia>()));
 		
 		assertEquals("success", action.list());
 		assertNotNull(action.getNivelCompetencias());
@@ -118,7 +118,7 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		action.setNivelCompetencia(nivelCompetencia);
 
 		manager.expects(once()).method("remove");
-		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId()), ANYTHING, ANYTHING).will(returnValue(new ArrayList<NivelCompetencia>()));
+		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(new ArrayList<NivelCompetencia>()));
 		assertEquals("success", action.delete());
 	}
 	
@@ -131,7 +131,7 @@ public class NivelCompetenciaEditActionTest extends MockObjectTestCase
 		action.setNivelCompetencia(nivelCompetencia);
 		
 		manager.expects(once()).method("remove").with(eq(nivelCompetencia.getId())).will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
-		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId()), ANYTHING, ANYTHING).will(returnValue(new ArrayList<NivelCompetencia>()));
+		manager.expects(once()).method("findAllSelect").with(eq(empresa.getId())).will(returnValue(new ArrayList<NivelCompetencia>()));
 
 		assertEquals("success", action.delete());
 	}

@@ -53,4 +53,14 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarial extends AbstractModel imp
 	public void setNivelCompetenciaHistorico(NivelCompetenciaHistorico nivelCompetenciaHistorico) {
 		this.nivelCompetenciaHistorico = nivelCompetenciaHistorico;
 	}
+	
+	public void setNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId){
+		inicializaNivelCompetenciaHistorico();
+		this.nivelCompetenciaHistorico.setId(nivelCompetenciaHistoricoId);
+	}
+	
+	private void inicializaNivelCompetenciaHistorico(){
+		if(this.nivelCompetenciaHistorico == null)
+			this.nivelCompetenciaHistorico = new NivelCompetenciaHistorico();
+	}
 }

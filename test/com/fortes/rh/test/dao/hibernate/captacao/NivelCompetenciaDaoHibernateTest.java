@@ -1237,7 +1237,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		nivelCompetenciaHistorico1.setEmpresa(empresa);
 		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico1);
 		
-		NivelCompetenciaHistorico nivelCompetenciaHistorico2 = iniciaNivelCompetenciaHistorico(empresa, DateUtil.criarDataMesAno(1, 1, 2015));
+		NivelCompetenciaHistorico nivelCompetenciaHistorico2 = iniciaNivelCompetenciaHistorico(empresa, DateUtil.criarDataMesAno(2, 1, 2015));
 		
 		NivelCompetencia nivelCompetencia1 = NivelCompetenciaFactory.getEntity();
 		nivelCompetencia1.setEmpresa(empresa);
@@ -1279,7 +1279,8 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configHistoricoNivel4.setNivelCompetencia(nivelCompetencia4);
 		configHistoricoNivelDao.save(configHistoricoNivel4);
 		
-		assertEquals((int) 2, nivelCompetenciaDao.getOrdemMaxima(empresa.getId(), x));
+		assertEquals((int) 3, nivelCompetenciaDao.getOrdemMaxima(empresa.getId(),nivelCompetenciaHistorico1.getData()));
+		assertEquals((int) 2, nivelCompetenciaDao.getOrdemMaxima(empresa.getId(),nivelCompetenciaHistorico2.getData()));
 	}
 	
 	public void testFindCompetenciasByFaixa()

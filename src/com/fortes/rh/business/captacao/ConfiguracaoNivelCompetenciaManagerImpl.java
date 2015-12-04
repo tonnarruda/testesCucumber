@@ -451,26 +451,28 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	
 	public Collection<MatrizCompetenciaNivelConfiguracao> montaConfiguracaoNivelCompetenciaByFaixa(Long empresaId, Long faixaSalarialId, Date data) 
 	{
-		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial =  configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(faixaSalarialId, data);
-		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasExigidasPelaFaixa = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId, configuracaoNivelCompetenciaFaixaSalarial.getData());
-
-		Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId, null, configuracaoNivelCompetenciaFaixaSalarial.getData());
-
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
-		for (ConfiguracaoNivelCompetencia competenciaExigidaPelaFaixa : configuracaoNivelCompetenciasExigidasPelaFaixa) 
-		{
-			competenciaExigidaPelaFaixa.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(competenciaExigidaPelaFaixa.getCompetenciaId(), competenciaExigidaPelaFaixa.getTipoCompetencia().charValue()));
-			for (NivelCompetencia nivel : niveis) 
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial =  configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(faixaSalarialId, data);
+		if(configuracaoNivelCompetenciaFaixaSalarial != null){
+			Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasExigidasPelaFaixa = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId, configuracaoNivelCompetenciaFaixaSalarial.getData());
+	
+			Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId, configuracaoNivelCompetenciaFaixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
+	
+			for (ConfiguracaoNivelCompetencia competenciaExigidaPelaFaixa : configuracaoNivelCompetenciasExigidasPelaFaixa) 
 			{
-				boolean isConfiguracaoFaixa = competenciaExigidaPelaFaixa.getNivelCompetencia().getDescricao().equals(nivel.getDescricao());
-				boolean hasCriterios = (competenciaExigidaPelaFaixa.getCriteriosAvaliacaoCompetencia() != null && competenciaExigidaPelaFaixa.getCriteriosAvaliacaoCompetencia().size() > 0);
-				matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaExigidaPelaFaixa.getCompetenciaDescricao(), nivel.getOrdem() + " - " + nivel.getDescricao(), isConfiguracaoFaixa, false, hasCriterios, false));
-			}
-			
-			if ( competenciaExigidaPelaFaixa.getCriteriosAvaliacaoCompetencia() != null ) {
-				for( CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia : competenciaExigidaPelaFaixa.getCriteriosAvaliacaoCompetencia() ) {
-					for (NivelCompetencia nivel : niveis)
-						matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(criterioAvaliacaoCompetencia.getDescricao(), nivel.getOrdem() + " - " + nivel.getDescricao(), false, false, false, true));
+				competenciaExigidaPelaFaixa.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(competenciaExigidaPelaFaixa.getCompetenciaId(), competenciaExigidaPelaFaixa.getTipoCompetencia().charValue()));
+				for (NivelCompetencia nivel : niveis) 
+				{
+					boolean isConfiguracaoFaixa = competenciaExigidaPelaFaixa.getNivelCompetencia().getDescricao().equals(nivel.getDescricao());
+					boolean hasCriterios = (competenciaExigidaPelaFaixa.getCriteriosAvaliacaoCompetencia() != null && competenciaExigidaPelaFaixa.getCriteriosAvaliacaoCompetencia().size() > 0);
+					matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(competenciaExigidaPelaFaixa.getCompetenciaDescricao(), nivel.getOrdem() + " - " + nivel.getDescricao(), isConfiguracaoFaixa, false, hasCriterios, false));
+				}
+				
+				if ( competenciaExigidaPelaFaixa.getCriteriosAvaliacaoCompetencia() != null ) {
+					for( CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia : competenciaExigidaPelaFaixa.getCriteriosAvaliacaoCompetencia() ) {
+						for (NivelCompetencia nivel : niveis)
+							matrizModelo.add(new MatrizCompetenciaNivelConfiguracao(criterioAvaliacaoCompetencia.getDescricao(), nivel.getOrdem() + " - " + nivel.getDescricao(), false, false, false, true));
+					}
 				}
 			}
 		}
