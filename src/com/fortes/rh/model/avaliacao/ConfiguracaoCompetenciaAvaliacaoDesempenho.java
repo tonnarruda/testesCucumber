@@ -9,7 +9,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
-import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
 
 @Entity
@@ -30,7 +30,7 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenho extends AbstractModel im
 	@Column
 	private Character tipoCompetencia;
 
-	private FaixaSalarial faixaSalarial;
+	private ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial;
 	
 	public Colaborador getAvaliador() {
 		return avaliador;
@@ -56,12 +56,13 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenho extends AbstractModel im
 		this.tipoCompetencia = tipoCompetencia;
 	}
 
-	public FaixaSalarial getFaixaSalarial() {
-		return faixaSalarial;
+	public ConfiguracaoNivelCompetenciaFaixaSalarial getConfiguracaoNivelCompetenciaFaixaSalarial() {
+		return configuracaoNivelCompetenciaFaixaSalarial;
 	}
 
-	public void setFaixaSalarial(FaixaSalarial faixaSalarial) {
-		this.faixaSalarial = faixaSalarial;
+	public void setConfiguracaoNivelCompetenciaFaixaSalarial(
+			ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) {
+		this.configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarial;
 	}
 
 	public AvaliacaoDesempenho getAvaliacaoDesempenho() {
@@ -70,5 +71,26 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenho extends AbstractModel im
 
 	public void setAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho) {
 		this.avaliacaoDesempenho = avaliacaoDesempenho;
+	}
+	
+	public void setProjectionAvaliacaoDesempenhoId(Long avaliacaoId){
+		if ( this.avaliacaoDesempenho == null)
+			this.avaliacaoDesempenho = new AvaliacaoDesempenho();
+		
+		this.avaliacaoDesempenho.setId(avaliacaoId);
+	}
+	
+	public void setProjectionConfiguracaoNivelCompetenciaFaixaSalarialId(Long configuracaoNivelCompetenciaFaixaSalarialId){
+		if ( this.configuracaoNivelCompetenciaFaixaSalarial == null)
+			this.configuracaoNivelCompetenciaFaixaSalarial = new ConfiguracaoNivelCompetenciaFaixaSalarial();
+		
+		this.configuracaoNivelCompetenciaFaixaSalarial.setId(configuracaoNivelCompetenciaFaixaSalarialId);
+	}
+	
+	public void setProjectionAvaliadorDEsempenhoId(Long avaliadorId){
+		if ( this.avaliador == null)
+			this.avaliador = new Colaborador();
+		
+		this.avaliador.setId(avaliadorId);
 	}
 }

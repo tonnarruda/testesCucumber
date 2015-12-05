@@ -14,6 +14,7 @@ import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 
 public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<ConfiguracaoCompetenciaAvaliacaoDesempenho> implements ConfiguracaoCompetenciaAvaliacaoDesempenhoDao
 {
+	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> findByAvaliacaoDesempenho(Long avaliacaoDesempenhoId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "ccad");
@@ -22,7 +23,7 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ccad.id"), "id");
 		p.add(Projections.property("ccad.avaliacaoDesempenho.id"), "projectionAvaliacaoDesempenhoId");
-		p.add(Projections.property("ccad.faixaSalarial.id"), "projectionFaixaSalarialId");
+		p.add(Projections.property("ccad.configuracaoNivelCompetenciaFaixaSalarial.id"), "projectionConfiguracaoNivelCompetenciaFaixaSalarialId");
 		p.add(Projections.property("ccad.avaliador.id"), "projectionAvaliadorId");
 		p.add(Projections.property("ccad.competenciaId"), "competenciaId");
 		p.add(Projections.property("ccad.tipoCompetencia"), "tipoCompetencia");

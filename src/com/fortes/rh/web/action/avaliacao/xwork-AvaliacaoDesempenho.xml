@@ -67,7 +67,7 @@
 			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/avaliacaoDesempenhoCompetencias.ftl</result>
 		</action>
-		<action name="saveCompetencias" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="prepareCompetencias">
+		<action name="saveCompetencias" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="saveCompetencias">
 			<result name="success" type="redirect">prepareCompetencias.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}</result>
 		</action>
 		<action name="deleteAvaliacao" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="deleteAvaliacao">

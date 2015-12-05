@@ -69,7 +69,7 @@
 		</div>
 		
 		<div style="width: 740px; margin: 0 auto;">
-			<@ww.form name="formParticipantes" id="formParticipantes" action="saveParticipantes" method="POST">
+			<@ww.form name="formCompetencias" id="formCompetencias" action="saveCompetencias" method="POST">
 				<div id="competencias" class="box">
 				  <h1 class="ui-widget-header title">
 				  Competências
@@ -101,6 +101,7 @@
 								      	<li class="ui-widget-content" id="${cnc.competenciaId}">
 									      	<input type="hidden" name="competenciaId" value="${cnc.competenciaId}"/>
 									      	<input type="hidden" name="competenciaTipo" value="${cnc.tipoCompetencia}"/>
+									      	<input type="hidden" name="configuracaoNivelCompetenciaFaixaSalarial" value="${cnc.configuracaoNivelCompetenciaFaixaSalarial.id}"/>
 								      		<div class="nome">${cnc.competenciaDescricao}</div>
 								      		<div style="clear:both;float: none;"></div>
 								      	</li>
