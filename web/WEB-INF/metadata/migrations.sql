@@ -200,13 +200,13 @@ CREATE TABLE configuracaocompetenciaavaliacaodesempenho (
 	id bigint NOT NULL,
     avaliador_id bigint,
     avaliacaodesempenho_id bigint,
-    faixasalarial_id bigint,
+    configuracaonivelcompetenciafaixasalarial_id bigint,
     competencia_id bigint not null,
     tipoCompetencia character
 ); --.go
 
 ALTER TABLE configuracaocompetenciaavaliacaodesempenho ADD CONSTRAINT configuracaocompetenciaavaliacaodesempenho_pkey PRIMARY KEY(id);--.go
 ALTER TABLE configuracaocompetenciaavaliacaodesempenho ADD CONSTRAINT configuracaocompetenciaavaliacaodesempenho_avaliador_fk FOREIGN KEY (avaliador_id) REFERENCES colaborador(id);--.go
-ALTER TABLE configuracaocompetenciaavaliacaodesempenho ADD CONSTRAINT configuracaocompetenciaavaliacaodesempenho_faixasalarial_fk FOREIGN KEY (faixasalarial_id) REFERENCES colaborador(id);--.go
+ALTER TABLE configuracaocompetenciaavaliacaodesempenho ADD CONSTRAINT configuracaocompetenciaavaliacaodesempenho_configuracaonivelcompetenciafaixasalarial_fk FOREIGN KEY (configuracaonivelcompetenciafaixasalarial_id) REFERENCES configuracaonivelcompetenciafaixasalarial(id);--.go
 ALTER TABLE configuracaocompetenciaavaliacaodesempenho ADD CONSTRAINT configuracaocompetenciaavaliacaodesempenho_avaliacaodesempenho_fk FOREIGN KEY (avaliacaodesempenho_id) REFERENCES avaliacaodesempenho(id);--.go
 CREATE SEQUENCE configuracaocompetenciaavaliacaodesempenho_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go

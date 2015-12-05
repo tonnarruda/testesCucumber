@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.ParticipanteAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
@@ -23,6 +24,7 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.ParticipanteAvaliacao;
@@ -54,10 +56,12 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private CargoManager cargoManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
+	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	private AvaliacaoDesempenho avaliacaoDesempenho;
 	private Collection<AvaliacaoDesempenho> avaliacaoDesempenhos;
 	private Collection<Avaliacao> avaliacaos;
 	private Collection<FaixaSalarial> faixaSalariais;
+	private Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> configuracaoCompetenciaAvaliacaoDesempenhos = new ArrayList<ConfiguracaoCompetenciaAvaliacaoDesempenho>();
 	
 	private Collection<Colaborador> participantes;
 	private Collection<Colaborador> avaliadors;
@@ -179,16 +183,10 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String saveCompetencias() throws Exception
 	{
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		colaboradorQuestionarios.removeAll(Collections.singleton(null));
 		
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(avaliados), ParticipanteAvaliacao.AVALIADO);
-		participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.arrayStringToArrayLong(avaliados), avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADO);
-		
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(avaliadores), ParticipanteAvaliacao.AVALIADOR);
-		participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.arrayStringToArrayLong(avaliadores), avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
-		
-		colaboradorQuestionarioManager.save(new ArrayList<ColaboradorQuestionario>(colaboradorQuestionarios), avaliacaoDesempenho.getId());
-		colaboradorQuestionarioManager.removeNotIn(colaboradorQuestionarios, avaliacaoDesempenho.getId());
+		configuracaoCompetenciaAvaliacaoDesempenhos.removeAll(Collections.singleton(null));
+		configuracaoCompetenciaAvaliacaoDesempenhoManager.save(new ArrayList<ConfiguracaoCompetenciaAvaliacaoDesempenho>(configuracaoCompetenciaAvaliacaoDesempenhos), avaliacaoDesempenho.getId());
+		configuracaoCompetenciaAvaliacaoDesempenhoManager.removeNotIn(configuracaoCompetenciaAvaliacaoDesempenhos, avaliacaoDesempenho.getId());
 		
 		prepareCompetencias();
 		return Action.SUCCESS;
@@ -201,6 +199,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
 			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), true, null, null, null);
+			
 			colaboradorsCheckList = populaCheckListBox(participantes, "getId", "getNome");
 			colaboradorsCheckList = CheckListBoxUtil.marcaCheckListBox(colaboradorsCheckList, colaboradorsCheck);
 		} catch (Exception e) {
@@ -828,5 +827,19 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public Collection<FaixaSalarial> getFaixaSalariais() {
 		return faixaSalariais;
+	}
+
+	public Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> getConfiguracaoCompetenciaAvaliacaoDesempenhos() {
+		return configuracaoCompetenciaAvaliacaoDesempenhos;
+	}
+
+	public void setConfiguracaoCompetenciaAvaliacaoDesempenhos(
+			Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> configuracaoCompetenciaAvaliacaoDesempenhos) {
+		this.configuracaoCompetenciaAvaliacaoDesempenhos = configuracaoCompetenciaAvaliacaoDesempenhos;
+	}
+
+	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(
+			ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
+		this.configuracaoCompetenciaAvaliacaoDesempenhoManager = configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	}
 }

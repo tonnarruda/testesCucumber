@@ -61,6 +61,11 @@
       <ref bean="configuracaoNivelCompetenciaManager" />
     </property>
   </bean>
+  <bean id="configuracaoCompetenciaAvaliacaoDesempenhoManagerTarget" class="com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl">
+    <property name="dao">
+      <ref bean="configuracaoCompetenciaAvaliacaoDesempenhoDao" />
+    </property>
+  </bean>
   <bean id="avaliacaoDesempenhoManagerTarget" class="com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManagerImpl">
     <property name="dao">
       <ref bean="avaliacaoDesempenhoDao" />
@@ -99,6 +104,14 @@
     </property>
     <property name="target">
       <ref bean="participanteAvaliacaoDesempenhoManagerTarget" />
+    </property>
+  </bean>
+  <bean id="configuracaoCompetenciaAvaliacaoDesempenhoManager" parent="parentManager">
+    <property name="proxyInterfaces">
+      <value>com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager</value>
+    </property>
+    <property name="target">
+      <ref bean="configuracaoCompetenciaAvaliacaoDesempenhoManagerTarget" />
     </property>
   </bean>
   <bean id="avaliacaoDesempenhoManager" parent="parentManager">
