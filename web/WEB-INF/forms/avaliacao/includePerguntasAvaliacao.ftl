@@ -19,11 +19,21 @@
 		</#if>
 
 		<p id="tituloPergunta" class="pergunta${pergunta.id}">${pergunta.ordem}) ${pergunta.texto}</p>
-		<@ww.hidden id="pesoPergunta" value=" ${pergunta.peso}"/>
+		<#if pergunta.peso?exists>
+			<#assign pesoPergunta="${pergunta.peso}"/>
+		<#else>
+			<#assign pesoPergunta="0"/>
+		</#if>
+		<@ww.hidden id="pesoPergunta" value="${pesoPergunta}"/>
 		
 		<#if pergunta.tipo == tipoPergunta.objetiva >
 			<#list pergunta.respostas as resposta>
-				<input type="radio" peso="${resposta.peso}" class="opcaoResposta${pergunta.id},radio objetiva pergunta" name="perguntas[${i}].colaboradorRespostas[0].resposta.id" value="${resposta.id}" id="${resposta.id}" <#if perguntas[i].colaboradorRespostas[0].temResposta() && (resposta.id == perguntas[i].colaboradorRespostas[0].resposta.id)>checked</#if>/><label for="${resposta.id}">${resposta.texto}</label><br>
+				<#if resposta.peso?exists>
+					<#assign pesoResposta="${resposta.peso}"/>
+				<#else>
+					<#assign pesoResposta="0"/>
+				</#if>
+				<input type="radio" peso="${pesoResposta}" class="opcaoResposta${pergunta.id},radio objetiva pergunta" name="perguntas[${i}].colaboradorRespostas[0].resposta.id" value="${resposta.id}" id="${resposta.id}" <#if perguntas[i].colaboradorRespostas[0].temResposta() && (resposta.id == perguntas[i].colaboradorRespostas[0].resposta.id)>checked</#if>/><label for="${resposta.id}">${resposta.texto}</label><br>
 			</#list>
 			
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.id" />
@@ -61,8 +71,12 @@
 						
 					</#list>
 				</#if>
-					
-				<input type="checkbox" peso="${resposta.peso}" class="opcaoResposta${pergunta.id}, radio multiplaEscolha pergunta" name="perguntas[${i}].colaboradorRespostas[${j}].resposta.id" value="${resposta.id}" id="${resposta.id}" ${checked}/><label for="${resposta.id}">${resposta.texto}</label><br>
+					<#if resposta.peso?exists>
+					<#assign pesoResposta="${resposta.peso}"/>
+				<#else>
+					<#assign pesoResposta="0"/>
+				</#if>
+				<input type="checkbox" peso="${pesoResposta}" class="opcaoResposta${pergunta.id}, radio multiplaEscolha pergunta" name="perguntas[${i}].colaboradorRespostas[${j}].resposta.id" value="${resposta.id}" id="${resposta.id}" ${checked}/><label for="${resposta.id}">${resposta.texto}</label><br>
 				<@ww.hidden name="perguntas[${i}].colaboradorRespostas[${j}].pergunta.id" value="${pergunta.id}"/>
 				<@ww.hidden name="perguntas[${i}].colaboradorRespostas[${j}].pergunta.tipo" value="${pergunta.tipo}" id= "tipo"/>
 				<@ww.hidden name="perguntas[${i}].colaboradorRespostas[${j}].pergunta.comentario" value="${pergunta.comentario?string}"/>
@@ -106,7 +120,12 @@
 			<@ww.select label="Selecione a nota de ${pergunta.notaMinima} a ${pergunta.notaMaxima}" cssClass="opcaoResposta${pergunta.id} nota pergunta" name="perguntas[${i}].colaboradorRespostas[0].valor" list=perguntas[i].colaboradorRespostas[0].getNotas() headerKey="" headerValue="Selecione..."/>
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.id" />
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.tipo" value="${pergunta.tipo}" id= "tipo"/>
-			<@ww.hidden id="peso" value="${pergunta.peso}"/>
+			<#if pergunta.peso?exists>
+				<#assign pesoPergunta="${pergunta.peso}"/>
+			<#else>
+				<#assign pesoPergunta="0"/>
+			</#if>
+			<@ww.hidden id="peso" value="${pesoPergunta}"/>
 			
 			<#if pergunta.comentario>
 				${pergunta.textoComentario}<br>

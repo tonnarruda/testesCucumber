@@ -247,6 +247,8 @@ $$ LANGUAGE plpgsql;--.go
 select insere_cncfid_em_cncc();--.go
 drop function insere_cncfid_em_cncc();--.go
 
+UPDATE colaboradorquestionario SET configuracaonivelcompetenciacolaborador_id = null WHERE configuracaonivelcompetenciacolaborador_id IN(SELECT id FROM configuracaoNivelCompetenciaColaborador WHERE ConfiguracaoNivelCompetenciaFaixaSalarial_id IS NULL AND colaboradorquestionario_id IS NOT NULL);--.go
+
 DELETE FROM configuracaoNivelCompetenciaColaborador WHERE ConfiguracaoNivelCompetenciaFaixaSalarial_id is null;--.go
 
 ------
