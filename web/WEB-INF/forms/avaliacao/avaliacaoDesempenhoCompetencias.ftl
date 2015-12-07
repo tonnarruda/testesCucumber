@@ -36,7 +36,18 @@
 			var permiteAutoAvaliacao = ${avaliacaoDesempenho.permiteAutoAvaliacao.toString()};
 			var avaliacaoDesempenhoId = ${avaliacaoDesempenho.id};
 			var avaliacaoId = ${avaliacaoDesempenho.avaliacao.id};
-		
+			var avaliacaoLiberada = ${avaliacaoDesempenho.liberada?string};
+			
+			$(function(){
+				if (!avaliacaoLiberada) {
+					conectCompetenciasAvaliadores();
+				
+			    	atualizeSelectables("#competencias-list ul", "li", "competencias");
+			    	atualizeSelectablesMini();
+			    } else {
+			    	$("li, .portlet-header").css("color", "#A1A1A1");
+			    }
+		    });
 		</script>
 	</head>
 	<body>
@@ -184,7 +195,12 @@
 				
 				<script>countConfiguracaoCompetencia=${countConfiguracaoCompetencia};</script>
 				<@ww.hidden name="avaliacaoDesempenho.id"/>
-				<button type="submit" class="btnGravar"></button>
+				
+				<#if avaliacaoDesempenho.liberada>
+					<button type="button" class="btnGravarDesabilitado"></button>
+				<#else>
+					<button type="submit" class="btnGravar"></button>
+				</#if>
 				<button type="button" onclick="window.location='list.action'" class="btnVoltar"></button>
 			</@ww.form>
 			<div style="clear: both;"></div>

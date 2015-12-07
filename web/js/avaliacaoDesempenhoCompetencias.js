@@ -5,17 +5,11 @@ var selectedsAvaliadosFromAvaliadores = new Array;
 var lastSelected;
 var activeShift = false;
 var activeCtrl = false;
-var notificatedAboutAutoAvaliacao = false;
 
 $(function() {
 	
-	conectCompetenciasAvaliadores();
-	
     portletEvents();
 	    
-	atualizeSelectables("#competencias-list ul", "li", "competencias");
-	atualizeSelectablesMini();
-    
 	$("#competencias-list > li .faixa-descricao").click(function(){
 		$(this).parent().find("ul").toggle();
 		$(this).find(".fa").toggle();

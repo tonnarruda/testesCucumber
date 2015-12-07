@@ -25,7 +25,7 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenho extends AbstractModel im
 	private AvaliacaoDesempenho avaliacaoDesempenho;
 	
 	@Column(name="competencia_id")
-	private Long competenciaId;
+	private Long competenciaId;  
 	
 	@Column
 	private Character tipoCompetencia;
