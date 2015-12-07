@@ -4,4 +4,4 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (647,
 insert into perfil_papel(perfil_id, papeis_id) values(1, 647);--.go
 alter sequence papel_sequence restart with 648;--.go
 
-update parametrosdosistema set acversaowebservicecompativel = 'x' where id = 1;--.go
+update parametrosdosistema set acversaowebservicecompativel = '1.1.58.1' where id = 1;--.go
