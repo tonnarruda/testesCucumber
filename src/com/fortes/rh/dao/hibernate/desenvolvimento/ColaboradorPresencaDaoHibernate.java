@@ -130,7 +130,7 @@ public class ColaboradorPresencaDaoHibernate extends GenericDaoHibernate<Colabor
 	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds, Long[] estabelecimentosIds)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select coalesce(count(dt.id), 0) ");
+		hql.append("select coalesce(count(distinct cp.id), 0) ");
 		hql.append("from ColaboradorPresenca as cp ");
 		hql.append("inner join cp.diaTurma dt ");
 		hql.append("inner join dt.turma t ");
