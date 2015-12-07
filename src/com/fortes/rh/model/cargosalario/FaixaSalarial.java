@@ -22,6 +22,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
@@ -71,6 +72,8 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	private String projectionEstabelecimentoNome;
 	@Transient
 	private Date dataConfiguracaoNivelCompetenciaFaixaSalarial;
+	@Transient
+	private Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> configuracaoCompetenciaAvaliacaoDesempenhos;
 	
 	public FaixaSalarial()
 	{
@@ -523,5 +526,14 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	
 	public String getDataConfiguracaoNivelCompetenciaFaixaSalarial(){
 		return DateUtil.formataDiaMesAno(this.dataConfiguracaoNivelCompetenciaFaixaSalarial);
+	}
+
+	public Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> getConfiguracaoCompetenciaAvaliacaoDesempenhos() {
+		return configuracaoCompetenciaAvaliacaoDesempenhos;
+	}
+
+	public void setConfiguracaoCompetenciaAvaliacaoDesempenhos(
+			Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> configuracaoCompetenciaAvaliacaoDesempenhos) {
+		this.configuracaoCompetenciaAvaliacaoDesempenhos = configuracaoCompetenciaAvaliacaoDesempenhos;
 	}
 }

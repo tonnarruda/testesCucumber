@@ -1,4 +1,4 @@
-var countColaboradorQuestionarios = 0;
+var countConfiguracaoCompetencia = 0;
 var selectedsAvaliados = new Array;
 var selectedsAvaliadores = new Array;
 var selectedsAvaliadosFromAvaliadores = new Array;
@@ -223,11 +223,11 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
     if( $(avaliadorUlTag).find(".competencia_"+ avaliadorLiTag.attr('id')).length == 0 && $(avaliadorUlTag).parent().attr("class") == $(avaliadorLiTag).parent().attr("class") ) {
     	$( avaliadorUlTag ).find( ".placeholder" ).remove();
     	$("<li class='competencia_"+avaliadorLiTag.attr('id')+"'></li>").text( avaliadorLiTag.find(".nome").text() ).appendTo( avaliadorUlTag );
-    	$( avaliadorUlTag ).find(".competencia_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countColaboradorQuestionarios+'].competenciaId" value="' + avaliadorLiTag.attr("id") + '"/>' +
-    			'<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countColaboradorQuestionarios+'].tipoCompetencia" value="' + avaliadorLiTag.find("input[name='competenciaTipo']").val() + '"/>' +
-				        							   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countColaboradorQuestionarios+'].avaliador.id" value="' + $(avaliadorUlTag).parents(".portlet").attr("id") + '"/>' +
-				        							   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countColaboradorQuestionarios+'].configuracaoNivelCompetenciaFaixaSalarial.id" value="' + avaliadorLiTag.find("input[name='configuracaoNivelCompetenciaFaixaSalarial']").val() + '"/>' +
-				        							   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countColaboradorQuestionarios+'].avaliacaoDesempenho.id" value="' + avaliacaoDesempenhoId + '"/>');
+    	$( avaliadorUlTag ).find(".competencia_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].competenciaId" value="' + avaliadorLiTag.attr("id") + '"/>' +
+    			'<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].tipoCompetencia" value="' + avaliadorLiTag.find("input[name='competenciaTipo']").val() + '"/>' +
+				        							   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].avaliador.id" value="' + $(avaliadorUlTag).parents(".portlet").attr("id") + '"/>' +
+				        							   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].configuracaoNivelCompetenciaFaixaSalarial.id" value="' + avaliadorLiTag.find("input[name='configuracaoNivelCompetenciaFaixaSalarial']").val() + '"/>' +
+				        							   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].avaliacaoDesempenho.id" value="' + avaliacaoDesempenhoId + '"/>');
     	
     	$("#avaliadores ul li .ui-icon-closethick").not(".disabled").click(function(){
 	    	if( $(this).parent().parent().find("li").length == 1 )
@@ -236,7 +236,7 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
 	    	$(this).parent().remove();
 	    });
 	    
-    	countColaboradorQuestionarios++;
+    	countConfiguracaoCompetencia++;
     }
 }
 
