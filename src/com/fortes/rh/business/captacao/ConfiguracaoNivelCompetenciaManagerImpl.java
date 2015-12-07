@@ -277,8 +277,8 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return getDao().findByConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarialId, configuracaoNivelCompetenciaFaixaSalarialData);
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId, Date data) {
-		Collection<ConfiguracaoNivelCompetencia> configuracoesNiveisCompetencia = getDao().findCompetenciaByFaixaSalarial(faixaId, data);
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId, Date data, Long configuracaoNivelCompetenciaFaixaSalarialId) {
+		Collection<ConfiguracaoNivelCompetencia> configuracoesNiveisCompetencia = getDao().findCompetenciaByFaixaSalarial(faixaId, data, configuracaoNivelCompetenciaFaixaSalarialId);
 		
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracoesNiveisCompetencia) {
 			configuracaoNivelCompetencia.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(configuracaoNivelCompetencia.getCompetenciaId(), configuracaoNivelCompetencia.getTipoCompetencia().charValue()));
@@ -454,7 +454,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizModelo = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial =  configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(faixaSalarialId, data);
 		if(configuracaoNivelCompetenciaFaixaSalarial != null){
-			Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasExigidasPelaFaixa = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId, configuracaoNivelCompetenciaFaixaSalarial.getData());
+			Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasExigidasPelaFaixa = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId, configuracaoNivelCompetenciaFaixaSalarial.getData(), null);
 	
 			Collection<NivelCompetencia> niveis = nivelCompetenciaManager.findAllSelect(empresaId, configuracaoNivelCompetenciaFaixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 	
@@ -485,7 +485,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		if(configuracaoNivelCompetenciaColaborador != null){
 			ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial =  configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(configuracaoNivelCompetenciaColaborador.getFaixaSalarial().getId(), colaboradorQuestionario.getRespondidaEm());
 			
-			Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasExigidasPelaFaixa = getDao().findCompetenciaByFaixaSalarial(configuracaoNivelCompetenciaColaborador.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
+			Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasExigidasPelaFaixa = getDao().findCompetenciaByFaixaSalarial(configuracaoNivelCompetenciaColaborador.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), null);
 				
 			Collection<ConfiguracaoNivelCompetencia> competenciasDoColaborador = getDao().findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 			
@@ -558,7 +558,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		if(candidatosDaSolicitacaoIds.isEmpty())
 			return tabelasCandidatos;
 
-		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciaExigidasPelaFaixa = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId, solicitacao.getData());
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciaExigidasPelaFaixa = getDao().findCompetenciaByFaixaSalarial(faixaSalarialId, solicitacao.getData(), null);
 		Collection<ConfigHistoricoNivel> configHistoricoNiveis = configHistoricoNivelManager.findByEmpresaAndDataNivelCompetenciaHistorico(empresaId, solicitacao.getData());
 
 		Collection<ConfiguracaoNivelCompetencia> configuracoesNivelCompetenciaCandidato = new ArrayList<ConfiguracaoNivelCompetencia>();

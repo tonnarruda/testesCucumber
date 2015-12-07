@@ -17,7 +17,7 @@ public class NivelCompetenciaDWR
 
 	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarialAndData(Long faixaSalarialId, String data)
 	{
-		return configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarialId, DateUtil.criarDataDiaMesAno(data));
+		return configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarialId, DateUtil.criarDataDiaMesAno(data), null);
 	}
 	
 	public boolean existePercentual(Long nivelCompetenciaId, Long empresaId, Double percentual)

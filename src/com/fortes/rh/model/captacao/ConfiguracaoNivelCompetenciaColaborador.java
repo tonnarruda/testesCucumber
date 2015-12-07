@@ -13,7 +13,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fortes.model.AbstractModel;
-import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
@@ -37,6 +36,8 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 	private Date data;
 	@OneToMany(fetch=FetchType.LAZY, mappedBy="configuracaoNivelCompetenciaColaborador")
 	private Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias;
+	@ManyToOne
+	private ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial;
 	
 	public ConfiguracaoNivelCompetenciaColaborador()
 	{
@@ -208,5 +209,30 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 
 	public void setAvaliador(Colaborador avaliador) {
 		this.avaliador = avaliador;
+	}
+
+	public ConfiguracaoNivelCompetenciaFaixaSalarial getConfiguracaoNivelCompetenciaFaixaSalarial() {
+		return configuracaoNivelCompetenciaFaixaSalarial;
+	}
+
+	public void setConfiguracaoNivelCompetenciaFaixaSalarial(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) {
+		this.configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarial;
+	}
+	
+	public void setConfiguracaoNivelCompetenciaFaixaSalarialId(Long configuracaoNivelCompetenciaFaixaSalarialId) {
+		if (this.configuracaoNivelCompetenciaFaixaSalarial == null)
+			this.configuracaoNivelCompetenciaFaixaSalarial = new ConfiguracaoNivelCompetenciaFaixaSalarial();
+			
+		this.configuracaoNivelCompetenciaFaixaSalarial.setId(configuracaoNivelCompetenciaFaixaSalarialId);
+	}
+	
+	public void setCncfNivelCompetenciaHistoricoId(Long cncfNivelCompetenciaHistoricoId) {
+		if (this.configuracaoNivelCompetenciaFaixaSalarial == null)
+			this.configuracaoNivelCompetenciaFaixaSalarial = new ConfiguracaoNivelCompetenciaFaixaSalarial();
+			
+		if (this.configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico() == null)
+			this.configuracaoNivelCompetenciaFaixaSalarial.setNivelCompetenciaHistorico(new NivelCompetenciaHistorico());
+		
+		this.configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().setId(cncfNivelCompetenciaHistoricoId);
 	}
 }
