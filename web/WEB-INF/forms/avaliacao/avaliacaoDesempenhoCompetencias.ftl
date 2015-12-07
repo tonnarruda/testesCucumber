@@ -21,7 +21,7 @@
 		<@ww.head/>
 		<title>Competências - ${avaliacaoDesempenho.titulo}</title>
 		
-		<#assign countColaboradorQuestionarios=0 />
+		<#assign countConfiguracaoCompetencia=0 />
 		<#assign gerarAutoAvaliacoesEmLoteAction="gerarAutoAvaliacoesEmLote.action"/>
 		
 		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
@@ -33,9 +33,9 @@
 		<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
 		
 		<script type="text/javascript">
-		var permiteAutoAvaliacao = ${avaliacaoDesempenho.permiteAutoAvaliacao.toString()};
-		var avaliacaoDesempenhoId = ${avaliacaoDesempenho.id};
-		var avaliacaoId = ${avaliacaoDesempenho.avaliacao.id};
+			var permiteAutoAvaliacao = ${avaliacaoDesempenho.permiteAutoAvaliacao.toString()};
+			var avaliacaoDesempenhoId = ${avaliacaoDesempenho.id};
+			var avaliacaoId = ${avaliacaoDesempenho.avaliacao.id};
 		
 		</script>
 	</head>
@@ -157,7 +157,21 @@
 								        	<li class="faixa_${faixa.id}">
 									      		<strong>${faixa.descricao}</strong>
 									      		<ul class="competencias">
-											      	<li class="placeholder">Arraste os competências até aqui</li>
+									      			<#if (faixa.configuracaoCompetenciaAvaliacaoDesempenhos.size() == 0) >
+											      		<li class="placeholder">Arraste os competências até aqui</li>
+											      	</#if>
+											      	<#list faixa.configuracaoCompetenciaAvaliacaoDesempenhos as ccad>
+											      		<li class="competencia_${ccad.competenciaId}">
+											      			${ccad.competenciaDescricao}
+											      		
+												      		<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].competenciaId" value="${ccad.competenciaId}"/>
+	    													<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].tipoCompetencia" value="${ccad.tipoCompetencia}"/>
+					        								<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].avaliador.id" value="${avaliador.id}"/>
+					        								<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].configuracaoNivelCompetenciaFaixaSalarial.id" value="${ccad.configuracaoNivelCompetenciaFaixaSalarial.id}"/>
+					        								<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].avaliacaoDesempenho.id" value="${avaliacaoDesempenho.id}"/>
+    													</li>
+    													<#assign countConfiguracaoCompetencia = countConfiguracaoCompetencia + 1/>
+											      	</#list>
 										      	</ul>
 									      	</li>
 								      	</#list>
@@ -168,7 +182,7 @@
 				  	</div>
 				</div>
 				
-				<script>countColaboradorQuestionarios=${countColaboradorQuestionarios};</script>
+				<script>countConfiguracaoCompetencia=${countConfiguracaoCompetencia};</script>
 				<@ww.hidden name="avaliacaoDesempenho.id"/>
 				<button type="submit" class="btnGravar"></button>
 				<button type="button" onclick="window.location='list.action'" class="btnVoltar"></button>

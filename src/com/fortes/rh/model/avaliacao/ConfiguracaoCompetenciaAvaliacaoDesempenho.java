@@ -24,13 +24,17 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenho extends AbstractModel im
 	@ManyToOne
 	private AvaliacaoDesempenho avaliacaoDesempenho;
 	
-	@Column(name="competencia_id", nullable=false)
+	@Column(name="competencia_id")
 	private Long competenciaId;
 	
 	@Column
 	private Character tipoCompetencia;
 
+	@ManyToOne
 	private ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial;
+	
+	@Transient
+	private String competenciaDescricao;
 	
 	public Colaborador getAvaliador() {
 		return avaliador;
@@ -87,10 +91,18 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenho extends AbstractModel im
 		this.configuracaoNivelCompetenciaFaixaSalarial.setId(configuracaoNivelCompetenciaFaixaSalarialId);
 	}
 	
-	public void setProjectionAvaliadorDEsempenhoId(Long avaliadorId){
+	public void setProjectionAvaliadorId(Long avaliadorId){
 		if ( this.avaliador == null)
 			this.avaliador = new Colaborador();
 		
 		this.avaliador.setId(avaliadorId);
+	}
+
+	public String getCompetenciaDescricao() {
+		return competenciaDescricao;
+	}
+
+	public void setCompetenciaDescricao(String competenciaDescricao) {
+		this.competenciaDescricao = competenciaDescricao;
 	}
 }

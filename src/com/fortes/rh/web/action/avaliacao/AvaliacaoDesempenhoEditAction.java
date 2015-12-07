@@ -173,6 +173,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		for (Colaborador avaliador : avaliadors) {
 			avaliador.setFaixaSalariaisAvaliados(new ArrayList<FaixaSalarial>());
 			for (FaixaSalarial faixaSalarialAvaliado : participanteAvaliacaoDesempenhoManager.findFaixasSalariaisDosAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId()) ) {
+				faixaSalarialAvaliado.setConfiguracaoCompetenciaAvaliacaoDesempenhos(configuracaoCompetenciaAvaliacaoDesempenhoManager.findByAvaliador(avaliador.getId(), faixaSalarialAvaliado.getId(), avaliacaoDesempenho.getId()));
+				
 				avaliador.getFaixaSalariaisAvaliados().add(faixaSalarialAvaliado);
 			}
 		}
@@ -182,12 +184,19 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	public String saveCompetencias() throws Exception
 	{
-		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		
-		configuracaoCompetenciaAvaliacaoDesempenhos.removeAll(Collections.singleton(null));
-		configuracaoCompetenciaAvaliacaoDesempenhoManager.save(new ArrayList<ConfiguracaoCompetenciaAvaliacaoDesempenho>(configuracaoCompetenciaAvaliacaoDesempenhos), avaliacaoDesempenho.getId());
-		configuracaoCompetenciaAvaliacaoDesempenhoManager.removeNotIn(configuracaoCompetenciaAvaliacaoDesempenhos, avaliacaoDesempenho.getId());
-		
+		try {
+			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
+			
+			configuracaoCompetenciaAvaliacaoDesempenhos.removeAll(Collections.singleton(null));
+			configuracaoCompetenciaAvaliacaoDesempenhoManager.save(new ArrayList<ConfiguracaoCompetenciaAvaliacaoDesempenho>(configuracaoCompetenciaAvaliacaoDesempenhos), avaliacaoDesempenho.getId());
+			configuracaoCompetenciaAvaliacaoDesempenhoManager.removeNotIn(configuracaoCompetenciaAvaliacaoDesempenhos, avaliacaoDesempenho.getId());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			prepareCompetencias();
+			return Action.ERROR;
+		}
+
 		prepareCompetencias();
 		return Action.SUCCESS;
 	}
