@@ -41,7 +41,7 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 
 	public String prepareUpdate() throws Exception
 	{
-		if(nivelCompetenciaHistorico != null){
+		if(nivelCompetenciaHistorico != null) {
 			nivelCompetenciaHistorico = nivelCompetenciaHistoricoManager.findById(nivelCompetenciaHistorico.getId());
 			configHistoricoNivels = configHistoricoNivelManager.findByNivelCompetenciaHistoricoId(nivelCompetenciaHistorico.getId());
 			
@@ -65,7 +65,7 @@ public class ConfigHistoricoNivelEditAction extends MyActionSupportList
 		}
 		catch (DataIntegrityViolationException e)
 		{
-			addActionWarning("Já existe uma histórico de níveis de competência cadastrado nesta data ( " + nivelCompetenciaHistorico.getDataFormatada() + " ). ");
+			addActionWarning("Já existe um histórico de níveis de competência cadastrado nesta data ( " + nivelCompetenciaHistorico.getDataFormatada() + " ). ");
 			e.printStackTrace();
 			nivelCompetenciaHistorico = null;
 			prepareInsert();

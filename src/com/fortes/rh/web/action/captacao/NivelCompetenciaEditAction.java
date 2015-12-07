@@ -249,7 +249,16 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			atualizaNivelCometenciaFaixaSalarial(niveisCompetenciaFaixaSalariaisHabilidade);
 			atualizaNivelCometenciaFaixaSalarial(niveisCompetenciaFaixaSalariaisAtitude);
 			
-			configuracaoNivelCompetenciaManager.saveCompetenciasFaixaSalarial(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaFaixaSalarial);
+			Collection<ConfiguracaoNivelCompetencia> configuracoesNivelCompeteciaAnteriores = configuracaoNivelCompetenciaManager.findByFaixa(configuracaoNivelCompetenciaFaixaSalarial.getId(), new Date());
+			
+			Collection<ConfiguracaoNivelCompetencia> configuracoesNivelCompetecia = configuracaoNivelCompetenciaManager.saveCompetenciasFaixaSalarial(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaFaixaSalarial);
+			
+//			Collection<Competencia> competenciasExcluidas = new ArrayList<Competencia>(competenciasAnteriores);
+//			competenciasExcluidas.removeAll(competencias);
+//			
+//			Collection<Competencia> competenciasInseridas = new ArrayList<Competencia>(competencias);
+//			competenciasInseridas.removeAll(competenciasAnteriores);
+			
 			setActionMsg("Níveis de competência da faixa salarial salvos com sucesso.");
 		}
 		catch (DataIntegrityViolationException e)

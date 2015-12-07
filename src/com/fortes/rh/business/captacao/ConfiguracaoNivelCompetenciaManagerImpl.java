@@ -173,8 +173,9 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			configuracaoNivelCompetenciaColaborador.setAvaliador(null);
 	}
 
-	public void saveCompetenciasFaixaSalarial(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) throws Exception
+	public Collection<ConfiguracaoNivelCompetencia> saveCompetenciasFaixaSalarial(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) throws Exception
 	{
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = new ArrayList<ConfiguracaoNivelCompetencia>();
 		if (configuracaoNivelCompetenciaFaixaSalarial.getId() != null) 
 		{
 			configuracaoNivelCompetenciaFaixaSalarialManager.update(configuracaoNivelCompetenciaFaixaSalarial);
@@ -182,7 +183,6 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		} 
 		else
 			configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.save(configuracaoNivelCompetenciaFaixaSalarial);
-		
 
 		if(niveisCompetenciaFaixaSalariais != null)
 		{
@@ -190,11 +190,15 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			{
 				if (configuracaoNivelCompetencia.getCompetenciaId() != null) 
 				{
+					configuracaoNivelCompetencias.add(configuracaoNivelCompetencia);
+					
 					configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
 					getDao().save(configuracaoNivelCompetencia);
 				}
 			}
 		}
+		
+		return configuracaoNivelCompetencias;
 	}
 	
 	public Collection<Solicitacao> getCompetenciasCandidato(Long empresaId, Long candidatoId) 
