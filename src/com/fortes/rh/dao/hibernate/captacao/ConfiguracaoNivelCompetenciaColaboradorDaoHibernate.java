@@ -25,6 +25,7 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaColaborador.class, "cncc");
 		criteria.createCriteria("cncc.colaborador", "co", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("cncc.faixaSalarial", "fs", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cncc.configuracaoNivelCompetenciaFaixaSalarial", "cncf", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("fs.cargo", "ca", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("cncc.colaboradorQuestionario", "cq", CriteriaSpecification.LEFT_JOIN);
 		criteria.createCriteria("cncc.avaliador", "av", CriteriaSpecification.LEFT_JOIN);
@@ -33,6 +34,8 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cncc.id"), "id");
 		p.add(Projections.property("cncc.data"), "data");
+		p.add(Projections.property("cncf.id"), "configuracaoNivelCompetenciaFaixaSalarialId");
+		p.add(Projections.property("cncf.nivelCompetenciaHistorico.id"), "cncfNivelCompetenciaHistoricoId");
 		p.add(Projections.property("co.id"), "projectionColaboradorId");
 		p.add(Projections.property("co.nome"), "projectionColaboradorNome");
 		p.add(Projections.property("ca.id"), "projectionCargoId");

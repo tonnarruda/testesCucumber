@@ -210,3 +210,43 @@ ALTER TABLE configuracaocompetenciaavaliacaodesempenho ADD CONSTRAINT configurac
 ALTER TABLE configuracaocompetenciaavaliacaodesempenho ADD CONSTRAINT configuracaocompetenciaavaliacaodesempenho_configuracaonivelcompetenciafaixasalarial_fk FOREIGN KEY (configuracaonivelcompetenciafaixasalarial_id) REFERENCES configuracaonivelcompetenciafaixasalarial(id);--.go
 ALTER TABLE configuracaocompetenciaavaliacaodesempenho ADD CONSTRAINT configuracaocompetenciaavaliacaodesempenho_avaliacaodesempenho_fk FOREIGN KEY (avaliacaodesempenho_id) REFERENCES avaliacaodesempenho(id);--.go
 CREATE SEQUENCE configuracaocompetenciaavaliacaodesempenho_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
+
+------
+
+---------Abaixo em 04/12/2015
+
+DELETE FROM configuracaoNivelCompetenciaColaborador WHERE colaborador_id is null or faixasalarial_id is null;--.go
+ALTER TABLE configuracaoNivelCompetenciaColaborador ADD COLUMN ConfiguracaoNivelCompetenciaFaixaSalarial_id bigint;--.go
+ALTER TABLE configuracaoNivelCompetenciaColaborador ADD CONSTRAINT cncc_cncf_fk FOREIGN KEY (ConfiguracaoNivelCompetenciaFaixaSalarial_id) REFERENCES ConfiguracaoNivelCompetenciaFaixaSalarial(id);--.go
+
+CREATE FUNCTION insere_cncfid_em_cncc() RETURNS integer AS $$
+DECLARE
+    mv RECORD;
+BEGIN
+    FOR mv IN select distinct faixasalarial_id, data from configuracaoNivelCompetenciaColaborador where faixasalarial_id is not null and colaborador_id is not null order by faixasalarial_id, data
+	LOOP
+		update configuracaoNivelCompetenciaColaborador set ConfiguracaoNivelCompetenciaFaixaSalarial_id =
+			(select id from ConfiguracaoNivelCompetenciaFaixaSalarial cncf
+			where
+			cncf.faixasalarial_id = mv.faixasalarial_id 
+			and cncf.data = (
+			    select
+				max(data) 
+			    from
+				ConfiguracaoNivelCompetenciaFaixaSalarial cncf2 
+			    where
+				cncf2.faixasalarial_id = cncf.faixasalarial_id 
+				and cncf2.data <= mv.data
+			) limit 1)
+		where faixasalarial_id = mv.faixasalarial_id 
+		and data = mv.data;
+	END LOOP;
+    RETURN 1;
+END;
+$$ LANGUAGE plpgsql;--.go
+select insere_cncfid_em_cncc();--.go
+drop function insere_cncfid_em_cncc();--.go
+
+DELETE FROM configuracaoNivelCompetenciaColaborador WHERE ConfiguracaoNivelCompetenciaFaixaSalarial_id is null;--.go
+
+------
