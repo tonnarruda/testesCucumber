@@ -1,5 +1,6 @@
 package com.fortes.rh.util;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -109,6 +110,28 @@ public class LongUtil
 		}
 		
 		return arrayDeLong;
+	}
+	
+	public static Collection<Long> collectionSimpleModelToCollectionLong(Collection<?> modelos) {
+		Collection<Long> collection = new ArrayList<Long>();
+		try {
+			if(modelos != null && modelos.size() > 0) {
+				int i = 0;
+				for (Object model : modelos)
+				{
+					Class<?> c = model.getClass();
+					
+					Field f = c.getDeclaredField("id");
+					f.setAccessible(true);
+					
+					collection.add((Long) f.get(model));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return collection;
 	}
 	
 	public static boolean arrayIsNotEmpty(Long[] ids)

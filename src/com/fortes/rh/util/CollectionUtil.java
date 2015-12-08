@@ -1,5 +1,6 @@
 package com.fortes.rh.util;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -405,5 +406,28 @@ public final class CollectionUtil<T>
 			result.put( entry.getKey(), entry.getValue() );
 		}
 		return result;
+	}
+	
+	public static Object[] collectionToArrayAttribute(Collection<?> modelos, String attributeName) {
+		Object[] array = new Object[modelos.size()];
+		try {
+			if(modelos != null && modelos.size() > 0) {
+				int i = 0;
+				for (Object model : modelos)
+				{
+					Class<?> c = model.getClass();
+					
+					Field f = c.getDeclaredField(attributeName);
+					f.setAccessible(true);
+					
+					array[i] = (Object) f.get(model);
+					i++;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return array;
 	}
 }
