@@ -220,19 +220,28 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 	}
 	
 	public void setConfiguracaoNivelCompetenciaFaixaSalarialId(Long configuracaoNivelCompetenciaFaixaSalarialId) {
-		if (this.configuracaoNivelCompetenciaFaixaSalarial == null)
-			this.configuracaoNivelCompetenciaFaixaSalarial = new ConfiguracaoNivelCompetenciaFaixaSalarial();
+		inicializaConfiguracaoNivelCompetenciaFaixaSalarial();
 			
 		this.configuracaoNivelCompetenciaFaixaSalarial.setId(configuracaoNivelCompetenciaFaixaSalarialId);
 	}
-	
+
 	public void setCncfNivelCompetenciaHistoricoId(Long cncfNivelCompetenciaHistoricoId) {
-		if (this.configuracaoNivelCompetenciaFaixaSalarial == null)
-			this.configuracaoNivelCompetenciaFaixaSalarial = new ConfiguracaoNivelCompetenciaFaixaSalarial();
+		inicializaConfiguracaoNivelCompetenciaFaixaSalarial();
 			
 		if (this.configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico() == null)
 			this.configuracaoNivelCompetenciaFaixaSalarial.setNivelCompetenciaHistorico(new NivelCompetenciaHistorico());
 		
 		this.configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().setId(cncfNivelCompetenciaHistoricoId);
+	}
+	
+	public void setCncfData(Date cncfData) {
+		inicializaConfiguracaoNivelCompetenciaFaixaSalarial();
+			
+		this.configuracaoNivelCompetenciaFaixaSalarial.setData(cncfData);
+	}
+	
+	private void inicializaConfiguracaoNivelCompetenciaFaixaSalarial() {
+		if (this.configuracaoNivelCompetenciaFaixaSalarial == null)
+			this.configuracaoNivelCompetenciaFaixaSalarial = new ConfiguracaoNivelCompetenciaFaixaSalarial();
 	}
 }

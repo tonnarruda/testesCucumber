@@ -147,8 +147,7 @@ public class AtitudeManagerImpl extends GenericManagerImpl<Atitude, AtitudeDao> 
 		this.areaOrganizacionalManager = areaOrganizacionalManager;
 	}
 
-	public void setCriterioAvaliacaoCompetenciaManager(
-			CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
+	public void setCriterioAvaliacaoCompetenciaManager(CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
 		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
 	}
 }

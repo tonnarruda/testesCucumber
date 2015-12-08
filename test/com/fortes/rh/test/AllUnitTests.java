@@ -196,7 +196,9 @@ import com.fortes.rh.test.dao.hibernate.captacao.CompetenciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConfigHistoricoNivelDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoImpressaoCurriculoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaColaboradorDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.captacao.ConfiguracaoNivelCompetenciaCriterioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ConhecimentoDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.captacao.CriterioAvaliacaoCompetenciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.EmpresaBdsDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.EtapaSeletivaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.ExperienciaDaoHibernateTest;
@@ -746,6 +748,8 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(ConfigHistoricoNivelEditActionTest.class);
         suite.addTestSuite(NivelCompetenciaHistoricoDaoHibernateTest.class);
         suite.addTestSuite(NivelCompetenciaHistoricoEditActionTest.class);
+        suite.addTestSuite(ConfiguracaoNivelCompetenciaCriterioDaoHibernateTest.class);
+        suite.addTestSuite(CriterioAvaliacaoCompetenciaDaoHibernateTest.class);
 
         //Indicadores
         suite.addTestSuite(IndicadorTurnOverListActionTest.class);

@@ -480,9 +480,9 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		
 		Collection<NivelCompetencia> nivelCompetencias = Arrays.asList(nivelPessimo,nivelRuim,nivelBom);
 		
-		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId()), eq(configuracaoNivelCompetenciaFaixaSalarial.getData())).will(returnValue(configuracaoNivelCompetencias));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId()), eq(configuracaoNivelCompetenciaFaixaSalarial.getData()), eq(configuracaoNivelCompetenciaFaixaSalarial.getId())).will(returnValue(configuracaoNivelCompetencias));
 		nivelCompetenciaManager.expects(once()).method("findAllSelect").with(eq(empresa.getId()), ANYTHING, eq(configuracaoNivelCompetenciaFaixaSalarial.getData())).will(returnValue(nivelCompetencias));
-		criterioAvaliacaoCompetenciaManager.expects(atLeastOnce()).method("findByCompetencia").withAnyArguments().will(returnValue(new ArrayList<CriterioAvaliacaoCompetencia>()));
+		criterioAvaliacaoCompetenciaManager.expects(atLeastOnce()).method("findByCompetenciaAndCNCFId").withAnyArguments().will(returnValue(new ArrayList<CriterioAvaliacaoCompetencia>()));
 		configuracaoNivelCompetenciaFaixaSalarialManager.expects(atLeastOnce()).method("findByFaixaSalarialIdAndData").with(eq(faixaSalarial.getId()), ANYTHING).will(returnValue(configuracaoNivelCompetenciaFaixaSalarial));
 		
 		Collection<MatrizCompetenciaNivelConfiguracao> result = configuracaoNivelCompetenciaManager.montaConfiguracaoNivelCompetenciaByFaixa(empresa.getId(), faixaSalarial.getId(), null);
@@ -539,16 +539,16 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		Collection<NivelCompetencia> niveisCompetencia = Arrays.asList(nivelBom, nivelRuim, nivelPessimo);
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasDoColaborador = Arrays.asList(configuracaoNivelCompetencia1DoColaborador, configuracaoNivelCompetencia2DoColaborador);
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasExigidasPelaFaixa = Arrays.asList(configuracaoNivelCompetencia1ExigidoPelaFaixa,configuracaoNivelCompetencia2ExigidoPelaFaixa);
-		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(1, 2, 2015));
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(1L,faixaSalarial, DateUtil.criarDataMesAno(1, 2, 2015));
 		
 		
 		configuracaoNivelCompetenciaColaboradorManager.expects(once()).method("findByData").with(eq(colaboradorQuestionario.getRespondidaEm()), eq(colaboradorQuestionario.getColaborador().getId()), eq(colaboradorQuestionario.getAvaliador().getId()), eq(colaboradorQuestionario.getId())).will(returnValue(configuracaoNivelCompetenciaColaborador));
 		
 		configuracaoNivelCompetenciaFaixaSalarialManager.expects(atLeastOnce()).method("findByFaixaSalarialIdAndData").with(eq(faixaSalarial.getId()), ANYTHING).will(returnValue(configuracaoNivelCompetenciaFaixaSalarial));
 		nivelCompetenciaManager.expects(once()).method("findAllSelect").with(eq(empresa.getId()), ANYTHING, eq(configuracaoNivelCompetenciaFaixaSalarial.getData())).will(returnValue(niveisCompetencia));
-		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(configuracaoNivelCompetenciaColaborador.getId()), eq(configuracaoNivelCompetenciaFaixaSalarial.getData())).will(returnValue(configuracaoNivelCompetenciasExigidasPelaFaixa));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(configuracaoNivelCompetenciaColaborador.getId()), eq(configuracaoNivelCompetenciaFaixaSalarial.getData()), eq(configuracaoNivelCompetenciaFaixaSalarial.getId())).will(returnValue(configuracaoNivelCompetenciasExigidasPelaFaixa));
 		configuracaoNivelCompetenciaDao.expects(once()).method("findByConfiguracaoNivelCompetenciaColaborador").with(eq(configuracaoNivelCompetenciaColaborador.getId()),eq(configuracaoNivelCompetenciaFaixaSalarial.getData())).will(returnValue(configuracaoNivelCompetenciasDoColaborador));
-		criterioAvaliacaoCompetenciaManager.expects(atLeastOnce()).method("findByCompetencia").withAnyArguments().will(returnValue(new ArrayList<CriterioAvaliacaoCompetencia>()));
+		criterioAvaliacaoCompetenciaManager.expects(atLeastOnce()).method("findByCompetenciaAndCNCFId").withAnyArguments().will(returnValue(new ArrayList<CriterioAvaliacaoCompetencia>()));
 		configuracaoNivelCompetenciaCriterioManager.expects(atLeastOnce()).method("findByConfiguracaoNivelCompetencia").withAnyArguments().will(returnValue(new ArrayList<CriterioAvaliacaoCompetencia>()));
 		
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizCompetencias = configuracaoNivelCompetenciaManager.montaMatrizCNCByQuestionario(colaboradorQuestionario, empresa.getId()); 
@@ -626,7 +626,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasFaixaSalarial = Arrays.asList(configuracaoNivelFaixaCompetencia1, configuracaoNivelFaixaCompetencia2);
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasCandidato = Arrays.asList(configuracaoNivelCompetencia1CandidatoJoao, configuracaoNivelCompetencia2CandidatoJoao);
 
-		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId()), eq(solicitacao.getData())).will(returnValue(configuracaoNivelCompetenciasFaixaSalarial));
+		configuracaoNivelCompetenciaDao.expects(once()).method("findCompetenciaByFaixaSalarial").with(eq(faixaSalarial.getId()), eq(solicitacao.getData()), eq(null)).will(returnValue(configuracaoNivelCompetenciasFaixaSalarial));
 		configHistoricoNivelManager.expects(once()).method("findByEmpresaAndDataNivelCompetenciaHistorico").with(eq(empresa.getId()), eq(solicitacao.getData())).will(returnValue(configHistoricoNiveis));	
 		configuracaoNivelCompetenciaDao.expects(once()).method("findBySolicitacaoIdCandidatoIdAndDataNivelCompetenciaHistorico").with(eq(solicitacao.getId()), eq(joao.getId()), eq(solicitacao.getData())).will(returnValue(configuracaoNivelCompetenciasCandidato));
 

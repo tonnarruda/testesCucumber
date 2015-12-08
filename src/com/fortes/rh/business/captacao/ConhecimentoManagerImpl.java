@@ -106,7 +106,7 @@ public class ConhecimentoManagerImpl  extends GenericManagerImpl<Conhecimento, C
 			CursoManager cursoManager = (CursoManager) SpringUtil.getBean("cursoManager");
 			conhecimento.setAreaOrganizacionals(areaOrganizacionalManager.findByConhecimento(conhecimentoId));
 			conhecimento.setCursos(cursoManager.findByCompetencia(conhecimentoId, TipoCompetencia.CONHECIMENTO));
-			conhecimento.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(conhecimentoId, TipoCompetencia.CONHECIMENTO));
+			conhecimento.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetenciaManager.findByCompetencia(conhecimentoId,TipoCompetencia.CONHECIMENTO));
 		}
 
 		return conhecimento;

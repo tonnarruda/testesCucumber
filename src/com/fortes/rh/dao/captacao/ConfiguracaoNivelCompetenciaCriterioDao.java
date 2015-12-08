@@ -7,6 +7,6 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
 
 public interface ConfiguracaoNivelCompetenciaCriterioDao extends GenericDao<ConfiguracaoNivelCompetenciaCriterio> 
 {
-	public Collection<ConfiguracaoNivelCompetenciaCriterio> findByConfiguracaoNivelCompetencia(Long configuracaoNivelCompetenciaId);
+	public Collection<ConfiguracaoNivelCompetenciaCriterio> findByConfiguracaoNivelCompetencia(Long configuracaoNivelCompetenciaId, Long configuracaoNivelCompetenciaFaixaSalarialId);
 	public void removeByConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelCompetenciaColaboradorId);
 }

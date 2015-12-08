@@ -2,6 +2,7 @@ package com.fortes.rh.test.factory.captacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
 import com.fortes.rh.model.captacao.NivelCompetencia;
@@ -43,11 +44,12 @@ public class ConfigHistoricoNivelFactory
 	public static ConfigHistoricoNivel getEntityAndNivelCompetenciaAndNivelCOmpetenciaHistorico(Long id)
 	{
 		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity(1L);
-		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity(1L);
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity(1L, new Date());
 		
 		ConfigHistoricoNivel configHistoricoNivel = ConfigHistoricoNivelFactory.getEntity();
 		configHistoricoNivel.setNivelCompetencia(nivelCompetencia);
 		configHistoricoNivel.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configHistoricoNivel.setPercentual(100.0);
 		
 		return configHistoricoNivel;
 	}
