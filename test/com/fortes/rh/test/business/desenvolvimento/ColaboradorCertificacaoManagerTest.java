@@ -24,11 +24,9 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 
 	public void testFindAllSelect()
 	{
-		Long empresaId = 1L;
-		
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = ColaboradorCertificacaoFactory.getCollection(1L);
 
-		colaboradorCertificacaoDao.expects(once()).method("findAllSelect").with(eq(empresaId)).will(returnValue(colaboradorCertificacaos));
-		assertEquals(colaboradorCertificacaos, colaboradorCertificacaoManager.findAllSelect(empresaId));
+		colaboradorCertificacaoDao.expects(once()).method("findAll").will(returnValue(colaboradorCertificacaos));
+		assertEquals(colaboradorCertificacaos, colaboradorCertificacaoManager.findAll());
 	}
 }

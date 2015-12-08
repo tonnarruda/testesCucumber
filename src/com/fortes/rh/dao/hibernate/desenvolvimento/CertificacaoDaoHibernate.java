@@ -164,7 +164,6 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 		StringBuilder sql = new StringBuilder();
 		sql.append("WITH cursoCertificados AS ( ");
 		sql.append("		select distinct cc.cursos_id as cusosIds from certificacao  c ");
-		sql.append("		inner join certificacao_avaliacaopratica cap on cap.certificacao_id = c.id ");
 		sql.append("		inner join certificacao_curso cc on cc.certificacaos_id = c.id ");
 		sql.append("		where c.id = :certificacaoId ");
 		sql.append("		) ");

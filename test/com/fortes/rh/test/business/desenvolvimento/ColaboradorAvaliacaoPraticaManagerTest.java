@@ -24,11 +24,9 @@ public class ColaboradorAvaliacaoPraticaManagerTest extends MockObjectTestCase
 
 	public void testFindAllSelect()
 	{
-		Long empresaId = 1L;
-		
 		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = ColaboradorAvaliacaoPraticaFactory.getCollection(1L);
 
-		colaboradorAvaliacaoPraticaDao.expects(once()).method("findAllSelect").with(eq(empresaId)).will(returnValue(colaboradorAvaliacaoPraticas));
-		assertEquals(colaboradorAvaliacaoPraticas, colaboradorAvaliacaoPraticaManager.findAllSelect(empresaId));
+		colaboradorAvaliacaoPraticaDao.expects(once()).method("findAll").will(returnValue(colaboradorAvaliacaoPraticas));
+		assertEquals(colaboradorAvaliacaoPraticas, colaboradorAvaliacaoPraticaManager.findAll());
 	}
 }
