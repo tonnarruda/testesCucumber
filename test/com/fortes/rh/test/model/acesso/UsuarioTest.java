@@ -11,8 +11,6 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.dicionario.TipoMensagem;
 import com.fortes.rh.test.factory.acesso.UsuarioFactory;
 
-
-
 public class UsuarioTest extends TestCase
 {
     public void testConfirmarSenha()

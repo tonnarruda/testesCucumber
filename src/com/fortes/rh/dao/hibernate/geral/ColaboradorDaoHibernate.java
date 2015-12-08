@@ -1111,7 +1111,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	{
 		
 		StringBuilder hql = new StringBuilder();
-		hql.append("select distinct new Colaborador(es.id, es.nome, ao.id, ao.nome, re.nome, co.id, co.nome, cg.nome, fs.nome, emp.id, emp.nome, emp.acIntegra, " +
+		hql.append("select distinct new Colaborador(es.id, es.nome, ao.id, cast(monta_familia_area(ao.id), text) as col_3_0_, re.nome, co.id, co.nome, cg.nome, fs.nome, emp.id, emp.nome, emp.acIntegra, " +
 				"co.nomeComercial, co.matricula, co.codigoAC, co.desligado, co.dataAdmissao, co.dataDesligamento, co.vinculo, co.naoIntegraAc, co.cursos,  " +
 				"co.pessoal.estadoCivil, co.pessoal.escolaridade, co.pessoal.mae, co.pessoal.pai, co.pessoal.cpf, co.pessoal.pis, co.pessoal.rg,  " +
 				"co.pessoal.rgOrgaoEmissor, co.pessoal.deficiencia, co.pessoal.rgDataExpedicao, co.pessoal.sexo,  " +
@@ -1260,7 +1260,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 
 		// Ordenação
 		if(order == null)
-			hql.append(" order by es.nome, ao.nome, co.nome ");
+			hql.append(" order by es.nome, col_3_0_, co.nome ");
 		else
 			hql.append(" order by " + order);
 
