@@ -173,9 +173,8 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			configuracaoNivelCompetenciaColaborador.setAvaliador(null);
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> saveCompetenciasFaixaSalarial(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) throws Exception
+	public void saveCompetenciasFaixaSalarial(Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariais, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) throws Exception
 	{
-		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = new ArrayList<ConfiguracaoNivelCompetencia>();
 		if (configuracaoNivelCompetenciaFaixaSalarial.getId() != null) 
 		{
 			configuracaoNivelCompetenciaFaixaSalarialManager.update(configuracaoNivelCompetenciaFaixaSalarial);
@@ -190,15 +189,11 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 			{
 				if (configuracaoNivelCompetencia.getCompetenciaId() != null) 
 				{
-					configuracaoNivelCompetencias.add(configuracaoNivelCompetencia);
-					
 					configuracaoNivelCompetencia.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
 					getDao().save(configuracaoNivelCompetencia);
 				}
 			}
 		}
-		
-		return configuracaoNivelCompetencias;
 	}
 	
 	public Collection<Solicitacao> getCompetenciasCandidato(Long empresaId, Long candidatoId) 
@@ -704,6 +699,11 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	public Collection<Competencia> findCompetenciasColaboradorByFaixaSalarialAndPeriodo(Long faixaId, Date dataIni, Date dataFim) 
 	{
 		return getDao().findCompetenciasColaboradorByFaixaSalarialAndPeriodo(faixaId, dataIni, dataFim);
+	}
+	
+	public Collection<Competencia> findCompetenciasByFaixaSalarial(Long faixaId, Date data, Character tipo) 
+	{
+		return getDao().findCompetenciasByFaixaSalarial(faixaId, data, tipo);
 	}
 	
 	public void removeDependenciasComConfiguracaoNivelCompetenciaColaboradorByFaixaSalarial(Long[] faixaIds)

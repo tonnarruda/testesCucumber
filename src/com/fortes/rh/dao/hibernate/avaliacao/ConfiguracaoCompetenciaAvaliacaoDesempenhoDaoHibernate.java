@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
@@ -13,6 +14,7 @@ import org.hibernate.type.Type;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoDao;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 
 public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<ConfiguracaoCompetenciaAvaliacaoDesempenho> implements ConfiguracaoCompetenciaAvaliacaoDesempenhoDao
 {
@@ -68,5 +70,38 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
 		return criteria.list();
+	}
+	
+	public void replaceConfiguracaoNivelCompetenciaFaixaSalarial(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) {
+		String hql = "update ConfiguracaoCompetenciaAvaliacaoDesempenho ccad set ccad.configuracaoNivelCompetenciaFaixaSalarial.id = :configuracaoNivelCompetenciaFaixaSalarialId ";
+		hql += " where ccad.id in ( select ccad2.id from ConfiguracaoCompetenciaAvaliacaoDesempenho ccad2 ";
+		hql += " left join ccad2.configuracaoNivelCompetenciaFaixaSalarial cncf ";
+		hql += " left join ccad2.avaliacaoDesempenho av ";
+		hql += " where cncf.faixaSalarial.id = :faixaSalarialId and av.liberada = :liberada ) ";
+
+		Query query = getSession().createQuery(hql);
+
+		query.setLong("configuracaoNivelCompetenciaFaixaSalarialId", configuracaoNivelCompetenciaFaixaSalarial.getId());
+		query.setLong("faixaSalarialId", configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId());
+		query.setBoolean("liberada", false);
+
+		query.executeUpdate();
+	}
+	
+	public void removeByCompetenciaAndFaixaSalarial(Long[] competenciasIds, Long faixaSalarialId, Character tipo) {
+		String hql = "delete from ConfiguracaoCompetenciaAvaliacaoDesempenho ";
+		hql += " where id in ( select ccad2.id from ConfiguracaoCompetenciaAvaliacaoDesempenho ccad2 ";
+		hql += " left join ccad2.configuracaoNivelCompetenciaFaixaSalarial cncf ";
+		hql += " where cncf.faixaSalarial.id = :faixaSalarialId ";
+		hql += " and ccad2.competenciaId in ( :competenciasIds ) ";
+		hql += " and ccad2.tipoCompetencia = :tipo )";
+
+		Query query = getSession().createQuery(hql);
+
+		query.setParameterList("competenciasIds", competenciasIds);
+		query.setLong("faixaSalarialId", faixaSalarialId);
+		query.setCharacter("tipo", tipo);
+
+		query.executeUpdate();
 	}
 }

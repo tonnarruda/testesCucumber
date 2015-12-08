@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.dao.DataIntegrityViolationException;
 
+import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
@@ -19,6 +20,7 @@ import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.captacao.Candidato;
+import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
@@ -49,6 +51,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 	private NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager;
 	private SolicitacaoManager solicitacaoManager;
+	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	
 	private NivelCompetencia nivelCompetencia;
 	private FaixaSalarial faixaSalarial;
@@ -70,6 +73,10 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisConhecimento;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisHabilidade;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisAtitude;
+	
+	private Collection<Competencia> conhecimentos = new ArrayList<Competencia>();
+	private Collection<Competencia> habilidades = new ArrayList<Competencia>();
+	private Collection<Competencia> atitudes = new ArrayList<Competencia>();
 	
 	private Collection<Solicitacao> solicitacoesNiveisCompetenciaFaixaSalariaisSalvos;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvos;
@@ -249,15 +256,15 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			atualizaNivelCometenciaFaixaSalarial(niveisCompetenciaFaixaSalariaisHabilidade);
 			atualizaNivelCometenciaFaixaSalarial(niveisCompetenciaFaixaSalariaisAtitude);
 			
-			Collection<ConfiguracaoNivelCompetencia> configuracoesNivelCompeteciaAnteriores = configuracaoNivelCompetenciaManager.findByFaixa(configuracaoNivelCompetenciaFaixaSalarial.getId(), new Date());
+			Collection<Competencia> conhecimentosAnteriores = configuracaoNivelCompetenciaManager.findCompetenciasByFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), new Date(), Competencia.CONHECIMENTO);
+			Collection<Competencia> habilidadesAnteriores = configuracaoNivelCompetenciaManager.findCompetenciasByFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), new Date(), Competencia.HABILIDADE);
+			Collection<Competencia> atitudesAnteriores = configuracaoNivelCompetenciaManager.findCompetenciasByFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), new Date(), Competencia.ATITUDE);
 			
-			Collection<ConfiguracaoNivelCompetencia> configuracoesNivelCompetecia = configuracaoNivelCompetenciaManager.saveCompetenciasFaixaSalarial(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaFaixaSalarial);
+			configuracaoNivelCompetenciaManager.saveCompetenciasFaixaSalarial(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaFaixaSalarial);
 			
-//			Collection<Competencia> competenciasExcluidas = new ArrayList<Competencia>(competenciasAnteriores);
-//			competenciasExcluidas.removeAll(competencias);
-//			
-//			Collection<Competencia> competenciasInseridas = new ArrayList<Competencia>(competencias);
-//			competenciasInseridas.removeAll(competenciasAnteriores);
+			configuracaoCompetenciaAvaliacaoDesempenhoManager.reajusteByConfiguracaoNivelCompetenciaFaixaSalarial(conhecimentosAnteriores, conhecimentos, Competencia.CONHECIMENTO, configuracaoNivelCompetenciaFaixaSalarial);
+			configuracaoCompetenciaAvaliacaoDesempenhoManager.reajusteByConfiguracaoNivelCompetenciaFaixaSalarial(habilidadesAnteriores, habilidades, Competencia.HABILIDADE, configuracaoNivelCompetenciaFaixaSalarial);
+			configuracaoCompetenciaAvaliacaoDesempenhoManager.reajusteByConfiguracaoNivelCompetenciaFaixaSalarial(atitudesAnteriores, atitudes, Competencia.ATITUDE, configuracaoNivelCompetenciaFaixaSalarial);
 			
 			setActionMsg("Níveis de competência da faixa salarial salvos com sucesso.");
 		}
@@ -285,6 +292,21 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNivelCompetencias) {
 				if (configuracaoNivelCompetencia != null) {
 					niveisCompetenciaFaixaSalariais.add(configuracaoNivelCompetencia);
+					
+					Competencia competencia = new Competencia();
+					competencia.setId(configuracaoNivelCompetencia.getCompetenciaId());
+					competencia.setNome(configuracaoNivelCompetencia.getCompetenciaDescricao());
+					competencia.setTipo(configuracaoNivelCompetencia.getTipoCompetencia());
+					
+					if (TipoCompetencia.CONHECIMENTO.equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
+						conhecimentos.add(competencia);
+					}
+					if (TipoCompetencia.HABILIDADE.equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
+						habilidades.add(competencia);
+					}
+					if (TipoCompetencia.ATITUDE.equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
+						atitudes.add(competencia);
+					}
 				}
 			}
 		}
@@ -494,6 +516,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		
 		return Action.SUCCESS;
 	}
+	
 	public String imprimirMatrizCompetenciasCandidatos()
 	{
 		try {
@@ -767,5 +790,10 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 
 	public Long getNivelCompetenciaHistoricoId() {
 		return nivelCompetenciaHistoricoId;
+	}
+
+	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(
+			ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
+		this.configuracaoCompetenciaAvaliacaoDesempenhoManager = configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	}
 }
