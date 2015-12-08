@@ -109,6 +109,8 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialDaoHibernateTest extends G
 		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial2);
 
 		assertEquals(configuracaoNivelCompetenciaFaixaSalarial1.getData(), configuracaoNivelCompetenciaFaixaSalarialDao.findByFaixaSalarialIdAndData(faixaSalarial1.getId(),DateUtil.criarDataMesAno(1, 1, 2005)).getData());
+		assertEquals(configuracaoNivelCompetenciaFaixaSalarial2.getData(), configuracaoNivelCompetenciaFaixaSalarialDao.findByFaixaSalarialIdAndData(faixaSalarial1.getId(),null).getData());
+		
 	}
 	
 	public void setConfiguracaoNivelCompetenciaFaixaSalarialDao(ConfiguracaoNivelCompetenciaFaixaSalarialDao configuracaoNivelCompetenciaFaixaSalarialDao)

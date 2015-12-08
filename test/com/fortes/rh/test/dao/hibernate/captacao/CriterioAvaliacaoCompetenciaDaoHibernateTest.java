@@ -2,33 +2,59 @@ package com.fortes.rh.test.dao.hibernate.captacao;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.captacao.ConfigHistoricoNivelDao;
+import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaDao;
+import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialDao;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.dao.captacao.CriterioAvaliacaoCompetenciaDao;
 import com.fortes.rh.dao.captacao.HabilidadeDao;
+import com.fortes.rh.dao.captacao.NivelCompetenciaDao;
+import com.fortes.rh.dao.captacao.NivelCompetenciaHistoricoDao;
+import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
 import com.fortes.rh.model.captacao.Habilidade;
+import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFactory;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
 import com.fortes.rh.test.factory.captacao.ConhecimentoFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.captacao.HabilidadeFactory;
+import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
+import com.fortes.rh.test.factory.captacao.NivelCompetenciaHistoricoFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class CriterioAvaliacaoCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<CriterioAvaliacaoCompetencia>
 {
-	private CriterioAvaliacaoCompetenciaDao criterioAvaliacaoCompetenciaDao;
 	private EmpresaDao empresaDao;
-	private ConhecimentoDao conhecimentoDao;
 	private HabilidadeDao habilidadeDao;
-
+	private ConhecimentoDao conhecimentoDao;
+	private FaixaSalarialDao faixaSalarialDao;
+	private NivelCompetenciaDao nivelCompetenciaDao;
+	private ConfigHistoricoNivelDao configHistoricoNivelDao;
+	private NivelCompetenciaHistoricoDao nivelCompetenciaHistoricoDao; 
+	private CriterioAvaliacaoCompetenciaDao criterioAvaliacaoCompetenciaDao;
+	private ConfiguracaoNivelCompetenciaDao configuracaoNivelCompetenciaDao;
+	private ConfiguracaoNivelCompetenciaFaixaSalarialDao configuracaoNivelCompetenciaFaixaSalarialDao;
+	
 	public CriterioAvaliacaoCompetencia getEntity()
 	{
 		CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia = new CriterioAvaliacaoCompetencia();
 		criterioAvaliacaoCompetencia.setId(null);
+		criterioAvaliacaoCompetencia.setDescricao("Criterio");
 		return criterioAvaliacaoCompetencia;
 	}
 	
@@ -118,9 +144,85 @@ public class CriterioAvaliacaoCompetenciaDaoHibernateTest extends GenericDaoHibe
 		
 		assertTrue(criterioAvaliacaoCompetenciaDao.existeCriterioAvaliacaoCompetencia(empresa.getId()));
 	}
+	
+	public void testFindByCompetenciaAndCNCFId(){
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity();
+		nivelCompetenciaHistorico.setData(DateUtil.criarDataMesAno(1, 1, 2015));
+		nivelCompetenciaHistorico.setEmpresa(empresa);
+		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico);
+		
+		NivelCompetencia nivelCompetencia = NivelCompetenciaFactory.getEntity();
+		nivelCompetencia.setEmpresa(empresa);
+		nivelCompetenciaDao.save(nivelCompetencia);
+		
+		ConfigHistoricoNivel configHistoricoNivel1 = new ConfigHistoricoNivel();
+		configHistoricoNivel1.setOrdem(1);
+		configHistoricoNivel1.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configHistoricoNivel1.setNivelCompetencia(nivelCompetencia);
+		configHistoricoNivel1.setPercentual(100.0);
+		configHistoricoNivelDao.save(configHistoricoNivel1);
+		
+		CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia1 = new CriterioAvaliacaoCompetencia();
+		criterioAvaliacaoCompetencia1.setDescricao("Criterio");
+		criterioAvaliacaoCompetenciaDao.save(criterioAvaliacaoCompetencia1);
+
+		Collection<CriterioAvaliacaoCompetencia> criterioAvaliacaoCompetencias = new ArrayList<CriterioAvaliacaoCompetencia>();
+		criterioAvaliacaoCompetencias.add(criterioAvaliacaoCompetencia1);
+
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		criterioAvaliacaoCompetencia1.setConhecimento(conhecimento);
+		conhecimento.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetencias);
+		conhecimentoDao.save(conhecimento);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarialDao.save(faixaSalarial);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(faixaSalarial, new Date());
+		configuracaoNivelCompetenciaFaixaSalarial.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
+		
+		ConfiguracaoNivelCompetencia configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaFactory.getEntity(nivelCompetencia, conhecimento.getId(), null, configuracaoNivelCompetenciaFaixaSalarial, null, null);
+		configuracaoNivelCompetencia.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configuracaoNivelCompetenciaDao.save(configuracaoNivelCompetencia);
+		
+		configuracaoNivelCompetenciaFaixaSalarialDao.getHibernateTemplateByGenericDao().flush();
+		
+		assertEquals(1, criterioAvaliacaoCompetenciaDao.findByCompetenciaAndCNCFId(conhecimento.getId(), configuracaoNivelCompetenciaFaixaSalarial.getId(), TipoCompetencia.CONHECIMENTO).size());
+	}
 
 	public void setHabilidadeDao(HabilidadeDao habilidadeDao) {
 		this.habilidadeDao = habilidadeDao;
+	}
+
+	public void setConfigHistoricoNivelDao(
+			ConfigHistoricoNivelDao configHistoricoNivelDao) {
+		this.configHistoricoNivelDao = configHistoricoNivelDao;
+	}
+
+	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao) {
+		this.faixaSalarialDao = faixaSalarialDao;
+	}
+
+	public void setConfiguracaoNivelCompetenciaDao(
+			ConfiguracaoNivelCompetenciaDao configuracaoNivelCompetenciaDao) {
+		this.configuracaoNivelCompetenciaDao = configuracaoNivelCompetenciaDao;
+	}
+
+	public void setConfiguracaoNivelCompetenciaFaixaSalarialDao(
+			ConfiguracaoNivelCompetenciaFaixaSalarialDao configuracaoNivelCompetenciaFaixaSalarialDao) {
+		this.configuracaoNivelCompetenciaFaixaSalarialDao = configuracaoNivelCompetenciaFaixaSalarialDao;
+	}
+
+	public void setNivelCompetenciaHistoricoDao(
+			NivelCompetenciaHistoricoDao nivelCompetenciaHistoricoDao) {
+		this.nivelCompetenciaHistoricoDao = nivelCompetenciaHistoricoDao;
+	}
+
+	public void setNivelCompetenciaDao(NivelCompetenciaDao nivelCompetenciaDao) {
+		this.nivelCompetenciaDao = nivelCompetenciaDao;
 	}
 	
 }

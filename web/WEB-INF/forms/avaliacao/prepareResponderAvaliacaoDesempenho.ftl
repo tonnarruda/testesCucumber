@@ -184,7 +184,11 @@
 					}
 				 });
 				
-				var performanceQuestionario = notaObtidaQuestionario / pontuacaoMaximaTotal;
+				var performanceQuestionario;
+				if(pontuacaoMaximaTotal > 0)
+					performanceQuestionario = notaObtidaQuestionario / pontuacaoMaximaTotal;
+				else
+					performanceQuestionario = 0;
 				$('#performanceQuestionario').text('Performance Questionário: ' + (performanceQuestionario * 100).toFixed(2) + "%" );
 			</#if>
 		}

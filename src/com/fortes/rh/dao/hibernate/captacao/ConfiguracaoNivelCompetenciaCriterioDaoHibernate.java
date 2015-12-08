@@ -1,7 +1,6 @@
 package com.fortes.rh.dao.hibernate.captacao;
 
 import java.util.Collection;
-import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -15,25 +14,25 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.ConfiguracaoNivelCompetenciaCriterioDao;
+import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
-import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
 
 public class ConfiguracaoNivelCompetenciaCriterioDaoHibernate extends GenericDaoHibernate<ConfiguracaoNivelCompetenciaCriterio> implements ConfiguracaoNivelCompetenciaCriterioDao {
 	
 	@SuppressWarnings("unchecked")
-	public Collection<ConfiguracaoNivelCompetenciaCriterio> findByConfiguracaoNivelCompetencia(Long configuracaoNivelCompetenciaId)
+	public Collection<ConfiguracaoNivelCompetenciaCriterio> findByConfiguracaoNivelCompetencia(Long configuracaoNivelCompetenciaId, Long configuracaoNivelCompetenciaFaixaSalarialId)
 	{
-		DetachedCriteria subQueryHc = DetachedCriteria.forClass(NivelCompetenciaHistorico.class, "nch2")
-				.setProjection(Projections.max("nch2.data"))
-				.add(Restrictions.eqProperty("nch2.empresa.id", "n.empresa.id"))
-				.add(Restrictions.le("nch2.data", new Date()));
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(ConfigHistoricoNivel.class, "chn2")
+				.setProjection(Projections.property("chn2.id"))
+				.add(Restrictions.eqProperty("chn2.nivelCompetenciaHistorico.id", "nch.id"))
+				.add(Restrictions.isNull("chn2.percentual"));
 		
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaCriterio.class, "cncc");
-		criteria.createCriteria("cncc.nivelCompetencia", "n", CriteriaSpecification.LEFT_JOIN);
-		criteria.createCriteria("n.configHistoricoNiveis", "chn", CriteriaSpecification.LEFT_JOIN);
-		criteria.createCriteria("chn.nivelCompetenciaHistorico", "nch", CriteriaSpecification.LEFT_JOIN);
-
-		criteria.add(Subqueries.propertyEq("nch.data", subQueryHc));
+		criteria.createCriteria("cncc.nivelCompetencia", "n", CriteriaSpecification.INNER_JOIN);
+		criteria.createCriteria("n.configHistoricoNiveis", "chn", CriteriaSpecification.INNER_JOIN);
+		criteria.createCriteria("chn.nivelCompetenciaHistorico", "nch", CriteriaSpecification.INNER_JOIN);
+		criteria.createCriteria("nch.configuracaoNivelCompetenciaFaixaSalariais", "cncf", CriteriaSpecification.INNER_JOIN);
+		criteria.add(Subqueries.notExists(subQueryHc));
 		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("id"), "id");
@@ -46,6 +45,7 @@ public class ConfiguracaoNivelCompetenciaCriterioDaoHibernate extends GenericDao
 		criteria.setProjection(p);
 		
 		criteria.add(Restrictions.eq("configuracaoNivelCompetencia.id", configuracaoNivelCompetenciaId));
+		criteria.add(Restrictions.eq("cncf.id", configuracaoNivelCompetenciaFaixaSalarialId));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		return criteria.list();
 	}

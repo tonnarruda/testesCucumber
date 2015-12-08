@@ -12,9 +12,9 @@ import com.fortes.rh.util.CollectionUtil;
 
 public class CriterioAvaliacaoCompetenciaManagerImpl extends GenericManagerImpl<CriterioAvaliacaoCompetencia, CriterioAvaliacaoCompetenciaDao> implements CriterioAvaliacaoCompetenciaManager
 {
-	public Collection<CriterioAvaliacaoCompetencia> findByCompetencia(Long competenciaId, Character tipoCompetencia)
+	public Collection<CriterioAvaliacaoCompetencia> findByCompetenciaAndCNCFId(Long competenciaId, Long configuracaonivelcompetenciafaixasalarialId, Character tipoCompetencia)
 	{
-		return getDao().findByCompetencia(competenciaId, tipoCompetencia);
+		return getDao().findByCompetenciaAndCNCFId(competenciaId, configuracaonivelcompetenciafaixasalarialId, tipoCompetencia);
 	}
 	
 	public void removeByCompetencia(Long competenciaId, Character tipoCompetencia, Collection<CriterioAvaliacaoCompetencia> criteriosQuePermanecem) {
@@ -23,5 +23,9 @@ public class CriterioAvaliacaoCompetenciaManagerImpl extends GenericManagerImpl<
 
 	public boolean existeCriterioAvaliacaoCompetencia(Long empresaId) {
 		return getDao().existeCriterioAvaliacaoCompetencia(empresaId);
+	}
+
+	public Collection<CriterioAvaliacaoCompetencia> findByCompetencia(Long competenciaId, Character tipoCompetencia) {
+		return getDao().findByCompetencia(competenciaId, tipoCompetencia);
 	}
 }

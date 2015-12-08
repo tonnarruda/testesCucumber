@@ -11,9 +11,9 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio;
 
 public class ConfiguracaoNivelCompetenciaCriterioManagerImpl extends GenericManagerImpl<ConfiguracaoNivelCompetenciaCriterio, ConfiguracaoNivelCompetenciaCriterioDao> implements ConfiguracaoNivelCompetenciaCriterioManager
 {
-	public Collection<ConfiguracaoNivelCompetenciaCriterio> findByConfiguracaoNivelCompetencia(Long configuracaoNivelCompetenciaId)
+	public Collection<ConfiguracaoNivelCompetenciaCriterio> findByConfiguracaoNivelCompetencia(Long configuracaoNivelCompetenciaId, Long configuracaoNivelCompetenciaFaixaSalarialId)
 	{
-		return getDao().findByConfiguracaoNivelCompetencia(configuracaoNivelCompetenciaId);
+		return getDao().findByConfiguracaoNivelCompetencia(configuracaoNivelCompetenciaId, configuracaoNivelCompetenciaFaixaSalarialId);
 	}
 	
 	public void removeByConfiguracaoNivelCompetenciaColaborador(Long configuracaoNivelCompetenciaColaboradorId) {

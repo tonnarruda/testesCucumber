@@ -7,7 +7,8 @@ import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
 
 public interface CriterioAvaliacaoCompetenciaManager extends GenericManager<CriterioAvaliacaoCompetencia>
 {
-	public Collection<CriterioAvaliacaoCompetencia> findByCompetencia(Long competenciaId, Character tipoCompetencia);
+	public Collection<CriterioAvaliacaoCompetencia> findByCompetenciaAndCNCFId(Long competenciaId, Long configuracaonivelcompetenciafaixasalarialId, Character tipoCompetencia);
 	public void removeByCompetencia(Long competenciaId, Character tipoCompetencia, Collection<CriterioAvaliacaoCompetencia> criteriosQuePermaneceram);
 	public boolean existeCriterioAvaliacaoCompetencia(Long empresaId);
+	public Collection<CriterioAvaliacaoCompetencia> findByCompetencia(Long competenciaId, Character tipoCompetencia);
 }
