@@ -173,3 +173,11 @@ END;
 $$ LANGUAGE plpgsql; --.go 
 
 ---------------------
+
+-- 08/12/2015 -- VERIFICAR ID QUANDO CRIAR MIGRATIONS
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (700, 'ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER', 'Cerificados Vencidos e a Vencer', '/desenvolvimento/certificacao/prepareImprimirCertificadosVencidosAVencer.action', 17, true, 368);--.go 
+INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 700);--.go
+ALTER sequence papel_sequence restart WITH 701;--.go
+
+------ 

@@ -58,5 +58,28 @@
 				<param name="documentName">certificacoes.pdf</param>
 			</result>
 		</action>
+		
+		<action name="prepareImprimirCertificadosVencidosAVencer" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoEditAction" method="prepareImprimirCertificadosVencidosAVencer">
+			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareImprimirCertificadosVencidosAVencer.ftl</result>
+		</action>
+		<action name="imprimirCertificadosVencidosAVencer" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoListAction" method="imprimirCertificadosVencidosAVencer">
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/certificadosVencidosAVencer.jasper</param>
+				<param name="dataSource">colaboradorCertificacoes</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">certificadosVencidosAVencer.pdf</param>
+			</result>
+		</action>
+		<action name="imprimirCertificadosVencidosAVencerXls" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="imprimirCertificadosVencidosAVencer">
+			<result name="sucessoAreaNomeComercial" type="xls">
+				<param name="dataSource">colaboradorCertificacoes</param>
+				<param name="documentName">certificadosVencidosAVencer.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Certificação,Matrícula,Nome,Nome Comercial,Cargo,Treinamentos,Status Treinamentos</param>
+				<param name="properties">xxxxxx,matricula,nome,nomeComercial,cargo.nome,xxxxx,xxxxxx</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>	
+		</action>
 	</package>
 </xwork>

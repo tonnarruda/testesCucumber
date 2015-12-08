@@ -6,15 +6,23 @@ import java.util.Collection;
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
+import com.fortes.rh.business.geral.EmpresaManager;
+import com.fortes.rh.business.geral.EstabelecimentoManager;
+import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
+import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
+import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
+import com.opensymphony.xwork.ActionContext;
 import com.opensymphony.xwork.ModelDriven;
 
 public class CertificacaoEditAction extends MyActionSupportEdit implements ModelDriven
@@ -24,18 +32,28 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private CertificacaoManager certificacaoManager;
 	private CursoManager cursoManager;
 	private AvaliacaoPraticaManager avaliacaoPraticaManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
+	private EstabelecimentoManager estabelecimentoManager;
+	private ParametrosDoSistemaManager parametrosDoSistemaManager;
+	private EmpresaManager empresaManager;
+	
+	private Collection<ColaboradorCertificacao> colaboradorCertificacoes = new ArrayList<ColaboradorCertificacao>();
 	private Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
-
+	private Collection<Empresa> empresas;
 	private Certificacao certificacao;
+	private Long empresaId;
 	
 	private String[] cursosCheck;
 	private Collection<CheckBox> cursosCheckList = new ArrayList<CheckBox>();
-	
 	private String[] avaliacoesPraticasCheck;
 	private Collection<CheckBox> avaliacoesPraticasCheckList = new ArrayList<CheckBox>();
+	private String[] areasCheck;
+	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
+	private String[] estabelecimentosCheck;
+	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
 		
 	private String nomeBusca;//filtro listagem
-
+	private char filtroCetificacao;
 	private boolean exibirPeriodicidade;
 
 	private void prepare() throws Exception
@@ -103,6 +121,32 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			certificacao.setCertificacaoPreRequisito(null);
 		
 		certificacao.setEmpresa(getEmpresaSistema());
+	}
+	
+	public String prepareImprimirCertificadosVencidosAVencer()
+	{
+		certificacoes = certificacaoManager.findAllSelect(getEmpresaSistema().getId());
+		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+		
+		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
+		populaEmpresa(new String[]{"ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER"});	
+		empresaId = getEmpresaSistema().getId();
+
+		return Action.SUCCESS;
+	}
+	
+	private void populaEmpresa(String... roles)
+	{
+		boolean compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores , getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), roles);
+	}
+	
+	public String imprimirCertificadosVencidosAVencer()
+	{
+		colaboradorCertificacoes = fazer consulta para relatório
+		
+		return Action.SUCCESS;
 	}
 	
 	public Object getModel()
@@ -178,5 +222,64 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public Collection<Certificacao> getCertificacoes() {
 		return certificacoes;
+	}
+
+	public void setAreasCheck(String[] areasCheck) {
+		this.areasCheck = areasCheck;
+	}
+
+	public Collection<CheckBox> getAreasCheckList() {
+		return areasCheckList;
+	}
+
+	public void setEstabelecimentosCheck(String[] estabelecimentosCheck) {
+		this.estabelecimentosCheck = estabelecimentosCheck;
+	}
+
+	public Collection<CheckBox> getEstabelecimentosCheckList() {
+		return estabelecimentosCheckList;
+	}
+
+	public void setAreaOrganizacionalManager(
+			AreaOrganizacionalManager areaOrganizacionalManager) {
+		this.areaOrganizacionalManager = areaOrganizacionalManager;
+	}
+
+	public void setEstabelecimentoManager(
+			EstabelecimentoManager estabelecimentoManager) {
+		this.estabelecimentoManager = estabelecimentoManager;
+	}
+
+	public Collection<Empresa> getEmpresas() {
+		return empresas;
+	}
+
+	public void setParametrosDoSistemaManager(
+			ParametrosDoSistemaManager parametrosDoSistemaManager) {
+		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
+	}
+
+	public void setEmpresaManager(EmpresaManager empresaManager) {
+		this.empresaManager = empresaManager;
+	}
+
+	public Long getEmpresaId() {
+		return empresaId;
+	}
+
+	public void setEmpresaId(Long empresaId) {
+		this.empresaId = empresaId;
+	}
+
+	public char getFiltroCetificacao() {
+		return filtroCetificacao;
+	}
+
+	public void setFiltroCetificacao(char filtroCetificacao) {
+		this.filtroCetificacao = filtroCetificacao;
+	}
+
+	public Collection<ColaboradorCertificacao> getColaboradorCertificacoes() {
+		return colaboradorCertificacoes;
 	}
 }
