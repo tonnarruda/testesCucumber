@@ -490,7 +490,6 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		assertEquals(new Integer(21), absenteismoAbr.getQtdDiasTrabalhados());
 		assertEquals(14.285714285714285, absenteismoAbr.getAbsenteismo());
 	}
-	
 
 	public void testMontaAbsenteismoConsiderandoSabadosEDomingos() throws Exception
 	{
@@ -555,6 +554,31 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 
 		assertNull(exception);
 
+	}
+
+	public void testMontaAbsenteismoConsiderandoQtdComoZero() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setConsiderarSabadoNoAbsenteismo(true);
+		empresa.setConsiderarDomingoNoAbsenteismo(true);
+		
+		Collection<Absenteismo> retornoBD = new ArrayList<Absenteismo>();
+		retornoBD.add(new Absenteismo("2011", "01", 0));
+		
+		colaboradorOcorrenciaDao.expects(once()).method("countFaltasByPeriodo").will(returnValue(retornoBD));
+		colaboradorAfastamentoManager.expects(once()).method("countAfastamentosByPeriodo").will(returnValue(retornoBD));
+		colaboradorManager.expects(atLeastOnce()).method("countAtivosPeriodo").will(returnValue(0));
+		
+		Date dataIni = DateUtil.montaDataByString("02/01/2011");
+		Date dataFim = DateUtil.montaDataByString("19/05/2011");
+		
+		Collection<Absenteismo> absenteismos = colaboradorOcorrenciaManager.montaAbsenteismo(dataIni, dataFim, Arrays.asList(empresa.getId()), null, null, null, null, null, empresa);
+		assertEquals(1, absenteismos.size());
+		
+		Absenteismo absenteismoJan = (Absenteismo) absenteismos.toArray()[0];
+		assertEquals("01", absenteismoJan.getMes());
+		assertEquals(new Integer(0), absenteismoJan.getQtdTotalFaltas());
+		assertEquals(0.0, absenteismoJan.getAbsenteismo());
 	}
 	
 	public void testMontaAbsenteismoException()
