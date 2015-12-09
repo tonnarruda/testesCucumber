@@ -74,9 +74,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisHabilidade;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisAtitude;
 	
-	private Collection<Competencia> conhecimentos = new ArrayList<Competencia>();
-	private Collection<Competencia> habilidades = new ArrayList<Competencia>();
-	private Collection<Competencia> atitudes = new ArrayList<Competencia>();
+	private Collection<Competencia> competencias = new ArrayList<Competencia>();
 	
 	private Collection<Solicitacao> solicitacoesNiveisCompetenciaFaixaSalariaisSalvos;
 	private Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaFaixaSalariaisSalvos;
@@ -252,9 +250,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			
 			configuracaoNivelCompetenciaManager.saveCompetenciasFaixaSalarial(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaFaixaSalarial);
 			
-			configuracaoCompetenciaAvaliacaoDesempenhoManager.reajusteByConfiguracaoNivelCompetenciaFaixaSalarial(conhecimentosAnteriores, conhecimentos, Competencia.CONHECIMENTO, configuracaoNivelCompetenciaFaixaSalarial);
-			configuracaoCompetenciaAvaliacaoDesempenhoManager.reajusteByConfiguracaoNivelCompetenciaFaixaSalarial(habilidadesAnteriores, habilidades, Competencia.HABILIDADE, configuracaoNivelCompetenciaFaixaSalarial);
-			configuracaoCompetenciaAvaliacaoDesempenhoManager.reajusteByConfiguracaoNivelCompetenciaFaixaSalarial(atitudesAnteriores, atitudes, Competencia.ATITUDE, configuracaoNivelCompetenciaFaixaSalarial);
+			configuracaoCompetenciaAvaliacaoDesempenhoManager.reajusteByConfiguracaoNivelCompetenciaFaixaSalarial(conhecimentosAnteriores, habilidadesAnteriores, atitudesAnteriores, competencias, configuracaoNivelCompetenciaFaixaSalarial);
 			
 			setActionMsg("Níveis de competência da faixa salarial salvos com sucesso.");
 		}
@@ -283,19 +279,12 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 				if (configuracaoNivelCompetencia != null) {
 					niveisCompetenciaFaixaSalariais.add(configuracaoNivelCompetencia);
 					
-					Competencia competencia = new Competencia();
-					competencia.setId(configuracaoNivelCompetencia.getCompetenciaId());
-					competencia.setNome(configuracaoNivelCompetencia.getCompetenciaDescricao());
-					competencia.setTipo(configuracaoNivelCompetencia.getTipoCompetencia());
-					
-					if (TipoCompetencia.CONHECIMENTO.equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
-						conhecimentos.add(competencia);
-					}
-					if (TipoCompetencia.HABILIDADE.equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
-						habilidades.add(competencia);
-					}
-					if (TipoCompetencia.ATITUDE.equals(configuracaoNivelCompetencia.getTipoCompetencia())) {
-						atitudes.add(competencia);
+					if ( configuracaoNivelCompetencia.getCompetenciaId() != null ) {
+						Competencia competencia = new Competencia();
+						competencia.setId(configuracaoNivelCompetencia.getCompetenciaId());
+						competencia.setNome(configuracaoNivelCompetencia.getCompetenciaDescricao());
+						competencia.setTipo(configuracaoNivelCompetencia.getTipoCompetencia());
+						competencias.add(competencia);
 					}
 				}
 			}

@@ -15,6 +15,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoDao;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
+import com.fortes.rh.util.LongUtil;
 
 public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<ConfiguracaoCompetenciaAvaliacaoDesempenho> implements ConfiguracaoCompetenciaAvaliacaoDesempenhoDao
 {
@@ -88,7 +89,7 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		query.executeUpdate();
 	}
 	
-	public void removeByCompetenciaAndFaixaSalarial(Long[] competenciasIds, Long faixaSalarialId, Character tipo) {
+	public void removeByCompetenciasQueNaoPermaneceram(Long[] competenciasIds, Long faixaSalarialId, Character tipo) {
 		String hql = "delete from ConfiguracaoCompetenciaAvaliacaoDesempenho ";
 		hql += " where id in ( select ccad2.id from ConfiguracaoCompetenciaAvaliacaoDesempenho ccad2 ";
 		hql += " left join ccad2.configuracaoNivelCompetenciaFaixaSalarial cncf ";

@@ -9,6 +9,7 @@ import com.fortes.rh.dao.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoDao
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.util.LongUtil;
 
 public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<ConfiguracaoCompetenciaAvaliacaoDesempenho, ConfiguracaoCompetenciaAvaliacaoDesempenhoDao> implements ConfiguracaoCompetenciaAvaliacaoDesempenhoManager
@@ -35,21 +36,37 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl extends Gener
 		return getDao().findByAvaliador(avaliadorId, faixaSalarialId, avaliacaoDesempenhoId);
 	}
 	
-	public void reajusteByConfiguracaoNivelCompetenciaFaixaSalarial(Collection<Competencia> competenciasAnteriores, Collection<Competencia> competencias, Character tipoCompetencia, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) {
-		Collection<Long> competenciasAnterioresIds = new ArrayList<Long>(LongUtil.collectionSimpleModelToCollectionLong(competenciasAnteriores));
-		Collection<Long> competenciasAtuaisIds = new ArrayList<Long>(LongUtil.collectionSimpleModelToCollectionLong(competencias));
+	public void reajusteByConfiguracaoNivelCompetenciaFaixaSalarial(Collection<Competencia> conhecimentosAnteriores, Collection<Competencia> habilidadesAnteriores, Collection<Competencia> atitudesAnteriores, Collection<Competencia> competencias, ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) {
 		
-		Collection<Long> competenciasExcluidas = new ArrayList<Long>(competenciasAnterioresIds);
-		Collection<Long> competenciasInseridas = new ArrayList<Long>(competenciasAtuaisIds);
+		removeCompetenciasQueNaoPermaneceram(conhecimentosAnteriores, competencias, configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), TipoCompetencia.CONHECIMENTO);
+		removeCompetenciasQueNaoPermaneceram(habilidadesAnteriores, competencias, configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), TipoCompetencia.HABILIDADE);
+		removeCompetenciasQueNaoPermaneceram(atitudesAnteriores, competencias, configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), TipoCompetencia.ATITUDE);
 		
-		competenciasExcluidas.removeAll(competenciasAtuaisIds);
-		competenciasInseridas.removeAll(competenciasAnterioresIds);
+		Collection<Competencia> competenciasAnteriores = new ArrayList<Competencia>();
+		competenciasAnteriores.addAll(conhecimentosAnteriores);
+		competenciasAnteriores.addAll(habilidadesAnteriores);
+		competenciasAnteriores.addAll(atitudesAnteriores);
 		
-		Long[] competenciasExcluidasIds = Arrays.copyOf(competenciasExcluidas.toArray(), competenciasExcluidas.toArray().length, Long[].class);
+		Collection<Competencia> competenciasExcluidas = new ArrayList<Competencia>(competenciasAnteriores);
+		competenciasExcluidas.removeAll(competencias);
 		
-		if (competenciasExcluidasIds.length > 0)
-			getDao().removeByCompetenciaAndFaixaSalarial(competenciasExcluidasIds, configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), tipoCompetencia);
+		Collection<Competencia> competenciasInseridas = new ArrayList<Competencia>(competencias);
+		competenciasInseridas.removeAll(competenciasAnteriores);
 		
+		getDao().replaceConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
+	}
+	
+	public void removeCompetenciasQueNaoPermaneceram(Collection<Competencia> competenciasAnteriores, Collection<Competencia> competencias, Long faixaSalarialId, Character tipoCompetencia) {
+		Collection<Competencia> competenciasQueNaoPermaneceram = new ArrayList<Competencia>(competenciasAnteriores);
+		competenciasQueNaoPermaneceram.removeAll(competencias);
+		
+		Collection<Long> competenciasQueNaoPermaneceramIds = LongUtil.collectionSimpleModelToCollectionLong(competenciasQueNaoPermaneceram);
+		
+		if(LongUtil.isNotEmpty(competenciasQueNaoPermaneceramIds))
+			getDao().removeByCompetenciasQueNaoPermaneceram(Arrays.copyOf(competenciasQueNaoPermaneceramIds.toArray(), competenciasQueNaoPermaneceramIds.toArray().length, Long[].class), faixaSalarialId, tipoCompetencia);
+	}
+	
+	public void replaceConfiguracaoNivelCompetenciaFaixaSalarial(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) {
 		getDao().replaceConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
 	}
 }
