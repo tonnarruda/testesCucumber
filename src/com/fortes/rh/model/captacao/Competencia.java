@@ -91,4 +91,22 @@ public class Competencia
 	{
 		this.nivelCompetencia = nivelCompetencia;
 	}
+	
+	@Override
+	public boolean equals(Object object)
+	{
+    	if(object == null)
+    		return false;
+
+    	if(object == this)
+    		return true;
+
+    	if (!object.getClass().getName().equals(this.getClass().getName()))
+    		return false;
+
+    	if(this.getId() == null)
+    		return false;
+
+    	return this.getId().equals(((Competencia)object).getId()) && this.getTipo().equals(((Competencia)object).getTipo());
+	}
 }

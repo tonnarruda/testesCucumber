@@ -11,5 +11,5 @@ public interface ConfiguracaoCompetenciaAvaliacaoDesempenhoDao extends GenericDa
 	public Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> findByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
 	public Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Long faixaSalarialId, Long avaliacaoDesempenhoId);
 	public void replaceConfiguracaoNivelCompetenciaFaixaSalarial(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial);
-	public void removeByCompetenciaAndFaixaSalarial(Long[] competenciasIds, Long faixaSalarialId, Character tipo);
+	public void removeByCompetenciasQueNaoPermaneceram(Long[] competenciasIds, Long faixaSalarialId, Character tipo);
 }
