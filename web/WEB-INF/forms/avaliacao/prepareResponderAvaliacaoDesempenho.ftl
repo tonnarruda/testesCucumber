@@ -90,18 +90,21 @@
 			var niveisSelecionadosDosCriterios = $("input[competencia="+competenciaId+"]:checked").not(":disabled");
 			var somaPescetualDosCriterios = 0;
 			$(niveisSelecionadosDosCriterios).each(function(){
-				somaPescetualDosCriterios += parseInt($(this).attr("percentual"));
+				somaPescetualDosCriterios += parseFloat($(this).attr("percentual"));
 			});
 			var media = somaPescetualDosCriterios/niveisSelecionadosDosCriterios.length;
 			var niveis = $("#competencia_"+competenciaId).parent().parent().find(".checkNivel");
 			
+			console.log(media);
 			var percentualFinal = 0;
 			$(niveis).filter(function() {
-			  return $(this).attr("percentual") <= media;
+			  return parseFloat($(this).attr("percentual")) <= media;
 			}).each(function() {
-			  var value = parseFloat($(this).attr("percentual"));
-			  percentualFinal = (value > percentualFinal) ? value : percentualFinal;
+			  var value = $(this).attr("percentual");
+			  percentualFinal = ( parseFloat(value) > parseFloat(percentualFinal) ) ? value : percentualFinal;
 			});
+			
+			console.log(percentualFinal);
 			
 			if(niveisSelecionadosDosCriterios.length > 0) {
 				$("#competencia_"+competenciaId).attr("checked", "checked");
@@ -292,7 +295,7 @@
 										</#if>
 										
 										<#if nivel.percentual?exists>
-											<#assign nivelPercentual="${nivel.percentual}"/>
+											<#assign nivelPercentual="${nivel.percentualString}"/>
 										<#else>
 											<#assign nivelPercentual=""/>
 										</#if>
@@ -324,7 +327,7 @@
 										
 										<#list nivelCompetencias as nivelCriterio>
 											<td style="width: 100px; text-align: center;">
-												<input type="radio" disabled="disabled" class="checkNivelCriterio radio" competencia="${i}" percentual="${nivelCriterio.percentual}" name="niveisCompetenciaFaixaSalariais[${i}].configuracaoNivelCompetenciaCriterios[${y}].nivelCompetencia.id" value="${nivelCriterio.id}" />
+												<input type="radio" disabled="disabled" class="checkNivelCriterio radio" competencia="${i}" percentual="${nivelCriterio.percentualString}" name="niveisCompetenciaFaixaSalariais[${i}].configuracaoNivelCompetenciaCriterios[${y}].nivelCompetencia.id" value="${nivelCriterio.id}" />
 											</td>
 										</#list>
 									</tr>

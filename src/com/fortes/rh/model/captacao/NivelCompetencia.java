@@ -58,6 +58,10 @@ public class NivelCompetencia extends AbstractModel implements Serializable
 	public Double getPercentual() {
 		return percentual;
 	}
+	
+	public String getPercentualString() {
+		return percentual.toString().replace(",", ".");
+	}
 
 	public void setPercentual(Double percentual) {
 		this.percentual = percentual;
