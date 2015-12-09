@@ -10,6 +10,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.ProjectionList;
+import org.hibernate.criterion.Projections;
+import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.CriterioAvaliacaoCompetenciaDao;
@@ -83,13 +86,16 @@ public class CriterioAvaliacaoCompetenciaDaoHibernate extends GenericDaoHibernat
 	}
 
 	public boolean existeCriterioAvaliacaoCompetencia(Long empresaId) {
+		ProjectionList projectionList = Projections.projectionList().create();
+		projectionList.add(Projections.property("cac.id"), "id");
+		
 		Criteria criteria = getSession().createCriteria(CriterioAvaliacaoCompetencia.class,"cac");
 		criteria.createCriteria("cac.conhecimento", "c", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cac.habilidade", "h", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cac.atitude", "a", Criteria.LEFT_JOIN);
-		
 		criteria.add(Expression.or(Expression.or(Expression.eq("c.empresa.id", empresaId),Expression.eq("h.empresa.id", empresaId)), Expression.eq("a.empresa.id", empresaId)));
-
+		criteria.setMaxResults(1);
+		criteria.setProjection(projectionList);
 		return criteria.list().size() > 0;
 
 	}

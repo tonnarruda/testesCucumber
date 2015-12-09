@@ -51,8 +51,13 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialDaoHibernate extends Gener
 
 	public boolean existByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId) 
 	{
+		ProjectionList projectionList = Projections.projectionList().create();
+		projectionList.add(Projections.property("cncfs.id"), "id");
+		
 		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaFaixaSalarial.class, "cncfs");
 		criteria.add(Expression.eq("cncfs.nivelCompetenciaHistorico.id", nivelCompetenciaHistoricoId));
+		criteria.setProjection(projectionList);
+		criteria.setMaxResults(1);
 		
 		return criteria.list().size() > 0;
 	}
