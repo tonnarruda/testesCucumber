@@ -21,5 +21,4 @@ public interface CertificacaoManager extends GenericManager<Certificacao>
 	Collection<Colaborador> findColaboradoresNaCertificacoa(Long certificacaoId);
 	public Collection<Certificacao> findAllSelectNotCertificacaoId(Long empresaId, Long certificacaoId);
 	Collection<Certificacao> findByCursoId(Long cursoId);
-	
 }

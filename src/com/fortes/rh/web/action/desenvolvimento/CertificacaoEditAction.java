@@ -2,9 +2,11 @@ package com.fortes.rh.web.action.desenvolvimento;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
+import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -19,6 +21,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -36,6 +39,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private EstabelecimentoManager estabelecimentoManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private EmpresaManager empresaManager;
+	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 	
 	private Collection<ColaboradorCertificacao> colaboradorCertificacoes = new ArrayList<ColaboradorCertificacao>();
 	private Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
@@ -55,6 +59,8 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private String nomeBusca;//filtro listagem
 	private char filtroCetificacao;
 	private boolean exibirPeriodicidade;
+	private Date dataIni;
+	private Date dataFim;
 
 	private void prepare() throws Exception
 	{
@@ -144,7 +150,10 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	
 	public String imprimirCertificadosVencidosAVencer()
 	{
-		colaboradorCertificacoes = fazer consulta para relatório
+		Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
+		Long[] estabelecimentoIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
+		
+		colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, getEmpresaSistema().getId(), certificacao.getId(), estabelecimentoIds, areaIds, filtroCetificacao);
 		
 		return Action.SUCCESS;
 	}
@@ -281,5 +290,10 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public Collection<ColaboradorCertificacao> getColaboradorCertificacoes() {
 		return colaboradorCertificacoes;
+	}
+
+	public void setColaboradorCertificacaoManager(
+			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
+		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	}
 }

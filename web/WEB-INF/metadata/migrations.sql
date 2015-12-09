@@ -94,7 +94,7 @@ BEGIN
 
 		LOOP
 
-			IF  	(select (select Array(select cursos_id from certificacao_curso where certificacaos_id = mvCertificado.id order by cursos_id))
+			IF  (select (select Array(select cursos_id from certificacao_curso where certificacaos_id = mvCertificado.id order by cursos_id))
 				=
 				(select Array(select cu.id
 				from colaboradorturma ct
@@ -180,4 +180,4 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (700,
 INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 700);--.go
 ALTER sequence papel_sequence restart WITH 701;--.go
 
------- 
+------
