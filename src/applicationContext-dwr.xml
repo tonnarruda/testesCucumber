@@ -193,5 +193,6 @@
 		<property name="configuracaoNivelCompetenciaManager" ref="configuracaoNivelCompetenciaManager"/>
 		<property name="nivelCompetenciaManager" ref="nivelCompetenciaManager"/>
 		<property name="criterioAvaliacaoCompetenciaManager" ref="criterioAvaliacaoCompetenciaManager"/>
+		<property name="configHistoricoNivelManager" ref="configHistoricoNivelManager"/>
 	</bean>
 </beans>

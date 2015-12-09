@@ -2,9 +2,11 @@ package com.fortes.rh.web.dwr;
 
 import java.util.Collection;
 
+import com.fortes.rh.business.captacao.ConfigHistoricoNivelManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
+import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
 import com.fortes.rh.util.DateUtil;
 
@@ -14,7 +16,13 @@ public class NivelCompetenciaDWR
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private NivelCompetenciaManager nivelCompetenciaManager;
 	private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
+	private ConfigHistoricoNivelManager configHistoricoNivelManager;
 
+	public Collection<ConfigHistoricoNivel> findNiveisCompetencia(String data, Long empresaId)
+	{
+		return configHistoricoNivelManager.findByEmpresaAndDataNivelCompetenciaHistorico(empresaId, DateUtil.criarDataDiaMesAno(data));
+	}
+	
 	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarialAndData(Long faixaSalarialId, String data)
 	{
 		return configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarialId, DateUtil.criarDataDiaMesAno(data), null);
@@ -47,5 +55,10 @@ public class NivelCompetenciaDWR
 
 	public void setCriterioAvaliacaoCompetenciaManager(CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager) {
 		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
+	}
+
+	public void setConfigHistoricoNivelManager(
+			ConfigHistoricoNivelManager configHistoricoNivelManager) {
+		this.configHistoricoNivelManager = configHistoricoNivelManager;
 	}
 }
