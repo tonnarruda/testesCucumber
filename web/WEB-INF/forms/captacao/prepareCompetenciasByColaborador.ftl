@@ -186,8 +186,9 @@
 					{ label: "Competências do colaborador", color:"lightblue", data: compColab, spider: {show: true} }
 				];
 				
-				if($('.checkCompetencia').is(':checked'))
+				if($('.checkCompetencia').is(':checked')){
 					plot = $.plot($("#grafico"), data , options);
+				}
 				
 				$("#grafico").bind("plothover", graficohover);
 			}
@@ -278,6 +279,7 @@
 			var configChecked;
 			var nivelChecked =  new Object();
 			var onLoad =  new Object();
+			var dadosNiveis;
 			function repopulaConfiguracaoNivelCompetencia()
 			{
 				configChecked = $('.checkCompetencia:checked').map(function(){
@@ -287,13 +289,28 @@
 						return id;
 					}
 				}).get();
-			
+				
+				NivelCompetenciaDWR.findNiveisCompetencia($('#data').val(), ${empresaSistema.id}, function(dataNiveis){	dadosNiveis = dataNiveis;});				
+				$('#configuracaoNivelCompetencia thead').remove();
 				$('#configuracaoNivelCompetencia tbody').remove();
 				NivelCompetenciaDWR.findCompetenciaByFaixaSalarialAndData(repopulaConfiguracaoNivelCompetenciaByDados, ${faixaSalarial.id}, $('#data').val());
 			}
 
 			function repopulaConfiguracaoNivelCompetenciaByDados(dados)
 			{
+				var content = '<thead>';
+				content += '<tr>';
+				content += '<th><input type="checkbox" id="checkAllCompetencia"></th>';
+				content += '<th style="width: 20px; text-align: center;">#</th>';
+				content += '<th>Competência/Critério para avaliação</th>';
+				
+				if(dadosNiveis != '')
+					for (var propNivel in dadosNiveis)
+						content += '<th>' + dadosNiveis[propNivel]["nivelCompetencia"]["descricao"] + '</th>';
+				
+				content += '</tr>';
+				content += '</thead>';
+			
 				if(dados == '')	{
 					montaAlerta();
 					$('.base').remove();
@@ -301,20 +318,25 @@
 				}
 				
 				var contador = 0;
-				var content = '<tbody>';
+				content += '<tbody>';
 				for (var prop in dados)
 				{
-					if (contador % 2 != 0)
-						content += '<tr class="even">';
-					else
-						content += '<tr class="odd">';
+					criteriosAvaliacaoCompetencia = dados[prop]["criteriosAvaliacaoCompetencia"];
+					
+					content += '<tr class="even">';
 				    
 				    id = dados[prop]["competenciaId"];
 				    marcado = $.inArray(id + '', configChecked) > -1;
 				    
-				    content += '	<td style="width: 20px;">';
+				    content += '		<td style="width: 20px;">';
 				    content += '		<input type="hidden" name="niveisCompetenciaFaixaSalariais[' + contador + '].tipoCompetencia" value="' + dados[prop]["tipoCompetencia"] + '" id="form_niveisCompetenciaFaixaSalariais_' + contador + '__tipoCompetencia" />';
-					content += '		<input type="checkbox" id="competencia_' + contador + '" name="niveisCompetenciaFaixaSalariais[' + contador + '].competenciaId" value="' + id + '" class="checkCompetencia" ';
+					content += '		<input type="hidden" name="niveisCompetenciaFaixaSalariais[' + contador + '].nivelCompetencia.ordem" class="ordem" value="' + dados[prop]["tipoCompetencia"] + '" id="ordem_' + contador + '" />';					
+					content += '		<input type="checkbox" id="competencia_' + contador + '" name="niveisCompetenciaFaixaSalariais[' + contador + '].competenciaId" value="' + id + '" ';
+					
+					if(criteriosAvaliacaoCompetencia.length > 0)
+						content += '	onclick="return false;" class="checkCompetencia" disabled="disabled" ';
+					else 
+						content += '	class="checkCompetencia changed" ';
 					
 					if(marcado)
 						content += ' checked=true';
@@ -336,22 +358,34 @@
 										
 					content += '	</td>';
 					
-					<#list nivelCompetencias as nivel>
-						content += '<td style=" width: 100px; text-align: center;';
-
-						if(dados[prop]["nivelCompetencia"]["id"] == ${nivel.id})
-							content += 'background-color: #BFC0C3;" class="nivelFaixa';
+					if(dadosNiveis != '')
+					{
+						for (var propNivel in dadosNiveis)
+						{
+							content += '<td style=" width: 100px; text-align: center;';
+	
+							if(dados[prop]["nivelCompetencia"]["id"] == dadosNiveis[propNivel]["nivelCompetencia"]["id"])
+								content += 'background-color: #BFC0C3;" class="nivelFaixa';
+								
+							content += '">	<input type="radio" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[' + contador + '].nivelCompetencia.id" value="' + dadosNiveis[propNivel]["nivelCompetencia"]["id"] + '" nivelcolaborador="' + dadosNiveis[propNivel]["ordem"] + '" nivelfaixa="' + dados[prop]["nivelCompetencia"]["ordem"] + '" ';
 							
-						content += '">	<input type="radio" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[' + contador + '].nivelCompetencia.id" value="${nivel.id}" nivelcolaborador="${nivel.ordem}" nivelfaixa="' + dados[prop]["nivelCompetencia"]["ordem"] + '" ';
-						
-						if(nivelChecked[id] == ${nivel.id})
-							content += ' checked=true ';
-						
-						if(!marcado)
-							content += ' disabled="disabled"';
-						
-						content += '/></td>';
-					</#list>
+							if(criteriosAvaliacaoCompetencia.length > 0)
+								content += ' onclick="return false;"  class="checkNivel radio"'; 
+							else
+								content += 'class="checkNivel changed radio"'; 
+							
+							content += ' percentual="' + dadosNiveis[propNivel]["percentual"] + '" onchange="(' + contador + ', ' + dadosNiveis[propNivel]["ordem"] + ')"';
+							
+							if(nivelChecked[id] == dadosNiveis[propNivel]["nivelCompetencia"]["id"])
+								content += ' checked=true ';
+							
+							if(!marcado)
+								content += ' disabled="disabled"';
+							
+							content += '/></td>';
+						}
+					}
+					
 					content += '</tr>';
 					contador++;
 				}
@@ -393,6 +427,12 @@
 	<body>
 		<@ww.actionmessage />
 		<@ww.actionerror />
+	
+		<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.configuracaoNivelCompetenciaFaixaSalarial?exists && configuracaoNivelCompetenciaColaborador.configuracaoNivelCompetenciaFaixaSalarial.id?exists>
+			<#assign configuracaoNivelCompetenciaFaixaSalarialId = configuracaoNivelCompetenciaColaborador.configuracaoNivelCompetenciaFaixaSalarial.id/>
+		<#else>
+			<#assign configuracaoNivelCompetenciaFaixaSalarialId = ""/>
+		</#if>
 		
 		<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.id?exists>
 			<#assign colaboradorQuestionarioId = configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.id/>
@@ -446,6 +486,7 @@
 			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.colaborador.id" value="${colaborador.id}"/>
 			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.id" value="${colaboradorQuestionarioId}"/>
 			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.avaliacaoDesempenho.id" value="${avDesempenhoId}"/>
+			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.configuracaoNivelCompetenciaFaixaSalarial.id" value="${configuracaoNivelCompetenciaFaixaSalarialId}"/>
 			
 			<@ww.hidden name="colaborador.id" />
 			<br />
@@ -507,7 +548,6 @@
 									</td>
 								</#list>
 							</tr>
-							
 							
 							<#assign y = 0/>
 							<#list configuracaoNivelCompetencia.criteriosAvaliacaoCompetencia as criterio>

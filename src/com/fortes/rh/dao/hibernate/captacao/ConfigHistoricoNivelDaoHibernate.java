@@ -79,6 +79,7 @@ public class ConfigHistoricoNivelDaoHibernate extends GenericDaoHibernate<Config
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("chn.id"), "id");
 		p.add(Projections.property("chn.ordem"), "ordem");
+		p.add(Projections.property("chn.percentual"), "percentual");
 		p.add(Projections.property("nc.id"), "nivelCompetenciaId");
 		p.add(Projections.property("nc.descricao"), "nivelCompetenciaDescricao");
 		

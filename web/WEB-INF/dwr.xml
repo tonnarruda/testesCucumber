@@ -196,6 +196,7 @@
 		
 		<!-- CAPTACAO -->
 		<convert converter="bean" match="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia"/>
+		<convert converter="bean" match="com.fortes.rh.model.captacao.ConfigHistoricoNivel"/>
 		<convert converter="bean" match="com.fortes.rh.model.captacao.NivelCompetencia"/>
 		<convert converter="bean" match="com.fortes.rh.model.captacao.SolicitacaoAvaliacao"/>
 		<convert converter="bean" match="com.fortes.rh.model.captacao.Solicitacao">
