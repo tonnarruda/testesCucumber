@@ -159,19 +159,6 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		return list();
 	}
 	
-	public String gerarPercentualIgualmente() throws Exception
-	{
-		try {
-			nivelCompetenciaManager.gerarPercentualIgualmente(getEmpresaSistema().getId());
-			addActionSuccess("Percentual distribuído igualmente com sucesso.");
-		} catch (Exception e) {
-			e.printStackTrace();
-			addActionError("Não foi possível gerar percentual igualmente.");
-		}
-		
-		return list();
-	}
-	
 	public String prepareCompetenciasByFaixaSalarial()
 	{
 		faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(faixaSalarial.getId());

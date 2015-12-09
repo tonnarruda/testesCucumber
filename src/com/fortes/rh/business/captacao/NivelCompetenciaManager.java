@@ -24,6 +24,4 @@ public interface NivelCompetenciaManager extends GenericManager<NivelCompetencia
 	boolean existePercentual(Long nivelCompetenciaId, Long empresaId, Double percentual);
 
 	boolean existeNivelCompetenciaSemPercentual(Long empresaId);
-
-	void gerarPercentualIgualmente(Long empresaId);
 }

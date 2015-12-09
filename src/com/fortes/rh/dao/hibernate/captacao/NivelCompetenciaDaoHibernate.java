@@ -9,6 +9,7 @@ import java.util.Iterator;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
@@ -31,14 +32,6 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 {
 	public Collection<NivelCompetencia> findAllSelect(Long empresaId, Long nivelCompetenciaHistoricoId, Date data) 
 	{
-		if(data == null)
-			data = new Date();
-		
-		DetachedCriteria subQueryHc = DetachedCriteria.forClass(NivelCompetenciaHistorico.class, "nch2")
-				.setProjection(Projections.max("nch2.data"))
-				.add(Restrictions.eqProperty("nch2.empresa.id", "nc.empresa.id"))
-				.add(Restrictions.le("nch2.data", data));
-		
 		Criteria criteria = getSession().createCriteria(NivelCompetencia.class, "nc");
 		criteria.createCriteria("nc.configHistoricoNiveis", "chn", Criteria.INNER_JOIN);
 		criteria.createCriteria("chn.nivelCompetenciaHistorico", "nch", Criteria.INNER_JOIN);
@@ -57,7 +50,7 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		if(nivelCompetenciaHistoricoId != null)
 			criteria.add(Expression.eq("chn.nivelCompetenciaHistorico.id", nivelCompetenciaHistoricoId));
 		else
-			criteria.add(Subqueries.propertyEq("nch.data", subQueryHc));
+			criteria.add(subQueryNHC(data));
 
 		criteria.addOrder(Order.asc("chn.ordem"));
 		criteria.addOrder(Order.asc("nc.descricao"));
@@ -136,16 +129,10 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 
 	private Criteria criteriaNivelConfiguracao(Date data) throws DataAccessResourceFailureException, IllegalStateException, HibernateException 
 	{
-		DetachedCriteria subQueryHc = DetachedCriteria.forClass(NivelCompetenciaHistorico.class, "nch2")
-				.setProjection(Projections.max("nch2.data"))
-				.add(Restrictions.eqProperty("nch2.empresa.id", "nc.empresa.id"))
-				.add(Restrictions.le("nch2.data", ( data!=null?data:new Date() ) ));
-		
 		Criteria criteria = getSession().createCriteria(ConfigHistoricoNivel.class, "chn");
 		criteria.createCriteria("chn.nivelCompetencia", "nc", Criteria.INNER_JOIN);
 		criteria.createCriteria("chn.nivelCompetenciaHistorico", "nch", Criteria.INNER_JOIN);
-		
-		criteria.add(Subqueries.propertyEq("nch.data", subQueryHc));
+		criteria.add(subQueryNHC(data));
 		return criteria;
 	}
 	
@@ -173,8 +160,6 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		return criteria.list().size() > 0;
 	}
 
-
-
 	public boolean existeNivelCompetenciaSemPercentual(Long empresaId) 
 	{
 		Criteria criteria = criteriaNivelConfiguracao(null);
@@ -183,5 +168,15 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		criteria.add(Expression.isNull("chn.percentual"));
 
 		return criteria.list().size() > 0;
+	}
+	
+	private Criterion subQueryNHC(Date data)
+	{
+		DetachedCriteria subQueryHc = DetachedCriteria.forClass(NivelCompetenciaHistorico.class, "nch2")
+				.setProjection(Projections.max("nch2.data"))
+				.add(Restrictions.eqProperty("nch2.empresa.id", "nc.empresa.id"))
+				.add(Restrictions.le("nch2.data", data!=null?data:new Date()));
+		
+		return Subqueries.propertyEq("nch.data", subQueryHc);
 	}
 }
