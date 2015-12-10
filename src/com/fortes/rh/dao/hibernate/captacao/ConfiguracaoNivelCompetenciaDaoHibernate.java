@@ -219,26 +219,25 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	{
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("select distinct cnc.competencia_id as competenciaId, COALESCE(a.nome, conhe.nome, h.nome) as competencia, c.nome as colabNome, c.id as colabId, nc.descricao as nivelColabDescricao, chn.ordem as nivelColabOrdem, cncc.id as configNCColaboradorId, cncc.data as configNCData, av.nome as avaliadorNome, ad.anonima as avaliacaoAnonima ");
+		sql.append("select distinct cnc.competencia_id as competenciaId, COALESCE(a.nome, conhe.nome, h.nome) as competencia, c.nome as colabNome, c.id as colabId, nc.descricao as nivelColabDescricao, chn.ordem as nivelColabOrdem, cncc.id as configNCColaboradorId, cncc.data as configNCData, av.nome as avaliadorNome, ad.anonima as avaliacaoAnonima, cncf.id as cncfId, cnc.tipoCompetencia as tipoCompetencia, cncf.nivelCompetenciaHistorico_id as cncfNivelCompetenciaHistoricoId ");
 		sql.append("from ConfiguracaoNivelCompetencia cnc ");
 		sql.append("left join Atitude a on a.id = cnc.competencia_id and :tipoAtitude = cnc.tipocompetencia ");
 		sql.append("left join Conhecimento conhe on conhe.id = cnc.competencia_id and :tipoConhecimento = cnc.tipocompetencia ");
 		sql.append("left join Habilidade h on h.id = cnc.competencia_id and :tipoHabilidade = cnc.tipocompetencia ");
-		sql.append("left join ConfigHistoricoNivel chn on chn.nivelCompetencia_id = cnc.nivelCompetencia_id ");
-		sql.append("left join NivelCompetencia nc on nc.id = chn.nivelCompetencia_id ");
-		sql.append("left join NivelCompetenciaHistorico nch on nch.id=chn.nivelCompetenciaHistorico_id and nch.data = (select max(data) from nivelCompetenciaHistorico where empresa_id = nc.empresa_id ");
+		sql.append("inner join ConfiguracaoNivelCompetenciaColaborador cncc on cncc.id = cnc.ConfiguracaoNivelCompetenciaColaborador_id ");
 
 		if(dataFim != null)
 			sql.append("and data <= :dataFim ");
-		
-		sql.append("						) ");
-		sql.append("inner join ConfiguracaoNivelCompetenciaColaborador cncc on cncc.id = cnc.ConfiguracaoNivelCompetenciaColaborador_id ");
+
+		sql.append("inner join  ConfiguracaoNivelCompetenciaFaixaSalarial cncf on cncc.ConfiguracaoNivelCompetenciaFaixaSalarial_id = cncf.id ");
+		sql.append("inner join ConfigHistoricoNivel chn on chn.NivelCompetenciaHistorico_id = cncf.nivelcompetenciahistorico_id and chn.nivelCompetencia_id = cnc.nivelCompetencia_id ");
+		sql.append("inner join NivelCompetencia nc on nc.id = chn.nivelCompetencia_id ");
 		sql.append("left join Colaborador c on c.id = cncc.colaborador_id ");
 		sql.append("left join Colaborador av on av.id = cncc.avaliador_id ");
 		sql.append("left join ColaboradorQuestionario cq on cq.id = cncc.colaboradorQuestionario_id ");
 		sql.append("left join AvaliacaoDesempenho ad on ad.id = cq.avaliacaoDesempenho_id ");
 		sql.append("where cncc.faixaSalarial_id = :faixaSalarialColaboradorId ");
-	
+		
 		if(dataIni != null)
 			sql.append("and cncc.data >= :dataIni ");
 		
@@ -275,9 +274,9 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
 		{
 			Object[] res = it.next();
-			lista.add(new ConfiguracaoNivelCompetencia((BigInteger)res[0], (String)res[1], (String)res[2], ((BigInteger)res[3]), (String)res[4], (Integer)res[5], ((BigInteger)res[6]), (Date)res[7], (String)res[8], (Boolean)res[9] ));
+			lista.add(new ConfiguracaoNivelCompetencia((BigInteger)res[0], (String)res[1], (String)res[2], ((BigInteger)res[3]), (String)res[4], (Integer)res[5], ((BigInteger)res[6]), (Date)res[7], (String)res[8], (Boolean)res[9], ((BigInteger)res[10]).longValue(), (Character)res[11], ((BigInteger)res[10]).longValue()));
 		}
-		
+//		cncfNivelCompetenciaHistoricoId
 		return lista;				
 	}
 	
@@ -435,6 +434,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		hql.append("select new ConfiguracaoNivelCompetencia(cnc.tipoCompetencia, cnc.competenciaId, cnc.nivelCompetencia.id, chn.ordem) "); 
 		hql.append("from ConfiguracaoNivelCompetencia cnc "); 
 		hql.append("left join cnc.configuracaoNivelCompetenciaColaborador cncc ");
+		hql.append("left join cncc.configuracaoNivelCompetenciaFaixaSalarial cncf ");
 		hql.append("left join cnc.nivelCompetencia nc ");
 		hql.append("left join nc.configHistoricoNiveis chn ");
 		hql.append("left join chn.nivelCompetenciaHistorico nch ");
@@ -442,7 +442,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		hql.append("and cncc.data = (select max(data) from ConfiguracaoNivelCompetenciaColaborador where colaborador.id = cncc.colaborador.id) ");
 		hql.append("and (cncc.colaboradorQuestionario.id = :colaboradorQuestionarioId or cncc.colaboradorQuestionario.id is null) ");
 		hql.append("and (cncc.avaliador.id = :avaliadorId or cncc.avaliador.id is null) ");
-		hql.append("and nch.data = (select max(data) from NivelCompetenciaHistorico where empresa.id = nc.empresa.id) ");
+		hql.append("and nch.data = (select data from NivelCompetenciaHistorico where id = cncf.nivelCompetenciaHistorico.id) ");
 		hql.append("order by cnc.competenciaId");
 		
 		Query query = getSession().createQuery(hql.toString());

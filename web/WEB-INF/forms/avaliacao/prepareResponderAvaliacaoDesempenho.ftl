@@ -62,7 +62,7 @@
 						
 						<#list niveisCompetenciaFaixaSalariais as nivelSugerido>
 							if('${nivelSugerido.competenciaId}' == '${nivelSalvo.competenciaId}' && '${nivelSugerido.tipoCompetencia}' == '${nivelSalvo.tipoCompetencia}' && '${nivelSugerido.nivelCompetencia.id}' == '${nivelSalvo.nivelCompetencia.id}'){
-								linha.find('.checkNivelCriterio[value="${nivelSalvo.nivelCompetencia.id}"]').parent().css('background-color','#A4E2DB');
+								linha.find('.checkNivel[value="${nivelSalvo.nivelCompetencia.id}"]').parent().css('background-color','#A4E2DB');
 							}
 						</#list>
 						
