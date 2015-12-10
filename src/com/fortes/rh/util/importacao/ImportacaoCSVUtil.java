@@ -59,10 +59,10 @@ public class ImportacaoCSVUtil
 			}
 		}
 		
-		validaExportação(opcao); 
+		validaExportacao(opcao); 
 	}
 
-	private void validaExportação(OpcaoImportacao opcao) throws FortesException 
+	private void validaExportacao(OpcaoImportacao opcao) throws FortesException 
 	{
 		switch (opcao)
 		{
