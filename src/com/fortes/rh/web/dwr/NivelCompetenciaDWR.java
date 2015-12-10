@@ -2,12 +2,13 @@ package com.fortes.rh.web.dwr;
 
 import java.util.Collection;
 
-import com.fortes.rh.business.captacao.ConfigHistoricoNivelManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
 import com.fortes.rh.business.captacao.CriterioAvaliacaoCompetenciaManager;
 import com.fortes.rh.business.captacao.NivelCompetenciaManager;
-import com.fortes.rh.model.captacao.ConfigHistoricoNivel;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
+import com.fortes.rh.model.captacao.NivelCompetencia;
 import com.fortes.rh.util.DateUtil;
 
 
@@ -16,16 +17,18 @@ public class NivelCompetenciaDWR
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	private NivelCompetenciaManager nivelCompetenciaManager;
 	private CriterioAvaliacaoCompetenciaManager criterioAvaliacaoCompetenciaManager;
-	private ConfigHistoricoNivelManager configHistoricoNivelManager;
+	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
 
-	public Collection<ConfigHistoricoNivel> findNiveisCompetencia(String data, Long empresaId)
+	public Collection<NivelCompetencia> findNiveisCompetencia(String data, Long faixaSalarialId, Long empresaId)
 	{
-		return configHistoricoNivelManager.findByEmpresaAndDataNivelCompetenciaHistorico(empresaId, DateUtil.criarDataDiaMesAno(data));
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(faixaSalarialId, DateUtil.criarDataDiaMesAno(data));
+		return nivelCompetenciaManager.findAllSelect(empresaId, configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
 	}
 	
-	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarialAndData(Long faixaSalarialId, String data)
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarialAndData(String data, Long faixaSalarialId)
 	{
-		return configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarialId, DateUtil.criarDataDiaMesAno(data), null);
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(faixaSalarialId, DateUtil.criarDataDiaMesAno(data));
+		return configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarialId, DateUtil.criarDataDiaMesAno(data), configuracaoNivelCompetenciaFaixaSalarial.getId());
 	}
 	
 	public boolean existePercentual(Long nivelCompetenciaId, Long empresaId, Double percentual)
@@ -57,8 +60,8 @@ public class NivelCompetenciaDWR
 		this.criterioAvaliacaoCompetenciaManager = criterioAvaliacaoCompetenciaManager;
 	}
 
-	public void setConfigHistoricoNivelManager(
-			ConfigHistoricoNivelManager configHistoricoNivelManager) {
-		this.configHistoricoNivelManager = configHistoricoNivelManager;
+	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(
+			ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager) {
+		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
 	}
 }

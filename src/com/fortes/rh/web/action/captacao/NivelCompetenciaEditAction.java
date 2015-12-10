@@ -333,20 +333,21 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 	
 	public String prepareInsertCompetenciasColaborador()
 	{
+		data = new Date();
 		configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
-		configuracaoNivelCompetenciaColaborador.setData(new Date());
+		configuracaoNivelCompetenciaColaborador.setData(data);
 		
 		colaborador = colaboradorManager.findById(colaborador.getId());
 		colaboradores = new ArrayList<Colaborador>();
 		colaboradores.add(new Colaborador("Anônimo", 0L));
 		colaboradores.addAll(colaboradorManager.findByEmpresaAndStatusAC(getEmpresaSistema().getId(), null, null, StatusRetornoAC.CONFIRMADO, false, false, SituacaoColaborador.ATIVO, true, "c.nome"));
 		faixaSalarial = colaborador.getHistoricoColaborador().getFaixaSalarial();
-		configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(faixaSalarial.getId(), new Date());
+		configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(faixaSalarial.getId(), data);
 		
 		if(configuracaoNivelCompetenciaFaixaSalarial != null && configuracaoNivelCompetenciaFaixaSalarial.getId() != null)
 			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId());
 		
-		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId(), null, data);
+		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId(), configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
 		
 		return Action.SUCCESS;
 	}
@@ -373,7 +374,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(null, null, configuracaoNivelCompetenciaFaixaSalarial.getId());
 		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId(), configuracaoNivelCompetenciaFaixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 		
-		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId(), configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
+		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId(), configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
 		
 		return Action.SUCCESS;
 	}
