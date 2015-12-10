@@ -15,7 +15,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoDao;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
-import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 
 public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<ConfiguracaoCompetenciaAvaliacaoDesempenho> implements ConfiguracaoCompetenciaAvaliacaoDesempenhoDao
 {
@@ -93,9 +93,10 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		String hql = "delete from ConfiguracaoCompetenciaAvaliacaoDesempenho ";
 		hql += " where id in ( select ccad2.id from ConfiguracaoCompetenciaAvaliacaoDesempenho ccad2 ";
 		hql += " left join ccad2.configuracaoNivelCompetenciaFaixaSalarial cncf ";
+		hql += " left join ccad2.avaliacaoDesempenho av ";
 		hql += " where cncf.faixaSalarial.id = :faixaSalarialId ";
 		hql += " and ccad2.competenciaId in ( :competenciasIds ) ";
-		hql += " and ccad2.tipoCompetencia = :tipo )";
+		hql += " and ccad2.tipoCompetencia = :tipo and av.liberada = false ) ";
 
 		Query query = getSession().createQuery(hql);
 
@@ -104,5 +105,45 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		query.setCharacter("tipo", tipo);
 
 		query.executeUpdate();
+	}
+	
+	public void removeByAvaliacaoDesempenho(Long avaliacaoDesempenhoId) {
+		String hql = "delete from ConfiguracaoCompetenciaAvaliacaoDesempenho where avaliacaoDesempenho.id = :avaliacaoDesempenhoId ";
+
+		Query query = getSession().createQuery(hql);
+
+		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
+
+		query.executeUpdate();
+	}
+	
+	public Collection<FaixaSalarial> findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho(Long avaliacaoDesempenhoId) {
+		StringBuilder hql = new StringBuilder();
+		
+		hql.append("select distinct new FaixaSalarial(fs.id, fs.nome, ca.nome, cncf.id) ");
+		hql.append("from ConfiguracaoCompetenciaAvaliacaoDesempenho as ccad ");
+		hql.append("inner join ccad.configuracaoNivelCompetenciaFaixaSalarial as cncf ");
+		hql.append("left join cncf.faixaSalarial as fs ");
+		hql.append("left join fs.cargo as ca ");
+		hql.append("where ccad.avaliacaoDesempenho.id = :avaliacaoDesempenhoId ");
+
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
+		
+		return query.list();
+	}
+	
+	public boolean existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(Long avaliacaoDesempenhoId){
+		StringBuilder sql = new StringBuilder();
+
+		sql.append("select * from configuracaocompetenciaavaliacaodesempenho ccad ");
+		sql.append("join configuracaonivelcompetenciafaixasalarial cncf on cncf.id = ccad.configuracaonivelcompetenciafaixasalarial_id ");
+		sql.append("join configuracaonivelcompetenciafaixasalarial cncfs on cncfs.data > cncf.data and cncf.faixasalarial_id = cncfs.faixasalarial_id ");
+		sql.append("where ccad.avaliacaoDesempenho_id = :avaliacaoDesempenhoId ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
+		
+		return query.list().size() > 0;
 	}
 }

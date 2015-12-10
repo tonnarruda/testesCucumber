@@ -71,6 +71,8 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	@Transient
 	private String projectionEstabelecimentoNome;
 	@Transient
+	private Long configuracaoNivelCompetenciaFaixaSalarialId;
+	@Transient
 	private Date dataConfiguracaoNivelCompetenciaFaixaSalarial;
 	@Transient
 	private Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> configuracaoCompetenciaAvaliacaoDesempenhos;
@@ -106,6 +108,14 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 		setId(id);
 		setNome(nome);
 		setNomeCargo(nomeCargo);
+	}
+	
+	public FaixaSalarial (Long id, String nome, String nomeCargo, Long configuracaoNivelCompetenciaFaixaSalarialId)
+	{
+		setId(id);
+		setNome(nome);
+		setNomeCargo(nomeCargo);
+		setConfiguracaoNivelCompetenciaFaixaSalarialId(configuracaoNivelCompetenciaFaixaSalarialId);
 	}
 	
 	public FaixaSalarial (String cargoNome, String faixaNome, Integer qtdColaboradores)	{
@@ -535,5 +545,14 @@ public class FaixaSalarial extends AbstractModel implements Serializable, Clonea
 	public void setConfiguracaoCompetenciaAvaliacaoDesempenhos(
 			Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> configuracaoCompetenciaAvaliacaoDesempenhos) {
 		this.configuracaoCompetenciaAvaliacaoDesempenhos = configuracaoCompetenciaAvaliacaoDesempenhos;
+	}
+
+	public Long getConfiguracaoNivelCompetenciaFaixaSalarialId() {
+		return configuracaoNivelCompetenciaFaixaSalarialId;
+	}
+
+	public void setConfiguracaoNivelCompetenciaFaixaSalarialId(
+			Long configuracaoNivelCompetenciaFaixaSalarialId) {
+		this.configuracaoNivelCompetenciaFaixaSalarialId = configuracaoNivelCompetenciaFaixaSalarialId;
 	}
 }

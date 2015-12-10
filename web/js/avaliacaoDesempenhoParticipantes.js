@@ -9,13 +9,7 @@ var notificatedAboutAutoAvaliacao = false;
 
 $(function() {
 	
-	conectAvaliadosAvaliadores();
-	
     portletEvents();
-	    
-	atualizeSelectables("#avaliados-list", "li", "avaliados");
-	atualizeSelectables("#avaliadores-list", ".portlet", "avaliadores");
-	atualizeSelectablesMini();
     
 	$(".show-info").click(function(){
 		$('#avaliados, #avaliadores').hide();

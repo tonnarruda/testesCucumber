@@ -167,7 +167,11 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		empresaId = getEmpresaSistema().getId();
 		
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		faixaSalariais = participanteAvaliacaoDesempenhoManager.findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
+		if (!avaliacaoDesempenho.isLiberada()) {
+			faixaSalariais = participanteAvaliacaoDesempenhoManager.findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
+		} else {
+			faixaSalariais = configuracaoCompetenciaAvaliacaoDesempenhoManager.findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho(avaliacaoDesempenho.getId());
+		}
 		avaliadors = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
 		
 		for (Colaborador avaliador : avaliadors) {
@@ -444,6 +448,10 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		{
 			avaliacaoDesempenhoManager.liberarOrBloquear(avaliacaoDesempenho, false);
 			addActionSuccess("Avaliação bloqueada com sucesso.");
+		}
+		catch (AvaliacaoRespondidaException e)
+		{
+			addActionWarning(e.getMessage());
 		}
 		catch (Exception e) 
 		{

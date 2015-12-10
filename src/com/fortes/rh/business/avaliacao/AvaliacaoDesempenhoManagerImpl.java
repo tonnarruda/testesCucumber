@@ -44,6 +44,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	private GerenciadorComunicacaoManager gerenciadorComunicacaoManager;
 	private ColaboradorManager colaboradorManager;
 	private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
+	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	
 	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao) 
 	{
@@ -119,6 +120,14 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 
 	public void liberarOrBloquear(AvaliacaoDesempenho avaliacaoDesempenho, boolean liberar) throws Exception
 	{
+		if (!liberar) {
+			Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
+			if (!colaboradorQuestionarios.isEmpty())
+				throw new AvaliacaoRespondidaException("Não foi possível bloquear, pois já existem respostas para essa avaliação.");
+			else if ( configuracaoCompetenciaAvaliacaoDesempenhoManager.existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(avaliacaoDesempenho.getId()) )
+				configuracaoCompetenciaAvaliacaoDesempenhoManager.removeByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
+		}
+		
 		getDao().liberarOrBloquear(avaliacaoDesempenho.getId(), liberar);
 	}
 
@@ -289,5 +298,10 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	public void setParticipanteAvaliacaoDesempenhoManager(
 			ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager) {
 		this.participanteAvaliacaoDesempenhoManager = participanteAvaliacaoDesempenhoManager;
+	}
+
+	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(
+			ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
+		this.configuracaoCompetenciaAvaliacaoDesempenhoManager = configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	}
 }

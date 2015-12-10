@@ -250,7 +250,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			
 			configuracaoNivelCompetenciaManager.saveCompetenciasFaixaSalarial(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaFaixaSalarial);
 			
-			configuracaoCompetenciaAvaliacaoDesempenhoManager.reajusteByConfiguracaoNivelCompetenciaFaixaSalarial(conhecimentosAnteriores, habilidadesAnteriores, atitudesAnteriores, competencias, configuracaoNivelCompetenciaFaixaSalarial);
+			configuracaoCompetenciaAvaliacaoDesempenhoManager.reajusteByConfiguracaoNivelCompetenciaFaixaSalarial(conhecimentosAnteriores, habilidadesAnteriores, atitudesAnteriores, competencias, configuracaoNivelCompetenciaFaixaSalarial, getEmpresaSistema());
 			
 			setActionMsg("Níveis de competência da faixa salarial salvos com sucesso.");
 		}
