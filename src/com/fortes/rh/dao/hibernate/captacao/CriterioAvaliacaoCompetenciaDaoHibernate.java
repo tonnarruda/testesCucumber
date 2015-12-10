@@ -12,7 +12,6 @@ import org.hibernate.SQLQuery;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
-import org.hibernate.transform.AliasToBeanResultTransformer;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.captacao.CriterioAvaliacaoCompetenciaDao;
@@ -38,8 +37,8 @@ public class CriterioAvaliacaoCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("inner join configuracaoNivelCompetencia cnc on cnc.competencia_id = comp.id and cnc.tipocompetencia= :tipoCompetencia ");
 		sql.append("inner join configuracaonivelcompetenciafaixasalarial cncf on cncf.id = cnc.configuracaonivelcompetenciafaixasalarial_id ");
 		sql.append("inner join nivelcompetenciahistorico nch on cncf.nivelcompetenciahistorico_id = nch.id ");
-		sql.append("where comp.id = :competenciaId and cncf.id = :configuracaonivelcompetenciafaixasalarialId  and not exists ");
-		sql.append("																			(select id from confighistoriconivel where nivelcompetenciahistorico_id = nch.id and percentual is null)");
+		sql.append("where comp.id = :competenciaId and cncf.id = :configuracaonivelcompetenciafaixasalarialId  ");
+		sql.append("	and not exists (select id from confighistoriconivel where nivelcompetenciahistorico_id = nch.id and percentual is null) ");
 		
 		SQLQuery query = getSession().createSQLQuery(sql.toString());
 		query.setCharacter("tipoCompetencia", tipoCompetencia);

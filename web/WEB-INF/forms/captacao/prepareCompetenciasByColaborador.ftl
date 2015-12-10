@@ -41,7 +41,8 @@
 			var compFaixa = [];
 			var compColab = [];
 			
-			$(function() {
+			function changes()
+			{
 				$('.checkCompetencia.changed').change(function() {
 					$(this).parent().parent().find(".checkNivel").attr('disabled', !($(this).attr('checked')));
 				});
@@ -50,6 +51,7 @@
 					$(this).parent().parent().find(".checkNivelCriterio").attr('disabled', !($(this).attr('checked')));
 					calculaNivelDaCompetenciaPeloPercentual( $(this).parent().parent().find(".checkNivelCriterio:eq(0)").attr('competencia') );
 				});
+				$('.checkCompetenciaCriterio').change();
 				
 				$('.checkNivelCriterio').change(function(){
 					calculaNivelDaCompetenciaPeloPercentual($(this).attr("competencia"));
@@ -59,7 +61,11 @@
 					$('.checkNivel,.checkNivelCriterio').attr('disabled', !($(this).attr('checked')));
 					$('.checkCompetencia.changed,.checkCompetenciaCriterio').attr('checked', $(this).attr('checked')).change();
 				});
+				
+				$('.checkCompetencia, #checkAllCompetencia, .checkNivel, .checkCompetenciaCriterio').change(atualizarGrafico);
+			}
 			
+			$(function() {
 				<#if niveisCompetenciaFaixaSalariaisSalvos?exists>
 					<#list niveisCompetenciaFaixaSalariaisSalvos as nivelSalvo>
 						var linha = $('tr').has('.checkCompetencia[value="${nivelSalvo.competenciaId}"]').has('input[type="hidden"][value="${nivelSalvo.tipoCompetencia}"]');
@@ -84,23 +90,23 @@
 
 				<#assign j = 1/>
 				<#list niveisCompetenciaFaixaSalariais as comp>
-					competencias[${j}] = '${comp.competenciaDescricao?j_string?replace('\"','&quot;')?replace('\'','\\\'')}';
-					<#assign j = j + 1/>
+					<#if comp.competenciaDescricao?exists>
+						competencias[${j}] = '${comp.competenciaDescricao?j_string?replace('\"','&quot;')?replace('\'','\\\'')}';
+						<#assign j = j + 1/>
+					</#if>
 				</#list>
 				
-				$('.checkCompetencia, #checkAllCompetencia, .checkNivel').change(atualizarGrafico);
-				
+				changes();
 				atualizarGrafico();
 				
 				<#if !niveisCompetenciaFaixaSalariais?exists || niveisCompetenciaFaixaSalariais?size == 0>
 					montaAlerta();
 				</#if>
 				
-			<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.id?exists>
-				$('#data').attr("disabled","disabled");
-				$('#data_button').hide();
-			</#if>
-				
+				<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.id?exists>
+					$('#data').attr("disabled","disabled");
+					$('#data_button').hide();
+				</#if>
 			});
 			
 			function calculaNivelDaCompetenciaPeloPercentual(competenciaId){
@@ -165,6 +171,7 @@
 				compFaixa = [];
 				compColab = [];
 			
+				$('.base').remove();
 				$('.checkCompetencia:checked').each(function() {
 					var seq = $(this).parent().next().text().match(/\d+/g)[0];
 					var check = $(this).parent().parent().find('.checkNivel:checked');
@@ -282,6 +289,17 @@
 			var dadosNiveis;
 			function repopulaConfiguracaoNivelCompetencia()
 			{
+				var hoje = new Date();
+				var partesData =$('#data').val().split('/');
+				var data = new Date(partesData[2],partesData[1]-1,partesData[0]); 
+				
+				if(data.getTime() > hoje.getTime())
+				{
+					jAlert('Não é possível inserir uma competência para o colaborador com uma data futura.');
+					partesData = hoje.toISOString().substring(0, 10).split('-');					
+					$('#data').val(partesData[2] + '/' + partesData[1] + '/' + partesData[0]);
+				} 
+			
 				configChecked = $('.checkCompetencia:checked').map(function(){
 					if($(this).parent().parent().find(".checkNivel").is(":checked")){
 						id = $(this).val();
@@ -290,10 +308,11 @@
 					}
 				}).get();
 				
-				NivelCompetenciaDWR.findNiveisCompetencia($('#data').val(), ${empresaSistema.id}, function(dataNiveis){	dadosNiveis = dataNiveis;});				
 				$('#configuracaoNivelCompetencia thead').remove();
 				$('#configuracaoNivelCompetencia tbody').remove();
-				NivelCompetenciaDWR.findCompetenciaByFaixaSalarialAndData(repopulaConfiguracaoNivelCompetenciaByDados, ${faixaSalarial.id}, $('#data').val());
+				
+				NivelCompetenciaDWR.findNiveisCompetencia($('#data').val(), ${faixaSalarial.id}, ${empresaSistema.id}, function(dataNiveis){dadosNiveis = dataNiveis;});				
+				NivelCompetenciaDWR.findCompetenciaByFaixaSalarialAndData(repopulaConfiguracaoNivelCompetenciaByDados, $('#data').val(), ${faixaSalarial.id});
 			}
 
 			function repopulaConfiguracaoNivelCompetenciaByDados(dados)
@@ -306,7 +325,7 @@
 				
 				if(dadosNiveis != '')
 					for (var propNivel in dadosNiveis)
-						content += '<th>' + dadosNiveis[propNivel]["nivelCompetencia"]["descricao"] + '</th>';
+						content += '<th>' + dadosNiveis[propNivel]["descricao"] + '</th>';
 				
 				content += '</tr>';
 				content += '</thead>';
@@ -330,7 +349,7 @@
 				    
 				    content += '		<td style="width: 20px;">';
 				    content += '		<input type="hidden" name="niveisCompetenciaFaixaSalariais[' + contador + '].tipoCompetencia" value="' + dados[prop]["tipoCompetencia"] + '" id="form_niveisCompetenciaFaixaSalariais_' + contador + '__tipoCompetencia" />';
-					content += '		<input type="hidden" name="niveisCompetenciaFaixaSalariais[' + contador + '].nivelCompetencia.ordem" class="ordem" value="' + dados[prop]["tipoCompetencia"] + '" id="ordem_' + contador + '" />';					
+					content += '		<input type="hidden" name="niveisCompetenciaFaixaSalariais[' + contador + '].nivelCompetencia.ordem" class="ordem" value="' + dados[prop]["ordem"] + '" id="ordem_' + contador + '" />';					
 					content += '		<input type="checkbox" id="competencia_' + contador + '" name="niveisCompetenciaFaixaSalariais[' + contador + '].competenciaId" value="' + id + '" ';
 					
 					if(criteriosAvaliacaoCompetencia.length > 0)
@@ -364,19 +383,19 @@
 						{
 							content += '<td style=" width: 100px; text-align: center;';
 	
-							if(dados[prop]["nivelCompetencia"]["id"] == dadosNiveis[propNivel]["nivelCompetencia"]["id"])
+							if(dados[prop]["nivelCompetencia"]["id"] == dadosNiveis[propNivel]["id"])
 								content += 'background-color: #BFC0C3;" class="nivelFaixa';
 								
-							content += '">	<input type="radio" class="checkNivel radio" name="niveisCompetenciaFaixaSalariais[' + contador + '].nivelCompetencia.id" value="' + dadosNiveis[propNivel]["nivelCompetencia"]["id"] + '" nivelcolaborador="' + dadosNiveis[propNivel]["ordem"] + '" nivelfaixa="' + dados[prop]["nivelCompetencia"]["ordem"] + '" ';
+							content += '">	<input type="radio" disabled="disabled" name="niveisCompetenciaFaixaSalariais[' + contador + '].nivelCompetencia.id" value="' + dadosNiveis[propNivel]["id"] + '" nivelcolaborador="' + dadosNiveis[propNivel]["ordem"] + '" nivelfaixa="' + dados[prop]["nivelCompetencia"]["ordem"] + '" ';
 							
 							if(criteriosAvaliacaoCompetencia.length > 0)
 								content += ' onclick="return false;"  class="checkNivel radio"'; 
 							else
 								content += 'class="checkNivel changed radio"'; 
 							
-							content += ' percentual="' + dadosNiveis[propNivel]["percentual"] + '" onchange="(' + contador + ', ' + dadosNiveis[propNivel]["ordem"] + ')"';
+							content += ' percentual="' + dadosNiveis[propNivel]["percentual"] + '" onchange="setOrdem(' + contador + ', ' + dadosNiveis[propNivel]["ordem"] + ')"';
 							
-							if(nivelChecked[id] == dadosNiveis[propNivel]["nivelCompetencia"]["id"])
+							if(nivelChecked[id] == dadosNiveis[propNivel]["id"])
 								content += ' checked=true ';
 							
 							if(!marcado)
@@ -387,6 +406,33 @@
 					}
 					
 					content += '</tr>';
+					
+					if(criteriosAvaliacaoCompetencia.length > 0)
+					{
+						var contadorCriterio = 0;
+						for (var propCriterios in criteriosAvaliacaoCompetencia)
+						{
+							content +=	'	<tr class="odd">';
+							content +=	'		<td >';
+							content +=	'		</td>';
+							content +=	'		<td style="text-align: center;">';
+							content +=	'			<input type="hidden" name="niveisCompetenciaFaixaSalariais[' + contador + '].configuracaoNivelCompetenciaCriterios[' + contadorCriterio + '].criterioDescricao" value="' + criteriosAvaliacaoCompetencia[propCriterios]["descricao"] + '" />';
+							content +=	'			<input type="checkbox" id="competencia_' + contador + '_criterio_' + contadorCriterio + '" name="niveisCompetenciaFaixaSalariais[' + contador + '].configuracaoNivelCompetenciaCriterios[' + contadorCriterio + '].criterioId" value="' + criteriosAvaliacaoCompetencia[propCriterios]["id"] + '" class="checkCompetenciaCriterio" />';
+							content +=	'		</td>';
+							content +=	'		<td><label for="competencia_' + contador + '_criterio_' + contadorCriterio + '">' + criteriosAvaliacaoCompetencia[propCriterios]["descricao"] + '</label></td>';
+							
+											for (var propNivel in dadosNiveis)
+											{
+												content +=	'<td style="width: 100px; text-align: center;">';
+												content +=	'	<input type="radio" disabled="disabled" class="checkNivelCriterio radio" competencia="' + contador + '" percentual="' + dadosNiveis[propNivel]["percentual"] + '" name="niveisCompetenciaFaixaSalariais[' + contador + '].configuracaoNivelCompetenciaCriterios[' + contadorCriterio + '].nivelCompetencia.id" value="' + dadosNiveis[propNivel]["id"] + '" />';
+												content +=	'</td>';
+											}
+							content +=	'	</tr>';
+									
+							contadorCriterio++;	
+						}
+					}
+					
 					contador++;
 				}
 				content += '</tbody>';
@@ -394,17 +440,19 @@
 				$('#configuracaoNivelCompetencia').append(content);
 				
 				$('#checkAllCompetencia').attr('checked', false);
-				
-				$('.checkCompetencia.changed').change(function() {
+
+				$('.checkCompetencia .changed').change(function() {
 					$(this).parent().parent().find(".checkNivel").attr('disabled', !($(this).attr('checked')));
 				});
 			
-				$('.checkCompetencia, #checkAllCompetencia, .checkNivel').change(atualizarGrafico);
-				
-				$.each(onLoad, function(key, value) {
-    				toolTipCompetenciaObs(key, value);
-				})
+				if(onLoad[1] != null)
+				{
+					$.each(onLoad, function(key, value) {
+	    				toolTipCompetenciaObs(key, value);
+					});
+				}
 
+				changes();
 				atualizarGrafico();
 			}
 			
@@ -427,11 +475,11 @@
 	<body>
 		<@ww.actionmessage />
 		<@ww.actionerror />
-	
+
 		<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.configuracaoNivelCompetenciaFaixaSalarial?exists && configuracaoNivelCompetenciaColaborador.configuracaoNivelCompetenciaFaixaSalarial.id?exists>
 			<#assign configuracaoNivelCompetenciaFaixaSalarialId = configuracaoNivelCompetenciaColaborador.configuracaoNivelCompetenciaFaixaSalarial.id/>
 		<#else>
-			<#assign configuracaoNivelCompetenciaFaixaSalarialId = ""/>
+			<#assign configuracaoNivelCompetenciaFaixaSalarialId = configuracaoNivelCompetenciaFaixaSalarial.id/>
 		</#if>
 		
 		<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.id?exists>

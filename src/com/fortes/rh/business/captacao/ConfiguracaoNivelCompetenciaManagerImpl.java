@@ -637,6 +637,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		if(configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario() != null && configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getId() != null)
 			throw new FortesException("Esta configuração de competência não pode ser excluída, pois existe dependência com avaliação de desempenho.");
 		
+		configuracaoNivelCompetenciaCriterioManager.removeByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelColaboradorId);
 		getDao().removeByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelColaboradorId);
 		configuracaoNivelCompetenciaColaboradorManager.remove(configuracaoNivelColaboradorId);
 	}
