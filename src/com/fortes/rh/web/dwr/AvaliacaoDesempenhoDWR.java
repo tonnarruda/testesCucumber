@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
+import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
@@ -19,6 +20,7 @@ public class AvaliacaoDesempenhoDWR
 {
 	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
 	private ColaboradorManager colaboradorManager;
+	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
 
 	@SuppressWarnings("unchecked")
 	public Map<Long, String> getAvaliacoesByEmpresa(Long empresaId)
@@ -59,12 +61,21 @@ public class AvaliacaoDesempenhoDWR
 		return CollectionUtil.convertCollectionToMap(avaliacaoDesempenhos, "getId", "getTitulo", AvaliacaoDesempenho.class);
 	}
 	
+	public boolean existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(Long avaliacaoDesempenhoId) {
+		return configuracaoCompetenciaAvaliacaoDesempenhoManager.existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(avaliacaoDesempenhoId);
+	}
+	
 	public void setAvaliacaoDesempenhoManager(AvaliacaoDesempenhoManager avaliacaoDesempenhoManager) {
 		this.avaliacaoDesempenhoManager = avaliacaoDesempenhoManager;
 	}
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {
 		this.colaboradorManager = colaboradorManager;
+	}
+
+	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(
+			ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
+		this.configuracaoCompetenciaAvaliacaoDesempenhoManager = configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	}
 	
 }

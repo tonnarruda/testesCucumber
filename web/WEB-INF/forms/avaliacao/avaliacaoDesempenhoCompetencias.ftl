@@ -162,7 +162,7 @@
 						  		 	<ul>
 								  		<input type="hidden" name="avaliadores" value="${avaliador.id}"/>
 						  		 		<#if (avaliador.faixaSalariaisAvaliados.size() == 0)> 
-							        		<li class="placeholder">Arraste os competências até aqui</li>
+							        		<li class="placeholder">Não existem avaliados configurados para esse avaliador</li>
 							        	</#if>
 							        	<#list avaliador.faixaSalariaisAvaliados as faixa>
 								        	<li class="faixa_${faixa.id}">

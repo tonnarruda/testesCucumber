@@ -36,11 +36,22 @@
 		var permiteAutoAvaliacao = ${avaliacaoDesempenho.permiteAutoAvaliacao.toString()};
 		var avaliacaoDesempenhoId = ${avaliacaoDesempenho.id};
 		var avaliacaoId = ${avaliacaoDesempenho.avaliacao.id};
+		var avaliacaoLiberada = ${avaliacaoDesempenho.liberada?string};
 		
 		$(function() {
 			$('#tooltipHelp').qtip({
 				content: 'Gera uma nova avaliação para cada um dos colaboradores desta avaliação, na qual ele irá avaliar apenas a si próprio.'
 			});
+			
+			if (!avaliacaoLiberada) {
+				conectAvaliadosAvaliadores();
+			
+		    	atualizeSelectables("#avaliados-list", "li", "avaliados");
+				atualizeSelectables("#avaliadores-list", ".portlet", "avaliadores");
+				atualizeSelectablesMini();
+		    } else {
+		    	$("li, .portlet-header").css("color", "#A1A1A1");
+		    }
 		});
 		
 		function pesquisar()

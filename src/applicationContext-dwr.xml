@@ -5,6 +5,7 @@
 	<bean id="avaliacaoDesempenhoDWR" class="com.fortes.rh.web.dwr.AvaliacaoDesempenhoDWR">
 		<property name="avaliacaoDesempenhoManager" ref="avaliacaoDesempenhoManager"/>
 		<property name="colaboradorManager" ref="colaboradorManager"/>
+		<property name="configuracaoCompetenciaAvaliacaoDesempenhoManager" ref="configuracaoCompetenciaAvaliacaoDesempenhoManager"/>
 	</bean>
 
 	<bean id="reajusteDWR" class="com.fortes.rh.web.dwr.ReajusteDWR">

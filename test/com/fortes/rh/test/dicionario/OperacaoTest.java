@@ -162,6 +162,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(++i, Operacao.CURSOS_A_VENCER.getId());			     				// 36
 		assertEquals(++i, Operacao.CERTIFICACOES_A_VENCER.getId());			     			// 37
 		assertEquals(++i, Operacao.COLABORADORES_COM_ANO_DE_EMPRESA.getId());			     			// 38
+		assertEquals(++i, Operacao.INSERIR_CONFIGURACAO_NIVEL_COMPETENCIA_FAIXA.getId());	// 37
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}

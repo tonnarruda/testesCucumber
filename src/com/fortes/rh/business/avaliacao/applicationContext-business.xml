@@ -62,6 +62,15 @@
     </property>
   </bean>
   <bean id="configuracaoCompetenciaAvaliacaoDesempenhoManagerTarget" class="com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl">
+    <property name="gerenciadorComunicacaoManager">
+      <ref bean="gerenciadorComunicacaoManager" />
+    </property>
+    <property name="configuracaoNivelCompetenciaManager">
+      <ref bean="configuracaoNivelCompetenciaManager" />
+    </property>
+    <property name="faixaSalarialManager">
+      <ref bean="faixaSalarialManager" />
+    </property>
     <property name="dao">
       <ref bean="configuracaoCompetenciaAvaliacaoDesempenhoDao" />
     </property>
@@ -96,6 +105,9 @@
     </property>
     <property name="participanteAvaliacaoDesempenhoManager">
       <ref bean="participanteAvaliacaoDesempenhoManager" />
+    </property>
+    <property name="configuracaoCompetenciaAvaliacaoDesempenhoManager">
+      <ref bean="configuracaoCompetenciaAvaliacaoDesempenhoManager" />
     </property>
   </bean>
   <bean id="participanteAvaliacaoDesempenhoManager" parent="parentManager">
