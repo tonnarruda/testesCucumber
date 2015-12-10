@@ -290,18 +290,23 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	{
 		Collection<ConfiguracaoNivelCompetencia> configuracaoAbaixos = new ArrayList<ConfiguracaoNivelCompetencia>();
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = getDao().findCompetenciaColaborador(data, null, competenciasIds, faixaSalarialId, false);
-		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasFaixas = getDao().findCompetenciasFaixaSalarial(competenciasIds, faixaSalarialId);
+		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetenciasFaixas = new ArrayList<ConfiguracaoNivelCompetencia>();
 		
+		Long configuracaoNivelCompetenciaFaixaSalarialId = null;
 		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : configuracaoNivelCompetencias) 
-		{
+		{	
+			if(!configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaFaixaSalarial().getId().equals(configuracaoNivelCompetenciaFaixaSalarialId)){
+				configuracaoNivelCompetenciaFaixaSalarialId = configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaFaixaSalarial().getId();
+				configuracaoNivelCompetenciasFaixas = getDao().findCompetenciaByFaixaSalarial(null, null, configuracaoNivelCompetenciaFaixaSalarialId);;
+			}
+			
 			for (ConfiguracaoNivelCompetencia competenciaFaixa : configuracaoNivelCompetenciasFaixas)
 			{
-				if((competenciaFaixa.getConfiguracaoNivelCompetenciaFaixaSalarial().getData().equals(configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador().getData()) 
-						|| competenciaFaixa.getConfiguracaoNivelCompetenciaFaixaSalarial().getData().before(configuracaoNivelCompetencia.getConfiguracaoNivelCompetenciaColaborador().getData()))
-						&& competenciaFaixa.getCompetenciaId().equals(configuracaoNivelCompetencia.getCompetenciaId()))
+				if(competenciaFaixa.getCompetenciaId().equals(configuracaoNivelCompetencia.getCompetenciaId()) && competenciaFaixa.getTipoCompetencia().equals(configuracaoNivelCompetencia.getTipoCompetencia()))
 				{
 					configuracaoNivelCompetencia.setNivelCompetenciaDescricaoProjection(competenciaFaixa.getNivelCompetencia().getDescricao());
 					configuracaoNivelCompetencia.setNivelCompetenciaOrdemProjection(competenciaFaixa.getNivelCompetencia().getOrdem());
+					break;
 				}
 			}
 			

@@ -350,8 +350,9 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 				if (configuracaoNivelCompetenciaColaborador == null){
 					configuracaoNivelCompetenciaColaborador = new ConfiguracaoNivelCompetenciaColaborador();
 					configuracaoNivelCompetenciaColaborador.setData(hoje);
+					configuracaoNivelCompetenciaColaborador.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(colaborador.getFaixaSalarial().getId(), colaboradorQuestionario.getRespondidaEm()));
 				}
-				
+
 				configuracaoNivelCompetenciaColaborador.setColaborador(colaborador);
 				configuracaoNivelCompetenciaColaborador.setColaboradorQuestionario(colaboradorQuestionario);
 				configuracaoNivelCompetenciaColaborador.setAvaliador(avaliador);

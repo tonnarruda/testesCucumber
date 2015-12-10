@@ -146,7 +146,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	
 	//findCompetenciaColaborador
 	public ConfiguracaoNivelCompetencia(BigInteger competenciaId, String faixaCompetencia, String colaboradorNome, BigInteger colaboradorId, 
-			String colaboradorNivel, Integer colaboradorOrden, BigInteger configNCColaboradorId, Date configCNData, String avaliadorNome, Boolean avaliacaoAnonima)
+			String colaboradorNivel, Integer colaboradorOrden, BigInteger configNCColaboradorId, Date configCNData, String avaliadorNome, Boolean avaliacaoAnonima, Long configuracaoNivelCompetenciaFaixaSalarialId, Character tipoCompetencia, Long nivelCompetenciaHistoricoId)
 	{
 		this.competenciaId = competenciaId.longValue();
 		this.competenciaDescricao = faixaCompetencia;
@@ -177,6 +177,11 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		configuracaoNivelCompetenciaColaborador.setColaboradorQuestionario(new ColaboradorQuestionario());
 		configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().setAvaliacaoDesempenho(new AvaliacaoDesempenho());
 		configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliacaoDesempenho().setAnonima(avaliacaoAnonima == null ? false : avaliacaoAnonima);
+		
+		configuracaoNivelCompetenciaFaixaSalarial = new ConfiguracaoNivelCompetenciaFaixaSalarial();
+		configuracaoNivelCompetenciaFaixaSalarial.setId(configuracaoNivelCompetenciaFaixaSalarialId);
+		configuracaoNivelCompetenciaFaixaSalarial.setNivelCompetenciaHistoricoId(nivelCompetenciaHistoricoId);
+		this.tipoCompetencia = tipoCompetencia;
 	}
 	
 	public ConfiguracaoNivelCompetencia(BigInteger candidatoId, String candidatoNome, String competencia, String nivel, Integer ordem)
