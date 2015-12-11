@@ -62,6 +62,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Notificar quando existir cursos a vencer", Operacao.getDescricaoById(++i));
 		assertEquals("Notificar quando existir certificações a vencer", Operacao.getDescricaoById(++i));
 		assertEquals("Colaborador completar ano de empresa", Operacao.getDescricaoById(++i));
+		assertEquals("Inserir histórico de competências para faixa salarial", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -116,6 +117,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 36
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 37
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 38
+		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 36
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -455,6 +457,17 @@ public class OperacaoTest extends TestCase
 		++qtdDeOperacoesTestadas;
 		
 		Operacao operacao = Operacao.ENVIAR_CARTAO_ANIVERSARIANTES;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+	}
+	
+	public void testEnviaEmailAoInserirConfiguracaoCompetenciaFaixaSalarial()
+	{
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.INSERIR_CONFIGURACAO_NIVEL_COMPETENCIA_FAIXA;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);

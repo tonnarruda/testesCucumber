@@ -6,19 +6,27 @@ import java.util.Collection;
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.dao.avaliacao.ParticipanteAvaliacaoDesempenhoDao;
+import com.fortes.rh.dao.cargosalario.CargoDao;
+import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
+import com.fortes.rh.model.cargosalario.Cargo;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.ParticipanteAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.CargoFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
@@ -26,10 +34,13 @@ import com.fortes.rh.util.LongUtil;
 public class ParticipanteAvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest<ParticipanteAvaliacaoDesempenho>
 {
 	private ParticipanteAvaliacaoDesempenhoDao participanteAvaliacaoDesempenhoDao;
+	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
 	private AvaliacaoDesempenhoDao avaliacaoDesempenhoDao;
+	private FaixaSalarialDao faixaSalarialDao;
 	private ColaboradorDao colaboradorDao;
 	private EmpresaDao empresaDao;
+	private CargoDao cargoDao;
 
 	@Override
 	public ParticipanteAvaliacaoDesempenho getEntity()
@@ -40,6 +51,13 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernateTest extends GenericDaoH
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresaDao.save(empresa);
 		
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaborador.setEmpresa(empresa);
 		colaboradorDao.save(colaborador);
@@ -47,6 +65,7 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernateTest extends GenericDaoH
 		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
 		historicoColaborador.setColaborador(colaborador);
 		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 02, 2001));
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
 		historicoColaboradorDao.save(historicoColaborador);
 
 		ParticipanteAvaliacaoDesempenho participanteAvaliacaoDesempenho = new ParticipanteAvaliacaoDesempenho();
@@ -77,6 +96,35 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernateTest extends GenericDaoH
 		participanteAvaliacaoDesempenhoDao.getHibernateTemplateByGenericDao().flush();
 		
 		assertEquals(1, participanteAvaliacaoDesempenhoDao.findParticipantes(participanteAvaliacaoDesempenho.getAvaliacaoDesempenho().getId(), ParticipanteAvaliacao.AVALIADO).size());
+	}
+	
+	public void testFindFaixasSalariaisDosAvaliadosByAvaliacaoDesempenho()
+	{
+		ParticipanteAvaliacaoDesempenho participanteAvaliacaoDesempenho = getEntity();
+		participanteAvaliacaoDesempenhoDao.save(participanteAvaliacaoDesempenho);
+		
+		participanteAvaliacaoDesempenhoDao.getHibernateTemplateByGenericDao().flush();
+		
+		assertEquals(1, participanteAvaliacaoDesempenhoDao.findFaixasSalariaisDosAvaliadosByAvaliacaoDesempenho(participanteAvaliacaoDesempenho.getAvaliacaoDesempenho().getId()).size());
+	}
+	
+	public void testFindFaixasSalariaisDosAvaliadosByAvaliador()
+	{
+		ParticipanteAvaliacaoDesempenho participanteAvaliadoAvaliacaoDesempenho = getEntity();
+		participanteAvaliacaoDesempenhoDao.save(participanteAvaliadoAvaliacaoDesempenho);
+		
+		Colaborador avaliadorAvaliacaoDesempenho = ColaboradorFactory.getEntity();
+		colaboradorDao.save(avaliadorAvaliacaoDesempenho);
+		
+		ColaboradorQuestionario colaboradorQuestionario = new ColaboradorQuestionario();
+		colaboradorQuestionario.setAvaliador(avaliadorAvaliacaoDesempenho);
+		colaboradorQuestionario.setColaborador(participanteAvaliadoAvaliacaoDesempenho.getColaborador());
+		colaboradorQuestionario.setAvaliacaoDesempenho(participanteAvaliadoAvaliacaoDesempenho.getAvaliacaoDesempenho());
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		participanteAvaliacaoDesempenhoDao.getHibernateTemplateByGenericDao().flush();
+		
+		assertEquals(1, participanteAvaliacaoDesempenhoDao.findFaixasSalariaisDosAvaliadosByAvaliador(participanteAvaliadoAvaliacaoDesempenho.getAvaliacaoDesempenho().getId(), avaliadorAvaliacaoDesempenho.getId()).size());
 	}
 	
 	public void testRemoveNotIn() throws Exception
@@ -148,5 +196,18 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernateTest extends GenericDaoH
 
 	public void setEmpresaDao(EmpresaDao empresaDao) {
 		this.empresaDao = empresaDao;
+	}
+
+	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao) {
+		this.faixaSalarialDao = faixaSalarialDao;
+	}
+
+	public void setColaboradorQuestionarioDao(
+			ColaboradorQuestionarioDao colaboradorQuestionarioDao) {
+		this.colaboradorQuestionarioDao = colaboradorQuestionarioDao;
+	}
+
+	public void setCargoDao(CargoDao cargoDao) {
+		this.cargoDao = cargoDao;
 	}
 }

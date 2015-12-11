@@ -14,6 +14,7 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.ParticipanteAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
@@ -24,7 +25,9 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -34,6 +37,7 @@ import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
@@ -54,6 +58,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 	private Mock avaliacaoManager;
 	private Mock parametrosDoSistemaManager ;
 	private Mock participanteAvaliacaoDesempenhoManager;
+	private Mock configuracaoCompetenciaAvaliacaoDesempenhoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -67,6 +72,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		avaliacaoManager = mock(AvaliacaoManager.class);
 		parametrosDoSistemaManager = new Mock(ParametrosDoSistemaManager.class);
 		participanteAvaliacaoDesempenhoManager = new Mock(ParticipanteAvaliacaoDesempenhoManager.class);
+		configuracaoCompetenciaAvaliacaoDesempenhoManager = new Mock(ConfiguracaoCompetenciaAvaliacaoDesempenhoManager.class);
 
 		action.setAvaliacaoDesempenhoManager((AvaliacaoDesempenhoManager) manager.proxy());
 		action.setAvaliacaoDesempenho(new AvaliacaoDesempenho());
@@ -78,6 +84,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		action.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
 	    action.setParametrosDoSistemaManager((ParametrosDoSistemaManager) parametrosDoSistemaManager .proxy());
 	    action.setParticipanteAvaliacaoDesempenhoManager((ParticipanteAvaliacaoDesempenhoManager) participanteAvaliacaoDesempenhoManager.proxy());
+	    action.setConfiguracaoCompetenciaAvaliacaoDesempenhoManager((ConfiguracaoCompetenciaAvaliacaoDesempenhoManager) configuracaoCompetenciaAvaliacaoDesempenhoManager.proxy());
 		
 		action.setEmpresaSistema(EmpresaFactory.getEmpresa(1L));
 		
@@ -148,6 +155,76 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
 		
 		assertEquals("success", action.saveParticipantes());
+	}
+	
+	public void testPrepareCompetencias() throws Exception
+	{
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
+		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		
+		Collection<Colaborador> colaboradoresAvaliadores = new ArrayList<Colaborador>();
+		colaboradoresAvaliadores.add(ColaboradorFactory.getEntity(1000L));
+		
+		Collection<FaixaSalarial> faixasSalariais = new ArrayList<FaixaSalarial>();
+		faixasSalariais.add(FaixaSalarialFactory.getEntity(1000L));
+		
+		Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> configuracaoCompetenciaAvaliacaoDesempenhos = new ArrayList<ConfiguracaoCompetenciaAvaliacaoDesempenho>();
+		configuracaoCompetenciaAvaliacaoDesempenhos.add(new ConfiguracaoCompetenciaAvaliacaoDesempenho());
+		
+		manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(avaliacaoDesempenho));
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING}).will(returnValue(faixasSalariais));
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("findParticipantes").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(colaboradoresAvaliadores));
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisDosAvaliadosByAvaliador").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(faixasSalariais));
+		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("findByAvaliador").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING}).will(returnValue(configuracaoCompetenciaAvaliacaoDesempenhos));
+		
+		action.prepareCompetencias();
+		
+		assertEquals(1, action.getFaixaSalariais().size());
+		assertEquals(1, action.getAvaliadors().size());
+	}
+	
+	public void testPrepareCompetenciasQuandoAvaliacaoLiberada() throws Exception
+	{
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
+		avaliacaoDesempenho.setLiberada(true);
+		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		
+		Collection<Colaborador> colaboradoresAvaliadores = new ArrayList<Colaborador>();
+		colaboradoresAvaliadores.add(ColaboradorFactory.getEntity(1000L));
+		
+		Collection<FaixaSalarial> faixasSalariais = new ArrayList<FaixaSalarial>();
+		faixasSalariais.add(FaixaSalarialFactory.getEntity(1000L));
+		
+		Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> configuracaoCompetenciaAvaliacaoDesempenhos = new ArrayList<ConfiguracaoCompetenciaAvaliacaoDesempenho>();
+		configuracaoCompetenciaAvaliacaoDesempenhos.add(new ConfiguracaoCompetenciaAvaliacaoDesempenho());
+		
+		manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(avaliacaoDesempenho));
+		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho").with(new Constraint[] {ANYTHING}).will(returnValue(faixasSalariais));
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("findParticipantes").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(colaboradoresAvaliadores));
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisDosAvaliadosByAvaliador").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(faixasSalariais));
+		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("findByAvaliador").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING}).will(returnValue(configuracaoCompetenciaAvaliacaoDesempenhos));
+		
+		action.prepareCompetencias();
+		
+		assertEquals(1, action.getFaixaSalariais().size());
+		assertEquals(1, action.getAvaliadors().size());
+	}
+	
+	public void testSaveCompetencias() throws Exception
+	{
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
+		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		
+		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
+		
+		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("save").with(ANYTHING, ANYTHING).isVoid();
+		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("removeNotIn").with(ANYTHING, ANYTHING).isVoid();
+		
+		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING}).will(returnValue(new ArrayList<FaixaSalarial>()));
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("findParticipantes").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(new ArrayList<Colaborador>()));
+		
+		assertEquals("success", action.saveCompetencias());
 	}
 	
 	public void testList() throws Exception
