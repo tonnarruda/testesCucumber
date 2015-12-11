@@ -168,7 +168,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 	{
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("select cnc.id, cnc.tipoCompetencia, cnc.competencia_id as competenciaId, COALESCE(a.nome, conhe.nome, h.nome) as competenciaDescricao, COALESCE(a.observacao, conhe.observacao, h.observacao) as competenciaObservacao, cnc.nivelcompetencia_id, nc.descricao, chn.ordem, cnc.pesoCompetencia ");
+		sql.append("select cnc.id, cnc.tipoCompetencia, cnc.competencia_id as competenciaId, COALESCE(a.nome, conhe.nome, h.nome) as competenciaDescricao, COALESCE(a.observacao, conhe.observacao, h.observacao) as competenciaObservacao, cnc.nivelcompetencia_id, nc.descricao, chn.ordem, cnc.pesoCompetencia, chn.percentual ");
 		sql.append("from ConfiguracaoNivelCompetencia cnc ");
 		sql.append("join ConfiguracaoNivelCompetenciaFaixaSalarial cncf on cncf.id = cnc.ConfiguracaoNivelCompetenciaFaixaSalarial_id ");
 		sql.append("left join ConfigHistoricoNivel chn on cncf.nivelCompetenciahistorico_id = chn.nivelCompetenciahistorico_id and chn.NivelCompetencia_id=cnc.NivelCompetencia_id ");
@@ -209,7 +209,7 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 			if(res[8] != null)
 				pesoCompetencia = ((Short)res[8]).intValue();
 			
-			lista.add(new ConfiguracaoNivelCompetencia(((BigInteger)res[0]).longValue(), (Character)res[1], ((BigInteger)res[2]).longValue(), (String)res[3], (String)res[4], ((BigInteger)res[5]).longValue(), (String)res[6], (Integer)res[7], pesoCompetencia ));
+			lista.add(new ConfiguracaoNivelCompetencia(((BigInteger)res[0]).longValue(), (Character)res[1], ((BigInteger)res[2]).longValue(), (String)res[3], (String)res[4], ((BigInteger)res[5]).longValue(), (String)res[6], (Integer)res[7], pesoCompetencia, (Double)res[9]));
 		}
 
 		return lista;				

@@ -117,7 +117,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setPesoCompetencia(pesoCompetencia);
 	}
 	
-	public ConfiguracaoNivelCompetencia(Long id, Character tipoCompetencia, Long competenciaId, String competenciaDescricao, String competenciaObservacao, Long nivelCompetenciaId, String nivelCompetenciaDescricao, Integer nivelCompetenciaOrdem, Integer pesoCompetencia)
+	public ConfiguracaoNivelCompetencia(Long id, Character tipoCompetencia, Long competenciaId, String competenciaDescricao, String competenciaObservacao, Long nivelCompetenciaId, String nivelCompetenciaDescricao, Integer nivelCompetenciaOrdem, Integer pesoCompetencia, Double nivelCompetenciaPercentual)
 	{
 		this.setId(id);
 		this.setTipoCompetencia(tipoCompetencia);
@@ -127,6 +127,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.setNivelCompetenciaIdProjection(nivelCompetenciaId);
 		this.setProjectionNivelCompetenciaDescricao(nivelCompetenciaDescricao);
 		this.setNivelCompetenciaOrdemProjection(nivelCompetenciaOrdem);
+		this.setNivelCompetenciaPercentualProjection(nivelCompetenciaPercentual);
 		this.setPesoCompetencia(pesoCompetencia);
 	}
 	
@@ -245,6 +246,12 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	{
 		inicializaNivelCompetencia();
 		this.nivelCompetencia.setId(nivelCompetenciaId);
+	}
+	
+	public void setNivelCompetenciaPercentualProjection(Double nivelCompetenciaPercentual) 
+	{
+		inicializaNivelCompetencia();
+		this.nivelCompetencia.setPercentual(nivelCompetenciaPercentual);
 	}
 	
 	public void setNivelCompetenciaDescricaoProjection(String nivelCompetenciaDescricao) 
