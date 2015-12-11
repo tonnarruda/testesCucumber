@@ -117,6 +117,7 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		query.executeUpdate();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Collection<FaixaSalarial> findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho(Long avaliacaoDesempenhoId) {
 		StringBuilder hql = new StringBuilder();
 		

@@ -11,6 +11,7 @@ import org.jmock.Mock;
 import org.jmock.cglib.MockObjectTestCase;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManagerImpl;
+import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
@@ -48,6 +49,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 	private Mock colaboradorRespostaManager;
 	private Mock questionarioManager;
 	private Mock gerenciadorComunicacaoManager;
+	private Mock configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	
 	protected void setUp() throws Exception
     {
@@ -66,6 +68,8 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
         avaliacaoDesempenhoManager.setQuestionarioManager((QuestionarioManager) questionarioManager.proxy());
         gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
         avaliacaoDesempenhoManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
+        configuracaoCompetenciaAvaliacaoDesempenhoManager = mock(ConfiguracaoCompetenciaAvaliacaoDesempenhoManager.class);
+        avaliacaoDesempenhoManager.setConfiguracaoCompetenciaAvaliacaoDesempenhoManager((ConfiguracaoCompetenciaAvaliacaoDesempenhoManager) configuracaoCompetenciaAvaliacaoDesempenhoManager.proxy());
     }
 
 	public void testFindAllSelect()
@@ -133,6 +137,8 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(3L);
 		
+		colaboradorQuestionarioManager.expects(once()).method("findRespondidasByAvaliacaoDesempenho").with(eq(3L)).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado").with(eq(3L)).will(returnValue(false));
 		avaliacaoDesempenhoDao.expects(once()).method("liberarOrBloquear").with(eq(3L), eq(false));
 		
 		avaliacaoDesempenhoManager.liberarOrBloquear(avaliacaoDesempenho, false);

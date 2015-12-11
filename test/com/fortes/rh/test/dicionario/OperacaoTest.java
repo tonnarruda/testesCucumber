@@ -11,7 +11,7 @@ public class OperacaoTest extends TestCase
 	
 	public void testQtdOperacoes()
 	{
-		assertEquals(36, Operacao.values().length);
+		assertEquals(37, Operacao.values().length);
 	}
 
 	public void testGetHashMapGrupos()
@@ -60,6 +60,7 @@ public class OperacaoTest extends TestCase
 		assertEquals("Reprovar solicitação de desligamento de colaborador", Operacao.getDescricaoById(++i));
 		assertEquals("Criar acesso ao sistema para colaborador", Operacao.getDescricaoById(++i));
 		assertEquals("Notificar quando existir cursos a vencer", Operacao.getDescricaoById(++i));
+		assertEquals("Inserir histórico de competências para faixa salarial", Operacao.getDescricaoById(++i));
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -112,6 +113,7 @@ public class OperacaoTest extends TestCase
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 34
 		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 35
 		assertEquals(3, Operacao.getMeioComunicacaosById(++i).size()); // 36
+		assertEquals(2, Operacao.getMeioComunicacaosById(++i).size()); // 36
 		
 		assertEquals("Quantidade de operações testadas",Operacao.values().length, i);
 	}
@@ -449,6 +451,17 @@ public class OperacaoTest extends TestCase
 		++qtdDeOperacoesTestadas;
 		
 		Operacao operacao = Operacao.ENVIAR_CARTAO_ANIVERSARIANTES;
+		
+		assertEquals(2, operacao.meioComunicação().size());
+		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
+		assertEquals(2,(MeioComunicacao.EMAIL.getListEnviarPara()).size());
+	}
+	
+	public void testEnviaEmailAoInserirConfiguracaoCompetenciaFaixaSalarial()
+	{
+		++qtdDeOperacoesTestadas;
+		
+		Operacao operacao = Operacao.INSERIR_CONFIGURACAO_NIVEL_COMPETENCIA_FAIXA;
 		
 		assertEquals(2, operacao.meioComunicação().size());
 		assertEquals(MeioComunicacao.EMAIL.getDescricao(), operacao.meioComunicação().values().toArray()[1]);
