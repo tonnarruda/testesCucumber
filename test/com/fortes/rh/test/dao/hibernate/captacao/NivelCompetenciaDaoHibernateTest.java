@@ -696,13 +696,18 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		nivelCompetenciaHistorico.setEmpresa(empresa);
 		nivelCompetenciaHistoricoDao.save(nivelCompetenciaHistorico);
 		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
+		configuracaoNivelCompetenciaFaixaSalarial.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configuracaoNivelCompetenciaFaixaSalarial.setData(nivelCompetenciaHistorico.getData());
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
+		
 		NivelCompetencia nivelCompetencia1 = nivelCompetencia(empresa, null, 4, null, nivelCompetenciaHistorico);
 		NivelCompetencia nivelCompetencia2 = nivelCompetencia(empresa, null, 1, null, nivelCompetenciaHistorico);
 
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "pedro", "pedro", "0123", null, null, null);
 		colaboradorManager.save(colaborador);
 		
-		ConfiguracaoNivelCompetenciaColaborador configColaborador = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, colaborador, DateUtil.criarDataMesAno(17, 8, 2011), null, null);
+		ConfiguracaoNivelCompetenciaColaborador configColaborador = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, colaborador, DateUtil.criarDataMesAno(17, 8, 2011), null, null, configuracaoNivelCompetenciaFaixaSalarial);
 		
 		criaConfiguracaoNivelCompetencia(atitude.getId(), nivelCompetencia1, configColaborador, TipoCompetencia.ATITUDE);
 		criaConfiguracaoNivelCompetencia(conhecimento.getId(), nivelCompetencia2, configColaborador, TipoCompetencia.CONHECIMENTO);
@@ -962,6 +967,11 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		
 		NivelCompetenciaHistorico nivelCompetenciaHistorico = iniciaNivelCompetenciaHistorico(empresa, DateUtil.criarDataMesAno(1, 1, 2015));
 		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
+		configuracaoNivelCompetenciaFaixaSalarial.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configuracaoNivelCompetenciaFaixaSalarial.setData(nivelCompetenciaHistorico.getData());
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
+		
 		NivelCompetencia nivelCompetencia1 = nivelCompetencia(empresa, "Bom", 4, null, nivelCompetenciaHistorico);
 		NivelCompetencia nivelCompetencia2 = nivelCompetencia(empresa, "Péssimo", 1, null, nivelCompetenciaHistorico);
 
@@ -976,8 +986,8 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		colaboradorQuestionario.setColaborador(colaborador);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario);
 		
-		ConfiguracaoNivelCompetenciaColaborador configColaborador = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, colaborador, DateUtil.criarDataMesAno(17, 8, 2011), null, null);
-		ConfiguracaoNivelCompetenciaColaborador configColaborador2 = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, colaborador, DateUtil.criarDataMesAno(16, 8, 2011), null, null);
+		ConfiguracaoNivelCompetenciaColaborador configColaborador = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, colaborador, DateUtil.criarDataMesAno(17, 8, 2011), null, null, configuracaoNivelCompetenciaFaixaSalarial);
+		ConfiguracaoNivelCompetenciaColaborador configColaborador2 = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, colaborador, DateUtil.criarDataMesAno(16, 8, 2011), null, null, configuracaoNivelCompetenciaFaixaSalarial);
 		
 		criaConfiguracaoNivelCompetencia(atitude.getId(), nivelCompetencia1, configColaborador, TipoCompetencia.ATITUDE);
 		criaConfiguracaoNivelCompetencia(conhecimento.getId(), nivelCompetencia2, configColaborador, TipoCompetencia.CONHECIMENTO);
@@ -1006,6 +1016,11 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		NivelCompetencia nivelCompetencia1 = nivelCompetencia(empresa, "Bom", 4, null, nivelCompetenciaHistorico);
 		NivelCompetencia nivelCompetencia2 = nivelCompetencia(empresa, "Péssimo", 1, null, nivelCompetenciaHistorico);
 
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
+		configuracaoNivelCompetenciaFaixaSalarial.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		configuracaoNivelCompetenciaFaixaSalarial.setData(nivelCompetenciaHistorico.getData());
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
+		
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L, "Pedro", "pedro", "0123", null, null, null);
 		colaboradorManager.save(colaborador);
 		
@@ -1017,8 +1032,8 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		colaboradorQuestionario.setColaborador(colaborador);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario);
 		
-		ConfiguracaoNivelCompetenciaColaborador configColaborador = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, colaborador, DateUtil.criarDataMesAno(17, 8, 2011), avaliador, colaboradorQuestionario );
-		ConfiguracaoNivelCompetenciaColaborador configColaborador2 = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, colaborador, DateUtil.criarDataMesAno(16, 8, 2011), avaliador, colaboradorQuestionario );
+		ConfiguracaoNivelCompetenciaColaborador configColaborador = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, colaborador, DateUtil.criarDataMesAno(17, 8, 2011), avaliador, colaboradorQuestionario, configuracaoNivelCompetenciaFaixaSalarial );
+		ConfiguracaoNivelCompetenciaColaborador configColaborador2 = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, colaborador, DateUtil.criarDataMesAno(16, 8, 2011), avaliador, colaboradorQuestionario, configuracaoNivelCompetenciaFaixaSalarial );
 		
 		criaConfiguracaoNivelCompetencia(atitude.getId(), nivelCompetencia1, configColaborador, TipoCompetencia.ATITUDE);
 		criaConfiguracaoNivelCompetencia(conhecimento.getId(), nivelCompetencia2, configColaborador, TipoCompetencia.CONHECIMENTO);
@@ -1093,13 +1108,14 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		return habilidade;
 	}
 
-	private ConfiguracaoNivelCompetenciaColaborador criaConfiguracaoNivelCompetenciaColaborador(FaixaSalarial faixaSalarial, Colaborador colaborador, Date data, Colaborador avaliador, ColaboradorQuestionario colabQuestionario)
+	private ConfiguracaoNivelCompetenciaColaborador criaConfiguracaoNivelCompetenciaColaborador(FaixaSalarial faixaSalarial, Colaborador colaborador, Date data, Colaborador avaliador, ColaboradorQuestionario colabQuestionario, ConfiguracaoNivelCompetenciaFaixaSalarial cncf)
 	{
 		ConfiguracaoNivelCompetenciaColaborador configColaborador = new ConfiguracaoNivelCompetenciaColaborador();
 		configColaborador.setColaborador(colaborador);
 		configColaborador.setFaixaSalarial(faixaSalarial);
 		configColaborador.setData(data);
 		configColaborador.setColaboradorQuestionario(colabQuestionario);
+		configColaborador.setConfiguracaoNivelCompetenciaFaixaSalarial(cncf);
 		configuracaoNivelCompetenciaColaboradorDao.save(configColaborador);
 		return configColaborador;
 	}
@@ -1200,7 +1216,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		historicoTiburcio.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoTiburcio);
 		
-		ConfiguracaoNivelCompetenciaColaborador configAtaliba = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, ataliba, DateUtil.criarDataMesAno(17, 8, 2011), null, null);
+		ConfiguracaoNivelCompetenciaColaborador configAtaliba = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, ataliba, DateUtil.criarDataMesAno(17, 8, 2011), null, null, null);
 		
 		ConfiguracaoNivelCompetencia configAtaliba1 = ConfiguracaoNivelCompetenciaFactory.getEntityColaborador(configAtaliba, nivelBom, atitude.getId(), TipoCompetencia.ATITUDE);
 		configuracaoNivelCompetenciaDao.save(configAtaliba1);
@@ -1208,7 +1224,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		ConfiguracaoNivelCompetencia configAtaliba2 = ConfiguracaoNivelCompetenciaFactory.getEntityColaborador(configAtaliba, nivelPessimo, conhecimento.getId(), TipoCompetencia.CONHECIMENTO);
 		configuracaoNivelCompetenciaDao.save(configAtaliba2);
 		
-		criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, tiburcio, DateUtil.criarDataMesAno(17, 8, 2011), null, null);
+		criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, tiburcio, DateUtil.criarDataMesAno(17, 8, 2011), null, null, null);
 		
 		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findColaboradoresCompetenciasAbaixoDoNivel(empresa.getId(), null, null, null, 'C');
 		ConfiguracaoNivelCompetencia[] configsArray = configs.toArray(new ConfiguracaoNivelCompetencia[]{});
