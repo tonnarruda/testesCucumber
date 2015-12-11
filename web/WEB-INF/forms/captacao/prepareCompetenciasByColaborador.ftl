@@ -102,11 +102,6 @@
 				<#if !niveisCompetenciaFaixaSalariais?exists || niveisCompetenciaFaixaSalariais?size == 0>
 					montaAlerta();
 				</#if>
-				
-				<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.id?exists>
-					$('#data').attr("disabled","disabled");
-					$('#data_button').hide();
-				</#if>
 			});
 			
 			function calculaNivelDaCompetenciaPeloPercentual(competenciaId){
@@ -349,7 +344,8 @@
 				    
 				    content += '		<td style="width: 20px;">';
 				    content += '		<input type="hidden" name="niveisCompetenciaFaixaSalariais[' + contador + '].tipoCompetencia" value="' + dados[prop]["tipoCompetencia"] + '" id="form_niveisCompetenciaFaixaSalariais_' + contador + '__tipoCompetencia" />';
-					content += '		<input type="hidden" name="niveisCompetenciaFaixaSalariais[' + contador + '].nivelCompetencia.ordem" class="ordem" value="' + dados[prop]["ordem"] + '" id="ordem_' + contador + '" />';					
+					content += '		<input type="hidden" name="niveisCompetenciaFaixaSalariais[' + contador + '].nivelCompetencia.ordem" class="ordem" value="' + dados[prop]["nivelCompetencia"]["ordem"] + '" id="ordem_' + contador + '" />';
+					content += '		<input type="hidden" name="niveisCompetenciaFaixaSalariais[' + contador + '].pesoCompetencia" value="' + dados[prop]["pesoCompetencia"] + '" id="peso">';
 					content += '		<input type="checkbox" id="competencia_' + contador + '" name="niveisCompetenciaFaixaSalariais[' + contador + '].competenciaId" value="' + id + '" ';
 					
 					if(criteriosAvaliacaoCompetencia.length > 0)
@@ -440,10 +436,8 @@
 				$('#configuracaoNivelCompetencia').append(content);
 				
 				$('#checkAllCompetencia').attr('checked', false);
-
-				$('.checkCompetencia .changed').change(function() {
-					$(this).parent().parent().find(".checkNivel").attr('disabled', !($(this).attr('checked')));
-				});
+				$('.checkCompetencia').attr('checked', false);
+				$('.checkNivel').attr('checked', false);
 			
 				if(onLoad[1] != null)
 				{
@@ -509,25 +503,24 @@
 		<#if configuracaoNivelCompetenciaColaborador?exists && 	configuracaoNivelCompetenciaColaborador.id?exists>
 			<b>Avaliação de Desempenho:</b> ${avDesempenhoTitulo} <br>
 			<b>Avaliador:</b> ${avaliadorNome}<br>
+			<b>Data:</b> ${configuracaoNivelCompetenciaColaborador.data}	
+			
 		</#if>
 		<div style="clear: both;"></div><br />
 		
 			<@ww.form name="form" id="form" action="saveCompetenciasColaborador.action" method="POST">
 			
-			<div id="legendas" style="float:right;">
-				<span style='background-color: #BFC0C3;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial
-			</div>
-			
-			<@ww.datepicker label="A partir de" name="configuracaoNivelCompetenciaColaborador.data" value="${data}" id="data" cssClass="mascaraData" onchange="repopulaConfiguracaoNivelCompetencia();"/>
-			<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.avaliacaoDesempenho?exists>
-				<@ww.hidden name="configuracaoNivelCompetenciaColaborador.data" value="${data}"/>
-			</#if>
-			
 			<#if configuracaoNivelCompetenciaColaborador?exists && 	configuracaoNivelCompetenciaColaborador.id?exists>
+				<@ww.hidden name="configuracaoNivelCompetenciaColaborador.data" id="data" cssClass="mascaraData" value="${data}"/>
 				<@ww.hidden name="configuracaoNivelCompetenciaColaborador.avaliador.id" id="avaliador" value="${avaliadorId}"/>
 			<#else>
+				<@ww.datepicker label="A partir de" name="configuracaoNivelCompetenciaColaborador.data" value="${data}" id="data" cssClass="mascaraData" onchange="repopulaConfiguracaoNivelCompetencia();"/>
 				<@ww.select label="Avaliador" id="avaliador" name="configuracaoNivelCompetenciaColaborador.avaliador.id" list="colaboradores"  listKey="id" listValue="nome"  headerKey="-1" headerValue="Selecione..." />
 			</#if>
+
+			<div id="legendas" style="float:right;">
+				<p><span style='background-color: #BFC0C3;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Níveis de Competência exigidos para o Cargo/Faixa Salarial</p>
+			</div>
 			
 			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.id" />
 			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.faixaSalarial.id" value="${faixaSalarial.id}"/>
@@ -536,8 +529,7 @@
 			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.avaliacaoDesempenho.id" value="${avDesempenhoId}"/>
 			<@ww.hidden name="configuracaoNivelCompetenciaColaborador.configuracaoNivelCompetenciaFaixaSalarial.id" value="${configuracaoNivelCompetenciaFaixaSalarialId}"/>
 			
-			<@ww.hidden name="colaborador.id" />
-			<br />
+			<@ww.hidden name="colaborador.id" /><br />
 			
 			<div id="niveisCompetenciaFaixaSalariais">
 				<table id="configuracaoNivelCompetencia" class="dados">
@@ -558,6 +550,7 @@
 							<tr class="even">
 								<td style="width: 20px;">
 									<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].tipoCompetencia"/>
+									<@ww.hidden name="niveisCompetenciaFaixaSalariais[${i}].pesoCompetencia" id="peso"/>
 									<#-- não utilizar decorator no hidden abaixo -->
 									<input type="hidden" name="niveisCompetenciaFaixaSalariais[${i}].nivelCompetencia.ordem" id="ordem_${i}" class="ordem" value=""/>
 									
