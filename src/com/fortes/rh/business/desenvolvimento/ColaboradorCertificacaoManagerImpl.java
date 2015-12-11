@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
-import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.business.GenericManagerImpl;
-import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
-import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
 
 public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<ColaboradorCertificacao, ColaboradorCertificacaoDao> implements ColaboradorCertificacaoManager
 {
@@ -21,15 +19,15 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 
 	public Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, Long empresaId, Long certificacaoId,	Long[] estabelecimentoIds, Long[] areaIds, char filtroCetificacao) 
 	{
-		Collection<Colaborador> colabNaCertificacaoNaoCertificados = new ArrayList<Colaborador>();
+		Collection<ColaboradorCertificacao> colabNaCertificacaoNaoCertificados = new ArrayList<ColaboradorCertificacao>();
 		
 		if(certificacaoId != null)
-			colabNaCertificacaoNaoCertificados.addAll(getDao().colabNaCertificacaoNaoCertificadosByCertificacaoId(certificacaoId));
+			colabNaCertificacaoNaoCertificados.addAll(getDao().colabNaCertificacaoNaoCertificados(certificacaoId, null, null));
 		else{
 			Collection<Certificacao> certificacoes = certificacaoManager.findAllSelect(empresaId);
 			
 			for (Certificacao certificacao : certificacoes) 
-				colabNaCertificacaoNaoCertificados.addAll(getDao().colabNaCertificacaoNaoCertificadosByCertificacaoId(certificacao.getId()));
+				colabNaCertificacaoNaoCertificados.addAll(getDao().colabNaCertificacaoNaoCertificados(certificacao.getId(), null, null));
 		}
 		
 		

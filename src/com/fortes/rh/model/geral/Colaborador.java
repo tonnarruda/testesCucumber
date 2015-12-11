@@ -827,7 +827,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setContatoFoneFixo(foneFixo);
 		this.setContatoCelular(celular);
 	}
-
+	
 	//Construtor usado pela consulta de aniversariantes
 	public Colaborador(Date dataNascimento, Long colaboradorId, String colaboradorMatricula, String colaboradorNome, String colaboradorNomeComercial, String cargoNome, String faixaSalarialNome, String areaOrganizacionalNome, String estabelecimentoNome, Long areaOrganizacionalId, Endereco endereco)
 	{

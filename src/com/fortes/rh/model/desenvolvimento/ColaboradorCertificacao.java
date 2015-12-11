@@ -30,6 +30,18 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	@Temporal(TemporalType.DATE)
 	private Date data;
 
+	public ColaboradorCertificacao() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	//usado por colabNaCertificacaoNaoCertificados
+	public ColaboradorCertificacao(Long id, String nome, String nomeComercial, String matricula, String cargoNome, Long certificacaoId, String certificacaoNome, Long cursoId, String cursoNome, 
+			Date tumaDataPrevIni, Date tumaDataPrevFim,	Boolean turmaRealizada, Boolean aprovadoNaTurma, Boolean certificado)
+	{
+		
+		
+	}
+	
 	public Colaborador getColaborador() {
 		return colaborador;
 	}
