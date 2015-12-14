@@ -164,19 +164,31 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return criteria.list();
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId, Date data, Long configuracaoNivelCompetenciaFaixaSalarialId) 
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId, Date data, Long configuracaoNivelCompetenciaFaixaSalarialId, Long avaliadorId, Long avaliacaoDesempenhoId) 
 	{
 		StringBuilder sql = new StringBuilder();
 
 		sql.append("select cnc.id, cnc.tipoCompetencia, cnc.competencia_id as competenciaId, COALESCE(a.nome, conhe.nome, h.nome) as competenciaDescricao, COALESCE(a.observacao, conhe.observacao, h.observacao) as competenciaObservacao, cnc.nivelcompetencia_id, nc.descricao, chn.ordem, cnc.pesoCompetencia, chn.percentual ");
 		sql.append("from ConfiguracaoNivelCompetencia cnc ");
 		sql.append("join ConfiguracaoNivelCompetenciaFaixaSalarial cncf on cncf.id = cnc.ConfiguracaoNivelCompetenciaFaixaSalarial_id ");
+		
+		if(avaliadorId != null && avaliacaoDesempenhoId != null){
+			sql.append("join configuracaoCompetenciaAvaliacaoDesempenho ccad on ccad.ConfiguracaoNivelCompetenciaFaixaSalarial_id = cncf.id ");
+			sql.append("and cnc.competencia_id = ccad.competencia_id and ccad.tipoCompetencia = cnc.tipoCompetencia ");
+		}
+		
 		sql.append("left join ConfigHistoricoNivel chn on cncf.nivelCompetenciahistorico_id = chn.nivelCompetenciahistorico_id and chn.NivelCompetencia_id=cnc.NivelCompetencia_id ");
 		sql.append("left join NivelCompetencia nc on nc.id=chn.nivelCompetencia_id ");
 		sql.append("left join Atitude a on a.id = cnc.competencia_id and 'A' = cnc.tipocompetencia ");
 		sql.append("left join Conhecimento conhe on conhe.id = cnc.competencia_id and 'C' = cnc.tipocompetencia ");
 		sql.append("left join Habilidade h on h.id = cnc.competencia_id and 'H' = cnc.tipocompetencia ");
+		
 		sql.append("where cnc.configuracaoNivelCompetenciaColaborador_id is null ");
+		
+		if(avaliadorId != null && avaliacaoDesempenhoId != null){
+			sql.append("and ccad.avaliacaodesempenho_id = :avaliacaoDesempenhoId ");
+			sql.append("and ccad.avaliador_id = :avaliadorId ");
+		}
 		
 		if(configuracaoNivelCompetenciaFaixaSalarialId != null){
 			sql.append("and cncf.id = :cncfId  ");
@@ -189,6 +201,11 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("order by competenciaDescricao ");
 
 		Query query = getSession().createSQLQuery(sql.toString());
+		
+		if(avaliadorId != null && avaliacaoDesempenhoId != null){
+			query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
+			query.setLong("avaliadorId", avaliadorId);
+		}
 		
 		if(configuracaoNivelCompetenciaFaixaSalarialId != null){
 			query.setLong("cncfId", configuracaoNivelCompetenciaFaixaSalarialId);

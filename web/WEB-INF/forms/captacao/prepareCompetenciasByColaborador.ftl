@@ -275,7 +275,8 @@
 				content +=  '</tr></td>';
 				content += '</tbody>';
 				
-				$('#configuracaoNivelCompetencia').append(content);			
+				$('#configuracaoNivelCompetencia').append(content);
+				$('#btnGravar').attr('disabled', true).removeClass('btnGravar').addClass('btnGravarDesabilitado');			
 			}
 			
 			var configChecked;
@@ -305,6 +306,7 @@
 				
 				$('#configuracaoNivelCompetencia thead').remove();
 				$('#configuracaoNivelCompetencia tbody').remove();
+				$('#btnGravar').removeAttr('disabled').removeClass('btnGravarDesabilitado').addClass('btnGravar');
 				
 				NivelCompetenciaDWR.findNiveisCompetencia($('#data').val(), ${faixaSalarial.id}, ${empresaSistema.id}, function(dataNiveis){dadosNiveis = dataNiveis;});				
 				NivelCompetenciaDWR.findCompetenciaByFaixaSalarialAndData(repopulaConfiguracaoNivelCompetenciaByDados, $('#data').val(), ${faixaSalarial.id});
@@ -629,7 +631,7 @@
 		
 		<div class="buttonGroup">
 			<#if niveisCompetenciaFaixaSalariais?exists && 0 < niveisCompetenciaFaixaSalariais?size>
-				<button onclick="enviarForm();" class="btnGravar"></button>
+				<button onclick="enviarForm();" class="btnGravar" id="btnGravar"></button>
 			<#else>
 				<button class="btnGravarDesabilitado"></button>
 			</#if>

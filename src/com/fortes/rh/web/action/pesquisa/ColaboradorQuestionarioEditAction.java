@@ -306,12 +306,12 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 				
 				if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() != null){	
 					niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId(), configuracaoNivelCompetenciaFaixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
-					niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId());
+					niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId(), colaboradorQuestionario.getAvaliador().getId(), colaboradorQuestionario.getAvaliacaoDesempenho().getId());
 				}else{
 					if(colaboradorQuestionario.getRespondida())
 						niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByColaborador(colaborador.getId(), avaliador.getId(), colaboradorQuestionario.getId());
 					
-					niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaborador.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId());
+					niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaborador.getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId(), colaboradorQuestionario.getAvaliador().getId(), colaboradorQuestionario.getAvaliacaoDesempenho().getId());
 				}
 				pontuacaoMaximaNivelCompetencia = nivelCompetenciaManager.getOrdemMaxima(colaborador.getEmpresa().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 			}

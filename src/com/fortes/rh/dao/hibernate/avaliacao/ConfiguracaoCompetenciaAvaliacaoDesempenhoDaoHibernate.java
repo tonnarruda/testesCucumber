@@ -147,4 +147,19 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		
 		return query.list().size() > 0;
 	}
+
+	public boolean existe(Long configuracaoNivelCompetenciaFaixaSalarialId, Long avaliadorId, Long avaliacaoDesempenhoId) 
+	{
+		Criteria criteria = getSession().createCriteria(ConfiguracaoCompetenciaAvaliacaoDesempenho.class, "ccad");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ccad.id"), "id");
+		
+		criteria.setProjection(p);
+		criteria.add(Expression.eq("ccad.configuracaoNivelCompetenciaFaixaSalarial.id", configuracaoNivelCompetenciaFaixaSalarialId));
+		criteria.add(Expression.eq("ccad.avaliador.id", avaliadorId));
+		criteria.add(Expression.eq("ccad.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
+
+		return criteria.list().size() > 0;
+	}
 }

@@ -185,6 +185,7 @@ import com.fortes.rh.test.dao.hibernate.acesso.UsuarioEmpresaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.avaliacao.AvaliacaoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.avaliacao.AvaliacaoDesempenhoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.avaliacao.AvaliacaoPraticaDaoHibernateTest;
+import com.fortes.rh.test.dao.hibernate.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.avaliacao.PeriodoExperienciaDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.AnuncioDaoHibernateTest;
 import com.fortes.rh.test.dao.hibernate.captacao.AtitudeDaoHibernateTest;
@@ -1332,6 +1333,8 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(AvaliacaoDesempenhoDaoHibernateTest.class);
         suite.addTestSuite(AvaliacaoDesempenhoManagerTest.class);
         suite.addTestSuite(AvaliacaoDesempenhoEditActionTest.class);
+        
+        suite.addTestSuite(ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest.class);
 
         //Avaliação Prática
         suite.addTestSuite(AvaliacaoPraticaDaoHibernateTest.class);
