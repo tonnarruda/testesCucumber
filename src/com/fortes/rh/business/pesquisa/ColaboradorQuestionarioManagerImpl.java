@@ -280,9 +280,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 	
 	public void save(Collection<ColaboradorQuestionario> colaboradorQuestionarios, Long avaliacaoDesempenhoId) 
 	{
-		Collection<ColaboradorQuestionario> colaboradorQuestionariosOld = getDao().findByAvaliacaoDesempenho(avaliacaoDesempenhoId, null);
-		
-		colaboradorQuestionarios.removeAll(colaboradorQuestionariosOld);
+//		Collection<ColaboradorQuestionario> colaboradorQuestionariosOld = getDao().findByAvaliacaoDesempenho(avaliacaoDesempenhoId, null);
+//		
+//		colaboradorQuestionarios.removeAll(colaboradorQuestionariosOld);
 		
 		saveOrUpdate(colaboradorQuestionarios);
 	}

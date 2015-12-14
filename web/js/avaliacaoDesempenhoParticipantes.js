@@ -11,6 +11,10 @@ $(function() {
 	
     portletEvents();
     
+    $(".portlet-header .pesoAvaliador").each(function(){
+    	$(this).val($(this).parents(".portlet").find(".peso:eq(0)").val());
+    });
+    
 	$(".show-info").click(function(){
 		$('#avaliados, #avaliadores').hide();
 		$(this).parent().parent().show();
@@ -76,6 +80,16 @@ $(function() {
 				$(this).parents(".box").find(".actions .remove").addClass("disabled");
 			}
 		}
+	});
+	
+	$(".actions .configure-pesos").click(function(){
+		$(".pesoAvaliador").toggle();
+		$(".portlet-toggle").toggle();
+	});
+	
+	$(".pesoAvaliador").click(function() { event.stopPropagation(); });
+	$(".portlet-header .pesoAvaliador").keyup(function(event) { 
+		$(this).parents(".portlet").find(".peso").val($(this).val());
 	});
 	
 	$(".actions .unselect-all").click(function(){
@@ -278,6 +292,13 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
 					        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacao.id" value="' + avaliacaoId + '"/>' +
 					        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacaoDesempenho.id" value="' + avaliacaoDesempenhoId + '"/>');
         	
+        	console.log(avaliadorLiTag.attr('id'));
+        	console.log(avaliadorUlTag.attr('id'));
+        	if ( avaliadorLiTag.attr('id') == avaliadorUlTag.attr('id') )
+        		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="text" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaboradorQuestionario.pesoAvaliador" class="pesoAvaliador"/>' );
+        	else
+        		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaboradorQuestionario.pesoAvaliador" class="peso" value="' + $(avaliadorUlTag).parents(".portlet").find(".portlet-header .pesoAvaliador").val() + '"/>');
+        		
         	$("#avaliadores ul li .ui-icon-closethick").not(".disabled").click(function(){
 		    	if( $(this).parent().parent().find("li").length == 1 )
 		    		$(this).parent().parent().append('<li class="placeholder">Arraste os avaliados até aqui</li>');

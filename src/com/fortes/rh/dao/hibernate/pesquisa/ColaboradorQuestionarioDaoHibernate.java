@@ -622,6 +622,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("cq.id"), "id");
 		p.add(Projections.property("cq.performance"), "performance");
 		p.add(Projections.property("cq.performanceNivelCompetencia"), "performanceNivelCompetencia");
+		p.add(Projections.property("cq.pesoAvaliador"), "pesoAvaliador");
 		p.add(Projections.property("cq.respondida"), "respondida");
 		p.add(Projections.property("avaliado.id"), "projectionColaboradorId");
 		p.add(Projections.property("avaliado.nome"), "projectionColaboradorNome");

@@ -182,7 +182,7 @@ drop function insert_participante_avaliado();--.go
 ALTER TABLE participanteavaliacaodesempenho ADD COLUMN produtividade double precision default 1; --.go
 
 ---------------
-ALTER TABLE colaboradorquestionario ADD COLUMN pesoAvaliador double precision default 1; --.go
+ALTER TABLE colaboradorquestionario ADD COLUMN pesoAvaliador integer default 1; --.go
 
 ---------
 DELETE from colaboradorquestionario where id in 

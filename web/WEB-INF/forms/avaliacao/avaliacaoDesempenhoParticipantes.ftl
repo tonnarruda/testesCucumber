@@ -244,6 +244,9 @@
 							<i class="fa fa-close"></i>
 							<i class="fa fa-align-justify"></i>
 					    </div>
+					    <div class="option configure-pesos" title="Configurar pesos">
+							<i class="fa fa-balance-scale"></i>
+					    </div>
 					</h1>
 					<div class="column ui-widget-content" id="avaliadores-list">
 				  		<div class="legend">
@@ -254,6 +257,7 @@
 					  	<#list avaliadors as avaliador>
 						  	<div class="portlet" id="${avaliador.id}">
 						  		 <div class="portlet-header">
+						  		 	<input type="text" class="pesoAvaliador" value=""/>
 						  		 	<div class="nome">${avaliador.nome}</div>
 						  		 	<div class="faixa show-when-expand">${avaliador.faixaSalarial.descricao}</div>
 						      		<div class="area show-when-expand">${avaliador.areaOrganizacional.nome}</div>
@@ -274,7 +278,7 @@
 								    <div style="clear: both;"></div>
 								 </div>
 						  		 <div class="portlet-content hide-when-expand">
-						  		 	<ul>
+						  		 	<ul id="${avaliador.id}">
 								  		<input type="hidden" name="avaliadores" value="${avaliador.id}"/>
 						  		 		<#if (avaliador.avaliados.size() == 0)> 
 							        		<li class="placeholder">Arraste os avaliados até aqui</li>
@@ -283,6 +287,11 @@
 								        	<li class="avaliado_${avaliado.id}">
 								        		${avaliado.nome}
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].id" value="${avaliado.colaboradorQuestionario.id}"/>
+								        		<#if avaliado.id == avaliador.id >
+									        		<input type="text" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="pesoAvaliador" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}"/>
+								        		<#else>
+									        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="peso" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}"/>
+								        		</#if>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].colaborador.id" value="${avaliado.id}"/>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliador.id" value="${avaliador.id}"/>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacao.id" value="${avaliacaoDesempenho.avaliacao.id}"/>
