@@ -70,13 +70,14 @@
 				<param name="documentName">certificadosVencidosAVencer.pdf</param>
 			</result>
 		</action>
-		<action name="imprimirCertificadosVencidosAVencerXls" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="imprimirCertificadosVencidosAVencer">
+		<action name="imprimirCertificadosVencidosAVencerXlS" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="imprimirCertificadosVencidosAVencer">
 			<result name="sucessoAreaNomeComercial" type="xls">
 				<param name="dataSource">colaboradorCertificacoes</param>
 				<param name="documentName">certificadosVencidosAVencer.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Certificação,Matrícula,Nome,Nome Comercial,Cargo,Treinamentos,Status Treinamentos</param>
-				<param name="properties">xxxxxx,matricula,nome,nomeComercial,cargo.nome,xxxxx,xxxxxx</param>
+				<param name="columns">Nome,Matrícula,Cargo,Certificação,Cetificado,Cuso,Período,Aprovado</param>
+				<param name="propertiesGroup">colaborador.id,turma.cargo.id,certificacao.id</param>
+				<param name="properties">colaborador.nomeMaisNomeComercial,colaborador.matricula,colaborador.historicoColaborador.cargo.nome,certificacao.nome,certificadoString,turma.curso.nome,turma.periodoFormatado,aprovadoNaTurmaString</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>	

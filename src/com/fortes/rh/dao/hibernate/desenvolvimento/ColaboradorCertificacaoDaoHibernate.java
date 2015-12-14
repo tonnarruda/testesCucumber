@@ -47,7 +47,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 	{
 		StringBuilder sql = new StringBuilder();
 		//Certificação,Matrícula,Nome,Nome Comercial,Cargo,Treinamentos,Status Treinamentos
-		sql.append("select  c.id, c.nome, c.nomecomercial, c.matricula, cg.nome, cert.id, cert.nome, cu.id, cu.nome, t.dataprevini, t.dataprevFim, t.realizada, ");
+		sql.append("select  c.id, c.nome, c.nomecomercial, c.matricula, cg.id, cg.nome, cert.id, cert.nome, cu.id, cu.nome, t.dataprevini, t.dataprevFim, t.realizada, ");
 		sql.append("verifica_aprovacao(cu.id, t.id, ct.id, cu.percentualminimofrequencia),  ");
 		sql.append("verifica_certificacao(cert.id, c.id) ");
 		sql.append("from colaborador c ");
@@ -90,7 +90,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		for (@SuppressWarnings("unchecked")
 		Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
 			Object[] res = it.next();
-			ColaboradorCertificacao colabs = new ColaboradorCertificacao(((BigInteger)res[0]).longValue(), (String)res[1], (String)res[2], (String)res[3], (String)res[4], ((BigInteger)res[5]).longValue(), (String)res[6], ((BigInteger)res[7]).longValue(), (String)res[8], (Date)res[9], (Date)res[10], (Boolean)res[11], (Boolean)res[12], (Boolean)res[13]);
+			ColaboradorCertificacao colabs = new ColaboradorCertificacao(((BigInteger)res[0]).longValue(), (String)res[1], (String)res[2], (String)res[3], ((BigInteger)res[4]).longValue(), (String)res[5], ((BigInteger)res[6]).longValue(), (String)res[7], ((BigInteger)res[8]).longValue(), (String)res[9], (Date)res[10], (Date)res[11], (Boolean)res[12], (Boolean)res[13], (Boolean)res[14]);
 			Colaboradores.add(colabs);
 		}
 
