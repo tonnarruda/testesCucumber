@@ -96,6 +96,10 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl extends Gener
 	public void replaceConfiguracaoNivelCompetenciaFaixaSalarial(ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial) {
 		getDao().replaceConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
 	}
+	
+	public boolean existe(Long configuracaoNivelCompetenciaFaixaSalarialId, Long avaliadorId, Long avaliacaoDesempenhoId) {
+		return getDao().existe(configuracaoNivelCompetenciaFaixaSalarialId, avaliadorId, avaliacaoDesempenhoId);
+	}
 
 	public void setGerenciadorComunicacaoManager(
 			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {

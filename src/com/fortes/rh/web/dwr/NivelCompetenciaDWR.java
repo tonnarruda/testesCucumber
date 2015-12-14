@@ -1,5 +1,6 @@
 package com.fortes.rh.web.dwr;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialManager;
@@ -22,13 +23,21 @@ public class NivelCompetenciaDWR
 	public Collection<NivelCompetencia> findNiveisCompetencia(String data, Long faixaSalarialId, Long empresaId)
 	{
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(faixaSalarialId, DateUtil.criarDataDiaMesAno(data));
+		
+		if(configuracaoNivelCompetenciaFaixaSalarial == null)
+			return new ArrayList<NivelCompetencia>();
+		
 		return nivelCompetenciaManager.findAllSelect(empresaId, configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
 	}
 	
 	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarialAndData(String data, Long faixaSalarialId)
 	{
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(faixaSalarialId, DateUtil.criarDataDiaMesAno(data));
-		return configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarialId, DateUtil.criarDataDiaMesAno(data), configuracaoNivelCompetenciaFaixaSalarial.getId());
+		
+		if(configuracaoNivelCompetenciaFaixaSalarial == null)
+			return new ArrayList<ConfiguracaoNivelCompetencia>();
+		
+		return configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarialId, DateUtil.criarDataDiaMesAno(data), configuracaoNivelCompetenciaFaixaSalarial.getId(), null, null);
 	}
 	
 	public boolean existePercentual(Long nivelCompetenciaId, Long empresaId, Double percentual)

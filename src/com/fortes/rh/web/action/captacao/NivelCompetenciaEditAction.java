@@ -224,7 +224,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(faixaSalarial.getId(), solicitacao.getData());
 		
 		if(configuracaoNivelCompetenciaFaixaSalarial != null && configuracaoNivelCompetenciaFaixaSalarial.getId() != null)
-			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarial.getId(), solicitacao.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId());
+			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarial.getId(), solicitacao.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId(), null, null);
 		
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId(), null, solicitacao.getData());
 		
@@ -345,7 +345,7 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(faixaSalarial.getId(), data);
 		
 		if(configuracaoNivelCompetenciaFaixaSalarial != null && configuracaoNivelCompetenciaFaixaSalarial.getId() != null)
-			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId());
+			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId(), null, null);
 		
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId(), configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
 		
@@ -368,10 +368,12 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		colaborador = configuracaoNivelCompetenciaColaborador.getColaborador();
 		configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaColaborador.getConfiguracaoNivelCompetenciaFaixaSalarial();
 		faixaSalarial = configuracaoNivelCompetenciaColaborador.getFaixaSalarial();
-		
 		data = configuracaoNivelCompetenciaColaborador.getData();
 		
-		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(null, null, configuracaoNivelCompetenciaFaixaSalarial.getId());
+		Long avaliadorId = configuracaoNivelCompetenciaColaborador.getAvaliador() != null ? configuracaoNivelCompetenciaColaborador.getAvaliador().getId() : null; 
+		Long avaliacaoDesempenhoId = configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliacaoDesempenho() != null ? configuracaoNivelCompetenciaColaborador.getColaboradorQuestionario().getAvaliacaoDesempenho().getId() : null; 
+		
+		niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(null, null, configuracaoNivelCompetenciaFaixaSalarial.getId(), avaliadorId, avaliacaoDesempenhoId);
 		niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(configuracaoNivelCompetenciaColaborador.getId(), configuracaoNivelCompetenciaFaixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 		
 		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId(), configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
