@@ -10,7 +10,7 @@ $(function() {
 	
     portletEvents();
 	    
-	$("#competencias-list > li .faixa-descricao").click(function(){
+	$(".faixa-descricao").click(function(){
 		$(this).parent().find("ul").toggle();
 		$(this).find(".fa").toggle();
 	});
