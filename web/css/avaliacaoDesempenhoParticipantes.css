@@ -36,6 +36,14 @@
 	float: left;
 }
 
+.pesoAvaliador {
+	float: right;
+	width: 25px;
+	text-align: right;
+	height: 11px;
+	display: none;
+}
+
 .ui-widget-header.actions {
 	border-bottom: 2px solid #DCE6F4 !important;
 	position: relative;
@@ -82,6 +90,7 @@
 
 .ui-widget-header.actions .option.select-all { left: 70px; }
 .ui-widget-header.actions .option.unselect-all { left: 140px; }
+.ui-widget-header.actions .option.configure-pesos { left: 210px; }
 #competencias .ui-widget-header.actions .option.select-all { left: 0px; }
 #competencias .ui-widget-header.actions .option.unselect-all { left: 70px; }
 #competencias .ui-widget-header.actions .option.move-all { left: 140px; }
