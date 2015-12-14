@@ -173,4 +173,39 @@ public class ConfiguracaoNivelCompetenciaColaboradorDaoHibernate extends Generic
 		
 		return query.list().size() > 0;
 	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<ConfiguracaoNivelCompetenciaColaborador> findByDataAndFaixaSalarial(Date dataInicio, Date dataFim, Long faixaSalarialId) {
+		ProjectionList projectionList = Projections.projectionList().create();
+		projectionList.add(Projections.property("cncc.id"), "id");
+		projectionList.add(Projections.property("cncc.data"), "data");
+		projectionList.add(Projections.property("cncc.faixaSalarial.id"), "projectionFaixaSalarialId");
+		projectionList.add(Projections.property("cncc.colaborador.id"), "projectionColaboradorId");
+		projectionList.add(Projections.property("cncf.id"), "configuracaoNivelCompetenciaFaixaSalarialId");
+		projectionList.add(Projections.property("cncf.data"), "configuracaoNivelCompetenciaFaixaSalarialData");
+		projectionList.add(Projections.property("cncf.nivelCompetenciaHistorico.id"), "cncfNivelCompetenciaHistoricoId");
+		projectionList.add(Projections.property("av.id"), "projectionAvaliadorId");
+		projectionList.add(Projections.property("av.nome"), "projectionAvaliadorNome");
+		projectionList.add(Projections.property("co.id"), "projectionColaboradorId");
+		projectionList.add(Projections.property("co.nome"), "projectionColaboradorNome");
+		projectionList.add(Projections.property("cq.id"), "projectionColaboradorQuestionarioId");
+		projectionList.add(Projections.property("avd.id"), "projectionAvaliacaoDesempenhoId");
+		projectionList.add(Projections.property("avd.anonima"), "projectionAvaliacaoDesempenhoAnonima");
+		
+		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaColaborador.class, "cncc");
+		criteria.createCriteria("cncc.configuracaoNivelCompetenciaFaixaSalarial", "cncf", CriteriaSpecification.INNER_JOIN);
+		criteria.createCriteria("cncc.colaborador", "co", CriteriaSpecification.INNER_JOIN);
+		criteria.createCriteria("cncc.avaliador", "av", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cncc.colaboradorQuestionario", "cq", CriteriaSpecification.LEFT_JOIN);
+		criteria.createCriteria("cq.avaliacaoDesempenho", "avd", CriteriaSpecification.LEFT_JOIN);
+		criteria.add(Expression.eq("cncc.faixaSalarial.id", faixaSalarialId));
+		criteria.add(Expression.ge("cncc.data", dataInicio));
+		criteria.add(Expression.le("cncc.data", dataFim));
+		criteria.setProjection(projectionList);
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetenciaColaborador.class));
+		
+		return criteria.list();	
+	}
 }

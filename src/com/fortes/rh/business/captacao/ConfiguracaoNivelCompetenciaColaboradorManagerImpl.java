@@ -68,4 +68,8 @@ public class ConfiguracaoNivelCompetenciaColaboradorManagerImpl extends GenericM
 	public boolean existeConfigCompetenciaParaAFaixaDestehistorico(Long historicoColaboradorId) {
 		return getDao().existeConfigCompetenciaParaAFaixaDestehistorico(historicoColaboradorId);
 	}
+
+	public Collection<ConfiguracaoNivelCompetenciaColaborador> findByDataAndFaixaSalarial(Date dataInicio, Date dataFim, Long faixaSalarialId) {
+		return getDao().findByDataAndFaixaSalarial(dataInicio, dataFim, faixaSalarialId);
+	}
 }

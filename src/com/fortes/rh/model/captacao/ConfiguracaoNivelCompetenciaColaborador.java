@@ -225,6 +225,12 @@ public class ConfiguracaoNivelCompetenciaColaborador extends AbstractModel imple
 		this.configuracaoNivelCompetenciaFaixaSalarial.setId(configuracaoNivelCompetenciaFaixaSalarialId);
 	}
 
+	public void setConfiguracaoNivelCompetenciaFaixaSalarialData(Date configuracaoNivelCompetenciaFaixaSalarialData) {
+		inicializaConfiguracaoNivelCompetenciaFaixaSalarial();
+			
+		this.configuracaoNivelCompetenciaFaixaSalarial.setData(configuracaoNivelCompetenciaFaixaSalarialData);
+	}
+	
 	public void setCncfNivelCompetenciaHistoricoId(Long cncfNivelCompetenciaHistoricoId) {
 		inicializaConfiguracaoNivelCompetenciaFaixaSalarial();
 			
