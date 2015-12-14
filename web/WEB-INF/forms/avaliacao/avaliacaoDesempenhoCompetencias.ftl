@@ -166,7 +166,11 @@
 							        	</#if>
 							        	<#list avaliador.faixaSalariaisAvaliados as faixa>
 								        	<li class="faixa_${faixa.id}">
-									      		<strong>${faixa.descricao}</strong>
+							        			<div style="font-size: 11px;" class="faixa-descricao">
+									        		<i class="fa fa-caret-up" style="display: none;"></i>
+						    						<i class="fa fa-caret-down"></i>
+										      		<strong>${faixa.descricao}</strong>
+									      		</div>
 									      		<ul class="competencias">
 									      			<#if (faixa.configuracaoCompetenciaAvaliacaoDesempenhos.size() == 0) >
 											      		<li class="placeholder">Arraste os competências até aqui</li>
