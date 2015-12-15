@@ -22,7 +22,6 @@ import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.avaliacao.relatorio.AcompanhamentoExperienciaColaborador;
 import com.fortes.rh.model.avaliacao.relatorio.FaixaPerformanceAvaliacaoDesempenho;
-import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
@@ -182,7 +181,7 @@ public class PeriodoExperienciaEditAction extends MyActionSupportList
 		
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(empresa.getId());
     	estabelecimentoCheckList = estabelecimentoManager.populaCheckBox(empresa.getId());
-    	avaliacaoCheckList = avaliacaoDesempenhoManager.populaCheckBox(empresa.getId(), true, TipoModeloAvaliacao.DESEMPENHO);
+    	avaliacaoCheckList = avaliacaoDesempenhoManager.populaCheckBox(empresa.getId(), true);
     	
     	avaliacoes = avaliacaoManager.findAllSelectComAvaliacaoDesempenho(getEmpresaSistema().getId(), true);
     	

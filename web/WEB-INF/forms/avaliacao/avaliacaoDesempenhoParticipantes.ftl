@@ -277,7 +277,7 @@
 					  	<#list avaliadors as avaliador>
 						  	<div class="portlet" id="${avaliador.id}">
 						  		 <div class="portlet-header">
-						  		 	<input type="text" class="pesoAvaliador" value=""/>
+						  		 	<input type="text" class="pesoAvaliador" value="" <#if avaliacaoDesempenho.liberada>disabled="disabled"</#if> />
 						  		 	<div class="nome">${avaliador.nome}</div>
 						  		 	<div class="faixa show-when-expand">${avaliador.faixaSalarial.descricao}</div>
 						      		<div class="area show-when-expand">${avaliador.areaOrganizacional.nome}</div>
@@ -308,7 +308,7 @@
 								        		${avaliado.nome}
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].id" value="${avaliado.colaboradorQuestionario.id}"/>
 								        		<#if avaliado.id == avaliador.id >
-									        		<input type="text" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="pesoAvaliador" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}"/>
+									        		<input type="text" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="pesoAvaliador" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}" <#if avaliacaoDesempenho.liberada>disabled="disabled"</#if> />
 								        		<#else>
 									        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="peso" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}"/>
 								        		</#if>
@@ -331,7 +331,11 @@
 				
 				<script>countColaboradorQuestionarios=${countColaboradorQuestionarios};</script>
 				<@ww.hidden name="avaliacaoDesempenho.id"/>
-				<button type="button" onclick="validForm();" class="btnGravar"></button>
+				<#if avaliacaoDesempenho.liberada>
+					<button type="button" class="btnGravarDesabilitado"></button>
+				<#else>
+					<button type="button" onclick="validForm();" class="btnGravar"></button>
+				</#if>
 				<button type="button" onclick="window.location='list.action'" class="btnVoltar"></button>
 			</@ww.form>
 			<div style="clear: both;"></div>

@@ -449,14 +449,14 @@ public class ColaboradorManagerTest extends MockObjectTestCase
     public void testOrdenaByMediaPerformance()
     {
     	Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
-    	Colaborador joao1 = new Colaborador(1L, "joão da silva", "joão", "pedro", null, 20.20, null, false, 20L, "prova", "vega", "area");
-    	Colaborador joao2 = new Colaborador(1L, "joão da silva", "joão", "pedro", null, 55.00, null, false, 21L, "prova II", "vega", "area");
+    	Colaborador joao1 = new Colaborador(1L, "joão da silva", "joão", "pedro", null, 1, 20.20, null, false, 20L, "prova", "vega", "area");
+    	Colaborador joao2 = new Colaborador(1L, "joão da silva", "joão", "pedro", null, 1, 55.00, null, false, 21L, "prova II", "vega", "area");
     	
     	colaboradores.add(joao1);
     	colaboradores.add(joao2);
     	
-    	Colaborador chico1 = new Colaborador(2L, "chico paulo", "chico", "pedro", null, 15.00, null, false, 21L, "prova II", "vega", "area");
-    	Colaborador chico2 = new Colaborador(2L, "chico paulo", "chico", "pedro", null, 75.00, null, false, 23L, "prova III", "vega", "area");
+    	Colaborador chico1 = new Colaborador(2L, "chico paulo", "chico", "pedro", null, 1, 15.00, null, false, 21L, "prova II", "vega", "area");
+    	Colaborador chico2 = new Colaborador(2L, "chico paulo", "chico", "pedro", null, 1, 75.00, null, false, 23L, "prova III", "vega", "area");
     	colaboradores.add(chico1);
     	colaboradores.add(chico2);
     	
