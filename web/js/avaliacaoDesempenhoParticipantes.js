@@ -254,7 +254,7 @@ function atualizeSelectablesMini() {
 
 function createAvaliador(id, nome) {
 	if ( $("#avaliadores .portlet[id="+id+"] ul").length == 0 ) {
-		$("#avaliadores .column").append('<div class="portlet" id="'+ id +'">' +
+		$("#avaliadores .column").append('<div class="portlet ui-selectable" id="'+ id +'">' +
 		  		 '<div class="portlet-header"><div class="nome">' + nome + '</div>' + 
 		  		 '<div style="clear: both;"></div>' +
 		  		 '</div>' +
