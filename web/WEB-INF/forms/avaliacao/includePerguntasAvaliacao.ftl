@@ -33,7 +33,7 @@
 				<#else>
 					<#assign pesoResposta="0"/>
 				</#if>
-				<input type="radio" peso="${pesoResposta}" class="opcaoResposta${pergunta.id},radio objetiva pergunta" name="perguntas[${i}].colaboradorRespostas[0].resposta.id" value="${resposta.id}" id="${resposta.id}" <#if perguntas[i].colaboradorRespostas[0].temResposta() && (resposta.id == perguntas[i].colaboradorRespostas[0].resposta.id)>checked</#if>/><label for="${resposta.id}">${resposta.texto}</label><br>
+				<input type="radio" peso="${pesoResposta}" class="opcaoResposta${pergunta.id}, radio objetiva pergunta" name="perguntas[${i}].colaboradorRespostas[0].resposta.id" value="${resposta.id}" id="${resposta.id}" <#if perguntas[i].colaboradorRespostas[0].temResposta() && (resposta.id == perguntas[i].colaboradorRespostas[0].resposta.id)>checked</#if>/><label for="${resposta.id}">${resposta.texto}</label><br>
 			</#list>
 			
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.id" />
@@ -104,7 +104,7 @@
 					<li style="text-align: center;">Pergunta não respondida.</li>
 				</ul>
 			</#if>
-			<textarea name="perguntas[${i}].colaboradorRespostas[0].comentario" class="opcaoResposta${pergunta.id} respostaSubjetiva" style="height:75px;width:730px;overflow-y:scroll">${valueResposta}</textarea><br>
+			<textarea name="perguntas[${i}].colaboradorRespostas[0].comentario" class="opcaoResposta${pergunta.id}, respostaSubjetiva" style="height:75px;width:730px;overflow-y:scroll">${valueResposta}</textarea><br>
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.id" />
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.tipo" value="${pergunta.tipo}" id= "tipo"/>
 		</#if>
@@ -117,7 +117,7 @@
 				<#assign valueComentario = "" />
 			</#if>
 		
-			<@ww.select label="Selecione a nota de ${pergunta.notaMinima} a ${pergunta.notaMaxima}" cssClass="opcaoResposta${pergunta.id} nota pergunta" name="perguntas[${i}].colaboradorRespostas[0].valor" list=perguntas[i].colaboradorRespostas[0].getNotas() headerKey="" headerValue="Selecione..."/>
+			<@ww.select label="Selecione a nota de ${pergunta.notaMinima} a ${pergunta.notaMaxima}" cssClass="opcaoResposta${pergunta.id}, nota pergunta" name="perguntas[${i}].colaboradorRespostas[0].valor" list=perguntas[i].colaboradorRespostas[0].getNotas() headerKey="" headerValue="Selecione..."/>
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.id" />
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.tipo" value="${pergunta.tipo}" id= "tipo"/>
 			<#if pergunta.peso?exists>

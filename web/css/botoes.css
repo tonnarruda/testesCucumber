@@ -173,7 +173,11 @@
 	background-image:url(../imgs/btnGravarDesabilitado.gif);
 	width: 79px !important;
 }
-
+.btnGravarParcialmente
+{
+	background-image:url(../imgs/btnGravarParcialmente.gif);
+	width: 162px !important;
+}
 .btnCancelar
 {
 	background-image:url(../imgs/btnCancelar.gif);
@@ -780,7 +784,8 @@
 .btnTrocaExtintores,
 .btnEnviarParaAmigo,
 .btnInserirEditar,
-.btnDividirPercentualIgualmente
+.btnDividirPercentualIgualmente,
+.btnGravarParcialmente
 {
 	border: 0;
 	background-repeat: no-repeat;

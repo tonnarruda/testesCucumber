@@ -46,6 +46,7 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 	@Temporal(TemporalType.DATE)
 	private Date respondidaEm;
     private Boolean respondida = false;
+    private boolean respondidaParcialmente;
 	@ManyToOne
     private Colaborador colaborador; // em Avaliações, este é o Avaliado
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -884,5 +885,13 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
 
 	public void setPesoAvaliador(Integer pesoAvaliador) {
 		this.pesoAvaliador = pesoAvaliador;
+	}
+
+	public boolean isRespondidaParcialmente() {
+		return respondidaParcialmente;
+	}
+
+	public void setRespondidaParcialmente(boolean respondidaParcialmente) {
+		this.respondidaParcialmente = respondidaParcialmente;
 	}
 }

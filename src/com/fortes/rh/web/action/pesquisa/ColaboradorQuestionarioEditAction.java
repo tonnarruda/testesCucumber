@@ -321,12 +321,45 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 
+	private boolean salvarColaboradorResposta()
+	{
+		boolean existeResposta = false;
+		for (Pergunta pergunta : perguntas) {
+			for (ColaboradorResposta colaboradorResposta : pergunta.getColaboradorRespostas()) {
+				if(colaboradorResposta.getValor() != null || colaboradorResposta.getResposta() != null || (colaboradorResposta.getComentario() != null && !"".equals(colaboradorResposta.getComentario())))
+				{
+					existeResposta = true;
+					break;
+				}
+			}
+			if(existeResposta)
+				break;
+		}
+		
+		boolean existeCompetencia = false;
+		for (ConfiguracaoNivelCompetencia configuracaoNivelCompetencia : niveisCompetenciaFaixaSalariais) 
+		{
+			if (configuracaoNivelCompetencia.getCompetenciaId() != null){
+				existeCompetencia = true;
+				break;
+			}
+		}
+		
+		return existeResposta || existeCompetencia;
+	}
+	
 	public String responderAvaliacaoDesempenho()
 	{
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetenciaColaborador = null;
 		Date hoje = new Date();
 		
 		try {
+			
+			if(!salvarColaboradorResposta()){
+				colaboradorQuestionarioManager.deleteRespostaAvaliacaoDesempenho(colaboradorQuestionario.getId());
+				return Action.SUCCESS; 
+			}
+			
 			AvaliacaoDesempenho avaliacaoDesempenho = avaliacaoDesempenhoManager.findByIdProjection(colaboradorQuestionario.getAvaliacaoDesempenho().getId());
 			if (!avaliacaoDesempenho.isLiberada())
 				throw new FortesException("Esta avaliação foi bloqueada e suas respostas não foram gravadas. Entre em contato com o administrador do sistema.");
@@ -549,6 +582,14 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 						break;
 				}
 			}
+			
+			if(pergunta.getColaboradorRespostas() == null)
+			{
+				ColaboradorResposta colaboradorResposta = new ColaboradorResposta();
+				colaboradorResposta.setPergunta(pergunta);
+				pergunta.addColaboradorResposta(colaboradorResposta);
+			}	
+			
 		}
 	}
 	

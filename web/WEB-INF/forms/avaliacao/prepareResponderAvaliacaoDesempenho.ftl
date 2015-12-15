@@ -119,14 +119,20 @@
 			$("#competencia_"+competenciaId).parent().parent().find(".checkNivel[percentual="+percentualFinal+"]").attr("checked","checked").change();
 		};
 		
-		function enviarForm()
+		function enviarForm(validarRespostas)
 		{
 			var linhasSemRadioMarcado = $('tr').has('.checkNivel:enabled').not(':has(.checkNivel:checked)');
 			linhasSemRadioMarcado = $.merge(linhasSemRadioMarcado, $('tr').has('.checkNivelCriterio:enabled').not(':has(.checkNivelCriterio:checked)'));
 
-			if (linhasSemRadioMarcado.size() == 0)
-			{
-				validaRespostas(null, null, true, true, false, false, true);
+			if (linhasSemRadioMarcado.size() == 0){
+				
+				$('#respondidaParcialmente').val(!validarRespostas);
+				
+				if(validarRespostas)
+					validaRespostas(null, null, true, true, false, false, true);
+				else
+					document.form.submit();
+				
 				return true;
 			}
 				
@@ -228,8 +234,9 @@
 			<@ww.hidden name="colaboradorQuestionario.avaliacao.exibeResultadoAutoavaliacao"/>
 			<@ww.hidden name="colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo"/>
 			<@ww.hidden name="colaboradorQuestionario.configuracaoNivelCompetenciaColaborador.id"/>
-			<@ww.hidden name="colaboradorQuestionario.respondidaEm"/>
 			<@ww.hidden name="colaboradorQuestionario.pesoAvaliador"/>
+			<@ww.hidden name="colaboradorQuestionario.respondidaEm"/>
+			<@ww.hidden name="colaboradorQuestionario.respondidaParcialmente" id="respondidaParcialmente" />
 			<@ww.hidden name="autoAvaliacao" />
 			
 			<#if colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
@@ -316,7 +323,6 @@
 									
 								</tr>
 								
-								
 								<#assign y = 0/>
 								<#list configuracaoNivelCompetencia.criteriosAvaliacaoCompetencia as criterio>
 									<tr class="odd">
@@ -354,7 +360,8 @@
 		</@ww.form>
 
 		<div class="buttonGroup">
-			<button onclick="enviarForm()" class="btnGravar"></button>
+			<button onclick="enviarForm(true);" class="btnGravar"></button>
+			<button onclick="enviarForm(false);" class="btnGravarParcialmente"></button>
 			<#if autoAvaliacao>
 				<button class="btnCancelar" onclick="window.location='../modelo/minhasAvaliacoesList.action'"></button>
 			<#else>

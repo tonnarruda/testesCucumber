@@ -601,6 +601,7 @@ public class ColaboradorRespostaDaoHibernate extends GenericDaoHibernate<Colabor
 
 		criteria.add(Expression.eq("ad.id", avaliacaoDesempenhoId));
 		criteria.add(Expression.eq("c.id", avaliadoId));
+		criteria.add(Expression.eq("cq.respondidaParcialmente", false));
 
 		if (desconsiderarAutoAvaliacao)
 			criteria.add(Expression.ne("av.id", avaliadoId));

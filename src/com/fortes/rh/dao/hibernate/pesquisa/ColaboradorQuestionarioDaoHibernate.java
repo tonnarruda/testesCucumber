@@ -625,6 +625,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("cq.performanceNivelCompetencia"), "performanceNivelCompetencia");
 		p.add(Projections.property("cq.pesoAvaliador"), "pesoAvaliador");
 		p.add(Projections.property("cq.respondida"), "respondida");
+		p.add(Projections.property("cq.respondidaParcialmente"), "respondidaParcialmente");
 		p.add(Projections.property("avaliado.id"), "projectionColaboradorId");
 		p.add(Projections.property("avaliado.nome"), "projectionColaboradorNome");
 		p.add(Projections.property("avaliador.id"), "projectionAvaliadorId");
@@ -757,6 +758,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		criteria.add(Expression.eq("avDesempenho.liberada", true));
 		criteria.add(Expression.eq("cq.respondida", true));
+		criteria.add(Expression.eq("cq.respondidaParcialmente", false));
 		
 		if (avaliacaoDesempenhoId != null)
 			criteria.add(Expression.eq("avDesempenho.id", avaliacaoDesempenhoId));
@@ -883,6 +885,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 	    criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
 	    criteria.add(Expression.eq("cq.respondida", true));
+	    criteria.add(Expression.eq("cq.respondidaParcialmente", false));
 	    criteria.add(Expression.eq("cq.colaborador.id", avaliadoId));
 
 	    if (desconsiderarAutoAvaliacao)
@@ -1001,6 +1004,9 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		getSession().createQuery(queryUpdateHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
 
 		queryHQL = "delete from ConfiguracaoNivelCompetenciaColaborador cncc where cncc.colaboradorQuestionario.id = :colaboradorQuestionarioId";
+		getSession().createQuery(queryHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
+		
+		queryHQL = "update ColaboradorQuestionario set respondidaParcialmente = false where id = :colaboradorQuestionarioId";
 		getSession().createQuery(queryHQL).setLong("colaboradorQuestionarioId",colaboradorQuestionarioId).executeUpdate();
 	}
 

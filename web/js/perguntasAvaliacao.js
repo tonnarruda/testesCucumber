@@ -7,6 +7,8 @@ function validaRespostas(camposObrigatorios, camposValidos, submete, validaObj, 
 	
 	jQuery("[class*=opcaoResposta]").each(function(index) {
 		
+		console.log(this);
+		
 		// pegando o elemento para validar e o id da pergunta para comparar
 		opcaoResposta = jQuery(this);
 		var perguntaId = opcaoResposta.attr('class').split(',')[0].substr(13);
