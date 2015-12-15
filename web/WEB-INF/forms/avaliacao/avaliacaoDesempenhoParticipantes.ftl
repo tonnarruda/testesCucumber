@@ -143,6 +143,26 @@
 			}
 		};
 		
+		function validForm() {
+			var validForm = true;
+			$(".pesoAvaliador").each(function(){
+				if( $(this).val() == "" ) {
+					$(this).css("background", "#FFEEC2");
+					validForm = false;
+				} else {
+					$(this).css("background", "");
+				}
+			});
+			
+			$(".pesoAvaliador").toggle(!validForm);
+			$(".portlet-toggle").toggle(validForm);
+			if(validForm)
+				$("#formParticipantes").submit();
+			else {
+				jAlert("Preencha os campos indicados.");
+			}
+		};
+		
 		</script>
 	</head>
 	<body>
@@ -311,7 +331,7 @@
 				
 				<script>countColaboradorQuestionarios=${countColaboradorQuestionarios};</script>
 				<@ww.hidden name="avaliacaoDesempenho.id"/>
-				<button type="submit" class="btnGravar"></button>
+				<button type="button" onclick="validForm();" class="btnGravar"></button>
 				<button type="button" onclick="window.location='list.action'" class="btnVoltar"></button>
 			</@ww.form>
 			<div style="clear: both;"></div>
