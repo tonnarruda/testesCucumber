@@ -404,8 +404,8 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		Collection<Colaborador> avaliados = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADO);
 		Collection<Colaborador> avaliadores = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
 		
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenhoClone, LongUtil.collectionToArrayLong(avaliados), ParticipanteAvaliacao.AVALIADO);
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenhoClone, LongUtil.collectionToArrayLong(avaliadores), ParticipanteAvaliacao.AVALIADOR);
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenhoClone, LongUtil.collectionToArrayLong(avaliados), null, ParticipanteAvaliacao.AVALIADO);
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenhoClone, LongUtil.collectionToArrayLong(avaliadores), null, ParticipanteAvaliacao.AVALIADOR);
 		
 		Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 		

@@ -1,6 +1,6 @@
 #competencias, #avaliados, #avaliadores {
 	float: left;
-	width: 350px;
+	width: 360px;
 	margin: 10px;
 }
 #competencias h1, #avaliados h1, #avaliadores h1 {
@@ -36,7 +36,7 @@
 	float: left;
 }
 
-.pesoAvaliador {
+.pesoAvaliador, .notaProdutividade {
 	float: right;
 	width: 25px;
 	text-align: right;
@@ -60,7 +60,7 @@
 	top: 0;
 	left: 0;
 	margin-top: -1px;
-	padding: 5px 27px;
+	padding: 5px 22px;
 	cursor: pointer;
 }
 
@@ -88,14 +88,15 @@
 	font-size: 11px;
 }
 
-.ui-widget-header.actions .option.select-all { left: 70px; }
-.ui-widget-header.actions .option.unselect-all { left: 140px; }
-.ui-widget-header.actions .option.configure-pesos { left: 210px; }
+.ui-widget-header.actions .option.select-all { left: 60px; }
+.ui-widget-header.actions .option.unselect-all { left: 120px; }
+.ui-widget-header.actions .option.configure-pesos { left: 180px; }
 #competencias .ui-widget-header.actions .option.select-all { left: 0px; }
 #competencias .ui-widget-header.actions .option.unselect-all { left: 70px; }
 #competencias .ui-widget-header.actions .option.move-all { left: 140px; }
-#avaliados .ui-widget-header.actions .option.move-all { left: 210px; }
-#avaliados .ui-widget-header.actions .option.generate-autoavaliacao { left: 280px; }
+#avaliados .ui-widget-header.actions .option.move-all { left: 180px; }
+#avaliados .ui-widget-header.actions .option.produtividade { left: 240px; }
+#avaliados .ui-widget-header.actions .option.generate-autoavaliacao { left: 300px; }
 
 #avaliadores li.has-respondida, #avaliadores .portlet.has-respondida .portlet-header {
 	color: #A1A1A1;
@@ -111,7 +112,7 @@ i.fa {
 	color: #62AADA;
 } 
 
-.ui-widget-header.actions .option:hover {
+.ui-widget-header.actions .option:hover, .option.active {
 	border-bottom: 2px solid #5292C0;
 }
 
@@ -146,14 +147,18 @@ i.fa {
 	cursor: pointer; 
 }
 
-#avaliadores ul .ui-icon-closethick.disabled, .option.disabled .ui-icon {
+#avaliadores ul .ui-icon-closethick.disabled, .option.disabled .ui-icon, .option.inactive .ui-icon {
 	background-image: url(../imgs/ui-icons_d8e7f3_256x240.png) !important;
 	cursor: default; 
 }
 
+.option.disabled .fa, .option.inactive .fa {
+	color: #DCE6F4 !important;
+}
+
 #competencias-list > li .faixa-descricao { width: 100%; float: none; }
 
-.option.disabled {
+.option.disabled, .option.inactive {
 	cursor: default !important;
 	border-bottom: none !important; 
 }

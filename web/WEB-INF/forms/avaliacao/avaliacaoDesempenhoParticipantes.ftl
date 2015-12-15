@@ -194,7 +194,7 @@
 			</div>
 		</div>
 		
-		<div style="width: 740px; margin: 0 auto;">
+		<div style="width: 760px; margin: 0 auto;">
 			<@ww.form name="formParticipantes" id="formParticipantes" action="saveParticipantes" method="POST">
 				<div id="avaliados" class="box">
 				  <h1 class="ui-widget-header title">
@@ -219,6 +219,9 @@
 						<i class="fa fa-close"></i>
 						<i class="fa fa-align-justify"></i>
 				    </div>
+				    <div class="option produtividade" title="Gerar autoavaliação para selecionados">
+						<i class="fa fa-line-chart"></i>
+				    </div>
 				    <#if avaliacaoDesempenho.permiteAutoAvaliacao>
 					  	<div class="option generate-autoavaliacao only-selectables disabled" title="Gerar autoavaliação para selecionados">
 							<span class="ui-icon ui-icon-refresh"></span>
@@ -235,6 +238,7 @@
 				      <#list participantes as avaliado>
 				      	<li class="ui-widget-content" id="${avaliado.id}">
 					      	<input type="hidden" name="avaliados" value="${avaliado.id}"/>
+					      	<input type="text" name="produtividade" class="notaProdutividade" value="${ avaliado.produtividade }" />
 				      		<div class="nome">${avaliado.nome}</div>
 				      		<div class="faixa show-when-expand">${avaliado.faixaSalarial.descricao}</div>
 				      		<div class="area show-when-expand">${avaliado.areaOrganizacional.nome}</div>

@@ -245,6 +245,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Collection<FaixaSalarial> faixaSalariaisAvaliados;
 	@Transient
 	private ColaboradorQuestionario colaboradorQuestionario;
+	@Transient
+	private Double produtividade;
 
 	public Colaborador()
 	{
@@ -811,12 +813,22 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setCargoNomeProjection(cargoNome);
 	}
 	
-	public Colaborador(Long id, String nome, String nomeComercial,Long empresaId, Long areaOrganizacionalId, String areaOrganizacionalNome, Long faixaSalarialId, String faixaSalarialNome, Long cargoId, String cargoNome)
+	public Colaborador(Long id, String nome, String nomeComercial, Long empresaId, Long areaOrganizacionalId, String areaOrganizacionalNome, Long faixaSalarialId, String faixaSalarialNome, Long cargoId, String cargoNome)
 	{
 		this(id, nome, nomeComercial, areaOrganizacionalId, areaOrganizacionalNome, faixaSalarialNome, cargoNome);
 		this.setEmpresaId(empresaId);
 		this.setFaixaSalarialIdProjection(faixaSalarialId);
 		this.setCargoIdProjection(cargoId);
+	}
+	
+	//findParticipantes
+	public Colaborador(Long id, String nome, String nomeComercial, Long empresaId, Long areaOrganizacionalId, String areaOrganizacionalNome, Long faixaSalarialId, String faixaSalarialNome, Long cargoId, String cargoNome, Double produtividade)
+	{
+		this(id, nome, nomeComercial, areaOrganizacionalId, areaOrganizacionalNome, faixaSalarialNome, cargoNome);
+		this.setEmpresaId(empresaId);
+		this.setFaixaSalarialIdProjection(faixaSalarialId);
+		this.setCargoIdProjection(cargoId);
+		this.produtividade = produtividade;
 	}
 	
 	//usado por findByIdHistoricoAtual 
@@ -2972,5 +2984,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 
 	public void setPesoAvaliador(Integer pesoAvaliador) {
 		this.pesoAvaliador = pesoAvaliador;
+	}
+
+	public Double getProdutividade() {
+		return produtividade == null ? 0 : produtividade;
+	}
+
+	public void setProdutividade(Double produtividade) {
+		this.produtividade = produtividade;
 	}
 }

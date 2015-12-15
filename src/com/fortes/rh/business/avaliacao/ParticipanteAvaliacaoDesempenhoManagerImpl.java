@@ -16,8 +16,9 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 {
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	
-	public void save(AvaliacaoDesempenho avaliacaoDesempenho, Long[] colaboradorIds, char tipo) 
+	public void save(AvaliacaoDesempenho avaliacaoDesempenho, Long[] colaboradorIds, String[] produtividade, char tipo) 
 	{
+		int i = 0;
 		for (Long colaboradorId : colaboradorIds) 
 		{
 			Collection<Colaborador> participantes = findParticipantes(avaliacaoDesempenho.getId(), tipo);
@@ -28,8 +29,10 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 				participanteAvaliacaoDesempenho.setAvaliacaoDesempenho(avaliacaoDesempenho);
 				participanteAvaliacaoDesempenho.setColaboradorId(colaboradorId);
 				participanteAvaliacaoDesempenho.setTipo(tipo);
+				participanteAvaliacaoDesempenho.setProdutividade(Double.parseDouble(produtividade[i]));
 				getDao().save(participanteAvaliacaoDesempenho);
 			}
+			i++;
 		}
 	}
 	

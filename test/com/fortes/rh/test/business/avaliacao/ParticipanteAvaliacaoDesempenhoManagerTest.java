@@ -37,10 +37,10 @@ public class ParticipanteAvaliacaoDesempenhoManagerTest extends MockObjectTestCa
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		
 		particapanteAvaliacaoDesempenhoDao.expects(once()).method("findParticipantes").with(new Constraint[]{ eq(avaliacaoDesempenho.getId()), eq(ParticipanteAvaliacao.AVALIADO)}).will(returnValue(colaboradors));
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.collectionToArrayLong(colaboradors), ParticipanteAvaliacao.AVALIADO);
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.collectionToArrayLong(colaboradors), null, ParticipanteAvaliacao.AVALIADO);
 		
 		particapanteAvaliacaoDesempenhoDao.expects(once()).method("findParticipantes").with(new Constraint[]{ eq(avaliacaoDesempenho.getId()), eq(ParticipanteAvaliacao.AVALIADO)}).will(returnValue(new ArrayList<Colaborador>()));
 		particapanteAvaliacaoDesempenhoDao.expects(once()).method("save").with(new Constraint[]{ANYTHING}).isVoid();
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.collectionToArrayLong(colaboradors), ParticipanteAvaliacao.AVALIADO);
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.collectionToArrayLong(colaboradors), null, ParticipanteAvaliacao.AVALIADO);
 	}
 }

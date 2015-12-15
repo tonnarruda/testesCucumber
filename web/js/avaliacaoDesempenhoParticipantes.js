@@ -85,6 +85,11 @@ $(function() {
 	});
 	
 	$(".actions .configure-pesos").click(function(){
+		$("#avaliadores .option").not(".configure-pesos").toggleClass("inactive");
+		$(this).toggleClass("active");
+		
+		$("#avaliadores-list > .portlet").toggleClass("ui-selectable");
+		
 		$(".pesoAvaliador").toggle();
 		$(".portlet-toggle").toggle();
 	});
@@ -146,6 +151,14 @@ $(function() {
 			});
 			notificatedAboutAutoAvaliacao = false;
 		}
+	});
+	
+	$("input[name=produtividade]").live("keypress", function(event){ event.stopPropagation(); });
+	$("#avaliados .actions .produtividade").click(function(event){
+		$("#avaliados .option").not(".produtividade").toggleClass("inactive");
+		$(this).toggleClass("active");
+		$("#avaliados-list > li").toggleClass("ui-selectable");
+		$("input[name=produtividade]").toggle();
 	});
 	
 	disableParentsRespondida();
