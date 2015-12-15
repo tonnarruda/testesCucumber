@@ -1251,6 +1251,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
 		configuracaoNivelCompetenciaFaixaSalarial.setFaixaSalarial(faixaSalarial);
+		configuracaoNivelCompetenciaFaixaSalarial.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
 		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
 		
 		ConfiguracaoNivelCompetencia configFaixa1 = ConfiguracaoNivelCompetenciaFactory.getEntityFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial, nivelBom, atitude.getId(), TipoCompetencia.ATITUDE);
@@ -1289,7 +1290,7 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		historicoTiburcio.setStatus(StatusRetornoAC.CONFIRMADO);
 		historicoColaboradorDao.save(historicoTiburcio);
 		
-		ConfiguracaoNivelCompetenciaColaborador configAtaliba = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, ataliba, DateUtil.criarDataMesAno(17, 8, 2011), null, null, null);
+		ConfiguracaoNivelCompetenciaColaborador configAtaliba = criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, ataliba, DateUtil.criarDataMesAno(17, 8, 2011), null, null, configuracaoNivelCompetenciaFaixaSalarial);
 		
 		ConfiguracaoNivelCompetencia configAtaliba1 = ConfiguracaoNivelCompetenciaFactory.getEntityColaborador(configAtaliba, nivelBom, atitude.getId(), TipoCompetencia.ATITUDE);
 		configuracaoNivelCompetenciaDao.save(configAtaliba1);
@@ -1298,6 +1299,8 @@ public class NivelCompetenciaDaoHibernateTest extends GenericDaoHibernateTest<Ni
 		configuracaoNivelCompetenciaDao.save(configAtaliba2);
 		
 		criaConfiguracaoNivelCompetenciaColaborador(faixaSalarial, tiburcio, DateUtil.criarDataMesAno(17, 8, 2011), null, null, null);
+		
+		configuracaoNivelCompetenciaDao.getHibernateTemplateByGenericDao().flush();
 		
 		Collection<ConfiguracaoNivelCompetencia> configs = configuracaoNivelCompetenciaDao.findColaboradoresCompetenciasAbaixoDoNivel(empresa.getId(), null, null, null, 'C');
 		ConfiguracaoNivelCompetencia[] configsArray = configs.toArray(new ConfiguracaoNivelCompetencia[]{});

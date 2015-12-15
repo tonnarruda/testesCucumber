@@ -482,9 +482,9 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("left join configuracaoNivelCompetenciaFaixaSalarial cncfs on cncfs.faixasalarial_id = fs.id  ");
 		sql.append("left join configuracaoNivelCompetencia cnc on cnc.configuracaoNivelCompetenciaFaixaSalarial_id = cncfs.id  ");
 		
-		sql.append("left join ConfigHistoricoNivel chn on chn.nivelCompetencia_id = cnc.nivelCompetencia_id ");
+		sql.append("left join NivelCompetenciaHistorico nch on nch.id = cncfs.nivelCompetenciaHistorico_id ");
+		sql.append("left join ConfigHistoricoNivel chn on chn.nivelCompetenciaHistorico_id = nch.id and chn.nivelCompetencia_id = cnc.nivelCompetencia_id ");
 		sql.append("left join NivelCompetencia nc on nc.id = chn.nivelCompetencia_id ");
-		sql.append("left join NivelCompetenciaHistorico nch on nch.id = chn.nivelCompetenciaHistorico_id and nch.data = (select max(data) from nivelCompetenciaHistorico where empresa_id = nc.empresa_id) ");
 		
 		sql.append("left join Atitude a on a.id = cnc.competencia_id and 'A' = cnc.tipocompetencia ");
 		sql.append("	left join atitude_curso at on at.atitudes_id = a.id ");
@@ -500,11 +500,12 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		sql.append("inner join empresa emp on emp.id = c.empresa_id ");
 		sql.append("left join configuracaoNivelCompetenciaColaborador cncc on cncc.colaborador_id = c.id  ");
 		sql.append("left join configuracaoNivelCompetencia cnc2 on cnc2.configuracaoNivelCompetenciaColaborador_id = cncc.id and cnc2.competencia_id = cnc.competencia_id and cnc2.tipoCompetencia = cnc.tipoCompetencia ");
-		
-		sql.append("left join ConfigHistoricoNivel chn2 on chn2.nivelCompetencia_id = cnc2.nivelCompetencia_id ");
+
+		sql.append("left join ConfiguracaoNivelCompetenciaFaixaSalarial cncf2 on cncf2.id = cncc.configuracaoNivelCompetenciaFaixaSalarial_id ");
+		sql.append("left join NivelCompetenciaHistorico nch2 on nch2.id = cncf2.nivelCompetenciaHistorico_id ");
+		sql.append("left join ConfigHistoricoNivel chn2 on chn2.nivelCompetenciaHistorico_id = nch2.id and chn2.nivelCompetencia_id = cnc2.nivelCompetencia_id ");
 		sql.append("left join NivelCompetencia nc2 on nc2.id = chn2.nivelCompetencia_id ");
-		sql.append("left join NivelCompetenciaHistorico nch2 on nch2.id = chn2.nivelCompetenciaHistorico_id and nch2.data = (select max(data) from nivelCompetenciaHistorico where empresa_id = nc2.empresa_id) ");
-		
+
 		sql.append("where c.desligado = false ");
 		sql.append("and hc.data = (select max(hc2.data) from HistoricoColaborador hc2 where hc2.colaborador_id = hc.colaborador_id and hc2.status = :status and hc2.data <= :hoje) ");
 		sql.append("and cncfs.data = (select max(cncfs2.data) from ConfiguracaoNivelCompetenciaFaixaSalarial cncfs2 where cncfs2.faixaSalarial_id = fs.id and cncfs2.data <= :hoje) ");
