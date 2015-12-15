@@ -224,10 +224,10 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		return getDao().findTituloModeloAvaliacao(page, pagingSize, periodoInicial, periodoFinal, empresaId, nomeBusca, avaliacaoId, liberada);
 	}
 
-	public Collection<CheckBox> populaCheckBox(Long empresaId, boolean ativa, char tipoModeloAvaliacao) {
+	public Collection<CheckBox> populaCheckBox(Long empresaId, boolean ativa) {
 		try
 		{
-			Collection<AvaliacaoDesempenho> avaliacoesDesempenho = getDao().findAllSelect(empresaId, ativa, tipoModeloAvaliacao);
+			Collection<AvaliacaoDesempenho> avaliacoesDesempenho = getDao().findAllSelect(empresaId, ativa, null);
 			return CheckListBoxUtil.populaCheckListBox(avaliacoesDesempenho, "getId", "getTitulo");
 		}
 		catch (Exception e)

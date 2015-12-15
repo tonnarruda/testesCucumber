@@ -2735,21 +2735,23 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 	//sou feio mais tenho teste, heheheh
 	public Collection<Colaborador> ordenaByMediaPerformance(Collection<Colaborador> colaboradores)
 	{
+		HashMap<Long, Integer> pesos = new HashMap<Long, Integer>();
 		HashMap<Long, Double> performaces = new HashMap<Long, Double>();
 		HashMap<Long, Double> qtdColaboradores = new HashMap<Long, Double>();
 
 		for (Colaborador colaborador : colaboradores) 
 		{
-
+			Integer pesosColab = pesos.get(colaborador.getId()) == null ? 0: pesos.get(colaborador.getId());
 			Double mediaColab = performaces.get(colaborador.getId()) == null ? 0.0: performaces.get(colaborador.getId());
 			Double qtdColab = qtdColaboradores.get(colaborador.getId()) == null ? 0.0: qtdColaboradores.get(colaborador.getId());
 
-			performaces.put(colaborador.getId(), mediaColab + colaborador.getPerformanceDouble());
+			pesos.put(colaborador.getId(), pesosColab + colaborador.getPesoAvaliador());
+			performaces.put(colaborador.getId(), mediaColab + ( colaborador.getPerformanceDouble() * colaborador.getPesoAvaliador() ) );
 			qtdColaboradores.put(colaborador.getId(), qtdColab + 1.0);
 		}
 
 		for (Colaborador colaborador : colaboradores)
-			colaborador.setMediaPerformance(performaces.get(colaborador.getId()) / qtdColaboradores.get(colaborador.getId()) );
+			colaborador.setMediaPerformance(performaces.get(colaborador.getId()) / pesos.get(colaborador.getId()) );
 
 		CollectionUtil<Colaborador> cul = new CollectionUtil<Colaborador>();
 		return cul.sortCollectionDouble(colaboradores, "mediaPerformance");

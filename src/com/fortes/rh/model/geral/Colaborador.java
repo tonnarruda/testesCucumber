@@ -214,6 +214,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	@Transient
 	private Date respondidaEm;
 	@Transient
+	private Integer pesoAvaliador;
+	@Transient
 	private Double performance;
 	@Transient
 	private Double mediaPerformance;
@@ -895,7 +897,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 
 	//findColabPeriodoExperiencia
-	public Colaborador(Long id, String nome, String nomeComercial, String nomeAvaliador, Date respondidaEm, Double performance, Double performanceNivelCompetencia, boolean anonima, Long avaliacaoDesempenhoId, String avaliacaoDesempenhoTitulo, String nomeEmpresa, String areaNome)
+	public Colaborador(Long id, String nome, String nomeComercial, String nomeAvaliador, Date respondidaEm, Integer pesoAvaliador, Double performance, Double performanceNivelCompetencia, boolean anonima, Long avaliacaoDesempenhoId, String avaliacaoDesempenhoTitulo, String nomeEmpresa, String areaNome)
 	{
 		this.setId(id);
 		this.nome = nome;
@@ -906,6 +908,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			this.nomeAvaliador = nomeAvaliador;
 		
 		this.respondidaEm = respondidaEm;
+		this.pesoAvaliador = pesoAvaliador;
 		this.performance = performance + (performanceNivelCompetencia == null ? 0 : performanceNivelCompetencia);
 		this.avaliacaoDesempenhoTitulo = avaliacaoDesempenhoTitulo;
 		this.avaliacaoDesempenhoId = avaliacaoDesempenhoId;//para o relatório em XLS
@@ -2961,5 +2964,13 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public void setColaboradorQuestionario(
 			ColaboradorQuestionario colaboradorQuestionario) {
 		this.colaboradorQuestionario = colaboradorQuestionario;
+	}
+
+	public Integer getPesoAvaliador() {
+		return pesoAvaliador;
+	}
+
+	public void setPesoAvaliador(Integer pesoAvaliador) {
+		this.pesoAvaliador = pesoAvaliador;
 	}
 }
