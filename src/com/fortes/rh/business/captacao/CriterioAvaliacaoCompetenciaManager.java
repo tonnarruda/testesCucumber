@@ -11,4 +11,5 @@ public interface CriterioAvaliacaoCompetenciaManager extends GenericManager<Crit
 	public void removeByCompetencia(Long competenciaId, Character tipoCompetencia, Collection<CriterioAvaliacaoCompetencia> criteriosQuePermaneceram);
 	public boolean existeCriterioAvaliacaoCompetencia(Long empresaId);
 	public Collection<CriterioAvaliacaoCompetencia> findByCompetencia(Long competenciaId, Character tipoCompetencia);
+	public Collection<CriterioAvaliacaoCompetencia> sincronizaCriterioAvaliacaoCompetencia(Long competenciaId, Character tipoCompetencia);
 }

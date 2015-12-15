@@ -16,6 +16,7 @@ import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -205,6 +206,7 @@ public class ConhecimentoManagerTest extends MockObjectTestCase
     	conhecimentoDao.expects(atLeastOnce()).method("save");
     	areaOrganizacionalManager.expects(atLeastOnce()).method("findByConhecimento").will(returnValue(areas));
     	conhecimentoDao.expects(atLeastOnce()).method("update");
+    	criterioAvaliacaoCompetenciaManager.expects(atLeastOnce()).method("sincronizaCriterioAvaliacaoCompetencia").will(returnValue(new ArrayList<CriterioAvaliacaoCompetencia>()));
     	
     	Map<Long, Long> areaIds = new  HashMap<Long, Long>();
     	areaIds.put(1L, 5L);
