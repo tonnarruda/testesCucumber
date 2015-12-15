@@ -117,7 +117,7 @@
 			$("input[name=colaboradorsCheck]:checked").each(function(){
 				if ( $("#"+openboxtype+" #"+$(this).val()).length == 0 ) {
 					if(openboxtype == "avaliados") {
-						$("#"+openboxtype+" ol").append('<li class="ui-widget-content ui-draggable" id="'+$(this).val()+'">' +
+						$("#"+openboxtype+" ol").append('<li class="ui-widget-content ui-draggable ui-selectable" id="'+$(this).val()+'">' +
 															'<input type="hidden" name="avaliados" value="'+$(this).val()+'"/>' +
 												      		'<div class="nome">'+ $(this).parent().text().replace(/([0-9]*.-.)?(.*)(.\(.*)/g, '$2') +'</div>' +
 												      		'<div class="faixa"></div>' +
