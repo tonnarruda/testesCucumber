@@ -13,6 +13,8 @@ $(function() {
     
     $(".portlet-header .pesoAvaliador").each(function(){
     	$(this).val($(this).parents(".portlet").find(".peso:eq(0)").val());
+    	if ($(this).val() == "")
+    		$(this).val(1);
     });
     
 	$(".show-info").click(function(){
@@ -87,7 +89,9 @@ $(function() {
 		$(".portlet-toggle").toggle();
 	});
 	
-	$(".pesoAvaliador").click(function() { event.stopPropagation(); });
+	
+	$(".pesoAvaliador").live("keypress", function() { return(somenteNumeros(event,'')); });
+	$(".pesoAvaliador").live("click", function() { event.stopPropagation(); });
 	$(".portlet-header .pesoAvaliador").keyup(function(event) { 
 		$(this).parents(".portlet").find(".peso").val($(this).val());
 	});
@@ -294,10 +298,15 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
         	
         	console.log(avaliadorLiTag.attr('id'));
         	console.log(avaliadorUlTag.attr('id'));
-        	if ( avaliadorLiTag.attr('id') == avaliadorUlTag.attr('id') )
-        		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="text" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaboradorQuestionario.pesoAvaliador" class="pesoAvaliador"/>' );
-        	else
+        	if ( avaliadorLiTag.attr('id') == avaliadorUlTag.attr('id') ) {
+        		var pesoAvaliadorVisible = $(".pesoAvaliador").is(":visible");
+        		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="text" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaboradorQuestionario.pesoAvaliador" class="pesoAvaliador" value="1"/>' );
+        		if ( pesoAvaliadorVisible )
+	        			$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id') + " .pesoAvaliador").show();
+        			
+        	} else {
         		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaboradorQuestionario.pesoAvaliador" class="peso" value="' + $(avaliadorUlTag).parents(".portlet").find(".portlet-header .pesoAvaliador").val() + '"/>');
+        	}
         		
         	$("#avaliadores ul li .ui-icon-closethick").not(".disabled").click(function(){
 		    	if( $(this).parent().parent().find("li").length == 1 )
