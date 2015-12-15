@@ -95,6 +95,14 @@
 	<#include "../util/bottomFiltro.ftl" />
 	<br>
 
+	<div id="legendas" align="right">
+	<p>
+		<span style="background-color: #009900;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Respondida&nbsp;&nbsp;
+		<span style="background-color: #002EB8;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Respondida Parcialmente&nbsp;&nbsp;
+		<span style="background-color: #555;">&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Não Respondida&nbsp;&nbsp;
+	</P>
+	</div>
+
 	<@display.table name="colaboradorQuestionarios" id="colaboradorQuestionario" class="dados">
 		<@display.column title="Ações" class="acao">
 			<#if colaboradorQuestionario.respondida>
@@ -104,15 +112,25 @@
 			<#else>
 				<a href="prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}"><img border="0" title="Responder" src="<@ww.url value="/imgs/folhaCheia.gif"/>"></a>
 				<a href="imprimirQuestionario.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}"><img border="0" title="Imprimir questionário" src="<@ww.url value="/imgs/printer.gif"/>"></a>
-				<!-- img border="0" title="Não há respostas a serem impressas" src="<@ww.url value="/imgs/printer.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);"/ -->
 				<@frt.link verifyRole="ROLE_AVAL_DESEMP_DELETE_RESPOSTA" imgTitle="Não há respostas a serem excluídas" imgName="deletar_avaliacao.gif" opacity=true/>
 			</#if>
 		</@display.column>
-		<@display.column property="colaborador.nome" title="Avaliado"/>
-		<@display.column property="avaliacaoDesempenho.titulo" title="Título"/>
-		<@display.column property="performanceFormatada" title="Performance Questionário" style="width:90px; text-align:right;"/>
-		<@display.column property="performanceNivelCompetenciaFormatada" title="Performance Competência" style="width:90px; text-align:right;"/>
-		<@display.column property="performanceFinal" title="Performance" style="width:90px; text-align:right;"/>
+		
+		<#if colaboradorQuestionario.respondidaParcialmente>
+			<#assign style="color:#002EB8;"/>
+		<#else>
+			<#if colaboradorQuestionario.respondida>
+				<#assign style="color:#009900;"/>
+			<#else>
+				<#assign style=""/>
+			</#if>
+		</#if>
+		
+		<@display.column property="colaborador.nome" title="Avaliado" style="${style}"/>
+		<@display.column property="avaliacaoDesempenho.titulo" title="Título" style="${style}"/>
+		<@display.column property="performanceFormatada" title="Performance Questionário" style="${style} width:90px; text-align:right;"/>
+		<@display.column property="performanceNivelCompetenciaFormatada" title="Performance Competência" style="${style} width:90px; text-align:right;"/>
+		<@display.column property="performanceFinal" title="Performance" style="${style} width:90px; text-align:right;"/>
 	</@display.table>
 </body>
 </html>

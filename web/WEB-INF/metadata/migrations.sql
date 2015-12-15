@@ -251,4 +251,8 @@ UPDATE colaboradorquestionario SET configuracaonivelcompetenciacolaborador_id = 
 
 DELETE FROM configuracaoNivelCompetenciaColaborador WHERE ConfiguracaoNivelCompetenciaFaixaSalarial_id is null;--.go
 
+------15/12/2015
+ALTER TABLE colaboradorQuestionario ADD COLUMN respondidaParcialmente boolean NOT NULL DEFAULT false; --.go
 ------
+
+

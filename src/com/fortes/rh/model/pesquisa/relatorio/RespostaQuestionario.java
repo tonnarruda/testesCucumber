@@ -61,7 +61,7 @@ public class RespostaQuestionario
 	public String getRespostaFormatada() {
 		switch (this.perguntaTipo) {
 			case TipoPergunta.NOTA:
-				return "Nota: " + this.colaboradorRespostaValor;
+				return "Nota: " + (this.colaboradorRespostaValor == null ? "" : this.colaboradorRespostaValor);
 			
 			case TipoPergunta.OBJETIVA:
 			case TipoPergunta.MULTIPLA_ESCOLHA:
