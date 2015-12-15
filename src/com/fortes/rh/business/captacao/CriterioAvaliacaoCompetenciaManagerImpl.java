@@ -28,4 +28,15 @@ public class CriterioAvaliacaoCompetenciaManagerImpl extends GenericManagerImpl<
 	public Collection<CriterioAvaliacaoCompetencia> findByCompetencia(Long competenciaId, Character tipoCompetencia) {
 		return getDao().findByCompetencia(competenciaId, tipoCompetencia);
 	}
+
+	public Collection<CriterioAvaliacaoCompetencia> sincronizaCriterioAvaliacaoCompetencia(Long competenciaId, Character tipoCompetencia){
+		Collection<CriterioAvaliacaoCompetencia> criterioAvaliacaoCompetencias = getDao().findByCompetencia(competenciaId, tipoCompetencia);
+		for (CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia : criterioAvaliacaoCompetencias) {
+			criterioAvaliacaoCompetencia.setId(null);
+			criterioAvaliacaoCompetencia.setConhecimento(null);
+			criterioAvaliacaoCompetencia.setHabilidade(null);
+			criterioAvaliacaoCompetencia.setAtitude(null);
+		}
+		return criterioAvaliacaoCompetencias;
+	}
 }

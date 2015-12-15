@@ -9,6 +9,7 @@ import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.captacao.AtitudeDao;
 import com.fortes.rh.model.captacao.Atitude;
+import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -78,7 +79,7 @@ public class AtitudeManagerImpl extends GenericManagerImpl<Atitude, AtitudeDao> 
 		return getDao().findAllSelect(empresaId);
 	}
 	
-	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds, Map<Long, Long> conhecimentoIds) 
+	public void sincronizar(Long empresaOrigemId, Long empresaDestinoId, Map<Long, Long> areaIds, Map<Long, Long> atitudesIds) 
 	{
 		
 		Collection<Atitude> atitudesDeOrigem = getDao().findSincronizarAtitudes(empresaOrigemId);
@@ -87,7 +88,9 @@ public class AtitudeManagerImpl extends GenericManagerImpl<Atitude, AtitudeDao> 
 		{
 			Long atitudeOrigemId = atitude.getId();
 			clonar(atitude, empresaDestinoId);
-			conhecimentoIds.put(atitudeOrigemId, atitude.getId());
+			atitudesIds.put(atitudeOrigemId, atitude.getId());
+			Collection<CriterioAvaliacaoCompetencia> criterioAvaliacaoCompetencias = criterioAvaliacaoCompetenciaManager.sincronizaCriterioAvaliacaoCompetencia(atitudeOrigemId, TipoCompetencia.ATITUDE);
+			atitude.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetencias);
 			
 			if(areaIds != null  && areaIds.size() > 0)
 			{
@@ -96,6 +99,10 @@ public class AtitudeManagerImpl extends GenericManagerImpl<Atitude, AtitudeDao> 
 				atitude.setAreaOrganizacionals(areas);
 			}
 			update(atitude);
+			for (CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia : criterioAvaliacaoCompetencias) {
+				criterioAvaliacaoCompetencia.setAtitude(atitude);
+				criterioAvaliacaoCompetenciaManager.update(criterioAvaliacaoCompetencia);
+			}
 		}
 	}
 

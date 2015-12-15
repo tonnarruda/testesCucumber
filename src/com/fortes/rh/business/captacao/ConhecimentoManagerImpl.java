@@ -12,6 +12,7 @@ import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.captacao.ConhecimentoDao;
 import com.fortes.rh.model.captacao.Conhecimento;
+import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -141,6 +142,8 @@ public class ConhecimentoManagerImpl  extends GenericManagerImpl<Conhecimento, C
 			Long conhecimentoOrigemId = conhecimento.getId();
 			clonar(conhecimento, empresaDestinoId);
 			conhecimentoIds.put(conhecimentoOrigemId, conhecimento.getId());
+			Collection<CriterioAvaliacaoCompetencia> criterioAvaliacaoCompetencias = criterioAvaliacaoCompetenciaManager.sincronizaCriterioAvaliacaoCompetencia(conhecimentoOrigemId, TipoCompetencia.CONHECIMENTO);
+			conhecimento.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetencias);
 			if(areaIds != null && areaIds.size() > 0)
 			{
 				Collection<AreaOrganizacional> areas = areaOrganizacionalManager.findByConhecimento(conhecimentoOrigemId);
@@ -148,6 +151,10 @@ public class ConhecimentoManagerImpl  extends GenericManagerImpl<Conhecimento, C
 				conhecimento.setAreaOrganizacionals(areas);
 			}
 			update(conhecimento);
+			for (CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia : criterioAvaliacaoCompetencias) {
+				criterioAvaliacaoCompetencia.setConhecimento(conhecimento);
+				criterioAvaliacaoCompetenciaManager.update(criterioAvaliacaoCompetencia);
+			}
 		}
 	}
 

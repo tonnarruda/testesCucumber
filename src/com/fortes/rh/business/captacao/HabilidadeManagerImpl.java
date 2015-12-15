@@ -8,6 +8,7 @@ import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.dao.captacao.HabilidadeDao;
+import com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia;
 import com.fortes.rh.model.captacao.Habilidade;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -89,6 +90,8 @@ public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, Habili
 			Long habilidadeOrigemId = habilidade.getId();
 			clonar(habilidade, empresaDestinoId);
 			habilidadeIds.put(habilidadeOrigemId, habilidade.getId());
+			Collection<CriterioAvaliacaoCompetencia> criterioAvaliacaoCompetencias = criterioAvaliacaoCompetenciaManager.sincronizaCriterioAvaliacaoCompetencia(habilidadeOrigemId, TipoCompetencia.HABILIDADE);
+			habilidade.setCriteriosAvaliacaoCompetencia(criterioAvaliacaoCompetencias);
 			
 			if(areaIds != null && areaIds.size() > 0)
 			{
@@ -97,6 +100,10 @@ public class HabilidadeManagerImpl extends GenericManagerImpl<Habilidade, Habili
 				habilidade.setAreaOrganizacionals(areasOrigem);
 			}
 			update(habilidade);
+			for (CriterioAvaliacaoCompetencia criterioAvaliacaoCompetencia : criterioAvaliacaoCompetencias) {
+				criterioAvaliacaoCompetencia.setHabilidade(habilidade);
+				criterioAvaliacaoCompetenciaManager.update(criterioAvaliacaoCompetencia);
+			}
 		}
 	}
 
