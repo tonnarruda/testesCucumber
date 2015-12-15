@@ -97,6 +97,7 @@
 				</#list>
 				
 				changes();
+				$('tr').has('.checkNivel:disabled').has('.checkNivel:checked').find('.checkCompetencia').attr('checked', 'checked');
 				atualizarGrafico();
 				
 				<#if !niveisCompetenciaFaixaSalariais?exists || niveisCompetenciaFaixaSalariais?size == 0>
@@ -245,6 +246,8 @@
 					jAlert('Informe uma data correta.');
 					return false;
 				}
+				
+				$('tr').has('.checkCompetencia:disabled').has('.checkCompetencia:checked').find('.checkCompetencia').removeAttr("disabled");
 				
 				var linhasSemRadioMarcado = $('tr').has('.checkNivel:enabled').not(':has(.checkNivel:checked)');
 				linhasSemRadioMarcado = $.merge(linhasSemRadioMarcado, $('tr').has('.checkNivelCriterio:enabled').not(':has(.checkNivelCriterio:checked)'));

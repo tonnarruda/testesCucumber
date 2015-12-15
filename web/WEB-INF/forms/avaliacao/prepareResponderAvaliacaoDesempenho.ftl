@@ -95,7 +95,6 @@
 			var media = somaPescetualDosCriterios/niveisSelecionadosDosCriterios.length;
 			var niveis = $("#competencia_"+competenciaId).parent().parent().find(".checkNivel");
 			
-			console.log(media);
 			var percentualFinal = 0;
 			$(niveis).filter(function() {
 			  return parseFloat($(this).attr("percentual")) <= media;
@@ -103,8 +102,6 @@
 			  var value = $(this).attr("percentual");
 			  percentualFinal = ( parseFloat(value) > parseFloat(percentualFinal) ) ? value : percentualFinal;
 			});
-			
-			console.log(percentualFinal);
 			
 			if(niveisSelecionadosDosCriterios.length > 0) {
 				$("#competencia_"+competenciaId).attr("checked", "checked");
@@ -121,6 +118,7 @@
 		
 		function enviarForm(validarRespostas)
 		{
+			$('tr').has('.checkCompetencia:disabled').has('.checkCompetencia:checked').find('.checkCompetencia').removeAttr("disabled");
 			var linhasSemRadioMarcado = $('tr').has('.checkNivel:enabled').not(':has(.checkNivel:checked)');
 			linhasSemRadioMarcado = $.merge(linhasSemRadioMarcado, $('tr').has('.checkNivelCriterio:enabled').not(':has(.checkNivelCriterio:checked)'));
 
