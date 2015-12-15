@@ -10,7 +10,7 @@ import com.fortes.rh.model.geral.Colaborador;
 
 public interface ParticipanteAvaliacaoDesempenhoManager extends GenericManager<ParticipanteAvaliacaoDesempenho> 
 {
-	public void save(AvaliacaoDesempenho avaliacaoDesempenho, Long[] colaboradorIds, char tipo);
+	public void save(AvaliacaoDesempenho avaliacaoDesempenho, Long[] colaboradorIds, String[] produtividade, char tipo);
 	public Collection<Colaborador> findParticipantes(Long avaliacaoDesempenhoId, Character tipo);
 	public void removeNotIn(Long[] participantes, Long avaliacaoDesempenhoId, Character tipo) throws Exception;
 	Collection<FaixaSalarial> findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);

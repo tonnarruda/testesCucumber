@@ -80,6 +80,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] colaboradorsCheck;
 	private String[] avaliados;
+	private String[] produtividade;
 	private String[] avaliadores;
 	private Collection<CheckBox> colaboradorsCheckList = new ArrayList<CheckBox>();
 	private Collection<CheckBox> avaliacoesCheckList = new ArrayList<CheckBox>();
@@ -279,10 +280,10 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 		colaboradorQuestionarios.removeAll(Collections.singleton(null));
 		
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(avaliados), ParticipanteAvaliacao.AVALIADO);
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(avaliados), produtividade, ParticipanteAvaliacao.AVALIADO);
 		participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.arrayStringToArrayLong(avaliados), avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADO);
 		
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(avaliadores), ParticipanteAvaliacao.AVALIADOR);
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(avaliadores), null, ParticipanteAvaliacao.AVALIADOR);
 		participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.arrayStringToArrayLong(avaliadores), avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
 		
 		colaboradorQuestionarioManager.save(new ArrayList<ColaboradorQuestionario>(colaboradorQuestionarios), avaliacaoDesempenho.getId());
@@ -858,5 +859,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(
 			ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
 		this.configuracaoCompetenciaAvaliacaoDesempenhoManager = configuracaoCompetenciaAvaliacaoDesempenhoManager;
+	}
+
+	public void setProdutividade(String[] produtividade) {
+		this.produtividade = produtividade;
 	}
 }

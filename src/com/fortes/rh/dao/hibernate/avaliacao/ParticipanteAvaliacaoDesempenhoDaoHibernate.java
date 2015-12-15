@@ -17,7 +17,7 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernate extends GenericDaoHiber
 	public Collection<Colaborador> findParticipantes(Long avaliacaoDesempenhoId, Character tipo) {
 		StringBuilder hql = new StringBuilder();
 		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, e.id, ");
-		hql.append("ao.id, ao.nome, fs.id, fs.nome, ca.id, ca.nome ) ");
+		hql.append("ao.id, ao.nome, fs.id, fs.nome, ca.id, ca.nome, p.produtividade ) ");
 		hql.append("from ParticipanteAvaliacaoDesempenho as p ");
 		hql.append("inner join p.colaborador as co ");
 		hql.append("inner join co.empresa as e ");

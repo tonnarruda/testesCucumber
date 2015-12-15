@@ -79,7 +79,7 @@
 			</div>
 		</div>
 		
-		<div style="width: 740px; margin: 0 auto;">
+		<div style="width: 760px; margin: 0 auto;">
 			<@ww.form name="formCompetencias" id="formCompetencias" action="saveCompetencias" method="POST">
 				<div id="competencias" class="box">
 				  <h1 class="ui-widget-header title">
