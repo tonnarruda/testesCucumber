@@ -9,4 +9,5 @@ public interface ColaboradorCertificacaoDao extends GenericDao<ColaboradorCertif
 {
 	Collection<ColaboradorCertificacao> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId);
 	Collection<ColaboradorCertificacao> colabNaCertificacaoNaoCertificados(Long certificacaoId, Long[] areasIds, Long[] estabelecimentosIds);
+	Collection<ColaboradorCertificacao> colaboradoresCertificados(Long certificacaoId, Long[] areasIds, Long[] estabelecimentosIds);
 }

@@ -9,5 +9,5 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 public interface ColaboradorCertificacaoManager extends GenericManager<ColaboradorCertificacao>
 {
 	Collection<ColaboradorCertificacao> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId);
-	Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, Long empresaId, Long certificacaoId, Long[] estabelecimentoIds, Long[] areaIds, char filtroCetificacao);
+	Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, Long empresaId, Long certificacaoId, Long[] areaIds, Long[] estabelecimentoIds, char filtroCetificacao);
 }

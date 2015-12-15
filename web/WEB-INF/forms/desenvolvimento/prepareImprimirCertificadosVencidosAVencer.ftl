@@ -47,7 +47,7 @@
 	
 	<div class="buttonGroup">
 		<button onclick="$('form[name=form]').attr('action', 'imprimirCertificadosVencidosAVencer.action');${validarCampos};" class="btnRelatorio" ></button>
-		<button onclick="$('form[name=form]').attr('action', 'imprimirCertificadosVencidosAVencerXLS.action');${validarCampos};" class="btnRelatorioExportar" ></button>
+		<button onclick="$('form[name=form]').attr('action', 'imprimirCertificadosVencidosAVencerXlS.action');${validarCampos};" class="btnRelatorioExportar" ></button>
 	</div>
 	
 </body>

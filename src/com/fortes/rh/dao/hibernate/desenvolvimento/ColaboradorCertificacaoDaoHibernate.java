@@ -8,12 +8,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.springframework.dao.DataAccessResourceFailureException;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
@@ -46,10 +48,9 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 	public Collection<ColaboradorCertificacao> colabNaCertificacaoNaoCertificados(Long certificacaoId, Long[] areasIds, Long[] estabelecimentosIds) 
 	{
 		StringBuilder sql = new StringBuilder();
-		//Certificação,Matrícula,Nome,Nome Comercial,Cargo,Treinamentos,Status Treinamentos
-		sql.append("select  c.id, c.nome, c.nomecomercial, c.matricula, cg.id, cg.nome, cert.id, cert.nome, cu.id, cu.nome, t.dataprevini, t.dataprevFim, t.realizada, ");
-		sql.append("verifica_aprovacao(cu.id, t.id, ct.id, cu.percentualminimofrequencia),  ");
-		sql.append("verifica_certificacao(cert.id, c.id) ");
+		sql.append("select  c.id as colabId, c.nome as colabNome, c.nomecomercial as colabNomeComercial, c.matricula as colabMatricula, cg.id as cargoId, cg.nome as cargoNome, cert.id as certId, cert.nome as certNome, cu.id as cursoId, cu.nome as cursoNome, t.dataprevini as turmaIni, t.dataprevFim as turmaFim, t.realizada as turmaRealizada, ");
+		sql.append("verifica_aprovacao(cu.id, t.id, ct.id, cu.percentualminimofrequencia) as aprovacao,  ");
+		sql.append("verifica_certificacao(cert.id, c.id) as certificacao ");
 		sql.append("from colaborador c ");
 		sql.append("left join colaboradorturma ct on ct.colaborador_id = c.id ");
 		sql.append("left join turma t on t.id = ct.turma_id ");
@@ -72,16 +73,58 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		sql.append("	having count(colaborador_id) = (select count(distinct cursos_id) from certificacao_curso  where certificacaos_id = :certificacaoId) ");
 		sql.append("       )  ");
 		sql.append("and desligado = false ");
-		sql.append("and hc.data = (select max(hc2.data) from historicocolaborador hc2 where hc2.colaborador_id = c.id) ");
+		sql.append("and hc.data = (select max(hc2.data) from historicocolaborador hc2 where hc2.colaborador_id = c.id and hc2.status = 1  ) ");
 		sql.append("and cert.id = :certificacaoId ");
-		sql.append("and hc.areaorganizacional_id in (:areasOrganizacionaisIds) ");
-		sql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
-		sql.append("order by c.nome ");
+		sql.append("and t.dataPrevFim = (select max(t2.dataPrevFim) from turma t2 where t2.curso_id = cu.id and t.realizada) ");
+		sql.append("and t.realizada ");
+		
+		return montaColaboradorCertificacao(certificacaoId, areasIds, estabelecimentosIds, sql);
+	}
+	
+	public Collection<ColaboradorCertificacao> colaboradoresCertificados(Long certificacaoId, Long[] areasIds, Long[] estabelecimentosIds) 
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("select c.id as colabId, c.nome as colabNome, c.nomecomercial as colabNomeComercial, c.matricula as colabMatricula, cg.id as cargoId, cg.nome as cargoNome, cert.id as certId, ");
+		sql.append("cert.nome as certNome, cu.id as cursoId, cu.nome as cursoNome, t.dataprevini as turmaIni, t.dataprevFim as turmaFim, t.realizada as turmaRealizada,  ");
+		sql.append("verifica_aprovacao(cu.id, t.id, ct.id, cu.percentualminimofrequencia) as aprovacao, ");
+		sql.append("verifica_certificacao(cert.id, c.id) as certificacao  ");
+		sql.append("from colaboradorcertificacao ccert ");
+		sql.append("inner join colaborador c on c.id = ccert.colaborador_id ");
+		sql.append("inner join certificacao_curso certcu on certcu.certificacaos_id = ccert.certificacao_id ");
+		sql.append("inner join certificacao cert on cert.id = ccert.certificacao_id  ");
+		sql.append("inner join curso cu on cu.id = certcu.cursos_id  ");
+		sql.append("inner join colaboradorturma ct on ct.colaborador_id = c.id  ");
+		sql.append("inner join turma t on t.id = ct.turma_id  ");
+		sql.append("inner join historicocolaborador hc on hc.colaborador_id = c.id  ");
+		sql.append("inner join faixasalarial fx on fx.id = hc.faixasalarial_id  ");
+		sql.append("inner join cargo cg on cg.id = fx.cargo_id  ");
+		sql.append("where desligado = false  ");
+		sql.append("and hc.data = (select max(hc2.data) from historicocolaborador hc2  where hc2.colaborador_id = c.id and hc2.status = 1  )  ");
+		sql.append("and cert.id = :certificacaoId ");
+		sql.append("and t.dataPrevFim = (select max(t2.dataPrevFim) from turma t2 where t2.curso_id = cu.id and t.realizada) ");
+		sql.append("and t.realizada ");
+		
+		return montaColaboradorCertificacao(certificacaoId, areasIds, estabelecimentosIds, sql);
+	}
+
+	private Collection<ColaboradorCertificacao> montaColaboradorCertificacao(Long certificacaoId, Long[] areasIds, Long[] estabelecimentosIds, StringBuilder sql) throws HibernateException, DataAccessResourceFailureException, IllegalStateException 
+	{
+		if(areasIds != null && areasIds.length >0)
+			sql.append("and hc.areaorganizacional_id in (:areasOrganizacionaisIds) ");
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.length >0)
+			sql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
+		
+		sql.append("order by c.nome, cert.nome, cu.nome ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("certificacaoId", certificacaoId);
-		query.setParameterList("areasOrganizacionaisIds", areasIds);
-		query.setParameterList("estabelecimentosIds", estabelecimentosIds);
+		
+		if(areasIds != null && areasIds.length >0)
+			query.setParameterList("areasOrganizacionaisIds", areasIds);
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.length >0)
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds);
 		
 		@SuppressWarnings("rawtypes")
 		List resultado = query.list();

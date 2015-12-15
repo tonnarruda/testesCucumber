@@ -150,10 +150,22 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	
 	public String imprimirCertificadosVencidosAVencer()
 	{
-		Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
-		Long[] estabelecimentoIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
+		try {
+			Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
+			Long[] estabelecimentoIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
+				
+			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, getEmpresaSistema().getId(), certificacao.getId(), areaIds, estabelecimentoIds, filtroCetificacao);
 		
-		colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, getEmpresaSistema().getId(), certificacao.getId(), estabelecimentoIds, areaIds, filtroCetificacao);
+			if(colaboradorCertificacoes.size() == 0){
+				addActionMessage("Não existem dados para o filtro informado.");
+				return Action.INPUT;	
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionMessage("Não foi possível gerar relatório.");
+			return Action.INPUT;
+		}
 		
 		return Action.SUCCESS;
 	}
