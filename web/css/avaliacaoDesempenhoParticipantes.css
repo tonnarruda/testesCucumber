@@ -38,7 +38,7 @@
 
 .pesoAvaliador, .notaProdutividade {
 	float: right;
-	width: 25px;
+	width: 30px;
 	text-align: right;
 	height: 11px;
 	display: none;

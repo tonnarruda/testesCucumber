@@ -21,7 +21,7 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 		int i = 0;
 		for (Long colaboradorId : colaboradorIds) 
 		{
-			Collection<Colaborador> participantes = findParticipantes(avaliacaoDesempenho.getId(), tipo);
+			Collection<Colaborador> participantes = findColaboradoresParticipantes(avaliacaoDesempenho.getId(), tipo);
 			
 			if (!LongUtil.contains(colaboradorId, participantes))//verifica se já é um  participante
 			{
@@ -48,7 +48,11 @@ public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerIm
 		return getDao().findFaixasSalariaisDosAvaliadosByAvaliador(avaliacaoDesempenhoId, avaliadorId);
 	}
 	
-	public Collection<Colaborador> findParticipantes(Long avaliacaoDesempenhoId, Character tipo) {
+	public Collection<Colaborador> findColaboradoresParticipantes(Long avaliacaoDesempenhoId, Character tipo) {
+		return getDao().findColaboradoresParticipantes(avaliacaoDesempenhoId, tipo);
+	}
+	
+	public Collection<ParticipanteAvaliacaoDesempenho> findParticipantes(Long avaliacaoDesempenhoId, Character tipo) {
 		return getDao().findParticipantes(avaliacaoDesempenhoId, tipo);
 	}
 	

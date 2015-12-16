@@ -2,7 +2,7 @@ package com.fortes.rh.model.dicionario;
 
 import java.util.LinkedHashMap;
 
-public class ParticipanteAvaliacao extends LinkedHashMap<String, String>
+public class TipoParticipanteAvaliacao extends LinkedHashMap<String, String>
 {
 	private static final long serialVersionUID = -1606033658695433714L;
 	
