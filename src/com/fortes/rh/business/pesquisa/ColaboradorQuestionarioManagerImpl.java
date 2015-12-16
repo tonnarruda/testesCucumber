@@ -18,6 +18,7 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.desenvolvimento.Turma;
+import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
 import com.fortes.rh.model.dicionario.ParticipanteAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -410,7 +411,7 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 		
 		for (Colaborador avaliador : avaliadores) {
-			for (ColaboradorQuestionario colaboradorQuestionario : findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), null, false, false)) {
+			for (ColaboradorQuestionario colaboradorQuestionario : findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), FiltroSituacaoAvaliacao.TODAS.getOpcao(), false, false, null)) {
 				ColaboradorQuestionario colaboradorQuestionarioClone = new ColaboradorQuestionario(avaliacaoDesempenhoClone);
 				colaboradorQuestionarioClone.setAvaliacao(colaboradorQuestionario.getAvaliacao());
 				colaboradorQuestionarioClone.setAvaliador(avaliador);
@@ -427,9 +428,9 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		getDao().excluirColaboradorQuestionarioByAvaliacaoDesempenho(avaliacaoDesempenhoId);
 	}
 	
-	public Collection<ColaboradorQuestionario> findAvaliadosByAvaliador(Long avaliacaoDesempenhoId, Long avaliadorId, Boolean respondida, boolean considerarPeriodoAvalDesempenho, boolean considerarLiberada)
+	public Collection<ColaboradorQuestionario> findAvaliadosByAvaliador(Long avaliacaoDesempenhoId, Long avaliadorId, char respondida, boolean considerarPeriodoAvalDesempenho, boolean considerarLiberada, Boolean considerarRespostasParciais)
 	{
-		return getDao().findAvaliadosByAvaliador(avaliacaoDesempenhoId, avaliadorId, respondida, considerarPeriodoAvalDesempenho, considerarLiberada); 
+		return getDao().findAvaliadosByAvaliador(avaliacaoDesempenhoId, avaliadorId, respondida, considerarPeriodoAvalDesempenho, considerarLiberada, considerarRespostasParciais); 
 	}
 
 	public Collection<ColaboradorQuestionario> getPerformance(Collection<Long> avaliados, Long avaliacaoDesempenhoId)

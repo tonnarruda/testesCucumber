@@ -505,7 +505,8 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	public void update(Collection<ColaboradorResposta> colaboradorRespostas, ColaboradorQuestionario colaboradorQuestionario, Long usuarioLogadoId, Long empresaId, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados)
 	{
 		ajustaEntidadesNull(colaboradorQuestionario);
-		colaboradorQuestionario.setRespondida(true);
+		if(!colaboradorQuestionario.isRespondidaParcialmente())
+			colaboradorQuestionario.setRespondida(true);
 		getDao().removeByColaboradorQuestionario(colaboradorQuestionario.getId());
 		saveRespostas(colaboradorRespostas, colaboradorQuestionario);
 

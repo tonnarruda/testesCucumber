@@ -88,7 +88,7 @@
 			<@ww.select label="Avaliador" required="true" name="avaliador.id" id="avaliador" list="avaliadors" listKey="id" listValue="nome" cssStyle="width: 245px;" headerKey="" headerValue="Selecione..."/>
 		</@authz.authorize>
 		
-		<@ww.select label="Situação" name="respondida" list=r"#{'0':'Todas','1':'Respondidas','2':'Não respondidas'}"/>
+		<@ww.select label="Situação" name="respondida" list=r"#{'T':'Todas','R':'Respondidas','P':'Respondida Parcialmente','N':'Não respondidas'}"/>
 		
 		<input type="submit" value="" class="btnPesquisar grayBGE" onclick="${validarCampos};">
 	</@ww.form>
@@ -116,10 +116,10 @@
 			</#if>
 		</@display.column>
 		
-		<#if colaboradorQuestionario.respondidaParcialmente>
+		<#if colaboradorQuestionario?exists && colaboradorQuestionario.respondidaParcialmente>
 			<#assign style="color:#002EB8;"/>
 		<#else>
-			<#if colaboradorQuestionario.respondida>
+			<#if colaboradorQuestionario?exists && colaboradorQuestionario.respondida>
 				<#assign style="color:#009900;"/>
 			<#else>
 				<#assign style=""/>

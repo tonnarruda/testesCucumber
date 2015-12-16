@@ -44,6 +44,7 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.desenvolvimento.TurmaAvaliacaoTurma;
+import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
 import com.fortes.rh.model.dicionario.TipoAvaliacaoCurso;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
@@ -809,13 +810,13 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
     	colaboradorQuestionarioDao.save(colaboradorQuestionario3Respondida);
     	
     	// todos os avaliados do avaliador.
-    	assertEquals(3, colaboradorQuestionarioDao.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), null, true, true).size());
+    	assertEquals(3, colaboradorQuestionarioDao.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), FiltroSituacaoAvaliacao.TODAS.getOpcao(), true, true, false).size());
     	
     	// apenas não respondidas
-    	assertEquals(2, colaboradorQuestionarioDao.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), false, true, true).size());
+    	assertEquals(2, colaboradorQuestionarioDao.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), FiltroSituacaoAvaliacao.NAO_RESPONDIDA.getOpcao(), true, true, false).size());
     	
     	// apenas respondidas
-    	assertEquals(1, colaboradorQuestionarioDao.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), true, true, true).size());
+    	assertEquals(1, colaboradorQuestionarioDao.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), FiltroSituacaoAvaliacao.RESPONDIDA.getOpcao(), true, true, false).size());
 	}
 	
 	public void testExcluirColaboradorQuestionarioByAvaliacaoDesempenho()
