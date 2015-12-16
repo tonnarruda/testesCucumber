@@ -22,6 +22,7 @@ import org.hibernate.type.Type;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
@@ -371,6 +372,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cq.id"), "id");
 		p.add(Projections.property("cq.respondida"), "respondida");
+		p.add(Projections.property("cq.respondidaParcialmente"), "respondidaParcialmente");
 		p.add(Projections.property("cq.respondidaEm"), "respondidaEm");
 		p.add(Projections.property("cq.observacao"), "observacao");
 		p.add(Projections.property("cq.performance"), "performance");
@@ -610,7 +612,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return criteria.list();
 	}
 	
-	public Collection<ColaboradorQuestionario> findAvaliadosByAvaliador(Long avaliacaoDesempenhoId, Long avaliadorId, Boolean respondida, boolean considerarPeriodoAvalDesempenho, boolean considerarLiberada)
+	public Collection<ColaboradorQuestionario> findAvaliadosByAvaliador(Long avaliacaoDesempenhoId, Long avaliadorId, char respondida, boolean considerarPeriodoAvalDesempenho, boolean considerarLiberada, Boolean considerarRespostasParciais)
 	{
 		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
 		
@@ -642,8 +644,17 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		if (avaliacaoDesempenhoId != null)
 			criteria.add(Expression.eq("avDesempenho.id", avaliacaoDesempenhoId));
 		
-		if (respondida != null)
-			criteria.add(Expression.eq("cq.respondida", respondida));
+		if (respondida == FiltroSituacaoAvaliacao.RESPONDIDA.getOpcao())
+			criteria.add(Expression.eq("cq.respondida", true));
+		else if(respondida == FiltroSituacaoAvaliacao.NAO_RESPONDIDA.getOpcao() && considerarRespostasParciais.booleanValue()){
+			criteria.add(Expression.or(Expression.eq("cq.respondida", false), Expression.eq("cq.respondidaParcialmente", considerarRespostasParciais)));
+		}
+		else if(respondida == FiltroSituacaoAvaliacao.NAO_RESPONDIDA.getOpcao() && !considerarRespostasParciais.booleanValue()){
+			criteria.add(Expression.eq("cq.respondida", false));
+			criteria.add(Expression.eq("cq.respondidaParcialmente", false));
+		}
+		else if(respondida == FiltroSituacaoAvaliacao.RESPONDIDA_PARCIALMENTE.getOpcao())
+			criteria.add(Expression.eq("cq.respondidaParcialmente", true));
 		
 		if(considerarPeriodoAvalDesempenho)
 		{

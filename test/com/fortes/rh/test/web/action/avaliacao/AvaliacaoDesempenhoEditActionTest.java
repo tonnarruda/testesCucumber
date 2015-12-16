@@ -28,6 +28,7 @@ import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
@@ -118,7 +119,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findParticipantes").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(colaboradoresAvaliados));
 		areaOrganizacionalManager.expects(once()).method("populaCheckOrderDescricao").with(ANYTHING).will(returnValue(new ArrayList<CheckBox>()));
 		
-		colaboradorQuestionarioManager.expects(once()).method("findAvaliadosByAvaliador").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING}).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		colaboradorQuestionarioManager.expects(once()).method("findAvaliadosByAvaliador").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING,ANYTHING, ANYTHING, ANYTHING}).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
 		
 		action.prepareParticipantes();
 		
@@ -513,7 +514,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		Collection<AvaliacaoDesempenho> avaliacaoDesempenhos = Arrays.asList(avaliacaoDesempenho);
 		action.setAvaliacaoDesempenhos(avaliacaoDesempenhos);
 		
-		action.setRespondida(' ');
+		action.setRespondida('T');
 		MockSecurityUtil.roles = new String[]{"ROLE_RESPONDER_AVALIACAO_DESEMP_POR_OUTRO_USUARIO"};
 		
 		manager.expects(once()).method("findByAvaliador").with(ANYTHING, eq(true), ANYTHING).will(returnValue(avaliacaoDesempenhos));
@@ -523,19 +524,19 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		
 		assertEquals("success",action.avaliacaoDesempenhoQuestionarioList());
 		
-		// filtro respondida = '1'
-		action.setRespondida('1');
+		// filtro respondida = 'R'
+		action.setRespondida('R');
 		manager.expects(once()).method("findByAvaliador").with(ANYTHING, eq(true), ANYTHING).will(returnValue(avaliacaoDesempenhos));
-		colaboradorQuestionarioManager.expects(once()).method("findAvaliadosByAvaliador").with(new Constraint[]{ANYTHING,ANYTHING,eq(true),eq(false),eq(true)}).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		colaboradorQuestionarioManager.expects(once()).method("findAvaliadosByAvaliador").with(new Constraint[]{ANYTHING,ANYTHING,eq(FiltroSituacaoAvaliacao.RESPONDIDA.getOpcao()),eq(false),eq(true), eq(false)}).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
 		empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(new ArrayList<Empresa>()));
 		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(new Constraint[]{eq(avaliacaoDesempenho.getId()), eq(false), eq(null), eq(null), eq(null)}).will(returnValue(new ArrayList<Colaborador>()));
 		
 		assertEquals("success",action.avaliacaoDesempenhoQuestionarioList());
 		
-		// filtro respondida = '2'
-		action.setRespondida('2');
+		// filtro respondida = 'N'
+		action.setRespondida('N');
 		manager.expects(once()).method("findByAvaliador").with(ANYTHING, eq(true), ANYTHING).will(returnValue(avaliacaoDesempenhos));
-		colaboradorQuestionarioManager.expects(once()).method("findAvaliadosByAvaliador").with(new Constraint[]{ANYTHING,ANYTHING,eq(false),eq(false),eq(true)}).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		colaboradorQuestionarioManager.expects(once()).method("findAvaliadosByAvaliador").with(new Constraint[]{ANYTHING,ANYTHING,eq(FiltroSituacaoAvaliacao.NAO_RESPONDIDA.getOpcao()),eq(false),eq(true), eq(false)}).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
 		empresaManager.expects(once()).method("findEmpresasPermitidas").will(returnValue(new ArrayList<Empresa>()));
 		colaboradorManager.expects(once()).method("findParticipantesDistinctComHistoricoByAvaliacaoDesempenho").with(new Constraint[]{eq(avaliacaoDesempenho.getId()), eq(false), eq(null), eq(null), eq(null)}).will(returnValue(new ArrayList<Colaborador>()));
 		
@@ -557,7 +558,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		action.setEmpresaId(1L);
 		action.getColaboradorQuestionarios();
 		action.getRespondida();
-		action.setRespondida('1');
+		action.setRespondida('R');
 		action.getParametros();
 		action.getOpcaoResultado();
 		action.getPerguntas();

@@ -19,6 +19,7 @@ import com.fortes.rh.exception.AvaliacaoRespondidaException;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
 import com.fortes.rh.model.dicionario.ParticipanteAvaliacao;
 import com.fortes.rh.model.dicionario.TipoQuestionario;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -469,9 +470,9 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
     {
     	Collection<ColaboradorQuestionario> avaliados = new ArrayList<ColaboradorQuestionario>();
     	
-    	colaboradorQuestionarioDao.expects(once()).method("findAvaliadosByAvaliador").with(new Constraint[]{eq(1L), eq(1000L), eq(false), eq(true), eq(true)}).will(returnValue(avaliados));
+    	colaboradorQuestionarioDao.expects(once()).method("findAvaliadosByAvaliador").with(new Constraint[]{eq(1L), eq(1000L), eq(FiltroSituacaoAvaliacao.NAO_RESPONDIDA.getOpcao()), eq(true), eq(true), eq(false)}).will(returnValue(avaliados));
     	
-    	assertNotNull(colaboradorQuestionarioManager.findAvaliadosByAvaliador(1L, 1000L, false, true, true));
+    	assertNotNull(colaboradorQuestionarioManager.findAvaliadosByAvaliador(1L, 1000L, FiltroSituacaoAvaliacao.NAO_RESPONDIDA.getOpcao(), true, true, false));
     }
     
     public void testGetPerformance()

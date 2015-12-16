@@ -27,6 +27,7 @@ import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
 import com.fortes.rh.model.dicionario.ParticipanteAvaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
@@ -97,7 +98,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private Date periodoFinal;
 	
 	private String msgDelete;
-	private char respondida = '2';
+	private char respondida = 'N';
 	
 	private String opcaoResultado; // criterio ou avaliador
 	private Map<String, Object> parametros;
@@ -154,7 +155,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		avaliadors = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
 		for (Colaborador avaliador : avaliadors) {
 			avaliador.setAvaliados(new ArrayList<Colaborador>());
-			for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), null, false, false)) {
+			for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), FiltroSituacaoAvaliacao.TODAS.getOpcao(), false, false, null)) {
 				colaboradorQuestionario.getColaborador().setColaboradorQuestionario(colaboradorQuestionario);
 				avaliador.getAvaliados().add(colaboradorQuestionario.getColaborador());
 			}
@@ -483,7 +484,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			avaliadors = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), false, null, null, null);
 		
 		if(avaliacaoDesempenho != null)
-			colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), filtroRespondida(), false, true);
+			colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), respondida, false, true, false);
 		
 		if(exibeResultadoAutoavaliacao)
 		{
@@ -495,16 +496,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		}
 		
 		return Action.SUCCESS;
-	}
-	
-	private Boolean filtroRespondida()
-	{
-		if(this.respondida == '1')
-			return true;
-		else if(this.respondida == '2') 
-			return false;
-		else
-			return null;
 	}
 
 	public AvaliacaoDesempenho getAvaliacaoDesempenho()

@@ -56,7 +56,7 @@
 						linha.find('.ordem').val(${nivelSalvo.nivelCompetencia.ordem});
 						
 						nivelColaborador.parent().css('background-color','#E4F0FE');
-						<#if colaboradorQuestionario.respondida>
+						<#if colaboradorQuestionario.respondida || colaboradorQuestionario.respondidaParcialmente>
 							nivelColaborador.attr('checked','checked');
 						</#if>
 						
@@ -359,7 +359,9 @@
 
 		<div class="buttonGroup">
 			<button onclick="enviarForm(true);" class="btnGravar"></button>
-			<button onclick="enviarForm(false);" class="btnGravarParcialmente"></button>
+			<#if !colaboradorQuestionario.respondida>
+				<button onclick="enviarForm(false);" class="btnGravarParcialmente"></button>
+			</#if>
 			<#if autoAvaliacao>
 				<button class="btnCancelar" onclick="window.location='../modelo/minhasAvaliacoesList.action'"></button>
 			<#else>
