@@ -1,4 +1,6 @@
 var countColaboradorQuestionarios = 0;
+var countParticipantesAvaliados = 0;
+var countParticipantesAvaliadores = 0;
 var selectedsAvaliados = new Array;
 var selectedsAvaliadores = new Array;
 var selectedsAvaliadosFromAvaliadores = new Array;
@@ -148,17 +150,22 @@ $(function() {
 				createAvaliadoForAvaliador(avaliador, $(this));
 				conectAvaliadosAvaliadores();
 				portletEvents();
+				
+				var pesoAvaliadorVisible = $(".pesoAvaliador").is(":visible");
+		    	$(".portlet[id="+$(this).attr("id")+"] .pesoAvaliador").toggle(pesoAvaliadorVisible);
+		    	$(".portlet[id="+$(this).attr("id")+"] .portlet-toggle").toggle(!pesoAvaliadorVisible);
 			});
 			notificatedAboutAutoAvaliacao = false;
 		}
 	});
 	
-	$("input[name=produtividade]").live("keypress", function(event){ event.stopPropagation(); });
+	$(".notaProdutividade").live("keypress", function() { return(somenteNumeros(event,',')); });
+	$(".notaProdutividade").live("click", function(event){ event.stopPropagation(); });
 	$("#avaliados .actions .produtividade").click(function(event){
 		$("#avaliados .option").not(".produtividade").toggleClass("inactive");
 		$(this).toggleClass("active");
 		$("#avaliados-list > li").toggleClass("ui-selectable");
-		$("input[name=produtividade]").toggle();
+		$(".notaProdutividade").toggle();
 	});
 	
 	disableParentsRespondida();
@@ -272,8 +279,13 @@ function atualizeSelectablesMini() {
 function createAvaliador(id, nome) {
 	if ( $("#avaliadores .portlet[id="+id+"] ul").length == 0 ) {
 		$("#avaliadores .column").append('<div class="portlet ui-selectable" id="'+ id +'">' +
-		  		 '<div class="portlet-header"><div class="nome">' + nome + '</div>' + 
-		  		 '<div style="clear: both;"></div>' +
+      			 '<input type="hidden" name="participantesAvaliadores['+countParticipantesAvaliadores+'].colaborador.id" value="'+id+'"/>' +
+      			 '<input type="hidden" name="participantesAvaliadores['+countParticipantesAvaliadores+'].avaliacaoDesempenho.id" value="'+avaliacaoDesempenhoId+'"/>' +
+      			 '<input type="hidden" name="participantesAvaliadores['+countParticipantesAvaliadores+'].tipo" value="R"/>' +
+		  		 '<div class="portlet-header">' +
+		  		 '	<input type="text" class="pesoAvaliador" value="1" />' +
+      			 '	<div class="nome">' + nome + '</div>' + 
+      			 '	<div style="clear: both;"></div>' +
 		  		 '</div>' +
 		  		 '<div class="portlet-header mini-actions" style="background: #F3F3F3; padding: 0; display: none;">' +
 		  		 '	<div class="mini-option remove only-selectables disabled" title="Remover selecionados" style="padding: 3px 15px; float: left;">' +
@@ -290,7 +302,7 @@ function createAvaliador(id, nome) {
 		  		 '  <div style="clear: both;"></div>' +
 		  		 '</div>' +
 		  		 '<div class="portlet-content hide-when-expand">' +
-		  		 	'<ul>' +
+		  		 	'<ul id="'+id+'">' +
 		  		 			'<input type="hidden" name="avaliadores" value="'+id+'"/>' +
 			        		'<li class="placeholder">Arraste os avaliados até aqui</li>' + 
 			      	'</ul>' +
@@ -321,12 +333,15 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
         		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaboradorQuestionario.pesoAvaliador" class="peso" value="' + $(avaliadorUlTag).parents(".portlet").find(".portlet-header .pesoAvaliador").val() + '"/>');
         	}
         		
+        	console.log($(avaliadorUlTag).parents(".portlet").find(".portlet-header .pesoAvaliador").val());
+
         	$("#avaliadores ul li .ui-icon-closethick").not(".disabled").click(function(){
 		    	if( $(this).parent().parent().find("li").length == 1 )
 		    		$(this).parent().parent().append('<li class="placeholder">Arraste os avaliados até aqui</li>');
 		    		
 		    	$(this).parent().remove();
 		    });
+        	
 		    
         	countColaboradorQuestionarios++;
         }

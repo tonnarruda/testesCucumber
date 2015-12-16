@@ -17,7 +17,7 @@ import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
-import com.fortes.rh.model.dicionario.ParticipanteAvaliacao;
+import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -70,7 +70,7 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernateTest extends GenericDaoH
 
 		ParticipanteAvaliacaoDesempenho participanteAvaliacaoDesempenho = new ParticipanteAvaliacaoDesempenho();
 		participanteAvaliacaoDesempenho.setAvaliacaoDesempenho(avaliacaoDesempenho);
-		participanteAvaliacaoDesempenho.setTipo(ParticipanteAvaliacao.AVALIADO);
+		participanteAvaliacaoDesempenho.setTipo(TipoParticipanteAvaliacao.AVALIADO);
 		participanteAvaliacaoDesempenho.setColaborador(colaborador);
 		participanteAvaliacaoDesempenho.setId(null);
 		
@@ -95,7 +95,7 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernateTest extends GenericDaoH
 		
 		participanteAvaliacaoDesempenhoDao.getHibernateTemplateByGenericDao().flush();
 		
-		assertEquals(1, participanteAvaliacaoDesempenhoDao.findParticipantes(participanteAvaliacaoDesempenho.getAvaliacaoDesempenho().getId(), ParticipanteAvaliacao.AVALIADO).size());
+		assertEquals(1, participanteAvaliacaoDesempenhoDao.findColaboradoresParticipantes(participanteAvaliacaoDesempenho.getAvaliacaoDesempenho().getId(), TipoParticipanteAvaliacao.AVALIADO).size());
 	}
 	
 	public void testFindFaixasSalariaisDosAvaliadosByAvaliacaoDesempenho()
@@ -148,7 +148,7 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernateTest extends GenericDaoH
 		ParticipanteAvaliacaoDesempenho participanteAvaliacaoDesempenho2 = new ParticipanteAvaliacaoDesempenho();
 		participanteAvaliacaoDesempenho2.setColaborador(colaborador2);
 		participanteAvaliacaoDesempenho2.setAvaliacaoDesempenho(participanteAvaliacaoDesempenho.getAvaliacaoDesempenho());
-		participanteAvaliacaoDesempenho2.setTipo(ParticipanteAvaliacao.AVALIADO);
+		participanteAvaliacaoDesempenho2.setTipo(TipoParticipanteAvaliacao.AVALIADO);
 		participanteAvaliacaoDesempenhoDao.save(participanteAvaliacaoDesempenho2);
 		
 		Collection<Colaborador> participantes = new ArrayList<Colaborador>();
@@ -156,12 +156,12 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernateTest extends GenericDaoH
 		
 		participanteAvaliacaoDesempenhoDao.getHibernateTemplateByGenericDao().flush();
 		
-		assertEquals(2, participanteAvaliacaoDesempenhoDao.findParticipantes(participanteAvaliacaoDesempenho.getAvaliacaoDesempenho().getId(), ParticipanteAvaliacao.AVALIADO).size());
-		participanteAvaliacaoDesempenhoDao.removeNotIn(LongUtil.collectionToArrayLong(participantes), participanteAvaliacaoDesempenho.getAvaliacaoDesempenho().getId(), ParticipanteAvaliacao.AVALIADO);
+		assertEquals(2, participanteAvaliacaoDesempenhoDao.findColaboradoresParticipantes(participanteAvaliacaoDesempenho.getAvaliacaoDesempenho().getId(), TipoParticipanteAvaliacao.AVALIADO).size());
+		participanteAvaliacaoDesempenhoDao.removeNotIn(LongUtil.collectionToArrayLong(participantes), participanteAvaliacaoDesempenho.getAvaliacaoDesempenho().getId(), TipoParticipanteAvaliacao.AVALIADO);
 		
 		participanteAvaliacaoDesempenhoDao.getHibernateTemplateByGenericDao().flush();
 		
-		assertEquals(1, participanteAvaliacaoDesempenhoDao.findParticipantes(participanteAvaliacaoDesempenho.getAvaliacaoDesempenho().getId(), ParticipanteAvaliacao.AVALIADO).size());
+		assertEquals(1, participanteAvaliacaoDesempenhoDao.findColaboradoresParticipantes(participanteAvaliacaoDesempenho.getAvaliacaoDesempenho().getId(), TipoParticipanteAvaliacao.AVALIADO).size());
 	}
 
 	public AvaliacaoDesempenhoDao getAvaliacaoDesempenhoDao() {

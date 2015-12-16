@@ -19,7 +19,7 @@ import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
-import com.fortes.rh.model.dicionario.ParticipanteAvaliacao;
+import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 import com.fortes.rh.model.pesquisa.ColaboradorResposta;
@@ -402,11 +402,11 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 
 	public void clonarParticipantes(AvaliacaoDesempenho avaliacaoDesempenho, AvaliacaoDesempenho avaliacaoDesempenhoClone) throws Exception
 	{
-		Collection<Colaborador> avaliados = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADO);
-		Collection<Colaborador> avaliadores = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
+		Collection<Colaborador> avaliados = participanteAvaliacaoDesempenhoManager.findColaboradoresParticipantes(avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADO);
+		Collection<Colaborador> avaliadores = participanteAvaliacaoDesempenhoManager.findColaboradoresParticipantes(avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
 		
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenhoClone, LongUtil.collectionToArrayLong(avaliados), null, ParticipanteAvaliacao.AVALIADO);
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenhoClone, LongUtil.collectionToArrayLong(avaliadores), null, ParticipanteAvaliacao.AVALIADOR);
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenhoClone, LongUtil.collectionToArrayLong(avaliados), null, TipoParticipanteAvaliacao.AVALIADO);
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenhoClone, LongUtil.collectionToArrayLong(avaliadores), null, TipoParticipanteAvaliacao.AVALIADOR);
 		
 		Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 		

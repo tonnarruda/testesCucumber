@@ -22,6 +22,8 @@
 		<title>Participantes - ${avaliacaoDesempenho.titulo}</title>
 		
 		<#assign countColaboradorQuestionarios=0 />
+		<#assign countParticipantesAvaliados=0 />
+		<#assign countParticipantesAvaliadores=0 />
 		<#assign gerarAutoAvaliacoesEmLoteAction="gerarAutoAvaliacoesEmLote.action"/>
 		
 		<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
@@ -118,7 +120,10 @@
 				if ( $("#"+openboxtype+" #"+$(this).val()).length == 0 ) {
 					if(openboxtype == "avaliados") {
 						$("#"+openboxtype+" ol").append('<li class="ui-widget-content ui-draggable ui-selectable" id="'+$(this).val()+'">' +
-															'<input type="hidden" name="avaliados" value="'+$(this).val()+'"/>' +
+													      	'<input type="hidden" name="participantesAvaliados['+countParticipantesAvaliados+'].colaborador.id" value="'+$(this).val()+'"/>' +
+													      	'<input type="hidden" name="participantesAvaliados['+countParticipantesAvaliados+'].avaliacaoDesempenho.id" value="'+avaliacaoDesempenhoId+'"/>' +
+													      	'<input type="hidden" name="participantesAvaliados['+countParticipantesAvaliados+'].tipo" value="A"/>' +
+													      	'<input type="text" name="participantesAvaliados['+countParticipantesAvaliados+'].produtividade" class="notaProdutividade" />' +
 												      		'<div class="nome">'+ $(this).parent().text().replace(/([0-9]*.-.)?(.*)(.\(.*)/g, '$2') +'</div>' +
 												      		'<div class="faixa"></div>' +
 												      		'<div class="area"></div>' +
@@ -235,15 +240,21 @@
 				  	  <div>Área Organizacional</div>
 				    </div>
 				    <ol id="avaliados-list">
-				      <#list participantes as avaliado>
-				      	<li class="ui-widget-content" id="${avaliado.id}">
-					      	<input type="hidden" name="avaliados" value="${avaliado.id}"/>
-					      	<input type="text" name="produtividade" class="notaProdutividade" value="${ avaliado.produtividade }" />
-				      		<div class="nome">${avaliado.nome}</div>
-				      		<div class="faixa show-when-expand">${avaliado.faixaSalarial.descricao}</div>
-				      		<div class="area show-when-expand">${avaliado.areaOrganizacional.nome}</div>
+				      <#list participantesAvaliados as avaliado>
+				      	<li class="ui-widget-content" id="${avaliado.colaborador.id}">
+					      	<input type="hidden" name="participantesAvaliados[${countParticipantesAvaliados}].id" value="${avaliado.id}"/>
+					      	<input type="hidden" name="participantesAvaliados[${countParticipantesAvaliados}].colaborador.id" value="${avaliado.colaborador.id}"/>
+					      	<input type="hidden" name="participantesAvaliados[${countParticipantesAvaliados}].avaliacaoDesempenho.id" value="${avaliado.avaliacaoDesempenho.id}"/>
+					      	<input type="hidden" name="participantesAvaliados[${countParticipantesAvaliados}].tipo" value="${avaliado.tipo}"/>
+					      	<input type="text" name="participantesAvaliados[${countParticipantesAvaliados}].produtividade" class="notaProdutividade" value="${avaliado.produtividadeString}" />
+					      	
+				      		<div class="nome">${avaliado.colaborador.nome}</div>
+				      		<div class="faixa show-when-expand">${avaliado.colaborador.faixaSalarial.descricao}</div>
+				      		<div class="area show-when-expand">${avaliado.colaborador.areaOrganizacional.nome}</div>
 				      		<div style="clear:both;float: none;"></div>
 				      	</li>
+				      	
+				      	<#assign countParticipantesAvaliados = countParticipantesAvaliados + 1/>
 				      </#list>
 				    </ol>
 				  </div>
@@ -278,13 +289,19 @@
 						  	<div>Cargo</div>
 						  	<div>Área Organizacional</div>
 						</div>
-					  	<#list avaliadors as avaliador>
-						  	<div class="portlet" id="${avaliador.id}">
+						
+					  	<#list participantesAvaliadores as avaliador>
+						  	<div class="portlet" id="${avaliador.colaborador.id}">
+						  		<input type="hidden" name="participantesAvaliadores[${countParticipantesAvaliadores}].id" value="${avaliador.id}"/>
+						      	<input type="hidden" name="participantesAvaliadores[${countParticipantesAvaliadores}].colaborador.id" value="${avaliador.colaborador.id}"/>
+						      	<input type="hidden" name="participantesAvaliadores[${countParticipantesAvaliadores}].avaliacaoDesempenho.id" value="${avaliador.avaliacaoDesempenho.id}"/>
+						      	<input type="hidden" name="participantesAvaliadores[${countParticipantesAvaliadores}].tipo" value="${avaliador.tipo}"/>
+					      	
 						  		 <div class="portlet-header">
 						  		 	<input type="text" class="pesoAvaliador" value="" <#if avaliacaoDesempenho.liberada>disabled="disabled"</#if> />
-						  		 	<div class="nome">${avaliador.nome}</div>
-						  		 	<div class="faixa show-when-expand">${avaliador.faixaSalarial.descricao}</div>
-						      		<div class="area show-when-expand">${avaliador.areaOrganizacional.nome}</div>
+						  		 	<div class="nome">${avaliador.colaborador.nome}</div>
+						  		 	<div class="faixa show-when-expand">${avaliador.colaborador.faixaSalarial.descricao}</div>
+						      		<div class="area show-when-expand">${avaliador.colaborador.areaOrganizacional.nome}</div>
 						      		<div style="clear:both;float: none;"></div>
 						  		 </div>
 						  		 <div class="portlet-header mini-actions" style="background: #F3F3F3; padding: 0; display: none;">
@@ -302,22 +319,21 @@
 								    <div style="clear: both;"></div>
 								 </div>
 						  		 <div class="portlet-content hide-when-expand">
-						  		 	<ul id="${avaliador.id}">
-								  		<input type="hidden" name="avaliadores" value="${avaliador.id}"/>
-						  		 		<#if (avaliador.avaliados.size() == 0)> 
+						  		 	<ul id="${avaliador.colaborador.id}">
+						  		 		<#if (avaliador.colaborador.avaliados.size() == 0)> 
 							        		<li class="placeholder">Arraste os avaliados até aqui</li>
 							        	</#if>
-							        	<#list avaliador.avaliados as avaliado>
+							        	<#list avaliador.colaborador.avaliados as avaliado>
 								        	<li class="avaliado_${avaliado.id}">
 								        		${avaliado.nome}
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].id" value="${avaliado.colaboradorQuestionario.id}"/>
-								        		<#if avaliado.id == avaliador.id >
+								        		<#if avaliado.id == avaliador.colaborador.id >
 									        		<input type="text" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="pesoAvaliador" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}" <#if avaliacaoDesempenho.liberada>disabled="disabled"</#if> />
 								        		<#else>
 									        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].pesoAvaliador" class="peso" value="${avaliado.colaboradorQuestionario.pesoAvaliador?string}"/>
 								        		</#if>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].colaborador.id" value="${avaliado.id}"/>
-								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliador.id" value="${avaliador.id}"/>
+								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliador.id" value="${avaliador.colaborador.id}"/>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacao.id" value="${avaliacaoDesempenho.avaliacao.id}"/>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacaoDesempenho.id" value="${avaliacaoDesempenho.id}"/>
 								        		<#if avaliado.colaboradorQuestionario.respondida>
@@ -329,11 +345,15 @@
 							      	</ul>
 						  		 </div>
 						  	</div>
+						  	
+						  	<#assign countParticipantesAvaliadores = countParticipantesAvaliadores + 1/>
 					  	</#list>
 				  	</div>
 				</div>
 				
 				<script>countColaboradorQuestionarios=${countColaboradorQuestionarios};</script>
+				<script>countParticipantesAvaliados=${countParticipantesAvaliados};</script>
+				<script>countParticipantesAvaliadores=${countParticipantesAvaliadores};</script>
 				<@ww.hidden name="avaliacaoDesempenho.id"/>
 				<#if avaliacaoDesempenho.liberada>
 					<button type="button" class="btnGravarDesabilitado"></button>

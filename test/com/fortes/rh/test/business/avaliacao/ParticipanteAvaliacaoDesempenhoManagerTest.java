@@ -10,7 +10,7 @@ import org.jmock.core.Constraint;
 import com.fortes.rh.business.avaliacao.ParticipanteAvaliacaoDesempenhoManagerImpl;
 import com.fortes.rh.dao.avaliacao.ParticipanteAvaliacaoDesempenhoDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
-import com.fortes.rh.model.dicionario.ParticipanteAvaliacao;
+import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -36,11 +36,11 @@ public class ParticipanteAvaliacaoDesempenhoManagerTest extends MockObjectTestCa
 		
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		
-		particapanteAvaliacaoDesempenhoDao.expects(once()).method("findParticipantes").with(new Constraint[]{ eq(avaliacaoDesempenho.getId()), eq(ParticipanteAvaliacao.AVALIADO)}).will(returnValue(colaboradors));
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.collectionToArrayLong(colaboradors), null, ParticipanteAvaliacao.AVALIADO);
+		particapanteAvaliacaoDesempenhoDao.expects(once()).method("findParticipantes").with(new Constraint[]{ eq(avaliacaoDesempenho.getId()), eq(TipoParticipanteAvaliacao.AVALIADO)}).will(returnValue(colaboradors));
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.collectionToArrayLong(colaboradors), null, TipoParticipanteAvaliacao.AVALIADO);
 		
-		particapanteAvaliacaoDesempenhoDao.expects(once()).method("findParticipantes").with(new Constraint[]{ eq(avaliacaoDesempenho.getId()), eq(ParticipanteAvaliacao.AVALIADO)}).will(returnValue(new ArrayList<Colaborador>()));
+		particapanteAvaliacaoDesempenhoDao.expects(once()).method("findParticipantes").with(new Constraint[]{ eq(avaliacaoDesempenho.getId()), eq(TipoParticipanteAvaliacao.AVALIADO)}).will(returnValue(new ArrayList<Colaborador>()));
 		particapanteAvaliacaoDesempenhoDao.expects(once()).method("save").with(new Constraint[]{ANYTHING}).isVoid();
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.collectionToArrayLong(colaboradors), null, ParticipanteAvaliacao.AVALIADO);
+		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.collectionToArrayLong(colaboradors), null, TipoParticipanteAvaliacao.AVALIADO);
 	}
 }

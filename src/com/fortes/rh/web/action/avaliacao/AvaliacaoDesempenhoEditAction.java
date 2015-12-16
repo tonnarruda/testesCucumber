@@ -25,11 +25,12 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
-import com.fortes.rh.model.dicionario.ParticipanteAvaliacao;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
+import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -66,6 +67,10 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	private Collection<Colaborador> participantes;
 	private Collection<Colaborador> avaliadors;
+	
+	private Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliados = new ArrayList<ParticipanteAvaliacaoDesempenho>();
+	private Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliadores = new ArrayList<ParticipanteAvaliacaoDesempenho>();
+	
 	private Colaborador avaliador;
 	private ColaboradorQuestionario colaboradorQuestionario; 
 	
@@ -149,15 +154,15 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
 		
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		participantes = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADO);
+		participantesAvaliados = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADO);
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		
-		avaliadors = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
-		for (Colaborador avaliador : avaliadors) {
-			avaliador.setAvaliados(new ArrayList<Colaborador>());
-			for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), FiltroSituacaoAvaliacao.TODAS.getOpcao(), false, false, null)) {
+		participantesAvaliadores = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
+		for (ParticipanteAvaliacaoDesempenho avaliador : participantesAvaliadores) {
+			avaliador.getColaborador().setAvaliados(new ArrayList<Colaborador>());
+			for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getColaborador().getId(), FiltroSituacaoAvaliacao.TODAS.getOpcao(), false, false, null)) {
 				colaboradorQuestionario.getColaborador().setColaboradorQuestionario(colaboradorQuestionario);
-				avaliador.getAvaliados().add(colaboradorQuestionario.getColaborador());
+				avaliador.getColaborador().getAvaliados().add(colaboradorQuestionario.getColaborador());
 			}
 		}
 		
@@ -174,7 +179,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		} else {
 			faixaSalariais = configuracaoCompetenciaAvaliacaoDesempenhoManager.findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho(avaliacaoDesempenho.getId());
 		}
-		avaliadors = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
+		avaliadors = participanteAvaliacaoDesempenhoManager.findColaboradoresParticipantes(avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
 		
 		for (Colaborador avaliador : avaliadors) {
 			avaliador.setFaixaSalariaisAvaliados(new ArrayList<FaixaSalarial>());
@@ -280,12 +285,14 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String saveParticipantes() throws Exception {
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 		colaboradorQuestionarios.removeAll(Collections.singleton(null));
+		participantesAvaliados.removeAll(Collections.singleton(null));
+		participantesAvaliadores.removeAll(Collections.singleton(null));
 		
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(avaliados), produtividade, ParticipanteAvaliacao.AVALIADO);
-		participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.arrayStringToArrayLong(avaliados), avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADO);
+		participanteAvaliacaoDesempenhoManager.saveOrUpdate(participantesAvaliados);
+		participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliados), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADO);
 		
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.arrayStringToArrayLong(avaliadores), null, ParticipanteAvaliacao.AVALIADOR);
-		participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.arrayStringToArrayLong(avaliadores), avaliacaoDesempenho.getId(), ParticipanteAvaliacao.AVALIADOR);
+		participanteAvaliacaoDesempenhoManager.saveOrUpdate(participantesAvaliadores);
+		participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliadores), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
 		
 		colaboradorQuestionarioManager.save(new ArrayList<ColaboradorQuestionario>(colaboradorQuestionarios), avaliacaoDesempenho.getId());
 		colaboradorQuestionarioManager.removeNotIn(colaboradorQuestionarios, avaliacaoDesempenho.getId());
@@ -854,5 +861,23 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setProdutividade(String[] produtividade) {
 		this.produtividade = produtividade;
+	}
+
+	public Collection<ParticipanteAvaliacaoDesempenho> getParticipantesAvaliados() {
+		return participantesAvaliados;
+	}
+
+	public void setParticipantesAvaliados(
+			Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliados) {
+		this.participantesAvaliados = participantesAvaliados;
+	}
+
+	public Collection<ParticipanteAvaliacaoDesempenho> getParticipantesAvaliadores() {
+		return participantesAvaliadores;
+	}
+
+	public void setParticipantesAvaliadores(
+			Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliadores) {
+		this.participantesAvaliadores = participantesAvaliadores;
 	}
 }
