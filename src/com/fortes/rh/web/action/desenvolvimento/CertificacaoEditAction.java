@@ -3,6 +3,8 @@ package com.fortes.rh.web.action.desenvolvimento;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
@@ -22,6 +24,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
 import com.fortes.web.tags.CheckBox;
 import com.opensymphony.xwork.Action;
@@ -55,6 +58,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+	private Map<String,Object> parametros = new HashMap<String, Object>();
 		
 	private String nomeBusca;//filtro listagem
 	private char filtroCetificacao;
@@ -153,6 +157,8 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		try {
 			Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
 			Long[] estabelecimentoIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
+			
+			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de certificações vencidas e a vencer ", getEmpresaSistema(), "");
 				
 			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, getEmpresaSistema().getId(), certificacao.getId(), areaIds, estabelecimentoIds, filtroCetificacao);
 		
@@ -307,5 +313,9 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	public void setColaboradorCertificacaoManager(
 			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
+	}
+
+	public Map<String, Object> getParametros() {
+		return parametros;
 	}
 }

@@ -62,7 +62,7 @@
 		<action name="prepareImprimirCertificadosVencidosAVencer" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoEditAction" method="prepareImprimirCertificadosVencidosAVencer">
 			<result name="success" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareImprimirCertificadosVencidosAVencer.ftl</result>
 		</action>
-		<action name="imprimirCertificadosVencidosAVencer" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoListAction" method="imprimirCertificadosVencidosAVencer">
+		<action name="imprimirCertificadosVencidosAVencer" class="com.fortes.rh.web.action.desenvolvimento.CertificacaoEditAction" method="imprimirCertificadosVencidosAVencer">
 			<result name="success" type="jasper">
 				<param name="location">WEB-INF/report/certificadosVencidosAVencer.jasper</param>
 				<param name="dataSource">colaboradorCertificacoes</param>
