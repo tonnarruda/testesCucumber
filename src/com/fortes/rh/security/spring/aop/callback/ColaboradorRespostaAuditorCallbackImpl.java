@@ -234,38 +234,38 @@ public class ColaboradorRespostaAuditorCallbackImpl implements AuditorCallback {
 						dados.append("	Resposta: \n");
 						
 						switch (mapPerguntas.get(perguntaId).getTipo()) {
-						
-						case TipoPergunta.NOTA:
+
+							case TipoPergunta.NOTA:
 								if(perguntasRespostas[i+ contador].substring(2) == null || perguntasRespostas[i+ contador].substring(2).isEmpty())
 									dados.append("		[Sem resposta]\n");
 								else
 									dados.append("		Nota:	" + perguntasRespostas[i+ contador].substring(2) + "\n");
-							break;
-							
-						case TipoPergunta.SUBJETIVA:
+								break;
+	
+							case TipoPergunta.SUBJETIVA:
 								dados.append("		Texto:	" + perguntasRespostas[i + contador].substring(2) + "\n");
-							break;
-							
-						case TipoPergunta.MULTIPLA_ESCOLHA:
+								break;
+	
+							case TipoPergunta.MULTIPLA_ESCOLHA:
 								boolean respostaMultiplaEscolha = true;
 								contador = 0;
-								
+	
 								while (respostaMultiplaEscolha) {
 									contador++;
-									
+	
 									if(i+contador < perguntasRespostas.length){
 										respostaId = (Long.parseLong(perguntasRespostas[i + contador].substring(2)));
-										dados.append("		Texto:	" + respostaManager.findById(respostaId).getTexto() + "\n");
+										dados.append("		Texto:	" + respostaManager.findEntidadeComAtributosSimplesById(respostaId).getTexto() + "\n");
 									}
 									if((i+contador+1) >= perguntasRespostas.length || !perguntasRespostas[i+contador+1].substring(0,2).equals("RM"))
 										respostaMultiplaEscolha = false;
 								}
-							break;
-
-						default:
+								break;
+	
+							default:
 								respostaId = (Long.parseLong(perguntasRespostas[i+contador].substring(2)));
-								dados.append("		Texto:	" + respostaManager.findById(respostaId).getTexto() + "\n");
-							break;
+								dados.append("		Texto:	" + respostaManager.findEntidadeComAtributosSimplesById(respostaId).getTexto() + "\n");
+								break;
 						}
 						i=i+contador;
 					}
