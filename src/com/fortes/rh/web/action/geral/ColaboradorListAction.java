@@ -293,6 +293,8 @@ public class ColaboradorListAction extends MyActionSupportList
 			
 	        byte[] reciboPagamentoBytes = Base64.decodeBase64(reciboPagamento.getBytes()); 
 			
+	        byteArrayInputStream = new ByteArrayInputStream(reciboPagamentoBytes);
+	        
 	        HttpServletResponse response = ServletActionContext.getResponse();
 
 			response.addHeader("Expires", "0");
@@ -355,7 +357,8 @@ public class ColaboradorListAction extends MyActionSupportList
 			String reciboDeDecimoTerceiro = colaboradorManager.getReciboDeDecimoTerceiro(colaborador, dataCalculo);
 			
 	        byte[] reciboPagamentoBytes = Base64.decodeBase64(reciboDeDecimoTerceiro.getBytes()); 
-			
+	        byteArrayInputStream = new ByteArrayInputStream(reciboPagamentoBytes);
+	        
 	        HttpServletResponse response = ServletActionContext.getResponse();
 
 			response.addHeader("Expires", "0");
@@ -363,7 +366,7 @@ public class ColaboradorListAction extends MyActionSupportList
 			response.setContentType("application/force-download");
 			response.setContentLength((int)reciboPagamentoBytes.length);
 			response.setHeader("Content-Transfer-Encoding", "binary");
-			response.setHeader("Content-Disposition","attachment; filename=\"recibo_decimo_terceiro_" + dataCalculo + ".pdf\"");
+			response.setHeader("Content-Disposition","attachment; filename=\"recibo_decimo_terceiro_" + dataCalculo.replace("/", "_") + ".pdf\"");
 
 			response.getOutputStream().write(reciboPagamentoBytes);
 		} 

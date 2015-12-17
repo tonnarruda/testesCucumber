@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.15x.18x" db="" data="xx/xx/20xx">
+	<Versao id="1.1.155.186" db="" data="16/12/2015">
 		<Item visivel="S" motivo="S15120000024"><![CDATA[T&D > Painel de Indicadores: Ajuste de inconsistência no indicador de “percentual de frequência (aprovados)”.]]></Item>
+		<Item visivel="S" motivo="S15110000258"><![CDATA[Info. Funcionais > Relatórios > Recibo de 13º salário: Novo relatório, quando integrado com o sistema Fortes Pessoal.]]></Item>
 		<Item visivel="S" motivo="P15110000246"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Apresentar hierarquia das áreas organizacionais ao imprimir.]]></Item>		
-		<Item visivel="S" motivo="P15120000056"><![CDATA[Info. Funcionais > Painel de Indicadores > Ocorrências/Absenteísmo:: Ajuste de inconsistência ao gerar indicador de absenteísmo.]]></Item>
+		<Item visivel="S" motivo="P15120000056"><![CDATA[Info. Funcionais > Painel de Indicadores > Ocorrências/Absenteísmo: Ajuste de inconsistência ao gerar indicador de absenteísmo.]]></Item>
 	</Versao>
 	<Versao id="1.1.154.185" db="" data="03/12/2015">
 		<Item visivel="S" motivo="S15110000172"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Ajuste da inconsistência ao deletar uma solicitação de pessoal com dependência.]]></Item>

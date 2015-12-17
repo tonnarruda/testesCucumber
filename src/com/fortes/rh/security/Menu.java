@@ -16,6 +16,7 @@ public abstract class Menu
 	
 	static{
 		papeisParaEmpresasIntegradas.add("ROLE_REL_RECIBO_PAGAMENTO");
+		papeisParaEmpresasIntegradas.add("ROLE_REL_RECIBO_DECIMO_TERCEIRO");
 	}
 	
 	public static String getMenuFormatado(Collection<Papel> rolesPapel, String contexto, ParametrosDoSistema parametros, Collection<Empresa> empresasDoUsuario, Empresa empresaLogada)
