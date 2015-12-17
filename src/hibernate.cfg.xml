@@ -152,6 +152,8 @@
     <mapping class="com.fortes.rh.model.avaliacao.Avaliacao" />
     <mapping class="com.fortes.rh.model.geral.Cliente" />
     <mapping class="com.fortes.rh.model.avaliacao.AvaliacaoDesempenho" />
+    <mapping class="com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho" />
+	<mapping class="com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho" />
     <mapping class="com.fortes.rh.model.geral.ConfiguracaoCampoExtra" />
     <mapping class="com.fortes.rh.model.geral.CamposExtras" />
     <mapping class="com.fortes.rh.model.geral.ConfiguracaoPerformance" />
@@ -170,6 +172,10 @@
     <mapping class="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia" />
     <mapping class="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaColaborador" />
     <mapping class="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial" />
+    <mapping class="com.fortes.rh.model.captacao.CriterioAvaliacaoCompetencia" />
+    <mapping class="com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaCriterio" />
+	<mapping class="com.fortes.rh.model.captacao.NivelCompetenciaHistorico" />
+	<mapping class="com.fortes.rh.model.captacao.ConfigHistoricoNivel" />
     <mapping class="com.fortes.rh.model.cargosalario.FaturamentoMensal" />
     <mapping class="com.fortes.rh.model.sesmt.NaturezaLesao" />
     <mapping class="com.fortes.rh.model.sesmt.ComposicaoSesmt" />
