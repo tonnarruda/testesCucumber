@@ -1,5 +1,6 @@
 package com.fortes.rh.business.desenvolvimento;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.business.GenericManagerImpl;
@@ -10,7 +11,9 @@ import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
+import com.fortes.web.tags.CheckBox;
 
 public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, CertificacaoDao> implements CertificacaoManager
 {
@@ -39,6 +42,22 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 
 		return getDao().findMatrizTreinamento(faixaIds);
 	}
+	
+	public Collection<CheckBox> populaCheckBox(Long empresaId)
+	{
+		try
+		{
+			Collection<Certificacao> estabelecimentosTmp = getDao().findAllSelect(empresaId);
+			return CheckListBoxUtil.populaCheckListBox(estabelecimentosTmp, "getId", "getNome");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		return new ArrayList<CheckBox>();
+	}
+
 
 	public void setFaixaSalarialManager(FaixaSalarialManager faixaSalarialManager)
 	{

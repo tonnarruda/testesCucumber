@@ -3,11 +3,6 @@ package com.fortes.rh.model.desenvolvimento;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
-import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
-import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.util.DateUtil;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -17,6 +12,9 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("serial")
 @Entity
@@ -37,7 +35,7 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	@Transient
 	private Boolean aprovadoNaTurma;
 	@Transient
-	private Boolean certificado;
+	private Date dataCertificado;
 
 	public ColaboradorCertificacao() {
 	}
@@ -45,7 +43,8 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	//usado por colabNaCertificacaoNaoCertificados
 	public ColaboradorCertificacao(Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, 
 			Long cargoId, String cargoNome,	Long certificacaoId, String certificacaoNome, Long cursoId, String cursoNome, 
-			Date turmaDataPrevIni, Date turmaDataPrevFim,	Boolean turmaRealizada, Boolean aprovadoNaTurma, Boolean certificado)
+			Date turmaDataPrevIni, Date turmaDataPrevFim,	Boolean turmaRealizada, Boolean aprovadoNaTurma, Date dataCertificado,
+			Integer periodicidade)
 	{
 		this.colaborador = new Colaborador();
 		this.colaborador.setId(colaboradorId);
@@ -60,6 +59,7 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		this.certificacao = new Certificacao();
 		this.certificacao.setId(certificacaoId);
 		this.certificacao.setNome(certificacaoNome);
+		this.certificacao.setPeriodicidade(periodicidade);
 		
 		this.turma = new Turma();
 		this.turma.setDataPrevIni(turmaDataPrevIni);
@@ -71,7 +71,7 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		this.turma.getCurso().setNome(cursoNome);
 		
 		this.aprovadoNaTurma = aprovadoNaTurma;
-		this.certificado = certificado;
+		this.dataCertificado = dataCertificado;
 	}
 	
 	public Colaborador getColaborador() {
@@ -126,18 +126,22 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		this.aprovadoNaTurma = aprovadoNaTurma;
 	}
 
-	public String getCertificadoString() {
-		if(certificado != null && certificado)
-			return "Sim";
-		
-		return "Não";
-	}
-	
-	public Boolean getCertificado() {
-		return certificado;
+	public Date getDataCertificado() {
+		return dataCertificado;
 	}
 
-	public void setCertificado(Boolean certificado) {
-		this.certificado = certificado;
+	public void setDataCertificado(Date dataCertificado) {
+		this.dataCertificado = dataCertificado;
+	}
+	
+	public String getDataCertificadoFormatada()
+	{
+		return DateUtil.formataDiaMesAno(this.dataCertificado);
+	}
+	
+	public String getDataVencimentoCertificacao()
+	{
+		Date vencimento = DateUtil.incrementaMes(this.dataCertificado, this.certificacao.getPeriodicidade());
+		return DateUtil.formataDiaMesAno(vencimento);
 	}
 }

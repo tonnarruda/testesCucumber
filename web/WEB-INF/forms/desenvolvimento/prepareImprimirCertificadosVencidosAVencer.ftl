@@ -24,7 +24,7 @@
 		<#assign dateFim = ""/>
 	</#if>
 	
-	<#assign validarCampos="return validaFormulario('form', new Array('dataIni', 'dataFim', 'certificacao'), new Array('dataIni', 'dataFim'))"/>
+	<#assign validarCampos="return validaFormulario('form', new Array('dataIni', 'dataFim', '@certificacoesCheck'), new Array('dataIni', 'dataFim'))"/>
 	
 </head>
 <body>
@@ -33,16 +33,15 @@
 	
 	<@ww.form name="form" action="imprimirCertificadosVencidosAVencer.action" onsubmit="${validarCampos}" validate="true" method="POST">
 	
-		Período:*<br>
+		Período Certificado:*<br>
 		<@ww.datepicker name="dataIni" id="dataIni" value="${dateIni}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 		<@ww.label value="a" liClass="liLeft" />
 		<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
 	
-		<@ww.select name="certificacao.id" id="certificacao" list="certificacoes" listKey="id" required="true" listValue="nome" label="Certificação" headerKey="" headerValue="Selecione..." cssStyle="width: 500px;"/>
+		<@frt.checkListBox name="certificacoesCheck" id="certificacoesCheck" label="Certificações" list="certificacoesCheckList" filtro="true" required="true"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
-		<@ww.select name="filtroCertificacao" label="Considerar colaboradores que possuem certificações" list=r"#{'0':'Vencidas e a vencer','1':'A vencer', '2':'Vencidas'}" cssStyle="width: 500px;"/>
-		
+		<@ww.select label="Considerar colaboradores que possuem certificações" name="filtroCetificacao" id="filtroCetificacao" list="tipoCertificacoes" cssStyle="width: 500px;"/>
 	</@ww.form>
 	
 	<div class="buttonGroup">

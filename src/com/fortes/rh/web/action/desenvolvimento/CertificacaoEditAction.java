@@ -19,10 +19,12 @@ import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
+import com.fortes.rh.model.dicionario.TipoCertificacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.MyActionSupportEdit;
@@ -58,13 +60,20 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private Collection<CheckBox> areasCheckList = new ArrayList<CheckBox>();
 	private String[] estabelecimentosCheck;
 	private Collection<CheckBox> estabelecimentosCheckList = new ArrayList<CheckBox>();
+	private String[] certificacoesCheck;
+	private Collection<CheckBox> certificacoesCheckList = new ArrayList<CheckBox>();
+	
 	private Map<String,Object> parametros = new HashMap<String, Object>();
+	private TipoCertificacao tipoCertificacoes = new TipoCertificacao(); 
+	private String reportFilter;
+	private String reportTitle;
 		
 	private String nomeBusca;//filtro listagem
 	private char filtroCetificacao;
 	private boolean exibirPeriodicidade;
 	private Date dataIni;
 	private Date dataFim;
+	
 
 	private void prepare() throws Exception
 	{
@@ -135,7 +144,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	
 	public String prepareImprimirCertificadosVencidosAVencer()
 	{
-		certificacoes = certificacaoManager.findAllSelect(getEmpresaSistema().getId());
+		certificacoesCheckList = certificacaoManager.populaCheckBox(getEmpresaSistema().getId());
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
 		
@@ -157,24 +166,39 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		try {
 			Long[] areaIds = LongUtil.arrayStringToArrayLong(areasCheck);
 			Long[] estabelecimentoIds = LongUtil.arrayStringToArrayLong(estabelecimentosCheck);
+			Long[] certificacoesIds = LongUtil.arrayStringToArrayLong(certificacoesCheck);
 			
-			parametros = RelatorioUtil.getParametrosRelatorio("Relatório de certificações vencidas e a vencer ", getEmpresaSistema(), "");
-				
-			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, getEmpresaSistema().getId(), certificacao.getId(), areaIds, estabelecimentoIds, filtroCetificacao);
+			reportTitle = "Relatório de certificações vencidas e a vencer ";
+			reportFilter = getDataReferenciaFormatada() + "\n";
+			reportFilter += "Certificações " + TipoCertificacao.getDescricao(filtroCetificacao).toLowerCase();
+			
+			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
+			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, getEmpresaSistema().getId(), areaIds, estabelecimentoIds, filtroCetificacao, certificacoesIds);
 		
 			if(colaboradorCertificacoes.size() == 0){
 				addActionMessage("Não existem dados para o filtro informado.");
+				prepareImprimirCertificadosVencidosAVencer();
 				return Action.INPUT;	
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			addActionMessage("Não foi possível gerar relatório.");
+			prepareImprimirCertificadosVencidosAVencer();
 			return Action.INPUT;
 		}
 		
 		return Action.SUCCESS;
 	}
+	
+	private String getDataReferenciaFormatada(){
+		String dataReferenciaFormatada = "-";
+		if (dataIni != null && dataFim != null)
+			dataReferenciaFormatada = "Período: " + DateUtil.formataDiaMesAno(dataIni) + " a " + DateUtil.formataDiaMesAno(dataFim);
+
+		return dataReferenciaFormatada;
+	}
+	
 	
 	public Object getModel()
 	{
@@ -317,5 +341,41 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public Map<String, Object> getParametros() {
 		return parametros;
+	}
+
+	public Date getDataIni() {
+		return dataIni;
+	}
+
+	public void setDataIni(Date dataIni) {
+		this.dataIni = dataIni;
+	}
+
+	public Date getDataFim() {
+		return dataFim;
+	}
+
+	public void setDataFim(Date dataFim) {
+		this.dataFim = dataFim;
+	}
+
+	public void setCertificacoesCheck(String[] certificacoesCheck) {
+		this.certificacoesCheck = certificacoesCheck;
+	}
+
+	public Collection<CheckBox> getCertificacoesCheckList() {
+		return certificacoesCheckList;
+	}
+
+	public String getReportFilter() {
+		return reportFilter;
+	}
+
+	public String getReportTitle() {
+		return reportTitle;
+	}
+
+	public TipoCertificacao getTipoCertificacoes() {
+		return tipoCertificacoes;
 	}
 }

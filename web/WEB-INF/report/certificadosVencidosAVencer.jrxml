@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="1.7715610000000017"/>
-	<property name="ireport.x" value="32"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -16,24 +16,27 @@
 	<field name="certificacao.nome" class="java.lang.String"/>
 	<field name="turma.curso.nome" class="java.lang.String"/>
 	<field name="colaborador.matricula" class="java.lang.String"/>
-	<field name="colaborador.historicoColaborador.cargo.nome" class="java.lang.String"/>
-	<field name="certificadoString" class="java.lang.String"/>
+	<field name="colaborador.historicoColaborador.faixaSalarial.cargo.nome" class="java.lang.String"/>
+	<field name="certificado" class="java.lang.Boolean"/>
 	<field name="colaborador.id" class="java.lang.Long"/>
 	<field name="turma.periodoFormatado" class="java.lang.String"/>
 	<field name="aprovadoNaTurmaString" class="java.lang.String"/>
+	<field name="dataCertificadoFormatada" class="java.lang.String"/>
+	<field name="certificacao.periodicidadeFormatada" class="java.lang.String"/>
+	<field name="dataVencimentoCertificacao" class="java.lang.String"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
-		<variableExpression><![CDATA[]]></variableExpression>
+		<variableExpression><![CDATA[$F{turma.curso.nome}]]></variableExpression>
 	</variable>
 	<group name="colaborador">
 		<groupExpression><![CDATA[$F{colaborador.id}]]></groupExpression>
 		<groupHeader>
-			<band height="13">
+			<band height="21">
 				<textField>
-					<reportElement x="2" y="0" width="533" height="13" uuid="dbe0a29a-9dfd-491b-bf0d-5bd1d941a434"/>
+					<reportElement x="2" y="8" width="533" height="13" uuid="dbe0a29a-9dfd-491b-bf0d-5bd1d941a434"/>
 					<box>
-						<bottomPen lineWidth="0.0"/>
+						<bottomPen lineWidth="0.25"/>
 					</box>
-					<textFieldExpression><![CDATA[$F{colaborador.nomeMaisNomeComercial} +" - " + $F{colaborador.matricula} +" - " + $F{colaborador.historicoColaborador.cargo.nome}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{colaborador.nomeMaisNomeComercial} +" - " + ($F{colaborador.matricula} != null ? $F{colaborador.matricula} : "Sem Matrícula " ) +" - " + $F{colaborador.historicoColaborador.faixaSalarial.cargo.nome}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -44,10 +47,46 @@
 	<group name="certificacao">
 		<groupExpression><![CDATA[$F{certificacao.id}]]></groupExpression>
 		<groupHeader>
-			<band height="14">
+			<band height="18">
 				<textField>
-					<reportElement x="21" y="0" width="514" height="14" uuid="ff768c51-20d3-4458-befa-b56a39db7b67"/>
-					<textFieldExpression><![CDATA[$F{certificacao.nome} + "- Certificado: " + $F{certificadoString}]]></textFieldExpression>
+					<reportElement x="18" y="2" width="220" height="14" uuid="ff768c51-20d3-4458-befa-b56a39db7b67"/>
+					<box>
+						<bottomPen lineWidth="0.25"/>
+					</box>
+					<textElement>
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{certificacao.nome}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="241" y="2" width="80" height="14" uuid="83eb2fa2-06e3-4ca5-a89d-f58ad7039225"/>
+					<box>
+						<bottomPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{dataCertificadoFormatada}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="324" y="2" width="71" height="14" uuid="8964939b-b298-47be-b837-cb776a191580"/>
+					<box>
+						<bottomPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{certificacao.periodicidadeFormatada}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="398" y="2" width="137" height="14" uuid="3c2be249-c764-4557-add2-8be363122348"/>
+					<box>
+						<bottomPen lineWidth="0.25"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{dataVencimentoCertificacao}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupHeader>
@@ -73,7 +112,7 @@
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="55" splitType="Stretch">
+		<band height="53" splitType="Stretch">
 			<staticText>
 				<reportElement key="staticText-2" x="2" y="8" width="533" height="13" uuid="52bbb728-831c-4194-a7a4-d267b97a7605"/>
 				<box>
@@ -88,7 +127,7 @@
 				<text><![CDATA[Colaborador - Matrícula - Cargo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-6" x="42" y="36" width="248" height="13" uuid="1f569800-406a-4763-a68e-fc8452f76371"/>
+				<reportElement key="staticText-6" x="42" y="38" width="280" height="13" uuid="1f569800-406a-4763-a68e-fc8452f76371"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -101,20 +140,20 @@
 				<text><![CDATA[Curso]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-8" x="294" y="36" width="124" height="13" uuid="e33a42c9-4dfb-4a46-a2e7-648dd6898f6f"/>
+				<reportElement key="staticText-8" x="325" y="38" width="156" height="13" uuid="e33a42c9-4dfb-4a46-a2e7-648dd6898f6f"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Left">
+				<textElement textAlignment="Center">
 					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Período]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-9" x="422" y="36" width="113" height="13" uuid="28920c75-4826-40f2-b47c-787c5ab0012d"/>
+				<reportElement key="staticText-9" x="484" y="38" width="51" height="13" uuid="28920c75-4826-40f2-b47c-787c5ab0012d"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -127,7 +166,7 @@
 				<text><![CDATA[Aprovado]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-2" x="21" y="23" width="514" height="13" uuid="7750bf1f-0331-4bc7-9121-201677062d93"/>
+				<reportElement key="staticText-2" x="18" y="23" width="220" height="13" uuid="7750bf1f-0331-4bc7-9121-201677062d93"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -137,14 +176,53 @@
 				<textElement>
 					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Certificação - Aprovação]]></text>
+				<text><![CDATA[Certificação]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="241" y="23" width="80" height="13" uuid="731983ca-c32e-4a1d-a754-2440ceac7be3"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Certificado em]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="398" y="23" width="137" height="13" uuid="06f7725a-7a3b-4059-8d30-7faaf72fb7b0"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Vencimento do Certificado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-2" x="324" y="23" width="71" height="13" uuid="995ab9e4-060f-4d23-91ad-aa58d3dfe20a"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Periodicidade]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="12" splitType="Prevent">
 			<rectangle>
-				<reportElement key="rectangle-1" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="21" y="1" width="514" height="11" backcolor="#EEEEEE" uuid="79389da8-1e1e-4915-b2b6-08911749b3ee">
+				<reportElement key="rectangle-1" positionType="Float" stretchType="RelativeToBandHeight" mode="Opaque" x="18" y="1" width="517" height="11" backcolor="#EEEEEE" uuid="79389da8-1e1e-4915-b2b6-08911749b3ee">
 					<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
@@ -152,33 +230,33 @@
 				</graphicElement>
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-9" x="294" y="1" width="124" height="11" uuid="b07c595d-3da5-4b42-80c5-324499e49b31"/>
+				<reportElement key="textField-9" x="325" y="1" width="156" height="11" uuid="b07c595d-3da5-4b42-80c5-324499e49b31"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{turma.periodoFormatado}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-10" x="422" y="1" width="113" height="11" uuid="e92a542b-2aa0-467a-bee6-1f5538f9b523"/>
+				<reportElement key="textField-10" x="484" y="1" width="51" height="11" uuid="e92a542b-2aa0-467a-bee6-1f5538f9b523"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{aprovadoNaTurmaString}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement key="textField-11" x="42" y="1" width="248" height="11" uuid="c4cc9dbd-f534-48eb-bbf9-6a963ba9736b"/>
+				<reportElement key="textField-11" x="42" y="1" width="280" height="11" uuid="c4cc9dbd-f534-48eb-bbf9-6a963ba9736b"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>

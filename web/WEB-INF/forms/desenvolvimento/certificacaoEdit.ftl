@@ -17,12 +17,13 @@
 			<@ww.textfield label="Nome" id="nome" name="certificacao.nome"  cssStyle="width:500px" maxLength="100" required="true"/>
 			<#if exibirPeriodicidade>
 				<@ww.textfield label="Periodicidade em meses" name="certificacao.periodicidade" id="periodicidade" cssStyle="width:30px; text-align:right;" maxLength="4" onkeypress = "return(somenteNumeros(event,''));"/>
+				<@ww.select label="Certificação pré-requisita" name="certificacao.certificacaoPreRequisito.id" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 500px;" />
+			<#else>
+				<@ww.hidden name="certificacao.periodicidade" />
+				<@ww.hidden name="certificacao.certificacaoPreRequisito.id" />	
 			</#if>
 	        <@frt.checkListBox label="Cursos" name="cursosCheck" list="cursosCheckList" filtro="true" />
 	        <@frt.checkListBox label="Avaliações Práticas" name="avaliacoesPraticasCheck" list="avaliacoesPraticasCheckList" filtro="true" />
-			
-			<@ww.select label="Certificação que será pré-requisito" name="certificacao.certificacaoPreRequisito.id" list="certificacoes" listKey="id" listValue="nome" headerKey="" headerValue="Selecione..." cssStyle="width: 500px;" />
-			
 			
 			<@ww.hidden name="certificacao.id" />
 			<@ww.token/>

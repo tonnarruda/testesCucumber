@@ -7,6 +7,7 @@ import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.web.tags.CheckBox;
 
 public interface CertificacaoManager extends GenericManager<Certificacao>
 {
@@ -19,6 +20,7 @@ public interface CertificacaoManager extends GenericManager<Certificacao>
 	Integer getCount(Long empresaId, String nomeBusca);
 	void deleteByFaixaSalarial(Long[] faixaIds) throws Exception;
 	Collection<Colaborador> findColaboradoresNaCertificacoa(Long certificacaoId);
-	public Collection<Certificacao> findAllSelectNotCertificacaoId(Long empresaId, Long certificacaoId);
+	Collection<Certificacao> findAllSelectNotCertificacaoId(Long empresaId, Long certificacaoId);
 	Collection<Certificacao> findByCursoId(Long cursoId);
+	Collection<CheckBox> populaCheckBox(Long empresaId);
 }

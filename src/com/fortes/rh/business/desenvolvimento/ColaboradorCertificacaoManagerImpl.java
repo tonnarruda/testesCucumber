@@ -6,40 +6,25 @@ import java.util.Date;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
-import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.util.CollectionUtil;
 
 public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<ColaboradorCertificacao, ColaboradorCertificacaoDao> implements ColaboradorCertificacaoManager
 {
-	private CertificacaoManager certificacaoManager;
-	
 	public Collection<ColaboradorCertificacao> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId) {
 		return getDao().findByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId);
 	}
 
-	public Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, Long empresaId, Long certificacaoId,	Long[] areaIds, Long[] estabelecimentoIds, char filtroCetificacao) 
+	public Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, Long empresaId, Long[] areaIds,	Long[] estabelecimentoIds, char filtroCetificacao, Long... certificacoesIds) 
 	{
-		Collection<ColaboradorCertificacao> colabNaCertificacaoNaoCertificados = new ArrayList<ColaboradorCertificacao>();
+		Collection<ColaboradorCertificacao> colaboradoresCertificacao = new ArrayList<ColaboradorCertificacao>();
 		
-		if(certificacaoId != null)
-			colabNaCertificacaoNaoCertificados.addAll(getDao().colabNaCertificacaoNaoCertificados(certificacaoId, areaIds, estabelecimentoIds));
-		else{
-			Collection<Certificacao> certificacoes = certificacaoManager.findAllSelect(empresaId);
-			
-			for (Certificacao certificacao : certificacoes) 
-				colabNaCertificacaoNaoCertificados.addAll(getDao().colabNaCertificacaoNaoCertificados(certificacao.getId(), areaIds, estabelecimentoIds));
-		}
+		if(false)//Vendo regras com o pessoal da equipe
+			for (Long certificacaoId : certificacoesIds) 
+				colaboradoresCertificacao.addAll(getDao().colabNaCertificacaoNaoCertificados(areaIds, estabelecimentoIds, certificacaoId));
 		
-		colabNaCertificacaoNaoCertificados.addAll(getDao().colaboradoresCertificados(certificacaoId, areaIds, estabelecimentoIds));
+		colaboradoresCertificacao.addAll(getDao().colaboradoresCertificados(dataIni, dataFim, filtroCetificacao, areaIds, estabelecimentoIds, certificacoesIds));
 		
-		CollectionUtil<ColaboradorCertificacao> cUtil = new CollectionUtil<ColaboradorCertificacao>();
-		colabNaCertificacaoNaoCertificados = cUtil.sortCollectionStringIgnoreCase(colabNaCertificacaoNaoCertificados, "colaborador.nome");
-		
-		return colabNaCertificacaoNaoCertificados;
-	}
-
-	public void setCertificacaoManager(CertificacaoManager certificacaoManager) {
-		this.certificacaoManager = certificacaoManager;
+		return new CollectionUtil<ColaboradorCertificacao>().sortCollectionStringIgnoreCase(colaboradoresCertificacao, "colaborador.nome");
 	}
 }
