@@ -159,6 +159,10 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
 		p.add(Projections.property("ao.areaMae.id"), "areaOrganizacionalAreaMaeId");
 		p.add(Projections.sqlProjection("monta_familia_area(ao6_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome");
+		p.add(Projections.property("col.nome"), "colaboradorNome");
+		p.add(Projections.property("col.contato.email"), "colaboradorEmail");
+		p.add(Projections.property("fs.nome"), "faixaSalarialNome");
+		p.add(Projections.property("ca.nome"), "cargoNome");
 		
 		criteria.setProjection(p);
 
@@ -167,7 +171,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 
 	    DetachedCriteria subSelect = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
 	    		.setProjection(Projections.max("hc2.data"))
-	    		.add(Restrictions.eqProperty("hc2.colaborador.id", "cb.id"))
+	    		.add(Restrictions.eqProperty("hc2.colaborador.id", "col.id"))
 	    		.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
 	    
 	    criteria.add(Subqueries.propertyEq("hc.data", subSelect));

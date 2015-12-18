@@ -11,6 +11,10 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.hibernate.Hibernate;
+import org.hibernate.criterion.Projections;
+import org.hibernate.type.Type;
+
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
@@ -143,5 +147,71 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	{
 		Date vencimento = DateUtil.incrementaMes(this.data, this.certificacao.getPeriodicidade());
 		return DateUtil.formataDiaMesAno(vencimento);
+	}
+	
+	public void setCargoNome(String cargoNome)
+	{
+		inicializaColaborador();
+		this.colaborador.setCargoNomeProjection(cargoNome);
+	}
+
+	public void setFaixaSalarialNome(String FaixaSalarialNome)
+	{
+		inicializaColaborador();
+		this.colaborador.setFaixaSalarialNomeProjection(FaixaSalarialNome);
+	}
+	
+	public void setColaboradorEmail(String colaboradorEmail)
+	{
+		inicializaColaborador();
+		this.colaborador.setEmailColaborador(colaboradorEmail);
+	}
+	
+	public void setColaboradorNome(String colaboradorNome)
+	{
+		inicializaColaborador();
+		this.colaborador.setNome(colaboradorNome);
+	}
+	
+	public void setAreaOrganizacionalAreaMaeId(Long areaOrganizacionalAreaMaeId)
+	{
+		inicializaColaborador();
+		this.colaborador.setAreaOrganizacionalAreaMaeId(areaOrganizacionalAreaMaeId);
+	}
+	
+	public void setAreaOrganizacionalNome(String areaOrganizacionalNome)
+	{
+		inicializaColaborador();
+		this.colaborador.setAreaOrganizacionalNome(areaOrganizacionalNome);
+	}
+	
+	public void setAreaOrganizacionalId(Long areaOrganizacionalId)
+	{
+		inicializaColaborador();
+		this.colaborador.setAreaOrganizacionalId(areaOrganizacionalId);
+	}
+
+	private void inicializaColaborador() 
+	{
+		if(this.colaborador == null)
+			this.colaborador = new Colaborador();
+	} 
+	
+	public void setCertificacaoPeriodicidade(Integer certificacaoPeriodicidade)
+	{
+		iniciaCertificacao();
+		this.certificacao.setPeriodicidade(certificacaoPeriodicidade);
+	}
+	
+	public void setCertificacaoNome(String CertificacaoNome)
+	{
+		iniciaCertificacao();
+		this.certificacao.setNome(CertificacaoNome);
+	}
+
+	private void iniciaCertificacao() 
+	{
+		if(this.certificacao == null)
+			this.certificacao = new Certificacao();
 	}
 }
