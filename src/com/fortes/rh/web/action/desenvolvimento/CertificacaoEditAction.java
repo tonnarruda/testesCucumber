@@ -145,8 +145,13 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	public String prepareImprimirCertificadosVencidosAVencer()
 	{
 		certificacoesCheckList = certificacaoManager.populaCheckBox(getEmpresaSistema().getId());
+		certificacoesCheckList = CheckListBoxUtil.marcaCheckListBox(certificacoesCheckList, certificacoesCheck);
+
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());
+		areasCheckList = CheckListBoxUtil.marcaCheckListBox(areasCheckList, areasCheck);
+		
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
+		estabelecimentosCheckList = CheckListBoxUtil.marcaCheckListBox(estabelecimentosCheckList, estabelecimentosCheck);
 		
 		empresaId = empresaManager.ajustaCombo(empresaId, getEmpresaSistema().getId());
 		populaEmpresa(new String[]{"ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER"});	
@@ -173,7 +178,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			reportFilter += "Certificações " + TipoCertificacao.getDescricao(filtroCetificacao).toLowerCase();
 			
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
-			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, getEmpresaSistema().getId(), areaIds, estabelecimentoIds, filtroCetificacao, certificacoesIds);
+			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, filtroCetificacao, areaIds, estabelecimentoIds, certificacoesIds);
 		
 			if(colaboradorCertificacoes.size() == 0){
 				addActionMessage("Não existem dados para o filtro informado.");

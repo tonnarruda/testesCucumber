@@ -938,6 +938,9 @@
     <property name="comissaoMembroManager">
       <ref bean="comissaoMembroManager" />
     </property>
+    <property name="colaboradorCertificacaoManager">
+      <ref bean="colaboradorCertificacaoManager" />
+    </property>
   </bean>
   <bean id="gerenciadorComunicacaoManager" parent="parentManager">
     <property name="proxyInterfaces">

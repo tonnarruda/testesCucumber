@@ -34,16 +34,14 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	private Turma turma; 
 	@Transient
 	private Boolean aprovadoNaTurma;
-	@Transient
-	private Date dataCertificado;
 
 	public ColaboradorCertificacao() {
 	}
 	
-	//usado por colabNaCertificacaoNaoCertificados
+	//usado por colaboradoresCertificados
 	public ColaboradorCertificacao(Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, 
 			Long cargoId, String cargoNome,	Long certificacaoId, String certificacaoNome, Long cursoId, String cursoNome, 
-			Date turmaDataPrevIni, Date turmaDataPrevFim,	Boolean turmaRealizada, Boolean aprovadoNaTurma, Date dataCertificado,
+			Date turmaDataPrevIni, Date turmaDataPrevFim,	Boolean turmaRealizada, Boolean aprovadoNaTurma, Date data,
 			Integer periodicidade)
 	{
 		this.colaborador = new Colaborador();
@@ -71,7 +69,17 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		this.turma.getCurso().setNome(cursoNome);
 		
 		this.aprovadoNaTurma = aprovadoNaTurma;
-		this.dataCertificado = dataCertificado;
+		this.data = data;
+	}
+	
+	//usado por certificacoesByColaboradorTurmaId
+	public ColaboradorCertificacao(Long certificacaoId, Long colaboradorId)
+	{
+		this.colaborador = new Colaborador();
+		this.colaborador.setId(colaboradorId);
+
+		this.certificacao = new Certificacao();
+		this.certificacao.setId(certificacaoId);
 	}
 	
 	public Colaborador getColaborador() {
@@ -125,23 +133,15 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	public void setAprovadoNaTurma(Boolean aprovadoNaTurma) {
 		this.aprovadoNaTurma = aprovadoNaTurma;
 	}
-
-	public Date getDataCertificado() {
-		return dataCertificado;
-	}
-
-	public void setDataCertificado(Date dataCertificado) {
-		this.dataCertificado = dataCertificado;
-	}
 	
 	public String getDataCertificadoFormatada()
 	{
-		return DateUtil.formataDiaMesAno(this.dataCertificado);
+		return DateUtil.formataDiaMesAno(this.data);
 	}
 	
 	public String getDataVencimentoCertificacao()
 	{
-		Date vencimento = DateUtil.incrementaMes(this.dataCertificado, this.certificacao.getPeriodicidade());
+		Date vencimento = DateUtil.incrementaMes(this.data, this.certificacao.getPeriodicidade());
 		return DateUtil.formataDiaMesAno(vencimento);
 	}
 }

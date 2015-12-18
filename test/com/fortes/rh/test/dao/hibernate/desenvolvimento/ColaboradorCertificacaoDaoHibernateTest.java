@@ -1,18 +1,25 @@
 package com.fortes.rh.test.dao.hibernate.desenvolvimento;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
+import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
+import com.fortes.rh.dao.desenvolvimento.CursoDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
+import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorCertificacaoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
+import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernateTest<ColaboradorCertificacao>
@@ -20,6 +27,8 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 	private ColaboradorCertificacaoDao colaboradorCertificacaoDao;
 	private ColaboradorDao colaboradorDao;
 	private CertificacaoDao certificacaoDao;
+	private CursoDao cursoDao;
+	private ColaboradorTurmaDao colaboradorTurmaDao;
 
 	@Override
 	public ColaboradorCertificacao getEntity()
@@ -62,6 +71,35 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(2, colaboradorCertificacaos.size());
 		assertEquals(0, colaboradorNaoCertificados.size());
 	}
+	
+	
+	public void testCertificacoesByColaboradorTurmaId()
+	{
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma.setCurso(curso);
+		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		Collection<Curso> cursos = new ArrayList<Curso>();
+		cursos.add(curso);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacao.setCursos(cursos);
+		certificacaoDao.save(certificacao);
+		
+		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacaos = colaboradorCertificacaoDao.colaboradoresCertificadosByColaboradorTurmaId(colaboradorTurma.getId());
+		
+		assertEquals(1, colaboradorCertificacaos.size());
+	}
+
 
 	public void setColaboradorCertificacaoDao(ColaboradorCertificacaoDao colaboradorCertificacaoDao)
 	{
@@ -75,5 +113,13 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 
 	public void setCertificacaoDao(CertificacaoDao certificacaoDao) {
 		this.certificacaoDao = certificacaoDao;
+	}
+
+	public void setCursoDao(CursoDao cursoDao) {
+		this.cursoDao = cursoDao;
+	}
+
+	public void setColaboradorTurmaDao(ColaboradorTurmaDao colaboradorTurmaDao) {
+		this.colaboradorTurmaDao = colaboradorTurmaDao;
 	}
 }

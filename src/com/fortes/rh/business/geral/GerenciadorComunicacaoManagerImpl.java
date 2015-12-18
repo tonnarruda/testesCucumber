@@ -25,6 +25,7 @@ import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.MotivoSolicitacaoManager;
 import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.cargosalario.HistoricoColaboradorManager;
+import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
@@ -40,10 +41,10 @@ import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
+import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.EnviarPara;
-import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
 import com.fortes.rh.model.dicionario.MeioComunicacao;
 import com.fortes.rh.model.dicionario.Operacao;
 import com.fortes.rh.model.dicionario.OrigemCandidato;
@@ -81,6 +82,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 {
 	private static Logger logger = Logger.getLogger(GerenciadorComunicacaoManagerImpl.class);
 	
+	ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 	CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	ParametrosDoSistemaManager parametrosDoSistemaManager;
 	AreaOrganizacionalManager areaOrganizacionalManager;
@@ -1888,102 +1890,202 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 
-	public void enviarNotificacaoCursosAVencer() {
-		Calendar data;
+	public void enviarNotificacaoCursosOuCertificacoesAVencer() 
+	{
 		ParametrosDoSistema parametros = parametrosDoSistemaManager.findById(1L);
-		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBeanOld("colaboradorTurmaManager");
-		Collection<ColaboradorTurma> colaboradoresTurmas = new ArrayList<ColaboradorTurma>();
+		Collection<Empresa> empresas = empresaManager.findTodasEmpresas();
+		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = new ArrayList<GerenciadorComunicacao>();
+
+		for (Empresa empresa : empresas) 
+		{
+			if(empresa.isControlarVencimentoPorCertificacao()){
+				gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CERTIFICACOES_A_VENCER.getId(), null);
+				notificacaoCertificacao(parametros, gerenciadorComunicacaos);
+			}
+			else{
+				gerenciadorComunicacaos.addAll(getDao().findByOperacaoId(Operacao.CURSOS_A_VENCER.getId(), null));
+				notificacaoCurso(parametros, gerenciadorComunicacaos);
+			}
+		}
+	}
+
+	private void notificacaoCertificacao(ParametrosDoSistema parametros, Collection<GerenciadorComunicacao> gerenciadorComunicacaos) 
+	{
+		Calendar data;
 		Collection<Integer> diasLembrete = new ArrayList<Integer>();
-		Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CURSOS_A_VENCER.getId(), null);
+		Collection<ColaboradorCertificacao> colaboradorCertificacoes = new ArrayList<ColaboradorCertificacao>();
 		StringBuilder mensagemTitulo;
 		StringBuilder mensagem;
+		
 		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
 		{
-			if(gerenciadorComunicacao.getEmpresa().getControlarVencimentoCertificacaoPor() == FiltroControleVencimentoCertificacao.CURSO.getOpcao()){
-				try 
+			try 
+			{
+				diasLembrete = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
+				for (Integer diaLembrete : diasLembrete)
 				{
-					diasLembrete = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
-					for (Integer diaLembrete : diasLembrete)
+					data = Calendar.getInstance();
+					data.setTime(new Date());
+					data.add(Calendar.DAY_OF_MONTH, +diaLembrete);
+
+					colaboradorCertificacoes = colaboradorCertificacaoManager.getCertificacoesAVencer(data.getTime(), gerenciadorComunicacao.getEmpresa().getId());
+
+					for (ColaboradorCertificacao colaboradorCertificacao : colaboradorCertificacoes)
 					{
-						data = Calendar.getInstance();
-						data.setTime(new Date());
-						data.add(Calendar.DAY_OF_MONTH, +diaLembrete);
-	
-						colaboradoresTurmas = colaboradorTurmaManager.findCursosCertificacoesAVencer(data.getTime(), gerenciadorComunicacao.getEmpresa().getId());
-						colaboradoresTurmas = agrupaCertificacoes(colaboradoresTurmas);
-						
-						for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas)
-						{
-							mensagemTitulo = new StringBuilder();
-							mensagemTitulo.append("[RH] - Falta(m) ")
-									.append(diaLembrete)
-									.append(" dia(s) para o curso ").append(colaboradorTurma.getCurso().getNome()).append(" do colaborador ")
-									.append(colaboradorTurma.getColaboradorNome()).append(" vencer.");
-							
-							mensagem = new StringBuilder();
-							mensagem.append("Curso a Vencer: ").append(colaboradorTurma.getCurso().getNome());
-							if (colaboradorTurma.getCurso().getCertificacaoNome() != null && !colaboradorTurma.getCurso().getCertificacaoNome().isEmpty()) {
-						 		mensagem.append("<br>Certificação(ões): ").append(colaboradorTurma.getCurso().getCertificacaoNome());
-						 	}
-						 	mensagem.append("<br>Vencimento: ").append(colaboradorTurma.getTurma().getVencimentoFormatado())
-						 		    .append("<br>Colaborador: ").append(colaboradorTurma.getColaboradorNome())
-						 			.append("<br>Área Organizacional: ").append(colaboradorTurma.getColaborador().getAreaOrganizacional().getNome())
-						 			.append("<br>Cargo: ").append(colaboradorTurma.getColaborador().getFaixaSalarial().getDescricao());
-							
-							if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
-								
-								mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, colaboradorTurma.getColaborador().getContato().getEmail());
-							
-							} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())) {
-								
-								String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaboradorTurma.getColaborador().getAreaOrganizacional().getId(), gerenciadorComunicacao.getEmpresa().getId(), AreaOrganizacional.RESPONSAVEL);
-								mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
-							
-							} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())) {
-								
-								String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaboradorTurma.getColaborador().getAreaOrganizacional().getId(), gerenciadorComunicacao.getEmpresa().getId(), AreaOrganizacional.CORRESPONSAVEL);
-								mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
-							
-							} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())) {
-								
-								String[] emails = gerenciadorComunicacao.getEmpresa().getArrayEmailRespRH();
-								mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
-							
-							} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {
-								
-								UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
-								CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
-								String[] emails = usuarioManager.findEmailsByUsuario(collUtil.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios()));
-								mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
-							
-							} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())) {
-								
-								usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem.toString(), "RH", null, colaboradorTurma.getColaborador().getAreaOrganizacional().getDescricaoIds(), TipoMensagem.TED, null);
-							
-							} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())) {
-								
-								usuarioMensagemManager.saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(mensagem.toString(), "RH", null, colaboradorTurma.getColaborador().getAreaOrganizacional().getDescricaoIds(), TipoMensagem.TED, null);
-							
-							} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {
-								
-								Collection<UsuarioEmpresa> usuariosConfigurados = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);	
-								usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", null, usuariosConfigurados, colaboradorTurma.getColaborador(), TipoMensagem.TED, null);
-							}
+						mensagemTitulo = new StringBuilder();
+						mensagemTitulo.append("[RH] - Falta(m) ")
+						.append(diaLembrete)
+						.append(" dia(s) para a certificação ").append(colaboradorCertificacao.getCertificacao().getNome()).append(" do colaborador ")
+						.append(colaboradorCertificacao.getColaborador().getNome()).append(" vencer.");
+
+						mensagem = new StringBuilder();
+						mensagem.append("Certificação a Vencer: ").append(colaboradorCertificacao.getCertificacao().getNome());
+						mensagem.append("<br>Vencimento: ").append(colaboradorCertificacao.getDataVencimentoCertificacao())
+						.append("<br>Colaborador: ").append(colaboradorCertificacao.getColaborador().getNome())
+						.append("<br>Área Organizacional: ").append(colaboradorCertificacao.getColaborador().getAreaOrganizacional().getNome())
+						.append("<br>Cargo: ").append(colaboradorCertificacao.getColaborador().getFaixaSalarial().getDescricao());
+
+						if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
+
+							mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, colaboradorCertificacao.getColaborador().getContato().getEmail());
+
+						} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())) {
+
+							String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaboradorCertificacao.getColaborador().getAreaOrganizacional().getId(), gerenciadorComunicacao.getEmpresa().getId(), AreaOrganizacional.RESPONSAVEL);
+							mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
+
+						} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())) {
+
+							String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaboradorCertificacao.getColaborador().getAreaOrganizacional().getId(), gerenciadorComunicacao.getEmpresa().getId(), AreaOrganizacional.CORRESPONSAVEL);
+							mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
+
+						} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())) {
+
+							String[] emails = gerenciadorComunicacao.getEmpresa().getArrayEmailRespRH();
+							mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
+
+						} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {
+
+							UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
+							CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
+							String[] emails = usuarioManager.findEmailsByUsuario(collUtil.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios()));
+							mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
+
+						} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())) {
+
+							usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem.toString(), "RH", null, colaboradorCertificacao.getColaborador().getAreaOrganizacional().getDescricaoIds(), TipoMensagem.TED, null);
+
+						} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())) {
+
+							usuarioMensagemManager.saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(mensagem.toString(), "RH", null, colaboradorCertificacao.getColaborador().getAreaOrganizacional().getDescricaoIds(), TipoMensagem.TED, null);
+
+						} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {
+
+							Collection<UsuarioEmpresa> usuariosConfigurados = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);	
+							usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", null, usuariosConfigurados, colaboradorCertificacao.getColaborador(), TipoMensagem.TED, null);
 						}
 					}
-				} catch (AddressException e) {
-					e.printStackTrace();
-				} catch (MessagingException e) {
-					e.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
+			} catch (AddressException e) {
+				e.printStackTrace();
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
 	
-	public void enviarNotificacaoCertificacoesAVencer(){
+	private void notificacaoCurso(ParametrosDoSistema parametros, Collection<GerenciadorComunicacao> gerenciadorComunicacaos) 
+	{
+		Calendar data;
+		ColaboradorTurmaManager colaboradorTurmaManager = (ColaboradorTurmaManager) SpringUtil.getBeanOld("colaboradorTurmaManager");
+		Collection<ColaboradorTurma> colaboradoresTurmas = new ArrayList<ColaboradorTurma>();
+		Collection<Integer> diasLembrete = new ArrayList<Integer>();
+		StringBuilder mensagemTitulo;
+		StringBuilder mensagem;
 		
+		for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) 
+		{
+			try 
+			{
+				diasLembrete = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
+				for (Integer diaLembrete : diasLembrete)
+				{
+					data = Calendar.getInstance();
+					data.setTime(new Date());
+					data.add(Calendar.DAY_OF_MONTH, +diaLembrete);
+
+					colaboradoresTurmas = colaboradorTurmaManager.findCursosCertificacoesAVencer(data.getTime(), gerenciadorComunicacao.getEmpresa().getId());
+					colaboradoresTurmas = agrupaCertificacoes(colaboradoresTurmas);
+
+					for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas)
+					{
+						mensagemTitulo = new StringBuilder();
+						mensagemTitulo.append("[RH] - Falta(m) ")
+						.append(diaLembrete)
+						.append(" dia(s) para o curso ").append(colaboradorTurma.getCurso().getNome()).append(" do colaborador ")
+						.append(colaboradorTurma.getColaboradorNome()).append(" vencer.");
+
+						mensagem = new StringBuilder();
+						mensagem.append("Curso a Vencer: ").append(colaboradorTurma.getCurso().getNome());
+						if (colaboradorTurma.getCurso().getCertificacaoNome() != null && !colaboradorTurma.getCurso().getCertificacaoNome().isEmpty()) {
+							mensagem.append("<br>Certificação(ões): ").append(colaboradorTurma.getCurso().getCertificacaoNome());
+						}
+						mensagem.append("<br>Vencimento: ").append(colaboradorTurma.getTurma().getVencimentoFormatado())
+						.append("<br>Colaborador: ").append(colaboradorTurma.getColaboradorNome())
+						.append("<br>Área Organizacional: ").append(colaboradorTurma.getColaborador().getAreaOrganizacional().getNome())
+						.append("<br>Cargo: ").append(colaboradorTurma.getColaborador().getFaixaSalarial().getDescricao());
+
+						if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COLABORADOR.getId())){
+
+							mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, colaboradorTurma.getColaborador().getContato().getEmail());
+
+						} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())) {
+
+							String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaboradorTurma.getColaborador().getAreaOrganizacional().getId(), gerenciadorComunicacao.getEmpresa().getId(), AreaOrganizacional.RESPONSAVEL);
+							mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
+
+						} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())) {
+
+							String[] emails = areaOrganizacionalManager.getEmailsResponsaveis(colaboradorTurma.getColaborador().getAreaOrganizacional().getId(), gerenciadorComunicacao.getEmpresa().getId(), AreaOrganizacional.CORRESPONSAVEL);
+							mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
+
+						} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.RESPONSAVEL_RH.getId())) {
+
+							String[] emails = gerenciadorComunicacao.getEmpresa().getArrayEmailRespRH();
+							mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
+
+						} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.EMAIL.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {
+
+							UsuarioManager usuarioManager = (UsuarioManager) SpringUtil.getBeanOld("usuarioManager");
+							CollectionUtil<Usuario> collUtil = new CollectionUtil<Usuario>();
+							String[] emails = usuarioManager.findEmailsByUsuario(collUtil.convertCollectionToArrayIds(gerenciadorComunicacao.getUsuarios()));
+							mail.send(gerenciadorComunicacao.getEmpresa(), parametros, mensagemTitulo.toString(), mensagem.toString(), true, emails);
+
+						} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.GESTOR_AREA.getId())) {
+
+							usuarioMensagemManager.saveMensagemAndUsuarioMensagemRespAreaOrganizacional(mensagem.toString(), "RH", null, colaboradorTurma.getColaborador().getAreaOrganizacional().getDescricaoIds(), TipoMensagem.TED, null);
+
+						} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.COGESTOR_AREA.getId())) {
+
+							usuarioMensagemManager.saveMensagemAndUsuarioMensagemCoRespAreaOrganizacional(mensagem.toString(), "RH", null, colaboradorTurma.getColaborador().getAreaOrganizacional().getDescricaoIds(), TipoMensagem.TED, null);
+
+						} else if (gerenciadorComunicacao.getMeioComunicacao().equals(MeioComunicacao.CAIXA_MENSAGEM.getId()) && gerenciadorComunicacao.getEnviarPara().equals(EnviarPara.USUARIOS.getId())) {
+
+							Collection<UsuarioEmpresa> usuariosConfigurados = verificaUsuariosAtivosNaEmpresa(gerenciadorComunicacao);	
+							usuarioMensagemManager.saveMensagemAndUsuarioMensagem(mensagem.toString(), "RH", null, usuariosConfigurados, colaboradorTurma.getColaborador(), TipoMensagem.TED, null);
+						}
+					}
+				}
+			} catch (AddressException e) {
+				e.printStackTrace();
+			} catch (MessagingException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private Collection<ColaboradorTurma> agrupaCertificacoes(Collection<ColaboradorTurma> colaboradoresTurmas) 
@@ -2059,5 +2161,10 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	public void setComissaoMembroManager(ComissaoMembroManager comissaoMembroManager) {
 		this.comissaoMembroManager = comissaoMembroManager;
+	}
+
+	public void setColaboradorCertificacaoManager(
+			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
+		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	}
 }

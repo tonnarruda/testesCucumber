@@ -46,7 +46,7 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("update").with(ANYTHING);
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
 		
-		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);
+		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);
 	}
 
 	public void testSaveNotas() throws Exception
@@ -65,7 +65,7 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		//aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(3L), eq(10L)).will(returnValue(new AproveitamentoAvaliacaoCurso()));
 		//aproveitamentoAvaliacaoCursoDao.expects(once()).method("remove");
 		
-		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);
+		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);
 	}
 	
 	public void testSaveNotas2()
@@ -100,7 +100,7 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		Exception exc = null;
 		try
 		{
-			aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);			
+			aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);			
 		}
 		catch (Exception e)
 		{

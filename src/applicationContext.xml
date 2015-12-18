@@ -257,18 +257,19 @@
 	</property>
   </bean>
   
-  <bean name="enviarNotificacaoCursosAVencerJob" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
+  <bean name="enviarNotificacaoCursosOuCertificacoesAVencerJob" class="com.fortes.rh.business.geral.GerenciadorComunicacaoManagerImpl">
     <property name="dao" ref="gerenciadorComunicacaoDaoTarget" />
     <property name="parametrosDoSistemaManager" ref="parametrosDoSistemaManager" />
     <property name="areaOrganizacionalManager" ref="areaOrganizacionalManager" />
     <property name="usuarioMensagemManager" ref="usuarioMensagemManager" />
     <property name="usuarioEmpresaManager" ref="usuarioEmpresaManager" />
+    <property name="empresaManager" ref="empresaManager" />
     <property name="mail" ref="mail" />
   </bean>
-  <bean name="enviarNotificacaoCursosAVencer" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+  <bean name="enviarNotificacaoCursosOuCertificacoesAVencer" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
   	 <property name="name" value="Notificar cursos à vencer"/>
-    <property name="targetObject" ref="enviarNotificacaoCursosAVencerJob"/>
-    <property name="targetMethod" value="enviarNotificacaoCursosAVencer"/>
+    <property name="targetObject" ref="enviarNotificacaoCursosOuCertificacoesAVencerJob"/>
+    <property name="targetMethod" value="enviarNotificacaoCursosOuCertificacoesAVencer"/>
   </bean>
 
   <bean id="cronTriggerBackup" class="org.springframework.scheduling.quartz.CronTriggerBean">
@@ -338,8 +339,8 @@
     <property name="jobDetail" ref="importarUltimasNoticias" />
 	<property name="cronExpression" value="0 0 0/1 * * ?" /> <!-- A cada 1 hora -->
   </bean>
-  <bean id="cronTriggerEnviarNotificacaoCursosAVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
-    <property name="jobDetail" ref="enviarNotificacaoCursosAVencer" />
+  <bean id="cronTriggerenviarNotificacaoCursosOuCertificacoesAVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
+    <property name="jobDetail" ref="enviarNotificacaoCursosOuCertificacoesAVencer" />
     <property name="cronExpression" value="0 20 7 * * ?" /> <!-- Todo os dias as 07:00h am -->
   </bean>
   
@@ -362,7 +363,7 @@
 		<ref bean="cronTriggerlembreteContratoTemporarioColaborador" />
 		<ref bean="cronTriggerlembreteHabilitacaoAVencer" />
 		<ref bean="cronTriggerImportarUltimasNoticias" />
-		<ref bean="cronTriggerEnviarNotificacaoCursosAVencer" />
+		<ref bean="cronTriggerenviarNotificacaoCursosOuCertificacoesAVencer" />
       </list>
     </property>
   </bean>

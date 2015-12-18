@@ -214,6 +214,9 @@
     <property name="transactionManager">
       <ref bean="transactionManager" />
     </property>
+    <property name="colaboradorCertificacaoManager">
+      <ref bean="colaboradorCertificacaoManager" />
+    </property>
   </bean>
   <bean id="aproveitamentoAvaliacaoCursoManager" parent="parentManager">
     <property name="proxyInterfaces">

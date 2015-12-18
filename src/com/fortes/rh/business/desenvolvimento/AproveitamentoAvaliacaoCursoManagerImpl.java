@@ -17,8 +17,9 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<AproveitamentoAvaliacaoCurso, AproveitamentoAvaliacaoCursoDao> implements AproveitamentoAvaliacaoCursoManager
 {
 	private PlatformTransactionManager transactionManager;
+	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 
-	public void saveNotas(Long[] colaboradorTurmaIds, String[] notas, AvaliacaoCurso avaliacaoCurso) throws Exception
+	public void saveNotas(Long[] colaboradorTurmaIds, String[] notas, AvaliacaoCurso avaliacaoCurso, boolean validarCertificacao) throws Exception
 	{
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -38,6 +39,9 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 				AproveitamentoAvaliacaoCurso aproveitamento = new AproveitamentoAvaliacaoCurso(colabTurma, avaliacaoCurso, valor);
 				
 				saveOrUpdate(aproveitamento);
+				
+				if(validarCertificacao)
+					colaboradorCertificacaoManager.verificaCertificacaoByColaboradorTurmaId(colabTurma.getId());
 			}
 
 			transactionManager.commit(status);
@@ -145,5 +149,10 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 	public Collection<AproveitamentoAvaliacaoCurso> findByColaboradorCurso(Long colaboradorId, Long cursoId) 
 	{
 		return getDao().findByColaboradorCurso(colaboradorId, cursoId);
+	}
+
+	public void setColaboradorCertificacaoManager(
+			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
+		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	}
 }

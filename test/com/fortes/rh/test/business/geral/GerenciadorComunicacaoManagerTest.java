@@ -1787,7 +1787,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CURSOS_A_VENCER.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
 		colaboradorTurmaManager.expects(once()).method("findCursosCertificacoesAVencer").with(ANYTHING, eq(gerenciadorComunicacao.getEmpresa().getId())).will(returnValue(colaboradoresTurmas));
 		mail.expects(once()).method("send").withAnyArguments().isVoid();
-		gerenciadorComunicacaoManager.enviarNotificacaoCursosAVencer();
+		gerenciadorComunicacaoManager.enviarNotificacaoCursosOuCertificacoesAVencer();
 	}
 	
 	private ColaboradorTurma criarColaboradorTurma(){

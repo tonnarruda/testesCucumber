@@ -20,6 +20,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
 import com.fortes.rh.model.dicionario.FormulaTurnover;
 import com.fortes.security.auditoria.ChaveDaAuditoria;
 
@@ -481,8 +482,12 @@ public class Empresa extends AbstractModel implements Serializable
 		return controlarVencimentoCertificacaoPor;
 	}
 
-	public void setControlarVencimentoCertificacaoPor(
-			int controlarVencimentoCertificacaoPor) {
+	public boolean isControlarVencimentoPorCertificacao()
+	{
+		return getControlarVencimentoCertificacaoPor() == FiltroControleVencimentoCertificacao.CERTIFICACAO.getOpcao();
+	}
+	
+	public void setControlarVencimentoCertificacaoPor(int controlarVencimentoCertificacaoPor) {
 		this.controlarVencimentoCertificacaoPor = controlarVencimentoCertificacaoPor;
 	}
 
@@ -590,8 +595,7 @@ public class Empresa extends AbstractModel implements Serializable
 		return considerarSabadoNoAbsenteismo;
 	}
 
-	public void setConsiderarSabadoNoAbsenteismo(
-			boolean considerarSabadoNoAbsenteismo) {
+	public void setConsiderarSabadoNoAbsenteismo(boolean considerarSabadoNoAbsenteismo) {
 		this.considerarSabadoNoAbsenteismo = considerarSabadoNoAbsenteismo;
 	}
 
@@ -599,8 +603,7 @@ public class Empresa extends AbstractModel implements Serializable
 		return considerarDomingoNoAbsenteismo;
 	}
 
-	public void setConsiderarDomingoNoAbsenteismo(
-			boolean considerarDomingoNoAbsenteismo) {
+	public void setConsiderarDomingoNoAbsenteismo(boolean considerarDomingoNoAbsenteismo) {
 		this.considerarDomingoNoAbsenteismo = considerarDomingoNoAbsenteismo;
 	}
 

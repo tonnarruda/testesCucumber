@@ -530,7 +530,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	{
 		try
 		{
-			aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso);
+			aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, getEmpresaSistema().isControlarVencimentoPorCertificacao());
 			addActionSuccess("Aproveitamento/Notas salvos com sucesso.");
 			prepareAproveitamento();
 			return Action.SUCCESS;
