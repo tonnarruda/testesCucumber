@@ -58,7 +58,7 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernate extends GenericDaoHiber
 	public Collection<ParticipanteAvaliacaoDesempenho> findParticipantes(Long avaliacaoDesempenhoId, Character tipo) {
 		DetachedCriteria subQueryHc = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
 		.setProjection(Projections.max("hc2.data"))
-		.add(Restrictions.eqProperty("hc2.colaborador.id", "c.id"))
+		.add(Restrictions.eqProperty("hc2.colaborador.id", "co.id"))
 		.add(Restrictions.le("hc2.data", new Date()));
 		
 		Criteria criteria = getSession().createCriteria(ParticipanteAvaliacaoDesempenho.class, "p"); 
