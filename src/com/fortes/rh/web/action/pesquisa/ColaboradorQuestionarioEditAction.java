@@ -396,7 +396,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 				colaboradorQuestionarioManager.update(colaboradorQuestionario);
 			}
 			
-			addActionSuccess("Avaliação respondida com sucesso.");
+			addActionSuccess("Respostas gravadas com sucesso.");
 			
 		} catch (FortesException e) 
 		{
