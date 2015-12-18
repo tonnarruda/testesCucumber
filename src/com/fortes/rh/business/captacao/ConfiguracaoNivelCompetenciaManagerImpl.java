@@ -280,7 +280,7 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		Collection<ConfiguracaoNivelCompetencia> configuracoesNiveisCompetencia = new ArrayList<ConfiguracaoNivelCompetencia>();
 		ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager = (ConfiguracaoCompetenciaAvaliacaoDesempenhoManager) SpringUtil.getBeanOld("configuracaoCompetenciaAvaliacaoDesempenhoManager");
 		
-		if(configuracaoCompetenciaAvaliacaoDesempenhoManager.existe(configuracaoNivelCompetenciaFaixaSalarialId,avaliadorId,avaliacaoDesempenhoId))
+		if(configuracaoCompetenciaAvaliacaoDesempenhoManager.existe(configuracaoNivelCompetenciaFaixaSalarialId,avaliacaoDesempenhoId))
 			configuracoesNiveisCompetencia = getDao().findCompetenciaByFaixaSalarial(faixaId, data, configuracaoNivelCompetenciaFaixaSalarialId, avaliadorId, avaliacaoDesempenhoId);
 		else
 			configuracoesNiveisCompetencia = getDao().findCompetenciaByFaixaSalarial(faixaId, data, configuracaoNivelCompetenciaFaixaSalarialId, null, null);

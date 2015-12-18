@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
+import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.captacao.CandidatoManager;
 import com.fortes.rh.business.captacao.CandidatoSolicitacaoManager;
 import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaColaboradorManager;
@@ -88,6 +89,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private CandidatoSolicitacaoManager candidatoSolicitacaoManager;
 	private AvaliacaoDesempenhoManager avaliacaoDesempenhoManager;
 	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
+	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
 
 	private Avaliacao avaliacao;
 	private Avaliacao avaliacaoExperiencia;
@@ -149,6 +151,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private boolean autoAvaliacao;
 	private boolean moduloExterno;
 	private boolean preview;
+	private boolean existConfigCompetenciaAvaliacaoDesempenho;
 
 	private Collection<NivelCompetencia> nivelCompetencias = new ArrayList<NivelCompetencia>();
 	private Collection<ConfiguracaoNivelCompetenciaVO> niveisCompetenciaFaixaSalariaisVOs;
@@ -303,7 +306,8 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 			ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial =  configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(colaborador.getFaixaSalarial().getId(), colaboradorQuestionario.getRespondidaEm());
 			if(configuracaoNivelCompetenciaFaixaSalarial != null && configuracaoNivelCompetenciaFaixaSalarial.getId() != null){
 				nivelCompetencias = nivelCompetenciaManager.findAllSelect(colaborador.getEmpresa().getId(), null, configuracaoNivelCompetenciaFaixaSalarial.getData());
-				
+				existConfigCompetenciaAvaliacaoDesempenho = configuracaoCompetenciaAvaliacaoDesempenhoManager.existe(configuracaoNivelCompetenciaFaixaSalarial.getId(),colaboradorQuestionario.getAvaliacaoDesempenho().getId());
+
 				if(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador() != null && colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId() != null){	
 					niveisCompetenciaFaixaSalariaisSalvos = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaColaborador(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getId(), configuracaoNivelCompetenciaFaixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData());
 					niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(colaboradorQuestionario.getConfiguracaoNivelCompetenciaColaborador().getFaixaSalarial().getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId(), colaboradorQuestionario.getAvaliador().getId(), colaboradorQuestionario.getAvaliacaoDesempenho().getId());
@@ -1138,5 +1142,14 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	public void setConfiguracaoNivelCompetenciaFaixaSalarialManager(
 			ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager) {
 		this.configuracaoNivelCompetenciaFaixaSalarialManager = configuracaoNivelCompetenciaFaixaSalarialManager;
+	}
+
+	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(
+			ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
+		this.configuracaoCompetenciaAvaliacaoDesempenhoManager = configuracaoCompetenciaAvaliacaoDesempenhoManager;
+	}
+
+	public boolean isExistConfigCompetenciaAvaliacaoDesempenho() {
+		return existConfigCompetenciaAvaliacaoDesempenho;
 	}
 }
