@@ -6,6 +6,7 @@ import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.geral.Colaborador;
 
 public interface ConfiguracaoCompetenciaAvaliacaoDesempenhoDao extends GenericDao<ConfiguracaoCompetenciaAvaliacaoDesempenho> 
 {
@@ -17,4 +18,5 @@ public interface ConfiguracaoCompetenciaAvaliacaoDesempenhoDao extends GenericDa
 	public boolean existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(Long avaliacaoDesempenhoId);
 	public void removeByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
 	public boolean existe(Long configuracaoNivelCompetenciaFaixaSalarialId,Long avaliacaoDesempenhoId);
+	public Collection<Colaborador> findColabSemCompetenciaConfiguradaByAvalDesempenhoId(Long avaliacaoDesempenhoId);
 }

@@ -14,6 +14,7 @@ import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.TipoCompetencia;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.util.LongUtil;
 
@@ -101,13 +102,15 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl extends Gener
 		return getDao().existe(configuracaoNivelCompetenciaFaixaSalarialId, avaliacaoDesempenhoId);
 	}
 
-	public void setGerenciadorComunicacaoManager(
-			GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
+	public Collection<Colaborador> findColabSemCompetenciaConfiguradaByAvalDesempenhoId(Long avaliacaoDesempenhoId) {
+		return getDao().findColabSemCompetenciaConfiguradaByAvalDesempenhoId(avaliacaoDesempenhoId);
+	}
+	
+	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
 
-	public void setConfiguracaoNivelCompetenciaManager(
-			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+	public void setConfiguracaoNivelCompetenciaManager(ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
 		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
 	}
 

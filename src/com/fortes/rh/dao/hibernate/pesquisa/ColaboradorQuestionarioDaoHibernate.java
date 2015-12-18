@@ -711,7 +711,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("cq.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
-		criteria.add(Expression.eq("cq.respondida", true));
+		criteria.add(Expression.or(Expression.eq("cq.respondida", true),Expression.eq("cq.respondidaParcialmente", true)));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));

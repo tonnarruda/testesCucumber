@@ -1,6 +1,7 @@
 package com.fortes.rh.dao.hibernate.avaliacao;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -16,6 +17,7 @@ import com.fortes.rh.dao.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoDao
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.geral.Colaborador;
 
 public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<ConfiguracaoCompetenciaAvaliacaoDesempenho> implements ConfiguracaoCompetenciaAvaliacaoDesempenhoDao
 {
@@ -156,9 +158,35 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		p.add(Projections.property("ccad.id"), "id");
 		
 		criteria.setProjection(p);
-		criteria.add(Expression.eq("ccad.configuracaoNivelCompetenciaFaixaSalarial.id", configuracaoNivelCompetenciaFaixaSalarialId));
 		criteria.add(Expression.eq("ccad.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
 
+		if(configuracaoNivelCompetenciaFaixaSalarialId != null)
+			criteria.add(Expression.eq("ccad.configuracaoNivelCompetenciaFaixaSalarial.id", configuracaoNivelCompetenciaFaixaSalarialId));
+
 		return criteria.list().size() > 0;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Collection<Colaborador> findColabSemCompetenciaConfiguradaByAvalDesempenhoId(Long avaliacaoDesempenhoId) 
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("select c.nome as colabNome from Colaborador c ");
+		sql.append("where c.id in ( ");
+		sql.append("	select distinct avaliador_id ");
+		sql.append("	from Colaboradorquestionario  ");
+		sql.append("	where avaliacaodesempenho_id = :avaliacaoDesempenhoId ");
+		sql.append("	and avaliador_id not in (select distinct avaliador_id from ConfiguracaoCompetenciaAvaliacaoDesempenho where avaliacaodesempenho_id = :avaliacaoDesempenhoId) ");
+		sql.append(") ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
+				
+		Collection<Colaborador> colaboradores = new LinkedList<Colaborador>();
+		Collection<String> lista = query.list();
+
+		for (String nomeColaborador : lista)
+			colaboradores.add(new Colaborador(nomeColaborador));
+
+		return colaboradores;
 	}
 }

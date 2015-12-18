@@ -7,6 +7,7 @@ import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 
 public interface ConfiguracaoCompetenciaAvaliacaoDesempenhoManager extends GenericManager<ConfiguracaoCompetenciaAvaliacaoDesempenho> 
@@ -20,4 +21,5 @@ public interface ConfiguracaoCompetenciaAvaliacaoDesempenhoManager extends Gener
 	public boolean existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(Long avaliacaoDesempenhoId);
 	public void removeByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
 	public boolean existe(Long configuracaoNivelCompetenciaFaixaSalarialId,Long avaliacaoDesempenhoId);
+	public Collection<Colaborador> findColabSemCompetenciaConfiguradaByAvalDesempenhoId(Long avaliacaoDesempenhoId);
 }

@@ -105,7 +105,7 @@
 
 	<@display.table name="colaboradorQuestionarios" id="colaboradorQuestionario" class="dados">
 		<@display.column title="Ações" class="acao">
-			<#if colaboradorQuestionario.respondida>
+			<#if colaboradorQuestionario.respondida || colaboradorQuestionario.respondidaParcialmente>
 				<a href="prepareResponderAvaliacaoDesempenho.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}"><img border="0" title="Editar respostas" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 				<a href="imprimirAvaliacaoDesempenhoRespondida.action?colaboradorQuestionario.id=${colaboradorQuestionario.id}"><img border="0" title="Imprimir respostas" src="<@ww.url value="/imgs/printer.gif"/>"></a>
 				<@frt.link verifyRole="ROLE_AVAL_DESEMP_DELETE_RESPOSTA" href="#" onclick="newConfirm('Confirma exclusão das respostas?', function(){window.location='deleteAvaliacao.action?colaboradorQuestionarioId=${colaboradorQuestionario.id}&avaliacaoDesempenho.id=${avaliacaoDesempenho.id}&respondida=${respondida}'});" imgTitle="Excluir respostas" imgName="deletar_avaliacao.gif"/>

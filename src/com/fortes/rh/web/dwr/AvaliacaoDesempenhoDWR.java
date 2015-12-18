@@ -29,7 +29,7 @@ public class AvaliacaoDesempenhoDWR
 		return new CollectionUtil<AvaliacaoDesempenho>().convertCollectionToMap(avaliacoesDesempenho, "getId", ((empresaId == null || empresaId < 0) ? "getTituloComEmpresa" : "getTitulo"));
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Map<Long, String> getAvaliacoesByEmpresaPermitidas(String naoApagar, HttpServletRequest request, Long... empresasIds)
 	{
 		Map session = new SessionMap(request);
@@ -46,6 +46,7 @@ public class AvaliacaoDesempenhoDWR
 		return new CollectionUtil<AvaliacaoDesempenho>().convertCollectionToMap(avaliacaoDesempenhos, "getId", ((empresasIds.length > 1) ? "getTituloComEmpresa" : "getTitulo"));
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Map<Long, String> getParticipantesByAvalEmpresaAreaCargo(Long avaliacaoDesempenhoId, Long empresaId, Long[] areasIds, Long[] cargosIds)
 	{
 		empresaId =(empresaId == null || empresaId == -1 || empresaId == 0) ? null : empresaId;
@@ -61,6 +62,29 @@ public class AvaliacaoDesempenhoDWR
 		return CollectionUtil.convertCollectionToMap(avaliacaoDesempenhos, "getId", "getTitulo", AvaliacaoDesempenho.class);
 	}
 	
+	public String verificaAvaliadosSemCompetencia(Long avaliacaoDesempenhoId)
+	{
+		if(configuracaoCompetenciaAvaliacaoDesempenhoManager.existe(null, avaliacaoDesempenhoId))
+		{
+			Collection<Colaborador> colaboradores = configuracaoCompetenciaAvaliacaoDesempenhoManager.findColabSemCompetenciaConfiguradaByAvalDesempenhoId(avaliacaoDesempenhoId);
+			if(colaboradores.size() != 0)
+			{
+				StringBuilder msg = new StringBuilder();
+				msg.append("Existem avaliadores sem configuração de competência a avaliar nesta avaliação de desempenho.</br>");
+				
+				msg.append("</br>Colaboradores:</br>");
+				for (Colaborador colaborador : colaboradores) 
+					msg.append(colaborador.getNome() + "</br>");	
+				
+				msg.append("</br>Deseja liberar assim mesmo?");
+				
+				return msg.toString();
+			}
+		}
+		
+		return "";
+	}
+	
 	public boolean existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(Long avaliacaoDesempenhoId) {
 		return configuracaoCompetenciaAvaliacaoDesempenhoManager.existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(avaliacaoDesempenhoId);
 	}
@@ -73,8 +97,7 @@ public class AvaliacaoDesempenhoDWR
 		this.colaboradorManager = colaboradorManager;
 	}
 
-	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(
-			ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
+	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
 		this.configuracaoCompetenciaAvaliacaoDesempenhoManager = configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	}
 	
