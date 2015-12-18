@@ -342,15 +342,25 @@
 								
 								<#assign i = i + 1/>
 							</#list>
+					
+							<#if niveisCompetenciaFaixaSalariais?exists && niveisCompetenciaFaixaSalariais?size == 0>
+								<tr>
+									<td colspan="15">
+										<div class="info"> 
+										<ul>
+											<#if existConfigCompetenciaAvaliacaoDesempenho>
+												<li>Não existem níveis de competências configurados para avaliar.</li>
+											<#else>
+												<li>Não existem níveis de competências configurados para o cargo atual do colaborador.</li>
+											</#if>
+										</ul>
+										</div>
+									</td>
+								</tr>
+							</#if>
+							
 						</tbody>
 					</table>
-					
-					<#if niveisCompetenciaFaixaSalariais?exists && niveisCompetenciaFaixaSalariais?size == 0>
-						<ul style="height:20px; margin-top: 5px; margin-left: 20px;">
-							Não existem níveis de competências configurados para o cargo atual do colaborador.
-						</ul>
-					</#if>
-					
 				</fieldset>
 			</#if>
 			

@@ -19,5 +19,5 @@ public interface ConfiguracaoCompetenciaAvaliacaoDesempenhoManager extends Gener
 	public Collection<FaixaSalarial> findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
 	public boolean existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(Long avaliacaoDesempenhoId);
 	public void removeByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
-	public boolean existe(Long configuracaoNivelCompetenciaFaixaSalarialId,Long avaliadorId, Long avaliacaoDesempenhoId);
+	public boolean existe(Long configuracaoNivelCompetenciaFaixaSalarialId,Long avaliacaoDesempenhoId);
 }

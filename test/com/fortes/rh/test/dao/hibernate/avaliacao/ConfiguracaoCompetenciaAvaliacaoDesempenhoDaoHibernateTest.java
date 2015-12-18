@@ -61,7 +61,7 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest extends 
 	public void testExiste()
 	{
 		ConfiguracaoCompetenciaAvaliacaoDesempenho configCompetenciaAd = getEntity();
-		assertTrue(configuracaoCompetenciaAvaliacaoDesempenhoDao.existe(configCompetenciaAd.getConfiguracaoNivelCompetenciaFaixaSalarial().getId(), configCompetenciaAd.getAvaliador().getId(), configCompetenciaAd.getAvaliacaoDesempenho().getId()));
+		assertTrue(configuracaoCompetenciaAvaliacaoDesempenhoDao.existe(configCompetenciaAd.getConfiguracaoNivelCompetenciaFaixaSalarial().getId(), configCompetenciaAd.getAvaliacaoDesempenho().getId()));
 	}
 	
 	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoDao(ConfiguracaoCompetenciaAvaliacaoDesempenhoDao configuracaoCompetenciaAvaliacaoDesempenhoDao) {
