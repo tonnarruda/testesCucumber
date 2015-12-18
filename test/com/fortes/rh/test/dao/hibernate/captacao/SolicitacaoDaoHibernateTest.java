@@ -77,20 +77,6 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 	{
 		Solicitacao solicitacao = new Solicitacao();
 
-		solicitacao.setAreaOrganizacional(null);
-		solicitacao.setFaixaSalarial(null);
-		solicitacao.setData(new Date());
-		solicitacao.setEscolaridade("a");
-		solicitacao.setIdadeMaxima(50);
-		solicitacao.setIdadeMinima(15);
-		solicitacao.setInfoComplementares("infor");
-		solicitacao.setQuantidade(200);
-		solicitacao.setRemuneracao(1500.00);
-		solicitacao.setSexo("m");
-		solicitacao.setVinculo("a");
-		solicitacao.setSolicitante(null);
-		solicitacao.setEncerrada(false);
-		solicitacao.setEmpresa(null);
 		return solicitacao;
 	}
 
@@ -114,7 +100,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Long estabelecimentoId = -1L;
 		Long motivoId = -1L;
 
-		Solicitacao solicitacao = getEntity();
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao.setDescricao("Desenvolvedor");
 		solicitacao.setEncerrada(true);
 		solicitacao.setEmpresa(empresa);
@@ -134,7 +120,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Long estabelecimentoId = -1L;
 		Long motivoId = -1L;
 		
-		Solicitacao solicitacao = getEntity();
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao.setDescricao("Desenvolvedor");
 		solicitacao.setEncerrada(true);
 		solicitacao.setEmpresa(empresa);
@@ -142,7 +128,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao.setData(DateUtil.criarAnoMesDia(2015, 01, 01));
 		solicitacao = solicitacaoDao.save(solicitacao);
 		
-		Solicitacao solicitacao2 = getEntity();
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
 		solicitacao2.setDescricao("Desenvolvedor");
 		solicitacao2.setEncerrada(true);
 		solicitacao2.setEmpresa(empresa);
@@ -168,7 +154,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Long estabelecimentoId = -1L;
 		Long motivoId = -1L;
 		
-		Solicitacao solicitacao = getEntity();
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao.setEncerrada(true);
 		solicitacao.setEmpresa(empresa);
 		solicitacao = solicitacaoDao.save(solicitacao);
@@ -191,7 +177,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Long estabelecimentoId = -1L;
 		Long motivoId = -1L;
 		
-		Solicitacao solicitacao = getEntity();
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao.setEncerrada(false);
 		solicitacao.setSuspensa(false);
 		solicitacao.setEmpresa(empresa);
@@ -235,7 +221,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		
 		Date hoje = new Date();
 		
-		Solicitacao solicitacao1 = getEntity();
+		Solicitacao solicitacao1 =SolicitacaoFactory.getSolicitacao();
 		solicitacao1.setEncerrada(false);
 		solicitacao1.setSuspensa(false);
 		solicitacao1.setStatus(StatusAprovacaoSolicitacao.APROVADO);
@@ -245,7 +231,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao1.setQuantidade(5);
 		solicitacaoDao.save(solicitacao1);
 		
-		Solicitacao solicitacao2 = getEntity();
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
 		solicitacao2.setEncerrada(false);
 		solicitacao2.setSuspensa(false);
 		solicitacao2.setStatus(StatusAprovacaoSolicitacao.APROVADO);
@@ -255,7 +241,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao2.setQuantidade(20);
 		solicitacaoDao.save(solicitacao2);
 		
-		Solicitacao solicitacaoTesteEstabelecimento1 = getEntity();
+		Solicitacao solicitacaoTesteEstabelecimento1 = SolicitacaoFactory.getSolicitacao();
 		solicitacaoTesteEstabelecimento1.setEncerrada(false);
 		solicitacaoTesteEstabelecimento1.setSuspensa(false);
 		solicitacaoTesteEstabelecimento1.setStatus(StatusAprovacaoSolicitacao.APROVADO);
@@ -266,7 +252,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacaoTesteEstabelecimento1.setQuantidade(2);
 		solicitacaoDao.save(solicitacaoTesteEstabelecimento1);
 		
-		Solicitacao solicitacaoTesteEstabelecimento2 = getEntity();
+		Solicitacao solicitacaoTesteEstabelecimento2 = SolicitacaoFactory.getSolicitacao();
 		solicitacaoTesteEstabelecimento2.setEncerrada(false);
 		solicitacaoTesteEstabelecimento2.setSuspensa(false);
 		solicitacaoTesteEstabelecimento2.setStatus(StatusAprovacaoSolicitacao.APROVADO);
@@ -277,7 +263,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacaoTesteEstabelecimento2.setQuantidade(4);
 		solicitacaoDao.save(solicitacaoTesteEstabelecimento2);
 		
-		Solicitacao solicitacaoTesteArea1 = getEntity();
+		Solicitacao solicitacaoTesteArea1 = SolicitacaoFactory.getSolicitacao();
 		solicitacaoTesteArea1.setEncerrada(false);
 		solicitacaoTesteArea1.setSuspensa(false);
 		solicitacaoTesteArea1.setStatus(StatusAprovacaoSolicitacao.APROVADO);
@@ -288,7 +274,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacaoTesteArea1.setQuantidade(6);
 		solicitacaoDao.save(solicitacaoTesteArea1);
 		
-		Solicitacao solicitacaoTesteArea2 = getEntity();
+		Solicitacao solicitacaoTesteArea2 = SolicitacaoFactory.getSolicitacao();
 		solicitacaoTesteArea2.setEncerrada(false);
 		solicitacaoTesteArea2.setSuspensa(false);
 		solicitacaoTesteArea2.setStatus(StatusAprovacaoSolicitacao.APROVADO);
@@ -351,14 +337,14 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		
 		Date hoje = new Date();
 		
-		Solicitacao solicitacao1 = getEntity();
+		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
 		solicitacao1.setData(hoje);
 		solicitacao1.setEmpresa(empresa);		
 		solicitacao1.setFaixaSalarial(faixa1);
 		solicitacao1.setEstabelecimento(estabelecimento);
 		solicitacaoDao.save(solicitacao1);
 
-		Solicitacao solicitacao2 = getEntity();
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
 		solicitacao2.setData(hoje);
 		solicitacao2.setEmpresa(empresa);		
 		solicitacao2.setFaixaSalarial(faixa2);
@@ -418,14 +404,14 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		
 		Date hoje = new Date();
 		
-		Solicitacao solicitacao1 = getEntity();
+		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
 		solicitacao1.setData(hoje);
 		solicitacao1.setEmpresa(empresa);		
 		solicitacao1.setAreaOrganizacional(area1);
 		solicitacao1.setEstabelecimento(estabelecimento);
 		solicitacaoDao.save(solicitacao1);
 		
-		Solicitacao solicitacao2 = getEntity();
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
 		solicitacao2.setData(hoje);
 		solicitacao2.setEmpresa(empresa);		
 		solicitacao2.setAreaOrganizacional(area2);
@@ -486,14 +472,14 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		
 		Date hoje = new Date();
 		
-		Solicitacao solicitacao1 = getEntity();
+		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
 		solicitacao1.setData(hoje);
 		solicitacao1.setEmpresa(empresa);		
 		solicitacao1.setMotivoSolicitacao(motivo1);
 		solicitacao1.setAreaOrganizacional(areaOrganizacional);
 		solicitacaoDao.save(solicitacao1);
 		
-		Solicitacao solicitacao2 = getEntity();
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
 		solicitacao2.setData(hoje);
 		solicitacao2.setEmpresa(empresa);		
 		solicitacao2.setEstabelecimento(estabelecimento);		
@@ -559,7 +545,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		faixaSalarial.setCargo(cargo);
 		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
 
-		Solicitacao solicitacao = getEntity();
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao.setSuspensa(false);
 		solicitacao.setEncerrada(false);
 		solicitacao.setEmpresa(empresa);
@@ -600,7 +586,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		faixaSalarial.setCargo(cargo);
 		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
 
-		Solicitacao solicitacao = getEntity();
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao.setSuspensa(false);
 		solicitacao.setEmpresa(empresa);
 		solicitacao.setEncerrada(false);
@@ -634,7 +620,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Long areaOrganizacionalId = -1L;
 		Long motivoId = -1L;
 
-		Solicitacao solicitacao = getEntity();
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao.setEncerrada(false);
 		solicitacao.setSuspensa(true);
 		solicitacao.setEmpresa(empresa);
@@ -659,17 +645,17 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Long areaOrganizacionalId = null;
 		Long motivoId = null;
 
-		Solicitacao solicitacao1 = getEntity();
+		Solicitacao solicitacao1 = SolicitacaoFactory.getSolicitacao();
 		solicitacao1.setEmpresa(empresa);
 		solicitacao1.setData(DateUtil.criarDataMesAno(1, 1, 2014));
 		solicitacaoDao.save(solicitacao1);
 		
-		Solicitacao solicitacao2 = getEntity();
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
 		solicitacao2.setEmpresa(empresa);
 		solicitacao2.setData(DateUtil.criarDataMesAno(1, 5, 2015));
 		solicitacaoDao.save(solicitacao2);
 		
-		Solicitacao solicitacao3 = getEntity();
+		Solicitacao solicitacao3 = SolicitacaoFactory.getSolicitacao();
 		solicitacao3.setEmpresa(empresa);
 		solicitacao3.setData(DateUtil.criarDataMesAno(1, 8, 2015));
 		solicitacaoDao.save(solicitacao3);
@@ -694,7 +680,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Long areaOrganizacionalId = -1L;
 		Long motivoId = -1L;
 		
-		Solicitacao solicitacao = getEntity();
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao.setEncerrada(false);
 		solicitacao.setSuspensa(true);
 		solicitacao.setEmpresa(empresa);
@@ -702,7 +688,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao.setStatus(StatusAprovacaoSolicitacao.APROVADO);
 		solicitacaoDao.save(solicitacao);
 		
-		Solicitacao solicitacao2 = getEntity();
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
 		solicitacao2.setEncerrada(false);
 		solicitacao2.setSuspensa(true);
 		solicitacao2.setEmpresa(empresa);
@@ -721,7 +707,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Empresa empresa = EmpresaFactory.getEmpresa();
 		empresa = empresaDao.save(empresa);
 
-		Solicitacao solicitacao = getEntity();
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao.setEncerrada(true);
 		solicitacao.setStatus(StatusAprovacaoSolicitacao.APROVADO);
 		solicitacao.setSuspensa(true);
@@ -737,11 +723,10 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 	public void testGetValor()
 	{
 		
-		Solicitacao solicitacao = getEntity();
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacaoDao.save(solicitacao);
 
 		Candidato candidato1 = CandidatoFactory.getCandidato();
-		candidato1.setNome("aaaaaaaaaaaaaaaaaaaaaaaaaa");
 		candidatoDao.save(candidato1);
 		
 		CandidatoSolicitacao candidatoSolicitacao1 = CandidatoSolicitacaoFactory.getEntity();
@@ -781,7 +766,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 
 	public void testFindByIdProjectionAreaFaixaSalarial()
 	{
-		Solicitacao solicitacao = getEntity();
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao = solicitacaoDao.save(solicitacao);
 
 		Solicitacao solicitacaoRetorno = solicitacaoDao.findByIdProjectionAreaFaixaSalarial(solicitacao.getId());
@@ -791,7 +776,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 
 	public void testFindByIdProjection()
 	{
-		Solicitacao solicitacao = getEntity();
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao = solicitacaoDao.save(solicitacao);
 
 		Solicitacao solicitacaoRetorno = solicitacaoDao.findByIdProjection(solicitacao.getId());
@@ -803,7 +788,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 	{
 		Usuario liberador = UsuarioFactory.getEntity();
 
-		Solicitacao s1 = getEntity();
+		Solicitacao s1 = SolicitacaoFactory.getSolicitacao();
 		s1.setLiberador(usuarioDao.save(liberador));
 		s1.setHorarioComercial("8h às 18h");
 		solicitacaoDao.save(s1);
@@ -817,7 +802,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 	public void testUpdateEncerraSolicitacao()
 	{
 		Date dataEncerramento = new Date();
-		Solicitacao s1 = getEntity();
+		Solicitacao s1 = SolicitacaoFactory.getSolicitacao();
 		s1.setDataEncerramento(null);
 		s1.setEncerrada(false);
 		s1 = solicitacaoDao.save(s1);
@@ -839,7 +824,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 
 	public void testUpdateSuspendeSolicitacao()
 	{
-		Solicitacao s1 = getEntity();
+		Solicitacao s1 = SolicitacaoFactory.getSolicitacao();
 		s1.setSuspensa(false);
 		s1 = solicitacaoDao.save(s1);
 
@@ -858,14 +843,14 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 
 	public void testUpdateStatusSolicitacao()
 	{
-		Solicitacao solicitacaoSalva = getEntity();
+		Solicitacao solicitacaoSalva = SolicitacaoFactory.getSolicitacao();
 		solicitacaoSalva.setStatus(StatusAprovacaoSolicitacao.APROVADO);
 		solicitacaoDao.save(solicitacaoSalva);
 		
 		Usuario usuario = UsuarioFactory.getEntity();
 		usuarioDao.save(usuario);
 		
-		Solicitacao solicitacaoEnviada = getEntity();
+		Solicitacao solicitacaoEnviada = SolicitacaoFactory.getSolicitacao();
 		solicitacaoEnviada.setId(solicitacaoSalva.getId());
 		solicitacaoEnviada.setStatus(StatusAprovacaoSolicitacao.REPROVADO);
 		solicitacaoEnviada.setObservacaoLiberador("anulada");
@@ -892,7 +877,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Collection<Bairro> bairros = new ArrayList<Bairro>();
 		bairros.add(bairro);
 		
-		Solicitacao s1 = getEntity();
+		Solicitacao s1 = SolicitacaoFactory.getSolicitacao();
 		s1.setBairros(bairros);
 		s1 = solicitacaoDao.save(s1);
 		
@@ -922,7 +907,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		areaOrganizacional.setEmpresa(empresa);
 		areaOrganizacionalDao.save(areaOrganizacional);
 		
-		Solicitacao solicitacao = getEntity();
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao.setAreaOrganizacional(areaOrganizacional);
 		solicitacao.setEstabelecimento(estabelecimento);
 		solicitacao.setData(data);
@@ -932,7 +917,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao.setQuantidade(3);
 		solicitacaoDao.save(solicitacao);
 		
-		Solicitacao solicitacao2 = getEntity();
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
 		solicitacao2.setAreaOrganizacional(areaOrganizacional);
 		solicitacao2.setEstabelecimento(estabelecimento);
 		solicitacao2.setData(data);
@@ -985,7 +970,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		areaOrganizacional.setEmpresa(empresa);
 		areaOrganizacionalDao.save(areaOrganizacional);
 		
-		Solicitacao solicitacao = getEntity();
+		Solicitacao solicitacao = SolicitacaoFactory.getSolicitacao();
 		solicitacao.setAreaOrganizacional(areaOrganizacional);
 		solicitacao.setEstabelecimento(estabelecimento);
 		solicitacao.setData(data);
@@ -995,7 +980,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao.setQuantidade(1);
 		solicitacaoDao.save(solicitacao);
 		
-		Solicitacao solicitacao2 = getEntity();
+		Solicitacao solicitacao2 = SolicitacaoFactory.getSolicitacao();
 		solicitacao2.setAreaOrganizacional(areaOrganizacional);
 		solicitacao2.setEstabelecimento(estabelecimento);
 		solicitacao2.setData(data);
@@ -1005,7 +990,7 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		solicitacao2.setQuantidade(1);
 		solicitacaoDao.save(solicitacao2);
 		
-		Solicitacao solicitacaoComPausa = getEntity();
+		Solicitacao solicitacaoComPausa = SolicitacaoFactory.getSolicitacao();
 		solicitacaoComPausa.setAreaOrganizacional(areaOrganizacional);
 		solicitacaoComPausa.setEstabelecimento(estabelecimento);
 		solicitacaoComPausa.setData(data);
@@ -1060,17 +1045,21 @@ public class SolicitacaoDaoHibernateTest extends GenericDaoHibernateTest<Solicit
 		Long[] solicitacaoIds = new Long[]{solicitacao2.getId()};
 		Long[] solicitacaoIdComPausa = new Long[]{solicitacaoComPausa.getId()};
 		
-		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresSemSolicitacao = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, null, null );
-		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresComSolicitacao = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, solicitacaoIds, null );
-		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresComPausa = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, solicitacaoIdComPausa, null );
+		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresSemSolicitacao = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, null, null, false );
+		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresSemSolicitacaoComHistoricoFuturo = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, null, null, true );
+		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresComSolicitacao = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, solicitacaoIds, null, false );
+		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresComPausa = solicitacaoDao.getIndicadorMediaDiasPreenchimentoVagas(dataEncerramento, dataEncerramento, areasIds, estabelecimentosIds, solicitacaoIdComPausa, null, false );
 		
 		assertEquals(1, indicadoresSemSolicitacao.size());
+		
 		IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVaga = (IndicadorDuracaoPreenchimentoVaga) indicadoresSemSolicitacao.toArray()[0];
+		IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVagaComHistoricoFuturo = (IndicadorDuracaoPreenchimentoVaga) indicadoresSemSolicitacaoComHistoricoFuturo.toArray()[0];
 		IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVagaComSolicitacao = (IndicadorDuracaoPreenchimentoVaga) indicadoresComSolicitacao.toArray()[0];
 		IndicadorDuracaoPreenchimentoVaga indicadorDuracaoPreenchimentoVagaComPausa = (IndicadorDuracaoPreenchimentoVaga) indicadoresComPausa.toArray()[0];
 		
 		assertEquals("deve retornar a média de dias", 11.0, indicadorDuracaoPreenchimentoVaga.getMediaDias());
 		assertEquals("deve retornar qtd contratados sem solicitação especificada", 2, indicadorDuracaoPreenchimentoVaga.getQtdContratados().intValue());
+		assertEquals("deve retornar qtd contratados sem solicitação especificada com histórico futuro", 3, indicadorDuracaoPreenchimentoVagaComHistoricoFuturo.getQtdContratados().intValue());
 		assertEquals("deve retornar qtd contratados com solicitação especificada", 0, indicadorDuracaoPreenchimentoVagaComSolicitacao.getQtdContratados().intValue());
 		assertEquals("deve retornar qtd contratados com solicitação especificada (com pausa)", 11.0, indicadorDuracaoPreenchimentoVagaComPausa.getMediaDias());
 	}

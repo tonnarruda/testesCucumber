@@ -104,14 +104,14 @@ public class DuracaoPreenchimentoVagaManagerTest extends MockObjectTestCase
     	indicadoresQtdVagas.add(qtdVagas1);
     	indicadoresQtdVagas.add(qtdVagas2);
     	
-    	solicitacaoManager.expects(once()).method("getIndicadorMediaDiasPreenchimentoVagas").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areaIds), eq(estabelecimentoIds), eq(solicitacaoIds), eq(empresaId)}).will(returnValue(indicadores));
+    	solicitacaoManager.expects(once()).method("getIndicadorMediaDiasPreenchimentoVagas").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areaIds), eq(estabelecimentoIds), eq(solicitacaoIds), eq(empresaId), eq(true)}).will(returnValue(indicadores));
     	solicitacaoManager.expects(once()).method("getIndicadorQtdCandidatos").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areaIds), eq(estabelecimentoIds), eq(solicitacaoIds)}).will(returnValue(indicadoresQtdCandidatos));
 		solicitacaoManager.expects(once()).method("getIndicadorQtdVagas").with(new Constraint[]{eq(dataDe), eq(dataAte), eq(areaIds), eq(estabelecimentoIds), eq(solicitacaoIds)}).will(returnValue(indicadoresQtdVagas));
 		
 		cargoManager.expects(atLeastOnce()).method("findByIdProjection").with(eq(1L)).will(returnValue(CargoFactory.getEntity(1L)));
 		cargoManager.expects(atLeastOnce()).method("findByIdProjection").with(eq(2L)).will(returnValue(CargoFactory.getEntity(2L)));
 		
-		Collection<IndicadorDuracaoPreenchimentoVaga> resultado = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe,dataAte,areaIds,estabelecimentoIds, 1L, solicitacaoIds);
+		Collection<IndicadorDuracaoPreenchimentoVaga> resultado = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe,dataAte,areaIds,estabelecimentoIds, 1L, solicitacaoIds, true);
     	assertEquals(2, resultado.size());
 		IndicadorDuracaoPreenchimentoVaga indicador1 = (IndicadorDuracaoPreenchimentoVaga)resultado.toArray()[0];
 		IndicadorDuracaoPreenchimentoVaga indicador2 = (IndicadorDuracaoPreenchimentoVaga)resultado.toArray()[1];

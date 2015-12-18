@@ -30,6 +30,7 @@
 		<@ww.datepicker name="dataDe" id="dataDe" value="${dataDeTmp}" liClass="liLeft" cssClass="mascaraData validaDataIni"/>
 		<@ww.label value="a" liClass="liLeft"/>
 		<@ww.datepicker name="dataAte" id="dataAte" value="${dataAteTmp}" cssClass="mascaraData validaDataFim"/>
+		<@ww.checkbox label="Considerar contratações futuras" id="considerarContratacaoFutura" name="considerarContratacaoFutura" labelPosition="left"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 	</@ww.form>

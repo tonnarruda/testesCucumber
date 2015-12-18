@@ -33,12 +33,12 @@ public class DuracaoPreenchimentoVagaManagerImpl implements DuracaoPreenchimento
 		return new CollectionUtil<Estabelecimento>().convertCollectionToMap(estabelecimentos, "getId", "getNome");
 	}
 
-	public Collection<IndicadorDuracaoPreenchimentoVaga> gerarIndicadorDuracaoPreenchimentoVagas(Date dataDe, Date dataAte, Collection<Long> areasIds, Collection<Long> estabelecimentosIds, Long empresaId, Long[] solicitacaoIds) throws Exception
+	public Collection<IndicadorDuracaoPreenchimentoVaga> gerarIndicadorDuracaoPreenchimentoVagas(Date dataDe, Date dataAte, Collection<Long> areasIds, Collection<Long> estabelecimentosIds, Long empresaId, Long[] solicitacaoIds, boolean considerarContratacaoFutura) throws Exception
 	{
 		Map<Long, String> mapNomesAreas = getAreas(empresaId);
 		Map<Long, String> mapNomesEstabelecimentos = getEstabelecimentos(empresaId);
 		
-		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresDuracaoPreenchimentoVagas = solicitacaoManager.getIndicadorMediaDiasPreenchimentoVagas(dataDe, dataAte, areasIds, estabelecimentosIds, solicitacaoIds, empresaId);
+		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresDuracaoPreenchimentoVagas = solicitacaoManager.getIndicadorMediaDiasPreenchimentoVagas(dataDe, dataAte, areasIds, estabelecimentosIds, solicitacaoIds, empresaId, considerarContratacaoFutura);
 		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresQtdCandidatos = solicitacaoManager.getIndicadorQtdCandidatos(dataDe, dataAte, areasIds, estabelecimentosIds, solicitacaoIds);
 		Collection<IndicadorDuracaoPreenchimentoVaga> indicadoresVagas = solicitacaoManager.getIndicadorQtdVagas(dataDe, dataAte, areasIds, estabelecimentosIds, solicitacaoIds);
 		

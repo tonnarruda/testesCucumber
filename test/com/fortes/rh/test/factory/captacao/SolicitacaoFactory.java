@@ -5,10 +5,26 @@ import java.util.Date;
 import com.fortes.rh.model.captacao.Solicitacao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.StatusAprovacaoSolicitacao;
-import com.fortes.rh.util.DateUtil;
 
 public class SolicitacaoFactory
 {
+	public static Solicitacao getSolicitacao(Long id)
+	{
+		Solicitacao solicitacao = getSolicitacao();
+		solicitacao.setId(id);
+		
+		return solicitacao;
+	}
+
+	public static Solicitacao getSolicitacao(FaixaSalarial faixaSalarial, Date data)
+	{
+		Solicitacao solicitacao = getSolicitacao();
+		solicitacao.setFaixaSalarial(faixaSalarial);
+		solicitacao.setData(data);
+		
+		return solicitacao;
+	}
+	
 	public static Solicitacao getSolicitacao()
 	{
 		Solicitacao solicitacao = new Solicitacao();
@@ -28,23 +44,6 @@ public class SolicitacaoFactory
 		solicitacao.setEmpresa(null);
 		solicitacao.setStatus(StatusAprovacaoSolicitacao.ANALISE);
 
-		return solicitacao;
-	}
-
-	public static Solicitacao getSolicitacao(Long id)
-	{
-		Solicitacao solicitacao = getSolicitacao();
-		solicitacao.setId(id);
-		
-		return solicitacao;
-	}
-
-	public static Solicitacao getSolicitacao(FaixaSalarial faixaSalarial, Date data)
-	{
-		Solicitacao solicitacao = getSolicitacao();
-		solicitacao.setFaixaSalarial(faixaSalarial);
-		solicitacao.setData(data);
-		
 		return solicitacao;
 	}
 }

@@ -69,6 +69,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 	private double qtdCandidatosAtendidosPorVaga;
 	private double indiceProcSeletivo;
 	private boolean indicadorResumido;
+	private boolean considerarContratacaoFutura;
 	
 	private LinkedHashMap<Character, String> tiposDataStatusAprovacaoSolicitacao;
 	private char dataStatusAprovacaoSolicitacao;
@@ -110,7 +111,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 		indiceProcSeletivo = colaboradorManager.calculaIndiceProcessoSeletivo(getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), LongUtil.arrayStringToArrayLong(areasCheck), dataAte);
 		
 		try {
-			indicadorDuracaoPreenchimentoVagas = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe, dataAte,  LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds));
+			indicadorDuracaoPreenchimentoVagas = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe, dataAte,  LongUtil.arrayStringToCollectionLong(areasCheck), LongUtil.arrayStringToCollectionLong(estabelecimentosCheck), getEmpresaSistema().getId(), LongUtil.arrayStringToArrayLong(solicitacaosCheckIds), considerarContratacaoFutura);
 		} catch (Exception e) {
 			
 		}
@@ -163,7 +164,7 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 
 		try
 		{
-			indicador = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe, dataAte, areasOrganizacionais,estabelecimentos, getEmpresaSistema().getId(), null);
+			indicador = duracaoPreenchimentoVagaManager.gerarIndicadorDuracaoPreenchimentoVagas(dataDe, dataAte, areasOrganizacionais,estabelecimentos, getEmpresaSistema().getId(), null, considerarContratacaoFutura);
 
 			reportFilter = "Período: " + DateUtil.formataDiaMesAno(dataDe) + " a " + DateUtil.formataDiaMesAno(dataAte);
 			reportTitle = "Indicador de Duração para preenchimento de Vagas";
@@ -471,5 +472,9 @@ public class IndicadorDuracaoPreenchimentoVagaListAction extends MyActionSupport
 
 	public LinkedHashMap<Character, String> getTiposDataStatusAprovacaoSolicitacao() {
 		return tiposDataStatusAprovacaoSolicitacao;
+	}
+
+	public void setConsiderarContratacaoFutura(boolean considerarContratacaoFutura) {
+		this.considerarContratacaoFutura = considerarContratacaoFutura;
 	}
 }

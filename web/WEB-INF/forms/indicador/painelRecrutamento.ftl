@@ -156,7 +156,7 @@
 			<@ww.datepicker name="dataAte" id="dataAte" value="${dateFim}" cssClass="mascaraData validaDataFim" />
 			<@ww.select label="Referenciar o período acima com a data da" name="dataStatusAprovacaoSolicitacao" list="tiposDataStatusAprovacaoSolicitacao" cssStyle="width: 300px;" />
 			<@ww.hidden name="statusSolicitacao" value = 'S'/>			
-			
+			<@ww.checkbox label="Considerar contratações futuras para estatística de preenchimento de vaga" id="considerarContratacaoFutura" name="considerarContratacaoFutura" labelPosition="left"/>
 			<@frt.checkListBox label="Estabelecimentos*" name="estabelecimentosCheck" id="estabelecimentoCheck" list="estabelecimentosCheckList" filtro="true" width="460" liClass="liLeft"/>
 			<@frt.checkListBox label="Áreas Organizacionais" name="areasCheck" id="areaCheck" list="areasCheckList" filtro="true" selectAtivoInativo="true" width="460" liClass="liLeft"/>
 			<@frt.checkListBox label="Solicitações de Pessoal" name="solicitacaosCheckIds" id="solicitacao" list="solicitacaosCheck" width="926" filtro="true"/>
