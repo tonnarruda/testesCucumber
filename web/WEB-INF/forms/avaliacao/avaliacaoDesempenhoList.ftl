@@ -57,8 +57,38 @@
 		
 		function submitLiberar(avaliacaoDesempenhoId)
 		{
-			$('#btnLiberar').removeAttr("href");
-			window.location='liberar.action?avaliacaoDesempenho.id=' + avaliacaoDesempenhoId;
+			AvaliacaoDesempenhoDWR.verificaAvaliadosSemCompetencia(avaliacaoDesempenhoId, function(msg) {
+				if (msg != '')
+				{
+					$('#liberaDialog').html(msg).dialog({ 	modal: true, 
+															width: 500,
+															maxHeight: 360,
+															buttons: 
+															[
+															    {
+															        text: "Liberar",
+															        click: function() { 
+																		$('#btnLiberar').removeAttr("href");
+																		window.location='liberar.action?avaliacaoDesempenho.id=' + avaliacaoDesempenhoId;									        
+															        }
+															    },
+															    {
+															        text: "Cancelar",
+															        click: function() { $(this).dialog("close"); }
+															    }
+															],
+															open: function() {
+														        $(this).closest('.ui-dialog').find('.ui-dialog-buttonpane button:eq(1)').focus(); 
+															}
+														});
+				
+				} else {
+					newConfirm('Deseja liberar esta Avaliação?', function(){
+						$('#btnLiberar').removeAttr("href");
+						window.location='liberar.action?avaliacaoDesempenho.id=' + avaliacaoDesempenhoId;
+					});
+				}
+			});			
 		}
 	</script>
 	
@@ -109,7 +139,7 @@
 				<a href="prepareResultado.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}"><img border="0" title="Resultado da Avaliação" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>"></a>
 				<a href="javascript:newConfirm('Deseja enviar e-mail de lembrete para os colaboradores que ainda não respoderam esta avaliação desempenho?', function(){window.location='enviarLembrete.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}'});"><img border="0" title="Enviar e-mail de Lembrete" src="<@ww.url includeParams="none" value="/imgs/icon_email.gif"/>"></a>
 			<#else>
-				<a href="javascript:newConfirm('Deseja liberar esta Avaliação?', function(){ submitLiberar(${avaliacaoDesempenho.id}); });" id="btnLiberar"><img border="0" title="Liberar" src="<@ww.url includeParams="none" value="/imgs/liberar.gif"/>"></a>
+				<a href="javascript:submitLiberar(${avaliacaoDesempenho.id});" id="btnLiberar"><img border="0" title="Liberar" src="<@ww.url includeParams="none" value="/imgs/liberar.gif"/>"></a>
 				<img border="0" title="Avaliação bloqueada" src="<@ww.url includeParams="none" value="/imgs/grafico_pizza.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				<img border="0" title="Avaliação bloqueada" src="<@ww.url includeParams="none" value="/imgs/icon_email.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			</#if>
@@ -155,5 +185,6 @@
 			<input type="submit" value="" class="btnLiberar">
 		</@ww.form>
 	</div>
+	<div id="liberaDialog" title="Confirmar liberação"></div>
 </body>
 </html>
