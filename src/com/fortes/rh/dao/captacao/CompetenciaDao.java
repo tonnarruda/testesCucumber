@@ -6,4 +6,6 @@ import com.fortes.rh.model.captacao.Competencia;
 public interface CompetenciaDao extends GenericDao<Competencia>
 {
 	boolean existeNome(String nome, Long competenciaId, Character tipo, Long empresaId);
+
+	Competencia findCompetencia(Long competenciaId, Character tipoCompetencia);
 }

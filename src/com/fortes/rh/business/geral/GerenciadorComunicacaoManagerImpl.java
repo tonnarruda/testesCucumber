@@ -36,6 +36,7 @@ import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.acesso.UsuarioEmpresa;
 import com.fortes.rh.model.acesso.UsuarioEmpresaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.captacao.Candidato;
 import com.fortes.rh.model.captacao.Competencia;
@@ -1427,7 +1428,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		}
 	}
 	
-	public void enviaEmailAoInserirConfiguracaoCompetenciaFaixaSalarial(Collection<Competencia> competenciasInseridas, Collection<Competencia> competenciasExcluidas, FaixaSalarial faixaSalarial, Empresa empresa )
+	public void enviaEmailAoInserirConfiguracaoCompetenciaFaixaSalarial(Collection<Competencia> competenciasInseridas, Collection<Competencia> competenciasExcluidas, FaixaSalarial faixaSalarial, Empresa empresa, Collection<AvaliacaoDesempenho> avaliacoesDesempenho )
 	{
 		try 
 		{
@@ -1452,6 +1453,14 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 					mensagem.append("As seguintes competências foram inseridas: \n");
 					for (Competencia competencia : competenciasInseridas) {
 						mensagem.append(" - "+competencia.getNome()+" \n");
+					}
+					mensagem.append("\n\n");
+				}
+				
+				if(avaliacoesDesempenho != null  && avaliacoesDesempenho.size() > 0 && (competenciasExcluidas.size() > 0 || competenciasInseridas.size() > 0)){
+					mensagem.append("As seguintes Avaliações de Desempenho serão afetadas com está mudança: \n");
+					for (AvaliacaoDesempenho avaliacaoDesempenho : avaliacoesDesempenho) {
+						mensagem.append(" - "+avaliacaoDesempenho.getTitulo()+" \n");
 					}
 					mensagem.append("\n\n");
 				}

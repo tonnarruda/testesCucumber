@@ -42,16 +42,16 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
 	
-	private NivelCompetenciaManager nivelCompetenciaManager;
-	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager; 
-	private FaixaSalarialManager faixaSalarialManager;
-	private CandidatoManager candidatoManager;
-	private ColaboradorManager colaboradorManager;
-	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
-	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
-	private NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager;
-	private SolicitacaoManager solicitacaoManager;
 	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
+	private ConfiguracaoNivelCompetenciaFaixaSalarialManager configuracaoNivelCompetenciaFaixaSalarialManager;
+	private ConfiguracaoNivelCompetenciaColaboradorManager configuracaoNivelCompetenciaColaboradorManager;
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager; 
+	private NivelCompetenciaHistoricoManager nivelCompetenciaHistoricoManager;
+	private NivelCompetenciaManager nivelCompetenciaManager;
+	private FaixaSalarialManager faixaSalarialManager;
+	private ColaboradorManager colaboradorManager;
+	private SolicitacaoManager solicitacaoManager;
+	private CandidatoManager candidatoManager;
 	
 	private NivelCompetencia nivelCompetencia;
 	private FaixaSalarial faixaSalarial;
@@ -248,9 +248,11 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 			Collection<Competencia> habilidadesAnteriores = configuracaoNivelCompetenciaManager.findCompetenciasByFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), new Date(), Competencia.HABILIDADE);
 			Collection<Competencia> atitudesAnteriores = configuracaoNivelCompetenciaManager.findCompetenciasByFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(), new Date(), Competencia.ATITUDE);
 			
+			ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarialAnterior = configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId(),  new Date());   
+
 			configuracaoNivelCompetenciaManager.saveCompetenciasFaixaSalarial(niveisCompetenciaFaixaSalariais, configuracaoNivelCompetenciaFaixaSalarial);
 			
-			configuracaoCompetenciaAvaliacaoDesempenhoManager.reajusteByConfiguracaoNivelCompetenciaFaixaSalarial(conhecimentosAnteriores, habilidadesAnteriores, atitudesAnteriores, competencias, configuracaoNivelCompetenciaFaixaSalarial, getEmpresaSistema());
+			configuracaoCompetenciaAvaliacaoDesempenhoManager.reajusteByConfiguracaoNivelCompetenciaFaixaSalarial(conhecimentosAnteriores, habilidadesAnteriores, atitudesAnteriores, competencias, configuracaoNivelCompetenciaFaixaSalarial, getEmpresaSistema(), configuracaoNivelCompetenciaFaixaSalarialAnterior);
 			
 			setActionMsg("Níveis de competência da faixa salarial salvos com sucesso.");
 		}
@@ -446,6 +448,10 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		catch (FortesException e)
 		{
 			addActionWarning(e.getMessage());
+			e.printStackTrace();
+		}
+		catch (DataIntegrityViolationException e) {
+			addActionWarning("Não foi possível excluir as competências, pois existem dependências.");
 			e.printStackTrace();
 		}
 		catch (Exception e)

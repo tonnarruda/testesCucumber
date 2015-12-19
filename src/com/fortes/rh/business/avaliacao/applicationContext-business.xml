@@ -71,6 +71,12 @@
     <property name="faixaSalarialManager">
       <ref bean="faixaSalarialManager" />
     </property>
+    <property name="competenciaManager">
+      <ref bean="competenciaManager" />
+    </property>
+    <property name="avaliacaoDesempenhoManager">
+      <ref bean="avaliacaoDesempenhoManager" />
+    </property>
     <property name="dao">
       <ref bean="configuracaoCompetenciaAvaliacaoDesempenhoDao" />
     </property>

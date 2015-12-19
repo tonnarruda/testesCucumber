@@ -32,7 +32,6 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest extends 
 	private ConhecimentoDao conhecimentoDao;
 	private ColaboradorQuestionarioDao colaboradorQuestionarioDao;
 
-	@Override
 	public ConfiguracaoCompetenciaAvaliacaoDesempenho getEntity()
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
@@ -58,7 +57,6 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest extends 
 		return configuracaoCompetenciaAvaliacaoDesempenho;
 	}
 
-	@Override
 	public GenericDao<ConfiguracaoCompetenciaAvaliacaoDesempenho> getGenericDao()
 	{
 		return configuracaoCompetenciaAvaliacaoDesempenhoDao;

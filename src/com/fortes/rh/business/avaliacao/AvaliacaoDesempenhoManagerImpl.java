@@ -283,6 +283,10 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		}
 	}
 	
+	public Collection<AvaliacaoDesempenho> findAvaliacaoDesempenhoBloqueadaComConfiguracaoCompetencia(Long configuracaoNivelCompetenciaFaixaSalarialId) {
+		return getDao().findAvaliacaoDesempenhoBloqueadaComConfiguracaoCompetencia(configuracaoNivelCompetenciaFaixaSalarialId);
+	}
+	
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
 	}
@@ -295,13 +299,11 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		this.colaboradorManager = colaboradorManager;
 	}
 
-	public void setParticipanteAvaliacaoDesempenhoManager(
-			ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager) {
+	public void setParticipanteAvaliacaoDesempenhoManager(ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager) {
 		this.participanteAvaliacaoDesempenhoManager = participanteAvaliacaoDesempenhoManager;
 	}
 
-	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(
-			ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
+	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
 		this.configuracaoCompetenciaAvaliacaoDesempenhoManager = configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	}
 }

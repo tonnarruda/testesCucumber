@@ -10,6 +10,7 @@ import com.fortes.rh.model.captacao.Atitude;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.Conhecimento;
 import com.fortes.rh.model.captacao.Habilidade;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.BaseDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.AtitudeFactory;
@@ -74,6 +75,29 @@ public class CompetenciaDaoHibernateTest extends BaseDaoHibernateTest
 		assertTrue(competenciaDao.existeNome("habilidade", habilidade.getId(), Competencia.HABILIDADE, empresa1.getId()));
 	}
 
+	public void testFindCompetencia()
+	{
+		Empresa empresa1 = EmpresaFactory.getEmpresa();
+		Empresa empresa2 = EmpresaFactory.getEmpresa();
+
+		empresa1 = empresaDao.save(empresa1);
+		empresa2 = empresaDao.save(empresa2);
+
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimento.setNome("conhecimento");
+		conhecimento.setEmpresa(empresa1);
+		conhecimentoDao.save(conhecimento);
+
+		Habilidade habilidade = HabilidadeFactory.getEntity();
+		habilidade.setNome("habilidade");
+		habilidade.setEmpresa(empresa1);
+		habilidadeDao.save(habilidade);
+
+		assertEquals(conhecimento.getNome(), competenciaDao.findCompetencia(conhecimento.getId(), TipoCompetencia.CONHECIMENTO).getNome());
+		assertEquals(habilidade.getNome(), competenciaDao.findCompetencia(habilidade.getId(), TipoCompetencia.HABILIDADE).getNome());
+	}
+
+	
 	public void setEmpresaDao(EmpresaDao empresaDao)
 	{
 		this.empresaDao = empresaDao;

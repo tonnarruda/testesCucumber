@@ -1,6 +1,7 @@
 package com.fortes.rh.model.avaliacao;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -78,10 +79,28 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenho extends AbstractModel im
 	}
 	
 	public void setProjectionAvaliacaoDesempenhoId(Long avaliacaoId){
+		inicializaAvaliacaoDesempenho();
+		this.avaliacaoDesempenho.setId(avaliacaoId);
+	}
+	
+	public void setProjectionAvaliacaoDesempenhoTitulo(String avaliacaoDesempenhoTitulo){
+		inicializaAvaliacaoDesempenho();
+		this.avaliacaoDesempenho.setTitulo(avaliacaoDesempenhoTitulo);
+	}
+	
+	public void setProjectionAvaliacaoDesempenhoDataInicio(Date dataInicio){
+		inicializaAvaliacaoDesempenho();
+		this.avaliacaoDesempenho.setInicio(dataInicio);
+	}
+	
+	public void setProjectionAvaliacaoDesempenhoDataFim(Date dataFim){
+		inicializaAvaliacaoDesempenho();
+		this.avaliacaoDesempenho.setFim(dataFim);
+	}
+
+	private void inicializaAvaliacaoDesempenho() {
 		if ( this.avaliacaoDesempenho == null)
 			this.avaliacaoDesempenho = new AvaliacaoDesempenho();
-		
-		this.avaliacaoDesempenho.setId(avaliacaoId);
 	}
 	
 	public void setProjectionConfiguracaoNivelCompetenciaFaixaSalarialId(Long configuracaoNivelCompetenciaFaixaSalarialId){

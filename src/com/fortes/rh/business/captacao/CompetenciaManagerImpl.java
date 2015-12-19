@@ -10,4 +10,8 @@ public class CompetenciaManagerImpl extends GenericManagerImpl<Competencia, Comp
 	{
 		return getDao().existeNome(nome, competenciaId, tipo, empresaId);
 	}
+
+	public Competencia findCompetencia(Long competenciaId, Character tipoCompetencia) {
+		return getDao().findCompetencia(competenciaId, tipoCompetencia);
+	}
 }
