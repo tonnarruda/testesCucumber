@@ -176,7 +176,11 @@
 									      		</div>
 									      		<ul class="competencias">
 									      			<#if (faixa.configuracaoCompetenciaAvaliacaoDesempenhos.size() == 0) >
-											      		<li class="placeholder">Arraste os competências até aqui</li>
+										      			<#if avaliacaoDesempenho.liberada >
+											      			<li class="placeholder">Não existem competências configuradas</li>
+											      		<#else>
+											      			<li class="placeholder">Arraste os competências até aqui</li>
+										      			</#if>
 											      	</#if>
 											      	<#list faixa.configuracaoCompetenciaAvaliacaoDesempenhos as ccad>
 											      		<li class="competencia_${ccad.competenciaId}">
