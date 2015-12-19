@@ -15,11 +15,12 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.AvaliacaoDesempenhoDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
 
+@SuppressWarnings("unchecked")
 public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<AvaliacaoDesempenho> implements AvaliacaoDesempenhoDao
 {
-	@SuppressWarnings("unchecked")
 	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao) {
 		
 		Criteria criteria = getSession().createCriteria(AvaliacaoDesempenho.class, "a");
@@ -57,7 +58,6 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		return criteria.list();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Collection<AvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Boolean liberada, Long... empresasIds)
 	{
 		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
@@ -135,7 +135,6 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		return (Integer) criteria.uniqueResult();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Collection<AvaliacaoDesempenho> findTituloModeloAvaliacao(Integer page, Integer pagingSize, Date periodoInicial, Date periodoFinal, Long empresaId, String tituloBusca, Long avaliacaoId, Boolean liberada) {
 		Criteria criteria = geraCriteria(page, pagingSize, periodoInicial, periodoFinal, empresaId, tituloBusca, avaliacaoId, liberada);
 
@@ -202,8 +201,6 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		return criteria;
 	}
 	
-
-	@SuppressWarnings("unchecked")
 	public Collection<AvaliacaoDesempenho> findIdsAvaliacaoDesempenho(Long avaliacaoId) 
 	{
 		Criteria criteria = getSession().createCriteria(AvaliacaoDesempenho.class, "ad");
@@ -217,6 +214,27 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		criteria.addOrder(Order.asc("ad.id"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		
+		return criteria.list();
+	}
+
+	public Collection<AvaliacaoDesempenho> findAvaliacaoDesempenhoBloqueadaComConfiguracaoCompetencia(Long configuracaoNivelCompetenciaFaixaSalarialId) {
+		Criteria criteria = getSession().createCriteria(ConfiguracaoCompetenciaAvaliacaoDesempenho.class, "ccad");
+		criteria.createCriteria("ccad.avaliacaoDesempenho", "av", Criteria.INNER_JOIN);
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("av.id"), "id");
+		p.add(Projections.property("av.titulo"), "titulo");
+		p.add(Projections.property("av.inicio"), "inicio");
+		p.add(Projections.property("av.fim"), "fim");
+		criteria.setProjection(Projections.distinct(p));
+
+		criteria.add(Expression.eq("av.liberada", false));
+		criteria.add(Expression.eq("ccad.configuracaoNivelCompetenciaFaixaSalarial.id", configuracaoNivelCompetenciaFaixaSalarialId));
+		
+		criteria.addOrder(Order.asc("av.titulo"));
+		
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(AvaliacaoDesempenho.class));
 		return criteria.list();
 	}
 }

@@ -29,6 +29,7 @@ import com.fortes.rh.test.business.acesso.UsuarioManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoDesempenhoManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoPraticaManagerTest;
+import com.fortes.rh.test.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest;
 import com.fortes.rh.test.business.avaliacao.PeriodoExperienciaManagerTest;
 import com.fortes.rh.test.business.captacao.AnuncioManagerTest;
 import com.fortes.rh.test.business.captacao.AtitudeManagerTest;
@@ -751,6 +752,8 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(NivelCompetenciaHistoricoEditActionTest.class);
         suite.addTestSuite(ConfiguracaoNivelCompetenciaCriterioDaoHibernateTest.class);
         suite.addTestSuite(CriterioAvaliacaoCompetenciaDaoHibernateTest.class);
+        suite.addTestSuite(ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest.class);
+        suite.addTestSuite(ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest.class);
 
         //Indicadores
         suite.addTestSuite(IndicadorTurnOverListActionTest.class);
