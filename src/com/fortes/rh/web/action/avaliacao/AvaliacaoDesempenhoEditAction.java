@@ -98,6 +98,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	private boolean isAvaliados;
 	private boolean temParticipantesAssociados;
+	
+	private boolean editarCompetencias = true;
 
 	private Date periodoInicial;
 	private Date periodoFinal;
@@ -188,6 +190,12 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 				
 				avaliador.getFaixaSalariaisAvaliados().add(faixaSalarialAvaliado);
 			}
+		}
+		
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = colaboradorQuestionarioManager.findRespondidasByAvaliacaoDesempenho(avaliacaoDesempenho.getId());
+		if (!colaboradorQuestionarios.isEmpty()) {
+			addActionMessage("Não é possível configurar, pois existem avaliações respondidas ou a avaliação está liberada.");
+			editarCompetencias = false;
 		}
 		
 		return Action.SUCCESS;
@@ -879,5 +887,13 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public void setParticipantesAvaliadores(
 			Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliadores) {
 		this.participantesAvaliadores = participantesAvaliadores;
+	}
+
+	public boolean isEditarCompetencias() {
+		return editarCompetencias;
+	}
+
+	public void setEditarCompetencias(boolean editarCompetencias) {
+		this.editarCompetencias = editarCompetencias;
 	}
 }

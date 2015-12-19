@@ -16,6 +16,8 @@
 		    </#if>
 		    
 		    #box { height: 500px; }
+		    .info { width: 670px; margin: 0 auto; }
+		    .info li { color: #00529B !important; }
 	  	</style>
 	  	
 		<@ww.head/>
@@ -36,7 +38,7 @@
 			var permiteAutoAvaliacao = ${avaliacaoDesempenho.permiteAutoAvaliacao.toString()};
 			var avaliacaoDesempenhoId = ${avaliacaoDesempenho.id};
 			var avaliacaoId = ${avaliacaoDesempenho.avaliacao.id};
-			var avaliacaoLiberada = ${avaliacaoDesempenho.liberada?string};
+			var avaliacaoLiberada = ${(avaliacaoDesempenho.liberada || !editarCompetencias)?string};
 			
 			$(function(){
 				if (!avaliacaoLiberada) {
@@ -52,6 +54,7 @@
 	</head>
 	<body>
 		<@ww.actionerror />
+		<@ww.actionmessage />
 		
 	  	<div id="box">
 			<span id="boxtitle"></span>

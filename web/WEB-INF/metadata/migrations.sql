@@ -116,15 +116,19 @@ ALTER TABLE participanteavaliacaodesempenho ADD CONSTRAINT participanteavaliacao
 ALTER TABLE participanteavaliacaodesempenho ADD CONSTRAINT participanteavaliacaodesempenho_avaliacaodesempenho_fk FOREIGN KEY (avaliacaodesempenho_id) REFERENCES avaliacaodesempenho(id);--.go
 CREATE SEQUENCE participanteavaliacaodesempenho_sequence START WITH 1 INCREMENT BY 1 NO MAXVALUE NO MINVALUE CACHE 1;--.go
 
+
 ----------------
+
+drop index if exists index_colaboradorquestionario_colaborador;--.go
+create index index_colaboradorquestionario_colaborador on colaboradorquestionario (avaliador_id,avaliacaodesempenho_id,colaborador_id);--.go
 
 CREATE FUNCTION relaciona_avaliado_avaliador() RETURNS integer AS $$
 DECLARE
     mviews RECORD;
 BEGIN
     FOR mviews IN
-		select distinct cq.id as cqid, cq.avaliador_id as avaliadorId, cq.avaliacaodesempenho_id as avaliacaoDesempenhoId, ad.avaliacao_id as avaliacaoId, 
-			cq_a.colaborador_id as colaboradorId, cq_a.id as cqaid
+		select distinct cq.avaliador_id as avaliadorId, cq.avaliacaodesempenho_id as avaliacaoDesempenhoId, ad.avaliacao_id as avaliacaoId, 
+			cq_a.colaborador_id as colaboradorId
 			from colaboradorquestionario cq
 			left join avaliacaodesempenho ad on ad.id = cq.avaliacaodesempenho_id 
 			left join colaboradorquestionario cq_a on cq_a.avaliacaodesempenho_id = cq.avaliacaodesempenho_id and cq_a.avaliador_id is null
@@ -137,13 +141,16 @@ BEGIN
 		LOOP
 			insert into colaboradorquestionario(id, colaborador_id, avaliacao_id, avaliacaodesempenho_id, avaliador_id, respondida) 
 			values ( nextval('colaboradorquestionario_sequence'), mviews.colaboradorId, mviews.avaliacaoId, mviews.avaliacaoDesempenhoId, mviews.avaliadorId, false);
-			delete from colaboradorquestionario where id in (mviews.cqid, mviews.cqaid);
 		END LOOP;
     RETURN 1;
 END;
 $$ LANGUAGE plpgsql;--.go
 select relaciona_avaliado_avaliador();--.go
 drop function relaciona_avaliado_avaliador();--.go 
+
+delete from colaboradorquestionario where (colaborador_id is null or avaliador_id is null) and avaliacaodesempenho_id is not null;
+
+drop index if exists index_colaboradorquestionario_colaborador;--.go
 
 ---------------
 
@@ -180,7 +187,7 @@ select insert_participante_avaliado();--.go
 drop function insert_participante_avaliado();--.go
 
 ---------------
-ALTER TABLE participanteavaliacaodesempenho ADD COLUMN produtividade double precision default 1; --.go
+ALTER TABLE participanteavaliacaodesempenho ADD COLUMN produtividade double precision; --.go
 
 ---------------
 ALTER TABLE colaboradorquestionario ADD COLUMN pesoAvaliador integer default 1; --.go

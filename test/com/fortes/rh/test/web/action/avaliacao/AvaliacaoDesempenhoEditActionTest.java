@@ -183,6 +183,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findColaboradoresParticipantes").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(colaboradoresAvaliadores));
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisDosAvaliadosByAvaliador").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(faixasSalariais));
 		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("findByAvaliador").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING}).will(returnValue(configuracaoCompetenciaAvaliacaoDesempenhos));
+		colaboradorQuestionarioManager.expects(once()).method("findRespondidasByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING}).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
 		
 		action.prepareCompetencias();
 		
@@ -190,7 +191,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		assertEquals(1, action.getAvaliadors().size());
 	}
 	
-	public void testPrepareCompetenciasQuandoAvaliacaoLiberada() throws Exception
+	public void testPrepareCompetenciasQuandoAvaliacaoLiberadaAndAvaliacoesRespondidas() throws Exception
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
 		avaliacaoDesempenho.setLiberada(true);
@@ -205,16 +206,21 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> configuracaoCompetenciaAvaliacaoDesempenhos = new ArrayList<ConfiguracaoCompetenciaAvaliacaoDesempenho>();
 		configuracaoCompetenciaAvaliacaoDesempenhos.add(new ConfiguracaoCompetenciaAvaliacaoDesempenho());
 		
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
+		colaboradorQuestionarios.add(new ColaboradorQuestionario());
+		
 		manager.expects(once()).method("findById").with(eq(1L)).will(returnValue(avaliacaoDesempenho));
 		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho").with(new Constraint[] {ANYTHING}).will(returnValue(faixasSalariais));
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findColaboradoresParticipantes").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(colaboradoresAvaliadores));
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisDosAvaliadosByAvaliador").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(faixasSalariais));
 		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("findByAvaliador").with(new Constraint[] {ANYTHING,ANYTHING,ANYTHING}).will(returnValue(configuracaoCompetenciaAvaliacaoDesempenhos));
+		colaboradorQuestionarioManager.expects(once()).method("findRespondidasByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING}).will(returnValue(colaboradorQuestionarios));
 		
 		action.prepareCompetencias();
 		
 		assertEquals(1, action.getFaixaSalariais().size());
 		assertEquals(1, action.getAvaliadors().size());
+		assertEquals(false, action.isEditarCompetencias());
 	}
 	
 	public void testSaveCompetencias() throws Exception
@@ -230,7 +236,8 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findFaixasSalariaisDosAvaliadosComCompetenciasByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING}).will(returnValue(new ArrayList<FaixaSalarial>()));
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findColaboradoresParticipantes").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(new ArrayList<Colaborador>()));
-		
+		colaboradorQuestionarioManager.expects(once()).method("findRespondidasByAvaliacaoDesempenho").with(new Constraint[] {ANYTHING}).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+
 		assertEquals("success", action.saveCompetencias());
 	}
 	
