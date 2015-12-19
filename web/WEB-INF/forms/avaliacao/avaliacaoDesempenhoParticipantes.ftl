@@ -224,7 +224,7 @@
 						<i class="fa fa-close"></i>
 						<i class="fa fa-align-justify"></i>
 				    </div>
-				    <div class="option produtividade" title="Gerar autoavaliação para selecionados">
+				    <div class="option produtividade" title="Nota de produtividade">
 						<i class="fa fa-line-chart"></i>
 				    </div>
 				    <#if avaliacaoDesempenho.permiteAutoAvaliacao>
