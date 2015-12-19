@@ -6,6 +6,7 @@ import java.util.Date;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -85,6 +86,8 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernate extends GenericDaoHiber
 		criteria.add(Restrictions.eq("p.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
 		criteria.add(Restrictions.eq("p.tipo", tipo));
 		criteria.add(Subqueries.propertyEq("hc.data", subQueryHc));
+		
+		criteria.addOrder(Order.asc("co.nome"));
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 		return criteria.list();

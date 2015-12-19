@@ -322,7 +322,11 @@
 						  		 <div class="portlet-content hide-when-expand">
 						  		 	<ul id="${avaliador.colaborador.id}">
 						  		 		<#if (avaliador.colaborador.avaliados.size() == 0)> 
-							        		<li class="placeholder">Arraste os avaliados até aqui</li>
+							  		 		<#if avaliacaoDesempenho.liberada > 
+								        		<li class="placeholder">Não avaliados configurados</li>
+								        	<#else>
+								        		<li class="placeholder">Arraste os avaliados até aqui</li>
+								        	</#if>
 							        	</#if>
 							        	<#list avaliador.colaborador.avaliados as avaliado>
 								        	<li class="avaliado_${avaliado.id}">
