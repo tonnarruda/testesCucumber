@@ -19,9 +19,9 @@ import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
 
+@SuppressWarnings("unchecked")
 public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<ConfiguracaoCompetenciaAvaliacaoDesempenho> implements ConfiguracaoCompetenciaAvaliacaoDesempenhoDao
 {
-	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> findByAvaliacaoDesempenho(Long avaliacaoDesempenhoId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "ccad");
@@ -46,7 +46,6 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		return criteria.list();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Collection<ConfiguracaoCompetenciaAvaliacaoDesempenho> findByAvaliador(Long avaliadorId, Long faixaSalarialId, Long avaliacaoDesempenhoId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "ccad");
@@ -119,7 +118,6 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		query.executeUpdate();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public Collection<FaixaSalarial> findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho(Long avaliacaoDesempenhoId) {
 		StringBuilder hql = new StringBuilder();
 		
@@ -129,6 +127,7 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		hql.append("left join cncf.faixaSalarial as fs ");
 		hql.append("left join fs.cargo as ca ");
 		hql.append("where ccad.avaliacaoDesempenho.id = :avaliacaoDesempenhoId ");
+		hql.append("order by ca.nome, fs.nome ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
@@ -166,7 +165,6 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 		return criteria.list().size() > 0;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Collection<Colaborador> findColabSemCompetenciaConfiguradaByAvalDesempenhoId(Long avaliacaoDesempenhoId) 
 	{
 		StringBuilder sql = new StringBuilder();
