@@ -53,15 +53,18 @@ $(function() {
 	
 	$(".mini-actions .remove").live("click", function(event) {
 		$(this).parents(".portlet").find("li.ui-selected").remove();
-		if($(this).parents(".portlet").find("li").not('.placeholder').length == 0)
-			$(this).parents(".portlet").find("ul").append('<li class="placeholder">Arraste as competências até aqui</li>');
+		
+		$(this).parents(".portlet").find(".competencias").each(function(){
+			if($(this).find("li").length == 0 )
+				$(this).append('<li class="placeholder">Arraste as competências até aqui</li>');
+		});
 		
 		$(this).parents(".mini-actions").hide();
 		event.stopPropagation();
 	});
 	
 	$(".mini-actions .select-all").live("click", function(event) {
-		$(this).parents(".portlet").find("li").not(".ui-selected").not(".has-respondida").addClass("ui-selected");
+		$(this).parents(".portlet").find(".competencias li").not(".placeholder").not(".ui-selected").addClass("ui-selected");
 		event.stopPropagation();
 	});
 	

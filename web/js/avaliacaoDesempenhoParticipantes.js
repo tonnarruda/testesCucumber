@@ -308,6 +308,7 @@ function createAvaliador(id, nome) {
 			      	'</ul>' +
 		  		 '</div>' +
 		  	'</div>');
+		countParticipantesAvaliadores++;
 	}
 }
 

@@ -129,6 +129,7 @@
 												      		'<div class="area"></div>' +
 												      		'<div style="clear:both; float: none;"></div>' +
 												      	'</li>');
+						countParticipantesAvaliados++;
 					} else if (openboxtype == "avaliadores") {
 						createAvaliador( $(this).val(), $(this).parent().text().replace(/([0-9]*.-.)?(.*)(.\(.*)/g, '$2') );
 						portletEvents();
