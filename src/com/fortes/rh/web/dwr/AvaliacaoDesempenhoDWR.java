@@ -85,6 +85,26 @@ public class AvaliacaoDesempenhoDWR
 		return "";
 	}
 	
+	public String verificaAvaliacoesComAvaliadosSemCompetencia(Long[] avaliacaoDesempenhoIds)
+	{
+		Collection<AvaliacaoDesempenho> avaliacoes = configuracaoCompetenciaAvaliacaoDesempenhoManager.findAvaliacoesComColabSemCompetenciaConfiguradaByAvalDesempenhoIds(avaliacaoDesempenhoIds);
+		if(avaliacoes.size() != 0)
+		{
+			StringBuilder msg = new StringBuilder();
+			msg.append("Existem avaliações com colaboradores sem nenhuma configuração de competência a avaliar.</br>");
+			
+			msg.append("</br>Avaliações:</br>");
+			for (AvaliacaoDesempenho avaliacao : avaliacoes) 
+				msg.append(avaliacao.getTitulo() + "</br>");	
+			
+			msg.append("</br>Deseja continuar?");
+			
+			return msg.toString();
+		}
+		
+		return "";
+	}
+	
 	public boolean existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(Long avaliacaoDesempenhoId) {
 		return configuracaoCompetenciaAvaliacaoDesempenhoManager.existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(avaliacaoDesempenhoId);
 	}

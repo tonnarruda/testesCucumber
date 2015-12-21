@@ -3,6 +3,7 @@ package com.fortes.rh.dao.avaliacao;
 import java.util.Collection;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -19,4 +20,5 @@ public interface ConfiguracaoCompetenciaAvaliacaoDesempenhoDao extends GenericDa
 	public void removeByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
 	public boolean existe(Long configuracaoNivelCompetenciaFaixaSalarialId,Long avaliacaoDesempenhoId);
 	public Collection<Colaborador> findColabSemCompetenciaConfiguradaByAvalDesempenhoId(Long avaliacaoDesempenhoId);
+	public Collection<AvaliacaoDesempenho> findAvaliacoesComColabSemCompetenciaConfiguradaByAvalDesempenhoIds(Long[] avaliacaoDesempenhoIds);
 }

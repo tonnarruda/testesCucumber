@@ -90,6 +90,40 @@
 				}
 			});			
 		}
+		
+		function submitLiberarEmLote()
+		{
+			var avaliacaoDesempenhoIds =  $("input[name=avaliacoesCheck]:checked").map(function(){return $(this).val();}).get();
+			console.log(avaliacaoDesempenhoIds);
+			AvaliacaoDesempenhoDWR.verificaAvaliacoesComAvaliadosSemCompetencia(avaliacaoDesempenhoIds, function(msg) {
+				if (msg != '')
+				{
+					$('#liberaDialog').html(msg).dialog({ 	modal: true, 
+															width: 500,
+															maxHeight: 360,
+															buttons: 
+															[
+															    {
+															        text: "Continuar",
+															        click: function() { 
+																		$("#formModalLiberar").submit();							        
+															        }
+															    },
+															    {
+															        text: "Cancelar",
+															        click: function() { $(this).dialog("close"); }
+															    }
+															],
+															open: function() {
+														        $(this).closest('.ui-dialog').find('.ui-dialog-buttonpane button:eq(1)').focus(); 
+															}
+														});
+				
+				} else {
+					$("#formModalLiberar").submit();	
+				}
+			});			
+		}
 	</script>
 	
 	<#if periodoInicial?exists>
@@ -182,7 +216,7 @@
 
 		<@ww.form name="formModalLiberar" id="formModalLiberar" onsubmit="${validarFormModalLiberar}" action="liberarEmLote.action" method="POST">
 			<@frt.checkListBox label="Avaliações" name="avaliacoesCheck" list="avaliacoesCheckList" form="document.getElementById('formModalLiberar')" filtro="true"/>
-			<input type="submit" value="" class="btnLiberar">
+			<input type="button" value="" onclick="submitLiberarEmLote();" class="btnLiberar">
 		</@ww.form>
 	</div>
 	<div id="liberaDialog" title="Confirmar liberação"></div>

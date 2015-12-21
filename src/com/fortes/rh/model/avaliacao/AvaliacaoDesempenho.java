@@ -36,6 +36,13 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
     private boolean liberada;
     private boolean exibirPerformanceProfissional;
     
+    public AvaliacaoDesempenho() {}
+    
+    public AvaliacaoDesempenho(String titulo)
+	{
+		this.titulo = titulo;
+	}
+    
     @NaoAudita
     public String getPeriodoFormatado()
     {

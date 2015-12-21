@@ -122,6 +122,52 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest extends 
 		assertEquals("Avaliador SEM competencia", ((Colaborador)colaboradores.toArray()[0]).getNome());
 	}
 	
+	public void testFindAvaliacoesComColabSemCompetenciaConfiguradaByAvalDesempenhoIds()
+	{
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenho.setTitulo("Avaliação SEM competencia");
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
+		Colaborador avaliadorComCompetencia = ColaboradorFactory.getEntity();
+		avaliadorComCompetencia.setNome("Avaliador com competencia");
+		colaboradorDao.save(avaliadorComCompetencia);
+		
+		Colaborador avaliadorSemCompetencia = ColaboradorFactory.getEntity();
+		avaliadorSemCompetencia.setNome("Avaliador SEM competencia");
+		colaboradorDao.save(avaliadorSemCompetencia);
+		
+		ColaboradorQuestionario colaboradorQuestionarioAvaliadorComCompetencia = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioAvaliadorComCompetencia.setAvaliador(avaliadorComCompetencia);
+		colaboradorQuestionarioAvaliadorComCompetencia.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioAvaliadorComCompetencia);
+		
+		ColaboradorQuestionario colaboradorQuestionarioAvaliadorSemCompetencia = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionarioAvaliadorSemCompetencia.setAvaliador(avaliadorSemCompetencia);
+		colaboradorQuestionarioAvaliadorSemCompetencia.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionarioAvaliadorSemCompetencia);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity();
+		configuracaoNivelCompetenciaFaixaSalarialDao.save(configuracaoNivelCompetenciaFaixaSalarial);
+		
+		Conhecimento conhecimento = ConhecimentoFactory.getConhecimento();
+		conhecimentoDao.save(conhecimento);	
+		
+		ConfiguracaoCompetenciaAvaliacaoDesempenho configuracaoCompetenciaAvaliacaoDesempenho = new ConfiguracaoCompetenciaAvaliacaoDesempenho();
+		configuracaoCompetenciaAvaliacaoDesempenho.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		configuracaoCompetenciaAvaliacaoDesempenho.setAvaliador(avaliadorComCompetencia);
+		configuracaoCompetenciaAvaliacaoDesempenho.setConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
+		configuracaoCompetenciaAvaliacaoDesempenho.setCompetenciaId(conhecimento.getId());
+		configuracaoCompetenciaAvaliacaoDesempenho.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		configuracaoCompetenciaAvaliacaoDesempenhoDao.save(configuracaoCompetenciaAvaliacaoDesempenho);
+		
+		configuracaoCompetenciaAvaliacaoDesempenhoDao.getHibernateTemplateByGenericDao().flush();
+		
+		Collection<AvaliacaoDesempenho> avaliacoes = configuracaoCompetenciaAvaliacaoDesempenhoDao.findAvaliacoesComColabSemCompetenciaConfiguradaByAvalDesempenhoIds(new Long[]{avaliacaoDesempenho.getId()});
+		
+		assertEquals(1, avaliacoes.size());
+		assertEquals("Avaliação SEM competencia", ((AvaliacaoDesempenho)avaliacoes.toArray()[0]).getTitulo());
+	}
+	
 	public void testFindByAvaliacaoDesempenho()
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho1 = AvaliacaoDesempenhoFactory.getEntity();
