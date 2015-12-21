@@ -292,18 +292,21 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	public String saveParticipantes() throws Exception {
 		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		colaboradorQuestionarios.removeAll(Collections.singleton(null));
+		
 		participantesAvaliados.removeAll(Collections.singleton(null));
-		participantesAvaliadores.removeAll(Collections.singleton(null));
-		
 		participanteAvaliacaoDesempenhoManager.saveOrUpdate(participantesAvaliados);
-		participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliados), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADO);
 		
-		participanteAvaliacaoDesempenhoManager.saveOrUpdate(participantesAvaliadores);
-		participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliadores), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
-		
-		colaboradorQuestionarioManager.save(new ArrayList<ColaboradorQuestionario>(colaboradorQuestionarios), avaliacaoDesempenho.getId());
-		colaboradorQuestionarioManager.removeNotIn(colaboradorQuestionarios, avaliacaoDesempenho.getId());
+		if ( !avaliacaoDesempenho.isLiberada() ) {
+			participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliados), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADO);
+			
+			participantesAvaliadores.removeAll(Collections.singleton(null));
+			participanteAvaliacaoDesempenhoManager.saveOrUpdate(participantesAvaliadores);
+			participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliadores), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
+			
+			colaboradorQuestionarios.removeAll(Collections.singleton(null));
+			colaboradorQuestionarioManager.save(new ArrayList<ColaboradorQuestionario>(colaboradorQuestionarios), avaliacaoDesempenho.getId());
+			colaboradorQuestionarioManager.removeNotIn(colaboradorQuestionarios, avaliacaoDesempenho.getId());
+		}
 		
 		prepareParticipantes();
 		return Action.SUCCESS;
