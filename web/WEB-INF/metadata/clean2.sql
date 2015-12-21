@@ -4,6 +4,7 @@ update empresabds set email='anapaula@entetecnologia.com.br';
 update candidato set email='anapaula@entetecnologia.com.br';
 update colaborador set email='samuelpinheiro@entetecnologia.com.br';
 update parametrosdosistema set emailUser='anapaula@entetecnologia.com.br';
+update empresa set emailRemetente='arnaldoescossio@entetecnologia.com.br';
 update empresa set emailRemetente='samuelpinheiro@entetecnologia.com.br';
 update empresa set emailRespSetorPessoal='anapaula@entetecnologia.com.br';
 update empresa set emailresprh='anapaula@entetecnologia.com.br';
