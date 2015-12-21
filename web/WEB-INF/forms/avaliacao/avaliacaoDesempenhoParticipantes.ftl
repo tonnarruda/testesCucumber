@@ -360,11 +360,8 @@
 				<script>countParticipantesAvaliados=${countParticipantesAvaliados};</script>
 				<script>countParticipantesAvaliadores=${countParticipantesAvaliadores};</script>
 				<@ww.hidden name="avaliacaoDesempenho.id"/>
-				<#if avaliacaoDesempenho.liberada>
-					<button type="button" class="btnGravarDesabilitado"></button>
-				<#else>
-					<button type="button" onclick="validForm();" class="btnGravar"></button>
-				</#if>
+				
+				<button type="button" onclick="validForm();" class="btnGravar"></button>
 				<button type="button" onclick="window.location='list.action'" class="btnVoltar"></button>
 			</@ww.form>
 			<div style="clear: both;"></div>
