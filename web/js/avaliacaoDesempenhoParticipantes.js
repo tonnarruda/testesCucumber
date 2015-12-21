@@ -99,7 +99,8 @@ $(function() {
 	
 	$(".pesoAvaliador").live("keypress", function() { return(somenteNumeros(event,'')); });
 	$(".pesoAvaliador").live("click", function() { event.stopPropagation(); });
-	$(".portlet-header .pesoAvaliador").keyup(function(event) { 
+	$(".portlet-header .pesoAvaliador").live("keyup", function(event) { 
+		console.log("funfou");
 		$(this).parents(".portlet").find(".peso").val($(this).val());
 	});
 	
@@ -326,12 +327,12 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
         	console.log(avaliadorUlTag.attr('id'));
         	if ( avaliadorLiTag.attr('id') == avaliadorUlTag.attr('id') ) {
         		var pesoAvaliadorVisible = $(".pesoAvaliador").is(":visible");
-        		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="text" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaboradorQuestionario.pesoAvaliador" class="pesoAvaliador" value="1"/>' );
+        		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="text" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].pesoAvaliador" class="pesoAvaliador" value="1"/>' );
         		if ( pesoAvaliadorVisible )
 	        			$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id') + " .pesoAvaliador").show();
         			
         	} else {
-        		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaboradorQuestionario.pesoAvaliador" class="peso" value="' + $(avaliadorUlTag).parents(".portlet").find(".portlet-header .pesoAvaliador").val() + '"/>');
+        		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].pesoAvaliador" class="peso" value="' + $(avaliadorUlTag).parents(".portlet").find(".portlet-header .pesoAvaliador").val() + '"/>');
         	}
         		
         	console.log($(avaliadorUlTag).parents(".portlet").find(".portlet-header .pesoAvaliador").val());
