@@ -22,6 +22,7 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
+import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -252,12 +253,10 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 				if(StringUtils.isNotEmpty(avaliacaoId))
 				{
 					Long adId = new Long(avaliacaoId);
-					Collection<Colaborador> avaliados = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(adId, true, null);
-					Collection<Colaborador> avaliadores = colaboradorManager.findParticipantesDistinctByAvaliacaoDesempenho(adId, false, null);
+					Collection<Colaborador> avaliados = participanteAvaliacaoDesempenhoManager.findColaboradoresParticipantes(adId, TipoParticipanteAvaliacao.AVALIADO);
+					Collection<Colaborador> avaliadores = participanteAvaliacaoDesempenhoManager.findColaboradoresParticipantes(adId, TipoParticipanteAvaliacao.AVALIADOR);
 
 					AvaliacaoDesempenho  avaliacaoDesempenho = getDao().findByIdProjection(adId);
-					
-					colaboradorQuestionarioManager.desassociarParticipantes(avaliacaoDesempenho);
 					
 					if (avaliados.isEmpty() || avaliadores.isEmpty())
 					{
@@ -265,14 +264,6 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 						continue;
 					}
 					
-					if (!avaliacaoDesempenho.isPermiteAutoAvaliacao() && avaliados.size() == 1 && avaliadores.size() == 1)
-					{
-						if (((Colaborador)avaliados.toArray()[0]).equals((Colaborador)avaliadores.toArray()[0]))
-							fortesException += "- " + avaliacaoDesempenho.getTitulo() + "<br /> ";
-						
-						continue;
-					}
-
 					if(fortesException.isEmpty())
 						liberarOrBloquear(avaliacaoDesempenho, true);
 				}

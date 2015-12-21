@@ -3,6 +3,7 @@ package com.fortes.rh.business.avaliacao;
 import java.util.Collection;
 
 import com.fortes.business.GenericManager;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.Competencia;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
@@ -22,4 +23,5 @@ public interface ConfiguracaoCompetenciaAvaliacaoDesempenhoManager extends Gener
 	public void removeByAvaliacaoDesempenho(Long avaliacaoDesempenhoId);
 	public boolean existe(Long configuracaoNivelCompetenciaFaixaSalarialId,Long avaliacaoDesempenhoId);
 	public Collection<Colaborador> findColabSemCompetenciaConfiguradaByAvalDesempenhoId(Long avaliacaoDesempenhoId);
+	public Collection<AvaliacaoDesempenho> findAvaliacoesComColabSemCompetenciaConfiguradaByAvalDesempenhoIds(Long[] avaliacaoDesempenhoIds);
 }

@@ -14,6 +14,7 @@ import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoDao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenho;
 import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
@@ -186,5 +187,29 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernate extends Gene
 			colaboradores.add(new Colaborador(nomeColaborador));
 
 		return colaboradores;
+	}
+	
+	public Collection<AvaliacaoDesempenho> findAvaliacoesComColabSemCompetenciaConfiguradaByAvalDesempenhoIds(Long[] avaliacaoDesempenhoIds) 
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("select a.titulo from avaliacaodesempenho a ");
+		sql.append("where a.id in (:avaliacaoDesempenhoIds) and a.id in ( ");
+		sql.append("	select cq.avaliacaodesempenho_id ");
+		sql.append("	from colaboradorquestionario cq ");
+		sql.append("	where cq.avaliacaodesempenho_id = a.id ");
+		sql.append("	and ( select count(*) from configuracaocompetenciaavaliacaodesempenho ccad where ccad.avaliacaodesempenho_id = a.id ) > 0 ");
+		sql.append("	and avaliador_id not in (select distinct avaliador_id from ConfiguracaoCompetenciaAvaliacaoDesempenho where avaliacaodesempenho_id = a.id) ");
+		sql.append(") ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setParameterList("avaliacaoDesempenhoIds", avaliacaoDesempenhoIds);
+		
+		Collection<AvaliacaoDesempenho> avaliacoes = new LinkedList<AvaliacaoDesempenho>();
+		Collection<String> lista = query.list();
+		
+		for (String tituloAvaliacao : lista)
+			avaliacoes.add(new AvaliacaoDesempenho(tituloAvaliacao));
+		
+		return avaliacoes;
 	}
 }
