@@ -70,7 +70,7 @@ public class AvaliacaoDesempenhoDWR
 			if(colaboradores.size() != 0)
 			{
 				StringBuilder msg = new StringBuilder();
-				msg.append("Existem avaliadores sem configuração de competência a avaliar nesta avaliação de desempenho.</br>");
+				msg.append("Existem avaliadores sem nenhuma configuração de competência a avaliar nesta avaliação de desempenho.</br>");
 				
 				msg.append("</br>Colaboradores:</br>");
 				for (Colaborador colaborador : colaboradores) 
