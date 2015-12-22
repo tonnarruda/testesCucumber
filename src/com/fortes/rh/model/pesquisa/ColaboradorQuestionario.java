@@ -227,6 +227,12 @@ public class ColaboradorQuestionario extends AbstractModel implements Serializab
     	newAvaliacao();    	
     	this.avaliacao.setAvaliarCompetenciasCargo(projectionAvaliacaoAvaliarCompetenciasCargo == null ? false : projectionAvaliacaoAvaliarCompetenciasCargo); 	
     }
+    
+    public void setProjectionAvaliacaoRespostasCompactas(Boolean projectionAvaliacaoRespostasCompactas)
+    {
+    	newAvaliacao();    	
+    	this.avaliacao.setRespostasCompactas(projectionAvaliacaoRespostasCompactas == null ? false : projectionAvaliacaoRespostasCompactas); 	
+    }
    
     public void setProjectionAvaliacaoDesempenhoId(Long projectionAvaliacaoDesempenhoId)
     {

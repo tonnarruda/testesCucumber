@@ -207,6 +207,7 @@
 		<#assign data="" />
 	</#if>
 	
+	<#assign respostasCompactas=colaboradorQuestionario.avaliacao.respostasCompactas />
 </head>
 <body>
 	<@ww.actionerror />

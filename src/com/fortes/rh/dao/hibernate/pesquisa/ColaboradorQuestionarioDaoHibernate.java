@@ -390,6 +390,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("avaliacao.cabecalho"), "projectionAvaliacaoCabecalho");
 		p.add(Projections.property("avaliacao.exibeResultadoAutoavaliacao"), "projectionAvaliacaoExibeResultadoAutoavaliacao");
 		p.add(Projections.property("avaliacao.avaliarCompetenciasCargo"), "projectionAvaliacaoAvaliarCompetenciasCargo");
+		p.add(Projections.property("avaliacao.respostasCompactas"), "projectionAvaliacaoRespostasCompactas");
 		p.add(Projections.property("avaliacaoDesempenho.id"), "projectionAvaliacaoDesempenhoId");
 		p.add(Projections.property("avaliacaoDesempenho.anonima"), "projectionAvaliacaoDesempenhoAnonima");
 		p.add(Projections.property("avaliacaoDesempenho.titulo"), "projectionAvaliacaoDesempenhoTitulo");
@@ -915,12 +916,14 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 	public ColaboradorQuestionario findByColaboradorAvaliacao(Long colaboradorId, Long avaliacaoId) 
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
+		criteria.createCriteria("cq.avaliacao", "a");
 
 		ProjectionList p = Projections.projectionList().create();
 
 		p.add(Projections.property("cq.id"), "id");
 		p.add(Projections.property("cq.colaborador.id"), "projectionColaboradorId");
-		p.add(Projections.property("cq.avaliacao.id"), "projectionAvaliacaoId");
+		p.add(Projections.property("a.id"), "projectionAvaliacaoId");
+		p.add(Projections.property("a.respostasCompactas"), "projectionAvaliacaoRespostasCompactas");
 		p.add(Projections.property("cq.turma.id"), "projectionTurmaId");
 		p.add(Projections.property("cq.respondida"), "respondida");
 		p.add(Projections.property("cq.observacao"), "observacao");

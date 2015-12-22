@@ -105,6 +105,7 @@
 		}
 	</script>
 	
+	<#assign respostasCompactas=colaboradorQuestionario.avaliacao.respostasCompactas />
 </head>
 <body>
 	<@ww.actionerror />
