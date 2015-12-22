@@ -34,7 +34,7 @@
 		<@ww.hidden id="pesoPergunta" value="${pesoPergunta}"/>
 		
 		<#if pergunta.tipo == tipoPergunta.objetiva >
-			<#assign i = 0 >
+			<#assign h = 0 >
 			<#list pergunta.respostas as resposta>
 				<#if resposta.peso?exists>
 					<#assign pesoResposta="${resposta.peso}"/>
@@ -43,8 +43,8 @@
 				</#if>
 				<input type="radio" peso="${pesoResposta}" class="opcaoResposta${pergunta.id}, radio objetiva pergunta" name="perguntas[${i}].colaboradorRespostas[0].resposta.id" value="${resposta.id}" id="${resposta.id}" <#if perguntas[i].colaboradorRespostas[0].temResposta() && (resposta.id == perguntas[i].colaboradorRespostas[0].resposta.id)>checked</#if>/><label class="labelResposta" for="${resposta.id}">${resposta.texto}</label>
 				<#if !respostasCompactas><br></#if>
-				<#assign i = i + 1 >
-				<#if respostasCompactas && i%5 == 0 >
+				<#assign h = h + 1 >
+				<#if respostasCompactas && h%5 == 0 >
 					<div style="clear: both;"></div>
 				</#if>
 			</#list>
