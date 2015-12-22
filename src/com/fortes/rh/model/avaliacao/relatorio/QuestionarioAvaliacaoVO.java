@@ -12,6 +12,7 @@ public class QuestionarioAvaliacaoVO implements Serializable
 	
 	private QuestionarioRelatorio questionarioRelatorio;
 	private Collection<MatrizCompetenciaNivelConfiguracao> matrizes;
+	private boolean somenteCompetencias = false;
 	
 	public QuestionarioRelatorio getQuestionarioRelatorio() {
 		return questionarioRelatorio;
@@ -24,5 +25,11 @@ public class QuestionarioAvaliacaoVO implements Serializable
 	}
 	public void setMatrizes(Collection<MatrizCompetenciaNivelConfiguracao> matrizes) {
 		this.matrizes = matrizes;
+	}
+	public boolean isSomenteCompetencias() {
+		return somenteCompetencias;
+	}
+	public void setSomenteCompetencias(boolean somenteCompetencias) {
+		this.somenteCompetencias = somenteCompetencias;
 	}
 }
