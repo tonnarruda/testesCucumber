@@ -153,7 +153,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("removeNotIn").with(ANYTHING, ANYTHING, ANYTHING).isVoid();
 		
-		colaboradorQuestionarioManager.expects(once()).method("save").with(ANYTHING, ANYTHING).isVoid();
+		colaboradorQuestionarioManager.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
 		colaboradorQuestionarioManager.expects(once()).method("removeNotIn").with(ANYTHING, ANYTHING).isVoid();
 		
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));

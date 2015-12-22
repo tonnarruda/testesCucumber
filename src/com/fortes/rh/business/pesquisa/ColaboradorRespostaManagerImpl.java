@@ -450,7 +450,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		
 		int pontuacaoNivelCompetenciaObtida = 0;
 		int pontuacaoMaximaNivelcompetencia = 0;
-		if(!niveisCompetenciaMarcados.isEmpty())
+		if(niveisCompetenciaMarcados != null && !niveisCompetenciaMarcados.isEmpty())
 		{
 			Colaborador colaborador = colaboradorManager.findColaboradorByDataHistorico(colaboradorQuestionario.getColaborador().getId(), new Date());
 			ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial =  configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(colaborador.getFaixaSalarial().getId(), colaboradorQuestionario.getRespondidaEm());
