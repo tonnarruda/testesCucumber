@@ -279,7 +279,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	
 	public String visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia()
 	{
-		prepareResponderAvaliacaoDesempenho();		
+		prepareResponderAvaliacaoDesempenho();
 		return Action.SUCCESS;
 	}
 		
