@@ -17,6 +17,7 @@ import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManagerImpl;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
 import com.fortes.rh.exception.AvaliacaoRespondidaException;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
@@ -406,11 +407,11 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
 		AvaliacaoDesempenho avaliacaoDesempenhoClone = AvaliacaoDesempenhoFactory.getEntity(2L);
 		
-		participanteAvaliacaoDesempenhoManager.expects(once()).method("findColaboradoresParticipantes").with(eq(avaliacaoDesempenho.getId()), eq(TipoParticipanteAvaliacao.AVALIADO)).will(returnValue(new ArrayList<Colaborador>()));
-		participanteAvaliacaoDesempenhoManager.expects(once()).method("findColaboradoresParticipantes").with(eq(avaliacaoDesempenho.getId()), eq(TipoParticipanteAvaliacao.AVALIADOR)).will(returnValue(new ArrayList<Colaborador>()));
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("findParticipantes").with(eq(avaliacaoDesempenho.getId()), eq(TipoParticipanteAvaliacao.AVALIADO)).will(returnValue(new ArrayList<ParticipanteAvaliacaoDesempenho>()));
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("findParticipantes").with(eq(avaliacaoDesempenho.getId()), eq(TipoParticipanteAvaliacao.AVALIADOR)).will(returnValue(new ArrayList<ParticipanteAvaliacaoDesempenho>()));
 		
-		participanteAvaliacaoDesempenhoManager.expects(once()).method("save").with(eq(avaliacaoDesempenhoClone), ANYTHING, ANYTHING, eq(TipoParticipanteAvaliacao.AVALIADO)).isVoid();
-		participanteAvaliacaoDesempenhoManager.expects(once()).method("save").with(eq(avaliacaoDesempenhoClone), ANYTHING, ANYTHING, eq(TipoParticipanteAvaliacao.AVALIADOR)).isVoid();
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("clone").with(eq(avaliacaoDesempenhoClone), ANYTHING).isVoid();
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("clone").with(eq(avaliacaoDesempenhoClone), ANYTHING).isVoid();
 		
 		colaboradorQuestionarioDao.expects(once()).method("saveOrUpdate").with(ANYTHING);
 		
