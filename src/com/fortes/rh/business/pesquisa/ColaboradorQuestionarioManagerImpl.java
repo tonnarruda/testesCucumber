@@ -17,6 +17,7 @@ import com.fortes.rh.exception.AvaliacaoRespondidaException;
 import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
 import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
@@ -279,15 +280,6 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		}
 	}
 	
-	public void save(Collection<ColaboradorQuestionario> colaboradorQuestionarios, Long avaliacaoDesempenhoId) 
-	{
-//		Collection<ColaboradorQuestionario> colaboradorQuestionariosOld = getDao().findByAvaliacaoDesempenho(avaliacaoDesempenhoId, null);
-//		
-//		colaboradorQuestionarios.removeAll(colaboradorQuestionariosOld);
-		
-		saveOrUpdate(colaboradorQuestionarios);
-	}
-
 	public void remove(Long[] participanteIds, Long avaliacaoDesempenhoId, boolean isAvaliado) throws Exception
 	{
 		Collection<ColaboradorQuestionario> colaboradorQuestionariosRespondidas = getDao().findRespondidasByAvaliacaoDesempenho(participanteIds, avaliacaoDesempenhoId, isAvaliado);
@@ -402,19 +394,19 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 
 	public void clonarParticipantes(AvaliacaoDesempenho avaliacaoDesempenho, AvaliacaoDesempenho avaliacaoDesempenhoClone) throws Exception
 	{
-		Collection<Colaborador> avaliados = participanteAvaliacaoDesempenhoManager.findColaboradoresParticipantes(avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADO);
-		Collection<Colaborador> avaliadores = participanteAvaliacaoDesempenhoManager.findColaboradoresParticipantes(avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
+		Collection<ParticipanteAvaliacaoDesempenho> avaliados = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADO);
+		Collection<ParticipanteAvaliacaoDesempenho> avaliadores = participanteAvaliacaoDesempenhoManager.findParticipantes(avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
 		
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenhoClone, LongUtil.collectionToArrayLong(avaliados), null, TipoParticipanteAvaliacao.AVALIADO);
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenhoClone, LongUtil.collectionToArrayLong(avaliadores), null, TipoParticipanteAvaliacao.AVALIADOR);
+		participanteAvaliacaoDesempenhoManager.clone(avaliacaoDesempenhoClone, avaliados);
+		participanteAvaliacaoDesempenhoManager.clone(avaliacaoDesempenhoClone, avaliadores);
 		
 		Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 		
-		for (Colaborador avaliador : avaliadores) {
-			for (ColaboradorQuestionario colaboradorQuestionario : findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), FiltroSituacaoAvaliacao.TODAS.getOpcao(), false, false, null)) {
+		for (ParticipanteAvaliacaoDesempenho avaliador : avaliadores) {
+			for (ColaboradorQuestionario colaboradorQuestionario : findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getColaborador().getId(), FiltroSituacaoAvaliacao.TODAS.getOpcao(), false, false, null)) {
 				ColaboradorQuestionario colaboradorQuestionarioClone = new ColaboradorQuestionario(avaliacaoDesempenhoClone);
 				colaboradorQuestionarioClone.setAvaliacao(colaboradorQuestionario.getAvaliacao());
-				colaboradorQuestionarioClone.setAvaliador(avaliador);
+				colaboradorQuestionarioClone.setAvaliador(avaliador.getColaborador());
 				colaboradorQuestionarioClone.setColaborador(colaboradorQuestionario.getColaborador());
 				colaboradorQuestionarios.add(colaboradorQuestionarioClone);
 			}

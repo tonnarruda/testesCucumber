@@ -305,7 +305,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 				participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliadores), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
 				
 				colaboradorQuestionarios.removeAll(Collections.singleton(null));
-				colaboradorQuestionarioManager.save(new ArrayList<ColaboradorQuestionario>(colaboradorQuestionarios), avaliacaoDesempenho.getId());
+				colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionarios);
 				colaboradorQuestionarioManager.removeNotIn(colaboradorQuestionarios, avaliacaoDesempenho.getId());
 			}
 			

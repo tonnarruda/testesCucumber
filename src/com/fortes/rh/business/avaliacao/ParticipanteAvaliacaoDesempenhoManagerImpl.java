@@ -10,29 +10,20 @@ import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.util.LongUtil;
 
 public class ParticipanteAvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<ParticipanteAvaliacaoDesempenho, ParticipanteAvaliacaoDesempenhoDao> implements ParticipanteAvaliacaoDesempenhoManager
 {
 	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
 	
-	public void save(AvaliacaoDesempenho avaliacaoDesempenho, Long[] colaboradorIds, String[] produtividade, char tipo) 
+	public void clone(AvaliacaoDesempenho avaliacaoDesempenho, Collection<ParticipanteAvaliacaoDesempenho> participantes) 
 	{
-		int i = 0;
-		for (Long colaboradorId : colaboradorIds) 
-		{
-			Collection<Colaborador> participantes = findColaboradoresParticipantes(avaliacaoDesempenho.getId(), tipo);
-			
-			if (!LongUtil.contains(colaboradorId, participantes))//verifica se já é um  participante
-			{
-				ParticipanteAvaliacaoDesempenho participanteAvaliacaoDesempenho = new ParticipanteAvaliacaoDesempenho();
-				participanteAvaliacaoDesempenho.setAvaliacaoDesempenho(avaliacaoDesempenho);
-				participanteAvaliacaoDesempenho.setColaboradorId(colaboradorId);
-				participanteAvaliacaoDesempenho.setTipo(tipo);
-				participanteAvaliacaoDesempenho.setProdutividade(Double.parseDouble(produtividade[i]));
-				getDao().save(participanteAvaliacaoDesempenho);
-			}
-			i++;
+		for (ParticipanteAvaliacaoDesempenho participanteAvaliacaoDesempenho : participantes) {
+			ParticipanteAvaliacaoDesempenho participanteAvaliacaoDesempenhoTemp = new ParticipanteAvaliacaoDesempenho();
+			participanteAvaliacaoDesempenhoTemp.setAvaliacaoDesempenho(avaliacaoDesempenho);
+			participanteAvaliacaoDesempenhoTemp.setColaboradorId(participanteAvaliacaoDesempenho.getColaborador().getId());
+			participanteAvaliacaoDesempenhoTemp.setTipo(participanteAvaliacaoDesempenho.getTipo());
+			participanteAvaliacaoDesempenhoTemp.setProdutividade(participanteAvaliacaoDesempenho.getProdutividade());
+			getDao().save(participanteAvaliacaoDesempenhoTemp);
 		}
 	}
 	

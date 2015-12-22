@@ -62,21 +62,25 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			AvaliacaoDesempenho avaliacaoDesempenhoClone = (AvaliacaoDesempenho) avaliacaoDesempenho.clone();
 			
 			// se for para outra empresa o modelo deve ser clonado
-			if (!empresaId.equals(avaliacaoDesempenhoClone.getAvaliacao().getEmpresa().getId()))
-			{
+			if(!empresaId.equals(avaliacaoDesempenho.getAvaliacao().getEmpresa().getId()) ){
 				Empresa empresa = new Empresa();
 				empresa.setId(empresaId);
 				
-				Avaliacao avaliacao = (Avaliacao) avaliacaoManager.findById(avaliacaoId).clone();
-				avaliacao.setEmpresa(empresa);
-				avaliacao.setTitulo(avaliacao.getTitulo() + "(Clone)");
-				avaliacao.setId(null);
-				avaliacaoManager.save(avaliacao);
-				
-				perguntaManager.clonarPerguntas(avaliacaoId, null, avaliacao);
-				
-				avaliacaoDesempenhoClone.setAvaliacao(avaliacao);
+				if( avaliacaoDesempenhoId != null){
+					
+					Avaliacao avaliacao = (Avaliacao) avaliacaoManager.findById(avaliacaoId).clone();
+					avaliacao.setEmpresa(empresa);
+					avaliacao.setTitulo(avaliacao.getTitulo() + "(Clone)");
+					avaliacao.setId(null);
+					avaliacaoManager.save(avaliacao);
+					
+					perguntaManager.clonarPerguntas(avaliacaoId, null, avaliacao);
+					
+					avaliacaoDesempenhoClone.setAvaliacao(avaliacao);
+				}
 			}
+			if(!(avaliacaoDesempenhoClone.getAvaliacao() != null && avaliacaoDesempenhoClone.getAvaliacao().getId() != null))
+				avaliacaoDesempenhoClone.setAvaliacao(null);
 			
 			avaliacaoDesempenhoClone.setId(null);
 			avaliacaoDesempenhoClone.setTitulo(avaliacaoDesempenhoClone.getTitulo() + " (Clone)");
