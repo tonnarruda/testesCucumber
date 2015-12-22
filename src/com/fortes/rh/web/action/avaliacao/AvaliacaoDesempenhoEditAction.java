@@ -291,21 +291,28 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	}
 	
 	public String saveParticipantes() throws Exception {
-		avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-		
-		participantesAvaliados.removeAll(Collections.singleton(null));
-		participanteAvaliacaoDesempenhoManager.saveOrUpdate(participantesAvaliados);
-		
-		if ( !avaliacaoDesempenho.isLiberada() ) {
-			participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliados), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADO);
+		try {
+			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
 			
-			participantesAvaliadores.removeAll(Collections.singleton(null));
-			participanteAvaliacaoDesempenhoManager.saveOrUpdate(participantesAvaliadores);
-			participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliadores), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
+			participantesAvaliados.removeAll(Collections.singleton(null));
+			participanteAvaliacaoDesempenhoManager.saveOrUpdate(participantesAvaliados);
 			
-			colaboradorQuestionarios.removeAll(Collections.singleton(null));
-			colaboradorQuestionarioManager.save(new ArrayList<ColaboradorQuestionario>(colaboradorQuestionarios), avaliacaoDesempenho.getId());
-			colaboradorQuestionarioManager.removeNotIn(colaboradorQuestionarios, avaliacaoDesempenho.getId());
+			if ( !avaliacaoDesempenho.isLiberada() ) {
+				participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliados), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADO);
+				
+				participantesAvaliadores.removeAll(Collections.singleton(null));
+				participanteAvaliacaoDesempenhoManager.saveOrUpdate(participantesAvaliadores);
+				participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliadores), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
+				
+				colaboradorQuestionarios.removeAll(Collections.singleton(null));
+				colaboradorQuestionarioManager.save(new ArrayList<ColaboradorQuestionario>(colaboradorQuestionarios), avaliacaoDesempenho.getId());
+				colaboradorQuestionarioManager.removeNotIn(colaboradorQuestionarios, avaliacaoDesempenho.getId());
+			}
+			
+			addActionSuccess("Gravado com sucesso.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Não foi possível gravar.");
 		}
 		
 		prepareParticipantes();

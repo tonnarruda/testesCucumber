@@ -16,6 +16,9 @@
 		    </#if>
 		    
 		    #box { height: 500px; }
+		    .info, .success { width: 670px; margin: 0 auto; }
+		    .info li { color: #00529B !important; }
+		    .success li { color: #4F8A10 !important; }
 	  	</style>
 	  	
 		<@ww.head/>
@@ -172,7 +175,8 @@
 		</script>
 	</head>
 	<body>
-		<@ww.actionerror />
+		<@ww.actionerror/>
+		<@ww.actionmessage/>
 		
 	  	<div id="box">
 			<span id="boxtitle"></span>
@@ -213,7 +217,7 @@
 				  	<div class="option remove only-selectables disabled" title="Remover selecionados">
 						<span class="ui-icon ui-icon-trash"></span>
 				    </div>
-				  	<div class="option move-all only-selectables disabled" title="Relacionar selecionados ao avaliadores">
+				  	<div class="option move-all only-selectables disabled" title="Relacionar selecionados aos avaliadores">
 						<i class="fa fa-users"></i>
 						<i class="fa fa-long-arrow-right"></i>
 				    </div>
