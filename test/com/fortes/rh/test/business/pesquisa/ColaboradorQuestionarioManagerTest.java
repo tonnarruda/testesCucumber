@@ -293,24 +293,6 @@ public class ColaboradorQuestionarioManagerTest extends MockObjectTestCase
 		assertEquals(2,colaboradorQuestionarioManager.findByAvaliacaoDesempenho(1L, null).size());
 	}
 	
-	public void testSaveComAvaliacaoDesempenhoEParticipantes()
-	{
-		Collection<Colaborador> participantes = new ArrayList<Colaborador>();
-		participantes.add(ColaboradorFactory.getEntity(1L));
-		participantes.add(ColaboradorFactory.getEntity(2L));
-		
-		Long[] colaboradorIds = new Long[]{1L,30L};
-		
-		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
-		
-		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(1L), eq(false), eq(null)).will(returnValue(participantes));
-		
-		colaboradorQuestionarioDao.expects(once()).method("save").with(ANYTHING);
-		
-		colaboradorQuestionarioManager.save(avaliacaoDesempenho, colaboradorIds, false);
-	}
-	
-	
 	public void testAssociarParticipantes() throws Exception
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);

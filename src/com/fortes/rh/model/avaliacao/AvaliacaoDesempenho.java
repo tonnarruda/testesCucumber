@@ -35,6 +35,9 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
     private boolean permiteAutoAvaliacao;
     private boolean liberada;
     private boolean exibirPerformanceProfissional;
+	
+    @ManyToOne
+	private Empresa empresa;
     
     public AvaliacaoDesempenho() {}
     
@@ -42,7 +45,7 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
 	{
 		this.titulo = titulo;
 	}
-    
+
     @NaoAudita
     public String getPeriodoFormatado()
     {
@@ -84,28 +87,6 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
     	avaliacao.setTitulo(avaliacaoTitulo);
     }
     
-    public void setProjectionAvaliacaoEmpresaId(Long empresaId)
-    {
-    	if (avaliacao == null)
-    		avaliacao = new Avaliacao();
-    	
-    	if (avaliacao.getEmpresa() == null)
-    		avaliacao.setEmpresa(new Empresa());
-    	
-    	avaliacao.getEmpresa().setId(empresaId);
-    }
-	
-    public void setProjectionAvaliacaoEmpresaNome(String empresaNome)
-	{
-		if (avaliacao == null)
-			avaliacao = new Avaliacao();
-		
-		if (avaliacao.getEmpresa() == null)
-			avaliacao.setEmpresa(new Empresa());
-		
-		avaliacao.getEmpresa().setNome(empresaNome);
-	}
-
 	public Avaliacao getAvaliacao() {
 		return avaliacao;
 	}
@@ -131,28 +112,13 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
 	}
 
 	public String getTitulo() {
-		return titulo;
+		return this.titulo;
 	}
 
 	public String getTituloComEmpresa() {
-		String titulo = this.titulo;
-		if (this.avaliacao != null && this.avaliacao.getEmpresa() != null)
-			titulo += " (" + this.avaliacao.getEmpresa().getNome() + ")";
-			
-		return titulo;
+		return this.titulo += " (" + this.empresa.getNome() + ")";
 	}
     
-    public void setEmpresaNomeProjection(String empresaNome)
-    {
-    	if(this.avaliacao == null)
-    		avaliacao= new Avaliacao();
-    	
-    	if(avaliacao.getEmpresa() == null)
-    		avaliacao.setEmpresa(new Empresa());
-    	
-    	avaliacao.getEmpresa().setNome(empresaNome);
-    }
-
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
@@ -188,5 +154,29 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
 	public void setExibirPerformanceProfissional(boolean exibirPerformanceProfissional)
 	{
 		this.exibirPerformanceProfissional = exibirPerformanceProfissional;
+	}
+
+	public Empresa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(Empresa empresa) {
+		this.empresa = empresa;
+	}
+	
+	public void setEmpresaId(Long empresaId) {
+		inicializaEmpresa();
+		this.empresa.setId(empresaId);
+	}
+	
+    public void setEmpresaNome(String empresaNome)
+   	{
+   		inicializaEmpresa();
+   		empresa.setNome(empresaNome);
+   	}
+
+	private void inicializaEmpresa() {
+		if(this.empresa == null)
+			this.empresa = new Empresa();
 	}
 }
