@@ -288,3 +288,5 @@ END;
 $$ LANGUAGE plpgsql;--.go
 select insere_empresa_em_avaliacaodesempenho();--.go
 drop function insere_empresa_em_avaliacaodesempenho();--.go
+
+--------
