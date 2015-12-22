@@ -69,10 +69,11 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			AvaliacaoDesempenho avaliacaoDesempenhoClone = (AvaliacaoDesempenho) avaliacaoDesempenho.clone();
 			
 			// se for para outra empresa o modelo deve ser clonado
-			if(!empresaId.equals(avaliacaoDesempenho.getAvaliacao().getEmpresa().getId()) ){
-				Empresa empresa = new Empresa();
-				empresa.setId(empresaId);
-				
+			if(!empresaId.equals(avaliacaoDesempenho.getEmpresa().getId()) ){
+ 				Empresa empresa = new Empresa();
+ 				empresa.setId(empresaId);
+				avaliacaoDesempenhoClone.setEmpresa(empresa);
+ 				
 				if( avaliacaoDesempenhoId != null){
 					
 					Avaliacao avaliacao = (Avaliacao) avaliacaoManager.findById(avaliacaoId).clone();
@@ -85,7 +86,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 					
 					avaliacaoDesempenhoClone.setAvaliacao(avaliacao);
 				}
-			}
+ 			}
 			if(!(avaliacaoDesempenhoClone.getAvaliacao() != null && avaliacaoDesempenhoClone.getAvaliacao().getId() != null))
 				avaliacaoDesempenhoClone.setAvaliacao(null);
 			
