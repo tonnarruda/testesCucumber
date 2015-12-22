@@ -12,6 +12,8 @@
 		.pergunta { padding: 5px; }
 		.dados th:first-child { text-align: left; padding-left: 5px; }
 	</style>
+	
+	<#assign respostasCompactas=avaliacao.respostasCompactas />
 </head>
 <body>
 	<@ww.actionerror />

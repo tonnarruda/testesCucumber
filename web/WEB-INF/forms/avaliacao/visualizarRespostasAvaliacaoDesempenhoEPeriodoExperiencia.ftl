@@ -7,6 +7,7 @@
 	<#else>
 		<title>Visualizar Acompanhamento do Período de Experiência</title>
 	</#if>	
+	<#assign respostasCompactas=colaboradorQuestionario.avaliacao.respostasCompactas />
 </head>
 <body>
 	<@ww.actionerror />

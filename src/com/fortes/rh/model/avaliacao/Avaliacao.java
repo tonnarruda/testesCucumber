@@ -48,6 +48,8 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 	@Transient
 	private int totalColab;
 	
+	private boolean respostasCompactas = false;
+	
 	public Avaliacao(){
 		super();
 	}
@@ -168,5 +170,13 @@ public class Avaliacao extends AbstractModel implements Serializable, Cloneable
 	public String getTipoModeloAvaliacaoDescricao() 
 	{
 		return new TipoModeloAvaliacao().get(this.tipoModeloAvaliacao); 	
+	}
+
+	public boolean isRespostasCompactas() {
+		return respostasCompactas;
+	}
+
+	public void setRespostasCompactas(boolean respostasCompactas) {
+		this.respostasCompactas = respostasCompactas;
 	}
 }

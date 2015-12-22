@@ -1,6 +1,13 @@
 <#assign authz=JspTaglibs["/WEB-INF/tlds/authz.tld"] />
 <#assign i = 0/>
 
+
+<style>
+	<#if respostasCompactas>
+		.perguntaResposta input { float: left; }
+		.perguntaResposta .labelResposta { float: left; width: 157px; margin-right: 15px; margin-bottom: 10px; }
+	</#if>
+</style>
 <#assign aspectoAnterior="-1"/>
 
 <#list perguntas as pergunta>
@@ -27,20 +34,27 @@
 		<@ww.hidden id="pesoPergunta" value="${pesoPergunta}"/>
 		
 		<#if pergunta.tipo == tipoPergunta.objetiva >
+			<#assign i = 0 >
 			<#list pergunta.respostas as resposta>
 				<#if resposta.peso?exists>
 					<#assign pesoResposta="${resposta.peso}"/>
 				<#else>
 					<#assign pesoResposta="0"/>
 				</#if>
-				<input type="radio" peso="${pesoResposta}" class="opcaoResposta${pergunta.id}, radio objetiva pergunta" name="perguntas[${i}].colaboradorRespostas[0].resposta.id" value="${resposta.id}" id="${resposta.id}" <#if perguntas[i].colaboradorRespostas[0].temResposta() && (resposta.id == perguntas[i].colaboradorRespostas[0].resposta.id)>checked</#if>/><label for="${resposta.id}">${resposta.texto}</label><br>
+				<input type="radio" peso="${pesoResposta}" class="opcaoResposta${pergunta.id}, radio objetiva pergunta" name="perguntas[${i}].colaboradorRespostas[0].resposta.id" value="${resposta.id}" id="${resposta.id}" <#if perguntas[i].colaboradorRespostas[0].temResposta() && (resposta.id == perguntas[i].colaboradorRespostas[0].resposta.id)>checked</#if>/><label class="labelResposta" for="${resposta.id}">${resposta.texto}</label>
+				<#if !respostasCompactas><br></#if>
+				<#assign i = i + 1 >
+				<#if respostasCompactas && i%5 == 0 >
+					<div style="clear: both;"></div>
+				</#if>
 			</#list>
+			<div style="clear: both;"></div>
 			
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.id" />
 			<@ww.hidden name="perguntas[${i}].colaboradorRespostas[0].pergunta.tipo" value="${pergunta.tipo}" id= "tipo" />
 			
 			<#if pergunta.comentario>
-				${pergunta.textoComentario}<br>
+				<label>${pergunta.textoComentario}</label><br>
 				<#if perguntas[i].colaboradorRespostas[0].comentario?exists>
 					<#assign valueComentario = perguntas[i].colaboradorRespostas[0].comentario />
 				<#else>
@@ -76,16 +90,21 @@
 				<#else>
 					<#assign pesoResposta="0"/>
 				</#if>
-				<input type="checkbox" peso="${pesoResposta}" class="opcaoResposta${pergunta.id}, radio multiplaEscolha pergunta" name="perguntas[${i}].colaboradorRespostas[${j}].resposta.id" value="${resposta.id}" id="${resposta.id}" ${checked}/><label for="${resposta.id}">${resposta.texto}</label><br>
+				<input type="checkbox" peso="${pesoResposta}" class="opcaoResposta${pergunta.id}, radio multiplaEscolha pergunta" name="perguntas[${i}].colaboradorRespostas[${j}].resposta.id" value="${resposta.id}" id="${resposta.id}" ${checked}/><label  class="labelResposta" for="${resposta.id}">${resposta.texto}</label>
+				<#if !respostasCompactas><br></#if>
 				<@ww.hidden name="perguntas[${i}].colaboradorRespostas[${j}].pergunta.id" value="${pergunta.id}"/>
 				<@ww.hidden name="perguntas[${i}].colaboradorRespostas[${j}].pergunta.tipo" value="${pergunta.tipo}" id= "tipo"/>
 				<@ww.hidden name="perguntas[${i}].colaboradorRespostas[${j}].pergunta.comentario" value="${pergunta.comentario?string}"/>
 				
 				<#assign j = j + 1/>
+				<#if respostasCompactas && j%5 == 0 >
+					<div style="clear: both;"></div>
+				</#if>
 			</#list>
+			<div style="clear: both;"></div>
 			
 			<#if pergunta.comentario>
-				${pergunta.textoComentario}<br>
+				<label>${pergunta.textoComentario}</label><br>
 				<textarea name="perguntas[${i}].colaboradorRespostas[0].comentario" style="height:75px;width:730px;overflow-y:scroll">${valueComentario}</textarea><br>
 			</#if>
 		</#if>

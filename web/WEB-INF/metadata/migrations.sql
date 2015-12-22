@@ -262,4 +262,4 @@ DELETE FROM configuracaoNivelCompetenciaColaborador WHERE ConfiguracaoNivelCompe
 ALTER TABLE colaboradorQuestionario ADD COLUMN respondidaParcialmente boolean NOT NULL DEFAULT false; --.go
 ------
 
-
+ALTER TABLE avaliacao ADD COLUMN respostasCompactas boolean NOT NULL DEFAULT false; --.go

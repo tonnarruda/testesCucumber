@@ -79,6 +79,7 @@
 				<@ww.select label="Tipo de Avaliação" name="avaliacao.tipoModeloAvaliacao" id="tipoModeloAvaliacao" list=r"#{'D':'Avaliação de Desempenho','A':'Acompanhamento do Período de Experiência'}"/>
 				<@ww.select label="Períodos de Acompanhamento de Experiência" name="avaliacao.periodoExperiencia.id" id="periodoExperiencia" listKey="id" listValue="diasComDescricao" list="periodoExperiencias"  headerKey="" headerValue="Selecione..." required="true" />
 				<@ww.checkbox label="Avaliar competências exigidas pelo cargo" id="avaliarCompetenciasCargo" name="avaliacao.avaliarCompetenciasCargo" labelPosition="left"/>
+				<@ww.checkbox label="Exibir respostas das perguntas de forma compacta" id="respostasCompactas" name="avaliacao.respostasCompactas" labelPosition="left"/>
 			</#if>			
 		
 			<@ww.hidden name="telaInicial" />
