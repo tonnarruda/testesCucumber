@@ -131,12 +131,23 @@ $(function() {
 	
 	$("#avaliados .actions .move-all").click(function(){
 		if ( !$(this).hasClass("disabled") ) {
-			$("#avaliadores .portlet-content ul").each(function() {
-				var avaliador = $(this);
-				$(".ui-selected").each(function(){
-					createAvaliadoForAvaliador(avaliador, $(this));
+			if ( $("#avaliadores .portlet-content ul").length > 0 ) {
+				$("#avaliadores .portlet-content ul").each(function() {
+					var avaliador = $(this);
+					$(".ui-selected").each(function(){
+						createAvaliadoForAvaliador(avaliador, $(this));
+					});
 				});
-			});
+			} else {
+				$("<div>Não há avaliadores para relacionar.</div>").dialog({
+		    		modal: true,
+		    		height: '120',
+		    		title: "Aviso",
+		    		buttons: { "Ok": function() {
+		    			$( this ).dialog( "close" );
+		    		} }
+		    	});
+			}
 			notificatedAboutAutoAvaliacao = false;
 		}
 	});
