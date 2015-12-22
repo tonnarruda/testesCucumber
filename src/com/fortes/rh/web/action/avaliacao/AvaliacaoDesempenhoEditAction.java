@@ -368,6 +368,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public String insert() throws Exception
 	{
+		avaliacaoDesempenho.setEmpresa(getEmpresaSistema());
 		avaliacaoDesempenhoManager.save(avaliacaoDesempenho);
 		return Action.SUCCESS;
 	}
@@ -375,6 +376,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String update() throws Exception
 	{
 		try {
+			avaliacaoDesempenho.setEmpresa(getEmpresaSistema());
 			avaliacaoDesempenhoManager.update(avaliacaoDesempenho);
 			
 			if( avaliacaoDesempenho.getAvaliacao() != null && avaliacaoDesempenho.getAvaliacao().getId() != null )

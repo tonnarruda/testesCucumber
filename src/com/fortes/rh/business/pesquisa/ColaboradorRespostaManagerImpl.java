@@ -438,7 +438,6 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 	public void calculaPerformance(ColaboradorQuestionario colaboradorQuestionario, Long empresaId, Collection<ConfiguracaoNivelCompetencia> niveisCompetenciaMarcados)
 	{
 		Long colaboradorQuestionarioId = colaboradorQuestionario.getId();
-		Long avaliacaoId = colaboradorQuestionario.getAvaliacao().getId();
 		
 		Collection<Long> perguntasIdsComPesoNulo = new ArrayList<Long>();
 		Collection<ColaboradorResposta> colaboradorRespostas = getDao().findByColaboradorQuestionario(colaboradorQuestionarioId);
@@ -463,7 +462,9 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 					pontuacaoMaximaNivelcompetencia += configuracaoNivelCompetenciaMarcado.getPesoCompetencia() * pontuacaoMaximaNivelCompetencia;
 		}
 		
-		int pontuacaoMaximaQuestionario = avaliacaoManager.getPontuacaoMaximaDaPerformance(avaliacaoId, new CollectionUtil<Long>().convertCollectionToArrayLong(perguntasIdsComPesoNulo));
+		int pontuacaoMaximaQuestionario = 0;
+		if(colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getId() != null)
+		pontuacaoMaximaQuestionario = avaliacaoManager.getPontuacaoMaximaDaPerformance(colaboradorQuestionario.getAvaliacao().getId(), new CollectionUtil<Long>().convertCollectionToArrayLong(perguntasIdsComPesoNulo));
 		
 		if(pontuacaoMaximaQuestionario != 0 || pontuacaoMaximaNivelcompetencia != 0 )//A performance vai ter que ficar nula, pois não posso dividir por zero
 		{
@@ -510,8 +511,7 @@ public class ColaboradorRespostaManagerImpl extends GenericManagerImpl<Colaborad
 		getDao().removeByColaboradorQuestionario(colaboradorQuestionario.getId());
 		saveRespostas(colaboradorRespostas, colaboradorQuestionario);
 
-		if (colaboradorQuestionario.getAvaliacao() != null)
-			calculaPerformance(colaboradorQuestionario, empresaId, niveisCompetenciaMarcados);
+		calculaPerformance(colaboradorQuestionario, empresaId, niveisCompetenciaMarcados);
 
 		colaboradorQuestionarioManager.update(colaboradorQuestionario);
 	}

@@ -25,7 +25,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		
 		Criteria criteria = getSession().createCriteria(AvaliacaoDesempenho.class, "a");
 		criteria.createCriteria("a.avaliacao", "avaliacao");
-		criteria.createCriteria("avaliacao.empresa", "emp");
+		criteria.createCriteria("a.empresa", "emp");
 
 		ProjectionList p = Projections.projectionList().create();
 
@@ -36,8 +36,8 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		p.add(Projections.property("a.liberada"), "liberada");
 		p.add(Projections.property("avaliacao.id"), "projectionAvaliacaoId");
 		p.add(Projections.property("avaliacao.titulo"), "projectionAvaliacaoTitulo");
-		p.add(Projections.property("emp.id"), "projectionAvaliacaoEmpresaId");
-		p.add(Projections.property("emp.nome"), "projectionAvaliacaoEmpresaNome");
+		p.add(Projections.property("emp.id"), "empresaId");
+		p.add(Projections.property("emp.nome"), "empresaNome");
 
 		criteria.setProjection(p);
 
@@ -62,8 +62,8 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 	{
 		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
 		criteria.createCriteria("cq.avaliacaoDesempenho", "ad");
-		criteria.createCriteria("cq.avaliacao", "a");
-		criteria.createCriteria("a.empresa", "e");
+		criteria.createCriteria("cq.avaliacao", "a", Criteria.LEFT_JOIN);
+		criteria.createCriteria("ad.empresa", "e");
 		
 		ProjectionList p = Projections.projectionList().create();
 
@@ -71,7 +71,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		p.add(Projections.property("ad.titulo"), "titulo");
 		p.add(Projections.property("ad.inicio"), "inicio");
 		p.add(Projections.property("ad.fim"), "fim");
-		p.add(Projections.property("e.nome"), "empresaNomeProjection");
+		p.add(Projections.property("e.nome"), "empresaNome");
 
 		criteria.setProjection(p);
 		
@@ -82,7 +82,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 			criteria.add(Expression.eq("ad.liberada", liberada));
 		
 		if(empresasIds != null && empresasIds.length > 0)
-			criteria.add(Expression.in("a.empresa.id", empresasIds));
+			criteria.add(Expression.in("ad.empresa.id", empresasIds));
 
 		criteria.addOrder(Order.asc("ad.titulo"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
@@ -94,7 +94,8 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 	public AvaliacaoDesempenho findByIdProjection(Long id)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(),"ad");
-		criteria.createCriteria("ad.avaliacao", "avaliacao");
+		criteria.createCriteria("ad.avaliacao", "avaliacao", Criteria.LEFT_JOIN);
+		criteria.createCriteria("ad.empresa", "e");
 
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("ad.id"), "id");
@@ -105,7 +106,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		p.add(Projections.property("ad.liberada"), "liberada");
 		p.add(Projections.property("ad.permiteAutoAvaliacao"), "permiteAutoAvaliacao");
 		p.add(Projections.property("ad.avaliacao.id"), "projectionAvaliacaoId");
-		p.add(Projections.property("avaliacao.empresa.id"), "projectionAvaliacaoEmpresaId");
+		p.add(Projections.property("e.id"), "empresaId");
 		criteria.setProjection(p);
 
 		criteria.add(Expression.eq("ad.id", id));
@@ -146,7 +147,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		p.add(Projections.property("a.liberada"), "liberada");
 		p.add(Projections.property("avaliacao.id"), "projectionAvaliacaoId");
 		p.add(Projections.property("avaliacao.titulo"), "projectionAvaliacaoTitulo");
-		p.add(Projections.property("emp.id"), "projectionAvaliacaoEmpresaId");
+		p.add(Projections.property("emp.id"), "empresaId");
 		criteria.setProjection(p);
 		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
@@ -156,8 +157,8 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 	
 	private Criteria geraCriteria(Integer page, Integer pagingSize, Date periodoInicial, Date periodoFinal, Long empresaId, String tituloBusca, Long avaliacaoId, Boolean liberada) {
 		Criteria criteria = getSession().createCriteria(AvaliacaoDesempenho.class, "a");
-		criteria.createCriteria("a.avaliacao", "avaliacao");
-		criteria.createCriteria("avaliacao.empresa", "emp");
+		criteria.createCriteria("a.avaliacao", "avaliacao", Criteria.LEFT_JOIN);
+		criteria.createCriteria("a.empresa", "emp");
 
 		if(empresaId != null)
 			criteria.add(Expression.eq("emp.id", empresaId));

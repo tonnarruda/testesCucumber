@@ -129,7 +129,6 @@ $(function() {
 	$("#avaliados .actions .remove").click(function(){
 		if ( !$(this).hasClass("disabled") ) {
 			$(this).parents(".box").find(".ui-selected").each(function(){
-				console.log($(this).parent().attr("id"));
 				$("#avaliadores .avaliado_" + $(this).attr("id")).remove();
 			});
 			
@@ -345,12 +344,12 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
         if( $(avaliadorUlTag).find(".avaliado_"+ avaliadorLiTag.attr('id')).length == 0 ) {
         	$("<li class='avaliado_"+avaliadorLiTag.attr('id')+"'></li>").text( avaliadorLiTag.find(".nome").text() ).appendTo( avaliadorUlTag );
         	$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaborador.id" value="' + avaliadorLiTag.attr("id") + '"/>' +
-					        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliador.id" value="' + $(avaliadorUlTag).parents(".portlet").attr("id") + '"/>' +
-					        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacao.id" value="' + avaliacaoId + '"/>' +
-					        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacaoDesempenho.id" value="' + avaliacaoDesempenhoId + '"/>');
+					        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliador.id" value="' + $(avaliadorUlTag).parents(".portlet").attr("id") + '"/>');
+        	if(avaliacaoId!=0)
+        		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacao.id" value="' + avaliacaoId + '"/>');
         	
-        	console.log(avaliadorLiTag.attr('id'));
-        	console.log(avaliadorUlTag.attr('id'));
+        	$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacaoDesempenho.id" value="' + avaliacaoDesempenhoId + '"/>');
+        	
         	if ( avaliadorLiTag.attr('id') == avaliadorUlTag.attr('id') ) {
         		var pesoAvaliadorVisible = $(".pesoAvaliador").is(":visible");
         		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="text" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].pesoAvaliador" class="pesoAvaliador" value="1"/>' );
@@ -361,8 +360,6 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
         		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].pesoAvaliador" class="peso" value="' + $(avaliadorUlTag).parents(".portlet").find(".portlet-header .pesoAvaliador").val() + '"/>');
         	}
         		
-        	console.log($(avaliadorUlTag).parents(".portlet").find(".portlet-header .pesoAvaliador").val());
-
         	$("#avaliadores ul li .ui-icon-closethick").not(".disabled").click(function(){
 		    	if( $(this).parent().parent().find("li").length == 1 )
 		    		$(this).parent().parent().append('<li class="placeholder">Arraste os avaliados até aqui</li>');

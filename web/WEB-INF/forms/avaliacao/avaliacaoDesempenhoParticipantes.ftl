@@ -40,7 +40,10 @@
 		<script type="text/javascript">
 		var permiteAutoAvaliacao = ${avaliacaoDesempenho.permiteAutoAvaliacao.toString()};
 		var avaliacaoDesempenhoId = ${avaliacaoDesempenho.id};
-		var avaliacaoId = ${avaliacaoDesempenho.avaliacao.id};
+		var avaliacaoId = "";
+		<#if avaliacaoDesempenho.avaliacao?exists && avaliacaoDesempenho.avaliacao.id?exists>
+			avaliacaoId = ${avaliacaoDesempenho.avaliacao.id};
+		</#if>
 		var avaliacaoLiberada = ${avaliacaoDesempenho.liberada?string};
 		
 		$(function() {
@@ -343,7 +346,9 @@
 								        		</#if>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].colaborador.id" value="${avaliado.id}"/>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliador.id" value="${avaliador.colaborador.id}"/>
-								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacao.id" value="${avaliacaoDesempenho.avaliacao.id}"/>
+								        		<#if avaliacaoDesempenho.avaliacao?exists && avaliacaoDesempenho.avaliacao.id?exists>
+								        			<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacao.id" value="${avaliacaoDesempenho.avaliacao.id}"/>
+								        		</#if>
 								        		<input type="hidden" name="colaboradorQuestionarios[${countColaboradorQuestionarios}].avaliacaoDesempenho.id" value="${avaliacaoDesempenho.id}"/>
 								        		<#if avaliado.colaboradorQuestionario.respondida>
 								        			<i class="fa fa-check respondida" title="Respondida"></i>
