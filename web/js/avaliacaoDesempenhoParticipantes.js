@@ -17,6 +17,9 @@ $(function() {
     	$(this).val($(this).parents(".portlet").find(".peso:eq(0)").val());
     	if ($(this).val() == "")
     		$(this).val(1);
+    	
+    	if ( $(this).parents(".portlet").find(".peso").length == 0 && $(this).parents(".portlet").find(".portlet-content .pesoAvaliador").length > 0)
+    		$(this).val($(this).parents(".portlet").find(".portlet-content .pesoAvaliador:eq(0)").val());
     });
     
 	$(".show-info").click(function(){
@@ -97,10 +100,16 @@ $(function() {
 	});
 	
 	
-	$(".pesoAvaliador").live("keypress", function() { return(somenteNumeros(event,'')); });
+	$(".pesoAvaliador").live("keypress", function() {
+		return(somenteNumeros(event,''));
+	});
+	$(".pesoAvaliador").live("keyup", function() {
+		if ( $(this).parents(".portlet").find(".peso").length == 0 )
+			$(this).parents(".portlet").find(".pesoAvaliador").val($(this).val());
+	});
+	
 	$(".pesoAvaliador").live("click", function() { event.stopPropagation(); });
 	$(".portlet-header .pesoAvaliador").live("keyup", function(event) { 
-		console.log("funfou");
 		$(this).parents(".portlet").find(".peso").val($(this).val());
 	});
 	
