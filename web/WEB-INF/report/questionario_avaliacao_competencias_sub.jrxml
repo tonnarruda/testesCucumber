@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.1029633968883545"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="155"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -70,7 +70,7 @@
 	<summary>
 		<band height="79" splitType="Prevent">
 			<crosstab>
-				<reportElement key="crosstab-1" positionType="Float" mode="Opaque" x="0" y="56" width="535" height="20" uuid="a00533ba-b1b0-4f81-a359-ccb5b4959b1a"/>
+				<reportElement key="crosstab-1" mode="Opaque" x="0" y="56" width="535" height="20" uuid="a00533ba-b1b0-4f81-a359-ccb5b4959b1a"/>
 				<crosstabParameter name="IS_AUTO_AVALIACAO" class="java.lang.Boolean">
 					<parameterValueExpression><![CDATA[$P{IS_AUTO_AVALIACAO}]]></parameterValueExpression>
 				</crosstabParameter>
@@ -308,7 +308,7 @@
 				<textElement textAlignment="Right" verticalAlignment="Bottom">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Performance Competência: " + $P{PERFORMANCENIVELCOMPETENCIA}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Performance Competências: " + $P{PERFORMANCENIVELCOMPETENCIA}]]></textFieldExpression>
 			</textField>
 			<frame>
 				<reportElement x="0" y="18" width="264" height="13" uuid="762e9ce9-220d-4dc1-83f8-61d487af87c2">

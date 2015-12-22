@@ -10,6 +10,7 @@ public class RespostaQuestionarioVO {
 	private Collection<MatrizCompetenciaNivelConfiguracao> matrizCompetecias;
 	private String colaboradorQuestionarioPerformance;
 	private String colaboradorQuestionarioPerformanceNivelCompetencia;
+	private boolean somenteCompetencias;
 	
 	public Collection<RespostaQuestionario> getRespostasQuestionario() {
 		return respostasQuestionario;
@@ -41,5 +42,13 @@ public class RespostaQuestionarioVO {
 
 	public void setColaboradorQuestionarioPerformanceNivelCompetencia(String colaboradorQuestionarioPerformanceNivelCompetencia) {
 		this.colaboradorQuestionarioPerformanceNivelCompetencia = colaboradorQuestionarioPerformanceNivelCompetencia;
+	}
+
+	public boolean isSomenteCompetencias() {
+		return somenteCompetencias;
+	}
+
+	public void setSomenteCompetencias(boolean somenteCompetencias) {
+		this.somenteCompetencias = somenteCompetencias;
 	}
 }

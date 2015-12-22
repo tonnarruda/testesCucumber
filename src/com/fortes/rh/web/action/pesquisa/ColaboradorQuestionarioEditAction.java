@@ -438,14 +438,18 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		colaborador = colaboradorManager.findColaboradorByDataHistorico(colaboradorQuestionario.getColaborador().getId(), colaboradorQuestionario.getRespondidaEm());
 		avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
 
-		Collection<RespostaQuestionario> respostaQuestionarios = colaboradorRespostaManager.findRespostasAvaliacaoDesempenho(colaboradorQuestionario.getId());
-		RespostaQuestionario respostaQuestionario = respostaQuestionarios.iterator().next();
-		
 		questionarioVO = new RespostaQuestionarioVO();
-		questionarioVO.setRespostasQuestionario(respostaQuestionarios);
+
+		if(colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getId() != null){
+			Collection<RespostaQuestionario> respostaQuestionarios = colaboradorRespostaManager.findRespostasAvaliacaoDesempenho(colaboradorQuestionario.getId());
+			questionarioVO.setRespostasQuestionario(respostaQuestionarios);
+			questionarioVO.setColaboradorQuestionarioPerformance(colaboradorQuestionario.getPerformanceFormatada());
+		}
+		else
+			questionarioVO.setSomenteCompetencias(true);
+			
 		questionarioVO.setMatrizCompetecias(configuracaoNivelCompetenciaManager.montaMatrizCNCByQuestionario(colaboradorQuestionario, colaborador.getEmpresa().getId()));
-		questionarioVO.setColaboradorQuestionarioPerformance(respostaQuestionario.getColaboradorQuestionarioPerformanceFormatada());
-		questionarioVO.setColaboradorQuestionarioPerformanceNivelCompetencia(respostaQuestionario.getColaboradorQuestionarioPerformanceNivelCompetenciaFormatada());
+		questionarioVO.setColaboradorQuestionarioPerformanceNivelCompetencia(colaboradorQuestionario.getPerformanceNivelCompetenciaFormatada());
 		
 		String filtro = colaboradorQuestionario.getAvaliacaoDesempenho().getTitulo();
 		filtro += "\nAvaliador: " + avaliador.getNome();
@@ -464,13 +468,18 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	public String imprimirQuestionario()
 	{
 		colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionario.getId());
-		avaliacao = avaliacaoManager.findById(colaboradorQuestionario.getAvaliacao().getId());
+		QuestionarioAvaliacaoVO questionarioAvaliacaoVO = new QuestionarioAvaliacaoVO();
+		
+		if(colaboradorQuestionario.getAvaliacao() != null && colaboradorQuestionario.getAvaliacao().getId() != null){
+			avaliacao = avaliacaoManager.findById(colaboradorQuestionario.getAvaliacao().getId());
+			questionarioAvaliacaoVO.setQuestionarioRelatorio(avaliacaoManager.getQuestionarioRelatorio(avaliacao, ordenarPorAspecto));
+		}	
+		else
+			questionarioAvaliacaoVO.setSomenteCompetencias(true);
 		
 		colaborador = colaboradorManager.findByIdComHistorico(colaboradorQuestionario.getColaborador().getId());
 		avaliador = colaboradorManager.findByIdProjectionEmpresa(colaboradorQuestionario.getAvaliador().getId());
 		
-		QuestionarioAvaliacaoVO questionarioAvaliacaoVO = new QuestionarioAvaliacaoVO();
-		questionarioAvaliacaoVO.setQuestionarioRelatorio(avaliacaoManager.getQuestionarioRelatorio(avaliacao, ordenarPorAspecto));
 		questionarioAvaliacaoVO.setMatrizes(configuracaoNivelCompetenciaManager.montaConfiguracaoNivelCompetenciaByFaixa(colaborador.getEmpresa().getId(), colaborador.getHistoricoColaborador().getFaixaSalarial().getId(), new Date()));
 		
 		questionarioAvaliacaoVOs = new ArrayList<QuestionarioAvaliacaoVO>();

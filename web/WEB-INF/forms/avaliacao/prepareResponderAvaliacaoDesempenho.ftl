@@ -226,14 +226,15 @@
 	</#if>
 	
 		<@ww.form name="form" action="responderAvaliacaoDesempenho.action" method="POST">
-			<#if perguntas?exists && 0 < perguntas?size>
+			<#if (perguntas?exists && perguntas?size > 0 ) >
 				<#include "includePerguntasAvaliacao.ftl" />
+			<#else>
+				<@ww.hidden name="colaboradorQuestionario.colaborador.id" />
+				<@ww.hidden name="colaboradorQuestionario.id" />
 			</#if>
 			<@ww.hidden name="avaliacaoDesempenho.id" />
 			<@ww.hidden name="colaboradorQuestionario.avaliacaoDesempenho.id" />
-			<@ww.hidden name="colaboradorQuestionario.id" />
 			<@ww.hidden name="colaboradorQuestionario.avaliador.id" />
-			<@ww.hidden name="colaboradorQuestionario.colaborador.id" />
 			<@ww.hidden name="colaboradorQuestionario.avaliacaoDesempenho.permiteAutoAvaliacao"/>
 			<@ww.hidden name="colaboradorQuestionario.avaliacao.exibeResultadoAutoavaliacao"/>
 			<@ww.hidden name="colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo"/>
