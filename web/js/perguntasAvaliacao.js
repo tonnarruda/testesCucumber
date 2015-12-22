@@ -30,7 +30,7 @@ function validaRespostas(camposObrigatorios, camposValidos, submete, validaObj, 
 	});
 	
 	// verifica a última pergunta.
-	if (!temRespostaMarcada)
+	if (!temRespostaMarcada && ultimoPerguntaId.trim()!='')
 		perguntasSemResposta.push(ultimoPerguntaId);
 	
 	// indicando quais nao foram marcadas

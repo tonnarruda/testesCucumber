@@ -16,7 +16,7 @@
 	
 	<script type="text/javascript">
 		$(function() {
-			<#if colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
+			<#if !colaboradorQuestionario.avaliacao.id?exists || colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
 				$('.pergunta').change(function(){
 					calcularPerformance();
 				});
@@ -153,7 +153,7 @@
 			<#if mostrarPerformanceAvalDesempenho>
 				var pontuacaoMaximaTotal = ${pontuacaoMaximaQuestionario};
 				var notaCompetencias = 0; 
-				<#if colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
+				<#if !colaboradorQuestionario.avaliacao.id?exists || colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
 					var pontuacaoMaximaNivelCompetencia = ${pontuacaoMaximaNivelCompetencia};
 				
 					$('#configuracaoNivelCompetencia').find('.performance').text('-');
@@ -169,34 +169,36 @@
 						 	$(this).find('.performance').text((calculoPerformance * 100).toFixed(2) + "%");
 						 }
 					});
-					$('#performanceCompetencias').text('Performance Competencia: ' + (notaCompetencias* 100).toFixed(2) + "%" );
+					$('#performanceCompetencias').text('Performance Competencias: ' + (notaCompetencias* 100).toFixed(2) + "%" );
 				</#if>
-				var notaObtidaQuestionario = 0;
-				 $('.perguntaResposta').each(function(){
-				 	var peso = $(this).find("#pesoPergunta").val();
-				 	var tipo = $(this).find("#tipo").val();
-				 	if(tipo == 1)
-				 		if($(this).find('.objetiva:checked').size() > 0)
-				 			notaObtidaQuestionario += $(this).find('.objetiva:checked').attr('peso') * peso;
-				 	
-				 	if( tipo == '4')
-			 			notaObtidaQuestionario += $(this).find('.nota').val()  * peso;
-
-					if(tipo == 5){
-						var pesoMultiplaEscolha = 0;
-						$(this).find('.multiplaEscolha:checked').each(function(){
-							pesoMultiplaEscolha += parseInt($(this).attr('peso'));
-						});
-						notaObtidaQuestionario += pesoMultiplaEscolha * peso;
-					}
-				 });
-				
-				var performanceQuestionario;
-				if(pontuacaoMaximaTotal > 0)
-					performanceQuestionario = notaObtidaQuestionario / pontuacaoMaximaTotal;
-				else
-					performanceQuestionario = 0;
-				$('#performanceQuestionario').text('Performance Questionário: ' + (performanceQuestionario * 100).toFixed(2) + "%" );
+				<#if colaboradorQuestionario.avaliacao.id?exists>
+					var notaObtidaQuestionario = 0;
+					 $('.perguntaResposta').each(function(){
+					 	var peso = $(this).find("#pesoPergunta").val();
+					 	var tipo = $(this).find("#tipo").val();
+					 	if(tipo == 1)
+					 		if($(this).find('.objetiva:checked').size() > 0)
+					 			notaObtidaQuestionario += $(this).find('.objetiva:checked').attr('peso') * peso;
+					 	
+					 	if( tipo == '4')
+				 			notaObtidaQuestionario += $(this).find('.nota').val()  * peso;
+	
+						if(tipo == 5){
+							var pesoMultiplaEscolha = 0;
+							$(this).find('.multiplaEscolha:checked').each(function(){
+								pesoMultiplaEscolha += parseInt($(this).attr('peso'));
+							});
+							notaObtidaQuestionario += pesoMultiplaEscolha * peso;
+						}
+					 });
+					
+					var performanceQuestionario;
+					if(pontuacaoMaximaTotal > 0)
+						performanceQuestionario = notaObtidaQuestionario / pontuacaoMaximaTotal;
+					else
+						performanceQuestionario = 0;
+					$('#performanceQuestionario').text('Performance Questionário: ' + (performanceQuestionario * 100).toFixed(2) + "%" );
+				</#if>
 			</#if>
 		}
 	</script>
@@ -219,16 +221,19 @@
 	<#if colaboradorQuestionario.avaliacao?exists && colaboradorQuestionario.avaliacao.cabecalho?exists>
 		<pre><h4>${colaboradorQuestionario.avaliacao.cabecalho}</h4></pre>
 	</#if>
-	<#if mostrarPerformanceAvalDesempenho>
+	<#if mostrarPerformanceAvalDesempenho && colaboradorQuestionario.avaliacao.id?exists>
 		<pre id="performanceQuestionario" style="text-align:right; font-weight: bold;">Performance Questionário: - </pre>
 	</#if>
 	
-	<#if perguntas?exists && 0 < perguntas?size>
 		<@ww.form name="form" action="responderAvaliacaoDesempenho.action" method="POST">
-			<#include "includePerguntasAvaliacao.ftl" />
+			<#if perguntas?exists && 0 < perguntas?size>
+				<#include "includePerguntasAvaliacao.ftl" />
+			</#if>
 			<@ww.hidden name="avaliacaoDesempenho.id" />
 			<@ww.hidden name="colaboradorQuestionario.avaliacaoDesempenho.id" />
+			<@ww.hidden name="colaboradorQuestionario.id" />
 			<@ww.hidden name="colaboradorQuestionario.avaliador.id" />
+			<@ww.hidden name="colaboradorQuestionario.colaborador.id" />
 			<@ww.hidden name="colaboradorQuestionario.avaliacaoDesempenho.permiteAutoAvaliacao"/>
 			<@ww.hidden name="colaboradorQuestionario.avaliacao.exibeResultadoAutoavaliacao"/>
 			<@ww.hidden name="colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo"/>
@@ -238,11 +243,11 @@
 			<@ww.hidden name="colaboradorQuestionario.respondidaParcialmente" id="respondidaParcialmente" />
 			<@ww.hidden name="autoAvaliacao" />
 			
-			<#if colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
+			<#if !colaboradorQuestionario.avaliacao.id?exists || colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
 				<br />
 				
 				<fieldset>
-					<legend>Reavaliar as Competências do Colaborador para o Cargo</legend><br />
+					<legend>Avaliar as Competências do Colaborador para o Cargo</legend><br />
 					
 					<div id="legendas">
 						<span style='background-color: #BFC0C3;'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;Nível de Competência exigido para o Cargo/Faixa Salarial
@@ -379,10 +384,5 @@
 				<button class="btnCancelar" onclick="window.location='avaliacaoDesempenhoQuestionarioList.action?avaliacaoDesempenho.id=${colaboradorQuestionario.avaliacaoDesempenho.id}'"></button>		
 			</#if>
 		</div>
-	<#else>
-		<div class="buttonGroup">
-			<button class="btnCancelar" onclick="window.location='avaliacaoDesempenhoQuestionarioList.action?avaliacaoDesempenho.id=${colaboradorQuestionario.avaliacaoDesempenho.id}'"></button>		
-		</div>
-	</#if>
 </body>
 </html>
