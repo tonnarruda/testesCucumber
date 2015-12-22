@@ -10,11 +10,11 @@ import org.jmock.core.Constraint;
 import com.fortes.rh.business.avaliacao.ParticipanteAvaliacaoDesempenhoManagerImpl;
 import com.fortes.rh.dao.avaliacao.ParticipanteAvaliacaoDesempenhoDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
+import com.fortes.rh.model.avaliacao.ParticipanteAvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
-import com.fortes.rh.util.LongUtil;
 
 public class ParticipanteAvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 {
@@ -28,19 +28,20 @@ public class ParticipanteAvaliacaoDesempenhoManagerTest extends MockObjectTestCa
         participanteAvaliacaoDesempenhoManager.setDao((ParticipanteAvaliacaoDesempenhoDao) particapanteAvaliacaoDesempenhoDao.proxy());
     }
 
-	public void testSaveAvaliados() {
+	public void testCloneAvaliados() {
 		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
 		
-		Collection<Colaborador> colaboradors = new ArrayList<Colaborador>();
-		colaboradors.add(colaborador);
+		ParticipanteAvaliacaoDesempenho participante = new ParticipanteAvaliacaoDesempenho();
+		participante.setColaborador(colaborador);
+		participante.setAvaliacaoDesempenho(new AvaliacaoDesempenho());
+		participante.setTipo(TipoParticipanteAvaliacao.AVALIADO);
+		
+		Collection<ParticipanteAvaliacaoDesempenho> participantes = new ArrayList<ParticipanteAvaliacaoDesempenho>();
+		participantes.add(participante);
 		
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		
-		particapanteAvaliacaoDesempenhoDao.expects(once()).method("findParticipantes").with(new Constraint[]{ eq(avaliacaoDesempenho.getId()), eq(TipoParticipanteAvaliacao.AVALIADO)}).will(returnValue(colaboradors));
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.collectionToArrayLong(colaboradors), null, TipoParticipanteAvaliacao.AVALIADO);
-		
-		particapanteAvaliacaoDesempenhoDao.expects(once()).method("findParticipantes").with(new Constraint[]{ eq(avaliacaoDesempenho.getId()), eq(TipoParticipanteAvaliacao.AVALIADO)}).will(returnValue(new ArrayList<Colaborador>()));
-		particapanteAvaliacaoDesempenhoDao.expects(once()).method("save").with(new Constraint[]{ANYTHING}).isVoid();
-		participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, LongUtil.collectionToArrayLong(colaboradors), null, TipoParticipanteAvaliacao.AVALIADO);
+		particapanteAvaliacaoDesempenhoDao.expects(once()).method("clone").with(new Constraint[]{ANYTHING}).isVoid();
+		participanteAvaliacaoDesempenhoManager.clone(avaliacaoDesempenho, participantes);
 	}
 }
