@@ -217,11 +217,12 @@ function atualizeSelectablesMini() {
 }
 
 function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
-    if( $(avaliadorUlTag).find(".competencia_"+ avaliadorLiTag.attr('id')).length == 0 && $(avaliadorUlTag).parent().attr("class") == $(avaliadorLiTag).parent().attr("class") ) {
-    	$( avaliadorUlTag ).find( ".placeholder" ).remove();
-    	$("<li class='competencia_"+avaliadorLiTag.attr('id')+"'></li>").text( avaliadorLiTag.find(".nome").text() ).appendTo( avaliadorUlTag );
-    	$( avaliadorUlTag ).find(".competencia_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].competenciaId" value="' + avaliadorLiTag.attr("id") + '"/>' +
-    			'<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].tipoCompetencia" value="' + avaliadorLiTag.find("input[name='competenciaTipo']").val() + '"/>' +
+    if( $(avaliadorUlTag).find(".competencia_"+ avaliadorLiTag.attr('id') +"_"+ avaliadorLiTag.attr('tipo')).length == 0 && $(avaliadorUlTag).parent().attr("class") == $(avaliadorLiTag).parent().attr("class") ) {
+    	$(avaliadorUlTag).find(".placeholder").remove();
+    	$("<li class='competencia_"+ avaliadorLiTag.attr('id') +"_"+ avaliadorLiTag.attr('tipo') +"'></li>").text( avaliadorLiTag.find(".nome").text() ).appendTo( avaliadorUlTag );
+    	
+    	$( avaliadorUlTag ).find(".competencia_"+ avaliadorLiTag.attr('id') +"_"+ avaliadorLiTag.attr('tipo')).append('<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].competenciaId" value="' + avaliadorLiTag.attr("id") + '"/>' +
+    												   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].tipoCompetencia" value="' + avaliadorLiTag.find("input[name='competenciaTipo']").val() + '"/>' +
 				        							   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].avaliador.id" value="' + $(avaliadorUlTag).parents(".portlet").attr("id") + '"/>' +
 				        							   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].configuracaoNivelCompetenciaFaixaSalarial.id" value="' + avaliadorLiTag.find("input[name='configuracaoNivelCompetenciaFaixaSalarial']").val() + '"/>' +
 				        							   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].avaliacaoDesempenho.id" value="' + avaliacaoDesempenhoId + '"/>');

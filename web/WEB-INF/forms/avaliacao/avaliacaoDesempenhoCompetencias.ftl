@@ -112,7 +112,7 @@
 					      		</div>
 					      		<ul class="faixa_${faixa.id}" style="display: none;">
 					      			<#list faixa.configuracaoNivelCompetencias as cnc>
-								      	<li class="ui-widget-content" id="${cnc.competenciaId}">
+								      	<li class="ui-widget-content" id="${cnc.competenciaId}" tipo="${cnc.tipoCompetencia}">
 									      	<input type="hidden" name="competenciaId" value="${cnc.competenciaId}"/>
 									      	<input type="hidden" name="competenciaTipo" value="${cnc.tipoCompetencia}"/>
 									      	<input type="hidden" name="configuracaoNivelCompetenciaFaixaSalarial" value="${cnc.configuracaoNivelCompetenciaFaixaSalarial.id}"/>
@@ -183,7 +183,7 @@
 										      			</#if>
 											      	</#if>
 											      	<#list faixa.configuracaoCompetenciaAvaliacaoDesempenhos as ccad>
-											      		<li class="competencia_${ccad.competenciaId}">
+											      		<li class="competencia_${ccad.competenciaId}_${ccad.tipoCompetencia}">
 											      			${ccad.competenciaDescricao}
 											      		
 												      		<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].competenciaId" value="${ccad.competenciaId}"/>
