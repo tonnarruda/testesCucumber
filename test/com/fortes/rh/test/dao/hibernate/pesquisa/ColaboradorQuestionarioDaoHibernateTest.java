@@ -351,7 +351,36 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		colaboradorQuestionario2.setAvaliacao(null);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
 
-		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findAvaliacaoByColaborador(colaborador.getId(), false);
+		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findAvaliacaoByColaborador(colaborador.getId());
+
+		assertEquals(1, retorno.size());
+	}
+	
+	public void testFindAvaliacaoDesempenhoByColaborador() throws Exception
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
+		avaliacaoDesempenho.setEmpresa(empresa);
+		avaliacaoDesempenho.setExibirPerformanceProfissional(true);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setEmpresa(empresa);
+		colaboradorDao.save(colaborador);
+
+		ColaboradorQuestionario colaboradorQuestionario1 = new ColaboradorQuestionario();
+		colaboradorQuestionario1.setColaborador(colaborador);
+		colaboradorQuestionario1.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
+
+		ColaboradorQuestionario colaboradorQuestionario2 = new ColaboradorQuestionario();
+		colaboradorQuestionario2.setColaborador(colaborador);
+		colaboradorQuestionario2.setAvaliacao(null);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+
+		Collection<ColaboradorQuestionario> retorno = colaboradorQuestionarioDao.findAvaliacaoDesempenhoByColaborador(colaborador.getId());
 
 		assertEquals(1, retorno.size());
 	}

@@ -66,6 +66,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenho.setAvaliacao(avaliacao);
+		avaliacaoDesempenho.setEmpresa(empresa);
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 		
 		assertEquals(1,avaliacaoDesempenhoDao.findAllSelect(empresa.getId(), null, null).size());
@@ -84,10 +85,12 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		
 		AvaliacaoDesempenho avaliacaoDesempenho1 = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenho1.setLiberada(true);
+		avaliacaoDesempenho1.setEmpresa(empresa);
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho1);
 		
 		AvaliacaoDesempenho avaliacaoDesempenho2 = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenho2.setLiberada(false);
+		avaliacaoDesempenho2.setEmpresa(empresa);
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho2);
 		
 		Colaborador colaborador = ColaboradorFactory.getEntity();
@@ -125,6 +128,7 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenho.setAvaliacao(avaliacao);
+		avaliacaoDesempenho.setEmpresa(empresa);
 		avaliacaoDesempenho.setLiberada(false);
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 		
@@ -145,17 +149,20 @@ public class AvaliacaoDesempenhoDaoHibernateTest extends GenericDaoHibernateTest
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenho.setTitulo("avaliação desempenho de 90 dias");
 		avaliacaoDesempenho.setAvaliacao(avaliacao);
+		avaliacaoDesempenho.setEmpresa(empresa);
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
 
 		AvaliacaoDesempenho avaliacaoDesempenho2 = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenho2.setTitulo("avaliação desempenho de 30 dias");
 		avaliacaoDesempenho2.setAvaliacao(avaliacao);
+		avaliacaoDesempenho2.setEmpresa(empresa);
 		avaliacaoDesempenho2.setLiberada(true);
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho2);
 
 		AvaliacaoDesempenho avaliacaoDesempenho3 = AvaliacaoDesempenhoFactory.getEntity();
 		avaliacaoDesempenho3.setTitulo("avaliação desempenho de 30 dias");
 		avaliacaoDesempenho3.setAvaliacao(avaliacao);
+		avaliacaoDesempenho3.setEmpresa(empresa);
 		avaliacaoDesempenho3.setLiberada(false);
 		avaliacaoDesempenhoDao.save(avaliacaoDesempenho3);
 		

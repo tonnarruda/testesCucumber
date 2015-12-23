@@ -116,6 +116,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		avaliacao.setEmpresa(empresa);
 		
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(3L);
+		avaliacaoDesempenho.setEmpresa(empresa);
 		avaliacaoDesempenho.setAvaliacao(avaliacao);
 		avaliacaoDesempenho.setLiberada(true);
 		

@@ -255,9 +255,13 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		this.perguntaManager = perguntaManager;
 	}
 
-	public Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, boolean somenteAvaliacaoDesempenho)
+	public Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId)
 	{
-		return getDao().findAvaliacaoByColaborador(colaboradorId, somenteAvaliacaoDesempenho);
+		return getDao().findAvaliacaoByColaborador(colaboradorId);
+	}
+	
+	public Collection<ColaboradorQuestionario> findAvaliacaoDesempenhoByColaborador(Long colaboradorId){
+		return getDao().findAvaliacaoDesempenhoByColaborador(colaboradorId);
 	}
 
 	public Collection<ColaboradorQuestionario> findColaboradorHistoricoByQuestionario(Long questionarioId, Boolean respondida, Long empresaId)

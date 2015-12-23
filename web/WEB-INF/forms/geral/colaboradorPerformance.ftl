@@ -376,21 +376,11 @@
 				<td>
 				<@display.table name="avaliacaoDesempenhos" id="avaliacaoDesempenho" class="dados">
 						<@display.column property="dataMaisTempoPeriodoExperiencia" title="Data" style="width: 140px;"/>
-						<#if avaliacaoDesempenho?exists && avaliacaoDesempenho.avaliacaoDesempenho.exibirPerformanceProfissional?exists && avaliacaoDesempenho.avaliacaoDesempenho.exibirPerformanceProfissional>
-							<@display.column title="Avaliação" >					
-								<a href= "javascript:popup('../../pesquisa/colaboradorQuestionario/visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia.action?colaboradorQuestionario.id=${avaliacaoDesempenho.id}', 600, 1100)">
-									<#if avaliacaoDesempenho.avaliacao.titulo?exists>
-										${avaliacaoDesempenho.avaliacao.titulo}
-									</#if>
-								</a>
-							</@display.column>
-						<#else>
-							<@display.column title="Avaliação" >					
-								<#if avaliacaoDesempenho.avaliacao.titulo?exists>
-									${avaliacaoDesempenho.avaliacao.titulo}
-								</#if>
-							</@display.column>
-						</#if>
+						<@display.column title="Avaliação" >					
+							<a href= "javascript:popup('../../pesquisa/colaboradorQuestionario/visualizarRespostasAvaliacaoDesempenhoEPeriodoExperiencia.action?colaboradorQuestionario.id=${avaliacaoDesempenho.id}', 600, 1100)">
+									${avaliacaoDesempenho.avaliacaoDesempenho.titulo}
+							</a>
+						</@display.column>
 					
 						<@display.column property="performanceFormatada" title="Performance  Questionário" style="width:90px; text-align:right;"/>
 						<@display.column property="performanceNivelCompetenciaFormatada" title="Performance Competência" style="width:90px; text-align:right;"/>

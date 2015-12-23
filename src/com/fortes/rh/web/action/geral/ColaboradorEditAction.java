@@ -901,11 +901,11 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 			if(habilitaCampoExtra)
 				configuracaoCampoExtras = configuracaoCampoExtraManager.find(new String[]{"ativoColaborador", "empresa.id"}, new Object[]{true, empresaDoColaborador.getId()}, new String[]{"ordem"});
 			
-			avaliacaoDesempenhos = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId(), true);
+			avaliacaoDesempenhos = colaboradorQuestionarioManager.findAvaliacaoDesempenhoByColaborador(colaborador.getId());
 			
 			pesquisas = colaboradorQuestionarioManager.findByColaborador(colaborador.getId());
 			
-			avaliacaoExperiencias = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId(), false);
+			avaliacaoExperiencias = colaboradorQuestionarioManager.findAvaliacaoByColaborador(colaborador.getId());
 			
 			historicoColaboradors = historicoColaboradorManager.progressaoColaborador(colaborador.getId(), empresaDoColaborador.getId());
 			historicoColaborador = historicoColaboradorManager.getHistoricoAtual(colaborador.getId());
