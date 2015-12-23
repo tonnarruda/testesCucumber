@@ -299,14 +299,14 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 	{
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
-		action.setTemParticipantesAssociados(false);
+		action.setTemAvaliacoesRespondidas(false);
 		
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
 		avaliacaoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Avaliacao>()));
 		colaboradorQuestionarioManager.expects(once()).method("verifyTemParticipantesAssociados").with(eq(2L)).will(returnValue(true));
 		
 		assertEquals("success",action.prepareUpdate());
-		assertTrue(action.getTemParticipantesAssociados());
+		assertTrue(action.isTemAvaliacoesRespondidas());
 	}
 	
 	public void testPrepareResultado() throws Exception

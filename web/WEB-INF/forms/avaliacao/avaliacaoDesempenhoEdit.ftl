@@ -48,7 +48,7 @@
 			<@ww.datepicker label="Período" required="true" value="${inicio}" name="avaliacaoDesempenho.inicio" id="inicio" cssClass="mascaraData validaDataIni" after="a" liClass="liLeft"/>
 			<@ww.datepicker label="" value="${fim}" name="avaliacaoDesempenho.fim" id="fim" cssClass="mascaraData validaDataFim"/>
 			
-			<#if temParticipantesAssociados>
+			<#if temAvaliacoesRespondidas>
 				<#assign desabilita="true"/>
 				<@ww.hidden name="avaliacaoDesempenho.permiteAutoAvaliacao" />
 				<@ww.hidden name="avaliacaoDesempenho.anonima" />

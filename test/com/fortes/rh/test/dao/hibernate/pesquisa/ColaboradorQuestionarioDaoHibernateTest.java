@@ -839,6 +839,50 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(0, colaboradorQuestionarioDao.findByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), null).size());
 	}
 	
+	public void testUpdateAvaliacaoFromColaboradorQuestionarioByAvaliacaoDesempenho()
+	{
+		Avaliacao avaliacao1 = AvaliacaoFactory.getEntity();
+		avaliacao1.setTitulo("Modelo 1");
+		avaliacaoDao.save(avaliacao1);
+
+		Avaliacao avaliacao2 = AvaliacaoFactory.getEntity();
+		avaliacao1.setTitulo("Modelo 2");
+		avaliacaoDao.save(avaliacao2);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenho.setTitulo("Avaliação Desempenho 1");
+		avaliacaoDesempenho.setAvaliacao(avaliacao1);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho);
+		
+		AvaliacaoDesempenho avaliacaoDesempenho2 = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenho2.setTitulo("Avaliação Desempenho 2");
+		avaliacaoDesempenho2.setAvaliacao(avaliacao2);
+		avaliacaoDesempenhoDao.save(avaliacaoDesempenho2);
+		
+		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario.setAvaliacao(avaliacao1);
+		colaboradorQuestionario.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario);
+		
+		ColaboradorQuestionario colaboradorQuestionario2 = ColaboradorQuestionarioFactory.getEntity();
+		colaboradorQuestionario2.setAvaliacao(avaliacao1);
+		colaboradorQuestionario2.setAvaliacaoDesempenho(avaliacaoDesempenho2);
+		colaboradorQuestionarioDao.save(colaboradorQuestionario2);
+		
+		Collection<ColaboradorQuestionario> colaboradorQuestionariosAval1 = colaboradorQuestionarioDao.findByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), null);
+		Collection<ColaboradorQuestionario> colaboradorQuestionariosAval2 = colaboradorQuestionarioDao.findByAvaliacaoDesempenho(avaliacaoDesempenho2.getId(), null);
+		assertEquals(avaliacao1.getId(), ((ColaboradorQuestionario) colaboradorQuestionariosAval1.toArray()[0]).getAvaliacao().getId());
+		assertEquals(avaliacao1.getId(), ((ColaboradorQuestionario) colaboradorQuestionariosAval2.toArray()[0]).getAvaliacao().getId());
+		
+		avaliacaoDesempenho.setAvaliacao(avaliacao2);
+		colaboradorQuestionarioDao.updateAvaliacaoFromColaboradorQuestionarioByAvaliacaoDesempenho(avaliacaoDesempenho);
+		
+		colaboradorQuestionariosAval1 = colaboradorQuestionarioDao.findByAvaliacaoDesempenho(avaliacaoDesempenho.getId(), null);
+		colaboradorQuestionariosAval2 = colaboradorQuestionarioDao.findByAvaliacaoDesempenho(avaliacaoDesempenho2.getId(), null);
+		assertEquals(avaliacao2.getId(), ((ColaboradorQuestionario) colaboradorQuestionariosAval1.toArray()[0]).getAvaliacao().getId());
+		assertEquals(avaliacao1.getId(), ((ColaboradorQuestionario) colaboradorQuestionariosAval2.toArray()[0]).getAvaliacao().getId());
+	}
+	
 	public void testFindIdsExibidosNaPerformanceProfissional()
 	{
 		Questionario questionario = QuestionarioFactory.getEntity();
