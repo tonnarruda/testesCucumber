@@ -208,7 +208,7 @@
 			<@ww.form name="formParticipantes" id="formParticipantes" action="saveParticipantes" method="POST">
 				<div id="avaliados" class="box">
 				  <h1 class="ui-widget-header title">
-				  	<span class="ui-icon ui-icon-plusthick more-avaliado" title="Inserir Avaliado" onclick="openboxAvaliado('Inserir Avaliado', 'nomeBusca');"></span>
+				  	<span class="ui-icon ui-icon-plusthick more-avaliado" title="Inserir Avaliado" <#if !avaliacaoDesempenho.liberada>onclick="openboxAvaliado('Inserir Avaliado', 'nomeBusca');"<#else>disabled="disabled"</#if> ></span>
 				  	Avaliados
 					<span class="ui-icon ui-icon-circle-triangle-e show-info"></span>
 					<span class="ui-icon ui-icon-circle-triangle-w hide-info"></span>
@@ -267,7 +267,7 @@
 			 
 				<div id="avaliadores" class="box">
 					<h1 class="ui-widget-header title">
-						<span class="ui-icon ui-icon-plusthick more-avaliador" title="Inserir Avaliador" onclick="openboxAvaliador('Inserir Avaliador', 'nomeBusca');"></span>
+						<span class="ui-icon ui-icon-plusthick more-avaliador" title="Inserir Avaliador" <#if !avaliacaoDesempenho.liberada>onclick="openboxAvaliador('Inserir Avaliador', 'nomeBusca');"<#else>disabled="disabled"</#if> ></span>
 						<span>Avaliadores</span>
 						<span class="ui-icon ui-icon-circle-triangle-e show-info"></span>
 						<span class="ui-icon ui-icon-circle-triangle-w hide-info"></span>
