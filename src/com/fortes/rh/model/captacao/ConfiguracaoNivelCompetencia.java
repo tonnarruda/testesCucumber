@@ -63,6 +63,10 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	private NivelCompetencia nivelCompetenciaFaixaSalarial;
 	@Transient
 	private Colaborador colaborador;
+	@Transient
+	private Double avaliadorPeso;
+	@Transient
+	private Long avaliadorId;
 	
 	
 	public ConfiguracaoNivelCompetencia()
@@ -200,6 +204,25 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 			candidato.setNome(candidatoNome);
 		}
 	}
+	
+	//findCompetenciasAndPesos
+	public ConfiguracaoNivelCompetencia(Long competenciaId, Character tipoCompetencia, Integer ordem, Long avaliadorId, Double avaliadorPeso, String nivelDescricao, Long cncfId, Long nivelcompetenciaHistoricoId)
+	{
+		this.competenciaId = competenciaId;
+		this.tipoCompetencia = tipoCompetencia;
+		
+		this.nivelCompetenciaColaborador = new NivelCompetencia();
+		this.nivelCompetenciaColaborador.setDescricao(nivelDescricao);
+		this.nivelCompetenciaColaborador.setOrdem(ordem);
+		
+		this.avaliadorId = avaliadorId;
+		this.avaliadorPeso = avaliadorPeso;
+		
+		this.configuracaoNivelCompetenciaFaixaSalarial = new ConfiguracaoNivelCompetenciaFaixaSalarial();
+		this.configuracaoNivelCompetenciaFaixaSalarial.setId(cncfId);
+		this.configuracaoNivelCompetenciaFaixaSalarial.setNivelCompetenciaHistorico(new NivelCompetenciaHistorico());
+		this.configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().setId(nivelcompetenciaHistoricoId);
+	} 
 	
 	public FaixaSalarial getFaixaSalarial() 
 	{
@@ -535,5 +558,20 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		if(this.candidato == null)
 			this.candidato = new Candidato();
 	}
-	
+
+	public Long getAvaliadorId() {
+		return avaliadorId;
+	}
+
+	public void setAvaliadorId(Long avaliadorId) {
+		this.avaliadorId = avaliadorId;
+	}
+
+	public Double getAvaliadorPeso() {
+		return avaliadorPeso;
+	}
+
+	public void setAvaliadorPeso(Double avaliadorPeso) {
+		this.avaliadorPeso = avaliadorPeso;
+	}
 }

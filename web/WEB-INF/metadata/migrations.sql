@@ -263,3 +263,10 @@ ALTER TABLE colaboradorQuestionario ADD COLUMN respondidaParcialmente boolean NO
 ------
 
 ALTER TABLE avaliacao ADD COLUMN respostasCompactas boolean NOT NULL DEFAULT false; --.go
+
+----- 21/12/2015
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (652, 'ROLE_REL_ANALISE_COMPETENCIAS_COLABORADOR', 'Análise de Desempenho das Competências do Colaborador', '/avaliacao/desempenho/prepareAnaliseDesempenhoCompetenciaColaborador.action', 7, true, 486);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 652);--.go
+alter sequence papel_sequence restart with 653;--.go
+
+-----

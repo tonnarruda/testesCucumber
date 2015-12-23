@@ -157,11 +157,33 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		return criteria.list();
 	}
 
-	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelCompetenciaFaixaSalarialId, Date configuracaoNivelCompetenciaFaixaSalarialData)
+	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelCompetenciaFaixaSalarialId)
 	{
-		Criteria criteria = createCriteria(configuracaoNivelCompetenciaFaixaSalarialData);
+		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetencia.class,"cnc");
+		criteria.createCriteria("cnc.configuracaoNivelCompetenciaFaixaSalarial", "cncf", Criteria.INNER_JOIN);
+		criteria.createCriteria("cncf.nivelCompetenciaHistorico", "nch", Criteria.INNER_JOIN);
+		criteria.createCriteria("nch.configHistoricoNiveis", "chn", Criteria.INNER_JOIN);
+		criteria.createCriteria("chn.nivelCompetencia", "nc", Criteria.INNER_JOIN);
 
-		criteria.add(Expression.eq("cnc.configuracaoNivelCompetenciaFaixaSalarial.id", configuracaoNivelCompetenciaFaixaSalarialId));
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cnc.id"), "id");
+		p.add(Projections.property("cnc.faixaSalarial.id"), "faixaSalarialIdProjection");
+		p.add(Projections.property("cnc.candidato.id"), "candidatoIdProjection");
+		p.add(Projections.property("cnc.configuracaoNivelCompetenciaColaborador.id"), "projectionConfiguracaoNivelCompetenciaColaboradorId");
+		p.add(Projections.property("cnc.configuracaoNivelCompetenciaFaixaSalarial.id"), "configuracaoNivelCompetenciaFaixaSalarialId");
+		p.add(Projections.property("cnc.configuracaoNivelCompetenciaCriterios"), "configuracaoNivelCompetenciaCriterios");
+		p.add(Projections.property("cnc.pesoCompetencia"), "pesoCompetencia");
+		p.add(Projections.property("nc.id"), "nivelCompetenciaIdProjection");
+		p.add(Projections.property("nc.descricao"), "projectionNivelCompetenciaDescricao");
+		p.add(Projections.property("chn.ordem"), "nivelCompetenciaOrdemProjection");
+		p.add(Projections.property("cnc.competenciaId"), "competenciaId");
+		p.add(Projections.sqlProjection("(select nome from competencia where id = {alias}.competencia_id and {alias}.tipoCompetencia = tipo) as competenciaDescricao", new String[] {"competenciaDescricao"}, new Type[] {Hibernate.STRING}), "competenciaDescricao");
+		p.add(Projections.property("cnc.tipoCompetencia"), "tipoCompetencia");
+
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("cncf.id", configuracaoNivelCompetenciaFaixaSalarialId));
+		criteria.add(Expression.eqProperty("chn.nivelCompetencia.id", "cnc.nivelCompetencia.id"));
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetencia.class));
 
@@ -776,5 +798,37 @@ public class ConfiguracaoNivelCompetenciaDaoHibernate extends GenericDaoHibernat
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetencia.class));
 		return criteria.list();
+	}
+	
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciasAndPesos(Long avaliacaoDesempenhoId, Long avaliadoId) 
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("select distinct cnc.competencia_Id as competenciaId, cnc.tipocompetencia as tipocompetencia, chn.ordem as ordem, cq.avaliador_id as avaliadorId, cq.pesoAvaliador as pesoAvaliador, nc.descricao, cncf.id as cncfId, chn.nivelcompetenciaHistorico_id as nivelcompetenciaHistoricoId ");
+		sql.append("from configuracaonivelcompetenciacolaborador cncc ");
+		sql.append("inner join configuracaonivelcompetencia cnc on cncc.id = cnc.configuracaonivelcompetenciacolaborador_id ");
+		sql.append("inner join colaboradorquestionario cq on cq.configuracaonivelcompetenciacolaborador_id = cncc.id ");
+		sql.append("inner join configuracaonivelcompetenciafaixasalarial cncf on cncf.id = cncc.configuracaonivelcompetenciafaixasalarial_id ");
+		sql.append("inner join confighistoriconivel chn on chn.nivelcompetenciaHistorico_id = cncf.nivelcompetenciaHistorico_id and chn.nivelcompetencia_id = cnc.nivelcompetencia_id ");
+		sql.append("inner join nivelcompetencia nc on nc.id = chn.nivelcompetencia_id ");
+		sql.append("where cncc.colaborador_id = :avaliadoId ");
+		sql.append("and cq.avaliacaodesempenho_id  = :avaliacaoDesempenhoId ");
+		sql.append("group by cnc.competencia_Id,cnc.tipocompetencia,chn.ordem, cq.avaliador_id, cq.pesoAvaliador, nc.descricao, cncf.id, chn.nivelcompetenciaHistorico_id ");
+		sql.append("order by cnc.tipocompetencia, cnc.competencia_Id ");
+
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
+		query.setLong("avaliadoId", avaliadoId);
+		
+		Collection<Object[]> resultado = query.list();
+		
+		Collection<ConfiguracaoNivelCompetencia> lista = new ArrayList<ConfiguracaoNivelCompetencia>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();)
+		{
+			Object[] res = it.next();
+			lista.add(new ConfiguracaoNivelCompetencia(((BigInteger)res[0]).longValue(), (Character)res[1], (Integer)res[2], ((BigInteger)res[3]).longValue(), (res[4]!=null ? (Double)res[4] : 1.0), (String)res[5], ((BigInteger)res[6]).longValue(), ((BigInteger)res[7]).longValue()));
+		}
+		
+		return lista;
 	}
 }

@@ -20,5 +20,7 @@ public interface NivelCompetenciaDao extends GenericDao<NivelCompetencia>
 	boolean existePercentual(Long nivelCompetenciaId, Long empresaId, Double percentual);
 
 	boolean existeNivelCompetenciaSemPercentual(Long empresaId);
+	
+	Double getOrdemMaximaByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId);
 
 }

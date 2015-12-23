@@ -801,7 +801,7 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		this.setFaixaSalarialHistoricoIndiceHistoricoValorProjection(faixaSalarialHistoricoIndiceHistoricoValor);
 	}
 	
-	//usado por findHistoricoByColaboradors, findByIdHistoricoAtual
+	//usado por findHistoricoByColaboradors
 	public Colaborador(Long id, String nome, String nomeComercial, Long areaOrganizacionalId, String areaOrganizacionalNome, String faixaSalarialNome, String cargoNome)
 	{
 		this.setId(id);
@@ -832,11 +832,12 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	}
 	
 	//usado por findByIdHistoricoAtual 
-	public Colaborador(Long id, String nome, String nomeComercial, Long areaOrganizacionalId, String areaOrganizacionalNome, String faixaSalarialNome, String cargoNome, Date dataAdmissao, String estabelecimentoNome, String ddd, String foneFixo, String celular)
+	public Colaborador(Long id, String nome, String nomeComercial, String matricula, Long areaOrganizacionalId, String areaOrganizacionalNome, String faixaSalarialNome, String cargoNome, Date dataAdmissao, String estabelecimentoNome, String ddd, String foneFixo, String celular)
 	{
 		this.setId(id);
 		this.nome = nome;
 		this.nomeComercial = nomeComercial;
+		this.matricula = matricula;
 		this.setAreaOrganizacionalId(areaOrganizacionalId);
 		this.setAreaOrganizacionalNome(areaOrganizacionalNome);
 		this.setFaixaSalarialNomeProjection(faixaSalarialNome);

@@ -13,7 +13,6 @@ import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
 import com.fortes.rh.business.avaliacao.ParticipanteAvaliacaoDesempenhoManager;
-import com.fortes.rh.business.cargosalario.CargoManager;
 import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
@@ -55,7 +54,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private EmpresaManager empresaManager;
 	private ColaboradorManager colaboradorManager;
-	private CargoManager cargoManager;
 	private ParametrosDoSistemaManager parametrosDoSistemaManager;
 	private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
 	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
@@ -72,6 +70,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private Collection<ParticipanteAvaliacaoDesempenho> participantesAvaliadores = new ArrayList<ParticipanteAvaliacaoDesempenho>();
 	
 	private Colaborador avaliador;
+	private Colaborador avaliado;
 	private ColaboradorQuestionario colaboradorQuestionario; 
 	
 	private Empresa empresa;
@@ -104,7 +103,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private Date periodoInicial;
 	private Date periodoFinal;
 	
-	private String msgDelete;
 	private char respondida = 'N';
 	
 	private String opcaoResultado; // criterio ou avaliador
@@ -116,11 +114,9 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private boolean desconsiderarAutoAvaliacao;
 	private boolean exibirObsAvaliadores;
 	private boolean clonarParticipantes;
-	private Long[] participanteIds;
 	
-	//questionario list
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
-	private Collection<ResultadoAvaliacaoDesempenho> resultados;
+	private Collection<ResultadoAvaliacaoDesempenho> resultados = new ArrayList<ResultadoAvaliacaoDesempenho>();
 	private Boolean compartilharColaboradores;
 	private boolean exibeResultadoAutoavaliacao;
 	private String msgResultadoAvaliacao;
@@ -318,6 +314,43 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		prepareParticipantes();
 		return Action.SUCCESS;
 	}
+
+	public String prepareAnaliseDesempenhoCompetenciaColaborador()
+	{
+		try {
+			compartilharColaboradores = parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
+			empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, empresaId, SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()));
+			avaliacaoDesempenhos = avaliacaoDesempenhoManager.findTituloModeloAvaliacao(null, null, null, null, getEmpresaSistema().getId(), null, null, true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String analiseDesempenhoCompetenciaColaborador()
+	{
+		try {
+			ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = avaliacaoDesempenhoManager.getResultadoAvaliacaoDesempenho(avaliacaoDesempenho.getId(), avaliado.getId());
+			
+			if(resultadoAvaliacaoDesempenho.getCompetencias().size() == 0){
+				addActionMessage("Não existem competências para o avalado informado.");
+				prepareAnaliseDesempenhoCompetenciaColaborador();
+				return INPUT;
+			}
+			
+			resultados.add(resultadoAvaliacaoDesempenho);
+			parametros = RelatorioUtil.getParametrosRelatorio("Análise de Desempenho das Competência do Colaborador", getEmpresaSistema(), "");
+
+		} catch (Exception e) {
+			addActionError("Problema ao gerar relatório.");
+			e.printStackTrace();
+			prepareAnaliseDesempenhoCompetenciaColaborador();
+			return Action.INPUT;
+		}
+
+		return Action.SUCCESS;
+	}
 	
 	public String prepareInsert() throws Exception
 	{
@@ -447,7 +480,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			e.printStackTrace();
 			return Action.ERROR;
 		}
-		
 	}
 	
 	public String liberar() 
@@ -732,11 +764,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		this.avaliador = avaliador;
 	}
 
-	public void setParticipanteIds(Long[] participanteIds)
-	{
-		this.participanteIds = participanteIds;
-	}
-
 	public void setParametrosDoSistemaManager(ParametrosDoSistemaManager parametrosDoSistemaManager) {
 		this.parametrosDoSistemaManager = parametrosDoSistemaManager;
 	}
@@ -841,10 +868,6 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		this.areasCheck = areasCheck;
 	}
 
-	public void setCargoManager(CargoManager cargoManager) {
-		this.cargoManager = cargoManager;
-	}
-
 	public void setExibirObsAvaliadores(boolean exibirObsAvaliadores) {
 		this.exibirObsAvaliadores = exibirObsAvaliadores;
 	}
@@ -915,5 +938,13 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public void setEditarCompetencias(boolean editarCompetencias) {
 		this.editarCompetencias = editarCompetencias;
+	}
+
+	public void setAvaliado(Colaborador avaliado) {
+		this.avaliado = avaliado;
+	}
+
+	public Colaborador getAvaliado() {
+		return avaliado;
 	}
 }

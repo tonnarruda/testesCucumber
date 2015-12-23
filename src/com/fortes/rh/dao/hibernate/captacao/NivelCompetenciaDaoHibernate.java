@@ -146,6 +146,17 @@ public class NivelCompetenciaDaoHibernate extends GenericDaoHibernate<NivelCompe
 		Integer result = (Integer) criteria.uniqueResult();
 		return (int) (result == null ? 0 : result);
 	}
+	
+	public Double getOrdemMaximaByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId) 
+	{
+		Criteria criteria = getSession().createCriteria(ConfigHistoricoNivel.class, "chn");
+		
+		criteria.setProjection(Projections.max("chn.ordem"));
+		criteria.add(Expression.eq("chn.nivelCompetenciaHistorico.id", nivelCompetenciaHistoricoId));
+		
+		Integer result = (Integer) criteria.uniqueResult();
+		return (Double) (result == null ? 0.0 : result);
+	}
 
 	public boolean existePercentual(Long nivelCompetenciaId, Long empresaId, Double percentual) 
 	{

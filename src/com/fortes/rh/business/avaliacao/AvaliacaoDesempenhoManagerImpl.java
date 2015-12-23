@@ -8,6 +8,8 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import com.fortes.business.GenericManagerImpl;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
+import com.fortes.rh.business.captacao.NivelCompetenciaManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -22,6 +24,9 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
+import com.fortes.rh.model.captacao.Competencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
 import com.fortes.rh.model.dicionario.TipoParticipanteAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
@@ -46,6 +51,8 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	private ColaboradorManager colaboradorManager;
 	private ParticipanteAvaliacaoDesempenhoManager participanteAvaliacaoDesempenhoManager;
 	private ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager;
+	private ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager;
+	private NivelCompetenciaManager nivelCompetenciaManager;
 	
 	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao) 
 	{
@@ -281,6 +288,66 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	public Collection<AvaliacaoDesempenho> findAvaliacaoDesempenhoBloqueadaComConfiguracaoCompetencia(Long configuracaoNivelCompetenciaFaixaSalarialId) {
 		return getDao().findAvaliacaoDesempenhoBloqueadaComConfiguracaoCompetencia(configuracaoNivelCompetenciaFaixaSalarialId);
 	}
+
+	public ResultadoAvaliacaoDesempenho getResultadoAvaliacaoDesempenho(Long avaliacaoDesempenhoId, Long avaliadoId) 
+	{
+		Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDoColaborador = configuracaoNivelCompetenciaManager.findCompetenciasAndPesos(avaliacaoDesempenhoId, avaliadoId);
+		ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = new ResultadoAvaliacaoDesempenho();
+		
+		if(configNiveisCompetenciasDoColaborador.size() == 0)
+			return resultadoAvaliacaoDesempenho;
+
+		resultadoAvaliacaoDesempenho.setColaborador(colaboradorManager.findByIdHistoricoAtual(avaliadoId, true));
+		Collection<Competencia> competencias = new ArrayList<Competencia>();
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial nivelCompetenciaFaixaSalarial = ((ConfiguracaoNivelCompetencia) (configNiveisCompetenciasDoColaborador.toArray()[0])).getConfiguracaoNivelCompetenciaFaixaSalarial();
+		Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDaFaixaSalarial = configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaFaixaSalarial(nivelCompetenciaFaixaSalarial.getId());
+		Double ordemMaxima = nivelCompetenciaManager.getOrdemMaximaByNivelCompetenciaHistoricoId(nivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId()); 
+		
+		Competencia competencia;
+		Double pesoAvaliador, pesoPorPotuacaoObtidaAvaliadorAcumulado, somaPesoAvaliadores;
+		Integer pontuacaoObtidaColaborador, pesoPorPotuacaoAutoAvaliacao = 0;
+		
+		for (ConfiguracaoNivelCompetencia cncFaixa : configNiveisCompetenciasDaFaixaSalarial) 
+		{
+			pesoPorPotuacaoObtidaAvaliadorAcumulado = 0.0;
+			somaPesoAvaliadores = 0.0;
+			
+			for (ConfiguracaoNivelCompetencia cncColaborador : configNiveisCompetenciasDoColaborador) 
+			{
+				if(cncFaixa.getCompetenciaId().equals(cncColaborador.getCompetenciaId()) && cncFaixa.getTipoCompetencia().equals(cncColaborador.getTipoCompetencia()) )
+				{
+					pesoAvaliador = cncColaborador.getAvaliadorPeso() != null ? cncColaborador.getAvaliadorPeso() : 1;
+					pontuacaoObtidaColaborador = cncColaborador.getNivelCompetenciaColaborador().getOrdem();
+					
+					pesoPorPotuacaoObtidaAvaliadorAcumulado += pesoAvaliador * pontuacaoObtidaColaborador;
+					somaPesoAvaliadores += pesoAvaliador;
+				
+					if(cncColaborador.getAvaliadorId().equals(avaliadoId))
+						pesoPorPotuacaoAutoAvaliacao += pontuacaoObtidaColaborador;
+				}
+			}
+			
+			if(somaPesoAvaliadores != 0.0)
+			{
+				competencia = new Competencia();
+				competencia.setNome(cncFaixa.getCompetenciaDescricao());
+				competencia.setPerformance((pesoPorPotuacaoObtidaAvaliadorAcumulado/(somaPesoAvaliadores*ordemMaxima))*100);
+				competencia.setCompetenciaAbaixoDoNivelExigido(competencia.getPerformance() < ((cncFaixa.getNivelCompetencia().getOrdem()/ordemMaxima)*100));
+				competencias.add(competencia);
+			}
+		}
+		
+		resultadoAvaliacaoDesempenho.setPerformanceAutoAvaliacao(( pesoPorPotuacaoAutoAvaliacao / (ordemMaxima*configNiveisCompetenciasDaFaixaSalarial.size()) ) * 100);
+		resultadoAvaliacaoDesempenho.setCompetencias(competencias);
+
+		Double produtividade = participanteAvaliacaoDesempenhoManager.findByAvalDesempenhoIdAbadColaboradorId(avaliacaoDesempenhoId, avaliadoId, TipoParticipanteAvaliacao.AVALIADO);
+		
+		if(produtividade != null)
+			resultadoAvaliacaoDesempenho.setProdutividade(produtividade * 10);
+		
+		return resultadoAvaliacaoDesempenho;
+	}
 	
 	public void setGerenciadorComunicacaoManager(GerenciadorComunicacaoManager gerenciadorComunicacaoManager) {
 		this.gerenciadorComunicacaoManager = gerenciadorComunicacaoManager;
@@ -301,4 +368,15 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 	public void setConfiguracaoCompetenciaAvaliacaoDesempenhoManager(ConfiguracaoCompetenciaAvaliacaoDesempenhoManager configuracaoCompetenciaAvaliacaoDesempenhoManager) {
 		this.configuracaoCompetenciaAvaliacaoDesempenhoManager = configuracaoCompetenciaAvaliacaoDesempenhoManager;
 	}
+
+	public void setConfiguracaoNivelCompetenciaManager(
+			ConfiguracaoNivelCompetenciaManager configuracaoNivelCompetenciaManager) {
+		this.configuracaoNivelCompetenciaManager = configuracaoNivelCompetenciaManager;
+	}
+
+	public void setNivelCompetenciaManager(
+			NivelCompetenciaManager nivelCompetenciaManager) {
+		this.nivelCompetenciaManager = nivelCompetenciaManager;
+	}
+
 }

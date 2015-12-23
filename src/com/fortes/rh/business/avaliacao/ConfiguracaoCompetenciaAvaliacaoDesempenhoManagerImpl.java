@@ -82,7 +82,7 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl extends Gener
 	public Collection<FaixaSalarial> findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho(Long avaliacaoDesempenhoId) {
 		Collection<FaixaSalarial> faixaSalarials = getDao().findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho(avaliacaoDesempenhoId);
 		for (FaixaSalarial faixaSalarial : faixaSalarials) {
-			faixaSalarial.setConfiguracaoNivelCompetencias(configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaFaixaSalarial(faixaSalarial.getConfiguracaoNivelCompetenciaFaixaSalarialId(), null));
+			faixaSalarial.setConfiguracaoNivelCompetencias(configuracaoNivelCompetenciaManager.findByConfiguracaoNivelCompetenciaFaixaSalarial(faixaSalarial.getConfiguracaoNivelCompetenciaFaixaSalarialId()));
 		}
 		return faixaSalarials;
 	}
