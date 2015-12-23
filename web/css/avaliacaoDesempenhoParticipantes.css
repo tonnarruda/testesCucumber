@@ -147,7 +147,7 @@ i.fa {
 	cursor: pointer; 
 }
 
-#avaliadores ul .ui-icon-closethick.disabled, .option.disabled .ui-icon, .option.inactive .ui-icon {
+#avaliadores ul .ui-icon-closethick.disabled, .option.disabled .ui-icon, .option.inactive .ui-icon, .ui-icon[disabled=disabled] {
 	background-image: url(../imgs/ui-icons_d8e7f3_256x240.png) !important;
 	cursor: default; 
 }

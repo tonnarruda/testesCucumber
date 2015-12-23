@@ -180,7 +180,15 @@ $(function() {
 		}
 	});
 	
-	$(".notaProdutividade").live("keypress", function() { return(somenteNumeros(event,',')); });
+	var ultimaProdutividade;
+	$(".notaProdutividade").live("keypress", function() {
+		ultimaProdutividade = $(this).val();
+		return somenteNumeros(event,',') ;
+	}).live("keyup", function(){
+		if ( parseFloat($(this).val().replace(",", ".") == "" ? 0 : $(this).val().replace(",", ".")) > 10 )
+			$(this).val(ultimaProdutividade);
+	});
+	
 	$(".notaProdutividade").live("click", function(event){ event.stopPropagation(); });
 	$("#avaliados .actions .produtividade").click(function(event){
 		$("#avaliados .option").not(".produtividade").toggleClass("inactive");
