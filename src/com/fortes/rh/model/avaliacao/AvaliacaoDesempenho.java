@@ -117,7 +117,14 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
 	}
 
 	public String getTituloComEmpresa() {
-		return this.titulo += " (" + this.empresa.getNome() + ")";
+		if(this.titulo != null ){
+			String titulo = this.titulo;
+			
+			if(this.empresa.getNome() != null)
+				titulo += " (" + this.empresa.getNome() + ")";
+			return titulo;
+		}
+		else return "";
 	}
     
 	public void setTitulo(String titulo) {
