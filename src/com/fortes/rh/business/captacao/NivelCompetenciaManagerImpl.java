@@ -46,6 +46,11 @@ public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompete
 	{
 		return getDao().getOrdemMaxima(empresaId, data);
 	}
+	
+	public Double getOrdemMaximaByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId) 
+	{
+		return getDao().getOrdemMaximaByNivelCompetenciaHistoricoId(nivelCompetenciaHistoricoId);
+	}
 
 	public boolean existePercentual(Long nivelCompetenciaId, Long empresaId, Double percentual) 
 	{
@@ -56,4 +61,5 @@ public class NivelCompetenciaManagerImpl extends GenericManagerImpl<NivelCompete
 	{
 		return getDao().existeNivelCompetenciaSemPercentual(empresaId);
 	}
+
 }

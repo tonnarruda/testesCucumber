@@ -142,7 +142,7 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest extends MockO
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		Collection<FaixaSalarial> faixaSalarials = Arrays.asList(faixaSalarial);
 		configuracaoCompetenciaAvaliacaoDesempenhoDao.expects(atLeastOnce()).method("findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId())).will(returnValue(faixaSalarials));
-		configuracaoNivelCompetenciaManager.expects(atLeastOnce()).method("findByConfiguracaoNivelCompetenciaFaixaSalarial").with(ANYTHING, eq(null));
+		configuracaoNivelCompetenciaManager.expects(atLeastOnce()).method("findByConfiguracaoNivelCompetenciaFaixaSalarial").with(ANYTHING);
 		
 		assertNotNull(configuracaoCompetenciaAvaliacaoDesempenhoManager.findFaixasSalariaisByCompetenciasConfiguradasParaAvaliacaoDesempenho(avaliacaoDesempenho.getId()));
 	}

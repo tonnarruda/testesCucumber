@@ -2753,7 +2753,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 	public Colaborador findByIdHistoricoAtual(Long colaboradorId, boolean exibirSomenteAtivos)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, ");
+		hql.append("select new Colaborador(co.id, co.nome, co.nomeComercial, co.matricula, ");
 		hql.append("ao.id, ao.nome, fs.nome, ca.nome, co.dataAdmissao, e.nome, co.contato.ddd, co.contato.foneFixo, co.contato.foneCelular) ");
 		hql.append("from HistoricoColaborador as hc ");
 		hql.append("left join hc.colaborador as co ");

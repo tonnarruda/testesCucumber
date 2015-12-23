@@ -115,6 +115,12 @@
     <property name="configuracaoCompetenciaAvaliacaoDesempenhoManager">
       <ref bean="configuracaoCompetenciaAvaliacaoDesempenhoManager" />
     </property>
+    <property name="configuracaoNivelCompetenciaManager">
+      <ref bean="configuracaoNivelCompetenciaManager" />
+    </property>
+    <property name="nivelCompetenciaManager">
+      <ref bean="nivelCompetenciaManager" />
+    </property>
   </bean>
   <bean id="participanteAvaliacaoDesempenhoManager" parent="parentManager">
     <property name="proxyInterfaces">

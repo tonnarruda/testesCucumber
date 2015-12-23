@@ -163,6 +163,24 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernateTest extends GenericDaoH
 		
 		assertEquals(1, participanteAvaliacaoDesempenhoDao.findColaboradoresParticipantes(participanteAvaliacaoDesempenho.getAvaliacaoDesempenho().getId(), TipoParticipanteAvaliacao.AVALIADO).size());
 	}
+	
+	public void testfindByAvalDesempenhoIdAbadColaboradorId() throws Exception
+	{
+		AvaliacaoDesempenho avalDesempenho = AvaliacaoDesempenhoFactory.getEntity();
+		avaliacaoDesempenhoDao.save(avalDesempenho);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		ParticipanteAvaliacaoDesempenho participanteAvaliacaoDesempenho = getEntity();
+		participanteAvaliacaoDesempenho.setColaborador(colaborador);
+		participanteAvaliacaoDesempenho.setAvaliacaoDesempenho(avalDesempenho);
+		participanteAvaliacaoDesempenho.setProdutividade(5.0);
+		participanteAvaliacaoDesempenho.setTipo(TipoParticipanteAvaliacao.AVALIADO);
+		participanteAvaliacaoDesempenhoDao.save(participanteAvaliacaoDesempenho);
+		
+		assertEquals(participanteAvaliacaoDesempenho.getProdutividade(), participanteAvaliacaoDesempenhoDao.findByAvalDesempenhoIdAbadColaboradorId(avalDesempenho.getId(), colaborador.getId(), TipoParticipanteAvaliacao.AVALIADO));
+	}
 
 	public AvaliacaoDesempenhoDao getAvaliacaoDesempenhoDao() {
 		return avaliacaoDesempenhoDao;

@@ -148,5 +148,20 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/prepareResultado.ftl</result>
 		</action>
+		
+		<action name="prepareAnaliseDesempenhoCompetenciaColaborador" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="prepareAnaliseDesempenhoCompetenciaColaborador">
+      		<interceptor-ref name="defaultListStack"/>
+			<result name="success" type="freemarker">/WEB-INF/forms/avaliacao/prepareAnaliseDesempenhoCompetenciaColaborador.ftl</result>
+		</action>
+		<action name="analiseDesempenhoCompetenciaColaborador" class="com.fortes.rh.web.action.avaliacao.AvaliacaoDesempenhoEditAction" method="analiseDesempenhoCompetenciaColaborador">
+			<interceptor-ref name="defaultListStack"/>
+			<result name="success" type="jasper">
+				<param name="location">WEB-INF/report/analiseDesempenhoCompetenciaColaborador.jasper</param>
+				<param name="dataSource">resultados</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">analiseDesempenhoCompetenciaColaborador.pdf</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/avaliacao/prepareAnaliseDesempenhoCompetenciaColaborador.ftl</result>
+		</action>
 	</package>
 </xwork>

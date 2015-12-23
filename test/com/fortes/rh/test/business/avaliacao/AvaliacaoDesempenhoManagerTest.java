@@ -12,6 +12,10 @@ import org.jmock.cglib.MockObjectTestCase;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoDesempenhoManagerImpl;
 import com.fortes.rh.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManager;
+import com.fortes.rh.business.avaliacao.ParticipanteAvaliacaoDesempenhoManager;
+import com.fortes.rh.business.captacao.ConfiguracaoNivelCompetenciaManager;
+import com.fortes.rh.business.captacao.NivelCompetenciaManager;
+import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
@@ -23,6 +27,12 @@ import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.avaliacao.ResultadoAvaliacaoDesempenho;
+import com.fortes.rh.model.captacao.Competencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetencia;
+import com.fortes.rh.model.captacao.ConfiguracaoNivelCompetenciaFaixaSalarial;
+import com.fortes.rh.model.captacao.NivelCompetencia;
+import com.fortes.rh.model.captacao.NivelCompetenciaHistorico;
+import com.fortes.rh.model.dicionario.TipoCompetencia;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.pesquisa.ColaboradorQuestionario;
@@ -33,7 +43,11 @@ import com.fortes.rh.model.pesquisa.relatorio.QuestionarioResultadoPerguntaObjet
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoDesempenhoFactory;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFactory;
+import com.fortes.rh.test.factory.captacao.ConfiguracaoNivelCompetenciaFaixaSalarialFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.captacao.NivelCompetenciaFactory;
+import com.fortes.rh.test.factory.captacao.NivelCompetenciaHistoricoFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorQuestionarioFactory;
 import com.fortes.rh.test.factory.pesquisa.ColaboradorRespostaFactory;
 import com.fortes.rh.test.factory.pesquisa.PerguntaFactory;
@@ -50,6 +64,10 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 	private Mock questionarioManager;
 	private Mock gerenciadorComunicacaoManager;
 	private Mock configuracaoCompetenciaAvaliacaoDesempenhoManager;
+	private Mock configuracaoNivelCompetenciaManager;
+	private Mock colaboradorManager;
+	private Mock nivelCompetenciaManager;
+	private Mock participanteAvaliacaoDesempenhoManager;
 	
 	protected void setUp() throws Exception
     {
@@ -70,6 +88,14 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
         avaliacaoDesempenhoManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager) gerenciadorComunicacaoManager.proxy());
         configuracaoCompetenciaAvaliacaoDesempenhoManager = mock(ConfiguracaoCompetenciaAvaliacaoDesempenhoManager.class);
         avaliacaoDesempenhoManager.setConfiguracaoCompetenciaAvaliacaoDesempenhoManager((ConfiguracaoCompetenciaAvaliacaoDesempenhoManager) configuracaoCompetenciaAvaliacaoDesempenhoManager.proxy());
+        configuracaoNivelCompetenciaManager = mock(ConfiguracaoNivelCompetenciaManager.class);
+        avaliacaoDesempenhoManager.setConfiguracaoNivelCompetenciaManager((ConfiguracaoNivelCompetenciaManager) configuracaoNivelCompetenciaManager.proxy());
+        colaboradorManager = mock(ColaboradorManager.class);
+        avaliacaoDesempenhoManager.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+        nivelCompetenciaManager = mock(NivelCompetenciaManager.class);
+        avaliacaoDesempenhoManager.setNivelCompetenciaManager((NivelCompetenciaManager) nivelCompetenciaManager.proxy());
+        participanteAvaliacaoDesempenhoManager = mock(ParticipanteAvaliacaoDesempenhoManager.class);
+        avaliacaoDesempenhoManager.setParticipanteAvaliacaoDesempenhoManager((ParticipanteAvaliacaoDesempenhoManager) participanteAvaliacaoDesempenhoManager.proxy());
     }
 
 	public void testFindAllSelect()
@@ -159,17 +185,6 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 
 	public void testEnviarLembrete()
 	{
-//		ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity(1L);
-//		parametros.setAppUrl("");
-//		
-//		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-//		Collection<Colaborador> colaboradors = ColaboradorFactory.getCollection();
-//		
-//		colaboradorManager.expects(once()).method("findParticipantesDistinctByAvaliacaoDesempenho").with(eq(1L),eq(false),eq(false)).will(returnValue(colaboradors));
-//		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(parametros));
-//		mail.expects(once()).method("send").with(new Constraint[]{ANYTHING,ANYTHING,ANYTHING,ANYTHING,ANYTHING});
-//		
-//		avaliacaoDesempenhoManager.enviarLembrete(1L, empresa);
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
 		gerenciadorComunicacaoManager.expects(once()).method("enviarLembreteAvaliacaoDesempenho").with(ANYTHING,ANYTHING);
 		
@@ -255,5 +270,66 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		
 		assertTrue(exception instanceof ColecaoVaziaException);
 		assertNull(resultados);
+	}
+	
+	public void testGetResultadoAvaliacaoDesempenho()
+	{
+		Long competenciaId = 2L;
+		
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity(1L);
+		
+		ConfiguracaoNivelCompetenciaFaixaSalarial cncf = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(1L);
+		cncf.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		
+		NivelCompetencia nivelCompetenciaColaborador1 = NivelCompetenciaFactory.getEntity(1L);
+		nivelCompetenciaColaborador1.setOrdem(2);
+		nivelCompetenciaColaborador1.setDescricao("Java");
+		
+		NivelCompetencia nivelCompetenciaColaborador2 = NivelCompetenciaFactory.getEntity(2L);
+		nivelCompetenciaColaborador2.setOrdem(5);
+		nivelCompetenciaColaborador2.setDescricao("Java");
+				
+		ConfiguracaoNivelCompetencia cncColab1 = ConfiguracaoNivelCompetenciaFactory.getEntity(1L);
+		cncColab1.setCompetenciaId(competenciaId);
+		cncColab1.setConfiguracaoNivelCompetenciaFaixaSalarial(cncf);
+		cncColab1.setNivelCompetenciaColaborador(nivelCompetenciaColaborador1);
+		cncColab1.setAvaliadorPeso(2.0);
+		cncColab1.setAvaliadorId(1L);
+		cncColab1.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		
+		ConfiguracaoNivelCompetencia cncColab2 = ConfiguracaoNivelCompetenciaFactory.getEntity(2L);
+		cncColab2.setCompetenciaId(competenciaId);
+		cncColab2.setConfiguracaoNivelCompetenciaFaixaSalarial(cncf);
+		cncColab2.setNivelCompetenciaColaborador(nivelCompetenciaColaborador2);
+		cncColab2.setAvaliadorPeso(1.0);
+		cncColab2.setAvaliadorId(2L);
+		cncColab2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		
+		ConfiguracaoNivelCompetencia cncFaixa = ConfiguracaoNivelCompetenciaFactory.getEntity(3L);
+		cncFaixa.setCompetenciaId(competenciaId);
+		cncFaixa.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
+		cncFaixa.setNivelCompetencia(nivelCompetenciaColaborador2);
+		
+		Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDoColaborador = new ArrayList<ConfiguracaoNivelCompetencia>();
+		configNiveisCompetenciasDoColaborador.add(cncColab1);
+		configNiveisCompetenciasDoColaborador.add(cncColab2);
+		
+		Collection<ConfiguracaoNivelCompetencia> configNiveisCompetenciasDaFaixa = new ArrayList<ConfiguracaoNivelCompetencia>();
+		configNiveisCompetenciasDaFaixa.add(cncFaixa);
+		
+		configuracaoNivelCompetenciaManager.expects(once()).method("findCompetenciasAndPesos").withAnyArguments().will(returnValue(configNiveisCompetenciasDoColaborador));
+		configuracaoNivelCompetenciaManager.expects(once()).method("findByConfiguracaoNivelCompetenciaFaixaSalarial").withAnyArguments().will(returnValue(configNiveisCompetenciasDaFaixa));
+		colaboradorManager.expects(once()).method("findByIdHistoricoAtual").withAnyArguments().will(returnValue(ColaboradorFactory.getEntity(1L)));
+		nivelCompetenciaManager.expects(once()).method("getOrdemMaximaByNivelCompetenciaHistoricoId").withAnyArguments().will(returnValue(5.0));
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("findByAvalDesempenhoIdAbadColaboradorId").withAnyArguments().will(returnValue(5.0));
+		
+		ResultadoAvaliacaoDesempenho resultado = avaliacaoDesempenhoManager.getResultadoAvaliacaoDesempenho(1L,2L);
+		assertEquals(1, resultado.getCompetencias().size());
+		assertEquals(100.0, resultado.getPerformanceAutoAvaliacao());
+		assertEquals(50.0, resultado.getProdutividade());
+		
+		Competencia competencia = ((Competencia) resultado.getCompetencias().toArray()[0]);
+		
+		assertEquals(60.0, competencia.getPerformance());
 	}
 }

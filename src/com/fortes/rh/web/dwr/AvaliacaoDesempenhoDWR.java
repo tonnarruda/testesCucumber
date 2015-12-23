@@ -14,6 +14,7 @@ import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CollectionUtil;
+import com.fortes.web.tags.Option;
 import com.opensymphony.webwork.dispatcher.SessionMap;
 
 public class AvaliacaoDesempenhoDWR 
@@ -49,7 +50,7 @@ public class AvaliacaoDesempenhoDWR
 	@SuppressWarnings("unchecked")
 	public Map<Long, String> getParticipantesByAvalEmpresaAreaCargo(Long avaliacaoDesempenhoId, Long empresaId, Long[] areasIds, Long[] cargosIds)
 	{
-		empresaId =(empresaId == null || empresaId == -1 || empresaId == 0) ? null : empresaId;
+		empresaId = (empresaId == null || empresaId == -1 || empresaId == 0) ? null : empresaId;
 		
 		Collection<Colaborador> participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, true, empresaId, areasIds, cargosIds);
 		return new CollectionUtil<Colaborador>().convertCollectionToMap(participantes, "getId", "getNome");
@@ -103,6 +104,28 @@ public class AvaliacaoDesempenhoDWR
 		}
 		
 		return "";
+	}
+
+	public Collection<Option> getAvaliados(Long avaliacaoDesempenhoId, Long empresaId, Long[] areasIds, Long[] cargosIds)
+	{
+		Collection<Option> options = new ArrayList<Option>();
+		Collection<Colaborador> participantes = new ArrayList<Colaborador>();
+		
+		if(avaliacaoDesempenhoId != null && !avaliacaoDesempenhoId.equals(-1L))
+			participantes = colaboradorManager.findParticipantesDistinctComHistoricoByAvaliacaoDesempenho(avaliacaoDesempenhoId, true, empresaId, areasIds, cargosIds);
+		
+		Option option = null;
+
+		for (Colaborador avaliado : participantes) {
+			
+			option = new Option();
+			option.setId(avaliado.getId());
+			option.setNome(avaliado.getNome());
+			
+			options.add(option);
+		}
+
+		return options;
 	}
 	
 	public boolean existeNovoHistoricoDeCompetenciaParaFaixaSalarialDeAlgumAvaliado(Long avaliacaoDesempenhoId) {

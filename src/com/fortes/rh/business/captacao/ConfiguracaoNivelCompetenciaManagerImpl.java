@@ -270,9 +270,9 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 		return configuracoesNiveisCompetencia;
 	}
 	
-	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelCompetenciaFaixaSalarialId, Date configuracaoNivelCompetenciaFaixaSalarialData)
+	public Collection<ConfiguracaoNivelCompetencia> findByConfiguracaoNivelCompetenciaFaixaSalarial(Long configuracaoNivelCompetenciaFaixaSalarialId)
 	{
-		return getDao().findByConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarialId, configuracaoNivelCompetenciaFaixaSalarialData);
+		return getDao().findByConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarialId);
 	}
 
 	public Collection<ConfiguracaoNivelCompetencia> findCompetenciaByFaixaSalarial(Long faixaId, Date data, Long configuracaoNivelCompetenciaFaixaSalarialId, Long avaliadorId, Long avaliacaoDesempenhoId) {
@@ -675,6 +675,11 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	public void removeBySolicitacaoId(Long solicitacaoId) 
 	{
 		getDao().removeBySolicitacaoId(solicitacaoId);
+	}
+
+	public Collection<ConfiguracaoNivelCompetencia> findCompetenciasAndPesos(Long avaliacaoDesempenhoId, Long avaliadoId) 
+	{
+		return getDao().findCompetenciasAndPesos(avaliacaoDesempenhoId, avaliadoId);
 	}
 	
 	public CriterioAvaliacaoCompetenciaManager getCriterioAvaliacaoCompetenciaManager() {

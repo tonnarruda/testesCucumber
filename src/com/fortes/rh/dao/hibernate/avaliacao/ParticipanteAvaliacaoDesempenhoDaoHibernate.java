@@ -164,4 +164,22 @@ public class ParticipanteAvaliacaoDesempenhoDaoHibernate extends GenericDaoHiber
 		
 		query.executeUpdate();
 	}
+
+	public Double findByAvalDesempenhoIdAbadColaboradorId(Long avaliacaoDesempenhoId, Long avaliadoId, Character tipoParticipanteAvaliacao) 
+	{
+		Criteria criteria = getSession().createCriteria(ParticipanteAvaliacaoDesempenho.class, "p"); 
+		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("p.produtividade"), "produtividade");
+		criteria.setProjection(p);
+		
+		criteria.add(Restrictions.eq("p.avaliacaoDesempenho.id", avaliacaoDesempenhoId));
+		criteria.add(Restrictions.eq("p.colaborador.id", avaliadoId));
+		criteria.add(Restrictions.eq("p.tipo", tipoParticipanteAvaliacao));
+		
+		if(criteria.uniqueResult() != null && !"".equals(criteria.uniqueResult()))
+			return (Double) criteria.uniqueResult();
+		else
+			return null;
+	}
 }

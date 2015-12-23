@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
 import com.fortes.rh.model.geral.Empresa;
+import com.fortes.rh.util.MathUtil;
 
 @Entity
 public class Competencia
@@ -31,6 +32,10 @@ public class Competencia
 
 	@Transient
 	private NivelCompetencia nivelCompetencia;
+	@Transient
+	private Double performance;
+	@Transient
+	private boolean competenciaAbaixoDoNivelExigido; 
 	
 	public Long getId() 
 	{
@@ -108,5 +113,21 @@ public class Competencia
     		return false;
 
     	return this.getId().equals(((Competencia)object).getId()) && this.getTipo().equals(((Competencia)object).getTipo());
+	}
+
+	public Double getPerformance() {
+		return MathUtil.round(performance, 2);
+	}
+
+	public void setPerformance(Double performance) {
+		this.performance = performance;
+	}
+
+	public boolean isCompetenciaAbaixoDoNivelExigido() {
+		return competenciaAbaixoDoNivelExigido;
+	}
+
+	public void setCompetenciaAbaixoDoNivelExigido(boolean competenciaAbaixoDoNivelExigido) {
+		this.competenciaAbaixoDoNivelExigido = competenciaAbaixoDoNivelExigido;
 	}
 }
