@@ -444,7 +444,11 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
 		criteria.createCriteria("cq.colaborador", "colab", Criteria.LEFT_JOIN);
-		criteria.createCriteria("cq.avaliacao", "av");//não pode ser LEFT_JOIN 
+		if(somenteAvaliacaoDesempenho == true)
+			criteria.createCriteria("cq.avaliacao", "av", Criteria.LEFT_JOIN);
+		else
+			criteria.createCriteria("cq.avaliacao", "av", Criteria.INNER_JOIN);/** Não pode ser LEFT_JOIN **/
+		
 		criteria.createCriteria("cq.avaliacaoDesempenho", "avd", Criteria.LEFT_JOIN); 
 		
 		ProjectionList p = Projections.projectionList().create();
