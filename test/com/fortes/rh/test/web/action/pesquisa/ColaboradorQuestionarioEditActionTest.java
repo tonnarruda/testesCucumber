@@ -520,8 +520,10 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
     	action.getAvaliacaoExperiencias();
     }
     
-    public void testImprimirAvaliacaoDesempenhoRespondida()
+    public void testImprimirAvaliacaoDesempenhoRespondidaComModeloDeAvalicao()
 	{
+    	Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
+    	
     	Cargo cargo = CargoFactory.getEntity();
     	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
     	faixaSalarial.setCargo(cargo);
@@ -539,6 +541,7 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
     	colaboradorQuestionario.setRespondidaEm(new Date());
     	colaboradorQuestionario.setColaborador(colaborador);
     	colaboradorQuestionario.setAvaliador(avaliador);
+    	colaboradorQuestionario.setAvaliacao(avaliacao);
 		
     	Map<String, Object> parametros = new HashMap<String, Object>();
     	parametros.put("NOME_DO_CARGO", colaborador.getFaixaSalarial().getNomeDeCargoEFaixa());
@@ -565,7 +568,46 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
     	assertNotNull(action.getQuestionarioVO());
 	}
     
-    public void testImprimirQuestionario()
+    public void testImprimirAvaliacaoDesempenhoRespondidaSemModeloDeAvalicao()
+   	{
+       	Cargo cargo = CargoFactory.getEntity();
+       	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+       	faixaSalarial.setCargo(cargo);
+       	
+       	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+       	colaborador.setEmpresa(EmpresaFactory.getEmpresa(1L));
+       	colaborador.setFaixaSalarial(faixaSalarial);
+       	colaborador.setNome("Avaliado");
+       	
+       	Colaborador avaliador = ColaboradorFactory.getEntity(2L);
+       	avaliador.setNome("Avaliador");
+       	
+       	ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(1L);
+       	colaboradorQuestionario.setAvaliacaoDesempenho(AvaliacaoDesempenhoFactory.getEntity(1L)); 
+       	colaboradorQuestionario.setRespondidaEm(new Date());
+       	colaboradorQuestionario.setColaborador(colaborador);
+       	colaboradorQuestionario.setAvaliador(avaliador);
+   		
+       	Map<String, Object> parametros = new HashMap<String, Object>();
+       	parametros.put("NOME_DO_CARGO", colaborador.getFaixaSalarial().getNomeDeCargoEFaixa());
+       	
+       	action.setColaboradorQuestionario(colaboradorQuestionario);
+       	
+       	colaboradorQuestionarioManager.expects(once()).method("findByIdProjection").with(eq(colaboradorQuestionario.getId())).will(returnValue(colaboradorQuestionario));
+       	colaboradorManager.expects(once()).method("findColaboradorByDataHistorico").with(eq(colaboradorQuestionario.getColaborador().getId()), eq(colaboradorQuestionario.getRespondidaEm())).will(returnValue(colaborador));
+       	colaboradorManager.expects(once()).method("findByIdProjectionEmpresa").with(eq(colaboradorQuestionario.getAvaliador().getId())).will(returnValue(avaliador));
+
+   		Collection<MatrizCompetenciaNivelConfiguracao> matrizCompetenciaNivelConfiguracoes = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
+   		
+   		configuracaoNivelCompetenciaManager.expects(once()).method("montaMatrizCNCByQuestionario").with(eq(colaboradorQuestionario),eq(colaborador.getEmpresa().getId())).will(returnValue(matrizCompetenciaNivelConfiguracoes));
+   		
+   		assertEquals("success", action.imprimirAvaliacaoDesempenhoRespondida());
+   		assertEquals(colaborador.getFaixaSalarial().getNomeDeCargoEFaixa(), action.getParametros().get("NOME_DO_CARGO"));
+       	assertNotNull(action.getQuestionarioVO());
+       	assertTrue(action.getQuestionarioVO().isSomenteCompetencias());
+   	}
+    
+    public void testImprimirQuestionarioComModelo()
 	{
     	Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
     	
@@ -604,6 +646,47 @@ public class ColaboradorQuestionarioEditActionTest extends MockObjectTestCase
 		
 		avaliacaoManager.expects(once()).method("getQuestionarioRelatorio").with(eq(avaliacao),ANYTHING).will(returnValue(new QuestionarioRelatorio()));
 
+		Collection<MatrizCompetenciaNivelConfiguracao> matrizCompetenciaNivelConfiguracoes = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
+		
+		configuracaoNivelCompetenciaManager.expects(once()).method("montaConfiguracaoNivelCompetenciaByFaixa").with(eq(colaborador.getEmpresa().getId()),eq(colaborador.getHistoricoColaborador().getFaixaSalarial().getId()), ANYTHING).will(returnValue(matrizCompetenciaNivelConfiguracoes));
+		
+		assertEquals("success", action.imprimirQuestionario());
+		assertNotNull(action.getParametros());
+    	assertNotNull(action.getQuestionarioAvaliacaoVOs());
+	}
+    
+    public void testImprimirQuestionarioSemModelo()
+	{
+    	Cargo cargo = CargoFactory.getEntity();
+    	FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+    	faixaSalarial.setCargo(cargo);
+    	
+    	HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+    	historicoColaborador.setFaixaSalarial(faixaSalarial);
+    	
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	colaborador.setEmpresa(EmpresaFactory.getEmpresa(1L));
+    	colaborador.setHistoricoColaborador(historicoColaborador);
+    	colaborador.setNome("Avaliado");
+    	
+    	Colaborador avaliador = ColaboradorFactory.getEntity(2L);
+    	avaliador.setNome("Avaliador");
+    	
+    	ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(1L);
+    	colaboradorQuestionario.setColaborador(colaborador);
+    	colaboradorQuestionario.setAvaliador(avaliador);
+    	colaboradorQuestionario.setAvaliacaoDesempenho(AvaliacaoDesempenhoFactory.getEntity(1L));
+		
+    	Map<String, Object> parametros = new HashMap<String, Object>();
+    	parametros.put("test", new Object());
+    	
+    	action.setColaboradorQuestionario(colaboradorQuestionario);
+    	
+    	colaboradorQuestionarioManager.expects(once()).method("findByIdProjection").with(eq(colaboradorQuestionario.getId())).will(returnValue(colaboradorQuestionario));
+		
+    	colaboradorManager.expects(once()).method("findByIdComHistorico").with(eq(colaboradorQuestionario.getColaborador().getId())).will(returnValue(colaborador));
+    	colaboradorManager.expects(once()).method("findByIdProjectionEmpresa").with(eq(colaboradorQuestionario.getAvaliador().getId())).will(returnValue(avaliador));
+		
 		Collection<MatrizCompetenciaNivelConfiguracao> matrizCompetenciaNivelConfiguracoes = new ArrayList<MatrizCompetenciaNivelConfiguracao>();
 		
 		configuracaoNivelCompetenciaManager.expects(once()).method("montaConfiguracaoNivelCompetenciaByFaixa").with(eq(colaborador.getEmpresa().getId()),eq(colaborador.getHistoricoColaborador().getFaixaSalarial().getId()), ANYTHING).will(returnValue(matrizCompetenciaNivelConfiguracoes));

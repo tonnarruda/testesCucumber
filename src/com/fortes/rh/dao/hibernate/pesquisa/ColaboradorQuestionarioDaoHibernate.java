@@ -440,15 +440,40 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		return (ColaboradorQuestionario) criteria.uniqueResult();
 	}
 
-	public Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, boolean somenteAvaliacaoDesempenho)
+	public Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
 		criteria.createCriteria("cq.colaborador", "colab", Criteria.LEFT_JOIN);
-		if(somenteAvaliacaoDesempenho == true)
-			criteria.createCriteria("cq.avaliacao", "av", Criteria.LEFT_JOIN);
-		else
-			criteria.createCriteria("cq.avaliacao", "av", Criteria.INNER_JOIN);/** Não pode ser LEFT_JOIN **/
+		criteria.createCriteria("cq.avaliacao", "av", Criteria.INNER_JOIN);
 		
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cq.id"), "id");
+		p.add(Projections.property("cq.respondidaEm"), "respondidaEm");
+		p.add(Projections.property("cq.performance"), "performance");
+		p.add(Projections.property("cq.performanceNivelCompetencia"), "performanceNivelCompetencia");
+		p.add(Projections.property("cq.observacao"), "observacao");
+		p.add(Projections.property("colab.id"), "projectionColaboradorId");
+		p.add(Projections.property("colab.dataAdmissao"), "projectionColaboradorDataAdmissao");
+		p.add(Projections.property("av.id"), "projectionAvaliacaoId");
+		p.add(Projections.property("av.titulo"), "projectionAvaliacaoTitulo");
+		
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("colab.id", colaboradorId));
+		criteria.add(Expression.isNull("cq.avaliacaoDesempenho"));
+		
+		criteria.addOrder(Order.desc("cq.respondidaEm"));
+		criteria.addOrder(Order.asc("colab.nome"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+		
+		return criteria.list();
+	}
+
+	public Collection<ColaboradorQuestionario> findAvaliacaoDesempenhoByColaborador(Long colaboradorId)
+	{
+		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
+		criteria.createCriteria("cq.colaborador", "colab", Criteria.LEFT_JOIN);
 		criteria.createCriteria("cq.avaliacaoDesempenho", "avd", Criteria.LEFT_JOIN); 
 		
 		ProjectionList p = Projections.projectionList().create();
@@ -460,18 +485,14 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("avd.exibirPerformanceProfissional"), "projectionExibirPerformanceProfissional");
 		p.add(Projections.property("colab.id"), "projectionColaboradorId");
 		p.add(Projections.property("colab.dataAdmissao"), "projectionColaboradorDataAdmissao");
-		p.add(Projections.property("av.id"), "projectionAvaliacaoId");
-		p.add(Projections.property("av.titulo"), "projectionAvaliacaoTitulo");
+		p.add(Projections.property("avd.id"), "projectionAvaliacaoDesempenhoId");
+		p.add(Projections.property("avd.titulo"), "projectionAvaliacaoDesempenhoTitulo");
 		
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("colab.id", colaboradorId));
-		
-		if(somenteAvaliacaoDesempenho == true)
-			criteria.add(Expression.isNotNull("cq.avaliacaoDesempenho"));
-		
-		if(somenteAvaliacaoDesempenho == false)
-			criteria.add(Expression.isNull("cq.avaliacaoDesempenho"));
+		criteria.add(Expression.isNotNull("cq.avaliacaoDesempenho"));
+		criteria.add(Expression.eq("avd.exibirPerformanceProfissional", true));
 		
 		criteria.addOrder(Order.desc("cq.respondidaEm"));
 		criteria.addOrder(Order.asc("colab.nome"));

@@ -442,8 +442,8 @@ public class ColaboradorEditActionTest extends MockObjectTestCase
 		colaboradorManager.expects(once()).method("getFoto").with(eq(colaborador.getId())).will(returnValue(null));
 		configuracaoCampoExtraManager.expects(once()).method("find").with(eq(new String[]{"ativoColaborador", "empresa.id"}),eq(new Object[]{true, empresa.getId()}), eq(new String[]{"ordem"})).will(returnValue(configuracaoCampoExtras));
 		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
-		colaboradorQuestionarioManager.expects(once()).method("findAvaliacaoByColaborador").with(eq(colaborador.getId()), eq(false)).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
-		colaboradorQuestionarioManager.expects(once()).method("findAvaliacaoByColaborador").with(eq(colaborador.getId()), eq(true)).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		colaboradorQuestionarioManager.expects(once()).method("findAvaliacaoDesempenhoByColaborador").with(eq(colaborador.getId())).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
+		colaboradorQuestionarioManager.expects(once()).method("findAvaliacaoByColaborador").with(eq(colaborador.getId())).will(returnValue(new ArrayList<ColaboradorQuestionario>()));
 		historicoColaboradorManager.expects(once()).method("progressaoColaborador").with(eq(colaborador.getId()), eq(empresa.getId())).will(returnValue(historicoColaboradors));
 		historicoColaboradorManager.expects(once()).method("getHistoricoAtual").with(eq(colaborador.getId())).will(returnValue(historicoColaborador1));
 		colaboradorIdiomaManager.expects(once()).method("findByColaborador").with(eq(colaborador.getId())).will(returnValue(colaboradorsIdioma));

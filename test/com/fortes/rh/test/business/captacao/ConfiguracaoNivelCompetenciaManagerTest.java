@@ -9,6 +9,7 @@ import java.util.List;
 
 import mockit.Mockit;
 
+import org.apache.poi.hwpf.model.NilPICFAndBinData;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 import org.jmock.core.Constraint;
@@ -260,7 +261,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
 		
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(1L);
-		colaboradorQuestionario.setAvaliacaoDesempenho(AvaliacaoDesempenhoFactory.getEntity());
+		colaboradorQuestionario.setAvaliacaoDesempenho(AvaliacaoDesempenhoFactory.getEntity(1L));
 		colaboradorQuestionario.setAvaliador(ColaboradorFactory.getEntity());
 		colaboradorQuestionario.setAvaliacao(avaliacao);
 
@@ -457,7 +458,7 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 	public void testMontaConfiguracaoNivelCompetenciaByFaixa()
 	{
 		Empresa empresa = EmpresaFactory.getEmpresa(1L);
-
+		
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(999999999999L);
 		
 		NivelCompetencia nivelPessimo = NivelCompetenciaFactory.getEntity();
@@ -467,10 +468,30 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		NivelCompetencia nivelRuim = NivelCompetenciaFactory.getEntity();
 		nivelRuim.setDescricao("ruim");
 		nivelRuim.setOrdem(2);
-
+		
 		NivelCompetencia nivelBom = NivelCompetenciaFactory.getEntity();
 		nivelBom.setDescricao("bom");
 		nivelBom.setOrdem(3);
+
+		NivelCompetenciaHistorico nivelCompetenciaHistorico = NivelCompetenciaHistoricoFactory.getEntity(DateUtil.criarDataMesAno(1, 2, 2015), empresa);
+		nivelCompetenciaHistorico.setId(1L);
+		
+		ConfigHistoricoNivel configHistoricoNivelPessimo = ConfigHistoricoNivelFactory.getEntity(1L);
+		configHistoricoNivelPessimo.setNivelCompetencia(nivelPessimo);
+		configHistoricoNivelPessimo.setOrdem(1);
+		configHistoricoNivelPessimo.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+
+		ConfigHistoricoNivel configHistoricoNivelRuim = ConfigHistoricoNivelFactory.getEntity(1L);
+		configHistoricoNivelRuim.setNivelCompetencia(nivelRuim);
+		configHistoricoNivelRuim.setOrdem(2);
+		configHistoricoNivelRuim.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+		
+		ConfigHistoricoNivel configHistoricoNivelBom = ConfigHistoricoNivelFactory.getEntity(1L);
+		configHistoricoNivelBom.setNivelCompetencia(nivelBom);
+		configHistoricoNivelBom.setOrdem(3);
+		configHistoricoNivelBom.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
+
+		nivelCompetenciaHistorico.setConfigHistoricoNiveis(Arrays.asList(configHistoricoNivelPessimo, configHistoricoNivelRuim, configHistoricoNivelBom));
 		
 		ConfiguracaoNivelCompetenciaColaborador configuracaoNivelCompetencia = ConfiguracaoNivelCompetenciaColaboradorFactory.getEntity(999999999998L);
 		configuracaoNivelCompetencia.setFaixaSalarial(faixaSalarial);
@@ -499,6 +520,8 @@ public class ConfiguracaoNivelCompetenciaManagerTest extends MockObjectTestCase
 		configuracaoNivelCompetencia3.setNivelCompetenciaColaborador(nivelRuim);
 		configuracaoNivelCompetencia3.setTipoCompetencia(TipoCompetencia.ATITUDE);
 		ConfiguracaoNivelCompetenciaFaixaSalarial configuracaoNivelCompetenciaFaixaSalarial = ConfiguracaoNivelCompetenciaFaixaSalarialFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(1, 2, 2015));
+		configuracaoNivelCompetenciaFaixaSalarial.setId(1L);
+		configuracaoNivelCompetenciaFaixaSalarial.setNivelCompetenciaHistorico(nivelCompetenciaHistorico);
 		
 		Collection<ConfiguracaoNivelCompetencia> configuracaoNivelCompetencias = Arrays.asList(configuracaoNivelCompetencia1,configuracaoNivelCompetencia2,configuracaoNivelCompetencia3);
 		

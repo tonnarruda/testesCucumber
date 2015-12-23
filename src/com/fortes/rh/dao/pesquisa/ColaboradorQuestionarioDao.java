@@ -20,7 +20,8 @@ public interface ColaboradorQuestionarioDao extends GenericDao<ColaboradorQuesti
 	Collection<ColaboradorQuestionario> findFichasMedicas();
 	ColaboradorQuestionario findByIdProjection(Long id);
 	ColaboradorQuestionario findByIdColaboradorCandidato(Long id);
-	Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId, boolean somenteAvaliacaoDesempenho);
+	Collection<ColaboradorQuestionario> findAvaliacaoByColaborador(Long colaboradorId);
+	public Collection<ColaboradorQuestionario> findAvaliacaoDesempenhoByColaborador(Long colaboradorId);
 	Collection<ColaboradorQuestionario> findColaboradorHistoricoByQuestionario(Long questionarioId, Boolean respondida, Long empresaId);
 	Collection<ColaboradorQuestionario> findByColaboradorAndAvaliacaoDesempenho(Long colaboradorParticipanteId, Long avaliacaoDesempenhoId, boolean isAvaliado, boolean desconsiderarAutoAvaliacao);
 	Integer getCountParticipantesAssociados(Long avaliacaoDesempenhoId);
