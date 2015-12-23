@@ -272,7 +272,7 @@ alter sequence papel_sequence restart with 653;--.go
 -----
 
 ------21/12/2015
-ALTER TABLE avaliacaodesempenho ADD COLUMN exiberesultadoautoavaliacao boolean;--.go
+ALTER TABLE avaliacaodesempenho ADD COLUMN exiberesultadoautoavaliacao boolean default false;--.go
 ALTER TABLE avaliacaodesempenho ADD COLUMN empresa_id bigint;--.go
 ALTER TABLE avaliacaodesempenho ADD CONSTRAINT avaliacaodesempenho_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
 

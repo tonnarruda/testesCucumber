@@ -24,7 +24,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 	public Collection<AvaliacaoDesempenho> findAllSelect(Long empresaId, Boolean ativa, Character tipoModeloAvaliacao) {
 		
 		Criteria criteria = getSession().createCriteria(AvaliacaoDesempenho.class, "a");
-		criteria.createCriteria("a.avaliacao", "avaliacao");
+		criteria.createCriteria("a.avaliacao", "avaliacao", Criteria.LEFT_JOIN);
 		criteria.createCriteria("a.empresa", "emp");
 
 		ProjectionList p = Projections.projectionList().create();
@@ -48,7 +48,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 			criteria.add(Expression.eq("emp.id", empresaId));
 
 		if(ativa != null)
-			criteria.add(Expression.eq("avaliacao.ativo", ativa));
+			criteria.add(Expression.or(Expression.eq("avaliacao.ativo", ativa), Expression.isNull("avaliacao.id")));
 		
 		criteria.addOrder(Order.asc("a.titulo"));
 
@@ -105,6 +105,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		p.add(Projections.property("ad.anonima"), "anonima");
 		p.add(Projections.property("ad.liberada"), "liberada");
 		p.add(Projections.property("ad.permiteAutoAvaliacao"), "permiteAutoAvaliacao");
+		p.add(Projections.property("ad.exibeResultadoAutoAvaliacao"), "exibeResultadoAutoAvaliacao");
 		p.add(Projections.property("ad.avaliacao.id"), "projectionAvaliacaoId");
 		p.add(Projections.property("e.id"), "empresaId");
 		criteria.setProjection(p);
