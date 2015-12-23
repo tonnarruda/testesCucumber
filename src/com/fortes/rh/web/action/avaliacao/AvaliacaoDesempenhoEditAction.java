@@ -97,7 +97,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private Long colaboradorQuestionarioId;
 	
 	private boolean isAvaliados;
-	private boolean temParticipantesAssociados;
+	private boolean temAvaliacoesRespondidas;
 	
 	private boolean editarCompetencias = true;
 
@@ -328,7 +328,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String prepareUpdate() throws Exception
 	{
 		prepare();
-		temParticipantesAssociados = colaboradorQuestionarioManager.verifyTemParticipantesAssociados(avaliacaoDesempenho.getId());
+		temAvaliacoesRespondidas = !colaboradorQuestionarioManager.findRespondidasByAvaliacaoDesempenho(avaliacaoDesempenho.getId()).isEmpty();
 		return Action.SUCCESS;
 	}
 
@@ -340,7 +340,17 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 
 	public String update() throws Exception
 	{
-		avaliacaoDesempenhoManager.update(avaliacaoDesempenho);
+		try {
+			avaliacaoDesempenhoManager.update(avaliacaoDesempenho);
+			
+			if( avaliacaoDesempenho.getAvaliacao() != null && avaliacaoDesempenho.getAvaliacao().getId() != null )
+				colaboradorQuestionarioManager.updateAvaliacaoFromColaboradorQuestionarioByAvaliacaoDesempenho(avaliacaoDesempenho);
+			
+			addActionSuccess("Avaliação de desempenho atualizada com sucesso.");
+		} catch (Exception e) {
+			addActionError("Não foi possível atualizar a avaliação de desempenho.");
+			e.printStackTrace();
+		}
 		return Action.SUCCESS;
 	}
 	
@@ -627,12 +637,12 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		this.empresaId = empresaId;
 	}
 
-	public boolean getTemParticipantesAssociados() {
-		return temParticipantesAssociados;
+	public boolean isTemAvaliacoesRespondidas() {
+		return temAvaliacoesRespondidas;
 	}
 
-	public void setTemParticipantesAssociados(boolean temParticipantesAssociados) {
-		this.temParticipantesAssociados = temParticipantesAssociados;
+	public void setTemAvaliacoesRespondidas(boolean temAvaliacoesRespondidas) {
+		this.temAvaliacoesRespondidas = temAvaliacoesRespondidas;
 	}
 
 	public void setColaboradorManager(ColaboradorManager colaboradorManager) {

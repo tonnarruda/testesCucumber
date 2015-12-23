@@ -21,6 +21,7 @@ import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.pesquisa.ColaboradorQuestionarioDao;
+import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.FiltroSituacaoAvaliacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -594,6 +595,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cq.id"), "id");
 		p.add(Projections.property("cq.respondida"), "respondida");
+		p.add(Projections.property("cq.avaliacao.id"), "projectionAvaliacaoId");
 		p.add(Projections.property("cq.avaliacaoDesempenho.id"), "projectionAvaliacaoDesempenhoId");
 		p.add(Projections.property("cq.colaborador.id"), "projectionColaboradorId");
 		p.add(Projections.property("cq.avaliador.id"), "projectionAvaliadorId");
@@ -842,6 +844,17 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 
 		Query query = getSession().createQuery(hql);
 		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenhoId);
+		
+		query.executeUpdate();
+	}
+	
+	public void updateAvaliacaoFromColaboradorQuestionarioByAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho) 
+	{
+		String hql = "update ColaboradorQuestionario set avaliacao.id = :avaliacaoId where avaliacaoDesempenho.id = :avaliacaoDesempenhoId"; 
+		
+		Query query = getSession().createQuery(hql);
+		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenho.getId());
+		query.setLong("avaliacaoId", avaliacaoDesempenho.getAvaliacao().getId());
 		
 		query.executeUpdate();
 	}

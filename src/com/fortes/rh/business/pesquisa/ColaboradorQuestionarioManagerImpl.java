@@ -342,6 +342,10 @@ public class ColaboradorQuestionarioManagerImpl extends GenericManagerImpl<Colab
 		
 		return novosAssociados;
 	}
+	
+	public void updateAvaliacaoFromColaboradorQuestionarioByAvaliacaoDesempenho(AvaliacaoDesempenho avaliacaoDesempenho)  {
+		getDao().updateAvaliacaoFromColaboradorQuestionarioByAvaliacaoDesempenho(avaliacaoDesempenho);
+	}
 
 	public void validaAssociacao(Collection<Colaborador> avaliados, Collection<Colaborador> avaliadores, boolean permiteAutoAvaliacao) throws Exception 
 	{
