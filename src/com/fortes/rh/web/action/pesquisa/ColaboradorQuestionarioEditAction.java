@@ -145,7 +145,7 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 	private Solicitacao solicitacao;
 	private Map<String, Object> parametros;
 	private boolean ordenarPorAspecto;
-	private boolean exibeResultadoAutoavaliacao;
+	private boolean exibeResultadoAutoAvaliacao;
 	private Boolean compartilharColaboradores;
 	private boolean respostaColaborador;
 	private boolean autoAvaliacao;
@@ -376,10 +376,10 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 				colaboradorQuestionario.setRespondidaEm(hoje); 
 			
 			Collection<ColaboradorResposta> colaboradorRespostasDasPerguntas = new ArrayList<ColaboradorResposta>();
-			if(colaboradorQuestionario.getAvaliacao()!=null){
-				exibeResultadoAutoavaliacao();//usado em avaliacaodesempenhoQuestionariolist.action
+			exibeResultadoAutoAvaliacao();//usado em avaliacaodesempenhoQuestionariolist.action
+				
+			if(colaboradorQuestionario.getAvaliacao()!=null)
 				colaboradorRespostasDasPerguntas = perguntaManager.getColaboradorRespostasDasPerguntas(perguntas);	
-			}
 
 			colaboradorRespostaManager.update(colaboradorRespostasDasPerguntas, colaboradorQuestionario, getUsuarioLogado().getId(), getEmpresaSistema().getId(), niveisCompetenciaFaixaSalariais);
 			
@@ -500,12 +500,12 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		return Action.SUCCESS;
 	}
 	
-	private void exibeResultadoAutoavaliacao() 
+	private void exibeResultadoAutoAvaliacao() 
 	{
-		this.exibeResultadoAutoavaliacao =  colaboradorQuestionario.getAvaliacaoDesempenho().isPermiteAutoAvaliacao() 
+		this.exibeResultadoAutoAvaliacao =  colaboradorQuestionario.getAvaliacaoDesempenho().isPermiteAutoAvaliacao() 
 		&& colaboradorQuestionario.getColaborador().getId().equals(SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession()).getId()) 
 		&& colaboradorQuestionario.getAvaliador().getId().equals(colaboradorQuestionario.getColaborador().getId()) 
-		&& colaboradorQuestionario.getAvaliacao().isExibeResultadoAutoavaliacao();
+		&& colaboradorQuestionario.getAvaliacaoDesempenho().isExibeResultadoAutoAvaliacao();
 	}
 	
 	public String prepareInsertAvaliacaoExperiencia()
@@ -993,12 +993,12 @@ public class ColaboradorQuestionarioEditAction extends MyActionSupportEdit
 		this.empresaId = empresaId;
 	}
 
-	public boolean isExibeResultadoAutoavaliacao() {
-		return exibeResultadoAutoavaliacao;
+	public boolean isExibeResultadoAutoAvaliacao() {
+		return exibeResultadoAutoAvaliacao;
 	}
 
-	public void setExibeResultadoAutoavaliacao(boolean exibeResultadoAutoavaliacao) {
-		this.exibeResultadoAutoavaliacao = exibeResultadoAutoavaliacao;
+	public void setExibeResultadoAutoAvaliacao(boolean exibeResultadoAutoAvaliacao) {
+		this.exibeResultadoAutoAvaliacao = exibeResultadoAutoAvaliacao;
 	}
 
 	public boolean isRespostaColaborador() {

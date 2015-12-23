@@ -389,7 +389,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		p.add(Projections.property("avaliacao.id"), "projectionAvaliacaoId");
 		p.add(Projections.property("avaliacao.titulo"), "projectionAvaliacaoTitulo");
 		p.add(Projections.property("avaliacao.cabecalho"), "projectionAvaliacaoCabecalho");
-		p.add(Projections.property("avaliacao.exibeResultadoAutoavaliacao"), "projectionAvaliacaoExibeResultadoAutoavaliacao");
+		p.add(Projections.property("avaliacaoDesempenho.exibeResultadoAutoAvaliacao"), "projectionAvaliacaoDesempenhoExibeResultadoAutoAvaliacao");
 		p.add(Projections.property("avaliacao.avaliarCompetenciasCargo"), "projectionAvaliacaoAvaliarCompetenciasCargo");
 		p.add(Projections.property("avaliacao.respostasCompactas"), "projectionAvaliacaoRespostasCompactas");
 		p.add(Projections.property("avaliacaoDesempenho.id"), "projectionAvaliacaoDesempenhoId");

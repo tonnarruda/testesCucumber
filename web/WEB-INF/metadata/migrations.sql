@@ -272,6 +272,7 @@ alter sequence papel_sequence restart with 653;--.go
 -----
 
 ------21/12/2015
+ALTER TABLE avaliacaodesempenho ADD COLUMN exiberesultadoautoavaliacao boolean;--.go
 ALTER TABLE avaliacaodesempenho ADD COLUMN empresa_id bigint;--.go
 ALTER TABLE avaliacaodesempenho ADD CONSTRAINT avaliacaodesempenho_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);--.go
 
@@ -279,9 +280,9 @@ CREATE FUNCTION insere_empresa_em_avaliacaodesempenho() RETURNS integer AS $$
 DECLARE
     mv RECORD;
 BEGIN
-    FOR mv IN select id, empresa_id from avaliacao
+    FOR mv IN select id, empresa_id, exiberesultadoautoavaliacao from avaliacao  where exiberesultadoautoavaliacao
 	LOOP
-		update avaliacaodesempenho set empresa_id = mv.empresa_id where avaliacao_id = mv.id;  	
+		update avaliacaodesempenho set empresa_id = mv.empresa_id, exiberesultadoautoavaliacao = mv.exiberesultadoautoavaliacao where avaliacao_id = mv.id;  	
 	END LOOP;
     RETURN 1;
 END;

@@ -35,6 +35,7 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
     private boolean permiteAutoAvaliacao;
     private boolean liberada;
     private boolean exibirPerformanceProfissional;
+	private boolean exibeResultadoAutoAvaliacao;
 	
     @ManyToOne
 	private Empresa empresa;
@@ -178,5 +179,13 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
 	private void inicializaEmpresa() {
 		if(this.empresa == null)
 			this.empresa = new Empresa();
+	}
+
+	public boolean isExibeResultadoAutoAvaliacao() {
+		return exibeResultadoAutoAvaliacao;
+	}
+
+	public void setExibeResultadoAutoAvaliacao(boolean exibeResultadoAutoAvaliacao) {
+		this.exibeResultadoAutoAvaliacao = exibeResultadoAutoAvaliacao;
 	}
 }

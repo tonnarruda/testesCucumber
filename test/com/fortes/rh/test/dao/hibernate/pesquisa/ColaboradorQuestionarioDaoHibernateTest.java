@@ -532,7 +532,6 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		questionarioDao.save(questionario);
 
 		Avaliacao avaliacao = AvaliacaoFactory.getEntity();
-		avaliacao.setExibeResultadoAutoavaliacao(true);
 		avaliacaoDao.save(avaliacao);
 		
 		ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity();

@@ -65,10 +65,6 @@
 
 			<@ww.textarea label="Observação" name="avaliacao.cabecalho"/>
 
-			<#if avaliacao.tipoModeloAvaliacao != 'S' && avaliacao.tipoModeloAvaliacao != 'L'>
-				<@ww.checkbox label="Exibir resultado ao colaborador após autoavaliação" id="exibeResultadoAutoavaliacao" name="avaliacao.exibeResultadoAutoavaliacao" labelPosition="left"/>
-			</#if>
-			
 			<#if avaliacao.tipoModeloAvaliacao == 'S'>
 				<@ww.textfield label="Percentual mínimo para aprovação" name="avaliacao.percentualAprovacao" id="percentualAprovacao" cssStyle="width:40px; text-align:right;" maxLength="5" onkeypress="return somenteNumeros(event,',');"/>
 			</#if>

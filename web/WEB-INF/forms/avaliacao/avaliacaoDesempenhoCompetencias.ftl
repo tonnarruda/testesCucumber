@@ -37,7 +37,6 @@
 		<script type="text/javascript">
 			var permiteAutoAvaliacao = ${avaliacaoDesempenho.permiteAutoAvaliacao.toString()};
 			var avaliacaoDesempenhoId = ${avaliacaoDesempenho.id};
-			var avaliacaoId = ${avaliacaoDesempenho.avaliacao.id};
 			var avaliacaoLiberada = ${(avaliacaoDesempenho.liberada || !editarCompetencias)?string};
 			
 			$(function(){
