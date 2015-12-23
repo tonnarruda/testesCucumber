@@ -301,9 +301,12 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		action.setTemAvaliacoesRespondidas(false);
 		
+		Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
+		colaboradorQuestionarios.add(new ColaboradorQuestionario());
+		
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
 		avaliacaoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Avaliacao>()));
-		colaboradorQuestionarioManager.expects(once()).method("verifyTemParticipantesAssociados").with(eq(2L)).will(returnValue(true));
+		colaboradorQuestionarioManager.expects(once()).method("findRespondidasByAvaliacaoDesempenho").with(eq(2L)).will(returnValue(colaboradorQuestionarios));
 		
 		assertEquals("success",action.prepareUpdate());
 		assertTrue(action.isTemAvaliacoesRespondidas());

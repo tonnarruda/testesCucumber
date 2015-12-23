@@ -85,7 +85,9 @@
 		}
 	</script>
 	
-	<#assign respostasCompactas=colaboradorQuestionario.avaliacao.respostasCompactas />
+	<#if colaboradorQuestionario?exists && colaboradorQuestionario.id?exists >
+		<#assign respostasCompactas=colaboradorQuestionario.avaliacao.respostasCompactas />
+	</#if>
 </head>
 <body>
 	<@ww.actionerror />
