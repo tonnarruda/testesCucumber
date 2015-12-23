@@ -150,7 +150,7 @@
 		
 		function calcularPerformance()
 		{
-			<#if mostrarPerformanceAvalDesempenho>
+			<#if mostrarPerformanceAvalDesempenho && colaboradorQuestionario.avaliacaoDesempenho.exibeResultadoAutoAvaliacao>
 				var pontuacaoMaximaTotal = ${pontuacaoMaximaQuestionario};
 				var notaCompetencias = 0; 
 				<#if !colaboradorQuestionario.avaliacao.id?exists || colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
@@ -221,7 +221,7 @@
 	<#if colaboradorQuestionario.avaliacao?exists && colaboradorQuestionario.avaliacao.cabecalho?exists>
 		<pre><h4>${colaboradorQuestionario.avaliacao.cabecalho}</h4></pre>
 	</#if>
-	<#if mostrarPerformanceAvalDesempenho && colaboradorQuestionario.avaliacao.id?exists>
+	<#if mostrarPerformanceAvalDesempenho && colaboradorQuestionario.avaliacao.id?exists && colaboradorQuestionario.avaliacaoDesempenho.exibeResultadoAutoAvaliacao >
 		<pre id="performanceQuestionario" style="text-align:right; font-weight: bold;">Performance Questionário: - </pre>
 	</#if>
 	
@@ -236,7 +236,7 @@
 			<@ww.hidden name="colaboradorQuestionario.avaliacaoDesempenho.id" />
 			<@ww.hidden name="colaboradorQuestionario.avaliador.id" />
 			<@ww.hidden name="colaboradorQuestionario.avaliacaoDesempenho.permiteAutoAvaliacao"/>
-			<@ww.hidden name="colaboradorQuestionario.avaliacao.exibeResultadoAutoavaliacao"/>
+			<@ww.hidden name="colaboradorQuestionario.avaliacaoDesempenho.exibeResultadoAutoAvaliacao"/>
 			<@ww.hidden name="colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo"/>
 			<@ww.hidden name="colaboradorQuestionario.configuracaoNivelCompetenciaColaborador.id"/>
 			<@ww.hidden name="colaboradorQuestionario.pesoAvaliador"/>
@@ -259,7 +259,7 @@
 					</div>
 		
 					<br /><br />
-					<#if mostrarPerformanceAvalDesempenho>
+					<#if mostrarPerformanceAvalDesempenho && colaboradorQuestionario.avaliacaoDesempenho.exibeResultadoAutoAvaliacao>
 						<pre id="performanceCompetencias" style="text-align:right; font-weight: bold;">Performance Questionário: - </pre>
 					</#if>
 					<table id="configuracaoNivelCompetencia" class="dados">
@@ -270,7 +270,7 @@
 									<th>${nivel.descricao}</th>
 								</#list>
 								
-								<#if mostrarPerformanceAvalDesempenho>
+								<#if mostrarPerformanceAvalDesempenho && colaboradorQuestionario.avaliacaoDesempenho.exibeResultadoAutoAvaliacao>
 									<th>Performance(%)</th>
 								</#if>
 							</tr>
@@ -320,7 +320,7 @@
 										</td>
 									</#list>
 									
-									<#if mostrarPerformanceAvalDesempenho>
+									<#if mostrarPerformanceAvalDesempenho && colaboradorQuestionario.avaliacaoDesempenho.exibeResultadoAutoAvaliacao>
 										<td style="width: 100px; text-align: center;" class="${class}">
 											<label class="performance">-</label>
 										</td>

@@ -30,7 +30,7 @@
 		</#if>
 	
 		$(function() {
-			<#if exibeResultadoAutoavaliacao && colaboradorQuestionario?exists && msgResultadoAvaliacao?exists>
+			<#if exibeResultadoAutoAvaliacao && colaboradorQuestionario?exists && msgResultadoAvaliacao?exists>
 				$("<div>${msgResultadoAvaliacao}</div>").dialog({ title: '${colaboradorQuestionario.avaliacao.titulo}', width: 400 });
 			</#if>
 		});

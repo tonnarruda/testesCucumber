@@ -118,7 +118,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	private Collection<ColaboradorQuestionario> colaboradorQuestionarios = new ArrayList<ColaboradorQuestionario>();
 	private Collection<ResultadoAvaliacaoDesempenho> resultados = new ArrayList<ResultadoAvaliacaoDesempenho>();
 	private Boolean compartilharColaboradores;
-	private boolean exibeResultadoAutoavaliacao;
+	private boolean exibeResultadoAutoAvaliacao;
 	private String msgResultadoAvaliacao;
 	private Long avaliacaoId;
 	
@@ -556,7 +556,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		if(avaliacaoDesempenho != null)
 			colaboradorQuestionarios = colaboradorQuestionarioManager.findAvaliadosByAvaliador(avaliacaoDesempenho.getId(), avaliador.getId(), respondida, false, true, false);
 		
-		if(exibeResultadoAutoavaliacao)
+		if(exibeResultadoAutoAvaliacao)
 		{
 			colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionarioId);
 			this.msgResultadoAvaliacao = colaboradorQuestionario.getAvaliacao().getCabecalho().replace("\r\n","<br>") +
@@ -804,12 +804,12 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		this.msgResultadoAvaliacao = msgResultadoAvaliacao;
 	}
 
-	public boolean isExibeResultadoAutoavaliacao() {
-		return exibeResultadoAutoavaliacao;
+	public boolean isExibeResultadoAutoAvaliacao() {
+		return exibeResultadoAutoAvaliacao;
 	}
 
-	public void setExibeResultadoAutoavaliacao(boolean exibeResultadoAutoavaliacao) {
-		this.exibeResultadoAutoavaliacao = exibeResultadoAutoavaliacao;
+	public void setExibeResultadoAutoAvaliacao(boolean exibeResultadoAutoAvaliacao) {
+		this.exibeResultadoAutoAvaliacao = exibeResultadoAutoAvaliacao;
 	}
 
 	public ColaboradorQuestionario getColaboradorQuestionario() {
