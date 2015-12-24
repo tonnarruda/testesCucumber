@@ -136,6 +136,9 @@ public class ResultadoAvaliacaoDesempenho extends ResultadoQuestionario
 	}
 
 	public String getProdutividadeFormatada() {
-		return MathUtil.round(produtividade, 2) + "%";
+		if ( produtividade != null )
+			return MathUtil.round(produtividade, 2) + "%";
+		else
+			return "";
 	}
 }

@@ -64,7 +64,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	@Transient
 	private Colaborador colaborador;
 	@Transient
-	private Double avaliadorPeso;
+	private Integer avaliadorPeso;
 	@Transient
 	private Long avaliadorId;
 	
@@ -206,7 +206,7 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 	}
 	
 	//findCompetenciasAndPesos
-	public ConfiguracaoNivelCompetencia(Long competenciaId, Character tipoCompetencia, Integer ordem, Long avaliadorId, Double avaliadorPeso, String nivelDescricao, Long cncfId, Long nivelcompetenciaHistoricoId)
+	public ConfiguracaoNivelCompetencia(Long competenciaId, Character tipoCompetencia, Integer ordem, Long avaliadorId, Integer avaliadorPeso, String nivelDescricao, Long cncfId, Long nivelcompetenciaHistoricoId)
 	{
 		this.competenciaId = competenciaId;
 		this.tipoCompetencia = tipoCompetencia;
@@ -567,11 +567,11 @@ public class ConfiguracaoNivelCompetencia extends AbstractModel implements Seria
 		this.avaliadorId = avaliadorId;
 	}
 
-	public Double getAvaliadorPeso() {
+	public Integer getAvaliadorPeso() {
 		return avaliadorPeso;
 	}
 
-	public void setAvaliadorPeso(Double avaliadorPeso) {
+	public void setAvaliadorPeso(Integer avaliadorPeso) {
 		this.avaliadorPeso = avaliadorPeso;
 	}
 }
