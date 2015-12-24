@@ -28,7 +28,7 @@ public interface FaixaSalarialHistoricoManager extends GenericManager<FaixaSalar
 	boolean verifyData(Long faixaSalarialHistoricoId, Date data, Long faixaSalarialId);
 	Double findUltimoHistoricoFaixaSalarial(Long faixaSalarialId);
 	FaixaSalarialHistorico findByHistoricoFaixaSalarial(Long faixaSalarialId);
-	Collection<FaixaSalarialHistorico> findByPeriodo(Long faixaSalarialId, Date data, Date dataProxima);
+	Collection<FaixaSalarialHistorico> findByPeriodo(Long faixaSalarialId, Date data, Date dataProxima, Date dataDesligamento);
 	Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(String[] grupoOcupacionalsCheck, String[] cargosCheck, String[] areasCheck, Date data, boolean ordemDataDescendente, Long empresaId, Boolean cargoAtivo) throws Exception;
 	boolean verifyHistoricoIndiceNaData(Date data, Long indiceId);
 	boolean setStatus(Long faixaSalarialHistoricoId, boolean aprovado);

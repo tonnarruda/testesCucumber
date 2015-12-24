@@ -358,7 +358,7 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		assertEquals(1, retorno.size());
 	}
 
-	public void testFindByPeriodo()
+	public void testFindByPeriodoSemDesligamento()
 	{
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
 		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
@@ -366,24 +366,76 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		Indice indice = IndiceFactory.getEntity();
 		indice = indiceDao.save(indice);
 
-		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity();
-		faixaSalarialHistorico1.setFaixaSalarial(faixaSalarial);
-		faixaSalarialHistorico1.setData(DateUtil.criarDataMesAno(01, 01, 2100));
+		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(01, 01, 2015), null);
 		faixaSalarialHistorico1 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico1);
 
-		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity();
-		faixaSalarialHistorico2.setFaixaSalarial(faixaSalarial);
-		faixaSalarialHistorico2.setData(DateUtil.criarDataMesAno(01, 02, 2100));
+		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(01, 02, 2015), null);
 		faixaSalarialHistorico2 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico2);
 
-		FaixaSalarialHistorico faixaSalarialHistorico3 = FaixaSalarialHistoricoFactory.getEntity();
-		faixaSalarialHistorico3.setFaixaSalarial(faixaSalarial);
-		faixaSalarialHistorico3.setData(DateUtil.criarDataMesAno(01, 03, 2100));
+		FaixaSalarialHistorico faixaSalarialHistorico3 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(01, 03, 2015), null);
 		faixaSalarialHistorico3 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico3);
 
-		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByPeriodo(faixaSalarial.getId(), DateUtil.criarDataMesAno(01, 02, 2100));
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByPeriodo(faixaSalarial.getId(), DateUtil.criarDataMesAno(01, 02, 2015), null);
 
 		assertEquals(2, retorno.size());
+	}
+	
+	public void testFindByPeriodoComDesligamentoNoDiaDoReajuste()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+		
+		Indice indice = IndiceFactory.getEntity();
+		indice = indiceDao.save(indice);
+		
+		Date data_01_03_2015 = DateUtil.criarDataMesAno(01, 03, 2015);
+		Date dataDesligamentoDoColaborador = data_01_03_2015;
+		Date dataProximo = data_01_03_2015;
+		
+		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(01, 01, 2015), null);
+		faixaSalarialHistorico1 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico1);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(01, 02, 2015), null);
+		faixaSalarialHistorico2 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico2);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico3 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(10, 02, 2015), null);
+		faixaSalarialHistorico3 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico3);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico4 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, data_01_03_2015, null);
+		faixaSalarialHistorico4 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico4);
+		
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByPeriodo(faixaSalarial.getId(), dataProximo, dataDesligamentoDoColaborador);
+		
+		assertEquals(3, retorno.size());
+	}
+	
+	public void testFindByPeriodoComDesligamentoAposDiaDoReajuste()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+		
+		Indice indice = IndiceFactory.getEntity();
+		indice = indiceDao.save(indice);
+		
+		Date data_01_03_2015 = DateUtil.criarDataMesAno(01, 03, 2015);
+		Date dataProximo = data_01_03_2015;
+		Date dataDesligamentoDoColaborador = DateUtil.criarDataMesAno(02, 03, 2015);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(01, 01, 2015), null);
+		faixaSalarialHistorico1 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico1);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(01, 02, 2015), null);
+		faixaSalarialHistorico2 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico2);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico3 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, data_01_03_2015, null);
+		faixaSalarialHistorico3 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico3);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico4 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(01, 04, 2015), null);
+		faixaSalarialHistorico4 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico4);
+		
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByPeriodo(faixaSalarial.getId(), dataProximo, dataDesligamentoDoColaborador);
+		
+		assertEquals(3, retorno.size());
 	}
 
 	public void testRemoveByFaixas()
@@ -771,40 +823,25 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		cargo.setEmpresa(empresa);
 		cargoDao.save(cargo);
 		
-		FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity();
-		faixa1.setCargo(cargo);
+		FaixaSalarial faixa1 = FaixaSalarialFactory.getEntity("Faixa 1", cargo);
 		faixaSalarialDao.save(faixa1);
 		
-		FaixaSalarial faixa2 = FaixaSalarialFactory.getEntity();
-		faixa2.setCargo(cargo);
+		FaixaSalarial faixa2 = FaixaSalarialFactory.getEntity("Faixa 2", cargo);
 		faixaSalarialDao.save(faixa2);
 		
-		FaixaSalarial faixa3 = FaixaSalarialFactory.getEntity();
-		faixa3.setCargo(cargo);
+		FaixaSalarial faixa3 = FaixaSalarialFactory.getEntity("Faixa 3", cargo);
 		faixaSalarialDao.save(faixa3);
 		
-		FaixaSalarialHistorico historico1 = FaixaSalarialHistoricoFactory.getEntity();
-		historico1.setFaixaSalarial(faixa1);
-		historico1.setData(DateUtil.criarDataMesAno(01, 01, 2010));
-		historico1.setStatus(StatusRetornoAC.CONFIRMADO);
+		FaixaSalarialHistorico historico1 = FaixaSalarialHistoricoFactory.getEntity(faixa1, DateUtil.criarDataMesAno(01, 01, 2010), StatusRetornoAC.CONFIRMADO);
 		faixaSalarialHistoricoDao.save(historico1);
 		
-		FaixaSalarialHistorico historico2 = FaixaSalarialHistoricoFactory.getEntity();
-		historico2.setFaixaSalarial(faixa2);
-		historico2.setStatus(StatusRetornoAC.CONFIRMADO);
-		historico2.setData(DateUtil.criarDataMesAno(01, 01, 2010));
+		FaixaSalarialHistorico historico2 = FaixaSalarialHistoricoFactory.getEntity(faixa2, DateUtil.criarDataMesAno(01, 01, 2010), StatusRetornoAC.CONFIRMADO);
 		faixaSalarialHistoricoDao.save(historico2);
 		
-		FaixaSalarialHistorico historico3 = FaixaSalarialHistoricoFactory.getEntity();
-		historico3.setFaixaSalarial(faixa2);
-		historico3.setStatus(StatusRetornoAC.AGUARDANDO);
-		historico3.setData(DateUtil.criarDataMesAno(1,1, 2011));
+		FaixaSalarialHistorico historico3 = FaixaSalarialHistoricoFactory.getEntity(faixa2, DateUtil.criarDataMesAno(01, 01, 2011), StatusRetornoAC.AGUARDANDO);
 		faixaSalarialHistoricoDao.save(historico3);
 		
-		FaixaSalarialHistorico historico4 = FaixaSalarialHistoricoFactory.getEntity();
-		historico4.setFaixaSalarial(faixa3);
-		historico4.setStatus(StatusRetornoAC.AGUARDANDO);
-		historico4.setData(DateUtil.criarDataMesAno(1,1, 2011));
+		FaixaSalarialHistorico historico4 = FaixaSalarialHistoricoFactory.getEntity(faixa3, DateUtil.criarDataMesAno(01, 01, 2011), StatusRetornoAC.AGUARDANDO);
 		faixaSalarialHistoricoDao.save(historico4);
 		
 		assertEquals(2, faixaSalarialHistoricoDao.findByEmpresaIdAndStatus(empresa.getId(), StatusRetornoAC.AGUARDANDO).size());

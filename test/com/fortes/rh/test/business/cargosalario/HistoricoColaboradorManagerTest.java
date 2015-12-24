@@ -1139,7 +1139,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		historicoColaboradores.add(historicoColaborador1);
 
 		historicoColaboradorDao.expects(once()).method("findPromocaoByColaborador").with(ANYTHING).will(returnValue(historicoColaboradores));
-		indiceHistoricoManager.expects(once()).method("findByPeriodo").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(indiceHistoricos));
+		indiceHistoricoManager.expects(once()).method("findByPeriodo").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(indiceHistoricos));
 		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(AreaOrganizacional.TODAS), ANYTHING, eq(new long[]{empresa.getId()})).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));
@@ -1161,36 +1161,14 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		Indice indice = IndiceFactory.getEntity(1L);
 		indice.setIndiceHistoricoAtual(indiceHistorico);
 
-		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(1L);
-		faixaSalarialHistorico.setObsReajuste("obsReajuste");
-		faixaSalarialHistorico.setIndice(indice);
-		faixaSalarialHistorico.setStatus(1);
-		faixaSalarialHistorico.setData(DateUtil.criarDataMesAno(01, 01, 2006));
-
-		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity(1L);
-		faixaSalarialHistorico2.setStatus(1);
-		faixaSalarialHistorico2.setData(DateUtil.criarDataMesAno(01, 01, 2006));
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(1L, indice, StatusRetornoAC.CONFIRMADO, DateUtil.criarDataMesAno(01, 01, 2006));
+		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity(2L, null, StatusRetornoAC.CONFIRMADO, DateUtil.criarDataMesAno(01, 01, 2006));
 
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 		faixaSalarial.setFaixaSalarialHistoricoAtual(faixaSalarialHistorico);
 
-		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(1L);
-		historicoColaborador1.setColaborador(colaborador);
-		historicoColaborador1.setData(DateUtil.criarDataMesAno(01, 01, 2006));
-		historicoColaborador1.setTipoSalario(TipoAplicacaoIndice.CARGO);
-		historicoColaborador1.setAreaOrganizacional(areaOrganizacional);
-		historicoColaborador1.setIndice(indice);
-		historicoColaborador1.setFaixaSalarial(faixaSalarial);
-		historicoColaborador1.setSalario(500.0);
-
-		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(1L);
-		historicoColaborador2.setColaborador(colaborador);
-		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2006));
-		historicoColaborador2.setTipoSalario(TipoAplicacaoIndice.CARGO);
-		historicoColaborador2.setAreaOrganizacional(areaOrganizacional);
-		historicoColaborador2.setIndice(indice);
-		historicoColaborador2.setFaixaSalarial(faixaSalarial);
-		historicoColaborador2.setSalario(500.0);
+		HistoricoColaborador historicoColaborador1 = HistoricoColaboradorFactory.getEntity(1L, colaborador, DateUtil.criarDataMesAno(01, 01, 2006), TipoAplicacaoIndice.CARGO, areaOrganizacional, indice, faixaSalarial, 500.0);
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity(2L, colaborador, DateUtil.criarDataMesAno(01, 01, 2006), TipoAplicacaoIndice.CARGO, areaOrganizacional, indice, faixaSalarial, 600.0);
 
 		Collection<HistoricoColaborador> historicoColaboradores = new ArrayList<HistoricoColaborador>();
 		historicoColaboradores.add(historicoColaborador1);
@@ -1201,7 +1179,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		faixaHistoricos.add(faixaSalarialHistorico2);
 
 		historicoColaboradorDao.expects(once()).method("findPromocaoByColaborador").with(ANYTHING).will(returnValue(historicoColaboradores));
-		faixaSalarialHistoricoManager.expects(atLeastOnce()).method("findByPeriodo").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaHistoricos));
+		faixaSalarialHistoricoManager.expects(atLeastOnce()).method("findByPeriodo").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaHistoricos));
 		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));

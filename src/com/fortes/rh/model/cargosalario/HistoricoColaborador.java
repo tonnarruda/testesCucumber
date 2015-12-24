@@ -106,7 +106,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 
 	public HistoricoColaborador(Long id, Double salario, Date data, String gfip, String motivo, Double quantidadeIndice, int tipoSalario, int status,
 			Long empresaId, Long colaboradorId, String colaboradorNomeComercial, String colaboradorNome, String colaboradorCodigoAC, boolean colaboradorNaoIntegraAc,
-			Long indiceId, String indiceNome, Double indiceHistoricoValor, Long areaId, String areaNome, Long ambienteId,
+			Date colaboradorDataDesligamento, Long indiceId, String indiceNome, Double indiceHistoricoValor, Long areaId, String areaNome, Long ambienteId,
 			String ambienteNome, Long funcaoId, String funcaoNome, Long faixaSalarialId, String faixaSalarialNome,
 			Long cargoId, String cargoNomeMercado, String cargoNome, Long grupoId, String grupoNome, Long estabelecimentoId, String estabelecimentoNome,
 			Double faixaHistoricoValor, Integer faixaHistoricoTipo, Double faixaHistoricoQuantidade, Double faixaHistoricoIndiceValor,
@@ -127,6 +127,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		setColaboradorNome(colaboradorNome);
 		setColaboradorCodigoAC(colaboradorCodigoAC);
 		setProjectionColaboradorNaoIntegraAc(colaboradorNaoIntegraAc);
+		setColaboradorDataDesligamento(colaboradorDataDesligamento);
 		setProjectionIndiceId(indiceId);
 		setProjectionIndiceNome(indiceNome);
 		setProjectionIndiceHistoricoValor(indiceHistoricoValor);
@@ -541,6 +542,12 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 	{
 		inicializaColaborador();
 		colaborador.setDesligado(colaboradorDesligado);
+	}
+	
+	public void setColaboradorDataDesligamento(Date dataDesligamento)
+	{
+		inicializaColaborador();
+		colaborador.setDataDesligamento(dataDesligamento);
 	}
 
 	private void inicializaColaborador() 

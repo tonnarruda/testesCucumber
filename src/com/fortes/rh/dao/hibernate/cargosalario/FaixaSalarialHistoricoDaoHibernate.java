@@ -261,7 +261,7 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		return criteria.list();
 	}
 
-	public Collection<FaixaSalarialHistorico> findByPeriodo(Long faixaSalarialId, Date dataProxima)
+	public Collection<FaixaSalarialHistorico> findByPeriodo(Long faixaSalarialId, Date dataProxima, Date dataDesligamento)
 	{
 		StringBuilder hql = new StringBuilder();
 
@@ -273,14 +273,17 @@ public class FaixaSalarialHistoricoDaoHibernate extends GenericDaoHibernate<Faix
 		hql.append("                                                from IndiceHistorico ih2 ");
 		hql.append("                                                where ih2.indice.id = i.id ");
 		hql.append("                                                      and ih2.data <= fsh.data) ");
-
 		hql.append("where fs.id = :faixaId ");
 		hql.append("and fsh.data <= :proxima ");
+		if(dataDesligamento != null)
+			hql.append("and fsh.data < :dataDesligamento ");
 		hql.append("order by fsh.data ");
 
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("faixaId", faixaSalarialId);
 		query.setDate("proxima", dataProxima);
+		if(dataDesligamento != null)
+			query.setDate("dataDesligamento", dataDesligamento);
 
 		return query.list();
 	}

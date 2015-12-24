@@ -104,7 +104,7 @@ public class IndiceHistoricoDaoHibernate extends GenericDaoHibernate<IndiceHisto
 		}
 	}
 
-	public Collection<IndiceHistorico> findByPeriodo(Long indiceId, Date data, Date dataProximo)
+	public Collection<IndiceHistorico> findByPeriodo(Long indiceId, Date data, Date dataProximo, Date dataDesligamento)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "ih");
 
@@ -118,6 +118,9 @@ public class IndiceHistoricoDaoHibernate extends GenericDaoHibernate<IndiceHisto
 		criteria.add(Expression.gt("ih.data", data));
 		criteria.add(Expression.le("ih.data", dataProximo));
 
+		if(dataDesligamento != null)
+			criteria.add(Expression.lt("ih.data", dataDesligamento));
+		
 		criteria.addOrder(Order.asc("ih.data"));
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
 

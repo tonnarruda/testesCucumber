@@ -98,9 +98,9 @@ public class IndiceHistoricoManagerTest extends MockObjectTestCase
 
 	public void testFindByPeriodo()
 	{
-		indiceHistoricoDao.expects(once()).method("findByPeriodo").with(ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
+		indiceHistoricoDao.expects(once()).method("findByPeriodo").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(null));
 
-		Collection<IndiceHistorico> retorno = indiceHistoricoManager.findByPeriodo(1L, null, null);
+		Collection<IndiceHistorico> retorno = indiceHistoricoManager.findByPeriodo(1L, null, null, null);
 
 		assertNull(retorno);
 	}

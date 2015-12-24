@@ -146,7 +146,7 @@ public class HistoricoColaboradorDaoHibernate extends GenericDaoHibernate<Histor
 	private void montaSelectConstrutor(StringBuilder hql)
 	{
 		hql.append("select new HistoricoColaborador(hc.id, hc.salario, hc.data, hc.gfip, hc.motivo, hc.quantidadeIndice, hc.tipoSalario, hc.status, ");
-		hql.append("e.id, co.id, co.nomeComercial, co.nome, co.codigoAC, co.naoIntegraAc, i.id, i.nome, ih.valor, ao.id, ao.nome, a.id, a.nome, f.id, f.nome, fs.id, fs.nome, ");
+		hql.append("e.id, co.id, co.nomeComercial, co.nome, co.codigoAC, co.naoIntegraAc, co.dataDesligamento, i.id, i.nome, ih.valor, ao.id, ao.nome, a.id, a.nome, f.id, f.nome, fs.id, fs.nome, ");
 		hql.append("c.id, c.nomeMercado, c.nome, go.id, go.nome, es.id, es.nome, fsh.valor, fsh.tipo, fsh.quantidade, ifsh.valor, ");
 		hql.append("fs.codigoAC, ao.codigoAC, es.codigoAC, fsh.status ) ");
 	}

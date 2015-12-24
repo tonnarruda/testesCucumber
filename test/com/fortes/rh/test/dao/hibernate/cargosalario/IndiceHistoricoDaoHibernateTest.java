@@ -157,18 +157,74 @@ public class IndiceHistoricoDaoHibernateTest extends GenericDaoHibernateTest<Ind
 		indiceHistoricoDao.findUltimoSalarioIndice(indice.getId());
 	}
 	
-	public void testFindByPeriodo()
+	public void testFindByPeriodoSemDesligamento()
 	{
 		Indice indice = IndiceFactory.getEntity();
 		indice = indiceDao.save(indice);
 		
-		IndiceHistorico indiceHistorico = IndiceHistoricoFactory.getEntity();
-		indiceHistorico.setIndice(indice);
-		indiceHistorico.setData(DateUtil.criarDataMesAno(01, 01, 1999));
-		indiceHistorico.setValor(150.00);
-		indiceHistorico = indiceHistoricoDao.save(indiceHistorico);
+		IndiceHistorico indiceHistorico1 = IndiceHistoricoFactory.getEntity(indice, DateUtil.criarDataMesAno(02, 01, 2015), 150.0);
+		indiceHistorico1 = indiceHistoricoDao.save(indiceHistorico1);
 
-		assertEquals(1, indiceHistoricoDao.findByPeriodo(indice.getId(), DateUtil.criarDataMesAno(01, 01, 1998), DateUtil.criarDataMesAno(01, 01, 2000)).size());
+		IndiceHistorico indiceHistorico2 = IndiceHistoricoFactory.getEntity(indice, DateUtil.criarDataMesAno(02, 02, 2015), 160.0);
+		indiceHistorico2 = indiceHistoricoDao.save(indiceHistorico2);
+		
+		IndiceHistorico indiceHistorico3 = IndiceHistoricoFactory.getEntity(indice, DateUtil.criarDataMesAno(02, 03, 2015), 170.0);
+		indiceHistorico3 = indiceHistoricoDao.save(indiceHistorico3);
+		
+		Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoDao.findByPeriodo(indice.getId(), DateUtil.criarDataMesAno(02, 01, 2015), DateUtil.criarDataMesAno(02, 02, 2015), null);
+		
+		assertEquals(1, indiceHistoricos.size());
+		assertEquals(indiceHistorico2.getData(), ((IndiceHistorico)indiceHistoricos.toArray()[0]).getData());
+	}
+	
+	public void testFindByPeriodoComDesligamentoNoDiaDoReajuste()
+	{
+		Date data_01_03_2015 = DateUtil.criarDataMesAno(01, 03, 2015);
+		Date dataDesligamentoDoColaborador = data_01_03_2015;
+		Date dataProximo = data_01_03_2015;
+		
+		Indice indice = IndiceFactory.getEntity();
+		indice = indiceDao.save(indice);
+		
+		IndiceHistorico indiceHistorico1 = IndiceHistoricoFactory.getEntity(indice, DateUtil.criarDataMesAno(02, 01, 2015), 150.0);
+		indiceHistorico1 = indiceHistoricoDao.save(indiceHistorico1);
+		
+		IndiceHistorico indiceHistorico2 = IndiceHistoricoFactory.getEntity(indice, DateUtil.criarDataMesAno(02, 02, 2015), 160.0);
+		indiceHistorico2 = indiceHistoricoDao.save(indiceHistorico2);
+		
+		IndiceHistorico indiceHistorico3 = IndiceHistoricoFactory.getEntity(indice, data_01_03_2015, 170.0);
+		indiceHistorico3 = indiceHistoricoDao.save(indiceHistorico3);
+		
+		Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoDao.findByPeriodo(indice.getId(), DateUtil.criarDataMesAno(02, 01, 2015), dataProximo, dataDesligamentoDoColaborador);
+		
+		assertEquals("1o histórico igual a data inicial",1, indiceHistoricos.size());
+		assertEquals(indiceHistorico2.getData(), ((IndiceHistorico)indiceHistoricos.toArray()[0]).getData());
+	}
+	
+	public void testFindByPeriodoComDesligamentoAposDiaDoReajuste()
+	{
+		Date data_01_03_2015 = DateUtil.criarDataMesAno(01, 03, 2015);
+		Date dataProximo = data_01_03_2015;
+		Date dataDesligamentoDoColaborador = DateUtil.criarDataMesAno(02, 03, 2015);;
+		
+		Indice indice = IndiceFactory.getEntity();
+		indice = indiceDao.save(indice);
+		
+		IndiceHistorico indiceHistorico1 = IndiceHistoricoFactory.getEntity(indice, DateUtil.criarDataMesAno(02, 01, 2015), 150.0);
+		indiceHistorico1 = indiceHistoricoDao.save(indiceHistorico1);
+		
+		IndiceHistorico indiceHistorico2 = IndiceHistoricoFactory.getEntity(indice, DateUtil.criarDataMesAno(02, 02, 2015), 160.0);
+		indiceHistorico2 = indiceHistoricoDao.save(indiceHistorico2);
+		
+		IndiceHistorico indiceHistorico3 = IndiceHistoricoFactory.getEntity(indice, data_01_03_2015, 170.0);
+		indiceHistorico3 = indiceHistoricoDao.save(indiceHistorico3);
+		
+		Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoDao.findByPeriodo(indice.getId(), DateUtil.criarDataMesAno(01, 01, 2015), dataProximo, dataDesligamentoDoColaborador);
+		
+		assertEquals("1o histórico depois da data inicial",3, indiceHistoricos.size());
+		assertEquals(indiceHistorico1.getData(), ((IndiceHistorico)indiceHistoricos.toArray()[0]).getData());
+		assertEquals(indiceHistorico2.getData(), ((IndiceHistorico)indiceHistoricos.toArray()[1]).getData());
+		assertEquals(indiceHistorico3.getData(), ((IndiceHistorico)indiceHistoricos.toArray()[2]).getData());
 	}
 
 	public void testVerifyDataIndice()

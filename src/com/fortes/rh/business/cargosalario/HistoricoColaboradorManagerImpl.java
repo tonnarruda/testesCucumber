@@ -555,7 +555,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 					Date dataProximo = getDataProximoHistorico(historicoColaboradors, proximo);
 
 					Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoManager.findByPeriodo(historicoColaboradorTmp.getIndice().getId(),
-							historicoColaboradorTmp.getData(), dataProximo);
+							historicoColaboradorTmp.getData(), dataProximo, historicoColaboradorTmp.getColaborador().getDataDesligamento());
 
 					historicosColaboradoresProgressao.add(historicoColaboradorTmp);
 					for (IndiceHistorico indiceHistorico : indiceHistoricos)
@@ -575,7 +575,7 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 					Date dataProximo = getDataProximoHistorico(historicoColaboradors, proximo);
 
 					Collection<FaixaSalarialHistorico> faixaHistoricos = faixaSalarialHistoricoManager.findByPeriodo(historicoColaboradorTmp.getFaixaSalarial()
-							.getId(), historicoColaboradorTmp.getData(), dataProximo);
+							.getId(), historicoColaboradorTmp.getData(), dataProximo, historicoColaboradorTmp.getColaborador().getDataDesligamento());
 
 					historicosColaboradoresProgressao.add(historicoColaboradorTmp);
 					for (FaixaSalarialHistorico faixaHistorico : faixaHistoricos)

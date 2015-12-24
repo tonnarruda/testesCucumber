@@ -31,9 +31,9 @@ public class IndiceHistoricoManagerImpl extends GenericManagerImpl<IndiceHistori
 		return getDao().findUltimoSalarioIndice(indiceId);
 	}
 
-	public Collection<IndiceHistorico> findByPeriodo(Long indiceId, Date data, Date dataProximo)
+	public Collection<IndiceHistorico> findByPeriodo(Long indiceId, Date data, Date dataProximo, Date dataDesligamento)
 	{
-		return getDao().findByPeriodo(indiceId, data, dataProximo);
+		return getDao().findByPeriodo(indiceId, data, dataProximo, dataDesligamento);
 	}
 
 	@SuppressWarnings("deprecation")

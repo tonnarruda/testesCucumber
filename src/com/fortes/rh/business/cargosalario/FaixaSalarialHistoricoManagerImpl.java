@@ -193,9 +193,9 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 	}
 
 	// TODO Método muito complexo, analisar a possiblidade de refatoração.
-	public Collection<FaixaSalarialHistorico> findByPeriodo(Long faixaSalarialId, Date data, Date dataProxima)
+	public Collection<FaixaSalarialHistorico> findByPeriodo(Long faixaSalarialId, Date data, Date dataProxima, Date dataDesligamento)
 	{
-		List<FaixaSalarialHistorico> faixaSalarialHistoricos = (List<FaixaSalarialHistorico>) getDao().findByPeriodo(faixaSalarialId, dataProxima);
+		List<FaixaSalarialHistorico> faixaSalarialHistoricos = (List<FaixaSalarialHistorico>) getDao().findByPeriodo(faixaSalarialId, dataProxima, dataDesligamento);
 		Collection<FaixaSalarialHistorico> retorno = new ArrayList<FaixaSalarialHistorico>();
 
 		int proximo = 1;
@@ -219,7 +219,7 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 					if(dataProxima.before(dataProximo))
 						dataProximo = dataProxima;
 
-					Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoManager.findByPeriodo(faixaSalarialHistoricoTmp.getIndice().getId(), faixaSalarialHistoricoTmp.getData(), dataProximo);
+					Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoManager.findByPeriodo(faixaSalarialHistoricoTmp.getIndice().getId(), faixaSalarialHistoricoTmp.getData(), dataProximo, dataDesligamento);
 
 					retorno.add(faixaSalarialHistoricoTmp);
 					for (IndiceHistorico indiceHistorico: indiceHistoricos)
