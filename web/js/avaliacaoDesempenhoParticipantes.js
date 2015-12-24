@@ -100,7 +100,7 @@ $(function() {
 	});
 	
 	
-	$(".pesoAvaliador").live("keypress", function() {
+	$(".pesoAvaliador").live("keypress", function(event) {
 		return(somenteNumeros(event,''));
 	});
 	$(".pesoAvaliador").live("keyup", function() {
@@ -108,7 +108,7 @@ $(function() {
 			$(this).parents(".portlet").find(".pesoAvaliador").val($(this).val());
 	});
 	
-	$(".pesoAvaliador").live("click", function() { event.stopPropagation(); });
+	$(".pesoAvaliador").live("click", function(event) { event.stopPropagation(); });
 	$(".portlet-header .pesoAvaliador").live("keyup", function(event) { 
 		$(this).parents(".portlet").find(".peso").val($(this).val());
 	});
@@ -180,13 +180,11 @@ $(function() {
 		}
 	});
 	
-	var ultimaProdutividade;
-	$(".notaProdutividade").live("keypress", function() {
-		ultimaProdutividade = $(this).val();
+	$(".notaProdutividade").live("keypress", function(event) {
 		return somenteNumeros(event,',') ;
 	}).live("keyup", function(){
 		if ( parseFloat($(this).val().replace(",", ".") == "" ? 0 : $(this).val().replace(",", ".")) > 10 )
-			$(this).val(ultimaProdutividade);
+			$(this).val(Math.min(Math.max( parseFloat($(this).val().replace(",", ".") == "" ? 0 : $(this).val().replace(",", ".")) , 0), 10));
 	});
 	
 	$(".notaProdutividade").live("click", function(event){ event.stopPropagation(); });
