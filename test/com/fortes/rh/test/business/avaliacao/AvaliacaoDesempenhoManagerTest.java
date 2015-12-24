@@ -293,7 +293,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		cncColab1.setCompetenciaId(competenciaId);
 		cncColab1.setConfiguracaoNivelCompetenciaFaixaSalarial(cncf);
 		cncColab1.setNivelCompetenciaColaborador(nivelCompetenciaColaborador1);
-		cncColab1.setAvaliadorPeso(2.0);
+		cncColab1.setAvaliadorPeso(2);
 		cncColab1.setAvaliadorId(1L);
 		cncColab1.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
 		
@@ -301,7 +301,7 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		cncColab2.setCompetenciaId(competenciaId);
 		cncColab2.setConfiguracaoNivelCompetenciaFaixaSalarial(cncf);
 		cncColab2.setNivelCompetenciaColaborador(nivelCompetenciaColaborador2);
-		cncColab2.setAvaliadorPeso(1.0);
+		cncColab2.setAvaliadorPeso(1);
 		cncColab2.setAvaliadorId(2L);
 		cncColab2.setTipoCompetencia(TipoCompetencia.CONHECIMENTO);
 		

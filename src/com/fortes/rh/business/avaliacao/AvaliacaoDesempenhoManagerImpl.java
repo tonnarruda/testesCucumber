@@ -305,13 +305,15 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		Double ordemMaxima = nivelCompetenciaManager.getOrdemMaximaByNivelCompetenciaHistoricoId(nivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId()); 
 		
 		Competencia competencia;
-		Double pesoAvaliador, pesoPorPotuacaoObtidaAvaliadorAcumulado, somaPesoAvaliadores;
-		Integer pontuacaoObtidaColaborador, pesoPorPotuacaoAutoAvaliacao = 0;
+		Integer pesoAvaliador, pesoPorPotuacaoObtidaAvaliadorAcumulado, somaPesoAvaliadores;
+		Integer pontuacaoObtidaColaborador = 0;
+		Integer pesoPorPotuacaoAutoAvaliacao = 0;
+		Integer qtdCncColaboradorAutoAvaliacao = 0;
 		
 		for (ConfiguracaoNivelCompetencia cncFaixa : configNiveisCompetenciasDaFaixaSalarial) 
 		{
-			pesoPorPotuacaoObtidaAvaliadorAcumulado = 0.0;
-			somaPesoAvaliadores = 0.0;
+			pesoPorPotuacaoObtidaAvaliadorAcumulado = 0;
+			somaPesoAvaliadores = 0;
 			
 			for (ConfiguracaoNivelCompetencia cncColaborador : configNiveisCompetenciasDoColaborador) 
 			{
@@ -323,12 +325,14 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 					pesoPorPotuacaoObtidaAvaliadorAcumulado += pesoAvaliador * pontuacaoObtidaColaborador;
 					somaPesoAvaliadores += pesoAvaliador;
 				
-					if(cncColaborador.getAvaliadorId().equals(avaliadoId))
+					if(cncColaborador.getAvaliadorId().equals(avaliadoId)) {
 						pesoPorPotuacaoAutoAvaliacao += pontuacaoObtidaColaborador;
+						qtdCncColaboradorAutoAvaliacao++;
+					}
 				}
 			}
 			
-			if(somaPesoAvaliadores != 0.0)
+			if(somaPesoAvaliadores != 0)
 			{
 				competencia = new Competencia();
 				competencia.setNome(cncFaixa.getCompetenciaDescricao());
@@ -338,7 +342,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			}
 		}
 		
-		resultadoAvaliacaoDesempenho.setPerformanceAutoAvaliacao(( pesoPorPotuacaoAutoAvaliacao / (ordemMaxima*configNiveisCompetenciasDaFaixaSalarial.size()) ) * 100);
+		resultadoAvaliacaoDesempenho.setPerformanceAutoAvaliacao(( pesoPorPotuacaoAutoAvaliacao / (ordemMaxima*qtdCncColaboradorAutoAvaliacao) ) * 100);
 		resultadoAvaliacaoDesempenho.setCompetencias(competencias);
 
 		Double produtividade = participanteAvaliacaoDesempenhoManager.findByAvalDesempenhoIdAbadColaboradorId(avaliacaoDesempenhoId, avaliadoId, TipoParticipanteAvaliacao.AVALIADO);
