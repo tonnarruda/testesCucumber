@@ -323,7 +323,10 @@ public class AvaliacaoDesempenhoManagerTest extends MockObjectTestCase
 		nivelCompetenciaManager.expects(once()).method("getOrdemMaximaByNivelCompetenciaHistoricoId").withAnyArguments().will(returnValue(5.0));
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findByAvalDesempenhoIdAbadColaboradorId").withAnyArguments().will(returnValue(5.0));
 		
-		ResultadoAvaliacaoDesempenho resultado = avaliacaoDesempenhoManager.getResultadoAvaliacaoDesempenho(1L,2L);
+		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
+		avaliacaoDesempenho.setPermiteAutoAvaliacao(true);
+		
+		ResultadoAvaliacaoDesempenho resultado = avaliacaoDesempenhoManager.getResultadoAvaliacaoDesempenho(avaliacaoDesempenho,2L);
 		assertEquals(1, resultado.getCompetencias().size());
 		assertEquals(100.0, resultado.getPerformanceAutoAvaliacao());
 		assertEquals(50.0, resultado.getProdutividade());
