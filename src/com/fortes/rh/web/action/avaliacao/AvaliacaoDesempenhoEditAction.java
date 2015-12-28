@@ -559,8 +559,11 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 		if(exibeResultadoAutoAvaliacao)
 		{
 			colaboradorQuestionario = colaboradorQuestionarioManager.findByIdProjection(colaboradorQuestionarioId);
-			this.msgResultadoAvaliacao = colaboradorQuestionario.getAvaliacao().getCabecalho().replace("\r\n","<br>") +
-					"<br/><span>Pontuação da Avaliação: " + colaboradorQuestionario.getPerformanceFormatada() + "</span>" +
+			this.msgResultadoAvaliacao = "";
+			if(colaboradorQuestionario.getAvaliacao()!= null && colaboradorQuestionario.getAvaliacao().getId() != null)
+				this.msgResultadoAvaliacao = colaboradorQuestionario.getAvaliacao().getCabecalho().replace("\r\n","<br>");
+					
+			this.msgResultadoAvaliacao = this.msgResultadoAvaliacao + "<br/><span>Pontuação da Avaliação: " + colaboradorQuestionario.getPerformanceFormatada() + "</span>" +
 					"<br/><span>Pontuação da Competência: " + colaboradorQuestionario.getPerformanceNivelCompetenciaFormatada() + "</span>" +
 					"<br/><h4>Pontuação Final: " + colaboradorQuestionario.getPerformanceFinal() + "</h4>";
 		}

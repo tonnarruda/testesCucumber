@@ -492,6 +492,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		criteria.add(Expression.eq("colab.id", colaboradorId));
 		criteria.add(Expression.isNotNull("cq.avaliacaoDesempenho"));
+		criteria.add(Expression.eq("cq.respondida", true));
 		
 		criteria.addOrder(Order.desc("cq.respondidaEm"));
 		criteria.addOrder(Order.asc("colab.nome"));
@@ -1120,22 +1121,26 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 
 	public Collection<ColaboradorQuestionario> findAutoAvaliacao(Long colaboradorId)
 	{
-		Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
+        Criteria criteria = getSession().createCriteria(ColaboradorQuestionario.class, "cq");
 		
-		criteria.createCriteria("cq.avaliacao", "av");
+		criteria.createCriteria("cq.avaliacao", "av", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cq.avaliacaoDesempenho", "avd", Criteria.LEFT_JOIN);
 		
 		ProjectionList p = Projections.projectionList().create();
 		
 		p.add(Projections.property("cq.id"), "id");
 		p.add(Projections.property("cq.respondidaEm"), "respondidaEm");
 		p.add(Projections.property("cq.avaliacaoDesempenho.id"), "avaliacaoDesempenhoId");
-		p.add(Projections.property("av.titulo"), "projectionAvaliacaoTitulo");
-		p.add(Projections.property("av.tipoModeloAvaliacao"), "projectionAvaliacaoTipoModelo");
+		p.add(Projections.sqlProjection("coalesce (avd2_.titulo, av1_.titulo) as titulo", new String []{"titulo"}, new Type[] {Hibernate.STRING}), "projectionAvaliacaoTitulo");
+		p.add(Projections.sqlProjection("coalesce (av1_.tipoModeloAvaliacao, 'D') as tipoModeloAvaliacao", new String []  {"tipoModeloAvaliacao"}, new Type[] {Hibernate.CHARACTER}), "projectionAvaliacaoTipoModelo");
 		criteria.setProjection(p);
 		
 		criteria.add(Expression.eq("cq.colaborador.id", colaboradorId));
 		criteria.add(Expression.eq("cq.avaliador.id", colaboradorId));
-		criteria.add(Expression.in("av.tipoModeloAvaliacao", new Character[] {TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, TipoModeloAvaliacao.DESEMPENHO}));
+		
+		
+		criteria.add(Expression.or(Expression.in("av.tipoModeloAvaliacao", new Character[] {TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA, TipoModeloAvaliacao.DESEMPENHO}),
+				Expression.sql("this_.avaliacaoDesempenho_id is not null and (select avaliacao_id from avaliacaoDesempenho where id = this_.avaliacaoDesempenho_id) is null"))); 
 		
 		criteria.addOrder(Order.desc("cq.respondidaEm"));
 		criteria.addOrder(Order.asc("av.titulo"));
