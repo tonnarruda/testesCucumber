@@ -577,6 +577,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		ParametrosDoSistema parametrosDoSistema = ParametrosDoSistemaFactory.getEntity();
 		parametrosDoSistema.setCompartilharColaboradores(true);
 		
+		manager.expects(once()).method("findById").with(ANYTHING).will(returnValue(new AvaliacaoDesempenho()));
 		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		manager.expects(once()).method("findTituloModeloAvaliacao").withAnyArguments().will(returnValue(new ArrayList<AvaliacaoDesempenho>()));
@@ -597,6 +598,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		
 		ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = new ResultadoAvaliacaoDesempenho();
 		
+		manager.expects(once()).method("findById").with(ANYTHING).will(returnValue(new AvaliacaoDesempenho()));
 		parametrosDoSistemaManager.expects(once()).method("findById").with(ANYTHING).will(returnValue(parametrosDoSistema));
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
 		manager.expects(once()).method("getResultadoAvaliacaoDesempenho").withAnyArguments().will(returnValue(resultadoAvaliacaoDesempenho));
@@ -619,6 +621,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		Collection<Competencia> competencias = new ArrayList<Competencia>();
 		competencias.add(BRL);
 		
+		manager.expects(once()).method("findById").with(ANYTHING).will(returnValue(new AvaliacaoDesempenho()));
 		ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = new ResultadoAvaliacaoDesempenho();
 		resultadoAvaliacaoDesempenho.setCompetencias(competencias);
 		

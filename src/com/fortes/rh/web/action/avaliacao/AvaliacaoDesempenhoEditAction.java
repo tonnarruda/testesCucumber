@@ -331,7 +331,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String analiseDesempenhoCompetenciaColaborador()
 	{
 		try {
-			ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = avaliacaoDesempenhoManager.getResultadoAvaliacaoDesempenho(avaliacaoDesempenho.getId(), avaliado.getId());
+			AvaliacaoDesempenho avaliacao = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
+			ResultadoAvaliacaoDesempenho resultadoAvaliacaoDesempenho = avaliacaoDesempenhoManager.getResultadoAvaliacaoDesempenho(avaliacao, avaliado.getId());
 			
 			if(resultadoAvaliacaoDesempenho.getCompetencias().size() == 0){
 				addActionMessage("Não existem competências para o avalado informado.");
@@ -340,7 +341,7 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			}
 			
 			resultados.add(resultadoAvaliacaoDesempenho);
-			parametros = RelatorioUtil.getParametrosRelatorio("Análise de Desempenho das Competência do Colaborador", getEmpresaSistema(), "");
+			parametros = RelatorioUtil.getParametrosRelatorio("Análise de Desempenho das Competências do Colaborador", getEmpresaSistema(), avaliacao.getTitulo());
 
 		} catch (Exception e) {
 			addActionError("Problema ao gerar relatório.");

@@ -14,6 +14,7 @@ public class ResultadoAvaliacaoDesempenho extends ResultadoQuestionario
 	
 	private Long avaliadoId;
 	private String avaliadoNome;
+	private Boolean avaliacaoPermiteAutoAvaliacao;
 	private String obsAvaliadores;
 	private Double performance;
 	private Double performanceAutoAvaliacao;
@@ -97,10 +98,12 @@ public class ResultadoAvaliacaoDesempenho extends ResultadoQuestionario
 		
 		Collection<Competencia> competenciasPerformance = new ArrayList<Competencia>();
 		
-		Competencia competenciaAutoAvaliacao = new Competencia();
-		competenciaAutoAvaliacao.setNome("Auto Avaliação");
-		competenciaAutoAvaliacao.setPerformance(performanceAutoAvaliacao);
-		competenciasPerformance.add(competenciaAutoAvaliacao);
+		if (avaliacaoPermiteAutoAvaliacao) {
+			Competencia competenciaAutoAvaliacao = new Competencia();
+			competenciaAutoAvaliacao.setNome("Auto Avaliação");
+			competenciaAutoAvaliacao.setPerformance(performanceAutoAvaliacao);
+			competenciasPerformance.add(competenciaAutoAvaliacao);
+		}
 
 		Competencia competencieAvaliacoes = new Competencia();
 		competencieAvaliacoes.setNome("Avaliação");
@@ -140,5 +143,10 @@ public class ResultadoAvaliacaoDesempenho extends ResultadoQuestionario
 			return MathUtil.round(produtividade, 2) + "%";
 		else
 			return "";
+	}
+
+	public void setAvaliacaoPermiteAutoAvaliacao(
+			Boolean avaliacaoPermiteAutoAvaliacao) {
+		this.avaliacaoPermiteAutoAvaliacao = avaliacaoPermiteAutoAvaliacao;
 	}
 }
