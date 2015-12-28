@@ -14,6 +14,9 @@ public abstract class Menu
 {
 	private static Collection<Papel> roles;
 	private static Collection<String> papeisParaEmpresasIntegradas = new ArrayList<String>();
+	private static String CURSOSVENCIDOSAVENCER = "ROLE_REL_CURSOS_VENCIDOS_A_VENCER";
+	private static String CERTIFICADOSVENCIDOSAVENCER = "ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER";
+	private static String AVALIACAOPRATICA = "ROLE_COLABORADOR_AVALIACAO_PRATICA";
 	
 	static{
 		papeisParaEmpresasIntegradas.add("ROLE_REL_RECIBO_PAGAMENTO");
@@ -128,11 +131,11 @@ public abstract class Menu
 					
 					menuFilho.append("<li>");
 					
-					if (verificaPapeisParaEmpresasIntegradas(papel, empresaLogada) && verificaEmpresaComSolicitacaoDesligamento(papel, empresaLogada)) 
+					if (verificaPapeisParaEmpresasIntegradas(papel, empresaLogada) && verificaEmpresaComSolicitacaoDesligamento(papel, empresaLogada) && verificaPapeisParaCursosOuCertificacaoVencidasAVencer(papel, empresaLogada)) 
 					{
 						menuFilho.append("<a href='" + url + "'>" + papel.getNome() + "</a>");
 					}
-	
+					
 					maisFilhos = getFilhos(papel.getId(), contexto, empresaLogada);
 	
 					if (!maisFilhos.equals(""))
@@ -146,6 +149,16 @@ public abstract class Menu
 		}
 
 		return menuFilho.toString();
+	}
+	
+	private static boolean verificaPapeisParaCursosOuCertificacaoVencidasAVencer(Papel papel, Empresa empresa) 
+	{
+		if(papel.getCodigo().equalsIgnoreCase(CERTIFICADOSVENCIDOSAVENCER) || papel.getCodigo().equalsIgnoreCase(CURSOSVENCIDOSAVENCER))
+		{
+			 return (empresa.isControlarVencimentoPorCertificacao() && papel.getCodigo().equalsIgnoreCase(CERTIFICADOSVENCIDOSAVENCER)) 
+					 || (!empresa.isControlarVencimentoPorCertificacao() && papel.getCodigo().equalsIgnoreCase(CURSOSVENCIDOSAVENCER));
+		}else
+			return !papel.getCodigo().equalsIgnoreCase(AVALIACAOPRATICA) || empresa.isControlarVencimentoPorCertificacao();
 	}
 	
 	private static boolean verificaPapeisParaEmpresasIntegradas(Papel papel, Empresa empresa) 

@@ -525,10 +525,14 @@
 				/desenvolvimento/prioridadeTreinamento/*/**=ROLE_CAD_PRIORIDADETREINAMENTO
 				/desenvolvimento/certificacao/matrizTreinamento.action*=ROLE_REL_MATRIZ_TREINAMENTO
 				/desenvolvimento/certificacao/imprimirMatrizTreinamento.action*=ROLE_REL_MATRIZ_TREINAMENTO
+				/desenvolvimento/certificacao/prepareImprimirCertificadosVencidosAVencer*=ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER
+				/desenvolvimento/certificacao/imprimirCertificadosVencidosAVencer*=ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER
+				/desenvolvimento/certificacao/imprimirCertificadosVencidosAVencerXlS*=ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER
 				/desenvolvimento/certificacao/*/**=ROLE_CAD_CERTIFICACAO
 				/desenvolvimento/indicadores/*/**=ROLE_MOV_CURSO,ROLE_TED_PAINEL_IND
 				/desenvolvimento/turma/prepareImprimirCursosVencidosAVencer.action*=ROLE_REL_CURSOS_VENCIDOS_A_VENCER
 				/desenvolvimento/turma/imprimirCursosVencidosAVencer.action*=ROLE_REL_CURSOS_VENCIDOS_A_VENCER
+				/desenvolvimento/colaboradorAvaliacaoPratica/*/**=ROLE_COLABORADOR_AVALIACAO_PRATICA
 				/desenvolvimento/colaboradorAvaliacaoPratica/*/**=ROLE_COLABORADOR_AVALIACAO_PRATICA
 
 				/pesquisa/trafego/*/**=ROLE_ANONYMOUS,ROLE_USER

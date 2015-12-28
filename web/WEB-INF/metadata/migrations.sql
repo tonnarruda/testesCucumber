@@ -3,8 +3,8 @@ alter table certificacao add column periodicidade integer;--.go
 
 
 --Verificar id do papel quando for criar a migrate
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (647,'ROLE_AVALIACAO_PRATICA', 'Avaliação Prática', '/avaliacao/avaliacaoPratica/list.action', 8, true, 366);--.go
-INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 647);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (648,'ROLE_AVALIACAO_PRATICA', 'Avaliação Prática', '/avaliacao/avaliacaoPratica/list.action', 8, true, 366);--.go
+INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 648);--.go
 
 CREATE TABLE avaliacaoPratica (
 id bigint NOT NULL,
@@ -46,12 +46,12 @@ CREATE SEQUENCE colaboradorAvaliacaoPratica_sequence START WITH 1 INCREMENT BY 1
 --OBS: Remover colaboradorAvaliacaoPratica em remover colaborador com dependências 
 
 --Verificar id do papel quando for criar a migrate
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (648,'ROLE_COLABORADOR_AVALIACAO_PRATICA', 'Notas da Avaliação Prática', '/desenvolvimento/colaboradorAvaliacaoPratica/prepare.action', 6, true, 367);--.go
-INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 648);--.go
-
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id, help) VALUES (649,'ROLE_REL_CERTIFICACOES_VENCIDAS_A_VENCER', 'Certificações Vencidas e a Vencer', '/desenvolvimento/turma/prepareImprimirCertificacoesVencidasAVencer.action', 16, true, 368,'Esta permissão estará visível se a configuração realizada no cadastro da empresa na opção "Controlar vencimento da certificação" estiver por: Periodicidade da certificação');--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (649,'ROLE_COLABORADOR_AVALIACAO_PRATICA', 'Notas da Avaliação Prática', '/desenvolvimento/colaboradorAvaliacaoPratica/prepare.action', 6, true, 367);--.go
 INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 649);--.go
-ALTER sequence papel_sequence restart WITH 650;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (650, 'ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER', 'Certificações Vencidas e a Vencer', '/desenvolvimento/certificacao/prepareImprimirCertificadosVencidosAVencer.action', 17, true, 368);--.go 
+INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 650);--.go
+ALTER sequence papel_sequence restart WITH 651;--.go
 
 -------
 ALTER TABLE empresa ADD COLUMN controlarVencimentoCertificacaoPor integer default 1;--.go
@@ -173,11 +173,3 @@ END;
 $$ LANGUAGE plpgsql; --.go 
 
 ---------------------
-
--- 08/12/2015 -- VERIFICAR ID QUANDO CRIAR MIGRATIONS
-
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (700, 'ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER', 'Cerificados Vencidos e a Vencer', '/desenvolvimento/certificacao/prepareImprimirCertificadosVencidosAVencer.action', 17, true, 368);--.go 
-INSERT INTO perfil_papel(perfil_id, papeis_id) VALUES(1, 700);--.go
-ALTER sequence papel_sequence restart WITH 701;--.go
-
-------

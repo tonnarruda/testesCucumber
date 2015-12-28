@@ -23,7 +23,9 @@
 				<@ww.hidden name="certificacao.certificacaoPreRequisito.id" />	
 			</#if>
 	        <@frt.checkListBox label="Cursos" name="cursosCheck" list="cursosCheckList" filtro="true" />
-	        <@frt.checkListBox label="Avaliações Práticas" name="avaliacoesPraticasCheck" list="avaliacoesPraticasCheckList" filtro="true" />
+	        <#if exibirPeriodicidade>
+	        	<@frt.checkListBox label="Avaliações Práticas" name="avaliacoesPraticasCheck" list="avaliacoesPraticasCheckList" filtro="true" />
+	        </#if>
 			
 			<@ww.hidden name="certificacao.id" />
 			<@ww.token/>

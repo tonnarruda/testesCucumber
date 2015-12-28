@@ -26,6 +26,8 @@
 	</style>
 	
 	<script type="text/javascript">
+		
+		var vencimentoCertificacaoPor = ${empresa.controlarVencimentoCertificacaoPor};
 		var solicitaMotivoDesintegracao = true;
 		$(function() {
 			$('#verificaParentescoHelp').qtip({
@@ -136,8 +138,21 @@
 			</@authz.authorize>
 			
 			if(document.getElementById('cnpj').value.length == 8)
-		 		return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH', 'formulaTurnover'), new Array('remetente','respSetorPessoal'));
-			else
+			{
+	 		 	if(vencimentoCertificacaoPor !=  $('#controlaPeriodicidadePor').val())
+	 		 	{
+		 		 	$('.alerta').dialog({
+			             modal: true, 
+			             width: 530,
+			             buttons: {
+			                "Ok": function() {
+			                    return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH', 'formulaTurnover'), new Array('remetente','respSetorPessoal'));
+			                }
+			            }
+			        });
+			    } else
+				    return validaFormulario('form', new Array('nome', 'razao','uf','cidade', 'cnpj', 'remetente', 'respSetorPessoal', 'respRH', 'formulaTurnover'), new Array('remetente','respSetorPessoal'));
+			} else
 				jAlert("Base CNPJ deve ter 8 dígitos.");
 			
 		}
@@ -340,7 +355,8 @@
 		<@ww.hidden name="empresa.codigoAC" id="codigoAC" />
 	<@ww.token/>
 	</@ww.form>
-
+	
+	<div class="alerta" title="Alerta" >Para que a nova confguração de "Controlar vencimento da certificação por" surta efeito, o usuário terá que efetuar o login novamente.</div>
 
 	<div class="buttonGroup">
 		<button onclick="enviaForm();" class="btnGravar" accesskey="${accessKey}">
