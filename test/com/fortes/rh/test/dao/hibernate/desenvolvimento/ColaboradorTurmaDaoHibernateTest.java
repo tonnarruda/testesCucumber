@@ -47,6 +47,7 @@ import com.fortes.rh.model.desenvolvimento.DiaTurma;
 import com.fortes.rh.model.desenvolvimento.PrioridadeTreinamento;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.FiltroAgrupamentoCursoColaborador;
+import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
 import com.fortes.rh.model.dicionario.FiltroSituacaoCurso;
 import com.fortes.rh.model.dicionario.StatusAprovacao;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -2461,6 +2462,7 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		
 		Certificacao certificacao = CertificacaoFactory.getEntity();
 		certificacao.setCertificacaoPreRequisito(certificacaoPreRequisito);
+		certificacao.setPeriodicidade(12);
 		certificacao.setCursos(Arrays.asList(curso));
 		certificacaoDao.save(certificacao);
 		
@@ -2473,10 +2475,11 @@ public class ColaboradorTurmaDaoHibernateTest extends GenericDaoHibernateTest<Co
 		colaboradorCertificacao.setData(new Date());
 		colaboradorCertificacaoDao.save(colaboradorCertificacao);
 		
+		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
+		
 		colaborador = colaboradorTurmaDao.verificaColaboradorCertificado(colaborador.getId(), certificacao.getCertificacaoPreRequisito().getId());
 				
 		assertEquals(colaborador.getId(), colaborador.getId());
-		
 	}
     
     public GenericDao<ColaboradorTurma> getGenericDao()

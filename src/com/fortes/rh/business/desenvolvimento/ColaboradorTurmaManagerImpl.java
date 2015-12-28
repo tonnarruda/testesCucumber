@@ -52,6 +52,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
 	private AvaliacaoCursoManager avaliacaoCursoManager;
 	private CertificacaoManager certificacaoManager;
+	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 
 	public Collection<ColaboradorTurma> filtrarColaboradores(int page, int pagingSize, String[] areasCheck, String[] cargosCheck, String[] estabelecimentosCheck, String[] gruposCheck, String[] colaboradoresCursosCheck, Turma turma, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId) throws ColecaoVaziaException
 	{
@@ -140,13 +141,17 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	}
 
 
-	public void saveUpdate(String[] colaboradorTurma, String[] selectPrioridades) throws Exception
+	public void saveUpdate(String[] colaboradorTurma, String[] selectPrioridades, boolean validarCertificacao) throws Exception
 	{
 		if(colaboradorTurma != null && colaboradorTurma.length > 0)
 		{
 			for(int i=0; i<colaboradorTurma.length; i++)
 			{
-				getDao().updateColaboradorTurmaSetPrioridade(Long.parseLong(colaboradorTurma[i].replace(".", "")), Long.parseLong(selectPrioridades[i].replace(".", "")));
+				Long colaboradorTurmaId = Long.parseLong(colaboradorTurma[i].replace(".", ""));
+				getDao().updateColaboradorTurmaSetPrioridade(colaboradorTurmaId, Long.parseLong(selectPrioridades[i].replace(".", "")));
+				
+				if(validarCertificacao)
+					colaboradorCertificacaoManager.verificaCertificacaoByColaboradorTurmaId(colaboradorTurmaId);
 			}
 		}
 	}
@@ -1157,5 +1162,10 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	
 	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId){
 		return getDao().findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(colaboradorId, certificacaoId, colaboradorCertificacaoId);
+	}
+
+	public void setColaboradorCertificacaoManager(
+			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
+		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	}
 }

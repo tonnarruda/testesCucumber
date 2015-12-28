@@ -1,15 +1,16 @@
 package com.fortes.rh.web.dwr;
 
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
+import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
 public class ListaPresencaDWR
 {
 	private ColaboradorPresencaManager colaboradorPresencaManager;
 	
-	public boolean updateFrequencia(Long diaTurmaId, Long colaboradorTurmaId, boolean presenca) throws Exception
+	public boolean updateFrequencia(Long diaTurmaId, Long colaboradorTurmaId, boolean presenca, int controlarVencimentoCertificacaoPor) throws Exception
 	{
 		try
 		{
-			colaboradorPresencaManager.updateFrequencia(diaTurmaId, colaboradorTurmaId, presenca);
+			colaboradorPresencaManager.updateFrequencia(diaTurmaId, colaboradorTurmaId, presenca, verificaCertificacao(controlarVencimentoCertificacaoPor));
 		}
 		catch (Exception e)
 		{
@@ -20,19 +21,24 @@ public class ListaPresencaDWR
 		return presenca;
 	}
 	
-	public void marcarTodos(Long diaTurmaId, Long turmaId) throws Exception
+	public void marcarTodos(Long diaTurmaId, Long turmaId, int controlarVencimentoCertificacaoPor) throws Exception
 	{
-		colaboradorPresencaManager.marcarTodos(diaTurmaId, turmaId);
+		colaboradorPresencaManager.marcarTodos(diaTurmaId, turmaId, verificaCertificacao(controlarVencimentoCertificacaoPor));
 	}
 	
-	public void desmarcarTodos(Long diaTurmaId) throws Exception
+	public void desmarcarTodos(Long diaTurmaId, int controlarVencimentoCertificacaoPor) throws Exception
 	{
-		colaboradorPresencaManager.removeByDiaTurma(diaTurmaId);
+		colaboradorPresencaManager.removeByDiaTurma(diaTurmaId, verificaCertificacao(controlarVencimentoCertificacaoPor));
 	}
 	
 	public String calculaFrequencia(Long colaboradorTurmaId, Integer qtdDias) throws Exception
 	{
 		return colaboradorPresencaManager.calculaFrequencia(colaboradorTurmaId, qtdDias);
+	}
+
+	private boolean verificaCertificacao(int controlarVencimentoCertificacaoPor) 
+	{
+		return controlarVencimentoCertificacaoPor == FiltroControleVencimentoCertificacao.CERTIFICACAO.getOpcao();
 	}
 	
 	public void setColaboradorPresencaManager(ColaboradorPresencaManager colaboradorPresencaManager)

@@ -37,14 +37,13 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cc.id"), "id");
 		p.add(Projections.property("cc.data"), "data");
-
 		criteria.setProjection(p);
 
-		criteria.add(Expression.eq("cc.colaborador.id",colaboradorId));
+		if(colaboradorId != null)
+			criteria.add(Expression.eq("cc.colaborador.id",colaboradorId));
+		
 		criteria.add(Expression.eq("cc.certificacao.id" , certificacaoId));
-
 		criteria.addOrder(Order.asc("cc.data"));
-
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
 
@@ -113,6 +112,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		return Colaboradores;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Collection<ColaboradorCertificacao> colaboradoresCertificadosByColaboradorTurmaId(Long colaboradorTurmaId) 
 	{
 		StringBuilder sql = new StringBuilder();
@@ -130,8 +130,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		List resultado = query.list();
 		Collection<ColaboradorCertificacao> Colaboradores = new ArrayList<ColaboradorCertificacao>();
 		
-		for (@SuppressWarnings("unchecked")
-		Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
 			Object[] res = it.next();
 			ColaboradorCertificacao colabs = new ColaboradorCertificacao(((BigInteger)res[0]).longValue(), ((BigInteger)res[1]).longValue());
 			Colaboradores.add(colabs);

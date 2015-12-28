@@ -104,7 +104,7 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
     	action.setColaboradoresTurmaId(new Long[]{1L});
     	action.setColaboradorTurmaHidden(new String[]{"1","2"});
 
-    	manager.expects(atLeastOnce()).method("saveUpdate").with(ANYTHING,ANYTHING);
+    	manager.expects(atLeastOnce()).method("saveUpdate").withAnyArguments();
     	assertEquals("success", action.update());
     }
 
@@ -113,11 +113,11 @@ public class ColaboradorTurmaEditActionTest extends MockObjectTestCase
     	action.setColaboradoresTurmaId(new Long[]{1L});
     	action.setColaboradorTurmaHidden(new String[]{"1"});
 
-    	manager.expects(once()).method("saveUpdate").with(ANYTHING,ANYTHING).will(throwException(new Exception()));
+    	manager.expects(once()).method("saveUpdate").withAnyArguments().will(throwException(new Exception()));
     	
     	
     	
-    	manager.expects(once()).method("saveUpdate").with(ANYTHING,ANYTHING);
+    	manager.expects(once()).method("saveUpdate").withAnyArguments();
     	assertEquals("input", action.update());
     }
 

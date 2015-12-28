@@ -1080,7 +1080,8 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 	public Collection<ColaboradorTurma> findByTurmaSemPresenca(Long turmaId, Long diaTurmaId)
 	{
 		StringBuilder hql = new StringBuilder();
-		hql.append("select new ColaboradorTurma(ct.id) from ColaboradorTurma ct where ct.turma.id = :turmaId ");
+		hql.append("select new ColaboradorTurma(ct.id) from ColaboradorTurma ct ");
+		hql.append("where ct.turma.id = :turmaId ");
 		hql.append("and ct.id not in (select cp.colaboradorTurma.id from ColaboradorPresenca cp where cp.diaTurma.id = :diaTurmaId)");
 
 		Query query = getSession().createQuery(hql.toString());
@@ -1773,6 +1774,10 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		p.add(Projections.property("co.nome"), "nome");
 
 		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("cc.colaborador.id", colaboradorId));
+		criteria.add(Expression.eq("cc.certificacao.id", certificacaoId));
+		
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(Colaborador.class));
 		
 	    return (Colaborador) criteria.uniqueResult();

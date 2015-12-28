@@ -13,8 +13,8 @@ import com.fortes.rh.model.desenvolvimento.DiaTurma;
 
 public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<ColaboradorPresenca, ColaboradorPresencaDao> implements ColaboradorPresencaManager
 {
-	
 	private ColaboradorTurmaManager colaboradorTurmaManager;
+	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 
 	public void setColaboradorTurmaManager(ColaboradorTurmaManager colaboradorTurmaManager)
 	{
@@ -31,7 +31,7 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 		return !getDao().existPresencaByTurma(turmaId).isEmpty();
 	}
 
-	public void updateFrequencia(Long diaTurmaId, Long colaboradorTurmaId, boolean presenca) throws Exception
+	public void updateFrequencia(Long diaTurmaId, Long colaboradorTurmaId, boolean presenca, boolean validarCertificacao) throws Exception
 	{
 		if (presenca)
 		{
@@ -42,25 +42,34 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			
 			ColaboradorPresenca colaboradorPresenca = new ColaboradorPresenca(colaboradorTurma, diaTurma, true);
 			getDao().save(colaboradorPresenca);
+			
+			if(validarCertificacao)
+				colaboradorCertificacaoManager.verificaCertificacaoByColaboradorTurmaId(colaboradorTurma.getId());
 		}
 		else
 			getDao().remove(diaTurmaId, colaboradorTurmaId);
 		
 	}
 
-	public void marcarTodos(Long diaTurmaId, Long turmaId)
+	public void marcarTodos(Long diaTurmaId, Long turmaId, boolean validarCertificacao)
 	{
 		DiaTurma diaTurma = new DiaTurma();
 		diaTurma.setId(diaTurmaId);
 		Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findByTurmaSemPresenca(turmaId, diaTurmaId);
 		
-		for (ColaboradorTurma colaboradorTurma : colaboradorTurmas)
+		if(colaboradorTurmas != null && colaboradorTurmas.size() > 0)
 		{
-			getDao().save(new ColaboradorPresenca(colaboradorTurma, diaTurma, true));
+			for (ColaboradorTurma colaboradorTurma : colaboradorTurmas)
+			{
+				getDao().save(new ColaboradorPresenca(colaboradorTurma, diaTurma, true));
+				
+				if(validarCertificacao)
+					colaboradorCertificacaoManager.verificaCertificacaoByColaboradorTurmaId(colaboradorTurma.getId());
+			}
 		}
 	}
 
-	public void removeByDiaTurma(Long diaTurmaId) throws Exception
+	public void removeByDiaTurma(Long diaTurmaId, boolean validarCertificacao) throws Exception
 	{
 		getDao().remove(diaTurmaId, null);
 	}
@@ -79,7 +88,6 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 		
 		Double resultado = qtdPresenca.doubleValue() / qtdDias.doubleValue();
 		
-//		NumberFormat formata = new DecimalFormat("#0.00");
 		DecimalFormat formata = (DecimalFormat) DecimalFormat.getInstance(new Locale("pt", "BR"));
 		formata.applyPattern("#0.00");
 		return formata.format(resultado * 100);
@@ -110,6 +118,11 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 	public Integer qtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId(Long diaTurmaId, Long estabelecimentoId) 
 	{
 		return getDao().qtdColaboradoresPresentesByDiaTurmaIdAndEstabelecimentoId(diaTurmaId, estabelecimentoId);
+	}
+
+	public void setColaboradorCertificacaoManager(
+			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
+		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	} 
 	
 }

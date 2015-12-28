@@ -101,9 +101,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		turmaDocumentoAnexoManager.salvarDocumentoAnexos(turma.getId(), documentoAnexoIds);
 	}
 
-	public void atualizar(Turma turma, String[] dias, String[] horasIni, String[] horasFim, String[] colaboradorTurma, String[] selectPrioridades, Long[] avaliacaoTurmaIds, Long[] documentoAnexoIds, boolean atualizaAvaliacaoEDocumentoAnexos) throws Exception
+	public void atualizar(Turma turma, String[] dias, String[] horasIni, String[] horasFim, String[] colaboradorTurma, String[] selectPrioridades, Long[] avaliacaoTurmaIds, Long[] documentoAnexoIds, boolean atualizaAvaliacaoEDocumentoAnexos, boolean validarCertificacao) throws Exception
 	{
-		colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades);
+		colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades, validarCertificacao);
 
 		updateTurmaDias(turma, dias, horasIni, horasFim);
 		

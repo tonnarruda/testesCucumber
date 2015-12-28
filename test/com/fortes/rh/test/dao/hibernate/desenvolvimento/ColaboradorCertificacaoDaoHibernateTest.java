@@ -12,6 +12,7 @@ import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
+import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
@@ -22,6 +23,7 @@ import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
@@ -37,6 +39,7 @@ import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorCertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.TurmaFactory;
 import com.fortes.rh.util.DateUtil;
 
 public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernateTest<ColaboradorCertificacao>
@@ -51,6 +54,7 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 	private CargoDao cargoDao;
 	private FaixaSalarialDao faixaSalarialDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
+	private TurmaDao turmaDao;
 
 	@Override
 	public ColaboradorCertificacao getEntity()
@@ -99,12 +103,19 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		Curso curso = CursoFactory.getEntity();
 		cursoDao.save(curso);
 		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setRealizada(true);
+		turma.setCurso(curso);
+		turma.setDataPrevFim(DateUtil.criarDataMesAno(1, 1, 2015));
+		turmaDao.save(turma);
+
 		Colaborador colaborador = ColaboradorFactory.getEntity();
 		colaboradorDao.save(colaborador);
 		
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
 		colaboradorTurma.setCurso(curso);
 		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurma.setTurma(turma);
 		colaboradorTurmaDao.save(colaboradorTurma);
 		
 		Collection<Curso> cursos = new ArrayList<Curso>();
@@ -208,5 +219,9 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 	public void setHistoricoColaboradorDao(
 			HistoricoColaboradorDao historicoColaboradorDao) {
 		this.historicoColaboradorDao = historicoColaboradorDao;
+	}
+
+	public void setTurmaDao(TurmaDao turmaDao) {
+		this.turmaDao = turmaDao;
 	}
 }

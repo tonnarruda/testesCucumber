@@ -274,7 +274,7 @@ public class ColaboradorTurmaEditAction extends MyActionSupportEdit implements M
 		try
 		{
 			if(colaboradorTurmaHidden != null && colaboradorTurmaHidden.length > 0)
-				colaboradorTurmaManager.saveUpdate(colaboradorTurmaHidden, selectPrioridades);
+				colaboradorTurmaManager.saveUpdate(colaboradorTurmaHidden, selectPrioridades, getEmpresaSistema().isControlarVencimentoPorCertificacao());
 
 			Collection<Long> aprovados = new HashSet<Long>();
 			Collection<Long> reprovados = new HashSet<Long>();

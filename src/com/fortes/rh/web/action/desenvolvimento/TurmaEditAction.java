@@ -298,7 +298,7 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 	{
 		turma = turmaManager.setAssinaturaDigital(manterAssinatura, turma, assinaturaDigital, "assinaturas");
 		
-		turmaManager.atualizar(turma, diasCheck, horariosIni, horariosFim, colaboradorTurma, selectPrioridades, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), LongUtil.arrayStringToArrayLong(documentoAnexoCheck), getEmpresaSistema().getId().equals(turma.getEmpresa().getId()));
+		turmaManager.atualizar(turma, diasCheck, horariosIni, horariosFim, colaboradorTurma, selectPrioridades, LongUtil.arrayStringToArrayLong(avaliacaoTurmasCheck), LongUtil.arrayStringToArrayLong(documentoAnexoCheck), getEmpresaSistema().getId().equals(turma.getEmpresa().getId()), getEmpresaSistema().isControlarVencimentoPorCertificacao());
 		
 		return planoTreinamento ? "successFiltroPlanoTreinamento" : Action.SUCCESS;
 	}

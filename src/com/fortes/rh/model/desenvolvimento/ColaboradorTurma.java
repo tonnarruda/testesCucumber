@@ -89,7 +89,7 @@ public class ColaboradorTurma extends AbstractModel implements Serializable
 	private Double nota;
 	@Transient
 	private Collection<MatrizTreinamento> matrizTreinamentos;
-	
+
 	public ColaboradorTurma() {	}
 
 	public ColaboradorTurma(Long id)

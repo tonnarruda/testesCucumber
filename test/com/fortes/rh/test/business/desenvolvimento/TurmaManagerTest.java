@@ -347,7 +347,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
 		String[] colaboradorTurmas = {colaboradorTurma.getId().toString()};
 		
-		colaboradorTurmaManager.expects(once()).method("saveUpdate").with(eq(colaboradorTurmas),eq(selectPrioridades)).isVoid();
+		colaboradorTurmaManager.expects(once()).method("saveUpdate").with(eq(colaboradorTurmas),eq(selectPrioridades), eq(false)).isVoid();
 		
 		turmaDao.expects(once()).method("update").with(eq(turma)).isVoid();
 		colaboradorPresencaManager.expects(once()).method("existPresencaByTurma").will(returnValue(false));
@@ -359,7 +359,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			turmaManager.atualizar(turma, diasCheck, null, null, colaboradorTurmas, selectPrioridades, avaliacaoTurmaIds, documentoAnexosIds, true);
+			turmaManager.atualizar(turma, diasCheck, null, null, colaboradorTurmas, selectPrioridades, avaliacaoTurmaIds, documentoAnexosIds, true, false);
 		}
 		catch (Exception e)
 		{

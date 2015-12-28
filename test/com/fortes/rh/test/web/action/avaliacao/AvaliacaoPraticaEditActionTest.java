@@ -9,7 +9,9 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.avaliacao.AvaliacaoPraticaFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.web.action.avaliacao.AvaliacaoPraticaEditAction;
 
 public class AvaliacaoPraticaEditActionTest extends MockObjectTestCase
@@ -25,6 +27,9 @@ public class AvaliacaoPraticaEditActionTest extends MockObjectTestCase
 		action.setAvaliacaoPraticaManager((AvaliacaoPraticaManager) manager.proxy());
 
 		action.setAvaliacaoPratica(new AvaliacaoPratica());
+		
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		action.setEmpresaSistema(empresa);
 	}
 
 	protected void tearDown() throws Exception
@@ -36,7 +41,8 @@ public class AvaliacaoPraticaEditActionTest extends MockObjectTestCase
 
 	public void testList() throws Exception
 	{
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<AvaliacaoPratica>()));
+		manager.expects(once()).method("getCount").will(returnValue(0));
+		manager.expects(once()).method("find").withAnyArguments().will(returnValue(new ArrayList<AvaliacaoPratica>()));
 		assertEquals("success", action.list());
 		assertNotNull(action.getAvaliacaoPraticas());
 	}
@@ -47,7 +53,8 @@ public class AvaliacaoPraticaEditActionTest extends MockObjectTestCase
 		action.setAvaliacaoPratica(avaliacaoPratica);
 
 		manager.expects(once()).method("remove");
-		manager.expects(once()).method("findAll").will(returnValue(new ArrayList<AvaliacaoPratica>()));
+		manager.expects(once()).method("getCount").will(returnValue(0));
+		manager.expects(once()).method("find").withAnyArguments().will(returnValue(new ArrayList<AvaliacaoPratica>()));
 		assertEquals("success", action.delete());
 	}
 	
@@ -57,6 +64,9 @@ public class AvaliacaoPraticaEditActionTest extends MockObjectTestCase
 		action.setAvaliacaoPratica(avaliacaoPratica);
 		
 		manager.expects(once()).method("remove").will(throwException(new HibernateObjectRetrievalFailureException(new ObjectNotFoundException("",""))));
+		manager.expects(once()).method("getCount").will(returnValue(0));
+		manager.expects(once()).method("find").withAnyArguments().will(returnValue(new ArrayList<AvaliacaoPratica>()));
+		
 		assertEquals("success", action.delete());
 	}
 

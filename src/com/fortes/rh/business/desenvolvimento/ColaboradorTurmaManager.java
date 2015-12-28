@@ -28,7 +28,7 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<ColaboradorTurma> filtroRelatorioMatriz(LinkedHashMap filtro);
 	public Collection<Colaborador> getListaColaboradores(Collection<ColaboradorTurma> colaboradorTurmasLista);
 	public Collection<ColaboradorTurma> filtroRelatorioPlanoTrei(LinkedHashMap filtro);
-	public void saveUpdate(String[] colaboradorTurma, String[] selectPrioridades) throws Exception;
+	public void saveUpdate(String[] colaboradorTurma, String[] selectPrioridades, boolean validarCertificacao) throws Exception;
 	public Collection<Curso> getListaCursos(Collection<ColaboradorTurma> colaboradorTurmasLista);
 	public Collection<ColaboradorCursoMatriz> montaMatriz(Collection<ColaboradorTurma> colaboradorTurmasLista);
 	public Collection<ColaboradorTurma> findColaboradoresByCursoTurmaIsNull(Long cursoId);

@@ -173,7 +173,7 @@ public class CertificacaoDaoHibernate extends GenericDaoHibernate<Certificacao> 
 		sql.append("inner join cursoCertificados on ct.curso_id = cursoCertificados.cusosIds ");
 		sql.append("group by col.id, col.nome ");
 		sql.append("having count(ct.curso_id) >= (select count(*) from cursoCertificados) ");
-		sql.append("order by col.id, col.nome ");
+		sql.append("order by col.nome ");
 		
 		Query q = getSession().createSQLQuery(sql.toString());
 		q.setLong("certificacaoId", certificacaoId);

@@ -1784,6 +1784,7 @@ public class GerenciadorComunicacaoManagerTest extends MockObjectTestCase
 		Collection<ColaboradorTurma> colaboradoresTurmas  = Arrays.asList(colaboradorTurma1, colaboradorTurma2);
 		
 		parametrosDoSistemaManager.expects(once()).method("findById").with(eq(1L)).will(returnValue(new ParametrosDoSistema()));
+		empresaManager.expects(once()).method("findTodasEmpresas").will(returnValue(Arrays.asList(empresa)));
 		gerenciadorComunicacaoDao.expects(once()).method("findByOperacaoId").with(eq(Operacao.CURSOS_A_VENCER.getId()),ANYTHING).will(returnValue(gerenciadorComunicacaos));
 		colaboradorTurmaManager.expects(once()).method("findCursosCertificacoesAVencer").with(ANYTHING, eq(gerenciadorComunicacao.getEmpresa().getId())).will(returnValue(colaboradoresTurmas));
 		mail.expects(once()).method("send").withAnyArguments().isVoid();

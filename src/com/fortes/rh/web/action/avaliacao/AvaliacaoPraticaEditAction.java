@@ -36,15 +36,30 @@ public class AvaliacaoPraticaEditAction extends MyActionSupportList
 
 	public String insert() throws Exception
 	{
-		avaliacaoPratica.setEmpresa(getEmpresaSistema());
-		avaliacaoPraticaManager.save(avaliacaoPratica);
-		return Action.SUCCESS;
+		try {
+			avaliacaoPratica.setEmpresa(getEmpresaSistema());
+			avaliacaoPraticaManager.save(avaliacaoPratica);
+
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Problema ao gravar as informações da avaliação prática!");
+			prepareInsert();
+			return Action.INPUT;
+		}
 	}
 
 	public String update() throws Exception
 	{
-		avaliacaoPraticaManager.update(avaliacaoPratica);
-		return Action.SUCCESS;
+		try {
+			avaliacaoPraticaManager.update(avaliacaoPratica);
+			return Action.SUCCESS;
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Problema ao gravar as informações da avaliação prática!");
+			prepareUpdate();
+			return Action.INPUT;
+		}
 	}
 
 	public String list() throws Exception

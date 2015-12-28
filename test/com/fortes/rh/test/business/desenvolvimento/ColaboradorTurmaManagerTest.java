@@ -439,7 +439,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades);
+			colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades, false);
 		}
 		catch (Exception e)
 		{
@@ -459,7 +459,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		Exception ex = null;
 		try
 		{
-			colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades);
+			colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades, false);
 		}
 		catch (Exception e)
 		{

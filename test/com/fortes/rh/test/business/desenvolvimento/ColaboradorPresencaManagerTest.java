@@ -76,22 +76,22 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 		colaboradorTurmaManager.expects(once()).method("findByTurmaSemPresenca").with(ANYTHING, ANYTHING).will(returnValue(colaboradorTurmas));
 		colaboradorPresencaDao.expects(once()).method("save").with(ANYTHING);
 		
-		colaboradorPresencaManager.marcarTodos(null, null);
+		colaboradorPresencaManager.marcarTodos(null, null, false);
 	}
 	
 	public void testRemoveByDiaTurma() throws Exception
 	{
 		colaboradorPresencaDao.expects(once()).method("remove").with(ANYTHING, ANYTHING).isVoid();
-		colaboradorPresencaManager.removeByDiaTurma(null);
+		colaboradorPresencaManager.removeByDiaTurma(null, false);
 	}
 	
 	public void testUpdatePresenca() throws Exception
 	{
 		colaboradorPresencaDao.expects(once()).method("save").with(ANYTHING);
-		colaboradorPresencaManager.updateFrequencia(null, null, true);
+		colaboradorPresencaManager.updateFrequencia(null, null, true, false);
 		
 		colaboradorPresencaDao.expects(once()).method("remove").with(ANYTHING,ANYTHING);
-		colaboradorPresencaManager.updateFrequencia(null, null, false);
+		colaboradorPresencaManager.updateFrequencia(null, null, false, false);
 	}
 	
 	public void testCalculaFrequencia() throws Exception

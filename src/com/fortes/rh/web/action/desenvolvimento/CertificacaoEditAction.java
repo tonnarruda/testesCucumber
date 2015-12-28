@@ -73,7 +73,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private boolean exibirPeriodicidade;
 	private Date dataIni;
 	private Date dataFim;
-	
+	private Boolean bloquearEdicao = false;
 
 	private void prepare() throws Exception
 	{
@@ -104,7 +104,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			prepare();
 			cursosCheckList = CheckListBoxUtil.marcaCheckListBox(cursosCheckList, certificacao.getCursos(), "getId");
 			avaliacoesPraticasCheckList = CheckListBoxUtil.marcaCheckListBox(avaliacoesPraticasCheckList, certificacao.getAvaliacoesPraticas(), "getId");
-			
+			bloquearEdicao = (colaboradorCertificacaoManager.findByColaboradorIdAndCertificacaoId(null, certificacao.getId()).size() > 0) && getEmpresaSistema().isControlarVencimentoPorCertificacao();
 		}
 		else
 			addActionError("A Certificação solicitada não existe na empresa " + getEmpresaSistema().getNome() +".");
@@ -382,5 +382,13 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 
 	public TipoCertificacao getTipoCertificacoes() {
 		return tipoCertificacoes;
+	}
+
+	public Boolean getBloquearEdicao() {
+		return bloquearEdicao;
+	}
+
+	public void setBloquearEdicao(Boolean bloquearEdicao) {
+		this.bloquearEdicao = bloquearEdicao;
 	}
 }

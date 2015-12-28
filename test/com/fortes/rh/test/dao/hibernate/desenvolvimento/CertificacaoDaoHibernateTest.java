@@ -213,10 +213,10 @@ public class CertificacaoDaoHibernateTest extends GenericDaoHibernateTest<Certif
 		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
 		colaboradorTurma.setColaborador(colaborador);
 		colaboradorTurma.setTurma(turma);
+		colaboradorTurma.setCurso(curso);
 		colaboradorTurmaDao.save(colaboradorTurma);
 		
 		certificacaoDao.getHibernateTemplateByGenericDao().flush();
-		colaboradorTurmaDao.getHibernateTemplateByGenericDao().flush();
 		
 		Collection<Colaborador> retorno = certificacaoDao.findColaboradoresNaCertificacoa(certificacao1.getId());
 		assertEquals(1, retorno.size());

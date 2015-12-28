@@ -87,10 +87,6 @@ public class MenuTest extends TestCase
 		menu.append("<ul id='menuDropDown'>\n");
 		menu.append("<li><a href='localhosturl.com.br'  >SESMT</a>\n");
 		menu.append("<ul>\n");
-		menu.append("<li><a href='localhosturl.com.br'>SESMT 1</a><ul>\n");
-		menu.append("<li><a href='localhosturl.com.br'>SESMT 2</a></li>\n");
-		menu.append("</ul>\n");
-		menu.append("</li>\n");
 		menu.append("</ul>\n");
 		menu.append("</li>\n");
 		menu.append("<li><a href='localhost/logout.action' accesskey='a'>S<u>a</u>ir</a></li>\n");

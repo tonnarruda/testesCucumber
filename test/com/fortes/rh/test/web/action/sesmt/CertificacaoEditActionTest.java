@@ -8,8 +8,11 @@ import mockit.Mockit;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
+import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
+import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.geral.Empresa;
@@ -25,6 +28,8 @@ public class CertificacaoEditActionTest extends MockObjectTestCase
 	private CertificacaoEditAction action;
 	private Mock certificacaoManager;
 	private Mock cursoManager;
+	private Mock avaliacaoPraticaManager;
+	private Mock colaboradorCertificacaoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -36,7 +41,13 @@ public class CertificacaoEditActionTest extends MockObjectTestCase
         
         cursoManager = mock(CursoManager.class);
         action.setCursoManager((CursoManager) cursoManager.proxy());
-		
+
+        avaliacaoPraticaManager = mock(AvaliacaoPraticaManager.class);
+        action.setAvaliacaoPraticaManager((AvaliacaoPraticaManager) avaliacaoPraticaManager.proxy());
+
+        colaboradorCertificacaoManager = mock(ColaboradorCertificacaoManager.class);
+        action.setColaboradorCertificacaoManager((ColaboradorCertificacaoManager) colaboradorCertificacaoManager.proxy());
+        
         Mockit.redefineMethods(CheckListBoxUtil.class, MockCheckListBoxUtil.class);
         Mockit.redefineMethods(CheckListBoxUtil.class, MockCheckListBoxUtil.class);
 	}
@@ -51,7 +62,10 @@ public class CertificacaoEditActionTest extends MockObjectTestCase
 		action.setCertificacao(certificacao);
 		
 		certificacaoManager.expects(once()).method("findById").with(eq(certificacao.getId())).will(returnValue(certificacao));
+		certificacaoManager.expects(once()).method("findAllSelectNotCertificacaoId").withAnyArguments().will(returnValue(new ArrayList<Certificacao>()));
 		cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[] {empresa.getId()})).will(returnValue(new ArrayList<Curso>()));
+		avaliacaoPraticaManager.expects(once()).method("find").withAnyArguments().will(returnValue(new ArrayList<AvaliacaoPratica>()));
+		
 		
 		assertEquals("success", action.prepareInsert());
 	}
@@ -79,6 +93,9 @@ public class CertificacaoEditActionTest extends MockObjectTestCase
 		certificacaoManager.expects(once()).method("verificaEmpresa").with(eq(certificacao.getId()), eq(empresa.getId())).will(returnValue(true));
 		certificacaoManager.expects(once()).method("findById").with(eq(certificacao.getId())).will(returnValue(certificacao));
 		cursoManager.expects(once()).method("findAllByEmpresasParticipantes").with(eq(new Long[] {empresa.getId()})).will(returnValue(new ArrayList<Curso>()));
+		certificacaoManager.expects(once()).method("findAllSelectNotCertificacaoId").withAnyArguments().will(returnValue(new ArrayList<Certificacao>()));
+		avaliacaoPraticaManager.expects(once()).method("find").withAnyArguments().will(returnValue(new ArrayList<AvaliacaoPratica>()));
+		colaboradorCertificacaoManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").withAnyArguments().will(returnValue(new ArrayList<AvaliacaoPratica>()));
 		
 		assertEquals("success", action.prepareUpdate());
 	}

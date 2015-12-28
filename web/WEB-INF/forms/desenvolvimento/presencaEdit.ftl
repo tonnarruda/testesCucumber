@@ -30,9 +30,9 @@
 		{
 			DWREngine.setErrorHandler(errorListaPresenca);
 			if(img.title == "${marcarTodos}")
-				ListaPresencaDWR.marcarTodos(function(){alteraImg(diaTurmaId, img);}, diaTurmaId, ${turma.id});
+				ListaPresencaDWR.marcarTodos(function(){alteraImg(diaTurmaId, img);}, diaTurmaId, ${turma.id}, ${empresaSistema.controlarVencimentoCertificacaoPor});
 			else
-				ListaPresencaDWR.desmarcarTodos(function(){alteraImg(diaTurmaId, img);}, diaTurmaId);
+				ListaPresencaDWR.desmarcarTodos(function(){alteraImg(diaTurmaId, img);}, diaTurmaId, ${empresaSistema.controlarVencimentoCertificacaoPor});
 		}
 
 		function alteraImg(diaTurmaId, img)
@@ -74,7 +74,7 @@
 			var presente = img.title != "${presente}"
 			DWREngine.setErrorHandler(errorListaPresenca);
 			ListaPresencaDWR.calculaFrequencia(function(data){alteraFrequencia(data, colaboradorTurmaId);}, colaboradorTurmaId, ${diaTurmas?size});
-			ListaPresencaDWR.updateFrequencia(function(data){mudaImagem(data, colaboradorTurmaId, img);}, diaTurmaId, colaboradorTurmaId, presente);
+			ListaPresencaDWR.updateFrequencia(function(data){mudaImagem(data, colaboradorTurmaId, img);}, diaTurmaId, colaboradorTurmaId, presente, ${empresaSistema.controlarVencimentoCertificacaoPor});
 		}
 
 		function mudaImagem(data, colaboradorTurmaId, img)
