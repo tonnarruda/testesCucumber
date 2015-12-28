@@ -473,7 +473,7 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 	public Collection<ColaboradorQuestionario> findAvaliacaoDesempenhoByColaborador(Long colaboradorId)
 	{
 		Criteria criteria = getSession().createCriteria(getEntityClass(), "cq");
-		criteria.createCriteria("cq.colaborador", "colab", Criteria.LEFT_JOIN);
+		criteria.createCriteria("cq.colaborador", "colab", Criteria.INNER_JOIN);
 		criteria.createCriteria("cq.avaliacaoDesempenho", "avd", Criteria.INNER_JOIN); 
 		
 		ProjectionList p = Projections.projectionList().create();

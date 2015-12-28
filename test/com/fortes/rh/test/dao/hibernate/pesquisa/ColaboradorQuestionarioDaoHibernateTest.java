@@ -373,6 +373,7 @@ public class ColaboradorQuestionarioDaoHibernateTest extends GenericDaoHibernate
 		ColaboradorQuestionario colaboradorQuestionario1 = new ColaboradorQuestionario();
 		colaboradorQuestionario1.setColaborador(colaborador);
 		colaboradorQuestionario1.setAvaliacaoDesempenho(avaliacaoDesempenho);
+		colaboradorQuestionario1.setRespondida(true);
 		colaboradorQuestionarioDao.save(colaboradorQuestionario1);
 
 		ColaboradorQuestionario colaboradorQuestionario2 = new ColaboradorQuestionario();
