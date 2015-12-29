@@ -200,10 +200,10 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	public String saveCompetencias() throws Exception
 	{
 		try {
-			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
+			avaliacaoDesempenho = avaliacaoDesempenhoManager.findByIdProjection(avaliacaoDesempenho.getId());
 			
 			configuracaoCompetenciaAvaliacaoDesempenhos.removeAll(Collections.singleton(null));
-			configuracaoCompetenciaAvaliacaoDesempenhoManager.save(new ArrayList<ConfiguracaoCompetenciaAvaliacaoDesempenho>(configuracaoCompetenciaAvaliacaoDesempenhos), avaliacaoDesempenho.getId());
+			configuracaoCompetenciaAvaliacaoDesempenhoManager.save(new ArrayList<ConfiguracaoCompetenciaAvaliacaoDesempenho>(configuracaoCompetenciaAvaliacaoDesempenhos), avaliacaoDesempenho);
 			configuracaoCompetenciaAvaliacaoDesempenhoManager.removeNotIn(configuracaoCompetenciaAvaliacaoDesempenhos, avaliacaoDesempenho.getId());
 			
 		} catch (Exception e) {

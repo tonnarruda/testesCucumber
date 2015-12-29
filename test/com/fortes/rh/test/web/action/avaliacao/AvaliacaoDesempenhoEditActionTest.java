@@ -146,16 +146,9 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		
 		parametrosDoSistemaManager.expects(once()).method("findById").will(returnValue(parametrosDoSistema));
 		empresaManager.expects(once()).method("findEmpresasPermitidas");
-		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
+		manager.expects(once()).method("findByIdProjection").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
 		
-		participanteAvaliacaoDesempenhoManager.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
-		participanteAvaliacaoDesempenhoManager.expects(once()).method("removeNotIn").with(ANYTHING, ANYTHING, ANYTHING).isVoid();
-		
-		participanteAvaliacaoDesempenhoManager.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
-		participanteAvaliacaoDesempenhoManager.expects(once()).method("removeNotIn").with(ANYTHING, ANYTHING, ANYTHING).isVoid();
-		
-		colaboradorQuestionarioManager.expects(once()).method("saveOrUpdate").with(ANYTHING).isVoid();
-		colaboradorQuestionarioManager.expects(once()).method("removeNotIn").with(ANYTHING, ANYTHING).isVoid();
+		participanteAvaliacaoDesempenhoManager.expects(once()).method("save").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).isVoid();
 		
 		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
 		participanteAvaliacaoDesempenhoManager.expects(once()).method("findParticipantes").with(new Constraint[] {ANYTHING,ANYTHING}).will(returnValue(new ArrayList<Colaborador>()));
@@ -229,7 +222,7 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(2L);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 		
-		manager.expects(once()).method("findById").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
+		manager.expects(once()).method("findByIdProjection").with(eq(2L)).will(returnValue(avaliacaoDesempenho));
 		
 		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("save").with(ANYTHING, ANYTHING).isVoid();
 		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("removeNotIn").with(ANYTHING, ANYTHING).isVoid();
