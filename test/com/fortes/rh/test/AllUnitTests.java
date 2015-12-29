@@ -30,6 +30,7 @@ import com.fortes.rh.test.business.avaliacao.AvaliacaoDesempenhoManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoManagerTest;
 import com.fortes.rh.test.business.avaliacao.AvaliacaoPraticaManagerTest;
 import com.fortes.rh.test.business.avaliacao.ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest;
+import com.fortes.rh.test.business.avaliacao.ParticipanteAvaliacaoDesempenhoManagerTest;
 import com.fortes.rh.test.business.avaliacao.PeriodoExperienciaManagerTest;
 import com.fortes.rh.test.business.captacao.AnuncioManagerTest;
 import com.fortes.rh.test.business.captacao.AtitudeManagerTest;
@@ -754,6 +755,7 @@ public class AllUnitTests extends TestSuite
         suite.addTestSuite(CriterioAvaliacaoCompetenciaDaoHibernateTest.class);
         suite.addTestSuite(ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest.class);
         suite.addTestSuite(ConfiguracaoCompetenciaAvaliacaoDesempenhoDaoHibernateTest.class);
+        suite.addTestSuite(ParticipanteAvaliacaoDesempenhoManagerTest.class);
 
         //Indicadores
         suite.addTestSuite(IndicadorTurnOverListActionTest.class);
