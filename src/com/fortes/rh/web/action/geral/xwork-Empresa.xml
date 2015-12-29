@@ -29,6 +29,7 @@
 		    <interceptor-ref name="tokenWebStack" />
 		    <result name="invalid.token" type="redirect">list.action</result>
 			<result name="success" type="redirect">list.action</result>
+			<result name="successAlterandoMenu" type="redirect">../../index.action?empresaId=${empresaSistema.id}</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/empresaEdit.ftl</result>
 		</action>
 		<action name="showLogo" class="com.fortes.rh.web.action.geral.EmpresaEditAction" method="showLogo" />

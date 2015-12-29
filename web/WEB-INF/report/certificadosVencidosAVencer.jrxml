@@ -14,18 +14,18 @@
 	<field name="colaborador.nomeMaisNomeComercial" class="java.lang.String"/>
 	<field name="certificacao.id" class="java.lang.Long"/>
 	<field name="certificacao.nome" class="java.lang.String"/>
-	<field name="turma.curso.nome" class="java.lang.String"/>
+	<field name="nomeCurso" class="java.lang.String"/>
 	<field name="colaborador.matricula" class="java.lang.String"/>
 	<field name="colaborador.historicoColaborador.faixaSalarial.cargo.nome" class="java.lang.String"/>
 	<field name="certificado" class="java.lang.Boolean"/>
 	<field name="colaborador.id" class="java.lang.Long"/>
-	<field name="turma.periodoFormatado" class="java.lang.String"/>
+	<field name="periodoTurma" class="java.lang.String"/>
 	<field name="aprovadoNaTurmaString" class="java.lang.String"/>
 	<field name="dataCertificadoFormatada" class="java.lang.String"/>
 	<field name="certificacao.periodicidadeFormatada" class="java.lang.String"/>
 	<field name="dataVencimentoCertificacao" class="java.lang.String"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
-		<variableExpression><![CDATA[$F{turma.curso.nome}]]></variableExpression>
+		<variableExpression><![CDATA[$F{nomeCurso}]]></variableExpression>
 	</variable>
 	<group name="colaborador">
 		<groupExpression><![CDATA[$F{colaborador.id}]]></groupExpression>
@@ -240,7 +240,7 @@
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{turma.periodoFormatado}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{periodoTurma}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement key="textField-10" x="484" y="1" width="51" height="11" uuid="e92a542b-2aa0-467a-bee6-1f5538f9b523"/>
@@ -266,7 +266,7 @@
 				<textElement>
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{turma.curso.nome}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nomeCurso}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

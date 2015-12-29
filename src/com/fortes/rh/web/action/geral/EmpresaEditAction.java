@@ -176,7 +176,8 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 	
 	public String update() throws Exception
 	{
-		boolean tavaIntegradaComAC = empresaManager.findIntegracaoAC(empresa.getId());
+		Empresa empresaAntesDaAlteracao = empresaManager.findByIdProjection(empresa.getId());
+		boolean tavaIntegradaComAC = empresaAntesDaAlteracao.isAcIntegra();
 		
 		if ( SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_INTEGRA_FORTES_PESSOAL"}) ) {
 			empresa.setGrupoAC(StringUtils.stripToNull(empresa.getGrupoAC()));
@@ -208,6 +209,9 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		empresaManager.enviaEmailInformandoDesintegracao(empresa, tavaIntegradaComAC, motivoDesintegracao, usuario.getNome() + "("+usuario.getLogin()+")" );
 		
 		atualizaEmpresaSessao();
+		
+		if(empresaAntesDaAlteracao.isControlarVencimentoPorCertificacao() != empresa.isControlarVencimentoPorCertificacao())
+			return "successAlterandoMenu";
 
 		return Action.SUCCESS;
 	}

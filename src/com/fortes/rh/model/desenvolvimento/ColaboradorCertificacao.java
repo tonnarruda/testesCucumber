@@ -11,10 +11,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
-import org.hibernate.Hibernate;
-import org.hibernate.criterion.Projections;
-import org.hibernate.type.Type;
-
 import com.fortes.model.AbstractModel;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
@@ -23,7 +19,7 @@ import com.fortes.rh.util.DateUtil;
 @SuppressWarnings("serial")
 @Entity
 @SequenceGenerator(name="sequence", sequenceName="colaboradorCertificacao_sequence", allocationSize=1)
-public class ColaboradorCertificacao extends AbstractModel implements Serializable
+public class ColaboradorCertificacao extends AbstractModel implements Serializable, Cloneable
 {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Colaborador colaborador;
@@ -35,7 +31,9 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	private Date data;
 	
 	@Transient
-	private Turma turma; 
+	private String nomeCurso;
+	@Transient
+	private String peridoTurma;
 	@Transient
 	private Boolean aprovadoNaTurma;
 
@@ -44,10 +42,9 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	
 	//usado por colaboradoresCertificados
 	public ColaboradorCertificacao(Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, 
-			Long cargoId, String cargoNome,	Long certificacaoId, String certificacaoNome, Long cursoId, String cursoNome, 
-			Date turmaDataPrevIni, Date turmaDataPrevFim,	Boolean turmaRealizada, Boolean aprovadoNaTurma, Date data,
-			Integer periodicidade)
+			Long cargoId, String cargoNome,	Long certificacaoId, String certificacaoNome, Integer periodicidade, Date data, Long id)
 	{
+		setId(id);
 		this.colaborador = new Colaborador();
 		this.colaborador.setId(colaboradorId);
 		this.colaborador.setNome(colaboradorNome);
@@ -62,17 +59,7 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		this.certificacao.setId(certificacaoId);
 		this.certificacao.setNome(certificacaoNome);
 		this.certificacao.setPeriodicidade(periodicidade);
-		
-		this.turma = new Turma();
-		this.turma.setDataPrevIni(turmaDataPrevIni);
-		this.turma.setDataPrevFim(turmaDataPrevFim);
-		this.turma.setRealizada(turmaRealizada);
-		
-		this.turma.setCurso(new Curso());
-		this.turma.getCurso().setId(cursoId);
-		this.turma.getCurso().setNome(cursoNome);
-		
-		this.aprovadoNaTurma = aprovadoNaTurma;
+
 		this.data = data;
 	}
 	
@@ -115,14 +102,6 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		return DateUtil.formataDiaMesAno(data);
 	}
 
-	public Turma getTurma() {
-		return turma;
-	}
-
-	public void setTurma(Turma turma) {
-		this.turma = turma;
-	}
-
 	public Boolean getAprovadoNaTurma() {
 		return aprovadoNaTurma;
 	}
@@ -145,8 +124,12 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	
 	public String getDataVencimentoCertificacao()
 	{
-		Date vencimento = DateUtil.incrementaMes(this.data, this.certificacao.getPeriodicidade());
-		return DateUtil.formataDiaMesAno(vencimento);
+		if(this.certificacao.getPeriodicidade() == null)
+			return "Sem vencimento";
+		else{
+			Date vencimento = DateUtil.incrementaMes(this.data, this.certificacao.getPeriodicidade());
+			return DateUtil.formataDiaMesAno(vencimento);
+		}
 	}
 	
 	public void setCargoNome(String cargoNome)
@@ -213,5 +196,34 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	{
 		if(this.certificacao == null)
 			this.certificacao = new Certificacao();
+	}
+	
+	@Override
+	public Object clone()
+	{
+		try
+		{
+			return super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new Error("Ocorreu um erro interno no sistema. Não foi possível clonar o objeto.");
+		}
+	}
+
+	public String getNomeCurso() {
+		return nomeCurso;
+	}
+
+	public void setNomeCurso(String nomeCurso) {
+		this.nomeCurso = nomeCurso;
+	}
+
+	public String getPeridoTurma() {
+		return peridoTurma;
+	}
+
+	public void setPeridoTurma(String peridoTurma) {
+		this.peridoTurma = peridoTurma;
 	}
 }

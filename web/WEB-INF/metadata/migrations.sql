@@ -91,21 +91,19 @@ BEGIN
 					inner join colaboradorTurma ct on ct.turma_id = t.id
 					inner join colaborador col on col.id = ct.colaborador_id
 					where cc.certificacaos_id = mvCertificado.id
-
 		LOOP
 
 			IF  (select (select Array(select cursos_id from certificacao_curso where certificacaos_id = mvCertificado.id order by cursos_id))
 				=
 				(select Array(select cu.id
 				from colaboradorturma ct
-				inner join turma t on t.id = ct.turma_id and t.dataprevfim = (select max(dataprevfim) from turma t2 where t2.curso_id = t.curso_id and t2.realizada)
+				inner join turma t on t.id = ct.turma_id and t.dataprevfim = (select max(dataprevfim) from turma t2 where t2.curso_id = t.curso_id and t2.realizada and t2.id = ct.turma_id)
 				inner join curso cu on cu.id = t.curso_id
 				where ct.colaborador_id = mvColaborador.id
 				and t.realizada
 				and cu.id in (select cursos_id from certificacao_curso where certificacaos_id = mvCertificado.id)
 				and verifica_aprovacao(cu.id, t.id, ct.id, cu.percentualminimofrequencia)
 				order by cu.id)))
-			
 			THEN 
 				insert into colaboradorCertificacao (id,colaborador_id, certificacao_id,data) 
 				values (nextval('colaboradorCertificacao_sequence'), mvColaborador.id, mvCertificado.id, current_date);

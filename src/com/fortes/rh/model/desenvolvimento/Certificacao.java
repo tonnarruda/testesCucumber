@@ -85,8 +85,14 @@ public class Certificacao extends AbstractModel implements Serializable
 		return periodicidade;
 	}
 
-	public String getPeriodicidadeFormatada() {
-		return periodicidade + " mes(es)";
+	public String getPeriodicidadeFormatada() 
+	{
+		if(periodicidade == null)
+			return "Sem peridicidade";
+		else if(periodicidade == 1)
+			return periodicidade + " mês";
+		else
+			return periodicidade + " meses";
 	}
 
 	public void setPeriodicidade(Integer periodicidade) {

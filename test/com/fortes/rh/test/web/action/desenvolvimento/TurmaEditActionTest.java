@@ -331,7 +331,7 @@ public class TurmaEditActionTest extends MockObjectTestCase
     	action.setCertificacao(certificacao);
     	
     	cursoManager.expects(once()).method("findByCertificacao").with(eq(1L)).will(returnValue(new ArrayList<Curso>()));
-    	colaboradorTurmaManager.expects(once()).method("findAprovadosByCertificacao").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Colaborador>()));
+    	colaboradorTurmaManager.expects(once()).method("findAprovadosByCertificacao").withAnyArguments().will(returnValue(new ArrayList<Colaborador>()));
 		certificacaoManager.expects(once()).method("findByIdProjection").with(eq(1L)).will(returnValue(certificacao));
     	empresaManager.expects(once()).method("findCidade").with(eq(1L)).will(returnValue("Fortaleza"));
     	

@@ -691,7 +691,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		return certificados;
 	}
 
-	public Collection<Colaborador> findAprovadosByCertificacao(Certificacao certificacao, int qtdCursos)
+	public Collection<Colaborador> findAprovadosByCertificacao(Certificacao certificacao, int qtdCursos, boolean controlarVencimentoPorCertificacao)
 	{
 		Collection<ColaboradorTurma> colaboradorTurmas = getDao().findAprovadosReprovados(null, certificacao, null, null, null, null, null, " co.id ", true, SituacaoColaborador.ATIVO);
 		
@@ -712,12 +712,27 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		
 		for (ColaboradorTurma ct : colaboradorTurmas) 
 		{
-			if(verificaAprovacao(ct) && qtdColabCursos.get(ct.getColaborador().getId()) == qtdCursos)
-				aprovados.add(ct.getColaborador());
-			else
+			if(controlarVencimentoPorCertificacao)
 			{
-				ct.getColaborador().setNome("<span style='color: red;'>" + ct.getColaborador().getNome() + " (Não certificado)</span>");
-				reprovados.add(ct.getColaborador());
+				if(colaboradorCertificacaoManager.findByColaboradorIdAndCertificacaoId(ct.getColaborador().getId(), certificacao.getId()).size()>0)
+				{
+					aprovados.add(ct.getColaborador());
+				} else
+				{
+					ct.getColaborador().setNome("<span style='color: red;'>" + ct.getColaborador().getNome() + " (Não certificado)</span>");
+					reprovados.add(ct.getColaborador());
+				}
+			} else 
+			{
+			
+				if(verificaAprovacao(ct) && qtdColabCursos.get(ct.getColaborador().getId()) == qtdCursos)
+				{
+					aprovados.add(ct.getColaborador());
+				} else
+				{
+					ct.getColaborador().setNome("<span style='color: red;'>" + ct.getColaborador().getNome() + " (Não certificado)</span>");
+					reprovados.add(ct.getColaborador());
+				}
 			}
 		}
 				

@@ -78,7 +78,7 @@
 				<param name="sheetName">Planilha1</param>
 				<param name="columns">Nome,Nome Comercial,Matrícula,Cargo,Certificação,Certificado em,Periodicidade,Vencimento do Certificado,Curso,Período,Aprovado</param>
 				<param name="propertiesGroup">colaborador.id,colaborador.id,colaborador.matricula,colaborador.historicoColaborador.faixaSalarial.cargo.id,certificacao.id,dataCertificadoFormatada,certificacao.periodicidade,dataVencimentoCertificacao</param>
-				<param name="properties">colaborador.nome,colaborador.nomeComercial,colaborador.matricula,colaborador.historicoColaborador.faixaSalarial.cargo.nome,certificacao.nome,dataCertificadoFormatada,certificacao.periodicidadeFormatada,dataVencimentoCertificacao,turma.curso.nome,turma.periodoFormatado,aprovadoNaTurmaString</param>
+				<param name="properties">colaborador.nome,colaborador.nomeComercial,colaborador.matricula,colaborador.historicoColaborador.faixaSalarial.cargo.nome,certificacao.nome,dataCertificadoFormatada,certificacao.periodicidadeFormatada,dataVencimentoCertificacao,nomeCurso,periodoTurma,aprovadoNaTurmaString</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>	

@@ -851,7 +851,7 @@ public class ColaboradorTurmaManagerTest extends MockObjectTestCase
 		colaboradorTurmaDao.expects(once()).method("findAprovadosReprovados").withAnyArguments().will(returnValue(colabTurmas));
 
 		
-		Collection<Colaborador> colaboradores = colaboradorTurmaManager.findAprovadosByCertificacao(null, 2);
+		Collection<Colaborador> colaboradores = colaboradorTurmaManager.findAprovadosByCertificacao(null, 2, false);
 		assertEquals(5, colaboradores.size());
 		
 		Colaborador[] colabs = colaboradores.toArray(new Colaborador[]{});

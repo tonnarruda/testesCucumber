@@ -113,6 +113,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		p.add(Projections.property("e.cnpj"), "cnpj");
 		p.add(Projections.property("e.cnae"), "cnae");
 		p.add(Projections.property("e.acIntegra"), "acIntegra");
+		p.add(Projections.property("e.controlarVencimentoCertificacaoPor"), "controlarVencimentoCertificacaoPor");
 		p.add(Projections.property("e.grupoAC"), "grupoAC");
 		p.add(Projections.property("e.codigoAC"), "codigoAC");
 		p.add(Projections.property("e.exibirSalario"), "exibirSalario");
