@@ -879,7 +879,11 @@ public class ColaboradorQuestionarioDaoHibernate extends GenericDaoHibernate<Col
 		
 		Query query = getSession().createQuery(hql);
 		query.setLong("avaliacaoDesempenhoId", avaliacaoDesempenho.getId());
-		query.setLong("avaliacaoId", avaliacaoDesempenho.getAvaliacao().getId());
+		
+		Long avaliacaoId = null;
+		if (avaliacaoDesempenho.getAvaliacao() != null && avaliacaoDesempenho.getAvaliacao().getId() != null)
+			avaliacaoId = avaliacaoDesempenho.getAvaliacao().getId();
+		query.setLong("avaliacaoId", avaliacaoId);
 		
 		query.executeUpdate();
 	}

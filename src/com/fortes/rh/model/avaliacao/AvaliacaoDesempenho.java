@@ -88,6 +88,14 @@ public class AvaliacaoDesempenho extends AbstractModel implements Serializable, 
     	avaliacao.setTitulo(avaliacaoTitulo);
     }
     
+    public void setProjectionAvaliacaoAvaliarCompetenciasCargo(boolean avaliarCompetenciasCargo)
+    {
+    	if (avaliacao == null)
+    		avaliacao = new Avaliacao();
+    	
+    	avaliacao.setAvaliarCompetenciasCargo(avaliarCompetenciasCargo);
+    }
+    
 	public Avaliacao getAvaliacao() {
 		return avaliacao;
 	}
