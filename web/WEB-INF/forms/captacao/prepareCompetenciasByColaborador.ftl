@@ -478,7 +478,11 @@
 		<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.configuracaoNivelCompetenciaFaixaSalarial?exists && configuracaoNivelCompetenciaColaborador.configuracaoNivelCompetenciaFaixaSalarial.id?exists>
 			<#assign configuracaoNivelCompetenciaFaixaSalarialId = configuracaoNivelCompetenciaColaborador.configuracaoNivelCompetenciaFaixaSalarial.id/>
 		<#else>
-			<#assign configuracaoNivelCompetenciaFaixaSalarialId = configuracaoNivelCompetenciaFaixaSalarial.id/>
+			<#if configuracaoNivelCompetenciaFaixaSalarial?exists>
+				<#assign configuracaoNivelCompetenciaFaixaSalarialId = configuracaoNivelCompetenciaFaixaSalarial.id/>
+			<#else>
+				<#assign configuracaoNivelCompetenciaFaixaSalarialId = 0 />
+			</#if>
 		</#if>
 		
 		<#if configuracaoNivelCompetenciaColaborador?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario?exists && configuracaoNivelCompetenciaColaborador.colaboradorQuestionario.id?exists>
