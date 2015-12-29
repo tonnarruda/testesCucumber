@@ -115,6 +115,9 @@
 									      	<input type="hidden" name="competenciaId" value="${cnc.competenciaId}"/>
 									      	<input type="hidden" name="competenciaTipo" value="${cnc.tipoCompetencia}"/>
 									      	<input type="hidden" name="configuracaoNivelCompetenciaFaixaSalarial" value="${cnc.configuracaoNivelCompetenciaFaixaSalarial.id}"/>
+									      	<input type="hidden" name="configuracaoNivelCompetenciaFaixaSalarial.faixaSalarial" value="${faixa.id}"/>
+									      	<input type="hidden" name="configuracaoNivelCompetenciaFaixaSalarial.faixaSalarial.descricao" value="${faixa.descricao}"/>
+									      	<input type="hidden" name="competenciaDescricao" value="${cnc.competenciaDescricao}"/>
 								      		<div class="nome">${cnc.competenciaDescricao}</div>
 								      		<div style="clear:both;float: none;"></div>
 								      	</li>
@@ -186,9 +189,13 @@
 											      			${ccad.competenciaDescricao}
 											      		
 												      		<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].competenciaId" value="${ccad.competenciaId}"/>
+												      		<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].competenciaDescricao" value="${ccad.competenciaDescricao}"/>
 	    													<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].tipoCompetencia" value="${ccad.tipoCompetencia}"/>
 					        								<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].avaliador.id" value="${avaliador.id}"/>
+					        								<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].avaliador.nome" value="${avaliador.nome}"/>
 					        								<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].configuracaoNivelCompetenciaFaixaSalarial.id" value="${ccad.configuracaoNivelCompetenciaFaixaSalarial.id}"/>
+					        								<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].configuracaoNivelCompetenciaFaixaSalarial.faixaSalarial.id" value="${faixa.id}"/>
+					        								<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].configuracaoNivelCompetenciaFaixaSalarial.faixaSalarial.descricao" value="${faixa.descricao}"/>
 					        								<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos[${countConfiguracaoCompetencia}].avaliacaoDesempenho.id" value="${avaliacaoDesempenho.id}"/>
     													</li>
     													<#assign countConfiguracaoCompetencia = countConfiguracaoCompetencia + 1/>

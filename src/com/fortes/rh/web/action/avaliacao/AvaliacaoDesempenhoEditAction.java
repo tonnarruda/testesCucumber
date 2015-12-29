@@ -288,23 +288,8 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 	
 	public String saveParticipantes() throws Exception {
 		try {
-			avaliacaoDesempenho = avaliacaoDesempenhoManager.findById(avaliacaoDesempenho.getId());
-			
-			participantesAvaliados.removeAll(Collections.singleton(null));
-			participanteAvaliacaoDesempenhoManager.saveOrUpdate(participantesAvaliados);
-			
-			if ( !avaliacaoDesempenho.isLiberada() ) {
-				participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliados), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADO);
-				
-				participantesAvaliadores.removeAll(Collections.singleton(null));
-				participanteAvaliacaoDesempenhoManager.saveOrUpdate(participantesAvaliadores);
-				participanteAvaliacaoDesempenhoManager.removeNotIn( LongUtil.collectionToArrayLong(participantesAvaliadores), avaliacaoDesempenho.getId(), TipoParticipanteAvaliacao.AVALIADOR);
-				
-				colaboradorQuestionarios.removeAll(Collections.singleton(null));
-				colaboradorQuestionarioManager.saveOrUpdate(colaboradorQuestionarios);
-				colaboradorQuestionarioManager.removeNotIn(colaboradorQuestionarios, avaliacaoDesempenho.getId());
-			}
-			
+			avaliacaoDesempenho = avaliacaoDesempenhoManager.findByIdProjection(avaliacaoDesempenho.getId());
+			participanteAvaliacaoDesempenhoManager.save(avaliacaoDesempenho, participantesAvaliados, participantesAvaliadores, colaboradorQuestionarios);
 			addActionSuccess("Gravado com sucesso.");
 		} catch (Exception e) {
 			e.printStackTrace();

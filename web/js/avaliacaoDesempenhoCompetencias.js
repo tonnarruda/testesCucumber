@@ -223,8 +223,12 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
     	
     	$( avaliadorUlTag ).find(".competencia_"+ avaliadorLiTag.attr('id') +"_"+ avaliadorLiTag.attr('tipo')).append('<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].competenciaId" value="' + avaliadorLiTag.attr("id") + '"/>' +
     												   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].tipoCompetencia" value="' + avaliadorLiTag.find("input[name='competenciaTipo']").val() + '"/>' +
+    												   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].competenciaDescricao" value="' + avaliadorLiTag.find("input[name='competenciaDescricao']").val() + '"/>' +
 				        							   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].avaliador.id" value="' + $(avaliadorUlTag).parents(".portlet").attr("id") + '"/>' +
+				        							   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].avaliador.nome" value="' + $(avaliadorUlTag).parents(".portlet").find(".nome").text() + '"/>' +
 				        							   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].configuracaoNivelCompetenciaFaixaSalarial.id" value="' + avaliadorLiTag.find("input[name='configuracaoNivelCompetenciaFaixaSalarial']").val() + '"/>' +
+				        							   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].configuracaoNivelCompetenciaFaixaSalarial.faixaSalarial.id" value="' + avaliadorLiTag.find("input[name='configuracaoNivelCompetenciaFaixaSalarial.faixaSalarial']").val() + '"/>' +
+				        							   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].configuracaoNivelCompetenciaFaixaSalarial.faixaSalarial.descricao" value="' + avaliadorLiTag.find("input[name='configuracaoNivelCompetenciaFaixaSalarial.faixaSalarial.descricao']").val() + '"/>' +
 				        							   '<input type="hidden" name="configuracaoCompetenciaAvaliacaoDesempenhos['+countConfiguracaoCompetencia+'].avaliacaoDesempenho.id" value="' + avaliacaoDesempenhoId + '"/>');
     	
     	$("#avaliadores ul li .ui-icon-closethick").not(".disabled").click(function(){

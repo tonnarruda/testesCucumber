@@ -306,6 +306,7 @@ function createAvaliador(id, nome) {
 	if ( $("#avaliadores .portlet[id="+id+"] ul").length == 0 ) {
 		$("#avaliadores .column").append('<div class="portlet ui-selectable" id="'+ id +'">' +
       			 '<input type="hidden" name="participantesAvaliadores['+countParticipantesAvaliadores+'].colaborador.id" value="'+id+'"/>' +
+      			'<input type="hidden" name="participantesAvaliadores['+countParticipantesAvaliadores+'].colaborador.nome" value="'+nome+'"/>' +
       			 '<input type="hidden" name="participantesAvaliadores['+countParticipantesAvaliadores+'].avaliacaoDesempenho.id" value="'+avaliacaoDesempenhoId+'"/>' +
       			 '<input type="hidden" name="participantesAvaliadores['+countParticipantesAvaliadores+'].tipo" value="R"/>' +
 		  		 '<div class="portlet-header">' +
@@ -344,7 +345,9 @@ function createAvaliadoForAvaliador(avaliadorUlTag, avaliadorLiTag) {
         if( $(avaliadorUlTag).find(".avaliado_"+ avaliadorLiTag.attr('id')).length == 0 ) {
         	$("<li class='avaliado_"+avaliadorLiTag.attr('id')+"'></li>").text( avaliadorLiTag.find(".nome").text() ).appendTo( avaliadorUlTag );
         	$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaborador.id" value="' + avaliadorLiTag.attr("id") + '"/>' +
-					        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliador.id" value="' + $(avaliadorUlTag).parents(".portlet").attr("id") + '"/>');
+        												   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].colaborador.nome" value="' + avaliadorLiTag.find(".nome").text() + '"/>' +
+					        							   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliador.id" value="' + $(avaliadorUlTag).parents(".portlet").attr("id") + '"/>' +
+        												   '<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliador.nome" value="' + $(avaliadorUlTag).parents(".portlet").find(".nome").text() + '"/>');
         	if(avaliacaoId!=0)
         		$( avaliadorUlTag ).find(".avaliado_"+ avaliadorLiTag.attr('id')).append('<input type="hidden" name="colaboradorQuestionarios['+countColaboradorQuestionarios+'].avaliacao.id" value="' + avaliacaoId + '"/>');
         	
