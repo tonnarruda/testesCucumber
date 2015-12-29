@@ -346,10 +346,10 @@ public class NivelCompetenciaEditAction extends MyActionSupportList
 		faixaSalarial = colaborador.getHistoricoColaborador().getFaixaSalarial();
 		configuracaoNivelCompetenciaFaixaSalarial = configuracaoNivelCompetenciaFaixaSalarialManager.findByFaixaSalarialIdAndData(faixaSalarial.getId(), data);
 		
-		if(configuracaoNivelCompetenciaFaixaSalarial != null && configuracaoNivelCompetenciaFaixaSalarial.getId() != null)
+		if(configuracaoNivelCompetenciaFaixaSalarial != null && configuracaoNivelCompetenciaFaixaSalarial.getId() != null) {
 			niveisCompetenciaFaixaSalariais = configuracaoNivelCompetenciaManager.findCompetenciaByFaixaSalarial(faixaSalarial.getId(), configuracaoNivelCompetenciaFaixaSalarial.getData(), configuracaoNivelCompetenciaFaixaSalarial.getId(), null, null);
-		
-		nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId(), configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
+			nivelCompetencias = nivelCompetenciaManager.findAllSelect(getEmpresaSistema().getId(), configuracaoNivelCompetenciaFaixaSalarial.getNivelCompetenciaHistorico().getId(), null);
+		}
 		
 		return Action.SUCCESS;
 	}
