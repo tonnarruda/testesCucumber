@@ -116,10 +116,10 @@
 				
 				var percentualFinal = 0;
 				$(niveis).filter(function() {
-				  return $(this).attr("percentual") <= media;
+				  return parseFloat($(this).attr("percentual")) <= media;
 				}).each(function() {
-				  var value = parseFloat($(this).attr("percentual"));
-				  percentualFinal = (value > percentualFinal) ? value : percentualFinal;
+				  var value = $(this).attr("percentual");
+				  percentualFinal = ( parseFloat(value) > parseFloat(percentualFinal)) ? value : percentualFinal;
 				});
 				
 				if(niveisSelecionadosDosCriterios.length > 0) {
