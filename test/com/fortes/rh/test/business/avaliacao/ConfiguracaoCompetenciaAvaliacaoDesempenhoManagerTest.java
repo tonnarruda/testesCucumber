@@ -69,7 +69,7 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerTest extends MockO
 		Exception exception = null;
 		try
 		{
-			configuracaoCompetenciaAvaliacaoDesempenhoManager.save(Arrays.asList(new ConfiguracaoCompetenciaAvaliacaoDesempenho()), avaliacaoDesempenho.getId());
+			configuracaoCompetenciaAvaliacaoDesempenhoManager.save(Arrays.asList(new ConfiguracaoCompetenciaAvaliacaoDesempenho()), avaliacaoDesempenho);
 		}
 		catch(Exception e){
 			exception = e;

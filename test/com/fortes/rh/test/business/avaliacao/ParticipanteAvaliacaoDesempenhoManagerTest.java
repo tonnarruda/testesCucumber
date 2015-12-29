@@ -44,4 +44,8 @@ public class ParticipanteAvaliacaoDesempenhoManagerTest extends MockObjectTestCa
 		particapanteAvaliacaoDesempenhoDao.expects(once()).method("clone").with(new Constraint[]{ANYTHING}).isVoid();
 		participanteAvaliacaoDesempenhoManager.clone(avaliacaoDesempenho, participantes);
 	}
-}
+	
+	public void testSave(){
+		
+	}
+	}
