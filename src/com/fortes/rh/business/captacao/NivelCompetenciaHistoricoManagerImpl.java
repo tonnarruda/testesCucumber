@@ -29,6 +29,10 @@ public class NivelCompetenciaHistoricoManagerImpl extends GenericManagerImpl<Niv
 	{
 		return getDao().findByData(date, empresaId);
 	}
+	
+	public NivelCompetenciaHistorico save(NivelCompetenciaHistorico nivelCompetenciaHistorico){
+		return getDao().save(nivelCompetenciaHistorico);
+	}
 
 	public void updateNivelConfiguracaoHistorico(NivelCompetenciaHistorico nivelCompetenciaHistorico) {
 		configHistoricoNivelManager.removeNotIds(LongUtil.collectionToArrayLong(nivelCompetenciaHistorico.getConfigHistoricoNiveis()), nivelCompetenciaHistorico.getId());

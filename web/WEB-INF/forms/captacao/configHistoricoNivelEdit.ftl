@@ -8,10 +8,10 @@
 		</style>
 		
 		<#if nivelCompetenciaHistorico?exists && nivelCompetenciaHistorico.id?exists>
-			<title>Editar Histórico do Nivel de Competência</title>
+			<title>Editar Histórico do Nível de Competência</title>
 			<#assign formAction="update.action"/>
 		<#else>
-			<title>Inserir Histórico do Nivel de Competência</title>
+			<title>Inserir Histórico do Nível de Competência</title>
 			<#assign formAction="insert.action"/>
 		</#if>
 	
@@ -99,6 +99,7 @@
 					
 					<@display.column title="<input type='checkbox' id='checkAllNiveis'/>" style="width:50px; text-align:center;" >
 						<input type="checkbox" id="configHistoricoNivel_${i}" name="configHistoricoNivels[${i}].id" value="${configHistNivelId}" class="configHistoricoNivel" <#if !podeEditar>disabled="disabled" </#if> />
+						<@ww.hidden name="configHistoricoNivels[${i}].nivelCompetencia.descricao" value="${configHistNivel.nivelCompetencia.descricao}"/> 
 					</@display.column>
 						
 					<@display.column property="nivelCompetencia.descricao" title="Descrição"/>
