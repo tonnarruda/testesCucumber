@@ -182,7 +182,12 @@
 				<img border="0" title="Avaliação bloqueada" src="<@ww.url includeParams="none" value="/imgs/icon_email.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 			</#if>
 			
-			<a href="prepareCompetencias.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}"><img border="0" title="Competências" src="<@ww.url includeParams="none" value="/imgs/competencias.gif"/>"></a>
+			<#if !avaliacaoDesempenho.avaliacao?exists || (avaliacaoDesempenho.avaliacao?exists && avaliacaoDesempenho.avaliacao.avaliarCompetenciasCargo) >
+				<a href="prepareCompetencias.action?avaliacaoDesempenho.id=${avaliacaoDesempenho.id}"><img border="0" title="Competências" src="<@ww.url includeParams="none" value="/imgs/competencias.gif"/>"></a>
+			<#else>
+				<img border="0" title="Competências" src="<@ww.url includeParams="none" value="/imgs/competencias.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+			</#if>
+				
 			<a href="javascript:;" onclick="javascript:clonar(${avaliacaoDesempenho.id}, '${avaliacaoDesempenho.titulo}')"><img border="0" title="Clonar" src="<@ww.url includeParams="none" value="/imgs/clonar.gif"/>"></a>
 			<#if avaliacaoDesempenho.avaliacao?exists && avaliacaoDesempenho.avaliacao.id?exists>
 				<a href="../modelo/imprimir.action?avaliacao.id=${avaliacaoDesempenho.avaliacao.id}"><img border="0" title="Imprimir Modelo da Avaliação" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>

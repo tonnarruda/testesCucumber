@@ -275,10 +275,16 @@ public class AvaliacaoDesempenhoEditActionTest extends MockObjectTestCase
 
 	public void testUpdate() throws Exception
 	{
+		Avaliacao avaliacao = AvaliacaoFactory.getEntity(1L);
+		
 		AvaliacaoDesempenho avaliacaoDesempenho = AvaliacaoDesempenhoFactory.getEntity(1L);
+		avaliacaoDesempenho.setAvaliacao(avaliacao);
 		action.setAvaliacaoDesempenho(avaliacaoDesempenho);
 
 		manager.expects(once()).method("update").with(eq(avaliacaoDesempenho)).isVoid();
+		colaboradorQuestionarioManager.expects(once()).method("updateAvaliacaoFromColaboradorQuestionarioByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho)).isVoid();
+		avaliacaoManager.expects(once()).method("findById").with(eq(avaliacaoDesempenho.getId())).will(returnValue(avaliacao));
+		configuracaoCompetenciaAvaliacaoDesempenhoManager.expects(once()).method("removeByAvaliacaoDesempenho").with(eq(avaliacaoDesempenho.getId())).isVoid();
 
 		assertEquals("success", action.update());
 	}

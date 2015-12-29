@@ -148,6 +148,7 @@ public class AvaliacaoDesempenhoDaoHibernate extends GenericDaoHibernate<Avaliac
 		p.add(Projections.property("a.liberada"), "liberada");
 		p.add(Projections.property("avaliacao.id"), "projectionAvaliacaoId");
 		p.add(Projections.property("avaliacao.titulo"), "projectionAvaliacaoTitulo");
+		p.add(Projections.property("avaliacao.avaliarCompetenciasCargo"), "projectionAvaliacaoAvaliarCompetenciasCargo");
 		p.add(Projections.property("emp.id"), "empresaId");
 		criteria.setProjection(p);
 		

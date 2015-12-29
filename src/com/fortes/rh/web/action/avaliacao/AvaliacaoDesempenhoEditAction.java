@@ -364,8 +364,14 @@ public class AvaliacaoDesempenhoEditAction extends MyActionSupportList
 			avaliacaoDesempenho.setEmpresa(getEmpresaSistema());
 			avaliacaoDesempenhoManager.update(avaliacaoDesempenho);
 			
-			if( avaliacaoDesempenho.getAvaliacao() != null && avaliacaoDesempenho.getAvaliacao().getId() != null )
-				colaboradorQuestionarioManager.updateAvaliacaoFromColaboradorQuestionarioByAvaliacaoDesempenho(avaliacaoDesempenho);
+			colaboradorQuestionarioManager.updateAvaliacaoFromColaboradorQuestionarioByAvaliacaoDesempenho(avaliacaoDesempenho);
+			
+			if( avaliacaoDesempenho.getAvaliacao() != null && avaliacaoDesempenho.getAvaliacao().getId() != null) {
+				Avaliacao avaliacao = avaliacaoManager.findById(avaliacaoDesempenho.getAvaliacao().getId());
+				
+				if ( !avaliacao.isAvaliarCompetenciasCargo() )
+					configuracaoCompetenciaAvaliacaoDesempenhoManager.removeByAvaliacaoDesempenho(avaliacaoDesempenho.getId());	
+			}
 			
 			addActionSuccess("Avaliação de desempenho atualizada com sucesso.");
 		} catch (Exception e) {
