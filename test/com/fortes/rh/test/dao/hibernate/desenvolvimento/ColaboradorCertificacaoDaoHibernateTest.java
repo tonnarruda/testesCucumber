@@ -121,15 +121,77 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		Collection<Curso> cursos = new ArrayList<Curso>();
 		cursos.add(curso);
 		
+		Certificacao certificacaoPre = CertificacaoFactory.getEntity();
+		certificacaoDao.save(certificacaoPre);
+		
 		Certificacao certificacao = CertificacaoFactory.getEntity();
 		certificacao.setCursos(cursos);
+		certificacao.setCertificacaoPreRequisito(certificacaoPre);
 		certificacaoDao.save(certificacao);
+		
+		Certificacao certificacao2 = CertificacaoFactory.getEntity();
+		certificacao2.setCursos(cursos);
+		certificacao2.setCertificacaoPreRequisito(certificacaoPre);
+		certificacaoDao.save(certificacao2);
 		
 		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
 		
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = colaboradorCertificacaoDao.colaboradoresCertificadosByColaboradorTurmaId(colaboradorTurma.getId());
 		
-		assertEquals(1, colaboradorCertificacaos.size());
+		assertEquals(2, colaboradorCertificacaos.size());
+	}
+	
+	public void testColaboradoresCertificadosByColaboradorIdAndCertificacaId()
+	{
+		Curso curso = CursoFactory.getEntity();
+		cursoDao.save(curso);
+		
+		Curso curso2 = CursoFactory.getEntity();
+		cursoDao.save(curso2);
+		
+		Turma turma = TurmaFactory.getEntity();
+		turma.setRealizada(true);
+		turma.setCurso(curso);
+		turma.setDataPrevFim(DateUtil.criarDataMesAno(1, 1, 2015));
+		turmaDao.save(turma);
+		
+		Turma turma2 = TurmaFactory.getEntity();
+		turma2.setRealizada(true);
+		turma2.setCurso(curso2);
+		turma2.setDataPrevFim(DateUtil.criarDataMesAno(1, 1, 2015));
+		turmaDao.save(turma2);
+
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma.setCurso(curso);
+		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurma.setTurma(turma);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity();
+		colaboradorTurma2.setCurso(curso2);
+		colaboradorTurma2.setColaborador(colaborador);
+		colaboradorTurma2.setTurma(turma2);
+		colaboradorTurmaDao.save(colaboradorTurma2);
+		
+		Collection<Curso> cursos = new ArrayList<Curso>();
+		cursos.add(curso);
+		
+		Certificacao certificacaoPre = CertificacaoFactory.getEntity();
+		certificacaoDao.save(certificacaoPre);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacao.setCursos(cursos);
+		certificacao.setCertificacaoPreRequisito(certificacaoPre);
+		certificacaoDao.save(certificacao);
+		
+		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
+		
+		ColaboradorCertificacao colaboradorCertificacaos = colaboradorCertificacaoDao.colaboradorCertificadoByColaboradorIdAndCertificacaId(colaborador.getId(), certificacao.getId());
+		
+		assertNotNull(colaboradorCertificacaos);
 	}
 	
 	public void testGetCertificacoesAVencer()

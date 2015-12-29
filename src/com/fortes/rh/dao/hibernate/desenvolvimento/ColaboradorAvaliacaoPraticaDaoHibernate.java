@@ -19,7 +19,7 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 	public Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId) 
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append("select cap.id, cap.data, cap.nota, ap.id, ap.notaMinima from ColaboradorAvaliacaoPratica cap ");
+		sql.append("select cap.id as capId, cap.data as capdata, cap.nota as capNota, ap.id as apId, ap.notaMinima as apMinimo, ap.titulo as apTitulo from ColaboradorAvaliacaoPratica cap ");
 		sql.append("left join AvaliacaoPratica ap on ap.id = cap.avaliacaopratica_id ");
 		sql.append("where cap.certificacao_id = :certificacaoId and cap.colaborador_id = :colaboradorId ");
 
@@ -62,6 +62,7 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 			colaboradorAvaliacaoPratica.setNota((Double)res[2]);
 			colaboradorAvaliacaoPratica.setAvaliacaoPraticaId(((BigInteger)res[3]).longValue());
 			colaboradorAvaliacaoPratica.setAvaliacaoPraticaNotaMinima((Double)res[4]);
+			colaboradorAvaliacaoPratica.setAvaliacaoPraticaTitulo((String)res[5]);
 			
 			ColaboradorAvaliacaoPraticas.add(colaboradorAvaliacaoPratica);
 		}

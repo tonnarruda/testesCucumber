@@ -9,6 +9,12 @@
 			$('form[name=form]').attr('action', action);
 			return validaFormulario('form', new Array('certificacao'), null);
 		}
+		
+		$(function() {
+			$('#tooltipHelp').qtip({
+				content: 'Algumas Certificações estão desabilitadas por não possuirem periodicidade.'
+			});
+		});
 	</script>
 	
 	<#include "../ftl/mascarasImports.ftl" />
@@ -38,7 +44,9 @@
 		<@ww.label value="a" liClass="liLeft" />
 		<@ww.datepicker name="dataFim" id="dataFim" value="${dateFim}" cssClass="mascaraData validaDataFim" />
 	
-		<@frt.checkListBox name="certificacoesCheck" id="certificacoesCheck" label="Certificações" list="certificacoesCheckList" filtro="true" required="true"/>
+		Certificações*:
+		<img id="tooltipHelp" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16"  />
+		<@frt.checkListBox name="certificacoesCheck" id="certificacoesCheck" list="certificacoesCheckList" filtro="true"/>
 		<@frt.checkListBox name="estabelecimentosCheck" id="estabelecimentosCheck" label="Estabelecimentos" list="estabelecimentosCheckList" filtro="true"/>
 		<@frt.checkListBox name="areasCheck" id="areasCheck" label="Áreas Organizacionais" list="areasCheckList" filtro="true" selectAtivoInativo="true"/>
 		<@ww.select label="Considerar colaboradores que possuem certificações" name="filtroCetificacao" id="filtroCetificacao" list="tipoCertificacoes" cssStyle="width: 500px;"/>

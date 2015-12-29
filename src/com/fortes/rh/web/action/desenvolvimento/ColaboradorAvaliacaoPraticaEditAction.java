@@ -175,6 +175,8 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 			}	
 		}
 		
+		if(getEmpresaSistema().isControlarVencimentoPorCertificacao())
+			colaboradorCertificacaoManager.colaboradoresCertificadosByColaboradorIdAndCertificacaId(colaborador.getId(), certificacao.getId());
 		
 		return buscaColaboradores();
 	}

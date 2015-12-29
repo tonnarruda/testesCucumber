@@ -11,7 +11,6 @@ import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
 import com.fortes.rh.model.geral.Colaborador;
-import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.web.tags.CheckBox;
 
@@ -43,12 +42,30 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 		return getDao().findMatrizTreinamento(faixaIds);
 	}
 	
-	public Collection<CheckBox> populaCheckBox(Long empresaId)
+	public Collection<CheckBox> populaCheckBoxDesabilitandoSemPeriodicidade(Long empresaId)
 	{
 		try
 		{
-			Collection<Certificacao> estabelecimentosTmp = getDao().findAllSelect(empresaId);
-			return CheckListBoxUtil.populaCheckListBox(estabelecimentosTmp, "getId", "getNome");
+			Collection<CheckBox> checkboxes = new ArrayList<CheckBox>();
+			Collection<Certificacao> certificacoesTemp = getDao().findAllSelect(empresaId);
+			CheckBox checkBox = null;
+			
+			for (Certificacao certificacao : certificacoesTemp)
+			{
+				checkBox = new CheckBox();
+				checkBox.setId(certificacao.getId());
+				checkBox.setNome(certificacao.getNome());
+				checkBox.setDesabilitado(true);
+				
+				if (certificacao.getPeriodicidade() == null)
+					checkBox.setTitulo("Essa certificação não possui periodicidade");
+				else
+					checkBox.setDesabilitado(false);
+				
+				checkboxes.add(checkBox);
+			}
+			
+			return checkboxes;
 		}
 		catch (Exception e)
 		{

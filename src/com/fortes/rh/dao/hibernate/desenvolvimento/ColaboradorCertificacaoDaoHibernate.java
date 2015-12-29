@@ -109,12 +109,13 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 	public Collection<ColaboradorCertificacao> colaboradoresCertificadosByColaboradorTurmaId(Long colaboradorTurmaId) 
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append("select cc.certificacaos_id, ct.colaborador_id ");
+		sql.append("select distinct cc.certificacaos_id, ct.colaborador_id, cert.certificacaoPreRequisito_id ");
 		sql.append("from certificacao_curso cc ");
+		sql.append("inner join certificacao cert on cert.id = cc.certificacaos_id ");
 		sql.append("inner join colaboradorturma  ct on ct.curso_id = cc.cursos_id ");
 		sql.append("where ct.id = :colaboradorTurmaId ");
 		sql.append("and verifica_certificacao(cc.certificacaos_id, ct.colaborador_id) ");
-		sql.append("order by cc.certificacaos_id, ct.curso_id ");
+		sql.append("order by cc.certificacaos_id, ct.colaborador_id, cert.certificacaoPreRequisito_id ");
 		
 		Query query = getSession().createSQLQuery(sql.toString());
 		query.setLong("colaboradorTurmaId", colaboradorTurmaId);
@@ -125,13 +126,39 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		
 		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
 			Object[] res = it.next();
-			ColaboradorCertificacao colabs = new ColaboradorCertificacao(((BigInteger)res[0]).longValue(), ((BigInteger)res[1]).longValue());
+			ColaboradorCertificacao colabs = new ColaboradorCertificacao(((BigInteger)res[0]).longValue(), ((BigInteger)res[1]).longValue(), res[2] != null ? ((BigInteger)res[2]).longValue() : null);
 			Colaboradores.add(colabs);
 		}
 
 		return Colaboradores;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public ColaboradorCertificacao colaboradorCertificadoByColaboradorIdAndCertificacaId(Long colaboradorId, Long certificacaoId) 
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("select c.id, :colaboradorId, c.certificacaoPreRequisito_id ");
+		sql.append("from certificacao c ");
+		sql.append("where verifica_certificacao(:certificacaoId, :colaboradorId) ");
+		sql.append("and c.id = :certificacaoId ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("colaboradorId", colaboradorId);
+		query.setLong("certificacaoId", certificacaoId);
+		
+		@SuppressWarnings("rawtypes")
+		List resultado = query.list();
+		
+		ColaboradorCertificacao colaboradorCertificacao = null;
+		Iterator<Object[]> it = resultado.iterator();
+		Object[] res = it.next();
 
+		if (res != null)
+			colaboradorCertificacao = new ColaboradorCertificacao(((BigInteger)res[0]).longValue(), ((BigInteger)res[1]).longValue(), res[2] != null ? ((BigInteger)res[2]).longValue() : null);
+
+		return colaboradorCertificacao;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public Collection<ColaboradorCertificacao> getCertificacoesAVencer(Date data, Long empresaId) 
 	{

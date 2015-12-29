@@ -144,7 +144,7 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	
 	public String prepareImprimirCertificadosVencidosAVencer()
 	{
-		certificacoesCheckList = certificacaoManager.populaCheckBox(getEmpresaSistema().getId());
+		certificacoesCheckList = certificacaoManager.populaCheckBoxDesabilitandoSemPeriodicidade(getEmpresaSistema().getId());
 		certificacoesCheckList = CheckListBoxUtil.marcaCheckListBox(certificacoesCheckList, certificacoesCheck);
 
 		areasCheckList = areaOrganizacionalManager.populaCheckOrderDescricao(getEmpresaSistema().getId());

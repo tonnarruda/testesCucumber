@@ -130,6 +130,10 @@ public class CheckListBoxTag extends TagSupport
 					disabled += " disabled = \"disabled\" "; 
 
 				checkGroup.append("<label for=\"checkGroup" + name + value + "\"><input name=\"" + name + "\" value=\"" + value + "\" type=\"checkbox\""+disabled+"");
+				
+				if(cb.getTitulo() != null && !"".equals(cb.getTitulo()))
+					checkGroup.append(" title=\"" + cb.getTitulo() + "\" ");
+				
 				checkGroup.append(" id=\"checkGroup" + name + value + "\" " + check + " onclick=\""+ onClick +"\">"); 
 				
 				if(showTitle)

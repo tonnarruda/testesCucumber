@@ -520,7 +520,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 	{
 		Colaborador colaborador = null;
 		Collection<Certificacao> certificacoes = certificacaoManager.findByCursoId(cursoId);
-		String msgAlert = null;
+		String msgAlert = "";
 		String msgAlertColaborador = null;
 
 		for(Certificacao certificacao : certificacoes){

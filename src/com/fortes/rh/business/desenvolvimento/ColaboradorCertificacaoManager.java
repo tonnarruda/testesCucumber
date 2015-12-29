@@ -12,4 +12,5 @@ public interface ColaboradorCertificacaoManager extends GenericManager<Colaborad
 	Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, char filtroCetificacao, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds);
 	void verificaCertificacaoByColaboradorTurmaId(Long colaboradorTurmaId);
 	Collection<ColaboradorCertificacao> getCertificacoesAVencer(Date data, Long empresaId);
+	Collection<ColaboradorCertificacao> colaboradoresCertificadosByColaboradorIdAndCertificacaId(Long colaboradorId, Long certificacaoId);
 }

@@ -33,7 +33,7 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	@Transient
 	private String nomeCurso;
 	@Transient
-	private String peridoTurma;
+	private String periodoTurma;
 	@Transient
 	private Boolean aprovadoNaTurma;
 
@@ -64,13 +64,14 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	}
 	
 	//usado por certificacoesByColaboradorTurmaId
-	public ColaboradorCertificacao(Long certificacaoId, Long colaboradorId)
+	public ColaboradorCertificacao(Long certificacaoId, Long colaboradorId, Long certificacaoPreRequisitoId)
 	{
 		this.colaborador = new Colaborador();
 		this.colaborador.setId(colaboradorId);
 
 		this.certificacao = new Certificacao();
 		this.certificacao.setId(certificacaoId);
+		this.certificacao.setCertificacaoPreRequisitoId(certificacaoPreRequisitoId);
 	}
 	
 	public Colaborador getColaborador() {
@@ -219,11 +220,11 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		this.nomeCurso = nomeCurso;
 	}
 
-	public String getPeridoTurma() {
-		return peridoTurma;
+	public String getPeriodoTurma() {
+		return periodoTurma;
 	}
 
-	public void setPeridoTurma(String peridoTurma) {
-		this.peridoTurma = peridoTurma;
+	public void setPeriodoTurma(String periodoTurma) {
+		this.periodoTurma = periodoTurma;
 	}
 }
