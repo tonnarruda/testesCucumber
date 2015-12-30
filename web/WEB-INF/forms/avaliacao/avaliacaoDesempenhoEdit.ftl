@@ -17,6 +17,7 @@
 	
 		<#include "../ftl/mascarasImports.ftl" />
 		
+		<style> :disabled { background: #F6F6F6; } </style>
 		<script type="text/javascript" >
 			$(function() {
 				habilitaExibirPerformanceProfissional();
@@ -34,11 +35,11 @@
 			
 			function exibirModeloAvaliacao(){
 				if($('#avaliarSomenteCompetencias').is(':checked')){
-					$('#modelo').attr('disabled','true');
+					$('#modelo').attr('disabled','disabled');
 					$('#modelo').parent().parent().find('.req').hide();
 				}
 				else{
-					$('#modelo').attr('disabled',false);
+					$('#modelo').removeAttr('disabled');
 					$('#modelo').parent().parent().find('.req').show();
 				}
 			}
