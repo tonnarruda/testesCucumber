@@ -13,4 +13,5 @@ public interface ConfiguracaoNivelCompetenciaFaixaSalarialManager extends Generi
 	Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> findProximasConfiguracoesAposData(Long faixaSalarialId, Date data);
 	boolean existByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId);
 	ConfiguracaoNivelCompetenciaFaixaSalarial findByFaixaSalarialIdAndData(Long faixaSalarialId, Date data);
+	ConfiguracaoNivelCompetenciaFaixaSalarial findByProjection(Long configuracaoNivelCompetenciaFaixaSalarialId);
 }

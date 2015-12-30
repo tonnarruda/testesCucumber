@@ -35,6 +35,22 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarial extends AbstractModel imp
 	public void setFaixaSalarial(FaixaSalarial faixaSalarial) {
 		this.faixaSalarial = faixaSalarial;
 	}
+	public void setFaixaSalarialId(Long faixaSalarialId) {
+		inicializaFaixaSalarial();
+		this.faixaSalarial.setId(faixaSalarialId);
+	}
+	public void setFaixaSalarialNome(String faixaSalarialNome) {
+		inicializaFaixaSalarial();
+		this.faixaSalarial.setNome(faixaSalarialNome);
+	}
+	public void setCargoId(Long cargoId) {
+		inicializaFaixaSalarial();
+		this.faixaSalarial.setProjectionCargoId(cargoId);
+	}
+	public void setCargoNome(String cargoNome) {
+		inicializaFaixaSalarial();
+		this.faixaSalarial.setNomeCargo(cargoNome);
+	}
 	public Date getData() {
 		return data;
 	}
@@ -53,14 +69,16 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarial extends AbstractModel imp
 	public void setNivelCompetenciaHistorico(NivelCompetenciaHistorico nivelCompetenciaHistorico) {
 		this.nivelCompetenciaHistorico = nivelCompetenciaHistorico;
 	}
-	
 	public void setNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId){
 		inicializaNivelCompetenciaHistorico();
 		this.nivelCompetenciaHistorico.setId(nivelCompetenciaHistoricoId);
 	}
-	
 	private void inicializaNivelCompetenciaHistorico(){
 		if(this.nivelCompetenciaHistorico == null)
 			this.nivelCompetenciaHistorico = new NivelCompetenciaHistorico();
+	}
+	private void inicializaFaixaSalarial() {
+		if(this.faixaSalarial == null)
+			this.faixaSalarial = new FaixaSalarial();
 	}
 }
