@@ -98,6 +98,36 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		assertEquals(0, colaboradorNaoCertificados.size());
 	}
 	
+	
+	public void testFindUltimaCertificacaoByColaboradorIdAndCertificacaoId()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Colaborador colaboradorNaoCertificado = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaboradorNaoCertificado);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacaoDao.save(certificacao);
+		
+		ColaboradorCertificacao colaboradorCertificacao = new ColaboradorCertificacao();
+		colaboradorCertificacao.setColaborador(colaborador);
+		colaboradorCertificacao.setCertificacao(certificacao);
+		colaboradorCertificacao.setData(DateUtil.criarDataMesAno(1, 1, 2015));
+		colaboradorCertificacaoDao.save(colaboradorCertificacao);
+		
+		ColaboradorCertificacao colaboradorCertificacao2 = new ColaboradorCertificacao();
+		colaboradorCertificacao2.setColaborador(colaborador);
+		colaboradorCertificacao2.setCertificacao(certificacao);
+		colaboradorCertificacao2.setData(DateUtil.criarDataMesAno(1, 2, 2015));
+		colaboradorCertificacaoDao.save(colaboradorCertificacao2);
+		
+		ColaboradorCertificacao colaboradorCertificacaoRetorno = colaboradorCertificacaoDao.findUltimaCertificacaoByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId());
+		
+		assertNotNull(colaboradorCertificacaoRetorno);
+		assertEquals("01/02/2015", DateUtil.formataDiaMesAno(colaboradorCertificacaoRetorno.getData()));
+	}
+	
 	public void testCertificacoesByColaboradorTurmaId()
 	{
 		Curso curso = CursoFactory.getEntity();

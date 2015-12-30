@@ -264,6 +264,7 @@
     <property name="usuarioMensagemManager" ref="usuarioMensagemManager" />
     <property name="usuarioEmpresaManager" ref="usuarioEmpresaManager" />
     <property name="empresaManager" ref="empresaManager" />
+    <property name="colaboradorCertificacaoManager" ref="colaboradorCertificacaoManager" />
     <property name="mail" ref="mail" />
   </bean>
   <bean name="enviarNotificacaoCursosOuCertificacoesAVencer" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
@@ -341,7 +342,7 @@
   </bean>
   <bean id="cronTriggerenviarNotificacaoCursosOuCertificacoesAVencer" class="org.springframework.scheduling.quartz.CronTriggerBean">
     <property name="jobDetail" ref="enviarNotificacaoCursosOuCertificacoesAVencer" />
-    <property name="cronExpression" value="0 20 7 * * ?" /> <!-- Todo os dias as 07:00h am -->
+    <property name="cronExpression" value="0 20 7 * * ?" /> <!-- Todo os dias as 07:20h am -->
   </bean>
   
   <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">

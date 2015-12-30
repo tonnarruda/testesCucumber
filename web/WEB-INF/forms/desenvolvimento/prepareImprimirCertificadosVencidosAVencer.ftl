@@ -5,11 +5,6 @@
 	<title>Certificações vencidas e a vencer</title>
 	
 	<script type="text/javascript">
-		function submeterAction(action)	{
-			$('form[name=form]').attr('action', action);
-			return validaFormulario('form', new Array('certificacao'), null);
-		}
-		
 		$(function() {
 			$('#tooltipHelp').qtip({
 				content: 'Algumas Certificações estão desabilitadas por não possuirem periodicidade.'

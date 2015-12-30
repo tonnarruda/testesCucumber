@@ -494,12 +494,19 @@ public class TurmaEditAction extends MyActionSupportList implements ModelDriven
 
 		cursos = cursoManager.findByCertificacao(certificacao.getId());
 		parametros.put("CURSOS", cursos);
-		certificacaoTreinamentos = Certificado.montaCertificacao(colaboradoresCheck, certificado, cursos);
+		
+		boolean vencimentoPorCertificacao = getEmpresaSistema().isControlarVencimentoPorCertificacao();
+
+		String retorno = "";
+		if(vencimentoPorCertificacao)
+			retorno = "ComAvaliacaoPratica";
+		
+		certificacaoTreinamentos = certificacaoManager.montaCertificacao(certificacao.getId(), colaboradoresCheck, certificado, cursos, vencimentoPorCertificacao);
 
 		if(certificado.getTamanho().equals("1"))
-			return "successGrande";
+			return "successGrande" + retorno;
 		else
-			return "successPequeno";
+			return "successPequeno" + retorno;
 
 	}
 

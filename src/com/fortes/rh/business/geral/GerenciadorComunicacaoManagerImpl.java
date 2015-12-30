@@ -1911,7 +1911,7 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 
 	private void notificacaoCertificacao(ParametrosDoSistema parametros, Collection<GerenciadorComunicacao> gerenciadorComunicacaos) 
 	{
-		Calendar data;
+		Date data;
 		Collection<Integer> diasLembrete = new ArrayList<Integer>();
 		Collection<ColaboradorCertificacao> colaboradorCertificacoes = new ArrayList<ColaboradorCertificacao>();
 		StringBuilder mensagemTitulo;
@@ -1921,14 +1921,11 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 		{
 			try 
 			{
-				diasLembrete = getIntervaloAviso(gerenciadorComunicacao.getQtdDiasLembrete());
+				diasLembrete = getIntervaloAviso (gerenciadorComunicacao.getQtdDiasLembrete());
 				for (Integer diaLembrete : diasLembrete)
 				{
-					data = Calendar.getInstance();
-					data.setTime(new Date());
-					data.add(Calendar.DAY_OF_MONTH, +diaLembrete);
-
-					colaboradorCertificacoes = colaboradorCertificacaoManager.getCertificacoesAVencer(data.getTime(), gerenciadorComunicacao.getEmpresa().getId());
+					data = DateUtil.incrementaDias(new Date(), diaLembrete);
+					colaboradorCertificacoes = colaboradorCertificacaoManager.getCertificacoesAVencer(data, gerenciadorComunicacao.getEmpresa().getId());
 
 					for (ColaboradorCertificacao colaboradorCertificacao : colaboradorCertificacoes)
 					{

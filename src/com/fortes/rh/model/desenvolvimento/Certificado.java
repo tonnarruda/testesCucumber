@@ -1,13 +1,12 @@
 package com.fortes.rh.model.desenvolvimento;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import com.fortes.rh.model.desenvolvimento.relatorio.CertificacaoTreinamentosRelatorio;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.DateUtil;
-import java.math.BigDecimal;
 
 
 public class Certificado implements Cloneable
@@ -93,23 +92,6 @@ public class Certificado implements Cloneable
 		}
 		
 		return certificados;
-	}
-
-	public static Collection<CertificacaoTreinamentosRelatorio> montaCertificacao(String[] colaboradoresCheck, Certificado certificado, Collection<Curso> cursos)
-	{
-		Collection<CertificacaoTreinamentosRelatorio> certificacaoTreinamentos = new ArrayList<CertificacaoTreinamentosRelatorio>(colaboradoresCheck.length);
-		for (String id: colaboradoresCheck)
-		{
-			Certificado certificadoTmp = new Certificado();
-			certificadoTmp.setImprimirMoldura(certificado.isImprimirMoldura());
-			
-			CertificacaoTreinamentosRelatorio certificacaoTreinamentosRelatorio = new CertificacaoTreinamentosRelatorio();
-			certificacaoTreinamentosRelatorio.setCertificado(certificado);
-			certificacaoTreinamentosRelatorio.setCursos(cursos);
-			certificacaoTreinamentos.add(certificacaoTreinamentosRelatorio);
-		}
-
-		return certificacaoTreinamentos;
 	}
 
 	public String getAss1()

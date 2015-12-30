@@ -8,7 +8,12 @@ import com.fortes.rh.business.cargosalario.FaixaSalarialManager;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
+import com.fortes.rh.model.desenvolvimento.Certificado;
+import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
+import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.model.desenvolvimento.Curso;
+import com.fortes.rh.model.desenvolvimento.relatorio.CertificacaoTreinamentosRelatorio;
 import com.fortes.rh.model.desenvolvimento.relatorio.MatrizTreinamento;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.LongUtil;
@@ -17,6 +22,9 @@ import com.fortes.web.tags.CheckBox;
 public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, CertificacaoDao> implements CertificacaoManager
 {
 	private FaixaSalarialManager faixaSalarialManager;
+	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager; 
+	
 	public Collection<Certificacao> findAllSelect(Long empresaId)
 	{
 		return getDao().findAllSelect(empresaId);
@@ -81,6 +89,54 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 		this.faixaSalarialManager = faixaSalarialManager;
 	}
 
+	public Collection<CertificacaoTreinamentosRelatorio> montaCertificacao(Long certificacaoId, String[] colaboradoresCheck, Certificado certificado, Collection<Curso> cursos, boolean vencimentoPorCertificacao)
+	{
+		ColaboradorCertificacao colaboradorCertificacao;
+		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacoesPraticas;
+		
+		if(vencimentoPorCertificacao){
+			for (Curso curso : cursos) {
+				curso.setNome("Treinamento: " + curso.getNome());
+				curso.setInformacao("Carga Horária: " + curso.getCargaHorariaMinutos());
+			}
+		}
+		
+		Collection<CertificacaoTreinamentosRelatorio> certificacaoTreinamentos = new ArrayList<CertificacaoTreinamentosRelatorio>(colaboradoresCheck.length);
+		for (String id: colaboradoresCheck)
+		{
+			Certificado certificadoTmp = new Certificado();
+			certificadoTmp.setImprimirMoldura(certificado.isImprimirMoldura());
+			
+			CertificacaoTreinamentosRelatorio certificacaoTreinamentosRelatorio = new CertificacaoTreinamentosRelatorio();
+			certificacaoTreinamentosRelatorio.setCertificado(certificado);
+			certificacaoTreinamentos.add(certificacaoTreinamentosRelatorio);
+			certificacaoTreinamentosRelatorio.setCursos(new ArrayList<Curso>());
+			certificacaoTreinamentosRelatorio.getCursos().addAll(cursos);
+			
+			if(vencimentoPorCertificacao)
+			{
+				Long colaboradorId = new Long(id);
+				
+				colaboradorCertificacao = colaboradorCertificacaoManager.findUltimaCertificacaoByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId);
+				colaboradorAvaliacoesPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
+				
+				if(colaboradorCertificacao != null && colaboradorCertificacao.getId() != null)
+					colaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId, colaboradorCertificacao.getId());
+				
+				Curso curso = null;
+				for (ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica : colaboradorAvaliacoesPraticas) {
+					curso = new Curso();
+					curso.setNome("Avaliação Prática: " + colaboradorAvaliacaoPratica.getAvaliacaoPratica().getTitulo());
+					curso.setInformacao("Nota: " + colaboradorAvaliacaoPratica.getNota());
+					certificacaoTreinamentosRelatorio.getCursos().add(curso);
+				}
+			}
+
+		}
+
+		return certificacaoTreinamentos;
+	}
+	
 	public Certificacao findByIdProjection(Long id)
 	{
 		return getDao().findByIdProjection(id);
@@ -133,5 +189,15 @@ public class CertificacaoManagerImpl extends GenericManagerImpl<Certificacao, Ce
 	
 	public Collection<Certificacao> findByCursoId(Long cursoId) {
 		return getDao().findByCursoId(cursoId);
+	}
+
+	public void setColaboradorCertificacaoManager(
+			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
+		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
+	}
+
+	public void setColaboradorAvaliacaoPraticaManager(
+			ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
+		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
 	}
 }

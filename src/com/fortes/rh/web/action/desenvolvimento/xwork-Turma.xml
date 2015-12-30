@@ -140,6 +140,18 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">certificado.pdf</param>
 			</result>
+			<result name="successGrandeComAvaliacaoPratica" type="jasper">
+				<param name="location">WEB-INF/report/certificacaoComAvaliacaoPraticaGrandeVerso.jasper</param>
+				<param name="dataSource">certificacaoTreinamentos</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">certificado.pdf</param>
+			</result>
+			<result name="successPequenoComAvaliacaoPratica" type="jasper">
+				<param name="location">WEB-INF/report/certificacaoComAvaliacaoPraticaPequenoVerso.jasper</param>
+				<param name="dataSource">certificacaoTreinamentos</param>
+				<param name="parametersMap">parametros</param>
+				<param name="documentName">certificado.pdf</param>
+			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/desenvolvimento/prepareImprimirCertificado.ftl</result>
 		</action>
 		<action name="insertPresenca" class="com.fortes.rh.web.action.desenvolvimento.TurmaEditAction" method="insertPresenca">

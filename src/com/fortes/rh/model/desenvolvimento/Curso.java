@@ -64,7 +64,8 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 	
 	@Transient
 	private String certificacaoNome;
-	
+	@Transient
+	private String informacao;//usado no relatório
 	@Transient
 	private Double totalDespesas;
 
@@ -330,5 +331,13 @@ public class Curso extends AbstractModel implements Serializable, Cloneable
 
 	public void setTotalDespesas(Double totalDespesas) {
 		this.totalDespesas = totalDespesas;
+	}
+
+	public String getInformacao() {
+		return informacao;
+	}
+
+	public void setInformacao(String informacao) {
+		this.informacao = informacao;
 	}
 }

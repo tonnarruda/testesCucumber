@@ -49,6 +49,28 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 
 		return criteria.list();
 	}
+	
+	public ColaboradorCertificacao findUltimaCertificacaoByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId) 
+	{
+		DetachedCriteria subQuery = DetachedCriteria.forClass(ColaboradorCertificacao.class, "cc2")
+				.setProjection(Projections.max("cc2.data"))
+				.add(Restrictions.eqProperty("cc2.colaborador.id", "cc.colaborador.id"));
+		
+		Criteria criteria = getSession().createCriteria(ColaboradorCertificacao.class, "cc");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cc.id"), "id");
+		p.add(Projections.property("cc.data"), "data");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("cc.colaborador.id",colaboradorId));
+		criteria.add(Expression.eq("cc.certificacao.id" , certificacaoId));
+
+		criteria.add(Subqueries.propertyEq("cc.data", subQuery));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
+
+		return (ColaboradorCertificacao) criteria.uniqueResult();
+	}
 
 	public Collection<ColaboradorCertificacao> colaboradoresCertificados(Date dataIni, Date dataFim, char filtroCetificacao, Long[] areasIds, Long[] estabelecimentosIds, Long[] certificacoesIds) 
 	{

@@ -19,6 +19,10 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	public Collection<ColaboradorCertificacao> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId) {
 		return getDao().findByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId);
 	}
+	
+	public ColaboradorCertificacao findUltimaCertificacaoByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId) {
+		return getDao().findUltimaCertificacaoByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId);
+	}
 
 	public Collection<ColaboradorCertificacao> montaRelatorioColaboradoresNasCertificacoes(Date dataIni, Date dataFim, char filtroCetificacao, Long[] areaIds, Long[] estabelecimentoIds, Long[] certificacoesIds)
 	{
