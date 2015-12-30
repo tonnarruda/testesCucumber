@@ -173,6 +173,7 @@
 		<@ww.hidden name="faixaSalarial.id"/>
 		<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.id" id="configuracaoNivelCompetenciaFaixaSalarialId"/>
 		<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.faixaSalarial.id" value="${faixaSalarial.id}"/>
+		<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.faixaSalarial.descricao" value="${faixaSalarial.descricao}"/>
 		
 		<#if nivelCompetenciaHistoricoId?exists>
 			<@ww.hidden name="configuracaoNivelCompetenciaFaixaSalarial.nivelCompetenciaHistorico.id" value="${nivelCompetenciaHistoricoId}"/>

@@ -82,4 +82,24 @@ public class ConfiguracaoNivelCompetenciaFaixaSalarialDaoHibernate extends Gener
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetenciaFaixaSalarial.class));
 		return (ConfiguracaoNivelCompetenciaFaixaSalarial)criteria.uniqueResult();
 	}
+
+	public ConfiguracaoNivelCompetenciaFaixaSalarial findByProjection(Long configuracaoNivelCompetenciaFaixaSalarialId) {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cncf.id"), "id");
+		p.add(Projections.property("cncf.data"), "data");
+		p.add(Projections.property("cncf.nivelCompetenciaHistorico.id"), "nivelCompetenciaHistoricoId");
+		p.add(Projections.property("fs.id"), "faixaSalarialId");
+		p.add(Projections.property("fs.nome"), "faixaSalarialNome");
+		p.add(Projections.property("c.id"), "cargoId");
+		p.add(Projections.property("c.nome"), "cargoNome");
+
+		Criteria criteria = getSession().createCriteria(ConfiguracaoNivelCompetenciaFaixaSalarial.class, "cncf");
+		criteria.createCriteria("cncf.faixaSalarial", "fs", Criteria.INNER_JOIN );
+		criteria.createCriteria("fs.cargo", "c", Criteria.INNER_JOIN);
+		
+		criteria.add(Expression.eq("cncf.id", configuracaoNivelCompetenciaFaixaSalarialId));
+		criteria.setProjection(p);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ConfiguracaoNivelCompetenciaFaixaSalarial.class));
+		return (ConfiguracaoNivelCompetenciaFaixaSalarial) criteria.uniqueResult();
+	}
 }

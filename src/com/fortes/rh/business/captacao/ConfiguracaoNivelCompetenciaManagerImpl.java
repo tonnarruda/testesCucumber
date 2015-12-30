@@ -697,4 +697,8 @@ public class ConfiguracaoNivelCompetenciaManagerImpl extends GenericManagerImpl<
 	public void setConfigHistoricoNivelManager(ConfigHistoricoNivelManager configHistoricoNivelManager) {
 		this.configHistoricoNivelManager = configHistoricoNivelManager;
 	}
+
+	public ConfiguracaoNivelCompetenciaFaixaSalarialManager getConfiguracaoNivelCompetenciaFaixaSalarialManager() {
+		return this.configuracaoNivelCompetenciaFaixaSalarialManager;
+	}
 }

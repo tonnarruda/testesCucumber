@@ -12,4 +12,5 @@ public interface ConfiguracaoNivelCompetenciaFaixaSalarialDao extends GenericDao
 	Collection<ConfiguracaoNivelCompetenciaFaixaSalarial> findProximasConfiguracoesAposData(Long faixaSalarialId, Date dataConfiguracaoExcluir);
 	boolean existByNivelCompetenciaHistoricoId(Long nivelCompetenciaHistoricoId);
 	ConfiguracaoNivelCompetenciaFaixaSalarial findByFaixaSalarialIdAndData(Long faixaSalarialId, Date data);
+	ConfiguracaoNivelCompetenciaFaixaSalarial findByProjection(Long configuracaoNivelCompetenciaFaixaSalarialId);
 }
