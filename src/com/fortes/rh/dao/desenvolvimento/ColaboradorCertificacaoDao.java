@@ -14,4 +14,5 @@ public interface ColaboradorCertificacaoDao extends GenericDao<ColaboradorCertif
 	Collection<ColaboradorCertificacao> getCertificacoesAVencer(Date data, Long empresaId);
 	ColaboradorCertificacao colaboradorCertificadoByColaboradorIdAndCertificacaId(Long colaboradorId, Long certificacaoId);
 	ColaboradorCertificacao findUltimaCertificacaoByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId);
+	Collection<ColaboradorCertificacao> getColaboradorCertificadoFilhas(Long[] colaboradorCertificacaoIds, Long colaboradorId);
 }

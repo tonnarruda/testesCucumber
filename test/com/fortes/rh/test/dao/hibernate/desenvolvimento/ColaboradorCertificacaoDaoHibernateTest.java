@@ -257,6 +257,7 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 
 		Certificacao certificacao = CertificacaoFactory.getEntity();
 		certificacao.setEmpresa(empresa);
+		certificacao.setPeriodicidade(1);
 		certificacaoDao.save(certificacao);
 		
 		ColaboradorCertificacao colaboradorCertificacao = new ColaboradorCertificacao();
@@ -265,7 +266,9 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		colaboradorCertificacao.setData(data);
 		colaboradorCertificacaoDao.save(colaboradorCertificacao);
 		
-		Collection<ColaboradorCertificacao> colaboradorCertificacaos = colaboradorCertificacaoDao.getCertificacoesAVencer(data, empresa.getId());
+		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
+		
+		Collection<ColaboradorCertificacao> colaboradorCertificacaos = colaboradorCertificacaoDao.getCertificacoesAVencer(DateUtil.incrementaMes(data, 1), empresa.getId());
 		
 		assertEquals(1, colaboradorCertificacaos.size());
 	}

@@ -176,7 +176,15 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 		}
 		
 		if(getEmpresaSistema().isControlarVencimentoPorCertificacao())
-			colaboradorCertificacaoManager.colaboradoresCertificadosByColaboradorIdAndCertificacaId(colaborador.getId(), certificacao.getId());
+		{
+			Collection<ColaboradorCertificacao> colaboradoresCertificados = colaboradorCertificacaoManager.colaboradoresCertificadosByColaboradorIdAndCertificacaId(colaborador.getId(), certificacao.getId());
+			
+			for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificados) 
+			{
+				colaboradorCertificacao.setData(new Date());
+				colaboradorCertificacaoManager.save(colaboradorCertificacao);
+			}
+		}
 		
 		return buscaColaboradores();
 	}

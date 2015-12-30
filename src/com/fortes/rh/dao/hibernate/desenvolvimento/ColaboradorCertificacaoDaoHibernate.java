@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Expression;
@@ -18,13 +17,10 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
-import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
-import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoCertificacao;
 
 public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<ColaboradorCertificacao> implements ColaboradorCertificacaoDao
@@ -173,55 +169,81 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		
 		ColaboradorCertificacao colaboradorCertificacao = null;
 		Iterator<Object[]> it = resultado.iterator();
-		Object[] res = it.next();
-
-		if (res != null)
+		
+		if (it.hasNext()){
+			Object[] res = it.next();
 			colaboradorCertificacao = new ColaboradorCertificacao(((BigInteger)res[0]).longValue(), ((BigInteger)res[1]).longValue(), res[2] != null ? ((BigInteger)res[2]).longValue() : null);
-
+		}
+		
 		return colaboradorCertificacao;
+	}
+	
+	public Collection<ColaboradorCertificacao> getColaboradorCertificadoFilhas(Long[] colaboradorCertificacaoIds, Long colaboradorId) 
+	{
+		Criteria criteria = getSession().createCriteria(ColaboradorCertificacao.class, "cc");
+
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("cc.id"), "id");
+		p.add(Projections.property("cc.data"), "data");
+		p.add(Projections.property("cc.certificacao"), "certificacao");
+		criteria.setProjection(p);
+
+		criteria.add(Expression.eq("cc.colaborador.id",colaboradorId));
+		criteria.add(Expression.in("cc.certificacao.id" , colaboradorCertificacaoIds));
+		criteria.add(Expression.not(Expression.in("cc.id" , colaboradorCertificacaoIds)));
+		
+		criteria.addOrder(Order.asc("cc.data"));
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
+
+		return criteria.list();
 	}
 	
 	@SuppressWarnings("unchecked")
 	public Collection<ColaboradorCertificacao> getCertificacoesAVencer(Date data, Long empresaId) 
 	{
-		Criteria criteria = getSession().createCriteria(ColaboradorCertificacao.class, "cc");
-		criteria.createCriteria("cc.certificacao", "cert", Criteria.LEFT_JOIN);
-		criteria.createCriteria("cc.colaborador", "col", Criteria.LEFT_JOIN);
-		criteria.createCriteria("col.historicoColaboradors", "hc", Criteria.INNER_JOIN);
-		criteria.createCriteria("hc.faixaSalarial", "fs", Criteria.INNER_JOIN);
-		criteria.createCriteria("fs.cargo", "ca", Criteria.INNER_JOIN);
-		criteria.createCriteria("hc.areaOrganizacional", "ao", Criteria.INNER_JOIN);
-
-		ProjectionList p = Projections.projectionList().create();
-		p.add(Projections.property("cc.id"), "id");
-		p.add(Projections.property("cc.data"), "data");
-		p.add(Projections.property("cert.nome"), "certificacaoNome");
-		p.add(Projections.property("cert.periodicidade"), "certificacaoPeriodicidade");
-		p.add(Projections.property("ao.id"), "areaOrganizacionalId");
-		p.add(Projections.property("ao.areaMae.id"), "areaOrganizacionalAreaMaeId");
-		p.add(Projections.sqlProjection("monta_familia_area(ao6_.id) as areaOrganizacionalNome", new String[] {"areaOrganizacionalNome"}, new Type[] {Hibernate.TEXT}), "areaOrganizacionalNome");
-		p.add(Projections.property("col.nome"), "colaboradorNome");
-		p.add(Projections.property("col.contato.email"), "colaboradorEmail");
-		p.add(Projections.property("fs.nome"), "faixaSalarialNome");
-		p.add(Projections.property("ca.nome"), "cargoNome");
+		StringBuilder sql = new StringBuilder();
+		sql.append("select cc.id as ccId, cc.data as ccData, cert.nome as certNome, cert.periodicidade as certPeri, ao.id as aoId, ao.areaMae_id as aoMaeId, monta_familia_area(ao.id) as areaOrganizacionalNome, ");
+		sql.append("co.nome as ColNome, co.email as colEmail, fs.nome as fsNome, ca.nome as caNome ");
+		sql.append("from ColaboradorCertificacao cc ");
+		sql.append("left join certificacao cert on cert.id = cc.certificacao_id ");
+		sql.append("left join colaborador co on co.id = cc.colaborador_id ");
+		sql.append("left join historicoColaborador hc on hc.colaborador_id = co.id ");
+		sql.append("left join faixaSalarial fs on fs.id = hc.faixaSalarial_id ");
+		sql.append("left join cargo ca on ca.id = fs.cargo_id ");
+		sql.append("left join areaOrganizacional ao on ao.id = hc.areaOrganizacional_id ");
+		sql.append("where co.desligado = false ");
+		sql.append("and hc.data = (select max(hc2.data) from historicocolaborador hc2  where hc2.colaborador_id = co.id and hc2.status = 1)  ");
+		sql.append("and cert.empresa_id = :empresaId ");
+		sql.append("and cert.periodicidade is not null ");
+		sql.append("and (cc.data + cast((coalesce(cert.periodicidade,0) || ' month') as interval)) = :data ");
 		
-		criteria.setProjection(p);
-
-		criteria.add(Expression.eq("cc.data", data));
-		criteria.add(Expression.eq("cert.empresa.id" , empresaId));
-
-	    DetachedCriteria subSelect = DetachedCriteria.forClass(HistoricoColaborador.class, "hc2")
-	    		.setProjection(Projections.max("hc2.data"))
-	    		.add(Restrictions.eqProperty("hc2.colaborador.id", "col.id"))
-	    		.add(Restrictions.eq("hc2.status", StatusRetornoAC.CONFIRMADO));
-	    
-	    criteria.add(Subqueries.propertyEq("hc.data", subSelect));
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("empresaId", empresaId);
+		query.setDate("data", data);
 		
-		criteria.addOrder(Order.asc("cc.data"));
+		@SuppressWarnings("rawtypes")
+		List resultado = query.list();
+		Collection<ColaboradorCertificacao> Colaboradores = new ArrayList<ColaboradorCertificacao>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
+			Object[] res = it.next();
+			ColaboradorCertificacao colabs = new ColaboradorCertificacao();
+			colabs.setId(((BigInteger)res[0]).longValue());
+			colabs.setData((Date)res[1]);
+			colabs.setCertificacaoNome((String)res[2]);
+			colabs.setCertificacaoPeriodicidade(res[3] != null ? (Integer)res[3] : null);
+			colabs.setAreaOrganizacionalId(((BigInteger)res[4]).longValue());
+			colabs.setAreaOrganizacionalAreaMaeId(res[5] != null ? ((BigInteger)res[5]).longValue() : null);
+			colabs.setAreaOrganizacionalNome((String)res[6]);
+			colabs.setColaboradorNome((String)res[7]);
+			colabs.setColaboradorEmail(res[8]!= null ? (String)res[8] : null);
+			colabs.setFaixaSalarialNome((String)res[9]);
+			colabs.setCargoNome((String)res[10]);
+			
+			Colaboradores.add(colabs);
+		}
 
-		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
-
-		return criteria.list();
+		return Colaboradores;
 	}
 }

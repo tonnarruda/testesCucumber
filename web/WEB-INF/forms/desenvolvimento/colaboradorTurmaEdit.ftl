@@ -57,11 +57,11 @@
 				DWRUtil.useLoadingMessage('Carregando...');
 				ColaboradorTurmaDWR.checaColaboradorInscritoEmOutraTurma(function(data){
 																				colabNaOutraTurma(data, 400, 700, 'Os seguintes colaboradores já estão inscritos neste curso.<br />Deseja realmente incluí-los nesta turma?');
-																			}, $("input[name='turma.id']").val(), $("input[name='turma.curso.id']").val(), colabsIds.toArray());
+																			}, $("input[name='turma.id']").val(), $("input[name='turma.curso.id']").val(), colabsIds.toArray(), false);
 			
-			ColaboradorTurmaDWR.verificaColaboradorCertificadoNaCertificacaoPreRequisito(function(data){
+				ColaboradorTurmaDWR.verificaColaboradorCertificadoNaCertificacaoPreRequisito(function(data){
 																				colabNaOutraTurma(data, 400, 700, 'Este curso está em uma Certificação com pré requisito.<br/> Existem colaboraodres que não estão certificados. Deseja realmente incluí-los neste curso?');
-																			},$("input[name='turma.curso.id']").val(), colabsIds.toArray());
+																			},$("input[name='turma.curso.id']").val(), colabsIds.toArray(), true);
 																			
 			}
 			else
@@ -99,7 +99,7 @@
 	<@ww.actionmessage />
 
 	<#include "../util/topFiltro.ftl" />
-		<@ww.form name="form" action="listFiltro.action" onsubmit="enviaForm();" method="POST" id="formBusca">
+		<@ww.form name="form" action="listFiltro.action" method="POST" id="formBusca">
 
             <@ww.select label="Empresa" name="empresaId" id="empresa" list="empresas" cssClass="empresaSelect" listKey="id" listValue="nome" headerValue="Todas" headerKey="-1" onchange="newChangeEmpresa(this.value);" disabled="!compartilharColaboradores"/>
 			

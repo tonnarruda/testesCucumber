@@ -9,6 +9,7 @@ import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
+import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.util.SpringUtil;
 
@@ -98,6 +99,13 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 			colaboradoresCertificados.add(colaboradorCertificado);
 			if(colaboradorCertificado.getCertificacao().getCertificacaoPreRequisito() != null && colaboradorCertificado.getCertificacao().getCertificacaoPreRequisito().getId() != null)
 				colaboradoresCertificados.addAll(colaboradoresCertificadosByColaboradorIdAndCertificacaId(colaboradorCertificado.getColaborador().getId(), colaboradorCertificado.getCertificacao().getCertificacaoPreRequisito().getId()));
+		}
+
+		if(colaboradoresCertificados.size() > 0)
+		{
+			Collection<ColaboradorCertificacao> colaboradoresCertificadosFilhas = getDao().getColaboradorCertificadoFilhas(new CollectionUtil<ColaboradorCertificacao>().convertCollectionToArrayIds(colaboradoresCertificados), colaboradorId);  
+			for (ColaboradorCertificacao colaboradorCertificacaoFilha : colaboradoresCertificadosFilhas) 
+				colaboradoresCertificados.add(getDao().colaboradorCertificadoByColaboradorIdAndCertificacaId(colaboradorId, colaboradorCertificacaoFilha.getCertificacao().getId()));
 		}
 		
 		return colaboradoresCertificados;

@@ -210,7 +210,7 @@ public class EmpresaEditAction extends MyActionSupportEdit implements ModelDrive
 		
 		atualizaEmpresaSessao();
 		
-		if(empresaAntesDaAlteracao.isControlarVencimentoPorCertificacao() != empresa.isControlarVencimentoPorCertificacao())
+		if(empresaAntesDaAlteracao.isControlarVencimentoPorCertificacao() != empresa.isControlarVencimentoPorCertificacao() && empresaAntesDaAlteracao.getId().equals(getEmpresaSistema().getId()))
 			return "successAlterandoMenu";
 
 		return Action.SUCCESS;

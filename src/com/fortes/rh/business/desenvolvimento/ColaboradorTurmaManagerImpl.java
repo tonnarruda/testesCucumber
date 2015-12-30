@@ -523,7 +523,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		String msgAlert = "";
 		String msgAlertColaborador = null;
 
-		for(Certificacao certificacao : certificacoes){
+		for(Certificacao certificacao : certificacoes)
+		{
 			for(int i = 0; i < colaboradoresId.length; i++)
 			{
 				colaborador = getDao().verificaColaboradorCertificado(colaboradoresId[i], certificacao.getCertificacaoPreRequisito().getId());
@@ -535,6 +536,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			
 			msgAlertColaborador = null;
 		}
+		
 		return msgAlert;
 	}
 

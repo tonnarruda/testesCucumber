@@ -100,9 +100,11 @@
 					<#assign i = i + 1/>
 				</@display.table>
 			
-				<div class="buttonGroup">
-					<button type="button" class="btnGravar" onclick="submeter('insertOrUpdate.action');"></button>
-				</div>
+				<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size) >
+					<div class="buttonGroup">
+						<button type="button" class="btnGravar" onclick="submeter('insertOrUpdate.action');"></button>
+					</div>
+				</#if>
 		
 				<br/>
 				<@display.table name="colaboradorTurmas" id="colaboradorTurma" class="dados">

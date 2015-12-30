@@ -1,6 +1,6 @@
-function colabNaOutraTurma(msg, altura, largura, titulo)
+function colabNaOutraTurma(msg, altura, largura, titulo, submit)
 {
-	if (msg != "")
+	if (msg != ""){
 		$('<div>' + msg + '</div>').dialog({title: titulo,
 											modal: true, 
 											height: altura,
@@ -16,6 +16,7 @@ function colabNaOutraTurma(msg, altura, largura, titulo)
 											    }
 											] 
 											});
-	else 
+	}else if (submit){
 		document.formColab.submit();
+	}
 }
