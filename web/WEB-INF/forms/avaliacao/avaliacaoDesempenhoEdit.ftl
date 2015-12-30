@@ -84,7 +84,7 @@
 			</#if>
 			
 			<@ww.checkbox label="Exibir resultado ao colaborador após autoavaliação" id="exibeResultadoAutoAvaliacao" name="avaliacaoDesempenho.exibeResultadoAutoAvaliacao" labelPosition="left"/>
-			<@ww.checkbox label="Avaliar somente as competências exigidas pelo cargo" id="avaliarSomenteCompetencias" name="" labelPosition="left" onchange="exibirModeloAvaliacao()"/>
+			<@ww.checkbox label="Realizar a avaliação somente com as competências exigidas pelo cargo" id="avaliarSomenteCompetencias" name="" labelPosition="left" onchange="exibirModeloAvaliacao()"/>
 			<@ww.select label="Modelo da Avaliação" name="avaliacaoDesempenho.avaliacao.id" id="modelo" required="true" list="avaliacaos" listKey="id" listValue="titulo" cssStyle="width: 450px;" headerKey="" headerValue="Selecione..." disabled="${desabilita}" />
 			<@ww.checkbox label="Exibir em Performance Profissional" id="exibirPerformanceProfissional" name="avaliacaoDesempenho.exibirPerformanceProfissional"  labelPosition="left"/>
 			<@ww.select label="Permitir autoavaliação" name="avaliacaoDesempenho.permiteAutoAvaliacao" disabled="${desabilita}" id="permiteAutoAvaliacao" list=r"#{true:'Sim',false:'Não'}" required="true" headerKey="" headerValue=""/>

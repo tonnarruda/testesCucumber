@@ -389,10 +389,24 @@ SELECT pg_catalog.setval('composicaosesmt_sequence', 1, false);
 
 
 --
+-- Name: confighistoriconivel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('confighistoriconivel_sequence', 1, false);
+
+
+--
 -- Name: configuracaocampoextra_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('configuracaocampoextra_sequence', 33, false);
+
+
+--
+-- Name: configuracaocompetenciaavaliacaodesempenho_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaocompetenciaavaliacaodesempenho_sequence', 1, false);
 
 
 --
@@ -424,6 +438,13 @@ SELECT pg_catalog.setval('configuracaonivelcompetenciacolaborador_sequence', 1, 
 
 
 --
+-- Name: configuracaonivelcompetenciacriterio_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaonivelcompetenciacriterio_sequence', 1, false);
+
+
+--
 -- Name: configuracaonivelcompetenciafaixasalarial_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -449,6 +470,13 @@ SELECT pg_catalog.setval('configuracaorelatoriodinamico_sequence', 1, false);
 --
 
 SELECT pg_catalog.setval('conhecimento_sequence', 1, false);
+
+
+--
+-- Name: criterioavaliacaocompetencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('criterioavaliacaocompetencia_sequence', 1, false);
 
 
 --
@@ -900,6 +928,13 @@ SELECT pg_catalog.setval('nivelcompetencia_sequence', 1, false);
 
 
 --
+-- Name: nivelcompetenciahistorico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('nivelcompetenciahistorico_sequence', 1, false);
+
+
+--
 -- Name: noticia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -932,6 +967,13 @@ SELECT pg_catalog.setval('papel_sequence', 670, false);
 --
 
 SELECT pg_catalog.setval('parametrosdosistema_sequence', 2, false);
+
+
+--
+-- Name: participanteavaliacaodesempenho_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('participanteavaliacaodesempenho_sequence', 1, false);
 
 
 --
@@ -24594,6 +24636,36 @@ ALTER TABLE composicaosesmt DISABLE TRIGGER ALL;
 ALTER TABLE composicaosesmt ENABLE TRIGGER ALL;
 
 --
+-- Data for Name: nivelcompetencia; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE nivelcompetencia DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE nivelcompetencia ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: nivelcompetenciahistorico; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE nivelcompetenciahistorico DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE nivelcompetenciahistorico ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: confighistoriconivel; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE confighistoriconivel DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE confighistoriconivel ENABLE TRIGGER ALL;
+
+--
 -- Data for Name: configuracaocampoextra; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -24636,6 +24708,26 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 ALTER TABLE configuracaocampoextra ENABLE TRIGGER ALL;
 
 --
+-- Data for Name: configuracaonivelcompetenciafaixasalarial; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE configuracaonivelcompetenciafaixasalarial DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE configuracaonivelcompetenciafaixasalarial ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: configuracaocompetenciaavaliacaodesempenho; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE configuracaocompetenciaavaliacaodesempenho DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE configuracaocompetenciaavaliacaodesempenho ENABLE TRIGGER ALL;
+
+--
 -- Data for Name: configuracaoimpressaocurriculo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -24666,26 +24758,6 @@ ALTER TABLE configuracaonivelcompetenciacolaborador DISABLE TRIGGER ALL;
 ALTER TABLE configuracaonivelcompetenciacolaborador ENABLE TRIGGER ALL;
 
 --
--- Data for Name: configuracaonivelcompetenciafaixasalarial; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-ALTER TABLE configuracaonivelcompetenciafaixasalarial DISABLE TRIGGER ALL;
-
-
-
-ALTER TABLE configuracaonivelcompetenciafaixasalarial ENABLE TRIGGER ALL;
-
---
--- Data for Name: nivelcompetencia; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-ALTER TABLE nivelcompetencia DISABLE TRIGGER ALL;
-
-
-
-ALTER TABLE nivelcompetencia ENABLE TRIGGER ALL;
-
---
 -- Data for Name: configuracaonivelcompetencia; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -24694,6 +24766,16 @@ ALTER TABLE configuracaonivelcompetencia DISABLE TRIGGER ALL;
 
 
 ALTER TABLE configuracaonivelcompetencia ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: configuracaonivelcompetenciacriterio; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE configuracaonivelcompetenciacriterio DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE configuracaonivelcompetenciacriterio ENABLE TRIGGER ALL;
 
 --
 -- Data for Name: configuracaoperformance; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -24734,6 +24816,16 @@ ALTER TABLE conhecimento_curso DISABLE TRIGGER ALL;
 
 
 ALTER TABLE conhecimento_curso ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: criterioavaliacaocompetencia; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE criterioavaliacaocompetencia DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE criterioavaliacaocompetencia ENABLE TRIGGER ALL;
 
 --
 -- Data for Name: curso_avaliacaocurso; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -25911,7 +26003,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (5, 'ROLE_CAD_CONHECIMENTO', 'Conhecimentos', '/captacao/conhecimento/list.action', 3, true, NULL, 362, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (493, 'ROLE_CAD_HABILIDADE', 'Habilidades', '/captacao/habilidade/list.action', 4, true, NULL, 362, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (494, 'ROLE_CAD_ATITUDE', 'Atitudes', '/captacao/atitude/list.action', 5, true, NULL, 362, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (516, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Níveis de Competência', '/captacao/nivelCompetencia/list.action', 6, true, NULL, 362, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (11, 'ROLE_CAD_CARGO', 'Cargos e Faixas', '/cargosalario/cargo/list.action', 7, true, NULL, 362, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (404, 'ROLE_CAD_INDICE', 'Índices', '/cargosalario/indice/list.action', 9, true, NULL, 362, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (363, 'ROLE_C&S_MOV', 'Movimentações', '#', 2, true, NULL, 361, NULL);
@@ -26235,6 +26326,11 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (654, 'ROLE_COLABORADOR_AVALIACAO_PRATICA', 'Notas Individuais', '/desenvolvimento/colaboradorAvaliacaoPratica/prepare.action', 1, true, NULL, 668, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (655, 'ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER', 'Colaboradores x Certificações', '/desenvolvimento/certificacao/prepareImprimirCertificadosVencidosAVencer.action', 17, true, NULL, 368, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (465, 'ROLE_REL_COLABORADORES_CERTIFICACOES', 'Colaboradores x Certificações', '/desenvolvimento/colaboradorTurma/prepareRelatorioColaboradorCertificacao.action', 17, true, NULL, 368, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (647, 'ROLE_REL_RECIBO_DECIMO_TERCEIRO', 'Recibo de 13º salário', '/geral/colaborador/prepareReciboDeDecimoTerceiro.action', 2, true, NULL, 377, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (516, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Níveis de Competência', NULL, 6, true, NULL, 362, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (650, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Cadastros', '/captacao/nivelCompetencia/list.action', 1, true, NULL, 516, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (651, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Historicos', '/captacao/nivelCompetenciaHistorico/list.action', 2, true, NULL, 516, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (652, 'ROLE_REL_ANALISE_COMPETENCIAS_COLABORADOR', 'Análise de Desempenho das Competências do Colaborador', '/avaliacao/desempenho/prepareAnaliseDesempenhoCompetenciaColaborador.action', 7, true, NULL, 486, NULL);
 
 
 ALTER TABLE papel ENABLE TRIGGER ALL;
@@ -26258,9 +26354,20 @@ ALTER TABLE perfil ENABLE TRIGGER ALL;
 ALTER TABLE parametrosdosistema DISABLE TRIGGER ALL;
 
 INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.161.192', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.60.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.156.187', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.58.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
 
 
 ALTER TABLE parametrosdosistema ENABLE TRIGGER ALL;
+
+--
+-- Data for Name: participanteavaliacaodesempenho; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+ALTER TABLE participanteavaliacaodesempenho DISABLE TRIGGER ALL;
+
+
+
+ALTER TABLE participanteavaliacaodesempenho ENABLE TRIGGER ALL;
 
 --
 -- Data for Name: pausapreenchimentovagas; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -26572,6 +26679,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 665);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 666);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 668);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 669);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 652);
 
 
 ALTER TABLE perfil_papel ENABLE TRIGGER ALL;
