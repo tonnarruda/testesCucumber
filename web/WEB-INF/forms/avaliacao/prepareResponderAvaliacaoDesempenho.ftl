@@ -14,6 +14,8 @@
 		.dados th:first-child { text-align: left; padding-left: 5px; }
 	</style>
 	
+	<#assign exibirPerformance=(mostrarPerformanceAvalDesempenho && !(avaliador.id == colaborador.id && !colaboradorQuestionario.avaliacaoDesempenho.exibeResultadoAutoAvaliacao)) />
+	
 	<script type="text/javascript">
 		$(function() {
 			<#if !colaboradorQuestionario.avaliacao.id?exists || colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
@@ -150,7 +152,8 @@
 		
 		function calcularPerformance()
 		{
-			<#if mostrarPerformanceAvalDesempenho && colaboradorQuestionario.avaliacaoDesempenho.exibeResultadoAutoAvaliacao>
+			<#if exibirPerformance >
+				
 				var pontuacaoMaximaTotal = ${pontuacaoMaximaQuestionario};
 				var notaCompetencias = 0; 
 				<#if !colaboradorQuestionario.avaliacao.id?exists || colaboradorQuestionario.avaliacao.avaliarCompetenciasCargo>
@@ -221,7 +224,7 @@
 	<#if colaboradorQuestionario.avaliacao?exists && colaboradorQuestionario.avaliacao.cabecalho?exists>
 		<pre><h4>${colaboradorQuestionario.avaliacao.cabecalho}</h4></pre>
 	</#if>
-	<#if mostrarPerformanceAvalDesempenho && colaboradorQuestionario.avaliacao.id?exists && colaboradorQuestionario.avaliacaoDesempenho.exibeResultadoAutoAvaliacao >
+	<#if exibirPerformance && colaboradorQuestionario.avaliacao.id?exists >
 		<pre id="performanceQuestionario" style="text-align:right; font-weight: bold;">Performance Questionário: - </pre>
 	</#if>
 	
@@ -259,7 +262,7 @@
 					</div>
 		
 					<br /><br />
-					<#if mostrarPerformanceAvalDesempenho && colaboradorQuestionario.avaliacaoDesempenho.exibeResultadoAutoAvaliacao>
+					<#if exibirPerformance>
 						<pre id="performanceCompetencias" style="text-align:right; font-weight: bold;">Performance Questionário: - </pre>
 					</#if>
 					<table id="configuracaoNivelCompetencia" class="dados">
@@ -270,7 +273,7 @@
 									<th>${nivel.descricao}</th>
 								</#list>
 								
-								<#if mostrarPerformanceAvalDesempenho && colaboradorQuestionario.avaliacaoDesempenho.exibeResultadoAutoAvaliacao>
+								<#if exibirPerformance>
 									<th>Performance(%)</th>
 								</#if>
 							</tr>
@@ -320,7 +323,7 @@
 										</td>
 									</#list>
 									
-									<#if mostrarPerformanceAvalDesempenho && colaboradorQuestionario.avaliacaoDesempenho.exibeResultadoAutoAvaliacao>
+									<#if exibirPerformance>
 										<td style="width: 100px; text-align: center;" class="${class}">
 											<label class="performance">-</label>
 										</td>
