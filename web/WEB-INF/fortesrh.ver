@@ -1,5 +1,10 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
+	<Versao id="1.1.156.187" db="" data="31/12/2015">
+		<Item visivel="S" motivo="P15110000249"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão: Desconsiderar progressões salariais referentes a faixa salarial após desligamento do colaborador.]]></Item>
+		<Item visivel="S" motivo="S15120000211"><![CDATA[R&S > Relatórios > Duração para preenchimento de vagas: Nova flag para considerar contrações futuras no cálculo do preenchimento de vagas.]]></Item>
+		<Item visivel="S" motivo="S15000000000"><![CDATA[Aval. Desempenho: Nova forma de avaliar as competências dos colaboradores.]]></Item>
+	</Versao>
 	<Versao id="1.1.155.186" db="" data="16/12/2015">
 		<Item visivel="S" motivo="S15120000024"><![CDATA[T&D > Painel de Indicadores: Ajuste de inconsistência no indicador de “percentual de frequência (aprovados)”.]]></Item>
 		<Item visivel="S" motivo="S15110000258"><![CDATA[Info. Funcionais > Relatórios > Recibo de 13º salário: Novo relatório, quando integrado com o sistema Fortes Pessoal.]]></Item>

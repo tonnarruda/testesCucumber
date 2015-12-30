@@ -798,7 +798,8 @@ CREATE TABLE avaliacao (
     periodoexperiencia_id bigint,
     exiberesultadoautoavaliacao boolean DEFAULT false NOT NULL,
     avaliarcompetenciascargo boolean DEFAULT false NOT NULL,
-    percentualaprovacao double precision
+    percentualaprovacao double precision,
+    respostascompactas boolean DEFAULT false NOT NULL
 );
 
 
@@ -853,7 +854,9 @@ CREATE TABLE avaliacaodesempenho (
     permiteautoavaliacao boolean,
     liberada boolean,
     avaliacao_id bigint,
-    exibirperformanceprofissional boolean DEFAULT true
+    exibirperformanceprofissional boolean DEFAULT true,
+    exiberesultadoautoavaliacao boolean DEFAULT false,
+    empresa_id bigint
 );
 
 
@@ -2024,7 +2027,9 @@ CREATE TABLE colaboradorquestionario (
     solicitacao_id bigint,
     avaliacaocurso_id bigint,
     performancenivelcompetencia double precision,
-    configuracaonivelcompetenciacolaborador_id bigint
+    configuracaonivelcompetenciacolaborador_id bigint,
+    pesoavaliador integer DEFAULT 1,
+    respondidaparcialmente boolean DEFAULT false NOT NULL
 );
 
 
@@ -2500,6 +2505,42 @@ SELECT pg_catalog.setval('composicaosesmt_sequence', 1, false);
 
 
 --
+-- Name: confighistoriconivel; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE confighistoriconivel (
+    id bigint NOT NULL,
+    nivelcompetencia_id bigint NOT NULL,
+    nivelcompetenciahistorico_id bigint NOT NULL,
+    ordem integer,
+    percentual double precision
+);
+
+
+ALTER TABLE public.confighistoriconivel OWNER TO postgres;
+
+--
+-- Name: confighistoriconivel_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE confighistoriconivel_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.confighistoriconivel_sequence OWNER TO postgres;
+
+--
+-- Name: confighistoriconivel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('confighistoriconivel_sequence', 1, false);
+
+
+--
 -- Name: configuracaocampoextra; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -2538,6 +2579,43 @@ ALTER TABLE public.configuracaocampoextra_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('configuracaocampoextra_sequence', 33, false);
+
+
+--
+-- Name: configuracaocompetenciaavaliacaodesempenho; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE configuracaocompetenciaavaliacaodesempenho (
+    id bigint NOT NULL,
+    avaliador_id bigint,
+    avaliacaodesempenho_id bigint,
+    configuracaonivelcompetenciafaixasalarial_id bigint,
+    competencia_id bigint NOT NULL,
+    tipocompetencia character(1)
+);
+
+
+ALTER TABLE public.configuracaocompetenciaavaliacaodesempenho OWNER TO postgres;
+
+--
+-- Name: configuracaocompetenciaavaliacaodesempenho_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE configuracaocompetenciaavaliacaodesempenho_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.configuracaocompetenciaavaliacaodesempenho_sequence OWNER TO postgres;
+
+--
+-- Name: configuracaocompetenciaavaliacaodesempenho_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaocompetenciaavaliacaodesempenho_sequence', 1, false);
 
 
 --
@@ -2641,7 +2719,8 @@ CREATE TABLE configuracaonivelcompetencia (
     tipocompetencia character(1),
     configuracaonivelcompetenciacolaborador_id bigint,
     configuracaonivelcompetenciafaixasalarial_id bigint,
-    solicitacao_id bigint
+    solicitacao_id bigint,
+    pesocompetencia smallint
 );
 
 
@@ -2678,7 +2757,8 @@ CREATE TABLE configuracaonivelcompetenciacolaborador (
     faixasalarial_id bigint,
     data date,
     colaboradorquestionario_id bigint,
-    avaliador_id bigint
+    avaliador_id bigint,
+    configuracaonivelcompetenciafaixasalarial_id bigint
 );
 
 
@@ -2706,13 +2786,50 @@ SELECT pg_catalog.setval('configuracaonivelcompetenciacolaborador_sequence', 1, 
 
 
 --
+-- Name: configuracaonivelcompetenciacriterio; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE configuracaonivelcompetenciacriterio (
+    id bigint NOT NULL,
+    criterio_id bigint,
+    criterio_descricao character varying(100) NOT NULL,
+    configuracaonivelcompetencia_id bigint,
+    nivelcompetencia_id bigint
+);
+
+
+ALTER TABLE public.configuracaonivelcompetenciacriterio OWNER TO postgres;
+
+--
+-- Name: configuracaonivelcompetenciacriterio_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE configuracaonivelcompetenciacriterio_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.configuracaonivelcompetenciacriterio_sequence OWNER TO postgres;
+
+--
+-- Name: configuracaonivelcompetenciacriterio_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('configuracaonivelcompetenciacriterio_sequence', 1, false);
+
+
+--
 -- Name: configuracaonivelcompetenciafaixasalarial; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
 CREATE TABLE configuracaonivelcompetenciafaixasalarial (
     id bigint NOT NULL,
     faixasalarial_id bigint,
-    data date
+    data date,
+    nivelcompetenciahistorico_id bigint
 );
 
 
@@ -2853,6 +2970,42 @@ ALTER TABLE public.conhecimento_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('conhecimento_sequence', 1, false);
+
+
+--
+-- Name: criterioavaliacaocompetencia; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE criterioavaliacaocompetencia (
+    id bigint NOT NULL,
+    descricao character varying(100) NOT NULL,
+    conhecimento_id bigint,
+    habilidade_id bigint,
+    atitude_id bigint
+);
+
+
+ALTER TABLE public.criterioavaliacaocompetencia OWNER TO postgres;
+
+--
+-- Name: criterioavaliacaocompetencia_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE criterioavaliacaocompetencia_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.criterioavaliacaocompetencia_sequence OWNER TO postgres;
+
+--
+-- Name: criterioavaliacaocompetencia_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('criterioavaliacaocompetencia_sequence', 1, false);
 
 
 --
@@ -3174,6 +3327,7 @@ CREATE TABLE empresa (
     solpessoalreabrirsolicitacao boolean DEFAULT false,
     considerardomingonoabsenteismo boolean DEFAULT false NOT NULL,
     processoexportacaoac boolean DEFAULT false NOT NULL,
+    mostrarperformanceavaldesempenho boolean DEFAULT false,
     CONSTRAINT no_blank_codigoac_empresa CHECK (((codigoac)::text <> ''::text)),
     CONSTRAINT no_blank_grupoac_empresa CHECK (((grupoac)::text <> ''::text))
 );
@@ -5380,7 +5534,6 @@ SELECT pg_catalog.setval('naturezalesao_sequence', 1, false);
 CREATE TABLE nivelcompetencia (
     id bigint NOT NULL,
     descricao character varying(60),
-    ordem integer,
     empresa_id bigint
 );
 
@@ -5406,6 +5559,40 @@ ALTER TABLE public.nivelcompetencia_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('nivelcompetencia_sequence', 1, false);
+
+
+--
+-- Name: nivelcompetenciahistorico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE nivelcompetenciahistorico (
+    id bigint NOT NULL,
+    data date NOT NULL,
+    empresa_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.nivelcompetenciahistorico OWNER TO postgres;
+
+--
+-- Name: nivelcompetenciahistorico_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE nivelcompetenciahistorico_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.nivelcompetenciahistorico_sequence OWNER TO postgres;
+
+--
+-- Name: nivelcompetenciahistorico_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('nivelcompetenciahistorico_sequence', 1, false);
 
 
 --
@@ -5563,7 +5750,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 648, false);
+SELECT pg_catalog.setval('papel_sequence', 653, false);
 
 
 --
@@ -5634,6 +5821,42 @@ ALTER TABLE public.parametrosdosistema_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('parametrosdosistema_sequence', 2, false);
+
+
+--
+-- Name: participanteavaliacaodesempenho; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE participanteavaliacaodesempenho (
+    id bigint NOT NULL,
+    colaborador_id bigint,
+    avaliacaodesempenho_id bigint,
+    tipo character(1),
+    produtividade double precision
+);
+
+
+ALTER TABLE public.participanteavaliacaodesempenho OWNER TO postgres;
+
+--
+-- Name: participanteavaliacaodesempenho_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE participanteavaliacaodesempenho_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.participanteavaliacaodesempenho_sequence OWNER TO postgres;
+
+--
+-- Name: participanteavaliacaodesempenho_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('participanteavaliacaodesempenho_sequence', 1, false);
 
 
 --
@@ -30018,6 +30241,12 @@ INSERT INTO comoficousabendovaga (id, nome) VALUES (1, 'Outro');
 
 
 --
+-- Data for Name: confighistoriconivel; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: configuracaocampoextra; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -30056,6 +30285,12 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 
 --
+-- Data for Name: configuracaocompetenciaavaliacaodesempenho; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: configuracaoimpressaocurriculo; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -30075,6 +30310,12 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 --
 -- Data for Name: configuracaonivelcompetenciacolaborador; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: configuracaonivelcompetenciacriterio; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -30111,6 +30352,12 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 
 --
 -- Data for Name: conhecimento_curso; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: criterioavaliacaocompetencia; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -30167,7 +30414,7 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 -- Data for Name: empresa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, emailresplimitecontrato, imganiversarianteurl, mensagemcartaoaniversariante, turnoverporsolicitacao, obrigarambientefuncao, verificaparentesco, controlariscopor, solpessoalexibircolabsubstituido, codigotrucurso, exibirlogoempresappraltcat, solpessoalexibirsalario, solpessoalobrigardadoscomplementares, formulaturnover, solicitarconfirmacaodesligamento, cnae2, considerarsabadonoabsenteismo, solpessoalreabrirsolicitacao, considerardomingonoabsenteismo, processoexportacaoac) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', NULL, '001', false, false, NULL, '', 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', false, false, 'N', 'A', false, false, false, true, false, 1, false, NULL, false, false, false, false);
+INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, emailresplimitecontrato, imganiversarianteurl, mensagemcartaoaniversariante, turnoverporsolicitacao, obrigarambientefuncao, verificaparentesco, controlariscopor, solpessoalexibircolabsubstituido, codigotrucurso, exibirlogoempresappraltcat, solpessoalexibirsalario, solpessoalobrigardadoscomplementares, formulaturnover, solicitarconfirmacaodesligamento, cnae2, considerarsabadonoabsenteismo, solpessoalreabrirsolicitacao, considerardomingonoabsenteismo, processoexportacaoac, mostrarperformanceavaldesempenho) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', NULL, '001', false, false, NULL, '', 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', false, false, 'N', 'A', false, false, false, true, false, 1, false, NULL, false, false, false, false, false);
 
 
 --
@@ -31050,6 +31297,7 @@ INSERT INTO migrations (name) VALUES ('20151123161848');
 INSERT INTO migrations (name) VALUES ('20151130141027');
 INSERT INTO migrations (name) VALUES ('20151207110302');
 INSERT INTO migrations (name) VALUES ('20151216100744');
+INSERT INTO migrations (name) VALUES ('20151230120940');
 
 
 --
@@ -31078,6 +31326,12 @@ INSERT INTO migrations (name) VALUES ('20151216100744');
 
 --
 -- Data for Name: nivelcompetencia; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: nivelcompetenciahistorico; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -31126,7 +31380,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (5, 'ROLE_CAD_CONHECIMENTO', 'Conhecimentos', '/captacao/conhecimento/list.action', 3, true, NULL, 362, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (493, 'ROLE_CAD_HABILIDADE', 'Habilidades', '/captacao/habilidade/list.action', 4, true, NULL, 362, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (494, 'ROLE_CAD_ATITUDE', 'Atitudes', '/captacao/atitude/list.action', 5, true, NULL, 362, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (516, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Níveis de Competência', '/captacao/nivelCompetencia/list.action', 6, true, NULL, 362, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (11, 'ROLE_CAD_CARGO', 'Cargos e Faixas', '/cargosalario/cargo/list.action', 7, true, NULL, 362, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (404, 'ROLE_CAD_INDICE', 'Índices', '/cargosalario/indice/list.action', 9, true, NULL, 362, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (363, 'ROLE_C&S_MOV', 'Movimentações', '#', 2, true, NULL, 361, NULL);
@@ -31278,6 +31531,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 4, true, NULL, 463, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (64, 'ROLE_MOV_CURSO_DNT', 'DNT', '/desenvolvimento/dnt/list.action', 5, true, NULL, 463, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (6, 'ROLE_CAD_BDS_EMPRESA', 'Empresas BDS', '/captacao/empresaBds/list.action', 6, true, NULL, 463, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (598, 'ROLE_CAND_SOLICITACAO_IMPRIMIR', 'Imprimir', '#', 9, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (15, 'ROLE_CAD_GRUPOGASTO', 'Grupos de Investimento', '/geral/grupoGasto/list.action', 7, true, NULL, 463, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (16, 'ROLE_CAD_GASTO', 'Investimentos', '/geral/gasto/list.action', 8, true, NULL, 463, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (36, 'ROLE_REL_GASTOEMPRESA', 'Investimentos da Empresa', '/geral/gastoEmpresa/prepareImprimir.action', 9, true, NULL, 463, NULL);
@@ -31334,7 +31588,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (596, 'ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO', 'Documentos Anexos', '#', 7, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (597, 'ROLE_CAND_SOLICITACAO_AVALIACOES', 'Avaliações da Solicitação', '#', 8, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (454, 'ROLE_TED_PAINEL_IND', 'Painel de Indicadores', '/desenvolvimento/indicadores/list.action', 4, true, NULL, 365, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (598, 'ROLE_CAND_SOLICITACAO_IMPRIMIR', 'Imprimir', '#', 9, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (599, 'ROLE_CAND_SOLICITACAO_TRIAGEM', 'Triagem', '#', 10, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (600, 'ROLE_CAND_SOLICITACAO_INSERIRETAPAGRUPO', 'Inserir Etapas em Grupo', '#', 11, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (601, 'ROLE_CAND_SOLICITACAO_RESULTADOAVALIACAO', 'Resultado da Avaliação', '#', 12, false, NULL, 22, NULL);
@@ -31433,13 +31686,23 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (509, 'ROLE_REL_ABSENTEISMO', 'Absenteísmo', '/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action', 9, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (646, 'ROLE_TAXA_DEMISSAO', 'Taxa de Demissão', '/indicador/indicadorTurnOver/prepareTaxaDeDemissao.action', 12, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (647, 'ROLE_REL_RECIBO_DECIMO_TERCEIRO', 'Recibo de 13º salário', '/geral/colaborador/prepareReciboDeDecimoTerceiro.action', 2, true, NULL, 377, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (516, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Níveis de Competência', NULL, 6, true, NULL, 362, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (650, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Cadastros', '/captacao/nivelCompetencia/list.action', 1, true, NULL, 516, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (651, 'ROLE_CAD_NIVEL_COMPETENCIA', 'Historicos', '/captacao/nivelCompetenciaHistorico/list.action', 2, true, NULL, 516, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (652, 'ROLE_REL_ANALISE_COMPETENCIAS_COLABORADOR', 'Análise de Desempenho das Competências do Colaborador', '/avaliacao/desempenho/prepareAnaliseDesempenhoCompetenciaColaborador.action', 7, true, NULL, 486, NULL);
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.155.186', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.58.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.156.187', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.58.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
+
+
+--
+-- Data for Name: participanteavaliacaodesempenho; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
 
 
 --
@@ -31744,6 +32007,7 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (2, 644);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 645);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 646);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 647);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 652);
 
 
 --
@@ -32460,11 +32724,27 @@ ALTER TABLE ONLY composicaosesmt
 
 
 --
+-- Name: confighistoriconivel_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY confighistoriconivel
+    ADD CONSTRAINT confighistoriconivel_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: configuracaocampoextra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
 ALTER TABLE ONLY configuracaocampoextra
     ADD CONSTRAINT configuracaocampoextra_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: configuracaocompetenciaavaliacaodesempenho_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY configuracaocompetenciaavaliacaodesempenho
+    ADD CONSTRAINT configuracaocompetenciaavaliacaodesempenho_pkey PRIMARY KEY (id);
 
 
 --
@@ -32508,6 +32788,14 @@ ALTER TABLE ONLY configuracaonivelcompetenciacolaborador
 
 
 --
+-- Name: configuracaonivelcompetenciacriterio_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY configuracaonivelcompetenciacriterio
+    ADD CONSTRAINT configuracaonivelcompetenciacriterio_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: configuracaonivelcompetenciafaixasalarial_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -32537,6 +32825,14 @@ ALTER TABLE ONLY configuracaorelatoriodinamico
 
 ALTER TABLE ONLY conhecimento
     ADD CONSTRAINT conhecimento_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: criterioavaliacaocompetencia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY criterioavaliacaocompetencia
+    ADD CONSTRAINT criterioavaliacaocompetencia_pkey PRIMARY KEY (id);
 
 
 --
@@ -33060,6 +33356,14 @@ ALTER TABLE ONLY nivelcompetencia
 
 
 --
+-- Name: nivelcompetenciahistorico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY nivelcompetenciahistorico
+    ADD CONSTRAINT nivelcompetenciahistorico_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: noticia_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -33097,6 +33401,14 @@ ALTER TABLE ONLY papel
 
 ALTER TABLE ONLY parametrosdosistema
     ADD CONSTRAINT parametrosdosistema_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: participanteavaliacaodesempenho_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY participanteavaliacaodesempenho
+    ADD CONSTRAINT participanteavaliacaodesempenho_pkey PRIMARY KEY (id);
 
 
 --
@@ -33556,6 +33868,13 @@ CREATE UNIQUE INDEX indicehistorico_data_indice_uk ON indicehistorico USING btre
 
 
 --
+-- Name: nivelcompetenciahistorico_data_empresa_uk; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE UNIQUE INDEX nivelcompetenciahistorico_data_empresa_uk ON nivelcompetenciahistorico USING btree (data, empresa_id);
+
+
+--
 -- Name: solicitacaoexame_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -33808,6 +34127,14 @@ ALTER TABLE ONLY avaliacaocurso
 
 ALTER TABLE ONLY avaliacaodesempenho
     ADD CONSTRAINT avaliacaodesempenho_avaliacao_fk FOREIGN KEY (avaliacao_id) REFERENCES avaliacao(id);
+
+
+--
+-- Name: avaliacaodesempenho_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY avaliacaodesempenho
+    ADD CONSTRAINT avaliacaodesempenho_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
 
 
 --
@@ -34192,6 +34519,14 @@ ALTER TABLE ONLY clinicaautorizada_exame
 
 ALTER TABLE ONLY clinicaautorizada_exame
     ADD CONSTRAINT clinicaautorizada_exame_exame_fk FOREIGN KEY (exames_id) REFERENCES exame(id);
+
+
+--
+-- Name: cncc_cncf_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY configuracaonivelcompetenciacolaborador
+    ADD CONSTRAINT cncc_cncf_fk FOREIGN KEY (configuracaonivelcompetenciafaixasalarial_id) REFERENCES configuracaonivelcompetenciafaixasalarial(id);
 
 
 --
@@ -34635,6 +34970,22 @@ ALTER TABLE ONLY composicaosesmt
 
 
 --
+-- Name: confighistoriconivel_nivelcompetencia_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY confighistoriconivel
+    ADD CONSTRAINT confighistoriconivel_nivelcompetencia_fk FOREIGN KEY (nivelcompetencia_id) REFERENCES nivelcompetencia(id);
+
+
+--
+-- Name: confighistoriconivel_nivelcompetenciahistorico_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY confighistoriconivel
+    ADD CONSTRAINT confighistoriconivel_nivelcompetenciahistorico_fk FOREIGN KEY (nivelcompetenciahistorico_id) REFERENCES nivelcompetenciahistorico(id);
+
+
+--
 -- Name: confignivelcompcolab_colaboradorquestionario_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -34659,11 +35010,43 @@ ALTER TABLE ONLY configuracaonivelcompetencia
 
 
 --
+-- Name: confignivelcompfaixasalarial_nivelcompetenciahistorico_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY configuracaonivelcompetenciafaixasalarial
+    ADD CONSTRAINT confignivelcompfaixasalarial_nivelcompetenciahistorico_fk FOREIGN KEY (nivelcompetenciahistorico_id) REFERENCES nivelcompetenciahistorico(id);
+
+
+--
 -- Name: configuracaocampoextra_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY configuracaocampoextra
     ADD CONSTRAINT configuracaocampoextra_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
+-- Name: configuracaocompetenciaavaliacaodesempenho_avaliacaodesempenho_; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY configuracaocompetenciaavaliacaodesempenho
+    ADD CONSTRAINT configuracaocompetenciaavaliacaodesempenho_avaliacaodesempenho_ FOREIGN KEY (avaliacaodesempenho_id) REFERENCES avaliacaodesempenho(id);
+
+
+--
+-- Name: configuracaocompetenciaavaliacaodesempenho_avaliador_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY configuracaocompetenciaavaliacaodesempenho
+    ADD CONSTRAINT configuracaocompetenciaavaliacaodesempenho_avaliador_fk FOREIGN KEY (avaliador_id) REFERENCES colaborador(id);
+
+
+--
+-- Name: configuracaocompetenciaavaliacaodesempenho_configuracaonivelcom; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY configuracaocompetenciaavaliacaodesempenho
+    ADD CONSTRAINT configuracaocompetenciaavaliacaodesempenho_configuracaonivelcom FOREIGN KEY (configuracaonivelcompetenciafaixasalarial_id) REFERENCES configuracaonivelcompetenciafaixasalarial(id);
 
 
 --
@@ -34747,6 +35130,22 @@ ALTER TABLE ONLY configuracaonivelcompetenciacolaborador
 
 
 --
+-- Name: configuracaonivelcompetenciacriterio_cnc_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY configuracaonivelcompetenciacriterio
+    ADD CONSTRAINT configuracaonivelcompetenciacriterio_cnc_fk FOREIGN KEY (configuracaonivelcompetencia_id) REFERENCES configuracaonivelcompetencia(id);
+
+
+--
+-- Name: configuracaonivelcompetenciacriterio_nivelcompetencia_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY configuracaonivelcompetenciacriterio
+    ADD CONSTRAINT configuracaonivelcompetenciacriterio_nivelcompetencia_fk FOREIGN KEY (nivelcompetencia_id) REFERENCES nivelcompetencia(id);
+
+
+--
 -- Name: configuracaonivelcompetenciafaixasalarial_faixasalarial_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -34808,6 +35207,30 @@ ALTER TABLE ONLY conhecimento_curso
 
 ALTER TABLE ONLY conhecimento
     ADD CONSTRAINT conhecimento_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
+-- Name: criterioavaliacaocompetencia_atitude_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY criterioavaliacaocompetencia
+    ADD CONSTRAINT criterioavaliacaocompetencia_atitude_fk FOREIGN KEY (atitude_id) REFERENCES atitude(id);
+
+
+--
+-- Name: criterioavaliacaocompetencia_conhecimento_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY criterioavaliacaocompetencia
+    ADD CONSTRAINT criterioavaliacaocompetencia_conhecimento_fk FOREIGN KEY (conhecimento_id) REFERENCES conhecimento(id);
+
+
+--
+-- Name: criterioavaliacaocompetencia_habilidade_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY criterioavaliacaocompetencia
+    ADD CONSTRAINT criterioavaliacaocompetencia_habilidade_fk FOREIGN KEY (habilidade_id) REFERENCES habilidade(id);
 
 
 --
@@ -35763,6 +36186,14 @@ ALTER TABLE ONLY nivelcompetencia
 
 
 --
+-- Name: nivelcompetenciahistorico_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY nivelcompetenciahistorico
+    ADD CONSTRAINT nivelcompetenciahistorico_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
 -- Name: obra_cidade_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -35808,6 +36239,22 @@ ALTER TABLE ONLY papel
 
 ALTER TABLE ONLY parametrosdosistema
     ADD CONSTRAINT parametrosdosistema_perfil_fk FOREIGN KEY (perfilpadrao_id) REFERENCES perfil(id);
+
+
+--
+-- Name: participanteavaliacaodesempenho_avaliacaodesempenho_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY participanteavaliacaodesempenho
+    ADD CONSTRAINT participanteavaliacaodesempenho_avaliacaodesempenho_fk FOREIGN KEY (avaliacaodesempenho_id) REFERENCES avaliacaodesempenho(id);
+
+
+--
+-- Name: participanteavaliacaodesempenho_colaborador_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY participanteavaliacaodesempenho
+    ADD CONSTRAINT participanteavaliacaodesempenho_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);
 
 
 --
