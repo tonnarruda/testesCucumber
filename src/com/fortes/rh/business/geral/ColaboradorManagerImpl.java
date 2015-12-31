@@ -2764,6 +2764,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 			mensagemManager.removerMensagensViculadasByColaborador(new Long[]{id});
 		}
 		catch (Exception e)	{
+			e.printStackTrace();
 			transactionManager.rollback(status);
 			throw e;
 		}
