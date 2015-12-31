@@ -14,7 +14,7 @@ public interface FaixaSalarialHistoricoDao extends GenericDao<FaixaSalarialHisto
 	FaixaSalarialHistorico findByIdProjection(Long faixaSalarialHistoricoId);
 	boolean verifyData(Long faixaSalarialHistoricoId, Date data, Long faixaSalarialId);
 	FaixaSalarialHistorico findByFaixaSalarialId(Long faixaSalariaId);
-	Collection<FaixaSalarialHistorico> findByPeriodo(Long faixaSalarialId, Date dataProxima, Date dataDesligamento);
+	Collection<FaixaSalarialHistorico> findByPeriodo(Long faixaSalarialId, Date dataInicio, Date dataProxima, Date dataDesligamento);
 	Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(Collection<Long> grupoOcupacionals, Collection<Long> cargoIds, Collection<Long> areaIds, Date data, boolean ordemDataDescendente, Long empresaId, Boolean cargoAtivo);
 	boolean setStatus(Long faixaSalarialHistoricoId, boolean aprovado);
 	void removeByFaixas(Long[] faixaSalarialIds);

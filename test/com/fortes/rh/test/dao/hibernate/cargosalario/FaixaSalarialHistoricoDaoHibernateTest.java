@@ -375,9 +375,9 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		FaixaSalarialHistorico faixaSalarialHistorico3 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(01, 03, 2015), null);
 		faixaSalarialHistorico3 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico3);
 
-		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByPeriodo(faixaSalarial.getId(), DateUtil.criarDataMesAno(01, 02, 2015), null);
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByPeriodo(faixaSalarial.getId(), DateUtil.criarDataMesAno(01, 01, 2015), DateUtil.criarDataMesAno(01, 02, 2015), null);
 
-		assertEquals(2, retorno.size());
+		assertEquals(1, retorno.size());
 	}
 	
 	public void testFindByPeriodoComDesligamentoNoDiaDoReajuste()
@@ -401,12 +401,15 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		FaixaSalarialHistorico faixaSalarialHistorico3 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(10, 02, 2015), null);
 		faixaSalarialHistorico3 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico3);
 		
-		FaixaSalarialHistorico faixaSalarialHistorico4 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, data_01_03_2015, null);
+		FaixaSalarialHistorico faixaSalarialHistorico4 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(20, 02, 2015), null);
 		faixaSalarialHistorico4 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico4);
 		
-		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByPeriodo(faixaSalarial.getId(), dataProximo, dataDesligamentoDoColaborador);
+		FaixaSalarialHistorico faixaSalarialHistorico5 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, data_01_03_2015, null);
+		faixaSalarialHistorico5 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico5);
 		
-		assertEquals(3, retorno.size());
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByPeriodo(faixaSalarial.getId(), DateUtil.criarDataMesAno(01, 02, 2015), dataProximo, dataDesligamentoDoColaborador);
+		
+		assertEquals(2, retorno.size());
 	}
 	
 	public void testFindByPeriodoComDesligamentoAposDiaDoReajuste()
@@ -421,7 +424,10 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		Date dataProximo = data_01_03_2015;
 		Date dataDesligamentoDoColaborador = DateUtil.criarDataMesAno(02, 03, 2015);
 		
-		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(01, 01, 2015), null);
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(01, 01, 2015), null);
+		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(02, 01, 2015), null);
 		faixaSalarialHistorico1 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico1);
 		
 		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(01, 02, 2015), null);
@@ -433,7 +439,7 @@ public class FaixaSalarialHistoricoDaoHibernateTest extends GenericDaoHibernateT
 		FaixaSalarialHistorico faixaSalarialHistorico4 = FaixaSalarialHistoricoFactory.getEntity(faixaSalarial, DateUtil.criarDataMesAno(01, 04, 2015), null);
 		faixaSalarialHistorico4 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico4);
 		
-		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByPeriodo(faixaSalarial.getId(), dataProximo, dataDesligamentoDoColaborador);
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoDao.findByPeriodo(faixaSalarial.getId(), DateUtil.criarDataMesAno(01, 01, 2015), dataProximo, dataDesligamentoDoColaborador);
 		
 		assertEquals(3, retorno.size());
 	}

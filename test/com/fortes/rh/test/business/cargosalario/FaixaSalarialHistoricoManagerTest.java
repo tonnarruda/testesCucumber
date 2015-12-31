@@ -402,7 +402,7 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		Date data = DateUtil.criarDataMesAno(01, 01, 2008);
 		Date dataProxima = DateUtil.criarDataMesAno(01, 06, 2008);
 
-		faixaSalarialHistoricoDao.expects(once()).method("findByPeriodo").with(eq(faixaSalarial.getId()), eq(dataProxima), eq(null)).will(returnValue(faixaSalarials));
+		faixaSalarialHistoricoDao.expects(once()).method("findByPeriodo").with(eq(faixaSalarial.getId()), eq(data), eq(dataProxima), eq(null)).will(returnValue(faixaSalarials));
 
 		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByPeriodo(faixaSalarial.getId(), data, dataProxima, null);
 		assertEquals(1, faixaSalarialHistoricos.size());
@@ -412,17 +412,13 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 	{
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 
-		Date data1 = DateUtil.criarDataMesAno(01, 01, 2008);
-		Date data2 = DateUtil.criarDataMesAno(01, 07, 2007);
-		Date dataProxima = DateUtil.criarDataMesAno(01, 06, 2008);
+		Date data1 = DateUtil.criarDataMesAno(1, 7, 2008);
+		Date data2 = DateUtil.criarDataMesAno(1, 8, 2008);
+		Date dataProxima = DateUtil.criarDataMesAno(1, 8, 2008);
 
 		Indice indice = IndiceFactory.getEntity(1L);
 
-		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(1L);
-		faixaSalarialHistorico.setTipo(TipoAplicacaoIndice.INDICE);
-		faixaSalarialHistorico.setData(dataProxima);
-		faixaSalarialHistorico.setIndice(indice);
-		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(1L, data1, TipoAplicacaoIndice.INDICE, indice, faixaSalarial);
 
 		Collection<FaixaSalarialHistorico> faixaSalarials = new ArrayList<FaixaSalarialHistorico>();
 		faixaSalarials.add(faixaSalarialHistorico);
@@ -437,11 +433,11 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		indiceHistoricos.add(indiceHistorico1);
 		indiceHistoricos.add(indiceHistorico2);
 
-		faixaSalarialHistoricoDao.expects(once()).method("findByPeriodo").with(eq(faixaSalarial.getId()), eq(dataProxima), eq(null)).will(returnValue(faixaSalarials));
+		faixaSalarialHistoricoDao.expects(once()).method("findByPeriodo").with(eq(faixaSalarial.getId()), eq(data1), eq(dataProxima), eq(null)).will(returnValue(faixaSalarials));
 		indiceHistoricoManager.expects(once()).method("findByPeriodo").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(indiceHistoricos));
 
 		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByPeriodo(faixaSalarial.getId(), data1, dataProxima, null);
-		assertEquals(2, faixaSalarialHistoricos.size());
+		assertEquals(3, faixaSalarialHistoricos.size());
 	}
 
 	public void testFindByPeriodoPorIndiceValor()
@@ -474,7 +470,7 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		Collection<IndiceHistorico> indiceHistoricos = new ArrayList<IndiceHistorico>();
 		indiceHistoricos.add(indiceHistorico);
 
-		faixaSalarialHistoricoDao.expects(once()).method("findByPeriodo").with(eq(faixaSalarial.getId()), eq(dataProxima), eq(null)).will(returnValue(faixaSalarialHistoricos));
+		faixaSalarialHistoricoDao.expects(once()).method("findByPeriodo").with(eq(faixaSalarial.getId()), eq(data), eq(dataProxima), eq(null)).will(returnValue(faixaSalarialHistoricos));
 		indiceHistoricoManager.expects(once()).method("findByPeriodo").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(indiceHistoricos));
 
 		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoManager.findByPeriodo(faixaSalarial.getId(), data, dataProxima, null);

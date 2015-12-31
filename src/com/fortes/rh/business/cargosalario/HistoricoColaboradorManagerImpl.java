@@ -580,9 +580,6 @@ public class HistoricoColaboradorManagerImpl extends GenericManagerImpl<Historic
 					historicosColaboradoresProgressao.add(historicoColaboradorTmp);
 					for (FaixaSalarialHistorico faixaHistorico : faixaHistoricos)
 					{
-						if (faixaHistorico.getData().before(historicoColaboradorTmp.getData()))
-							continue;
-
 						HistoricoColaborador historicoColaboradorClone = (HistoricoColaborador) historicoColaboradorTmp.clone();
 						historicoColaboradorClone.setData(faixaHistorico.getData());
 						historicoColaboradorClone.getFaixaSalarial().setFaixaSalarialHistoricoAtual(faixaHistorico);

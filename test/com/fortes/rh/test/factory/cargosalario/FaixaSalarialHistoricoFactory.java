@@ -48,6 +48,15 @@ public class FaixaSalarialHistoricoFactory
 		
 		return faixaSalarialHistorico;
 	}
+	
+	public static FaixaSalarialHistorico getEntity(Long id, Date data, int tipo, Indice indice, FaixaSalarial faixaSalarial)
+	{
+		FaixaSalarialHistorico faixaSalarialHistorico = getEntity(id, indice, 1, data);
+		faixaSalarialHistorico.setTipo(tipo);
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		
+		return faixaSalarialHistorico;
+	}
 
 	public static Collection<FaixaSalarialHistorico> getCollection()
 	{

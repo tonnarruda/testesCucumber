@@ -195,7 +195,7 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 	// TODO Método muito complexo, analisar a possiblidade de refatoração.
 	public Collection<FaixaSalarialHistorico> findByPeriodo(Long faixaSalarialId, Date data, Date dataProxima, Date dataDesligamento)
 	{
-		List<FaixaSalarialHistorico> faixaSalarialHistoricos = (List<FaixaSalarialHistorico>) getDao().findByPeriodo(faixaSalarialId, dataProxima, dataDesligamento);
+		List<FaixaSalarialHistorico> faixaSalarialHistoricos = (List<FaixaSalarialHistorico>) getDao().findByPeriodo(faixaSalarialId, data, dataProxima, dataDesligamento);
 		Collection<FaixaSalarialHistorico> retorno = new ArrayList<FaixaSalarialHistorico>();
 
 		int proximo = 1;
@@ -210,23 +210,22 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 				}
 				case TipoAplicacaoIndice.INDICE:
 				{
-					Date dataProximo = null;
+					Date dataProximoHistorico = null;
 					if(proximo == faixaSalarialHistoricos.size())
-						dataProximo = new Date();
+						dataProximoHistorico = new Date();
 					else
-						dataProximo = faixaSalarialHistoricos.get(proximo).getData();
+						dataProximoHistorico = faixaSalarialHistoricos.get(proximo).getData();
 
-					if(dataProxima.before(dataProximo))
-						dataProximo = dataProxima;
+					if(dataProxima.before(dataProximoHistorico))
+						dataProximoHistorico = dataProxima;
 
-					Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoManager.findByPeriodo(faixaSalarialHistoricoTmp.getIndice().getId(), faixaSalarialHistoricoTmp.getData(), dataProximo, dataDesligamento);
+					Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoManager.findByPeriodo(faixaSalarialHistoricoTmp.getIndice().getId(), faixaSalarialHistoricoTmp.getData(), dataProximoHistorico, dataDesligamento);
 
-					retorno.add(faixaSalarialHistoricoTmp);
+					if(!retorno.contains(faixaSalarialHistoricoTmp))
+						retorno.add(faixaSalarialHistoricoTmp);
+					
 					for (IndiceHistorico indiceHistorico: indiceHistoricos)
 					{
-						if(indiceHistorico.getData().before(data))
-							continue;
-
 						FaixaSalarialHistorico faixaSalarialHistoricoClone = (FaixaSalarialHistorico) faixaSalarialHistoricoTmp.clone();
 						faixaSalarialHistoricoClone.setData(indiceHistorico.getData());
 						faixaSalarialHistoricoClone.getIndice().setIndiceHistoricoAtual(indiceHistorico);

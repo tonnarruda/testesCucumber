@@ -307,15 +307,13 @@ public class ColaboradorListAction extends MyActionSupportList
 
 			response.getOutputStream().write(reciboPagamentoBytes);
 		} 
-		catch (IntegraACException e) 
-		{
-			e.printStackTrace();
-			addActionWarning(e.getMessage());
-			prepareReciboPagamento();
-			return Action.INPUT;
-		}
 		catch (Exception e) 
 		{
+			if(e instanceof IntegraACException)
+				addActionWarning(e.getMessage());
+			else
+				addActionError(e.getMessage());
+			
 			e.printStackTrace();
 			addActionError(e.getMessage());
 			prepareReciboPagamento();
@@ -371,17 +369,14 @@ public class ColaboradorListAction extends MyActionSupportList
 
 			response.getOutputStream().write(reciboPagamentoBytes);
 		} 
-		catch (IntegraACException e) 
-		{
-			e.printStackTrace();
-			addActionWarning(e.getMessage());
-			prepareReciboDeDecimoTerceiro();
-			return Action.INPUT;
-		}
 		catch (Exception e) 
 		{
+			if(e instanceof IntegraACException)
+				addActionWarning(e.getMessage());
+			else
+				addActionError(e.getMessage());
+			
 			e.printStackTrace();
-			addActionError(e.getMessage());
 			prepareReciboDeDecimoTerceiro();
 			return Action.INPUT;
 		}

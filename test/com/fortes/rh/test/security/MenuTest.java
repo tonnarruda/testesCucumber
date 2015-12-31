@@ -16,6 +16,7 @@ import com.fortes.rh.test.factory.geral.ParametrosDoSistemaFactory;
 public class MenuTest extends TestCase
 {
 	public void testGetMenuFormatado()
+	
 	{
 		Collection<Papel> papels = new ArrayList<Papel>();
 		Papel papel1 = new Papel();
