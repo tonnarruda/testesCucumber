@@ -4933,16 +4933,16 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				"DELETE FROM Cat WHERE colaborador.id = :id",
 				
 				"DELETE FROM ColaboradorResposta WHERE colaboradorQuestionario.id IN (SELECT id FROM ColaboradorQuestionario WHERE avaliador.id = :id OR colaborador.id = :id)",
+				"UPDATE ConfiguracaoNivelCompetenciaColaborador set colaboradorQuestionario.id = null WHERE  colaboradorQuestionario.id in(select id from ColaboradorQuestionario where avaliador.id = :id OR colaborador.id = :id) ",
 				"DELETE FROM ColaboradorQuestionario WHERE avaliador.id = :id OR colaborador.id = :id",
 				
 				"DELETE FROM AproveitamentoAvaliacaoCurso WHERE colaboradorTurma.id IN (SELECT id FROM ColaboradorTurma WHERE colaborador.id = :id)",
 				"DELETE FROM ColaboradorPresenca WHERE colaboradorTurma.id IN (SELECT id FROM ColaboradorTurma WHERE colaborador.id = :id)",
 				"DELETE FROM ColaboradorTurma WHERE colaborador.id = :id",
 				
+				"delete from ConfiguracaoNivelCompetenciaCriterio where configuracaoNivelCompetencia.id in(Select id FROM ConfiguracaoNivelCompetencia WHERE configuracaoNivelCompetenciaColaborador.id IN (SELECT id FROM ConfiguracaoNivelCompetenciaColaborador WHERE colaborador.id = :id))",
 				"DELETE FROM ConfiguracaoNivelCompetencia WHERE configuracaoNivelCompetenciaColaborador.id IN (SELECT id FROM ConfiguracaoNivelCompetenciaColaborador WHERE colaborador.id = :id)",
 				"DELETE FROM ConfiguracaoNivelCompetenciaColaborador WHERE colaborador.id = :id",
-				"DELETE FROM ConfiguracaoNivelCompetencia WHERE configuracaoNivelCompetenciaColaborador.id IN (SELECT id FROM ConfiguracaoNivelCompetenciaColaborador WHERE avaliador.id = :id)",
-				"DELETE FROM ConfiguracaoNivelCompetenciaColaborador WHERE avaliador.id = :id",
 				
 				"DELETE FROM ConfiguracaoNivelCompetencia WHERE configuracaoNivelCompetenciaColaborador.id IN (SELECT id FROM ConfiguracaoNivelCompetenciaColaborador WHERE avaliador.id = :id)",
 				"DELETE FROM ConfiguracaoNivelCompetenciaColaborador WHERE avaliador.id = :id",
@@ -4971,8 +4971,10 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				"UPDATE Colaborador SET solicitanteDemissao.id = NULL WHERE solicitanteDemissao.id = :id",
 				"DELETE FROM HistoricoColaborador WHERE colaborador.id = :id",
 				"DELETE FROM ReajusteColaborador WHERE colaborador.id = :id",
+				
 				"DELETE FROM ParticipanteAvaliacaoDesempenho WHERE colaborador.id = :id",
-				"DELE FROM configuracaocompetenciaavaliacaodesempenho WHERE avaliador.id = :id",
+				"DELETE FROM ConfiguracaoCompetenciaAvaliacaoDesempenho WHERE avaliador.id = :id",
+				
 				"DELETE FROM Colaborador WHERE id = :id"
 		};
 		

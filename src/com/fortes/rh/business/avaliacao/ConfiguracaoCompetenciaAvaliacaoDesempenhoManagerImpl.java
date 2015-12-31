@@ -73,7 +73,11 @@ public class ConfiguracaoCompetenciaAvaliacaoDesempenhoManagerImpl extends Gener
 		}
 		
 		FaixaSalarial faixaSalarial = faixaSalarialManager.findByFaixaSalarialId(configuracaoNivelCompetenciaFaixaSalarial.getFaixaSalarial().getId());
-		Collection<AvaliacaoDesempenho> avaliacoesDesempenho = avaliacaoDesempenhoManager.findAvaliacaoDesempenhoBloqueadaComConfiguracaoCompetencia(configuracaoNivelCompetenciaFaixaSalarialAnterior.getId());
+		Collection<AvaliacaoDesempenho> avaliacoesDesempenho = new ArrayList<AvaliacaoDesempenho>();
+		
+		if(configuracaoNivelCompetenciaFaixaSalarialAnterior != null && configuracaoNivelCompetenciaFaixaSalarialAnterior.getId() != null)
+			avaliacoesDesempenho = avaliacaoDesempenhoManager.findAvaliacaoDesempenhoBloqueadaComConfiguracaoCompetencia(configuracaoNivelCompetenciaFaixaSalarialAnterior.getId());
+		
 		gerenciadorComunicacaoManager.enviaEmailAoInserirConfiguracaoCompetenciaFaixaSalarial(competenciasInseridas, competenciasExcluidas, faixaSalarial, empresa, avaliacoesDesempenho);
 		
 		getDao().replaceConfiguracaoNivelCompetenciaFaixaSalarial(configuracaoNivelCompetenciaFaixaSalarial);
