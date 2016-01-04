@@ -340,6 +340,32 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
        	return result.getRetorno();
 	}
 	
+	public String getDeclaracaoRendimentos(Colaborador colaborador, String ano) throws Exception
+	{
+		StringBuilder token = new StringBuilder();
+		GrupoAC grupoAC = new GrupoAC();
+		Call call = acPessoalClient.createCall(colaborador.getEmpresa(), token, grupoAC, "GetDeclaracaoRendimentos");
+
+		QName xmlstring = new QName("xs:string");
+
+		call.addParameter("Token", xmlstring, ParameterMode.IN);
+		call.addParameter("Empresa", xmlstring, ParameterMode.IN);
+		call.addParameter("Empregado", xmlstring, ParameterMode.IN);
+		call.addParameter("Ano", xmlstring, ParameterMode.IN);
+		
+		acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
+		
+		Object[] param = new Object[]{ token.toString(), colaborador.getEmpresa().getCodigoAC(), colaborador.getCodigoAC(), ano };
+    	
+		TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
+       	Boolean retorno = result.getSucesso("GetDeclaracaoRendimentos", param, this.getClass());
+		
+       	if (!retorno)
+        	throw new IntegraACException(result.getMensagem());
+       	
+       	return result.getRetorno();
+	}
+	
 	public String[] getDatasDecimoTerceiroPorEmpregado(Colaborador colaborador) throws Exception
 	{
 		String[] result = null;

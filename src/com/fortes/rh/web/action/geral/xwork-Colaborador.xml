@@ -28,7 +28,19 @@
 			    <param name="inputName">byteArrayInputStream</param>
 			    <param name="bufferSize">1024</param>
 			</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/geral/prepareReciboDeDecimoTerceiro.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/reciboDeDecimoTerceiro.ftl</result>
+		</action>
+		<action name="prepareDeclaracaoRendimentos" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareDeclaracaoRendimentos">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/declaracaoRendimentos.ftl</result>
+		</action>
+		<action name="declaracaoRendimentos" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="declaracaoRendimentos">
+		    <result name="success" type="stream">
+			    <param name="contentDisposition">filename=declaracaoRendimentos.pdf</param>
+			    <param name="contentType">application/PDF;charset=UTF-8</param>
+			    <param name="inputName">byteArrayInputStream</param>
+			    <param name="bufferSize">1024</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/declaracaoRendimentos.ftl</result>
 		</action>
 		<action name="list" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="list">
 			<interceptor-ref name="defaultListStack">

@@ -121,6 +121,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	private String[] dataCalculos;
 	private String dataCalculo;
+	private String anoDosRendimentos;
 
 	private Collection<String> dinamicColumns;
 	private Collection<String> dinamicProperts;
@@ -339,7 +340,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		}
 		else if(!colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId()))
 		{
-			addActionWarning("Só é possível solicitar seu recibo de pagamento pela empresa a qual você foi contratado(a). Acesse a empresa <strong>" + colaborador.getEmpresaNome() + "</strong> para solicitar seu recibo.");
+			addActionWarning("Só é possível solicitar seu recibo de décimo terceiro pela empresa a qual você foi contratado(a). Acesse a empresa <strong>" + colaborador.getEmpresaNome() + "</strong> para solicitar seu recibo.");
 			colaborador = null;
 		} else {
 			dataCalculos = colaboradorManager.getDatasDecimoTerceiroPorEmpregado(colaborador);
@@ -374,14 +375,76 @@ public class ColaboradorListAction extends MyActionSupportList
 		{
 			e.printStackTrace();
 			addActionWarning(e.getMessage());
-			prepareReciboPagamento();
+			prepareReciboDeDecimoTerceiro();
 			return Action.INPUT;
 		}
 		catch (Exception e) 
 		{
 			e.printStackTrace();
 			addActionError(e.getMessage());
-			prepareReciboPagamento();
+			prepareReciboDeDecimoTerceiro();
+			return Action.INPUT;
+		}
+        
+		return Action.SUCCESS;
+	}
+	
+	public String prepareDeclaracaoRendimentos() throws Exception
+	{
+		colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+		
+		if(!getEmpresaSistema().isAcIntegra())
+		{
+			addActionWarning("Esta empresa não está integrada com Fortes Pessoal.");
+		}
+		else if(colaborador == null)
+		{
+			addActionWarning("Sua conta de usuário não está vinculada à nenhum colaborador");
+		}
+		else if(!colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId()))
+		{
+			addActionWarning("Só é possível solicitar sua declaração de rendimentos pela empresa a qual você foi contratado(a). Acesse a empresa <strong>" + colaborador.getEmpresaNome() + "</strong> para solicitar sua declaração.");
+			colaborador = null;
+		} 
+		
+		return Action.SUCCESS;
+	}
+	
+	public String declaracaoRendimentos() throws Exception
+	{
+		try {
+			colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+			
+			String declaracaoRendimentos = colaboradorManager.getDeclaracaoRendimentos(colaborador, anoDosRendimentos);
+			
+	        byte[] reciboPagamentoBytes = Base64.decodeBase64(declaracaoRendimentos.getBytes()); 
+	        byteArrayInputStream = new ByteArrayInputStream(reciboPagamentoBytes);
+	        
+	        HttpServletResponse response = ServletActionContext.getResponse();
+
+			response.addHeader("Expires", "0");
+			response.addHeader("Pragma", "no-cache");
+			response.setContentType("application/force-download");
+			response.setContentLength((int)reciboPagamentoBytes.length);
+			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.setHeader("Content-Disposition","attachment; filename=\"declaracao_rendimentos_" + anoDosRendimentos + ".pdf\"");
+
+			response.getOutputStream().write(reciboPagamentoBytes);
+		} 
+		catch (IntegraACException e) 
+		{
+			e.printStackTrace();
+			addActionWarning(e.getMessage());
+			prepareDeclaracaoRendimentos();
+			return Action.INPUT;
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			addActionError(e.getMessage());
+			prepareDeclaracaoRendimentos();
 			return Action.INPUT;
 		}
         
@@ -1433,6 +1496,14 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public String getDataCalculo() {
 		return dataCalculo;
+	}
+	
+	public String getAnoDosRendimentos() {
+		return anoDosRendimentos;
+	}
+
+	public void setAnoDosRendimentos(String anoDosRendimentos) {
+		this.anoDosRendimentos = anoDosRendimentos.replace(" ", "");
 	}
 
 	public String[] getDataCalculos() {

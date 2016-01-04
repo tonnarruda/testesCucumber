@@ -2829,6 +2829,11 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return acPessoalClientColaborador.getReciboDeDecimoTerceiro(colaborador, dataCalculo);
 	}
 	
+	public String getDeclaracaoRendimentos(Colaborador colaborador, String ano) throws Exception 
+	{
+		return acPessoalClientColaborador.getDeclaracaoRendimentos(colaborador, ano);
+	}
+	
 	public String[] getDatasDecimoTerceiroPorEmpregado(Colaborador colaborador) throws Exception 
 	{
 		return acPessoalClientColaborador.getDatasDecimoTerceiroPorEmpregado(colaborador);
