@@ -23,7 +23,7 @@
 	<pageHeader>
 		<band height="15" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="f8f05069-a502-495b-bc4d-4bfe36de3c89" key="staticText-11" x="2" y="0" width="199" height="15"/>
+				<reportElement key="staticText-11" x="2" y="0" width="199" height="15" uuid="f8f05069-a502-495b-bc4d-4bfe36de3c89"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -40,7 +40,7 @@
 	<columnHeader>
 		<band height="17" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="7d7c5036-23cf-4887-b976-af60bdc00c5b" key="staticText-6" x="2" y="0" width="199" height="16"/>
+				<reportElement key="staticText-6" x="2" y="0" width="199" height="16" uuid="7d7c5036-23cf-4887-b976-af60bdc00c5b"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -53,7 +53,7 @@
 				<text><![CDATA[Ocorrência]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="bcf94120-643c-4af7-8f4c-a8bf09e735f1" key="staticText-15" x="209" y="0" width="153" height="16"/>
+				<reportElement key="staticText-15" x="209" y="0" width="153" height="16" uuid="bcf94120-643c-4af7-8f4c-a8bf09e735f1"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -66,7 +66,7 @@
 				<text><![CDATA[Período]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="05fa24c3-10c3-4203-84da-89d3d7f95bd1" key="staticText-16" x="369" y="0" width="416" height="16"/>
+				<reportElement key="staticText-16" x="369" y="0" width="416" height="16" uuid="05fa24c3-10c3-4203-84da-89d3d7f95bd1"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -83,7 +83,7 @@
 	<detail>
 		<band height="15" splitType="Stretch">
 			<rectangle>
-				<reportElement uuid="3ea87655-f3b7-414e-933c-210961c9cd6c" key="rectangle-1" stretchType="RelativeToTallestObject" x="2" y="0" width="783" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#EEEEEE">
+				<reportElement key="rectangle-1" stretchType="RelativeToTallestObject" x="2" y="0" width="783" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#EEEEEE" uuid="3ea87655-f3b7-414e-933c-210961c9cd6c">
 					<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
@@ -91,36 +91,33 @@
 				</graphicElement>
 			</rectangle>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="8901f370-fbf6-4540-b146-0e6d973c4ee1" key="textField" x="2" y="-1" width="199" height="16"/>
+				<reportElement key="textField" x="2" y="-1" width="199" height="16" uuid="8901f370-fbf6-4540-b146-0e6d973c4ee1"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
 				<textFieldExpression><![CDATA[$F{ocorrencia.descricao}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="false">
-				<reportElement uuid="8598d6e4-069d-46f9-be81-690c3c934c0c" key="textField" x="369" y="-1" width="416" height="16"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement key="textField" x="369" y="-1" width="416" height="16" uuid="8598d6e4-069d-46f9-be81-690c3c934c0c"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
 				<textFieldExpression><![CDATA[$F{observacao}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="e6d9344e-6e6d-4d1d-9907-1ce8084475cf" key="textField" x="209" y="-1" width="153" height="16"/>
+				<reportElement key="textField" x="209" y="-1" width="153" height="16" uuid="e6d9344e-6e6d-4d1d-9907-1ce8084475cf"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement/>
 				<textFieldExpression><![CDATA[$F{Periodo}]]></textFieldExpression>
 			</textField>
 		</band>
