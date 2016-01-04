@@ -45,9 +45,10 @@
 						<seriesExpression><![CDATA[""]]></seriesExpression>
 						<categoryExpression><![CDATA[$F{nome}]]></categoryExpression>
 						<valueExpression><![CDATA[$F{performance}]]></valueExpression>
+						<labelExpression><![CDATA[$F{performance} + "%"]]></labelExpression>
 					</categorySeries>
 				</categoryDataset>
-				<barPlot>
+				<barPlot isShowLabels="true">
 					<plot orientation="Horizontal" backgroundAlpha="0.6" foregroundAlpha="0.6" labelRotation="0.0">
 						<seriesColor seriesOrder="0" color="#C9C9C9"/>
 					</plot>
