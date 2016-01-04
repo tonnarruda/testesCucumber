@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="performanceFuncional_avaliacaoDesempenhos" pageWidth="785" pageHeight="802" whenNoDataType="AllSectionsNoDetail" columnWidth="785" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="32e341e7-4107-4134-9792-cfe26cdf22ad">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="2.3579476910000037"/>
+	<property name="ireport.x" value="665"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -12,6 +12,7 @@
 	<field name="avaliacao.titulo" class="java.lang.String"/>
 	<field name="performanceFormatada" class="java.lang.String"/>
 	<field name="observacao" class="java.lang.String"/>
+	<field name="avaliacaoDesempenho.titulo" class="java.lang.String"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" calculation="Count">
 		<variableExpression><![CDATA[$F{avaliacao.titulo}]]></variableExpression>
 	</variable>
@@ -24,7 +25,7 @@
 	<pageHeader>
 		<band height="15" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="54ea7032-07a0-4887-973c-9276e84377c7" key="staticText-11" x="2" y="0" width="221" height="15"/>
+				<reportElement key="staticText-11" x="2" y="0" width="221" height="15" uuid="54ea7032-07a0-4887-973c-9276e84377c7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -41,7 +42,7 @@
 	<columnHeader>
 		<band height="17" splitType="Stretch">
 			<staticText>
-				<reportElement uuid="fa3eefe8-9a0d-4a9c-b642-3eddf8096282" key="staticText-6" x="2" y="0" width="208" height="16"/>
+				<reportElement key="staticText-6" x="2" y="0" width="208" height="16" uuid="fa3eefe8-9a0d-4a9c-b642-3eddf8096282"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -54,7 +55,7 @@
 				<text><![CDATA[Data]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="33207a1d-8200-46ec-8eec-10a65bedfa13" key="staticText-7" x="215" y="0" width="187" height="16"/>
+				<reportElement key="staticText-7" x="215" y="0" width="299" height="16" uuid="33207a1d-8200-46ec-8eec-10a65bedfa13"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -67,7 +68,7 @@
 				<text><![CDATA[Avaliação]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="66d9cfe4-a6e3-43fe-af91-7104ad13da9a" key="staticText-8" x="407" y="0" width="181" height="16"/>
+				<reportElement key="staticText-8" x="517" y="0" width="72" height="16" uuid="66d9cfe4-a6e3-43fe-af91-7104ad13da9a"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -80,7 +81,7 @@
 				<text><![CDATA[Performance]]></text>
 			</staticText>
 			<staticText>
-				<reportElement uuid="33e51075-41e1-4887-a411-8350922f4fca" key="staticText-9" x="593" y="0" width="190" height="16"/>
+				<reportElement key="staticText-9" x="593" y="0" width="190" height="16" uuid="33e51075-41e1-4887-a411-8350922f4fca"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -97,15 +98,15 @@
 	<detail>
 		<band height="15" splitType="Stretch">
 			<rectangle>
-				<reportElement uuid="de752684-e7e2-40c8-969a-946afa06683a" key="rectangle-1" stretchType="RelativeToTallestObject" x="0" y="0" width="784" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#EEEEEE">
+				<reportElement key="rectangle-1" stretchType="RelativeToTallestObject" x="0" y="0" width="784" height="15" isRemoveLineWhenBlank="true" isPrintWhenDetailOverflows="true" backcolor="#EEEEEE" uuid="de752684-e7e2-40c8-969a-946afa06683a">
 					<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</graphicElement>
 			</rectangle>
-			<textField isBlankWhenNull="true">
-				<reportElement uuid="662a0f04-9528-472c-aa77-72c8f3ad685a" key="textField" x="215" y="1" width="187" height="13"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement key="textField" x="215" y="1" width="299" height="13" uuid="662a0f04-9528-472c-aa77-72c8f3ad685a"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -115,10 +116,10 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{avaliacao.titulo}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{avaliacaoDesempenho.titulo}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement uuid="f09fe761-e9e7-4671-b25d-b551998c3fcd" key="textField" x="2" y="1" width="208" height="13"/>
+				<reportElement key="textField" x="2" y="1" width="208" height="13" uuid="f09fe761-e9e7-4671-b25d-b551998c3fcd"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -131,7 +132,7 @@
 				<textFieldExpression><![CDATA[$F{dataMaisTempoPeriodoExperiencia}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="cbdcf124-eff0-458b-b7fb-5fc7156c9eb1" key="textField-1" x="407" y="1" width="181" height="13"/>
+				<reportElement key="textField-1" x="517" y="1" width="72" height="13" uuid="cbdcf124-eff0-458b-b7fb-5fc7156c9eb1"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -144,7 +145,7 @@
 				<textFieldExpression><![CDATA[$F{performanceFormatada}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="false">
-				<reportElement uuid="e4b3948d-634c-42e4-9492-7d4feb8b82be" key="textField" x="593" y="1" width="190" height="13"/>
+				<reportElement key="textField" x="593" y="1" width="190" height="13" uuid="e4b3948d-634c-42e4-9492-7d4feb8b82be"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
