@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.155.18x" db="" data="xx/xx/2016">
-		<Item visivel="S" motivo="P15120000218"><![CDATA[Info. Funcionais > Colaboradores > Performance Profissional > Imprimir: Correção de inconsistência na exibição das observações referentes a ocorrências, afastamentos e etapas seletivas.]]></Item>
+		<Item visivel="S" motivo="P15120000218"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Performance Profissional > Imprimir: Correção de inconsistência na exibição das observações referentes a ocorrências, afastamentos e etapas seletivas.]]></Item>
+		<Item visivel="S" motivo="P15110000249"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão: Desconsiderar progressões salariais referentes a faixa salarial após desligamento do colaborador.]]></Item>
 		<Item visivel="S" motivo="S15120000287"><![CDATA[Mudança de ícone do Chat Fortes.]]></Item>
 	</Versao>
 	<Versao id="1.1.155.186" db="" data="16/12/2015">
