@@ -164,7 +164,7 @@
 	<div id="${div}">
 		<div id="quadrado">
 			<h2>
-				<img src="<@ww.url includeParams="none" value="/imgs/ChatFortes.gif" theme="simple"/>">	
+				<img src="<@ww.url includeParams="none" value="/imgs/chat_fortes.png" theme="simple"/>">	
 				Configuração para suporte:
 			</h2>
 			<#if usuarioLogado.id == 1>

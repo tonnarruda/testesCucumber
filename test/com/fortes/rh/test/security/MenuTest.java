@@ -40,7 +40,7 @@ public class MenuTest extends TestCase
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://blog.fortesinformatica.com.br/categoria/ente-rh/?utm_source=sistema&utm_medium=icone-barra-lateral&utm_content=ente-rh&utm_campaign=clique-blog' target='_blank' title='Blog'><img src='localhost/imgs/blog.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='videoteca.action' title='Videoteca'><img src='localhost/imgs/video.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://www.logmein123.com'  target='_blank' title='LogMeIn'><img src='localhost/imgs/logmeinrescue.png' style='vertical-align: middle;'></a></li>\n");
-		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://chatonline.grupofortes.com.br/cliente/MATRIZ/000006/0002' target='_blank' title='Fortes Chat'><img src='localhost/imgs/ChatFortes.gif' style='vertical-align: middle;'></a></li>\n");
+		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://chatonline.grupofortes.com.br/cliente/MATRIZ/000006/0002' target='_blank' title='Fortes Chat'><img src='localhost/imgs/chat_fortes.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("</ul>\n");
 		menu.append("\n");
 		ParametrosDoSistema parametros = ParametrosDoSistemaFactory.getEntity();
@@ -100,7 +100,7 @@ public class MenuTest extends TestCase
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://blog.fortesinformatica.com.br/categoria/ente-rh/?utm_source=sistema&utm_medium=icone-barra-lateral&utm_content=ente-rh&utm_campaign=clique-blog' target='_blank' title='Blog'><img src='localhost/imgs/blog.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='videoteca.action' title='Videoteca'><img src='localhost/imgs/video.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://www.logmein123.com'  target='_blank' title='LogMeIn'><img src='localhost/imgs/logmeinrescue.png' style='vertical-align: middle;'></a></li>\n");
-		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://chatonline.grupofortes.com.br/cliente/MATRIZ/000006/0002' target='_blank' title='Fortes Chat'><img src='localhost/imgs/ChatFortes.gif' style='vertical-align: middle;'></a></li>\n");
+		menu.append("<li style='float: right; line-height: 0.8em'><a href='http://chatonline.grupofortes.com.br/cliente/MATRIZ/000006/0002' target='_blank' title='Fortes Chat'><img src='localhost/imgs/chat_fortes.png' style='vertical-align: middle;'></a></li>\n");
 		menu.append("</ul>\n");
 		menu.append("\n");
 		
