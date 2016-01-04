@@ -155,3 +155,22 @@ END;
 $$ LANGUAGE plpgsql; --.go 
 
 ---------------------
+
+--------------------- Novos relacionamentos
+
+CREATE TABLE colaboradorCertificacao_colaboradorTurma (
+	colaboradorcertificacao_id bigint NOT NULL,
+	colaboradoresTurmas_id bigint NOT NULL
+); --.go
+
+ALTER TABLE colaboradorCertificacao_colaboradorTurma ADD CONSTRAINT colaboradorCertificacao_colaboradorTurma_colabCertificacao_fk FOREIGN KEY (colaboradorcertificacao_id) REFERENCES colaboradorcertificacao(id);--.go
+ALTER TABLE colaboradorCertificacao_colaboradorTurma ADD CONSTRAINT colaboradorCertificacao_colaboradorTurma_colabTurmas_fk FOREIGN KEY (colaboradoresTurmas_id) REFERENCES colaboradorTurma(id);--.go
+
+
+CREATE TABLE colaboradorCertificacao_colaboradorAvaliacaoPratica (
+	colaboradorcertificacao_id bigint NOT NULL,
+	colaboradoresAvaliacoesPraticas_id bigint NOT NULL
+); --.go
+
+ALTER TABLE colaboradorCertificacao_colaboradorAvaliacaoPratica ADD CONSTRAINT colabCertificacao_colabAvaliacaoPratica_colabCertificacao_fk FOREIGN KEY (colaboradorcertificacao_id) REFERENCES colaboradorcertificacao(id);--.go
+ALTER TABLE colaboradorCertificacao_colaboradorAvaliacaoPratica ADD CONSTRAINT colabCertificacao_colabAvaliacaoPratica_colabAvalPratica_fk FOREIGN KEY (colaboradoresAvaliacoesPraticas_id) REFERENCES colaboradorAvaliacaoPratica(id);--.go

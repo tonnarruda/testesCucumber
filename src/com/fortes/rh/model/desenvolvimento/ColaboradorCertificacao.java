@@ -1,10 +1,12 @@
 package com.fortes.rh.model.desenvolvimento;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
@@ -36,7 +38,13 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	private String periodoTurma;
 	@Transient
 	private Boolean aprovadoNaTurma;
+	
+	@ManyToMany
+	private Collection<ColaboradorTurma> colaboradoresTurmas; 
 
+	@ManyToMany
+	private Collection<ColaboradorAvaliacaoPratica> colaboradoresAvaliacoesPraticas;
+	
 	public ColaboradorCertificacao() {
 	}
 	

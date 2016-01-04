@@ -33,8 +33,10 @@ public class Certificacao extends AbstractModel implements Serializable
 	private Empresa empresa;
 	@Column
 	private Integer periodicidade;
+	
 	@ManyToMany(fetch=FetchType.LAZY)
 	private Collection<AvaliacaoPratica> avaliacoesPraticas;
+	
 	@OneToMany(fetch=FetchType.LAZY,  mappedBy="certificacao")
 	private Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas;
 	

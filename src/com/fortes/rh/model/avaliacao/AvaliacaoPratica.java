@@ -15,7 +15,9 @@ import com.fortes.rh.model.geral.Empresa;
 public class AvaliacaoPratica extends AbstractModel implements Serializable
 {
 	private String titulo;
+	
 	private Double notaMinima;
+	
 	@ManyToOne
 	private Empresa empresa;
 	
