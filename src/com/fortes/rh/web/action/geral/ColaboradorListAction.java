@@ -62,6 +62,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ColaboradorJsonVO;
 import com.fortes.rh.model.geral.ConfiguracaoCampoExtra;
 import com.fortes.rh.model.geral.ConfiguracaoRelatorioDinamico;
 import com.fortes.rh.model.geral.Empresa;
@@ -211,6 +212,19 @@ public class ColaboradorListAction extends MyActionSupportList
 	{
 		data = colaboradorManager.getAutoComplete(descricao, getEmpresaSistema().getId());
 		json = StringUtil.toJSON(data, null);
+		
+		return Action.SUCCESS;
+	}
+	
+	public String colaboradoresPorArea() throws Exception
+	{
+		try {
+			Collection<ColaboradorJsonVO> colaboradores = colaboradorManager.getColaboradoresJsonVO(new Long[]{ 59L });
+			json = StringUtil.toJSON(colaboradores, new String[]{"id"});
+		} catch (Exception e) {
+			json = "error";
+			e.printStackTrace();
+		}
 		
 		return Action.SUCCESS;
 	}

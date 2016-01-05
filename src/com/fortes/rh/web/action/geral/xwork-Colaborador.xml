@@ -6,6 +6,10 @@
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
 		    <param name="contentType">application/json</param>
 		</action>
+		<action name="colaboradoresPorAreaJson" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="colaboradoresPorArea">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/json.ftl</result>
+		    <param name="contentType">application/json</param>
+		</action>
 		<action name="prepareReciboPagamento" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareReciboPagamento">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/reciboPagamento.ftl</result>
 		</action>

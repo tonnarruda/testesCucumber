@@ -86,6 +86,7 @@ import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Cidade;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorIdioma;
+import com.fortes.rh.model.geral.ColaboradorJsonVO;
 import com.fortes.rh.model.geral.Contato;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Endereco;
@@ -2579,6 +2580,10 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId) {
 		return getDao().getAutoComplete(descricao, empresaId);
+	}
+	
+	public Collection<ColaboradorJsonVO> getColaboradoresJsonVO(Long[] areaOrganizacionalIds) {
+		return getDao().getColaboradoresJsonVO(areaOrganizacionalIds);
 	}
 
 	public void setCandidatoSolicitacaoManager(CandidatoSolicitacaoManager candidatoSolicitacaoManager) {

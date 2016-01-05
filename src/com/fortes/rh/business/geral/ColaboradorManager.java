@@ -27,6 +27,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ColaboradorJsonVO;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.PendenciaAC;
@@ -177,6 +178,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public int countAtivosPeriodo(Date dataIni, Collection<Long> empresaIds, Collection<Long> estabelecimentosIds, Collection<Long> areasIds, Collection<Long> cargosIds, Collection<Long> ocorrenciasId, boolean considerarDataAdmissao, Long colaboradorId, boolean isAbsenteismo);
 	public String montaGraficoTurnover(Collection<TurnOverCollection> turnOverCollections, Collection<Empresa> empresas);
 	public Collection<AutoCompleteVO> getAutoComplete(String descricao, Long empresaId);
+	public Collection<ColaboradorJsonVO> getColaboradoresJsonVO(Long[] areaOrganizacionalIds);
 	public Collection<Colaborador> findColabPeriodoExperienciaAgrupadoPorModelo(Long id, Date periodoIni, Date periodoFim, Long avaliacaoId, String[] areasCheck, String[] estabelecimentoCheck, String[] colaboradorsCheck, boolean considerarAutoAvaliacao) throws Exception;
 	public Collection<Colaborador> findByAvaliacoes(Long... avaliacaoIds);
 	public Colaborador findByCodigoACEmpresaCodigoAC(String codigoAC, String empresaCodigoAC, String grupoAC);

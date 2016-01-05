@@ -51,6 +51,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.AutoCompleteVO;
 import com.fortes.rh.model.geral.CamposExtras;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.ColaboradorJsonVO;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.Pessoal;
@@ -4188,6 +4189,36 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		Query query = getSession().createQuery(hql.toString());
 		query.setLong("empresaId", empresaId);
 		query.setString("descricao", "%" + descricao.toUpperCase() + "%");
+		
+		return query.list();
+	}
+	
+	public Collection<ColaboradorJsonVO> getColaboradoresJsonVO(Long[] areaOrganizacionalIds)
+	{
+		StringBuilder hql = new StringBuilder();
+		hql.append("select new ColaboradorJsonVO(c.endereco.logradouro || ', ' || c.endereco.numero, c.endereco.bairro, c.endereco.cep, cid.nome, ");
+		hql.append("c.pessoal.cpf, c.contato.email, c.pessoal.sexo, c.nome, '(' || c.contato.ddd || ') ' || c.contato.foneFixo, uf.sigla, c.pessoal.rg, c.pessoal.escolaridade, c.pessoal.mae, c.pessoal.pis, ce.texto1, c.vinculo,  ");
+		hql.append("c.pessoal.dataNascimento, ce.numero1, c.dataEncerramentoContrato, c.dataAdmissao, ca.nome) ");
+		hql.append("from Colaborador as c ");
+		hql.append("left join c.historicoColaboradors hc ");
+		hql.append("left join hc.faixaSalarial fs ");
+		hql.append("left join fs.cargo ca ");
+		hql.append("left join c.endereco.uf uf ");
+		hql.append("left join c.endereco.cidade cid ");
+		hql.append("left join c.camposExtras ce ");
+		
+		hql.append("where hc.data = (");
+		hql.append("		select max(hc2.data) ");
+		hql.append("		from HistoricoColaborador as hc2 ");
+		hql.append("			where hc2.colaborador.id = c.id ");
+		hql.append("			and hc2.data <= current_date ");
+		hql.append("		) ");
+		hql.append("and hc.areaOrganizacional.id in (:areaOrganizacionalIds) ");
+		
+		hql.append(" order by c.nome");		
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setParameterList("areaOrganizacionalIds", areaOrganizacionalIds);
 		
 		return query.list();
 	}
