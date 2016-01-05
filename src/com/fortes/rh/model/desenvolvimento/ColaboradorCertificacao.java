@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -42,7 +44,7 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	@ManyToMany
 	private Collection<ColaboradorTurma> colaboradoresTurmas; 
 
-	@ManyToMany
+	@OneToMany(fetch=FetchType.LAZY,  mappedBy="colaboradorCertificacao", cascade = {CascadeType.ALL})
 	private Collection<ColaboradorAvaliacaoPratica> colaboradoresAvaliacoesPraticas;
 	
 	public ColaboradorCertificacao() {
@@ -234,5 +236,14 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 
 	public void setPeriodoTurma(String periodoTurma) {
 		this.periodoTurma = periodoTurma;
+	}
+
+	public Collection<ColaboradorAvaliacaoPratica> getColaboradoresAvaliacoesPraticas() {
+		return colaboradoresAvaliacoesPraticas;
+	}
+
+	public void setColaboradoresAvaliacoesPraticas(
+			Collection<ColaboradorAvaliacaoPratica> colaboradoresAvaliacoesPraticas) {
+		this.colaboradoresAvaliacoesPraticas = colaboradoresAvaliacoesPraticas;
 	}
 }

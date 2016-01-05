@@ -26,6 +26,9 @@ public class ColaboradorAvaliacaoPratica extends AbstractModel implements Serial
 	private Certificacao certificacao;
 	@ManyToOne(fetch=FetchType.LAZY)
 	private Colaborador colaborador;
+	@ManyToOne
+	private ColaboradorCertificacao colaboradorCertificacao;
+
 	@Temporal(TemporalType.DATE)
 	private Date data;
 	private Double nota;
@@ -81,5 +84,34 @@ public class ColaboradorAvaliacaoPratica extends AbstractModel implements Serial
 	private void iniciaAvaliacaoPratica() {
 		if(avaliacaoPratica == null)
 			avaliacaoPratica = new AvaliacaoPratica();
+	}
+	public ColaboradorCertificacao getColaboradorCertificacao() {
+		return colaboradorCertificacao;
+	}
+	public void setColaboradorCertificacao(
+			ColaboradorCertificacao colaboradorCertificacao) {
+		this.colaboradorCertificacao = colaboradorCertificacao;
+	}
+	public void setColaboradorId(Long colaboradorId){
+		if(this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		colaborador.setId(colaboradorId);
+	}
+	
+	public void setCertificacaoId(Long certificacaoId){
+		if(this.certificacao == null)
+			this.certificacao = new Certificacao();
+		
+		this.certificacao.setId(certificacaoId);
+	}
+	
+	public void setColaboradorCertificacaoId(Long colaboradorCertificacaoId){
+		if(colaboradorCertificacaoId != null){
+			if(this.colaboradorCertificacao == null)
+				this.colaboradorCertificacao = new ColaboradorCertificacao();
+			
+			colaboradorCertificacao.setId(colaboradorCertificacaoId);
+		}
 	}
 }

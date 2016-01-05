@@ -119,4 +119,15 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 	public void setColaboradorAvaliacaoPraticaManager(ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
 		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
 	}
+
+	public void removerColaboradorCertificadoComDependencias(Long colaboradorCertificacaoId) {
+		if(colaboradorCertificacaoId != null){
+			getDao().removeDependencias(colaboradorCertificacaoId);
+			remove(colaboradorCertificacaoId);
+		}
+	}
+
+	public Date dataCertificacao(Long colaboradorCertificacaoId) {
+		return getDao().dataCertificacao(colaboradorCertificacaoId);
+	}
 }

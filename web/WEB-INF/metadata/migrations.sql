@@ -120,7 +120,7 @@ drop function certificaColaboradores();--.go
 
 -----
 
-CREATE OR REPLACE FUNCTION verifica_certificacao(id_certificado BIGINT, id_coalborador BIGINT) RETURNS BOOLEAN AS $$  
+CREATE OR REPLACE FUNCTION verifica_certificacao(id_certificado BIGINT, id_colaborador BIGINT) RETURNS BOOLEAN AS $$  
 BEGIN 
 return (
 
@@ -129,9 +129,9 @@ return (
 		  		(select Array(
 			  				select cu.id from colaboradorturma ct inner join turma t on t.id = ct.turma_id 
 			  				and t.dataprevfim = (select max(dataprevfim) from turma t2 where t2.curso_id = t.curso_id and t2.realizada 
-							and dataprevfim > (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_coalborador and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000')))
+							and dataprevfim > (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_colaborador and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000')))
 							inner join curso cu on cu.id = t.curso_id
-							where ct.colaborador_id = id_coalborador
+							where ct.colaborador_id = id_colaborador
 							and t.realizada
 							and cu.id in (select cursos_id from certificacao_curso where certificacaos_id = id_certificado)
 							and verifica_aprovacao(cu.id, t.id, ct.id, cu.percentualminimofrequencia)
@@ -143,10 +143,10 @@ return (
 		(
 			select (select Array(select avaliacoespraticas_id from certificacao_avaliacaopratica where certificacao_id = id_certificado order by avaliacoespraticas_id)) =
 			(select Array( 
-						select caval.avaliacaopratica_id from colaboradoravaliacaopratica caval where caval.colaborador_id = id_coalborador
+						select caval.avaliacaopratica_id from colaboradoravaliacaopratica caval where caval.colaborador_id = id_colaborador
 						and caval.certificacao_id = id_certificado
 						and caval.nota >= (select aval.notaMinima from avaliacaopratica aval where aval.id = caval.avaliacaopratica_id)
-						and caval.data > (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_coalborador and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000'))
+						and caval.data > (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_colaborador and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000'))
 						order by caval.avaliacaopratica_id)))
 		) 
 		as situacao 
@@ -166,11 +166,27 @@ CREATE TABLE colaboradorCertificacao_colaboradorTurma (
 ALTER TABLE colaboradorCertificacao_colaboradorTurma ADD CONSTRAINT colaboradorCertificacao_colaboradorTurma_colabCertificacao_fk FOREIGN KEY (colaboradorcertificacao_id) REFERENCES colaboradorcertificacao(id);--.go
 ALTER TABLE colaboradorCertificacao_colaboradorTurma ADD CONSTRAINT colaboradorCertificacao_colaboradorTurma_colabTurmas_fk FOREIGN KEY (colaboradoresTurmas_id) REFERENCES colaboradorTurma(id);--.go
 
+ALTER TABLE colaboradorAvaliacaoPratica ADD COLUMN colaboradorcertificacao_id bigint;--.go
+ALTER TABLE colaboradorAvaliacaoPratica ADD CONSTRAINT colabAvaliacaoPratica_colabCertificacao_fk FOREIGN KEY (colaboradorcertificacao_id) REFERENCES colaboradorcertificacao(id);--.go
 
-CREATE TABLE colaboradorCertificacao_colaboradorAvaliacaoPratica (
-	colaboradorcertificacao_id bigint NOT NULL,
-	colaboradoresAvaliacoesPraticas_id bigint NOT NULL
-); --.go
 
-ALTER TABLE colaboradorCertificacao_colaboradorAvaliacaoPratica ADD CONSTRAINT colabCertificacao_colabAvaliacaoPratica_colabCertificacao_fk FOREIGN KEY (colaboradorcertificacao_id) REFERENCES colaboradorcertificacao(id);--.go
-ALTER TABLE colaboradorCertificacao_colaboradorAvaliacaoPratica ADD CONSTRAINT colabCertificacao_colabAvaliacaoPratica_colabAvalPratica_fk FOREIGN KEY (colaboradoresAvaliacoesPraticas_id) REFERENCES colaboradorAvaliacaoPratica(id);--.go
+CREATE OR REPLACE FUNCTION createColaboradorCertificacao_colaboradorTurma() RETURNS integer AS $$
+DECLARE 
+	mvColaboradorCertificacao RECORD; 
+	mvColaboradorTurma RECORD;
+BEGIN 
+		FOR mvColaboradorTurma IN select ct.id from colaboradorturma ct
+					inner join turma t on t.id = ct.turma_id and t.dataprevfim = (select max(dataprevfim) from turma t2 where t2.curso_id = t.curso_id and t2.realizada and t2.id = ct.turma_id)
+					inner join curso cu on cu.id = t.curso_id where ct.colaborador_id = mvColaboradorCertificacao.colaboradorId
+					and t.realizada and cu.id in (select cursos_id from certificacao_curso where certificacaos_id = mvColaboradorCertificacao.certificacaoId )
+					and verifica_aprovacao(cu.id, t.id, ct.id, cu.percentualminimofrequencia) order by cu.id
+		LOOP 
+			insert into colaboradorCertificacao_colaboradorTurma (colaboradorcertificacao_id, colaboradoresTurmas_id) 
+			values(mvColaboradorCertificacao.certificacaoId, mvColaboradorTurma.id );
+		END LOOP; 
+	END LOOP;
+    RETURN 1; 
+END; 
+$$ LANGUAGE plpgsql;--.go
+select createColaboradorCertificacao_colaboradorTurma();--.go
+drop function createColaboradorCertificacao_colaboradorTurma();--.go

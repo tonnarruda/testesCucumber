@@ -246,4 +246,15 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 
 		return Colaboradores;
 	}
+
+	public void removeDependencias(Long colaboradorCertificacaoId) {
+		Query query = getSession().createQuery("update ColaboradorAvaliacaoPratica cap set colaboradorCertificacao.id = null where cap.colaboradorCertificacao.id = :colaboradorCertificacaoId ");
+		query.setLong("colaboradorCertificacaoId", colaboradorCertificacaoId);
+		
+		query.executeUpdate();
+	}
+
+	public Date dataCertificacao(Long colaboradorCertificacaoId) {
+		return null;
+	}
 }

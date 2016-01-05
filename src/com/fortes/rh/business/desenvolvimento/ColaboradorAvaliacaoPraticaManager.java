@@ -9,4 +9,7 @@ public interface ColaboradorAvaliacaoPraticaManager extends GenericManager<Colab
 {
 	Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId);
 	void removeAllByColaboradorId(Long colaboradorId);
+	Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId);
+	void removeColaboradorAvaliacaoPraticaAndColaboradorCertificado(ColaboradorAvaliacaoPratica colaboradorAvaliacaoPraticaRealizada);
+	
 }

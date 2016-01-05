@@ -15,4 +15,6 @@ public interface ColaboradorCertificacaoDao extends GenericDao<ColaboradorCertif
 	ColaboradorCertificacao colaboradorCertificadoByColaboradorIdAndCertificacaId(Long colaboradorId, Long certificacaoId);
 	ColaboradorCertificacao findUltimaCertificacaoByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId);
 	Collection<ColaboradorCertificacao> getColaboradorCertificadoFilhas(Long[] colaboradorCertificacaoIds, Long colaboradorId);
+	void removeDependencias(Long colaboradorCertificacaoId);
+	Date dataCertificacao(Long colaboradorCertificacaoId);
 }
