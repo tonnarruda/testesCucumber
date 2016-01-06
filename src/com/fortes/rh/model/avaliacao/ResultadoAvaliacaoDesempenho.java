@@ -50,11 +50,14 @@ public class ResultadoAvaliacaoDesempenho extends ResultadoQuestionario
 			return 0.0;
 		
 		Double somaPerformance = 0.0;
+		Integer somaPesosDasCompetencias = 0;
 		
-		for (Competencia competencia : competencias) 
-			somaPerformance += competencia.getPerformance();
+		for (Competencia competencia : competencias) {
+			somaPerformance += competencia.getPerformance() * competencia.getPesoCompetencia();
+			somaPesosDasCompetencias+=competencia.getPesoCompetencia();
+		}
 		
-		Double retorno = somaPerformance/competencias.size();
+		Double retorno = somaPerformance/somaPesosDasCompetencias;
 		
 		if(this.produtividade == null)	
 			return retorno;

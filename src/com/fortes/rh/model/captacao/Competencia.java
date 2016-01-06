@@ -36,6 +36,8 @@ public class Competencia
 	private Double performance;
 	@Transient
 	private boolean competenciaAbaixoDoNivelExigido; 
+	@Transient
+	private Integer pesoCompetencia;
 	
 	public Long getId() 
 	{
@@ -129,5 +131,13 @@ public class Competencia
 
 	public void setCompetenciaAbaixoDoNivelExigido(boolean competenciaAbaixoDoNivelExigido) {
 		this.competenciaAbaixoDoNivelExigido = competenciaAbaixoDoNivelExigido;
+	}
+
+	public Integer getPesoCompetencia() {
+		return pesoCompetencia;
+	}
+
+	public void setPesoCompetencia(Integer pesoCompetencia) {
+		this.pesoCompetencia = pesoCompetencia;
 	}
 }

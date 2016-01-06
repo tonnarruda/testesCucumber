@@ -310,7 +310,7 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 		Integer pesoAvaliador, pesoPorPontuacaoObtidaAvaliadorAcumulado, somaPesoAvaliadores;
 		Integer pontuacaoObtidaColaborador = 0;
 		Integer pesoPorPontuacaoAutoAvaliacao = 0;
-		Integer qtdCncColaboradorAutoAvaliacao = 0;
+		Integer somaPesosCompetenciasDaAutoAvaliacao = 0;
 		
 		for (ConfiguracaoNivelCompetencia cncFaixa : configNiveisCompetenciasDaFaixaSalarial) 
 		{
@@ -322,14 +322,14 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 				if(cncFaixa.getCompetenciaId().equals(cncColaborador.getCompetenciaId()) && cncFaixa.getTipoCompetencia().equals(cncColaborador.getTipoCompetencia()) )
 				{
 					pesoAvaliador = cncColaborador.getAvaliadorPeso() != null ? cncColaborador.getAvaliadorPeso() : 1;
-					pontuacaoObtidaColaborador = cncColaborador.getNivelCompetenciaColaborador().getOrdem();
+					pontuacaoObtidaColaborador = cncColaborador.getNivelCompetenciaColaborador().getOrdem() * cncFaixa.getPesoCompetencia();
 					
 					pesoPorPontuacaoObtidaAvaliadorAcumulado += pesoAvaliador * pontuacaoObtidaColaborador;
 					somaPesoAvaliadores += pesoAvaliador;
 				
 					if(avaliacaoDesempenho.isPermiteAutoAvaliacao() && cncColaborador.getAvaliadorId().equals(avaliadoId)) {
 						pesoPorPontuacaoAutoAvaliacao += pontuacaoObtidaColaborador;
-						qtdCncColaboradorAutoAvaliacao++;
+						somaPesosCompetenciasDaAutoAvaliacao+=cncFaixa.getPesoCompetencia();
 					}
 				}
 			}
@@ -338,14 +338,15 @@ public class AvaliacaoDesempenhoManagerImpl extends GenericManagerImpl<Avaliacao
 			{
 				competencia = new Competencia();
 				competencia.setNome(cncFaixa.getCompetenciaDescricao());
-				competencia.setPerformance((pesoPorPontuacaoObtidaAvaliadorAcumulado/(somaPesoAvaliadores*ordemMaxima))*100);
+				competencia.setPerformance((pesoPorPontuacaoObtidaAvaliadorAcumulado/(somaPesoAvaliadores*ordemMaxima*cncFaixa.getPesoCompetencia()))*100);
 				competencia.setCompetenciaAbaixoDoNivelExigido(competencia.getPerformance() < ((cncFaixa.getNivelCompetencia().getOrdem()/ordemMaxima)*100));
+				competencia.setPesoCompetencia(cncFaixa.getPesoCompetencia());
 				competencias.add(competencia);
 			}
 		}
 		
 		if ( avaliacaoDesempenho.isPermiteAutoAvaliacao() )
-			resultadoAvaliacaoDesempenho.setPerformanceAutoAvaliacao(( pesoPorPontuacaoAutoAvaliacao / (ordemMaxima*qtdCncColaboradorAutoAvaliacao) ) * 100);
+			resultadoAvaliacaoDesempenho.setPerformanceAutoAvaliacao(( pesoPorPontuacaoAutoAvaliacao / (ordemMaxima*somaPesosCompetenciasDaAutoAvaliacao) ) * 100);
 		
 		resultadoAvaliacaoDesempenho.setCompetencias(competencias);
 
