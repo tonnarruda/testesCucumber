@@ -563,7 +563,7 @@
 						</@authz.authorize>
 
 						<@ww.select label="Estabelecimento" name="historicoColaborador.estabelecimento.id" id="estabelecimento" list="estabelecimentos" required="true" listKey="id" listValue="nome" headerKey="" disabled= "${somenteLeitura}" headerValue="Selecione..." cssStyle="width: 355px;" onchange="${funcaoEstabelecimento}"/>
-						<@ww.select label="Área Organizacional" name="historicoColaborador.areaOrganizacional.id" id="areaOrganizacional" list="areaOrganizacionals" required="true" listKey="id" listValue="descricao" headerKey="" disabled= "${somenteLeitura}" headerValue="Selecione..." cssStyle="width: 355px;" onchange="verificaMaternidade(this.value, 'areaOrganizacional');"/>
+						<@ww.select label="Área Organizacional" name="historicoColaborador.areaOrganizacional.id" id="areaOrganizacional" list="areaOrganizacionals" required="true" listKey="id" listValue="descricaoComCodigoAC" headerKey="" disabled= "${somenteLeitura}" headerValue="Selecione..." cssStyle="width: 355px;" onchange="verificaMaternidade(this.value, 'areaOrganizacional');"/>
 						
 						
 						<@authz.authorize ifAllGranted="ROLE_COMPROU_SESMT">

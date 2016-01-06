@@ -129,6 +129,15 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 		faixaSalarials = faixaSalarialUtil.sortCollectionStringIgnoreCase(faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, faixaInativaId), "cargo.nome");
 
 		areaOrganizacionals = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaInativaId, true);
+		
+		if ( getEmpresaSistema().isAcIntegra() ) {
+			String mascara = areaOrganizacionalManager.getMascaraLotacoesAC(getEmpresaSistema()).replaceAll("9", "A");
+			if(mascara != "") {
+				for (AreaOrganizacional area : areaOrganizacionals) {
+					area.setMascara(mascara);
+				}
+			}
+		}
 	}
 
 	public String prepareInsert() throws Exception

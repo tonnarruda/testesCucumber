@@ -137,7 +137,7 @@
 				</div>
 				<div style="float: right;margin-top: -151px;"/>
 					<@ww.select id="motivoSolicitacao" label="Motivo da Solicitação" name="motivoSolicitacao.id" list="motivosSolicitacoes" listKey="id" listValue="descricao" headerValue="Todos" headerKey="-1" cssStyle="width: 465px;" />
-					<@ww.select id="areaOrganizacional" label="Área Organizacional" name="areaOrganizacional.id" list="areasOrganizacionais" listKey="id" listValue="descricao" headerValue="Todos" headerKey="-1"cssStyle="width: 465px;" />
+					<@ww.select id="areaOrganizacional" label="Área Organizacional" name="areaOrganizacional.id" list="areasOrganizacionais" listKey="id" listValue="descricaoComCodigoAC" headerValue="Todos" headerKey="-1"cssStyle="width: 465px;" />
 					<@ww.select id="estabelecimento" label="Estabelecimento" name="estabelecimento.id" list="estabelecimentos" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1"cssStyle="width: 465px;" />
 					<@ww.select id="cargo" label="Cargo" name="cargo.id" list="cargos" listKey="id" listValue="nome" headerValue="Todos" headerKey="-1" cssStyle="width: 465px;"/><br>
 				</div>

@@ -4,6 +4,7 @@
 package com.fortes.rh.model.geral;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -14,6 +15,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Transient;
+import javax.swing.text.MaskFormatter;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -78,6 +80,8 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 	private int nivelHierarquico;
 	@Transient
 	private int qtdContratados;
+	@Transient
+	private String mascara;
 	
 	public AreaOrganizacional(String nome){
 		this.nome = nome;
@@ -146,6 +150,18 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 			descricao = getAreaMae().getDescricao() + " > " + nome;
 
 		return descricao;
+	}
+	
+	public String getDescricaoComCodigoAC() {
+		String codigoACComMascara;
+		try {
+			MaskFormatter mf = new MaskFormatter(mascara);
+			mf.setValueContainsLiteralCharacters(false);
+			codigoACComMascara = mf.valueToString(codigoAC) + " ";
+		} catch (ParseException e) {
+			codigoACComMascara = "";
+		}
+		return codigoACComMascara + getDescricao();
 	}
 	
 	@NaoAudita
@@ -528,5 +544,13 @@ public class AreaOrganizacional extends AbstractModel implements Serializable, C
 
 	public void setNivelHierarquico(int nivelHierarquico) {
 		this.nivelHierarquico = nivelHierarquico;
+	}
+
+	public String getMascara() {
+		return mascara;
+	}
+
+	public void setMascara(String mascara) {
+		this.mascara = mascara;
 	}
 }

@@ -330,7 +330,16 @@ public class ColaboradorEditAction extends MyActionSupportEdit
 		faixas = faixaSalarialManager.findFaixas(getEmpresaSistema(), Cargo.ATIVO, faixaInativaId);
 
 		areaOrganizacionals = areaOrganizacionalManager.findAllSelectOrderDescricao(getEmpresaSistema().getId(), AreaOrganizacional.ATIVA, areaInativaId, true);
-
+		
+		if ( getEmpresaSistema().isAcIntegra() ) {
+			String mascara = areaOrganizacionalManager.getMascaraLotacoesAC(getEmpresaSistema()).replaceAll("9", "A");
+			if(mascara != "") {
+				for (AreaOrganizacional area : areaOrganizacionals) {
+					area.setMascara(mascara);
+				}
+			}
+		}
+		
 		estabelecimentos = estabelecimentoManager.findAllSelect(getEmpresaSistema().getId());
 		
 		periodoExperiencias = periodoExperienciaManager.findAllSelect(getEmpresaSistema().getId(), false);

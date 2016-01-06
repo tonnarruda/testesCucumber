@@ -145,6 +145,15 @@ public class SolicitacaoListAction extends MyActionSupportList
 		else
 			areasOrganizacionais = areaOrganizacionalManager.findAllSelectOrderDescricaoByUsuarioId(getEmpresaSistema().getId(), getUsuarioLogado().getId(), AreaOrganizacional.ATIVA, null);
 		
+		if ( getEmpresaSistema().isAcIntegra() ) {
+			String mascara = areaOrganizacionalManager.getMascaraLotacoesAC(getEmpresaSistema()).replaceAll("9", "A");
+			if(mascara != "") {
+				for (AreaOrganizacional area : areasOrganizacionais) {
+					area.setMascara(mascara);
+				}
+			}
+		}
+		
 		motivosSolicitacoes = motivoSolicitacaoManager.findAll();
 		
 		status = new StatusAprovacaoSolicitacao();
