@@ -44,6 +44,7 @@ public class AproveitamentoAvaliacaoCursoDaoHibernate extends GenericDaoHibernat
 	public AproveitamentoAvaliacaoCurso findByColaboradorTurmaAvaliacaoId(Long colaboradorTurmaId, Long avaliacaoCursoId)
 	{
 		Criteria criteria = getSession().createCriteria(AproveitamentoAvaliacaoCurso.class, "a");
+		criteria.createCriteria("a.avaliacaoCurso", "avc");
 
 		criteria.add(Expression.eq("a.colaboradorTurma.id", colaboradorTurmaId));
 		criteria.add(Expression.eq("a.avaliacaoCurso.id", avaliacaoCursoId));

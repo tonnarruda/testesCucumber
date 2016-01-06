@@ -42,9 +42,19 @@ public class AproveitamentoAvaliacaoCurso extends AbstractModel implements Seria
 	
 	public void setProjectionAvaliacaoCursoId(Long avaliacaoCursoId)
 	{
+		inicializaAvaliacaoCurso();
+		this.avaliacaoCurso.setId(avaliacaoCursoId);
+	}
+	
+	public void setProjectionAvaliacaoCursoMinimoAprovacao(Double avaliacaoCursoMinimoAprovacao)
+	{
+		inicializaAvaliacaoCurso();
+		this.avaliacaoCurso.setMinimoAprovacao(avaliacaoCursoMinimoAprovacao);
+	}
+
+	private void inicializaAvaliacaoCurso() {
 		if (this.avaliacaoCurso == null)
 			this.avaliacaoCurso = new AvaliacaoCurso();
-		this.avaliacaoCurso.setId(avaliacaoCursoId);
 	}
 	
     public AvaliacaoCurso getAvaliacaoCurso()

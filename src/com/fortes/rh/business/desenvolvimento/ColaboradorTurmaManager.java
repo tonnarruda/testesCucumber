@@ -77,4 +77,5 @@ public interface ColaboradorTurmaManager extends GenericManager<ColaboradorTurma
 	public Collection<ColaboradorTurma> findCursosCertificacoesAVencer(Date dataReferencia, Long empresaId);
 	public Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId);
 	public String verificaColaboradorCertificado(Long[] colaboradoresId, Long cursoId);
+	public Collection<ColaboradorTurma> findByTurmaId(Long turmaId);
 }

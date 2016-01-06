@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.fortes.dao.GenericDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
+import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 
 public interface ColaboradorCertificacaoDao extends GenericDao<ColaboradorCertificacao> 
 {
@@ -16,5 +17,6 @@ public interface ColaboradorCertificacaoDao extends GenericDao<ColaboradorCertif
 	ColaboradorCertificacao findUltimaCertificacaoByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId);
 	Collection<ColaboradorCertificacao> getColaboradorCertificadoFilhas(Long[] colaboradorCertificacaoIds, Long colaboradorId);
 	void removeDependencias(Long colaboradorCertificacaoId);
-	Date dataCertificacao(Long colaboradorCertificacaoId);
+	Collection<ColaboradorTurma> colaboradoresTurmaCertificados(Long colaboradorId, Long certificacaoId);
+	ColaboradorCertificacao findByColaboradorTurma(Long colaboradorTurmaId);
 }

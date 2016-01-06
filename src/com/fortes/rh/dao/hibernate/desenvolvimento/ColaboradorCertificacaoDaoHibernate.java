@@ -21,6 +21,7 @@ import org.hibernate.transform.AliasToBeanResultTransformer;
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
+import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.dicionario.TipoCertificacao;
 
 public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<ColaboradorCertificacao> implements ColaboradorCertificacaoDao
@@ -254,7 +255,50 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		query.executeUpdate();
 	}
 
-	public Date dataCertificacao(Long colaboradorCertificacaoId) {
-		return null;
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Collection<ColaboradorTurma> colaboradoresTurmaCertificados(Long colaboradorId, Long certificacaoId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT ct.id as colaboradorTurmaId, t.id as turmaId, t.dataPrevFim as turmaDataPrevFim FROM colaboradorTurma ct ");
+		sql.append("INNER JOIN turma t ON t.id = ct.turma_id AND t.dataprevfim = ( (SELECT MAX(dataprevfim) FROM turma t2 WHERE t2.curso_id = t.curso_id AND t2.realizada AND t2.id = ct.turma_id) ) ");
+		sql.append("INNER JOIN curso c ON c.id = t.curso_id ");
+		sql.append("WHERE ct.colaborador_id = :colaboradorId AND t.realizada AND c.id IN ((SELECT cursos_id FROM certificacao_curso WHERE certificacaos_id = :certificacaoId)) ");
+		sql.append("AND verifica_aprovacao(c.id, t.id, ct.id, c.percentualminimofrequencia) order by t.dataprevfim desc");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("colaboradorId", colaboradorId);
+		query.setLong("certificacaoId", certificacaoId);
+		
+		List resultado = query.list();
+		Collection<ColaboradorTurma> colaboradoresTurma = new ArrayList<ColaboradorTurma>();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
+			Object[] res = it.next();
+			ColaboradorTurma colabs = new ColaboradorTurma();
+			colabs.setId(((BigInteger)res[0]).longValue());
+			colabs.setTurmaId(((BigInteger)res[1]).longValue());
+			colabs.setTurmaDataPrevFim((Date)res[2]);
+			colaboradoresTurma.add(colabs);
+		}
+		return colaboradoresTurma;
+	}
+
+	public ColaboradorCertificacao findByColaboradorTurma(Long colaboradorTurmaId) {
+		StringBuilder sql = new StringBuilder();
+		sql.append("SELECT distinct cc.id as id, cc.colaborador_id as colaboradorId, cc.certificacao_id as certificacaoId FROM colaboradorcertificacao cc ");
+		sql.append("JOIN colaboradorcertificacao_colaboradorturma cc_ct ON cc_ct.colaboradorcertificacao_id = cc.id WHERE cc_ct.colaboradoresturmas_id = :colaboradorTurmaId ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("colaboradorTurmaId", colaboradorTurmaId);
+		
+		List resultado = query.list();
+		ColaboradorCertificacao colaboradorCertificacao = new ColaboradorCertificacao();
+		
+		for (Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
+			Object[] res = it.next();
+			colaboradorCertificacao.setId(((BigInteger)res[0]).longValue());
+			colaboradorCertificacao.setColaboradorId(((BigInteger)res[1]).longValue());
+			colaboradorCertificacao.setCertificacaoId(((BigInteger)res[2]).longValue());
+		}
+		return colaboradorCertificacao;
 	}
 }

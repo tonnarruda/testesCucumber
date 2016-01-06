@@ -10,6 +10,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.transform.AliasToBeanResultTransformer;
@@ -89,8 +90,9 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 		Criteria criteria = getSession().createCriteria(ColaboradorAvaliacaoPratica.class, "cap");
 		criteria.add(Expression.eq("colaborador.id", colaboradorId))
 		.add(Expression.eq("certificacao.id",certificacaoId))
-		.add(Expression.isNull("colaboradorCertificacao.id"));
-
+		.add(Expression.isNull("colaboradorCertificacao.id"))
+		.addOrder(Order.desc("cap.data"));
+		
 		ProjectionList p = Projections.projectionList().create();
 		p.add(Projections.property("cap.id"), "id");
 		p.add(Projections.property("cap.data"), "data");

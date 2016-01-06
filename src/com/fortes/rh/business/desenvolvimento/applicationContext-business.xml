@@ -86,6 +86,9 @@
     <property name="faturamentoMensalManager">
       <ref bean="faturamentoMensalManager" />
     </property>
+    <property name="colaboradorCertificacaoManager">
+      <ref bean="colaboradorCertificacaoManager" />
+    </property>
   </bean>
   <bean id="turmaManager" parent="parentManager">
     <property name="proxyInterfaces">
@@ -270,6 +273,9 @@
   <bean id="colaboradorCertificacaoManagerTarget" class="com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManagerImpl">
     <property name="dao">
       <ref bean="colaboradorCertificacaoDao" />
+    </property>
+    <property name="colaboradorAvaliacaoPraticaManager">
+      <ref bean="colaboradorAvaliacaoPraticaManager" />
     </property>
   </bean>
   <bean id="colaboradorCertificacaoManager" parent="parentManager">

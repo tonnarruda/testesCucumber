@@ -242,8 +242,29 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		return colaboradoresAvaliacoesPraticas;
 	}
 
-	public void setColaboradoresAvaliacoesPraticas(
-			Collection<ColaboradorAvaliacaoPratica> colaboradoresAvaliacoesPraticas) {
+	public void setColaboradoresAvaliacoesPraticas(Collection<ColaboradorAvaliacaoPratica> colaboradoresAvaliacoesPraticas) {
 		this.colaboradoresAvaliacoesPraticas = colaboradoresAvaliacoesPraticas;
+	}
+
+	public Collection<ColaboradorTurma> getColaboradoresTurmas() {
+		return colaboradoresTurmas;
+	}
+
+	public void setColaboradoresTurmas(Collection<ColaboradorTurma> colaboradoresTurmas) {
+		this.colaboradoresTurmas = colaboradoresTurmas;
+	}
+
+	public void setColaboradorId(Long colaboradorId) {
+		if(this.colaborador == null)
+			this.colaborador = new Colaborador();
+		
+		this.colaborador.setId(colaboradorId);
+	}
+
+	public void setCertificacaoId(Long certificacaoId) {
+		if(this.certificacao == null)
+			this.certificacao = new Certificacao();
+		
+		this.certificacao.setId(certificacaoId);
 	}
 }

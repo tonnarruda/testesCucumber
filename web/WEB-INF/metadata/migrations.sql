@@ -175,6 +175,7 @@ DECLARE
 	mvColaboradorCertificacao RECORD; 
 	mvColaboradorTurma RECORD;
 BEGIN 
+	FOR mvColaboradorCertificacao in select colaborador_id AS colaboradorId, certificacao_id as certificacaoId from  colaboradorCertificacao LOOP
 		FOR mvColaboradorTurma IN select ct.id from colaboradorturma ct
 					inner join turma t on t.id = ct.turma_id and t.dataprevfim = (select max(dataprevfim) from turma t2 where t2.curso_id = t.curso_id and t2.realizada and t2.id = ct.turma_id)
 					inner join curso cu on cu.id = t.curso_id where ct.colaborador_id = mvColaboradorCertificacao.colaboradorId

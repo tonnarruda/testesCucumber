@@ -1782,4 +1782,17 @@ public class ColaboradorTurmaDaoHibernate extends GenericDaoHibernate<Colaborado
 		
 	    return (Colaborador) criteria.uniqueResult();
 	}
+
+	public Collection<ColaboradorTurma> findByTurmaId(Long turmaId) {
+		ProjectionList p = Projections.projectionList().create();
+		p.add(Projections.property("ct.id"), "id");
+
+		Criteria criteria = getSession().createCriteria(ColaboradorTurma.class, "ct");
+		criteria.add(Expression.eq("ct.turma.id", turmaId));
+		criteria.setProjection(p);
+		
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorTurma.class));
+		
+	    return criteria.list();
+	}
 }

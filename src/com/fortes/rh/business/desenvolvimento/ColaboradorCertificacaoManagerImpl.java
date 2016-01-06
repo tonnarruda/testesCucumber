@@ -84,8 +84,7 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		
 		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificados) 
 		{
-			colaboradorCertificacao.setData(new Date());
-			getDao().save(colaboradorCertificacao);
+			saveColaboradorCertificacao(colaboradorCertificacao);
 		}
 	}
 
@@ -120,14 +119,39 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
 	}
 
-	public void removerColaboradorCertificadoComDependencias(Long colaboradorCertificacaoId) {
+	public void descertificarColaboradorByColaboradorTurma(Long colaboradorTurmaId) {
+		ColaboradorCertificacao colaboradorCertificacao = getDao().findByColaboradorTurma(colaboradorTurmaId);
+		
+		this.descertificarColaborador(colaboradorCertificacao.getId());
+	}
+
+	
+	public void descertificarColaborador(Long colaboradorCertificacaoId) {
 		if(colaboradorCertificacaoId != null){
 			getDao().removeDependencias(colaboradorCertificacaoId);
 			remove(colaboradorCertificacaoId);
 		}
 	}
 
-	public Date dataCertificacao(Long colaboradorCertificacaoId) {
-		return getDao().dataCertificacao(colaboradorCertificacaoId);
+	public void saveColaboradorCertificacao(ColaboradorCertificacao colaboradorCertificacao) {
+		Collection<ColaboradorTurma> colaboradoresTurmas = getDao().colaboradoresTurmaCertificados(colaboradorCertificacao.getColaborador().getId(), colaboradorCertificacao.getCertificacao().getId());
+		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaboradorCertificacao.getColaborador().getId(), colaboradorCertificacao.getCertificacao().getId());
+		
+		Date dataColaboradorCertificacao = null;
+		
+		if(colaboradoresTurmas != null)
+			dataColaboradorCertificacao = ((ColaboradorTurma) colaboradoresTurmas.toArray()[0]).getTurma().getDataPrevFim();
+		
+		if(colaboradorAvaliacoesPraticas != null)
+			dataColaboradorCertificacao = ((ColaboradorAvaliacaoPratica)colaboradorAvaliacoesPraticas.toArray()[0]).getData().after(dataColaboradorCertificacao) ? ((ColaboradorAvaliacaoPratica)colaboradorAvaliacoesPraticas.toArray()[0]).getData() : dataColaboradorCertificacao;
+		
+		colaboradorCertificacao.setColaboradoresTurmas(colaboradoresTurmas);
+		colaboradorCertificacao.setData(dataColaboradorCertificacao);
+		getDao().save(colaboradorCertificacao);
+
+		for (ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica : colaboradorAvaliacoesPraticas) {
+			colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacao);
+			colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPratica);
+		}
 	}
 }

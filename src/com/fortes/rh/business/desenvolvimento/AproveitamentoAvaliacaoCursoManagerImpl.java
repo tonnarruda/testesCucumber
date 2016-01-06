@@ -71,6 +71,9 @@ public class AproveitamentoAvaliacaoCursoManagerImpl extends GenericManagerImpl<
 		{
 			aproveitamento.setId(resultado.getId());
 			getDao().update(aproveitamento);
+
+			if(aproveitamento.getValor() < resultado.getAvaliacaoCurso().getMinimoAprovacao() )
+				colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(aproveitamento.getColaboradorTurma().getId());
 		}
 	}
 

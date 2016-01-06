@@ -13,6 +13,9 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import com.fortes.rh.business.avaliacao.AvaliacaoManager;
 import com.fortes.rh.business.avaliacao.PeriodoExperienciaManager;
+import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
+import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
+import com.fortes.rh.business.desenvolvimento.TurmaManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
@@ -21,6 +24,7 @@ import com.fortes.rh.business.pesquisa.PerguntaManager;
 import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.PeriodoExperiencia;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
+import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.Turma;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
@@ -45,14 +49,16 @@ import com.opensymphony.xwork.ActionContext;
 public class AvaliacaoEditAction extends MyActionSupportList
 {
 	private static final long serialVersionUID = 1L;
+	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	private ColaboradorRespostaManager colaboradorRespostaManager;
+	private PeriodoExperienciaManager periodoExperienciaManager;
+	private ColaboradorTurmaManager colaboradorTurmaManager;
+	private PlatformTransactionManager transactionManager;
+	private ColaboradorManager colaboradorManager;
 	private AvaliacaoManager avaliacaoManager;
 	private PerguntaManager perguntaManager;
-	private PeriodoExperienciaManager periodoExperienciaManager;
 	private EmpresaManager empresaManager;
-	private ColaboradorManager colaboradorManager;
-	private ColaboradorRespostaManager colaboradorRespostaManager;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-	private PlatformTransactionManager transactionManager;
 	
 	private Avaliacao avaliacao;
 	private boolean exibirPeso;
@@ -221,7 +227,7 @@ public class AvaliacaoEditAction extends MyActionSupportList
 			return Action.INPUT;
 		}
 	}
-
+	
 	public String list() throws Exception
 	{
 		setVideoAjuda(778L);
@@ -482,5 +488,15 @@ public class AvaliacaoEditAction extends MyActionSupportList
 
 	public void setAgruparPorAspecto(boolean agruparPorAspecto) {
 		this.agruparPorAspecto = agruparPorAspecto;
+	}
+
+	public void setColaboradorTurmaManager(
+			ColaboradorTurmaManager colaboradorTurmaManager) {
+		this.colaboradorTurmaManager = colaboradorTurmaManager;
+	}
+
+	public void setColaboradorCertificacaoManager(
+			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
+		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	}
 }

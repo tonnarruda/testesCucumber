@@ -52,4 +52,5 @@ public interface ColaboradorTurmaDao extends GenericDao<ColaboradorTurma>
 	Collection<ColaboradorTurma> findCursosCertificacoesAVencer(Date dataReferencia, Long empresaId);
 	Collection<ColaboradorTurma> findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId);
 	public Colaborador verificaColaboradorCertificado(Long colaboradorId, Long certificacaoId);
+	Collection<ColaboradorTurma> findByTurmaId(Long turmaId);
 }

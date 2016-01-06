@@ -160,7 +160,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 						colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPraticaRealizada);
 						AvaliacaoPratica avaliacaoPratica = avaliacaoPraticaManager.findEntidadeComAtributosSimplesById(colaboradorAvaliacaoPratica.getAvaliacaoPratica().getId());
 						if(colaboradorAvaliacaoPratica.getNota() < avaliacaoPratica.getNotaMinima())
-							colaboradorCertificacaoManager.removerColaboradorCertificadoComDependencias(colaboradorCertificacao.getId());
+							colaboradorCertificacaoManager.descertificarColaborador(colaboradorCertificacao.getId());
 					}else{
 						colaboradorAvaliacaoPraticaManager.removeColaboradorAvaliacaoPraticaAndColaboradorCertificado(colaboradorAvaliacaoPraticaRealizada);
 					}
@@ -185,13 +185,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 			
 			for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresCertificados) 
 			{
-				colaboradorCertificacao.setData(new Date());
-				colaboradorCertificacaoManager.save(colaboradorCertificacao);
-				Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaborador.getId(), certificacao.getId());
-				for (ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica : colaboradorAvaliacaoPraticas) {
-					colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacao);
-					colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPratica);
-				}
+				colaboradorCertificacaoManager.saveColaboradorCertificacao(colaboradorCertificacao);
 			}
 		}
 		

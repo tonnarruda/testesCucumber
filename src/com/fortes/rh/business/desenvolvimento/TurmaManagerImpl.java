@@ -30,15 +30,16 @@ import com.fortes.rh.util.StringUtil;
 
 public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implements TurmaManager
 {
-	private DiaTurmaManager diaTurmaManager;
+	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
+	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
 	private ColaboradorPresencaManager colaboradorPresencaManager;
+	private FaturamentoMensalManager faturamentoMensalManager;
+	private TurmaTipoDespesaManager turmaTipoDespesaManager;
 	private ColaboradorTurmaManager colaboradorTurmaManager;
 	private PlatformTransactionManager transactionManager;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
-	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
+	private DiaTurmaManager diaTurmaManager;
 	private CursoManager cursoManager;
-	private TurmaTipoDespesaManager turmaTipoDespesaManager;
-	private FaturamentoMensalManager faturamentoMensalManager;
 
 	public void setColaboradorQuestionarioManager(ColaboradorQuestionarioManager colaboradorQuestionarioManager)
 	{
@@ -113,6 +114,15 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		if(atualizaAvaliacaoEDocumentoAnexos) {
 			turmaAvaliacaoTurmaManager.salvarAvaliacaoTurmas(turma.getId(), avaliacaoTurmaIds);
 			turmaDocumentoAnexoManager.salvarDocumentoAnexos(turma.getId(), documentoAnexoIds);
+		}
+		if(validarCertificacao && colaboradorTurma == null)
+			verificaCertificacaoByColaboradorTurmaId(turma);
+	}
+	
+	private void verificaCertificacaoByColaboradorTurmaId(Turma turma){
+		Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurmaId(turma.getId());
+		for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) {
+			colaboradorCertificacaoManager.verificaCertificacaoByColaboradorTurmaId(colaboradorTurma.getId());
 		}
 	}
 
@@ -387,5 +397,10 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 	public void setColaboradorPresencaManager(ColaboradorPresencaManager colaboradorPresencaManager)
 	{
 		this.colaboradorPresencaManager = colaboradorPresencaManager;
+	}
+
+	public void setColaboradorCertificacaoManager(
+			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
+		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	}
 }

@@ -1185,4 +1185,8 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 			ColaboradorCertificacaoManager colaboradorCertificacaoManager) {
 		this.colaboradorCertificacaoManager = colaboradorCertificacaoManager;
 	}
+
+	public Collection<ColaboradorTurma> findByTurmaId(Long turmaId) {
+		return getDao().findByTurmaId(turmaId);
+	}
 }
