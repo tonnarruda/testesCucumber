@@ -66,6 +66,7 @@
 				</#if>
 				<br/>
 				<#assign i = 0/>		
+				
 				<@display.table name="colaboradorAvaliacaoPraticas" id="colaboradorAvaliacaoPratica" class="dados">
 					<@display.caption><div style="background-color: #EFEFEF;color:#5C5C5A;">Avaliações Práticas</div> </@display.caption>
 					
@@ -87,25 +88,29 @@
 						<#assign colaboradorAvaliacaoPraticaData = "${hoje?date}"/>
 					</#if>
 					
-					<@display.column property="avaliacaoPratica.titulo" title="Título" style="width: 500px;"/>
-					<@display.column property="avaliacaoPratica.notaMinima" title="Nota Mínima Aprovação" style="width: 100px;text-align: center;" />
-					<@display.column title="Realizada em" style="width: 160px;text-align: center;height: 30px !important">
-						<@ww.datepicker id="data[${i}]" name="colaboradorAvaliacaoPraticas[${i}].data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple"/><br>
-						<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].avaliacaoPratica.id" value="${colaboradorAvaliacaoPratica.avaliacaoPratica.id}"/>
-						<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].id" value="${colaboradorAvaliacaoPraticaId}"/>
-					</@display.column>
-					<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
-						<@ww.textfield id="nota[${i}]" name="colaboradorAvaliacaoPraticas[${i}].nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));"/>
-					</@display.column>
-					<#assign i = i + 1/>
-				</@display.table>
-			
-				<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size) >
-					<div class="buttonGroup">
-						<button type="button" class="btnGravar" onclick="submeter('insertOrUpdate.action');"></button>
-					</div>
-				</#if>
-		
+						<@display.column property="avaliacaoPratica.titulo" title="Título" style="width: 500px;"/>
+						<@display.column property="avaliacaoPratica.notaMinima" title="Nota Mínima Aprovação" style="width: 100px;text-align: center;" />
+						<@display.column title="Realizada em" style="width: 160px;text-align: center;height: 30px !important">
+							<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size) &&  colaboradorTurmas?exists && (0 < colaboradorTurmas?size) >
+								<@ww.datepicker id="data[${i}]" name="colaboradorAvaliacaoPraticas[${i}].data" cssClass="mascaraData" value="${colaboradorAvaliacaoPraticaData}" theme="simple"/><br>
+							</#if>
+							<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].avaliacaoPratica.id" value="${colaboradorAvaliacaoPratica.avaliacaoPratica.id}"/>
+							<@ww.hidden name="colaboradorAvaliacaoPraticas[${i}].id" value="${colaboradorAvaliacaoPraticaId}"/>
+						</@display.column>
+						<@display.column title="Nota" style="width: 80px;text-align: center;height: 30px !important">
+							<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size) &&  colaboradorTurmas?exists && (0 < colaboradorTurmas?size) >
+								<@ww.textfield id="nota[${i}]" name="colaboradorAvaliacaoPraticas[${i}].nota" value="${colaboradorAvaliacaoPraticaNota}" maxLength="4" cssStyle="text-align:right;width:50px;border:1px solid #BEBEBE;" onkeypress = "return(somenteNumeros(event,'.,,'));"/>
+							</#if>
+						</@display.column>
+						<#assign i = i + 1/>
+					</@display.table>
+				
+					<#if colaboradorAvaliacaoPraticas?exists && (0 < colaboradorAvaliacaoPraticas?size) &&  colaboradorTurmas?exists && (0 < colaboradorTurmas?size) >
+						<div class="buttonGroup">
+							<button type="button" class="btnGravar" onclick="submeter('insertOrUpdate.action');"></button>
+						</div>
+					</#if>
+				
 				<br/>
 				<@display.table name="colaboradorTurmas" id="colaboradorTurma" class="dados">
 					<@display.caption><div style="background-color: #EFEFEF;color:#5C5C5A;">Cursos Realizados Para a Certificação</div> </@display.caption>
