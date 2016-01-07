@@ -52,7 +52,7 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	
 	//usado por colaboradoresCertificados
 	public ColaboradorCertificacao(Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, 
-			Long cargoId, String cargoNome,	Long certificacaoId, String certificacaoNome, Integer periodicidade, Date data, Long id)
+			 Long estabelecimentoId, String estabelecimentoNome, Long cargoId, String cargoNome, Long certificacaoId, String certificacaoNome, Integer periodicidade, Date data, Long id)
 	{
 		setId(id);
 		this.colaborador = new Colaborador();
@@ -62,6 +62,8 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		this.colaborador.setMatricula(colaboradorMatricula);
 		this.colaborador.setHistoricoColaborador(new HistoricoColaborador());
 		
+		this.colaborador.getHistoricoColaborador().setProjectionEstabelecimentoId(estabelecimentoId);
+		this.colaborador.getHistoricoColaborador().setEstabelecimentoNome(estabelecimentoNome);
 		this.colaborador.getHistoricoColaborador().setCargoId(cargoId);
 		this.colaborador.getHistoricoColaborador().setCargoNome(cargoNome);
 		

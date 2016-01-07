@@ -72,7 +72,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 	public Collection<ColaboradorCertificacao> colaboradoresCertificados(Date dataIni, Date dataFim, char filtroCetificacao, Long[] areasIds, Long[] estabelecimentosIds, Long[] certificacoesIds) 
 	{
 		StringBuilder sql = new StringBuilder();
-		sql.append("select distinct c.id as colabId, c.nome as colabNome, c.nomecomercial as colabNomeComercial, c.matricula as colabMatricula, cg.id as cargoId, cg.nome as cargoNome, ");
+		sql.append("select distinct c.id as colabId, c.nome as colabNome, c.nomecomercial as colabNomeComercial, c.matricula as colabMatricula, estab.id as estabelecimentoId, estab.nome as estabelecimentoNome, cg.id as cargoId, cg.nome as cargoNome, ");
 		sql.append("cert.id as certId, cert.nome as certNome, cert.periodicidade as certPeriodicidade, ccert.data as certData, ccert.id as  colaboradorcertificacaoId ");
 		sql.append("from colaboradorcertificacao ccert ");
 		sql.append("inner join colaborador c on c.id = ccert.colaborador_id ");
@@ -80,6 +80,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		sql.append("inner join historicocolaborador hc on hc.colaborador_id = c.id  ");
 		sql.append("inner join faixasalarial fx on fx.id = hc.faixasalarial_id  ");
 		sql.append("inner join cargo cg  on cg.id = fx.cargo_id  ");
+		sql.append("inner join estabelecimento estab on estab.id = hc.estabelecimento_id  ");
 		sql.append("where desligado = false  ");
 		sql.append("and hc.data = (select max(hc2.data) from historicocolaborador hc2  where hc2.colaborador_id = c.id and hc2.status = 1  )  ");
 		sql.append("and cert.id in (:certificacoesIds) ");
@@ -117,7 +118,7 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		for (@SuppressWarnings("unchecked")
 		Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
 			Object[] res = it.next();
-			ColaboradorCertificacao colabs = new ColaboradorCertificacao(((BigInteger)res[0]).longValue(), (String)res[1], (String)res[2], (String)res[3], ((BigInteger)res[4]).longValue(), (String)res[5], ((BigInteger)res[6]).longValue(), (String)res[7], (Integer)res[8], (Date)res[9], ((BigInteger)res[10]).longValue());
+			ColaboradorCertificacao colabs = new ColaboradorCertificacao(((BigInteger)res[0]).longValue(), (String)res[1], (String)res[2], (String)res[3], ((BigInteger)res[4]).longValue(), (String)res[5], ((BigInteger)res[6]).longValue(), (String)res[7], ((BigInteger)res[8]).longValue(), (String)res[9], (Integer)res[10], (Date)res[11], ((BigInteger)res[12]).longValue());
 			Colaboradores.add(colabs);
 		}
 

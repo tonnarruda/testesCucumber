@@ -12,7 +12,7 @@ public class TipoCertificacao  extends LinkedHashMap
 	
 	@SuppressWarnings("unchecked")
 	public TipoCertificacao() {
-		put(VENCIDA_AVENCER,"Venvidas e a vencer");
+		put(VENCIDA_AVENCER,"Vencidas e a vencer");
 		put(VENCIDA, "Vencida");
 		put(AVENCER, "A vencer");
 	}

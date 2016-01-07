@@ -1,6 +1,7 @@
 package com.fortes.rh.test.web.action.desenvolvimento;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import mockit.Mockit;
@@ -30,6 +31,7 @@ import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorAvaliacaoPraticaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorCertificacaoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.web.action.desenvolvimento.ColaboradorAvaliacaoPraticaEditAction;
 
@@ -147,6 +149,9 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = new ArrayList<ColaboradorAvaliacaoPratica>();
 		colaboradorAvaliacaoPraticas.add(colaboradorAvaliacaoPratica);
 		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+		Collection<ColaboradorTurma> colaboradorTurmas = Arrays.asList(colaboradorTurma);
+		
 		certificacaoManager.expects(once()).method("findAllSelect").will(returnValue(new ArrayList<Certificacao>()));
 		certificacaoManager.expects(once()).method("findColaboradoresNaCertificacoa").will(returnValue(colaboradoresNaCertificacao));
 		areaOrganizacionalManager.expects(once()).method("findAreasByUsuarioResponsavel").will(returnValue(new ArrayList<AreaOrganizacional>()));
@@ -154,7 +159,7 @@ public class ColaboradorAvaliacaoPraticaEditActionTest extends MockObjectTestCas
 		colaboradorCertificacaoManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(new ArrayList<ColaboradorCertificacao>()));
 		avaliacaoPraticaManager.expects(once()).method("findByCertificacaoId").will(returnValue(avaliacaoPraticas));
 		colaboradorAvaliacaoPraticaManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(colaboradorAvaliacaoPraticas));
-		colaboradorTurmaManager.expects(once()).method("findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId").will(returnValue(new ArrayList<ColaboradorTurma>()));
+		colaboradorTurmaManager.expects(once()).method("findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId").will(returnValue(colaboradorTurmas));
 		
 		assertEquals("success", action.buscaColaboradores());
 		assertEquals(2, action.getColaboradores().size());

@@ -2,10 +2,10 @@
 	<head>
 		<@ww.head/>
 		<#if avaliacaoPratica.id?exists>
-			<title>Editar AvaliacaoPratica</title>
+			<title>Editar Avaliação Prática</title>
 			<#assign formAction="update.action"/>
 		<#else>
-			<title>Inserir AvaliacaoPratica</title>
+			<title>Inserir Avaliação Prática</title>
 			<#assign formAction="insert.action"/>
 		</#if>
 	
