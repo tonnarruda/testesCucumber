@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManagerImpl;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorPresencaDao;
@@ -26,6 +27,7 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 	private ColaboradorPresencaManagerImpl colaboradorPresencaManager = new ColaboradorPresencaManagerImpl();
 	private Mock colaboradorPresencaDao;
 	private Mock colaboradorTurmaManager;
+	private Mock colaboradorCertificacaoManager;
 
     protected void setUp() throws Exception
     {
@@ -34,6 +36,9 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 		
 		colaboradorTurmaManager = new Mock(ColaboradorTurmaManager.class);
 		colaboradorPresencaManager.setColaboradorTurmaManager((ColaboradorTurmaManager) colaboradorTurmaManager.proxy());
+		
+		colaboradorCertificacaoManager = new Mock(ColaboradorCertificacaoManager.class);
+		colaboradorPresencaManager.setColaboradorCertificacaoManager((ColaboradorCertificacaoManager) colaboradorCertificacaoManager.proxy());
 		
         super.setUp();
     }
@@ -90,7 +95,12 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 		colaboradorPresencaDao.expects(once()).method("save").with(ANYTHING);
 		colaboradorPresencaManager.updateFrequencia(null, null, true, false);
 		
+		colaboradorPresencaDao.expects(once()).method("save").with(ANYTHING);
+		colaboradorCertificacaoManager.expects(once()).method("verificaCertificacaoByColaboradorTurmaId").with(ANYTHING);
+		colaboradorPresencaManager.updateFrequencia(null, null, true, true);
+		
 		colaboradorPresencaDao.expects(once()).method("remove").with(ANYTHING,ANYTHING);
+		colaboradorCertificacaoManager.expects(once()).method("descertificarColaboradorByColaboradorTurma").with(ANYTHING,ANYTHING);
 		colaboradorPresencaManager.updateFrequencia(null, null, false, false);
 	}
 	
@@ -137,36 +147,4 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 		
 		assertEquals(new Integer(2), colaboradorPresencaManager.qtdDiaPresentesTurma(null, null, null, new Long[]{turma.getId()}, null, null));
 	}
-	
-	//reftorar
-//	public void testFindQtdColaboradorAbaixoPercentual()
-//	{
-//		Turma turma1 = TurmaFactory.getEntity();
-//		turma1.setId(1L);
-//		turma1.setDiasEstimadosParaAprovacao(200.0);
-//			
-//		Collection<Turma> turmas = new ArrayList<Turma>();
-//		turmas.add(turma1);
-//		
-//		ColaboradorPresenca colaboradorPresenca1 = ColaboradorPresencaFactory.getEntity(1L);
-//		colaboradorPresenca1.setTurmaId(turma1.getId());
-//		colaboradorPresenca1.setDiasPresente(100);
-//		
-//		ColaboradorPresenca colaboradorPresenca2 = ColaboradorPresencaFactory.getEntity(2L);
-//		colaboradorPresenca2.setTurmaId(turma1.getId());
-//		colaboradorPresenca2.setDiasPresente(200);
-//		
-//		ColaboradorPresenca colaboradorPresenca3 = ColaboradorPresencaFactory.getEntity(3L);
-//		colaboradorPresenca3.setTurmaId(turma1.getId());
-//		colaboradorPresenca3.setDiasPresente(300);
-//
-//		Collection<ColaboradorPresenca> colaboradorPresencas = new ArrayList<ColaboradorPresenca>();
-//		colaboradorPresencas.add(colaboradorPresenca1);
-//		colaboradorPresencas.add(colaboradorPresenca2);
-//		colaboradorPresencas.add(colaboradorPresenca3);
-//
-//		colaboradorPresencaDao.expects(once()).method("findColaboradoresPresencaDiaTurma").will(returnValue(colaboradorPresencas));
-//
-//		assertEquals(new Integer(1), colaboradorPresencaManager.findQtdColaboradorAbaixoPercentual(turmas));
-//	}
 }

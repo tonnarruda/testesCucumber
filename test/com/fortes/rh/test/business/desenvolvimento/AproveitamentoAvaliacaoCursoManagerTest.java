@@ -11,6 +11,7 @@ import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureExcepti
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManagerImpl;
+import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.dao.desenvolvimento.AproveitamentoAvaliacaoCursoDao;
 import com.fortes.rh.model.desenvolvimento.AproveitamentoAvaliacaoCurso;
 import com.fortes.rh.model.desenvolvimento.AvaliacaoCurso;
@@ -23,11 +24,14 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 	AproveitamentoAvaliacaoCursoManagerImpl aproveitamentoAvaliacaoCursoManager = new AproveitamentoAvaliacaoCursoManagerImpl();
 	Mock aproveitamentoAvaliacaoCursoDao = null;
 	Mock transactionManager;
+	Mock colaboradorCertificacaoManager;
 
 	protected void setUp() throws Exception
 	{
 		aproveitamentoAvaliacaoCursoDao = new Mock(AproveitamentoAvaliacaoCursoDao.class);
 		aproveitamentoAvaliacaoCursoManager.setDao((AproveitamentoAvaliacaoCursoDao) aproveitamentoAvaliacaoCursoDao.proxy());
+		colaboradorCertificacaoManager = new Mock(ColaboradorCertificacaoManager.class);
+		aproveitamentoAvaliacaoCursoManager.setColaboradorCertificacaoManager((ColaboradorCertificacaoManager) colaboradorCertificacaoManager.proxy());
 		
 		transactionManager = new Mock(PlatformTransactionManager.class);
 		aproveitamentoAvaliacaoCursoManager.setTransactionManager((PlatformTransactionManager) transactionManager.proxy());
@@ -38,14 +42,17 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		Long[] colaboradorTurmaIds = new Long[]{1L,2L};
 		String[] notas = new String[]{"4.0","5.0"};
 		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity(1);
+		avaliacaoCurso.setMinimoAprovacao(5.0);
 		
 		AproveitamentoAvaliacaoCurso aproveitamento = new AproveitamentoAvaliacaoCurso();
+		aproveitamento.setAvaliacaoCurso(avaliacaoCurso);
 		
 		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("findByColaboradorTurmaAvaliacaoId").with(ANYTHING, ANYTHING).will(returnValue(aproveitamento));
 		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("update").with(ANYTHING);
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
-		
+		colaboradorCertificacaoManager.expects(once()).method("descertificarColaboradorByColaboradorTurma").with(ANYTHING, ANYTHING).isVoid();
+
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);
 	}
 
@@ -66,6 +73,23 @@ public class AproveitamentoAvaliacaoCursoManagerTest extends MockObjectTestCase
 		//aproveitamentoAvaliacaoCursoDao.expects(once()).method("remove");
 		
 		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, false);
+	}
+	
+	public void testSaveNotasComConfiguracaoPeriodicidadePorCertificacao() throws Exception
+	{
+		Long[] colaboradorTurmaIds = new Long[]{1L,2L,3L};
+		String[] notas = new String[]{"4.0","5.0",""};
+		AvaliacaoCurso avaliacaoCurso = AvaliacaoCursoFactory.getEntity(10L);
+		
+		transactionManager.expects(once()).method("getTransaction").with(ANYTHING).will(returnValue(null));
+		aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(1L), eq(10L)).will(returnValue(null));
+		aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(2L), eq(10L)).will(returnValue(null));
+		aproveitamentoAvaliacaoCursoDao.expects(once()).method("findByColaboradorTurmaAvaliacaoId").with(eq(3L), ANYTHING).will(returnValue(null));
+		aproveitamentoAvaliacaoCursoDao.expects(atLeastOnce()).method("save").with(ANYTHING);
+		transactionManager.expects(once()).method("commit").with(ANYTHING);
+		colaboradorCertificacaoManager.expects(atLeastOnce()).method("verificaCertificacaoByColaboradorTurmaId").with(ANYTHING).isVoid();
+		
+		aproveitamentoAvaliacaoCursoManager.saveNotas(colaboradorTurmaIds, notas, avaliacaoCurso, true);
 	}
 	
 	public void testSaveNotas2()

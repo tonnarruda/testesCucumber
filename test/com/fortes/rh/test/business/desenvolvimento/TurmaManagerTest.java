@@ -20,6 +20,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.fortes.rh.business.cargosalario.FaturamentoMensalManager;
 import com.fortes.rh.business.desenvolvimento.AproveitamentoAvaliacaoCursoManager;
+import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorPresencaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.business.desenvolvimento.CursoManager;
@@ -69,6 +70,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 	Mock faturamentoMensalManager;
 	Mock turmaAvaliacaoTurmaManager;
 	Mock turmaDocumentoAnexoManager;
+	Mock colaboradorCertificacaoManager;
 
 	protected void setUp() throws Exception
 	{
@@ -105,6 +107,9 @@ public class TurmaManagerTest extends MockObjectTestCase
 		
 		turmaAvaliacaoTurmaManager = new Mock(TurmaAvaliacaoTurmaManager.class);
 		turmaDocumentoAnexoManager = new Mock(TurmaDocumentoAnexoManager.class);
+		
+		colaboradorCertificacaoManager = new Mock(ColaboradorCertificacaoManager.class);
+		turmaManager.setColaboradorCertificacaoManager((ColaboradorCertificacaoManager) colaboradorCertificacaoManager.proxy());
 		
 		Mockit.redefineMethods(ActionContext.class, MockActionContext.class);
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
@@ -264,6 +269,7 @@ public class TurmaManagerTest extends MockObjectTestCase
 		turmaDocumentoAnexoManager.expects(once()).method("removeByTurma").with(eq(turma.getId())).isVoid();
 		turmaDao.expects(once()).method("remove").with(eq(turma.getId())).isVoid();
 		transactionManager.expects(once()).method("commit").with(ANYTHING);
+		colaboradorCertificacaoManager.expects(atLeastOnce()).method("descertificarColaboradorByColaboradorTurma").with(ANYTHING, ANYTHING).isVoid();
 
 		Exception ex = null;
 		try
