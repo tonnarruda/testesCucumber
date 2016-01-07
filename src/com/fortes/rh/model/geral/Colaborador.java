@@ -201,6 +201,10 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	private Indice indice;
 	@Transient
 	private Double salario;
+	@Transient
+	private Double salarioVariavel;
+	@Transient
+	private Double mensalidade;
 	@Temporal(TemporalType.DATE)
 	private Date dataAtualizacao = new Date();
 	@Transient
@@ -594,7 +598,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 						Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
 						Date vencimento, String categoria, String logradouro, String complemento, String numero, 
 						String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome,  
-						String cidadeNome, String ufSigla, Date afastamentoInicio, Date afastamentoFim, String candIndicadoPor, 
+						String cidadeNome, String ufSigla, Date afastamentoInicio, Date afastamentoFim, String candIndicadoPor,
+						Double salario, int tipoSalario, Double quantidadeIndice, Indice indice, FaixaSalarial faixaSalarial, FaixaSalarialHistorico faixaSalarialHistorico, IndiceHistorico indiceHistorico, Indice faixaIndice, IndiceHistorico faixaHistoricoIndice,  
 						String texto1,  String texto2,  String texto3,  String texto4,  String texto5,  String texto6,  String texto7,  String texto8,  String textolongo1,  String textolongo2,
 						Date data1,  Date data2,  Date data3,  Double valor1,  Double valor2,  Integer numero1  
 					   ) 
@@ -604,7 +609,8 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 				matricula, codigoAC, desligado, dataAdmissao, dataDesligamento, vinculo, naoIntegraAc, cursos, estadoCivil, escolaridade, mae, pai,
 				cpf, pis, rg, rgOrgaoEmissor, deficiencia, rgDataExpedicao, sexo, dataNascimento, conjuge, qtdFilhos, ctpsNumero, ctpsSerie,
 				ctpsDv, numeroHab, emissao, vencimento, categoria, logradouro, complemento, numero, bairro, cep, email, foneCelular, foneFixo, 
-				funcaoNome, ambienteNome, cidadeNome, ufSigla, afastamentoInicio, afastamentoFim, candIndicadoPor);
+				funcaoNome, ambienteNome, cidadeNome, ufSigla, afastamentoInicio, afastamentoFim, candIndicadoPor,
+				salario, tipoSalario, quantidadeIndice, indice, faixaSalarial, faixaSalarialHistorico, indiceHistorico, faixaIndice, faixaHistoricoIndice);
 		
 		if (this.camposExtras == null)
 			this.camposExtras = new CamposExtras();
@@ -636,7 +642,9 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 			Date dataNascimento, String conjuge, Integer qtdFilhos, String ctpsNumero, String ctpsSerie, Character ctpsDv, String numeroHab, Date emissao, 
 			Date vencimento, String categoria, String logradouro, String complemento, String numero, 
 			String bairro, String cep, String email, String foneCelular, String foneFixo, String funcaoNome, String ambienteNome, 
-			String cidadeNome, String ufSigla, Date afastamentoInicio, Date afastamentoFim, String candIndicadoPor) 
+			String cidadeNome, String ufSigla, Date afastamentoInicio, Date afastamentoFim, String candIndicadoPor,
+			Double salario, int tipoSalario, Double quantidadeIndice, Indice indice, FaixaSalarial faixaSalarial, FaixaSalarialHistorico faixaSalarialHistorico, IndiceHistorico indiceHistorico, Indice faixaIndice, IndiceHistorico faixaHistoricoIndice
+			) 
 	{
 		this(coId, coNome, esId, esNome, aoId, aoNome, reNome, cgNome, fsNome,
 				empresaId, empresaNome, empresaAcIntegra, nomeComercial,
@@ -656,6 +664,23 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 		if (this.ambiente == null)
 			this.ambiente =  new Ambiente();
 		this.ambiente.setNome(ambienteNome);
+		
+		if (this.historicoColaborador == null)
+			historicoColaborador = new HistoricoColaborador();
+		
+		historicoColaborador.setSalario(salario);
+		historicoColaborador.setTipoSalario(tipoSalario);
+		historicoColaborador.setQuantidadeIndice(quantidadeIndice);
+		
+		historicoColaborador.setIndice( indice != null ? indice : new Indice() );
+		historicoColaborador.getIndice().setIndiceHistoricoAtual(indiceHistorico);
+
+		historicoColaborador.setFaixaSalarial( faixaSalarial != null ? faixaSalarial : new FaixaSalarial() );
+		historicoColaborador.getFaixaSalarial().setFaixaSalarialHistoricoAtual(faixaSalarialHistorico);
+		if (faixaSalarialHistorico != null)
+			historicoColaborador.getFaixaSalarial().getFaixaSalarialHistoricoAtual().setIndice(faixaIndice);
+		if(faixaIndice != null)
+			historicoColaborador.getFaixaSalarial().getFaixaSalarialHistoricoAtual().getIndice().setIndiceHistoricoAtual(faixaHistoricoIndice);
 	}
 
 	public Colaborador(Long coId, String coNome, Long esId, String esNome, Long aoId, String aoNome, String reNome, String cgNome,
@@ -2127,6 +2152,18 @@ public class Colaborador extends AbstractModel implements Serializable, Cloneabl
 	public void setSalario(Double salario)
 	{
 		this.salario = salario;
+	}
+	public Double getSalarioVariavel() {
+		return salarioVariavel;
+	}
+	public void setSalarioVariavel(Double salarioVariavel) {
+		this.salarioVariavel = salarioVariavel;
+	}
+	public Double getMensalidade() {
+		return mensalidade;
+	}
+	public void setMensalidade(Double mensalidade) {
+		this.mensalidade = mensalidade;
 	}
 	public String getRegimeRevezamento()
 	{

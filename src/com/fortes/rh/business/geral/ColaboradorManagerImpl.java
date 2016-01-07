@@ -103,6 +103,7 @@ import com.fortes.rh.model.geral.relatorio.TurnOverCollection;
 import com.fortes.rh.model.relatorio.DataGrafico;
 import com.fortes.rh.model.ws.TEmpregado;
 import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
+import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.util.ArquivoUtil;
 import com.fortes.rh.util.Autenticador;
@@ -1166,6 +1167,59 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		colaboradors = cu1.sortCollectionStringIgnoreCase(colaboradors, "descricaoEmpresaEstabelecimentoAreaOrganizacional");
 		
 		return colaboradors;
+	}
+	
+	public void getRemuneracaoVariavelFromAcPessoalByColaboradores(Collection<Colaborador> colaboradores) throws Exception 
+	{
+		ArrayList<String> colaboradoresIdsList = new ArrayList<String>();
+		ArrayList<Long> empresasIdsList = new ArrayList<Long>();
+		
+		for (Colaborador colaborador : colaboradores) 
+		{			
+			if (colaborador.getEmpresa().isAcIntegra() && colaborador.getCodigoAC() != null && !colaborador.getCodigoAC().equals("") && !colaborador.isNaoIntegraAc())
+			{
+				colaboradoresIdsList.remove(colaborador.getCodigoAC().toString());
+				colaboradoresIdsList.add(colaborador.getCodigoAC().toString());
+				
+				Long empresaId = colaborador.getEmpresa().getId();
+				if (empresaId != null && !empresasIdsList.contains(empresaId))
+					empresasIdsList.add(empresaId);
+			}
+		}
+		
+		String[] colaboradoresIds = new String[colaboradoresIdsList.size()];
+		colaboradoresIds = colaboradoresIdsList.toArray(colaboradoresIds);
+		
+		if (colaboradoresIdsList.size() != 0)
+		{
+			List<TRemuneracaoVariavel> remuneracoesVariaveisList = new ArrayList<TRemuneracaoVariavel>();
+			Empresa empresa;
+			TRemuneracaoVariavel[] remuneracoesVariaveisTemp;
+
+			for (Long empresaId : empresasIdsList)
+			{
+				empresa = empresaManager.findById(empresaId);
+				remuneracoesVariaveisTemp = acPessoalClientColaborador.getRemuneracoesVariaveis(empresa, colaboradoresIds, DateUtil.formataAnoMes(new Date()), DateUtil.formataAnoMes(new Date())); 
+				CollectionUtil<TRemuneracaoVariavel> util = new CollectionUtil<TRemuneracaoVariavel>();
+				remuneracoesVariaveisList.addAll(util.convertArrayToCollection(remuneracoesVariaveisTemp));
+			}
+						
+			for (TRemuneracaoVariavel remuneracaoVariavel : remuneracoesVariaveisList)
+			{
+				for (Colaborador colaborador : colaboradores) 
+				{
+					if (colaborador.getCodigoAC() != null && !colaborador.getCodigoAC().equals(""))
+					{
+						if (colaborador.getCodigoAC().equals(remuneracaoVariavel.getCodigoEmpregado()))
+						{
+							colaborador.getHistoricoColaborador().setSalarioVariavel(remuneracaoVariavel.getValor());
+							colaborador.getHistoricoColaborador().setMensalidade(remuneracaoVariavel.getMensalidade());
+							break;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	public void verificaColaboradoresSemCodigoAC(Collection<ReajusteColaborador> reajustes) throws Exception

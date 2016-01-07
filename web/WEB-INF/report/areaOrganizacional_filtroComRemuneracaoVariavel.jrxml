@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="areaOrganizacional_filtro" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="a0132c91-3ef2-400e-8679-2ecd475a3212">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="areaOrganizacional_filtro" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="782" leftMargin="30" rightMargin="30" topMargin="20" bottomMargin="20" uuid="a0132c91-3ef2-400e-8679-2ecd475a3212">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<property name="ireport.zoom" value="2.727272727272731"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.zoom" value="1.5394743546921312"/>
+	<property name="ireport.x" value="275"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="CABECALHO" class="com.fortes.rh.model.relatorio.Cabecalho" isForPrompting="false"/>
-	<parameter name="EXIBIRSALARIO" class="java.lang.Boolean" isForPrompting="false"/>
-	<parameter name="EXIBIRSALARIOVARIAVEL" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="nome" class="java.lang.String"/>
 	<field name="faixaSalarial.nome" class="java.lang.String"/>
 	<field name="faixaSalarial.cargo.nome" class="java.lang.String"/>
@@ -21,24 +19,44 @@
 	<field name="descricaoEmpresaEstabelecimentoAreaOrganizacional" class="java.lang.String"/>
 	<field name="nomeMaisNomeComercial" class="java.lang.String"/>
 	<field name="historicoColaborador.salarioCalculado" class="java.lang.Double"/>
+	<field name="historicoColaborador.salarioVariavel" class="java.lang.Double"/>
+	<field name="historicoColaborador.mensalidade" class="java.lang.Double"/>
 	<variable name="PAGE_ROW_NUMBER" class="java.lang.Integer" resetType="Group" resetGroup="gruposAreas" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
 	</variable>
 	<variable name="ContadorNome" class="java.lang.Long" calculation="Count">
 		<variableExpression><![CDATA[$F{nome}]]></variableExpression>
 	</variable>
-	<variable name="salarioTotal" class="java.lang.Double" calculation="Sum">
+	<variable name="salarioContratualTotal" class="java.lang.Double" calculation="Sum">
 		<variableExpression><![CDATA[$F{historicoColaborador.salarioCalculado}]]></variableExpression>
 	</variable>
-	<variable name="salarioSubTotal" class="java.lang.Double" resetType="Group" resetGroup="gruposAreas" calculation="Sum">
+	<variable name="remuneracaoVariavelTotal" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{historicoColaborador.salarioVariavel}]]></variableExpression>
+	</variable>
+	<variable name="salarioTotal" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{historicoColaborador.salarioVariavel}.doubleValue() + $F{historicoColaborador.salarioCalculado}.doubleValue() + $F{historicoColaborador.mensalidade}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="mensalidadeTotal" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{historicoColaborador.mensalidade}]]></variableExpression>
+	</variable>
+	<variable name="salarioContratualSubTotal" class="java.lang.Double" resetType="Group" resetGroup="gruposAreas" calculation="Sum">
 		<variableExpression><![CDATA[$F{historicoColaborador.salarioCalculado}]]></variableExpression>
+	</variable>
+	<variable name="mensalidadeSubTotal" class="java.lang.Double" resetType="Group" resetGroup="gruposAreas" calculation="Sum">
+		<variableExpression><![CDATA[$F{historicoColaborador.mensalidade}]]></variableExpression>
+	</variable>
+	<variable name="salarioSubTotal" class="java.lang.Double" resetType="Group" resetGroup="gruposAreas" calculation="Sum">
+		<variableExpression><![CDATA[new Double($F{historicoColaborador.salarioVariavel}.doubleValue() + $F{historicoColaborador.salarioCalculado}.doubleValue() + $F{historicoColaborador.mensalidade}.doubleValue())]]></variableExpression>
+	</variable>
+	<variable name="remuneracaoVariavelSubTotal" class="java.lang.Double" resetType="Group" resetGroup="gruposAreas" calculation="Sum">
+		<variableExpression><![CDATA[$F{historicoColaborador.salarioVariavel}]]></variableExpression>
 	</variable>
 	<group name="gruposAreas">
 		<groupExpression><![CDATA[$F{descricaoEmpresaEstabelecimentoAreaOrganizacional}]]></groupExpression>
 		<groupHeader>
 			<band height="13" splitType="Stretch">
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField" x="4" y="1" width="527" height="11" isPrintWhenDetailOverflows="true" uuid="c27af9b0-941d-499c-9dca-2709ee720c69"/>
+					<reportElement key="textField" x="4" y="2" width="778" height="11" isPrintWhenDetailOverflows="true" uuid="c27af9b0-941d-499c-9dca-2709ee720c69"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -55,7 +73,7 @@
 		<groupFooter>
 			<band height="17" splitType="Stretch">
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField-21" x="12" y="1" width="523" height="13" uuid="599013da-8dca-4ba6-b361-d419ee987c0a"/>
+					<reportElement key="textField-21" x="12" y="1" width="770" height="13" uuid="599013da-8dca-4ba6-b361-d419ee987c0a"/>
 					<box>
 						<topPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -68,19 +86,56 @@
 					<textFieldExpression><![CDATA["Total: " + $V{gruposAreas_COUNT}]]></textFieldExpression>
 				</textField>
 				<textField pattern=",##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-14" x="464" y="2" width="67" height="11" uuid="374235c6-101f-407f-82c1-f9242e928080">
-						<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
-					</reportElement>
+					<reportElement key="textField-14" x="604" y="1" width="74" height="11" uuid="e2933aa3-790c-4997-88d6-fb1a82f4d2ec"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
-					<textElement textAlignment="Right" verticalAlignment="Middle">
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{remuneracaoVariavelSubTotal}]]></textFieldExpression>
+				</textField>
+				<textField pattern=",##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-14" x="523" y="1" width="79" height="11" uuid="e8c967ca-1d1b-4893-a0a2-3ea597a284f3"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{salarioContratualSubTotal}]]></textFieldExpression>
+				</textField>
+				<textField pattern=",##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-14" x="736" y="1" width="46" height="11" uuid="7dbc0b72-bb84-45e8-ac06-5cc26144551a"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Top">
 						<font size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{salarioSubTotal}]]></textFieldExpression>
+				</textField>
+				<textField pattern=",##0.00" isBlankWhenNull="true">
+					<reportElement key="textField-14" x="680" y="1" width="54" height="11" uuid="d72c86cc-fafa-44f8-b5a0-6f07b38736ec"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Top">
+						<font size="8"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{mensalidadeSubTotal}]]></textFieldExpression>
 				</textField>
 			</band>
 		</groupFooter>
@@ -107,7 +162,7 @@
 				<text><![CDATA[Static text]]></text>
 			</staticText>
 			<subreport isUsingCache="true">
-				<reportElement key="subreport-1" x="0" y="1" width="535" height="50" uuid="84cc2548-de32-44d9-acd9-9b6c795099aa"/>
+				<reportElement key="subreport-1" x="0" y="1" width="782" height="50" uuid="84cc2548-de32-44d9-acd9-9b6c795099aa"/>
 				<subreportParameter name="SUBREPORT_DIR">
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 				</subreportParameter>
@@ -121,9 +176,7 @@
 	<columnHeader>
 		<band height="37" splitType="Stretch">
 			<staticText>
-				<reportElement key="staticText-2" x="12" y="25" width="337" height="11" uuid="16044f4c-515f-4de0-bbee-cb72221a0289">
-					<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
-				</reportElement>
+				<reportElement key="staticText-2" x="12" y="25" width="326" height="11" uuid="16044f4c-515f-4de0-bbee-cb72221a0289"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -136,9 +189,7 @@
 				<text><![CDATA[Colaborador]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-3" x="351" y="25" width="181" height="11" uuid="533d906b-e341-41c8-b473-2552be5e72fc">
-					<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
-				</reportElement>
+				<reportElement key="staticText-3" x="340" y="25" width="181" height="11" uuid="533d906b-e341-41c8-b473-2552be5e72fc"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -150,8 +201,21 @@
 				</textElement>
 				<text><![CDATA[Cargo/Faixa]]></text>
 			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="523" y="25" width="79" height="11" uuid="f32b1b99-d315-4d41-8217-b503e0b2c4ca"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Salário Contratual]]></text>
+			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-20" x="4" y="12" width="528" height="12" uuid="41a976fc-07cd-40e4-9227-ef8207991077"/>
+				<reportElement key="textField-20" x="4" y="12" width="778" height="12" uuid="41a976fc-07cd-40e4-9227-ef8207991077"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -164,39 +228,7 @@
 				<textFieldExpression><![CDATA["Empresa - Estabelecimento - Área Organizacional"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement key="staticText-3" x="291" y="25" width="171" height="11" uuid="b0f4ae72-75ed-4675-8e5f-c42a70092575">
-					<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Cargo/Faixa]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-2" x="12" y="25" width="277" height="11" uuid="1f25adb5-7cb5-4349-923d-7499f6005b68">
-					<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Justified" verticalAlignment="Middle">
-					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Colaborador]]></text>
-			</staticText>
-			<staticText>
-				<reportElement key="staticText-3" x="464" y="25" width="68" height="11" uuid="e4ce55c1-ee23-4508-a98a-181695a59940">
-					<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
-				</reportElement>
+				<reportElement key="staticText-3" x="604" y="25" width="74" height="11" uuid="8714dccb-7e2f-4ef1-95de-8feee9019085"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -206,14 +238,40 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Salário]]></text>
+				<text><![CDATA[Valores da Folha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="680" y="25" width="54" height="11" uuid="3c4c97d4-0635-41d6-8dff-b4699ff657e1"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Mensalidade]]></text>
+			</staticText>
+			<staticText>
+				<reportElement key="staticText-3" x="736" y="25" width="46" height="11" uuid="f4fa07ed-5765-4740-b3b1-c60ada7fb3c9"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.5" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="12" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-4" x="0" y="0" width="535" height="10" backcolor="#EEEEEE" uuid="f077ab89-3232-4986-8839-06f43a2d5342">
+				<reportElement key="rectangle-4" x="0" y="0" width="782" height="10" backcolor="#EEEEEE" uuid="f077ab89-3232-4986-8839-06f43a2d5342">
 					<printWhenExpression><![CDATA[new Boolean(($V{PAGE_ROW_NUMBER}.intValue() % 2) == 1)]]></printWhenExpression>
 				</reportElement>
 				<graphicElement>
@@ -221,9 +279,7 @@
 				</graphicElement>
 			</rectangle>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField" x="12" y="0" width="337" height="11" uuid="9de37dbf-a404-4031-8f6e-fa7440edbea7">
-					<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
-				</reportElement>
+				<reportElement key="textField" x="12" y="0" width="326" height="11" uuid="9de37dbf-a404-4031-8f6e-fa7440edbea7"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -236,39 +292,7 @@
 				<textFieldExpression><![CDATA[$F{nomeMaisNomeComercial}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-14" x="351" y="0" width="180" height="11" uuid="2a8e6a6f-e123-4cba-9b16-0338e908723f">
-					<printWhenExpression><![CDATA[new Boolean (!$P{EXIBIRSALARIO}.booleanValue())]]></printWhenExpression>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{faixaSalarial.cargo.nome}+" "+$F{faixaSalarial.nome}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField" x="12" y="0" width="277" height="11" uuid="2018a603-bfbd-47d9-bbd8-6fcb4a208db4">
-					<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
-				</reportElement>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nomeMaisNomeComercial}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement key="textField-14" x="291" y="0" width="171" height="11" uuid="dccd4cbf-1a0b-40a3-bb15-599f46f7f63a">
-					<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
-				</reportElement>
+				<reportElement key="textField-14" x="340" y="0" width="181" height="11" uuid="2a8e6a6f-e123-4cba-9b16-0338e908723f"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -281,19 +305,56 @@
 				<textFieldExpression><![CDATA[$F{faixaSalarial.cargo.nome}+" "+$F{faixaSalarial.nome}]]></textFieldExpression>
 			</textField>
 			<textField pattern=",##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-14" x="464" y="0" width="67" height="11" uuid="f45ebd3c-8b73-4824-a0bb-b7090fa2085c">
-					<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
-				</reportElement>
+				<reportElement key="textField-14" x="523" y="0" width="79" height="11" uuid="2823a215-65bc-40e7-8ff7-b323a6ed6dd4"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{historicoColaborador.salarioCalculado}]]></textFieldExpression>
+			</textField>
+			<textField pattern=",##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-14" x="604" y="0" width="74" height="11" uuid="e09b1d0f-d339-4af7-8919-55351354c98d"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{historicoColaborador.salarioVariavel}]]></textFieldExpression>
+			</textField>
+			<textField pattern=",##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-14" x="680" y="0" width="54" height="11" uuid="0060695d-0dbb-4955-9c6e-9800f1077cfd"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{historicoColaborador.mensalidade}]]></textFieldExpression>
+			</textField>
+			<textField pattern=",##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-14" x="736" y="0" width="46" height="11" uuid="8cfb242a-b246-40bc-9dc4-9ffb3550beab"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new Double($F{historicoColaborador.salarioVariavel}.doubleValue() + $F{historicoColaborador.salarioCalculado}.doubleValue() + $F{historicoColaborador.mensalidade}.doubleValue())]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -306,41 +367,13 @@
 	<summary>
 		<band height="14" splitType="Stretch">
 			<rectangle>
-				<reportElement key="rectangle-5" x="0" y="0" width="535" height="14" backcolor="#D4D3D3" uuid="5fe052ea-f21f-4917-b137-e40db386bd56"/>
+				<reportElement key="rectangle-5" x="0" y="0" width="782" height="14" backcolor="#D4D3D3" uuid="5fe052ea-f21f-4917-b137-e40db386bd56"/>
 				<graphicElement>
 					<pen lineWidth="0.0" lineStyle="Solid"/>
 				</graphicElement>
 			</rectangle>
 			<staticText>
-				<reportElement key="staticText-5" x="4" y="0" width="108" height="11" isPrintInFirstWholeBand="true" uuid="78cfc53b-ea82-4ee3-8d71-9c23c71eec35"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[Total de Colaboradores:]]></text>
-			</staticText>
-			<textField isBlankWhenNull="false">
-				<reportElement key="textField" x="112" y="0" width="25" height="11" uuid="b17247b0-eaed-477b-933b-d983266476b9"/>
-				<box>
-					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$V{ContadorNome}]]></textFieldExpression>
-			</textField>
-			<textField pattern=",##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-14" x="464" y="0" width="67" height="11" uuid="d3008748-79ce-4bbe-afb4-928a574a0303">
-					<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
-				</reportElement>
+				<reportElement key="staticText-5" x="4" y="0" width="109" height="11" isPrintInFirstWholeBand="true" uuid="78cfc53b-ea82-4ee3-8d71-9c23c71eec35"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -348,6 +381,71 @@
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Total de Colaboradores:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="false">
+				<reportElement key="textField" x="113" y="0" width="25" height="11" uuid="b17247b0-eaed-477b-933b-d983266476b9"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{ContadorNome}]]></textFieldExpression>
+			</textField>
+			<textField pattern=",##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-14" x="523" y="0" width="79" height="11" uuid="4ce6cd3c-2cca-452e-9a6e-323eea9d43f0"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{salarioContratualTotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern=",##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-14" x="604" y="0" width="74" height="11" uuid="1a506a3b-98b3-4668-8e8e-3b7a6824e2b7"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{remuneracaoVariavelTotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern=",##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-14" x="680" y="0" width="54" height="11" uuid="03aa1552-03e2-4d02-9e33-a8e64bc00ba6"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{mensalidadeTotal}]]></textFieldExpression>
+			</textField>
+			<textField pattern=",##0.00" isBlankWhenNull="true">
+				<reportElement key="textField-14" x="736" y="0" width="46" height="11" uuid="38bf3fc1-418f-43cd-b5b7-631af6669cbb"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font size="8" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{salarioTotal}]]></textFieldExpression>

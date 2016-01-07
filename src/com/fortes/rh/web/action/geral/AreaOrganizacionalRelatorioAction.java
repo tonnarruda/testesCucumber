@@ -64,6 +64,8 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 	private Boolean compartilharColaboradores;
 	private String reportTitle;
 	private Long[] empresasPermitidas;
+	private boolean exibirSalario;
+	private boolean exibirSalarioVariavel = false;
 	
 	public String execute() throws Exception
 	{
@@ -86,10 +88,30 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 		
 		return Action.SUCCESS;
 	}
+	
+	private boolean exibirSalarioVariavel()
+	{
+		boolean exibirSalarioVariavel = false;
+		
+		if (empresa.getId() != null)
+		{
+			empresa = empresaManager.findByIdProjection(empresa.getId());
+			exibirSalarioVariavel = empresa.isAcIntegra();
+		}
+		else
+			exibirSalarioVariavel = empresaManager.checkEmpresaIntegradaAc();
+		
+		return exibirSalarioVariavel;
+	}
 
 	public String gerarRelatorio() throws Exception
 	{
+		String retorno = null;
 		String msg = null;
+		
+		if(exibirSalario)
+			exibirSalarioVariavel = exibirSalarioVariavel();
+		
 		try
 		{
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
@@ -108,9 +130,14 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 
 			dataSource = colaboradorManager.ordenaPorEstabelecimentoArea(dataSource, EmpresaUtil.empresasSelecionadas(empresa.getId(),empresasPermitidas));
 
+			if ( exibirSalarioVariavel )
+				colaboradorManager.getRemuneracaoVariavelFromAcPessoalByColaboradores(dataSource);
+			
 			parametros = areaOrganizacionalManager.getParametrosRelatorio("Relatório de Áreas Organizacionais", getEmpresaSistema(), null);
-
-			return Action.SUCCESS;
+			parametros.put("EXIBIRSALARIO", exibirSalario);
+			parametros.put("EXIBIRSALARIOVARIAVEL", exibirSalarioVariavel);
+			
+			retorno = Action.SUCCESS;
 		}
 		catch (Exception e)
 		{
@@ -122,8 +149,15 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 				addActionMessage("Não foi possível gerar o relatório");
 
 			formFiltro();
- 			return Action.INPUT;
+			retorno = Action.INPUT;
 		}
+		
+		if(Action.INPUT.equals(retorno))
+			return Action.INPUT;
+		else if (exibirSalarioVariavel)
+			return "successRemuneracaoVariavel"; 
+		else
+			return retorno;
 	}
 
 	public Collection<AreaOrganizacional> getAreaOrganizacionals()
@@ -319,5 +353,15 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 	
 	public void setEmpresasPermitidas(Long[] empresasPermitidas) {
 		this.empresasPermitidas = empresasPermitidas;
+	}
+	
+	public boolean isExibirSalario() 
+	{
+		return exibirSalario;
+	}
+
+	public void setExibirSalario(boolean exibirSalario) 
+	{
+		this.exibirSalario = exibirSalario;
 	}
 }

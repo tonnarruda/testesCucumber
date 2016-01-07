@@ -90,6 +90,10 @@
 				</ul>
 			</fieldset>
 		</#if>
+		
+		<@authz.authorize ifAllGranted="EXIBIR_SALARIO_RELAT_COLAB_CARGO">
+			<@ww.checkbox label="Exibir Salário" name="exibirSalario" id="exibirSalario" labelPosition="left" cssStyle="margin-top: 10px;"/>
+		</@authz.authorize>
 	</@ww.form>
 
 	<div class="buttonGroup">

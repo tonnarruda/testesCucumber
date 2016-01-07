@@ -225,4 +225,5 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public void confirmaReenvios(TFeedbackPessoalWebService tFeedbackPessoalWebService, Empresa empresa) throws Exception;
 	public void setDataSolicitacaoDesligamentoACByDataDesligamento(Long empresaId);
 	public Collection<Colaborador> listColaboradorComDataSolDesligamentoAC(Long empresaId);
+	public void getRemuneracaoVariavelFromAcPessoalByColaboradores(Collection<Colaborador> colaboradores) throws Exception;
 }

@@ -1118,7 +1118,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 				"co.pessoal.dataNascimento, co.pessoal.conjuge, co.pessoal.qtdFilhos, co.pessoal.ctps.ctpsNumero, co.pessoal.ctps.ctpsSerie, co.pessoal.ctps.ctpsDv,  " +
 				"co.habilitacao.numeroHab, co.habilitacao.emissao, co.habilitacao.vencimento, co.habilitacao.categoria, co.endereco.logradouro, co.endereco.complemento,  " +
 				"co.endereco.numero, co.endereco.bairro, co.endereco.cep, co.contato.email, co.contato.foneCelular,	co.contato.foneFixo, fun.nome, amb.nome, " +
-				"cidade.nome, uf.sigla, caf.inicio, caf.fim, cand.pessoal.indicadoPor  " );
+				"cidade.nome, uf.sigla, caf.inicio, caf.fim, cand.pessoal.indicadoPor, hc1.salario, hc1.tipoSalario, hc1.quantidadeIndice, i, fs, fsh, ih, ifs, ifsh " );
 				
 				if(habilitaCampoExtra && camposExtras != null)
 				{
@@ -1135,12 +1135,17 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		hql.append("left join hc1.funcao as fun ");
 		hql.append("left join hc1.ambiente as amb ");
 		hql.append("left join hc1.colaborador as co ");
+		hql.append("left join hc1.indice as i ");
+		hql.append("left join i.indiceHistoricos as ih with ih.data = (select max(ih2.data) from IndiceHistorico ih2 where ih2.indice.id = i.id and ih2.data <= :hoje) ");
 		hql.append("left join co.empresa as emp ");
 		hql.append("left join co.endereco.cidade as cidade ");
 		hql.append("left join co.endereco.uf as uf ");
 		hql.append("left join co.colaboradorAfastamento as caf ");
 		hql.append("left join co.candidato as cand ");
 		hql.append("left join hc1.faixaSalarial as fs ");
+		hql.append("left join fs.faixaSalarialHistoricos as fsh with fsh.data = (select max(fsh2.data) from FaixaSalarialHistorico fsh2 where fsh2.faixaSalarial.id = fs.id and fsh2.data <= :hoje and fsh2.status != :statusFaixaSalarial) ");
+		hql.append("left join fsh.indice as ifs ");
+		hql.append("left join ifs.indiceHistoricos as ifsh with ifsh.data = (select max(ih3.data) from IndiceHistorico ih3 where ih3.indice.id = ifs.id and ih3.data <= :hoje) ");
 		hql.append("left join hc1.faixaSalarial.cargo as cg ");
 		hql.append("left join hc1.faixaSalarial.cargo.grupoOcupacional as go ");
 
@@ -1269,6 +1274,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		// Parâmetros
 		query.setDate("hoje", new Date());
 		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		query.setInteger("statusFaixaSalarial", StatusRetornoAC.CANCELADO);
 		
 		if(sexo != null && !sexo.equals(Sexo.INDIFERENTE))
 			query.setString("sexo", sexo);
