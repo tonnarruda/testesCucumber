@@ -26,9 +26,9 @@ public class ListaPresencaDWR
 		colaboradorPresencaManager.marcarTodos(diaTurmaId, turmaId, verificaCertificacao(controlarVencimentoCertificacaoPor));
 	}
 	
-	public void desmarcarTodos(Long diaTurmaId, int controlarVencimentoCertificacaoPor) throws Exception
+	public void desmarcarTodos(Long diaTurmaId, Long turmaId, int controlarVencimentoCertificacaoPor) throws Exception
 	{
-		colaboradorPresencaManager.removeByDiaTurma(diaTurmaId, verificaCertificacao(controlarVencimentoCertificacaoPor));
+		colaboradorPresencaManager.removeByDiaTurma(diaTurmaId, turmaId, verificaCertificacao(controlarVencimentoCertificacaoPor));
 	}
 	
 	public String calculaFrequencia(Long colaboradorTurmaId, Integer qtdDias) throws Exception

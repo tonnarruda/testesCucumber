@@ -13,7 +13,7 @@ public interface ColaboradorPresencaManager extends GenericManager<ColaboradorPr
 	public boolean existPresencaByTurma(Long turmaId);
 	public void updateFrequencia(Long diaTurmaId, Long colaboradorTurmaId, boolean presenca, boolean validarCertificacao) throws Exception;
 	public void marcarTodos(Long diaTurmaId, Long turmaId, boolean validarCertificacao);
-	public void removeByDiaTurma(Long diaTurmaId, boolean validarCertificacao) throws Exception;
+	public void removeByDiaTurma(Long diaTurmaId, Long turmaId, boolean validarCertificacao) throws Exception;
 	public String calculaFrequencia(Long colaboradorTurmaId, Integer qtdDias);
 	public Collection<ColaboradorTurma> preparaLinhaEmBranco(Collection<ColaboradorTurma> colaboradorTurmas, int qtdMaxLinha, Long estabelecimentoId);
 	public void removeByColaboradorTurma(Long[] colaboradorTurmaIds);

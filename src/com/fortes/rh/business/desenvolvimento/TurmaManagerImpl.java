@@ -60,6 +60,9 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			//	Remove todos os relacionamentos com Questionario/Resposta na turma
 			colaboradorQuestionarioManager.removeByColaboradorETurma(null, turmaId);
 			
+			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) {
+				colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), true);
+			}
 			if(colaboradoresTurmas.size() > 0)
 			{
 				CollectionUtil<ColaboradorTurma> cc = new CollectionUtil<ColaboradorTurma>();
@@ -102,7 +105,8 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 		turmaDocumentoAnexoManager.salvarDocumentoAnexos(turma.getId(), documentoAnexoIds);
 	}
 
-	public void atualizar(Turma turma, String[] dias, String[] horasIni, String[] horasFim, String[] colaboradorTurma, String[] selectPrioridades, Long[] avaliacaoTurmaIds, Long[] documentoAnexoIds, boolean atualizaAvaliacaoEDocumentoAnexos, boolean validarCertificacao) throws Exception
+	public void atualizar(Turma turma, String[] dias, String[] horasIni, String[] horasFim, String[] colaboradorTurma, String[] selectPrioridades, Long[] avaliacaoTurmaIds, Long[] documentoAnexoIds,
+			boolean atualizaAvaliacaoEDocumentoAnexos, boolean validarCertificacao) throws Exception
 	{
 		colaboradorTurmaManager.saveUpdate(colaboradorTurma, selectPrioridades, validarCertificacao);
 
@@ -116,14 +120,20 @@ public class TurmaManagerImpl extends GenericManagerImpl<Turma, TurmaDao> implem
 			turmaDocumentoAnexoManager.salvarDocumentoAnexos(turma.getId(), documentoAnexoIds);
 		}
 		if(validarCertificacao && colaboradorTurma == null)
-			verificaCertificacaoByColaboradorTurmaId(turma);
+				verificaCertificacaoByColaboradorTurmaId(turma);
 	}
 	
 	private void verificaCertificacaoByColaboradorTurmaId(Turma turma){
 		Collection<ColaboradorTurma> colaboradoresTurmas = colaboradorTurmaManager.findByTurmaId(turma.getId());
-		for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) {
-			colaboradorCertificacaoManager.verificaCertificacaoByColaboradorTurmaId(colaboradorTurma.getId());
+		if(turma.getRealizada()){
+			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) {
+				colaboradorCertificacaoManager.verificaCertificacaoByColaboradorTurmaId(colaboradorTurma.getId());
+			}
 		}
+		else
+			for (ColaboradorTurma colaboradorTurma : colaboradoresTurmas) {
+				colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), false);
+			}
 	}
 
 	public void salvarTurmaDiasCusto(Turma turma, String[] diasCheck, String[] horasIni, String[] horasFim, String despesaJSON) throws Exception

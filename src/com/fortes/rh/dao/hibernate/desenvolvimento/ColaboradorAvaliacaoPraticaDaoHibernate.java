@@ -107,4 +107,13 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorAvaliacaoPratica.class));
 		return criteria.list();
 	}
+
+	public void removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(Long colaboradorCertificacaoId) {
+		StringBuilder hql = new StringBuilder();
+		hql.append("delete from ColaboradorAvaliacaoPratica where colaboradorCertificacao.id = :colaboradorCertificacaoId ");
+		
+		Query query = getSession().createQuery(hql.toString());
+		query.setLong("colaboradorCertificacaoId", colaboradorCertificacaoId);
+		query.executeUpdate();		
+	}
 }

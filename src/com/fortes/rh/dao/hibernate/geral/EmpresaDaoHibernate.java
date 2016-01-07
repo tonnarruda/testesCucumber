@@ -285,6 +285,7 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 				"delete from turmatipodespesa where turma_id in (select id from turma where empresa_id =  " + id + ");",
 				"delete from turmatipodespesa where tipodespesa_id in (select id from tipodespesa where empresa_id =  " + id + ");",
 				"delete from tipodespesa where empresa_id =  " + id + ";",
+				"delete from colaboradorquestionario where turma_id in (select id from turma where empresa_id = " + id + ");",
 				"delete from turma where curso_id in (select id from curso where empresa_id = " + id + ");",
 				"delete from colaboradorturma where dnt_id in (select id from dnt where empresa_id = " + id + ");",
 				"delete from dnt where empresa_id = " + id + ";",
@@ -323,11 +324,9 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 				"delete from engenheiroresponsavel where empresa_id = " + id + ";",
 				"delete from reajustecolaborador where tabelareajustecolaborador_id in (select id from tabelareajustecolaborador where empresa_id = " + id + ");",
 				"delete from tabelareajustecolaborador where empresa_id = " + id + ";",
-				"delete from colaboradorquestionario where turma_id in (select id from turma where empresa_id = " + id + ");",
 				"delete from colaboradorturma where turma_id in (select id from turma where empresa_id = " + id + ");",
 				"delete from diaturma where turma_id in (select id from turma where empresa_id = " + id + ");",
 				"delete from nivelcompetencia where empresa_id = " + id + ";",
-				"delete from colaborador where empresa_id = " + id + ";",
 				"delete from naturezalesao where empresa_id = " + id + ";",
 				"delete from motivodemissao where empresa_id = " + id + ";",
 				"delete from medicocoordenador where empresa_id = " + id + ";",
@@ -336,7 +335,11 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 				"delete from medidaseguranca where empresa_id = " + id + ";",
 				"delete from areavivencia where empresa_id = " + id + ";",
 				"delete from certificacao_avaliacaopratica where avaliacoesPraticas_id in (select id from avaliacaoPratica where empresa_id = " + id + ");",
+				"delete from colaboradorAvaliacaoPratica where avaliacaoPratica_id in ( select id from avaliacaoPratica where empresa_id = " + id + ");",
 				"delete from avaliacaoPratica where empresa_id = " + id + ";",
+				"delete from colaboradorCertificacao_colaboradorTurma where colaboradorCertificacao_id in (select id from colaboradorCertificacao where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from colaboradorCertificacao where colaborador_id in (select id from colaborador where empresa_id = " + id + ");",
+				"delete from colaborador where empresa_id = " + id + ";",
 				"delete from empresa where id = " + id + ";"
 		};
 		

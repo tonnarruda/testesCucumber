@@ -20,6 +20,7 @@ import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.Certificado;
+import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.desenvolvimento.DNT;
@@ -44,15 +45,16 @@ import com.ibm.icu.math.BigDecimal;
 @SuppressWarnings("unchecked")
 public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorTurma, ColaboradorTurmaDao> implements ColaboradorTurmaManager
 {
-	private ColaboradorManager colaboradorManager;
-	private EmpresaManager empresaManager;
-	private AreaOrganizacionalManager areaOrganizacionalManager;
-	private CursoManager cursoManager;
-	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
 	private AproveitamentoAvaliacaoCursoManager aproveitamentoAvaliacaoCursoManager;
+	private ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager;
+	private ColaboradorQuestionarioManager colaboradorQuestionarioManager;
+	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	private AreaOrganizacionalManager areaOrganizacionalManager;
 	private AvaliacaoCursoManager avaliacaoCursoManager;
 	private CertificacaoManager certificacaoManager;
-	private ColaboradorCertificacaoManager colaboradorCertificacaoManager;
+	private ColaboradorManager colaboradorManager;
+	private EmpresaManager empresaManager;
+	private CursoManager cursoManager;
 
 	public Collection<ColaboradorTurma> filtrarColaboradores(int page, int pagingSize, String[] areasCheck, String[] cargosCheck, String[] estabelecimentosCheck, String[] gruposCheck, String[] colaboradoresCursosCheck, Turma turma, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId) throws ColecaoVaziaException
 	{
@@ -546,6 +548,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		// Remove os Questionarios/Respostas vinculados ao colaborador nesta turma
 		colaboradorQuestionarioManager.removeByColaboradorETurma(colaboradorTurma.getColaborador().getId(), colaboradorTurma.getTurma().getId());
 		aproveitamentoAvaliacaoCursoManager.removeByColaboradorTurma(colaboradorTurma.getId());
+		colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), true);
 		super.remove(colaboradorTurma);
 	}
 
@@ -1188,5 +1191,10 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 
 	public Collection<ColaboradorTurma> findByTurmaId(Long turmaId) {
 		return getDao().findByTurmaId(turmaId);
+	}
+
+	public void setColaboradorAvaliacaoPraticaManager(
+			ColaboradorAvaliacaoPraticaManager colaboradorAvaliacaoPraticaManager) {
+		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
 	}
 }

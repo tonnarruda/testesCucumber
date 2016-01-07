@@ -82,7 +82,7 @@ public class ColaboradorPresencaManagerTest extends MockObjectTestCase
 	public void testRemoveByDiaTurma() throws Exception
 	{
 		colaboradorPresencaDao.expects(once()).method("remove").with(ANYTHING, ANYTHING).isVoid();
-		colaboradorPresencaManager.removeByDiaTurma(null, false);
+		colaboradorPresencaManager.removeByDiaTurma(null, null, false);
 	}
 	
 	public void testUpdatePresenca() throws Exception

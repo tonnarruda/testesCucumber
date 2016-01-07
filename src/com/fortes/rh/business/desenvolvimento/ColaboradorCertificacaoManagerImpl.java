@@ -119,16 +119,20 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		this.colaboradorAvaliacaoPraticaManager = colaboradorAvaliacaoPraticaManager;
 	}
 
-	public void descertificarColaboradorByColaboradorTurma(Long colaboradorTurmaId) {
+	public void descertificarColaboradorByColaboradorTurma(Long colaboradorTurmaId, boolean removerColaboradorAvaliacaoPratica) {
 		ColaboradorCertificacao colaboradorCertificacao = getDao().findByColaboradorTurma(colaboradorTurmaId);
-		
-		this.descertificarColaborador(colaboradorCertificacao.getId());
+		if(colaboradorCertificacao != null)
+			this.descertificarColaborador(colaboradorCertificacao.getId(), removerColaboradorAvaliacaoPratica);
 	}
 
 	
-	public void descertificarColaborador(Long colaboradorCertificacaoId) {
+	public void descertificarColaborador(Long colaboradorCertificacaoId, boolean removerColaboradorAvaliacaoPratica) {
 		if(colaboradorCertificacaoId != null){
-			getDao().removeDependencias(colaboradorCertificacaoId);
+			if(removerColaboradorAvaliacaoPratica)
+				colaboradorAvaliacaoPraticaManager.removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(colaboradorCertificacaoId);
+			else
+				getDao().removeDependencias(colaboradorCertificacaoId);
+			
 			remove(colaboradorCertificacaoId);
 		}
 	}
@@ -153,5 +157,9 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 			colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacao);
 			colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPratica);
 		}
+	}
+
+	public ColaboradorCertificacao findByColaboradorTurma(Long colaboradorTurmaId) {
+		return getDao().findByColaboradorTurma(colaboradorTurmaId);
 	}
 }

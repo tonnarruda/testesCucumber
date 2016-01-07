@@ -10,4 +10,5 @@ public interface ColaboradorAvaliacaoPraticaDao extends GenericDao<ColaboradorAv
 	Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId, Long colaboradorCertificacaoId);
 	void removeAllByColaboradorId(Long colaboradorId);
 	Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId);
+	void removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(Long colaboradorCertificacaoId);
 }

@@ -25,7 +25,10 @@ public class ColaboradorAvaliacaoPraticaManagerImpl extends GenericManagerImpl<C
 
 	public void removeColaboradorAvaliacaoPraticaAndColaboradorCertificado(ColaboradorAvaliacaoPratica colaboradorAvaliacaoPraticaRealizada) {
 		ColaboradorCertificacaoManager colaboradorCertificacaoManager = (ColaboradorCertificacaoManager) SpringUtil.getBeanOld("colaboradorCertificacaoManager");
-		colaboradorCertificacaoManager.descertificarColaborador(colaboradorAvaliacaoPraticaRealizada.getColaboradorCertificacao().getId());
-		getDao().remove(colaboradorAvaliacaoPraticaRealizada);
+		colaboradorCertificacaoManager.descertificarColaborador(colaboradorAvaliacaoPraticaRealizada.getColaboradorCertificacao().getId(), true);
+	}
+
+	public void removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(Long colaboradorTurmaId) {
+		getDao().removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(colaboradorTurmaId);
 	}
 }

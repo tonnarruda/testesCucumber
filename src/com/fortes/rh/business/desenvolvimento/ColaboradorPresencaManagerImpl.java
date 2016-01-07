@@ -46,8 +46,10 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 			if(validarCertificacao)
 				colaboradorCertificacaoManager.verificaCertificacaoByColaboradorTurmaId(colaboradorTurma.getId());
 		}
-		else
+		else{
 			getDao().remove(diaTurmaId, colaboradorTurmaId);
+			colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurmaId, false);
+		}
 		
 	}
 
@@ -69,9 +71,23 @@ public class ColaboradorPresencaManagerImpl extends GenericManagerImpl<Colaborad
 		}
 	}
 
-	public void removeByDiaTurma(Long diaTurmaId, boolean validarCertificacao) throws Exception
+	public void removeByDiaTurma(Long diaTurmaId, Long turmaId, boolean validarCertificacao) throws Exception
 	{
 		getDao().remove(diaTurmaId, null);
+		
+		if(validarCertificacao){
+			DiaTurma diaTurma = new DiaTurma();
+			diaTurma.setId(diaTurmaId);
+			Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findByTurmaSemPresenca(turmaId, diaTurmaId);
+			
+			if(colaboradorTurmas != null && colaboradorTurmas.size() > 0)
+			{
+				for (ColaboradorTurma colaboradorTurma : colaboradorTurmas)
+				{
+					colaboradorCertificacaoManager.descertificarColaboradorByColaboradorTurma(colaboradorTurma.getId(), false);
+				}
+			}
+		}
 	}
 
 	public Integer qtdDiaPresentesTurma(Date dataIni, Date dataFim, Long[] empresaIds, Long[] cursoIds, Long[] areasIds, Long[] estabelecimentosIds)

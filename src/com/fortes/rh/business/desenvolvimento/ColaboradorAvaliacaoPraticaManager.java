@@ -11,5 +11,6 @@ public interface ColaboradorAvaliacaoPraticaManager extends GenericManager<Colab
 	void removeAllByColaboradorId(Long colaboradorId);
 	Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId);
 	void removeColaboradorAvaliacaoPraticaAndColaboradorCertificado(ColaboradorAvaliacaoPratica colaboradorAvaliacaoPraticaRealizada);
+	void removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(Long colaboradorTurmaId);
 	
 }

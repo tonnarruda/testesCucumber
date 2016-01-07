@@ -32,7 +32,7 @@
 			if(img.title == "${marcarTodos}")
 				ListaPresencaDWR.marcarTodos(function(){alteraImg(diaTurmaId, img);}, diaTurmaId, ${turma.id}, ${empresaSistema.controlarVencimentoCertificacaoPor});
 			else
-				ListaPresencaDWR.desmarcarTodos(function(){alteraImg(diaTurmaId, img);}, diaTurmaId, ${empresaSistema.controlarVencimentoCertificacaoPor});
+				ListaPresencaDWR.desmarcarTodos(function(){alteraImg(diaTurmaId, img);}, diaTurmaId, ${turma.id}, ${empresaSistema.controlarVencimentoCertificacaoPor});
 		}
 
 		function alteraImg(diaTurmaId, img)

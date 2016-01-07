@@ -14,7 +14,8 @@ public interface ColaboradorCertificacaoManager extends GenericManager<Colaborad
 	void verificaCertificacaoByColaboradorTurmaId(Long colaboradorTurmaId);
 	Collection<ColaboradorCertificacao> getCertificacoesAVencer(Date data, Long empresaId);
 	Collection<ColaboradorCertificacao> colaboradoresCertificadosByColaboradorIdAndCertificacaId(Long colaboradorId, Long certificacaoId);
-	void descertificarColaborador(Long colaboradorCertificacaoId);
-	void descertificarColaboradorByColaboradorTurma(Long colaboradorTurmaId);
+	void descertificarColaborador(Long colaboradorCertificacaoId, boolean removerColaboradorAvaliacaoPratica);
+	void descertificarColaboradorByColaboradorTurma(Long colaboradorTurmaId, boolean removerColaboradorAvaliacaoPratica);
 	void saveColaboradorCertificacao(ColaboradorCertificacao colaboradorCertificacao);
+	public ColaboradorCertificacao findByColaboradorTurma(Long colaboradorTurmaId);
 }

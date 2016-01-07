@@ -160,7 +160,7 @@ public class ColaboradorAvaliacaoPraticaEditAction extends MyActionSupportList
 						colaboradorAvaliacaoPraticaManager.update(colaboradorAvaliacaoPraticaRealizada);
 						AvaliacaoPratica avaliacaoPratica = avaliacaoPraticaManager.findEntidadeComAtributosSimplesById(colaboradorAvaliacaoPratica.getAvaliacaoPratica().getId());
 						if(colaboradorAvaliacaoPratica.getNota() < avaliacaoPratica.getNotaMinima())
-							colaboradorCertificacaoManager.descertificarColaborador(colaboradorCertificacao.getId());
+							colaboradorCertificacaoManager.descertificarColaborador(colaboradorCertificacao.getId(), false);
 					}else{
 						colaboradorAvaliacaoPraticaManager.removeColaboradorAvaliacaoPraticaAndColaboradorCertificado(colaboradorAvaliacaoPraticaRealizada);
 					}
