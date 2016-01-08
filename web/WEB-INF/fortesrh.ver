@@ -4,6 +4,7 @@
 		<Item visivel="S" motivo="P15120000218"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Performance Profissional > Imprimir: Correção de inconsistência na exibição das observações referentes a ocorrências, afastamentos e etapas seletivas.]]></Item>
 		<Item visivel="S" motivo="P15110000249"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão: Desconsiderar progressões salariais referentes a faixa salarial após desligamento do colaborador.]]></Item>
 		<Item visivel="S" motivo="S15120000287"><![CDATA[Mudança de ícone do Chat Fortes.]]></Item>
+		<Item visivel="S" motivo="S15110000222"><![CDATA[Nova nomenclatura "Fortes Tecnologia" na tela de login.]]></Item>
 	</Versao>
 	<Versao id="1.1.155.186" db="" data="16/12/2015">
 		<Item visivel="S" motivo="S15120000024"><![CDATA[T&D > Painel de Indicadores: Ajuste de inconsistência no indicador de “percentual de frequência (aprovados)”.]]></Item>
