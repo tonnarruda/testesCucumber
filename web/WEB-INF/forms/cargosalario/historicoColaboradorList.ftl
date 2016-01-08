@@ -63,8 +63,18 @@
 			<@display.column title="Status no AC" style="width: 50px;text-align: center;">
 				<#if historicoColaborador.tipoSalario == 1>
 					<#if historicoColaborador.faixaSalarial.faixaSalarialHistoricoAtual.status?exists>
-						<img border="0" title="${statusRetornoAC.getDescricao(historicoColaborador.status)}"
-						src="<@ww.url includeParams="none" value="/imgs/"/>${statusRetornoAC.getImg(historicoColaborador.faixaSalarial.faixaSalarialHistoricoAtual.status)}">
+						<#if (historicoColaborador.faixaSalarial.faixaSalarialHistoricoAtual.status == 1 && historicoColaborador.status == 1) >
+							<img border="0" title="${statusRetornoAC.getDescricao(historicoColaborador.status)}" 
+							src="<@ww.url includeParams="none" value="/imgs/"/>${statusRetornoAC.getImg(1)}">
+						<#else>
+							<img border="0" title="Histórico do colaborador: ${statusRetornoAC.getDescricao(historicoColaborador.status)}
+								Histórico da faixa salarial: ${statusRetornoAC.getDescricao(historicoColaborador.faixaSalarial.faixaSalarialHistoricoAtual.status)}"
+								<#if historicoColaborador.faixaSalarial.faixaSalarialHistoricoAtual.status != 1 >
+									src="<@ww.url includeParams="none" value="/imgs/"/>${statusRetornoAC.getImg(2)}">
+								<#else>
+									src="<@ww.url includeParams="none" value="/imgs/"/>${statusRetornoAC.getImg(historicoColaborador.status)}">
+								</#if>
+						</#if>
 					<#else>
 						<div style="width: 100%; text-align: center;">
 							<img class="tooltipHelpHistoricoFaixa" src="<@ww.url value="/imgs/iconWarning.gif"/>" />
