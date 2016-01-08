@@ -40,13 +40,13 @@
 	
 	<li id="wwgrp_criterios" class="wwgrp" style="margin: 10px 0;">
 		<div id="wwlbl_criterios" class="wwlbl">
-			<label for="criterios" class="desc"> Critérios para avaliação da competência:</label>
+			<label for="criterios" class="desc"> Comportamentos observados para a competência:</label>
 		</div> 
 		<div id="wwctrl_criterios" class="wwctrl" style="border: 1px solid #BEBEBE; padding: 10px 5px; width: 490px;">
 			<ul id="criterios"></ul>
-			<a title="Adicionar critério" href="javascript:;" onclick="validaAddCriterio(${empresaSistema.id}, 'habilidade');">
+			<a title="Adicionar comportamento" href="javascript:;" onclick="validaAddCriterio(${empresaSistema.id}, 'habilidade');">
 				<img src="<@ww.url includeParams="none" value="/imgs/add.png"/>" border="0" align="absMiddle" /> 
-				Adicionar critério 
+				Adicionar comportamento 
 			</a>
 		</div>
 	</li>	

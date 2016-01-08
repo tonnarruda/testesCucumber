@@ -30,7 +30,7 @@ function validaAddCriterio(empresaId, competencia)
 	{
 		NivelCompetenciaDWR.existeNivelCompetenciaSemPercentual(empresaId, function(data){
 			if(data)			
-				jAlert("Não é possível adicionar critérios para essa competência, pois existem níveis de competência sem percentual mínimo configurado.");
+				jAlert("Não é possível adicionar comportamentos para essa competência, pois existem níveis de competência sem percentual mínimo configurado.");
 			else
 				addCriterio(competencia);
 		});	
@@ -45,7 +45,7 @@ function addCriterio(competencia, criterioDescricao, criterioId)
 	criterioDescricao = criterioDescricao != undefined ? criterioDescricao : "";
 	
 	var criterio = '<li style="margin: 2px 0;"><span>';
-	criterio += '<img title="Remover critério" onclick="delCriterio(\''+ competencia +'\', this)" src="/fortesrh/imgs/remove.png" border="0" align="absMiddle" style="cursor:pointer;" />&nbsp;';
+	criterio += '<img title="Remover comportamento" onclick="delCriterio(\''+ competencia +'\', this)" src="/fortesrh/imgs/remove.png" border="0" align="absMiddle" style="cursor:pointer;" />&nbsp;';
 	criterio += '<input type="hidden" value="' + criterioId + '" class="inputCriterioId" >';
 	criterio += '<input type="text" maxlength="100" value="' + criterioDescricao + '" class="inputCriterioDescricao" style="width:468px;">';
 	criterio += '</span></li>';

@@ -260,7 +260,7 @@
 				$('tr.even').css('background-color', '#EFEFEF');
 				$('tr.odd').css('background-color', '#FFF');
 			
-				jAlert('Selecione os níveis para as competências ou critérios indicados.');
+				jAlert('Selecione os níveis para as competências ou comportamentos indicados.');
 				linhasSemRadioMarcado.css('background-color', '#FFEEC2');
 	
 				return false;
@@ -321,7 +321,7 @@
 				content += '<tr>';
 				content += '<th><input type="checkbox" id="checkAllCompetencia"></th>';
 				content += '<th style="width: 20px; text-align: center;">#</th>';
-				content += '<th>Competência/Critério para avaliação</th>';
+				content += '<th>Competência/Comportamento para avaliação</th>';
 				
 				if(dadosNiveis != '')
 					for (var propNivel in dadosNiveis)
@@ -546,7 +546,7 @@
 						<tr>
 							<th><input type="checkbox" id="checkAllCompetencia"></th>
 							<th style="width: 20px; text-align: center;">#</th>
-							<th>Competência/Critério para avaliação</th>
+							<th>Competência/Comportamento para avaliação</th>
 							<#list nivelCompetencias as nivel>
 								<th>${nivel.descricao}</th>
 							</#list>

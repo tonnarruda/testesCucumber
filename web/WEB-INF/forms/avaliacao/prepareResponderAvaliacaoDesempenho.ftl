@@ -139,7 +139,7 @@
 			$('tr.even').css('background-color', '#EFEFEF');
 			$('tr.odd').css('background-color', '#FFF');
 		
-			jAlert('Selecione os níveis para as competências ou critérios indicados.');
+			jAlert('Selecione os níveis para as competências ou comportamentos indicados.');
 			linhasSemRadioMarcado.css('background-color', '#FFEEC2');
 
 			return false;
@@ -268,7 +268,7 @@
 					<table id="configuracaoNivelCompetencia" class="dados">
 						<thead>
 							<tr>
-								<th><input type="checkbox" id="checkAllCompetencia"> Competência/Critério para avaliação</th>
+								<th><input type="checkbox" id="checkAllCompetencia"> Competência/Comportamento para avaliação</th>
 								<#list nivelCompetencias as nivel>
 									<th>${nivel.descricao}</th>
 								</#list>
