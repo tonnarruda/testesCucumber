@@ -122,6 +122,7 @@ public class HistoricoColaboradorEditAction extends MyActionSupportEdit
 			historicoColaborador = historicoColaboradorManager.getHistoricoAtualOuFuturo(colaborador.getId());
 			historicoColaborador.setId(null);
 			historicoColaborador.setData(new Date());
+			historicoColaborador.setMotivo(MotivoHistoricoColaborador.SEM_MOTIVO);
 			ambientes = ambienteManager.findByEstabelecimento(historicoColaborador.getEstabelecimento().getId());
 			funcaos = funcaoManager.findByCargo(historicoColaborador.getFaixaSalarial().getCargo().getId());
 		}
