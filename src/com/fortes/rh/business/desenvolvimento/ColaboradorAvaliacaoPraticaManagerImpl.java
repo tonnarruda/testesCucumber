@@ -14,13 +14,8 @@ public class ColaboradorAvaliacaoPraticaManagerImpl extends GenericManagerImpl<C
 		return getDao().findByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId, colaboradorCertificacaoId);
 	}
 
-	public void removeAllByColaboradorId(Long colaboradorId) {
-		getDao().removeAllByColaboradorId(colaboradorId);
-		
-	}
-
 	public Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId) {
-		return getDao().findByColaboradorIdAndCertificacaoId(colaboradorId, certificacaoId);
+		return getDao().findColaboradorAvaliacaoPraticaQueNaoEstaCertificado(colaboradorId, certificacaoId);
 	}
 
 	public void removeColaboradorAvaliacaoPraticaAndColaboradorCertificado(ColaboradorAvaliacaoPratica colaboradorAvaliacaoPraticaRealizada) {
@@ -28,7 +23,7 @@ public class ColaboradorAvaliacaoPraticaManagerImpl extends GenericManagerImpl<C
 		colaboradorCertificacaoManager.descertificarColaborador(colaboradorAvaliacaoPraticaRealizada.getColaboradorCertificacao().getId(), true);
 	}
 
-	public void removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(Long colaboradorTurmaId) {
-		getDao().removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(colaboradorTurmaId);
+	public void removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(Long colaboradorCertificacaoId) {
+		getDao().removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(colaboradorCertificacaoId);
 	}
 }

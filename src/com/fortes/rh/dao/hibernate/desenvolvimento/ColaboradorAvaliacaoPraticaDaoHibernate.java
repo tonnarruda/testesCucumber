@@ -77,16 +77,8 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 		return ColaboradorAvaliacaoPraticas;
 	}
 
-	public void removeAllByColaboradorId(Long colaboradorId) 
-	{
-		Query query = getSession().createQuery("delete ColaboradorAvaliacaoPratica cap where cap.colaborador.id = :colaboradorId");
-		query.setLong("colaboradorId", colaboradorId);
-
-		query.executeUpdate();
-	}
-
 	@SuppressWarnings("unchecked")
-	public Collection<ColaboradorAvaliacaoPratica> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId) {
+	public Collection<ColaboradorAvaliacaoPratica> findColaboradorAvaliacaoPraticaQueNaoEstaCertificado(Long colaboradorId, Long certificacaoId) {
 		Criteria criteria = getSession().createCriteria(ColaboradorAvaliacaoPratica.class, "cap");
 		criteria.add(Expression.eq("colaborador.id", colaboradorId))
 		.add(Expression.eq("certificacao.id",certificacaoId))
@@ -109,10 +101,9 @@ public class ColaboradorAvaliacaoPraticaDaoHibernate extends GenericDaoHibernate
 	}
 
 	public void removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(Long colaboradorCertificacaoId) {
-		StringBuilder hql = new StringBuilder();
-		hql.append("delete from ColaboradorAvaliacaoPratica where colaboradorCertificacao.id = :colaboradorCertificacaoId ");
+		String hql = "delete from ColaboradorAvaliacaoPratica cap where cap.colaboradorCertificacao.id = :colaboradorCertificacaoId ";
 		
-		Query query = getSession().createQuery(hql.toString());
+		Query query = getSession().createQuery(hql);
 		query.setLong("colaboradorCertificacaoId", colaboradorCertificacaoId);
 		query.executeUpdate();		
 	}

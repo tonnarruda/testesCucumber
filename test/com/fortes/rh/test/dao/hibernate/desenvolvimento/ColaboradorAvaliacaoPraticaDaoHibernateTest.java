@@ -29,13 +29,11 @@ public class ColaboradorAvaliacaoPraticaDaoHibernateTest extends GenericDaoHiber
 	private ColaboradorDao colaboradorDao;
 	private CertificacaoDao certificacaoDao;
 
-	@Override
 	public ColaboradorAvaliacaoPratica getEntity()
 	{
 		return ColaboradorAvaliacaoPraticaFactory.getEntity();
 	}
 
-	@Override
 	public GenericDao<ColaboradorAvaliacaoPratica> getGenericDao()
 	{
 		return colaboradorAvaliacaoPraticaDao;
@@ -77,6 +75,75 @@ public class ColaboradorAvaliacaoPraticaDaoHibernateTest extends GenericDaoHiber
 		
 		assertEquals(90.0, result.getNota());
 		assertEquals(80.0, result.getAvaliacaoPratica().getNotaMinima());
+	}
+	
+	public void testFindColaboradorAvaliacaoPraticaQueNaoEstaCertificado(){
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacaoDao.save(certificacao);
+		
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity();
+		avaliacaoPratica.setNotaMinima(80.0);
+		avaliacaoPraticaDao.save(avaliacaoPratica);
+		
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity();
+		colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
+		colaboradorAvaliacaoPratica.setCertificacao(certificacao);
+		colaboradorAvaliacaoPratica.setColaborador(colaborador);
+		colaboradorAvaliacaoPratica.setNota(90.0);
+		colaboradorAvaliacaoPratica.setData(DateUtil.criarDataMesAno(1, 15, 2015));
+		colaboradorAvaliacaoPraticaDao.save(colaboradorAvaliacaoPratica);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity();
+		colaboradorCertificacao.setColaborador(colaborador);
+		colaboradorCertificacao.setCertificacao(certificacao);
+		colaboradorCertificacao.setData(DateUtil.criarDataMesAno(1, 12, 2015));
+		colaboradorCertificacaoDao.save(colaboradorCertificacao);
+		
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPraticaCertificado = ColaboradorAvaliacaoPraticaFactory.getEntity();
+		colaboradorAvaliacaoPraticaCertificado.setColaboradorCertificacao(colaboradorCertificacao);
+		colaboradorAvaliacaoPraticaCertificado.setAvaliacaoPratica(avaliacaoPratica);
+		colaboradorAvaliacaoPraticaCertificado.setCertificacao(certificacao);
+		colaboradorAvaliacaoPraticaCertificado.setColaborador(colaborador);
+		colaboradorAvaliacaoPraticaCertificado.setNota(100.0);
+		colaboradorAvaliacaoPraticaCertificado.setData(DateUtil.criarDataMesAno(1, 10, 2015));
+		colaboradorAvaliacaoPraticaDao.save(colaboradorAvaliacaoPraticaCertificado);
+		
+		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacaoPraticas = colaboradorAvaliacaoPraticaDao.findColaboradorAvaliacaoPraticaQueNaoEstaCertificado(colaborador.getId(), certificacao.getId());
+		
+		assertEquals(1, colaboradorAvaliacaoPraticas.size());
+	}
+	
+	public void testRemoveColaboradorAvaliacaoPraticaByColaboradorCertificacaoId()
+	{
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacaoDao.save(certificacao);
+		
+		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity();
+		colaboradorCertificacao.setColaborador(colaborador);
+		colaboradorCertificacao.setCertificacao(certificacao);
+		colaboradorCertificacao.setData(DateUtil.criarDataMesAno(1, 12, 2015));
+		colaboradorCertificacaoDao.save(colaboradorCertificacao);
+		
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity();
+		avaliacaoPratica.setNotaMinima(80.0);
+		avaliacaoPraticaDao.save(avaliacaoPratica);
+		
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity();
+		colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacao);
+		colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
+		colaboradorAvaliacaoPratica.setCertificacao(certificacao);
+		colaboradorAvaliacaoPratica.setColaborador(colaborador);
+		colaboradorAvaliacaoPratica.setNota(90.0);
+		colaboradorAvaliacaoPratica.setData(DateUtil.criarDataMesAno(1, 10, 2015));
+		colaboradorAvaliacaoPraticaDao.save(colaboradorAvaliacaoPratica);
+
+		colaboradorAvaliacaoPraticaDao.removeColaboradorAvaliacaoPraticaByColaboradorCertificacaoId(colaboradorCertificacao.getId());
 	}
 	
 	public void setColaboradorAvaliacaoPraticaDao(ColaboradorAvaliacaoPraticaDao colaboradorAvaliacaoPraticaDao)

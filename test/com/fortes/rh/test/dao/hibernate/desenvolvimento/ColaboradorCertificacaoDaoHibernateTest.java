@@ -1,14 +1,17 @@
 package com.fortes.rh.test.dao.hibernate.desenvolvimento;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.avaliacao.AvaliacaoPraticaDao;
 import com.fortes.rh.dao.cargosalario.CargoDao;
 import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
 import com.fortes.rh.dao.cargosalario.HistoricoColaboradorDao;
 import com.fortes.rh.dao.desenvolvimento.CertificacaoDao;
+import com.fortes.rh.dao.desenvolvimento.ColaboradorAvaliacaoPraticaDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorTurmaDao;
 import com.fortes.rh.dao.desenvolvimento.CursoDao;
@@ -16,10 +19,12 @@ import com.fortes.rh.dao.desenvolvimento.TurmaDao;
 import com.fortes.rh.dao.geral.AreaOrganizacionalDao;
 import com.fortes.rh.dao.geral.ColaboradorDao;
 import com.fortes.rh.dao.geral.EmpresaDao;
+import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.desenvolvimento.Certificacao;
+import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 import com.fortes.rh.model.desenvolvimento.Curso;
@@ -29,6 +34,7 @@ import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.avaliacao.AvaliacaoPraticaFactory;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
@@ -36,6 +42,7 @@ import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CertificacaoFactory;
+import com.fortes.rh.test.factory.desenvolvimento.ColaboradorAvaliacaoPraticaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorCertificacaoFactory;
 import com.fortes.rh.test.factory.desenvolvimento.ColaboradorTurmaFactory;
 import com.fortes.rh.test.factory.desenvolvimento.CursoFactory;
@@ -55,6 +62,8 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 	private FaixaSalarialDao faixaSalarialDao;
 	private HistoricoColaboradorDao historicoColaboradorDao;
 	private TurmaDao turmaDao;
+	private AvaliacaoPraticaDao avaliacaoPraticaDao;
+	private ColaboradorAvaliacaoPraticaDao  colaboradorAvaliacaoPraticaDao;
 
 	@Override
 	public ColaboradorCertificacao getEntity()
@@ -272,6 +281,99 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		
 		assertEquals(1, colaboradorCertificacaos.size());
 	}
+	
+	public void testRemoveDependencias(){
+		Date data = DateUtil.criarDataMesAno(1, 1, 2015);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome("Feião");
+		colaborador.setEmpresa(empresa);
+		colaborador.setEmailColaborador("bla@ble.com");
+		colaboradorDao.save(colaborador);
+
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacao.setEmpresa(empresa);
+		certificacao.setPeriodicidade(1);
+		certificacaoDao.save(certificacao);
+		
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity();
+		avaliacaoPraticaDao.save(avaliacaoPratica);
+
+		ColaboradorCertificacao colaboradorCertificacao = new ColaboradorCertificacao();
+		colaboradorCertificacao.setColaborador(colaborador);
+		colaboradorCertificacao.setCertificacao(certificacao);
+		colaboradorCertificacao.setData(data);
+		colaboradorCertificacaoDao.save(colaboradorCertificacao);
+		
+		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity(1L);
+		colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
+		colaboradorAvaliacaoPratica.setColaborador(colaborador);
+		colaboradorAvaliacaoPratica.setCertificacao(certificacao);
+		colaboradorAvaliacaoPratica.setColaboradorCertificacao(colaboradorCertificacao);
+		colaboradorAvaliacaoPratica.setData(data);
+		colaboradorAvaliacaoPratica.setNota(10.0);
+		colaboradorAvaliacaoPraticaDao.save(colaboradorAvaliacaoPratica);
+		
+		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
+		
+		colaboradorCertificacaoDao.removeDependencias(colaboradorCertificacao.getId());
+		Collection<ColaboradorAvaliacaoPratica> colaboradorAvaliacoesPraticas = colaboradorAvaliacaoPraticaDao.findColaboradorAvaliacaoPraticaQueNaoEstaCertificado(colaborador.getId(), certificacao.getId());
+		assertNull(((ColaboradorAvaliacaoPratica) colaboradorAvaliacoesPraticas.toArray()[0]).getColaboradorCertificacao());
+	}
+	
+	public void testFindByColaboradorTurma(){
+		Date data = DateUtil.criarDataMesAno(1, 1, 2015);
+		
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity();
+		colaborador.setNome("Feião");
+		colaborador.setEmpresa(empresa);
+		colaborador.setEmailColaborador("bla@ble.com");
+		colaboradorDao.save(colaborador);
+
+		Curso curso = CursoFactory.getEntity();
+		curso.setEmpresa(empresa);
+		cursoDao.save(curso);
+		
+		Collection<Curso> cursos = Arrays.asList(curso);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacao.setEmpresa(empresa);
+		certificacao.setPeriodicidade(1);
+		certificacao.setCursos(cursos);
+		certificacaoDao.save(certificacao);
+
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turmaDao.save(turma);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+		colaboradorTurma.setColaborador(colaborador);
+		colaboradorTurma.setCurso(curso);
+		colaboradorTurma.setTurma(turma);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		AvaliacaoPratica avaliacaoPratica = AvaliacaoPraticaFactory.getEntity();
+		avaliacaoPraticaDao.save(avaliacaoPratica);
+
+		Collection<ColaboradorTurma> colaboradorTurmas = Arrays.asList(colaboradorTurma);
+		
+		ColaboradorCertificacao colaboradorCertificacao = new ColaboradorCertificacao();
+		colaboradorCertificacao.setColaborador(colaborador);
+		colaboradorCertificacao.setCertificacao(certificacao);
+		colaboradorCertificacao.setData(data);
+		colaboradorCertificacao.setColaboradoresTurmas(colaboradorTurmas);
+		colaboradorCertificacaoDao.save(colaboradorCertificacao);
+				
+		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
+		
+		assertEquals(colaboradorCertificacao.getId(), colaboradorCertificacaoDao.findByColaboradorTurma(colaboradorTurma.getId()).getId());
+	}
 
 	public void setColaboradorCertificacaoDao(ColaboradorCertificacaoDao colaboradorCertificacaoDao)
 	{
@@ -318,5 +420,14 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 
 	public void setTurmaDao(TurmaDao turmaDao) {
 		this.turmaDao = turmaDao;
+	}
+
+	public void setAvaliacaoPraticaDao(AvaliacaoPraticaDao avaliacaoPraticaDao) {
+		this.avaliacaoPraticaDao = avaliacaoPraticaDao;
+	}
+
+	public void setColaboradorAvaliacaoPraticaDao(
+			ColaboradorAvaliacaoPraticaDao colaboradorAvaliacaoPraticaDao) {
+		this.colaboradorAvaliacaoPraticaDao = colaboradorAvaliacaoPraticaDao;
 	}
 }

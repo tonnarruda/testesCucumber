@@ -32,4 +32,13 @@ public class AvaliacaoPraticaManagerTest extends MockObjectTestCase
 		
 		assertEquals(avaliacaoPraticas, avaliacaoPraticaManager.find(1, 15, new String[] {"empresa.id"}, new Object[] { empresaId }, new String[] { "titulo" }));
 	}
+	
+	public void testFindByCertificacaoId(){
+		Long certificacaoId = 1L;
+		
+		Collection<AvaliacaoPratica> avaliacaoPraticas = AvaliacaoPraticaFactory.getCollection(1L);
+		avaliacaoPraticaDao.expects(once()).method("findByCertificacaoId").with(eq(certificacaoId)).will(returnValue(avaliacaoPraticas));
+		
+		assertEquals(1, avaliacaoPraticaManager.findByCertificacaoId(certificacaoId).size());
+	}
 }
