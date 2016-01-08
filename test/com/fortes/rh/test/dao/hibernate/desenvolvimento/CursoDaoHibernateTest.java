@@ -75,6 +75,7 @@ public class CursoDaoHibernateTest extends GenericDaoHibernateTest<Curso>
 	public Curso getEntity()
 	{
 		Curso curso = new Curso();
+		curso.setNome("Curso");
 		curso.setId(null);
 		return curso;
 	}
