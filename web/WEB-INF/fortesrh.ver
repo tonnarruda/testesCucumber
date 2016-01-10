@@ -1,8 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.157.188" db="" data="xx/xx/2016">
+	<Versao id="1.1.157.188" db="" data="11/01/2016">
+		<Item visivel="S" motivo="S15100000084"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Exibição do código do Fortes Pessoal no campo de área organizacional do filtro.]]></Item>
+		<Item visivel="S" motivo="S15100000084"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Inserir/Editar > Dados Funcionais: Exibição do código do Fortes Pessoal no campo de área organizacional.]]></Item>
+		<Item visivel="S" motivo="S15100000084"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão > Editar Situações > Inserir: Exibição do código do Fortes Pessoal no campo de área organizacional.]]></Item>
 		<Item visivel="S" motivo="P15120000218"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Performance Profissional > Imprimir: Correção de inconsistência na exibição das observações referentes a ocorrências, afastamentos e etapas seletivas.]]></Item>
 		<Item visivel="S" motivo="P15110000249"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão: Desconsiderar progressões salariais referentes a faixa salarial após desligamento do colaborador.]]></Item>
+		<Item visivel="S" motivo="P15120000162"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão > Editar Situações: Corrigindo inconsistência ao exibir o ícone relacionado ao status do histórico.]]></Item>
 		<Item visivel="S" motivo="P15120000249"><![CDATA[Info. Funcionais > Cadastros > Colaboradores > Visualizar Progressão > Editar Situações > Inserir: Correção de inconsistência ao selecionar motivo do reajuste.]]></Item>
 		<Item visivel="S" motivo="S15120000287"><![CDATA[Mudança de ícone do Chat Fortes.]]></Item>
 		<Item visivel="S" motivo="S15110000222"><![CDATA[Nova nomenclatura "Fortes Tecnologia" na tela de login.]]></Item>

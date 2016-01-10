@@ -68,7 +68,7 @@
 							src="<@ww.url includeParams="none" value="/imgs/"/>${statusRetornoAC.getImg(1)}">
 						<#else>
 							<img border="0" title="Histórico do colaborador: ${statusRetornoAC.getDescricao(historicoColaborador.status)}
-								Histórico da faixa salarial: ${statusRetornoAC.getDescricao(historicoColaborador.faixaSalarial.faixaSalarialHistoricoAtual.status)}"
+Histórico da faixa salarial: ${statusRetornoAC.getDescricao(historicoColaborador.faixaSalarial.faixaSalarialHistoricoAtual.status)}"
 								<#if historicoColaborador.faixaSalarial.faixaSalarialHistoricoAtual.status != 1 >
 									src="<@ww.url includeParams="none" value="/imgs/"/>${statusRetornoAC.getImg(2)}">
 								<#else>

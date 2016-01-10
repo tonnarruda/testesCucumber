@@ -200,6 +200,49 @@ $$;
 
 ALTER FUNCTION public.verifica_aprovacao(id_curso bigint, id_turma bigint, id_colaboradorturma bigint, percentualminimofrequencia double precision) OWNER TO postgres;
 
+--
+-- Name: verifica_certificacao(bigint, bigint); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION verifica_certificacao(id_certificado bigint, id_colaborador bigint) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$  
+BEGIN 
+return (
+
+		select (
+				(select (select Array(select cursos_id from certificacao_curso where certificacaos_id = id_certificado order by cursos_id)) =
+		  		(select Array(
+			  				select cu.id from colaboradorturma ct inner join turma t on t.id = ct.turma_id 
+			  				and t.dataprevfim = (select max(dataprevfim) from turma t2 where t2.curso_id = t.curso_id and t2.realizada 
+							and dataprevfim > (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_colaborador and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000')))
+							inner join curso cu on cu.id = t.curso_id
+							where ct.colaborador_id = id_colaborador
+							and t.realizada
+							and cu.id in (select cursos_id from certificacao_curso where certificacaos_id = id_certificado)
+							and verifica_aprovacao(cu.id, t.id, ct.id, cu.percentualminimofrequencia)
+							order by cu.id
+							)
+				)
+			)
+		and
+		(
+			select (select Array(select avaliacoespraticas_id from certificacao_avaliacaopratica where certificacao_id = id_certificado order by avaliacoespraticas_id)) =
+			(select Array( 
+						select caval.avaliacaopratica_id from colaboradoravaliacaopratica caval where caval.colaborador_id = id_colaborador
+						and caval.certificacao_id = id_certificado
+						and caval.nota >= (select aval.notaMinima from avaliacaopratica aval where aval.id = caval.avaliacaopratica_id)
+						and caval.data > (coalesce((select max(data) + cast((coalesce(ce.periodicidade,0) || ' month') as interval) from colaboradorcertificacao  cc inner join certificacao ce on ce.id = cc.certificacao_id where cc.colaborador_id = id_colaborador and cc.certificacao_id = id_certificado group by ce.periodicidade), '01/01/2000'))
+						order by caval.avaliacaopratica_id)))
+		) 
+		as situacao 
+	);
+END; 
+$$;
+
+
+ALTER FUNCTION public.verifica_certificacao(id_certificado bigint, id_colaborador bigint) OWNER TO postgres;
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -881,6 +924,41 @@ SELECT pg_catalog.setval('avaliacaodesempenho_sequence', 1, false);
 
 
 --
+-- Name: avaliacaopratica; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE avaliacaopratica (
+    id bigint NOT NULL,
+    titulo character varying(100),
+    notaminima double precision,
+    empresa_id bigint
+);
+
+
+ALTER TABLE public.avaliacaopratica OWNER TO postgres;
+
+--
+-- Name: avaliacaopratica_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE avaliacaopratica_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.avaliacaopratica_sequence OWNER TO postgres;
+
+--
+-- Name: avaliacaopratica_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('avaliacaopratica_sequence', 1, false);
+
+
+--
 -- Name: avaliacaoturma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -1512,11 +1590,46 @@ SELECT pg_catalog.setval('cat_sequence', 1, false);
 CREATE TABLE certificacao (
     id bigint NOT NULL,
     nome character varying(100),
-    empresa_id bigint
+    empresa_id bigint,
+    periodicidade integer,
+    certificacaoprerequisito_id bigint
 );
 
 
 ALTER TABLE public.certificacao OWNER TO postgres;
+
+--
+-- Name: certificacao_avaliacaopratica; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE certificacao_avaliacaopratica (
+    certificacao_id bigint NOT NULL,
+    avaliacoespraticas_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.certificacao_avaliacaopratica OWNER TO postgres;
+
+--
+-- Name: certificacao_avaliacaopratica_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE certificacao_avaliacaopratica_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.certificacao_avaliacaopratica_sequence OWNER TO postgres;
+
+--
+-- Name: certificacao_avaliacaopratica_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('certificacao_avaliacaopratica_sequence', 1, false);
+
 
 --
 -- Name: certificacao_curso; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
@@ -1858,6 +1971,91 @@ ALTER TABLE public.colaboradorafastamento_sequence OWNER TO postgres;
 --
 
 SELECT pg_catalog.setval('colaboradorafastamento_sequence', 1, false);
+
+
+--
+-- Name: colaboradoravaliacaopratica; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE colaboradoravaliacaopratica (
+    id bigint NOT NULL,
+    avaliacaopratica_id bigint,
+    certificacao_id bigint,
+    colaborador_id bigint,
+    data date,
+    nota double precision,
+    colaboradorcertificacao_id bigint
+);
+
+
+ALTER TABLE public.colaboradoravaliacaopratica OWNER TO postgres;
+
+--
+-- Name: colaboradoravaliacaopratica_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE colaboradoravaliacaopratica_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.colaboradoravaliacaopratica_sequence OWNER TO postgres;
+
+--
+-- Name: colaboradoravaliacaopratica_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('colaboradoravaliacaopratica_sequence', 1, false);
+
+
+--
+-- Name: colaboradorcertificacao; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE colaboradorcertificacao (
+    id bigint NOT NULL,
+    colaborador_id bigint,
+    certificacao_id bigint,
+    data date
+);
+
+
+ALTER TABLE public.colaboradorcertificacao OWNER TO postgres;
+
+--
+-- Name: colaboradorcertificacao_colaboradorturma; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE colaboradorcertificacao_colaboradorturma (
+    colaboradorcertificacao_id bigint NOT NULL,
+    colaboradoresturmas_id bigint NOT NULL
+);
+
+
+ALTER TABLE public.colaboradorcertificacao_colaboradorturma OWNER TO postgres;
+
+--
+-- Name: colaboradorcertificacao_sequence; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE colaboradorcertificacao_sequence
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.colaboradorcertificacao_sequence OWNER TO postgres;
+
+--
+-- Name: colaboradorcertificacao_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('colaboradorcertificacao_sequence', 1, false);
 
 
 --
@@ -3174,6 +3372,7 @@ CREATE TABLE empresa (
     solpessoalreabrirsolicitacao boolean DEFAULT false,
     considerardomingonoabsenteismo boolean DEFAULT false NOT NULL,
     processoexportacaoac boolean DEFAULT false NOT NULL,
+    controlarvencimentocertificacaopor integer DEFAULT 1,
     CONSTRAINT no_blank_codigoac_empresa CHECK (((codigoac)::text <> ''::text)),
     CONSTRAINT no_blank_grupoac_empresa CHECK (((grupoac)::text <> ''::text))
 );
@@ -5563,7 +5762,7 @@ ALTER TABLE public.papel_sequence OWNER TO postgres;
 -- Name: papel_sequence; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('papel_sequence', 648, false);
+SELECT pg_catalog.setval('papel_sequence', 656, false);
 
 
 --
@@ -7569,6 +7768,12 @@ INSERT INTO areaformacao (id, nome) VALUES (74, 'Zootecnia');
 
 
 --
+-- Data for Name: avaliacaopratica; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: avaliacaoturma; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -7696,6 +7901,12 @@ INSERT INTO areaformacao (id, nome) VALUES (74, 'Zootecnia');
 
 --
 -- Data for Name: certificacao; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: certificacao_avaliacaopratica; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 
@@ -29921,6 +30132,24 @@ INSERT INTO codigocbo (codigo, descricao) VALUES ('223310', 'Zootecnista');
 
 
 --
+-- Data for Name: colaboradoravaliacaopratica; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: colaboradorcertificacao; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- Data for Name: colaboradorcertificacao_colaboradorturma; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
 -- Data for Name: colaboradoridioma; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -30167,7 +30396,7 @@ INSERT INTO configuracaocampoextra (id, ativocolaborador, ativocandidato, nome, 
 -- Data for Name: empresa; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, emailresplimitecontrato, imganiversarianteurl, mensagemcartaoaniversariante, turnoverporsolicitacao, obrigarambientefuncao, verificaparentesco, controlariscopor, solpessoalexibircolabsubstituido, codigotrucurso, exibirlogoempresappraltcat, solpessoalexibirsalario, solpessoalobrigardadoscomplementares, formulaturnover, solicitarconfirmacaodesligamento, cnae2, considerarsabadonoabsenteismo, solpessoalreabrirsolicitacao, considerardomingonoabsenteismo, processoexportacaoac) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', NULL, '001', false, false, NULL, '', 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', false, false, 'N', 'A', false, false, false, true, false, 1, false, NULL, false, false, false, false);
+INSERT INTO empresa (id, nome, cnpj, razaosocial, codigoac, emailremetente, emailrespsetorpessoal, emailresprh, cnae, grauderisco, representantelegal, nitrepresentantelegal, horariotrabalho, endereco, acintegra, maxcandidatacargo, logourl, exibirsalario, uf_id, cidade_id, atividade, mensagemmoduloexterno, logocertificadourl, grupoac, campoextracolaborador, campoextracandidato, mailnaoaptos, emailresplimitecontrato, imganiversarianteurl, mensagemcartaoaniversariante, turnoverporsolicitacao, obrigarambientefuncao, verificaparentesco, controlariscopor, solpessoalexibircolabsubstituido, codigotrucurso, exibirlogoempresappraltcat, solpessoalexibirsalario, solpessoalobrigardadoscomplementares, formulaturnover, solicitarconfirmacaodesligamento, cnae2, considerarsabadonoabsenteismo, solpessoalreabrirsolicitacao, considerardomingonoabsenteismo, processoexportacaoac, controlarvencimentocertificacaopor) VALUES (1, 'Empresa Padrão', '00000000', 'Empresa Padrão', NULL, 'rh@empresapadrao.com.br', 'sp@empresapadrao.com.br', NULL, NULL, NULL, NULL, NULL, NULL, NULL, false, 5, 'fortes.gif', true, NULL, NULL, NULL, 'Se você não é registrado, cadastre já seu currículo e tenha acesso às vagas disponíveis em nossa empresa.', NULL, '001', false, false, NULL, '', 'cartao_aniversario.jpg', 'Parabéns #NOMECOLABORADOR#', false, false, 'N', 'A', false, false, false, true, false, 1, false, NULL, false, false, false, false, 1);
 
 
 --
@@ -31050,6 +31279,7 @@ INSERT INTO migrations (name) VALUES ('20151123161848');
 INSERT INTO migrations (name) VALUES ('20151130141027');
 INSERT INTO migrations (name) VALUES ('20151207110302');
 INSERT INTO migrations (name) VALUES ('20151216100744');
+INSERT INTO migrations (name) VALUES ('20160107165224');
 
 
 --
@@ -31278,6 +31508,7 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (475, 'ROLE_CAD_CLIENTE', 'Clientes', '/geral/cliente/list.action', 4, true, NULL, 463, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (64, 'ROLE_MOV_CURSO_DNT', 'DNT', '/desenvolvimento/dnt/list.action', 5, true, NULL, 463, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (6, 'ROLE_CAD_BDS_EMPRESA', 'Empresas BDS', '/captacao/empresaBds/list.action', 6, true, NULL, 463, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (598, 'ROLE_CAND_SOLICITACAO_IMPRIMIR', 'Imprimir', '#', 9, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (15, 'ROLE_CAD_GRUPOGASTO', 'Grupos de Investimento', '/geral/grupoGasto/list.action', 7, true, NULL, 463, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (16, 'ROLE_CAD_GASTO', 'Investimentos', '/geral/gasto/list.action', 8, true, NULL, 463, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (36, 'ROLE_REL_GASTOEMPRESA', 'Investimentos da Empresa', '/geral/gastoEmpresa/prepareImprimir.action', 9, true, NULL, 463, NULL);
@@ -31334,7 +31565,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (596, 'ROLE_CAND_SOLICITACAO_DOCUMENTOANEXO', 'Documentos Anexos', '#', 7, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (597, 'ROLE_CAND_SOLICITACAO_AVALIACOES', 'Avaliações da Solicitação', '#', 8, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (454, 'ROLE_TED_PAINEL_IND', 'Painel de Indicadores', '/desenvolvimento/indicadores/list.action', 4, true, NULL, 365, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (598, 'ROLE_CAND_SOLICITACAO_IMPRIMIR', 'Imprimir', '#', 9, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (599, 'ROLE_CAND_SOLICITACAO_TRIAGEM', 'Triagem', '#', 10, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (600, 'ROLE_CAND_SOLICITACAO_INSERIRETAPAGRUPO', 'Inserir Etapas em Grupo', '#', 11, false, NULL, 22, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (601, 'ROLE_CAND_SOLICITACAO_RESULTADOAVALIACAO', 'Resultado da Avaliação', '#', 12, false, NULL, 22, NULL);
@@ -31378,7 +31608,6 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (620, 'ROLE_MOV_APROV_REPROV_SOL_DESLIGAMENTO', 'Aprovar/Reprovar Solicitações de Desligamento', '/geral/colaborador/prepareAprovarReprovarSolicitacaoDesligamento.action', 3, true, NULL, 469, 'Para visualizar as solicitações de desligamento, o usuário deverá ser gestor de uma área organizacional ou ter no perfil a permissão de visualizar todos os colaboradores.');
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (633, 'ROLE_EDITA_DATA_SOLICITACAO', 'Editar data da solicitação', '#', 1, false, NULL, 612, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (634, 'ROLE_UTI', 'Inserir Nono Dígito em Celulares', '/geral/insereNonoDigito/prepareInsert.action', 18, true, NULL, 37, NULL);
-INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (635, 'ROLE_REL_CURSOS_VENCIDOS_A_VENCER', 'Cursos Vencidos e a Vencer', '/desenvolvimento/turma/prepareImprimirCursosVencidosAVencer.action', 15, true, NULL, 368, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (562, 'ROLE_VISUALIZAR_ATUALIZACAO_SISTEMA', 'Visualizar mensagem de atualização/inconsistência do sistema', '', 3, false, NULL, NULL, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (618, 'ROLE_UTI_EXPORTAR_AC', 'Exportar dados para o Fortes Pessoal', '/exportacao/prepareExportarAC.action', 17, true, NULL, 37, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (410, 'RECEBE_ALERTA_ERRO_CONEXAO_ACPESSOAL', 'Recebe mensagem de problema de comunicação com o Fortes Pessoal', '', 15, false, NULL, 37, NULL);
@@ -31433,13 +31662,17 @@ INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, h
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (509, 'ROLE_REL_ABSENTEISMO', 'Absenteísmo', '/geral/colaboradorOcorrencia/prepareRelatorioAbsenteismo.action', 9, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (646, 'ROLE_TAXA_DEMISSAO', 'Taxa de Demissão', '/indicador/indicadorTurnOver/prepareTaxaDeDemissao.action', 12, true, NULL, 377, NULL);
 INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (647, 'ROLE_REL_RECIBO_DECIMO_TERCEIRO', 'Recibo de 13º salário', '/geral/colaborador/prepareReciboDeDecimoTerceiro.action', 2, true, NULL, 377, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (653, 'ROLE_AVALIACAO_PRATICA', 'Avaliação Prática', '/avaliacao/avaliacaoPratica/list.action', 8, true, NULL, 366, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (654, 'ROLE_COLABORADOR_AVALIACAO_PRATICA', 'Notas da Avaliação Prática', '/desenvolvimento/colaboradorAvaliacaoPratica/prepare.action', 6, true, NULL, 367, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (655, 'ROLE_REL_CERTIFICADOS_VENCIDOS_A_VENCER', 'Certificações Vencidas e a Vencer', '/desenvolvimento/certificacao/prepareImprimirCertificadosVencidosAVencer.action', 17, true, NULL, 368, NULL);
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, accesskey, papelmae_id, help) VALUES (635, 'ROLE_REL_CURSOS_VENCIDOS_A_VENCER', 'Cursos Vencidos e a Vencer', '/desenvolvimento/turma/prepareImprimirCursosVencidosAVencer.action', 15, true, NULL, 368, 'Esta permissão estará visível se a configuração realizada no cadastro da empresa na opção "Controlar vencimento da certificação" estiver por: Periodicidade do curso');
 
 
 --
 -- Data for Name: parametrosdosistema; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.155.186', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.58.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
+INSERT INTO parametrosdosistema (id, appurl, appcontext, appversao, emailsmtp, emailport, emailuser, emailpass, atualizadorpath, servidorremprot, enviaremail, atualizadosucesso, perfilpadrao_id, acversaowebservicecompativel, uppercase, emaildosuportetecnico, codempresasuporte, codclientesuporte, camposcandidatovisivel, camposcandidatoobrigatorio, camposcandidatotabs, compartilharcolaboradores, compartilharcandidatos, proximaversao, autenticacao, tls, sessiontimeout, emailremetente, caminhobackup, compartilharcursos, telainicialmoduloexterno, suporteveica, horariosbackup, inibirgerarrelatoriopesquisaanonima, quantidadecolaboradoresrelatoriopesquisaanonima, bancoconsistente, quantidadeconstraints, tamanhomaximoupload, modulospermitidossomatorio) VALUES (1, 'http://localhost:8080/fortesrh', '/fortesrh', '1.1.157.188', NULL, 25, NULL, NULL, NULL, '', true, NULL, 2, '1.1.58.1', false, NULL, '0002', NULL, 'nome,nascimento,naturalidade,sexo,cpf,escolaridade,endereco,email,fone,celular,nomeContato,parentes,estadoCivil,qtdFilhos,nomeConjuge,profConjuge,nomePai,profPai,nomeMae,profMae,pensao,possuiVeiculo,deficiencia,formacao,idioma,desCursos,cargosCheck,areasCheck,conhecimentosCheck,colocacao,expProfissional,infoAdicionais,identidade,cartairaHabilitacao,tituloEleitoral,certificadoMilitar,ctps', 'nome,cpf,escolaridade,ende,num,cidade,fone', 'abaDocumentos,abaExperiencias,abaPerfilProfissional,abaFormacaoEscolar,abaDadosPessoais,abaCurriculo', true, true, '2014-01-01', true, false, 600, NULL, NULL, false, 'L', false, '2', false, 1, true, 0, NULL, 63);
 
 
 --
@@ -31744,6 +31977,9 @@ INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (2, 644);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 645);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 646);
 INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 647);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 653);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 654);
+INSERT INTO perfil_papel (perfil_id, papeis_id) VALUES (1, 655);
 
 
 --
@@ -32164,6 +32400,14 @@ ALTER TABLE ONLY avaliacaodesempenho
 
 
 --
+-- Name: avaliacaopratica_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY avaliacaopratica
+    ADD CONSTRAINT avaliacaopratica_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: avaliacaoturma_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
 --
 
@@ -32329,6 +32573,22 @@ ALTER TABLE ONLY colaborador
 
 ALTER TABLE ONLY colaboradorafastamento
     ADD CONSTRAINT colaboradorafastamento_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: colaboradoravaliacaopratica_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY colaboradoravaliacaopratica
+    ADD CONSTRAINT colaboradoravaliacaopratica_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: colaboradorcertificacao_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY colaboradorcertificacao
+    ADD CONSTRAINT colaboradorcertificacao_pkey PRIMARY KEY (id);
 
 
 --
@@ -33811,6 +34071,14 @@ ALTER TABLE ONLY avaliacaodesempenho
 
 
 --
+-- Name: avaliacaopratica_empresa_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY avaliacaopratica
+    ADD CONSTRAINT avaliacaopratica_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
 -- Name: avaliacaoturma_questionario_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -33979,6 +34247,30 @@ ALTER TABLE ONLY candidatosolicitacao
 
 
 --
+-- Name: cap_avaliacaopratica_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY colaboradoravaliacaopratica
+    ADD CONSTRAINT cap_avaliacaopratica_fk FOREIGN KEY (avaliacaopratica_id) REFERENCES avaliacaopratica(id);
+
+
+--
+-- Name: cap_certificacao_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY colaboradoravaliacaopratica
+    ADD CONSTRAINT cap_certificacao_fk FOREIGN KEY (certificacao_id) REFERENCES certificacao(id);
+
+
+--
+-- Name: cap_colaborador_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY colaboradoravaliacaopratica
+    ADD CONSTRAINT cap_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);
+
+
+--
 -- Name: cargo_areaformacao_areaformacao_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -34139,6 +34431,30 @@ ALTER TABLE ONLY cat
 
 
 --
+-- Name: certificacao_avaliacaopratica_avaliacaopraticas_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY certificacao_avaliacaopratica
+    ADD CONSTRAINT certificacao_avaliacaopratica_avaliacaopraticas_fk FOREIGN KEY (avaliacoespraticas_id) REFERENCES avaliacaopratica(id);
+
+
+--
+-- Name: certificacao_avaliacaopratica_certificacao_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY certificacao_avaliacaopratica
+    ADD CONSTRAINT certificacao_avaliacaopratica_certificacao_fk FOREIGN KEY (certificacao_id) REFERENCES certificacao(id);
+
+
+--
+-- Name: certificacao_certificacaoprerequisito_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY certificacao
+    ADD CONSTRAINT certificacao_certificacaoprerequisito_fk FOREIGN KEY (certificacaoprerequisito_id) REFERENCES certificacao(id);
+
+
+--
 -- Name: certificacao_curso_certificacao_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -34160,6 +34476,14 @@ ALTER TABLE ONLY certificacao_curso
 
 ALTER TABLE ONLY certificacao
     ADD CONSTRAINT certificacao_empresa_fk FOREIGN KEY (empresa_id) REFERENCES empresa(id);
+
+
+--
+-- Name: certificacao_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY colaboradorcertificacao
+    ADD CONSTRAINT certificacao_id_fk FOREIGN KEY (certificacao_id) REFERENCES certificacao(id);
 
 
 --
@@ -34192,6 +34516,14 @@ ALTER TABLE ONLY clinicaautorizada_exame
 
 ALTER TABLE ONLY clinicaautorizada_exame
     ADD CONSTRAINT clinicaautorizada_exame_exame_fk FOREIGN KEY (exames_id) REFERENCES exame(id);
+
+
+--
+-- Name: colabavaliacaopratica_colabcertificacao_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY colaboradoravaliacaopratica
+    ADD CONSTRAINT colabavaliacaopratica_colabcertificacao_fk FOREIGN KEY (colaboradorcertificacao_id) REFERENCES colaboradorcertificacao(id);
 
 
 --
@@ -34232,6 +34564,14 @@ ALTER TABLE ONLY colaborador
 
 ALTER TABLE ONLY colaborador
     ADD CONSTRAINT colaborador_estado_fk FOREIGN KEY (uf_id) REFERENCES estado(id);
+
+
+--
+-- Name: colaborador_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY colaboradorcertificacao
+    ADD CONSTRAINT colaborador_id_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);
 
 
 --
@@ -34280,6 +34620,22 @@ ALTER TABLE ONLY colaboradorafastamento
 
 ALTER TABLE ONLY colaboradorafastamento
     ADD CONSTRAINT colaboradorafastamento_colaborador_fk FOREIGN KEY (colaborador_id) REFERENCES colaborador(id);
+
+
+--
+-- Name: colaboradorcertificacao_colaboradorturma_colabcertificacao_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY colaboradorcertificacao_colaboradorturma
+    ADD CONSTRAINT colaboradorcertificacao_colaboradorturma_colabcertificacao_fk FOREIGN KEY (colaboradorcertificacao_id) REFERENCES colaboradorcertificacao(id);
+
+
+--
+-- Name: colaboradorcertificacao_colaboradorturma_colabturmas_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY colaboradorcertificacao_colaboradorturma
+    ADD CONSTRAINT colaboradorcertificacao_colaboradorturma_colabturmas_fk FOREIGN KEY (colaboradoresturmas_id) REFERENCES colaboradorturma(id);
 
 
 --
