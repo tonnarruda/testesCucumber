@@ -34,7 +34,7 @@ public class OcorrenciaProvidenciaEditAction extends MyActionSupportList
 	{
 		Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
 		
-		Collection<Colaborador> colaboradores = colaboradorOcorrenciaManager.findColaboraesPermitidosByUsuario(usuarioLogado, null, getEmpresaSistema().getId(), SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}));
+		Collection<Colaborador> colaboradores = colaboradorOcorrenciaManager.findColaboraesPermitidosByUsuario(usuarioLogado, null, getEmpresaSistema().getId(), SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}), false);
 		Long[] colaboradoresIds = new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradores);
 		
 		setTotalSize(colaboradorOcorrenciaManager.findByFiltros(0, 0, colaboradorNome, ocorrenciaDescricao, comProvidencia(), colaboradoresIds, getEmpresaSistema().getId()).size());

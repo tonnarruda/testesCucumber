@@ -317,7 +317,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 		}
 	}
 	
-	public Collection<Colaborador> findColaboraesPermitidosByUsuario(Usuario usuarioLogado, Colaborador colaborador, Long empresaId, boolean roleVerAreas) 
+	public Collection<Colaborador> findColaboraesPermitidosByUsuario(Usuario usuarioLogado, Colaborador colaborador, Long empresaId, boolean roleVerAreas, boolean somenteDesligados) 
 	{
 		Long[] areasIds = null;
 		if(usuarioLogado.getId() != 1L && !roleVerAreas)
@@ -328,7 +328,7 @@ public class ColaboradorOcorrenciaManagerImpl extends GenericManagerImpl<Colabor
 				areasIds = new Long[]{-1L};//não vai achar nenhum colaborador
 		}
 			
-		return colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, null, null, colaborador, null, null, empresaId, false);
+		return colaboradorManager.findByAreasOrganizacionalIds(null, null, areasIds, null, null, colaborador, null, null, empresaId, false, somenteDesligados);
 	}
 	
 	public Collection<ColaboradorOcorrencia> findByEmpresaId(Long empresaId) 

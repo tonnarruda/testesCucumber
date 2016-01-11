@@ -61,7 +61,7 @@ public class ColaboradorTurmaManagerImpl extends GenericManagerImpl<ColaboradorT
 		Collection<ColaboradorTurma> retorno = new ArrayList<ColaboradorTurma>();
 		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
 
-		colaboradores = colaboradorManager.findByAreasOrganizacionalIds(page, pagingSize, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, true);
+		colaboradores = colaboradorManager.findByAreasOrganizacionalIds(page, pagingSize, LongUtil.arrayStringToArrayLong(areasCheck), LongUtil.arrayStringToArrayLong(cargosCheck), LongUtil.arrayStringToArrayLong(estabelecimentosCheck), colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, true, false);
 		if (colaboradores != null && colaboradores.size() > 0)
 			retorno = geraColaboradorTurma(colaboradores, turma);
 

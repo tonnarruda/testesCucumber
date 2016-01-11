@@ -222,9 +222,9 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 		return getDao().findList(page, pagingSize, parametros, TipoBuscaHistoricoColaborador.SEM_HISTORICO_FUTURO);
 	}
 
-	public Collection<Colaborador> findByAreasOrganizacionalIds(Integer page, Integer pagingSize, Long[] areasIds, Long[] cargosIds, Long[] estabelecimentosIds, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo)
+	public Collection<Colaborador> findByAreasOrganizacionalIds(Integer page, Integer pagingSize, Long[] areasIds, Long[] cargosIds, Long[] estabelecimentosIds, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean comHistColaboradorFuturo, boolean somenteDesligados)
 	{
-		return getDao().findByAreaOrganizacionalIds(page, pagingSize, areasIds, cargosIds, estabelecimentosIds, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, comHistColaboradorFuturo);
+		return getDao().findByAreaOrganizacionalIds(page, pagingSize, areasIds, cargosIds, estabelecimentosIds, colaborador, dataAdmissaoIni, dataAdmissaoFim, empresaId, comHistColaboradorFuturo, somenteDesligados);
 	}
 
 	public Colaborador findColaboradorPesquisa(Long id, Long empresaId)
@@ -1758,7 +1758,7 @@ public class ColaboradorManagerImpl extends GenericManagerImpl<Colaborador, Cola
 
 	public Collection<Colaborador> findByAreaOrganizacionalIdsNome(Collection<Long> areasIds, Colaborador colaborador)
 	{
-		return getDao().findByAreaOrganizacionalIds(areasIds, null, null, null, null, colaborador, null, null, null, false);
+		return getDao().findByAreaOrganizacionalIds(areasIds, null, null, null, null, colaborador, null, null, null, false, false);
 	}
 
 	public Colaborador findByIdHistoricoAtual(Long colaboradorId, boolean exibirSomenteAtivos)

@@ -73,7 +73,7 @@ public interface ColaboradorManager extends GenericManager<Colaborador>
 	public Collection<Colaborador> findSemUsuarios(Long empresaId, Usuario usuario);
 	public Integer getCount(Map parametros);
 	public Collection<Colaborador> findList(int page, int pagingSize, Map parametros);
-	public Collection<Colaborador> findByAreasOrganizacionalIds(Integer page, Integer pagingSize, Long[] areasIds, Long[] cargosIds, Long[] estabelecimentosIds, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean somenteHistoricoAtualEPassado);
+	public Collection<Colaborador> findByAreasOrganizacionalIds(Integer page, Integer pagingSize, Long[] areasIds, Long[] cargosIds, Long[] estabelecimentosIds, Colaborador colaborador, Date dataAdmissaoIni, Date dataAdmissaoFim, Long empresaId, boolean somenteHistoricoAtualEPassado, boolean somenteDesligados);
 	public Colaborador findColaboradorPesquisa(Long id,Long empresaId);
 	public void saveDetalhes(Colaborador colaborador, Collection<Formacao> formacaos, Collection<CandidatoIdioma> idiomas, Collection<Experiencia> experiencias);
 	public Long religaColaboradorAC(String codigoAC, String empCodigo, String grupoAC);

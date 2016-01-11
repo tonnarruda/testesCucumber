@@ -18,7 +18,6 @@ import com.fortes.rh.business.geral.ProvidenciaManager;
 import com.fortes.rh.business.sesmt.AfastamentoManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
 import com.fortes.rh.exception.IntegraACException;
-import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
@@ -72,6 +71,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 	private Collection<AbsenteismoCollection> dataSource = new ArrayList<AbsenteismoCollection>();
 	private String dataDe;
 	private String dataAte;
+	private boolean somenteDesligados;
 
 	public String prepare() throws Exception
 	{
@@ -184,7 +184,7 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 	{
 		if (colaborador != null)
 		{
-			colaboradors = colaboradorOcorrenciaManager.findColaboraesPermitidosByUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()), colaborador, getEmpresaSistema().getId(), SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}));
+			colaboradors = colaboradorOcorrenciaManager.findColaboraesPermitidosByUsuario(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()), colaborador, getEmpresaSistema().getId(), SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}), somenteDesligados);
 			
 			if (colaborador.getId() != null)
 			{
@@ -422,5 +422,13 @@ public class ColaboradorOcorrenciaEditAction extends MyActionSupportList
 
 	public String[] getAfastamentosCheck() {
 		return afastamentosCheck;
+	}
+
+	public boolean isSomenteDesligados() {
+		return somenteDesligados;
+	}
+
+	public void setSomenteDesligados(boolean somenteDesligados) {
+		this.somenteDesligados = somenteDesligados;
 	}
 }

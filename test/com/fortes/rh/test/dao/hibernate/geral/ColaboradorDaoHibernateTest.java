@@ -1884,7 +1884,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		colaboradorBusca.setNome("dro j");
 		colaboradorBusca.setMatricula("2E3");
 		colaboradorBusca.getPessoal().setCpf("000");
-		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalIds(areaIds, null, null, 1, 10, colaboradorBusca, null, null, empresa.getId(), false);
+		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalIds(areaIds, null, null, 1, 10, colaboradorBusca, null, null, empresa.getId(), false, false);
 
 		assertEquals(1, colaboradores.size());
 		Colaborador retorno = (Colaborador) colaboradores.toArray()[0];
@@ -1896,7 +1896,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 
 		// Teste findByAreaOrganizacionalIds
 		Long[] areasIds = new Long[] { areaOrganizacional.getId() };
-		colaboradores = colaboradorDao.findByAreaOrganizacionalIds(1, 10, areasIds, null, null, null, null, null, areaOrganizacional.getEmpresa().getId(), false);
+		colaboradores = colaboradorDao.findByAreaOrganizacionalIds(1, 10, areasIds, null, null, null, null, null, areaOrganizacional.getEmpresa().getId(), false, false);
 		assertEquals(1, colaboradores.size());
 
 		// Teste findByAreaOrganizacionalIds
@@ -1965,7 +1965,7 @@ public class ColaboradorDaoHibernateTest extends GenericDaoHibernateTest<Colabor
 		Date dataAdmissaoIni = DateUtil.criarDataMesAno(6, 6, 2011);
 		Date dataAdmissaoFim = DateUtil.criarDataMesAno(8, 8, 2011);
 
-		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalIds(Arrays.asList(areaOrganizacional.getId()), Arrays.asList(estabelecimento.getId()),null, null, null, colaboradorBusca, dataAdmissaoIni, dataAdmissaoFim, empresa.getId(), false);
+		Collection<Colaborador> colaboradores = colaboradorDao.findByAreaOrganizacionalIds(Arrays.asList(areaOrganizacional.getId()), Arrays.asList(estabelecimento.getId()),null, null, null, colaboradorBusca, dataAdmissaoIni, dataAdmissaoFim, empresa.getId(), false, false);
 		assertEquals(1, colaboradores.size());
 		assertEquals(joao, colaboradores.toArray()[0]);
 	}
