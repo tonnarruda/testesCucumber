@@ -534,7 +534,11 @@ public class ColaboradorListAction extends MyActionSupportList
 	{
 		JRDataSource dataSource = new JRBeanCollectionDataSource(colaboradores);
 
-		String filtro = "Estabelecimentos: " + estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), null);
+		Long empresaId = null;
+		if (estabelecimentosCheck == null && empresa != null && empresa.getId() != null)
+			empresaId = empresa.getId();
+		
+		String filtro = "Estabelecimentos: " + estabelecimentoManager.nomeEstabelecimentos(LongUtil.arrayStringToArrayLong(estabelecimentosCheck), empresaId);
 		filtro += "\nÁreas Organizacionais: " + areaOrganizacionalManager.nomeAreas(LongUtil.arrayStringToArrayLong(areaOrganizacionalsCheck));
 		
 		parametros = RelatorioUtil.getParametrosRelatorio("Listagem de Colaboradores", getEmpresaSistema(), filtro);
