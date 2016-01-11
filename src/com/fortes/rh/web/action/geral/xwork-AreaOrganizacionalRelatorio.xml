@@ -13,12 +13,6 @@
 				<param name="parametersMap">parametros</param>
 				<param name="documentName">colaboradoresAreaOrganizacional.pdf</param>
 			</result>
-			<result name="successRemuneracaoNoRH" type="jasper">
-				<param name="location">WEB-INF/report/areaOrganizacional_filtroComRemuneracao.jasper</param>
-				<param name="dataSource">dataSource</param>
-				<param name="parametersMap">parametros</param>
-				<param name="documentName">colaboradoresAreaOrganizacional.pdf</param>
-			</result>
 			<result name="successRemuneracaoVariavel" type="jasper">
 				<param name="location">WEB-INF/report/areaOrganizacional_filtroComRemuneracaoVariavel.jasper</param>
 				<param name="dataSource">dataSource</param>
@@ -27,7 +21,7 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/areaOrganizacionalRelatorioFiltro.ftl</result>
 		</action>
-		<action name="gerarRelatorioXLS" class="com.fortes.rh.web.action.geral.AreaOrganizacionalRelatorioAction" method="gerarRelatorio">
+		<action name="gerarRelatorioXLS" class="com.fortes.rh.web.action.geral.AreaOrganizacionalRelatorioAction" method="gerarRelatorioXLS">
 			<result name="success" type="xls">
 				<param name="dataSource">dataSource</param>
 				<param name="documentName">areaOrganizacionalPorColaborador.xls</param>
@@ -35,6 +29,26 @@
 				<param name="columns">Empresa,Estabelecimento,Área Organizacional,Colaborador,Cargo/Faixa</param>
 				<param name="propertiesGroup">empresa.id,estabelecimento.id,areaOrganizacional.id</param>
 				<param name="properties">empresa.nome,estabelecimento.nome,areaOrganizacional.descricao,nome,cargoFaixa</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successRemuneracaoVariavelRH" type="xls">
+				<param name="dataSource">dataSource</param>
+				<param name="documentName">areaOrganizacionalPorColaborador.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Empresa,Estabelecimento,Área Organizacional,Colaborador,Cargo/Faixa,Salário Contratual</param>
+				<param name="propertiesGroup">empresa.id,estabelecimento.id,areaOrganizacional.id</param>
+				<param name="properties">empresa.nome,estabelecimento.nome,areaOrganizacional.descricao,nome,cargoFaixa,historicoColaborador.salarioCalculado</param>
+				<param name="reportFilter">reportFilter</param>
+				<param name="reportTitle">reportTitle</param>
+			</result>
+			<result name="successRemuneracaoVariavel" type="xls">
+				<param name="dataSource">dataSource</param>
+				<param name="documentName">areaOrganizacionalPorColaborador.xls</param>
+				<param name="sheetName">Planilha1</param>
+				<param name="columns">Empresa,Estabelecimento,Área Organizacional,Colaborador,Cargo/Faixa,Salário Contratual, Valores da Folha, Mensalidade,Total</param>
+				<param name="propertiesGroup">empresa.id,estabelecimento.id,areaOrganizacional.id</param>
+				<param name="properties">empresa.nome,estabelecimento.nome,areaOrganizacional.descricao,nome,cargoFaixa,historicoColaborador.salarioCalculado,historicoColaborador.salarioVariavel,historicoColaborador.mensalidade,historicoColaborador.salarioCalculadoMaisSalarioVariavel</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>		

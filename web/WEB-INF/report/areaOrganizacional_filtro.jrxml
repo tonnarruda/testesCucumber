@@ -3,7 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<property name="ireport.zoom" value="2.727272727272731"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="570"/>
 	<property name="ireport.y" value="0"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
@@ -38,7 +38,7 @@
 		<groupHeader>
 			<band height="13" splitType="Stretch">
 				<textField isBlankWhenNull="false">
-					<reportElement key="textField" x="4" y="1" width="527" height="11" isPrintWhenDetailOverflows="true" uuid="c27af9b0-941d-499c-9dca-2709ee720c69"/>
+					<reportElement key="textField" x="4" y="1" width="531" height="11" isPrintWhenDetailOverflows="true" uuid="c27af9b0-941d-499c-9dca-2709ee720c69"/>
 					<box>
 						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -68,7 +68,7 @@
 					<textFieldExpression><![CDATA["Total: " + $V{gruposAreas_COUNT}]]></textFieldExpression>
 				</textField>
 				<textField pattern=",##0.00" isBlankWhenNull="true">
-					<reportElement key="textField-14" x="464" y="2" width="67" height="11" uuid="374235c6-101f-407f-82c1-f9242e928080">
+					<reportElement key="textField-14" x="464" y="2" width="71" height="11" uuid="374235c6-101f-407f-82c1-f9242e928080">
 						<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 					</reportElement>
 					<box>
@@ -151,7 +151,7 @@
 				<text><![CDATA[Cargo/Faixa]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement key="textField-20" x="4" y="12" width="528" height="12" uuid="41a976fc-07cd-40e4-9227-ef8207991077"/>
+				<reportElement key="textField-20" x="4" y="12" width="531" height="12" uuid="41a976fc-07cd-40e4-9227-ef8207991077"/>
 				<box>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -194,7 +194,7 @@
 				<text><![CDATA[Colaborador]]></text>
 			</staticText>
 			<staticText>
-				<reportElement key="staticText-3" x="464" y="25" width="68" height="11" uuid="e4ce55c1-ee23-4508-a98a-181695a59940">
+				<reportElement key="staticText-3" x="464" y="25" width="71" height="11" uuid="e4ce55c1-ee23-4508-a98a-181695a59940">
 					<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -206,7 +206,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Salário]]></text>
+				<text><![CDATA[Salário Contratual]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
@@ -281,7 +281,7 @@
 				<textFieldExpression><![CDATA[$F{faixaSalarial.cargo.nome}+" "+$F{faixaSalarial.nome}]]></textFieldExpression>
 			</textField>
 			<textField pattern=",##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-14" x="464" y="0" width="67" height="11" uuid="f45ebd3c-8b73-4824-a0bb-b7090fa2085c">
+				<reportElement key="textField-14" x="464" y="0" width="71" height="11" uuid="f45ebd3c-8b73-4824-a0bb-b7090fa2085c">
 					<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>
@@ -338,7 +338,7 @@
 				<textFieldExpression><![CDATA[$V{ContadorNome}]]></textFieldExpression>
 			</textField>
 			<textField pattern=",##0.00" isBlankWhenNull="true">
-				<reportElement key="textField-14" x="464" y="0" width="67" height="11" uuid="d3008748-79ce-4bbe-afb4-928a574a0303">
+				<reportElement key="textField-14" x="464" y="0" width="71" height="11" uuid="d3008748-79ce-4bbe-afb4-928a574a0303">
 					<printWhenExpression><![CDATA[new Boolean ($P{EXIBIRSALARIO}.booleanValue() && !$P{EXIBIRSALARIOVARIAVEL}.booleanValue())]]></printWhenExpression>
 				</reportElement>
 				<box>

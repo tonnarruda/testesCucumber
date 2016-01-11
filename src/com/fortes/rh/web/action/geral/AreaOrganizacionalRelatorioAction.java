@@ -103,7 +103,17 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 		
 		return exibirSalarioVariavel;
 	}
+	
 
+	public String gerarRelatorioXLS() throws Exception
+	{
+		String retorno = gerarRelatorio();
+		
+		if(exibirSalario && !exibirSalarioVariavel)
+			return "successRemuneracaoVariavelRH"; 
+		else return retorno;
+	}
+	
 	public String gerarRelatorio() throws Exception
 	{
 		String retorno = null;
@@ -151,13 +161,11 @@ public class AreaOrganizacionalRelatorioAction extends MyActionSupport
 			formFiltro();
 			retorno = Action.INPUT;
 		}
-		
 		if(Action.INPUT.equals(retorno))
 			return Action.INPUT;
 		else if (exibirSalarioVariavel)
 			return "successRemuneracaoVariavel"; 
-		else
-			return retorno;
+		else return retorno;
 	}
 
 	public Collection<AreaOrganizacional> getAreaOrganizacionals()
