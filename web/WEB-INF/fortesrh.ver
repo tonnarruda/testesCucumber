@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
 	<Versao id="1.1.15x.18x" db="" data="xx/xx/2016">
+		<Item visivel="S" motivo="S15100000103"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Nova coluna de Nome Comercial ao exportar para o excel.]]></Item>
 		<Item visivel="S" motivo="S15120000112"><![CDATA[C&S > Relatórios > Colaboradores por Área Organizacional: Nova opção para exibir salário dos colaboradores.]]></Item>
 		<Item visivel="S" motivo="P15120000077"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Correção de inconsistência ao exibir estabelecimentos no relatório.]]></Item>
 	</Versao>
