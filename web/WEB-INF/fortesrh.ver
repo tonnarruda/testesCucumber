@@ -10,6 +10,7 @@
 		<Item visivel="S" motivo="S15110000208"><![CDATA[SESMT > Relatórios > EPI: Agrupamento dos menus "EPI's com CA vencer", "EPI's com prazos a vencer", "EPI's Entregues" e "Ficha de EPI".]]></Item>
 		<Item visivel="S" motivo="S15110000208"><![CDATA[SESMT > Relatórios > Exames: Agrupamento dos menus "Exames Previstos", "Exames Realizados" e "Função por exame".]]></Item>
 		<Item visivel="S" motivo="S15110000208"><![CDATA[SESMT > Relatórios > Afastamentos: Agrupamento dos menus "Resumo de afastamentos" e "Afastamentos".]]></Item>
+		<Item visivel="S" motivo="P16010000084"><![CDATA[Utilitários > Exportar Curso/Turma como ocorrência para o TRU: Correção de inconsistência ao filtrar turmas dos cursos selecionados.]]></Item>
 	</Versao>
 	<Versao id="1.1.157.188" db="" data="11/01/2016">
 		<Item visivel="S" motivo="S15100000084"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Exibição do código do Fortes Pessoal no campo de área organizacional do filtro.]]></Item>

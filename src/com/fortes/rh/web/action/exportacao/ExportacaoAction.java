@@ -55,9 +55,9 @@ public class ExportacaoAction extends MyActionSupport
 			empresas = empresaManager.findEmpresasIntegradas();
 			
 			if(empresas.isEmpty())
-			{
+			{ 
 				empresas = new ArrayList<Empresa>();
-				throw new Exception ("Não existe(m) empresa(s) Integrada(s)." );
+				throw new Exception ("Não existe(m) empresa(s) Integrada(s).");
 			}
 			
 			return SUCCESS;
@@ -93,7 +93,7 @@ public class ExportacaoAction extends MyActionSupport
 				Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findColabTreinamentos(empresaId, estabelecimentoIds, areaIds, new Long[]{curso.getId()}, LongUtil.arrayStringToArrayLong(turmasCheck), considerarSomenteDiasPresente);
 				
 				if(colaboradorTurmas.isEmpty()){
-					addActionMessage("Não existem colaboradores, para o filtro informado, inseridos na turma a serem exportados como ocorrência.");
+					addActionMessage("Não existem colaboradores inseridos no curso '"+curso.getNome()+"' a serem exportados como ocorrência.");
 					prepareExportacaoTreinamentos();
 					return Action.INPUT;
 				}
@@ -192,7 +192,7 @@ public class ExportacaoAction extends MyActionSupport
 			if(colaborador.getCodigoAC() == null || colaborador.getCodigoAC().equals(""))
 				erro.append(" -" + colaborador.getNomeMaisNomeComercial() + "<br>");
 		
-		if(erro.length() > 0)
+		if(erro.length() > 0) 	
 			throw new Exception ("Impossível exportar.<br>Existem Colaboradores sem código AC (Matrícula):<br>" + erro.toString() );
 	}
 

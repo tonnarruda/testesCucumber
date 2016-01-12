@@ -18,6 +18,8 @@
 	
 	<script type='text/javascript'>
 		$(function(){
+			var turmasCheck;
+		
 			populaFiltros($('#empresaId').val());
 			
 			$('#empresaId').change(function(){
@@ -74,6 +76,7 @@
 		
 		function populaTurma()
 		{
+			turmasCheck = $("input[name=turmasCheck]:checked").map(function(){ return $(this) });
 			DWRUtil.useLoadingMessage('Carregando...');
 			var cursoIds = getArrayCheckeds(document.forms[0], 'cursosCheck');
 			TurmaDWR.getTurmasByCursos(populaTurmas, cursoIds);
@@ -82,6 +85,10 @@
 		function populaTurmas(data)
 		{
 			addChecks('turmasCheck', data);
+			
+			$(turmasCheck).each(function(){
+				$("#" + $(this).attr("id") ).attr("checked", "checked");
+			});
 		}
 	</script>
 	
