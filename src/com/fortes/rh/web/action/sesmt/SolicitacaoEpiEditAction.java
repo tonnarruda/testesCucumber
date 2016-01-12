@@ -104,7 +104,7 @@ public class SolicitacaoEpiEditAction extends MyActionSupportEdit
 	{
 		prepare();
 		colaborador.setPessoalCpf(StringUtil.removeMascara(colaborador.getPessoal().getCpf()));
-		colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, false, null, null, getEmpresaSistema().getId());
+		colaboradors = colaboradorManager.findByNomeCpfMatricula(colaborador, true, null, null, getEmpresaSistema().getId());
 		if (colaboradors == null || colaboradors.isEmpty())
 			addActionMessage("Nenhum colaborador para o filtro informado.");
 
