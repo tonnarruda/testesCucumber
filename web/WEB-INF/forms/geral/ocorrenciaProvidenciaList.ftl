@@ -21,6 +21,7 @@
 		<@ww.form name="formBusca" action="list.action" method="POST" id="formBusca">
 			<@ww.textfield label="Colaborador" name="colaboradorNome" cssStyle="width: 350px;"/>
 			<@ww.textfield label="Ocorrência" name="ocorrenciaDescricao" cssStyle="width: 350px;"/>
+			<@ww.select label="Considerar colaboradores" name="somenteDesligados" list=r"#{false:'Ativos', true:'Desligados'}" cssStyle="width: 150px;" headerKey="A" />
 			<@ww.select label="Providêcias" name="comProvidencia" list=r"#{'S':'Sem Providência', 'C':'Com Providência'}" cssStyle="width: 150px;" headerKey="T" headerValue="Todos"/>
 			<@ww.hidden id="pagina" name="page"/>
 			<@ww.hidden id="showFilter" name="showFilter"/>

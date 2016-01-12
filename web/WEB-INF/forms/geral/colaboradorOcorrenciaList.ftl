@@ -27,7 +27,7 @@
 					<@ww.textfield label="CPF" id="cpf" name="colaborador.pessoal.cpf" value="" liClass="liLeft" maxLength="11" onkeypress="return(somenteNumeros(event,''));" cssStyle="width:150px;"/>
 					<@ww.textfield label="Matrícula" id="matricula" name="colaborador.matricula" cssStyle="width:150px;"  maxLength="20"/>
 
-					<@ww.select label="Considerar colaboradores" name="somenteDesligados" list=r"#{'false':'Ativos', 'true':'Desligados'}" cssStyle="width: 100px;" headerKey="A" />
+					<@ww.select label="Considerar colaboradores" name="somenteDesligados" list=r"#{false:'Ativos', true:'Desligados'}" cssStyle="width: 100px;" headerKey="A" />
 
 					<@ww.hidden name="prontuario.id" id="prontuario"/>
 					<input type="submit" value="" class="btnPesquisar grayBGDivInfo" />

@@ -8,9 +8,11 @@ import java.util.Date;
 import org.hibernate.ObjectNotFoundException;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
+import org.jmock.core.Constraint;
 import org.springframework.orm.hibernate3.HibernateObjectRetrievalFailureException;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorOcorrenciaManagerImpl;
 import com.fortes.rh.business.geral.GerenciadorComunicacaoManager;
@@ -18,12 +20,15 @@ import com.fortes.rh.business.geral.OcorrenciaManager;
 import com.fortes.rh.business.sesmt.ColaboradorAfastamentoManager;
 import com.fortes.rh.dao.geral.ColaboradorOcorrenciaDao;
 import com.fortes.rh.exception.IntegraACException;
+import com.fortes.rh.model.acesso.Usuario;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.ColaboradorOcorrencia;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
 import com.fortes.rh.model.geral.Ocorrencia;
 import com.fortes.rh.model.geral.relatorio.Absenteismo;
+import com.fortes.rh.test.factory.acesso.UsuarioFactory;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.geral.ColaboradorOcorrenciaFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
@@ -41,6 +46,7 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 	Mock colaboradorAfastamentoManager;
 	Mock acPessoalClientColaboradorOcorrencia;
 	Mock gerenciadorComunicacaoManager;
+	Mock areaOrganizacionalManager;
 
 	protected void setUp() throws Exception
 	{
@@ -62,6 +68,8 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		colaboradorOcorrenciaManager.setAcPessoalClientColaboradorOcorrencia((AcPessoalClientColaboradorOcorrencia)acPessoalClientColaboradorOcorrencia.proxy());
 		gerenciadorComunicacaoManager = mock(GerenciadorComunicacaoManager.class);
 		colaboradorOcorrenciaManager.setGerenciadorComunicacaoManager((GerenciadorComunicacaoManager)gerenciadorComunicacaoManager.proxy());
+		areaOrganizacionalManager = mock(AreaOrganizacionalManager.class);
+		colaboradorOcorrenciaManager.setAreaOrganizacionalManager((AreaOrganizacionalManager) areaOrganizacionalManager.proxy());
 	}
 
 	public void testFindByColaborador()
@@ -555,6 +563,22 @@ public class ColaboradorOcorrenciaManagerTest extends MockObjectTestCase
 		assertNull(exception);
 
 	}
+	
+	public void testFindColaboraesPermitidosByUsuario() 
+	{
+		Long[] areasIds = new Long[] {1L, 2L};
+		Long empresaId = 2L;
+		Usuario usuario = UsuarioFactory.getEntity(2L);
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		Collection<Colaborador> colaboradores = new ArrayList<Colaborador>();
+		
+		areaOrganizacionalManager.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").with(ANYTHING, ANYTHING).will(returnValue(areasIds));
+		colaboradorManager.expects(once()).method("findByAreasOrganizacionalIds").with(new Constraint[]{eq(null), eq(null), 
+				eq(areasIds), eq(null), eq(null), eq(colaborador), eq(null), eq(null), eq(empresaId), eq(false), ANYTHING}).will(returnValue(colaboradores));
+		
+		assertEquals(colaboradores, colaboradorOcorrenciaManager.findColaboraesPermitidosByUsuario(usuario, colaborador, empresaId, false, true));
+	}
+	
 
 	public void testMontaAbsenteismoConsiderandoQtdComoZero() throws Exception
 	{

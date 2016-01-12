@@ -4082,7 +4082,7 @@ public class ColaboradorDaoHibernate extends GenericDaoHibernate<Colaborador> im
 		if (LongUtil.arrayIsNotEmpty(ocorrenciasIds))
 			criteria.add(Restrictions.in("o.id", ocorrenciasIds));
 		
-		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, true, null).list();
+		List<Object[]> resultado = configuraCriteriaParaPainelDeIncadores(criteria, dataFim, empresaIds, estabelecimentosIds, areasIds, cargosIds, false, null).list();
 		
 		Collection<DataGrafico> dataGraficos = new ArrayList<DataGrafico>();
 		

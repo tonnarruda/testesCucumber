@@ -29,17 +29,17 @@ public class OcorrenciaProvidenciaEditAction extends MyActionSupportList
 	private Collection<Ocorrencia> ocorrencias;
 	private Collection<Providencia> providencias;
 	private Collection<ColaboradorOcorrencia> colaboradorOcorrencias;
+	private boolean somenteDesligados = false;
 	
 	public String list() throws Exception
 	{
 		Usuario usuarioLogado = SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession());
 		
-		Collection<Colaborador> colaboradores = colaboradorOcorrenciaManager.findColaboraesPermitidosByUsuario(usuarioLogado, null, getEmpresaSistema().getId(), SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}), false);
+		Collection<Colaborador> colaboradores = colaboradorOcorrenciaManager.findColaboraesPermitidosByUsuario(usuarioLogado, null, getEmpresaSistema().getId(), SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"}), somenteDesligados);
 		Long[] colaboradoresIds = new CollectionUtil<Colaborador>().convertCollectionToArrayIds(colaboradores);
 		
 		setTotalSize(colaboradorOcorrenciaManager.findByFiltros(0, 0, colaboradorNome, ocorrenciaDescricao, comProvidencia(), colaboradoresIds, getEmpresaSistema().getId()).size());
 		colaboradorOcorrencias = colaboradorOcorrenciaManager.findByFiltros(getPage(), getPagingSize(), colaboradorNome, ocorrenciaDescricao, comProvidencia(), colaboradoresIds, getEmpresaSistema().getId());
-		
 		if(colaboradorOcorrencias.size() == 0)
 			addActionMessage("Não existem providências a serem listadas para o filtro informado");
 		
@@ -123,5 +123,13 @@ public class OcorrenciaProvidenciaEditAction extends MyActionSupportList
 
 	public void setComProvidencia(char comProvidencia) {
 		this.comProvidencia = comProvidencia;
+	}
+
+	public boolean isSomenteDesligados() {
+		return somenteDesligados;
+	}
+
+	public void setSomenteDesligados(boolean somenteDesligados) {
+		this.somenteDesligados = somenteDesligados;
 	}
 }
