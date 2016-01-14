@@ -428,17 +428,14 @@ public class ColaboradorListAction extends MyActionSupportList
 
 			response.getOutputStream().write(reciboPagamentoBytes);
 		} 
-		catch (IntegraACException e) 
-		{
-			e.printStackTrace();
-			addActionWarning(e.getMessage());
-			prepareDeclaracaoRendimentos();
-			return Action.INPUT;
-		}
 		catch (Exception e) 
 		{
+			if(e instanceof IntegraACException)
+				addActionWarning(e.getMessage());
+			else
+				addActionError(e.getMessage());
+
 			e.printStackTrace();
-			addActionError(e.getMessage());
 			prepareDeclaracaoRendimentos();
 			return Action.INPUT;
 		}
