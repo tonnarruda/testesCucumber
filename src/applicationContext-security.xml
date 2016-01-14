@@ -607,10 +607,15 @@
 				/sesmt/solicitacaoEpi/prepareRelatorioVencimentoEpi*/**=ROLE_REL_EPIVENCIMENTO
 				/sesmt/solicitacaoEpi/relatorioEntregaEpi*/**=ROLE_REL_EPIVENCIMENTO
 				/sesmt/solicitacaoEpi/prepareRelatorioEntregaEpi*/**=ROLE_REL_EPIVENCIMENTO
-				/sesmt/solicitacaoEpi/list.action*=ROLE_CAD_ENTREGAEPI,ROLE_CAD_SOLICITACAOEPI
+				/sesmt/solicitacaoEpi/list.action*=ROLE_CAD_ENTREGAEPI,ROLE_CAD_SOLICITACAOEPI,ROLE_GERENCIAMENTO_EPI_EDITAR_SOLICITACAO,ROLE_GERENCIAMENTO_EPI_EXCLUIR_SOLICITACAO
 				/sesmt/solicitacaoEpi/entrega.action*=ROLE_CAD_ENTREGAEPI
 				/sesmt/solicitacaoEpi/prepareEntrega.action*=ROLE_CAD_ENTREGAEPI
-				/sesmt/solicitacaoEpi/*/**=ROLE_CAD_SOLICITACAOEPI
+				/sesmt/solicitacaoEpi/prepareInsert.action*=ROLE_CAD_SOLICITACAOEPI
+				/sesmt/solicitacaoEpi/filtroColaboradores.action*=ROLE_CAD_SOLICITACAOEPI
+				/sesmt/solicitacaoEpi/insert.action*=ROLE_CAD_SOLICITACAOEPI
+				/sesmt/solicitacaoEpi/prepareUpdate.action*=ROLE_GERENCIAMENTO_EPI_EDITAR_SOLICITACAO
+				/sesmt/solicitacaoEpi/update.action*=ROLE_GERENCIAMENTO_EPI_EDITAR_SOLICITACAO
+				/sesmt/solicitacaoEpi/delete.action*=ROLE_GERENCIAMENTO_EPI_EXCLUIR_SOLICITACAO
 				/sesmt/motivoSolicitacaoEpi/*/**=ROLE_CAD_MOTIVO_SOLICITACAO_EPI
 				/sesmt/etapaProcessoEleitoral/*/**=ROLE_CAD_ETAPAPROCESSOELEITORAL
 				/sesmt/eleicao/*/**=ROLE_CAD_ELEICAO

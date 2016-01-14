@@ -42,12 +42,13 @@
 		
 		function enviaForm()
 		{
-			check = validaCheck(document.forms[1], 'epiIds', "Selecione pelo menos um EPI.");
+	
+			check = validaCheck(document.getElementById('formInserir'), 'epiIds', "Selecione pelo menos um EPI.");
 			if (check)
 			{
 				$(".inativo").removeAttr("disabled");
 				
-				idsQtdSolicitado = getIdsInputQtdSolicitado(document.forms[1]);
+				idsQtdSolicitado = getIdsInputQtdSolicitado(document.getElementById('formInserir'));
 				validaDatas = new Array('data');
 							
 				if($('#entregue').val() == 'true')
@@ -65,7 +66,7 @@
 					}				
 				}
 				
-				var selectTamanhosAtivos = $("form:eq(1)").find("select[name=selectTamanhoEpi]").not(":disabled");
+				var selectTamanhosAtivos = $('#formInserir').find("select[name=selectTamanhoEpi]").not(":disabled");
 				
 				$(selectTamanhosAtivos).each(function(){
 					idsQtdSolicitado.push($(this).attr("id"));
@@ -110,8 +111,9 @@
 			return ids;
 		}
 	
-		function marcarDesmarcar(frm)
+		function marcarDesmarcar()
 		{
+			frm = document.getElementById('formInserir');
 			var vMarcar;
 	
 			if (document.getElementById('md').checked)
@@ -184,13 +186,11 @@
 	
 		function configuraCampos()
 		{
+			<#if edicao?exists>
 			var id = "";
-	
-			if (document.forms.length > 1)
-			{
-				for (var i = 0; i < document.forms[1].elements.length; i++)
+				for (var i = 0; i < document.getElementById('formInserir').elements.length; i++)
 				{
-					var elementForm = document.forms[1].elements[i];
+					var elementForm =  document.getElementById('formInserir').elements[i];
 					if ((elementForm != null) && (elementForm.type == 'checkbox') && (elementForm.checked))
 					{
 						var idCheck = elementForm.value;
@@ -217,7 +217,8 @@
 						}
 					}
 				}
-			}
+			
+		</#if>
 		}
 	
 		function listaEpis(colaboradorId)
@@ -245,21 +246,23 @@
 	<@ww.actionmessage />
 	<@ww.actionerror />
 	
-	<#include "../util/topFiltro.ftl" />
-	<@ww.form name="formFiltro" action="filtroColaboradores.action" method="POST">
-		<@ww.textfield label="Nome" name="colaborador.nome" id="nome" cssClass="inputNome" maxLength="100" cssStyle="width: 400px;"/>
-		<@ww.textfield label="CPF" id="cpf" name="colaborador.pessoal.cpf" liClass="liLeft" maxLength="11" cssClass="mascaraCpf" onkeypress="return(somenteNumeros(event,''));" />
-		<@ww.textfield label="Matrícula" id="matricula" name="colaborador.matricula" cssStyle="width:60px;"  maxLength="20"/>
-		<@ww.hidden id="colaboradorId" name="colaborador.id" />
-		<button onclick="pesquisar();" class="btnPesquisar grayBGE"></button>
-		<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar grayBGE"></button>
-	</@ww.form>
-	<#include "../util/bottomFiltro.ftl" />
-	<br/>
+	<#if !edicao?exists>
+		<#include "../util/topFiltro.ftl" />
+		<@ww.form name="formFiltro" action="filtroColaboradores.action" method="POST">
+			<@ww.textfield label="Nome" name="colaborador.nome" id="nome" cssClass="inputNome" maxLength="100" cssStyle="width: 400px;"/>
+			<@ww.textfield label="CPF" id="cpf" name="colaborador.pessoal.cpf" liClass="liLeft" maxLength="11" cssClass="mascaraCpf" onkeypress="return(somenteNumeros(event,''));" />
+			<@ww.textfield label="Matrícula" id="matricula" name="colaborador.matricula" cssStyle="width:60px;"  maxLength="20"/>
+			<@ww.hidden id="colaboradorId" name="colaborador.id" />
+			<button onclick="pesquisar();" class="btnPesquisar grayBGE"></button>
+			<button onclick="document.forms[0].action='list.action';document.forms[0].submit();" class="btnVoltar grayBGE"></button>
+		</@ww.form>
+		<#include "../util/bottomFiltro.ftl" />
+		<br/>
+	</#if>
 
 	<#if (colaboradors?exists && colaboradors?size > 0) || (edicao?exists)>
 
-		<@ww.form name="form" action="${formAction}" method="POST">
+		<@ww.form name="form" id="formInserir" action="${formAction}" method="POST">
 			<#if solicitacaoEpi.colaborador?exists>
 				<h4> Colaborador: ${solicitacaoEpi.colaborador.nome} </h4>
 				<@ww.hidden name="solicitacaoEpi.colaborador.id" />
@@ -282,7 +285,7 @@
 						<#assign class="gray"/>
 					</#if>
 					
-					<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar(document.forms[1]);' />" style="width: 25px; text-align: center;">
+					<@display.column title="<input type='checkbox' id='md' onclick='marcarDesmarcar();' />" style="width: 25px; text-align: center;">
 						<#assign checked=""/>
 						<#if epiIds?exists>
 							<#list epiIds as epiId>

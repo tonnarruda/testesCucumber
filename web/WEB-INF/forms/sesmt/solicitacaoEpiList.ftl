@@ -26,11 +26,8 @@
 		<#assign dateFim = ""/>
 	</#if>
 
-	<#if entrega>
-		<title>Entrega/Devolução de EPIs</title>
-	<#else><script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
-		<title>Solicitações de EPIs</title>
-	</#if>
+	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/qtip.js?version=${versao}"/>"></script>
+	<title>Gerenciamento de EPIs</title>
 	
 	<script type="text/javascript">
 		$(function() {
@@ -109,19 +106,27 @@
 	<@display.table name="solicitacaoEpis" id="solicitacaoEpi" class="dados" >
 		<@display.column title="Ações" class="acao" style="width: 70px;">
 			<#if solicitacaoEpi.situacaoEntrega == 'E' || solicitacaoEpi.situacaoEntrega == 'P'>
-				<a href="prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}"><img border="0" title="Entrega/Devolução" src="<@ww.url value="/imgs/check.gif"/>"></a>
-				<@authz.authorize ifAllGranted="ROLE_CAD_SOLICITACAOEPI" >
+				<@authz.authorize ifAllGranted="ROLE_CAD_ENTREGAEPI">
+					<a href="prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}"><img border="0" title="Entregar/Devolver" src="<@ww.url value="/imgs/check.gif"/>"></a>
+				</@authz.authorize>
+				<@authz.authorize ifAllGranted="ROLE_GERENCIAMENTO_EPI_EDITAR_SOLICITACAO">
 					<img border="0" title="Não é possível editar uma solicitação já entregue, ou com algum item entregue" src="<@ww.url includeParams="none" value="/imgs/edit.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
+				</@authz.authorize>
+				<@authz.authorize ifAllGranted="ROLE_GERENCIAMENTO_EPI_EXCLUIR_SOLICITACAO">
 					<img border="0" title="Não é possível excluir uma solicitação já entregue, ou com algum item entregue" src="<@ww.url includeParams="none" value="/imgs/delete.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);">
 				</@authz.authorize>
 			<#else>
-				<#if solicitacaoEpi.colaborador.historicoColaborador.motivo?exists && solicitacaoEpi.colaborador.historicoColaborador.motivo == "C" && solicitacaoEpi.colaborador.historicoColaborador.status != 1>
-					<a href="#"><img border="0" title="Não é permitida entrega de EPIs a colaboradores não confirmados no AC" src="<@ww.url value="/imgs/check.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);"></a>
-				<#else>
-					<a href="prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}"><img border="0" title="Entrega" src="<@ww.url value="/imgs/check.gif"/>"></a>
-				</#if>
-				<@authz.authorize ifAllGranted="ROLE_CAD_SOLICITACAOEPI" >
+				<@authz.authorize ifAllGranted="ROLE_CAD_ENTREGAEPI">
+					<#if solicitacaoEpi.colaborador.historicoColaborador.motivo?exists && solicitacaoEpi.colaborador.historicoColaborador.motivo == "C" && solicitacaoEpi.colaborador.historicoColaborador.status != 1>
+						<a href="#"><img border="0" title="Não é permitida entrega de EPIs a colaboradores não confirmados no AC" src="<@ww.url value="/imgs/check.gif"/>" style="opacity:0.2;filter:alpha(opacity=20);"></a>
+					<#else>
+						<a href="prepareEntrega.action?solicitacaoEpi.id=${solicitacaoEpi.id}"><img border="0" title="Entregar/Devolver" src="<@ww.url value="/imgs/check.gif"/>"></a>
+					</#if>
+				</@authz.authorize>
+				<@authz.authorize ifAllGranted="ROLE_GERENCIAMENTO_EPI_EDITAR_SOLICITACAO">
 					<a href="prepareUpdate.action?solicitacaoEpi.id=${solicitacaoEpi.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
+				</@authz.authorize>
+				<@authz.authorize ifAllGranted="ROLE_GERENCIAMENTO_EPI_EXCLUIR_SOLICITACAO">
 					<a href="#" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?solicitacaoEpi.id=${solicitacaoEpi.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
 				</@authz.authorize>
 			</#if>
