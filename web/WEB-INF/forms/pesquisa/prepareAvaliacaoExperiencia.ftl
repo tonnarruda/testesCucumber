@@ -75,12 +75,27 @@
 				document.form.submit();
 			}
 		}
+		
+		function validarRespondidaEm(dataAdmissao, respondidaEm) {
+			dataAdmissao = dataAdmissao.split(/[^0-9]+/);
+			dataAdmissao = new Date(dataAdmissao[1]+"/"+dataAdmissao[0]+"/"+dataAdmissao[2]);
+			
+			respondidaEm = respondidaEm.split(/[^0-9]+/);
+			respondidaEm = new Date(respondidaEm[1]+"/"+respondidaEm[0]+"/"+respondidaEm[2]);
+			
+			var valid = respondidaEm >= dataAdmissao;
+			if (!valid)
+				jAlert('A data está inferior a data da contratação do colaborador.');
+			
+			return valid;
+		}
 
 		function validaForm(){
 			var validarRespostas = validaRespostas(new Array('data'), new Array('data'), false, true, false, false, true);
-			var validarFormulario = validaFormulario('form', new Array('data'), new Array('data'), true)
+			var validarFormulario = validaFormulario('form', new Array('data'), new Array('data'), true);
+			var validarData = validarRespondidaEm( '${colaborador.dataAdmissao?date}', $("input[name='colaboradorQuestionario.respondidaEm']").val() );
 			
-			if(validarRespostas && validarFormulario)
+			if(validarRespostas && validarFormulario && validarData)
 				validaRespostasSubjetivas();
 		}
 	</script>
