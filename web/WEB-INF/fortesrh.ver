@@ -3,6 +3,7 @@
 	<Versao id="1.1.15x.18x" db="" data="xx/xx/2016">
 		<Item visivel="S" motivo="S15100000103"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Nova coluna de Nome Comercial ao exportar para o excel.]]></Item>
 		<Item visivel="S" motivo="S15120000112"><![CDATA[C&S > Relatórios > Colaboradores por Área Organizacional: Nova opção para exibir salário dos colaboradores.]]></Item>
+		<Item visivel="S" motivo="P16010000126"><![CDATA[Aval. Desempenho > Movimentações > Acompanhamento do Período de Experiência > Inserir/Editar: Nova validação para não permitir responder a avaliação com data inferior a data de contratação do colaborador.]]></Item>
 		<Item visivel="S" motivo="P16010000172"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores + Nota: Correção de inconsistência ao inserir colaborador.]]></Item>
 		<Item visivel="S" motivo="S20150800138"><![CDATA[Info. Funcionais > Movimentações > Ocorrências: Possibilidade de movimentar ocorrências para colaboradores desligados.]]></Item>
 		<Item visivel="S" motivo="S15120000241"><![CDATA[Info. Funcionais > Relatórios > Declaração de Rendimentos: Novo relatório, quando integrado com o sistema Fortes Pessoal.]]></Item>		
@@ -13,6 +14,7 @@
 		<Item visivel="S" motivo="S15110000208"><![CDATA[SESMT > Relatórios > Exames: Agrupamento dos menus "Exames Previstos", "Exames Realizados" e "Função por exame".]]></Item>
 		<Item visivel="S" motivo="S15110000208"><![CDATA[SESMT > Relatórios > Afastamentos: Agrupamento dos menus "Resumo de afastamentos" e "Afastamentos".]]></Item>
 		<Item visivel="S" motivo="P16010000084"><![CDATA[Utilitários > Exportar Curso/Turma como ocorrência para o TRU: Correção de inconsistência ao filtrar turmas dos cursos selecionados.]]></Item>
+		
 	</Versao>
 	<Versao id="1.1.157.188" db="" data="11/01/2016">
 		<Item visivel="S" motivo="S15100000084"><![CDATA[R&S > Movimentações > Solicitação de Pessoal: Exibição do código do Fortes Pessoal no campo de área organizacional do filtro.]]></Item>
