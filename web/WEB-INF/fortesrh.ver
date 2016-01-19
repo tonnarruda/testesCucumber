@@ -3,6 +3,7 @@
 	<Versao id="1.1.15x.18x" db="" data="xx/xx/2016">
 		<Item visivel="S" motivo="S15100000103"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Nova coluna de Nome Comercial ao exportar para o excel.]]></Item>
 		<Item visivel="S" motivo="S15120000112"><![CDATA[C&S > Relatórios > Colaboradores por Área Organizacional: Nova opção para exibir salário dos colaboradores.]]></Item>
+		<Item visivel="S" motivo="P16010000172"><![CDATA[T&D > Cadastros > Cursos/Treinamentos > Turmas > Colaboradores Inscritos > Incluir Colaboradores + Nota: Correção de inconsistência ao inserir colaborador.]]></Item>
 		<Item visivel="S" motivo="S20150800138"><![CDATA[Info. Funcionais > Movimentações > Ocorrências: Possibilidade de movimentar ocorrências para colaboradores desligados.]]></Item>
 		<Item visivel="S" motivo="S15120000241"><![CDATA[Info. Funcionais > Relatórios > Declaração de Rendimentos: Novo relatório, quando integrado com o sistema Fortes Pessoal.]]></Item>		
 		<Item visivel="S" motivo="P15120000077"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Correção de inconsistência ao exibir estabelecimentos no relatório.]]></Item>

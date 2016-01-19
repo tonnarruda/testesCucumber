@@ -15,7 +15,7 @@
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ColaboradorTurmaDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/util.js?version=${versao}"/>'></script>
-	<script type="text/javascript" src="<@ww.url includeParams="none" value="/js/colaboradorTurma.js?version=${versao}"/>"></script>
+	<script type='text/javascript' src='<@ww.url includeParams="none" value="/js/colaboradorTurma.js?version=${versao}"/>'></script>
 	
 	<script type='text/javascript'>
 		var empresaIds = new Array();
@@ -39,7 +39,7 @@
 		}
 		
 		function populaNotas(colaboradorId)
-		{
+		{ 
 			$('input[id^="nota_"]').val('');
 			
 			var urlFind = "<@ww.url includeParams="none" value="/desenvolvimento/colaboradorTurma/findNotas.action"/>";
@@ -63,7 +63,7 @@
 				colaboradoresIds = new Array($('#colaborador').val());
 				DWRUtil.useLoadingMessage('Carregando...');
 				ColaboradorTurmaDWR.checaColaboradorInscritoEmOutraTurma(function(data){
-																				colabNaOutraTurma(data, 180, 430, 'Colaborador já inscrito no curso<br />Deseja realmente incluí-lo nesta turma?');
+																				colabNaOutraTurma(data, 180, 430, 'Colaborador já inscrito no curso<br />Deseja realmente incluí-lo nesta turma?', true);
 																			}, ${turma.id}, ${turma.curso.id}, colaboradoresIds);																			
 				
 			}
