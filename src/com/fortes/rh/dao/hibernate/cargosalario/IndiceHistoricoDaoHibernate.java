@@ -12,13 +12,17 @@ import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.transform.AliasToBeanResultTransformer;
+import org.hibernate.type.Type;
 
 import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.ReajusteIndice;
+import com.fortes.rh.util.DateUtil;
 
 @SuppressWarnings("unchecked")
 public class IndiceHistoricoDaoHibernate extends GenericDaoHibernate<IndiceHistorico> implements IndiceHistoricoDao
@@ -127,6 +131,37 @@ public class IndiceHistoricoDaoHibernate extends GenericDaoHibernate<IndiceHisto
 		return criteria.list();
 	}
 
+	
+	public Collection<IndiceHistorico> findHistoricoIndiceAnteriorAoProximoHistoricoDaFaixa(Long indiceId, Date data, Date dataProximoHistorico, Date dataDesligamento, Long faixaSalarialId)
+	{
+		if(dataDesligamento != null && dataDesligamento.before(dataProximoHistorico))
+				dataProximoHistorico = dataDesligamento;
+		
+		String sql = "coalesce(min(this0__.data), to_timestamp('"+ DateUtil.formataAnoMesDia(dataProximoHistorico) + "', 'YYYY-MM-DD') )";
+		DetachedCriteria subSelect = DetachedCriteria.forClass(FaixaSalarialHistorico.class, "fsh2")
+		    		.setProjection(Projections.sqlProjection(sql, new String[]{"data"}, new Type[] {Hibernate.DATE}))
+		    		.add(Restrictions.eq("fsh2.faixaSalarial.id", faixaSalarialId))
+		    		.add(Restrictions.gt("fsh2.data", data))
+		 			.add(Restrictions.le("fsh2.data", dataProximoHistorico));
+			
+		 ProjectionList p = Projections.projectionList().create();
+		 p.add(Projections.property("ih.data"), "data");
+		 p.add(Projections.property("ih.valor"), "valor");
+		
+		 Criteria criteria = getSession().createCriteria(getEntityClass(), "ih");
+		criteria.setProjection(p);
+		
+		criteria.add(Expression.eq("ih.indice.id", indiceId));
+		criteria.add(Expression.gt("ih.data", data));
+		criteria.add(Subqueries.propertyLt("ih.data", subSelect));
+		
+		criteria.addOrder(Order.asc("ih.data"));
+		criteria.setResultTransformer(new AliasToBeanResultTransformer(getEntityClass()));
+
+		return criteria.list();
+	}
+
+	
 	public boolean remove(Date data, Long indiceId)
 	{
 		String hql = "delete from IndiceHistorico ih where ih.data = :data and ih.indice.id = :id";

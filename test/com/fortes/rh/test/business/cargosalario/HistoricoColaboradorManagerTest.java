@@ -1179,7 +1179,7 @@ public class HistoricoColaboradorManagerTest extends MockObjectTestCase
 		faixaHistoricos.add(faixaSalarialHistorico2);
 
 		historicoColaboradorDao.expects(once()).method("findPromocaoByColaborador").with(ANYTHING).will(returnValue(historicoColaboradores));
-		faixaSalarialHistoricoManager.expects(atLeastOnce()).method("findByPeriodo").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(faixaHistoricos));
+		faixaSalarialHistoricoManager.expects(atLeastOnce()).method("findByPeriodo").with(ANYTHING, ANYTHING).will(returnValue(faixaHistoricos));
 		areaOrganizacionalManager.expects(once()).method("findAllListAndInativas").with(eq(AreaOrganizacional.TODAS), ANYTHING, eq(new Long[]{empresa.getId()})).will(returnValue(areas));
 		areaOrganizacionalManager.expects(once()).method("montaFamilia").with(ANYTHING).will(returnValue(areas));
 		areaOrganizacionalManager.expects(atLeastOnce()).method("getAreaOrganizacional").with(ANYTHING, ANYTHING).will(returnValue(areaOrganizacional));

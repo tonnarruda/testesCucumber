@@ -17,6 +17,7 @@ public interface IndiceHistoricoDao extends GenericDao<IndiceHistorico>
 	Double findUltimoSalarioIndice(Long indiceId);
 
 	Collection<IndiceHistorico> findByPeriodo(Long indiceId, Date data, Date dataProximo, Date dataDesligamento);
+	Collection<IndiceHistorico> findHistoricoIndiceAnteriorAoProximoHistoricoDaFaixa(Long indiceId, Date data, Date dataProximoHistorico, Date dataDesligamento, Long faixaSalarialId);
 
 	boolean remove(Date data, Long indiceId);
 

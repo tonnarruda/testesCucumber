@@ -8,6 +8,7 @@ import com.fortes.rh.exception.FaixaJaCadastradaException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.PendenciaAC;
 import com.fortes.rh.model.ws.TSituacaoCargo;
@@ -28,7 +29,7 @@ public interface FaixaSalarialHistoricoManager extends GenericManager<FaixaSalar
 	boolean verifyData(Long faixaSalarialHistoricoId, Date data, Long faixaSalarialId);
 	Double findUltimoHistoricoFaixaSalarial(Long faixaSalarialId);
 	FaixaSalarialHistorico findByHistoricoFaixaSalarial(Long faixaSalarialId);
-	Collection<FaixaSalarialHistorico> findByPeriodo(Long faixaSalarialId, Date data, Date dataProxima, Date dataDesligamento);
+	Collection<FaixaSalarialHistorico> findByPeriodo(HistoricoColaborador historicoColaborador, Date dataProxima);
 	Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(String[] grupoOcupacionalsCheck, String[] cargosCheck, String[] areasCheck, Date data, boolean ordemDataDescendente, Long empresaId, Boolean cargoAtivo) throws Exception;
 	boolean verifyHistoricoIndiceNaData(Date data, Long indiceId);
 	boolean setStatus(Long faixaSalarialHistoricoId, boolean aprovado);

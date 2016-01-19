@@ -35,6 +35,11 @@ public class IndiceHistoricoManagerImpl extends GenericManagerImpl<IndiceHistori
 	{
 		return getDao().findByPeriodo(indiceId, data, dataProximo, dataDesligamento);
 	}
+	
+	public Collection<IndiceHistorico> findHistoricoIndiceAnteriorAoProximoHistoricoDaFaixa(Long indiceId, Date data, Date dataProximoHistorico, Date dataDesligamento, Long faixaSalarialId)
+	{
+		return getDao().findHistoricoIndiceAnteriorAoProximoHistoricoDaFaixa(indiceId, data, dataProximoHistorico, dataDesligamento, faixaSalarialId);
+	}
 
 	@SuppressWarnings("deprecation")
 	public boolean remove(Date data, Long indiceId) throws FortesException

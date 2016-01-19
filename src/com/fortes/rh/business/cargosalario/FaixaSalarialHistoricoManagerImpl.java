@@ -18,8 +18,11 @@ import com.fortes.rh.exception.FortesException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistoricoVO;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
+import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
+import com.fortes.rh.model.dicionario.SituacaoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Empresa;
@@ -193,11 +196,17 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 	}
 
 	// TODO Método muito complexo, analisar a possiblidade de refatoração.
-	public Collection<FaixaSalarialHistorico> findByPeriodo(Long faixaSalarialId, Date data, Date dataProxima, Date dataDesligamento)
+	public Collection<FaixaSalarialHistorico> findByPeriodo(HistoricoColaborador historicoColaborador, Date dataProxima)
 	{
-		List<FaixaSalarialHistorico> faixaSalarialHistoricos = (List<FaixaSalarialHistorico>) getDao().findByPeriodo(faixaSalarialId, data, dataProxima, dataDesligamento);
 		Collection<FaixaSalarialHistorico> retorno = new ArrayList<FaixaSalarialHistorico>();
+		List<FaixaSalarialHistorico> faixaSalarialHistoricos = (List<FaixaSalarialHistorico>) getDao().findByPeriodo(historicoColaborador.getFaixaSalarial().getId(), historicoColaborador.getData(), dataProxima, historicoColaborador.getColaborador().getDataDesligamento());
 
+		if((faixaSalarialHistoricos.size() == 0 ||historicoColaborador.getMotivo().equals(MotivoHistoricoColaborador.CONTRATADO)) &&      
+				historicoColaborador.getFaixaSalarial().getFaixaSalarialHistoricoAtual().getTipo() != null && 
+				historicoColaborador.getFaixaSalarial().getFaixaSalarialHistoricoAtual().getTipo() == TipoAplicacaoIndice.INDICE )
+		{
+			montaReajusteIndiceFaixa(historicoColaborador, retorno, dataProxima);		
+		}
 		int proximo = 1;
 		for (FaixaSalarialHistorico faixaSalarialHistoricoTmp : faixaSalarialHistoricos)
 		{
@@ -219,10 +228,9 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 					if(dataProxima.before(dataProximoHistorico))
 						dataProximoHistorico = dataProxima;
 
-					Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoManager.findByPeriodo(faixaSalarialHistoricoTmp.getIndice().getId(), faixaSalarialHistoricoTmp.getData(), dataProximoHistorico, dataDesligamento);
+					Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoManager.findByPeriodo(faixaSalarialHistoricoTmp.getIndice().getId(), faixaSalarialHistoricoTmp.getData(), dataProximoHistorico, historicoColaborador.getColaborador().getDataDesligamento());
 
-					if(!retorno.contains(faixaSalarialHistoricoTmp))
-						retorno.add(faixaSalarialHistoricoTmp);
+					retorno.add(faixaSalarialHistoricoTmp);
 					
 					for (IndiceHistorico indiceHistorico: indiceHistoricos)
 					{
@@ -242,6 +250,22 @@ public class FaixaSalarialHistoricoManagerImpl extends GenericManagerImpl<FaixaS
 		}
 
 		return retorno;
+	}
+
+	private void montaReajusteIndiceFaixa( HistoricoColaborador historicoColaborador, Collection<FaixaSalarialHistorico> retorno, Date dataProximoHistorico) {
+		
+		Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoManager.findHistoricoIndiceAnteriorAoProximoHistoricoDaFaixa(historicoColaborador.getFaixaSalarial().getFaixaSalarialHistoricoAtual().getIndice().getId(),
+				historicoColaborador.getData(), dataProximoHistorico, historicoColaborador.getColaborador().getDataDesligamento(), historicoColaborador.getFaixaSalarial().getId());
+		
+		for (IndiceHistorico indiceHistorico: indiceHistoricos)
+		{
+			FaixaSalarialHistorico faixaSalarialHistoricoClone = (FaixaSalarialHistorico) historicoColaborador.getFaixaSalarial().getFaixaSalarialHistoricoAtual().clone();
+			faixaSalarialHistoricoClone.setData(indiceHistorico.getData());
+			faixaSalarialHistoricoClone.getIndice().setIndiceHistoricoAtual(indiceHistorico);
+			faixaSalarialHistoricoClone.setObsReajuste("Reajuste do Índice da Faixa");
+
+			retorno.add(faixaSalarialHistoricoClone);
+		}
 	}
 
 	public Collection<FaixaSalarialHistorico> findByGrupoCargoAreaData(String[] grupoOcupacionalsCheck, String[] cargosCheck, String[] areasCheck, Date data, boolean ordemDataDescendente, Long empresaId, Boolean cargoAtivo) throws Exception

@@ -14,6 +14,8 @@ public interface IndiceHistoricoManager extends GenericManager<IndiceHistorico>
 	boolean verifyData(Long indiceHistoricoId, Date data, Long indiceId);
 	Double findUltimoSalarioIndice(Long indiceId);
 	Collection<IndiceHistorico> findByPeriodo(Long indiceId, Date data, Date dataProximo, Date dataDesligamento);
+	
+	public Collection<IndiceHistorico> findHistoricoIndiceAnteriorAoProximoHistoricoDaFaixa(Long indiceId, Date data, Date dataProximoHistorico, Date dataDesligamento, Long faixaSalarialId);
 	boolean remove(Date data, Long indiceId) throws FortesException;
 	boolean existeHistoricoAnteriorOuIgualDaData(Date data, Long indiceId);
 	boolean existeHistoricoAnteriorDaData(Date data, Long indiceId);

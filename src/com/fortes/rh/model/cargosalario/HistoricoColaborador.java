@@ -109,7 +109,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 			Date colaboradorDataDesligamento, Long indiceId, String indiceNome, Double indiceHistoricoValor, Long areaId, String areaNome, Long ambienteId,
 			String ambienteNome, Long funcaoId, String funcaoNome, Long faixaSalarialId, String faixaSalarialNome,
 			Long cargoId, String cargoNomeMercado, String cargoNome, Long grupoId, String grupoNome, Long estabelecimentoId, String estabelecimentoNome,
-			Double faixaHistoricoValor, Integer faixaHistoricoTipo, Double faixaHistoricoQuantidade, Double faixaHistoricoIndiceValor,
+			Double faixaHistoricoValor, Integer faixaHistoricoTipo, Double faixaHistoricoQuantidade, Double faixaHistoricoIndiceValor, Long faixaHistoricoIndiceId, 
 			String faixaCodigoAc, String areaOrganizacionalCodigoAc, String estabelecimentoCodigoAc, Integer faixaSalarialHistoricoStatus )
 	{
 		setId(id);
@@ -152,6 +152,7 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 		setProjectionFaixaHistoricoTipo(faixaHistoricoTipo);
 		setProjectionFaixaHistoricoQuantidade(faixaHistoricoQuantidade);
 		setProjectionFaixaHistoricoIndiceValor(faixaHistoricoIndiceValor);
+		setProjectionFaixaHistoricoIndiceId(faixaHistoricoIndiceId);
 		setProjectionFaixaSalarialHistoricoStatus(faixaSalarialHistoricoStatus);
 	}
 
@@ -708,6 +709,20 @@ public class HistoricoColaborador extends AbstractModel implements Serializable,
 			this.faixaSalarial.getFaixaSalarialHistoricoAtual().getIndice().setIndiceHistoricoAtual(new IndiceHistorico());
 
 		this.faixaSalarial.getFaixaSalarialHistoricoAtual().getIndice().getIndiceHistoricoAtual().setValor(faixaHistoricoIndiceValor);
+	}
+
+	public void setProjectionFaixaHistoricoIndiceId(Long faixaHistoricoIndiceId)
+	{
+		if (this.faixaSalarial == null)
+			this.faixaSalarial = new FaixaSalarial();
+
+		if (this.faixaSalarial.getFaixaSalarialHistoricoAtual() == null)
+			this.faixaSalarial.setFaixaSalarialHistoricoAtual(new FaixaSalarialHistorico());
+
+		if (this.faixaSalarial.getFaixaSalarialHistoricoAtual().getIndice() == null)
+			this.faixaSalarial.getFaixaSalarialHistoricoAtual().setIndice(new Indice());
+
+		this.faixaSalarial.getFaixaSalarialHistoricoAtual().getIndice().setId(faixaHistoricoIndiceId);
 	}
 
 	public void setFaixaSalarialDescricao(String faixaSalarialDescricao)

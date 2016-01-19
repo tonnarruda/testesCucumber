@@ -4,15 +4,21 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.fortes.dao.GenericDao;
+import com.fortes.rh.dao.cargosalario.FaixaSalarialDao;
+import com.fortes.rh.dao.cargosalario.FaixaSalarialHistoricoDao;
 import com.fortes.rh.dao.cargosalario.IndiceDao;
 import com.fortes.rh.dao.cargosalario.IndiceHistoricoDao;
 import com.fortes.rh.dao.cargosalario.ReajusteIndiceDao;
 import com.fortes.rh.dao.cargosalario.TabelaReajusteColaboradorDao;
+import com.fortes.rh.model.cargosalario.FaixaSalarial;
+import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
 import com.fortes.rh.model.cargosalario.ReajusteIndice;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
+import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
@@ -20,10 +26,12 @@ import com.fortes.rh.util.DateUtil;
 
 public class IndiceHistoricoDaoHibernateTest extends GenericDaoHibernateTest<IndiceHistorico>
 {
-	private IndiceHistoricoDao indiceHistoricoDao;
-	private IndiceDao indiceDao;
 	private TabelaReajusteColaboradorDao tabelaReajusteColaboradorDao;
+	private FaixaSalarialHistoricoDao faixaSalarialHistoricoDao;
+	private IndiceHistoricoDao indiceHistoricoDao;
 	private ReajusteIndiceDao reajusteIndiceDao;
+	private FaixaSalarialDao faixaSalarialDao;
+	private IndiceDao indiceDao;
 
 	public IndiceHistorico getEntity()
 	{
@@ -227,6 +235,102 @@ public class IndiceHistoricoDaoHibernateTest extends GenericDaoHibernateTest<Ind
 		assertEquals(indiceHistorico3.getData(), ((IndiceHistorico)indiceHistoricos.toArray()[2]).getData());
 	}
 
+	public void testFindHistoricoIndiceAnteriorAoProximoHistoricoDaFaixaComHistoricoDaFaixaAntesDoSHistoricosDeIndice()
+	{
+		Indice indice = IndiceFactory.getEntity();
+		indice = indiceDao.save(indice);
+		
+		IndiceHistorico indiceHistorico1 = IndiceHistoricoFactory.getEntity(indice, DateUtil.criarDataMesAno(02, 01, 2015), 150.0);
+		indiceHistorico1 = indiceHistoricoDao.save(indiceHistorico1);
+		
+		IndiceHistorico indiceHistorico2 = IndiceHistoricoFactory.getEntity(indice, DateUtil.criarDataMesAno(02, 02, 2015), 160.0);
+		indiceHistorico2 = indiceHistoricoDao.save(indiceHistorico2);
+		
+		IndiceHistorico indiceHistorico3 = IndiceHistoricoFactory.getEntity(indice, DateUtil.criarDataMesAno(01, 03, 2015), 170.0);
+		indiceHistorico3 = indiceHistoricoDao.save(indiceHistorico3);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico.setData(DateUtil.criarDataMesAno(01, 01, 2014));
+		faixaSalarialHistorico.setIndice(indice);
+		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+		
+		Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoDao.findHistoricoIndiceAnteriorAoProximoHistoricoDaFaixa(indice.getId(), DateUtil.criarDataMesAno(01, 01, 2014), new Date(), null, faixaSalarial.getId());
+		
+		assertEquals("1o histórico depois da data inicial",3, indiceHistoricos.size());
+		assertEquals(indiceHistorico1.getData(), ((IndiceHistorico)indiceHistoricos.toArray()[0]).getData());
+		assertEquals(indiceHistorico2.getData(), ((IndiceHistorico)indiceHistoricos.toArray()[1]).getData());
+		assertEquals(indiceHistorico3.getData(), ((IndiceHistorico)indiceHistoricos.toArray()[2]).getData());
+	}
+	
+	public void testFindHistoricoIndiceAnteriorAoProximoHistoricoDaFaixaComDataDesligamento()
+	{
+		Date dataDesligamento = DateUtil.criarDataMesAno(25, 02, 2015);
+				
+		Indice indice = IndiceFactory.getEntity();
+		indice = indiceDao.save(indice);
+		
+		IndiceHistorico indiceHistorico1 = IndiceHistoricoFactory.getEntity(indice, DateUtil.criarDataMesAno(02, 01, 2015), 150.0);
+		indiceHistorico1 = indiceHistoricoDao.save(indiceHistorico1);
+		
+		IndiceHistorico indiceHistorico2 = IndiceHistoricoFactory.getEntity(indice, DateUtil.criarDataMesAno(01, 03, 2015), 170.0);
+		indiceHistorico2 = indiceHistoricoDao.save(indiceHistorico2);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico.setData(DateUtil.criarDataMesAno(01, 01, 2014));
+		faixaSalarialHistorico.setIndice(indice);
+		faixaSalarialHistorico = faixaSalarialHistoricoDao.save(faixaSalarialHistorico);
+		
+		Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoDao.findHistoricoIndiceAnteriorAoProximoHistoricoDaFaixa(indice.getId(), DateUtil.criarDataMesAno(01, 01, 2014), new Date(), dataDesligamento, faixaSalarial.getId());
+		
+		assertEquals("1o histórico depois da data inicial",1, indiceHistoricos.size());
+		assertEquals(indiceHistorico1.getData(), ((IndiceHistorico)indiceHistoricos.toArray()[0]).getData());
+	}
+	
+	public void testFindHistoricoIndiceAnteriorAoProximoHistoricoDaFaixaComVariosHistoricosDeFaixa()
+	{
+		Date dataDesligamento = DateUtil.criarDataMesAno(25, 02, 2015);
+				
+		Indice indice = IndiceFactory.getEntity();
+		indice = indiceDao.save(indice);
+		
+		IndiceHistorico indiceHistorico1 = IndiceHistoricoFactory.getEntity(indice, DateUtil.criarDataMesAno(02, 01, 2015), 150.0);
+		indiceHistorico1 = indiceHistoricoDao.save(indiceHistorico1);
+		
+		IndiceHistorico indiceHistorico2 = IndiceHistoricoFactory.getEntity(indice, DateUtil.criarDataMesAno(02, 02, 2015), 160.0);
+		indiceHistorico2 = indiceHistoricoDao.save(indiceHistorico2);
+		
+		IndiceHistorico indiceHistorico3 = IndiceHistoricoFactory.getEntity(indice, DateUtil.criarDataMesAno(01, 03, 2015), 170.0);
+		indiceHistorico3 = indiceHistoricoDao.save(indiceHistorico3);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial = faixaSalarialDao.save(faixaSalarial);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico1.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico1.setData(DateUtil.criarDataMesAno(01, 01, 2014));
+		faixaSalarialHistorico1.setIndice(indice);
+		faixaSalarialHistorico1 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico1);
+		
+		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity();
+		faixaSalarialHistorico2.setFaixaSalarial(faixaSalarial);
+		faixaSalarialHistorico2.setData(DateUtil.criarDataMesAno(01, 02, 2015));
+		faixaSalarialHistorico2.setIndice(indice);
+		faixaSalarialHistorico2 = faixaSalarialHistoricoDao.save(faixaSalarialHistorico2);
+		
+		Collection<IndiceHistorico> indiceHistoricos = indiceHistoricoDao.findHistoricoIndiceAnteriorAoProximoHistoricoDaFaixa(indice.getId(), DateUtil.criarDataMesAno(01, 01, 2014), new Date(), dataDesligamento, faixaSalarial.getId());
+		
+		assertEquals("1o histórico depois da data inicial",1, indiceHistoricos.size());
+		assertEquals(indiceHistorico1.getData(), ((IndiceHistorico)indiceHistoricos.toArray()[0]).getData());
+	}
+	
 	public void testVerifyDataIndice()
 	{
 		Indice indice = IndiceFactory.getEntity();
@@ -398,5 +502,13 @@ public class IndiceHistoricoDaoHibernateTest extends GenericDaoHibernateTest<Ind
 	public void setReajusteIndiceDao(ReajusteIndiceDao reajusteIndiceDao) 
 	{
 		this.reajusteIndiceDao = reajusteIndiceDao;
+	}
+
+	public void setFaixaSalarialDao(FaixaSalarialDao faixaSalarialDao) {
+		this.faixaSalarialDao = faixaSalarialDao;
+	}
+
+	public void setFaixaSalarialHistoricoDao(FaixaSalarialHistoricoDao faixaSalarialHistoricoDao) {
+		this.faixaSalarialHistoricoDao = faixaSalarialHistoricoDao;
 	}
 }

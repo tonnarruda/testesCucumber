@@ -25,16 +25,20 @@ import com.fortes.rh.exception.FaixaJaCadastradaException;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.FaixaSalarialHistorico;
+import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.cargosalario.Indice;
 import com.fortes.rh.model.cargosalario.IndiceHistorico;
+import com.fortes.rh.model.dicionario.MotivoHistoricoColaborador;
 import com.fortes.rh.model.dicionario.StatusRetornoAC;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.PendenciaAC;
+import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.CargoFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialHistoricoFactory;
+import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceFactory;
 import com.fortes.rh.test.factory.cargosalario.IndiceHistoricoFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
@@ -401,14 +405,21 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 
 		Date data = DateUtil.criarDataMesAno(01, 01, 2008);
 		Date dataProxima = DateUtil.criarDataMesAno(01, 06, 2008);
+		
+		faixaSalarial.setFaixaSalarialHistoricoAtual(faixaSalarialHistorico);
+
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setColaborador(ColaboradorFactory.getEntity());
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setData(data);
 
 		faixaSalarialHistoricoDao.expects(once()).method("findByPeriodo").with(eq(faixaSalarial.getId()), eq(data), eq(dataProxima), eq(null)).will(returnValue(faixaSalarials));
 
-		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByPeriodo(faixaSalarial.getId(), data, dataProxima, null);
+		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByPeriodo(historicoColaborador, dataProxima);
 		assertEquals(1, faixaSalarialHistoricos.size());
 	}
 
-	public void testFindByPeriodoPorIndice()
+	public void testFindByPeriodoPorIndiceComHistoricoDaFaixaNoMesmoDiaDaContratacao()
 	{
 		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
 
@@ -420,24 +431,101 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 
 		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(1L, data1, TipoAplicacaoIndice.INDICE, indice, faixaSalarial);
 
-		Collection<FaixaSalarialHistorico> faixaSalarials = new ArrayList<FaixaSalarialHistorico>();
-		faixaSalarials.add(faixaSalarialHistorico);
+		IndiceHistorico indiceHistorico1 = new IndiceHistorico();
+		indiceHistorico1.setData(data1);
+
+		IndiceHistorico indiceHistorico2 = new IndiceHistorico();
+		indiceHistorico2.setData(data2);
+		
+		Collection<IndiceHistorico> indiceHistoricos = new ArrayList<IndiceHistorico>();
+		indiceHistoricos.add(indiceHistorico2);
+
+		faixaSalarial.setFaixaSalarialHistoricoAtual(faixaSalarialHistorico);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setColaborador(ColaboradorFactory.getEntity(1L));
+		historicoColaborador.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setData(data1);
+		
+		faixaSalarialHistoricoDao.expects(once()).method("findByPeriodo").with(eq(faixaSalarial.getId()), eq(data1), eq(dataProxima), eq(null)).will(returnValue(new ArrayList<FaixaSalarialHistorico>()));
+		indiceHistoricoManager.expects(once()).method("findHistoricoIndiceAnteriorAoProximoHistoricoDaFaixa").with(new Constraint[] {eq(indice.getId()), eq(data1), eq(dataProxima), eq(null), eq(faixaSalarial.getId())}).will(returnValue(indiceHistoricos));
+	
+		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByPeriodo(historicoColaborador, dataProxima);
+		assertEquals(1, faixaSalarialHistoricos.size()); 
+	}
+	
+	public void testFindByPeriodoPorIndiceComHistoricoDaFaixaAnteriorAoDiaDaContratacao()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+
+		Date data1 = DateUtil.criarDataMesAno(1, 7, 2008);
+		Date data2 = DateUtil.criarDataMesAno(1, 8, 2008);
+		Date dataProxima = DateUtil.criarDataMesAno(1, 8, 2008);
+
+		Indice indice = IndiceFactory.getEntity(1L);
+
+		FaixaSalarialHistorico faixaSalarialHistorico = FaixaSalarialHistoricoFactory.getEntity(1L, DateUtil.criarDataMesAno(1, 1, 2008), TipoAplicacaoIndice.INDICE, indice, faixaSalarial);
 
 		IndiceHistorico indiceHistorico1 = new IndiceHistorico();
 		indiceHistorico1.setData(data1);
 
 		IndiceHistorico indiceHistorico2 = new IndiceHistorico();
 		indiceHistorico2.setData(data2);
+		
+		Collection<IndiceHistorico> indiceHistoricos = new ArrayList<IndiceHistorico>();
+		indiceHistoricos.add(indiceHistorico2);
+
+		faixaSalarial.setFaixaSalarialHistoricoAtual(faixaSalarialHistorico);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setColaborador(ColaboradorFactory.getEntity(1L));
+		historicoColaborador.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setData(data1);
+		
+		faixaSalarialHistoricoDao.expects(once()).method("findByPeriodo").with(eq(faixaSalarial.getId()), eq(data1), eq(dataProxima), eq(null)).will(returnValue(new ArrayList<FaixaSalarialHistorico>()));
+		indiceHistoricoManager.expects(once()).method("findHistoricoIndiceAnteriorAoProximoHistoricoDaFaixa").with(new Constraint[] {eq(indice.getId()), eq(data1), eq(dataProxima), eq(null), eq(faixaSalarial.getId())}).will(returnValue(indiceHistoricos));
+	
+		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByPeriodo(historicoColaborador, dataProxima);
+		assertEquals(1, faixaSalarialHistoricos.size()); 
+	}
+	
+	public void testFindByPeriodoPorIndiceComHistoricoDaFaixaPosteriorAoUnicoHistoricoDeIndice()
+	{
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity(1L);
+
+		Date data1 = DateUtil.criarDataMesAno(1, 12, 2015);
+		Date dataProxima = DateUtil.criarDataMesAno(05,01,2016);
+
+		Indice indice = IndiceFactory.getEntity(1L);
+
+		FaixaSalarialHistorico faixaSalarialHistorico1 = FaixaSalarialHistoricoFactory.getEntity(1L, DateUtil.criarDataMesAno(1, 1, 2015), TipoAplicacaoIndice.INDICE, indice, faixaSalarial);
+		FaixaSalarialHistorico faixaSalarialHistorico2 = FaixaSalarialHistoricoFactory.getEntity(1L, dataProxima, TipoAplicacaoIndice.INDICE, indice, faixaSalarial);
+
+		IndiceHistorico indiceHistorico1 = new IndiceHistorico();
+		indiceHistorico1.setData(DateUtil.criarDataMesAno(1, 01, 2016));
 
 		Collection<IndiceHistorico> indiceHistoricos = new ArrayList<IndiceHistorico>();
 		indiceHistoricos.add(indiceHistorico1);
-		indiceHistoricos.add(indiceHistorico2);
 
-		faixaSalarialHistoricoDao.expects(once()).method("findByPeriodo").with(eq(faixaSalarial.getId()), eq(data1), eq(dataProxima), eq(null)).will(returnValue(faixaSalarials));
-		indiceHistoricoManager.expects(once()).method("findByPeriodo").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(indiceHistoricos));
-
-		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByPeriodo(faixaSalarial.getId(), data1, dataProxima, null);
-		assertEquals(3, faixaSalarialHistoricos.size());
+		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos1 = new ArrayList<FaixaSalarialHistorico>();
+		faixaSalarialHistoricos1.add(faixaSalarialHistorico2);
+		
+		faixaSalarial.setFaixaSalarialHistoricoAtual(faixaSalarialHistorico1);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setColaborador(ColaboradorFactory.getEntity(1L));
+		historicoColaborador.setMotivo(MotivoHistoricoColaborador.CONTRATADO);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setData(DateUtil.criarDataMesAno(1, 12, 2015));
+		
+		faixaSalarialHistoricoDao.expects(once()).method("findByPeriodo").with(eq(faixaSalarial.getId()), eq(data1), eq(dataProxima), eq(null)).will(returnValue(faixaSalarialHistoricos1));
+		indiceHistoricoManager.expects(once()).method("findHistoricoIndiceAnteriorAoProximoHistoricoDaFaixa").with(new Constraint[] {eq(indice.getId()), eq(data1), eq(dataProxima), eq(null), eq(faixaSalarial.getId())}).will(returnValue(indiceHistoricos));
+		indiceHistoricoManager.expects(once()).method("findByPeriodo").with(eq(faixaSalarialHistorico2.getIndice().getId()), eq(faixaSalarialHistorico2.getData()), ANYTHING, ANYTHING).will(returnValue(new ArrayList<IndiceHistorico>()));
+		
+		Collection<FaixaSalarialHistorico> faixaSalarialHistoricos = faixaSalarialHistoricoManager.findByPeriodo(historicoColaborador, dataProxima);
+		assertEquals(2, faixaSalarialHistoricos.size()); 
 	}
 
 	public void testFindByPeriodoPorIndiceValor()
@@ -470,10 +558,19 @@ public class FaixaSalarialHistoricoManagerTest extends MockObjectTestCase
 		Collection<IndiceHistorico> indiceHistoricos = new ArrayList<IndiceHistorico>();
 		indiceHistoricos.add(indiceHistorico);
 
+		faixaSalarial.setFaixaSalarialHistoricoAtual(faixaSalarialHistorico);
+		
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity(1L);
+		historicoColaborador.setColaborador(ColaboradorFactory.getEntity(1L));
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setData(data);
+
 		faixaSalarialHistoricoDao.expects(once()).method("findByPeriodo").with(eq(faixaSalarial.getId()), eq(data), eq(dataProxima), eq(null)).will(returnValue(faixaSalarialHistoricos));
 		indiceHistoricoManager.expects(once()).method("findByPeriodo").with(ANYTHING, ANYTHING, ANYTHING, ANYTHING).will(returnValue(indiceHistoricos));
+		indiceHistoricoManager.expects(once()).method("findHistoricoIndiceAnteriorAoProximoHistoricoDaFaixa").with(new Constraint[] {eq(indice.getId()), eq(data), eq(dataProxima), eq(null), eq(faixaSalarial.getId())}).will(returnValue(new ArrayList<IndiceHistorico>()));
 
-		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoManager.findByPeriodo(faixaSalarial.getId(), data, dataProxima, null);
+
+		Collection<FaixaSalarialHistorico> retorno = faixaSalarialHistoricoManager.findByPeriodo(historicoColaborador, dataProxima);
 		assertEquals(3, retorno.size());
 	}
 
