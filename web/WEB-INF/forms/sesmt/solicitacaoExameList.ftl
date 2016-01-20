@@ -195,11 +195,11 @@
 		<button onclick="window.location='prepareInsert.action?nomeBusca='+escape($('#nomeBusca').val()) + '&vinculo=' +$('#vinculo').val()+'&primeiraExecucao=true'" accesskey="N" class="btnInserir"></button>
 	</div>
 	
-	<div id="considerarRiscoPorDialog">
+	<div id="considerarRiscoPorDialog" style="display: none;">
 		<@ww.form name="formConsiderarRiscoPor" id="formConsiderarRiscoPor" action="../exame/imprimirAso.action" method="" >
 
 			<@ww.hidden name="solicitacaoExame.id" id="solicitacaoExameId"/>
-			<@ww.select label="Imprimir ASO considerando risco por:" name="imprimirASOComRiscoPor" list="tiposRiscoSistema" cssStyle="width: 200px; margin-top: 6px;" />
+			<@ww.select label="Imprimir ASO considerando risco por" name="imprimirASOComRiscoPor" list="tiposRiscoSistema" cssStyle="width: 200px; margin-top: 6px;" />
 			
 			<button type="submit" class="btnImprimir grayBG" onclick="$('#considerarRiscoPorDialog').dialog('close');"></button>
 			<button type="button" onclick="$('#considerarRiscoPorDialog').dialog('close'); $('#considerarRiscoPorDialog input').val(''); $('#considerarRiscoPorDialog select').val('');" class="btnCancelar grayBG">	</button>
