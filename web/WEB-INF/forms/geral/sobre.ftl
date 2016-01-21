@@ -12,7 +12,7 @@
 <body>
 	<ul class="sobre">
 		<li>Versão: ${parametrosDoSistema.appVersao}</li>
-		<li>Copyright ©${ano} Fortes Informática</li>
+		<li>Copyright ©${ano} Fortes Tecnologia</li>
 		<li><a href="http://www2.fortesinformatica.com.br/" target="_blank">www2.fortesinformatica.com.br/</a></li>
 	</ul>
 </body>

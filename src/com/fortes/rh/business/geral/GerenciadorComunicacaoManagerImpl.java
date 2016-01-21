@@ -278,8 +278,8 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
     		corpo.append("Período: "+ DateUtil.formataDiaMesAno(questionario.getDataInicio()) + " a " + DateUtil.formataDiaMesAno(questionario.getDataFim()) + "<br><br>");
     		corpo.append("Acesse o RH em: <br>");
     		corpo.append("<a href=\"" + parametros.getAppUrl() + "\">RH</a><br><br>");
-    		corpo.append("Copyright© by Fortes Informática LTDA<br>");
-    		corpo.append("http://www.fortesinformatica.com.br");
+    		corpo.append("Copyright© by Fortes Tecnologia LTDA<br>");
+    		corpo.append("http://www.fortestecnologia.com.br");
 
             for (ColaboradorQuestionario colaboradorQuestionario : colaboradorQuestionarios)
             {
@@ -1874,8 +1874,8 @@ public class GerenciadorComunicacaoManagerImpl extends GenericManagerImpl<Gerenc
 				corpo.append("<strong>Login:</strong> "+login+"<br> <strong>Senha:</strong> "+senha+"<br><br>");
 				corpo.append("Acesse o RH em: <br>");
 				corpo.append("<a href=\"" + parametros.getAppUrl() + "\">RH</a><br><br>");
-				corpo.append("Copyright© by Fortes Informática LTDA<br>");
-				corpo.append("http://www.fortesinformatica.com.br");
+				corpo.append("Copyright© by Fortes Tecnologia LTDA<br>");
+				corpo.append("http://www.fortestecnologia.com.br");
 
 				Collection<GerenciadorComunicacao> gerenciadorComunicacaos = getDao().findByOperacaoId(Operacao.CRIAR_ACESSO_SISTEMA.getId(), empresa.getId());
 				for (GerenciadorComunicacao gerenciadorComunicacao : gerenciadorComunicacaos) {
