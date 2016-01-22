@@ -118,6 +118,17 @@ public class ColaboradorQuestionarioListActionTest extends MockObjectTestCase
 
     	assertEquals("success", colaboradorQuestionarioAction.delete());
     }
+    
+    public void testDeleteSemAvaliacao() throws Exception
+    {
+    	ColaboradorQuestionario colaboradorQuestionario = ColaboradorQuestionarioFactory.getEntity(1L);
+    	colaboradorQuestionarioAction.setColaboradorQuestionario(colaboradorQuestionario);
+
+    	colaboradorQuestionarioManager.expects(once()).method("findById").with(eq(colaboradorQuestionario.getId())).will(returnValue(colaboradorQuestionario));
+    	colaboradorRespostaManager.expects(once()).method("removeFicha").with(eq(colaboradorQuestionario.getId()));
+
+    	assertEquals("success", colaboradorQuestionarioAction.delete());
+    }
 
     public void testGets() throws Exception
     {

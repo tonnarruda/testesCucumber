@@ -19,8 +19,6 @@ import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.business.pesquisa.ColaboradorQuestionarioManager;
 import com.fortes.rh.business.pesquisa.ColaboradorRespostaManager;
 import com.fortes.rh.business.pesquisa.QuestionarioManager;
-import com.fortes.rh.model.acesso.Usuario;
-import com.fortes.rh.model.avaliacao.Avaliacao;
 import com.fortes.rh.model.avaliacao.AvaliacaoDesempenho;
 import com.fortes.rh.model.dicionario.TipoModeloAvaliacao;
 import com.fortes.rh.model.dicionario.TipoPergunta;
@@ -203,14 +201,18 @@ public class ColaboradorQuestionarioListAction extends MyActionSupportList
 	{
 		//TODO: Este metodo tambem remove o "colaboradorQuestionario" relacionado. O ideal seria
 		//      que o "colaboradorQuestionarioManager" removesse as respostas e nao o contrario.
-		
-		ColaboradorQuestionario colaboradorQuestionarioTemp = colaboradorQuestionarioManager.findById(colaboradorQuestionario.getId());
-		
-		colaboradorRespostaManager.removeFicha(colaboradorQuestionario.getId());
-				
-		if(TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA == colaboradorQuestionarioTemp.getAvaliacao().getTipoModeloAvaliacao()){
-			gerenciadorComunicacaoManager.enviarMensagemAoExluirRespostasAvaliacaoPeriodoDeExperiencia(colaboradorQuestionarioTemp, getUsuarioLogado(), colaboradorQuestionarioTemp.getColaborador().getEmpresa());
-		
+		try {
+			ColaboradorQuestionario colaboradorQuestionarioTemp = colaboradorQuestionarioManager.findById(colaboradorQuestionario.getId());
+			
+			colaboradorRespostaManager.removeFicha(colaboradorQuestionario.getId());
+			
+			if(colaboradorQuestionarioTemp.getAvaliacao() != null  && TipoModeloAvaliacao.ACOMPANHAMENTO_EXPERIENCIA == colaboradorQuestionarioTemp.getAvaliacao().getTipoModeloAvaliacao()){
+				gerenciadorComunicacaoManager.enviarMensagemAoExluirRespostasAvaliacaoPeriodoDeExperiencia(colaboradorQuestionarioTemp, getUsuarioLogado(), colaboradorQuestionarioTemp.getColaborador().getEmpresa());
+			}
+			addActionSuccess("Exclusão realizada com sucesso.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			addActionError("Ocorreu um erro ao realizar a exclusão");
 		}
 		return Action.SUCCESS;
 	}
