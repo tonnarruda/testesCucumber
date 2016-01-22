@@ -170,7 +170,6 @@ public class SolicitacaoExameDaoHibernate extends GenericDaoHibernate<Solicitaca
 		hql.append("			    where cas2.candidato.id = ca.id) ");
 		hql.append("	or s.data is null) ");
 		
-		hql.append("and clinica.id != null ");
 		hql.append("order by clinica.nome ");
 
 		Query query = getSession().createQuery(hql.toString());
