@@ -182,7 +182,7 @@
 		function populaArea(empresaId)
 		{
 			DWRUtil.useLoadingMessage('Carregando...');
-			AreaOrganizacionalDWR.getByEmpresas(createListArea, empresaId, empresaIds, null);
+			AreaOrganizacionalDWR.getPemitidasByEmpresas(createListArea,false, empresaId, empresaIds);
 		}
 
 		function createListArea(data)
@@ -360,6 +360,10 @@
 
 	<@ww.form name="form" action="relatorioDinamico.action" onsubmit="return validarCampos();" validate="true" method="POST">
 	
+		<#list empresas as empresa>
+			<input type="hidden" name="empresasPermitidas" value="${empresa.id}" />
+		</#list>
+		
 		<#if compartilharColaboradores>
 			<@ww.select label="Empresa" name="empresa.id" id="empresa" list="empresas" listKey="id" listValue="nome" headerValue="Todas" headerKey="" onchange="populaEstabelecimento(this.value);populaArea(this.value);populaCargo();mostraFiltroEnviadosParaAC()"/>
 		<#else>

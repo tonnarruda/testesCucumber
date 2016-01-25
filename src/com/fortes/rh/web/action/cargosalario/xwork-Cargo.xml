@@ -87,6 +87,7 @@
 		<action name="prepareRelatorioColaboradorCargo" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="prepareRelatorioColaboradorCargo">
 			<interceptor-ref name="defaultListStack"/>
 			<result name="success" type="freemarker">/WEB-INF/forms/cargosalario/prepareRelatorioColaboradorCargo.ftl</result>
+			<result name="semPermissaoDeVerAreaOrganizacional" type="freemarker">/WEB-INF/pages/mensagemInfoWarnError.ftl</result>
 		</action>
 		<action name="relatorioColaboradorCargo" class="com.fortes.rh.web.action.cargosalario.CargoEditAction" method="relatorioColaboradorCargo">
 			<interceptor-ref name="defaultDeleteStack"/>

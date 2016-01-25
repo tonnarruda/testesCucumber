@@ -71,6 +71,7 @@ import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.DateUtil;
+import com.fortes.rh.util.EmpresaUtil;
 import com.fortes.rh.util.LongUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.util.StringUtil;
@@ -163,6 +164,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	private boolean exibirSomenteAtivos;
 
 	private Long[] empresaIds;//repassado para o DWR
+	private Long[] empresasPermitidas;
 
 	private CamposExtras camposExtras = new CamposExtras();;
 	private Map sexos = new Sexo();
@@ -482,13 +484,16 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	public String prepareRelatorioDinamico()
 	{
+		boolean verTodasAreas = SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"});
+		boolean podeGerarRelatorioColaborador = verTodasAreas || (areaOrganizacionalManager.findAllListAndInativasByUsuarioId(getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), AreaOrganizacional.TODAS, null).size() > 0); 
+		
+		if(!podeGerarRelatorioColaborador){
+			setActionMsg("Usuário sem permissão de gerar este relatório, pois o mesmo não é gestor de área organizacional e não possui em seu perfil a configuração para \"Visualizar todas as Áreas Organizacionais\".");
+			return "semPermissaoDeVerAreaOrganizacional";			
+		}
+
 		Long usuarioId = SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession());
 		prepareEmpresas("ROLE_REL_LISTA_COLAB");
-		
-		CollectionUtil<Empresa> clu = new CollectionUtil<Empresa>();
-		empresaIds = clu.convertCollectionToArrayIds(empresas);//usado pelo DWR
-		
-		empresa = getEmpresaSistema();
 		
 		habilitaCampoExtra = getEmpresaSistema().isCampoExtraColaborador();
 		
@@ -537,9 +542,10 @@ public class ColaboradorListAction extends MyActionSupportList
 		try
 		{
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
+			areaOrganizacionalsCheck = areaOrganizacionalManager.filtraPermitidas(areaOrganizacionalsCheck, (empresa.getId() == null ? getEmpresaSistema().getId() : empresa.getId()));
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 			Collection<Long> cargos = LongUtil.arrayLongToCollectionLong(cargosCheck);
-			
+
 			camposExtras.setId(1l);
 			
 			String nomeRelatorio = "modeloDinamico.jrxml";
@@ -711,7 +717,8 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	private Collection<Colaborador> getcolaboradoresByFiltros(Collection<Long> estabelecimentos, Collection<Long> areas,Collection<Long> cargos, String order) 
 	{
-		return colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, cargos, camposExtras, orderField, dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim, situacao, enviadoParaAC, empresa.getId());
+		return colaboradorManager.findAreaOrganizacionalByAreas(habilitaCampoExtra, estabelecimentos, areas, cargos, camposExtras, order, 
+				dataIni, dataFim, sexo, deficiencia, tempoServicoIni, tempoServicoFim, situacao, enviadoParaAC, EmpresaUtil.empresasSelecionadas(empresa.getId(),empresasPermitidas));
 	}
 	
 	public String relatorioDinamicoXLS() throws Exception
@@ -719,6 +726,7 @@ public class ColaboradorListAction extends MyActionSupportList
 		try
 		{
 			Collection<Long> estabelecimentos = LongUtil.arrayStringToCollectionLong(estabelecimentosCheck);
+			areaOrganizacionalsCheck = areaOrganizacionalManager.filtraPermitidas(areaOrganizacionalsCheck, (empresa.getId() == null ? getEmpresaSistema().getId() : empresa.getId()));
 			Collection<Long> areas = LongUtil.arrayStringToCollectionLong(areaOrganizacionalsCheck);
 			Collection<Long> cargos = LongUtil.arrayLongToCollectionLong(cargosCheck);
 			camposExtras.setId(1l);
@@ -1500,5 +1508,9 @@ public class ColaboradorListAction extends MyActionSupportList
 
 	public String[] getDataCalculos() {
 		return dataCalculos;
+	}
+
+	public void setEmpresasPermitidas(Long[] empresasPermitidas) {
+		this.empresasPermitidas = empresasPermitidas;
 	}
 }

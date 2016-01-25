@@ -315,6 +315,7 @@
 		<action name="prepareRelatorioDinamico" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareRelatorioDinamico">
 			<result name="success" type="freemarker">/WEB-INF/forms/geral/colaboradorListagemRelatorio.ftl</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/colaboradorListagemRelatorio.ftl</result>
+			<result name="semPermissaoDeVerAreaOrganizacional" type="freemarker">/WEB-INF/pages/mensagemInfoWarnError.ftl</result>
 		</action>
 		<action name="relatorioDinamico" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="relatorioDinamico">
 			<result name="success" type="jasper">

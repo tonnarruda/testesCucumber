@@ -177,20 +177,22 @@ public class CargoEditAction extends MyActionSupportEdit
 		verTodasAreas = SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"});
 		podeGerarRelatorioColaboradorPorCargo = verTodasAreas || (areaOrganizacionalManager.findAllListAndInativasByUsuarioId(getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), AreaOrganizacional.TODAS, null).size() > 0); 
 		
-		if(!podeGerarRelatorioColaboradorPorCargo)
-			setActionMsg("Usuário sem permição de gerar relatório, pois o mesmo não é gestor de área organizacional e\\ou não possui em seu perfil \"Visualizar todas as Áreas Organizacionais\". ");
+		if(!podeGerarRelatorioColaboradorPorCargo){
+			setActionMsg("Usuário sem permissão de gerar este relatório, pois o mesmo não é gestor de área organizacional e não possui em seu perfil a configuração para \"Visualizar todas as Áreas Organizacionais\".");
+			return "semPermissaoDeVerAreaOrganizacional";
+		}
 		
-		prepareRelatoriosColab();
+		preparaEmpresasRelatoriosColaborador();
 		return Action.SUCCESS;
 	}
 
 	public String prepareRelatorioColaboradorGrupoOcupacional() throws Exception
 	{
-		prepareRelatoriosColab();
+		preparaEmpresasRelatoriosColaborador();
 		return Action.SUCCESS;
 	}
 
-	private void prepareRelatoriosColab() 
+	private void preparaEmpresasRelatoriosColaborador() 
 	{
 		compartilharColaboradores =  parametrosDoSistemaManager.findById(1L).getCompartilharColaboradores();
 		empresas = empresaManager.findEmpresasPermitidas(compartilharColaboradores, getEmpresaSistema().getId(), SecurityUtil.getIdUsuarioLoged(ActionContext.getContext().getSession()), "ROLE_REL_COLAB_CARGO");
@@ -203,25 +205,23 @@ public class CargoEditAction extends MyActionSupportEdit
 			empresa = getEmpresaSistema();
 		
 		dataHistorico = new Date();
-		
-		
 	}
 	
 	public String relatorioColaboradorCargoXLS() throws Exception {
 		if(relatorioResumido) {
 			populaTituloFiltro(); 
 			try {
-				areasOrganizacionaisPermitidas();
-				List<HistoricoColaborador> historicoColaboradores = (List<HistoricoColaborador>) historicoColaboradorManager.relatorioColaboradorCargo(dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo, exibirSalarioVariavel, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
+				areasCheck = areaOrganizacionalManager.filtraPermitidas(areasCheck, (empresa.getId() == null ? getEmpresaSistema().getId() : empresa.getId()));
+				List<HistoricoColaborador> historicoColaboradores = (List<HistoricoColaborador>) historicoColaboradorManager.relatorioColaboradorCargo(
+						dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo, exibirSalarioVariavel, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
 				faixasDoCargo = faixaSalarialManager.geraDadosRelatorioResumidoColaboradoresPorCargoXLS(historicoColaboradores);
 				return "successResumidoXls";
-			} catch (ColecaoVaziaException e) {
-				addActionMessage(e.getMessage());
-				e.printStackTrace();
-				prepareRelatorioColaboradorCargo();
-				return Action.INPUT;
 			}catch (Exception e) {
-				addActionMessage(e.getMessage());
+				if(e instanceof ColecaoVaziaException)
+					addActionMessage(e.getMessage());
+				else
+					addActionError(e.getMessage());
+				
 				e.printStackTrace();
 				prepareRelatorioColaboradorCargo();
 				return Action.INPUT;
@@ -276,15 +276,15 @@ public class CargoEditAction extends MyActionSupportEdit
 			exibirSalarioVariavel = exibirSalarioVariavel();
 		
 		try {
-			areasOrganizacionaisPermitidas();
-			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo, exibirSalarioVariavel, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
-		} catch (ColecaoVaziaException e) {
-			addActionMessage(e.getMessage());
-			e.printStackTrace();
-			prepareRelatorioColaboradorCargo();
-			return Action.INPUT;
+			areasCheck = areaOrganizacionalManager.filtraPermitidas(areasCheck, (empresa.getId() == null ? getEmpresaSistema().getId() : empresa.getId()));
+			historicoColaboradors = historicoColaboradorManager.relatorioColaboradorCargo(
+					dataHistorico, cargosCheck, estabelecimentosCheck, qtdMeses, opcaoFiltro, areasCheck, exibColabAdmitido, qtdMesesDesatualizacao, vinculo, exibirSalarioVariavel, EmpresaUtil.empresasSelecionadas(empresa.getId(), empresasPermitidas));
 		}catch (Exception e) {
-			addActionMessage(e.getMessage());
+			if(e instanceof ColecaoVaziaException)
+				addActionMessage(e.getMessage());
+			else
+				addActionError(e.getMessage());
+
 			e.printStackTrace();
 			prepareRelatorioColaboradorCargo();
 			return Action.INPUT;
@@ -298,20 +298,6 @@ public class CargoEditAction extends MyActionSupportEdit
 		parametros.put("EXIBIRAREAORGANIZACIONAL", exibirAreaOrganizacional);
 		
 		return Action.SUCCESS;
-	}
-
-	private void areasOrganizacionaisPermitidas() 
-	{
-		verTodasAreas = SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"});
-		if(!verTodasAreas && (areasCheck == null || areasCheck.length == 0))
-		{
-			Long[] areaIds = areaOrganizacionalManager.findIdsAreasDoResponsavelCoResponsavel(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()), getEmpresaSistema().getId());
-			
-			if(areaIds.length == 0)
-				areaIds = new Long[]{-1L};
-
-			areasCheck = new StringUtil().LongToString(areaIds);
-		}
 	}
 
 	private void populaTituloFiltro() 
@@ -342,7 +328,7 @@ public class CargoEditAction extends MyActionSupportEdit
 				empresa = empresaManager.findByIdProjection(empresa.getId());
 			
 			if(empresasPermitidas == null){
-				addActionMessage("O relatório não pode ser gerado, pois o usuário não possui empresa com permição de acesso.");
+				addActionMessage("O relatório não pode ser gerado, pois o usuário não possui empresa com permissão de acesso.");
 				prepareRelatorioColaboradorGrupoOcupacional();
 				return Action.INPUT;
 			}

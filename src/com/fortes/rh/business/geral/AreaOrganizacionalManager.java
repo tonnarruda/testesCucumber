@@ -90,4 +90,5 @@ public interface AreaOrganizacionalManager extends GenericManager<AreaOrganizaci
 	public boolean verificarColaboradoresAreaMae(AreaOrganizacional areaMae);
 	public void transferirColabDaAreaMaeParaAreaFilha(AreaOrganizacional areaOrganizacional);
 	public boolean possuiAreaFilhasByCodigoAC(String codigoAC, Long empresaId);
+	public String[] filtraPermitidas(String[] areasIds, Long empresaId);
 }

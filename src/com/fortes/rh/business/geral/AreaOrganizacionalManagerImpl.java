@@ -40,6 +40,7 @@ import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.sesmt.relatorio.ExamesPrevistosRelatorio;
 import com.fortes.rh.model.ws.TAreaOrganizacional;
+import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
 import com.fortes.rh.util.CollectionUtil;
 import com.fortes.rh.util.LongUtil;
@@ -48,6 +49,7 @@ import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.util.StringUtil;
 import com.fortes.rh.web.ws.AcPessoalClientLotacao;
 import com.fortes.web.tags.CheckBox;
+import com.opensymphony.xwork.ActionContext;
 
 @SuppressWarnings("unchecked")
 public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrganizacional, AreaOrganizacionalDao> implements AreaOrganizacionalManager
@@ -693,7 +695,6 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 
 	public void bind(AreaOrganizacional areaOrganizacional, TAreaOrganizacional lotacao) throws Exception
 	{
-		//TODO: codigoac vazio
 		areaOrganizacional.setCodigoAC(lotacao.getCodigo());
 		areaOrganizacional.setNome(lotacao.getNome());
 
@@ -807,6 +808,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return getDao().findSemCodigoAC(empresaId);
 	}
 
+	// TODO: SEM TESTE
 	public void deleteAreaOrganizacional(Long[] areaIds) throws Exception {
 
 		if (areaIds != null && areaIds.length > 0) {
@@ -843,6 +845,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return areasIds;
 	}
 	
+	// TODO: SEM TESTE
 	public Collection<Long> findIdsAreasFilhas(Collection<Long> areasIds) 
 	{
 		Collection<Long> areasFilhasIds = new ArrayList<Long>();
@@ -921,7 +924,8 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		
 		return StringUtil.converteCollectionToArrayString(emailsNotificacoes);
 	}
-
+	
+	// TODO: SEM TESTE
 	public void desvinculaResponsaveis(Long... colaboradoresIds)
 	{
 		getDao().desvinculaResponsavel(colaboradoresIds);		
@@ -940,6 +944,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 			areaOrganizacionalTmp.setAreaMae(null);
 	}
 	
+	// TODO: SEM TESTE
 	public Collection<AreaOrganizacional> ordenarAreasHierarquicamente(Collection<AreaOrganizacional> areas, Collection<Long> areasIds, int nivelHierarquico)
 	{
 		Collection<AreaOrganizacional> areasOrdenadas = new ArrayList<AreaOrganizacional>();
@@ -967,6 +972,7 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 		return areasOrdenadas;
 	}
 	
+	// TODO: SEM TESTE
 	public void removeComDependencias(Long id) throws FortesException
 	{
 		String[] tables = getDao().findDependentTables(id);
@@ -1012,5 +1018,22 @@ public class AreaOrganizacionalManagerImpl extends GenericManagerImpl<AreaOrgani
 	public Long[] findAreasMaesIdsByEmpresaId(Long empresaId) 
 	{
 		return getDao().findAreasMaesIdsByEmpresaId(empresaId);
+	}
+
+	public String[] filtraPermitidas(String[] areasIds, Long empresaId) 
+	{
+		boolean verTodasAreas = SecurityUtil.verifyRole(ActionContext.getContext().getSession(), new String[]{"ROLE_VER_AREAS"});
+		
+		if(!verTodasAreas && ArrayUtils.isEmpty(areasIds))
+		{
+			Long[] areaIds = findIdsAreasDoResponsavelCoResponsavel(SecurityUtil.getUsuarioLoged(ActionContext.getContext().getSession()), empresaId);
+			
+			if(areaIds.length == 0)
+				areaIds = new Long[]{-1L};
+
+			areasIds = new StringUtil().LongToString(areaIds);
+		}
+		
+		return areasIds;
 	}
 }

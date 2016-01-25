@@ -844,8 +844,6 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		assertEquals(3, areaIds.size());
 	}
 	
-
-	
 	public void testSetFamiliaAreasComExamesPrevistos() throws Exception
 	{
 		Collection<AreaOrganizacional> areas = new ArrayList<AreaOrganizacional>();
@@ -1106,11 +1104,9 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		
 		AreaOrganizacional areaAvo = AreaOrganizacionalFactory.getEntity(1L);
 		areaAvo.setEmpresa(empresa);
-		areaAvo.setNome("areaAvo");
 		
 		AreaOrganizacional areaMae1 = AreaOrganizacionalFactory.getEntity(2L);
 		areaMae1.setEmpresa(empresa);
-		areaMae1.setNome("areaMae1");
 		areaMae1.setEmailsNotificacoes("ru@gmail.com; sam@gmail.com");
 		areaMae1.setResponsavel(responsavel);
 		areaMae1.setCoResponsavel(responsavel2);
@@ -1118,19 +1114,16 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		
 		AreaOrganizacional areaMae2 = AreaOrganizacionalFactory.getEntity(3L);
 		areaMae2.setEmpresa(empresa);
-		areaMae2.setNome("areaMae2");
 		areaMae2.setResponsavel(responsavel);
 		areaMae2.setAreaMae(areaAvo);
 		
 		AreaOrganizacional areaFilha1 = AreaOrganizacionalFactory.getEntity(4L);
 		areaFilha1.setEmpresa(empresa);
-		areaFilha1.setNome("areaFilha1");
 		areaFilha1.setResponsavel(responsavel2);
 		areaFilha1.setAreaMae(areaMae1);
 		
 		AreaOrganizacional areaFilha2 = AreaOrganizacionalFactory.getEntity(5L);
 		areaFilha2.setEmpresa(empresa);
-		areaFilha2.setNome("areaFilha2");
 		areaFilha2.setResponsavel(responsavel2);
 		areaFilha2.setAreaMae(areaMae2);
 		
@@ -1138,5 +1131,59 @@ public class AreaOrganizacionalManagerTest extends MockObjectTestCase
 		
 		assertEquals(4, areaOrganizacionalManager.getEmailsResponsaveis(areaFilha1.getId(), todasAsAreas, AreaOrganizacional.RESPONSAVEL).length);
 		assertEquals(3, areaOrganizacionalManager.getEmailsResponsaveis(areaFilha1.getId(), todasAsAreas, AreaOrganizacional.CORRESPONSAVEL).length);
+	}
+	
+	public void testFiltraPermitidasComRoleVerAreas()
+	{
+		MockSecurityUtil.roles = new String[]{"ROLE_VER_AREAS"};
+		Long empresaId = 1L;
+		
+		assertNull(areaOrganizacionalManager.filtraPermitidas(null, empresaId));
+	}
+	
+	public void testFiltraPermitidasSemRoleVerAreasComAreas()
+	{
+		MockSecurityUtil.roles = new String[]{};
+		Long empresaId = 1L;
+		String[] areasIds = {"1","2"};
+		
+		assertEquals(areasIds,  areaOrganizacionalManager.filtraPermitidas(areasIds, empresaId));
+	}
+	
+	public void testFiltraPermitidasSemRoleVerComAreasDoResponsavel()
+	{
+		MockSecurityUtil.roles = new String[]{};
+		Long usuarioId = 1L;
+		Long empresaId = 1L;
+		String[] areasIds = {};
+		String[] areasPermitidas = {"1","2","3"};
+		Long[] areasIdsdoResponsavel = {1L, 2L, 3L};
+		Collection<Long> areasIdsCollection = Arrays.asList(new Long[] {1L,2L,3L});
+		
+		areaOrganizacionalDao.expects(once()).method("findIdsAreasFilhas").with(eq(areasIdsCollection)).will(returnValue(new ArrayList<Long>()));
+		areaOrganizacionalDao.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").with(eq(usuarioId), eq(empresaId)).will(returnValue(areasIdsdoResponsavel));
+		
+		String[] areasRetonadas = areaOrganizacionalManager.filtraPermitidas(areasIds, empresaId);
+		
+		assertEquals(areasPermitidas.length, areasRetonadas.length );
+		assertEquals(areasPermitidas[0], areasRetonadas[0]);
+		assertEquals(areasPermitidas[1], areasRetonadas[1]);
+		assertEquals(areasPermitidas[2], areasRetonadas[2]);
+	}
+	
+	public void testFiltraPermitidasSemRoleVerSemAreasDoResponsavel()
+	{
+		MockSecurityUtil.roles = new String[]{};
+		Long usuarioId = 1L;
+		Long empresaId = 1L;
+		String[] areasIds = {};
+		String[] areasPermitidas = {"-1"};
+		Long[] areasIdsdoResponsavel = {};
+		
+		areaOrganizacionalDao.expects(once()).method("findIdsAreasDoResponsavelCoResponsavel").with(eq(usuarioId), eq(empresaId)).will(returnValue(areasIdsdoResponsavel));
+		
+		String[] areasRetonadas = areaOrganizacionalManager.filtraPermitidas(areasIds, empresaId);
+		assertEquals(areasPermitidas.length, areasRetonadas.length );
+		assertEquals(areasPermitidas[0], areasRetonadas[0]);
 	}
 }

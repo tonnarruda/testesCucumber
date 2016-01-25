@@ -239,7 +239,7 @@
 									</#if>
 									
 									<@display.column title="Ações" style="text-align:center; width: 80px;" media="html">
-										<@frt.link href="#" onclick="newConfirm('${pendenciaAC.msg}', function(){window.location='${pendenciaAC.action}'});" imgTitleDisabled="Você não tem permição para remover esse ítem." imgTitle="Excluir" imgName="delete.gif" opacity=opacityDisabled disabled=opacityDisabled/>
+										<@frt.link href="#" onclick="newConfirm('${pendenciaAC.msg}', function(){window.location='${pendenciaAC.action}'});" imgTitleDisabled="Você não tem permissão para remover esse ítem." imgTitle="Excluir" imgName="delete.gif" opacity=opacityDisabled disabled=opacityDisabled/>
 									</@display.column>
 		
 								</#if>
