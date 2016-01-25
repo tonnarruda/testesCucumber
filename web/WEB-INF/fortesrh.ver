@@ -9,6 +9,7 @@
 		<Item visivel="S" motivo="S20150800138"><![CDATA[Info. Funcionais > Movimentações > Ocorrências: Possibilidade de movimentar ocorrências para colaboradores desligados.]]></Item>
 		<Item visivel="S" motivo="S15120000241"><![CDATA[Info. Funcionais > Relatórios > Declaração de Rendimentos: Novo relatório, quando integrado com o sistema Fortes Pessoal.]]></Item>		
 		<Item visivel="S" motivo="P15120000077"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Correção de inconsistência ao exibir estabelecimentos no relatório.]]></Item>
+		<Item visivel="S" motivo="S16010000043"><![CDATA[Info. Funcionais > Relatórios > Listagem de Colaboradores: Apresentar somente as áreas organizacionais que o usuário tenha permissão de visualizar.]]></Item>
 		<Item visivel="S" motivo="S15120000004"><![CDATA[SESMT > Movimentações > Solicitação de EPIs > Inserir: Possibilidade de cadastrar apenas para colaboradores ativos.]]></Item>
 		<Item visivel="S" motivo="S15110000203"><![CDATA[SESMT > Movimentações > Gerenciamento de EPIs: Nova tela para gerenciamento de EPIs, a qual é a unificação das telas de "Solicitação de EPI" e "Entregas de EPI".]]></Item>
 		<Item visivel="S" motivo="S15110000208"><![CDATA[SESMT > Relatórios > EPI: Agrupamento dos menus "EPI's com CA vencer", "EPI's com prazos a vencer", "EPI's Entregues" e "Ficha de EPI".]]></Item>
