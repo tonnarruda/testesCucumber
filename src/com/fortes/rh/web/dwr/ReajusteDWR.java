@@ -384,6 +384,36 @@ public class ReajusteDWR
 		return tabelaReajusteColaborador.getTipoReajuste();
 	}
 	
+	public Collection<Option> findRealinhamentosByPeriodo(Long empresaId, String dataIniStr, String dataFimStr)
+	{
+		Collection<TabelaReajusteColaborador> tabelaReajusteColaboradores = new ArrayList<TabelaReajusteColaborador>();
+		Collection<Option> retorno = new ArrayList<Option>();
+
+		if (empresaId != null)
+		{
+			Long[] idsLong = new Long[1];
+			idsLong[0] = new Long(empresaId);
+			
+			Collection<TabelaReajusteColaborador> tabelaReajusteColaboradorLista = new LinkedList<TabelaReajusteColaborador>();
+			
+			Date dataIni = null;
+			if(!dataIniStr.equals("") && !dataIniStr.equals("  /  /    "))
+				dataIni = DateUtil.criarDataDiaMesAno(dataIniStr);
+			
+			Date dataFim = null;
+			if(!dataFimStr.equals("") && !dataFimStr.equals("  /  /    "))
+				dataFim = DateUtil.criarDataDiaMesAno(dataFimStr);
+			
+			tabelaReajusteColaboradorLista = tabelaReajusteColaboradorManager.findAllSelect(empresaId, dataIni, dataFim);
+
+			if (tabelaReajusteColaboradorLista != null && tabelaReajusteColaboradorLista.size() > 0)
+				for (TabelaReajusteColaborador tabelaReajusteColaborador : tabelaReajusteColaboradorLista) 
+					retorno.add(new Option(tabelaReajusteColaborador.getId(), tabelaReajusteColaborador.getNome()));
+		}
+
+		return retorno;
+	}
+	
 	public void setColaboradorManager(ColaboradorManager colaboradorManager)
 	{
 		this.colaboradorManager = colaboradorManager;

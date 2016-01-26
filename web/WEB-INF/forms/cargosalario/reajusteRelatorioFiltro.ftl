@@ -3,9 +3,10 @@
 <html>
 <head>
 <@ww.head/>
-	<title>Relatório de Planejamento de Realinhamentos</title>
+	<title>Planejamento de Realinhamentos</title>
 	<#assign formAction="gerarRelatorio.action"/>
 	<#assign accessKey="I"/>
+	<#include "../ftl/mascarasImports.ftl" />
 	
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/interface/ReajusteDWR.js?version=${versao}"/>'></script>
 	<script type='text/javascript' src='<@ww.url includeParams="none" value="/dwr/engine.js?version=${versao}"/>'></script>
@@ -24,7 +25,29 @@
 		<#if !verTodasAreas>
 			$('#divOptFiltro').hide();
 		</#if>
+		
+		$('#help').qtip({
+			content: '<div style="text-align:justify">Ao preencher os campos serão apresentados apenas os planejamentos de realinhamento que estejam dentro do período informado.</div>',
+			style: { width: 400 }
+		});
+		
+		setDatas();
 	});
+	
+	function setDatas()
+	{
+		var newDate = new Date();
+		newDate.setMonth(newDate.getMonth() - 6);
+		
+		var seisMesesAtras = newDate.getDate() + "/"; 
+		seisMesesAtras += ((newDate.getMonth() > 9) ? "" : "0") + (newDate.getMonth()+1) + "/"; 
+		seisMesesAtras += newDate.getFullYear();
+		
+		$('#inicio').val(seisMesesAtras);
+		$('#fim').val($.datepicker.formatDate('dd/mm/yy',new Date()));
+		
+		findRealinhamentosByPeriodo();
+	}
 	
 	function createListIndices(data)
 	{
@@ -61,6 +84,13 @@
 
 	function validarCampos()
 	{
+		if($('#optReajuste').val() == 0)
+		{
+			$('#optReajuste').css('background', 'rgb(255, 238, 194)');
+			jAlert("Preencha os campos indicados.");
+			return false;
+		}
+	
 		return validaFormulario('form', new Array('optReajuste','optFiltro'), new Array());
 	}
 
@@ -114,6 +144,17 @@
 		else
 			$('.btnRelatorioExportar').removeAttr('disabled').css('opacity', '1');
 	}
+	
+	function findRealinhamentosByPeriodo()
+	{
+		ReajusteDWR.findRealinhamentosByPeriodo(repopulaListaRealinhamento, ${empresaSistema.id}, $('#inicio').val(), $('#fim').val() );
+	}
+	
+	function repopulaListaRealinhamento(data)
+	{
+		DWRUtil.removeAllOptions("optReajuste");
+		addOptionsByCollection('optReajuste', data, 'Selecione...');
+	}
 
 </script>
 
@@ -127,6 +168,12 @@
 			<@ww.label label="Promoção/Reajuste" name="tabelaReajusteColaborador.nome"/>
 			<@ww.hidden id="optReajuste" name="tabelaReajusteColaborador.id" value="${tabelaReajusteColaborador.id}"/>
 		<#else>
+			<label>Período de aplicação do realinhamento:</label>
+			<img id="help" src="<@ww.url value="/imgs/help.gif"/>" width="16" height="16" style="margin-left: -5px" />
+			<br />
+			<@ww.datepicker label="" theme="simple" value="" id="inicio" cssClass="mascaraData validaDataIni" liClass="liLeft" onchange="findRealinhamentosByPeriodo();" onblur="findRealinhamentosByPeriodo();"/>a
+			<@ww.datepicker label="" theme="simple" value="" id="fim" cssClass="mascaraData validaDataFim" onchange="findRealinhamentosByPeriodo();" onblur="findRealinhamentosByPeriodo();"/>
+			</br></br>
 			<@ww.select id="optReajuste" label="Selecione o Planejamento"  name="tabelaReajusteColaborador.id" onchange="carregaTipoReajuste()" required="true"  list='tabelaReajusteColaboradors' headerKey="" headerValue="Selecione..."   listKey="id" listValue="nome"/>
 		</#if>
 		

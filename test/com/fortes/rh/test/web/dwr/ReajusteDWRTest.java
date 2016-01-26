@@ -1,7 +1,7 @@
 package com.fortes.rh.test.web.dwr;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import mockit.Mockit;
 
@@ -13,11 +13,14 @@ import com.fortes.rh.business.cargosalario.TabelaReajusteColaboradorManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.model.cargosalario.TabelaReajusteColaborador;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
 import com.fortes.rh.test.util.mockObjects.MockSpringUtil;
 import com.fortes.rh.util.SpringUtil;
 import com.fortes.rh.web.dwr.ReajusteDWR;
+import com.fortes.web.tags.Option;
 
 public class ReajusteDWRTest extends MockObjectTestCase
 {
@@ -33,16 +36,16 @@ public class ReajusteDWRTest extends MockObjectTestCase
 
 		Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
 
+		
+		tabelaReajusteColaboradorManager = new Mock(TabelaReajusteColaboradorManager.class);
+		reajusteDWR.setTabelaReajusteColaboradorManager((TabelaReajusteColaboradorManager) tabelaReajusteColaboradorManager.proxy());
+
 		reajusteColaboradorManager = new Mock(ReajusteColaboradorManager.class);
-		reajusteColaboradorManager = new Mock(TabelaReajusteColaboradorManager.class);
+		reajusteDWR.setReajusteColaboradorManager((ReajusteColaboradorManager) reajusteColaboradorManager.proxy());
+		
 		colaboradorManager = new Mock(ColaboradorManager.class);
-
-		Map<String, Mock> mocks = new HashMap<String, Mock>();
-        mocks.put("reajusteColaboradorManager", reajusteColaboradorManager);
-        mocks.put("tabelaReajusteColaboradorManager", tabelaReajusteColaboradorManager);
-        mocks.put("colaboradorManager", colaboradorManager);
-
-        MockSpringUtil.mocks = mocks;
+		reajusteDWR.setColaboradorManager((ColaboradorManager) colaboradorManager.proxy());
+		
 	}
 
 	public void testVerificaColaboradorValidaTabela()
@@ -91,7 +94,7 @@ public class ReajusteDWRTest extends MockObjectTestCase
 		{
 			tabelaReajusteColaboradorManager.expects(once()).method("findByIdProjection").with(eq(tabelaReajusteColaborador.getId())).will(returnValue(tabelaReajusteColaborador));
 			colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
-			reajusteDWR.verificaColaborador(2L, 3L, true);
+			reajusteDWR.verificaColaborador(tabelaReajusteColaborador.getId(), colaborador.getId(), true);
 		}
 		catch (Exception e)
 		{
@@ -112,7 +115,7 @@ public class ReajusteDWRTest extends MockObjectTestCase
 		{
 			tabelaReajusteColaboradorManager.expects(once()).method("findByIdProjection").with(eq(tabelaReajusteColaborador.getId())).will(returnValue(tabelaReajusteColaborador));
 			colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
-			reajusteDWR.verificaColaborador(2L, 3L, false);
+			reajusteDWR.verificaColaborador(tabelaReajusteColaborador.getId(), colaborador.getId(), false);
 		}
 		catch (Exception e)
 		{
@@ -120,5 +123,26 @@ public class ReajusteDWRTest extends MockObjectTestCase
 		}
 
 		assertNotNull(exeption);
+	}
+	
+	public void testFindRealinhamentosByPeriodo()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		String dataIni = "1/1/2016";
+		String dataFim = "31/1/2016";
+		
+		TabelaReajusteColaborador tabelaReajusteColaborador1 = TabelaReajusteColaboradorFactory.getEntity(1L);
+		TabelaReajusteColaborador tabelaReajusteColaborador2 = TabelaReajusteColaboradorFactory.getEntity(2L);
+		
+		Collection<TabelaReajusteColaborador> tabelaReajusteColaboradores = new ArrayList<TabelaReajusteColaborador>();
+		tabelaReajusteColaboradores.add(tabelaReajusteColaborador1);
+		tabelaReajusteColaboradores.add(tabelaReajusteColaborador2);
+				
+		tabelaReajusteColaboradorManager.expects(once()).method("findAllSelect").with(eq(empresa.getId()),ANYTHING,ANYTHING).will(returnValue(tabelaReajusteColaboradores));
+		
+		Collection<Option> retorno = reajusteDWR.findRealinhamentosByPeriodo(empresa.getId(), dataIni, dataFim);
+		
+		assertEquals(2, retorno.size());
 	}
 }

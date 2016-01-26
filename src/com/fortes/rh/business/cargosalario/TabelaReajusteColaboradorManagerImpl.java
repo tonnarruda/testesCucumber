@@ -58,14 +58,14 @@ public class TabelaReajusteColaboradorManagerImpl extends GenericManagerImpl<Tab
 		getDao().remove(tabelaReajusteColaborador.getId());
 	}
 
-	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId)
+	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId, Date dataIni, Date dataFim)
 	{
-		return getDao().findAllSelect(empresaId, null, TODAS);
+		return getDao().findAllSelect(empresaId, null, TODAS, dataIni, dataFim);
 	}
 
 	public Collection<TabelaReajusteColaborador> findAllSelectByNaoAprovada(Long empresaId, Character tipoReajuste)
 	{
-		return getDao().findAllSelect(empresaId, tipoReajuste, NAO_APROVADA);
+		return getDao().findAllSelect(empresaId, tipoReajuste, NAO_APROVADA, null, null);
 	}
 
 	public void marcaUltima(Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors)

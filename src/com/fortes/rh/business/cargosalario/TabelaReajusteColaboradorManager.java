@@ -33,7 +33,7 @@ public interface TabelaReajusteColaboradorManager extends GenericManager<TabelaR
 
 	public void marcaUltima(Collection<TabelaReajusteColaborador> tabelaReajusteColaboradors);
 
-	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId);
+	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId, Date dataIni, Date dataFim);
 
 	public Collection<TabelaReajusteColaborador> findAllSelectByNaoAprovada(Long empresaId, Character tipoReajuste);
 

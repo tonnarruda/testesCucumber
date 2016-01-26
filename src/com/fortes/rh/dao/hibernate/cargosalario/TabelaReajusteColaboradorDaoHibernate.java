@@ -1,6 +1,7 @@
 package com.fortes.rh.dao.hibernate.cargosalario;
 
 import java.util.Collection;
+import java.util.Date;
 
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
@@ -44,7 +45,7 @@ public class TabelaReajusteColaboradorDaoHibernate extends GenericDaoHibernate<T
 	}
 	
 	@SuppressWarnings("unchecked")
-	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId, Character tipoReajuste, Boolean aprovada)
+	public Collection<TabelaReajusteColaborador> findAllSelect(Long empresaId, Character tipoReajuste, Boolean aprovada, Date dataIni, Date dataFim)
 	{
 		Criteria criteria = getSession().createCriteria(TabelaReajusteColaborador.class, "trc");
 
@@ -61,7 +62,14 @@ public class TabelaReajusteColaboradorDaoHibernate extends GenericDaoHibernate<T
 		
 		if (tipoReajuste != null)
 			criteria.add(Expression.eq("trc.tipoReajuste", tipoReajuste));
-			
+		
+		if(dataIni != null && dataFim != null)
+			criteria.add(Expression.between("trc.data", dataIni, dataFim));
+		else if(dataIni != null)
+			criteria.add(Expression.ge("trc.data", dataIni));
+		else if(dataFim != null)
+			criteria.add(Expression.le("trc.data", dataFim));
+		
 		criteria.addOrder(Order.asc("trc.nome"));
 
 		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);

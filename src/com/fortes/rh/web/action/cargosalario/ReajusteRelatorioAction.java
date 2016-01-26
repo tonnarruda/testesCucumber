@@ -92,7 +92,7 @@ public class ReajusteRelatorioAction extends MyActionSupport
 	public String formFiltro() throws Exception
 	{
 		estabelecimentosCheckList = estabelecimentoManager.populaCheckBox(getEmpresaSistema().getId());
-		tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelect(getEmpresaSistema().getId());
+		tabelaReajusteColaboradors = tabelaReajusteColaboradorManager.findAllSelect(getEmpresaSistema().getId(), null, null);
 		grupoOcupacionals = grupoOcupacionalManager.findAllSelect(getEmpresaSistema().getId());
 		grupoOcupacionalsCheckList = CheckListBoxUtil.populaCheckListBox(grupoOcupacionals, "getId", "getNome");
 		cargosCheckList = cargoManager.populaCheckBox(false, getEmpresaSistema().getId());

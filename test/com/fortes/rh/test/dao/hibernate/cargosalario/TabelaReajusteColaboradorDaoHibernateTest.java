@@ -11,6 +11,7 @@ import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.test.dao.GenericDaoHibernateTest;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.TabelaReajusteColaboradorFactory;
+import com.fortes.rh.util.DateUtil;
 
 public class TabelaReajusteColaboradorDaoHibernateTest extends GenericDaoHibernateTest<TabelaReajusteColaborador>
 {
@@ -68,9 +69,35 @@ public class TabelaReajusteColaboradorDaoHibernateTest extends GenericDaoHiberna
 		tabela2.setTipoReajuste(TipoReajuste.FAIXA_SALARIAL);
 		tabelaReajusteColaboradorDao.save(tabela2);
 		
-		assertEquals(2, tabelaReajusteColaboradorDao.findAllSelect(empresa.getId(), null, true).size());
-		assertEquals(1, tabelaReajusteColaboradorDao.findAllSelect(empresa.getId(), TipoReajuste.COLABORADOR, true).size());
-		assertEquals(1, tabelaReajusteColaboradorDao.findAllSelect(empresa.getId(), TipoReajuste.FAIXA_SALARIAL, true).size());
+		assertEquals(2, tabelaReajusteColaboradorDao.findAllSelect(empresa.getId(), null, true, null, null).size());
+		assertEquals(1, tabelaReajusteColaboradorDao.findAllSelect(empresa.getId(), TipoReajuste.COLABORADOR, true, null, null).size());
+		assertEquals(1, tabelaReajusteColaboradorDao.findAllSelect(empresa.getId(), TipoReajuste.FAIXA_SALARIAL, true, null, null).size());
+	}
+
+	
+	public void testFindAllSelectNoPeriodo()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresa = empresaDao.save(empresa);
+		
+		Date data1 = DateUtil.criarDataMesAno(1, 1, 2016);
+		Date data2 = DateUtil.criarDataMesAno(25, 1, 2016);
+		
+		TabelaReajusteColaborador tabela1 = TabelaReajusteColaboradorFactory.getEntity();
+		tabela1.setEmpresa(empresa);
+		tabela1.setAprovada(true);
+		tabela1.setTipoReajuste(TipoReajuste.COLABORADOR);
+		tabela1.setData(data1);
+		tabelaReajusteColaboradorDao.save(tabela1);
+
+		TabelaReajusteColaborador tabela2 = TabelaReajusteColaboradorFactory.getEntity();
+		tabela2.setEmpresa(empresa);
+		tabela2.setAprovada(true);
+		tabela2.setTipoReajuste(TipoReajuste.COLABORADOR);
+		tabela2.setData(data2);
+		tabelaReajusteColaboradorDao.save(tabela2);
+		
+		assertEquals(1, tabelaReajusteColaboradorDao.findAllSelect(empresa.getId(), null, true, DateUtil.criarDataMesAno(1, 12, 2015), DateUtil.criarDataMesAno(20, 1, 2016)).size());
 	}
 	
 	public void testGetCount()
@@ -109,7 +136,7 @@ public class TabelaReajusteColaboradorDaoHibernateTest extends GenericDaoHiberna
 		tabelaReajusteColaborador = tabelaReajusteColaboradorDao.save(tabelaReajusteColaborador);
 
 		tabelaReajusteColaboradorDao.updateSetAprovada(tabelaReajusteColaborador.getId(), true);
-		assertEquals(1, tabelaReajusteColaboradorDao.findAllSelect(empresa.getId(), TipoReajuste.COLABORADOR, true).size());
+		assertEquals(1, tabelaReajusteColaboradorDao.findAllSelect(empresa.getId(), TipoReajuste.COLABORADOR, true, null, null).size());
 	}
 
 	public void setEmpresaDao(EmpresaDao empresaDao)
