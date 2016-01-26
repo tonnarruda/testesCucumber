@@ -17,11 +17,11 @@
 	<#include "../ftl/showFilterImports.ftl" />
 
 	<#if solicitacaoEpi.id?exists>
-		<title>Editar Solicitação de EPIs</title>
+		<title>Editar Gerenciamento de EPIs</title>
 		<#assign formAction="update.action"/>
 		<#assign edicao=true/>
 	<#else>
-		<title>Inserir Solicitação de EPIs</title>
+		<title>Inserir Gerenciamento de EPIs</title>
 		
 		<#assign formAction="insert.action"/>
 	</#if>

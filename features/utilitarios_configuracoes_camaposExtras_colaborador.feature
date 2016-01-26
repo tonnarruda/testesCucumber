@@ -40,7 +40,7 @@ Funcionalidade: Campos Extras para Colaborador
     E eu preencho o campo (JS) "Admissão" com "21/12/2010"
     E eu saio do campo "Admissão"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
-    E eu seleciono "Financeiro" de "Área Organizacional"
+    E eu seleciono (JS) "1" de "areaOrganizacional"
     E eu seleciono "Contador I" de "Cargo/Faixa"
     E eu seleciono "Por valor" de "Salário Proposto"
     E eu preencho "Valor" com "100"

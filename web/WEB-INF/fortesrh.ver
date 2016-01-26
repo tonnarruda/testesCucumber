@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Versoes>
-	<Versao id="1.1.15x.18x" db="" data="xx/xx/2016">
+	<Versao id="1.1.158.189" db="" data="26/01/2016">
 		<Item visivel="S" motivo="S15100000103"><![CDATA[C&S > Relatórios > Colaboradores por Cargo: Nova coluna de Nome Comercial ao exportar para o excel.]]></Item>
 		<Item visivel="S" motivo="S15120000112"><![CDATA[C&S > Relatórios > Colaboradores por Área Organizacional: Nova opção para exibir salário dos colaboradores.]]></Item>
 		<Item visivel="S" motivo="P16010000207"><![CDATA[Pesquisas: Movimentações > Pesquisas > Colaboradores > Excluir: Correção de inconsistência ao excluir colaborador da pesquisa.]]></Item>

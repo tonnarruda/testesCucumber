@@ -530,6 +530,9 @@ public class EmpresaDaoHibernate extends GenericDaoHibernate<Empresa> implements
 		
 		criteria.add(Expression.eq("e.id", empresaId));
 		
+		if(criteria.uniqueResult() == null)
+			return false;
+		
 		return (Boolean) criteria.uniqueResult();
 	}
 

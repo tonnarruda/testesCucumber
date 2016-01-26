@@ -126,12 +126,12 @@ public class SolicitacaoEpiListAction extends MyActionSupportList
 	{
 		if (solicitacaoEpiItemEntregaManager.existeEntrega(solicitacaoEpi.getId()))
 		{
-			addActionMessage("A solicitação não pôde ser excluída porque já foi entregue.");
+			addActionMessage("O Gerenciamento não pôde ser excluído porque já foi entregue.");
 		}
 		else
 		{
 			solicitacaoEpiManager.remove(solicitacaoEpi.getId());
-			addActionSuccess("Solicitação de EPIs excluída com sucesso.");			
+			addActionSuccess("Gerenciamento de EPIs excluído com sucesso.");			
 		}
 
 		return SUCCESS;

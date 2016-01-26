@@ -23533,3 +23533,66 @@ ALTER TABLE colaboradorAvaliacaoPratica ADD COLUMN colaboradorcertificacao_id bi
 ALTER TABLE colaboradorAvaliacaoPratica ADD CONSTRAINT colabAvaliacaoPratica_colabCertificacao_fk FOREIGN KEY (colaboradorcertificacao_id) REFERENCES colaboradorcertificacao(id);--.go
 insert into migrations values('20160107165224');--.go
 update parametrosdosistema set appversao = '1.1.157.188';--.go
+-- versao 1.1.158.189
+
+update curso set nome = '.' where nome is null; --.go
+alter table curso alter column nome SET NOT NULL; --.go
+insert into migrations values('20160108154705');--.go
+update papel set ordem = ordem + 1 where papelmae_id = 377 and ordem > 2 ;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (656, 'ROLE_REL_DECLARACAO_RENDIMENTOS', 'Declaração de Rendimentos', '/geral/colaborador/prepareDeclaracaoRendimentos.action', 3, true, 377);--.go
+insert into perfil_papel(perfil_id, papeis_id) values(1, 656);--.go
+alter sequence papel_sequence restart with 657;--.go
+
+update parametrosdosistema set acversaowebservicecompativel = '1.1.53.1' where id = 1;--.go
+insert into migrations values('20160112101548');--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (657, 'ROLE_EPI', 'EPI', '#', 3, true, 387);--.go
+
+INSERT INTO perfil_papel (perfil_id, papeis_id) SELECT distinct perfil_id, 657 FROM perfil_papel where papeis_id in(432, 434, 489, 436);--.go
+update papel set papelmae_id = 657, ordem = 1 where id = 434 ;--.go
+update papel set papelmae_id = 657, ordem = 2 where id = 436 ;--.go
+update papel set papelmae_id = 657, ordem = 3 where id = 489 ;--.go
+update papel set papelmae_id = 657, ordem = 4 where id = 432 ;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (658, 'ROLE_EXAMES', 'Exames', '#', 7, true, 387);--.go
+INSERT INTO perfil_papel (perfil_id, papeis_id) SELECT distinct perfil_id, 658 FROM perfil_papel where papeis_id in(431, 460, 559);--.go
+update papel set papelmae_id = 658, ordem = 1 where id = 431 ;--.go
+update papel set papelmae_id = 658, ordem = 2 where id = 460 ;--.go
+update papel set papelmae_id = 658, ordem = 3 where id = 559 ;--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (659, 'ROLE_AFASTAMENTOS', 'Afastamentos', '#', 8, true, 387);--.go
+INSERT INTO perfil_papel (perfil_id, papeis_id) SELECT distinct perfil_id, 659 FROM perfil_papel where papeis_id in(442, 536 );--.go
+update papel set papelmae_id = 659, ordem = 2 where id = 442 ;--.go
+update papel set papelmae_id = 659, ordem = 1 where id = 536 ;--.go
+
+
+update papel set ordem = 4 where id = 448;--.go
+update papel set ordem = 5 where id = 389;--.go
+update papel set ordem = 6 where id = 429;--.go
+update papel set ordem = 9  where id = 449;--.go
+update papel set ordem = 10 where id = 458;--.go
+update papel set ordem = 11 where id = 459;--.go
+update papel set ordem = 12 where id = 488;--.go
+update papel set ordem = 13 where id = 642;--.go
+
+alter sequence papel_sequence restart with 660;--.go
+insert into migrations values('20160112164337');--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (660, 'ROLE_GERENCIAMENTO_EPI', 'Gerenciamento de EPIs', '/sesmt/solicitacaoEpi/list.action', 2, true, 386);--.go
+
+INSERT INTO perfil_papel (perfil_id, papeis_id) SELECT distinct perfil_id, 660 FROM perfil_papel where papeis_id in(433,435);--.go
+
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (661, 'ROLE_GERENCIAMENTO_EPI_EDITAR_SOLICITACAO', 'Editar solicitação', '#', 2, false, 660);--.go
+INSERT INTO papel (id, codigo, nome, url, ordem, menu, papelmae_id) VALUES (662, 'ROLE_GERENCIAMENTO_EPI_EXCLUIR_SOLICITACAO', 'Excluir solicitação', '#', 3, false, 660);--.go
+
+update papel set papelmae_id = 660, menu = false, url='#', ordem = 1, nome = 'Inserir solicitação' where id = 433;--.go
+update papel set papelmae_id = 660, menu = false, url='#', ordem = 4, nome = 'Entregar/Devolver' where id = 435;--.go
+
+INSERT INTO perfil_papel (perfil_id, papeis_id) SELECT distinct perfil_id, 661 FROM perfil_papel where papeis_id in(433);--.go
+INSERT INTO perfil_papel (perfil_id, papeis_id) SELECT distinct perfil_id, 662 FROM perfil_papel where papeis_id in(433);--.go
+
+alter sequence papel_sequence restart with 663;--.go
+insert into migrations values('20160113123402');--.go
+
+update parametrosdosistema set acversaowebservicecompativel='1.1.59.1';--.go
+insert into migrations values('20160126103555');--.go
+update parametrosdosistema set appversao = '1.1.158.189';--.go

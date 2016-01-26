@@ -93,7 +93,12 @@
 		function validaForm(){
 			var validarRespostas = validaRespostas(new Array('data'), new Array('data'), false, true, false, false, true);
 			var validarFormulario = validaFormulario('form', new Array('data'), new Array('data'), true);
-			var validarData = validarRespondidaEm( '${colaborador.dataAdmissao?date}', $("input[name='colaboradorQuestionario.respondidaEm']").val() );
+			
+			<#if colaborador?exists && colaborador.dataAdmissao?exists>
+				var validarData = validarRespondidaEm( '${colaborador.dataAdmissao?date}', $("input[name='colaboradorQuestionario.respondidaEm']").val() );
+			<#else>
+				var validarData = true; 
+			</#if>
 			
 			if(validarRespostas && validarFormulario && validarData)
 				validaRespostasSubjetivas();

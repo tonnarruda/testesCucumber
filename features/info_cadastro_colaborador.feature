@@ -57,7 +57,7 @@ Funcionalidade: Cadastrar Colaborador
     E eu preencho o campo (JS) "Admissão" com "21/12/2010"
     E eu saio do campo "Admissão"
     E eu seleciono "Estabelecimento Padrão" de "Estabelecimento"
-    E eu seleciono "Financeiro > Compras" de "Área Organizacional"
+    E eu seleciono (JS) "2" de "areaOrganizacional"
     E eu seleciono "Contador I" de "Cargo/Faixa"
     E eu seleciono "Por valor" de "Salário Proposto"
     E eu preencho "Valor" com "100"
@@ -83,7 +83,7 @@ Funcionalidade: Cadastrar Colaborador
     E o campo "bairroNome" deve conter "São Gerardo"
 
     Então eu clico "Dados Funcionais"
-    E eu seleciono "Financeiro > Compras > Almoxarifado" de "Área Organizacional"
+    E eu seleciono (JS) "3" de "areaOrganizacional"
     Quando eu clico no botão "Gravar"
     Então eu devo ver "alterado com sucesso."
     E eu devo ver "Silva Barbosa"
