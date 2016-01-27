@@ -6,7 +6,7 @@
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 		
-		#box
+		#box, #selectRelatorio
 		{
 			display: none;
 		}
@@ -31,29 +31,47 @@
 				$('#' + campo).attr("disabled", true);
 		}
 	
+		function imprimirRelatorio(catId) {
+			$('#selectRelatorio').dialog({	title: 'Imprimir relatório',
+			modal: true, 
+			height: 145,
+			width: 200,
+				buttons: [ 	{ text: "Imprimir", click: function() {
+				            if ( $('#tipoRelatorio').val() == 'S' ) {
+				            	popupConfigRelatorio(catId);
+				            } else {
+				            	$("#formRelatorio").find("");
+				            	$("#formRelatorio").submit();
+				            }
+							$(this).dialog("close");
+						} },
+			    		{ text: "Cancelar", click: function() { $(this).dialog("close"); } } ] 
+			});
+		}
+	
 		function popupConfigRelatorio(catId)
 		{
-			$('#catId').val(catId);
+			$('#formRelatorioSimples').find('#catId').val(catId);
 		
 			$('#box').dialog({ modal: true, width: 360 });
 		}
 		
 		function gerarRelatorio()
 		{
-			$('#formRelatorio input').each(function(i, item) {
+			$('#formRelatorioSimples input').each(function(i, item) {
 				if (item.type == 'checkbox')
 					$.cookie(item.id, item.checked);
 				else
 					$.cookie(item.id, item.value);
 			});
 			
-			$('#formRelatorio').submit();
+			$('#formRelatorioSimples').submit();
 
 			$('#box').dialog('close');
 		}
 		
 		$(function() {
-			$('#formRelatorio input').each(function(i, item) {
+			$('#formRelatorioSimples input').each(function(i, item) {
 				if ($.cookie(item.id))
 				{
 					if (item.type == 'checkbox')
@@ -121,7 +139,7 @@
 		<@display.column title="Açőes" class="acao">
 			<a href="prepareUpdate.action?cat.id=${cat.id}"><img border="0" title="<@ww.text name="list.edit.hint"/>" src="<@ww.url value="/imgs/edit.gif"/>"></a>
 			<a href="javascript:;" onclick="newConfirm('Confirma exclusão?', function(){window.location='delete.action?cat.id=${cat.id}'});"><img border="0" title="Excluir" src="<@ww.url value="/imgs/delete.gif"/>"></a>
-			<a href="javascript:;" onclick="popupConfigRelatorio(${cat.id})"><img border="0" title="Imprimir Ficha de Investigação de Acidente" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
+			<a href="javascript:;" onclick="imprimirRelatorio(${cat.id})"><img border="0" title="Imprimir Ficha de Investigação de Acidente" src="<@ww.url includeParams="none" value="/imgs/printer.gif"/>"></a>
 		 </@display.column>
 		<@display.column property="colaborador.nome" title="Colaborador" style="width:280px;"/>
 		<@display.column property="data" title="Data" format="{0,date,dd/MM/yyyy}" style="width:70px;"/>
@@ -130,7 +148,7 @@
 	</@display.table>
 
 	<div id="box" title="Configurar Informações para Impressão">
-		<@ww.form name="formRelatorio" id="formRelatorio" action="imprimirFichaInvestigacaoAcidente.action" method="POST">
+		<@ww.form name="formRelatorioSimples" id="formRelatorioSimples" action="imprimirFichaInvestigacaoAcidente.action" method="POST">
 			<@ww.hidden name="cat.id" id="catId"/>
 			<li>
 				<fieldset class="fieldsetPadrao">
@@ -157,6 +175,13 @@
 			<button onclick="gerarRelatorio();" class="btnImprimirPdf"></button>
 			<button onclick="$('#box').dialog('close');" class="btnCancelar"></button>
 		</div>
+	</div>
+	
+	<div id="selectRelatorio" title="Configurar Informações para Impressão">
+		<@ww.form name="formRelatorio" id="formRelatorio" action="imprimirCAT.action" method="POST">
+			<@ww.hidden name="cat.id" id="catId"/>
+			<@ww.select label="Tipo de relatório" name="tipoRelatorio" id="tipoRelatorio" list=r"#{'S':'Simples','D':'Detalhado'}"/>
+		</@ww.form>
 	</div>
 	
 	<div class="buttonGroup">

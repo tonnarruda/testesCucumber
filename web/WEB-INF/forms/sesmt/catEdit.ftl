@@ -161,7 +161,7 @@
 				<@ww.textfield label="Bairro" id="testemunha1Bairro" name="cat.testemunha1Bairro" cssStyle="width:215px;" maxLength="100" liClass="liLeft"/>
 				<@ww.textfield label="Município" id="testemunha1Municipio" name="cat.testemunha1Municipio" cssStyle="width:215px;" maxLength="100" liClass="liLeft"/>
 				<@ww.textfield label="UF" id="testemunha1UF" name="cat.testemunha1Uf" cssStyle="width:29px;" maxLength="2" liClass="liLeft"/>
-				<@ww.textfield label="Telefone" id="testemunha1Telefone" name="cat.testemunha1Telefone" cssStyle="width:105px;" maxLength="11" liClass="liLeft"/>
+				<@ww.textfield label="Telefone" id="testemunha1Telefone" name="cat.testemunha1Telefone" cssStyle="width:105px;" maxLength="11" liClass="liLeft" cssClass="mascaraTelefone"/>
 			</fieldset>
 			
 			<fieldset style="width:480px; margin-top: 10px;">
