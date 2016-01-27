@@ -1,6 +1,7 @@
 package com.fortes.rh.test.business.sesmt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -276,5 +277,14 @@ public class HistoricoFuncaoManagerTest extends MockObjectTestCase
 		}
 		
 		assertNull(exception);
+	}
+	
+	public void testFindByFuncoes() 
+	{
+		Long[] funcoesCheck = {1L};
+		Collection<Funcao> funcoes = Arrays.asList(FuncaoFactory.getEntity(1L));
+		historicoFuncaoDao.expects(once()).method("findByFuncoes").with(ANYTHING, ANYTHING).will(returnValue(funcoes));
+
+		assertEquals(funcoes.size(), historicoFuncaoManager.findByFuncoes(new Date(), funcoesCheck).size());
 	}
 }

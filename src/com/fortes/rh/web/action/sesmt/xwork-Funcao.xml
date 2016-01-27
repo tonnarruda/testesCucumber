@@ -86,18 +86,18 @@
 			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioQtdPorFuncao.ftl</result>
 		</action>
 
-		<action name="prepareRelatorioFuncoesExames" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="prepareRelatorioFuncoesExames">
-			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioFuncoesExames.ftl</result>
+		<action name="prepareRelatorioExamesPorFuncao" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="prepareRelatorioExamesPorFuncao">
+			<result name="success" type="freemarker">/WEB-INF/forms/sesmt/relatorioExamesPorFuncao.ftl</result>
 		</action>
 		
-		<action name="relatorioFuncoesExames" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="relatorioFuncoesExames">
+		<action name="relatorioExamesPorFuncao" class="com.fortes.rh.web.action.sesmt.FuncaoListAction" method="relatorioExamesPorFuncao">
 			<result name="success" type="jasper">
-				<param name="location">/WEB-INF/report/funcoesExames.jasper</param>
+				<param name="location">/WEB-INF/report/Exames_por_funcao.jasper</param>
 				<param name="dataSource">funcaos</param>
 				<param name="parametersMap">parametros</param>
-				<param name="documentName">funcoesExames.pdf</param>
+				<param name="documentName">Exames_por_funcao.pdf</param>
 			</result>
-			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioFuncoesExames.ftl</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/sesmt/relatorioExamesPorFuncao.ftl</result>
 		</action>
 		
 	</package>

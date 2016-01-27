@@ -1,6 +1,7 @@
 package com.fortes.rh.test.web.action.sesmt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
@@ -14,6 +15,7 @@ import com.fortes.rh.business.geral.AreaOrganizacionalManager;
 import com.fortes.rh.business.geral.ColaboradorManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.sesmt.FuncaoManager;
+import com.fortes.rh.business.sesmt.HistoricoFuncaoManager;
 import com.fortes.rh.model.cargosalario.Cargo;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.AreaOrganizacional;
@@ -24,11 +26,13 @@ import com.fortes.rh.model.sesmt.relatorio.QtdPorFuncaoRelatorio;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
 import com.fortes.rh.test.factory.captacao.EmpresaFactory;
+import com.fortes.rh.test.factory.cargosalario.FuncaoFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
 import com.fortes.rh.test.util.mockObjects.MockRelatorioUtil;
 import com.fortes.rh.test.util.mockObjects.MockSecurityUtil;
 import com.fortes.rh.util.RelatorioUtil;
 import com.fortes.rh.web.action.sesmt.FuncaoListAction;
+import com.fortes.web.tags.CheckBox;
 
 public class FuncaoListActionTest extends MockObjectTestCase
 {
@@ -38,6 +42,7 @@ public class FuncaoListActionTest extends MockObjectTestCase
 	private Mock colaboradorManager;
 	private Mock areaOrganizacionalManager;
 	private Mock estabelecimentoManager;
+	private Mock historicoFuncaoManager;
 
     protected void setUp() throws Exception
     {
@@ -47,12 +52,14 @@ public class FuncaoListActionTest extends MockObjectTestCase
         colaboradorManager = new Mock(ColaboradorManager.class);
         areaOrganizacionalManager = new Mock(AreaOrganizacionalManager.class);
         estabelecimentoManager = mock(EstabelecimentoManager.class);
+        historicoFuncaoManager = mock(HistoricoFuncaoManager.class);
 
         action.setFuncaoManager((FuncaoManager) manager.proxy());
         action.setCargoManager((CargoManager) cargoManager.proxy());
         action.setColaboradorManager((ColaboradorManager)colaboradorManager.proxy());
         action.setAreaOrganizacionalManager((AreaOrganizacionalManager)areaOrganizacionalManager.proxy());
         action.setEstabelecimentoManager((EstabelecimentoManager) estabelecimentoManager.proxy());
+        action.setHistoricoFuncaoManager((HistoricoFuncaoManager) historicoFuncaoManager.proxy());
 
         Mockit.redefineMethods(SecurityUtil.class, MockSecurityUtil.class);
         Mockit.redefineMethods(RelatorioUtil.class, MockRelatorioUtil.class);
@@ -170,6 +177,35 @@ public class FuncaoListActionTest extends MockObjectTestCase
     	estabelecimentoManager.expects(once()).method("findAllSelect").with(eq(action.getEmpresaSistema().getId())).will(returnValue(new ArrayList<Estabelecimento>()));
     	
     	assertEquals("input", action.gerarRelatorioQtdPorFuncao());
+    }
+    
+	public void testPrepareRelatorioExamesPorFuncao()
+	{
+		manager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<CheckBox>()));
+		assertEquals("success", action.prepareRelatorioExamesPorFuncao());
+	}
+    
+	public void testRelatorioExamesPorFuncaoColecaoVazia()
+    {
+    	historicoFuncaoManager.expects(once()).method("findByFuncoes").with(ANYTHING, ANYTHING).will(returnValue(new ArrayList<Funcao>()));
+    	manager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<CheckBox>()));
+    	assertEquals("input", action.relatorioExamesPorFuncao());
+    	assertEquals("Não existem dados para o relatório", action.getActionMessages().iterator().next());
+    }
+    
+    public void testRelatorioExamesPorFuncaoException()
+    {
+    	historicoFuncaoManager.expects(once()).method("findByFuncoes").with(ANYTHING, ANYTHING).will(returnValue(null));
+    	manager.expects(once()).method("populaCheckBox").will(returnValue(new ArrayList<CheckBox>()));
+    	assertEquals("input", action.relatorioExamesPorFuncao());
+    	assertEquals("Erro ao gerar relatório.", action.getActionErrors().iterator().next());
+    }
+    
+    public void testRelatorioExamesPorFuncao()
+    {
+    	Collection<Funcao> funcoes = Arrays.asList(FuncaoFactory.getEntity(1L));
+    	historicoFuncaoManager.expects(once()).method("findByFuncoes").with(ANYTHING, ANYTHING).will(returnValue(funcoes));
+    	assertEquals("success", action.relatorioExamesPorFuncao());
     }
     
     public void testGetSet() throws Exception

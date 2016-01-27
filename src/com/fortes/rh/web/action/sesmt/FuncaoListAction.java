@@ -180,34 +180,34 @@ public class FuncaoListAction extends MyActionSupportList
 	}
 
 	
-	public String prepareRelatorioFuncoesExames()
+	public String prepareRelatorioExamesPorFuncao()
 	{
 		funcoesCheckList = funcaoManager.populaCheckBox();
 		return SUCCESS;
 	}
 	
-	public String relatorioFuncoesExames()
+	public String relatorioExamesPorFuncao()
 	{
 		String msg = new String();
 		try
 		{
-			parametros = RelatorioUtil.getParametrosRelatorio("Funções por Exames", getEmpresaSistema(), "Data: " + DateUtil.formataDiaMesAno(data));
+			parametros = RelatorioUtil.getParametrosRelatorio("Exames por Função", getEmpresaSistema(), "Data: " + DateUtil.formataDiaMesAno(data));
 			funcaos = historicoFuncaoManager.findByFuncoes(data, funcoesCheck);  
 			
 			if (funcaos.isEmpty())
 			{
-				msg = "Não existem dados para relatório";
+				msg = "Não existem dados para o relatório";
 				throw new Exception(msg);  
 			}
 			
 		} catch (Exception e)
 		{
 			e.printStackTrace();
-			if (msg == null )
+			if (msg.isEmpty())
 				addActionError("Erro ao gerar relatório.");
 			else
-				addActionError(msg);
-			prepareRelatorioFuncoesExames();
+				addActionMessage(msg);
+			prepareRelatorioExamesPorFuncao();
 			return INPUT;
 		}
 		return SUCCESS;

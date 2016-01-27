@@ -2,7 +2,7 @@
 <#assign display=JspTaglibs["/WEB-INF/tlds/displaytag.tld"] />
 <html>
 <head>
-	<title>Funções por Exames</title>
+	<title>Exames por Função</title>
 	<style type="text/css">
 		@import url('<@ww.url value="/css/displaytag.css?version=${versao}"/>');
 	</style>
@@ -22,7 +22,7 @@
 	<@ww.actionerror />
 	<@ww.actionmessage />
 
-	<@ww.form name="form" action="relatorioFuncoesExames.action" onsubmit="enviaForm();" method="POST" id="formBusca">
+	<@ww.form name="form" action="relatorioExamesPorFuncao.action" onsubmit="enviaForm();" method="POST" id="formBusca">
 
 		Data:*
 		<@ww.datepicker name="data" id="data" value="${dateIni}" required="true" cssClass="mascaraData"/>
