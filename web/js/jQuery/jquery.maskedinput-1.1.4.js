@@ -253,6 +253,7 @@ $(".mascaraCep").mask("99999-999",{placeholder:" "});
 $(".somenteNumerosFour").mask("9999",{placeholder:" "});
 $(".mascaraHora").mask("99:99",{placeholder:" "});
 $(".mascaraHoraCurso").mask("9999:99",{placeholder : " ", completed:function(){$(this).val( $(this).val().replace(/ /g, '0') );}});
+$(".mascaraTelefone").mask("(99) 999999999",{placeholder:" "});
 });
 
 jQuery(document).ready(function() {

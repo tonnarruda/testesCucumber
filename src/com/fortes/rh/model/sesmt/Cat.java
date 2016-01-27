@@ -78,6 +78,36 @@ public class Cat extends AbstractModel implements Serializable
     @Lob
     private String obsLimitacaoFuncional;
     
+    @Column(length=100)
+    private String testemunha1Nome;
+    @Column(length=100)
+    private String testemunha1Endereco;
+    @Column(length=100)
+    private String testemunha1Bairro;
+    @Column(length=8)
+    private String testemunha1Cep;
+    @Column(length=100)
+    private String testemunha1Municipio;
+    @Column(length=2)
+    private String testemunha1UF;
+    @Column(length=20)
+    private String testemunha1Telefone;
+    
+    @Column(length=100)
+    private String testemunha2Nome;
+    @Column(length=100)
+    private String testemunha2Endereco;
+    @Column(length=100)
+    private String testemunha2Bairro;
+    @Column(length=8)
+    private String testemunha2Cep;
+    @Column(length=100)
+    private String testemunha2Municipio;
+    @Column(length=2)
+    private String testemunha2UF;
+    @Column(length=20)
+    private String testemunha2Telefone;
+    
     public Cat()
 	{
 	}
@@ -408,5 +438,117 @@ public class Cat extends AbstractModel implements Serializable
 
 	public void setObsLimitacaoFuncional(String obsLimitacaoFuncional) {
 		this.obsLimitacaoFuncional = obsLimitacaoFuncional;
+	}
+
+	public String getTestemunha1Nome() {
+		return testemunha1Nome;
+	}
+
+	public void setTestemunha1Nome(String testemunha1Nome) {
+		this.testemunha1Nome = testemunha1Nome;
+	}
+
+	public String getTestemunha1Endereco() {
+		return testemunha1Endereco;
+	}
+
+	public void setTestemunha1Endereco(String testemunha1Endereco) {
+		this.testemunha1Endereco = testemunha1Endereco;
+	}
+
+	public String getTestemunha1Bairro() {
+		return testemunha1Bairro;
+	}
+
+	public void setTestemunha1Bairro(String testemunha1Bairro) {
+		this.testemunha1Bairro = testemunha1Bairro;
+	}
+
+	public String getTestemunha1Cep() {
+		return testemunha1Cep;
+	}
+
+	public void setTestemunha1Cep(String testemunha1Cep) {
+		this.testemunha1Cep = testemunha1Cep;
+	}
+
+	public String getTestemunha1Municipio() {
+		return testemunha1Municipio;
+	}
+
+	public void setTestemunha1Municipio(String testemunha1Municipio) {
+		this.testemunha1Municipio = testemunha1Municipio;
+	}
+
+	public String getTestemunha1UF() {
+		return testemunha1UF;
+	}
+
+	public void setTestemunha1UF(String testemunha1uf) {
+		testemunha1UF = testemunha1uf;
+	}
+
+	public String getTestemunha1Telefone() {
+		return testemunha1Telefone;
+	}
+
+	public void setTestemunha1Telefone(String testemunha1Telefone) {
+		this.testemunha1Telefone = testemunha1Telefone;
+	}
+
+	public String getTestemunha2Nome() {
+		return testemunha2Nome;
+	}
+
+	public void setTestemunha2Nome(String testemunha2Nome) {
+		this.testemunha2Nome = testemunha2Nome;
+	}
+
+	public String getTestemunha2Endereco() {
+		return testemunha2Endereco;
+	}
+
+	public void setTestemunha2Endereco(String testemunha2Endereco) {
+		this.testemunha2Endereco = testemunha2Endereco;
+	}
+
+	public String getTestemunha2Bairro() {
+		return testemunha2Bairro;
+	}
+
+	public void setTestemunha2Bairro(String testemunha2Bairro) {
+		this.testemunha2Bairro = testemunha2Bairro;
+	}
+
+	public String getTestemunha2Cep() {
+		return testemunha2Cep;
+	}
+
+	public void setTestemunha2Cep(String testemunha2Cep) {
+		this.testemunha2Cep = testemunha2Cep;
+	}
+
+	public String getTestemunha2Municipio() {
+		return testemunha2Municipio;
+	}
+
+	public void setTestemunha2Municipio(String testemunha2Municipio) {
+		this.testemunha2Municipio = testemunha2Municipio;
+	}
+
+	public String getTestemunha2UF() {
+		return testemunha2UF;
+	}
+
+	public void setTestemunha2UF(String testemunha2uf) {
+		testemunha2UF = testemunha2uf;
+	}
+
+	public String getTestemunha2Telefone() {
+		return testemunha2Telefone;
+	}
+
+	public void setTestemunha2Telefone(String testemunha2Telefone) {
+		this.testemunha2Telefone = testemunha2Telefone;
 	}
 }
