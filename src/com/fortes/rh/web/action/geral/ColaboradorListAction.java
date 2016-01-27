@@ -266,23 +266,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	public String prepareReciboPagamento() throws Exception
 	{
-		colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
-		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
-		
-		if(!getEmpresaSistema().isAcIntegra())
-		{
-			addActionWarning("Esta empresa não está integrada com Fortes Pessoal.");
-		}
-		else if(colaborador == null)
-		{
-			addActionWarning("Sua conta de usuário não está vinculada à nenhum colaborador");
-		}
-		else if(!colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId()))
-		{
-			addActionWarning("Só é possível solicitar seu recibo de pagamento pela empresa a qual você foi contratado(a). Acesse a empresa <strong>" + colaborador.getEmpresaNome() + "</strong> para solicitar seu recibo.");
-			colaborador = null;
-		}
-		
+		preparaRecibo("seu recibo de pagamento");
 		return Action.SUCCESS;
 	}
 	
@@ -327,25 +311,8 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	public String prepareReciboDeDecimoTerceiro() throws Exception
 	{
-		colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
-		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
-		
-		if(!getEmpresaSistema().isAcIntegra())
-		{
-			addActionWarning("Esta empresa não está integrada com Fortes Pessoal.");
-		}
-		else if(colaborador == null)
-		{
-			addActionWarning("Sua conta de usuário não está vinculada à nenhum colaborador");
-		}
-		else if(!colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId()))
-		{
-			addActionWarning("Só é possível solicitar seu recibo de décimo terceiro pela empresa a qual você foi contratado(a). Acesse a empresa <strong>" + colaborador.getEmpresaNome() + "</strong> para solicitar seu recibo.");
-			colaborador = null;
-		} else {
-			dataCalculos = colaboradorManager.getDatasDecimoTerceiroPorEmpregado(colaborador);
-		}
-		
+	
+		preparaRecibo("seu recibo de décimo terceiro");
 		return Action.SUCCESS;
 	}
 	
@@ -388,23 +355,7 @@ public class ColaboradorListAction extends MyActionSupportList
 	
 	public String prepareDeclaracaoRendimentos() throws Exception
 	{
-		colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
-		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
-		
-		if(!getEmpresaSistema().isAcIntegra())
-		{
-			addActionWarning("Esta empresa não está integrada com Fortes Pessoal.");
-		}
-		else if(colaborador == null)
-		{
-			addActionWarning("Sua conta de usuário não está vinculada à nenhum colaborador");
-		}
-		else if(!colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId()))
-		{
-			addActionWarning("Só é possível solicitar sua declaração de rendimentos pela empresa a qual você foi contratado(a). Acesse a empresa <strong>" + colaborador.getEmpresaNome() + "</strong> para solicitar sua declaração.");
-			colaborador = null;
-		} 
-		
+		preparaRecibo("sua declaração de rendimentos");
 		return Action.SUCCESS;
 	}
 	
@@ -444,7 +395,115 @@ public class ColaboradorListAction extends MyActionSupportList
         
 		return Action.SUCCESS;
 	}
+	
+	public String prepareReciboPagamentoComplementar()
+	{
+	
+		preparaRecibo("seu recibo de complemento da folha com encargos");
+		return Action.SUCCESS;
+	}
+	
+	public String reciboPagamentoComplementar() throws Exception
+	{
+		try {
+			colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+			
+			String reciboPagamentoComplementar = colaboradorManager.getReciboDePagamentoComplementar(colaborador, DateUtil.criarDataMesAno(mesAno));
+			
+	        byte[] reciboPagamentoComplementarBytes = Base64.decodeBase64(reciboPagamentoComplementar.getBytes()); 
+			
+	        byteArrayInputStream = new ByteArrayInputStream(reciboPagamentoComplementarBytes);
+	        
+	        HttpServletResponse response = ServletActionContext.getResponse();
 
+			response.addHeader("Expires", "0");
+			response.addHeader("Pragma", "no-cache");
+			response.setContentType("application/force-download");
+			response.setContentLength((int)reciboPagamentoComplementarBytes.length);
+			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.setHeader("Content-Disposition","attachment; filename=\"reciboComplementoDeFolhaComEncargos_"+mesAno+".pdf\"");
+
+			response.getOutputStream().write(reciboPagamentoComplementarBytes);
+		} 
+		catch (Exception e) 
+		{
+			if(e instanceof IntegraACException)
+				addActionWarning(e.getMessage());
+			else
+				addActionError(e.getMessage());
+			
+			e.printStackTrace();
+			prepareReciboPagamentoComplementar();
+			return Action.INPUT;
+		}
+        
+		return Action.SUCCESS;
+	}
+	
+	public String prepareReciboPagamentoAdiantamentoDeFolha() 
+	{
+		preparaRecibo("seu recibo de adiantamento de folha");
+		return Action.SUCCESS;
+	}
+
+	public String reciboPagamentoAdiantamentoDeFolha() throws Exception
+	{
+		try {
+			colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+			colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+			
+			String reciboPagamentoComplementar = colaboradorManager.getReciboPagamentoAdiantamentoDeFolha(colaborador, DateUtil.criarDataMesAno(mesAno));
+			
+	        byte[] reciboPagamentoComplementarBytes = Base64.decodeBase64(reciboPagamentoComplementar.getBytes()); 
+			
+	        byteArrayInputStream = new ByteArrayInputStream(reciboPagamentoComplementarBytes);
+	        
+	        HttpServletResponse response = ServletActionContext.getResponse();
+
+			response.addHeader("Expires", "0");
+			response.addHeader("Pragma", "no-cache");
+			response.setContentType("application/force-download");
+			response.setContentLength((int)reciboPagamentoComplementarBytes.length);
+			response.setHeader("Content-Transfer-Encoding", "binary");
+			response.setHeader("Content-Disposition","attachment; filename=\"reciboPagamentoAdiantamentoDeFolha_" + mesAno.replace("/", "") + ".pdf\"");
+
+			response.getOutputStream().write(reciboPagamentoComplementarBytes);
+		} 
+		catch (Exception e) 
+		{
+			if(e instanceof IntegraACException)
+				addActionWarning(e.getMessage());
+			else
+				addActionError(e.getMessage());
+			
+			e.printStackTrace();
+			prepareReciboPagamentoAdiantamentoDeFolha();
+			return Action.INPUT;
+		}
+        
+		return Action.SUCCESS;
+	}
+
+	private void preparaRecibo(String descricaoRecibo) {
+		colaborador = SecurityUtil.getColaboradorSession(ActionContext.getContext().getSession());
+		colaborador = colaboradorManager.findColaboradorById(colaborador.getId());
+		
+		if(!getEmpresaSistema().isAcIntegra())
+		{
+			addActionWarning("Esta empresa não está integrada com Fortes Pessoal.");
+		}
+		else if(colaborador == null)
+		{
+			addActionWarning("Sua conta de usuário não está vinculada à nenhum colaborador");
+		}
+		else if(!colaborador.getEmpresa().getId().equals(getEmpresaSistema().getId()))
+		{
+			addActionWarning("Só é possível solicitar " + descricaoRecibo + " pela empresa a qual você foi contratado(a). Acesse a empresa <strong>" + colaborador.getEmpresaNome() + "</strong> para solicitar seu recibo.");
+			colaborador = null;
+		}
+	}
+	
 	public String delete() throws Exception
 	{
 		try 

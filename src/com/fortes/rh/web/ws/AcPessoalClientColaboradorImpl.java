@@ -422,4 +422,66 @@ public class AcPessoalClientColaboradorImpl implements AcPessoalClientColaborado
 			throw new IntegraACException(e, "Não foi possível confirmar reenvio dos dados da tabela temporária.");
 		}
 	}
+	
+	public String getReciboDePagamentoComplementar(Colaborador colaborador, Date mesAno) throws Exception
+	{
+		StringBuilder token = new StringBuilder();
+		GrupoAC grupoAC = new GrupoAC();
+		Call call = acPessoalClient.createCall(colaborador.getEmpresa(), token, grupoAC, "GetReciboDePagamentoComplementar");
+
+		QName xmlstring = new QName("xs:string");
+		QName xmlint = new QName("xs:int");
+
+		call.addParameter("Token", xmlstring, ParameterMode.IN);
+		call.addParameter("Empresa", xmlstring, ParameterMode.IN);
+		call.addParameter("Empregado", xmlstring, ParameterMode.IN);
+		call.addParameter("Ano", xmlint, ParameterMode.IN);
+		call.addParameter("Mes", xmlint, ParameterMode.IN);
+		
+		acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
+		
+    	Calendar calendar = Calendar.getInstance();
+		calendar.setTime(mesAno);		
+		
+		Object[] param = new Object[]{ token.toString(), colaborador.getEmpresa().getCodigoAC(), colaborador.getCodigoAC(), calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1};
+		
+		TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
+       	Boolean retorno = result.getSucesso("GetReciboDePagamentoComplementar", param, this.getClass());
+		
+       	if (!retorno)
+        	throw new IntegraACException(result.getMensagem());
+       	
+       	return result.getRetorno();
+	}
+	
+	public String getReciboPagamentoAdiantamentoDeFolha(Colaborador colaborador, Date mesAno) throws Exception
+	{
+		StringBuilder token = new StringBuilder();
+		GrupoAC grupoAC = new GrupoAC();
+		Call call = acPessoalClient.createCall(colaborador.getEmpresa(), token, grupoAC, "GetReciboDePagamentoAdiantamento");
+
+		QName xmlstring = new QName("xs:string");
+		QName xmlint = new QName("xs:int");
+
+		call.addParameter("Token", xmlstring, ParameterMode.IN);
+		call.addParameter("Empresa", xmlstring, ParameterMode.IN);
+		call.addParameter("Empregado", xmlstring, ParameterMode.IN);
+		call.addParameter("Ano", xmlint, ParameterMode.IN);
+		call.addParameter("Mes", xmlint, ParameterMode.IN);
+		
+		acPessoalClient.setReturnType(call, grupoAC.getAcUrlWsdl());
+		
+    	Calendar calendar = Calendar.getInstance();
+		calendar.setTime(mesAno);		
+		
+		Object[] param = new Object[]{ token.toString(), colaborador.getEmpresa().getCodigoAC(), colaborador.getCodigoAC(), calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1};
+		
+		TFeedbackPessoalWebService result = (TFeedbackPessoalWebService) call.invoke(param);
+       	Boolean retorno = result.getSucesso("GetReciboDePagamentoAdiantamento", param, this.getClass());
+		
+       	if (!retorno)
+        	throw new IntegraACException(result.getMensagem());
+       	
+       	return result.getRetorno();
+	}
 }

@@ -1717,8 +1717,62 @@ public class ColaboradorManagerTest extends MockObjectTestCase
 		assertEquals(qtdDemitidosReducaoDeQuadro.doubleValue(), taxaDemissaoRetorno.getQtdDemitidosReducaoQuadro());
 		assertEquals(CalculoTaxaDemissao, taxaDemissaoRetorno.getTaxaDemissao());
     }
+    
+    public void testGetReciboPagamentoComplementar(){
+    	String retorno = "JVBERi0xLjINCjEgMCBvYmogPDwNCi9DcmVhdGlvbkRhdGUoRDoyMDE2MDEyNzA5MzQyOSkNCi9DcmVhdG9yKEZvcnRlc1JlcG9ydCB2My4xMDF4IFwyNTEgQ29weXJpZ2h0IKkgMTk5OS0yMDE1IEZvcnRlcyBJbmZvcm3hdGljYSkNCj4";
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	Date mesAno = DateUtil.criarDataMesAno("01/2016");
+    	Exception exception = null;
+    	acPessoalClientColaborador.expects(once()).method("getReciboDePagamentoComplementar").with(ANYTHING, ANYTHING).will(returnValue(retorno));
+
+    	try {
+    		colaboradorManager.getReciboDePagamentoComplementar(colaborador, mesAno);
+		} catch (Exception e) {
+			exception = e;
+		}
+    	assertNull(exception);
+    }
+    
+    public void testGetReciboPagamentoComplementarException(){
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	Date mesAno = DateUtil.criarDataMesAno("01/2016");
+    	Exception exception = null;
+    	acPessoalClientColaborador.expects(once()).method("getReciboDePagamentoComplementar").with(ANYTHING, ANYTHING).will(throwException(new Exception()));
+
+    	try {
+    		colaboradorManager.getReciboDePagamentoComplementar(colaborador, mesAno);
+		} catch (Exception e) {
+			exception = e;
+		}
+    	assertNotNull(exception);
+    }
+    
+    public void testGetReciboPagamentoAdiantamentoDeFolha(){
+    	String retorno = "JVBERi0xLjINCjEgMCBvYmogPDwNCi9DcmVhdGlvbkRhdGUoRDoyMDE2MDEyNzA5MzQyOSkNCi9DcmVhdG9yKEZvcnRlc1JlcG9ydCB2My4xMDF4IFwyNTEgQ29weXJpZ2h0IKkgMTk5OS0yMDE1IEZvcnRlcyBJbmZvcm3hdGljYSkNCj4";
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	Date mesAno = DateUtil.criarDataMesAno("01/2016");
+    	Exception exception = null;
+    	acPessoalClientColaborador.expects(once()).method("getReciboPagamentoAdiantamentoDeFolha").with(ANYTHING, ANYTHING).will(returnValue(retorno));
+
+    	try {
+    		colaboradorManager.getReciboPagamentoAdiantamentoDeFolha(colaborador, mesAno);
+		} catch (Exception e) {
+			exception = e;
+		}
+    	assertNull(exception);
+    }
+    
+    public void testGetReciboPagamentoAdiantamentoDeFolhaException(){
+    	Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+    	Date mesAno = DateUtil.criarDataMesAno("01/2016");
+    	Exception exception = null;
+    	acPessoalClientColaborador.expects(once()).method("getReciboPagamentoAdiantamentoDeFolha").with(ANYTHING, ANYTHING).will(throwException(new Exception()));
+
+    	try {
+    		colaboradorManager.getReciboPagamentoAdiantamentoDeFolha(colaborador, mesAno);
+		} catch (Exception e) {
+			exception = e;
+		}
+    	assertNotNull(exception);
+    }
 }
-
-
-
-

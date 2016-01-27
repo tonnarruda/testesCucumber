@@ -36,4 +36,8 @@ public interface AcPessoalClientColaborador
 	public String[] getDatasDecimoTerceiroPorEmpregado(Colaborador colaborador) throws Exception;
 	
 	public void confirmarReenvio(TFeedbackPessoalWebService tFeedbackPessoalWebService, Empresa empresa) throws Exception;
+	
+	public String getReciboDePagamentoComplementar(Colaborador colaborador, Date mesAno) throws Exception;
+	
+	public String getReciboPagamentoAdiantamentoDeFolha(Colaborador colaborador, Date mesAno) throws Exception;
 }

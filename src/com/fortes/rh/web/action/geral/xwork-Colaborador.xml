@@ -42,6 +42,30 @@
 			</result>
 			<result name="input" type="freemarker">/WEB-INF/forms/geral/declaracaoRendimentos.ftl</result>
 		</action>
+		<action name="prepareReciboPagamentoComplementar" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareReciboPagamentoComplementar">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/reciboComplementoDeFolhaComEncargos.ftl</result>
+		</action>
+		<action name="reciboPagamentoComplementar" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="reciboPagamentoComplementar">
+		    <result name="success" type="stream">
+			    <param name="contentDisposition">filename=reciboComplementoDeFolhaComEncargos.pdf</param>
+			    <param name="contentType">application/pdf;charset=UTF-8</param>
+			    <param name="inputName">byteArrayInputStream</param>
+			    <param name="bufferSize">1024</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/reciboComplementoDeFolhaComEncargos.ftl</result>
+		</action>
+		<action name="prepareReciboPagamentoAdiantamentoDeFolha" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="prepareReciboPagamentoAdiantamentoDeFolha">
+			<result name="success" type="freemarker">/WEB-INF/forms/geral/reciboPagamentoAdiantamentoDeFolha.ftl</result>
+		</action>
+		<action name="reciboPagamentoAdiantamentoDeFolha" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="reciboPagamentoAdiantamentoDeFolha">
+		    <result name="success" type="stream">
+			    <param name="contentDisposition">filename=reciboPagamentoAdiantamentoDeFolha.pdf</param>
+			    <param name="contentType">application/pdf;charset=UTF-8</param>
+			    <param name="inputName">byteArrayInputStream</param>
+			    <param name="bufferSize">1024</param>
+			</result>
+			<result name="input" type="freemarker">/WEB-INF/forms/geral/reciboComplementoDeFolhaComEncargos.ftl</result>
+		</action>
 		<action name="list" class="com.fortes.rh.web.action.geral.ColaboradorListAction" method="list">
 			<interceptor-ref name="defaultListStack">
 	    		<param name="scope.session">codigoACBusca,matriculaBusca,cpfBusca,nomeBusca,situacao,areaOrganizacional.id,estabelecimento.id,cargo.id</param>

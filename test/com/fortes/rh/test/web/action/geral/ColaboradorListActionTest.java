@@ -1,7 +1,6 @@
 package com.fortes.rh.test.web.action.geral;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import mockit.Mockit;
 
@@ -15,8 +14,8 @@ import com.fortes.rh.business.geral.EmpresaManager;
 import com.fortes.rh.business.geral.EstabelecimentoManager;
 import com.fortes.rh.business.geral.ParametrosDoSistemaManager;
 import com.fortes.rh.exception.ColecaoVaziaException;
-import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.ParametrosDoSistema;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
@@ -208,7 +207,195 @@ public class ColaboradorListActionTest extends MockObjectTestCase
 	{
 		assertEquals("success",action.formPrint());
 	}
-
+	
+	public void testReciboPagamentoComplementar(){
+		String retorno = "JVBERi0xLjINCjEgMCBvYmogPDwNCi9DcmVhdGlvbkRhdGUoRDoyMDE2MDEyNzA5MzQyOSkNCi9DcmVhdG9yKEZvcnRlc1JlcG9ydCB2My4xMDF4IFwyNTEgQ29weXJpZ2h0IKkgMTk5OS0yMDE1IEZvcnRlcyBJbmZvcm3hdGljYSkNCj4";
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		action.setEmpresaSistema(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		
+		String mesAno = "01/2016";
+		action.setMesAno(mesAno);
+		
+		
+		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		
+		colaboradorManager.expects(once()).method("getReciboDePagamentoComplementar").with(ANYTHING, ANYTHING).will(returnValue(retorno));
+		
+		Exception expException = null;
+		try {
+			assertEquals("success",action.reciboPagamentoComplementar());
+		} catch (Exception e) {
+			expException = e;
+		}
+		
+		assertNull(expException);
+	}
+	
+	public void testReciboPagamentoComplementarException() throws Exception{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		action.setEmpresaSistema(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		
+		String mesAno = "01/2016";
+		action.setMesAno(mesAno);
+		
+		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		
+		colaboradorManager.expects(once()).method("getReciboDePagamentoComplementar").with(ANYTHING, ANYTHING).will(throwException(new Exception()));
+		
+		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		
+		assertEquals("input",action.reciboPagamentoComplementar());
+	}
+	
+	public void testReciboPagamentoAdiantamentoDeFolha(){
+		String retorno = "JVBERi0xLjINCjEgMCBvYmogPDwNCi9DcmVhdGlvbkRhdGUoRDoyMDE2MDEyNzA5MzQyOSkNCi9DcmVhdG9yKEZvcnRlc1JlcG9ydCB2My4xMDF4IFwyNTEgQ29weXJpZ2h0IKkgMTk5OS0yMDE1IEZvcnRlcyBJbmZvcm3hdGljYSkNCj4";
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		action.setEmpresaSistema(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		
+		String mesAno = "01/2016";
+		action.setMesAno(mesAno);
+		
+		
+		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		
+		colaboradorManager.expects(once()).method("getReciboPagamentoAdiantamentoDeFolha").with(ANYTHING, ANYTHING).will(returnValue(retorno));
+		
+		Exception expException = null;
+		try {
+			assertEquals("success",action.reciboPagamentoAdiantamentoDeFolha());
+		} catch (Exception e) {
+			expException = e;
+		}
+		
+		assertNull(expException);
+	}
+	
+	public void testReciboPagamentoAdiantamentoDeFolhaException() throws Exception{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		action.setEmpresaSistema(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		
+		String mesAno = "01/2016";
+		action.setMesAno(mesAno);
+		
+		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		
+		colaboradorManager.expects(once()).method("getReciboPagamentoAdiantamentoDeFolha").with(ANYTHING, ANYTHING).will(throwException(new Exception()));
+		
+		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		
+		assertEquals("input",action.reciboPagamentoAdiantamentoDeFolha());
+	}
+	
+	public void testPrepareReciboPagamentoAdiantamentoDeFolha()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		action.setEmpresaSistema(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		
+		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		
+		assertEquals("success",action.prepareReciboPagamentoAdiantamentoDeFolha());
+	}
+	
+	public void testPrepareReciboPagamentoAdiantamentoDeFolhaEmpresaDesintegrada()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(false);
+		action.setEmpresaSistema(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		
+		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		action.prepareReciboPagamentoAdiantamentoDeFolha();
+		
+		assertEquals("Esta empresa não está integrada com Fortes Pessoal.", action.getActionWarnings().iterator().next());
+	}
+	
+	public void testPrepareReciboPagamentoAdiantamentoDeFolhaColaboradorLogadoEmEmpresaDiferenteDaQueFoiContratado()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		action.setEmpresaSistema(empresa);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa(2L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa2);
+		
+		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		action.prepareReciboPagamentoAdiantamentoDeFolha();
+		
+		assertEquals(action.getActionWarnings().iterator().next(),"Só é possível solicitar seu recibo de adiantamento de folha pela empresa a qual você foi contratado(a). Acesse a empresa <strong>" + colaborador.getEmpresaNome() + "</strong> para solicitar seu recibo.");
+	}
+	
+	public void testPrepareReciboPagamentoAdiantamentoDeFolhaColaboradorSemUsuario()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		action.setEmpresaSistema(empresa);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa(2L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa2);
+		
+		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(null));
+		action.prepareReciboPagamentoAdiantamentoDeFolha();
+		
+		assertEquals(action.getActionWarnings().iterator().next(),"Sua conta de usuário não está vinculada à nenhum colaborador");
+	}
+	
+	public void testPrepareReciboPagamentoComplementar()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		action.setEmpresaSistema(empresa);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa);
+		
+		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		
+		assertEquals("success", action.prepareReciboPagamentoComplementar());
+	}
+	
+	public void testPrepareReciboPagamentoComplementarLogadoEmEmpresaDiferenteDaQueFoiContratado()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		empresa.setAcIntegra(true);
+		action.setEmpresaSistema(empresa);
+		
+		Empresa empresa2 = EmpresaFactory.getEmpresa(2L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setEmpresa(empresa2);
+		
+		colaboradorManager.expects(once()).method("findColaboradorById").with(eq(colaborador.getId())).will(returnValue(colaborador));
+		action.prepareReciboPagamentoComplementar();
+		
+		assertEquals(action.getActionWarnings().iterator().next(),"Só é possível solicitar seu recibo de complemento da folha com encargos pela empresa a qual você foi contratado(a). Acesse a empresa <strong>" + colaborador.getEmpresaNome() + "</strong> para solicitar seu recibo.");
+	}
+	
 	public void setEmpresaManager(Mock empresaManager)
 	{
 		this.empresaManager = empresaManager;

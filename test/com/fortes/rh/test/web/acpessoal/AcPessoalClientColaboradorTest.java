@@ -2,22 +2,35 @@ package com.fortes.rh.test.web.acpessoal;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 
+import javax.xml.namespace.QName;
+import javax.xml.rpc.ParameterMode;
+
+import org.apache.axis.client.Call;
+
+import com.fortes.rh.exception.IntegraACException;
 import com.fortes.rh.model.cargosalario.FaixaSalarial;
 import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.dicionario.TipoAplicacaoIndice;
 import com.fortes.rh.model.geral.AreaOrganizacional;
 import com.fortes.rh.model.geral.Colaborador;
+import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.model.geral.Estabelecimento;
+import com.fortes.rh.model.geral.GrupoAC;
 import com.fortes.rh.model.ws.TEmpregado;
+import com.fortes.rh.model.ws.TFeedbackPessoalWebService;
 import com.fortes.rh.model.ws.TRemuneracaoVariavel;
 import com.fortes.rh.model.ws.TSituacao;
 import com.fortes.rh.test.factory.captacao.AreaOrganizacionalFactory;
 import com.fortes.rh.test.factory.captacao.ColaboradorFactory;
+import com.fortes.rh.test.factory.captacao.EmpresaFactory;
 import com.fortes.rh.test.factory.cargosalario.FaixaSalarialFactory;
 import com.fortes.rh.test.factory.cargosalario.HistoricoColaboradorFactory;
 import com.fortes.rh.test.factory.geral.EstabelecimentoFactory;
+import com.fortes.rh.test.factory.geral.GrupoACFactory;
 import com.fortes.rh.util.DateUtil;
 import com.fortes.rh.web.ws.AcPessoalClientColaboradorImpl;
 
@@ -320,5 +333,43 @@ public class AcPessoalClientColaboradorTest extends AcPessoalClientTest
 		montaMockGrupoAC();
 		
 		assertEquals(false, acPessoalClientColaboradorImpl.verificaHistoricoNaFolhaAC(1L, "99554", empresa));
+	}
+	
+	public void testGetReciboDePagamentoComplementar()
+	{
+		montaMockGrupoAC();
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setCodigoAC("000001");
+		colaborador.setEmpresa(empresa);
+		
+		Exception exception = null;
+		
+		 try {
+			acPessoalClientColaboradorImpl.getReciboDePagamentoComplementar(colaborador,  DateUtil.criarDataMesAno("01/2016"));
+		} catch (Exception e) {
+			exception = e;
+		}
+		 assertNotNull(exception);
+	}
+	
+	public void testGetReciboDePagamentoAdiantamentoDeFolha()
+	{
+		montaMockGrupoAC();
+		Empresa empresa = EmpresaFactory.getEmpresa(1L);
+		
+		Colaborador colaborador = ColaboradorFactory.getEntity(1L);
+		colaborador.setCodigoAC("000001");
+		colaborador.setEmpresa(empresa);
+		
+		Exception exception = null;
+		
+		 try {
+			acPessoalClientColaboradorImpl.getReciboPagamentoAdiantamentoDeFolha(colaborador,  DateUtil.criarDataMesAno("01/2016"));
+		} catch (Exception e) {
+			exception = e;
+		}
+		 assertNotNull(exception);
 	}
 }
