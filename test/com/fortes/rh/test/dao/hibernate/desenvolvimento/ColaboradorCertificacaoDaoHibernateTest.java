@@ -374,6 +374,81 @@ public class ColaboradorCertificacaoDaoHibernateTest extends GenericDaoHibernate
 		
 		assertEquals(colaboradorCertificacao.getId(), colaboradorCertificacaoDao.findByColaboradorTurma(colaboradorTurma.getId()).getId());
 	}
+	
+	public void testColaboradoresQueParticipaDoCertificado()
+	{
+		Empresa empresa = EmpresaFactory.getEmpresa();
+		empresaDao.save(empresa);
+		
+		AreaOrganizacional areaOrganizacional = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional);
+		
+		AreaOrganizacional areaOrganizacional2 = AreaOrganizacionalFactory.getEntity();
+		areaOrganizacionalDao.save(areaOrganizacional2);
+
+		Cargo cargo = CargoFactory.getEntity();
+		cargoDao.save(cargo);
+		
+		FaixaSalarial faixaSalarial = FaixaSalarialFactory.getEntity();
+		faixaSalarial.setCargo(cargo);
+		faixaSalarialDao.save(faixaSalarial);
+		
+		Colaborador colaborador1 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador1);
+
+		HistoricoColaborador historicoColaborador = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador.setColaborador(colaborador1);
+		historicoColaborador.setData(DateUtil.criarDataMesAno(01, 01, 2001));
+		historicoColaborador.setAreaOrganizacional(areaOrganizacional);
+		historicoColaborador.setFaixaSalarial(faixaSalarial);
+		historicoColaborador.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador);
+		
+		Colaborador colaborador2 = ColaboradorFactory.getEntity();
+		colaboradorDao.save(colaborador2);
+
+		HistoricoColaborador historicoColaborador2 = HistoricoColaboradorFactory.getEntity();
+		historicoColaborador2.setColaborador(colaborador2);
+		historicoColaborador2.setData(DateUtil.criarDataMesAno(01, 01, 2001));
+		historicoColaborador2.setAreaOrganizacional(areaOrganizacional2);
+		historicoColaborador2.setFaixaSalarial(faixaSalarial);
+		historicoColaborador2.setStatus(StatusRetornoAC.CONFIRMADO);
+		historicoColaboradorDao.save(historicoColaborador2);
+		
+		Curso curso = CursoFactory.getEntity();
+		curso.setEmpresa(empresa);
+		cursoDao.save(curso);
+		
+		Collection<Curso> cursos = Arrays.asList(curso);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity();
+		certificacao.setEmpresa(empresa);
+		certificacao.setPeriodicidade(1);
+		certificacao.setCursos(cursos);
+		certificacaoDao.save(certificacao);
+
+		Turma turma = TurmaFactory.getEntity();
+		turma.setCurso(curso);
+		turma.setRealizada(true);
+		turmaDao.save(turma);
+		
+		ColaboradorTurma colaboradorTurma = ColaboradorTurmaFactory.getEntity(1L);
+		colaboradorTurma.setColaborador(colaborador1);
+		colaboradorTurma.setCurso(curso);
+		colaboradorTurma.setTurma(turma);
+		colaboradorTurmaDao.save(colaboradorTurma);
+		
+		ColaboradorTurma colaboradorTurma2 = ColaboradorTurmaFactory.getEntity(1L);
+		colaboradorTurma2.setColaborador(colaborador2);
+		colaboradorTurma2.setCurso(curso);
+		colaboradorTurma2.setTurma(turma);
+		colaboradorTurmaDao.save(colaboradorTurma2);
+		
+		colaboradorCertificacaoDao.getHibernateTemplateByGenericDao().flush();
+		
+		assertEquals(2, colaboradorCertificacaoDao.colaboradoresQueParticipaDoCertificado(new Long[]{areaOrganizacional.getId(), areaOrganizacional2.getId()}, null, certificacao.getId()).size());
+		assertEquals(1, colaboradorCertificacaoDao.colaboradoresQueParticipaDoCertificado(new Long[]{areaOrganizacional.getId()}, null, certificacao.getId()).size());
+	}
 
 	public void setColaboradorCertificacaoDao(ColaboradorCertificacaoDao colaboradorCertificacaoDao)
 	{

@@ -22,7 +22,7 @@ import com.fortes.dao.GenericDaoHibernate;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
-import com.fortes.rh.model.dicionario.TipoCertificacao;
+import com.fortes.rh.model.dicionario.StatusRetornoAC;
 
 public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<ColaboradorCertificacao> implements ColaboradorCertificacaoDao
 {
@@ -67,62 +67,6 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 		criteria.setResultTransformer(new AliasToBeanResultTransformer(ColaboradorCertificacao.class));
 
 		return (ColaboradorCertificacao) criteria.uniqueResult();
-	}
-
-	public Collection<ColaboradorCertificacao> colaboradoresCertificados(Date dataIni, Date dataFim, char filtroCetificacao, Long[] areasIds, Long[] estabelecimentosIds, Long[] certificacoesIds) 
-	{
-		StringBuilder sql = new StringBuilder();
-		sql.append("select distinct c.id as colabId, c.nome as colabNome, c.nomecomercial as colabNomeComercial, c.matricula as colabMatricula, estab.id as estabelecimentoId, estab.nome as estabelecimentoNome, cg.id as cargoId, cg.nome as cargoNome, ");
-		sql.append("cert.id as certId, cert.nome as certNome, cert.periodicidade as certPeriodicidade, ccert.data as certData, ccert.id as  colaboradorcertificacaoId ");
-		sql.append("from colaboradorcertificacao ccert ");
-		sql.append("inner join colaborador c on c.id = ccert.colaborador_id ");
-		sql.append("inner join certificacao cert on cert.id = ccert.certificacao_id  ");
-		sql.append("inner join historicocolaborador hc on hc.colaborador_id = c.id  ");
-		sql.append("inner join faixasalarial fx on fx.id = hc.faixasalarial_id  ");
-		sql.append("inner join cargo cg  on cg.id = fx.cargo_id  ");
-		sql.append("inner join estabelecimento estab on estab.id = hc.estabelecimento_id  ");
-		sql.append("where desligado = false  ");
-		sql.append("and hc.data = (select max(hc2.data) from historicocolaborador hc2  where hc2.colaborador_id = c.id and hc2.status = 1  )  ");
-		sql.append("and cert.id in (:certificacoesIds) ");
-		sql.append("and ccert.data between :dataIni and :dataFim ");
-		sql.append("and cert.periodicidade is not null ");
-		
-		if(filtroCetificacao == TipoCertificacao.VENCIDA)
-			sql.append("and ccert.data + cast((coalesce(cert.periodicidade,0) || ' month') as interval) <= :dataFim ");
-		else if(filtroCetificacao == TipoCertificacao.AVENCER)
-			sql.append("and ccert.data + cast((coalesce(cert.periodicidade,0) || ' month') as interval) > :dataFim ");
-		
-		if(areasIds != null && areasIds.length >0)
-			sql.append("and hc.areaorganizacional_id in (:areasOrganizacionaisIds) ");
-		
-		if(estabelecimentosIds != null && estabelecimentosIds.length >0)
-			sql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
-		
-		sql.append("order by c.nome, cert.nome ");
-		
-		Query query = getSession().createSQLQuery(sql.toString());
-		query.setParameterList("certificacoesIds", certificacoesIds);
-		query.setDate("dataIni", dataIni);
-		query.setDate("dataFim", dataFim);
-		
-		if(areasIds != null && areasIds.length >0)
-			query.setParameterList("areasOrganizacionaisIds", areasIds);
-		
-		if(estabelecimentosIds != null && estabelecimentosIds.length >0)
-			query.setParameterList("estabelecimentosIds", estabelecimentosIds);
-		
-		@SuppressWarnings("rawtypes")
-		List resultado = query.list();
-		Collection<ColaboradorCertificacao> Colaboradores = new ArrayList<ColaboradorCertificacao>();
-		
-		for (@SuppressWarnings("unchecked")
-		Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
-			Object[] res = it.next();
-			ColaboradorCertificacao colabs = new ColaboradorCertificacao(((BigInteger)res[0]).longValue(), (String)res[1], (String)res[2], (String)res[3], ((BigInteger)res[4]).longValue(), (String)res[5], ((BigInteger)res[6]).longValue(), (String)res[7], ((BigInteger)res[8]).longValue(), (String)res[9], (Integer)res[10], (Date)res[11], ((BigInteger)res[12]).longValue());
-			Colaboradores.add(colabs);
-		}
-
-		return Colaboradores;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -301,5 +245,80 @@ public class ColaboradorCertificacaoDaoHibernate extends GenericDaoHibernate<Col
 			colaboradorCertificacao.setCertificacaoId(((BigInteger)res[2]).longValue());
 		}
 		return colaboradorCertificacao;
+	}
+	
+	public Collection<ColaboradorCertificacao> colaboradoresQueParticipaDoCertificado(Long[] areasIds, Long[] estabelecimentosIds, Long certificadoId) 
+	{
+		StringBuilder sql = new StringBuilder();
+		sql.append("select cc.id as ccId, cc.data as ccData, ");
+		sql.append("ct.id as ctId, ct.nome as certNome, ct.periodicidade as certPer, ");
+		sql.append("cp.colaborador_id as ColId, cp.matricula, cp.nome as ColNome,  cp.nomeComercial, ");
+		sql.append("est.id as estId, est.nome as estNome, ");
+		sql.append("cg.id as cgId, cg.nome as cgNome ");
+		sql.append("from (WITH colaboradorNoCursoDaCertificacao as ( ");
+		sql.append("select distinct ct.colaborador_id, cu.id from colaboradorturma ct ");
+		sql.append("inner join turma t on t.id = ct.turma_id ");
+		sql.append("inner join curso cu on cu.id = t.curso_id ");
+		sql.append("where t.realizada ");
+		sql.append("and cu.id in (select cursos_id from certificacao_curso where certificacaos_id = :certificadoId) ");
+		sql.append("order by ct.colaborador_id) ");
+		sql.append("select ccc.colaborador_id, c.nome, c.matricula, c.nomecomercial, hc.faixasalarial_id, hc.estabelecimento_id ");
+		sql.append("from colaboradorNoCursoDaCertificacao ccc ");
+		sql.append("inner join colaborador c on c.id = ccc.colaborador_id ");
+		sql.append("inner join historicocolaborador hc on  hc.colaborador_id = ccc.colaborador_id ");
+		sql.append("where hc.data = (select max(data) from historicocolaborador hc2 where hc2.colaborador_id = ccc.colaborador_id) ");
+		sql.append("and hc.status = :status ");
+		
+		if(areasIds != null && areasIds.length >0)
+			sql.append("and hc.areaorganizacional_id in (:areasIds) ");
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.length >0)
+			sql.append("and hc.estabelecimento_id in (:estabelecimentosIds) ");
+		
+		sql.append("group by ccc.colaborador_id, c.nome, c.matricula, c.nomecomercial, hc.faixasalarial_id, hc.estabelecimento_id ");
+		sql.append("having count(ccc.colaborador_id) = (select count(cursos_id) from certificacao_curso where certificacaos_id = :certificadoId) ");
+		sql.append("order by c.nome) as cp ");
+		sql.append("left join colaboradorcertificacao cc on cc.colaborador_id = cp.colaborador_id and cc.certificacao_id = :certificadoId ");
+		sql.append("left join certificacao ct on ct.id = :certificadoId ");
+		sql.append("left join faixasalarial fx on fx.id = cp.faixasalarial_id ");
+		sql.append("left join cargo cg on cg.id = fx.cargo_id ");
+		sql.append("left join estabelecimento est on est.id = cp.estabelecimento_id ");
+		
+		Query query = getSession().createSQLQuery(sql.toString());
+		query.setLong("certificadoId", certificadoId);
+		query.setInteger("status", StatusRetornoAC.CONFIRMADO);
+		
+		if(areasIds != null && areasIds.length >0)
+			query.setParameterList("areasIds", areasIds);
+		
+		if(estabelecimentosIds != null && estabelecimentosIds.length >0)
+			query.setParameterList("estabelecimentosIds", estabelecimentosIds);
+		
+		@SuppressWarnings("rawtypes")
+		List resultado = query.list();
+		Collection<ColaboradorCertificacao> ColaboradoresCertificacao = new ArrayList<ColaboradorCertificacao>();
+
+		for(Iterator<Object[]> it = resultado.iterator(); it.hasNext();){
+			Object[] res = it.next();
+			
+			ColaboradorCertificacao colabs = new ColaboradorCertificacao();
+			colabs.setId(res[0] != null ? ((BigInteger)res[0]).longValue() : null);
+			colabs.setData(res[1] != null ? (Date)res[1] : null);
+			colabs.setCertificacaoId(res[2] != null ? ((BigInteger)res[2]).longValue() : null);
+			colabs.setCertificacaoNome(res[3] != null ? (String)res[3] : null);
+			colabs.setCertificacaoPeriodicidade(res[4] != null ? (Integer)res[4] : null);
+			colabs.setColaboradorId(((BigInteger)res[5]).longValue());
+			colabs.setColaboradorMatricula(res[6]!= null ? (String)res[6] : null);
+			colabs.setColaboradorNome(res[7]!= null ? (String)res[7] : null);
+			colabs.setColaboradorNomeComercial(res[8]!= null ? (String)res[8] : null);
+			colabs.setFaixaSalarialId(res[9] != null ? ((BigInteger)res[9]).longValue() : null);
+			colabs.setFaixaSalarialNome(res[10]!= null ? (String)res[10] : null);
+			colabs.setCargoId(res[11] != null ? ((BigInteger)res[11]).longValue() : null);
+			colabs.setCargoNome(res[12]!= null ? (String)res[12] : null);
+			
+			ColaboradoresCertificacao.add(colabs);
+		}
+
+		return ColaboradoresCertificacao;
 	}
 }

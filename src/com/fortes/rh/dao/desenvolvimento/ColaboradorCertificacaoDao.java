@@ -10,7 +10,6 @@ import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
 public interface ColaboradorCertificacaoDao extends GenericDao<ColaboradorCertificacao> 
 {
 	Collection<ColaboradorCertificacao> findByColaboradorIdAndCertificacaoId(Long colaboradorId, Long certificacaoId);
-	Collection<ColaboradorCertificacao> colaboradoresCertificados(Date dataIni, Date dataFim, char filtroCetificacao, Long[] areasIds, Long[] estabelecimentosIds, Long[] certificacoesIds);
 	Collection<ColaboradorCertificacao> colaboradoresCertificadosByColaboradorTurmaId(Long colaboradorTurmaId);
 	Collection<ColaboradorCertificacao> getCertificacoesAVencer(Date data, Long empresaId);
 	ColaboradorCertificacao colaboradorCertificadoByColaboradorIdAndCertificacaId(Long colaboradorId, Long certificacaoId);
@@ -19,4 +18,5 @@ public interface ColaboradorCertificacaoDao extends GenericDao<ColaboradorCertif
 	void removeDependencias(Long colaboradorCertificacaoId);
 	Collection<ColaboradorTurma> colaboradoresTurmaCertificados(Long colaboradorId, Long certificacaoId);
 	ColaboradorCertificacao findByColaboradorTurma(Long colaboradorTurmaId);
+	Collection<ColaboradorCertificacao> colaboradoresQueParticipaDoCertificado(Long[] areasIds, Long[] estabelecimentosIds, Long certificadoId);
 }

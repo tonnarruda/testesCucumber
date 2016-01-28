@@ -16,7 +16,6 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 import com.fortes.model.AbstractModel;
-import com.fortes.rh.model.cargosalario.HistoricoColaborador;
 import com.fortes.rh.model.geral.Colaborador;
 import com.fortes.rh.util.DateUtil;
 
@@ -50,32 +49,6 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	public ColaboradorCertificacao() {
 	}
 	
-	//usado por colaboradoresCertificados
-	public ColaboradorCertificacao(Long colaboradorId, String colaboradorNome, String colaboradorNomeComercial, String colaboradorMatricula, 
-			 Long estabelecimentoId, String estabelecimentoNome, Long cargoId, String cargoNome, Long certificacaoId, String certificacaoNome, Integer periodicidade, Date data, Long id)
-	{
-		setId(id);
-		this.colaborador = new Colaborador();
-		this.colaborador.setId(colaboradorId);
-		this.colaborador.setNome(colaboradorNome);
-		this.colaborador.setNomeComercial(colaboradorNomeComercial);
-		this.colaborador.setMatricula(colaboradorMatricula);
-		this.colaborador.setHistoricoColaborador(new HistoricoColaborador());
-		
-		this.colaborador.getHistoricoColaborador().setProjectionEstabelecimentoId(estabelecimentoId);
-		this.colaborador.getHistoricoColaborador().setEstabelecimentoNome(estabelecimentoNome);
-		this.colaborador.getHistoricoColaborador().setCargoId(cargoId);
-		this.colaborador.getHistoricoColaborador().setCargoNome(cargoNome);
-		
-		this.certificacao = new Certificacao();
-		this.certificacao.setId(certificacaoId);
-		this.certificacao.setNome(certificacaoNome);
-		this.certificacao.setPeriodicidade(periodicidade);
-
-		this.data = data;
-	}
-	
-	//usado por certificacoesByColaboradorTurmaId
 	public ColaboradorCertificacao(Long certificacaoId, Long colaboradorId, Long certificacaoPreRequisitoId)
 	{
 		this.colaborador = new Colaborador();
@@ -112,6 +85,9 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	
 	public String getDataFormatada() 
 	{
+		if(this.data == null)
+			return "-";
+		
 		return DateUtil.formataDiaMesAno(data);
 	}
 
@@ -132,12 +108,17 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 	
 	public String getDataCertificadoFormatada()
 	{
+		if(this.data == null)
+			return "-";
+		
 		return DateUtil.formataDiaMesAno(this.data);
 	}
 	
 	public String getDataVencimentoCertificacao()
 	{
-		if(this.certificacao.getPeriodicidade() == null)
+		if(this.data == null)
+			return "Não Certificado";
+		else if(this.certificacao.getPeriodicidade() == null)
 			return "Sem vencimento";
 		else{
 			Date vencimento = DateUtil.incrementaMes(this.data, this.certificacao.getPeriodicidade());
@@ -150,11 +131,23 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		inicializaColaborador();
 		this.colaborador.setCargoNomeProjection(cargoNome);
 	}
-
-	public void setFaixaSalarialNome(String FaixaSalarialNome)
+	
+	public void setCargoId(Long cargoId)
 	{
 		inicializaColaborador();
-		this.colaborador.setFaixaSalarialNomeProjection(FaixaSalarialNome);
+		this.colaborador.setCargoIdProjection(cargoId);
+	}
+	
+	public void setFaixaSalarialId(Long faixaSalarialId)
+	{
+		inicializaColaborador();
+		this.colaborador.setFaixaSalarialIdProjection(faixaSalarialId);
+	}
+	
+	public void setFaixaSalarialNome(String faixaSalarialNome)
+	{
+		inicializaColaborador();
+		this.colaborador.setFaixaSalarialNomeProjection(faixaSalarialNome);
 	}
 	
 	public void setColaboradorEmail(String colaboradorEmail)
@@ -163,10 +156,23 @@ public class ColaboradorCertificacao extends AbstractModel implements Serializab
 		this.colaborador.setEmailColaborador(colaboradorEmail);
 	}
 	
+
+	public void setColaboradorMatricula(String colaboradorMatricula) 
+	{
+		inicializaColaborador();
+		this.colaborador.setMatricula(colaboradorMatricula);
+	}
+	
 	public void setColaboradorNome(String colaboradorNome)
 	{
 		inicializaColaborador();
 		this.colaborador.setNome(colaboradorNome);
+	}
+	
+	public void setColaboradorNomeComercial(String colaboradorNomeComercial)
+	{
+		inicializaColaborador();
+		this.colaborador.setNomeComercial(colaboradorNomeComercial);
 	}
 	
 	public void setAreaOrganizacionalAreaMaeId(Long areaOrganizacionalAreaMaeId)

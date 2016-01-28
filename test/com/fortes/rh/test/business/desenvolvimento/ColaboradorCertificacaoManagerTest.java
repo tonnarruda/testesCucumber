@@ -9,11 +9,14 @@ import mockit.Mockit;
 import org.jmock.Mock;
 import org.jmock.MockObjectTestCase;
 
+import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
+import com.fortes.rh.business.desenvolvimento.CertificacaoManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorAvaliacaoPraticaManager;
 import com.fortes.rh.business.desenvolvimento.ColaboradorCertificacaoManagerImpl;
 import com.fortes.rh.business.desenvolvimento.ColaboradorTurmaManager;
 import com.fortes.rh.dao.desenvolvimento.ColaboradorCertificacaoDao;
 import com.fortes.rh.model.avaliacao.AvaliacaoPratica;
+import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorAvaliacaoPratica;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorTurma;
@@ -37,6 +40,8 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 	private Mock colaboradorCertificacaoDao;
 	private Mock colaboradorAvaliacaoPraticaManager;
 	private Mock colaboradorTurmaManager;
+	private Mock certificacaoManager;
+	private Mock avaliacaoPraticaManager;
 	
 	protected void setUp() throws Exception
     {
@@ -47,7 +52,11 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
         colaboradorAvaliacaoPraticaManager = new Mock(ColaboradorAvaliacaoPraticaManager.class);
         colaboradorCertificacaoManager.setColaboradorAvaliacaoPraticaManager((ColaboradorAvaliacaoPraticaManager) colaboradorAvaliacaoPraticaManager.proxy());
         
+        avaliacaoPraticaManager = new Mock(AvaliacaoPraticaManager.class);
+        colaboradorCertificacaoManager.setAvaliacaoPraticaManager((AvaliacaoPraticaManager) avaliacaoPraticaManager.proxy());
+        
         colaboradorTurmaManager = new Mock(ColaboradorTurmaManager.class);
+        certificacaoManager = new Mock(CertificacaoManager.class);
         
         Mockit.redefineMethods(SpringUtil.class, MockSpringUtil.class);
     }
@@ -63,10 +72,16 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 	public void testMontaRelatorioColaboradoresNasCertificacoes()
 	{
 		MockSpringUtil.mocks.put("colaboradorTurmaManager", colaboradorTurmaManager);
+		MockSpringUtil.mocks.put("certificacaoManager", certificacaoManager);
+		
+		Certificacao certificacao = CertificacaoFactory.getEntity(1L);
+		certificacao.setNome("cert. admin");
+		Collection<Certificacao> certificacoes = new ArrayList<Certificacao>();
+		certificacoes.add(certificacao);
 		
 		ColaboradorCertificacao colaboradorCertificacao = ColaboradorCertificacaoFactory.getEntity(1L);
 		colaboradorCertificacao.setColaborador(ColaboradorFactory.getEntity(1L));
-		colaboradorCertificacao.setCertificacao(CertificacaoFactory.getEntity(1L));
+		colaboradorCertificacao.setCertificacao(certificacao);
 		
 		Collection<ColaboradorCertificacao> colaboradorCertificacaos = new ArrayList<ColaboradorCertificacao>();
 		colaboradorCertificacaos.add(colaboradorCertificacao);
@@ -89,6 +104,9 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		avaliacaoPratica.setNotaMinima(90.0);
 		avaliacaoPratica.setTitulo("Beber Cachaça");
 		
+		Collection<AvaliacaoPratica> avaliacoesPraticas = new ArrayList<AvaliacaoPratica>();
+		avaliacoesPraticas.add(avaliacaoPratica);
+		
 		ColaboradorAvaliacaoPratica colaboradorAvaliacaoPratica = ColaboradorAvaliacaoPraticaFactory.getEntity(1L);
 		colaboradorAvaliacaoPratica.setAvaliacaoPratica(avaliacaoPratica);
 		colaboradorAvaliacaoPratica.setNota(90.0);
@@ -96,9 +114,11 @@ public class ColaboradorCertificacaoManagerTest extends MockObjectTestCase
 		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = new ArrayList<ColaboradorAvaliacaoPratica>();
 		avaliacoesPraticasDoColaboradorRealizadas.add(colaboradorAvaliacaoPratica);
 		
-		colaboradorCertificacaoDao.expects(once()).method("colaboradoresCertificados").will(returnValue(colaboradorCertificacaos));
+		colaboradorCertificacaoDao.expects(once()).method("colaboradoresQueParticipaDoCertificado").will(returnValue(colaboradorCertificacaos));
 		colaboradorTurmaManager.expects(once()).method("findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId").will(returnValue(colaboradorTurmas));
+		avaliacaoPraticaManager.expects(once()).method("findByCertificacaoId").will(returnValue(avaliacoesPraticas));
 		colaboradorAvaliacaoPraticaManager.expects(once()).method("findByColaboradorIdAndCertificacaoId").will(returnValue(avaliacoesPraticasDoColaboradorRealizadas));
+		certificacaoManager.expects(once()).method("findById").will(returnValue(certificacoes));
 		
 		Date dataIni = DateUtil.criarDataMesAno(1, 1, 2015);
 		Date dataFim = DateUtil.criarDataMesAno(1, 1, 2016);
