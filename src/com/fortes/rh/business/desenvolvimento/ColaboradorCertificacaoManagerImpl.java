@@ -3,6 +3,8 @@ package com.fortes.rh.business.desenvolvimento;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.fortes.business.GenericManagerImpl;
 import com.fortes.rh.business.avaliacao.AvaliacaoPraticaManager;
@@ -43,10 +45,8 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 		for (Certificacao certificacao : certificacoes) 
 			colaboradoresQueParticipamDaCerttificacao.addAll(getDao().colaboradoresQueParticipaDoCertificado(areaIds, estabelecimentoIds, certificacao.getId()));
 		
-		colaboradoresQueParticipamDaCerttificacao = new CollectionUtil<ColaboradorCertificacao>().sortCollection(colaboradoresQueParticipamDaCerttificacao, "colaborador.nome");
-		
 		ColaboradorCertificacao	colabCertificacao;
-		
+		colaboradoresQueParticipamDaCerttificacao = new CollectionUtil<ColaboradorCertificacao>().sortCollection(colaboradoresQueParticipamDaCerttificacao, "colaborador.nome");
 		for (ColaboradorCertificacao colaboradorCertificacao : colaboradoresQueParticipamDaCerttificacao) 
 		{
 			Collection<ColaboradorTurma> colaboradorTurmas = colaboradorTurmaManager.findByColaboradorIdAndCertificacaoIdAndColabCertificacaoId(colaboradorCertificacao.getColaborador().getId(), colaboradorCertificacao.getCertificacao().getId(), colaboradorCertificacao.getId());
@@ -60,30 +60,65 @@ public class ColaboradorCertificacaoManagerImpl extends GenericManagerImpl<Colab
 				colaboradorCertificacaosRetorno.add(colabCertificacao);
 			}
 			
-			Collection<AvaliacaoPratica> avaliacoesPraticas = avaliacaoPraticaManager.findByCertificacaoId(colaboradorCertificacao.getCertificacao().getId());
-			Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaboradorCertificacao.getColaborador().getId(), colaboradorCertificacao.getCertificacao().getId(), colaboradorCertificacao.getId());
-			
-			for (AvaliacaoPratica avaliacaoPratica : avaliacoesPraticas) 
-			{
-				colabCertificacao = (ColaboradorCertificacao) colaboradorCertificacao.clone();
-				colabCertificacao.setPeriodoTurma("-");
-				colabCertificacao.setNomeCurso("Avaliação Prática: " + avaliacaoPratica.getTitulo());
-				
-				colabCertificacao.setAprovadoNaTurma(false);
-				for (ColaboradorAvaliacaoPratica avaliacaoPraticaDoColaboradorRealizada : avaliacoesPraticasDoColaboradorRealizadas) 
-				{
-					if(avaliacaoPraticaDoColaboradorRealizada.getAvaliacaoPratica().getId().equals(avaliacaoPratica.getId()))
-					{
-						colabCertificacao.setAprovadoNaTurma(avaliacaoPraticaDoColaboradorRealizada.getNota() >= avaliacaoPratica.getNotaMinima());
-						break;
-					}
-				}
-				
-				colaboradorCertificacaosRetorno.add(colabCertificacao);
-			}
+			populaAvaliacoesPraticas(colaboradorCertificacaosRetorno,colaboradorCertificacao);
 		}	
 		
+		populaStatusAprovadoNaCertificacao(colaboradorCertificacaosRetorno);
+			
 		return colaboradorCertificacaosRetorno;
+	}
+
+	private void populaStatusAprovadoNaCertificacao(Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno) 
+	{
+		Long certificacaIdTemp = 0L;
+		Long colaboradorIdTemp = 0L;
+		boolean certificadoAnterior = false;
+		Map<Long, Boolean> colaboradorCertificado = new HashMap<Long, Boolean>();
+		
+		for (ColaboradorCertificacao colaboradorCertificacao : colaboradorCertificacaosRetorno) 
+		{
+			if(certificacaIdTemp.equals(colaboradorCertificacao.getCertificacao().getId()) && colaboradorIdTemp.equals(colaboradorCertificacao.getColaborador().getId())){
+				certificadoAnterior = certificadoAnterior && colaboradorCertificacao.getAprovadoNaTurma();	
+			}else{
+				certificacaIdTemp = colaboradorCertificacao.getCertificacao().getId();
+				colaboradorIdTemp = colaboradorCertificacao.getColaborador().getId();
+				certificadoAnterior = colaboradorCertificacao.getAprovadoNaTurma();
+			}
+
+			colaboradorCertificado.put(colaboradorCertificacao.getColaborador().getId(), certificadoAnterior);
+		}
+		
+		for (ColaboradorCertificacao colaboradorCertificacao : colaboradorCertificacaosRetorno) 
+			colaboradorCertificacao.getCertificacao().setAprovadoNaCertificacao(colaboradorCertificado.get(colaboradorCertificacao.getColaborador().getId()));
+	}
+
+	private void populaAvaliacoesPraticas(Collection<ColaboradorCertificacao> colaboradorCertificacaosRetorno, ColaboradorCertificacao colaboradorCertificacao) 
+	{
+		ColaboradorCertificacao colabCertificacao;
+		Collection<AvaliacaoPratica> avaliacoesPraticas = avaliacaoPraticaManager.findByCertificacaoId(colaboradorCertificacao.getCertificacao().getId());
+		Collection<ColaboradorAvaliacaoPratica> avaliacoesPraticasDoColaboradorRealizadas = colaboradorAvaliacaoPraticaManager.findByColaboradorIdAndCertificacaoId(colaboradorCertificacao.getColaborador().getId(), colaboradorCertificacao.getCertificacao().getId(), colaboradorCertificacao.getId());
+		
+		for (AvaliacaoPratica avaliacaoPratica : avaliacoesPraticas) 
+		{
+			if(avaliacaoPratica.getId() == null)
+				continue;
+			
+			colabCertificacao = (ColaboradorCertificacao) colaboradorCertificacao.clone();
+			colabCertificacao.setPeriodoTurma("-");
+			colabCertificacao.setNomeCurso("Avaliação Prática: " + avaliacaoPratica.getTitulo());
+			
+			colabCertificacao.setAprovadoNaTurma(false);
+			for (ColaboradorAvaliacaoPratica avaliacaoPraticaDoColaboradorRealizada : avaliacoesPraticasDoColaboradorRealizadas) 
+			{
+				if(avaliacaoPraticaDoColaboradorRealizada.getAvaliacaoPratica().getId().equals(avaliacaoPratica.getId()))
+				{
+					colabCertificacao.setAprovadoNaTurma(avaliacaoPraticaDoColaboradorRealizada.getNota() >= avaliacaoPratica.getNotaMinima());
+					break;
+				}
+			}
+			
+			colaboradorCertificacaosRetorno.add(colabCertificacao);
+		}
 	}
 
 	public String formataPeriodo(Date dataPrevIni, Date dataPrevFim)

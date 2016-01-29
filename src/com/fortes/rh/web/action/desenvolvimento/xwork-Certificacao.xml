@@ -76,9 +76,9 @@
 				<param name="dataSource">colaboradorCertificacoes</param>
 				<param name="documentName">certificadosVencidosAVencer.xls</param>
 				<param name="sheetName">Planilha1</param>
-				<param name="columns">Nome,Nome Comercial,Matrícula,Estabelecimento,Cargo,Certificação,Certificado em,Periodicidade,Vencimento do Certificado,Curso,Período,Aprovado</param>
-				<param name="propertiesGroup">colaborador.id,colaborador.id,colaborador.matricula,colaborador.historicoColaborador.estabelecimento.id,colaborador.historicoColaborador.faixaSalarial.cargo.id,certificacao.id,dataCertificadoFormatada,certificacao.periodicidade,dataVencimentoCertificacao</param>
-				<param name="properties">colaborador.nome,colaborador.nomeComercial,colaborador.matricula,colaborador.historicoColaborador.estabelecimento.nome,colaborador.historicoColaborador.faixaSalarial.cargo.nome,certificacao.nome,dataCertificadoFormatada,certificacao.periodicidadeFormatada,dataVencimentoCertificacao,nomeCurso,periodoTurma,aprovadoNaTurmaString</param>
+				<param name="columns">Nome,Nome Comercial,Matrícula,Estabelecimento,Cargo,Certificação,Status Certificação,Certificado em,Periodicidade,Vencimento do Certificado,Curso,Período,Aprovado</param>
+				<param name="propertiesGroup">colaborador.id,colaborador.id,colaborador.matricula,colaborador.historicoColaborador.estabelecimento.id,colaborador.historicoColaborador.faixaSalarial.cargo.id,certificacao.id,certificacao.aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidade,dataVencimentoCertificacao</param>
+				<param name="properties">colaborador.nome,colaborador.nomeComercial,colaborador.matricula,colaborador.historicoColaborador.estabelecimento.nome,colaborador.historicoColaborador.faixaSalarial.cargo.nome,certificacao.nome,certificacao.aprovadoNaCertificacaoString,dataCertificadoFormatada,certificacao.periodicidadeFormatada,dataVencimentoCertificacao,nomeCurso,periodoTurma,aprovadoNaTurmaString</param>
 				<param name="reportFilter">reportFilter</param>
 				<param name="reportTitle">reportTitle</param>
 			</result>	

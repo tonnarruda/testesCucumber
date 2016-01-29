@@ -19,7 +19,6 @@ import com.fortes.rh.model.desenvolvimento.Certificacao;
 import com.fortes.rh.model.desenvolvimento.ColaboradorCertificacao;
 import com.fortes.rh.model.desenvolvimento.Curso;
 import com.fortes.rh.model.dicionario.FiltroControleVencimentoCertificacao;
-import com.fortes.rh.model.dicionario.TipoCertificacao;
 import com.fortes.rh.model.geral.Empresa;
 import com.fortes.rh.security.SecurityUtil;
 import com.fortes.rh.util.CheckListBoxUtil;
@@ -64,7 +63,6 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private Collection<CheckBox> certificacoesCheckList = new ArrayList<CheckBox>();
 	
 	private Map<String,Object> parametros = new HashMap<String, Object>();
-	private TipoCertificacao tipoCertificacoes = new TipoCertificacao(); 
 	private String reportFilter;
 	private String reportTitle;
 		
@@ -74,6 +72,8 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 	private Date dataIni;
 	private Date dataFim;
 	private Boolean bloquearEdicao = false;
+	private boolean colaboradorCertificado;
+	private boolean colaboradorNaoCertificado;
 
 	private void prepare() throws Exception
 	{
@@ -175,8 +175,18 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 			
 			reportTitle = "Relatório de certificações vencidas e a vencer ";
 			reportFilter = getDataReferenciaFormatada() + "\n";
-			reportFilter += "Certificações " + TipoCertificacao.getDescricao(filtroCetificacao).toLowerCase();
 			
+			reportFilter += "Colaboradores";
+			
+			if(colaboradorCertificado)
+				reportFilter += " certificados"; 
+			
+			if(colaboradorCertificado && colaboradorNaoCertificado)
+				reportFilter += " e";
+			
+			if(colaboradorNaoCertificado)
+				reportFilter += " não certificados";
+				
 			parametros = RelatorioUtil.getParametrosRelatorio(reportTitle, getEmpresaSistema(), reportFilter);
 			colaboradorCertificacoes = colaboradorCertificacaoManager.montaRelatorioColaboradoresNasCertificacoes(dataIni, dataFim, filtroCetificacao, areaIds, estabelecimentoIds, certificacoesIds);
 		
@@ -380,15 +390,27 @@ public class CertificacaoEditAction extends MyActionSupportEdit implements Model
 		return reportTitle;
 	}
 
-	public TipoCertificacao getTipoCertificacoes() {
-		return tipoCertificacoes;
-	}
-
 	public Boolean getBloquearEdicao() {
 		return bloquearEdicao;
 	}
 
 	public void setBloquearEdicao(Boolean bloquearEdicao) {
 		this.bloquearEdicao = bloquearEdicao;
+	}
+
+	public boolean isColaboradorCertificado() {
+		return colaboradorCertificado;
+	}
+
+	public void setColaboradorCertificado(boolean colaboradorCertificado) {
+		this.colaboradorCertificado = colaboradorCertificado;
+	}
+
+	public boolean isColaboradorNaoCertificado() {
+		return colaboradorNaoCertificado;
+	}
+
+	public void setColaboradorNaoCertificado(boolean colaboradorNaoCertificado) {
+		this.colaboradorNaoCertificado = colaboradorNaoCertificado;
 	}
 }
